@@ -2,125 +2,129 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 575B67DFD66
-	for <lists+linux-efi@lfdr.de>; Fri,  3 Nov 2023 01:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FD397DFD89
+	for <lists+linux-efi@lfdr.de>; Fri,  3 Nov 2023 01:31:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbjKCABj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Nov 2023 20:01:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48700 "EHLO
+        id S229628AbjKCAbF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Nov 2023 20:31:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjKCABi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Nov 2023 20:01:38 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2049.outbound.protection.outlook.com [40.107.237.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AFAF136;
-        Thu,  2 Nov 2023 17:01:32 -0700 (PDT)
+        with ESMTP id S229605AbjKCAbD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Nov 2023 20:31:03 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2068.outbound.protection.outlook.com [40.107.237.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E9B136;
+        Thu,  2 Nov 2023 17:30:57 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MO7XO/RKjitwIVgTrnzRaHe+jiYU7b78a2nB5cWciJ2seLGQt5Vh2oNitqZ8AGySrCnvoq5S74/RYCh/o2YIwcIl3bOpsJPIkgbLZ1pJr2tMpMTQdbSmpgflP0nV7/7Ki5oxnWUe8B9P2ubV08fnBgUepkUKfU0reboTlM7/F2iurZZsrnWMUSx4BJAKly3z+TsC77L1+4wl/ZYl3Mx8LQbcI2JjFja1a714ubR7fQy1KyNKDJnFDF69uRjK+m87958RtWCreMMDEfN3B6Gq6uActe8x/hyG17+M4ZR1n7IOOCEDYPg9fuUdoO4BIECB85L34X7NKHOUF/wfK1jZTQ==
+ b=h0WGxkquoEtI5o9shoauW8/0Ugd3YqMUQaSSKj392+eoGrOL05VkAYA9ibSHwI6vwxh5cS11201hImI1IwzF9uDLkE41pCnRQVkO6mWS2piXv4VJyYIio/8xxtf1vWOQ/UlQHiWnN23pRjEKG0HKE+Wu1rOJlAarLQevsSLEBOIlSLPAGYpDqv1T0GGlTWy6NnsuipmkPNay/pFh7xGZJqmMSEqQdv7sk8WVthT7Ok4mFFiFbzx8mKvr//+/v0D9+nGfD5nF15oTYGQC4XhH8UKQUzT4DINeLWBXoIP5jfG7ZFYYy539hlMnC5s1qhOFcilBChAhP8V1SvA5pBF9HQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aNzhc/kB9KGXaRJZK881c+BcsoROOl+DtXNidS/uY8I=;
- b=PUPqjKa0bhoG4tdNBypomeEqBEFuB/no6N64UAvOR5PBIa3an9fEVJ4+KB5h8Tl17CkefSSlC9r7FgwCtmgBbDSkPnBYJ6MUSIfvayk4bjKO8JXV2TLZ013QbMUWdniJ6uqUoZ3nJbmb/DX7oHNBvVoFkL+p3/9QrNGwi8kUpFPBa+bVDxAzP3TmttdjD1vV4w8E0WCU7MsuzH2bN536fww1EVtaRBL46M25Ygf0GBeuQIuvtrunkX1aiZW9IcMcK5bGRdIdAEvSnlz8ma9p53k7jE/RkkRuNMUiu/uX3qq+iWFXmHtMti4EnW0uWdtJIx2rtCj0ldsppfHXynIk1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ bh=SuVcA1YJY1vy1frPyG2g6Inh2HhEI+1q6IVFdC+UzlU=;
+ b=Pl2TiHt+dn32CADZRvIX5J5Ir4MCSZfpbkXCBoP0LK3zlQjcVrXD1G5AoXWKV5eAhpRwnTYRhKSwkBq/APXD2t2Y6N8D8l8j6a6jHW/SBZli0qslm2pYKQFKE4jRj3kMcuwU0NujF0HHlOuU+jSErSTtGhFjaZIgT+M9/89yNldwHgd0OlsZjmFlm9ybvsTc139rxN0K+bUzI2ZKKd4KEA6cbm9SLfQQWAI+PO+3mk+mTEAOf8ZyqMh6Mh6nmN/jKfd/vNra9dXph9cxki4MtmIJKezbg/KSbAyAVt4vwPOFZh5oSl92f4b+RNtLGU9/FLk665ALriyMwT3UY9px3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aNzhc/kB9KGXaRJZK881c+BcsoROOl+DtXNidS/uY8I=;
- b=CeKLEalrs9e3PenbvFL8Jx+JJ72ubjEU8vbHxTBdD4lIstNDaYf4PXUsvMh6j6OdnYF9eRx40IVA3YhBoBD7ZBvUbzQ8nV/+14I92x3wtv3xkZhtN1XSeCw5WwqqMGbmCCcNwDoUye0jFwqWHlqJDsqFf+s1n90T2AX9mitzBAA=
-Received: from MN2PR20CA0003.namprd20.prod.outlook.com (2603:10b6:208:e8::16)
- by CH2PR12MB4940.namprd12.prod.outlook.com (2603:10b6:610:65::10) with
+ bh=SuVcA1YJY1vy1frPyG2g6Inh2HhEI+1q6IVFdC+UzlU=;
+ b=kFTAHs2jxgNqncQ8z+/saAedxozcj5q2PqAe//wPPsj6shA9vccjJ3IpsqjBcgO61Oc6xV0w9SfKpzGR+XM/un6uk6d7ZpCwHrcntzDu9ALx0ifs1PHBT5mLT0/NBimMZNTnZbMpTqobX3F2cEpNaOtWwEiQX0pDTzlY2De4vrc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BYAPR12MB2869.namprd12.prod.outlook.com (2603:10b6:a03:132::30)
+ by PH0PR12MB7010.namprd12.prod.outlook.com (2603:10b6:510:21c::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.21; Fri, 3 Nov
- 2023 00:01:29 +0000
-Received: from BL6PEPF0001AB56.namprd02.prod.outlook.com
- (2603:10b6:208:e8:cafe::cc) by MN2PR20CA0003.outlook.office365.com
- (2603:10b6:208:e8::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19 via Frontend
- Transport; Fri, 3 Nov 2023 00:01:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB56.mail.protection.outlook.com (10.167.241.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6954.19 via Frontend Transport; Fri, 3 Nov 2023 00:01:28 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Thu, 2 Nov
- 2023 19:01:22 -0500
-Date:   Thu, 2 Nov 2023 19:01:05 -0500
-From:   Michael Roth <michael.roth@amd.com>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-CC:     Vlastimil Babka <vbabka@suse.cz>, Borislav Petkov <bp@alien8.de>,
-        "Andy Lutomirski" <luto@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Sean Christopherson" <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Kuppuswamy Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Paolo Bonzini" <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        <marcelo.cerri@canonical.com>, <tim.gardner@canonical.com>,
-        <philip.cox@canonical.com>, <aarcange@redhat.com>,
-        <peterx@redhat.com>, <x86@kernel.org>, <linux-mm@kvack.org>,
-        <linux-coco@lists.linux.dev>, <linux-efi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@kernel.org>,
-        Nikolay Borisov <nik.borisov@suse.com>,
-        Bandan Das <bsd@redhat.com>
-Subject: Re: [PATCHv2] efi/unaccepted: Fix soft lockups caused by parallel
- memory acceptance
-Message-ID: <20231103000105.m3z4eijcxlxciyzd@amd.com>
-References: <20231016163122.12855-1-kirill.shutemov@linux.intel.com>
- <20231016205419.c3sfriemyaiczxie@amd.com>
- <3ccb822e-fc46-3087-d6ad-2f754dcf218c@suse.cz>
- <20231101004523.vseyi5bezgfaht5i@amd.com>
- <20231102135611.lyiu2lss2csswgch@box.shutemov.name>
+ 2023 00:30:55 +0000
+Received: from BYAPR12MB2869.namprd12.prod.outlook.com
+ ([fe80::ea10:2f7:ef14:9c]) by BYAPR12MB2869.namprd12.prod.outlook.com
+ ([fe80::ea10:2f7:ef14:9c%4]) with mapi id 15.20.6933.026; Fri, 3 Nov 2023
+ 00:30:54 +0000
+Message-ID: <bd888ca8-39e8-0e68-9bb5-566ef91cee24@amd.com>
+Date:   Thu, 2 Nov 2023 17:30:51 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH RFC v3 5/6] firmware/efi: Process CXL Component Events
+Content-Language: en-US
+To:     Ira Weiny <ira.weiny@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+References: <20230601-cxl-cper-v3-0-0189d61f7956@intel.com>
+ <20230601-cxl-cper-v3-5-0189d61f7956@intel.com>
+From:   Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+In-Reply-To: <20230601-cxl-cper-v3-5-0189d61f7956@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR21CA0016.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::26) To BYAPR12MB2869.namprd12.prod.outlook.com
+ (2603:10b6:a03:132::30)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231102135611.lyiu2lss2csswgch@box.shutemov.name>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB56:EE_|CH2PR12MB4940:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4b0333e-be02-4394-0db0-08dbdc0007cd
+X-MS-TrafficTypeDiagnostic: BYAPR12MB2869:EE_|PH0PR12MB7010:EE_
+X-MS-Office365-Filtering-Correlation-Id: 652ec45d-1115-4d21-1f20-08dbdc042337
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Ozlz5HoUEpI+bbXzR58fjkKCsb3BSnLBXMkkBw6pumz8/YtHD+JRQf0RFc98EdFRK9yvEkpsmSwMidtX4YleI6ZKhGwAs5PHtA3IrQ6FmftHPpgHSSn0cU6AmXOjxs4y247vBMoQHtW9eYPEWQK6zqkiedt2xjP52g5WQkt/vcyLoJ7c62TIVp36/yJEGesZKsZxCDmGRaXyjjgadZKTuO3FAGzXvri0q4Xx7NnxH3HzK09o9bV4I4i03L3bMjLekms8uDqoGRAIfQzmGh6tNyZ1eSRQuyT7lYeK97dInopIX0heYV1P1KyJvLR+ALg8yhVlH0xmGlOwW7qxYYds/HQXCIEf+cddXKJA81lqKuwxtzx5Q08++vmn7RwekOcNI4CU2RvV7QMxYElfasQC1S5yIgg1TaNDI+d3zEAwOFqitd4kcju6UjXtxiCykxpODy7x4QVkvKne31UGQCXEQcrhaLs/TKjwkVPcgwuAsxg4E4HPqpo32j/iww7/ZNyG4drFropnE3rsAQ42Mi+q7vtoKwhS646L8UzJNeAuuS8DtsiCqXA12EnqNjGvERQB2QARAYHpRqzDfatIJvUc4xlH7lhPqjpLfw0IsZQG/diUkw4tiDtnTitiWhNs4pkt65o2pt+3/s6Hohf6b0l47ZFaFb47TdCq7ZpN1yjoZvsVcGalmXiJyGnaUZV0d56qfQlNNFx5dgF9H94vWXtwNGkLCxCqGHbLlrgzY+oi+xpsnQMF5J7kkhwAFOIB6URNxSYjTKwjpQBB/I/Gzu7zgQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(346002)(396003)(39860400002)(376002)(230922051799003)(451199024)(186009)(64100799003)(1800799009)(82310400011)(40470700004)(36840700001)(46966006)(81166007)(16526019)(2616005)(1076003)(40460700003)(40480700001)(356005)(426003)(26005)(336012)(44832011)(8676002)(8936002)(41300700001)(2906002)(86362001)(7416002)(7406005)(82740400003)(54906003)(478600001)(70206006)(70586007)(6916009)(316002)(4326008)(36756003)(6666004)(5660300002)(47076005)(83380400001)(36860700001)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: W+Z4qjK8u2G8zk/rbjA+k2zFzjb20ic4yJvk1eCsLj6rciRBkJlupLYA7DMMTBMDXDI2sOMl7PTspTTgTTeEqKai5419x1TR1U6SQs7Gwb/DJfQeJFgtUjYw9fKnkghJ+8fDf5FDIlwhz42dricqG1inGiXH6E7I0a5YUToER7g+7+dYgkMx7xU9LxBUzZTH61w773FqwXTHTgzy21IsYRcuHPj6/tim+4UOWeWh0ijjwscY92qR5NfRq9+HfUiWXy2H9xUAHMuVrqLwy3zN+CHqGZDluFq9neft+jdthMk1XeR5gZ+5/ZFrQ/pMMjV1ftmpaejuzNcwRud2UIGnlIcycuKnJt6vw4OGKOnMrLp6nhNKb8lSD6yuYQiveUg1N4fnKoXrdC4wX6p3eiBuhjcPJYP192bDWcafW7BeXwZ4rf9q4xsCZ1oUqVYsTzTb4IJgIu5PEWaclm4WA2RV8wh9Fx+nsYwkt+JekXX3LpLwEcBziFiFPEb8WcNdLqXg6J4sNTNtVCaesgkelPjQhdJuzVGfyCiyXU6KOqwRVYWQIk1qLPnYqqQzm1b35TbIuq6WIPKKxtUm3IYnG8i4+zbYWvLzWG6PztmOow9A6gNyMbhmWNx/JkKMPH45x2yUM7o5EDxZ/iia9O95AY/itg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(396003)(366004)(39860400002)(346002)(230922051799003)(64100799003)(451199024)(186009)(1800799009)(4326008)(8676002)(8936002)(41300700001)(7416002)(36756003)(2906002)(5660300002)(26005)(2616005)(83380400001)(53546011)(6666004)(6506007)(6512007)(31686004)(31696002)(38100700002)(86362001)(6486002)(54906003)(66946007)(66556008)(66476007)(110136005)(478600001)(316002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MWYrYU9NWi9Oc2xhWHlZZ1hwRzJWNkplcjNqdmg4K2hMVzQvRHR1cnIzVFd6?=
+ =?utf-8?B?dmMyZExvNlRMUElUbGxZdG5uUU1EMU5ibDUxazZMazVJQ0g4MzRLWmVCYlJJ?=
+ =?utf-8?B?Z0R0OGM0MlNtOTlMWlZQUjFValdYcEhKTGo2QTZiNlQwV2VFWmVqbC94TkNm?=
+ =?utf-8?B?YkRrUVdkRWJTank5YS9OcGZGbGl5aWlNbytkNFVTZGtrWjErQURBWmY3bkJP?=
+ =?utf-8?B?RFl2VHhvUVd0TE0rcGxRcUJ2NTJEM2xlQTBqL21yc2hEQWV1eFU0eStoUGlw?=
+ =?utf-8?B?a2FweWJuTTAvZ3gwS2RJYUJCdFR4bXY2S3JOZHpuYTU2eGphTE5ld0JjeEVt?=
+ =?utf-8?B?azFiUEVYdHpMUlpWQThtMys2alhDTFRNQzBvRXZONi9DVitsclhPTnBSdmxX?=
+ =?utf-8?B?aUl1emhJUnVrZWNOTENZd2ZrdnBUQ3NHbFBUQTVSZ2dCdXBiMktGT3FrN2pU?=
+ =?utf-8?B?ZTRYbnNQVTFsdFgzVFJxUUxUNTFRMi9hb293UlhXR2dyK1ZyQ1NrSkdOenZX?=
+ =?utf-8?B?MmNjNUJrZmdTQTRmNzgwaXlsZXpHYzVsd3ViV2Z6NkZDRXE1WUNWMysvUlZY?=
+ =?utf-8?B?b1lNQUxrSndVWGtnZWpxMHFvT0hOaFFJUEMzUTRZVWQxdWJKNEVTSm1CQWR1?=
+ =?utf-8?B?WHdiUkVzam1wS0x5cFozMGFsZ09LV1h4SkJOT0pRVVduL3FmV1F1TjJtRExz?=
+ =?utf-8?B?TEMvNDNXMU0yZHQrY3B0MkgzRVREMkREV2VHTXdCazR2bTIzeGxBQkJDd0la?=
+ =?utf-8?B?Q3pBMVJQSGdxMWd1Sk4vNUJVbnJDNzhybWlFcytxZUkzeFpuZjdzbE1XTE55?=
+ =?utf-8?B?dURhdmR4WG90SmU5L205M0MvWGRvMnROSk41eVRVL1NTbmdKQ3cwM0dURCtG?=
+ =?utf-8?B?ODNqVDJyaWxEQjIzdVhZL1ZLS053VTh0ekdLcnJXZWVjL0l2MnZEK0N1ZUdm?=
+ =?utf-8?B?SVRxOFhkYUszQUg0emJtQnpOUkpEMzloRitQc0c2Szgzd1QyMU00MVBoY3BP?=
+ =?utf-8?B?SXExM2I3Wk14OWk5Znc3RjlDekU5MWxlUVN0SG01RE5WTTNiQ0cxNFFPTUZt?=
+ =?utf-8?B?ZE8xYkU2c2xkWnR6dmkwUEtFWExGbXh6YytvZktCUEJRNktzRlFCT2Vta1Q5?=
+ =?utf-8?B?M0xTbi9idXZEaFgrMDN2YVpGZTBpWVJoUmdIN1JBenBQRGhLdjNsZDdtVEhX?=
+ =?utf-8?B?Mit6R0Z4MHZLSlZUMENpNkV5a05QR29kU0MvaHYwVWFaUXN4OFhwc2E2azM2?=
+ =?utf-8?B?dThFcTJjV1RWUzJvUFppaEZnb2oxYzVacGpzVUlXOHd6ZmZvVVhXOUh5TkZJ?=
+ =?utf-8?B?Sy9WSUxXREJjVDFWM2ptY0h3ME1vMnJ5bG1QSjRmL3pnT3VpQWdnNDM0QStq?=
+ =?utf-8?B?d05zRndMSVU4dFowMkxrSFIvUUlMa3VzOUxWRkNMdFNTRzRCVU9ZTjIzZTRQ?=
+ =?utf-8?B?UHo2SDBvWkJoVk1mSGVTdFlTVXQzN3ZqTHJFOWovcjVicXJGK0NKd3hZL0Jy?=
+ =?utf-8?B?LzJUcVZmVUJDei9yMEFoTUl5MnhiVzNPaUlhb2l0M3FkTXNDeGR3bzFaZTdK?=
+ =?utf-8?B?d3A3TSttSnFoQnpYTkM1UCs2YnNud2NRaEhSakNaZTZ0UzlUWGJucFgvdG1H?=
+ =?utf-8?B?Z0ZJTW50aTNtdEJsOFlEaG4yRTQ5bXA1ZFR3a1l1QTNWaEIyM2I3dTIxN2hn?=
+ =?utf-8?B?VHp4cUtLOEJ4UWxoQTBRWHdBdEFWWlJNT1FURWhkb2xYNi9IN25vMWpMSW9p?=
+ =?utf-8?B?aldkdTNCU1VTYlQrYkJjejdCTWhtS1V6cU1DaUd0MGNOT2IrT2xXYS81RUtH?=
+ =?utf-8?B?NXVaYUlHTStZbDk4UVZsTGovSDdaNEFlRFROMC9SMFQ1OU8wWENuVUhoZmdD?=
+ =?utf-8?B?L1Fmb1hlTnVTdEdpd21SWmlFWWVKdUdsTE1hSDNlcGdaS2J2eFAveFZmQlNF?=
+ =?utf-8?B?cmo3ci9nZEJLL1ZSaC8rc1h6dk5WYWFhNUNTMVdyVmNkdW1mSENkMUNZVXdl?=
+ =?utf-8?B?MnhTekp1QTU0L2VnMlhtMy9qRTRiWG9IS0tqaitQZE9vWWVHR3dTUDhLTVlj?=
+ =?utf-8?B?SGNqSmVGQmE5ekl5TmJrcmlOZGhuS2JmU2t0dmI3SGY4VUE1TEwrV21ST2Rt?=
+ =?utf-8?Q?UeTaDoQVCOcdhccLE9bttIL/0?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2023 00:01:28.9234
+X-MS-Exchange-CrossTenant-Network-Message-Id: 652ec45d-1115-4d21-1f20-08dbdc042337
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2023 00:30:53.4121
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4b0333e-be02-4394-0db0-08dbdc0007cd
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB56.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4940
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mPhZjM3+qDDFHdEIMdeFUfBtCj1FfuEeKMTX4wSsW76NpVJC013FTYC/Z0+JO2CDbsSnjsiCJhj0BDqUcYsdOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7010
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -128,189 +132,73 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Nov 02, 2023 at 04:56:11PM +0300, Kirill A. Shutemov wrote:
-> On Tue, Oct 31, 2023 at 07:45:23PM -0500, Michael Roth wrote:
-> > > If you mean the guest has as many cpus as the host provides to it, but you
-> > > stress with many more than that number of processes, then I wonder how
-> > 
-> > Yes, this is what I meant. If there are more memory-hog worker threads in
-> > the guest than there are vCPUs, I'm better able to reproduce soft-lockups.
-> > That sort of makes sense since those threads will spend more time waiting on
-> > an available vCPU to handle memory acceptance.
-> > 
-> > But it actually isn't a requirement, I've also been able to reproduce this
-> > with equal numbers of worker threads and vCPUs if I run 4 VMs, each
-> > running the stress/acceptance workload at the same time.
-> > 
-> > And if I force 4K pages in gmem backend (technically a supported
-> > configuration) then I can reproduce it much more easily since the 2MB
-> > acceptance path takes much longer and it makes it easier to expose any
-> > potential remaining concurrency issues.
-> 
-> This all sounds like we are solidly in "system is overloaded" territory.
-> 
-> Soft-lockups are still not good in this case. But I am not sure what we
-> can do about it.
+On 11/1/2023 2:11 PM, Ira Weiny wrote:
 
-After spending more time on it I'm starting to reach a similar conclusion,
-but I'm not yet convinced it's so much the system being overloaded as it
-is the handling for KVM_SET_MEMORY_ATTRIBUTES being particularly punishing
-for this sort of workload and starving vCPUs for execution time due to
-it causing MMU invalidations that cause #NPFs to need restarting and
-frequent NMIs due KVM_REQ_TLB_FLUSH requests. For non-CoCo guests I think
-this activity would be much more infrequent.
+[snip]
 
-For instance here's the journey of a particular 4MB range that ends up
-triggering a soft-lockup in the guest according to host-side ftraces (in
-this case I've disabled the additional 2MB region that gets taken for
-the zero-padding issue, and implemented the bug fix mentioned earlier,
-so there vCPUs don't ever end up waiting on each other):
+> diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
+> index 6b689e1efc78..2bdadde80f1a 100644
+> --- a/include/linux/cxl-event.h
+> +++ b/include/linux/cxl-event.h
+> @@ -108,4 +108,53 @@ struct cxl_event_record_raw {
+>   	union cxl_event event;
+>   } __packed;
+>   
+> +enum cxl_event_type {
+> +	CXL_CPER_EVENT_GEN_MEDIA,
+> +	CXL_CPER_EVENT_DRAM,
+> +	CXL_CPER_EVENT_MEM_MODULE,
+> +};
+> +
+> +#define CPER_CXL_DEVICE_ID_VALID		BIT(0)
+> +#define CPER_CXL_DEVICE_SN_VALID		BIT(1)
+> +#define CPER_CXL_COMP_EVENT_LOG_VALID		BIT(2)
+> +struct cper_cxl_event_rec {
+> +	struct {
+> +		u32 length;
+> +		u64 validation_bits;
+> +		struct cper_cxl_event_devid {
+> +			u16 vendor_id;
+> +			u16 device_id;
+> +			u8 func_num;
+> +			u8 device_num;
+> +			u8 bus_num;
+> +			u16 segment_num;
+> +			u16 slot_num; /* bits 2:0 reserved */
+> +			u8 reserved;
+> +		} device_id;
+> +		struct cper_cxl_event_sn {
+> +			u32 lower_dw;
+> +			u32 upper_dw;
+> +		} dev_serial_num;
+> +	} hdr;
+> +
+> +	union cxl_event event;
+> +};
 
-== Acceptance for 4MB GPA range 0x18cbc00000:18cc000000 ==
-
-  <...>-1946910 [226] ...1. 324797.313982: kvm_page_fault: vcpu 219 rip 0x0 address 0x00000018cbc00000 error_code 0x500000004
-  <...>-1946910 [098] ...1. 324797.631256: kvm_page_fault: vcpu 219 rip 0x0 address 0x00000018cbdff000 error_code 0x500000004
-  <...>-1946910 [107] ...1. 324835.184044: kvm_page_fault: vcpu 219 rip 0x0 address 0x00000018cbe00000 error_code 0x500000004
-  <...>-1946910 [235] ...1. 324835.208404: kvm_page_fault: vcpu 219 rip 0x0 address 0x00000018cbfff000 error_code 0x500000004
-
-It's a pretty wild ride that spans 38s across 4 CPUs. I seem to get these
-for 2 or 3 unlucky GPA ranges for each run and the other ranges stay
-well below the soft-lockup threshold.
-
-Maybe there are ways to improve on that situation, like accepting using
-larger chunk sizes (which is sort of the opposite of what I was suggesting
-earlier, but maybe when done to a degree that significantly batches
-invalidations and KVM_REQ_TLB_FLUSH requests it becomes less of an issue to
-have vCPUs waiting on each other).
-
-> 
-> One silly idea is to prevent all vCPUs to do accept simultaneously and
-> reserve one (or several) to do housekeeping. The idea is that this vCPU
-> can be preempted to do job on other tasks.
-
-Maybe if larger chunk sizes / more batching does end up helping, a
-worker thread/pool of this sort makes even more sense. But maybe there
-are simpler ways to experiment with that.
-
-> 
-> It would only make a difference for PREEMPT_FULL case and if the
-> housekeeping CPU will hit the accept path from preemptable context. And it
-> is obviously not applicable if there's only single vCPU.
-> 
-> > > softlockups would happen due to the extra processes. Since irqs are disabled
-> > > through the whole operation, the extra processes can't become scheduled, and
-> > > not being scheduled due to overloading doesn't trigger softlockups, hmm...
-> > 
-> > The soft lock-ups happen as soon as IRQs are re-enabled, either:
-> > 
-> >   a) right after a thread sees that its range intersects something
-> >      that's in the process of being accepted
-> > 
-> >   b) right after a thread finishes accepting its whole range and is
-> >      about to return from accept_memory()
-> > 
-> > I see a) occur more in the 4K test scenario, b) is more difficult to
-> > reproduce and seems to need a larger system to reproduce more reliably.
-> 
-> I am not sure why you differentiate these scenarios. Kernel just hits
-> place where it can be preempted and observes that it is overdue to
-> scheduling.
-
-It just seemed like a) was more similar to the original issue of threads
-becoming serialized on a few CPUs, but with the changes noted above to
-completely decouple vCPUs from each other I was still able to trigger soft
-lock-ups, but instead of a storm of lock-ups from vCPU threads suffering
-secondary effects, these were purely lock-ups of type b), which
-point to there ultimately being something on the host-side which was
-causing all the threads to trip over themselves.
-
-> 
-> > The fact that b) seems to depend on larger systems sort of makes sense.
-> > When we need to covert a page to private as part of accepting it, there
-> > is a guest->host request that eventually goes off to host userspace which
-> > will call the KVM ioctl KVM_SET_MEMORY_ATTRIBUTES to mark the memory as
-> > private so that it will get faulted in from the guest_memfd backend. When
-> > this happens, any guest page faults that are currently in flight will get
-> > invalidated and require a retry, and there's also a guest TLB flush
-> > that results in an NMI to all the cores the guest was scheduled on so that
-> > it can exit and acknowledge new updates. So the higher the rate of
-> > KVM_SET_MEMORY_ATTRIBUTES the system is able to process, the higher the
-> > frequency of this sort of activity on the host side that can impact each
-> > vCPUs ability to make progress on accepting a particular range.
-> > 
-> > Also I was running 4 guests, each with as many vCPUs as the host, so
-> > contention for physical resources would probably be a factor as well.
-> 
-> Yeah, at some point you will just saturate memory bandwidth.
-> 
-> > I'm not sure what can be done about b), but they seem to be host-side
-> > optimizations that aren't too relevant to this patch, and they seem to
-> > occur less frequently than a), which seems to be more guest side.
-> > 
-> > Still not sure what is causing type a) lock-ups exactly, but through
-> > various traces and debug statements I think I've at least gotten some idea
-> > that there are certain conditions where the vCPUs become more and more
-> > dependent on each other completing certain ranges, and they spend longer
-> > and longer amounts of time looping through the accepting_list.
-> > 
-> > There are 3 things I've noticed that might lead to vCPUs getting hung up
-> > on each other:
-> > 
-> >  1) try_to_accept_memory_one() calls accept_page(page, MAX_ORDER), which
-> >     is a 4MB range
-> 
-> This should not make one vCPU to setup on work on another. Page allocator
-> owns full 4MB. It is not shared with anyone.
-
-Indeed, with 2) and 3) addressed there no longer seem to be any
-dependencies between threads.
-
-> 
-> >  2) There's an extra 2MB region taken after each unit to account for
-> >     load_unaligned_zeropad() 
-> 
-> Okay, yes, this is true.
-> 
-> >  3) There is what appears to be a bug here:
-> > 
-> >         list_for_each_entry(entry, &accepting_list, list) {
-> >                 if (entry->end < range.start)
-> >                         continue;
-> >                 if (entry->start >= range.end)
-> >                         continue;
-> > 
-> >     where if entry->end == range.start, the thread will wait on the owner
-> >     of that range even though it doesn't actually intersect.
-> 
-> Good catch. Care to send a patch?
-
-Sure, I will get that posted by tomorrow after a bit more testing.
-
-> 
-> > I don't quite know how all this lines up to a dependency chain that would
-> > potentially explain the lock-ups, but to mitigate that scenario, I tried only
-> > adding the specific 2MB range that is being accepted to accepting_list, rather
-> > than the whole range, and then just iterate through 2MB at a time in
-> > accept_memory() instead of passing the larger range on to arch_accept_memory().
-> 
-> This might improve situation with soft lockups a bit, but would hurt
-> accept bandwidth.
-
-Yah, I think it was helpful for getting rid of some noise and getting a
-better idea of the main source of the bottleneck, but the underlying issue
-still remains even with these changes in place. 
-
-I'll continue to experiment with it, but it makes me feel better at least
-that there isn't something strange going on with the current guest-side
-implementation.
+Do we need pragma pack or similar for alignment here?
 
 Thanks,
+Smita
 
-Mike
+> +
+> +struct cxl_cper_notifier_data {
+> +	enum cxl_event_type event_type;
+> +	struct cper_cxl_event_rec *rec;
+> +};
+> +
+> +#ifdef CONFIG_UEFI_CPER
+> +int register_cxl_cper_notifier(struct notifier_block *nb);
+> +void unregister_cxl_cper_notifier(struct notifier_block *nb);
+> +#else
+> +static inline int register_cxl_cper_notifier(struct notifier_block *nb)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline void unregister_cxl_cper_notifier(struct notifier_block *nb) { }
+> +#endif
+> +
+>   #endif /* _LINUX_CXL_EVENT_H */
+> 
 
-> 
-> > That seems to have resolved the soft lock-ups for the forced-4K scenario, but
-> > I haven't had much time to test larger configurations yet.
-> 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
