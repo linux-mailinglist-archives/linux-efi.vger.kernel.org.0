@@ -2,146 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4287E7E04A3
-	for <lists+linux-efi@lfdr.de>; Fri,  3 Nov 2023 15:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E478E7E0509
+	for <lists+linux-efi@lfdr.de>; Fri,  3 Nov 2023 15:54:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230159AbjKCO2E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Nov 2023 10:28:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49848 "EHLO
+        id S229531AbjKCOyG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 3 Nov 2023 10:54:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229965AbjKCO2D (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Nov 2023 10:28:03 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D48D42;
-        Fri,  3 Nov 2023 07:28:00 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SMNNk2h3Mz6K8YV;
-        Fri,  3 Nov 2023 22:27:02 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 3 Nov
- 2023 14:27:57 +0000
-Date:   Fri, 3 Nov 2023 14:27:56 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Ira Weiny <ira.weiny@intel.com>
-CC:     Dan Williams <dan.j.williams@intel.com>,
-        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>, <linux-efi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-        <shiju.jose@huawei.com>
-Subject: Re: [PATCH RFC v3 1/6] cxl/trace: Remove uuid from event trace
- known events
-Message-ID: <20231103142756.00000e20@Huawei.com>
-In-Reply-To: <20230601-cxl-cper-v3-1-0189d61f7956@intel.com>
-References: <20230601-cxl-cper-v3-0-0189d61f7956@intel.com>
-        <20230601-cxl-cper-v3-1-0189d61f7956@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S229490AbjKCOyG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Nov 2023 10:54:06 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82221134;
+        Fri,  3 Nov 2023 07:54:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699023240; x=1730559240;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ImLATCUal4qcTIqW8Jys3wM2D8O83KmDvPk7LUPJviQ=;
+  b=eZHg9n15aKjyhBPxKMecEhbhNlcOvuimQiKxnJ7HSAU/J0yytUYsl7xA
+   8mwwsNZrG+Zk8EvzugLld7w2eoqaNlaRugzhTyRXiziDZdBQsrIBmJVXi
+   1F5CcCh2/5stCpHdwfOoUII/KD8xcENmpO24D+hWsis99q+1e6vhE425T
+   6k+o7v8ul8XD+BO+eWkHyV2XeUOoGLu61rxwaiMPLeb8Y/A+roKZc7Ff6
+   Bdd6q7ys/FfWCbKujP/VLB1VmIm5b7D35QrkAZB4DLnmfKj0JSJpFLB0W
+   jmeSqCdwKXWRrI7wzXOIsW8ZfOohjZ0cZWeSOUntKK3+yoPsnHxejQ+Tc
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10883"; a="392839536"
+X-IronPort-AV: E=Sophos;i="6.03,273,1694761200"; 
+   d="scan'208";a="392839536"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2023 07:53:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.03,273,1694761200"; 
+   d="scan'208";a="2912345"
+Received: from mahautam-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.51.190])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2023 07:53:56 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id C491E10A314; Fri,  3 Nov 2023 17:53:53 +0300 (+03)
+Date:   Fri, 3 Nov 2023 17:53:53 +0300
+From:   "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Michael Roth <michael.roth@amd.com>
+Cc:     linux-efi@vger.kernel.org, x86@kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Nikolay Borisov <nik.borisov@suse.com>, stable@kernel.org,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] efi/unaccepted: Fix off-by-one when checking for
+ overlapping ranges
+Message-ID: <20231103145353.5wzcwc5znkzt6vzf@box>
+References: <20231103142650.108394-1-michael.roth@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231103142650.108394-1-michael.roth@amd.com>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 01 Nov 2023 14:11:18 -0700
-Ira Weiny <ira.weiny@intel.com> wrote:
+On Fri, Nov 03, 2023 at 09:26:50AM -0500, Michael Roth wrote:
+> When a thread needs to accept memory it will scan the accepting_list
+> to see if any ranges already being processed by other threads overlap
+> with its range. Due to an off-by-one in the range comparisons, a thread
+> might falsely determine that an overlapping range is being accepted,
+> leading to an unnecessary delay before it begins processing the range.
 
-> The uuid printed in the well known events is redundant.  The uuid
-> defines what the event was.
+Maybe s/thread/task/g ?
+
+> Fix the off-by-one in the range comparison to prevent this and slightly
+> improve performance.
 > 
-> Remove the uuid from the known events and only report it in the generic
-> event as it remains informative there.
-> 
-> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> Fixes: 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by parallel memory acceptance")
+> Link: https://lore.kernel.org/linux-mm/20231101004523.vseyi5bezgfaht5i@amd.com/T/#me2eceb9906fcae5fe958b3fe88e41f920f8335b6
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-Removing the print is fine, but look like this also removes the actual trace point
-field.  That's userspace ABI.  Expanding it is fine, but taking fields away
-is more problematic.
+Otherwise, looks good:
 
-Are we sure we don't break anyone?  Shiju, will rasdaemon be fine with this
-change?
-
-Thanks,
-
-Jonathan
-
-
-
-> ---
->  drivers/cxl/core/trace.h | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-> index a0b5819bc70b..79ed03637604 100644
-> --- a/drivers/cxl/core/trace.h
-> +++ b/drivers/cxl/core/trace.h
-> @@ -189,7 +189,6 @@ TRACE_EVENT(cxl_overflow,
->  	__string(memdev, dev_name(&cxlmd->dev))			\
->  	__string(host, dev_name(cxlmd->dev.parent))		\
->  	__field(int, log)					\
-> -	__field_struct(uuid_t, hdr_uuid)			\
->  	__field(u64, serial)					\
->  	__field(u32, hdr_flags)					\
->  	__field(u16, hdr_handle)				\
-> @@ -203,7 +202,6 @@ TRACE_EVENT(cxl_overflow,
->  	__assign_str(host, dev_name((cxlmd)->dev.parent));			\
->  	__entry->log = (l);							\
->  	__entry->serial = (cxlmd)->cxlds->serial;				\
-> -	memcpy(&__entry->hdr_uuid, &(hdr).id, sizeof(uuid_t));			\
->  	__entry->hdr_length = (hdr).length;					\
->  	__entry->hdr_flags = get_unaligned_le24((hdr).flags);			\
->  	__entry->hdr_handle = le16_to_cpu((hdr).handle);			\
-> @@ -212,12 +210,12 @@ TRACE_EVENT(cxl_overflow,
->  	__entry->hdr_maint_op_class = (hdr).maint_op_class
->  
->  #define CXL_EVT_TP_printk(fmt, ...) \
-> -	TP_printk("memdev=%s host=%s serial=%lld log=%s : time=%llu uuid=%pUb "	\
-> +	TP_printk("memdev=%s host=%s serial=%lld log=%s : time=%llu "		\
->  		"len=%d flags='%s' handle=%x related_handle=%x "		\
->  		"maint_op_class=%u : " fmt,					\
->  		__get_str(memdev), __get_str(host), __entry->serial,		\
->  		cxl_event_log_type_str(__entry->log),				\
-> -		__entry->hdr_timestamp, &__entry->hdr_uuid, __entry->hdr_length,\
-> +		__entry->hdr_timestamp, __entry->hdr_length,			\
->  		show_hdr_flags(__entry->hdr_flags), __entry->hdr_handle,	\
->  		__entry->hdr_related_handle, __entry->hdr_maint_op_class,	\
->  		##__VA_ARGS__)
-> @@ -231,15 +229,17 @@ TRACE_EVENT(cxl_generic_event,
->  
->  	TP_STRUCT__entry(
->  		CXL_EVT_TP_entry
-> +		__field_struct(uuid_t, hdr_uuid)
->  		__array(u8, data, CXL_EVENT_RECORD_DATA_LENGTH)
->  	),
->  
->  	TP_fast_assign(
->  		CXL_EVT_TP_fast_assign(cxlmd, log, rec->hdr);
-> +		memcpy(&__entry->hdr_uuid, &rec->hdr.id, sizeof(uuid_t));
->  		memcpy(__entry->data, &rec->data, CXL_EVENT_RECORD_DATA_LENGTH);
->  	),
->  
-> -	CXL_EVT_TP_printk("%s",
-> +	CXL_EVT_TP_printk("uuid=%pUb %s", &__entry->hdr_uuid,
->  		__print_hex(__entry->data, CXL_EVENT_RECORD_DATA_LENGTH))
->  );
->  
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > 
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
