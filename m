@@ -1,146 +1,208 @@
-Return-Path: <linux-efi+bounces-23-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-24-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F877E795D
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Nov 2023 07:32:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC567E7AC0
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Nov 2023 10:25:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB6C8281109
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Nov 2023 06:32:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C57D1C20E55
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Nov 2023 09:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4740910A3F;
-	Fri, 10 Nov 2023 06:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gM/Z/sXC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6ACD125CE;
+	Fri, 10 Nov 2023 09:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-efi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8884810950
-	for <linux-efi@vger.kernel.org>; Fri, 10 Nov 2023 06:32:37 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81F8F7687;
-	Thu,  9 Nov 2023 22:32:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699597955; x=1731133955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=P+HrsfTgmIAQuHJtSIDJylsGuedtQJzyUXRzKrUPFZE=;
-  b=gM/Z/sXC1M6lin0iLAtVJHOIYq/3Om9u/JMwWFANqvTIAlwpi57WbU7u
-   ePvmUWwSqOU0QK7s3nKmnXF6AGutTGjjCUq/yTrAFTyHxH2zlkTKztCow
-   2wr64xNT5hWaOZRzIofaZOVNKkC0KlN4zDVGxD/D2Ab6i8tGyF95HswY3
-   EFyKfjOdqqMftIveIJdaPtxNnBorKnDLxZApyLcsueN+rJO0SEdzJ5wKz
-   RnaW+QlOVhm50F5G8fQWsuE68EnysvH6v5x7zObf9DO7vBmC/o/HZgJB7
-   wTEmxg5FsjrHIc+5WeCWEP39Wday0NjYERMseNO4sLrbsSoOcE6ME4OD+
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="370336242"
-X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; 
-   d="scan'208";a="370336242"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2023 20:23:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,291,1694761200"; 
-   d="scan'208";a="4745660"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 09 Nov 2023 20:23:44 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r1J3V-0009Q4-27;
-	Fri, 10 Nov 2023 04:23:41 +0000
-Date: Fri, 10 Nov 2023 12:23:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Daniel Walker <danielwa@cisco.com>, Will Deacon <will@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Rob Herring <robh@kernel.org>,
-	Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pratyush Brahma <quic_pbrahma@quicinc.com>,
-	Tomas Mudrunka <tomas.mudrunka@gmail.com>,
-	Sean Anderson <sean.anderson@seco.com>, x86@kernel.org,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	xe-linux-external@cisco.com, Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/8] drivers: firmware: efi: libstub: enable generic
- commandline
-Message-ID: <202311101224.evyh4zgY-lkp@intel.com>
-References: <20231110013817.2378507-6-danielwa@cisco.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4EC125AF
+	for <linux-efi@vger.kernel.org>; Fri, 10 Nov 2023 09:25:00 +0000 (UTC)
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B20AF2B7CC;
+	Fri, 10 Nov 2023 01:24:59 -0800 (PST)
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-5bf5d6eaf60so17754297b3.2;
+        Fri, 10 Nov 2023 01:24:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699608298; x=1700213098;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KmyygXGlWqHLIcYJDnrqzZMuJVEgqUclqA12kn4gnFE=;
+        b=NiQu3GsbIMv6LSvCp8jhSgx+jRxZsbNu9V+EdBYoAEBxjHwGJzk7pJ71BfDX/UH7Wz
+         ECHr3lABQC+1VZ10KOQzAZMPB8Bz5dNPcfMo1/0DVmltRYF8eUt6YUizB/FZaKCFENeQ
+         TxF8D7whdKLkSABdJuZbfso8bUdVG9auUJwLIe7zW6zpA8tbd4ivo/e8U2/8/rHkcfnM
+         hXx/BytyoA1ZZkKLCep3bXHW5EvrIN61PPgo69rKyn4wicbYC3w7l9C/JKfYt5V8zHUs
+         B9U/G6g0+cc+lHlX9EvzVb7ekJ9NN4klXdY78jToGhtM6/yk5xM7NvIBU4bnXAM7s8cm
+         EbQg==
+X-Gm-Message-State: AOJu0YzIGX77uXdW2SL8+LwpzYWu+SupiR+qujqjNw3a5kjx48AIDHtl
+	TLMJxfiPGuIKQTLf2z6Bxv+y6GskDiXDig==
+X-Google-Smtp-Source: AGHT+IFoXrgCJRz7afFo0PwLPyK/4l+eLOmgJ+1kz5XbwTzyyUuxMlnex9ZLprOuCx2YEjtbrcBq7A==
+X-Received: by 2002:a81:8305:0:b0:5a7:b973:db3c with SMTP id t5-20020a818305000000b005a7b973db3cmr8225093ywf.34.1699608298636;
+        Fri, 10 Nov 2023 01:24:58 -0800 (PST)
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com. [209.85.219.182])
+        by smtp.gmail.com with ESMTPSA id h83-20020a816c56000000b005af9da2225bsm8481335ywc.20.2023.11.10.01.24.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Nov 2023 01:24:58 -0800 (PST)
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-da7238b3eb4so2038406276.1;
+        Fri, 10 Nov 2023 01:24:57 -0800 (PST)
+X-Received: by 2002:a25:bc90:0:b0:d9b:4a28:f66 with SMTP id
+ e16-20020a25bc90000000b00d9b4a280f66mr7552303ybk.53.1699608297683; Fri, 10
+ Nov 2023 01:24:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231110013817.2378507-6-danielwa@cisco.com>
+References: <20231031064553.2319688-1-xiao.w.wang@intel.com> <20231031064553.2319688-3-xiao.w.wang@intel.com>
+In-Reply-To: <20231031064553.2319688-3-xiao.w.wang@intel.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 10 Nov 2023 10:24:46 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUQGtenM=_sNntW4mQ0K-7G=5_OhxG-AgQffMbR276W1w@mail.gmail.com>
+Message-ID: <CAMuHMdUQGtenM=_sNntW4mQ0K-7G=5_OhxG-AgQffMbR276W1w@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] riscv: Optimize bitops with Zbb extension
+To: Xiao Wang <xiao.w.wang@intel.com>
+Cc: paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	ardb@kernel.org, anup@brainfault.org, haicheng.li@intel.com, 
+	ajones@ventanamicro.com, yujie.liu@intel.com, charlie@rivosinc.com, 
+	linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Daniel,
+Hi Xiao,
 
-kernel test robot noticed the following build warnings:
+On Tue, Oct 31, 2023 at 7:37=E2=80=AFAM Xiao Wang <xiao.w.wang@intel.com> w=
+rote:
+> This patch leverages the alternative mechanism to dynamically optimize
+> bitops (including __ffs, __fls, ffs, fls) with Zbb instructions. When
+> Zbb ext is not supported by the runtime CPU, legacy implementation is
+> used. If Zbb is supported, then the optimized variants will be selected
+> via alternative patching.
+>
+> The legacy bitops support is taken from the generic C implementation as
+> fallback.
+>
+> If the parameter is a build-time constant, we leverage compiler builtin t=
+o
+> calculate the result directly, this approach is inspired by x86 bitops
+> implementation.
+>
+> EFI stub runs before the kernel, so alternative mechanism should not be
+> used there, this patch introduces a macro NO_ALTERNATIVE for this purpose=
+.
+>
+> Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
+> Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
 
-[auto build test WARNING on v6.6]
-[cannot apply to arm64/for-next/core efi/next tip/x86/core robh/for-next linus/master next-20231110]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks for your patch, which is now commit 457926b253200bd9 ("riscv:
+Optimize bitops with Zbb extension") in riscv/for-next.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Walker/CMDLINE-add-generic-builtin-command-line/20231110-094423
-base:   v6.6
-patch link:    https://lore.kernel.org/r/20231110013817.2378507-6-danielwa%40cisco.com
-patch subject: [PATCH 5/8] drivers: firmware: efi: libstub: enable generic commandline
-config: loongarch-randconfig-002-20231110 (https://download.01.org/0day-ci/archive/20231110/202311101224.evyh4zgY-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231110/202311101224.evyh4zgY-lkp@intel.com/reproduce)
+> --- a/arch/riscv/include/asm/bitops.h
+> +++ b/arch/riscv/include/asm/bitops.h
+> @@ -15,13 +15,261 @@
+>  #include <asm/barrier.h>
+>  #include <asm/bitsperlong.h>
+>
+> +#if !defined(CONFIG_RISCV_ISA_ZBB) || defined(NO_ALTERNATIVE)
+>  #include <asm-generic/bitops/__ffs.h>
+> -#include <asm-generic/bitops/ffz.h>
+> -#include <asm-generic/bitops/fls.h>
+>  #include <asm-generic/bitops/__fls.h>
+> +#include <asm-generic/bitops/ffs.h>
+> +#include <asm-generic/bitops/fls.h>
+> +
+> +#else
+> +#include <asm/alternative-macros.h>
+> +#include <asm/hwcap.h>
+> +
+> +#if (BITS_PER_LONG =3D=3D 64)
+> +#define CTZW   "ctzw "
+> +#define CLZW   "clzw "
+> +#elif (BITS_PER_LONG =3D=3D 32)
+> +#define CTZW   "ctz "
+> +#define CLZW   "clz "
+> +#else
+> +#error "Unexpected BITS_PER_LONG"
+> +#endif
+> +
+> +static __always_inline unsigned long variable__ffs(unsigned long word)
+> +{
+> +       int num;
+> +
+> +       asm_volatile_goto(ALTERNATIVE("j %l[legacy]", "nop", 0,
+> +                                     RISCV_ISA_EXT_ZBB, 1)
+> +                         : : : : legacy);
+> +
+> +       asm volatile (".option push\n"
+> +                     ".option arch,+zbb\n"
+> +                     "ctz %0, %1\n"
+> +                     ".option pop\n"
+> +                     : "=3Dr" (word) : "r" (word) :);
+> +
+> +       return word;
+> +
+> +legacy:
+> +       num =3D 0;
+> +#if BITS_PER_LONG =3D=3D 64
+> +       if ((word & 0xffffffff) =3D=3D 0) {
+> +               num +=3D 32;
+> +               word >>=3D 32;
+> +       }
+> +#endif
+> +       if ((word & 0xffff) =3D=3D 0) {
+> +               num +=3D 16;
+> +               word >>=3D 16;
+> +       }
+> +       if ((word & 0xff) =3D=3D 0) {
+> +               num +=3D 8;
+> +               word >>=3D 8;
+> +       }
+> +       if ((word & 0xf) =3D=3D 0) {
+> +               num +=3D 4;
+> +               word >>=3D 4;
+> +       }
+> +       if ((word & 0x3) =3D=3D 0) {
+> +               num +=3D 2;
+> +               word >>=3D 2;
+> +       }
+> +       if ((word & 0x1) =3D=3D 0)
+> +               num +=3D 1;
+> +       return num;
+> +}
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311101224.evyh4zgY-lkp@intel.com/
+Surely we can do better than duplicating include/asm-generic/bitops/__ffs.h=
+?
 
-All warnings (new ones prefixed by >>):
+E.g. rename the generic implementation to generic___ffs():
 
->> drivers/firmware/efi/libstub/efi-stub-helper.c:43: warning: expecting prototype for efi_handle_cmdline(). Prototype was for efi_handle_builtin_cmdline() instead
-   drivers/firmware/efi/libstub/efi-stub-helper.c:592: warning: Function parameter or member 'out' not described in 'efi_load_initrd'
+    -static __always_inline unsigned long __ffs(unsigned long word)
+    +static __always_inline unsigned long generic__ffs(unsigned long word)
+     {
+             ...
+     }
 
+    +#ifndef __ffs
+    +#define __ffs(x) generic__ffs(x)
+    +#endif
 
-vim +43 drivers/firmware/efi/libstub/efi-stub-helper.c
+and explicitly calling the generic one here?
 
-    32	
-    33	/**
-    34	 * efi_handle_cmdline() - handle adding in built-in parts of the command line
-    35	 * @cmdline:	kernel command line
-    36	 *
-    37	 * Add in the generic parts of the commandline and start the parsing of the
-    38	 * command line.
-    39	 *
-    40	 * Return:	status code
-    41	 */
-    42	efi_status_t efi_handle_builtin_cmdline(char const *cmdline)
-  > 43	{
-    44		efi_status_t status = EFI_SUCCESS;
-    45	
-    46		if (sizeof(CMDLINE_STATIC_PREPEND) > 1)
-    47			status |= efi_parse_options(CMDLINE_STATIC_PREPEND);
-    48	
-    49		if (!IS_ENABLED(CONFIG_CMDLINE_OVERRIDE))
-    50			status |= efi_parse_options(cmdline);
-    51	
-    52		if (sizeof(CMDLINE_STATIC_APPEND) > 1)
-    53			status |= efi_parse_options(CMDLINE_STATIC_APPEND);
-    54	
-    55		if (status != EFI_SUCCESS)
-    56			efi_err("Failed to parse options\n");
-    57	
-    58		return status;
-    59	}
-    60	
+Same comment for the other functions.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
