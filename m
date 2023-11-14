@@ -1,62 +1,63 @@
-Return-Path: <linux-efi+bounces-48-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-49-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142C47EA8E2
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Nov 2023 04:02:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B887EA8E4
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Nov 2023 04:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BFAEB209D5
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Nov 2023 03:02:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 214AAB20A86
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Nov 2023 03:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C275B1FC6;
-	Tue, 14 Nov 2023 03:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB0679DE;
+	Tue, 14 Nov 2023 03:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ncf.edu header.i=@ncf.edu header.b="fkoIROk8"
+	dkim=pass (2048-bit key) header.d=ncf.edu header.i=@ncf.edu header.b="i66m2BXx"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61477E
-	for <linux-efi@vger.kernel.org>; Tue, 14 Nov 2023 03:02:24 +0000 (UTC)
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501411A1
-	for <linux-efi@vger.kernel.org>; Mon, 13 Nov 2023 19:02:23 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-daf26d84100so3764934276.3
-        for <linux-efi@vger.kernel.org>; Mon, 13 Nov 2023 19:02:23 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C9446A9
+	for <linux-efi@vger.kernel.org>; Tue, 14 Nov 2023 03:02:29 +0000 (UTC)
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C3161A2
+	for <linux-efi@vger.kernel.org>; Mon, 13 Nov 2023 19:02:28 -0800 (PST)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-5bf58914bacso57066357b3.3
+        for <linux-efi@vger.kernel.org>; Mon, 13 Nov 2023 19:02:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ncf.edu; s=google; t=1699930942; x=1700535742; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MxRfexvdTG0ppUiwHVD4kW4+CfwUo1gfUnj1LiwzgF0=;
-        b=fkoIROk8wlohEg4FXWzBcDIIWSD3IVpDOI/x97KfcB4FTfsNxzyTiEActwRKMgiPZQ
-         YvNCUMBDFmJc12tzybZT9Nm470CR4ki21SOnQJpxybNsNbFpVfiEQyKBTruAe6eGG2gb
-         O4PgJJHGtFt17mAhmg4gBnLQ3u6Gk2Pxiyp6foPjqQphcjNrzMrSymwOx7X4OZJGh/LA
-         nwFCgJRhXtu+bewW6QAJuaYHBPForSnLSAEpiVUHGd9UHCcU7fk1O3/ZJ13PUdF5w5nG
-         CRdizjx9hmSk0rHhmodEjpxrZpSmBKUjRJ/qmT9f5tpu2fxO3YnGsmeuctCRyiWJhgd/
-         1gEA==
+        d=ncf.edu; s=google; t=1699930948; x=1700535748; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SMWgF1k2ykWuu8Bjcr4iQLPBPTDTPxlZiLEGw/7iu+w=;
+        b=i66m2BXxO5m2fCl6TChxLH3RK3HhkX1c9U+6fhB3huWTo2pHps72Eh9SfsPCfjNGKF
+         MGahg1zOaHYCHWXRUI7RIeqxCDuvBD9WNAl8KQV+khG8laHxqoDB9GJDTfV6Z6etnWfV
+         2bFesxMPwGPk4jne/ehvQaxZ4jmmkmnM2Rogc8ccg0SUWXiRN4cptodc6ORcBDs1NGLa
+         nXAo/P81gpjTLI/L6LbnSTZ3QH/iL4+lCAxILi1RICeMfdHTEXfcU7/9WfNByGnK2Vyw
+         cYXeazQbe3kLGXsoDS3Dn7v5uQA64MFOuIPPgElaR6I+8zk4S+BJbL71u9ZGZ+r4oiib
+         tjvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699930942; x=1700535742;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MxRfexvdTG0ppUiwHVD4kW4+CfwUo1gfUnj1LiwzgF0=;
-        b=cniBJ5DS1f7BQbx+VH9zLzBSga97Tl7DIUXO9yZt1hGt8PS4feV5UEcGxLL9BIR2bE
-         1ejLWFWEKRlguNZ9DjPDLWhCvU4zFBaB0CIda4CxH1O1BY1t7/Wu1v6uZHXxI1bRZ413
-         NuDwzVrXHYn17MCKzE7HIKzTETKK6IczsCdw9pD+5RTaY+rfoye7RCW/Pgl/SFC6cLCk
-         mD9Sqnr60dLopa+4Bud8U9BLAWY1RLRXawDp2yI+4gV2uQGSIyzBzL4T3qP2sT9WJL7F
-         oyZtk6fW/Alcndvr39xesiDtxe9kOrjLIue8hd7MGLbY15W9K4m0JobMDRTVF3xXKKnd
-         RwXA==
-X-Gm-Message-State: AOJu0YzQWuCrNyfwdVzbJO7baZ4SlOpvioP6XVqaG780JlHGJngNcAbK
-	FR9kyQhkAoCPfhmenZY0m+4z+Q==
-X-Google-Smtp-Source: AGHT+IFC3tpIR4sj7RNXgZigkVbpZ5ErE6mGenHyxA0FQbGMhLj1TiFAeySkioIuCtraqID4ZNCcNw==
-X-Received: by 2002:a25:aa24:0:b0:d9b:4f28:f6ce with SMTP id s33-20020a25aa24000000b00d9b4f28f6cemr7822239ybi.1.1699930942434;
-        Mon, 13 Nov 2023 19:02:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699930948; x=1700535748;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SMWgF1k2ykWuu8Bjcr4iQLPBPTDTPxlZiLEGw/7iu+w=;
+        b=nOYMGGYtvfniBjlKPYzjB+I83VwkbBorPOb8KtJ87txrU0fh5WI85AWmke7ehQds2s
+         7SwLEX/T30PK5ABui1VCMRhLn/V9GhinF2e/G2up8qbBPITw9ncLop4VHagh93/ry6LY
+         tbQSsuG3CmryHbU0kvptQg9sp4ul+xYzCQKOf/2KL1vJqpMbgYf4HJRYkk6DhGURSwmE
+         GeR3Bv7MX0WiqXWb0frcPI2i1586HfxsuNmgyR7/E1FjJaWAwLd/HlUiplHd/Mo8Vu/Z
+         LNd2tRH+kdCGrpEUcmDZwPpEPobZdmggQKhLLg0vLTzY2e22hgGxFm31GTCYSlqZH5X/
+         mtvg==
+X-Gm-Message-State: AOJu0Yx/gMltf+Up25504iSINuUyeTQb9xgq1e2j77YKEDlsAvxUqK8z
+	3fk4Ial4jr7P4vQATgXpI8teZw==
+X-Google-Smtp-Source: AGHT+IFD7KvbTb+tGl/UoCilRnSomvyyiLX7mTYIn/1QS351TQtySzpDsuxpleORlfRRWeSOhHUCBg==
+X-Received: by 2002:a25:34d1:0:b0:daf:6698:89d7 with SMTP id b200-20020a2534d1000000b00daf669889d7mr6608575yba.47.1699930947775;
+        Mon, 13 Nov 2023 19:02:27 -0800 (PST)
 Received: from Lux.hsd1.fl.comcast.net ([2601:580:8201:d0::4174])
-        by smtp.gmail.com with ESMTPSA id x6-20020a25a006000000b00daf78e2e63dsm1403315ybh.27.2023.11.13.19.02.21
+        by smtp.gmail.com with ESMTPSA id x6-20020a25a006000000b00daf78e2e63dsm1403315ybh.27.2023.11.13.19.02.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 19:02:22 -0800 (PST)
+        Mon, 13 Nov 2023 19:02:27 -0800 (PST)
 From: Hunter Chasens <hunter.chasens18@ncf.edu>
 To: corbet@lwn.net
 Cc: linux-doc@vger.kernel.org,
@@ -64,10 +65,12 @@ Cc: linux-doc@vger.kernel.org,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hunter Chasens <hunter.chasens18@ncf.edu>
-Subject: [PATCH v3 1/2] docs: admin-guide: Update bootloader and installation instructions
-Date: Mon, 13 Nov 2023 22:02:07 -0500
-Message-ID: <20231114030208.30479-1-hunter.chasens18@ncf.edu>
+Subject: [PATCH v3 2/2] docs: admin-guide: Adds explicit target to EFI-Stub doc
+Date: Mon, 13 Nov 2023 22:02:08 -0500
+Message-ID: <20231114030208.30479-2-hunter.chasens18@ncf.edu>
 X-Mailer: git-send-email 2.42.1
+In-Reply-To: <20231114030208.30479-1-hunter.chasens18@ncf.edu>
+References: <20231114030208.30479-1-hunter.chasens18@ncf.edu>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -76,114 +79,27 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Updates the bootloader and installation instructions in
-admin-guide/README.rst to align with modern practices.
+Adds an explicit target to efi-stub.rst so that it can be
+referenced via roles in other documentation.
 
-Details of Changes:
-
- - Added guidance on using EFISTUB for UEFI/EFI systems.
- - Noted that LILO is no longer in active development and provides
-   alternatives.
- - Kept LILO instructions but marked as Legacy LILO Instructions.
-   Suggest removal in future patch.
+Note: scripts/checkpatch.pl is asking for a SPDX_LICENSE_TAG.
+I believe this is under GPL2 but i'd like to confirm.
 
 Signed-off-by: Hunter Chasens <hunter.chasens18@ncf.edu>
 ---
- Documentation/admin-guide/README.rst | 69 ++++++++++++++++++----------
- 1 file changed, 45 insertions(+), 24 deletions(-)
+ Documentation/admin-guide/efi-stub.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/admin-guide/README.rst b/Documentation/admin-guide/README.rst
-index 9a969c0157f1..ad53f4245379 100644
---- a/Documentation/admin-guide/README.rst
-+++ b/Documentation/admin-guide/README.rst
-@@ -262,9 +262,11 @@ Compiling the kernel
-  - Make sure you have at least gcc 5.1 available.
-    For more information, refer to :ref:`Documentation/process/changes.rst <changes>`.
- 
-- - Do a ``make`` to create a compressed kernel image. It is also
--   possible to do ``make install`` if you have lilo installed to suit the
--   kernel makefiles, but you may want to check your particular lilo setup first.
-+ - Do a ``make`` to create a compressed kernel image. It is also possible to do
-+   ``make install`` if you have lilo installed or if your distribution has an
-+   install script recognised by the kernel's installer. Most popular
-+   distributions will have a recognized install script. You may want to
-+   check your distribution's setup first.
- 
-    To do the actual install, you have to be root, but none of the normal
-    build should require that. Don't take the name of root in vain.
-@@ -301,32 +303,51 @@ Compiling the kernel
-    image (e.g. .../linux/arch/x86/boot/bzImage after compilation)
-    to the place where your regular bootable kernel is found.
- 
-- - Booting a kernel directly from a floppy without the assistance of a
--   bootloader such as LILO, is no longer supported.
--
--   If you boot Linux from the hard drive, chances are you use LILO, which
--   uses the kernel image as specified in the file /etc/lilo.conf.  The
--   kernel image file is usually /vmlinuz, /boot/vmlinuz, /bzImage or
--   /boot/bzImage.  To use the new kernel, save a copy of the old image
--   and copy the new image over the old one.  Then, you MUST RERUN LILO
--   to update the loading map! If you don't, you won't be able to boot
--   the new kernel image.
--
--   Reinstalling LILO is usually a matter of running /sbin/lilo.
--   You may wish to edit /etc/lilo.conf to specify an entry for your
--   old kernel image (say, /vmlinux.old) in case the new one does not
--   work.  See the LILO docs for more information.
--
--   After reinstalling LILO, you should be all set.  Shutdown the system,
-+ - Booting a kernel directly from non-volatile memory (e.g. a hard drive)
-+   without the assistance of a bootloader such as LILO or GRUB, is no longer
-+   supported in BIOS (non-EFI systems). On UEFI/EFI systems, however, you can
-+   use EFISTUB which allows the motherboard to boot directly to the kernel.
-+   On modern workstations and desktops, it's generally recommended to use a
-+   bootloader as difficulties can arise with multiple kernels and secure boot.
-+   For more details on EFISTUB,
-+   see :ref:`Documentation/admin-guide/efi-stub.rst <efi_stub>`.
+diff --git a/Documentation/admin-guide/efi-stub.rst b/Documentation/admin-guide/efi-stub.rst
+index 090f3a185e18..cba966338087 100644
+--- a/Documentation/admin-guide/efi-stub.rst
++++ b/Documentation/admin-guide/efi-stub.rst
+@@ -1,3 +1,5 @@
++.. _efi_stub:
 +
-+ - It's important to note that as of 2016 LILO (LInux LOader) is no longer in
-+   active development, though as it was extremely popular, it often comes up
-+   in documentation. Popular alternatives include GRUB2, rEFInd, Syslinux,
-+   systemd-boot, or EFISTUB. For various reasons, it's not recommended to use
-+   software that's no longer in active development.
-+
-+ - Chances are your distribution includes an install script and running
-+   ``make install`` will be all that's needed. Should that not be the case
-+   you'll have to identify your bootloader and reference its documentation or
-+   configure your EFI.
-+
-+Legacy LILO Instructions
-+------------------------
-+
-+
-+ - If you use LILO the kernel images are specified in the file /etc/lilo.conf.
-+   The kernel image file is usually /vmlinuz, /boot/vmlinuz, /bzImage or
-+   /boot/bzImage. To use the new kernel, save a copy of the old image and copy
-+   the new image over the old one. Then, you MUST RERUN LILO to update the
-+   loading map! If you don't, you won't be able to boot the new kernel image.
-+
-+ - Reinstalling LILO is usually a matter of running /sbin/lilo. You may wish
-+   to edit /etc/lilo.conf to specify an entry for your old kernel image
-+   (say, /vmlinux.old) in case the new one does not work. See the LILO docs
-+   for more information.
-+
-+ - After reinstalling LILO, you should be all set. Shutdown the system,
-    reboot, and enjoy!
- 
--   If you ever need to change the default root device, video mode,
--   etc. in the kernel image, use your bootloader's boot options
--   where appropriate.  No need to recompile the kernel to change
--   these parameters.
-+ - If you ever need to change the default root device, video mode, etc. in the
-+   kernel image, use your bootloader's boot options where appropriate. No need
-+   to recompile the kernel to change these parameters.
- 
-  - Reboot with the new kernel and enjoy.
- 
-+
- If something goes wrong
- -----------------------
- 
+ =================
+ The EFI Boot Stub
+ =================
 -- 
 2.42.1
 
