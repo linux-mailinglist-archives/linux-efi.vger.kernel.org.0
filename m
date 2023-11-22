@@ -1,180 +1,121 @@
-Return-Path: <linux-efi+bounces-79-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-80-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018577F452F
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Nov 2023 12:56:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 102C77F48CD
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Nov 2023 15:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 952ADB20F2E
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Nov 2023 11:55:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 409171C209AC
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Nov 2023 14:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021284AF93;
-	Wed, 22 Nov 2023 11:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1A94E1AA;
+	Wed, 22 Nov 2023 14:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUMwU/gX"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A87591;
-	Wed, 22 Nov 2023 03:55:51 -0800 (PST)
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6d7e89d48efso185584a34.1;
-        Wed, 22 Nov 2023 03:55:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700654150; x=1701258950;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WnzgeFjuBItEyIVZYQBtxAG5TnFPC1Nz+dshenAaKC4=;
-        b=lzt82JqMXjDrjKJqHRcWEA/7DdYOKdCXfv0OjcAjDCUtyn8f46u/eWRV60hAIwjiWG
-         /nrhSAz8uO1D5UjpYAGUeT2+uJzkORhbjr+nItSuOWLD5Y2TGrEyaD01ho0ytOPweSkP
-         ICtSwB+wetkNHSk90lPb6DmC43BaOVClPHHtQf9hDZ6gHqE5ybP4ziSwSBAszRKhSwnU
-         iIZyNxeQFl6bzMAdWrfJNYPakW/d5IrowTHv14o5JZwZq1RpT6WXPWBNMNPuPFehvhXj
-         VCp/ovpyUodYf9yxr9DYK/cDBZ346SUJ04QpB4OGmkT1Zf5WCuyggt2WbL+JhEBUD0Ec
-         Z+UA==
-X-Gm-Message-State: AOJu0YyTItu35it00JXMIxLLi35OvFJu8qFYWQKurg2/B1siWKEtLXbm
-	0aExfWNgqrE4MN7Rybx1omCzK3YV3pbAM/MgNso=
-X-Google-Smtp-Source: AGHT+IFxwoExJhSMBRxQTHXgD/nLHO3yL8dtRUR3JO04lud2KKUHrAdJ364xYPIIbgEneIKFFci7Dqs2zGd+NVIwZF0=
-X-Received: by 2002:a05:6870:a924:b0:1f4:d544:2490 with SMTP id
- eq36-20020a056870a92400b001f4d5442490mr2623563oab.4.1700654150597; Wed, 22
- Nov 2023 03:55:50 -0800 (PST)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F93D4E1A5
+	for <linux-efi@vger.kernel.org>; Wed, 22 Nov 2023 14:22:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C789C433C8
+	for <linux-efi@vger.kernel.org>; Wed, 22 Nov 2023 14:22:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700662952;
+	bh=5MazeRHrmLUYXVf39lQU4apYB2KWbmVY8ffCHlqBXAI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GUMwU/gXdeuY9tqie6kQyDaiqpt99T76LGkKpZPIWl56C/PfgRxI6lpx+ZI3h1acD
+	 w6cBBwvUNL83mp6hRkS4GOr/TmNhNIDsXidkpIwsr++Qy4fCkAta6lmfgPUgPrbnNH
+	 2ch9tpLdh4f2QCcT04kJo7CJFPZrOE0GFbPIbbAGsWA1qCTLjkfp+65KrE+TVH/+q0
+	 lkzwFJqAiP7a0PFQKknlATwaZiY2h0zzXZWr+uTYWD+/gfHlpm7GcOLA1ft0upbYtN
+	 kasjkYhkO76AiavGuGZ0c5pItDPwbkJIWcmieA4hazAWznBOdu+NxDNiG6shsGo30G
+	 1yxMriaV9Povg==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5098e423ba2so9594941e87.2
+        for <linux-efi@vger.kernel.org>; Wed, 22 Nov 2023 06:22:31 -0800 (PST)
+X-Gm-Message-State: AOJu0YwRn9aOyMOgUn4kkz2dAv4u4T9RtpNuYHbNQzS7HqpOd/n6uJd/
+	o0eAM2z55wHufYY0GRksx5N+NJTmA+HN0pVddpk=
+X-Google-Smtp-Source: AGHT+IGcGTSWUWbkB6vxEj4vAnj7h17DJCUprZuGWq3WYEuVB8VascJtYxHSsNvv9+Df5qZwMbrC8zpj67w419jaA9c=
+X-Received: by 2002:a05:6512:2384:b0:507:a04e:3207 with SMTP id
+ c4-20020a056512238400b00507a04e3207mr2047228lfv.6.1700662950268; Wed, 22 Nov
+ 2023 06:22:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231121103829.10027-1-raag.jadav@intel.com> <20231121103829.10027-3-raag.jadav@intel.com>
- <CAJZ5v0jmaRQWfO_mM4GZ8mEFftuSNgt36=tJ5vC2Uw7MAcpYJg@mail.gmail.com> <ZV2KYqah4FHH4tnz@black.fi.intel.com>
-In-Reply-To: <ZV2KYqah4FHH4tnz@black.fi.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 22 Nov 2023 12:55:39 +0100
-Message-ID: <CAJZ5v0gyuk-1vfpaRWO1wniYHwMp==Nx9KLVS42=39yXmqKq6Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] ACPI: bus: update acpi_dev_uid_match() to support
- multiple types
-To: Raag Jadav <raag.jadav@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, mika.westerberg@linux.intel.com, 
-	andriy.shevchenko@linux.intel.com, lenb@kernel.org, robert.moore@intel.com, 
-	ardb@kernel.org, will@kernel.org, mark.rutland@arm.com, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	acpica-devel@lists.linuxfoundation.org, linux-efi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, mallikarjunappa.sangannavar@intel.com, 
-	bala.senthil@intel.com
+References: <20231122084906.12476-1-wangyao@lemote.com>
+In-Reply-To: <20231122084906.12476-1-wangyao@lemote.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 22 Nov 2023 22:22:19 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5WZD5fWJ-3e1HMJ-bugy5BA-9zfaG+wmzJt9DoQu0pog@mail.gmail.com>
+Message-ID: <CAAhV-H5WZD5fWJ-3e1HMJ-bugy5BA-9zfaG+wmzJt9DoQu0pog@mail.gmail.com>
+Subject: Re: [PATCH] efi/loongarch: Change MMU translation mode
+To: wangyao@lemote.com
+Cc: ardb@kernel.org, wangrui@loongson.cn, linux-efi@vger.kernel.org, 
+	ainux.wang@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 22, 2023 at 5:58=E2=80=AFAM Raag Jadav <raag.jadav@intel.com> w=
-rote:
+Hi, Yao,
+
+On Wed, Nov 22, 2023 at 4:50=E2=80=AFPM <wangyao@lemote.com> wrote:
 >
-> On Tue, Nov 21, 2023 at 08:25:20PM +0100, Rafael J. Wysocki wrote:
-> > On Tue, Nov 21, 2023 at 11:38=E2=80=AFAM Raag Jadav <raag.jadav@intel.c=
-om> wrote:
-> > >
-> > > According to ACPI specification, a _UID object can evaluate to either
-> > > a numeric value or a string. Update acpi_dev_uid_match() helper to
-> > > support _UID matching for both integer and string types.
-> > >
-> > > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > You need to be careful with using this.  There are some things below
-> > that go beyond what I have suggested.
+> From: Wang Yao <wangyao@lemote.com>
 >
-> I think we all suggested some bits and pieces so I included everyone.
-> We can drop if there are any objections.
-
-There are, from me and from Andy.
-
-[cut]
-
-> > Up to this point it is all fine IMV.
-> >
-> > > +/**
-> > > + * acpi_dev_uid_match - Match device by supplied UID
-> > > + * @adev: ACPI device to match.
-> > > + * @uid2: Unique ID of the device.
-> > > + *
-> > > + * Matches UID in @adev with given @uid2.
-> > > + *
-> > > + * Returns: %true if matches, %false otherwise.
-> > > + */
-> > > +
-> > > +/* Treat uid as a string for array and pointer types, treat as an in=
-teger otherwise */
-> > > +#define get_uid_type(x) \
-> > > +       (__builtin_choose_expr(is_array_or_pointer_type(x), (const ch=
-ar *)0, (u64)0))
-> >
-> > But I wouldn't use the above.
-> >
-> > It is far more elaborate than needed for this use case and may not
-> > actually work as expected.  For instance, why would a pointer to a
-> > random struct type be a good candidate for a string?
+> Refer ot UEFI spec v2.10 section 2.3.8 LoongArch Platforms:
 >
-> Such case will not compile, since its data type will not match with
-> acpi_str_uid_match() prototype. The compiler does a very good job of
-> qualifing only the compatible string types here, which is exactly what
-> we want.
+> The processor is in the following execution mode during boot service:
+>     ...
+>     The memory is in physical addressing mode. LoongArch architecture
+>     defines two memory access mode, namely direct address translation
+>     mode and mapped address translation mode.
 >
-> error: passing argument 2 of 'acpi_str_uid_match' from incompatible point=
-er type [-Werror=3Dincompatible-pointer-types]
->     if (acpi_dev_uid_match(adev, adev)) {
->                                  ^
-> ./include/acpi/acpi_bus.h:870:20: note: expected 'const char *' but argum=
-ent is of type 'struct acpi_device *'
->  static inline bool acpi_str_uid_match(struct acpi_device *adev, const ch=
-ar *uid2)
+> So need to change MMU translation mode before config direct mapping.
+From UEFI spec v2.10 section 2.3.8, you can also see "MMU enabled", so
+PG is already enabled in UEFI.
 
-You are right, it won't compile, but that's not my point.  Why would
-it be matched with acpi_str_uid_match() in the first place?
+Huacai
 
-> > > +
-> > > +#define acpi_dev_uid_match(adev, uid2)                         \
-> > > +       _Generic(get_uid_type(uid2),                            \
-> > > +                const char *: acpi_str_uid_match,              \
-> > > +                u64: acpi_int_uid_match)(adev, uid2)
-> > > +
-> >
-> > Personally, I would just do something like the following
-> >
-> > #define acpi_dev_uid_match(adev, uid2) \
-> >         _Generic((uid2), \
-> >                 const char *: acpi_str_uid_match, \
-> >                 char *: acpi_str_uid_match, \
-> >                 const void *: acpi_str_uid_match, \
-> >                 void *: acpi_str_uid_match, \
-> >                 default: acpi_int_uid_match)(adev, uid2)
-> >
-> > which doesn't require compiler.h to be fiddled with and is rather
-> > straightforward to follow.
-> >
-> > If I'm to apply the patches, this is about the level of complexity you
-> > need to target.
 >
-> Understood, however this will limit the type support to only a handful
-> of types,
-
-Indeed.
-
-> and will not satisfy a few of the existing users, which, for
-> example are passing signed or unsigned pointer or an array of u8.
-
-Fair enough, so those types would need to be added to the list.
-
-> Listing every possible type manually for _Generic() looks a bit verbose
-> for something that can be simply achieved by __builtin functions in my
-> opinion.
-
-But then you don't even need _Generic(), do you?
-
-Wouldn't something like the below work?
-
-#define acpi_dev_uid_match(adev, uid2) \
-        (__builtin_choose_expr(is_array_or_pointer_type((uid2)),acpi_str_ui=
-d_match(adev,
-uid2), acpi_int_uid_match(adev, uid2))
-
-In any case, I'm not particularly convinced about the
-is_array_or_pointer_type() thing and so I'm not going to apply the
-series as is.
+> Signed-off-by: Wang Yao <wangyao@lemote.com>
+> ---
+>  drivers/firmware/efi/libstub/loongarch.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmware/=
+efi/libstub/loongarch.c
+> index 807cba2693fc..4c0a84c58f5b 100644
+> --- a/drivers/firmware/efi/libstub/loongarch.c
+> +++ b/drivers/firmware/efi/libstub/loongarch.c
+> @@ -49,7 +49,7 @@ efi_status_t efi_boot_kernel(void *handle, efi_loaded_i=
+mage_t *image,
+>         struct exit_boot_struct priv;
+>         unsigned long desc_size;
+>         efi_status_t status;
+> -       u32 desc_ver;
+> +       u32 desc_ver, val;
+>
+>         status =3D efi_alloc_virtmap(&priv.runtime_map, &desc_size, &desc=
+_ver);
+>         if (status !=3D EFI_SUCCESS) {
+> @@ -69,6 +69,12 @@ efi_status_t efi_boot_kernel(void *handle, efi_loaded_=
+image_t *image,
+>                     priv.runtime_entry_count * desc_size, desc_size,
+>                     desc_ver, priv.runtime_map);
+>
+> +       /* Change address translation mode */
+> +       val =3D csr_read32(LOONGARCH_CSR_CRMD);
+> +       val &=3D ~CSR_CRMD_DA;
+> +       val |=3D CSR_CRMD_PG;
+> +       csr_write32(val, LOONGARCH_CSR_CRMD);
+> +
+>         /* Config Direct Mapping */
+>         csr_write64(CSR_DMW0_INIT, LOONGARCH_CSR_DMWIN0);
+>         csr_write64(CSR_DMW1_INIT, LOONGARCH_CSR_DMWIN1);
+> --
+> 2.27.0
+>
 
