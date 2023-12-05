@@ -1,155 +1,171 @@
-Return-Path: <linux-efi+bounces-109-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-110-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF568033BF
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Dec 2023 14:02:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03A28043DE
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Dec 2023 02:17:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28708280E99
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Dec 2023 13:02:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13BC1C20C6D
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Dec 2023 01:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9603249F0;
-	Mon,  4 Dec 2023 13:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19751373;
+	Tue,  5 Dec 2023 01:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ibgK0akm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aC6BJpz5"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6B7A20
-	for <linux-efi@vger.kernel.org>; Mon,  4 Dec 2023 13:02:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A30AC433C7
-	for <linux-efi@vger.kernel.org>; Mon,  4 Dec 2023 13:02:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701694952;
-	bh=gTq4hFcq25zsoqrcN/aT3NIB0DYj5Wol6Eqm8tbCuz0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ibgK0akm1LhEdDxg13pFN59IcmYK+JPPqymf4BKTjL71KyTG2CLvYpQ1rSZyEwnzz
-	 umBRtE5KINv0Fni36yreF7/LUP0LjY9KND6wsDjSwDleeIIb0lFZyz7UaK6VwqZfRR
-	 GhJpErBEDqXQQktoN2S/DPNAj7ufcVM42axhuBEGxOBgb6eDtNyieDwCfd/E/0AUQa
-	 EOSI4iF34WJfsuU1ima7co0NeLCyy4hxX4IUv7RBk0rusfnWRsZg1+ha41y2n4R7z9
-	 fLZfQtd3Ua0A6BcM4sySWLYSEXQeAHLHQTEKOcV8kiQkeTuBu+3fF7jjjZD9NAqwab
-	 gLPgdcKw234sw==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-54ba86ae133so4751149a12.2
-        for <linux-efi@vger.kernel.org>; Mon, 04 Dec 2023 05:02:32 -0800 (PST)
-X-Gm-Message-State: AOJu0Yy3dv2AA8TIrWjBadm4Ek7Rjhg0qjQ3pjY9xOt1flKRfWNrRHmC
-	yaAnn/2JS63qSioTG/tNR9SJPds1eQhVPkUi+dA=
-X-Google-Smtp-Source: AGHT+IFtobe5T1jnVMWOnctnMjfSwCEYSxcvC4Kvf0Z6ECYQ/hDsY32KDaakhQrOFgv1tHfiJ5kWkO1tw7TVznP4gso=
-X-Received: by 2002:a50:ccc6:0:b0:54c:4837:905d with SMTP id
- b6-20020a50ccc6000000b0054c4837905dmr3185750edj.85.1701694950816; Mon, 04 Dec
- 2023 05:02:30 -0800 (PST)
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF5FD5
+	for <linux-efi@vger.kernel.org>; Mon,  4 Dec 2023 17:17:03 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-db547d3631fso3554133276.1
+        for <linux-efi@vger.kernel.org>; Mon, 04 Dec 2023 17:17:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701739023; x=1702343823; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2cI1AxfJq9BtJ7fl7Vdny5aAStKFiE7rOt3KnMXKqB8=;
+        b=aC6BJpz5+udYZAyrhLvwUYW77sIkZTcs9/xgCvZDS0cbhHo0GdSI+w2TgmDwODFuQR
+         XjeUAAko1452X0sTSeHaC7wLtIkmJhY5l614/QGk5c7DekrrCHuPLPf3hcNPt2rRcSpI
+         28Y6JcsANFR//AHit/Co9ch8RwnufESkTEDv5Vw6K1N5bkOPnyizp59eK8oAJkXB9Ide
+         cgat4XhNjnR7ID66+ZclLtLyvleb7cZ1ATSPnDxHTcDFoRtOeITAmOGRyZQlMZK21Q7/
+         HbFZpz54EtmsJeT2dcBokAuzCRJtd9BqYMDrAVNPW7neUsulR0NGUpachgxx43bjuYzF
+         OAJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701739023; x=1702343823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2cI1AxfJq9BtJ7fl7Vdny5aAStKFiE7rOt3KnMXKqB8=;
+        b=ARnly+oNJ3VvZeHotC2KQkJKWwcKjfwGSjbIDXZDYsT+s4YdV1DqRiSGWahpCWpo4L
+         tQL6gE3ylFW+W7uKFssMj25zFGIfURUzr9tG0ajTAa3niBIBse0zIap8J4UGZmYy/jnt
+         IVTn6mZPI1QhYPT04ClvU0HReLwVlG8LXxCd6rlpisQ3fmhrQUEVWg39cZjGYeQ5/7er
+         rEOvYt7cXqZx446rYBFilpgb5CetJbC5XKS29pAibmNpdUGPNFI+q6jt112P3VUUfhSP
+         Up+b3MQwCEdHQTbY2DY3GLb4hDdRd4VmcO7ERwWJMzaMYdujpoM5o7DebsB7YR5VVFcb
+         nWvA==
+X-Gm-Message-State: AOJu0Yy9asejzOmKZmTcjRFvAZlHdTCUOz1GxmnOnYLR7ALoBLAg1Tp+
+	0o+zDm/Vio2oTzqj1ffG6qFgjIT32AVUVvhIqILbExMJc3omOKUVadWd+g==
+X-Google-Smtp-Source: AGHT+IE7IsQY42XHpp4W8PuwD9NoZ9hX8Q0k+oHpLaDgVLajtc4i1qyH9CyCwCe9xrhsLcQR3+XO8EyR0IdNhSX5zlA=
+X-Received: by 2002:a25:2d1:0:b0:db7:dad0:60d4 with SMTP id
+ 200-20020a2502d1000000b00db7dad060d4mr3280290ybc.97.1701739023065; Mon, 04
+ Dec 2023 17:17:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231204031853.6379-1-wangyao@lemote.com>
-In-Reply-To: <20231204031853.6379-1-wangyao@lemote.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 4 Dec 2023 21:02:20 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4ZNsD8E=uEmtr3bgn4vfXXW0ugNHhwQHeKDKvyVAA=gA@mail.gmail.com>
-Message-ID: <CAAhV-H4ZNsD8E=uEmtr3bgn4vfXXW0ugNHhwQHeKDKvyVAA=gA@mail.gmail.com>
+References: <20231204031853.6379-1-wangyao@lemote.com> <CAAhV-H4ZNsD8E=uEmtr3bgn4vfXXW0ugNHhwQHeKDKvyVAA=gA@mail.gmail.com>
+In-Reply-To: <CAAhV-H4ZNsD8E=uEmtr3bgn4vfXXW0ugNHhwQHeKDKvyVAA=gA@mail.gmail.com>
+From: Ainux Wang <ainux.wang@gmail.com>
+Date: Tue, 5 Dec 2023 09:16:26 +0800
+Message-ID: <CAPWE4_yLATC-Qh4STyxJ_o8DRu_+odJLDU5C6qebdmXVMaNuYA@mail.gmail.com>
 Subject: Re: [PATCH] efi/loongarch: Use relocate address to calculate kernel
  entry address
-To: wangyao@lemote.com
-Cc: ardb@kernel.org, wangrui@loongson.cn, linux-efi@vger.kernel.org, 
-	ainux.wang@gmail.com
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: wangyao@lemote.com, ardb@kernel.org, wangrui@loongson.cn, 
+	linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Yao,
-
-The title can be "Use load address ....".
-
-
-On Mon, Dec 4, 2023 at 11:19=E2=80=AFAM <wangyao@lemote.com> wrote:
+Huacai Chen <chenhuacai@kernel.org> =E4=BA=8E2023=E5=B9=B412=E6=9C=884=E6=
+=97=A5=E5=91=A8=E4=B8=80 21:02=E5=86=99=E9=81=93=EF=BC=9A
 >
-> From: Wang Yao <wangyao@lemote.com>
+> Hi, Yao,
 >
-> The efi_relocate_kernel() may relocate the PIE kernel to anywhere, the re=
-located
-> address may not be equal to link address or EFI_KIMG_PREFERRED_ADDRESS.
+> The title can be "Use load address ....".
 >
-> Signed-off-by: Wang Yao <wangyao@lemote.com>
-> ---
->  arch/loongarch/include/asm/efi.h              | 2 +-
->  drivers/firmware/efi/libstub/loongarch-stub.c | 4 ++--
->  drivers/firmware/efi/libstub/loongarch.c      | 6 +++---
->  3 files changed, 6 insertions(+), 6 deletions(-)
 >
-> diff --git a/arch/loongarch/include/asm/efi.h b/arch/loongarch/include/as=
-m/efi.h
-> index 091897d40b03..91d81f9730ab 100644
-> --- a/arch/loongarch/include/asm/efi.h
-> +++ b/arch/loongarch/include/asm/efi.h
-> @@ -32,6 +32,6 @@ static inline unsigned long efi_get_kimg_min_align(void=
-)
+> On Mon, Dec 4, 2023 at 11:19=E2=80=AFAM <wangyao@lemote.com> wrote:
+> >
+> > From: Wang Yao <wangyao@lemote.com>
+> >
+> > The efi_relocate_kernel() may relocate the PIE kernel to anywhere, the =
+relocated
+> > address may not be equal to link address or EFI_KIMG_PREFERRED_ADDRESS.
+> >
+> > Signed-off-by: Wang Yao <wangyao@lemote.com>
+> > ---
+> >  arch/loongarch/include/asm/efi.h              | 2 +-
+> >  drivers/firmware/efi/libstub/loongarch-stub.c | 4 ++--
+> >  drivers/firmware/efi/libstub/loongarch.c      | 6 +++---
+> >  3 files changed, 6 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/arch/loongarch/include/asm/efi.h b/arch/loongarch/include/=
+asm/efi.h
+> > index 091897d40b03..91d81f9730ab 100644
+> > --- a/arch/loongarch/include/asm/efi.h
+> > +++ b/arch/loongarch/include/asm/efi.h
+> > @@ -32,6 +32,6 @@ static inline unsigned long efi_get_kimg_min_align(vo=
+id)
+> >
+> >  #define EFI_KIMG_PREFERRED_ADDRESS     PHYSADDR(VMLINUX_LOAD_ADDRESS)
+> >
+> > -unsigned long kernel_entry_address(void);
+> > +unsigned long kernel_entry_address(unsigned long kernel_addr);
+> >
+> >  #endif /* _ASM_LOONGARCH_EFI_H */
+> > diff --git a/drivers/firmware/efi/libstub/loongarch-stub.c b/drivers/fi=
+rmware/efi/libstub/loongarch-stub.c
+> > index 72c71ae201f0..4d52f1dc5258 100644
+> > --- a/drivers/firmware/efi/libstub/loongarch-stub.c
+> > +++ b/drivers/firmware/efi/libstub/loongarch-stub.c
+> > @@ -35,9 +35,9 @@ efi_status_t handle_kernel_image(unsigned long *image=
+_addr,
+> >         return status;
+> >  }
+> >
+> > -unsigned long kernel_entry_address(void)
+> > +unsigned long kernel_entry_address(unsigned long kernel_addr)
+> >  {
+> >         unsigned long base =3D (unsigned long)&kernel_offset - kernel_o=
+ffset;
+> >
+> > -       return (unsigned long)&kernel_entry - base + VMLINUX_LOAD_ADDRE=
+SS;
+> > +       return (unsigned long)&kernel_entry - base + TO_CACHE(kernel_ad=
+dr);
+> >  }
+> > diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmwar=
+e/efi/libstub/loongarch.c
+> > index 807cba2693fc..d7ec9381f8ea 100644
+> > --- a/drivers/firmware/efi/libstub/loongarch.c
+> > +++ b/drivers/firmware/efi/libstub/loongarch.c
+> > @@ -37,9 +37,9 @@ static efi_status_t exit_boot_func(struct efi_boot_me=
+mmap *map, void *priv)
+> >         return EFI_SUCCESS;
+> >  }
+> >
+> > -unsigned long __weak kernel_entry_address(void)
+> > +unsigned long __weak kernel_entry_address(unsigned long kernel_addr)
+> >  {
+> > -       return *(unsigned long *)(PHYSADDR(VMLINUX_LOAD_ADDRESS) + 8);
+> > +       return *(unsigned long *)(PHYSADDR(kernel_addr) + 8);
+> The address read from DOS header is link address, so you should return
+> *(unsigned long *)(kernel_addr + 8) -  VMLINUX_LOAD_ADDRESS +
+> TO_CACHE(kernel_addr);
 >
->  #define EFI_KIMG_PREFERRED_ADDRESS     PHYSADDR(VMLINUX_LOAD_ADDRESS)
+> Huacai
+Ok, thanks.
+Best regards,
+Ainux Wang.
 >
-> -unsigned long kernel_entry_address(void);
-> +unsigned long kernel_entry_address(unsigned long kernel_addr);
->
->  #endif /* _ASM_LOONGARCH_EFI_H */
-> diff --git a/drivers/firmware/efi/libstub/loongarch-stub.c b/drivers/firm=
-ware/efi/libstub/loongarch-stub.c
-> index 72c71ae201f0..4d52f1dc5258 100644
-> --- a/drivers/firmware/efi/libstub/loongarch-stub.c
-> +++ b/drivers/firmware/efi/libstub/loongarch-stub.c
-> @@ -35,9 +35,9 @@ efi_status_t handle_kernel_image(unsigned long *image_a=
-ddr,
->         return status;
->  }
->
-> -unsigned long kernel_entry_address(void)
-> +unsigned long kernel_entry_address(unsigned long kernel_addr)
->  {
->         unsigned long base =3D (unsigned long)&kernel_offset - kernel_off=
-set;
->
-> -       return (unsigned long)&kernel_entry - base + VMLINUX_LOAD_ADDRESS=
+> >  }
+> >
+> >  efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
+> > @@ -73,7 +73,7 @@ efi_status_t efi_boot_kernel(void *handle, efi_loaded=
+_image_t *image,
+> >         csr_write64(CSR_DMW0_INIT, LOONGARCH_CSR_DMWIN0);
+> >         csr_write64(CSR_DMW1_INIT, LOONGARCH_CSR_DMWIN1);
+> >
+> > -       real_kernel_entry =3D (void *)kernel_entry_address();
+> > +       real_kernel_entry =3D (void *)kernel_entry_address(kernel_addr)=
 ;
-> +       return (unsigned long)&kernel_entry - base + TO_CACHE(kernel_addr=
-);
->  }
-> diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmware/=
-efi/libstub/loongarch.c
-> index 807cba2693fc..d7ec9381f8ea 100644
-> --- a/drivers/firmware/efi/libstub/loongarch.c
-> +++ b/drivers/firmware/efi/libstub/loongarch.c
-> @@ -37,9 +37,9 @@ static efi_status_t exit_boot_func(struct efi_boot_memm=
-ap *map, void *priv)
->         return EFI_SUCCESS;
->  }
->
-> -unsigned long __weak kernel_entry_address(void)
-> +unsigned long __weak kernel_entry_address(unsigned long kernel_addr)
->  {
-> -       return *(unsigned long *)(PHYSADDR(VMLINUX_LOAD_ADDRESS) + 8);
-> +       return *(unsigned long *)(PHYSADDR(kernel_addr) + 8);
-The address read from DOS header is link address, so you should return
-*(unsigned long *)(kernel_addr + 8) -  VMLINUX_LOAD_ADDRESS +
-TO_CACHE(kernel_addr);
-
-Huacai
-
->  }
->
->  efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
-> @@ -73,7 +73,7 @@ efi_status_t efi_boot_kernel(void *handle, efi_loaded_i=
-mage_t *image,
->         csr_write64(CSR_DMW0_INIT, LOONGARCH_CSR_DMWIN0);
->         csr_write64(CSR_DMW1_INIT, LOONGARCH_CSR_DMWIN1);
->
-> -       real_kernel_entry =3D (void *)kernel_entry_address();
-> +       real_kernel_entry =3D (void *)kernel_entry_address(kernel_addr);
->
->         real_kernel_entry(true, (unsigned long)cmdline_ptr,
->                           (unsigned long)efi_system_table);
-> --
-> 2.27.0
->
+> >
+> >         real_kernel_entry(true, (unsigned long)cmdline_ptr,
+> >                           (unsigned long)efi_system_table);
+> > --
+> > 2.27.0
+> >
 
