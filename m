@@ -1,83 +1,74 @@
-Return-Path: <linux-efi+bounces-113-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-114-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2348080486F
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Dec 2023 05:11:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C51AA8049AE
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Dec 2023 07:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4BBA28102C
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Dec 2023 04:11:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 505FFB20C3C
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Dec 2023 06:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA42CA4C;
-	Tue,  5 Dec 2023 04:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZtsmoCvy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE02DDA1;
+	Tue,  5 Dec 2023 06:04:35 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77189FA;
-	Mon,  4 Dec 2023 20:10:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701749458; x=1733285458;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BgAKyIE8Taig/P+FmUDkLxkyIqxSRk5PyzxoVtR/DZI=;
-  b=ZtsmoCvyru3GN26iuUtg+xjjWRjrsUF+260E6CfwvUv0yf+zYxkgyaAW
-   jYQGwzrhJd1oP2VV8XAdNAtR0pVxqHeC4T+BROfcK425ZuCZm+vHbq5SP
-   OWOVSw86ZSlbG2oQc1iItZ3PcfFCGZPAW3ze6cJv5Hd0vG2/Ic7YD1iVq
-   ms6XhnAEEYb5QEYMof4dyQe0iB672BcPySqLGHf6mG2GAKm2Wm0RZEgcE
-   d8GY/zaEXF3ODQVny1rspW7DVXmGR9NS7nZ7sJ3iKVL3UxaMV4Lw489bw
-   AK11NLOWpzl47fQBjW7ExswnlKDKeONhjHwOhoJYBZzZCbjprAMEgs+SK
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="716332"
-X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="716332"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 20:10:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="747079121"
-X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="747079121"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 20:10:53 -0800
-Date: Tue, 5 Dec 2023 06:10:50 +0200
-From: Raag Jadav <raag.jadav@intel.com>
-To: mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
-	rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
-	ardb@kernel.org, will@kernel.org, mark.rutland@arm.com
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linuxfoundation.org, linux-efi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	mallikarjunappa.sangannavar@intel.com, bala.senthil@intel.com
-Subject: Re: [PATCH v3 0/5] Support _UID matching for integer types
-Message-ID: <ZW6iyu4qF0V7wCXG@black.fi.intel.com>
-References: <20231123100617.28020-1-raag.jadav@intel.com>
+Received: from smtpbg153.qq.com (smtpbg153.qq.com [13.245.218.24])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663E1C3
+	for <linux-efi@vger.kernel.org>; Mon,  4 Dec 2023 22:04:29 -0800 (PST)
+X-QQ-mid: bizesmtp80t1701756242t12b57rd
+Received: from localhost.localdomain ( [222.92.8.138])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 05 Dec 2023 14:04:01 +0800 (CST)
+X-QQ-SSF: 01400000000000F0W000000A0000000
+X-QQ-FEAT: yFWqZ/siFTGY461mtQHAVX9qS+3hMd0VDE+XGL3skJWo/WyJTDfESqbE1beE2
+	rT42drzAkeyUOE1FWbg1cHjNCy0YOahjmLBKa9Sp2N+oUR1MGQOhGLLr43qNyFybMWacpDz
+	UeZQKbEs3plTzA1zHsY9gPEP2kj/L134/XUHWIsiH9Sy4jOvp+g5KcV0ur6JnkS1B8qNMRd
+	sBM/LPR9QqKi+CHOWkQS/KKP84IBXlMj+PD/1esJLLXli3c6ZmR+0aB0zTqcy0gsZkKAW9w
+	VhdtcxNC3AJgiNyAXI+vgFLNndvZ2AAtfFQmEKgXfAsgNZxn+UGJljbs970C++22BrYEsm6
+	jgc89hVOye2WEzX9AXZC1h/snDp/2oOMPd4l+TFqh1jIRUmCBv0CZa7AthoWWZfH5HHMln2
+	j3IS5fGxCFg=
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 8188823437681347932
+From: wangyao@lemote.com
+To: ardb@kernel.org,
+	chenhuacai@kernel.org,
+	wangrui@loongson.cn
+Cc: linux-efi@vger.kernel.org,
+	ainux.wang@gmail.com,
+	Wang Yao <wangyao@lemote.com>
+Subject: [PATCH v3 0/2] Use load address to calculate kernel entry
+Date: Tue,  5 Dec 2023 14:03:43 +0800
+Message-Id: <20231205060345.7742-1-wangyao@lemote.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231123100617.28020-1-raag.jadav@intel.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:lemote.com:qybglogicsvrgz:qybglogicsvrgz5a-2
 
-On Thu, Nov 23, 2023 at 03:36:12PM +0530, Raag Jadav wrote:
-> This series updates the standard ACPI helpers to support _UID matching
-> for both integer and string types, and uses them in a couple of places.
-> 
-> Changes since v2:
-> - Drop __builtin functions to reduce complexity (Rafael)
-> - Update tags
-> 
-> Changes since v1:
-> - Fix build errors
+From: Wang Yao <wangyao@lemote.com>
 
-Bump.
+1, The PIE kernel will be loaded anywhere, so use load address to
+calculate kernel entry address.
 
-Anything I can do to move this forward?
+2, Use twice efi_relocate_kernel() to make load address is not equal to
+link address for test.
 
-Raag
+Wang Yao (2):
+  efi/loongarch: Use load address to calculate kernel entry address
+  efi/loongarch: load address is not equal to link address
+
+ arch/loongarch/include/asm/efi.h              |  2 +-
+ drivers/firmware/efi/libstub/loongarch-stub.c | 16 +++++++++++++---
+ drivers/firmware/efi/libstub/loongarch.c      |  6 +++---
+ 3 files changed, 17 insertions(+), 7 deletions(-)
+
+-- 
+2.27.0
+
 
