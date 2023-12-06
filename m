@@ -1,46 +1,64 @@
-Return-Path: <linux-efi+bounces-125-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-126-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30946806364
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Dec 2023 01:25:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7AD80704C
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Dec 2023 13:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF5D1F216C9
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Dec 2023 00:25:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A402AB20E1F
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Dec 2023 12:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3000D360;
-	Wed,  6 Dec 2023 00:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CDC36B08;
+	Wed,  6 Dec 2023 12:54:40 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC70AFA
-	for <linux-efi@vger.kernel.org>; Tue,  5 Dec 2023 16:25:10 -0800 (PST)
-X-QQ-mid: bizesmtp86t1701822269t3ll3ndp
-Received: from localhost.localdomain ( [222.92.8.138])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 06 Dec 2023 08:24:28 +0800 (CST)
-X-QQ-SSF: 01400000000000F0W000000A0000000
-X-QQ-FEAT: VbOeDQvtdXOrpd9aicjQImh02BSBbiTkafwz0lSQn/1r8gbJcSqJNU1wh6q25
-	zvpVeiUR1eJD1LLYOGE35jy1pRN9lJ9yKNG2V+MNpBJPESsDHinyklK9xafLULbDC7Vm5S9
-	8LoGPRnIqCir9iUTpShUng2wjVhlVQenMFldk4z0EytWcZuAtCcXp1w6YEKBvgoe4nWILZR
-	S70F33csDhBwBOV4kDDCUFqav86BIH/JDrjVsZE+Q33EjyQy+1jvnoX1cPLyigdK13suNHT
-	Vtpik6fAWzFTaPYkW7d9jFKcq56Xc+YXZW3YAyiOb8AjSEVVNSgyuP5jx70QnlynQBfkQc4
-	oMxp/kKynV2PDKRyCQ+WV43DPI3UgOAUmBLejOTS/Bzzv1jC6y/WaOeLDzlyw==
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 428872662590024513
-From: wangyao@lemote.com
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33249FA;
+	Wed,  6 Dec 2023 04:54:37 -0800 (PST)
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9AF461FD0C;
+	Wed,  6 Dec 2023 12:54:35 +0000 (UTC)
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 13BCD13403;
+	Wed,  6 Dec 2023 12:54:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 9HGHAwtvcGV6dAAAn2gu4w
+	(envelope-from <tzimmermann@suse.de>); Wed, 06 Dec 2023 12:54:35 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
 To: ardb@kernel.org,
-	chenhuacai@kernel.org,
-	wangrui@loongson.cn
-Cc: linux-efi@vger.kernel.org,
-	ainux.wang@gmail.com,
-	Wang Yao <wangyao@lemote.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH v4] efi/loongarch: Use load address to calculate kernel entry address
-Date: Wed,  6 Dec 2023 08:24:27 +0800
-Message-Id: <20231206002427.25480-1-wangyao@lemote.com>
-X-Mailer: git-send-email 2.27.0
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	bhelgaas@google.com,
+	arnd@arndb.de,
+	zohar@linux.ibm.com,
+	dmitry.kasatkin@gmail.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	javierm@redhat.com
+Cc: linux-arch@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/3] arch/x86: Remove unnecessary dependencies on bootparam.h
+Date: Wed,  6 Dec 2023 13:38:36 +0100
+Message-ID: <20231206125433.18420-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -48,88 +66,98 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:lemote.com:qybglogicsvrgz:qybglogicsvrgz5a-2
+X-Rspamd-Queue-Id: 9AF461FD0C
+X-Spam-Score: 6.49
+X-Spamd-Result: default: False [6.49 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	 R_MISSING_CHARSET(2.50)[];
+	 TAGGED_RCPT(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 R_SPF_SOFTFAIL(0.00)[~all:c];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_TWELVE(0.00)[22];
+	 MID_CONTAINS_FROM(1.00)[];
+	 FREEMAIL_TO(0.00)[kernel.org,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,google.com,arndb.de,linux.ibm.com,gmail.com,paul-moore.com,namei.org,hallyn.com];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 R_DKIM_NA(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[];
+	 DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
+X-Spamd-Bar: ++++++
+Authentication-Results: smtp-out2.suse.de;
+	dkim=none;
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=suse.de (policy=none);
+	spf=softfail (smtp-out2.suse.de: 2a07:de40:b281:104:10:150:64:98 is neither permitted nor denied by domain of tzimmermann@suse.de) smtp.mailfrom=tzimmermann@suse.de
+X-Rspamd-Server: rspamd1
 
-From: Wang Yao <wangyao@lemote.com>
+Reduce built time in some cases by removing unnecessary include statements
+for <asm/bootparam.h>. Reorganize some header files accordingly.
 
-The efi_relocate_kernel() may load the PIE kernel to anywhere, the loaded
-address may not be equal to link address or EFI_KIMG_PREFERRED_ADDRESS.
+While working on the kernel's boot-up graphics, I noticed that touching
+include/linux/screen_info.h triggers a complete rebuilt of the kernel
+on x86. It turns out that the architecture's PCI and EFI headers include
+<asm/bootparam.h>, which depends on <linux/screen_info.h>. But none of
+the drivers have any business with boot parameters or the screen_info
+state.
 
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Wang Yao <wangyao@lemote.com>
----
+The patchset moves a few limes from pci.h and efi.h into separate header
+files and then removes the obsolete include statements on x86. I did
 
-v3->v4:
-Add Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+  make allmodconfig
+  make -j28
+  touch include/linus/screen_info.h
+  time -j28 make
 
-v2->v3:
-Dropped TO_CACHE:
-kernel_addr may be DA/PG address, both access kernel entry.
+to measure the time it takes to rebuild. Results without the patchset
+are around 20 minutes.
 
-v1->v2:
-Use link address that from DOS header to calculate kernel entry,
-corrected by Huacai Chen.
+  real    20m46,705s
+  user    354m29,166s
+  sys     28m27,359s
 
- arch/loongarch/include/asm/efi.h              | 2 +-
- drivers/firmware/efi/libstub/loongarch-stub.c | 4 ++--
- drivers/firmware/efi/libstub/loongarch.c      | 6 +++---
- 3 files changed, 6 insertions(+), 6 deletions(-)
+And with the patchset applied it goes down to about a minute.
 
-diff --git a/arch/loongarch/include/asm/efi.h b/arch/loongarch/include/asm/efi.h
-index 091897d40b03..91d81f9730ab 100644
---- a/arch/loongarch/include/asm/efi.h
-+++ b/arch/loongarch/include/asm/efi.h
-@@ -32,6 +32,6 @@ static inline unsigned long efi_get_kimg_min_align(void)
- 
- #define EFI_KIMG_PREFERRED_ADDRESS	PHYSADDR(VMLINUX_LOAD_ADDRESS)
- 
--unsigned long kernel_entry_address(void);
-+unsigned long kernel_entry_address(unsigned long kernel_addr);
- 
- #endif /* _ASM_LOONGARCH_EFI_H */
-diff --git a/drivers/firmware/efi/libstub/loongarch-stub.c b/drivers/firmware/efi/libstub/loongarch-stub.c
-index 72c71ae201f0..d6ec5d4b8dbe 100644
---- a/drivers/firmware/efi/libstub/loongarch-stub.c
-+++ b/drivers/firmware/efi/libstub/loongarch-stub.c
-@@ -35,9 +35,9 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 	return status;
- }
- 
--unsigned long kernel_entry_address(void)
-+unsigned long kernel_entry_address(unsigned long kernel_addr)
- {
- 	unsigned long base = (unsigned long)&kernel_offset - kernel_offset;
- 
--	return (unsigned long)&kernel_entry - base + VMLINUX_LOAD_ADDRESS;
-+	return (unsigned long)&kernel_entry - base + kernel_addr;
- }
-diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmware/efi/libstub/loongarch.c
-index 807cba2693fc..0e0aa6cda73f 100644
---- a/drivers/firmware/efi/libstub/loongarch.c
-+++ b/drivers/firmware/efi/libstub/loongarch.c
-@@ -37,9 +37,9 @@ static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
- 	return EFI_SUCCESS;
- }
- 
--unsigned long __weak kernel_entry_address(void)
-+unsigned long __weak kernel_entry_address(unsigned long kernel_addr)
- {
--	return *(unsigned long *)(PHYSADDR(VMLINUX_LOAD_ADDRESS) + 8);
-+	return *(unsigned long *)(kernel_addr + 8) - VMLINUX_LOAD_ADDRESS + kernel_addr;
- }
- 
- efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
-@@ -73,7 +73,7 @@ efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
- 	csr_write64(CSR_DMW0_INIT, LOONGARCH_CSR_DMWIN0);
- 	csr_write64(CSR_DMW1_INIT, LOONGARCH_CSR_DMWIN1);
- 
--	real_kernel_entry = (void *)kernel_entry_address();
-+	real_kernel_entry = (void *)kernel_entry_address(kernel_addr);
- 
- 	real_kernel_entry(true, (unsigned long)cmdline_ptr,
- 			  (unsigned long)efi_system_table);
+  real    0m58,232s
+  user    4m37,617s
+  sys     0m34,993s
+
+The test system was an Intel i5-13500.
+
+Thomas Zimmermann (3):
+  arch/x86: Move struct pci_setup_rom into pci_setup.h
+  arch/x86: Add <asm/ima-efi.h> for arch_ima_efi_boot_mode
+  arch/x86: Do not include <asm/bootparam.h> in several header files
+
+ arch/x86/include/asm/efi.h              |  3 ---
+ arch/x86/include/asm/ima-efi.h          | 12 ++++++++++++
+ arch/x86/include/asm/kexec.h            |  1 -
+ arch/x86/include/asm/mem_encrypt.h      |  2 +-
+ arch/x86/include/asm/pci.h              | 13 -------------
+ arch/x86/include/asm/pci_setup.h        | 19 +++++++++++++++++++
+ arch/x86/include/asm/sev.h              |  3 ++-
+ arch/x86/include/asm/x86_init.h         |  2 --
+ arch/x86/pci/common.c                   |  1 +
+ drivers/firmware/efi/libstub/x86-stub.c |  1 +
+ include/asm-generic/Kbuild              |  1 +
+ include/asm-generic/ima-efi.h           | 16 ++++++++++++++++
+ security/integrity/ima/ima_efi.c        |  5 +----
+ 13 files changed, 54 insertions(+), 25 deletions(-)
+ create mode 100644 arch/x86/include/asm/ima-efi.h
+ create mode 100644 arch/x86/include/asm/pci_setup.h
+ create mode 100644 include/asm-generic/ima-efi.h
+
+
+base-commit: a9d99261a978835b02e248fe18af3026416af3e8
 -- 
-2.27.0
+2.43.0
 
 
