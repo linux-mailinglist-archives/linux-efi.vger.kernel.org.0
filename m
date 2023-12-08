@@ -1,73 +1,97 @@
-Return-Path: <linux-efi+bounces-146-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-147-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A5A80A8CE
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Dec 2023 17:25:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 076A880A964
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Dec 2023 17:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6D60B20B14
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Dec 2023 16:25:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B682F2818B6
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Dec 2023 16:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3983717A;
-	Fri,  8 Dec 2023 16:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F10D38DEC;
+	Fri,  8 Dec 2023 16:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GbHxaSoS"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EDF519BE
-	for <linux-efi@vger.kernel.org>; Fri,  8 Dec 2023 08:25:05 -0800 (PST)
-Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-6d9f2ec6283so528882a34.1
-        for <linux-efi@vger.kernel.org>; Fri, 08 Dec 2023 08:25:05 -0800 (PST)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5876C19A4
+	for <linux-efi@vger.kernel.org>; Fri,  8 Dec 2023 08:39:33 -0800 (PST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5c941936f7fso14574267b3.0
+        for <linux-efi@vger.kernel.org>; Fri, 08 Dec 2023 08:39:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1702053572; x=1702658372; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HcPWgxq5wP5HDT3HOjbVp2OIWRp2UjSl+DNyEGOk0r4=;
+        b=GbHxaSoS83BUu7re9LY0zqPpYuXpCjyOaOlZX/lHraO4BP4+lQxPeLkRWmjI//kuc7
+         25ZPiFuc0WPIbP/2yPW5J5jht5ND5KIXN0XXZ493St51xcfPrQnzqQqmTonggYzXl+m4
+         wgo+1rF+iylNE6L7luf+gXNBz+I+Ss7BIdqmhI+94ntQ1CqadYm/EveQLl79SqpP6lz8
+         2nQhXOOOFbTu4hltfjwH68wzZId/jv7EsaT4e/XIHDJJCsh/2zgpJIZqRfO0NtwBJgFZ
+         KjjITfBKdunhBulCHyy3sZYFWxsNv1xN0kL6vDe7r4iugY6DXGR2MYY3Nl5EIKq1A3Yz
+         asoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702052704; x=1702657504;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NADYlLeKES7cbeGMNjbEMFy02hFJfzOn/DYe4MvOsgE=;
-        b=JZV65w/sdkRWvqchfyqjtDHv010ZOIY5x8/aQA/Kk7H7F3gUH507Z9Oisf90mROvNL
-         3m/SaZVqrTiXn1tJlrOHbI5PWnwP+n731QsOY+55USZ446ksPL0OUq9XW/+3SpzhgUfR
-         xzEOup7tGCtu2UoAtvKaVXB15Azb23nCrgxLXNk3nIJxAnKcdBZUDOCPD59EqFMpHg6q
-         CfF4BtmPuXjBEEJluxZxWfgPLQGaC96y1mP7VuILkN+csAtrZDP+5jZpiuDN4TiqsLgz
-         hYwBCymSigkYBO9JJPW/L1zOb+3dgqRbTKQPnfdmkEZDAqrH8hRkt+/1N7oVIBZ97Luy
-         A1Xw==
-X-Gm-Message-State: AOJu0YxMu7CaezVZPQ8d5iVJgTFg6K+nYvgf/wKWc3vpRZsnOcnVDTKN
-	Omp/Vvb6KA0Yg1ymc2spJtAvshgGGuhmbuPksppUFlHInT73
-X-Google-Smtp-Source: AGHT+IG6BRWUkk2Xgdw5Y5u1fvjiNqnAGM4BCsPGuuj8F0d1CjG69JFxybor2IxzWlk0HV3RHkoYu1DqOVLlIZSYBq25sasO6dDP
+        d=1e100.net; s=20230601; t=1702053572; x=1702658372;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HcPWgxq5wP5HDT3HOjbVp2OIWRp2UjSl+DNyEGOk0r4=;
+        b=swfY2Wf+UXEwfTD3eDDMLPjvSCLvuKAnBux4RvfUsJZYFyOzeviYzBXTar0JlgKonU
+         o8mv3UWskLKPOi/zMoZQvRbnIjnm+G2LanHToUlstqVtGZKwF0HyaZZSEyb2ZeBEbQG4
+         yQrbd0tJlsGs/UHZX/YI+sqccxfcZNnADwdsUZGy3De6+81qwdgDyQwOj/b84FA6n5ew
+         Xa1SG4NjixJMrpCEO+eG5z9fken6vg0HSc88DHrw+MzdHQsGTNIoKRy4kGsILa1UfqU0
+         sINrzZ8i3HLEaSCr7JuV4jJQ5UNumrzyFX4ceHpPjBRbWvTng8lhdpENwJ0SDmAcBwc4
+         c8Vg==
+X-Gm-Message-State: AOJu0YyRcPndwpwbFFFjiW3RsvNqgHYaDZGxJGimGmLatSa0uQNVqHmJ
+	WFttHW2sew2WaYihjXfBhNro6hm2r19nZ1FZOJ+4rIFFui0BlMmQTUcpxb6MdksKWvHsbVjyW/f
+	mWL8Ogp3HxeHL//FWzjk8LOR+6+P/2GYHX/87BUWMuJVqhiSWbYc3HRoen2wR
+X-Google-Smtp-Source: AGHT+IF+hdOnJk2VSjru1XU1KIgjRSM93On6qbvv/IxqpnLeesvCaVztbOmBs2mV/a7WdGkvPv96WSh3
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:690c:3586:b0:5d3:d44a:578d with SMTP id
+ fr6-20020a05690c358600b005d3d44a578dmr8822ywb.4.1702053572252; Fri, 08 Dec
+ 2023 08:39:32 -0800 (PST)
+Date: Fri,  8 Dec 2023 17:39:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6830:438b:b0:6d9:f752:1d25 with SMTP id
- s11-20020a056830438b00b006d9f7521d25mr201674otv.1.1702052704621; Fri, 08 Dec
- 2023 08:25:04 -0800 (PST)
-Date: Fri, 08 Dec 2023 08:25:04 -0800
-In-Reply-To: <CANp29Y4bxQzV-=rSQOBPfi2Rxrob_GTHZrsGAgvemvnXgC5a3g@mail.gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000d91934060c020627@google.com>
-Subject: Re: [syzbot] [efi] BUG: corrupted list in efivar_entry_remove
-From: syzbot <syzbot+1902c359bfcaf39c46f2@syzkaller.appspotmail.com>
-To: ardb@kernel.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nogikh@google.com, syzkaller-bugs@googlegroups.com
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=618; i=ardb@kernel.org;
+ h=from:subject; bh=ke/yFxbldPNDyYM47CjVDl/I+SZeyeQnOAvlYydKwAA=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIbXYbZ/TP68gZ6e2xrMljq/zzh57verVy5ORd3teLHPcb
+ PLnS21bRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjIEhlGhr/VSVICGcLzeRca
+ pASvXipw+pnPxjD97Proi4bLXNR0ZzP8lTTOqYhdeeJKFmPXrjt3v3PsY30qe0BoQ11phc9TL+M EPgA=
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20231208163925.3225018-5-ardb@google.com>
+Subject: [PATCH 0/3] efivarfs fixes
+From: Ard Biesheuvel <ardb@google.com>
+To: linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, Johan Hovold <johan+linaro@kernel.org>, 
+	Jiao Zhou <jiaozhou@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+From: Ard Biesheuvel <ardb@kernel.org>
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Some fixes for efivarfs, most notably, a fix in patch #3 for a long
+standing issue reported by syzbot.
 
-Reported-and-tested-by: syzbot+1902c359bfcaf39c46f2@syzkaller.appspotmail.com
+Cc: Johan Hovold <johan+linaro@kernel.org>
+Cc: Jiao Zhou <jiaozhou@google.com>
 
-Tested on:
+Ard Biesheuvel (3):
+  efivarfs: Move efivar availability check into FS context init
+  efivarfs: Free s_fs_info on unmount
+  efivarfs: Move efivarfs list into superblock s_fs_info
 
-commit:         ecbfc830 efivarfs: Move efivarfs list into superblock ..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git efivarfs-list-corruption-fix
-console output: https://syzkaller.appspot.com/x/log.txt?x=147a4fcae80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f62dd67b72f86455
-dashboard link: https://syzkaller.appspot.com/bug?extid=1902c359bfcaf39c46f2
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-userspace arch: arm64
+ fs/efivarfs/inode.c    |  3 +-
+ fs/efivarfs/internal.h |  6 ++--
+ fs/efivarfs/super.c    | 31 ++++++++++----------
+ fs/efivarfs/vars.c     |  5 ++--
+ 4 files changed, 24 insertions(+), 21 deletions(-)
 
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
+-- 
+2.43.0.472.g3155946c3a-goog
+
 
