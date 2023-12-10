@@ -1,26 +1,60 @@
-Return-Path: <linux-efi+bounces-158-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-159-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1CD80B999
-	for <lists+linux-efi@lfdr.de>; Sun, 10 Dec 2023 08:16:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B2E80B9AA
+	for <lists+linux-efi@lfdr.de>; Sun, 10 Dec 2023 08:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CC221C20777
-	for <lists+linux-efi@lfdr.de>; Sun, 10 Dec 2023 07:15:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B39F1B20A5B
+	for <lists+linux-efi@lfdr.de>; Sun, 10 Dec 2023 07:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C6A4439;
-	Sun, 10 Dec 2023 07:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568725235;
+	Sun, 10 Dec 2023 07:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YQj5Mxqp"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77F77C1;
-	Sat,  9 Dec 2023 23:15:49 -0800 (PST)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rCE2O-0007XZ-HN; Sun, 10 Dec 2023 08:15:40 +0100
-Message-ID: <fe7a2b72-9418-42dc-b6fb-2aa93bc4eabc@leemhuis.info>
-Date: Sun, 10 Dec 2023 08:15:39 +0100
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFF7BD;
+	Sat,  9 Dec 2023 23:30:14 -0800 (PST)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so2880709a12.1;
+        Sat, 09 Dec 2023 23:30:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702193414; x=1702798214; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PJZ68NEWh29H4sGqzC2fIlY8OiY/jserKoz9/XMRFts=;
+        b=YQj5MxqpFmS3F4wAUDUkndAhFQvwmEhEN4RBTWS5eFoLHQO/vKcpKDrrwo8mE9xAHH
+         5CcU4J0AXUbt5bTOkJXpReIw4fAg8b0wD6h8IGL5voq2ny53uxWJzMCmsKc+9bicUXZ0
+         QinC7tfuubQDwykKlxvUU5gmXl9cwHCBT/gCwu6atH8zbn8Tfcf9UGaqlvped8hpPwfr
+         SossnzV3V1MdkcpzgHjnV0vCBEiVvJYErXpVC4q5EvMolzWEkknOTf3UTNmyBsx6WF5u
+         /bRXbZ2iXOq9GBUgqsMEt3pwhy9y3BhUNn8m9Cgt4Imns6FO3nkcy7TVtjUfjFHykrds
+         Jetw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702193414; x=1702798214;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PJZ68NEWh29H4sGqzC2fIlY8OiY/jserKoz9/XMRFts=;
+        b=H6csmPLg26ij78VGkHl5Wzzgra+pNPjl4hrPffqOUlf+NTQAIK5hYHivQ1uneREpdP
+         uuIfDiMkO68DfzB2IwunWZL7RtCMpbhAXGSj2fLAChi0uGqXpe3iUB+QxLXr1K3BKLkN
+         9WljgCadWifRLtqDEHbAnoJ/9kdcaR+AX1elznaIGSz7imcb1r40rJ92bPDKH5gvR7Jf
+         v8vn/eR+Oza38kr9KmSBQKn4jdsv2CDpFMcR5wXKojrt+cg2syEpNUy/E0zj5f+0Y1pS
+         klIfxP0hSj4e1eFLKRFm4BxVwv5p2XFBS9A/BibTwasufliOwuBAHbtD/TdkvOdbYG/B
+         oG2g==
+X-Gm-Message-State: AOJu0YyyGXuG3ntcGB7q41lMGOUte906GEh9SuoVUpjoKl+kN3cXsyl6
+	sssLmg8dYN3Ts9ucFgBLHwQ=
+X-Google-Smtp-Source: AGHT+IE4E/haG2aufMTkcvK3NaUCG+up+gPhQuwhMTIAchkganZEWSFvdmizSOzYzpS7+oaJliX8vg==
+X-Received: by 2002:a17:902:f686:b0:1cf:cf34:d4fa with SMTP id l6-20020a170902f68600b001cfcf34d4famr2556606plg.28.1702193414038;
+        Sat, 09 Dec 2023 23:30:14 -0800 (PST)
+Received: from [192.168.0.106] ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id hx11-20020a17090b440b00b002886e13bcbesm6075884pjb.56.2023.12.09.23.30.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Dec 2023 23:30:13 -0800 (PST)
+Message-ID: <7cf21703-391a-4123-b862-14a1af62aeaa@gmail.com>
+Date: Sun, 10 Dec 2023 14:30:08 +0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -29,92 +63,73 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Fwd: Kernel 6.6.1 hangs on "loading initial ramdisk"
-Content-Language: en-US, de-DE
-To: Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>
-Cc: Bagas Sanjaya <bagasdotme@gmail.com>, bwg <whirl@mniotilta.ca>,
+Content-Language: en-US
+To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: bwg <whirl@mniotilta.ca>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Regressions <regressions@lists.linux.dev>,
  linux-efi <linux-efi@vger.kernel.org>,
  the arch/x86 maintainers <x86@kernel.org>,
  Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
  Thomas Gleixner <tglx@linutronix.de>, shibedrill1@gmail.com
 References: <9057d7de-f2e0-44ba-bec7-8b0861b2a850@gmail.com>
  <ZXVdZE3D-KFBqPnj@archie.me>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <ZXVdZE3D-KFBqPnj@archie.me>
+ <fe7a2b72-9418-42dc-b6fb-2aa93bc4eabc@leemhuis.info>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <fe7a2b72-9418-42dc-b6fb-2aa93bc4eabc@leemhuis.info>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1702192549;0aa0df20;
-X-HE-SMSGID: 1rCE2O-0007XZ-HN
 
-[Moved a lot of people CCed in the previous mail to BCC, as I'm pretty
-sure they do not care about this regression; at the same time add the
-x86 maintainers and the efi list.]
-
-[Top posting for once to make this easier accessible for everyone.]
-
-Ard, Boris, just to make it obvious: the regression report quoted below
- was bisected to a1b87d54f4e45f ("x86/efistub: Avoid legacy decompressor
-when doing EFI boot") [v6.6-rc1] from Ard which committed by Boris.
-There are two users that seem to be affected by this. Both seem to run
-Arch. For details see:
-https://bugzilla.kernel.org/show_bug.cgi?id=218173
-
-Bagas, FWIW, I know you want to help, but your previous mail is not
-helpful at all -- on the contrary, as it is yet another one that is
-likely hurting my regression tracking efforts[1]. Please stop and just
-tell me about things like this in a private mail, as we agreed on earlier.
-
-Ciao, Thorsten
-
-[1] This is why: You just added Ard and Boris to the CC, but did not
-make it obvious *why* they should care about that mail. They (and all
-the other recipients) for sure will have no idea what a1b87d54f4e45f
-exactly is, so you should have mentioned the commit summary. And doing
-that after a big quote makes it worse, as many people now need to scroll
-down to see if that mails contains something that might be relevant for
-them -- and just a waste of time if not.
-
-Furthermore, sending the first mail of the thread to all those people
-and lists was likely not very wise, as nobody is likely to care in a
-case like this. And not removing all those people and lists in the
-second mail of the thread make it a lot worse, as it became clear that
-many people and list do not care about it now that the regression was
-bisected. Hence it's best to remove them, we all get enough mail already.
-
-All that makes people ignore mails from you -- and maybe about
-regression tracking in general. :-(
-
-On 10.12.23 07:40, Bagas Sanjaya wrote:
-> On Wed, Nov 22, 2023 at 07:06:50AM +0700, Bagas Sanjaya wrote:
->> Hi,
->>
->> I notice a regression report on Bugzilla [1]. Quoting from it:
->>
->>> After upgrading from 6.5.9 to 6.6.1 on my Dell Latitude E6420 (Intel i5-2520M) with EndeavourOS, the boot process would hang at "loading initial ramdisk". The issue is present on the 6.6.1 release of both Linux and Linux-zen, but not the 6.5.9 release, which makes me think this is somehow upstream in the kernel, rather than to do with packaging. My current workaround is using the Linux LTS kernel.
->>>
->>> I have been unable to consistently reproduce this bug. Between 50 and 30 percent of the time, the "loading initial ramdisk" will display, the disk activity indicator will turn off briefly and then resume blinking, and then the kernel boots as expected. The other 50 to 70 percent of the time, the boot stops at "loading initial ramdisk" and the disk activity indicator turns off, and does not resume blinking. The disk activity light is constantly flashing during normal system operation, so I know it's not secretly booting but not updating the display. I haven't been able to replicate this issue in QEMU. I have seen similar bugs that have been solved by disabling IOMMU, but this has not had any effect. Neither has disabling graphics drivers and modesetting. I have been able to reproduce it while using Nouveau, so I don't believe it has to do with Nvidia's proprietary drivers.
->>>
->>> Examining dmesg and journalctl, there doesn't appear to be ANY logs from the failed boots. I don't believe the kernel even is started on these failed boots. Enabling GRUB debug messages (linux,loader,init,fs,device,disk,partition) shows that the hang occurs after GRUB attempts to start the loaded image- it's able to load the image into memory, but the boot stalls after "Starting image" with a hex address (presumably the start addr of the kernel).  
->>>
->>> I've been trying to compile the kernel myself to see if I can solve the issue, or at least aid in reproduceability, but this is not easy or fast to do on a 2012 i5 processor. I'll update if I can successfully recompile the kernel and if it yields any information.  
->>>
->>> Please let me know if I should provide any additional information. This is my first time filing a bug here.
->>
->> See Bugzilla for the full thread and attached grub output.
->>
->> Anyway, I'm adding this regression to regzbot:
->>
->> #regzbot introduced: v6.5..v6.6 https://bugzilla.kernel.org/show_bug.cgi?id=218173
->> #regzbot title: initramfs loading hang on nouveau system (Dell Latitude E6420)
->>
+On 12/10/23 14:15, Linux regression tracking (Thorsten Leemhuis) wrote:
+> [Moved a lot of people CCed in the previous mail to BCC, as I'm pretty
+> sure they do not care about this regression; at the same time add the
+> x86 maintainers and the efi list.]
 > 
-> Another reporter on Bugzilla had bisected the regression, so:
+> [Top posting for once to make this easier accessible for everyone.]
 > 
-> #regzbot introduced: a1b87d54f4e45f
+> Ard, Boris, just to make it obvious: the regression report quoted below
+>  was bisected to a1b87d54f4e45f ("x86/efistub: Avoid legacy decompressor
+> when doing EFI boot") [v6.6-rc1] from Ard which committed by Boris.
+> There are two users that seem to be affected by this. Both seem to run
+> Arch. For details see:
+> https://bugzilla.kernel.org/show_bug.cgi?id=218173
 > 
-> Thanks.
+> Bagas, FWIW, I know you want to help, but your previous mail is not
+> helpful at all -- on the contrary, as it is yet another one that is
+> likely hurting my regression tracking efforts[1]. Please stop and just
+> tell me about things like this in a private mail, as we agreed on earlier.
 > 
+> Ciao, Thorsten
+> 
+> [1] This is why: You just added Ard and Boris to the CC, but did not
+> make it obvious *why* they should care about that mail. They (and all
+> the other recipients) for sure will have no idea what a1b87d54f4e45f
+> exactly is, so you should have mentioned the commit summary. And doing
+> that after a big quote makes it worse, as many people now need to scroll
+> down to see if that mails contains something that might be relevant for
+> them -- and just a waste of time if not.
+> 
+> Furthermore, sending the first mail of the thread to all those people
+> and lists was likely not very wise, as nobody is likely to care in a
+> case like this. And not removing all those people and lists in the
+> second mail of the thread make it a lot worse, as it became clear that
+> many people and list do not care about it now that the regression was
+> bisected. Hence it's best to remove them, we all get enough mail already.
+> 
+> All that makes people ignore mails from you -- and maybe about
+> regression tracking in general. :-(
+> 
+
+Oops, I didn't greet additional Cc's as you mentioned (that's my
+tendency when handling regressions).
+
+So maybe we continue tracking this on Bugzilla or keeping on ML or
+both?
+
+Thanks.
+
+-- 
+An old man doll... just what I always wanted! - Clara
+
 
