@@ -1,45 +1,54 @@
-Return-Path: <linux-efi+bounces-188-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-189-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23DE80E4A9
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Dec 2023 08:11:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC7780E4AD
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Dec 2023 08:13:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E1251C22146
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Dec 2023 07:11:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8E161F22530
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Dec 2023 07:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06C91642B;
-	Tue, 12 Dec 2023 07:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024091642B;
+	Tue, 12 Dec 2023 07:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k5Od11fz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rU8XMmSr"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42F715AFC
-	for <linux-efi@vger.kernel.org>; Tue, 12 Dec 2023 07:11:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A353C433C9;
-	Tue, 12 Dec 2023 07:11:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702365111;
-	bh=mAmUSentyWLmxS3uIGWIk1/WaLIBgAtASobEkLuZlvM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=k5Od11fzDY5KMknbUEDyOS5n59hXgpWpDno++QZ6xjmcPaPcEsafwrSrEjApDSC4h
-	 t7ixBPBEmBsPs+nQs1l2SU/llp3dhp/jgsu4RhCeYvhVGxP+XbsbiOEYNspmF8kjZL
-	 aBu0Sw3RE2NiVj8ZIWsaTqsDW0njBI24wNHouv7LxNv8gjChTb+uNuiIzBLJ9yaN1p
-	 Ipkg52K2CDW1XVuUKil0GjZmPnqUm5rHHr8G9mBNBuHpob2r0Zzh6I4yhVFs7ZOZ3C
-	 mzOpta/DA47V14vrwI6EuFnhfcZ8uSUcA7O3KqGUxvgVk4Y1jU2xmK7F+p3Bi2FBVO
-	 heNSrKqzhwU0Q==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2c9bd3ec4f6so66679581fa.2;
-        Mon, 11 Dec 2023 23:11:51 -0800 (PST)
-X-Gm-Message-State: AOJu0Ywyo9yPrKG9CxJK9vgL4SYITliZEJDsvNu7Iy1rffH0wf9Odfgx
-	ywIV6BdS4KbAoStJR2FB9qXrbse5MSctI0izoyA=
-X-Google-Smtp-Source: AGHT+IFOwmyXSlMHNCihbFQURemSWuU5fLaZxVeC+4D0v54JRt+64Efmqtk8z5oD2pOuRTub/XTcFcsK5ie5zv0RSJI=
-X-Received: by 2002:a2e:9856:0:b0:2ca:16d0:9e9a with SMTP id
- e22-20020a2e9856000000b002ca16d09e9amr1456456ljj.92.1702365109470; Mon, 11
- Dec 2023 23:11:49 -0800 (PST)
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB1AE3
+	for <linux-efi@vger.kernel.org>; Mon, 11 Dec 2023 23:13:39 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-50bfa5a6cffso6075050e87.0
+        for <linux-efi@vger.kernel.org>; Mon, 11 Dec 2023 23:13:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702365218; x=1702970018; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2HvarWiRiZp9CS6HJcLHItesInJpFtP0opjbE7J4kz8=;
+        b=rU8XMmSrZl5D+k5uNNCvzCQro6E+ilUc8MMstLQNUobiD5b/oMjd71o0wdWX9HiYx2
+         CkDLddEm/rIctpn6zXyUmEDnlJY9ATEL4mY7ZUjeUp+0EYdzlS6yv7ilcHB2mBf48uJ+
+         fN/yuzOIMxTlF6khdtNjOatPbeTfouLiXZT+1QW58NEHD7Mv8Cio6Aqm3zKJ273IXyjG
+         d2BtPB4DOVCD/koIOpjTFTiIj9HGVeooXi89/E1R/7y4SB50H+QcUetP7jDKD+GpUN4G
+         OaDr0uYARmc/ZZkYPa8l6GCGUuw5f0B/mbmQwR/f0NYJG6H+md85js5IGgZCPEBMPIYJ
+         o0wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702365218; x=1702970018;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2HvarWiRiZp9CS6HJcLHItesInJpFtP0opjbE7J4kz8=;
+        b=QiRIQ2RyrK8nSyTrg67385zBl9tbEDek8K3EcWt9Z2tA1pHRizVN/2qAM/7v2afWfi
+         TOHFdRqZmYUJ6c2w/IDwH2bHFjMstAchdpgS4gmsr4z6IYv7TnIUVrrPoTEvN7qrXOWX
+         ewgbnzEhLx0ISl5xmpc+26yiCfOPeG43TDQXBhUKr6u25i7TVsCWsyuJVQOX6T20DxmQ
+         wQC2yVn/SmbQOpVSXCl5IRZN6CcrpRXTGBDi68JPR44PinkCITZXXYwQcHt+rd1rlhAZ
+         5ChgDdeAHuYWoD36oN0yochQfr4UR5FeQ1vbNGhb+ksf/52MOclUbxdv9iyoBIUWJCCE
+         Xb+w==
+X-Gm-Message-State: AOJu0Yxr/Z/M3Mgt0sHylIVBccWxuGsAFIkVQiK+CdLfKRAX/0uu+KPK
+	2TMao1jQz2YAr8hBTVZyLqckSwAAQdTOA+EPbdinoQ==
+X-Google-Smtp-Source: AGHT+IFDk55SgY+IlCJn0QNiEn+nXWbyKK7Qxz1/FKHRKczqpugePZ/D1Jdj8q9TgPPxOatu0kP4nx8+E3GHLx5rx50=
+X-Received: by 2002:ac2:4201:0:b0:50b:e6e0:cadc with SMTP id
+ y1-20020ac24201000000b0050be6e0cadcmr2168637lfh.121.1702365217651; Mon, 11
+ Dec 2023 23:13:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -50,22 +59,22 @@ References: <20231013074540.8980-1-masahisa.kojima@linaro.org>
  <20231013074540.8980-5-masahisa.kojima@linaro.org> <CAMj1kXEFPwqd=Ksc_HuoNSwRUyCNka4E7cWZgkgMq7XHcu2VFA@mail.gmail.com>
  <CADQ0-X8DJk02oKabzQcMwqKFjr6A6LDWaQDCndKybC6D=9M7vg@mail.gmail.com>
 In-Reply-To: <CADQ0-X8DJk02oKabzQcMwqKFjr6A6LDWaQDCndKybC6D=9M7vg@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 12 Dec 2023 08:11:38 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEB6XajecjXe3oX2nagO8foajdwZ99SiC_dD8WBjr+93w@mail.gmail.com>
-Message-ID: <CAMj1kXEB6XajecjXe3oX2nagO8foajdwZ99SiC_dD8WBjr+93w@mail.gmail.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Tue, 12 Dec 2023 09:13:01 +0200
+Message-ID: <CAC_iWjJOJ-x7CUJvN4tYx2UF=yY4gp3QPjt+7uP79tO+2AZ0-w@mail.gmail.com>
 Subject: Re: [PATCH v9 4/6] efivarfs: automatically update super block flag
 To: Masahisa Kojima <masahisa.kojima@linaro.org>
-Cc: Jens Wiklander <jens.wiklander@linaro.org>, Jan Kiszka <jan.kiszka@siemens.com>, 
-	Sumit Garg <sumit.garg@linaro.org>, linux-kernel@vger.kernel.org, 
-	op-tee@lists.trustedfirmware.org, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Johan Hovold <johan+linaro@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, 
+Cc: Ard Biesheuvel <ardb@kernel.org>, Jens Wiklander <jens.wiklander@linaro.org>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Sumit Garg <sumit.garg@linaro.org>, 
+	linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org, 
+	Johan Hovold <johan+linaro@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
 	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 12 Dec 2023 at 06:39, Masahisa Kojima
+Hi Ard,
+
+On Tue, 12 Dec 2023 at 07:39, Masahisa Kojima
 <masahisa.kojima@linaro.org> wrote:
 >
 > Hi Ard,
@@ -101,7 +110,167 @@ On Tue, 12 Dec 2023 at 06:39, Masahisa Kojima
 > The modification should be OK, also I have tested it works as expected.
 >
 > Thank you very much for fixing this.
->
 
-Thank you Masahisa.
+Same results here (as we discussed yesterday on IRC). Code looks sane
+and the automatic remounting correctly sets the mountpoint as RW
+
+Thanks!
+/Ilias
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/fs/efivarfs?id=94f7f6182c72ba642c1f20111681f9cc8621c95f
+>
+> Thanks,
+> Masahisa Kojima
+>
+> >
+> >
+> > > ---
+> > >  drivers/firmware/efi/efi.c  |  6 ++++++
+> > >  drivers/firmware/efi/vars.c |  8 ++++++++
+> > >  fs/efivarfs/super.c         | 33 +++++++++++++++++++++++++++++++++
+> > >  include/linux/efi.h         |  8 ++++++++
+> > >  4 files changed, 55 insertions(+)
+> > >
+> > > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> > > index 53ae25bbb6ac..d2eec5ed8e5e 100644
+> > > --- a/drivers/firmware/efi/efi.c
+> > > +++ b/drivers/firmware/efi/efi.c
+> > > @@ -32,6 +32,7 @@
+> > >  #include <linux/ucs2_string.h>
+> > >  #include <linux/memblock.h>
+> > >  #include <linux/security.h>
+> > > +#include <linux/notifier.h>
+> > >
+> > >  #include <asm/early_ioremap.h>
+> > >
+> > > @@ -187,6 +188,9 @@ static const struct attribute_group efi_subsys_attr_group = {
+> > >         .is_visible = efi_attr_is_visible,
+> > >  };
+> > >
+> > > +struct blocking_notifier_head efivar_ops_nh;
+> > > +EXPORT_SYMBOL_GPL(efivar_ops_nh);
+> > > +
+> > >  static struct efivars generic_efivars;
+> > >  static struct efivar_operations generic_ops;
+> > >
+> > > @@ -427,6 +431,8 @@ static int __init efisubsys_init(void)
+> > >                 platform_device_register_simple("efivars", 0, NULL, 0);
+> > >         }
+> > >
+> > > +       BLOCKING_INIT_NOTIFIER_HEAD(&efivar_ops_nh);
+> > > +
+> > >         error = sysfs_create_group(efi_kobj, &efi_subsys_attr_group);
+> > >         if (error) {
+> > >                 pr_err("efi: Sysfs attribute export failed with error %d.\n",
+> > > diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+> > > index e9dc7116daf1..f654e6f6af87 100644
+> > > --- a/drivers/firmware/efi/vars.c
+> > > +++ b/drivers/firmware/efi/vars.c
+> > > @@ -63,6 +63,7 @@ int efivars_register(struct efivars *efivars,
+> > >                      const struct efivar_operations *ops)
+> > >  {
+> > >         int rv;
+> > > +       int event;
+> > >
+> > >         if (down_interruptible(&efivars_lock))
+> > >                 return -EINTR;
+> > > @@ -77,6 +78,13 @@ int efivars_register(struct efivars *efivars,
+> > >
+> > >         __efivars = efivars;
+> > >
+> > > +       if (efivar_supports_writes())
+> > > +               event = EFIVAR_OPS_RDWR;
+> > > +       else
+> > > +               event = EFIVAR_OPS_RDONLY;
+> > > +
+> > > +       blocking_notifier_call_chain(&efivar_ops_nh, event, NULL);
+> > > +
+> > >         pr_info("Registered efivars operations\n");
+> > >         rv = 0;
+> > >  out:
+> > > diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> > > index e028fafa04f3..0f6e4d223aea 100644
+> > > --- a/fs/efivarfs/super.c
+> > > +++ b/fs/efivarfs/super.c
+> > > @@ -14,11 +14,36 @@
+> > >  #include <linux/slab.h>
+> > >  #include <linux/magic.h>
+> > >  #include <linux/statfs.h>
+> > > +#include <linux/notifier.h>
+> > >
+> > >  #include "internal.h"
+> > >
+> > >  LIST_HEAD(efivarfs_list);
+> > >
+> > > +struct efivarfs_info {
+> > > +       struct super_block *sb;
+> > > +       struct notifier_block nb;
+> > > +};
+> > > +
+> > > +static struct efivarfs_info info;
+> > > +
+> > > +static int efivarfs_ops_notifier(struct notifier_block *nb, unsigned long event,
+> > > +                                void *data)
+> > > +{
+> > > +       switch (event) {
+> > > +       case EFIVAR_OPS_RDONLY:
+> > > +               info.sb->s_flags |= SB_RDONLY;
+> > > +               break;
+> > > +       case EFIVAR_OPS_RDWR:
+> > > +               info.sb->s_flags &= ~SB_RDONLY;
+> > > +               break;
+> > > +       default:
+> > > +               return NOTIFY_DONE;
+> > > +       }
+> > > +
+> > > +       return NOTIFY_OK;
+> > > +}
+> > > +
+> > >  static void efivarfs_evict_inode(struct inode *inode)
+> > >  {
+> > >         clear_inode(inode);
+> > > @@ -255,6 +280,12 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+> > >         if (!root)
+> > >                 return -ENOMEM;
+> > >
+> > > +       info.sb = sb;
+> > > +       info.nb.notifier_call = efivarfs_ops_notifier;
+> > > +       err = blocking_notifier_chain_register(&efivar_ops_nh, &info.nb);
+> > > +       if (err)
+> > > +               return err;
+> > > +
+> > >         INIT_LIST_HEAD(&efivarfs_list);
+> > >
+> > >         err = efivar_init(efivarfs_callback, (void *)sb, true, &efivarfs_list);
+> > > @@ -281,6 +312,8 @@ static int efivarfs_init_fs_context(struct fs_context *fc)
+> > >
+> > >  static void efivarfs_kill_sb(struct super_block *sb)
+> > >  {
+> > > +       blocking_notifier_chain_unregister(&efivar_ops_nh, &info.nb);
+> > > +       info.sb = NULL;
+> > >         kill_litter_super(sb);
+> > >
+> > >         if (!efivar_is_available())
+> > > diff --git a/include/linux/efi.h b/include/linux/efi.h
+> > > index 4776a3dd9a72..489707b9b0b0 100644
+> > > --- a/include/linux/efi.h
+> > > +++ b/include/linux/efi.h
+> > > @@ -1355,6 +1355,14 @@ bool efi_config_table_is_usable(const efi_guid_t *guid, unsigned long table)
+> > >
+> > >  umode_t efi_attr_is_visible(struct kobject *kobj, struct attribute *attr, int n);
+> > >
+> > > +/*
+> > > + * efivar ops event type
+> > > + */
+> > > +#define EFIVAR_OPS_RDONLY 0
+> > > +#define EFIVAR_OPS_RDWR 1
+> > > +
+> > > +extern struct blocking_notifier_head efivar_ops_nh;
+> > > +
+> > >  void efivars_generic_ops_register(void);
+> > >  void efivars_generic_ops_unregister(void);
+> > >
+> > > --
+> > > 2.30.2
+> > >
 
