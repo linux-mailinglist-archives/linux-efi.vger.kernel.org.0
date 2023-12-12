@@ -1,305 +1,267 @@
-Return-Path: <linux-efi+bounces-190-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-191-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D2880E83C
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Dec 2023 10:53:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AF180E84C
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Dec 2023 10:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 941B41F212F1
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Dec 2023 09:53:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5448C1C20A15
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Dec 2023 09:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E71359143;
-	Tue, 12 Dec 2023 09:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64CC5914A;
+	Tue, 12 Dec 2023 09:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxHmQ+4y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GaIWa+5H"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D77658ADA;
-	Tue, 12 Dec 2023 09:53:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBBFC433CB;
-	Tue, 12 Dec 2023 09:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F9258AD3;
+	Tue, 12 Dec 2023 09:55:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21D0C433C9;
+	Tue, 12 Dec 2023 09:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702374782;
-	bh=x5x2Vt28BNZ87A+YkQlGNkExkl+Op7LxWbonnGSkuOw=;
+	s=k20201202; t=1702374946;
+	bh=BQ3BLgzy5Ip8VA406gPgErfyBqjO7GKw1h33a58SXak=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mxHmQ+4y+8NlyN53vheUW3IUNyqKgtqsUPFN8tyNlZadW9rRHkUULTte7thnSgDOG
-	 tyUvI9un9MjfFQr6SEwXNdMvzRQXrj1PuyEaBZcz1kB+EsnerTaSsX095Zj2nib096
-	 jd5Jyp/5EK+RXWSS90eBP45XW+J7u4iLCUIDkcRERD7H4IdrUiKbgH2iIyfxhMiu6U
-	 y1UV45PRyyiTHBVtVdVoksnRo2De8NRo1fnoIFEYsBuCnlR/9fJDiHgW/ZQ+16wwNE
-	 cnpa599TB8SDYPaTJcgFzCRmibniGQjFP12JGCDkLEMy+TyuERAjmRW6GEuYr0fT7R
-	 gKbpFtWIYlmgg==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2ca1e6a94a4so70571881fa.0;
-        Tue, 12 Dec 2023 01:53:02 -0800 (PST)
-X-Gm-Message-State: AOJu0Yzhids1hesGyOcEPsmMuXejaNVwE5BpRAHNWSX3Ks4mwthPGARH
-	YSoSXnJ4yUa2LV22oLesB/XI7YHJB8BvzPHEVm8=
-X-Google-Smtp-Source: AGHT+IFrQVmnOb7fDDBe24yV44ELYK4VOrlITkWMjSN/4x/YbEISe3Vo9O63r3t2vwCf1enEHPoe68o5AZgC/4ddJxc=
-X-Received: by 2002:a2e:a22b:0:b0:2cc:207f:4783 with SMTP id
- i11-20020a2ea22b000000b002cc207f4783mr1292561ljm.18.1702374780611; Tue, 12
- Dec 2023 01:53:00 -0800 (PST)
+	b=GaIWa+5HO/3tpLiJqVwkGHTCi5qex7zNQtWyU4PNsBQHsBUXpZiC58dM58/LuVX9M
+	 3KYhJvHlIErYbprY2t/ZIQdSN24vOxlX96Gu3j5Vsob+RNTV7HvBd/GqXzWBO1rbHS
+	 +fptPBUY/B659L07EdnvJZlKKaWEPZKzyflncHVy9B0yV3Mga6SkgQCm6mkbPCKuTj
+	 yHvq/q+Z6JJ5SUPZ7eWqris9Lr2tgx05rXVcX1JI+U71pywzW5La2G3JbS3Mh4BaP6
+	 CAfNzwoKJnlNgxSPhhLU4BIAhIsvivVpvYv7gfpL33fkNXxFl+0ggMkNW944Q7639c
+	 1ukJgDrhcSQOw==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2c9f7fe6623so68549541fa.3;
+        Tue, 12 Dec 2023 01:55:45 -0800 (PST)
+X-Gm-Message-State: AOJu0YyVmvG/JvkMoiAs2cLVq6+oLnmG/LqcL8JcIMZpzSy+GPYZiFuA
+	MSWYzvqpuOK6DCVOoEdM7c6KqVdizVKRI1PXmGs=
+X-Google-Smtp-Source: AGHT+IF6xU8aIgiKF9gxcOAyuJr/WgEi/ofYZrwF8M6mAYkjtZwvKk19QO6Cotxux4vrHGvx9k66hgiW+JaSJMbjxMc=
+X-Received: by 2002:a2e:a99a:0:b0:2cb:30c8:2c09 with SMTP id
+ x26-20020a2ea99a000000b002cb30c82c09mr1515293ljq.54.1702374944140; Tue, 12
+ Dec 2023 01:55:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231211-cxl-cper-v2-0-c116900ba658@intel.com> <20231211-cxl-cper-v2-6-c116900ba658@intel.com>
-In-Reply-To: <20231211-cxl-cper-v2-6-c116900ba658@intel.com>
+References: <20231110013817.2378507-1-danielwa@cisco.com> <20231110013817.2378507-6-danielwa@cisco.com>
+In-Reply-To: <20231110013817.2378507-6-danielwa@cisco.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 12 Dec 2023 10:52:49 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGogr2hc9Ofv1WTSvh3uTjuY8rHFbcVpigfd6D19qdbvw@mail.gmail.com>
-Message-ID: <CAMj1kXGogr2hc9Ofv1WTSvh3uTjuY8rHFbcVpigfd6D19qdbvw@mail.gmail.com>
-Subject: Re: [PATCH v2 6/7] firmware/efi: Process CXL Component Events
-To: Ira Weiny <ira.weiny@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>, 
-	Yazen Ghannam <yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+Date: Tue, 12 Dec 2023 10:55:33 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFK-4mbNd_4La7Jhr_+ygBVyHdJm72vh7S41TGf2FYDdQ@mail.gmail.com>
+Message-ID: <CAMj1kXFK-4mbNd_4La7Jhr_+ygBVyHdJm72vh7S41TGf2FYDdQ@mail.gmail.com>
+Subject: Re: [PATCH 5/8] drivers: firmware: efi: libstub: enable generic commandline
+To: Daniel Walker <danielwa@cisco.com>
+Cc: Will Deacon <will@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Rob Herring <robh@kernel.org>, 
+	Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pratyush Brahma <quic_pbrahma@quicinc.com>, 
+	Tomas Mudrunka <tomas.mudrunka@gmail.com>, Sean Anderson <sean.anderson@seco.com>, x86@kernel.org, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	xe-linux-external@cisco.com, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 11 Dec 2023 at 23:57, Ira Weiny <ira.weiny@intel.com> wrote:
+On Fri, 10 Nov 2023 at 02:39, Daniel Walker <danielwa@cisco.com> wrote:
 >
-> BIOS can configure memory devices as firmware first.  This will send CXL
-> events to the firmware instead of the OS.  The firmware can then send
-> these events to the OS via UEFI.
+> This adds code to handle the generic command line changes.
+> The efi code appears that it doesn't benefit as much from this design
+> as it could.
 >
-> UEFI v2.10 section N.2.14 defines a Common Platform Error Record (CPER)
-> format for CXL Component Events.  The format is mostly the same as the
-> CXL Common Event Record Format.  The difference is a GUID is used in
-> the Section Type to identify the event type.
+> For example, if you had a prepend command line with "nokaslr" then
+> you might be helpful to re-enable it in the boot loader or dts,
+> but there appears to be no way to re-enable kaslr or some of the
+> other options.
 >
-> Add EFI support to detect CXL CPER records and call a notifier chain
-> with the record data blobs to be processed by the CXL code.
+> The efi command line handling is incorrect. x86 and arm have an append
+> system however the efi code prepends the command line.
 >
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> For example, you could have a non-upgradable bios which sends
+>
+> efi=disable_early_pci_dma
+>
+> This hypothetically could have been set because early pci dma caused
+> issues on early versions of the product.
+>
+> Then later the early pci dma was made to work and the company desired
+> to start using it. To override the bios you could set the CONFIG_CMDLINE
+> to,
+>
+> efi=no_disable_early_pci_dma
+>
+> then parsing would normally start with the bios command line, then move
+> to the CONFIG_CMDLINE and you would end up with early pci dma turned on.
+>
+> however, current efi code keeps early pci dma off because the bios
+> arguments always override the built in.
+>
+> Per my reading this is different from the main body of x86, arm, and
+> arm64.
+>
+> The generic command line provides both append and prepend, so it
+> alleviates this issue if it's used. However not all architectures use
+> it.
+>
+> It would be desirable to allow the efi stub to have it's builtin command
+> line to be modified after compile, but I don't see a feasible way to do
+> that currently.
+>
+> Cc: xe-linux-external@cisco.com
+> Signed-off-by: Daniel Walker <danielwa@cisco.com>
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+There are quite some 'might be's and 'hypothetical's in this commit log.
 
->
+Is there an actual use case that you are addressing here? Without
+that, this looks like unnecessary churn to me, tbh.
+
+Note that this code executes in the context of platform firmware,
+which may be old and buggy so we should be cautious about making
+unnecessary changes here.
+
+
 > ---
-> Changes from v1:
-> [djbw: convert to single notifier callback]
-> [djbw: append _GUID to guid defines]
-> [iweiny: clean up function names]
-> ---
->  drivers/firmware/efi/cper.c     | 15 ++++++++++++
->  drivers/firmware/efi/cper_cxl.c | 45 ++++++++++++++++++++++++++++++++++++
->  drivers/firmware/efi/cper_cxl.h | 29 +++++++++++++++++++++++
->  include/linux/cxl-event.h       | 51 +++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 140 insertions(+)
+>  .../firmware/efi/libstub/efi-stub-helper.c    | 29 +++++++++++++++++++
+>  drivers/firmware/efi/libstub/efi-stub.c       |  9 ++++++
+>  drivers/firmware/efi/libstub/efistub.h        |  1 +
+>  drivers/firmware/efi/libstub/x86-stub.c       | 14 +++++++--
+>  4 files changed, 51 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> index 35c37f667781..39c65733ae9b 100644
-> --- a/drivers/firmware/efi/cper.c
-> +++ b/drivers/firmware/efi/cper.c
-> @@ -22,6 +22,7 @@
->  #include <linux/aer.h>
->  #include <linux/printk.h>
->  #include <linux/bcd.h>
-> +#include <linux/cxl-event.h>
->  #include <acpi/ghes.h>
->  #include <ras/ras_event.h>
->  #include "cper_cxl.h"
-> @@ -607,6 +608,20 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
->                         cper_print_prot_err(newpfx, prot_err);
->                 else
->                         goto err_section_too_small;
-> +       } else if (guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA_GUID) ||
-> +                  guid_equal(sec_type, &CPER_SEC_CXL_DRAM_GUID) ||
-> +                  guid_equal(sec_type, &CPER_SEC_CXL_MEM_MODULE_GUID)) {
-> +               struct cper_cxl_event_rec *rec = acpi_hest_get_payload(gdata);
-> +
-> +               if (rec->hdr.length <= sizeof(rec->hdr))
-> +                       goto err_section_too_small;
-> +
-> +               if (rec->hdr.length > sizeof(*rec)) {
-> +                       pr_err(FW_WARN "error section length is too big\n");
-> +                       return;
-> +               }
-> +
-> +               cxl_cper_post_event(newpfx, sec_type, rec);
->         } else {
->                 const void *err = acpi_hest_get_payload(gdata);
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index bfa30625f5d0..952fa2cdff51 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -11,6 +11,7 @@
 >
-> diff --git a/drivers/firmware/efi/cper_cxl.c b/drivers/firmware/efi/cper_cxl.c
-> index a55771b99a97..669983f7956f 100644
-> --- a/drivers/firmware/efi/cper_cxl.c
-> +++ b/drivers/firmware/efi/cper_cxl.c
-> @@ -8,6 +8,7 @@
->   */
+>  #include <linux/efi.h>
+>  #include <linux/kernel.h>
+> +#include <linux/cmdline.h>
+>  #include <asm/efi.h>
+>  #include <asm/setup.h>
 >
->  #include <linux/cper.h>
-> +#include <linux/cxl-event.h>
->  #include "cper_cxl.h"
->
->  #define PROT_ERR_VALID_AGENT_TYPE              BIT_ULL(0)
-> @@ -187,3 +188,47 @@ void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_e
->                                sizeof(cxl_ras->header_log), 0);
->         }
+> @@ -29,6 +30,34 @@ bool __pure __efi_soft_reserve_enabled(void)
+>         return !efi_nosoftreserve;
 >  }
-> +
-> +DECLARE_RWSEM(cxl_cper_rw_sem);
-> +static cxl_cper_notifier cper_notifier;
-> +
-> +void cxl_cper_post_event(const char *pfx, guid_t *sec_type,
-> +                        struct cper_cxl_event_rec *rec)
+>
+> +/**
+> + * efi_handle_cmdline() - handle adding in built-in parts of the command line
+> + * @cmdline:   kernel command line
+> + *
+> + * Add in the generic parts of the commandline and start the parsing of the
+> + * command line.
+> + *
+> + * Return:     status code
+> + */
+> +efi_status_t efi_handle_builtin_cmdline(char const *cmdline)
 > +{
-> +       struct cxl_cper_event_data data = {
-> +               .rec = rec,
-> +       };
+> +       efi_status_t status = EFI_SUCCESS;
 > +
-> +       if (!(rec->hdr.validation_bits & CPER_CXL_COMP_EVENT_LOG_VALID)) {
-> +               pr_err(FW_WARN "cxl event no Component Event Log present\n");
-> +               return;
+> +       if (sizeof(CMDLINE_STATIC_PREPEND) > 1)
+> +               status |= efi_parse_options(CMDLINE_STATIC_PREPEND);
+> +
+> +       if (!IS_ENABLED(CONFIG_CMDLINE_OVERRIDE))
+> +               status |= efi_parse_options(cmdline);
+> +
+> +       if (sizeof(CMDLINE_STATIC_APPEND) > 1)
+> +               status |= efi_parse_options(CMDLINE_STATIC_APPEND);
+> +
+> +       if (status != EFI_SUCCESS)
+> +               efi_err("Failed to parse options\n");
+> +
+> +       return status;
+> +}
+> +
+>  /**
+>   * efi_parse_options() - Parse EFI command line options
+>   * @cmdline:   kernel command line
+> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+> index f9c1e8a2bd1d..770abe95c0ee 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub.c
+> @@ -127,6 +127,14 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+>                 return EFI_OUT_OF_RESOURCES;
+>         }
+>
+> +#ifdef CONFIG_GENERIC_CMDLINE
+> +       status = efi_handle_builtin_cmdline(cmdline);
+> +       if (status != EFI_SUCCESS) {
+> +               goto fail_free_cmdline;
 > +       }
-> +
-> +       if (guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA_GUID))
-> +               data.event_type = CXL_CPER_EVENT_GEN_MEDIA;
-> +       else if (guid_equal(sec_type, &CPER_SEC_CXL_DRAM_GUID))
-> +               data.event_type = CXL_CPER_EVENT_DRAM;
-> +       else if (guid_equal(sec_type, &CPER_SEC_CXL_MEM_MODULE_GUID))
-> +               data.event_type = CXL_CPER_EVENT_MEM_MODULE;
-> +
-> +       down_read(&cxl_cper_rw_sem);
-> +       if (cper_notifier)
-> +               cper_notifier(&data);
-> +       up_read(&cxl_cper_rw_sem);
-> +}
-> +
-> +void cxl_cper_register_notifier(cxl_cper_notifier notifier)
-> +{
-> +       down_write(&cxl_cper_rw_sem);
-> +       cper_notifier = notifier;
-> +       up_write(&cxl_cper_rw_sem);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_cper_register_notifier, CXL);
-> +
-> +void cxl_cper_unregister_notifier(void)
-> +{
-> +       down_write(&cxl_cper_rw_sem);
-> +       cper_notifier = NULL;
-> +       up_write(&cxl_cper_rw_sem);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_cper_unregister_notifier, CXL);
-> diff --git a/drivers/firmware/efi/cper_cxl.h b/drivers/firmware/efi/cper_cxl.h
-> index 86bfcf7909ec..b1b1b0514f6b 100644
-> --- a/drivers/firmware/efi/cper_cxl.h
-> +++ b/drivers/firmware/efi/cper_cxl.h
-> @@ -10,11 +10,38 @@
->  #ifndef LINUX_CPER_CXL_H
->  #define LINUX_CPER_CXL_H
->
-> +#include <linux/cxl-event.h>
-> +
->  /* CXL Protocol Error Section */
->  #define CPER_SEC_CXL_PROT_ERR                                          \
->         GUID_INIT(0x80B9EFB4, 0x52B5, 0x4DE3, 0xA7, 0x77, 0x68, 0x78,   \
->                   0x4B, 0x77, 0x10, 0x48)
->
-> +/* CXL Event record UUIDs are formated at GUIDs and reported in section type */
-> +/*
-> + * General Media Event Record
-> + * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
-> + */
-> +#define CPER_SEC_CXL_GEN_MEDIA_GUID                                    \
-> +       GUID_INIT(0xfbcd0a77, 0xc260, 0x417f,                           \
-> +                 0x85, 0xa9, 0x08, 0x8b, 0x16, 0x21, 0xeb, 0xa6)
-> +
-> +/*
-> + * DRAM Event Record
-> + * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
-> + */
-> +#define CPER_SEC_CXL_DRAM_GUID                                         \
-> +       GUID_INIT(0x601dcbb3, 0x9c06, 0x4eab,                           \
-> +                 0xb8, 0xaf, 0x4e, 0x9b, 0xfb, 0x5c, 0x96, 0x24)
-> +
-> +/*
-> + * Memory Module Event Record
-> + * CXL rev 3.0 section 8.2.9.2.1.3; Table 8-45
-> + */
-> +#define CPER_SEC_CXL_MEM_MODULE_GUID                                   \
-> +       GUID_INIT(0xfe927475, 0xdd59, 0x4339,                           \
-> +                 0xa5, 0x86, 0x79, 0xba, 0xb1, 0x13, 0xb7, 0x74)
-> +
->  #pragma pack(1)
->
->  /* Compute Express Link Protocol Error Section, UEFI v2.10 sec N.2.13 */
-> @@ -62,5 +89,7 @@ struct cper_sec_prot_err {
->  #pragma pack()
->
->  void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err);
-> +void cxl_cper_post_event(const char *pfx, guid_t *sec_type,
-> +                        struct cper_cxl_event_rec *rec);
->
->  #endif //__CPER_CXL_
-> diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
-> index 18dab4d90dc8..c764ff877a6d 100644
-> --- a/include/linux/cxl-event.h
-> +++ b/include/linux/cxl-event.h
-> @@ -108,4 +108,55 @@ struct cxl_event_record_raw {
->         union cxl_event event;
->  } __packed;
->
-> +enum cxl_event_type {
-> +       CXL_CPER_EVENT_GEN_MEDIA,
-> +       CXL_CPER_EVENT_DRAM,
-> +       CXL_CPER_EVENT_MEM_MODULE,
-> +};
-> +
-> +#pragma pack(1)
-> +
-> +#define CPER_CXL_DEVICE_ID_VALID               BIT(0)
-> +#define CPER_CXL_DEVICE_SN_VALID               BIT(1)
-> +#define CPER_CXL_COMP_EVENT_LOG_VALID          BIT(2)
-> +struct cper_cxl_event_rec {
-> +       struct {
-> +               u32 length;
-> +               u64 validation_bits;
-> +               struct cper_cxl_event_devid {
-> +                       u16 vendor_id;
-> +                       u16 device_id;
-> +                       u8 func_num;
-> +                       u8 device_num;
-> +                       u8 bus_num;
-> +                       u16 segment_num;
-> +                       u16 slot_num; /* bits 2:0 reserved */
-> +                       u8 reserved;
-> +               } device_id;
-> +               struct cper_cxl_event_sn {
-> +                       u32 lower_dw;
-> +                       u32 upper_dw;
-> +               } dev_serial_num;
-> +       } hdr;
-> +
-> +       union cxl_event event;
-> +};
-> +
-> +struct cxl_cper_event_data {
-> +       enum cxl_event_type event_type;
-> +       struct cper_cxl_event_rec *rec;
-> +};
-> +
-> +#pragma pack()
-> +
-> +typedef void (*cxl_cper_notifier)(struct cxl_cper_event_data *ev_data);
-> +
-> +#ifdef CONFIG_UEFI_CPER
-> +void cxl_cper_register_notifier(cxl_cper_notifier notifier);
-> +void cxl_cper_unregister_notifier(void);
-> +#else
-> +static inline void cxl_cper_register_notifier(cxl_cper_notifier notifier) { }
-> +static inline void cxl_cper_unregister_notifier(void) { }
 > +#endif
 > +
->  #endif /* _LINUX_CXL_EVENT_H */
+> +#ifdef CONFIG_CMDLINE
+>         if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
+>             IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
+>             cmdline_size == 0) {
+> @@ -144,6 +152,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+>                         goto fail_free_cmdline;
+>                 }
+>         }
+> +#endif
 >
+>         *cmdline_ptr = cmdline;
+>         return EFI_SUCCESS;
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index 212687c30d79..1ac6631905c5 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -996,6 +996,7 @@ efi_status_t efi_relocate_kernel(unsigned long *image_addr,
+>                                  unsigned long alignment,
+>                                  unsigned long min_addr);
+>
+> +efi_status_t efi_handle_builtin_cmdline(char const *cmdline);
+>  efi_status_t efi_parse_options(char const *cmdline);
+>
+>  void efi_parse_option_graphics(char *option);
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index 9d5df683f882..273a8a9c8bbb 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -847,6 +847,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+>         struct setup_header *hdr = &boot_params->hdr;
+>         const struct linux_efi_initrd *initrd = NULL;
+>         unsigned long kernel_entry;
+> +       unsigned long cmdline_paddr = ((u64)hdr->cmd_line_ptr |
+> +                                      ((u64)boot_params->ext_cmd_line_ptr << 32));
+>         efi_status_t status;
+>
+>         boot_params_pointer = boot_params;
+> @@ -877,6 +879,14 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+>                 goto fail;
+>         }
+>
+> +#ifdef CONFIG_GENERIC_CMDLINE
+> +       status = efi_handle_builtin_cmdline((char *)cmdline_paddr);
+> +       if (status != EFI_SUCCESS) {
+> +               efi_err("Failed to parse options\n");
+> +               goto fail;
+> +       }
+> +#else /* CONFIG_GENERIC_CMDLINE */
+> +
+>  #ifdef CONFIG_CMDLINE_BOOL
+>         status = efi_parse_options(CONFIG_CMDLINE);
+>         if (status != EFI_SUCCESS) {
+> @@ -885,8 +895,6 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+>         }
+>  #endif
+>         if (!IS_ENABLED(CONFIG_CMDLINE_OVERRIDE)) {
+> -               unsigned long cmdline_paddr = ((u64)hdr->cmd_line_ptr |
+> -                                              ((u64)boot_params->ext_cmd_line_ptr << 32));
+>                 status = efi_parse_options((char *)cmdline_paddr);
+>                 if (status != EFI_SUCCESS) {
+>                         efi_err("Failed to parse options\n");
+> @@ -894,6 +902,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+>                 }
+>         }
+>
+> +#endif
+> +
+>         status = efi_decompress_kernel(&kernel_entry);
+>         if (status != EFI_SUCCESS) {
+>                 efi_err("Failed to decompress kernel\n");
 > --
-> 2.43.0
+> 2.39.2
+>
 >
 
