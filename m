@@ -1,256 +1,111 @@
-Return-Path: <linux-efi+bounces-198-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-199-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EA4810C37
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Dec 2023 09:17:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1654C811543
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Dec 2023 15:51:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C89EB20BB3
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Dec 2023 08:17:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B7928227A
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Dec 2023 14:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A72FBEC;
-	Wed, 13 Dec 2023 08:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736052EB05;
+	Wed, 13 Dec 2023 14:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a3xa+mXp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3BKDe+zE"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354269F
-	for <linux-efi@vger.kernel.org>; Wed, 13 Dec 2023 00:17:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702455453; x=1733991453;
-  h=date:from:to:cc:subject:message-id;
-  bh=lVuiVttjT8I71rf9I4RCW2uqD/F5qd6D3zwOiVNOXOs=;
-  b=a3xa+mXpyPqFUsviCHPYDjXNyjyTxZweW0mEGJQe/wQEKs2vTgYsmC+M
-   1193gEI1jbuTtKkbDoeucBzGpLKvPUGkXmhhRvXMS1tq/P0Lc8s8SRiqp
-   g1T+ebR3y8PlrOZMSU53KJzl7/z5vOg5NwcHFRXjoGUwjwrpiXGExlRmj
-   cLf2tNPT17qw+BnQmTZi4NV37Z4WAH2fSuzEXdb85CXSUs7HcAHe6/dRl
-   16Zm2awgILdLKouEVe6kFYh7TbzSa2cNyWUy5WMYKmZ++o/FB9SkyRLjQ
-   nsLdS/9zAgi+LcXL92HKguoaNakw+GOpElTeA80OrOSUpjw54VH3f2D4l
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="398771231"
-X-IronPort-AV: E=Sophos;i="6.04,272,1695711600"; 
-   d="scan'208";a="398771231"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 00:17:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="767124949"
-X-IronPort-AV: E=Sophos;i="6.04,272,1695711600"; 
-   d="scan'208";a="767124949"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 13 Dec 2023 00:17:11 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rDKQW-000KGV-28;
-	Wed, 13 Dec 2023 08:17:08 +0000
-Date: Wed, 13 Dec 2023 16:15:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 50d7cdf7a9b1ab6f4f74a69c84e974d5dc0c1bf1
-Message-ID: <202312131647.bDhpAjoG-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFCC1107
+	for <linux-efi@vger.kernel.org>; Wed, 13 Dec 2023 06:51:46 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5d340a9cf07so84274597b3.3
+        for <linux-efi@vger.kernel.org>; Wed, 13 Dec 2023 06:51:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1702479106; x=1703083906; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YuOVvQyWFF74ZGP/068HtHRQfRTCFgxGI2tyoRFPHLA=;
+        b=3BKDe+zEMghI05lrv1gtkzUBzOLP67UikV7M84pXLsSn6+eeAKSM+x/O5vgVoSg84E
+         y8FErX0sTD5NB6Lp9IU4onCA84diBUhpIlqnFKxcKevvxzqh2fYz06IdLMBaISgGFdNy
+         AQoN3S0l6U3AfLIZZkQbdSUa08iE+pS04xttz6LaEgrBZp8KcwLamt7/XI2tHIJHIpXh
+         vfVGQGaB8mHOnz+4VkxvPGw/XE4rK6B1mYsJL8ydZNF50FaOT3G5zSAXXIfkRn27GV/h
+         HnzH/NCG90Nbwq7OSeuc5XLjIPjsiwS73FKD1ibDFjL6LeFMsfjn/6BZqtXUZiE3jdnz
+         GgxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702479106; x=1703083906;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YuOVvQyWFF74ZGP/068HtHRQfRTCFgxGI2tyoRFPHLA=;
+        b=pa/UUeiHAIrKsPPn8q55ntuZvdhdl0X1ZNZz7SzA9IwLVO2teTkCNr3k0tK/eF+kks
+         pfsfO3Sld0MGMcSJisFq1VJyQClGI5Ua8C3oEd5yv5z/Sk0xCK4yA9OKiuBBz1p4sQfY
+         82rUcEvT2Hrh/gP421VQuZJxm4KCvP3CuPXhWIZaydojqfFEGP6lggcY772S44upcXQH
+         ZL5kXOO32BZpi+Qpc9Zlxrsj/ptAOUUaWoizIhK7NC7WZ3kWZawxOMrCmpwr4EImYxtG
+         7MgjAPxuAbalDVurDxTEGUoVvhx7wnNrxeA2rUnpn0K+3sBMyEhawaJlx5IyYHLxoGf6
+         k0tg==
+X-Gm-Message-State: AOJu0Ywk7uWIHE9BvtgT76kP6vGp5ebLvtdcNtLiZiNgEihv5RxOkRQn
+	hjboE74k9oCfqQfEg4byKI0QDIQ9
+X-Google-Smtp-Source: AGHT+IGKA4dUYH72tb5cSLBe/Zo2OtTFc2UI9Bo72ZaIiVgJLU7wFGeRe+us/R/7co6Ji1R60W2Hum3X
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:690c:d93:b0:5d4:3013:25d4 with SMTP id
+ da19-20020a05690c0d9300b005d4301325d4mr88291ywb.5.1702479105816; Wed, 13 Dec
+ 2023 06:51:45 -0800 (PST)
+Date: Wed, 13 Dec 2023 15:51:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1384; i=ardb@kernel.org;
+ h=from:subject; bh=8NwNGRo9WGP9wrnOVxRGwU1Mndbi3FhnpnBVg/2cV2g=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIbXyyCu2CRveilpsrr6061cd9xr9hC4jJY2Nq47seJTNu
+ EJr8mO9jlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCR85wM/wPZYq+tDjadl6Bb
+ f5VvredTU+el6noLshRn7vM+kth/NZ3hf3E2j/5u5Zc6D2cuul65wfeA9EpTId+THDlcdktUPmY UMgAA
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20231213145121.2935172-2-ardb@google.com>
+Subject: [GIT PULL] EFI fixes for v6.7 #2
+From: Ard Biesheuvel <ardb@google.com>
+To: torvalds@linux-foundation.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 50d7cdf7a9b1ab6f4f74a69c84e974d5dc0c1bf1  efi/x86: Avoid physical KASLR on older Dell systems
+From: Ard Biesheuvel <ardb@kernel.org>
 
-elapsed time: 1501m
+Hi Linus,
 
-configs tested: 178
-configs skipped: 2
+Please pull the EFI fixes below.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The following changes since commit 01b1e3ca0e5ce47bbae8217d47376ad01b331b07:
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     nsimosci_hs_defconfig   gcc  
-arc                   randconfig-001-20231212   gcc  
-arc                   randconfig-002-20231212   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                          gemini_defconfig   gcc  
-arm                       imx_v4_v5_defconfig   clang
-arm                   randconfig-001-20231212   gcc  
-arm                   randconfig-002-20231212   gcc  
-arm                   randconfig-003-20231212   gcc  
-arm                   randconfig-004-20231212   gcc  
-arm                           sama5_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20231212   gcc  
-arm64                 randconfig-002-20231212   gcc  
-arm64                 randconfig-003-20231212   gcc  
-arm64                 randconfig-004-20231212   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20231212   gcc  
-csky                  randconfig-002-20231212   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20231212   clang
-hexagon               randconfig-002-20231212   clang
-i386                             allmodconfig   clang
-i386                              allnoconfig   clang
-i386                             allyesconfig   clang
-i386         buildonly-randconfig-001-20231212   gcc  
-i386         buildonly-randconfig-002-20231212   gcc  
-i386         buildonly-randconfig-003-20231212   gcc  
-i386         buildonly-randconfig-004-20231212   gcc  
-i386         buildonly-randconfig-005-20231212   gcc  
-i386         buildonly-randconfig-006-20231212   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231212   gcc  
-i386                  randconfig-002-20231212   gcc  
-i386                  randconfig-003-20231212   gcc  
-i386                  randconfig-004-20231212   gcc  
-i386                  randconfig-005-20231212   gcc  
-i386                  randconfig-006-20231212   gcc  
-i386                  randconfig-011-20231212   clang
-i386                  randconfig-012-20231212   clang
-i386                  randconfig-013-20231212   clang
-i386                  randconfig-014-20231212   clang
-i386                  randconfig-015-20231212   clang
-i386                  randconfig-016-20231212   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231212   gcc  
-loongarch             randconfig-002-20231212   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        m5272c3_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   clang
-mips                             allyesconfig   gcc  
-mips                         bigsur_defconfig   gcc  
-mips                        maltaup_defconfig   clang
-mips                      pic32mzda_defconfig   clang
-nios2                         10m50_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20231212   gcc  
-nios2                 randconfig-002-20231212   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20231212   gcc  
-parisc                randconfig-002-20231212   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   clang
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                  mpc866_ads_defconfig   clang
-powerpc               randconfig-001-20231212   gcc  
-powerpc               randconfig-002-20231212   gcc  
-powerpc               randconfig-003-20231212   gcc  
-powerpc                     tqm8560_defconfig   gcc  
-powerpc64                        alldefconfig   gcc  
-powerpc64             randconfig-001-20231212   gcc  
-powerpc64             randconfig-002-20231212   gcc  
-powerpc64             randconfig-003-20231212   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   clang
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20231212   gcc  
-riscv                 randconfig-002-20231212   gcc  
-riscv                          rv32_defconfig   clang
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231212   clang
-s390                  randconfig-002-20231212   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20231212   gcc  
-sh                    randconfig-002-20231212   gcc  
-sh                      rts7751r2d1_defconfig   gcc  
-sh                   rts7751r2dplus_defconfig   gcc  
-sh                             shx3_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20231212   gcc  
-sparc64               randconfig-002-20231212   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20231212   gcc  
-um                    randconfig-002-20231212   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20231212   gcc  
-x86_64       buildonly-randconfig-002-20231212   gcc  
-x86_64       buildonly-randconfig-003-20231212   gcc  
-x86_64       buildonly-randconfig-004-20231212   gcc  
-x86_64       buildonly-randconfig-005-20231212   gcc  
-x86_64       buildonly-randconfig-006-20231212   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231212   clang
-x86_64                randconfig-002-20231212   clang
-x86_64                randconfig-003-20231212   clang
-x86_64                randconfig-004-20231212   clang
-x86_64                randconfig-005-20231212   clang
-x86_64                randconfig-006-20231212   clang
-x86_64                randconfig-011-20231212   gcc  
-x86_64                randconfig-012-20231212   gcc  
-x86_64                randconfig-013-20231212   gcc  
-x86_64                randconfig-014-20231212   gcc  
-x86_64                randconfig-015-20231212   gcc  
-x86_64                randconfig-016-20231212   gcc  
-x86_64                randconfig-071-20231212   gcc  
-x86_64                randconfig-072-20231212   gcc  
-x86_64                randconfig-073-20231212   gcc  
-x86_64                randconfig-074-20231212   gcc  
-x86_64                randconfig-075-20231212   gcc  
-x86_64                randconfig-076-20231212   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                  cadence_csp_defconfig   gcc  
-xtensa                randconfig-001-20231212   gcc  
-xtensa                randconfig-002-20231212   gcc  
+  efi/unaccepted: Fix off-by-one when checking for overlapping ranges (2023-11-28 12:49:21 +0100)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v6.7-2
+
+for you to fetch changes up to 50d7cdf7a9b1ab6f4f74a69c84e974d5dc0c1bf1:
+
+  efi/x86: Avoid physical KASLR on older Dell systems (2023-12-11 17:57:42 +0100)
+
+----------------------------------------------------------------
+EFI fixes for v6.7 #2
+
+- Deal with a regression in the recently refactored x86 EFI stub code on
+  older Dell systems by disabling randomization of the physical load
+  address
+- Use the correct load address for relocatable Loongarch kernels
+
+----------------------------------------------------------------
+Ard Biesheuvel (1):
+      efi/x86: Avoid physical KASLR on older Dell systems
+
+Wang Yao (1):
+      efi/loongarch: Use load address to calculate kernel entry address
+
+ arch/loongarch/include/asm/efi.h              |  2 +-
+ drivers/firmware/efi/libstub/loongarch-stub.c |  4 ++--
+ drivers/firmware/efi/libstub/loongarch.c      |  6 +++---
+ drivers/firmware/efi/libstub/x86-stub.c       | 31 +++++++++++++++++++++------
+ 4 files changed, 30 insertions(+), 13 deletions(-)
 
