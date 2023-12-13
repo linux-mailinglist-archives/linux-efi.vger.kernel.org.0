@@ -1,57 +1,58 @@
-Return-Path: <linux-efi+bounces-202-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-203-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E96C811FFB
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Dec 2023 21:30:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11637812004
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Dec 2023 21:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 315181C21151
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Dec 2023 20:30:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE8461F21849
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Dec 2023 20:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19CC2207D;
-	Wed, 13 Dec 2023 20:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F24381BD;
+	Wed, 13 Dec 2023 20:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="gZ68dQNw"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="OF+hrUMD"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DFE1127
-	for <linux-efi@vger.kernel.org>; Wed, 13 Dec 2023 12:30:18 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-33621d443a7so3699688f8f.3
-        for <linux-efi@vger.kernel.org>; Wed, 13 Dec 2023 12:30:18 -0800 (PST)
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FFCDDD
+	for <linux-efi@vger.kernel.org>; Wed, 13 Dec 2023 12:31:20 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-3333b46f26aso6625373f8f.1
+        for <linux-efi@vger.kernel.org>; Wed, 13 Dec 2023 12:31:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1702499417; x=1703104217; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=i+467Loz3LrvYEdXAV5s12LMqcUY9odwCyEv1IdVOvU=;
-        b=gZ68dQNw/RKx0d/oICoetz555Ra/uNpzcF7W/+PXeUdEN8b28FE0zRdTMG7aZcvOd3
-         khRv3oWfsZ8UFA3eDrp8OWX0SgZQb4PHzky2v/sMMIgKbOJVVs4lY5FXM+RqFemkmXsu
-         fV8tPbNPboESY07Bv6Bb5vQnFSCSDITsEyyLGf/D4TOiDiWLydRuU6PemOJMXrckW41Y
-         6ehCVKWYTa9883sRrWJzRXxEiPtzrv0hPQvjFyuEhVvxwXRrS285HsCrPyTrmEQt1JXg
-         IVaGD8fJ0oQbSL3OpHtATR3by/loi94TtYmySiThArcC4hEQ4UMXNWEgLLPIqW56IoCk
-         MKgg==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1702499478; x=1703104278; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E15RwjGwh0jg6//BOgBWUm8VeEPhhxkhRr12JTaACPU=;
+        b=OF+hrUMDO1WDgo25gRINqm8tt4IJOo30AwXe7ElgLxjc8MhNhG5j+NLC1fcPU0USNE
+         6IzGOWwIjEN6XNZu/K2eJFANsI14nVKWUJloCCVP/vUxv6jVMujvSmj8+TK4ACfFbzz0
+         aFJUGMNCrpIc8agIsfaosP43snv9/Piozb5A/aWKppcriqqgnkBa4WgUPlKcMNMfkvk+
+         vbetLn8AXoQ/5Jx5ey6Zlgvh5ZFC1sOc76EGmtlPykOVi6YDST0QcPRclh1UuCTpvoYS
+         Csj3G5/1NHSKgVXB73+Trjhutx4Iea/0MAc/bNH3L9X7RS6B2Zq+vU6BHZe4yQvQsWOV
+         jwjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702499417; x=1703104217;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i+467Loz3LrvYEdXAV5s12LMqcUY9odwCyEv1IdVOvU=;
-        b=FZsJrepJQTHHATVmgEADJlgQ/VhSkFd0YAzGuhRh1zj366nG3AaCkkJxcnEmA6FPrF
-         Q+nV7A0Ru967hjwq0TOkRcj5PCBE5VaR3Mv9CxISsB+z78cM5U1zhQaW8gF+Bqt3bflI
-         IvXzMVycFkjS2qk8LtETtRNutcPJIaB0JpLXe8reKJ0XJODARzG6xhO4KxdSjLCWwpUB
-         t27d9fVFaMhNuP0Gb9DX7xBJqzIEHdlr2CWaXXjTD5jbwTF5z5/svLkhqw5m84wvm27g
-         rrnAPqIB2oA0IvM9MrUbC3g2SnOvWDrCd7QrGqs1WasWW1/A0v4odT8O4ZabkFBJ1uZz
-         k97A==
-X-Gm-Message-State: AOJu0YwTZFdngYkFLC/aGTqGS6fbyISoPdQ7g2pKvnFL1FFud14OIxhJ
-	h7pbGFA7y+3PWJGXqpWl/rtmgA==
-X-Google-Smtp-Source: AGHT+IGBLga6z9pG2jLj7Eh24QZCKuh/cAtflhfd+Zgtj1tOF9StAT24MMOv0TqcLPwKldvFFyI7jA==
-X-Received: by 2002:a05:6000:10c1:b0:336:38ef:1e91 with SMTP id b1-20020a05600010c100b0033638ef1e91mr917003wrx.128.1702499416911;
-        Wed, 13 Dec 2023 12:30:16 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702499478; x=1703104278;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E15RwjGwh0jg6//BOgBWUm8VeEPhhxkhRr12JTaACPU=;
+        b=FA7sKBBIx5hSvGL0ib7NW8xKNRb9J6aYW8QOT4nb84XG0vJSUGCNVxfIwa+o2kOof3
+         mtF3IhiDkT2GDrEJEW5D+z63au87UjNa4aV9WSF739BuopQbiMkrMW76Vs+QOos+IQiH
+         uWWAX7w/jMQ+FwPOCitxcBg27gUAYzAXJULlPV/KP6QCbznUUWzv1Qa5TkVscX6sLOL6
+         hR92Yo+ZUCWf8wVe5BrkdUj0I5uqCzzlbWjRdPpw1B6ZzlfogDJNbpfT62kkiHQu1miw
+         27vxVno7uOcvKHbd9JsPZr6iD81m76CuvV3CjJOmoZkXWhVN0p8CyeJx2q7Q4RhvUc6j
+         95ag==
+X-Gm-Message-State: AOJu0YwtI7PXbOb2hxldNlg2dB3vCPTqGJpEKcV9Va2YKURqpESCcQ6f
+	FZZhIQhrOvW5B8YfLRzgaJzxHQ==
+X-Google-Smtp-Source: AGHT+IHJ9RU792w4DCZZx9hZPdAspSn4SI/uXWC5g1BlHgB2r11Rp2Nl7fP233w9pzamiUzq2saHcQ==
+X-Received: by 2002:a5d:5742:0:b0:336:370d:4c4f with SMTP id q2-20020a5d5742000000b00336370d4c4fmr973590wrw.60.1702499478475;
+        Wed, 13 Dec 2023 12:31:18 -0800 (PST)
 Received: from alex-rivos.ba.rivosinc.com (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id x10-20020a5d444a000000b00336371fafe6sm2945256wrr.16.2023.12.13.12.30.15
+        by smtp.gmail.com with ESMTPSA id h3-20020a5d4303000000b0033629538fa2sm5560888wrq.18.2023.12.13.12.31.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Dec 2023 12:30:16 -0800 (PST)
+        Wed, 13 Dec 2023 12:31:18 -0800 (PST)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
 To: Russell King <linux@armlinux.org.uk>,
 	Ryan Roberts <ryan.roberts@arm.com>,
@@ -75,10 +76,12 @@ To: Russell King <linux@armlinux.org.uk>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org
 Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v2 0/4] riscv: Use READ_ONCE()/WRITE_ONCE() for pte accesses
-Date: Wed, 13 Dec 2023 21:29:57 +0100
-Message-Id: <20231213203001.179237-1-alexghiti@rivosinc.com>
+Subject: [PATCH v2 1/4] riscv: Use WRITE_ONCE() when setting page table entries
+Date: Wed, 13 Dec 2023 21:29:58 +0100
+Message-Id: <20231213203001.179237-2-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231213203001.179237-1-alexghiti@rivosinc.com>
+References: <20231213203001.179237-1-alexghiti@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -87,47 +90,70 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series is a follow-up for riscv of a recent series from Ryan [1] which
-converts all direct dereferences of pte_t into a ptet_get() access.
+To avoid any compiler "weirdness" when accessing page table entries which
+are concurrently modified by the HW, let's use WRITE_ONCE() macro
+(commit 20a004e7b017 ("arm64: mm: Use READ_ONCE/WRITE_ONCE when accessing
+page tables") gives a great explanation with more details).
 
-The goal here for riscv is to use READ_ONCE()/WRITE_ONCE() for all page
-table entries accesses to avoid any compiler transformation when the
-hardware can concurrently modify the page tables entries (A/D bits for
-example).
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+---
+ arch/riscv/include/asm/pgtable-64.h | 6 +++---
+ arch/riscv/include/asm/pgtable.h    | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-I went a bit further and added pud/p4d/pgd_get() helpers as such concurrent
-modifications can happen too at those levels.
-
-[1] https://lore.kernel.org/all/20230612151545.3317766-1-ryan.roberts@arm.com/
-
-Changes in v2:
-- Fix the kernel test report on arm32
-- Remove the pte suffix patch
-- Fix pud_offset/p4d_offset which were missing the use of accessors
-- Rebase on top of 6.7-rc4
-
-Alexandre Ghiti (4):
-  riscv: Use WRITE_ONCE() when setting page table entries
-  mm: Introduce pudp/p4dp/pgdp_get() functions
-  riscv: mm: Only compile pgtable.c if MMU
-  riscv: Use accessors to page table entries instead of direct
-    dereference
-
- arch/arm/include/asm/pgtable.h      |  2 ++
- arch/riscv/include/asm/kfence.h     |  4 +--
- arch/riscv/include/asm/pgtable-64.h | 22 +++----------
- arch/riscv/include/asm/pgtable.h    | 33 +++++--------------
- arch/riscv/kernel/efi.c             |  2 +-
- arch/riscv/kvm/mmu.c                | 22 ++++++-------
- arch/riscv/mm/Makefile              |  3 +-
- arch/riscv/mm/fault.c               | 16 ++++-----
- arch/riscv/mm/hugetlbpage.c         | 12 +++----
- arch/riscv/mm/kasan_init.c          | 45 +++++++++++++------------
- arch/riscv/mm/pageattr.c            | 44 ++++++++++++-------------
- arch/riscv/mm/pgtable.c             | 51 ++++++++++++++++++++++++++---
- include/linux/pgtable.h             | 21 ++++++++++++
- 13 files changed, 157 insertions(+), 120 deletions(-)
-
+diff --git a/arch/riscv/include/asm/pgtable-64.h b/arch/riscv/include/asm/pgtable-64.h
+index 9a2c780a11e9..5d8431a390dd 100644
+--- a/arch/riscv/include/asm/pgtable-64.h
++++ b/arch/riscv/include/asm/pgtable-64.h
+@@ -202,7 +202,7 @@ static inline int pud_user(pud_t pud)
+ 
+ static inline void set_pud(pud_t *pudp, pud_t pud)
+ {
+-	*pudp = pud;
++	WRITE_ONCE(*pudp, pud);
+ }
+ 
+ static inline void pud_clear(pud_t *pudp)
+@@ -278,7 +278,7 @@ static inline unsigned long _pmd_pfn(pmd_t pmd)
+ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
+ {
+ 	if (pgtable_l4_enabled)
+-		*p4dp = p4d;
++		WRITE_ONCE(*p4dp, p4d);
+ 	else
+ 		set_pud((pud_t *)p4dp, (pud_t){ p4d_val(p4d) });
+ }
+@@ -351,7 +351,7 @@ static inline pud_t *pud_offset(p4d_t *p4d, unsigned long address)
+ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
+ {
+ 	if (pgtable_l5_enabled)
+-		*pgdp = pgd;
++		WRITE_ONCE(*pgdp, pgd);
+ 	else
+ 		set_p4d((p4d_t *)pgdp, (p4d_t){ pgd_val(pgd) });
+ }
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 294044429e8e..c9f4b250b4ee 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -248,7 +248,7 @@ static inline int pmd_leaf(pmd_t pmd)
+ 
+ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+ {
+-	*pmdp = pmd;
++	WRITE_ONCE(*pmdp, pmd);
+ }
+ 
+ static inline void pmd_clear(pmd_t *pmdp)
+@@ -510,7 +510,7 @@ static inline int pte_same(pte_t pte_a, pte_t pte_b)
+  */
+ static inline void set_pte(pte_t *ptep, pte_t pteval)
+ {
+-	*ptep = pteval;
++	WRITE_ONCE(*ptep, pteval);
+ }
+ 
+ void flush_icache_pte(pte_t pte);
 -- 
 2.39.2
 
