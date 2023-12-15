@@ -1,397 +1,176 @@
-Return-Path: <linux-efi+bounces-225-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-226-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEA181480A
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Dec 2023 13:27:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7A781546B
+	for <lists+linux-efi@lfdr.de>; Sat, 16 Dec 2023 00:26:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 188AF285DDA
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Dec 2023 12:27:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568811F23F28
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Dec 2023 23:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756E32DB7A;
-	Fri, 15 Dec 2023 12:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB99618ED0;
+	Fri, 15 Dec 2023 23:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PwbUOjoy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/utvE8Cm";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PwbUOjoy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/utvE8Cm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="URYmGtaX"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CC62C6B1;
-	Fri, 15 Dec 2023 12:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 911971F829;
-	Fri, 15 Dec 2023 12:26:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1702643178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ionOnhVqbRQv5yJFH2KkaG5cDoE/rfCo3Lap5LRFeCQ=;
-	b=PwbUOjoydVNdPC49q1JsmoxCgf8nZ3vdiYzrlNb1/ZCY6ASMRxEYHPK73nGjjtsUMEdhuq
-	EnZlyjneCh23omNHtUB+un1qccKZquKI5jeCSLG7ZEIACknW8eJ7MXgYypYc21ciYyagVD
-	YQmpO5kbUSDkyqnCn8NE4bsnVrKtG2E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1702643178;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ionOnhVqbRQv5yJFH2KkaG5cDoE/rfCo3Lap5LRFeCQ=;
-	b=/utvE8CmGuI3thDXTy3J8aIeKraIgUqof+nluhrMGQT0jveIhLhr0yaGOjP2ta1iNv96DV
-	CIHfPlsAAX+uYfDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1702643178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ionOnhVqbRQv5yJFH2KkaG5cDoE/rfCo3Lap5LRFeCQ=;
-	b=PwbUOjoydVNdPC49q1JsmoxCgf8nZ3vdiYzrlNb1/ZCY6ASMRxEYHPK73nGjjtsUMEdhuq
-	EnZlyjneCh23omNHtUB+un1qccKZquKI5jeCSLG7ZEIACknW8eJ7MXgYypYc21ciYyagVD
-	YQmpO5kbUSDkyqnCn8NE4bsnVrKtG2E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1702643178;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ionOnhVqbRQv5yJFH2KkaG5cDoE/rfCo3Lap5LRFeCQ=;
-	b=/utvE8CmGuI3thDXTy3J8aIeKraIgUqof+nluhrMGQT0jveIhLhr0yaGOjP2ta1iNv96DV
-	CIHfPlsAAX+uYfDg==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 0860713BA0;
-	Fri, 15 Dec 2023 12:26:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id mJTrAOpFfGVIRwAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Fri, 15 Dec 2023 12:26:18 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: ardb@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	bhelgaas@google.com,
-	arnd@arndb.de,
-	zohar@linux.ibm.com,
-	dmitry.kasatkin@gmail.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	javierm@redhat.com
-Cc: linux-arch@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 3/3] arch/x86: Do not include <asm/bootparam.h> in several header files
-Date: Fri, 15 Dec 2023 13:18:14 +0100
-Message-ID: <20231215122614.5481-4-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231215122614.5481-1-tzimmermann@suse.de>
-References: <20231215122614.5481-1-tzimmermann@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E8018034;
+	Fri, 15 Dec 2023 23:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702682789; x=1734218789;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=3xKqnFB4W5k8UZ3XimdoyygtjqnO8wYj5wwpupdnA+M=;
+  b=URYmGtaXwZaY3/0t6rJ6R6Bnw5M4RIIlP3iml42eb/F+oQopzGIWVzIF
+   41H1zxQJMX+enrP974OQy6DkQomS1cODC0mMrQiCQJnJ/cnDl8ILlVMsA
+   koJkKJtmmxYGvCLGkci5rUeNzv9faQtczaO/CeAWX/fLgAVStDzU6uu3T
+   /lGBkQ2lnOUDIfA2NO8LxIQWViXPTcMGXsc02Gj4W6M5xJMYj+zTyoGO7
+   /BKHHA0fAu4SEyIxih4ActhF5lar5uYbwQkQvCPp2N8r2L/UA30fRRtPI
+   xYe4lW7Mv34JZykGCqWNjiTOY3G8Fht3HhUKqatQWUw3rz30f+SmiUVMF
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10925"; a="395079624"
+X-IronPort-AV: E=Sophos;i="6.04,280,1695711600"; 
+   d="scan'208";a="395079624"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 15:26:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10925"; a="724605076"
+X-IronPort-AV: E=Sophos;i="6.04,280,1695711600"; 
+   d="scan'208";a="724605076"
+Received: from iweiny-desk3.amr.corp.intel.com (HELO localhost) ([10.213.164.93])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 15:26:27 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH v4 0/7] efi/cxl-cper: Report CPER CXL component events
+ through trace events
+Date: Fri, 15 Dec 2023 15:26:26 -0800
+Message-Id: <20231215-cxl-cper-v4-0-01b6dab44fcd@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: 3.40
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [3.40 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-3.00)[99.99%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 R_MISSING_CHARSET(2.50)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 R_RATELIMIT(0.00)[to_ip_from(RLthqzz6q5hnubohss7ffybi86)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[22];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FREEMAIL_TO(0.00)[kernel.org,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,google.com,arndb.de,linux.ibm.com,gmail.com,paul-moore.com,namei.org,hallyn.com];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Level: ***
-X-Spam-Score: 3.40
-Authentication-Results: smtp-out2.suse.de;
-	none
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKLgfGUC/3XNwW7DIAyA4VepOI/JBkJgp73HtAMYWJDapIIo6
+ lTl3Ud6qrLmaPDv785qLDlW9nG6sxKXXPM0tkG9nRgNbvyJPIc2MwFCggbkdDtzusbChU6JjLS
+ kSbO27l2N3Bc30rAFF1fnWLaPa4kp3x7G13ebh1znqfw+yAW31xfXF+TArfVOyWRS38NnHud4f
+ qfpst08CALahI7QOK+fgk1dxJEkWihRBUtSOw/iv4QC9wEhagvgne7MXpJHkmwhoLFBY+ptp19
+ Kchf0KRgtQ4Agur2kjiTVQtV7bwETyi4+h+u6/gGuWzUM9wEAAA==
+To: Dan Williams <dan.j.williams@intel.com>, 
+ Jonathan Cameron <jonathan.cameron@huawei.com>, 
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, 
+ Shiju Jose <shiju.jose@huawei.com>
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>, 
+ Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, 
+ Alison Schofield <alison.schofield@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, Ard Biesheuvel <ardb@kernel.org>, 
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-cxl@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>
+X-Mailer: b4 0.13-dev-2539e
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1702682786; l=3579;
+ i=ira.weiny@intel.com; s=20221222; h=from:subject:message-id;
+ bh=3xKqnFB4W5k8UZ3XimdoyygtjqnO8wYj5wwpupdnA+M=;
+ b=JuXfQqh3TbymZ5dI72fAeYajBa6O+cQ8wS+BQBvK0bfTSQMyVEZJLgox4gdRFGI7LdlYilUPn
+ moSFGUgr9UoC16WOjS1mfjVA8PL8q4xCH6roQ6Eglfae7hkqwA/FvsC
+X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
+ pk=brwqReAJklzu/xZ9FpSsMPSQ/qkSalbg6scP3w809Ec=
 
-Remove the include statement for <asm/bootparam.h> from several header
-files that don't require it. Limits the exposure of the boot parameters
-within the Linux kernel code. Update several source files that require
-code from bootparam.h.
+Series status/background
+========================
 
-v2:
-	* clean up misc.h and e820/types.h
-	* include bootparam.h in several source files
+Smita has been a great help with this series.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Dan had a better idea for how to register the call between the efi and
+cxl subsystems so this is reworked for V2-4.
+
+Dependencies
+============
+
+NOTE this patch depends on Dan's addition of a device guard[1].
+Therefore, the base commit is not a stable commit.  I've pushed a branch
+with this commit included for testing if folks are interested.[2]
+
+[1] https://lore.kernel.org/all/170250854466.1522182.17555361077409628655.stgit@dwillia2-xfh.jf.intel.com/
+[2] https://github.com/weiny2/linux-kernel/tree/cxl-cper-2023-12-15
+
+Cover letter
+============
+
+CXL Component Events, as defined by EFI 2.10 Section N.2.14, wrap a
+mostly CXL event payload in an EFI Common Platform Error Record (CPER)
+record.  If a device is configured for firmware first CXL event records
+are not sent directly to the host.
+
+The CXL sub-system uniquely has DPA to HPA translation information.  It
+also already has event format tracing.  Restructure the code to make
+sharing the data between CPER/event logs most efficient.  Then send the
+CXL CPER records to the CXL sub-system for processing.
+
+With event logs the events interrupt the driver directly.  In the EFI
+case events are wrapped with device information which allows the CXL
+subsystem to identify the PCI device.
+
+Previous version considered matching the memdev differently.  However,
+the most robust was to find the PCI device via Bus, Device, Function and
+use the PCI device to find the driver data.
+
+CPER records are identified with GUID's while CXL event logs contain
+UUID's.  The UUID is reported for all events.  While the UUID is
+redundant for the known events the UUID's are already used by rasdaemon.
+To keep compatibility UUIDs are injected for CPER records based on the
+record type.
+
+In addition this series cleans up the UUID defines used between the
+event processing and cxl_test code.
+
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- arch/x86/boot/compressed/acpi.c       | 2 ++
- arch/x86/boot/compressed/cmdline.c    | 2 ++
- arch/x86/boot/compressed/efi.c        | 2 ++
- arch/x86/boot/compressed/misc.h       | 3 ++-
- arch/x86/boot/compressed/pgtable_64.c | 1 +
- arch/x86/boot/compressed/sev.c        | 1 +
- arch/x86/include/asm/e820/types.h     | 2 +-
- arch/x86/include/asm/kexec.h          | 1 -
- arch/x86/include/asm/mem_encrypt.h    | 2 +-
- arch/x86/include/asm/sev.h            | 3 ++-
- arch/x86/include/asm/x86_init.h       | 2 --
- arch/x86/kernel/crash.c               | 1 +
- arch/x86/kernel/sev-shared.c          | 2 ++
- arch/x86/platform/pvh/enlighten.c     | 1 +
- arch/x86/xen/enlighten_pvh.c          | 1 +
- arch/x86/xen/vga.c                    | 1 -
- 16 files changed, 19 insertions(+), 8 deletions(-)
+Changes in v4:
+- lkp: Fix 0day build issues
+       [Functionally the same as v3]
+- Link to v3: https://lore.kernel.org/r/20231213-cxl-cper-v3-0-7fd863dd0d25@intel.com
 
-diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
-index 55c98fdd67d2..4db998a8d8f0 100644
---- a/arch/x86/boot/compressed/acpi.c
-+++ b/arch/x86/boot/compressed/acpi.c
-@@ -5,6 +5,8 @@
- #include "../string.h"
- #include "efi.h"
- 
-+#include <asm/bootparam.h>
-+
- #include <linux/numa.h>
- 
- /*
-diff --git a/arch/x86/boot/compressed/cmdline.c b/arch/x86/boot/compressed/cmdline.c
-index c1bb180973ea..e162d7f59cc5 100644
---- a/arch/x86/boot/compressed/cmdline.c
-+++ b/arch/x86/boot/compressed/cmdline.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- #include "misc.h"
- 
-+#include <asm/bootparam.h>
-+
- static unsigned long fs;
- static inline void set_fs(unsigned long seg)
- {
-diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-index 6edd034b0b30..f2e50f9758e6 100644
---- a/arch/x86/boot/compressed/efi.c
-+++ b/arch/x86/boot/compressed/efi.c
-@@ -7,6 +7,8 @@
- 
- #include "misc.h"
- 
-+#include <asm/bootparam.h>
-+
- /**
-  * efi_get_type - Given a pointer to boot_params, determine the type of EFI environment.
-  *
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index c0d502bd8716..01c89c410efd 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -33,7 +33,6 @@
- #include <linux/elf.h>
- #include <asm/page.h>
- #include <asm/boot.h>
--#include <asm/bootparam.h>
- #include <asm/desc_defs.h>
- 
- #include "tdx.h"
-@@ -53,6 +52,8 @@
- #define memptr unsigned
- #endif
- 
-+struct boot_param;
-+
- /* boot/compressed/vmlinux start and end markers */
- extern char _head[], _end[];
- 
-diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index 51f957b24ba7..c882e1f67af0 100644
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include "misc.h"
-+#include <asm/bootparam.h>
- #include <asm/e820/types.h>
- #include <asm/processor.h>
- #include "pgtable.h"
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 454acd7a2daf..13beae767e48 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -12,6 +12,7 @@
-  */
- #include "misc.h"
- 
-+#include <asm/bootparam.h>
- #include <asm/pgtable_types.h>
- #include <asm/sev.h>
- #include <asm/trapnr.h>
-diff --git a/arch/x86/include/asm/e820/types.h b/arch/x86/include/asm/e820/types.h
-index 314f75d886d0..47695db18246 100644
---- a/arch/x86/include/asm/e820/types.h
-+++ b/arch/x86/include/asm/e820/types.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_E820_TYPES_H
- #define _ASM_E820_TYPES_H
- 
--#include <uapi/asm/bootparam.h>
-+#include <asm/setup_data.h>
- 
- /*
-  * These are the E820 types known to the kernel:
-diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
-index c9f6a6c5de3c..91ca9a9ee3a2 100644
---- a/arch/x86/include/asm/kexec.h
-+++ b/arch/x86/include/asm/kexec.h
-@@ -25,7 +25,6 @@
- 
- #include <asm/page.h>
- #include <asm/ptrace.h>
--#include <asm/bootparam.h>
- 
- struct kimage;
- 
-diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
-index 359ada486fa9..c1a8a3408c18 100644
---- a/arch/x86/include/asm/mem_encrypt.h
-+++ b/arch/x86/include/asm/mem_encrypt.h
-@@ -15,7 +15,7 @@
- #include <linux/init.h>
- #include <linux/cc_platform.h>
- 
--#include <asm/bootparam.h>
-+struct boot_params;
- 
- #ifdef CONFIG_X86_MEM_ENCRYPT
- void __init mem_encrypt_init(void);
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 5b4a1ce3d368..8dad8b1613bf 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -13,7 +13,6 @@
- 
- #include <asm/insn.h>
- #include <asm/sev-common.h>
--#include <asm/bootparam.h>
- #include <asm/coco.h>
- 
- #define GHCB_PROTOCOL_MIN	1ULL
-@@ -22,6 +21,8 @@
- 
- #define	VMGEXIT()			{ asm volatile("rep; vmmcall\n\r"); }
- 
-+struct boot_params;
-+
- enum es_result {
- 	ES_OK,			/* All good */
- 	ES_UNSUPPORTED,		/* Requested operation not supported */
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index c878616a18b8..f062715578a0 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -2,8 +2,6 @@
- #ifndef _ASM_X86_PLATFORM_H
- #define _ASM_X86_PLATFORM_H
- 
--#include <asm/bootparam.h>
--
- struct ghcb;
- struct mpc_bus;
- struct mpc_cpu;
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index c92d88680dbf..564cff7ed33a 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -26,6 +26,7 @@
- #include <linux/vmalloc.h>
- #include <linux/memblock.h>
- 
-+#include <asm/bootparam.h>
- #include <asm/processor.h>
- #include <asm/hardirq.h>
- #include <asm/nmi.h>
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index ccb0915e84e1..4962ec42dc68 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -9,6 +9,8 @@
-  * and is included directly into both code-bases.
-  */
- 
-+#include <asm/setup_data.h>
-+
- #ifndef __BOOT_COMPRESSED
- #define error(v)	pr_err(v)
- #define has_cpuflag(f)	boot_cpu_has(f)
-diff --git a/arch/x86/platform/pvh/enlighten.c b/arch/x86/platform/pvh/enlighten.c
-index 00a92cb2c814..944e0290f2c0 100644
---- a/arch/x86/platform/pvh/enlighten.c
-+++ b/arch/x86/platform/pvh/enlighten.c
-@@ -3,6 +3,7 @@
- 
- #include <xen/hvc-console.h>
- 
-+#include <asm/bootparam.h>
- #include <asm/io_apic.h>
- #include <asm/hypervisor.h>
- #include <asm/e820/api.h>
-diff --git a/arch/x86/xen/enlighten_pvh.c b/arch/x86/xen/enlighten_pvh.c
-index ada3868c02c2..9e9db601bd52 100644
---- a/arch/x86/xen/enlighten_pvh.c
-+++ b/arch/x86/xen/enlighten_pvh.c
-@@ -4,6 +4,7 @@
- 
- #include <xen/hvc-console.h>
- 
-+#include <asm/bootparam.h>
- #include <asm/io_apic.h>
- #include <asm/hypervisor.h>
- #include <asm/e820/api.h>
-diff --git a/arch/x86/xen/vga.c b/arch/x86/xen/vga.c
-index d97adab8420f..f7547807b0bd 100644
---- a/arch/x86/xen/vga.c
-+++ b/arch/x86/xen/vga.c
-@@ -2,7 +2,6 @@
- #include <linux/screen_info.h>
- #include <linux/init.h>
- 
--#include <asm/bootparam.h>
- #include <asm/setup.h>
- 
- #include <xen/interface/xen.h>
+Changes in v3:
+- djbw: use scope based cleanup functions
+- iweiny: further clean ups
+- Link to v2: https://lore.kernel.org/r/20231211-cxl-cper-v2-0-c116900ba658@intel.com
+
+---
+Ira Weiny (7):
+      cxl/trace: Pass uuid explicitly to event traces
+      cxl/events: Promote CXL event structures to a core header
+      cxl/events: Create common event UUID defines
+      cxl/events: Separate UUID from event structures
+      cxl/events: Create a CXL event union
+      firmware/efi: Process CXL Component Events
+      cxl/memdev: Register for and process CPER events
+
+ drivers/cxl/core/mbox.c         |  93 +++++++++++------------
+ drivers/cxl/core/trace.h        |  30 ++++----
+ drivers/cxl/cxlmem.h            | 110 ++++++---------------------
+ drivers/cxl/pci.c               |  55 +++++++++++++-
+ drivers/firmware/efi/cper.c     |  15 ++++
+ drivers/firmware/efi/cper_cxl.c |  46 ++++++++++++
+ drivers/firmware/efi/cper_cxl.h |  29 +++++++
+ include/linux/cxl-event.h       | 161 +++++++++++++++++++++++++++++++++++++++
+ include/linux/pci.h             |   2 +
+ tools/testing/cxl/test/mem.c    | 163 +++++++++++++++++++++++-----------------
+ 10 files changed, 484 insertions(+), 220 deletions(-)
+---
+base-commit: 6436863dfabce0d7ac416c8dc661fd513b967d39
+change-id: 20230601-cxl-cper-26ffc839c6c6
+
+Best regards,
 -- 
-2.43.0
+Ira Weiny <ira.weiny@intel.com>
 
 
