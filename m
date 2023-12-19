@@ -1,134 +1,204 @@
-Return-Path: <linux-efi+bounces-240-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-241-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A49817D39
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Dec 2023 23:27:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8800381810D
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Dec 2023 06:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E631B21DDA
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Dec 2023 22:27:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B4D31F24B3F
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Dec 2023 05:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10D74E14;
-	Mon, 18 Dec 2023 22:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2LkWNuL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19E9613B;
+	Tue, 19 Dec 2023 05:36:45 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7413D740B0;
-	Mon, 18 Dec 2023 22:27:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCACAC433C9;
-	Mon, 18 Dec 2023 22:27:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702938430;
-	bh=bnMaUsbsfJ/Mgj0ipxaF2LvUK40Y5atE6jfvwPpoS/M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=j2LkWNuLc/R/R4Rwb+682uk4YWicH5mA1ioiq16Kfogpk+iJUuEZMeK2YQHHBJnw2
-	 ApEI6PyQPMvlAHYQVlxOoyOcWr8heyLReDEWsKTfJCfwduJsdMDRZg4vCPYfJhKDdp
-	 0NRB9vszSjXnyU90WongfbS1z8RAw42k2CdTFHialKNAs0eMbC8ZnM8iYZWkEKEe5N
-	 zUUGclAG4VI4+lRuWZnk/o7o+J03ayeX6h8Eu3GFndhAUOp8XvVpP4/ZBFyLI66+30
-	 PM0C/S1FX2YWqPrDP8qYLWgFXpJWWKrvzrPhH8IhTiuo8NGSVI0hFhjEYT4iHnIKYd
-	 5qLbH/MHwIffA==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-50e1d61b657so4583121e87.0;
-        Mon, 18 Dec 2023 14:27:10 -0800 (PST)
-X-Gm-Message-State: AOJu0YyJFzGKthpB6UBBKpSOdQ9mod2hx3ZnFFEUn5JwY0Y6vNbkSeuq
-	NP2OJLFxqqomm5ySdElPGwGstIAlofUgygvKJ5c=
-X-Google-Smtp-Source: AGHT+IE5PD6bA3gdRugQvcpyePbVaEF0dHlVX9xB0hLKvzMTHvGRMVP+zf7v4xHZsx7TcAiHHWqhGA7ZfLplkmX0kz8=
-X-Received: by 2002:a05:6512:3a5:b0:50e:3eeb:47e0 with SMTP id
- v5-20020a05651203a500b0050e3eeb47e0mr578082lfp.56.1702938429095; Mon, 18 Dec
- 2023 14:27:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A18F611F
+	for <linux-efi@vger.kernel.org>; Tue, 19 Dec 2023 05:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lemote.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lemote.com
+X-QQ-mid: bizesmtp91t1702964151tnirw86x
+Received: from localhost.localdomain ( [222.92.8.138])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 19 Dec 2023 13:35:50 +0800 (CST)
+X-QQ-SSF: 01400000000000F0W000000A0000000
+X-QQ-FEAT: D2GZf6M6C/gl4FXsVRCaNSI/H5NGV6Bc4V+7XEm/wYq2ArB+tvCgfEe3jeLn7
+	r9vqIOsIuLhD/8mfYQGAFog4kXTdaMylbsLswJt4efWmbvJkMjqdJ62rLZ5cXjqQzMPc4/5
+	yhD7mFLjDVEPc3x14feLj9NlNaBZKFl2IY95PSMYDySSgttPZnLtFyuVmcoJRqyqrnJ9MDs
+	9Xgyu+MqIziYZFPJuGu3kl6CppydvUUsinZ+S7z/l0tsNVMKDbYwvmSCZ/yOuldWQHLh6mI
+	QkTQ1tmx2Z81XIv7HXe0VIt16VmpftgqyBa3yIFwb+0OtA6GA/G46knNOepKftNNshy3MwV
+	Tc3FaLrRmIDC+3KDEtQIgtJARuF7TjHYugiB44hIEQKJEWbrcE1TH6xa1dJw68jEvs0xSm7
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 10460518577884746340
+From: wangyao@lemote.com
+To: ardb@kernel.org,
+	chenhuacai@kernel.org,
+	wangrui@loongson.cn
+Cc: linux-efi@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	ainux.wang@gmail.com,
+	Wang Yao <wangyao@lemote.com>
+Subject: [PATCH] efi/loongarch: Directly position the loaded image file
+Date: Tue, 19 Dec 2023 13:35:43 +0800
+Message-Id: <20231219053543.11726-1-wangyao@lemote.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231218080127.907460-1-masahiroy@kernel.org>
-In-Reply-To: <20231218080127.907460-1-masahiroy@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 18 Dec 2023 23:26:58 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFmoXKLzFQnfTgatSpsQj=6HnExRoYtH_jaYakGZFwrkg@mail.gmail.com>
-Message-ID: <CAMj1kXFmoXKLzFQnfTgatSpsQj=6HnExRoYtH_jaYakGZFwrkg@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: zboot: do not use $(shell ...) in cmd_copy_and_pad
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:lemote.com:qybglogicsvrgz:qybglogicsvrgz5a-2
 
-On Mon, 18 Dec 2023 at 09:01, Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> You do not need to use $(shell ...) in recipe lines, as they are already
-> executed in a shell. An alternative solution is $$(...), which is an
-> escaped sequence of the shell's command substituion, $(...).
->
-> For this case, there is a reason to avoid $(shell ...).
->
-> Kbuild detects command changes by using the if_changed macro, which
-> compares the previous command recorded in .*.cmd with the current
-> command from Makefile. If they differ, Kbuild re-runs the build rule.
->
-> To diff the commands, Make must expand $(shell ...) first. It means that
-> hexdump is executed every time, even when nothing needs rebuilding. If
-> Kbuild determines that vmlinux.bin needs rebuilding, hexdump will be
-> executed again to evaluate the 'cmd' macro, one more time to really
-> build vmlinux.bin, and finally yet again to record the expanded command
-> into .*.cmd.
->
-> Replace $(shell ...) with $$(...) to avoid multiple, unnecessay shell
-> evaluations. Since Make is agnostic about the shell code, $(...), the
-> if_changed macro compares the string "$(hexdump -s16 -n4 ...)" verbatim,
-> so hexdump is run only for building vmlinux.bin.
->
-> For the same reason, $(shell ...) in EFI_ZBOOT_OBJCOPY_FLAGS should be
-> eliminated.
->
-> While I was here, I replaced '&&' with ';' because a command for
-> if_changed is executed with 'set -e'.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+From: Wang Yao <wangyao@lemote.com>
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Replace kernel_offset with image_base to positon the image file that has
+been loaded by UEFI or GRUB.
 
-> ---
->
->  arch/arm64/boot/Makefile                    | 2 +-
->  drivers/firmware/efi/libstub/Makefile.zboot | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/arm64/boot/Makefile b/arch/arm64/boot/Makefile
-> index 1761f5972443..a5a787371117 100644
-> --- a/arch/arm64/boot/Makefile
-> +++ b/arch/arm64/boot/Makefile
-> @@ -44,7 +44,7 @@ EFI_ZBOOT_BFD_TARGET  := elf64-littleaarch64
->  EFI_ZBOOT_MACH_TYPE    := ARM64
->  EFI_ZBOOT_FORWARD_CFI  := $(CONFIG_ARM64_BTI_KERNEL)
->
-> -EFI_ZBOOT_OBJCOPY_FLAGS        = --add-symbol zboot_code_size=0x$(shell \
-> +EFI_ZBOOT_OBJCOPY_FLAGS        = --add-symbol zboot_code_size=0x$$( \
->                                 $(NM) vmlinux|grep _kernel_codesize|cut -d' ' -f1)
->
->  include $(srctree)/drivers/firmware/efi/libstub/Makefile.zboot
-> diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
-> index 2c489627a807..65ffd0b760b2 100644
-> --- a/drivers/firmware/efi/libstub/Makefile.zboot
-> +++ b/drivers/firmware/efi/libstub/Makefile.zboot
-> @@ -5,8 +5,8 @@
->  # EFI_ZBOOT_FORWARD_CFI
->
->  quiet_cmd_copy_and_pad = PAD     $@
-> -      cmd_copy_and_pad = cp $< $@ && \
-> -                        truncate -s $(shell hexdump -s16 -n4 -e '"%u"' $<) $@
-> +      cmd_copy_and_pad = cp $< $@; \
-> +                        truncate -s $$(hexdump -s16 -n4 -e '"%u"' $<) $@
->
->  # Pad the file to the size of the uncompressed image in memory, including BSS
->  $(obj)/vmlinux.bin: $(obj)/$(EFI_ZBOOT_PAYLOAD) FORCE
-> --
-> 2.40.1
->
->
+Signed-off-by: Wang Yao <wangyao@lemote.com>
+---
+ arch/loongarch/include/asm/efi.h              | 2 --
+ arch/loongarch/kernel/head.S                  | 1 -
+ arch/loongarch/kernel/image-vars.h            | 1 -
+ arch/loongarch/kernel/vmlinux.lds.S           | 1 -
+ drivers/firmware/efi/libstub/loongarch-stub.c | 9 +++++----
+ drivers/firmware/efi/libstub/loongarch-stub.h | 4 ++++
+ drivers/firmware/efi/libstub/loongarch.c      | 6 ++++--
+ 7 files changed, 13 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/loongarch-stub.h
+
+diff --git a/arch/loongarch/include/asm/efi.h b/arch/loongarch/include/asm/efi.h
+index 91d81f9730ab..eddc8e79b3fa 100644
+--- a/arch/loongarch/include/asm/efi.h
++++ b/arch/loongarch/include/asm/efi.h
+@@ -32,6 +32,4 @@ static inline unsigned long efi_get_kimg_min_align(void)
+ 
+ #define EFI_KIMG_PREFERRED_ADDRESS	PHYSADDR(VMLINUX_LOAD_ADDRESS)
+ 
+-unsigned long kernel_entry_address(unsigned long kernel_addr);
+-
+ #endif /* _ASM_LOONGARCH_EFI_H */
+diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
+index 53b883db0786..0ecab4216392 100644
+--- a/arch/loongarch/kernel/head.S
++++ b/arch/loongarch/kernel/head.S
+@@ -34,7 +34,6 @@ pe_header:
+ 
+ SYM_DATA(kernel_asize, .long _kernel_asize);
+ SYM_DATA(kernel_fsize, .long _kernel_fsize);
+-SYM_DATA(kernel_offset, .long _kernel_offset);
+ 
+ #endif
+ 
+diff --git a/arch/loongarch/kernel/image-vars.h b/arch/loongarch/kernel/image-vars.h
+index 5087416b9678..41ddcf56d21c 100644
+--- a/arch/loongarch/kernel/image-vars.h
++++ b/arch/loongarch/kernel/image-vars.h
+@@ -11,7 +11,6 @@ __efistub_strcmp		= strcmp;
+ __efistub_kernel_entry		= kernel_entry;
+ __efistub_kernel_asize		= kernel_asize;
+ __efistub_kernel_fsize		= kernel_fsize;
+-__efistub_kernel_offset		= kernel_offset;
+ #if defined(CONFIG_EFI_EARLYCON) || defined(CONFIG_SYSFB)
+ __efistub_screen_info		= screen_info;
+ #endif
+diff --git a/arch/loongarch/kernel/vmlinux.lds.S b/arch/loongarch/kernel/vmlinux.lds.S
+index bb2ec86f37a8..a5d0cd2035da 100644
+--- a/arch/loongarch/kernel/vmlinux.lds.S
++++ b/arch/loongarch/kernel/vmlinux.lds.S
+@@ -143,7 +143,6 @@ SECTIONS
+ 	_kernel_fsize = _edata - _text;
+ 	_kernel_vsize = _end - __initdata_begin;
+ 	_kernel_rsize = _edata - __initdata_begin;
+-	_kernel_offset = kernel_offset - _text;
+ #endif
+ 
+ 	.gptab.sdata : {
+diff --git a/drivers/firmware/efi/libstub/loongarch-stub.c b/drivers/firmware/efi/libstub/loongarch-stub.c
+index d6ec5d4b8dbe..736b6aae323d 100644
+--- a/drivers/firmware/efi/libstub/loongarch-stub.c
++++ b/drivers/firmware/efi/libstub/loongarch-stub.c
+@@ -8,10 +8,10 @@
+ #include <asm/efi.h>
+ #include <asm/addrspace.h>
+ #include "efistub.h"
++#include "loongarch-stub.h"
+ 
+ extern int kernel_asize;
+ extern int kernel_fsize;
+-extern int kernel_offset;
+ extern int kernel_entry;
+ 
+ efi_status_t handle_kernel_image(unsigned long *image_addr,
+@@ -24,7 +24,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 	efi_status_t status;
+ 	unsigned long kernel_addr = 0;
+ 
+-	kernel_addr = (unsigned long)&kernel_offset - kernel_offset;
++	kernel_addr = (unsigned long)image->image_base;
+ 
+ 	status = efi_relocate_kernel(&kernel_addr, kernel_fsize, kernel_asize,
+ 		     EFI_KIMG_PREFERRED_ADDRESS, efi_get_kimg_min_align(), 0x0);
+@@ -35,9 +35,10 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 	return status;
+ }
+ 
+-unsigned long kernel_entry_address(unsigned long kernel_addr)
++unsigned long kernel_entry_address(unsigned long kernel_addr,
++		efi_loaded_image_t *image)
+ {
+-	unsigned long base = (unsigned long)&kernel_offset - kernel_offset;
++	unsigned long base = (unsigned long)image->image_base;
+ 
+ 	return (unsigned long)&kernel_entry - base + kernel_addr;
+ }
+diff --git a/drivers/firmware/efi/libstub/loongarch-stub.h b/drivers/firmware/efi/libstub/loongarch-stub.h
+new file mode 100644
+index 000000000000..cd015955a015
+--- /dev/null
++++ b/drivers/firmware/efi/libstub/loongarch-stub.h
+@@ -0,0 +1,4 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++unsigned long kernel_entry_address(unsigned long kernel_addr,
++		efi_loaded_image_t *image);
+diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmware/efi/libstub/loongarch.c
+index 0e0aa6cda73f..684c9354637c 100644
+--- a/drivers/firmware/efi/libstub/loongarch.c
++++ b/drivers/firmware/efi/libstub/loongarch.c
+@@ -8,6 +8,7 @@
+ #include <asm/efi.h>
+ #include <asm/addrspace.h>
+ #include "efistub.h"
++#include "loongarch-stub.h"
+ 
+ typedef void __noreturn (*kernel_entry_t)(bool efi, unsigned long cmdline,
+ 					  unsigned long systab);
+@@ -37,7 +38,8 @@ static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
+ 	return EFI_SUCCESS;
+ }
+ 
+-unsigned long __weak kernel_entry_address(unsigned long kernel_addr)
++unsigned long __weak kernel_entry_address(unsigned long kernel_addr,
++		efi_loaded_image_t *image)
+ {
+ 	return *(unsigned long *)(kernel_addr + 8) - VMLINUX_LOAD_ADDRESS + kernel_addr;
+ }
+@@ -73,7 +75,7 @@ efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
+ 	csr_write64(CSR_DMW0_INIT, LOONGARCH_CSR_DMWIN0);
+ 	csr_write64(CSR_DMW1_INIT, LOONGARCH_CSR_DMWIN1);
+ 
+-	real_kernel_entry = (void *)kernel_entry_address(kernel_addr);
++	real_kernel_entry = (void *)kernel_entry_address(kernel_addr, image);
+ 
+ 	real_kernel_entry(true, (unsigned long)cmdline_ptr,
+ 			  (unsigned long)efi_system_table);
+-- 
+2.27.0
+
 
