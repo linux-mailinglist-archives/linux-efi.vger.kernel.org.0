@@ -1,201 +1,111 @@
-Return-Path: <linux-efi+bounces-257-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-258-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B26181867A
-	for <lists+linux-efi@lfdr.de>; Tue, 19 Dec 2023 12:39:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8BE8189B6
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Dec 2023 15:24:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A34F828279A
-	for <lists+linux-efi@lfdr.de>; Tue, 19 Dec 2023 11:39:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31EBF1F260DE
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Dec 2023 14:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BBD1802D;
-	Tue, 19 Dec 2023 11:38:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZ5wW2eq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD9B1B26F;
+	Tue, 19 Dec 2023 14:24:32 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADAC18023;
-	Tue, 19 Dec 2023 11:38:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEDCC43397;
-	Tue, 19 Dec 2023 11:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702985937;
-	bh=z/k+YLVG8n9w0gU6sDLuJgWPnnGVRssnALfrFYt48Kc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YZ5wW2eq3iLNVR0D3INYFDiHoOy9u7hHTIJmjfZrOmN9uEHlkSe2+p1LY8oA6Uqc6
-	 o5VzCD0CAEUBSZX5jaeRxTi5InLpxumraBNOcnXdpYcCmIgQhPonNmzT7snKzERGqd
-	 zXQcfBxETiC4pkV1PQZtn8g0yu7/g/wQxuvUn5kEjX/SZ57kCv2F9jYZTXCk3hJCF1
-	 ArW8C+v3dmdH8zKR2xalj8md0QUM4CNJ58TnTYVq9vpI6ZDXlVXiI9XFFYvVPkZRmO
-	 ySmRvSCKaphWrtDvYj4JXREjfOyKuw8GYmjokI38G2QdDaMQwV7V+r1gD6t2hGcj2/
-	 WB8ZmBIkPNq5g==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2cc7b4709edso12475221fa.0;
-        Tue, 19 Dec 2023 03:38:57 -0800 (PST)
-X-Gm-Message-State: AOJu0YybCozzdw1vas2RZEgUc3jQQxA72MjecCrfqmbovMfxNWkvZiu3
-	2mvMT+9Cr8J5l1hmGIJ89djinZdKkNVJ5DSL/LQ=
-X-Google-Smtp-Source: AGHT+IGy+6E+Sn9s6ye17sM7ASYkS54eKGlyAxWBRLZL4jRxMOyZr0iV3s8QFFjT31FJTJwCyWvX4/ab2jc+J0WE6aE=
-X-Received: by 2002:a2e:8897:0:b0:2cc:7013:4b40 with SMTP id
- k23-20020a2e8897000000b002cc70134b40mr1369809lji.68.1702985935277; Tue, 19
- Dec 2023 03:38:55 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23111C6AE;
+	Tue, 19 Dec 2023 14:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Svf7g0bQGz6K62v;
+	Tue, 19 Dec 2023 22:23:43 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id C19DF140DDB;
+	Tue, 19 Dec 2023 22:24:06 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 19 Dec
+ 2023 14:24:02 +0000
+Date: Tue, 19 Dec 2023 14:24:01 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Ira Weiny <ira.weiny@intel.com>
+CC: Dan Williams <dan.j.williams@intel.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>, "Davidlohr Bueso" <dave@stgolabs.net>,
+	Dave Jiang <dave.jiang@intel.com>, "Alison Schofield"
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ard
+ Biesheuvel <ardb@kernel.org>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v4 6/7] firmware/efi: Process CXL Component Events
+Message-ID: <20231219142401.00000c80@Huawei.com>
+In-Reply-To: <20231215-cxl-cper-v4-6-01b6dab44fcd@intel.com>
+References: <20231215-cxl-cper-v4-0-01b6dab44fcd@intel.com>
+	<20231215-cxl-cper-v4-6-01b6dab44fcd@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215122614.5481-1-tzimmermann@suse.de> <20231215122614.5481-3-tzimmermann@suse.de>
-In-Reply-To: <20231215122614.5481-3-tzimmermann@suse.de>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 19 Dec 2023 12:38:44 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHrn-PxpMGnR4VoHv7kHvQYyf8SS9i1irm9Gi_uBseciw@mail.gmail.com>
-Message-ID: <CAMj1kXHrn-PxpMGnR4VoHv7kHvQYyf8SS9i1irm9Gi_uBseciw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] arch/x86: Add <asm/ima-efi.h> for arch_ima_efi_boot_mode
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	bhelgaas@google.com, arnd@arndb.de, zohar@linux.ibm.com, 
-	dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org, 
-	serge@hallyn.com, javierm@redhat.com, linux-arch@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Hi Thomas,
+On Fri, 15 Dec 2023 15:26:32 -0800
+Ira Weiny <ira.weiny@intel.com> wrote:
 
-On Fri, 15 Dec 2023 at 13:26, Thomas Zimmermann <tzimmermann@suse.de> wrote:
->
-> The header file <asm/efi.h> contains the macro arch_ima_efi_boot_mode,
-> which expands to use struct boot_params from <asm/bootparams.h>. Many
-> drivers include <linux/efi.h>, but do not use boot parameters. Changes
-> to bootparam.h or its included headers can easily trigger large,
-> unnessary rebuilds of the kernel.
->
-> Moving x86's arch_ima_efi_boot_mode to <asm/ima-efi.h> and including
-> <asm/setup.h> separates that dependency from the rest of the EFI
-> interfaces. The only user is in ima_efi.c. As the file already declares
-> a default value for arch_ima_efi_boot_mode, move this define into
-> asm-generic for all other architectures.
->
-> With arch_ima_efi_boot_mode removed from efi.h, <asm/bootparam.h> can
-> later be removed from further x86 header files.
->
+> BIOS can configure memory devices as firmware first.  This will send CXL
+> events to the firmware instead of the OS.  The firmware can then send
+> these events to the OS via UEFI.
+> 
+> UEFI v2.10 section N.2.14 defines a Common Platform Error Record (CPER)
+> format for CXL Component Events.  The format is mostly the same as the
+> CXL Common Event Record Format.  The difference is the use of a GUID in
+> the Section Type rather than a UUID as part of the event itself.
+> 
+> Add EFI support to detect CXL CPER records and call a registered
+> notifier with the event.  Enforce that only one notifier call can be
+> registered at any time.
+> 
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+One trivial thing inline.
 
-Apologies if I missed this in v1 but is the new asm-generic header
-really necessary? Could we instead turn arch_ima_efi_boot_mode into a
-function that is a static inline { return unset; } by default, but can
-be emitted out of line in one of the x86/platform/efi.c source files,
-where referring to boot_params is fine?
++ Agree that notifier naming is unwise given what that means elsewhere in the
+kernel.
 
-
-
-
-
-> v2:
->         * remove extra declaration of boot_params (Ard)
->
-
-Please don't put the revision log here, but below the --- so that 'git
-am' will ignore it.
-
-
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->  arch/x86/include/asm/efi.h       |  3 ---
->  arch/x86/include/asm/ima-efi.h   | 11 +++++++++++
->  include/asm-generic/Kbuild       |  1 +
->  include/asm-generic/ima-efi.h    | 16 ++++++++++++++++
->  security/integrity/ima/ima_efi.c |  5 +----
->  5 files changed, 29 insertions(+), 7 deletions(-)
->  create mode 100644 arch/x86/include/asm/ima-efi.h
->  create mode 100644 include/asm-generic/ima-efi.h
->
-> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-> index c4555b269a1b..99f31176c892 100644
-> --- a/arch/x86/include/asm/efi.h
-> +++ b/arch/x86/include/asm/efi.h
-> @@ -418,9 +418,6 @@ extern int __init efi_memmap_split_count(efi_memory_desc_t *md,
->  extern void __init efi_memmap_insert(struct efi_memory_map *old_memmap,
->                                      void *buf, struct efi_mem_range *mem);
->
-> -#define arch_ima_efi_boot_mode \
-> -       ({ extern struct boot_params boot_params; boot_params.secure_boot; })
-> -
->  #ifdef CONFIG_EFI_RUNTIME_MAP
->  int efi_get_runtime_map_size(void);
->  int efi_get_runtime_map_desc_size(void);
-> diff --git a/arch/x86/include/asm/ima-efi.h b/arch/x86/include/asm/ima-efi.h
-> new file mode 100644
-> index 000000000000..b4d904e66b39
-> --- /dev/null
-> +++ b/arch/x86/include/asm/ima-efi.h
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_X86_IMA_EFI_H
-> +#define _ASM_X86_IMA_EFI_H
+> diff --git a/drivers/firmware/efi/cper_cxl.h b/drivers/firmware/efi/cper_cxl.h
+> index 86bfcf7909ec..71f27b3e2810 100644
+> --- a/drivers/firmware/efi/cper_cxl.h
+> +++ b/drivers/firmware/efi/cper_cxl.h
+> @@ -10,11 +10,38 @@
+>  #ifndef LINUX_CPER_CXL_H
+>  #define LINUX_CPER_CXL_H
+>  
+> +#include <linux/cxl-event.h>
 > +
-> +#include <asm/setup.h>
-> +
-> +#define arch_ima_efi_boot_mode boot_params.secure_boot
-> +
-> +#include <asm-generic/ima-efi.h>
-> +
-> +#endif /* _ASM_X86_IMA_EFI_H */
-> diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
-> index def242528b1d..4fd16e71e8cd 100644
-> --- a/include/asm-generic/Kbuild
-> +++ b/include/asm-generic/Kbuild
-> @@ -26,6 +26,7 @@ mandatory-y += ftrace.h
->  mandatory-y += futex.h
->  mandatory-y += hardirq.h
->  mandatory-y += hw_irq.h
-> +mandatory-y += ima-efi.h
->  mandatory-y += io.h
->  mandatory-y += irq.h
->  mandatory-y += irq_regs.h
-> diff --git a/include/asm-generic/ima-efi.h b/include/asm-generic/ima-efi.h
-> new file mode 100644
-> index 000000000000..f87f5edef440
-> --- /dev/null
-> +++ b/include/asm-generic/ima-efi.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ */
-> +
-> +#ifndef __ASM_GENERIC_IMA_EFI_H_
-> +#define __ASM_GENERIC_IMA_EFI_H_
-> +
-> +#include <linux/efi.h>
-> +
+>  /* CXL Protocol Error Section */
+>  #define CPER_SEC_CXL_PROT_ERR						\
+>  	GUID_INIT(0x80B9EFB4, 0x52B5, 0x4DE3, 0xA7, 0x77, 0x68, 0x78,	\
+>  		  0x4B, 0x77, 0x10, 0x48)
+>  
+> +/* CXL Event record UUIDs are formated at GUIDs and reported in section type */
+
+as GUIDs
+
 > +/*
-> + * Only include this header file from your architecture's <asm/ima-efi.h>.
+> + * General Media Event Record
+> + * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
 > + */
-> +
-> +#ifndef arch_ima_efi_boot_mode
-> +#define arch_ima_efi_boot_mode efi_secureboot_mode_unset
-> +#endif
-> +
-> +#endif /* __ASM_GENERIC_FB_H_ */
-> diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/ima/ima_efi.c
-> index 138029bfcce1..56bbee271cec 100644
-> --- a/security/integrity/ima/ima_efi.c
-> +++ b/security/integrity/ima/ima_efi.c
-> @@ -6,10 +6,7 @@
->  #include <linux/module.h>
->  #include <linux/ima.h>
->  #include <asm/efi.h>
-> -
-> -#ifndef arch_ima_efi_boot_mode
-> -#define arch_ima_efi_boot_mode efi_secureboot_mode_unset
-> -#endif
-> +#include <asm/ima-efi.h>
->
->  static enum efi_secureboot_mode get_sb_mode(void)
->  {
-> --
-> 2.43.0
->
->
+> +#define CPER_SEC_CXL_GEN_MEDIA_GUID					\
+
+> 
+
 
