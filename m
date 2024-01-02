@@ -1,106 +1,73 @@
-Return-Path: <linux-efi+bounces-293-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-294-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED961821F68
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Jan 2024 17:23:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C664F821F6F
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jan 2024 17:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF2D31C224AC
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Jan 2024 16:23:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 721C1283999
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jan 2024 16:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCD114F6E;
-	Tue,  2 Jan 2024 16:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FF814F6D;
+	Tue,  2 Jan 2024 16:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PUxeijn1"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vSu3DRPA"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2042.outbound.protection.outlook.com [40.107.93.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C122714F6B;
-	Tue,  2 Jan 2024 16:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704212600; x=1735748600;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=nTj5BEcXpuVQut8n9uHupZr0JpAzXhHJg+74hWSY1iw=;
-  b=PUxeijn1knk0I0utwsaYXCi8SXsd1De+60zCq+cVhKpKzXhvru81OWx0
-   9KyAW7aSl2fSb77PKV21p9lmV//8XClc4VOkWSM5PyouafRVOpC5gol3I
-   N9IdX75JPrDvrBHJzgkxr92z+WteVBTHpndh5BRPdf+jIIetesu1ZzqZH
-   Ku4YEZWmKlEzVr7A5/rdti+PJoH4rcRCTdqAIrhtlwxoXhJpZXuHf9Yqr
-   dYEe+lHq2+b6IfLSYoLttlc+i5ybQm3Zeco/nXOmN/NxmSwF+XszNQ9r7
-   hVqPVj7kuQE0LMInuVG6Yidnv6a5DsrTXjz4IglIkLfBS2LnKqj8wWU4v
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="4231458"
-X-IronPort-AV: E=Sophos;i="6.04,325,1695711600"; 
-   d="scan'208";a="4231458"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 08:23:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="772879540"
-X-IronPort-AV: E=Sophos;i="6.04,325,1695711600"; 
-   d="scan'208";a="772879540"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Jan 2024 08:23:18 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 2 Jan 2024 08:23:17 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 2 Jan 2024 08:23:17 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 2 Jan 2024 08:23:17 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5BD14F63;
+	Tue,  2 Jan 2024 16:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YFqtD2Ejc0p3/9TCmKmVGqH5di+nWHetPWqJEuKCiQoALG1bXRuLXFjz5TMuMkr9f1emqJ2v3np5bCNj4/XH6jeKESljvZIbva3weNAJEvFCa9IlTigMFtbYFqI206nqmiT5lNl76C4en6AyXnGkE4dX///06QH0yPWSwXB/lcilCla0Ea6nD1JJPFFOQuqXwAeoCSMwMGeu5RfdNXqNU8AqCdYvf32jqDBmvJVFC6esxYDt2kfOHIU1R3ZnTIuaJs2ots01ix1UGs1ECzVIuWSeR5vkqrXJaOSjcrW8juuhWyHtN9Qc2flliWTjjBOEJgu5Q41Z57b7tbYJfhYpoA==
+ b=UGfGP89IJqEronp1mWfjwKqQato0VYdbooiIosi+HBXtJIp2ZK5ZLtt/yczFPQ4TwAAdGw44+P8mERgLzF94I3mApTmnWOmf1+WAaOzjpmETMCSK7ibkI+Ct2wwUaRMzhhCbljolT8Aa6ABVu/0WHA4tJY19UpmvOqGuHXUNsQoRsh5OYlO+4wvWYZj05WSYwN6prDILfZllBCqMb3oHsTZLxP+E1CENiy+0kbrcPWIwdqD/gOdUF/PMmqwlipjkup5dzjGtD4/OiWY4B5IBckTOO5tRbMe26StNiX7i6UerbBdIxQEEkaVDlX12ZNPnKmZbilZVM5nUjWYZlkiulg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BCATZMlhjzt0WZ3k34hJdQoByPkkIFRbfDbxzp3YkNM=;
- b=F6FdwWcTpOFuuOgHQ/gqNGizFwaUU/j9ARsb2Sf0/RA4Qk5AP8VW9K9y+RLcYywAebJh7o+m5+5IdYw5FZylP0Ca7xqM++C5pI4L6Qx3LXokckNTa2dHCCI5W0IQpDrH+lto/MGCorbjIEBKgI4BeLKI4JQIIS7sgx8XGoJZ59MIONo8i1kAFtf+X81JpWcpGgnN4Mx6BLoHHdWzwNGpOMFSRx9xVyEcDoP79JWiZ/N6J3gMRZSsgaRqOGUZ+feJeuOe7Z1q3I2pD1l5lfRhIeNX1l7NzPoFrI4OirmVvilfIcHCNSofojniMSgaVAcHHT6HS+V/sKK9oSskPkV0gw==
+ bh=BWiom1TaxWY0+jUhg8kXoh0+zOvUSmPdDkOKcWVcPyk=;
+ b=E+2fcsQPsdeKXm1AkDMfHYkx4k6zqm6XQCpFraTfn8cVKrSWo5+IbM7d6OmzF+Ie2tqbO81GKhhozorVOFMV9opC6f0qIFo9ZL/jF0SCEg64buOQueDudlADH/1sN+7Z92ckWf9I79I2GbsRfBiv/q9UAEj2E9NhgSzfICVFsL1MHDxABBZsWD4EgwBoUgzUZ8OxdLjo/z8/kY14aS8vTcEVi2qFamLXFMVO64wBKpV5VDobOFi1B3/1sUjPcCeqO8UHwBTuN743RT7uxxe0KQ9Ga1wirOCJOCrluZix1DANzAMaNT+QLjDRKTZ/46za138tar17ChqeW1fL2F8AWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BWiom1TaxWY0+jUhg8kXoh0+zOvUSmPdDkOKcWVcPyk=;
+ b=vSu3DRPAUzAWjlm0MOUdvk1g6AESgRLDbJMugjFC420xnFHeOIh9oH/w2WaUZGrTv87m7bOsIS+3hVCstCVxZOc02arpa/bUrZcwJ4Y5EqMBqY4y7n+/xuaXo52OCG9me95pyDCWmfZXklW+X9Kb8qKBVdMa2RUu5gK/BNul4Tc=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
- by DS0PR11MB7802.namprd11.prod.outlook.com (2603:10b6:8:de::22) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
+ by DM4PR12MB5390.namprd12.prod.outlook.com (2603:10b6:5:389::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Tue, 2 Jan
- 2024 16:23:16 +0000
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::da91:dbe5:857c:fa9c]) by SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::da91:dbe5:857c:fa9c%4]) with mapi id 15.20.7135.023; Tue, 2 Jan 2024
- 16:23:15 +0000
-Date: Tue, 2 Jan 2024 08:23:12 -0800
-From: Ira Weiny <ira.weiny@intel.com>
-To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>
-CC: Ard Biesheuvel <ardb@kernel.org>, Alison Schofield
-	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
- Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Yazen Ghannam
-	<yazen.ghannam@amd.com>, Smita Koralahalli
-	<Smita.KoralahalliChannabasappa@amd.com>
-Subject: Re: [PATCH 1/4] acpi/ghes, cxl: Create a common CXL struct to handle
- different CXL CPER records
-Message-ID: <6594387015431_151dc12949a@iweiny-mobl.notmuch>
-References: <20240102150933.161009-1-Smita.KoralahalliChannabasappa@amd.com>
- <20240102150933.161009-2-Smita.KoralahalliChannabasappa@amd.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240102150933.161009-2-Smita.KoralahalliChannabasappa@amd.com>
-X-ClientProxiedBy: SJ0PR03CA0376.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::21) To SA1PR11MB6733.namprd11.prod.outlook.com
- (2603:10b6:806:25c::17)
+ 2024 16:26:07 +0000
+Received: from BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::1d68:1eb8:d7dc:4b43]) by BL1PR12MB5732.namprd12.prod.outlook.com
+ ([fe80::1d68:1eb8:d7dc:4b43%6]) with mapi id 15.20.7135.023; Tue, 2 Jan 2024
+ 16:26:07 +0000
+Message-ID: <b2c4835d-0076-47f0-b0d1-792dc32cc305@amd.com>
+Date: Tue, 2 Jan 2024 10:26:05 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/efistub: fix the missing KASLR_FLAG bit in
+ boot_params->hdr.loadflags
+To: Ard Biesheuvel <ardb@kernel.org>, Yuntao Wang <ytcoode@gmail.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Ingo Molnar <mingo@kernel.org>, Dionna Glaze <dionnaglaze@google.com>,
+ Nikolay Borisov <nik.borisov@suse.com>
+References: <20231226140250.224516-1-ytcoode@gmail.com>
+ <CAMj1kXGE9JUoPUqBMJkwVUco67dEa8N95=gMJwE+Sj1ux1+5tQ@mail.gmail.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <CAMj1kXGE9JUoPUqBMJkwVUco67dEa8N95=gMJwE+Sj1ux1+5tQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DM5PR08CA0029.namprd08.prod.outlook.com
+ (2603:10b6:4:60::18) To BL1PR12MB5732.namprd12.prod.outlook.com
+ (2603:10b6:208:387::17)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -108,86 +75,113 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|DS0PR11MB7802:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4038b4fc-3248-4abb-a6df-08dc0baf1f7e
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|DM4PR12MB5390:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01d4910c-5466-4d60-d087-08dc0baf85f5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DgjicEmoGcNUuJvACoX4ost+pCUBhaI2eeK6rvSMEs4yX0dryDJZKD3cWFt1dpPdrNmNDk9sYfVtiksSukrDkSWFEqaDWtL/Vcu4ZhWV+DBMAzYu5gvLxAbYuuiS3DTCclNq4MRtgjuw9TipRgmZADKWDk8BITqpyF75+6FKwk1VmZ1oHXFGMUv1HEAmYr+XBcJxM2We7jYvxb7rK+trQh7iBwM7RqOjbfudbR1Gi44Qg8H2GVQYOd8R06ivTOCZQwnEB4yObtkxXZxFnDclD1kuNrMlJ7Jc1v6Bcq//t7KVl0LSulJq9m/UzYUeXN30dCr+ep50+Tmumb1R0gq/W6EMPvDvn2pzkSyrscxZHmr5QnwIkVJ4eePdKFOP+s/y+FeJSsoNj03g+t4TUbCeTa4svB1GdWjMVJS0Y6VFNMYurBxognPJDFjk+YjKvM8fmTvoyA0ZcoD4gcGH7veKIJD6zwEnoedTx1DLOt5C4lOnd/biTMPyzjvRb6Url/wcnao4ygC7Nf5GSYnggEe1XkQZd1uP8BhPVIlZq257UPDFZdp/NLslDdvEYUQ+IhQJ
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(39860400002)(346002)(136003)(396003)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(26005)(82960400001)(38100700002)(66946007)(66556008)(66476007)(316002)(54906003)(6486002)(478600001)(86362001)(5660300002)(2906002)(44832011)(8936002)(8676002)(4326008)(6666004)(6506007)(9686003)(41300700001)(6512007);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info:
+	KKRjZmmXPojIfp7vs8wbQQ4zejMukyY6JbnGfWNaBa0UpWFTMwAoVIlix3VRHd0y3p7pgeHacXfJTNg9hy91BrswOwLAMAtv7Rxnksxqv6FDNufE+YEbahRpbyLGUAbz6fxbGuUXRscb5BaBM8haH/Q1YTOumD3q0bIxGx9WO+goxmGFGfCKl3Rh0UiOk2qDNGeOldrIl7r41zFeOD7SiuCqu1uAWxIXxtbhDgxJ2xyvFNX9PaWla2wprYRK0hES/Sm6oBc7rL/dSx9kkEq4KH4V271HJfXpufxSAE1QhpHgF49GRPDl5wlMLfD3CDfCMPufWz3PjSgxj7awXLuZDsvZpnpDCjdceEpoj33kq8IMvUibU0rurVEmqy3LV0/nGEx9in4M2qjFnGqhXicLkbfJnbYTow8kHZ3qKhvZzvkA8T0CKRVjMnsD5Sm1CQzG3LsQ3mOJtHVhmxAQ90mPiMSg2d0nFYki0J67FhUZ9IS7d3MEzxP5Tqata+HlysRMsAiMuk83QWpZ4nbiTbYVNpAbVmHGckt1L2zI8NZwjKPamiCR9C3z+DeR3VAASjp/fy3OA6rW/pXDQ3/wTyUCcMbdCSUeIzYSbmbKXIQVYCYNX2nXxzrr170HDhXORxklvBSvkdNAXqP/lDo3jv2VAw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(376002)(136003)(346002)(39860400002)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(38100700002)(36756003)(31686004)(31696002)(86362001)(6512007)(53546011)(478600001)(83380400001)(4326008)(66946007)(66556008)(66476007)(6486002)(26005)(316002)(110136005)(2616005)(54906003)(8936002)(8676002)(6506007)(41300700001)(5660300002)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iZ/RNu5p2Rl8eXkXx1QZy0/SIAo3q1VTqHGx0od45DNSuFnLTFV7opH2bRol?=
- =?us-ascii?Q?jHRRtkn0TiEcPn/DCz7rS1E/QPMTUUAW74FUWFwm68rX1B81ByRldCcBGl+T?=
- =?us-ascii?Q?UR9j5MKDwC3zCN2pRbXSsyuOUA5Zfhd0MLfcJxbzG8pSUH1s/GJPvCI8kJ+5?=
- =?us-ascii?Q?m9xduQegi38E5Zl5Qps2u1cFeZRWx4FIe6D47wRMJ4T17owM6GdI6OCsBkOK?=
- =?us-ascii?Q?zAU2OR2C6P+CEXpNhGE1EIGZZedPRXh6fdY6wu6gdV5nXsHDX//XjxCUHzyj?=
- =?us-ascii?Q?oGQ7u/LQBa//wZk6O7+GZYRmMakwVqW1reZ6AMMCw20Rwx15Z5E1bPLIG2z9?=
- =?us-ascii?Q?le032jpHJVuzsJCQULOdVo08g0aoC3n403LdAclLjkr1BbTKCvVBKW0lN31i?=
- =?us-ascii?Q?PS9c1HG5nPT0vGGjhTRQJAv7VF1nbZbp3a5SbaPvUxBTP+vbIFYw/d+7n6p+?=
- =?us-ascii?Q?JIcKuYkWXBrFebUV6+oMz3/UaO/spce3uH5IG7F/6FCfemb6ntpSK+OStdwr?=
- =?us-ascii?Q?s3bh6HL46W/85OOBLWxXztZv7lFpiU8vyhvjwQKOUG7Z2ZWMzQXjEDiOK17a?=
- =?us-ascii?Q?SRvKA60JKyCKn2q7U7OGWACVkw879Mcxjd8el8PKffIghcyIjx304qA3Sa/F?=
- =?us-ascii?Q?NxlmBuC+OMNI66irNEmO2GNnL2Z1a25rWzJMGEOzXrugUt8v7qjb41Pzez4B?=
- =?us-ascii?Q?D7w2J6/4TLBqmeN36wnbBVTE0GYiM+XdjIafy3oGdtD3p+GVJSr6mtMUxwah?=
- =?us-ascii?Q?Vf1CE+4+YlLd01RhHCLyyKhAbtNu57b4ulVaqJcgXkfhNpNk1wrdKVRHOHbG?=
- =?us-ascii?Q?38sYvgwmAl9OKCywFt/N5z1RP69BTu2BtRveZfwurWgsZBBWKuUzyzWb6WjH?=
- =?us-ascii?Q?ifC/Q16lVpqoTuYs00visiP0wAS84dvnB/fcFw32p60+3fzLvsAX+APghRi3?=
- =?us-ascii?Q?k742ATN+lBRmeh5zInv70GLNwFRP6E8C0OJIOptJiZ8dfKmOOOl4pOzFuHA1?=
- =?us-ascii?Q?oXNBQgzubxPlzwL6vwxEsIntYc9PJzGWtYTevjpoPNu0pqvkvkfvHdhjpqRi?=
- =?us-ascii?Q?rC37sFZ8Iz1PUF06yotDSjap06AzWXVjzpTGyCp8eg404ghiKH4On8OPBV1H?=
- =?us-ascii?Q?BN/uvWolHqtBAXICtexoMBtf3+Go35iSlVBeBg+oZMOabS2G1GXDvRnMskj/?=
- =?us-ascii?Q?cF1XbMrejq9WbecNeu1mvekms1CghZdZfzkG88RJX9MgnAXQu4XJUPEB/B7l?=
- =?us-ascii?Q?RxgNkNyF043AgnM/w6cCbP/mmG4MunQnF10I4GYBbRV0401bIpUsSa1mH5yB?=
- =?us-ascii?Q?8hlLjYcmvRXAv/6rnEOGEhzAKaZk6HaOoEYn9G2U/g9bx9lSvsLS8jcN/JK/?=
- =?us-ascii?Q?ymXDk6pXeerGm+cx1zvonKlHlTLmtklGIlxqVWCaSytAbep2kEOtvcSr25qk?=
- =?us-ascii?Q?B+Xi95VcaMIb9u9+fkPIrXPQrN5Qo6hHutj/wGslPiIyG6KnZwqbd84R0ucY?=
- =?us-ascii?Q?+F0+VnCCeo3vNu4+70YN6M8wUPdlxg5Zht6caZ7RCft1FH5TFuT3jvKu7fK1?=
- =?us-ascii?Q?zfs9QTHW0gmPNeyio8MZLEJMA+0RcyyIvhDhmanB?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4038b4fc-3248-4abb-a6df-08dc0baf1f7e
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?clhLY1JFRFBXM08xODZOcCtjNHJRNHpuL2RLYU1lTThQdkVYT1oxRkROcXIv?=
+ =?utf-8?B?c3RiL1FVRE01YUVTdk0ya0JxQ0ZwRkRpSFVUN29QMmNQQkNveHBrWDd5V3BX?=
+ =?utf-8?B?aFoyWnphSi9qY25LQitxaWNmSVhpTjFwWmYzaWNuZVhNa21QWGpHaE5ZU2R2?=
+ =?utf-8?B?b0UvZlJwem40bUlDSlRKODEwNTJDRGYxSVRHQjJoNGh4K3JHeTBSWjQ3T3NH?=
+ =?utf-8?B?UHIxNSs2OGZlVjdSbmpXUlV5c1ZsNGoyM0VIZmFXc3RXbjNHOEhnWGd4VnNn?=
+ =?utf-8?B?L0EzeCsrSzQ3bFN1b1QwdlJZQkZta2J4SFhiQlJJSElheWJ6Z2plUzhmVWox?=
+ =?utf-8?B?SEw3Y0VYbjgwRmdqcWpSVnNORFU1bEgydTIrbGpaWTAydERnVFNOZ0VGQmJj?=
+ =?utf-8?B?SlJ2Qi9FRlhLUDBDTmZqUkxjRUFVSzV5R0JRNDF2UlNyOElnTW4vNUJHKzRE?=
+ =?utf-8?B?MzhKLzdRUTEyYldUNnRwZ1krZ2JhQ0tpTmoyVkZCdGozRmtsMHlja1JiRFpD?=
+ =?utf-8?B?STI5OWNDdzRhNy8wVExIbGU3VjRMcWtxK05zdzdwbWgxUU9jby90ZVdyUnl6?=
+ =?utf-8?B?MDZaUzdjOU04aXMvNjdjNWxVb1RQM1pDRlFNc01yaDJ3aU9JWVZ6Wi8vc1px?=
+ =?utf-8?B?TTNVMlpwM2NWcEN2UVhDRkkxV0prNmVtTlN6bzYwUWcxY2RTRk5YbCsycW5y?=
+ =?utf-8?B?L1d0MDZtTHJUMk1EcFE0UHduTXEvWThzTGZlMHV3dVlxakZ6RklncTVVOEtP?=
+ =?utf-8?B?aFg0ZWtaU0pRdDVYU2kvNmw5TUdzbHBKNEY0VjN0Sm1LNnpuL2c5MXZuZ2Mv?=
+ =?utf-8?B?NEZrTmFlVk5nQksvVTIvbFk1OTdOcjVES09OeGp3aW5sZ3RFWmRua3VoV0l4?=
+ =?utf-8?B?U0RHcnRCazFmMGZscGVVQlRkeUR1dUNUb1F0cGU4K0JmNmV6SUtiNHcvZ0Fy?=
+ =?utf-8?B?U3hlTHBvMFRrc3REOUZTRld2NmpMc2dzYmh5bXFsdHpZZllXYm55b2p4cXJj?=
+ =?utf-8?B?K3gxRlg2Mzc4dDF1dzZNRVZjb1FDc1oyUHBGNE9PNTRDL1huN3RaTmdpeFFh?=
+ =?utf-8?B?MEJ5eXZVejBVSTNwRmI2cjhhRmlPK1FickZ1emNCNDNya0pmMmRRUlFrV1pS?=
+ =?utf-8?B?b3ZZMVJuWmhheUUyWmx6NmJoYUhlRTYvNGVVMnhZeDBhUVNJRGdDT2EvRVNZ?=
+ =?utf-8?B?L0VISWFIQXVHTi9jTi9GVG5mTE5hWGUyMm1KaVh2SXZIQjBqVHJJNkhLTEpx?=
+ =?utf-8?B?bG81cGRVaEx0T0hnVm1tV01nOXJwcVVFaFovNFhEcjdISFdGRHl3TDdHQk5o?=
+ =?utf-8?B?MlRERjNhdHZyZUlzUlBYYm56akJlZGx5emc2bFFmQ1lRVHpmS3E5dzhHalZ6?=
+ =?utf-8?B?c3VKZEhuTm5ITkZFNXJKdHRDb2ZONElpMzVhYllhYlp6WkFyeWtWaWVXazhw?=
+ =?utf-8?B?TitGVjhjQkEvNlFMODB5UHVGSC9VclV3clVNbWJPMUJXVTJodnBmTy9EeVQ4?=
+ =?utf-8?B?SEluSXNxai9VVWhPZFRQUWYvN2NJcFd6OUc5VlpUVUdjL2Noci9valpzL0tv?=
+ =?utf-8?B?RWN2ZUppNXAvbFplL25HYmROWGZuUmNEbEROcWFtWUhjbTluanVsdHJ4UmlM?=
+ =?utf-8?B?bEt4NFUwRHZEM3I2TEdzZ3JZNVhnRTZtS0FGSlhSOVVxRExDcGo3eGk1dmJk?=
+ =?utf-8?B?ZFIwYnZTaFA2ZVUvNlBqakNBem5nbmRMeE5mQUV2aXpnYWVNQUp6MHZmR3dI?=
+ =?utf-8?B?YUk0Wm9BWXd1K0k3VmU5azMzSHlwYU5Mcmw1RS9WdDlMaTRiK3NIR0JTS0Vm?=
+ =?utf-8?B?VGVZVm5ldTdDdDUxSDBwbnRXRmp3ek84QzVNK1ZnaGJtWmR2cEs1Y3Z4SzJn?=
+ =?utf-8?B?Wlo0RHdScjFCaFVHc1ZBMVlpQjVhQk40SFZUb0x4QnNWcy9NMFVDVnh2QzBK?=
+ =?utf-8?B?aXdQakxiczJ6RnRtTFZkVnlnbUQrT0JBVFdnMXhmYWtuOEptQks3VFh0OS8v?=
+ =?utf-8?B?Z1RYREZxdStYaURWTzhWY1ducTR1RkR0TFRXRkp5WlU5clhRWmpPWm9IN0o1?=
+ =?utf-8?B?ZG1hcDBzTFFLNlQvK0I0U0p5dXBDb2dmSjQrbHluR1VNdUYyZmpmOXdRSVdZ?=
+ =?utf-8?Q?Sv9wWAiOWpIgI2HrLsm9w3Svf?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01d4910c-5466-4d60-d087-08dc0baf85f5
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2024 16:23:15.6930
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2024 16:26:07.6094
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 42DMYIz/R+UYOOZX2nn7Oe2tzISSlUwCy0dCUrvKGGm4J56y3Yuqd5Vu1pgX/QoyWx5JVeRP5xMH5XsznyiROQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7802
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: +aMTvbz5oKnGyK+1hQoUPh5fyF8gjD1TWNbFPzTLvC7ZSr8zKp9f3WJh5GhE9jqJ5F+vfmmtaqpOag0OLMvIcw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5390
 
-Smita Koralahalli wrote:
-> Currently defined cxl_cper_callback interface between CXL subsystem and
-> GHES module is just confined to handling CXL Component errors only.
+On 1/2/24 09:29, Ard Biesheuvel wrote:
+> On Tue, 26 Dec 2023 at 15:03, Yuntao Wang <ytcoode@gmail.com> wrote:
+>>
+>> When KASLR is enabled, the KASLR_FLAG bit in boot_params->hdr.loadflags
+>> should be set to 1 to propagate KASLR status from compressed kernel to
+>> kernel, just as the choose_random_location() function does.
+>>
+>> Currently, when kernel is booted via efi stub, the KASLR_FLAG bit in
+>> boot_params->hdr.loadflags is not set, even though it should be. This
+>> causes some functions, such as kernel_randomize_memory(), not to execute
+>> as expected. Fix it.
+>>
+>> Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+>> ---
+>>   drivers/firmware/efi/libstub/x86-stub.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+>> index da9b7b8d0716..b0c68593ad40 100644
+>> --- a/drivers/firmware/efi/libstub/x86-stub.c
+>> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+>> @@ -787,7 +787,10 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
+>>                          efi_debug("AMI firmware v2.0 or older detected - disabling physical KASLR\n");
+>>                          seed[0] = 0;
+>>                  }
+>> -       }
+>> +
+>> +               boot_params_ptr->hdr.loadflags |= KASLR_FLAG;
+>> +       } else
+>> +               boot_params_ptr->hdr.loadflags &= ~KASLR_FLAG;
+>>
 > 
-> Extend this callback to process CXL Protocol errors as well. Achieve
-> by defining a new struct cxl_cper_rec_data to include cxl_cper_event_rec
-> and other fields of CXL protocol errors which will be defined in future
-> patches.
+> Thanks for the fix.
+
+Does it need a Fixes: tag?
+
+Thanks,
+Tom
+
 > 
-> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-
-[snip]
-
->  
->  static int __init cxl_pci_driver_init(void)
-> diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
-> index 17eadee819b6..afa71ee0437c 100644
-> --- a/include/linux/cxl-event.h
-> +++ b/include/linux/cxl-event.h
-> @@ -141,8 +141,12 @@ struct cxl_cper_event_rec {
->  	union cxl_event event;
->  } __packed;
->  
-> +struct cxl_cper_rec_data {
-> +	struct cxl_cper_event_rec rec;
-
-NIT: I would call this something like event to distinguish it from other
-record data.
-
-Other than that this seems reasonable to me.
-
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-
-[snip]
+> I'll queue this up right away, but I am going to drop the 'else' part,
+> given that the KASLR flag is never set by the EFI stub so clearing it
+> should never be needed.
+> 
+> 
+>>          status = efi_random_alloc(alloc_size, CONFIG_PHYSICAL_ALIGN, &addr,
+>>                                    seed[0], EFI_LOADER_CODE,
+>> --
+>> 2.43.0
+>>
 
