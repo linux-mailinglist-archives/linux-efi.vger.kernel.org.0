@@ -1,320 +1,134 @@
-Return-Path: <linux-efi+bounces-285-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-286-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF770821D60
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Jan 2024 15:07:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E095821E60
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jan 2024 16:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65AD41F22CB9
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Jan 2024 14:07:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA3BB280FBC
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jan 2024 15:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856BF10955;
-	Tue,  2 Jan 2024 14:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9F214F6A;
+	Tue,  2 Jan 2024 15:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="F6WKApO+";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+9dAoq18";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="F6WKApO+";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+9dAoq18"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VDgPd76j"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2070.outbound.protection.outlook.com [40.107.243.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFB510A08;
-	Tue,  2 Jan 2024 14:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 783D421CD5;
-	Tue,  2 Jan 2024 14:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1704204431; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2pKW3MOvzlLddZ8wgZpZ0Qkpaa3ApoAPPuTxT5p1ZAQ=;
-	b=F6WKApO+r2ZU30ximQyD5FQDaNAaX0li7FenxLAj3qwi7rwrUT6vbfe7wGfApwPKjvxnVR
-	Xx4X0u3N2isHL3J6/iZCFMX6NngL0byNjeuZE5AFPbvEKCjJqUI+7eDJRrjCIsKtVP7tHN
-	7Zc1ZPD0Aav+YmDTQZ232m6KNTCdP58=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1704204431;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2pKW3MOvzlLddZ8wgZpZ0Qkpaa3ApoAPPuTxT5p1ZAQ=;
-	b=+9dAoq18ms6dYGA0+pQrqGAVAdmP0l/DayAjXcTwFRmYSauYC5JqR+Sm5mUbdVClGbRW55
-	Ugp4ITda/Zat79Ag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1704204431; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2pKW3MOvzlLddZ8wgZpZ0Qkpaa3ApoAPPuTxT5p1ZAQ=;
-	b=F6WKApO+r2ZU30ximQyD5FQDaNAaX0li7FenxLAj3qwi7rwrUT6vbfe7wGfApwPKjvxnVR
-	Xx4X0u3N2isHL3J6/iZCFMX6NngL0byNjeuZE5AFPbvEKCjJqUI+7eDJRrjCIsKtVP7tHN
-	7Zc1ZPD0Aav+YmDTQZ232m6KNTCdP58=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1704204431;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2pKW3MOvzlLddZ8wgZpZ0Qkpaa3ApoAPPuTxT5p1ZAQ=;
-	b=+9dAoq18ms6dYGA0+pQrqGAVAdmP0l/DayAjXcTwFRmYSauYC5JqR+Sm5mUbdVClGbRW55
-	Ugp4ITda/Zat79Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EBA181340C;
-	Tue,  2 Jan 2024 14:07:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WBk7OI4YlGUHWwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 02 Jan 2024 14:07:10 +0000
-Message-ID: <97f118fc-b38f-4bcc-83d3-4d3c13edf7a0@suse.de>
-Date: Tue, 2 Jan 2024 15:07:10 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19EE13FF4;
+	Tue,  2 Jan 2024 15:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BS7PopijizYniOcuHsdMjgxfLb8pD+13B8d7hRm/oWuO7lhRIj2fVN/GeXv2INApk+juzuABrPHOwfvCkepJFhZUcmK9nmhHAYfADN1kbQIw7YBtaUjOsGHFjDeXe8Ykyrgqw5NWOcfmmTt/1fNDjeJz00QV4tPW3kJYfTBiysphA3d93tTkqF1mMsuz/uI4+L0BSwijOrHD66yeTCwXBwPUgAfdPOw1Wnbu/TAnkN79zaf5x9/eqafVxOwwsxvOtFTY/pRJt+50WrzAvrffLXrMbBvN/71Oe3AgCdQ6on0xHpHdPsMrQ+CtXpy6wbvZr3uN46ZJ52STs4SSTMrPMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hrRTEe2QfuROLsMOjgmdBEJJF0cyaIww9z0gIjgksRg=;
+ b=Oeg8mKvZWpdaNSu166Lnpr6VFUZ1EKihPXU+E96zW4QSGihX2KYWt0nDhACtBd784azhLMqlg5JA9yufumppDVLti6llkSxI9BCZZYi+0I7OEMs5bYuvPZ3B7uXj/Q2leKC5JhtolVb5kl5yHBMS8KhIjPYIrnZxS02HV7nNU+KiJcRXQ7Bb5q+SFhgWNJTsM9vmrABivlmw3WK5apasCb4e5cTVFoVzXxdtcy2iloSA1+3SixO56QYdsrMWvvOdx5F5fy+ksqSHmdaqbSEvs94/fUnT79fHRSO2BfVqGVrlPTITeRuYAJEi6/qh4glDPJFHXfqbBg3Ib54sxIpEuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hrRTEe2QfuROLsMOjgmdBEJJF0cyaIww9z0gIjgksRg=;
+ b=VDgPd76jXFaeyk5rFAnadCBRBpNxSmHwbccGNU5F4/8E1rVDcDDeQl8H1Hr98tkIXisJxn4F//GU3LrCjekOspLUEKR3zbCMdX7xC+CSemWlLCof16Et1MKeMcQmE0rtwPQ++5LXh9gtOeuzxtQHRxpxcjUWSmi/afZ15RLh/DA=
+Received: from BY5PR03CA0017.namprd03.prod.outlook.com (2603:10b6:a03:1e0::27)
+ by BL1PR12MB5063.namprd12.prod.outlook.com (2603:10b6:208:31a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.13; Tue, 2 Jan
+ 2024 15:09:46 +0000
+Received: from SJ1PEPF00001CDE.namprd05.prod.outlook.com
+ (2603:10b6:a03:1e0:cafe::96) by BY5PR03CA0017.outlook.office365.com
+ (2603:10b6:a03:1e0::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.21 via Frontend
+ Transport; Tue, 2 Jan 2024 15:09:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00001CDE.mail.protection.outlook.com (10.167.242.6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7159.9 via Frontend Transport; Tue, 2 Jan 2024 15:09:45 +0000
+Received: from ethanolx50f7host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 2 Jan
+ 2024 09:09:44 -0600
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+To: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>
+CC: Ard Biesheuvel <ardb@kernel.org>, Alison Schofield
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
+ Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Yazen Ghannam
+	<yazen.ghannam@amd.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>
+Subject: [PATCH 0/4] acpi/ghes, cper, cxl: Trace FW-First CXL Protocol Errors
+Date: Tue, 2 Jan 2024 15:09:29 +0000
+Message-ID: <20240102150933.161009-1-Smita.KoralahalliChannabasappa@amd.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] arch/x86: Add <asm/ima-efi.h> for
- arch_ima_efi_boot_mode
-Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- bhelgaas@google.com, arnd@arndb.de, zohar@linux.ibm.com,
- dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
- serge@hallyn.com, javierm@redhat.com, linux-arch@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-integrity@vger.kernel.org,
- linux-security-module@vger.kernel.org
-References: <20231215122614.5481-1-tzimmermann@suse.de>
- <20231215122614.5481-3-tzimmermann@suse.de>
- <CAMj1kXHrn-PxpMGnR4VoHv7kHvQYyf8SS9i1irm9Gi_uBseciw@mail.gmail.com>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <CAMj1kXHrn-PxpMGnR4VoHv7kHvQYyf8SS9i1irm9Gi_uBseciw@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------V1rJHPDmuLABI0b4MEA4rKIk"
-X-Spam-Level: 
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -3.79
-X-Spamd-Result: default: False [-3.79 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 TO_DN_SOME(0.00)[];
-	 HAS_ATTACHMENT(0.00)[];
-	 MIME_BASE64_TEXT_BOGUS(1.00)[];
-	 R_RATELIMIT(0.00)[to_ip_from(RLf6fmkuiuubj71hj5sz5bt3qt)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 NEURAL_HAM_SHORT(-0.20)[-0.999];
-	 MIME_BASE64_TEXT(0.10)[];
-	 SIGNED_PGP(-2.00)[];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
-	 MID_RHS_MATCH_FROM(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[21];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FREEMAIL_CC(0.00)[linutronix.de,redhat.com,alien8.de,linux.intel.com,kernel.org,zytor.com,google.com,arndb.de,linux.ibm.com,gmail.com,paul-moore.com,namei.org,hallyn.com,vger.kernel.org];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Flag: NO
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDE:EE_|BL1PR12MB5063:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1045f04d-f522-4244-b4ac-08dc0ba4db1d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	VbB6E+kUlKyLTKEUMYNtn8zpeZOXsQKxQ3AlNx/zwWjtEXGBwIAyuhwEB/7yBmHptiHg/MNGyclbosL03Q+oS339sSXhywkw/+l7SxiM6eYP7k5n5V93LdGNTZwxrvJ9NO8eeWl6/nutnlvZ06ptZ8KMmPUVdzjs9+Fjg+L1P4iRDvHDPff1xnrUk3ue281M3/npaJtGLSiwo6Mbz6oDZxKkswkY1HaJRqtuohJbWlzr6v/0vHq5wirZvw7bTzqJUtApFHALISBHI9x6DG82jpSWfqDr5R2TSYHAgwexH4TPjt6/hgbfIC+Nx8Sdr3ggYyfUemLuqXVpeolE0cRtLKD+84UFtYjHysAh1/7tsH1RhLqDHiI0oEcRBFwr59xmAMKmLENzuFaSb9hRB+fkvT4g5+jCs774268jc83R+AhWUAEZ++M3hxbmK/cLV7ta07x076Db2Wpzz1zZDLGJ5o7ljj0eizlv7yzXgCFKgHEv63ve6iCkvmfup49EGwal8AiEciY+/9gBcGT/lYl0f4QjhtK4cEw+U3RowFVM9QV3RaYbvQLtKLjLxml0H1tykOhkctxCTBeFvm/Vh6jKhTaPRhA4xs1bOJ7tWLCxNThUM/CvektR6wMs6XjI8KV5F2+5mvMrBczSSjk76OSDULveYqVePpXx+ExVriUaS1dH+5X/yyioYOGo95U9gkYrunw3S5gX4rTwy+uB4W4nZXBliz2tqEgDHCOANQE15oFZyVunIzPTBWPV1HXbBxx7
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(396003)(376002)(346002)(230922051799003)(64100799003)(451199024)(1800799012)(82310400011)(186009)(36840700001)(46966006)(40470700004)(40480700001)(40460700003)(36756003)(6666004)(70586007)(70206006)(7696005)(86362001)(356005)(336012)(16526019)(426003)(81166007)(1076003)(83380400001)(2616005)(26005)(41300700001)(47076005)(2906002)(4744005)(5660300002)(4326008)(966005)(478600001)(36860700001)(82740400003)(110136005)(54906003)(316002)(8936002)(8676002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2024 15:09:45.7217
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1045f04d-f522-4244-b4ac-08dc0ba4db1d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CDE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5063
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------V1rJHPDmuLABI0b4MEA4rKIk
-Content-Type: multipart/mixed; boundary="------------he60F04tXY0KIGYaLWTuKqnB";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- bhelgaas@google.com, arnd@arndb.de, zohar@linux.ibm.com,
- dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
- serge@hallyn.com, javierm@redhat.com, linux-arch@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-integrity@vger.kernel.org,
- linux-security-module@vger.kernel.org
-Message-ID: <97f118fc-b38f-4bcc-83d3-4d3c13edf7a0@suse.de>
-Subject: Re: [PATCH v2 2/3] arch/x86: Add <asm/ima-efi.h> for
- arch_ima_efi_boot_mode
-References: <20231215122614.5481-1-tzimmermann@suse.de>
- <20231215122614.5481-3-tzimmermann@suse.de>
- <CAMj1kXHrn-PxpMGnR4VoHv7kHvQYyf8SS9i1irm9Gi_uBseciw@mail.gmail.com>
-In-Reply-To: <CAMj1kXHrn-PxpMGnR4VoHv7kHvQYyf8SS9i1irm9Gi_uBseciw@mail.gmail.com>
+This patchset adds trace event support for FW-First Protocol Errors.
 
---------------he60F04tXY0KIGYaLWTuKqnB
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+This series depends on:
+https://lore.kernel.org/linux-cxl/20231220-cxl-cper-v5-0-1bb8a4ca2c7a@intel.com
 
-SGlpIEFyZA0KDQpBbSAxOS4xMi4yMyB1bSAxMjozOCBzY2hyaWViIEFyZCBCaWVzaGV1dmVs
-Og0KPiBIaSBUaG9tYXMsDQo+IA0KPiBPbiBGcmksIDE1IERlYyAyMDIzIGF0IDEzOjI2LCBU
-aG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3VzZS5kZT4gd3JvdGU6DQo+Pg0KPj4g
-VGhlIGhlYWRlciBmaWxlIDxhc20vZWZpLmg+IGNvbnRhaW5zIHRoZSBtYWNybyBhcmNoX2lt
-YV9lZmlfYm9vdF9tb2RlLA0KPj4gd2hpY2ggZXhwYW5kcyB0byB1c2Ugc3RydWN0IGJvb3Rf
-cGFyYW1zIGZyb20gPGFzbS9ib290cGFyYW1zLmg+LiBNYW55DQo+PiBkcml2ZXJzIGluY2x1
-ZGUgPGxpbnV4L2VmaS5oPiwgYnV0IGRvIG5vdCB1c2UgYm9vdCBwYXJhbWV0ZXJzLiBDaGFu
-Z2VzDQo+PiB0byBib290cGFyYW0uaCBvciBpdHMgaW5jbHVkZWQgaGVhZGVycyBjYW4gZWFz
-aWx5IHRyaWdnZXIgbGFyZ2UsDQo+PiB1bm5lc3NhcnkgcmVidWlsZHMgb2YgdGhlIGtlcm5l
-bC4NCj4+DQo+PiBNb3ZpbmcgeDg2J3MgYXJjaF9pbWFfZWZpX2Jvb3RfbW9kZSB0byA8YXNt
-L2ltYS1lZmkuaD4gYW5kIGluY2x1ZGluZw0KPj4gPGFzbS9zZXR1cC5oPiBzZXBhcmF0ZXMg
-dGhhdCBkZXBlbmRlbmN5IGZyb20gdGhlIHJlc3Qgb2YgdGhlIEVGSQ0KPj4gaW50ZXJmYWNl
-cy4gVGhlIG9ubHkgdXNlciBpcyBpbiBpbWFfZWZpLmMuIEFzIHRoZSBmaWxlIGFscmVhZHkg
-ZGVjbGFyZXMNCj4+IGEgZGVmYXVsdCB2YWx1ZSBmb3IgYXJjaF9pbWFfZWZpX2Jvb3RfbW9k
-ZSwgbW92ZSB0aGlzIGRlZmluZSBpbnRvDQo+PiBhc20tZ2VuZXJpYyBmb3IgYWxsIG90aGVy
-IGFyY2hpdGVjdHVyZXMuDQo+Pg0KPj4gV2l0aCBhcmNoX2ltYV9lZmlfYm9vdF9tb2RlIHJl
-bW92ZWQgZnJvbSBlZmkuaCwgPGFzbS9ib290cGFyYW0uaD4gY2FuDQo+PiBsYXRlciBiZSBy
-ZW1vdmVkIGZyb20gZnVydGhlciB4ODYgaGVhZGVyIGZpbGVzLg0KPj4NCj4gDQo+IEFwb2xv
-Z2llcyBpZiBJIG1pc3NlZCB0aGlzIGluIHYxIGJ1dCBpcyB0aGUgbmV3IGFzbS1nZW5lcmlj
-IGhlYWRlcg0KPiByZWFsbHkgbmVjZXNzYXJ5PyBDb3VsZCB3ZSBpbnN0ZWFkIHR1cm4gYXJj
-aF9pbWFfZWZpX2Jvb3RfbW9kZSBpbnRvIGENCj4gZnVuY3Rpb24gdGhhdCBpcyBhIHN0YXRp
-YyBpbmxpbmUgeyByZXR1cm4gdW5zZXQ7IH0gYnkgZGVmYXVsdCwgYnV0IGNhbg0KPiBiZSBl
-bWl0dGVkIG91dCBvZiBsaW5lIGluIG9uZSBvZiB0aGUgeDg2L3BsYXRmb3JtL2VmaS5jIHNv
-dXJjZSBmaWxlcywNCj4gd2hlcmUgcmVmZXJyaW5nIHRvIGJvb3RfcGFyYW1zIGlzIGZpbmU/
-DQoNCkkgY2Fubm90IGZpZ3VyZSBvdXQgaG93IHRvIGRvIHRoaXMgd2l0aG91dCAqc29tZXRo
-aW5nKiBpbiBhc20tZ2VuZXJpYyBvciANCmFkZGluZyBpZi1DT05GSUdfWDg2IGd1YXJkcyBp
-biBpbWEtZWZpLmMuDQoNCkJ1dCBJIG5vdGljZWQgdGhhdCBsaW51eC9lZmkuaCBhbHJlYWR5
-IGNvbnRhaW5zIDIgb3IgMyBpZmRlZiBicmFuY2hlcyANCmZvciB4ODYuIFdvdWxkIGl0IGJl
-IGFuIG9wdGlvbiB0byBtb3ZlIHRoaXMgY29kZSBpbnRvIGFzbS9lZmkuaCANCihpbmNsdWRp
-bmcgYSBoZWFkZXIgZmlsZSBpbiBhc20tZ2VuZXJpYyBmb3IgdGhlIG5vbi14ODYgdmFyaWFu
-dHMpIGFuZCANCmFkZCB0aGUgYXJjaF9pbWFfZWZpX2Jvb3RfbW9kZSgpIGhlbHBlciB0aGVy
-ZSBhcyB3ZWxsPyAgQXQgbGVhc3QgdGhhdCANCndvdWxkbid0IGJlIGEgaGVhZGVyIGZvciBv
-bmx5IGEgc2luZ2xlIGRlZmluZS4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiANCj4g
-DQo+IA0KPiANCj4gDQo+PiB2MjoNCj4+ICAgICAgICAgICogcmVtb3ZlIGV4dHJhIGRlY2xh
-cmF0aW9uIG9mIGJvb3RfcGFyYW1zIChBcmQpDQo+Pg0KPiANCj4gUGxlYXNlIGRvbid0IHB1
-dCB0aGUgcmV2aXNpb24gbG9nIGhlcmUsIGJ1dCBiZWxvdyB0aGUgLS0tIHNvIHRoYXQgJ2dp
-dA0KPiBhbScgd2lsbCBpZ25vcmUgaXQuDQo+IA0KPiANCj4+IFNpZ25lZC1vZmYtYnk6IFRo
-b21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0KPj4gLS0tDQo+PiAgIGFy
-Y2gveDg2L2luY2x1ZGUvYXNtL2VmaS5oICAgICAgIHwgIDMgLS0tDQo+PiAgIGFyY2gveDg2
-L2luY2x1ZGUvYXNtL2ltYS1lZmkuaCAgIHwgMTEgKysrKysrKysrKysNCj4+ICAgaW5jbHVk
-ZS9hc20tZ2VuZXJpYy9LYnVpbGQgICAgICAgfCAgMSArDQo+PiAgIGluY2x1ZGUvYXNtLWdl
-bmVyaWMvaW1hLWVmaS5oICAgIHwgMTYgKysrKysrKysrKysrKysrKw0KPj4gICBzZWN1cml0
-eS9pbnRlZ3JpdHkvaW1hL2ltYV9lZmkuYyB8ICA1ICstLS0tDQo+PiAgIDUgZmlsZXMgY2hh
-bmdlZCwgMjkgaW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMoLSkNCj4+ICAgY3JlYXRlIG1v
-ZGUgMTAwNjQ0IGFyY2gveDg2L2luY2x1ZGUvYXNtL2ltYS1lZmkuaA0KPj4gICBjcmVhdGUg
-bW9kZSAxMDA2NDQgaW5jbHVkZS9hc20tZ2VuZXJpYy9pbWEtZWZpLmgNCj4+DQo+PiBkaWZm
-IC0tZ2l0IGEvYXJjaC94ODYvaW5jbHVkZS9hc20vZWZpLmggYi9hcmNoL3g4Ni9pbmNsdWRl
-L2FzbS9lZmkuaA0KPj4gaW5kZXggYzQ1NTViMjY5YTFiLi45OWYzMTE3NmM4OTIgMTAwNjQ0
-DQo+PiAtLS0gYS9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9lZmkuaA0KPj4gKysrIGIvYXJjaC94
-ODYvaW5jbHVkZS9hc20vZWZpLmgNCj4+IEBAIC00MTgsOSArNDE4LDYgQEAgZXh0ZXJuIGlu
-dCBfX2luaXQgZWZpX21lbW1hcF9zcGxpdF9jb3VudChlZmlfbWVtb3J5X2Rlc2NfdCAqbWQs
-DQo+PiAgIGV4dGVybiB2b2lkIF9faW5pdCBlZmlfbWVtbWFwX2luc2VydChzdHJ1Y3QgZWZp
-X21lbW9yeV9tYXAgKm9sZF9tZW1tYXAsDQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHZvaWQgKmJ1Ziwgc3RydWN0IGVmaV9tZW1fcmFuZ2UgKm1lbSk7DQo+
-Pg0KPj4gLSNkZWZpbmUgYXJjaF9pbWFfZWZpX2Jvb3RfbW9kZSBcDQo+PiAtICAgICAgICh7
-IGV4dGVybiBzdHJ1Y3QgYm9vdF9wYXJhbXMgYm9vdF9wYXJhbXM7IGJvb3RfcGFyYW1zLnNl
-Y3VyZV9ib290OyB9KQ0KPj4gLQ0KPj4gICAjaWZkZWYgQ09ORklHX0VGSV9SVU5USU1FX01B
-UA0KPj4gICBpbnQgZWZpX2dldF9ydW50aW1lX21hcF9zaXplKHZvaWQpOw0KPj4gICBpbnQg
-ZWZpX2dldF9ydW50aW1lX21hcF9kZXNjX3NpemUodm9pZCk7DQo+PiBkaWZmIC0tZ2l0IGEv
-YXJjaC94ODYvaW5jbHVkZS9hc20vaW1hLWVmaS5oIGIvYXJjaC94ODYvaW5jbHVkZS9hc20v
-aW1hLWVmaS5oDQo+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPj4gaW5kZXggMDAwMDAwMDAw
-MDAwLi5iNGQ5MDRlNjZiMzkNCj4+IC0tLSAvZGV2L251bGwNCj4+ICsrKyBiL2FyY2gveDg2
-L2luY2x1ZGUvYXNtL2ltYS1lZmkuaA0KPj4gQEAgLTAsMCArMSwxMSBAQA0KPj4gKy8qIFNQ
-RFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wICovDQo+PiArI2lmbmRlZiBfQVNNX1g4
-Nl9JTUFfRUZJX0gNCj4+ICsjZGVmaW5lIF9BU01fWDg2X0lNQV9FRklfSA0KPj4gKw0KPj4g
-KyNpbmNsdWRlIDxhc20vc2V0dXAuaD4NCj4+ICsNCj4+ICsjZGVmaW5lIGFyY2hfaW1hX2Vm
-aV9ib290X21vZGUgYm9vdF9wYXJhbXMuc2VjdXJlX2Jvb3QNCj4+ICsNCj4+ICsjaW5jbHVk
-ZSA8YXNtLWdlbmVyaWMvaW1hLWVmaS5oPg0KPj4gKw0KPj4gKyNlbmRpZiAvKiBfQVNNX1g4
-Nl9JTUFfRUZJX0ggKi8NCj4+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2FzbS1nZW5lcmljL0ti
-dWlsZCBiL2luY2x1ZGUvYXNtLWdlbmVyaWMvS2J1aWxkDQo+PiBpbmRleCBkZWYyNDI1Mjhi
-MWQuLjRmZDE2ZTcxZThjZCAxMDA2NDQNCj4+IC0tLSBhL2luY2x1ZGUvYXNtLWdlbmVyaWMv
-S2J1aWxkDQo+PiArKysgYi9pbmNsdWRlL2FzbS1nZW5lcmljL0tidWlsZA0KPj4gQEAgLTI2
-LDYgKzI2LDcgQEAgbWFuZGF0b3J5LXkgKz0gZnRyYWNlLmgNCj4+ICAgbWFuZGF0b3J5LXkg
-Kz0gZnV0ZXguaA0KPj4gICBtYW5kYXRvcnkteSArPSBoYXJkaXJxLmgNCj4+ICAgbWFuZGF0
-b3J5LXkgKz0gaHdfaXJxLmgNCj4+ICttYW5kYXRvcnkteSArPSBpbWEtZWZpLmgNCj4+ICAg
-bWFuZGF0b3J5LXkgKz0gaW8uaA0KPj4gICBtYW5kYXRvcnkteSArPSBpcnEuaA0KPj4gICBt
-YW5kYXRvcnkteSArPSBpcnFfcmVncy5oDQo+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9hc20t
-Z2VuZXJpYy9pbWEtZWZpLmggYi9pbmNsdWRlL2FzbS1nZW5lcmljL2ltYS1lZmkuaA0KPj4g
-bmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4+IGluZGV4IDAwMDAwMDAwMDAwMC4uZjg3ZjVlZGVm
-NDQwDQo+PiAtLS0gL2Rldi9udWxsDQo+PiArKysgYi9pbmNsdWRlL2FzbS1nZW5lcmljL2lt
-YS1lZmkuaA0KPj4gQEAgLTAsMCArMSwxNiBAQA0KPj4gKy8qIFNQRFgtTGljZW5zZS1JZGVu
-dGlmaWVyOiBHUEwtMi4wKyAqLw0KPj4gKw0KPj4gKyNpZm5kZWYgX19BU01fR0VORVJJQ19J
-TUFfRUZJX0hfDQo+PiArI2RlZmluZSBfX0FTTV9HRU5FUklDX0lNQV9FRklfSF8NCj4+ICsN
-Cj4+ICsjaW5jbHVkZSA8bGludXgvZWZpLmg+DQo+PiArDQo+PiArLyoNCj4+ICsgKiBPbmx5
-IGluY2x1ZGUgdGhpcyBoZWFkZXIgZmlsZSBmcm9tIHlvdXIgYXJjaGl0ZWN0dXJlJ3MgPGFz
-bS9pbWEtZWZpLmg+Lg0KPj4gKyAqLw0KPj4gKw0KPj4gKyNpZm5kZWYgYXJjaF9pbWFfZWZp
-X2Jvb3RfbW9kZQ0KPj4gKyNkZWZpbmUgYXJjaF9pbWFfZWZpX2Jvb3RfbW9kZSBlZmlfc2Vj
-dXJlYm9vdF9tb2RlX3Vuc2V0DQo+PiArI2VuZGlmDQo+PiArDQo+PiArI2VuZGlmIC8qIF9f
-QVNNX0dFTkVSSUNfRkJfSF8gKi8NCj4+IGRpZmYgLS1naXQgYS9zZWN1cml0eS9pbnRlZ3Jp
-dHkvaW1hL2ltYV9lZmkuYyBiL3NlY3VyaXR5L2ludGVncml0eS9pbWEvaW1hX2VmaS5jDQo+
-PiBpbmRleCAxMzgwMjliZmNjZTEuLjU2YmJlZTI3MWNlYyAxMDA2NDQNCj4+IC0tLSBhL3Nl
-Y3VyaXR5L2ludGVncml0eS9pbWEvaW1hX2VmaS5jDQo+PiArKysgYi9zZWN1cml0eS9pbnRl
-Z3JpdHkvaW1hL2ltYV9lZmkuYw0KPj4gQEAgLTYsMTAgKzYsNyBAQA0KPj4gICAjaW5jbHVk
-ZSA8bGludXgvbW9kdWxlLmg+DQo+PiAgICNpbmNsdWRlIDxsaW51eC9pbWEuaD4NCj4+ICAg
-I2luY2x1ZGUgPGFzbS9lZmkuaD4NCj4+IC0NCj4+IC0jaWZuZGVmIGFyY2hfaW1hX2VmaV9i
-b290X21vZGUNCj4+IC0jZGVmaW5lIGFyY2hfaW1hX2VmaV9ib290X21vZGUgZWZpX3NlY3Vy
-ZWJvb3RfbW9kZV91bnNldA0KPj4gLSNlbmRpZg0KPj4gKyNpbmNsdWRlIDxhc20vaW1hLWVm
-aS5oPg0KPj4NCj4+ICAgc3RhdGljIGVudW0gZWZpX3NlY3VyZWJvb3RfbW9kZSBnZXRfc2Jf
-bW9kZSh2b2lkKQ0KPj4gICB7DQo+PiAtLQ0KPj4gMi40My4wDQo+Pg0KPj4NCg0KLS0gDQpU
-aG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0
-d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkwNDYx
-IE51ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBBbmRy
-ZXcgTWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJlcmcp
-DQo=
+Smita Koralahalli (4):
+  acpi/ghes, cxl: Create a common CXL struct to handle different CXL
+    CPER records
+  efi/cper, cxl: Make definitions and structures global
+  acpi/ghes, efi/cper: Recognize and process CXL Protocol Errors.
+  acpi/ghes, cxl/pci: Trace FW-First CXL Protocol Errors
 
---------------he60F04tXY0KIGYaLWTuKqnB--
+ drivers/acpi/apei/ghes.c        | 26 +++++++++++++-
+ drivers/cxl/core/pci.c          | 46 ++++++++++++++++++++++++
+ drivers/cxl/cxlpci.h            |  3 ++
+ drivers/cxl/pci.c               | 13 ++++---
+ drivers/firmware/efi/cper_cxl.c | 63 +++++++++++++++++++++++++++------
+ drivers/firmware/efi/cper_cxl.h |  7 ++--
+ include/linux/cper.h            |  4 +++
+ include/linux/cxl-event.h       | 24 ++++++++++++-
+ 8 files changed, 164 insertions(+), 22 deletions(-)
 
---------------V1rJHPDmuLABI0b4MEA4rKIk
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+-- 
+2.17.1
 
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmWUGI4FAwAAAAAACgkQlh/E3EQov+Dm
-pA/+JRK9PXbdRtmUTfa/5uA51d+UH55VpdzEwG8LeCqSRLp2RZll0AWZe2ipcvVSlBrXJ5uVMNxY
-Zf5loRJtJ5a5it0TW7Kjmt3247yGnmyt+jiEanStL7Cwr3ztqutyHGfLXxUl+bvpC9ZBMXDjDiIN
-iZkyt7lztidvRZiAu6tg/1mJzQdmy4T5AM7mS9qi+0G8ch1BvH+fw0cBa0EZiWFn9s8AvFygLb0+
-TJRVdTZ37Gin4d/nJLSfAHPzDyZ30GiBiU0vcVDe8CZjvmOSgaVto5hMXEfCfEF3Cej2/Kk+uc3E
-Z/hs9WzltCXGvoHrsTVU+fIBfMr9ExP9QkE0MuCX/2GCrVlWrpyL6ddKBO5SmdS5mJDpkizUFgpq
-yBPo4GP7jVgciwyglVIt1eDhmKNcrN35856BEoU9H18tiZHJX7uyolg6Lv6xHrDw0N8NwYouDgnT
-3/bWGzCOUvdkEJ5YZvpjn7abqgiYEhATz9kSI3Ksh1b3eFwXycNgBoP1e7gO9mIUVhD1Ir1bl1HA
-yJsQbWz/QXzFTW0S/LPIoRCVKSfHt13pGfVzQeN4bOk7JsauCAYtug/DA59LqeCui6t4o3vCvwef
-K6izAD1yYcotl6pCExBLz3dlB8bBDRx8W+OYXkNk3+Jbtkj8mYT166XUx2+uXzDj5hwkffyNE51w
-7KQ=
-=+CAT
------END PGP SIGNATURE-----
-
---------------V1rJHPDmuLABI0b4MEA4rKIk--
 
