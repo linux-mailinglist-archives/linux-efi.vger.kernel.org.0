@@ -1,89 +1,124 @@
-Return-Path: <linux-efi+bounces-300-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-301-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A35822B83
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Jan 2024 11:41:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35000822E0C
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Jan 2024 14:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89E4AB21E0A
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Jan 2024 10:41:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72615B2306E
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Jan 2024 13:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8A418E08;
-	Wed,  3 Jan 2024 10:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3B019475;
+	Wed,  3 Jan 2024 13:11:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YjiXUhhX"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF5518E00;
-	Wed,  3 Jan 2024 10:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T4mSP48zFz6K6Jp;
-	Wed,  3 Jan 2024 18:39:49 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id D418A140B2F;
-	Wed,  3 Jan 2024 18:41:15 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 3 Jan
- 2024 10:41:15 +0000
-Date: Wed, 3 Jan 2024 10:41:13 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ira Weiny <ira.weiny@intel.com>
-CC: Dan Williams <dan.j.williams@intel.com>, Smita Koralahalli
-	<Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>, "Davidlohr Bueso" <dave@stgolabs.net>,
-	Dave Jiang <dave.jiang@intel.com>, "Alison Schofield"
-	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ard
- Biesheuvel <ardb@kernel.org>, <linux-efi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>
-Subject: Re: [PATCH v4 7/7] cxl/memdev: Register for and process CPER events
-Message-ID: <20240103104113.000024c0@Huawei.com>
-In-Reply-To: <658235548ca6c_2edf029490@iweiny-mobl.notmuch>
-References: <20231215-cxl-cper-v4-0-01b6dab44fcd@intel.com>
-	<20231215-cxl-cper-v4-7-01b6dab44fcd@intel.com>
-	<20231219143732.0000181e@Huawei.com>
-	<658226c9a49f3_277bd294fb@iweiny-mobl.notmuch>
-	<65822909ebe4c_269bd294f5@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-	<658235548ca6c_2edf029490@iweiny-mobl.notmuch>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B901F1945C;
+	Wed,  3 Jan 2024 13:11:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A78C433C7;
+	Wed,  3 Jan 2024 13:11:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704287514;
+	bh=qIhmbs4q19ce2u3+/p/L4uydu2guvXDqASx18xBCCcw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YjiXUhhXpqumwXKQPMqpkdB4wPrRMy0bOzR1kahYVY1+qE5n7Z4haXZSfzT55IAI1
+	 ynnt4aDFeWwdn3Bmo5Bfg3xsBbD4VmuDjTgmQqqSG0Dix3Qw+sRw31WGG1TTPzsztY
+	 xEBVl2pFbuK9dXt2+f5UHWoEFd+owy0H5XKrkZJgan6ykecKAc0NlQ3PixVapEOMsh
+	 WZaVatHDS9M7AbWzldR9FtJbZ8YV4Nj0WtHrYRV+9O+mPx3NBqug+uWnuoXIFfBHdv
+	 wIXZQatu7fvlr03zk4kPyj4OlIeIKc3RW7eL39FEqzhdIH8rP99VcvF/HkLUMW9Uyc
+	 e/qinOLQAN2uw==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-50e766937ddso8433219e87.3;
+        Wed, 03 Jan 2024 05:11:54 -0800 (PST)
+X-Gm-Message-State: AOJu0Yw7x6HLmhqYQWyCD4Ng8AH0hEZWtJfvJPFXxVvQYICwYEqdc8pj
+	k1ASIwzd6P/jUQdMzKHIwexv7bnN81u+UYHAWIU=
+X-Google-Smtp-Source: AGHT+IH2AecowZ+aHnkLeMgGIy725oLMF333U21alEK2Fc5uT7O22wyPK+unkG3ON5Ldu0WACaHrxvakM17+AqJ7PHk=
+X-Received: by 2002:ac2:5190:0:b0:50e:aa04:b2e9 with SMTP id
+ u16-20020ac25190000000b0050eaa04b2e9mr24496lfi.39.1704287512452; Wed, 03 Jan
+ 2024 05:11:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+References: <20231215122614.5481-1-tzimmermann@suse.de> <20231215122614.5481-3-tzimmermann@suse.de>
+ <CAMj1kXHrn-PxpMGnR4VoHv7kHvQYyf8SS9i1irm9Gi_uBseciw@mail.gmail.com> <97f118fc-b38f-4bcc-83d3-4d3c13edf7a0@suse.de>
+In-Reply-To: <97f118fc-b38f-4bcc-83d3-4d3c13edf7a0@suse.de>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 3 Jan 2024 14:11:40 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF-1TXYzheS-e_rGKnV+6FrkZe+e2sfCixyUzxSQE7X6w@mail.gmail.com>
+Message-ID: <CAMj1kXF-1TXYzheS-e_rGKnV+6FrkZe+e2sfCixyUzxSQE7X6w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] arch/x86: Add <asm/ima-efi.h> for arch_ima_efi_boot_mode
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	bhelgaas@google.com, arnd@arndb.de, zohar@linux.ibm.com, 
+	dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org, 
+	serge@hallyn.com, javierm@redhat.com, linux-arch@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-integrity@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 19 Dec 2023 16:29:08 -0800
-Ira Weiny <ira.weiny@intel.com> wrote:
+On Tue, 2 Jan 2024 at 15:07, Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>
+> Hii Ard
+>
+> Am 19.12.23 um 12:38 schrieb Ard Biesheuvel:
+> > Hi Thomas,
+> >
+> > On Fri, 15 Dec 2023 at 13:26, Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> >>
+> >> The header file <asm/efi.h> contains the macro arch_ima_efi_boot_mode,
+> >> which expands to use struct boot_params from <asm/bootparams.h>. Many
+> >> drivers include <linux/efi.h>, but do not use boot parameters. Changes
+> >> to bootparam.h or its included headers can easily trigger large,
+> >> unnessary rebuilds of the kernel.
+> >>
+> >> Moving x86's arch_ima_efi_boot_mode to <asm/ima-efi.h> and including
+> >> <asm/setup.h> separates that dependency from the rest of the EFI
+> >> interfaces. The only user is in ima_efi.c. As the file already declares
+> >> a default value for arch_ima_efi_boot_mode, move this define into
+> >> asm-generic for all other architectures.
+> >>
+> >> With arch_ima_efi_boot_mode removed from efi.h, <asm/bootparam.h> can
+> >> later be removed from further x86 header files.
+> >>
+> >
+> > Apologies if I missed this in v1 but is the new asm-generic header
+> > really necessary? Could we instead turn arch_ima_efi_boot_mode into a
+> > function that is a static inline { return unset; } by default, but can
+> > be emitted out of line in one of the x86/platform/efi.c source files,
+> > where referring to boot_params is fine?
+>
+> I cannot figure out how to do this without *something* in asm-generic or
+> adding if-CONFIG_X86 guards in ima-efi.c.
+>
+> But I noticed that linux/efi.h already contains 2 or 3 ifdef branches
+> for x86. Would it be an option to move this code into asm/efi.h
+> (including a header file in asm-generic for the non-x86 variants) and
+> add the arch_ima_efi_boot_mode() helper there as well?  At least that
+> wouldn't be a header for only a single define.
+>
 
-> Dan Williams wrote:
-> > Ira Weiny wrote:
-> > [..]  
-> > > > and drop the = NULL above.  
-> > > 
-> > > Done.  
-> > 
-> > The NULL assignment was more about making it clear that
-> > __free(pci_dev_put) will take no action until the pdev is acquired.
-> > Otherwise, any future refactoring that introduces a 'return' before
-> > @pdev is acquired needs to be careful to assign @pdev to NULL. So, just
-> > include it in the declaration more as a __free() declaration style issue
-> > than a correctness issue.  
-> 
-> I think he meant the assignment to cxlds.  At least that is the NULL
-> assignment I took out.
-> 
-> Ira
+Could we just move the x86 implementation out of line?
 
-yup.  The other one is correct as Dan pointed out.
+So something like this in arch/x86/include/asm/efi.h
+
+enum efi_secureboot_mode x86_ima_efi_boot_mode(void);
+#define arch_ima_efi_boot_mode x86_ima_efi_boot_mode()
+
+and an implementation in one of the related .c files:
+
+enum efi_secureboot_mode x86_ima_efi_boot_mode(void)
+{
+    return boot_params.secure_boot;
+}
+
+?
 
