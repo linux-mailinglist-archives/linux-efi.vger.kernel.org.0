@@ -1,109 +1,260 @@
-Return-Path: <linux-efi+bounces-303-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-304-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7021E822F37
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Jan 2024 15:12:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FCD823165
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Jan 2024 17:41:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCD5C2822CB
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Jan 2024 14:11:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0B72B233F2
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Jan 2024 16:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3ADC1A27A;
-	Wed,  3 Jan 2024 14:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB031BDD1;
+	Wed,  3 Jan 2024 16:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="egDg1wsG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MfMF/8v2"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8252C1A28F
-	for <linux-efi@vger.kernel.org>; Wed,  3 Jan 2024 14:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-5ea6aa02fa4so147107507b3.0
-        for <linux-efi@vger.kernel.org>; Wed, 03 Jan 2024 06:11:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704291112; x=1704895912; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=N1gohNDvDYqnLgBsdSNZRUvoOfZRwL36SC5qX9w2Hxw=;
-        b=egDg1wsGsPyvwkn0PAiI6TR2lfiLIZxvI8LRb859lhTMLviv/GF2+84P0mMDfAQUhG
-         F+aHPq4Se6qCz830ciscohWnjYVGcaSRNGE24ZohCFbfRxrCi4Yvhdcbh5FhvEjX6U40
-         igclG8VlwYuJ3qvsVvwDmQTNGbTkllfGzTyS46YjfYotTMz+ZerRHfijVlVPk5M+G/u+
-         f1EDyU+ky9QRfZ1cCbX327I5D98k5fkTJ/YfQpJqZ1SD4sFwURX91l1chyUiK7i0bUU5
-         /17WbLkveHybozR/MbZ4gMjxC9Lj1LKfNm4MFy0bb6W7WgPkwth7SkhVYKf1E78V8O/6
-         GTAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704291112; x=1704895912;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N1gohNDvDYqnLgBsdSNZRUvoOfZRwL36SC5qX9w2Hxw=;
-        b=lcbmdyBH9EPPOb7wJSXQIuW4bL48vmPFmBF4zevuioygirTgqhgG9/wwcAr6zDvV0c
-         reRcf9GzIr4Y6tjPzbHFHLFaQE7ZJqPt2h/TVu/uKzFYxgNv+n6xGoDbd41jlFHdLmmI
-         OOYGHhf70q2bVJelEj5o7LV1FbIBlVU4lCE8KtCpmVt35J0fPQI5bEbYqshI8fmGaNc9
-         CcwflVm1/pSvXXviFsj8ezRgcRdAGUFsF9h38BgphIFG27yFa/22dW2T8i39ugoLVyla
-         KN/6cyWIxBvOxqalSgvmFmaZEdunmL9U7PuTLIpnZKugQrlMzRWb/F+taY8/0zaSQUT4
-         ZBlg==
-X-Gm-Message-State: AOJu0Yzg+T5jsm+dbwr9aW9Asbl0DM0jKRteUBNyZ9NnOmNUrMPb19Iy
-	kcl1cqhaamb8gnmH9ZOJ7NE0U8PlyFu/fUY=
-X-Google-Smtp-Source: AGHT+IFpc2tYIJN3F3QYYTji329UUXI2i5Vpj3+MSLMBCW0/qmAp58Mk8LlAH8WEOsQVrv5M530Un/h7
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a5b:782:0:b0:dbe:53ef:cb6a with SMTP id
- b2-20020a5b0782000000b00dbe53efcb6amr3355956ybq.13.1704291112533; Wed, 03 Jan
- 2024 06:11:52 -0800 (PST)
-Date: Wed,  3 Jan 2024 15:11:21 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE181BDCD
+	for <linux-efi@vger.kernel.org>; Wed,  3 Jan 2024 16:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704300098; x=1735836098;
+  h=date:from:to:cc:subject:message-id;
+  bh=lpPfWrwCGDuoeG2wpp7yHh15YWRjn8m/bwMkQV5kh2s=;
+  b=MfMF/8v2eaDZHENyNzfhwrdeIdnuaTharjPpwjOuTCk05r9xJj1PlxXy
+   FTALWkD8zcJ/UXZIUCIZRDNyV3TIi2s4ptxIqORhkQ9a3KxI+/CtE3Yuw
+   b7N/2Zj4mCkMO/v48jO9n9K4pTqW4U5PKuUY/A9JdWvamNwq+sYg6sPjf
+   8MmUh70+da0Z3yVgK5qR1VS6A8TVBn32MatjCnsMneIhW6x8qtfRoFGtU
+   F91sy0Y03yAbRt/YsAla2/WS18Cr8geznJKpVkiDyQ3ym6vf98oX+Vprq
+   NzPVrm7MSGG/7NUutFSmoe15Va/hh04BN8bXJAcaXkMc2/tinX/8sfbBd
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="399806178"
+X-IronPort-AV: E=Sophos;i="6.04,328,1695711600"; 
+   d="scan'208";a="399806178"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2024 08:41:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10942"; a="870611361"
+X-IronPort-AV: E=Sophos;i="6.04,328,1695711600"; 
+   d="scan'208";a="870611361"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 03 Jan 2024 08:41:36 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rL4JC-000MID-0I;
+	Wed, 03 Jan 2024 16:41:34 +0000
+Date: Thu, 04 Jan 2024 00:41:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 01638431c465741e071ab34acf3bef3c2570f878
+Message-ID: <202401040001.MtFI2qm1-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1076; i=ardb@kernel.org;
- h=from:subject; bh=bRBdufwc9G+2crrKdj5gwvJZ8dLKNvG2ASmVYZPAxJ4=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIXVqNmdjSHnwkoURoVbT5xWwulS+XrLvdfZb8z4LvvYP+
- snnrHI6SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwEQEljAy3Ps8neNSkmsay7uu
- 2CL5lZq+c+MW1E3Mf7Y27MnHQpuqnwy/mOZs3lNnIZGiVG7f+8Zza6v6RdVPMrVtnGx7Hm/I3i3 DAQA=
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20240103141120.1646106-2-ardb+git@google.com>
-Subject: [GIT PULL] EFI fix for v6.7 #3
-From: Ard Biesheuvel <ardb+git@google.com>
-To: torvalds@linux-foundation.org
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 01638431c465741e071ab34acf3bef3c2570f878  efi/x86: Fix the missing KASLR_FLAG bit in boot_params->hdr.loadflags
 
-Hello Linus,
+elapsed time: 1458m
 
-Please pull this final EFI fix for v6.7, which addresses another minor issue
-caused by the EFI stub overhaul in v6.6.
+configs tested: 178
+configs skipped: 2
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-The following changes since commit 50d7cdf7a9b1ab6f4f74a69c84e974d5dc0c1bf1:
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                     haps_hs_smp_defconfig   gcc  
+arc                     nsimosci_hs_defconfig   gcc  
+arc                   randconfig-001-20240103   gcc  
+arc                   randconfig-002-20240103   gcc  
+arc                    vdk_hs38_smp_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                         assabet_defconfig   gcc  
+arm                        clps711x_defconfig   gcc  
+arm                                 defconfig   clang
+arm                      jornada720_defconfig   gcc  
+arm                             pxa_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240103   gcc  
+csky                  randconfig-002-20240103   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20240103   clang
+i386         buildonly-randconfig-002-20240103   clang
+i386         buildonly-randconfig-003-20240103   clang
+i386         buildonly-randconfig-004-20240103   clang
+i386         buildonly-randconfig-005-20240103   clang
+i386         buildonly-randconfig-006-20240103   clang
+i386                                defconfig   gcc  
+i386                  randconfig-001-20240103   clang
+i386                  randconfig-002-20240103   clang
+i386                  randconfig-003-20240103   clang
+i386                  randconfig-004-20240103   clang
+i386                  randconfig-005-20240103   clang
+i386                  randconfig-006-20240103   clang
+i386                  randconfig-011-20240103   gcc  
+i386                  randconfig-012-20240103   gcc  
+i386                  randconfig-013-20240103   gcc  
+i386                  randconfig-014-20240103   gcc  
+i386                  randconfig-015-20240103   gcc  
+i386                  randconfig-016-20240103   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240103   gcc  
+loongarch             randconfig-002-20240103   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                         apollo_defconfig   gcc  
+m68k                       bvme6000_defconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   clang
+mips                             allyesconfig   gcc  
+mips                         cobalt_defconfig   gcc  
+mips                         db1xxx_defconfig   gcc  
+mips                      loongson3_defconfig   gcc  
+mips                          rm200_defconfig   gcc  
+mips                         rt305x_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240103   gcc  
+nios2                 randconfig-002-20240103   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc                    or1ksim_defconfig   gcc  
+openrisc                 simple_smp_defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240103   gcc  
+parisc                randconfig-002-20240103   gcc  
+parisc64                            defconfig   gcc  
+powerpc                    adder875_defconfig   gcc  
+powerpc                          allmodconfig   clang
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                    amigaone_defconfig   gcc  
+powerpc                     asp8347_defconfig   gcc  
+powerpc                   currituck_defconfig   gcc  
+powerpc                     ksi8560_defconfig   gcc  
+powerpc                 linkstation_defconfig   gcc  
+powerpc                     stx_gp3_defconfig   gcc  
+powerpc                      tqm8xx_defconfig   gcc  
+powerpc64                        alldefconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   clang
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20240103   gcc  
+s390                  randconfig-002-20240103   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                            hp6xx_defconfig   gcc  
+sh                          lboxre2_defconfig   gcc  
+sh                    randconfig-001-20240103   gcc  
+sh                    randconfig-002-20240103   gcc  
+sh                          sdk7786_defconfig   gcc  
+sh                           se7705_defconfig   gcc  
+sh                           se7724_defconfig   gcc  
+sh                           sh2007_defconfig   gcc  
+sh                  sh7785lcr_32bit_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                       sparc64_defconfig   gcc  
+sparc64                          alldefconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240103   gcc  
+sparc64               randconfig-002-20240103   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240103   clang
+x86_64       buildonly-randconfig-002-20240103   clang
+x86_64       buildonly-randconfig-003-20240103   clang
+x86_64       buildonly-randconfig-004-20240103   clang
+x86_64       buildonly-randconfig-005-20240103   clang
+x86_64       buildonly-randconfig-006-20240103   clang
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                randconfig-011-20240103   clang
+x86_64                randconfig-012-20240103   clang
+x86_64                randconfig-013-20240103   clang
+x86_64                randconfig-014-20240103   clang
+x86_64                randconfig-015-20240103   clang
+x86_64                randconfig-016-20240103   clang
+x86_64                randconfig-071-20240103   clang
+x86_64                randconfig-072-20240103   clang
+x86_64                randconfig-073-20240103   clang
+x86_64                randconfig-074-20240103   clang
+x86_64                randconfig-075-20240103   clang
+x86_64                randconfig-076-20240103   clang
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa                          iss_defconfig   gcc  
+xtensa                randconfig-001-20240103   gcc  
+xtensa                randconfig-002-20240103   gcc  
 
-  efi/x86: Avoid physical KASLR on older Dell systems (2023-12-11 17:57:42 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v6.7-3
-
-for you to fetch changes up to 01638431c465741e071ab34acf3bef3c2570f878:
-
-  efi/x86: Fix the missing KASLR_FLAG bit in boot_params->hdr.loadflags (2024-01-02 16:51:28 +0100)
-
-----------------------------------------------------------------
-EFI fix for v6.7 #3
-
-- Ensure that the KASLR load flag is set in boot_params when loading the
-  kernel randomized directly from the EFI stub
-
-----------------------------------------------------------------
-Yuntao Wang (1):
-      efi/x86: Fix the missing KASLR_FLAG bit in boot_params->hdr.loadflags
-
- drivers/firmware/efi/libstub/x86-stub.c | 2 ++
- 1 file changed, 2 insertions(+)
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
