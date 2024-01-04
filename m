@@ -1,327 +1,286 @@
-Return-Path: <linux-efi+bounces-330-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-331-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3FD8246AD
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 17:51:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C88824753
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 18:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAF00B242FD
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 16:51:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE282284CD1
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 17:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF0825567;
-	Thu,  4 Jan 2024 16:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8924528DB4;
+	Thu,  4 Jan 2024 17:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LNNVouCQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DVtcOeM7"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AD425565;
-	Thu,  4 Jan 2024 16:51:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6836C433B6;
-	Thu,  4 Jan 2024 16:51:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704387084;
-	bh=/O08vCHajpvw1Rc518HR1WgtRPRPdQ2wO5g9HKaqQZg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=LNNVouCQ7kkf1s4M4e+Ug9Gu5ulcmaGMNzB3FPvPs+R7/eBI7ut7UbP+fYvmuHINk
-	 EN3jJMkyo81ljMJs4GGkOLrbrz1ypSHfmnwoEOL+Hkfq5P5+QvVEbYIKu6QxOOCeR/
-	 Pzyk62YvjYc5gEiS2z9bAjN4WZnV1fSzmH4xThSAnnkW+InBrMaAKhcN/jEHaL3AdO
-	 4TJViPAQT+J9T0l4korFIqiUujj9K7kZxD7u+bL2Eq/utH9LFU9UIfwCbJbp1p3Pjb
-	 IMEOHifN2Ch05EV+y7cfS+TdxJZxHggX0wdX/LeTQBzOBkBZjX5WYoArY1NdZPT06T
-	 zfbyAgnqnmlAA==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-50ea226bda8so737687e87.2;
-        Thu, 04 Jan 2024 08:51:24 -0800 (PST)
-X-Gm-Message-State: AOJu0YwW1tFcuOQC3/1aZ7ZyECZoINPApDWrrD8C+IbVNDjzDsFCe7b9
-	rpVJAwslEUUSh4Br8m7tG02FFb50painN/e3A1A=
-X-Google-Smtp-Source: AGHT+IHRR7/L+jg0JGpYQggGGUYhoDQhuYPy2emnnzvE1eZlb+I0OuUWy5vnZch8St2OV9Ll01H5JKblC8uJ2O1XJbE=
-X-Received: by 2002:a05:6512:2251:b0:50e:74c1:6e65 with SMTP id
- i17-20020a056512225100b0050e74c16e65mr566380lfu.81.1704387082580; Thu, 04 Jan
- 2024 08:51:22 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72AE286AD;
+	Thu,  4 Jan 2024 17:18:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704388682; x=1735924682;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=cH3HkodL9PGsGg28dKubhWRYOpdfI68lLcFrFmpq5mY=;
+  b=DVtcOeM7FDy7IgIAgjKyLRA5HRWD+coUlKM6RsOT/jK5iAW8ogVjA78G
+   f1+NItfFx8OM/oFI8kb9bFTRJDQfTLC4jvSXKpaI8YCNlxuGFhTJ/PIDv
+   jybX3MLPBEJeyfQJBxmjFJxx1kNaOYPnTBJVoh28/vIgLKgCVr0JCC2K6
+   /FC9MZfyygRsT8AEYm1C7yt2JP5m7IbREkjdk7eMrdJXky7iR4yLMvJE7
+   d9PQFf6SbX+sRYXOlkvHoyUs2bw76mjAFYgn+SUiZ8xkhDoVRFqw/9qwc
+   t4wrCH/ANAlvc+9my2Fm6fouGpG7v6WlvDqKCDJMyawLV0HrCvVJW6Tij
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="483479639"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="483479639"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 09:18:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="846313110"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="846313110"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Jan 2024 09:18:00 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 4 Jan 2024 09:17:59 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 4 Jan 2024 09:17:59 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 4 Jan 2024 09:17:59 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 4 Jan 2024 09:17:58 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=i5PvmQ4uJaPGsna49z72X1FMjvhWafwcB6vf2Iy90wXM0VvRYDz7Vt7muWDisxEUU8oD/8MbhJXcET3RGg8jTfJDj+JvzyUq3Wi4nizYj7QYVYgiKqf5eyw7JCJazDkyhuCmzvGOAE3BGTuJXhVNYH2diSdWFFh5ZJnOX9kvDODnWfT4kx2prBkQqkHSF9BqDUVoIHH/CdfVarGGi/OklSv5VyPPj+ODN4Z64nns83EDvPEHY1v7BaelBtjtW6LHnFnIA0DT1hKQkcCKaWMPQZmDkN0NJW+PG9g91WBIsy/+MFMsKuXLoK5GdtZVpj9Rg1E3KRr2n/Nhw0W+fk3prw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G/Go10zzQviITp8WLPR9dANexNsdMxzCpaPa4mtTTWE=;
+ b=ecZjGp1X/ixSDQeed62ionsOVE80y9q80DJv6OSTtDacbA/dnv/AfttQtLdFd4oJZX2DjaOSdv3DDyz2TgnxLPwYd76Uel/ifNo2BB77k0C5d/HtV/Dko4xuEYVBptXfwPWfrAdkjGXd9CxAQfkuEVoz77svvmTgLG8fZzWBGA7aA0gQZC6lbNi6KQisK2J0OAsnVV+8ux8ZwqqQP38SRwpH4jlHwWuQHNlTW6OHhb5d/g1D1Ir4QgEO/e5iRnl+p2pAB7DAt6G8l+mLUWR0cmlNLdwa+XbUbuiw6dQYHy9xg+jCnAGQX5wfzz4n5MpZAndy88iu2Aa1rncY81r+0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
+ by DM4PR11MB6215.namprd11.prod.outlook.com (2603:10b6:8:a9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.13; Thu, 4 Jan
+ 2024 17:17:55 +0000
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::da91:dbe5:857c:fa9c]) by SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::da91:dbe5:857c:fa9c%4]) with mapi id 15.20.7159.013; Thu, 4 Jan 2024
+ 17:17:55 +0000
+Date: Thu, 4 Jan 2024 09:17:42 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, Bjorn Helgaas
+	<helgaas@kernel.org>
+CC: Bjorn Helgaas <bhelgaas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>,
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ard
+ Biesheuvel" <ardb@kernel.org>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v5 8/9] PCI: Define scoped based management functions
+Message-ID: <6596e836a783a_1587c29412@iweiny-mobl.notmuch>
+References: <6595e201beb4_be7022944d@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240103230147.GA1800245@bhelgaas>
+ <6595f9eec5986_be70229443@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <6595f9eec5986_be70229443@dwillia2-xfh.jf.intel.com.notmuch>
+X-ClientProxiedBy: SJ0PR03CA0150.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::35) To SA1PR11MB6733.namprd11.prod.outlook.com
+ (2603:10b6:806:25c::17)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240104095421.12772-1-tzimmermann@suse.de> <20240104095421.12772-5-tzimmermann@suse.de>
-In-Reply-To: <20240104095421.12772-5-tzimmermann@suse.de>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 4 Jan 2024 17:51:11 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHEJubE42e6cUiEUv=Z66d9Gqw0EM7Wts9hrHzf8ZDsGQ@mail.gmail.com>
-Message-ID: <CAMj1kXHEJubE42e6cUiEUv=Z66d9Gqw0EM7Wts9hrHzf8ZDsGQ@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] arch/x86: Do not include <asm/bootparam.h> in
- several files
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	bhelgaas@google.com, arnd@arndb.de, zohar@linux.ibm.com, 
-	dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org, 
-	serge@hallyn.com, javierm@redhat.com, linux-arch@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|DM4PR11MB6215:EE_
+X-MS-Office365-Filtering-Correlation-Id: b61efcf1-e6d0-4a84-0b7a-08dc0d4916e4
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qimJ12/hZQIQA6kDjSi/Q/6UZJPeseHeJh8xDn6O6ecKzE6+UceXAK8fuBod+eLTdvyXTSoPPi59wsRr4vgtH36G2oCwB2VcN22w4ltzTM2tZY2MswkOxCS3b6k6foqikdvuVr8o6XJecy5dFBvdOhK/FJTzGAFg0sD65yT7TDneYhexT4E3W2FD308ag567QZdC8g/sgSBmkiDyKmaNgYr/Tyu7KDo3SiUVXYU01lruIyArpOIN5qf74dkU3QApg7/uw3oMKCBgzQ2BD0suQ5iH0yUX64KO2OSBGhTxHcqFbNC8HP9LN6k1D4q4g8ppGC/SXeV5mB7INDYXVCSprzBKTkuepZVcKYgAqGHB9Cr8dsU6pjs0xoK2JNcrtqUggFVoBbXhw/i+DDR9IwzUQZE9BaXqz3Bueog2mfe//Vo24tOP/9uvyT0Lpo3HtTGTXa6RcUbjCG6U6bi2NP/K7SrvXcSMItljGxC6cfjuMK70YCyJbkPbNilB67bMKbe5pgPQVjyMDMWF+dOR0x2b69yJkFg6kyUE2g5j1xBWfwsibH18SCMS9KFiEjC3LaG3
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(396003)(39860400002)(346002)(366004)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(38100700002)(66556008)(66946007)(66476007)(110136005)(54906003)(82960400001)(44832011)(83380400001)(86362001)(2906002)(26005)(41300700001)(5660300002)(7416002)(6512007)(6506007)(6666004)(9686003)(478600001)(8676002)(8936002)(6486002)(4326008)(316002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9I1KpEd932XKXqhx0bGXat+no66milJv2KINa0YSZ3v7gwJBaF585WONy7u2?=
+ =?us-ascii?Q?vXvh4He+EM41ZuyWsCzxDfkk94hNmVtcCMJR0ZVy/ewSrOE2D7cWSKDUGz1E?=
+ =?us-ascii?Q?NwoECXwqBNn3+njeJNb+fHXxiTlhKZJzYNbQVMtnWccpxGsVr5K3HNEeTpde?=
+ =?us-ascii?Q?fzhh7OuiuXDzjU51UXS5zgMqOTCXkabziTNzNKq2cC4rGLX/M4E0eym6RgQ3?=
+ =?us-ascii?Q?5cgVUuHH2manIiV3z+t0U9aXgn1k4+EaDT7FTo/MQL4H1dzIuXJ1ZmdWIFKb?=
+ =?us-ascii?Q?RZ+tmFSgeRTVgH3A4uFxlK9UR7ssA+5OUdY0RYk+Sw54OaqrLGxwTFfPBfdi?=
+ =?us-ascii?Q?KOMmYIsYf09ISHeXMqxP9R5QQt0C+nyEAmmGNFDgl15dlZj+/2lW9Z9hNNkQ?=
+ =?us-ascii?Q?jCW1nXL+Y1G+Gj6neoz1asymU8XQ0ogPtw1j2SWU4eUpxejuR/+ZyBo3jo7f?=
+ =?us-ascii?Q?dP4pZ29tJstSFiTOOwSg6qkjBkjODV1NpRHXjUz2BZrfKc5YcYLUd5bhbj/S?=
+ =?us-ascii?Q?e6WxGr5uBLJpbmbzK5iYqoKGR01I/I32OVZ4FA0cu/6GwN3ehE8H/pG6kJcr?=
+ =?us-ascii?Q?mPWKTDuZ6j76oCkFuwmCDKboBdNLbQ/p3Ss4eHhHesZIFNVfTCd4SbhJLdvE?=
+ =?us-ascii?Q?r69VB3BC7/TVaMGfwswGLemEBx9LwsoYiOfZtbVPXuauhIKbRTn6klkCuonT?=
+ =?us-ascii?Q?QXCrkduOVoxZMeVcXXRbLlsxTulR2zSDPdnxlbmkl05jXk4JhiYXg6gbECDI?=
+ =?us-ascii?Q?MIf1AobLZGONxpCGJ5jCnuxZpKHL9gsMQ8QEDv56tsjNsMXRuA/ioIrQKmyn?=
+ =?us-ascii?Q?aKQ9jBTGybpPSqX5RKm7FsjQPXmxdZDlnwSWKgDQDruwfPlSxNeQrIuCTr/+?=
+ =?us-ascii?Q?GV8LjprWgiQ6pI/3MPUTYYgkqrckKqrjvLOIOxY5Ah5/NRCuIcDzFVPLg3kH?=
+ =?us-ascii?Q?+QWDqskUG2NCSNrml+FqItX3AFEavOfW0A5AvmTmxCGsaVhgvNEUIS/aIr3O?=
+ =?us-ascii?Q?hAykkG6PqPCUE7kWUZrwA1C9Z9fpBknfRunmCobv2JIESBiITyzrCIPwGMVp?=
+ =?us-ascii?Q?NBUIN8R6cAcmnAzGlSJg32J0mF1UgkYFUjjmDae/IHJ08qwJ4EY+zeM2vzIZ?=
+ =?us-ascii?Q?v4ClJRkO1/Y+AM2J2zkICdU08ypW9NqBLkML485OlQeepdIfoLkCD1ZFnwxH?=
+ =?us-ascii?Q?ORocYqUucV/b5i0EOfgKZtS4yoFD7IETD57jq2wmCzX9UWRfN9lqDv1VTKB2?=
+ =?us-ascii?Q?VJR+4RcyIBnhz+xgY3zeuOdIJuVod48T4gpVOYWQ0ONDE0d2Rz5pQ8u0T0aq?=
+ =?us-ascii?Q?pEQ8J6omm93ogBJtTV//Jh6OsiI0yal+OHBe9+eItoEeqwGSAQ26/8t6VbS8?=
+ =?us-ascii?Q?khXzaF64WZ4P/sdVxIchUy5YMHRsguUdeT2myFK9zgQ1PZPWTueE2YK08B18?=
+ =?us-ascii?Q?QTlC6naiG0NvDYsDAQS8i9LZqNb5bnVoaA3d1MZ3bs/6t/bE8+kT9MDlKs2S?=
+ =?us-ascii?Q?9r+waCw/uj6+UiGR6FfwAsvl4N5X1ga4oG6CD55Y+GW8+9UnA55CLcNTekqi?=
+ =?us-ascii?Q?zqCC3sz3HUPbfImYirI8RK3/h/LtNvBNsPBddtTO?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b61efcf1-e6d0-4a84-0b7a-08dc0d4916e4
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jan 2024 17:17:54.9808
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4B+MZoMvsWq4mQKTWIh49leJ8CtDyt4HbyCGhJXMsofRDbSxMgJ4TrJeLUAl8FAJF0Su7pbTPga9M64eYDsWkw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6215
+X-OriginatorOrg: intel.com
 
-On Thu, 4 Jan 2024 at 10:54, Thomas Zimmermann <tzimmermann@suse.de> wrote:
->
-> Remove the include statement for <asm/bootparam.h> from several files
-> that don't require it. Limits the exposure of the boot parameters
-> within the Linux kernel code.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
->
+Dan Williams wrote:
+> Bjorn Helgaas wrote:
+> > On Wed, Jan 03, 2024 at 02:38:57PM -0800, Dan Williams wrote:
+> > > Ira Weiny wrote:
+> > > > Users of pci_dev_get() can benefit from a scoped based put.  Also,
+> > > > locking a PCI device is often done within a single scope.
+> > > > 
+> > > > Define a pci_dev_put() free function and a PCI device lock guard.  These
+> > > > will initially be used in new CXL event processing code but is defined
+> > > > in a separate patch for others to pickup and use/backport easier.
+> > > 
+> > > Any heartburn if I take this through cxl.git with the rest in this
+> > > series? Patch 9 has a dependency on this one.
+> > 
+> > No real heartburn.  I was trying to figure out what this does
+> > since I'm not familiar with the "scoped based put" idea and
+> > 'git grep -i "scope.*base"' wasn't much help.
+> > 
+> > I would kind of like the commit log to say a little more about what
+> > the "scoped based put" (does that have too many past tenses in it?)
+> > means and how users of pci_dev_get() will benefit.
+> 
+> That is completely fair, and I should have checked to make sure that the
+> changelog clarified the impact of the change.
+
+Agreed.  Apologies for the brevity.
+
+> 
+> > I don't know what "locking a PCI device is often done within a single
+> > scope" is trying to tell me either.  What if it's *not* done within a
+> > single scope?
+
+I was not trying to fix that but Dan covers it below indicating that the
+pointer can be returned outside the scope if needed with no_free_ptr().
+
+> > 
+> > Does this change anything for callers of pci_dev_get() and
+> > pci_dev_put()?
+
+Current callers don't need to use this.
+
+> > 
+> > Does this avoid a common programming error?  I just don't know what
+> > the benefit of this is yet.
+
+Dan covered it well below.
+
+> > 
+> > I'm sure this is really cool stuff, but there's little documentation,
+> > few existing users, and I don't know what I need to look for when
+> > reviewing things.
+> 
+> Here a is a re-write of the changelog:
+
+FWIW
+
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+
+> 
 > ---
->
-> v3:
->         * revert of e820/types.h required
-> v2:
->         * clean up misc.h and e820/types.h
->         * include bootparam.h in several source files
+> PCI: Introduce cleanup helpers for device reference counts and locks
+> 
+> The "goto error" pattern is notorious for introducing subtle resource
+> leaks. Use the new cleanup.h helpers for PCI device reference counts and
+> locks.
+> 
+> Similar to the new put_device() and device_lock() cleanup helpers,
+> __free(put_device) and guard(device), define the same for PCI devices,
+> __free(pci_dev_put) and guard(pci_dev).  These helpers eliminate the
+> need for "goto free;" and "goto unlock;" patterns. For example, A
+> 'struct pci_dev *' instance declared as:
+> 
+> 	struct pci_dev *pdev __free(pci_dev_put) = NULL;
+> 
+> ...will automatically call pci_dev_put() if @pdev is non-NULL when @pdev
+> goes out of scope (automatic variable scope). If a function wants to
+> invoke pci_dev_put() on error, but return @pdev on success, it can do:
+> 
+> 	return no_free_ptr(pdev);
+> 
+> ...or:
+> 
+> 	return_ptr(pdev);
+> 
+> For potential cleanup opportunity there are 587 open-coded calls to
+> pci_dev_put() in the kernel with 65 instances within 10 lines of a goto
+> statement with the CXL driver threatening to add another one.
+> 
+> The guard() helper holds the associated lock for the remainder of the
+> current scope in which it was invoked. So, for example:
+> 
+> 	func(...)
+> 	{
+> 		if (...) {
+> 			...
+> 			guard(pci_dev); /* pci_dev_lock() invoked here */
+> 			...
+> 		} /* <- implied pci_dev_unlock() triggered here */
+> 	}
+> 
+> There are 15 invocations of pci_dev_unlock() in the kernel with 5
+> instances within 10 lines of a goto statement. Again, the CXL driver is
+> threatening to add another.
+> 
+> Introduce these helpers to preclude the addition of new more error prone
+> goto put; / goto unlock; sequences. For now, these helpers are used in
+> drivers/cxl/pci.c to allow ACPI error reports to be fed back into the
+> CXL driver associated with the PCI device identified in the report.
+> 
 > ---
->  arch/x86/boot/compressed/acpi.c       | 2 ++
->  arch/x86/boot/compressed/cmdline.c    | 2 ++
->  arch/x86/boot/compressed/efi.c        | 2 ++
->  arch/x86/boot/compressed/misc.h       | 3 ++-
->  arch/x86/boot/compressed/pgtable_64.c | 1 +
->  arch/x86/boot/compressed/sev.c        | 1 +
->  arch/x86/include/asm/kexec.h          | 1 -
->  arch/x86/include/asm/mem_encrypt.h    | 2 +-
->  arch/x86/include/asm/sev.h            | 3 ++-
->  arch/x86/include/asm/x86_init.h       | 2 --
->  arch/x86/kernel/crash.c               | 1 +
->  arch/x86/kernel/sev-shared.c          | 2 ++
->  arch/x86/platform/pvh/enlighten.c     | 1 +
->  arch/x86/xen/enlighten_pvh.c          | 1 +
->  arch/x86/xen/vga.c                    | 1 -
->  15 files changed, 18 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
-> index 18d15d1ce87d..f196b1d1ddf8 100644
-> --- a/arch/x86/boot/compressed/acpi.c
-> +++ b/arch/x86/boot/compressed/acpi.c
-> @@ -5,6 +5,8 @@
->  #include "../string.h"
->  #include "efi.h"
->
-> +#include <asm/bootparam.h>
-> +
->  #include <linux/numa.h>
->
->  /*
-> diff --git a/arch/x86/boot/compressed/cmdline.c b/arch/x86/boot/compressed/cmdline.c
-> index c1bb180973ea..e162d7f59cc5 100644
-> --- a/arch/x86/boot/compressed/cmdline.c
-> +++ b/arch/x86/boot/compressed/cmdline.c
-> @@ -1,6 +1,8 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #include "misc.h"
->
-> +#include <asm/bootparam.h>
-> +
->  static unsigned long fs;
->  static inline void set_fs(unsigned long seg)
->  {
-> diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-> index 6edd034b0b30..f2e50f9758e6 100644
-> --- a/arch/x86/boot/compressed/efi.c
-> +++ b/arch/x86/boot/compressed/efi.c
-> @@ -7,6 +7,8 @@
->
->  #include "misc.h"
->
-> +#include <asm/bootparam.h>
-> +
->  /**
->   * efi_get_type - Given a pointer to boot_params, determine the type of EFI environment.
->   *
-> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-> index c0d502bd8716..01c89c410efd 100644
-> --- a/arch/x86/boot/compressed/misc.h
-> +++ b/arch/x86/boot/compressed/misc.h
-> @@ -33,7 +33,6 @@
->  #include <linux/elf.h>
->  #include <asm/page.h>
->  #include <asm/boot.h>
-> -#include <asm/bootparam.h>
->  #include <asm/desc_defs.h>
->
->  #include "tdx.h"
-> @@ -53,6 +52,8 @@
->  #define memptr unsigned
->  #endif
->
-> +struct boot_param;
-> +
-
-Typo?
-
-Interestingly, it still builds fine for me without any warnings.
-
-
->  /* boot/compressed/vmlinux start and end markers */
->  extern char _head[], _end[];
->
-> diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-> index 51f957b24ba7..c882e1f67af0 100644
-> --- a/arch/x86/boot/compressed/pgtable_64.c
-> +++ b/arch/x86/boot/compressed/pgtable_64.c
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #include "misc.h"
-> +#include <asm/bootparam.h>
->  #include <asm/e820/types.h>
->  #include <asm/processor.h>
->  #include "pgtable.h"
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> index 454acd7a2daf..13beae767e48 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -12,6 +12,7 @@
->   */
->  #include "misc.h"
->
-> +#include <asm/bootparam.h>
->  #include <asm/pgtable_types.h>
->  #include <asm/sev.h>
->  #include <asm/trapnr.h>
-> diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
-> index c9f6a6c5de3c..91ca9a9ee3a2 100644
-> --- a/arch/x86/include/asm/kexec.h
-> +++ b/arch/x86/include/asm/kexec.h
-> @@ -25,7 +25,6 @@
->
->  #include <asm/page.h>
->  #include <asm/ptrace.h>
-> -#include <asm/bootparam.h>
->
->  struct kimage;
->
-> diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
-> index 359ada486fa9..c1a8a3408c18 100644
-> --- a/arch/x86/include/asm/mem_encrypt.h
-> +++ b/arch/x86/include/asm/mem_encrypt.h
-> @@ -15,7 +15,7 @@
->  #include <linux/init.h>
->  #include <linux/cc_platform.h>
->
-> -#include <asm/bootparam.h>
-> +struct boot_params;
->
-
-Unfortunately, the SEV/SNP code is a bit of a kludge given that it
-declares routines in headers under arch/x86/include/asm, and defines
-them in two different places (the decompressor and the kernel proper).
-
-So while I feel that we should avoid relying on incomplete struct
-definitions, this one (and the one below) seems fine to me for now.
-If/when someone gets around to cleaning up the SEV/SNP header files,
-to split the init code from the more widely used mm types etc, we can
-revisit this.
-
-
->  #ifdef CONFIG_X86_MEM_ENCRYPT
->  void __init mem_encrypt_init(void);
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index 5b4a1ce3d368..8dad8b1613bf 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -13,7 +13,6 @@
->
->  #include <asm/insn.h>
->  #include <asm/sev-common.h>
-> -#include <asm/bootparam.h>
->  #include <asm/coco.h>
->
->  #define GHCB_PROTOCOL_MIN      1ULL
-> @@ -22,6 +21,8 @@
->
->  #define        VMGEXIT()                       { asm volatile("rep; vmmcall\n\r"); }
->
-> +struct boot_params;
-> +
->  enum es_result {
->         ES_OK,                  /* All good */
->         ES_UNSUPPORTED,         /* Requested operation not supported */
-> diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-> index c878616a18b8..f062715578a0 100644
-> --- a/arch/x86/include/asm/x86_init.h
-> +++ b/arch/x86/include/asm/x86_init.h
-> @@ -2,8 +2,6 @@
->  #ifndef _ASM_X86_PLATFORM_H
->  #define _ASM_X86_PLATFORM_H
->
-> -#include <asm/bootparam.h>
-> -
->  struct ghcb;
->  struct mpc_bus;
->  struct mpc_cpu;
-> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-> index c92d88680dbf..564cff7ed33a 100644
-> --- a/arch/x86/kernel/crash.c
-> +++ b/arch/x86/kernel/crash.c
-> @@ -26,6 +26,7 @@
->  #include <linux/vmalloc.h>
->  #include <linux/memblock.h>
->
-> +#include <asm/bootparam.h>
->  #include <asm/processor.h>
->  #include <asm/hardirq.h>
->  #include <asm/nmi.h>
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index ccb0915e84e1..4962ec42dc68 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -9,6 +9,8 @@
->   * and is included directly into both code-bases.
->   */
->
-> +#include <asm/setup_data.h>
-> +
->  #ifndef __BOOT_COMPRESSED
->  #define error(v)       pr_err(v)
->  #define has_cpuflag(f) boot_cpu_has(f)
-> diff --git a/arch/x86/platform/pvh/enlighten.c b/arch/x86/platform/pvh/enlighten.c
-> index 00a92cb2c814..944e0290f2c0 100644
-> --- a/arch/x86/platform/pvh/enlighten.c
-> +++ b/arch/x86/platform/pvh/enlighten.c
-> @@ -3,6 +3,7 @@
->
->  #include <xen/hvc-console.h>
->
-> +#include <asm/bootparam.h>
->  #include <asm/io_apic.h>
->  #include <asm/hypervisor.h>
->  #include <asm/e820/api.h>
-> diff --git a/arch/x86/xen/enlighten_pvh.c b/arch/x86/xen/enlighten_pvh.c
-> index ada3868c02c2..9e9db601bd52 100644
-> --- a/arch/x86/xen/enlighten_pvh.c
-> +++ b/arch/x86/xen/enlighten_pvh.c
-> @@ -4,6 +4,7 @@
->
->  #include <xen/hvc-console.h>
->
-> +#include <asm/bootparam.h>
->  #include <asm/io_apic.h>
->  #include <asm/hypervisor.h>
->  #include <asm/e820/api.h>
-> diff --git a/arch/x86/xen/vga.c b/arch/x86/xen/vga.c
-> index d97adab8420f..f7547807b0bd 100644
-> --- a/arch/x86/xen/vga.c
-> +++ b/arch/x86/xen/vga.c
-> @@ -2,7 +2,6 @@
->  #include <linux/screen_info.h>
->  #include <linux/init.h>
->
-> -#include <asm/bootparam.h>
->  #include <asm/setup.h>
->
->  #include <xen/interface/xen.h>
-> --
-> 2.43.0
->
->
+> 
+> As for reviewing conversions that use these new helpers, one of the
+> gotchas I have found is that it is easy to make a mistake if a goto
+> still exists in the function after the conversion. So unless and until
+> all of the resources a function acquires, that currently need a goto to
+> unwind them on error, can be converted to cleanup.h based helpers it is
+> best not to mix styles.
+> 
+> I think the function documentation in include/linux/cleanup.h does a
+> decent job of explaining how to use the helpers. However, I am happy to
+> suggest some updates if you think it would help.
 
