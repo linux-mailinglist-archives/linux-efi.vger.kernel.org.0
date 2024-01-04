@@ -1,384 +1,278 @@
-Return-Path: <linux-efi+bounces-328-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-329-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D089823F11
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 10:56:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB961824144
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 13:06:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8710B243C6
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 09:56:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9FD28405A
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 12:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900E920B27;
-	Thu,  4 Jan 2024 09:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fustg9+o";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dbXGBzKJ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fustg9+o";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dbXGBzKJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6112111A;
+	Thu,  4 Jan 2024 12:06:18 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BAB20DE1;
-	Thu,  4 Jan 2024 09:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A5BB91F7FC;
-	Thu,  4 Jan 2024 09:54:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1704362066; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4i41TaruQR4Pq5LXVEoj7/T9YHF9NQenB4+HeINuBzQ=;
-	b=fustg9+o6qY6TdkQ3bcIke++mqLviQ0aEDOI0jykhmrcW5x4qRYGZjNEUDkZL/krZ41f5i
-	KWUA6mdqYEKTND1s/sQjOp/uNrumayJQa368Ek6PQYjNjwN1ypUWhjWBJoTt0qKCvkNm8Y
-	GzNAFybAGvMDkMpmXNqwfPin/Mkb0PU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1704362066;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4i41TaruQR4Pq5LXVEoj7/T9YHF9NQenB4+HeINuBzQ=;
-	b=dbXGBzKJXvS9A4pyna6aepGghBvFxQypR9kpnM2NVdT36NzRsMZRdwSmbUEkrbgflYoYiu
-	dIl2cW7cX8NyIuBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1704362066; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4i41TaruQR4Pq5LXVEoj7/T9YHF9NQenB4+HeINuBzQ=;
-	b=fustg9+o6qY6TdkQ3bcIke++mqLviQ0aEDOI0jykhmrcW5x4qRYGZjNEUDkZL/krZ41f5i
-	KWUA6mdqYEKTND1s/sQjOp/uNrumayJQa368Ek6PQYjNjwN1ypUWhjWBJoTt0qKCvkNm8Y
-	GzNAFybAGvMDkMpmXNqwfPin/Mkb0PU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1704362066;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4i41TaruQR4Pq5LXVEoj7/T9YHF9NQenB4+HeINuBzQ=;
-	b=dbXGBzKJXvS9A4pyna6aepGghBvFxQypR9kpnM2NVdT36NzRsMZRdwSmbUEkrbgflYoYiu
-	dIl2cW7cX8NyIuBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 184EE137E8;
-	Thu,  4 Jan 2024 09:54:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6LObBFKAlmXPZwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 04 Jan 2024 09:54:26 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: ardb@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	bhelgaas@google.com,
-	arnd@arndb.de,
-	zohar@linux.ibm.com,
-	dmitry.kasatkin@gmail.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	javierm@redhat.com
-Cc: linux-arch@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 4/4] arch/x86: Do not include <asm/bootparam.h> in several files
-Date: Thu,  4 Jan 2024 10:51:22 +0100
-Message-ID: <20240104095421.12772-5-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240104095421.12772-1-tzimmermann@suse.de>
-References: <20240104095421.12772-1-tzimmermann@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0122121364;
+	Thu,  4 Jan 2024 12:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T5QGm0rYjz6K8wb;
+	Thu,  4 Jan 2024 20:03:44 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 18B4F140A86;
+	Thu,  4 Jan 2024 20:06:11 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 4 Jan
+ 2024 12:06:10 +0000
+Date: Thu, 4 Jan 2024 12:06:09 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+CC: <linux-efi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>, "Alison
+ Schofield" <alison.schofield@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Ben Widawsky
+	<bwidawsk@kernel.org>, Dan Williams <dan.j.williams@intel.com>, "Yazen
+ Ghannam" <yazen.ghannam@amd.com>
+Subject: Re: [PATCH v2 1/2] efi/cper, cxl: Decode CXL Protocol Error Section
+Message-ID: <20240104120609.00005ebd@Huawei.com>
+In-Reply-To: <20221028200950.67505-2-Smita.KoralahalliChannabasappa@amd.com>
+References: <20221028200950.67505-1-Smita.KoralahalliChannabasappa@amd.com>
+	<20221028200950.67505-2-Smita.KoralahalliChannabasappa@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: 3.40
-X-Spamd-Result: default: False [3.40 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-3.00)[99.99%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 R_MISSING_CHARSET(2.50)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 R_RATELIMIT(0.00)[to_ip_from(RLf6fmkuiuubj71hj5sz5bt3qt)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[22];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FREEMAIL_TO(0.00)[kernel.org,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,google.com,arndb.de,linux.ibm.com,gmail.com,paul-moore.com,namei.org,hallyn.com];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: ***
-X-Spam-Flag: NO
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Remove the include statement for <asm/bootparam.h> from several files
-that don't require it. Limits the exposure of the boot parameters
-within the Linux kernel code.
+On Fri, 28 Oct 2022 20:09:49 +0000
+Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> wrote:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> Add support for decoding CXL Protocol Error Section as defined in UEFI 2.10
+> Section N.2.13.
+> 
+> Do the section decoding in a new cper_cxl.c file. This new file will be
+> used in the future for more CXL CPERs decode support. Add this to the
+> existing UEFI_CPER config.
+> 
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 
----
+Obviously very late with this comment, but I now have a test setup running
+so a minor formatting issue became apparent that would be nice to tidy up
+I think.
 
-v3:
-	* revert of e820/types.h required
-v2:
-	* clean up misc.h and e820/types.h
-	* include bootparam.h in several source files
----
- arch/x86/boot/compressed/acpi.c       | 2 ++
- arch/x86/boot/compressed/cmdline.c    | 2 ++
- arch/x86/boot/compressed/efi.c        | 2 ++
- arch/x86/boot/compressed/misc.h       | 3 ++-
- arch/x86/boot/compressed/pgtable_64.c | 1 +
- arch/x86/boot/compressed/sev.c        | 1 +
- arch/x86/include/asm/kexec.h          | 1 -
- arch/x86/include/asm/mem_encrypt.h    | 2 +-
- arch/x86/include/asm/sev.h            | 3 ++-
- arch/x86/include/asm/x86_init.h       | 2 --
- arch/x86/kernel/crash.c               | 1 +
- arch/x86/kernel/sev-shared.c          | 2 ++
- arch/x86/platform/pvh/enlighten.c     | 1 +
- arch/x86/xen/enlighten_pvh.c          | 1 +
- arch/x86/xen/vga.c                    | 1 -
- 15 files changed, 18 insertions(+), 7 deletions(-)
+> +void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err)
+> +{
+> +	if (prot_err->valid_bits & PROT_ERR_VALID_AGENT_TYPE)
+> +		pr_info("%s agent_type: %d, %s\n", pfx, prot_err->agent_type,
+> +			prot_err->agent_type < ARRAY_SIZE(prot_err_agent_type_strs)
+> +			? prot_err_agent_type_strs[prot_err->agent_type]
+> +			: "unknown");
+> +
+> +	if (prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS) {
+> +		switch (prot_err->agent_type) {
+> +		/*
+> +		 * According to UEFI 2.10 Section N.2.13, the term CXL Device
+> +		 * is used to refer to Restricted CXL Device, CXL Device, CXL
+> +		 * Logical Device or a CXL Fabric Manager Managed Logical
+> +		 * Device.
+> +		 */
+> +		case RCD:
+> +		case DEVICE:
+> +		case LD:
+> +		case FMLD:
+> +		case RP:
+> +		case DSP:
+> +		case USP:
+> +			pr_info("%s agent_address: %04x:%02x:%02x.%x\n",
+> +				pfx, prot_err->agent_addr.segment,
+> +				prot_err->agent_addr.bus,
+> +				prot_err->agent_addr.device,
+> +				prot_err->agent_addr.function);
+> +			break;
+> +		case RCH_DP:
+> +			pr_info("%s rcrb_base_address: 0x%016llx\n", pfx,
+> +				prot_err->agent_addr.rcrb_base_addr);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (prot_err->valid_bits & PROT_ERR_VALID_DEVICE_ID) {
+> +		const __u8 *class_code;
+> +
+> +		switch (prot_err->agent_type) {
+> +		case RCD:
+> +		case DEVICE:
+> +		case LD:
+> +		case FMLD:
+> +		case RP:
+> +		case DSP:
+> +		case USP:
+> +			pr_info("%s slot: %d\n", pfx,
+> +				prot_err->device_id.slot >> CPER_PCIE_SLOT_SHIFT);
+> +			pr_info("%s vendor_id: 0x%04x, device_id: 0x%04x\n",
+> +				pfx, prot_err->device_id.vendor_id,
+> +				prot_err->device_id.device_id);
+> +			pr_info("%s sub_vendor_id: 0x%04x, sub_device_id: 0x%04x\n",
+> +				pfx, prot_err->device_id.subsystem_vendor_id,
+> +				prot_err->device_id.subsystem_id);
+> +			class_code = prot_err->device_id.class_code;
+> +			pr_info("%s class_code: %02x%02x\n", pfx,
+> +				class_code[1], class_code[0]);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER) {
+> +		switch (prot_err->agent_type) {
+> +		case RCD:
+> +		case DEVICE:
+> +		case LD:
+> +		case FMLD:
+> +			pr_info("%s lower_dw: 0x%08x, upper_dw: 0x%08x\n", pfx,
+> +				prot_err->dev_serial_num.lower_dw,
+> +				prot_err->dev_serial_num.upper_dw);
 
-diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
-index 18d15d1ce87d..f196b1d1ddf8 100644
---- a/arch/x86/boot/compressed/acpi.c
-+++ b/arch/x86/boot/compressed/acpi.c
-@@ -5,6 +5,8 @@
- #include "../string.h"
- #include "efi.h"
- 
-+#include <asm/bootparam.h>
-+
- #include <linux/numa.h>
- 
- /*
-diff --git a/arch/x86/boot/compressed/cmdline.c b/arch/x86/boot/compressed/cmdline.c
-index c1bb180973ea..e162d7f59cc5 100644
---- a/arch/x86/boot/compressed/cmdline.c
-+++ b/arch/x86/boot/compressed/cmdline.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- #include "misc.h"
- 
-+#include <asm/bootparam.h>
-+
- static unsigned long fs;
- static inline void set_fs(unsigned long seg)
- {
-diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-index 6edd034b0b30..f2e50f9758e6 100644
---- a/arch/x86/boot/compressed/efi.c
-+++ b/arch/x86/boot/compressed/efi.c
-@@ -7,6 +7,8 @@
- 
- #include "misc.h"
- 
-+#include <asm/bootparam.h>
-+
- /**
-  * efi_get_type - Given a pointer to boot_params, determine the type of EFI environment.
-  *
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index c0d502bd8716..01c89c410efd 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -33,7 +33,6 @@
- #include <linux/elf.h>
- #include <asm/page.h>
- #include <asm/boot.h>
--#include <asm/bootparam.h>
- #include <asm/desc_defs.h>
- 
- #include "tdx.h"
-@@ -53,6 +52,8 @@
- #define memptr unsigned
- #endif
- 
-+struct boot_param;
-+
- /* boot/compressed/vmlinux start and end markers */
- extern char _head[], _end[];
- 
-diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index 51f957b24ba7..c882e1f67af0 100644
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include "misc.h"
-+#include <asm/bootparam.h>
- #include <asm/e820/types.h>
- #include <asm/processor.h>
- #include "pgtable.h"
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 454acd7a2daf..13beae767e48 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -12,6 +12,7 @@
-  */
- #include "misc.h"
- 
-+#include <asm/bootparam.h>
- #include <asm/pgtable_types.h>
- #include <asm/sev.h>
- #include <asm/trapnr.h>
-diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
-index c9f6a6c5de3c..91ca9a9ee3a2 100644
---- a/arch/x86/include/asm/kexec.h
-+++ b/arch/x86/include/asm/kexec.h
-@@ -25,7 +25,6 @@
- 
- #include <asm/page.h>
- #include <asm/ptrace.h>
--#include <asm/bootparam.h>
- 
- struct kimage;
- 
-diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
-index 359ada486fa9..c1a8a3408c18 100644
---- a/arch/x86/include/asm/mem_encrypt.h
-+++ b/arch/x86/include/asm/mem_encrypt.h
-@@ -15,7 +15,7 @@
- #include <linux/init.h>
- #include <linux/cc_platform.h>
- 
--#include <asm/bootparam.h>
-+struct boot_params;
- 
- #ifdef CONFIG_X86_MEM_ENCRYPT
- void __init mem_encrypt_init(void);
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 5b4a1ce3d368..8dad8b1613bf 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -13,7 +13,6 @@
- 
- #include <asm/insn.h>
- #include <asm/sev-common.h>
--#include <asm/bootparam.h>
- #include <asm/coco.h>
- 
- #define GHCB_PROTOCOL_MIN	1ULL
-@@ -22,6 +21,8 @@
- 
- #define	VMGEXIT()			{ asm volatile("rep; vmmcall\n\r"); }
- 
-+struct boot_params;
-+
- enum es_result {
- 	ES_OK,			/* All good */
- 	ES_UNSUPPORTED,		/* Requested operation not supported */
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index c878616a18b8..f062715578a0 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -2,8 +2,6 @@
- #ifndef _ASM_X86_PLATFORM_H
- #define _ASM_X86_PLATFORM_H
- 
--#include <asm/bootparam.h>
--
- struct ghcb;
- struct mpc_bus;
- struct mpc_cpu;
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index c92d88680dbf..564cff7ed33a 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -26,6 +26,7 @@
- #include <linux/vmalloc.h>
- #include <linux/memblock.h>
- 
-+#include <asm/bootparam.h>
- #include <asm/processor.h>
- #include <asm/hardirq.h>
- #include <asm/nmi.h>
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index ccb0915e84e1..4962ec42dc68 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -9,6 +9,8 @@
-  * and is included directly into both code-bases.
-  */
- 
-+#include <asm/setup_data.h>
-+
- #ifndef __BOOT_COMPRESSED
- #define error(v)	pr_err(v)
- #define has_cpuflag(f)	boot_cpu_has(f)
-diff --git a/arch/x86/platform/pvh/enlighten.c b/arch/x86/platform/pvh/enlighten.c
-index 00a92cb2c814..944e0290f2c0 100644
---- a/arch/x86/platform/pvh/enlighten.c
-+++ b/arch/x86/platform/pvh/enlighten.c
-@@ -3,6 +3,7 @@
- 
- #include <xen/hvc-console.h>
- 
-+#include <asm/bootparam.h>
- #include <asm/io_apic.h>
- #include <asm/hypervisor.h>
- #include <asm/e820/api.h>
-diff --git a/arch/x86/xen/enlighten_pvh.c b/arch/x86/xen/enlighten_pvh.c
-index ada3868c02c2..9e9db601bd52 100644
---- a/arch/x86/xen/enlighten_pvh.c
-+++ b/arch/x86/xen/enlighten_pvh.c
-@@ -4,6 +4,7 @@
- 
- #include <xen/hvc-console.h>
- 
-+#include <asm/bootparam.h>
- #include <asm/io_apic.h>
- #include <asm/hypervisor.h>
- #include <asm/e820/api.h>
-diff --git a/arch/x86/xen/vga.c b/arch/x86/xen/vga.c
-index d97adab8420f..f7547807b0bd 100644
---- a/arch/x86/xen/vga.c
-+++ b/arch/x86/xen/vga.c
-@@ -2,7 +2,6 @@
- #include <linux/screen_info.h>
- #include <linux/init.h>
- 
--#include <asm/bootparam.h>
- #include <asm/setup.h>
- 
- #include <xen/interface/xen.h>
--- 
-2.43.0
+Doesn't say what it is the lower dw of.  Good to add a mention of serial number.
+
+
+> +			break;
+> +		default:
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (prot_err->valid_bits & PROT_ERR_VALID_CAPABILITY) {
+> +		switch (prot_err->agent_type) {
+> +		case RCD:
+> +		case DEVICE:
+> +		case LD:
+> +		case FMLD:
+> +		case RP:
+> +		case DSP:
+> +		case USP:
+No heading for this.  Which means the output just ends up with something like:
+
+    lower_dw: 0x00000004, upper_dw = 0x00000000
+   00000000: 00020010 00008000 0000000f 00000411
+   00000010: 00110000 00000000 00000000 00000000
+
+etc  So also wants a space before the hex dump or indeed greater indent once that's
+added.
+
+Similar formatting things apply to later changes to the message such as the header
+log register in the next patch.
+
+Whilst not a bug as such, pretty printing is always nice :)
+
+Jonathan
+
+
+> +			print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4,
+
+> +				       prot_err->capability,
+> +				       sizeof(prot_err->capability), 0);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (prot_err->valid_bits & PROT_ERR_VALID_DVSEC) {
+> +		pr_info("%s DVSEC length: 0x%04x\n", pfx, prot_err->dvsec_len);
+> +
+> +		pr_info("%s CXL DVSEC:\n", pfx);
+> +		print_hex_dump(pfx, "", DUMP_PREFIX_OFFSET, 16, 4, (prot_err + 1),
+> +			       prot_err->dvsec_len, 0);
+> +	}
+> +}
+> diff --git a/drivers/firmware/efi/cper_cxl.h b/drivers/firmware/efi/cper_cxl.h
+> new file mode 100644
+> index 000000000000..86bfcf7909ec
+> --- /dev/null
+> +++ b/drivers/firmware/efi/cper_cxl.h
+> @@ -0,0 +1,66 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * UEFI Common Platform Error Record (CPER) support for CXL Section.
+> + *
+> + * Copyright (C) 2022 Advanced Micro Devices, Inc.
+> + *
+> + * Author: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> + */
+> +
+> +#ifndef LINUX_CPER_CXL_H
+> +#define LINUX_CPER_CXL_H
+> +
+> +/* CXL Protocol Error Section */
+> +#define CPER_SEC_CXL_PROT_ERR						\
+> +	GUID_INIT(0x80B9EFB4, 0x52B5, 0x4DE3, 0xA7, 0x77, 0x68, 0x78,	\
+> +		  0x4B, 0x77, 0x10, 0x48)
+> +
+> +#pragma pack(1)
+> +
+> +/* Compute Express Link Protocol Error Section, UEFI v2.10 sec N.2.13 */
+> +struct cper_sec_prot_err {
+> +	u64 valid_bits;
+> +	u8 agent_type;
+> +	u8 reserved[7];
+> +
+> +	/*
+> +	 * Except for RCH Downstream Port, all the remaining CXL Agent
+> +	 * types are uniquely identified by the PCIe compatible SBDF number.
+> +	 */
+> +	union {
+> +		u64 rcrb_base_addr;
+> +		struct {
+> +			u8 function;
+> +			u8 device;
+> +			u8 bus;
+> +			u16 segment;
+> +			u8 reserved_1[3];
+> +		};
+> +	} agent_addr;
+> +
+> +	struct {
+> +		u16 vendor_id;
+> +		u16 device_id;
+> +		u16 subsystem_vendor_id;
+> +		u16 subsystem_id;
+> +		u8 class_code[2];
+> +		u16 slot;
+> +		u8 reserved_1[4];
+> +	} device_id;
+> +
+> +	struct {
+> +		u32 lower_dw;
+> +		u32 upper_dw;
+> +	} dev_serial_num;
+> +
+> +	u8 capability[60];
+> +	u16 dvsec_len;
+> +	u16 err_len;
+> +	u8 reserved_2[4];
+> +};
+> +
+> +#pragma pack()
+> +
+> +void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err);
+> +
+> +#endif //__CPER_CXL_
 
 
