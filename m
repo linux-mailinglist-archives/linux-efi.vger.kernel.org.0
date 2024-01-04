@@ -1,112 +1,113 @@
-Return-Path: <linux-efi+bounces-331-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-332-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C88824753
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 18:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A2B82479E
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 18:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE282284CD1
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 17:23:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F1E8285875
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Jan 2024 17:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8924528DB4;
-	Thu,  4 Jan 2024 17:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C44288CE;
+	Thu,  4 Jan 2024 17:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DVtcOeM7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lKK3qHzw"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72AE286AD;
-	Thu,  4 Jan 2024 17:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E89D286B7;
+	Thu,  4 Jan 2024 17:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704388682; x=1735924682;
+  t=1704390122; x=1735926122;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=cH3HkodL9PGsGg28dKubhWRYOpdfI68lLcFrFmpq5mY=;
-  b=DVtcOeM7FDy7IgIAgjKyLRA5HRWD+coUlKM6RsOT/jK5iAW8ogVjA78G
-   f1+NItfFx8OM/oFI8kb9bFTRJDQfTLC4jvSXKpaI8YCNlxuGFhTJ/PIDv
-   jybX3MLPBEJeyfQJBxmjFJxx1kNaOYPnTBJVoh28/vIgLKgCVr0JCC2K6
-   /FC9MZfyygRsT8AEYm1C7yt2JP5m7IbREkjdk7eMrdJXky7iR4yLMvJE7
-   d9PQFf6SbX+sRYXOlkvHoyUs2bw76mjAFYgn+SUiZ8xkhDoVRFqw/9qwc
-   t4wrCH/ANAlvc+9my2Fm6fouGpG7v6WlvDqKCDJMyawLV0HrCvVJW6Tij
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="483479639"
+  bh=XppQ0Z5/2+KDvZiMhisTMbOrup02pLM/LdLLZdIw++4=;
+  b=lKK3qHzwSwWaiMuUYuy8OvYgtXhwgRHO148tQJ+S8V/Ty1F3cS/4C9fX
+   v1YFWFh2YR1mB9NelCug6Mi3LzxffZeV66ZuUyYUxUL8jfSlwTeHS3CT8
+   5yPTIX0t4nr6aJtxBl6CUEscZJILyv8h8Eu3igegCpUnvJEsNfztkb9YH
+   roojLKTZ2xWMGJkhaE11f1yB804vsmB98F0FCwzhMShECyf2SuSjamJjP
+   MuvZteqcqPUvdopnNGIS7EiTe0PPX28LeobyzohLI+g1DaOtaAwTQkQ8K
+   F49v7DahGfrdx3sF+vvNvh94LjvKNQbq2Iu87nFBxPExTPi/3tz39Mrbh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="4425448"
 X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="483479639"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 09:18:00 -0800
+   d="scan'208";a="4425448"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 09:41:53 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="846313110"
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="953687933"
 X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="846313110"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmsmga008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Jan 2024 09:18:00 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+   d="scan'208";a="953687933"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Jan 2024 09:41:52 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 4 Jan 2024 09:17:59 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.1.2507.35; Thu, 4 Jan 2024 09:41:52 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 4 Jan 2024 09:17:59 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ 15.1.2507.35; Thu, 4 Jan 2024 09:41:51 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 4 Jan 2024 09:17:59 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.35 via Frontend Transport; Thu, 4 Jan 2024 09:41:51 -0800
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.40) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 4 Jan 2024 09:17:58 -0800
+ 15.1.2507.35; Thu, 4 Jan 2024 09:41:51 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=i5PvmQ4uJaPGsna49z72X1FMjvhWafwcB6vf2Iy90wXM0VvRYDz7Vt7muWDisxEUU8oD/8MbhJXcET3RGg8jTfJDj+JvzyUq3Wi4nizYj7QYVYgiKqf5eyw7JCJazDkyhuCmzvGOAE3BGTuJXhVNYH2diSdWFFh5ZJnOX9kvDODnWfT4kx2prBkQqkHSF9BqDUVoIHH/CdfVarGGi/OklSv5VyPPj+ODN4Z64nns83EDvPEHY1v7BaelBtjtW6LHnFnIA0DT1hKQkcCKaWMPQZmDkN0NJW+PG9g91WBIsy/+MFMsKuXLoK5GdtZVpj9Rg1E3KRr2n/Nhw0W+fk3prw==
+ b=l+5zxOtwRODQi/9h4oKFFbXYr8bmdyw5rYgpNTX68LEjXDy6727UO55Fdc8rA3WIgcB9sqTk57EVQOE7lWbxpRv4UfoSOTMoj6/zTpbB1tYQHX2u686Khz16Wd53C/7hu1WM7RqVyoBjKOpANwWX9p8d4JRMFXcVhOa6DjbfMsQnSKwy1uMFVda5OLwPSgJJj3DI0DjrvhJNmcQnUCtRYeuk6Gj15GuVuwE8g5KiXyqi5AaZwl/wKN+WB2Yz9I+MEyi9NYTFA5SnO3XsHJNFhDpIeWkarYllCtSy1Ztp5EXhxdCbVMj4ACjCN5QviErmamkLlbRRCnCF72N757OS5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G/Go10zzQviITp8WLPR9dANexNsdMxzCpaPa4mtTTWE=;
- b=ecZjGp1X/ixSDQeed62ionsOVE80y9q80DJv6OSTtDacbA/dnv/AfttQtLdFd4oJZX2DjaOSdv3DDyz2TgnxLPwYd76Uel/ifNo2BB77k0C5d/HtV/Dko4xuEYVBptXfwPWfrAdkjGXd9CxAQfkuEVoz77svvmTgLG8fZzWBGA7aA0gQZC6lbNi6KQisK2J0OAsnVV+8ux8ZwqqQP38SRwpH4jlHwWuQHNlTW6OHhb5d/g1D1Ir4QgEO/e5iRnl+p2pAB7DAt6G8l+mLUWR0cmlNLdwa+XbUbuiw6dQYHy9xg+jCnAGQX5wfzz4n5MpZAndy88iu2Aa1rncY81r+0w==
+ bh=BZpPY/DlidciaE2+x+PFOxI7I564CVQswSgdgnqjqfk=;
+ b=XdSfZwV/XEK5TEk62VgCKpn0yDT27EGXuWfmvCQWOtDF8QVFbL9OIF3CDCVI61RRe8ll1je+ZwG0VjntJ5YzOTOiY/5pmgTVnXznuzAAiH1h0U5STKa0aMiPYtVxEfrOXR5J222UseZEHkmFZexrAOE324yWgyrMc4KsZc7X5vZ31lCEltwqclbNax6Srf123RfIKnoccCk8tDZQZaumHBnKyDvyOxPMYNHWrIq1KXoOOVzs5u1+XU2rGn8oCzHKa3BABo50GiSBlogauWDxkkZmy8pwlWkqDXy10Ay82cwyHt9XRPShdknWRvgn6tFINmTX3DjMCksnMjlIJKpTJg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
- by DM4PR11MB6215.namprd11.prod.outlook.com (2603:10b6:8:a9::11) with
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA1PR11MB7698.namprd11.prod.outlook.com (2603:10b6:806:332::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.13; Thu, 4 Jan
- 2024 17:17:55 +0000
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::da91:dbe5:857c:fa9c]) by SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::da91:dbe5:857c:fa9c%4]) with mapi id 15.20.7159.013; Thu, 4 Jan 2024
- 17:17:55 +0000
-Date: Thu, 4 Jan 2024 09:17:42 -0800
-From: Ira Weiny <ira.weiny@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, Bjorn Helgaas
-	<helgaas@kernel.org>
-CC: Bjorn Helgaas <bhelgaas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ 2024 17:41:49 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7159.013; Thu, 4 Jan 2024
+ 17:41:49 +0000
+Date: Thu, 4 Jan 2024 09:41:46 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>, Lukas Wunner <lukas@wunner.de>
+CC: Dan Williams <dan.j.williams@intel.com>, Ira Weiny <ira.weiny@intel.com>,
 	Jonathan Cameron <jonathan.cameron@huawei.com>, Smita Koralahalli
 	<Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
 	Yazen Ghannam <yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>,
 	Dave Jiang <dave.jiang@intel.com>, Alison Schofield
-	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ard
- Biesheuvel" <ardb@kernel.org>, <linux-efi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
 Subject: Re: [PATCH v5 8/9] PCI: Define scoped based management functions
-Message-ID: <6596e836a783a_1587c29412@iweiny-mobl.notmuch>
-References: <6595e201beb4_be7022944d@dwillia2-xfh.jf.intel.com.notmuch>
- <20240103230147.GA1800245@bhelgaas>
- <6595f9eec5986_be70229443@dwillia2-xfh.jf.intel.com.notmuch>
+Message-ID: <6596edda327c8_8dc68294b2@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20231220-cxl-cper-v5-0-1bb8a4ca2c7a@intel.com>
+ <20231220-cxl-cper-v5-8-1bb8a4ca2c7a@intel.com>
+ <20240104060528.GA10504@wunner.de>
+ <6596539c9729e_8dc6829476@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240104070235.GA13468@wunner.de>
+ <CAMj1kXG0QiizpA_oTkV4h2DaF4KuM454_KBno3UngvO7fRm-7g@mail.gmail.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <6595f9eec5986_be70229443@dwillia2-xfh.jf.intel.com.notmuch>
-X-ClientProxiedBy: SJ0PR03CA0150.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::35) To SA1PR11MB6733.namprd11.prod.outlook.com
- (2603:10b6:806:25c::17)
+In-Reply-To: <CAMj1kXG0QiizpA_oTkV4h2DaF4KuM454_KBno3UngvO7fRm-7g@mail.gmail.com>
+X-ClientProxiedBy: MW2PR16CA0044.namprd16.prod.outlook.com
+ (2603:10b6:907:1::21) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -114,173 +115,169 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|DM4PR11MB6215:EE_
-X-MS-Office365-Filtering-Correlation-Id: b61efcf1-e6d0-4a84-0b7a-08dc0d4916e4
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA1PR11MB7698:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3388bd88-567e-4676-3dde-08dc0d4c6dfb
 X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qimJ12/hZQIQA6kDjSi/Q/6UZJPeseHeJh8xDn6O6ecKzE6+UceXAK8fuBod+eLTdvyXTSoPPi59wsRr4vgtH36G2oCwB2VcN22w4ltzTM2tZY2MswkOxCS3b6k6foqikdvuVr8o6XJecy5dFBvdOhK/FJTzGAFg0sD65yT7TDneYhexT4E3W2FD308ag567QZdC8g/sgSBmkiDyKmaNgYr/Tyu7KDo3SiUVXYU01lruIyArpOIN5qf74dkU3QApg7/uw3oMKCBgzQ2BD0suQ5iH0yUX64KO2OSBGhTxHcqFbNC8HP9LN6k1D4q4g8ppGC/SXeV5mB7INDYXVCSprzBKTkuepZVcKYgAqGHB9Cr8dsU6pjs0xoK2JNcrtqUggFVoBbXhw/i+DDR9IwzUQZE9BaXqz3Bueog2mfe//Vo24tOP/9uvyT0Lpo3HtTGTXa6RcUbjCG6U6bi2NP/K7SrvXcSMItljGxC6cfjuMK70YCyJbkPbNilB67bMKbe5pgPQVjyMDMWF+dOR0x2b69yJkFg6kyUE2g5j1xBWfwsibH18SCMS9KFiEjC3LaG3
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(396003)(39860400002)(346002)(366004)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(38100700002)(66556008)(66946007)(66476007)(110136005)(54906003)(82960400001)(44832011)(83380400001)(86362001)(2906002)(26005)(41300700001)(5660300002)(7416002)(6512007)(6506007)(6666004)(9686003)(478600001)(8676002)(8936002)(6486002)(4326008)(316002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: kHfn0J24AD0Zmley0nrgEzDFf10fvpI2oT/bXc3jBW0LJwA/AcQBhYv7iPvMVv39bQeIwtFtPnB1zx9Meh9o72XBKR68/+U38nG0dwq5IHmos7Uc/4Qgb92+KtRcX7qAIRa2e82iLz+dt7q6XawWryYctxS/8lC8No694xPLK8igBvv1KirC6/lhlHpcrHgpBoS+JtcIDuzbjQSb7TlgJy0738Z91s4r8z23vC2ZZifYn+KB/X4Xz32G1/TaBvGfmfTklawBftYkjCJ6DE59t2nsWtLfev9B3KEeHLKTXb6IsDoOowevOCC5Yq9Wod7xpXsG1jXjA4WA0KgiwsKGm0gb9SPOxhxMCI5UVMsnL/wG/udLaFxAQnS+hPyIca8CnruKLqgC7FwEtSHvqaR+zTbrA2+bnMc/mGCzBlscnBXZgfGb0vEUCvRW/LI9UDTVtxWrthuGBBYXT9K6k2ys8lTze1uZwRJFk2lhUnmj5scnlpg9so2ptdR+OBJ+p1vwFbhZVoYAh9xiCnWfg8tyWZ4GRo9QmDnspYnmi0W3S9s=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(376002)(366004)(39860400002)(346002)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(2906002)(5660300002)(7416002)(8936002)(4326008)(8676002)(316002)(9686003)(66556008)(110136005)(66946007)(66476007)(54906003)(6512007)(26005)(83380400001)(38100700002)(41300700001)(82960400001)(86362001)(6506007)(478600001)(6666004)(966005)(6486002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9I1KpEd932XKXqhx0bGXat+no66milJv2KINa0YSZ3v7gwJBaF585WONy7u2?=
- =?us-ascii?Q?vXvh4He+EM41ZuyWsCzxDfkk94hNmVtcCMJR0ZVy/ewSrOE2D7cWSKDUGz1E?=
- =?us-ascii?Q?NwoECXwqBNn3+njeJNb+fHXxiTlhKZJzYNbQVMtnWccpxGsVr5K3HNEeTpde?=
- =?us-ascii?Q?fzhh7OuiuXDzjU51UXS5zgMqOTCXkabziTNzNKq2cC4rGLX/M4E0eym6RgQ3?=
- =?us-ascii?Q?5cgVUuHH2manIiV3z+t0U9aXgn1k4+EaDT7FTo/MQL4H1dzIuXJ1ZmdWIFKb?=
- =?us-ascii?Q?RZ+tmFSgeRTVgH3A4uFxlK9UR7ssA+5OUdY0RYk+Sw54OaqrLGxwTFfPBfdi?=
- =?us-ascii?Q?KOMmYIsYf09ISHeXMqxP9R5QQt0C+nyEAmmGNFDgl15dlZj+/2lW9Z9hNNkQ?=
- =?us-ascii?Q?jCW1nXL+Y1G+Gj6neoz1asymU8XQ0ogPtw1j2SWU4eUpxejuR/+ZyBo3jo7f?=
- =?us-ascii?Q?dP4pZ29tJstSFiTOOwSg6qkjBkjODV1NpRHXjUz2BZrfKc5YcYLUd5bhbj/S?=
- =?us-ascii?Q?e6WxGr5uBLJpbmbzK5iYqoKGR01I/I32OVZ4FA0cu/6GwN3ehE8H/pG6kJcr?=
- =?us-ascii?Q?mPWKTDuZ6j76oCkFuwmCDKboBdNLbQ/p3Ss4eHhHesZIFNVfTCd4SbhJLdvE?=
- =?us-ascii?Q?r69VB3BC7/TVaMGfwswGLemEBx9LwsoYiOfZtbVPXuauhIKbRTn6klkCuonT?=
- =?us-ascii?Q?QXCrkduOVoxZMeVcXXRbLlsxTulR2zSDPdnxlbmkl05jXk4JhiYXg6gbECDI?=
- =?us-ascii?Q?MIf1AobLZGONxpCGJ5jCnuxZpKHL9gsMQ8QEDv56tsjNsMXRuA/ioIrQKmyn?=
- =?us-ascii?Q?aKQ9jBTGybpPSqX5RKm7FsjQPXmxdZDlnwSWKgDQDruwfPlSxNeQrIuCTr/+?=
- =?us-ascii?Q?GV8LjprWgiQ6pI/3MPUTYYgkqrckKqrjvLOIOxY5Ah5/NRCuIcDzFVPLg3kH?=
- =?us-ascii?Q?+QWDqskUG2NCSNrml+FqItX3AFEavOfW0A5AvmTmxCGsaVhgvNEUIS/aIr3O?=
- =?us-ascii?Q?hAykkG6PqPCUE7kWUZrwA1C9Z9fpBknfRunmCobv2JIESBiITyzrCIPwGMVp?=
- =?us-ascii?Q?NBUIN8R6cAcmnAzGlSJg32J0mF1UgkYFUjjmDae/IHJ08qwJ4EY+zeM2vzIZ?=
- =?us-ascii?Q?v4ClJRkO1/Y+AM2J2zkICdU08ypW9NqBLkML485OlQeepdIfoLkCD1ZFnwxH?=
- =?us-ascii?Q?ORocYqUucV/b5i0EOfgKZtS4yoFD7IETD57jq2wmCzX9UWRfN9lqDv1VTKB2?=
- =?us-ascii?Q?VJR+4RcyIBnhz+xgY3zeuOdIJuVod48T4gpVOYWQ0ONDE0d2Rz5pQ8u0T0aq?=
- =?us-ascii?Q?pEQ8J6omm93ogBJtTV//Jh6OsiI0yal+OHBe9+eItoEeqwGSAQ26/8t6VbS8?=
- =?us-ascii?Q?khXzaF64WZ4P/sdVxIchUy5YMHRsguUdeT2myFK9zgQ1PZPWTueE2YK08B18?=
- =?us-ascii?Q?QTlC6naiG0NvDYsDAQS8i9LZqNb5bnVoaA3d1MZ3bs/6t/bE8+kT9MDlKs2S?=
- =?us-ascii?Q?9r+waCw/uj6+UiGR6FfwAsvl4N5X1ga4oG6CD55Y+GW8+9UnA55CLcNTekqi?=
- =?us-ascii?Q?zqCC3sz3HUPbfImYirI8RK3/h/LtNvBNsPBddtTO?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b61efcf1-e6d0-4a84-0b7a-08dc0d4916e4
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xKSoU30XBxnWmYQODcdryHs3NpjR4LKgJy3HQrqzSwYhrmQHtjqPeuSrbUI8?=
+ =?us-ascii?Q?pMuf/fDqsOFLsMUesTthjyrZfZkbIpnbkARsPasmn1klIAUw5OvhjtS36H2n?=
+ =?us-ascii?Q?s7nxOeD3vnRKf1tFUbpQS3Nm/wTAbqySDwJWvJns5smj7EsoNAFklUVeV88c?=
+ =?us-ascii?Q?9X13d1HihCyEY8jnQTxXbRKX53Sf+gEZ/j6dg2kCpB99v6cHfT8bZKL58IT5?=
+ =?us-ascii?Q?ndv8pIbad0lx02Fv/eUKfOcLACfAYAUtTtfefrlZ5//ehYcy4zxYCVamzJzC?=
+ =?us-ascii?Q?FwFGv4+yRp9GVCAos3RQSwSpQ5imVAXpOOZoDWWHZv42ifMTQL27FyWuEHe2?=
+ =?us-ascii?Q?StpJOvoVpbN9d6kVWyJ+zyyFuwiuwXt2VfV2MhCcy9mkVQzhCNu6xeJyr5zL?=
+ =?us-ascii?Q?chP8BQLxt/XYsgpw+NzjODTujVtLtXFPm6KZdCT20kUAUCZXwSx4tJc1z+Uc?=
+ =?us-ascii?Q?QGGriMp43AulrtT9IWGIa/Wr9hcqzePTYDa4wfwZMvLuGRbSGrBzn9THmCIi?=
+ =?us-ascii?Q?GKMfP6h90kMazCLkvFnr1sRaqHkSHHSOB9B6Md8ViwP4Afaqoaq1BBSNmnAl?=
+ =?us-ascii?Q?DoLbgJs/dv4OWweg3Pw6zJ/iw3l4aPYpuOwW8Jlm62fF3ZZv35hPRuXyACMG?=
+ =?us-ascii?Q?pPdM7YfdjGi6mN0aULZ0Fp9A6h3w5mxPI4/nnT4d9c/kHxZbJzD1iABp0lzt?=
+ =?us-ascii?Q?OWkrP3XaMwamrQHSLDxk/Uk5+uODVppqoB1tX6y0u8LIQ7Te1qlqzUFKIzNo?=
+ =?us-ascii?Q?ciS0Bkyh3kcY+dZ7u3BKIaHKtPIOEfef7rT5RjUBAmuEzLpz/S6kSFegifH+?=
+ =?us-ascii?Q?Z7LfFfeDSlKjneJ1uQDv+FzG78Izq5QYUEJ+GN0aWIB/OguZyDkDxTL7tkvU?=
+ =?us-ascii?Q?rDFcD4ufwpkyplKqdUfklh7sf5WhwEH34hcsMWyeAFRws01D4RS6w1seBIJn?=
+ =?us-ascii?Q?rXQvBIlqQMvfBDfjq/KBu7XGbIcwav1SHp/tm3RSG1AO20ooDXZj1OKFKzWT?=
+ =?us-ascii?Q?O6aIpApQ9lO+p0eUjI2BSmZbY8iIzPWBF4AJREoz+MSjMcH2Ymph2b/oG+tX?=
+ =?us-ascii?Q?q0u0iSd2E5tHrfQWAh3B7XEMrgfo1TBi6TZTdkExRnCEPZpzJrmp7zlSzAFN?=
+ =?us-ascii?Q?53Th8HMuL7qAF6rxaFjBueWeW/j60k7xEdELA5KtvixmKGPhz26kEjp0o6HK?=
+ =?us-ascii?Q?ImCr9D8diHhQEZkcHgnpe3RxzkyInUYF9rNUKNtVrX2O/FvGsldzvT/f8V87?=
+ =?us-ascii?Q?v7M9937nBuICAKG+3sfhT62Trc5fkPbb9kLg6RgjAJmV4CLKGasHP57pmPVf?=
+ =?us-ascii?Q?j133lp7JsgkbcjMYm6ZZpBpfO1WGhZ6/ExHJwMvHCecCeN4lebb/uDbKasuK?=
+ =?us-ascii?Q?yk3El8ubRwfjjLZgLvm3CT+c4aC5Cbbo06KKX2OPgsfrRhy1afqJnevcFWS8?=
+ =?us-ascii?Q?8Dh3R4w4GbUd94PMgdVfl82TuRbFDisKTZ1RLOHKzPZSnpyV+GWWtt78bEUp?=
+ =?us-ascii?Q?b2tkeL4KhdV14Z58fErSh7NkjBWCEWGqZ58XORXcXLUhrGYektOtLUgqux83?=
+ =?us-ascii?Q?Z63pQn9Hab2Cwu96CYCupCZSMkBdSJZZZnfmQVXLVpBt5ZPnxDSenPieO552?=
+ =?us-ascii?Q?og=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3388bd88-567e-4676-3dde-08dc0d4c6dfb
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jan 2024 17:17:54.9808
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jan 2024 17:41:49.5166
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4B+MZoMvsWq4mQKTWIh49leJ8CtDyt4HbyCGhJXMsofRDbSxMgJ4TrJeLUAl8FAJF0Su7pbTPga9M64eYDsWkw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6215
+X-MS-Exchange-CrossTenant-UserPrincipalName: p55wI54Jse3GKzqKG1A+2oc+siGDzHtji0RoBbtkOltZbonUlKOqpXxFJILoGduK6Y10+vlkTnjRaKbLqA+wBDjbNOqmkitUE8ABHDIHMxw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7698
 X-OriginatorOrg: intel.com
 
-Dan Williams wrote:
-> Bjorn Helgaas wrote:
-> > On Wed, Jan 03, 2024 at 02:38:57PM -0800, Dan Williams wrote:
-> > > Ira Weiny wrote:
-> > > > Users of pci_dev_get() can benefit from a scoped based put.  Also,
-> > > > locking a PCI device is often done within a single scope.
-> > > > 
-> > > > Define a pci_dev_put() free function and a PCI device lock guard.  These
-> > > > will initially be used in new CXL event processing code but is defined
-> > > > in a separate patch for others to pickup and use/backport easier.
-> > > 
-> > > Any heartburn if I take this through cxl.git with the rest in this
-> > > series? Patch 9 has a dependency on this one.
-> > 
-> > No real heartburn.  I was trying to figure out what this does
-> > since I'm not familiar with the "scoped based put" idea and
-> > 'git grep -i "scope.*base"' wasn't much help.
-> > 
-> > I would kind of like the commit log to say a little more about what
-> > the "scoped based put" (does that have too many past tenses in it?)
-> > means and how users of pci_dev_get() will benefit.
+Ard Biesheuvel wrote:
+> On Thu, 4 Jan 2024 at 08:02, Lukas Wunner <lukas@wunner.de> wrote:
+> >
+> > On Wed, Jan 03, 2024 at 10:43:40PM -0800, Dan Williams wrote:
+> > > Lukas Wunner wrote:
+> > > > On Wed, Dec 20, 2023 at 04:17:35PM -0800, Ira Weiny wrote:
+> > > > > --- a/include/linux/pci.h
+> > > > > +++ b/include/linux/pci.h
+> > > > > @@ -1170,6 +1170,7 @@ int pci_get_interrupt_pin(struct pci_dev *dev, struct pci_dev **bridge);
+> > > > >  u8 pci_common_swizzle(struct pci_dev *dev, u8 *pinp);
+> > > > >  struct pci_dev *pci_dev_get(struct pci_dev *dev);
+> > > > >  void pci_dev_put(struct pci_dev *dev);
+> > > > > +DEFINE_FREE(pci_dev_put, struct pci_dev *, if (_T) pci_dev_put(_T))
+> > > >
+> > > > pci_dev_put() already performs a NULL pointer check internally.
+> > > > Why duplicate it here?
+> > >
+> > > Greg asked the same for the introduction of __free(kvfree), and Peter
+> > > clarified:
+> > >
+> > > http://lore.kernel.org/r/20230814161731.GN776869@hirez.programming.kicks-ass.net
+> > >
+> > > Essentially, that check is more for build-time than runtime because when
+> > > the macro is expanded the compiler can notice scenarios where @pdev is
+> > > set to NULL (likely by no_free_ptr()) and skip the call to pci_dev_put()
+> > > altogether. pci_dev_put() also happens to be out-of-line, so saving a
+> > > call when @pdev is NULL a small win in that respect as well.
+> >
+> > Doubtful whether that's correct.  The kernel is compiled with
+> > -fno-delete-null-pointer-checks since commit a3ca86aea507
+> > ("Add '-fno-delete-null-pointer-checks' to gcc CFLAGS").
+> >
+> > So these NULL pointer checks are generally not optimized away.
+> >
+> > I've just responded to the discussion you've linked above:
+> > https://lore.kernel.org/all/20240104065744.GA6055@wunner.de/
+> >
 > 
-> That is completely fair, and I should have checked to make sure that the
-> changelog clarified the impact of the change.
+> AIUI, Peter is referring to constant propagation of compile time
+> constant pointers here, not pointer variables where the NULL check is
+> elided if the variable has already been dereferenced.
+> 
 
-Agreed.  Apologies for the brevity.
+No, it is for auto (on stack) pointer variables. Consider this sequence:
 
-> 
-> > I don't know what "locking a PCI device is often done within a single
-> > scope" is trying to tell me either.  What if it's *not* done within a
-> > single scope?
+	struct pci_dev *pdev __free(pci_dev_put) = pci_get_domain_bus_and_slot(...);
 
-I was not trying to fix that but Dan covers it below indicating that the
-pointer can be returned outside the scope if needed with no_free_ptr().
+	if (!pdev)
+		return NULL;
 
-> > 
-> > Does this change anything for callers of pci_dev_get() and
-> > pci_dev_put()?
+	if (!check_pdev(pdev))
+		return NULL;
 
-Current callers don't need to use this.
+	return no_free_ptr(pdev);
 
-> > 
-> > Does this avoid a common programming error?  I just don't know what
-> > the benefit of this is yet.
+...that expands at compile time to a first pass of:
 
-Dan covered it well below.
+	struct pci_dev *pdev = pci_get_domain_bus_and_slot(...);
 
-> > 
-> > I'm sure this is really cool stuff, but there's little documentation,
-> > few existing users, and I don't know what I need to look for when
-> > reviewing things.
-> 
-> Here a is a re-write of the changelog:
+	if (!pdev) {
+		if (pdev)
+			pci_dev_put(pdev);
+		return NULL;
+	}
 
-FWIW
+	if (!check_pdev(pdev)) {
+		if (pdev)
+			pci_dev_put(pdev);
+		return NULL;
+	}
 
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+	struct pci_dev *tmp = pdev;
+	pdev = NULL;
+	if (pdev)
+		pci_dev_put(pdev);
+	return tmp;
 
-> 
-> ---
-> PCI: Introduce cleanup helpers for device reference counts and locks
-> 
-> The "goto error" pattern is notorious for introducing subtle resource
-> leaks. Use the new cleanup.h helpers for PCI device reference counts and
-> locks.
-> 
-> Similar to the new put_device() and device_lock() cleanup helpers,
-> __free(put_device) and guard(device), define the same for PCI devices,
-> __free(pci_dev_put) and guard(pci_dev).  These helpers eliminate the
-> need for "goto free;" and "goto unlock;" patterns. For example, A
-> 'struct pci_dev *' instance declared as:
-> 
-> 	struct pci_dev *pdev __free(pci_dev_put) = NULL;
-> 
-> ...will automatically call pci_dev_put() if @pdev is non-NULL when @pdev
-> goes out of scope (automatic variable scope). If a function wants to
-> invoke pci_dev_put() on error, but return @pdev on success, it can do:
-> 
-> 	return no_free_ptr(pdev);
-> 
-> ...or:
-> 
-> 	return_ptr(pdev);
-> 
-> For potential cleanup opportunity there are 587 open-coded calls to
-> pci_dev_put() in the kernel with 65 instances within 10 lines of a goto
-> statement with the CXL driver threatening to add another one.
-> 
-> The guard() helper holds the associated lock for the remainder of the
-> current scope in which it was invoked. So, for example:
-> 
-> 	func(...)
-> 	{
-> 		if (...) {
-> 			...
-> 			guard(pci_dev); /* pci_dev_lock() invoked here */
-> 			...
-> 		} /* <- implied pci_dev_unlock() triggered here */
-> 	}
-> 
-> There are 15 invocations of pci_dev_unlock() in the kernel with 5
-> instances within 10 lines of a goto statement. Again, the CXL driver is
-> threatening to add another.
-> 
-> Introduce these helpers to preclude the addition of new more error prone
-> goto put; / goto unlock; sequences. For now, these helpers are used in
-> drivers/cxl/pci.c to allow ACPI error reports to be fed back into the
-> CXL driver associated with the PCI device identified in the report.
-> 
-> ---
-> 
-> As for reviewing conversions that use these new helpers, one of the
-> gotchas I have found is that it is easy to make a mistake if a goto
-> still exists in the function after the conversion. So unless and until
-> all of the resources a function acquires, that currently need a goto to
-> unwind them on error, can be converted to cleanup.h based helpers it is
-> best not to mix styles.
-> 
-> I think the function documentation in include/linux/cleanup.h does a
-> decent job of explaining how to use the helpers. However, I am happy to
-> suggest some updates if you think it would help.
+...the compiler can then optimize this on a second pass to:
+
+	if (!pdev)
+		return NULL;
+
+	if (!check_pdev(pdev)) {
+		pci_dev_put(pdev);
+		return NULL;
+	}
+
+	return pdev;
+
+...if the NULL check is dropped from DEFINE_FREE(pci_dev_put...) then
+this becomes unoptimizable by the compiler without
+link-time-optimization (LTO) to see that pci_dev_put() has an internal
+NULL check:
+
+	struct pci_dev *pdev = pci_get_domain_bus_and_slot(...);
+
+	if (!pdev) {
+		pci_dev_put(pdev);
+		return NULL;
+	}
+
+	if (!check_pdev(pdev)) {
+		pci_dev_put(pdev);
+		return NULL;
+	}
+
+	struct pci_dev *tmp = pdev;
+	pdev = NULL;
+	pci_dev_put(pdev);
+	return tmp;
+
+Now, if pci_dev_put() would become a static inline the compiler could
+again do the optimization, but it is otherwise free (post compiler
+optimization) to keep a conditional in these DEFINE_FREE() instances and
+not worry about whether the actual free routine is inline, out-of-line,
+or has its own NULL check.
 
