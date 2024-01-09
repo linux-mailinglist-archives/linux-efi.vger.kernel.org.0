@@ -1,256 +1,204 @@
-Return-Path: <linux-efi+bounces-378-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-379-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61FDB8290D9
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jan 2024 00:31:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7998290E7
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Jan 2024 00:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B1BAB24F07
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Jan 2024 23:31:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E95F02867CA
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Jan 2024 23:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEDB3E479;
-	Tue,  9 Jan 2024 23:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CF737159;
+	Tue,  9 Jan 2024 23:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ulO6BLnB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LsQSeA7/"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9735E3D553;
-	Tue,  9 Jan 2024 23:31:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4A0C43394;
-	Tue,  9 Jan 2024 23:31:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704843091;
-	bh=5hVxyDqNgsjcjD9YxzQas3f5vsVGH6QVocKWVSXz16A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ulO6BLnBwTO1ExrIAtY/d6/8/t3snXWZ5xifzwxXvIe7aZNJ+xlEF2JN/Qa4xPmiH
-	 2zQb3h1DbaxgJFvd/i2JCQc0l7jruCrcZRcAHOOLQxmLySFzJt8xVKm4pGGvoyUq/c
-	 qIeXL/cSu3n+PO1WFX0BxEORZZ9GSneJjamd+aCIX3fUrwtJkeSxNO6CK8v3p20x/V
-	 laBldAkwyL2cIpp+0ICO4q99vfUffGqOEobELr7nqpYZ0YLCwTU8vF938fZHegoHXg
-	 H1WHiSHgO0wi8T1+8H4wl7+p5j/MvVQiT60nmsHbYCdXUCY8w7WZewbdp/zVdSuPE7
-	 OVkKbSWGWiDUA==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-50e6ee8e911so3746527e87.1;
-        Tue, 09 Jan 2024 15:31:30 -0800 (PST)
-X-Gm-Message-State: AOJu0YymNeRm4S1ay5Jsykb9MAXzT/DxH7r45IQmkcxw0IQRaZNfaSXY
-	Tb1JNi2LcITb0YG4OFjLZ7m/4fVTMawM+T93FDI=
-X-Google-Smtp-Source: AGHT+IFxA8vGxIRBTWUyaiUZuldmYuGrjNaLStRYSK5aoQJzEJWovu97wR9lsnxNk+G0Wnl6ksNb7tZX4/MfBiBm75o=
-X-Received: by 2002:a05:6512:3d8d:b0:50e:2bf0:dd6a with SMTP id
- k13-20020a0565123d8d00b0050e2bf0dd6amr51574lfv.13.1704843089198; Tue, 09 Jan
- 2024 15:31:29 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101EA364C1;
+	Tue,  9 Jan 2024 23:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704843520; x=1736379520;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=xy0vNyWK4NMphtKtF5Twl8XhFt2Jybju4y2NE85IJ2E=;
+  b=LsQSeA7/FyhbypPUCEUEPTwLbJzyWwwKoHY0iVlwrqOXEJDl2m10/vyR
+   hAfjAXTMDNhdSRIQ2x/f0tryx109FDv0eKf/4EiKiJQNX8I40eifw7pW0
+   1sNWvv95OCuCTwuT5EbOlu5dF2uoKKnxad8YaKv7CyTTtPg2BMv29KAua
+   1ZCIUTssTFcM4ksF0V3X/LdCPHswkn2STshYbFFBZ/7PUmRxVYiv09c8r
+   8DGUMdGH+jMTldDqaaqUVVxUqdtYhlJNxbGbndwM3mDX7WKVqQ7LiThnC
+   i7+YcpYC5ekbHWxV4VdIliviLde28NZzT8qiqOdMhLUD7wlGAiKjft/rE
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="429540143"
+X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
+   d="scan'208";a="429540143"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 15:38:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
+   d="scan'208";a="16440408"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Jan 2024 15:38:39 -0800
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 9 Jan 2024 15:38:38 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 9 Jan 2024 15:38:33 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 9 Jan 2024 15:38:33 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 9 Jan 2024 15:38:33 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lBwSRoli9t51/FyLltbYTZmDsiSSwBXsao9lebyv72AyFMGffT2FhfM3v/2teZC+XxwECtfdN/AIROteOQ4m170zxEFnSSszdvgkOb8B3vPDZxMCLY57aTqH1wErVmbDIQWCKNUoqyp4d2PA5J59t90txtSAA7kUODtgKjt9v4cxdl+zVJ7dU0sraWFUdQk3/KQb81z5jmTaI/k8vWDuHGiB7+TpGsBWhvRveNwdHMJAIkZz9ZPyNqkJ+u+Pax5TMg8yYtO6YiMGRCORavfH/Bt1SHGBlif2x5GhWbsePtzmqNy+UZG2Ic12gjvfOBnKGXaaEJ9/ePlJG/1/0Q0PMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aCUsgw683MEk1qoTGdyKY23MukXkcH4UVwcKzxuLlTE=;
+ b=S6xvyYLL+gYk9H/OnKr2mkjx53lC3uaqHJIOnwzBahUBG+DCnHcpAfad61RrdiPtsuvA1TbeEtBmQ428Hp5rMdzkLy2AzTQvnTiiqNyFDxI7OiIfFIMjpkKzPCGNm/HIu9ioJIAoWXyWW6lf/KTA9h6l74OWqKF67F1yhdbJePCwETpsyC8SDwwnSUF0gyC3s5AA9t8H76SesaX9OHkFJ/XHfx2Ydnnuvb6J8whKbDPpxhabwmbr772k9XCEEXOPsbnjLfQySyuHfDGtMrzkMyVHGN55yCbMkfNptczmVzx3jjTsyDwoLE0JW0BRjcwVWj+j6wm8JXciZ6K90i+8LQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DM6PR11MB4692.namprd11.prod.outlook.com (2603:10b6:5:2aa::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.17; Tue, 9 Jan
+ 2024 23:38:31 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7181.015; Tue, 9 Jan 2024
+ 23:38:31 +0000
+Date: Tue, 9 Jan 2024 15:38:28 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ira Weiny
+	<ira.weiny@intel.com>
+CC: Dan Williams <dan.j.williams@intel.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>,
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ard
+ Biesheuvel" <ardb@kernel.org>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v5 4/9] cxl/events: Remove passing a UUID to known event
+ traces
+Message-ID: <659dd8f467dbe_5cee29456@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20231220-cxl-cper-v5-0-1bb8a4ca2c7a@intel.com>
+ <20231220-cxl-cper-v5-4-1bb8a4ca2c7a@intel.com>
+ <20240108132325.00000e9c@Huawei.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240108132325.00000e9c@Huawei.com>
+X-ClientProxiedBy: MW4PR04CA0098.namprd04.prod.outlook.com
+ (2603:10b6:303:83::13) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231220-cxl-cper-v5-0-1bb8a4ca2c7a@intel.com>
- <20240108165855.00002f5a@Huawei.com> <eefc5888-4610-8e39-61ed-2d84e9ebf255@amd.com>
- <659caa8da651c_127da22947b@dwillia2-xfh.jf.intel.com.notmuch>
- <659cb0295ac1_8d749294b@iweiny-mobl.notmuch> <659cb684deb2d_127da22945a@dwillia2-xfh.jf.intel.com.notmuch>
- <20240109160435.00004a4a@Huawei.com> <659db15452090_24a8294f4@dwillia2-xfh.jf.intel.com.notmuch>
- <659dd6ff5ee1_24a8294d0@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <659dd6ff5ee1_24a8294d0@dwillia2-xfh.jf.intel.com.notmuch>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 10 Jan 2024 00:31:17 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHvJzLksPtj1_O2L+4zH4emEs5tnvFCq=Wysfr842b=Sg@mail.gmail.com>
-Message-ID: <CAMj1kXHvJzLksPtj1_O2L+4zH4emEs5tnvFCq=Wysfr842b=Sg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/9] efi/cxl-cper: Report CPER CXL component events
- through trace events
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>, 
-	Yazen Ghannam <yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM6PR11MB4692:EE_
+X-MS-Office365-Filtering-Correlation-Id: e008c351-e8f5-40b6-5421-08dc116c169c
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: swhF1E+ZXEjMmLaQGJNV+MkcrLxndGZzeBcQHQ3Lc+XVvqFeb13mbKHqdEcbVN29axjL5m08V44guXZjWqmTM1SM+hmPWpg794WAXMxQQfaIZq37hV80EhzJoKTLZTHTNDq3jPmD2rHRTClJnX4tgLVYzdkO9Yh9evBfjHjLjC+yrzoCAEVBZNoGP5cHfOwPRAGSJak8hmkYZNrKh2rU1uFehltqdp3dLNbvOJPrCL+5bs8uylre+eWlelqU1dCyxT2TVojpgBgUzKwhTDJtanD6rvJMJ2J0QFwUs2x8JQozdFGeXv1gluFkoXuY5M+4jrhDQyn4ON/Cw6769VoT4SbrxOdVYskwIeugHDKRIqtvz3hU//4v0yy4E1ANS4Kk34DE/xSNmvrJGHj4EYFO/oaOo03RCyl/j4ikUnHC+YzvfcuFdmY4hIh4prOKMtyysVNu7eUSsyQwAf7f2LbzIPcM+0XPZ1qrxIUnBhuqmxhpb5Yxv+eEXnFE1RdQvFeVVMEDJQnhdpxZm+tDtcw4pouC4EVufFvnKiFg8Uju7TpYjrAZlfRcEVYz5Np45Cdf
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(376002)(366004)(39860400002)(396003)(230922051799003)(186009)(451199024)(1800799012)(64100799003)(6512007)(9686003)(26005)(86362001)(38100700002)(82960400001)(5660300002)(4326008)(6506007)(6666004)(8936002)(6636002)(316002)(8676002)(66476007)(66946007)(110136005)(54906003)(66556008)(2906002)(41300700001)(478600001)(6486002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zjL5qcbEYB11XxGe2Lrvk1EjizsoANnFXq4lpM0gf7YFVeCLTDyOgReGmcAO?=
+ =?us-ascii?Q?Lz53jmyHqMtHEExJ4KmwZKhFW5eSJAbp03VEgrmFgJkOhS6VUdOXKx0x/89M?=
+ =?us-ascii?Q?x3EEovggsnJfQTFdYupSVft/IhOLe0tQBMcuKT5ttmRuNA4bB+VkZq0mBej3?=
+ =?us-ascii?Q?afDNkbsdpLTfENjAMsms7fUh+vZYsoifdcS7LLd/SObJmiCXD/T4guVACZOS?=
+ =?us-ascii?Q?HyOozFh9fXDjj3EtkfqA1Sx87BiHjRBJpuQDf4AajFooEku92iENp4GIzpOn?=
+ =?us-ascii?Q?QniCDzJ3CCdA6ceIcxTb/tVv1Mk0iufcX8NJMPuavYTEkfBNfCYQORb06sF3?=
+ =?us-ascii?Q?JA142m51UZSbItSB3OY+BiKZal1tfwUnNwIlqIWUyrUB9j0GVJb57EnjcZjr?=
+ =?us-ascii?Q?/ADxsIvIzWLB909kluxbRpCSrdim7Wx6pqsDPczTfb61hALhDYmitV9+LAO5?=
+ =?us-ascii?Q?h04QZJiPu3TSP1DKcnIOuC8r2DT06KUXdQKs457mhkgSI3G04/Snqless6HY?=
+ =?us-ascii?Q?ZjUkcVPauYR26RPKzgDXduDEAIwzTn0ZvVk4TjVVxQcG00NCundzqK2zRCq0?=
+ =?us-ascii?Q?50bjUKVxSJJaorl05BdVqrCIokDFOK/IjKrMt3dIg8y7DCRdrkWmoDMSSYnw?=
+ =?us-ascii?Q?G6s1jOFkJxCGzyf7LJqavJXXPrKkwl+asHY05wrSY17h1f9k5iG0FN8cSUYa?=
+ =?us-ascii?Q?MGAf46767049jky+Xis5ioy0FCg1Kwh8SxjSIqwlUDF6/8jv0sVmyLDeTCjO?=
+ =?us-ascii?Q?JhVTDlb7vFIH4976/OsUQqsA703qTleP2HY6gPxWyEg2miiIZY4MO04Hhu4r?=
+ =?us-ascii?Q?VEydK2zYtuW3IwO26K8Rr0QNh05OCQDAlQASlCGDPOyzqSEd406Zg1eZafU8?=
+ =?us-ascii?Q?7wmOY5TE5ajPuR5OgBVZzcB5jlsYoYiZ06vkI0S55MDSWuGFsFi/bHpbOINu?=
+ =?us-ascii?Q?WKI71ArbPnUItb7P03yMvx3gzRPyd5LEXtldsXtQsMxbOTbMP7u2s028F73G?=
+ =?us-ascii?Q?CoM/VM7STEun1ZmSE1sGVU3oD93Ob3rvLts2+gu3QhAw9coOrYi0UUxAFiuj?=
+ =?us-ascii?Q?X0gdbAeDSKiX5lnxpM3dZpoMWfjdyiEc6b3QgK8j2OdJEB+z7Ysl21l+bWDB?=
+ =?us-ascii?Q?OoxQ4OBjt47PU7ueSg7khcqAhu+E44G3AUPMPbwBPywtCoeak5rE7VkU9JYo?=
+ =?us-ascii?Q?ZjQHtSSui+Frdp2sVn2jWkfAaeWbyCviC6WP+viqR29krRoXWZkxVSqcUJz+?=
+ =?us-ascii?Q?9+j7GCBDGtwSBUkTKN3JJbkqqxN0pBAc9kmxn6FwgtPIPQ9JavJZkwdcCnD3?=
+ =?us-ascii?Q?OKmIwsSTusLHyIvZzzsQzc7H2xpoyFKoi67aHCZOpfOmInTwZCTATJTBcGQd?=
+ =?us-ascii?Q?X1qDeE56DhGE1cHs5y4JCmXQfe6G3dl24kgsUxgRe8Ll3/z0gT/QLSp3oUU6?=
+ =?us-ascii?Q?Ta2tEhzi7On2M+A6Cv30tFCTbRsWp0OscHhRfoQXV8KubsyIdAcpsGJnI2sK?=
+ =?us-ascii?Q?emldZa8LssuqhmBcwVqJuxCGQTwVJPDgu8Ljf3nqakDPh4Y20Jb4ELJWW10F?=
+ =?us-ascii?Q?6nl5vP6wIVondAOt2mak2fMWGBVZEeynO94z/73g+KWaSEvE0dDfI7EOAeu6?=
+ =?us-ascii?Q?Kw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e008c351-e8f5-40b6-5421-08dc116c169c
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 23:38:31.5054
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7LjgvFO66wWqzduMiGxpJuhO6mHJRk83MQOmAsdrn32z5jS+6qBK5lIIhPnx/dnaUGpQRa1dfGSMV4c5f/pBf7pI8gYokh78UNHUtTD1+6o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4692
+X-OriginatorOrg: intel.com
 
-On Wed, 10 Jan 2024 at 00:30, Dan Williams <dan.j.williams@intel.com> wrote=
-:
->
-> Dan Williams wrote:
-> > Jonathan Cameron wrote:
-> > > On Mon, 8 Jan 2024 18:59:16 -0800
-> > > Dan Williams <dan.j.williams@intel.com> wrote:
-> > >
-> > > > Ira Weiny wrote:
-> > > > > Dan Williams wrote:
-> > > > > > Smita Koralahalli wrote:
-> > > > > > > On 1/8/2024 8:58 AM, Jonathan Cameron wrote:
-> > > > > > > > On Wed, 20 Dec 2023 16:17:27 -0800
-> > > > > > > > Ira Weiny <ira.weiny@intel.com> wrote:
-> > > > > > > >
-> > > > > > > >> Series status/background
-> > > > > > > >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> > > > > > > >>
-> > > > > > > >> Smita has been a great help with this series.  Thank you a=
-gain!
-> > > > > > > >>
-> > > > > > > >> Smita's testing found that the GHES code ended up printing=
- the events
-> > > > > > > >> twice.  This version avoids the duplicate print by calling=
- the callback
-> > > > > > > >> from the GHES code instead of the EFI code as suggested by=
- Dan.
-> > > > > > > >
-> > > > > > > > I'm not sure this is working as intended.
-> > > > > > > >
-> > > > > > > > There is nothing gating the call in ghes_proc() of ghes_pri=
-nt_estatus()
-> > > > > > > > and now the EFI code handling that pretty printed things is=
- missing we get
-> > > > > > > > the horrible kernel logging for an unknown block instead.
-> > > > > > > >
-> > > > > > > > So I think we need some minimal code in cper.c to match the=
- guids then not
-> > > > > > > > log them (on basis we are arguing there is no need for new =
-cper records).
-> > > > > > > > Otherwise we are in for some messy kernel logs
-> > > > > > > >
-> > > > > > > > Something like:
-> > > > > > > >
-> > > > > > > > {1}[Hardware Error]: Hardware error from APEI Generic Hardw=
-are Error Source: 1
-> > > > > > > > {1}[Hardware Error]: event severity: recoverable
-> > > > > > > > {1}[Hardware Error]:  Error 0, type: recoverable
-> > > > > > > > {1}[Hardware Error]:   section type: unknown, fbcd0a77-c260=
--417f-85a9-088b1621eba6
-> > > > > > > > {1}[Hardware Error]:   section length: 0x90
-> > > > > > > > {1}[Hardware Error]:   00000000: 00000090 00000007 00000000=
- 0d938086  ................
-> > > > > > > > {1}[Hardware Error]:   00000010: 00100000 00000000 00040000=
- 00000000  ................
-> > > > > > > > {1}[Hardware Error]:   00000020: 00000000 00000000 00000000=
- 00000000  ................
-> > > > > > > > {1}[Hardware Error]:   00000030: 00000000 00000000 00000000=
- 00000000  ................
-> > > > > > > > {1}[Hardware Error]:   00000040: 00000000 00000000 00000000=
- 00000000  ................
-> > > > > > > > {1}[Hardware Error]:   00000050: 00000000 00000000 00000000=
- 00000000  ................
-> > > > > > > > {1}[Hardware Error]:   00000060: 00000000 00000000 00000000=
- 00000000  ................
-> > > > > > > > {1}[Hardware Error]:   00000070: 00000000 00000000 00000000=
- 00000000  ................
-> > > > > > > > {1}[Hardware Error]:   00000080: 00000000 00000000 00000000=
- 00000000  ................
-> > > > > > > > cxl_general_media: memdev=3Dmem1 host=3D0000:10:00.0 serial=
-=3D4 log=3DInformational : time=3D0 uuid=3Dfbcd0a77-c260-417f-85a9-088b1621=
-eba6 len=3D0 flags=3D'' handle=3D0 related_handle=3D0 maint_op_class=3D0 : =
-dpa=3D0 dpa_flags=3D'' descriptor=3D'' type=3D'ECC Error' transaction_type=
-=3D'Unknown' channel=3D0 rank=3D0 device=3D0 comp_id=3D00 00 00 00 00 00 00=
- 00 00 00 00 00 00 00 00 00 validity_flags=3D''
-> > > > > > > >
-> > > > > > > > (I'm filling the record with 0s currently)
-> > > > > > >
-> > > > > > > Yeah, when I tested this, I thought its okay for the hexdump =
-to be there
-> > > > > > > in dmesg from EFI as the handling is done in trace events fro=
-m GHES.
-> > > > > > >
-> > > > > > > If, we need to handle from EFI, then it would be a good reaso=
-n to move
-> > > > > > > the GUIDs out from GHES and place it in a common location for=
- EFI/cper
-> > > > > > > to share similar to protocol errors.
-> > > > > >
-> > > > > > Ah, yes, my expectation was more aligned with Jonathan's observ=
-ation to
-> > > > > > do the processing in GHES code *and* skip the processing in the=
- CPER
-> > > > > > code, something like:
-> > > > > >
-> > > > >
-> > > > > Agreed this was intended I did not realize the above.
-> > > > >
-> > > > > >
-> > > > > > diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi=
-/cper.c
-> > > > > > index 35c37f667781..0a4eed470750 100644
-> > > > > > --- a/drivers/firmware/efi/cper.c
-> > > > > > +++ b/drivers/firmware/efi/cper.c
-> > > > > > @@ -24,6 +24,7 @@
-> > > > > >  #include <linux/bcd.h>
-> > > > > >  #include <acpi/ghes.h>
-> > > > > >  #include <ras/ras_event.h>
-> > > > > > +#include <linux/cxl-event.h>
-> > > > > >  #include "cper_cxl.h"
-> > > > > >
-> > > > > >  /*
-> > > > > > @@ -607,6 +608,15 @@ cper_estatus_print_section(const char *pfx=
-, struct acpi_hest_generic_data *gdata
-> > > > > >                       cper_print_prot_err(newpfx, prot_err);
-> > > > > >               else
-> > > > > >                       goto err_section_too_small;
-> > > > > > +     } else if (guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA_G=
-UID)) {
-> > > > > > +             printk("%ssection_type: CXL General Media Error\n=
-", newpfx);
-> > > > >
-> > > > > Do we want the printk's here?  I did not realize that a generic e=
-vent
-> > > > > would be printed.  So intention was nothing would be done on this=
- path.
-> > > >
-> > > > I think we do otherwise the kernel will say
-> > > >
-> > > >     {1}[Hardware Error]: Hardware error from APEI Generic Hardware =
-Error Source: 1
-> > > >     {1}[Hardware Error]: event severity: recoverable
-> > > >     {1}[Hardware Error]:  Error 0, type: recoverable
-> > > >     ...
-> > > >
-> > > > ...leaving the user hanging vs:
-> > > >
-> > > >     {1}[Hardware Error]: Hardware error from APEI Generic Hardware =
-Error Source: 1
-> > > >     {1}[Hardware Error]: event severity: recoverable
-> > > >     {1}[Hardware Error]:  Error 0, type: recoverable
-> > > >     {1}[Hardware Error]:   section type: General Media Error
-> > > >
-> > > > ...as an indicator to go follow up with rasdaemon or whatever else =
-is
-> > > > doing the detailed monitoring of CXL events.
-> > >
-> > > Agreed. Maybe push it out to a static const table though.
-> > > As the argument was that we shouldn't be spitting out big logs in thi=
-s
-> > > modern world, let's make it easy for people to add more entries.
-> > >
-> > > struct skip_me {
-> > >     guid_t guid;
-> > >     const char *name;
-> > > };
-> > > static const struct skip_me skip_me =3D {
-> > >     { &CPER_SEC_CXL_GEN_MEDIA, "CXL General Media Error" },
-> > > etc.
-> > > };
-> > >
-> > > for (i =3D 0; i < ARRAY_SIZE(skip_me); i++) {
-> > >     if (guid_equal(sec_type, skip_me[i].guid)) {
-> > >             printk("%asection_type: %s\n", newpfx, skip_me[i].name);
-> > >             break;
-> > > }
-> > >
-> > > or something like that in the final else.
-> >
-> > I like it.
-> >
-> > Any concerns with that being an -rc fixup, and move ahead with the base
-> > enabling for v6.8? I don't see that follow-on as a reason to push the
-> > whole thing to v6.9.
->
-> I will put it in -next for soak time and make an inclusion decision in a
-> few days after I hear back.
->
+Jonathan Cameron wrote:
+> On Wed, 20 Dec 2023 16:17:31 -0800
+> Ira Weiny <ira.weiny@intel.com> wrote:
+> 
+> > The UUID data is redundant in the known event trace types.  The addition
+> > of static defines allows the trace macros to create the UUID data inside
+> > the trace thus removing unnecessary code.
+> > 
+> > Have well known trace events use static data to set the uuid field based
+> > on the event type.
+> > 
+> > Suggested-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > 
+> 
+> >  	TP_STRUCT__entry(
+> >  		CXL_EVT_TP_entry
+> > @@ -422,7 +424,8 @@ TRACE_EVENT(cxl_dram,
+> >  	),
+> >  
+> >  	TP_fast_assign(
+> > -		CXL_EVT_TP_fast_assign(cxlmd, log, uuid, rec->hdr);
+> > +		CXL_EVT_TP_fast_assign(cxlmd, log, rec->hdr);
+> > +		memcpy(&__entry->hdr_uuid, &CXL_EVENT_DRAM_UUID, sizeof(uuid_t));
+> 
+> Hmm. Why not
+> 
+> 		__entry->hdr_uuid = CXL_EVENT_DRAM_UUID;
+> ?
+> 
+> Compiler should be able to squish the stuff in the define down to data as as the
+> UUID generation logic is pretty simple.
+> 
+> I've not emulated the cper records for these yet, so not tested that works beyond
+> compiling.
 
-For the series and however you want to handle the merge:
-
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+We can follow on with this conversion later as I see other usage of uuid
+copying in trace events (bcache for instance). Although I probably would
+not replace it with straight assignment and instead use the uuid_copy()
+helper. Otherwise, why do {uuid,guid}_copy() helpers exist?
 
