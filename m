@@ -1,108 +1,113 @@
-Return-Path: <linux-efi+bounces-382-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-383-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE04B829BAF
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jan 2024 14:49:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA3D829C71
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Jan 2024 15:22:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 819481F245A1
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jan 2024 13:49:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE9EF1F29EB4
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Jan 2024 14:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D5C495D1;
-	Wed, 10 Jan 2024 13:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1jPPPfb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0676F495C5;
+	Wed, 10 Jan 2024 14:22:15 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20F4495CC;
-	Wed, 10 Jan 2024 13:48:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14496C433C7;
-	Wed, 10 Jan 2024 13:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704894507;
-	bh=Mpj9MmpWsZ0QXa3z+JG9y8iO9570kyRUme6G8UyY3ns=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V1jPPPfbtZjWicjR/pXvV3fvfEd+WTpUYKesK1ver/unl0yUXsY4TkjQIutQjBRsP
-	 rP/Oz0q/0h14UEjOgFaxFG624+eWlJ/AO+ivv3TYC1sZnL+hL4/+Alo/46tP000hXg
-	 zplNZ64lLrfkj8J9hOzdzzP2smKm7MeEZ/IYISeNp94tvvX509RdtM1WHeyhjMm5jx
-	 6PVp6J9lR2f0adpYnosG4kNDW+C6yKAzSmFoUpH39oONuTUSb402zXo2PYbzqdDyDw
-	 8BKfIvBQaR2VfeSzJy9k28uur98lcaUtFQRjhOYk1Xziu9Q+q1jecwOjEuD67FrH9y
-	 AnuUlci6GEj1Q==
-Date: Wed, 10 Jan 2024 13:48:20 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: akpm@linux-foundation.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-efi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
-	linux-mm@kvack.org, bridge@lists.linux.dev, netdev@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 2/3] arch and include: Update LLVM Phabricator links
-Message-ID: <20240110-apostle-trident-533d4c2c9c97@spud>
-References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
- <20240109-update-llvm-links-v1-2-eb09b59db071@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC824B5A1;
+	Wed, 10 Jan 2024 14:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T990f3nsfz6K977;
+	Wed, 10 Jan 2024 22:19:30 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 78450140B38;
+	Wed, 10 Jan 2024 22:22:06 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 10 Jan
+ 2024 14:22:05 +0000
+Date: Wed, 10 Jan 2024 14:22:05 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: Ira Weiny <ira.weiny@intel.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>, "Davidlohr Bueso" <dave@stgolabs.net>,
+	Dave Jiang <dave.jiang@intel.com>, "Alison Schofield"
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ard
+ Biesheuvel <ardb@kernel.org>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v5 4/9] cxl/events: Remove passing a UUID to known event
+ traces
+Message-ID: <20240110142205.0000164e@Huawei.com>
+In-Reply-To: <659dd8f467dbe_5cee29456@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20231220-cxl-cper-v5-0-1bb8a4ca2c7a@intel.com>
+	<20231220-cxl-cper-v5-4-1bb8a4ca2c7a@intel.com>
+	<20240108132325.00000e9c@Huawei.com>
+	<659dd8f467dbe_5cee29456@dwillia2-xfh.jf.intel.com.notmuch>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="p6SYI+U6gP5vpK1M"
-Content-Disposition: inline
-In-Reply-To: <20240109-update-llvm-links-v1-2-eb09b59db071@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
+On Tue, 9 Jan 2024 15:38:28 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
---p6SYI+U6gP5vpK1M
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Jonathan Cameron wrote:
+> > On Wed, 20 Dec 2023 16:17:31 -0800
+> > Ira Weiny <ira.weiny@intel.com> wrote:
+> >   
+> > > The UUID data is redundant in the known event trace types.  The addition
+> > > of static defines allows the trace macros to create the UUID data inside
+> > > the trace thus removing unnecessary code.
+> > > 
+> > > Have well known trace events use static data to set the uuid field based
+> > > on the event type.
+> > > 
+> > > Suggested-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > >   
+> >   
+> > >  	TP_STRUCT__entry(
+> > >  		CXL_EVT_TP_entry
+> > > @@ -422,7 +424,8 @@ TRACE_EVENT(cxl_dram,
+> > >  	),
+> > >  
+> > >  	TP_fast_assign(
+> > > -		CXL_EVT_TP_fast_assign(cxlmd, log, uuid, rec->hdr);
+> > > +		CXL_EVT_TP_fast_assign(cxlmd, log, rec->hdr);
+> > > +		memcpy(&__entry->hdr_uuid, &CXL_EVENT_DRAM_UUID, sizeof(uuid_t));  
+> > 
+> > Hmm. Why not
+> > 
+> > 		__entry->hdr_uuid = CXL_EVENT_DRAM_UUID;
+> > ?
+> > 
+> > Compiler should be able to squish the stuff in the define down to data as as the
+> > UUID generation logic is pretty simple.
+> > 
+> > I've not emulated the cper records for these yet, so not tested that works beyond
+> > compiling.  
+> 
+> We can follow on with this conversion later as I see other usage of uuid
+> copying in trace events (bcache for instance). Although I probably would
+> not replace it with straight assignment and instead use the uuid_copy()
+> helper. Otherwise, why do {uuid,guid}_copy() helpers exist?
 
-On Tue, Jan 09, 2024 at 03:16:30PM -0700, Nathan Chancellor wrote:
-> reviews.llvm.org was LLVM's Phabricator instances for code review. It
-> has been abandoned in favor of GitHub pull requests. While the majority
-> of links in the kernel sources still work because of the work Fangrui
-> has done turning the dynamic Phabricator instance into a static archive,
-> there are some issues with that work, so preemptively convert all the
-> links in the kernel sources to point to the commit on GitHub.
->=20
-> Most of the commits have the corresponding differential review link in
-> the commit message itself so there should not be any loss of fidelity in
-> the relevant information.
->=20
-> Link: https://discourse.llvm.org/t/update-on-github-pull-requests/71540/1=
-72
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
+To copy unknown uuids and guids where the compiler can't optimize things
+nearly as well because it can't see the values. 
 
->  arch/riscv/Kconfig              | 2 +-
->  arch/riscv/include/asm/ftrace.h | 2 +-
+Jonathan
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
-Cheers,
-Conor.
-
---p6SYI+U6gP5vpK1M
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZZ6gJAAKCRB4tDGHoIJi
-0mIlAQCj5ZP6QEhEswWYjX38obn/p3pF8mt+Ve+vlBnVEhAW8QD8ClRvKxDiajR5
-Zp8ES/FLDyH/QJ5QjGuYLP5PATLeFAY=
-=SqXc
------END PGP SIGNATURE-----
-
---p6SYI+U6gP5vpK1M--
 
