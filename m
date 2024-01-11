@@ -1,146 +1,237 @@
-Return-Path: <linux-efi+bounces-385-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-386-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF9482A557
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Jan 2024 01:46:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F7382A6C3
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jan 2024 05:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B15F1C22D92
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Jan 2024 00:46:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8176428836D
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jan 2024 04:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FD7ED6;
-	Thu, 11 Jan 2024 00:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA223256D;
+	Thu, 11 Jan 2024 04:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="iLYMN66F"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="q90eKb7K"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2917136A
-	for <linux-efi@vger.kernel.org>; Thu, 11 Jan 2024 00:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6d9b1589a75so2376345b3a.3
-        for <linux-efi@vger.kernel.org>; Wed, 10 Jan 2024 16:46:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704933967; x=1705538767; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gueNhZrbsNiJzCN2gb4yLrjECQBWf6cwwXnoTcfXIT4=;
-        b=iLYMN66FKBdyLftqxvShVV6YPPjxaiH0A4bEAzAFXUh07Rtw7cg392gFExYv4aTjPp
-         8ZhTs0xsPpn6Xt3z7ZSCx9+l33aZXrNwfon+LzcPDHf5jEjnvZK8v7t2AiI8yLH+ugI3
-         SAixjT3vhp/BZBahYdq2dQahnHiGSuF9qMJow=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704933967; x=1705538767;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gueNhZrbsNiJzCN2gb4yLrjECQBWf6cwwXnoTcfXIT4=;
-        b=OWcCt6nBr6gljVjp7RO2B/vNUz9FZrj65kV1Q09G/X2CxFGDFMoj5alosRtvGkBydp
-         2BX0zNLjPvFGSkfgWbShJwHDeD6arc9xkontl4jFUA8FZTmRDZVe97mGfiQeiek/2w6Y
-         QIIN2l4UTFBC1nXCL9c6EgsJ6me/olx+fXm1cKr+ISggwcfrN8ujxkYbBuKXb8p+swUg
-         +kOWqFwGxW2bf+6lGyCpHrP59cYEsJOCSUCYLOcxwz9j4eUbBUaD8maVE5LxqFgSF3HT
-         yxDQo2m2RvOYiAteiK33YV3DlXir9gnfuqkbsP0ZMP1/3UnlcWIaotpbAQ71e8Y9OGcb
-         7ZQw==
-X-Gm-Message-State: AOJu0Yz3VesRn3ddhrTw2H+74suZGs9tAZCURxAQEq1aiMqyIIdpSw7Q
-	ImNg22RDag/t6FI04c8/pEb4jDlr3SoM
-X-Google-Smtp-Source: AGHT+IGkiZ1hknB2+0UC/gxIH8jrVZxWAA/1vUWxP929828CA6Qm4M9e8Oxn46aJ8qOxkFFVf4GTPg==
-X-Received: by 2002:aa7:90d3:0:b0:6d9:a64c:c5d1 with SMTP id k19-20020aa790d3000000b006d9a64cc5d1mr504196pfk.26.1704933967538;
-        Wed, 10 Jan 2024 16:46:07 -0800 (PST)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id y2-20020a62b502000000b006dac91d6da5sm4071344pfe.68.2024.01.10.16.46.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jan 2024 16:46:06 -0800 (PST)
-Date: Wed, 10 Jan 2024 16:46:06 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: akpm@linux-foundation.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-efi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
-	linux-mm@kvack.org, bridge@lists.linux.dev, netdev@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, ast@kernel.org,
-	daniel@iogearbox.net, andrii@kernel.org, mykolal@fb.com,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH 0/3] Update LLVM Phabricator and Bugzilla links
-Message-ID: <202401101645.ED161519BA@keescook>
-References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A320D110C
+	for <linux-efi@vger.kernel.org>; Thu, 11 Jan 2024 04:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <6a655e9f-9878-4292-9d16-f988c4bdfc73@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1704945949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oe8y6rx2nxJCVb5v6A3KEWIfmf39eOlQDxZDCZDQpSs=;
+	b=q90eKb7K7E7fJPyeOkcWuuQTXMX/wft3oCBjOBhlyiFmrgkyKMUJJweJzGZ7ubFNp8EHyV
+	GcPbNwdLXwLn7SNydULG8Gy/XrORJnr8NctjugZkNqq03qyefn2lSAbUGAAVNkmDZdUytt
+	a026lbDO23xBpkhnXEJJxhDMfDKiHMo=
+Date: Wed, 10 Jan 2024 20:05:36 -0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
+Subject: Re: [PATCH 1/3] selftests/bpf: Update LLVM Phabricator links
+Content-Language: en-GB
+To: Nathan Chancellor <nathan@kernel.org>, akpm@linux-foundation.org
+Cc: llvm@lists.linux.dev, patches@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-efi@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-media@vger.kernel.org, linux-arch@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, bridge@lists.linux.dev,
+ netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, mykolal@fb.com, bpf@vger.kernel.org
+References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
+ <20240109-update-llvm-links-v1-1-eb09b59db071@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yonghong Song <yonghong.song@linux.dev>
+In-Reply-To: <20240109-update-llvm-links-v1-1-eb09b59db071@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Jan 09, 2024 at 03:16:28PM -0700, Nathan Chancellor wrote:
-> This series updates all instances of LLVM Phabricator and Bugzilla links
-> to point to GitHub commits directly and LLVM's Bugzilla to GitHub issue
-> shortlinks respectively.
-> 
-> I split up the Phabricator patch into BPF selftests and the rest of the
-> kernel in case the BPF folks want to take it separately from the rest of
-> the series, there are obviously no dependency issues in that case. The
-> Bugzilla change was mechanical enough and should have no conflicts.
-> 
-> I am aiming this at Andrew and CC'ing other lists, in case maintainers
-> want to chime in, but I think this is pretty uncontroversial (famous
-> last words...).
-> 
+
+On 1/9/24 2:16 PM, Nathan Chancellor wrote:
+> reviews.llvm.org was LLVM's Phabricator instances for code review. It
+> has been abandoned in favor of GitHub pull requests. While the majority
+> of links in the kernel sources still work because of the work Fangrui
+> has done turning the dynamic Phabricator instance into a static archive,
+> there are some issues with that work, so preemptively convert all the
+> links in the kernel sources to point to the commit on GitHub.
+>
+> Most of the commits have the corresponding differential review link in
+> the commit message itself so there should not be any loss of fidelity in
+> the relevant information.
+>
+> Additionally, fix a typo in the xdpwall.c print ("LLMV" -> "LLVM") while
+> in the area.
+>
+> Link: https://discourse.llvm.org/t/update-on-github-pull-requests/71540/172
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+
+Ack with one nit below.
+
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+
 > ---
-> Nathan Chancellor (3):
->       selftests/bpf: Update LLVM Phabricator links
->       arch and include: Update LLVM Phabricator links
->       treewide: Update LLVM Bugzilla links
-> 
->  arch/arm64/Kconfig                                 |  4 +--
->  arch/powerpc/Makefile                              |  4 +--
->  arch/powerpc/kvm/book3s_hv_nested.c                |  2 +-
->  arch/riscv/Kconfig                                 |  2 +-
->  arch/riscv/include/asm/ftrace.h                    |  2 +-
->  arch/s390/include/asm/ftrace.h                     |  2 +-
->  arch/x86/power/Makefile                            |  2 +-
->  crypto/blake2b_generic.c                           |  2 +-
->  drivers/firmware/efi/libstub/Makefile              |  2 +-
->  drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c           |  2 +-
->  drivers/media/test-drivers/vicodec/codec-fwht.c    |  2 +-
->  drivers/regulator/Kconfig                          |  2 +-
->  include/asm-generic/vmlinux.lds.h                  |  2 +-
->  include/linux/compiler-clang.h                     |  2 +-
->  lib/Kconfig.kasan                                  |  2 +-
->  lib/raid6/Makefile                                 |  2 +-
->  lib/stackinit_kunit.c                              |  2 +-
->  mm/slab_common.c                                   |  2 +-
->  net/bridge/br_multicast.c                          |  2 +-
->  security/Kconfig                                   |  2 +-
->  tools/testing/selftests/bpf/README.rst             | 32 +++++++++++-----------
->  tools/testing/selftests/bpf/prog_tests/xdpwall.c   |  2 +-
->  .../selftests/bpf/progs/test_core_reloc_type_id.c  |  2 +-
->  23 files changed, 40 insertions(+), 40 deletions(-)
+> Cc: ast@kernel.org
+> Cc: daniel@iogearbox.net
+> Cc: andrii@kernel.org
+> Cc: mykolal@fb.com
+> Cc: bpf@vger.kernel.org
+> Cc: linux-kselftest@vger.kernel.org
 > ---
-> base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
-> change-id: 20240109-update-llvm-links-d03f9d649e1e
-> 
-> Best regards,
-> -- 
-> Nathan Chancellor <nathan@kernel.org>
-> 
+>   tools/testing/selftests/bpf/README.rst             | 32 +++++++++++-----------
+>   tools/testing/selftests/bpf/prog_tests/xdpwall.c   |  2 +-
+>   .../selftests/bpf/progs/test_core_reloc_type_id.c  |  2 +-
+>   3 files changed, 18 insertions(+), 18 deletions(-)
+>
+> diff --git a/tools/testing/selftests/bpf/README.rst b/tools/testing/selftests/bpf/README.rst
+> index cb9b95702ac6..b9a493f66557 100644
+> --- a/tools/testing/selftests/bpf/README.rst
+> +++ b/tools/testing/selftests/bpf/README.rst
+> @@ -115,7 +115,7 @@ the insn 20 undoes map_value addition. It is currently impossible for the
+>   verifier to understand such speculative pointer arithmetic.
+>   Hence `this patch`__ addresses it on the compiler side. It was committed on llvm 12.
+>   
+> -__ https://reviews.llvm.org/D85570
+> +__ https://github.com/llvm/llvm-project/commit/ddf1864ace484035e3cde5e83b3a31ac81e059c6
+>   
+>   The corresponding C code
+>   
+> @@ -165,7 +165,7 @@ This is due to a llvm BPF backend bug. `The fix`__
+>   has been pushed to llvm 10.x release branch and will be
+>   available in 10.0.1. The patch is available in llvm 11.0.0 trunk.
+>   
+> -__  https://reviews.llvm.org/D78466
+> +__  https://github.com/llvm/llvm-project/commit/3cb7e7bf959dcd3b8080986c62e10a75c7af43f0
+>   
+>   bpf_verif_scale/loop6.bpf.o test failure with Clang 12
+>   ======================================================
+> @@ -204,7 +204,7 @@ r5(w5) is eventually saved on stack at insn #24 for later use.
+>   This cause later verifier failure. The bug has been `fixed`__ in
+>   Clang 13.
+>   
+> -__  https://reviews.llvm.org/D97479
+> +__  https://github.com/llvm/llvm-project/commit/1959ead525b8830cc8a345f45e1c3ef9902d3229
+>   
+>   BPF CO-RE-based tests and Clang version
+>   =======================================
+> @@ -221,11 +221,11 @@ failures:
+>   - __builtin_btf_type_id() [0_, 1_, 2_];
+>   - __builtin_preserve_type_info(), __builtin_preserve_enum_value() [3_, 4_].
+>   
+> -.. _0: https://reviews.llvm.org/D74572
+> -.. _1: https://reviews.llvm.org/D74668
+> -.. _2: https://reviews.llvm.org/D85174
+> -.. _3: https://reviews.llvm.org/D83878
+> -.. _4: https://reviews.llvm.org/D83242
+> +.. _0: https://github.com/llvm/llvm-project/commit/6b01b465388b204d543da3cf49efd6080db094a9
+> +.. _1: https://github.com/llvm/llvm-project/commit/072cde03aaa13a2c57acf62d79876bf79aa1919f
+> +.. _2: https://github.com/llvm/llvm-project/commit/00602ee7ef0bf6c68d690a2bd729c12b95c95c99
+> +.. _3: https://github.com/llvm/llvm-project/commit/6d218b4adb093ff2e9764febbbc89f429412006c
+> +.. _4: https://github.com/llvm/llvm-project/commit/6d6750696400e7ce988d66a1a00e1d0cb32815f8
+>   
+>   Floating-point tests and Clang version
+>   ======================================
+> @@ -234,7 +234,7 @@ Certain selftests, e.g. core_reloc, require support for the floating-point
+>   types, which was introduced in `Clang 13`__. The older Clang versions will
+>   either crash when compiling these tests, or generate an incorrect BTF.
+>   
+> -__  https://reviews.llvm.org/D83289
+> +__  https://github.com/llvm/llvm-project/commit/a7137b238a07d9399d3ae96c0b461571bd5aa8b2
+>   
+>   Kernel function call test and Clang version
+>   ===========================================
+> @@ -248,7 +248,7 @@ Without it, the error from compiling bpf selftests looks like:
+>   
+>     libbpf: failed to find BTF for extern 'tcp_slow_start' [25] section: -2
+>   
+> -__ https://reviews.llvm.org/D93563
+> +__ https://github.com/llvm/llvm-project/commit/886f9ff53155075bd5f1e994f17b85d1e1b7470c
+>   
+>   btf_tag test and Clang version
+>   ==============================
+> @@ -264,8 +264,8 @@ Without them, the btf_tag selftest will be skipped and you will observe:
+>   
+>     #<test_num> btf_tag:SKIP
+>   
+> -.. _0: https://reviews.llvm.org/D111588
+> -.. _1: https://reviews.llvm.org/D111199
+> +.. _0: https://github.com/llvm/llvm-project/commit/a162b67c98066218d0d00aa13b99afb95d9bb5e6
+> +.. _1: https://github.com/llvm/llvm-project/commit/3466e00716e12e32fdb100e3fcfca5c2b3e8d784
+>   
+>   Clang dependencies for static linking tests
+>   ===========================================
+> @@ -274,7 +274,7 @@ linked_vars, linked_maps, and linked_funcs tests depend on `Clang fix`__ to
+>   generate valid BTF information for weak variables. Please make sure you use
+>   Clang that contains the fix.
+>   
+> -__ https://reviews.llvm.org/D100362
+> +__ https://github.com/llvm/llvm-project/commit/968292cb93198442138128d850fd54dc7edc0035
+>   
+>   Clang relocation changes
+>   ========================
+> @@ -292,7 +292,7 @@ Here, ``type 2`` refers to new relocation type ``R_BPF_64_ABS64``.
+>   To fix this issue, user newer libbpf.
+>   
+>   .. Links
+> -.. _clang reloc patch: https://reviews.llvm.org/D102712
+> +.. _clang reloc patch: https://github.com/llvm/llvm-project/commit/6a2ea84600ba4bd3b2733bd8f08f5115eb32164b
+>   .. _kernel llvm reloc: /Documentation/bpf/llvm_reloc.rst
+>   
+>   Clang dependencies for the u32 spill test (xdpwall)
+> @@ -304,6 +304,6 @@ from running test_progs will look like:
+>   
+>   .. code-block:: console
+>   
+> -  test_xdpwall:FAIL:Does LLVM have https://reviews.llvm.org/D109073? unexpected error: -4007
+> +  test_xdpwall:FAIL:Does LLVM have https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d5? unexpected error: -4007
+>   
+> -__ https://reviews.llvm.org/D109073
+> +__ https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d
 
-Excellent! Thanks for doing this. I spot checked a handful I was
-familiar with and everything looks good to me.
+To be consistent with other links, could you add the missing last alnum '5' to the above link?
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-
--- 
-Kees Cook
+> diff --git a/tools/testing/selftests/bpf/prog_tests/xdpwall.c b/tools/testing/selftests/bpf/prog_tests/xdpwall.c
+> index f3927829a55a..4599154c8e9b 100644
+> --- a/tools/testing/selftests/bpf/prog_tests/xdpwall.c
+> +++ b/tools/testing/selftests/bpf/prog_tests/xdpwall.c
+> @@ -9,7 +9,7 @@ void test_xdpwall(void)
+>   	struct xdpwall *skel;
+>   
+>   	skel = xdpwall__open_and_load();
+> -	ASSERT_OK_PTR(skel, "Does LLMV have https://reviews.llvm.org/D109073?");
+> +	ASSERT_OK_PTR(skel, "Does LLVM have https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d5?");
+>   
+>   	xdpwall__destroy(skel);
+>   }
+> diff --git a/tools/testing/selftests/bpf/progs/test_core_reloc_type_id.c b/tools/testing/selftests/bpf/progs/test_core_reloc_type_id.c
+> index 22aba3f6e344..6fc8b9d66e34 100644
+> --- a/tools/testing/selftests/bpf/progs/test_core_reloc_type_id.c
+> +++ b/tools/testing/selftests/bpf/progs/test_core_reloc_type_id.c
+> @@ -80,7 +80,7 @@ int test_core_type_id(void *ctx)
+>   	 * to detect whether this test has to be executed, however strange
+>   	 * that might look like.
+>   	 *
+> -	 *   [0] https://reviews.llvm.org/D85174
+> +	 *   [0] https://github.com/llvm/llvm-project/commit/00602ee7ef0bf6c68d690a2bd729c12b95c95c99
+>   	 */
+>   #if __has_builtin(__builtin_preserve_type_info)
+>   	struct core_reloc_type_id_output *out = (void *)&data.out;
+>
 
