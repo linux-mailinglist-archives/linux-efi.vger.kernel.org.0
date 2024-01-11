@@ -1,219 +1,146 @@
-Return-Path: <linux-efi+bounces-384-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-385-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB8A829C78
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jan 2024 15:24:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF9482A557
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jan 2024 01:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C00F1C223A4
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jan 2024 14:24:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B15F1C22D92
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jan 2024 00:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC104A98B;
-	Wed, 10 Jan 2024 14:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FD7ED6;
+	Thu, 11 Jan 2024 00:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="iLYMN66F"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59FA495C5;
-	Wed, 10 Jan 2024 14:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4T994R6LsSz67kwK;
-	Wed, 10 Jan 2024 22:22:47 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 84004140C9C;
-	Wed, 10 Jan 2024 22:24:37 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 10 Jan
- 2024 14:24:37 +0000
-Date: Wed, 10 Jan 2024 14:24:36 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-CC: Dan Williams <dan.j.williams@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose
-	<shiju.jose@huawei.com>, Yazen Ghannam <yazen.ghannam@amd.com>, "Davidlohr
- Bueso" <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, "Alison
- Schofield" <alison.schofield@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, <linux-efi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v5 0/9] efi/cxl-cper: Report CPER CXL component events
- through trace events
-Message-ID: <20240110142436.0000787a@Huawei.com>
-In-Reply-To: <CAMj1kXHvJzLksPtj1_O2L+4zH4emEs5tnvFCq=Wysfr842b=Sg@mail.gmail.com>
-References: <20231220-cxl-cper-v5-0-1bb8a4ca2c7a@intel.com>
-	<20240108165855.00002f5a@Huawei.com>
-	<eefc5888-4610-8e39-61ed-2d84e9ebf255@amd.com>
-	<659caa8da651c_127da22947b@dwillia2-xfh.jf.intel.com.notmuch>
-	<659cb0295ac1_8d749294b@iweiny-mobl.notmuch>
-	<659cb684deb2d_127da22945a@dwillia2-xfh.jf.intel.com.notmuch>
-	<20240109160435.00004a4a@Huawei.com>
-	<659db15452090_24a8294f4@dwillia2-xfh.jf.intel.com.notmuch>
-	<659dd6ff5ee1_24a8294d0@dwillia2-xfh.jf.intel.com.notmuch>
-	<CAMj1kXHvJzLksPtj1_O2L+4zH4emEs5tnvFCq=Wysfr842b=Sg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2917136A
+	for <linux-efi@vger.kernel.org>; Thu, 11 Jan 2024 00:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6d9b1589a75so2376345b3a.3
+        for <linux-efi@vger.kernel.org>; Wed, 10 Jan 2024 16:46:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1704933967; x=1705538767; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gueNhZrbsNiJzCN2gb4yLrjECQBWf6cwwXnoTcfXIT4=;
+        b=iLYMN66FKBdyLftqxvShVV6YPPjxaiH0A4bEAzAFXUh07Rtw7cg392gFExYv4aTjPp
+         8ZhTs0xsPpn6Xt3z7ZSCx9+l33aZXrNwfon+LzcPDHf5jEjnvZK8v7t2AiI8yLH+ugI3
+         SAixjT3vhp/BZBahYdq2dQahnHiGSuF9qMJow=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704933967; x=1705538767;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gueNhZrbsNiJzCN2gb4yLrjECQBWf6cwwXnoTcfXIT4=;
+        b=OWcCt6nBr6gljVjp7RO2B/vNUz9FZrj65kV1Q09G/X2CxFGDFMoj5alosRtvGkBydp
+         2BX0zNLjPvFGSkfgWbShJwHDeD6arc9xkontl4jFUA8FZTmRDZVe97mGfiQeiek/2w6Y
+         QIIN2l4UTFBC1nXCL9c6EgsJ6me/olx+fXm1cKr+ISggwcfrN8ujxkYbBuKXb8p+swUg
+         +kOWqFwGxW2bf+6lGyCpHrP59cYEsJOCSUCYLOcxwz9j4eUbBUaD8maVE5LxqFgSF3HT
+         yxDQo2m2RvOYiAteiK33YV3DlXir9gnfuqkbsP0ZMP1/3UnlcWIaotpbAQ71e8Y9OGcb
+         7ZQw==
+X-Gm-Message-State: AOJu0Yz3VesRn3ddhrTw2H+74suZGs9tAZCURxAQEq1aiMqyIIdpSw7Q
+	ImNg22RDag/t6FI04c8/pEb4jDlr3SoM
+X-Google-Smtp-Source: AGHT+IGkiZ1hknB2+0UC/gxIH8jrVZxWAA/1vUWxP929828CA6Qm4M9e8Oxn46aJ8qOxkFFVf4GTPg==
+X-Received: by 2002:aa7:90d3:0:b0:6d9:a64c:c5d1 with SMTP id k19-20020aa790d3000000b006d9a64cc5d1mr504196pfk.26.1704933967538;
+        Wed, 10 Jan 2024 16:46:07 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id y2-20020a62b502000000b006dac91d6da5sm4071344pfe.68.2024.01.10.16.46.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jan 2024 16:46:06 -0800 (PST)
+Date: Wed, 10 Jan 2024 16:46:06 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: akpm@linux-foundation.org, llvm@lists.linux.dev,
+	patches@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-efi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+	linux-mm@kvack.org, bridge@lists.linux.dev, netdev@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, mykolal@fb.com,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH 0/3] Update LLVM Phabricator and Bugzilla links
+Message-ID: <202401101645.ED161519BA@keescook>
+References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
 
-On Wed, 10 Jan 2024 00:31:17 +0100
-Ard Biesheuvel <ardb@kernel.org> wrote:
-
-> On Wed, 10 Jan 2024 at 00:30, Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > Dan Williams wrote:  
-> > > Jonathan Cameron wrote:  
-> > > > On Mon, 8 Jan 2024 18:59:16 -0800
-> > > > Dan Williams <dan.j.williams@intel.com> wrote:
-> > > >  
-> > > > > Ira Weiny wrote:  
-> > > > > > Dan Williams wrote:  
-> > > > > > > Smita Koralahalli wrote:  
-> > > > > > > > On 1/8/2024 8:58 AM, Jonathan Cameron wrote:  
-> > > > > > > > > On Wed, 20 Dec 2023 16:17:27 -0800
-> > > > > > > > > Ira Weiny <ira.weiny@intel.com> wrote:
-> > > > > > > > >  
-> > > > > > > > >> Series status/background
-> > > > > > > > >> ========================
-> > > > > > > > >>
-> > > > > > > > >> Smita has been a great help with this series.  Thank you again!
-> > > > > > > > >>
-> > > > > > > > >> Smita's testing found that the GHES code ended up printing the events
-> > > > > > > > >> twice.  This version avoids the duplicate print by calling the callback
-> > > > > > > > >> from the GHES code instead of the EFI code as suggested by Dan.  
-> > > > > > > > >
-> > > > > > > > > I'm not sure this is working as intended.
-> > > > > > > > >
-> > > > > > > > > There is nothing gating the call in ghes_proc() of ghes_print_estatus()
-> > > > > > > > > and now the EFI code handling that pretty printed things is missing we get
-> > > > > > > > > the horrible kernel logging for an unknown block instead.
-> > > > > > > > >
-> > > > > > > > > So I think we need some minimal code in cper.c to match the guids then not
-> > > > > > > > > log them (on basis we are arguing there is no need for new cper records).
-> > > > > > > > > Otherwise we are in for some messy kernel logs
-> > > > > > > > >
-> > > > > > > > > Something like:
-> > > > > > > > >
-> > > > > > > > > {1}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-> > > > > > > > > {1}[Hardware Error]: event severity: recoverable
-> > > > > > > > > {1}[Hardware Error]:  Error 0, type: recoverable
-> > > > > > > > > {1}[Hardware Error]:   section type: unknown, fbcd0a77-c260-417f-85a9-088b1621eba6
-> > > > > > > > > {1}[Hardware Error]:   section length: 0x90
-> > > > > > > > > {1}[Hardware Error]:   00000000: 00000090 00000007 00000000 0d938086  ................
-> > > > > > > > > {1}[Hardware Error]:   00000010: 00100000 00000000 00040000 00000000  ................
-> > > > > > > > > {1}[Hardware Error]:   00000020: 00000000 00000000 00000000 00000000  ................
-> > > > > > > > > {1}[Hardware Error]:   00000030: 00000000 00000000 00000000 00000000  ................
-> > > > > > > > > {1}[Hardware Error]:   00000040: 00000000 00000000 00000000 00000000  ................
-> > > > > > > > > {1}[Hardware Error]:   00000050: 00000000 00000000 00000000 00000000  ................
-> > > > > > > > > {1}[Hardware Error]:   00000060: 00000000 00000000 00000000 00000000  ................
-> > > > > > > > > {1}[Hardware Error]:   00000070: 00000000 00000000 00000000 00000000  ................
-> > > > > > > > > {1}[Hardware Error]:   00000080: 00000000 00000000 00000000 00000000  ................
-> > > > > > > > > cxl_general_media: memdev=mem1 host=0000:10:00.0 serial=4 log=Informational : time=0 uuid=fbcd0a77-c260-417f-85a9-088b1621eba6 len=0 flags='' handle=0 related_handle=0 maint_op_class=0 : dpa=0 dpa_flags='' descriptor='' type='ECC Error' transaction_type='Unknown' channel=0 rank=0 device=0 comp_id=00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 validity_flags=''
-> > > > > > > > >
-> > > > > > > > > (I'm filling the record with 0s currently)  
-> > > > > > > >
-> > > > > > > > Yeah, when I tested this, I thought its okay for the hexdump to be there
-> > > > > > > > in dmesg from EFI as the handling is done in trace events from GHES.
-> > > > > > > >
-> > > > > > > > If, we need to handle from EFI, then it would be a good reason to move
-> > > > > > > > the GUIDs out from GHES and place it in a common location for EFI/cper
-> > > > > > > > to share similar to protocol errors.  
-> > > > > > >
-> > > > > > > Ah, yes, my expectation was more aligned with Jonathan's observation to
-> > > > > > > do the processing in GHES code *and* skip the processing in the CPER
-> > > > > > > code, something like:
-> > > > > > >  
-> > > > > >
-> > > > > > Agreed this was intended I did not realize the above.
-> > > > > >  
-> > > > > > >
-> > > > > > > diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> > > > > > > index 35c37f667781..0a4eed470750 100644
-> > > > > > > --- a/drivers/firmware/efi/cper.c
-> > > > > > > +++ b/drivers/firmware/efi/cper.c
-> > > > > > > @@ -24,6 +24,7 @@
-> > > > > > >  #include <linux/bcd.h>
-> > > > > > >  #include <acpi/ghes.h>
-> > > > > > >  #include <ras/ras_event.h>
-> > > > > > > +#include <linux/cxl-event.h>
-> > > > > > >  #include "cper_cxl.h"
-> > > > > > >
-> > > > > > >  /*
-> > > > > > > @@ -607,6 +608,15 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
-> > > > > > >                       cper_print_prot_err(newpfx, prot_err);
-> > > > > > >               else
-> > > > > > >                       goto err_section_too_small;
-> > > > > > > +     } else if (guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA_GUID)) {
-> > > > > > > +             printk("%ssection_type: CXL General Media Error\n", newpfx);  
-> > > > > >
-> > > > > > Do we want the printk's here?  I did not realize that a generic event
-> > > > > > would be printed.  So intention was nothing would be done on this path.  
-> > > > >
-> > > > > I think we do otherwise the kernel will say
-> > > > >
-> > > > >     {1}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-> > > > >     {1}[Hardware Error]: event severity: recoverable
-> > > > >     {1}[Hardware Error]:  Error 0, type: recoverable
-> > > > >     ...
-> > > > >
-> > > > > ...leaving the user hanging vs:
-> > > > >
-> > > > >     {1}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-> > > > >     {1}[Hardware Error]: event severity: recoverable
-> > > > >     {1}[Hardware Error]:  Error 0, type: recoverable
-> > > > >     {1}[Hardware Error]:   section type: General Media Error
-> > > > >
-> > > > > ...as an indicator to go follow up with rasdaemon or whatever else is
-> > > > > doing the detailed monitoring of CXL events.  
-> > > >
-> > > > Agreed. Maybe push it out to a static const table though.
-> > > > As the argument was that we shouldn't be spitting out big logs in this
-> > > > modern world, let's make it easy for people to add more entries.
-> > > >
-> > > > struct skip_me {
-> > > >     guid_t guid;
-> > > >     const char *name;
-> > > > };
-> > > > static const struct skip_me skip_me = {
-> > > >     { &CPER_SEC_CXL_GEN_MEDIA, "CXL General Media Error" },
-> > > > etc.
-> > > > };
-> > > >
-> > > > for (i = 0; i < ARRAY_SIZE(skip_me); i++) {
-> > > >     if (guid_equal(sec_type, skip_me[i].guid)) {
-> > > >             printk("%asection_type: %s\n", newpfx, skip_me[i].name);
-> > > >             break;
-> > > > }
-> > > >
-> > > > or something like that in the final else.  
-> > >
-> > > I like it.
-> > >
-> > > Any concerns with that being an -rc fixup, and move ahead with the base
-> > > enabling for v6.8? I don't see that follow-on as a reason to push the
-> > > whole thing to v6.9.  
-> >
-> > I will put it in -next for soak time and make an inclusion decision in a
-> > few days after I hear back.
-> >  
+On Tue, Jan 09, 2024 at 03:16:28PM -0700, Nathan Chancellor wrote:
+> This series updates all instances of LLVM Phabricator and Bugzilla links
+> to point to GitHub commits directly and LLVM's Bugzilla to GitHub issue
+> shortlinks respectively.
 > 
-> For the series and however you want to handle the merge:
+> I split up the Phabricator patch into BPF selftests and the rest of the
+> kernel in case the BPF folks want to take it separately from the rest of
+> the series, there are obviously no dependency issues in that case. The
+> Bugzilla change was mechanical enough and should have no conflicts.
 > 
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> I am aiming this at Andrew and CC'ing other lists, in case maintainers
+> want to chime in, but I think this is pretty uncontroversial (famous
+> last words...).
+> 
+> ---
+> Nathan Chancellor (3):
+>       selftests/bpf: Update LLVM Phabricator links
+>       arch and include: Update LLVM Phabricator links
+>       treewide: Update LLVM Bugzilla links
+> 
+>  arch/arm64/Kconfig                                 |  4 +--
+>  arch/powerpc/Makefile                              |  4 +--
+>  arch/powerpc/kvm/book3s_hv_nested.c                |  2 +-
+>  arch/riscv/Kconfig                                 |  2 +-
+>  arch/riscv/include/asm/ftrace.h                    |  2 +-
+>  arch/s390/include/asm/ftrace.h                     |  2 +-
+>  arch/x86/power/Makefile                            |  2 +-
+>  crypto/blake2b_generic.c                           |  2 +-
+>  drivers/firmware/efi/libstub/Makefile              |  2 +-
+>  drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c           |  2 +-
+>  drivers/media/test-drivers/vicodec/codec-fwht.c    |  2 +-
+>  drivers/regulator/Kconfig                          |  2 +-
+>  include/asm-generic/vmlinux.lds.h                  |  2 +-
+>  include/linux/compiler-clang.h                     |  2 +-
+>  lib/Kconfig.kasan                                  |  2 +-
+>  lib/raid6/Makefile                                 |  2 +-
+>  lib/stackinit_kunit.c                              |  2 +-
+>  mm/slab_common.c                                   |  2 +-
+>  net/bridge/br_multicast.c                          |  2 +-
+>  security/Kconfig                                   |  2 +-
+>  tools/testing/selftests/bpf/README.rst             | 32 +++++++++++-----------
+>  tools/testing/selftests/bpf/prog_tests/xdpwall.c   |  2 +-
+>  .../selftests/bpf/progs/test_core_reloc_type_id.c  |  2 +-
+>  23 files changed, 40 insertions(+), 40 deletions(-)
+> ---
+> base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
+> change-id: 20240109-update-llvm-links-d03f9d649e1e
+> 
+> Best regards,
+> -- 
+> Nathan Chancellor <nathan@kernel.org>
+> 
 
-Any path in works for me as well.
+Excellent! Thanks for doing this. I spot checked a handful I was
+familiar with and everything looks good to me.
 
-J
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-- 
+Kees Cook
 
