@@ -1,122 +1,127 @@
-Return-Path: <linux-efi+bounces-406-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-407-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1B782D7F1
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Jan 2024 12:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4315282DE7F
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jan 2024 18:34:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 977A9280F37
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Jan 2024 11:00:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E619F2832D3
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jan 2024 17:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4997E1E867;
-	Mon, 15 Jan 2024 11:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBDD182A3;
+	Mon, 15 Jan 2024 17:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="b9q0o4tQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NDsqGDId"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E522C683;
-	Mon, 15 Jan 2024 11:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D5A1440E01A9;
-	Mon, 15 Jan 2024 11:00:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id sfiRGpzfaODp; Mon, 15 Jan 2024 11:00:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1705316423; bh=oP77XyZj9HhicA6zK+E2uirUhsgRReQ/mwWlYJegOQA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b9q0o4tQ50g+7Sr5DKT5AfeuDncxgpLRIIudonC6h0msPRkM2sMP9vfEa+BuCZbl1
-	 Uqte3mOzZ+IpLU3RpLCzC92861U8l/LPzTnMMy+hXGuck4FLADjlPxWUXGi9TX58Sa
-	 ysB5lW8rptHc7ilcZGNrQt29I8S59GnvuP2RDdAgJyOl4KXT8oAlwcXNxsvFdSuuZW
-	 c0hLIp6HwzsEe6sFYqF/yeglM0EPf+m2FmVvCmEkarZH1Oti1fjhPfEap9JSNdQryq
-	 7Btd8LUDHVJ/vxXOTnidM6NyotTX50FuXaHub7bKxt7VwPqfjS6irr6TxnouG1KufG
-	 4BVKfTLTqr73UuSvSrZbaO/gMA5hlhZWIqHPvV2GtBuHzoovogDt0JcOwlDkbmWjFJ
-	 oLKRKGMSUy5l/1A5ReOZId7WfIjRnEuQykO4K/9d57TvWCON/BAlGvRX1O/IF+ak/x
-	 ijvYQidLBTIAmKJK7aKKLCiIOR9Zau8RftkXynt+Uk1yQrHEkzjH3HSR06A3xHKPaf
-	 67x4l5jVNR9iJzhPeorcAEWYwPfx8VWHkauCWe2Zd04ccFdd5M5pY1D8NtkY+ssykL
-	 ko4wsKO98DMsDEu/qo8GAu9HDua195gnEZgQd2RAlbTltZIxzksvnR2fT0ljic0SEu
-	 Fk8eYp/HJEpH1SwTYxISl7RI=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8C6BE40E016C;
-	Mon, 15 Jan 2024 11:00:01 +0000 (UTC)
-Date: Mon, 15 Jan 2024 12:00:00 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>, nathan@kernel.org,
-	tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, bhelgaas@google.com, arnd@arndb.de,
-	zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, paul@paul-moore.com,
-	jmorris@namei.org, serge@hallyn.com, javierm@redhat.com,
-	linux-arch@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] arch/x86: Remove unnecessary dependencies on
- bootparam.h
-Message-ID: <20240115110000.GEZaUQMBwGAibwR_Yp@fat_crate.local>
-References: <20240112095000.8952-1-tzimmermann@suse.de>
- <CAMj1kXGxNTvCca+9TfUfvp06ppyD9XiyO59khYXg88VkyFm1rw@mail.gmail.com>
- <3e2f70ab-c4de-4fae-9365-4f6f77c847c5@suse.de>
- <CAMj1kXGECo1E1U8jjrzvA=ZJe80DVOi3v5CvxkhXbnBQKVMT8Q@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6F4182A0;
+	Mon, 15 Jan 2024 17:34:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83087C433C7;
+	Mon, 15 Jan 2024 17:34:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705340061;
+	bh=2cyFxe3uTqXct4jEHJssjWPzlGUygaQOIyDsjApVixs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NDsqGDIdECNVMWc+uAQHFv77zTzI5T522ItTdcWbGbiidpMdS71qAqKcTWOJWnWL9
+	 +3C6sbRpMZs2bWs3h/nmboU8I2UO8EwSv8AVSssH5cCAXp7H6i4zX0kVUucRvOK4wj
+	 o4rA7dLoHtMdlxxhe+yNFIjxxHByYyLNlZhPHnbyjnUxmK6KOZZ+xSGVe2zHXQ/QiF
+	 I9tASWxZfH4n043KIl4rErlj0xolpjIUCtazroKabuEFa7b2Cb1qfPH1KzO4YeTJni
+	 q4xTI9OtbnmvHXxmQDQTGTHXWU0uJtUk0J+jFlTvEwWCdT3ALxRo0cHm/K2ZX7fqKu
+	 TTQs+myvvVlMw==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-50eabd1c701so10909227e87.3;
+        Mon, 15 Jan 2024 09:34:21 -0800 (PST)
+X-Gm-Message-State: AOJu0YxQyQ3IZ7MX0G7hkq7pIJv4FjFfPJlXFafYITsRpiWIrJKQIRZp
+	uoUDwjeaNe9i3XeN3hQqT/bgl6aXJGPcLxLBVUE=
+X-Google-Smtp-Source: AGHT+IHFo330I6ZljINXz/ysqRtL+x3YL/kuqlI40H8B493dbLWWGACXW6EkUsLbSJQXy3E03NMp49jK4CLZdbH39co=
+X-Received: by 2002:ac2:44ba:0:b0:50e:7b63:556c with SMTP id
+ c26-20020ac244ba000000b0050e7b63556cmr2378330lfm.101.1705340059757; Mon, 15
+ Jan 2024 09:34:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXGECo1E1U8jjrzvA=ZJe80DVOi3v5CvxkhXbnBQKVMT8Q@mail.gmail.com>
+References: <mhng-8a4a5f85-faf9-405c-95a0-78cd04ec6509@palmer-ri-x1c9> <56b52d4e-9dc0-400c-a141-7e70f5c72afa@siemens.com>
+In-Reply-To: <56b52d4e-9dc0-400c-a141-7e70f5c72afa@siemens.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 15 Jan 2024 18:34:08 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGR1aQdvej+0drfim-ZP27ZhO9UR_i_PT6F+hsV0UvbJw@mail.gmail.com>
+Message-ID: <CAMj1kXGR1aQdvej+0drfim-ZP27ZhO9UR_i_PT6F+hsV0UvbJw@mail.gmail.com>
+Subject: Re: [PATCH] riscv/efistub: Ensure GP-relative addressing is not used
+To: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jan 15, 2024 at 11:55:36AM +0100, Ard Biesheuvel wrote:
-> But please be aware that we are in the middle of the merge window
+On Sat, 13 Jan 2024 at 11:35, Jan Kiszka <jan.kiszka@siemens.com> wrote:
+>
+> On 12.01.24 19:56, Palmer Dabbelt wrote:
+> > On Fri, 12 Jan 2024 10:51:16 PST (-0800), Ard Biesheuvel wrote:
+> >> Hi Jan,
+> >>
+> >> On Fri, 12 Jan 2024 at 19:37, Jan Kiszka <jan.kiszka@siemens.com> wrote:
+> >>>
+> >>> From: Jan Kiszka <jan.kiszka@siemens.com>
+> >>>
+> >>> The cflags for the RISC-V efistub were missing -mno-relax, thus were
+> >>> under the risk that the compiler could use GP-relative addressing. That
+> >>> happened for _edata with binutils-2.41 and kernel 6.1, causing the
+> >>> relocation to fail due to an invalid kernel_size in handle_kernel_image.
+> >>> It was not yet observed with newer versions, but that may just be luck.
+> >>>
+> >>> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+> >>> ---
+> >>>
+> >>> Something like this should go to stable as well, but we will need
+> >>> rebased patches.
+> >>>
+> >>>  drivers/firmware/efi/libstub/Makefile | 2 +-
+> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/drivers/firmware/efi/libstub/Makefile
+> >>> b/drivers/firmware/efi/libstub/Makefile
+> >>> index 06964a3c130f..d561d7de46a9 100644
+> >>> --- a/drivers/firmware/efi/libstub/Makefile
+> >>> +++ b/drivers/firmware/efi/libstub/Makefile
+> >>> @@ -28,7 +28,7 @@ cflags-$(CONFIG_ARM)          += -DEFI_HAVE_STRLEN
+> >>> -DEFI_HAVE_STRNLEN \
+> >>>                                    -DEFI_HAVE_MEMCHR
+> >>> -DEFI_HAVE_STRRCHR \
+> >>>                                    -DEFI_HAVE_STRCMP -fno-builtin
+> >>> -fpic \
+> >>>                                    $(call
+> >>> cc-option,-mno-single-pic-base)
+> >>> -cflags-$(CONFIG_RISCV)         += -fpic -DNO_ALTERNATIVE
+> >>> +cflags-$(CONFIG_RISCV)         += -fpic -DNO_ALTERNATIVE -mno-relax
+> >>
+> >> Can we detect the presence of these references (via the relocation
+> >> type)? We already do something similar for ordinary absolute
+> >> references too.
+> >
+> > If there's no `__global_pointer$` symbol then the linker won't make
+> > GP-relative relaxations (because it doesn't know where GP is).  We
+> > usually define that symbol in the linker script, but I'm not entierly
+> > sure how libstub gets its linker script...
+> >
+>
+> The stub seems to be linked together with the rest of the kernel, thus
+> the regular arch/riscv/kernel/vmlinux.lds.S is used.
+>
 
-Yes, and the merge window has been suspended too:
+Indeed - the EFI stub is part of the same executable as vmlinux, we
+just mangle the symbol names to ensure that only code that can be
+safely called from the EFI stub can be linked to it.
 
-https://lore.kernel.org/r/CAHk-=wjMWpmXtKeiN__vnNO4TcttZR-8dVvd_oBq%2BhjeSsWUwg@mail.gmail.com
-
-> right now, and I suspect that the -tip maintainers may have some
-> feedback of their own. So give it at least a week or so, and ping this
-> thread again to ask how to proceed.
-
-From: Documentation/process/maintainer-tip.rst
-
-"Merge window
-^^^^^^^^^^^^
-
-Please do not expect large patch series to be handled during the merge
-window or even during the week before.  Such patches should be submitted in
-mergeable state *at* *least* a week before the merge window opens.
-Exceptions are made for bug fixes and *sometimes* for small standalone
-drivers for new hardware or minimally invasive patches for hardware
-enablement.
-
-During the merge window, the maintainers instead focus on following the
-upstream changes, fixing merge window fallout, collecting bug fixes, and
-allowing themselves a breath. Please respect that.
-
-The release candidate -rc1 is the starting point for new patches to be
-applied which are targeted for the next merge window."
-
-So pls be patient.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+If the effect of -mno-relax is to stop emitting R_RISCV_RELAX
+relocations, we should perhaps add those to the STUBCOPY_RELOC-y
+Makefile variable? (in the same file). BTW R_RISCV_HI20 doesn't seem
+like the right value there to begin with: the idea of that is to
+disallow ELF relocations that evaluate to expressions that can only be
+known at runtime (like absolute addresses for global pointer
+variables)
 
