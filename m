@@ -1,98 +1,194 @@
-Return-Path: <linux-efi+bounces-420-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-421-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A9D832913
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Jan 2024 12:42:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5362283779D
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Jan 2024 00:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB2A01F22502
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Jan 2024 11:42:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7728B1C25844
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Jan 2024 23:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20F94EB27;
-	Fri, 19 Jan 2024 11:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4024B4BAA0;
+	Mon, 22 Jan 2024 23:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DtfLfUcg"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b="uTeTlZ7s"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C983C486;
-	Fri, 19 Jan 2024 11:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA713495FC;
+	Mon, 22 Jan 2024 23:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705664558; cv=none; b=LLc2jaa7/bdHYTP92HJyfe2e6PMZLTshbWhBi6S+3eO4bpwuUJvG38RWXfpbLElRs0QCDPAaBzyOAOBDdWLEPzNdHNDFUA+aIHY+fYX1N51S8/wpMib0/2Ft9QcwtOkf9zoPiTaKN5SoSwnnyX8vwtYKkQKO3iSD1SvgG8uCPvc=
+	t=1705965318; cv=none; b=Ajxp2IJL+tTr0s9ymg4E+Bc5nPqEni2YBO/hD7LuSP2YgllqYxVka6wXYsuw7zq0fdmRiV1ixIiW1WmxHy2vAZa6hYm1F8D9PmuBI0QIdNjsqkAskmFKfupaLebQ2M8TSOV7UWv64fyCtvkxKrUxZYPgc5K8Rt7ZveIo96kTMOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705664558; c=relaxed/simple;
-	bh=LC9COPXQo2VIEyQXnhD9uXez/gy3eKAmfhHuEx89nQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aRm1IHVCIHzufgY0LuNm8BJWnvAmVsBx4JZNFMp+vNckQigVk48Eus22gOEhjfVKwjqqkiIUpA2hZhxDb0v/+pHAofpAUZx2/yRD2Atn78g2DpVFE3oBeyKeP9OqoGVe97FWTQIvDch77RhFvFclTHzZtKLIv/cRLaOGQfoxKY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DtfLfUcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBDBC433C7;
-	Fri, 19 Jan 2024 11:42:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705664558;
-	bh=LC9COPXQo2VIEyQXnhD9uXez/gy3eKAmfhHuEx89nQU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DtfLfUcg0p8Gg1qJ+XZdJTCe3+0A67GF4OJfJCBegbnsCCk6kC4jcj2DAtF+vAN6Y
-	 l16iqgFCxXCINnmjHHox/1h6a6JEQPP+rKLwGh23MvQeZd7ejZ8dydVlz6A6eVTt/O
-	 Eo+Hs4U7eKuZGnjQCVmhLcpK1Kfj3eq4aP+9lJIR3ByAAHzYltoqtR+ogCHiYlLqlq
-	 BMcVep+ZFdPeqJCuSrVH3nIxQWgZsxtmuJyesT9y9ZjhrNtf3eK+w/04lRJ4WKCNZJ
-	 vOX8R4qSows/X9XiCLu2CIgCtXy4uD2W5bN5Uqfo5NyMiFPCiGnMy9wlqWT4ipcfJk
-	 5rPH4t7mg14gw==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2cdae52d355so6503671fa.2;
-        Fri, 19 Jan 2024 03:42:38 -0800 (PST)
-X-Gm-Message-State: AOJu0YyJbV5ymMZFEEFo8c1oW+n1JPKWdbbAVHpQnqPaz3kt3SQjc35t
-	ahCb7ejoYX6dvcCRNH1NkTe0WefYMiiJQ1FePhOZao6+tGjdR0QWHgHl7Y+Z27LtQ5XUsrt/pzc
-	mbMwNFveR2vYfg6ShMTVLa0n9N7w=
-X-Google-Smtp-Source: AGHT+IFKsuEjMZk6Jd5v6V2D44ibCGIvPNx7v2vxnA1wTx8x71FAIDINQVSliMTeTGGqKLWZI73KivT1NnJtDeRsqak=
-X-Received: by 2002:a05:651c:c8b:b0:2cd:fa5f:d7b7 with SMTP id
- bz11-20020a05651c0c8b00b002cdfa5fd7b7mr1404652ljb.79.1705664556417; Fri, 19
- Jan 2024 03:42:36 -0800 (PST)
+	s=arc-20240116; t=1705965318; c=relaxed/simple;
+	bh=mHoVToJdg9lSsJtvh74c2XX6GXRpiszou/ybfX9aNhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xc8xxlQauzIfaBBSX2E8zSWMxZ30Skg/wtkZBaRq0dx7K4thQQNpMsP9mpO7Bm3ze2yAAcp7w5vsRyPXnFuXSULFMhJadmqDmCW4dgD0dVtOGOcew1oEX8gKr+J/f2FQ8LG2K37IEOOpwy5+M4fLjsozuKYEXWiGL5KJf/RFYSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b=uTeTlZ7s; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1705965308; x=1706570108; i=timschumi@gmx.de;
+	bh=mHoVToJdg9lSsJtvh74c2XX6GXRpiszou/ybfX9aNhw=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+	b=uTeTlZ7sGVk12V0wC9JlHFLBF5pUGqQQuJgis9a6MKyABaAPZbYd5zrDf90J3DUu
+	 dq9id9j+YY/+0Lr9BI567vQ0QdmL3t6vA1pwDvBmEE2Pmqj101jmd9/6X80c1iuOE
+	 r9fC5lh3qZOy6MbKiWNF4rA5ThjyUniL6CJXqVUiZAmYNOPDvUYnQCdOs+yIjJXJt
+	 UqMocBvM7z+URHR8AUCqpfw6V6gCdbdCopwyWy/BIt19Nt9KJNqo0ny7x2W/qDBfj
+	 mNDPMg5Z3nyUNKEqxcHpsSig7C2yQmGKcHlbqAOm/Nu2+IFlLo9MkX3JubNOByRO1
+	 qvofSZM3aSz+aYUVZg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([93.218.111.23]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MpUZ4-1qkyNE1Voi-00psK9; Tue, 23 Jan 2024 00:15:08 +0100
+From: Tim Schumacher <timschumi@gmx.de>
+To: linux-efi@vger.kernel.org
+Cc: Tim Schumacher <timschumi@gmx.de>,
+	Jeremy Kerr <jk@ozlabs.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] efivarfs: Iterate variables with increasing name buffer sizes
+Date: Tue, 23 Jan 2024 00:15:05 +0100
+Message-ID: <20240122231507.1307793-1-timschumi@gmx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240119100635.12333-1-yang.lee@linux.alibaba.com>
-In-Reply-To: <20240119100635.12333-1-yang.lee@linux.alibaba.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 19 Jan 2024 12:42:25 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEZ3M-RM7i=KkMp8YnDYmamdpZr+MjdHnR2HuNXUYC4KQ@mail.gmail.com>
-Message-ID: <CAMj1kXEZ3M-RM7i=KkMp8YnDYmamdpZr+MjdHnR2HuNXUYC4KQ@mail.gmail.com>
-Subject: Re: [PATCH -next] efi/libstub: Add one kernel-doc comment
-To: Yang Li <yang.lee@linux.alibaba.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lbC9O+leBNej2307ZV7QzLn8/V3PfaPIB07+/RCMcAmoED0zCAc
+ 5jkmhg81TnZBroMV051zVhCpMEeUCn85pUg8oH5BaIC9vn8jsNkojBLijSaAoY6NyZ1ncuF
+ MB02pCRsz2zjKVOk2vML1nvHH1ebiVNTBJj1tcM4oqhjASEk3fI//LdGMa4vOYXxIs5ZPuC
+ bbzPnWtU6CcXuObta9qDw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:nkrJKBUhS+o=;4PPd/T+xEGa22Xz/SDkRgUbc5s5
+ Yph4ueyIszKpcN3Zf31mDBmecLTDeDZERHoH6QBZoTqDpP7cM34FJpxwJQlMug3LJk4w0S/aj
+ K+ejBeTzoqGN4xlmo0K2lHKcRmPZePYvllH0C2MD5xTz/E/rQyQICwrE4kCzTHLe4qfRYZPe2
+ EkMdw5NN+n5HuWKBbaFtHdws1lNmBOtoSi4YEc00yUKx8NVvONuTpCN2jzr0vsTaP5dBQSVcn
+ i6t7q49hNONaP4Jmtn9IG7NjBn3D+mDCr2orkngttZsdPqwwnEhFFqk/7sazb4k7oZ4NazXX7
+ NyH7KD9Y5ZVCDCU1AfreGpgZOTYNhWjzlcMVYBBy47q3gmFBDk9BxGcjX4RoBo6nlrNQizSM1
+ 6HQ2z0UuLNZ99kjiS24XNRf1Ug81KLSzm2EjuPOOHUW0fTMIFvTmptIaR2hJ7ZGM90VafRwP0
+ cj0AJuof9z05WSs/my6RVi8h5JN+vYYJRfQy8PQTkbMSU5aDHksAFFfYILZxIfIZ/+A+bKPn7
+ 6MZ6x4YjqTETz7HK1SRnQToPY7tigEtG7LkPVvjM5mFs5c9E6Gd8ta3X/FmUFG7w6lzZqKjIh
+ 1rRtVIMWmn94SuNh9qeTx7A0v0LnXCpJtGvA7z57OoP57kovisrIsQdOhb+QRCvV3BEpwwHjr
+ +qQoTFcsS6TUMjLQdh8g5NqcfoFZPa+SnUlPxHTAl+Qx46HQ8CJOtw4UTrnCNitWJgqo+zUPj
+ gx2XcVR4PdJkDNdS1TFp6j5mstCoeauLBDWbFvKtoM264r4qLxUmMeNl5etYZrwQCa/f8xr6R
+ PTtr75vfl4PsGGRl2HdBbVeYfZP9cDJ+BndHrPBL53RKfmSXY/NwvaQ/IW4zWtNW2Qk5s7f0p
+ LcNewYkxWdzTXkM5USGm8fo6DT0A4/vUfxNzzMeRq6ZnE5GU0KVqFgrQl+5jPs9Y7CStOzQZC
+ J7uj/9s/ynKwG1lsBAq3uh7rNj0=
 
-On Fri, 19 Jan 2024 at 11:06, Yang Li <yang.lee@linux.alibaba.com> wrote:
->
-> Add the description of @memory_type to silence the warning:
-> drivers/firmware/efi/libstub/alignedmem.c:27: warning: Function parameter or struct member 'memory_type' not described in 'efi_allocate_pages_aligned'
->
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-> ---
->  drivers/firmware/efi/libstub/alignedmem.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/firmware/efi/libstub/alignedmem.c b/drivers/firmware/efi/libstub/alignedmem.c
-> index 6b83c492c3b8..8ff51c6a2aa1 100644
-> --- a/drivers/firmware/efi/libstub/alignedmem.c
-> +++ b/drivers/firmware/efi/libstub/alignedmem.c
-> @@ -14,6 +14,7 @@
->   * @max:       the address that the last allocated memory page shall not
->   *             exceed
->   * @align:     minimum alignment of the base of the allocation
-> + * @memory_type: the type of memory to allocate, as defined by efi_memory_type
+This sidesteps a quirk in a few old (2011-ish) UEFI implementations,
+where a call to `GetNextVariableName` with a buffer size larger than 512
+bytes will always return `EFI_INVALID_PARAMETER`.
 
-What is 'efi_memory_type'?
+It is currently unknown whether this is just a botched check or if the
+length is interpreted differently, so the underlying buffer is still
+sized for 1024 bytes, even if we communicate a smaller size to the
+runtime service.
 
->   *
->   * Allocate pages as EFI_LOADER_DATA. The allocated pages are aligned according
->   * to @align, which should be >= EFI_ALLOC_ALIGN. The last allocated page will
-> --
-> 2.20.1.7.g153144c
->
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Tim Schumacher <timschumi@gmx.de>
+=2D--
+linux-stable is CC'd because this issue (together with a few other
+unfortunate non-kernel edge-cases) resulted in semi-bricked machines
+when installing various Linux distributions across the last 10+ years.
+
+The short explanation is that efibootmgr created an entirely new list
+of boot options when not being able to read the existing one, which
+wiped the device-based entries from `BootOrder` and overwrote the "BIOS
+Setup" entry that was stored in `Boot0000`, making the setup menu
+completely inaccessible on the hardware that I'm testing on.
+
+Matching bug reports exist for Ubuntu [1] and Debian [2], they just
+don't mention the root issue because I finished tracking this down only
+yesterday.
+
+As mentioned in the commit message and comment, the reason for rejecting
+buffers larger than 512 bytes is still unknown, but I plan to continue
+looking at the UEFI binary once I have a bit more time. Depending on the
+results of that, the accommodations we make here could be toned down
+again.
+
+[1] https://bugs.launchpad.net/ubuntu/+source/efibootmgr/+bug/1082418
+[2] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D887139
+=2D--
+ fs/efivarfs/vars.c | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
+
+diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
+index 9e4f47808bd5..55a1468af3fa 100644
+=2D-- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -372,13 +372,15 @@ static void dup_variable_bug(efi_char16_t *str16, ef=
+i_guid_t *vendor_guid,
+ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, vo=
+id *),
+ 		void *data, bool duplicates, struct list_head *head)
+ {
+-	unsigned long variable_name_size =3D 1024;
++	unsigned long variable_name_allocation_size =3D 1024;
++	unsigned long variable_name_advertised_size =3D 512;
+ 	efi_char16_t *variable_name;
++	efi_char16_t *variable_name_tmp;
+ 	efi_status_t status;
+ 	efi_guid_t vendor_guid;
+ 	int err =3D 0;
+
+-	variable_name =3D kzalloc(variable_name_size, GFP_KERNEL);
++	variable_name =3D kzalloc(variable_name_allocation_size, GFP_KERNEL);
+ 	if (!variable_name) {
+ 		printk(KERN_ERR "efivars: Memory allocation failed.\n");
+ 		return -ENOMEM;
+@@ -391,10 +393,16 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid=
+_t, unsigned long, void *),
+ 	/*
+ 	 * Per EFI spec, the maximum storage allocated for both
+ 	 * the variable name and variable data is 1024 bytes.
++	 *
++	 * However, a small set of old UEFI implementations
++	 * reject large sizes, so we start off with advertising
++	 * something that is more digestible. The underlying
++	 * buffer is still 1024 bytes in size, in case the implementation
++	 * interprets the size differently.
+ 	 */
+
+ 	do {
+-		variable_name_size =3D 1024;
++		unsigned long variable_name_size =3D variable_name_advertised_size;
+
+ 		status =3D efivar_get_next_variable(&variable_name_size,
+ 						  variable_name,
+@@ -431,6 +439,22 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_=
+t, unsigned long, void *),
+ 			break;
+ 		case EFI_NOT_FOUND:
+ 			break;
++		case EFI_BUFFER_TOO_SMALL:
++			variable_name_advertised_size =3D variable_name_size;
++			if (variable_name_size <=3D variable_name_allocation_size)
++				break;
++
++			variable_name_tmp =3D krealloc(variable_name, variable_name_size, GFP_=
+KERNEL);
++
++			if (!variable_name_tmp) {
++				printk(KERN_ERR "efivars: Memory reallocation failed.\n");
++				err =3D -ENOMEM;
++				status =3D EFI_NOT_FOUND;
++				break;
++			}
++			variable_name =3D variable_name_tmp;
++			variable_name_allocation_size =3D variable_name_size;
++			break;
+ 		default:
+ 			printk(KERN_WARNING "efivars: get_next_variable: status=3D%lx\n",
+ 				status);
+=2D-
+2.43.0
+
 
