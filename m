@@ -1,199 +1,183 @@
-Return-Path: <linux-efi+bounces-432-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-433-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB7983DB1F
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Jan 2024 14:44:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B8383DEA3
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Jan 2024 17:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60BC287CA0
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Jan 2024 13:44:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19FBC1C21066
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Jan 2024 16:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AF71B599;
-	Fri, 26 Jan 2024 13:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A391D6A5;
+	Fri, 26 Jan 2024 16:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xW10/i+R"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b="NcZxPcD9"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEC81AACB
-	for <linux-efi@vger.kernel.org>; Fri, 26 Jan 2024 13:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2371E87E;
+	Fri, 26 Jan 2024 16:25:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706276645; cv=none; b=dE8fK16KYJ6YKYDs9RHdSIfBHY5QpQriF//0I7H8BbU04YktqCAvOKO+oQf+PyeGULu9wOr81VqZLd/UjtrlmEPgh1cR7/aXpmP1XzOfbWHdF111U9+KZDuyg24ogEL2TK7p1c3WR/3u7cp0we7Xfr20/HAIGEU9etjsDkm5ZLA=
+	t=1706286342; cv=none; b=LTRMlcMZK/4PCsUZug+D/lLmFcfqL0t+GLrEb+L621oedWJR1bN7EJfDfzXtLfWD4X7x2IZnl+HlmU1RuWiCUW17Y39pnuUfmLrHSbu0/iAaBXXlrSDLW2Idgstz/W7/AMYs5OrmFr35j0P1u82hBizsLgrvEWcUuwksLM+8o/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706276645; c=relaxed/simple;
-	bh=KDGHlF9BjXdSB0sZEccUbLYZAH/18txpi/bnbz/Z/vA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lj+Z8USdxqi00FF/s6Yd/d0nMaqn/jCTIFvj6PL/moKPJxf8BWSK+evbJH+6XdGLaeYPUmvevSj4tWCSxaK4/5R4xiHdbFvgsEGazP1Tw+uwI0Z7KsN6jZ8JoL5L2+mm8QJVI00e10tg9+eHfrjf4COz5ErpZvHhbJlGCcoeVUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xW10/i+R; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc6477d2cbcso373145276.3
-        for <linux-efi@vger.kernel.org>; Fri, 26 Jan 2024 05:44:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706276642; x=1706881442; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TnNIHpV3zteiVajtwnpfhHYHgjNd8+MoEisix2YWyS8=;
-        b=xW10/i+R8iNdC1IM2O659rHzYJt6rwPfot31CRfzvuoU/AeiHX8/xjfb1T3LtaAJv8
-         QRTTG6tH6y+VbP85dkX20WWjtj7ZI+SMfGgvo7dGFESQyXHkwP+/O5Wxjc6pbjceBl2u
-         zpnFyHmtNZqWgPCPNPcfd6GBXihwLsFnF0wLMWrqbH6CZueFc9g1tnwV1hRjTuKnTWki
-         t6EO9C0XK50h99XaxB0LJY95DXdKDIFYx6ZaaRfN2u75Z6VuWJh1mC8VrlUezIAav+wr
-         aBhRfQL5b4qrXX2GELOUXO+/tj5hOieSabtAj+DTJQibldktuBtXex5mJYNuQEM2YACH
-         idww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706276642; x=1706881442;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TnNIHpV3zteiVajtwnpfhHYHgjNd8+MoEisix2YWyS8=;
-        b=Iyk8Wnm1ODZu/PWh9u4/9KbtH690RxEU0BgStX/6HR+GMmLCR6TTV3Dgk8mq5nQ9Oz
-         EBeCZnb6Jx2LsA8sDI4y3g6+5W3iDJNGQsKrBkOFpyMJ1Ln0IUKnlUr0c01z1o9HvXaj
-         /SjxiYdTiWLODAwTFvffKWunV/WxdZJuepgwvB6VoXUTZ5SBjBe66DNLLJNhk6tIQsHm
-         UHdd9zcDMjazMgxOID9uj++/iAHoxNCvuRsoI4PN6wn24WaAiyDI2fYys3tPVlLpNjeV
-         JYBUwzFHZCHx9bp64y3kiHScwQgE90rTPPA+IX1lNJ0MO2nPwSaMnIQu9M6WVHA3Gjob
-         0QWg==
-X-Gm-Message-State: AOJu0YxTA+Jb7zOYsoLA2k1k9E/OMSelIsYUytG7jfs/10PVRJuf9c7j
-	H56MIbGrdSC4bpJ0avk4NOQc3rTT0slXw9lIK4WSSnHfHKyPwpACThCRs7aq9QH7+4uwH7zAfns
-	/cFEaJmL5HMmwjKoZLLyaJsYanIiDwV0tvvaGCh0pBvv/i9V/hluw3QDyg+ur3nrXSGQjlJfaDe
-	I1vNyDecZszx8lYf4cMZeRPmZQTw==
-X-Google-Smtp-Source: AGHT+IERGzGpTqbu2AclGclMAWfXANfdP3LoVV7qJ2T1tzODZT7Ntk8EvJppyz9qss3JaGO4eYka9TRI
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:6902:1b8b:b0:dc2:2847:b34a with SMTP id
- ei11-20020a0569021b8b00b00dc22847b34amr112080ybb.9.1706276641623; Fri, 26 Jan
- 2024 05:44:01 -0800 (PST)
-Date: Fri, 26 Jan 2024 14:43:57 +0100
+	s=arc-20240116; t=1706286342; c=relaxed/simple;
+	bh=6z0ByeYL+pkh95bC+3RgBUcMtnqLYolkJqdVY7JSZco=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X4hEwgwYfcmicWue9ZDNJlB6qU/pjbCqB7+YjFPFQFu68s6nkSrm/0xuLhEH+p6l64xLdtZKARBWeo8BDO3CnYxxfXAuTTORpTrG/KOU2+eKU2XTieptnw4M3+rgrPzrjAlW897aFpBvqZaNbJ/MWVRw21gcF7ouxQRi9OQabPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b=NcZxPcD9; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1706286328; x=1706891128; i=timschumi@gmx.de;
+	bh=6z0ByeYL+pkh95bC+3RgBUcMtnqLYolkJqdVY7JSZco=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
+	 References;
+	b=NcZxPcD9lq45zJ7UxyHXRUGo3lEWgZuTCtILpfysjpanLsW8jCNfcN92N8Z9EkM4
+	 UsiIBqmLZ48gCx7AoOekCLm7HEi324GNc56qdQbnFLOPgPCjMzzU9l5Dg9TrcrZ5D
+	 xm/5FOitxD0XibtQpSeIzGZbTcS0R16q47kaHvtcBq0bh2ErLLTOBw0wXWxWUt0RP
+	 tquFo2bz5sWVKLRhE2lOIi5PDoxZeeodQYKKhb32QDBiB6klpHa3FZHfT+OeBMMzQ
+	 Q87dMo1biDPcTPq9aS2QcFRCs1u1a5qKS5OGdJZQMTiojg7GfC2Wavl6jSf+RZ8Ui
+	 B0AGAiiSeo0umJCnGQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([93.218.111.23]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1Mv31c-1rBb3H3LdI-00r3ow; Fri, 26 Jan 2024 17:25:27 +0100
+From: Tim Schumacher <timschumi@gmx.de>
+To: linux-efi@vger.kernel.org
+Cc: Tim Schumacher <timschumi@gmx.de>,
+	jk@ozlabs.org,
+	ardb@kernel.org,
+	mjg59@srcf.ucam.org,
+	pjones@redhat.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] efivarfs: Request at most 512 bytes for variable names
+Date: Fri, 26 Jan 2024 17:25:23 +0100
+Message-ID: <20240126162524.52051-1-timschumi@gmx.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240123202743.1591165-1-timschumi@gmx.de>
+References: <20240123202743.1591165-1-timschumi@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3994; i=ardb@kernel.org;
- h=from:subject; bh=Y96q7GKu/v3rW4tp8R6Ype9eFtC7E1BdN0T+JMK5c7U=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIXXzdlkFbZdC84PBk76qTp1s1RZ47k9ntG9x16PzV/Pn6
- 9jbeal1lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIkYzWBkeCSSqddXHfhh+tYd
- EzXCLlg/97j4ydN7o5fOWQXzNc9NbRn+51VfjNM3LJb5oyvLvOK/hOypdosj5ZdMX0xt8cqrilj HDQA=
-X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240126134356.2859488-2-ardb+git@google.com>
-Subject: [PATCH] x86/efistub: Give up if memory attribute protocol returns an error
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: pjones@redhat.com, Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:+aDdGtIfgG90q+Bt2+L0eHwS9QyS6tkSZK4Yxy7mc21bnBmtWSM
+ wcCJzAzhxzpqY+C7vM7wlX+nIoeX51bx9k8VBagLN9xKUpRgPXL7mAmkEkepML9U4Xa+p1S
+ lPDoNMziSXxccQ1RaG376qWx0n0KVGC37FqKPoV+hCk6Ytf02Dn00y6iy4AS5Ij0ugrlH1x
+ Oxg52Ch4j+2wu+h4TkJ7A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:exu9ofekbfU=;NkVT69E2thuvsZqDmqQowaaz6co
+ fZIJYQgv36qfAakhvYI10R8Gd6L/uw4eMvp3mWfupiq3eZDdg9myJ4efttIRAAF9Vg8eat808
+ 2ptObyHqFQzP2GsYYNK71kGL+ppg5EeaY8VxRTtjEOpQdG1ADWmQPrExdWrn6wqaTA/1BNbdw
+ dGL5miY3GLZp0ankMP6Af8no0IEUEDiNK0NxfD156GoOOnH6BUrRvi3UmZJL+KXcJCdGeLHtN
+ G3hZRXnCvdid1jUUbdLupagJTHkWtSOyb4ynQ4hq2X0lshUjV5VHRZv1XeLzvS0gec2O27ZP4
+ u1hG5JqLVGQ9ZZDr7Ojuq5pldDZ8i/yTG1FiFMqxDC5/vqPWEnRmCXwYaebR+7Uuy0wbj/OJb
+ RhWSAA+qJtHog26hICgmZLxVX1G3Ws/Z+0+qWue/6SjUYGFfW0nF6S/MFdKonP9EI+S72fJkk
+ VS6lQXV/QJBRYDBqn/CT91aHbkVdFlidPH7/x1xShq6sQ0SrtwEw3QyOLeLp66xDesvFtCHLs
+ QRlWm4z57mEPDLt/ukf/oILC+lSVndhvIQLgh68WYutaAe+H7Gf584bX9SfnfBVFIfh7+X3ON
+ 6UT4xg3SmVg8ChO/1SY1fyt9LACN8aN0wT90GSH07u4FgacM1R1NXEaiRaehrxyemp2sBTwyR
+ pRrxa882owIbq12iJykwD9UbcJL2Swr5/PyLpmDzv58cQYI/APiNDIMoI+Ecj4UJlV1jFfi3O
+ 3kBfhadWL/sY/WuJfyMec4Zoj1qgpfpHrSv+TCyO1OAdt4Z6D9B2uxkcAg38MaahZCtzyO3OF
+ 3pENs4iDt8RqmbfeNJG92heOUVmKnapxQXK26/SH5kFT1UHAQ8GEMBw6frSJfVVlE+wzpn8Tk
+ 97sED7aBcuTdeRTc/v6C3uFp0ePKao6WuNSBV3B6vDiYjvR9vdrFgnxsZ+HBsKtg/pnw1Q3Bl
+ bsONC42BlNNJps2f6RyLXL1h9TQ=
 
-From: Ard Biesheuvel <ardb@kernel.org>
+This sidesteps a quirk in a few old (2011-ish) UEFI implementations,
+where a call to `GetNextVariableName` with a buffer size larger than 512
+bytes will always return `EFI_INVALID_PARAMETER`.
 
-The recently introduced EFI memory attributes protocol should be used
-if it exists to ensure that the memory allocation created for the kernel
-permits execution. This is needed for compatibility with tightened
-requirements related Windows logo certification for x86 PCs.
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Tim Schumacher <timschumi@gmx.de>
+=2D--
+Made a patch with just the size change (and a comment / error message
+for good measure) as requested. I just hope that I don't have to come
+back in a month to find out that there is a machine that only accepts up
+to (e.g.) 256 bytes.
 
-Currently, we simply strip the execute protect (XP) attribute from the
-entire range, but this might be rejected under some firmware security
-policies, and so in a subsequent patch, this will be changed to only
-strip XP from the executable region that runs early, and make it
-read-only (RO) as well.
+One thing that I just recently noticed is that properly processing
+variables above 512 bytes in size is currently meaningless anyways,
+since the VFS layer only allows file name sizes of up to 255 bytes,
+and 512 bytes of UCS2 will end up being at least 256 bytes of
+UTF-8.
 
-In order to catch any issues early, ensure that the memory attribute
-protocol works as intended, and give up if it produces spurious errors.
+If path creation errors are decoupled from the iteration process then
+one could at least skip those entries, but the efivarfs implementation
+seems to be in no shape to handle that currently.
+=2D--
+Changes since v1 ("efivarfs: Iterate variables with increasing name buffer=
+ sizes"):
 
-Note that the DXE services based fallback was always based on best
-effort, so don't propagate any errors returned by that API.
+- Redid the logic to start with the current limit of 1024 and continuously
+  halve it until we get a successful result.
+- Added a warning line in case we find anything that is bigger than the li=
+mit.
+- Removed an outdated (or never accurate?) comment about a specification-i=
+mposed
+  length limit.
 
-Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/x86-stub.c | 24 ++++++++++++--------
- drivers/firmware/efi/libstub/x86-stub.h |  4 ++--
- 2 files changed, 16 insertions(+), 12 deletions(-)
+Changes since v2 ("efivarfs: Halve name buffer size until first successful=
+ response"):
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 0d510c9a06a4..cb0be88c8131 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -223,8 +223,8 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
- 	}
- }
- 
--void efi_adjust_memory_range_protection(unsigned long start,
--					unsigned long size)
-+efi_status_t efi_adjust_memory_range_protection(unsigned long start,
-+						unsigned long size)
+- Removed all the complicated logic, only keeping the new limit, the
+  comment change, and the error message in case a big variable is found.
+=2D--
+ fs/efivarfs/vars.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
+index 9e4f47808bd5..3f6385f2a4e5 100644
+=2D-- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -372,7 +372,7 @@ static void dup_variable_bug(efi_char16_t *str16, efi_=
+guid_t *vendor_guid,
+ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, vo=
+id *),
+ 		void *data, bool duplicates, struct list_head *head)
  {
+-	unsigned long variable_name_size =3D 1024;
++	unsigned long variable_name_size =3D 512;
+ 	efi_char16_t *variable_name;
  	efi_status_t status;
- 	efi_gcd_memory_space_desc_t desc;
-@@ -236,13 +236,17 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
- 
- 	if (memattr != NULL) {
--		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
--			       rounded_end - rounded_start, EFI_MEMORY_XP);
--		return;
-+		status = efi_call_proto(memattr, clear_memory_attributes,
-+					rounded_start,
-+					rounded_end - rounded_start,
-+					EFI_MEMORY_XP);
-+		if (status != EFI_SUCCESS)
-+			efi_warn("Failed to clear EFI_MEMORY_XP attribute\n");
-+		return status;
- 	}
- 
- 	if (efi_dxe_table == NULL)
--		return;
-+		return EFI_SUCCESS;
- 
+ 	efi_guid_t vendor_guid;
+@@ -389,12 +389,13 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid=
+_t, unsigned long, void *),
+ 		goto free;
+
  	/*
- 	 * Don't modify memory region attributes, they are
-@@ -255,7 +259,7 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 		status = efi_dxe_call(get_memory_space_descriptor, start, &desc);
- 
- 		if (status != EFI_SUCCESS)
--			return;
+-	 * Per EFI spec, the maximum storage allocated for both
+-	 * the variable name and variable data is 1024 bytes.
++	 * A small set of old UEFI implementations reject sizes
++	 * above a certain threshold, the lowest seen in the wild
++	 * is 512.
+ 	 */
+
+ 	do {
+-		variable_name_size =3D 1024;
++		variable_name_size =3D 512;
+
+ 		status =3D efivar_get_next_variable(&variable_name_size,
+ 						  variable_name,
+@@ -431,6 +432,11 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_=
+t, unsigned long, void *),
+ 			break;
+ 		case EFI_NOT_FOUND:
+ 			break;
++		case EFI_BUFFER_TOO_SMALL:
++			printk(KERN_WARNING "efivars: Assumed maximum name size to be 512, got=
+ name of size %lu\n",
++			       variable_name_size);
++			status =3D EFI_NOT_FOUND;
 +			break;
- 
- 		next = desc.base_address + desc.length;
- 
-@@ -280,8 +284,10 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 				 unprotect_start,
- 				 unprotect_start + unprotect_size,
- 				 status);
-+			break;
- 		}
- 	}
-+	return EFI_SUCCESS;
- }
- 
- static void setup_unaccepted_memory(void)
-@@ -805,9 +811,7 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
- 
- 	*kernel_entry = addr + entry;
- 
--	efi_adjust_memory_range_protection(addr, kernel_total_size);
--
--	return EFI_SUCCESS;
-+	return efi_adjust_memory_range_protection(addr, kernel_total_size);
- }
- 
- static void __noreturn enter_kernel(unsigned long kernel_addr,
-diff --git a/drivers/firmware/efi/libstub/x86-stub.h b/drivers/firmware/efi/libstub/x86-stub.h
-index 37c5a36b9d8c..1c20e99a6494 100644
---- a/drivers/firmware/efi/libstub/x86-stub.h
-+++ b/drivers/firmware/efi/libstub/x86-stub.h
-@@ -5,8 +5,8 @@
- extern void trampoline_32bit_src(void *, bool);
- extern const u16 trampoline_ljmp_imm_offset;
- 
--void efi_adjust_memory_range_protection(unsigned long start,
--					unsigned long size);
-+efi_status_t efi_adjust_memory_range_protection(unsigned long start,
-+						unsigned long size);
- 
- #ifdef CONFIG_X86_64
- efi_status_t efi_setup_5level_paging(void);
--- 
-2.43.0.429.g432eaa2c6b-goog
+ 		default:
+ 			printk(KERN_WARNING "efivars: get_next_variable: status=3D%lx\n",
+ 				status);
+=2D-
+2.43.0
 
 
