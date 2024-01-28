@@ -1,163 +1,194 @@
-Return-Path: <linux-efi+bounces-435-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-436-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A0583E0FE
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Jan 2024 19:03:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2C583F590
+	for <lists+linux-efi@lfdr.de>; Sun, 28 Jan 2024 14:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 487D7281AB6
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Jan 2024 18:03:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23ABA1C20F4D
+	for <lists+linux-efi@lfdr.de>; Sun, 28 Jan 2024 13:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13D32033A;
-	Fri, 26 Jan 2024 18:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E1223757;
+	Sun, 28 Jan 2024 13:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b="XVRFUuBJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UILB4vqq"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C26920335;
-	Fri, 26 Jan 2024 18:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62FF23745
+	for <linux-efi@vger.kernel.org>; Sun, 28 Jan 2024 13:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706292179; cv=none; b=G/DFXMMfB1VEXaumpqAE1QZWfevHNuczz5QpnzjoUY08DE53MKxrOsKKXskvl4Vx5PG7+Xx/xNrSzQzXF696imQQ2jid6BWOc9Pnpi9KosrkCHUbdXkrthGX23NnjliiVuGAf85FDcWQpDgeFz3p0aoS3noHjYP7NvoZiX3wMb4=
+	t=1706447790; cv=none; b=rW93MqE8ZqiRCMwmqbdvP2nEJz9Mafku6TEmJcgl3X/yGUUkD7j/o6oLUYvk/PNJ5vFzswcZlT5EIBPmKJSk16UXpHIidR2mZpmne6lhU44uWjOMbE3s+L4RppvYh0zLdytxztJgS6eVVEuD4GfTuKV6ueJTDxzkyGXMFxHAgjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706292179; c=relaxed/simple;
-	bh=X6NHVHK1AHtZ56fXP7BQYTerDml+3kcIC9CcKvSmryw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tONHFWtuQOyq72Ngw44mXbWLoypXJGbdwpNUxPq5Kk1kkUx+qLAbGXJTSCBwv+jexsJ2cjUmzkLL5IX0+rjx5ZytM4WEDBytDsRMNnOzlNdJue/Ggog34xMAeiF8amqzU/R+OfcwP1EFcVrOCtpX1+6HFdm8th1CGCnxYPn5fLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b=XVRFUuBJ; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1706292166; x=1706896966; i=timschumi@gmx.de;
-	bh=X6NHVHK1AHtZ56fXP7BQYTerDml+3kcIC9CcKvSmryw=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=XVRFUuBJKLvBCfDhEWSWEjPdQS1RRF4c0buO0tbxsj1+H8x62pceBJSBws+r9v42
-	 pEbN1cE8We7affLK7fqZZDesEUjQVooPCSm/BflRALCl9pAzOQyO2RB9f71BJRHjj
-	 M1PX9GfOiwNUnm78tIvuQBygE3VEFT51cLFMxUHASTF8wSg4pwIpxkz/K85BL4q/O
-	 0fVwe5xvjZ4mjMNxSixkMUbqy2bK5juuC2ChfnqhkacLcuMZbUdLIM4r7iHTUWB9+
-	 wUVevkiJfymPaGOnIhZFd0wV3QmSA/YR+qVjL3/cD3ZsyETZNpXjq7P+xSBS58Pi6
-	 we5OoveRmbibU6JDew==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [10.222.0.4] ([93.218.111.23]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M6Udt-1rQwVI3h6H-00703t; Fri, 26
- Jan 2024 19:02:45 +0100
-Message-ID: <00d699b5-bf2f-4411-af3b-30ca6fadf66a@gmx.de>
-Date: Fri, 26 Jan 2024 19:02:42 +0100
+	s=arc-20240116; t=1706447790; c=relaxed/simple;
+	bh=EPoksa4LIDF6eAvTqqO+W5OhQ8HKnJG17VQTKrzLr7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=cXvmgH2P4YDpWEg8TAjmKupVdmQF/ibR+M4nM6E30EmNYkzLpWfythMgkdiT+h2WEQLs1PAYLdts0So4f2LofONR5ac0u3f6GDT3SZLR/lvsBaBIfvWh8tlNgPO45tccY5+cGjxw562qNlf9ReS3oQccf1upqWkxaJagnB2UhCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UILB4vqq; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706447790; x=1737983790;
+  h=date:from:to:cc:subject:message-id;
+  bh=EPoksa4LIDF6eAvTqqO+W5OhQ8HKnJG17VQTKrzLr7Q=;
+  b=UILB4vqq9OqOTpYwcTL+4TkpeBXKnoVTXb26hRaz0wOWswGLKvmuQmlf
+   LptN/5PRWpV7Nuu/Uc+OF5FdHlyA1YjJ8AJkCrcxpd6r3qBfBFQqfi1Qh
+   53GNDD7zZX32lKlHnD6s88e2i53BbvAIoZpGBOjKJn543ZAkLT85YPcfI
+   YCingBpWCsnS4zOmHWBpnX6xFqZjg/C0ZnslsRZZPT+gvj0WMIHZSsFtv
+   MR/RFrDxGJH36qVJZS6QAhqXpEFXzPnHq6LVv9ykUs2Fc9UkoYmb1oWtx
+   9+/jl0FOwQfW4+1jzhPTzqGKr4FKtrUL3qIW0WPFGjdFttEBeqWb4+1Mz
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="16131403"
+X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
+   d="scan'208";a="16131403"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 05:16:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
+   d="scan'208";a="35885197"
+Received: from lkp-server01.sh.intel.com (HELO 370188f8dc87) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 28 Jan 2024 05:16:28 -0800
+Received: from kbuild by 370188f8dc87 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rU51N-0003PO-19;
+	Sun, 28 Jan 2024 13:16:25 +0000
+Date: Sun, 28 Jan 2024 21:16:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 9ec96d83b3d3c0759c9a7e59c6aa1510b49cb049
+Message-ID: <202401282118.JcjWVj1k-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] efivarfs: Request at most 512 bytes for variable names
-Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, jk@ozlabs.org, mjg59@srcf.ucam.org,
- pjones@redhat.com, linux-kernel@vger.kernel.org
-References: <20240123202743.1591165-1-timschumi@gmx.de>
- <20240126162524.52051-1-timschumi@gmx.de>
- <CAMj1kXGOzk4OnsxL8T7Finx8RzNu23SriY7QokAvKD=BkEvpjw@mail.gmail.com>
-From: Tim Schumacher <timschumi@gmx.de>
-In-Reply-To: <CAMj1kXGOzk4OnsxL8T7Finx8RzNu23SriY7QokAvKD=BkEvpjw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:D6XXyUsCLUWLX1PROIwS/+6op+Zie4432dKrFa+sn/lYSE4XU/z
- vfXyMI9eqQARaS5Z2qSM2hrIjjSkNNZ1u/mJp+IMHhPhn454nSlabLA4Gpg9VPjTjZzgWNn
- GffXbBB26xE/D5n8jFiYnrr7UJJ2g4u2ux0zlB3DBE6HP+JqbYOqy8nVyHklK7kIeDSbdxM
- v/cwrLU2zacJRleW6iXnA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Jp1gcYIyKj8=;WALUFVM+83nxFcwlRRLlV8ge2jU
- oaFu9t6MFX7kdKVDbXmVfF8hCmWWhGN7GI+eRqrjwgbjLCjzIOmOadO15zMXhgv0as6hvuri0
- RKqNIcXwmRBpBt4zPR2O3XTm9uVp2rB0xIk4eqMPWA9+tuDJQhTRM0qFLkJoBnX56QFi66/gK
- 9lFGVmHx6rADv/WM9DAx2w3xTquG6n5zBNwTWZQ6ZMG7lRlQRKYxrRF+XQn0WgDttszbnDWLk
- YGe41xiPq791SH/afh1wDpAXBCUUPI8sON7xtcZrfYDX81e+3o96GTSt4elordmDdXHsOTOz1
- 3vYWuNguEd4nKPfIvE4N5rkrAWRJ2736gT4lIgBAbZsOIMR3abXnXoLTWAIpXk8TjJzT3trvZ
- o+ATVnFCPfhdu4Ibd7TMmb404QTUz148MM1Jy4IWijDvdML7K1eY4J2XKQO28/Zq9+jnrb1ow
- 0pblQY4ImeadNfSsVvG7aj2G8RQ63XNoKn7M5v2Z5Yq0nnB3czDt29HyNsvGXqATKDsySHPfa
- PbCkwOQ7MOOXsbfNuGwwz6QxN3c4yZRq9+JjSg7VnnLkPh4icRb3NCci6nK9Jc/g7ZjqRbeAr
- teC2h2KJ+r0MOTvg7CLM7QY/f7TYL/gd3LSfx3ZM/UCra9CfQD3dqkYv6mirlJXfTERB6sw/U
- 62uEwNssqkDPsMclI1wMOteOFVeC8MWj7Ww6r5kwqPFgmAN+Hh/1Oi82bIdVI5UxTrKGDOOzm
- bb40oEqPyLqanm4Eb5vMoEalOMg++7wORBukDw5o7t1jy9IrF+C9voAq2r23O49YBNvr/qeBf
- ZuTkQQIE2ERqA0m7cS3oyWMOHnwByabwfuLQgpl6NZnO9E2lRZVyVRuN6ggRYphbtiUZO62/Z
- F/XH3z8xI19Bfc7ZGYXPcS9PDARZlgOshjUC81lljcwTMXp+R9yluCgZGsH+nnYJdkWVzN4tN
- vj55gBUDDmKg6S0+HDoRm/M7uvI=
 
-On 26.01.24 17:35, Ard Biesheuvel wrote:
-> On Fri, 26 Jan 2024 at 17:25, Tim Schumacher <timschumi@gmx.de> wrote:
->
->> Made a patch with just the size change (and a comment / error message
->> for good measure) as requested. I just hope that I don't have to come
->> back in a month to find out that there is a machine that only accepts u=
-p
->> to (e.g.) 256 bytes.
->>
->
-> How about we add
->
-> static int varname_max_size =3D 512;
-> module_param(varname_max_size, int, 0644);
-> MODULE_PARM_DESC(varname_max_size,
->                  "Set the maximum number of bytes to expect for variable=
- names");
->
-> and use varname_max_size to initialize the malloc and the input argument=
-?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 9ec96d83b3d3c0759c9a7e59c6aa1510b49cb049  efi/libstub: Add one kernel-doc comment
 
-What I'm most concerned about either way is the default setting, because
-at the point where users will start investigating why their EFI variables
-can't be read, their setup menu and other boot entries will be long gone
-already.
+elapsed time: 2596m
 
-Making this configurable would only make sense if we actually disallowed
-write (/read?) accesses completely in case anything is wrong (i.e. more
-data than we can handle, or a buggy UEFI that needs an even smaller size
-to work). Then users would actually notice something is off instead of
-just making them believe that there are no more variables.
+configs tested: 105
+configs skipped: 3
 
-Additionally, We have a bunch of misguided "source of truths" across the
-whole stack (`EFI_VAR_NAME_LEN` for the structs, a whole second iteration
-implementation for `efi_pstore_read`, etc.), making sure all of these matc=
-h
-each other is probably beyond the scope of this patch (but a requirement
-for making this a proper user-configurable setting).
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->> One thing that I just recently noticed is that properly processing
->> variables above 512 bytes in size is currently meaningless anyways,
->> since the VFS layer only allows file name sizes of up to 255 bytes,
->> and 512 bytes of UCS2 will end up being at least 256 bytes of
->> UTF-8.
->>
->
-> Interesting. Let's add this to the commit log - it makes the case much
-> stronger, given that it proves that it is impossible for anyone to be
-> relying on the current maximum being over 512 bytes.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                 nsimosci_hs_smp_defconfig   gcc  
+arc                   randconfig-001-20240128   gcc  
+arc                   randconfig-002-20240128   gcc  
+arc                           tb10x_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                             mxs_defconfig   clang
+arm                   randconfig-001-20240128   clang
+arm                   randconfig-002-20240128   clang
+arm                   randconfig-003-20240128   clang
+arm                   randconfig-004-20240128   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240128   clang
+arm64                 randconfig-002-20240128   clang
+arm64                 randconfig-003-20240128   clang
+arm64                 randconfig-004-20240128   clang
+csky                              allnoconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240128   gcc  
+csky                  randconfig-002-20240128   gcc  
+hexagon                           allnoconfig   clang
+hexagon                             defconfig   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20240127   gcc  
+i386         buildonly-randconfig-002-20240127   gcc  
+i386         buildonly-randconfig-003-20240127   gcc  
+i386         buildonly-randconfig-004-20240127   gcc  
+i386         buildonly-randconfig-005-20240127   gcc  
+i386         buildonly-randconfig-006-20240127   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20240127   gcc  
+i386                  randconfig-002-20240127   gcc  
+i386                  randconfig-003-20240127   gcc  
+i386                  randconfig-004-20240127   gcc  
+i386                  randconfig-005-20240127   gcc  
+i386                  randconfig-006-20240127   gcc  
+i386                  randconfig-011-20240127   clang
+i386                  randconfig-012-20240127   clang
+i386                  randconfig-013-20240127   clang
+i386                  randconfig-014-20240127   clang
+i386                  randconfig-015-20240127   clang
+i386                  randconfig-016-20240127   clang
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   clang
+nios2                             allnoconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                               defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240128   clang
+x86_64       buildonly-randconfig-002-20240128   clang
+x86_64       buildonly-randconfig-003-20240128   clang
+x86_64       buildonly-randconfig-004-20240128   clang
+x86_64       buildonly-randconfig-005-20240128   clang
+x86_64       buildonly-randconfig-006-20240128   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240128   gcc  
+x86_64                randconfig-002-20240128   gcc  
+x86_64                randconfig-003-20240128   gcc  
+x86_64                randconfig-006-20240128   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
 
-It makes the case much stronger for why one wouldn't be able to _create_
-variables of that length from Linux userspace, creating dentries internall=
-y
-seems to have different restrictions (or at least their name size seems
-unlimited to me). Therefore, anything external could have still created
-such variables, and such a variable will also affect any variable that
-follows, not just itself. They don't have to be processed properly, but
-they still need to be processed (and they currently aren't processed at al=
-l).
-
-For what it's worth, I was able get the quirky UEFI implementation (the ve=
-ry
-same that can't request variable names longer than 512 bytes) to attempt t=
-o
-return a variable name of length greater than 512 to the kernel by creatin=
-g
-it through SetVariable beforehand.
-
-I'm sure you already noticed, but I don't want to argue in favor of this
-patches correctness more than it really is.
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
