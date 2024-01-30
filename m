@@ -1,146 +1,220 @@
-Return-Path: <linux-efi+bounces-437-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-438-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12016842891
-	for <lists+linux-efi@lfdr.de>; Tue, 30 Jan 2024 17:00:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AA7842B68
+	for <lists+linux-efi@lfdr.de>; Tue, 30 Jan 2024 19:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5E131F28BD0
-	for <lists+linux-efi@lfdr.de>; Tue, 30 Jan 2024 16:00:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6CC81C25E6C
+	for <lists+linux-efi@lfdr.de>; Tue, 30 Jan 2024 18:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894FB86152;
-	Tue, 30 Jan 2024 16:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372C686AD7;
+	Tue, 30 Jan 2024 18:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b="bEVyglh2"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vJos1uSU"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C74D85C5C;
-	Tue, 30 Jan 2024 16:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3B086AD3
+	for <linux-efi@vger.kernel.org>; Tue, 30 Jan 2024 18:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706630437; cv=none; b=e/3AirslNDj9Vg/JGYmDC3gCqmyv/G2W/w7k/kpvX0xibN2ksQXuNSrsOARjR4GiK6cWkGirWQ5/ubHjjQgUd4l3e9+AxccFGbmodSY2Ub3CcHIzkv5ElJ4WOpNIpv6F2di18QIT6Z7McyNjWA8xojH+4LmKgEZSPP/2hCQ4gJw=
+	t=1706637701; cv=none; b=cjUSa12ImgidZjepbVMxIT3C/S2ydEo6VtdTYVJBO5/Mrr0Rh4rwADDL/kmrzI+YByqQqfz//R9TUJxLEeEXjcAI8Zdp23N2gcYAp83ZpRRLLFVt86va9DQ+xKx1ADYosNDmEkNSP+IdToy6Kk7kTP46mDA5yjTRUeGQ2wS/aLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706630437; c=relaxed/simple;
-	bh=Sd2TBz8i472kEAnJMWJEafNr6Q7/YeKh7j8vwLAbrOw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ONj669aMwioBY5ZB/9WZe12o3SC50+37w2Uf53/gbw2I/OO7qgE3+qga4Yl175Uu2fwmCekacIVijM6hk0Uyxf2T84IiZKM8+cfMTsSz4jzglIFTbonK0Tt4t66zVUbleLAlf7EBk6LJ0S3rCfKuX6sZJUzIqzY9olUBLByalO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b=bEVyglh2; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1706630422; x=1707235222; i=timschumi@gmx.de;
-	bh=Sd2TBz8i472kEAnJMWJEafNr6Q7/YeKh7j8vwLAbrOw=;
-	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:
-	 In-Reply-To;
-	b=bEVyglh2XyIm2kVWdb8o8PI1YI9jWaTs5mtwxYrAIMgkLVZ8gfta+PXE/SL58PCV
-	 +zJ9HHvEz6eP8+VjdgY3jpePGHGoB/ZGIclw/ux9m+C7/071+LgLBHV74G/s0EOdk
-	 zq849hWGc91fhBLyhQ88DCKLm0OgD7zGHcSlANWcJdRT9mA8SOJ3+rNZeWNlbY1bj
-	 cXu85DcOkZhEGH9MTOpkcXyouI1ycn0bGSlHU3ag8WjbSFOQeb5PzUaON5PPjDl2g
-	 W4BjJKEzIoA8IF66p/+D6jCN2fccjq8QOu1U5zhEPsJ2NUUbU2MjcR7dawcukmXC8
-	 CQhDxMpL9bTVVc6R1A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [10.222.0.4] ([93.218.111.23]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Md6Mj-1qw3wj2azz-00aByq; Tue, 30
- Jan 2024 17:00:22 +0100
-Message-ID: <8caa916b-5b40-446a-9a80-68a4cf0fc75f@gmx.de>
-Date: Tue, 30 Jan 2024 17:00:16 +0100
+	s=arc-20240116; t=1706637701; c=relaxed/simple;
+	bh=Ja87yBDRywP0CX6OXCxIORKfnyHcITk/n7d3soQAEdQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PlAKutmHaMePwjQ9wfYdrnAqgU9iPI1VZ3KvA2s2pgG9rcUTdM+mOHjI++iXzgOqymW9+Fbfpd1UBaX2wclRgDPuXALqZ2S8eh8r1qYmjyQn66CGzyX8XqtdG27MF8zMpIPUmwBe+ONXpMZhyCIAyNupaK/lerLwYwg/55aB9gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vJos1uSU; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbf216080f5so7655359276.1
+        for <linux-efi@vger.kernel.org>; Tue, 30 Jan 2024 10:01:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706637698; x=1707242498; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pWduuWVQBghPR6SIJrFKdvonWh9z5TDyHZomCZj0848=;
+        b=vJos1uSUJ4n7fY7HO5VhCWmaHgROFMqoaYHlOQ/3cgHNRLDYm5aRWe+Wnjklc2YA/6
+         b/j+5U9+51mHLv2vwxQI5s+OPlqA4/E96rCOv8MB2DQwgt2LkinUma1SO+1UK1RYIm8/
+         +UWp/CR8TfIRokaeYgVibikmm9VoUG82YLQbEQ8mNZkQp0C4HKDJj5Vf7xOxLOGRPqQI
+         /5pzXaAMl30uwEMtRMoa+Kc4hFs+EO1nApPmoS0zytReEYmp1GGxqNIfZQRPewOLXted
+         379/YICubc+grXWhBBpEtuAceUAWQLaJnWzkS4V1aHFtLojRs34A19WZY13usenzhchX
+         SMnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706637698; x=1707242498;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pWduuWVQBghPR6SIJrFKdvonWh9z5TDyHZomCZj0848=;
+        b=UrA+r0Srw4wQhu8qAHx88lgP3Yn35ga27O0OuY09i6V6ps2REKFvl6sVauuCjc0W0M
+         tAl84QFkZoiEzIbLX+Nu2t2kGuUik5962eGcWKUcPwF3kd+I+gukXEZrDEb7h842XIjE
+         xVHQUA+gA7dITS2v/guJpgWp1sEIbbmT/IejALLRv7Kvpip+emUrwCHIw2892GFVUbt/
+         QeBQVhFjWE0qiXtR8fNlf/ee5eYYRLbscAhcNC/ltTW5LC9rKVQaJhqvl7O8A8WNTEj1
+         YXZvi/unf1BXP9LmJZBf7XrwHnWsQfdrs1irjeQCWJiN9ZjU76A48FvFPknxpl9seep/
+         z1GQ==
+X-Gm-Message-State: AOJu0Yw2wYroVgZmDRmIrc+lE1kmWNe3UZ20f7darAaMotHrz6cmhMBM
+	AqEjzrjmG3dMkBeNkIG3ZaosJc6jgnsah5TzoZlXhYv6PKuqUuB9tYSaGBoDtvfLf4euneZ8pD9
+	Cr39IQoWyuk+9oPJjo1u4Qrm5GrPJVx1LL3aKUMIDZpYDTWOKk/W2ieVgot36wVTk57BlYc+4JW
+	wLsUDVNDdWZCWd0gQKmx43+kpB5w==
+X-Google-Smtp-Source: AGHT+IHVZB6kbZwOEMYlK2tT43mBtUj9XSIpNQh1P3W0NVaPxSHuhGbL4V94pa8iIK4QgSN6jBLY4BI5
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:6902:e0d:b0:dc3:721f:7a4e with SMTP id
+ df13-20020a0569020e0d00b00dc3721f7a4emr2988643ybb.12.1706637698391; Tue, 30
+ Jan 2024 10:01:38 -0800 (PST)
+Date: Tue, 30 Jan 2024 19:01:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] efivarfs: Request at most 512 bytes for variable names
-From: Tim Schumacher <timschumi@gmx.de>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, jk@ozlabs.org, mjg59@srcf.ucam.org,
- pjones@redhat.com, linux-kernel@vger.kernel.org
-References: <20240123202743.1591165-1-timschumi@gmx.de>
- <20240126162524.52051-1-timschumi@gmx.de>
- <CAMj1kXGOzk4OnsxL8T7Finx8RzNu23SriY7QokAvKD=BkEvpjw@mail.gmail.com>
- <00d699b5-bf2f-4411-af3b-30ca6fadf66a@gmx.de>
-Content-Language: en-US
-In-Reply-To: <00d699b5-bf2f-4411-af3b-30ca6fadf66a@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:RFKXXIB4a7gJGtoO1i8sCB8yePbDkdI6XSo5oE61lZoJU5FSGXZ
- ZynBgkm/Q9to5KRmWR052kbA3BvMfbqHkZUxagJjzKMVqoRtM9iZEPkpu4m6K/V8p9bY+yv
- rXdTxulEnODL79WIKEstrFHDDNBBIuJZSd9l7BQggGOowXjJMliGR1Dwj/EfBpLVHrqNgLu
- 5jPhKf0qEDT5SWuAJzMBg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:oN/akEBlZSc=;MYQObOQFeHrQeESuRMkIkqIDGwd
- lxQMShDsLXlB22mX3nii2XX2PU360S9lotNhJOQm3YC9whvOhOJTqtk52ahEf4tGfNVlkvYgq
- eEpL39XWfU0b4YH8k9YlOCTAOqVbF0y5otsNJui9U9Nb1RSQ07rij5HgR2i5787qfgceJItck
- RpyYS4vi0zGxVsh7XbcoKeHsK0hQHDVIguHAdKYcz4fOZqYj+nW+ap0H0HKAeSVqxLxc7/O1a
- B0yF3kFLM+nB5vjBP5my5hYq7Ps4oymRgr7gUAzXu6/foBmR4TFQcH1XeKjCX67ZR6UlPC1eG
- XZtqCB+rQ0A4zBz8Wv9cxACEO0CAt+cK0CkE7k3Dk6X7IiTRHJ/He7kQt3x0B8uolRE0UPoUm
- uN3XgzC+YJKw63UnB/96/OuYqY7UwaahC6HrhZFCjh8Wd3Z2hXPu0ABb9VXYW/Zy5haJJ4KYx
- FlrLXZjQJv0pm0ZtA7yr8OVxSYBFImu6yMkZSS62+emO6F/NFnSlvrowKT9SmAjRAYSkK0WQc
- k0vHpwE1g66QkYNZ/yIhJ6ZzBrlzu4UO3L9e12AD14lh9nhj2FDrD3Rq76qqGs9GE3cWWo2vG
- SXMle/+8sVtK9iWj65sk8X0HYduOs+8vL0iCufmD0pjClT6uE72vuoVC2WZnzsC987VGN852T
- Sq3+y/ZxaGCK1yPgrax0yLWgJKPHcsKIP0Kkd0/vfd66+RkrAusipTPJs5zIca0Kf2KtfX3cG
- PRKJLnBd6HRqohV4oxgKEktjUeeY51bXCTTd2KpKevgKsYemgfjZEMPkyegMn59sjW4zmir9G
- BcGnCxr9YcHWAQVatqnKmf3Dx3KZYw5UZxOdgfVrqE4gk=
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5604; i=ardb@kernel.org;
+ h=from:subject; bh=gD7glzJD8v//JBqrPvDPr6NAJ6wcBKEESpbbpZq2Etg=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIXWnZd3beRyNqzeG7L9mrlftV7vhbPr/SlWJ2zOW/Dzm+
+ bPjbJpFRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZiIuxojw0nFs1YM2xz2r12j
+ pzXvPH+XX/F243Nnc7dN3Fq6gf3e//8MfyVrEtQW31u2Oe214kz/VQereyW/zheYpRTY0S68593 3aCYA
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240130180134.239252-2-ardb+git@google.com>
+Subject: [PATCH] x86/efistub: Avoid placing the kernel below LOAD_PHYSICAL_ADDR
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, Tom Englund <tomenglund26@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 26.01.24 19:02, Tim Schumacher wrote:
-> On 26.01.24 17:35, Ard Biesheuvel wrote:
->> On Fri, 26 Jan 2024 at 17:25, Tim Schumacher <timschumi@gmx.de> wrote:
->>
->>> One thing that I just recently noticed is that properly processing
->>> variables above 512 bytes in size is currently meaningless anyways,
->>> since the VFS layer only allows file name sizes of up to 255 bytes,
->>> and 512 bytes of UCS2 will end up being at least 256 bytes of
->>> UTF-8.
->>>
->>
->> Interesting. Let's add this to the commit log - it makes the case much
->> stronger, given that it proves that it is impossible for anyone to be
->> relying on the current maximum being over 512 bytes.
->
-> It makes the case much stronger for why one wouldn't be able to _create_
-> variables of that length from Linux userspace, creating dentries interna=
-lly
-> seems to have different restrictions (or at least their name size seems
-> unlimited to me). Therefore, anything external could have still created
-> such variables, and such a variable will also affect any variable that
-> follows, not just itself. They don't have to be processed properly, but
-> they still need to be processed (and they currently aren't processed at =
-all).
->
+From: Ard Biesheuvel <ardb@kernel.org>
 
-I was able to experimentally confirm that creating dentries internally is
-_not_ restricted by the value of NAME_MAX. The test setup was as follows:
+The EFI stub's kernel placement logic randomizes the physical placement
+of the kernel by taking all available memory into account, and picking a
+region at random, based on a random seed.
 
-- Build and boot a kernel with NAME_MAX bumped to an artificially high
-   value (e.g. 1024). This is supposed to simulate an external user.
-- Create an UEFI variable with a name of length 254 (ends up at length 291
-   with the appended GUID, which is above the normal NAME_MAX limit).
-- Create a "sentinel" UEFI variable with a non-critical name size (e.g. 32=
-)
-   to determine whether iteration has been stopped early during the next b=
-oot.
-- Reboot into the same kernel but with an unmodified NAME_MAX limit (i.e. =
-255).
-- Observe that not only the sentinel variable shows up (i.e. iteration
-   hasn't stopped early), but that even the variable with a file name leng=
-th of
-   291 shows up and continues to be readable and writable from userspace.
+When KASLR is disabled, this seed is set to 0x0, and this results in the
+lowest available region of memory to be selected for loading the kernel,
+even if this is below LOAD_PHYSICAL_ADDR. Some of this memory is
+typically reserved for the GFP_DMA region, to accommodate masters that
+can only access the first 16 MiB of system memory.
 
-Notably (and unexpectedly), only the _creation_ of efivarfs files with len=
-gth
-larger than NAME_MAX (from inside userspace) seems to abide by the NAME_MA=
-X
-limit, and ends up bailing out with "File name too long" / ENAMETOOLONG.
-Therefore, please disregard my earlier statement about "processing such
-entries properly is meaningless" that I put into the patch-accompanying me=
-ssage.
-I assumed it would be enforced across all/most common file operations inst=
-ead
-of just when creating files.
+Even if such devices are rare these days, we may still end up with a
+warning in the kernel log, as reported by Tom:
+
+ swapper/0: page allocation failure: order:10, mode:0xcc1(GFP_KERNEL|GFP_DMA), nodemask=(null),cpuset=/,mems_allowed=0
+
+Fix this by tweaking the random allocation logic to accept a low bound
+on the placement, and set it to LOAD_PHYSICAL_ADDR.
+
+Reported-by: Tom Englund <tomenglund26@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218404
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/efistub.h     |  3 ++-
+ drivers/firmware/efi/libstub/kaslr.c       |  2 +-
+ drivers/firmware/efi/libstub/randomalloc.c | 12 +++++++-----
+ drivers/firmware/efi/libstub/x86-stub.c    |  1 +
+ drivers/firmware/efi/libstub/zboot.c       |  2 +-
+ 5 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index a1c6ab24cd99..fc18fd649ed7 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -956,7 +956,8 @@ efi_status_t efi_get_random_bytes(unsigned long size, u8 *out);
+ 
+ efi_status_t efi_random_alloc(unsigned long size, unsigned long align,
+ 			      unsigned long *addr, unsigned long random_seed,
+-			      int memory_type, unsigned long alloc_limit);
++			      int memory_type, unsigned long alloc_min,
++			      unsigned long alloc_max);
+ 
+ efi_status_t efi_random_get_seed(void);
+ 
+diff --git a/drivers/firmware/efi/libstub/kaslr.c b/drivers/firmware/efi/libstub/kaslr.c
+index 62d63f7a2645..1a9808012abd 100644
+--- a/drivers/firmware/efi/libstub/kaslr.c
++++ b/drivers/firmware/efi/libstub/kaslr.c
+@@ -119,7 +119,7 @@ efi_status_t efi_kaslr_relocate_kernel(unsigned long *image_addr,
+ 		 */
+ 		status = efi_random_alloc(*reserve_size, min_kimg_align,
+ 					  reserve_addr, phys_seed,
+-					  EFI_LOADER_CODE, EFI_ALLOC_LIMIT);
++					  EFI_LOADER_CODE, 0, EFI_ALLOC_LIMIT);
+ 		if (status != EFI_SUCCESS)
+ 			efi_warn("efi_random_alloc() failed: 0x%lx\n", status);
+ 	} else {
+diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+index 674a064b8f7a..4e96a855fdf4 100644
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -17,7 +17,7 @@
+ static unsigned long get_entry_num_slots(efi_memory_desc_t *md,
+ 					 unsigned long size,
+ 					 unsigned long align_shift,
+-					 u64 alloc_limit)
++					 u64 alloc_min, u64 alloc_max)
+ {
+ 	unsigned long align = 1UL << align_shift;
+ 	u64 first_slot, last_slot, region_end;
+@@ -30,11 +30,11 @@ static unsigned long get_entry_num_slots(efi_memory_desc_t *md,
+ 		return 0;
+ 
+ 	region_end = min(md->phys_addr + md->num_pages * EFI_PAGE_SIZE - 1,
+-			 alloc_limit);
++			 alloc_max);
+ 	if (region_end < size)
+ 		return 0;
+ 
+-	first_slot = round_up(md->phys_addr, align);
++	first_slot = round_up(max(md->phys_addr, alloc_min), align);
+ 	last_slot = round_down(region_end - size + 1, align);
+ 
+ 	if (first_slot > last_slot)
+@@ -56,7 +56,8 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 			      unsigned long *addr,
+ 			      unsigned long random_seed,
+ 			      int memory_type,
+-			      unsigned long alloc_limit)
++			      unsigned long alloc_min,
++			      unsigned long alloc_max)
+ {
+ 	unsigned long total_slots = 0, target_slot;
+ 	unsigned long total_mirrored_slots = 0;
+@@ -78,7 +79,8 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 		efi_memory_desc_t *md = (void *)map->map + map_offset;
+ 		unsigned long slots;
+ 
+-		slots = get_entry_num_slots(md, size, ilog2(align), alloc_limit);
++		slots = get_entry_num_slots(md, size, ilog2(align), alloc_min,
++					    alloc_max);
+ 		MD_NUM_SLOTS(md) = slots;
+ 		total_slots += slots;
+ 		if (md->attribute & EFI_MEMORY_MORE_RELIABLE)
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index e387f30717a7..0a49a9228b00 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -808,6 +808,7 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
+ 
+ 	status = efi_random_alloc(alloc_size, CONFIG_PHYSICAL_ALIGN, &addr,
+ 				  seed[0], EFI_LOADER_CODE,
++				  LOAD_PHYSICAL_ADDR,
+ 				  EFI_X86_KERNEL_ALLOC_LIMIT);
+ 	if (status != EFI_SUCCESS)
+ 		return status;
+diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
+index bdb17eac0cb4..1ceace956758 100644
+--- a/drivers/firmware/efi/libstub/zboot.c
++++ b/drivers/firmware/efi/libstub/zboot.c
+@@ -119,7 +119,7 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+ 		}
+ 
+ 		status = efi_random_alloc(alloc_size, min_kimg_align, &image_base,
+-					  seed, EFI_LOADER_CODE, EFI_ALLOC_LIMIT);
++					  seed, EFI_LOADER_CODE, 0, EFI_ALLOC_LIMIT);
+ 		if (status != EFI_SUCCESS) {
+ 			efi_err("Failed to allocate memory\n");
+ 			goto free_cmdline;
+-- 
+2.43.0.429.g432eaa2c6b-goog
 
 
