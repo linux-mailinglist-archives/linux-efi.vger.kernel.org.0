@@ -1,162 +1,116 @@
-Return-Path: <linux-efi+bounces-457-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-458-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47FB847667
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Feb 2024 18:42:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEEA484771B
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Feb 2024 19:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BBE91F21C54
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Feb 2024 17:42:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41801B2DBFF
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Feb 2024 18:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1161D14AD13;
-	Fri,  2 Feb 2024 17:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED4F14C58E;
+	Fri,  2 Feb 2024 18:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="0BmDXPVC"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="z4c1jWNV"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E309F7E5
-	for <linux-efi@vger.kernel.org>; Fri,  2 Feb 2024 17:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9918B14C583
+	for <linux-efi@vger.kernel.org>; Fri,  2 Feb 2024 18:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706895680; cv=none; b=vAGKZiX5xqNYVZrV1fYh48+GsxPtSyfr/ff1HYFsdCF/G3xkShSTczaHSXAVGcED+KVB1/w3PJ3U8rRbGEP2zSFW43hFnbs7Fp35B+CfNDylpBVH85uZF1dgnOGEkXeB5yCOtEOdUTt5sZfV07rfJXKW3YCVNP3M9rgb3nw3Ueg=
+	t=1706897233; cv=none; b=oIQKGmC6kYqIT/STglBboxRG2RKzBIlbWFnEnm7Z6lYhIzVNikz9erjabrA175uF1Ys6SSfQVJV4ek2tffTY59dg6hZ6LRRuIAafz0ZdkfZme5YTqaikCUBmJK5cMsKYX4jdBisF5iXG9ZLNvJKZ7N2HRE5g0ewBLLzcWFwa17c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706895680; c=relaxed/simple;
-	bh=bZlfqok9qew6k9fz+Z27UK6LPlwWG6tsG4PeKP4rbXs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tfA660yFdO3pD7Q//P9rs9Ov8Z+yqECRZ+/EHyCkSAHKPE+A/8LN0d+5bsaaH//yuYWTRAhFOPZGW8SV7D7pij5f4+p8E110MksHOFhMUK3JTMY/vS6b7KZPf416narFYBULZZDT8EsbxsI7QlqsXhhdFIsqm+YLPLwr6DBCXEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=0BmDXPVC; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1706897233; c=relaxed/simple;
+	bh=Tnhv8sNX/QnVZcJ58iesaELBYEexgiSK1O7CkAZ6Cnk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FTo13qA9io3QVrlLib6P+Kdz1nw4H/qA88+7Oy1uuscC37kM+TjiwVSlsn6jbozKSIU6Wxnx/dPFfgoSSezbVdLy4pqlB8TxytQDlIGUguaPrJ1WYyB8Z0BBac3VDK6jv275Q7O7xMVRVR/p+loZjJdi/YWycIS74R7xLm7gZ10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=z4c1jWNV; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a30e445602cso734260366b.0
-        for <linux-efi@vger.kernel.org>; Fri, 02 Feb 2024 09:41:17 -0800 (PST)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6ddd19552e6so1484427b3a.1
+        for <linux-efi@vger.kernel.org>; Fri, 02 Feb 2024 10:07:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1706895676; x=1707500476; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cWtC7jO98lUeRBHL4RQhZAFvZjsqfE/uVt4nvdNHZP4=;
-        b=0BmDXPVCkF4bYZYVpY2IE1feYwif9ZVfDxf4Ai5kQ2+xDCQfVyIqRnNpIiqtzx7Wop
-         0/U+LW+t26DHFW/DdtukGLDFEuOQe3VEVp7AcJgo7w/vWqiok1OzprsQLDHBvXMl6P6j
-         Y9xN2wj/q8cqsaotpugzLZ4NO9t77zu9lB9QXPQuUfw3fImZKPXzKO7jPOMyzPBr+imv
-         F7Ymf956Ev3UfbjFNbCZWj1fvmwUiwDKPGlcwtNwJAo6q2XE2PAV+5koXBcTx+0fhdTZ
-         NUzoW42EtSGesG9Kelhb0NZmuDibQODc/sqbaQOE6U7xtVmpsCcxvjsbI6NuW10Qm8/d
-         Jopg==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1706897231; x=1707502031; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uVRplVyrc9nYcvh+2WwM6XgSY33Nf8X5Ft1+PR+SGLM=;
+        b=z4c1jWNVM2WV3H/qQ9Ajl2op3jSmkqVUgppdaFrmzOCQaCueHb3+czFsUYXXy7t4VV
+         GzImGD7TF9zdDYoLfDBYyPIDp24tX2oCeoB1XpjPALVs0zfG6pOqYHCaJ6dzWTXBDETV
+         V9bomfwt8OJv2bXf15wVP/EZVdyac7eBgi7z88vkAu0xWefu1YETCSXAsF3kFXDf4QYJ
+         RPfUQ+wd24Qq2yTq2UgZVv19557Pa4cehILC2VsO5Ut3J7Snfoat0ZWx6c6DX/k7kqkn
+         Rwi0ga2UwzpjLBO5fzpdUxXrQbX8s0aUDGQYNwed4DoSwFopZS/9JoYpbllq4LTT3Clo
+         g22Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706895676; x=1707500476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cWtC7jO98lUeRBHL4RQhZAFvZjsqfE/uVt4nvdNHZP4=;
-        b=vVg2c3q5+84Bb150JA/2O8vm2LxFfcvcX9cCC8jP0o0LssGr55Wy0yhEabpgMLnQFh
-         9ZIqDn/ZZaHzowbpKRzjKYyw8uVhlzdW1c1fvgsYCfFHUUBBwfwCkIFT0GaWPyZumQgf
-         gWIGy2SVQcZXCt+X8X4D98GLunsKSbMcBB8QJYriOHeCx8YGaUX8issmlVh9bkyvjNhe
-         irjYyBQAiA9cIlYFmk25/lafXtkJKF5neIoeDNrFXVUMUfrlEvz7yrw3EbTESRl7qmQp
-         hvzdi7JwEjAPqU+CzAofDkThaFS4mh3xdbIw1dKhxRqeOM3bTta3ee6DipJNy2JzGg+b
-         0x0A==
-X-Gm-Message-State: AOJu0Ywhwohkvc2PyOZa6bKpocnX6nZQfONijx3wg+cCeZFPxz0A8k8t
-	efpzcP7MU3P9Ua33qN5Kxe0IWJyDI4xb7WWctOkDqxfVJXNSbetTXr2LyT0lAk8x92lgcWTkgYK
-	OfpjBoaS0xcE6dIbIhaVw4c8T3kQXIjXTtx7F5g==
-X-Google-Smtp-Source: AGHT+IHHACEG53UViD2eXG7vvDC/BBy9cKKGK86pK1KqKt9yPaQGwmh1+pUQisp4lH6+ccNGliBBByhYVThQhkwmoN4=
-X-Received: by 2002:a17:907:971a:b0:a37:1778:7d7f with SMTP id
- jg26-20020a170907971a00b00a3717787d7fmr1914343ejc.29.1706895675962; Fri, 02
- Feb 2024 09:41:15 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706897231; x=1707502031;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uVRplVyrc9nYcvh+2WwM6XgSY33Nf8X5Ft1+PR+SGLM=;
+        b=gY9QELoPE2z6YRii5g59H3X1x5lhVU6PLKLIYm103HVgnwBjCqfRt47eY+WUTXcwYR
+         MxQK3Ba4QW2SDdjTKkpRhtgiSSKRSm9bQtTPT211SFmI4gBOKLt0xisL14M53Er6+JeW
+         iduyGjzpkCbznFPwRGK+ivXgqaAVCESjsF+88p6jzDYqx733/gWW9Wj7LT+r0UhKMkWt
+         cZAM12eOJJDnudeG8Vfg8neO8goGp0zpSRHF516w36BLYKyd+a7fQFiaZKIrWS0hiEW6
+         AMNwYlQO64KmsNqyRRxaR/kI1OupJZdPoklMz3FC2fMWpN7+E8TAcmr5qvf4J51mWS31
+         fj/A==
+X-Gm-Message-State: AOJu0YwBr5PAB0YqhGususzDJpeYOWa5d7M07csq0NzyZhWGnbohCLQY
+	HcW636gThe7UJ0yqDuhRGd+nw2JnX0VBxLUgT2bW7rw+YcEizg9BTC4wWEvNxeQ=
+X-Google-Smtp-Source: AGHT+IE+O4aRjNZAkR4CFJssXFXmF1HqZuyzjr1MfJIhR3KvlZdvvP0MmdCf6x/znHNOwFk7h6HKPw==
+X-Received: by 2002:aa7:8895:0:b0:6dd:8891:c4 with SMTP id z21-20020aa78895000000b006dd889100c4mr10813749pfe.25.1706897230894;
+        Fri, 02 Feb 2024 10:07:10 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCV5IZ51+bmx0aGfXOAVxSYK/DIV7nwJoXATKClGG9L55mbhsg0f2xhaPbM5gDVgWuvaSDmKn0b8kOFbrtm4RnU2XbBlR8L/qiFduUki1lgDESJzNlNH57tXCv0N0ylOqjMvYeakFqb9CRxWqDhSXbbu7ZT5W38mJVsH5UZAmZfUY/IF7uwD0n7aPGNH6cmaj5qsfLMYix37h8yGxZUtRW/zg+Z0ykChA6kFdHB6au4p8DQiEzPsZg5BtsDXHcuHCd8KpNFzQlgpL7pN
+Received: from abrestic.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id s26-20020aa78d5a000000b006ddd31a701esm1989267pfe.19.2024.02.02.10.07.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Feb 2024 10:07:10 -0800 (PST)
+From: Andrew Bresticker <abrestic@rivosinc.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Andrew Bresticker <abrestic@rivosinc.com>
+Subject: [PATCH v2 0/2] efi: Fixes for EFI_MEMORY_SP memory on RISC-V and ARM64
+Date: Fri,  2 Feb 2024 10:07:02 -0800
+Message-Id: <20240202180704.808766-1-abrestic@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240202163433.786581-1-abrestic@rivosinc.com>
- <20240202163433.786581-3-abrestic@rivosinc.com> <CAMj1kXH7=9-Ww_z6a4Z5K8MrbH8x17Y3EzYk9Qf-3PL-JgMcww@mail.gmail.com>
-In-Reply-To: <CAMj1kXH7=9-Ww_z6a4Z5K8MrbH8x17Y3EzYk9Qf-3PL-JgMcww@mail.gmail.com>
-From: Andrew Bresticker <abrestic@rivosinc.com>
-Date: Fri, 2 Feb 2024 12:41:04 -0500
-Message-ID: <CALE4mHq4KhfBd+n2waUpHt48fTRXdBWZyiEJf5a3=hfUA_ue3Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] efi: Don't add memblocks for unusable memory
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 2, 2024 at 11:45=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
-ote:
->
-> On Fri, 2 Feb 2024 at 17:34, Andrew Bresticker <abrestic@rivosinc.com> wr=
-ote:
-> >
-> > Adding memblocks (even if nomap) for such regions unnecessarily consume=
-s
-> > resources by creating struct pages for memory that may never be used or=
-,
-> > in the case of soft-reserved regions, prevents the memory from later
-> > being hotplugged in by dax_kmem. This is also consistent with how x86
-> > handles unusable memory found in the EFI memory map.
-> >
->
-> x86 doesn't care as much about memory vs device semantics as ARM does.
->
-> This affects the output of memblock_is_[region_]memory(), so we'd have
-> to double check that none of those uses get broken by this.
->
-> If the soft reserved regions need to be omitted from memblock, we can
-> deal with that separately perhaps, but changing it at this level seems
-> inappropriate to me.
+Two small fixes to enable the use soft-reserved/special-purpose memory
+(EFI_MEMORY_SP) with dax_kmem on RISC-V (and ARM64, I think, though I
+don't have a platform to test it on).
 
-Sure, I can constrain this to just the soft-reserved regions.
+Patch 1 fixes a trivial integer narrowing bug. Patch 2 prevents adding
+memblocks for soft-reserved memory so that it can later be hotplugged by
+dax_kmem.
 
--Andrew
+Tested on a RISC-V platform that presents a range of EFI_MEMORY_SP with
+Bjorn's MEMORY_HOTPLUG series[0] applied.
 
->
->
-> > Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
-> > ---
-> >  drivers/firmware/efi/efi-init.c | 12 +-----------
-> >  1 file changed, 1 insertion(+), 11 deletions(-)
-> >
-> > diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi=
--init.c
-> > index d4987d013080..f05bacac89b7 100644
-> > --- a/drivers/firmware/efi/efi-init.c
-> > +++ b/drivers/firmware/efi/efi-init.c
-> > @@ -24,13 +24,6 @@
-> >
-> >  unsigned long __initdata screen_info_table =3D EFI_INVALID_TABLE_ADDR;
-> >
-> > -static int __init is_memory(efi_memory_desc_t *md)
-> > -{
-> > -       if (md->attribute & (EFI_MEMORY_WB|EFI_MEMORY_WT|EFI_MEMORY_WC)=
-)
-> > -               return 1;
-> > -       return 0;
-> > -}
-> > -
-> >  /*
-> >   * Translate a EFI virtual address into a physical address: this is ne=
-cessary,
-> >   * as some data members of the EFI system table are virtually remapped=
- after
-> > @@ -195,12 +188,9 @@ static __init void reserve_regions(void)
-> >                 memrange_efi_to_native(&paddr, &npages);
-> >                 size =3D npages << PAGE_SHIFT;
-> >
-> > -               if (is_memory(md)) {
-> > +               if (is_usable_memory(md)) {
-> >                         early_init_dt_add_memory_arch(paddr, size);
-> >
-> > -                       if (!is_usable_memory(md))
-> > -                               memblock_mark_nomap(paddr, size);
-> > -
-> >                         /* keep ACPI reclaim memory intact for kexec et=
-c. */
-> >                         if (md->type =3D=3D EFI_ACPI_RECLAIM_MEMORY)
-> >                                 memblock_reserve(paddr, size);
-> > --
-> > 2.34.1
-> >
+[0]: https://lore.kernel.org/lkml/20230512145737.985671-1-bjorn@kernel.org/
+
+v1->v2: address comments from Ard
+
+Andrew Bresticker (2):
+  efi: runtime: Fix potential overflow of soft-reserved region size
+  efi: Don't add memblocks for soft-reserved memory
+
+ drivers/firmware/efi/arm-runtime.c   |  2 +-
+ drivers/firmware/efi/efi-init.c      | 19 ++++++++++---------
+ drivers/firmware/efi/riscv-runtime.c |  2 +-
+ 3 files changed, 12 insertions(+), 11 deletions(-)
+
+-- 
+2.34.1
+
 
