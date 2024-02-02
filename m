@@ -1,116 +1,115 @@
-Return-Path: <linux-efi+bounces-451-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-452-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA50845F4A
-	for <lists+linux-efi@lfdr.de>; Thu,  1 Feb 2024 19:07:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67AA38474E8
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Feb 2024 17:35:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDA911F23F66
-	for <lists+linux-efi@lfdr.de>; Thu,  1 Feb 2024 18:07:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CAEA1C26861
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Feb 2024 16:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C191012FB21;
-	Thu,  1 Feb 2024 18:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8337C6E9;
+	Fri,  2 Feb 2024 16:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="T/Q91HsV"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="szB/kNWD"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549B812FB1E
-	for <linux-efi@vger.kernel.org>; Thu,  1 Feb 2024 18:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A751487CD
+	for <linux-efi@vger.kernel.org>; Fri,  2 Feb 2024 16:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706810511; cv=none; b=ukh0KjWNGkBXnYpE4OW7kZ24wgHMPQ7cHovovUvENoDVPw0aO3TtQ7+I6sqsAskO/6taM43YLwQ4U8qJnCTml07+SS9CqiuMCdGggmAyYpSY+L0GhjCJ38xcolXO6ccvAIWJHqWkUHcXFCqc1ZGdzjBpzd8MpeaKbLsd63UtbBg=
+	t=1706891687; cv=none; b=eAV64uKipir1k4RM31BM/EA1d/uYZmLjGAki7oKAa2uT9Iq8cXe1+rbXMkTIH++a/LEL/MsfaKbC5Sp/lYtUfW1aP7BqdUS2RgRcK+2r7KFnrayQmuqgvsqz0grDKdvRFfkWDcfPDD4ModHax/bNL/o/NvfHP1q5I0njQbuk8/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706810511; c=relaxed/simple;
-	bh=lGh59MfVylmNJEGVvQ0EBkn4B6EIgcQ61xdm18F4Fys=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LtfYHjbMBd7TwY60tTzr+hsHjwd5HmHpnp2eHHRZ6KaHDdNBIGGDUAxCpii0GwMktwbwSGg+zcVFgCRxcf8Q04x4vHUFLus8zs0vT1kSeAi35p3ejiP5Z5Vs6TnHoCvqpvyZ8BEZv0CJKz+P62QsPyiMWV6BvOmCOOuBDxT1c60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=T/Q91HsV; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d932f6ccfaso9696755ad.1
-        for <linux-efi@vger.kernel.org>; Thu, 01 Feb 2024 10:01:50 -0800 (PST)
+	s=arc-20240116; t=1706891687; c=relaxed/simple;
+	bh=+v1TZF2URicEdYFQLC2qCb57HIjFgUlWEfgDgy3fcIg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MtYONCrXGb1CSzkb8h+3FX8SADDOUAMFz8A3JkAScypwc8saYz3aLCWarhzwKfGSdVdklFkIlj9/LCBgZIuUVFTmdzBOHE1DRV4MvCsm9RtA4nbYc9GGtqV/lHRI92AufnG0fxOYjZzfO7AKt3LnAmMXCVwGsTsilFDf89B79rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=szB/kNWD; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1d7431e702dso19962855ad.1
+        for <linux-efi@vger.kernel.org>; Fri, 02 Feb 2024 08:34:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1706810509; x=1707415309; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FS2urDeY3yGH+J/524IZcRsKebTe7YWaRCtbmg74Jjw=;
-        b=T/Q91HsVmxZ7uXs/d2UN/b3ogBFv1JTvgD5LpwgmjR6xA/0+LxpKxKyUVwmdXJNtzb
-         CJZIFQNP35dEo3tXNGdwb7bSaG+IDsm6nhCzyx7Xkr3KWMQ7Yx9cmGAUoiJK8+XpDgXj
-         dAqoIF0HIFjDknSI8hYI7WlpdwSEhtH2qXbe8=
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1706891685; x=1707496485; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zdXQdXt7uLhKSI5m7G79mULu/VguSqRuThE3UzF0G/M=;
+        b=szB/kNWDzAQIVgS3oUNOCGjtj3CEu7vg1kpIviotUksxSakMzSRWEzahbTPGuZeDzG
+         oLniVkn9YHe4g1KAerTVesWb+g/We8k3isiu0qRUzs2RaCTxL2CybD9uTeb+a1hYDfkr
+         9PJAl6tNtn7zR/IAjeX2V90bESl4cKZvkr2YqMi5H+JRM0ncu2bZApLTWca0DCbV+q/7
+         /T0twG0I5dBTcE4iLnetY5s3PKecL/CyhWv3CCdUheFennhehwyGA93TXTi87g6I3NpG
+         bzsEeZP2TfvMTurrWv7yH6uIL5npAXeKDIMLBVSsfXcUE5jnGgt+fvqYsoiULq+WmaaD
+         NA+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706810509; x=1707415309;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FS2urDeY3yGH+J/524IZcRsKebTe7YWaRCtbmg74Jjw=;
-        b=ZckN2q1RB/OkcdEoRGNQPQLvmJld0hf3N/9DPgnNELaf6tssfKPMCPKgzn9L+b17XO
-         KIIX66HoTFbCmAkwcfTQpmxLEBRnVKsxH4WzoIqiq3hc/pP2fqO+mUcwagZr5cHqHFEr
-         x3wDFP4yepyKcK32nSLz29HZxr3nEaRXXmzb+hu+1+Bd7i7srcuuC691edEmx9num61s
-         10Q2rkoBBXPPLucvFhl6GFhLWJFGFMjZ1x6TzOKwgDmQYRHz0tmtbPV84jeQiPV2yDhm
-         bnUEx1Ad6xXySopxqZVayIcii7p/IpLYFqmRIDpo488pGLCP2zRKStm7JQU73GAvcE+x
-         27og==
-X-Gm-Message-State: AOJu0YyUuLLG72rrI/daxS90qDuWunHYKqoY7feV3rbYE1Er/Lv2BrdH
-	dD4MmJly+B3JItHCJcjO2/I6PdvbzONUAbIs0lue8va8/L5WLF64/SU0Oyr7DQ==
-X-Google-Smtp-Source: AGHT+IFrMi8un4yA/RB5XIxDPRPbr3qEhaVRF2m0ZWl7C9B1LoGB224WZOLPdvfeKqLRKv67Y3yVuw==
-X-Received: by 2002:a17:902:c642:b0:1d4:4e13:6b59 with SMTP id s2-20020a170902c64200b001d44e136b59mr4532236pls.45.1706810509602;
-        Thu, 01 Feb 2024 10:01:49 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWXfkTtzGwoAf3TrNQWvF1aZ2QvtuWxNJk4qXF+HlVBnAkqli8aiM5GhnLYrEHOl3kRz9JhGKzr/SclXG/dYq2QnprZqSuSQCND8+P6VdibDFGyRE/YGUDm8o4a7+QfnE0mffc+RVlaDMhRLu8HlaoEeETmBVKqb7/7mezAEQ3Nlz76T2JwWB8GUXd6RH5UwgaH4YUQYkjICH3qSk0gkefqDr7o3m5YqGLIXCcz7eC0sOF8GlPmsMWpQ6q3EYSQ7Rc=
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id jd11-20020a170903260b00b001d91b80876dsm89986plb.245.2024.02.01.10.01.49
+        d=1e100.net; s=20230601; t=1706891685; x=1707496485;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zdXQdXt7uLhKSI5m7G79mULu/VguSqRuThE3UzF0G/M=;
+        b=B9VBONdM8wmHu0g9u8ymLG/P1Y7XAeSFQh7qjYKtZ9yScz/eoF6xT3gYdcfxuY4FLh
+         /oeLYiwXD/ugGTGxEm+kP1eYLi44h54qqWbAOCvdEj15/gykIJLg0zXil6x3Klvdg4yR
+         Bco9IUEr9foItpNr93IOK+qm3naAcyFtoIGgNLvh36iRm3eYxnHhwXi4ARmLkiG1nCrr
+         vzjuDDSp4WyRxOscLLz+8jyxeFXY0OQjXaW8C+pOTD0t6yd1hJtzSCh+7mCKcp/gq7sz
+         WhrWqmydVZnmhfWMmELygouEW0m9Rh3/p2+PHXSOjsVKpGaxez4Kxueb705hndG7CYjw
+         Vb5w==
+X-Gm-Message-State: AOJu0YxqeQS7JSUEzNk6eOPTpF5TOBWK7jM6rvtkDlO4/wWFwENlPITm
+	L7D5tfiU0u6+0Uhp0JIYHn2RmgsvmasVxQQ2ia1HqxKioOhhRp/UZv+QxHfsk7u1/dsmlOFNYl4
+	Hjno=
+X-Google-Smtp-Source: AGHT+IGeSXexknJyqCvxmwiH4L2JVOdEJAH5LevXg0Rh8dfbIrxux5chSbtz0h0DsQdD5qCN3QQDlA==
+X-Received: by 2002:a17:903:32cb:b0:1d9:6091:6f3b with SMTP id i11-20020a17090332cb00b001d960916f3bmr4721097plr.47.1706891684987;
+        Fri, 02 Feb 2024 08:34:44 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVqKdY77sH4w/gkgczn3OarUbhZoeewIrRVoedcjoAmpjy2EH+uuY1EUYIhfWI+JJqio+FklxQl1cB3xtxG4uHlt7uG5w2uVyoK08N64wTmY9ggGPUC4khyuhLoXSSaR3gl8O4yqPnNHGFN2yb1OgBwCPFDfETYS3r+yVfJV3L5S/2Hv8vXEiAY0AJncaVFLy0F6jA6ymeNnJQJePdLRpir1N3kZ5q37J7r1diC2vku+m06f8Uq1NHv9cmGmScGAx+ePj6Q4VKXQBjr
+Received: from abrestic.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id ju15-20020a170903428f00b001d75c26e857sm1784870plb.288.2024.02.02.08.34.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Feb 2024 10:01:49 -0800 (PST)
-From: Kees Cook <keescook@chromium.org>
-To: ardb@kernel.org,
+        Fri, 02 Feb 2024 08:34:44 -0800 (PST)
+From: Andrew Bresticker <abrestic@rivosinc.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
 	linux-efi@vger.kernel.org,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: Kees Cook <keescook@chromium.org>,
-	tony.luck@intel.com,
-	linux-hardening@vger.kernel.org,
-	kernel@gpiccoli.net,
-	kernel-dev@igalia.com
-Subject: Re: [PATCH] efi: pstore: Allow dynamic initialization based on module parameter
-Date: Thu,  1 Feb 2024 10:01:46 -0800
-Message-Id: <170681050420.3736595.3520971124875660694.b4-ty@chromium.org>
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Andrew Bresticker <abrestic@rivosinc.com>
+Subject: [PATCH 0/2] efi: Fixes for EFI_MEMORY_SP memory on RISC-V and ARM64
+Date: Fri,  2 Feb 2024 08:34:31 -0800
+Message-Id: <20240202163433.786581-1-abrestic@rivosinc.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240103184053.226203-1-gpiccoli@igalia.com>
-References: <20240103184053.226203-1-gpiccoli@igalia.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Wed, 03 Jan 2024 15:40:32 -0300, Guilherme G. Piccoli wrote:
-> The efi-pstore module parameter "pstore_disable" warrants that users
-> are able to deactivate such backend. There is also a Kconfig option
-> for the default value of this parameter. It was originally added due
-> to some bad UEFI FW implementations that could break with many variables
-> written.
-> 
-> Some distros (such as Arch Linux) set this in their config file still
-> nowadays. And once it is set, even being a writable module parameter,
-> there is effectively no way to make use of efi-pstore anymore.
-> If "pstore_disable" is set to true, the init function of the module exits
-> early and is never called again after the initcall processing.
-> 
-> [...]
+Two small fixes to enable the use soft-reserved/special-purpose memory
+(EFI_MEMORY_SP) with dax_kmem on RISC-V (and ARM64, I think, though I
+don't have a platform to test it on).
 
-Applied to for-next/pstore, thanks!
+Patch 1 fixes a trivial integer narrowing bug. Patch 2 prevents adding
+memblocks for unusable memory (including soft-resreved memory) so that it
+can later be hotplugged by dax_kmem.
 
-[1/1] efi: pstore: Allow dynamic initialization based on module parameter
-      https://git.kernel.org/kees/c/c3f849caf81b
+Tested on a RISC-V platform that presents a range of EFI_MEMORY_SP with
+Bjorn's MEMORY_HOTPLUG series[0] applied.
 
-Take care,
+[0]: https://lore.kernel.org/lkml/20230512145737.985671-1-bjorn@kernel.org/
+
+Andrew Bresticker (2):
+  efi: runtime: Fix potential overflow of soft-reserved region size
+  efi: Don't add memblocks for unusable memory
+
+ drivers/firmware/efi/arm-runtime.c   |  2 +-
+ drivers/firmware/efi/efi-init.c      | 12 +-----------
+ drivers/firmware/efi/riscv-runtime.c |  2 +-
+ 3 files changed, 3 insertions(+), 13 deletions(-)
 
 -- 
-Kees Cook
+2.34.1
 
 
