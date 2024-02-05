@@ -1,68 +1,68 @@
-Return-Path: <linux-efi+bounces-480-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-481-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC6E849D5A
-	for <lists+linux-efi@lfdr.de>; Mon,  5 Feb 2024 15:49:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 749DE849D5F
+	for <lists+linux-efi@lfdr.de>; Mon,  5 Feb 2024 15:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C639287E3D
-	for <lists+linux-efi@lfdr.de>; Mon,  5 Feb 2024 14:49:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BC2C2884D4
+	for <lists+linux-efi@lfdr.de>; Mon,  5 Feb 2024 14:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E662C1A3;
-	Mon,  5 Feb 2024 14:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D662D04A;
+	Mon,  5 Feb 2024 14:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UC8Mjy6y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQ9E9xF8"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57F12C19F
-	for <linux-efi@vger.kernel.org>; Mon,  5 Feb 2024 14:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648AD2D046
+	for <linux-efi@vger.kernel.org>; Mon,  5 Feb 2024 14:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707144582; cv=none; b=CwuS67CXcp3hMvXC3rwt7ZNG/bDlI3bBGCtmVIgtmnpWersF0ubpSaq0fYIQx0HEPYScyHlQIu3lSzTKx5DgVMT3VmBhdkNZNvCSP7Ay/eXoR9nh9pYoH07YB+6kheQ2mNVOblVq/x23eOfd6mcENHWUaSE47g2e34WzxSp8Oqc=
+	t=1707144633; cv=none; b=b45HpWGcnwQmjzu0wUnftSrge34ZGqdcB82Nf76QeVud6rCHzNgq4OoYHfQD7TrOOSAHdTCB7PqhKtJ2QgffwBkMSdaMk/5jYw2qBnzWVx1Y+kErTk6Et+xIjQq44qImuhFXZXrqUfksjMGxvjAd6tpzn/l8sIdN1qeoDBvVglE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707144582; c=relaxed/simple;
-	bh=INpbiAnUW/tBdtxD2Y21kMqeUCVZ8i323xrSot9n0WY=;
+	s=arc-20240116; t=1707144633; c=relaxed/simple;
+	bh=v7z9gMHF/RhVC7L8CqF/6+YJ4KPwW3B5vbJXboB3J9U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BR0I2V/RCSfdLM1jq4se+gJd1+Qkw7gfdTcaHH+Bgg4d3a4K9o62sSsBF2bNsJj0Qbo3ERvQmrs3yASzDaF9LNC9TOSAJCRLHWoii7ozgc2tcTxLwUi6McKAQnTn++jITi7Hq2Lgl0XjLpJCqu0fHsMHmQDwGkzL/LgTIed8eWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UC8Mjy6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307A6C433F1
-	for <linux-efi@vger.kernel.org>; Mon,  5 Feb 2024 14:49:42 +0000 (UTC)
+	 To:Cc:Content-Type; b=UjQI5kMSXLvfvXZJp0SQBkmcmOdFk8iDyps4JM0QafxnDP7J8cNL0dH6wUxOnYNTfglXHpx43UTquG5jvTGNzUVKfU3xqt3PlROiffIdzsCetMM2tikCG2GOWEYXQITfYCR++PH7viOCkcQb4ipKn7LpO5DBPXlF2TnmYaT9NEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQ9E9xF8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D90C433C7
+	for <linux-efi@vger.kernel.org>; Mon,  5 Feb 2024 14:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707144582;
-	bh=INpbiAnUW/tBdtxD2Y21kMqeUCVZ8i323xrSot9n0WY=;
+	s=k20201202; t=1707144631;
+	bh=v7z9gMHF/RhVC7L8CqF/6+YJ4KPwW3B5vbJXboB3J9U=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UC8Mjy6yLPjPzSGoLMlbV5zirq0y2bONkcFvmDl8NR1Ra3Hq7KPlQvx0mVkGG2IZH
-	 fAhsISEgqcfbvWPJiF9uHaMWglD3Ac6hVrqhVMLiO6YbYFhyEbNmbCY2EFxV1W3vbY
-	 4YB1scxa2VlFK3sc7CjWL5kIq8BMqc5eDmVOhAbPanZfKiwNFMMdPp9tDs0oLVIqz6
-	 3PMHQampKCJMYQURAnsCEF8zeI5gdGxFmv3Zg9Zq2XtI7JqdQAS7IfoCopOFpTa7yo
-	 Mu18pnqg8+1oQ5VtPiwCeIikhZGxcSQaBSqQEz7Npb/a5FOWK2oVe5nNWFe239ZLQQ
-	 wthHMquJced2g==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5113303e664so4669326e87.0
-        for <linux-efi@vger.kernel.org>; Mon, 05 Feb 2024 06:49:42 -0800 (PST)
-X-Gm-Message-State: AOJu0YyhP+iVnMZcmZj7R2GlYJFtobAdG+5lYRLlj1Nhq6E787isQsQC
-	xtDBI9tq7mLpgoMrYsgWkhHPCZ+5YoyT7L14/a052AbJGkpt1hctepdD+0l9jUGJ53QL4ga220A
-	yWptwxXWPmvkGRgFuoVDZqAe/i8s=
-X-Google-Smtp-Source: AGHT+IFx7Cn6XV1bWFcq06ibwrsLmY2kVBZLdi8zXALTINGz0IAdM8wLt/hU3SM/y1oQ5O4Whi0wZbbPYAhwjYz+o5E=
-X-Received: by 2002:a05:6512:1153:b0:511:53fa:b971 with SMTP id
- m19-20020a056512115300b0051153fab971mr1528896lfg.9.1707144580372; Mon, 05 Feb
- 2024 06:49:40 -0800 (PST)
+	b=YQ9E9xF8xOqhCRRV6plUDODWJejYccruBcl9ihTa2q23ol0NxkypXEjHh6HscAO3r
+	 XU8Z6nS5TcFzd5frgUtv9q5E19pkJ40yGrem9sv5ks6KGEuqZO2mSsMFKPjIGlUnqt
+	 CyvEtdxbMWimnRM8QRbnW2J6qNfp9IkdznX8zrGWqo68Sd3fBR5Wprgjo7vQbBT8f5
+	 T9omh7wN1j6WXyupggPiW8PXoKJxiQfEelBY5Wiyr0AFmGHopifGe9a09vNVp2G+hR
+	 1f+K4mbcYddft6W5s0J3bdBhZ7DugEDtFId8wZpZuRiOIFa3dR/HVkBog/QMUfl1yP
+	 u2VhXs/X7UAJg==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2cf1fd1cc5bso56373111fa.3
+        for <linux-efi@vger.kernel.org>; Mon, 05 Feb 2024 06:50:31 -0800 (PST)
+X-Gm-Message-State: AOJu0YytgIKFmtHqhC9/1Zumbc9h5KHIVabkpsj8ll0mcikTu3UPX6RP
+	qKJgfP8uLDlMDEWQVPSug1xBsKRfBJM8GMyEZdG7CmAv1tmsRS5RlRkLhnu6s9veeFob4fCPvpF
+	fc8POFEoFc7jVHu4U4NAIGq0Yupg=
+X-Google-Smtp-Source: AGHT+IG0y8toW5W8eFpdsvCe1fQRU++du7bguiRlXKxtPLYdgRVdo+1MtoYPmuL58UIfylv6XxSJn6rF88OzzGkz+SI=
+X-Received: by 2002:a2e:a694:0:b0:2d0:6c48:8777 with SMTP id
+ q20-20020a2ea694000000b002d06c488777mr4577lje.27.1707144630185; Mon, 05 Feb
+ 2024 06:50:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1707141974.git.baskov@ispras.ru> <82e66a8c9ae70e416eb8ae5229cf5a93f17921b9.1707141974.git.baskov@ispras.ru>
-In-Reply-To: <82e66a8c9ae70e416eb8ae5229cf5a93f17921b9.1707141974.git.baskov@ispras.ru>
+References: <cover.1707141974.git.baskov@ispras.ru> <9b99e3e3c2c6c32a674ffa3272f85fa9443e33a0.1707141974.git.baskov@ispras.ru>
+In-Reply-To: <9b99e3e3c2c6c32a674ffa3272f85fa9443e33a0.1707141974.git.baskov@ispras.ru>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 5 Feb 2024 14:49:28 +0000
-X-Gmail-Original-Message-ID: <CAMj1kXHTyq6=hVOYa3u2y0GRcrG6wCFA8OqrELZXQD+EGwdMuA@mail.gmail.com>
-Message-ID: <CAMj1kXHTyq6=hVOYa3u2y0GRcrG6wCFA8OqrELZXQD+EGwdMuA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] x86/boot: Order sections by their RVAs
+Date: Mon, 5 Feb 2024 14:50:19 +0000
+X-Gmail-Original-Message-ID: <CAMj1kXEZeEu=NLBzgeJvsfBiGJt-DUNCRr=M-CohkM6LnVCffA@mail.gmail.com>
+Message-ID: <CAMj1kXEZeEu=NLBzgeJvsfBiGJt-DUNCRr=M-CohkM6LnVCffA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] x86/boot: Align .compat virtual size
 To: Evgeniy Baskov <baskov@ispras.ru>
 Cc: Mike Beaton <mjsbeaton@gmail.com>, Alexey Khoroshilov <khoroshilov@ispras.ru>, 
 	linux-efi@vger.kernel.org
@@ -70,100 +70,35 @@ Content-Type: text/plain; charset="UTF-8"
 
 On Mon, 5 Feb 2024 at 14:44, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >
-> Image loaders which check the contiguity of executable images consider
-> sections adjacent in the section table to be adjacent in virtual memory.
+> Even if this section is discardable, it still needs to have virtual memory
+> size aligned on section alignment to be compliant.
 >
-> Sort sections by their RVAs in PE section table.
+
+It does not. The PE/COFF spec does not require a section to end on an
+address that is aligned to the section alignment of the image.
+
+> Align compat section on section alignment. This adds ~4k of memory after
+> the kernel image during EFISTUB execution but, it's not a problem on
+> x86 architecture.
 >
 > Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 > ---
->  arch/x86/boot/header.S | 56 +++++++++++++++++++++---------------------
->  1 file changed, 28 insertions(+), 28 deletions(-)
+>  arch/x86/boot/header.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-
-Hi,
-
-I just sent a fix for this issue:
-
-https://lore.kernel.org/linux-efi/20240205081106.2415414-2-ardb+git@google.com/T/#u
-
-Could you please check whether it works for you as well?
-
-
 > diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-> index b2771710ed98..097b84ab288c 100644
+> index 097b84ab288c..128e35f5c89b 100644
 > --- a/arch/x86/boot/header.S
 > +++ b/arch/x86/boot/header.S
-> @@ -153,6 +153,34 @@ section_table:
->                 IMAGE_SCN_MEM_READ              | \
->                 IMAGE_SCN_MEM_DISCARDABLE       # Characteristics
->
-> +       .ascii  ".text"
-> +       .byte   0
-> +       .byte   0
-> +       .byte   0
-> +       .long   ZO__data
-> +       .long   setup_size
-> +       .long   ZO__data                        # Size of initialized data
-> +                                               # on disk
-> +       .long   setup_size
-> +       .long   0                               # PointerToRelocations
-> +       .long   0                               # PointerToLineNumbers
-> +       .word   0                               # NumberOfRelocations
-> +       .word   0                               # NumberOfLineNumbers
-> +       .long   IMAGE_SCN_CNT_CODE              | \
-> +               IMAGE_SCN_MEM_READ              | \
-> +               IMAGE_SCN_MEM_EXECUTE           # Characteristics
-> +
-> +       .ascii  ".data\0\0\0"
-> +       .long   ZO__end - ZO__data              # VirtualSize
-> +       .long   setup_size + ZO__data           # VirtualAddress
-> +       .long   ZO__edata - ZO__data            # SizeOfRawData
-> +       .long   setup_size + ZO__data           # PointerToRawData
-> +
-> +       .long   0, 0, 0
-> +       .long   IMAGE_SCN_CNT_INITIALIZED_DATA  | \
-> +               IMAGE_SCN_MEM_READ              | \
-> +               IMAGE_SCN_MEM_WRITE             # Characteristics
-> +
+> @@ -184,7 +184,7 @@ section_table:
 >  #ifdef CONFIG_EFI_MIXED
 >         .asciz  ".compat"
 >
-> @@ -185,34 +213,6 @@ pecompat_fstart:
->         .set    pecompat_vsize, 0
->         .set    pecompat_fstart, setup_size
->  #endif
-> -       .ascii  ".text"
-> -       .byte   0
-> -       .byte   0
-> -       .byte   0
-> -       .long   ZO__data
-> -       .long   setup_size
-> -       .long   ZO__data                        # Size of initialized data
-> -                                               # on disk
-> -       .long   setup_size
-> -       .long   0                               # PointerToRelocations
-> -       .long   0                               # PointerToLineNumbers
-> -       .word   0                               # NumberOfRelocations
-> -       .word   0                               # NumberOfLineNumbers
-> -       .long   IMAGE_SCN_CNT_CODE              | \
-> -               IMAGE_SCN_MEM_READ              | \
-> -               IMAGE_SCN_MEM_EXECUTE           # Characteristics
-> -
-> -       .ascii  ".data\0\0\0"
-> -       .long   ZO__end - ZO__data              # VirtualSize
-> -       .long   setup_size + ZO__data           # VirtualAddress
-> -       .long   ZO__edata - ZO__data            # SizeOfRawData
-> -       .long   setup_size + ZO__data           # PointerToRawData
-> -
-> -       .long   0, 0, 0
-> -       .long   IMAGE_SCN_CNT_INITIALIZED_DATA  | \
-> -               IMAGE_SCN_MEM_READ              | \
-> -               IMAGE_SCN_MEM_WRITE             # Characteristics
-> -
->         .set    section_count, (. - section_table) / 40
->  #endif /* CONFIG_EFI_STUB */
->
+> -       .long   8                               # VirtualSize
+> +       .long   pecompat_vsize                  # VirtualSize
+>         .long   setup_size + ZO__end            # VirtualAddress
+>         .long   pecompat_fsize                  # SizeOfRawData
+>         .long   pecompat_fstart                 # PointerToRawData
 > --
 > 2.43.0
 >
