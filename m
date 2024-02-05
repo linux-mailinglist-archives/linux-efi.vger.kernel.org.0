@@ -1,196 +1,145 @@
-Return-Path: <linux-efi+bounces-475-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-476-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C4E849522
-	for <lists+linux-efi@lfdr.de>; Mon,  5 Feb 2024 09:11:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F7684953D
+	for <lists+linux-efi@lfdr.de>; Mon,  5 Feb 2024 09:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50BE91C2363E
-	for <lists+linux-efi@lfdr.de>; Mon,  5 Feb 2024 08:11:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EC9A2811A9
+	for <lists+linux-efi@lfdr.de>; Mon,  5 Feb 2024 08:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112DD11197;
-	Mon,  5 Feb 2024 08:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01D71119C;
+	Mon,  5 Feb 2024 08:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E4nwTgKy"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="JO8W1Dpu";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="JO8W1Dpu"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488E2125AD
-	for <linux-efi@vger.kernel.org>; Mon,  5 Feb 2024 08:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06FD1118A;
+	Mon,  5 Feb 2024 08:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707120678; cv=none; b=hfFpoeIdxOxVAHkZnGfU03TMGGbzfdBMaFE8eBtt81tzuLct1/HQHRsQ6c03w2rbJA8+W5XuH236bPJw6uabTgVEdixURi3xH/CtJJcOO/hdNe4LH8xqCwOG/A2KJ91VMN+CpY4WXJ63SORBUGPYqEoUsTm07y5hUk6znhoLch0=
+	t=1707121234; cv=none; b=CtKSHLDYdaUdU0+ZWuHsLeixyBpLekIfZmvX16z/f8HxlMVu/tdN2HuljUyh+mKZmoY3eBZKFf8E61mavvPd3mKu3orJhSml0s3YVcm52D68umsubUJmrZGZ1X69j1uMp1ii6PcTRvBrRpchXbJHLRWRFeWOJ1yqwcOP+5G5OEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707120678; c=relaxed/simple;
-	bh=BAFgpR4X3KpDnnVtmJyyiOT88VRWGQpHuRzwOTnj+V8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l0RMgbdmKWPmy+lvWCQ0X2ofhql4uoBvgrHWm01YroLKiPaXKEGKA3OYLZYObIfmtxqQlByrv7swCnxnz1uX1G/vOamBdggqSHKaoyaXjIDP2Wh7/9ztif2H9yavF2WgoJbPPm9aaB4rdrz4FmLSrs7os7QI+13h9Q2mspp2bHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E4nwTgKy; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b267bf11so4228987276.2
-        for <linux-efi@vger.kernel.org>; Mon, 05 Feb 2024 00:11:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707120675; x=1707725475; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Y5NqMyMM2YuT7vFLbcYH8NZXZb8hqxsabSo6d+pQx28=;
-        b=E4nwTgKyCbl2/rP9I3nMNjbaRlHwjyTnrcg3eR+eTymHJo00axmf291fOS1HPjR2Ya
-         Vli4fuLhClnfIu26k0oJdN4ss7/HUv3mKmDa9RYcG35oEUyOGW/Au/4jYj5zX5gY0fmk
-         O0roLP2vEWNr05fyhkGyCl0BgBh496Z3eR6L7y5GnDUsMqYw9chM3i/cNHYxhBJooH3j
-         s9/mCFG+Bv0GjwUANqC6gf6VhlrZwx6aPo6ndZlKIe1i8Uy2MvoIwPZBYRedwzJUH/D1
-         4Auj1ZojSwa9jGF2jyT9ZfyLX3LlK7A5OjG+3yCvD7EFcGibBxPniiborTqt/562+FnH
-         aV0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707120675; x=1707725475;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y5NqMyMM2YuT7vFLbcYH8NZXZb8hqxsabSo6d+pQx28=;
-        b=lMQwibjQDVAUK5oeUMn597gByGguGGgNx4Jpb2cmEiKIgwBuJctNf/GmPXyv72XHC8
-         RDIg54kPxkfHQaLxSmMHIsk9MZXQm9m7NH7gHE4pxxmP3rJAetu8LiPvImhyh94JRD2O
-         u8ZRG1L4WFqVuvWBNYF9dNDyFshfAZadKfjRMDBP+NyCcE27lbb1JNoriaOFgODYm+QI
-         BrBIV0xiRraHQUpP0eJ0VWqsBs/n/Ur4RJSq5x8GY7C31oF9VhhrYoufug/uiVlHcUDr
-         vGQUR9OPkntiH7NqeMjRp8Rpynrm3Jq+tOYqJyHsq8SIZ8FijvqE7p4J3ucq8nEjeyYy
-         Mviw==
-X-Gm-Message-State: AOJu0Yy8EV4HdvkwngOYjeY0J4VWh5g7bHI9iREuz+mxTFLtO3FhcHYN
-	d11HxAx6K2vSZPhKBR4AsxBNfUYjsbLrT7Pi3DayZUhea/jHL44dYe1qiUVMIenT1p6A7cLeEnc
-	+iCe82QUG6LCTICn9BJdbFzNHU3iE3r5RErS4jfrW4aXajVucPKlrPfemtMAiNsyyYZGX14c9XJ
-	/BV9OuDHL/jAw8j0IaKZPtyA6azA==
-X-Google-Smtp-Source: AGHT+IFdrGBMa/35mQZy1MMgRlgEfMkwNyLEbFPg/KYVJJx7UGNvqhAH4mAPdBJHijjDDvfwBh2qgLZ4
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:6902:993:b0:dc2:25fd:eff1 with SMTP id
- bv19-20020a056902099300b00dc225fdeff1mr422690ybb.4.1707120675257; Mon, 05 Feb
- 2024 00:11:15 -0800 (PST)
-Date: Mon,  5 Feb 2024 09:11:07 +0100
+	s=arc-20240116; t=1707121234; c=relaxed/simple;
+	bh=eu/BwH8FT7BImKJToQrnKLcDXyUO2zgZpz9MD25cU7c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fKXY3ftXWrYoRyjKqqrV4nIlmOawikbUgK+jWxNzmqnSnyRDIKs5liVFHxjz4f/YDLYJAhmQOC1455J2WemRpxJX/8Gp/LiCSBwEyycHnY7pDXUVvxC/BRJlEEBnG0rmhaeXyYWaQgG9RtAteFaQ+BbnKHj/epARxX9er8mSdKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=JO8W1Dpu; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=JO8W1Dpu; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1707121231;
+	bh=eu/BwH8FT7BImKJToQrnKLcDXyUO2zgZpz9MD25cU7c=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=JO8W1DpurgTMXtNTCNU8J4q0FM0xnYE3RKeCmnYYjfmQctLVTu2DwSjh7fUrjZlF4
+	 SNdHlHvxdgviuQHj9v1NAIsErUxsmDK4pLIK9aziX8UXYD7k2oD0zwmJqkFuBgq6yq
+	 6k+3M22sZN3Dz+0UIn+qBvSSHc7tQQxUvrojYU9w=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id A05DD12868CE;
+	Mon,  5 Feb 2024 03:20:31 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id UQll_wppCcMJ; Mon,  5 Feb 2024 03:20:31 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1707121231;
+	bh=eu/BwH8FT7BImKJToQrnKLcDXyUO2zgZpz9MD25cU7c=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=JO8W1DpurgTMXtNTCNU8J4q0FM0xnYE3RKeCmnYYjfmQctLVTu2DwSjh7fUrjZlF4
+	 SNdHlHvxdgviuQHj9v1NAIsErUxsmDK4pLIK9aziX8UXYD7k2oD0zwmJqkFuBgq6yq
+	 6k+3M22sZN3Dz+0UIn+qBvSSHc7tQQxUvrojYU9w=
+Received: from [172.20.9.170] (62-244-190-9.cust.exponential-e.net [62.244.190.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 04A2C1286899;
+	Mon,  5 Feb 2024 03:20:29 -0500 (EST)
+Message-ID: <7357618f02b87786f06f3e10b50f1247f328f07a.camel@HansenPartnership.com>
+Subject: Re: [PATCH v1] efi/libstub: Add Confidential Computing (CC)
+ measurement support
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+  Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, "Yao, Jiewen"
+	 <jiewen.yao@intel.com>, "Lu, Ken" <ken.lu@intel.com>
+Date: Mon, 05 Feb 2024 08:20:27 +0000
+In-Reply-To: <6a696340-b57c-4fa5-bb2e-b3a0257453bc@linux.intel.com>
+References: 
+	<20240203075736.3982371-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+	 <82a84e769875c70279348179c1b2b63a16770c8e.camel@HansenPartnership.com>
+	 <6a696340-b57c-4fa5-bb2e-b3a0257453bc@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3574; i=ardb@kernel.org;
- h=from:subject; bh=ETg8Vjh2MQ+rYHZXOgrc0v0V9MSi8UuMU2QlvfPlXSA=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXADOm/rax8jTFLv/g0pWgKPNO9c0I4Lop/85ug9dInz
- c/OXLy4o5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEzEtoCRYUpW/j+X90F5N+2V
- dX5PPD5P2MYqz3/+sqcLrFXyS9acZmNkeCilkvDOUtXk4pmnF03+TXEK22tZWPq4xfbn8nWPzmw 8zwgA
-X-Mailer: git-send-email 2.43.0.594.gd9cf4e227d-goog
-Message-ID: <20240205081106.2415414-2-ardb+git@google.com>
-Subject: [PATCH] x86/efistub: Use 1:1 file:memory mapping for PE/COFF .compat section
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, Mike Beaton <mjsbeaton@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Sun, 2024-02-04 at 12:27 -0800, Kuppuswamy Sathyanarayanan wrote:
+> +Jiewen & Ken (RTMR firmware owner)
+> 
+> On 2/3/24 10:46 PM, James Bottomley wrote:
+> > On Sat, 2024-02-03 at 07:57 +0000, Kuppuswamy Sathyanarayanan
+> > wrote:
+> > > If the virtual firmware implements TPM support, TCG2 protocol
+> > > will be used for kernel measurements and event logging support.
+> > > But in CC environment, not all platforms support or enable the
+> > > TPM feature. UEFI specification [1] exposes protocol and
+> > > interfaces used for kernel measurements in CC platforms without
+> > > TPM support.
+> > > 
+> > > Currently, the efi-stub only supports the kernel related
+> > > measurements for the platform that supports TCG2 protocol. So,
+> > > extend it add CC measurement protocol
+> > > (EFI_CC_MEASUREMENT_PROTOCOL) and event logging support. Event
+> > > logging format in the CC environment is the same as TCG2.
+> >  
+> > Why do we have to do this anymore?  Given that you're already
+> > pushing patches that map RTMRs to TPM PCRs:
+> > 
+> > https://lore.kernel.org/lkml/20240128212532.2754325-4-sameo@rivosinc.com/
+> 
+> IMHO, I am not sure whether we need this mapping support . I have
+> already mentioned the same comment in [1]. If we support extension
+> and logging via configFS ABI, why again support PCR mapping?
+> 
+> https://lore.kernel.org/lkml/2bd7c80b-9cd8-4450-a410-c3739d224167@linux.intel.com/
 
-The .compat section is a dummy PE section that contains the address of
-the 32-bit entrypoint of the 64-bit kernel image if it is bootable from
-32-bit firmware (i.e., CONFIG_EFI_MIXED=y)
+Well, the point is if it can be done, you can push the measurement and
+logging all the way down into the TCG driver and not have to modify any
+upper layer code at all (so less chance of introducing bugs).  It would
+be a single change instead of patching everywhere there's a
+measurement.
 
-This section is only 8 bytes in size and is only referenced from the
-loader, and so it is placed at the end of the memory view of the image,
-to avoid the need for padding it to 4k, which is required for sections
-appearing in the middle of the image.
+> > Can't you just add a stub TCG2 driver to EFI that exposes only the
+> > ability to log and measure using this mapping?  That way all our
+> > existing code will "just work" without the need to understand
+> > anything about confidential computing or add new code to do the
+> > measurement?
+> 
+> I am not familiar with the EFI implementation, but I think a new
+> protocol is added to handle future CC extensions (which could deviate
+> from TCG2)
 
-Unfortunately, this violates the PE/COFF spec, and even if most EFI
-loaders will work correctly (including the Tianocore reference
-implementation), PE loaders do exist that reject such images, on the
-basis that both the file and memory views of the file contents should be
-described by the section headers in a manner that is monotonic and does
-not leave any gaps.
+OK, but you could add a new driver for just that functionality only
+when you actually deviate and handle all of the current functionality
+in the non-deviating TCG driver.  Nothing forbids a feature from having
+multiple driver attachments.
 
-So reorganize the sections to avoid this issue. This results in a slight
-padding overhead (< 4k) but this can be avoided by disabling
-CONFIG_EFI_MIXED (which is only needed in rare cases these days)
+James
 
-Reported-by: Mike Beaton <mjsbeaton@gmail.com>
-Link: https://lkml.kernel.org/r/CAHzAAWQ6srV6LVNdmfbJhOwhBw5ZzxxZZ07aHt9oKkfYAdvuQQ%40mail.gmail.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/boot/header.S | 13 +++++--------
- arch/x86/boot/setup.ld |  6 +++---
- 2 files changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index b2771710ed98..8c093a2b18eb 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -106,8 +106,7 @@ extra_header_fields:
- 	.word	0				# MinorSubsystemVersion
- 	.long	0				# Win32VersionValue
- 
--	.long	setup_size + ZO__end + pecompat_vsize
--						# SizeOfImage
-+	.long	setup_size + ZO__end		# SizeOfImage
- 
- 	.long	salign				# SizeOfHeaders
- 	.long	0				# CheckSum
-@@ -143,7 +142,7 @@ section_table:
- 	.ascii	".setup"
- 	.byte	0
- 	.byte	0
--	.long	setup_size - salign 		# VirtualSize
-+	.long	pecompat_fstart - salign 	# VirtualSize
- 	.long	salign				# VirtualAddress
- 	.long	pecompat_fstart - salign	# SizeOfRawData
- 	.long	salign				# PointerToRawData
-@@ -156,8 +155,8 @@ section_table:
- #ifdef CONFIG_EFI_MIXED
- 	.asciz	".compat"
- 
--	.long	8				# VirtualSize
--	.long	setup_size + ZO__end		# VirtualAddress
-+	.long	pecompat_fsize			# VirtualSize
-+	.long	pecompat_fstart			# VirtualAddress
- 	.long	pecompat_fsize			# SizeOfRawData
- 	.long	pecompat_fstart			# PointerToRawData
- 
-@@ -172,8 +171,7 @@ section_table:
- 	 * modes this image supports.
- 	 */
- 	.pushsection ".pecompat", "a", @progbits
--	.balign	falign
--	.set	pecompat_vsize, salign
-+	.balign	salign
- 	.globl	pecompat_fstart
- pecompat_fstart:
- 	.byte	0x1				# Version
-@@ -182,7 +180,6 @@ pecompat_fstart:
- 	.long	setup_size + ZO_efi32_pe_entry	# Entrypoint
- 	.popsection
- #else
--	.set	pecompat_vsize, 0
- 	.set	pecompat_fstart, setup_size
- #endif
- 	.ascii	".text"
-diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
-index 83bb7efad8ae..3a2d1360abb0 100644
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -24,6 +24,9 @@ SECTIONS
- 	.text		: { *(.text .text.*) }
- 	.text32		: { *(.text32) }
- 
-+	.pecompat	: { *(.pecompat) }
-+	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
-+
- 	. = ALIGN(16);
- 	.rodata		: { *(.rodata*) }
- 
-@@ -36,9 +39,6 @@ SECTIONS
- 	. = ALIGN(16);
- 	.data		: { *(.data*) }
- 
--	.pecompat	: { *(.pecompat) }
--	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
--
- 	.signature	: {
- 		setup_sig = .;
- 		LONG(0x5a5aaa55)
--- 
-2.43.0.594.gd9cf4e227d-goog
+>  and to support platforms that does not support or enable TPM
+> feature. So modifying the TCG2 driver in EFI may not work for the
+> above-mentioned cases. I think the EFI driver part of this support
+> is already merged.
+> 
+> Jiewen/Ken may have more comments about this proposal.
 
 
