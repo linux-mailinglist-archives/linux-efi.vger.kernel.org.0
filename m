@@ -1,117 +1,133 @@
-Return-Path: <linux-efi+bounces-493-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-494-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1B884C1A0
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Feb 2024 02:04:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E29984C9EF
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Feb 2024 12:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5F0FB237AD
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Feb 2024 01:04:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 105D81F25C47
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Feb 2024 11:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA5BD268;
-	Wed,  7 Feb 2024 01:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982501B7FF;
+	Wed,  7 Feb 2024 11:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="rXsEbN6/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y6Wu6pno"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C914BD27A
-	for <linux-efi@vger.kernel.org>; Wed,  7 Feb 2024 01:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78181D525;
+	Wed,  7 Feb 2024 11:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707267875; cv=none; b=tDdhdCEMZtKH3tbEpGU5KxD7S8dGroVrN0PRTgaFqoeMcw95JhSY83EWl0/SVSbexaiZdYYs0qAsbBHISZglbKaH0EOr08t8yLfVTZALSUGUNMD7dsW/dwFdqbG+EqtDflWRilz8GlEuMrkkKazYOSroz8+yaKn7b+s59A6GvvE=
+	t=1707306652; cv=none; b=PuC4UoJrIip7A6X7+dOyGA5tF/hkLqyxYCdKAtZ6ZJXW+6IH8aJ8skxiURgKSGQ5vbeHkXIXgsIjMu+c0XFSyvHSGqeiRAhLOrl+OCUB4v8hLli2lgFrH4HHwx5Q3odC37hbuWf9v4q2KR4NdH8jLfryVzccgeGN8wkpo0tyvcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707267875; c=relaxed/simple;
-	bh=tnqp0+o4UjQ9pQtqj33Rbv0wz4gTOgCsar16HtLe8Zo=;
-	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=peaQZPoO2o/Ug7I+n+6imaUWgDAkHxsvlJZfKNu8/+byBnYvga8b7L7RS9s5jbWvM5R8wXeYesltU4T94ZXlS+G9kpGdo8Gy87qwXj6mthSi/HtI/5DzgpE8KndFBLUnhkA0Uk0qI3FXXVp+XYDDeYjNlbnOF9ah0hjIR0VSd/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=rXsEbN6/; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5cddc5455aeso40237a12.1
-        for <linux-efi@vger.kernel.org>; Tue, 06 Feb 2024 17:04:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1707267873; x=1707872673; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KSJRZP7YuqNoUD4atd7Qd4EMeXnFCJPyzasdn7MfZzU=;
-        b=rXsEbN6/nhRnPT+AcObKOIIa8gZV4n+vMVoKAE+3yFeVcVUvVp4Orqcjh1S7u2b6tG
-         jzQIjHDwS9VbxmlOxwRi2d5LigBsXSBzOjlYaTzdSgmNuPAshoxv/AcqH7k30ROOX4bb
-         5ZznYSwb5vMZk2pGbgjhMLQLrtPc7JGxmuM2PcUIeUPDaNCz3BCrst57V9eOoEJtHX0y
-         xlZrzIT1E7hxUXfNJcs8VOH3pD8WS1qNRsJyT1G/UJ9PCOhHDAxHL9XEzELCWNrg7bmQ
-         Z2XYB4yf1Evr3IqxjEFl3dzamdPa/ekl3MUQfUq8uZBNo46tSgE/m/z2duYn+jhwNd1M
-         5PNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707267873; x=1707872673;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KSJRZP7YuqNoUD4atd7Qd4EMeXnFCJPyzasdn7MfZzU=;
-        b=QTAGqd3HBnugBkmEAmXHpxS9VNYuS25zCUu4z5Fp/Y3gPpp42C5vwgsfp+8O9YH/yN
-         lcm/TjZFp6L0BeB/QbpW4nNQOLUtFFnXk6XBivkYT29ntT0nS4pU+EXAcbAWtdZNCPlR
-         KWnTD9bWRmIJUB+pfiLqUaMqpFWN+YGJbQNq0kFHuK7O/qAGD1ZyiMHzaaA2ecnuDAvG
-         0zbVm7cI59ukKt6AHaSNTSy2VaAUSUmYO658/oQNQwWplxJcp++uRMXLQtYnXOKMQtaI
-         ZCw+At08qoH/K/qjmBwOq1JECSZhrq7XuK6LuzS/YJ9HegrSBt7wjiah3eHTrUJNfUUa
-         x0cw==
-X-Gm-Message-State: AOJu0YxjO6eTkGBm8Q2VETVcepGGgFIuSKCjXWLoUgt1ecsR73PVK/c+
-	251VQTLmLvZo/ihubMwXczTYI48+5MuY20JmTlcebP/SHJ4OPJVhAzWba4hCQ14=
-X-Google-Smtp-Source: AGHT+IEbcsyeWOp+4JdYTl/w+FCuX1Fsyymvn8fUUJUcFSijmo5iCTzMDxF6FQorXgjWWXOLARcisw==
-X-Received: by 2002:a17:90a:b898:b0:295:2a35:13b8 with SMTP id o24-20020a17090ab89800b002952a3513b8mr1261301pjr.0.1707267873057;
-        Tue, 06 Feb 2024 17:04:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUStYCrR4F6SLcGDQdilqCjiTl+isSJhk9msycAA9AIFOWfBGH7nLE+EP2Q+9bM0HYvysrMJbEuMAt1o4RmLLsAKKqmNiqiO4W9flKqxUsq2W6CiOG3uayyvxdtGWkAgDXi7L/5EHgxs6fDwJ0T17FYXXxM5b0L3Vl2EiVoGHQx2eu8FHmGlmgb8nFLuybkfRJWbAexLNK7WB3ADW1DwAQRp5/23J+d7C163DWM1XGwnTHQTi7dqv5JHw==
-Received: from localhost ([12.44.203.122])
-        by smtp.gmail.com with ESMTPSA id bb1-20020a17090b008100b002963e682f6fsm2404918pjb.57.2024.02.06.17.04.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 17:04:32 -0800 (PST)
-Date: Tue, 06 Feb 2024 17:04:32 -0800 (PST)
-X-Google-Original-Date: Tue, 06 Feb 2024 17:04:31 PST (-0800)
-Subject:     Re: [PATCH v2 0/2] efi: Fixes for EFI_MEMORY_SP memory on RISC-V and ARM64
-In-Reply-To: <CAMj1kXEQdGKzoZjaZwa-SRhnwTwvaR_-SY7YtfKsUfEBc952_g@mail.gmail.com>
-CC: abrestic@rivosinc.com, Paul Walmsley <paul.walmsley@sifive.com>,
-  aou@eecs.berkeley.edu, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-  linux-riscv@lists.infradead.org
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Message-ID: <mhng-9698541b-6a15-437d-94ff-3f9e277209ad@palmer-ri-x1c9a>
+	s=arc-20240116; t=1707306652; c=relaxed/simple;
+	bh=SfvJn+xoupBR1MbkXFoDnA5hLXb3/g/1CcV8cOlXD/A=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=WZW8MG3XeH3TMiXgw10eaJRkwKploy7wNFKikXB/icvEZ5WUdhIOZEYP1M19EYNJCN5RonR9GhPOqOYLP3/rBcemNPEa0piFGok/nFAV1Yh1kYC/XoQ9dvYM/OZXLLfRNhj2mIcjq1k7TRvOfhCwKtFF177P3lC5dR7jkx5aDn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y6Wu6pno; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707306651; x=1738842651;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=SfvJn+xoupBR1MbkXFoDnA5hLXb3/g/1CcV8cOlXD/A=;
+  b=Y6Wu6pnom9XLv6poGlDiUWQsebH+Dk2elTYCJDQzn3C8DC7ZvXyiHmw5
+   yobsVvVo8LysAr9PllLlEbmlFK0ipHXwjPHdvOimsaWtILkwFEV1osbHM
+   V1YTvfQJLtH4ScELhVy9wRdhogHLfIT6bMONwwjB1QcUPtroN7l5BlcaS
+   oLjcflRgYAqzeoophCcahRcxi/DnkSdOvpZqoI/+ZPVPrpjxewKSIv19K
+   TTv0IqubjZa9V3orFBAtyE7PJcN1H5MNakjo1sZJr4uVGZwhSLv7AXT5M
+   1hV4HZP74SThZU5OWmJSSzYITj3rhvGnarjK8ILnyr30g92TAhrUxWksF
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="4837019"
+X-IronPort-AV: E=Sophos;i="6.05,250,1701158400"; 
+   d="scan'208";a="4837019"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 03:50:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="909976005"
+X-IronPort-AV: E=Sophos;i="6.05,250,1701158400"; 
+   d="scan'208";a="909976005"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.51.96])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 03:50:43 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 7 Feb 2024 13:50:37 +0200 (EET)
+To: linux-pci@vger.kernel.org, 
+    "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+cc: Bjorn Helgaas <bhelgaas@google.com>, 
+    Jesse Brandeburg <jesse.brandeburg@intel.com>, 
+    intel-wired-lan@lists.osuosl.org, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+    Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+    linux-edac@vger.kernel.org, linux-efi@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+    Netdev <netdev@vger.kernel.org>, Oliver O'Halloran <oohall@gmail.com>, 
+    Paolo Abeni <pabeni@redhat.com>, Tony Luck <tony.luck@intel.com>
+Subject: Re: [PATCH 0/4] PCI: Consolidate TLP Log reading and printing
+In-Reply-To: <20240206135717.8565-1-ilpo.jarvinen@linux.intel.com>
+Message-ID: <d1168e4a-c766-b3c2-bb74-c8dbae984cff@linux.intel.com>
+References: <20240206135717.8565-1-ilpo.jarvinen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Type: multipart/mixed; BOUNDARY="8323328-2015099635-1707302934=:1119"
+Content-ID: <ca89eb14-5052-c712-0d3b-dae8e97234e8@linux.intel.com>
 
-On Fri, 02 Feb 2024 10:28:54 PST (-0800), Ard Biesheuvel wrote:
-> On Fri, 2 Feb 2024 at 19:07, Andrew Bresticker <abrestic@rivosinc.com> wrote:
->>
->> Two small fixes to enable the use soft-reserved/special-purpose memory
->> (EFI_MEMORY_SP) with dax_kmem on RISC-V (and ARM64, I think, though I
->> don't have a platform to test it on).
->>
->> Patch 1 fixes a trivial integer narrowing bug. Patch 2 prevents adding
->> memblocks for soft-reserved memory so that it can later be hotplugged by
->> dax_kmem.
->>
->> Tested on a RISC-V platform that presents a range of EFI_MEMORY_SP with
->> Bjorn's MEMORY_HOTPLUG series[0] applied.
->>
->> [0]: https://lore.kernel.org/lkml/20230512145737.985671-1-bjorn@kernel.org/
->>
->> v1->v2: address comments from Ard
->>
->> Andrew Bresticker (2):
->>   efi: runtime: Fix potential overflow of soft-reserved region size
->>   efi: Don't add memblocks for soft-reserved memory
->>
->
-> Thanks, I'll take these both as fixes.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+--8323328-2015099635-1707302934=:1119
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <5d24dca6-e3dc-f4f5-8d6c-ee0d65616a2f@linux.intel.com>
 
-Thanks!
+Adding Cc Quigshun which I ended up forgotting despite thinking it at one=
+=20
+point.
+
+--=20
+ i.
+
+On Tue, 6 Feb 2024, Ilpo J=E4rvinen wrote:
+
+> This series consolidates AER & DPC TLP Log handling code. Helpers are
+> added for reading and printing the TLP Log and the format is made to
+> include E-E Prefixes in both cases (previously only one DPC RP PIO
+> displayed the E-E Prefixes).
+>=20
+> I'd appreciate if people familiar with ixgbe could check the error
+> handling conversion within the driver is correct.
+>=20
+> Ilpo J=E4rvinen (4):
+>   PCI/AER: Cleanup register variable
+>   PCI: Generalize TLP Header Log reading
+>   PCI: Add TLP Prefix reading into pcie_read_tlp_log()
+>   PCI: Create helper to print TLP Header and Prefix Log
+>=20
+>  drivers/firmware/efi/cper.c                   |  4 +-
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 39 +++------
+>  drivers/pci/ats.c                             |  2 +-
+>  drivers/pci/pci.c                             | 79 +++++++++++++++++++
+>  drivers/pci/pci.h                             |  2 +-
+>  drivers/pci/pcie/aer.c                        | 28 ++-----
+>  drivers/pci/pcie/dpc.c                        | 31 ++++----
+>  drivers/pci/probe.c                           | 14 ++--
+>  include/linux/aer.h                           | 16 ++--
+>  include/linux/pci.h                           |  2 +-
+>  include/ras/ras_event.h                       | 10 +--
+>  include/uapi/linux/pci_regs.h                 |  2 +
+>  12 files changed, 145 insertions(+), 84 deletions(-)
+>=20
+>=20
+--8323328-2015099635-1707302934=:1119--
 
