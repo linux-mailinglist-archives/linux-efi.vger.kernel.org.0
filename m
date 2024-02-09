@@ -1,119 +1,163 @@
-Return-Path: <linux-efi+bounces-495-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-496-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADF284E509
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Feb 2024 17:30:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC6184F51A
+	for <lists+linux-efi@lfdr.de>; Fri,  9 Feb 2024 13:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB8CA281D56
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Feb 2024 16:30:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76BBA1C20D67
+	for <lists+linux-efi@lfdr.de>; Fri,  9 Feb 2024 12:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7149F7B3DB;
-	Thu,  8 Feb 2024 16:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE0C2E852;
+	Fri,  9 Feb 2024 12:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A08evnEq"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zySJsSXy"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0857149E04;
-	Thu,  8 Feb 2024 16:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA452E633
+	for <linux-efi@vger.kernel.org>; Fri,  9 Feb 2024 12:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707409847; cv=none; b=TajsMk7uZSYe83/o+LJwcy+ZudYU00KmZnu+b5sCxgF3r1bS/To/OdL7C99JIuPT7ygmjSBDH8p1Yo45Lcp51/8URfdwWWG19l4FxMO1s7HSGnY2yVtDW3z+6YnX355MOqfGNYhTake85FoY9DmTiGvQ7uNYZM6NSIRF7ktFwZY=
+	t=1707481150; cv=none; b=mh5IEECWFyMfhGn5AhCUXaieyKxvlJWh81CTDxHJcK1sfYj4VQvxmzssD0/pxsFM7oOMHMFzBwmPU0Ymkj5UFFFHFWQPUp7wrOuIbgP1o2LxrNHRK8b24nl3qMgLeG/NhXVkQv4UJ5+Xmmt5bjqIa6bS8rIMyG28fNDb7ZvIwAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707409847; c=relaxed/simple;
-	bh=3bilr2S0udUPWaP4Keb7VMbboD+4Al1FIMWs8mnwqSk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FKvStHMRVLRg2JUxr0hxiyJ7voGRweunqZ5G3ESkO0th1nsrCslDOmbX8jVYozmZzpFUXFTRUKYFnF4h3QNRXixLL+uDWYyipQHxs8k/oa1DnJZv05bu+HUFXfwRkyotWEt7xce/V63w0h9N7x98Rumw4kEOhfmcOvuJSLItqrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A08evnEq; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-51168addef1so2966235e87.1;
-        Thu, 08 Feb 2024 08:30:45 -0800 (PST)
+	s=arc-20240116; t=1707481150; c=relaxed/simple;
+	bh=Fz97hPtjSC+OlzB5S+RdJ497UrQcECmFNfNq8/St2qw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lx2whrENALrIITUI7LOS1jVEeRDEPVXPdO7F84yCGI87wNBHJHgu+dXXDned2/7FIPStOggFJ3NNTJ/9xB+ztOBEMLcqcrgfHEILo2Xz5Cj3xEK7p48hHXr7Dz5sZfDLQ88e6ZDB5VhTD3L20+40C47VCZcBh7l6oTcbluRALYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zySJsSXy; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-604a1a44b56so13981577b3.2
+        for <linux-efi@vger.kernel.org>; Fri, 09 Feb 2024 04:19:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707409844; x=1708014644; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Uxa9gRUyNtVY4d25DKEEurdVqxnFvTfKyQlJDNPyYRI=;
-        b=A08evnEqdvI3vGJ0ya35Dz9W4rc37Nen/QPR0eRntd8TVMmVxfthLYwguMshYYuVi2
-         xL0CU0ZiS1SJ5jThQ06DrEvV+E6Vy4KGDPHouVrRTNzmXklDemwE8X/JP8Z5a0Qv12Q5
-         l/eRrg/3Kk9By4y7QwElwFYNPNmpBmwX7gEfyymp0iDLODq5lJUuV8C9BXYR5vtuQwkV
-         oFcPw18h+U/IfAtGw9wtdt+wjlotmovt8nEObvWApo3pimfIKIXDz4CRWcgp3yDW0Inp
-         PpQPVVv6bC8LMo+IyNQlc2Sy8fvB6tNOx+3+H8v1gnqgSRe+M7FLxDzd6I9/eV2se24B
-         BKUg==
+        d=google.com; s=20230601; t=1707481144; x=1708085944; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=quZsX58dQ+HVXzhaUb6f7zbFZuRk+f3w0M4WrUFa+BM=;
+        b=zySJsSXySUM1p0OCWSHMrf5ekFH9+Kd0WHodk1niClDMSQuUZLWT6QNPKxrCuxsl/o
+         y2yE+rnWzL1qyWXHH6LcNnb8EteT0bxxV1/u95UYubSDyQjmfK2G3EVYE8C/ugixhnmb
+         X4dnlBuRNbxsmaVt34jrHQDh7ZipJ1vFxXFpbA1yArN9aY0TxPtIRYG2ClE5oAW9kmdm
+         ok0A1lwAsrz/Ha23Qo3Jamwlj2DLPpAngtP1W275vrkp0WafyXHFd+zLIxBTeLJuBgZj
+         tY3NGIJLCYnrKKeekNMYNmBV0Oy35S8lcyPeXzeC6RSyXYEH7jNGFq6S7uY/gI9OdS96
+         pa6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707409844; x=1708014644;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Uxa9gRUyNtVY4d25DKEEurdVqxnFvTfKyQlJDNPyYRI=;
-        b=eRWgHP8z5plBN2Jbo+O8fwTPeEegHw37EiAKG6SxJWVwASwv6iIvhHXQMq0uGJEAOJ
-         Re/gR71KnM6fCYrgjbYJDFPAFrfyqxmD5KN6jqZ2vnjWxo8d19fpCKXjFez+zoe8iJkf
-         XAnAYIlBz5U93rYO3SwPpEACoDvkoZAXbmsrSTkMdp6yJD47HZtLJ7ZCGaPDP9CnqGuN
-         yCuhK2gPtHgHZstpam4f5icMSQoZ1h2cViQNMfJKMig9CkjwGSDMhc8HbzLjaNnhiQ2g
-         QzjiryNqo91nzHKhsz5PhlDaq4cQqoOelh2XiRZb8XNf+YlVO2XmH9R9llnHPmvJ3PDC
-         mBQA==
-X-Forwarded-Encrypted: i=1; AJvYcCW8ce+uuEI562s4ky7tF7wPjfzuoIJqbf4aTMCq6l3f+kY7/kzv3AecOQlMbwbXMUfIOfepXv3fA+N4xk1V2lG9Gh7cvYI/pk4yTFX1
-X-Gm-Message-State: AOJu0Yyp9CmLh4SF6d0RPrTltUWpt9PAqzGShmKrU+rCuUGILFxohGvL
-	AXUU3xlK9JYZZ5EQntQlrbNywZe3qJE9ObS01KOvZkeU/OLlIrfT
-X-Google-Smtp-Source: AGHT+IFRTrNOiDNAkl7Kzj4zgqs01IlH1M12+NivZvsOx6PgF9lvS4AmTO6WrVnxxrDOhESB0Ar3tA==
-X-Received: by 2002:a05:6512:3d0f:b0:511:1038:dcde with SMTP id d15-20020a0565123d0f00b005111038dcdemr7983918lfv.52.1707409843453;
-        Thu, 08 Feb 2024 08:30:43 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVvGrDev/EPYsh966CkRHUxwlOXevKgPlp3sqo3VizOgc2NpvOBmUvJLBI5hJmW0zdG8Yr2SIoOBsXAFdieoDkwBoAGLnQQCyFnEAeAY0XqqnamRlVIpT4NW4hEPETqusq51faVejps82QtAKqHDNfJk7cgB6Ob6sLfRobRGN0FQr3HgR+jWdHPmuv0l1J6D7E9IFoZ2zCNvYhOWyL51Ce6cXTRM51dLBpWsDEvcjq1rRZjf8sJa1vBRHt0YFMO4N182mC3P/bpeeLKRoEPHTIOC3rHQWJWJJqFzlkhfL8UL+6dRbGUAM4sSytqeu2d
-Received: from sacco-Inspiron-5559.. (88-160-103-158.subs.proxad.net. [88.160.103.158])
-        by smtp.gmail.com with ESMTPSA id d5-20020a056512368500b00511602c50cesm41809lfs.277.2024.02.08.08.30.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 08:30:43 -0800 (PST)
-From: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-To: ardb@kernel.org,
-	bp@alien8.de,
-	kirill.shutemov@linux.intel.com,
-	alexghiti@rivosinc.com,
-	palmer@rivosinc.com,
-	arnd@arndb.de
-Cc: linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-Subject: [PATCH] drivers: efistub: fix typo in docs
-Date: Thu,  8 Feb 2024 17:30:38 +0100
-Message-Id: <20240208163038.111870-1-vincenzo.mezzela@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1707481144; x=1708085944;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=quZsX58dQ+HVXzhaUb6f7zbFZuRk+f3w0M4WrUFa+BM=;
+        b=bNgdniU8/NDHF5hTo88qLllM4hmNnaBZTSVj+aUlbxyIHrs5RvpJ7m3+kRAVna46S5
+         9I1sIfWUy335J7sW98vDRoHp36uWR2kZBEGFruYveWq7j5rGwr4bBfUsimB6LncId++Y
+         tjc2L899DwO7xedrwQv1jid7rZqXWkyJUJe4jCPOaZE3bc+88/TQyRiEqaj3M5kKzw4h
+         RA5qjAo2hcA4LnuDwNjBpQeF2QK2z4gD2YPtCQYXTL/eVEdc/OxNL1rAonBGAxoH1beQ
+         rbqT/Mjq68hEkVYJz+r/FC9eiNCSdwr1VyF/+crl0QblZzC1eQoaQJrEEm78IEavsj4V
+         RQ4Q==
+X-Gm-Message-State: AOJu0YyK45Dgm4aXylKUw+TLlMSrsepijo//T5CaCkD59Z5JIL4yTajy
+	fUMvpht1yJZv6ElDEbOU2xTdb3o1PnTCW+/Y7ZvMLhbm9vn+EYbubZOPLSa9TkFkNlm/CQ==
+X-Google-Smtp-Source: AGHT+IH1vRDlMeGAxe8bcv81+IMNpQ93Jnuy0Ntz689CB/ZZcbADMTF5D5JDeSzXHtkorSyGRRki0J8T
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a0d:ccd0:0:b0:604:4c5:7dc8 with SMTP id
+ o199-20020a0dccd0000000b0060404c57dc8mr203711ywd.8.1707481143926; Fri, 09 Feb
+ 2024 04:19:03 -0800 (PST)
+Date: Fri,  9 Feb 2024 13:18:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3415; i=ardb@kernel.org;
+ h=from:subject; bh=Z411jHmvHC9CXaHKxH3FxGI8kz3lyIaloNgPcG5Bl4s=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfWYhL7G+iRNpV2Tdp03Z3g055rxn3Wmtk+erpF0ejn7l
+ HXokm0PO0pZGMQ4GGTFFFkEZv99t/P0RKla51myMHNYmUCGMHBxCsBEHooz/OFb7PDAx1TRuOlv
+ +Ipf7wTbmv+0cx35q/cjMmZqFbeyUw8jw/9GrZWW9Uuf9t84GXkricXtZ13xQqaAkzN7JNebvGB aygQA
+X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
+Message-ID: <20240209121854.4043660-2-ardb+git@google.com>
+Subject: [GIT PULL] EFI fixes for v6.8 #1
+From: Ard Biesheuvel <ardb+git@google.com>
+To: torvalds@linux-foundation.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-This patch resolves a spelling error in the documentation.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-It is submitted as part of my application to the "Linux Kernel Bug
-Fixing Spring Unpaid 2024" mentorship program of the Linux Kernel
-Foundation.
+Hello Linus,
 
-Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
----
- drivers/firmware/efi/libstub/efistub.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please consider the changes below for v6.8.
 
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 212687c30d79..8369f3adcb37 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -221,7 +221,7 @@ typedef void (__efiapi *efi_event_notify_t)(efi_event_t, void *);
-  *
-  * @events:	array of UEFI events
-  * @ids:	index where to put the event in the array
-- * @event:	event to add to the aray
-+ * @event:	event to add to the array
-  *
-  * boottime->wait_for_event() takes an array of events as input.
-  * Provide a helper to set it up correctly for mixed mode.
--- 
-2.34.1
+Only notable change here is the patch that changes the way we deal with
+spurious errors from the EFI memory attribute protocol. This will be backported
+to v6.6, and is intended to ensure that we will not paint ourselves into a
+corner when we tighten this further in order to comply with MS requirements on
+signed EFI code. Note that this protocol does not currently exist in x86
+production systems in the field, only in Microsoft's fork of OVMF, but it will
+be mandatory for Windows logo certification for x86 PCs in the future.
 
+
+The following changes since commit 6613476e225e090cc9aad49be7fa504e290dd33d:
+
+  Linux 6.8-rc1 (2024-01-21 14:11:32 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.8-1
+
+for you to fetch changes up to 1ad55cecf22f05f1c884adf63cc09d3c3e609ebf:
+
+  x86/efistub: Use 1:1 file:memory mapping for PE/COFF .compat section (2024-02-05 10:24:51 +0000)
+
+----------------------------------------------------------------
+EFI fixes for v6.8 #1
+
+- Tighten ELF relocation checks on the RISC-V EFI stub
+- Give up if the new EFI memory attributes protocol fails spuriously on
+  x86
+- Take care not to place the kernel in the lowest 16 MB of DRAM on x86
+- Omit special purpose EFI memory from memblock
+- Some fixes for the CXL CPER reporting code
+- Make the PE/COFF layout of mixed-mode capable images comply with a
+  strict interpretation of the spec
+
+----------------------------------------------------------------
+Andrew Bresticker (2):
+      efi: runtime: Fix potential overflow of soft-reserved region size
+      efi: Don't add memblocks for soft-reserved memory
+
+Ard Biesheuvel (4):
+      riscv/efistub: Tighten ELF relocation check
+      x86/efistub: Give up if memory attribute protocol returns an error
+      x86/efistub: Avoid placing the kernel below LOAD_PHYSICAL_ADDR
+      x86/efistub: Use 1:1 file:memory mapping for PE/COFF .compat section
+
+Ira Weiny (2):
+      cxl/cper: Fix errant CPER prints for CXL events
+      cxl/trace: Remove unnecessary memcpy's
+
+Jan Kiszka (1):
+      riscv/efistub: Ensure GP-relative addressing is not used
+
+Yang Li (1):
+      efi/libstub: Add one kernel-doc comment
+
+ arch/x86/boot/header.S                     | 14 ++++++--------
+ arch/x86/boot/setup.ld                     |  6 +++---
+ drivers/acpi/apei/ghes.c                   | 26 --------------------------
+ drivers/cxl/core/trace.h                   |  6 +++---
+ drivers/firmware/efi/arm-runtime.c         |  2 +-
+ drivers/firmware/efi/cper.c                | 19 +++++++++++++++++++
+ drivers/firmware/efi/efi-init.c            | 19 ++++++++++---------
+ drivers/firmware/efi/libstub/Makefile      |  4 ++--
+ drivers/firmware/efi/libstub/alignedmem.c  |  1 +
+ drivers/firmware/efi/libstub/efistub.h     |  3 ++-
+ drivers/firmware/efi/libstub/kaslr.c       |  2 +-
+ drivers/firmware/efi/libstub/randomalloc.c | 12 +++++++-----
+ drivers/firmware/efi/libstub/x86-stub.c    | 25 +++++++++++++++----------
+ drivers/firmware/efi/libstub/x86-stub.h    |  4 ++--
+ drivers/firmware/efi/libstub/zboot.c       |  2 +-
+ drivers/firmware/efi/riscv-runtime.c       |  2 +-
+ include/linux/cper.h                       | 23 +++++++++++++++++++++++
+ 17 files changed, 97 insertions(+), 73 deletions(-)
 
