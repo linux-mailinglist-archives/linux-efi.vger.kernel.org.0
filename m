@@ -1,122 +1,123 @@
-Return-Path: <linux-efi+bounces-508-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-509-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F3A851F35
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Feb 2024 22:09:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DEB851F91
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Feb 2024 22:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E9C9284CD4
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Feb 2024 21:09:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B02DE284CF2
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Feb 2024 21:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA8B4C627;
-	Mon, 12 Feb 2024 21:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FAF4D59E;
+	Mon, 12 Feb 2024 21:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HkuOz9iA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kR1S9b0x"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCB04C61C
-	for <linux-efi@vger.kernel.org>; Mon, 12 Feb 2024 21:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3784D599
+	for <linux-efi@vger.kernel.org>; Mon, 12 Feb 2024 21:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707772147; cv=none; b=iiAVJvASxW7eMNoKRXFRsvuFLBJT5Z0WfdkQ6TVTFIerUxsHGahwt4MXp31IN9qL4YLZ0/p4x4nRPjp7N/6/FqsxSuGqGAqXvmCxscj/pQqp0Dd7MCIg2OJ6aqHwglzvNjW83Yx5Ixc7zI8fOSVy9IHQ+PRkhrf6IUZUcAswkBc=
+	t=1707773512; cv=none; b=U8OfeTEkVzXaSJ/rX6k8XUcG2INKvWrtU58nAOAsalEwo5w1LS/96+dz5iIogk/QWTNNxVc3J6mO8qFeB4cMqL9+uWnbZ4r0qsPul9uvo8PT4o+ikqxAbv7gj6uJ6AMsQ7pYs1GDhPFcMCr5N3rdNPUwAIV336fWudxJ5fdq+KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707772147; c=relaxed/simple;
-	bh=eaHK+0uqBKdiARIJBHAVmUjXS27cvj8wATvIY7GoRsI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VOD6W74vtcI3L/U2456XqQUjsIojLosjYbP6tGZCK0zKwwLGXNc4XpNIBiW+dVPX82CvmaeRmibMbFlGBb9GdvxExY8qVOczRDB6S+gqrQn80q0bR/X7v1X5us6U2I6+7usVUUcpiBE4M74Ft+MRTlLKLstqn9elhyQ/62TXhjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HkuOz9iA; arc=none smtp.client-ip=209.85.160.177
+	s=arc-20240116; t=1707773512; c=relaxed/simple;
+	bh=uChUnQc4QHp+qfT44V695j8Bfi5csO+b4Ks0xqs3YHM=;
+	h=Date:Message-Id:Mime-Version:Subject:From:To:Cc:Content-Type; b=Dxn/i6WMFNe2o214OoZh9R2MbjpRzr9+d6dYpNxgOuYi1DSA2hccdLdiF+E/VvGJe2WI84s/PlY2jZnYc9739V3yWX5/8t37cpkUB29NIUK9Hf8z1ei7gTKKc/NkfR/cfTfQ7YZRarWYC04psQIHzsEZhuFuJq/9nf6+h3/CBNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kR1S9b0x; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-428405a0205so9911cf.1
-        for <linux-efi@vger.kernel.org>; Mon, 12 Feb 2024 13:09:05 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc64e0fc7c8so4985497276.2
+        for <linux-efi@vger.kernel.org>; Mon, 12 Feb 2024 13:31:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707772145; x=1708376945; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TtBS0t8HQq3ffeWINKiRfJ18TizLD6ebAqVB2qey4Fk=;
-        b=HkuOz9iAWxKX9Kfw6AreLg3cb5CYf1V/CvTFQ1mYwjusKfKivSAjRIKbBSJQP8PO4l
-         +rIfxENn4uHp4CoUPJsMoxnRzXw45ZIGOCAZD2UPRGn+G/CVzhr8zQnzQkbB50hbjHBD
-         R7kODf3VoLYPyd/+vSfhMkUVSkaeBwPZMhkXGCgxGhaQM2ObQQNF+J2/pqs2RDAWz3q1
-         Y4+SFZ+OZiEHVOskFDKtW6gOJSmnwBhiG0xGfGKvgL37dOeAq7hB3L6+I9tV+aALJdTo
-         3vQUfqpUDh+UsYjiS50oE3u4RxtV7nGiwD4PrsUP5rPrWDrmWdjYHOjgQA3cxnhXm6Xq
-         NIag==
+        d=google.com; s=20230601; t=1707773510; x=1708378310; darn=vger.kernel.org;
+        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eNLzwhDxpGsG0xXWUreD5zieU26PkV4O6rqgtZMT05I=;
+        b=kR1S9b0xVghuNhih0RY6ckd6sl5vht9SMKx6ct0THm60HK2tkJVIGvEH6TnneCNSLt
+         Czif0nlWvlBsRhZTLpEM4OOe7nuqaNUyDZYbkyoGELFW5NLVJQ06xWonL2leZYu5B4TW
+         G1lkoLz4d0v7uISQcwcWBrF6zpivbdioQMLoemrkmzoU0H8Rm/T6RWE9+TsRs/6xyHlO
+         hbXdflQE+sVHkJkIRdtawSj1qg0Dx2y2BMMFGG0DiebuzBMIeb43hka31Gcmcpqs3RdQ
+         BI8Z4g/c1n/AT4Cv0/N6DrahdvARZIytcItQVJ5fR8fWuxYACr8ee8BVcT0jKC3xPJXg
+         kEjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707772145; x=1708376945;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TtBS0t8HQq3ffeWINKiRfJ18TizLD6ebAqVB2qey4Fk=;
-        b=cMdZdsB76OlrX7cmeb7TcxVwlXQaV4CREp9Sx59J2K78/jb4744oGSh/QOw7MAb6V1
-         9qtyXEu2B9B3x27HHEP3oViWXAFF3SWF17HnzKAX0MCPNxRxaweJjIRu6TEkG4c/EDrE
-         aZcR1lXsmij4Ry+ctl1RFj+8avG6jzRIN+gI3P9YRJzVfPRVgw91jvHOGeUFSOIQwgbr
-         Gg7DCTLDnkEwGz5Y2RrpZMsDHvCznRZNdNRJA95KtcBd0icpfWSlNus2MSSZmnGF65f2
-         t3u81bp4HEhmDx55H6i3o+XcnpIlfWcX6dzBEr5cnV7II/DZxyEsVGFR+ehad7hRwfrV
-         Rr4g==
-X-Gm-Message-State: AOJu0YzTEh4ser8vXtGrTBS+eE1dn9ybJqFaNARgO2TBJRexooAykVdB
-	yzulL4UfXJSUqISayrE7+u3V/LAPDQlhhGidoZ+KZFZuO8NQXz+UGdErh0n6eLL4csjfl8W9ms0
-	eaupN88vHxqfQSMz836BBvOXEP356gIxkYqjX
-X-Google-Smtp-Source: AGHT+IEpfEiCwSBozGYMJtQATokzhNsF6j8mBiB8P/EaHiE94WS6h4ItcmTOw7U41gnDZuvqbY6Um7RjsjvpZH5HXgU=
-X-Received: by 2002:ac8:4f8c:0:b0:42d:a99b:3346 with SMTP id
- j12-20020ac84f8c000000b0042da99b3346mr10964qtw.28.1707772144930; Mon, 12 Feb
- 2024 13:09:04 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707773510; x=1708378310;
+        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eNLzwhDxpGsG0xXWUreD5zieU26PkV4O6rqgtZMT05I=;
+        b=KQ5C3c/fKxKvKMtsQxYu8yrhLsUELhDebNWGJCfIiFzWsrNRgtujVbpedTpYtz1cRe
+         SBCTED12S3vYi4f4Mz02zXuWOxkFv22PUKBFAD8yzEIvWBmpr9DlFdyW2LkUOtkXB2tw
+         tU6OhtdnJw2wmTR6uUb5+9FCHcnethtJBQpvik4RHpPMAd3kGH/NX5jfSexwoPef1ATM
+         /YJVXUlAgG72t/yjBwZoCYp+cnYHnNAOkZHt7UQh+6Kv5TB5FKSCbSlNOsk65ysN+u9H
+         Szk8QgJCNv8FI6jcLzNnknks2+ll52yNdz/by31TelqaoKGd2MIQdCk2HbS5LK/YF/hR
+         7arA==
+X-Forwarded-Encrypted: i=1; AJvYcCX4ejlt3kiIlNgEDA71/dtrS8h+Dh21uzURSHvyVXrUW+ORDsyJ7dABybsfs2FZF6NUgvhvRPZSP/traECAK+p3qv6gSaSSfVHz
+X-Gm-Message-State: AOJu0YyjoOaixbi6ObQ2ca4QUIqmiRkqs8GadfvUoPzfFP8TsrTu7UBj
+	d0raLBhhFnwwTpkfctolAqI0+u2LiZ4lQ81FaG9yzQvd/N5Ksl+NXteCKMeVnxV2Oae47V7MDhV
+	jj88NrTOEv8r2Tg==
+X-Google-Smtp-Source: AGHT+IF9alaAHgJwNReX0hvs4exxyVhwm4cmM3z4eyrywKx2dW6rYYZY38FjIw40qMMnsR4IjK0GJApBbjhUT1k=
+X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:496d:5de1:a404:8bee])
+ (user=saravanak job=sendgmr) by 2002:a25:c402:0:b0:dcb:fb69:eadc with SMTP id
+ u2-20020a25c402000000b00dcbfb69eadcmr65722ybf.6.1707773510116; Mon, 12 Feb
+ 2024 13:31:50 -0800 (PST)
+Date: Mon, 12 Feb 2024 13:31:41 -0800
+Message-Id: <20240212213147.489377-1-saravanak@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240210030549.4048795-1-saravanak@google.com>
- <20240210030549.4048795-4-saravanak@google.com> <05e4fb58-f075-4995-9331-c3f8e8a850de@linaro.org>
-In-Reply-To: <05e4fb58-f075-4995-9331-c3f8e8a850de@linaro.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
+Subject: [PATCH v2 0/4] Add post-init-supplier binding to improve
+ suspend/resume stability
 From: Saravana Kannan <saravanak@google.com>
-Date: Mon, 12 Feb 2024 13:08:29 -0800
-Message-ID: <CAGETcx9dRCG8WzFABuEGy19hXgbYgMDV6b+-8bnzKNsbrpFiDA@mail.gmail.com>
-Subject: Re: [PATCH v1 3/4] dt-bindings: Add post-init-supplier property
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh+dt@kernel.org>, 
+To: Saravana Kannan <saravanak@google.com>, Rob Herring <robh+dt@kernel.org>, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>, 
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 11, 2024 at 6:52=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 10/02/2024 04:05, Saravana Kannan wrote:
-> > The post-init-supplier property can be used to break a dependency cycle=
- by
-> > marking some supplier(s) as a post device initialization supplier(s). T=
-his
-> > allows the kernel to do a better job at ordering initialization and
-> > suspend/resume of the devices in a dependency cycle.
->
-> ...
->
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 3dfe7ea25320..40fd498543a5 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -6055,10 +6055,11 @@ S:    Maintained
-> >  F:   drivers/base/devcoredump.c
-> >  F:   include/linux/devcoredump.h
-> >
-> > -DEVICE DEPENDENCY HELPER SCRIPT
-> > +FIRMWARE DEVICE LINK (fw_devlink)
->
-> This breaks ordering of MAINTAINERS...
+This patch series adds a "post-init-supplier" device tree binding that
+can be used to break dependency cycles in device tree and enforce a more
+determinstic probe/suspend/resume order. This will also improve the
+stability of global async probing and async suspend/resume and allow us
+to enable them more easily. Yet another step away from playing initcall
+chicken with probing and step towards fully async probing and
+suspend/resume.
 
-Oops. Thanks. Will fix it.
+Patch 3 (the binding docunentation) provide a lot more details and examples.
 
--Saravana
+v1->v2:
+- Addressed Documentation/commit text errors pointed out by Rob
+- Reordered MAINTAINERS chunk as pointed out by Krzysztof
+
+Saravana Kannan (4):
+  driver core: Adds flags param to fwnode_link_add()
+  driver core: Add FWLINK_FLAG_IGNORE to completely ignore a fwnode link
+  dt-bindings: Add post-init-supplier property
+  of: property: fw_devlink: Add support for "post-init-supplier"
+    property
+
+ .../bindings/post-init-supplier.yaml          | 101 ++++++++++++++++++
+ MAINTAINERS                                   |  13 +--
+ drivers/base/core.c                           |  14 ++-
+ drivers/firmware/efi/sysfb_efi.c              |   2 +-
+ drivers/of/property.c                         |  17 ++-
+ include/linux/fwnode.h                        |   5 +-
+ 6 files changed, 138 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/post-init-supplier.yaml
+
+-- 
+2.43.0.687.g38aa6559b0-goog
+
 
