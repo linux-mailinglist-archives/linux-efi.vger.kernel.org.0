@@ -1,69 +1,70 @@
-Return-Path: <linux-efi+bounces-552-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-553-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A972A855C03
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Feb 2024 09:09:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5727B855C29
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Feb 2024 09:17:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA834B2659E
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Feb 2024 08:09:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 142362835FB
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Feb 2024 08:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C267111A0;
-	Thu, 15 Feb 2024 08:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F26A11713;
+	Thu, 15 Feb 2024 08:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nihSTvYX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pp4bxTs6"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453091118F;
-	Thu, 15 Feb 2024 08:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5761BBA37;
+	Thu, 15 Feb 2024 08:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707984553; cv=none; b=NwfMCiDwZG4V+nQF9zwyASylo+0dW+h+/Aa1Y4O1yfFHy8MOutvmtGOIB3UZDue/YR95TD+mX4NTtf/PDtsXFZyXQAlS3Nv6Utc4qs/hOxLZDNLq7zfeTlkj6w/89jIUUOi7IdyjL95J16MIMhGcYHW0F7hyX7PEXNL5+lsskBU=
+	t=1707985050; cv=none; b=EhTyMeAb1uhqTGuGh3p0WkR/D2plUGrqjXAIwEC3IlZuFlvNG0qid/3HGaZ8D5YqTPSW5wct+2Wp9/pysdtqkwJPbuE+XTEZmqnD8+HgQdm1/OozmuT50tdAnMuxIFJ6Q3TOGg9ozhpCEf7vxIQRoA/PQ0OIpK6w0s2AI8S5MWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707984553; c=relaxed/simple;
-	bh=iBhxtYQbpLfj3dlhxKI2geTS1BtCu4ErK/UQ/65GC9k=;
+	s=arc-20240116; t=1707985050; c=relaxed/simple;
+	bh=+P7NF3eRBh0FZLxyVDfg36fNj8Y+3yMND3DUl1RSHA8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CNB9Z9QOMYZ7CW1tVv6008hIwkn6NKUumVod5ch5HW6UWUkbxN8m0L5DgRdtWNGt0t0GX0KQnWx88V/QaMqHVLuL5r4mC2y7OLkGYB2Bx9rs6KTbMZZnvHlyOyyEt9gzssw4qpHY3oqKeSIo2eyqusw+TJinPFCwZyZc6T4LUFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nihSTvYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6813C43141;
-	Thu, 15 Feb 2024 08:09:12 +0000 (UTC)
+	 To:Cc:Content-Type; b=Pw813ssv7SIJMKoA5m4vbN06UaSdsL5MUCN3P7YP0r/z4bF6PaIiuXOw8Z5jmQAeXs0lvCfgzfX6/4k3+WuKSMrWbvRZ54fwwxmWNobsFUaMQlAI+iov2JK3IjeJzFKYwpXpMtwJmKIV5GQDPM0ey0vruruGGkXRkAKDMQRZxgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pp4bxTs6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFCCC43601;
+	Thu, 15 Feb 2024 08:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707984552;
-	bh=iBhxtYQbpLfj3dlhxKI2geTS1BtCu4ErK/UQ/65GC9k=;
+	s=k20201202; t=1707985049;
+	bh=+P7NF3eRBh0FZLxyVDfg36fNj8Y+3yMND3DUl1RSHA8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nihSTvYX3PqYfrp/Bdhm3OFoEXqstCjlXeLvJFPhV0bn04Gh5frQzRdTQFYuObeJN
-	 FLs0y9nCyK06w+AgV8Mw2r5om9Vq1XLDrQrAdIZIawj2AYmScZD1TFkHrgcBzPQSKi
-	 whkNmIjS9L4MswGi/Np4BkbqIUWwGn1gO7AZRj9BScBxPdsKcaSeGzD6cFC+4bfT7I
-	 qpcmKEgXeLzPJswzqgZBbsDgqNXtHwfnHgz7xTMJ6X8PHyOx/dOFUwYipqeFuBm3Wf
-	 3lA/1QZNJnjx4kcNQfjAv2lOqRDj2+LF6KcFMaQn3/zAeEWdRTMt/YltHpfGmZkRRG
-	 scj1PwuNN3d8w==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-511976c126dso741250e87.1;
-        Thu, 15 Feb 2024 00:09:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUXno6ypJ2cFs8QFDruGUFMLrdp07P9xYV0oC89c/1RRGF0hHcm3YAcrbL6veJuf+QTxNwMLENSOD64zYsik0S1MDXIpsrc6iUIGIvIa1E6cd7qES7mwzoub1fLlMk0rsvmop3hulLmoC4ES6vzBUrOeKZzm8XsRc2wTY9NxrK5Zj3N260Jlurl4/uPmEzHYUUoXnWujPEFLMC2ue3s/P1Jcjnb
-X-Gm-Message-State: AOJu0YyKDM9adFslKy72ivRkjsW79cEEl45v/Q+9htsSrGo7AbRO3PiE
-	pu7kxLHfm6QU2KtgiNHM9GB9SdSLU9Ob1lnMZhCWuW4Ufru6u9nlhTEQO8yHOjU9Xln+hf2NcwE
-	C3/PMmxnveP8gYtluFRE2/+ye7Tg=
-X-Google-Smtp-Source: AGHT+IES5dFR/dEUVlJWfvtf3xciPB+7NHzjXGklMH5tK3nkOBEGAVCil/5i8S6vDeDjj+8Wg38DPkb9JJN4ATkctI0=
-X-Received: by 2002:a05:6512:e98:b0:511:ac21:57db with SMTP id
- bi24-20020a0565120e9800b00511ac2157dbmr936557lfb.0.1707984550864; Thu, 15 Feb
- 2024 00:09:10 -0800 (PST)
+	b=pp4bxTs6cC7B/IK2Rd9oqNCXU7OmQGOa7A0+1pVKylChCJCpNJjB/uYO2k+Izg4Hx
+	 MTV+DpCcYgnEacvbskWvbEDroLKH2YAGmIs/7kpnvz+om1Fhg76hiTdT4j36fI204Q
+	 kYOn2JK6l4ceyrs10pU22Bb9NYT0qN1M64CuB08JYb1/ENiV2a7f//1j6aJDWBCpZK
+	 azejBHYv5COlp4ydA0PPm0iXb0Cl9bi1B5U80940/B7vFC/CjF7e6xTJwbfpQGL6t9
+	 qwf/757MkLkTbJ6fx9LfIBUS/TnWFC7tI1ri1/3Irz3JNGovvA6ZED0dU0FeJj6vKZ
+	 wOFmKLTDisT1A==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5112bd13a4fso1749443e87.0;
+        Thu, 15 Feb 2024 00:17:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU44Y+FewHEYeoHDI0jpKffVn7E8A0YVxXn2Vk+7/w5Wg+s+WF4hqpEkcMlGDPEOGsWsy9KBueyod9iDZLOiSumXnzAomFflBWIwALcggfGQhwoKUcXfTJd5PZufdtdZsD5NQmZ2JvHJUMRI0f7xPsyjb1RZzArQB3KInKhk+zJdbJKBU11ovdi/KDrKJanQi4+03j6hjli+p/WYOa5SlsCuVJT
+X-Gm-Message-State: AOJu0YygaXe1GoWWoS6Dqb69+XrlXjLHWpf/MKw1pUAI/Qy9tJ/8z30y
+	Ie6xkPUx6lzYezsT0wyK7qlBSAY8QO2WD43nD+Br6sCQxy3YelqSAjFVhDoieEoLzah3fNCetu9
+	VYhi1N2zreJB3w6egE8X1QlNQzbY=
+X-Google-Smtp-Source: AGHT+IFaJnFdkQY2OwbLLwiamOuZj8op08dvguEH8JXfmdLHQiJ2OW0H1ADrevkksnugXgljUbU9OZ6MaGg3BfNvJ+s=
+X-Received: by 2002:ac2:41c8:0:b0:511:463c:32c1 with SMTP id
+ d8-20020ac241c8000000b00511463c32c1mr1514354lfi.19.1707985047858; Thu, 15 Feb
+ 2024 00:17:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240214221847.2066632-1-ross.philipson@oracle.com> <20240214221847.2066632-5-ross.philipson@oracle.com>
-In-Reply-To: <20240214221847.2066632-5-ross.philipson@oracle.com>
+References: <20240214221847.2066632-1-ross.philipson@oracle.com> <20240214221847.2066632-7-ross.philipson@oracle.com>
+In-Reply-To: <20240214221847.2066632-7-ross.philipson@oracle.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 15 Feb 2024 09:08:59 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGaMfUAR85jpeS2JxcmWBbpkzroCVZOtwa3WDQwStDjMw@mail.gmail.com>
-Message-ID: <CAMj1kXGaMfUAR85jpeS2JxcmWBbpkzroCVZOtwa3WDQwStDjMw@mail.gmail.com>
-Subject: Re: [PATCH v8 04/15] x86: Secure Launch Resource Table header file
+Date: Thu, 15 Feb 2024 09:17:16 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEmMBY_jc0uM5UgZbuZ3-C7NPKzg5AScaunyu9XzLgzZA@mail.gmail.com>
+Message-ID: <CAMj1kXEmMBY_jc0uM5UgZbuZ3-C7NPKzg5AScaunyu9XzLgzZA@mail.gmail.com>
+Subject: Re: [PATCH v8 06/15] x86: Add early SHA support for Secure Launch
+ early measurements
 To: Ross Philipson <ross.philipson@oracle.com>
 Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
 	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
@@ -73,330 +74,204 @@ Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
 	mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, 
 	jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu, 
 	herbert@gondor.apana.org.au, davem@davemloft.net, kanth.ghatraju@oracle.com, 
-	trenchboot-devel@googlegroups.com
+	trenchboot-devel@googlegroups.com, Eric Biggers <ebiggers@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
 On Wed, 14 Feb 2024 at 23:31, Ross Philipson <ross.philipson@oracle.com> wrote:
 >
-> Introduce the Secure Launch Resource Table which forms the formal
-> interface between the pre and post launch code.
+> From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
 >
+> The SHA algorithms are necessary to measure configuration information into
+> the TPM as early as possible before using the values. This implementation
+> uses the established approach of #including the SHA libraries directly in
+> the code since the compressed kernel is not uncompressed at this point.
+>
+> The SHA code here has its origins in the code from the main kernel:
+>
+> commit c4d5b9ffa31f ("crypto: sha1 - implement base layer for SHA-1")
+>
+> A modified version of this code was introduced to the lib/crypto/sha1.c
+> to bring it in line with the sha256 code and allow it to be pulled into the
+> setup kernel in the same manner as sha256 is.
+>
+> Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
 > Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+
+We have had some discussions about this, and you really need to
+capture the justification in the commit log for introducing new code
+that implements an obsolete and broken hashing algorithm.
+
+SHA-1 is broken and should no longer be used for anything. Introducing
+new support for a highly complex boot security feature, and then
+relying on SHA-1 in the implementation makes this whole effort seem
+almost futile, *unless* you provide some rock solid reasons here why
+this is still safe.
+
+If the upshot would be that some people are stuck with SHA-1 so they
+won't be able to use this feature, then I'm not convinced we should
+obsess over that.
+
 > ---
->  include/linux/slr_table.h | 270 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 270 insertions(+)
->  create mode 100644 include/linux/slr_table.h
+>  arch/x86/boot/compressed/Makefile       |  2 +
+>  arch/x86/boot/compressed/early_sha1.c   | 12 ++++
+>  arch/x86/boot/compressed/early_sha256.c |  6 ++
+
+
+
+>  include/crypto/sha1.h                   |  1 +
+>  lib/crypto/sha1.c                       | 81 +++++++++++++++++++++++++
+
+This needs to be a separate patch in any case.
+
+
+>  5 files changed, 102 insertions(+)
+>  create mode 100644 arch/x86/boot/compressed/early_sha1.c
+>  create mode 100644 arch/x86/boot/compressed/early_sha256.c
 >
-> diff --git a/include/linux/slr_table.h b/include/linux/slr_table.h
+> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> index f19c038409aa..a1b018eb9801 100644
+> --- a/arch/x86/boot/compressed/Makefile
+> +++ b/arch/x86/boot/compressed/Makefile
+> @@ -118,6 +118,8 @@ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+>  vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
+>  vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+>
+> +vmlinux-objs-$(CONFIG_SECURE_LAUNCH) += $(obj)/early_sha1.o $(obj)/early_sha256.o
+> +
+>  $(obj)/vmlinux: $(vmlinux-objs-y) FORCE
+>         $(call if_changed,ld)
+>
+> diff --git a/arch/x86/boot/compressed/early_sha1.c b/arch/x86/boot/compressed/early_sha1.c
 > new file mode 100644
-> index 000000000000..42020988233a
+> index 000000000000..0c7cf6f8157a
 > --- /dev/null
-> +++ b/include/linux/slr_table.h
-> @@ -0,0 +1,270 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
+> +++ b/arch/x86/boot/compressed/early_sha1.c
+> @@ -0,0 +1,12 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +/*
-> + * Secure Launch Resource Table
-> + *
-> + * Copyright (c) 2023, Oracle and/or its affiliates.
+> + * Copyright (c) 2022 Apertus Solutions, LLC.
 > + */
 > +
-> +#ifndef _LINUX_SLR_TABLE_H
-> +#define _LINUX_SLR_TABLE_H
+> +#include <linux/init.h>
+> +#include <linux/linkage.h>
+> +#include <linux/string.h>
+> +#include <asm/boot.h>
+> +#include <asm/unaligned.h>
 > +
-> +/* Put this in efi.h if it becomes a standard */
-> +#define SLR_TABLE_GUID                         EFI_GUID(0x877a9b2a, 0x0385, 0x45d1, 0xa0, 0x34, 0x9d, 0xac, 0x9c, 0x9e, 0x56, 0x5f)
-> +
-> +/* SLR table header values */
-> +#define SLR_TABLE_MAGIC                0x4452544d
-> +#define SLR_TABLE_REVISION     1
-> +
-> +/* Current revisions for the policy and UEFI config */
-> +#define SLR_POLICY_REVISION            1
-> +#define SLR_UEFI_CONFIG_REVISION       1
-> +
-> +/* SLR defined architectures */
-> +#define SLR_INTEL_TXT          1
-> +#define SLR_AMD_SKINIT         2
-> +
-> +/* SLR defined bootloaders */
-> +#define SLR_BOOTLOADER_INVALID 0
-> +#define SLR_BOOTLOADER_GRUB    1
-> +
-> +/* Log formats */
-> +#define SLR_DRTM_TPM12_LOG     1
-> +#define SLR_DRTM_TPM20_LOG     2
-> +
-> +/* DRTM Policy Entry Flags */
-> +#define SLR_POLICY_FLAG_MEASURED       0x1
-> +#define SLR_POLICY_IMPLICIT_SIZE       0x2
-> +
-> +/* Array Lengths */
-> +#define TPM_EVENT_INFO_LENGTH          32
-> +#define TXT_VARIABLE_MTRRS_LENGTH      32
-> +
-> +/* Tags */
-> +#define SLR_ENTRY_INVALID      0x0000
-> +#define SLR_ENTRY_DL_INFO      0x0001
-> +#define SLR_ENTRY_LOG_INFO     0x0002
-> +#define SLR_ENTRY_ENTRY_POLICY 0x0003
-> +#define SLR_ENTRY_INTEL_INFO   0x0004
-> +#define SLR_ENTRY_AMD_INFO     0x0005
-> +#define SLR_ENTRY_ARM_INFO     0x0006
-> +#define SLR_ENTRY_UEFI_INFO    0x0007
-> +#define SLR_ENTRY_UEFI_CONFIG  0x0008
-> +#define SLR_ENTRY_END          0xffff
-> +
-> +/* Entity Types */
-> +#define SLR_ET_UNSPECIFIED     0x0000
-> +#define SLR_ET_SLRT            0x0001
-> +#define SLR_ET_BOOT_PARAMS     0x0002
-> +#define SLR_ET_SETUP_DATA      0x0003
-> +#define SLR_ET_CMDLINE         0x0004
-> +#define SLR_ET_UEFI_MEMMAP     0x0005
-> +#define SLR_ET_RAMDISK         0x0006
-> +#define SLR_ET_TXT_OS2MLE      0x0010
-> +#define SLR_ET_UNUSED          0xffff
-> +
-> +#ifndef __ASSEMBLY__
-> +
+> +#include "../../../../lib/crypto/sha1.c"
+> diff --git a/arch/x86/boot/compressed/early_sha256.c b/arch/x86/boot/compressed/early_sha256.c
+> new file mode 100644
+> index 000000000000..54930166ffee
+> --- /dev/null
+> +++ b/arch/x86/boot/compressed/early_sha256.c
+> @@ -0,0 +1,6 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +/*
-> + * Primary SLR Table Header
+> + * Copyright (c) 2022 Apertus Solutions, LLC
 > + */
-> +struct slr_table {
-> +       u32 magic;
-> +       u16 revision;
-> +       u16 architecture;
-> +       u32 size;
-> +       u32 max_size;
-> +       /* entries[] */
-> +} __packed;
-
-Packing this struct has no effect on the layout so better drop the
-__packed here. If this table is part of a structure that can appear
-misaligned in memory, better to pack the outer struct or deal with it
-there in another way.
-
 > +
-> +/*
-> + * Common SLRT Table Header
-> + */
-> +struct slr_entry_hdr {
-> +       u16 tag;
-> +       u16 size;
-> +} __packed;
-
-Same here
-
-> +
-> +/*
-> + * Boot loader context
-> + */
-> +struct slr_bl_context {
-> +       u16 bootloader;
-> +       u16 reserved;
-> +       u64 context;
-> +} __packed;
-> +
-> +/*
-> + * DRTM Dynamic Launch Configuration
-> + */
-> +struct slr_entry_dl_info {
-> +       struct slr_entry_hdr hdr;
-> +       struct slr_bl_context bl_context;
-> +       u64 dl_handler;
-
-I noticed in the EFI patch that this is actually
-
-void (*dl_handler)(struct slr_bl_context *bl_context);
-
-so better declare it as such.
-
-> +       u64 dce_base;
-> +       u32 dce_size;
-> +       u64 dlme_entry;
-> +} __packed;
-> +
-> +/*
-> + * TPM Log Information
-> + */
-> +struct slr_entry_log_info {
-> +       struct slr_entry_hdr hdr;
-> +       u16 format;
-> +       u16 reserved;
-> +       u64 addr;
-> +       u32 size;
-> +} __packed;
-> +
-> +/*
-> + * DRTM Measurement Policy
-> + */
-> +struct slr_entry_policy {
-> +       struct slr_entry_hdr hdr;
-> +       u16 revision;
-> +       u16 nr_entries;
-> +       /* policy_entries[] */
-
-Please use a flex array here:
-
-  struct slr_policy_entry policy_entries[];
-
-> +} __packed;
-> +
-> +/*
-> + * DRTM Measurement Entry
-> + */
-> +struct slr_policy_entry {
-> +       u16 pcr;
-> +       u16 entity_type;
-> +       u16 flags;
-> +       u16 reserved;
-> +       u64 entity;
-> +       u64 size;
-> +       char evt_info[TPM_EVENT_INFO_LENGTH];
-> +} __packed;
-> +
-> +/*
-> + * Secure Launch defined MTRR saving structures
-> + */
-> +struct slr_txt_mtrr_pair {
-> +       u64 mtrr_physbase;
-> +       u64 mtrr_physmask;
-> +} __packed;
-> +
-> +struct slr_txt_mtrr_state {
-> +       u64 default_mem_type;
-> +       u64 mtrr_vcnt;
-> +       struct slr_txt_mtrr_pair mtrr_pair[TXT_VARIABLE_MTRRS_LENGTH];
-> +} __packed;
-> +
-> +/*
-> + * Intel TXT Info table
-> + */
-> +struct slr_entry_intel_info {
-> +       struct slr_entry_hdr hdr;
-> +       u64 saved_misc_enable_msr;
-> +       struct slr_txt_mtrr_state saved_bsp_mtrrs;
-> +} __packed;
-> +
-> +/*
-> + * AMD SKINIT Info table
-> + */
-> +struct slr_entry_amd_info {
-> +       struct slr_entry_hdr hdr;
-> +} __packed;
-> +
-> +/*
-> + * ARM DRTM Info table
-> + */
-> +struct slr_entry_arm_info {
-> +       struct slr_entry_hdr hdr;
-> +} __packed;
-> +
-
-These two look preliminary, so better to drop them now and introduce
-only once you know what they will look like.
-
-> +struct slr_entry_uefi_config {
-> +       struct slr_entry_hdr hdr;
-> +       u16 revision;
-> +       u16 nr_entries;
-> +       /* uefi_cfg_entries[] */
-
-Use a flex array
-
-> +} __packed;
-> +
-> +struct slr_uefi_cfg_entry {
-> +       u16 pcr;
-> +       u16 reserved;
-> +       u64 cfg; /* address or value */
-> +       u32 size;
-> +       char evt_info[TPM_EVENT_INFO_LENGTH];
-> +} __packed;
-> +
-> +static inline void *slr_end_of_entrys(struct slr_table *table)
-
-typo 'entrys' ?
-
+> +#include "../../../../lib/crypto/sha256.c"
+> diff --git a/include/crypto/sha1.h b/include/crypto/sha1.h
+> index 044ecea60ac8..d715dd5332e1 100644
+> --- a/include/crypto/sha1.h
+> +++ b/include/crypto/sha1.h
+> @@ -42,5 +42,6 @@ extern int crypto_sha1_finup(struct shash_desc *desc, const u8 *data,
+>  #define SHA1_WORKSPACE_WORDS   16
+>  void sha1_init(__u32 *buf);
+>  void sha1_transform(__u32 *digest, const char *data, __u32 *W);
+> +void sha1(const u8 *data, unsigned int len, u8 *out);
+>
+>  #endif /* _CRYPTO_SHA1_H */
+> diff --git a/lib/crypto/sha1.c b/lib/crypto/sha1.c
+> index 1aebe7be9401..10152125b338 100644
+> --- a/lib/crypto/sha1.c
+> +++ b/lib/crypto/sha1.c
+> @@ -137,4 +137,85 @@ void sha1_init(__u32 *buf)
+>  }
+>  EXPORT_SYMBOL(sha1_init);
+>
+> +static void __sha1_transform(u32 *digest, const char *data)
 > +{
-> +       return (((void *)table) + table->size);
-
-You can drop two sets of parens here
-
+> +       u32 ws[SHA1_WORKSPACE_WORDS];
+> +
+> +       sha1_transform(digest, data, ws);
+> +
+> +       memzero_explicit(ws, sizeof(ws));
 > +}
 > +
-> +static inline struct slr_entry_hdr *
-> +slr_next_entry(struct slr_table *table,
-> +              struct slr_entry_hdr *curr)
+> +static void sha1_update(struct sha1_state *sctx, const u8 *data, unsigned int len)
 > +{
-> +       struct slr_entry_hdr *next = (struct slr_entry_hdr *)
-> +                               ((u8 *)curr + curr->size);
+> +       unsigned int partial = sctx->count % SHA1_BLOCK_SIZE;
 > +
-> +       if ((void *)next >= slr_end_of_entrys(table))
-> +               return NULL;
-> +       if (next->tag == SLR_ENTRY_END)
-> +               return NULL;
+> +       sctx->count += len;
 > +
-> +       return next;
-> +}
+> +       if (likely((partial + len) >= SHA1_BLOCK_SIZE)) {
+> +               int blocks;
 > +
-> +static inline struct slr_entry_hdr *
-> +slr_next_entry_by_tag(struct slr_table *table,
-> +                     struct slr_entry_hdr *entry,
-> +                     u16 tag)
-> +{
-> +       if (!entry) /* Start from the beginning */
-> +               entry = (struct slr_entry_hdr *)(((u8 *)table) + sizeof(*table));
+> +               if (partial) {
+> +                       int p = SHA1_BLOCK_SIZE - partial;
 > +
-> +       for ( ; ; ) {
-> +               if (entry->tag == tag)
-> +                       return entry;
+> +                       memcpy(sctx->buffer + partial, data, p);
+> +                       data += p;
+> +                       len -= p;
 > +
-> +               entry = slr_next_entry(table, entry);
-> +               if (!entry)
-> +                       return NULL;
+> +                       __sha1_transform(sctx->state, sctx->buffer);
+> +               }
+> +
+> +               blocks = len / SHA1_BLOCK_SIZE;
+> +               len %= SHA1_BLOCK_SIZE;
+> +
+> +               if (blocks) {
+> +                       while (blocks--) {
+> +                               __sha1_transform(sctx->state, data);
+> +                               data += SHA1_BLOCK_SIZE;
+> +                       }
+> +               }
+> +               partial = 0;
 > +       }
 > +
-> +       return NULL;
+> +       if (len)
+> +               memcpy(sctx->buffer + partial, data, len);
 > +}
 > +
-> +static inline int
-> +slr_add_entry(struct slr_table *table,
-> +             struct slr_entry_hdr *entry)
+> +static void sha1_final(struct sha1_state *sctx, u8 *out)
 > +{
-> +       struct slr_entry_hdr *end;
+> +       const int bit_offset = SHA1_BLOCK_SIZE - sizeof(__be64);
+> +       unsigned int partial = sctx->count % SHA1_BLOCK_SIZE;
+> +       __be64 *bits = (__be64 *)(sctx->buffer + bit_offset);
+> +       __be32 *digest = (__be32 *)out;
+> +       int i;
 > +
-> +       if ((table->size + entry->size) > table->max_size)
-> +               return -1;
+> +       sctx->buffer[partial++] = 0x80;
+> +       if (partial > bit_offset) {
+> +               memset(sctx->buffer + partial, 0x0, SHA1_BLOCK_SIZE - partial);
+> +               partial = 0;
 > +
-> +       memcpy((u8 *)table + table->size - sizeof(*end), entry, entry->size);
-> +       table->size += entry->size;
+> +               __sha1_transform(sctx->state, sctx->buffer);
+> +       }
 > +
-> +       end  = (struct slr_entry_hdr *)((u8 *)table + table->size - sizeof(*end));
-> +       end->tag = SLR_ENTRY_END;
-> +       end->size = sizeof(*end);
+> +       memset(sctx->buffer + partial, 0x0, bit_offset - partial);
+> +       *bits = cpu_to_be64(sctx->count << 3);
+> +       __sha1_transform(sctx->state, sctx->buffer);
 > +
-> +       return 0;
+> +       for (i = 0; i < SHA1_DIGEST_SIZE / sizeof(__be32); i++)
+> +               put_unaligned_be32(sctx->state[i], digest++);
+> +
+> +       *sctx = (struct sha1_state){};
 > +}
 > +
-> +static inline void
-> +slr_init_table(struct slr_table *slrt, u16 architecture, u32 max_size)
+> +void sha1(const u8 *data, unsigned int len, u8 *out)
 > +{
-> +       struct slr_entry_hdr *end;
+> +       struct sha1_state sctx = {0};
 > +
-> +       slrt->magic = SLR_TABLE_MAGIC;
-> +       slrt->revision = SLR_TABLE_REVISION;
-> +       slrt->architecture = architecture;
-> +       slrt->size = sizeof(*slrt) + sizeof(*end);
-> +       slrt->max_size = max_size;
-> +       end = (struct slr_entry_hdr *)((u8 *)slrt + sizeof(*slrt));
-> +       end->tag = SLR_ENTRY_END;
-> +       end->size = sizeof(*end);
+> +       sha1_init(sctx.state);
+> +       sctx.count = 0;
+> +       sha1_update(&sctx, data, len);
+> +       sha1_final(&sctx, out);
 > +}
+> +EXPORT_SYMBOL(sha1);
 > +
-> +#endif /* !__ASSEMBLY */
-> +
-> +#endif /* _LINUX_SLR_TABLE_H */
+>  MODULE_LICENSE("GPL");
 > --
 > 2.39.3
 >
