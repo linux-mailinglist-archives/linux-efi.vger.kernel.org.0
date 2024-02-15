@@ -1,45 +1,45 @@
-Return-Path: <linux-efi+bounces-563-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-564-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DCA85624E
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Feb 2024 12:57:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19BE856258
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Feb 2024 12:58:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E398D289481
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Feb 2024 11:57:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 301E81C22F88
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Feb 2024 11:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D3812B164;
-	Thu, 15 Feb 2024 11:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7543C57872;
+	Thu, 15 Feb 2024 11:58:45 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15905127B41;
-	Thu, 15 Feb 2024 11:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F367912B15B;
+	Thu, 15 Feb 2024 11:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707998212; cv=none; b=AURPw1pbmie/0FvynviUKVdvPyuffsCmfVwiRdQJYVn8d4okG1EQQBT23qkxF67gZ5Kk9zL0g0fmL5lnnKs6AKlgDzLlCMRUqROkXyFV0OZntn1RGSYWVgLkkD8nJIY9Vp3nJwUEgfD+smspcve/TirdhbzNzxECp9FmPt0zQgI=
+	t=1707998325; cv=none; b=HLvkEJVtPiPvniEnv9By31iVrnPZ6Mu/3YLnc7sh8zuHEfIzv1nEVcP5FZ296edT/C8k4jKYYOatgONLMLTXxMAF9ITJyEIvspKfM7dflOQbMPwDKnibGPd7SWjRfzP5j1c+8h8uIfFPIRNZKMo+sUvhNeHYyIJM7YSgC3OjMzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707998212; c=relaxed/simple;
-	bh=GuEq2m8kfPXvgra25VpHA7V6cCxxsrm6u7nxl0eVd0s=;
+	s=arc-20240116; t=1707998325; c=relaxed/simple;
+	bh=K7xEpsB2cMveNQiHzXYyaP1JLMAMdzqrLnMo4zJBzco=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mJEDVxCawZCvaLhPGiciN58VqEWMWjkuNyTJEwqfvuLkv/AqirbRRbXKXmQI0AGojlLBmVxGMQjmHYT6p1VWrLNKXsbKfdA1igBd+NSyg1JwInFBrOw44eECzE88gPFvm0u4ns6n1SF5Z7ockpOjq5w56XbUU/jgu5Wgn222F18=
+	 MIME-Version:Content-Type; b=Mjug8V4lDVfv4U4jjuCWYyaDJ7uZFnDrtKs3exMYD/iZ70oyptrbKrPP/U+adUJlxHA1iUYcDxYXctcPWlO9d9u+QhSLlQnXdfUf3Zx8pqmooV3CSmNjE9xYPFO6Kp8fHCAN3aGpjGJvRwn7FiqF6Z/3U0kaPbR8e0EANLCDxR8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TbD2j1XwCz6J9xX;
-	Thu, 15 Feb 2024 19:52:45 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TbD5W4fnRz6K8wc;
+	Thu, 15 Feb 2024 19:55:11 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 78D9C140D1A;
-	Thu, 15 Feb 2024 19:56:47 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 43C96140B55;
+	Thu, 15 Feb 2024 19:58:39 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 15 Feb
- 2024 11:56:47 +0000
-Date: Thu, 15 Feb 2024 11:56:46 +0000
+ 2024 11:58:38 +0000
+Date: Thu, 15 Feb 2024 11:58:38 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 CC: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -47,12 +47,12 @@ CC: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
  Schofield" <alison.schofield@intel.com>, Vishal Verma
 	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
 	<dan.j.williams@intel.com>, Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: Re: [PATCH v2 1/4] acpi/ghes, cxl: Create a common CXL struct to
- handle different CXL CPER records
-Message-ID: <20240215115646.000038d6@Huawei.com>
-In-Reply-To: <20240109034755.100555-2-Smita.KoralahalliChannabasappa@amd.com>
+Subject: Re: [PATCH v2 2/4] efi/cper, cxl: Make definitions and structures
+ global
+Message-ID: <20240215115838.000050b1@Huawei.com>
+In-Reply-To: <20240109034755.100555-3-Smita.KoralahalliChannabasappa@amd.com>
 References: <20240109034755.100555-1-Smita.KoralahalliChannabasappa@amd.com>
-	<20240109034755.100555-2-Smita.KoralahalliChannabasappa@amd.com>
+	<20240109034755.100555-3-Smita.KoralahalliChannabasappa@amd.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -66,113 +66,105 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, 9 Jan 2024 03:47:52 +0000
+On Tue, 9 Jan 2024 03:47:53 +0000
 Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com> wrote:
 
-> Currently defined cxl_cper_callback interface between CXL subsystem and
-> GHES module is just confined to handling CXL Component errors only.
-> 
-> Extend this callback to process CXL Protocol errors as well. Achieve
-> by defining a new struct cxl_cper_event_info to include cxl_cper_event_rec
-> and other fields of CXL protocol errors which will be defined in future
-> patches.
+> In preparation to add tracepoint support, move protocol error UUID
+> definition to a common location and make CXL RAS capability struct
+> global for use across different modules.
 > 
 > Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Hi Smita,
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I guess this will get effected by the mess around the reporting that
-Ira is fixing but in meantime some comments on the current code.
 > ---
 > v2:
-> 	cxl_cper_rec_data -> cxl_cper_event_info
-> 	data -> info
+> 	No change.
 > ---
->  drivers/acpi/apei/ghes.c  | 6 +++++-
->  drivers/cxl/pci.c         | 8 ++++----
->  include/linux/cxl-event.h | 6 +++++-
->  3 files changed, 14 insertions(+), 6 deletions(-)
+>  drivers/firmware/efi/cper_cxl.c | 11 -----------
+>  drivers/firmware/efi/cper_cxl.h |  7 ++-----
+>  include/linux/cper.h            |  4 ++++
+>  include/linux/cxl-event.h       | 11 +++++++++++
+>  4 files changed, 17 insertions(+), 16 deletions(-)
 > 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index aed465d2fd68..60b615d361d3 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -693,6 +693,10 @@ static cxl_cper_callback cper_callback;
->  static void cxl_cper_post_event(enum cxl_event_type event_type,
->  				struct cxl_cper_event_rec *rec)
->  {
-> +	struct cxl_cper_event_info info;
+> diff --git a/drivers/firmware/efi/cper_cxl.c b/drivers/firmware/efi/cper_cxl.c
+> index a55771b99a97..4fd8d783993e 100644
+> --- a/drivers/firmware/efi/cper_cxl.c
+> +++ b/drivers/firmware/efi/cper_cxl.c
+> @@ -18,17 +18,6 @@
+>  #define PROT_ERR_VALID_DVSEC			BIT_ULL(5)
+>  #define PROT_ERR_VALID_ERROR_LOG		BIT_ULL(6)
+>  
+> -/* CXL RAS Capability Structure, CXL v3.0 sec 8.2.4.16 */
+> -struct cxl_ras_capability_regs {
+> -	u32 uncor_status;
+> -	u32 uncor_mask;
+> -	u32 uncor_severity;
+> -	u32 cor_status;
+> -	u32 cor_mask;
+> -	u32 cap_control;
+> -	u32 header_log[16];
+> -};
+> -
+>  static const char * const prot_err_agent_type_strs[] = {
+>  	"Restricted CXL Device",
+>  	"Restricted CXL Host Downstream Port",
+> diff --git a/drivers/firmware/efi/cper_cxl.h b/drivers/firmware/efi/cper_cxl.h
+> index 86bfcf7909ec..6f8c00495708 100644
+> --- a/drivers/firmware/efi/cper_cxl.h
+> +++ b/drivers/firmware/efi/cper_cxl.h
+> @@ -7,14 +7,11 @@
+>   * Author: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+>   */
+>  
+> +#include <linux/cxl-event.h>
 > +
-> +	info.rec = *(struct cxl_cper_event_rec *)rec;
-
-Why cast?
-
-> +
->  	if (rec->hdr.length <= sizeof(rec->hdr) ||
->  	    rec->hdr.length > sizeof(*rec)) {
->  		pr_err(FW_WARN "CXL CPER Invalid section length (%u)\n",
-> @@ -707,7 +711,7 @@ static void cxl_cper_post_event(enum cxl_event_type event_type,
+>  #ifndef LINUX_CPER_CXL_H
+>  #define LINUX_CPER_CXL_H
 >  
->  	guard(rwsem_read)(&cxl_cper_rw_sem);
->  	if (cper_callback)
-> -		cper_callback(event_type, rec);
-> +		cper_callback(event_type, &info);
->  }
+> -/* CXL Protocol Error Section */
+> -#define CPER_SEC_CXL_PROT_ERR						\
+> -	GUID_INIT(0x80B9EFB4, 0x52B5, 0x4DE3, 0xA7, 0x77, 0x68, 0x78,	\
+> -		  0x4B, 0x77, 0x10, 0x48)
+> -
+>  #pragma pack(1)
 >  
->  int cxl_cper_register_callback(cxl_cper_callback callback)
-> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-> index b14237f824cf..1ad240ead4fd 100644
-> --- a/drivers/cxl/pci.c
-> +++ b/drivers/cxl/pci.c
-> @@ -972,9 +972,9 @@ static struct pci_driver cxl_pci_driver = {
+>  /* Compute Express Link Protocol Error Section, UEFI v2.10 sec N.2.13 */
+> diff --git a/include/linux/cper.h b/include/linux/cper.h
+> index c1a7dc325121..2cbf0a93785a 100644
+> --- a/include/linux/cper.h
+> +++ b/include/linux/cper.h
+> @@ -89,6 +89,10 @@ enum {
+>  #define CPER_NOTIFY_DMAR						\
+>  	GUID_INIT(0x667DD791, 0xC6B3, 0x4c27, 0x8A, 0x6B, 0x0F, 0x8E,	\
+>  		  0x72, 0x2D, 0xEB, 0x41)
+> +/* CXL Protocol Error Section */
+> +#define CPER_SEC_CXL_PROT_ERR						\
+> +	GUID_INIT(0x80B9EFB4, 0x52B5, 0x4DE3, 0xA7, 0x77, 0x68, 0x78,	\
+> +		  0x4B, 0x77, 0x10, 0x48)
 >  
->  #define CXL_EVENT_HDR_FLAGS_REC_SEVERITY GENMASK(1, 0)
->  static void cxl_cper_event_call(enum cxl_event_type ev_type,
-> -				struct cxl_cper_event_rec *rec)
-> +				struct cxl_cper_event_info *info)
->  {
-> -	struct cper_cxl_event_devid *device_id = &rec->hdr.device_id;
-> +	struct cper_cxl_event_devid *device_id = &info->rec.hdr.device_id;
->  	struct pci_dev *pdev __free(pci_dev_put) = NULL;
->  	enum cxl_event_log_type log_type;
->  	struct cxl_dev_state *cxlds;
-> @@ -996,11 +996,11 @@ static void cxl_cper_event_call(enum cxl_event_type ev_type,
->  		return;
->  
->  	/* Fabricate a log type */
-> -	hdr_flags = get_unaligned_le24(rec->event.generic.hdr.flags);
-> +	hdr_flags = get_unaligned_le24(info->rec.event.generic.hdr.flags);
->  	log_type = FIELD_GET(CXL_EVENT_HDR_FLAGS_REC_SEVERITY, hdr_flags);
->  
->  	cxl_event_trace_record(cxlds->cxlmd, log_type, ev_type,
-> -			       &uuid_null, &rec->event);
-> +			       &uuid_null, &info->rec.event);
->  }
->  
->  static int __init cxl_pci_driver_init(void)
+>  /*
+>   * Flags bits definitions for flags in struct cper_record_header
 > diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
-> index 17eadee819b6..6ce839c59749 100644
+> index 6ce839c59749..3a41dd5723e8 100644
 > --- a/include/linux/cxl-event.h
 > +++ b/include/linux/cxl-event.h
-> @@ -141,8 +141,12 @@ struct cxl_cper_event_rec {
+> @@ -141,6 +141,17 @@ struct cxl_cper_event_rec {
 >  	union cxl_event event;
 >  } __packed;
 >  
-> +struct cxl_cper_event_info {
-> +	struct cxl_cper_event_rec rec;
-
-Only parts of this will be relevant to the protocol errors.
-Maybe worth doing a union with the first part of rec in both
-structures but not the union cxl_event in the protocol error.
-Keep it all anonymous to avoid yet another structure in the
-reads/and writes though.
-
+> +/* CXL RAS Capability Structure, CXL v3.0 sec 8.2.4.16 */
+> +struct cxl_ras_capability_regs {
+> +	u32 uncor_status;
+> +	u32 uncor_mask;
+> +	u32 uncor_severity;
+> +	u32 cor_status;
+> +	u32 cor_mask;
+> +	u32 cap_control;
+> +	u32 header_log[16];
 > +};
 > +
->  typedef void (*cxl_cper_callback)(enum cxl_event_type type,
-> -				  struct cxl_cper_event_rec *rec);
-> +				  struct cxl_cper_event_info *info);
->  
->  #ifdef CONFIG_ACPI_APEI_GHES
->  int cxl_cper_register_callback(cxl_cper_callback callback);
+>  struct cxl_cper_event_info {
+>  	struct cxl_cper_event_rec rec;
+>  };
 
 
