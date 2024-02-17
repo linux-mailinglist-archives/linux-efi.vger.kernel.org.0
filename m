@@ -1,217 +1,182 @@
-Return-Path: <linux-efi+bounces-580-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-581-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E521F858EB3
-	for <lists+linux-efi@lfdr.de>; Sat, 17 Feb 2024 11:27:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFF2859248
+	for <lists+linux-efi@lfdr.de>; Sat, 17 Feb 2024 21:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771BD282A7E
-	for <lists+linux-efi@lfdr.de>; Sat, 17 Feb 2024 10:27:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 565251F223DE
+	for <lists+linux-efi@lfdr.de>; Sat, 17 Feb 2024 20:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A682CCB4;
-	Sat, 17 Feb 2024 10:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5801F7E591;
+	Sat, 17 Feb 2024 20:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o0Ek3M1m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JEomp9Ix"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6562C85A
-	for <linux-efi@vger.kernel.org>; Sat, 17 Feb 2024 10:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792D17E596;
+	Sat, 17 Feb 2024 20:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708165669; cv=none; b=KT1Pq1UwoVTE8iTiuk3NPPxOTCm+ds6VY0DSyYO9IX6N8TnULRghFBKvLy3zw/CTUCGj8pdc37oN++R8xRf3H6+eV6dWI10ilq/4nLylN3EioKociSPxms6S4G3tKZT/zHfkPrLy5+6XIoNTvd6PW1mAWHDdKGT0+qFIITYyMIk=
+	t=1708200463; cv=none; b=oIj5G6StB+M+d69nBOrXy1pbbTUek23WKi8LOxx1fwut7sowujdKl5vqGyFDEjuFfRT4APF7Y7C5tzL1eUEoTWXJ0ECe3fZavtFtSJOkt6lZknQXi5+MA+1WbmXpxlNVDPktxy33czxQsHiGg624pXzs+RtjhVRWUwCsqbaBQ8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708165669; c=relaxed/simple;
-	bh=ITgI8wtXqvIXeUHgFXHCH7Z/ODX/Zp0/cZW85LaK3GI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DspsLTEIUGtBDq2rqFkcQDpB9oHqPbcVtBT+NStSTiwW9en0yRe2vESvmQH6fv9Ly5a1b23SleL8tyVHE2p5dFY3Js2DU0udGA5Wovrj5kIoc9ngk+/TGCkXk/ciQbeDULvBk1sF+qz4qDGnKmoGoZoikDF8ag1TnEf5cbwLSyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o0Ek3M1m; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5610cc8cc1aso3036331a12.1
-        for <linux-efi@vger.kernel.org>; Sat, 17 Feb 2024 02:27:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708165665; x=1708770465; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J6wGmVKMUMPFGBDWK1cKr8wVY2QYEjHS28FhJFBjkZo=;
-        b=o0Ek3M1m68etsdzvk9nT6q76Gygz7bD1sFX8TBbLf/OQrmFDrUMYH7GYlrDSzHJ396
-         3kHr86Hxt7lU+1qyI3rWdOrhl6LTf+uU/Qx0SHGUFePhGgRMkUy29D3cMNH7EAdDKj3h
-         DihlqJzYIT56uXcZoXBM8dPXOEs28SEtWwOhufLqzaC1bPZSyQLHftgoY9jGNO+KLAOZ
-         jdyqPeQm4upNhiz1LNnt0TUlJCU4V/zaZJd8GTrZ8OiFePknW7edfQhrIE5Y768wz/W+
-         akjvtsEv6Oip4D5AyRmshu51QU/+l+wOjRPY7mONPx3KMkrPxfmNLi4ICkK3bSWVKetg
-         z4VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708165665; x=1708770465;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J6wGmVKMUMPFGBDWK1cKr8wVY2QYEjHS28FhJFBjkZo=;
-        b=sr0igaKpUniJaaGLT4vEIpS0nrSbXM7HkyLde9Z880H7SsnY4zy/Cng0YUiHfCJLmd
-         MnMptkEfxSJJwoe/EYCflM86ybZpM/XYuFYg0pP89l7TePmlfeLJ1MCFjxLamGG0dwJY
-         r0sgaioGBu/9R0f8oxhcyS6NHeZ6KQDtmvi7OnnlZx16QlEzl2qQw2+WWTbN2ofSvjC7
-         jbjH2xdQMR43euIDy9nx1YgDqxKoiUaL06XW/uU51PjxfXQCJs3i3UOIVgpcbaJ8+StV
-         S4JcEz9R1Iee3ZegmEVf3H/K/hS7+vQsATP+ImMqQglCI3l2c6mDyMyEDWN7If4iTAz2
-         E/DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkGIYaQLyv9rRK7l8OqDYHr0QolW+qid2naS5i+WwAwsNuzNKGm4M6QqPOIwd9v+VVjZ7JYaBMTo/88NMofuFviqGxceL4OmDC
-X-Gm-Message-State: AOJu0YzJCj6iRsj2g8tvjngVMraIRBOJlvv8qu40WK3VLBv/upNR8g7c
-	6TeqExHLzgWH/sfz4Jig9CF5VmLDJw6kEW+k1Z6c1U7Hec3aWGdbLl6kc5rT8iw=
-X-Google-Smtp-Source: AGHT+IHUeBCCNfOTMT200Z74Cnghv39yumCat7MUHrvWHRWyM9YqqunSXXsBmoxV7HCdaoMCmKKnOg==
-X-Received: by 2002:aa7:d0d6:0:b0:564:1884:76be with SMTP id u22-20020aa7d0d6000000b00564188476bemr994258edo.39.1708165665403;
-        Sat, 17 Feb 2024 02:27:45 -0800 (PST)
-Received: from [192.168.0.22] ([78.10.207.130])
-        by smtp.gmail.com with ESMTPSA id y5-20020aa7d505000000b0056200715130sm777637edq.54.2024.02.17.02.27.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Feb 2024 02:27:44 -0800 (PST)
-Message-ID: <b7fcb71a-e3bf-4f50-89d6-caff9f3303dc@linaro.org>
-Date: Sat, 17 Feb 2024 11:27:43 +0100
+	s=arc-20240116; t=1708200463; c=relaxed/simple;
+	bh=/69HW9NzBJsJX+iI5iUdtA0unbwpwPW5fq7scXx+J5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hn54m8xYm6TG0AQ6/Bfvocg0znUmtQOyzxIpnZQdDdPi/N+8V+7Os9iVJCK9nEiXgpO9H7qcc+JRo17e6EE8r96x+hY7dUlBeNAj8CB8GTg7AmjpS24HQJt8OGBaltf0jjeK8k7aTkxA5yctZgsR7P4fz+17OIGSbNYb3Ql5h38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JEomp9Ix; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708200461; x=1739736461;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/69HW9NzBJsJX+iI5iUdtA0unbwpwPW5fq7scXx+J5o=;
+  b=JEomp9IxilrusFwFmY5Gvs+SI/7xj3nq73bwW/4turY6J1iDtecBAbeW
+   Fjm0ytzMzUHgkeQdUc3fJVwa5yvEuWymRGQH1HZnmB4uixZv9o3GCiaif
+   c3Bz4U5utU5gO/vdg+4gr0QDj9C3lVboAgI9JUQIo6gFThkdLBqfqikuf
+   LqFMHUUKR/xK9evTiovBjxrEGVs8VmHzMRCSS3tL4VPQHqKPYgE6Lk0ug
+   OzsEz2AAjrjZC37uhuuWGfqtukgH5jkAsZvJKLhSvN11KvZ0/ky9xde/I
+   fszQgpUhTnLntvYafdYBkMCR7R59pSzcPe8ctxmnJIyZ9M0IwZ2d5ejNv
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10987"; a="2180177"
+X-IronPort-AV: E=Sophos;i="6.06,167,1705392000"; 
+   d="scan'208";a="2180177"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2024 12:07:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,167,1705392000"; 
+   d="scan'208";a="8727084"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by fmviesa003.fm.intel.com with ESMTP; 17 Feb 2024 12:07:35 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rbQyC-0002Te-24;
+	Sat, 17 Feb 2024 20:07:32 +0000
+Date: Sun, 18 Feb 2024 04:06:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ross Philipson <ross.philipson@oracle.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+	linux-efi@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, ross.philipson@oracle.com,
+	dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
+	ardb@kernel.org, mjg59@srcf.ucam.org,
+	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de,
+	jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
+	nivedita@alum.mit.edu, herbert@gondor.apana.org.au,
+	davem@davemloft.net, kanth.ghatraju@oracle.com,
+	trenchboot-devel@googlegroups.com
+Subject: Re: [PATCH v8 15/15] x86: EFI stub DRTM launch support for Secure
+ Launch
+Message-ID: <202402180324.a3PqEegg-lkp@intel.com>
+References: <20240214221847.2066632-16-ross.philipson@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
-Content-Language: en-US
-To: Saravana Kannan <saravanak@google.com>, Conor Dooley <conor@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, kernel-team@android.com,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20240212213147.489377-1-saravanak@google.com>
- <20240212213147.489377-4-saravanak@google.com>
- <20240214-stable-anytime-b51b898d87af@spud>
- <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240214221847.2066632-16-ross.philipson@oracle.com>
 
-On 15/02/2024 00:32, Saravana Kannan wrote:
-> 
-> Good point. Done.
-> 
->>> +    # One or more suppliers can be marked as post initialization supplier
->>> +    description:
->>> +      List of phandles to suppliers that are not needed for initializing or
->>> +      resuming this device.
->>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
->>> +      items:
->>> +        maxItems: 1
->>
->> Rob's bot rightfully complains here about invalid syntax.
-> 
-> I added these two lines based on Rob's feedback. Is the indentation
-> that's wrong?
-> 
-> Yeah, I'm trying to run the dts checker, but I haven't be able to get
-> it to work on my end. See my email to Rob on the v1 series about this.
-> 
-> $ make DT_CHECKER_FLAGS=-m dt_binding_check
-> 
-> The best I could get out of it is a bunch of error reports on other
-> files and then:
-> ...
-> <snip>/Documentation/devicetree/bindings/post-init-suppliers.yaml:
-> ignoring, error parsing file
-> ...
-> 
-> I also tried to use DT_SCHEMA_FILES so I can only test this one file,
-> but that wasn't working either:
+Hi Ross,
 
-I see the errors immediately during testing, no special arguments needed:
+kernel test robot noticed the following build errors:
 
-crosc64_dt_binding_check post-init-supplier.yaml
-make[1]: Entering directory '/home/krzk/dev/linux/linux/out'
-  LINT    Documentation/devicetree/bindings
-  DTEX    Documentation/devicetree/bindings/post-init-supplier.example.dts
-../Documentation/devicetree/bindings/post-init-supplier.yaml:84:12:
-[error] syntax error: mapping values are not allowed here (syntax)
-  CHKDT   Documentation/devicetree/bindings/processed-schema.json
-../Documentation/devicetree/bindings/post-init-supplier.yaml:84:12:
-mapping values are not allowed in this context
-make[3]: *** [../Documentation/devicetree/bindings/Makefile:26:
-Documentation/devicetree/bindings/post-init-supplier.example.dts] Error 1
-make[3]: *** Deleting file
-'Documentation/devicetree/bindings/post-init-supplier.example.dts'
-make[3]: *** Waiting for unfinished jobs....
-../Documentation/devicetree/bindings/post-init-supplier.yaml:84:12:
-mapping values are not allowed in this context
-  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-/home/krzk/dev/linux/linux/Documentation/devicetree/bindings/post-init-supplier.yaml:
-ignoring, error parsing file
-make[2]: *** [/home/krzk/dev/linux/linux/Makefile:1424:
-dt_binding_check] Error 2
-make[1]: *** [/home/krzk/dev/linux/linux/Makefile:240: __sub-make] Error 2
-make[1]: Leaving directory '/home/krzk/dev/linux/linux/out'
-make: *** [Makefile:240: __sub-make] Error 2
+[auto build test ERROR on char-misc/char-misc-testing]
+[also build test ERROR on char-misc/char-misc-next char-misc/char-misc-linus herbert-cryptodev-2.6/master herbert-crypto-2.6/master linus/master v6.8-rc4 next-20240216]
+[cannot apply to tip/x86/core]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Ross-Philipson/x86-boot-Place-kernel_info-at-a-fixed-offset/20240215-064712
+base:   char-misc/char-misc-testing
+patch link:    https://lore.kernel.org/r/20240214221847.2066632-16-ross.philipson%40oracle.com
+patch subject: [PATCH v8 15/15] x86: EFI stub DRTM launch support for Secure Launch
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20240218/202402180324.a3PqEegg-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240218/202402180324.a3PqEegg-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402180324.a3PqEegg-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In function 'efi_secure_launch',
+       inlined from 'efi_stub_entry' at drivers/firmware/efi/libstub/x86-stub.c:990:2:
+>> drivers/firmware/efi/libstub/x86-stub.c:861:9: error: inconsistent operand constraints in an 'asm'
+     861 |         asm volatile ("jmp *%%rax"
+         |         ^~~
 
 
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+vim +/asm +861 drivers/firmware/efi/libstub/x86-stub.c
 
-I assume you develop on some older trees, because both next and v6.8-rc1
-work... or standard issues: old dtschema, old yamllint.
+   813	
+   814	static void efi_secure_launch(struct boot_params *boot_params)
+   815	{
+   816		struct slr_entry_uefi_config *uefi_config;
+   817		struct slr_uefi_cfg_entry *uefi_entry;
+   818		struct slr_entry_dl_info *dlinfo;
+   819		efi_guid_t guid = SLR_TABLE_GUID;
+   820		struct slr_table *slrt;
+   821		u64 memmap_hi;
+   822		void *table;
+   823		u8 buf[64] = {0};
+   824	
+   825		table = get_efi_config_table(guid);
+   826	
+   827		/*
+   828		 * The presence of this table indicated a Secure Launch
+   829		 * is being requested.
+   830		 */
+   831		if (!table)
+   832			return;
+   833	
+   834		slrt = (struct slr_table *)table;
+   835	
+   836		if (slrt->magic != SLR_TABLE_MAGIC)
+   837			return;
+   838	
+   839		/* Add config information to measure the UEFI memory map */
+   840		uefi_config = (struct slr_entry_uefi_config *)buf;
+   841		uefi_config->hdr.tag = SLR_ENTRY_UEFI_CONFIG;
+   842		uefi_config->hdr.size = sizeof(*uefi_config) + sizeof(*uefi_entry);
+   843		uefi_config->revision = SLR_UEFI_CONFIG_REVISION;
+   844		uefi_config->nr_entries = 1;
+   845		uefi_entry = (struct slr_uefi_cfg_entry *)(buf + sizeof(*uefi_config));
+   846		uefi_entry->pcr = 18;
+   847		uefi_entry->cfg = boot_params->efi_info.efi_memmap;
+   848		memmap_hi = boot_params->efi_info.efi_memmap_hi;
+   849		uefi_entry->cfg |= memmap_hi << 32;
+   850		uefi_entry->size = boot_params->efi_info.efi_memmap_size;
+   851		memcpy(&uefi_entry->evt_info[0], "Measured UEFI memory map",
+   852			strlen("Measured UEFI memory map"));
+   853	
+   854		if (slr_add_entry(slrt, (struct slr_entry_hdr *)uefi_config))
+   855			return;
+   856	
+   857		/* Jump through DL stub to initiate Secure Launch */
+   858		dlinfo = (struct slr_entry_dl_info *)
+   859			slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_DL_INFO);
+   860	
+ > 861		asm volatile ("jmp *%%rax"
+   862			      : : "a" (dlinfo->dl_handler), "D" (&dlinfo->bl_context));
+   863	}
+   864	
 
-I am afraid you do it for some old Android kernel... :(
-
-Best regards,
-Krzysztof
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
