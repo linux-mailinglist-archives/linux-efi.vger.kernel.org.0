@@ -1,158 +1,162 @@
-Return-Path: <linux-efi+bounces-584-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-585-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79773859D02
-	for <lists+linux-efi@lfdr.de>; Mon, 19 Feb 2024 08:34:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA28285AD8E
+	for <lists+linux-efi@lfdr.de>; Mon, 19 Feb 2024 22:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2765C1F22B91
-	for <lists+linux-efi@lfdr.de>; Mon, 19 Feb 2024 07:34:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A83A91C22237
+	for <lists+linux-efi@lfdr.de>; Mon, 19 Feb 2024 21:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0ED20B17;
-	Mon, 19 Feb 2024 07:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B31553E03;
+	Mon, 19 Feb 2024 21:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ivwMq1Sh"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HwD0a/z7"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2078.outbound.protection.outlook.com [40.107.95.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1166620B0E;
-	Mon, 19 Feb 2024 07:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708328068; cv=none; b=L/ndf2ch6jh760DAX6FWZM0yNym6AAxXzmY3XeOve0jXn6eOroROFLU9OTvdy57H/F8G8H7587Fsu0hlW/XvVYmcV/Vr+PlziAXCzAS1aoSshquYUh9P7hnSPf/h9fLhIyr9ANYs6tv4SvqGXOi/eg49hvjuQhqKnNE6wjpbs1g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708328068; c=relaxed/simple;
-	bh=nG+e0xfx4vtsde8hCf9gGVh7ZBbgR70WURJo1H2ry3E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WAZuyCc/ZCWyhRmNZg5EH+zACpR6CEk5GWVYSjcO7Rgvd1q79t34IR02uJMxF81FM4fWPUk7Epe7UDVQ203Fpo7Mlihsj028yIuo67rQPI/nyNsj0GM5R703Fl7eTQs6Nq1K9dXfMUeKDfp2YgzhuCOrDo8yxFnM1rIhjQzSqNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ivwMq1Sh; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708328067; x=1739864067;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nG+e0xfx4vtsde8hCf9gGVh7ZBbgR70WURJo1H2ry3E=;
-  b=ivwMq1Sh0968tUK0gIeSVA4F8Pn9Y0YKlFLZ3uPh86b9IkiI0Ld806o3
-   AkQZrMvwJD/uSBVzAZEiI/+Q4YIDqJEyzBwFUVIHG/k6g+7EyJzqksPz9
-   HkGTzj7y59CuwN4GlDp1dY827rRyApQyKQJvq1MTvEDS3nWtWGshE8lif
-   oYEte3YEyLJIQXN4zA1ODtpQxbLiUyPPMUKUiGN1En1PaitQhhSWGT8rA
-   TlD7NucZn3xtz9duE5P2BoqZQVDNxaHxoOnk33RQaFAk22o7z6K2JiyKf
-   JE01vxd1QlvVnA/b3XXd8hUlf/b5OTRQ6dapVlKznynj2W9XUWrmd7j9G
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="13503078"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="13503078"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2024 23:34:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="27579484"
-Received: from mojammel-mobl.amr.corp.intel.com (HELO [10.209.58.186]) ([10.209.58.186])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2024 23:34:24 -0800
-Message-ID: <7feb889f-f78e-4caa-a2f4-9d41acf6ca76@linux.intel.com>
-Date: Sun, 18 Feb 2024 23:34:23 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F452E40C;
+	Mon, 19 Feb 2024 21:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708377135; cv=fail; b=b55KAFZQnp9RjGhIh0AiL8YcAWm9l9IUZH/arMe6FS9nNHgLth+57WdKy7XxaI23XjX2XZagIILCHZzAiUGZObNYPf0nJdckcV/c7Aohkpt+A+opz0IV569aH2hJpcTlAdvWaQgLGSCqp6y8zRteDYJJMZTRvUX3UjYOd87H8xI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708377135; c=relaxed/simple;
+	bh=eV9PVuyzpZ70I/pu9Z3stgOdL4n4O5Q3lijY/WMVqA0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HJR3MZ3DwKwvtuxfdBxCoMKLQuuYSsb1x7IzDkk/t21LZ7sQvu2M77+LZrH8ymycnDfYRaYA4Yh5MlglR3J59nbWuQkZMMSknb2u1/3D1g3XGIrjr0zPioVC5jFzE9/MBD+tdTNNymFfU8LHu11Xe3Pbgw02BZ0UNKQ64IIfD9c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HwD0a/z7; arc=fail smtp.client-ip=40.107.95.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TGXR/RFgHIwl55y2sSHxH5H7WZICoZh1sdRsVuZCjLIWvC5TUOu0VNz85wENCL1GUajwUXc0yXqUhloZUt28kzqRproM7Zt+g7P1dH7z9Z59Nidirm/EhMvoCuCyvwceI9ff+bydvQUKTKUdjxiW20WHlryIIy92DSrqT7Z1t2NTFlGncL+t/Y1hPKEcQeVJ2lShMugs19GFxRvvESBRp50u+BZSAM+feS+NuG5Upkx9YU/L3vc0GF6rT0eqQCBGPlBsLjfvKUz/0i/WCnO1HHF2zGOQ68nqXuDtzgjz6TsmJMqAq2YAJK9d7Wff8Gb+Jsqzll5uPVeSyWGD3obiEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=y6PG7rDVf4cEk4RqzZVKG6iYnAzchQ1zPvQVV5Q2L+4=;
+ b=Qr8R4pxaY1LxSb5a7EGqFOd+up6aYX99Gn5p2sMZuuB4u+B4fkwc61Aa3+I70cnconaNf4LJya3yxyWeym8c2TNDaBrIudCfrfP7zmGoAhjVV2iRfH1f5Jpv/UfFLojPPvb4AvjtdhzDnjSF9TQ6CJYul6rKzHD/dM0hcMRazWSsWlq5ZzeTFglR8PQZEy+Su9iKSUu7AX1qGwrAa1TYHriA2fcb5T3T4dZEW6FddZbKn/CtOQ1XO/UzQ8BNXvSok7tDQialRjZxTmKMRLOcVmbr/q+QW1VaOyxU9ByS2fJkTdNn2PZG7F3TV/vfL/WLvBEY9dgqfpZYne5YZAZZ8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y6PG7rDVf4cEk4RqzZVKG6iYnAzchQ1zPvQVV5Q2L+4=;
+ b=HwD0a/z7KGyd6k8usNyKZg+PWsjCFcXWXXqPjvds5Lh2x/gz/cgQJd9MX4UofgfyuyZWN1gkDXrB4/DFPbmGnn9Q4OOjae9IB2wjz+UOfS/aKcuu6EbAqQuCDpR00qXGfMOWKvqtxDe4fu1Z8AfkaK+Vuoe+WkJV6WBO1hvk4CU=
+Received: from BN6PR17CA0054.namprd17.prod.outlook.com (2603:10b6:405:75::43)
+ by PH7PR12MB7233.namprd12.prod.outlook.com (2603:10b6:510:204::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.16; Mon, 19 Feb
+ 2024 21:12:09 +0000
+Received: from BN1PEPF0000468E.namprd05.prod.outlook.com
+ (2603:10b6:405:75:cafe::d0) by BN6PR17CA0054.outlook.office365.com
+ (2603:10b6:405:75::43) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39 via Frontend
+ Transport; Mon, 19 Feb 2024 21:12:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN1PEPF0000468E.mail.protection.outlook.com (10.167.243.139) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7292.25 via Frontend Transport; Mon, 19 Feb 2024 21:12:09 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
+ 2024 15:12:08 -0600
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>
+CC: <ardb@kernel.org>, <hpa@zytor.com>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <rafael@kernel.org>, <peterz@infradead.org>,
+	<adrian.hunter@intel.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	<elena.reshetova@intel.com>, <jun.nakajima@intel.com>,
+	<rick.p.edgecombe@intel.com>, <thomas.lendacky@amd.com>, <seanjc@google.com>,
+	<kai.huang@intel.com>, <bhe@redhat.com>, <kexec@lists.infradead.org>,
+	<linux-coco@lists.linux.dev>, <kirill.shutemov@linux.intel.com>,
+	<anisinha@redhat.com>, <michael.roth@amd.com>, <bdas@redhat.com>,
+	<vkuznets@redhat.com>
+Subject: [PATCH] efi/x86: skip efi_arch_mem_reserve() in case of kexec.
+Date: Mon, 19 Feb 2024 21:11:58 +0000
+Message-ID: <20240219211158.768523-1-Ashish.Kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] efi/libstub: Add get_event_log() support for CC
- platforms
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
- linux-efi@vger.kernel.org
-References: <20240215030002.281456-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20240215030002.281456-3-sathyanarayanan.kuppuswamy@linux.intel.com>
- <CAC_iWjJ_TS66KG7uGOQFiKGfZNKjnod6u7zua4LVK-EJHEUv8w@mail.gmail.com>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <CAC_iWjJ_TS66KG7uGOQFiKGfZNKjnod6u7zua4LVK-EJHEUv8w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468E:EE_|PH7PR12MB7233:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9593f61e-3912-4aea-ae6e-08dc318f6f02
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	zv5+Wj+QPkgmwV77lGpy67xlucjkDzmfuaeb/L6kP1ZRU8RFIhev9Eg0Z0mFZlBUrxbGW2daC1Mn3+3yge4VNwhklL6DDyqL3isZ9HbryqoHGeLSJKr73Pq/pYjK4icHc8lZAe06un0fm+5hFkGQRW32HES0w/F50HAfRQ8YGnRDaQRJU+qkG8OOIXQYx6fDz3N3Ob5uL3UCbM66bQiU/z+D4Hnso/NrxmRi2IsPSh2LbMUbnALhN6gfuNlIocZsVm1lxavWWOojuYDqfl9SUGyHL2SCNCqfuBUFgMDm7ZYSS4QcIO2BeK94TlmR735zbVZvdEEblA2Al31sTLa9xSSqV7N0JzSw1VRxkTAFICBppC+TGMruB02Sel/o/cTCZUP6I8LHaf2LNvSNEmaWBL32VlYhMHw05x0cfJgSL07BMXcvrmWzqbSTBqTSW6PU3ff6LBAjT5ZQ2+LknyR6wKlKyi1NHc5PcrngL1c8i7l8BN9zCuGHPvIOtrxT6PyMpIC5hr5Hy87+d4wjxN2ZOP7TLa+PtRtzMPj/oUE1BkjatZ+eVqpTFM3/cBgqpgVWhZG29Gd9ZClKf/0H0O5vuy4sKyL30C/P2djd3+tiGdzu6JjNJ4WnMMPKFFnlDD68+bm1iDHqTY1tpTfvRU/JI4uxmi5HVPlP9K/TaxGPjfY=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(46966006)(40470700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2024 21:12:09.1830
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9593f61e-3912-4aea-ae6e-08dc318f6f02
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0000468E.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7233
 
-Hi Ilias,
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-On 2/18/24 11:03 PM, Ilias Apalodimas wrote:
-> On Thu, 15 Feb 2024 at 05:02, Kuppuswamy Sathyanarayanan
-> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->> To allow event log info access after boot, EFI boot stub extracts
->> the event log information and installs it in an EFI configuration
->> table. Currently, EFI boot stub only supports installation of event
->> log only for TPM 1.2 and TPM 2.0 protocols. Extend the same support
->> for CC protocol. Since CC platform also uses TCG2 format, reuse TPM2
->> support code as much as possible.
->>
->> Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#efi-cc-measurement-protocol [1]
->> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> [...]
->
->> +void efi_retrieve_eventlog(void)
->> +{
->> +       efi_physical_addr_t log_location = 0, log_last_entry = 0;
->> +       efi_guid_t cc_guid = EFI_CC_MEASUREMENT_PROTOCOL_GUID;
->> +       efi_guid_t tpm2_guid = EFI_TCG2_PROTOCOL_GUID;
->> +       int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
->> +       efi_tcg2_protocol_t *tpm2 = NULL;
->> +       efi_cc_protocol_t *cc = NULL;
->> +       efi_bool_t truncated;
->> +       efi_status_t status;
->> +
->> +       status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
->> +       if (status == EFI_SUCCESS) {
->> +               status = efi_call_proto(tpm2, get_event_log, version, &log_location,
->> +                                       &log_last_entry, &truncated);
->> +
->> +               if (status != EFI_SUCCESS || !log_location) {
->> +                       version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
->> +                       status = efi_call_proto(tpm2, get_event_log, version,
->> +                                               &log_location, &log_last_entry,
->> +                                               &truncated);
->> +                       if (status != EFI_SUCCESS || !log_location)
->> +                               return;
->> +               }
->> +
->> +               efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
->> +                                          truncated);
->> +               return;
->> +       }
->> +
->> +       status = efi_bs_call(locate_protocol, &cc_guid, NULL, (void **)&cc);
->> +       if (status == EFI_SUCCESS) {
->> +               version = EFI_CC_EVENT_LOG_FORMAT_TCG_2;
->> +               status = efi_call_proto(cc, get_event_log, version, &log_location,
->> +                                       &log_last_entry, &truncated);
->> +               if (status != EFI_SUCCESS || !log_location)
->> +                       return;
->> +
->> +               efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
->> +                                          truncated);
->> +               return;
->> +       }
->> +}
-> [...]
->
-> I haven't looked into CC measurements much, but do we always want to
-> prioritize the tcg2 protocol? IOW if you have firmware that implements
-> both, shouldn't we prefer the CC protocol for VMs?
+For kexec use case, need to use and stick to the EFI memmap passed
+from the first kernel via boot-params/setup data, hence,
+skip efi_arch_mem_reserve() during kexec.
 
-According the UEFI specification, sec "Conidential computing", if a firmware implements
-the TPM, then it should be used and CC interfaces should not be published. So I think
-we should check for TPM first, if it does not exist then try for CC.
+Additionally during SNP guest kexec testing discovered that EFI memmap
+is corrupted during chained kexec. kexec_enter_virtual_mode() during
+late init will remap the efi_memmap physical pages allocated in
+efi_arch_mem_reserve() via memboot & then subsequently cause random
+EFI memmap corruption once memblock is freed/teared-down.
 
-https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#confidential-computing
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+---
+ arch/x86/platform/efi/quirks.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-> Thanks
-> /Ilias
-
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index f0cc00032751..d4562d074371 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -258,6 +258,16 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
+ 	int num_entries;
+ 	void *new;
+ 
++	/*
++	 * For kexec use case, need to use the EFI memmap passed from the first
++	 * kernel via boot-params/setup data and need to skip this.
++	 * Additionally kexec_enter_virtual_mode() during late init will remap
++	 * the efi_memmap physical pages allocated here via memboot & then
++	 * subsequently cause random EFI memmap corruption once memblock is freed.
++	 */
++	if (efi_setup)
++		return;
++
+ 	if (efi_mem_desc_lookup(addr, &md) ||
+ 	    md.type != EFI_BOOT_SERVICES_DATA) {
+ 		pr_err("Failed to lookup EFI memory descriptor for %pa\n", &addr);
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.34.1
 
 
