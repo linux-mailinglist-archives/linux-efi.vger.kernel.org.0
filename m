@@ -1,167 +1,130 @@
-Return-Path: <linux-efi+bounces-594-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-595-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F325B85B7F5
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 10:46:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CBF85BC65
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 13:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7CE4281162
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 09:46:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 967161F23C09
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 12:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D751E6026B;
-	Tue, 20 Feb 2024 09:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358B067C49;
+	Tue, 20 Feb 2024 12:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="Leozg8Iv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DeqOh7qG"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E055FDD3
-	for <linux-efi@vger.kernel.org>; Tue, 20 Feb 2024 09:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23698F4A;
+	Tue, 20 Feb 2024 12:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708422109; cv=none; b=kRU8SY4f7Duo5ACJ01Er9tX/z0FXpqzhvISKtNoOSPdLcEGSMBhEX2+Ed61VuHrjnwb0dwXBWvX218LHlcdj09cDxvbmQwCPGUiHqQsI1fFewzXpcFiVSxM2QZE8smAHwZM3pZSuagIl546TketYq7XWzzJRncjBHzqlWjady1U=
+	t=1708432935; cv=none; b=jKNqBeErOrBmppkQEcoJcV8vUDIKgu8h65FDwqL9NFlmOkBllBO4RH3aNdDDcAV/pfJpLLQqDuGG7Rl+Py21jDIKcY/bwx3/Vk56DDy4ho5fT04XtiCLfhtQeYLeHL8Y56WVzUx2mRmcYxWzqcy/gQaIERLccjzZnUZr1k2XgGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708422109; c=relaxed/simple;
-	bh=UPcLKjHlyC38Lt5s8TPhv+qOJo45oOSFr2wIKDQGaE0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VTrxUvzXmbngqlpOXKyjEhO3jPWjywAnKg43E+SQ6e4W4QrCWj08H5T+RFbPuLSFQ0We8XD5kRoJq8KN49ws52wY7YhqLDAB32z/noTSoRoGE97Q3G9LRO/3slQOsl8dXj9EOv6Ib/qzdLMKjyFbA9yHaw0UQ52OSUK7/zLz2kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=Leozg8Iv; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id B31133F17F
-	for <linux-efi@vger.kernel.org>; Tue, 20 Feb 2024 09:41:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1708422104;
-	bh=fTPqNxuhHfpwk/b7ZgI9H1VgQ95qQ0tlqSbUZkwFr5U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=Leozg8IvxIqewLwkyd/AIDNVBhGBkWMVMO5L+2294n3nvUAkU+7v7bsmaykYgjM2f
-	 4qXXlzDvbDJO6cPtEJqtQ0yXJztpoQRjJkbZASNMNB/PlHkNlMHIxSDE8QqlU15V4w
-	 Du7gQ4KnxNb7dJWl/98SrRtf7X5iUF25AMOlKOLohiTndhtd0s64RnfZQUXa+gPoo/
-	 H2yqcEJ98uHvccOFcniTz45ggkW+6T9rISng5mceP0G+M9yACSSwX1LzA7g43mSqic
-	 XLQhgOvOGvtS2sgKwP1eDMmRAH7xSMRVF9KMHq3UZsYSDsWNHdfPK8pTm/O28qnlq2
-	 oKOS1ZqtQlafw==
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-33d308b0c76so1165407f8f.0
-        for <linux-efi@vger.kernel.org>; Tue, 20 Feb 2024 01:41:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708422104; x=1709026904;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fTPqNxuhHfpwk/b7ZgI9H1VgQ95qQ0tlqSbUZkwFr5U=;
-        b=bqiSppa/OW3WUQ08tasJv9Juk+4vSubu1lxeQ0DR07V+GE+fWJ+bpRRWSpfDYlltYF
-         XGyr7uZuJT3FTlvWgE+UQddv5qHHyyoB+HmnY3vmUpF+FuvtZkXOeD3q6jSUIriIXTeh
-         cTN3I3p4r0MZtqUFcWdL1v/mzhPWGoeycmvErzydZnCJWj/EjolfdpDBdUYS+1t/iI5s
-         wWs1qRlPCZh4kOQXjcgLbuHnbCASnmTGNkmUXDl5MNQjWrzpSOlX0agftAogeSiO0aOP
-         t3HAG1bPuJNIeRYm4ahAz3zfHtFjB5Gd8l2oS3eiSqNiXvohRtmWr+LFW89MFJ0S8wHW
-         /6wg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJhNIG+/qir3mEvOXW/h73icBBFerGTSVAONZRTJD8BPfZOij4xUQmWqcA7c9jIf5N7E9guAslvCtCRiIROvhm9JvjGK4ChB87
-X-Gm-Message-State: AOJu0YxYBqtib7lS3XijaKmWIPmPL7PT1RMKmGpyq8jRq3VAiSqQ83lb
-	/fx39hUwm16l+GiBIdaU3YekcYIP2mq6elR7+BjujygQZo7x/QBZ0lu+240hrjJZ43QnHVgFZxc
-	bzK8ASeK+IuC4sLPsLv3NOPDTxuUwUkVrVgKKwqUTJDfvioILjfjoqvCRX8Ihr4oQ2fNmMLrHr9
-	/T///f3ugGa2kVNm2X/Vbq0sv9WnW5zj9h7xuLur9Ti2PpIVGO
-X-Received: by 2002:a5d:5345:0:b0:33d:1bd1:8ae2 with SMTP id t5-20020a5d5345000000b0033d1bd18ae2mr9576715wrv.19.1708422104449;
-        Tue, 20 Feb 2024 01:41:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEStYiQMGNGaBe/24htrF/Ch7IUVdqtRIbtGHrvc+8LpF5F3cNV0bFFeOXu6KrMg+A2nJnnRGsfFC4tMbCUwHw=
-X-Received: by 2002:a5d:5345:0:b0:33d:1bd1:8ae2 with SMTP id
- t5-20020a5d5345000000b0033d1bd18ae2mr9576697wrv.19.1708422104136; Tue, 20 Feb
- 2024 01:41:44 -0800 (PST)
+	s=arc-20240116; t=1708432935; c=relaxed/simple;
+	bh=WQEMa0Zg8JWL+HJp+aoQ8wXzZKQIdgVqIXMBI4Y1QIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LHYrytN0pRhPVgbFt+egIekIkXMg9XcpDn4w8741GRya120EILy0BcKZJQVbAHtQ0GR5bKBVWzVGm+x/rvBoQMw0GQQ+XtkyBEgi2K6l8noDnGNnNkGgyyc4l6EhllKSZnMfZRMaGzZ3NIZQED0aW13NDL92IRM7Fb3oCYiWve4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DeqOh7qG; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708432934; x=1739968934;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WQEMa0Zg8JWL+HJp+aoQ8wXzZKQIdgVqIXMBI4Y1QIA=;
+  b=DeqOh7qGM+W5RKsDjGWHxkdBRLR39fgqRCnl9VPPtJeCvSM7CrlAhxBW
+   2YXcKlblAMAsQ2h8Lp+5j+atWx2owECcSq2sWFdqSCr8yPOeynSx+3vEW
+   l+LyTYnSmGPfMkJC2sYg24Lpu39534yrTwQ/XkkRCIWskFBBAaHcQaz6f
+   iG/3TRoQe+KOWT4yxn42vVIdxaluqognxcWtSPVK9qUIut2vYxR52mSHI
+   na9LpVgtyAJpSmZKtkZ3coiS//8voty58Eu6w1ay33kLdsof1QW6aJls+
+   UMGDE3wa2iDBJ3S6OFi/Kk1A1MTi2Zz1/Lu9GsTRDv+ZCAgsw4sLTE6T5
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2436851"
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="2436851"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 04:42:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="936448498"
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="936448498"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Feb 2024 04:42:06 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 20702305; Tue, 20 Feb 2024 14:42:05 +0200 (EET)
+Date: Tue, 20 Feb 2024 14:42:05 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, luto@kernel.org, x86@kernel.org, ardb@kernel.org, hpa@zytor.com, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, rafael@kernel.org, 
+	peterz@infradead.org, adrian.hunter@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, elena.reshetova@intel.com, jun.nakajima@intel.com, 
+	rick.p.edgecombe@intel.com, thomas.lendacky@amd.com, seanjc@google.com, kai.huang@intel.com, 
+	bhe@redhat.com, kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
+	anisinha@redhat.com, michael.roth@amd.com, bdas@redhat.com, vkuznets@redhat.com, 
+	dionnaglaze@google.com, jroedel@suse.de, ashwin.kamat@broadcom.com
+Subject: Re: [PATCH 1/2] x86/mm: Do not zap PMD entry mapping unaccepted
+ memory table during kdump.
+Message-ID: <ictdanmnsdn4qnzg42ett6om4r6qzypmxdc5spjwa2g5gz2s7p@drh7hoqdj4sc>
+References: <20240212104448.2589568-1-kirill.shutemov@linux.intel.com>
+ <cover.1708390906.git.ashish.kalra@amd.com>
+ <a0bf771e1472eb1a6a241acd2e16c98ab8ac9253.1708390906.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMj1kXG4HpAHYKwz27_Qy9_Wx+O_QJDmA4CBXcMrvVcrOXhBxw@mail.gmail.com>
- <87plwsj6ar.fsf@xnox-Inspiron-7400.mail-host-address-is-not-set> <CAMj1kXGjxtMnJ6MeeE-W73Jw_seRPnQwVDRyBayDzKvaDLFLjw@mail.gmail.com>
-In-Reply-To: <CAMj1kXGjxtMnJ6MeeE-W73Jw_seRPnQwVDRyBayDzKvaDLFLjw@mail.gmail.com>
-From: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-Date: Tue, 20 Feb 2024 09:41:08 +0000
-Message-ID: <CADWks+YuLjPA++8EfPa=7JM6DMO2wErF3DOkYCkY=9JKujpKeA@mail.gmail.com>
-Subject: Re: x86 efistub stable backports for v6.6
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, 
-	linux-efi@vger.kernel.org, jan.setjeeilers@oracle.com, pjones@redhat.com, 
-	steve@einval.com, julian.klode@canonical.com, bluca@debian.org, 
-	jejb@linux.ibm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0bf771e1472eb1a6a241acd2e16c98ab8ac9253.1708390906.git.ashish.kalra@amd.com>
 
-On Tue, 20 Feb 2024 at 08:37, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Tue, 20 Feb 2024 at 02:03, xnox <dimitri.ledkov@canonical.com> wrote:
-> >
-> > Ard Biesheuvel <ardb@kernel.org> writes:
-> >
-> > > On Thu, 15 Feb 2024 at 12:12, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > >>
-> > >> On Thu, Feb 15, 2024 at 10:41:57AM +0100, Ard Biesheuvel wrote:
-> > >> > On Thu, 15 Feb 2024 at 10:27, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > >> > >
-> > >> > > On Thu, Feb 15, 2024 at 10:17:20AM +0100, Ard Biesheuvel wrote:
-> > >> > > > (cc stakeholders from various distros - apologies if I missed anyone)
-> > >> > > >
-> > >> > > > Please consider the patches below for backporting to the linux-6.6.y
-> > >> > > > stable tree.
-> > >> > > >
-> > >> > > > These are prerequisites for building a signed x86 efistub kernel image
-> > >> > > > that complies with the tightened UEFI boot requirements imposed by
-> > >> > > > MicroSoft, and this is the condition under which it is willing to sign
-> > >> > > > future Linux secure boot shim builds with its 3rd party CA
-> > >> > > > certificate. (Such builds must enforce a strict separation between
-> > >> > > > executable and writable code, among other things)
-> > >> > > >
-> > > ...
-> > >> > > And is this not an issue for 6.1.y as well?
-> > >> > >
-> > >> >
-> > >> > It is, but there are many more changes that would need to go into v6.1:
-> > >> >
-> ...
-> > >> >  32 files changed, 1204 insertions(+), 1448 deletions(-)
-> > >> >
-> > > ...
-> > >> > If you're happy to take these too, I can give you the proper list, but
-> > >> > perhaps we should deal with v6.6 first?
-> > >>
-> > >> Yeah, let's deal with 6.6 first :)
-> > >>
-> > >> What distros are going to need/want this for 6.1.y?  Will normal users
-> > >> care as this is only for a new requirement by Microsoft, not for older
-> > >> releases, right?
-> > >>
-> > >
-> > > I will let the distro folks on cc answer this one.
-> >
-> > Canonical will want to backport this at least as far back as v4.15 for
-> > Ubuntu and Ubuntu Pro. So yeah, as far back as possible will be
-> > apperiated by everybody involved. Since if/when firmware (VMs or
-> > Hardware) starts to require NX compat, it will be desired to have all
-> > stable supported kernels with this support built-in.
-> >
->
-> Thanks for the data point, and good luck with backporting this to
-> v4.15 or earlier. If it helps, I have a branch that backports
-> LoadFile2 initrd loading support to v5.4 (below), which you will need
-> to backport first. Going further back than v5.4 is going to be very
-> messy IMHO.
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-lf2-backport-x86
+On Tue, Feb 20, 2024 at 01:18:29AM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> During crashkernel boot only pre-allocated crash memory is presented as
+> E820_TYPE_RAM. This can cause PMD entry mapping unaccepted memory table
+> to be zapped during phys_pmd_init() as SNP/TDX guest use E820_TYPE_ACPI
+> to store the unaccepted memory table and pass it between the kernels on
+> kexec/kdump.
+> 
+> E820_TYPE_ACPI covers not only ACPI data, but also EFI tables and might
+> be required by kernel to function properly.
+> 
+> The problem was discovered during debugging kdump for SNP guest. The
+> unaccepted memory table stored with E820_TYPE_ACPI and passed between
+> the kernels on kdump was getting zapped as the PMD entry mapping this
+> is above the E820_TYPE_RAM range for the reserved crashkernel memory.
+> 
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/mm/init_64.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index a0dffaca6d2b..207c6dddde0c 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -524,7 +524,9 @@ phys_pmd_init(pmd_t *pmd_page, unsigned long paddr, unsigned long paddr_end,
+>  			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
+>  					     E820_TYPE_RAM) &&
+>  			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
+> -					     E820_TYPE_RESERVED_KERN))
+> +					     E820_TYPE_RESERVED_KERN) &&
+> +			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
+> +					     E820_TYPE_ACPI))
+>  				set_pmd_init(pmd, __pmd(0), init);
+>  			continue;
 
-Yeah, we are not yet sure how far back we will actually manage to get
-to. And things will need to move one series/generation at the time. As
-other pieces need to land too.
-And yes, the above repo is helpful.
+Why do you single out phys_pmd_init()? I think it has to be addressed for
+all page table levels as we do for E820_TYPE_RAM and E820_TYPE_RESERVED_KERN.
 
 -- 
-Dimitri
-
-Sent from Ubuntu Pro
-https://ubuntu.com/pro
+  Kiryl Shutsemau / Kirill A. Shutemov
 
