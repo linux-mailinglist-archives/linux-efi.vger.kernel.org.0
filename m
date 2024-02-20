@@ -1,162 +1,181 @@
-Return-Path: <linux-efi+bounces-586-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-587-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7C185AF3D
-	for <lists+linux-efi@lfdr.de>; Mon, 19 Feb 2024 23:55:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B5485B039
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 02:03:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C650E2832AF
-	for <lists+linux-efi@lfdr.de>; Mon, 19 Feb 2024 22:55:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4260284AE2
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 01:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8387B535D1;
-	Mon, 19 Feb 2024 22:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968F4D2F5;
+	Tue, 20 Feb 2024 01:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="iBW7/Aw8"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="EpYZifso"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08B3524DD;
-	Mon, 19 Feb 2024 22:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708383309; cv=fail; b=R25g77pzYKI7P37kjwqA8ZT4xAO/OYqMUKXQCmtVRPI96PPnrte5mWDPudC5cx+Ty2K6ztOKOxuYSDtzpIaO71sKwWHqd5zw+BxHdgLBAI6ielAFtlmajAjZhoDR431KRe5FgKASrdbChKvDOn40q6RzyQsQ35tMpHCKmjdsoFw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708383309; c=relaxed/simple;
-	bh=fdFOi0KVLm8DagGC6DvnAsKS7OqaZ3wZ4kte/OHjmyM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pvoKklJg4y6vJ433vs/cm6+ayjSKvodb7r+J+PKPB8797/amMWa503MdZK21ZuuDC/EZ2nrfjrUjwiFt2HA2NrUYN0nTd1F1Vq0zQtkqoUx0HQh6m1RfPcbPP41xnl8kpuflqFUGJ2gEGJM9pcCMJIv1UwNJHl/pUThBVTJTRWU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=iBW7/Aw8; arc=fail smtp.client-ip=40.107.220.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=njBr592sd/Jcgjy33+k114RxaCm97CHUXBzAJdGWlaom2T2MxQbNFpR5IQO9S+UTVHAWAxyQxNtGg7rEcZgcSoHjvvaSFLFBCwFUh51I9G09K97zo9rpKVsjTaAZKtiAl81PrpBNELrcUQkK8igult9xKNuualXzqkkrtPyX6u8r3SgUnK1SztneIIhv/GHhaAcmNcZ70Coxabm4eubpVTtIIpSj5rsxLsCHtm2jNkrJO+IbTx5AyAASHz/aOWAOP362T90DcdanXg82xgCJveJoAVw/Qf4ru64KZ5VyTOMyLQD1RJjaiUp8UBbFWsWwgW9rOJD2Aoz69mp4nf0tPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7krmcbrX6fJrYRXKqedy70aof1EtOi279EOdlJzQ08U=;
- b=mTfLfeVlWkBqU/ZR6peIWVVm6B5l4AilM7M+cmdK5qpnWXX0gX8QDRku634y0RSHzLDU9zv8xop5orIel/xTqihUg7nb7MFWoK7dnGNfJKFEJvIZo7X7vwzD/dkaQ+Lzd9Jsqs62CRaGvjhzd+f9NTQUh+mLAVVfQfQo71WHOpmkPdf3fjj1/QBBZz/jnS3+iMG5gkDlorLADRPotApmewJs5wPPP1H0IRh/MrTthCAIpQ+NzKquDR/vUofvQMGwULChpR646AZ5AFhLQWq3aiAH9uHQ0/b/8+5DWCVx0TWzccht/nC7JQVLiHYMWdHfGOj5k2PwqEp6FR8Ql50ZXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7krmcbrX6fJrYRXKqedy70aof1EtOi279EOdlJzQ08U=;
- b=iBW7/Aw8MgiS0twKl1mcK8FtlfaUq+jJFm9PXs36ffyJGms19YP7Ibrd6MckOOPf2bT8t2Kjn3d8ra0oXIMvEjMUWFqa+5yQMEJTUoU7hmooOuUCuVc0AJzLzv2FH1ysQBG706eWQiI+Fw2NHrBgrhnvFuP66K2cSB22uV1mXXw=
-Received: from BN0PR03CA0045.namprd03.prod.outlook.com (2603:10b6:408:e7::20)
- by PH0PR12MB8149.namprd12.prod.outlook.com (2603:10b6:510:297::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.19; Mon, 19 Feb
- 2024 22:55:03 +0000
-Received: from BN3PEPF0000B06F.namprd21.prod.outlook.com
- (2603:10b6:408:e7:cafe::2c) by BN0PR03CA0045.outlook.office365.com
- (2603:10b6:408:e7::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.38 via Frontend
- Transport; Mon, 19 Feb 2024 22:55:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN3PEPF0000B06F.mail.protection.outlook.com (10.167.243.74) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7339.0 via Frontend Transport; Mon, 19 Feb 2024 22:55:02 +0000
-Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
- 2024 16:55:00 -0600
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>
-CC: <ardb@kernel.org>, <hpa@zytor.com>, <linux-efi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <rafael@kernel.org>, <peterz@infradead.org>,
-	<adrian.hunter@intel.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	<elena.reshetova@intel.com>, <jun.nakajima@intel.com>,
-	<rick.p.edgecombe@intel.com>, <thomas.lendacky@amd.com>, <seanjc@google.com>,
-	<kai.huang@intel.com>, <bhe@redhat.com>, <kexec@lists.infradead.org>,
-	<linux-coco@lists.linux.dev>, <kirill.shutemov@linux.intel.com>,
-	<anisinha@redhat.com>, <michael.roth@amd.com>, <bdas@redhat.com>,
-	<vkuznets@redhat.com>
-Subject: [PATCH v2] efi/x86: skip efi_arch_mem_reserve() in case of kexec.
-Date: Mon, 19 Feb 2024 22:54:51 +0000
-Message-ID: <20240219225451.787816-1-Ashish.Kalra@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87804171A0
+	for <linux-efi@vger.kernel.org>; Tue, 20 Feb 2024 01:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708391032; cv=none; b=DbNAD2VTxE5Pa4aeDhqgky73LZnAdJ3OOhVZZjtkgL/irdzG0sy3omDaOuk8HGaadLqlh1IdxeaqS0zNtOlXnArIT1yWF50L4k/UsGrTfyik2TOwneZC5qZzL8zDmswtJZw5W4E77fLiJyEyj2fScyZ1M6wDGfpPKWiVtWbdyK0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708391032; c=relaxed/simple;
+	bh=ln+OWu0AE8bzSNGwR8vgNlRELBvGt8fUywdq1XVwYNE=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
+	 Content-Type; b=HkVcM/lIwqgBOpfCjKazj9Pu3tZdp2bWnumoQc4mFc/3ItHPiuPwVrdJZ+nj1StkLo8SE+k8n2sj2ZqeTr784tJ+oF4FNmFz2TeTg0YTr6KxLhzLOk89xPsy6l4eNYPQgsjsaeJqioyxeGwV7HYlJLbC9OdRoG+yLkACtBr9Ye0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=EpYZifso; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5D81940CBE
+	for <linux-efi@vger.kernel.org>; Tue, 20 Feb 2024 01:03:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1708391015;
+	bh=+zS6MFOZJh5YuAzFETZLG5u3fWZMDM68zpe8l63E6VI=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
+	 Content-Type;
+	b=EpYZifsoRBL3o/602FdmKnXDO0GiyfAef8//qRP7RcQmKl8ZWBLe5qIlxkOMEopek
+	 CbM/6NrUR37NCDy1qdpnqerKMFhqOxF7CzZlT0AaS3iONs+5nu4GxWIc7st2xqy4Cd
+	 pzgzUjfaw0g6UhzdcRZzRdi1k2rqbfhjRss29nXlpVQyTKmhzAea0F7XP4YFH9b6BT
+	 l57LMnufMQYwjPWC2qJQRl8+5X4/osRnSJlyieSE++JXNdk+5zrM9ztphH5NJYsYkV
+	 36HWk5DH1/yBbeikC7jejdC4VMq6Jjc7V9nhWDmwSSnTm+YfumIamcseokOgchqiLT
+	 jveEEvJUVm1QA==
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33d567ff9baso476636f8f.1
+        for <linux-efi@vger.kernel.org>; Mon, 19 Feb 2024 17:03:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708391015; x=1708995815;
+        h=mime-version:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+zS6MFOZJh5YuAzFETZLG5u3fWZMDM68zpe8l63E6VI=;
+        b=cpe4Bmp5yl0HOSAOznB8AggFlQu9IeXI3dzSBen5SkLVl9LxKQnFENg76b14kuWdW/
+         nLd0t3AAfwkN6aiGMrTBZp1+xKfCe/JuNjKRoTe0ay9mw40FiWBoPMedkBieA9hHzY+F
+         2MG1i4SwQW843hSWxEFhojT2e/WnThoOfGJTcoUMDiRmxlJbD2SQNj5F2Lrg9nqE08s0
+         qFVO/+bYEslRHrmLq8snQTXSr9h07ivH+z79sxPjBfer2/SAdeQ6lWuMx7hZsobhlNyG
+         ILTvO3VjxcrP4ZiO4sy2N/ekq5xuF+eqGBirvtD0Gf2YDnW6HDxXVfGQeYTqpDtIvV0+
+         T1IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrmXnyLh/yVo7qechOEuV0IrM1uulnwgAeSzprTPHG2ZCCV9LExLMRZEwV8V+cl54RWZkwEilF5EoFcUPnh+pm4swsWpDZ4k4z
+X-Gm-Message-State: AOJu0YwLZqz6vnAyQTx9ShWuoQu4jNypFCkCPKidlUV+Jp7H5adz8dJy
+	dlJUvMa9xQW09f5+qXWlZWWNzKXhmmCEvtjesMLgLrP0drmh9Ce7HKeQB8XlYc9ldEFRWRJ0yA9
+	y4T4xK1cFO9esA3yq8iFOjb+fvA3FDENrl299H8ymfUU2B8BBrmVwQA2jJAoFfy3bGf4+OwjAXQ
+	==
+X-Received: by 2002:adf:e60c:0:b0:33d:3566:b5c5 with SMTP id p12-20020adfe60c000000b0033d3566b5c5mr4573898wrm.7.1708391014906;
+        Mon, 19 Feb 2024 17:03:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IELLxS/uoyQ39/UQ+Dht7pYV6J8z3L94e41kT2bLLXgbZAiXpy5DVclx7H2HgKQ2ZHHc/RkYg==
+X-Received: by 2002:adf:e60c:0:b0:33d:3566:b5c5 with SMTP id p12-20020adfe60c000000b0033d3566b5c5mr4573887wrm.7.1708391014456;
+        Mon, 19 Feb 2024 17:03:34 -0800 (PST)
+Received: from localhost ([2a01:4b00:85fd:d700:a75:4765:bff:3fc5])
+        by smtp.gmail.com with ESMTPSA id n9-20020a056000170900b0033d5fab6781sm2594595wrc.96.2024.02.19.17.03.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Feb 2024 17:03:34 -0800 (PST)
+From: xnox <dimitri.ledkov@canonical.com>
+X-Google-Original-From: xnox <xnox@xnox-Inspiron-7400.mail-host-address-is-not-set>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org,
+ linux-efi@vger.kernel.org, 
+	jan.setjeeilers@oracle.com, pjones@redhat.com, 
+	steve@einval.com, julian.klode@canonical.com, 
+	bluca@debian.org, jejb@linux.ibm.com
+Subject: Re: x86 efistub stable backports for v6.6
+In-Reply-To: <CAMj1kXG4HpAHYKwz27_Qy9_Wx+O_QJDmA4CBXcMrvVcrOXhBxw@mail.gmail.com>
+ (message from Ard Biesheuvel on Thu, 15 Feb 2024 12:29:06 +0100)
+Date: Tue, 20 Feb 2024 01:03:24 +0000
+Message-ID: <87plwsj6ar.fsf@xnox-Inspiron-7400.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06F:EE_|PH0PR12MB8149:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2bc7059e-eb5a-427c-37f7-08dc319dceab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	irKuAdDcW6m7ves3rSRgiQxmzr/l0WJQlVeWt/BJ4cex4vB9Pbno1v6fbKwTeVqNw2etE866KLgpcf46mHBkyWHQOrnRD1s/ABJXCMCR9kZ7mp/G/P5pQKQR5rNRFbOeVivsWMbydZ3JTBqw11ypP0W+p6VioELHC6H2OKcK8sFsnWefKQhmRsN31SuaNJU7ypPPfK4HL3KXqhxaiVUJVxtx9ZXiQJMxBMWj6X3TJKku7UykX00ZpdrHyemT5751O0vph0P3l5Pbb/ueBHmVF2XzpN7/g6Bvio5q3mgJ3rZGkSkO544oSBsRlSp8HfftQqw/5XqgrLwBbgRiRJw04b75YAyHnDhRwqXGt8BjSZ70zzsjxANNZ9UiZQ+MEs/peYLWUWP+zKzxNlicfd2AEQCmYLBwof6wSLradVwhoUOafLXMSHBW+2PEHCrw4alTZSZNa9BxVFMs3v31D9Idq6Aw1zTLQ7voXpKU1/96c6AHy7XgFlIXt+zvKdWFYqtoAade+4YemjTB4GuUr6jb1YF3+7gylDfZ3tkOo8dXOOw1LmVlZrKDnf7QoiYsQD/hsFrtk7jEfoVgVFeEVBKhM4mfSZxfsYnjs6Esid/GNEWfpHwr90bsPT8ZkRZPEuY2U1RKI4FpqHRyflJP56GTd+exer649teTLFbsHaxGvJE=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(40470700004)(46966006);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2024 22:55:02.6252
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2bc7059e-eb5a-427c-37f7-08dc319dceab
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B06F.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8149
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+Ard Biesheuvel <ardb@kernel.org> writes:
 
-For kexec use case, need to use and stick to the EFI memmap passed
-from the first kernel via boot-params/setup data, hence,
-skip efi_arch_mem_reserve() during kexec.
+> On Thu, 15 Feb 2024 at 12:12, Greg KH <gregkh@linuxfoundation.org> wrote:
+>>
+>> On Thu, Feb 15, 2024 at 10:41:57AM +0100, Ard Biesheuvel wrote:
+>> > On Thu, 15 Feb 2024 at 10:27, Greg KH <gregkh@linuxfoundation.org> wrote:
+>> > >
+>> > > On Thu, Feb 15, 2024 at 10:17:20AM +0100, Ard Biesheuvel wrote:
+>> > > > (cc stakeholders from various distros - apologies if I missed anyone)
+>> > > >
+>> > > > Please consider the patches below for backporting to the linux-6.6.y
+>> > > > stable tree.
+>> > > >
+>> > > > These are prerequisites for building a signed x86 efistub kernel image
+>> > > > that complies with the tightened UEFI boot requirements imposed by
+>> > > > MicroSoft, and this is the condition under which it is willing to sign
+>> > > > future Linux secure boot shim builds with its 3rd party CA
+>> > > > certificate. (Such builds must enforce a strict separation between
+>> > > > executable and writable code, among other things)
+>> > > >
+> ...
+>> > > And is this not an issue for 6.1.y as well?
+>> > >
+>> >
+>> > It is, but there are many more changes that would need to go into v6.1:
+>> >
+>> >  Documentation/x86/boot.rst                     |   2 +-
+>> >  arch/x86/Kconfig                               |  17 +
+>> >  arch/x86/boot/Makefile                         |   2 +-
+>> >  arch/x86/boot/compressed/Makefile              |  13 +-
+>> >  arch/x86/boot/compressed/efi_mixed.S           | 328 ++++++++++++++
+>> >  arch/x86/boot/compressed/efi_thunk_64.S        | 195 --------
+>> >  arch/x86/boot/compressed/head_32.S             |  38 +-
+>> >  arch/x86/boot/compressed/head_64.S             | 593 +++++--------------------
+>> >  arch/x86/boot/compressed/mem_encrypt.S         | 152 ++++++-
+>> >  arch/x86/boot/compressed/misc.c                |  61 ++-
+>> >  arch/x86/boot/compressed/misc.h                |   2 -
+>> >  arch/x86/boot/compressed/pgtable.h             |  10 +-
+>> >  arch/x86/boot/compressed/pgtable_64.c          |  87 ++--
+>> >  arch/x86/boot/compressed/sev.c                 | 112 +++--
+>> >  arch/x86/boot/compressed/vmlinux.lds.S         |   6 +-
+>> >  arch/x86/boot/header.S                         | 215 ++++-----
+>> >  arch/x86/boot/setup.ld                         |  14 +-
+>> >  arch/x86/boot/tools/build.c                    | 271 +----------
+>> >  arch/x86/include/asm/boot.h                    |   8 +
+>> >  arch/x86/include/asm/efi.h                     |  14 +-
+>> >  arch/x86/include/asm/sev.h                     |   7 +
+>> >  drivers/firmware/efi/libstub/Makefile          |   8 +-
+>> >  drivers/firmware/efi/libstub/alignedmem.c      |   5 +-
+>> >  drivers/firmware/efi/libstub/arm64-stub.c      |   6 +-
+>> >  drivers/firmware/efi/libstub/efi-stub-helper.c |   2 +
+>> >  drivers/firmware/efi/libstub/efistub.h         |  28 +-
+>> >  drivers/firmware/efi/libstub/mem.c             |   3 +-
+>> >  drivers/firmware/efi/libstub/randomalloc.c     |  13 +-
+>> >  drivers/firmware/efi/libstub/x86-5lvl.c        |  95 ++++
+>> >  drivers/firmware/efi/libstub/x86-stub.c        | 327 +++++++-------
+>> >  drivers/firmware/efi/libstub/x86-stub.h        |  17 +
+>> >  include/linux/efi.h                            |   1 +
+>> >  32 files changed, 1204 insertions(+), 1448 deletions(-)
+>> >
+> ...
+>> > If you're happy to take these too, I can give you the proper list, but
+>> > perhaps we should deal with v6.6 first?
+>>
+>> Yeah, let's deal with 6.6 first :)
+>>
+>> What distros are going to need/want this for 6.1.y?  Will normal users
+>> care as this is only for a new requirement by Microsoft, not for older
+>> releases, right?
+>>
+>
+> I will let the distro folks on cc answer this one.
 
-Additionally during SNP guest kexec testing discovered that EFI memmap
-is corrupted during chained kexec. kexec_enter_virtual_mode() during
-late init will remap the efi_memmap physical pages allocated in
-efi_arch_mem_reserve() via memblock & then subsequently cause random
-EFI memmap corruption once memblock is freed/teared-down.
+Canonical will want to backport this at least as far back as v4.15 for
+Ubuntu and Ubuntu Pro. So yeah, as far back as possible will be
+apperiated by everybody involved. Since if/when firmware (VMs or
+Hardware) starts to require NX compat, it will be desired to have all
+stable supported kernels with this support built-in.
 
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
- arch/x86/platform/efi/quirks.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Regards,
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index f0cc00032751..d4562d074371 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -258,6 +258,16 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
- 	int num_entries;
- 	void *new;
- 
-+	/*
-+	 * For kexec use case, need to use the EFI memmap passed from the first
-+	 * kernel via boot-params/setup data and need to skip this.
-+	 * Additionally kexec_enter_virtual_mode() during late init will remap
-+	 * the efi_memmap physical pages allocated here via memblock & then
-+	 * subsequently cause random EFI memmap corruption once memblock is freed.
-+	 */
-+	if (efi_setup)
-+		return;
-+
- 	if (efi_mem_desc_lookup(addr, &md) ||
- 	    md.type != EFI_BOOT_SERVICES_DATA) {
- 		pr_err("Failed to lookup EFI memory descriptor for %pa\n", &addr);
--- 
-2.34.1
-
+Dimitri.
 
