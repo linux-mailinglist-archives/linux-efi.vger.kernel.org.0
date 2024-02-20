@@ -1,109 +1,133 @@
-Return-Path: <linux-efi+bounces-592-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-593-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2EE85B51D
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 09:28:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A86D185B561
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 09:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D72D1F21BEA
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 08:28:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 657F3282300
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Feb 2024 08:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9173D5C61A;
-	Tue, 20 Feb 2024 08:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69495C60A;
+	Tue, 20 Feb 2024 08:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VuBTIhfX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i50NX79B"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649515C609;
-	Tue, 20 Feb 2024 08:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1C05C5F2;
+	Tue, 20 Feb 2024 08:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708417688; cv=none; b=qzW70iXsQ+7khRUJadsNVRS2BIspnXk25e/ELRz+beJPoW6lbyqFgtuoljApiJfATyy4Vqx/NM9TXX1wb/DCQtNxAIgDG/5FmdRUSx6bMU5YytG4A7OmshycY0xJ59o7v5Swa3A5tO1L4tUaNOoXeWosEiqm07jWu/CWhZn2UGw=
+	t=1708418232; cv=none; b=J/MOZ0UvkN+1CdCBN+O0gcliG6at/lnVE7zCNFsVV+lf6s2MJO4Wxe6X2rMypL/uv4JTo9zfZT+X2WfvaDOyTSnfYn+tWddZm19gXQ5RssDuZO5AQWTNcNVP+0xo1rqF/aE3lECvue8q4dwy9eqz4EhaNWT3+h9gEnxsRBIE9hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708417688; c=relaxed/simple;
-	bh=8NojBs5OOxOWAE3h/AeLXQbt98Gk2zBllMx9ZfLFugw=;
+	s=arc-20240116; t=1708418232; c=relaxed/simple;
+	bh=OBNB0k0FytlPxcnFOclq0NEXCoipePnmZTf+6P5ki+Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=skTUv7+QKkDbzI2XBWYby+RkGOubT7x7nkex3GqGuPWiXf+WWBpR8hqUSOV5pSbU9WDtYoZwltyRuN8yqB8dMVGap0DnmpbmTGqSLhGP/0wk9vtKJnBBLpD5NitrJh0oBDqYRLitk0EBAAE+9noAZQeC8VR5nWOeFriZnQ0wUUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VuBTIhfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C7CC43390;
-	Tue, 20 Feb 2024 08:28:07 +0000 (UTC)
+	 To:Cc:Content-Type; b=m1Knd/iSil2nf78zrOuNKJUwLggdH6Dfma6/jPsoDr7wo08XU/Z/fYU82pVYo8uUzKtZDWBm6k/CheSPudsG35+qGFt1RkAykmLuPF8Hf0RykaVwm5bEY63y25w9C+7pXQunfCViJSrkN47o4K5TECQaBXOSkyb3wIrWaiJYZ3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i50NX79B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE92C43399;
+	Tue, 20 Feb 2024 08:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708417687;
-	bh=8NojBs5OOxOWAE3h/AeLXQbt98Gk2zBllMx9ZfLFugw=;
+	s=k20201202; t=1708418232;
+	bh=OBNB0k0FytlPxcnFOclq0NEXCoipePnmZTf+6P5ki+Q=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VuBTIhfXyy1WszQ0KLEYbexwTgrNe7OMEwgEDtOgQcS35Dekd88m8Wr+ccyuzW3EX
-	 p2XgwJ31uRUyID+9Wu4P1Re2U8jllGzNO+oaNw7Zvmkslxs35tF2jdqz533H7FICMx
-	 vzPkjN1iV/Ikf1c6N4KBgow9b1qBvlF6A4aRmNhEr+h6/rHXoVLwPev1q2DjWHTVvR
-	 ufA2gm0WV13GGXFkAO0GZRpzaQacYZHrciuHdLi2womFataACBO22KBnmMcgdcbO9p
-	 aya/BsQOYDKcFhA4RktManAULDcuUmroX+p6ApHZOTxvbkxBtus80rCtMVO0WNodiu
-	 AEMAp6x+THHFQ==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5112bd13a4fso6685591e87.0;
-        Tue, 20 Feb 2024 00:28:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXj9wrWtDHb4EOriYkHH4Q50xJ7ZSdTH0Qbqhu0orxtuPbScmRyGfa8l5N2EneXkb/3VAC+t1VSS7PWoo7F/LT5lYf4Z0y+G9QxFA39ga+VwvHTkRuc76/jYgkjxSIEpvef+Ihkoqh6MAxw02wndJKXPiuS7qz8Ma3bv+0R835a4YUvMphrrRJB5rsyXvQF56NmeBYTRwr6ICiNPrdngWM/bQ==
-X-Gm-Message-State: AOJu0YwkZs6udMbAj0nkVluZRz4U3NZG87o5KOdUFPRnY7K/B/5AqR5Z
-	QDBLapURY1cJs00cQPDMn2neYLtsJWzrm1lx5asoVa89Be5UTcH8gqdacb6eoC6ufuKsoOgqz1J
-	Od2vuytkRNbdkJdrvkY9TI9UVNMs=
-X-Google-Smtp-Source: AGHT+IFG5XWQOePlu2a/BI98A1oPfCPp49GB0UY1qIt2KM/lwtnqF5//96XzhpPDrq4mFoV6bCF5jKk3Tcs+aZHZKv8=
-X-Received: by 2002:ac2:5394:0:b0:512:b965:f60f with SMTP id
- g20-20020ac25394000000b00512b965f60fmr1206182lfh.9.1708417686087; Tue, 20 Feb
- 2024 00:28:06 -0800 (PST)
+	b=i50NX79B4MiHC5G0bhTyLsnG5T81WgLR/rEXzybT2Muggw1h7QRUJN9Ea8PIKPNW6
+	 0rCr8r8h4wrHIUoVCDYe3qrFjtCClcrUhZtnJ6iIrhyr/iSkipezXZs6K4rISm0o69
+	 pqFPqYjOvcWub7OS2xKFSNit0Krz6S68le/Ns3hiGEKfzM4VDBmqcE5MzXu3GguOhP
+	 m3WNDCt6Ja31wVE7qwjpl9wGE6K5qCgYUfGiWwqkkucCdN0tl40S96cSOQtiMg6/aM
+	 t2M3Io6tI+QDKll2xvkNTBo9W5P1Mw5ZQBlO7TmzR03f58Ki0FANCmJ0bsT+b6AptV
+	 Ksp5+h3kABmvA==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d2305589a2so31738831fa.1;
+        Tue, 20 Feb 2024 00:37:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUzAaZbO03ZjndUfwMrIoM3lg6vO5CFWlIRYLOX8Td+YYEQ7O7bXLOuLO+H9J0Dqo1v66wMJPxQPKRxcpulKjlr8o8mSP8Zu7yKTVovL7F3pIUzJOGCC7VweES7tUUDLrxu
+X-Gm-Message-State: AOJu0YxKRQHLmKKzmKUy3VMGQ/h5/pAufjLC0kRY6TD7+z+ZhZbthNB8
+	ocAWgU+m5SgBVubrb6iqJfCmOPBRbUWIoT9eS0p60HHGhZUy1Kuu4T+8nJauZAgqwytN0vLJSOb
+	2UF4dhm+rmC7lQFCWKKRLMH9ktoQ=
+X-Google-Smtp-Source: AGHT+IH5LJ9Na0gc2WmzLAq7A6Kn2wwh72/gbR9JrDlR3Tzd7hZy2DcPQCEiB5dzVcFR5JF1XwUNgCZYyAi8MXq33dk=
+X-Received: by 2002:a2e:870f:0:b0:2d2:4218:6275 with SMTP id
+ m15-20020a2e870f000000b002d242186275mr2186989lji.49.1708418230514; Tue, 20
+ Feb 2024 00:37:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240215225116.3435953-1-boqun.feng@gmail.com>
- <2024021718-dwindling-oval-8183@gregkh> <ZdQmCEepdOE2R7gS@boqun-archlinux>
-In-Reply-To: <ZdQmCEepdOE2R7gS@boqun-archlinux>
+References: <CAMj1kXG4HpAHYKwz27_Qy9_Wx+O_QJDmA4CBXcMrvVcrOXhBxw@mail.gmail.com>
+ <87plwsj6ar.fsf@xnox-Inspiron-7400.mail-host-address-is-not-set>
+In-Reply-To: <87plwsj6ar.fsf@xnox-Inspiron-7400.mail-host-address-is-not-set>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 20 Feb 2024 09:27:54 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGzaUsgn0DGfy15c+Z5ECNqosjWbci-YZyUTsMWXte21A@mail.gmail.com>
-Message-ID: <CAMj1kXGzaUsgn0DGfy15c+Z5ECNqosjWbci-YZyUTsMWXte21A@mail.gmail.com>
-Subject: Re: [RFC] efi: Add ACPI_MEMORY_NVS into the linear map
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, linux-arm-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Oliver Smith-Denny <osde@linux.microsoft.com>
+Date: Tue, 20 Feb 2024 09:36:59 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGjxtMnJ6MeeE-W73Jw_seRPnQwVDRyBayDzKvaDLFLjw@mail.gmail.com>
+Message-ID: <CAMj1kXGjxtMnJ6MeeE-W73Jw_seRPnQwVDRyBayDzKvaDLFLjw@mail.gmail.com>
+Subject: Re: x86 efistub stable backports for v6.6
+To: xnox <dimitri.ledkov@canonical.com>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, 
+	linux-efi@vger.kernel.org, jan.setjeeilers@oracle.com, pjones@redhat.com, 
+	steve@einval.com, julian.klode@canonical.com, bluca@debian.org, 
+	jejb@linux.ibm.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 20 Feb 2024 at 05:10, Boqun Feng <boqun.feng@gmail.com> wrote:
+On Tue, 20 Feb 2024 at 02:03, xnox <dimitri.ledkov@canonical.com> wrote:
 >
-> On Sat, Feb 17, 2024 at 08:49:32AM +0100, Greg KH wrote:
-> > On Thu, Feb 15, 2024 at 02:51:06PM -0800, Boqun Feng wrote:
-> > > Currently ACPI_MEMORY_NVS is omitted from the linear map, which causes
-> > > a trouble with the following firmware memory region setup:
-> > >
-> > >     [..] efi:   0x0000dfd62000-0x0000dfd83fff [ACPI Reclaim|...]
-> > >     [..] efi:   0x0000dfd84000-0x0000dfd87fff [ACPI Mem NVS|...]
-> > >
-> > > , on ARM64 with 64k page size, the whole 0x0000dfd80000-0x0000dfd8ffff
-> > > range will be omitted from the the linear map due to 64k round-up. And
-> > > a page fault happens when trying to access the ACPI_RECLAIM_MEMORY:
-> > >
-> > >     [...] Unable to handle kernel paging request at virtual address ffff0000dfd80000
-> > >
-> > > To fix this, add ACPI_MEMORY_NVS into the linear map.
-> > >
-> > > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > > Cc: stable@vger.kernel.org # 5.15+
-> >
-> > What commit id does this fix?  Can you include that as well?
-> >
+> Ard Biesheuvel <ardb@kernel.org> writes:
 >
-> It should be 7aff79e297ee ("Drivers: hv: Enable Hyper-V code to be built
-> on ARM64"), but as Ard mentioned earlier, this could be fixed at the VM
-> firmware, and Oliver is working on that. Should the situation change, I
-> will send a V2 with more information and include the commit id.
+> > On Thu, 15 Feb 2024 at 12:12, Greg KH <gregkh@linuxfoundation.org> wrote:
+> >>
+> >> On Thu, Feb 15, 2024 at 10:41:57AM +0100, Ard Biesheuvel wrote:
+> >> > On Thu, 15 Feb 2024 at 10:27, Greg KH <gregkh@linuxfoundation.org> wrote:
+> >> > >
+> >> > > On Thu, Feb 15, 2024 at 10:17:20AM +0100, Ard Biesheuvel wrote:
+> >> > > > (cc stakeholders from various distros - apologies if I missed anyone)
+> >> > > >
+> >> > > > Please consider the patches below for backporting to the linux-6.6.y
+> >> > > > stable tree.
+> >> > > >
+> >> > > > These are prerequisites for building a signed x86 efistub kernel image
+> >> > > > that complies with the tightened UEFI boot requirements imposed by
+> >> > > > MicroSoft, and this is the condition under which it is willing to sign
+> >> > > > future Linux secure boot shim builds with its 3rd party CA
+> >> > > > certificate. (Such builds must enforce a strict separation between
+> >> > > > executable and writable code, among other things)
+> >> > > >
+> > ...
+> >> > > And is this not an issue for 6.1.y as well?
+> >> > >
+> >> >
+> >> > It is, but there are many more changes that would need to go into v6.1:
+> >> >
+...
+> >> >  32 files changed, 1204 insertions(+), 1448 deletions(-)
+> >> >
+> > ...
+> >> > If you're happy to take these too, I can give you the proper list, but
+> >> > perhaps we should deal with v6.6 first?
+> >>
+> >> Yeah, let's deal with 6.6 first :)
+> >>
+> >> What distros are going to need/want this for 6.1.y?  Will normal users
+> >> care as this is only for a new requirement by Microsoft, not for older
+> >> releases, right?
+> >>
+> >
+> > I will let the distro folks on cc answer this one.
+>
+> Canonical will want to backport this at least as far back as v4.15 for
+> Ubuntu and Ubuntu Pro. So yeah, as far back as possible will be
+> apperiated by everybody involved. Since if/when firmware (VMs or
+> Hardware) starts to require NX compat, it will be desired to have all
+> stable supported kernels with this support built-in.
 >
 
-The patch as-is is not acceptable to me, so no need to send a v2 just
-to add more information.
+Thanks for the data point, and good luck with backporting this to
+v4.15 or earlier. If it helps, I have a branch that backports
+LoadFile2 initrd loading support to v5.4 (below), which you will need
+to backport first. Going further back than v5.4 is going to be very
+messy IMHO.
 
-Please consider the fix I proposed for arch_memremap_can_ram_remap()
-if fixing this in the firmware is not feasible.
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-lf2-backport-x86
 
