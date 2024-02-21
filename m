@@ -1,172 +1,168 @@
-Return-Path: <linux-efi+bounces-624-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-625-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3E685EBFB
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Feb 2024 23:48:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBDD85ECDA
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Feb 2024 00:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42A44283470
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Feb 2024 22:48:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EE4DB21744
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Feb 2024 23:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4045086646;
-	Wed, 21 Feb 2024 22:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CA51272B2;
+	Wed, 21 Feb 2024 23:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4E9he3p9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uo6j9C+3"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983C53EA8F
-	for <linux-efi@vger.kernel.org>; Wed, 21 Feb 2024 22:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBCD56456;
+	Wed, 21 Feb 2024 23:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708555719; cv=none; b=WImOI69lBCjjeKTum5eQIYWW2P97SYhrKzPADwhIADCLZow9KcNgO6w1izSCszNPzmFNCaUTZDa5oRg3m2qlgqq9Zd+YF4odj8n0iJWqdC7u4lXvPCgCXCFEZJ5au16U70tXmZTgwOHvqW0IYkdzcKQDhVoCQYiFsbNDxhgjbWI=
+	t=1708557862; cv=none; b=bXgU2jiPSdcUFeC6nq9/Qpw2zdwS/FJLxKrx6uuLARE4b7tPNzu1ossHia/rDzsD18Jq6KEDdKh2vMt4d7gmi9YN2f6ObCB66XPOC/TuHQovLxS/0uqnXl0ayOAsGAefgaBWGa5XVT5IO91FgQEbCm5wa1LCn+AjhZYSWuWVDB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708555719; c=relaxed/simple;
-	bh=1CkGcXdG+KrlM+x9gWekq+WBiUkt/eToiyx5uT4ML+8=;
+	s=arc-20240116; t=1708557862; c=relaxed/simple;
+	bh=o0pBvdU+JHgT39C/oZ43v61yIgxOBybqfEpddDffT+s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LzoAifb3M7o2avZqMOhSWETAOb8QdJyDm5rDkHFkSN69ukjRcbD0UNAnqa0e3XykQSgP/wzUIyXbhz6iB+dq0bz/VVPoKqcKsRBSIa//FJTUMkYWHCS7R6lUH8hzJMuZu6YndTkn1SNUkAGW9MLIaaMFX9ipZgQGxUAM1t4dh/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4E9he3p9; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-428405a0205so54051cf.1
-        for <linux-efi@vger.kernel.org>; Wed, 21 Feb 2024 14:48:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708555684; x=1709160484; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gw5fc5I26kdjc0zlKV7SIy+DOj8voXJyqY3HQnL2RuU=;
-        b=4E9he3p9Gt5DJ4bz0VKbMtIezXkJVB1PMFthc06+xcYvzk2p8jeO8bCiTaEqPCnlJC
-         TJSmMaQGZoTEoGcZUCib8edHI60UA6zfh0Ccww0hUFNo/eN581y2yd+zhd2XCShqN5MD
-         gXfdUgtQOq1SzQiceBbALEFyPAnoCoOe8zcwqCYX4cS3KvVF6rrZOA770g36Y4XuajH3
-         3jU1rCkLgNbe5tIj8Q6dL0A07OcHM1vQMLV+rwNIXDv0n1CzjvS7G/GALHLtIis+AEpN
-         Yr8LA+ASYHUapVw3SJeZuw2+fPbD8KckiatUIrA5/XdUAkGgj0gCLwZEP0PDGUYTEtrl
-         a9Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708555684; x=1709160484;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gw5fc5I26kdjc0zlKV7SIy+DOj8voXJyqY3HQnL2RuU=;
-        b=h9tX3dOlQFZqF9FuUXubJoEm7rTqCMBFn7sq1s7v8z+FiNLAuVq17vkeEeLNSCzA3U
-         Ssouu+BTvSbDCinXUX7qr2eXbCd7b6Qxghjybg6xMsmWmxiGlyzP86yYyedzBiICwMFh
-         1uQfyFEWzFHkTrVZWIAIHQ2wD+ZiB0YHS2wVuFjffYZcc8LMBIL9ATgs7wTX2rMJkT3L
-         xctz49UGQ3qKX0PNHX1hLqYjMR5OHmVBS5PQ6BH9cTt6j8ywdl5d9qEJJmtmLvafQQCS
-         tVe/wPxqneBuhd5QGGf0ZUKG+i8EnYq3BgnYUaFlDEdxUN2/mHYK2RoUx1RzxnoKAtq3
-         vgCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXEc/2gE7XqPC/REK9NS3mb8Sc/rGBwIYwZwY8Y2BVfVEVPHrUVKGULHzkF39wwMga1O6hg6prmVbq7NoIORGwXCDpw/HEne24y
-X-Gm-Message-State: AOJu0YxdRy4QfHy3VslyoprDVszvTpauQzZgpkE9AmCprnvqjBvJNJSe
-	2GOvqQ2NkRGkBnq9RIZQYukTmoQ+9g6+MR8CH0GmGckRO39pn50wKJQR740TrUEf5tv1o29wpxt
-	cWQ+Cl3Oh94Orf+qgzctLicWNJSJYduTkMKMS
-X-Google-Smtp-Source: AGHT+IHIiztHrlPVGbWlf9kC0Qn60zcxekXTmFXaa6Zvf6bxngg4By83+kUKNWAWtpmAT3Koc+UzgsGYRi3muOBgwgE=
-X-Received: by 2002:ac8:1242:0:b0:42d:dbd8:e12 with SMTP id
- g2-20020ac81242000000b0042ddbd80e12mr441467qtj.2.1708555683602; Wed, 21 Feb
- 2024 14:48:03 -0800 (PST)
+	 To:Cc:Content-Type; b=X4BOlSGoxPIU5l4AobN6VjfgXmiDgDv5hqQvSGx3xa3c65QB7eMHJtTkcYLfRLU51C8OKtl7CQoXmQWytOTZ3lGDbADrRJzBu7a6z7cWLzXSoKu22yv7Bsh+EH3sgF8XDOLY9T0PUdCXrIhdLSdej4i1LBDBLcf2RFXmQBwyGpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uo6j9C+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2A2C433B2;
+	Wed, 21 Feb 2024 23:24:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708557862;
+	bh=o0pBvdU+JHgT39C/oZ43v61yIgxOBybqfEpddDffT+s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Uo6j9C+3yRULLuhfUameeJdnFArY/DJQDmDNfb1NtvgSUoJu5xf4jfx3Gzy+QWSD9
+	 /Ki6xXWWXFKWco2i+oBjemS298yxFH2zmONSAJcVKpgnn5ASa+vrnmQIpFxASzABp+
+	 xoSQLSGYl7MTRjNIb7yQfurBY6V9FXK8ivBg1ovDs85Q1KUONIJVWj5xmY8Ur8JYYU
+	 fZHc/w3kaVNWAkptQF2laAOVKKd9frUPsRF+EkoYYE7i6AHxoYzxa8iLUf660a9KUD
+	 GjhfnDzRtt2+7CtEkm91mWF+v2OU9tMK+ATcehpGg8SBuGV4NPe2dcC3yYgKO2TTcg
+	 nGOx4pK29xnCA==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d2531294faso19792401fa.2;
+        Wed, 21 Feb 2024 15:24:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVyNDcEzKTTQSv5DNDzm/PrucU88RphNZGanUIZpAW4RGjDQJRoA7FJlrzpZTt4kpx2CrcO1ZAs3P9e/iVNqF1VhthsobAG+dhfnKTe7wSsSdjrnEPK160TbQEifnJ6cxMni/EG6Kb7xGz3/xfbB6BHeSGx4yzb7N1MvOkq+WCmOCrewD+AbEAMPqmnF+BWfUgQNA48h1Km3vftmz4GB/6o3gILoVIaorvMToST92829DTGtVOhqZFyPaf6tC0X4XMJ
+X-Gm-Message-State: AOJu0YxaIvoxLHyGYb7bxG007v0Gnu3PS5YuKWr7ng7EE0b9ZPf+wHTt
+	YQ0yIU0PViUTWaBbYJ1dhHKJnMQTD7DbPx79iV/ma/Dee8P1mLaifevw0t3hppN3dAzc3eNCzkT
+	vnyRwpFbEarFUMmBRf6EbMcc5eYc=
+X-Google-Smtp-Source: AGHT+IEFjS3UH7erXEZ4kbkF96yuQm9TlfZ1AWhPucU81wH0eazr9XKjePangSR6zBzRuAu+rhDmfGqI9zl7A6Q+3YI=
+X-Received: by 2002:a2e:b8c8:0:b0:2d0:c77c:b1ca with SMTP id
+ s8-20020a2eb8c8000000b002d0c77cb1camr14950388ljp.49.1708557860236; Wed, 21
+ Feb 2024 15:24:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240212213147.489377-1-saravanak@google.com> <20240212213147.489377-4-saravanak@google.com>
- <20240214-stable-anytime-b51b898d87af@spud> <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
- <20240215-unstirred-rearrange-d619a2524a63@spud> <CAGETcx8EBta8dUSELUJ6_ibZABnnhSYX0VEGa8s-CbHFYuskkQ@mail.gmail.com>
- <20240221-emblaze-ripeness-7ad4e41343fa@spud>
-In-Reply-To: <20240221-emblaze-ripeness-7ad4e41343fa@spud>
-From: Saravana Kannan <saravanak@google.com>
-Date: Wed, 21 Feb 2024 14:47:26 -0800
-Message-ID: <CAGETcx99Dob1D6Cr7+wN5+4aARgBdGdwEkNUjRAc6d_Ls9dqrQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
-To: Conor Dooley <conor@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20240214221847.2066632-1-ross.philipson@oracle.com>
+ <20240214221847.2066632-16-ross.philipson@oracle.com> <CAMj1kXF3k_c4Wn9GU+NC_+_aYfDpAzAUnfR=A4L_T+re1H3G=w@mail.gmail.com>
+ <dc53f100-062b-47ae-abc8-5414ce8d041c@oracle.com> <C98F883A-31D5-4F67-97FF-4AEFAADDDC74@zytor.com>
+In-Reply-To: <C98F883A-31D5-4F67-97FF-4AEFAADDDC74@zytor.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 22 Feb 2024 00:24:06 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFYVbCd3EaweseNndhmOwdbzEmvB1vjWk2rmTBxAoPCxg@mail.gmail.com>
+Message-ID: <CAMj1kXFYVbCd3EaweseNndhmOwdbzEmvB1vjWk2rmTBxAoPCxg@mail.gmail.com>
+Subject: Re: [PATCH v8 15/15] x86: EFI stub DRTM launch support for Secure Launch
+To: "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>
+Cc: ross.philipson@oracle.com, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-efi@vger.kernel.org, dpsmith@apertussolutions.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, 
+	jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu, 
+	herbert@gondor.apana.org.au, davem@davemloft.net, kanth.ghatraju@oracle.com, 
+	trenchboot-devel@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 21, 2024 at 11:34=E2=80=AFAM Conor Dooley <conor@kernel.org> wr=
-ote:
+On Wed, 21 Feb 2024 at 21:37, H. Peter Anvin <hpa@zytor.com> wrote:
 >
-> On Tue, Feb 20, 2024 at 08:13:31PM -0800, Saravana Kannan wrote:
-> > I made that fix and now I'm getting this:
-> > $ make DT_CHECKER_FLAGS=3D-m dt_binding_check
-> > DT_SCHEMA_FILES=3DDocumentation/devicetree/bindings/post-init-suppliers=
-.yaml
-> >   DTEX    Documentation/devicetree/bindings/post-init-suppliers.example=
-.dts
-> >   LINT    Documentation/devicetree/bindings
-> >   CHKDT   Documentation/devicetree/bindings/processed-schema.json
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-sup=
-pliers.yaml:
-> > 'oneOf' conditional failed, one must be fixed:
-> >         'unevaluatedProperties' is a required property
-> >         'additionalProperties' is a required property
-> >         hint: Either unevaluatedProperties or additionalProperties
-> > must be present
-> >         from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-> >   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/tpm/ibm,vtpm.=
-yaml:
-> > ignoring, error in schema: properties
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-sup=
-pliers.yaml:
-> > ignoring, error in schema:
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/soc/tegra/nvi=
-dia,tegra20-pmc.yaml:
-> > ignoring, error in schema: allOf: 0: then: properties: pinmux
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/net/lantiq,pe=
-f2256.yaml:
-> > ignoring, error in schema: properties: lantiq,data-rate-bps
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-sup=
-plier.yaml:
-> > ignoring, error in schema:
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/iio/pressure/=
-honeywell,mprls0025pa.yaml:
-> > ignoring, error in schema: properties: honeywell,pmax-pascal
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/iio/pressure/=
-honeywell,hsc030pa.yaml:
-> > ignoring, error in schema: properties: honeywell,pmax-pascal
+> On February 21, 2024 12:17:30 PM PST, ross.philipson@oracle.com wrote:
+> >On 2/15/24 1:01 AM, Ard Biesheuvel wrote:
+> >> On Wed, 14 Feb 2024 at 23:32, Ross Philipson <ross.philipson@oracle.co=
+m> wrote:
+> >>>
+> >>> This support allows the DRTM launch to be initiated after an EFI stub
+> >>> launch of the Linux kernel is done. This is accomplished by providing
+> >>> a handler to jump to when a Secure Launch is in progress. This has to=
+ be
+> >>> called after the EFI stub does Exit Boot Services.
+> >>>
+> >>> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+> >>> ---
+> >>>   drivers/firmware/efi/libstub/x86-stub.c | 55 ++++++++++++++++++++++=
++++
+> >>>   1 file changed, 55 insertions(+)
+> >>>
+> >>> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmwa=
+re/efi/libstub/x86-stub.c
+> >>> index 0d510c9a06a4..4df2cf539194 100644
+> >>> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> >>> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> >>> @@ -9,6 +9,7 @@
+> >>>   #include <linux/efi.h>
+> >>>   #include <linux/pci.h>
+> >>>   #include <linux/stddef.h>
+> >>> +#include <linux/slr_table.h>
+> >>>
+> >>>   #include <asm/efi.h>
+> >>>   #include <asm/e820/types.h>
+> >>> @@ -810,6 +811,57 @@ static efi_status_t efi_decompress_kernel(unsign=
+ed long *kernel_entry)
+> >>>          return EFI_SUCCESS;
+> >>>   }
+> >>>
+> >>> +static void efi_secure_launch(struct boot_params *boot_params)
+> >>> +{
+> >>> +       struct slr_entry_uefi_config *uefi_config;
+> >>> +       struct slr_uefi_cfg_entry *uefi_entry;
+> >>> +       struct slr_entry_dl_info *dlinfo;
+> >>> +       efi_guid_t guid =3D SLR_TABLE_GUID;
+> >>> +       struct slr_table *slrt;
+> >>> +       u64 memmap_hi;
+> >>> +       void *table;
+> >>> +       u8 buf[64] =3D {0};
+> >>> +
+> >>
+> >> If you add a flex array to slr_entry_uefi_config as I suggested in
+> >> response to the other patch, we could simplify this substantially
+> >
+> >I feel like there is some reason why we did not use flex arrays. We were=
+ talking and we seem to remember we used to use them and someone asked us t=
+o remove them. We are still looking into it. But if we can go back to them,=
+ I will take all the changes you recommended here.
+> >
 >
-> >   DTC_CHK Documentation/devicetree/bindings/post-init-suppliers.example=
-.dtb
-> > Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-> > /example-0/clock-controller@1000: failed to match any schema with
-> > compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
-> > Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-> > /example-0/clock-controller@1000: failed to match any schema with
-> > compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
-> > Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-> > /example-0/clock-controller@2000: failed to match any schema with
-> > compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
-> > Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-> > /example-0/clock-controller@2000: failed to match any schema with
-> > compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
->
-> FWIW, I don't see these or the other errors you see above. You really
-> need to get yourself a newer version of dt-schema, or else avoid
-> working on this using whatever castrated system google provides you with!
+> Linux kernel code doesn't use VLAs because of the limited stack size, and=
+ VLAs or alloca() makes stack size tracking impossible. Although this techn=
+ically speaking runs in a different environment, it is easier to enforce th=
+e constraint globally.
 
-Ok, finally found the workaround to updating these packages and the
-output is a lot cleaner now.
+Flex array !=3D VLA
 
-> > But I guess the "oneOf" error is because the yaml is being treated as
-> > a description of a DT node and not a schema?
->
-> The oneOf is due to missing "additionalProperties: true" - As far as I
-> understand you need that regardless of whether this is going into
-> dt-schema or the kernel.
+VLAs were phased out because of this reason (and VLAISs [VLAs in
+structs] were phased out before that because they are a GNU extension
+and not supported by Clang)
 
-Ok, I added that and the errors go away. I'll send out a v3 and
-hopefully Rob can pick it up.
+Today, VLAs are not supported anywhere in the kernel.
 
--Saravana
+Flex arrays are widely used in the kernel. A flex array is a trailing
+array of unspecified size in a struct that makes the entire *type*
+have a variable size. But that does not make them VLAs (or VLAISs) - a
+VLA is a stack allocated *variable* whose size is based on a function
+parameter.
+
+Instances of types containing flex arrays can be allocated statically,
+or dynamically on the heap. This is common practice in the kernel, and
+even supported by instrumentation to help the compiler track the
+runtime size and flag overruns. We are even in the process of adding
+compiler support to annotate struct members as carrying the number of
+elements in an associated flex arrays, to improve the coverage of the
+instrumentation.
+
+I am not asking for a VLA here, only a flex array.
 
