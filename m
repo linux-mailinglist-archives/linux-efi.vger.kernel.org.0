@@ -1,79 +1,81 @@
-Return-Path: <linux-efi+bounces-626-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-627-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4116785ECEF
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Feb 2024 00:30:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8932685ECF4
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Feb 2024 00:30:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7151F1C21B37
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Feb 2024 23:30:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A040D1C21EA2
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Feb 2024 23:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6FB12880F;
-	Wed, 21 Feb 2024 23:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBC912D74B;
+	Wed, 21 Feb 2024 23:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pGG5W/pC"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ccXHuh83"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780431272DE
-	for <linux-efi@vger.kernel.org>; Wed, 21 Feb 2024 23:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C8F12B16B
+	for <linux-efi@vger.kernel.org>; Wed, 21 Feb 2024 23:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708558234; cv=none; b=NRbDUQo5yZ3VjNUudpbRuFvyWxNCQrXB1M3UN/uy/LxP2PDeEiQ7reZ9gMSrn9XNcfvoysA2fuUY5skgQBsLi9gU8IS6H8c7Cwy7TkmZhyQ2xeC3ogernL1qGdHdwKENdUIk2Y9i3nWbkMMfJAuyAftEMb3QgGpvVLHvO9inP+8=
+	t=1708558238; cv=none; b=r8Wg1QmBS94W3q45G2XuUT0paF/Zti7G3Xrjxbe/inSwYTUUE0E/4WbBr14BNKESTSwunR0OTbgzfFuOfrBGkCPiicS70vQ6Bm0bRDaaao2Y8rHPLdIjTROVh2j3MYy4iLS3HunqNOeQ+dKnXUFuNxLkKbEMSwfzCPtFQ+qM0g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708558234; c=relaxed/simple;
-	bh=rMfghQHSrf66m2xYpU7sUmwUlSg6uFRoFfJUQDk9JaI=;
-	h=Date:Message-Id:Mime-Version:Subject:From:To:Cc:Content-Type; b=YluQUkY6mUCKqlKUs36nA6DNy5G1ln3wazKT2C64XSGDlRPwA5FA9S4v2fhaG2KOe5f5g7kwq8wXyOzKqrwVByFOWek6oDDKvbP9tqovyZQ3k+VXn+DG/F9c85Jjt6yzzVSCGZYloZjUt0ssLKpZc6NCIIbzx/s91mOwHrk3c5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pGG5W/pC; arc=none smtp.client-ip=209.85.219.202
+	s=arc-20240116; t=1708558238; c=relaxed/simple;
+	bh=O3k+nYu1MYBPKH6TsA/y54d2ADLO3F4v2KYWl0x8bqo=;
+	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
+	 To:Cc:Content-Type; b=RXxwVaZJwoIGyKQRZR7VaDnkqZ+DI/rXC85zb7IJleBMFwSokWqJMeVfItz1x7HT5U6GntrHXwafp0jPRJHARRWNX87JC2kkIvA5FExlSP9IUI3zgLmo2WeghrqlBQ5pVejaXecesdGrzU+eaetZttx+UfkyS9HOE+EJA5a+4v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ccXHuh83; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc693399655so13056069276.1
-        for <linux-efi@vger.kernel.org>; Wed, 21 Feb 2024 15:30:32 -0800 (PST)
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-607cd6c11d7so107369387b3.0
+        for <linux-efi@vger.kernel.org>; Wed, 21 Feb 2024 15:30:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708558231; x=1709163031; darn=vger.kernel.org;
-        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RsJ1fv6sfnN74ztB0VWfE18M80nrvJ6wlqEGStg9ZSY=;
-        b=pGG5W/pCpowgB90F6DOeurXkM0sDYn2DGbPwU6oOalRQK0gqUbERNIDe39Oow7i9re
-         3mkubDSPCtNrY3OhAfrvGEQ0ZVhTyoWAIUkDPVf3oDbuezJtVl/8fntnz30jA/aqyspz
-         KgY59ihna18AXxR+UdUCaYRBTqGDJDL6oTHifkDfNZpCYOxdpVALsfnPYqt7NfQl93b2
-         O6ZHzLkzTnOMkNPiyxm+vJS2dGIvo1mZoBJorw5FEoje2jSQVIOAz5E5bPfZgQJ6RdvQ
-         TqoijWnpUN7/nEqoYUftm9oM3yIKwTvD/VdxiTuCi1T+CqIH7Y/iJYLcIS0bIYqPpwWC
-         tAig==
+        d=google.com; s=20230601; t=1708558235; x=1709163035; darn=vger.kernel.org;
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2RZcm32i75equt/unWf5KMZ/RAcqfb/I89ao1kCyS8A=;
+        b=ccXHuh83DugB0FVQYirkrAty60fONap3CK593aejGZlaS6pxh5cf7aP+nDz5jBoEm7
+         KYlEeTnHJJEKVGY2myu7/+bwy0rxvFSN34PvfuFcWEB9pB123ANwq/20iTZmxMdGXEcQ
+         HGuTq6NWx7HYVRdbIKzFKYJAm4n36KH1fVynRqk5YtQ7fpgvNXnIa8OSMsxH7BsEVHHD
+         OfOiKjLx/qSTq096n0LfP2kq1HVqDK9GtVJi8UdPIAn94MNGG8g6yVDNOmH3kULnaS74
+         8hfgdkA8Ue9aP9xmh6cXs6Oo+uh9gzuyGOPXZfmUOXcrlkxpTmVkCq1dWlH/z1RGpn5P
+         lSTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708558231; x=1709163031;
-        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RsJ1fv6sfnN74ztB0VWfE18M80nrvJ6wlqEGStg9ZSY=;
-        b=RMHk+lxVHYu7mkOHt7ED+2kW3+v5jiQ+RGMAVHOevw6+IRMiHFjmwRJHRWkIXe81Bw
-         rjJHDWeDJ96F2WE4foKkZUerhqOhDRBfTFfRrrR3zCgwng4b51eDXxW5c2EoZEYp5XQS
-         okqF9190+p/sBt++xSwkU1/qYJqY4S4i72l8GnEkY1lXNkVPu51j4/zDr2N8+LOBs9/I
-         gsKVn1UMFgzVKYSKyibSkgVFX/HTP6CC8zOVjFOhR9nyRtX5DTQw6WTUhbXYSZLpwlnt
-         lx6TzKUeGOeuFljAKeg9fk6VCOMay6CuW08VA3/O4nvITrVWldGnqibce7D9dzYDxIJb
-         a1Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9rWWYWXehWySfJbATvfc7+e1bkGSo8Huf2uWgchKY8KykehN/8K3UCLZcDvMQsJW6v3sQ1KiZMzuIxJWaHyx2xxb6g0AaZ8so
-X-Gm-Message-State: AOJu0YxQkEYC7qzex1C6+gP8gtfJJuzNe8Y2tsTOZp4B/xGLriQy5osg
-	EGzkO6VlZC7oRP5p5DbEM/q5MuA2/NSKhe6CURax0I2cpEkKHL7EXTC+ea1ufWwB5+RLrd8Nis3
-	8/ehfTFGV4umSVA==
-X-Google-Smtp-Source: AGHT+IFFe6RGLehaGSPj902y32MxR8KvPs3Ay0pm4gQyZIEo/E/TTc10pIGjALHXPwbgNwcAARJB+YShim+SxHY=
+        d=1e100.net; s=20230601; t=1708558235; x=1709163035;
+        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2RZcm32i75equt/unWf5KMZ/RAcqfb/I89ao1kCyS8A=;
+        b=oJ70SodCwuha7tL89JRDCQl3nY9GCtqM+7VL6vCeyBsZRIcg+oy5n5iNGvHeP3JLHb
+         TEEc0xJzMAeg5l+sznoftBmRasXzLIw+kzidOrkTuPoFqBgPBY2Xvo6/ENIUk+Kf9gzF
+         tRlcK9whUaIqYwhJYeA01I83js0y2XmeZEg55hfvNiOJlvofXkcv0AKO6SFJTx3T+b62
+         jioraQNcMKlQwrwvyMffzM8moekCDCbQ1sufdfwi5dUKNRpnzOhliu7EpJHW4I53Zb9e
+         gwrKvzcQtFUmfyjJrsLzF8LGguAeIyO+t0ap4JbskH2whKhQU8Q7LY38RCWY+GPBtjk7
+         DbnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVwkZSWnQ2pCPmVOCyYWVKXqPemobMoI1wK+hUjic4dAOAAHvu8epgCBOhh4UE6XUCwcnz+cfmbAOwafqXQ4tf5BwxU73OY7J4
+X-Gm-Message-State: AOJu0YxapfXnB9Xw5Oq0ufMNSfTzrUCUcFSb/WzL7wJLLQ/OHlTtgrC8
+	SXO6pfA1E4uT929UA1dvVayDkDoub3W1fCRFTqvO9c/8XIOFxwoUt9A9XzhR19GFmKIw+IW10KV
+	uhbN8LswB1UuiMw==
+X-Google-Smtp-Source: AGHT+IFymqwFZX8gUcnkDHzCjCSYD5QmwOYK5TfTYepo77znZQH+G9Phdflg4Iktv+dh1kr8I9s40IenkChq33E=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:4e1e:336a:2b30:13fe])
- (user=saravanak job=sendgmr) by 2002:a05:6902:1024:b0:dc7:48ce:d17f with SMTP
- id x4-20020a056902102400b00dc748ced17fmr199215ybt.10.1708558231444; Wed, 21
- Feb 2024 15:30:31 -0800 (PST)
-Date: Wed, 21 Feb 2024 15:30:20 -0800
-Message-Id: <20240221233026.2915061-1-saravanak@google.com>
+ (user=saravanak job=sendgmr) by 2002:a0d:e6c5:0:b0:608:801a:e66e with SMTP id
+ p188-20020a0de6c5000000b00608801ae66emr571836ywe.3.1708558235317; Wed, 21 Feb
+ 2024 15:30:35 -0800 (PST)
+Date: Wed, 21 Feb 2024 15:30:21 -0800
+In-Reply-To: <20240221233026.2915061-1-saravanak@google.com>
+Message-Id: <20240221233026.2915061-2-saravanak@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20240221233026.2915061-1-saravanak@google.com>
 X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
-Subject: [PATCH v3 0/4] Add post-init-providers binding to improve
- suspend/resume stability
+Subject: [PATCH v3 1/4] driver core: Adds flags param to fwnode_link_add()
 From: Saravana Kannan <saravanak@google.com>
 To: Rob Herring <robh+dt@kernel.org>, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -88,44 +90,76 @@ Cc: kernel-team@android.com, devicetree@vger.kernel.org,
 	linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-This patch series adds a "post-init-providers" device tree binding that
-can be used to break dependency cycles in device tree and enforce a more
-determinstic probe/suspend/resume order. This will also improve the
-stability of global async probing and async suspend/resume and allow us
-to enable them more easily. Yet another step away from playing initcall
-chicken with probing and step towards fully async probing and
-suspend/resume.
+Allow the callers to set fwnode link flags when adding fwnode links.
 
-Patch 3 (the binding documentation) provides a lot more details and
-examples.
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+---
+ drivers/base/core.c              | 5 +++--
+ drivers/firmware/efi/sysfb_efi.c | 2 +-
+ drivers/of/property.c            | 2 +-
+ include/linux/fwnode.h           | 3 ++-
+ 4 files changed, 7 insertions(+), 5 deletions(-)
 
-v2->v3:
-- Changes doc/code from "post-init-supplier" to "post-init-providers"
-- Fixed some wording that was ambiguous for Conor.
-- Fixed indentation, additionalProperties and white space issues in the
-  yaml syntax.
-- Fixed syntax errors in the example.
-
-v1->v2:
-- Addressed Documentation/commit text errors pointed out by Rob
-- Reordered MAINTAINERS chunk as pointed out by Krzysztof
-
-Saravana Kannan (4):
-  driver core: Adds flags param to fwnode_link_add()
-  driver core: Add FWLINK_FLAG_IGNORE to completely ignore a fwnode link
-  dt-bindings: Add post-init-providers property
-  of: property: fw_devlink: Add support for "post-init-providers"
-    property
-
- .../bindings/post-init-providers.yaml         | 105 ++++++++++++++++++
- MAINTAINERS                                   |  13 ++-
- drivers/base/core.c                           |  14 ++-
- drivers/firmware/efi/sysfb_efi.c              |   2 +-
- drivers/of/property.c                         |  17 ++-
- include/linux/fwnode.h                        |   5 +-
- 6 files changed, 142 insertions(+), 14 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/post-init-providers.yaml
-
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 9828da9b933c..adeff041d472 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -92,12 +92,13 @@ static int __fwnode_link_add(struct fwnode_handle *con,
+ 	return 0;
+ }
+ 
+-int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
++int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
++		    u8 flags)
+ {
+ 	int ret;
+ 
+ 	mutex_lock(&fwnode_link_lock);
+-	ret = __fwnode_link_add(con, sup, 0);
++	ret = __fwnode_link_add(con, sup, flags);
+ 	mutex_unlock(&fwnode_link_lock);
+ 	return ret;
+ }
+diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
+index 456d0e5eaf78..cc807ed35aed 100644
+--- a/drivers/firmware/efi/sysfb_efi.c
++++ b/drivers/firmware/efi/sysfb_efi.c
+@@ -336,7 +336,7 @@ static int efifb_add_links(struct fwnode_handle *fwnode)
+ 	if (!sup_np)
+ 		return 0;
+ 
+-	fwnode_link_add(fwnode, of_fwnode_handle(sup_np));
++	fwnode_link_add(fwnode, of_fwnode_handle(sup_np), 0);
+ 	of_node_put(sup_np);
+ 
+ 	return 0;
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index b71267c6667c..bce849f21ae2 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1085,7 +1085,7 @@ static void of_link_to_phandle(struct device_node *con_np,
+ 		tmp_np = of_get_next_parent(tmp_np);
+ 	}
+ 
+-	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np));
++	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np), 0);
+ }
+ 
+ /**
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 2a72f55d26eb..c964749953e3 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -210,7 +210,8 @@ static inline void fwnode_dev_initialized(struct fwnode_handle *fwnode,
+ }
+ 
+ extern bool fw_devlink_is_strict(void);
+-int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup);
++int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
++		    u8 flags);
+ void fwnode_links_purge(struct fwnode_handle *fwnode);
+ void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
+ 
 -- 
 2.44.0.rc0.258.g7320e95886-goog
 
