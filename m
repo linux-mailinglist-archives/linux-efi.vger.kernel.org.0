@@ -1,165 +1,134 @@
-Return-Path: <linux-efi+bounces-635-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-636-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0263085F001
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Feb 2024 04:42:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7692885F008
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Feb 2024 04:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8539F1F256BA
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Feb 2024 03:42:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A231F2283C
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Feb 2024 03:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9F21799C;
-	Thu, 22 Feb 2024 03:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB8E1773E;
+	Thu, 22 Feb 2024 03:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RGsjpPZ8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HxIurYKw"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10201757B
-	for <linux-efi@vger.kernel.org>; Thu, 22 Feb 2024 03:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2690F17558
+	for <linux-efi@vger.kernel.org>; Thu, 22 Feb 2024 03:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708573317; cv=none; b=IFttSa57xiecxDmaHteBNDMbSpyeH5Uf9z7K5FB1aNemDTirbXRAa4lwNDWDKogTYeKcVDCgIslkT2J4EJY3P4OgnPmB5oHFFgT0Wegwu0UDT5RfeBor0gGJUg6j39jduLeYfc/g0ykkYU/ShwWuQ5IhOhzNEe6t9uoEguLI+Jw=
+	t=1708573591; cv=none; b=GpkELBmaHA4k5Dw+UbRnkFmX0Ld7uuq01Xk2+MUW2Xdy+/7114PajoSzWXN7tk3smp/GSZGohnOVotOBKqNUklCOlci441tKYd5y1BqkNFWjBZH14Y0Hzc+01dGsYdeSKEa3OCX2osSfyt3m696Mdj3om/DR0fbs1nglWtHaM/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708573317; c=relaxed/simple;
-	bh=CFleHBNrQpRDBWB+bPrY3lACjfd7SpfoVKRa4Rm7usE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p0Yfvr9/Yixoi1ah7x8pY3pGIMraUA9p8u87GBPykiiw4ysit5pq+KfA6Z9J7wjEEtPoJeYSOgbTtliXAnpBgpJcoiqFFi0+8LZKeLQEEp9IqN/kNFxCI4JG8a2tUz9f7VoyBPK9H5D//GrzWORWy1TYBdqqTZriQhuH4WakrK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RGsjpPZ8; arc=none smtp.client-ip=209.85.160.173
+	s=arc-20240116; t=1708573591; c=relaxed/simple;
+	bh=vA2pdbQ+LBQGE4JsVOwYzj4zQ+3197cEH10/uV1J0ws=;
+	h=Date:Message-Id:Mime-Version:Subject:From:To:Cc:Content-Type; b=ojUzfNeP/Ts1TTYAs9R8zXFdRMzlby6xtZzWKkRK7aghvnYxKGQFw8AONHZ5Lie6Nl52Itf8Ps0ynrh7r0CO1di/S+/vbs0vEbD3b/sOcZeh4/VAQcDZ8OtGyB+rKjwnst5edANNEQ3meEXqJs5TXW/uSEZCT8OAixYFhHZ37qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HxIurYKw; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-42db1baff53so98721cf.0
-        for <linux-efi@vger.kernel.org>; Wed, 21 Feb 2024 19:41:54 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b267bf11so7496217276.2
+        for <linux-efi@vger.kernel.org>; Wed, 21 Feb 2024 19:46:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708573313; x=1709178113; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tkWn2p2KoktTF74iyosyAqtgPvGQax193IdDSSf0wdk=;
-        b=RGsjpPZ8fpxN3eTzLGz1eZxxOFjwO+7HrSuwUmiE71lFb5IKrVyulevIhya7ZmALez
-         jy3xk7BjCpG+f4jVyAE+HC+lKJkomau5gSM9vbveLWZ1M7Z8R8BrVC8f8suFidwPwR5/
-         ykd3fNXw5Yd+rQxp0dcNmjgxxeeJN9oZP7cXrP9j3NJOoN2lN5H4yTsluwawdw9Rm+zJ
-         GXPa0qDPtDVGyDUO7x7R+Kt2qFQ0VE69V64RNtiHnyMgn29ob7gN9uBlqTAWzhe1GAue
-         6cMzqGkOVyEgBzIyC91gL8Fjl27zIXLb7mb4l+4dqYdDpT5qPYnoLy4dWw75H1bp9uV5
-         p+IQ==
+        d=google.com; s=20230601; t=1708573587; x=1709178387; darn=vger.kernel.org;
+        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=708QuIQsvoQpwRBXFqGjyGgcNojmh8+A+3U5/P9lDlw=;
+        b=HxIurYKwX3sPRmzF3cxmuJH2RBJsnAmHFQis98yKwvtmPRm32AAdE5g470MRbo8D/X
+         BCDTjz4WLhWNC8ZwsQk/23ikchbCB/z0cFB3ZK3q06Uy/acd371eI35fl8v/lCkozysd
+         GUPzLyChQ/B1JlB2juHpoMwjPm8hjFEi5C6e9a01OQKJg9JkyNRR9wkGdkSv6uzOylaT
+         DORMwkwAPHKpm8MwBJQl7XO7QNtoLLl/ycdylSRHNqNVKws2gcKsS37aDoxEf4vCBXnS
+         tfYdhhIJysx1CvHjtKfvLskdDzJska0CDw82Eme8cefRs2jQa92I3+CD10T/OKJjKOvk
+         feEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708573313; x=1709178113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tkWn2p2KoktTF74iyosyAqtgPvGQax193IdDSSf0wdk=;
-        b=nnQXGhCa5WwC4XQFI/aie7aT9BELzwWFpVIPUFnmJlMpE5Bq8orpiEzpYFp79UXpNP
-         oDGqshhMN+DDGsJXnSapbBkKvwn2joL0kV3ESUwTK/t08dyjAvbJsZb8C5wl9//xygrz
-         3MluAmmZy47cPQdJAftEGK3/7IyJHqcBvKgXcauOZJCAt2ubKzH3yplw6RYl4Qelqcnk
-         czxxow78odpR2GhZ5S8x/WbF+kMzv/oM9Upj9dpC8fia3D/l5v1jq8H2ZroEk/N7DRy6
-         q1BnsT8AzTKaMB/r/iVNDan5ffjFt1GBBrE9AxhXlcphhsw4TRNP+JNWRP83fvqgf8D8
-         oGrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcbAZUxhhT8XfCciTyFUJT/SL6gH7LsRE5QfoXKt+MZrjju4jlscK/aJcI8pW/aGXJ8GJGAr/R3beb7yMafAncKHaQDdvnRkKj
-X-Gm-Message-State: AOJu0YynxZPlPdYxbCCl6jDYCO2HoVdrAlZEYNR56VlE6Cf1rJSA4Eiw
-	wwyjiNGOHYxFSAuvvRsqbFVnhAsbHWWY++/0X+9iDTvIROkRp3251hbhUnHrnP/NEPlI6K3bO4P
-	Q22RntRDd4Uu7svor0HCOgE+DNnqsPbEvsSxN
-X-Google-Smtp-Source: AGHT+IGvjS/JsDjKLRtFXUpHvTnqcMileQ3GCikt+aLAGrSc25d+ufjOgPr0Fh2MCXQbYqWszHyGfO3vfuuMY/hfPQk=
-X-Received: by 2002:a05:622a:68c9:b0:42d:be0f:e30a with SMTP id
- ic9-20020a05622a68c900b0042dbe0fe30amr384702qtb.23.1708573313369; Wed, 21 Feb
- 2024 19:41:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708573587; x=1709178387;
+        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=708QuIQsvoQpwRBXFqGjyGgcNojmh8+A+3U5/P9lDlw=;
+        b=w9qsHs4UctfRr7tqR3Dt04A24+0grRu6in/tmGL93qdiawbk/cvNtwim0ERGp8GZpw
+         oLEBqOJH3qMdFJGOsuNAIueBs59uoUTN37RpeAfMnWK9Ozf2Xd5fhWInhnqL6/GIpU1Q
+         ppiZ1P2HPgDDVrhp0+eTaF1EZL/7gM+cSlkvG80Zdf7noo5DrazhkhsJ50PVkfm1Kfvq
+         yanZqhxSlDfMEXh4FeS2VJSj3C+Az0VLtz6sCO6jy/2MnFO6hebV5fTL2Ng4BZb26O8E
+         YayenScWOpfXMtD7YkDvcbyMpxEfDO0KIpMbhffx0FIhMQtn4Sq+1BOe2xafM7o8zBlC
+         29Rg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCFM3sd3XeTDvj4jiiDON276SOHRFLvvLnw2YlhHCsv3Qb/9jbwnex6BoGcNqcD38b9v/i5cKnGOxrr6wwRuPtTqmeIjTHb5Z0
+X-Gm-Message-State: AOJu0YwrOmmSe33WV2M617SQolWPD3TkowfMeR7qDEPnmiiJ5K4obZme
+	Fp9k18dSzoXUkKx8DtlevvuIXcyA5DIR97pXDiMeNES6Yo7FiLVnHiVz5ZLpt2S9hneiEaGcpJQ
+	jD8/fVeEWA4GDKQ==
+X-Google-Smtp-Source: AGHT+IG5iz4C0XWr0hw0lr0P7P25CRKutkzBhn/QBqN7oFtCGa+/bzH8SlB+2NPEB5FLPXb4rj+ArO+SQgqeKzk=
+X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:451c:c6c5:1fb1:a2a1])
+ (user=saravanak job=sendgmr) by 2002:a05:6902:1008:b0:dbe:387d:a8ef with SMTP
+ id w8-20020a056902100800b00dbe387da8efmr44003ybt.1.1708573587147; Wed, 21 Feb
+ 2024 19:46:27 -0800 (PST)
+Date: Wed, 21 Feb 2024 19:46:18 -0800
+Message-Id: <20240222034624.2970024-1-saravanak@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240221233026.2915061-1-saravanak@google.com>
- <20240221233026.2915061-4-saravanak@google.com> <170856138383.540970.12743608676098316685.robh@kernel.org>
-In-Reply-To: <170856138383.540970.12743608676098316685.robh@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+Subject: [PATCH v4 0/4] Add post-init-providers binding to improve
+ suspend/resume stability
 From: Saravana Kannan <saravanak@google.com>
-Date: Wed, 21 Feb 2024 19:41:16 -0800
-Message-ID: <CAGETcx9v_NHhC4EwKDQ1UQMQQB=B2e1nQSqJZAwc7VwEWztp8g@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] dt-bindings: Add post-init-providers property
-To: Rob Herring <robh@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	kernel-team@android.com, linux-efi@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org, 
-	Frank Rowand <frowand.list@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-acpi@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Saravana Kannan <saravanak@google.com>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 21, 2024 at 4:23=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
->
->
-> On Wed, 21 Feb 2024 15:30:23 -0800, Saravana Kannan wrote:
-> > The post-init-providers property can be used to break a dependency cycl=
-e by
-> > marking some provider(s) as a post device initialization provider(s). T=
-his
-> > allows an OS to do a better job at ordering initialization and
-> > suspend/resume of the devices in a dependency cycle.
-> >
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > ---
-> >  .../bindings/post-init-providers.yaml         | 105 ++++++++++++++++++
-> >  MAINTAINERS                                   |  13 ++-
-> >  2 files changed, 112 insertions(+), 6 deletions(-)
-> >  create mode 100644 Documentation/devicetree/bindings/post-init-provide=
-rs.yaml
-> >
->
-> My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
->
-> yamllint warnings/errors:
->
-> dtschema/dtc warnings/errors:
-> Documentation/devicetree/bindings/post-init-providers.example.dtb: /examp=
-le-0/clock-controller@1000: failed to match any schema with compatible: ['v=
-endor,soc4-gcc', 'vendor,soc1-gcc']
-> Documentation/devicetree/bindings/post-init-providers.example.dtb: /examp=
-le-0/clock-controller@1000: failed to match any schema with compatible: ['v=
-endor,soc4-gcc', 'vendor,soc1-gcc']
-> Documentation/devicetree/bindings/post-init-providers.example.dtb: /examp=
-le-0/clock-controller@2000: failed to match any schema with compatible: ['v=
-endor,soc4-dispcc', 'vendor,soc1-dispcc']
-> Documentation/devicetree/bindings/post-init-providers.example.dtb: /examp=
-le-0/clock-controller@2000: failed to match any schema with compatible: ['v=
-endor,soc4-dispcc', 'vendor,soc1-dispcc']
+This patch series adds a "post-init-providers" device tree binding that
+can be used to break dependency cycles in device tree and enforce a more
+determinstic probe/suspend/resume order. This will also improve the
+stability of global async probing and async suspend/resume and allow us
+to enable them more easily. Yet another step away from playing initcall
+chicken with probing and step towards fully async probing and
+suspend/resume.
 
-I'm assuming it's okay to ignore these warnings about made up
-compatible string names.
+Patch 3 (the binding documentation) provides a lot more details and
+examples.
 
-> doc reference errors (make refcheckdocs):
-> Warning: MAINTAINERS references a file that doesn't exist: Documentation/=
-devicetree/bindings/post-init-supplier.yaml
-> MAINTAINERS: Documentation/devicetree/bindings/post-init-supplier.yaml
+v3->v4:
+- Fixed MAINTAINERS file to go with the file rename.
 
-Will fix this and send out v4. Ignore the v3 series please.
+v2->v3:
+- Changes doc/code from "post-init-supplier" to "post-init-providers"
+- Fixed some wording that was ambiguous for Conor.
+- Fixed indentation, additionalProperies and white space issues in the
+  yaml syntax.
+- Fixed syntax errors in the example.
 
--Saravana
+v1->v2:
+- Addressed Documentation/commit text errors pointed out by Rob
+- Reordered MAINTAINERS chunk as pointed out by Krzysztof
 
->
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/202402=
-21233026.2915061-4-saravanak@google.com
->
-> The base for the series is generally the latest rc1. A different dependen=
-cy
-> should be noted in *this* patch.
->
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
->
-> pip3 install dtschema --upgrade
->
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your sch=
-ema.
->
+Saravana Kannan (4):
+  driver core: Adds flags param to fwnode_link_add()
+  driver core: Add FWLINK_FLAG_IGNORE to completely ignore a fwnode link
+  dt-bindings: Add post-init-providers property
+  of: property: fw_devlink: Add support for "post-init-providers"
+    property
+
+ .../bindings/post-init-providers.yaml         | 105 ++++++++++++++++++
+ MAINTAINERS                                   |  13 ++-
+ drivers/base/core.c                           |  14 ++-
+ drivers/firmware/efi/sysfb_efi.c              |   2 +-
+ drivers/of/property.c                         |  17 ++-
+ include/linux/fwnode.h                        |   5 +-
+ 6 files changed, 142 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/post-init-providers.yaml
+
+-- 
+2.44.0.rc0.258.g7320e95886-goog
+
 
