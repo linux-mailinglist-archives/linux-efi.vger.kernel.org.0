@@ -1,56 +1,56 @@
-Return-Path: <linux-efi+bounces-653-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-654-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30196860DF3
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Feb 2024 10:28:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22477860E1B
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Feb 2024 10:37:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95E111F21F4C
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Feb 2024 09:28:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8BEF283CCC
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Feb 2024 09:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD1C5C8E2;
-	Fri, 23 Feb 2024 09:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951775C8FB;
+	Fri, 23 Feb 2024 09:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="spY12Uxa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTO9NyHW"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928891642A;
-	Fri, 23 Feb 2024 09:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541DD5B687;
+	Fri, 23 Feb 2024 09:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708680516; cv=none; b=bCJdLi17h5s6M7SMgUGlLKUwZhQiQiVC7TrGR3Wi4suhqzvNswrsnjf6OsGsvCAn2AvbW5O8zV5tMXCmpV3B35ttJSaDbNeYKWa/7Cd1cbT1/jhFEzvPcM3gh7ni5nJo2AZDi/PPLSzg8g0y/O1ExNISY/Lppyfm2jRCbBQ4zMU=
+	t=1708681021; cv=none; b=bgDgajhkJEr/pSgA3q6NkyxSiAEZxd4v18FraoJXUMdZXsmOfwsNcn+9yCD0hpRszkjg2nsdxePQdDXz/PZJ96Um+8H/L+61blsG8XlMpbi4nampJldhwpCX4nlaZJZndYizNysBuaa/w96h4BFUvp0ucY4Bhi68a8PFrcL3Lg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708680516; c=relaxed/simple;
-	bh=nBidOp/Sc51deSYITKjnb2FvBakVjMShqvr/vQHBD0I=;
+	s=arc-20240116; t=1708681021; c=relaxed/simple;
+	bh=WmJ0OMw0PMDqgKg1zGlDpZIg7VOeRdS3myN/hyG1fUo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UnLIMRMWwpkR+dD1u4txp4TGLCkhXAYwOhqtU3KcsL9QDY+hr8CzlexKVzTM4g6x684nxLwGRlcpCBEWVZ90ytVTbTufEqV0kFOzF4qh5Bq88tB2YCkNALtnQzYyW2fYVMntpf4SQ3dVlAm5dWE19MeTMRygVd2atSiu5/3rpPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=spY12Uxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1A4C43394;
-	Fri, 23 Feb 2024 09:28:36 +0000 (UTC)
+	 To:Cc:Content-Type; b=hMH35kTPft1B73Rfifw+4Bf1ltJdzz7K2XE+ZOnB3AOq0b2hgVXE4OTboW0EMqm/rSB3m5NOkglITgiR5oTwPxXZOlBQkTYzmD0yCNA7p4XOVQQh8SAktXstqfq9nZIamno4ndR0kT5EAR2YxdzfXL0a8Gs3rjb/NY8TLX4o4AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTO9NyHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FCAC43601;
+	Fri, 23 Feb 2024 09:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708680516;
-	bh=nBidOp/Sc51deSYITKjnb2FvBakVjMShqvr/vQHBD0I=;
+	s=k20201202; t=1708681021;
+	bh=WmJ0OMw0PMDqgKg1zGlDpZIg7VOeRdS3myN/hyG1fUo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=spY12Uxa31bVEpe562lmosV6WOxu7PVy93WPK+1XVPtSSUhtvx6GHOT1QJW1mAg/A
-	 S8/GpdJNiEIiBNUGi6RUvoO22wCcHsBatXyztAN5YmLLv29MnjRUU8l4IKHBBFL87B
-	 cqhxVQQZai0anlQ0TJmRADDUMEkOe41c6LAgALzU9mNanDHr0NpiI6+r5pYcY+zNax
-	 yW4W5+dfm5srena21i4hTzvQpUS70Z5Vyy7bMJffv5KAhxb91LwkdyilX9p+ljpMko
-	 V1t2eMChMgWsRiFWvDBYapIJoffKzivPh1B4BihrJVQ09g0/MgpHd0bp31Lj2yyfWF
-	 YVH6u0vvzPSgg==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5645960cd56so127820a12.1;
-        Fri, 23 Feb 2024 01:28:35 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU4NkZEpXSSuwMAAE4ArFeil6m7+2Nefi+JV9TD0JA6ZOFslNtXg9Zm73JCSB79199eblaGKZ2LN10y3eeqyxnoAQ50c4Fkl6LICgtpUxa9JQxsS4rDpNQGRLrw9dzIhJ1AiMQEpe439b70+JA/83zMBXBjvijPgqfNw+72IgHQW9gDuPSR6AtWZNJdFK5Ln1r52FM9YKxhMDirbqeBlLiNQaPWoJtuh+KzOQF8O8UFE3172v1n9kf0W147/OV+QshH
-X-Gm-Message-State: AOJu0Yy2QrG5rJhaXbxUgPJ3dTmYAHysJhY3gaAo10a1Z4fIHFL3XZ9Y
-	vOhH33FJJvOA+mrMh8dE2MXPJMOMeX7eRrg9B2ZeYpuGCPg4zM2Z7bEGZLxRBf49cItIz4h0/Ex
-	5/rfhh0DYm0GdFkxYAn2ahY03GY0=
-X-Google-Smtp-Source: AGHT+IEjrwBVKcv0S/1aJGS8Hf82d54S6yBBKB5Z13OVmnd4l6/l61nsjWbV93Sh/os1iRuVkffQtuNmyTWtlEJ5C5I=
-X-Received: by 2002:a05:651c:221a:b0:2d2:4017:d79f with SMTP id
- y26-20020a05651c221a00b002d24017d79fmr1050276ljq.37.1708680502830; Fri, 23
- Feb 2024 01:28:22 -0800 (PST)
+	b=lTO9NyHW+QOcMkPuRJcotERPkR/T2h9Kq86+n167xu60btQS459z0+tDwQV9XtMkF
+	 CCzImEA3iAnuVeKfshq3AGjapuUcNQ2z+0C3diuj1m7yJl6nabO3pjg5uK8hE2R/4I
+	 nU/fJ+g+YZnImI/WG2V1kvg/CNU1ux5b7YpQKc0k+M09ttWcGpefZhfZtYlfr/Vsiz
+	 zG006FszQVM54ch5S67QwNbU22wRqoal5Way327q1cACUXVIVY8J+rWHhRVDi78YzE
+	 /LR62mm8Zc8HPECYu4ZYElfIj9f9T7E49tbsdxG++WabH4jk93AVVcCMa2QiiQtUCJ
+	 jq0wikgl2s6mg==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d27184197cso1639191fa.1;
+        Fri, 23 Feb 2024 01:37:00 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVajRbhKxKDUOBNrxxeomu+tpNNdhYP3QZM3Loz210OkE2NuYEewOg4fhyIqH1ledLZOoC4nsUUZZiXcyRFh2Ga3wuFGTt9N7Pwf72cNBUGgJ4/JuE0oFhxpBebaOq/jMUd1jZDJPuqi50ZBsopRFFrkWonv4gsPw66j4Jl3bbJQjS++KUVMYO7QhnuoItxKLhlcqJXZRLFcQYPPbN6sSIobKC/+NSNdHifM0gKJ+4/MaAdHizOA8LnwtM5m2De5+mm
+X-Gm-Message-State: AOJu0YwCAjxfObg14yC/nvrXh6FdBpJENqhDbb/7CDnjzGkq8ngSfk4g
+	YTQULkwqMDE40HxSnZEWxICBTr4IRm1ciTWzJMYf+MWM8HQz+NwscCUMoMiXGx/ZbTjDrcM29IJ
+	nX8I/QgHyIVHbrkOZLTbWso+sqrk=
+X-Google-Smtp-Source: AGHT+IG8RzI+KlFZjtnX9Ar8ORCwXhB3wnST2X3XRz5ROmCtiTukZgWnN7bJJrkNqPIDPlBotgqwm3wzCz7lultVJL8=
+X-Received: by 2002:a2e:a30f:0:b0:2d2:40d7:9a55 with SMTP id
+ l15-20020a2ea30f000000b002d240d79a55mr940682lje.4.1708681019139; Fri, 23 Feb
+ 2024 01:36:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -58,156 +58,114 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240214221847.2066632-1-ross.philipson@oracle.com>
- <20240214221847.2066632-7-ross.philipson@oracle.com> <CAMj1kXEmMBY_jc0uM5UgZbuZ3-C7NPKzg5AScaunyu9XzLgzZA@mail.gmail.com>
- <98ad92bb-ef17-4c15-88ba-252db2a2e738@citrix.com> <CAMj1kXFTu+bV2kQhAyu15hrYai20NcBLb4Zu8XG2Y-XjL0f+rw@mail.gmail.com>
- <1a8e69a7-89eb-4d36-94d6-0da662d8b72f@citrix.com>
-In-Reply-To: <1a8e69a7-89eb-4d36-94d6-0da662d8b72f@citrix.com>
+ <20240214221847.2066632-15-ross.philipson@oracle.com> <CAMj1kXHXt6z94JCM2C5rLz-n9nGA46bb1eMbqcP5e7K9+NzPSg@mail.gmail.com>
+ <c5bd3ee4-4bf1-4e9a-8e5d-12ee8e195d3d@apertussolutions.com>
+In-Reply-To: <c5bd3ee4-4bf1-4e9a-8e5d-12ee8e195d3d@apertussolutions.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 23 Feb 2024 10:27:58 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEvmGy9RJo4s8tECsFj2dufZ8jBPoJOEtkcGUoj+x2qsw@mail.gmail.com>
-Message-ID: <CAMj1kXEvmGy9RJo4s8tECsFj2dufZ8jBPoJOEtkcGUoj+x2qsw@mail.gmail.com>
-Subject: Re: [PATCH v8 06/15] x86: Add early SHA support for Secure Launch
- early measurements
-To: Andrew Cooper <andrew.cooper3@citrix.com>
+Date: Fri, 23 Feb 2024 10:36:46 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEUdj+==Ud_YWP2FP05St3KDsduzUMsOZzu9LRsLVsLVA@mail.gmail.com>
+Message-ID: <CAMj1kXEUdj+==Ud_YWP2FP05St3KDsduzUMsOZzu9LRsLVsLVA@mail.gmail.com>
+Subject: Re: [PATCH v8 14/15] x86: Secure Launch late initcall platform module
+To: "Daniel P. Smith" <dpsmith@apertussolutions.com>
 Cc: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
 	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-crypto@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-efi@vger.kernel.org, dpsmith@apertussolutions.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, 
-	mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, 
-	jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu, 
+	linux-efi@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	hpa@zytor.com, dave.hansen@linux.intel.com, mjg59@srcf.ucam.org, 
+	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, jarkko@kernel.org, 
+	jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu, 
 	herbert@gondor.apana.org.au, davem@davemloft.net, kanth.ghatraju@oracle.com, 
-	trenchboot-devel@googlegroups.com, Eric Biggers <ebiggers@kernel.org>
+	trenchboot-devel@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 22 Feb 2024 at 13:30, Andrew Cooper <andrew.cooper3@citrix.com> wrote:
+On Thu, 22 Feb 2024 at 14:58, Daniel P. Smith
+<dpsmith@apertussolutions.com> wrote:
 >
-> On 22/02/2024 9:34 am, Ard Biesheuvel wrote:
-> > On Thu, 22 Feb 2024 at 04:05, Andrew Cooper <andrew.cooper3@citrix.com> wrote:
-> >> On 15/02/2024 8:17 am, Ard Biesheuvel wrote:
-> >>> On Wed, 14 Feb 2024 at 23:31, Ross Philipson <ross.philipson@oracle.com> wrote:
-> >>>> From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
-> >>>>
-> >>>> The SHA algorithms are necessary to measure configuration information into
-> >>>> the TPM as early as possible before using the values. This implementation
-> >>>> uses the established approach of #including the SHA libraries directly in
-> >>>> the code since the compressed kernel is not uncompressed at this point.
-> >>>>
-> >>>> The SHA code here has its origins in the code from the main kernel:
-> >>>>
-> >>>> commit c4d5b9ffa31f ("crypto: sha1 - implement base layer for SHA-1")
-> >>>>
-> >>>> A modified version of this code was introduced to the lib/crypto/sha1.c
-> >>>> to bring it in line with the sha256 code and allow it to be pulled into the
-> >>>> setup kernel in the same manner as sha256 is.
-> >>>>
-> >>>> Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
-> >>>> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
-> >>> We have had some discussions about this, and you really need to
-> >>> capture the justification in the commit log for introducing new code
-> >>> that implements an obsolete and broken hashing algorithm.
-> >>>
-> >>> SHA-1 is broken and should no longer be used for anything. Introducing
-> >>> new support for a highly complex boot security feature, and then
-> >>> relying on SHA-1 in the implementation makes this whole effort seem
-> >>> almost futile, *unless* you provide some rock solid reasons here why
-> >>> this is still safe.
-> >>>
-> >>> If the upshot would be that some people are stuck with SHA-1 so they
-> >>> won't be able to use this feature, then I'm not convinced we should
-> >>> obsess over that.
-> >> To be absolutely crystal clear here.
+> On 2/15/24 03:40, Ard Biesheuvel wrote:
+> > On Wed, 14 Feb 2024 at 23:32, Ross Philipson <ross.philipson@oracle.com> wrote:
 > >>
-> >> The choice of hash algorithm(s) are determined by the OEM and the
-> >> platform, not by Linux.
+> >> From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
 > >>
-> >> Failing to (at least) cap a PCR in a bank which the OEM/platform left
-> >> active is a security vulnerability.  It permits the unsealing of secrets
-> >> if an attacker can replay a good set of measurements into an unused bank.
+> >> The Secure Launch platform module is a late init module. During the
+> >> init call, the TPM event log is read and measurements taken in the
+> >> early boot stub code are located. These measurements are extended
+> >> into the TPM PCRs using the mainline TPM kernel driver.
 > >>
-> >> The only way to get rid of the requirement for SHA-1 here is to lobby
-> >> the IHVs/OEMs, or perhaps the TCG, to produce/spec a platform where the
-> >> SHA-1 banks can be disabled.  There are no known such platforms in the
-> >> market today, to the best of our knowledge.
+> >> The platform module also registers the securityfs nodes to allow
+> >> access to TXT register fields on Intel along with the fetching of
+> >> and writing events to the late launch TPM log.
 > >>
-> > OK, so mainline Linux does not support secure launch at all today. At
-> > this point, we need to decide whether or not tomorrow's mainline Linux
-> > will support secure launch with SHA1 or without, right?
+> >> Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
+> >> Signed-off-by: garnetgrimm <grimmg@ainfosec.com>
+> >> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+> >
+> > There is an awful amount of code that executes between the point where
+> > the measurements are taken and the point where they are loaded into
+> > the PCRs. All of this code could subvert the boot flow and hide this
+> > fact, by replacing the actual taken measurement values with the known
+> > 'blessed' ones that will unseal the keys and/or phone home to do a
+> > successful remote attestation.
 >
-> I'd argue that's a slightly unfair characterisation.
+> To set context, in general the motivation to employ an RTM, Static or
+> Dynamic, integrity solution is to enable external platform validation,
+> aka attestation. These trust chains are constructed from the principle
+> of measure and execute that rely on the presence of a RoT for Storage
+> (RTS) and a RoT for Reporting (RTR). Under the TCG architecture adopted
+> by x86 vendors and now recently by Arm, those roles are fulfilled by the
+> TPM. With this context, lets layout the assumptive trusts being made here,
+>    1. The CPU GETSEC instruction functions correctly
+>    2. The IOMMU, and by extension the PMRs, functions correctly
+>    2. The ACM authentication process functions correctly
+>    3. The ACM functions correctly
+>    4. The TPM interactions function correctly
+>    5. The TPM functions correctly
 >
-
-Fair enough. I'm genuinely trying to have a precise understanding of
-this, not trying to be dismissive.
-
-> We want tomorrow's mainline to support Secure Launch.  What that entails
-> under the hood is largely outside of the control of the end user.
+> With this basis, let's explore your assertion here. The assertion breaks
+> down into two scenarios. The first is that the at-rest kernel binary is
+> corrupt, unintentionally (bug) or maliciously, either of which does not
+> matter for the situation. For the sake of simplicity, corruption of the
+> Linux kernel during loading or before the DRTM Event is considered an
+> equivalent to corruption of the kernel at-rest. The second is that the
+> kernel binary was corrupted in memory at some point after the DRTM event
+> occurs.
 >
-
-So the debate is really whether it makes sense at all to support
-Secure Launch on systems that are stuck on an obsolete and broken hash
-algorithm. This is not hyperbole: SHA-1 is broken today and once these
-changes hit production 1-2 years down the line, the situation will
-only have deteriorated. And another 2-3 years later, we will be the
-ones chasing obscure bugs on systems that were already obsolete when
-this support was added.
-
-So what is the value proposition here? An end user today, who is
-mindful enough of security to actively invest the effort to migrate
-their system from ordinary measured boot to secure launch, is really
-going to do so on a system that only implements SHA-1 support?
-
-> > And the point you are making here is that we need SHA-1 not only to a)
-> > support systems that are on TPM 1.2 and support nothing else, but also
-> > to b) ensure that crypto agile TPM 2.0 with both SHA-1 and SHA-256
-> > enabled can be supported in a safe manner, which would involve
-> > measuring some terminating event into the SHA-1 PCRs to ensure they
-> > are not left in a dangling state that might allow an adversary to
-> > trick the TPM into unsealing a secret that it shouldn't.
+> For both scenarios, the ACM will correctly configure the IOMMU PMRs to
+> ensure the kernel can no longer be tampered with in memory. After which,
+> the ACM will then accurately measure the kernel (bzImage) and safely
+> store the measurement in the TPM.
 >
-> Yes.  Also c) because if the end user wants to use SHA-1, they should be
-> able to.
+> In the first scenario, the TPM will accurately report the kernel
+> measurement in the attestation. The attestation authority will be able
+> to detect if an invalid kernel was started and can take whatever
+> remediation actions it may employ.
 >
-
-The end user can do whatever they want, of course. Whether it belongs
-in the upstream is an entirely different matter, though, especially
-because we will effectively be forced to support this forever.
-
-
-> > So can we support b) without a), and if so, does measuring an
-> > arbitrary dummy event into a PCR that is only meant to keep sealed
-> > forever really require a SHA-1 implementation, or could we just use an
-> > arbitrary (not even random) sequence of 160 bits and use that instead?
->
-> a) and b) are in principle independent, but we cannot support b) without
-> SHA-1.
->
-> To cap a PCR, the event log still needs to be kept accurate, and that's
-> at least one SHA-1 calculation.  If you were to simply extend a dummy
-> value, the system hopefully fails safe, but the user gets "something
-> went wrong, you're on your own", rather than "we intentionally blocked
-> the use of SHA-1, everything is good".
->
-> And frankly, you need SHA-1 just to read the event log, if any component
-> (including TXT itself) wrote a SHA-1 entry into it.
+> In the second scenario, any attempt to corrupt the binary after the ACM
+> has configured the IOMMU PMR will fail.
 >
 >
-> To be blunt.  SHA-1 support is not viably optional today as far as
-> Secure Launch is concerned.  If there's a suitable Kconfig symbol to use
-> for people who want a completely SHA-1-less kernel, then we can make
-> Secure Launch depend on that until such time as the hardware ecosystem
-> has caught up.
+
+This protects the memory image from external masters after the
+measurement has been taken.
+
+So any external influences in the time window between taking the
+measurements and loading them into the PCRs are out of scope here, I
+guess?
+
+Maybe it would help (or if I missed it - apologies) to include a
+threat model here. I suppose physical tampering is out of scope?
+
+> > At the very least, this should be documented somewhere. And if at all
+> > possible, it should also be documented why this is ok, and to what
+> > extent it limits the provided guarantees compared to a true D-RTM boot
+> > where the early boot code measures straight into the TPMs before
+> > proceeding.
+>
+> I can add a rendition of the above into the existing section of the
+> documentation patch that already discusses separation of the measurement
+> from the TPM recording code. As to the limits it incurs on the DRTM
+> integrity, as explained above, I submit there are none.
 >
 
-Yes, this crossed my mind as well. There is a Kconfig symbol
-CRYPTO_USER_API_ENABLE_OBSOLETE I added a while ago for a similar
-purpose.
-
-I am still disappointed that we have to go down this path, but I
-understand the concerns now that you have explained them to me (again)
-in more detail.
-
-These considerations need to be recorded in the documentation or
-commit logs as well, so that we can easily refer back to them without
-having to dig through the mail archives.
+Thanks for the elaborate explananation. And yes, please document this
+with the changes.
 
