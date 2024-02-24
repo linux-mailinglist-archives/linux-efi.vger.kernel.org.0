@@ -1,121 +1,181 @@
-Return-Path: <linux-efi+bounces-660-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-661-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED23F861BA5
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Feb 2024 19:30:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1C086234E
+	for <lists+linux-efi@lfdr.de>; Sat, 24 Feb 2024 08:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1B341F2781D
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Feb 2024 18:30:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D2F21C2122F
+	for <lists+linux-efi@lfdr.de>; Sat, 24 Feb 2024 07:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA6F128811;
-	Fri, 23 Feb 2024 18:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD72810A2B;
+	Sat, 24 Feb 2024 07:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbO0L3o5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m9BvGJeZ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A22E3FF1;
-	Fri, 23 Feb 2024 18:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0A68487;
+	Sat, 24 Feb 2024 07:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708713007; cv=none; b=Frx2sd9TrEhcZIL/fREyQR2cJiYvyi5fpMGJzqKXqpcBVRrMntQgB6tD7OCn3lLrRd53pHgk0F3T0sNhuYk0SyOYlmEOrwXNITGyaW6Cz7N2FPN7k2MKqH9+I6uj4yCQ/vE6SOpXMCh31qLcmfYv9qGALlapNdNVqGeToe3/93E=
+	t=1708759873; cv=none; b=X1wCtNpcOhmgbDmk3ieg7ArvwcRuGnSQ0DHYJfpDPHIdsiAGuCg+kwezrwnMpQcUxtMbxUxtn3u02Lfsizw/ag+T+xVjR1UnkIct/A9wCNLWkaxDMCPCkIiy+k7YxJDR8mS+XZkU50gG/brpLa/GR2RcLUJVIHv0U1Enqrhwcdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708713007; c=relaxed/simple;
-	bh=h4pO3Tgr1PTkYatoEkKrET/MjLlwGSker91U7kqaO1o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QBFUyTsE2Yhkqv02timKASG0rTN14cU/pqC/LjDnoMRgzWmlcMG94jSztEIL1sQZzKXsLHc6JeotO5utv6OR0oo0JCR3lnZv26sh4T7AylOO9aq3an2phwa9Zm9dM5X7yuNHvHIwruSwVPMV9T46q4iOqZdjAMyJvSjLum1ATTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbO0L3o5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFCDC433F1;
-	Fri, 23 Feb 2024 18:30:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708713006;
-	bh=h4pO3Tgr1PTkYatoEkKrET/MjLlwGSker91U7kqaO1o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nbO0L3o5nidphoFvFp61Tw3dg+tZlos4tvnVsxt3LBum2bv9S4cTfrRbYtCdgcpk8
-	 2K3+Bqs4WAKaIaUXuBtYuzhcR3M9qhvTbIwBIFPCyZaItSaQjQrr8Jd56PmZEqrQZb
-	 acEwsL077wp13g1v9RpB2z0nSaHiOLwmaOr9HiFeBHfwJxnAsJU8yhUiKDdA+zvn9n
-	 RHBDNQixtUS8LsYmrCB85aI7TzZ//EdZ8jMmeSMNGs5bSkm8fzONPNSAGQWnNkLgVx
-	 h4oof10cHJMT7hRlxo70kTubFphVQMWuM+RE2weKDWruUnrzxYplMjxaZS63eqxuam
-	 ++gfEOXUOc9gQ==
-Date: Fri, 23 Feb 2024 10:30:04 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Ross Philipson <ross.philipson@oracle.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
-	linux-efi@vger.kernel.org, dpsmith@apertussolutions.com,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-	dave.hansen@linux.intel.com, mjg59@srcf.ucam.org,
-	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de,
-	jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
-	nivedita@alum.mit.edu, herbert@gondor.apana.org.au,
-	davem@davemloft.net, kanth.ghatraju@oracle.com,
-	trenchboot-devel@googlegroups.com
-Subject: Re: [PATCH v8 06/15] x86: Add early SHA support for Secure Launch
- early measurements
-Message-ID: <20240223183004.GE1112@sol.localdomain>
-References: <20240214221847.2066632-1-ross.philipson@oracle.com>
- <20240214221847.2066632-7-ross.philipson@oracle.com>
- <CAMj1kXEmMBY_jc0uM5UgZbuZ3-C7NPKzg5AScaunyu9XzLgzZA@mail.gmail.com>
- <98ad92bb-ef17-4c15-88ba-252db2a2e738@citrix.com>
- <CAMj1kXFTu+bV2kQhAyu15hrYai20NcBLb4Zu8XG2Y-XjL0f+rw@mail.gmail.com>
- <1a8e69a7-89eb-4d36-94d6-0da662d8b72f@citrix.com>
- <CAMj1kXEvmGy9RJo4s8tECsFj2dufZ8jBPoJOEtkcGUoj+x2qsw@mail.gmail.com>
- <431a0b3a-47e5-4e61-a7fc-31cdf56f4e4c@citrix.com>
- <20240223175449.GA1112@sol.localdomain>
- <e641e2f1-16cf-4717-8a1f-8afac2644efe@citrix.com>
+	s=arc-20240116; t=1708759873; c=relaxed/simple;
+	bh=buu8SVznffYLooKd5ucCOXhekw/UjP+3E944rGDQ+L8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gkb9c/p/V4LQCH2LXG7RuF4wa44jaT979TX/7LzvEHd0kSI+iPgHTk7QYo29I8n70r0d3ysOGMJeb8CrA3TP79MF+spvBqsdLC6zA6r5bOVrfNWtk2CWZG+RIk7PyJpvtqZfomb38R2Zs07pxwLjh5ObHfyKIC09Ejp9WhlcMOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m9BvGJeZ; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708759872; x=1740295872;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=buu8SVznffYLooKd5ucCOXhekw/UjP+3E944rGDQ+L8=;
+  b=m9BvGJeZNCEHXs0XeE0lJ893NEld56Hc8Qfo3vE+1HattXi6WyEYasj2
+   iIFZM0Gc1R1spChZSdYgFXEn450gZE01fCndmDyB+eEm7GEmHHDba1LQz
+   8eBFsder0y148MqqB9Q4MD0YDBSf0P5wU56edlgxjl3zyiOniNPFgQqGq
+   U/bVWnncJETPIjCm+3UEUnyuOUPvAnP+nMCO9og0r6TFq8hpkHBJ5k74n
+   b4dyVlN3OHhPZzJYJ/lD030pZFsdCdO7HOPFepnFqRjUdxt1jaJmQwxDZ
+   IVEpv51ZwjvJkS6TteLAVsG5H/GEJ0m3OyIetNUbxSotYZhQjrT5S1Y20
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="6908083"
+X-IronPort-AV: E=Sophos;i="6.06,181,1705392000"; 
+   d="scan'208";a="6908083"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 23:31:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,181,1705392000"; 
+   d="scan'208";a="37150062"
+Received: from bafghani-mobl.amr.corp.intel.com (HELO [10.255.231.229]) ([10.255.231.229])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 23:31:11 -0800
+Message-ID: <3b8113ac-e44c-4b11-b494-9e473352037a@linux.intel.com>
+Date: Fri, 23 Feb 2024 23:31:10 -0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e641e2f1-16cf-4717-8a1f-8afac2644efe@citrix.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] efi/libstub: Add get_event_log() support for CC
+ platforms
+Content-Language: en-US
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-efi@vger.kernel.org
+References: <20240215030002.281456-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20240215030002.281456-3-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <CAC_iWjJ_TS66KG7uGOQFiKGfZNKjnod6u7zua4LVK-EJHEUv8w@mail.gmail.com>
+ <7feb889f-f78e-4caa-a2f4-9d41acf6ca76@linux.intel.com>
+ <CAC_iWj+9eWesWD62krdhLwj58fpjptpnnG5JpUJUpFsg7_GzOA@mail.gmail.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <CAC_iWj+9eWesWD62krdhLwj58fpjptpnnG5JpUJUpFsg7_GzOA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 23, 2024 at 06:20:27PM +0000, Andrew Cooper wrote:
-> On 23/02/2024 5:54 pm, Eric Biggers wrote:
-> > On Fri, Feb 23, 2024 at 04:42:11PM +0000, Andrew Cooper wrote:
-> >> Yes, and I agree.  We're not looking to try and force this in with
-> >> underhand tactics.
-> >>
-> >> But a blind "nack to any SHA-1" is similarly damaging in the opposite
-> >> direction.
-> >>
-> > Well, reviewers have said they'd prefer that SHA-1 not be included and given
-> > some thoughtful reasons for that.  But also they've given suggestions on how to
-> > make the SHA-1 support more palatable, such as splitting it into a separate
-> > patch and giving it a proper justification.
-> >
-> > All suggestions have been ignored.
-> 
-> The public record demonstrates otherwise.
-> 
-> But are you saying that you'd be happy if the commit message read
-> something more like:
-> 
-> ---8<---
-> For better or worse, Secure Launch needs SHA-1 and SHA-256.
-> 
-> The choice of hashes used lie with the platform firmware, not with
-> software, and is often outside of the users control.
-> 
-> Even if we'd prefer to use SHA-256-only, if firmware elected to start us
-> with the SHA-1 and SHA-256 backs active, we still need SHA-1 to parse
-> the TPM event log thus far, and deliberately cap the SHA-1 PCRs in order
-> to safely use SHA-256 for everything else.
-> ---
 
-Please take some time to read through the comments that reviewers have left on
-previous versions of the patchset.
+On 2/23/24 5:24 AM, Ilias Apalodimas wrote:
+> Apologies for the late reply,
+>
+>
+> On Mon, 19 Feb 2024 at 09:34, Kuppuswamy Sathyanarayanan
+> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+>> Hi Ilias,
+>>
+>> On 2/18/24 11:03 PM, Ilias Apalodimas wrote:
+>>> On Thu, 15 Feb 2024 at 05:02, Kuppuswamy Sathyanarayanan
+>>> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+>>>> To allow event log info access after boot, EFI boot stub extracts
+>>>> the event log information and installs it in an EFI configuration
+>>>> table. Currently, EFI boot stub only supports installation of event
+>>>> log only for TPM 1.2 and TPM 2.0 protocols. Extend the same support
+>>>> for CC protocol. Since CC platform also uses TCG2 format, reuse TPM2
+>>>> support code as much as possible.
+>>>>
+>>>> Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#efi-cc-measurement-protocol [1]
+>>>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>>> [...]
+>>>
+>>>> +void efi_retrieve_eventlog(void)
+>>>> +{
+>>>> +       efi_physical_addr_t log_location = 0, log_last_entry = 0;
+>>>> +       efi_guid_t cc_guid = EFI_CC_MEASUREMENT_PROTOCOL_GUID;
+>>>> +       efi_guid_t tpm2_guid = EFI_TCG2_PROTOCOL_GUID;
+>>>> +       int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
+>>>> +       efi_tcg2_protocol_t *tpm2 = NULL;
+>>>> +       efi_cc_protocol_t *cc = NULL;
+>>>> +       efi_bool_t truncated;
+>>>> +       efi_status_t status;
+>>>> +
+>>>> +       status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
+>>>> +       if (status == EFI_SUCCESS) {
+>>>> +               status = efi_call_proto(tpm2, get_event_log, version, &log_location,
+>>>> +                                       &log_last_entry, &truncated);
+>>>> +
+>>>> +               if (status != EFI_SUCCESS || !log_location) {
+>>>> +                       version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
+>>>> +                       status = efi_call_proto(tpm2, get_event_log, version,
+>>>> +                                               &log_location, &log_last_entry,
+>>>> +                                               &truncated);
+>>>> +                       if (status != EFI_SUCCESS || !log_location)
+>>>> +                               return;
+>>>> +               }
+>>>> +
+>>>> +               efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
+>>>> +                                          truncated);
+>>>> +               return;
+>>>> +       }
+>>>> +
+>>>> +       status = efi_bs_call(locate_protocol, &cc_guid, NULL, (void **)&cc);
+>>>> +       if (status == EFI_SUCCESS) {
+>>>> +               version = EFI_CC_EVENT_LOG_FORMAT_TCG_2;
+>>>> +               status = efi_call_proto(cc, get_event_log, version, &log_location,
+>>>> +                                       &log_last_entry, &truncated);
+>>>> +               if (status != EFI_SUCCESS || !log_location)
+>>>> +                       return;
+>>>> +
+>>>> +               efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
+>>>> +                                          truncated);
+>>>> +               return;
+>>>> +       }
+>>>> +}
+>>> [...]
+>>>
+>>> I haven't looked into CC measurements much, but do we always want to
+>>> prioritize the tcg2 protocol? IOW if you have firmware that implements
+>>> both, shouldn't we prefer the CC protocol for VMs?
+>> According the UEFI specification, sec "Conidential computing", if a firmware implements
+>> the TPM, then it should be used and CC interfaces should not be published. So I think
+>> we should check for TPM first, if it does not exist then try for CC.
+> Ok thanks, that makes sense. That document also says the services
+> should be implemented on a virtual firmware.
+> I am unsure at the moment though if it's worth checking that and
+> reporting an error otherwise. Thoughts?
 
-- Eric
+IMO, it is not fatal for the firmware to implement both protocols. Although, it
+violates the specification, does it makes sense to return error and skip
+measurements? I think for such case, we can add a warning and proceed
+with TPM if it exists.
+
+>
+> Thanks
+> /Ilias
+>> https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#confidential-computing
+>>
+>>> Thanks
+>>> /Ilias
+>> --
+>> Sathyanarayanan Kuppuswamy
+>> Linux Kernel Developer
+>>
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
 
