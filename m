@@ -1,260 +1,198 @@
-Return-Path: <linux-efi+bounces-665-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-666-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7866B862D29
-	for <lists+linux-efi@lfdr.de>; Sun, 25 Feb 2024 22:30:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332E68691A0
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Feb 2024 14:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6A5A1F2278B
-	for <lists+linux-efi@lfdr.de>; Sun, 25 Feb 2024 21:30:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCB2C281F77
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Feb 2024 13:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478BE1B81F;
-	Sun, 25 Feb 2024 21:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C57713B299;
+	Tue, 27 Feb 2024 13:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kT4nBQ71"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o8YEaViT"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894801804E
-	for <linux-efi@vger.kernel.org>; Sun, 25 Feb 2024 21:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AD813B28B
+	for <linux-efi@vger.kernel.org>; Tue, 27 Feb 2024 13:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708896607; cv=none; b=XRRlDu+wxl0bOOvI296ojulsK0kwEW0Ywyrpv/GxBWs98IWLTr+5rtotGsUSjtLu6hh0PkULAwb/BcT9LXuAKDXfIgsBWyxvZXcvn0YBgi+GG+1tpLHL4UxFYbPNugbEndI7VK4I7K79S9ysQPdSkMkZYA/h4TkvN6p5rhJm0io=
+	t=1709040012; cv=none; b=DvVQFfxRY6Qqq7iNICL2XXpaoDJ7PtGp1zyyHU1VwKWOwrHroEi+mNbd+SuOmAxlLt4BwMseyacLzbeQBmgRltxAAxjafHYBwbTFJTQ8OP4dFF3dEPHzJawcf3HO7UlBDi0z2fkV2HyHPDJ/d0aa6OFy/qjFdPEwl0B1QE60WYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708896607; c=relaxed/simple;
-	bh=DmZIbl9alzF0nQC7KUyLUNVQPUtjQTvd/GeoUyZOw2A=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=McSeQbSClqcOFq0bI8f8/b8qGqy80/atKkb5knvJJhqsx5enzkaktR/8CwvhILPjCiWXWe7Tmp8mrIZBqK07bBqxBGasmLLOAOeQghTodSGO32HVGAjJ1XBLNI6Q3IWAkOLNoIp3LBd/uXVDFx1W2TRTJ4enqNWyo8qU4Y7dfxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kT4nBQ71; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708896606; x=1740432606;
-  h=date:from:to:cc:subject:message-id;
-  bh=DmZIbl9alzF0nQC7KUyLUNVQPUtjQTvd/GeoUyZOw2A=;
-  b=kT4nBQ71gVPOWSXyNCzkgG18xSd6zWaNG5aI+wWERMZ+e9r72ujzd4uo
-   4xGe7N5iGATB8OD+lgZgYVNp3aADWOZv56xSeCyM5/neGYXYw45d1fzNa
-   zp/ipTmRHHdozLkMjcbdEppF7Yc6ien8+763l98GgIVnJOaDNpXQ6VWm3
-   1HMs9z7wE4uzfSf1Ui6RxJhbpFaUqJzqQE7PvzopGCibIwfebMHMQbocd
-   kkbcsqqCP2TgVhDzkrHPcauoCHcKkCkMEe4YHEsJhTkpU2UClDWZtsWm6
-   eZfUlgnH0B2l5ZvYMHu58V1gpO+PQumOvQtDXwRyGcp15OV1FWy/gD3Zz
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="3015605"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="3015605"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2024 13:30:05 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="11174642"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 25 Feb 2024 13:30:03 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1reM4O-0009na-2k;
-	Sun, 25 Feb 2024 21:30:00 +0000
-Date: Mon, 26 Feb 2024 05:28:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 2ce507f57ba9c78c080d4a050ebdc97263239de8
-Message-ID: <202402260547.JZYh7TTf-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1709040012; c=relaxed/simple;
+	bh=UCc+QXpK/pxCYv6oqRhkjlslZVn9Vi3dZm4sUsqmYXI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sZH23W7mMgaR3noOuhPK1uPp35MpqOvOYj+MRTB5k1QU6Y/EKhW67Ff0trMP96ncllQNFCrJhT8Pa4ly2UkOFIG0ydU4uFkV4BGEa4g64Ysf42kfek9zNgjrgSQn/knSCR3knNKBC1UQ5Ws5gy9RhuU74ggCVHuWLdTrThZ+y1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o8YEaViT; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d24a727f78so59157781fa.0
+        for <linux-efi@vger.kernel.org>; Tue, 27 Feb 2024 05:20:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709040007; x=1709644807; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vlr5GxTuTyoOqcx2wy9fcrF4X1fQdHiiP+0pPjt3du4=;
+        b=o8YEaViTzRsCM3yNL6D38U0y955k1Yq82BaB9YXlSg8ZRhlEfoYE9bF5yO9LzfSiZa
+         FUY/+LEELHeuhqrfSBUvOu+0ubD99/MeqhAbm7qlt33PQGaC14YW6FDzSUrnc0WpLSO0
+         uLgE00EnIEivUFCR2hB3R2Kty2HbcWLkBbnex0Snw2nWhJHys8K77b0zpAhXeHPKEVT5
+         xT4vQO6e4Hn9XhLn7R6PhhbOO/9aDeo0vJXqf33aSKi2Wqjdjy8WnAiVEP2HtBCKbt4Q
+         x3H7G2ZUCbnQfwvBdBcI31dObwJY6ELxlq3FopP+A0yfQ1VYBRa49PhPLUR6ZBgIvyvL
+         hmVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709040007; x=1709644807;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vlr5GxTuTyoOqcx2wy9fcrF4X1fQdHiiP+0pPjt3du4=;
+        b=CbEMNbJjBKHvuX8CRBONBgNK8Fy5cAfMHK7bJl/p0VxG5aet8mAFgciEgQp2DrJWGa
+         8Y2n1oRfwyavXLxo79ZUBRfXRaEyoKIBDTFs54ZOKfMkbV0Lp1HJoYK7dKKX6WEuCcMm
+         78lgl3HKqBx079MfNnOaa2XGq2C+KmMiBciX/U3m0fNNNZ2R0gouk4iWGV+aqmmXUYdx
+         zXwaifquJ2IMLKs77LZ20lGGwMiGOWjzPV2x6DNTVDtHliBcOr/V1WXb4RJI9KvtpmSF
+         pkdZRkPSBRDGViyFvdFYfRLovi7dDs75ttCm20WtCsrQOaCtZkHus1FQzkfhTjTvUQBQ
+         GeTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVe6lP2+SnPPAmZsr74RnN0IOOv0bi7I+XdrN+Rqr0g0xtfkPJJXjDDuDBPnEoQLeMTH5wUkfic+0a2fOe1AtSSj6llw7SjGVyZ
+X-Gm-Message-State: AOJu0YyHx6wgwLO73ROoZEVL3gRf4rKJeHrOVxQLbK2hsVY6zgYoyo4C
+	5+TD5nKJRMXx7IOPlE1N1BaL9Hy44kmHocWPag9kkzkRamQp7Ejw90Ei8w4VSCwxS43irLiOR/q
+	xydCaXkCRVHrj/lECc6Ht1bjA21rGeqBvPIPxcA==
+X-Google-Smtp-Source: AGHT+IGQ5qKugw7EolCixjBBZt98DHlZp0AHzKrqvDtOPvC40Yids/u0deBUUEQVxTX4vweQHoEHToV3hUoy2m4wmRs=
+X-Received: by 2002:a05:651c:48c:b0:2d2:5cca:cf6f with SMTP id
+ s12-20020a05651c048c00b002d25ccacf6fmr5999084ljc.18.1709040007508; Tue, 27
+ Feb 2024 05:20:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240215030002.281456-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20240215030002.281456-3-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <CAC_iWjJ_TS66KG7uGOQFiKGfZNKjnod6u7zua4LVK-EJHEUv8w@mail.gmail.com>
+ <7feb889f-f78e-4caa-a2f4-9d41acf6ca76@linux.intel.com> <CAC_iWj+9eWesWD62krdhLwj58fpjptpnnG5JpUJUpFsg7_GzOA@mail.gmail.com>
+ <3b8113ac-e44c-4b11-b494-9e473352037a@linux.intel.com>
+In-Reply-To: <3b8113ac-e44c-4b11-b494-9e473352037a@linux.intel.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Tue, 27 Feb 2024 15:19:31 +0200
+Message-ID: <CAC_iWjLXNBJz2RgRb3vbM_hetnw3hoWpG+sKM1gfiGo=z6tLxA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] efi/libstub: Add get_event_log() support for CC platforms
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 2ce507f57ba9c78c080d4a050ebdc97263239de8  efivarfs: Drop 'duplicates' bool parameter on efivar_init()
+On Sat, 24 Feb 2024 at 09:31, Kuppuswamy Sathyanarayanan
+<sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+>
+>
+> On 2/23/24 5:24 AM, Ilias Apalodimas wrote:
+> > Apologies for the late reply,
+> >
+> >
+> > On Mon, 19 Feb 2024 at 09:34, Kuppuswamy Sathyanarayanan
+> > <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+> >> Hi Ilias,
+> >>
+> >> On 2/18/24 11:03 PM, Ilias Apalodimas wrote:
+> >>> On Thu, 15 Feb 2024 at 05:02, Kuppuswamy Sathyanarayanan
+> >>> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+> >>>> To allow event log info access after boot, EFI boot stub extracts
+> >>>> the event log information and installs it in an EFI configuration
+> >>>> table. Currently, EFI boot stub only supports installation of event
+> >>>> log only for TPM 1.2 and TPM 2.0 protocols. Extend the same support
+> >>>> for CC protocol. Since CC platform also uses TCG2 format, reuse TPM2
+> >>>> support code as much as possible.
+> >>>>
+> >>>> Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#efi-cc-measurement-protocol [1]
+> >>>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> >>> [...]
+> >>>
+> >>>> +void efi_retrieve_eventlog(void)
+> >>>> +{
+> >>>> +       efi_physical_addr_t log_location = 0, log_last_entry = 0;
+> >>>> +       efi_guid_t cc_guid = EFI_CC_MEASUREMENT_PROTOCOL_GUID;
+> >>>> +       efi_guid_t tpm2_guid = EFI_TCG2_PROTOCOL_GUID;
+> >>>> +       int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
+> >>>> +       efi_tcg2_protocol_t *tpm2 = NULL;
+> >>>> +       efi_cc_protocol_t *cc = NULL;
+> >>>> +       efi_bool_t truncated;
+> >>>> +       efi_status_t status;
+> >>>> +
+> >>>> +       status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
+> >>>> +       if (status == EFI_SUCCESS) {
+> >>>> +               status = efi_call_proto(tpm2, get_event_log, version, &log_location,
+> >>>> +                                       &log_last_entry, &truncated);
+> >>>> +
+> >>>> +               if (status != EFI_SUCCESS || !log_location) {
+> >>>> +                       version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
+> >>>> +                       status = efi_call_proto(tpm2, get_event_log, version,
+> >>>> +                                               &log_location, &log_last_entry,
+> >>>> +                                               &truncated);
+> >>>> +                       if (status != EFI_SUCCESS || !log_location)
+> >>>> +                               return;
+> >>>> +               }
+> >>>> +
+> >>>> +               efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
+> >>>> +                                          truncated);
+> >>>> +               return;
+> >>>> +       }
+> >>>> +
+> >>>> +       status = efi_bs_call(locate_protocol, &cc_guid, NULL, (void **)&cc);
+> >>>> +       if (status == EFI_SUCCESS) {
+> >>>> +               version = EFI_CC_EVENT_LOG_FORMAT_TCG_2;
+> >>>> +               status = efi_call_proto(cc, get_event_log, version, &log_location,
+> >>>> +                                       &log_last_entry, &truncated);
+> >>>> +               if (status != EFI_SUCCESS || !log_location)
+> >>>> +                       return;
+> >>>> +
+> >>>> +               efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
+> >>>> +                                          truncated);
+> >>>> +               return;
+> >>>> +       }
+> >>>> +}
+> >>> [...]
+> >>>
+> >>> I haven't looked into CC measurements much, but do we always want to
+> >>> prioritize the tcg2 protocol? IOW if you have firmware that implements
+> >>> both, shouldn't we prefer the CC protocol for VMs?
+> >> According the UEFI specification, sec "Conidential computing", if a firmware implements
+> >> the TPM, then it should be used and CC interfaces should not be published. So I think
+> >> we should check for TPM first, if it does not exist then try for CC.
+> > Ok thanks, that makes sense. That document also says the services
+> > should be implemented on a virtual firmware.
+> > I am unsure at the moment though if it's worth checking that and
+> > reporting an error otherwise. Thoughts?
+>
+> IMO, it is not fatal for the firmware to implement both protocols. Although, it
+> violates the specification, does it makes sense to return error and skip
+> measurements? I think for such case, we can add a warning and proceed
+> with TPM if it exists.
 
-elapsed time: 731m
+If you have a TPM, the current code wouldn't even look for CC (which
+we agreed is correct).
+The question is, should we care if a firmware exposes the CC protocol,
+but isn't virtualized
 
-configs tested: 171
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                          axs103_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240225   gcc  
-arc                   randconfig-002-20240225   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                           h3600_defconfig   gcc  
-arm                   randconfig-001-20240225   clang
-arm                   randconfig-002-20240225   gcc  
-arm                   randconfig-003-20240225   clang
-arm                   randconfig-004-20240225   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240225   gcc  
-arm64                 randconfig-002-20240225   clang
-arm64                 randconfig-003-20240225   gcc  
-arm64                 randconfig-004-20240225   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240225   gcc  
-csky                  randconfig-002-20240225   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240225   clang
-hexagon               randconfig-002-20240225   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240225   gcc  
-i386         buildonly-randconfig-002-20240225   gcc  
-i386         buildonly-randconfig-003-20240225   clang
-i386         buildonly-randconfig-004-20240225   gcc  
-i386         buildonly-randconfig-005-20240225   clang
-i386         buildonly-randconfig-006-20240225   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240225   gcc  
-i386                  randconfig-002-20240225   clang
-i386                  randconfig-003-20240225   clang
-i386                  randconfig-004-20240225   gcc  
-i386                  randconfig-005-20240225   gcc  
-i386                  randconfig-006-20240225   gcc  
-i386                  randconfig-011-20240225   clang
-i386                  randconfig-012-20240225   gcc  
-i386                  randconfig-013-20240225   gcc  
-i386                  randconfig-014-20240225   clang
-i386                  randconfig-015-20240225   gcc  
-i386                  randconfig-016-20240225   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240225   gcc  
-loongarch             randconfig-002-20240225   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5275evb_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      maltasmvp_defconfig   gcc  
-nios2                         10m50_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240225   gcc  
-nios2                 randconfig-002-20240225   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc                 simple_smp_defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240225   gcc  
-parisc                randconfig-002-20240225   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240225   clang
-powerpc               randconfig-002-20240225   clang
-powerpc               randconfig-003-20240225   clang
-powerpc64             randconfig-001-20240225   gcc  
-powerpc64             randconfig-002-20240225   clang
-powerpc64             randconfig-003-20240225   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240225   gcc  
-riscv                 randconfig-002-20240225   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240225   gcc  
-s390                  randconfig-002-20240225   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                         apsh4a3a_defconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240225   gcc  
-sh                    randconfig-002-20240225   gcc  
-sh                          rsk7269_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240225   gcc  
-sparc64               randconfig-002-20240225   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240225   clang
-um                    randconfig-002-20240225   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240225   clang
-x86_64       buildonly-randconfig-002-20240225   clang
-x86_64       buildonly-randconfig-003-20240225   clang
-x86_64       buildonly-randconfig-004-20240225   gcc  
-x86_64       buildonly-randconfig-005-20240225   clang
-x86_64       buildonly-randconfig-006-20240225   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240225   gcc  
-x86_64                randconfig-002-20240225   clang
-x86_64                randconfig-003-20240225   gcc  
-x86_64                randconfig-004-20240225   clang
-x86_64                randconfig-005-20240225   clang
-x86_64                randconfig-006-20240225   gcc  
-x86_64                randconfig-011-20240225   clang
-x86_64                randconfig-012-20240225   clang
-x86_64                randconfig-013-20240225   gcc  
-x86_64                randconfig-014-20240225   gcc  
-x86_64                randconfig-015-20240225   clang
-x86_64                randconfig-016-20240225   gcc  
-x86_64                randconfig-071-20240225   gcc  
-x86_64                randconfig-072-20240225   gcc  
-x86_64                randconfig-073-20240225   clang
-x86_64                randconfig-074-20240225   gcc  
-x86_64                randconfig-075-20240225   clang
-x86_64                randconfig-076-20240225   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240225   gcc  
-xtensa                randconfig-002-20240225   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks
+/Ilias
+>
+> >
+> > Thanks
+> > /Ilias
+> >> https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#confidential-computing
+> >>
+> >>> Thanks
+> >>> /Ilias
+> >> --
+> >> Sathyanarayanan Kuppuswamy
+> >> Linux Kernel Developer
+> >>
+> --
+> Sathyanarayanan Kuppuswamy
+> Linux Kernel Developer
+>
 
