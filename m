@@ -1,206 +1,158 @@
-Return-Path: <linux-efi+bounces-668-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-669-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDC386BF69
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Feb 2024 04:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D41E86C1A9
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Feb 2024 08:13:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28161B22856
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Feb 2024 03:23:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2677CB242D3
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Feb 2024 07:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB9237169;
-	Thu, 29 Feb 2024 03:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B59E446BA;
+	Thu, 29 Feb 2024 07:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ENz9sNBx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UiXLkR9C"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C74E2E851;
-	Thu, 29 Feb 2024 03:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB854446B4;
+	Thu, 29 Feb 2024 07:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709177013; cv=none; b=gszyDXm9oA946bdXlgs+PSUieZ+GLz6UxHgzt0JVMa0qfYTnNu6n7sq9ed/Dv7PmGWcmqoZcWh7QU2iSw0dUi/WnV6QW8xQt26RFtSxnaz0ZyHwmGtdySSN721dXc2mMRDBRl9sxKWH4TPx3OOhIF7pYE6NOTEX2NfI1un5sF8Q=
+	t=1709190805; cv=none; b=Hd/dMr62089ajA/tZEfDC6xHXnsutdUWcw9JB2mu/aiI1HGUneuXdiV9DVx7ZdJ0XBJVVbgA/B3m1fIOn5761T/adcv2TTmpwXwXG5NF7o2mh9GewlwpeKjRgQvbXIGgMrVzSGuh7gCOgP5LagG8WFyiiF1IqC0adc4jWk7ZLk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709177013; c=relaxed/simple;
-	bh=oq6iOWR3Be8NAwys5VPvZUV+Pl0yb4RFoJQDWT2ydyU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FKmsxOAE8rFqK0fmRJarppELK5jnqJeDp/iOsGtUu0EG4mf+szTBT6HLrxM+ygYiEX6LmRpLSDrSWuzSXPeqIApYNsYytsVSrogRYVlJWizc3K+nlTNSWYxyf9trPA7rUK3qv+KR66tzfSJfM1KN6rsxz473Fcl9Rt2UqFHB2Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ENz9sNBx; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1709190805; c=relaxed/simple;
+	bh=G2TxGFUdAAXJKdIfxQBleGyn2fBf9uj4lSj2hBlEcmE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ummvUjBVgKEGZID0/BLDaVrPqkoAjbxbrRZZ/S7K63D+5+qQJUgeLHsh4zTZUpBRgsizkt36VEvkmTgPfIM9IdnkWOvtkHzo3a/il8DC2+pyG2h5jD6ZsRXbQ0+wXeMfbHsbAAPMhndgvI3Wsamg+sXY8lYdqleAbXtYO6KZhTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UiXLkR9C; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709177012; x=1740713012;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=oq6iOWR3Be8NAwys5VPvZUV+Pl0yb4RFoJQDWT2ydyU=;
-  b=ENz9sNBx8BVSK165ET+plu0gskK500Ca9efbG5JSrJf+qCbuRrorUC8S
-   wng1XgmEOY1jo4B2wanHjU5bQnf26dx5q6kQf1N62ukpI27ioeUkHMdh/
-   YVLIyakB0bwmPDNmlarcebZgEB+9kkrc92kzz6+aN6VjjjGWiIcQ8ETlX
-   Cn3r/XWOVmmJ2Kz7659OlbGvH2maEU4TTdgU863SqpaMupzFolJ8QjGIO
-   EerX3tg4mqk8zqsGpkqdWZUhl++7PJZWkFAS/Kwsxmtwa1nt3DWLQ1x1u
-   +fuZD16YsbH0wzGslE1f/hGFdlgTg/+qYcq8miSx5hZ4rBjVBBIKPlYSf
+  t=1709190803; x=1740726803;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=G2TxGFUdAAXJKdIfxQBleGyn2fBf9uj4lSj2hBlEcmE=;
+  b=UiXLkR9Cp4hO1eXJyqVSuXXFP1C0yilwDUhquHfzLVlas54+ScZF/j5l
+   9ts2XZcgDIdWZzz5xdYIOs/JF4GIQxlVb9y25EAuc7WQ83QiQTz57cmL2
+   NWk2aN+81tnemZfaUSMxbiUjntXDnNZi55V7OQPgLg+KJuJoSzxLhrFT9
+   gSzYRoP6LpyuJvqPF7cHZ2ndbjI808qsPJnoKs49nYx931k2ZXaneNOOh
+   hetnYpvuOmRhgufF8LMPZyck4KsPzwgXjuoKOaWxNap/j/T9Imx0EwRA5
+   LZE+33TFOlMrbUy9TClGtbFUFDziNW6ykovZUTU7a1c8B6mkvRK4tCebM
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14188896"
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3519845"
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="14188896"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 19:23:31 -0800
+   d="scan'208";a="3519845"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 23:13:22 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,192,1705392000"; 
-   d="scan'208";a="12241675"
-Received: from smitpat1-mobl.amr.corp.intel.com (HELO [10.209.30.182]) ([10.209.30.182])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 19:23:30 -0800
-Message-ID: <49f8948f-3101-492d-8dae-46e8d8b8e2ed@linux.intel.com>
-Date: Wed, 28 Feb 2024 19:23:30 -0800
+   d="scan'208";a="8283933"
+Received: from iweiny-desk3.amr.corp.intel.com (HELO localhost) ([10.213.166.213])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 23:13:21 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 0/4] efi/cxl-cper: Report CXL CPER events through tracing
+Date: Wed, 28 Feb 2024 23:13:15 -0800
+Message-Id: <20240228-cxl-cper3-v1-0-6aa3f1343c6c@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] efi/libstub: Add get_event_log() support for CC
- platforms
-Content-Language: en-US
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
- linux-efi@vger.kernel.org
-References: <20240215030002.281456-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20240215030002.281456-3-sathyanarayanan.kuppuswamy@linux.intel.com>
- <CAC_iWjJ_TS66KG7uGOQFiKGfZNKjnod6u7zua4LVK-EJHEUv8w@mail.gmail.com>
- <7feb889f-f78e-4caa-a2f4-9d41acf6ca76@linux.intel.com>
- <CAC_iWj+9eWesWD62krdhLwj58fpjptpnnG5JpUJUpFsg7_GzOA@mail.gmail.com>
- <3b8113ac-e44c-4b11-b494-9e473352037a@linux.intel.com>
- <CAC_iWjLXNBJz2RgRb3vbM_hetnw3hoWpG+sKM1gfiGo=z6tLxA@mail.gmail.com>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <CAC_iWjLXNBJz2RgRb3vbM_hetnw3hoWpG+sKM1gfiGo=z6tLxA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIsu4GUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDIyMD3eSKHN3kgtQiY11jg1RTUyNzyzRLYzMloPqCotS0zAqwWdGxtbU
+ AOfAb71sAAAA=
+To: Dan Williams <dan.j.williams@intel.com>, 
+ Jonathan Cameron <jonathan.cameron@huawei.com>, 
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, 
+ Shiju Jose <shiju.jose@huawei.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, 
+ Yazen Ghannam <yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>, 
+ Dave Jiang <dave.jiang@intel.com>, 
+ Alison Schofield <alison.schofield@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, Ard Biesheuvel <ardb@kernel.org>, 
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-cxl@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+ Borislav Petkov <bp@alien8.de>
+X-Mailer: b4 0.13-dev-2d940
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1709190800; l=2474;
+ i=ira.weiny@intel.com; s=20221222; h=from:subject:message-id;
+ bh=G2TxGFUdAAXJKdIfxQBleGyn2fBf9uj4lSj2hBlEcmE=;
+ b=XjOlXZKAEwpqnuJEnFKvUjGnxXZSncPqvFrkssW+feQFDHoP54pVx2E9WtzvCDJALiGBFE8fl
+ DhElZ3pqyWGAepI8DDWySgAgDpUCNjPWul3jVRxN5I8o2xhN5ZsGVsf
+X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
+ pk=brwqReAJklzu/xZ9FpSsMPSQ/qkSalbg6scP3w809Ec=
 
+CXL Component Events, as defined by EFI 2.10 Section N.2.14, wrap a
+mostly CXL event payload in an EFI Common Platform Error Record (CPER)
+record.  If a device is configured for firmware first CXL event records
+are not sent directly to the host.
 
-On 2/27/24 5:19 AM, Ilias Apalodimas wrote:
-> On Sat, 24 Feb 2024 at 09:31, Kuppuswamy Sathyanarayanan
-> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->>
->> On 2/23/24 5:24 AM, Ilias Apalodimas wrote:
->>> Apologies for the late reply,
->>>
->>>
->>> On Mon, 19 Feb 2024 at 09:34, Kuppuswamy Sathyanarayanan
->>> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->>>> Hi Ilias,
->>>>
->>>> On 2/18/24 11:03 PM, Ilias Apalodimas wrote:
->>>>> On Thu, 15 Feb 2024 at 05:02, Kuppuswamy Sathyanarayanan
->>>>> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->>>>>> To allow event log info access after boot, EFI boot stub extracts
->>>>>> the event log information and installs it in an EFI configuration
->>>>>> table. Currently, EFI boot stub only supports installation of event
->>>>>> log only for TPM 1.2 and TPM 2.0 protocols. Extend the same support
->>>>>> for CC protocol. Since CC platform also uses TCG2 format, reuse TPM2
->>>>>> support code as much as possible.
->>>>>>
->>>>>> Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#efi-cc-measurement-protocol [1]
->>>>>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->>>>> [...]
->>>>>
->>>>>> +void efi_retrieve_eventlog(void)
->>>>>> +{
->>>>>> +       efi_physical_addr_t log_location = 0, log_last_entry = 0;
->>>>>> +       efi_guid_t cc_guid = EFI_CC_MEASUREMENT_PROTOCOL_GUID;
->>>>>> +       efi_guid_t tpm2_guid = EFI_TCG2_PROTOCOL_GUID;
->>>>>> +       int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
->>>>>> +       efi_tcg2_protocol_t *tpm2 = NULL;
->>>>>> +       efi_cc_protocol_t *cc = NULL;
->>>>>> +       efi_bool_t truncated;
->>>>>> +       efi_status_t status;
->>>>>> +
->>>>>> +       status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
->>>>>> +       if (status == EFI_SUCCESS) {
->>>>>> +               status = efi_call_proto(tpm2, get_event_log, version, &log_location,
->>>>>> +                                       &log_last_entry, &truncated);
->>>>>> +
->>>>>> +               if (status != EFI_SUCCESS || !log_location) {
->>>>>> +                       version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
->>>>>> +                       status = efi_call_proto(tpm2, get_event_log, version,
->>>>>> +                                               &log_location, &log_last_entry,
->>>>>> +                                               &truncated);
->>>>>> +                       if (status != EFI_SUCCESS || !log_location)
->>>>>> +                               return;
->>>>>> +               }
->>>>>> +
->>>>>> +               efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
->>>>>> +                                          truncated);
->>>>>> +               return;
->>>>>> +       }
->>>>>> +
->>>>>> +       status = efi_bs_call(locate_protocol, &cc_guid, NULL, (void **)&cc);
->>>>>> +       if (status == EFI_SUCCESS) {
->>>>>> +               version = EFI_CC_EVENT_LOG_FORMAT_TCG_2;
->>>>>> +               status = efi_call_proto(cc, get_event_log, version, &log_location,
->>>>>> +                                       &log_last_entry, &truncated);
->>>>>> +               if (status != EFI_SUCCESS || !log_location)
->>>>>> +                       return;
->>>>>> +
->>>>>> +               efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
->>>>>> +                                          truncated);
->>>>>> +               return;
->>>>>> +       }
->>>>>> +}
->>>>> [...]
->>>>>
->>>>> I haven't looked into CC measurements much, but do we always want to
->>>>> prioritize the tcg2 protocol? IOW if you have firmware that implements
->>>>> both, shouldn't we prefer the CC protocol for VMs?
->>>> According the UEFI specification, sec "Conidential computing", if a firmware implements
->>>> the TPM, then it should be used and CC interfaces should not be published. So I think
->>>> we should check for TPM first, if it does not exist then try for CC.
->>> Ok thanks, that makes sense. That document also says the services
->>> should be implemented on a virtual firmware.
->>> I am unsure at the moment though if it's worth checking that and
->>> reporting an error otherwise. Thoughts?
->> IMO, it is not fatal for the firmware to implement both protocols. Although, it
->> violates the specification, does it makes sense to return error and skip
->> measurements? I think for such case, we can add a warning and proceed
->> with TPM if it exists.
-> If you have a TPM, the current code wouldn't even look for CC (which
-> we agreed is correct).
-> The question is, should we care if a firmware exposes the CC protocol,
-> but isn't virtualized
+The CXL sub-system uniquely has DPA to HPA translation information.  It
+also already has event decoding/tracing.  Such translations are very
+useful for users to determine which system issues may correspond to
+specific hardware events.
 
-AFAIK, even if a firmware improperly uses this protocol (in a non-virtual
-environment), it should not be a fatal issue. So, if we add such a check,
-it will be just a spec compliance check. Also, a firmware can improperly
-use any existing EFI interfaces in n other ways. But, we cannot check for
-all such cases, right? So personally I think it is not needed. But I am fine
-either way.
+The restructuring of the event data structures in 6.8 made sharing the
+data between CPER/event logs more efficient.  Now re-wire the sending of
+CPER records to the CXL sub-system.
 
-If we want to add such check, I think we should either cc_platform_has()
-or CPU feature flag check for it.
+In addition provide a default RAS event should the CXL module not be
+loaded [ie callback not registered].
 
->
-> Thanks
-> /Ilias
->>> Thanks
->>> /Ilias
->>>> https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#confidential-computing
->>>>
->>>>> Thanks
->>>>> /Ilias
->>>> --
->>>> Sathyanarayanan Kuppuswamy
->>>> Linux Kernel Developer
->>>>
->> --
->> Sathyanarayanan Kuppuswamy
->> Linux Kernel Developer
->>
+Series status/background
+========================
+
+Smita and Jonathan have been a great help with this series.  Once again
+thank you.
+
+Unfortunately, with all the churn surrounding the bug which Dan
+Carpenter found the maintainers were force to revert this work.
+
+Therefore, this is a whole new series based on what is in 6.8.
+
+Testing
+=======
+
+I've hacked up a quick debugfs patch to facilitate easier testing.[1]
+
+With this I have verified that the bug Dan Carpenter found is fixed.
+However, the tp_printk bug Jonathan found remains.  The taking of the
+device lock in the callback is required and the tp_printk issue is
+unlikely to be fixed.  Fortunately, tp_printk is not widely used so it
+is anticipated this will not be an issue.
+
+No other locking issues were found with this test and locking debug
+turned on.
+
+[1] https://github.com/weiny2/linux-kernel/commit/6c540a23cb1194d67a9dcfefb702774a99afc3b1
+
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+---
+Ira Weiny (4):
+      cxl/event: Add missing include files
+      acpi/ghes: Process CXL Component Events
+      cxl/pci: Register for and process CPER events
+      ras/events: Trace CXL CPER events even without the CXL stack loaded
+
+ drivers/acpi/apei/ghes.c  | 130 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/cxl/pci.c         |  69 +++++++++++++++++++++++-
+ include/linux/cxl-event.h |  21 ++++++++
+ include/ras/ras_event.h   |  90 ++++++++++++++++++++++++++++++++
+ 4 files changed, 309 insertions(+), 1 deletion(-)
+---
+base-commit: daeacfa75d08954e1a5b71c36a8fbfcdd0b3fec9
+change-id: 20240220-cxl-cper3-30e55279f936
+
+Best regards,
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+Ira Weiny <ira.weiny@intel.com>
 
 
