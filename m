@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-690-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-691-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5D586FF56
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Mar 2024 11:44:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3042786FF57
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Mar 2024 11:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EF621C210E2
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Mar 2024 10:44:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82F88B20BA9
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Mar 2024 10:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391EC36B02;
-	Mon,  4 Mar 2024 10:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C135237179;
+	Mon,  4 Mar 2024 10:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gu0+ZBrH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g2RCP/JY"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C31F364C8
-	for <linux-efi@vger.kernel.org>; Mon,  4 Mar 2024 10:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE97364CF
+	for <linux-efi@vger.kernel.org>; Mon,  4 Mar 2024 10:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709549068; cv=none; b=gBvqh0othhlFWboHy6ZFO28133L9k1fSdFRSIYww+840Gdvq9DJ7Ss+TXbBDD0PZU1DOiyZZos0w/6QEAgQm5IIpDK5XDq29tgIElw9zq1zZEYwnW/vIz6lubf9kwkWIoJO72uagcLhT3wLhINRFUl4s4MmP/R86/haz7hWcz/k=
+	t=1709549069; cv=none; b=V/F1PuiQdQiXo2a2AfOwkOU7JXTz5aJtX6cQlo6D11QesX/Kp2+L8mMe8N/yfQ7tWKc1cPt1yILgEdlfS9U1Lw1i/i6ov7OfUcOmZAXQKlOCxsV5VTFuZCN9sUuYEyeNyxkgWW58LWUOL25JmX9C9NAkZ6jWx04Md1TgwY21yKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709549068; c=relaxed/simple;
-	bh=J9xhqifDnYz9MiaIJkP6q3vXgzeQIiGNnswih3Z1vgU=;
+	s=arc-20240116; t=1709549069; c=relaxed/simple;
+	bh=yKk7DgcgzXFZiUmFOwLqLLIsHe1XDQot/WyBU4BCRg0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K9efpGLCodsOGqzNpkRGEyiLS+PRxiNfoJQE3YtHMJSIWNt282WKjSbzn+2fqwvKIOnkT1KINKhOJpG5/PPeW43f7IPXz0tCNA63nytnPXnl7Ot7TDmp0K6e78sZgF6XkclZZ5km3UTrbrrIMtFNpDjkJ3gumzGih1vC5qUwVpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gu0+ZBrH; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=jk8PBIqzJyhWv+GudND35LWzEu812du/3+ArGlFzD9T5Ha2z5MhoO16bNfXtwTKkdb0qenXUVw5d2l7D+NkFYmuNJL/aG5eEPz/757WAKs6+tvBqolOgjwzUzlUkk/CqcgUcDNDwbz0orxR7jaEnNrejvDjVlcopTP/3QbmAX9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g2RCP/JY; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-412b2321084so21431525e9.2
-        for <linux-efi@vger.kernel.org>; Mon, 04 Mar 2024 02:44:25 -0800 (PST)
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4128defb707so21485345e9.0
+        for <linux-efi@vger.kernel.org>; Mon, 04 Mar 2024 02:44:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709549064; x=1710153864; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1709549066; x=1710153866; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOqtzBzdQ3hsbbykV18UWs1iRDCBoMzO5Q6nZSM61S4=;
-        b=Gu0+ZBrH3YCPbV7JH8oYHoAUBF28PVGaKvBKxa8sIn7SPTIS3tOeuhaRW8scdpcnsT
-         tYl5FPv+s7L3v/7nNjLj1tXWj/72dI4ZlES+XHM1sGR8SgfgujF7tN5/XBMPGvCzG1Gq
-         Xs+7Zkg/4Ba52r/vmXHyynyrqHxjnJw+JkiIHSeG1dfZ7LDrjiBLpkl+VzvoJXJj15ke
-         0GHwaO0X2Eoc3rixZMth2b24YzAfd0+LtX7jeJuHXQ0RZqgQ6tNLJJ7K8hce9GcZIl3L
-         av6d9tK90JY6NVQl7Cp/dVLjqGB7mb0HbMjhBaYIDWN/xUjHNrI5hk5BKLXqVozj6Pna
-         a34w==
+        bh=9jO2xNPIVNjLVhvHwuXBWw/Z0nGFsjqfUoNUcFbTuDs=;
+        b=g2RCP/JYQBcxA2MWOSZUN3vcrR14jgq9NXeQMKKuK7fDJhecF6iiqcj0IdeFd1Sk8B
+         nX+lY7nV1Gs9qOzqrORoLIjz4T3jY5NmRYdTTX/AyCiIIC45QziCBcjm4ng97zwvv8Nc
+         8Q8quRqUPOqIod0M7CqJwM/JEl+tVV3iaOOwtt+62UFTQdDUOz5Agwe0YfhgulX4cS3K
+         Dm+uxmFst97QPlVo5yzK0Mn0yRwPfOOefeloylTTFQHC+b8bLsJtC7i598tRnEh+iJvF
+         HXmVKpObV+skAm23dDZqMxtdh86Hk8u3pMjJUH9Ytu8v6yQXtSz+a43StTuO2UxLak/j
+         gqOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709549064; x=1710153864;
+        d=1e100.net; s=20230601; t=1709549066; x=1710153866;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOqtzBzdQ3hsbbykV18UWs1iRDCBoMzO5Q6nZSM61S4=;
-        b=rhB4BFHzToH0eLgzvmzfpqHwEy5cBpoi4uGiVkJf2Bc8eI+LT4S1kkesU2sogREoQq
-         g8BB6x0VD075IQFEEPqTS3ExJR2hYMleBvbU9LoPURAebFVzvF/9YwS76YYS5eEi08Rn
-         xLpMelG1OjNjXTOX4a2DPwornmcJ95ZcoV7UXdKHbPMUv8XMC5GD48ldWF2iHtKt+DXW
-         8znIl3VqQzwXZC54vEcYLHxZZmuRn473PRcN8ccx1KFKFLYm4pOYEU0NeYq6oZkoY4CT
-         89K30N8fE2IjTBj7mOB114nR5Qmr+f0ExfOA9qiO9ETln8h/CTFDjbHJN/OS3AKZnZZ/
-         GQPQ==
-X-Gm-Message-State: AOJu0Yx9ESFAq/2LBtzIsE7p9VStWklpn4xOsPXtn6fw5Y5SQ3TsikE0
-	ked2XsNMI3kWsush7mB/EF6hDsS+Z7sPjnFkuMgLYDtKikcF45h1pMMOh3Q/Um9nD5C+boB3Rea
-	fxjiDyyUc8jmqmrapXMER9j8JIx+UIB1XTtaR/2lTEl1SsgJWhslFG3xywxGBe7CjVIfwxpzzp9
-	hOgjZB1bLljYje7d6u0PrtKDu2vA==
-X-Google-Smtp-Source: AGHT+IFoh3MiEbo+i5gxYuvpUFWRazSxQ0iZaiC0JSivBmzLJvi4VcOqefxHjzhS0Noyw7RS9sQlQeto
+        bh=9jO2xNPIVNjLVhvHwuXBWw/Z0nGFsjqfUoNUcFbTuDs=;
+        b=SHZooN7ctA0OH562VqI03/yksWACAvi9e87ML6rftpynJmgEGo7NM2t+zrE9G0/WOO
+         s7Hz8cSBzwGhEnOYu6bXNVjZUubYAE8GSwXD10YoJkvTDbeKKAwJok7DcH2qJeH7m1Gj
+         jpGzcPALIuZa+6Lu7pPn96uuEyHsV/RJxuOS30GQAOmdxaMQYYZEz53wsgE3Nrli3dJh
+         ca7EEYkPSxarIaOihV89iJOxS8VGXTMVeRZK8MCxJEHoJcEYDz8vmjugypeqD0d4t2HP
+         ee/FYXS6BHXZu2QKAavipM1LAR5+SZmjLXw1WZzqiRXBEAvr7lOmH1FX/+tJHQtYAWw0
+         9eFg==
+X-Gm-Message-State: AOJu0YzCnhRHPAvV/B1+9y1CVygW/lKFiGBErLzljOqlny5XUDdaCuk2
+	FQymFH35XleQlBdgnE3kj5mxbEe0RYwQISXohwvagGGNYP4vL2BBALLalhzO96+orBQqxrKkZ5G
+	qfu9deIDmS3cX6Bgx3I/qak4FEEMPxGmz87Zu7VHotlGC2nDFVI85kyRqTtbeQl7xMMDLgACmMR
+	WKuoH9uKIYdHvTVVHBApDVaq8MPw==
+X-Google-Smtp-Source: AGHT+IEErJd24A/Y+Cv23GzYzUip41zWKdz6AJfeyJ5OivLH9WaLXb8sa+PD7mMpPczGu8bDWsD6QHMj
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:600c:1c0a:b0:412:e84f:4e08 with SMTP id
- j10-20020a05600c1c0a00b00412e84f4e08mr8462wms.8.1709549064092; Mon, 04 Mar
- 2024 02:44:24 -0800 (PST)
-Date: Mon,  4 Mar 2024 11:44:13 +0100
+ (user=ardb job=sendgmr) by 2002:a05:600c:5024:b0:412:e6de:1b87 with SMTP id
+ n36-20020a05600c502400b00412e6de1b87mr21791wmr.4.1709549066271; Mon, 04 Mar
+ 2024 02:44:26 -0800 (PST)
+Date: Mon,  4 Mar 2024 11:44:14 +0100
 In-Reply-To: <20240304104409.2326422-6-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -74,14 +74,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240304104409.2326422-6-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4787; i=ardb@kernel.org;
- h=from:subject; bh=xichEWK5e4/jRYNdIPGHE18RWlrz3XDPAK0FIojpjW4=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXp0r/vbbfqzTdapv79ktHamcfmVGbveOP72+vbkmuhv
- O/36hjt6yhlYRDjYJAVU2QRmP333c7TE6VqnWfJwsxhZQIZwsDFKQATeaTHyPD+aeaHUqaORUuX
- aHOxHL5xfD97VMKJg9NXaOTrpFja15YxMnQ/Nr3+XNyai6NMUaej+p+P0WHWeW9N254aqZtknxP rYgAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7368; i=ardb@kernel.org;
+ h=from:subject; bh=5UEzyMfXx1/Eo1U2xzRcfiH7tP4avZMenbC8OCUzQgg=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXp0n9zn7DoC6iG5/49Zv5cbNJF9fsvuPYlS7413nXx0
+ M7ndWvPdZSyMIhxMMiKKbIIzP77bufpiVK1zrNkYeawMoEMYeDiFICJfM5l+J/zXL3656fzj//r
+ WS+rCTkfKZv+7cwp8dcvb80PZJzu8KySkWHmvzQf3S+Ki0vua6pcMni0vjl8+ieWmd75UdYVE+X /WTEDAA==
 X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Message-ID: <20240304104409.2326422-9-ardb+git@google.com>
-Subject: [PATCH 3/4] efi/libstub: Measure into CC protocol if TCG2 protocol is absent
+Message-ID: <20240304104409.2326422-10-ardb+git@google.com>
+Subject: [PATCH 4/4] efi/libstub: Add get_event_log() support for CC platforms
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>, 
@@ -89,138 +89,202 @@ Cc: Ard Biesheuvel <ardb@kernel.org>,
 	Ilias Apalodimas <ilias.apalodimas@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-To accommodate confidential compute VMs that expose the simplified CC
-measurement protocol instead of the full-blown TCG2 one, fall back to
-the former if the latter does not exist.
+To allow event log info access after boot, EFI boot stub extracts
+the event log information and installs it in an EFI configuration
+table. Currently, EFI boot stub only supports installation of event
+log only for TPM 1.2 and TPM 2.0 protocols. Extend the same support
+for CC protocol. Since CC platform also uses TCG2 format, reuse TPM2
+support code as much as possible.
 
-The CC protocol was designed to be used in this manner, which is why the
-types and prototypes have been kept the same where possible. So reuse
-the existing code, and only deviate from the TCG2 code path where
-needed.
-
+Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#efi-cc-measurement-protocol [1]
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+[ardb: reorganize logic slightly to share more code]
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub-helper.c | 67 +++++++++++++++-----
- drivers/firmware/efi/libstub/efistub.h         |  3 +
- 2 files changed, 53 insertions(+), 17 deletions(-)
+ drivers/firmware/efi/libstub/efi-stub.c |  2 +-
+ drivers/firmware/efi/libstub/efistub.h  |  4 +-
+ drivers/firmware/efi/libstub/tpm.c      | 74 +++++++++++++-------
+ drivers/firmware/efi/libstub/x86-stub.c |  2 +-
+ include/linux/efi.h                     |  3 +
+ 5 files changed, 57 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 0dbc9d3f4abd..21f4567324f6 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -223,44 +223,77 @@ static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
- 					     unsigned long load_size,
- 					     enum efistub_event_type event)
- {
-+	union {
-+		efi_status_t
-+		(__efiapi *hash_log_extend_event)(void *, u64, efi_physical_addr_t,
-+						  u64, const union efistub_event *);
-+		struct { u32 hash_log_extend_event; } mixed_mode;
-+	} method;
- 	struct efistub_measured_event *evt;
- 	int size = struct_size(evt, tagged_event_data,
- 			       events[event].event_data_len);
- 	efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
- 	efi_tcg2_protocol_t *tcg2 = NULL;
-+	union efistub_event ev;
- 	efi_status_t status;
-+	void *protocol;
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index f9c1e8a2bd1d..958a680e0660 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -167,7 +167,7 @@ efi_status_t efi_stub_common(efi_handle_t handle,
  
- 	efi_bs_call(locate_protocol, &tcg2_guid, NULL, (void **)&tcg2);
- 	if (tcg2) {
--		status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
--				     (void **)&evt);
--		if (status != EFI_SUCCESS)
--			goto fail;
+ 	si = setup_graphics();
+ 
+-	efi_retrieve_tpm2_eventlog();
++	efi_retrieve_eventlog();
+ 
+ 	/* Ask the firmware to clear memory on unclean shutdown */
+ 	efi_enable_reset_attack_mitigation();
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 4bf9a76796b7..e0a2766a70c0 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -922,6 +922,8 @@ typedef struct {
+ 
+ #define EFI_CC_BOOT_HASH_ALG_SHA384	0x00000004
+ 
++#define EFI_CC_EVENT_LOG_FORMAT_TCG_2	0x00000002
++
+ typedef union efi_cc_protocol efi_cc_protocol_t;
+ 
+ union efi_cc_protocol {
+@@ -1147,7 +1149,7 @@ static inline void
+ efi_enable_reset_attack_mitigation(void) { }
+ #endif
+ 
+-void efi_retrieve_tpm2_eventlog(void);
++void efi_retrieve_eventlog(void);
+ 
+ struct screen_info *alloc_screen_info(void);
+ struct screen_info *__alloc_screen_info(void);
+diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+index 7acbac16eae0..c35f99f259c1 100644
+--- a/drivers/firmware/efi/libstub/tpm.c
++++ b/drivers/firmware/efi/libstub/tpm.c
+@@ -47,39 +47,18 @@ void efi_enable_reset_attack_mitigation(void)
+ 
+ #endif
+ 
+-void efi_retrieve_tpm2_eventlog(void)
++static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_location,
++				       efi_physical_addr_t log_last_entry,
++				       efi_bool_t truncated)
+ {
+-	efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
+ 	efi_guid_t linux_eventlog_guid = LINUX_EFI_TPM_EVENT_LOG_GUID;
+ 	efi_status_t status;
+-	efi_physical_addr_t log_location = 0, log_last_entry = 0;
+ 	struct linux_efi_tpm_eventlog *log_tbl = NULL;
+ 	struct efi_tcg2_final_events_table *final_events_table = NULL;
+ 	unsigned long first_entry_addr, last_entry_addr;
+ 	size_t log_size, last_entry_size;
+-	efi_bool_t truncated;
+-	int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
+-	efi_tcg2_protocol_t *tcg2_protocol = NULL;
+ 	int final_events_size = 0;
+ 
+-	status = efi_bs_call(locate_protocol, &tcg2_guid, NULL,
+-			     (void **)&tcg2_protocol);
+-	if (status != EFI_SUCCESS)
+-		return;
 -
--		evt->event_data.tcg2_data = (struct efi_tcg2_event){
-+		ev.tcg2_data = (struct efi_tcg2_event){
- 			.event_size			= size,
--			.event_header.header_size	= sizeof(evt->event_data.tcg2_data.event_header),
-+			.event_header.header_size	= sizeof(ev.tcg2_data.event_header),
- 			.event_header.header_version	= EFI_TCG2_EVENT_HEADER_VERSION,
- 			.event_header.pcr_index		= events[event].pcr_index,
- 			.event_header.event_type	= EV_EVENT_TAG,
- 		};
-+		protocol = tcg2;
-+		method.hash_log_extend_event =
-+			(void *)efi_table_attr(tcg2, hash_log_extend_event);
+-	status = efi_call_proto(tcg2_protocol, get_event_log, version,
+-				&log_location, &log_last_entry, &truncated);
+-
+-	if (status != EFI_SUCCESS || !log_location) {
+-		version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
+-		status = efi_call_proto(tcg2_protocol, get_event_log, version,
+-					&log_location, &log_last_entry,
+-					&truncated);
+-		if (status != EFI_SUCCESS || !log_location)
+-			return;
+-
+-	}
+-
+ 	first_entry_addr = (unsigned long) log_location;
+ 
+ 	/*
+@@ -93,8 +72,11 @@ void efi_retrieve_tpm2_eventlog(void)
+ 		 * get_event_log only returns the address of the last entry.
+ 		 * We need to calculate its size to deduce the full size of
+ 		 * the logs.
++		 *
++		 * CC Event log also uses TCG2 format, handle it same as TPM2.
+ 		 */
+-		if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
++		if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 ||
++		    version == EFI_CC_EVENT_LOG_FORMAT_TCG_2) {
+ 			/*
+ 			 * The TCG2 log format has variable length entries,
+ 			 * and the information to decode the hash algorithms
+@@ -129,6 +111,8 @@ void efi_retrieve_tpm2_eventlog(void)
+ 	 */
+ 	if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
+ 		final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
++	else if (version == EFI_CC_EVENT_LOG_FORMAT_TCG_2)
++		final_events_table = get_efi_config_table(LINUX_EFI_CC_FINAL_LOG_GUID);
+ 	if (final_events_table && final_events_table->nr_events) {
+ 		struct tcg_pcr_event2_head *header;
+ 		int offset;
+@@ -165,3 +149,43 @@ void efi_retrieve_tpm2_eventlog(void)
+ err_free:
+ 	efi_bs_call(free_pool, log_tbl);
+ }
++
++void efi_retrieve_eventlog(void)
++{
++	efi_physical_addr_t log_location = 0, log_last_entry = 0;
++	efi_guid_t tpm2_guid = EFI_TCG2_PROTOCOL_GUID;
++	int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
++	efi_tcg2_protocol_t *tpm2 = NULL;
++	efi_bool_t truncated;
++	efi_status_t status;
++
++	status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
++	if (status == EFI_SUCCESS) {
++		status = efi_call_proto(tpm2, get_event_log, version, &log_location,
++					&log_last_entry, &truncated);
++
++		if (status != EFI_SUCCESS || !log_location) {
++			version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2;
++			status = efi_call_proto(tpm2, get_event_log, version,
++						&log_location, &log_last_entry,
++						&truncated);
++		}
 +	} else {
 +		efi_guid_t cc_guid = EFI_CC_MEASUREMENT_PROTOCOL_GUID;
 +		efi_cc_protocol_t *cc = NULL;
++
++		status = efi_bs_call(locate_protocol, &cc_guid, NULL, (void **)&cc);
++		if (status != EFI_SUCCESS)
++			return;
++
++		version = EFI_CC_EVENT_LOG_FORMAT_TCG_2;
++		status = efi_call_proto(cc, get_event_log, version, &log_location,
++					&log_last_entry, &truncated);
++	}
++
++	if (status != EFI_SUCCESS || !log_location)
++		return;
++
++	efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
++				   truncated);
++}
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 99429bc4b0c7..d09aa13c7ff0 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -923,7 +923,7 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
  
--		evt->tagged_event_id		= events[event].event_id;
--		evt->tagged_event_data_size	= events[event].event_data_len;
--
--		memcpy(evt->tagged_event_data, events[event].event_data,
--		       events[event].event_data_len);
-+		efi_bs_call(locate_protocol, &cc_guid, NULL, (void **)&cc);
-+		if (!cc)
-+			return EFI_UNSUPPORTED;
+ 	efi_random_get_seed();
  
--		status = efi_call_proto(tcg2, hash_log_extend_event, 0,
--					load_addr, load_size, &evt->event_data.tcg2_data);
--		efi_bs_call(free_pool, evt);
-+		ev.cc_data = (struct efi_cc_event){
-+			.event_size			= size,
-+			.event_header.header_size	= sizeof(ev.cc_data.event_header),
-+			.event_header.header_version	= EFI_CC_EVENT_HEADER_VERSION,
-+			.event_header.event_type	= EV_EVENT_TAG,
-+		};
+-	efi_retrieve_tpm2_eventlog();
++	efi_retrieve_eventlog();
  
-+		status = efi_call_proto(cc, map_pcr_to_mr_index,
-+					events[event].pcr_index,
-+					&ev.cc_data.event_header.mr_index);
- 		if (status != EFI_SUCCESS)
- 			goto fail;
--		return EFI_SUCCESS;
-+
-+		protocol = cc;
-+		method.hash_log_extend_event =
-+			(void *)efi_table_attr(cc, hash_log_extend_event);
- 	}
+ 	setup_graphics(boot_params);
  
--	return EFI_UNSUPPORTED;
-+	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size, (void **)&evt);
-+	if (status != EFI_SUCCESS)
-+		goto fail;
-+
-+	evt->event_data			= ev;
-+	evt->tagged_event_id		= events[event].event_id;
-+	evt->tagged_event_data_size	= events[event].event_data_len;
-+
-+	memcpy(evt->tagged_event_data, events[event].event_data,
-+	       events[event].event_data_len);
-+
-+	status = efi_fn_call(&method, hash_log_extend_event, protocol, 0,
-+			     load_addr, load_size, &evt->event_data);
-+	efi_bs_call(free_pool, evt);
-+
-+	if (status == EFI_SUCCESS)
-+		return EFI_SUCCESS;
-+
- fail:
- 	efi_warn("Failed to measure data for event %d: 0x%lx\n", event, status);
- 	return status;
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index d621bfb719c4..4bf9a76796b7 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -954,8 +954,11 @@ union efi_cc_protocol {
- 	} mixed_mode;
- };
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 2f57fec2e629..a69c08b90e74 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -440,6 +440,9 @@ void efi_native_runtime_setup(void);
+ /* OVMF protocol GUIDs */
+ #define OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID	EFI_GUID(0xc5a010fe, 0x38a7, 0x4531,  0x8a, 0x4a, 0x05, 0x00, 0xd2, 0xfd, 0x16, 0x49)
  
-+static_assert(sizeof(efi_tcg2_event_t) == sizeof(efi_cc_event_t));
++/* CC GUIDs */
++#define LINUX_EFI_CC_FINAL_LOG_GUID		EFI_GUID(0xdd4a4648, 0x2de7, 0x4665, 0x96, 0x4d, 0x21, 0xd9, 0xef, 0x5f, 0xb4, 0x46)
 +
- union efistub_event {
- 	efi_tcg2_event_t	tcg2_data;
-+	efi_cc_event_t		cc_data;
- };
- 
- struct efistub_measured_event {
+ typedef struct {
+ 	efi_guid_t guid;
+ 	u64 table;
 -- 
 2.44.0.278.ge034bb2e1d-goog
 
