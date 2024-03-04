@@ -1,68 +1,68 @@
-Return-Path: <linux-efi+bounces-703-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-704-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3AC87003F
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Mar 2024 12:21:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782DE870043
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Mar 2024 12:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0121F281ECA
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Mar 2024 11:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18A141F23EE5
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Mar 2024 11:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435D43984F;
-	Mon,  4 Mar 2024 11:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B80338DC8;
+	Mon,  4 Mar 2024 11:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3eYZKraX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BhTKS5LJ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C10937157
-	for <linux-efi@vger.kernel.org>; Mon,  4 Mar 2024 11:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E00238DE6
+	for <linux-efi@vger.kernel.org>; Mon,  4 Mar 2024 11:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709551247; cv=none; b=n6yjE2HFh43LsjYhLI1TG9xuJigHE05Fsqwbd6QpZ29A9TWViOwgrazsVOODyWtu0QyTbS7uWHZjnnxlPLRKpelhln4YDR7jYyRXAWXdFMOVhSHRGaIMW1REkla82AZKTfpsGEWRvsPN144x1unOgWLU0iDgjrbxWI/JAa931Js=
+	t=1709551248; cv=none; b=byzWeJEI4jN40shY/jm7f7g09IXOSuEK3ocT1QkYPT7odyT1LDDGrU1YO5bmnd3NKt9LVtSFzcVYJUq8ixev4Q+Bxs4CZmIubHakJTbAtsM69/yEILVvBoTAfHsqklWM806WoWslLJPoAGIlFVq4Uj0frv23L7F6WonGW1vT00E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709551247; c=relaxed/simple;
-	bh=2YRqf7C7z8liqqmWEbngC2mjZ4UbBAhViA0W1TkZKn0=;
+	s=arc-20240116; t=1709551248; c=relaxed/simple;
+	bh=MPjG+81at1ckc7jlgy4H92kTOlHwGNwT7cArqw8ofCk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=r80nOgF6J76mq6ZkFYZxgDYHd43s6yDX0M08u1+K8lXk2ni5J/7m8U6Q7xwW56UvU5t27DkHUnDB0wa92DRMRsE7E0pigecVjBI8bklBQd4MCCCec1m25DleuO0XybUqlZMZAoecbZF3UKPbVRIuKqlE7rBScRnWTwMspp9dRSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3eYZKraX; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=AA2KalLW5PHSgQS/nzfmsXawSa3jMxG+oTPDWViVnOjtp4GChhJwfh+yoRxziiOiwcqDA6JumjvGL85BEMLBNBjtkOcldJx4v2JakzkmG/WShQzX9mOped0JdbLXvaMODm7KlqDRVm1lN+61b/CWUONCsjfHzeuSY7G3p4xi3Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BhTKS5LJ; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-412c9e3c9b9so13390455e9.0
-        for <linux-efi@vger.kernel.org>; Mon, 04 Mar 2024 03:20:45 -0800 (PST)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-608852fc324so62681967b3.2
+        for <linux-efi@vger.kernel.org>; Mon, 04 Mar 2024 03:20:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709551244; x=1710156044; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1709551246; x=1710156046; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=h+mDWGDNfb7c6RNZ5sMw7NZUyybd0XgmzdynTa9PTho=;
-        b=3eYZKraXR1YpJWh7gc0FDbaZ30mk5a5qwdcl4YiwRpmaxld5dYsiwprgM/YEJkiTv8
-         1W264Uf1julcWeU7S3bh9Pm3hhjMH0roBqBlC1K41ddATO8sgOIH1UzmsfMa24HvEpjB
-         Ig0K86GXr+j24Br+npuPVATrqlWcK5mC4SVhXngASpspthgBjKeCS+HY4uFnoGl1Wx99
-         dS6+nvPfi9q/dab/wmldO1pJJTfBSOgAiSVnYnN8+vhUUk1cUbuu25c2Dea37FFIkd+E
-         OoN3CW0WIvauc1rEcdHvjpo19XuUc5RJ1ff0i1hqdj0+eJQXNCvE5Z0Z4+4gA2tGBVuS
-         UX4A==
+        bh=mQEOl+zFHutZjuVUfqmQ3HrmxCFhMCilSMNU7sG1cos=;
+        b=BhTKS5LJTG/58px8rU6SlUhsyLCHs5qYA/AeMry5Ilf+1elNuTQQ/9BnPdaiBjfUCO
+         QdhpCdm4PQA6m4SMz0W4SbfL2vyJBw2mBrrC5GTkaxyofd/ief+04SM51Y2eR5ngtTVp
+         KJwYEaygEgO7HJa/pt/4DbKZdteZgOBZIKT7woE5Qd2TgZJ+ocMqAQ81J/cSZV41sXyV
+         srs4Uaspom5pPlrkCccdvMJxCrCuk7+zmn1LzctxR+4koFcP7eQUcEWNq5x3z2A7fOX6
+         uFUrmw5dO+tGhS1Vpu/st1kdy9ZFKYwDAyUF4i+zEofwyBQONf9//fyNcb45t2s5bc/o
+         eeYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709551244; x=1710156044;
+        d=1e100.net; s=20230601; t=1709551246; x=1710156046;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=h+mDWGDNfb7c6RNZ5sMw7NZUyybd0XgmzdynTa9PTho=;
-        b=cg+y5MY6MBSDRsoaPDbjcncR/dpxN+QvLtZleho7vGsMELE6inVQoNtaIwCIQ6yhV2
-         1nT5FuodE1aHJJJqD0Pm+aVzu4hAQaRmgj00n3FXFMv1E3Lkj1zkw5Z212ywOcXcFr3V
-         D+4Ya25eadSiF7uGHwjR1CG96vF4YOgeE7AbXVNXiZzElwYed41FMCSZgVY7BeqAAJ4y
-         f//sZiAfFL6yuybb77o/ipawBoxXrO3zPJbZ/pmPO2g7dbPMzlBCCKlcRxczeTPr7z6U
-         Rj/KMWEboDj6lHImjOZBy3ahQP5IvkFJczVg97jAveRwpWY6qOY1fFnSdGC3F5QxBp7Q
-         Bbng==
-X-Gm-Message-State: AOJu0Yy8INFREhSrgTkwiB0o+Q3oxA3/VpwYGIe3+uyLj2USTwxHaX/P
-	OcnmWZd0to5Ph3ddthHEuYjVUXmVkGEZ6zAmKO/KuGDSYz4/UtngYeO6mB7XHPBUT86qFQ==
-X-Google-Smtp-Source: AGHT+IFHvnkqE+udJAl+Z7DWwseV2RuAWWKME5rPAqMPXaoEvR5I7YVSSsS2AsF67NWjx1vt5sGImlUK
+        bh=mQEOl+zFHutZjuVUfqmQ3HrmxCFhMCilSMNU7sG1cos=;
+        b=PkZ3DjuGZ0IAmhGwrz9nKiVS7L4rLW24iTYlGS54MYl+Q4EyNqrznfeQfcI+it6/gN
+         3UntJvQd9nzCSaQbQYpHVsOh/mzIV+herC7Yp61ya7tJt+TYEWjx03FurG63fSmRy374
+         YMgWi0g32gzDUJ3m0aluy9OHA3113EovfEoyPIVpVjeGkWFCH2xXlRB+8rQFvxddxMwI
+         A864lNQBKmrK2MADDyXchUUPqdl2rjAaKCeL7Lw3HPRu0lMRQN4oAKvV8i353blRIw45
+         VIIN6EBsZ/OerLGkWSSnW4/z4tBACDnLXAdpxPEDHIgvJ8vMcn3kQP7ZEuzDCm7tr7jZ
+         cOqA==
+X-Gm-Message-State: AOJu0YyRKgdrfZqutjFLC8b4yAZEjVQn3hLUOQblr2O8jUSXTnCGL0iw
+	okNuDQlPnpKZVDEBla0l2pCAn/fhJiRnK1qO9d7qY/B4LwkKLmRuzqsMoJGgeWi/+q4E9g==
+X-Google-Smtp-Source: AGHT+IFGB6giO5Ze4dV9T1NHIdN/QLerdM5tPY4C7V4SF7DAhcR55OWFVMPbQeMhnNQkJe2VDWHIsumx
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:600c:21d1:b0:412:e55e:290a with SMTP id
- x17-20020a05600c21d100b00412e55e290amr42899wmj.1.1709551244062; Mon, 04 Mar
- 2024 03:20:44 -0800 (PST)
-Date: Mon,  4 Mar 2024 12:19:49 +0100
+ (user=ardb job=sendgmr) by 2002:a05:6902:110a:b0:dbd:b165:441 with SMTP id
+ o10-20020a056902110a00b00dbdb1650441mr2270477ybu.0.1709551246410; Mon, 04 Mar
+ 2024 03:20:46 -0800 (PST)
+Date: Mon,  4 Mar 2024 12:19:50 +0100
 In-Reply-To: <20240304111937.2556102-20-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -72,15 +72,15 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240304111937.2556102-20-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3560; i=ardb@kernel.org;
- h=from:subject; bh=l1viORQ4TuoNJ3blqVcyO9JUifcv9cebCbX/oNGqapc=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXpulDP/zcts/iidfm3B97Z8/2Q5vz2c99WSlsvtgoWi
- 5f5souvo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEwkZyHD/yoPzSsB2/4fUDJt
- Ppk/Yc+TqLNbJux4FP32wYvJ1ep3v4QyMny63q+54EpQe+mOfyx+crEm2z29S3qehVXOvVyzXT7 1Gz8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8077; i=ardb@kernel.org;
+ h=from:subject; bh=Cz4GkNTDeebiqFwn4gZLKTQjPsXyvhZTNZmHVYzdE48=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXpurASmwWLeeybzyceVWrk8JlUMelr13qVWdPUFB0WH
+ L7z4VdaRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhIziyGv2L/58v+vsfD/cqd
+ M+3IzcMh7WVcK4xbHjx+6zl/Spp3SxjDX/EqRm/n2cYWOpN11wTs2n9e3Tj+3zWz7ownK066dEQ IMgIA
 X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Message-ID: <20240304111937.2556102-31-ardb+git@google.com>
-Subject: [PATCH stable-v6.1 11/18] x86/efistub: Prefer EFI memory attributes
- protocol over DXE services
+Message-ID: <20240304111937.2556102-32-ardb+git@google.com>
+Subject: [PATCH stable-v6.1 12/18] x86/efistub: Perform SNP feature test while
+ running in the firmware
 From: Ard Biesheuvel <ardb+git@google.com>
 To: stable@vger.kernel.org
 Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
@@ -89,91 +89,261 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Commit 11078876b7a6a1b7226344fecab968945c806832 upstream ]
+[ Commit 31c77a50992e8dd136feed7b67073bb5f1f978cc upstream ]
 
-Currently, the EFI stub relies on DXE services in some cases to clear
-non-execute restrictions from page allocations that need to be
-executable. This is dodgy, because DXE services are not specified by
-UEFI but by PI, and they are not intended for consumption by OS loaders.
-However, no alternative existed at the time.
+Before refactoring the EFI stub boot flow to avoid the legacy bare metal
+decompressor, duplicate the SNP feature check in the EFI stub before
+handing over to the kernel proper.
 
-Now, there is a new UEFI protocol that should be used instead, so if it
-exists, prefer it over the DXE services calls.
+The SNP feature check can be performed while running under the EFI boot
+services, which means it can force the boot to fail gracefully and
+return an error to the bootloader if the loaded kernel does not
+implement support for all the features that the hypervisor enabled.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-18-ardb@kernel.org
+Link: https://lore.kernel.org/r/20230807162720.545787-23-ardb@kernel.org
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 29 ++++++++++++++------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ arch/x86/boot/compressed/sev.c          | 112 ++++++++++++--------
+ arch/x86/include/asm/sev.h              |   5 +
+ drivers/firmware/efi/libstub/x86-stub.c |  17 +++
+ 3 files changed, 88 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index adaddd38d97d..01af018b9315 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -26,6 +26,7 @@ const efi_system_table_t *efi_system_table;
- const efi_dxe_services_table_t *efi_dxe_table;
- u32 image_offset __section(".data");
- static efi_loaded_image_t *image = NULL;
-+static efi_memory_attribute_protocol_t *memattr;
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 9c91cc40f456..8b21c57bc470 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -327,20 +327,25 @@ static void enforce_vmpl0(void)
+  */
+ #define SNP_FEATURES_PRESENT (0)
  
- static efi_status_t
- preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
-@@ -222,12 +223,18 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 	unsigned long rounded_start, rounded_end;
- 	unsigned long unprotect_start, unprotect_size;
++u64 snp_get_unsupported_features(u64 status)
++{
++	if (!(status & MSR_AMD64_SEV_SNP_ENABLED))
++		return 0;
++
++	return status & SNP_FEATURES_IMPL_REQ & ~SNP_FEATURES_PRESENT;
++}
++
+ void snp_check_features(void)
+ {
+ 	u64 unsupported;
  
--	if (efi_dxe_table == NULL)
+-	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
 -		return;
 -
- 	rounded_start = rounddown(start, EFI_PAGE_SIZE);
- 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
- 
-+	if (memattr != NULL) {
-+		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
-+			       rounded_end - rounded_start, EFI_MEMORY_XP);
-+		return;
-+	}
-+
-+	if (efi_dxe_table == NULL)
-+		return;
-+
  	/*
- 	 * Don't modify memory region attributes, they are
- 	 * already suitable, to lower the possibility to
-@@ -758,6 +765,7 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 			       efi_system_table_t *sys_table_arg,
- 			       struct boot_params *boot_params)
+ 	 * Terminate the boot if hypervisor has enabled any feature lacking
+ 	 * guest side implementation. Pass on the unsupported features mask through
+ 	 * EXIT_INFO_2 of the GHCB protocol so that those features can be reported
+ 	 * as part of the guest boot failure.
+ 	 */
+-	unsupported = sev_status & SNP_FEATURES_IMPL_REQ & ~SNP_FEATURES_PRESENT;
++	unsupported = snp_get_unsupported_features(sev_status);
+ 	if (unsupported) {
+ 		if (ghcb_version < 2 || (!boot_ghcb && !early_setup_ghcb()))
+ 			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+@@ -350,35 +355,22 @@ void snp_check_features(void)
+ 	}
+ }
+ 
+-void sev_enable(struct boot_params *bp)
++/*
++ * sev_check_cpu_support - Check for SEV support in the CPU capabilities
++ *
++ * Returns < 0 if SEV is not supported, otherwise the position of the
++ * encryption bit in the page table descriptors.
++ */
++static int sev_check_cpu_support(void)
  {
-+	efi_guid_t guid = EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID;
- 	unsigned long bzimage_addr = (unsigned long)startup_32;
- 	unsigned long buffer_start, buffer_end;
- 	struct setup_header *hdr = &boot_params->hdr;
-@@ -769,13 +777,18 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 	unsigned int eax, ebx, ecx, edx;
+-	struct msr m;
+-	bool snp;
+-
+-	/*
+-	 * bp->cc_blob_address should only be set by boot/compressed kernel.
+-	 * Initialize it to 0 to ensure that uninitialized values from
+-	 * buggy bootloaders aren't propagated.
+-	 */
+-	if (bp)
+-		bp->cc_blob_address = 0;
+-
+-	/*
+-	 * Do an initial SEV capability check before snp_init() which
+-	 * loads the CPUID page and the same checks afterwards are done
+-	 * without the hypervisor and are trustworthy.
+-	 *
+-	 * If the HV fakes SEV support, the guest will crash'n'burn
+-	 * which is good enough.
+-	 */
+ 
+ 	/* Check for the SME/SEV support leaf */
+ 	eax = 0x80000000;
+ 	ecx = 0;
+ 	native_cpuid(&eax, &ebx, &ecx, &edx);
+ 	if (eax < 0x8000001f)
+-		return;
++		return -ENODEV;
+ 
+ 	/*
+ 	 * Check for the SME/SEV feature:
+@@ -393,6 +385,35 @@ void sev_enable(struct boot_params *bp)
+ 	native_cpuid(&eax, &ebx, &ecx, &edx);
+ 	/* Check whether SEV is supported */
+ 	if (!(eax & BIT(1)))
++		return -ENODEV;
++
++	return ebx & 0x3f;
++}
++
++void sev_enable(struct boot_params *bp)
++{
++	struct msr m;
++	int bitpos;
++	bool snp;
++
++	/*
++	 * bp->cc_blob_address should only be set by boot/compressed kernel.
++	 * Initialize it to 0 to ensure that uninitialized values from
++	 * buggy bootloaders aren't propagated.
++	 */
++	if (bp)
++		bp->cc_blob_address = 0;
++
++	/*
++	 * Do an initial SEV capability check before snp_init() which
++	 * loads the CPUID page and the same checks afterwards are done
++	 * without the hypervisor and are trustworthy.
++	 *
++	 * If the HV fakes SEV support, the guest will crash'n'burn
++	 * which is good enough.
++	 */
++
++	if (sev_check_cpu_support() < 0)
+ 		return;
+ 
+ 	/*
+@@ -403,26 +424,8 @@ void sev_enable(struct boot_params *bp)
+ 
+ 	/* Now repeat the checks with the SNP CPUID table. */
+ 
+-	/* Recheck the SME/SEV support leaf */
+-	eax = 0x80000000;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	if (eax < 0x8000001f)
+-		return;
+-
+-	/*
+-	 * Recheck for the SME/SEV feature:
+-	 *   CPUID Fn8000_001F[EAX]
+-	 *   - Bit 0 - Secure Memory Encryption support
+-	 *   - Bit 1 - Secure Encrypted Virtualization support
+-	 *   CPUID Fn8000_001F[EBX]
+-	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
+-	 */
+-	eax = 0x8000001f;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	/* Check whether SEV is supported */
+-	if (!(eax & BIT(1))) {
++	bitpos = sev_check_cpu_support();
++	if (bitpos < 0) {
+ 		if (snp)
+ 			error("SEV-SNP support indicated by CC blob, but not CPUID.");
+ 		return;
+@@ -454,7 +457,24 @@ void sev_enable(struct boot_params *bp)
+ 	if (snp && !(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
+ 		error("SEV-SNP supported indicated by CC blob, but not SEV status MSR.");
+ 
+-	sme_me_mask = BIT_ULL(ebx & 0x3f);
++	sme_me_mask = BIT_ULL(bitpos);
++}
++
++/*
++ * sev_get_status - Retrieve the SEV status mask
++ *
++ * Returns 0 if the CPU is not SEV capable, otherwise the value of the
++ * AMD64_SEV MSR.
++ */
++u64 sev_get_status(void)
++{
++	struct msr m;
++
++	if (sev_check_cpu_support() < 0)
++		return 0;
++
++	boot_rdmsr(MSR_AMD64_SEV, &m);
++	return m.q;
+ }
+ 
+ /* Search for Confidential Computing blob in the EFI config table. */
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 7ca5c9ec8b52..e231638ba19a 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -202,6 +202,8 @@ void snp_set_wakeup_secondary_cpu(void);
+ bool snp_init(struct boot_params *bp);
+ void __init __noreturn snp_abort(void);
+ int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, struct snp_guest_request_ioctl *rio);
++u64 snp_get_unsupported_features(u64 status);
++u64 sev_get_status(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -225,6 +227,9 @@ static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *in
+ {
+ 	return -ENOTTY;
+ }
++
++static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
++static inline u64 sev_get_status(void) { return 0; }
+ #endif
+ 
+ #endif
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 01af018b9315..8d3ce383bcbb 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -15,6 +15,7 @@
+ #include <asm/setup.h>
+ #include <asm/desc.h>
+ #include <asm/boot.h>
++#include <asm/sev.h>
+ 
+ #include "efistub.h"
+ #include "x86-stub.h"
+@@ -747,6 +748,19 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+ 	return EFI_SUCCESS;
+ }
+ 
++static bool have_unsupported_snp_features(void)
++{
++	u64 unsupported;
++
++	unsupported = snp_get_unsupported_features(sev_get_status());
++	if (unsupported) {
++		efi_err("Unsupported SEV-SNP features detected: 0x%llx\n",
++			unsupported);
++		return true;
++	}
++	return false;
++}
++
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
+ 				    struct boot_params *boot_params)
+ {
+@@ -777,6 +791,9 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
  	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
  		efi_exit(handle, EFI_INVALID_PARAMETER);
  
--	efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
--	if (efi_dxe_table &&
--	    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
--		efi_warn("Ignoring DXE services table: invalid signature\n");
--		efi_dxe_table = NULL;
-+	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES)) {
-+		efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
-+		if (efi_dxe_table &&
-+		    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
-+			efi_warn("Ignoring DXE services table: invalid signature\n");
-+			efi_dxe_table = NULL;
-+		}
- 	}
- 
-+	/* grab the memory attributes protocol if it exists */
-+	efi_bs_call(locate_protocol, &guid, NULL, (void **)&memattr);
++	if (have_unsupported_snp_features())
++		efi_exit(handle, EFI_UNSUPPORTED);
 +
- 	status = efi_setup_5level_paging();
- 	if (status != EFI_SUCCESS) {
- 		efi_err("efi_setup_5level_paging() failed!\n");
+ 	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES)) {
+ 		efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
+ 		if (efi_dxe_table &&
 -- 
 2.44.0.278.ge034bb2e1d-goog
 
