@@ -1,175 +1,213 @@
-Return-Path: <linux-efi+bounces-717-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-718-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E146871522
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Mar 2024 06:06:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AEE871824
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Mar 2024 09:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 998E7B23E95
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Mar 2024 05:06:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59F7FB22291
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Mar 2024 08:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF8C44361;
-	Tue,  5 Mar 2024 05:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E1A7EEF8;
+	Tue,  5 Mar 2024 08:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y1FpB/Jy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n95tLUbq"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2334F45977
-	for <linux-efi@vger.kernel.org>; Tue,  5 Mar 2024 05:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F4979F2
+	for <linux-efi@vger.kernel.org>; Tue,  5 Mar 2024 08:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709615114; cv=none; b=LpKRo3N+xYqDLD7z4EmL9I9HTVNJ4xre+r5dpsjVDBpNnGfKpmRDC5HBTZla1kEyZB68NXflmlhuCG55DyMlbtH8WvUu+agMcYsZs7Xvj+2P8OZcrQ795kZng+H4yrPTw8je6cPHMqfhp1WhmarK+WNoAkw9An4fE/IBI7NqXVU=
+	t=1709626912; cv=none; b=R8U2/OqYn1SvMoO+uO645JKq25ZcX8mm4NIjX99/5rAxRB8TKImlZy9+A9yBX0CoULVAHTVfQDyW3qMPyeHcLHG/XOK5v+dsVNb8F4xo2G/PrMjY0vcyD+t0kF5OtyY8NTPTqyjz6aHj/ar6A3Qz4RstUo7DmMRjCqOz3dbzQv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709615114; c=relaxed/simple;
-	bh=FgXbHdYbzu0zV1Fn+0Sm3Z2N29NaUTHdcJVRWQiFOe4=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=QrGZUzsD8WO9p6YMtnKI2n0W0zr2Vux/WoppcnsIlnTaTUuJrH7SoC6MCoFoIv6PyVvVwdtMK1vJf9S3eGGaNqgc4ai6CzsZMSR0LK9StvmL9Z8NDSn60sWMiMdImv6WOrqAuKKlc/QNAWZLKE0K+MP1VjxoGsIuvg+oGIr5sv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y1FpB/Jy; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-609c800881fso7634037b3.0
-        for <linux-efi@vger.kernel.org>; Mon, 04 Mar 2024 21:05:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709615112; x=1710219912; darn=vger.kernel.org;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2AK1RvhjBdB4hDhmPTNWoUxZx2sr2tNAM1/EjrC2JoM=;
-        b=y1FpB/Jyx5C6fSs1Ap3r6/w8H9k3Y60pZNpsSMYvIHhyejogBqCcddbXL+JrFXK4jr
-         LVGPWpQfaA9gk8QavlnbBmNOLdMXd4LKwFa+pdSqStD85Si0Y50hXqrLMdhAL5RG1K92
-         jUFHm95otGHqlWABF6YAX33/2QUJQfafQwseyAXK9xZWiYYzZ666Gut3dTBvV/pcQEdg
-         QclDAB1zTRRbNCO/YzoHmyzYndCM+/wVLt/MgEMBoF/4GhWn3gbxXo3upofhlctmnmzK
-         XfzdoWMyKEcjnnePfb6EOeXBpW5LsWbH1PGEFxin35vVIt/L1P/NaQrMxqkrDkCz4l95
-         hcoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709615112; x=1710219912;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2AK1RvhjBdB4hDhmPTNWoUxZx2sr2tNAM1/EjrC2JoM=;
-        b=f8IPOw816FyPg0i+9uRTOXBLBwPQKKFwEIMNqnBlds3YsODC+oG/jE8MTF3aB+54rX
-         wjbfm6zXl5kdkO4gzsfuQMfGueBY+xlvs7KLIFg1MX/cwKhj5Hxx7RoUHlFp9dTYv+VY
-         569jCCHFq5pEiS2mhbdmGzyaTi0R8/EkKWyYqcgxA9e744kcyIo4f8A9xUjoPaAwiJwj
-         X54Q3cYfjjSnPaOVwu63qO2DQLZczJPE/9e6YCCwiDMxMCYIrWci3g1uVFriAf1/r0Vr
-         LxMVYiKPaIbPzjjlpFG968+aI1hbDcsNwAlPyi9vQk5d9yHJBOpdC/ypx00Ml7qV3W6N
-         CY+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVExZAK9IVCJnvfR/I0tgI/HfpiBHqSdoUZ0gU0y2ZYb1GNCrCIEjsBYYjvfZgmNHzhYbk2t5jrRKOzwTGqPsOZplazVNdO3cCx
-X-Gm-Message-State: AOJu0YymZYAp2xTxOzAL28ICCR6WOWhbd5XYXXMcPEvYB4aT3XT6qrVg
-	hvxAW4l8kkPURe3mGf3EKtAy2EVyrq73nIhN2yhHPMoBn6NlKpEBilf4fehk4rX8Y6jgXErQCTh
-	Ea3bKA2ma16iqtA==
-X-Google-Smtp-Source: AGHT+IH2KzRd8ijTXs0JYOCur+G/X47aFWeD6zQZ4dffImANFZRDeEhSxZMnhoOcs3UOxIj6Er5VZdNgNg1tQNM=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:d64:6ee3:55a9:46e6])
- (user=saravanak job=sendgmr) by 2002:a05:690c:c9d:b0:607:cd11:5464 with SMTP
- id cm29-20020a05690c0c9d00b00607cd115464mr3058844ywb.9.1709615112162; Mon, 04
- Mar 2024 21:05:12 -0800 (PST)
-Date: Mon,  4 Mar 2024 21:04:56 -0800
-In-Reply-To: <20240305050458.1400667-1-saravanak@google.com>
-Message-Id: <20240305050458.1400667-4-saravanak@google.com>
+	s=arc-20240116; t=1709626912; c=relaxed/simple;
+	bh=Y/6nn94d3QeieZsIKxU/xFnBhgJ/IZQ0mHIKnSG6opw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mwfsHaByMoZxrE1ZC8ey1cTk5W4QSqVDm+W867Uw3zBRmN8FQr/N+Rzl5ZvKp41BPdQMe56XURD0zqHfqIcqYAiErbe5fIayBt9mrMtgqoPcFuxO4GdSIdMw6ym0GXHH/VGBUGlXhxj4dXxXpnLqMXcYulmH19hOBGEb9ZCKbkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n95tLUbq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7FBC43394
+	for <linux-efi@vger.kernel.org>; Tue,  5 Mar 2024 08:21:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709626911;
+	bh=Y/6nn94d3QeieZsIKxU/xFnBhgJ/IZQ0mHIKnSG6opw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=n95tLUbqsCECei1Zl6iUgKGgPtqc1Jhwx4sKk3ZaH4Sf6LXn3o1PmXVzrDcsCXYb7
+	 CA2jHZj2LGWuSHBsZBlGoMacNDG6e7i0w+TGbz/pJzGdjxGqA76h6ueVuehbCM1cPR
+	 2KfvnrUFCKgVRPnPOtdOq0wJkSQpSuV1y4xkGxJnZtBO625HM6YGvQM4Z2VpiOJdI/
+	 YPfgMggWdt5+kMcWMU03Wz96kAcuoJsjqlA6nzzmWee/tpT832FByaLB2j0eFd3jYW
+	 tjTHnn+x8q84y67xEHG20W9wI4PJswFZi0Qu7ItriJx32i6CeL+OC8Olh7F2ckQff7
+	 87PLCiZEITS1g==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d208be133bso73717071fa.2
+        for <linux-efi@vger.kernel.org>; Tue, 05 Mar 2024 00:21:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXjT+v72DgJh/cIPz/K/klioaBWnY5Yi4uLpVMNTQTdXeHHNuZ2Rmf0FcQKDIVaMyCCdZhmsCYsPHYuQJMuFliuc4/lytq+d9hz
+X-Gm-Message-State: AOJu0Yzdbu5AnokyG+MT5gaqjXoi2QyXvB/S0HsDt9QdPG2rkt6fDmIj
+	t4U3oHLu3uOZR53+CZPO1u94rrhtnEikssGgMuWlifnBxJR2gSra6T+8SX1andaPlIxhPzhvSfz
+	uO1alLlwygyyYCLcywY6RTBbECQs=
+X-Google-Smtp-Source: AGHT+IEaVxzgRGURkdrBjpQwL2DGh+pOdk79u64Tt7VwMZwT5mOvXLBt1taAK0nL6iwA4pea6Yz1CQViDTKcb8f/+Iw=
+X-Received: by 2002:a05:6512:3d0f:b0:512:d655:9d4b with SMTP id
+ d15-20020a0565123d0f00b00512d6559d4bmr1022701lfv.5.1709626909554; Tue, 05 Mar
+ 2024 00:21:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240305050458.1400667-1-saravanak@google.com>
-X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Subject: [PATCH v5 3/3] of: property: fw_devlink: Add support for
- "post-init-providers" property
-From: Saravana Kannan <saravanak@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>
+MIME-Version: 1.0
+References: <20240304104409.2326422-6-ardb+git@google.com> <20240304104409.2326422-7-ardb+git@google.com>
+ <8a0cdc16-c300-44ed-af8c-559bbe7aa95b@linux.intel.com>
+In-Reply-To: <8a0cdc16-c300-44ed-af8c-559bbe7aa95b@linux.intel.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 5 Mar 2024 09:21:38 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHvzS6w8gmaSHiu13__uP95AUJxMXBVnOGFB6Tt1+ocfA@mail.gmail.com>
+Message-ID: <CAMj1kXHvzS6w8gmaSHiu13__uP95AUJxMXBVnOGFB6Tt1+ocfA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] efi/libstub: Fold efi_tcg2_tagged_event into efi_measured_event
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Add support for this property so that dependency cycles can be broken and
-fw_devlink can do better probe/suspend/resume ordering between devices in a
-dependency cycle.
+On Tue, 5 Mar 2024 at 05:30, Kuppuswamy Sathyanarayanan
+<sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+>
+>
+> On 3/4/24 2:44 AM, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> >
+> > In spite of the efi_ prefix, struct efi_tcg2_tagged_event is specific to
+> > the EFI stub, and so we can tweak it to our liking if needed, e.g., to
+> > accommodate the TDX variant of the TCG2 measurement protocol.
+> >
+> > In preparation for that, get rid of it entirely, and combine it with the
+> > efi_measured_event struct used by the measurement code.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  drivers/firmware/efi/libstub/efi-stub-helper.c | 26 ++++++++------------
+> >  drivers/firmware/efi/libstub/efistub.h         | 18 ++++++++------
+> >  2 files changed, 21 insertions(+), 23 deletions(-)
+> >
+> > diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > index bfa30625f5d0..0dbc9d3f4abd 100644
+> > --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> > @@ -193,7 +193,7 @@ void efi_apply_loadoptions_quirk(const void **load_options, u32 *load_options_si
+> >       *load_options_size = load_option_unpacked.optional_data_size;
+> >  }
+> >
+> > -enum efistub_event {
+> > +enum efistub_event_type {
+> >       EFISTUB_EVT_INITRD,
+> >       EFISTUB_EVT_LOAD_OPTIONS,
+> >       EFISTUB_EVT_COUNT,
+> > @@ -221,44 +221,38 @@ static const struct {
+> >
+> >  static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
+> >                                            unsigned long load_size,
+> > -                                          enum efistub_event event)
+> > +                                          enum efistub_event_type event)
+> >  {
+> > +     struct efistub_measured_event *evt;
+> > +     int size = struct_size(evt, tagged_event_data,
+> > +                            events[event].event_data_len);
+>
+> Include linux/overflow.h explicitly?
+>
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
----
- drivers/of/property.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+Yes, good point.
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index bce849f21ae2..b517a92dabca 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1066,7 +1066,8 @@ of_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
- }
- 
- static void of_link_to_phandle(struct device_node *con_np,
--			      struct device_node *sup_np)
-+			      struct device_node *sup_np,
-+			      u8 flags)
- {
- 	struct device_node *tmp_np = of_node_get(sup_np);
- 
-@@ -1085,7 +1086,7 @@ static void of_link_to_phandle(struct device_node *con_np,
- 		tmp_np = of_get_next_parent(tmp_np);
- 	}
- 
--	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np), 0);
-+	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np), flags);
- }
- 
- /**
-@@ -1198,6 +1199,8 @@ static struct device_node *parse_##fname(struct device_node *np,	     \
-  *		 to a struct device, implement this ops so fw_devlink can use it
-  *		 to find the true consumer.
-  * @optional: Describes whether a supplier is mandatory or not
-+ * @fwlink_flags: Optional fwnode link flags to use when creating a fwnode link
-+ *		  for this property.
-  *
-  * Returns:
-  * parse_prop() return values are
-@@ -1210,6 +1213,7 @@ struct supplier_bindings {
- 					  const char *prop_name, int index);
- 	struct device_node *(*get_con_dev)(struct device_node *np);
- 	bool optional;
-+	u8 fwlink_flags;
- };
- 
- DEFINE_SIMPLE_PROP(clocks, "clocks", "#clock-cells")
-@@ -1240,6 +1244,7 @@ DEFINE_SIMPLE_PROP(leds, "leds", NULL)
- DEFINE_SIMPLE_PROP(backlight, "backlight", NULL)
- DEFINE_SIMPLE_PROP(panel, "panel", NULL)
- DEFINE_SIMPLE_PROP(msi_parent, "msi-parent", "#msi-cells")
-+DEFINE_SIMPLE_PROP(post_init_providers, "post-init-providers", NULL)
- DEFINE_SUFFIX_PROP(regulators, "-supply", NULL)
- DEFINE_SUFFIX_PROP(gpio, "-gpio", "#gpio-cells")
- 
-@@ -1349,6 +1354,10 @@ static const struct supplier_bindings of_supplier_bindings[] = {
- 	{ .parse_prop = parse_regulators, },
- 	{ .parse_prop = parse_gpio, },
- 	{ .parse_prop = parse_gpios, },
-+	{
-+		.parse_prop = parse_post_init_providers,
-+		.fwlink_flags = FWLINK_FLAG_IGNORE,
-+	},
- 	{}
- };
- 
-@@ -1393,7 +1402,7 @@ static int of_link_property(struct device_node *con_np, const char *prop_name)
- 					: of_node_get(con_np);
- 			matched = true;
- 			i++;
--			of_link_to_phandle(con_dev_np, phandle);
-+			of_link_to_phandle(con_dev_np, phandle, s->fwlink_flags);
- 			of_node_put(phandle);
- 			of_node_put(con_dev_np);
- 		}
--- 
-2.44.0.278.ge034bb2e1d-goog
+> >       efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
+> >       efi_tcg2_protocol_t *tcg2 = NULL;
+> >       efi_status_t status;
+> >
+> >       efi_bs_call(locate_protocol, &tcg2_guid, NULL, (void **)&tcg2);
+> >       if (tcg2) {
+> > -             struct efi_measured_event {
+> > -                     efi_tcg2_event_t        event_data;
+> > -                     efi_tcg2_tagged_event_t tagged_event;
+> > -                     u8                      tagged_event_data[];
+> > -             } *evt;
+> > -             int size = sizeof(*evt) + events[event].event_data_len;
+> > -
+> >               status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
+> >                                    (void **)&evt);
+>
+> It looks like in patch 3 you have converted evt as stack variable. Since that
+> change is not specific to CC fallback, can it be moved here?
+>
 
+Not sure what you mean here. evt is still there after parch #3
+
+> >               if (status != EFI_SUCCESS)
+> >                       goto fail;
+> >
+> > -             evt->event_data = (struct efi_tcg2_event){
+> > +             evt->event_data.tcg2_data = (struct efi_tcg2_event){
+> >                       .event_size                     = size,
+> > -                     .event_header.header_size       = sizeof(evt->event_data.event_header),
+> > +                     .event_header.header_size       = sizeof(evt->event_data.tcg2_data.event_header),
+> >                       .event_header.header_version    = EFI_TCG2_EVENT_HEADER_VERSION,
+> >                       .event_header.pcr_index         = events[event].pcr_index,
+> >                       .event_header.event_type        = EV_EVENT_TAG,
+> >               };
+> >
+> > -             evt->tagged_event = (struct efi_tcg2_tagged_event){
+> > -                     .tagged_event_id                = events[event].event_id,
+> > -                     .tagged_event_data_size         = events[event].event_data_len,
+> > -             };
+> > +             evt->tagged_event_id            = events[event].event_id;
+> > +             evt->tagged_event_data_size     = events[event].event_data_len;
+> >
+> >               memcpy(evt->tagged_event_data, events[event].event_data,
+> >                      events[event].event_data_len);
+> >
+> >               status = efi_call_proto(tcg2, hash_log_extend_event, 0,
+> > -                                     load_addr, load_size, &evt->event_data);
+> > +                                     load_addr, load_size, &evt->event_data.tcg2_data);
+> >               efi_bs_call(free_pool, evt);
+> >
+> >               if (status != EFI_SUCCESS)
+> > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> > index c04b82ea40f2..b2c50dce48b8 100644
+> > --- a/drivers/firmware/efi/libstub/efistub.h
+> > +++ b/drivers/firmware/efi/libstub/efistub.h
+> > @@ -843,14 +843,7 @@ struct efi_tcg2_event {
+> >       /* u8[] event follows here */
+> >  } __packed;
+> >
+> > -struct efi_tcg2_tagged_event {
+> > -     u32 tagged_event_id;
+> > -     u32 tagged_event_data_size;
+> > -     /* u8  tagged event data follows here */
+> > -} __packed;
+> > -
+> >  typedef struct efi_tcg2_event efi_tcg2_event_t;
+> > -typedef struct efi_tcg2_tagged_event efi_tcg2_tagged_event_t;
+> >  typedef union efi_tcg2_protocol efi_tcg2_protocol_t;
+> >
+> >  union efi_tcg2_protocol {
+> > @@ -882,6 +875,17 @@ union efi_tcg2_protocol {
+> >       } mixed_mode;
+> >  };
+> >
+> > +union efistub_event {
+> > +     efi_tcg2_event_t        tcg2_data;
+> > +};
+> > +
+> > +struct efistub_measured_event {
+> > +     union efistub_event     event_data;
+> > +     u32                     tagged_event_id;
+> > +     u32                     tagged_event_data_size;
+> > +     u8                      tagged_event_data[];
+> > +} __packed;
+> > +
+>
+> Since efistub_measured_event is only used efi-stub-helper.c, why
+> not leave it there?
+>
+
+Indeed. I will move it back.
 
