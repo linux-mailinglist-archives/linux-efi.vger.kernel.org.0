@@ -1,132 +1,279 @@
-Return-Path: <linux-efi+bounces-723-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-724-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C54687261E
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Mar 2024 19:01:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A55872695
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Mar 2024 19:33:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED051C26073
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Mar 2024 18:01:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F4C128B523
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Mar 2024 18:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9533317BAF;
-	Tue,  5 Mar 2024 18:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEECA1426F;
+	Tue,  5 Mar 2024 18:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yXZlXGAl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EhYOV7MM"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E88A16427
-	for <linux-efi@vger.kernel.org>; Tue,  5 Mar 2024 18:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AA61B970
+	for <linux-efi@vger.kernel.org>; Tue,  5 Mar 2024 18:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709661695; cv=none; b=Mkq9ksuJwg2COMLTrYNWk3f1/HpJE8QF4xaujRMjp+FDlDExleSsP8UeFwMiVvocRhVpRVzOqAB6uIu6941dwe7YnSQj9+PVFM2qejhLQSys6cTkkxW+xWxr61XbxnfPQ9N+nycPagsRUPIqYvXq3oZRf538dwsWAJKw9xa0KQU=
+	t=1709663588; cv=none; b=bpu5GS7rB/hTEaxWpJM46bsgsapBdrETqKPOEU+xlaEzf3I2C4pp8o0eg5qzoMWBS0WA82V9DQ+xciWA6eanzgeXphYd956uLS3jlld7Kixxz/p1tVuz025VC9nYcPn1UIMRyyLIEXXiFLwx1mtwEs/XnY0erKMsl+xDtfW6KkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709661695; c=relaxed/simple;
-	bh=JxsWIpYhrw0yj+dOcxVkY9nDuIgkArCAusybNAVXdNQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vv+X5vNc8Y58JWemRZNBZj3tYTe3+3GKZeHSAXlMBr/xX0IevIa9zP6dV+FNJLmgZsvpuhCQ/va9u5/XiGoWGek8K6V0rMm4C8p4H3PDs06V+kc77npuQozuuikTceGQJpMU+U1PinMU0pGinXIlsuDp6JiuWAl63PqzD7zVjPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yXZlXGAl; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d288bac3caso73627761fa.2
-        for <linux-efi@vger.kernel.org>; Tue, 05 Mar 2024 10:01:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709661691; x=1710266491; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1qUyyr1xe58n5fPwCACgS+V9qMPtqxEaQMrQxOS+5Y8=;
-        b=yXZlXGAlC7dnH3CLwL4BZD69lBm+7Hgy0UeIqPxQYfEfDKGZTQGcjHpVcZO3l33YsE
-         XCJf68OlGjBuWE6tH8RJuHV/XVHgrm8BFO/vyxFBvnqcD4kkf0Rod0I4Axhogn8DoNMT
-         tNawMuCjn1E8K1LCoE6d0RZgHMPyPEsy5tev584qDdVqBdO2v2w6Xc7K1EN68e+zE4+6
-         shHuw+jQjc6OS/gPOjPDMzmLYV5YCuSbxraoTAxT13/+v6Im00FWbVaNKzO9eH5w2QZA
-         Ev0V0CwSb1Eyj81yylSaiVlXoIMqJ3o6BB49E3JfAUu2GQa6GyWNbWQSQcYJZsF1zM5x
-         qMGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709661691; x=1710266491;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1qUyyr1xe58n5fPwCACgS+V9qMPtqxEaQMrQxOS+5Y8=;
-        b=g8cIpT9OCHFXFMSp4BgRTZvsSO9dfWFTFqD/zZbzeWjCxrDcmL2nZ7J5SVs74S8SbI
-         So7cWdWHhk1xzgqLUKCgt3GUNIxKL3/bWykeUql9Y66bt7QjAOM35hoVyCEktpxl7dLl
-         3GzUSHwTisq823j2zvC56aYc2jycClR3Z5EUcrTYdsd7xH5nSAEV1og+4VJYD+f0Ksx7
-         w1O0YH8eKBC+RajbMwwFVqHWUoluE9ErsBV0lzfebLhC3OJEajmkknNaFmeQz58qYraU
-         wqx8inmwq7giOzwVnCwx8YZFSFW6md14HQVNR2oXJHpBwtrzCmclUlsCGaZL/YLCM3BX
-         6Mwg==
-X-Gm-Message-State: AOJu0YzzIk1Fp9kBHG7h8FtmED5rxYKWk1rzm/DndfarG5WKiyJhkD2s
-	l7D2zP0EI/Lsp9gSjPa0ZYwexL+isU779W1vJHQKpWLXA9Oy5wHhzYTfuPsqkbbCnLNrvFrnaC+
-	Wbk55B5xTT+bWVVL7d7t7ks2fmPoqCKua3XB4GQ==
-X-Google-Smtp-Source: AGHT+IHat9OjxAwjLByJ9gwYG4Q/i4r/04aB4CwoTwj1I2uNEu9Jpe2msY+1pU0jH+dLyvhVTDaUCv050bmHXxOLi8g=
-X-Received: by 2002:ac2:59cd:0:b0:513:d23:7bf6 with SMTP id
- x13-20020ac259cd000000b005130d237bf6mr1789826lfn.21.1709661691581; Tue, 05
- Mar 2024 10:01:31 -0800 (PST)
+	s=arc-20240116; t=1709663588; c=relaxed/simple;
+	bh=v4kgbFwNGEtR1wFQ6X/mJy4Vux4DcOKNyMCmQhpkmFg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LBDqj7ZYbXyqMpJcnfyQg3LBngNbLOQH9WivM6tzNUzCn9lVN2x06qbtzy7xtJMuLjqG4bP8F5a7w8rLywQwqOkpBqHHO9EJ8BYeQgjluLBCEwY6fhoUlDcuFwMuzUjLAgEjGlvGY2zZnJdsK+fysGKsHzNhiXxRlce3u8mrXmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EhYOV7MM; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709663587; x=1741199587;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=v4kgbFwNGEtR1wFQ6X/mJy4Vux4DcOKNyMCmQhpkmFg=;
+  b=EhYOV7MMge+8XitEGYu1dn0FbM0syyy+4tR2v1QSFVJ4nANk4a5fUPVg
+   5OihdenWpe2a/jK6IXzjbxLQ37guylfcHxfsPi+Zl7l/6+37nKTZfS8pJ
+   HKISRnfXjtzl49kAFjHvZPww1wGYz9O62h0owu5utVxVYYiEDU019rLQH
+   SxFhifP6olEwwdAg1r7VJbySwFkocBri88e3mKUGLTEgp+RyNk0Azyw7i
+   tzOvWei6AZyOsC1POq8Ely/48NSeYc7VJHISYerOzUqON/vW22iNSWbf2
+   XM7nhZyiQiwDSWcC8+YKeAQPcq/AThtQljYSGpER/k3rk8863ntL1n8Ip
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="14953562"
+X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
+   d="scan'208";a="14953562"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 10:33:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
+   d="scan'208";a="13956890"
+Received: from msavchak-mobl.amr.corp.intel.com (HELO [10.209.19.134]) ([10.209.19.134])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 10:33:05 -0800
+Message-ID: <2f2416e0-265b-4f03-abf5-fb29c1a0e61b@linux.intel.com>
+Date: Tue, 5 Mar 2024 10:33:05 -0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304104409.2326422-6-ardb+git@google.com> <20240304104409.2326422-8-ardb+git@google.com>
-In-Reply-To: <20240304104409.2326422-8-ardb+git@google.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Tue, 5 Mar 2024 20:00:55 +0200
-Message-ID: <CAC_iWjKeKBd3O-i8Lodv4m5e8n=0Bss0N_mjc+jCj2QNgmaQzA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] efi/libstub: Add Confidential Computing (CC)
- measurement typedefs
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] efi/libstub: Measure into CC protocol if TCG2
+ protocol is absent
+Content-Language: en-US
+To: Dionna Amalie Glaze <dionnaglaze@google.com>,
+ Ard Biesheuvel <ardb@kernel.org>
+Cc: Qinkun Bao <qinkun@google.com>, linux-efi@vger.kernel.org,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>
+References: <20240304104409.2326422-6-ardb+git@google.com>
+ <20240304104409.2326422-9-ardb+git@google.com>
+ <CAAH4kHYD03xepd=u9m66XWY=UHkOdooGj7jKPnu9DvA=LPAfXg@mail.gmail.com>
+ <CAMj1kXEyWkDaENDOk5zrkZv+5=FwbXgQekoVHP2OqscrM5x=og@mail.gmail.com>
+ <CAAH4kHb7ZgfrQQjVr-JiutQthwkbrVGR2DkUDE=E0ZoWGO34eA@mail.gmail.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <CAAH4kHb7ZgfrQQjVr-JiutQthwkbrVGR2DkUDE=E0ZoWGO34eA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Ard,
 
-On Mon, 4 Mar 2024 at 12:44, Ard Biesheuvel <ardb+git@google.com> wrote:
+On 3/5/24 10:00 AM, Dionna Amalie Glaze wrote:
+> On Tue, Mar 5, 2024 at 9:47 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+>> On Tue, 5 Mar 2024 at 18:34, Dionna Amalie Glaze <dionnaglaze@google.com> wrote:
+>>> On Mon, Mar 4, 2024 at 2:44 AM Ard Biesheuvel <ardb+git@google.com> wrote:
+>>>> From: Ard Biesheuvel <ardb@kernel.org>
+>>>>
+>>>> To accommodate confidential compute VMs that expose the simplified CC
+>>>> measurement protocol instead of the full-blown TCG2 one, fall back to
+>>>> the former if the latter does not exist.
+>>>>
+>>>> The CC protocol was designed to be used in this manner, which is why the
+>>>> types and prototypes have been kept the same where possible. So reuse
+>>>> the existing code, and only deviate from the TCG2 code path where
+>>>> needed.
+>>>>
+>>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>>>> ---
+>>>>  drivers/firmware/efi/libstub/efi-stub-helper.c | 67 +++++++++++++++-----
+>>>>  drivers/firmware/efi/libstub/efistub.h         |  3 +
+>>>>  2 files changed, 53 insertions(+), 17 deletions(-)
+>>>>
+>>>> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+>>>> index 0dbc9d3f4abd..21f4567324f6 100644
+>>>> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+>>>> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+>>>> @@ -223,44 +223,77 @@ static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
+>>>>                                              unsigned long load_size,
+>>>>                                              enum efistub_event_type event)
+>>>>  {
+>>>> +       union {
+>>>> +               efi_status_t
+>>>> +               (__efiapi *hash_log_extend_event)(void *, u64, efi_physical_addr_t,
+>>>> +                                                 u64, const union efistub_event *);
+>>>> +               struct { u32 hash_log_extend_event; } mixed_mode;
+>>>> +       } method;
+>>>>         struct efistub_measured_event *evt;
+>>>>         int size = struct_size(evt, tagged_event_data,
+>>>>                                events[event].event_data_len);
+>>>>         efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
+>>>>         efi_tcg2_protocol_t *tcg2 = NULL;
+>>>> +       union efistub_event ev;
+>>>>         efi_status_t status;
+>>>> +       void *protocol;
+>>>>
+>>>>         efi_bs_call(locate_protocol, &tcg2_guid, NULL, (void **)&tcg2);
+>>>>         if (tcg2) {
+>>>> -               status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
+>>>> -                                    (void **)&evt);
+>>>> -               if (status != EFI_SUCCESS)
+>>>> -                       goto fail;
+>>>> -
+>>>> -               evt->event_data.tcg2_data = (struct efi_tcg2_event){
+>>>> +               ev.tcg2_data = (struct efi_tcg2_event){
+>>>>                         .event_size                     = size,
+>>>> -                       .event_header.header_size       = sizeof(evt->event_data.tcg2_data.event_header),
+>>>> +                       .event_header.header_size       = sizeof(ev.tcg2_data.event_header),
+>>>>                         .event_header.header_version    = EFI_TCG2_EVENT_HEADER_VERSION,
+>>>>                         .event_header.pcr_index         = events[event].pcr_index,
+>>>>                         .event_header.event_type        = EV_EVENT_TAG,
+>>>>                 };
+>>>> +               protocol = tcg2;
+>>>> +               method.hash_log_extend_event =
+>>>> +                       (void *)efi_table_attr(tcg2, hash_log_extend_event);
+>>>> +       } else {
+>>> +Qinkun Bao
+>>> Given that the exclusive or between CC_MEASUREMENT_PROTOCOL and the
+>>> TCG protocol breaks backwards compatibility, it'd be preferable to
+>>> measure into all the measurement protocols that are present.
+>> How so? Older kernels will use TCG2 if it exists, and so will new
+>> kernels. The only difference is that on new kernels, the CC protocol
+>> will be used in case TCG2 is not implemented.
+>>
+>> So the only affected scenario here is a system that today implements
+>> TCG but not CC, and intends to implement CC later and receive
+>> measurements into both protocols. Does that really qualify as backward
+>> compatibility? I'd rather not accommodate future systems that
+>> implement something that the UEFI spec says they should not.
+>>
+>>> The UEFI
+>>> v2.10 standard says that firmware "should not" provide both, but it is
+>>> not MUST NOT. Given this and our desire to provide service continuity,
+>>> I ask that you remove the "else" guard.
+>>>
+>> Ignoring the newer protocol if the established one exists is an
+>> excellent way of making sure this does not happen.
+>>
+> The problem is that the protocols are not equivalent, and we disagree
+> with the standard's claim of "should not" to the point that we're
+> taking it to the USWG. The "should not" advisement is predicated on
+> not trusting boot layers to use both protocols when they're both
+> present, such that you could accidentally miss measuring a
+> security-critical event. That's a strawman though, since you already
+> need to develop trust in those boot layers. We have software supply
+> chain endorsements for tracking that kind of property for use in
+> attestation verification.
 >
-> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->
-> If the virtual firmware implements TPM support, TCG2 protocol will be
-> used for kernel measurements and event logging support. But in CC
-> environment, not all platforms support or enable the TPM feature. UEFI
-> specification [1] exposes protocol and interfaces used for kernel
-> measurements in CC platforms without TPM support.
->
-> More details about the EFI CC measurements and logging can be found
-> in [1].
->
-> Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#efi-cc-measurement-protocol [1]
-> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> [ardb: Drop code changes, keep typedefs and #define's only]
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  drivers/firmware/efi/libstub/efistub.h | 79 ++++++++++++++++++++
->  include/linux/efi.h                    |  1 +
->  2 files changed, 80 insertions(+)
+> The CC protocol is useful for hardware-rooted boot measurement, but it
+> does nothing about the rest of TPM 2.0. There are plenty of users that
+> want to use a vTPM that's hosted by the VMM but also get an extra
+> integrity assurance that measurements into TDX RTMRs and attested by
+> an Intel-rooted key pass an extra level of scrutiny.
 >
 
-[...]
+If you check the EDK2 part of this support, it also uses if else model.
+It does not measure both. If there a complete vTPM support, why
+can't user trust measurements from it? I think the CC vendors will
+ensure their vTPM implementation is protected from attack from the
+host (like implementing it part of firmware or launching it as  service in
+a separate VM).
 
-> +
-> +struct efi_cc_event {
-> +       u32 event_size;
-> +       struct {
-> +               u32 header_size;
-> +               u16 header_version;
-> +               u32 mr_index;
-> +               u32 event_type;
-> +       } __packed event_header;
-> +       u8 event_data[0];
+>>>> +               efi_guid_t cc_guid = EFI_CC_MEASUREMENT_PROTOCOL_GUID;
+>>>> +               efi_cc_protocol_t *cc = NULL;
+>>>>
+>>>> -               evt->tagged_event_id            = events[event].event_id;
+>>>> -               evt->tagged_event_data_size     = events[event].event_data_len;
+>>>> -
+>>>> -               memcpy(evt->tagged_event_data, events[event].event_data,
+>>>> -                      events[event].event_data_len);
+>>>> +               efi_bs_call(locate_protocol, &cc_guid, NULL, (void **)&cc);
+>>>> +               if (!cc)
+>>>> +                       return EFI_UNSUPPORTED;
+>>>>
+>>>> -               status = efi_call_proto(tcg2, hash_log_extend_event, 0,
+>>>> -                                       load_addr, load_size, &evt->event_data.tcg2_data);
+>>>> -               efi_bs_call(free_pool, evt);
+>>>> +               ev.cc_data = (struct efi_cc_event){
+>>>> +                       .event_size                     = size,
+>>>> +                       .event_header.header_size       = sizeof(ev.cc_data.event_header),
+>>>> +                       .event_header.header_version    = EFI_CC_EVENT_HEADER_VERSION,
+>>>> +                       .event_header.event_type        = EV_EVENT_TAG,
+>>>> +               };
+>>>>
+>>>> +               status = efi_call_proto(cc, map_pcr_to_mr_index,
+>>>> +                                       events[event].pcr_index,
+>>>> +                                       &ev.cc_data.event_header.mr_index);
+>>>>                 if (status != EFI_SUCCESS)
+>>>>                         goto fail;
+>>>> -               return EFI_SUCCESS;
+>>>> +
+>>>> +               protocol = cc;
+>>>> +               method.hash_log_extend_event =
+>>>> +                       (void *)efi_table_attr(cc, hash_log_extend_event);
+>>>>         }
+>>>>
+>>>> -       return EFI_UNSUPPORTED;
+>>>> +       status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size, (void **)&evt);
+>>>> +       if (status != EFI_SUCCESS)
+>>>> +               goto fail;
+>>>> +
+>>>> +       evt->event_data                 = ev;
+>>>> +       evt->tagged_event_id            = events[event].event_id;
+>>>> +       evt->tagged_event_data_size     = events[event].event_data_len;
+>>>> +
+>>>> +       memcpy(evt->tagged_event_data, events[event].event_data,
+>>>> +              events[event].event_data_len);
+>>>> +
+>>>> +       status = efi_fn_call(&method, hash_log_extend_event, protocol, 0,
+>>>> +                            load_addr, load_size, &evt->event_data);
+>>>> +       efi_bs_call(free_pool, evt);
+>>>> +
+>>>> +       if (status == EFI_SUCCESS)
+>>>> +               return EFI_SUCCESS;
+>>>> +
+>>>>  fail:
+>>>>         efi_warn("Failed to measure data for event %d: 0x%lx\n", event, status);
+>>>>         return status;
+>>>> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+>>>> index d621bfb719c4..4bf9a76796b7 100644
+>>>> --- a/drivers/firmware/efi/libstub/efistub.h
+>>>> +++ b/drivers/firmware/efi/libstub/efistub.h
+>>>> @@ -954,8 +954,11 @@ union efi_cc_protocol {
+>>>>         } mixed_mode;
+>>>>  };
+>>>>
+>>>> +static_assert(sizeof(efi_tcg2_event_t) == sizeof(efi_cc_event_t));
+>>>> +
+>>>>  union efistub_event {
+>>>>         efi_tcg2_event_t        tcg2_data;
+>>>> +       efi_cc_event_t          cc_data;
+>>>>  };
+>>>>
+>>>>  struct efistub_measured_event {
+>>>> --
+>>>> 2.44.0.278.ge034bb2e1d-goog
+>>>>
+>>>>
+>>>
+>>> --
+>>> -Dionna Glaze, PhD (she/her)
+>
+>
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
-We should define this as a flexible array member instead of a zero-length array?
-The spec is funny and defines this as event_data[1]. I think we aren't
-using the sizeof(struct efi_cc_event) anywhere, so if this struct is
-not used as a member of another struct or an array we can omit it
-entirely.
-
-[...]
-
-Cheers
-/Ilias
 
