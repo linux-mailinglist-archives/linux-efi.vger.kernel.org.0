@@ -1,94 +1,77 @@
-Return-Path: <linux-efi+bounces-736-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-737-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE74D873230
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Mar 2024 10:13:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A4D873221
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Mar 2024 10:11:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F6D7B21D8D
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Mar 2024 09:09:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A99C28F152
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Mar 2024 09:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0B260B8E;
-	Wed,  6 Mar 2024 08:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AE95FDD2;
+	Wed,  6 Mar 2024 09:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ULFJY8yl"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="OCPru/fL"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB07960912
-	for <linux-efi@vger.kernel.org>; Wed,  6 Mar 2024 08:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8218C5D8EA;
+	Wed,  6 Mar 2024 09:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709715410; cv=none; b=WiqyIGgkVQRMsp25VqbCxmPyW9FyiXUWEt7J4jVChvJiAjIEbqZ8Jlt5E17HHU0LeeKsm9//tyEhayfW6mlj0w0uM5k/yoj57JfmNxzrCohDuGM4s5r+vlglpxtlqhKclFSbkLIznqSsC0ZLKdXYU9jxFWCQeMijS0FJhPhIrc0=
+	t=1709715785; cv=none; b=LDDvHwkfrNyX5WrhYIeW7jIllr896D50nYBL+lxkYdBrn6ZBulCIpbO0jnJjFmNRnCxKL6IDpyPrpPO4ypAo4lCe+U3mGAhUIIA8W+u3AkJGAmmxukDUHKYMMvkzUf4SUW/3Xcsi/iRBNi6uhgw+RGrOVPKT7xc8FVpw1E2W+/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709715410; c=relaxed/simple;
-	bh=5PaOQohqxvp2+MT7niO+peIr/2hmdAFE5UfHwQ4Ukws=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Mvm7IUpMmKitHUg3RwVbxv+7KPwy6obncsZ7OEdc0uIBVVhcNAlzGaz0GDk6P3oPer8XNP3oLMjykKJSjB0GxDmLwIL+0Kzfw/vIJSFXzhgpEzLIzWYLXRkd4tlH/VEcoBSwOovErKAUouUq3K0MT/kMlipFAqfFMQHrAV9R7Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ULFJY8yl; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-21f0c82e97fso4191043fac.2
-        for <linux-efi@vger.kernel.org>; Wed, 06 Mar 2024 00:56:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1709715408; x=1710320208; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1CABJMt4hSO244iW5Glz3DNnS14exaADs5c0BJOhPvw=;
-        b=ULFJY8ylDjBgKKt/Wg0/xtbkvfomi2pAmc3fbrLuQPCkAqtDQwGzAm7Q0mUHzQOsdj
-         DMPwBWObGn0POhIJlb6liPmoePrS6j2CZiCtmLiaSKGrCSI/0PxdVasK9BF0qly8m+HE
-         //ONfWOQAXSfz9Jj4tLyQF6knxEsiPbAtiz9+BZU2Tab9xqev0KHcmdgxj6ShQ9Xpdxj
-         a5bCyhUl0m2Zb8tz4f2Cs5KVv+6iV5aToGjXpa7XajXah6PTMvzvEL8kieh5SSjHRg8j
-         vZrZF9v9E67NrC36fhjMYB8A+AYNsb5he05z4KKTam6MuGhPUoYro73NL8hKbEz81Jx6
-         RmkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709715408; x=1710320208;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1CABJMt4hSO244iW5Glz3DNnS14exaADs5c0BJOhPvw=;
-        b=Eb4WCzyRrto92JCj4D/BaZ7Htk/v6Gx0+RXczCPw4SC9dVi8GN81CZ8yKx7DRLi03a
-         odfHum9sqKy5CzTZOIpbVMfFYSpZVD6imWGRGiy2ZxT5AqDXLbG50H8Xf6lz+zUUywwE
-         Dn/aLSjFvIqmAnkV3G+cyLeHXflFeOMnkDQHYzBJR7CQtrUaMnVD7nsmtAQQ22oWHftl
-         JfYdhskoeQaIcxdOIqpS3j79vz3ka1D0OQH75p+zCgwMMP1QrCdSfQQSIKuRqW/RmOQ7
-         IW5KCSwKGmvMa3F87VXssuFa8h7yC9xkerorV+Lb0PEVMJTgaomHCpBBZv8YybOL5plv
-         lmOA==
-X-Forwarded-Encrypted: i=1; AJvYcCXx0pUC8Ji4Ocu+r9cgcdzXK3o2i8MelaPZAf7bg8nE/ESjq+/wTMF6bDlTPz1fZ0aq1VvJ7cvg+F4B62+Jz51n19PKb5w65A5V
-X-Gm-Message-State: AOJu0YzWpV0e2loPfxSe/Al1F1s0S8yC/Urqf7fVzY0gTh6NM5t95FIT
-	R7eieM7rIuqMD98gnVvMJiVbB+Ln2I+fDyzm4fXk3c3HEPkHaXCq/LPUAr4ur68=
-X-Google-Smtp-Source: AGHT+IE2BdBcL6wdxX3LfFe6ila1xwesEmOhKWIXEUQRU2u85mQlRvRPcTSduuuATxjh6RtMEQbedw==
-X-Received: by 2002:a05:6870:819e:b0:21d:e28a:fb14 with SMTP id k30-20020a056870819e00b0021de28afb14mr4580959oae.47.1709715407767;
-        Wed, 06 Mar 2024 00:56:47 -0800 (PST)
-Received: from L6YN4KR4K9.bytedance.net ([61.213.176.7])
-        by smtp.gmail.com with ESMTPSA id o74-20020a62cd4d000000b006e58663dd0asm10740071pfg.110.2024.03.06.00.56.43
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 06 Mar 2024 00:56:47 -0800 (PST)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	ardb@kernel.org,
-	cuiyunhui@bytedance.com,
-	xuzhipeng.1973@bytedance.com,
-	alexghiti@rivosinc.com,
-	samitolvanen@google.com,
-	bp@alien8.de,
-	xiao.w.wang@intel.com,
-	jan.kiszka@siemens.com,
-	kirill.shutemov@linux.intel.com,
-	nathan@kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: [PATCH 3/3] efistub: fix missed the initialization of gp
-Date: Wed,  6 Mar 2024 16:56:22 +0800
-Message-Id: <20240306085622.87248-3-cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20240306085622.87248-1-cuiyunhui@bytedance.com>
+	s=arc-20240116; t=1709715785; c=relaxed/simple;
+	bh=uV64QgV0J/+QZOGrjbCPihXYSBl0rMMCx3JYQNRjgpQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NMp4IumhUrTOxv9qQ6E8151uMfCzrS1j0HYpwyAQc33OfhIvjXaUlvj6jNRGem4/DXqATRv8eTdSewMjmfD7U1ECmdq2UYanlzg2sNvldRx0VS7ScWNT9sYtVgjy0G0izWBpkLntvEVXPwF1xXgZSKS+QNLM2iGWpDT7L4XbIvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=OCPru/fL; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1709715784; x=1741251784;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uV64QgV0J/+QZOGrjbCPihXYSBl0rMMCx3JYQNRjgpQ=;
+  b=OCPru/fLr4vtFwkdD8z3eyyxLC68fcBtTxqbAArqopj87JRiU3eczmaT
+   AC6ugC2xGLNaIvIn+oSYi8L4RN2iyeuEfRtz5LPk16TPSQ1S68G3P1Z7V
+   ascEzgecPjWE2gElAQGgHIbkQNZ+nj39igM+oL2tPwtyxjMcJ1aloXn7u
+   6FCg94EQ5pqJCN/k250EPkBcx+05x5vSeioNG5qcv06+rfn9/T3GwtvCo
+   phJlX6KDd3rxGSsB9BtsZQYbf1QswDATZUCNL9yDV5wJHLaLcOZ6/t8Ar
+   P1CqV3ZiYjjxdDf0ZWdxbfEebcFCsOwU6P+E29GvUuTC1x0pDB+OoJT/F
+   Q==;
+X-CSE-ConnectionGUID: 4dqBU33OR6GCmN6Rg1LReA==
+X-CSE-MsgGUID: ker7b5MQRvW9rJIKupvRzQ==
+X-IronPort-AV: E=Sophos;i="6.06,207,1705388400"; 
+   d="asc'?scan'208";a="248037788"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Mar 2024 02:03:03 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 6 Mar 2024 02:02:48 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Wed, 6 Mar 2024 02:02:46 -0700
+Date: Wed, 6 Mar 2024 09:02:01 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Yunhui Cui <cuiyunhui@bytedance.com>
+CC: <paul.walmsley@sifive.com>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
+	<ardb@kernel.org>, <xuzhipeng.1973@bytedance.com>, <alexghiti@rivosinc.com>,
+	<samitolvanen@google.com>, <bp@alien8.de>, <xiao.w.wang@intel.com>,
+	<jan.kiszka@siemens.com>, <kirill.shutemov@linux.intel.com>,
+	<nathan@kernel.org>, <linux-riscv@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH 1/3] Revert "riscv/efistub: Ensure GP-relative addressing
+ is not used"
+Message-ID: <20240306-zippy-magazine-9a4ecfe1758a@wendy>
 References: <20240306085622.87248-1-cuiyunhui@bytedance.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -96,46 +79,60 @@ List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="UQFtTkia6S6WEuRu"
+Content-Disposition: inline
+In-Reply-To: <20240306085622.87248-1-cuiyunhui@bytedance.com>
 
-Compared with gcc version 12, gcc version 13 uses the gp
-register for compilation optimization, but the efistub module
-does not initialize gp.
+--UQFtTkia6S6WEuRu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Co-Developed-by: Zhipeng Xu <xuzhipeng.1973@bytedance.com>
----
- arch/riscv/kernel/efi-header.S | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+On Wed, Mar 06, 2024 at 04:56:20PM +0800, Yunhui Cui wrote:
+> This reverts commit afb2a4fb84555ef9e61061f6ea63ed7087b295d5.
+>=20
+> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 
-diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
-index 515b2dfbca75..fa17c08c092a 100644
---- a/arch/riscv/kernel/efi-header.S
-+++ b/arch/riscv/kernel/efi-header.S
-@@ -40,7 +40,7 @@ optional_header:
- 	.long	__pecoff_data_virt_end - __pecoff_text_end	// SizeOfInitializedData
- #endif
- 	.long	0					// SizeOfUninitializedData
--	.long	__efistub_efi_pe_entry - _start		// AddressOfEntryPoint
-+	.long	_efistub_entry - _start		// AddressOfEntryPoint
- 	.long	efi_header_end - _start			// BaseOfCode
- #ifdef CONFIG_32BIT
- 	.long  __pecoff_text_end - _start		// BaseOfData
-@@ -121,4 +121,13 @@ section_table:
- 
- 	.balign	0x1000
- efi_header_end:
-+
-+	.global	_efistub_entry
-+_efistub_entry:
-+	/* Reload the global pointer */
-+	load_global_pointer
-+
-+	call __efistub_efi_pe_entry
-+	ret
-+
- 	.endm
--- 
-2.20.1
+Reverts are commits too. You still need to write commit messages
+justifying the revert.
 
+Thanks,
+Conor.
+
+> ---
+>  drivers/firmware/efi/libstub/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi=
+/libstub/Makefile
+> index 31eb1e287ce1..475f37796779 100644
+> --- a/drivers/firmware/efi/libstub/Makefile
+> +++ b/drivers/firmware/efi/libstub/Makefile
+> @@ -28,7 +28,7 @@ cflags-$(CONFIG_ARM)		+=3D -DEFI_HAVE_STRLEN -DEFI_HAVE=
+_STRNLEN \
+>  				   -DEFI_HAVE_MEMCHR -DEFI_HAVE_STRRCHR \
+>  				   -DEFI_HAVE_STRCMP -fno-builtin -fpic \
+>  				   $(call cc-option,-mno-single-pic-base)
+> -cflags-$(CONFIG_RISCV)		+=3D -fpic -DNO_ALTERNATIVE -mno-relax
+> +cflags-$(CONFIG_RISCV)		+=3D -fpic -DNO_ALTERNATIVE
+>  cflags-$(CONFIG_LOONGARCH)	+=3D -fpie
+> =20
+>  cflags-$(CONFIG_EFI_PARAMS_FROM_FDT)	+=3D -I$(srctree)/scripts/dtc/libfdt
+> --=20
+> 2.20.1
+>=20
+
+--UQFtTkia6S6WEuRu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZegw/QAKCRB4tDGHoIJi
+0ufrAP0fOFW/zftAQMBV1enoDhJMzqNOQWXj+pDwdOj2qTybjwD/exFfXude+jUl
+xvXn4DE7ZGib8U52zF+vq1DDE3/XmgM=
+=eSX3
+-----END PGP SIGNATURE-----
+
+--UQFtTkia6S6WEuRu--
 
