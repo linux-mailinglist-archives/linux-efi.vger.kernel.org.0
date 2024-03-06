@@ -1,113 +1,119 @@
-Return-Path: <linux-efi+bounces-733-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-734-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D93A872EC8
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Mar 2024 07:24:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5E287320F
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Mar 2024 10:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02BC21C2157A
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Mar 2024 06:24:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E33228D8B7
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Mar 2024 09:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64CE1BF27;
-	Wed,  6 Mar 2024 06:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098405FB84;
+	Wed,  6 Mar 2024 08:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b="DEhnJiKt"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="SO7DT2+X"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from quicklyemailsend77.com (quicklyemailsend77.com [57.128.172.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E75C1BDDC
-	for <linux-efi@vger.kernel.org>; Wed,  6 Mar 2024 06:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.128.172.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563895FB81
+	for <linux-efi@vger.kernel.org>; Wed,  6 Mar 2024 08:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709706240; cv=none; b=jkflh1+3isf49zIzrj3EGBLFd0Dh7Tvn+t7OxHow4gzphBrKp4A1NrQH10Fi/EExs6OXWgQcP1KuhVh1+ATHKU2JO2225arfvWEbQZWcwHJBuTUtdXkkLo6oJRPTg84pk8+hfoUgqFpua9yesATF334ljbK3gh0bIFccGoNFcIg=
+	t=1709715399; cv=none; b=AO0CFQ7GyLQ3z8hfyRv3GPB9LWfnyGugItyi5/tsbyIam7Dc9Sy7zh6F9+mnjOJrDaI4bKagT1U3UkXZb//yQygaUo30Y1eyDoDue+fFzxX+dIxmuFqiHpCQG89WYk/ZyJb9vq8S+v8fB4w1L5uu984X1XFman94Z+ASRdv9SBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709706240; c=relaxed/simple;
-	bh=UkCnC3hxyWUR811IY5T5PlAQFaHotSY7xhHSl4hh88I=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HVBnl4j+xpIUqBkd0lGN5QJ3zVUWhtOfkyE2PiL3KGA7kVsdjvtR4bETXUbRe6n31vbI5BXLsGNw7Y0WHdiaIM1mfhbf719RK++LqRdCbrjURBp9BwzxJHkUYeQlVHM762Grd2xbbRJvxewWpymqEGL6zM/VkYzCXIdA3Ui9px4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com; spf=pass smtp.mailfrom=quicklyemailsend77.com; dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b=DEhnJiKt; arc=none smtp.client-ip=57.128.172.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicklyemailsend77.com
-Received: from quicklyemailsend77.com (unknown [185.255.114.95])
-	by quicklyemailsend77.com (Postfix) with ESMTPA id 9CE48397795
-	for <linux-efi@vger.kernel.org>; Wed,  6 Mar 2024 03:51:42 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 quicklyemailsend77.com 9CE48397795
+	s=arc-20240116; t=1709715399; c=relaxed/simple;
+	bh=ALSPsCpVA0CNK2wGtP8VKCF7ZyFy6s/GtdM0fjyQOjM=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=gSH6jH5wpUDsUgLm1ZV/sXafDBdCOZAj9Z30t6V7yr4Yb1QjBPShnJyFArWe0a/H7BGr4X7OfgmXp9RW7JEL/oXWNvpxj0hNe23gIfMWsqb3+c3PGXeIW+qeW8W8AoLutK3VK++78k+/MXT4N84/mALQHdzprxYvwL+X4/qe++c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=SO7DT2+X; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6e5e4b1d1f1so434913b3a.1
+        for <linux-efi@vger.kernel.org>; Wed, 06 Mar 2024 00:56:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=quicklyemailsend77.com; s=default; t=1709697103;
-	bh=eefLZdwY5mr6nwq86b3d+rtsxGUHJntuGmXl+R35AcQ=;
-	h=Reply-To:From:To:Subject:Date:From;
-	b=DEhnJiKtqfk6vPzCS767TfEFUvCnCw3Ip7vs6zDsP22nLXICYkELU7Jnwrjiil9ST
-	 ckLdoxH4TXqsUbfSLdvvr/Ks0dgb3Kq4almiMYgmWeAFfFVvP+zi3T6DyWHtMN4Zyk
-	 /FT/WupGRFEfzr54WXH49Ml71Qff/mETVrJyaSBqH/+ZP6/VPchvJAyQ3R/yzoTQCa
-	 VtfVgdhwhzcXHkOXg0ZfUwiOsFYTlM8eA0A1OSkwUkwxsnV1xgvgTi6z4BLKr6GWtk
-	 q3hNjjNF197pCo8HyJEJ1E+SwShB+yzWVbaFKIDfoF/9sKq2Ql9L/lZ8SBwfNk33+U
-	 ivhQm/WUQrImw==
-Reply-To: joakimlarson@skendiaelevator.com
-From: info@quicklyemailsend77.com
-To: linux-efi@vger.kernel.org
-Subject: =?UTF-8?B?7YyQ66ekIOusuOydmCAyMDI0?=
-Date: 05 Mar 2024 19:51:42 -0800
-Message-ID: <20240305195142.5AF5484B29D06433@quicklyemailsend77.com>
+        d=bytedance.com; s=google; t=1709715398; x=1710320198; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=miJgmmft5IPBYmaXSyen84BtDBnhdyu7bBvtRv7/vGE=;
+        b=SO7DT2+XR1Z4OLsN6CO25OwBa9XsaFkp7GP2lSemHoJuYgPyp4JLPBLuXky1AEsR6G
+         qPFkCZlsPtANynBTpWZbfM2S3FHfS0KFlU0TdY0POs907lM4gizQeIA3+Mmo+0/c9NJj
+         3xq+aS03liXzgMe+rEOUuufNOvGmOtqvkASbUaTm+GQ66S2GjQ4QhKN7oOCkZX0ddi/v
+         7tZU5tC0Q384JKC22tsiCy8OVg8s74Pt9ZyVd81BR+rnO+ORAUWasnxqkeylKFaGZmvq
+         pUlrPAdHIt9b/vzIlzftBqwPF/RmOmN1E0n3Sa7Eq4JHI6PlnSVkMU0WJyfLxNkSqAhq
+         uwwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709715398; x=1710320198;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=miJgmmft5IPBYmaXSyen84BtDBnhdyu7bBvtRv7/vGE=;
+        b=akx8BVUqr7U0vcyKIQ5mG3hzIOASja0GYy6JDzOujwZTdfyKCgLpnJGtebMu71wwvj
+         hli6hzkvLPu7jAVS1yifpBvhjeUtI+i/bfT6vsKdsoC6oX6SfgUpV8nAokKcmfmgazAv
+         kX+pHLES+7dYBM7rALvhGRhLEzxFSS8gXeaMiQzcJ1NOdUfeK8Wh4yjMqqyEOvvXOwW/
+         iWBHPBQYXt6RG2RAdbBdev2t2E2QZ/fgEVhCixYi5CkoFWPX1jLhv2AwF1Og0MLASM0q
+         tLWJaLBGDHF/4Io8Pa9KSxe3RFC3chTjx/NKUyP1KZi8ZI1vlGOHt0W7aRK8vikZmFPl
+         eHdw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9TQiP2e4mUp0jsYUC4fjKUYyzdQ7r+11sE5yqRmhWEVPDRhQg/8XcQycwi6waCHoNmFKE1+uJQdWNiCiyq7sw85cWImdwcJX3
+X-Gm-Message-State: AOJu0Ywowa40MgK+denzHZvOupen0SA19R30zl7wsd1uK24WBy/bRwHR
+	qAYEOMOXGzI+zXVFsrB3x4X8gALPZCHddk/DbJRrEdnfzu6uD3ZORWHCSVLat3o=
+X-Google-Smtp-Source: AGHT+IHSPWMWnSqJ94igWDFx0dxlS6jl64WPFzIgP3y43hLTZHJR/pVyi5tFhE8JE9eK2c3TtONwHQ==
+X-Received: by 2002:a05:6a20:1442:b0:1a0:eb43:421b with SMTP id a2-20020a056a20144200b001a0eb43421bmr5447236pzi.28.1709715397698;
+        Wed, 06 Mar 2024 00:56:37 -0800 (PST)
+Received: from L6YN4KR4K9.bytedance.net ([61.213.176.7])
+        by smtp.gmail.com with ESMTPSA id o74-20020a62cd4d000000b006e58663dd0asm10740071pfg.110.2024.03.06.00.56.33
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 06 Mar 2024 00:56:37 -0800 (PST)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	ardb@kernel.org,
+	cuiyunhui@bytedance.com,
+	xuzhipeng.1973@bytedance.com,
+	alexghiti@rivosinc.com,
+	samitolvanen@google.com,
+	bp@alien8.de,
+	xiao.w.wang@intel.com,
+	jan.kiszka@siemens.com,
+	kirill.shutemov@linux.intel.com,
+	nathan@kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH 1/3] Revert "riscv/efistub: Ensure GP-relative addressing is not used"
+Date: Wed,  6 Mar 2024 16:56:20 +0800
+Message-Id: <20240306085622.87248-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
+This reverts commit afb2a4fb84555ef9e61061f6ea63ed7087b295d5.
 
-=EC=95=88=EB=85=95=ED=95=98=EC=84=B8=EC=9A=94
-=20
-=EC=8A=A4=EC=9B=A8=EB=8D=B4 =EC=8A=A4=EC=B9=B8=EB=94=94=EC=95=84 =EC=97=98=
-=EB=A0=88=EB=B0=94=ED=86=A0(Skandia Elevato)=EC=97=90=EC=84=9C =EC=98=A8 =
-=EC=9A=94=EC=95=84=ED=82=B4 =EB=9D=BC=EB=A5=B4=EC=86=90(JOAKIM LARSSON) .
-=20
-=EC=9A=B0=EB=A6=AC=EB=8A=94 =EA=B8=B4=EA=B8=89=ED=95=98=EA=B2=8C =EA=B7=80=
-=ED=95=98=EC=9D=98 =EC=A0=9C=ED=92=88=EC=9D=84 =ED=95=84=EC=9A=94=EB=A1=9C =
-=ED=95=98=EB=A9=B0 =EA=B0=80=EB=8A=A5=ED=95=9C =ED=95=9C =EB=B9=A8=EB=A6=AC=
- =EC=8B=9C=ED=97=98 =EC=A3=BC=EB=AC=B8=EC=9D=84 =ED=95=98=EA=B3=A0 =EC=8B=
-=B6=EC=8A=B5=EB=8B=88=EB=8B=A4. 
-=20
-=EC=98=A8=EB=9D=BC=EC=9D=B8=EC=9C=BC=EB=A1=9C =EC=A0=9C=ED=92=88=EC=97=90 =
-=EB=8C=80=ED=95=9C =EC=A0=95=EB=B3=B4=EB=A5=BC =EC=88=98=EC=A7=91=ED=95=98=
-=EA=B3=A0 =EC=9E=88=EC=8A=B5=EB=8B=88=EB=8B=A4. 
-=20
-=EA=B7=B8=EB=A6=AC=EA=B3=A0 =EB=82=B4 =EB=AA=A8=EC=9E=84=EC=97=90=EC=84=9C =
-=EB=82=98=EB=8A=94 =EC=9A=B0=EB=A6=AC=EA=B0=80 =EB=8B=B9=EC=8B=A0=EC=9D=98 =
-=EC=A0=9C=ED=92=88=EC=9D=84 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EA=B2=83=EC=9D=B4=
-=EB=9D=BC=EA=B3=A0 =EC=83=9D=EA=B0=81=ED=95=A9=EB=8B=88=EB=8B=A4.
-=20
-1. =EC=B5=9C=EC=8B=A0 Catalouge=EB=A5=BC =EB=B3=B4=EB=82=BC =EC=88=98 =EC=
-=9E=88=EC=8A=B5=EB=8B=88=EA=B9=8C?
-=20
-2. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EC=88=98 =EC=9E=
-=88=EB=8A=94 =EC=B5=9C=EC=86=8C=ED=95=9C=EC=9D=80 =EB=AC=B4=EC=97=87=EC=9D=
-=B4=EA=B3=A0 =EB=98=90=ED=95=9C =EA=B8=B0=EA=B0=84=EC=9D=84 =EB=B3=B4=EB=82=
-=B4=EC=8B=AD=EC=8B=9C=EC=98=A4=20
-=EB=B0=8F =EC=A1=B0=EA=B1=B4.
-3. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=98=EB=8A=94 =EA=B2=
-=BD=EC=9A=B0 =EC=A7=80=EB=B6=88=EC=9D=84 =EC=96=B4=EB=96=BB=EA=B2=8C =ED=95=
-=B4=EA=B2=B0=ED=95=98=EA=B8=B0=EB=A5=BC =EC=9B=90=ED=95=98=EC=8B=AD=EB=8B=
-=88=EA=B9=8C?
-=20
-=EA=B7=80=ED=95=98=EC=9D=98 =ED=9A=8C=EC=8B=A0 =EB=8C=80=EA=B8=B0 =EC=A4=91=
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+---
+ drivers/firmware/efi/libstub/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-Mr Joakim larssonv(=EB=B6=80=EC=82=AC=EC=9E=A5/=EC=98=81=EC=97=85 =EA=B4=80=
-=EB=A6=AC=EC=9E=90)
-
-=EB=B0=A9=EB=AC=B8=EC=9E=90 =EC=A3=BC=EC=86=8C: Kedumsv=C3=A4gen 14, SE-534=
- 94 Vara, Sweden
-
-=EB=B0=B0=EC=86=A1 =EC=A3=BC=EC=86=8C: Industriv=C3=A4gen, SE-534 94 Vara, =
-Sweden
-
-joakimlarson@skendiaelevator.com
-https://skandiaelevator.com
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 31eb1e287ce1..475f37796779 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -28,7 +28,7 @@ cflags-$(CONFIG_ARM)		+= -DEFI_HAVE_STRLEN -DEFI_HAVE_STRNLEN \
+ 				   -DEFI_HAVE_MEMCHR -DEFI_HAVE_STRRCHR \
+ 				   -DEFI_HAVE_STRCMP -fno-builtin -fpic \
+ 				   $(call cc-option,-mno-single-pic-base)
+-cflags-$(CONFIG_RISCV)		+= -fpic -DNO_ALTERNATIVE -mno-relax
++cflags-$(CONFIG_RISCV)		+= -fpic -DNO_ALTERNATIVE
+ cflags-$(CONFIG_LOONGARCH)	+= -fpie
+ 
+ cflags-$(CONFIG_EFI_PARAMS_FROM_FDT)	+= -I$(srctree)/scripts/dtc/libfdt
+-- 
+2.20.1
 
 
