@@ -1,68 +1,69 @@
-Return-Path: <linux-efi+bounces-760-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-761-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE29874D25
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Mar 2024 12:14:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B74F874D69
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Mar 2024 12:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89500B23076
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Mar 2024 11:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D8091C20D55
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Mar 2024 11:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AAE127B7E;
-	Thu,  7 Mar 2024 11:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CA385643;
+	Thu,  7 Mar 2024 11:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5IYZXcZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NtvOvbZC"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B56386AC5
-	for <linux-efi@vger.kernel.org>; Thu,  7 Mar 2024 11:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF4485634
+	for <linux-efi@vger.kernel.org>; Thu,  7 Mar 2024 11:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709810036; cv=none; b=nf+8GdVzDWuWxNLc/h9HuLZis7Epklwx9QBu+DTX08bFq3loCdhYsE5RxlQ52edrMW5ObZymDIP0hf2TewuGHZ/rH7qyRC+4XtefJCuyBEXIDuYmfVuvkux9eZIjHQeLUwMsgy+T4klRTi9gFzc6BlsjD4/U+0aDtJOHfza62IA=
+	t=1709811020; cv=none; b=eABRhgglPwwTe4p8UdmgcyLl8zJx1Dl2bPxnFFYJil8hm1SoO/3k3ief0nGQ62fFOD/BLv4ydYSUOh5VQ7aVSa2Bxoaeb/REdHneTIwnvkTmnlt4uBy1dcqUC9PL6qGu2P6aW2mBX9I52qbxQ3mcZg3mgNM+SYBuX6lYn4Ddi64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709810036; c=relaxed/simple;
-	bh=JFo6+21egMJ+HMsq+Ypj5c2ko/Qw1CKsLuNZ/O96z+w=;
+	s=arc-20240116; t=1709811020; c=relaxed/simple;
+	bh=gJZhAGpX1oWur/51opNZU6aCpnp5HFVznz42ysvFNqI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KYz6Rj9n/6XZ4sgRXGsOQQbuVs4LlZ2jyIdMCjer+cX9dgG08eGljexQU+U8B6QI/eLlGnnvgrKLEYKY/bbsaSl2oDN0Gjxwu3Cm7lc5kPAnuKKXRKpjplog4NcXEAM68WKxBFhy6MvM/V8QU1Nx8rq601/Qu6uQkv2XIIhJTVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5IYZXcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68EAC433F1
-	for <linux-efi@vger.kernel.org>; Thu,  7 Mar 2024 11:13:55 +0000 (UTC)
+	 To:Cc:Content-Type; b=ErK0LgvfHKavuwUtXFoDOSKUwA1Ji4sjj+37vTIl+cY81PUh3MmMfaE118v2JDCMztl21GMdyyekioMEYmojXdWMcwb54X54832e1wja20pFoZdrLU5vwdoYz580OXFB7ID5qNOkyTl6TddTQsTQc0YOaJh6CgyzVlM9LiDNdeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NtvOvbZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963C5C433C7
+	for <linux-efi@vger.kernel.org>; Thu,  7 Mar 2024 11:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709810035;
-	bh=JFo6+21egMJ+HMsq+Ypj5c2ko/Qw1CKsLuNZ/O96z+w=;
+	s=k20201202; t=1709811019;
+	bh=gJZhAGpX1oWur/51opNZU6aCpnp5HFVznz42ysvFNqI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=M5IYZXcZQYTm1jQjbUL52zLkHJLnzfP1XvXYJZeed/F+eEz71OfRqkpUSl+r4gbNc
-	 HnTZRuM+nQKK2B7pkM0Qm5x7WinCMowZ9pEVf27Ttd207Xs3F5CSsnYpingcYROu3n
-	 zlUlauOFccm3AAvYqS9CtE8M7Ffzgor5rHw5u8weYZq9nPAHobz+ShT16NZG/adRmp
-	 Slcq+2AdWJhQ77XGPLw1h3L5qwnikuHCp2/WqlB2jEYF8Jnj2O7j9qu9sY3K90GML3
-	 NN8xwNdKlmc69cb06MlQNM5mi99bLM9q7dGlUuiyyqH/c5zjRSBEYQHPUf8lgyuRJY
-	 Z241WJMC45tnA==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d27fef509eso9822541fa.3
-        for <linux-efi@vger.kernel.org>; Thu, 07 Mar 2024 03:13:55 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUQ8C80q0If9WrAfoab9KEtiCI5g/c1EdcITGS4Rf52ZPU0XOup0+tyEE8y18kV/KpwuSYbGylM5IhLv3P9h2Il4Af49VogGmVZ
-X-Gm-Message-State: AOJu0YxhwBPAiBXHhSviuynawLGoKp9ckNmCrxojC+bu3Jg6AwpTbj2H
-	GZ9DrGDFUxUYFgZ6t4eoXG/jB8b5FcEz/yZ2Txd032scl9T9Un6NzY+HlSEZTHzcqSw6/fywdG+
-	n4vxe37rD71uNvkmG19SYbvLR7B8=
-X-Google-Smtp-Source: AGHT+IGU0d7nuKQ7e65/nOwU1ITb55FrPli4bI0Znl1veN4gMjnEHR6wNepzTsMHRzGgSR9S8dF5FIFBv9qkER8tsBM=
-X-Received: by 2002:a05:6512:2215:b0:512:e4f4:b562 with SMTP id
- h21-20020a056512221500b00512e4f4b562mr1370919lfu.31.1709810033911; Thu, 07
- Mar 2024 03:13:53 -0800 (PST)
+	b=NtvOvbZCY9OIK6cRmR8OfTbtmasClcNuNtmf5wOs/liqpfUS518RyzhO+G58VGqmb
+	 wYETi6Btbt2Sf8Nvr4Wy4yCGjK2c0SsB1VDvgqQlX3W7xJq5ceAkatwQF6yMTMR7aR
+	 tz0N6p3CG+xvyZeTLursyUMIQ0TRnz28NWV6rjieCG58jfBg1+1z5tl4NzS34KP2Kg
+	 RDmozgIkNHXEPo7n/LmnT5j2510jReypJgXhUBm5yN+K/I3usNkwWcLzvzkwLMuD4v
+	 JgnGUvAG48oeUWMVYH33avIsCzeJgDWbUkhquDCfPEdTPg6Oe7Wj7O4UF3H1uz6LeE
+	 v0ke1LQ33Sz3A==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d22b8801b9so10884331fa.0
+        for <linux-efi@vger.kernel.org>; Thu, 07 Mar 2024 03:30:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUcOPTUzwj9gInPFTi89hu6TrJowMVw1f0tqDLWx/K14/KEhyG2nqeTa47pPQxFhu2R/bXahvR6qWMqToFIOkFeUogizAyWYmO0
+X-Gm-Message-State: AOJu0YyAWtGS4OHtUJlw6OZlTcyPR+TCM2HUETc8q5xzHgqK1F/PwrVg
+	UNoSKYPth7nRz2jNyDfvZBaBzOMKdW64HWnaZqkrkiiPucacPF6rFPXVu+fgBrlgYdbdjbEUlcZ
+	JF6S92I8X7WyABUCouY+LcDWdPr4=
+X-Google-Smtp-Source: AGHT+IFeWi5UCr9BnoNzvHdQRREN/a4jFotGDxJEaJr8iVMPtfgoGMFMykcEyN0z6+ANGK/fek4caX3Zz6I7ehExOtw=
+X-Received: by 2002:a2e:b247:0:b0:2d2:71cc:253d with SMTP id
+ n7-20020a2eb247000000b002d271cc253dmr1136667ljm.25.1709811017571; Thu, 07 Mar
+ 2024 03:30:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0229a87e-fb19-4dad-99fc-4afd7ed4099a@collabora.com> <CAMj1kXE166VdJLWSWo7_3MDw4V3zSuYRx44Z7yqyj5mQVOdDCA@mail.gmail.com>
-In-Reply-To: <CAMj1kXE166VdJLWSWo7_3MDw4V3zSuYRx44Z7yqyj5mQVOdDCA@mail.gmail.com>
+References: <0229a87e-fb19-4dad-99fc-4afd7ed4099a@collabora.com>
+ <CAMj1kXE166VdJLWSWo7_3MDw4V3zSuYRx44Z7yqyj5mQVOdDCA@mail.gmail.com> <CAMj1kXGFLwsgPo9Xy_-9gaOUUO=wDd_K12ccYUhP1nWf3KLb0w@mail.gmail.com>
+In-Reply-To: <CAMj1kXGFLwsgPo9Xy_-9gaOUUO=wDd_K12ccYUhP1nWf3KLb0w@mail.gmail.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 7 Mar 2024 12:13:43 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGFLwsgPo9Xy_-9gaOUUO=wDd_K12ccYUhP1nWf3KLb0w@mail.gmail.com>
-Message-ID: <CAMj1kXGFLwsgPo9Xy_-9gaOUUO=wDd_K12ccYUhP1nWf3KLb0w@mail.gmail.com>
+Date: Thu, 7 Mar 2024 12:30:06 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXG3ySsqU0v5dnC2V+xiKGxdFnY_WSOFzrqb0sr9gDT7Zw@mail.gmail.com>
+Message-ID: <CAMj1kXG3ySsqU0v5dnC2V+xiKGxdFnY_WSOFzrqb0sr9gDT7Zw@mail.gmail.com>
 Subject: Re: [Bug Report] Bug in "efi/libstub: Add get_event_log() support for
  CC platforms"
 To: Muhammad Usama Anjum <usama.anjum@collabora.com>
@@ -71,41 +72,64 @@ Cc: Ard Biesheuvel <ardb+git@google.com>,
 	Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 7 Mar 2024 at 12:08, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Thu, 7 Mar 2024 at 12:13, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> Hi Muhammad,
+> On Thu, 7 Mar 2024 at 12:08, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > Hi Muhammad,
+> >
+> > Thanks for the report.
+> >
+> > On Thu, 7 Mar 2024 at 12:02, Muhammad Usama Anjum
+> > <usama.anjum@collabora.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > The recent patch:
+> > > 276805fb9c305: efi/libstub: Add get_event_log() support for CC platforms
+> > > has introduced
+> > > #define EFI_CC_EVENT_LOG_FORMAT_TCG_2   0x00000002
+> > >
+> > > But EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 has the same numerical value:
+> > > #define EFI_TCG2_EVENT_LOG_FORMAT_TCG_2   0x2
+> > >
+> > > Thus there is dead code in efi_retrieve_tcg2_eventlog() i.e, multiple if
+> > > conditions with (version == 2) I'm unable to decide on what is wrong and
+> > > what is right here. Please have a look.
+> > >
+> >
+> > Why is this a problem? The compiler will recognize this and simplify
+> > the conditional. The code as written is semantically correct, the fact
+> > that the symbolic constants resolve to the same numerical value is
+> > just an implementation detail.
 >
-> Thanks for the report.
+> Ah hold on. I see what you mean now:
 >
-> On Thu, 7 Mar 2024 at 12:02, Muhammad Usama Anjum
-> <usama.anjum@collabora.com> wrote:
-> >
-> > Hi,
-> >
-> > The recent patch:
-> > 276805fb9c305: efi/libstub: Add get_event_log() support for CC platforms
-> > has introduced
-> > #define EFI_CC_EVENT_LOG_FORMAT_TCG_2   0x00000002
-> >
-> > But EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 has the same numerical value:
-> > #define EFI_TCG2_EVENT_LOG_FORMAT_TCG_2   0x2
-> >
-> > Thus there is dead code in efi_retrieve_tcg2_eventlog() i.e, multiple if
-> > conditions with (version == 2) I'm unable to decide on what is wrong and
-> > what is right here. Please have a look.
-> >
+> if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
+> final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
+> + else if (version == EFI_CC_EVENT_LOG_FORMAT_TCG_2)
+> + final_events_table = get_efi_config_table(LINUX_EFI_CC_FINAL_LOG_GUID);
 >
-> Why is this a problem? The compiler will recognize this and simplify
-> the conditional. The code as written is semantically correct, the fact
-> that the symbolic constants resolve to the same numerical value is
-> just an implementation detail.
+> Yes, that is broken.
 
-Ah hold on. I see what you mean now:
+Could we fix it like this perhaps?
 
-if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
-final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
-+ else if (version == EFI_CC_EVENT_LOG_FORMAT_TCG_2)
-+ final_events_table = get_efi_config_table(LINUX_EFI_CC_FINAL_LOG_GUID);
-
-Yes, that is broken.
+--- a/drivers/firmware/efi/libstub/tpm.c
++++ b/drivers/firmware/efi/libstub/tpm.c
+@@ -75,8 +75,7 @@
+         *
+         * CC Event log also uses TCG2 format, handle it same as TPM2.
+         */
+       if (version > EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2) {
+            /*
+             * The TCG2 log format has variable length entries,
+             * and the information to decode the hash algorithms
+@@ -109,10 +108,11 @@
+     * Figure out whether any events have already been logged to the
+     * final events structure, and if so how much space they take up
+     */
+   if (version > EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2)
+       final_events_table =
+           get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID) ?:
+           get_efi_config_table(LINUX_EFI_CC_FINAL_LOG_GUID);
 
