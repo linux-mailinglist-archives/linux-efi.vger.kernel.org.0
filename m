@@ -1,243 +1,130 @@
-Return-Path: <linux-efi+bounces-764-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-765-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF75A87541C
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Mar 2024 17:22:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E781387541D
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Mar 2024 17:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31228B24B24
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Mar 2024 16:22:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2F58283446
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Mar 2024 16:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E3812FF60;
-	Thu,  7 Mar 2024 16:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6916F1E897;
+	Thu,  7 Mar 2024 16:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UlHYj1Ps"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mDPKKKsi"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA6712F5AE
-	for <linux-efi@vger.kernel.org>; Thu,  7 Mar 2024 16:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AC012BF3B
+	for <linux-efi@vger.kernel.org>; Thu,  7 Mar 2024 16:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709828514; cv=none; b=XGcGIasu3lx30ZikCCz2/+seUiB+nsllTEXzkri2Q9nDCIJjOyEyhAbYxfjm/H1I0/xPphy3yX0aUDrr3inEvwlM20MgFLTdzQNL/4QokFnmw5GUho/nSlOSzrmpQ6qxBVM9NKQI8G/P9PeLft9AY1/tvsMFI83W03YQ5Ebwdbo=
+	t=1709828548; cv=none; b=A4FcUVjWiqFso0+zNgHeLuih0qzw/NTqt4xmWSENZR4r4S3MEYtL91vOfYMJZUvat/iJGXO6L+4RlOryXbjVtITuFvqAdoKMYoEGES6vvXQV5npe4grHmp6e2Bgzpvvo0U0WQjoSjv9c50bThuyBXMcFdgzSluPxTQdWsXcvfgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709828514; c=relaxed/simple;
-	bh=U4swRsOlTMxrzuKp3X1aijAz9oVE4WC63mwsYg2TUJw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VQXukIh+0gbYg8Xgbc4DSCaQNbamXNUfTchIuk3VvRRzydFhw4y7twsD1iiWjlS3C3i3zhr2pMVus5xJOo5UOy3LGAg5siv2p9nkPZnrl/grfmG43FpRZTWcHGWA5Pjv2UwFli42M07eZGASkP/yZaL0zTFTKi30pNYFAHADI/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UlHYj1Ps; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709828514; x=1741364514;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=U4swRsOlTMxrzuKp3X1aijAz9oVE4WC63mwsYg2TUJw=;
-  b=UlHYj1PsdvZ8ODbrglItbUwhT/IKjmwfympfjypyd/huoleh4G5NUozq
-   qyq4TBNn7Nb062n8X+i/yw1HJOC33Lo1S3VPgqBZQkAFmoec0Tzo5LX4W
-   45fHssw4shcpHgN/ndefJYjgtklj5zkAHtT7qRcFGVbLY2/bAyVrvkZtA
-   rdxjErR+Z44jidx0B22Qb6GnpJbRnp4i7QSo/4VkaWUevcsOhPddpjigR
-   gbV66EueHPRqr2lXk0XtzXAxqkEeYCuKYdEODzwY9snN9dsufRwxAgPOU
-   BFZCEATTZ2u8GbP8yyqEmuP3RRUCXe6unsfq2n6vTxk37VLhEwTfUvdbL
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="21959620"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="21959620"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 08:21:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="10083259"
-Received: from pqtruong-mobl.amr.corp.intel.com (HELO [10.212.139.124]) ([10.212.139.124])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 08:21:52 -0800
-Message-ID: <f246d70d-65c0-4de8-8f49-960d7b719a23@linux.intel.com>
-Date: Thu, 7 Mar 2024 08:21:51 -0800
+	s=arc-20240116; t=1709828548; c=relaxed/simple;
+	bh=RH965VRzhr8fQNSe1irhAYC9UGkxUfC2Asnt2FtFzlY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=e2MZ5EGK/E6ITmOIuhMQZklZh+JKUJl165iwTZAR4ys54fWONIWPyiLo/CEQIr46IYZutmK9krnHhlSstaxD5DbecGzTXIhl5mjYgqHuhmj2mjZvdVOgJSg1ahPSRK420N7MElb+WpWSaeeLmOkuMhpsZ75OqpWa+BPkYj7HzGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mDPKKKsi; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-609f015e386so16192567b3.3
+        for <linux-efi@vger.kernel.org>; Thu, 07 Mar 2024 08:22:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709828545; x=1710433345; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5ErjHBWdSSakqn/aHxwHT5BfjRHzEYvqxPc54cCuTPk=;
+        b=mDPKKKsiQehhwNxk6DsuLJpKUSpao4kmVFSNRC02kN7AGJFOArk/fLqA3fDkw27Nge
+         DtVPvLWjZERPRnch+3fl3NHIlPcqRWlL9yn5pGpsUhXkLEFARrzh5jXsjziUc4v+HBnN
+         b8FKDTwqbXQW1/Go74JUVTEl2Amm4o37RN5rUJ/fmvZ4DQamJFHLmd9C0+buWjfDXkOE
+         npeOHGHxy6r7Z0cx6dhCX9skIpUBAjQywvv2ez2EQDl6dIb7f5CkdKoVQirZrya8w/Dy
+         L85djul5LDEUHSsoUsUIVDttd9j0T1uwzkM604UGWIatEK7IqeJKD7HT68k8ck/qzDg2
+         Ve6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709828545; x=1710433345;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5ErjHBWdSSakqn/aHxwHT5BfjRHzEYvqxPc54cCuTPk=;
+        b=HgYnRF2oVK6RCZJXTvdrqjDU01/REESJLLpATvEMx9hoWzcLZA9YzbpZe81foeNSHi
+         sUzCCT5hl8SWPBVYxBGFx6K8bdJvudWVpB0Pkr843KEMYSSTTbwMTxtPDpjhSRlS+j4k
+         iCCgOrYNWeYJ+mX6JBtMjSF0sjo1Sup21aBGJRhm68WCQRBcjObu9mgyfLiQYn1B9R9l
+         qnbPYynPE2X+iFoyMb1fJ0vUadC7woZGgLDCWG4SvaZQx1lqGQvtiMJtjmsvQ6JAEsqg
+         z3NIK4/UUIjB8t1Mlg6j2LV8bC620G1wXxhOJnZzdqu0tM9MAoLVzaMTDZ1tViM3OJvw
+         rnBw==
+X-Gm-Message-State: AOJu0Yxe9oMhE2EL0K+gSXlekyWU7WlCsI7I5FRKejzhAUme69ikLFVC
+	DNkVEDJqoZLWiwWGRoQLe9PxihSDiEcLeNJiSTMlGK0Qg6ZAkagkutjqx/ZjUowtU/oPWcINXrP
+	Q8Md+O8cPX47HkeeUo4YoPkl+naApPESnAU2SLvTUNRahLaUPjOga882CAMREWQvIATIvCk4SBj
+	RZGVTcusVW7rWBuFJd5N+Rih/3dQ==
+X-Google-Smtp-Source: AGHT+IFQeZzccCYpyXrXt2CDmITr8E6OB2I0r0qghDPijJgHKVU/DBgUqy3n0Uu5uqa9lUJlwCOc4VcC
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a0d:d696:0:b0:609:e89c:983f with SMTP id
+ y144-20020a0dd696000000b00609e89c983fmr883274ywd.10.1709828545472; Thu, 07
+ Mar 2024 08:22:25 -0800 (PST)
+Date: Thu,  7 Mar 2024 17:22:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Bug Report] Bug in "efi/libstub: Add get_event_log() support for
- CC platforms"
-Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- Ard Biesheuvel <ardb+git@google.com>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org
-References: <0229a87e-fb19-4dad-99fc-4afd7ed4099a@collabora.com>
- <CAMj1kXE166VdJLWSWo7_3MDw4V3zSuYRx44Z7yqyj5mQVOdDCA@mail.gmail.com>
- <CAMj1kXGFLwsgPo9Xy_-9gaOUUO=wDd_K12ccYUhP1nWf3KLb0w@mail.gmail.com>
- <CAMj1kXG3ySsqU0v5dnC2V+xiKGxdFnY_WSOFzrqb0sr9gDT7Zw@mail.gmail.com>
- <ee598ddd-5f23-45a7-9233-f7de1bd9364e@linux.intel.com>
- <CAMj1kXEmRqLD7+9nNxBmyxAp8O2iRQ6wfeJS=Qrks4+ivv673Q@mail.gmail.com>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <CAMj1kXEmRqLD7+9nNxBmyxAp8O2iRQ6wfeJS=Qrks4+ivv673Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1729; i=ardb@kernel.org;
+ h=from:subject; bh=tdmSSd52DnAz994gpQ6l+sVS8T+KwMjSwhjTlMziEmU=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXly+3fPuzjX3RbeOqN2i7/a7cV7jW58J0z+yHwfVLaj
+ bjrvx+d6ChlYRDjYJAVU2QRmP333c7TE6VqnWfJwsxhZQIZwsDFKQAT+XSekeHQ8cpZP15+PfBj
+ 77k/c7I3TOv0jQoPCG6a2MHHKZCYHM/M8M9ghnSp1eU7p7v6WM9F1rM1bH6xV71O6q6UrZXegly BlfwA
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+Message-ID: <20240307162214.272314-7-ardb+git@google.com>
+Subject: [PATCH v2 0/5] efi/libstub: Fall back to CC proto for measurement
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
+From: Ard Biesheuvel <ardb@kernel.org>
 
-On 3/7/24 7:41 AM, Ard Biesheuvel wrote:
-> On Thu, 7 Mar 2024 at 16:36, Kuppuswamy Sathyanarayanan
-> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->>
->> On 3/7/24 3:30 AM, Ard Biesheuvel wrote:
->>> On Thu, 7 Mar 2024 at 12:13, Ard Biesheuvel <ardb@kernel.org> wrote:
->>>> On Thu, 7 Mar 2024 at 12:08, Ard Biesheuvel <ardb@kernel.org> wrote:
->>>>> Hi Muhammad,
->>>>>
->>>>> Thanks for the report.
->>>>>
->>>>> On Thu, 7 Mar 2024 at 12:02, Muhammad Usama Anjum
->>>>> <usama.anjum@collabora.com> wrote:
->>>>>> Hi,
->>>>>>
->>>>>> The recent patch:
->>>>>> 276805fb9c305: efi/libstub: Add get_event_log() support for CC platforms
->>>>>> has introduced
->>>>>> #define EFI_CC_EVENT_LOG_FORMAT_TCG_2   0x00000002
->>>>>>
->>>>>> But EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 has the same numerical value:
->>>>>> #define EFI_TCG2_EVENT_LOG_FORMAT_TCG_2   0x2
->>>>>>
->>>>>> Thus there is dead code in efi_retrieve_tcg2_eventlog() i.e, multiple if
->>>>>> conditions with (version == 2) I'm unable to decide on what is wrong and
->>>>>> what is right here. Please have a look.
->>>>>>
->>>>> Why is this a problem? The compiler will recognize this and simplify
->>>>> the conditional. The code as written is semantically correct, the fact
->>>>> that the symbolic constants resolve to the same numerical value is
->>>>> just an implementation detail.
->>>> Ah hold on. I see what you mean now:
->>>>
->>>> if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
->>>> final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
->>>> + else if (version == EFI_CC_EVENT_LOG_FORMAT_TCG_2)
->>>> + final_events_table = get_efi_config_table(LINUX_EFI_CC_FINAL_LOG_GUID);
->>>>
->>>> Yes, that is broken.
->>> Could we fix it like this perhaps?
->>>
->>> --- a/drivers/firmware/efi/libstub/tpm.c
->>> +++ b/drivers/firmware/efi/libstub/tpm.c
->>> @@ -75,8 +75,7 @@
->>>          *
->>>          * CC Event log also uses TCG2 format, handle it same as TPM2.
->>>          */
->>>        if (version > EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2) {
->>>             /*
->>>              * The TCG2 log format has variable length entries,
->>>              * and the information to decode the hash algorithms
->>> @@ -109,10 +108,11 @@
->>>      * Figure out whether any events have already been logged to the
->>>      * final events structure, and if so how much space they take up
->>>      */
->>>    if (version > EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2)
->>>        final_events_table =
->>>            get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID) ?:
->>>            get_efi_config_table(LINUX_EFI_CC_FINAL_LOG_GUID);
->> Looks good to me. If there is a concern that a TPM config table may exists
->> even in CC case, we can get the table pointer under protocol check and pass
->> it as argument to this function.
->>
-> Yeah, that makes sense. I'll fold this into the patch too.
->
-> I did realize, though, that we are still missing some pieces to allow
-> the kernel to make use of this. Only the TCG2 final events log is
-> accessed by the kernel proper, and AFAICT, this all happens in the
-> context of a char driver attached to a TPM device.
->
-> So I'd like to understand if there are any plans to follow up?
->
->
+This is a follow-up to Kuppuswamy's series [0] to add TDX based
+measurement of the initrd and command line to the EFI stub.
 
-There is a discussion in the following thread about convergence between
-RTMR and TPM for eventlog extension and access to firmware tables. I think
-we will have follow up patches once we decide on the correct direction.
+In view of time wrt the merge window, I've taken the liberty of applying
+my review feedback to the code directly, rather than going back and
+forth with the author to converge on something we can both agree on.
 
-https://lore.kernel.org/lkml/b20a4dc2-2794-46a9-b3d5-41e06ce22e34@intel.com/#t
+Changes since v1:
+- add patch to switch to the TCG2 spec's symbolic GUID name for the
+  final events table
+- omit flex array member in efi_cc_event_t
+- avoid version confusion between CC and TCG2 both using version 2
 
->
->
->
->> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
->> index c35f99f259c1..2ef1e4cd6bb2 100644
->> --- a/drivers/firmware/efi/libstub/tpm.c
->> +++ b/drivers/firmware/efi/libstub/tpm.c
->> @@ -49,12 +49,12 @@ void efi_enable_reset_attack_mitigation(void)
->>
->>  static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_location,
->>                                        efi_physical_addr_t log_last_entry,
->> -                                      efi_bool_t truncated)
->> +                                     efi_bool_t truncated,
->> +                                     struct efi_tcg2_final_events_table *final_events_table)
->>  {
->>         efi_guid_t linux_eventlog_guid = LINUX_EFI_TPM_EVENT_LOG_GUID;
->>         efi_status_t status;
->>         struct linux_efi_tpm_eventlog *log_tbl = NULL;
->> -       struct efi_tcg2_final_events_table *final_events_table = NULL;
->>         unsigned long first_entry_addr, last_entry_addr;
->>         size_t log_size, last_entry_size;
->>         int final_events_size = 0;
->> @@ -109,10 +109,6 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
->>          * Figure out whether any events have already been logged to the
->>          * final events structure, and if so how much space they take up
->>          */
->> -       if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
->> -               final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
->> -       else if (version == EFI_CC_EVENT_LOG_FORMAT_TCG_2)
->> -               final_events_table = get_efi_config_table(LINUX_EFI_CC_FINAL_LOG_GUID);
->>         if (final_events_table && final_events_table->nr_events) {
->>                 struct tcg_pcr_event2_head *header;
->>                 int offset;
->> @@ -152,6 +148,7 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
->>
->>  void efi_retrieve_eventlog(void)
->>  {
->> +      struct efi_tcg2_final_events_table *final_events_table = NULL;
->>         efi_physical_addr_t log_location = 0, log_last_entry = 0;
->>         efi_guid_t tpm2_guid = EFI_TCG2_PROTOCOL_GUID;
->>         int version = EFI_TCG2_EVENT_LOG_FORMAT_TCG_2;
->> @@ -170,6 +167,8 @@ void efi_retrieve_eventlog(void)
->>                                                 &log_location, &log_last_entry,
->>                                                 &truncated);
->>                 }
->> +               if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
->> +                       final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
->>         } else {
->>                 efi_guid_t cc_guid = EFI_CC_MEASUREMENT_PROTOCOL_GUID;
->>                 efi_cc_protocol_t *cc = NULL;
->> @@ -179,6 +178,7 @@ void efi_retrieve_eventlog(void)
->>                         return;
->>
->>                 version = EFI_CC_EVENT_LOG_FORMAT_TCG_2;
->> +              final_events_table = get_efi_config_table(LINUX_EFI_CC_FINAL_LOG_GUID);
->>                 status = efi_call_proto(cc, get_event_log, version, &log_location,
->>                                         &log_last_entry, &truncated);
->>         }
->> @@ -187,5 +187,5 @@ void efi_retrieve_eventlog(void)
->>                 return;
->>
->>         efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
->> -                                  truncated);
->> +                                 truncated, final_events_table);
->>  }
->>
->>
->>
->>
->>
->> --
->> Sathyanarayanan Kuppuswamy
->> Linux Kernel Developer
->>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+
+[0] https://lore.kernel.org/all/20240215030002.281456-1-sathyanarayanan.kuppuswamy@linux.intel.com/
+
+Ard Biesheuvel (3):
+  efi/libstub: Fold efi_tcg2_tagged_event into efi_measured_event
+  efi/tpm: Use symbolic GUID name from spec for final events table
+  efi/libstub: Measure into CC protocol if TCG2 protocol is absent
+
+Kuppuswamy Sathyanarayanan (2):
+  efi/libstub: Add Confidential Computing (CC) measurement typedefs
+  efi/libstub: Add get_event_log() support for CC platforms
+
+ drivers/firmware/efi/efi.c                     |  3 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 98 ++++++++++++++------
+ drivers/firmware/efi/libstub/efi-stub.c        |  2 +-
+ drivers/firmware/efi/libstub/efistub.h         | 90 ++++++++++++++++--
+ drivers/firmware/efi/libstub/tpm.c             | 82 ++++++++++------
+ drivers/firmware/efi/libstub/x86-stub.c        |  2 +-
+ include/linux/efi.h                            |  5 +-
+ 7 files changed, 214 insertions(+), 68 deletions(-)
+
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.44.0.278.ge034bb2e1d-goog
 
 
