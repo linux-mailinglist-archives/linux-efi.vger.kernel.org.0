@@ -1,152 +1,133 @@
-Return-Path: <linux-efi+bounces-777-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-778-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF99875F39
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Mar 2024 09:16:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702C6876072
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Mar 2024 09:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD96C28270D
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Mar 2024 08:16:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 277FB285589
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Mar 2024 08:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AC751031;
-	Fri,  8 Mar 2024 08:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430F72D056;
+	Fri,  8 Mar 2024 08:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJEBJF65"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RzUAcXhV"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F992C85C;
-	Fri,  8 Mar 2024 08:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB4B524C3
+	for <linux-efi@vger.kernel.org>; Fri,  8 Mar 2024 08:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709885788; cv=none; b=E01/DpLkbH9EYdBnXzbVBILY/eZpZNvyhQZipHTCPvwMSJWwRQN/og54KF5LEetbJRyRSnXT6IwR7bmyKjtGvTVuD1EQgyDsrmRAxl22661lDPgPOzTkcAroov7N2tH4K4jtMX7oTh9z0etrDx8yAQtvrqMdeQCaWsWEwrLHBr4=
+	t=1709888295; cv=none; b=DLPqEPX8eRcErbuPCJun6zFTtdpsdhDlNHlWNXVhrjz3AR70Ivj9vVXBET/xjybgc1puUgWw/WJEKnmTANjmkmNTIlbrmx4VlPELc5WGh4cX0fZs4EpgikTNU4Ok6HgH9qxPp/lucxWaVdo59sv7bKjQwy4bP5q5z/6F3Po3Ccw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709885788; c=relaxed/simple;
-	bh=+KlByP7rf+bOfulZPxS+EKdSXzyhEgQiIoUkRNVAth0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XC/lCe/fyFBmTQ6hzHH3MX6IumzL606ItjuYIEd2KxlfdEuZlsCGeC1WdG6ZzjK17vq06g/e4s0kzimTXHu9L80TbJxmVFUtgxUgkduB1Q7t5Sdaijyzq+jyfBY25R+ZLoLYK9bFbmmG0v5+04cvXEhIFMvUQORmSwAfNbBeXjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AJEBJF65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA060C43142;
-	Fri,  8 Mar 2024 08:16:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709885787;
-	bh=+KlByP7rf+bOfulZPxS+EKdSXzyhEgQiIoUkRNVAth0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AJEBJF65mmnJlZwCUPpKFJYdzNJka13dBkz0edt4+/KqQdM7xUsiNLYeVYxnMrgt2
-	 q+ehRfCaOtMGAyldwckSNhgvODgQReTpEl3zR9QqFbo3uY3bApcRnMHPrQ0Jz7CICf
-	 /dXmWydc0avlzbfadhLItkiAcm0UkiiFbC5UT9mmuEDm1vtLh7koBbseq3h8OqxMqs
-	 wkoWMTKjHqaRBj/tku/OkDmQo7tcmrc+F8KaDn5kdqbOAoKuIScNjFtabxUgiwPq26
-	 HUDMaS0ENmScg89zDJ/noNVANFZ7cHVPYmrtjBFbgqxgS43RJMGbKnYX5cE3p8ZdVO
-	 TgMdERL4rmWaw==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-512e4f4e463so2464373e87.1;
-        Fri, 08 Mar 2024 00:16:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX0p8qTYyZVBf2/15oS9KmhQ/8S/WaIrALpY/5Eeprzv+Gay1jSWLKNsReSwKu4etqlNJ1s4tVqv1oE09R9MInr+0HEzKnSYsAOvlw8zcEqbXM+AkIvl9wQQUk0jSQaj2tH6iqpIBtx
-X-Gm-Message-State: AOJu0YwJaKVR6iM08DesEWXxnWcgGdGv7hpLG71JrDwBD9Zk888Q4m/M
-	xR0CBolYV09chPwJT4nnfXOFe0Q+1pHqz9Au/s+exHEM1xvUXu3vq+mBmw3mAMuLAxW5KPHoAEe
-	BDGx6mpduVbFSPcWgkrNdsKHIwRE=
-X-Google-Smtp-Source: AGHT+IGpv/Z8DQiyJqrjf2eUzf7yHR2/5h5Z4A8FPQ0x7MSK7aRM10lTeI1HNy98FRtxs0WDa4CCB8IatOX9H1APg7I=
-X-Received: by 2002:a05:6512:4851:b0:513:54c6:9f68 with SMTP id
- ep17-20020a056512485100b0051354c69f68mr2751944lfb.18.1709885785595; Fri, 08
- Mar 2024 00:16:25 -0800 (PST)
+	s=arc-20240116; t=1709888295; c=relaxed/simple;
+	bh=89Fo04Kf8u+l4YHEdTmROroSLRpIHr7WLaVSC4uYyK4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nqZjME0WOTOnGZTWCZ3Xx5n4VflKNSZ9pESxbtUwceUL4Ta8/MPeuckapFhiq2ORWM8tGBxTrNs5xUHwCMHRdOD1pR/ZAmY+9l2J8etnC3talh3c6B6dlcE17tbAnod7Bo73357cucow4J4SjhMW4k1bpb55IYjU0mjp580uxF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RzUAcXhV; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-40e53200380so11739835e9.3
+        for <linux-efi@vger.kernel.org>; Fri, 08 Mar 2024 00:58:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709888292; x=1710493092; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZlsIWuBGq/1+/Il03K2GJRQT78w8fUPScrkjeMZPQC8=;
+        b=RzUAcXhVJTKdDTjVMsnPHaa7z2MQD6qVnRCyvovDWaFbtaJgmWjA7ZPQXe04YwbU6b
+         oi9ebZS/A6tz6hvB6ToD+hWl87tWUbsRsYyTyg1nPof8CugSe6wTN9DgB48o6cPRttNV
+         phQAVrXXVnhfnB7I6LCbKy7WB9QClKxWN82sExoIE1936SUl8AERuLcsDBOsvS5hxZeG
+         YAUX3jy65WbMxAZgkvoTeP/hVcE2FoitvE2YlcH9ggsxdscp07wGpMRgPtF6X1Z9ZFPT
+         kg5w7bhVxVEq/jfdCVFHrF3BL01y/QKRp9Yii8U2jVma8gCVYLk2kRHpQS5gvzXv/0iU
+         xMAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709888292; x=1710493092;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZlsIWuBGq/1+/Il03K2GJRQT78w8fUPScrkjeMZPQC8=;
+        b=gkvkh0FijwPUpmCQPLM5NPEeLpbJn/1qFuZZURneVQGJHPHqKO7UtFJ0M+ULaq73Wz
+         I0kvsu+8CkJDBmCCG6qUEI9y0tNpIWB6zoiH/rKB8B7YYmOwH+2jk8h0yHMmi25PLqss
+         jbNhCfQExWbp/FSTOB1bDXV4KRhRAan1J0vH7lfyV0HqYTdRSzB4ynLmWbLtQjaQNYfN
+         yZdHKI3tvrGcAVq/Wd++G0noDJvyhxI3a+Krjmqm7F9yWEeliyDrFPcqfvs9R7wNBv1a
+         Kmsr+jttVeAuxczGFlaFaidZjbzVVm7YMZ3s1QknD8WQSeAWRH7iCNIW6UZlbTo3RUK5
+         N3Hw==
+X-Gm-Message-State: AOJu0YzEAwut863ZnJqOnZejEiThUazfV8g/NPjfKxE9/79VruLYJwQv
+	zCtRqWR4BFMqbkAwmsYVFbTjN7FXkKhJff+5TmtXYurqb2IXQU9uPMFmWueD6gIPhDC1xlwP8H2
+	oj/M3ryB5VgMKSN+w227QZYRJDzYcj1z5CJtXoj/ghaHng+QMAPpHq3+Ll8DCF9erYNO4RH84zi
+	CpIGorTpau7LYAwPGA99HlS6IC9g==
+X-Google-Smtp-Source: AGHT+IEPD8keadXgOhV2dGjS/dk4MZswGCMuTcTBZ8rJiwCllwUaS6lRZOuk7Gpq7z/SCfJn3UUhRc0O
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:600c:b92:b0:412:e783:bf5b with SMTP id
+ fl18-20020a05600c0b9200b00412e783bf5bmr158502wmb.4.1709888291257; Fri, 08 Mar
+ 2024 00:58:11 -0800 (PST)
+Date: Fri,  8 Mar 2024 09:57:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAMj1kXH1oMbONoHFMPaatfaqrHNE2ryfrG7kw-7J-eFsuXkK-Q@mail.gmail.com>
- <mhng-c53211c1-4708-459a-bdc5-6e013c2adaee@palmer-ri-x1c9>
- <CAMj1kXEFqMx8qUHQEbg=OqbG-H0Zpj-nWu=a6qhhvNEZPO7f4Q@mail.gmail.com>
- <CAMj1kXG4SXsBfNqWMRUJ+AVv=6trWUAow-f8Mk5oKCpO=WueFg@mail.gmail.com>
- <CAEEQ3wkN3HDUuPDfWTn4kTxKH03OaRxBTFru3jJzZgW+BVhABg@mail.gmail.com>
- <CAMj1kXHuKbaXqWuFuMXhfL1_2w05CfJrk2uAPOW2HNHdpEnxXA@mail.gmail.com> <CAEEQ3wnv47x+FXYQ1=DdQdgRrp_EgX+C9eH+-JMPWh5p2450Zw@mail.gmail.com>
-In-Reply-To: <CAEEQ3wnv47x+FXYQ1=DdQdgRrp_EgX+C9eH+-JMPWh5p2450Zw@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 8 Mar 2024 09:16:14 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFE_G5-od5kbOiU_4D7dwjksdrMTofHfYsLkjFtZDz-dA@mail.gmail.com>
-Message-ID: <CAMj1kXFE_G5-od5kbOiU_4D7dwjksdrMTofHfYsLkjFtZDz-dA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH 3/3] efistub: fix missed the initialization
- of gp
-To: yunhui cui <cuiyunhui@bytedance.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu, 
-	xuzhipeng.1973@bytedance.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
-	bp@alien8.de, xiao.w.wang@intel.com, jan.kiszka@siemens.com, 
-	kirill.shutemov@linux.intel.com, nathan@kernel.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, Conor Dooley <conor@kernel.org>, 
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1825; i=ardb@kernel.org;
+ h=from:subject; bh=InBBNPBH0BCQA/t6tSrON7UMzidtHfWAqxCf4hnlHwo=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXVZSHe+1f/pURtt4zbH/tSyKl9W9S+ZxzF3bMulhyxC
+ /4leIyto5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExksQrDP8tL8uXPDnh+n7L6
+ 2uf/H6TKO7fYifEd8TPImeXTLrfJbwMjw6RbxvFrLF8k39Y/u49PPPzBj4Z/H7fXcWVpG/zm+Xx fmgsA
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+Message-ID: <20240308085754.476197-7-ardb+git@google.com>
+Subject: [PATCH v3 0/5] efi/libstub: Fall back to CC proto for measurement
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, 8 Mar 2024 at 08:10, yunhui cui <cuiyunhui@bytedance.com> wrote:
->
-> Hi Ard,
->
-> On Fri, Mar 8, 2024 at 12:49=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> =
-wrote:
-> >
-> > On Thu, 7 Mar 2024 at 04:19, yunhui cui <cuiyunhui@bytedance.com> wrote=
-:
-> > >
-...
-> > >
-> > > From the logic of binutils, if "__global_pointer$" exists, it is
-> > > possible to use GP for optimization. For RISC-V, "__global_pointer$"
-> > > was introduced in commit "fbe934d69eb7e". Therefore, for the system a=
-s
-> > > a whole, we should keep using GP uniformly.
-> >
-> > There is no 'system as a whole' that can use GP 'uniformly'
-> >
-> > The EFI stub is a separate executable that runs from a different
-> > mapping of memory, in an execution context managed by the firmware. It
-> > happens to be linked into the same executable as the vmlinux kernel.
-> >
-> > > The root cause of this
-> > > problem is that GP is not loaded, rather than "On RISC-V, we also
-> > > avoid GP based relocations..." as commit "d2baf8cc82c17" said.
-> >
-> > GP is not loaded because in the EFI firmware context, there is no safe
-> > way to rely on it.
-> >
-> > > We need
-> > > to address problems head-on, rather than avoid them.
-> > >
-> >
-> > So what solution are you proposing for the potential GP conflicts
-> > between the boot loader, the Linux EFI stub and the firmware?
->
->
-> The GP register values are now loaded in the arch/riscv/kernel/head.S
-> and arch/riscv/kernel/suspend_entry.S files.
->
-> Let's think about EFI runtimeservice. If the EFI firmware code uses GP
-> registers but the compiler does not avoid GP, and kernel uses the
-> callback function provided by EFI, is there a problem? Is it possible
-> to solve the problem only by making the firmware code not use GP at
-> all and compiling options to avoid using GP?
->
+From: Ard Biesheuvel <ardb@kernel.org>
 
-EFI runtime services do not use callbacks, and execute in a context
-that is entirely owned by the OS. So this is one place where EFI
-firmware cannot use GP at all even if the UEFI spec permitted it.
+This is a follow-up to Kuppuswamy's series [0] to add TDX based
+measurement of the initrd and command line to the EFI stub.
 
-> The same goes for efistub.
->
+Changes since v2 [1]:
+- fix incorrect assertion that efi_tcg2_tagged_event is a local
+  invention; it comes from the TCG PC Client spec
+- fix deviation from TCG PC Client spec in how the event size field is
+  populated
 
-Not really. The UEFI spec seems to suggest that *system* firmware
-should not touch GP or make any assumptions about its value, but it
-doesn't say anything about EFI applications such as the EFI stub or
-GRUB.
+Changes since v1:
+- add patch to switch to the TCG2 spec's symbolic GUID name for the
+  final events table
+- omit flex array member in efi_cc_event_t
+- avoid version confusion between CC and TCG2 both using version 2
 
-> So the way to solve this problem is that the firmware does not use GP
-> optimization. Does this allow efistub to load the GP register?
->
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
-What about GRUB or other bootloaders that are loaded before the
-kernel, but are still active while the EFI stub is executing? Who gets
-to own GP in this scenario?
+[0] https://lore.kernel.org/all/20240215030002.281456-1-sathyanarayanan.kuppuswamy@linux.intel.com/
+[1] https://lkml.kernel.org/r/20240307162214.272314-7-ardb%2Bgit%40google.com
+
+Ard Biesheuvel (3):
+  efi/libstub: Use correct event size when measuring data into the TPM
+  efi/tpm: Use symbolic GUID name from spec for final events table
+  efi/libstub: Measure into CC protocol if TCG2 protocol is absent
+
+Kuppuswamy Sathyanarayanan (2):
+  efi/libstub: Add Confidential Computing (CC) measurement typedefs
+  efi/libstub: Add get_event_log() support for CC platforms
+
+ drivers/firmware/efi/efi.c                     |  3 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 98 ++++++++++++++------
+ drivers/firmware/efi/libstub/efi-stub.c        |  2 +-
+ drivers/firmware/efi/libstub/efistub.h         | 95 +++++++++++++++++--
+ drivers/firmware/efi/libstub/tpm.c             | 82 ++++++++++------
+ drivers/firmware/efi/libstub/x86-stub.c        |  2 +-
+ include/linux/efi.h                            |  4 +-
+ 7 files changed, 219 insertions(+), 67 deletions(-)
+
+-- 
+2.44.0.278.ge034bb2e1d-goog
+
 
