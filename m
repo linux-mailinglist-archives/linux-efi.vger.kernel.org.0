@@ -1,155 +1,216 @@
-Return-Path: <linux-efi+bounces-773-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-774-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895B9875DED
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Mar 2024 07:17:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5F9875E2A
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Mar 2024 08:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC8BA1C20C3D
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Mar 2024 06:17:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADF091F23B01
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Mar 2024 07:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9C52E84F;
-	Fri,  8 Mar 2024 06:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EAA1CFB2;
+	Fri,  8 Mar 2024 07:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Zhy/zOsK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CCTFVLcU"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7689D1D6A8
-	for <linux-efi@vger.kernel.org>; Fri,  8 Mar 2024 06:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E99EEBB
+	for <linux-efi@vger.kernel.org>; Fri,  8 Mar 2024 07:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709878637; cv=none; b=a89ed0RKt+dljJcRKY/kq2CIdm1nU+GhJUUz9bVcHeua4YcQsPeXDYFjxctdVLjo9Yc+NG36FrMYxVgprYgXmRIUsa53Oow9S3kjAuRo0aVu7whYIaWAbFapqvkIueZLonSHcWOROR2a7sCj+rGIYx+kBD+79j0BHjGSCfG2GbU=
+	t=1709881451; cv=none; b=AV8s9osuEivEckaziX8inlEGIlkiha2qijf+jem87PBVM2H5Y8YBotHJdSAW9aP32cmtsqeKyrDy7+L9+svfZsSrtWBPAOLMESGO+PBGyQgGd5Q8MLh+uvdror9LoYGer4kTJGoSe8JrMZCOT5uLy+wAriIMv++32WorVfLy8EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709878637; c=relaxed/simple;
-	bh=//KtGIHnqH0q7odPRbeTYz+pydOzeDl9s0Zj+XZXd14=;
+	s=arc-20240116; t=1709881451; c=relaxed/simple;
+	bh=moNWiccG68WHCNpvgicP6owADtftc9jklz4pXPmQCxI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tesO/NJM0OwjsYSpojNg2KSVrwcnruUkTTd7PqcW3DjZJgNtZ2Rf4q5edRwDaSX8mjqOULd/wP98Yv/OPRgPzDYs+M2wsPKvO2BzZYhhk1w2+NG0+cGmMX94rKFYlAmMgD4Oh+4D9qDaiqptoET2xKA6JWSWxm7oCEJKdxnUr1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Zhy/zOsK; arc=none smtp.client-ip=209.85.208.176
+	 To:Cc:Content-Type; b=WG1uOC7uLoBSsj/w3wPSs5A9p+ECgkOWginkEyp1caAbeFuuHii6kzjR9rd48tmGovT6Q8/LTT+XGUGXZuqAAeCl+4Rv/pEBtXmlJqn1HlQbseMXVzEtwSBsQiyYbBuHKrOf7+HHLPkEEBT+4zqe4mCqTziUUBf0Hoc6btrfv58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CCTFVLcU; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d094bc2244so23722101fa.1
-        for <linux-efi@vger.kernel.org>; Thu, 07 Mar 2024 22:17:15 -0800 (PST)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-512e4f4e463so2394013e87.1
+        for <linux-efi@vger.kernel.org>; Thu, 07 Mar 2024 23:04:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709878633; x=1710483433; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1709881448; x=1710486248; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BGicMrrqVSq9woU0rQu2gy5i8fqlBtpVNI9P5BqEU78=;
-        b=Zhy/zOsKc+5hmbRF8mxQRfsQuLzYvoiQmLeCKVkHQexvFI5VCfibij1vawhGrymYF5
-         SlbaoHDX68ODQnzy/NqFGabCevj6wuZa1+QWGJF4emu9epPdD3Fq7vkhD+l3Hd4rcJxM
-         k3mAkI0fyZ9hRuIGZ5eHhjgJl4euzkwFuc557cqC3KKGlPCD/gT5ettAhD8HNuOKyXTF
-         YfE6qUvssUx6Oc/ZPHmPZEXSf/BIkhQltBgIyk0LrjWYYs704yKYYR+e2IQ8/aoSBP+f
-         +kSlhHyt1YqEJlgj8EP5gcdqFb7Z/UxFvbx4qGK7XiZEIwCL/gKuTI9AzFZV7JkzrChj
-         aj6Q==
+        bh=gn4mCkYJjDrdq3Br0Hvw1EguRQAza2aTfn3KrOlEaj8=;
+        b=CCTFVLcUGOf8g9ogGFNZGMpK5oBQavRi86JUm6BGNi5S79qAxR/iiFNPH0Mx4FcokH
+         DOv+aWAOpMPLk9cbuOoKgi3Bsi6iUHy6845Je/khytnJ6WLZtz+d32We7u2i3golJ3pp
+         uT7uNwTaoShtFNxmAQIErAL41K2mBiplhXzc/Kk7c+NXOaD5LMYacJmm9A+g0Kqtqiau
+         BuggSXrSngP3SYhagMxcWpCHa2UI1WJWZuWry5ekeVNBHkC8og7xZk3YfWBUEBUZz8lg
+         +PDu/iI6N0akw+yE19Fn55e8xr1Sn/JyEaJ+RjIgJaA/lBy3LfzSBM4UeF2PDeAB+4cl
+         EGkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709878633; x=1710483433;
+        d=1e100.net; s=20230601; t=1709881448; x=1710486248;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BGicMrrqVSq9woU0rQu2gy5i8fqlBtpVNI9P5BqEU78=;
-        b=Tkl3LuiZXGvRmCVqfqPXuqFC4Z2eWT6s+Fk8thi1yKtHuKirM5w7SwUn2AX+kwLfyq
-         jGdzdNnKyhRZ2PcZqcvKys2Dk3LocF7nrX7Y4bE+ehcm8M/DInoWPNVvj+aAHpDZubJh
-         MpZhslJGChxD8lHkktaGrZrYDWpehsHKhvmiivnbar9KUwZmexOI0YW0zuUBIfLCUs11
-         fB+9dsbVGjq/WpHdK5Ozxe79zzNhJfd7Yck8wDLAkt8Hr3sQBjmRNfvRBtJf8OaEppXt
-         6c3qItNrkQ5WhgRnvxbQrz/M8RylBkgmB8v6Q8hgpUJY28pFvtqnXwWOEjskPxX24nn0
-         hA8A==
-X-Gm-Message-State: AOJu0YzWDZrIjLVuzlyX8gFcf2CN2H4apATphPlxOHd34jmsoMI5rXBS
-	q9A0hShjo9byYyIrOC4coGyU57Kj13gJjHkCLvsyiO8+TLGL6RkOaQBKrgWqnjBWy9m1oCenMhH
-	vqxNBiv/OO21QEUzPYtvHcGj+Pf4nM7ZmqbDbrQ==
-X-Google-Smtp-Source: AGHT+IG/aeepsNgY023QTHXhmwNDTeAv/1y6JwUQTxDQjfEo4GRcDuYFiCIxr75nip7QD7AZz3VPWyduBfDGWf9cRCk=
-X-Received: by 2002:a2e:3613:0:b0:2d2:3810:552 with SMTP id
- d19-20020a2e3613000000b002d238100552mr2577462lja.53.1709878633286; Thu, 07
- Mar 2024 22:17:13 -0800 (PST)
+        bh=gn4mCkYJjDrdq3Br0Hvw1EguRQAza2aTfn3KrOlEaj8=;
+        b=wLkwjmsFZ4DEJJ+vGpX2sFzHvKX956P6DRIAu1gqEfShK0e9Nk6pclxc6OvxXktgtb
+         bzMOoEvRlejvA7hl4ALy5fSDRlsCjmFZKGJCFfTzw26WMvUwfIw0iI5Z4/vhSkwj9ZoF
+         WW1G0oEoaV5HY7T+k3iUzAlqtqR0LhyflKZNQgr0M7vWRq01fPMtSwj48Gn4v0UewlcC
+         n6+WqUYyweuLFhdTPNRFC4+GChnD02y5PsqMjnuhYMDvK0mjI7Z0AhSw1+adA636+0Qc
+         fPFN9cxnZ5PgYGxZM/HfeeKTxaOb6Kt2V5MifvNQor4Ov9mg+KECRKQbnSHN0Q2rEIvu
+         yf7w==
+X-Gm-Message-State: AOJu0YwuIflXBYW5bgeiXGp+8NJKKMEnWeJNIAffWjyTfRMDfweoxOLK
+	WI/lPHOWsRladkZFjd69exgLRIwRX4LY0BG7y1Q1rdbyFnAylgHdPGXeOpTxb3iZyxoZUQVtuPm
+	1atib/yd+mSztrovVDSdmcwiqLLqkc8O4GaZxQTv4fM+sCRA+u4a9vA==
+X-Google-Smtp-Source: AGHT+IEze9YqD7egEaM0l0ENZ+1i0T2nZprsuXZtpasDYyXww0k8f7ZRGOyc1XDWf0bAeQK4GiofNkuHTTH3BZQmt6I=
+X-Received: by 2002:ac2:5e35:0:b0:513:5c64:3a8a with SMTP id
+ o21-20020ac25e35000000b005135c643a8amr2894491lfg.16.1709881447757; Thu, 07
+ Mar 2024 23:04:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240307162214.272314-7-ardb+git@google.com> <20240307162214.272314-9-ardb+git@google.com>
-In-Reply-To: <20240307162214.272314-9-ardb+git@google.com>
+References: <20240307162214.272314-7-ardb+git@google.com> <20240307162214.272314-8-ardb+git@google.com>
+In-Reply-To: <20240307162214.272314-8-ardb+git@google.com>
 From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Fri, 8 Mar 2024 08:16:37 +0200
-Message-ID: <CAC_iWjJNhsptZDcr=qD0gsjLJet+WbPk=PeT9npDoAc4GYx2Mw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] efi/tpm: Use symbolic GUID name from spec for
- final events table
+Date: Fri, 8 Mar 2024 09:03:31 +0200
+Message-ID: <CAC_iWjLhVmAjnmAvdkr3aCZwbWhNMJwLaeQ9NsUCbcwVHhwp3g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] efi/libstub: Fold efi_tcg2_tagged_event into efi_measured_event
 To: Ard Biesheuvel <ardb+git@google.com>
 Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
+Hi Ard,
+
 On Thu, 7 Mar 2024 at 18:22, Ard Biesheuvel <ardb+git@google.com> wrote:
 >
 > From: Ard Biesheuvel <ardb@kernel.org>
 >
-> The LINUX_EFI_ GUID identifiers are only intended to be used to refer to
-> GUIDs that are part of the Linux implementation, and are not considered
-> external ABI. (Famous last words).
+> In spite of the efi_ prefix, struct efi_tcg2_tagged_event is specific to
+> the EFI stub, and so we can tweak it to our liking if needed, e.g., to
+> accommodate the TDX variant of the TCG2 measurement protocol.
 >
-> GUIDs that already have a symbolic name in the spec should use that
-> name, to avoid confusion between firmware components. So use the
-> official name EFI_TCG2_FINAL_EVENTS_TABLE_GUID for the TCG2 'final
-> events' configuration table.
+> In preparation for that, get rid of it entirely, and combine it with the
+> efi_measured_event struct used by the measurement code.
 >
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+
 > ---
->  drivers/firmware/efi/efi.c         | 2 +-
->  drivers/firmware/efi/libstub/tpm.c | 2 +-
->  include/linux/efi.h                | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+>  drivers/firmware/efi/libstub/efi-stub-helper.c | 38 +++++++++++---------
+>  drivers/firmware/efi/libstub/efistub.h         |  7 ----
+>  2 files changed, 22 insertions(+), 23 deletions(-)
 >
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 4fcda50acfa4..f6cfd29308d9 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -597,7 +597,7 @@ static const efi_config_table_type_t common_tables[] __initconst = {
->         {EFI_MEMORY_ATTRIBUTES_TABLE_GUID,      &efi_mem_attr_table,    "MEMATTR"       },
->         {LINUX_EFI_RANDOM_SEED_TABLE_GUID,      &efi_rng_seed,          "RNG"           },
->         {LINUX_EFI_TPM_EVENT_LOG_GUID,          &efi.tpm_log,           "TPMEventLog"   },
-> -       {LINUX_EFI_TPM_FINAL_LOG_GUID,          &efi.tpm_final_log,     "TPMFinalLog"   },
-> +       {EFI_TCG2_FINAL_EVENTS_TABLE_GUID,      &efi.tpm_final_log,     "TPMFinalLog"   },
->         {LINUX_EFI_MEMRESERVE_TABLE_GUID,       &mem_reserve,           "MEMRESERVE"    },
->         {LINUX_EFI_INITRD_MEDIA_GUID,           &initrd,                "INITRD"        },
->         {EFI_RT_PROPERTIES_TABLE_GUID,          &rt_prop,               "RTPROP"        },
-> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
-> index 7acbac16eae0..a880f7374c27 100644
-> --- a/drivers/firmware/efi/libstub/tpm.c
-> +++ b/drivers/firmware/efi/libstub/tpm.c
-> @@ -128,7 +128,7 @@ void efi_retrieve_tpm2_eventlog(void)
->          * final events structure, and if so how much space they take up
->          */
->         if (version == EFI_TCG2_EVENT_LOG_FORMAT_TCG_2)
-> -               final_events_table = get_efi_config_table(LINUX_EFI_TPM_FINAL_LOG_GUID);
-> +               final_events_table = get_efi_config_table(EFI_TCG2_FINAL_EVENTS_TABLE_GUID);
->         if (final_events_table && final_events_table->nr_events) {
->                 struct tcg_pcr_event2_head *header;
->                 int offset;
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index c74f47711f0b..464fe16411b8 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -386,6 +386,7 @@ void efi_native_runtime_setup(void);
->  #define EFI_CONSOLE_OUT_DEVICE_GUID            EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4,  0x9a, 0x46, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
->  #define APPLE_PROPERTIES_PROTOCOL_GUID         EFI_GUID(0x91bd12fe, 0xf6c3, 0x44fb,  0xa5, 0xb7, 0x51, 0x22, 0xab, 0x30, 0x3a, 0xe0)
->  #define EFI_TCG2_PROTOCOL_GUID                 EFI_GUID(0x607f766c, 0x7455, 0x42be,  0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
-> +#define EFI_TCG2_FINAL_EVENTS_TABLE_GUID       EFI_GUID(0x1e2ed096, 0x30e2, 0x4254,  0xbd, 0x89, 0x86, 0x3b, 0xbe, 0xf8, 0x23, 0x25)
->  #define EFI_LOAD_FILE_PROTOCOL_GUID            EFI_GUID(0x56ec3091, 0x954c, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
->  #define EFI_LOAD_FILE2_PROTOCOL_GUID           EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e,  0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
->  #define EFI_RT_PROPERTIES_TABLE_GUID           EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
-> @@ -411,7 +412,6 @@ void efi_native_runtime_setup(void);
->  #define LINUX_EFI_LOADER_ENTRY_GUID            EFI_GUID(0x4a67b082, 0x0a4c, 0x41cf,  0xb6, 0xc7, 0x44, 0x0b, 0x29, 0xbb, 0x8c, 0x4f)
->  #define LINUX_EFI_RANDOM_SEED_TABLE_GUID       EFI_GUID(0x1ce1e5bc, 0x7ceb, 0x42f2,  0x81, 0xe5, 0x8a, 0xad, 0xf1, 0x80, 0xf5, 0x7b)
->  #define LINUX_EFI_TPM_EVENT_LOG_GUID           EFI_GUID(0xb7799cb0, 0xeca2, 0x4943,  0x96, 0x67, 0x1f, 0xae, 0x07, 0xb7, 0x47, 0xfa)
-> -#define LINUX_EFI_TPM_FINAL_LOG_GUID           EFI_GUID(0x1e2ed096, 0x30e2, 0x4254,  0xbd, 0x89, 0x86, 0x3b, 0xbe, 0xf8, 0x23, 0x25)
->  #define LINUX_EFI_MEMRESERVE_TABLE_GUID                EFI_GUID(0x888eb0c6, 0x8ede, 0x4ff5,  0xa8, 0xf0, 0x9a, 0xee, 0x5c, 0xb9, 0x77, 0xc2)
->  #define LINUX_EFI_INITRD_MEDIA_GUID            EFI_GUID(0x5568e427, 0x68fc, 0x4f3d,  0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68)
->  #define LINUX_EFI_MOK_VARIABLE_TABLE_GUID      EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index bfa30625f5d0..186ced8371ac 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -11,6 +11,7 @@
+>
+>  #include <linux/efi.h>
+>  #include <linux/kernel.h>
+> +#include <linux/overflow.h>
+>  #include <asm/efi.h>
+>  #include <asm/setup.h>
+>
+> @@ -193,7 +194,7 @@ void efi_apply_loadoptions_quirk(const void **load_options, u32 *load_options_si
+>         *load_options_size = load_option_unpacked.optional_data_size;
+>  }
+>
+> -enum efistub_event {
+> +enum efistub_event_type {
+>         EFISTUB_EVT_INITRD,
+>         EFISTUB_EVT_LOAD_OPTIONS,
+>         EFISTUB_EVT_COUNT,
+> @@ -219,46 +220,51 @@ static const struct {
+>         },
+>  };
+>
+> +union efistub_event {
+> +       efi_tcg2_event_t        tcg2_data;
+> +};
+> +
+> +struct efistub_measured_event {
+> +       union efistub_event     event_data;
+> +       u32                     tagged_event_id;
+> +       u32                     tagged_event_data_size;
+> +       u8                      tagged_event_data[];
+> +} __packed;
+> +
+>  static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
+>                                              unsigned long load_size,
+> -                                            enum efistub_event event)
+> +                                            enum efistub_event_type event)
+>  {
+> +       struct efistub_measured_event *evt;
+> +       int size = struct_size(evt, tagged_event_data,
+> +                              events[event].event_data_len);
+>         efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
+>         efi_tcg2_protocol_t *tcg2 = NULL;
+>         efi_status_t status;
+>
+>         efi_bs_call(locate_protocol, &tcg2_guid, NULL, (void **)&tcg2);
+>         if (tcg2) {
+> -               struct efi_measured_event {
+> -                       efi_tcg2_event_t        event_data;
+> -                       efi_tcg2_tagged_event_t tagged_event;
+> -                       u8                      tagged_event_data[];
+> -               } *evt;
+> -               int size = sizeof(*evt) + events[event].event_data_len;
+> -
+>                 status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
+>                                      (void **)&evt);
+>                 if (status != EFI_SUCCESS)
+>                         goto fail;
+>
+> -               evt->event_data = (struct efi_tcg2_event){
+> +               evt->event_data.tcg2_data = (struct efi_tcg2_event){
+>                         .event_size                     = size,
+> -                       .event_header.header_size       = sizeof(evt->event_data.event_header),
+> +                       .event_header.header_size       = sizeof(evt->event_data.tcg2_data.event_header),
+>                         .event_header.header_version    = EFI_TCG2_EVENT_HEADER_VERSION,
+>                         .event_header.pcr_index         = events[event].pcr_index,
+>                         .event_header.event_type        = EV_EVENT_TAG,
+>                 };
+>
+> -               evt->tagged_event = (struct efi_tcg2_tagged_event){
+> -                       .tagged_event_id                = events[event].event_id,
+> -                       .tagged_event_data_size         = events[event].event_data_len,
+> -               };
+> +               evt->tagged_event_id            = events[event].event_id;
+> +               evt->tagged_event_data_size     = events[event].event_data_len;
+>
+>                 memcpy(evt->tagged_event_data, events[event].event_data,
+>                        events[event].event_data_len);
+>
+>                 status = efi_call_proto(tcg2, hash_log_extend_event, 0,
+> -                                       load_addr, load_size, &evt->event_data);
+> +                                       load_addr, load_size, &evt->event_data.tcg2_data);
+>                 efi_bs_call(free_pool, evt);
+>
+>                 if (status != EFI_SUCCESS)
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index c04b82ea40f2..dae635cc3d4f 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -843,14 +843,7 @@ struct efi_tcg2_event {
+>         /* u8[] event follows here */
+>  } __packed;
+>
+> -struct efi_tcg2_tagged_event {
+> -       u32 tagged_event_id;
+> -       u32 tagged_event_data_size;
+> -       /* u8  tagged event data follows here */
+> -} __packed;
+> -
+>  typedef struct efi_tcg2_event efi_tcg2_event_t;
+> -typedef struct efi_tcg2_tagged_event efi_tcg2_tagged_event_t;
+>  typedef union efi_tcg2_protocol efi_tcg2_protocol_t;
+>
+>  union efi_tcg2_protocol {
 > --
 > 2.44.0.278.ge034bb2e1d-goog
 >
-
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
