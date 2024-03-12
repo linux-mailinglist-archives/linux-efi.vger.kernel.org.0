@@ -1,103 +1,150 @@
-Return-Path: <linux-efi+bounces-810-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-811-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91856879757
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Mar 2024 16:18:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEED879AD4
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Mar 2024 18:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EC411F229C8
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Mar 2024 15:18:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F6591C223BA
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Mar 2024 17:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558DF7C091;
-	Tue, 12 Mar 2024 15:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37285137C24;
+	Tue, 12 Mar 2024 17:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1Lmwl5P"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="asB1AKGp"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B25E7BB04;
-	Tue, 12 Mar 2024 15:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773D3273FC
+	for <linux-efi@vger.kernel.org>; Tue, 12 Mar 2024 17:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710256732; cv=none; b=sJTii9dSzgt4yIIUMSXp2l1Whs6rjG6zOpP1KvNu44QLs/Qqc6MDICUGX7FttjVyg1lx+pqExYl7bQkQ0DJjA5m6ruOy0nHL2jzOwzpq+v602Q/E5nll8oNbkyP87dBIRAqoToTLg5R5EoyVZuqwIVI2eiXJbgJMS2hsTFdsKSA=
+	t=1710265934; cv=none; b=d8XR0DMN5xOU3wd+9oXTl7HB+xjZPiWrIPbzh21X4EgXs5gBSOwhrk1AYTwnG4N0yol/bYtu4rETc91vnS1XynSRQqeUfThS5mSJMJSPqJw1iGijPnHm9SgI413AC/uWn/aM+QSI5J8En1RlOtR5CWPonpRz+eXY3dQ9H71qG5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710256732; c=relaxed/simple;
-	bh=e9D3nRiUkzwoDNU1WO9Mvab1qnoYPq79dDij4jjwu3k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=DIV1v4BikQ5votpyOmv7W3jlNrfUs21j4+mxn8oVwlcjEa9B0D6SS+sJkuZr0j9LSNX4Iwndn/6iAwnufkGX3P49vH3Ig0jOV9gnf/8dIF+wDYkZ6DGCTgdy31H7YEcdxmu1uIGkbqqo69Y0PC8KTH3aaFQyLGMEpcOroJMCwJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1Lmwl5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74728C433F1;
-	Tue, 12 Mar 2024 15:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710256731;
-	bh=e9D3nRiUkzwoDNU1WO9Mvab1qnoYPq79dDij4jjwu3k=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=h1Lmwl5P+pE/kbBOvKdZOZM25nEbfDfgOnhEj7uMpL3lrvqSkVH9DeyjsZEf7DTHn
-	 hE+C1iPnYAEHMQA1AkgjHn1CDxlvyhvh92FjY/rUU57Pura7j3mc/fwaDBHM0YxPTJ
-	 EuoUD49zHXeU5FjxnjVBGrnmBZIibE94K4SxGOVFkYeERZITcH2CIZ7Ggl+fqv6eoh
-	 IeaxrCO5fembgp1vdfcOdBpTepENLylh42LBlMDfzVapAhKGludQ50rVeZJO1++Zzs
-	 ezP/6E7bAq6njdK/Y/+nWz0kYO4KifZtj2dwllKvMBdw9TGXv7C5OxDFZpWF+4z+48
-	 mk2gdGgwHJZMw==
+	s=arc-20240116; t=1710265934; c=relaxed/simple;
+	bh=E96RFgKlfXV1du9K86FpWA34QrNJN7+dAaBLx0vsuIo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=q8T938VPbV/6CsYTCk6ALTsGAJoDRv9xj18y6T9vG8RIXa7TdLVSq30YPVvGCfArRS8NH9oBWsoP0xLPGJKiOHw0R12KRVi1HLPa65cxeA5fdVu4jAlBtzYP9mqW4gTrugqNpjbKjCP5HDAYo7ng8CG0r3OyMzvjpuXQ7BmpkiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=asB1AKGp; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-33e95458c42so1405791f8f.0
+        for <linux-efi@vger.kernel.org>; Tue, 12 Mar 2024 10:52:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1710265931; x=1710870731; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FDtxe4RWcALKWFoA0LMU4jpR4rZQTWJcn1XZld1M8ZQ=;
+        b=asB1AKGpek7/PQ5buDqu3/lNKYhZdlr3qibgp+j/q8c6tCuBSPcXULPQzB5pnfvdCl
+         8DFDF6WeZAEHcLa5qDPqjtPAT4+GiJfsgN48paNutRifSnTT71lWFwpIPUOTL1JjSCeA
+         9v//7KW0M2bmvlX1pztxODqSZ9o3Uj32XATBip/ZNwsA4+BAGXM79RW7+CyEeMzeCfe6
+         SRo23dTz70Ibhple0lpRenVFwmaeuy/ywhDH+TLMkydTW1Vz0/KXfWnZuGA3bwNNtDEA
+         jMVjZH+VpuQm1d3nyps6TpFrR8050lGcEU/hnZot46CQmZXIQ2RkvLNZOXoOEA89x7h2
+         LIMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710265931; x=1710870731;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FDtxe4RWcALKWFoA0LMU4jpR4rZQTWJcn1XZld1M8ZQ=;
+        b=Ml2caMGDnAxknyBjY7UZKYJsQXcm7bMZxwBRy73GAEvvqt4IetdOsfNWT63qzabe7E
+         QR7EYEHnB+VaWq8ZeVw6W68bk6e74L5dRyABsdNn9sMddMizIlt+MO4+Oboj/yK9NXuN
+         fsDx5GbjhUl/QTjhV8YElvJME5t8NfH1I25HjLDXsrA24174giFaoXD/nJzPzut7B6yb
+         kWyaIYhqKTegNYdyQ3bEIhtgdwf/Rg6LUPbyl4l1Bp9lFGgRtEuB//rMz7sIIX9zhTs3
+         D7fuKL3G1TYpmNZo1oQ/03Z/7/eJJmbqyLXZFw2C0GED2UAbqB58eeKBEUPntG52KfhL
+         cZKA==
+X-Gm-Message-State: AOJu0Yy9DGeJy9ZAflS4oYzvESYjQk1lmG3uu1DjOSmjm5YF6iOyixK7
+	XZkhzOP0jyor9UMpjgWNhajKNM4PR7XA8pCCVNU7EAcXPlQRSZVEgtgsJ2vfZ4NdWq6tMA==
+X-Google-Smtp-Source: AGHT+IGkK+iQWesBR//EXwhXkQnKi79ufjMkR17H1LMc988Q6K0cR5twOeUZ1A2VT/Vnmi1UnG9XirxX
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:adf:9d84:0:b0:33e:8fb4:f3e2 with SMTP id
+ p4-20020adf9d84000000b0033e8fb4f3e2mr444wre.9.1710265930657; Tue, 12 Mar 2024
+ 10:52:10 -0700 (PDT)
+Date: Tue, 12 Mar 2024 18:51:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2469; i=ardb@kernel.org;
+ h=from:subject; bh=HnX1VFD8KWpl1LBkk/A67CzySVreW61PBdOtvKF3Fl4=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXDNK0E4dJ+2bJJrVb/Rfc53HU965c9b5GA+CrmN0U/c
+ 0y4JLg7SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwESmrmBkOLn/k23FpaZjv3Y/
+ eaZ0I8+u8KBu8Bf2lIVKUZev1k9KaGFk2OvZIssssoPjuEnisoDi8+lFTfUfpNbwSjBHfJ6yZuN DdgA=
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+Message-ID: <20240312175137.2185208-2-ardb+git@google.com>
+Subject: [GIT PULL] EFI updates for v6.9
+From: Ard Biesheuvel <ardb+git@google.com>
+To: torvalds@linux-foundation.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Mar 2024 17:18:45 +0200
-Message-Id: <CZRVET5930A0.3KM5Q2BAH05LT@kernel.org>
-Cc: "open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>,
- "David Howells" <dhowells@redhat.com>, "David Woodhouse"
- <dwmw2@infradead.org>, "herbert@gondor.apana.org.au"
- <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>,
- "Ard Biesheuvel" <ardb@kernel.org>, "paul@paul-moore.com"
- <paul@paul-moore.com>, "jmorris@namei.org" <jmorris@namei.org>,
- "serge@hallyn.com" <serge@hallyn.com>, "zohar@linux.ibm.com"
- <zohar@linux.ibm.com>, "roberto.sassu@huawei.com"
- <roberto.sassu@huawei.com>, "dmitry.kasatkin@gmail.com"
- <dmitry.kasatkin@gmail.com>, "mic@digikod.net" <mic@digikod.net>,
- "casey@schaufler-ca.com" <casey@schaufler-ca.com>, "stefanb@linux.ibm.com"
- <stefanb@linux.ibm.com>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "keyrings@vger.kernel.org"
- <keyrings@vger.kernel.org>, "linux-crypto@vger.kernel.org"
- <linux-crypto@vger.kernel.org>, "linux-efi@vger.kernel.org"
- <linux-efi@vger.kernel.org>, "linux-integrity@vger.kernel.org"
- <linux-integrity@vger.kernel.org>
-Subject: Re: [PATCH RFC 1/8] certs: Introduce ability to link to a system
- key
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Eric Snowberg" <eric.snowberg@oracle.com>
-X-Mailer: aerc 0.17.0
-References: <20240311161111.3268190-1-eric.snowberg@oracle.com>
- <20240311161111.3268190-2-eric.snowberg@oracle.com>
- <CZR5W1VPAVJC.2VZOSD53YNT9I@kernel.org>
- <77AE4DEA-9474-44A1-88DC-852523C36797@oracle.com>
-In-Reply-To: <77AE4DEA-9474-44A1-88DC-852523C36797@oracle.com>
 
-On Mon Mar 11, 2024 at 11:31 PM EET, Eric Snowberg wrote:
->
->
-> > On Mar 11, 2024, at 1:18=E2=80=AFPM, Jarkko Sakkinen <jarkko@kernel.org=
-> wrote:
-> >=20
-> > On Mon Mar 11, 2024 at 6:11 PM EET, Eric Snowberg wrote:
-> >> + return -1;
-> >=20
-> > Missed this one: why a magic number?
->
-> Good point, I'll change this to return -ENOKEY.  Thanks.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Either that or a boolean function, which ever fits to the overall
-flow better... The upside of error code is less branching in the call
-sites. The upside of boolean is that caller exactly knows all the
-values that ever should come out as a result.
+Hello Linus,
 
-Your choice ofc.
+Please pull the EFI changes below.
 
-BR, Jarkko
+
+The following changes since commit 841c35169323cd833294798e58b9bf63fa4fa1de=
+:
+
+  Linux 6.8-rc4 (2024-02-11 12:18:13 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-f=
+or-v6.9
+
+for you to fetch changes up to 021bc4b9d7ed8dcc90dc288e59f120fa6e3087dc:
+
+  virt: efi_secret: Convert to platform remove callback returning void (202=
+4-03-09 11:37:18 +0100)
+
+----------------------------------------------------------------
+EFI updates for v6.9:
+
+- Measure initrd and command line using the CC protocol if the ordinary
+  TCG2 protocol is not implemented, typically on TDX confidential VMs
+
+- Avoid creating mappings that are both writable and executable while
+  running in the EFI boot services. This is a prerequisite for getting
+  the x86 shim loader signed by MicroSoft again, which allows the
+  distros to install on x86 PCs that ship with EFI secure boot enabled.
+
+- API update for struct platform_driver::remove()
+
+----------------------------------------------------------------
+Ard Biesheuvel (4):
+      efi/libstub: Use TPM event typedefs from the TCG PC Client spec
+      efi/tpm: Use symbolic GUID name from spec for final events table
+      efi/libstub: Measure into CC protocol if TCG2 protocol is absent
+      x86/efistub: Remap kernel text read-only before dropping NX attribute
+
+Kuppuswamy Sathyanarayanan (2):
+      efi/libstub: Add Confidential Computing (CC) measurement typedefs
+      efi/libstub: Add get_event_log() support for CC platforms
+
+Uwe Kleine-K=C3=B6nig (1):
+      virt: efi_secret: Convert to platform remove callback returning void
+
+ arch/x86/boot/compressed/Makefile              |  2 +-
+ arch/x86/boot/compressed/misc.c                |  1 +
+ arch/x86/include/asm/boot.h                    |  1 +
+ drivers/firmware/efi/efi.c                     |  3 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 98 ++++++++++++++++++----=
+----
+ drivers/firmware/efi/libstub/efi-stub.c        |  2 +-
+ drivers/firmware/efi/libstub/efistub.h         | 95 ++++++++++++++++++++++=
++--
+ drivers/firmware/efi/libstub/tpm.c             | 82 +++++++++++++--------
+ drivers/firmware/efi/libstub/x86-stub.c        | 13 +++-
+ drivers/virt/coco/efi_secret/efi_secret.c      |  5 +-
+ include/linux/efi.h                            |  4 +-
+ 11 files changed, 234 insertions(+), 72 deletions(-)
 
