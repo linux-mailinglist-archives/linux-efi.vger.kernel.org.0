@@ -1,134 +1,144 @@
-Return-Path: <linux-efi+bounces-817-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-818-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABB387CA88
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Mar 2024 10:17:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DAB87CA92
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Mar 2024 10:19:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CA241C21547
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Mar 2024 09:17:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BB23284436
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Mar 2024 09:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C6617732;
-	Fri, 15 Mar 2024 09:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569B317C64;
+	Fri, 15 Mar 2024 09:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JHhRvMUW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UdgbZVDP"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03867175AA;
-	Fri, 15 Mar 2024 09:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F48617C60
+	for <linux-efi@vger.kernel.org>; Fri, 15 Mar 2024 09:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710494233; cv=none; b=EY9I2qhtGF3GCiNCDanUVxW5bGtkYPB6En/IaGevolsewk5raTtCcoQtuII3RHH2HFa3tawpZ0XpMh6K6LoHNdgkk/cWn3xkk+l4zoeRQobzS8QxXuQnuxxXW3y0+CjLD8k3Sg4d9yAFQMZ5R6z2H3DbtBG8rD97JTh7x3FSR4s=
+	t=1710494368; cv=none; b=EsUXn2pAdI404JltrePY7CoahXlJUQJzOAhRlxSh+M+zzqeQaGboIBA/1AiortnS6ao53A4EsbhuTGgQXjFdo7CwB30kENDeUoFrqlLvNv8WCyQZ88SVP3YtsjhQzdSqObkHcpviSRJi9folSWgaCerJwgLtGvVYzAtZzAZlFgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710494233; c=relaxed/simple;
-	bh=w/EAdnTZd2O/JcwSzVr2SXDVg04KJAxDQ1+bGadkR4Y=;
+	s=arc-20240116; t=1710494368; c=relaxed/simple;
+	bh=o/KT3rRRZ4dl7ItNvt8BJvLFShthLlJcw0r+0QyKteQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=enHIZ8iGXwkjy0cyAre/WrF+fuErzgi0nldZq7GzjUqT8J4iOLHJ1Vprx1VWoSTmIO00WY3/EuA1yfbGeEn0xsa4Bso1aHOSPZ5andeR5T8hRPekoyQLgeKuzc0ilOR36ERzzUWiOnZcI+F+VP1052lG+MRGmA+QH9Bs1LMS+JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JHhRvMUW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D82BC43394;
-	Fri, 15 Mar 2024 09:17:12 +0000 (UTC)
+	 To:Cc:Content-Type; b=NFILfradHlD8DvFiCCFnU89c5QrGLz2Hlz4MOB2vCSaf6fot0S3ggEXqtExnRB57jVtVWwv6ucdW7y3dwxY3pGPMEOpctMhuUdQmpjA65G2GJGg6m8pux6xbotpPTpxKVZni/1GQKERQEG5yW30BZTfLR3jnixDK8D6hOpgHop8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UdgbZVDP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4814C433C7
+	for <linux-efi@vger.kernel.org>; Fri, 15 Mar 2024 09:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710494232;
-	bh=w/EAdnTZd2O/JcwSzVr2SXDVg04KJAxDQ1+bGadkR4Y=;
+	s=k20201202; t=1710494367;
+	bh=o/KT3rRRZ4dl7ItNvt8BJvLFShthLlJcw0r+0QyKteQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JHhRvMUW74EIlu7QM/eX98Xfd2GjiiIYlYmdse0oiWR7xhkLFzkWN8ddHltOJCwG5
-	 7fYEuavhGbmOO/HMBRhSlugYLaFknOcAb7wCSjmJbq/0N59zj57+uHOEwGiv1aRQ9b
-	 RNXs7idaDJfSzKSsZ9y87moSftNwJmMzy6Cor4d/4oFIqUP1plNJY35GFL75e/fuHW
-	 cDEw6qAc2zzY17CYN8M564sAfVu1ie73M1b0gTjqRUSac2mC9QylPbA6Jj9ot1pye/
-	 6s/VAvP6gTi19aUuP227cNTZhZoIVzlda7ANK2kylVAyXnm1iQvIg2dMrc6JwT6n87
-	 hn5RWorT49Xew==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d2505352e6so20911771fa.3;
-        Fri, 15 Mar 2024 02:17:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVnVLR8hgm0hdUWGQCPPy1C/p6gDcFbJbeJmsNjn5BX16IrjNIo/psW/83mgZ9X57Jl49vhUX+3Ke848h7N/ndkZ1zLf/eD58YKCorSbmfJ
-X-Gm-Message-State: AOJu0Yz6aT2pHs2XlKkeIy+QVPRyUk+ewYzqPROman/XiEuLh5PQ+NoK
-	GZ0NTiPhFLVxqdV0fIxB8yIQeVsP0wzmbD4iWhGXHnDO3HLUP9IeXyNWJ1J67FamdxbsQM8X8wW
-	rmE6S7QBtgqCdCnYvr/gIpgIrwzM=
-X-Google-Smtp-Source: AGHT+IHIyVHLfhfOboxgjvvwdwQMuIYw2O+imOPAoasCJ9Yc7xk9MybqlpGrsLSbnVb/d2DG4Si8FGmbE5pE6GBXOkE=
-X-Received: by 2002:a2e:8806:0:b0:2d4:3c32:814d with SMTP id
- x6-20020a2e8806000000b002d43c32814dmr3049000ljh.26.1710494230930; Fri, 15 Mar
- 2024 02:17:10 -0700 (PDT)
+	b=UdgbZVDPDceev5X9WOTsa2WIquThCwi/h7d1dqUfW2UrFC9qESj9KBFBTvF1HUTKc
+	 MpfI8vb178kFMT2fya/lwrOqEiwojrs7n21CXS8zSNLUWa8YKtqYO7CBEm3P2f4cKh
+	 tk9xUfEddCjFCGBfjc24ofoG84l75IryGIR3YqMkNCq8QKpyDfAmDho4UyqNUrV2Jz
+	 PFJm/d6x8l0Vm96pB5OKn11UUW3VQKUfCAVxeTcZcxGWAE6l3WyZAfmSuXL4/Z4eAG
+	 rSBdXQW1OgK5s0TYSRZwtFHxgLHklxlQ143MJtlmp/ZgVj44V/4SWm9AJ428NJWTgj
+	 hvAJEdpMhWi7g==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5131316693cso2447109e87.0
+        for <linux-efi@vger.kernel.org>; Fri, 15 Mar 2024 02:19:27 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzgKNKEgz0Tg3Pk4KFLlyXJGtHyAcOQeUsdtZQC0lXnPTxYW37H
+	0HN7Z487pT/bV0dFolWstHT4aNP80BLIbWZlnFAzKMBt4/8ZjPyRQVFd5FqugyC5LlNnVs+drEq
+	LrmAUaE2mYwL7Jo3v+NAwP/+0oXY=
+X-Google-Smtp-Source: AGHT+IH/919ftG3d9LBTfekrneQi8IECRS2PAkGoTCPq6l1Ud8luTUr+xqVQesfFLrKHVaMTZfE4aDRdSDEYbv7dY8c=
+X-Received: by 2002:a05:6512:4844:b0:513:cbde:8764 with SMTP id
+ ep4-20020a056512484400b00513cbde8764mr2899262lfb.57.1710494366062; Fri, 15
+ Mar 2024 02:19:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240315002616.422802-1-timschumi@gmx.de>
-In-Reply-To: <20240315002616.422802-1-timschumi@gmx.de>
+References: <20240315002616.422802-1-timschumi@gmx.de> <20240315002616.422802-2-timschumi@gmx.de>
+In-Reply-To: <20240315002616.422802-2-timschumi@gmx.de>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 15 Mar 2024 10:16:59 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEvQS8e95A55po-nKn8cGou8Dn9nNhidt_QSqL02WawpQ@mail.gmail.com>
-Message-ID: <CAMj1kXEvQS8e95A55po-nKn8cGou8Dn9nNhidt_QSqL02WawpQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] efi: pstore: Request at most 512 bytes for variable names
+Date: Fri, 15 Mar 2024 10:19:15 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFf8tmTkO+xn4PwumJ3pQQUQ7TUMtEBNBMc+HXb4ab5dQ@mail.gmail.com>
+Message-ID: <CAMj1kXFf8tmTkO+xn4PwumJ3pQQUQ7TUMtEBNBMc+HXb4ab5dQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] efivarfs: Remove unused internal struct members
 To: Tim Schumacher <timschumi@gmx.de>
-Cc: linux-efi@vger.kernel.org, Kees Cook <keescook@chromium.org>, 
-	Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
-	linux-hardening@vger.kernel.org
+Cc: linux-efi@vger.kernel.org, Jeremy Kerr <jk@ozlabs.org>
 Content-Type: text/plain; charset="UTF-8"
-
-Hi Tim,
 
 On Fri, 15 Mar 2024 at 01:27, Tim Schumacher <timschumi@gmx.de> wrote:
 >
-> Work around a quirk in a few old (2011-ish) UEFI implementations, where
-> a call to `GetNextVariableName` with a buffer size larger than 512 bytes
-> will always return EFI_INVALID_PARAMETER.
+> The structure was moved to the efivarfs internals in commit 2d82e6227ea1
+> ("efi: vars: Move efivar caching layer into efivarfs") after previously
+> being used as the data ABI for efivars until its removal in commit
+> 0f5b2c69a4cb ("efi: vars: Remove deprecated 'efivars' sysfs interface").
 >
-> This was already done to efivarfs in f45812cc23fb ("efivarfs: Request at
-> most 512 bytes for variable names"), but the second copy of the variable
-> iteration implementation was overlooked.
+> As efivarfs only uses the structure for the variable name caching layer,
+> the data-related members were never in use. Remove them to avoid
+> implying that efivarfs is bound by the same restrictions that efivars
+> once had.
+>
+> Since we are changing the last copy of "struct efi_variable", document
+> the former layout in the ABI documentation of /sys/firmware/efi/vars
+> that is still left over.
 >
 > Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-
-Thanks for the patch. I'll take it as a fix.
-
-As an aside, you really want to avoid EFI pstore in general, and
-specifically on such old systems with quirky UEFI implementations.
-
 > ---
-> I CC'd the pstore people and linux-hardening mailing list because
-> get_maintainer.pl suggested to do so. Apologies in case this was the
-> incorrect decision, this is a very non-pstore-specific patch after all.
->
-
-If any of the linux-hardening/pstore people give you grief, just send
-them to me :-)
-
-(I am part of the linux-hardening group myself, and work closely with Kees)
-
-
-> I have taken the liberty of adding a TODO for the future, the actual
-> refactor can follow at some point down the line.
+> I'm unsure if this is how documentation of removed interfaces is/should
+> be handled, input on this would be greatly appreciated. Of course, the
+> alternative to what I did here is to remove the documentation
+> completely. If someone is running a kernel old enough to have this
+> interface, then the matching kernel source will still contain said
+> documentation.
 > ---
->  drivers/firmware/efi/efi-pstore.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+>  Documentation/ABI/stable/sysfs-firmware-efi-vars | 12 ++++++++++--
+>  fs/efivarfs/internal.h                           |  3 ---
+>  2 files changed, 10 insertions(+), 5 deletions(-)
 >
-> diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
-> index e7b9ec6f8a86..f0ceb5702d21 100644
-> --- a/drivers/firmware/efi/efi-pstore.c
-> +++ b/drivers/firmware/efi/efi-pstore.c
-> @@ -135,7 +135,15 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
->         efi_status_t status;
+
+Please just rip out the doc (but in a separate patch and cc the
+Documentation maintainers)
+
+
+> diff --git a/Documentation/ABI/stable/sysfs-firmware-efi-vars b/Documentation/ABI/stable/sysfs-firmware-efi-vars
+> index 46ccd233e359..461b9139cedb 100644
+> --- a/Documentation/ABI/stable/sysfs-firmware-efi-vars
+> +++ b/Documentation/ABI/stable/sysfs-firmware-efi-vars
+> @@ -41,8 +41,16 @@ Description:
+>                 raw_var:        A binary file that can be read to obtain
+>                                 a structure that contains everything
+>                                 there is to know about the variable.
+> -                               For structure definition see "struct
+> -                               efi_variable" in the kernel sources.
+> +
+> +                               The structure is defined as follows:
+> +                               struct efi_variable {
+> +                                       efi_char16_t VariableName[512];
+> +                                       efi_guid_t VendorGuid;
+> +                                       unsigned long DataSize;
+> +                                       __u8 Data[1024];
+> +                                       efi_status_t Status;
+> +                                       __u32 Attributes;
+> +                               } __attribute__((packed));
 >
->         for (;;) {
-> -               varname_size = 1024;
-> +               /*
-> +                * A small set of old UEFI implementations reject sizes
-> +                * above a certain threshold, the lowest seen in the wild
-> +                * is 512.
-> +                *
-> +                * TODO: Commonize with the iteration implementation in
-> +                *       fs/efivarfs to keep all the quirks in one place.
-> +                */
-> +               varname_size = 512;
+>                                 This file can also be written to in
+>                                 order to update the value of a variable.
+> diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
+> index f7206158ee81..971560a01320 100644
+> --- a/fs/efivarfs/internal.h
+> +++ b/fs/efivarfs/internal.h
+> @@ -24,9 +24,6 @@ struct efivarfs_fs_info {
+>  struct efi_variable {
+>         efi_char16_t  VariableName[EFI_VAR_NAME_LEN/sizeof(efi_char16_t)];
+>         efi_guid_t    VendorGuid;
+> -       unsigned long DataSize;
+> -       __u8          Data[1024];
+> -       efi_status_t  Status;
+>         __u32         Attributes;
+>  } __attribute__((packed));
 >
->                 /*
->                  * If this is the first read() call in the pstore enumeration,
-> --
-> 2.44.0
->
+
+I suppose we can drop the packed attribute too, given that this is no
+longer external ABI.
 
