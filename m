@@ -1,133 +1,89 @@
-Return-Path: <linux-efi+bounces-823-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-824-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EEB87D491
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Mar 2024 20:45:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD2687D495
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Mar 2024 20:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 067F7B21729
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Mar 2024 19:45:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F20151C2106C
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Mar 2024 19:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813794EB22;
-	Fri, 15 Mar 2024 19:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C475452F97;
+	Fri, 15 Mar 2024 19:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b="nCSMfMMs"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="KoVCMDkw"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6211864D
-	for <linux-efi@vger.kernel.org>; Fri, 15 Mar 2024 19:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B4F5336A;
+	Fri, 15 Mar 2024 19:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710531947; cv=none; b=seTf+9Z09VCwGwm15dpSyEkt/E5zBS09KO2Xm7y2rr4SNMjwsvdzj/dBlErlli1BtV4RFkApK8R8Pq9Ox+VrlNiJXnF4C/3xx4NK56xwWVboV1RGerboWJXovIUyd4pvbfwQehTU2paK+vaUezBasRu1e+TgRIhNXReEJaVCNKU=
+	t=1710531975; cv=none; b=GNa6Iu47ncYl3Ypk9sCmXG7XezNaYSBrpXp2KhARVOo+6uAa79jkCzSGjFhjW2FRUnGf7GYv/BTpPZCJ3DcPMZ4G/op1dY9Q0NhvJ2BnX8AZNyisAdgLfa7fTQi07EXQkx8/nsGQC3Ghe9Wq5PKeHB7TO2LGUDioqR5YzIZTR8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710531947; c=relaxed/simple;
-	bh=YhxeV85R+H/8+IWdXkuZ0F4ERj7d3aBJ94DFrE3son8=;
+	s=arc-20240116; t=1710531975; c=relaxed/simple;
+	bh=CyO55Dw7XsuAhmq2UFNdyZkwG7l+VK8tbtJ7oWv5oJg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dr84vk8nXU7U8IS/Ygg8ZELDLAdEKFkk2bcTlRUDM2fIljJibHRzLG3M2aowOpCeetZaRVyfbGPznF0Nmw/cA8OR2D6P6630Zqcdg7TNpu1cuFQLIMJxeOGiZwz76u+uMqhOipzQVReufnz65K60GBQA4Ho5kIW3srcCNdBZcrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b=nCSMfMMs; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1710531935; x=1711136735; i=timschumi@gmx.de;
-	bh=YhxeV85R+H/8+IWdXkuZ0F4ERj7d3aBJ94DFrE3son8=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=nCSMfMMsZjYGqMl9axRDDhm7oa0qVEMM2mANB8+Z2dW4q+ujwkvU8DT6nG8bfXjG
-	 7Fr5j78U2Oofer4Orl0t2ltJ40DATufWHZH4XOeniIVRv/yw3ts519sEiZiXQaFe/
-	 +ws1x2j0aFHlmEWhXiGQCYL8ZbZkbjwUH+i4KIe7ZKC25/YDL7jYC28m7rqT7wPHy
-	 FL5ES3OvNKWMBv/5aHhu5N3/N5cpZD+o//Cm496XAAOF/7/OMeBt3mI2FYPZJh7VU
-	 TJuLSpPjBIP8DVxH2cTGCTViAIYfYu75q6VI3jzNx6tPgGXIyBi9oL2dF8xuOJiME
-	 wumeUSlr60oPOvUTng==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [10.222.0.4] ([93.218.98.241]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MpDJX-1r0b0S2l4R-00qh8a; Fri, 15
- Mar 2024 20:45:35 +0100
-Message-ID: <dd1a8d6b-4cfc-426c-b840-382976565a83@gmx.de>
-Date: Fri, 15 Mar 2024 20:45:35 +0100
+	 In-Reply-To:Content-Type; b=qrpbP9kR69g3jY4rkLKbSxecBxfP/u8kQv9OfRIRwtjqTcQuc2xX1oXPqWTEsKKWEiEmbBS0D3xpCQ62WUTQI3Crn32/SzmHO2f/5gyY3CIHY2kx/P7hL//g+htv17YYw0lvRLUk6P5+T2aUe72yqqaXazWXJHAmJdZkcSQFXD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=KoVCMDkw; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CyO55Dw7XsuAhmq2UFNdyZkwG7l+VK8tbtJ7oWv5oJg=; b=KoVCMDkwcTzZ2TVlK0TuGbIFLH
+	0ZGDBIl7uNfV912TShCkOCakhWsRklU8BVXnTLYe1VboyhtfiG9M4Xo8ozL35t2cRTX2NSzj/87cN
+	6JeUDd0DKUwyTAuU9nfaeLjRPq2EdDOTSegazssCX3PNd+nUYZd4R3wfDoZG30Jp/spkuVgvFyrZ7
+	k0nSVX9FYrJ0r14eTtd+WAxlbsxJvLsdzr7avXu7dPPPNBUrVlOeBSfbauG/qxuNC0pxg55Fhq+Fa
+	pFxDJV8GJ6wyauQW75TgBLXY0u0NNdNDpzjh4TUcfLGKZecS0lhXKPXQ5Dh6M2gO/VbC05CUs/Dab
+	hdsyZyXw==;
+Received: from [186.209.63.98] (helo=[172.17.1.0])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1rlDVB-00Aw9K-T5; Fri, 15 Mar 2024 20:46:02 +0100
+Message-ID: <2a500ade-a91d-15f2-e5ae-7f261e6a84b4@igalia.com>
+Date: Fri, 15 Mar 2024 16:45:56 -0300
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] efi: Clear up misconceptions about a maximum variable
- name size
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/3] efi: pstore: Request at most 512 bytes for variable
+ names
 Content-Language: en-US
 To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, Jeremy Kerr <jk@ozlabs.org>
+Cc: linux-efi@vger.kernel.org, Tim Schumacher <timschumi@gmx.de>,
+ Kees Cook <keescook@chromium.org>, Tony Luck <tony.luck@intel.com>,
+ linux-hardening@vger.kernel.org
 References: <20240315002616.422802-1-timschumi@gmx.de>
- <20240315002616.422802-3-timschumi@gmx.de>
- <CAMj1kXGBtF6v=QCeBjJsVr=wdndWM0DbyFXxObsd5YUcm7U3zQ@mail.gmail.com>
-From: Tim Schumacher <timschumi@gmx.de>
-In-Reply-To: <CAMj1kXGBtF6v=QCeBjJsVr=wdndWM0DbyFXxObsd5YUcm7U3zQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:BB5n5pQrvocFL6pxIk7UcE9CmwYizhcyWp8/gAq3JD5MfL7yTcw
- A0XzcA3reIB4YWdO9r+MuWDIBr9831sSFeksOKqDMZnPutwZJIbstPwuTDRw7oelAgiMshT
- 9xmnqcedXrpv2YGlu3+KeSX19rck7CQ+WXrhiHwn8LrmXgN9zAZeBqMzl2qAZusO+9HJog4
- OBTSo3P4bLrqzqeHy/RFw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:qVSCNmNUVHk=;dDW1o/ge47TO5Gh8aD6V6UBhk2C
- ufXfhoVj+NHVxpQfEmst5o8H2oiBM/ENjdTujAwftIFStjwUEkZH8E4fq0YvtkZ2j0yq+J0iD
- cSfpY0armDNDMVKKfYQEmbmGFFb9j6jVc5KaOF7+mrU6XpZyU2ieRXpBaYK5seHDh1nQh5JNR
- pabw5L/t2QH5U937vDi9CeUUXu2U58i+sDzLSe0TPtQZBqvJD3TvX7shRXAfLx4c9mm1qJr3w
- wq66QlbKQy/OqgFL7yiEw3kTAanROTqLSA4kRjTg9EVZlCC/dpqCWx0B7ACdRqXJ+qRBVz4wJ
- RC7OYzvPQ+UwVY+Q6KF6hFN5dJxwB3PEGBT4Wg7oEVF1V6DYw0Ds1Zt2kDlnZ4xcwByXA2h1R
- wggUWgo2Z9aIhQTOJv4QB25aGMgRv7mGvXJmJWdDtkKb5EPnIJDViU//MQI2sH6HRCFeFHNmn
- RngH7AngCgZOCtbu8ptAPBXT6aV4vSHROr8nDJ1qW6JuDpMTlEUAsd3fcInAXV+VPUwV0Ro9T
- JOf1ob7KgCLYa04BUodn86FhAFhJX7nHYzvhucGtERMhj8qCmIokwVUNe2foPA6oE6Dx3fuRt
- bQT2EB5PvDjqkKETCc3J24BWeoTfARbthHcwgne+HCN9vketZ+w67wv8Sxw/Bxaed7vwXvncH
- YIV55Q6q5hvUrkksT1VbWbe/vQoPxqAcqG7O+wK0RKZigkWzRKBaH47MKE3K0pLPaurltOzca
- IypZykErI/shzxBfZJ7f7olb9pKnpPw8ou6pmaBKQFunRjX7LxSP2mAUWKO+Di2iryJVxPqGE
- hfYhh+tX/fZTGpUwKU15K5PqrOu+DJNhFvdnVSQP5yzAU=
+ <CAMj1kXEvQS8e95A55po-nKn8cGou8Dn9nNhidt_QSqL02WawpQ@mail.gmail.com>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <CAMj1kXEvQS8e95A55po-nKn8cGou8Dn9nNhidt_QSqL02WawpQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 15.03.24 10:20, Ard Biesheuvel wrote:
-> On Fri, 15 Mar 2024 at 01:27, Tim Schumacher <timschumi@gmx.de> wrote:
->>
->> The UEFI specification does not make any mention of a maximum variable
->> name size, so the headers and implementation shouldn't claim that one
->> exists either.
->>
->> Comments referring to this limit have been removed or rewritten, as thi=
-s
->> is an implementation detail local to the Linux kernel.
->>
->> Where appropriate, the magic value of 1024 has been replaced with
->> EFI_VAR_NAME_LEN, as this is used for the efi_variable struct
->> definition. This in itself does not change any behavior, but should
->> serve as points of interest when making future changes in the same area=
-.
->>
->> A related build-time check has been added to ensure that the special
->> 512 byte sized buffer will not overflow with a potentially decreased
->> EFI_VAR_NAME_LEN.
->>
->> Signed-off-by: Tim Schumacher <timschumi@gmx.de>
->
-> Shouldn't we switch to 512 everywhere while at it?
+On 15/03/2024 06:16, Ard Biesheuvel wrote:
+> [...]
+> As an aside, you really want to avoid EFI pstore in general, and
+> specifically on such old systems with quirky UEFI implementations.
 >
 
-We probably could, but my general aim for this is to eventually get rid of=
- a
-predetermined data storage size anyways.
+Hi Ard, this comment made me very curious; apart from old quirky UEFI
+implementations, what's the reason you see to avoid using efi-pstore in
+general ?
 
-The only part that needs guesswork is the sizing of the buffer for the
-initial read (be it either by estimating a constant or by doing a
-challenge-response thing), after that we can just measure the string
-once (with an upper bound at the buffer size, similar to what
-`var_name_strnsize` already does) and hold on to that length going forward=
-.
+Thanks in advance for your insights!
+Cheers,
 
-The variable name storage situation still isn't entirely clear, so I
-just wanted to get rid of most of the magic numbers for now, and guarded t=
-he
-one "this would lead to a memory corruption with changed values" case with
-`BUILD_BUG_ON`. I don't consider the define to be freely changeable at the
-moment, but in case it seems like a good idea to someone else, we can at
-least save them from one potential headache.
+
+Guilherme
 
