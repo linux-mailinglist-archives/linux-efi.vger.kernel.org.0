@@ -1,122 +1,79 @@
-Return-Path: <linux-efi+bounces-827-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-828-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4685687DD54
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 14:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C918A87DFA9
+	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 20:34:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB415B20E6A
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 13:58:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2BC5B20C43
+	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 19:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BA21CA81;
-	Sun, 17 Mar 2024 13:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24671F94C;
+	Sun, 17 Mar 2024 19:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kSTgc870"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5i98Q/N"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189931C6BE
-	for <linux-efi@vger.kernel.org>; Sun, 17 Mar 2024 13:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E80F1F947
+	for <linux-efi@vger.kernel.org>; Sun, 17 Mar 2024 19:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710683891; cv=none; b=OvFxq90S3CLdJAIOaThkbSAaJqEI7xIjuq9iCSLs8nEXw+h4PetpgpIEo7dxt6V4U1umpkfkRaYx8VejpM27AILUI0giGAyAVc/Z0+sGeWIjkxvbgHyLBu2uol7PYMqUn58/xLsVuDUtWJh2xu1KEBKSfL2cgAZ67boPhk7iNwI=
+	t=1710704046; cv=none; b=TaKrxWXgRpRQrsKM0dmdwQSiEzjyKoF2jMMbEgyhBtFKnUBlla1Z3AGDlnPMZs5ODFdiFUzuo7Rgf1QtOjmfey4KEkF2j7Zaxwtu3O6zyKpWamjN9Gx40nW22O3oAg7Dhi2/05jxh5dzvO3bWp5zfXunj5zA4+zXK7Fe9o+YKx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710683891; c=relaxed/simple;
-	bh=zoJeiK03Kub+m+HSfEi2Y2MmQYIrOSTkyiUxlRDu8J0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZRPdiFbBh8iK8y3HO12op/ol58JdzfbXgNs0kFyTtkclGMYEByTgVrpJjxS3ltJFvegl4nRrFh7+0/nv8xRECCXfMImEFiqrII4GiASn6D9o32dFGsEuX0JK61AU/GN3pq9V1alStUANGGcpn4hczUYBZmtCea/DsOWQTxfWHSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kSTgc870; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-60a08eb0956so56231067b3.3
-        for <linux-efi@vger.kernel.org>; Sun, 17 Mar 2024 06:58:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710683889; x=1711288689; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=p1P6J9pjhQJmeBCYeEGZyK27cyT0Yx//OvZTCw/Ttmw=;
-        b=kSTgc870xx3GszZqwBG4faXSbwNjjz+eBOkG9G+HSSiF1qWia+bDBlmTIjOrA+Bu7Z
-         UkF95PIC6GSLn4A1iXQVPaVeLEPGuvWcyVvfxHZq/uWzHQkOIeiyjurfSOWPasvAPryN
-         W2lNFEujY1M9JmXD+Jz193GU85aaZKn60NrOoVJct/EsGERuAJtrocnflqB2I6fz1Fll
-         aJ4DNWdXxOrirKg44k0Z9gVj3om6UOinvn2Gj6jyfDKvINUB4xZX023Wf3nGIFvcpXi/
-         24BXkvam2VlPukNQ6zw67TQecHO/cqTe960C6zAVtvbCEd4cfJZ/Xw5PqdhzfWTDnxqq
-         FXCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710683889; x=1711288689;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p1P6J9pjhQJmeBCYeEGZyK27cyT0Yx//OvZTCw/Ttmw=;
-        b=XijSZPqbQ0vXrrLBfGOdN0EcgoqPef0CLhVY512OCJlK2dsAF0TX8O/XDtg8uHt6oN
-         rriUcigK3u1sth6t6cYr/Cc6xGeyTb0Nl/uxyIEToa7TT3JEesbheeJEQV78Yrao6ZAn
-         1wN9utPAjwbrzjICTbvF/xaRWgjAoAwaqKWij/ovp+aaIMdnY14Ty6BQ27B3uB0/9GTb
-         86IyNLQGHOaMfOepWjyRStdISxWv8zU8ufGLGztRW59plfzTY4MQ/vZ+UAg8k6p9WY4J
-         XHpINaXrvaDWmRbOHl2FAXNXbE3rlO3b6s00sJHnrjrAGAjpDXXz0KAOvjiMOZyVwzUe
-         EHvw==
-X-Gm-Message-State: AOJu0Yztd6gvljE4Ckh/mahtqrypMx0v3fMIhDIXiyITRHRm0GKzpPdT
-	jihT7O+DM6mbtltNPCmflNkQHbOE0l8uXZwkqY452YRWeb7OyPyLuvpVyqa1VT0Hd8qupw==
-X-Google-Smtp-Source: AGHT+IFZnWZDXvcqYPZ7rfsMjwjhGt0bMKwwuKMbjH55/tXPlM8t93AUn1jwn+Pu3j9mVDZNGHobkGb8
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a81:a042:0:b0:60a:3487:6f7c with SMTP id
- x63-20020a81a042000000b0060a34876f7cmr1780309ywg.9.1710683889103; Sun, 17 Mar
- 2024 06:58:09 -0700 (PDT)
-Date: Sun, 17 Mar 2024 14:58:05 +0100
+	s=arc-20240116; t=1710704046; c=relaxed/simple;
+	bh=ojQdPKuk/ABa2yhcbbSQeFXU3PUNlPKRFTY/6iaUdQo=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=NO8fHnAsRmldPzaEHq6Zx4sRoge1QTePJQRZJX3FILmzuI6gy4o6RVqaCfCQ2Ul8CpMmIys2lpt5FFMJQ8Ej1PFVoerLwzR4bSWi4P5R9lFUQLtpqBnzrZt2sdQToMonpX1Qzl9qk2I7O+nrLfwEXe6N5Bg+QYdhBUFYkwRURbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5i98Q/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 71556C433F1;
+	Sun, 17 Mar 2024 19:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710704046;
+	bh=ojQdPKuk/ABa2yhcbbSQeFXU3PUNlPKRFTY/6iaUdQo=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=S5i98Q/N8gyycOh91BC9/6LFzzR2/NDA5zloUlmGbZHWFnyKLXP7f93g6oizfE57V
+	 OhJnzNeSFS59F8swW4ix2NEtB+hH+4fNT8cjBFWuZXtKHXqXxKMWpFOP+1KnPjigNK
+	 wfXoNLnsfcF4dyxgbPY++QOVR+S+Ym5CuINO4uF4HwFmHne4A4PxG/xs0HJUCRubAv
+	 v47dr3WgEr2fELJJfslFrcKkr563BXqXb9c9o/kylfP3R2Og+MQKVM/bnKKedbuv7t
+	 sB3EZht+FSmjGlUYFsux6gLsRHmhbjF6FdN5DHX9cJKD9ylg/YRzvHq7RZo47mjxdD
+	 U1TkDRA/IUR6Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 68E77D95060;
+	Sun, 17 Mar 2024 19:34:06 +0000 (UTC)
+Subject: Re: [GIT PULL] EFI fixes for v6.9 #1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20240317135804.4092430-2-ardb+git@google.com>
+References: <20240317135804.4092430-2-ardb+git@google.com>
+X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20240317135804.4092430-2-ardb+git@google.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.9-1
+X-PR-Tracked-Commit-Id: b3810c5a2cc4a6665f7a65bed5393c75ce3f3aa2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 906a93befec826475ab3d4facacc57a0b0a002a5
+Message-Id: <171070404642.21222.2907036416407168093.pr-tracker-bot@kernel.org>
+Date: Sun, 17 Mar 2024 19:34:06 +0000
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: torvalds@linux-foundation.org, linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1328; i=ardb@kernel.org;
- h=from:subject; bh=0dFjLvEEaYZsdIOSTCrG72hknPqiZknW8zk84IHpn5Y=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXbt7dxOVnXjqR9P31a+f38F4I8ebct40+f4lVw1vGxP
- 2O5/v2yjlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCRI+sZGY669N6/qPiwhPHY
- hx0bYuZvNenou9r+k0M5jqFTJP9+5wKG/8HdRo+02axr42/4Ps9v9WMTS2u9NOXQ3Jnf68/+5qv p5AUA
-X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
-Message-ID: <20240317135804.4092430-2-ardb+git@google.com>
-Subject: [GIT PULL] EFI fixes for v6.9 #1
-From: Ard Biesheuvel <ardb+git@google.com>
-To: torvalds@linux-foundation.org
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+The pull request you sent on Sun, 17 Mar 2024 14:58:05 +0100:
 
-Hello Linus,
+> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.9-1
 
-Please pull the EFI fix below. It fixes an oversight on my part in the recent
-EFI stub rework for x86, which is needed to get Linux/x86 distro builds signed
-again for secure boot by MicroSoft. For this reason, most of this work is being
-backported to v6.1, which is therefore also affected by this regression.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/906a93befec826475ab3d4facacc57a0b0a002a5
 
-Thanks,
-Ard.
+Thank you!
 
-
-The following changes since commit 021bc4b9d7ed8dcc90dc288e59f120fa6e3087dc:
-
-  virt: efi_secret: Convert to platform remove callback returning void (2024-03-09 11:37:18 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.9-1
-
-for you to fetch changes up to b3810c5a2cc4a6665f7a65bed5393c75ce3f3aa2:
-
-  x86/efistub: Clear decompressor BSS in native EFI entrypoint (2024-03-15 19:47:09 +0100)
-
-----------------------------------------------------------------
-EFI fixes for v6.9 #1
-
-- Explicitly wipe BSS in the native EFI entrypoint, so that globals
-  shared with the legacy decompressor are zero-initialized correctly.
-
-----------------------------------------------------------------
-Ard Biesheuvel (1):
-      x86/efistub: Clear decompressor BSS in native EFI entrypoint
-
- drivers/firmware/efi/libstub/x86-stub.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
