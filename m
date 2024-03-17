@@ -1,176 +1,122 @@
-Return-Path: <linux-efi+bounces-826-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-827-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FC587DC42
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 03:34:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4685687DD54
+	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 14:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 341971C2087B
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 02:34:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB415B20E6A
+	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 13:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A06E291E;
-	Sun, 17 Mar 2024 02:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BA21CA81;
+	Sun, 17 Mar 2024 13:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b="jbP8vORH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kSTgc870"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1913FD4;
-	Sun, 17 Mar 2024 02:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189931C6BE
+	for <linux-efi@vger.kernel.org>; Sun, 17 Mar 2024 13:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710642878; cv=none; b=aECV4B3O+JpXiIzvuYGMgLX/f9z9MNSSmU2yCWsW0sP8nOVDZ+iBux9vIsWBMbalijDfiOs8NUNw44KiDJTA4mGfKxKWUeNC6ia4bC/B35LEe6gnGmD5vWh1Wq8qyjE1NJSPK78KyBom+4dMMt3zOSyksdCnRW1YUKyEsEu+frc=
+	t=1710683891; cv=none; b=OvFxq90S3CLdJAIOaThkbSAaJqEI7xIjuq9iCSLs8nEXw+h4PetpgpIEo7dxt6V4U1umpkfkRaYx8VejpM27AILUI0giGAyAVc/Z0+sGeWIjkxvbgHyLBu2uol7PYMqUn58/xLsVuDUtWJh2xu1KEBKSfL2cgAZ67boPhk7iNwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710642878; c=relaxed/simple;
-	bh=tJaJJred577vOPsMHOBTK5Cf+xg/GJMJBBCtaPnAhe0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BN4ei6EZcqLhSbO8c7vCbsdL7oBTjsZ6JHXu1EYa8eSaBrL+3qNAFoWFPjzKHb7mesUOm6gIux+mQo6KHR3hyEkRK8Na+eXcWDXVUgi0elcQT8tTd/Aq+DXODrheI7JqXlBryw+p7g7x4kZL2ibQFGzjynhddBuPdxrSLJ5V8cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b=jbP8vORH; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1710642862; x=1711247662; i=timschumi@gmx.de;
-	bh=Iu6Ea+P0wgKVpCTinPs8NLQRA5oz6QwOGeGWv+5ybOc=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-	b=jbP8vORHe/rye1XpqHn3c1RT/FVw9OQT0IbQYIyUW1ybS9GRI6qkFH73NzbpJvo/
-	 C6LhgK6BKc+oDIKpgUyR8yMi9eAd0KJwt1PZxImIWV7E4wIJeXvukGeU+/bfrDa0y
-	 xKauwRhRatXkT0vbHt+CE6Q3y5UzTdjqQsTP9zFPt2k38cIMHEjaFwnCQwPCe/fAz
-	 MBgWcVfOAYb38GkbYcR7SBke+TRs9vRzJlqV13CCdIWt8szic+6QY1iyU56636Rd6
-	 TOPykGkVBH3TLTLUMn2fdF5NidBBy0K5y083NoNN2e2od+ul/yKHMKdqXJb9By4lC
-	 6HLJeF5Kns1UQsgHbw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost.localdomain ([93.218.98.241]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MQe5u-1rNwRE1Rzi-00Nh92; Sun, 17 Mar 2024 03:34:22 +0100
-From: Tim Schumacher <timschumi@gmx.de>
-To: stable@vger.kernel.org
-Cc: Tim Schumacher <timschumi@gmx.de>,
-	Jeremy Kerr <jk@ozlabs.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org
-Subject: [PATCH 5.15-] efivars: Request at most 512 bytes for variable names
-Date: Sun, 17 Mar 2024 03:33:21 +0100
-Message-ID: <20240317023326.285140-1-timschumi@gmx.de>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1710683891; c=relaxed/simple;
+	bh=zoJeiK03Kub+m+HSfEi2Y2MmQYIrOSTkyiUxlRDu8J0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZRPdiFbBh8iK8y3HO12op/ol58JdzfbXgNs0kFyTtkclGMYEByTgVrpJjxS3ltJFvegl4nRrFh7+0/nv8xRECCXfMImEFiqrII4GiASn6D9o32dFGsEuX0JK61AU/GN3pq9V1alStUANGGcpn4hczUYBZmtCea/DsOWQTxfWHSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kSTgc870; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-60a08eb0956so56231067b3.3
+        for <linux-efi@vger.kernel.org>; Sun, 17 Mar 2024 06:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1710683889; x=1711288689; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=p1P6J9pjhQJmeBCYeEGZyK27cyT0Yx//OvZTCw/Ttmw=;
+        b=kSTgc870xx3GszZqwBG4faXSbwNjjz+eBOkG9G+HSSiF1qWia+bDBlmTIjOrA+Bu7Z
+         UkF95PIC6GSLn4A1iXQVPaVeLEPGuvWcyVvfxHZq/uWzHQkOIeiyjurfSOWPasvAPryN
+         W2lNFEujY1M9JmXD+Jz193GU85aaZKn60NrOoVJct/EsGERuAJtrocnflqB2I6fz1Fll
+         aJ4DNWdXxOrirKg44k0Z9gVj3om6UOinvn2Gj6jyfDKvINUB4xZX023Wf3nGIFvcpXi/
+         24BXkvam2VlPukNQ6zw67TQecHO/cqTe960C6zAVtvbCEd4cfJZ/Xw5PqdhzfWTDnxqq
+         FXCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710683889; x=1711288689;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p1P6J9pjhQJmeBCYeEGZyK27cyT0Yx//OvZTCw/Ttmw=;
+        b=XijSZPqbQ0vXrrLBfGOdN0EcgoqPef0CLhVY512OCJlK2dsAF0TX8O/XDtg8uHt6oN
+         rriUcigK3u1sth6t6cYr/Cc6xGeyTb0Nl/uxyIEToa7TT3JEesbheeJEQV78Yrao6ZAn
+         1wN9utPAjwbrzjICTbvF/xaRWgjAoAwaqKWij/ovp+aaIMdnY14Ty6BQ27B3uB0/9GTb
+         86IyNLQGHOaMfOepWjyRStdISxWv8zU8ufGLGztRW59plfzTY4MQ/vZ+UAg8k6p9WY4J
+         XHpINaXrvaDWmRbOHl2FAXNXbE3rlO3b6s00sJHnrjrAGAjpDXXz0KAOvjiMOZyVwzUe
+         EHvw==
+X-Gm-Message-State: AOJu0Yztd6gvljE4Ckh/mahtqrypMx0v3fMIhDIXiyITRHRm0GKzpPdT
+	jihT7O+DM6mbtltNPCmflNkQHbOE0l8uXZwkqY452YRWeb7OyPyLuvpVyqa1VT0Hd8qupw==
+X-Google-Smtp-Source: AGHT+IFZnWZDXvcqYPZ7rfsMjwjhGt0bMKwwuKMbjH55/tXPlM8t93AUn1jwn+Pu3j9mVDZNGHobkGb8
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a81:a042:0:b0:60a:3487:6f7c with SMTP id
+ x63-20020a81a042000000b0060a34876f7cmr1780309ywg.9.1710683889103; Sun, 17 Mar
+ 2024 06:58:09 -0700 (PDT)
+Date: Sun, 17 Mar 2024 14:58:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Z9uILynzNQSbtsP0jTPtpxumGN+ynNPSCCW9fpqKdTfYljrJD9e
- e0UJhDXfwPj3YfsFKJllz9Do1SXmfOIYBaA6Q3jXOuVNm7drbe6MaSXgY4jydxnvdL+4hu5
- ZHiwIpNjFUiI56eS7HliYVmo6A7vSZHkzjqPw3sSG9fM2Q6AzAwcY3kNl5gV6CDGaPjFykq
- bSgi6AyRk49y6nw2W/2ow==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sPxOwSC3jcM=;M1io3FQv+xJwGp0tmiXmQ/s6zBL
- 39UxB/QcxHbg0gG+eUaiLet51m0SjD45q7/5jKpKYM6bIeGtNu8q7FtxoKGpuLlu25b2L5CbY
- rUt54uBaRM5sfpBfKtL9zMYynHO4Mpb8gPWm9mg5T48VaxTWtCSZ/1km3fpejkkwJafxfnqNF
- UWXtdCalOl/DMrzYhECauyPxPCKOL3sVVtTrPGZ+VsnRWLYwqJfMvBGk5WH0V+aLoLbm4NHQ7
- C28H+0Sg2Hh6/ce1FUp/3hB8oITrA7S1dmlRA2CyWBdjOmDGtCV2t6I+vh3mAKUKEmYFdfFFq
- IgRUIIXAJTXDbw4VwibuGo1J+Lp1k+l7na1kLcIILtoov28ehzjxpoQIbDYiO5AjKAo+KA1ey
- CdzyIvJL26tuAw63swIw90s0VNhX4UhjyKrWaKgEh3ETfB3i5UDnxoSz2Iayv5kWYjhd41fXl
- +Ha/CjbNl+0AQS3HFS5ugAmutxEnLZ8okpv1dx4NkWqNhDSGCXgcyWKXJPCLxT5RMiUIlQzPm
- +JydaPZb2PSAF/hokNiJtoysgfR9RvtnmygtyMAE0sFEPfXTUEwWONmzHJSkxEEi+qtfythgg
- WHeiOohrGBesnsShHeJrGgYnoT37McuDFuf5aQTaizEsS7nweFZDvT6vG1FoBsrzcg1VnqUxl
- itFViq+lhj424KSICvuKAHhDM4KW/Pyl3zvguj2gk4eC0PPIfZcSMMCigGsz7h/D9iTP1llKM
- Mw6bU1EbkL01wbmzTUKMKvK6W3SwmFMqwi81vHOwwyjbn8duLZaHjhe97URnE7mugl5qjBRGh
- ad2tiORM8S/MWbi/b2ZitCwoKLMawMX6/GS3wDWzrCTdY=
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1328; i=ardb@kernel.org;
+ h=from:subject; bh=0dFjLvEEaYZsdIOSTCrG72hknPqiZknW8zk84IHpn5Y=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXbt7dxOVnXjqR9P31a+f38F4I8ebct40+f4lVw1vGxP
+ 2O5/v2yjlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCRI+sZGY669N6/qPiwhPHY
+ hx0bYuZvNenou9r+k0M5jqFTJP9+5wKG/8HdRo+02axr42/4Ps9v9WMTS2u9NOXQ3Jnf68/+5qv p5AUA
+X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
+Message-ID: <20240317135804.4092430-2-ardb+git@google.com>
+Subject: [GIT PULL] EFI fixes for v6.9 #1
+From: Ard Biesheuvel <ardb+git@google.com>
+To: torvalds@linux-foundation.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Work around a quirk in a few old (2011-ish) UEFI implementations, where
-a call to `GetNextVariableName` with a buffer size larger than 512 bytes
-will always return EFI_INVALID_PARAMETER.
+Hello Linus,
 
-There is some lore around EFI variable names being up to 1024 bytes in
-size, but this has no basis in the UEFI specification, and the upper
-bounds are typically platform specific, and apply to the entire variable
-(name plus payload).
+Please pull the EFI fix below. It fixes an oversight on my part in the recent
+EFI stub rework for x86, which is needed to get Linux/x86 distro builds signed
+again for secure boot by MicroSoft. For this reason, most of this work is being
+backported to v6.1, which is therefore also affected by this regression.
 
-Given that Linux does not permit creating files with names longer than
-NAME_MAX (255) bytes, 512 bytes (=3D=3D 256 UTF-16 characters) is a
-reasonable limit.
+Thanks,
+Ard.
 
-Cc: <stable@vger.kernel.org> # 6.1+
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-[timschumi@gmx.de: adjusted diff for changed context and code move]
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-=2D--
-Please apply this patch to stable kernel 5.15, 5.10, 5.4, and 4.19
-respectively. Kernel 6.1 and upwards were already handled via CC,
-5.15 and below required a separate patch due to a slight refactor of
-surrounding code in bbc6d2c6ef22 ("efi: vars: Switch to new wrapper
-layer") and a subsequent code move in 2d82e6227ea1 ("efi: vars: Move
-efivar caching layer into efivarfs").
 
-Please note that the upper Signed-off-by tags are remnants from the
-original patch, I documented my modifications below them and added
-another sign-off. As far as I was able to gather, this is the expected
-format for diverged stable patches.
+The following changes since commit 021bc4b9d7ed8dcc90dc288e59f120fa6e3087dc:
 
-I'm not sure on the specifics of manual stable backports, so let me
-know in case anything doesn't follow the process. The linux-efi team
-and list are on CC both for documentation/review purposes and in case
-a new sign-off/ack of theirs is required.
-=2D--
- drivers/firmware/efi/vars.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+  virt: efi_secret: Convert to platform remove callback returning void (2024-03-09 11:37:18 +0100)
 
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index cae590bd08f2..eaed1ddcc803 100644
-=2D-- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -415,7 +415,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t=
-, unsigned long, void *),
- 		void *data, bool duplicates, struct list_head *head)
- {
- 	const struct efivar_operations *ops;
--	unsigned long variable_name_size =3D 1024;
-+	unsigned long variable_name_size =3D 512;
- 	efi_char16_t *variable_name;
- 	efi_status_t status;
- 	efi_guid_t vendor_guid;
-@@ -438,12 +438,13 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid=
-_t, unsigned long, void *),
- 	}
+are available in the Git repository at:
 
- 	/*
--	 * Per EFI spec, the maximum storage allocated for both
--	 * the variable name and variable data is 1024 bytes.
-+	 * A small set of old UEFI implementations reject sizes
-+	 * above a certain threshold, the lowest seen in the wild
-+	 * is 512.
- 	 */
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.9-1
 
- 	do {
--		variable_name_size =3D 1024;
-+		variable_name_size =3D 512;
+for you to fetch changes up to b3810c5a2cc4a6665f7a65bed5393c75ce3f3aa2:
 
- 		status =3D ops->get_next_variable(&variable_name_size,
- 						variable_name,
-@@ -491,9 +492,13 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_=
-t, unsigned long, void *),
- 			break;
- 		case EFI_NOT_FOUND:
- 			break;
-+		case EFI_BUFFER_TOO_SMALL:
-+			pr_warn("efivars: Variable name size exceeds maximum (%lu > 512)\n",
-+				variable_name_size);
-+			status =3D EFI_NOT_FOUND;
-+			break;
- 		default:
--			printk(KERN_WARNING "efivars: get_next_variable: status=3D%lx\n",
--				status);
-+			pr_warn("efivars: get_next_variable: status=3D%lx\n", status);
- 			status =3D EFI_NOT_FOUND;
- 			break;
- 		}
-=2D-
-2.44.0
+  x86/efistub: Clear decompressor BSS in native EFI entrypoint (2024-03-15 19:47:09 +0100)
 
+----------------------------------------------------------------
+EFI fixes for v6.9 #1
+
+- Explicitly wipe BSS in the native EFI entrypoint, so that globals
+  shared with the legacy decompressor are zero-initialized correctly.
+
+----------------------------------------------------------------
+Ard Biesheuvel (1):
+      x86/efistub: Clear decompressor BSS in native EFI entrypoint
+
+ drivers/firmware/efi/libstub/x86-stub.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
