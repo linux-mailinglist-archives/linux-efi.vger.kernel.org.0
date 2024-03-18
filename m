@@ -1,79 +1,174 @@
-Return-Path: <linux-efi+bounces-828-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-829-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C918A87DFA9
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 20:34:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA2887E1E8
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Mar 2024 02:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2BC5B20C43
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Mar 2024 19:34:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77564B212DD
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Mar 2024 01:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24671F94C;
-	Sun, 17 Mar 2024 19:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795521E866;
+	Mon, 18 Mar 2024 01:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5i98Q/N"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UjUANLT9"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E80F1F947
-	for <linux-efi@vger.kernel.org>; Sun, 17 Mar 2024 19:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3EE1E862;
+	Mon, 18 Mar 2024 01:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710704046; cv=none; b=TaKrxWXgRpRQrsKM0dmdwQSiEzjyKoF2jMMbEgyhBtFKnUBlla1Z3AGDlnPMZs5ODFdiFUzuo7Rgf1QtOjmfey4KEkF2j7Zaxwtu3O6zyKpWamjN9Gx40nW22O3oAg7Dhi2/05jxh5dzvO3bWp5zfXunj5zA4+zXK7Fe9o+YKx0=
+	t=1710726934; cv=none; b=sBXtAwAJnfX1qgqLUoWRa4ZnKim8PYb3lX2qGhfTTa3n7JAozK8kuVatpayzoNvUm2NpnDL/9MrR39rJVtLN0LEhsIPT3euPpnD9EWhFrOgeO7grqUuBmupgWQFhM+FM2G5wgeNoh2T/53ciklmY1y4lMSv/mSfNbRUb4hS4BEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710704046; c=relaxed/simple;
-	bh=ojQdPKuk/ABa2yhcbbSQeFXU3PUNlPKRFTY/6iaUdQo=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=NO8fHnAsRmldPzaEHq6Zx4sRoge1QTePJQRZJX3FILmzuI6gy4o6RVqaCfCQ2Ul8CpMmIys2lpt5FFMJQ8Ej1PFVoerLwzR4bSWi4P5R9lFUQLtpqBnzrZt2sdQToMonpX1Qzl9qk2I7O+nrLfwEXe6N5Bg+QYdhBUFYkwRURbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5i98Q/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 71556C433F1;
-	Sun, 17 Mar 2024 19:34:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710704046;
-	bh=ojQdPKuk/ABa2yhcbbSQeFXU3PUNlPKRFTY/6iaUdQo=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=S5i98Q/N8gyycOh91BC9/6LFzzR2/NDA5zloUlmGbZHWFnyKLXP7f93g6oizfE57V
-	 OhJnzNeSFS59F8swW4ix2NEtB+hH+4fNT8cjBFWuZXtKHXqXxKMWpFOP+1KnPjigNK
-	 wfXoNLnsfcF4dyxgbPY++QOVR+S+Ym5CuINO4uF4HwFmHne4A4PxG/xs0HJUCRubAv
-	 v47dr3WgEr2fELJJfslFrcKkr563BXqXb9c9o/kylfP3R2Og+MQKVM/bnKKedbuv7t
-	 sB3EZht+FSmjGlUYFsux6gLsRHmhbjF6FdN5DHX9cJKD9ylg/YRzvHq7RZo47mjxdD
-	 U1TkDRA/IUR6Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 68E77D95060;
-	Sun, 17 Mar 2024 19:34:06 +0000 (UTC)
-Subject: Re: [GIT PULL] EFI fixes for v6.9 #1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20240317135804.4092430-2-ardb+git@google.com>
-References: <20240317135804.4092430-2-ardb+git@google.com>
-X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20240317135804.4092430-2-ardb+git@google.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.9-1
-X-PR-Tracked-Commit-Id: b3810c5a2cc4a6665f7a65bed5393c75ce3f3aa2
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 906a93befec826475ab3d4facacc57a0b0a002a5
-Message-Id: <171070404642.21222.2907036416407168093.pr-tracker-bot@kernel.org>
-Date: Sun, 17 Mar 2024 19:34:06 +0000
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: torvalds@linux-foundation.org, linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+	s=arc-20240116; t=1710726934; c=relaxed/simple;
+	bh=iUMk+G89JkHrqV4fUL3Gt28oxAeNaZnrFGaHr6SxGkU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PZqhkYlnKHq2fXG2WjHTdyGtKOLhklEO49UOIOwp6L67yDF5DgN/ilHBNSt3NNAYZjBrybiiAcwPPlzOPBtPe926pSKCPzBbLFBJoonwdrpiR2gyX6E3bU4oYftCWR2Z3DJKks+LBxIZ5oWPDcE7VD5y54kP9pHnRbirFH6m31I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UjUANLT9; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710726933; x=1742262933;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=iUMk+G89JkHrqV4fUL3Gt28oxAeNaZnrFGaHr6SxGkU=;
+  b=UjUANLT9jAo8tjCK8wAGSQTnlyg600xxCaigcuF7w8QVrL65eZqD44O9
+   5jZDUwXyDyfx2zCB5zdHj4lVUk9cXDlyer3T/qYJNLnDwjb+D7t9Xb+HZ
+   kz1JORYPXyI8Z2pmU5u5Jvpw6EvzEdY4P18js1u8mJ1Nxddzg6aYXXK5W
+   zUIANXikv7HzvjyuDrS4AuMS7O0thEdDJV2Z+Sna7P0zL1iZO0h+NBLRJ
+   x1fdkgXWeeiT8bmUY9iPvMOW3fWJfAicC6TWELU5J/7DO4mjXNwxd5LEt
+   K33Cus+19/TVQ1R0rBTGu2U1Z9fQDjSkp42zwIJsDQrBvOTlL6auz1ogF
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="16668193"
+X-IronPort-AV: E=Sophos;i="6.07,133,1708416000"; 
+   d="scan'208";a="16668193"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2024 18:55:32 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,133,1708416000"; 
+   d="scan'208";a="44248090"
+Received: from haibo-optiplex-7090.sh.intel.com ([10.239.159.132])
+  by orviesa002.jf.intel.com with ESMTP; 17 Mar 2024 18:55:29 -0700
+From: Haibo Xu <haibo1.xu@intel.com>
+To: linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-efi@vger.kernel.org
+Cc: paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	ardb@kernel.org,
+	sunilvl@ventanamicro.com,
+	xiaobo55x@gmail.com,
+	Haibo Xu <haibo1.xu@intel.com>
+Subject: [PATCH v2] riscv: dmi: Add SMBIOS/DMI support
+Date: Mon, 18 Mar 2024 10:09:16 +0800
+Message-Id: <20240318020916.1299190-1-haibo1.xu@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Sun, 17 Mar 2024 14:58:05 +0100:
+Enable the dmi driver for riscv which would allow access the
+SMBIOS info through some userspace file(/sys/firmware/dmi/*).
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.9-1
+The change was based on that of arm64 and has been verified
+by dmidecode tool.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/906a93befec826475ab3d4facacc57a0b0a002a5
+Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+---
+Changes since v1
+  - Change to use memremap/memunmap for dmi_(early)_remap/unmap
+    definition(suggested by Ard)
+  - Minor clean up for comments (Ard)
+---
+ arch/riscv/Kconfig                   | 11 +++++++++++
+ arch/riscv/include/asm/dmi.h         | 24 ++++++++++++++++++++++++
+ drivers/firmware/efi/riscv-runtime.c | 13 +++++++++++++
+ 3 files changed, 48 insertions(+)
+ create mode 100644 arch/riscv/include/asm/dmi.h
 
-Thank you!
-
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 8ebafe337eac..3639151cb4ef 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -952,6 +952,17 @@ config EFI
+ 	  allow the kernel to be booted as an EFI application. This
+ 	  is only useful on systems that have UEFI firmware.
+ 
++config DMI
++	bool "Enable support for SMBIOS (DMI) tables"
++	depends on EFI
++	default y
++	help
++	  This enables SMBIOS/DMI feature for systems.
++
++	  This option is only useful on systems that have UEFI firmware.
++	  However, even with this option, the resultant kernel should
++	  continue to boot on existing non-UEFI platforms.
++
+ config CC_HAVE_STACKPROTECTOR_TLS
+ 	def_bool $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=tp -mstack-protector-guard-offset=0)
+ 
+diff --git a/arch/riscv/include/asm/dmi.h b/arch/riscv/include/asm/dmi.h
+new file mode 100644
+index 000000000000..ca7cce557ef7
+--- /dev/null
++++ b/arch/riscv/include/asm/dmi.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2024 Intel Corporation
++ *
++ * based on arch/arm64/include/asm/dmi.h
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++
++#ifndef __ASM_DMI_H
++#define __ASM_DMI_H
++
++#include <linux/io.h>
++#include <linux/slab.h>
++
++#define dmi_early_remap(x, l)		memremap(x, l, MEMREMAP_WB)
++#define dmi_early_unmap(x, l)		memunmap(x)
++#define dmi_remap(x, l)			memremap(x, l, MEMREMAP_WB)
++#define dmi_unmap(x)			memunmap(x)
++#define dmi_alloc(l)			kzalloc(l, GFP_KERNEL)
++
++#endif
+diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/efi/riscv-runtime.c
+index 09525fb5c240..c3bfb9e77e02 100644
+--- a/drivers/firmware/efi/riscv-runtime.c
++++ b/drivers/firmware/efi/riscv-runtime.c
+@@ -152,3 +152,16 @@ void arch_efi_call_virt_teardown(void)
+ {
+ 	efi_virtmap_unload();
+ }
++
++static int __init riscv_dmi_init(void)
++{
++	/*
++	 * On riscv, DMI depends on UEFI, and dmi_setup() needs to
++	 * be called early because dmi_id_init(), which is an arch_initcall
++	 * itself, depends on dmi_scan_machine() having been called already.
++	 */
++	dmi_setup();
++
++	return 0;
++}
++core_initcall(riscv_dmi_init);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.34.1
+
 
