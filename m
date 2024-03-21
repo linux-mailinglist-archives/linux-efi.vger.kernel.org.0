@@ -1,104 +1,112 @@
-Return-Path: <linux-efi+bounces-837-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-838-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2422B885C23
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Mar 2024 16:39:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0758F8862A9
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Mar 2024 22:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3EAD281EBE
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Mar 2024 15:39:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 286C01C2162D
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Mar 2024 21:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F238624C;
-	Thu, 21 Mar 2024 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F5413443D;
+	Thu, 21 Mar 2024 21:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FErP5GvX"
+	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="aq6RYuwj"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB9886637;
-	Thu, 21 Mar 2024 15:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C85A288AE
+	for <linux-efi@vger.kernel.org>; Thu, 21 Mar 2024 21:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711035251; cv=none; b=WTpu59QZ1ZcklJXGtMRJhTieS46FUEMQTKMG/+B2ysYvmzcYKiQBOK/rFTlIk50o7JCARvbUZ43A9RA01BxdppJ+zzbRtJtGknLACSVIN8TTmCiTG9nhj5bF1Rh1PpLz6yx2x4BzL8qJsnESf04kgE//Xb9qXB12neRsYKQ7eTg=
+	t=1711057551; cv=none; b=sSswrKbs3uxuIiEseACZ8aJ1Y5PKJdJgjcEK0jYTfFKe7t0hT75TKgNqRxQroFJ4mKp9yBkRt885NPXaHHSyBIoEv2fxV5JY5XEZinoZaHgKZtRxbCsJ9NcYgoj6JevcR6aesnQBlcvruLIXQa23aq5TaeGMG1ZyS4CU1XaKd9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711035251; c=relaxed/simple;
-	bh=F0K+WHKw2TuHQuHxwMJxlaheNAbUvP3X1s0Ten7rJvA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ClIewRjYm8Pckkcws6eWIB12z1lkOnZDZS9xz42H7fB/StZ07DOHF3jn/D2z+mqFqQ/WfKXOPd8yac7qbhaBZazTpp979D9YQyZ1haKu6VBIXFI/FZi29T+tBoWDNVKSOqGgC/ispERXwvIhg+uqHzAy5NHPxoJ8lAX1+QtZfWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FErP5GvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928BBC43390;
-	Thu, 21 Mar 2024 15:34:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711035251;
-	bh=F0K+WHKw2TuHQuHxwMJxlaheNAbUvP3X1s0Ten7rJvA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FErP5GvX7NQD74UYljWejmMYJKjbLoV4qQCXerVStSIkEi/vJqCFXXO0rvLr43WKq
-	 Mh3nqbW8I8zt6jkHL8YlsKMdyVuAe9uN3ARiyIhYIFWBA+Pq5jsAgfBcyUddqc0uN2
-	 Nt6OvKrmhZe9br+y0wVXhglbZy01CoPUBc0SNUFI=
-Date: Thu, 21 Mar 2024 16:34:08 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ted Brandston <tbrandston@google.com>, linux-efi@vger.kernel.org,
-	stable@vger.kernel.org, Jiao Zhou <jiaozhou@google.com>,
-	Nicholas Bishop <nicholasbishop@google.com>
-Subject: Re: efivarfs fixes without the commit being fixed in 6.1 and 6.6
- (resending without html)
-Message-ID: <2024032151-tweet-attractor-3b6f@gregkh>
-References: <CA+eDQTFQ45nWGmctp-CkK=xXXQQHc_DTkM1iN4m-0o5fCjt8VA@mail.gmail.com>
- <CA+eDQTEiRyddZYwmyX3q+1bBgFRQydC++i4DDbiQ+zC-j72FVQ@mail.gmail.com>
- <2024032132-fax-unsmooth-f92b@gregkh>
- <CAMj1kXEKfAKJM0o-X5vY9cMpkurvpZ418GpyS5fWqiZO-0H9wg@mail.gmail.com>
+	s=arc-20240116; t=1711057551; c=relaxed/simple;
+	bh=2tQnMaOk3l5Vzdsx6KewYY3YiTVYe2pki0Ft8A9hQmU=;
+	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=rVSlLuq0w00F9JfZcl2uCc5T1GtcsCK7jIfZ5s0clFVgbUa27MdWQ0e2KbqKjJSw/kJVVW8heDPtdAyegvabhXME58maKvkcyeoIYkRhK+NuuntA3m6LsJFtbqFrsVNIccSguOdFQ36Eci+o2Aq4oS8AyywlMlhnndgs6zJnjJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=aq6RYuwj; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
+Date: Thu, 21 Mar 2024 14:45:41 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
+	s=key1; t=1711057545;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 references:references; bh=2tQnMaOk3l5Vzdsx6KewYY3YiTVYe2pki0Ft8A9hQmU=;
+	b=aq6RYuwjiDABc2QbzU7SrGGdLNatkeQEMtyhg5vtc19T0JZBy8+naYv8zN+BPL/y87W+bn
+	BDFFZazipTyCrzF5/NiHCkFg2JSp8vWh+kkBKVGrMG9O1pFy20RzgLNl2HrSHDIC/0wwzo
+	9Q2AvNCaX/wJiJ1isuTbjj+5omlwx2yCnOJIx9eRKabXIcRXcB7klEXJetdRjtwinVh30W
+	zUaYY9BhsqOh8Oe3JTSGaEUNfcAPCNxQk2iQrSVYYesdDnEooTDazcX/+jXeJy8OwETi88
+	w4+adkIasV+hQjpllfN1bRyh/XiJNhWcwhMqPKTUcGXfR5+lM+KqKJw95U6KMg==
+Message-ID: <20240321144541.GD8211@craftyguy.net>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Clayton Craft <clayton@craftyguy.net>
+To: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Cc: clayton@craftyguy.net
+Subject: x86_64 32-bit EFI mixed mode boot broken
+References:
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; boundary="3NEYmrcHHRyyUH2K"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Migadu-Flow: FLOW_OUT
+
+
+--3NEYmrcHHRyyUH2K
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXEKfAKJM0o-X5vY9cMpkurvpZ418GpyS5fWqiZO-0H9wg@mail.gmail.com>
+Content-Transfer-Encoding: base64
 
-On Thu, Mar 21, 2024 at 04:28:56PM +0100, Ard Biesheuvel wrote:
-> On Thu, 21 Mar 2024 at 15:59, Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Thu, Mar 21, 2024 at 10:43:05AM -0400, Ted Brandston wrote:
-> > > Hi, this is my first time posting to a kernel list (third try, finally
-> > > figured out the html-free -- sorry for the noise).
-> > >
-> > > I noticed that in the 6.6 kernel there's a fix commit from Ard [1] but
-> > > not the commit it's fixing ("efivarfs: Add uid/gid mount options").
-> > > Same thing in 6.1 [2]. The commit being fixed doesn't appear until 6.7
-> > > [3].
-> > >
-> > > I'm not familiar with this code so it's unclear to me if this might
-> > > cause problems, but I figured I should point it out.
-> > >
-> > > [1]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/fs/efivarfs/super.c?h=linux-6.6.y&id=48be1364dd387e375e1274b76af986cb8747be2c
-> > > [2]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/fs/efivarfs/super.c?h=linux-6.1.y
-> > > [3]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/fs/efivarfs/super.c?h=linux-6.7.y
-> >
-> > Good catch.
-> 
-> Indeed. Thanks for reporting this.
-> 
-> >  Ard, should this be reverted?
-> >
-> 
-> With this fix applied, we'll end up kfree()'ing a pointer that is
-> guaranteed to be NULL, on a code path that typically executes once per
-> boot, if at all.
-> 
-> So in practical terms, there is really no difference, and this is the
-> only thing I personally care about.
-> 
-> So I wouldn't mind if we just left them, unless there are other
-> concerns wrt to maintenance, tidiness etc.
-> 
+SSd2ZSBiZWVuIGNoYXNpbmcgYSBwcm9ibGVtIHdpdGggMzItYml0IEVGSSBtaXhlZCBtb2RlIGJv
+b3Rpbmcgb24gdHdvIGRpZmZlcmVudAooeDg2XzY0KSBJbnRlbCBCYXkgVHJhaWwgcGxhdGZvcm1z
+LCB3aGVyZSB0aGUgc3lzdGVtIHJlYm9vdHMgb3IgaGFuZ3Mgc2VlbWluZ2x5CnZlcnkgZWFybHkg
+c29tZXdoZXJlIGJlZm9yZSBvciBhZnRlciBsb2FkaW5nIHRoZSBrZXJuZWwuIEkndmUgbm90IGJl
+ZW4gYWJsZSB0bwpnZXQgYW55IG91dHB1dCBmcm9tIHRoZSBrZXJuZWwgb3Igc3R1YiBvdmVyIGVm
+aWZiIHdoZW4gdGhlIGlzc3VlIGhhcHBlbnNbMF0sIGFuZApkbyBub3QgaGF2ZSBzZXJpYWwgY29u
+c29sZSBhY2Nlc3Mgb24gdGhlc2Ugc3lzdGVtcy4gCgp2Ni44IGZhaWxzIGZvciBtZSwgYW5kIHBy
+ZXN1bWFibHkgc28gZG9lcyBldmVyeXRoaW5nIGJhY2sgdG8gdjYuMi4gdjYuMSBpcyBhYmxlCnRv
+IGJvb3QgT0sgb24gdGhlc2UgcGxhdGZvcm1zIHdpdGggbWl4ZWQgbW9kZSwgYW5kIGl0IGxvb2tz
+IGxpa2UgdGhlcmUgYXJlIGEgbG90Cm9mIGNoYW5nZXMgZnJvbSA2LjEuLjYuMiBmb3IgRUZJL21p
+eGVkIG1vZGUgYm9vdGluZy4gSSBkaWQgbWFuYWdlZCB0byBiaXNlY3QgdGhlCmlzc3VlIHRvOiAK
+CiAgICAgICAgY29tbWl0IGUyYWI5ZWFiMzI0Y2RmMjQwZGU4OTc0MWU0YTFhYTc5OTE5ZjAxOTYK
+ICAgICAgICBBdXRob3I6IEFyZCBCaWVzaGV1dmVsIDxhcmRiQGtlcm5lbC5vcmc+CiAgICAgICAg
+RGF0ZTogICBUdWUgTm92IDIyIDE3OjEwOjAyIDIwMjIgKzAxMDAKICAgICAgICAKICAgICAgICAg
+ICAgeDg2L2Jvb3QvY29tcHJlc3NlZDogTW92ZSAzMi1iaXQgZW50cnlwb2ludCBjb2RlIGludG8g
+LnRleHQgc2VjdGlvbgoKSG93ZXZlciBJJ20gbm90IHN1cmUgaG93IHRvIHByb2NlZWQgZnJvbSBo
+ZXJlLCBvciBpZiBteSBiaXNlY3QgaXMgYWxsIHRoYXQKdXNlZnVsIHNpbmNlIHRoZSBjb21taXQg
+c2VlbXMgdG8gYmUgaW4gdGhlIG1pZGRsZSBvZiBhIGJ1bmNoIG9mIGNoYW5nZXMgSSBkbyBub3QK
+dW5kZXJzdGFuZC4gSSd2ZSBiZWVuIHVzaW5nIHN5c3RlbWQtYm9vdCB0byB0ZXN0IHRoaXMgKGJv
+dGggdGhlIGZ1bGwgYm9vdGxvYWRlcgphbmQgVUtJIHcvIHRoZSBzZC1ib290IHN0dWIpLiBJcyAz
+Mi1iaXQgbWl4ZWQgbW9kZSBvbiB4ODZfNjQgd29ya2luZyBmb3Igb3RoZXJzPwoKVGhhbmtzLApD
+bGF5dG9uCgowLiBVc2luZyAiZGVidWcgaWdub3JlX2xvZ2xldmVsIGVhcmx5Y29uPWVmaWZiIGVh
+cmx5cHJpbnRrPWVmaSxrZWVwIGVmaT1kZWJ1ZyIK
 
-Ok, let's leave it, as long as there's no bad side affects.
+--3NEYmrcHHRyyUH2K
+Content-Type: application/pgp-signature; name="signature.asc"
 
-greg k-h
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEkdOrrjmBP3eB7DeWSkztbX7flQoFAmX8qoUACgkQSkztbX7f
+lQrlnA//arshnPdEcrjUori6388jGpQ5VwbulT42f421zbOOATnXjmK3d2cQ3Pds
+3cr/mwkmFg+zS8sh/kUH+TnNcvlQjaHOwi1sbEBVJrZ6qHfBQY56/kDUWQIzYbU1
+1lpR9j8eP+X9WFNC9oE3WQK6kvky4sSHD+WAmnG7iYeuqSZwSLcFDivZR/27rH73
+DyHpBFDOQWZdoIjg0IN0CcNf80JH6cWcNmNwFD5PUmfr2t952C7JM4zD1Omp9Cse
+HyQsaco2HwL+HWbIQpuRDYGbA+vLm9k9zR1hHP6yQhscHOkwp7ETE+MdKlQufkJC
+EeMyeKhxWLMLvRa/tDK9aK9bQsYzHWIhGWpyUfHWfaxkcpspeAGPGuHzhZMt2c0H
+hgm2D5LJRzqM69YfYi8IDzfoj4k9SyHDylewEsTvMHirWK6trr7exKALLwNLNdwa
+nJP5mdP3iyJ/9WGSRAbrnEBWnDi/nrDk659LCrZwUqFtJX8ljnLp4dyJ5znwYiv+
+3Mr+o1ThRUvr3t4gB0Rg3MNO8tQNnnbfFSFm+MD1ClQUHKVzgS36XUoe+dLpIub6
+eHdMSGpvVKZJz4TJfdjqIPkpUgyEPdD6H2FuLWnDD3oLb6cXEAGoSl/qaYc1V+dn
+mQntqxW0dBwh4j/2AcWUvORHrjMa6Cv/CZAUUy6bQy03UHxaAmM=
+=kCJm
+-----END PGP SIGNATURE-----
+
+--3NEYmrcHHRyyUH2K--
 
