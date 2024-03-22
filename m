@@ -1,121 +1,108 @@
-Return-Path: <linux-efi+bounces-841-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-842-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CF188643B
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 01:06:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B80E886493
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 02:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD421F22177
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 00:06:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBDF6B22561
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 01:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F11387;
-	Fri, 22 Mar 2024 00:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AABEC3;
+	Fri, 22 Mar 2024 01:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="QZLbi5YU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d7xuTVW4"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9379382;
-	Fri, 22 Mar 2024 00:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC7065C
+	for <linux-efi@vger.kernel.org>; Fri, 22 Mar 2024 01:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711066011; cv=none; b=jLuxqdy0QwmcftLC1Akl+VymmgRPWTZ8+SgzURhgf25nAh5JbmJNxV8Yahz5wEPrwQM58YI7GsRsBlDpLPiscXFWKs4m1tJKUA0kLKTuP4K3kkPHJhlPhMiHdDUbkXtDfIfku88dLZD6llWNXJK5G3FGKb51wkApSU2hxzwBHQQ=
+	t=1711069738; cv=none; b=XLQMxVusqtUOFj2dID3mC8Jlxdi8pjXpfBMRjLBxy97+11rF3XQP0CGV5pZZbkTlwi7V4oXPHSYkyuj+ylygq6uP/hPvHST39v5Qn4ulhnZIXVatDALMhxpkPGbG2LHfu9uaXYH3dceXSMJtmbZl9Sj9KNibdFzXNTytzUd5W0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711066011; c=relaxed/simple;
-	bh=sJNuvfV/Rre/UoxjQHPPLLAdGqsUE6wJx6GszC4ZmZA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mdHFd4krOdBIaTmecdz7Cgo8sLM8wWn0LnF0RNUbFAbJSiccAR+289rD/Sprk6B+jvZ8XVTVKLFRemup+V6VFCDkfwWpXGOgnKPXdRaBqaT70kr0aDT4mrxrizF+4vCrYlc17n5CcLLOKVrxOv9NH75SemKt1MJ5qIWiL8zVChE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=QZLbi5YU; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
-Date: Thu, 21 Mar 2024 17:06:41 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
-	s=key1; t=1711066006;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sJNuvfV/Rre/UoxjQHPPLLAdGqsUE6wJx6GszC4ZmZA=;
-	b=QZLbi5YUc4TG37Pz56OmLR1DDAJWJlCstn9sWQ2Eq7+MEXdBpQuKfrAQLrU1O9REwFQolK
-	OLww4pVhrwIq10k9/7pr+CIlBnuPLIKgXerVIilSujBvCxhGanoYqu6N6pogg1Slf0Io8A
-	rJ/8JPIlZJMz9UrcLfqyi61B/eVEWvCWf1cOkmB28IlM8VSFLt/2AEnOzWpZu/q3j7YqRb
-	Ct8g6zZxXFYShObMd+JmWD7Q47m4b0I6sF+751gW4Wqiy8ztONWJLVeSlAl0tcl1UIaTTB
-	fWVN7DuZrz4W10DxWW1McCZpT3LIEJAsBDUGaSaycQYvOTnnQW/w9vOme0Tsmw==
-Message-ID: <20240321170641.GK8211@craftyguy.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Clayton Craft <clayton@craftyguy.net>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- regressions@lists.linux.dev
-Subject: Re: x86_64 32-bit EFI mixed mode boot broken
-In-Reply-To: <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
-References: <20240321150510.GI8211@craftyguy.net>
- <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
+	s=arc-20240116; t=1711069738; c=relaxed/simple;
+	bh=OfGge7sG/ns1z/ItuB0Kcv1DpFj1OPQ1tPMi+jFOVOY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GH8Lowi14QKBFlcjdIIrLd+284yx4xx7/ScYag//xqwmDAhjc0mdMPeJz3uEtDDv2M4EaC0DGpzXkfMWnG3CuCKaQCE3w/5uwEnGKWpKHfHR/PmRN+CsXZbE3Ck/5tsqbLHIQUnGYdWPlW43KvYfvvABFV6evjqi9u6CB1oLtw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d7xuTVW4; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5d8dbe37d56so1017405a12.0
+        for <linux-efi@vger.kernel.org>; Thu, 21 Mar 2024 18:08:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1711069736; x=1711674536; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=R+y1XoQi4L4pB9dXi4cPQL39QfY+GN+c/qrd7Sy4OvU=;
+        b=d7xuTVW4SivG0vyvTbUrFEYr01NbbEUBtkH4uBkO6ZrgJ4tYWvxmSYu18KALSeZ3KU
+         Xl7B+uTpwlEVEU3tMZZcYn5yoWQ2MM0w20cFG3f4hT5QZIUyJroswo6N3BE5WEQ60Oeg
+         SINPIKbK7Fhihup7EcNQ2/Eqy6uOMFwpGqdUteKhe1/EHtyHirrVZjgqfEAA23HdLrn0
+         /TIwwUae3La8LNJLLHBEzT2SrYUScU6ZnD8aAPcS1T1/opMjblS65ot21d5/hjxlllq9
+         0J6wqyMMcuq+F1Qdp6atUVqO+E1kCRz8uyrO7UVpXgVVhkCbmKY289UrXBJtwzp0xRbi
+         1F7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711069736; x=1711674536;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=R+y1XoQi4L4pB9dXi4cPQL39QfY+GN+c/qrd7Sy4OvU=;
+        b=d42Xagq5KMGQ/K409vcLW5yfyJdHCVGjhxwNTON/9dDYzdC1XEARI9/8ALm5L16tkF
+         MWLdY9IdFlM0l7gCYSUSLZxf1tFWb4j9FXs0ZtqQjjTMCt1OIBROt2RzOpn9i38o5i+R
+         4faIFVdnFflATVryfWtAZBzhX12JC7IVid6zyvK3We1DU8CWgHswPy7/TurPMDK6dcQX
+         MWwnts0o5PS1ljk7bU7XHH6IL5wy02IXi0eqVTv0YkbKT4xzhBQg+deBqElP/4L5sh19
+         8OLhm7sp7SLp+5ABnHdzkWBY6qbbnYlZ63Iq0cSsTmS6dUkefDn5jDxd2A2eDzyKPCZw
+         Rojw==
+X-Forwarded-Encrypted: i=1; AJvYcCVagf2K65QihDryhlooJszfqjBY2CVfCsfYJnYDVufUMVt0NFA+MwO/IICijGQp1OXEtl1FAuyEMYVN9xFOcHbA6ICuapbpS6Pt
+X-Gm-Message-State: AOJu0YzY+zpc4SpttW84a+CFHf0ULDqbOuU/a4mJxqyOV3Qz4qn9FiyN
+	YQI5zuiL7eD5mdtwyIS3YRZCirQCW11ntiIrRWcX+wv7rnTypt314IFgyG2ANPQTbg==
+X-Google-Smtp-Source: AGHT+IHfIQh71vgw10rr70rB9vqV/a/XdtF6keIbStJjf3iqaWb8qzS0oZN3PCrqBe/2yKDiiHU1ezg=
+X-Received: from hmarynka.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:925])
+ (user=ovt job=sendgmr) by 2002:a63:d30a:0:b0:5d3:832c:4048 with SMTP id
+ b10-20020a63d30a000000b005d3832c4048mr2276pgg.9.1711069736318; Thu, 21 Mar
+ 2024 18:08:56 -0700 (PDT)
+Date: Fri, 22 Mar 2024 01:08:45 +0000
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="N3XsRCzAXOHRROpi"; micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
+Message-ID: <20240322010846.305860-1-ovt@google.com>
+Subject: [PATCH] efi: fix panic in kdump kernel
+From: Oleksandr Tymoshenko <ovt@google.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: ovt@google.com, johan+linaro@kernel.org, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Check if get_next_variable() is actually valid pointer before
+calling it. In kdump kernel this method is set to NULL that causes
+panic during the kexec-ed kernel boot.
 
---N3XsRCzAXOHRROpi
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: base64
+Tested with QEMU and OVMF firmware.
 
-T24gVGh1LCAyMSBNYXIgMjAyNCAyMzo0ODowOSArMDEwMCBBcmQgQmllc2hldXZlbCA8YXJkYkBr
-ZXJuZWwub3JnPiB3cm90ZToKPiA+IHY2LjggZmFpbHMgZm9yIG1lLCBhbmQgcHJlc3VtYWJseSBz
-byBkb2VzIGV2ZXJ5dGhpbmcgYmFjayB0byB2Ni4yLiB2Ni4xIGlzIGFibGUKPiA+IHRvIGJvb3Qg
-T0sgb24gdGhlc2UgcGxhdGZvcm1zIHdpdGggbWl4ZWQgbW9kZSwgYW5kIGl0IGxvb2tzIGxpa2Ug
-dGhlcmUgYXJlIGEgbG90Cj4gPiBvZiBjaGFuZ2VzIGZyb20gNi4xLi42LjIgZm9yIEVGSS9taXhl
-ZCBtb2RlIGJvb3RpbmcuCj4gCj4gdjYuMSBqdXN0IHJlY2VpdmVkIHNvbWUgRUZJIHJlbGF0ZWQg
-YmFja3BvcnRzLCBzbyBwbGVhc2UgY2hlY2sgdGhlCj4gbGF0ZXN0IHY2LjEueSBhcyB3ZWxsLgoK
-SSBqdXN0IGdhdmUgdjYuMS44MiBhIHRyeSwgYW5kIGl0IGZhaWxzIHRvIGJvb3QgZm9yIG1lLiBU
-aGF0IHNlZW1zIHRvIGJlIGEKcmVncmVzc2lvbiBmcm9tIHRoZSA2LjEuMCB0aGF0IEkgdGVzdGVk
-IHByZXZpb3VzbHkuCgo+IEkgdXN1YWxseSB0ZXN0IG9uIDMyLWJpdCBPVk1GIGJ1aWx0IHdpdGgg
-TE9BRF9YNjRfT05fSUEzMl9FTkFCTEUsCj4gd2hpY2ggYWxsb3dzIHRoZSB1c2Ugb2YgdGhlIGNv
-bXBhdCBlbnRyeSBwb2ludC4gVGhpcyBpcyBkaWZmZXJlbnQgZnJvbQo+IHRoZSBFRkkgaGFuZG92
-ZXIgcHJvdG9jb2wsIGFuZCBJIGFtIG5vdCBzdXJlIHdoaWNoIG9uZSB5b3UgYXJlIHVzaW5nLgoK
-SSBzaG91bGQgaGF2ZSBtZW50aW9uZWQgdGhpcyBwcmV2aW91c2x5LCBoZXJlJ3MgdGhlIEVGSS1y
-ZWxhdGVkIGtjb25maWcgdGhhdCBJCmFtIHVzaW5nLiBJZiB0aGVyZSdzIGFueXRoaW5nIG1pc3Np
-bmcgdGhlbiBwbGVhc2UgbGV0IG1lIGtub3c6CgogICAgICAgIENPTkZJR19FRkk9eQogICAgICAg
-IENPTkZJR19FRklfRUFSTFlDT049eQogICAgICAgIENPTkZJR19FRklfRVNSVD15CiAgICAgICAg
-IyBDT05GSUdfRUZJX0hBTkRPVkVSX1BST1RPQ09MIGlzIG5vdCBzZXQKICAgICAgICBDT05GSUdf
-RUZJX01JWEVEPXkKICAgICAgICBDT05GSUdfRUZJX1JVTlRJTUVfV1JBUFBFUlM9eQogICAgICAg
-IENPTkZJR19FRklfU1RVQj15CiAgICAgICAgQ09ORklHX0VGSV9WQVJTX1BTVE9SRT1tCiAgICAg
-ICAgQ09ORklHX0VGSV9WQVJTX1BTVE9SRV9ERUZBVUxUX0RJU0FCTEU9eQoKTm90ZSB0aGF0IHRo
-ZSBFRkkgaGFuZG92ZXIgcHJvdG9jb2wgc3VwcG9ydCBpcyBkaXNhYmxlZCwgSSB3YXMgdW5kZXIg
-dGhlCmltcHJlc3Npb24gdGhhdCBpdCdzIG5vdCByZXF1aXJlZCBmb3IgbWl4ZWQgbW9kZS4KClBs
-ZWFzZSBsZXQgbWUga25vdyBpZiB0aGVyZSdzIGFueSBtb3JlIGluZm9ybWF0aW9uIEkgY2FuIHBy
-b3ZpZGUgYWJvdXQgbXkKdGVzdGluZyAvIHNldHVwLgoKLUNsYXl0b24K
+Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+---
+ drivers/firmware/efi/efi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---N3XsRCzAXOHRROpi
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 8859fb0b006d..800b85807a02 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -203,6 +203,8 @@ static bool generic_ops_supported(void)
+ 
+ 	name_size = sizeof(name);
+ 
++	if (efi.get_next_variable == NULL)
++		return false;
+ 	status = efi.get_next_variable(&name_size, &name, &guid);
+ 	if (status == EFI_UNSUPPORTED)
+ 		return false;
+-- 
+2.44.0.396.g6e790dbe36-goog
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEkdOrrjmBP3eB7DeWSkztbX7flQoFAmX8y5EACgkQSkztbX7f
-lQqPbA//WPktNG9F+YujYiC1/7VIPC8mPvbRNdwMZA5LYSGgKDP8vRjuU+zoX8Aa
-o20GByQ7LxvByv7XhzdMv7oLFRI5sFwcYJraleO+fUvJT9YluN3eN7rZNeZyUOzc
-f14xiC4uXniYxnJq6L3aAf24FACKmg1ub+NPXTZtswLp06sq2oyVoN5La8K9h/4Y
-pjg6lbxwM5vqoCovDDF3C9WqvmEWcyYsGFPs3ptFxTqMSYQAMjtXUl0jTjFM8ncj
-VY1dK/P3Lt2AUVtaUDyAWGBXnmx5CICgkx7LjWCu9pPto0B89y2DUjQhsJ2litnB
-UFQq5A2oL3GF2uv/w34LrGh97HQT+C8L6BD9D7HJrBlzz7X1bjBmeDlN9bL9iYId
-JSGVGMc3UwAgeLV/mjrdB7vL6UHjMdXUlOPHz8W2OMIKC3p6iJmo5+tyRWYCSB21
-DMjqA4Oy/IOTSOC6t9oxaBDJwJvjGbWVXB4AFiHIbKZ428UHkvKxPVBVMhu1TUV4
-heHw/WhRpv3HDVVFwM1YRveB7Ec1ewjwRJdrydGmLWX19c6cNNFec6jsh5FavLPk
-FiydB3Neubs/61cT9d4lS7ibdhyrTEkxX2cyeJEwC1CLlQDM03AwiyraUvG/323Z
-+rBImKoZgRBnj+q2juHFSzYcj1UVi8i1uibWnfamUxTPoN458J8=
-=HxZ7
------END PGP SIGNATURE-----
-
---N3XsRCzAXOHRROpi--
 
