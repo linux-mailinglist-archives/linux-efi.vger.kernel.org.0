@@ -1,215 +1,147 @@
-Return-Path: <linux-efi+bounces-847-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-848-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304C3886AE6
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 12:01:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84770886C62
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 13:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF8A21F23E4D
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 11:01:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16643B22040
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 12:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64ECF3D547;
-	Fri, 22 Mar 2024 11:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EA144C89;
+	Fri, 22 Mar 2024 12:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nec.com header.i=@nec.com header.b="bzCMIZPB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rTFNuXN7"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2059.outbound.protection.outlook.com [40.107.113.59])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455313DBB7;
-	Fri, 22 Mar 2024 11:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.113.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711105273; cv=fail; b=RxxD2sVSiRZ954XI/q87dEqYMpyVeExZUeUA33g91yPZhSoIGgj7XuIPDqc9JVVvs6m3yLp0F2HY8KMaEkJkOQixbEhGjCHoJKNNjjKskYuFilpCp3jCtGpyIbBEJd3qyfHg4ScQyQPgsGCi6mMAT6pRqvMza8rjb+HN/Aos9u8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711105273; c=relaxed/simple;
-	bh=RRNRgJzRrgHITpPO/1LPiUjqYNdV7c9a/xENndFDR4Q=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jqRqY/itaE9NefpK/Y8utetA4DSMgVDF+cDIwOSSWqynIWSm1STneOEsjTykrrPVHCEDZCPPQLDdSdZla8R7RPt6p8OJAPu86IHHazRfYylZ7EoWBBLuFxXXLOAO/qXi+OUNEEeyfvZnnAuYUgO57cf3r9J0wwLPPo2YqE5tXyk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nec.com; spf=pass smtp.mailfrom=nec.com; dkim=pass (2048-bit key) header.d=nec.com header.i=@nec.com header.b=bzCMIZPB; arc=fail smtp.client-ip=40.107.113.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nec.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aaml3W57ulbB1IyBrJfHIqoNuOnQ26gYC1NmaHMaOztUDPNADjPul6PlDvwfbL2i8fuKd3ySRqBcu1Z9iG0w13Ajbk1FWAAFIEr2aTzDwLEymdqhAkLUPbDO2kstAd1qCQxOSdq07JQhotOWX3nvRPGSB5s8VaSqiaOvGK+TeBvRB35ANGqrTeUEug9mEZWpAGUuHE6qH3nq/7k750k+hCEjyRzxtpqJHk+mQAo1KPbl9OIYsovSWH2sIk9QnBbHzxUZNMWH8jO0s7Zq1CpoBE8/gRHKeJlA7SzioA430O5l+2aO6kqe1SHtIoyPBG49uIt2YWefl8o09kYenbRZ6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W+BOConBcylqTq1Rj3MHMFy+PQy5kIsabyWphjNYiso=;
- b=dJEBE01OnjEvenlUHVy9AQ2Sflkv16Lb9UF0yFBsra/nGfjjBs12L9UfIHvZ4qgRHBk66e/GoOgyjMs41Y/Kdr58Wb/oqCyxS6sujUZ6cvjLTWNvNiDyaKaFA1Zrktxv/3k8e32nu/iH+9JfIEkzrajo8VkTu7mp2bG4gIQ06lA6rsLx51XLcx+5r0N+dr7vuLK+UI/s8YZ3PSqVNyyVhM0COouL9K1C6n8xs5+6LgH0dmxLZKmmlhLKzjBfQltTRjgt7EbfVtec3FfZcsfbYGOEGHvEqDrf5Gv8phEiHsWiEqRld3YpDZhKdH4vJGpWtv85yg5NkHBZSpMol45W2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nec.com; dmarc=pass action=none header.from=nec.com; dkim=pass
- header.d=nec.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nec.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W+BOConBcylqTq1Rj3MHMFy+PQy5kIsabyWphjNYiso=;
- b=bzCMIZPBgJfh4xBYUFkXczpX3as+5vuoqsL9AQTPhN+K2UZQ5BBYFb4hFqD1nJId60Q1jXOju2DDKR0iPL/p82Z0lIUtULoeyc6RBxdlAdTiAaCiMuC3zQ8797nNMILXhT9+Spo7KRPG82fPlOJp47MVZMDvNMryLbY4v03rt+YIzTGqJob3+2/CJ2axxW2GHgPJ2mMe0ofX7aAfeR8/UzzJCING3/Fz8yIjsq+jm6OR3YHR0/aNA2hwtYTToM1NIwsdctR18j8ImZ5ylGhXBhbM1MSXqf9L00QCAXmxobpy6Cn0UZHvoez2WzYabG9jHhH4KMIMFbqO4ynQgJVZuA==
-Received: from TY1PR01MB1625.jpnprd01.prod.outlook.com (2603:1096:403:5::19)
- by TYCPR01MB5774.jpnprd01.prod.outlook.com (2603:1096:400:44::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.24; Fri, 22 Mar
- 2024 11:01:06 +0000
-Received: from TY1PR01MB1625.jpnprd01.prod.outlook.com
- ([fe80::fb45:85ca:f420:e514]) by TY1PR01MB1625.jpnprd01.prod.outlook.com
- ([fe80::fb45:85ca:f420:e514%5]) with mapi id 15.20.7386.031; Fri, 22 Mar 2024
- 11:01:06 +0000
-From: =?iso-2022-jp?B?S09ORE8gS0FaVU1BKBskQjZhRiMhIU9CPz8bKEIp?=
-	<kazuma-kondo@nec.com>
-To: "ardb@kernel.org" <ardb@kernel.org>
-CC: "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-	"tomenglund26@gmail.com" <tomenglund26@gmail.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	=?iso-2022-jp?B?S09ORE8gS0FaVU1BKBskQjZhRiMhIU9CPz8bKEIp?=
-	<kazuma-kondo@nec.com>
-Subject: [PATCH] efi/libstub: fix efi_random_alloc() to allocate memory at
- alloc_min or higher address
-Thread-Topic: [PATCH] efi/libstub: fix efi_random_alloc() to allocate memory
- at alloc_min or higher address
-Thread-Index: AQHafEg9wcbkIIdoj0CvtWchAjlv4Q==
-Date: Fri, 22 Mar 2024 11:01:06 +0000
-Message-ID: <20240322110058.557329-1-kazuma-kondo@nec.com>
-Accept-Language: ja-JP, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: git-send-email 2.39.3
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nec.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY1PR01MB1625:EE_|TYCPR01MB5774:EE_
-x-ms-office365-filtering-correlation-id: 188d4d09-b583-4efc-d14b-08dc4a5f5fa8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- 5TZXEEVVEqzrFdhAEP5xS8WfrVYQwFbuBDiv9KlXTBDfwf3P9dmPlCUGvBZ4sYqVkanP5QFubnWHQ+Sdlsq8d0ReqoObfv4jLJVhetX7YsyOcyApM/lVzQQT725XD+w7rGvNLhZlqvnJ9cGBB6ufLNSUtrK8VufDJVyuiTAmsQioAw4wgOTiN6g6w1kBQiChc82mxUfSlIZJzn7yNHDE8QwRB+GCORnBdKVd+1b2FH1jgVmDD5RzZNU4/fWBFlXG6HntM75T1dM6U46K2V+XrP1ESaadK6O+u9vRjmXC6hvfy2IEPWRbiyUnOoGZgsdV2693Lw7C27aSDcRsr2TQrPD1VECB8ys5Yalw48K5KcQ6nTcjP7+oZl1R9upbp4Kve57Ai+U4GlT+f7i75Z2WM1EwRnFPJYrb+UkFZ90oPpWyT0jOoWmKi4dl88h2WXy6IjFAKh+ITRKiXncQQaPqPzvvnzu9u2dCdshshf9Oxs1na/0fhAKo/AH53PTwFpTJqykectSR5cT1AWTK4UgFZu8wbGBfM8qufp9YqXuyg0yUqS2EdCkFYFtNVJ2De2582+2BkxhSfK9A/6oc0ftmvWt+VpFuxDqyo43YELHHhpZQtUG6xE2PpsDIj5cQxbBy15+6Hg7u4jD7D4hADa03o2XMegTC/WMQ/ZRQFtkKfipM7lhX3WhOB5DLnPeRYmPK/9g/sgq3Xjab5maAiVaH+byBSIrRparInwji+ch6IrQ=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY1PR01MB1625.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-2022-jp?B?d0RoV2F5SVU2aVNrV2xlbFVNczhHYmRmdmVKWURuam9qMmtMUWlqblhr?=
- =?iso-2022-jp?B?SGswc2JOeDVrcG51YnFER242UnNRZ1JqVDB4VkkwMEtNMkFFUWNOYmJh?=
- =?iso-2022-jp?B?NkNqUG1Rd29PcUY0SGlQektOdUEvMjRKa2w0cFJoNExIbmZ3aW8yM0Zq?=
- =?iso-2022-jp?B?T3h2ZzFMRnNiclNDeFVLUUMvMTJLVEZ2dVFJRmx2RytwRGZXZkkyemJu?=
- =?iso-2022-jp?B?dnhsSndZZUw2enlXY2VMRWRTZVl2ZjJ2ZEJuK0tpL0tpbnZyb2hSOHRX?=
- =?iso-2022-jp?B?SzFVelBIK201bzJyUkZReFg0ZlNWbmlPdUNBaFhlT2Jzc3VhQ29HRGJL?=
- =?iso-2022-jp?B?STFBVC8ySmEyYll5RWF6YlVVZGxjdVlKb29BVm1jUnFEV3NURjljVks5?=
- =?iso-2022-jp?B?VWlpcDYrNm5HNGtKOWFDMXBDb3lrVVZOMDJORGt0aEZQREM0WWFZZE5L?=
- =?iso-2022-jp?B?bTNpRkRWOUVGSUhSN3RPSWUrZ3BCQVp1Tmh4T01Hb3VxM1ZuOTNXb2tk?=
- =?iso-2022-jp?B?cm9OR3Vyd29ybzFaTERBeXFQZHFnQ083V253bldGeTBBSUVBa3VYTHFB?=
- =?iso-2022-jp?B?N1IxZ3FlY0pBYUNZNi90dnI1bFN0ejhkbG5ZTHVHMWlrWWRvNm9YZHdH?=
- =?iso-2022-jp?B?U01PUGJ0WWVjcFVqT3VxRS9aK0ZzNkJGZ2tpN1J5R3h0Z0N4VG1JVndh?=
- =?iso-2022-jp?B?Mk54N3JpNHBzbVFJdG5JbXRxblNqVzJjeE1QTHpJVEo3b0M2dW9Pd3Rn?=
- =?iso-2022-jp?B?Y1BiWXFTV09wbU5KR3QxQnc1UHMxekFEWjBueWdkN1lZcHNrbElmK3Av?=
- =?iso-2022-jp?B?MG9FaGZRQmJvN3NoSEczQnRuQXV1ajVjNi9CcGQxQ29TSmxVR25xa2dX?=
- =?iso-2022-jp?B?U2psWFNhcWdPMEpLeTBYY1pveHpQa0lRL3RiTW40WS9EcktYUUVST2s3?=
- =?iso-2022-jp?B?bSsvVXI5bCtEZEhxOWozYllnNFdaMlpxYWtESitFUnRFNFBybXVVTkdX?=
- =?iso-2022-jp?B?UlRxWC9zUU1QZ204ajJ4SHAxRjMvSnpybG9tOW1ZZTB4WC80OEhrQ0FT?=
- =?iso-2022-jp?B?UGRnOVVUUXlvanJCVmkvdE1qeU15cHZieXpjT2hrelB1eW5JRjFmVDhu?=
- =?iso-2022-jp?B?WjNFREM4aC91My9SY3FiYUpib0JJQnNCZW15ODNJNzVXOGE3WWJpVlNu?=
- =?iso-2022-jp?B?NXIzeVpWUnpHYXVZN0xOSStXalJGSGliQ0l6TWg3UUY5ZEU1RHlNVmRM?=
- =?iso-2022-jp?B?bzEyODRsVmxJSGh2Q1pOZEdLZjRMTEMvSXVZUDFzNTFKVTBQa2hFd1Ux?=
- =?iso-2022-jp?B?bDBrOUJMTzNlcG0rMnBDdm8zeEljMEtDek5nNjN0OGhJOEZqRjRocFF2?=
- =?iso-2022-jp?B?VHBsVDVqMXRoYVU1dXF1b2taN0VXdy9XVWF0ZGVkWElENHFnKy94ZnBC?=
- =?iso-2022-jp?B?VUJ4dytKcHk1N2NWZmt5RWk0Y05iVUxGdzVtZjJMa1hTU00xZkoyYWZJ?=
- =?iso-2022-jp?B?QmpRTi91a2xZU0gwVTRFckNOQ21IaDhvZDdVYWJzM0pjMnlYUjRwM0ZE?=
- =?iso-2022-jp?B?azN5RFZPSnRCcXpkNFJMQWQ3MjkzREh5Vk5zN3hwUW5NMm9sZWdJR1dG?=
- =?iso-2022-jp?B?VTUxZmltMmlnZ0xVZ0taUnlzYUdQZEsvVXYvMVUrMWdHN01MWUZNSDI5?=
- =?iso-2022-jp?B?TU8zcTd1bHh1OEswaEo1QTVma1lvV3Jma21NMjZtb09lVWhhSDdvVzYy?=
- =?iso-2022-jp?B?OU1KZ2JNUTN6NzI1VUVIV2RuNEdZMmVqZHNQaHUwUmF5cGJKRjB6L24w?=
- =?iso-2022-jp?B?V1h0QUdxMGovYjh0UmtkTWl3SklTdnVFUUJIcjdWUGFJUE5YNnM4OEY4?=
- =?iso-2022-jp?B?QnlWWlpsMTFCUUYzMDVFZXYwZDlKWnJPTlJUUmN2THRRRlJEK3ZoNkpx?=
- =?iso-2022-jp?B?YWtrMytFWm9rR3FGMnJTVzhOWW9qd0RaZTFuYlJCZCtURGhleWhHVmpC?=
- =?iso-2022-jp?B?QjJnKzE0MFRKNjNud1pnTjZIcHRZOXk1WDVmRDZCQmdzYUFvK2IwbjMv?=
- =?iso-2022-jp?B?VFFlNFBKQ0VYN2RlSU40NWhpUmJ4R25ZZGIwMTJhS21naU52MFpZZTVS?=
- =?iso-2022-jp?B?M1d4WmNZeEN0Q0NIbkZPUFZnQldZY0xaazJRQUJQTm0xZ09PRnNhb3Nw?=
- =?iso-2022-jp?B?M1RpazFyY3RIbGlOYlE1bklvWWZQVWdhckE0Sm5LcGpPb3E5c0YzYnZC?=
- =?iso-2022-jp?B?YTJRRy8xcXNqOFdNQ1pES01wV0lHUDlwdEk1cjNhNGFvUERjaHJIbjFS?=
- =?iso-2022-jp?B?WFRmODRpOEoreVRkbU5NN2k3S25qM2FGMmc9PQ==?=
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5964E446D6;
+	Fri, 22 Mar 2024 12:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711111939; cv=none; b=foHxbauHmWTYRuFsvvZovapcDmUYn150uehdc8QpZeggyZs3O2QnjfPmtEJKriPxawz8M2dFjx1YagqzsT8ejgjacytrUsnebfee09AzldxsopEG77ULC2Sk2ZkzXU5td20Vyf8zoldbbPT09YgdHXxEp/5Ot1l1yR7HoY1hv/M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711111939; c=relaxed/simple;
+	bh=mKpFVELhqQO/MJQzF7MS3ARP49TrE+jyDb5kEDSxe4Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YlNvxECo9O2J4NGpSB89Cc6IO9Zbq9fLa2/uVZw6ALOdAZRN11CNi+qE0wdlon99BsRCOn7QEeD2/Sgy/K1aBb6LhMZ2PnaxmbwYdFEouNxlMaQZ/p7nG1zahhysV3eHImkN5yz7nSz/FA5TZHPFuKFGDA+0jWkZGpBiqcWjBgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rTFNuXN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8D9C43330;
+	Fri, 22 Mar 2024 12:52:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711111938;
+	bh=mKpFVELhqQO/MJQzF7MS3ARP49TrE+jyDb5kEDSxe4Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rTFNuXN7JV4H1M8lLXRl6mOJlWMr4A6pU8HEO6y7MijPx4W9rSw9Pyvr5Bwq3IIk0
+	 LNaObKIDTjch5G9YXExNvq07vTwioeOu/P6r/BVYcpOVGcVE3LtmIwm8gkKIC9GEH7
+	 nSTDeHx5fGMFmjMU7Ckckq6suE2n6mscUs65BXjt+wapmqXn1HmHkyiEdIPqs+VYAv
+	 2l3afxG3UidmbmwbsX6Rr2NGI0bZhSNOEJocVQAt+IRBliuVwXHZ6uSzSedUQPGjIj
+	 nX6vYYO8H8uF1LzTAoOBAiKgEnESFNZs+WhCvGd8dBDEXOg4JnxiK1QiL6OwAyTx+o
+	 M9wOrlCgMnvMA==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-513c8b72b24so2360902e87.3;
+        Fri, 22 Mar 2024 05:52:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU+TnPsCLhITkXCghIEtP2s1vst4qGSF6KaeTRrAuJTj2AgVVQB2oIxzxTHuzsGfpV51WRMTSfpHWiLiYDH82QkTbH2oe4BlfuxPonIRGgztcvB6MU/N8yRBf+ImfpNRk1wpSVi31Ln
+X-Gm-Message-State: AOJu0Yw1N2azeuQPiBnjyphJxMkzG3zEGGpT8Vcrdkc72eyxFb3OAL8c
+	uoyLwA+p3ANp/wILUqtV5Z0k5uvFJYAG3ClQXR3Z/XA8v6zZ8BMeIIrZFuMJYWLCIOHlBqp41DM
+	EVT2FTIAZdNSDuR5Bts4+olv+MoY=
+X-Google-Smtp-Source: AGHT+IHklJRW3LUltX6SoxEccs31USx3zcS1zXoGK6HTBbqRH+NoHQwA+Fh/DI4NCb7BYfEXe3bp6gH48jeuRVFqdw8=
+X-Received: by 2002:a19:9157:0:b0:513:d1b6:6f0e with SMTP id
+ y23-20020a199157000000b00513d1b66f0emr1553664lfj.36.1711111937220; Fri, 22
+ Mar 2024 05:52:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nec.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY1PR01MB1625.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 188d4d09-b583-4efc-d14b-08dc4a5f5fa8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2024 11:01:06.6637
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: e67df547-9d0d-4f4d-9161-51c6ed1f7d11
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NeJU3WI20/Gd2q/vPAS9cIW2xk2TcRYgpoXBol0GmY1seRKdBhwxVfoDYmtWIeS6oxy5Orl+KeByeuqEKZtV2Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB5774
+References: <20240321150510.GI8211@craftyguy.net> <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
+ <20240321170641.GK8211@craftyguy.net>
+In-Reply-To: <20240321170641.GK8211@craftyguy.net>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 22 Mar 2024 13:52:05 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
+Message-ID: <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
+Subject: Re: x86_64 32-bit EFI mixed mode boot broken
+To: Clayton Craft <clayton@craftyguy.net>
+Cc: Hans de Goede <hdegoede@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Following warning is sometimes observed while booting my servers:
-  [    3.594838] DMA: preallocated 4096 KiB GFP_KERNEL pool for atomic allo=
-cations
-  [    3.602918] swapper/0: page allocation failure: order:10, mode:0xcc1(G=
-FP_KERNEL|GFP_DMA), nodemask=3D(null),cpuset=3D/,mems_allowed=3D0-1
-  ...
-  [    3.851862] DMA: preallocated 1024 KiB GFP_KERNEL|GFP_DMA pool for ato=
-mic allocation
+On Fri, 22 Mar 2024 at 01:06, Clayton Craft <clayton@craftyguy.net> wrote:
+>
+> On Thu, 21 Mar 2024 23:48:09 +0100 Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > v6.8 fails for me, and presumably so does everything back to v6.2. v6.1 is able
+> > > to boot OK on these platforms with mixed mode, and it looks like there are a lot
+> > > of changes from 6.1..6.2 for EFI/mixed mode booting.
+> >
+> > v6.1 just received some EFI related backports, so please check the
+> > latest v6.1.y as well.
+>
+> I just gave v6.1.82 a try, and it fails to boot for me. That seems to be a
+> regression from the 6.1.0 that I tested previously.
+>
+> > I usually test on 32-bit OVMF built with LOAD_X64_ON_IA32_ENABLE,
+> > which allows the use of the compat entry point. This is different from
+> > the EFI handover protocol, and I am not sure which one you are using.
+>
+> I should have mentioned this previously, here's the EFI-related kconfig that I
+> am using. If there's anything missing then please let me know:
+>
+>         CONFIG_EFI=y
+>         CONFIG_EFI_EARLYCON=y
+>         CONFIG_EFI_ESRT=y
+>         # CONFIG_EFI_HANDOVER_PROTOCOL is not set
+>         CONFIG_EFI_MIXED=y
+>         CONFIG_EFI_RUNTIME_WRAPPERS=y
+>         CONFIG_EFI_STUB=y
+>         CONFIG_EFI_VARS_PSTORE=m
+>         CONFIG_EFI_VARS_PSTORE_DEFAULT_DISABLE=y
+>
+> Note that the EFI handover protocol support is disabled, I was under the
+> impression that it's not required for mixed mode.
+>
 
-If 'nokaslr' boot option is set, the warning always happens.
+That depends on the bootloader. One of the changes around that time is
+the introduction of this Kconfig symbol: before that, the EFI handover
+protocol was always supported but now it can be compiled out. So the
+safe choice is to enable it.
 
-On x86, ZONE_DMA is small zone at the first 16MB of physical address
-space. When this problem happens, most of that space seems to be used
-by decompressed kernel. Thereby, there is not enough space at DMA_ZONE
-to meet the request of DMA pool allocation.
+However, while looking more deeply into this, I noticed that we are
+running quite low own stack space. Mixed mode is different because it
+calls into the boot services using the decompressor's boot stack,
+rather than using the one that was provided by firmware at entry.
+(Note that the UEFI spec mandates 128k of stack space)
 
-The commit 2f77465b05b1 ("x86/efistub: Avoid placing the kernel below LOAD_=
-PHYSICAL_ADDR")
-tried to fix this problem by introducing lower bound of allocation.
+In my case, I bisected the regression to
 
-But the fix is not complete.
+commit 5c4feadb0011983bbc4587bc61056c7b379d9969 (HEAD)
+Author: Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon Aug 7 18:27:16 2023 +0200
 
-efi_random_alloc() allocates pages by following steps.
-1. Count total available slots ('total_slots')
-2. Select a slot ('target_slot') to allocate randomly
-3. Calculate a starting address ('target') to be included target_slot
-4. Allocate pages, which starting address is 'target'
+    x86/decompressor: Move global symbol references to C code
 
-In step 1, 'alloc_min' is used to offset the starting address of
-memory chunk. But in step 3 'alloc_min' is not considered at all.
-As the result, 'target' can be miscalculated and become lower
-than 'alloc_min'.
+which moves the boot stack into a different memory region. Formerly,
+we'd end up at the far end of the heap when overrunning the stack but
+now, we end up crashing. Of course, overwriting the heap can cause
+problems of its own, so we'll need to bump this in any case.
 
-When KASLR is disabled, 'target_slot' is always 0 and
-the problem happens everytime if the EFI memory map of the system
-meets the condition.
+Could you give this a try please?
 
-Fix this problem by calculating 'target' considering 'alloc_min'.
 
-Cc: linux-efi@vger.kernel.org
-Cc: Tom Englund <tomenglund26@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Fixes: 2f77465b05b1 ("x86/efistub: Avoid placing the kernel below LOAD_PHYS=
-ICAL_ADDR")
-Signed-off-by: Kazuma Kondo <kazuma-kondo@nec.com>
----
- drivers/firmware/efi/libstub/randomalloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--- a/arch/x86/include/asm/boot.h
++++ b/arch/x86/include/asm/boot.h
+@@ -38,7 +38,7 @@
+ #endif
 
-diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/=
-efi/libstub/randomalloc.c
-index 4e96a855fdf4..7e1852859550 100644
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -120,7 +120,7 @@ efi_status_t efi_random_alloc(unsigned long size,
- 			continue;
- 		}
-=20
--		target =3D round_up(md->phys_addr, align) + target_slot * align;
-+		target =3D round_up(max(md->phys_addr, alloc_min), align) + target_slot =
-* align;
- 		pages =3D size / EFI_PAGE_SIZE;
-=20
- 		status =3D efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS,
---=20
-2.39.3
+ #ifdef CONFIG_X86_64
+-# define BOOT_STACK_SIZE       0x4000
++# define BOOT_STACK_SIZE       0x10000
+
+ /*
+  * Used by decompressor's startup_32() to allocate page tables for identity
 
