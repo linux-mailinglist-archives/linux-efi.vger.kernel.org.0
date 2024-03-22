@@ -1,120 +1,100 @@
-Return-Path: <linux-efi+bounces-859-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-860-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2098873EF
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 20:30:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BC78873F8
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 20:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0961C227EB
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 19:30:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFA31C228A8
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 19:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F32D7A15E;
-	Fri, 22 Mar 2024 19:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B177AE63;
+	Fri, 22 Mar 2024 19:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GI4W6i26"
+	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="Kj1QB2Ki"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7787A157;
-	Fri, 22 Mar 2024 19:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECFB7AE5C
+	for <linux-efi@vger.kernel.org>; Fri, 22 Mar 2024 19:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711135813; cv=none; b=giOnuV2bUfdRzRm399Re2dvoBREVgcfnEo5Tv9xeGUu7i5emumD1erKCPKu33RHL2aXQuABPdX2hpu2IFmKp4rYJRFT/Pm5REQ0yQc2GrCEIZ5JsGxZxuWKeWF8tchpfEwsPTmq+nVpJEGc/fLCWIDrvpx0DVt4ID1jRe79t/ms=
+	t=1711136059; cv=none; b=MrPjP3dO3eqHdo2OpwufC7cKICa8esBnyCdkEGvTbNrMvmgpOkuyGAquW0urEpS0j6XkOUuwEKVcrVQeRa4FThwTn6PYSg9mmQ0ZAw+0M8Hm1r8bANk2zDONCIfkoFhJBmr8a6h6Go8l/QxrQdvJJbz1zrXmaltNoD6buwrVygA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711135813; c=relaxed/simple;
-	bh=9R6ki8LkQLAWyMMmV+81/0KXBdxdkaUt91oUyJxHRXQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=IYiU374NgAm5WgNqJKJUa0icEVzud0W4KOGo5y5dGAGfSCB9pcJ/G02TB71+Uk9ygIdUaQfIBo2ikyZyPUEdqVIXHFPIkT9bJRcdl+CehvksJCft5MmyW+alRyMYOv9yoCEdxO+hR9QsBTTXXKfY5xfLxtxAJvylCD2EO2G00Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GI4W6i26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D41C433F1;
-	Fri, 22 Mar 2024 19:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711135813;
-	bh=9R6ki8LkQLAWyMMmV+81/0KXBdxdkaUt91oUyJxHRXQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=GI4W6i26GH4YKoxcLI7lQ8yf1CYz3gnsVS5q/50obT5c+RAjHWdIx+1+1fcYFuMSK
-	 z7tq2Hy8gsByyk1C6HLUmIdEjEMjPlAEd5SPyoRNSsS1HUrAS8NtMtMQaTjVj8XtIP
-	 GfI5wwIhfK2ZdvFH8yfESIP4RXcrOtJGRVvTmGJafpDdRsj5RvAbXWu2XtvMvItr/Z
-	 Zoq9QazCmln///YbTsHQqQmawt8pLZ8s+57149iivVTAWIDAH/W5Cm1wZubwMH+tEE
-	 0i08O00EIoJelk5Ubc024aZSDXEmpIUnVRa35wSfyaEC/x0wB3d6Rabg6Z8TigwMBO
-	 GVbz6krwT5hCg==
-Date: Fri, 22 Mar 2024 14:30:11 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	linux-edac@vger.kernel.org, linux-efi@vger.kernel.org,
-	Tony Luck <tony.luck@intel.com>
-Subject: Re: [PATCH 3/4] PCI: Add TLP Prefix reading into pcie_read_tlp_log()
-Message-ID: <20240322193011.GA701027@bhelgaas>
+	s=arc-20240116; t=1711136059; c=relaxed/simple;
+	bh=rmSxOJ7PesryFAlCYmpPV9lPM91ZLNWCXgJKf7O7vEw=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=JbiG3/BYiKJvW9tlHsFgB45hJXI/Z5UP31t6tnpNHRej7j+Ey251rVxEhWf66yNDT9JRo1GvxMnt171iHv9k+Rx6EgIM/qpyxE0tm9Huay38ca9f5l1o72beeZAYuHWk+kvSjmxiiSsooh71Yf+pdqQvNgZM9myaOfS2IXp3e5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=Kj1QB2Ki; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240206135717.8565-4-ilpo.jarvinen@linux.intel.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
+	s=key1; t=1711136055;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rmSxOJ7PesryFAlCYmpPV9lPM91ZLNWCXgJKf7O7vEw=;
+	b=Kj1QB2Ki6DZ6KhgM77hUzPva/yi9CQDjDrOeQcS8zioPvZN9//CpoNvsSLuS1VUy4Vm+k9
+	mIAnA0OHemCkGxjj75TnqezkmBWoyYOw+xtVpoDNDBNsUfpK4yQQyTwZ7uIOYoLHC/6QW2
+	ZLVCr4yfVkn94nTHfTQYamuWuC84m0a8md9x4dfaVp1V7Zk+TpyKxc0zJvpdZEgn/ceps2
+	qpDj1YAamo819kmdnvIl88Z20VBQoF8OVZsxASapbyuF3avfj7R66qnayIORrTqbxfaT3Z
+	B6f+PpzazTzdg/EoFu+pE8XBgzKf68olAEY9Sl5gaSOkzESJ6i6Fzcw3CeDmVA==
+Date: Fri, 22 Mar 2024 19:34:12 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Clayton Craft" <clayton@craftyguy.net>
+Message-ID: <8a64ba697d719bc9750e6fffc268e194dfde16e5@craftyguy.net>
+TLS-Required: No
+Subject: Re: x86_64 32-bit EFI mixed mode boot broken
+To: "Ard Biesheuvel" <ardb@kernel.org>
+Cc: "Hans de Goede" <hdegoede@redhat.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, "Thomas
+ Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, regressions@lists.linux.dev
+In-Reply-To: <CAMj1kXEH4CTnQ3d+Z-TnqNUhFaFc1yH+Eaa6cHk9-vZ_geQ2nw@mail.gmail.com>
+References: <20240321150510.GI8211@craftyguy.net>
+ <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
+ <20240321170641.GK8211@craftyguy.net>
+ <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
+ <20240322091857.GM8211@craftyguy.net>
+ <CAMj1kXFmnv+FGRMnnJMJejj5yvSybgZTNEYZz0hxb6K9VAeo1Q@mail.gmail.com>
+ <fe09869c2d853bde8ce0feb537c4dab09014f5d9@craftyguy.net>
+ <CAMj1kXEH4CTnQ3d+Z-TnqNUhFaFc1yH+Eaa6cHk9-vZ_geQ2nw@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Feb 06, 2024 at 03:57:16PM +0200, Ilpo Järvinen wrote:
-> pcie_read_tlp_log() handles only 4 TLP Header Log DWORDs but TLP Prefix
-> Log (PCIe r6.1 secs 7.8.4.12 & 7.9.14.13) may also be present.
+March 22, 2024 at 11:30 AM, "Ard Biesheuvel" <ardb@kernel.org> wrote:
 
-s/TLP Header Log/Header Log/ to match spec terminology (also below)
 
-> Generalize pcie_read_tlp_log() and struct pcie_tlp_log to handle also
-> TLP Prefix Log. The layout of relevant registers in AER and DPC
-> Capability is not identical but the offsets of TLP Header Log and TLP
-> Prefix Log vary so the callers must pass the offsets to
-> pcie_read_tlp_log().
+>=20
+>=20On Fri, 22 Mar 2024 at 19:57, Clayton Craft <clayton@craftyguy.net> w=
+rote:
+>=20
+>=20I have pushed a branch below that reverts the patch you identified in
+>=20
+>=204 separate steps. Could you please check which step makes your system
+>=20
+>=20boot again?
+>=20
+>=20https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=
+=3Defi-clayton
+>
 
-s/is not identical but/is identical, but/ ?
+Thanks a lot for doing this, I really appreciate the help!
 
-The spec is a little obtuse about Header Log Size.
+It looks like if I build from 868a7245, booting breaks again on my Bay Tr=
+ail systems. If I put back 00e85ab5, they boot again.
 
-> Convert eetlp_prefix_path into integer called eetlp_prefix_max and
-> make is available also when CONFIG_PCI_PASID is not configured to
-> be able to determine the number of E-E Prefixes.
-
-I think this eetlp_prefix_path piece is right, but would be nice in a
-separate patch since it's a little bit different piece to review.
-
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> @@ -11336,7 +11336,9 @@ static pci_ers_result_t ixgbe_io_error_detected(struct pci_dev *pdev,
->  	if (!pos)
->  		goto skip_bad_vf_detection;
->  
-> -	ret = pcie_read_tlp_log(pdev, pos + PCI_ERR_HEADER_LOG, &tlp_log);
-> +	ret = pcie_read_tlp_log(pdev, pos + PCI_ERR_HEADER_LOG,
-> +				pos + PCI_ERR_PREFIX_LOG,
-> +				aer_tlp_log_len(pdev), &tlp_log);
->  	if (ret < 0) {
->  		ixgbe_check_cfg_remove(hw, pdev);
->  		goto skip_bad_vf_detection;
-
-We applied the patch to export pcie_read_tlp_log(), but I'm having
-second thoughts about it.   I don't think drivers really have any
-business here, and I'd rather not expose either pcie_read_tlp_log() or
-aer_tlp_log_len().
-
-This part of ixgbe_io_error_detected() was added by 83c61fa97a7d
-("ixgbe: Add protection from VF invalid target DMA"), and to me it
-looks like debug code that probably doesn't need to be there as long
-as the PCI core does the appropriate logging.
-
-Bjorn
+-Clayton
 
