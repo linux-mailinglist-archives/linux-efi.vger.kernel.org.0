@@ -1,134 +1,130 @@
-Return-Path: <linux-efi+bounces-850-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-851-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A45A886E51
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 15:16:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382E5886E5E
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 15:20:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05A8628B4B7
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 14:16:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69DAE1C219F7
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 14:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F96247A5D;
-	Fri, 22 Mar 2024 14:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D7547A66;
+	Fri, 22 Mar 2024 14:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ACJjhCFd"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="ZETGE8z3"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF33646546;
-	Fri, 22 Mar 2024 14:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7677F47A40;
+	Fri, 22 Mar 2024 14:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711117013; cv=none; b=HLQ9Gocun+uKbD4nJZ9B57RFIXG3Pv17rMkSNLKksfS7LuIrazAJxDfDIsG5Z+Jq5HBZiyI4piJjsqlRqH6LI1m/aabpdSrzRQGrvIJt2gJvBajNHsIP/pjXRXW77F8wYsfFX3OH15dTwiEB0MwKP3fZDh47QLjZi27AjuML04k=
+	t=1711117230; cv=none; b=IacdUQx7ES+57nRtm/z9neZiz/c7rSG2bb7B22vsxsezqV31n3E6CLu8FyWGRtZ+XSwB0VOz3aLjRCqxvonFBb5J8voaMbRwiE81Li+FhlhZ8HJMmOjydMDiPNym2ze/64bMRhZKAA+AbCR3R0omuPxNfEo1vGmsUTDctNgRhE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711117013; c=relaxed/simple;
-	bh=2KeOzt6+e2pFDwhqfLnCeh7Ap5am70wfBW1us6UaZEk=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=YQlnZyjF+smAPuA0iDqM162I+Q7pChE2/VxQbMhVHEEoG19xdqxcSlKrbO+m9C7mMSnOh+5+qmkePuEKSYDMG+vj2qNxa23n7cFoLbKp2UXVgR5gr/gO/QRbfYwoSdAFysFu4nENdktHxreRTlByhW0+Yz7vkn//wCn3/+7H9mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ACJjhCFd; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711117012; x=1742653012;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=2KeOzt6+e2pFDwhqfLnCeh7Ap5am70wfBW1us6UaZEk=;
-  b=ACJjhCFd6/QVOSzMQM+vy17EH4uIHumSnJt1fgPSbhdDEhPPS6N2iCqf
-   +79Mkw7iueVL/o4KnDoOmBAIn0GvXUr9et6ARzSVq2D14anKA72Iu0xjb
-   7tdsDzeDFGhexuL0mX2zkGmkexz3/MwdhxDUnlKaKI70UEiatbe2u2gxN
-   aUeTcG2TJqPdfCXWYoGayp3JhslgFrBntC/Annf7bGf3Ty7NiCg5HapZM
-   8/SXXA0uaXstU2nvS7U0xd5XKVF9IIYlLX0jVYFNGa6Eg/Hbul15DftL2
-   Fmzhf++yZIO/+mhBBs8PwmYBl+32RHWRw9SAfhNIlFpGvgP3JScocrEiT
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5994961"
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="5994961"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 07:16:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="15352468"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.18])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 07:16:42 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 22 Mar 2024 16:16:37 +0200 (EET)
-To: Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
-cc: linux-pci@vger.kernel.org, Jesse Brandeburg <jesse.brandeburg@intel.com>, 
-    intel-wired-lan@lists.osuosl.org, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-    Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-    linux-edac@vger.kernel.org, linux-efi@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-    Netdev <netdev@vger.kernel.org>, Oliver O'Halloran <oohall@gmail.com>, 
-    Paolo Abeni <pabeni@redhat.com>, Tony Luck <tony.luck@intel.com>
-Subject: Re: [PATCH 0/4] PCI: Consolidate TLP Log reading and printing
-In-Reply-To: <cc3f6a32-a00d-3c68-bc89-c042d238e7fe@linux.intel.com>
-Message-ID: <771bb522-c4eb-b515-e315-6ad1c622cbd9@linux.intel.com>
-References: <20240308213107.GA700934@bhelgaas> <cc3f6a32-a00d-3c68-bc89-c042d238e7fe@linux.intel.com>
+	s=arc-20240116; t=1711117230; c=relaxed/simple;
+	bh=aB18poa/nAuHxUYgK7CDuG4N2UPsaq85ox+8DKB04kM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=ZJ+2ARzZvPrEJtKp42hi9o199C43WE5O3bG38jAkRnDy38hxBtXyT1G3Okb89VUUhit58kcvUHSgPbcPMiIjZ1VxyYTUl85XM0eA5EY5WJmWeiQaG0gHS1NtWpIrHWDwAuGY+ZPR2tkDmOpyHaIBLx+74MtgkbmjFSK6uJhMr8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=ZETGE8z3; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 42MEJ2ZV3496390
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 22 Mar 2024 07:19:03 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 42MEJ2ZV3496390
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024031401; t=1711117149;
+	bh=aB18poa/nAuHxUYgK7CDuG4N2UPsaq85ox+8DKB04kM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=ZETGE8z3u9I9yJvR5e/CQUJ9GmkJb4wq8snvbhDmH/87Lzwf+k/ZGo1AYaXFYl9nd
+	 uETOnzCevSP6x3/Jys4AjBwWIYxjN9AYiGaZOvlyuMh07rolz2MUbUQq4v4IpcmfbH
+	 XaZ2kjkRbA92EYSzRvO14ZBO4HfRYvjEeGadQEOmjwCnKNtbWI9V4I8BadIyN7/QVt
+	 DeVXQnWkfk815Zq/7e7UNEjKO+YrQ5XnPO0G5EbeTFGaD7lwA438bf/x93wt39mE9f
+	 IPdJFoxWZE023tvibiGtBG/M2k5vMMP30t9IEatLMPA/6G+NKk1Qm1CeXy3mgZtMya
+	 5XnVwvHOIMJMQ==
+Date: Fri, 22 Mar 2024 07:18:58 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: "Daniel P. Smith" <dpsmith@apertussolutions.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ross Philipson <ross.philipson@oracle.com>
+CC: linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+        linux-efi@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, mjg59@srcf.ucam.org,
+        James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de,
+        jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
+        nivedita@alum.mit.edu, herbert@gondor.apana.org.au,
+        davem@davemloft.net, kanth.ghatraju@oracle.com,
+        trenchboot-devel@googlegroups.com
+Subject: Re: [PATCH v8 01/15] x86/boot: Place kernel_info at a fixed offset
+User-Agent: K-9 Mail for Android
+In-Reply-To: <9d01a6d2-4dd9-4331-8fc9-b01c07cfdbb5@apertussolutions.com>
+References: <20240214221847.2066632-1-ross.philipson@oracle.com> <20240214221847.2066632-2-ross.philipson@oracle.com> <CAMj1kXH3Gvr3vDRLDdXuc0s7ZAQYE6+D7tmCRBjJWwWt2fn4-w@mail.gmail.com> <9d01a6d2-4dd9-4331-8fc9-b01c07cfdbb5@apertussolutions.com>
+Message-ID: <32FDA47A-C87F-406F-A0B9-3AA1BB2EBAFB@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-20305305-1711116997=:1115"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On March 21, 2024 6:45:48 AM PDT, "Daniel P=2E Smith" <dpsmith@apertussolut=
+ions=2Ecom> wrote:
+>Hi Ard!
+>
+>On 2/15/24 02:56, Ard Biesheuvel wrote:
+>> On Wed, 14 Feb 2024 at 23:31, Ross Philipson <ross=2Ephilipson@oracle=
+=2Ecom> wrote:
+>>>=20
+>>> From: Arvind Sankar <nivedita@alum=2Emit=2Eedu>
+>>>=20
+>>> There are use cases for storing the offset of a symbol in kernel_info=
+=2E
+>>> For example, the trenchboot series [0] needs to store the offset of th=
+e
+>>> Measured Launch Environment header in kernel_info=2E
+>>>=20
+>>=20
+>> Why? Is this information consumed by the bootloader?
+>
+>Yes, the bootloader needs a standardized means to find the offset of the =
+MLE header, which communicates a set of meta-data needed by the DCE in orde=
+r to set up for and start the loaded kernel=2E Arm will also need to provid=
+e a similar metadata structure and alternative entry point (or a complete r=
+ewrite of the existing entry point), as the current Arm entry point is in d=
+irect conflict with Arm DRTM specification=2E
+>
+>> I'd like to get away from x86 specific hacks for boot code and boot
+>> images, so I would like to explore if we can avoid kernel_info, or at
+>> least expose it in a generic way=2E We might just add a 32-bit offset
+>> somewhere in the first 64 bytes of the bootable image: this could
+>> co-exist with EFI bootable images, and can be implemented on arm64,
+>> RISC-V and LoongArch as well=2E
+>
+>With all due respect, I would not refer to boot params and the kern_info =
+extension designed by the x86 maintainers as a hack=2E It is the well-defin=
+ed boot protocol for x86, just as Arm has its own boot protocol around Devi=
+ce Tree=2E
+>
+>We would gladly adopt a cross arch/cross image type, zImage and bzImage, =
+means to embedded meta-data about the kernel that can be discovered by a bo=
+otloader=2E Otherwise, we are relegated to doing a per arch/per image type =
+discovery mechanism=2E If you have any suggestions that are cross arch/cros=
+s image type that we could explore, we would be grateful and willing to inv=
+estigate how to adopt such a method=2E
+>
+>V/r,
+>Daniel
 
---8323328-20305305-1711116997=:1115
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-
-On Mon, 11 Mar 2024, Ilpo J=C3=A4rvinen wrote:
-
-> On Fri, 8 Mar 2024, Bjorn Helgaas wrote:
->=20
-> > On Tue, Feb 06, 2024 at 03:57:13PM +0200, Ilpo J=C3=A4rvinen wrote:
-> > > This series consolidates AER & DPC TLP Log handling code. Helpers are
-> > > added for reading and printing the TLP Log and the format is made to
-> > > include E-E Prefixes in both cases (previously only one DPC RP PIO
-> > > displayed the E-E Prefixes).
-> > >=20
-> > > I'd appreciate if people familiar with ixgbe could check the error
-> > > handling conversion within the driver is correct.
-> > >=20
-> > > Ilpo J=C3=A4rvinen (4):
-> > >   PCI/AER: Cleanup register variable
-> > >   PCI: Generalize TLP Header Log reading
-> >=20
-> > I applied these first two to pci/aer for v6.9, thanks, these are all
-> > nice improvements!
-> >=20
-> > I postponed the ixgbe part for now because I think we should get an
-> > ack from those maintainers or just send it to them since it subtly
-> > changes the error and device removal checking there.
->=20
-> Okay, I'll make sure they're separated properly for the remaining patches=
-=20
-> (I was already planning on doing that separation and posting v2 to avoid=
-=20
-> their input blocking the changed but you beat me to it).
->=20
-> > >   PCI: Add TLP Prefix reading into pcie_read_tlp_log()
-> > >   PCI: Create helper to print TLP Header and Prefix Log
-> >=20
-> > I'll respond to these with some minor comments.
->=20
-> Did you forget to send those comments?
-
-Ping.
-
-I still haven't received those comments for patches 3 & 4.
-
---=20
- i.
-
---8323328-20305305-1711116997=:1115--
+To be fair, the way things are going UEFI, i=2Ee=2E PE/COFF, is becoming t=
+he new standard format=2E Yes, ELF would have been better, but=2E=2E=2E
 
