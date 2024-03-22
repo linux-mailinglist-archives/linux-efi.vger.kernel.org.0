@@ -1,125 +1,133 @@
-Return-Path: <linux-efi+bounces-854-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-855-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA728870C1
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 17:18:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA0A8870C5
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 17:19:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79FB1F234A9
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 16:18:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3544D1C22FCF
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 16:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685B73FE28;
-	Fri, 22 Mar 2024 16:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5603859B43;
+	Fri, 22 Mar 2024 16:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q2AbIvuL"
+	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="edP+l9Ib"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3F05787F
-	for <linux-efi@vger.kernel.org>; Fri, 22 Mar 2024 16:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CA35674C
+	for <linux-efi@vger.kernel.org>; Fri, 22 Mar 2024 16:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711124286; cv=none; b=j77eRnZ62s8mJo3cfWcxEtdlrUWaTyy6kgg9K7LcgUhl7zaOz7a6m64hq7DPcnXDYF+x2HIjq/tB0sE8ZP2KAYvD8u/pNENe9DW7nvte78+QWO2vpQSGa2twbSYc6db3JrmoL5K38LeyNOAysMZfjYlWtK0pXNQXsV6b3ex8Kig=
+	t=1711124352; cv=none; b=XzOgxzD+GxmerjgHAUT+3S6NZ3HX7sjT4J89xzuZ4jRSxG+e86mW6so0128Q3+HekC7fkiK7WPQEPf5nV+eXMCPswJEgNwcY+j6Vje16xvPXytYPJppjWl64lhthnLrKNrq3FJ82lLzlWlqXISqO02Dux1xQ+aTLbYD2HOAmhBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711124286; c=relaxed/simple;
-	bh=P37VHxoA1yRdqPqIjZK2rbPddPpTTk5UbcYc9p20ywQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BmP62LT825Gg7GsiNRi2mGfnaAkWBNdrW39/nFuotPaiEfpLEins/cvzFTqsxQwrEle0YiUJQim1i76vte0O1QfaDZjZh4ZnzSLfRDrWFnek31C9mdswqm8+7Xd4zNk0YMlKZ9QsQMEYk8Cs1f0hbqGMAdjCpT7HkaGiVSBhFLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q2AbIvuL; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-41401f598cfso11237215e9.2
-        for <linux-efi@vger.kernel.org>; Fri, 22 Mar 2024 09:18:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711124283; x=1711729083; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FFk61FRARL/qHgAV+6TkE4xiuOcMJSxzm8BOAGYKOug=;
-        b=q2AbIvuLFrOYBjzoPslvdjNwwNEHqGjSq33p+Fvo2xMamigChiyymQza+hVzjvJaPf
-         PZHVOGOVXMZ9P+9wGZbBDsdoseWQjdPMgOEvmYyGHWjKWcT6LTs+ntpLIYjDrXs/lZzZ
-         n9/drbfLe2EM13bJZQZHoWAmOAOBBkM2dZPmdCnaNGzOhkgplnU8/bmyvpqV5ZJEEh2+
-         eeveuVprj5TmYgp4WDw3Tv3/fo+W6GCfAe2T4xK3oWc/28gxSpWZCMfs6bviP7ZR8kTS
-         fS3BSkoCgJ+uUGA6un49/AiP0hmQRKCOXY610jihjT7N4Zkm+UsSR985U59tu3fU0qZQ
-         L60g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711124283; x=1711729083;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FFk61FRARL/qHgAV+6TkE4xiuOcMJSxzm8BOAGYKOug=;
-        b=d9uA6+TheTjctQfAM7JzG5OFj3sOP/FN17Ux4Qz0qPnwSnX+OzB5Wq/pxEWMDl6b0d
-         rwC+OYqxReV3UemJM0EWHtqi82bbHm4KU9csI8qbFpD5p5yVKc0OfzVXYFiKBWaJQAjV
-         506CFD2BnM1yvnPfRiPloiSkWz/u5VWPXF9eGWMsTeSFo9cHqGp5ziUs9LHH8eQ7a3Na
-         pbQsx2Otw7eZhmKgnpTwwGoWyty4qApYlNzo72weY8mGnzplsxeyb6YQj5WRo2lFQC6l
-         3VsuFUjK2/uqHSMXNpXEUWH/qpIqV55Q/p/bsSpmKrNa07fnC2qfBA/797CRooBBEDRS
-         xajA==
-X-Gm-Message-State: AOJu0Yxvsem027JSNCQbou0R14BC1ofOONITlKZ3MLS0eAUa/Hn5okxm
-	ns75CSjNs5xceLSy0GV7QW+mFjtF9nbiCpnoTF3FDQ1KkeUjX8+7yjvuvosi84oLzzrgyXen5zH
-	Eiw54tJ5Lw+1kYACA1QOMiCOcSjfPfsi4Gvp0BiWCIDUhnNDn1QPR45Sxe5I34GlXmk9cspqJiY
-	GGbJZCwMzJ1yvHMjl//Dd/rUw64A==
-X-Google-Smtp-Source: AGHT+IGOxHy7Qz1E7ersGRQMRa81Z/TZ9rA4H2l2f/Qosd6+eDedqvvZizkZhM+YpJVn8/z5DyvuHv4J
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:600c:358d:b0:414:a17:b5f7 with SMTP id
- p13-20020a05600c358d00b004140a17b5f7mr24455wmq.4.1711124283213; Fri, 22 Mar
- 2024 09:18:03 -0700 (PDT)
-Date: Fri, 22 Mar 2024 17:17:54 +0100
-In-Reply-To: <20240322161751.3046943-4-ardb+git@google.com>
+	s=arc-20240116; t=1711124352; c=relaxed/simple;
+	bh=pRMg/t6wZBrXTf4eCE43zA/56qnnDkoAuBkVWGZYyic=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UzCb/7atnhpn9CHwa/3ST4WIhW67y1qWM2RrdTI2uPzZTEKpRISjB4nTfHBfRXbXg98/InKi41eAIJba/o8n0Xj0rcZEztdlLeNYVcRRWRiLwBwcfGGaBosoBVOiD+MSQFyl34+2T+8KPcjBbz4isPROOpA/unMrQOCF9QX69YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=edP+l9Ib; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
+Date: Fri, 22 Mar 2024 09:18:57 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
+	s=key1; t=1711124343;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pRMg/t6wZBrXTf4eCE43zA/56qnnDkoAuBkVWGZYyic=;
+	b=edP+l9Ibbgtc8Vbzfc5iQXpNnl9xNH2sqO08Nd8rF5tjabh8YwZbbmW70v7KjHidoXTAno
+	g5swq3UNoo/f6CmlgcUi2bAFjtysd78faP1RclxupYnCEk1FHB6jEqujqj/VyCkqmbVo2M
+	1QUbmbapLgxR74iNQjks8qqm+i/mll1tiXQ7Ra0FqVkHctBVnhhLSDGxmFZ/k3W6ISqGS1
+	qYmYgSL7tdGdvnM2F+jAD6tWX6pugCyAsfSag1CgktnXmkGNzCutSCtQfAlHpC3qfy54dY
+	wPyIYErSIfnJFRS2i5gFX1s03OECTRnvuinP+qBLUMgf8Eoqs1s71F2ZB+daJg==
+Message-ID: <20240322091857.GM8211@craftyguy.net>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Clayton Craft <clayton@craftyguy.net>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ regressions@lists.linux.dev
+Subject: Re: x86_64 32-bit EFI mixed mode boot broken
+In-Reply-To: <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
+References: <20240321150510.GI8211@craftyguy.net>
+ <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
+ <20240321170641.GK8211@craftyguy.net>
+ <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240322161751.3046943-4-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1289; i=ardb@kernel.org;
- h=from:subject; bh=Y/uw19SLcCmt02yuzGlDeusQ0hoDO04Fu5E3EhaYWMU=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXveuMdipOv3ftp9JT9w9X+1b0rWaZdkeqZa7L9dspfl
- SYOw/rZHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAi7hKMDJMmJhQY5q2pOrtK
- daO1rHLRhSkH/Nn/Xmr/9FfixLZQn3UMf4XmeTYemF00RdLh+habq1mdAqX32sXzpSfE1nV5B+x 34AEA
-X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
-Message-ID: <20240322161751.3046943-6-ardb+git@google.com>
-Subject: [PATCH 2/2] x86/efistub: Don't clear BSS twice in mixed mode
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>, Clayton Craft <clayton@craftyguy.net>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="ZDwzZQYzZVCy0qwd"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Migadu-Flow: FLOW_OUT
 
-From: Ard Biesheuvel <ardb@kernel.org>
 
-Clearing BSS should only be done once, at the very beginning.
-efi_pe_entry() is the entrypoint from the firmware, which may not clear
-BSS and so it is done explicitly. However, efi_pe_entry() is also used
-as an entrypoint by the mixed mode startup code, in which case BSS will
-already have been cleared, and doing it again at this point will corrupt
-global variables holding the firmware's GDT/IDT and segment selectors.
+--ZDwzZQYzZVCy0qwd
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: base64
 
-So make the memset() conditional on whether the EFI stub is running in
-native mode.
+T24gRnJpLCAyMiBNYXIgMjAyNCAxMzo1MjowNSArMDEwMCBBcmQgQmllc2hldXZlbCA8YXJkYkBr
+ZXJuZWwub3JnPiB3cm90ZToKPiBUaGF0IGRlcGVuZHMgb24gdGhlIGJvb3Rsb2FkZXIuIE9uZSBv
+ZiB0aGUgY2hhbmdlcyBhcm91bmQgdGhhdCB0aW1lIGlzCj4gdGhlIGludHJvZHVjdGlvbiBvZiB0
+aGlzIEtjb25maWcgc3ltYm9sOiBiZWZvcmUgdGhhdCwgdGhlIEVGSSBoYW5kb3Zlcgo+IHByb3Rv
+Y29sIHdhcyBhbHdheXMgc3VwcG9ydGVkIGJ1dCBub3cgaXQgY2FuIGJlIGNvbXBpbGVkIG91dC4g
+U28gdGhlCj4gc2FmZSBjaG9pY2UgaXMgdG8gZW5hYmxlIGl0LgoKSSBhbSB1c2luZyBzeXN0ZW1k
+LWJvb3QsIGFuZCBiYXNlZCBvbiBteSB1bmRlcnN0YW5kaW5nIG9mIGl0cyBzb3VyY2UgaXQgc2Vl
+bXMgdG8Kb25seSB1c2UgaGFuZG92ZXIgb24gb2xkIGtlcm5lbHMgdGhhdCBkb24ndCBzdXBwb3J0
+IExJTlVYX0lOSVRSRF9NRURJQV9HVUlELgo+IAo+IEhvd2V2ZXIsIHdoaWxlIGxvb2tpbmcgbW9y
+ZSBkZWVwbHkgaW50byB0aGlzLCBJIG5vdGljZWQgdGhhdCB3ZSBhcmUKPiBydW5uaW5nIHF1aXRl
+IGxvdyBvd24gc3RhY2sgc3BhY2UuIE1peGVkIG1vZGUgaXMgZGlmZmVyZW50IGJlY2F1c2UgaXQK
+PiBjYWxscyBpbnRvIHRoZSBib290IHNlcnZpY2VzIHVzaW5nIHRoZSBkZWNvbXByZXNzb3IncyBi
+b290IHN0YWNrLAo+IHJhdGhlciB0aGFuIHVzaW5nIHRoZSBvbmUgdGhhdCB3YXMgcHJvdmlkZWQg
+YnkgZmlybXdhcmUgYXQgZW50cnkuCj4gKE5vdGUgdGhhdCB0aGUgVUVGSSBzcGVjIG1hbmRhdGVz
+IDEyOGsgb2Ygc3RhY2sgc3BhY2UpCj4gCj4gSW4gbXkgY2FzZSwgSSBiaXNlY3RlZCB0aGUgcmVn
+cmVzc2lvbiB0bwo+IAo+IGNvbW1pdCA1YzRmZWFkYjAwMTE5ODNiYmM0NTg3YmM2MTA1NmM3YjM3
+OWQ5OTY5IChIRUFEKQo+IEF1dGhvcjogQXJkIEJpZXNoZXV2ZWwgPGFyZGJAa2VybmVsLm9yZz4K
+PiBEYXRlOiAgIE1vbiBBdWcgNyAxODoyNzoxNiAyMDIzICswMjAwCj4gCj4gICAgIHg4Ni9kZWNv
+bXByZXNzb3I6IE1vdmUgZ2xvYmFsIHN5bWJvbCByZWZlcmVuY2VzIHRvIEMgY29kZQo+IAo+IHdo
+aWNoIG1vdmVzIHRoZSBib290IHN0YWNrIGludG8gYSBkaWZmZXJlbnQgbWVtb3J5IHJlZ2lvbi4g
+Rm9ybWVybHksCj4gd2UnZCBlbmQgdXAgYXQgdGhlIGZhciBlbmQgb2YgdGhlIGhlYXAgd2hlbiBv
+dmVycnVubmluZyB0aGUgc3RhY2sgYnV0Cj4gbm93LCB3ZSBlbmQgdXAgY3Jhc2hpbmcuIE9mIGNv
+dXJzZSwgb3ZlcndyaXRpbmcgdGhlIGhlYXAgY2FuIGNhdXNlCj4gcHJvYmxlbXMgb2YgaXRzIG93
+biwgc28gd2UnbGwgbmVlZCB0byBidW1wIHRoaXMgaW4gYW55IGNhc2UuCj4gCj4gQ291bGQgeW91
+IGdpdmUgdGhpcyBhIHRyeSBwbGVhc2U/Cj4gCj4gCj4gLS0tIGEvYXJjaC94ODYvaW5jbHVkZS9h
+c20vYm9vdC5oCj4gKysrIGIvYXJjaC94ODYvaW5jbHVkZS9hc20vYm9vdC5oCj4gQEAgLTM4LDcg
+KzM4LDcgQEAKPiAgI2VuZGlmCj4gCj4gICNpZmRlZiBDT05GSUdfWDg2XzY0Cj4gLSMgZGVmaW5l
+IEJPT1RfU1RBQ0tfU0laRSAgICAgICAweDQwMDAKPiArIyBkZWZpbmUgQk9PVF9TVEFDS19TSVpF
+ICAgICAgIDB4MTAwMDAKPiAKPiAgLyoKPiAgICogVXNlZCBieSBkZWNvbXByZXNzb3IncyBzdGFy
+dHVwXzMyKCkgdG8gYWxsb2NhdGUgcGFnZSB0YWJsZXMgZm9yIGlkZW50aXR5CgpKdXN0IGdhdmUg
+dGhpcyBhIHRyeSwgb24gNi4xLjgyLCBhbmQgdGhlIHN5c3RlbSBzdGlsbCByZWJvb3RzIGFmdGVy
+IHNlbGVjdGluZwp0aGUga2VybmVsIGluIHRoZSBib290bG9hZGVyLiBTbyBpdCBzZWVtcyBsaWtl
+IG15IHByb2JsZW0gaXMgZGlmZmVyZW50LgoKQXMgSSBtZW50aW9uZWQgaW5pdGlhbGx5LCBJIGJp
+c2VjdGVkIG15IGZhaWx1cmUgdG8gZTJhYjllYWIzMi4gRG9lcyB0aGF0IGdpdmUKYW55IGhpbnQg
+YWJvdXQgd2hhdCBtaWdodCBiZSB0aGUgcHJvYmxlbT8KCi1DbGF5dG9uCg==
 
-Fixes: b3810c5a2cc4a666 ("x86/efistub: Clear decompressor BSS in native EFI entrypoint")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/x86-stub.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+--ZDwzZQYzZVCy0qwd
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 2096ae09438e..1edf93e63897 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -476,7 +476,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	efi_status_t status;
- 	char *cmdline_ptr;
- 
--	memset(_bss, 0, _ebss - _bss);
-+	if (efi_is_native())
-+		memset(_bss, 0, _ebss - _bss);
- 
- 	efi_system_table = sys_table_arg;
- 
--- 
-2.44.0.396.g6e790dbe36-goog
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCgAdFiEEkdOrrjmBP3eB7DeWSkztbX7flQoFAmX9r3EACgkQSkztbX7f
+lQrrVw/9Fb/e4pVj5RoGppymFb9gjfxLYT21kL08bq3otfPXNTif7telFvum9WTg
+9iua6RX0TYnUoJ5wj74XhoDjFyJpzqNk2dPNyMKENCcqJ+5YwZYFWUcZNqTGIttt
+n94TMqowODXjZgAcUxmWqyLMgdHyK9FnoXlVGD15o060B3Px69qub/VUtnfSc8DC
+DX8qsHbbarYEE0mX15Z9PynuEdz3y5f2spNFYkLJzM6/brrNOJ6jRInV3t32YMZD
+oBPFg7NaarSEjTJhp051DyUaa4rZU+TgxOF8wKCgzTiGj1kTj9AtTIaeIE6uCB6R
+ADNTYFjrcccCUNdFg8FXR9YxDtRbsyCN+CaziXIAC6rRWwAAk3Q0PKdJvvjJjCsY
+m6F08lb+3VdFmz7WRuCAXFWVjjXVXKCRgiPxtsmYW4dKrID9hrmHU8ulJqQJuPIn
+t14ex4BvOz2/mRGCJd4e13nm3lsk4DjW9JNbo1aLscED5AtrZpcjq5Um5+WS0Icn
+qJzahTfWX0H8lT/xLTe9dQBf/T/LqzqRyzJjvw3ThyQe+1Fu2vXNpd2t4fLaexCs
+vYtjBatMyLwAp8EP2ILpDCGyD+aMv4DWgXKjnhYqZ50TpHE0nyUa/HOrvnC25YSj
+1y8JOfHH1QW3HVkEFS1oy61TaB2SA8tZDrMFvZ6O9X6FoGB4uPQ=
+=QTbx
+-----END PGP SIGNATURE-----
+
+--ZDwzZQYzZVCy0qwd--
 
