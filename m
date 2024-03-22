@@ -1,147 +1,155 @@
-Return-Path: <linux-efi+bounces-848-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-849-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84770886C62
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 13:52:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DC6886CA9
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 14:18:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16643B22040
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 12:52:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D042284719
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Mar 2024 13:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EA144C89;
-	Fri, 22 Mar 2024 12:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2EF4595B;
+	Fri, 22 Mar 2024 13:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rTFNuXN7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tg5Mqxje"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5964E446D6;
-	Fri, 22 Mar 2024 12:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727AA4501C;
+	Fri, 22 Mar 2024 13:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711111939; cv=none; b=foHxbauHmWTYRuFsvvZovapcDmUYn150uehdc8QpZeggyZs3O2QnjfPmtEJKriPxawz8M2dFjx1YagqzsT8ejgjacytrUsnebfee09AzldxsopEG77ULC2Sk2ZkzXU5td20Vyf8zoldbbPT09YgdHXxEp/5Ot1l1yR7HoY1hv/M=
+	t=1711113488; cv=none; b=cGe0bo3KcYxBHfqkeHjvus13amhf6DeQriD8GuHVyW9ntJJAZ4Q51SXd/FW6gGT3usr/rmaYNv4qfQU4G0+NJarYzLye1G5V9nun/5cISI1YTs3MjFITHSW2chrm9CMGWPdyBM1JAJr4xAvkwSgB1RpONe1IX8KU7cbDQ5PT4tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711111939; c=relaxed/simple;
-	bh=mKpFVELhqQO/MJQzF7MS3ARP49TrE+jyDb5kEDSxe4Y=;
+	s=arc-20240116; t=1711113488; c=relaxed/simple;
+	bh=HAKZ7cmBvqd6aSZFndMvBQg8DCq/3g1+oo1NIjMagHA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YlNvxECo9O2J4NGpSB89Cc6IO9Zbq9fLa2/uVZw6ALOdAZRN11CNi+qE0wdlon99BsRCOn7QEeD2/Sgy/K1aBb6LhMZ2PnaxmbwYdFEouNxlMaQZ/p7nG1zahhysV3eHImkN5yz7nSz/FA5TZHPFuKFGDA+0jWkZGpBiqcWjBgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rTFNuXN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8D9C43330;
-	Fri, 22 Mar 2024 12:52:18 +0000 (UTC)
+	 To:Cc:Content-Type; b=ATZDyjSCuxve+3SJtxx/Rm+zxmUBQmHyj4pRo2uqBcuo0vaqHZxbXBTQWrHFdXXuq8KOHuDHdH7T2Q8dljWu2eMVGrePLYeqdNjnDEsN6/QbIOpjw1U/SeR66tracT2k50lUNgTn9Hkvo648uz7+VIPd8qtxeknIE1ss0UdCKKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tg5Mqxje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478B8C433C7;
+	Fri, 22 Mar 2024 13:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711111938;
-	bh=mKpFVELhqQO/MJQzF7MS3ARP49TrE+jyDb5kEDSxe4Y=;
+	s=k20201202; t=1711113488;
+	bh=HAKZ7cmBvqd6aSZFndMvBQg8DCq/3g1+oo1NIjMagHA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rTFNuXN7JV4H1M8lLXRl6mOJlWMr4A6pU8HEO6y7MijPx4W9rSw9Pyvr5Bwq3IIk0
-	 LNaObKIDTjch5G9YXExNvq07vTwioeOu/P6r/BVYcpOVGcVE3LtmIwm8gkKIC9GEH7
-	 nSTDeHx5fGMFmjMU7Ckckq6suE2n6mscUs65BXjt+wapmqXn1HmHkyiEdIPqs+VYAv
-	 2l3afxG3UidmbmwbsX6Rr2NGI0bZhSNOEJocVQAt+IRBliuVwXHZ6uSzSedUQPGjIj
-	 nX6vYYO8H8uF1LzTAoOBAiKgEnESFNZs+WhCvGd8dBDEXOg4JnxiK1QiL6OwAyTx+o
-	 M9wOrlCgMnvMA==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-513c8b72b24so2360902e87.3;
-        Fri, 22 Mar 2024 05:52:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU+TnPsCLhITkXCghIEtP2s1vst4qGSF6KaeTRrAuJTj2AgVVQB2oIxzxTHuzsGfpV51WRMTSfpHWiLiYDH82QkTbH2oe4BlfuxPonIRGgztcvB6MU/N8yRBf+ImfpNRk1wpSVi31Ln
-X-Gm-Message-State: AOJu0Yw1N2azeuQPiBnjyphJxMkzG3zEGGpT8Vcrdkc72eyxFb3OAL8c
-	uoyLwA+p3ANp/wILUqtV5Z0k5uvFJYAG3ClQXR3Z/XA8v6zZ8BMeIIrZFuMJYWLCIOHlBqp41DM
-	EVT2FTIAZdNSDuR5Bts4+olv+MoY=
-X-Google-Smtp-Source: AGHT+IHklJRW3LUltX6SoxEccs31USx3zcS1zXoGK6HTBbqRH+NoHQwA+Fh/DI4NCb7BYfEXe3bp6gH48jeuRVFqdw8=
-X-Received: by 2002:a19:9157:0:b0:513:d1b6:6f0e with SMTP id
- y23-20020a199157000000b00513d1b66f0emr1553664lfj.36.1711111937220; Fri, 22
- Mar 2024 05:52:17 -0700 (PDT)
+	b=Tg5MqxjepdspHRR5uIeSUEeWCfndJZIpSgKe5FNHJJqmLE8TtJoPdgXPSaF1/BAnt
+	 3b8xJx44vgVFDcWSHIiV4GNpwiA2jzR24jTfpzlP4KT/7RTVmhADBjAR5CXhEhylSZ
+	 vVuJ6xWDmq5X7aGKKemy+oRbwO1su6TyVwZwbE3kF1vD82zXUKLpXl9xRINP8wzIFJ
+	 ADmPiYCWiFmKbasxDDegdvYYnZV2VWsHjNW1Jntt6EjCuOl5TPdsqy5UFvNgfFXZmn
+	 7otGsrHTDEi+gzhJR7EzrjSc7VCVMFcnyXi5oVipuDUyXyE4RmpzKepF5rcmUxro7F
+	 BpIEI9IYsunmA==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-513e25afabaso2437770e87.2;
+        Fri, 22 Mar 2024 06:18:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXvjStzuX6anZY0Z9hec8pUrd9eNOKcbo4SFpMfhb7dVhICz/uPXlHAHJzguHRaxyNWd7u0F82P0rtFczHTE2bFHRtSfkxhfk6YnHKK
+X-Gm-Message-State: AOJu0YwM4Famppuy8l1XnonvhQcLvteK0BpiZxPltfVBXEHGnFmZyf+N
+	U5ESU0NStKAJsVrApeW1eIfxxeCVUNzZKOccYgyaWTEZLGiIv1EVP9ppVBxJip23jHX+8J5eID6
+	yFjDkguiGbQe5t+1g7g7bhOpwB0U=
+X-Google-Smtp-Source: AGHT+IEIA+evTHJpyKg98JNtKwr5btrYIbch9rK1MshAfP0vLICEz71naB+QTV7q817ECTKKOei8/+8e3+92R6/E2oY=
+X-Received: by 2002:a19:3813:0:b0:515:92a8:25c1 with SMTP id
+ f19-20020a193813000000b0051592a825c1mr1495201lfa.56.1711113486649; Fri, 22
+ Mar 2024 06:18:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240321150510.GI8211@craftyguy.net> <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
- <20240321170641.GK8211@craftyguy.net>
-In-Reply-To: <20240321170641.GK8211@craftyguy.net>
+References: <20240322110058.557329-1-kazuma-kondo@nec.com>
+In-Reply-To: <20240322110058.557329-1-kazuma-kondo@nec.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 22 Mar 2024 13:52:05 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
-Message-ID: <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
-Subject: Re: x86_64 32-bit EFI mixed mode boot broken
-To: Clayton Craft <clayton@craftyguy.net>
-Cc: Hans de Goede <hdegoede@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, regressions@lists.linux.dev
+Date: Fri, 22 Mar 2024 14:17:55 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFSpF0YzwtgER11ocBrhjyG0Us7=kp7a92tDm3aZy=WrA@mail.gmail.com>
+Message-ID: <CAMj1kXFSpF0YzwtgER11ocBrhjyG0Us7=kp7a92tDm3aZy=WrA@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub: fix efi_random_alloc() to allocate memory at
+ alloc_min or higher address
+To: =?UTF-8?B?S09ORE8gS0FaVU1BKOi/keiXpCDlkoznnJ8p?= <kazuma-kondo@nec.com>
+Cc: "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
+	"tomenglund26@gmail.com" <tomenglund26@gmail.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 22 Mar 2024 at 01:06, Clayton Craft <clayton@craftyguy.net> wrote:
+On Fri, 22 Mar 2024 at 12:01, KONDO KAZUMA(=E8=BF=91=E8=97=A4=E3=80=80=E5=
+=92=8C=E7=9C=9F) <kazuma-kondo@nec.com> wrote:
 >
-> On Thu, 21 Mar 2024 23:48:09 +0100 Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > v6.8 fails for me, and presumably so does everything back to v6.2. v6.1 is able
-> > > to boot OK on these platforms with mixed mode, and it looks like there are a lot
-> > > of changes from 6.1..6.2 for EFI/mixed mode booting.
-> >
-> > v6.1 just received some EFI related backports, so please check the
-> > latest v6.1.y as well.
+> Following warning is sometimes observed while booting my servers:
+>   [    3.594838] DMA: preallocated 4096 KiB GFP_KERNEL pool for atomic al=
+locations
+>   [    3.602918] swapper/0: page allocation failure: order:10, mode:0xcc1=
+(GFP_KERNEL|GFP_DMA), nodemask=3D(null),cpuset=3D/,mems_allowed=3D0-1
+>   ...
+>   [    3.851862] DMA: preallocated 1024 KiB GFP_KERNEL|GFP_DMA pool for a=
+tomic allocation
 >
-> I just gave v6.1.82 a try, and it fails to boot for me. That seems to be a
-> regression from the 6.1.0 that I tested previously.
+> If 'nokaslr' boot option is set, the warning always happens.
 >
-> > I usually test on 32-bit OVMF built with LOAD_X64_ON_IA32_ENABLE,
-> > which allows the use of the compat entry point. This is different from
-> > the EFI handover protocol, and I am not sure which one you are using.
+> On x86, ZONE_DMA is small zone at the first 16MB of physical address
+> space. When this problem happens, most of that space seems to be used
+> by decompressed kernel. Thereby, there is not enough space at DMA_ZONE
+> to meet the request of DMA pool allocation.
 >
-> I should have mentioned this previously, here's the EFI-related kconfig that I
-> am using. If there's anything missing then please let me know:
+> The commit 2f77465b05b1 ("x86/efistub: Avoid placing the kernel below LOA=
+D_PHYSICAL_ADDR")
+> tried to fix this problem by introducing lower bound of allocation.
 >
->         CONFIG_EFI=y
->         CONFIG_EFI_EARLYCON=y
->         CONFIG_EFI_ESRT=y
->         # CONFIG_EFI_HANDOVER_PROTOCOL is not set
->         CONFIG_EFI_MIXED=y
->         CONFIG_EFI_RUNTIME_WRAPPERS=y
->         CONFIG_EFI_STUB=y
->         CONFIG_EFI_VARS_PSTORE=m
->         CONFIG_EFI_VARS_PSTORE_DEFAULT_DISABLE=y
+> But the fix is not complete.
 >
-> Note that the EFI handover protocol support is disabled, I was under the
-> impression that it's not required for mixed mode.
+> efi_random_alloc() allocates pages by following steps.
+> 1. Count total available slots ('total_slots')
+> 2. Select a slot ('target_slot') to allocate randomly
+> 3. Calculate a starting address ('target') to be included target_slot
+> 4. Allocate pages, which starting address is 'target'
 >
+> In step 1, 'alloc_min' is used to offset the starting address of
+> memory chunk. But in step 3 'alloc_min' is not considered at all.
+> As the result, 'target' can be miscalculated and become lower
+> than 'alloc_min'.
+>
+> When KASLR is disabled, 'target_slot' is always 0 and
+> the problem happens everytime if the EFI memory map of the system
+> meets the condition.
+>
+> Fix this problem by calculating 'target' considering 'alloc_min'.
+>
+> Cc: linux-efi@vger.kernel.org
+> Cc: Tom Englund <tomenglund26@gmail.com>
+> Cc: linux-kernel@vger.kernel.org
+> Fixes: 2f77465b05b1 ("x86/efistub: Avoid placing the kernel below LOAD_PH=
+YSICAL_ADDR")
+> Signed-off-by: Kazuma Kondo <kazuma-kondo@nec.com>
 
-That depends on the bootloader. One of the changes around that time is
-the introduction of this Kconfig symbol: before that, the EFI handover
-protocol was always supported but now it can be compiled out. So the
-safe choice is to enable it.
+Hello Kazuma Kondo,
 
-However, while looking more deeply into this, I noticed that we are
-running quite low own stack space. Mixed mode is different because it
-calls into the boot services using the decompressor's boot stack,
-rather than using the one that was provided by firmware at entry.
-(Note that the UEFI spec mandates 128k of stack space)
+Thanks for your patch. I will take it as a fix.
 
-In my case, I bisected the regression to
-
-commit 5c4feadb0011983bbc4587bc61056c7b379d9969 (HEAD)
-Author: Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon Aug 7 18:27:16 2023 +0200
-
-    x86/decompressor: Move global symbol references to C code
-
-which moves the boot stack into a different memory region. Formerly,
-we'd end up at the far end of the heap when overrunning the stack but
-now, we end up crashing. Of course, overwriting the heap can cause
-problems of its own, so we'll need to bump this in any case.
-
-Could you give this a try please?
+You sent the same patch twice, right? Is there any difference between the t=
+wo?
 
 
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -38,7 +38,7 @@
- #endif
-
- #ifdef CONFIG_X86_64
--# define BOOT_STACK_SIZE       0x4000
-+# define BOOT_STACK_SIZE       0x10000
-
- /*
-  * Used by decompressor's startup_32() to allocate page tables for identity
+> ---
+>  drivers/firmware/efi/libstub/randomalloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmwar=
+e/efi/libstub/randomalloc.c
+> index 4e96a855fdf4..7e1852859550 100644
+> --- a/drivers/firmware/efi/libstub/randomalloc.c
+> +++ b/drivers/firmware/efi/libstub/randomalloc.c
+> @@ -120,7 +120,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+>                         continue;
+>                 }
+>
+> -               target =3D round_up(md->phys_addr, align) + target_slot *=
+ align;
+> +               target =3D round_up(max(md->phys_addr, alloc_min), align)=
+ + target_slot * align;
+>                 pages =3D size / EFI_PAGE_SIZE;
+>
+>                 status =3D efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRE=
+SS,
+> --
+> 2.39.3
 
