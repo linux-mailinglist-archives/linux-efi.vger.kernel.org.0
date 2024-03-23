@@ -1,111 +1,111 @@
-Return-Path: <linux-efi+bounces-864-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-865-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F72887876
-	for <lists+linux-efi@lfdr.de>; Sat, 23 Mar 2024 13:16:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4310E8878AD
+	for <lists+linux-efi@lfdr.de>; Sat, 23 Mar 2024 13:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA50E1C214ED
-	for <lists+linux-efi@lfdr.de>; Sat, 23 Mar 2024 12:16:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 646151C227A4
+	for <lists+linux-efi@lfdr.de>; Sat, 23 Mar 2024 12:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8750A168A9;
-	Sat, 23 Mar 2024 12:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0AAA21370;
+	Sat, 23 Mar 2024 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMax+p5K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNOXMR9W"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43330224C7;
-	Sat, 23 Mar 2024 12:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69BBCA6F;
+	Sat, 23 Mar 2024 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711196164; cv=none; b=U4tiTGvsyfbMdqrFfCgntP0aktCtlixhPhK9ErR2rvTguq4TGbS/kUi3RVU4LI3MpBTJ9zbQCdDXjaHq8ysfr5B5+n620EDnRjNlZLNG2XfYFuDvuARwvZoTYDfXJGHrmJqsYhxJ2q/x51KweWHHPg0uRztlSKXPEl/E9HYtApg=
+	t=1711197605; cv=none; b=Mkywwto2zkJ+jErmO6eS/ecxZO/i/AoxryuoSgjTT2YZ0YXR1QFh0ZiZGNmsiC6zsTctArCOmLimQHEoY2P7PltNrwP0aNTb+2PlwZtvWN7dbGsKkpEuN8TKPuEDPAWIZ5qwrzMceh9BlUj+D4IwybZtkewRXxnDTLsNxQ47qJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711196164; c=relaxed/simple;
-	bh=298pc/6jgFUt0TwsCfTIdMnWzb5pr9qYj3xJKL5h9b4=;
+	s=arc-20240116; t=1711197605; c=relaxed/simple;
+	bh=cbSZolRDzHHEJXXy+xiONqpLt3MC8VuAdPFXF38KDkU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dtbwy+Ga88SjO2IQI59Nv9Owz1dc7BsltlYNmbR40DTppbvhV7ipLFAi6P7H5Q0zFivlLQ1LG3oHlH7UK8Q8wtwhX9Atgc1s48QefMPqOGIKVkATJCIWhqjHVSZpTqD3nNb1xHRSM924gdaqcv4tbRLyk14q0LSg4d5SAHuluZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMax+p5K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1D8C43390;
-	Sat, 23 Mar 2024 12:16:03 +0000 (UTC)
+	 To:Cc:Content-Type; b=alIdw9PrhmrlgeP+GKyaZohgvWmqWTqHjYKYpRCkDeM8sO2LgVgGGfoR9BLXjmfAAf5738PbMeS/nDz79ubOkT5UoaC1/6+uTzcHpUOFfmxXfT3QnwnIR3OLdsmbBqQnSRnvM9t6DjIQ62r4djCkP/nRr76Wyi4eYeqPrbos+Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNOXMR9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C217C43399;
+	Sat, 23 Mar 2024 12:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711196163;
-	bh=298pc/6jgFUt0TwsCfTIdMnWzb5pr9qYj3xJKL5h9b4=;
+	s=k20201202; t=1711197605;
+	bh=cbSZolRDzHHEJXXy+xiONqpLt3MC8VuAdPFXF38KDkU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QMax+p5KYlB+npS6Z4iPkf+3iwEXX34LNFxzva2NMTymhzQ2p+A1obKHyBhQUGOwZ
-	 Qw4sJkEcc3vIUBZBNOalhDX+nRpzY31zZ2C85/vzZVv6NTlNDvcO/SSMg06pSdCsOp
-	 ydxnEkcB+4mCsJqZLeEx5ndCIkfL3qM/K/Q7kLLvgJV3rk7EJWT8l+TFE9xznwV05i
-	 9YsYB3UDpdh4o3QwLiH7Ab+9iMXEZLSGMOAyYK7EU/oVyZjOJOP9qiP0nOF6TIHKWu
-	 VU4ov1y4QOxbxkLSWLJ3LAKwUbgRoQH4eChYDR2ONZ/bcEOdvagoWLXG5ISzepx4Rj
-	 Adg8I+HgUrgbg==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d6a1af9c07so41272071fa.3;
-        Sat, 23 Mar 2024 05:16:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW6AxBjmvSJOmpM+Ch9gvalN4wLqx013Ep/e2k+2P+FKAAy+bX2dQKOPFq8ThZd+UtuFEquy8BDpuoniad6nN5CrRUwhcpbU2YdzXoi/n4uUPcH9CUhdz0v+nDnFBDKTWheSAV7NfbYDeUsCjQuEACxjK0HZfR+ehg5YD9wnJP+
-X-Gm-Message-State: AOJu0YwZ8PgLbc4G4ilTQHuFfRB+Buv2aNCZdPcxvSkG+DeEl3hpsR3g
-	S+w0fZvBbYhC85gJne2VGcoL4uKU3KTpjmrGS7nR+logM9Cdhz+ZIYoHdtL434Mvcvo42TeHeiN
-	kQEXEEyfBDTUtVmyxxyzxpo6EHeg=
-X-Google-Smtp-Source: AGHT+IHUBS5vtwn45KMvgPpQE099s2U9NrhFU0h6pQa4pjHfgrf1U2XXsDqbwTu0oIxWu3ZZUniBzF45ZNzdWf2sx2s=
-X-Received: by 2002:a05:651c:11c9:b0:2d3:ada4:1228 with SMTP id
- z9-20020a05651c11c900b002d3ada41228mr1357649ljo.18.1711196162074; Sat, 23 Mar
- 2024 05:16:02 -0700 (PDT)
+	b=lNOXMR9WCZz1sx4YPMuxBR4aCsOYTQoGLWRdvInLWitHiKWJmADDfu7UgNKcdmolB
+	 bRPBPEMov9gMUpgXZ2GqrdeAy6rfyuQgCvhhR5J6zKXm8i1tDlAWkajoShtiv9cePP
+	 znZLByFqd+JlcM3q45TkKJI7iNAN7hh2GS12uO/Atgg4xUjxR+QC9P+DinDeZFBeZK
+	 QUjIdZrh1RtEabIY+qxh5F7jC3WtUbySjZAJPWkXxnmdiV5OX3UMbsuC3u5i4CEADt
+	 zDFrh/VDcMd9tE74JNUMg345+gY4e6HuaIp9xVoNPOCo8gBofJq4aAbjZtMCAfIBVm
+	 d75l4ueuSW4Ig==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d68651e253so50570571fa.0;
+        Sat, 23 Mar 2024 05:40:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUePTZ+5DLhBi93kCTA8wM+lsXPY5YyZuS1vvVlm3FNLcJvN7iYJGNVk8Js972mH2BVSdPzoSw+kBxGa1x8qPIbnidcf3bwB08wR5pR05DXAsJr8uZH/vMSRm8C9CPJiNP/ooQI1VVb
+X-Gm-Message-State: AOJu0Yyv3O6zD+ykQ1vBYsl8dREnIht2PLMcpAHQCQsFlgHEXY+lAEmq
+	Tr8k7UR0+GgOdQZ1NeFZIrbIYKN0VicX3VzJ3Z4dWy1nOSixJLWYujaetkLBNy+G7at1q5N/R4N
+	9SGsaSg0Fa9ILGYJ6+8+hTHJG2AM=
+X-Google-Smtp-Source: AGHT+IEJvtbme/eS1L6D9RG94EKx6mhtYiagbSFm78FWvwIqq+NA3C7kvVkTUtUFsPi+e1xNkbGDEo6a9nBFejMQlu4=
+X-Received: by 2002:a2e:3615:0:b0:2d4:3b15:5561 with SMTP id
+ d21-20020a2e3615000000b002d43b155561mr1366070lja.40.1711197603491; Sat, 23
+ Mar 2024 05:40:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240323063334.735219-1-ovt@google.com>
-In-Reply-To: <20240323063334.735219-1-ovt@google.com>
+References: <20240321150510.GI8211@craftyguy.net> <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
+ <20240321170641.GK8211@craftyguy.net> <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
+ <20240322091857.GM8211@craftyguy.net> <CAMj1kXFmnv+FGRMnnJMJejj5yvSybgZTNEYZz0hxb6K9VAeo1Q@mail.gmail.com>
+ <fe09869c2d853bde8ce0feb537c4dab09014f5d9@craftyguy.net> <CAMj1kXEH4CTnQ3d+Z-TnqNUhFaFc1yH+Eaa6cHk9-vZ_geQ2nw@mail.gmail.com>
+ <8a64ba697d719bc9750e6fffc268e194dfde16e5@craftyguy.net>
+In-Reply-To: <8a64ba697d719bc9750e6fffc268e194dfde16e5@craftyguy.net>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sat, 23 Mar 2024 14:15:50 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF0oM4CZM6GBQ+JNdk0ipf62cVJWjaR7Qy8YEU2B6=MVg@mail.gmail.com>
-Message-ID: <CAMj1kXF0oM4CZM6GBQ+JNdk0ipf62cVJWjaR7Qy8YEU2B6=MVg@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: fix panic in kdump kernel
-To: Oleksandr Tymoshenko <ovt@google.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sat, 23 Mar 2024 14:39:51 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEk=7_BoaavZtZs7giBq4Kwk-QQoNjMZS=rWLJP=LdVLw@mail.gmail.com>
+Message-ID: <CAMj1kXEk=7_BoaavZtZs7giBq4Kwk-QQoNjMZS=rWLJP=LdVLw@mail.gmail.com>
+Subject: Re: x86_64 32-bit EFI mixed mode boot broken
+To: Clayton Craft <clayton@craftyguy.net>
+Cc: Hans de Goede <hdegoede@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, regressions@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 23 Mar 2024 at 08:33, Oleksandr Tymoshenko <ovt@google.com> wrote:
+On Fri, 22 Mar 2024 at 21:34, Clayton Craft <clayton@craftyguy.net> wrote:
 >
-> Check if get_next_variable() is actually valid pointer before
-> calling it. In kdump kernel this method is set to NULL that causes
-> panic during the kexec-ed kernel boot.
+> March 22, 2024 at 11:30 AM, "Ard Biesheuvel" <ardb@kernel.org> wrote:
 >
-> Tested with QEMU and OVMF firmware.
 >
-> Fixes: bad267f9e18f ("efi: verify that variable services are supported")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+> >
+> > On Fri, 22 Mar 2024 at 19:57, Clayton Craft <clayton@craftyguy.net> wrote:
+> >
+> > I have pushed a branch below that reverts the patch you identified in
+> >
+> > 4 separate steps. Could you please check which step makes your system
+> >
+> > boot again?
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-clayton
+> >
+>
+> Thanks a lot for doing this, I really appreciate the help!
+>
+> It looks like if I build from 868a7245, booting breaks again on my Bay Trail systems. If I put back 00e85ab5, they boot again.
+>
 
-Thanks. Queued as a fix.
+OK.
 
-> ---
-> Changes in v2:
->   - Style fix
->   - Added Cc: stable
->   - Added Fixes: trailer
-> ---
->  drivers/firmware/efi/efi.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 8859fb0b006d..fdf07dd6f459 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -203,6 +203,8 @@ static bool generic_ops_supported(void)
->
->         name_size = sizeof(name);
->
-> +       if (!efi.get_next_variable)
-> +               return false;
->         status = efi.get_next_variable(&name_size, &name, &guid);
->         if (status == EFI_UNSUPPORTED)
->                 return false;
-> --
-> 2.44.0.396.g6e790dbe36-goog
->
+I have reshuffled the branch and put the patch you identified as the
+one fixing the boot first. Please double check whether this change
+still fixes the boot for you.
+
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-clayton-2
+
+If so, we can try applying it to mainline, and merge it if it works there too.
+
+If not, we will need better debugging to figure out what the hell is going on.
 
