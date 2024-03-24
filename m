@@ -1,108 +1,159 @@
-Return-Path: <linux-efi+bounces-868-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-869-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BAD887BCD
-	for <lists+linux-efi@lfdr.de>; Sun, 24 Mar 2024 06:54:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D8F887D3E
+	for <lists+linux-efi@lfdr.de>; Sun, 24 Mar 2024 15:49:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D85F2823C1
-	for <lists+linux-efi@lfdr.de>; Sun, 24 Mar 2024 05:54:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC908B20DF2
+	for <lists+linux-efi@lfdr.de>; Sun, 24 Mar 2024 14:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F7B1400B;
-	Sun, 24 Mar 2024 05:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEA6182DD;
+	Sun, 24 Mar 2024 14:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="FRt+yN14"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JPDshrsW"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B55112E7C
-	for <linux-efi@vger.kernel.org>; Sun, 24 Mar 2024 05:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D9C18035
+	for <linux-efi@vger.kernel.org>; Sun, 24 Mar 2024 14:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711259639; cv=none; b=KZyjhA4q9rEbjfn/hy4pLuNURAslZasclxndLLyp+N2NjTnzrtW5cufL1jCOQC929b30Zhmrxg/krbYkki0E3yr+cNArckKqUdX0sJHWwrNQJDcOvsfy0fvlTwQe4kdRfScz+gVFO6+G4OiWu9Vg4exwkCTNq5CDp16OEYYR7Pk=
+	t=1711291771; cv=none; b=imWwf6OjW3dn3T8BWihXDYyPR6f7zZMDWNNz3AdqHYqp5DOCbNIk78eEiZneyzKTTcnMLxALEdlCPHCRBR3A4Gj9Ttt0WIeXHvIPuLEV2NwvQtZMlvJS0eRyy39YyjiDwTEDPW/poEzsPd5nKHt/NK2Vd1xshNgcrm68JFSTWZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711259639; c=relaxed/simple;
-	bh=k6K1qJsbWkoTQwo17/BGCwBZeOrK8asEP4jPl+ndMqc=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=E+Ebt4hG+KiKyS8m9u7KgVND7ojSpl8HXrwlImKTa/w8HQG2HRn3CAQ/8nQez1u6MaHwEmyxfOUDhD9482za8HSMshmb+Nx9ODffUMoq5ZO4KtvlqZC+fviUv/zRucuuYXoD55xG7zsha5S3YmF9MTlxCjtewFi9MhPK/IrnCwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=FRt+yN14; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
+	s=arc-20240116; t=1711291771; c=relaxed/simple;
+	bh=b0T2E6rfT+SfjZ3KicwpabA3ip4trl8wAgPlr1ugUpw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e12OuO+B9K8aW69O8SPBsOnzjaOfQoUkTueduaQIx/8v0anjSSvk9meNCiAord5aCXUYKd6QaLZsqOpWcXtQOu136SbWeAdX2d/4RXm5LYC10UIuJhzttWYEQjjqe1p/0qvKAqMuEAJVOKi7gKVX4tvo1n8aO+jPw69KhIPXu6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JPDshrsW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711291768;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bQeOWgDE8ZK/2VH8iK9oZfcBxftmpHefx2GklYdNKXY=;
+	b=JPDshrsWr/wjE56u+saCfH8lbxgtCxBrs0Eimlm5xsal3Jd8jqqZvfGhpNSkdNMIv0aIRm
+	4QaVQtKEFsOsRhEQNGR/q6K5NrfYE3tGF6imkM35vZ3zfqtkYbN0wjGIPnqJ1jhEhGzmUw
+	v5IA00mnXEoAUMN9p18q4zdO4VwI/M8=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-qcAAuS0UMWCQBqKbvp2Fkg-1; Sun, 24 Mar 2024 10:49:27 -0400
+X-MC-Unique: qcAAuS0UMWCQBqKbvp2Fkg-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a46ba1a19fdso266799766b.1
+        for <linux-efi@vger.kernel.org>; Sun, 24 Mar 2024 07:49:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711291765; x=1711896565;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bQeOWgDE8ZK/2VH8iK9oZfcBxftmpHefx2GklYdNKXY=;
+        b=SVVHlxa3LKwqa+vR+fsD/9Ltdzl9TEvhtZxsnbuqhmpcgRaUSeCn2/5/R5tuW5gdw1
+         SbAmbSP4b7LXh2NSAkRuPDf7Km0CzuH8/KzSSG5IZKLubqRW60juHTLGqzsoKlm9z4NP
+         iaPPNDrI3z4lHgiZeMEh6ytyKIAKZPMId2VadepaMJGxPHEyWNACDADTnOupU5HpjGEN
+         XEtOiZ/MFWVOil/8syzsTWDEafYjV5H+DcN9KJhjnEqlc2NMtXs1a9Ef0ghcM+D2M4Ty
+         r127L8pE1GHauMZpuFZGkqb1pmNm6rQm6VjCbB+3/ZseJEPCua2xp0vCrZBFP8MW0Uk+
+         Cc0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW2yeroWQV/wkVGhaeJHv09Y8PJWIdrHS1J2CR2gFr0Cf+8kXJ6uikr4XOxT1ztPJOPiLottQj7qXAn7UpLuNoNHNX0WBT0NDLs
+X-Gm-Message-State: AOJu0YwNLP+pdhPO7GKciAnV8M6nv09Cqeh/yXS8VAUk8h1wFk7KaC9S
+	8bDxFetaK39oeiIOmO6/rNA38HTU9rtVqwYv/6A+7uUaCXVxhEbdG2WXyTB3A4MaaHMcMK4JUY6
+	PXX0aLjwSWr1nyKpeYWElV7ageluq292ydYKpOaiUmgRFTLjhFWs7IvnS0Q==
+X-Received: by 2002:a17:906:c111:b0:a47:4b76:6258 with SMTP id do17-20020a170906c11100b00a474b766258mr2091366ejc.25.1711291765643;
+        Sun, 24 Mar 2024 07:49:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3AfZuVj/LH8PmM5oxAKwVmIGD0XD2zB7qT+98dJjuYKKW3sKq+XAUtMPDBs/qzFmH11boVA==
+X-Received: by 2002:a17:906:c111:b0:a47:4b76:6258 with SMTP id do17-20020a170906c11100b00a474b766258mr2091360ejc.25.1711291765291;
+        Sun, 24 Mar 2024 07:49:25 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id se16-20020a170906ce5000b00a468be342bfsm2036173ejb.136.2024.03.24.07.49.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 Mar 2024 07:49:24 -0700 (PDT)
+Message-ID: <a3aae375-5582-46e4-866b-6a81641998af@redhat.com>
+Date: Sun, 24 Mar 2024 15:49:23 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
-	s=key1; t=1711259634;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9noNjRG5J01WXAhzTC1re8jGZ/L4ci7PArNMcz5zSdQ=;
-	b=FRt+yN14LDuW1S6eg8vkC3y3RQTlw8VeiBduPXcNaOVh2vzfl3Zr4moDi2HpyjFMUdKOG7
-	iJpbQ2XpTeuM7oTLaEpRiPsG511uyJ0jk2Wv6FictZ5XD6ZyQeFKhhkxMA5EEqqk+2hvgg
-	xURZ9BsoXz99aUh/+kz7tnMFILdhGP2a6DrluqaWS/MIX/hP0g8f6OhQK0YGNYScJmDd9j
-	RTLTehHG3wy9zfyT83xUbnTJA26G5wviE+rTe4eQsvJM069gvwCJQFBS0JdHI+SQsQgQzb
-	84VwvrMMSuLUGL6hyCjqGVmpioNzTJXPOWF2Jqi8B3uxNV/it1K5/uBGpUSndw==
-Date: Sun, 24 Mar 2024 05:53:52 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Clayton Craft" <clayton@craftyguy.net>
-Message-ID: <2a15095b2b6343f63e228443d9fd3f35872b6d09@craftyguy.net>
-TLS-Required: No
+User-Agent: Mozilla Thunderbird
 Subject: Re: x86_64 32-bit EFI mixed mode boot broken
-To: "Ard Biesheuvel" <ardb@kernel.org>
-Cc: "Hans de Goede" <hdegoede@redhat.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, "Thomas
- Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, regressions@lists.linux.dev
-In-Reply-To: <CAMj1kXHEJuZH4GsPKpu2vn6NQtKq1FBUtb-Rkfatwa63brgXpw@mail.gmail.com>
+To: Ard Biesheuvel <ardb@kernel.org>, Clayton Craft <clayton@craftyguy.net>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ regressions@lists.linux.dev
 References: <20240321150510.GI8211@craftyguy.net>
  <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
- <20240321170641.GK8211@craftyguy.net>
- <CAMj1kXE-sxGM2H8akunJ1mZPDSVX1+2ehDtK-jqW--8tw9J5LA@mail.gmail.com>
- <20240322091857.GM8211@craftyguy.net>
- <CAMj1kXFmnv+FGRMnnJMJejj5yvSybgZTNEYZz0hxb6K9VAeo1Q@mail.gmail.com>
- <fe09869c2d853bde8ce0feb537c4dab09014f5d9@craftyguy.net>
- <CAMj1kXEH4CTnQ3d+Z-TnqNUhFaFc1yH+Eaa6cHk9-vZ_geQ2nw@mail.gmail.com>
- <8a64ba697d719bc9750e6fffc268e194dfde16e5@craftyguy.net>
- <CAMj1kXEk=7_BoaavZtZs7giBq4Kwk-QQoNjMZS=rWLJP=LdVLw@mail.gmail.com>
- <CAMj1kXHEJuZH4GsPKpu2vn6NQtKq1FBUtb-Rkfatwa63brgXpw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAMj1kXGzH4TiwvSF3bZsJpuuWf04Ri_852fUMTdH8pLRaH3+Yg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-March 23, 2024 at 10:18 AM, "Ard Biesheuvel" <ardb@kernel.org> wrote:
-> On Sat, 23 Mar 2024 at 14:39, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >=20
->=20>  OK.
-> >=20
->=20>  I have reshuffled the branch and put the patch you identified as t=
-he
-> >=20
->=20>  one fixing the boot first. Please double check whether this change
-> >=20
->=20>  still fixes the boot for you.
-> >=20
->=20>  https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log=
-/?h=3Defi-clayton-2
-> >=20
->=20>  If so, we can try applying it to mainline, and merge it if it work=
-s there too.
+Hi,
 
-This branch boots on my Bay Trail systems.
+On 3/21/24 11:48 PM, Ard Biesheuvel wrote:
+> (cc Hans)
+> 
+> On Thu, 21 Mar 2024 at 23:05, Clayton Craft <clayton@craftyguy.net> wrote:
+>>
+>> I've been chasing a problem with 32-bit EFI mixed mode booting on two different
+>> (x86_64) Intel Bay Trail platforms, where the system reboots or hangs seemingly
+>> very early somewhere before or after loading the kernel. I've not been able to
+>> get any output from the kernel or stub over efifb when the issue happens[0], and
+>> do not have serial console access on these systems.
+>>
+>> v6.8 fails for me, and presumably so does everything back to v6.2. v6.1 is able
+>> to boot OK on these platforms with mixed mode, and it looks like there are a lot
+>> of changes from 6.1..6.2 for EFI/mixed mode booting.
+> 
+> v6.1 just received some EFI related backports, so please check the
+> latest v6.1.y as well.
+> 
+>> I did managed to bisect the
+>> issue to:
+>>
+>>         commit e2ab9eab324cdf240de89741e4a1aa79919f0196
+>>         Author: Ard Biesheuvel <ardb@kernel.org>
+>>         Date:   Tue Nov 22 17:10:02 2022 +0100
+>>
+>>             x86/boot/compressed: Move 32-bit entrypoint code into .text section
+>>
+>> However I'm not sure how to proceed from here, or if my bisect is all that
+>> useful since the commit seems to be in the middle of a bunch of changes I do not
+>> understand. I've been using systemd-boot to test this (both the full bootloader
+>> and UKI w/ the sd-boot stub). Is 32-bit mixed mode on x86_64 working for others?
+>>
+> 
+> I usually test on 32-bit OVMF built with LOAD_X64_ON_IA32_ENABLE,
+> which allows the use of the compat entry point. This is different from
+> the EFI handover protocol, and I am not sure which one you are using.
+> 
+> I have never had any reports, or noticed any issues myself. Last time
+> I tried (some weeks ago) it was working for me.
+> CC'ing Hans who may have more data points.
+
+I've been offline for most of the week and I see that in the mean time
+you seem to have found a fix, great.
+
+FWIW I have been booting everything up to 6.8.0 on my own mixed-mode
+Bay Trail tablets without issues, so the problem seems to be specific to
+certain BIOS-es.
+
+Please Cc me on the final fix, then I can test that early and double check
+that things don't regress on other mixed-mode Bay Trail devices.
+
+Regards,
+
+Hans
 
 
-> I have a mainline branch with the same change applied, please try that =
-one too.
 
-I assume this is the `efi-mixed-mode-boot-hack` branch, if so then this b=
-ranch also boots on these systems.
 
--Clayton
 
