@@ -1,149 +1,114 @@
-Return-Path: <linux-efi+bounces-881-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-882-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3682D88ADA9
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Mar 2024 19:20:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1405E88BF24
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Mar 2024 11:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A8C2B2EDDD
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Mar 2024 18:12:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 461011C3B3A6
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Mar 2024 10:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB0F12CDAA;
-	Mon, 25 Mar 2024 17:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C1954BF0;
+	Tue, 26 Mar 2024 10:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSeRjP13"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aj6Sv1cY"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E95366B56;
-	Mon, 25 Mar 2024 17:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA6E54916
+	for <linux-efi@vger.kernel.org>; Tue, 26 Mar 2024 10:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711388521; cv=none; b=YO31o/Hpr/UDHM4AtYNVV+64Aodx8vMqdoF6MpD2kfNZ7R024VrqHIKQJ/odK18S+A0dpq2HI+QAw6ssjUMahTxMyMCJo571+2bMlH1QY7MAW4W/3UwhOh5LjsCVwGHf7fEvfzPt8tHueOz8f5DEUWCc2Tc5zoEjo8hqUxVeW1s=
+	t=1711448341; cv=none; b=eUDYmhEGJOU11DU5PA8sxzgCssTOeZ4QDIBmhnoDtD0vbGN+RyLiSd0VzToSZAKHU7JRx7U8k7uT8jj640ACcINhJh6V9Aptnz3cQDyDNWDnZIauZgMjBx2CxfwkKi9Xnw8NSE4oa6KKgs6lyCrAoNWN8Gi6Iy6O6+vSSsgzxQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711388521; c=relaxed/simple;
-	bh=GkqZQTc6xFfq4AFBhSlQmqbD3gwDhQPGpPNr+/ScS3c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q+loJOktbGkCMdyPOZfjz30g0QKVyyouHGl1NlJwk97/WsUOlCPxwtPL1xQhcq21vARyGXGVksM3Z3nzKYvnJ5LBqTZUh+XbriJclSBzoc17/b1l45p+citiJ7doR3IqkgTWUXgnfBpj8kRRhEbPPNkvTe4rY6fW2FLzNjpQpLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSeRjP13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E6FC43390;
-	Mon, 25 Mar 2024 17:42:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711388520;
-	bh=GkqZQTc6xFfq4AFBhSlQmqbD3gwDhQPGpPNr+/ScS3c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HSeRjP13D8igM+K0ns0ZSPPQJmz1R1xIkZ3P6MdrVlc5rO/ZAJ1Uq20y/giNfjuNw
-	 4I6ie7v3BzqjFxgYHcZuJ5GrzboQH/gZwTbGurzC2CgMACx/3v5yIsMPnJ0SXdFyXd
-	 HHMsr8SgV9FrPOQNd7KZFDG8uE9Af9/y3SfKcUoIXoZhltlEA8aCLTl1Wo4QS0EJY8
-	 pN8iCFZ0vFZd0liP/qz9S9aPDLS61WqkhDNIaufQaXzmExtS1oGDcy4JNgH0zpdEMD
-	 AFNzsHYv3w3cu8IkBPTjWEBzGxVCa8UOe2fXwMWU1RA01AdpwfD6twFI0aqiA6N3vj
-	 L9I6PKrkFeK5Q==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d48ba4d5ecso51267231fa.1;
-        Mon, 25 Mar 2024 10:42:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVT6SkbwRbZmDMy9p7LBqofibtXrh4BSuYyJ3OPW7DIYTR5vT6BQSxwK+TxhGUwjy1UjqH7pwANTZ6+1NOMtvO9A9iLRhXtQ+kVriB3qWF0CA2JuT7nmPmMrvYm3lBb8mNbr7GF7fFu
-X-Gm-Message-State: AOJu0YxodQiMz/v8WenUWXGrXwIjPQuUuangjhpY0Rs01+n2Qao6RrKJ
-	PEr/uRyFIhloW8ZZX+W9Ghn1fWXXjrTquip+quWUdksFGx3ONPWTNxpgiT18S5QHjiYurJSn1+o
-	hgMFeIm2uGWz+fZCS2vfzNNCloc8=
-X-Google-Smtp-Source: AGHT+IGV+kKuo+pA0XGm/aFf/KK2YAwYBlFP6cUVMlkA7svZ+a9Wq/iBXoxmfIi3k0dbFoN31aGa+FSSFU2X4fLWmTA=
-X-Received: by 2002:a2e:b0ef:0:b0:2d4:535a:e7a with SMTP id
- h15-20020a2eb0ef000000b002d4535a0e7amr2344870ljl.24.1711388519157; Mon, 25
- Mar 2024 10:41:59 -0700 (PDT)
+	s=arc-20240116; t=1711448341; c=relaxed/simple;
+	bh=oULyshDxEufutFb3x7JgsNjS+oHXl5TJLKQUqi0sDrw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BJxkJyyr/wrmIwFgTAPsRoQItzOQjoqob8x5tl90Abt4+cSkUqyI/UvGdLA/vdFJAjPTqe9kkSrOjrdNW1fynardCLh0BQ2hTAPlSRDUN88DCPCJGCPn3QZttd2chVXkMtypUuv4hSRE7EWGZjI/56X6CTJGkpk/cf2mIFDWEJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aj6Sv1cY; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-33ece03ca5dso3789387f8f.1
+        for <linux-efi@vger.kernel.org>; Tue, 26 Mar 2024 03:18:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1711448338; x=1712053138; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aSka93kJTnOgAP03M/h64YmhtrdMXWpUCiZ0EiI90eU=;
+        b=aj6Sv1cYG4sPVXYCZd6ieNRHWJhHTQbTwRkWWX/J5GQsKkOqC4c3RVYZKq2yBB3NKX
+         kuejrbNYts43IVu8fE6/QjeojVtF6sGFvtPbronC+OfP9c8vGTqHmXF6gryYfRtjk/nE
+         eVcXr93xxVKodgO3qVJeoeJGOuhTp+5B61leRGtKBueVJTnu7whl0/qbq5WvSUdy4ZF+
+         +qJOMQJVrtu2CeuFDkHTkndjCvi0Rz2dWrLR5pntNWZWfoNDqzwpqkDePcEPn3i0Qb32
+         aaRf2yLXuK82C9cxAYSJjWooL5WOQa6ws+tj253qa5K/40nG3VUk9qp3OLmPdyQXekdX
+         STvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711448338; x=1712053138;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aSka93kJTnOgAP03M/h64YmhtrdMXWpUCiZ0EiI90eU=;
+        b=GC7jHDCub5ba+B04qIXP6ykCPG7dagGrRiVHIbqicFTxgLZMV9QIDPl0J6z7ocKoyT
+         VLry9Vvg0n0C8q4gk31GirKSFJVrhykfNSu1I0QnXiR8FRygaFGPi36Q6cGKT6gwRdNJ
+         ftIt8HfpjHuLT6nEnA0J9kTcEN/pM29GOrw+exGhD7EkxWmCfKEsbhkqstY7tzs51Kta
+         rm23PyGtDBrJb3DfHYe/YUzOPnaSOTJoC4IgNnq0/rwW1yUK/+z7AdeCjUiE0mslzBr1
+         rzhe/5dbRAFGXQD70PTTCKIFjWHhkJKfm9/wNXlqIvZsjZsD4suZr7H7Lzi6F66L6ar1
+         5e3w==
+X-Gm-Message-State: AOJu0YwYuQQs+TJbFl25rwOynHHq6TiOtkXV0nC1dE+p17N+Q854m8GQ
+	+KbwGcX5reXnXAF4ka5K7icU4/DN7a6+owhbDJOwchSztOazVCIYiicrBaqnV+DzDi0eKv7ZNsU
+	+IcLIulyMakAkFMbtFVaAn/ap+bN0bKhp/v0L+KJb/Z2mwwvxOibfl9P+Jc3SsvAHKm1TZ4tdPV
+	wuv0abgW4EudLfjigBYxis10jTeg==
+X-Google-Smtp-Source: AGHT+IHCX3ldgn3vkVGsmTlC28iPE3tIgnAvBTl7427Kl53dqwVmiz5ikSTzIxeQ9AR+/DlkcD3Td8So
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:adf:f687:0:b0:33e:c639:6828 with SMTP id
+ v7-20020adff687000000b0033ec6396828mr29614wrp.2.1711448338345; Tue, 26 Mar
+ 2024 03:18:58 -0700 (PDT)
+Date: Tue, 26 Mar 2024 11:18:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240325083905.13163-2-ardb+git@google.com> <5b32b8c8-0a1b-44cf-aedf-cca1d6c83bd8@redhat.com>
- <20240325103912.GB6076@craftyguy.net>
-In-Reply-To: <20240325103912.GB6076@craftyguy.net>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 25 Mar 2024 19:41:47 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE5aunV5RkoDtpSxdmEi+EVB-7_SsdT7+naBwbYb2BxSA@mail.gmail.com>
-Message-ID: <CAMj1kXE5aunV5RkoDtpSxdmEi+EVB-7_SsdT7+naBwbYb2BxSA@mail.gmail.com>
-Subject: Re: [PATCH] x86/efistub: Add missing boot_params for mixed mode
- compat entry
-To: Clayton Craft <clayton@craftyguy.net>
-Cc: Hans de Goede <hdegoede@redhat.com>, Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1005; i=ardb@kernel.org;
+ h=from:subject; bh=uXppyG3XL3zkmpmppLdK1fymc0lLkWkINhDxHaRKqYE=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIY1pIfe94tfri4MFtdzDjt/g/11kNvW66LTZPdoHz9ZuV
+ zLWLOfrKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABOp2snwP/fzix2ftZbWLza8
+ HS47Yyq7SW1D/d5JbHFfOuYLJmhdUGL4Z7gkzCa37onf49qvGeoZ8yvFcu5yP81bavHmx8drzkl SPAA=
+X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
+Message-ID: <20240326101850.914032-2-ardb+git@google.com>
+Subject: [PATCH] efi/libstub: Cast away type warning in use of max()
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: kazuma-kondo@nec.com, Ard Biesheuvel <ardb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 25 Mar 2024 at 19:39, Clayton Craft <clayton@craftyguy.net> wrote:
->
-> On Mon, 25 Mar 2024 14:18:01 +0100 Hans de Goede <hdegoede@redhat.com> wrote:
-> > Hi,
-> >
-> > On 3/25/24 9:39 AM, Ard Biesheuvel wrote:
-> > > From: Ard Biesheuvel <ardb@kernel.org>
-> > >
-> > > The native EFI stub entry point does not take a struct boot_params from
-> > > the boot loader, but creates it from scratch, and populates only the
-> > > fields that still have meaning in this context (command line, initrd
-> > > base and size, etc)
-> > >
-> > > The original mixed mode implementation used the EFI handover protocol,
-> > > where the boot loader (i.e., GRUB) populates a struct boot_params and
-> > > passes it to a special EFI entry point that takes the struct boot_params
-> > > pointer as the third argument.
-> > >
-> > > When the new mixed mode implementation was introduced, using a special
-> > > 32-bit PE entrypoint in the 64-bit kernel, it adopted the usual
-> > > prototype, and relied on the EFI stub to create the struct boot_params
-> > > as usual. This is preferred because it makes the bootloader side much
-> > > easier to implement, as it does not need any x86-specific knowledge on
-> > > how struct boot_params and struct setup_header are put together.
-> > >
-> > > However, one thing was missed: EFI mixed mode goes through startup_32()
-> > > *before* entering the 64-bit EFI stub, which is difficult to avoid given
-> > > that 64-bit execution requires page tables, which can only be populated
-> > > using 32-bit code, and this piece is what the mixed mode EFI stub relies
-> > > on. startup_32() accesses a couple of struct boot_params fields to
-> > > decide where to place the page tables.
-> > >
-> > > startup_32() turns out to be quite tolerant to bogus struct boot_params,
-> > > given that ESI used to contain junk when entering via the new mixed mode
-> > > protocol. Only when commit
-> > >
-> > >   e2ab9eab324c ("x86/boot/compressed: Move 32-bit entrypoint code into .text section")
-> > >
-> > > started to zero ESI explicitly when entering via this boot path, boot
-> > > failures started to appear on some systems, presumably ones that unmap
-> > > page 0x0 or map it read-only.
-> > >
-> > > The solution is to pass a special, temporary struct boot_params to
-> > > startup_32() via ESI, one that is sufficient for getting it to create
-> > > the page tables correctly and is discarded right after. This means
-> > > setting a minimal alignment of 4k, only to get the statically allocated
-> > > page tables line up correctly, and setting init_size to the executable
-> > > image size (_end - startup_32). This ensures that the page tables are
-> > > covered by the static footprint of the PE image.
-> > >
-> > > Given that EFI boot no longer calls the decompressor and no longer pads
-> > > the image to permit the decompressor to execute in place, the same
-> > > temporary struct boot_params should be used in the EFI handover protocol
-> > > based mixed mode implementation as well, to prevent the page tables from
-> > > being placed outside of allocated memory.
-> > >
-> > > Cc: Hans de Goede <hdegoede@redhat.com>
-> > > Fixes: e2ab9eab324c ("x86/boot/compressed: Move 32-bit entrypoint code into .text section")
-> > > Closes: https://lore.kernel.org/all/20240321150510.GI8211@craftyguy.net/
-> > > Reported-by: Clayton Craft <clayton@craftyguy.net>
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > I have given this a test run (on top of 6.9-rc1) on one of my
-> > Bay Trail mixed mode tablets and the tablet still boots fine:
->
-> I did the same test (with 6.9-rc1) on my Bay Trail tablet & NUC that failed
-> previously, and this fixes booting with EFI mixed mode on them.
->
-> Tested-by: Clayton Craft <clayton@craftyguy.net>
->
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Thanks for testing again.
+Add a missing (u64) cast to alloc_min, which is passed into
+efi_random_alloc() as unsigned long, while efi_physical_addr_t is u64.
 
-I'll get this to Linus in the next week or so, and the fix should make
-its way back through the stable trees in the following weeks.
+Fixes: 3cb4a4827596abc82e ("efi/libstub: fix efi_random_alloc() ...")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/randomalloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+index 7e1852859550..fa81528150fe 100644
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -120,7 +120,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 			continue;
+ 		}
+ 
+-		target = round_up(max(md->phys_addr, alloc_min), align) + target_slot * align;
++		target = round_up(max(md->phys_addr, (u64)alloc_min), align) + target_slot * align;
+ 		pages = size / EFI_PAGE_SIZE;
+ 
+ 		status = efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS,
+-- 
+2.44.0.396.g6e790dbe36-goog
+
 
