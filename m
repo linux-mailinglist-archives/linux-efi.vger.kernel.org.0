@@ -1,255 +1,142 @@
-Return-Path: <linux-efi+bounces-883-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-884-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD8188D2DA
-	for <lists+linux-efi@lfdr.de>; Wed, 27 Mar 2024 00:35:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1903988E118
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Mar 2024 13:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A350B1F3EEC0
-	for <lists+linux-efi@lfdr.de>; Tue, 26 Mar 2024 23:35:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A29D1C29FAD
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Mar 2024 12:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A06D13D8AA;
-	Tue, 26 Mar 2024 23:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAA2154C06;
+	Wed, 27 Mar 2024 12:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hXPppQh7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfHSqVXJ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B2F13E036
-	for <linux-efi@vger.kernel.org>; Tue, 26 Mar 2024 23:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8774D154C01;
+	Wed, 27 Mar 2024 12:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711496109; cv=none; b=SxuoyjEryeaj9J6TXZILx0xn0sWAnDr9jwzS6Pw34vEvA1WIrZK3coV211t+ntNFYC3yXV5E5n66M7VVXpdz88yU8hlaOTUpdSQT4GmM9PnDjgqhIRXfkFtcRb36RFwjcVLmIgxtKIiqlpeKHegWGkVfZIfggwt7okNF4kC+M9o=
+	t=1711541732; cv=none; b=kIEpA27fJfz5Gycn/RXMBUAU1qxO28i6WZbV2EgP246qHp2vlZ4Bb6mZ7MdKt0IH4XoLtXEBTDRunVRjLggNJJgRvjNG11zxRQeaUNBXSSdsNAFwt8JJ0oFImdHPzgMctREAvsFP13q5H7JBQZsfqoAiJkMdJkShUPKWMcNYHTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711496109; c=relaxed/simple;
-	bh=bAbEk80XgzU438kORqOWLl4Z0ojkgf9YaTbo7MNQGqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=iDSmkGCSOp73HQAWVNU5G7AT862meTjfYZnBXdOLBX8FRbSv+Di64sNxjQmRrJK/iPSd+dtrt5lK+fm6paOkacwGAlCFXeXhiXy3pn1P/S93XObDaZJg16uR0BWENT8hF8SIqIyoVvHtLZpG4tgBkjuy+0F2/8ddVbABzmpBQ2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hXPppQh7; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711496107; x=1743032107;
-  h=date:from:to:cc:subject:message-id;
-  bh=bAbEk80XgzU438kORqOWLl4Z0ojkgf9YaTbo7MNQGqQ=;
-  b=hXPppQh7Z9za/TLIunLrXXG5S/OQMjW2gMVjxMrAHZbhji3ChMwanOeP
-   rYR0ZU2ADjTTqCE740UcAPuHoZDVouZezUK+RTESJMSMUOvj5tINZTGYd
-   R0Oi0o7jhAqy/F9mF1AP/gDxk5Rxt1jQiDsgnveUg/wTv1GF09hlmJZGm
-   NO5fqAak9JKfe/Zf3WuP4e4KxtdUNhY4WjlmrfbUW9rcXFGpVKOp4eFMb
-   z03sPRSjAVY9F2jWgij2LcCiqLcHIA+mJ6UzuX/WFmtmrQWjMrmcjKuQO
-   BNqlputIDPFSD7xkdsWEmAgOffnC6y1La4hNu3Q37cand/sbDw1q5RKn3
-   g==;
-X-CSE-ConnectionGUID: WwVKjWZrQluV+CAa6r3C/g==
-X-CSE-MsgGUID: Z4503vO/TWiWBvuqZW+ULQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="24067313"
-X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
-   d="scan'208";a="24067313"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 16:35:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
-   d="scan'208";a="16762405"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 26 Mar 2024 16:35:05 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rpGJq-0000XQ-2J;
-	Tue, 26 Mar 2024 23:35:02 +0000
-Date: Wed, 27 Mar 2024 07:34:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 07263d8a5a2cea66a3f10d930fea60ce49c7dc3b
-Message-ID: <202403270702.wd9Ix8rQ-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1711541732; c=relaxed/simple;
+	bh=lNQbdKRflk16maW7ZwdkNbs/gGlJa9QMoMDr0oQoQFo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CM+SWA9TCqMY9hHWqaZiJCOGZ2UFuSfwnpXMTJNYrSMEIDlaJct4hYNMr/XcEswezplTY94+ID36mazkNs19WcxzgkIPGKiEniuizxhE8ixgS0YLjPjNB1mPx97zH9kekPMp5xIveFkS72HULbJqfK7KlH+2hpIaOZEZqDzXgRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfHSqVXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F7EC433F1;
+	Wed, 27 Mar 2024 12:15:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711541732;
+	bh=lNQbdKRflk16maW7ZwdkNbs/gGlJa9QMoMDr0oQoQFo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gfHSqVXJzIAkVGeKfcvX/YlvvzZrNlxoVFKqU/R6jI6IUTU6Bc6gpCO6X0yOO0zRn
+	 fqys0Kze8PSnpPnIERFnSZncilpGJRCx+5IlnvZfSJPQ7xJpjTYyVMnY9a1ZRtF1mv
+	 BJf2lv9zdKTsyR4Q30HVJ1xMciC8EZ+lZDz3yVVPZJQCzICVPHn5pGU3+aKmKZ/4Ci
+	 ogpnOP6RtVAm5SfraB4APjrLMFeqNcbHv2/fK3thlBPdZXDcpm4KntBctJleIm1kUB
+	 3LFC6o3kJRaQh+VKJrEtDqMH7z/BE0+z76PtW/LMaYh6r5IDJF/a1Udz0lx0tuP24H
+	 mHdqVHh8JzbCQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	ardb@kernel.org
+Cc: stable@kernel.org,
+	Radek Podgorny <radek@podgorny.cz>,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: FAILED: Patch "x86/efistub: Clear decompressor BSS in native EFI entrypoint" failed to apply to 5.15-stable tree
+Date: Wed, 27 Mar 2024 08:15:30 -0400
+Message-ID: <20240327121530.2831969-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Patchwork-Hint: ignore
+X-stable: review
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 07263d8a5a2cea66a3f10d930fea60ce49c7dc3b  efi/libstub: Cast away type warning in use of max()
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-elapsed time: 730m
+Thanks,
+Sasha
 
-configs tested: 164
-configs skipped: 3
+------------------ original commit in Linus's tree ------------------
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+From b3810c5a2cc4a6665f7a65bed5393c75ce3f3aa2 Mon Sep 17 00:00:00 2001
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 15 Mar 2024 16:26:16 +0100
+Subject: [PATCH] x86/efistub: Clear decompressor BSS in native EFI entrypoint
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     nsimosci_hs_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                          sp7021_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240326   gcc  
-i386         buildonly-randconfig-002-20240326   clang
-i386         buildonly-randconfig-003-20240326   clang
-i386         buildonly-randconfig-003-20240327   clang
-i386         buildonly-randconfig-004-20240326   gcc  
-i386         buildonly-randconfig-004-20240327   clang
-i386         buildonly-randconfig-005-20240326   gcc  
-i386         buildonly-randconfig-005-20240327   clang
-i386         buildonly-randconfig-006-20240326   gcc  
-i386         buildonly-randconfig-006-20240327   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240326   gcc  
-i386                  randconfig-002-20240326   gcc  
-i386                  randconfig-003-20240326   gcc  
-i386                  randconfig-003-20240327   clang
-i386                  randconfig-004-20240326   clang
-i386                  randconfig-005-20240326   gcc  
-i386                  randconfig-005-20240327   clang
-i386                  randconfig-006-20240326   clang
-i386                  randconfig-011-20240326   clang
-i386                  randconfig-012-20240326   gcc  
-i386                  randconfig-012-20240327   clang
-i386                  randconfig-013-20240326   clang
-i386                  randconfig-014-20240326   clang
-i386                  randconfig-014-20240327   clang
-i386                  randconfig-015-20240326   clang
-i386                  randconfig-016-20240326   clang
-i386                  randconfig-016-20240327   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                          atari_defconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        stmark2_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                          ath79_defconfig   gcc  
-mips                           ip27_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc                  or1klitex_defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                   microwatt_defconfig   gcc  
-powerpc                    socrates_defconfig   gcc  
-powerpc                 xes_mpc85xx_defconfig   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                           se7712_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                       sparc32_defconfig   gcc  
-sparc                       sparc64_defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240326   clang
-x86_64       buildonly-randconfig-002-20240326   gcc  
-x86_64       buildonly-randconfig-003-20240326   clang
-x86_64       buildonly-randconfig-004-20240326   gcc  
-x86_64       buildonly-randconfig-004-20240327   clang
-x86_64       buildonly-randconfig-005-20240326   gcc  
-x86_64       buildonly-randconfig-006-20240326   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240326   gcc  
-x86_64                randconfig-001-20240327   clang
-x86_64                randconfig-002-20240326   gcc  
-x86_64                randconfig-003-20240326   gcc  
-x86_64                randconfig-004-20240326   clang
-x86_64                randconfig-005-20240326   gcc  
-x86_64                randconfig-005-20240327   clang
-x86_64                randconfig-006-20240326   clang
-x86_64                randconfig-006-20240327   clang
-x86_64                randconfig-011-20240326   gcc  
-x86_64                randconfig-012-20240326   clang
-x86_64                randconfig-012-20240327   clang
-x86_64                randconfig-013-20240326   gcc  
-x86_64                randconfig-013-20240327   clang
-x86_64                randconfig-014-20240326   gcc  
-x86_64                randconfig-014-20240327   clang
-x86_64                randconfig-015-20240326   clang
-x86_64                randconfig-015-20240327   clang
-x86_64                randconfig-016-20240326   clang
-x86_64                randconfig-016-20240327   clang
-x86_64                randconfig-071-20240326   clang
-x86_64                randconfig-072-20240326   gcc  
-x86_64                randconfig-072-20240327   clang
-x86_64                randconfig-073-20240326   gcc  
-x86_64                randconfig-073-20240327   clang
-x86_64                randconfig-074-20240326   gcc  
-x86_64                randconfig-074-20240327   clang
-x86_64                randconfig-075-20240326   gcc  
-x86_64                randconfig-075-20240327   clang
-x86_64                randconfig-076-20240326   gcc  
-x86_64                randconfig-076-20240327   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                           alldefconfig   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                       common_defconfig   gcc  
+The EFI stub on x86 no longer invokes the decompressor as a subsequent
+boot stage, but calls into the decompression code directly while running
+in the context of the EFI boot services.
 
+This means that when using the native EFI entrypoint (as opposed to the
+EFI handover protocol, which clears BSS explicitly), the firmware PE
+image loader is being relied upon to ensure that BSS is zeroed before
+the EFI stub is entered from the firmware.
+
+As Radek's report proves, this is a bad idea. Not all loaders do this
+correctly, which means some global variables that should be statically
+initialized to 0x0 may have junk in them.
+
+So clear BSS explicitly when entering via efi_pe_entry(). Note that
+zeroing BSS from C code is not generally safe, but in this case, the
+following assignment and dereference of a global pointer variable
+ensures that the memset() cannot be deferred or reordered.
+
+Cc: <stable@kernel.org> # v6.1+
+Reported-by: Radek Podgorny <radek@podgorny.cz>
+Closes: https://lore.kernel.org/all/a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/x86-stub.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 35413c8dfc251..2096ae09438e4 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -21,6 +21,8 @@
+ #include "efistub.h"
+ #include "x86-stub.h"
+ 
++extern char _bss[], _ebss[];
++
+ const efi_system_table_t *efi_system_table;
+ const efi_dxe_services_table_t *efi_dxe_table;
+ static efi_loaded_image_t *image = NULL;
+@@ -474,6 +476,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	efi_status_t status;
+ 	char *cmdline_ptr;
+ 
++	memset(_bss, 0, _ebss - _bss);
++
+ 	efi_system_table = sys_table_arg;
+ 
+ 	/* Check if we were booted by the EFI firmware */
+@@ -967,8 +971,6 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ void efi_handover_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg,
+ 			struct boot_params *boot_params)
+ {
+-	extern char _bss[], _ebss[];
+-
+ 	memset(_bss, 0, _ebss - _bss);
+ 	efi_stub_entry(handle, sys_table_arg, boot_params);
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
+
+
+
 
