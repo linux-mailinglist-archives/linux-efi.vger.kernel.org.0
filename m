@@ -1,45 +1,45 @@
-Return-Path: <linux-efi+bounces-885-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-886-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5896388E32A
-	for <lists+linux-efi@lfdr.de>; Wed, 27 Mar 2024 14:43:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BE588E29D
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Mar 2024 14:30:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7649CB220AD
-	for <lists+linux-efi@lfdr.de>; Wed, 27 Mar 2024 13:12:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07A4D1C2AF3A
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Mar 2024 13:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B573115E211;
-	Wed, 27 Mar 2024 12:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF24173DB6;
+	Wed, 27 Mar 2024 12:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GbL1IpoU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjLlJZ3E"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8A415E20E;
-	Wed, 27 Mar 2024 12:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59DA173DAF;
+	Wed, 27 Mar 2024 12:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711541928; cv=none; b=LW+zwQmxLhniIKZus1d045plkFKwDpdsSws3VzmsbTWxSC7S+MOXYswAPVok3Ryt1SajsGkzpufVLCxYcfkJiTCfjbgnISHkB2s8N7k9R6n2b7AC0p3S0qbkHtK0t9Es1NDnmlqpUH5sVghhVMY30it1jBfuI88IZ/QeErwqhKw=
+	t=1711542142; cv=none; b=aRhC0vJBYnCYjJLmbVsgeRagvxqMbUemc5W+LJUhK8kbW8SuRuB/h21slRlYHgQGGIEL4PVJGzFolurLnAtp5nAy9vhA3ZAq3PoI5jSP3i2sQZZJjBBiXJahry3F19NPyJHWUN5RS25EQC+QXUI3FYUIUMMRYeUwzm9wAHYcG64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711541928; c=relaxed/simple;
-	bh=68O6XXYr0IlJya/H/GKuxkbgcuiBxpanA02NM+THtis=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KYmpzS28bdAQYZarSkXyfJdFypiQkhSXxz/X/xOTG9j4EEQabmBM7dXcXzVh4YC+YVUBWWarATqaWc3J4UgOWIzI/Zm9qfxpx9i/p44RtJBnilMs7ZppNpsBOKf0518EQhaRS9d+njJCrykF8OpGwGpJ0Yg71G33c55SfFCPw4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GbL1IpoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C22C433F1;
-	Wed, 27 Mar 2024 12:18:47 +0000 (UTC)
+	s=arc-20240116; t=1711542142; c=relaxed/simple;
+	bh=/lnbJ51hoif9pZoErInLHDrj3xNKLkb2imZYhXPFEJU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nrk+29HWzUKZxITPI1DLeYhZ/N45ZCMHXscEmyajXjZh/o8L+F5pGNwk+j2jve0hKRcwbYFefaWQRWMQJg+xWV7rW59fi8aL6NFLOP0H6DlW2PMobL9hWlWuHT+iz0wrkovfcqbQGB/7MRCB3wN0gbVMI5ILRKW8sTWrvzdqFsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjLlJZ3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B99C43394;
+	Wed, 27 Mar 2024 12:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711541928;
-	bh=68O6XXYr0IlJya/H/GKuxkbgcuiBxpanA02NM+THtis=;
+	s=k20201202; t=1711542142;
+	bh=/lnbJ51hoif9pZoErInLHDrj3xNKLkb2imZYhXPFEJU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=GbL1IpoUyuRbDHgMqbAMzNNCnGzuyXDao85iy1W/2BNSBCJ+XfW5Ih7qbsqghiMlZ
-	 ccYcXmGrmCxX0XBfoydcgp+1vAzft45KAm1q5UCvLMtgSg5XhvRF934fMcSGFMoeEl
-	 qgqrMzamqVYgrFQghTLkoOK7iTR5LErifepbZ8i9nfZeINO4GUhRS1yOJx7uw6+psC
-	 uBT8uS5IKwHs0sPUGVLEjdg6rHgRqDvp9JfQqxIVnCRRuAmhxLyN9jdhkEaLdvfXSo
-	 XjMMZACU/T4qwzWWMokAzrgXc75zkXDSTRkoMRbpeBTxN8olstogSaJRmw2Ytu1PtV
-	 f4OVsDca811Pw==
+	b=OjLlJZ3EoH1/s2R51/SkaeiEBvx8fKHniFxR/t67XKI2qoXyjR+tXn3AHji4ZRguQ
+	 en43inULOckIK4V1w/pdrm+Yx3vIIIihf7Q79fXVEDnocqr4bkmGAszXNQghzJ92xs
+	 obyjY0iYzNmA9JoL9wuaeAwZJjz0TXia9Wzqx8Ns3leYEwD6hRJceeDGu5p1pcSeZi
+	 yDwr2iEqUS39b+kFamdovkNOo2XEWLg5KXnHmj3xSHNwuAbuKJWShJnHT24moqasdI
+	 7bCxAoadwZdAMZnc9PcVxNEvnZ5Rm4ziK8laYiDyLaYKZE3i+OrULD+RLmZbn2W54J
+	 YcuhNn4venmDg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	ardb@kernel.org
@@ -47,9 +47,9 @@ Cc: stable@kernel.org,
 	Radek Podgorny <radek@podgorny.cz>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "x86/efistub: Clear decompressor BSS in native EFI entrypoint" failed to apply to 5.10-stable tree
-Date: Wed, 27 Mar 2024 08:18:46 -0400
-Message-ID: <20240327121846.2834664-1-sashal@kernel.org>
+Subject: FAILED: Patch "x86/efistub: Clear decompressor BSS in native EFI entrypoint" failed to apply to 5.4-stable tree
+Date: Wed, 27 Mar 2024 08:22:20 -0400
+Message-ID: <20240327122221.2837636-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -61,7 +61,7 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
