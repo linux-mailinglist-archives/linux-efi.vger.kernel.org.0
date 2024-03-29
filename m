@@ -1,178 +1,242 @@
-Return-Path: <linux-efi+bounces-895-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-897-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015FD890BFA
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Mar 2024 21:51:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E92EE89134E
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Mar 2024 06:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50913B22542
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Mar 2024 20:51:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E0FE287E79
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Mar 2024 05:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315865B1E3;
-	Thu, 28 Mar 2024 20:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDF43C068;
+	Fri, 29 Mar 2024 05:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b="XWbG/r8m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NfP+MRwg"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD0C13A3E7
-	for <linux-efi@vger.kernel.org>; Thu, 28 Mar 2024 20:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328833BBE0
+	for <linux-efi@vger.kernel.org>; Fri, 29 Mar 2024 05:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711659084; cv=none; b=rPXBrpCl75UQTXeTKM0jOCHtc+NBppjGKdNQZgy8tMl+TCucA9ZETGb2MmWZPR5HAG9cXF8VcIbEFL5m6Es16aknJpOtCakfoiWZ6yGbrBevf0bBn/Oe4tIW6cTLAZSjeRFfXmnS1L8tKGCr6ILReGvD2Mt372e3cKgPW/HjgvA=
+	t=1711690899; cv=none; b=bqKqzWP3ESgVs9qYOSdLWkjgwi8538BamVgLv/lP5drcROygQtDmNPx18f19b/PwBRpKrcJm3x9SanSCSQgi7YIgca/Src4cvjhcetUHL7eYVmfnFPjNSz5fUui17RXj6uSO+/ajrJIrQNvweejjJiLbR79fA/ETM8YHnoNchDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711659084; c=relaxed/simple;
-	bh=4mysez7lD1vKLQufVGQpeVDXY3KNZoEL5k6rpwnJG5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jh/ljUO9BVdkd78QGSWuLLyMU7DdAtjbZWk2yP6IGyW/gH8YGvwcmIW/Mi/9ugyHXiPSuBlHrClnghgrqxoDSgggjQ6lDtqokl4rk2mBHlWQPqMJZvWXJaeeQokUuTzj77Lk1heWhwJtGBeoeL1fU5AEjd5Bbh2+pcwAxXaJRn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b=XWbG/r8m; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1711659074; x=1712263874; i=timschumi@gmx.de;
-	bh=6ORMjfkr+xilT0cm/WbOy99GHRbCruCTXAGNKgYCQX0=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=XWbG/r8mWNw3uJpUhrTu8uwPTUy+cKxfQQM7VdiELk102Giux/GuKHVQAOGtw+OQ
-	 tG9JUxSYUNnkLEEgSLdAbCgRUA+n5FXikFPeTfMKoErRXa1nFJuBC5mjdqs5OghbE
-	 LE4tw/SnJs8CDLoL7PtzVp9taVLWJg5XC78+bFnmyIfcMOxUQtTJub9BT//zOI+rF
-	 MKga/KM3BAGpEZtsQjc96+9nkI/RUz3RoYwAyPuOsSq0OYeHovBMg04jAX1keGe3e
-	 Ew5KS94CIg3Lz4xA+h+oF3LJ3yKjNLQuPY0zbsnlTrBW3Gu42rIPt5kA8Sscpa2JA
-	 jBrXmtHETADkop4MVw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost.localdomain ([93.218.98.241]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1M3DNt-1rqlfL2sDV-003gqw; Thu, 28 Mar 2024 21:51:14 +0100
-From: Tim Schumacher <timschumi@gmx.de>
-To: linux-efi@vger.kernel.org
-Cc: Tim Schumacher <timschumi@gmx.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Jeremy Kerr <jk@ozlabs.org>
-Subject: [PATCH v2 4/4] efi: Clear up misconceptions about a maximum variable name size
-Date: Thu, 28 Mar 2024 21:50:33 +0100
-Message-ID: <20240328205041.76812-4-timschumi@gmx.de>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240328205041.76812-1-timschumi@gmx.de>
-References: <20240315002616.422802-1-timschumi@gmx.de>
- <20240328205041.76812-1-timschumi@gmx.de>
+	s=arc-20240116; t=1711690899; c=relaxed/simple;
+	bh=WtSAuLcos0NlfsW0WGl4M6QSUAwXoBGO6u2k9jRJ4v8=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=CKxBH16ocG0AuE6soJL5fxk6cgqnOZiVsgPIkohUrCuEJ1kgCOriwdyR6W5PJ7uc17IYiq2e3jr1vW94Rm1wZXxVkKc0Ws3cO97qEZ3AWxtRRJzelMNN2fZeym6FSYlTewnouiHJXhqVy47O7BR6wderLdrtKF49NGzlgNav5+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NfP+MRwg; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711690898; x=1743226898;
+  h=date:from:to:cc:subject:message-id;
+  bh=WtSAuLcos0NlfsW0WGl4M6QSUAwXoBGO6u2k9jRJ4v8=;
+  b=NfP+MRwgUfm8hh8ONFfYEvP+85vzTbkuTvqVd5+9h47+H/NGOVOR6HQm
+   1BywTP4vn3w44zGx91zLE5PjXfV80o9M0cDoyG/ZeqZF9aIs24Huz4YnC
+   9rv25gfL48N3pGO5TuiPoHNbLJH50WiRiPi3YwMQB9rbRKeK+mjHqPhjl
+   6OdmU5X75ZTOGhPhk/ONN68Bb2LbPiLM1N0MD6VFEFK0r9RbwEzCFOany
+   g6YO9jV9H94Og7djXmLCxo8RNCwrNELb+HHmXFXD1XfbKFluEYsGXszZW
+   7ojOWKKnnF5xljjzTikyJbIEGRUXTtsy63YUM9DuQyrkWmiDnnY2IGpok
+   w==;
+X-CSE-ConnectionGUID: RT8e4xcLRTqfH8JM7jVSLQ==
+X-CSE-MsgGUID: 2f+C+8qlQ0eUItcpLdA+7g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="10679654"
+X-IronPort-AV: E=Sophos;i="6.07,164,1708416000"; 
+   d="scan'208";a="10679654"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 22:41:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,164,1708416000"; 
+   d="scan'208";a="16759325"
+Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 28 Mar 2024 22:41:35 -0700
+Received: from kbuild by be39aa325d23 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rq4zd-0002sw-1b;
+	Fri, 29 Mar 2024 05:41:33 +0000
+Date: Fri, 29 Mar 2024 13:41:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ decd347c2a75d32984beb8807d470b763a53b542
+Message-ID: <202403291328.ngRPTnQj-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ik1jGDY/Ziu7GHg5hW3aufW0oiC6PQlztnSZVGMPDwxfHTW6xZU
- ZD5hNciPDMdiC/1fasAMSfmN8dGXmLcIVLcNMzwTbrVSxxAQP5+BgKanzm1GsluuGeFzJz9
- dT45QbaYXfVOMDvnivXT/gSQ7HlaXQWUPWlvkqPAB2PF3Bqoe6kOeHd5SEG/26xUNR0ZtXz
- exwmVnvWUGvsHApngBd/Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:+1xIh9xekeM=;a5XdEGhUcgJzCJNhWh1hZd+8GKb
- ornTuxVubP8Q+HKBZagLYAp5rbHsfLl9wBGwfOwQuWPY+OaZfE8LSStXM8yoFBVYaFIZVLnbN
- 1BstD0ZOdXmydvrCMfmZIYOIfLjui48DF5lqJV9V1+85GTmv10h0J1Qr9phVGK1fUcvUUo57O
- fGM+OBNoYxv81E97FFcn7QrVmgauYjaD9BF+/nklHYPf7zqhwg3gMIbe9841h844ANhtdGigJ
- IoCQVvygKVWB+DrKbB2/atrElr9r6BkuSZUYkpiQrYjUqkzFHDY4BxC0Vh1lOLPsRe37Ll/Mc
- zqXzzZ6g4biBoPeRJQp1nx0qDGls7EQPHUkn3uIZxYFEXp5VGJAp/tdGqpcYeYjJDmT5bcDNp
- sEeT3emRD9h7kHKDe3I3qgeKJMDvB89tsihdQvNtnCFLqVFag/fDD6ptofHph7M0PjjFAwxbv
- T+PhumAFQ7eBYQgkqUKDHbSdcVENe0Zr7oh6JjUfNDkqAk6mzzqNQuNpErptsnmp2m3zC7v/Z
- 0JmjFI1W+v98IB2DnlGApis7zv2LyK553Txb0gg/xGwOc51y98kKI605X3gGhxgE1jhBe3XrI
- haxba9SrDiyVkFz+WwlRvvtElHXvYIRn6WapRNTN+RfLMOXkMRudkUnyxyIfbFEKOgDE8bU6a
- Gl7qyMOUXJH9dQgkmXQLzCyN2rkWuWlHYsLQYCjmh2dnuPDz45MQWbhfd395t8pDJ2bYrbvVd
- HLDedqp7wWxc217eRozz4+YIJp5BeS61cykcSEXUksHNXb6k5cgO2M1l0MIoCcY3JN9WyCejl
- 5tzmllGe0yykO0W3YMY6rw0JsQBWauv0kLJnFvFqQ5VE0=
 
-The UEFI specification does not make any mention of a maximum variable
-name size, so the headers and implementation shouldn't claim that one
-exists either.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: decd347c2a75d32984beb8807d470b763a53b542  x86/efistub: Reinstate soft limit for initrd loading
 
-Comments referring to this limit have been removed or rewritten, as this
-is an implementation detail local to the Linux kernel.
+elapsed time: 841m
 
-Where appropriate, the magic value of 1024 has been replaced with
-EFI_VAR_NAME_LEN, as this is used for the efi_variable struct
-definition. This in itself does not change any behavior, but should
-serve as points of interest when making future changes in the same area.
+configs tested: 151
+configs skipped: 3
 
-A related build-time check has been added to ensure that the special
-512 byte sized buffer will not overflow with a potentially decreased
-EFI_VAR_NAME_LEN.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-=2D--
-Changes from v1:
- - None, resubmitted as part of a patch chain
-=2D--
- drivers/firmware/efi/vars.c | 2 +-
- fs/efivarfs/vars.c          | 5 +++--
- include/linux/efi.h         | 9 ++++-----
- 3 files changed, 8 insertions(+), 8 deletions(-)
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240329   gcc  
+arc                   randconfig-002-20240329   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240329   gcc  
+arm                   randconfig-002-20240329   clang
+arm                   randconfig-003-20240329   clang
+arm                   randconfig-004-20240329   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240329   gcc  
+arm64                 randconfig-002-20240329   clang
+arm64                 randconfig-003-20240329   clang
+arm64                 randconfig-004-20240329   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240329   gcc  
+csky                  randconfig-002-20240329   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240329   clang
+hexagon               randconfig-002-20240329   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240329   gcc  
+i386         buildonly-randconfig-002-20240329   clang
+i386         buildonly-randconfig-003-20240329   clang
+i386         buildonly-randconfig-004-20240329   clang
+i386         buildonly-randconfig-005-20240329   clang
+i386         buildonly-randconfig-006-20240329   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240329   clang
+i386                  randconfig-002-20240329   clang
+i386                  randconfig-003-20240329   clang
+i386                  randconfig-004-20240329   clang
+i386                  randconfig-005-20240329   clang
+i386                  randconfig-006-20240329   clang
+i386                  randconfig-011-20240329   clang
+i386                  randconfig-012-20240329   clang
+i386                  randconfig-013-20240329   gcc  
+i386                  randconfig-014-20240329   gcc  
+i386                  randconfig-015-20240329   gcc  
+i386                  randconfig-016-20240329   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240329   gcc  
+loongarch             randconfig-002-20240329   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240329   gcc  
+nios2                 randconfig-002-20240329   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240329   gcc  
+parisc                randconfig-002-20240329   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-001-20240329   clang
+powerpc               randconfig-002-20240329   gcc  
+powerpc               randconfig-003-20240329   clang
+powerpc64             randconfig-001-20240329   gcc  
+powerpc64             randconfig-002-20240329   clang
+powerpc64             randconfig-003-20240329   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240329   gcc  
+riscv                 randconfig-002-20240329   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240329   clang
+s390                  randconfig-002-20240329   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240329   gcc  
+sh                    randconfig-002-20240329   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240329   gcc  
+sparc64               randconfig-002-20240329   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240329   clang
+um                    randconfig-002-20240329   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240329   clang
+x86_64       buildonly-randconfig-002-20240329   gcc  
+x86_64       buildonly-randconfig-003-20240329   gcc  
+x86_64       buildonly-randconfig-004-20240329   clang
+x86_64       buildonly-randconfig-005-20240329   gcc  
+x86_64       buildonly-randconfig-006-20240329   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240329   gcc  
+x86_64                randconfig-002-20240329   gcc  
+x86_64                randconfig-003-20240329   clang
+x86_64                randconfig-004-20240329   gcc  
+x86_64                randconfig-005-20240329   clang
+x86_64                randconfig-006-20240329   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240329   gcc  
+xtensa                randconfig-002-20240329   gcc  
 
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index f654e6f6af873..4056ba7f34408 100644
-=2D-- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -215,7 +215,7 @@ efi_status_t efivar_set_variable_locked(efi_char16_t *=
-name, efi_guid_t *vendor,
-
- 	if (data_size > 0) {
- 		status =3D check_var_size(nonblocking, attr,
--					data_size + ucs2_strsize(name, 1024));
-+					data_size + ucs2_strsize(name, EFI_VAR_NAME_LEN));
- 		if (status !=3D EFI_SUCCESS)
- 			return status;
- 	}
-diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
-index 4d722af1014f2..3cc89bb624f07 100644
-=2D-- a/fs/efivarfs/vars.c
-+++ b/fs/efivarfs/vars.c
-@@ -295,9 +295,9 @@ static bool variable_is_present(efi_char16_t *variable=
-_name, efi_guid_t *vendor,
- 	unsigned long strsize1, strsize2;
- 	bool found =3D false;
-
--	strsize1 =3D ucs2_strsize(variable_name, 1024);
-+	strsize1 =3D ucs2_strsize(variable_name, EFI_VAR_NAME_LEN);
- 	list_for_each_entry_safe(entry, n, head, list) {
--		strsize2 =3D ucs2_strsize(entry->var.VariableName, 1024);
-+		strsize2 =3D ucs2_strsize(entry->var.VariableName, EFI_VAR_NAME_LEN);
- 		if (strsize1 =3D=3D strsize2 &&
- 			!memcmp(variable_name, &(entry->var.VariableName),
- 				strsize2) &&
-@@ -396,6 +396,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t=
-, unsigned long, void *,
-
- 	do {
- 		variable_name_size =3D 512;
-+		BUILD_BUG_ON(EFI_VAR_NAME_LEN < 512);
-
- 		status =3D efivar_get_next_variable(&variable_name_size,
- 						  variable_name,
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index d59b0947fba08..418e555459da7 100644
-=2D-- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1072,12 +1072,11 @@ static inline u64 efivar_reserved_space(void) { re=
-turn 0; }
- #endif
-
- /*
-- * The maximum size of VariableName + Data =3D 1024
-- * Therefore, it's reasonable to save that much
-- * space in each part of the structure,
-- * and we use a page for reading/writing.
-+ * There is no actual upper limit specified for the variable name size.
-+ *
-+ * This limit exists only for practical purposes, since name conversions
-+ * are bounds-checked and name data is occasionally stored in-line.
-  */
--
- #define EFI_VAR_NAME_LEN	1024
-
- int efivars_register(struct efivars *efivars,
-=2D-
-2.44.0
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
