@@ -1,94 +1,459 @@
-Return-Path: <linux-efi+bounces-903-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-904-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A93E89261A
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Mar 2024 22:32:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C5A8926E3
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Mar 2024 23:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2231F227C5
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Mar 2024 21:32:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2FA728421D
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Mar 2024 22:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F2E13B58D;
-	Fri, 29 Mar 2024 21:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7390E13118A;
+	Fri, 29 Mar 2024 22:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ba6mIC6T"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QMl5bUwl"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2095.outbound.protection.outlook.com [40.107.237.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EBB38FAD;
-	Fri, 29 Mar 2024 21:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711747946; cv=none; b=qtD8R4iMjzQrvkbLwtXs6OkpbkTFaVY8LW90+5laViqwbttwPwefuS/vbsk10PXLq7WzR77ptbhkWv6KjYlW5Xrbt7aVpHmYYOYW6ULBkgJcXjQia6jgZA3nQ/kTg9mSQYqsBqxu8JqF7g1DpClyWte9b2Ahz8/g5olyDsIRVnQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711747946; c=relaxed/simple;
-	bh=03k3/MoIFh20kQtGBfrG86YnFtiVqYH7W4PbBw36ROQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DZHe6ic/YTaBiP87rm3cddpkT7UufUSIt4W+nFMjzOYq9pX9ZI4qUbI5DR0rixTZMHLbwPQX+zxy/XFqIUvojlJE3xjuVbOgPHRG3P98VrPKAcO+ZJv7MWHOr8bmA8eb13/+pOf/caaqf8S/fBHyFP+UFn4DET7oON/9Rf5xjGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ba6mIC6T; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=8dH4O4z+/RT4LVfi/suZsrGaL+23+8UZ0hz47CF7NNQ=; b=ba6mIC6TKKXVH+seYPfBtBkpoW
-	Nnd8NycmJb4NqNVriO5DU0gBLuz8SWPPA8cdWVRDzECz6WFHJytH8oAibrT0YMnqPeQGdUhuxAk+P
-	IUGgTw9XovMtYInSDRuoCVYv2DljRoBGb+9GdltFN405lHq+LyidyI/E575M4F5M2WtwCT7HXJGbZ
-	z4cbLT2LP4NoQHv/sjFY+6C2G8Ino0qsO8p+ALrWCQ/Bv/qDMl9GIHPDVFk4j6T+Q7O8DGe6Os+tq
-	pND4MkNzRcf9W8IFJMrOhyJCIZHvS1fenecUwDcN6Fz/oqdpjDRRCfSqz1AxvWGt+IuNytANrdMVz
-	CeM2YYzw==;
-Received: from 187-26-72-49.3g.claro.net.br ([187.26.72.49] helo=[192.168.224.24])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1rqJpi-00Gm6d-MD; Fri, 29 Mar 2024 22:32:19 +0100
-Message-ID: <d7561279-0372-d630-3c81-d6bad965a511@igalia.com>
-Date: Fri, 29 Mar 2024 18:32:09 -0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157B128DCA;
+	Fri, 29 Mar 2024 22:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711752070; cv=fail; b=iT73yaJATXPF6TexZMUEAV2/sxEWzNiLK5TUnvPX0Cy2E14qbaNwPyBNeqaglJ//Jx+6uFKjnxeQq+z+nMgdQg7F1U37PDX1ZUB+DIlOCzOGWxC06t1YWT90Ew/eW+Rh3ApI8I72qztLjrFodKVarmzb+wwckGDk0XXy7Qh/CJs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711752070; c=relaxed/simple;
+	bh=+qwRVQtAUFwc+mzfaMAXarOygq0dR3IZtuet68K/Fyc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=G29ZIU+yv38ZuTtXNi+N8C9Zhwjmp44eIvzsKJgCft7KwIkeThqwQKY9NS8L4PwEr46ODNkpxKhj/5OKv8BT1YCNoJfs/awO/a9KJkRV+vJZaAlNqOJlgGXBdjfLBdz3f3I2QS98P/ZBr6R+qHJydYb7baxyGFy6LT11pI9R0o0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QMl5bUwl; arc=fail smtp.client-ip=40.107.237.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BkkM76oyZTz2Q2LpBR6pBvhemX3+VK0fBLimXRngfvWCLdPfuoYo/vDDc9RbYD4UJCpFX6s1jEACDTyMlHtRFRtONzRJPjfA5pmccOwplO8CEa6s0ovxM9Hl35Er48H48WBDOpZd1uPtQB3DDta7kBsPc3EIceVFUm/Gm1wTOx55QotP37QBX1KD8mX4WMa0LZynfQjnkStLhLnWXcdQwsSPer6kiUjqteQovSGXfh7YMRVKbeMRw21NQro0Qy+gQ/LA6DPgby5/cQICN4eDyYN95UrX4YKucYI2oBsPICG3c8q8kvw9fCtKbZwnr1grISQQtUC1KNVzYdiMagOGFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lm2yVCaf9RoiDruxpEx206c6phucY5FX3RMdmFeXZ9k=;
+ b=RDOAGF7+Ik4xDCrKfFjYUaCEgFCp8rPLEoyGEJGfpLOXNIa7YWeEWzZ1VotCI/ZUgTSOVN6QiqcPcDBe5GBx9DmXLKN4YMa19/hFyoPmXJz6oq65UWNMaTUYLl0AXj/clPXTRfxyopcl4hYjwIcO71g4dftgFJvWksN77W1OGtqxvf8pbLNnC0Zgx3QmEOw2m5F4R8LYVLl/bBFar8vjgNGERX4KUT1jJPql2hneEZv8TzpArkgEtYh2C0+YAbEHtbkVjmyx76VGDNFvy3BkIlL1Pl871ZsykDD0NONy0TJd+zaD5o2zx4yCgWb8Y8juLnwrKvehR4dlgdslxCuzqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lm2yVCaf9RoiDruxpEx206c6phucY5FX3RMdmFeXZ9k=;
+ b=QMl5bUwlMCq6WdH4tCDHxZVKXNBku4/gXeVQ0tOLa0L6+pc48BPHNHT7qZrod8KvPGtXue3FRb7oTQXlMpourqiZouj8qHTvXYQHCn2cmmywW2ROkv52VRi3CV/u471+HApu4l8pEYs1PhJ1Ycjjvse/PRcpKPKO/VLPR5Dq27w=
+Received: from DS7PR12MB6263.namprd12.prod.outlook.com (2603:10b6:8:95::17) by
+ SJ1PR12MB6217.namprd12.prod.outlook.com (2603:10b6:a03:458::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7409.33; Fri, 29 Mar 2024 22:41:02 +0000
+Received: from DS7PR12MB6263.namprd12.prod.outlook.com
+ ([fe80::b286:7d11:bee0:2d37]) by DS7PR12MB6263.namprd12.prod.outlook.com
+ ([fe80::b286:7d11:bee0:2d37%4]) with mapi id 15.20.7409.039; Fri, 29 Mar 2024
+ 22:41:02 +0000
+Message-ID: <8d543a15-af62-4403-b2e0-3b395edfe9e4@amd.com>
+Date: Fri, 29 Mar 2024 17:38:52 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 04/15] x86: Secure Launch Resource Table header file
+To: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+ linux-efi@vger.kernel.org
+Cc: dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, ardb@kernel.org,
+ mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
+ peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
+ nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net,
+ kanth.ghatraju@oracle.com, trenchboot-devel@googlegroups.com
+References: <20240214221847.2066632-1-ross.philipson@oracle.com>
+ <20240214221847.2066632-5-ross.philipson@oracle.com>
+Content-Language: en-US
+From: Kim Phillips <kim.phillips@amd.com>
+Organization: AMD
+In-Reply-To: <20240214221847.2066632-5-ross.philipson@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN1PR12CA0079.namprd12.prod.outlook.com
+ (2603:10b6:802:21::14) To DS7PR12MB6263.namprd12.prod.outlook.com
+ (2603:10b6:8:95::17)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 1/3] efi: pstore: Request at most 512 bytes for variable
- names
-Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, Tim Schumacher <timschumi@gmx.de>,
- Kees Cook <keescook@chromium.org>, Tony Luck <tony.luck@intel.com>,
- linux-hardening@vger.kernel.org
-References: <20240315002616.422802-1-timschumi@gmx.de>
- <CAMj1kXEvQS8e95A55po-nKn8cGou8Dn9nNhidt_QSqL02WawpQ@mail.gmail.com>
- <2a500ade-a91d-15f2-e5ae-7f261e6a84b4@igalia.com>
- <CAMj1kXHEzDzFk+6jo0UNFQ9RptRS==88XjnvxLiZThZAm6pF-A@mail.gmail.com>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <CAMj1kXHEzDzFk+6jo0UNFQ9RptRS==88XjnvxLiZThZAm6pF-A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6263:EE_|SJ1PR12MB6217:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Hkl8K+NUU2xWpYzCX8iWlZCRIWfimJSM5pZ+gyjCjEOSL9P3Rn9yyjmZPpvXl3BxjwRv/Cuh5ARzlvVKIDJQNknQ+d9K98CwpJ6AG1WgKw8W/W1P4HYReUgaauK+aeb3mU2y61lAnHTQ3UutFp9RR5La01iCOkdNx7tX7tHj64Xn2m0lZdu4aahAw7jDi8kiVarGCtHi1SYN93JWcJeGfur9hrKFPBXEq5qyZe2qrUjzW1RBkE0EU1dA20+IEQacqFdX2s9hq/KatEZz5elGbJ2HvS67b239PYcUDEuXxQD7QK3UMILH8ejMlh2k2rRZmnLykNRbEuw7fCSlAT1OwinM80debtnCjVK+99ISveNjFJ0rqFqcc7Z1SKr49EbuiI/pSO2qOrPXjIoMi0LOM38OU4IDG+QzFFHpfVfu85RQg4dvDdMW2HpVnpQzwlwK5OAJhZ/ox3f/OhAizj7rmhbmSY527shjIkG3d6wbLA7LKaUdzB/8JZPGalCjvDkLwH1OmNE8fsgsIy/RSZpf127efi7ROacRLZCh6SJPGWdyuT4UkObzNajAtVe7PDGRWLhPpXCpCYFawvQEJIX0VT3//a/59t0c7N7YZghjEOrjaxif3qE6/rjtvCOKfdwGKU9p5gNTL1MSzSYO/V1ZmMdyRHtgaN+HY7oYjlH9QKA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6263.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(376005)(1800799015);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WHlDbnV5TnB2SlVNYjVRbUlLRUh0eEVBZkkxMlg5dmMvRDJLRGZ6cXV3Qngr?=
+ =?utf-8?B?aWhIdTNkVHUwQThydWlDU081WGd5TUF5U2ZoamVIcWx4UHJxTVJzLzNXd0xw?=
+ =?utf-8?B?MmdVUkx4OFJRNW9TUllwOXY1WlZIcDdubEwzWmY5WlZ6WUpOK0RlRE9ocjhD?=
+ =?utf-8?B?K0RhWll1eHlLOE0vMVhHNU5pVTlDUkZCK04xemlheFZGbDVONlVodmZvVjg4?=
+ =?utf-8?B?UEZRS09TYkUzN0hIL0hidVBjdjV6RWYwZE1oT1VPVGJmd2Q2bGZmaHMzdUlx?=
+ =?utf-8?B?V1d2UUxYNzRlTkliMTVqd3B1VldjOGJVTDZxZG5KNC9yUk5KSXFYSGlXSUNH?=
+ =?utf-8?B?anFvN21Xam5zYjZqeEZlc2NaQkJZV0hWOTVzT1ZMaUppejdNYlErNWlyM00y?=
+ =?utf-8?B?dE9BU0x6dUpycWUxUERQTTA0cEF4bzEwczIyYzFaT05GV3NHS1d3SHo4aExQ?=
+ =?utf-8?B?TG5CSkNJTS9URC94YlAxbHRkRW5oSXRpZENrQnJ6V0RrbTBBU0RDSmY4N2dm?=
+ =?utf-8?B?RkQwN3dtK3M4V3JYdlFVM2RSdFJja3NEVFQ4ZTMvTFZvMm9KcisxZk83QVJU?=
+ =?utf-8?B?b1NQOG5naURkeWNjeFlwaWtObytydytpT0xpMDlZd2V4cnpVNHR0OVlETmtn?=
+ =?utf-8?B?TDhETUxicVJSTW1OdUpiQ1BCZ2FMUVczUFhDSW1UeXNZbnR6ZDVBS0NtM0JH?=
+ =?utf-8?B?MzFUeGt5SUM2YnRwOXp2WDI2WW93TEdoMytIS1RyN2N1QXk0RitHaWtIZXZw?=
+ =?utf-8?B?QTRLcVZzUlFtRG1JSE56VFhjY2dFZEhuUDUvK0pOeC9vYVpVaUN0YTh5Nm9E?=
+ =?utf-8?B?RUs5TDQyWTc2RmlDM0NkTks2ZTZIU1ZWMFNER05XOGh0amxYbTRZUjhlWlcy?=
+ =?utf-8?B?aWh4eDZlMGNETTRSVFF4dU5BMDJZMW9hdk9NZzhVdDNtck9ncWdGYWNyaDJl?=
+ =?utf-8?B?ZXlIY0V0V05ibHBBTnAwOTVNQmFrai9KNDFyUlA5bzhPQ1ptT2UyL3dIUk4w?=
+ =?utf-8?B?WWhxa01Mb21pTk5iQ3NvMmxvSHBqald4dng2WXdkTUZEenptUTNVenV6VFVa?=
+ =?utf-8?B?M3NkM2RTRS9tTEFEZFVxdHpQMVc5RlpncnhZRnB0SXJNUmlLRTFZQlA3Z1BQ?=
+ =?utf-8?B?ZnF3UDN0Um1NR0h2cVZGdWIwUTEvdjkyVEUrSCswL01PdTZWSEhpeG1EKzBt?=
+ =?utf-8?B?UGtBY1lhckVQaWhRK0dZSVpuMXlnMmtxSHAyZ0p0bzdyakJHQzlWNjVyalY4?=
+ =?utf-8?B?Nk1rUzc2Z0cydFl4elJnOEJreEhKY1dYd2h2R1R1djJzc0FEUVU2U05UYzhM?=
+ =?utf-8?B?UG1pKzRiK2RLNHIzbFA1aGJGaDlRanVZZlFIVkViVzZlMWFpcFUvZ0t5UVlO?=
+ =?utf-8?B?ZnBwcW1qQ0RRK0tHcTdFQjM2d2t6MWxYajJtYkNjSlQwODFHSWhTcUhwOENP?=
+ =?utf-8?B?Q1VGc2VvNWd0cjYwd0p5VXl4bmFsRFBrOTYrellCOG4yWkNrTi9YdkNlVUpp?=
+ =?utf-8?B?ZS9Dekp2KzB4ak4rQktURzNpT0FkaC82bFlxK1F1VjV4QTdyajh4Qlp3UGd0?=
+ =?utf-8?B?MWIvUEtydWhzS0VBMExSY1AvZDkvYzNyOGVudUNITExPcHI4RERSUHh0RHBT?=
+ =?utf-8?B?Y2MvSjBBclFXNnNDZ0g5QjhSRTJTb1gvOUxkRFczRWpMc29iQWF3QzN0Rzcv?=
+ =?utf-8?B?OXdFa2N2OEFaOU84eXZMZ1pOTUljM0tpbDJKOWxsR1h1OE1pRWpTeTMxVU42?=
+ =?utf-8?B?RmRwRnhydzVCTEl6a2ZIWmxkTzBSUjBnbDRtbXZVSTVKT0crK1huN1dLMTFu?=
+ =?utf-8?B?ZEo4UzlaRmErOFRDUVNTWVQybUhGelhhNjdwZTM0c0NGeDF0ZVdBZmgrWDd5?=
+ =?utf-8?B?ZnRKNXpsSTR0NkdZZkxPTWRRTmFJRGRyc0oxT1hOVWJpR3hRM0FzSS8vS0Fi?=
+ =?utf-8?B?RzJiZ2xCUTM4dmcrWWJ5NG1xZCtTOXRKNVFXWm1GREZGdlJYbkh4M3c2ckk5?=
+ =?utf-8?B?MGxIQnJuYXJpbmQ5THFCTjZqUzkyTEtpbjF0K3hvdk5teWVNMXJJbHNoLzdN?=
+ =?utf-8?B?ZnFvU0t0YVlnUnJuUzBDVUVWZ3JKWFZGQVFUQVF3NFAyeVlyaEFNRTdxcll4?=
+ =?utf-8?Q?zvdhYQzh59VITtzKjJgRMSRq2?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5fcf4d61-e37a-4595-254c-08dc50414fbf
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6263.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 22:41:02.2410
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ilGgkrAbN/QGxCRDsFAVzxGCrnuii09s15bGN/0TY5T4fJ/decyRW+CsMzueQ3DxrQoL7F9fC4wqSyBOwuyPuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6217
 
-On 29/03/2024 04:34, Ard Biesheuvel wrote:
-> [...]
+Hi Ross,
+
+On 2/14/24 4:18 PM, Ross Philipson wrote:
+> Introduce the Secure Launch Resource Table which forms the formal
+> interface between the pre and post launch code.
 > 
-> I'm just not impressed by the general quality of implementations -
-> relying on this when the system is going down is a reasonable last
-> resort, perhaps, but if other options are available, I'd prioritize
-> those.
-> 
-> And this is for the oops/panic logs only - other uses of pstore seem
-> better served with ordinary file based persistence.
+> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+> ---
+>   include/linux/slr_table.h | 270 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 270 insertions(+)
+>   create mode 100644 include/linux/slr_table.h
 
-OK, I understand now.
-Thanks,
+> diff --git a/include/linux/slr_table.h b/include/linux/slr_table.h
+> new file mode 100644
+> index 000000000000..42020988233a
+> --- /dev/null
+> +++ b/include/linux/slr_table.h
+> @@ -0,0 +1,270 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Secure Launch Resource Table
+> + *
+> + * Copyright (c) 2023, Oracle and/or its affiliates.
+> + */
+> +
+> +#ifndef _LINUX_SLR_TABLE_H
+> +#define _LINUX_SLR_TABLE_H
+> +
+> +/* Put this in efi.h if it becomes a standard */
+> +#define SLR_TABLE_GUID				EFI_GUID(0x877a9b2a, 0x0385, 0x45d1, 0xa0, 0x34, 0x9d, 0xac, 0x9c, 0x9e, 0x56, 0x5f)
+> +
+> +/* SLR table header values */
+> +#define SLR_TABLE_MAGIC		0x4452544d
+> +#define SLR_TABLE_REVISION	1
+> +
+> +/* Current revisions for the policy and UEFI config */
+> +#define SLR_POLICY_REVISION		1
+> +#define SLR_UEFI_CONFIG_REVISION	1
+> +
+> +/* SLR defined architectures */
+> +#define SLR_INTEL_TXT		1
+> +#define SLR_AMD_SKINIT		2
+> +
+> +/* SLR defined bootloaders */
+> +#define SLR_BOOTLOADER_INVALID	0
+> +#define SLR_BOOTLOADER_GRUB	1
+> +
+> +/* Log formats */
+> +#define SLR_DRTM_TPM12_LOG	1
+> +#define SLR_DRTM_TPM20_LOG	2
+> +
+> +/* DRTM Policy Entry Flags */
+> +#define SLR_POLICY_FLAG_MEASURED	0x1
+> +#define SLR_POLICY_IMPLICIT_SIZE	0x2
+> +
+> +/* Array Lengths */
+> +#define TPM_EVENT_INFO_LENGTH		32
+> +#define TXT_VARIABLE_MTRRS_LENGTH	32
+> +
+> +/* Tags */
+> +#define SLR_ENTRY_INVALID	0x0000
+> +#define SLR_ENTRY_DL_INFO	0x0001
+> +#define SLR_ENTRY_LOG_INFO	0x0002
+> +#define SLR_ENTRY_ENTRY_POLICY	0x0003
+> +#define SLR_ENTRY_INTEL_INFO	0x0004
+> +#define SLR_ENTRY_AMD_INFO	0x0005
+> +#define SLR_ENTRY_ARM_INFO	0x0006
+> +#define SLR_ENTRY_UEFI_INFO	0x0007
+> +#define SLR_ENTRY_UEFI_CONFIG	0x0008
+> +#define SLR_ENTRY_END		0xffff
+> +
+> +/* Entity Types */
+> +#define SLR_ET_UNSPECIFIED	0x0000
+> +#define SLR_ET_SLRT		0x0001
+> +#define SLR_ET_BOOT_PARAMS	0x0002
+> +#define SLR_ET_SETUP_DATA	0x0003
+> +#define SLR_ET_CMDLINE		0x0004
+> +#define SLR_ET_UEFI_MEMMAP	0x0005
+> +#define SLR_ET_RAMDISK		0x0006
+> +#define SLR_ET_TXT_OS2MLE	0x0010
+> +#define SLR_ET_UNUSED		0xffff
+> +
+> +#ifndef __ASSEMBLY__
+> +
+> +/*
+> + * Primary SLR Table Header
+> + */
+> +struct slr_table {
+> +	u32 magic;
+> +	u16 revision;
+> +	u16 architecture;
+> +	u32 size;
+> +	u32 max_size;
 
+Do these need to have their endianness specified with, e.g., __le32?
 
-Guilherme
+> +	/* entries[] */
 
+Instead of the above line, a legit 'entries' can be enabled using:
 
+DECLARE_FLEX_ARRAY(struct slr_entry_hdr, entries);
+
+> +} __packed;
+
+You'd have to move this above struct slr_table which would need it:
+
+> +/*
+> + * Common SLRT Table Header
+> + */
+> +struct slr_entry_hdr {
+> +	u16 tag;
+> +	u16 size;
+> +} __packed;
+> +
+> +/*
+> + * Boot loader context
+> + */
+> +struct slr_bl_context {
+> +	u16 bootloader;
+> +	u16 reserved;
+> +	u64 context;
+> +} __packed;
+> +
+> +/*
+> + * DRTM Dynamic Launch Configuration
+> + */
+> +struct slr_entry_dl_info {
+> +	struct slr_entry_hdr hdr;
+> +	struct slr_bl_context bl_context;
+> +	u64 dl_handler;
+> +	u64 dce_base;
+> +	u32 dce_size;
+> +	u64 dlme_entry;
+> +} __packed;
+> +
+> +/*
+> + * TPM Log Information
+> + */
+> +struct slr_entry_log_info {
+> +	struct slr_entry_hdr hdr;
+> +	u16 format;
+> +	u16 reserved;
+> +	u64 addr;
+> +	u32 size;
+> +} __packed;
+> +
+> +/*
+> + * DRTM Measurement Policy
+> + */
+> +struct slr_entry_policy {
+> +	struct slr_entry_hdr hdr;
+> +	u16 revision;
+> +	u16 nr_entries;
+> +	/* policy_entries[] */
+> +} __packed;
+> +
+> +/*
+> + * DRTM Measurement Entry
+> + */
+> +struct slr_policy_entry {
+> +	u16 pcr;
+> +	u16 entity_type;
+> +	u16 flags;
+> +	u16 reserved;
+> +	u64 entity;
+> +	u64 size;
+> +	char evt_info[TPM_EVENT_INFO_LENGTH];
+> +} __packed;
+> +
+> +/*
+> + * Secure Launch defined MTRR saving structures
+> + */
+> +struct slr_txt_mtrr_pair {
+> +	u64 mtrr_physbase;
+> +	u64 mtrr_physmask;
+> +} __packed;
+> +
+> +struct slr_txt_mtrr_state {
+> +	u64 default_mem_type;
+> +	u64 mtrr_vcnt;
+> +	struct slr_txt_mtrr_pair mtrr_pair[TXT_VARIABLE_MTRRS_LENGTH];
+> +} __packed;
+> +
+> +/*
+> + * Intel TXT Info table
+> + */
+> +struct slr_entry_intel_info {
+> +	struct slr_entry_hdr hdr;
+> +	u64 saved_misc_enable_msr;
+> +	struct slr_txt_mtrr_state saved_bsp_mtrrs;
+> +} __packed;
+> +
+> +/*
+> + * AMD SKINIT Info table
+> + */
+> +struct slr_entry_amd_info {
+> +	struct slr_entry_hdr hdr;
+> +} __packed;
+> +
+> +/*
+> + * ARM DRTM Info table
+> + */
+> +struct slr_entry_arm_info {
+> +	struct slr_entry_hdr hdr;
+> +} __packed;
+
+Shouldn't these three structs be added as part of their
+separate per-vendor enablement patches?
+
+> +struct slr_entry_uefi_config {
+> +	struct slr_entry_hdr hdr;
+> +	u16 revision;
+> +	u16 nr_entries;
+> +	/* uefi_cfg_entries[] */
+> +} __packed;
+> +
+> +struct slr_uefi_cfg_entry {
+> +	u16 pcr;
+> +	u16 reserved;
+> +	u64 cfg; /* address or value */
+> +	u32 size;
+> +	char evt_info[TPM_EVENT_INFO_LENGTH];
+> +} __packed;
+> +
+> +static inline void *slr_end_of_entrys(struct slr_table *table)
+> +{
+> +	return (((void *)table) + table->size);
+> +}
+> +
+> +static inline struct slr_entry_hdr *
+> +slr_next_entry(struct slr_table *table,
+> +	       struct slr_entry_hdr *curr)
+> +{
+> +	struct slr_entry_hdr *next = (struct slr_entry_hdr *)
+> +				((u8 *)curr + curr->size);
+> +
+> +	if ((void *)next >= slr_end_of_entrys(table))
+> +		return NULL;
+> +	if (next->tag == SLR_ENTRY_END)
+> +		return NULL;
+> +
+> +	return next;
+> +}
+> +
+> +static inline struct slr_entry_hdr *
+> +slr_next_entry_by_tag(struct slr_table *table,
+> +		      struct slr_entry_hdr *entry,
+> +		      u16 tag)
+> +{
+> +	if (!entry) /* Start from the beginning */
+> +		entry = (struct slr_entry_hdr *)(((u8 *)table) + sizeof(*table));
+
+Back to the 'entries', the above line can now be made more readable:
+
+entry = table->entries;
+
+That's just one example, this flex array simplification can be made
+in other structs in this series, too.
+
+Cheers,
+
+Kim
+
+> +
+> +	for ( ; ; ) {
+> +		if (entry->tag == tag)
+> +			return entry;
+> +
+> +		entry = slr_next_entry(table, entry);
+> +		if (!entry)
+> +			return NULL;
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +static inline int
+> +slr_add_entry(struct slr_table *table,
+> +	      struct slr_entry_hdr *entry)
+> +{
+> +	struct slr_entry_hdr *end;
+> +
+> +	if ((table->size + entry->size) > table->max_size)
+> +		return -1;
+> +
+> +	memcpy((u8 *)table + table->size - sizeof(*end), entry, entry->size);
+> +	table->size += entry->size;
+> +
+> +	end  = (struct slr_entry_hdr *)((u8 *)table + table->size - sizeof(*end));
+> +	end->tag = SLR_ENTRY_END;
+> +	end->size = sizeof(*end);
+> +
+> +	return 0;
+> +}
+> +
+> +static inline void
+> +slr_init_table(struct slr_table *slrt, u16 architecture, u32 max_size)
+> +{
+> +	struct slr_entry_hdr *end;
+> +
+> +	slrt->magic = SLR_TABLE_MAGIC;
+> +	slrt->revision = SLR_TABLE_REVISION;
+> +	slrt->architecture = architecture;
+> +	slrt->size = sizeof(*slrt) + sizeof(*end);
+> +	slrt->max_size = max_size;
+> +	end = (struct slr_entry_hdr *)((u8 *)slrt + sizeof(*slrt));
+> +	end->tag = SLR_ENTRY_END;
+> +	end->size = sizeof(*end);
+> +}
+> +
+> +#endif /* !__ASSEMBLY */
+> +
+> +#endif /* _LINUX_SLR_TABLE_H */
 
