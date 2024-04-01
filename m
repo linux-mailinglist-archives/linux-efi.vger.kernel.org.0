@@ -1,43 +1,43 @@
-Return-Path: <linux-efi+bounces-908-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-909-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D64893E80
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Apr 2024 18:04:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C122894045
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Apr 2024 18:27:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5F691F21168
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Apr 2024 16:04:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E7661C20892
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Apr 2024 16:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA06045BE4;
-	Mon,  1 Apr 2024 16:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F6446B9F;
+	Mon,  1 Apr 2024 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/1mQzUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND1vihcI"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D11A383BA;
-	Mon,  1 Apr 2024 16:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C27C129;
+	Mon,  1 Apr 2024 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987465; cv=none; b=CmGvKsXpJOeMW9btsUWjhbddiGxfpsV6JghhUsbp5eALzPFRUG3O0EypMIzIq6DHjfnYLyKYV3NuxdcHnW5UXXjXsQ4DdCIyeOcdtkPmzn9AZyV0cO+2pql9Op2Bb2X5i8QWRXEYI75twc4cbiZYQnnrY89SWQBh9Bvqai0Uuck=
+	t=1711988875; cv=none; b=ITUftiZ2wZcdSRSq1GZDkSyrcAASp0QCuoSGmFt+/a+1mqJz+eivxS3Yx2ODQjrj0Pjq7J5UlL7Mto8fE+qRH9YIlV+FU/47fQmxCT7te+rt8KimRmqmCq55wHhm+g18EMCQzLfoOwZlw1hGvH4HvNKQ2/dJjptKRkz67HwfAtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987465; c=relaxed/simple;
-	bh=30q5MPlePjPKHlT+QuhcWwxtQQ6URh5gtR7ZctbDe0U=;
+	s=arc-20240116; t=1711988875; c=relaxed/simple;
+	bh=Ya4h15FkpoXHhaMquYV0OAHhjoJCo638P01fWR22oqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hcJ7n1COh3URxHOmucwukhrqZty9/u+ynEckMw02PYCzCMUefH57pAiQae4LYh26DunhsC1/gcctb5E9oT+xDEpMYRtSa1IEd9sUd7jjERS3qUsc5GPqbTv4Jneaq81JKmuw9uP6ycvdYvUh28mqHYtjCKrPWdiPjamCvo10gpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/1mQzUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F000FC433F1;
-	Mon,  1 Apr 2024 16:04:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FmYHqUkdpyDv4he26yskw9pjjcU8fJW79u0/ffVbwtABHTDkGUl+wiQhP3jUlJc6UjnDoSVM4tiQ7N4Q2EKK5igwj6i0YTW8l33FFt2INaEcIi0FF+9fdliXXG5ctsiGeL4oBaE4a1nrDqvO8q3DVzDh0jECJ4QSBQM0DfWG6GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ND1vihcI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30A2C433C7;
+	Mon,  1 Apr 2024 16:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987465;
-	bh=30q5MPlePjPKHlT+QuhcWwxtQQ6URh5gtR7ZctbDe0U=;
+	s=korg; t=1711988875;
+	bh=Ya4h15FkpoXHhaMquYV0OAHhjoJCo638P01fWR22oqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/1mQzUbo+s8bkQdLgoQ7dUt1QAGLKrb86Cp6xS01NUYSDBjxqbngudL2gwQeK8vL
-	 Rp05eBVcMYJo5PNUoksjsnnLrGC2X1OwaqOGCkxJoaw58nxh5me3PJ7OKZDBFwqwfH
-	 8cFUmONRhlAo9omQP57iEzCcl8tfW1KCrQj/irX4=
+	b=ND1vihcIz81AMfxstjMQTE4GzR0SOgWZx3kAtH94vGVkdGDZWbdnYcBXaGVFsUUe6
+	 TzBYf5mS9poSePyAiKKw5SPxigbvubsMrPKB4aH6rUo5bSBXM01cn4F2gw9Do4kumE
+	 moYua1GoccKVEGmacInkbEeK69OLxNEZmezZ1Chg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kazuma Kondo <kazuma-kondo@nec.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 267/399] efi/libstub: fix efi_random_alloc() to allocate memory at alloc_min or higher address
-Date: Mon,  1 Apr 2024 17:43:53 +0200
-Message-ID: <20240401152557.156667243@linuxfoundation.org>
+Subject: [PATCH 6.7 314/432] efi/libstub: fix efi_random_alloc() to allocate memory at alloc_min or higher address
+Date: Mon,  1 Apr 2024 17:45:01 +0200
+Message-ID: <20240401152602.551725613@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
