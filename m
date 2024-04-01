@@ -1,43 +1,43 @@
-Return-Path: <linux-efi+bounces-910-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-911-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF02B894249
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Apr 2024 18:51:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A513A8943AA
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Apr 2024 19:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F17C61C21B81
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Apr 2024 16:51:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611E4283954
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Apr 2024 17:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63F74C3C3;
-	Mon,  1 Apr 2024 16:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415D048CDD;
+	Mon,  1 Apr 2024 17:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsec50z5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVBISFlc"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC38481D1;
-	Mon,  1 Apr 2024 16:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13815446B6;
+	Mon,  1 Apr 2024 17:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990275; cv=none; b=TRJxRWIyMaS9SBNGpW8tlBqaOytGOSxW3dzBwfXt4zi4124akb7Zl6PSpDxRdT4jkC4SN9Nd2U9tW9PK3cD05tzKuRCjJWgUYKKZBm80qYzhdZ162doizc4KZf2DVVMYz24xsCEbqOlLntf3sblGYQVs8hdm7iU132wys17ewHE=
+	t=1711991196; cv=none; b=WHgjornnHruFSy0uT+8KXyQU17kxvh5XYf5ZuMkGM8r7P3NkBHAPuFmRAy5bB52ZTAOnXJsutMFcjG66VfjFddFBd5AVJaFreRPwcNR835FEM6yhjIhL8A34X+T0Lxw1KEozY+OGoUUYYQI+yzNaD5+nRXaS/FhyS58FmoLjKJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990275; c=relaxed/simple;
-	bh=JaHB1WCfSl+JRh0Aed6/FLQFQXdNaijhbRYev4Inkc4=;
+	s=arc-20240116; t=1711991196; c=relaxed/simple;
+	bh=IUn9rlGtMqQ/fkR3wzenl7yv+FIXkxoGsD7rh5GLSco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X+ASVjeurnPWNfBDfAZH2CJMHBt/ePtrxqnqFStDe75a/IqsonL5jxgXdkUSPpm0okxkaoHy5Rpfu8hSe9vMkgUVDk0JVF3szuhzLjT9WuQdOV50Av6oKSq2rdW9VEQyMLdsurRZFoVJX4695LFc+gDEp1tfdSNTNN/dPVTBHsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsec50z5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACE9C433C7;
-	Mon,  1 Apr 2024 16:51:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b7iPPl58SnZ4WoSkXLq6yQGDbwPn2IwWZUafoJdoMz3d8cmthJ6O4OlupWdxlll3RSerS6SIBtSmyCj7uKEWajFQ/KUcA0nk1DPpPKDRdOkttIc5StR6/Xmw0e9agbWCfP8THVqvEVHVqm9w4WK/vVK8DbCZ6o8sCYrnPkm3xX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVBISFlc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5BBC433C7;
+	Mon,  1 Apr 2024 17:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990275;
-	bh=JaHB1WCfSl+JRh0Aed6/FLQFQXdNaijhbRYev4Inkc4=;
+	s=korg; t=1711991195;
+	bh=IUn9rlGtMqQ/fkR3wzenl7yv+FIXkxoGsD7rh5GLSco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hsec50z5VueWVLhL2ryaxr11Fmp6IY9Ms0EUF3pYg/nyj0UruxdPA15ivpiqDQxMi
-	 VD/L9LAQh5VmRxXG895mc3sC1OF2XzechtGWeWmi2kr8NRLR+BQAdU6tM9lYW7ishB
-	 DNQ5z9p5kucOWipfA32zWUiWf58cqBRhxdER4Hvk=
+	b=LVBISFlciAObau30TzXre4DyU82ZXrIGCbpCWcFgu9lCw1vHTqGX0YgU5wIaGKkwm
+	 3EOUfUBvBt2iuDb0Ryqai7CsXgpcX1KyTQlh08kTXunlLeF2RWuJdEGJhecIIe+ys1
+	 SjQJg+kgFyUxQjeXigichTyGP6OpCWG115SsGCT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kazuma Kondo <kazuma-kondo@nec.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 300/396] efi/libstub: fix efi_random_alloc() to allocate memory at alloc_min or higher address
-Date: Mon,  1 Apr 2024 17:45:49 +0200
-Message-ID: <20240401152556.846021617@linuxfoundation.org>
+Subject: [PATCH 6.1 192/272] efi/libstub: fix efi_random_alloc() to allocate memory at alloc_min or higher address
+Date: Mon,  1 Apr 2024 17:46:22 +0200
+Message-ID: <20240401152536.879375205@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -121,10 +121,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
-index 4e96a855fdf47..7e18528595502 100644
+index 7ba05719a53ba..0d7b11b55ff31 100644
 --- a/drivers/firmware/efi/libstub/randomalloc.c
 +++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -120,7 +120,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+@@ -119,7 +119,7 @@ efi_status_t efi_random_alloc(unsigned long size,
  			continue;
  		}
  
