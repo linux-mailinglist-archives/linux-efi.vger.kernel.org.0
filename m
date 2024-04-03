@@ -1,145 +1,142 @@
-Return-Path: <linux-efi+bounces-917-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-918-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8240D896FCC
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Apr 2024 15:04:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A43896FFA
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Apr 2024 15:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0ED01C27848
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Apr 2024 13:04:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88AF21F285F8
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Apr 2024 13:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB06C1474C0;
-	Wed,  3 Apr 2024 13:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA94147C95;
+	Wed,  3 Apr 2024 13:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vBI6VS8p"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KPPvgC9r"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812CA1EEF9;
-	Wed,  3 Apr 2024 13:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AC614831E
+	for <linux-efi@vger.kernel.org>; Wed,  3 Apr 2024 13:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712149443; cv=none; b=XHwMfx8McNs1J775Py6VSd+HeNtyD+u+VIy0Cq20CCWGuHWqxNvRsT/CbkHar6BHgoPvUbPVd3od33+7efGMIzMtlBX1cjGbBg06iVnq23U/JQYWff67U0DZHSM/Nc23GlMa9h8wAXZ9dENNn4KS5sv4FE8GghNINO74KE24s1M=
+	t=1712150155; cv=none; b=nv/pooWkApEmzRkG/d35hHPOmbtzGDMda9RVn0FSTHo++1WCFYjNJsgD60tGrs/6vol0BdgpXHiKGE+SbfDVHH8FH/Ql9ifDMRDVZT+EuJn771bpVgA2p3WPvmn7yRjHUK0H1KTIaLijqgx2Igvjgbnt/zWBdmykOfiB7z5JVTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712149443; c=relaxed/simple;
-	bh=jAxgzwRTkP59nxfnPjXp9rWsoyhM/O0bfjbLfKVZk40=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NRmojtEip+UKpKa7Kflmnor0sVhmCgwvnY847CzdV9y2GK21MzX57rSNK3w2TFFdWyVSjqkkzoQ7840e0sly//47aPnh2eOLi9NFVr1XU+2Mw4uvTJg4UqBp3pkeC90av3K3mgZiNccOTygx7Pa2rqdujNd2FzC03iqYaM8frWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vBI6VS8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209DFC43394;
-	Wed,  3 Apr 2024 13:04:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712149443;
-	bh=jAxgzwRTkP59nxfnPjXp9rWsoyhM/O0bfjbLfKVZk40=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=vBI6VS8p+fMh7+vTQBD3ictGeDJNrYI5GGa45VGtNi9AL34NobyZc7NVn1S5u0EPo
-	 a4+R2biB55W6W0JfY2NoRcmn2FPM65MLicK80szCGL8a1cuJd/B/O/ER6sY0fcS2Xc
-	 /Npz/cjOs67O1ZDY4bIMUihMIgyoO1Tz/duLeTYiXSdL5OtOi0cNp8bmumKfFDyTrv
-	 dUATXnTMMbg1E7xC6VWOCEWx5yvICP5PbZC2+JepRN15WuICfYWx07TcIiW0ZcIVwz
-	 tcHhXZpyrVTvfvcUK1U61/Xo32GTra8BI/9KXOuua0+gPzCmGOrbVzIqcpicYcoqXm
-	 B2Ejxu849hddw==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d475b6609eso69724641fa.2;
-        Wed, 03 Apr 2024 06:04:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWq8HL1aICeSeBCXXoHFEYZRPsCQjVEUTVH+weQ8+uvzLnEBCDIeUIolsHG2GGlATbzzUHu2UaC9E4AWXXMYSoHhocjjPirY3Bg
-X-Gm-Message-State: AOJu0YwRqgAuwdpswPpA7pkEVSVnDTTn7rCDVny/3pBWNRONza2geglO
-	Fz1RnOa08hmDZp+ulIx5ejjBVO92Gpf4c2eISvQPAIJN8Ue9E/LrNMa1M4yhFlpS/bFulSib/mW
-	d1tETqmcp/napFNUXBoNw2Uia2Mk=
-X-Google-Smtp-Source: AGHT+IHXQaEMys++S96XiBNlaXjAU9VskPXxODEVcvovTePiNNMFtNxf+XvNMPhpxzmDBKgVEKo0kD0osOIbNzPyuP8=
-X-Received: by 2002:a2e:b8d2:0:b0:2d2:42ff:483c with SMTP id
- s18-20020a2eb8d2000000b002d242ff483cmr12406161ljp.33.1712149441487; Wed, 03
- Apr 2024 06:04:01 -0700 (PDT)
+	s=arc-20240116; t=1712150155; c=relaxed/simple;
+	bh=BvY7n2GM32YM2EPuTXqQK41U/DifdKggfolJTvMcnKo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=R4c7FzwqtCoWiG+3/cS4AaU5bDD6WGw+VHqJfhnbWzmNELywKSBeY3YBCWT7XRFHa5sdBhqr0oKfjeEQfH2tDhaO5aDfa+UeoFYyzV2bTC32zrXJ72xA889FEu9sNgQ9jGqDFMzo/cQQUFyfDsiiz4rmC1+acPCctvAOFRiB3r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KPPvgC9r; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712150153;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8EVms2YLsDUuCYIw5cPdoEBYXqHd2OjbZnSw2iHHs/8=;
+	b=KPPvgC9rx4X6Hgcy1e1slkm6rsCzwL3sI6Ceplf/LX9Pqy5GJ6HKd2w14zRiDJ+rOky6Pt
+	NxaEW2VFy+iT8UHFltdiutTblJ+B7enHfQVTXxIa/IQcLYnSjLxK76U+TepTrMvvhiyPE1
+	z9wAsbFdMZcsU9vGuyDJyhbgLGlX19U=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-134-LeCBoHk7NyC9Beax0jwbVQ-1; Wed, 03 Apr 2024 09:15:51 -0400
+X-MC-Unique: LeCBoHk7NyC9Beax0jwbVQ-1
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2d48d13b3c9so49396501fa.1
+        for <linux-efi@vger.kernel.org>; Wed, 03 Apr 2024 06:15:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712150150; x=1712754950;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8EVms2YLsDUuCYIw5cPdoEBYXqHd2OjbZnSw2iHHs/8=;
+        b=IRr0yKP8YKq/aSD6u0li9pdh1/yso4TEPh0GWjfcY6vJ7i9zoST04L6Ah9bNn5WsU0
+         NvJyBFitFEmGfsO3RErlR/XRcofcwioopmgqVpqYGxNC8Jbb/UFDAC/nK3ocWapus6Ii
+         sKUWHB83rGuco5P+pqQ/ut4ZCCUiquRdjWGhy3jGJ3LnsJQsVHQfKJmkZ/5++FI3yjM1
+         xw22OBjgSRuGaffzIACL7VINPuf19pnPMKMq2Xb/sXa6B69lZgYvsspoiwvgPnyr+pkS
+         MBuV261tyvDmG7U5Vf+GhV4CVCsQinCsOfIfMVwOhbOCVBzsImJ2lkb+xQxvao1B4t9/
+         tJYA==
+X-Forwarded-Encrypted: i=1; AJvYcCXbeP24UHDagYw0GnjnaV05t6qwiS2RCYh1XhenDHXzzCInTjST6B4hKcUfCbjbrdXa+0t83GGqCdzqCRcuNpJSN8izc+BFcb8T
+X-Gm-Message-State: AOJu0YwnRK5UxPA9Gv9oXvFNFCKYmJm7YIpomdboqjep0V2oMIrbS7BJ
+	zH63mH9LTok2c9DA5L45/muTAoIhds3Y2zLnUslnXIlwEmdpylis8DStH3CDkFREV05tCpXY+4G
+	YN2r53aapPyoZlcLFlY8BcC808DrsvFPC4CsVPu8pVM6a0ligoAZU+XXLzw==
+X-Received: by 2002:a2e:a795:0:b0:2d8:2cd3:aa51 with SMTP id c21-20020a2ea795000000b002d82cd3aa51mr2201598ljf.53.1712150149811;
+        Wed, 03 Apr 2024 06:15:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFflOgcZSGdO/Ti5VsWhuXmDQ+H6zSOAqVtN4QkVE3bUJKOVJce9cVFlwkyt8RksgYYDBkyKg==
+X-Received: by 2002:a2e:a795:0:b0:2d8:2cd3:aa51 with SMTP id c21-20020a2ea795000000b002d82cd3aa51mr2201570ljf.53.1712150149275;
+        Wed, 03 Apr 2024 06:15:49 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id n11-20020a05600c500b00b0041624540918sm1692064wmr.9.2024.04.03.06.15.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Apr 2024 06:15:48 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, "Kirill A. Shutemov"
+ <kirill.shutemov@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Masahisa Kojima
+ <masahisa.kojima@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob
+ Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, linux-efi@vger.kernel.org
+Subject: Re: [PATCH 10/34] efi: sysfb: don't build when EFI is disabled
+In-Reply-To: <CAMj1kXG2kcAmmB5aQRv5VBJ8Ov2fcg5waGpD1r=aOR9rV=dSWg@mail.gmail.com>
+References: <20240403080702.3509288-1-arnd@kernel.org>
+ <20240403080702.3509288-11-arnd@kernel.org>
+ <CAMj1kXG2kcAmmB5aQRv5VBJ8Ov2fcg5waGpD1r=aOR9rV=dSWg@mail.gmail.com>
+Date: Wed, 03 Apr 2024 15:15:48 +0200
+Message-ID: <87jzle1ta3.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240403080702.3509288-1-arnd@kernel.org> <20240403080702.3509288-11-arnd@kernel.org>
-In-Reply-To: <20240403080702.3509288-11-arnd@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 3 Apr 2024 16:03:48 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXG2kcAmmB5aQRv5VBJ8Ov2fcg5waGpD1r=aOR9rV=dSWg@mail.gmail.com>
-Message-ID: <CAMj1kXG2kcAmmB5aQRv5VBJ8Ov2fcg5waGpD1r=aOR9rV=dSWg@mail.gmail.com>
-Subject: Re: [PATCH 10/34] efi: sysfb: don't build when EFI is disabled
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
-	Javier Martinez Canillas <javierm@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Daniel Vetter <daniel.vetter@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Masahisa Kojima <masahisa.kojima@linaro.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-On Wed, 3 Apr 2024 at 11:09, Arnd Bergmann <arnd@kernel.org> wrote:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> With 'make W=1', there is a warning when EFI is turned off but sysfb_efi
-> still gets built:
->
-> drivers/firmware/efi/sysfb_efi.c:188:35: error: unused variable 'efifb_dmi_system_table' [-Werror,-Wunused-const-variable]
-> static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
->                                   ^
-> drivers/firmware/efi/sysfb_efi.c:238:35: error: unused variable 'efifb_dmi_swap_width_height' [-Werror,-Wunused-const-variable]
-> static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
->                                   ^
-> drivers/firmware/efi/sysfb_efi.c:297:28: error: unused function 'find_pci_overlap_node' [-Werror,-Wunused-function]
-> static struct device_node *find_pci_overlap_node(void)
->
-> There was an earlier patch to address the duplicate function definitions, but
-> that missed how we should not be building this file in the first place.
->
-> Fixes: 15d27b15de96 ("efi: sysfb_efi: fix build when EFI is not set")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Ard Biesheuvel <ardb@kernel.org> writes:
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> On Wed, 3 Apr 2024 at 11:09, Arnd Bergmann <arnd@kernel.org> wrote:
+>>
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> With 'make W=1', there is a warning when EFI is turned off but sysfb_efi
+>> still gets built:
+>>
+>> drivers/firmware/efi/sysfb_efi.c:188:35: error: unused variable 'efifb_dmi_system_table' [-Werror,-Wunused-const-variable]
+>> static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
+>>                                   ^
+>> drivers/firmware/efi/sysfb_efi.c:238:35: error: unused variable 'efifb_dmi_swap_width_height' [-Werror,-Wunused-const-variable]
+>> static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
+>>                                   ^
+>> drivers/firmware/efi/sysfb_efi.c:297:28: error: unused function 'find_pci_overlap_node' [-Werror,-Wunused-function]
+>> static struct device_node *find_pci_overlap_node(void)
+>>
+>> There was an earlier patch to address the duplicate function definitions, but
+>> that missed how we should not be building this file in the first place.
+>>
+>> Fixes: 15d27b15de96 ("efi: sysfb_efi: fix build when EFI is not set")
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+>
 
-or I can take it via the EFI tree if you prefer.
+Looks good to me too.
 
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
 
-> ---
->  drivers/firmware/efi/Makefile    | 3 ++-
->  drivers/firmware/efi/sysfb_efi.c | 2 --
->  2 files changed, 2 insertions(+), 3 deletions(-)
+> or I can take it via the EFI tree if you prefer.
 >
-> diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
-> index a2d0009560d0..3baf80d8cf81 100644
-> --- a/drivers/firmware/efi/Makefile
-> +++ b/drivers/firmware/efi/Makefile
-> @@ -30,7 +30,8 @@ obj-$(CONFIG_EFI_RCI2_TABLE)          += rci2-table.o
->  obj-$(CONFIG_EFI_EMBEDDED_FIRMWARE)    += embedded-firmware.o
->  obj-$(CONFIG_LOAD_UEFI_KEYS)           += mokvar-table.o
->
-> -obj-$(CONFIG_SYSFB)                    += sysfb_efi.o
-> +sysfb-$(CONFIG_SYSFB)                  += sysfb_efi.o
-> +obj-$(CONFIG_EFI)                      += $(sysfb-y)
->
->  arm-obj-$(CONFIG_EFI)                  := efi-init.o arm-runtime.o
->  obj-$(CONFIG_ARM)                      += $(arm-obj-y)
-> diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-> index cc807ed35aed..a8c982475f6b 100644
-> --- a/drivers/firmware/efi/sysfb_efi.c
-> +++ b/drivers/firmware/efi/sysfb_efi.c
-> @@ -346,7 +346,6 @@ static const struct fwnode_operations efifb_fwnode_ops = {
->         .add_links = efifb_add_links,
->  };
->
-> -#ifdef CONFIG_EFI
->  static struct fwnode_handle efifb_fwnode;
->
->  __init void sysfb_apply_efi_quirks(void)
-> @@ -372,4 +371,3 @@ __init void sysfb_set_efifb_fwnode(struct platform_device *pd)
->                 pd->dev.fwnode = &efifb_fwnode;
->         }
->  }
-> -#endif
-> --
-> 2.39.2
->
+
+I think that could be merged through your EFI tree. Thanks!
+
+-- 
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
+
 
