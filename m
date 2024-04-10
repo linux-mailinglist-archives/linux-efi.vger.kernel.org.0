@@ -1,117 +1,136 @@
-Return-Path: <linux-efi+bounces-932-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-933-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9C089C7AF
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Apr 2024 17:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 208BB89ECF5
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Apr 2024 10:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3D0C1F23387
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Apr 2024 15:01:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00E81F22A79
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Apr 2024 08:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD9C13F435;
-	Mon,  8 Apr 2024 15:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPVzIBvT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5498713D52A;
+	Wed, 10 Apr 2024 08:02:37 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470CD13F42A;
-	Mon,  8 Apr 2024 15:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C136613D505;
+	Wed, 10 Apr 2024 08:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712588494; cv=none; b=uRoqqWANLNavbl5vmJnsCI4xn5XWcY4D5QYlTYtBKee6s8H4U6lakBSySHofUzWXb4l8a5c1DZh7NevtJfL8iJDzHTUxGPz/OhMui4vbheLZfMah4cCeRzo/tXAOPsbuHWNcrjaUtDl4On02G5sBnG4plBv6lJpcDBLscpEvzCE=
+	t=1712736157; cv=none; b=nj/+XoOjnt/sStNX6gfPlRLy8FTwBCskCz30eSIsVqUodK36V209VjYYOJi5V2aZ6Zj9dQtWPi+X3Ja6/aJDWJWci3Id2lZkkUrr0XpNx1CbblCfphl+dhgBfkzTZ3lfCQOr3hTTA9hf372bgjVMkEX/rizVMYq3g1EvhPUutvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712588494; c=relaxed/simple;
-	bh=EITVdlJtkrnylLXhed9Pr1DfYAyVTQ3XvaUDh63E534=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bjGRrwHk++ZbrkhTgH5dXtENpfRHmOQgJczDQVc15iA567JVW7k1W6MUUOXs7yZhxnNGzTX9gfmFXSqeiqb/RfO03pubmr21C5vGhsPv+wymsdlr54E51D1WxkfwCXhutiACQjLNfRk4LWGJ4pRpG7g74ENrtKCkg1UVyI74PrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPVzIBvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB446C433F1;
-	Mon,  8 Apr 2024 15:01:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712588493;
-	bh=EITVdlJtkrnylLXhed9Pr1DfYAyVTQ3XvaUDh63E534=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iPVzIBvT/iSK03mJ74WyCdtfwrYQ0FIvhL5K8YMXOWzUcxtAW1X9DNCrqtBiFjfyi
-	 tl90sPwPpZ5rbnlWkWlrmucbJbApIpssRcLEk4bwAVt6FxwLnhmycj60p3s5ZulGuY
-	 Oi6kb5XzN6oeZLDaCEoYGMUGaCwA36s9aVa2vFCs+0r3L2ACNZZS6RJMIMK7lmGxXl
-	 LZaKWREq5eaTZ8dEmqubeluPfq1pepZhLI9FVjpANsP8XqyeISOYtrQC8gZ/KN/t0I
-	 J4RLdMza2ntow+e8CC8hAcBjXsrybDusTaZepo397svH4xSl9ToXUzq+mYubuhRT/b
-	 17pKAxdggeVsA==
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6ea1572136eso453455a34.1;
-        Mon, 08 Apr 2024 08:01:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW3+0lUuKg3hHhe5fIqYbB6u665OvDnFDviXdUd7KWwdn3iXbLFY6hEeIr3VKPT+6KhtijdC/aMEQixQJR8e62LzYen9GjggTwawKLEhn9SqELjylZL57kGQkpxmjD/8n7Z+WFUBW8H2HCWTBOLjc+YqFVDm55FTv5XdDPgzEIaiLOjT+XnmOtAolUMwTh7zUKraa7MV0+2yxafcRNvULKVG6VwrLZivXIW1gexeQtwi62weIsFjgZCMyHHVQ==
-X-Gm-Message-State: AOJu0YzUFgJuG5OoHcgg+C7cG0jOPGlDiSTYqqsmM17PI9Otqcm2Gp8w
-	0xKNpdaFYwl5HKE7Dz+tIuFRrDijMGKw9nsfRzmQji05ws/GVvDn/2lcM2jA+e5CupL+fHBJ80z
-	yHjpuw6lyNGtgRjHxBoAg7xnjuYg=
-X-Google-Smtp-Source: AGHT+IE7BjvtTOsOgPqYkXR1Qq+KOOG/nJtiEyKbfNUuvRcPpCIK8D3B6ZYbWXxS6qJ87RK9Jxd6UH195uv+p6a4TTw=
-X-Received: by 2002:a05:6808:603:b0:3c5:f534:e2c7 with SMTP id
- y3-20020a056808060300b003c5f534e2c7mr2839026oih.1.1712588493105; Mon, 08 Apr
- 2024 08:01:33 -0700 (PDT)
+	s=arc-20240116; t=1712736157; c=relaxed/simple;
+	bh=KElYbch9PwjyMMyu6DqQ19Q1q06S1GdiKB4kYIvJsOA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=bBAtC04DaDVwHEUOOiFSRuslrl4QmXJkNwIxlynnpCJTLQoVrWUVTlO89Clpnhd/aF12w6oTjHuxnvrJymhY+Q8tm+0OxOvE8XUv/x2Dczi3ELoLd/y8qIsK+MyeonrFwSjZ3eR5Bs0oaVVpccWwZSXhKQxXPM80iFWgxUzQYEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDFDC43390;
+	Wed, 10 Apr 2024 08:02:36 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id 324081063262; Wed, 10 Apr 2024 10:02:32 +0200 (CEST)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Michael Ellerman <mpe@ellerman.id.au>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Damien Le Moal <dlemoal@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Corey Minyard <minyard@acm.org>, Peter Huewe <peterhuewe@gmx.de>, 
+ Jarkko Sakkinen <jarkko@kernel.org>, Tero Kristo <kristo@kernel.org>, 
+ Stephen Boyd <sboyd@kernel.org>, Ian Abbott <abbotti@mev.co.uk>, 
+ H Hartley Sweeten <hsweeten@visionengravers.com>, 
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+ Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+ Vinod Koul <vkoul@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, Moritz Fischer <mdf@kernel.org>, 
+ Liviu Dudau <liviu.dudau@arm.com>, 
+ Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ Peter Rosin <peda@axentia.se>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Markuss Broks <markuss.broks@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Lee Jones <lee@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+ Kalle Valo <kvalo@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+ Tony Lindgren <tony@atomide.com>, Mark Brown <broonie@kernel.org>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Xiang Chen <chenxiang66@hisilicon.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Vaibhav Hiremath <hvaibhav.linux@gmail.com>, Alex Elder <elder@kernel.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Jacky Huang <ychuang3@nuvoton.com>, 
+ Helge Deller <deller@gmx.de>, Christoph Hellwig <hch@lst.de>, 
+ Robin Murphy <robin.murphy@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Kees Cook <keescook@chromium.org>, 
+ Trond Myklebust <trond.myklebust@hammerspace.com>, 
+ Anna Schumaker <anna@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
+ linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org, 
+ openipmi-developer@lists.sourceforge.net, linux-integrity@vger.kernel.org, 
+ linux-omap@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-efi@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-fpga@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
+ linux-leds@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ greybus-dev@lists.linaro.org, linux-staging@lists.linux.dev, 
+ linux-serial@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-fbdev@vger.kernel.org, iommu@lists.linux.dev, 
+ linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+ linux-hardening@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-kbuild@vger.kernel.org, alsa-devel@alsa-project.org, 
+ linux-sound@vger.kernel.org
+In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
+References: <20240403080702.3509288-1-arnd@kernel.org>
+Subject: Re: (subset) [PATCH 00/34] address all -Wunused-const warnings
+Message-Id: <171273615213.1094883.18382201508159771859.b4-ty@collabora.com>
+Date: Wed, 10 Apr 2024 10:02:32 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1712410202.git.lukas@wunner.de>
-In-Reply-To: <cover.1712410202.git.lukas@wunner.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 8 Apr 2024 17:01:22 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hOHCSp8-8EZjuGAOR0QSH3CcvokG3uBGAKFFpTrkqQRA@mail.gmail.com>
-Message-ID: <CAJZ5v0hOHCSp8-8EZjuGAOR0QSH3CcvokG3uBGAKFFpTrkqQRA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Deduplicate bin_attribute simple read() callbacks
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, 
-	Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, 
-	Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>, 
-	intel-gvt-dev@lists.freedesktop.org, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
-	Luis Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-On Sat, Apr 6, 2024 at 3:52=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrote=
-:
->
-> For my upcoming PCI device authentication v2 patches, I have the need
-> to expose a simple buffer in virtual memory as a bin_attribute.
->
-> It turns out we've duplicated the ->read() callback for such simple
-> buffers a fair number of times across the tree.
->
-> So instead of reinventing the wheel, I decided to introduce a common
-> helper and eliminate all duplications I could find.
->
-> I'm open to a bikeshedding discussion on the sysfs_bin_attr_simple_read()
-> name. ;)
->
-> Lukas Wunner (2):
->   sysfs: Add sysfs_bin_attr_simple_read() helper
->   treewide: Use sysfs_bin_attr_simple_read() helper
->
->  arch/powerpc/platforms/powernv/opal.c              | 10 +-------
->  drivers/acpi/bgrt.c                                |  9 +-------
->  drivers/firmware/dmi_scan.c                        | 12 ++--------
->  drivers/firmware/efi/rci2-table.c                  | 10 +-------
->  drivers/gpu/drm/i915/gvt/firmware.c                | 26 +++++-----------=
------
->  .../intel/int340x_thermal/int3400_thermal.c        |  9 +-------
->  fs/sysfs/file.c                                    | 27 ++++++++++++++++=
-++++++
->  include/linux/sysfs.h                              | 15 ++++++++++++
->  init/initramfs.c                                   | 10 +-------
->  kernel/module/sysfs.c                              | 13 +----------
->  10 files changed, 56 insertions(+), 85 deletions(-)
->
-> --
 
-For the series
+On Wed, 03 Apr 2024 10:06:18 +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Compilers traditionally warn for unused 'static' variables, but not
+> if they are constant. The reason here is a custom for C++ programmers
+> to define named constants as 'static const' variables in header files
+> instead of using macros or enums.
+> 
+> [...]
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Applied, thanks!
+
+[09/34] power: rt9455: hide unused rt9455_boost_voltage_values
+        commit: 452d8950db3e839aba1bb13bc5378f4bac11fa04
+
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
+
 
