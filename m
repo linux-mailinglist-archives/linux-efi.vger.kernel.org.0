@@ -1,136 +1,167 @@
-Return-Path: <linux-efi+bounces-933-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-934-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208BB89ECF5
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Apr 2024 10:02:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E654389EFC4
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Apr 2024 12:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00E81F22A79
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Apr 2024 08:02:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23BD41C226FD
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Apr 2024 10:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5498713D52A;
-	Wed, 10 Apr 2024 08:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DD9158D90;
+	Wed, 10 Apr 2024 10:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sc66azfd"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C136613D505;
-	Wed, 10 Apr 2024 08:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18860158D94;
+	Wed, 10 Apr 2024 10:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712736157; cv=none; b=nj/+XoOjnt/sStNX6gfPlRLy8FTwBCskCz30eSIsVqUodK36V209VjYYOJi5V2aZ6Zj9dQtWPi+X3Ja6/aJDWJWci3Id2lZkkUrr0XpNx1CbblCfphl+dhgBfkzTZ3lfCQOr3hTTA9hf372bgjVMkEX/rizVMYq3g1EvhPUutvY=
+	t=1712744669; cv=none; b=miUk5hoKR6v2NC0NxIoIld7Lx4Fv4UZ1qCWrsnVhKyTONhcFn/qTXpw4jnAwVtfxKrEBu2LXRt/efQDRZuscv42gczVeZICn3jTAWYvfZFYM/T6a/VutyajL4EVGkx230ewL22Vn7uiXUgVMGGXPybojUwKNWCUHM324fk+DnIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712736157; c=relaxed/simple;
-	bh=KElYbch9PwjyMMyu6DqQ19Q1q06S1GdiKB4kYIvJsOA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=bBAtC04DaDVwHEUOOiFSRuslrl4QmXJkNwIxlynnpCJTLQoVrWUVTlO89Clpnhd/aF12w6oTjHuxnvrJymhY+Q8tm+0OxOvE8XUv/x2Dczi3ELoLd/y8qIsK+MyeonrFwSjZ3eR5Bs0oaVVpccWwZSXhKQxXPM80iFWgxUzQYEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDFDC43390;
-	Wed, 10 Apr 2024 08:02:36 +0000 (UTC)
-Received: by mercury (Postfix, from userid 1000)
-	id 324081063262; Wed, 10 Apr 2024 10:02:32 +0200 (CEST)
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Michael Ellerman <mpe@ellerman.id.au>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Damien Le Moal <dlemoal@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Corey Minyard <minyard@acm.org>, Peter Huewe <peterhuewe@gmx.de>, 
- Jarkko Sakkinen <jarkko@kernel.org>, Tero Kristo <kristo@kernel.org>, 
- Stephen Boyd <sboyd@kernel.org>, Ian Abbott <abbotti@mev.co.uk>, 
- H Hartley Sweeten <hsweeten@visionengravers.com>, 
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
- Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
- Vinod Koul <vkoul@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, Moritz Fischer <mdf@kernel.org>, 
- Liviu Dudau <liviu.dudau@arm.com>, 
- Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Michael Hennerich <michael.hennerich@analog.com>, 
- Peter Rosin <peda@axentia.se>, Lars-Peter Clausen <lars@metafoo.de>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Markuss Broks <markuss.broks@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Lee Jones <lee@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
- Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
- Yisen Zhuang <yisen.zhuang@huawei.com>, Stanislaw Gruszka <stf_xl@wp.pl>, 
- Kalle Valo <kvalo@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
- Tony Lindgren <tony@atomide.com>, Mark Brown <broonie@kernel.org>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Xiang Chen <chenxiang66@hisilicon.com>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Heiko Stuebner <heiko@sntech.de>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Vaibhav Hiremath <hvaibhav.linux@gmail.com>, Alex Elder <elder@kernel.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Jacky Huang <ychuang3@nuvoton.com>, 
- Helge Deller <deller@gmx.de>, Christoph Hellwig <hch@lst.de>, 
- Robin Murphy <robin.murphy@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Kees Cook <keescook@chromium.org>, 
- Trond Myklebust <trond.myklebust@hammerspace.com>, 
- Anna Schumaker <anna@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
- linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org, 
- openipmi-developer@lists.sourceforge.net, linux-integrity@vger.kernel.org, 
- linux-omap@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-crypto@vger.kernel.org, 
- dmaengine@vger.kernel.org, linux-efi@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-fpga@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org, 
- linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
- linux-leds@vger.kernel.org, linux-wireless@vger.kernel.org, 
- linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- greybus-dev@lists.linaro.org, linux-staging@lists.linux.dev, 
- linux-serial@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-fbdev@vger.kernel.org, iommu@lists.linux.dev, 
- linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
- linux-hardening@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-kbuild@vger.kernel.org, alsa-devel@alsa-project.org, 
- linux-sound@vger.kernel.org
-In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
-References: <20240403080702.3509288-1-arnd@kernel.org>
-Subject: Re: (subset) [PATCH 00/34] address all -Wunused-const warnings
-Message-Id: <171273615213.1094883.18382201508159771859.b4-ty@collabora.com>
-Date: Wed, 10 Apr 2024 10:02:32 +0200
+	s=arc-20240116; t=1712744669; c=relaxed/simple;
+	bh=ebbxEm39CjWYFC6IF/Qa9Ng63Zx8Wwaf4wL+lGqTjNw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L3SPyLVI1aWmU771d/jJdN9vtk6A6wtFoMLEqoBPHtKCE9pRo20JOQmtq3BkTB6XCR8GokoaFRthBEDqPnZW8IpspnJnOs8yHrA1PqfldMzzjODqGpD2dk6qs+ymPYfDDtfcRqjYSOF2YY0vvRw+lsPqZHaH+dYNtcgKXg89jpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sc66azfd; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712744668; x=1744280668;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ebbxEm39CjWYFC6IF/Qa9Ng63Zx8Wwaf4wL+lGqTjNw=;
+  b=Sc66azfdkVe3zz7jy0TBbV+UCVoHJ3Bt0RUQGHYX4Jx+yWrMo8fstSUN
+   JJNK8mgPsQDfSfPrZWXMEiQ/RSL23JFVZVMUEUjEGu4YGZ9091eBPDGsC
+   tuGoO7L5c7ykkCNy1n235OYcG5e+UUxDCSAbJsX9sDjDBzAG0jp7AD0nT
+   i8Vrbq9HJ4rcW9riTiMjLOO6iOBcju9egzNK1h6vqiDSmTVof2Q9GxmEK
+   lNClYTWpiT7jdAuZBr6oDmQdWZjw1NafgWPO2iwJlfdi8X2GHqTaYB1un
+   hBXjhdyj7eJj2keRP7qojdmFF26KB4obkNR3ecdgw8A74+pIx7/8FhXJ2
+   A==;
+X-CSE-ConnectionGUID: nXPEC85WSmmG0RSCrPZ+0A==
+X-CSE-MsgGUID: f/H3utzNQlK8JOIgAXaqHw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8224430"
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
+   d="scan'208";a="8224430"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 03:24:28 -0700
+X-CSE-ConnectionGUID: Nrqx7/0BSJWJvICVK9O+Qg==
+X-CSE-MsgGUID: s3AwXsfhQfq6IXM8QWLN+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
+   d="scan'208";a="25283031"
+Received: from unknown (HELO chenyu-dev.sh.intel.com) ([10.239.62.107])
+  by orviesa004.jf.intel.com with ESMTP; 10 Apr 2024 03:24:26 -0700
+From: Chen Yu <yu.c.chen@intel.com>
+To: linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	linux-kernel@vger.kernel.org,
+	Chen Yu <yu.c.chen@intel.com>,
+	"Hossain, Md Iqbal" <md.iqbal.hossain@intel.com>
+Subject: [PATCH] efi/unaccepted: touch soft lockup during memory accept
+Date: Wed, 10 Apr 2024 18:23:01 +0800
+Message-Id: <20240410102301.634677-1-yu.c.chen@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
 
+Commit 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused
+by parallel memory acceptance") has released the spinlock so
+other CPUs can do memory acceptance in parallel and not
+triggers softlockup on other CPUs.
 
-On Wed, 03 Apr 2024 10:06:18 +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Compilers traditionally warn for unused 'static' variables, but not
-> if they are constant. The reason here is a custom for C++ programmers
-> to define named constants as 'static const' variables in header files
-> instead of using macros or enums.
-> 
-> [...]
+However the softlock up was intermittent shown up if the memory
+of the TD guest is large, and the timeout of softlockup is set
+to 1 second:
 
-Applied, thanks!
+ RIP: 0010:_raw_spin_unlock_irqrestore
+ Call Trace:
+ ? __hrtimer_run_queues
+ <IRQ>
+ ? hrtimer_interrupt
+ ? watchdog_timer_fn
+ ? __sysvec_apic_timer_interrupt
+ ? __pfx_watchdog_timer_fn
+ ? sysvec_apic_timer_interrupt
+ </IRQ>
+ ? __hrtimer_run_queues
+ <TASK>
+ ? hrtimer_interrupt
+ ? asm_sysvec_apic_timer_interrupt
+ ? _raw_spin_unlock_irqrestore
+ ? __sysvec_apic_timer_interrupt
+ ? sysvec_apic_timer_interrupt
+ accept_memory
+ try_to_accept_memory
+ do_huge_pmd_anonymous_page
+ get_page_from_freelist
+ __handle_mm_fault
+ __alloc_pages
+ __folio_alloc
+ ? __tdx_hypercall
+ handle_mm_fault
+ vma_alloc_folio
+ do_user_addr_fault
+ do_huge_pmd_anonymous_page
+ exc_page_fault
+ ? __do_huge_pmd_anonymous_page
+ asm_exc_page_fault
+ __handle_mm_fault
 
-[09/34] power: rt9455: hide unused rt9455_boost_voltage_values
-        commit: 452d8950db3e839aba1bb13bc5378f4bac11fa04
+When the local irq is enabled at the end of accept_memory(),
+the softlockup detects that the watchdog on single CPU has
+not been fed for a while. That is to say, even other CPUs
+will not be blocked by spinlock, the current CPU might be
+stunk with local irq disabled for a while, which hurts not
+only nmi watchdog but also softlockup.
 
-Best regards,
+Chao Gao pointed out that the memory accept could be time
+costly and there was similar report before. Thus to avoid
+any softlocup detection during this stage, give the
+softlockup a flag to skip the timeout check at the end of
+accept_memory(), by invoking touch_softlockup_watchdog().
+
+Reported-by: "Hossain, Md Iqbal" <md.iqbal.hossain@intel.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+---
+ drivers/firmware/efi/unaccepted_memory.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+index 5b439d04079c..50f6503fe49f 100644
+--- a/drivers/firmware/efi/unaccepted_memory.c
++++ b/drivers/firmware/efi/unaccepted_memory.c
+@@ -4,6 +4,7 @@
+ #include <linux/memblock.h>
+ #include <linux/spinlock.h>
+ #include <linux/crash_dump.h>
++#include <linux/nmi.h>
+ #include <asm/unaccepted_memory.h>
+ 
+ /* Protects unaccepted memory bitmap and accepting_list */
+@@ -149,6 +150,9 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 	}
+ 
+ 	list_del(&range.list);
++
++	touch_softlockup_watchdog();
++
+ 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+ }
+ 
 -- 
-Sebastian Reichel <sebastian.reichel@collabora.com>
+2.25.1
 
 
