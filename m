@@ -1,141 +1,122 @@
-Return-Path: <linux-efi+bounces-937-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-938-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5A18A04E7
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Apr 2024 02:50:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6958A13DD
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Apr 2024 14:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6211F251ED
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Apr 2024 00:50:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB4E7289EF5
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Apr 2024 12:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA6679DC;
-	Thu, 11 Apr 2024 00:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FC214B061;
+	Thu, 11 Apr 2024 12:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R/7AIIZt"
+	dkim=pass (2048-bit key) header.d=iam.tj header.i=@iam.tj header.b="TVtoJ9bj"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from iam.tj (yes.iam.tj [109.74.197.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1491C01;
-	Thu, 11 Apr 2024 00:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8F814B09C
+	for <linux-efi@vger.kernel.org>; Thu, 11 Apr 2024 12:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.74.197.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712796641; cv=none; b=DSvbzFf5t0XkYwwR2px4aUzK+HQ8Cogjt7KZI9AKcdBrokOe04wSLpYYhUhHYnjAlf8OKVKbYoxUt/Byeo3+ucf7mTOZMsJFBkzP1FY2obc7wQ+K/I7CYMawv3Zez7lRFjbCUj7f9nZlzHRLtBLsjTX01xd2+DzWLLwiTNjfvkw=
+	t=1712836958; cv=none; b=qo8QKGbbl/Gqwuv/0X3VHJc7bBL56FskDesP1spDtBXgkUvwUSb4ikfw3BpDpNaxh6PZ3dA8t1EQ+VCQ6Ws8Hl5Z79BRpM4XoEfDXJOsW2NMsLO3AqjEeNAs/XZF8l+1h6+bKxdlXubW0ERNKsblLk8uUqfdL23E9E9C7TrfpnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712796641; c=relaxed/simple;
-	bh=FPPB/GdxEEL3sFWdyaY02Mi0zFPSitnZc7eAqagFJUs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F88PcK7QqfivVF9IQSUTCy4prq29RjlfPAZLnS9DGAcHwE6vW3RI9D02MSJYoZUk7PUNLHJf58/zkqBnKXNucdXQ70RrY5rkMeDF4zsGyCEqA39IBIQqtLoNI62t87kh8nmwdlu8aUMNZ5QaszAdtqy8aFoWfr6B+YIY8mXL4oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R/7AIIZt; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712796638; x=1744332638;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FPPB/GdxEEL3sFWdyaY02Mi0zFPSitnZc7eAqagFJUs=;
-  b=R/7AIIZtwVadlRJIbcA+aV3bc6ELu6JKvuhclgCDPiKjRRTpew967kfY
-   /pAQuZOEjxGEZoPKOtk+mwSWxDORfwK6vqr+oAz6u3a5+/H7frgVt4x0d
-   ncW6htVrZArVr6GF4uOhp25y9MXzo9f0vv7pQ333wRR94CrAHJusCCDhu
-   YzXp2tPeRzEuwFW030RIFWYUeXw0bNvUptK6ybcNtwY7EGwltfz8OO5yR
-   XZ2hAERV5fvm8ZT/ISxYEepx82yoIn3iWIYMOpxNQVhAVAFWYeDTzTtrX
-   9vz95Ei6FF6Ze3YYkuiRfNNlTuo3CsRYc9+wJcGu9ovyB+7lQjXHzh01Y
-   A==;
-X-CSE-ConnectionGUID: JWJFjwrQS0qWpKsNUTyrZw==
-X-CSE-MsgGUID: pyM2VbntSdKpC1VWfRZRRA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="11153368"
-X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
-   d="scan'208";a="11153368"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 17:50:38 -0700
-X-CSE-ConnectionGUID: 0nDhENRFSsyzdp/Iq5n1ZQ==
-X-CSE-MsgGUID: /TIn2SV0TeuafMNRs7dNjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
-   d="scan'208";a="20737058"
-Received: from unknown (HELO chenyu-dev.sh.intel.com) ([10.239.62.107])
-  by fmviesa006.fm.intel.com with ESMTP; 10 Apr 2024 17:50:36 -0700
-From: Chen Yu <yu.c.chen@intel.com>
-To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Chao Gao <chao.gao@intel.com>,
-	linux-kernel@vger.kernel.org,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Hossain, Md Iqbal" <md.iqbal.hossain@intel.com>
-Subject: [PATCH v2] efi/unaccepted: touch soft lockup during memory accept
-Date: Thu, 11 Apr 2024 08:49:07 +0800
-Message-Id: <20240411004907.649394-1-yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1712836958; c=relaxed/simple;
+	bh=OS0CbYOvbW6s2Xi8WPDzUXh8p2n4qOxDjBxZaUKrcF8=;
+	h=Content-Type:Message-ID:Date:MIME-Version:To:From:Subject:Cc; b=rWFV7YRUIZkr1qRMS79vLuY6xz3oU+ncBP2x+AiCDSuvX9dqDwmt0970Z9d+F4n0Ndd/VUOrTCJ7Ih1mLsk33ajpIOvg5yedv7Qh3IJwuErGVB+h72siQbfOxuRYUnGecIaSGMISPQ/Y7YCzxoR/QXdkoJmCy1NFB1jVI+IfmLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iam.tj; spf=pass smtp.mailfrom=iam.tj; dkim=pass (2048-bit key) header.d=iam.tj header.i=@iam.tj header.b=TVtoJ9bj; arc=none smtp.client-ip=109.74.197.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iam.tj
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iam.tj
+Received: from [IPV6:2a0d:3344:11e:1ff0::ff] (unknown [IPv6:2a0d:3344:11e:1ff0::ff])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by iam.tj (Postfix) with ESMTPSA id 9AA57347BC;
+	Thu, 11 Apr 2024 13:02:31 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=iam.tj; s=2019;
+	t=1712836951; bh=OS0CbYOvbW6s2Xi8WPDzUXh8p2n4qOxDjBxZaUKrcF8=;
+	h=Date:To:From:Subject:Cc:From;
+	b=TVtoJ9bjtjCufFvH/b5HI38GtZthLiu14XleZ8cX46ER3QWh1raQp/qfjAV2HsFBk
+	 pwiqHipVMRsKyCDoSbw4kyPcWDUIcnXcnLO3QVY0rhlmqN6GoHvwFuRGWpq6RDZSfe
+	 L345Lmpx9ysgc/ciPXDJRZoO903E04lhgGGBKWaVYUCBW96E6iGPxUWmtbUGthbX9w
+	 fm/1W1i4rMGrl/qF/sDSxmlF40AYy/ZD/rMuy884l2avH3X5B3MRO6D0qCYDRoNkFX
+	 PVbLBdJR8pQBCGm1NRuZaLtG0izvT6BmOdUr/LM9FaQ+bSCiYrrgFnVzY0l8Mp0ofH
+	 KGq8RnuHza4DA==
+Content-Type: multipart/mixed; boundary="------------0FukH855E0HzJy0Qr0y4CvXz"
+Message-ID: <c3796ac1-521f-4cba-9c74-3eb92072bb85@iam.tj>
+Date: Thu, 11 Apr 2024 13:02:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: linux-efi@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>
+From: Tj <linux@iam.tj>
+Subject: Regression: ef/x86: Remove EfiMemoryMappedIO from E820 map
+Cc: Mateus Kaduk <mateusz.kaduk@gmail.com>
 
-Commit 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused
-by parallel memory acceptance") has released the spinlock so
-other CPUs can do memory acceptance in parallel and not
-triggers softlockup on other CPUs.
+This is a multi-part message in MIME format.
+--------------0FukH855E0HzJy0Qr0y4CvXz
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-However the softlock up was intermittent shown up if the memory
-of the TD guest is large, and the timeout of softlockup is set
-to 1 second.
+Lenovo Legion 9i fails to set up e820 EFI MMIO regions since v6.2 due to
+commit 07eab0901ede8b75 "efi/x86: Remove EfiMemoryMappedIO from E820 map"
 
-The symptom is:
-When the local irq is enabled at the end of accept_memory(),
-the softlockup detects that the watchdog on single CPU has
-not been fed for a while. That is to say, even other CPUs
-will not be blocked by spinlock, the current CPU might be
-stunk with local irq disabled for a while, which hurts not
-only nmi watchdog but also softlockup.
+Mateusz Kaduk bisected v6.1..v6.2 and pinpointed this on his Legion 9i and confirms this patch fixes all the reported issues.
 
-Chao Gao pointed out that the memory accept could be time
-costly and there was similar report before. Thus to avoid
-any softlocup detection during this stage, give the
-softlockup a flag to skip the timeout check at the end of
-accept_memory(), by invoking touch_softlockup_watchdog().
+https://bugzilla.kernel.org/show_bug.cgi?id=218444
 
-Fixes: 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by parallel memory acceptance")
-Reported-by: "Hossain, Md Iqbal" <md.iqbal.hossain@intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
-v1 -> v2:
-	 Refine the commit log and add fixes tag/reviewed-by tag from Kirill.
----
- drivers/firmware/efi/unaccepted_memory.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This patch is more of a proof of cause since it is quite coarse; it simply disables the effects of 07eab0901ede8b75 with "keep_efi_e820" on command-line; maybe there is a better way than arbitrarily
+removing mappings larger than 256KiB? I wonder if the removal should be done later once the regions
+have been read, or if there is some inherent metadata in the regions to describe what range(s) need
+to be retained.
 
-diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-index 5b439d04079c..50f6503fe49f 100644
---- a/drivers/firmware/efi/unaccepted_memory.c
-+++ b/drivers/firmware/efi/unaccepted_memory.c
-@@ -4,6 +4,7 @@
- #include <linux/memblock.h>
- #include <linux/spinlock.h>
- #include <linux/crash_dump.h>
-+#include <linux/nmi.h>
- #include <asm/unaccepted_memory.h>
- 
- /* Protects unaccepted memory bitmap and accepting_list */
-@@ -149,6 +150,9 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 	}
- 
- 	list_del(&range.list);
-+
-+	touch_softlockup_watchdog();
-+
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
- }
- 
--- 
-2.25.1
 
+
+
+--------------0FukH855E0HzJy0Qr0y4CvXz
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-efi-x86-add-param-keep_efi_e820.patch"
+Content-Disposition: attachment;
+ filename="0001-efi-x86-add-param-keep_efi_e820.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA4MTU2YTc1NjBiZTkzY2U1NjNmNDViM2NlMWY2NDNmNjNmOWUyMTI2IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBUaiA8bGludXhAaWFtLnRqPgpEYXRlOiBUaHUsIDEx
+IEFwciAyMDI0IDEyOjM3OjQ2ICswMTAwClN1YmplY3Q6IFtQQVRDSF0gZWZpL3g4NjogYWRk
+IHBhcmFtIGtlZXBfZWZpX2U4MjAKCkFkZCBhIGNvbW1hbmQtbGluZSBvcHRpb24gdG8gcmV0
+YWluIGFsbCBlODIwIG1hcHBpbmdzLgoKQ29tbWl0IDA3ZWFiMDkwMWVkZThiIGluIHY2LjIg
+YWRkZWQgbG9naWMgdG8gcmVtb3ZlIGU4MjAgRUZJIE1NSU8KcmVnaW9ucyBsYXJnZXIgdGhh
+biAyNTZLaUIuIFRoaXMgY2F1c2VkIGEgcmVncmVzc2lvbiB0aGF0IGFmZmVjdHMKTGVub3Zv
+IExlZ2lvbiA5aSBhbmQgcG9zc2libHkgb3RoZXJzLgoKRml4ZXM6IDA3ZWFiMDkwMWVkZThi
+ICgiZWZpL3g4NjogUmVtb3ZlIEVmaU1lbW9yeU1hcHBlZElPIGZyb20gRTgyMAptYXAiKQpD
+bG9zZXM6IGh0dHBzOi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MjE4
+NDQ0ClNpZ25lZC1vZmYtYnk6IFRqIDxsaW51eEBpYW0udGo+ClRlc3RlZC1ieTogTWF0ZXVz
+eiBLYWR1ayA8bWF0ZXVzei5rYWR1a0BnbWFpbC5jb20+Ci0tLQogYXJjaC94ODYvcGxhdGZv
+cm0vZWZpL2VmaS5jIHwgMTEgKysrKysrKysrKysKIDEgZmlsZSBjaGFuZ2VkLCAxMSBpbnNl
+cnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC94ODYvcGxhdGZvcm0vZWZpL2VmaS5jIGIv
+YXJjaC94ODYvcGxhdGZvcm0vZWZpL2VmaS5jCmluZGV4IGYwOTBlYzk3MmQ3Yi4uOTQxMDE4
+Mjk0MmJkIDEwMDY0NAotLS0gYS9hcmNoL3g4Ni9wbGF0Zm9ybS9lZmkvZWZpLmMKKysrIGIv
+YXJjaC94ODYvcGxhdGZvcm0vZWZpL2VmaS5jCkBAIC0xMDMsNiArMTAzLDE0IEBAIHN0YXRp
+YyBjb25zdCB1bnNpZ25lZCBsb25nICogY29uc3QgZWZpX3RhYmxlc1tdID0gewogCiB1NjQg
+ZWZpX3NldHVwOwkJLyogZWZpIHNldHVwX2RhdGEgcGh5c2ljYWwgYWRkcmVzcyAqLwogCitz
+dGF0aWMgaW50IGtlZXBfZWZpX2U4MjAgX19pbml0ZGF0YTsKK3N0YXRpYyBpbnQgX19pbml0
+IHNldHVwX2tlZXBfZWZpX2U4MjAoY2hhciAqYXJnKQoreworCWtlZXBfZWZpX2U4MjAgPSAx
+OworCXJldHVybiAwOworfQorZWFybHlfcGFyYW0oImtlZXBfZWZpX2U4MjAiLCBzZXR1cF9r
+ZWVwX2VmaV9lODIwKTsKKwogc3RhdGljIGludCBhZGRfZWZpX21lbW1hcCBfX2luaXRkYXRh
+Owogc3RhdGljIGludCBfX2luaXQgc2V0dXBfYWRkX2VmaV9tZW1tYXAoY2hhciAqYXJnKQog
+ewpAQCAtMzMzLDYgKzM0MSw5IEBAIHN0YXRpYyB2b2lkIF9faW5pdCBlZmlfcmVtb3ZlX2U4
+MjBfbW1pbyh2b2lkKQogCXU2NCBzaXplLCBzdGFydCwgZW5kOwogCWludCBpID0gMDsKIAor
+CWlmIChrZWVwX2VmaV9lODIwKQorCQlyZXR1cm47CisKIAlmb3JfZWFjaF9lZmlfbWVtb3J5
+X2Rlc2MobWQpIHsKIAkJaWYgKG1kLT50eXBlID09IEVGSV9NRU1PUllfTUFQUEVEX0lPKSB7
+CiAJCQlzaXplID0gbWQtPm51bV9wYWdlcyA8PCBFRklfUEFHRV9TSElGVDsKLS0gCjIuMzku
+MgoK
+
+--------------0FukH855E0HzJy0Qr0y4CvXz--
 
