@@ -1,145 +1,183 @@
-Return-Path: <linux-efi+bounces-945-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-946-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269AE8AC6A4
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Apr 2024 10:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D03438ACC04
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Apr 2024 13:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA7882834E3
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Apr 2024 08:19:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8205E2823EA
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Apr 2024 11:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AAE5102F;
-	Mon, 22 Apr 2024 08:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E621465B7;
+	Mon, 22 Apr 2024 11:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YsgLicLO"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7E8502B6;
-	Mon, 22 Apr 2024 08:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1301E146595
+	for <linux-efi@vger.kernel.org>; Mon, 22 Apr 2024 11:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713773930; cv=none; b=KTm7pF/s+L1x4s93exkltT3gtWTwvsrb5ODXQhDqV1rnnAEQ3cC/R1o07e8mV5kWKUt9/m0P52Y/SpCWQmj49+zfMhBkfvGYS8rXuoFDEqNLwia2T6OS19rsiHEZugkH98ZHKaimpuWC36p45qdtEJ9VWGvZGdRVj/5IXH1HAes=
+	t=1713785265; cv=none; b=ZySX/OwZ16ljEu5BtTHB2aE56CfVfv8a4P04qVwpd7ZX9rBsTJC588CwHqDHtIbbAxv/TOSpbKRq+Ck5rb7yTwgmOuT18DPI7nRMcu4KVqtgeWauW+fV1NIJwCKCOiAnDnk75S5DZx8bhN3vA1ksAAw9jkpc7ispmZ8Lkn6mKWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713773930; c=relaxed/simple;
-	bh=1R0QdiqBkh2lDI1KZWlD4yhHxXvFKtuxtuwBOw/ITOE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=a+EoWro1vSYv/ZNn5sKp0LrXGEJL9PtjzaARAm/t9y97X+8es7AW8AXSONV2Xlw2Idw0f5RRs3eFRU0usNcj/3jgG7LtGO7qZ0wpNGQ6XH/onCZ8zFLmgWDArikSSFqCwco1GtxsJ9hEpRRlWDQsvNe7S4QvMQlAie6SNuX1T30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VNJ6g0Nzdz4x1R;
-	Mon, 22 Apr 2024 18:18:35 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Damien Le Moal <dlemoal@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Corey Minyard <minyard@acm.org>, Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Tero Kristo <kristo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
-	John Allen <john.allen@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Vinod Koul <vkoul@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Moritz Fischer <mdf@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Peter Rosin <peda@axentia.se>, Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Markuss Broks <markuss.broks@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Yisen Zhuang <yisen.zhuang@huawei.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>, Kalle Valo <kvalo@kernel.org>,
-	Sebastian Reichel <sre@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vaibhav Hiremath <hvaibhav.linux@gmail.com>,
-	Alex Elder <elder@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
-	Jacky Huang <ychuang3@nuvoton.com>, Helge Deller <deller@gmx.de>,
-	Christoph Hellwig <hch@lst.de>, Robin Murphy <robin.murphy@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>, Takashi Iwai <tiwai@suse.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net,
-	linux-integrity@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-fpga@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-input@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormr,
-	eply.com@web.codeaurora.org, linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-rtc@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, greybus-dev@lists.linaro.org,
-	linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	iommu@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-hardening@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
-In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
-References: <20240403080702.3509288-1-arnd@kernel.org>
-Subject: Re: (subset) [PATCH 00/34] address all -Wunused-const warnings
-Message-Id: <171377378377.1025456.1313405994816400451.b4-ty@ellerman.id.au>
-Date: Mon, 22 Apr 2024 18:16:23 +1000
+	s=arc-20240116; t=1713785265; c=relaxed/simple;
+	bh=IIERLXGuhgMzjRFxP+SlabqBW/eSZqSY7rrmn3OK2ZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iXYQ2Bm0YQ6UHW8upzvxFBQHXy/a3rgZ+KkbzQmgpC0SGDpXHTb71j2xMniA7msTUvfJtn5bWgM7+VoCD/w1vLkOONpx+j6zbp8lbhw2BXt96jgugAcY+W1f8N0g0dd5hAnrgDe7XRtGibPJFylj7/XeULmXJTyqMkMzJcsvnHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YsgLicLO; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-518931f8d23so4382906e87.3
+        for <linux-efi@vger.kernel.org>; Mon, 22 Apr 2024 04:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713785261; x=1714390061; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pAHS0Gv/aJRFLYbSUujnvPu8mogZARnmQtFNoH+oLlw=;
+        b=YsgLicLOL5/+sMeZ4Fb93pDeW87OdAAKFP1sh+GAiaULlhULZPpwCaL1QP8w8v/S78
+         up/oZ3xE55POrKqsRsMj/G5arH6MkXiK6daGL6UXW4YwXxOvZEiduKYyWke0MvNQXR4+
+         Dp5noQD0VZorhFLtQNfSt3A8zRpNPw7vILnpBbJTyry2AsFRu/avEsKSA5aT+7Xg3VDe
+         idYz275oYQMRXAd5W0J6YW3YZIEc3smamUurw+cgVEPxoMXGBRWakjw/Jki4aP03j4c6
+         Yf4WApaLKHs8i5NhtPK0GzhvCksWXGNgr1vv+/NeKmbHL3XrCcJTYym5bHjl3OUCvcbe
+         kwOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713785261; x=1714390061;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pAHS0Gv/aJRFLYbSUujnvPu8mogZARnmQtFNoH+oLlw=;
+        b=f74anykMFquB+HeAsvz4aPrC2zTgt56ON6rwfhey8AUR524SbbSZoU8uJ+7Ag/Frkk
+         k5VPiDqaMjLmMMHrWbDTbgtWILAIsMp0VZvOwn4qgDDwHYjQQAg2ae1S+WCchPJ2kBdC
+         /Eg8QqzPnn6ZNs3yEusdLPe8q1ZN/DaDN4fJNdH582eLGgf8hQRe/zjmx2KeHxoWyJ+j
+         YEMckZ1YyVvmPZl7lcFDpGq06CdlZpcmZrl6GdfaBFnwYm4PS9Rl1CAH4RudD3AN83Z8
+         advx9EbdEzfTZ6frZlxgIyzHJEnW/QBUgVWEBX69wOQ78VgWKnsp0JQn5BhJAi0gZ8jo
+         29Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCUFHz/EB35tzhwqoS5Bvsha0O76fcqA4faRXzZ1IwZyMTkuSCFkyv+Ky4I6DIesTcK5Nu1ESxTgzwTm4XQ/OLSkBKuokrIHrcVV
+X-Gm-Message-State: AOJu0YxCNS31e1MPsIodtfJLWolRo77sdXBZ7CfBmOuUNZf8nU8K0qbM
+	hh2gxU17pvYKEiJXGgUP9+8WcnNeu6SprHfWN9jqmniZ9vy7b5+FG3/YYZig1jk=
+X-Google-Smtp-Source: AGHT+IE8EBr5NvmY11IDYuiTNid1hwFS7mppMFMZCTSBlKU5z9TbJJgtf22eemyN27XguoGl4AJ18g==
+X-Received: by 2002:ac2:5963:0:b0:518:ddc3:b3a2 with SMTP id h3-20020ac25963000000b00518ddc3b3a2mr5172597lfp.28.1713785261086;
+        Mon, 22 Apr 2024 04:27:41 -0700 (PDT)
+Received: from localhost.localdomain (87-100-245-199.bb.dnainternet.fi. [87.100.245.199])
+        by smtp.gmail.com with ESMTPSA id a15-20020ac25e6f000000b00517041af89dsm1738793lfr.293.2024.04.22.04.27.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Apr 2024 04:27:40 -0700 (PDT)
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
+To: Ard Biesheuvel <ardb@kernel.org>,
+	linux-efi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Lennart Poettering <lennart@poettering.net>
+Subject: [PATCH] efi: expose TPM event log to userspace via sysfs
+Date: Mon, 22 Apr 2024 14:27:11 +0300
+Message-Id: <20240422112711.362779-1-mikko.rapeli@linaro.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 03 Apr 2024 10:06:18 +0200, Arnd Bergmann wrote:
-> Compilers traditionally warn for unused 'static' variables, but not
-> if they are constant. The reason here is a custom for C++ programmers
-> to define named constants as 'static const' variables in header files
-> instead of using macros or enums.
-> 
-> In W=1 builds, we get warnings only static const variables in C
-> files, but not in headers, which is a good compromise, but this still
-> produces warning output in at least 30 files. These warnings are
-> almost all harmless, but also trivial to fix, and there is no
-> good reason to warn only about the non-const variables being unused.
-> 
-> [...]
+Userspace needs to know if TPM kernel drivers need to be loaded
+and related services started early in the boot if TPM device
+is used and available. If EFI firmware has used TPM device
+to e.g. measure binaries, then many of them also provide the TPM
+log to kernel in addition to the actual TPM device side measurements.
+Expose availability of TPM event log to userspace via
+/sys/firmware/efi/tpm_log. If the file exists, then firmware
+provided a TPM event log to kernel, and userspace init should also
+queue TPM module loading and other early boot services for TPM support.
 
-Applied to powerpc/next.
+Enables systemd to support TPM drivers as modules when rootfs is
+encrypted with the TPM device.
 
-[01/34] powerpc/fsl-soc: hide unused const variable
-        https://git.kernel.org/powerpc/c/01acaf3aa75e1641442cc23d8fe0a7bb4226efb1
+Sample output from a arm64 qemu machine with u-boot based EFI firmware
+and swtpm:
 
-cheers
+root@trs-qemuarm64:~# dmesg|grep TPMEvent
+[    0.000000] efi: TPMFinalLog=0xbd648040 RTPROP=0xbd646040 SMBIOS3.0=0xbe6ad000 TPMEventLog=0xbd5f9040 INITRD=0xbd5f7040 RNG=0xbd5f6040  MEMRESERVE=0xbd5f5040
+root@trs-qemuarm64:~# ls -l /sys/firmware/efi/tpm_log
+-r-------- 1 root root 4096 Apr 22 10:31 /sys/firmware/efi/tpm_log
+root@trs-qemuarm64:~# cat /sys/firmware/efi/tpm_log
+TPMEventLog=0xbd5f9040
+root@trs-qemuarm64:~# cat /sys/firmware/efi/systab
+SMBIOS3=0xbe6ad000
+
+Other similar information is currently in /sys/firmware/efi/systab but
+for new exported variables a one-variable-per-file sysfs interface
+is preferred according to comments in systab_show()
+drivers/firmware/efi/efi.c
+
+See also:
+https://github.com/systemd/systemd/pull/32314
+https://lists.freedesktop.org/archives/systemd-devel/2024-April/050206.html
+
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: Lennart Poettering <lennart@poettering.net>
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+---
+ Documentation/ABI/testing/sysfs-firmware-efi | 12 ++++++++++++
+ drivers/firmware/efi/efi.c                   | 13 +++++++++++++
+ 2 files changed, 25 insertions(+)
+
+diff --git a/Documentation/ABI/testing/sysfs-firmware-efi b/Documentation/ABI/testing/sysfs-firmware-efi
+index 5e4d0b27cdfe..caaff27cc73e 100644
+--- a/Documentation/ABI/testing/sysfs-firmware-efi
++++ b/Documentation/ABI/testing/sysfs-firmware-efi
+@@ -36,3 +36,15 @@ Description:	Displays the content of the Runtime Configuration Interface
+ 		Table version 2 on Dell EMC PowerEdge systems in binary format
+ Users:		It is used by Dell EMC OpenManage Server Administrator tool to
+ 		populate BIOS setup page.
++
++What:		/sys/firmware/efi/tpm_log
++Date:		April 2024
++Contact:	Mikko Rapeli <mikko.rapeli@linaro.org>
++Description:	If EFI firmware supports TPM device and measurements were done
++		then a TPM event log has very likely been generated and provided
++		to the kernel. This serves as indicator for userspace to load
++		TPM drivers and to start related service early in the boot sequence,
++		e.g. initramfs, where full bus probes and device scans are not yet
++		done.
++Users:		systemd will use this interface to support TPM drivers as modules also
++		for early initramfs
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 4fcda50acfa4..94773e8b8806 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -162,6 +162,13 @@ static ssize_t fw_platform_size_show(struct kobject *kobj,
+ 	return sprintf(buf, "%d\n", efi_enabled(EFI_64BIT) ? 64 : 32);
+ }
+ 
++static ssize_t tpm_log_show(struct kobject *kobj,
++				     struct kobj_attribute *attr, char *buf)
++{
++	return sprintf(buf, "TPMEventLog=0x%lx", efi.tpm_log);
++}
++static struct kobj_attribute efi_attr_tpm_log = __ATTR_RO_MODE(tpm_log, 0400);
++
+ extern __weak struct kobj_attribute efi_attr_fw_vendor;
+ extern __weak struct kobj_attribute efi_attr_runtime;
+ extern __weak struct kobj_attribute efi_attr_config_table;
+@@ -459,6 +466,12 @@ static int __init efisubsys_init(void)
+ 		platform_device_register_simple("efi_secret", 0, NULL, 0);
+ #endif
+ 
++	if (efi.tpm_log != EFI_INVALID_TABLE_ADDR) {
++		error = sysfs_create_file(efi_kobj, &efi_attr_tpm_log.attr);
++		if (error)
++			pr_err("sysfs create file failed with error %d.\n", error);
++	}
++
+ 	return 0;
+ 
+ err_remove_group:
+-- 
+2.34.1
+
 
