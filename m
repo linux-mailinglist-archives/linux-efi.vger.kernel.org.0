@@ -1,121 +1,112 @@
-Return-Path: <linux-efi+bounces-966-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-967-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199C98AE8F3
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Apr 2024 16:02:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B78B8B10BB
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Apr 2024 19:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E7F5B25693
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Apr 2024 14:02:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D5A51F258FF
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Apr 2024 17:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C377136E38;
-	Tue, 23 Apr 2024 14:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938C016D326;
+	Wed, 24 Apr 2024 17:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="BRfXEkci"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlgk8zRo"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5EC136E16;
-	Tue, 23 Apr 2024 14:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A3F16D323;
+	Wed, 24 Apr 2024 17:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713880806; cv=none; b=d7xgEuASdrduwmmVkmTj4pFl19TnLxpux7VpaxpNEJK4oDbh2v5Ns5ZMN1ZUdwFShR0IRkdeT8r1bGj7zwxE8ZdnbnL+VV5xkLqQPPW4+TvFJE/s9kxSf+6EyVCynMa5vY9BRoMh5LLEy3NcnzPb/g8Zgz5gAg/kNfJ07u9yn2Q=
+	t=1713978754; cv=none; b=MsOvCIt2ORF/nYNfDjhdh535KAm1F+45JtHMvFPaksF7/U3wt9xKVWnR/R20wDX3o33JBKh+sJYeTVXZZGjCuzHTdU3F+hV4xf2Yn8om42ds9rC9MFAnJqHk83fgoPsm+2812fseTpz3BqJU8zxwKEHzQRNW5AR33b8tA9IdY68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713880806; c=relaxed/simple;
-	bh=PzEyPm3uFppccDqRRPZJsBGGE8BDKJ5eSFXRs0iXUsg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Dtj9TAePa88UMZ19BkqAe9xwZt0cmsrcJDdt6gN6Ogy8JsEq/s5TnbDpLidQaoZqf2iJwx9rWCkaVnXw4Bhk8HOiEwY/nwZn+GGYRLwtZa5RYGVYnvThXge2RC8vkMR8rHEtMcrgT4qs2vym9u1V2SgTwuePYiTZ1LlGi0xvqnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=BRfXEkci; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1713880805; x=1745416805;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SyeTuxtsDsOQH6Q0op2IkDaUc7NS6Cg+L/o0qZ8cwsI=;
-  b=BRfXEkcihaww6gtGRCMcy5W9z9NWwpa5WpHBCWdoxYHlO4kVrIQujAIQ
-   t97+OMBdWEzTN+OQk24ZaiEo/KF2iDRBLV4CfaGOpI0z2p4khZ26TGLy7
-   WyQz5xZFRO4azGbRJKVhKYPMEOzV+p6BzOdPT6Jc17GxDj8sXqWoD+YlE
-   E=;
-X-IronPort-AV: E=Sophos;i="6.07,222,1708387200"; 
-   d="scan'208";a="414050955"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 13:59:58 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [10.0.10.100:20810]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.30.96:2525] with esmtp (Farcaster)
- id c93c9285-09b3-43d0-9b46-423906eadf23; Tue, 23 Apr 2024 13:59:57 +0000 (UTC)
-X-Farcaster-Flow-ID: c93c9285-09b3-43d0-9b46-423906eadf23
-Received: from EX19D008EUC004.ant.amazon.com (10.252.51.148) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 23 Apr 2024 13:59:57 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
- EX19D008EUC004.ant.amazon.com (10.252.51.148) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 23 Apr 2024 13:59:56 +0000
-Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com
- (10.253.65.58) by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP
- Server id 15.2.1258.28 via Frontend Transport; Tue, 23 Apr 2024 13:59:56
- +0000
-Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id BF09A20D4A; Tue, 23 Apr 2024 13:59:55 +0000 (UTC)
-From: Hagar Hemdan <hagarhem@amazon.com>
-To:
-CC: Maximilian Heyne <mheyne@amazon.de>, Pratyush Yadav <ptyadav@amazon.de>,
-	Norbert Manthey <nmanthey@amazon.de>, Hagar Hemdan <hagarhem@amazon.com>,
-	<stable@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] efi: libstub: only free priv.runtime_map when allocated
-Date: Tue, 23 Apr 2024 13:59:26 +0000
-Message-ID: <20240423135928.1200-1-hagarhem@amazon.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1713978754; c=relaxed/simple;
+	bh=Kkt+YSmlIUMjWbiX/GoYafA5lRKE9xD3stveC0qUvmA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eHiC0R/hvPdafp2saMh71Ye82lXYuFvsrdqSLMRj8odYmULNLjM/Brhx6z+IeOjU1zmi+Ps+p1B0IyOYqt6N+1Yv7EkS2aPUxhDpdtAU8ZdWuIVt4PyXlcgIYSNWWFCq8P/2xeWUDiaXFxiPNPktfVIt5B5ipUPhNuuSMyLZTco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlgk8zRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACD4C2BD11;
+	Wed, 24 Apr 2024 17:12:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713978754;
+	bh=Kkt+YSmlIUMjWbiX/GoYafA5lRKE9xD3stveC0qUvmA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hlgk8zRoBFgiTu4cHuAAFfiJOpNQb6jzqeB6PI52v5ko9LqOPIQE2+LsSKFYiQrHA
+	 EQmHaurrWmx4TuISFEKERvO9wxwQcL6uDtkKQ8zfhph95ixEZuTAxAfHVp83hJnCW/
+	 J1bmUs6FDSfIYRU3LaiRGoXfbCGeyQFoltGQXJlUEqqO2lBB0A4BoFrtEAE7NF94+3
+	 fy8BEg+X3ag4Ok9hJEe/r7NeaFqmnoB1svunfOoOQf/YsYx96WgupX5AYPGetm9PGh
+	 L2dyOG+FKGdqp9/GB96SpIJr5SOa9iINPG3PFhnBoCY/ab7JVfGazBLFO3wEnWWdiw
+	 NK6nebuAQnOKA==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-51b2f105829so38715e87.3;
+        Wed, 24 Apr 2024 10:12:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX+CHVoAW7a56ptjm5+Nj7LzEy8b9tF0DYEaUcDGxiX0OPV2uGKReN6lh8tuLRRGhj8xkO7nOVZ/zDJmd+IWcZTJlZLpOjKtGqfNiss
+X-Gm-Message-State: AOJu0Yz4tvTkmvnYGh3ce3flUABZdRiqf5XdFd5sC8400JpVvrtIHcvD
+	hMCq1naWbodAtIMVZKXRetFgVSwGYoV2UegsGYHX/bgIIyt6CbKYSay2pqA2E7w7VGeJt8D/VlF
+	allnIA/YSmqguLNgpVoiI4CLIV+M=
+X-Google-Smtp-Source: AGHT+IFylpELUugGSA1hGuuC3zfhaMOA+fwjdt07ZGe43Ydi4oygeR25mHBbZo39tsn6NuKNZ3DZKXgHj/A8s6lJenY=
+X-Received: by 2002:ac2:5b12:0:b0:51b:2f81:7361 with SMTP id
+ v18-20020ac25b12000000b0051b2f817361mr2649433lfn.57.1713978752374; Wed, 24
+ Apr 2024 10:12:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+References: <20240411004907.649394-1-yu.c.chen@intel.com> <ZiZ2yUI09QIrYr/4@chenyu5-mobl2>
+In-Reply-To: <ZiZ2yUI09QIrYr/4@chenyu5-mobl2>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 24 Apr 2024 19:12:21 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGdRkiLh+3DePZuejaqEphyP=gN6bnK6v08ueP3MP40EA@mail.gmail.com>
+Message-ID: <CAMj1kXGdRkiLh+3DePZuejaqEphyP=gN6bnK6v08ueP3MP40EA@mail.gmail.com>
+Subject: Re: [PATCH v2] efi/unaccepted: touch soft lockup during memory accept
+To: Chen Yu <yu.c.chen@intel.com>
+Cc: linux-efi@vger.kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Nikolay Borisov <nik.borisov@suse.com>, Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org, 
+	"Hossain, Md Iqbal" <md.iqbal.hossain@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-priv.runtime_map is only allocated when efi_novamap is not set.
-Otherwise, it is an uninitialized value.
-In the error path, it is freed unconditionally.
-Avoid passing an uninitialized value to free_pool.
-Free priv.runtime_map only when it was allocated.
+On Mon, 22 Apr 2024 at 16:40, Chen Yu <yu.c.chen@intel.com> wrote:
+>
+> On 2024-04-11 at 08:49:07 +0800, Chen Yu wrote:
+> > Commit 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused
+> > by parallel memory acceptance") has released the spinlock so
+> > other CPUs can do memory acceptance in parallel and not
+> > triggers softlockup on other CPUs.
+> >
+> > However the softlock up was intermittent shown up if the memory
+> > of the TD guest is large, and the timeout of softlockup is set
+> > to 1 second.
+> >
+> > The symptom is:
+> > When the local irq is enabled at the end of accept_memory(),
+> > the softlockup detects that the watchdog on single CPU has
+> > not been fed for a while. That is to say, even other CPUs
+> > will not be blocked by spinlock, the current CPU might be
+> > stunk with local irq disabled for a while, which hurts not
+> > only nmi watchdog but also softlockup.
+> >
+> > Chao Gao pointed out that the memory accept could be time
+> > costly and there was similar report before. Thus to avoid
+> > any softlocup detection during this stage, give the
+> > softlockup a flag to skip the timeout check at the end of
+> > accept_memory(), by invoking touch_softlockup_watchdog().
+> >
+> > Fixes: 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by parallel memory acceptance")
+> > Reported-by: "Hossain, Md Iqbal" <md.iqbal.hossain@intel.com>
+> > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> > ---
+> > v1 -> v2:
+> >        Refine the commit log and add fixes tag/reviewed-by tag from Kirill.
+>
+> Gently pinging about this patch.
+>
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
-
-Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
----
-v2: added Cc stable tag to the commit message as requested by kernel
-test robot.
----
- drivers/firmware/efi/libstub/fdt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index 70e9789ff9de..6a337f1f8787 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -335,8 +335,8 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 
- fail:
- 	efi_free(fdt_size, fdt_addr);
--
--	efi_bs_call(free_pool, priv.runtime_map);
-+	if (!efi_novamap)
-+		efi_bs_call(free_pool, priv.runtime_map);
- 
- 	return EFI_LOAD_ERROR;
- }
--- 
-2.40.1
-
+Queued up in efi/urgent now, thanks.
 
