@@ -1,218 +1,128 @@
-Return-Path: <linux-efi+bounces-973-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-974-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3883A8B20A5
-	for <lists+linux-efi@lfdr.de>; Thu, 25 Apr 2024 13:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A978B229D
+	for <lists+linux-efi@lfdr.de>; Thu, 25 Apr 2024 15:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4E6B28807A
-	for <lists+linux-efi@lfdr.de>; Thu, 25 Apr 2024 11:47:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 683572853C3
+	for <lists+linux-efi@lfdr.de>; Thu, 25 Apr 2024 13:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA1812AACE;
-	Thu, 25 Apr 2024 11:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D786149C66;
+	Thu, 25 Apr 2024 13:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="onNKEIi2"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="eosGQqeo";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="eosGQqeo"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F7312AACB
-	for <linux-efi@vger.kernel.org>; Thu, 25 Apr 2024 11:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A25F149C5E;
+	Thu, 25 Apr 2024 13:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714045670; cv=none; b=Th05/s6uALbO5sHMuPSVTyB6MFO17SGV84KaLjFeuuU7CqimW2AKg1Ko+UQ9ofPBb066VQTyTOENPlhUwp4s++J5uvKsRYILd6+3xZvDfdYdqMbt6WdNScHCcFfJRCwdQo1dqnxR1ALA7t0fgkIgQOVMO37AOlefgmmjvxkmBFs=
+	t=1714051494; cv=none; b=Q5q+dtk/AsymeQfn586MJaRRyUDhXI1pYQB4f+y2PdJfQjUJTKb80AGqWEsZFqb+QHhUSZdVo53NL+0T/7LPygSWqOJILDSct1mKH7kPDXAymtxowhlsw+g94e8QmRzHNpjC/G8sjVr0QBJPT7pNbF1gU1oDsMVKznCc0HBFQ20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714045670; c=relaxed/simple;
-	bh=RHNTIS3g2CJKJDZCRpS3u7vQxKmYqqYAO/4oGSKSXIg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iRmzcK6ChIzffRLzEuD+OsH0HvflZDBJo8UPj2T8cBgAyI6ARK1wmEpgehtSf1izU/PdjvG3hVa/6o7JyyofhlXnE7W+qL11RSB+qQssFPc9BZMpmlyLVMxS7TyD+9cEknPQpHi2uI6qlEySh9zLmoDanbkpEgEU0cf8FQSxnPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=onNKEIi2; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a5224dfa9adso174036466b.0
-        for <linux-efi@vger.kernel.org>; Thu, 25 Apr 2024 04:47:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714045667; x=1714650467; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RHNTIS3g2CJKJDZCRpS3u7vQxKmYqqYAO/4oGSKSXIg=;
-        b=onNKEIi2U5YgkbuSO1Wpu3aXa8GHXaJ7JmIRv/E9dZ5b1bFoO8oWutwkeEvHWLHBfl
-         G0gO1B4YeXOuD5zGDu/szlfe5mhJhnFkK9RMKf5L1lxqEah2KV+ubNM90/jzmAibrU8o
-         3jeFiwgCyGjnYtOsf7yHVLC0dmFm3uxSj/S+j0i8MGIzvXbfwHI8txNC+aTlfDlg9k69
-         oy6xC307Ks9rXefDbGc6po6HCR0ca1GvC/+2+B9Ca9jy3O7Lvdh/kl6rrwFtNZAPUDai
-         l0gdhWC8y6+yC/dNXcaEduH53NOc2LDmWt5ue07g//9AvfDMLK/4CDkh46u+L0+QEV4z
-         kXSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714045667; x=1714650467;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RHNTIS3g2CJKJDZCRpS3u7vQxKmYqqYAO/4oGSKSXIg=;
-        b=AH87hFGw9tTu02kMbmzq7OWPYng3mqMHk6nuxxPsg6Qrsz9D/18nWU1kg9JNwvUjpQ
-         nl/EUeU5lW4JoYDLSMDcxKzhO2OBzcE/SKjaPXA/gbCA+2albR08Agc+kkR4M4Z3+4do
-         inkRVIlOkzz82DApKqhh/jQHKpBzv1Dq+eOq/1iOZ/N/kNe4zheUij5YCHW2JbDg8Ilf
-         /rC1bqZV22j1ubEzXl/ONf3aBuKDtV4h0W9cy/xUd+IzE35T5GTvYAu1O8+Maf3niIzQ
-         idNGVDzGsxFC7RXMV7dN6e857K1cf9Ju520lVcyNJueauiSEqL4vNaBWHyLT4ltCbfeE
-         eJfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbPRE+YbpNLHz3tdmpkT1pc0S+oTKC2+AQ0lAifEqqhWvhgLmTPz0hutMc/4enwoQIWlxutYnYaPlp011XI7f+fEOmPEvlZ/fb
-X-Gm-Message-State: AOJu0Yxd8dEYS3//5KuaaI36UvijwcWzFOZeeOWtgbK8hNnObFNp7yt/
-	u1XnjGuqEj+DULGkoa4qa9bavW1jBQ+uhtMi8ReMeT2/VAJ6fJRX9FfixsN1jRzRTUmAYmYlMxR
-	Hd/mGUmwzme4ADVVOLAIVef5YbwP9w2Sw8tcO0Q==
-X-Google-Smtp-Source: AGHT+IE3ji8iTO06xLdWB8yL93NCmKcLgZr8yjyWFIgOSgjEAa2USrrDLaK8WiYbpAUGewZgsFmsU18MAMpB7iLGPq0=
-X-Received: by 2002:a17:906:3289:b0:a58:8227:a2a with SMTP id
- 9-20020a170906328900b00a5882270a2amr2455723ejw.25.1714045666913; Thu, 25 Apr
- 2024 04:47:46 -0700 (PDT)
+	s=arc-20240116; t=1714051494; c=relaxed/simple;
+	bh=ozjaLJHhWZpDTgLDXvd1VlEiwMrroifvmzMJERJwjEw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CnbB6UQ/6JJQ6YUe7o6T/OigZjJpxKxzM1QvcklasDdQ4Uw/vZL1aHbMySI/kNqVurCHc/BOSWQcrwaEO9alyFE6436TZ6ZQwjYmPZuKxu+hFfK8qSxmF5rlWVU9h872j4jOL+DoBK455gttISoQGW9u14FpWGdQbAwB151xn2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=eosGQqeo; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=eosGQqeo; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1714051491;
+	bh=ozjaLJHhWZpDTgLDXvd1VlEiwMrroifvmzMJERJwjEw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=eosGQqeowpDPkjn7yZa3it8SLlwPDU4EN0NhcxI7x/BMV9snDWs9UUbUNnpEOg3Uj
+	 2dyl3DoImzR/mxCzR6CeauSwWgMlntG8swy+vv+lDshSi7/Iev4tgge038eYCa8fPU
+	 M/Fa5LaI1/cmtvGdp4cJAISb7SrlKhADUYt1FRzc=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 6C9AD1286C62;
+	Thu, 25 Apr 2024 09:24:51 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id aSEB-T6M91Te; Thu, 25 Apr 2024 09:24:51 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1714051491;
+	bh=ozjaLJHhWZpDTgLDXvd1VlEiwMrroifvmzMJERJwjEw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=eosGQqeowpDPkjn7yZa3it8SLlwPDU4EN0NhcxI7x/BMV9snDWs9UUbUNnpEOg3Uj
+	 2dyl3DoImzR/mxCzR6CeauSwWgMlntG8swy+vv+lDshSi7/Iev4tgge038eYCa8fPU
+	 M/Fa5LaI1/cmtvGdp4cJAISb7SrlKhADUYt1FRzc=
+Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 5A95912864AA;
+	Thu, 25 Apr 2024 09:24:50 -0400 (EDT)
+Message-ID: <f6259f0a28b80db78d28475105ae7f37655a58ee.camel@HansenPartnership.com>
+Subject: Re: [PATCH] efi: expose TPM event log to userspace via sysfs
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Lennart Poettering <mzxreary@0pointer.de>, Ard Biesheuvel
+ <ardb@kernel.org>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>, Mikko Rapeli
+	 <mikko.rapeli@linaro.org>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org
+Date: Thu, 25 Apr 2024 09:24:48 -0400
+In-Reply-To: <ZiopXE6-AucAB9NM@gardel-login>
+References: <20240422112711.362779-1-mikko.rapeli@linaro.org>
+	 <6e751959b9056884c1b9d3ba23e303d1737d8763.camel@HansenPartnership.com>
+	 <ZiZhSfgeAdrbnaVL@nuoska>
+	 <CAC_iWjKA-xRH=3FK+=woXsB8AW4+_mVhJhUQnL8iFKxGzOwKiA@mail.gmail.com>
+	 <e3038141413e25350f0e53496f7a7af1bf8419cf.camel@HansenPartnership.com>
+	 <CAC_iWj+zbs2tq_nMASDX6pgCAP23+PpctJFiu9=mgOVDz8Trzw@mail.gmail.com>
+	 <e1da76ca4c7fe9319aaac5f8ff6eb46db433ec60.camel@HansenPartnership.com>
+	 <CAC_iWjLH=SDoTw_Pgr2hOKHkjEp_dKqwpUe9j6a=_WNW9UcxKw@mail.gmail.com>
+	 <CAMj1kXGHT2wULF2zwNM_QxD29dRW_dtFX2sOvsLahPiRVB61qg@mail.gmail.com>
+	 <ZiopXE6-AucAB9NM@gardel-login>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6e751959b9056884c1b9d3ba23e303d1737d8763.camel@HansenPartnership.com>
- <ZiZhSfgeAdrbnaVL@nuoska> <CAC_iWjKA-xRH=3FK+=woXsB8AW4+_mVhJhUQnL8iFKxGzOwKiA@mail.gmail.com>
- <e3038141413e25350f0e53496f7a7af1bf8419cf.camel@HansenPartnership.com>
- <CAC_iWj+zbs2tq_nMASDX6pgCAP23+PpctJFiu9=mgOVDz8Trzw@mail.gmail.com>
- <e1da76ca4c7fe9319aaac5f8ff6eb46db433ec60.camel@HansenPartnership.com>
- <CAC_iWjLH=SDoTw_Pgr2hOKHkjEp_dKqwpUe9j6a=_WNW9UcxKw@mail.gmail.com>
- <CAMj1kXGHT2wULF2zwNM_QxD29dRW_dtFX2sOvsLahPiRVB61qg@mail.gmail.com>
- <ZiopXE6-AucAB9NM@gardel-login> <CAMj1kXETZ3L2QEZjD8=zr9FY11FGkf5KktXoSixjpGxWS4h8sA@mail.gmail.com>
- <Zio6xeRbld_tzH0B@gardel-login>
-In-Reply-To: <Zio6xeRbld_tzH0B@gardel-login>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Thu, 25 Apr 2024 14:47:10 +0300
-Message-ID: <CAC_iWjK7s9ERvNhf6-ER1epHa3j0bBmz0Jw4v_VBbE_kwMnG7g@mail.gmail.com>
-Subject: Re: [PATCH] efi: expose TPM event log to userspace via sysfs
-To: Lennart Poettering <mzxreary@0pointer.de>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Mikko Rapeli <mikko.rapeli@linaro.org>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-Hi all
+On Thu, 2024-04-25 at 11:58 +0200, Lennart Poettering wrote:
+[...]
+> General purpose distros typically don't build all TPM drivers into
+> the kernel, but ship some in the initrd instead. Then, udev is
+> responsible for iterating all buses/devices and auto-loading the
+> necessary drivers. Each loaded bus driver might make more devices
+> available for which more drivers then need to be loaded, and so on.
+> Some of the busses are "slow" in the sense that we don't really know
+> a precise time when we know that all devices have now shown up, there
+> might always be slow devices that haven't popped up yet. Iterating
+> through the entire tree of devices in sysfs is often quite slow in
+> itself too, it's one of the most time consuming parts of the boot in
+> fact. This all is done asynchronously hence: we
+> enumerate/trigger/kmod all devices as quickly as we can, but we
+> continue doing other stuff at the same time.
 
-On Thu, 25 Apr 2024 at 14:13, Lennart Poettering <mzxreary@0pointer.de> wro=
-te:
->
-> On Do, 25.04.24 12:36, Ard Biesheuvel (ardb@kernel.org) wrote:
->
-> > > systemd these days makes use of the TPM =E2=80=94 if available =E2=80=
-=94 for various
-> > > purposes, such as disk encryption, measuring boot phases and system
-> > > identity and various other things. Now, for the purpose of disk
-> > > encryption, we need to wait for two things: the hard drive, and the
-> > > TPM to be probed/driver loaded/accessible. /etc/fstab tells us pretty
-> > > explicitly what bloock device to wait for, hence it's easy. But
-> > > waiting for a TPM is harder: we might need it for disk encryption, bu=
-t
-> > > we don't know right-away if there actually *is* a TPM device to show
-> > > up, and hence don't know whether to wait for it or not.
-> > >
-> >
-> > I take it this means that the LUKS metadata lacks a 'this key is
-> > sealed into the TPM' bit?
->
-> Well, it does carry that info. But this is of no relevance
-> really. typically luks has multiple keys enrolled, and which slot(s) to
-> use is really up to the moment of invocation, depending on what is availa=
-ble.
->
-> moreover, i used disk encryption as one example, but we have more
-> users of TPM. for example we measure early in the initrd that we are
-> now in the initd, and when we leave the initrd we measure that we are
-> now gone. we also have a tool that sets up the TPM SRK. All that stuff
-> is supposed to be run if a TPM is available, but delayed just enough
-> until the TPM actually shows up, but no more. So for all of that stuff
-> we must have a way to delay tings correctly.
->
-> > So exposing the physical address of the TPM event log is probably not
-> > what we want here.
-> >
-> > Note that the TPM event log table is a Linux/efistub construct,
-> > whereas the TPM final log table actually comes from the firmware
-> > directly. So the former only exists if the EFI stub executed first,
-> > and managed to invoke the TCG protocol etc. OTOH, the TPM final log is
-> > TPM2 only, so it doesn't exist on TPM 1.2
->
-> (side note: in systemd we do not care about tpm 1.2 anymore, we only
-> support tpm2, and treat systems with just tpm 1.2 like systems that
-> have no tpm).
->
-> > Another thing we need to consider is TDX, which exposes a pseudo-TPM
-> > which does not support sealing, along with a CC protocol similar to
-> > the TCG2 protocol. This code will use the event log infrastructure as
-> > well: there are discussions going on at the moment whether we can
-> > improve the way these protocols are combined.
->
-> The way the delay for a tpm device is actually implemented in systemd
-> is somewhat generic: there's a target unit called
-> "tpm2.target". Typically we just delay its activation until a
-> /dev/tpmrm0 device shows up, if the firmware check suggested that. But
-> you could also stuff all kinds of other stuff before that. For exampe,
-> we could also delay it until some userspace service is running that
-> turns the local security tech into a "fake" tpm device or similar. So
-> from our side it's entirely pluggable already, and supports other ways
-> to synchronize properly on a TPM being available, people can plug in
-> whatever they need there for the synchronization.
->
-> However, our primary focus is to cover nicely the typical/generic
-> systems that have a discrete TPM or ftpm that just needs some generic
-> driver probing/loading to be available.
->
-> Or in other words: i am fully aware that a tpm-like device can be
-> provided by various means. For now, with this firmware flag file thing
-> we primarily care about the simple case where it's just driver loading
-> that we need to do.
->
-> > So we should define a scope here:
-> > - do we need TPM1.2 support?
->
-> For our systemd usecase, that's a clear no.
->
-> > - do we need non-EFI boot support?
->
-> My own focus is EFI. systemd supports non-EFI of course. If people
-> care about non-EFI I am sure they'd be thankful if we could provide a
-> similar automatism
->
-> > - do we need to do anything in particular for FDE on TDX, which has a
-> > TPM event log but no TPM is likely to appear.
->
-> I'd ignore that for now. And if they provide a software tpm-like device
-> eventually they just have to plug in the service that provides it
-> before tpm2.target and be done with it. I think we have an acceptable
-> approach for that already.
->
-> > I am fine with adding a sysfs node under /sys/firmware/efi that
-> > exposes some of this information, e.g.,
-> > linux_efi_tpm_eventlog::version, but not the physical address of the
-> > table.
->
-> Yeah, the physical address is of no interest to us. We just need to
-> know the existance, and that independently of any actualy tpm device
-> having shown up. i.e. existance of
-> /sys/kernel/security/tpm0/binary_bios_measurements would be good
-> enough for is if it was available without "tpm0" actually being
-> around...
+So let me make a suggestion that you can use now.  Since all you
+currently care about is the EFI/ACPI device, there is always a single
+sysfs entry that corresponds to that (so you shouldn't need the log
+entry as an indicator):
 
-IIRC 'binary_bios_measurements' is only created after the TPM drivers
-probe the device, so that wouldn't work.
-Ard is right though the TPMEventLog is an EFI stub construct, so
-exposing this is Linux-specific (and stub-specific).
-The TPMFinalLog OTOH is described by the TCG spec so exposing that
-even using the address address would work for systemd
+/sys/bus/acpi/devices/MSFT0101\:00
 
-Regards
-/Ilias
+That link (or a kobject uevent if you prefer to look for that) will
+always appear regardless of whether a driver has attached or not.  When
+the driver actually attaches, a driver/ directory will appear where the
+link points.
 
+The device link is added when the acpi scan is initiated as a
+subsys_initcall, which is before all the filesystem initcalls, so it
+should run before the initrd is mounted.
 
->
-> Lennart
->
-> --
-> Lennart Poettering, Berlin
+Is this enough for now and we can think about a more generic indicator
+that all drivers have been probed later?
+
+James
+
 
