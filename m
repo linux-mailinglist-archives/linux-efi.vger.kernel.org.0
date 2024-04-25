@@ -1,101 +1,219 @@
-Return-Path: <linux-efi+bounces-980-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-981-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F128B2361
-	for <lists+linux-efi@lfdr.de>; Thu, 25 Apr 2024 16:01:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DC58B27A6
+	for <lists+linux-efi@lfdr.de>; Thu, 25 Apr 2024 19:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A184A28AB3B
-	for <lists+linux-efi@lfdr.de>; Thu, 25 Apr 2024 14:01:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68D8CB213A0
+	for <lists+linux-efi@lfdr.de>; Thu, 25 Apr 2024 17:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8AA149DEA;
-	Thu, 25 Apr 2024 14:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5130714E2CD;
+	Thu, 25 Apr 2024 17:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbeyGHjb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ChT/Srxf"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54D8149C6E;
-	Thu, 25 Apr 2024 14:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0851482EF
+	for <linux-efi@vger.kernel.org>; Thu, 25 Apr 2024 17:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714053695; cv=none; b=lCjuaz2HJK4w0p0RrTTKhXDLHbDN7gakVpRpnHTJPZtlplqgc+7Wz8Axhk9gJ/NJ1/MPPvVE8IZjYN0svzSRk2SI5sQry4GdfFnjnO3p6ULJ1N3s8NDsMiEq39ol1SMIiTni2NInoiEQcMw5TiE4Bsm6Rubrrby3keHkBq5fwAE=
+	t=1714066632; cv=none; b=n1RHNXHhgSU8nQM7scxuP9dX8A0rcU0lWylSDo+/b9j0PFuKVDx9hXWuIED7pA45tEYEiHrAORCdP4ege5LDjeRmelkkUdvOBHPY0+Y4lQe3In37apPoqLhK7ELNBqh9NFKJ0GymV5EuMTZXHm3R8XgmKjf3/ioBIGBE6pX2wQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714053695; c=relaxed/simple;
-	bh=gOKjqTrwy/H/hFGh4uedpQPBDplAM1BDzbOPolpCIYg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=tlUc8Txksa3qvXJBbCng/tgeTnbsSEmpRThuQvQVVi2CuD7CWOJ0iIYMeU583DMIB/Ore7MZeaQzK7lKIpoqfLjqVOLTNROCj9iIdx9PWocW678P215RPSIQyD98wF7VA+VTCxO/p6lMw/Kais960MF0CcHmmYJe1t3++0rmI+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbeyGHjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A1FC113CC;
-	Thu, 25 Apr 2024 14:01:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714053694;
-	bh=gOKjqTrwy/H/hFGh4uedpQPBDplAM1BDzbOPolpCIYg=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=EbeyGHjbiDenFYP6KGmF/qCZqSu6doaojbB9dgrUPfciACqeqsBTPpfSn1RekYtTw
-	 CufsNwYj+bScnknse+DnYbet1t3Ziqn8DUQop+Ej5fqex+ag8duuyQjzMwNHrvKX5B
-	 0Ux2whXse8jX/0w0y7hF/S5to5IUyRPihqrhgZWPTHf8o4Oz7cVs6J/938dIIkJamF
-	 Zf2ZNbxL3ibXeaFpaTfUETc+KvNDwmriW42SUVPHb164ERFpDsiSTB5azlqleLhvUp
-	 vYOyHC+vo5yGzw7KU11M3fJswSBNJ5nDpxTnL+vwYvJkuEyBP5HEa3kArC6GVEEvel
-	 xFhnAT+pLkxNQ==
+	s=arc-20240116; t=1714066632; c=relaxed/simple;
+	bh=0epV5HRm8/mnKhOEL1lls3LZw/nCThK8S+rYbqMeMlA=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=IiRyPqBylGivQ10yu5V9iUQghvcdCBLJXsluVowpBTOD3SZcsU3IkHc/zpllJDM06wB1t1iv5mskrUa/fqLNltB2vlakPlEcKvYomUa8M0PuPFs4KITmrasQbODYFpPXMjsSsvBl0Vi3lIap76J/J6eESPKyQA82FP9m8if0cAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ChT/Srxf; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714066630; x=1745602630;
+  h=date:from:to:cc:subject:message-id;
+  bh=0epV5HRm8/mnKhOEL1lls3LZw/nCThK8S+rYbqMeMlA=;
+  b=ChT/SrxfqZsDYY53iMPyyOqiaHtg15F70yntMPEPCZggozTdS41cXG6F
+   nH0u8yAobNgY/pZE30TqBrucNBwt0d5cRquqhOl3xK2SR+4CFu/mnNZFq
+   LMoTnMguf8Q0LC2tlNBpIlMYTDwrsoAaGeNO/+s7mJQPXUh0YQG+QJoor
+   FV40mXbUFZT/DF2oxv8Xh0Lso2f54J66XCD7oUh5DANcqq6Sr6ZbeNxEu
+   k5PrthhBbloEwT0ILokvF1t3PqFUFpF+CaqvYbYnAmlpUtCqEdUzOkUoJ
+   RfwUM5T9QEm9xkw9BM9RJfNYXyAEAj+8Hh3SqlZZlCemmLAUs0uzQZcAh
+   Q==;
+X-CSE-ConnectionGUID: 8H7K4NdHRyaGx6RodjXDPg==
+X-CSE-MsgGUID: wKAhZE1HT9W+TiX1eBuo8w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9892208"
+X-IronPort-AV: E=Sophos;i="6.07,230,1708416000"; 
+   d="scan'208";a="9892208"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2024 10:37:09 -0700
+X-CSE-ConnectionGUID: NQEd+EpXR2qGy3tLrNfYTA==
+X-CSE-MsgGUID: A35GPHQ2QqCXqRfC5ZsRrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,230,1708416000"; 
+   d="scan'208";a="25030775"
+Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 25 Apr 2024 10:37:08 -0700
+Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s031t-0002f3-2r;
+	Thu, 25 Apr 2024 17:37:05 +0000
+Date: Fri, 26 Apr 2024 01:36:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 1c5a1627f48105cbab81d25ec2f72232bfaa8185
+Message-ID: <202404260105.9AygrL3I-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 25 Apr 2024 17:01:28 +0300
-Message-Id: <D0T9BM4E1F5C.2TZMIRSHCKCQ2@kernel.org>
-To: "Lennart Poettering" <mzxreary@0pointer.de>, "Ard Biesheuvel"
- <ardb@kernel.org>
-Cc: "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "James Bottomley"
- <James.Bottomley@hansenpartnership.com>, "Mikko Rapeli"
- <mikko.rapeli@linaro.org>, <linux-efi@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-integrity@vger.kernel.org>
-Subject: Re: [PATCH] efi: expose TPM event log to userspace via sysfs
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240422112711.362779-1-mikko.rapeli@linaro.org>
- <6e751959b9056884c1b9d3ba23e303d1737d8763.camel@HansenPartnership.com>
- <ZiZhSfgeAdrbnaVL@nuoska>
- <CAC_iWjKA-xRH=3FK+=woXsB8AW4+_mVhJhUQnL8iFKxGzOwKiA@mail.gmail.com>
- <e3038141413e25350f0e53496f7a7af1bf8419cf.camel@HansenPartnership.com>
- <CAC_iWj+zbs2tq_nMASDX6pgCAP23+PpctJFiu9=mgOVDz8Trzw@mail.gmail.com>
- <e1da76ca4c7fe9319aaac5f8ff6eb46db433ec60.camel@HansenPartnership.com>
- <CAC_iWjLH=SDoTw_Pgr2hOKHkjEp_dKqwpUe9j6a=_WNW9UcxKw@mail.gmail.com>
- <CAMj1kXGHT2wULF2zwNM_QxD29dRW_dtFX2sOvsLahPiRVB61qg@mail.gmail.com>
- <ZiopXE6-AucAB9NM@gardel-login>
-In-Reply-To: <ZiopXE6-AucAB9NM@gardel-login>
 
-On Thu Apr 25, 2024 at 12:58 PM EEST, Lennart Poettering wrote:
-> General purpose distros typically don't build all TPM drivers into the
-> kernel, but ship some in the initrd instead. Then, udev is responsible
-> for iterating all buses/devices and auto-loading the necessary
-> drivers. Each loaded bus driver might make more devices available for
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 1c5a1627f48105cbab81d25ec2f72232bfaa8185  efi/unaccepted: touch soft lockup during memory accept
 
-I've had since day 0 that I've worked with TPM driver (i.e. since 2013
-or 2014) that module support should be removed.
+elapsed time: 1459m
 
-I've kept the module compilation only because huge turnback from the
-community.
+configs tested: 126
+configs skipped: 3
 
-It does not make sense:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-1. Because it makes sense as part of "TCB".
-2. "TCB" is should in be vmlinux.
-3. TPM is also a subsystem with other clients in the kernel.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                          axs101_defconfig   gcc  
+arc                          axs103_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                         haps_hs_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                          collie_defconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240425   clang
+arm                   randconfig-002-20240425   clang
+arm                   randconfig-003-20240425   clang
+arm                   randconfig-004-20240425   clang
+arm                         s3c6400_defconfig   gcc  
+arm                          sp7021_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240425   clang
+hexagon               randconfig-002-20240425   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240425   gcc  
+i386         buildonly-randconfig-003-20240425   gcc  
+i386         buildonly-randconfig-006-20240425   gcc  
+i386                  randconfig-004-20240425   gcc  
+i386                  randconfig-013-20240425   gcc  
+i386                  randconfig-014-20240425   gcc  
+i386                  randconfig-015-20240425   gcc  
+i386                  randconfig-016-20240425   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        stmark2_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                       lemote2f_defconfig   gcc  
+mips                     loongson1c_defconfig   gcc  
+mips                    maltaup_xpa_defconfig   gcc  
+mips                      pic32mzda_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                         alldefconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-003-20240425   clang
+powerpc                    sam440ep_defconfig   gcc  
+powerpc                     tqm8540_defconfig   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                 kfr2r09-romimage_defconfig   gcc  
+sh                        sh7757lcr_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-002-20240425   clang
+um                           x86_64_defconfig   clang
+x86_64       buildonly-randconfig-002-20240425   gcc  
+x86_64       buildonly-randconfig-006-20240425   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   clang
+x86_64                randconfig-004-20240425   gcc  
+x86_64                randconfig-005-20240425   gcc  
+x86_64                randconfig-011-20240425   gcc  
+x86_64                randconfig-014-20240425   gcc  
+x86_64                randconfig-072-20240425   gcc  
+x86_64                randconfig-073-20240425   gcc  
+x86_64                randconfig-076-20240425   gcc  
+x86_64                          rhel-8.3-func   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa                         virt_defconfig   gcc  
 
-At minimum the main TPM driver should IMHO just in vmlinux e.g. because
-it is rare to see distro kernel with TPM enabled and IMA disabled, I
-don't know any.
-
-That said, I would not mind either if TPM subsystem drivers were only
-y/n *except* tpm_vtpm_proxy.
-
-BR, Jarkko
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
