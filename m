@@ -1,46 +1,46 @@
-Return-Path: <linux-efi+bounces-985-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-986-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39C68B323F
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 10:23:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B704F8B36A0
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 13:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CEFEB22F99
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 08:23:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 719B8282DF0
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 11:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24C813C9A0;
-	Fri, 26 Apr 2024 08:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5297145344;
+	Fri, 26 Apr 2024 11:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQdJpHdq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMU7B8Sk"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941E842A9B;
-	Fri, 26 Apr 2024 08:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79295145341;
+	Fri, 26 Apr 2024 11:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714119789; cv=none; b=XSuacc6BgZ0q4fzpnMDnqKkz20OKf79iVYRwdRe6SstXYLQXQaKp6nHOlzM8ZQmu1RlVOjj0dL1mcHjXcVQn0fkKw/Itk0/P36yMHjsFXI7W9HqcBKlWPiq8kWbmWmxo4EPyz2nnYp7eDkz7WdXUpkA4PAaFPA7KKDR/3YKr7pI=
+	t=1714131713; cv=none; b=Nyuig7NrS4Gf2aWmU5rLBGGe2/qPG8jQeqXD69tyOT6A7zMH+C2ykC3UMWodCkpLCqmaM01/yck+Be0dHncSRp/wOM1TMVjra1uMf0lEAFSgfaWikbHHhB0AtTHNj1zcguqJCQg68JIFImypF70emjgpdfI7mK8vLo88/0V9hZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714119789; c=relaxed/simple;
-	bh=XksjV31GmF0RJcKDj+rdXWjazudnL5P2SWjBdN37Xxo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=CSzjQOUqGeM2gr0d5HJGZogJjHr1ZHcgItlKH+3qGV+pqXUh/RN/25l9hTV005vIcalHDUQhCO/h9shdJbZhJqddN6jESxCnlY2SAZkLpU2L8kWA17/fQmiafM6YRvh1JuVhxcI+gZsazoZdG8C1dFbnQIkmj+uZGw5FL6XwZC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQdJpHdq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F16C113CD;
-	Fri, 26 Apr 2024 08:23:06 +0000 (UTC)
+	s=arc-20240116; t=1714131713; c=relaxed/simple;
+	bh=060C0eRyK2crDEUo4GFbKKDarWvNJFdiUqBTqnc9Udg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=KIIuPgUu4p5tdH7GuLPUR3MDN5BPyhUHYpsHSG9IMbdmC7a23T0Zo3sI06OUsXVG6hjY1mriM+k3LvtRFDuRXpmQF8bBDU1QGTbcpBVvBbhWk2jvOeeNKgUhrSSps4m5vG+ASi4RE8Bn5DzQX/h2tuj1rxRb+u/MukiS1LL5zH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMU7B8Sk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC84C113CD;
+	Fri, 26 Apr 2024 11:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714119789;
-	bh=XksjV31GmF0RJcKDj+rdXWjazudnL5P2SWjBdN37Xxo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vQdJpHdqJHod4X9CHpGG30biB9tBc6HLmIcjritXnSMyNw7ehkNnbmMa8OCchodCV
-	 LEnSeQk6b29nlWfaejFPfobfNz6fAnspDnQyBWAsEUzYYjc2t8vklAECbTd70Xb4pE
-	 ZIbcb/vgsKP73RruTGiL3GgKq+bol0rcx2KENOnacpY3Nz21wrnPaSNu74Q+pcaVag
-	 sdgL8ap0TQGS031h6wGwKSOmcatP7sxVe/ODv2y6FJi5Gsej1CCxpKoysnRDL7ziwH
-	 qPs6wrJxJ0vYsX0ybS0j/5Rc6DvfJWbXJFp2e1cBiF0U8GZyZUh1FNVOpM/TdjEDJ/
-	 bFpKRWb34cCww==
+	s=k20201202; t=1714131713;
+	bh=060C0eRyK2crDEUo4GFbKKDarWvNJFdiUqBTqnc9Udg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=lMU7B8SknPTVtxDHVYvvYmHeak7SID/R2+WrjbQuJDD0dZaXJsNbun+p5KHqZ5P6D
+	 iKuO9oKPAVBoYcVt2XyKj7vyPVRRV6xDMF8rZmDFk+dEQKyv0lCwHTWL8FhRkacUv3
+	 ixOxDYQj4uI9Mrij6z4TEC4wYpJvdUBmF8n/oL/gkEeScLm/7OrLYP6qA79Ur9WUQ9
+	 sPb9JsmvKX9nrPh02b45ZzXbou1AyGpOLV0eI/mibSVT4WmUJyQSlp7KKQprJytG0m
+	 k8g1Kbuiu31UdIf8jxxFIo5leJihWoGI9zZtxTOqEuQvwHfijYTBPMAFjkay4enuQZ
+	 bpPFlr/ixgNPA==
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -49,62 +49,80 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Apr 2024 11:23:03 +0300
-Message-Id: <D0TWR1M8I014.1BR5Q9L4K497Z@kernel.org>
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Mikko Rapeli" <mikko.rapeli@linaro.org>
-Cc: "Lennart Poettering" <mzxreary@0pointer.de>, "Ard Biesheuvel"
- <ardb@kernel.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "James
- Bottomley" <James.Bottomley@hansenpartnership.com>,
- <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-integrity@vger.kernel.org>
+Date: Fri, 26 Apr 2024 14:41:47 +0300
+Message-Id: <D0U0Z7L2IWN4.IDJXDHZYHDF5@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, "Ilias Apalodimas"
+ <ilias.apalodimas@linaro.org>, "Lennart Poettering"
+ <lennart@poettering.net>
 Subject: Re: [PATCH] efi: expose TPM event log to userspace via sysfs
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Mikko Rapeli" <mikko.rapeli@linaro.org>, "Ard Biesheuvel"
+ <ardb@kernel.org>, <linux-efi@vger.kernel.org>
 X-Mailer: aerc 0.17.0
-References: <CAC_iWjKA-xRH=3FK+=woXsB8AW4+_mVhJhUQnL8iFKxGzOwKiA@mail.gmail.com> <e3038141413e25350f0e53496f7a7af1bf8419cf.camel@HansenPartnership.com> <CAC_iWj+zbs2tq_nMASDX6pgCAP23+PpctJFiu9=mgOVDz8Trzw@mail.gmail.com> <e1da76ca4c7fe9319aaac5f8ff6eb46db433ec60.camel@HansenPartnership.com> <CAC_iWjLH=SDoTw_Pgr2hOKHkjEp_dKqwpUe9j6a=_WNW9UcxKw@mail.gmail.com> <CAMj1kXGHT2wULF2zwNM_QxD29dRW_dtFX2sOvsLahPiRVB61qg@mail.gmail.com> <ZiopXE6-AucAB9NM@gardel-login> <D0T9BM4E1F5C.2TZMIRSHCKCQ2@kernel.org> <D0TVQWEDNZO0.PN96CXJOTN1B@kernel.org> <D0TVUC3PEG7K.1XYIAGIM2T0UQ@kernel.org> <ZitjoLvggYB7vR0O@nuoska>
-In-Reply-To: <ZitjoLvggYB7vR0O@nuoska>
+References: <20240422112711.362779-1-mikko.rapeli@linaro.org>
+In-Reply-To: <20240422112711.362779-1-mikko.rapeli@linaro.org>
 
-On Fri Apr 26, 2024 at 11:19 AM EEST, Mikko Rapeli wrote:
-> Hi,
->
-> On Fri, Apr 26, 2024 at 10:40:20AM +0300, Jarkko Sakkinen wrote:
-> > On Fri Apr 26, 2024 at 10:35 AM EEST, Jarkko Sakkinen wrote:
-> > > On Thu Apr 25, 2024 at 5:01 PM EEST, Jarkko Sakkinen wrote:
-> > > > On Thu Apr 25, 2024 at 12:58 PM EEST, Lennart Poettering wrote:
-> > > > > General purpose distros typically don't build all TPM drivers int=
-o the
-> > > > > kernel, but ship some in the initrd instead. Then, udev is respon=
-sible
-> > > > > for iterating all buses/devices and auto-loading the necessary
-> > > > > drivers. Each loaded bus driver might make more devices available=
- for
-> > > >
-> > > > I've had since day 0 that I've worked with TPM driver (i.e. since 2=
-013
-> > >
-> > > - had the opinion (typo)
-> >=20
-> > Tbh, I have zero idea what this discussion is about anyway because the
-> > original thread *was not* CC'd to linux-integrity and I'm not subscribe=
-d
-> > to linux-efi. So next time put all the relevant mailing lists. I.e.
-> > definitive NAK for this patch.
->
-> Sorry for not including linux-integrity. I added maintainers and lists
-> proposed by scripts/get_maintainers.pl for the change which did not touch
-> drivers/char/tpm/ though TPM event log APIs are clearly there.
->
-> The full thread starts from here:
->
-> https://lore.kernel.org/all/20240422112711.362779-1-mikko.rapeli@linaro.o=
-rg/T/#u
+On Mon Apr 22, 2024 at 2:27 PM EEST, Mikko Rapeli wrote:
+> Userspace needs to know if TPM kernel drivers need to be loaded
+> and related services started early in the boot if TPM device
+> is used and available. If EFI firmware has used TPM device
+> to e.g. measure binaries, then many of them also provide the TPM
 
-NP, just add CC to the next version.
+What are the other uses cases? TPM settings and reset (clear), i.e.
+machine owner use cases? I think "e.g." is not needed here and it
+confuses a bit.
 
-I'll download it and check through once bandwidth.
-
-> Cheers,
+> log to kernel in addition to the actual TPM device side measurements.
+> Expose availability of TPM event log to userspace via
+> /sys/firmware/efi/tpm_log. If the file exists, then firmware
+> provided a TPM event log to kernel, and userspace init should also
+> queue TPM module loading and other early boot services for TPM support.
 >
-> -Mikko
+> Enables systemd to support TPM drivers as modules when rootfs is
+> encrypted with the TPM device.
+
+"Enabling systemd" is not an unambiguous sequence of events, as far
+as I know.
+
+Please describe what the changes are done to  the kernel, and how they
+help to enable whatever systemd wants it. This is way too abstract to
+work as "a pitch".
+
+>
+> Sample output from a arm64 qemu machine with u-boot based EFI firmware
+> and swtpm:
+>
+> root@trs-qemuarm64:~# dmesg|grep TPMEvent
+> [    0.000000] efi: TPMFinalLog=3D0xbd648040 RTPROP=3D0xbd646040 SMBIOS3.=
+0=3D0xbe6ad000 TPMEventLog=3D0xbd5f9040 INITRD=3D0xbd5f7040 RNG=3D0xbd5f604=
+0  MEMRESERVE=3D0xbd5f5040
+> root@trs-qemuarm64:~# ls -l /sys/firmware/efi/tpm_log
+> -r-------- 1 root root 4096 Apr 22 10:31 /sys/firmware/efi/tpm_log
+> root@trs-qemuarm64:~# cat /sys/firmware/efi/tpm_log
+> TPMEventLog=3D0xbd5f9040
+> root@trs-qemuarm64:~# cat /sys/firmware/efi/systab
+> SMBIOS3=3D0xbe6ad000
+>
+> Other similar information is currently in /sys/firmware/efi/systab but
+> for new exported variables a one-variable-per-file sysfs interface
+> is preferred according to comments in systab_show()
+> drivers/firmware/efi/efi.c
+>
+> See also:
+> https://github.com/systemd/systemd/pull/32314
+> https://lists.freedesktop.org/archives/systemd-devel/2024-April/050206.ht=
+ml
+>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Cc: Lennart Poettering <lennart@poettering.net>
+> Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+
+I'd recommend to test this also with hardware. Easy options for ARM
+are:
+
+1. Raspberry Pi 3B+. It has broken TrustZone that allows supply your
+   own payloads. OP-TEE supports this.
+2. Get https://thepihut.com/products/letstrust-tpm-for-raspberry-pi.
 
 BR, Jarkko
 
