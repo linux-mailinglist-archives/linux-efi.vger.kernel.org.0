@@ -1,145 +1,157 @@
-Return-Path: <linux-efi+bounces-987-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-988-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C975F8B36B2
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 13:48:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 233438B409F
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 22:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 031B91C21AE0
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 11:48:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3FAC282578
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 20:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65451145321;
-	Fri, 26 Apr 2024 11:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31EB1CFBC;
+	Fri, 26 Apr 2024 20:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jc1YRiUI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cuK8mgWC"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE7113F01A;
-	Fri, 26 Apr 2024 11:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC701208AF;
+	Fri, 26 Apr 2024 20:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714132125; cv=none; b=eDCtvgUMPCLX8wJ+fg1Ctf/rhHziIxwjIBIUlqe8rq/JlzzGvB3GYWnU+kDcU1zy9fFvhPdFHyoLiuCCKNfiz6V3uzYqGcIh82yA3v0/4x0QxYJ8n7AveSckS/oRdGM5iRPLMW9VFLFoFuNdCbCXC9ga2PejgFuqr6fFIir0twI=
+	t=1714161788; cv=none; b=pahRN99076vs+1IRoBiJkRCGVmJEADhsWtGxboX4WFxF8roSmstyCWckeNBrT9jYNPgPwbUe0DnJX+067waOtJxGHtYy7EibP1k7c58M9o+x5IC1eSDhx6IleZ/HS3fxG8t2IzDYyBmoqoSOpdUxwq6P48TDB5Qv9cIXj4Xx2ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714132125; c=relaxed/simple;
-	bh=BQU2RBaoh+BYwZJxNG6MuOnWNxfKhQAz+I7OuG0h14w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=m/K94qL7bGs6x8V2YGDudxV38rQ5erCnfZyYTua//mttwk5/J43gL2+yPfjBAXgw/IcgZeGxSybbEMySW/EkHSEe8ec/wBm4jx+r5q642hqWnQobP7phNR5HmvqtB18kZyYpe4fKCsVInWrLLVPGdtIEOqdp7CKNaTwwkKtqHWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jc1YRiUI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A52FC113CD;
-	Fri, 26 Apr 2024 11:48:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714132124;
-	bh=BQU2RBaoh+BYwZJxNG6MuOnWNxfKhQAz+I7OuG0h14w=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=jc1YRiUIsXBhWYGOKSR6jgCIgv+XlHiiqtK6/NnzcjiE8IS2t/qU1yHVH09olJebX
-	 54DVzrcVs3eUA5hJ+/iTF+XPguh0JX9e/hRqrKfcYQVGVFH3uaJV12w77B9NRcd5an
-	 hIEs/GOl3RQ6TvACc65HcYj3tMLTDG4JHCcBjMjf6WNHHinEvUa6KbOqay0bk6+Bhf
-	 S/tvWke82H46+jMgWm8z3bkmrIWm0ZOFtQoDSc4LwGS3QOXkn3tsqwi1fLED//9kMH
-	 0+1UkXw0uVqjWgDoeoDMKwZjwskjo3NbBiQZ9GhopmswJk0259hzGXhdrHPn6fGDtP
-	 D8g2D3JJOAL1g==
+	s=arc-20240116; t=1714161788; c=relaxed/simple;
+	bh=Mq+HIvBiRfXqX7bq1lJIJQ9QW1/+6x26EYOzLbZxohA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=c6Gtr2NJbx9fi7tUqMVRoDj+2KwemIad/035UKOZKZgQvm3YGPvWyQZZjtbeex7tgULDbosSxcFEFX1+tW3v9Np/KCLUcfEPF0vaZZYwXT3s+0YuRo84/03ihuJP5M1JegVXAolZ6XqFnnW679VrB6CYQgHFSrXTTt282ATye64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cuK8mgWC; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714161787; x=1745697787;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=Mq+HIvBiRfXqX7bq1lJIJQ9QW1/+6x26EYOzLbZxohA=;
+  b=cuK8mgWCptBDl8wueIv3g8KnABfIBBa43DWs3I/eH1xpC19JGHIwIzW0
+   qtz9ZWAAyBkYADAAj0RXII9DXuxwp07nGX0ayfNSKKNh5u/EHzClo6KBI
+   HrR5gzJWyLym/kixjUT7cKqVEzR4J/attvbn8y7huFQ6NVcpY+MPRwF9k
+   wYaZMVJIag0JvSJAiWF9NjbX8AefW3t5VetqEfSTeeEG9r4FeW/NG95XM
+   ULdRZcZgdaDgW35LfXJuBt/MrFLGDAf0RiJHHFNL+MX2ZNhVPpxygJdQ3
+   iSwHd7ox3dVKSUdKwJ9+JPTub2NByB2Zu1Gz4TYrpRz7zWr2IWy+T47P6
+   g==;
+X-CSE-ConnectionGUID: CYfZzpiITgW4BgpGhf24bw==
+X-CSE-MsgGUID: quzStg/eQH6Bp2WiXnq0/w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="9787163"
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; 
+   d="scan'208";a="9787163"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 13:03:06 -0700
+X-CSE-ConnectionGUID: e0o/VpuZQaeWZc6Nd3Pjsw==
+X-CSE-MsgGUID: ISuVIbRnTHCF0MvS+8y3GQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; 
+   d="scan'208";a="25516139"
+Received: from iweiny-mobl.amr.corp.intel.com (HELO localhost) ([10.209.176.246])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 13:03:05 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH v3 0/2] efi/cxl-cper: Report CXL CPER events through
+ tracing
+Date: Fri, 26 Apr 2024 13:02:58 -0700
+Message-Id: <20240426-cxl-cper3-v3-0-6ade7dfc849e@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Apr 2024 14:48:39 +0300
-Message-Id: <D0U14GGWT2AW.XRFW7MB1QZFV@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, "Ilias Apalodimas"
- <ilias.apalodimas@linaro.org>, "Lennart Poettering"
- <lennart@poettering.net>
-Subject: Re: [PATCH] efi: expose TPM event log to userspace via sysfs
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Mikko Rapeli" <mikko.rapeli@linaro.org>, "Ard Biesheuvel"
- <ardb@kernel.org>, <linux-efi@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240422112711.362779-1-mikko.rapeli@linaro.org>
-In-Reply-To: <20240422112711.362779-1-mikko.rapeli@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHIILGYC/02MywqDMBBFf0Wybkqc8b3qf5Qu7GRSA1YlkWAR/
+ 71RKHV5LvecVXh2lr1oklU4DtbbcYiAl0RQ1w4vllZHFqAgUwBK0tJLmtihRMV5DmVtaixE/E+
+ OjV2O1v0RubN+Ht3nSId0X3+V6lQJqVSyaFs0KWZIBd3sMHN/pfEt9kqAv5kBnE2IZk5aY1kZ0
+ up5Nrdt+wKk1Vs23AAAAA==
+To: Dave Jiang <dave.jiang@intel.com>, 
+ Dan Williams <dan.j.williams@intel.com>, 
+ Jonathan Cameron <jonathan.cameron@huawei.com>, 
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, 
+ Shiju Jose <shiju.jose@huawei.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, 
+ Yazen Ghannam <yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>, 
+ Alison Schofield <alison.schofield@intel.com>, 
+ Vishal Verma <vishal.l.verma@intel.com>, Ard Biesheuvel <ardb@kernel.org>, 
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-cxl@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+ Borislav Petkov <bp@alien8.de>
+X-Mailer: b4 0.13-dev-2d940
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1714161785; l=2068;
+ i=ira.weiny@intel.com; s=20221211; h=from:subject:message-id;
+ bh=Mq+HIvBiRfXqX7bq1lJIJQ9QW1/+6x26EYOzLbZxohA=;
+ b=nlX+XmIEYn5bLLKXFjPw8b3YJxtR6DsOTI4QuOaR0qOT43FN3rMoeQBeS4iIo0TpQYm2wnkdk
+ NTyTlzZOQjNCd459/a59z2OeeC2prP/oy11j6lJj4JxatErN1T1Azyb
+X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
+ pk=noldbkG+Wp1qXRrrkfY1QJpDf7QsOEthbOT7vm0PqsE=
 
-On Mon Apr 22, 2024 at 2:27 PM EEST, Mikko Rapeli wrote:
->  Documentation/ABI/testing/sysfs-firmware-efi | 12 ++++++++++++
->  drivers/firmware/efi/efi.c                   | 13 +++++++++++++
->  2 files changed, 25 insertions(+)
->
-> diff --git a/Documentation/ABI/testing/sysfs-firmware-efi b/Documentation=
-/ABI/testing/sysfs-firmware-efi
-> index 5e4d0b27cdfe..caaff27cc73e 100644
-> --- a/Documentation/ABI/testing/sysfs-firmware-efi
-> +++ b/Documentation/ABI/testing/sysfs-firmware-efi
-> @@ -36,3 +36,15 @@ Description:	Displays the content of the Runtime Confi=
-guration Interface
->  		Table version 2 on Dell EMC PowerEdge systems in binary format
->  Users:		It is used by Dell EMC OpenManage Server Administrator tool to
->  		populate BIOS setup page.
-> +
-> +What:		/sys/firmware/efi/tpm_log
+If a device is configured for firmware first CXL event records are not
+sent directly to the host, rather they are reported through the EFI
+Common Platform Error Records (CPER).  EFI 2.10 Section N.2.14 defines
+the CXL CPER to wrap a mostly CXL event payload.
 
-*Conditional* suggestion: s/tpm_log/tpm_event_log/
+The CXL sub-system uniquely has DPA to HPA translation information.[0]
+It also already has event decoding/tracing.  Such translations are very
+useful for users to determine which system issues may correspond to
+specific hardware events.
 
-I.e. if we want this better to use the most popular name.
+The restructuring of the event data structures in 6.8 made sharing the
+data between CPER/event logs more efficient.  Now re-wire the sending of
+CPER records to the CXL sub-system.
 
-> +Date:		April 2024
-> +Contact:	Mikko Rapeli <mikko.rapeli@linaro.org>
-> +Description:	If EFI firmware supports TPM device and measurements were d=
-one
-> +		then a TPM event log has very likely been generated and provided
-> +		to the kernel. This serves as indicator for userspace to load
-> +		TPM drivers and to start related service early in the boot sequence,
-> +		e.g. initramfs, where full bus probes and device scans are not yet
-> +		done.
-> +Users:		systemd will use this interface to support TPM drivers as module=
-s also
-> +		for early initramfs
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 4fcda50acfa4..94773e8b8806 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -162,6 +162,13 @@ static ssize_t fw_platform_size_show(struct kobject =
-*kobj,
->  	return sprintf(buf, "%d\n", efi_enabled(EFI_64BIT) ? 64 : 32);
->  }
-> =20
-> +static ssize_t tpm_log_show(struct kobject *kobj,
-> +				     struct kobj_attribute *attr, char *buf)
-> +{
-> +	return sprintf(buf, "TPMEventLog=3D0x%lx", efi.tpm_log);
+Series status/background
+========================
 
-It is also asymmetric with the log message as we can see here. Why you
-want to put that prefix and not just print the number? Why hex and not
-just %lu?
+Smita and Jonathan have been a great help with this series.  Once again
+thank you.
 
+Unfortunately, with all the churn surrounding the bug which Dan
+Carpenter found the maintainers were force to revert this work.
 
-> +}
-> +static struct kobj_attribute efi_attr_tpm_log =3D __ATTR_RO_MODE(tpm_log=
-, 0400);
-> +
->  extern __weak struct kobj_attribute efi_attr_fw_vendor;
->  extern __weak struct kobj_attribute efi_attr_runtime;
->  extern __weak struct kobj_attribute efi_attr_config_table;
-> @@ -459,6 +466,12 @@ static int __init efisubsys_init(void)
->  		platform_device_register_simple("efi_secret", 0, NULL, 0);
->  #endif
-> =20
-> +	if (efi.tpm_log !=3D EFI_INVALID_TABLE_ADDR) {
-> +		error =3D sysfs_create_file(efi_kobj, &efi_attr_tpm_log.attr);
-> +		if (error)
-> +			pr_err("sysfs create file failed with error %d.\n", error);
-> +	}
+Testing
+=======
 
-s/err/warn/
+Continue to use my quick hack in debugfs to facilitate easier testing.[1]
 
-Why "sys create file" and not "sys_create_file"?
+[0]
+Link: https://lore.kernel.org/all/cover.1711598777.git.alison.schofield@intel.com/
+[1]
+Link: https://github.com/weiny2/linux-kernel/commit/9b1f33314e8488506dbad63dc1c896386d4803d6
 
-> +
->  	return 0;
-> =20
->  err_remove_group:
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+---
+Changes in v3:
+- djbw: drop patch which traces errors if CXL is not loaded
+- djbw: Let CXL layer declare work struct.  Leave kfifo management in
+  GHES layer
+- Link to v2: https://lore.kernel.org/r/20240422-cxl-cper3-v2-0-5cdd378fcd0b@intel.com
 
-BR, Jarkko
+---
+Ira Weiny (2):
+      acpi/ghes: Process CXL Component Events
+      cxl/pci: Process CPER events
+
+ drivers/acpi/apei/ghes.c  | 110 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/cxl/pci.c         |  71 +++++++++++++++++++++++++++++-
+ include/linux/cxl-event.h |  27 ++++++++++++
+ 3 files changed, 207 insertions(+), 1 deletion(-)
+---
+base-commit: e33c4963bf536900f917fb65a687724d5539bc21
+change-id: 20240220-cxl-cper3-30e55279f936
+
+Best regards,
+-- 
+Ira Weiny <ira.weiny@intel.com>
+
 
