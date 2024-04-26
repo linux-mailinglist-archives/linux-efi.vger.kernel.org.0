@@ -1,46 +1,46 @@
-Return-Path: <linux-efi+bounces-982-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-983-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E9C8B3179
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 09:36:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CCF8B3185
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 09:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E17B2158B
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 07:36:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01FD61F23086
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Apr 2024 07:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002D8139D11;
-	Fri, 26 Apr 2024 07:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B99713C3D2;
+	Fri, 26 Apr 2024 07:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GOV5FuHk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BzT/7lFz"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D2842040;
-	Fri, 26 Apr 2024 07:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B75913BC2B;
+	Fri, 26 Apr 2024 07:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714116957; cv=none; b=amBKyo0I5q4hRCmo5cE7mhz6keeAV7qwOp6qC4O7+a4xm4yzgESVgFtcQa89BcEzviPACdGToB8PLgFTiBW91FDn/EQjlhYDSrZwq6jDvamM/a2NM6c3oOtZgqqmvfowPWBwvF/2iemTsxpRRTvSe70LRuFntLev6pQtG0hmpMc=
+	t=1714117227; cv=none; b=njYYeOtgck/zgAbglWkcdvm1JcLuSZQwXeshTWauU/OFrKskMzbJAiAauBrWfIRuaccoCFT8mLbefA21WTnsY60+yJHGTdiiXp5b223h+EpSy+6+XHKnJHKwh35S8T3CdPflratA0xa3+JNtWqijdhHRXycqRitV5P5y9vxMmLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714116957; c=relaxed/simple;
-	bh=fKzJqecCQuXBB/Bg3EXO3byJ6b3SOoYHAtjUmZZJkxI=;
+	s=arc-20240116; t=1714117227; c=relaxed/simple;
+	bh=chUCBKm0g/EgYZKxrCjqZZNilka/lvBLEBGvalg6iHQ=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ZIUfLHrhsMaXmE98ULCgDtwX1nITa5cz+e3agnQokba8kOzQXuwcmA95wkLiwqhsqBJofrs/oZYPaCbOAQDTnlxpAO5Wb4i44/RBWF2YPQQ3RX3LfII8B19ZFQqDtFdHrl63vgFNBd2TsNxCPt94X0gIYmKZDJEFF0HfQfOg1KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GOV5FuHk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5EDC113CD;
-	Fri, 26 Apr 2024 07:35:53 +0000 (UTC)
+	 References:In-Reply-To; b=qp50dAuGq5IMUgIK8gDKPfgb+cAdJoWVtgauRj/ez0hU1LQsZUEDQC3OH0KENyRM5kqaQU2r9HL8Pt+taRsqXajsuy+Ws1skpjQb+txjJqjwgls9kCO6MAULUIU/eAePMjdtJaVcQ9DHFgeTcZcZ5+B+KsCTyp5uM7LYRBQ3zn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzT/7lFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510FFC113CD;
+	Fri, 26 Apr 2024 07:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714116957;
-	bh=fKzJqecCQuXBB/Bg3EXO3byJ6b3SOoYHAtjUmZZJkxI=;
+	s=k20201202; t=1714117226;
+	bh=chUCBKm0g/EgYZKxrCjqZZNilka/lvBLEBGvalg6iHQ=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=GOV5FuHk1Mq9fKRra96XmOWnFqnaLzugHbViNkfV7sEZ3jx5o35PNFwy8yb/R19nD
-	 oPYq4j9u1yvN3mAPTBAAZ1i8kj1oY32RgzTN9KfTJFRGZg3+JbrKWHf0F7yIAE7Fx3
-	 PQXwyPUcE+x1mtlX3AnCVrzAahuzug1DcsPp4B92L8MZavkIApi76msAcC5E6nHj6Q
-	 WCzDYLhkrcdgB0Yj8vT1r7S0Mb73eh0W2LdlKa5reFczZCGFgM+ChJXZaaYYvX14Ac
-	 W7kLtjgt6MDg1qHc56OEIvlf3VhYfaskSK1l4VPCaLaryu4GKToGglZXA7bXTswH6T
-	 aS5pp3VnkaRVw==
+	b=BzT/7lFzpdtMz/MgN0gy+U2KrPftZrw4FISRXVC52TuD4n3j0gvZbipwiOFG8YOZd
+	 Ci1NpAb/BLGUwLCSb4c3wNGTeP1hGqhg2kkhsgREZR0/jKwFjnLZAM6lrLtzu87/2n
+	 swmWVYst0m5LyT2VjbEfGB+QIh/oERGxSQ/ksF5OYt22eBxfWUxcxLTDnWjjQ+lUu+
+	 lMo95iqFYYK1p8BkShCLgNF+JpkJ1K4Boyjz9Mn08LipyMIZtfud7j+g0Ms5gCraDD
+	 rAXpc/zPClOUs9Zz8Ko/6LhYsV7o1EEv2WSwT3SyCUgJO/0mHXfNifyk0uEUUSzECJ
+	 f0Scbs0PLZjBw==
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -49,8 +49,8 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Apr 2024 10:35:51 +0300
-Message-Id: <D0TVQWEDNZO0.PN96CXJOTN1B@kernel.org>
+Date: Fri, 26 Apr 2024 10:40:20 +0300
+Message-Id: <D0TVUC3PEG7K.1XYIAGIM2T0UQ@kernel.org>
 Cc: "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "James Bottomley"
  <James.Bottomley@hansenpartnership.com>, "Mikko Rapeli"
  <mikko.rapeli@linaro.org>, <linux-efi@vger.kernel.org>,
@@ -70,18 +70,27 @@ References: <20240422112711.362779-1-mikko.rapeli@linaro.org>
  <CAC_iWjLH=SDoTw_Pgr2hOKHkjEp_dKqwpUe9j6a=_WNW9UcxKw@mail.gmail.com>
  <CAMj1kXGHT2wULF2zwNM_QxD29dRW_dtFX2sOvsLahPiRVB61qg@mail.gmail.com>
  <ZiopXE6-AucAB9NM@gardel-login> <D0T9BM4E1F5C.2TZMIRSHCKCQ2@kernel.org>
-In-Reply-To: <D0T9BM4E1F5C.2TZMIRSHCKCQ2@kernel.org>
+ <D0TVQWEDNZO0.PN96CXJOTN1B@kernel.org>
+In-Reply-To: <D0TVQWEDNZO0.PN96CXJOTN1B@kernel.org>
 
-On Thu Apr 25, 2024 at 5:01 PM EEST, Jarkko Sakkinen wrote:
-> On Thu Apr 25, 2024 at 12:58 PM EEST, Lennart Poettering wrote:
-> > General purpose distros typically don't build all TPM drivers into the
-> > kernel, but ship some in the initrd instead. Then, udev is responsible
-> > for iterating all buses/devices and auto-loading the necessary
-> > drivers. Each loaded bus driver might make more devices available for
+On Fri Apr 26, 2024 at 10:35 AM EEST, Jarkko Sakkinen wrote:
+> On Thu Apr 25, 2024 at 5:01 PM EEST, Jarkko Sakkinen wrote:
+> > On Thu Apr 25, 2024 at 12:58 PM EEST, Lennart Poettering wrote:
+> > > General purpose distros typically don't build all TPM drivers into th=
+e
+> > > kernel, but ship some in the initrd instead. Then, udev is responsibl=
+e
+> > > for iterating all buses/devices and auto-loading the necessary
+> > > drivers. Each loaded bus driver might make more devices available for
+> >
+> > I've had since day 0 that I've worked with TPM driver (i.e. since 2013
 >
-> I've had since day 0 that I've worked with TPM driver (i.e. since 2013
+> - had the opinion (typo)
 
-- had the opinion (typo)
+Tbh, I have zero idea what this discussion is about anyway because the
+original thread *was not* CC'd to linux-integrity and I'm not subscribed
+to linux-efi. So next time put all the relevant mailing lists. I.e.
+definitive NAK for this patch.
 
 BR, Jarkko
 
