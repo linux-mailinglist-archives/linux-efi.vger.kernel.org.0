@@ -1,103 +1,115 @@
-Return-Path: <linux-efi+bounces-999-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1000-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8218F8B5DEA
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 17:40:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6628B5E03
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 17:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 217271F21749
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 15:40:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C29631C2124B
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 15:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F177382871;
-	Mon, 29 Apr 2024 15:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B382382883;
+	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqJPVpqP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMc9yYED"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FA882869;
-	Mon, 29 Apr 2024 15:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C0282881;
+	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714405244; cv=none; b=BpAGSRH5k3RYtEoOVXejY4UEaG4k8Dp0KV7mcPIzsJ7v3BYxnkBndR5P/H0wgBjb72nEJvP2rQvzGDGOy5jBGRSPD5TE6xlDb1rs1ES+wyzzRVpZBzf8bfjwDkR7odonnSI+xCoYOj/ZtDSLQLdGnu1/C7iKB2mKiF9SflZrHSA=
+	t=1714405698; cv=none; b=gCshtltMs7aQygQ8UBthwvgXvEm+o/Gt5k4AHszLa+uRMB0ydwixdoNbVvfKAwvNu0oegvNMHujqH/r8RIRpwwpaR6j90KePtxlq3xoDLSRIf5/RuyrWmRWxe4Rf95p2MY+FSeb+K10bVt0a1JTdn95n1ff7njCF9J8MBv7TuBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714405244; c=relaxed/simple;
-	bh=ogdRWuX7tsdQmtKzPCEo+vOtWyyXCE54MSfI2V0FkgA=;
+	s=arc-20240116; t=1714405698; c=relaxed/simple;
+	bh=q0TrEuqJ399P2tU46vjogSsElHWc/nM7/9Z+Al4Ihls=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s71ddzy0StqV1ISsVjlXiNfRFuyZV3lPKsGJryMyrhvzd8c4CX3DVgJ4L0Oz+5J5BD95ZYXIpviQdCo+rhgksakoHfkSp6m1a9ONlA7tGt+l3tqMJLWFD73SwUIoP7XqOr9O3H8HEY9GlNKq5lPV1p9kzH30/n68B8Yx0dcx9OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqJPVpqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E04EC4AF1D;
-	Mon, 29 Apr 2024 15:40:44 +0000 (UTC)
+	 To:Cc:Content-Type; b=OBI0cy5evpflUZidOkyAmvjxuksL4qTgu+1nC5mycEJrnwxhaqnP50Yk4pBD8KIHGbn2qeHYFsdcbfP+kSV05gS4nrvPko2fwskoXXOb6WtLG/hGngcnAfT5dwEexLjp/7HhANd3hI3F/ZVZx7v0AuT4hZmx2Ar+pFXNg7qSfbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMc9yYED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13401C113CD;
+	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714405244;
-	bh=ogdRWuX7tsdQmtKzPCEo+vOtWyyXCE54MSfI2V0FkgA=;
+	s=k20201202; t=1714405698;
+	bh=q0TrEuqJ399P2tU46vjogSsElHWc/nM7/9Z+Al4Ihls=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mqJPVpqPpOxEltjXLUSQaA7wBXLZozGHCzcoFwDDX812zOsUl9Tn0oSHm56d+ueBs
-	 qWhq/JEUdcTYuwzJnZy4llwIhRDVB2p036fepLLjoQkdZry+F8n4SMKo150ky/2cmi
-	 tT088q3saf2nwSqLeb0kBtA5j5BLLDCMypHQ3UoIW0bDkrTmsxdwrVRLcoHT1Bu6/J
-	 ZP7x/EmSLDYbWJvvKUChizkH7WZ1vvuJqdCNr1vSv1RNGI937rV3jDg3kqvD3LCFoH
-	 kK0xubU9UZGLvKhukU6gEHNlfuCP22qOZA4gWfa07DhdqYf9ghHkIgs4BJuGtgy5CF
-	 vfrRU8CuJdLsg==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2e09138a2b1so13334191fa.3;
-        Mon, 29 Apr 2024 08:40:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUJLLHTjt4Q+cO/0J4NcjbQE/D8O9JiGf2Q0aWN7slme/8CtoeSEwnNfPtVLGVFLILXl8y5tWKAFD165Ozp3d53DcwvwHfG4EFWfwVl0SSiLw5piQDbhgj5lJjwaDQrjstKnkPCEjcD
-X-Gm-Message-State: AOJu0Yxt5GFNhHV3TOVYqCxAS3lwFjXlyih7xQmmdDACLF1TSaihlNEx
-	mLDbE9hOIpGoteKAh0aZAqHCEfJtcBqb2i8fMaQg9Bi82tycNMbmJShDeh64Ec0mTkjdpeN2YAp
-	GqlHhX9AftZqpxWmhMcKoPGO8R/U=
-X-Google-Smtp-Source: AGHT+IGdnu7bGK/0mcNSpYjqdoesXmVkZhwsKtfItbYipOa5cAX/3z5pHz0FaxV4tIIfB/iUe338u4cCaOGViy+UMEE=
-X-Received: by 2002:a2e:be24:0:b0:2df:98c3:95dd with SMTP id
- z36-20020a2ebe24000000b002df98c395ddmr6578514ljq.22.1714405242556; Mon, 29
- Apr 2024 08:40:42 -0700 (PDT)
+	b=lMc9yYEDyzeRZOJ1DRUT7SFpqY0LFuNwm2GRW2x2+4sUM7hTHv2OuNtKaNnQRJKHJ
+	 ZQxj5mkTm8xhpjAE+gbLHw4eaTyF58ajvnGBOcHEY+04zix7O+IFSlWCa7RG2grPXU
+	 bASVDmSzzNxqEKnUWhe66Lv/D8jUNNmhOiHs810CbbJYDiLAXDh0NQuPKM3gIUiJjE
+	 NWqBY/ffZIk/VT1uhSMNEOSDWi3Ke7G+hILanka25TL5nSmc5g4JI4GJNeoNpnRn5c
+	 qfDacGm6CMtmvyOq8M0a3yxpeZVKBongaytfhWthBPy24zkIx15HjVN+Ir57f7dppL
+	 Kbpvz+lYzGXRA==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51ca95db667so4074055e87.0;
+        Mon, 29 Apr 2024 08:48:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUP5nZVHWN9lHtDCg/dvclg1HKyxFE0UaWtTRUgDd2NBhycQsO5z62Ihmv5CI2f2TtheRsWcmuuuBVGddMY56gaPZ0c+OSyItqo6bk5OXKy+9kEHV/JwCjWnzNJ1jyJoSRLRVkE5IqHOKJiqZs6/qwq+TeSWPHGFgadePtRIwfq
+X-Gm-Message-State: AOJu0YyOvLxrGORjvkqf2N7jeQpWYMOmbqEA5ygfnVW+jZAFptY2hV/p
+	Sfb3pLX+jRn8H2GD7O04kp0DS8/p4KNwiWUl5XGVPX0jKBDi42iyYhUklN4KEJ3R/Vtjw9160UT
+	aRrMYFY7/B07g2vZBoxx42xAGv0k=
+X-Google-Smtp-Source: AGHT+IH8dW+HR1/IwDDX3dJknVDKeoWFxn3QWuqcOlBwnDTa15PNjBagiz2MJ/zAfJQ1b/bGC3FTypm4Ztu41t9o6iE=
+X-Received: by 2002:a05:6512:781:b0:51a:f31f:fc6e with SMTP id
+ x1-20020a056512078100b0051af31ffc6emr7462063lfr.14.1714405696431; Mon, 29 Apr
+ 2024 08:48:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <tencent_E910110547D287B13FEDB6E161D8874E6E06@qq.com>
-In-Reply-To: <tencent_E910110547D287B13FEDB6E161D8874E6E06@qq.com>
+References: <20240423135928.1200-1-hagarhem@amazon.com>
+In-Reply-To: <20240423135928.1200-1-hagarhem@amazon.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 29 Apr 2024 17:40:30 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEfdJ9SzPO7NpYwXW3uPGYNOzVFndRswLZb=6TPAgN5TA@mail.gmail.com>
-Message-ID: <CAMj1kXEfdJ9SzPO7NpYwXW3uPGYNOzVFndRswLZb=6TPAgN5TA@mail.gmail.com>
-Subject: Re: [PATCH] x86/efi: mark racy access on efi_rts_work.efi_rts_id
-To: linke li <lilinke99@qq.com>
-Cc: xujianhao01@gmail.com, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 29 Apr 2024 17:48:05 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHiPcgC7-kXToivcbfyHe9g3Cg6__TFWhHYRUcOJ8hy1g@mail.gmail.com>
+Message-ID: <CAMj1kXHiPcgC7-kXToivcbfyHe9g3Cg6__TFWhHYRUcOJ8hy1g@mail.gmail.com>
+Subject: Re: [PATCH v2] efi: libstub: only free priv.runtime_map when allocated
+To: Hagar Hemdan <hagarhem@amazon.com>
+Cc: Maximilian Heyne <mheyne@amazon.de>, Pratyush Yadav <ptyadav@amazon.de>, 
+	Norbert Manthey <nmanthey@amazon.de>, stable@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 27 Apr 2024 at 07:28, linke li <lilinke99@qq.com> wrote:
+On Tue, 23 Apr 2024 at 16:00, Hagar Hemdan <hagarhem@amazon.com> wrote:
 >
-> In efi_crash_gracefully_on_page_fault(), efi_rts_work.efi_rts_id can by
-> changed by other thread from the comment. Mark possible data race on
-> efi_rts_work.efi_rts_id as benign using READ_ONCE.
+> priv.runtime_map is only allocated when efi_novamap is not set.
+> Otherwise, it is an uninitialized value.
+> In the error path, it is freed unconditionally.
+> Avoid passing an uninitialized value to free_pool.
+> Free priv.runtime_map only when it was allocated.
 >
-> This patch is aimed at reducing the number of benign races reported by
-> KCSAN in order to focus future debugging effort on harmful races.
+> This bug was discovered and resolved using Coverity Static Analysis
+> Security Testing (SAST) by Synopsys, Inc.
 >
-> Signed-off-by: linke li <lilinke99@qq.com>
+> Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
 > ---
->  arch/x86/platform/efi/quirks.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v2: added Cc stable tag to the commit message as requested by kernel
+> test robot.
+> ---
+>  drivers/firmware/efi/libstub/fdt.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> index f0cc00032751..4acb81700caf 100644
-> --- a/arch/x86/platform/efi/quirks.c
-> +++ b/arch/x86/platform/efi/quirks.c
-> @@ -751,7 +751,7 @@ void efi_crash_gracefully_on_page_fault(unsigned long phys_addr)
->          * because this case occurs *very* rarely and hence could be improved
->          * on a need by basis.
->          */
-> -       if (efi_rts_work.efi_rts_id == EFI_RESET_SYSTEM) {
-> +       if (READ_ONCE(efi_rts_work.efi_rts_id) == EFI_RESET_SYSTEM) {
->                 pr_info("efi_reset_system() buggy! Reboot through BIOS\n");
->                 machine_real_restart(MRR_BIOS);
->                 return;
 
-Why is this the only reference that needs an annotation?
+Queued up in efi/next, thanks.
+
+> diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+> index 70e9789ff9de..6a337f1f8787 100644
+> --- a/drivers/firmware/efi/libstub/fdt.c
+> +++ b/drivers/firmware/efi/libstub/fdt.c
+> @@ -335,8 +335,8 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+>
+>  fail:
+>         efi_free(fdt_size, fdt_addr);
+> -
+> -       efi_bs_call(free_pool, priv.runtime_map);
+> +       if (!efi_novamap)
+> +               efi_bs_call(free_pool, priv.runtime_map);
+>
+>         return EFI_LOAD_ERROR;
+>  }
+> --
+> 2.40.1
+>
 
