@@ -1,112 +1,203 @@
-Return-Path: <linux-efi+bounces-997-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-998-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7B58B445B
-	for <lists+linux-efi@lfdr.de>; Sat, 27 Apr 2024 07:28:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B368B5B24
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 16:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 024EA1C2208B
-	for <lists+linux-efi@lfdr.de>; Sat, 27 Apr 2024 05:28:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B531B1F21A29
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 14:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07023FB2F;
-	Sat, 27 Apr 2024 05:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1853277F11;
+	Mon, 29 Apr 2024 14:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="tIwLi7UW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GcQwUu4F"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84163EA96;
-	Sat, 27 Apr 2024 05:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EE4762DA;
+	Mon, 29 Apr 2024 14:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714195719; cv=none; b=Bz0m0zIWc9Ll5HvXF25pIB2PNEvZYy7Uu0uuufNVEYsiswljeDb6N2mxhxMXcMHqHo3IByuWq9WrLzka8IliVqMVjh5Q+6+LYkD/FQpsdXhGV1cSOFzJRhcTXqosgGnCNSPKvqbSu0PBJ32sQueoU9kfYBg+odoy0VVSFdyl9+o=
+	t=1714400575; cv=none; b=hCDoUHDLpvLf/319n3I2M7fChKCrOzMGkz/xqEadvgHt7RKaVPzzrP6OXivOaoPX42OSa3DfDFBaSc2Yv+6QdZzzE4SR1m0rACpugSyOEYh+Q/RN8LBHr+Ybl7cu7xsPu+cU0FKfPK9pM1OaLAkS7eD8Zw+bXoq2AifghL90QyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714195719; c=relaxed/simple;
-	bh=GwqpKC5+LkRLRTZ4RlLT13C4t8nOGVEKrN3Cl/Yjgm8=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=FJZMuL7oySwVzVK6WaAr2gUwd+tAMVYJ7mJvcsw13s8WTE/kkEPxxgOrGjSYSv2tb8hsS/VkLRQmfYbefRBSreRBEzs/RPotkUN6bJoGLdUZ3zb2EbBZGh4Wimcv8RKNs05UqbWDRHx0rqu7TDFEamt9ZxKYenQX4nFvfkLRCs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=tIwLi7UW; arc=none smtp.client-ip=203.205.221.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1714195704; bh=OPRLB2fvbwGnGWhWWCaQT4aiVsrtxUso4PGORBObRx0=;
-	h=From:To:Cc:Subject:Date;
-	b=tIwLi7UWenf68TtvO8RZqWj61IASgk3P7bsMXQXAq358VYQkQFI/rHNvii0zFerBb
-	 JWNFn/V4U8EiXSQD2jK8kbGxTHWVTqaZiqAHI7TBhtLUsSumTgZjCNPqXVr08VM4jb
-	 hO9vP/gY0YZVdtZUlF7x9lyjFQGOWbjRmCzz3OFo=
-Received: from localhost.localdomain ([58.213.8.145])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id 649974F2; Sat, 27 Apr 2024 13:25:09 +0800
-X-QQ-mid: xmsmtpt1714195509tnziqak7s
-Message-ID: <tencent_E910110547D287B13FEDB6E161D8874E6E06@qq.com>
-X-QQ-XMAILINFO: NMGzQWUSIfvTorIFbPMI2XNbz0tgf4ZkeLxSeVT6T+LxYTX4HeP/Fm/R64o4ie
-	 AHoK3qD2FK+DKjsvGmtc+XmK11Spn/YvDtY6lfrkYBu7KeQV+EE9WUYg2kZw/MmCUUmOgbUZ9/O7
-	 Rl2U/CsEjoCJEtucuikX4OB6L/IuNiMLtgRU9Fk8CGLrsIvuoQdCM106qVneT/claNqKvQSwXNNc
-	 v32sGYOYrD/nvoQGjEwRnNEWt+EINwK/k66fwaKOer+d1Shaa5ZJ/H/Bbb0mEaEpFClgEDDa6vm8
-	 z985LRVxZ+VABus2/qju9LDVLSSP3hq9LnmlIunv/eb1b8LGlAr5wCwi7N8OQI/kXEtQu3AfyGvu
-	 ChDM5ObRRg7zy7Q+EnIxzekMG52emLLPpRuOx1X8EO184yvbVYXj5fCzACX8LygFSeUzAaoKigR7
-	 YM/R5ZGWGBjIZzYELrbI2FOGSOUzEbkBwc0VQjCL4T6D56oXnfnHLduHq//61mTRGiqohvQprUN9
-	 uvPEKEYCoEKPCu4ta2b/FHxV3qWniB2ZqA6fsh4IRB5UutDA1++KSoclqH231puFFPLbmEn9ExLu
-	 zkqXoP5mFZH77QGTKbG7lz553opN5G1uSS0aGlmyj8TVnf/HdMR3IpKP8c3EGuaJnUHpjGQX6/iF
-	 JUGyo1ZfK5yp5giGICR7EHP5WV+CNoFtA6nNh079ZwTDk1nnrLO/1+uztbIr5A4XRXB0hwE+2h+c
-	 1rTIBoBOBBYknpXLBKOU1RGivBFq9DPuIplSTmmKLA9lAS/u2HYEKzzg8XfwBYQ5qVntoriRnJ7R
-	 rQTV50uV6/DUE6CsOaPL7wtbpr5yXphZe/91Hw5rbqT+dnc4rQ77fiwi8opFbyDbWiISWuY0IFvG
-	 0gSHfiseMf8iP9eEkSB6+DbPNjNK/XiKaUNyOiib5hUqaMISqdUM0LW/tvZYumhGQZYW9oH8koqk
-	 qscSm7RWamV+rxXuNRFYHUS7U8YQToE8nOdXlCx7cZ/vo8VttRGnsVegynYj2ildEsY/P1ims=
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-From: linke li <lilinke99@qq.com>
-To: 
-Cc: xujianhao01@gmail.com,
-	linke li <lilinke99@qq.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] x86/efi: mark racy access on efi_rts_work.efi_rts_id
-Date: Sat, 27 Apr 2024 13:25:07 +0800
-X-OQ-MSGID: <20240427052507.29801-1-lilinke99@qq.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	s=arc-20240116; t=1714400575; c=relaxed/simple;
+	bh=/LW0m0LOAnPc0ufPHxPFom40EYrXG3uvphQo+nXtYvQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NhCEO1UF7dL/nZtni07qd5vLLH6ws/qeHK7ZgINuMHtvQkgv3SGHoYAM0gOObHPXQUJL6/aTfrQbLqaXPzd2l/y/Cuak9sRF+5oF1ump2dtBOSZUsc5+uxV87G6ocVZ8tVqSFtsE9Ky4y+6QTgUhbHwBAzMbZSRj47hplhIPQrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GcQwUu4F; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2dd6a7ae2dcso72164781fa.1;
+        Mon, 29 Apr 2024 07:22:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714400571; x=1715005371; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q5QVpxga4N6/hqXrH0MOQKoldXcmMmAuvc1GZMoLFtI=;
+        b=GcQwUu4Fdy5rWSAQTGxuvlGuWNnGl0IShd98sOR7iE4uzJNK7J9YdFzNXLIymxeIjO
+         IoHloMzxIyydt4aacwp9gM9txIiYDoy8e+P1Q50cJrtjjnTria5SwY4aKLyAyuuMM7Bt
+         DA/lPdi0L4jQWMNW1X/sI+1UOOhO0vUtTIwXtOD13BfFefvOebrWO/Diq9vv1/3PVfXe
+         Y7QYYWZAO0hSy/TJSzJNisY7XlM4A+6hLwoADr2QnuqKOkxd3Kc0m7UFDzozL9KDROo7
+         ia3De63BNr5lDcO/pLN9stZzNfQepR23ogw1xLWTacuSpGvSB1zroLZQGl52XnI2BJRX
+         9zHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714400571; x=1715005371;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q5QVpxga4N6/hqXrH0MOQKoldXcmMmAuvc1GZMoLFtI=;
+        b=SJ+Ip+lQ8P2C3XCUpE2vLsljshBD18ej2LyPnwU4sLA/UuHUuv9AxS9wRY5+J/NEVs
+         ujnTGMhg5ylB8uAVEC/BgVKctKLNi99E6r2ipnGhoZRRixbQZOlumx371zEropE5c0iS
+         ztjqjK49hV7eN/8XtdhQ8WNyUzeF5W6kQbh34DUG5M9Twfz84CSg/TIuD99WdlD8k8We
+         jsxRRekFALfeJnme5304qJWIOA0d3uD7a83bvIjUIkYngNzu/biOym14whf29XATXE+w
+         KPsXu6T7+Wj826b0fzkFMcjV5tQ7UqFBjzT8TiGh0a90+x+aaluJ+UChVjxpSutPIcIq
+         y7cw==
+X-Forwarded-Encrypted: i=1; AJvYcCVXzOSA/QznXrcylXAMGYv4qX9Axkjb3baBLEOnPUNnEXfC0ViZ3Jy7jt2SMb2s6LEN/G98mFFcJ0u/Oxm+1By0DR2VNkBT5HOBavRBBpI1OLT0aZDWorE+NusbPXf5I76IFkg3eh9a
+X-Gm-Message-State: AOJu0YxqNf9L2rF8/aG1myqSrjmwM1RCjROpLX+uG5ra3IaPdrqupNYT
+	CsVm1u7ytlwDn2E/NqUl4rjM9/VwdyyIqR8ieLY2ahqfKXl09PGo0UQ/9a05VxffZs7j+sU8fC+
+	biu9uUDkmODJ3cufODvp+MbO5r/U=
+X-Google-Smtp-Source: AGHT+IFRoXV25WEa7TOCZ5iwFJ1etTgBdopt5lNjuPebhcmXiNyyBP2Ud9FNF6vLlGt/MZCZGxSbztYIte5P6b5QEfY=
+X-Received: by 2002:a2e:88d2:0:b0:2d8:8633:ff70 with SMTP id
+ a18-20020a2e88d2000000b002d88633ff70mr8656115ljk.30.1714400571081; Mon, 29
+ Apr 2024 07:22:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240318020916.1299190-1-haibo1.xu@intel.com> <7d69fac0-4cd1-4db6-b19f-fb5a418549ab@rivosinc.com>
+In-Reply-To: <7d69fac0-4cd1-4db6-b19f-fb5a418549ab@rivosinc.com>
+From: Haibo Xu <xiaobo55x@gmail.com>
+Date: Mon, 29 Apr 2024 22:22:39 +0800
+Message-ID: <CAJve8omCXANwhQuvFnhzw_=Fx0fh1pHq+7UYMWS507-2cHVx9A@mail.gmail.com>
+Subject: Re: [PATCH v2] riscv: dmi: Add SMBIOS/DMI support
+To: Atish Patra <atishp@rivosinc.com>
+Cc: Haibo Xu <haibo1.xu@intel.com>, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org, 
+	aou@eecs.berkeley.edu, palmer@dabbelt.com, paul.walmsley@sifive.com, 
+	ardb@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In efi_crash_gracefully_on_page_fault(), efi_rts_work.efi_rts_id can by
-changed by other thread from the comment. Mark possible data race on 
-efi_rts_work.efi_rts_id as benign using READ_ONCE.
+Hi @Palmer,
 
-This patch is aimed at reducing the number of benign races reported by
-KCSAN in order to focus future debugging effort on harmful races.
+Could you please let me know whether this patch was OK for the next RISC-V =
+PULL?
 
-Signed-off-by: linke li <lilinke99@qq.com>
----
- arch/x86/platform/efi/quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Haibo
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index f0cc00032751..4acb81700caf 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -751,7 +751,7 @@ void efi_crash_gracefully_on_page_fault(unsigned long phys_addr)
- 	 * because this case occurs *very* rarely and hence could be improved
- 	 * on a need by basis.
- 	 */
--	if (efi_rts_work.efi_rts_id == EFI_RESET_SYSTEM) {
-+	if (READ_ONCE(efi_rts_work.efi_rts_id) == EFI_RESET_SYSTEM) {
- 		pr_info("efi_reset_system() buggy! Reboot through BIOS\n");
- 		machine_real_restart(MRR_BIOS);
- 		return;
--- 
-2.39.3 (Apple Git-146)
-
+On Wed, Mar 20, 2024 at 3:46=E2=80=AFAM Atish Patra <atishp@rivosinc.com> w=
+rote:
+>
+> On 3/17/24 19:09, Haibo Xu wrote:
+> > Enable the dmi driver for riscv which would allow access the
+> > SMBIOS info through some userspace file(/sys/firmware/dmi/*).
+> >
+> > The change was based on that of arm64 and has been verified
+> > by dmidecode tool.
+> >
+> > Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+> > ---
+> > Changes since v1
+> >    - Change to use memremap/memunmap for dmi_(early)_remap/unmap
+> >      definition(suggested by Ard)
+> >    - Minor clean up for comments (Ard)
+> > ---
+> >   arch/riscv/Kconfig                   | 11 +++++++++++
+> >   arch/riscv/include/asm/dmi.h         | 24 ++++++++++++++++++++++++
+> >   drivers/firmware/efi/riscv-runtime.c | 13 +++++++++++++
+> >   3 files changed, 48 insertions(+)
+> >   create mode 100644 arch/riscv/include/asm/dmi.h
+> >
+> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > index 8ebafe337eac..3639151cb4ef 100644
+> > --- a/arch/riscv/Kconfig
+> > +++ b/arch/riscv/Kconfig
+> > @@ -952,6 +952,17 @@ config EFI
+> >         allow the kernel to be booted as an EFI application. This
+> >         is only useful on systems that have UEFI firmware.
+> >
+> > +config DMI
+> > +     bool "Enable support for SMBIOS (DMI) tables"
+> > +     depends on EFI
+> > +     default y
+> > +     help
+> > +       This enables SMBIOS/DMI feature for systems.
+> > +
+> > +       This option is only useful on systems that have UEFI firmware.
+> > +       However, even with this option, the resultant kernel should
+> > +       continue to boot on existing non-UEFI platforms.
+> > +
+> >   config CC_HAVE_STACKPROTECTOR_TLS
+> >       def_bool $(cc-option,-mstack-protector-guard=3Dtls -mstack-protec=
+tor-guard-reg=3Dtp -mstack-protector-guard-offset=3D0)
+> >
+> > diff --git a/arch/riscv/include/asm/dmi.h b/arch/riscv/include/asm/dmi.=
+h
+> > new file mode 100644
+> > index 000000000000..ca7cce557ef7
+> > --- /dev/null
+> > +++ b/arch/riscv/include/asm/dmi.h
+> > @@ -0,0 +1,24 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/*
+> > + * Copyright (C) 2024 Intel Corporation
+> > + *
+> > + * based on arch/arm64/include/asm/dmi.h
+> > + *
+> > + * This file is subject to the terms and conditions of the GNU General=
+ Public
+> > + * License.  See the file "COPYING" in the main directory of this arch=
+ive
+> > + * for more details.
+> > + */
+> > +
+> > +#ifndef __ASM_DMI_H
+> > +#define __ASM_DMI_H
+> > +
+> > +#include <linux/io.h>
+> > +#include <linux/slab.h>
+> > +
+> > +#define dmi_early_remap(x, l)                memremap(x, l, MEMREMAP_W=
+B)
+> > +#define dmi_early_unmap(x, l)                memunmap(x)
+> > +#define dmi_remap(x, l)                      memremap(x, l, MEMREMAP_W=
+B)
+> > +#define dmi_unmap(x)                 memunmap(x)
+> > +#define dmi_alloc(l)                 kzalloc(l, GFP_KERNEL)
+> > +
+> > +#endif
+> > diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/ef=
+i/riscv-runtime.c
+> > index 09525fb5c240..c3bfb9e77e02 100644
+> > --- a/drivers/firmware/efi/riscv-runtime.c
+> > +++ b/drivers/firmware/efi/riscv-runtime.c
+> > @@ -152,3 +152,16 @@ void arch_efi_call_virt_teardown(void)
+> >   {
+> >       efi_virtmap_unload();
+> >   }
+> > +
+> > +static int __init riscv_dmi_init(void)
+> > +{
+> > +     /*
+> > +      * On riscv, DMI depends on UEFI, and dmi_setup() needs to
+> > +      * be called early because dmi_id_init(), which is an arch_initca=
+ll
+> > +      * itself, depends on dmi_scan_machine() having been called alrea=
+dy.
+> > +      */
+> > +     dmi_setup();
+> > +
+> > +     return 0;
+> > +}
+> > +core_initcall(riscv_dmi_init);
+>
+> Reviewed-by: Atish Patra <atishp@rivosinc.com>
 
