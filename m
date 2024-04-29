@@ -1,115 +1,175 @@
-Return-Path: <linux-efi+bounces-1000-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1001-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6628B5E03
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 17:48:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516128B5EE8
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 18:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C29631C2124B
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 15:48:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CC89281151
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Apr 2024 16:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B382382883;
-	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMc9yYED"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0B784A48;
+	Mon, 29 Apr 2024 16:24:28 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C0282881;
-	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3E0824AA;
+	Mon, 29 Apr 2024 16:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714405698; cv=none; b=gCshtltMs7aQygQ8UBthwvgXvEm+o/Gt5k4AHszLa+uRMB0ydwixdoNbVvfKAwvNu0oegvNMHujqH/r8RIRpwwpaR6j90KePtxlq3xoDLSRIf5/RuyrWmRWxe4Rf95p2MY+FSeb+K10bVt0a1JTdn95n1ff7njCF9J8MBv7TuBQ=
+	t=1714407868; cv=none; b=kBYRe7lp0RWoBJ167lV4FT2iWyJuBXfuT/5jMwr6Jtno99XOwSgFv0RJ7+1ZEhwXlNySFYzOgUv/9yqGUs+skRLUoofrzQsAhEs7DK2gLagWw+t5kYaYvD5WH1PDVsDlTiZECI1EYJ5Tq3S7ApVwwgpHGKOS/j0aPl1fWUPTv+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714405698; c=relaxed/simple;
-	bh=q0TrEuqJ399P2tU46vjogSsElHWc/nM7/9Z+Al4Ihls=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OBI0cy5evpflUZidOkyAmvjxuksL4qTgu+1nC5mycEJrnwxhaqnP50Yk4pBD8KIHGbn2qeHYFsdcbfP+kSV05gS4nrvPko2fwskoXXOb6WtLG/hGngcnAfT5dwEexLjp/7HhANd3hI3F/ZVZx7v0AuT4hZmx2Ar+pFXNg7qSfbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMc9yYED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13401C113CD;
-	Mon, 29 Apr 2024 15:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714405698;
-	bh=q0TrEuqJ399P2tU46vjogSsElHWc/nM7/9Z+Al4Ihls=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lMc9yYEDyzeRZOJ1DRUT7SFpqY0LFuNwm2GRW2x2+4sUM7hTHv2OuNtKaNnQRJKHJ
-	 ZQxj5mkTm8xhpjAE+gbLHw4eaTyF58ajvnGBOcHEY+04zix7O+IFSlWCa7RG2grPXU
-	 bASVDmSzzNxqEKnUWhe66Lv/D8jUNNmhOiHs810CbbJYDiLAXDh0NQuPKM3gIUiJjE
-	 NWqBY/ffZIk/VT1uhSMNEOSDWi3Ke7G+hILanka25TL5nSmc5g4JI4GJNeoNpnRn5c
-	 qfDacGm6CMtmvyOq8M0a3yxpeZVKBongaytfhWthBPy24zkIx15HjVN+Ir57f7dppL
-	 Kbpvz+lYzGXRA==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51ca95db667so4074055e87.0;
-        Mon, 29 Apr 2024 08:48:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUP5nZVHWN9lHtDCg/dvclg1HKyxFE0UaWtTRUgDd2NBhycQsO5z62Ihmv5CI2f2TtheRsWcmuuuBVGddMY56gaPZ0c+OSyItqo6bk5OXKy+9kEHV/JwCjWnzNJ1jyJoSRLRVkE5IqHOKJiqZs6/qwq+TeSWPHGFgadePtRIwfq
-X-Gm-Message-State: AOJu0YyOvLxrGORjvkqf2N7jeQpWYMOmbqEA5ygfnVW+jZAFptY2hV/p
-	Sfb3pLX+jRn8H2GD7O04kp0DS8/p4KNwiWUl5XGVPX0jKBDi42iyYhUklN4KEJ3R/Vtjw9160UT
-	aRrMYFY7/B07g2vZBoxx42xAGv0k=
-X-Google-Smtp-Source: AGHT+IH8dW+HR1/IwDDX3dJknVDKeoWFxn3QWuqcOlBwnDTa15PNjBagiz2MJ/zAfJQ1b/bGC3FTypm4Ztu41t9o6iE=
-X-Received: by 2002:a05:6512:781:b0:51a:f31f:fc6e with SMTP id
- x1-20020a056512078100b0051af31ffc6emr7462063lfr.14.1714405696431; Mon, 29 Apr
- 2024 08:48:16 -0700 (PDT)
+	s=arc-20240116; t=1714407868; c=relaxed/simple;
+	bh=3BVV/eVaeyIqnDdV64YCAwRwJzsCPrPlALPlAwheUtU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZD4bbjnp4IRBOsQCD5PMRt1ZSC//YpNPQlFkzYcxvL+W2Uuu6OI2cTb+fmShs9SVv7WlC/K2zfu3g2kTpAZC7+tONIv9PovCQwirfrsYcFSoq5ga/O9mrYl3nzR8iV7wum3EM9jj/pMXXzhvLFkXgfAKumbiyOPAeS2xlmwZvM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VSpVx6Qvlz6GDB4;
+	Tue, 30 Apr 2024 00:21:45 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8A879140B39;
+	Tue, 30 Apr 2024 00:24:20 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 29 Apr
+ 2024 17:24:19 +0100
+Date: Mon, 29 Apr 2024 17:24:18 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Ira Weiny <ira.weiny@intel.com>
+CC: Dave Jiang <dave.jiang@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>, "Yazen Ghannam"
+	<yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>, Alison
+ Schofield <alison.schofield@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Tony
+ Luck" <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH v4 1/2] acpi/ghes: Process CXL Component Events
+Message-ID: <20240429172418.0000534c@Huawei.com>
+In-Reply-To: <20240426-cxl-cper3-v4-1-58076cce1624@intel.com>
+References: <20240426-cxl-cper3-v4-0-58076cce1624@intel.com>
+	<20240426-cxl-cper3-v4-1-58076cce1624@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240423135928.1200-1-hagarhem@amazon.com>
-In-Reply-To: <20240423135928.1200-1-hagarhem@amazon.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 29 Apr 2024 17:48:05 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHiPcgC7-kXToivcbfyHe9g3Cg6__TFWhHYRUcOJ8hy1g@mail.gmail.com>
-Message-ID: <CAMj1kXHiPcgC7-kXToivcbfyHe9g3Cg6__TFWhHYRUcOJ8hy1g@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: libstub: only free priv.runtime_map when allocated
-To: Hagar Hemdan <hagarhem@amazon.com>
-Cc: Maximilian Heyne <mheyne@amazon.de>, Pratyush Yadav <ptyadav@amazon.de>, 
-	Norbert Manthey <nmanthey@amazon.de>, stable@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, 23 Apr 2024 at 16:00, Hagar Hemdan <hagarhem@amazon.com> wrote:
->
-> priv.runtime_map is only allocated when efi_novamap is not set.
-> Otherwise, it is an uninitialized value.
-> In the error path, it is freed unconditionally.
-> Avoid passing an uninitialized value to free_pool.
-> Free priv.runtime_map only when it was allocated.
->
-> This bug was discovered and resolved using Coverity Static Analysis
-> Security Testing (SAST) by Synopsys, Inc.
->
-> Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-> ---
-> v2: added Cc stable tag to the commit message as requested by kernel
-> test robot.
-> ---
->  drivers/firmware/efi/libstub/fdt.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
+On Fri, 26 Apr 2024 20:34:00 -0700
+Ira Weiny <ira.weiny@intel.com> wrote:
 
-Queued up in efi/next, thanks.
+> BIOS can configure memory devices as firmware first.  This will send CXL
+> events to the firmware instead of the OS.  The firmware can then inform
+> the OS of these events via UEFI.
+> 
+> UEFI v2.10 section N.2.14 defines a Common Platform Error Record (CPER)
+> format for CXL Component Events.  The format is mostly the same as the
+> CXL Common Event Record Format.  The difference lies in the use of a
+> GUID as the CPER Section Type which matches the UUID defined in CXL 3.1
+> Table 8-43.
+> 
+> Currently a configuration such as this will trace a non standard event
+> in the log omitting useful details of the event.  In addition the CXL
+> sub-system contains additional region and HPA information useful to the
+> user.[0]
+> 
+> The CXL code is required to be called from process context as it needs
+> to take a device lock.  The GHES code may be in interrupt context.  This
+> complicated the use of a callback.  Dan Williams suggested the use of
+> work items as an atomic way of switching between the callback execution
+> and a default handler.[1]
+> 
+> The use of a kfifo simplifies queue processing by providing lock free
+> fifo operations.  cxl_cper_kfifo_get() allows easier management of the
+> kfifo between the ghes and cxl modules.
+> 
+> CXL 3.1 Table 8-127 requires a device to have a queue depth of 1 for
+> each of the four event logs.  A combined queue depth of 32 is chosen to
+> provide room for 8 entries of each log type.
+> 
+> Add GHES support to detect CXL CPER records.  Add the ability for the
+> CXL sub-system to register a work queue to process the events.
+> 
+> This patch adds back the functionality which was removed to fix the
+> report by Dan Carpenter[2].
+> 
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Link: http://lore.kernel.org/r/cover.1711598777.git.alison.schofield@intel.com [0]
+> Link: http://lore.kernel.org/r/65d111eb87115_6c745294ac@dwillia2-xfh.jf.intel.com.notmuch [1]
+> Link: http://lore.kernel.org/r/b963c490-2c13-4b79-bbe7-34c6568423c7@moroto.mountain [2]
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Totally trivial comment inline.  Maybe Dave can tweak whilst applying...
 
-> diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-> index 70e9789ff9de..6a337f1f8787 100644
-> --- a/drivers/firmware/efi/libstub/fdt.c
-> +++ b/drivers/firmware/efi/libstub/fdt.c
-> @@ -335,8 +335,8 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
->
->  fail:
->         efi_free(fdt_size, fdt_addr);
-> -
-> -       efi_bs_call(free_pool, priv.runtime_map);
-> +       if (!efi_novamap)
-> +               efi_bs_call(free_pool, priv.runtime_map);
->
->         return EFI_LOAD_ERROR;
->  }
-> --
-> 2.40.1
->
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
+> index 03fa6d50d46f..a0067c49e2ca 100644
+> --- a/include/linux/cxl-event.h
+> +++ b/include/linux/cxl-event.h
+> @@ -3,6 +3,8 @@
+>  #ifndef _LINUX_CXL_EVENT_H
+>  #define _LINUX_CXL_EVENT_H
+>  
+> +#include <linux/workqueue_types.h>
+> +
+>  /*
+>   * Common Event Record Format
+>   * CXL rev 3.0 section 8.2.9.2.1; Table 8-42
+> @@ -140,4 +142,29 @@ struct cxl_cper_event_rec {
+>  	union cxl_event event;
+>  } __packed;
+>  
+> +struct cxl_cper_work_data {
+> +	enum cxl_event_type event_type;
+> +	struct cxl_cper_event_rec rec;
+> +};
+> +
+> +#ifdef CONFIG_ACPI_APEI_GHES
+> +int cxl_cper_register_work(struct work_struct *work);
+> +int cxl_cper_unregister_work(struct work_struct *work);
+> +int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd);
+> +#else
+> +static inline int cxl_cper_register_work(struct work_struct *work);
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline int cxl_cper_unregister_work(struct work_struct *work);
+> +{
+> +	return 0;
+> +}
+
+Trivial note of the day: Inconsistent spacing - add a blank line here.
+
+> +static inline int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>  #endif /* _LINUX_CXL_EVENT_H */
+> 
+
 
