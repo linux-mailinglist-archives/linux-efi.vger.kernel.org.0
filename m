@@ -1,395 +1,215 @@
-Return-Path: <linux-efi+bounces-1031-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1032-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625968C0511
-	for <lists+linux-efi@lfdr.de>; Wed,  8 May 2024 21:32:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C738C08A6
+	for <lists+linux-efi@lfdr.de>; Thu,  9 May 2024 02:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B2451C221FD
-	for <lists+linux-efi@lfdr.de>; Wed,  8 May 2024 19:31:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370281F2167C
+	for <lists+linux-efi@lfdr.de>; Thu,  9 May 2024 00:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD1C130A4A;
-	Wed,  8 May 2024 19:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DFE38DD4;
+	Thu,  9 May 2024 00:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="qpXz0fpK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZtdHoghz"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92938130AC7
-	for <linux-efi@vger.kernel.org>; Wed,  8 May 2024 19:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB98364A5;
+	Thu,  9 May 2024 00:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715196714; cv=none; b=IxmfDoVvWPsgBBD1jxNqVhBt//bMbON5TwucQptm7s6hbbZGljvGv9Dr1x7sGu0Wxskaf1nyjIFaavIRycewZLjgsvpJt2jlYFw4H0X1cWxSTugEzTj5FrmJdb2uQPrmRrDzVwBMtEwPn++lUmcQFCiJ4u+bim+LbSuuFIUYbcg=
+	t=1715215610; cv=none; b=gjUgzsdSer31mbx5ygAvJAil2PxXgnQWc2Ix1W94nucTBBxYOcqpf3KZuJpNKI2UGNnE1Iglivzj2gl9jZj7LgBeLJyrq6Xn4vrdCiWDT8IJPSKLMh/LYVQ0uvXhnNKBk1WxgJFQoxnn0ciSGwr0YjyzcMNQC6X4uO1qs+p4KiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715196714; c=relaxed/simple;
-	bh=17Fc7ODuOz1kLt1gNe1cLiC3KB/RQ6g/Lgo9SPZ4gaw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hRlSyGwRKOIdXu5S5i/jlOqeI5/95njbbufjs3zNGicZV0bQ8F//tLb6wL98u6ubuLvbnCF9N5guTTGezbMsXvlAOwmcjFx7F5WJQX3McDqpugWd33CfcaNDiHBj7wcrfYcPq6B3ud0awpRB2w6Li27kncE9PInXSKH4Dp5CxOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=qpXz0fpK; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-34e0d8b737eso741278f8f.1
-        for <linux-efi@vger.kernel.org>; Wed, 08 May 2024 12:31:51 -0700 (PDT)
+	s=arc-20240116; t=1715215610; c=relaxed/simple;
+	bh=+KT3BBq/J8pC0HgggVgvXiiYxlzHKGxivVXeeAlfYiE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MAb4wbuRKJKAd4Z6fw8LiS8EPBAafUl3QGCocg1nMNNl69kJIY+e9lMfQ6VX0CLcxFd+dfP8zwatLJnL4cuxZUYIldhvx/lTARhiIKgF+2X0scGCFwnqIUe5aAKJ2uA+5ufjSFg7r+pg6hP1BKCwAdSg21wO5csVDeao64ucA3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZtdHoghz; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-4dcceac3ae1so149588e0c.2;
+        Wed, 08 May 2024 17:46:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715196710; x=1715801510; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1715215607; x=1715820407; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3Mj4lZQ0sNzizek27x00kn2/PQ3ffbB6QFBBUZYNyzk=;
-        b=qpXz0fpK6bmYnoAg6TyQoKjCo8PTRaAKLX3LxpHCm0YM37mPKT6RKI+g+cQyhN9RwJ
-         pep0GkfvVSkvmsCkiNtQkVBjUONZJZ5sTF02IBaGPLYxJg5xpnxaMP+jYTKoTkT8RVu7
-         wiMyKY+jKs7avzysbZRNmNcBv4c9p8+UoD/9sR7ZHB5GrDnad5zgPLialTH2Ri8WGDsy
-         28UrsbOqaJjJs7tuHntTbfIxRjMEcN5K6LnHIFM6mtkGar8yFQcicRKPWY+PlN6BDZ3y
-         mc08qKZapIhvT2s2AFh1vBePl2TzpspcjY17CGHgGP7DtGgtdtNs5JhE9v1u5kb0hUUc
-         XBiA==
+        bh=1HutaMr4YNAQdV0piVG8U9fxjw32ZuJHu11VAl/8knE=;
+        b=ZtdHoghzdszVnl5jcHEMHzzeP0m/gx2/mOnsDBZeQcAlbakwYAzQqY9Kq1clGbISLG
+         1pu8advSFe9kke+kcuVEeMZwRc4nPRG9LDM6iEBbb9ial9BykNscNScULiUnPmxTiWOn
+         535R3AYoduJ34nm02e45km8N73W9TD3ki1RFSuBZU6kMKqhWXsT6TquMjD66PXZ6trlW
+         9Xpvy9T7tDYTK3mRU6SeGFRiP5B1ppiQBE1Oxm1YlRlSZkS0PIll61oO7lgbN0BB8LRu
+         aAgLe8zz+GvLp4+ob6KKbPjt6fXgaJxLOmwpU91RX2//5djO6TMfRV9n9C+cOe2+qGGK
+         JCVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715196710; x=1715801510;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1715215607; x=1715820407;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3Mj4lZQ0sNzizek27x00kn2/PQ3ffbB6QFBBUZYNyzk=;
-        b=fxOwtyXShQoi8Tt7rdE8LcWy5OjLr1SEeCmnf2WMF8K6R7layatFm+/yaJ9bnmiMZQ
-         yEfXNH4v5xYcKIjkL0gV2CwPJGIVyJ5vkKsVoajeuq0DpwNbUF9wKTLcQcBidwOlGgM1
-         hiIbZUyWyz69LiRHt/HqD4i9seJMvQEvsi+EBrZ/kKgmWZyA5X9GQTBhCMimY9JcpOvj
-         HwGf5EJvGNgcSdcLixnseA+Xot8RI4KVb09iFOrKq9js4kXShSyD0vl9VJ1ZJZRv7Jnu
-         /JbVgsHAKAWo65g4+Yq64Urgalx86Q6LeVpHt0yXh26cGB+IwnkszurmhEQm3xeBbweE
-         ntVg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4n7Dz2qpDBBWhLfV7JOxTt1TocMF76H/K3nQD3p6npAh1vPvXHt1jhSF5I9GFf4STywWtdYsw7ZCmNiH8tOiVAq/xxW6gH/E8
-X-Gm-Message-State: AOJu0Yx19oO2aCbn5aPIiwApdrh+J6dELCa1qcXjnK2MGiOGxV1UlSO8
-	v+Z1WN04ZmnnZerHwuU53Z7z3648juL9VB+e3SJ87o+9whCClolxLS1Qz24f/eE=
-X-Google-Smtp-Source: AGHT+IGynnks5bQyXkefndTUc8PNt1+uZJK8w5+sVciCnroxfstzlHH5YDMjCv7Za3kPs8Z2dwdXzA==
-X-Received: by 2002:adf:fe8a:0:b0:34c:fd92:3359 with SMTP id ffacd0b85a97d-350185d57e7mr489056f8f.21.1715196709811;
-        Wed, 08 May 2024 12:31:49 -0700 (PDT)
-Received: from alex-rivos.ba.rivosinc.com (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id s2-20020a5d4242000000b003472489d26fsm15924162wrr.19.2024.05.08.12.31.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 May 2024 12:31:49 -0700 (PDT)
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-To: Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atishp@atishpatra.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-riscv@lists.infradead.org,
-	linux-efi@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-mm@kvack.org
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH 12/12] mm, riscv, arm64: Use common get_and_clear_full_ptes()/clear_full_ptes() functions
-Date: Wed,  8 May 2024 21:19:31 +0200
-Message-Id: <20240508191931.46060-13-alexghiti@rivosinc.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240508191931.46060-1-alexghiti@rivosinc.com>
-References: <20240508191931.46060-1-alexghiti@rivosinc.com>
+        bh=1HutaMr4YNAQdV0piVG8U9fxjw32ZuJHu11VAl/8knE=;
+        b=Qq4+V21JI3eXZFvIwFj0+f2VM9cSzlFl+tpMKQfowVyqzQb1AWKIv7C6pnOUcmSGEP
+         3iUERbPVwjQ3QpqaR/gabQalTVoDYhkIGM1w2OigX9YgZz/hp8WYifmHYbWmLSzeK1J9
+         lM7JOuQpTJTzEJmsLlzI/wI5CoboFlq4maLaVd8DW+c+bfwlhzzpiyt27Gg7WSOk8UVA
+         bWZGzqFWWDs0KRTf+iPI9gj45eSX4ZGkr6vg7hVpP4InlqPy6k7aPPOHYyVN9OS/cxNy
+         ACIpRpwKPYcapNr8N9wLcKqbJW0qlMPkVPmrgvi3qeSAAG/qveGyyy62csaBhjy6cyNf
+         DKdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ4DKcQsuHdbJtJ3QqUt1gIJuTCtocCOrAOgfcrC8Q19HZY8K5X0ivCITZ6wZlCS+sWVDC58coplpEV6HjJ2m2llnmy/BrrEBPqx3eb/ag7BdykjXnOaHlYbY+pJYXp8WNqWpoNH+fy1CLCNWwHVv1H6+RyGJpcrR1gzTX
+X-Gm-Message-State: AOJu0YzwJDQqea8qcIAVH3k81m/2hPdZTp6k0Tu/WhQ5ElG6MRlZF9wz
+	oOvuvM5gVAU9PEBKIBb6SBDOPGHvVFch5cDOiuHF1KbGw2CJ7x2/pwfaN/S7+eDnzZfMs+9HOcg
+	lf34NAINT8DZ8ojbNSOU2cOQrNDA=
+X-Google-Smtp-Source: AGHT+IF79LXSq4NewTC5DFVGeNH4TGRK7B023rxeM+UTTC9bpQ7D2OYFXWiN0Dal3DjFVZkbQyCweJ7ZkvtSI8S33PY=
+X-Received: by 2002:a05:6122:7cb:b0:4d8:797b:94df with SMTP id
+ 71dfb90a1353d-4df6929c091mr4383063e0c.2.1715215607538; Wed, 08 May 2024
+ 17:46:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240508191931.46060-1-alexghiti@rivosinc.com> <20240508191931.46060-2-alexghiti@rivosinc.com>
+In-Reply-To: <20240508191931.46060-2-alexghiti@rivosinc.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Thu, 9 May 2024 12:46:35 +1200
+Message-ID: <CAGsJ_4xayC4D4y0d7SPXxCvuW4-rJQUCa_-OUDSsOGm_HyPm1w@mail.gmail.com>
+Subject: Re: [PATCH 01/12] mm, arm64: Rename ARM64_CONTPTE to THP_CONTPTE
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Ard Biesheuvel <ardb@kernel.org>, Anup Patel <anup@brainfault.org>, 
+	Atish Patra <atishp@atishpatra.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Make riscv use the contpte aware get_and_clear_full_ptes()/clear_full_ptes()
-function from arm64.
+On Thu, May 9, 2024 at 7:20=E2=80=AFAM Alexandre Ghiti <alexghiti@rivosinc.=
+com> wrote:
+>
+> The ARM64_CONTPTE config represents the capability to transparently use
+> contpte mappings for THP userspace mappings, which will be implemented
+> in the next commits for riscv, so make this config more generic and move
+> it to mm.
+>
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> ---
+>  arch/arm64/Kconfig               | 9 ---------
+>  arch/arm64/include/asm/pgtable.h | 6 +++---
+>  arch/arm64/mm/Makefile           | 2 +-
+>  mm/Kconfig                       | 9 +++++++++
+>  4 files changed, 13 insertions(+), 13 deletions(-)
+>
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index ac2f6d906cc3..9d823015b4e5 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -2227,15 +2227,6 @@ config UNWIND_PATCH_PAC_INTO_SCS
+>         select UNWIND_TABLES
+>         select DYNAMIC_SCS
+>
+> -config ARM64_CONTPTE
+> -       bool "Contiguous PTE mappings for user memory" if EXPERT
+> -       depends on TRANSPARENT_HUGEPAGE
+> -       default y
+> -       help
+> -         When enabled, user mappings are configured using the PTE contig=
+uous
+> -         bit, for any mappings that meet the size and alignment requirem=
+ents.
+> -         This reduces TLB pressure and improves performance.
+> -
+>  endmenu # "Kernel Features"
+>
+>  menu "Boot options"
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pg=
+table.h
+> index 7c2938cb70b9..1758ce71fae9 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1369,7 +1369,7 @@ extern void ptep_modify_prot_commit(struct vm_area_=
+struct *vma,
+>                                     unsigned long addr, pte_t *ptep,
+>                                     pte_t old_pte, pte_t new_pte);
+>
+> -#ifdef CONFIG_ARM64_CONTPTE
+> +#ifdef CONFIG_THP_CONTPTE
 
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
- arch/arm64/include/asm/pgtable.h | 41 ++++------------------------
- arch/arm64/mm/Makefile           |  1 -
- arch/arm64/mm/contpte.c          | 46 -------------------------------
- arch/riscv/include/asm/pgtable.h | 39 ++++++++++++++++++++++++++
- include/linux/contpte.h          |  5 ++++
- mm/contpte.c                     | 47 ++++++++++++++++++++++++++++++++
- 6 files changed, 96 insertions(+), 83 deletions(-)
- delete mode 100644 arch/arm64/mm/contpte.c
+Is it necessarily THP? can't be hugetlb or others? I feel THP_CONTPTE
+isn't a good name.
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 162efd9647dd..f8a3159f9df0 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1373,17 +1373,6 @@ extern void ptep_modify_prot_commit(struct vm_area_struct *vma,
- 
- #ifdef CONFIG_THP_CONTPTE
- 
--/*
-- * The contpte APIs are used to transparently manage the contiguous bit in ptes
-- * where it is possible and makes sense to do so. The PTE_CONT bit is considered
-- * a private implementation detail of the public ptep API (see below).
-- */
--extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
--				pte_t *ptep, unsigned int nr, int full);
--extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
--				unsigned long addr, pte_t *ptep,
--				unsigned int nr, int full);
--
- #define pte_batch_hint pte_batch_hint
- static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
- {
-@@ -1428,34 +1417,14 @@ extern void pte_clear(struct mm_struct *mm,
- 		      unsigned long addr, pte_t *ptep);
- #define pte_clear pte_clear
- 
-+extern void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+			    pte_t *ptep, unsigned int nr, int full);
- #define clear_full_ptes clear_full_ptes
--static inline void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
--				pte_t *ptep, unsigned int nr, int full)
--{
--	if (likely(nr == 1)) {
--		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
--		__clear_full_ptes(mm, addr, ptep, nr, full);
--	} else {
--		contpte_clear_full_ptes(mm, addr, ptep, nr, full);
--	}
--}
- 
-+extern pte_t get_and_clear_full_ptes(struct mm_struct *mm,
-+				     unsigned long addr, pte_t *ptep,
-+				     unsigned int nr, int full);
- #define get_and_clear_full_ptes get_and_clear_full_ptes
--static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
--				unsigned long addr, pte_t *ptep,
--				unsigned int nr, int full)
--{
--	pte_t pte;
--
--	if (likely(nr == 1)) {
--		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
--		pte = __get_and_clear_full_ptes(mm, addr, ptep, nr, full);
--	} else {
--		pte = contpte_get_and_clear_full_ptes(mm, addr, ptep, nr, full);
--	}
--
--	return pte;
--}
- 
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
- extern pte_t ptep_get_and_clear(struct mm_struct *mm,
-diff --git a/arch/arm64/mm/Makefile b/arch/arm64/mm/Makefile
-index 52a1b2082627..dbd1bc95967d 100644
---- a/arch/arm64/mm/Makefile
-+++ b/arch/arm64/mm/Makefile
-@@ -3,7 +3,6 @@ obj-y				:= dma-mapping.o extable.o fault.o init.o \
- 				   cache.o copypage.o flush.o \
- 				   ioremap.o mmap.o pgd.o mmu.o \
- 				   context.o proc.o pageattr.o fixmap.o
--obj-$(CONFIG_THP_CONTPTE)	+= contpte.o
- obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
- obj-$(CONFIG_PTDUMP_CORE)	+= ptdump.o
- obj-$(CONFIG_PTDUMP_DEBUGFS)	+= ptdump_debugfs.o
-diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-deleted file mode 100644
-index 1cef93b15d6e..000000000000
---- a/arch/arm64/mm/contpte.c
-+++ /dev/null
-@@ -1,46 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2023 ARM Ltd.
-- */
--
--#include <linux/mm.h>
--#include <linux/efi.h>
--#include <linux/export.h>
--#include <asm/tlbflush.h>
--
--static void contpte_try_unfold_partial(struct mm_struct *mm, unsigned long addr,
--					pte_t *ptep, unsigned int nr)
--{
--	/*
--	 * Unfold any partially covered contpte block at the beginning and end
--	 * of the range.
--	 */
--
--	if (ptep != arch_contpte_align_down(ptep) || nr < CONT_PTES)
--		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
--
--	if (ptep + nr != arch_contpte_align_down(ptep + nr)) {
--		unsigned long last_addr = addr + PAGE_SIZE * (nr - 1);
--		pte_t *last_ptep = ptep + nr - 1;
--
--		contpte_try_unfold(mm, last_addr, last_ptep,
--				   __ptep_get(last_ptep));
--	}
--}
--
--void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
--				pte_t *ptep, unsigned int nr, int full)
--{
--	contpte_try_unfold_partial(mm, addr, ptep, nr);
--	__clear_full_ptes(mm, addr, ptep, nr, full);
--}
--EXPORT_SYMBOL_GPL(contpte_clear_full_ptes);
--
--pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
--				unsigned long addr, pte_t *ptep,
--				unsigned int nr, int full)
--{
--	contpte_try_unfold_partial(mm, addr, ptep, nr);
--	return __get_and_clear_full_ptes(mm, addr, ptep, nr, full);
--}
--EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 728f31da5e6a..a4843bdfdb37 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -754,6 +754,37 @@ static inline pte_t __ptep_get_and_clear(struct mm_struct *mm,
- 	return pte;
- }
- 
-+static inline void __clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+				     pte_t *ptep, unsigned int nr, int full)
-+{
-+	for (;;) {
-+		__ptep_get_and_clear(mm, addr, ptep);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
-+}
-+
-+static inline pte_t __get_and_clear_full_ptes(struct mm_struct *mm,
-+					      unsigned long addr, pte_t *ptep,
-+					      unsigned int nr, int full)
-+{
-+	pte_t pte, tmp_pte;
-+
-+	pte = __ptep_get_and_clear(mm, addr, ptep);
-+	while (--nr) {
-+		ptep++;
-+		addr += PAGE_SIZE;
-+		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
-+		if (pte_dirty(tmp_pte))
-+			pte = pte_mkdirty(pte);
-+		if (pte_young(tmp_pte))
-+			pte = pte_mkyoung(pte);
-+	}
-+	return pte;
-+}
-+
- static inline void __ptep_set_wrprotect(struct mm_struct *mm,
- 					unsigned long address, pte_t *ptep,
- 					pte_t pte)
-@@ -823,6 +854,13 @@ extern void ptep_set_wrprotect(struct mm_struct *mm,
- extern void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
- 			   pte_t *ptep, unsigned int nr);
- #define wrprotect_ptes	wrprotect_ptes
-+extern void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+			    pte_t *ptep, unsigned int nr, int full);
-+#define clear_full_ptes	clear_full_ptes
-+extern pte_t get_and_clear_full_ptes(struct mm_struct *mm,
-+				     unsigned long addr, pte_t *ptep,
-+				     unsigned int nr, int full);
-+#define get_and_clear_full_ptes	get_and_clear_full_ptes
- 
- #else /* CONFIG_THP_CONTPTE */
- 
-@@ -842,6 +880,7 @@ extern void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
- #define ptep_set_wrprotect(mm, addr, ptep)					\
- 			__ptep_set_wrprotect(mm, addr, ptep, __ptep_get(ptep))
- #define wrprotect_ptes		__wrprotect_ptes
-+#define clear_full_ptes		__clear_full_ptes
- 
- #endif /* CONFIG_THP_CONTPTE */
- 
-diff --git a/include/linux/contpte.h b/include/linux/contpte.h
-index d1439db1706c..b24554ebca41 100644
---- a/include/linux/contpte.h
-+++ b/include/linux/contpte.h
-@@ -28,5 +28,10 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
- 				  pte_t entry, int dirty);
- void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
- 			    pte_t *ptep, unsigned int nr);
-+void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+			     pte_t *ptep, unsigned int nr, int full);
-+pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
-+				      unsigned long addr, pte_t *ptep,
-+				      unsigned int nr, int full);
- 
- #endif /* _LINUX_CONTPTE_H */
-diff --git a/mm/contpte.c b/mm/contpte.c
-index fe36b6b1d20a..677344e0e3c3 100644
---- a/mm/contpte.c
-+++ b/mm/contpte.c
-@@ -51,6 +51,8 @@
-  *   - ptep_clear_flush_young()
-  *   - wrprotect_ptes()
-  *   - ptep_set_wrprotect()
-+ *   - clear_full_ptes()
-+ *   - get_and_clear_full_ptes()
-  */
- 
- pte_t huge_ptep_get(pte_t *ptep)
-@@ -905,4 +907,49 @@ __always_inline void ptep_set_wrprotect(struct mm_struct *mm,
- {
- 	wrprotect_ptes(mm, addr, ptep, 1);
- }
-+
-+void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+			     pte_t *ptep, unsigned int nr, int full)
-+{
-+	contpte_try_unfold_partial(mm, addr, ptep, nr);
-+	__clear_full_ptes(mm, addr, ptep, nr, full);
-+}
-+EXPORT_SYMBOL_GPL(contpte_clear_full_ptes);
-+
-+pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
-+				      unsigned long addr, pte_t *ptep,
-+				      unsigned int nr, int full)
-+{
-+	contpte_try_unfold_partial(mm, addr, ptep, nr);
-+	return __get_and_clear_full_ptes(mm, addr, ptep, nr, full);
-+}
-+EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
-+
-+__always_inline void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+				     pte_t *ptep, unsigned int nr, int full)
-+{
-+	if (likely(nr == 1)) {
-+		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
-+		__clear_full_ptes(mm, addr, ptep, nr, full);
-+	} else {
-+		contpte_clear_full_ptes(mm, addr, ptep, nr, full);
-+	}
-+}
-+
-+__always_inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
-+					      unsigned long addr, pte_t *ptep,
-+					      unsigned int nr, int full)
-+{
-+	pte_t pte;
-+
-+	if (likely(nr == 1)) {
-+		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
-+		pte = __get_and_clear_full_ptes(mm, addr, ptep, nr, full);
-+	} else {
-+		pte = contpte_get_and_clear_full_ptes(mm, addr, ptep, nr, full);
-+	}
-+
-+	return pte;
-+}
-+
- #endif /* CONFIG_THP_CONTPTE */
--- 
-2.39.2
+>
+>  /*
+>   * The contpte APIs are used to transparently manage the contiguous bit =
+in ptes
+> @@ -1622,7 +1622,7 @@ static inline int ptep_set_access_flags(struct vm_a=
+rea_struct *vma,
+>         return contpte_ptep_set_access_flags(vma, addr, ptep, entry, dirt=
+y);
+>  }
+>
+> -#else /* CONFIG_ARM64_CONTPTE */
+> +#else /* CONFIG_THP_CONTPTE */
+>
+>  #define ptep_get                               __ptep_get
+>  #define set_pte                                        __set_pte
+> @@ -1642,7 +1642,7 @@ static inline int ptep_set_access_flags(struct vm_a=
+rea_struct *vma,
+>  #define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+>  #define ptep_set_access_flags                  __ptep_set_access_flags
+>
+> -#endif /* CONFIG_ARM64_CONTPTE */
+> +#endif /* CONFIG_THP_CONTPTE */
+>
+>  int find_num_contig(struct mm_struct *mm, unsigned long addr,
+>                     pte_t *ptep, size_t *pgsize);
+> diff --git a/arch/arm64/mm/Makefile b/arch/arm64/mm/Makefile
+> index 60454256945b..52a1b2082627 100644
+> --- a/arch/arm64/mm/Makefile
+> +++ b/arch/arm64/mm/Makefile
+> @@ -3,7 +3,7 @@ obj-y                           :=3D dma-mapping.o extabl=
+e.o fault.o init.o \
+>                                    cache.o copypage.o flush.o \
+>                                    ioremap.o mmap.o pgd.o mmu.o \
+>                                    context.o proc.o pageattr.o fixmap.o
+> -obj-$(CONFIG_ARM64_CONTPTE)    +=3D contpte.o
+> +obj-$(CONFIG_THP_CONTPTE)      +=3D contpte.o
+>  obj-$(CONFIG_HUGETLB_PAGE)     +=3D hugetlbpage.o
+>  obj-$(CONFIG_PTDUMP_CORE)      +=3D ptdump.o
+>  obj-$(CONFIG_PTDUMP_DEBUGFS)   +=3D ptdump_debugfs.o
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index c325003d6552..fd4de221a1c6 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -984,6 +984,15 @@ config ARCH_HAS_CACHE_LINE_SIZE
+>  config ARCH_HAS_CONTPTE
+>         bool
+>
+> +config THP_CONTPTE
+> +       bool "Contiguous PTE mappings for user memory" if EXPERT
+> +       depends on ARCH_HAS_CONTPTE && TRANSPARENT_HUGEPAGE
+> +       default y
+> +       help
+> +         When enabled, user mappings are configured using the PTE contig=
+uous
+> +         bit, for any mappings that meet the size and alignment requirem=
+ents.
+> +         This reduces TLB pressure and improves performance.
+> +
+>  config ARCH_HAS_CURRENT_STACK_POINTER
+>         bool
+>         help
+> --
+> 2.39.2
 
+Thanks
+Barry
 
