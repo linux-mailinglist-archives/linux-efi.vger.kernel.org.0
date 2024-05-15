@@ -1,153 +1,128 @@
-Return-Path: <linux-efi+bounces-1038-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1037-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D828C6BDA
-	for <lists+linux-efi@lfdr.de>; Wed, 15 May 2024 20:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BED558C6BA1
+	for <lists+linux-efi@lfdr.de>; Wed, 15 May 2024 19:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8209B211DC
-	for <lists+linux-efi@lfdr.de>; Wed, 15 May 2024 18:05:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48451B24002
+	for <lists+linux-efi@lfdr.de>; Wed, 15 May 2024 17:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7BA158DA9;
-	Wed, 15 May 2024 18:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027D843AD4;
+	Wed, 15 May 2024 17:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="fru98BVI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxvPnn0P"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BB9158845;
-	Wed, 15 May 2024 18:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C927928680;
+	Wed, 15 May 2024 17:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715796327; cv=none; b=JuwNcGlRPTb1uVePeO4u4OmvZaEQ3dzwnhIJ0y0uxaq7ozoANk06Ehsl9+PGFZ0ExHyIuh/YmuNgg0mBOqTjSkQVt+U+vhrdPMCMEXZmdNESY+ZQfbPxrAwrfG1FhCA0rPg5UleiSKLxWWgfOFnQ7tlHdrNXxu/yiDag5FuVrr8=
+	t=1715794983; cv=none; b=XbpCFIY46vw26LRLEG279XMGl8IwVNwX10sTuPIH8zv/voVJktjrOf1L2/0MlQqvcRGqmaf/MljLoQSqGDYB9RWzXdeQeB73oR6vzsJNFaTJNWZgU1XjnyRrGb9Y6GFam5yzL8K2EVa73hLKeZ4tcuCE3ZexvapbEO2EwlCW36Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715796327; c=relaxed/simple;
-	bh=NOWeMdSAMU8+1sNAkP8Nr6iomJ7DvwEXpGNc1eKDk9Q=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=OcV7nxzdvIan6z7EVg2W0X3V9jjvA7KFnMOWZVcWNekrk75Ada4uOukraqohxkt7NbtkwqeLOGrk9diCil4RUWYHzbks31hXSkDYPIK66VKaHZSH4dIIlansdgluCjy+gUxH5ENQbnWtM/VD2Ho6o/uHmqEf4a9a8REgvNohzSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=fru98BVI; arc=none smtp.client-ip=67.231.157.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
-Received: from pps.filterd (m0122330.ppops.net [127.0.0.1])
-	by mx0b-00190b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44F9vZnB018902;
-	Wed, 15 May 2024 18:32:28 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=
-	from:to:cc:subject:date:message-id:content-type:content-id
-	:content-transfer-encoding:mime-version; s=jan2016.eng; bh=NOWeM
-	dSAMU8+1sNAkP8Nr6iomJ7DvwEXpGNc1eKDk9Q=; b=fru98BVI8LqPFgxPVZr0T
-	UpEDpwuLFY0WCgmofI7PZbh5AzTAte7ft1TRxW7a1P33qdEgpF9d4KDN6CdCEUGS
-	VBk5Kkl4uHUX8dYl4R4q375W2oGwBYvovyRY3p0cOc7IwN0xjQPBY7Hh9wpiUm2m
-	5oxYMpT8thcwz+rcU4Yuy9vMyCldMi8VMK50O7U+WDXuATLLxxMcuSL+JDXPVzak
-	LbLQqODiBelzl7e3Khk1RtAlV2BKA1/2ds5IXk/uPc8VC3w6l8ZksrnOYqlNNfGa
-	DVazoQ3VH2H6r/YfAQ2I7VXdOSyQL1ciO6H9EUk1B4EHzCH7dusP/U92F9+GpN/Q
-	w==
-Received: from prod-mail-ppoint1 (prod-mail-ppoint1.akamai.com [184.51.33.18] (may be forged))
-	by mx0b-00190b01.pphosted.com (PPS) with ESMTPS id 3y20b56v7e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 18:32:28 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint1.akamai.com [127.0.0.1])
-	by prod-mail-ppoint1.akamai.com (8.17.1.19/8.17.1.19) with ESMTP id 44FCjiDj026173;
-	Wed, 15 May 2024 13:32:27 -0400
-Received: from email.msg.corp.akamai.com ([172.27.91.27])
-	by prod-mail-ppoint1.akamai.com (PPS) with ESMTPS id 3y240y4u9f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 13:32:27 -0400
-Received: from usma1ex-dag4mb1.msg.corp.akamai.com (172.27.91.20) by
- usma1ex-dag4mb8.msg.corp.akamai.com (172.27.91.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Wed, 15 May 2024 13:32:27 -0400
-Received: from usma1ex-dag4mb1.msg.corp.akamai.com ([172.27.91.20]) by
- usma1ex-dag4mb1.msg.corp.akamai.com ([172.27.91.20]) with mapi id
- 15.02.1258.028; Wed, 15 May 2024 13:32:27 -0400
-From: "Chaney, Ben" <bchaney@akamai.com>
-To: "ardb@kernel.org" <ardb@kernel.org>,
-        "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>,
-        "linux-efi@vger.kernel.org"
-	<linux-efi@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-CC: "bp@alien8.de" <bp@alien8.de>,
-        "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "Tottenham, Max"
-	<mtottenh@akamai.com>,
-        "Hunt, Joshua" <johunt@akamai.com>,
-        "Galaxy, Michael"
-	<mgalaxy@akamai.com>
-Subject: Regression in 6.1.81: Missing memory in pmem device
-Thread-Topic: Regression in 6.1.81: Missing memory in pmem device
-Thread-Index: AQHapu3aAXNBspXH5EmfViMgDx95dw==
-Date: Wed, 15 May 2024 17:32:27 +0000
-Message-ID: <FA5F6719-8824-4B04-803E-82990E65E627@akamai.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0D238261143F6D46B9677A1E174E540D@akamai.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1715794983; c=relaxed/simple;
+	bh=+2jezA4tzmackJBF0Q+owMmDvh4B99B+iW1Z69bVj6w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PIUbL5M9e5+8KQ/DCvV+rgnTE5/Or+BSVnj54Y78FEXdycBDw+B0Iiutka0/egApUM7u9O7plTas+0ZGcBZe88m+sNCba1ytuB8nhFLvt2pOZ6tiH8ARQYjBLshzYhlJMDWRkykt6pyzIEdjxzoH/e7vA1gAnbdP2/gxNiFvLsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxvPnn0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9EBC32781;
+	Wed, 15 May 2024 17:43:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715794982;
+	bh=+2jezA4tzmackJBF0Q+owMmDvh4B99B+iW1Z69bVj6w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nxvPnn0PS27/q0qKZr1ddhC9LXUdOUl+SWOd1aGrGurKTFz6ODBnMNkKe8Ok4J21y
+	 bD/L0by2HC6wh6DAbOdz7oldAIIc9X72Cbh9pu0vqNdE2+udJ3d7agzDvVOsY6BmfH
+	 rPEDy2CRpO4hJQaCiCk1qRICcyjoCwL7UPZ3tIXmuim3MtR8mA6VPFOVFnPqukGklB
+	 Rbdrz4wX2yxhIRzd719vYk4y9p8AmuxS3prAgs0uHh5s7fCajAwdDX6xpC1y7fsWNJ
+	 3FRdflX8oyqZpV++1WYj3OofKWpDIrI2gMM/+pI3G/WSvp8OXV4/RxCoaFaP37YJ8w
+	 A04G/KoKPRMbQ==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-51f1bf83f06so9018732e87.1;
+        Wed, 15 May 2024 10:43:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWJDwUq3DOuMC+RnnOvKN2xqMzsrB3EHqiKieRqlLePNZXcRjRGmeaFRDq6aYUZxefyC3XajBpz0Hl7Sfo4dJcUB2EjQdFKB9AFbFNcW2jOWkGrklpbtp3G6p/+OEeI9p8a5gGfViBVB1IBU5iqXh3tTQelh3KBiNL8iTAQeK/a
+X-Gm-Message-State: AOJu0YwLtb5rYbHHbTvCrXYcU+Ha0eACsU7fQ4yVYpOhE1TFDYgMZMnM
+	pisKRS/sYZ2vFcekN+sQg5XPRySrx2H/r9vfPXQpe0k/gKJnUtbsNFpyjqzMe4r/pBerboXgaw8
+	Azhyu9YlUdJcLtCPJoecwmZMmdJg=
+X-Google-Smtp-Source: AGHT+IG3JT/3EHxo6OFaMXZ0gQCWCAhBcDpT+zlsqflYcTKqqQvfS9Ucv/AtAQ4sOeWbWtvrJiUZwbPxKfVK9WarPTI=
+X-Received: by 2002:a05:6512:2356:b0:519:6953:2ffc with SMTP id
+ 2adb3069b0e04-5221007027amr12979190e87.42.1715794980678; Wed, 15 May 2024
+ 10:43:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-15_10,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=598
- phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405150122
-X-Proofpoint-ORIG-GUID: 2KyqGTvCdGd3uUwnnZ2PZHER5km1icai
-X-Proofpoint-GUID: 2KyqGTvCdGd3uUwnnZ2PZHER5km1icai
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-15_10,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 priorityscore=1501
- lowpriorityscore=0 mlxscore=0 impostorscore=0 malwarescore=0 clxscore=1011
- bulkscore=0 suspectscore=0 mlxlogscore=434 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
- definitions=main-2405150124
+References: <FA5F6719-8824-4B04-803E-82990E65E627@akamai.com>
+In-Reply-To: <FA5F6719-8824-4B04-803E-82990E65E627@akamai.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 15 May 2024 19:42:49 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE2ZvaKout=nSfv08Hn5yvf8SRGhQeTikZcUeQOmyDgnw@mail.gmail.com>
+Message-ID: <CAMj1kXE2ZvaKout=nSfv08Hn5yvf8SRGhQeTikZcUeQOmyDgnw@mail.gmail.com>
+Subject: Re: Regression in 6.1.81: Missing memory in pmem device
+To: "Chaney, Ben" <bchaney@akamai.com>, Kees Cook <keescook@chromium.org>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, 
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, "Tottenham, Max" <mtottenh@akamai.com>, 
+	"Hunt, Joshua" <johunt@akamai.com>, "Galaxy, Michael" <mgalaxy@akamai.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGVsbG8sDQogICAgICAgICAgICAgICAgSSBlbmNvdW50ZXJlZCBhbiBpc3N1ZSB3aGVuIHVwZ3Jh
-ZGluZyB0byA2LjEuODkgZnJvbSA2LjEuNzcuIFRoaXMgdXBncmFkZSBjYXVzZWQgYSBicmVha2Fn
-ZSBpbiBlbXVsYXRlZCBwZXJzaXN0ZW50IG1lbW9yeS4gU2lnbmlmaWNhbnQgYW1vdW50cyBvZiBt
-ZW1vcnkgYXJlIG1pc3NpbmcgZnJvbSBhIHBtZW0gZGV2aWNlOg0KDQpmZGlzayAtbCAvZGV2L3Bt
-ZW0qDQpEaXNrIC9kZXYvcG1lbTA6IDM1NS45IEdpQiwgMzgyMTE3ODcxNjE2IGJ5dGVzLCA3NDYz
-MjM5Njggc2VjdG9ycw0KVW5pdHM6IHNlY3RvcnMgb2YgMSAqIDUxMiA9IDUxMiBieXRlcw0KU2Vj
-dG9yIHNpemUgKGxvZ2ljYWwvcGh5c2ljYWwpOiA1MTIgYnl0ZXMgLyA0MDk2IGJ5dGVzDQpJL08g
-c2l6ZSAobWluaW11bS9vcHRpbWFsKTogNDA5NiBieXRlcyAvIDQwOTYgYnl0ZXMNCg0KRGlzayAv
-ZGV2L3BtZW0xOiAyNS4zOCBHaUIsIDI3MjQ2MTk4Nzg0IGJ5dGVzLCA1MzIxNTIzMiBzZWN0b3Jz
-DQpVbml0czogc2VjdG9ycyBvZiAxICogNTEyID0gNTEyIGJ5dGVzDQpTZWN0b3Igc2l6ZSAobG9n
-aWNhbC9waHlzaWNhbCk6IDUxMiBieXRlcyAvIDQwOTYgYnl0ZXMNCkkvTyBzaXplIChtaW5pbXVt
-L29wdGltYWwpOiA0MDk2IGJ5dGVzIC8gNDA5NiBieXRlcw0KDQoJVGhlIG1lbW1hcCBwYXJhbWV0
-ZXIgdGhhdCBjcmVhdGVkIHRoZXNlIHBtZW0gZGV2aWNlcyBpcyDigJxtZW1tYXA9MzY0NDE2TSEy
-ODY3Mk0sMzY3NDg4TSE0MTk4NDBN4oCdLCB3aGljaCBzaG91bGQgY2F1c2UgYSBtdWNoIGxhcmdl
-ciBhbW91bnQgb2YgbWVtb3J5IHRvIGJlIGFsbG9jYXRlZCB0byAvZGV2L3BtZW0xLiBUaGUgYW1v
-dW50IG9mIG1pc3NpbmcgbWVtb3J5IGFuZCB0aGUgZGV2aWNlIGl0IGlzIG1pc3NpbmcgZnJvbSBp
-cyByYW5kb21pemVkIG9uIGVhY2ggcmVib290LiBUaGVyZSBpcyBzb21lIGFtb3VudCBvZiBtZW1v
-cnkgbWlzc2luZyBpbiBhbG1vc3QgYWxsIGNhc2VzLCBidXQgbm90IDEwMCUgb2YgdGhlIHRpbWUu
-IE5vdGFibHksIHRoZSBtZW1vcnkgdGhhdCBpcyBtaXNzaW5nIGZyb20gdGhlc2UgZGV2aWNlcyBp
-cyBub3QgcmVjbGFpbWVkIGJ5IHRoZSBzeXN0ZW0gZm9yIGdlbmVyYWwgdXNlLiBUaGlzIHN5c3Rl
-bSBpbiBxdWVzdGlvbiBoYXMgNzY4R0Igb2YgbWVtb3J5IHNwbGl0IGV2ZW5seSBhY3Jvc3MgdHdv
-IE5VTUEgbm9kZXMuDQoNCglXaGVuIHRoZSBlcnJvciBvY2N1cnMsIHRoZXJlIGFyZSBhbHNvIHRo
-ZSBmb2xsb3dpbmcgZXJyb3IgbWVzc2FnZXMgc2hvd2luZyB1cCBpbiBkbWVzZzoNCg0KWyAgICA1
-LjMxODMxN10gbmRfcG1lbSBuYW1lc3BhY2UxLjA6IFttZW0gMHg1YzIwNDJjMDAwLTB4NWZmN2Zm
-ZmZmZiBmbGFncyAweDIwMF0gbWlzYWxpZ25lZCwgdW5hYmxlIHRvIG1hcA0KWyAgICA1LjMzNTA3
-M10gbmRfcG1lbTogcHJvYmUgb2YgbmFtZXNwYWNlMS4wIGZhaWxlZCB3aXRoIGVycm9yIC05NQ0K
-DQoJQmlzZWN0aW9uIGltcGxpY2F0ZXMgMmRmYWVhYzNmMzhlNGU1NTBkMjE1MjA0ZWVkZDk3YTA2
-MWZkYzExOCBhcyB0aGUgcGF0Y2ggdGhhdCBmaXJzdCBjYXVzZWQgdGhlIGlzc3VlLiBJIGJlbGll
-dmUgdGhlIGNhdXNlIG9mIHRoZSBpc3N1ZSBpcyB0aGF0IHRoZSBFRkkgc3R1YiBpcyByYW5kb21p
-emluZyB0aGUgbG9jYXRpb24gb2YgdGhlIGRlY29tcHJlc3NlZCBrZXJuZWwgd2l0aG91dCBhY2Nv
-dW50aW5nIGZvciB0aGUgbWVtb3J5IG1hcCwgYW5kIGl0IGlzIGNsb2JiZXJpbmcgc29tZSBvZiB0
-aGUgbWVtb3J5IHRoYXQgaGFzIGJlZW4gcmVzZXJ2ZWQgZm9yIHBtZW0uDQoNClRoYW5rIHlvdSwN
-CglCZW4gQ2hhbmV5DQoNCg0KDQoNCg==
+(cc Kees)
+
+On Wed, 15 May 2024 at 19:32, Chaney, Ben <bchaney@akamai.com> wrote:
+>
+> Hello,
+>                 I encountered an issue when upgrading to 6.1.89 from 6.1.=
+77. This upgrade caused a breakage in emulated persistent memory. Significa=
+nt amounts of memory are missing from a pmem device:
+>
+> fdisk -l /dev/pmem*
+> Disk /dev/pmem0: 355.9 GiB, 382117871616 bytes, 746323968 sectors
+> Units: sectors of 1 * 512 =3D 512 bytes
+> Sector size (logical/physical): 512 bytes / 4096 bytes
+> I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+>
+> Disk /dev/pmem1: 25.38 GiB, 27246198784 bytes, 53215232 sectors
+> Units: sectors of 1 * 512 =3D 512 bytes
+> Sector size (logical/physical): 512 bytes / 4096 bytes
+> I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+>
+>         The memmap parameter that created these pmem devices is =E2=80=9C=
+memmap=3D364416M!28672M,367488M!419840M=E2=80=9D, which should cause a much=
+ larger amount of memory to be allocated to /dev/pmem1. The amount of missi=
+ng memory and the device it is missing from is randomized on each reboot. T=
+here is some amount of memory missing in almost all cases, but not 100% of =
+the time. Notably, the memory that is missing from these devices is not rec=
+laimed by the system for general use. This system in question has 768GB of =
+memory split evenly across two NUMA nodes.
+>
+>         When the error occurs, there are also the following error message=
+s showing up in dmesg:
+>
+> [    5.318317] nd_pmem namespace1.0: [mem 0x5c2042c000-0x5ff7ffffff flags=
+ 0x200] misaligned, unable to map
+> [    5.335073] nd_pmem: probe of namespace1.0 failed with error -95
+>
+>         Bisection implicates 2dfaeac3f38e4e550d215204eedd97a061fdc118 as =
+the patch that first caused the issue. I believe the cause of the issue is =
+that the EFI stub is randomizing the location of the decompressed kernel wi=
+thout accounting for the memory map, and it is clobbering some of the memor=
+y that has been reserved for pmem.
+>
+
+Does using 'nokaslr' on the kernel command line work around this?
+
+I think in this particular case, we could just disable physical KASLR
+(but retain virtual KASLR) if memmap=3D appears on the kernel command
+line, on the basis that emulated persistent memory is somewhat of a
+niche use case, and physical KASLR is not as important as virtual
+KASLR (which shouldn't be implicated in this).
 
