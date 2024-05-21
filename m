@@ -1,100 +1,122 @@
-Return-Path: <linux-efi+bounces-1052-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1053-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F398C95C8
-	for <lists+linux-efi@lfdr.de>; Sun, 19 May 2024 20:15:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF80C8CB2A5
+	for <lists+linux-efi@lfdr.de>; Tue, 21 May 2024 19:13:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EADD6281970
-	for <lists+linux-efi@lfdr.de>; Sun, 19 May 2024 18:15:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F3351F22244
+	for <lists+linux-efi@lfdr.de>; Tue, 21 May 2024 17:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE8E2770C;
-	Sun, 19 May 2024 18:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5094812FF8B;
+	Tue, 21 May 2024 17:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Kvt49UDN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hszeFpKM"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1F5EADB
-	for <linux-efi@vger.kernel.org>; Sun, 19 May 2024 18:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D0C22F11
+	for <linux-efi@vger.kernel.org>; Tue, 21 May 2024 17:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716142517; cv=none; b=FM9pNIZmla09f41OquqjIGgsU3/+432ipYuV3UaAY+dyH+jYIW74d9D/EvUUhbuyQ1Hciz+mSsoTZKSxUw/AOuCx8w2TpF+/ovCIHsueeP8jIVuxt68JQkY87esI/QEdVjB2GrGOb9LmrQkFzqKrGKZX6EaNhfyII3FpLvIwQqc=
+	t=1716311593; cv=none; b=IiTNk2bQP0aCWxkmk8wDIkDSrffVkTx2oIin9x812xD5rqRzNv1sjQoJRHj1UnCrKkNoFYvHr3fYp8baWxxuOSG42AcwjLcRUFOscTA11kMb/lmN/Q2UYboT/B2elUNEmHDBwUxX/VSjPt0CGolqRCfEgb7fmSy7ruHz78v3xAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716142517; c=relaxed/simple;
-	bh=7aMlUpYXG+D3tRLz8K4ybKHvPVMZ7c7UUXtb/IR5nqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GSScC9VjqDC0dInFAB4cRQhTvtiDahH+upAbmr3mO3sOY3jQ6rN1ZQHPWvPrBXAkdEk2VvW0UPn9NzVvQqh6T+Ei8NICzmNn67TPoYTw+5HvEcHh82ODiWCR7H7jRq8vBdEJNplmL+mnL/ZXEqmMj7p2nkJ3ahH2MoHNew5EQ2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Kvt49UDN; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1ed835f3c3cso61211135ad.3
-        for <linux-efi@vger.kernel.org>; Sun, 19 May 2024 11:15:14 -0700 (PDT)
+	s=arc-20240116; t=1716311593; c=relaxed/simple;
+	bh=tOT/LxjJ0u66XLjYiKpIFgHX+9pqbE0zX9PLwJPa4QA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tKX+687SqCmFZ/KISm8k4B0Sxmq6N+MiiSfP50FSMAV0hWhyQtCtXVGckqF9xkiHQjw3xMFctBaHx1Rdt34qSbHLHQaADN1RjSjWh9P+X5cGQDKyXcgTCA8/FUv0VyxjfmtBNYDeYCEIrZDu8h/5iScdkUGRnSYYZnjMBapPktU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hszeFpKM; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-420122cf3eeso50880895e9.0
+        for <linux-efi@vger.kernel.org>; Tue, 21 May 2024 10:13:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1716142514; x=1716747314; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jzOZ7YVghqBo2F/fa+rUY+FNuLS1ZQELoEWyUmcv/zo=;
-        b=Kvt49UDN32oVq9iiyjmiXpkIZrp34U5JeMKN4HS3TDga4dOUr6s07QIMzFhbiwOhKr
-         hIuCoplTx8fkWq8+Yh80y0NSfUlN0ssvVYs8K0SwdvFS5eYqZsX8avU091QzHVkU/zkZ
-         tiggbrDLlXxRotio0tqj/WnpESTqkpA7cvPz0=
+        d=google.com; s=20230601; t=1716311590; x=1716916390; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nfP9Xg6cYkEWHf3nLVKtP7vq0zXQ2Nu99jrVTn2J/ew=;
+        b=hszeFpKMPIRrclTEnWmCI9nKAlLeGQK1GqQGqdX4PzHY1SRikaMLQ6rTLB8SUQH1jz
+         nKIKfIrc6eILY78TZ3aoDUf9x/LQC+tLMKo3HnWvqxAbSSHPpY0dOtlodGYkwK9G9SFI
+         0w81Pj4hf6baJ5e8hm6M7Mb3oOwv39GPxDweGg6xRpyE5DBkCfA+DgsBpFOZQQfAihk7
+         ea7oBLB4lyLpfjhoa996mpthnxmnPS6LjOWkkxN33WrtDV6VsO8p/WU5NSSA0y1Li2HU
+         mHP8g3X52TSUixHNWkjwdCobK7xL+xZ/DiFl0DqO12Fk1Td9OVhS1YDKHxTgzvG4qvqg
+         NBXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716142514; x=1716747314;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jzOZ7YVghqBo2F/fa+rUY+FNuLS1ZQELoEWyUmcv/zo=;
-        b=HIg7Z3UrYiNk/S3ZDdJbauWsDlGOTAiZlQTxD2+WTiRtxgkUe+0csVJ7FTgjATSfa2
-         KGW0SW69DQ4p46WMui3l7GAJYm5b1eRlhssww5X58bICxqXttIFuIux+iGf2yMHKvV49
-         aPe2Tjwxm5pP3dL6RU0Z1ZgdJWzrP0Jxah/W3qUX1vs1KLLhtiQdc5WQBjpJvy8y9znK
-         QvCwPtfrz6g6yMxOCVxjhz5td7q0HrHz4HV4keljAM0p2trLWAaLmYRn9+xmoMR6Yca4
-         w2sTNnRVYcwf+lC5BlbULGdk4nDMscW7L0QojCdErYj3cJk0hs9yS8eGgxdja5HSu0b/
-         HaMw==
-X-Gm-Message-State: AOJu0YxFtevLw350Ha7E7b1tWLF3fKWEBGPc7nEcP4a9K26j29IUTAm1
-	kdEO4I6Z0HDdOEefSWxhVFySB2MHdjzUEc99VJ8TLqmIc4GhtnYG5ojN4P9y3CGiq84pJtQUIjM
-	=
-X-Google-Smtp-Source: AGHT+IHJG6+ZH93XGOoEQl/FkVnfWHdRCIs6HlPK6t1up+Q5GVekj0cg3DQc5ikbwdVQdEoYm67uUQ==
-X-Received: by 2002:a05:6a00:1992:b0:6ea:afcb:1b4a with SMTP id d2e1a72fcca58-6f4e0283938mr35571943b3a.8.1716142514397;
-        Sun, 19 May 2024 11:15:14 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4f28bcaaasm14297466b3a.73.2024.05.19.11.15.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 May 2024 11:15:12 -0700 (PDT)
-Date: Sun, 19 May 2024 11:15:11 -0700
-From: Kees Cook <keescook@chromium.org>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org,
-	tony.luck@intel.com, ardb@kernel.org, kernel@gpiccoli.net,
-	kernel-dev@igalia.com
-Subject: Re: [PATCH] efi: pstore: Return proper errors on UEFI failures
-Message-ID: <202405191114.1DD51BDC1C@keescook>
-References: <20240519163428.1148724-1-gpiccoli@igalia.com>
+        d=1e100.net; s=20230601; t=1716311590; x=1716916390;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nfP9Xg6cYkEWHf3nLVKtP7vq0zXQ2Nu99jrVTn2J/ew=;
+        b=Rue7S90mOXjd70xKhz/vQt6pnkV0//3CZvFFXgfRZqdktr060GxBENVDRJBZTSmgJb
+         seFgsJ1hfDpwLKlmW9PRauh/xJHsDq+p9alooadg/jcmzaHK5t+1LQR7cW5I2FhEMBYs
+         c2MaG2y5cjlGVhq3FgDbUvupsB0Bjioal/9++FDOY3NIHB5EFQ/HUas4Q28Cug25SP12
+         jvr0viNfDwKQGtaDnvVKNRZ4HsJkH80N65D8yjDNBqZMuV1h20TQ07d7fcZ8+zBlTlH7
+         x0JS39y3k8swKRliAZkiv1/O6ynnRGOoRCV4xesC3eWx7GUBD11PFcj+qypmTLlmidtZ
+         Aj5A==
+X-Gm-Message-State: AOJu0Yw5EOIX5Uenk0D3Ecy43dRA+FL85d3GlIUOn7VjEtPb8cEQIPFm
+	9Xf5fsAYwQKY/haKaGlJ951DPoO83jGZMHsi2cqBzfXEHqEt6XmE/XUhii3oWeSfL2XOeQ==
+X-Google-Smtp-Source: AGHT+IEOg/JhMMYZsx4ryXtd6IEbDenNtKZPOkDZksAMdD0iz27L19/tapZ9mSls2cFCFJQ9J5SO68wv
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:600c:3d9b:b0:420:29dd:84ce with SMTP id
+ 5b1f17b1804b1-42029dd879dmr477425e9.3.1716311589848; Tue, 21 May 2024
+ 10:13:09 -0700 (PDT)
+Date: Tue, 21 May 2024 19:13:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240519163428.1148724-1-gpiccoli@igalia.com>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1390; i=ardb@kernel.org;
+ h=from:subject; bh=LbAD3xJywJEQtWp5dyt+d4aRzAQmaPFGgn61oDEEtI0=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIc3nmoJDohbbt6Isq/PbeDb+mHX7qqFI0C3pY1opb66d5
+ 2zujefpKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNZd4mR4deFKN/8pRKnMtdf
+ cPxRNa3KrpLB/GHE9JmnhEzMdb+saGRkeNbuk7/N8BiHX8m0h+94NsoyRL5tYlVMf7notdGTGcr WzAA=
+X-Mailer: git-send-email 2.45.0.215.g3402c0e53f-goog
+Message-ID: <20240521171303.3822496-2-ardb+git@google.com>
+Subject: [GIT PULL] EFI fixes for v6.10 #1
+From: Ard Biesheuvel <ardb+git@google.com>
+To: torvalds@linux-foundation.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, May 19, 2024 at 01:33:53PM -0300, Guilherme G. Piccoli wrote:
-> Right now efi-pstore either returns 0 (success) or -EIO; but we
-> do have a function to convert UEFI errors in different standard
-> error codes, helping to narrow down potential issues more accurately.
-> 
-> So, let's use this helper here.
-> 
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Ah yeah, good idea!
+Hi Linus,
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Please pull the fix below. This is going be backported to v6.1 and later to
+address the regression described in the commit. Whether or not physical KASLR
+for the cases in question will be brought back later (presumably by sharing the
+physical placement logic with the traditional decompressor) is as yet
+undecided.
 
--- 
-Kees Cook
+
+
+The following changes since commit 4b2543f7e1e6b91cfc8dd1696e3cdf01c3ac8974:
+
+  efi: libstub: only free priv.runtime_map when allocated (2024-04-29 17:47:32 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.10-1
+
+for you to fetch changes up to 15aa8fb852f995dd234a57f12dfb989044968bb6:
+
+  x86/efistub: Omit physical KASLR when memory reservations exist (2024-05-17 17:06:18 +0200)
+
+----------------------------------------------------------------
+EFI fixes for v6.10 #1
+
+- Followup fix for the EFI boot sequence refactor, which may result in
+  physical KASLR putting the kernel in a region which is being used for
+  a special purpose via a command line argument.
+
+----------------------------------------------------------------
+Ard Biesheuvel (1):
+      x86/efistub: Omit physical KASLR when memory reservations exist
+
+ drivers/firmware/efi/libstub/x86-stub.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
