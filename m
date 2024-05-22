@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-1063-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1064-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6393C8CC5F6
-	for <lists+linux-efi@lfdr.de>; Wed, 22 May 2024 19:59:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D475F8CC614
+	for <lists+linux-efi@lfdr.de>; Wed, 22 May 2024 20:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 864231C209AC
-	for <lists+linux-efi@lfdr.de>; Wed, 22 May 2024 17:59:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BBD71F24900
+	for <lists+linux-efi@lfdr.de>; Wed, 22 May 2024 18:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584AA143C5B;
-	Wed, 22 May 2024 17:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68E0145B1D;
+	Wed, 22 May 2024 18:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="naWG00b7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KvaZcWE9"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEA41411FF;
-	Wed, 22 May 2024 17:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498E51487C5;
+	Wed, 22 May 2024 18:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716400790; cv=none; b=URwB9RI1QMjwxsYXW7LBpj7MmT9Zl3hRyrWGkv+0uC1X8q9GcF7r4vYXkd8IkhICxIZ7M2yr73a6UC5a9+AVnIvguLHNetrQFADP2I8d8bYeO+Q4DBUYLX/8IF8QRQp3GW1ICk8hf0KNxTRWg0P6VcIY4q0/5SO2hYktTKVxW0M=
+	t=1716401153; cv=none; b=HGkgxTAZH92S3alPrj3tfccSk/Fl1WiBPwaNUVBEHhkTpF2BGbYRd6NtfHZourlBdjNAM2c/iGm2cGT4FV9WhlM9aHy5w+fcpnXutAen6s3OB9/W/Y2ZvtW9LDxQBBQU8t4qoi5lj6ZcJyeMyBWw1n/0fzSDvBWn1RRnzxlayUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716400790; c=relaxed/simple;
-	bh=m8dSaMf+9viOYLDWhAIIO5d+dTaOcVWzhd5wL34Njkk=;
+	s=arc-20240116; t=1716401153; c=relaxed/simple;
+	bh=rGKA2eDEvUItRMtWurjYPOOFfebKNdda5YnYlMMO0K4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I58Wf9oEEoUUD11BUlqFbUlDNZVvjXY3nDEiLp62N3IYi2OCw8zbHKuCPmQvEjEqhA07nLdGU9bPDxxA6q3V1UEP/ca7t2TCSIQBEA0NLpZiyTj3tw0uErJl8nKPZfsCovRX2ILMiSsUv4oqQ2hjUhIa6Ndeq7sdhTl57lyVJnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=naWG00b7; arc=none smtp.client-ip=192.198.163.13
+	 In-Reply-To:Content-Type; b=i71pUw42bwGenPseXGvE184AmDmkMgd9rg+Jlj2s2nWMqvuPXqzHRtcHJRIYN9a6yKQC7KmgZy/RB42kRGcRt+DGqK+qbeclxZPOp0X0q4yNos5jLUrag94EU6uZ6qrYtNvFNJUajFT7Vid15GEpHnj0CKOquQLkiZ1APPRDBIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KvaZcWE9; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716400788; x=1747936788;
+  t=1716401151; x=1747937151;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=m8dSaMf+9viOYLDWhAIIO5d+dTaOcVWzhd5wL34Njkk=;
-  b=naWG00b75Tf3q3vOMd0nVBuhx5WaeadodDoftSYZwQmYyx12BZ2jx8uT
-   9bdwiIQry4yILrWy3g1JJY+w1seQ19/6Fp+MTboAfJwELYK2TmUZxx+36
-   msT6m8IQ0D24DjZ6+J+C2iomu56D84ioFMFrxWG65segW4+rsZSTIMxm/
-   N4JfQRMdwAoROhuVFUgrFuLjGJErGoNI4T7g5i6dqHK7o1zE4TKVQyVO5
-   hn2nBac/D9VtAtF3GUQg+QXg7P5P2TMslQwsLCRoRnND72xIgtn93t8oF
-   jjO7toJXXvx+bUAZdVGl2kUgFOwbKVhXZmhe0suGbpu31hM3QYfGTMNBS
-   Q==;
-X-CSE-ConnectionGUID: i//ccQYJS0KrP1+6bwjCNQ==
-X-CSE-MsgGUID: Rvue0N8tS829Y1yzeZQUhw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="15624524"
+  bh=rGKA2eDEvUItRMtWurjYPOOFfebKNdda5YnYlMMO0K4=;
+  b=KvaZcWE961W0HpTEUoRlyBnODHHJ2XgjjzvEtKzJTIlPKN0VLmmgo9Pe
+   RQ/2tRvx1Rnj4YEtiTvjd54ASLQriG1XCs/EKjMT6xs/FWdROvEfbCQ0F
+   HsZyuyABSKnpdlrv0L3iazPws+I3V9YNlWWJeVTqe4TZRXfu49N44i24y
+   wVw47fFTmvt2IgpLOfiBBPkCmFl71U+Wqaeq3HZz2P7ROU1Q6yyjF7u8D
+   StikRavZdObMAycx8jYdORGtFqj1bWLqTjTTwF0aMSiVuXi2/sFohup46
+   cJvS2Yj7VB6bkoJF7IPafULv3fzxan074PyX+gHOOlxLIn5YdhHfgi7AT
+   w==;
+X-CSE-ConnectionGUID: rI3Q7YFYT7upXEa0uqguBw==
+X-CSE-MsgGUID: RQ7DS5BbQze/LlIa5uwNGA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="23340835"
 X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; 
-   d="scan'208";a="15624524"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 10:59:47 -0700
-X-CSE-ConnectionGUID: RflMnJeIRfCjQ79P9qwagA==
-X-CSE-MsgGUID: NgPq+JFfT4Ww72g129iM7g==
+   d="scan'208";a="23340835"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 11:05:50 -0700
+X-CSE-ConnectionGUID: ndMXfA3GRVWUmcf4dXcPeA==
+X-CSE-MsgGUID: bOIZU3NbTnCcVNh3qRuyAA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; 
-   d="scan'208";a="33833457"
+   d="scan'208";a="38164509"
 Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.125.109.237]) ([10.125.109.237])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 10:59:46 -0700
-Message-ID: <8470dcc5-fbd4-4977-b8e8-5f7bfbf4b220@intel.com>
-Date: Wed, 22 May 2024 10:59:45 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 11:05:50 -0700
+Message-ID: <7dc64418-6821-49c2-b9af-ee4ab148ba9f@intel.com>
+Date: Wed, 22 May 2024 11:05:49 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] acpi/ghes, efi/cper: Recognize and process CXL
- Protocol Errors.
+Subject: Re: [PATCH 3/4] acpi/ghes, cxl/pci: Trace FW-First CXL Protocol
+ Errors
 To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
  linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-cxl@vger.kernel.org
@@ -79,207 +79,170 @@ Cc: Ard Biesheuvel <ardb@kernel.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Yazen Ghannam <yazen.ghannam@amd.com>, Bowman Terry <terry.bowman@amd.com>
 References: <20240522150839.27578-1-Smita.KoralahalliChannabasappa@amd.com>
- <20240522150839.27578-3-Smita.KoralahalliChannabasappa@amd.com>
+ <20240522150839.27578-4-Smita.KoralahalliChannabasappa@amd.com>
 Content-Language: en-US
 From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20240522150839.27578-3-Smita.KoralahalliChannabasappa@amd.com>
+In-Reply-To: <20240522150839.27578-4-Smita.KoralahalliChannabasappa@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 5/22/24 8:08 AM, Smita Koralahalli wrote:
-> UEFI v2.10 section N.2.13 defines a CPER record for CXL Protocol errors.
+> When PCIe AER is in FW-First, OS should process CXL Protocol errors from
+> CPER records.
 > 
-> Add GHES support to detect CXL CPER Protocol Error Record and Cache Error
-> Severity, Device ID, Device Serial number and CXL RAS capability struct in
-> struct cxl_cper_prot_err. Include this struct as a member of struct
-> cxl_cper_work_data.
+> Reuse the existing work queue cxl_cper_work registered with GHES to notify
+> the CXL subsystem on a Protocol error.
+> 
+> The defined trace events cxl_aer_uncorrectable_error and
+> cxl_aer_correctable_error currently trace native CXL AER errors. Reuse
+> them to trace FW-First Protocol Errors.
 > 
 > Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 > ---
->  drivers/acpi/apei/ghes.c        | 10 +++++
->  drivers/firmware/efi/cper_cxl.c | 66 +++++++++++++++++++++++++++++++++
->  include/linux/cxl-event.h       | 26 +++++++++++++
->  3 files changed, 102 insertions(+)
+>  drivers/acpi/apei/ghes.c  | 14 ++++++++++++++
+>  drivers/cxl/core/pci.c    | 24 ++++++++++++++++++++++++
+>  drivers/cxl/cxlpci.h      |  3 +++
+>  drivers/cxl/pci.c         | 34 ++++++++++++++++++++++++++++++++--
+>  include/linux/cxl-event.h |  1 +
+>  5 files changed, 74 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 623cc0cb4a65..1a58032770ee 100644
+> index 1a58032770ee..a31bd91e9475 100644
 > --- a/drivers/acpi/apei/ghes.c
 > +++ b/drivers/acpi/apei/ghes.c
-> @@ -717,6 +717,14 @@ static void cxl_cper_post_event(enum cxl_event_type event_type,
->  	schedule_work(cxl_cper_work);
->  }
+> @@ -723,6 +723,20 @@ static void cxl_cper_handle_prot_err(struct acpi_hest_generic_data *gdata)
 >  
-> +static void cxl_cper_handle_prot_err(struct acpi_hest_generic_data *gdata)
-> +{
-> +	struct cxl_cper_work_data wd;
+>  	if (cxl_cper_handle_prot_err_info(gdata, &wd.p_err))
+>  		return;
 > +
-> +	if (cxl_cper_handle_prot_err_info(gdata, &wd.p_err))
+> +	guard(spinlock_irqsave)(&cxl_cper_work_lock);
+> +
+> +	if (!cxl_cper_work)
 > +		return;
-> +}
 > +
->  int cxl_cper_register_work(struct work_struct *work)
->  {
->  	if (cxl_cper_work)
-> @@ -791,6 +799,8 @@ static bool ghes_do_proc(struct ghes *ghes,
->  			struct cxl_cper_event_rec *rec = acpi_hest_get_payload(gdata);
->  
->  			cxl_cper_post_event(CXL_CPER_EVENT_MEM_MODULE, rec);
-> +		} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
-> +			cxl_cper_handle_prot_err(gdata);
->  		} else {
->  			void *err = acpi_hest_get_payload(gdata);
->  
-> diff --git a/drivers/firmware/efi/cper_cxl.c b/drivers/firmware/efi/cper_cxl.c
-> index 4fd8d783993e..03b9839f3b73 100644
-> --- a/drivers/firmware/efi/cper_cxl.c
-> +++ b/drivers/firmware/efi/cper_cxl.c
-> @@ -8,6 +8,7 @@
->   */
->  
->  #include <linux/cper.h>
-> +#include <acpi/ghes.h>
->  #include "cper_cxl.h"
->  
->  #define PROT_ERR_VALID_AGENT_TYPE		BIT_ULL(0)
-> @@ -44,6 +45,17 @@ enum {
->  	USP,	/* CXL Upstream Switch Port */
->  };
->  
-> +static enum cxl_aer_err_type cper_severity_cxl_aer(int cper_severity)
-> +{
-> +	switch (cper_severity) {
-> +	case CPER_SEV_RECOVERABLE:
-> +	case CPER_SEV_FATAL:
-> +		return CXL_AER_UNCORRECTABLE;
-> +	default:
-> +		return CXL_AER_CORRECTABLE;
+> +	wd.event_type = CXL_CPER_EVENT_PROT_ERR;
+> +
+> +	if (!kfifo_put(&cxl_cper_fifo, wd)) {
+> +		pr_err_ratelimited("CXL CPER kfifo overflow\n");
+> +		return;
 > +	}
-> +}
 > +
->  void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err)
->  {
->  	if (prot_err->valid_bits & PROT_ERR_VALID_AGENT_TYPE)
-> @@ -176,3 +188,57 @@ void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_e
->  			       sizeof(cxl_ras->header_log), 0);
->  	}
+> +	schedule_work(cxl_cper_work);
 >  }
-> +
-> +int cxl_cper_handle_prot_err_info(struct acpi_hest_generic_data *gdata,
-> +				  struct cxl_cper_prot_err *p_err)
+>  
+>  int cxl_cper_register_work(struct work_struct *work)
+> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+> index 0df09bd79408..ef9438cb1dd6 100644
+> --- a/drivers/cxl/core/pci.c
+> +++ b/drivers/cxl/core/pci.c
+> @@ -686,6 +686,30 @@ void read_cdat_data(struct cxl_port *port)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
+>  
+> +void cxl_trace_prot_err(struct cxl_dev_state *cxlds,
+> +			struct cxl_cper_prot_err *p_err)
 > +{
-> +	struct cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
-> +	u8 *dvsec_start, *cap_start;
+> +	u32 status, fe;
 > +
-> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_DEVICE_ID)) {
-> +		pr_err(FW_WARN "No Device ID\n");
-> +		return -EINVAL;
-> +	}
+> +	if (p_err->severity == CXL_AER_CORRECTABLE) {
+> +		status = p_err->cxl_ras.cor_status & ~p_err->cxl_ras.cor_mask;
 > +
-> +	/*
-> +	 * The device ID or agent address is required for CXL RCD, CXL
-> +	 * SLD, CXL LD, CXL Fabric Manager Managed LD, CXL Root Port,
-> +	 * CXL Downstream Switch Port and CXL Upstream Switch Port.
-> +	 */
-> +	if (prot_err->agent_type <= 0x7 && prot_err->agent_type != RCH_DP) {
-
-Perhaps define an enum CXL_AGENT_TYPE_MAX instead of 0x7 magic number? Otherwise if a new type is introduced, it would break this code.
- 
-> +		p_err->segment = prot_err->agent_addr.segment;
-> +		p_err->bus = prot_err->agent_addr.bus;
-> +		p_err->device = prot_err->agent_addr.device;
-> +		p_err->function = prot_err->agent_addr.function;
+> +		trace_cxl_aer_correctable_error(cxlds->cxlmd, status);
 > +	} else {
-> +		pr_err(FW_WARN "Invalid agent type\n");
-> +		return -EINVAL;
+> +		status = p_err->cxl_ras.uncor_status & ~p_err->cxl_ras.uncor_mask;
+> +
+> +		if (hweight32(status) > 1)
+> +			fe = BIT(FIELD_GET(CXL_RAS_CAP_CONTROL_FE_MASK,
+> +					   p_err->cxl_ras.cap_control));
+> +		else
+> +			fe = status;
+> +
+> +		trace_cxl_aer_uncorrectable_error(cxlds->cxlmd, status, fe,
+> +						  p_err->cxl_ras.header_log);
 > +	}
-
-Up to you if you want to do this or not, but maybe:
-
-	if (prot_err->agent_type >= CXL_AGENT_TYPE_MAX || prot_err->agent_type == RCH_DP) {
-		pr_warn(...);
-		return -EINVAL;
-	}
-
-	p_err->segment = ...;
-	p_err->bus = ...;
-	...
-
-Although perhaps a helper function cxl_cper_valid_agent_type() that checks invalid agent type by checking the valid_bits, the agent_type boundary, and if agent_type != RCH_DP?
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_trace_prot_err, CXL);
 > +
-> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
-> +		pr_err(FW_WARN "Invalid Protocol Error log\n");
-> +		return -EINVAL;
-> +	}
+>  static void __cxl_handle_cor_ras(struct cxl_dev_state *cxlds,
+>  				 void __iomem *ras_base)
+>  {
+> diff --git a/drivers/cxl/cxlpci.h b/drivers/cxl/cxlpci.h
+> index 93992a1c8eec..0ba3215786e1 100644
+> --- a/drivers/cxl/cxlpci.h
+> +++ b/drivers/cxl/cxlpci.h
+> @@ -130,4 +130,7 @@ void read_cdat_data(struct cxl_port *port);
+>  void cxl_cor_error_detected(struct pci_dev *pdev);
+>  pci_ers_result_t cxl_error_detected(struct pci_dev *pdev,
+>  				    pci_channel_state_t state);
+> +struct cxl_cper_prot_err;
+> +void cxl_trace_prot_err(struct cxl_dev_state *cxlds,
+> +			struct cxl_cper_prot_err *p_err);
+>  #endif /* __CXL_PCI_H__ */
+> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+> index 74876c9835e8..3e3c36983686 100644
+> --- a/drivers/cxl/pci.c
+> +++ b/drivers/cxl/pci.c
+> @@ -1011,12 +1011,42 @@ static void cxl_handle_cper_event(enum cxl_event_type ev_type,
+>  			       &uuid_null, &rec->event);
+>  }
+>  
+> +static void cxl_handle_prot_err(struct cxl_cper_prot_err *p_err)
+> +{
+> +	struct pci_dev *pdev __free(pci_dev_put) = NULL;
+> +	struct cxl_dev_state *cxlds;
+> +	unsigned int devfn;
 > +
-> +	dvsec_start = (u8 *)(prot_err + 1);
-> +	cap_start = dvsec_start + prot_err->dvsec_len;
-> +	p_err->cxl_ras = *(struct cxl_ras_capability_regs *)cap_start;
+> +	devfn = PCI_DEVFN(p_err->device, p_err->function);
+> +	pdev = pci_get_domain_bus_and_slot(p_err->segment,
+> +					   p_err->bus, devfn);
+> +	if (!pdev)
+> +		return;
 > +
-> +	/*
-> +	 * Set device serial number unconditionally.
-> +	 *
-> +	 * Print a warning message if it is not valid. The device serial
-> +	 * number is required for CXL RCD, CXL SLD, CXL LD and CXL Fabric
-> +	 * Manager Managed LD.
-> +	 */
-> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER) ||
-> +	      prot_err->agent_type > 0x4 || prot_err->agent_type == RCH_DP)
+> +	guard(device)(&pdev->dev);
+> +	if (pdev->driver != &cxl_pci_driver)
+> +		return;
+> +
+> +	cxlds = pci_get_drvdata(pdev);
+> +	if (!cxlds)
+> +		return;
+> +
+> +	if (((u64)p_err->upper_dw << 32 | p_err->lower_dw) != cxlds->serial)
+> +		pr_warn("CPER-reported device serial number does not match expected value\n");
 
-prot_err->agent_type > FM_LD? Although maybe it would be a clearer read if a helper function is defined to identify the agent types such as cxl_cper_prot_err_serial_needed() or cxl_cper_prot_agent_type_device() and with it a switch statement to explicitly identify all the agent types that require serial number. If a future device is defined, the > 0x4 logic may break.  
+Given that we are operating on a device, perhaps dev_warn(&pdev->dev, ...) may be better served.
 
 DJ
-
-> +		pr_warn(FW_WARN "No Device Serial number\n");
 > +
-> +	p_err->lower_dw = prot_err->dev_serial_num.lower_dw;
-> +	p_err->upper_dw = prot_err->dev_serial_num.upper_dw;
-> +
-> +	p_err->severity = cper_severity_cxl_aer(gdata->error_severity);
-> +
-> +	return 0;
+> +	cxl_trace_prot_err(cxlds, p_err);
 > +}
+> +
+>  static void cxl_cper_work_fn(struct work_struct *work)
+>  {
+>  	struct cxl_cper_work_data wd;
+>  
+> -	while (cxl_cper_kfifo_get(&wd))
+> -		cxl_handle_cper_event(wd.event_type, &wd.rec);
+> +	while (cxl_cper_kfifo_get(&wd)) {
+> +		if (wd.event_type == CXL_CPER_EVENT_PROT_ERR)
+> +			cxl_handle_prot_err(&wd.p_err);
+> +		else
+> +			cxl_handle_cper_event(wd.event_type, &wd.rec);
+> +	}
+>  }
+>  static DECLARE_WORK(cxl_cper_work, cxl_cper_work_fn);
+>  
 > diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
-> index f11e52ff565a..9c7b69e076a0 100644
+> index 9c7b69e076a0..5562844df850 100644
 > --- a/include/linux/cxl-event.h
 > +++ b/include/linux/cxl-event.h
-> @@ -165,11 +165,37 @@ struct cxl_ras_capability_regs {
->  	u32 header_log[16];
->  };
+> @@ -122,6 +122,7 @@ struct cxl_event_record_raw {
+>  } __packed;
 >  
-> +enum cxl_aer_err_type {
-> +	CXL_AER_UNCORRECTABLE,
-> +	CXL_AER_CORRECTABLE,
-> +};
-> +
-> +struct cxl_cper_prot_err {
-> +	struct cxl_ras_capability_regs cxl_ras;
-> +
-> +	/* Device ID */
-> +	u8 function;
-> +	u8 device;
-> +	u8 bus;
-> +	u16 segment;
-> +
-> +	/* Device Serial Number */
-> +	u32 lower_dw;
-> +	u32 upper_dw;
-> +
-> +	int severity;
-> +};
-> +
->  struct cxl_cper_work_data {
->  	enum cxl_event_type event_type;
->  	struct cxl_cper_event_rec rec;
-> +	struct cxl_cper_prot_err p_err;
->  };
->  
-> +struct acpi_hest_generic_data;
-> +int cxl_cper_handle_prot_err_info(struct acpi_hest_generic_data *gdata,
-> +				  struct cxl_cper_prot_err *p_err);
-> +
->  #ifdef CONFIG_ACPI_APEI_GHES
->  int cxl_cper_register_work(struct work_struct *work);
->  int cxl_cper_unregister_work(struct work_struct *work);
+>  enum cxl_event_type {
+> +	CXL_CPER_EVENT_PROT_ERR,
+>  	CXL_CPER_EVENT_GENERIC,
+>  	CXL_CPER_EVENT_GEN_MEDIA,
+>  	CXL_CPER_EVENT_DRAM,
 
