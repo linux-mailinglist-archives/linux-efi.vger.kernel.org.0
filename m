@@ -1,104 +1,132 @@
-Return-Path: <linux-efi+bounces-1075-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1076-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3956B8CD0D5
-	for <lists+linux-efi@lfdr.de>; Thu, 23 May 2024 13:06:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C6C8CD0FB
+	for <lists+linux-efi@lfdr.de>; Thu, 23 May 2024 13:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654731C20FB4
-	for <lists+linux-efi@lfdr.de>; Thu, 23 May 2024 11:06:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A8FC1F21870
+	for <lists+linux-efi@lfdr.de>; Thu, 23 May 2024 11:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9C61448D2;
-	Thu, 23 May 2024 11:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B5D144D03;
+	Thu, 23 May 2024 11:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+seZe7t"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C3546AF;
-	Thu, 23 May 2024 11:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A81313D297;
+	Thu, 23 May 2024 11:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716462361; cv=none; b=Cw2Y4HG0bVyADl/F/Qi4rweT+5WGSPo9/g6OJYfhljI75trSCBSgsp2Fhctcw8/riS12cc7N6lXmwseALINX7wdQSIq57wjMbtfYuIFQd5gsmCvzyh7J8tUCO7jEN/LUXrRaPmPucv2TvCX+LSpBpiV4kuLtMp7YBeokp9sR/Vs=
+	t=1716462826; cv=none; b=eGxfJw6B0gtx6+YF2kugxGYf295j5DTevv4PMmH8ltW4yoTnLxM0uefqRJeC56GnPCNoC3vydjrrlWCYSo9jtfzdT9Zg20yHQyvtrxqMLLcUPgxbo5PidMZdGzMjVsIiR57jckNeMwoP1PRKO3eXn9BMlx8rneT7R/E/zgxlSBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716462361; c=relaxed/simple;
-	bh=1iwYUuxtNs1jjZ796ZpZFQ+C43XWPyywwcrX4m2EB9A=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:MIME-Version:
-	 Content-Type:To:Cc; b=jCFA0A//+1NrV9LmRgPlTC/ZliYtEpjeS3pXnF9L67FCcB3OhUW4dxgFIK6kshM3dimmxwm1QbsEllIZX++qiDavZrW80/+sAe13WbFPpAbyFeLEx4mDSv4fgezPKS2lJQZ836HbfYpxOvY+PRdsM6EP4d9A4PRQoLODamSB9Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout3.hostsharing.net (Postfix) with ESMTPS id BFDF41029124C;
-	Thu, 23 May 2024 13:00:02 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id 6AD8F603EE84;
-	Thu, 23 May 2024 13:00:02 +0200 (CEST)
-X-Mailbox-Line: From 05f4290439a58730738a15b0c99cd8576c4aa0d9 Mon Sep 17 00:00:00 2001
-Message-ID: <05f4290439a58730738a15b0c99cd8576c4aa0d9.1716461752.git.lukas@wunner.de>
-In-Reply-To: <2024052334-nape-wanting-0a2a@gregkh>
-References: <2024052334-nape-wanting-0a2a@gregkh>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Thu, 23 May 2024 13:00:00 +0200
-Subject: [PATCH] sysfs: Unbreak the build around sysfs_bin_attr_simple_read()
+	s=arc-20240116; t=1716462826; c=relaxed/simple;
+	bh=8Iv96qeK3XO6FCLRf729LFGYnVsyZm+QYnohsytJjMQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RtkEG+UFJvYsSIp1QIghjjCB99cXXBktr/aVRTXOnsW7BqJNgJr/fxssx6HRSsm6v9hBWuuKnFZn2MPnbmFxFiUMKaOIqqhjlFIEo/vsrKtBFVEVzWtFbtwmLJTRwzWgCrMUO8uIc7cVCqA7Q1Unyy1PK5+ew86zrf+OdhKWIFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+seZe7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF729C4AF09;
+	Thu, 23 May 2024 11:13:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716462825;
+	bh=8Iv96qeK3XO6FCLRf729LFGYnVsyZm+QYnohsytJjMQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=H+seZe7tia9XlPVFbMv1VD3pMpCR28zP+PYcUgiD0HO1ott5vOkK+LXl8bv8ATOEV
+	 Ad7Ijqn3GCoXbbBre2uB55H4H1dRQNmRXl/deA5egIYXocWhAF9rjgR8lVkJ5+o8NZ
+	 OG5SDUld0NahdcHQMt64J6N7ht+au3cZ7TP09Urx3Iapvq5rotxpP0AiIYeXXglQ+6
+	 eZ6rD75sGB4BUdqavP/iRsVStenQOXZHzPwo0753UW4DF8n8g0eL1BvpVIdVLbJYOM
+	 wm7k3mmwTOQHb3zq+xrznKr/qzcbVsen8qnT1gcW3fzAwIv2+ZiRq09Avg0ymvLDR1
+	 yv6vXxM56UoxA==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5b2fbe85f82so947956eaf.1;
+        Thu, 23 May 2024 04:13:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVKsIadf99X0BzkPk+l6LddPS9eZ9A6+jRMez0YTqkp7wEXO0YKFWS9JWCMRQBKNKZHtudmCb+rCO2IJDurGvSzkFQz1a2wLgjHaMh8iewwNxZLdBGcXPLLxLQVe8QFCbE66dCZFhRLS592oLfBB78rpdaTQBrs4jhwnN3yhQORWQ+lhIGhf1CZl+hJ20zfeWuEqHxRMLnUjAnsAQf6juZfjcFryIHPM4EPJWinszlC0CjsHtqXHwlKeT6AEQ==
+X-Gm-Message-State: AOJu0Yw98/6IyxrJn++77Nj+MCIXnjt+u8gS22J55flQtqgm6K2hN+vS
+	q2Ca/cPUE3um+2E9wFZDOOimyekt0TRyaOBaPp343DmTQXCZUsM1T9aRp2wY0Ng7SFAi2kYmQ//
+	j3DDs1ISqFC3oGKBpiVMxDavdJoM=
+X-Google-Smtp-Source: AGHT+IGDJUzVNILe+89DNDK58fKL2girzfjapTcy0TAMQFrntEneDV5GD9qcXO8dgV6h6vsQw1LQsO6L8qszS/mlEfc=
+X-Received: by 2002:a05:6820:2c8a:b0:5b2:89f:452 with SMTP id
+ 006d021491bc7-5b6a240fad5mr4236608eaf.1.1716462825087; Thu, 23 May 2024
+ 04:13:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>, intel-gvt-dev@lists.freedesktop.org, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
+References: <2024052334-nape-wanting-0a2a@gregkh> <05f4290439a58730738a15b0c99cd8576c4aa0d9.1716461752.git.lukas@wunner.de>
+In-Reply-To: <05f4290439a58730738a15b0c99cd8576c4aa0d9.1716461752.git.lukas@wunner.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 23 May 2024 13:13:34 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ihKzCbFxfVn9s5zB3WJepzi+dUPk1LFRMnbFF-9EV6nw@mail.gmail.com>
+Message-ID: <CAJZ5v0ihKzCbFxfVn9s5zB3WJepzi+dUPk1LFRMnbFF-9EV6nw@mail.gmail.com>
+Subject: Re: [PATCH] sysfs: Unbreak the build around sysfs_bin_attr_simple_read()
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	linux-acpi@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, 
+	Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>, 
+	intel-gvt-dev@lists.freedesktop.org, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
+	Luis Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Günter reports build breakage for m68k "m5208evb_defconfig" plus
-CONFIG_BLK_DEV_INITRD=y caused by commit 66bc1a173328 ("treewide:
-Use sysfs_bin_attr_simple_read() helper").
+On Thu, May 23, 2024 at 1:00=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrot=
+e:
+>
+> G=C3=BCnter reports build breakage for m68k "m5208evb_defconfig" plus
+> CONFIG_BLK_DEV_INITRD=3Dy caused by commit 66bc1a173328 ("treewide:
+> Use sysfs_bin_attr_simple_read() helper").
+>
+> The defconfig disables CONFIG_SYSFS, so sysfs_bin_attr_simple_read()
+> is not compiled into the kernel.  But init/initramfs.c references
+> that function in the initializer of a struct bin_attribute.
+>
+> Add an empty static inline to avoid the build breakage.
+>
+> Fixes: 66bc1a173328 ("treewide: Use sysfs_bin_attr_simple_read() helper")
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Closes: https://lore.kernel.org/r/e12b0027-b199-4de7-b83d-668171447ccc@ro=
+eck-us.net
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
 
-The defconfig disables CONFIG_SYSFS, so sysfs_bin_attr_simple_read()
-is not compiled into the kernel.  But init/initramfs.c references
-that function in the initializer of a struct bin_attribute.
+Works for me.
 
-Add an empty static inline to avoid the build breakage.
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
 
-Fixes: 66bc1a173328 ("treewide: Use sysfs_bin_attr_simple_read() helper")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/r/e12b0027-b199-4de7-b83d-668171447ccc@roeck-us.net
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
- include/linux/sysfs.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-index a7d725fbf739..c4e64dc11206 100644
---- a/include/linux/sysfs.h
-+++ b/include/linux/sysfs.h
-@@ -750,6 +750,15 @@ static inline int sysfs_emit_at(char *buf, int at, const char *fmt, ...)
- {
- 	return 0;
- }
-+
-+static inline ssize_t sysfs_bin_attr_simple_read(struct file *file,
-+						 struct kobject *kobj,
-+						 struct bin_attribute *attr,
-+						 char *buf, loff_t off,
-+						 size_t count)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_SYSFS */
- 
- static inline int __must_check sysfs_create_file(struct kobject *kobj,
--- 
-2.43.0
-
+> ---
+>  include/linux/sysfs.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+> index a7d725fbf739..c4e64dc11206 100644
+> --- a/include/linux/sysfs.h
+> +++ b/include/linux/sysfs.h
+> @@ -750,6 +750,15 @@ static inline int sysfs_emit_at(char *buf, int at, c=
+onst char *fmt, ...)
+>  {
+>         return 0;
+>  }
+> +
+> +static inline ssize_t sysfs_bin_attr_simple_read(struct file *file,
+> +                                                struct kobject *kobj,
+> +                                                struct bin_attribute *at=
+tr,
+> +                                                char *buf, loff_t off,
+> +                                                size_t count)
+> +{
+> +       return 0;
+> +}
+>  #endif /* CONFIG_SYSFS */
+>
+>  static inline int __must_check sysfs_create_file(struct kobject *kobj,
+> --
+> 2.43.0
+>
 
