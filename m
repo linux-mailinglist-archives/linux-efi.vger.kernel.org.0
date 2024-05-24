@@ -1,186 +1,245 @@
-Return-Path: <linux-efi+bounces-1083-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1084-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C448CDD0A
-	for <lists+linux-efi@lfdr.de>; Fri, 24 May 2024 00:51:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E604F8CE05D
+	for <lists+linux-efi@lfdr.de>; Fri, 24 May 2024 06:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAD071F23287
-	for <lists+linux-efi@lfdr.de>; Thu, 23 May 2024 22:51:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BDB31C20C14
+	for <lists+linux-efi@lfdr.de>; Fri, 24 May 2024 04:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A4384DE9;
-	Thu, 23 May 2024 22:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C241DFC6;
+	Fri, 24 May 2024 04:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HFmoZeEb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DOjEWnRN"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566DAAD2C;
-	Thu, 23 May 2024 22:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6874215A5
+	for <linux-efi@vger.kernel.org>; Fri, 24 May 2024 04:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716504706; cv=none; b=pL7xzFLyMeULKZ4FU248Kxog3spPSvW0mxWUc0Zyb2kON6gLSKB07PRZm87mKqEQOwZGhnGjgzkpLV/Zeyw9neQZIQwBkZtu15A8NYYjdCqwC6yELt+KkUIW5WezAMvr20P3jKuF06kbbUwW38qf3nNF+QYreRZtlXAGVHCXOQc=
+	t=1716525151; cv=none; b=ZmaNBPMHcJn7rPMePrEwArCP9TmKjl/vBkXzm3fJvyW0XJ7LKICWSS7cIyoRvFmMg5wjJy4VJxOLYx9undc4UCkhA8HAWZVtKorumQWVYDUY10dLwsN1KzYgzOtwqFVSLQp0pE+/wocO8ovAiZtyS7170WNMx3b5fA7UYmn8OiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716504706; c=relaxed/simple;
-	bh=giJ5QDjLDfVV2cOpY+mASzmzACsrekg/cRgM9xcuAUA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s875IIgMmcg/5K8mxIQjsynrRjc6VLmNnacNwUoBeJVFzOXTod7oo2PDLI4J/R2CZ5lDLzjegbNal7SCB1eNS7lyYjM4BD6c6knxjwDslYlZI6dn4bACYjs1CSMGEbk0FtZgsTmzW9z66JNUN6a2QMrT8HLNsSHH363EHgh/5aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HFmoZeEb; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1716525151; c=relaxed/simple;
+	bh=RrAlblPhSWmfuknmfsyR31YJjcX77jgjpq3weUKXiP8=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=XqUko2yRUm77AJbZrHPak16YaaPA3YF4iHPLoGI0ye8hBX+TmeZp2sS71DhnT46WVJ5sXb045jcwEpS5AAbdGu3vn9QnQZNPiWBOyuoMoYQuDChjd+N/QRQfvF99qep9s9O8J8rltOiDHaELUEFQYBaH1JGNQcCLK7wcbP3BLD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DOjEWnRN; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716504704; x=1748040704;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=giJ5QDjLDfVV2cOpY+mASzmzACsrekg/cRgM9xcuAUA=;
-  b=HFmoZeEbrIhUg8N0qANhk4Q6TubfFJYTHeiUTPCqS8cyx0YT+qW/IrSr
-   1nKs2ITWCGvBnmfDvobYm3Jh553JukeuSI4y1j9nm/y/cU/jMUXRreUAQ
-   7NzEZERyQA19G7Fh2plPVDGxFoFzB13n3bUYF1zesQgJSwwmAgiKpeZ/r
-   E3HjDmYlZZcWAhpRWx43OGzDdkla/vzXCf85JcPcCgeQjr+GWaHiNTCK4
-   OO+iL6dOSeUQtHNMyDOAGM4Jy4gVb2TRdOZf9PrYH+8bH1xjGcY/2ZsfK
-   dU8SDa9susHFKUO/cMzbsUS7UItEvMc1N+vVnjHWdhyxqFuGxwgTtNGQk
-   w==;
-X-CSE-ConnectionGUID: UV9q8AZKTDqzX/2IK1ROww==
-X-CSE-MsgGUID: KgyOc1PuS4yDlpNjizx38w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="30392880"
-X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
-   d="scan'208";a="30392880"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 15:51:44 -0700
-X-CSE-ConnectionGUID: A1AX1DW8RWiVfriUcdUDTw==
-X-CSE-MsgGUID: 60l+yT6OQdit+dQ4JACT5w==
+  t=1716525149; x=1748061149;
+  h=date:from:to:cc:subject:message-id;
+  bh=RrAlblPhSWmfuknmfsyR31YJjcX77jgjpq3weUKXiP8=;
+  b=DOjEWnRNmIqaALHomew6JbPuSUmBqLfi8Aw9eRKAifP4hHpIuC3+Xp8B
+   vnWfhs2IfxjvKw2B9yypBrVhwRRNBhJVwUNpMJkS5x5fNjmplsgCzvhIB
+   PYf3y1w9ECxgNEANKweiUW0LiLYz4KXsqC1kE53S+l84rbF08VTO8XEHs
+   SJbjRzJk9ELeKa9Moeaz2ghbe5b5LSwkXYq+x4QeqNyKPfxSZsuAMeZip
+   Te+h1Umy2CK8GXx3WzZeWEhR2Ai7mbOHm+f7/HmJzc87DJk44t0KBxpCu
+   Gu8vCGCaj8O+zYvGPUPjcF7OXg3raiJrNTtqwvpcg+L6AvA9uWGz6UBpY
+   A==;
+X-CSE-ConnectionGUID: uFJk5zIoRFiNC+ezeXb9pA==
+X-CSE-MsgGUID: fsBFhZndRlCztaNBKFRWdA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="13073966"
+X-IronPort-AV: E=Sophos;i="6.08,184,1712646000"; 
+   d="scan'208";a="13073966"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 21:32:29 -0700
+X-CSE-ConnectionGUID: LCV/O54qS9aHnhpBlrkI8Q==
+X-CSE-MsgGUID: 7INljgLEQHizxrrUHZNbew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
-   d="scan'208";a="38231893"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.125.110.61]) ([10.125.110.61])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 15:51:42 -0700
-Message-ID: <cf799922-d5f5-4f8d-96ef-5a526d5ae643@intel.com>
-Date: Thu, 23 May 2024 15:51:41 -0700
+X-IronPort-AV: E=Sophos;i="6.08,184,1712646000"; 
+   d="scan'208";a="34500260"
+Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 23 May 2024 21:32:27 -0700
+Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sAMbR-0003rB-0x;
+	Fri, 24 May 2024 04:32:25 +0000
+Date: Fri, 24 May 2024 12:32:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS
+ 7c23b186ab892088f76a3ad9dbff1685ffe2e832
+Message-ID: <202405241209.PQbk8PiZ-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] acpi/ghes, efi/cper: Recognize and process CXL
- Protocol Errors.
-To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Yazen Ghannam <yazen.ghannam@amd.com>, Bowman Terry <terry.bowman@amd.com>
-References: <20240522150839.27578-1-Smita.KoralahalliChannabasappa@amd.com>
- <20240522150839.27578-3-Smita.KoralahalliChannabasappa@amd.com>
- <8470dcc5-fbd4-4977-b8e8-5f7bfbf4b220@intel.com>
- <08dc0027-371c-5783-fd65-ad6f8b228fee@amd.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <08dc0027-371c-5783-fd65-ad6f8b228fee@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 7c23b186ab892088f76a3ad9dbff1685ffe2e832  efi: pstore: Return proper errors on UEFI failures
 
+elapsed time: 1259m
 
-On 5/23/24 2:19 PM, Smita Koralahalli wrote:
-> Hi Dave,
-> 
-> On 5/22/2024 10:59 AM, Dave Jiang wrote:
->>
->>
->> On 5/22/24 8:08 AM, Smita Koralahalli wrote:
->>> UEFI v2.10 section N.2.13 defines a CPER record for CXL Protocol errors.
->>>
->>> Add GHES support to detect CXL CPER Protocol Error Record and Cache Error
->>> Severity, Device ID, Device Serial number and CXL RAS capability struct in
->>> struct cxl_cper_prot_err. Include this struct as a member of struct
->>> cxl_cper_work_data.
->>>
->>> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
->>> ---
->>>   drivers/acpi/apei/ghes.c        | 10 +++++
->>>   drivers/firmware/efi/cper_cxl.c | 66 +++++++++++++++++++++++++++++++++
->>>   include/linux/cxl-event.h       | 26 +++++++++++++
->>>   3 files changed, 102 insertions(+)
->>>
-> 
-> [snip]
-> 
-> 
->>> +     * The device ID or agent address is required for CXL RCD, CXL
->>> +     * SLD, CXL LD, CXL Fabric Manager Managed LD, CXL Root Port,
->>> +     * CXL Downstream Switch Port and CXL Upstream Switch Port.
->>> +     */
->>> +    if (prot_err->agent_type <= 0x7 && prot_err->agent_type != RCH_DP) {
->>
->> Perhaps define an enum CXL_AGENT_TYPE_MAX instead of 0x7 magic number? Otherwise if a new type is introduced, it would break this code.
-> 
-> Agreed. I will define a boolean array indexed by agent type as suggested by Alison. That would avoid all these comparisons and not worry about breaking code in future.
-> 
->>  
->>> +        p_err->segment = prot_err->agent_addr.segment;
->>> +        p_err->bus = prot_err->agent_addr.bus;
->>> +        p_err->device = prot_err->agent_addr.device;
->>> +        p_err->function = prot_err->agent_addr.function;
->>> +    } else {
->>> +        pr_err(FW_WARN "Invalid agent type\n");
->>> +        return -EINVAL;
->>> +    }
->>
->> Up to you if you want to do this or not, but maybe:
->>
->>     if (prot_err->agent_type >= CXL_AGENT_TYPE_MAX || prot_err->agent_type == RCH_DP) {
->>         pr_warn(...);
->>         return -EINVAL;
->>     }
->>
->>     p_err->segment = ...;
->>     p_err->bus = ...;
-> 
-> Noted.
-> 
->>     ...
->>
->> Although perhaps a helper function cxl_cper_valid_agent_type() that checks invalid agent type by checking the valid_bits, the agent_type boundary, and if agent_type != RCH_DP?
-> 
-> Okay.
-> 
->>> +
->>> +    if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
->>> +        pr_err(FW_WARN "Invalid Protocol Error log\n");
->>> +        return -EINVAL;
->>> +    }
->>> +
->>> +    dvsec_start = (u8 *)(prot_err + 1);
->>> +    cap_start = dvsec_start + prot_err->dvsec_len;
->>> +    p_err->cxl_ras = *(struct cxl_ras_capability_regs *)cap_start;
->>> +
->>> +    /*
->>> +     * Set device serial number unconditionally.
->>> +     *
->>> +     * Print a warning message if it is not valid. The device serial
->>> +     * number is required for CXL RCD, CXL SLD, CXL LD and CXL Fabric
->>> +     * Manager Managed LD.
->>> +     */
->>> +    if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER) ||
->>> +          prot_err->agent_type > 0x4 || prot_err->agent_type == RCH_DP)
->>
->> prot_err->agent_type > FM_LD? Although maybe it would be a clearer read if a helper function is defined to identify the agent types such as cxl_cper_prot_err_serial_needed() or cxl_cper_prot_agent_type_device() and with it a switch statement to explicitly identify all the agent types that require serial number. If a future device is defined, the > 0x4 logic may break.
-> 
-> Probably helper function is not required if boolean array is defined? What do you think?
+configs tested: 152
+configs skipped: 4
 
-That works for me. My main concern is to clarify the code and remove possibility of breakage from future changes.
-> 
-> Thanks,
-> Smita
-> 
-> [snip]
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240524   gcc  
+arc                   randconfig-002-20240524   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240524   clang
+arm                   randconfig-002-20240524   gcc  
+arm                   randconfig-003-20240524   gcc  
+arm                   randconfig-004-20240524   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240524   clang
+arm64                 randconfig-002-20240524   clang
+arm64                 randconfig-003-20240524   gcc  
+arm64                 randconfig-004-20240524   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240524   gcc  
+csky                  randconfig-002-20240524   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240524   clang
+hexagon               randconfig-002-20240524   clang
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240523   clang
+i386         buildonly-randconfig-002-20240523   gcc  
+i386         buildonly-randconfig-003-20240523   clang
+i386         buildonly-randconfig-004-20240523   clang
+i386         buildonly-randconfig-005-20240523   clang
+i386         buildonly-randconfig-006-20240523   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240523   gcc  
+i386                  randconfig-002-20240523   clang
+i386                  randconfig-003-20240523   clang
+i386                  randconfig-004-20240523   clang
+i386                  randconfig-005-20240523   gcc  
+i386                  randconfig-006-20240523   clang
+i386                  randconfig-011-20240523   gcc  
+i386                  randconfig-012-20240523   clang
+i386                  randconfig-013-20240523   clang
+i386                  randconfig-014-20240523   gcc  
+i386                  randconfig-015-20240523   gcc  
+i386                  randconfig-016-20240523   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240524   gcc  
+loongarch             randconfig-002-20240524   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240524   gcc  
+nios2                 randconfig-002-20240524   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240524   gcc  
+parisc                randconfig-002-20240524   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-001-20240524   gcc  
+powerpc               randconfig-002-20240524   gcc  
+powerpc               randconfig-003-20240524   clang
+powerpc64             randconfig-001-20240524   gcc  
+powerpc64             randconfig-002-20240524   gcc  
+powerpc64             randconfig-003-20240524   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240524   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240524   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240524   gcc  
+x86_64       buildonly-randconfig-002-20240524   gcc  
+x86_64       buildonly-randconfig-003-20240524   clang
+x86_64       buildonly-randconfig-004-20240524   gcc  
+x86_64       buildonly-randconfig-005-20240524   gcc  
+x86_64       buildonly-randconfig-006-20240524   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240524   gcc  
+x86_64                randconfig-002-20240524   clang
+x86_64                randconfig-003-20240524   clang
+x86_64                randconfig-004-20240524   clang
+x86_64                randconfig-005-20240524   clang
+x86_64                randconfig-006-20240524   gcc  
+x86_64                randconfig-011-20240524   gcc  
+x86_64                randconfig-012-20240524   clang
+x86_64                randconfig-013-20240524   clang
+x86_64                randconfig-014-20240524   gcc  
+x86_64                randconfig-015-20240524   gcc  
+x86_64                randconfig-016-20240524   clang
+x86_64                randconfig-071-20240524   gcc  
+x86_64                randconfig-072-20240524   clang
+x86_64                randconfig-073-20240524   gcc  
+x86_64                randconfig-074-20240524   gcc  
+x86_64                randconfig-075-20240524   clang
+x86_64                randconfig-076-20240524   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
