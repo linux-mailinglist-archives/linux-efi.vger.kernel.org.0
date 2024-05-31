@@ -1,69 +1,70 @@
-Return-Path: <linux-efi+bounces-1117-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1118-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05818D6052
-	for <lists+linux-efi@lfdr.de>; Fri, 31 May 2024 13:09:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3108D630C
+	for <lists+linux-efi@lfdr.de>; Fri, 31 May 2024 15:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96AE92835BE
-	for <lists+linux-efi@lfdr.de>; Fri, 31 May 2024 11:09:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FB0F1C23AEA
+	for <lists+linux-efi@lfdr.de>; Fri, 31 May 2024 13:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14D3156F4D;
-	Fri, 31 May 2024 11:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEA5158862;
+	Fri, 31 May 2024 13:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTtk227m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MZz/xjDZ"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AF8153BC1;
-	Fri, 31 May 2024 11:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571E133CF1;
+	Fri, 31 May 2024 13:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717153784; cv=none; b=dSoOcAepB5tCf2DzIPdpZMk7i7NKxL6qVm7WincRtOA6CaObNv3i1+R6X2X61LEQdWrWWi9nkb37DAoIts2B1ex9oIBOdJWz/hS+2/bo5wvi07qneyLDLDasixeQJqrr/TgmIRbyXN7aDkyUyTFjFmco1125D3erlhCux6XnFhA=
+	t=1717162435; cv=none; b=lMMHjYdjeNdJlhQ9vzfH6hOsnaA2YZzOPPxfTZUBpL2AXstexPMU8jSAu+iI1SL4efngkT5wBEw0LWJnU585NzSHeTuTyK0JIh7mkYqRuPku8r25GAKn37z8luJkyGj0N6fM/0QaHKbYfQxWgn3Cl4wNLynW6WAIQrF8WiLL36E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717153784; c=relaxed/simple;
-	bh=HgtvQmhgEpL9Xbp5+KHJ6NjcuOEi7zDCX0BlPKTFvGc=;
+	s=arc-20240116; t=1717162435; c=relaxed/simple;
+	bh=RNo32SrIe3HmggtXYp5QRYuepbRArSiMzCD3RGnmxc8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PCUt4TDR8W7bg0i2j17/S2EvttU5OkJCOkg6qkpWlfCeVfPCbbn64h4qx/rqTNS7ZVt5NWB3admGnWJGCgrZBwMAhSGtyz5jse/n0OWC0w8JWhBl1hxDDMlzBohCPEx0KvJWo099NfHCa803DQzTHS1u8B4G0h93OHx65canIg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTtk227m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4C7C4AF16;
-	Fri, 31 May 2024 11:09:44 +0000 (UTC)
+	 To:Cc:Content-Type; b=YIDrnM3c9PaJaEzP+Ycbyw7vNns9VPTn3OuKPKtnhpFwf62oJzHDblOIzhlBYvuJXMVTiOH0GbmZ5VInTIHPtYwJD6ZvgO3H++DScl1OG2xvhBfvBjDfireZyQj2s/zdS9yaGV+VSr0wy2xGjr4Sbb2gyCKgitoTeZzQm1UwwT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MZz/xjDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DD4C4AF0C;
+	Fri, 31 May 2024 13:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717153784;
-	bh=HgtvQmhgEpL9Xbp5+KHJ6NjcuOEi7zDCX0BlPKTFvGc=;
+	s=k20201202; t=1717162434;
+	bh=RNo32SrIe3HmggtXYp5QRYuepbRArSiMzCD3RGnmxc8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XTtk227mDgN9yrTK1sYIJdBwb13rZdzdiDLQf1D1lV6VYjqnNY8eoiBsb5xvjoB/k
-	 /hIe2wFsOGiTyBQSpe7LkY9o/uOJDA1Fe8LpPya6oap4IbUOcELLVBwc42sWifhHOT
-	 Yl1E907W46n5nq72q+ICSOIdWoDXNJQGOK/ynRwyU2GJfl/PLHN0aOKMK+uNNpyHa9
-	 NOFdoSVDpfpeLc5z4bV7IPCP0bm3MA2GtZqgDg3SIyjCl8yt98/ElPRJZmMU+Dxdlm
-	 S/4XoJab0vBmKRwrh2D/jXcFNGLbfx8t9ZV8b/3e1UfCkCNFd12w3AIJerl79WF6Ii
-	 ycAJwno/aDHiQ==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2e95abc7259so20693411fa.3;
-        Fri, 31 May 2024 04:09:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUW1mCT6B0uubbrlfvHMb9kGzpWb0FjUmjnukmX/6ZlAGJGU2vpffoZL/01d0p9Pf0p2RJUxbK/z/ZBnB2L3otedeTdN6kCIcXU3bPV+6nMPOtCnBmVYjVPwbU9Gvbk0iRgRwgdg9iz9IOstsOKPA0nKtXBNw/s6qj3feZ4wMKcxTmlwg5uyinAkX9/+G0evyo3xEU3D0sGSh40SjI0OcsEBw1f
-X-Gm-Message-State: AOJu0Yzt+Z2esu9R5C1uI35QWMnEKIid9UnCJzZjBSqBQUy0h6hvXRdT
-	GDCQmkeitmSg//GHcprRJRUy8BVyrBi0kpvo5u37ENV+qd39ygc3VAfest6+6BBGt10cUxNXTQm
-	SJ6M15f6gcAn1yTRc6ITyxUL7rbs=
-X-Google-Smtp-Source: AGHT+IGTzAQXJboCZrE7ub+CPIwBrd4fT/qOP7BamuTNTLnHwWnsj6M7s6s5d6esPM1ooNMpIhnA2f1RjvhbZEhwwrw=
-X-Received: by 2002:a2e:8695:0:b0:2e9:6265:9926 with SMTP id
- 38308e7fff4ca-2ea951ddd1emr10496851fa.49.1717153782170; Fri, 31 May 2024
- 04:09:42 -0700 (PDT)
+	b=MZz/xjDZ96WgM7RyXP0SlgkmfENJG0BI+6V4Ek8IKIpDS8sGC/gOEAty1bmHtOx6O
+	 9wAI2SJvYS69vplofuAvOyB4/1KVFvtGCbY+lpM2OpQmCc103Z0M9rYdRiZMfLUYCi
+	 J668pWS5nvq/BewjlHeVjiYnQ7dfEE9Rrz/bLVSXvP3XFAjXhQnq0fUq20rFc1N0dg
+	 rTDJa76XBPFXPvkHhMv3hHj50H+WYLGDM668cbCNE7T9QWli08aWKbd8TovzW1a8rs
+	 kejAHHRs/uvx/A/Gthb6ELpYbAy3vHH0mZvtWFr/lKMnfj+I4RWMrN/Yk9KtoEzlv7
+	 cQ9uJVKOSiGew==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2e724bc46bfso11616131fa.3;
+        Fri, 31 May 2024 06:33:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVNqZjdoqqBYiFvDwv3hYln77JxYg/zItSoBrg9BrbdKP/DoKE+lLTd5O5/Ui3r+PF2z7RvnA2fQ2/H+plcRuMgh87p0MY2Gz6vG1gu1UIVEPQJT/lwIwCx/QXhzntlBVqev4CSEVzVyxYr91uB0cTaHM3iLRoMBgcSZr1POMVtEtdgW1qDFCx389IjLrhIF7WHt3LMGA9fauNOpA9yZPmOXHWB
+X-Gm-Message-State: AOJu0Yzys0JOKEmLel9ZJtE2kWCnNb59IrcffHYarjZyRaq3G+TBZ68X
+	IKZWLPBhdQJ+YqqcbhL1grBFt3sHFjv+BsvrXgolsq3NnxazPd0O/DWkt0NY6069EYpJwjPUSLC
+	Xm/bmGBh8cMKT2o/rHORUmvGdX98=
+X-Google-Smtp-Source: AGHT+IGlqK6NPM1u+Eyko2YTmOtbIDS7IcY/uRtynxr79vdeKHLi3qCI4AcIHpcHBsOx+R/wgFPEJHaZF4/iw6knwsM=
+X-Received: by 2002:a2e:a983:0:b0:2ea:91e1:666f with SMTP id
+ 38308e7fff4ca-2ea950ef73dmr14989881fa.21.1717162433048; Fri, 31 May 2024
+ 06:33:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240531010331.134441-1-ross.philipson@oracle.com> <20240531010331.134441-20-ross.philipson@oracle.com>
-In-Reply-To: <20240531010331.134441-20-ross.philipson@oracle.com>
+References: <20240531010331.134441-1-ross.philipson@oracle.com>
+ <20240531010331.134441-9-ross.philipson@oracle.com> <CAMj1kXHaH6atsvwr6oVPdZuhR5YEXU33-2kYEn6xb1e=gidOCw@mail.gmail.com>
+In-Reply-To: <CAMj1kXHaH6atsvwr6oVPdZuhR5YEXU33-2kYEn6xb1e=gidOCw@mail.gmail.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 31 May 2024 13:09:30 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGC7a5+5at7T7M_mxBNWjqnuM4QGydG4ZEbu63y6fri3g@mail.gmail.com>
-Message-ID: <CAMj1kXGC7a5+5at7T7M_mxBNWjqnuM4QGydG4ZEbu63y6fri3g@mail.gmail.com>
-Subject: Re: [PATCH v9 19/19] x86: EFI stub DRTM launch support for Secure Launch
+Date: Fri, 31 May 2024 15:33:41 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHcYOPTLTh-hEtfHk+JaORGK+fEatTT+UOqLJww+_cNTg@mail.gmail.com>
+Message-ID: <CAMj1kXHcYOPTLTh-hEtfHk+JaORGK+fEatTT+UOqLJww+_cNTg@mail.gmail.com>
+Subject: Re: [PATCH v9 08/19] x86: Secure Launch kernel early boot stub
 To: Ross Philipson <ross.philipson@oracle.com>
 Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
 	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
@@ -79,182 +80,206 @@ Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
 	trenchboot-devel@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 31 May 2024 at 03:32, Ross Philipson <ross.philipson@oracle.com> wrote:
+On Fri, 31 May 2024 at 13:00, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> This support allows the DRTM launch to be initiated after an EFI stub
-> launch of the Linux kernel is done. This is accomplished by providing
-> a handler to jump to when a Secure Launch is in progress. This has to be
-> called after the EFI stub does Exit Boot Services.
+> Hello Ross,
 >
-> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
-
-Just some minor remarks below. The overall approach in this patch
-looks fine now.
-
-
-> ---
->  drivers/firmware/efi/libstub/x86-stub.c | 98 +++++++++++++++++++++++++
->  1 file changed, 98 insertions(+)
+> On Fri, 31 May 2024 at 03:32, Ross Philipson <ross.philipson@oracle.com> wrote:
+> >
+> > The Secure Launch (SL) stub provides the entry point for Intel TXT (and
+> > later AMD SKINIT) to vector to during the late launch. The symbol
+> > sl_stub_entry is that entry point and its offset into the kernel is
+> > conveyed to the launching code using the MLE (Measured Launch
+> > Environment) header in the structure named mle_header. The offset of the
+> > MLE header is set in the kernel_info. The routine sl_stub contains the
+> > very early late launch setup code responsible for setting up the basic
+> > environment to allow the normal kernel startup_32 code to proceed. It is
+> > also responsible for properly waking and handling the APs on Intel
+> > platforms. The routine sl_main which runs after entering 64b mode is
+> > responsible for measuring configuration and module information before
+> > it is used like the boot params, the kernel command line, the TXT heap,
+> > an external initramfs, etc.
+> >
+> > Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+> > ---
+> >  Documentation/arch/x86/boot.rst        |  21 +
+> >  arch/x86/boot/compressed/Makefile      |   3 +-
+> >  arch/x86/boot/compressed/head_64.S     |  30 +
+> >  arch/x86/boot/compressed/kernel_info.S |  34 ++
+> >  arch/x86/boot/compressed/sl_main.c     | 577 ++++++++++++++++++++
+> >  arch/x86/boot/compressed/sl_stub.S     | 725 +++++++++++++++++++++++++
+> >  arch/x86/include/asm/msr-index.h       |   5 +
+> >  arch/x86/include/uapi/asm/bootparam.h  |   1 +
+> >  arch/x86/kernel/asm-offsets.c          |  20 +
+> >  9 files changed, 1415 insertions(+), 1 deletion(-)
+> >  create mode 100644 arch/x86/boot/compressed/sl_main.c
+> >  create mode 100644 arch/x86/boot/compressed/sl_stub.S
+> >
+> > diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
+> > index 4fd492cb4970..295cdf9bcbdb 100644
+> > --- a/Documentation/arch/x86/boot.rst
+> > +++ b/Documentation/arch/x86/boot.rst
+> > @@ -482,6 +482,14 @@ Protocol:  2.00+
+> >             - If 1, KASLR enabled.
+> >             - If 0, KASLR disabled.
+> >
+> > +  Bit 2 (kernel internal): SLAUNCH_FLAG
+> > +
+> > +       - Used internally by the setup kernel to communicate
+> > +         Secure Launch status to kernel proper.
+> > +
+> > +           - If 1, Secure Launch enabled.
+> > +           - If 0, Secure Launch disabled.
+> > +
+> >    Bit 5 (write): QUIET_FLAG
+> >
+> >         - If 0, print early messages.
+> > @@ -1028,6 +1036,19 @@ Offset/size:     0x000c/4
+> >
+> >    This field contains maximal allowed type for setup_data and setup_indirect structs.
+> >
+> > +============   =================
+> > +Field name:    mle_header_offset
+> > +Offset/size:   0x0010/4
+> > +============   =================
+> > +
+> > +  This field contains the offset to the Secure Launch Measured Launch Environment
+> > +  (MLE) header. This offset is used to locate information needed during a secure
+> > +  late launch using Intel TXT. If the offset is zero, the kernel does not have
+> > +  Secure Launch capabilities. The MLE entry point is called from TXT on the BSP
+> > +  following a success measured launch. The specific state of the processors is
+> > +  outlined in the TXT Software Development Guide, the latest can be found here:
+> > +  https://www.intel.com/content/dam/www/public/us/en/documents/guides/intel-txt-software-development-guide.pdf
+> > +
+> >
 >
-> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> index d5a8182cf2e1..a1143d006202 100644
-> --- a/drivers/firmware/efi/libstub/x86-stub.c
-> +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> @@ -9,6 +9,8 @@
->  #include <linux/efi.h>
->  #include <linux/pci.h>
->  #include <linux/stddef.h>
-> +#include <linux/slr_table.h>
-> +#include <linux/slaunch.h>
+> Could we just repaint this field as the offset relative to the start
+> of kernel_info rather than relative to the start of the image? That
+> way, there is no need for patch #1, and given that the consumer of
+> this field accesses it via kernel_info, I wouldn't expect any issues
+> in applying this offset to obtain the actual address.
 >
->  #include <asm/efi.h>
->  #include <asm/e820/types.h>
-> @@ -830,6 +832,97 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
->         return efi_adjust_memory_range_protection(addr, kernel_text_size);
->  }
 >
-> +#if (IS_ENABLED(CONFIG_SECURE_LAUNCH))
-
-IS_ENABLED() is mostly used for C conditionals not CPP ones.
-
-It would be nice if this #if could be dropped, and replaced with ... (see below)
-
-
-> +static bool efi_secure_launch_update_boot_params(struct slr_table *slrt,
-> +                                                struct boot_params *boot_params)
-> +{
-> +       struct slr_entry_intel_info *txt_info;
-> +       struct slr_entry_policy *policy;
-> +       struct txt_os_mle_data *os_mle;
-> +       bool updated = false;
-> +       int i;
-> +
-> +       txt_info = slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_INTEL_INFO);
-> +       if (!txt_info)
-> +               return false;
-> +
-> +       os_mle = txt_os_mle_data_start((void *)txt_info->txt_heap);
-> +       if (!os_mle)
-> +               return false;
-> +
-> +       os_mle->boot_params_addr = (u32)(u64)boot_params;
-> +
-
-Why is this safe?
-
-> +       policy = slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_ENTRY_POLICY);
-> +       if (!policy)
-> +               return false;
-> +
-> +       for (i = 0; i < policy->nr_entries; i++) {
-> +               if (policy->policy_entries[i].entity_type == SLR_ET_BOOT_PARAMS) {
-> +                       policy->policy_entries[i].entity = (u64)boot_params;
-> +                       updated = true;
-> +                       break;
-> +               }
-> +       }
-> +
-> +       /*
-> +        * If this is a PE entry into EFI stub the mocked up boot params will
-> +        * be missing some of the setup header data needed for the second stage
-> +        * of the Secure Launch boot.
-> +        */
-> +       if (image) {
-> +               struct setup_header *hdr = (struct setup_header *)((u8 *)image->image_base + 0x1f1);
-
-Could we use something other than a bare 0x1f1 constant here? struct
-boot_params has a struct setup_header at the correct offset, so with
-some casting of offsetof() use, we can make this look a lot more self
-explanatory.
-
-
-> +               u64 cmdline_ptr, hi_val;
-> +
-> +               boot_params->hdr.setup_sects = hdr->setup_sects;
-> +               boot_params->hdr.syssize = hdr->syssize;
-> +               boot_params->hdr.version = hdr->version;
-> +               boot_params->hdr.loadflags = hdr->loadflags;
-> +               boot_params->hdr.kernel_alignment = hdr->kernel_alignment;
-> +               boot_params->hdr.min_alignment = hdr->min_alignment;
-> +               boot_params->hdr.xloadflags = hdr->xloadflags;
-> +               boot_params->hdr.init_size = hdr->init_size;
-> +               boot_params->hdr.kernel_info_offset = hdr->kernel_info_offset;
-> +               hi_val = boot_params->ext_cmd_line_ptr;
-
-We have efi_set_u64_split() for this.
-
-> +               cmdline_ptr = boot_params->hdr.cmd_line_ptr | hi_val << 32;
-> +               boot_params->hdr.cmdline_size = strlen((const char *)cmdline_ptr);;
-> +       }
-> +
-> +       return updated;
-> +}
-> +
-> +static void efi_secure_launch(struct boot_params *boot_params)
-> +{
-> +       struct slr_entry_dl_info *dlinfo;
-> +       efi_guid_t guid = SLR_TABLE_GUID;
-> +       dl_handler_func handler_callback;
-> +       struct slr_table *slrt;
-> +
-
-... a C conditional here, e.g.,
-
-if (!IS_ENABLED(CONFIG_SECURE_LAUNCH))
-    return;
-
-The difference is that all the code will get compile test coverage
-every time, instead of only in configs that enable
-CONFIG_SECURE_LAUNCH.
-
-This significantly reduces the risk that your stuff will get broken
-inadvertently.
-
-> +       /*
-> +        * The presence of this table indicated a Secure Launch
-> +        * is being requested.
-> +        */
-> +       slrt = (struct slr_table *)get_efi_config_table(guid);
-> +       if (!slrt || slrt->magic != SLR_TABLE_MAGIC)
-> +               return;
-> +
-> +       /*
-> +        * Since the EFI stub library creates its own boot_params on entry, the
-> +        * SLRT and TXT heap have to be updated with this version.
-> +        */
-> +       if (!efi_secure_launch_update_boot_params(slrt, boot_params))
-> +               return;
-> +
-> +       /* Jump through DL stub to initiate Secure Launch */
-> +       dlinfo = slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_DL_INFO);
-> +
-> +       handler_callback = (dl_handler_func)dlinfo->dl_handler;
-> +
-> +       handler_callback(&dlinfo->bl_context);
-> +
-> +       unreachable();
-> +}
-> +#endif
-> +
->  static void __noreturn enter_kernel(unsigned long kernel_addr,
->                                     struct boot_params *boot_params)
->  {
-> @@ -957,6 +1050,11 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
->                 goto fail;
->         }
+> >  The Image Checksum
+> >  ==================
+> > diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> > index 9189a0e28686..9076a248d4b4 100644
+> > --- a/arch/x86/boot/compressed/Makefile
+> > +++ b/arch/x86/boot/compressed/Makefile
+> > @@ -118,7 +118,8 @@ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+> >  vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
+> >  vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+> >
+> > -vmlinux-objs-$(CONFIG_SECURE_LAUNCH) += $(obj)/early_sha1.o $(obj)/early_sha256.o
+> > +vmlinux-objs-$(CONFIG_SECURE_LAUNCH) += $(obj)/early_sha1.o $(obj)/early_sha256.o \
+> > +       $(obj)/sl_main.o $(obj)/sl_stub.o
+> >
+> >  $(obj)/vmlinux: $(vmlinux-objs-y) FORCE
+> >         $(call if_changed,ld)
+> > diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+> > index 1dcb794c5479..803c9e2e6d85 100644
+> > --- a/arch/x86/boot/compressed/head_64.S
+> > +++ b/arch/x86/boot/compressed/head_64.S
+> > @@ -420,6 +420,13 @@ SYM_CODE_START(startup_64)
+> >         pushq   $0
+> >         popfq
+> >
+> > +#ifdef CONFIG_SECURE_LAUNCH
+> > +       /* Ensure the relocation region is coverd by a PMR */
 >
-> +#if (IS_ENABLED(CONFIG_SECURE_LAUNCH))
-
-... and drop this #if as well.
-
-> +       /* If a Secure Launch is in progress, this never returns */
-> +       efi_secure_launch(boot_params);
-> +#endif
-> +
->         /*
->          * Call the SEV init code while still running with the firmware's
->          * GDT/IDT, so #VC exceptions will be handled by EFI.
-> --
-> 2.39.3
+> covered
 >
+> > +       movq    %rbx, %rdi
+> > +       movl    $(_bss - startup_32), %esi
+> > +       callq   sl_check_region
+> > +#endif
+> > +
+> >  /*
+> >   * Copy the compressed kernel to the end of our buffer
+> >   * where decompression in place becomes safe.
+> > @@ -462,6 +469,29 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+> >         shrq    $3, %rcx
+> >         rep     stosq
+> >
+> > +#ifdef CONFIG_SECURE_LAUNCH
+> > +       /*
+> > +        * Have to do the final early sl stub work in 64b area.
+> > +        *
+> > +        * *********** NOTE ***********
+> > +        *
+> > +        * Several boot params get used before we get a chance to measure
+> > +        * them in this call. This is a known issue and we currently don't
+> > +        * have a solution. The scratch field doesn't matter. There is no
+> > +        * obvious way to do anything about the use of kernel_alignment or
+> > +        * init_size though these seem low risk with all the PMR and overlap
+> > +        * checks in place.
+> > +        */
+> > +       movq    %r15, %rdi
+> > +       callq   sl_main
+> > +
+> > +       /* Ensure the decompression location is covered by a PMR */
+> > +       movq    %rbp, %rdi
+> > +       movq    output_len(%rip), %rsi
+> > +       callq   sl_check_region
+> > +#endif
+> > +
+> > +       pushq   %rsi
+>
+> This looks like a rebase error.
+>
+> >         call    load_stage2_idt
+> >
+> >         /* Pass boot_params to initialize_identity_maps() */
+> > diff --git a/arch/x86/boot/compressed/kernel_info.S b/arch/x86/boot/compressed/kernel_info.S
+> > index c18f07181dd5..e199b87764e9 100644
+> > --- a/arch/x86/boot/compressed/kernel_info.S
+> > +++ b/arch/x86/boot/compressed/kernel_info.S
+> > @@ -28,6 +28,40 @@ SYM_DATA_START(kernel_info)
+> >         /* Maximal allowed type for setup_data and setup_indirect structs. */
+> >         .long   SETUP_TYPE_MAX
+> >
+> > +       /* Offset to the MLE header structure */
+> > +#if IS_ENABLED(CONFIG_SECURE_LAUNCH)
+> > +       .long   rva(mle_header)
+>
+> ... so this could just be mle_header - kernel_info, and the consumer
+> can do the math instead.
+>
+> > +#else
+> > +       .long   0
+> > +#endif
+> > +
+> >  kernel_info_var_len_data:
+> >         /* Empty for time being... */
+> >  SYM_DATA_END_LABEL(kernel_info, SYM_L_LOCAL, kernel_info_end)
+> > +
+> > +#if IS_ENABLED(CONFIG_SECURE_LAUNCH)
+> > +       /*
+> > +        * The MLE Header per the TXT Specification, section 2.1
+> > +        * MLE capabilities, see table 4. Capabilities set:
+> > +        * bit 0: Support for GETSEC[WAKEUP] for RLP wakeup
+> > +        * bit 1: Support for RLP wakeup using MONITOR address
+> > +        * bit 2: The ECX register will contain the pointer to the MLE page table
+> > +        * bit 5: TPM 1.2 family: Details/authorities PCR usage support
+> > +        * bit 9: Supported format of TPM 2.0 event log - TCG compliant
+> > +        */
+> > +SYM_DATA_START(mle_header)
+> > +       .long   0x9082ac5a  /* UUID0 */
+> > +       .long   0x74a7476f  /* UUID1 */
+> > +       .long   0xa2555c0f  /* UUID2 */
+> > +       .long   0x42b651cb  /* UUID3 */
+> > +       .long   0x00000034  /* MLE header size */
+> > +       .long   0x00020002  /* MLE version 2.2 */
+> > +       .long   rva(sl_stub_entry) /* Linear entry point of MLE (virt. address) */
+>
+> and these should perhaps be relative to mle_header?
+>
+> > +       .long   0x00000000  /* First valid page of MLE */
+> > +       .long   0x00000000  /* Offset within binary of first byte of MLE */
+> > +       .long   rva(_edata) /* Offset within binary of last byte + 1 of MLE */
+>
+> and here
+>
+
+Ugh never mind - these are specified externally.
 
