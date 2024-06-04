@@ -1,246 +1,355 @@
-Return-Path: <linux-efi+bounces-1148-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1149-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5D08FBD93
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 22:53:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DEA8FBD9D
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 22:55:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD7D11C247E8
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 20:53:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32E94B21C1A
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 20:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2603514C586;
-	Tue,  4 Jun 2024 20:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58AFB14BF91;
+	Tue,  4 Jun 2024 20:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rHj/eJs6"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6937314658E;
-	Tue,  4 Jun 2024 20:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717534429; cv=fail; b=DZTw0+8ABydLMtATCvkXr8Nn/zCr2FT8Xz/UZLnpwIskhzm+AcaJjrXd7kwUSTxRUD0nTlg8hxbgj/N8bXZydlvUgEewY9H33VwT1DTSrqNh44wGfnfUnGO+zriKa6jW3bmhOGmB+FDeldY/qwJa5tXALctAfeEsxcWylIDtDgo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717534429; c=relaxed/simple;
-	bh=JFQCwuI3w1E4QamodBiqBzSyVfzgmpYcBtPIo/fzH9c=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=T97t72zT2s9UKY6rhFqTNEwnBYp4ATzIWwnX6ha3wP5Jf3OiS2UeJurpEmmf9a41nzMp/yL+AS7DpLiklCCKEEE3WrCIco9aA3J0maUVkLgBm66ChIPYenXyF4tvMU/wynXWyEcHPFxIKeg4eylR6HLXDePUX9reetzhGC05E/U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 454JDTJW028053;
-	Tue, 4 Jun 2024 20:53:05 GMT
-DKIM-Signature: =?UTF-8?Q?v=3D1;_a=3Drsa-sha256;_c=3Drelaxed/relaxed;_d=3Doracle.com;_h?=
- =?UTF-8?Q?=3Dcc:content-transfer-encoding:content-type:date:from:in-reply?=
- =?UTF-8?Q?-to:message-id:mime-version:references:subject:to;_s=3Dcorp-202?=
- =?UTF-8?Q?3-11-20;_bh=3DFSKs8WeMluH48z6q6RrHBxlRhCwBbsFznMZLnbfoYoo=3D;_b?=
- =?UTF-8?Q?=3DC12IH6szRJOZ1ZYyQOwUrp6iNBqBXteSrhIT6phZZCNkhB98RCSWupJ7Kgn/?=
- =?UTF-8?Q?DySaVvOi_HGeAayuy7gLR0Y7qkKru16MRjqAMJ81Ej2WT1cD1PHRsGnA/ftGiXH?=
- =?UTF-8?Q?7gxnwdBCU+ut4z_cUPPpXkQrLnoylsh7c4HD4hcGM9S4dswaSnEOW9F3b6WQ8ZM?=
- =?UTF-8?Q?VDJsHG07c5iRZxtxaC1P_2lJFob2GvdmONzFAMsUHPFqmdwJ/It09yTSeyPlGJr?=
- =?UTF-8?Q?mTjtkCQtzfZgtzjTrIu2VmhbPe_6Xhdcr+75BgAeO9Nq17TqgDVZWJFeOOzdjSc?=
- =?UTF-8?Q?v1iIBL3idM/kD5vL3ljOwXtycRd11a3Y_7w=3D=3D_?=
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yfv58dwb5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 04 Jun 2024 20:53:05 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 454JW1Mj015646;
-	Tue, 4 Jun 2024 20:53:04 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3ygrjcuygj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 04 Jun 2024 20:53:04 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DD+0SsxWgvQw2t9Ynrpgtyp9k1NsDeEtQ1rVcAE1AtUBFcwTRXyc92Ww9LAfW7krXL2hlO3UqRiVqBo+BqwVhC2QDKXqvXnKvAnuABQVjS/oTHbP5+SNf62XwlEQ5byBm+sCqfXPt73UpKWxfoJwA+S1sOQO5otUlFCwvAmlDRBwPSW0FFMY5KZfHXBhQQPtmUn92oWys2TeD0rqglSNiVc2chrm1KBbgn0jAfk/R4j5TqaMV3n6fS8oMiKmpoQ4XFZ7440iiZVMEC5llN5keekZxPkfetcYD/CXMbOLKSLjP5hBFOIgIZNHvFMtMBG05woF2+ugZQFP42vkc0OM2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FSKs8WeMluH48z6q6RrHBxlRhCwBbsFznMZLnbfoYoo=;
- b=PnL080oKuRwTllpZwiDP8C1xYc4xJtP+9zfgvt+UIDiA0/89NOypFQK1lqDQUoDjsyuZadTdjG/m/GP+hKlM92+rwkoiqm3Os49Qvult7Y9zTtrGbXNjocaEdZRUi3qov3obIIEzL/uW6InCBGUchWxD7xCECOZX9j5zuXbiX1v3wWAPNC/hUbpQoIzgwMI6zhGTUSPka7xKrDygetqUJL6FFnQsHheEdovbKTn++Z4OK0ANDkjQxEyDKNAB3T83WIgBBH74qjxqo3d5fkBoeWg159aU3+kiMGjAhdxgQ8kufDZn8ksmiPM4zZKUq0hNOTbKkLBKLV7cArVDg/o9ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FSKs8WeMluH48z6q6RrHBxlRhCwBbsFznMZLnbfoYoo=;
- b=rwwRUDqtbUi4uDnp2X0Kcz6iA/bbnDgVFrrFPZVaaqnj8bRTN25nfqN//CIQSMemGbm345qmFFwwSpxLh5Pu7YVg9gbgB6Q6zeVuH3bS/PYTpEl/0PvFJaUrylODDLzPfYS03Ft+fK8pN/BsnHO/wD08jHAsNigtJ0+z2uMcPus=
-Received: from DS0PR10MB7224.namprd10.prod.outlook.com (2603:10b6:8:f5::14) by
- CH0PR10MB4937.namprd10.prod.outlook.com (2603:10b6:610:c5::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7633.27; Tue, 4 Jun 2024 20:53:01 +0000
-Received: from DS0PR10MB7224.namprd10.prod.outlook.com
- ([fe80::c57:383f:cfb2:47f8]) by DS0PR10MB7224.namprd10.prod.outlook.com
- ([fe80::c57:383f:cfb2:47f8%6]) with mapi id 15.20.7633.021; Tue, 4 Jun 2024
- 20:53:01 +0000
-Message-ID: <2bc7aa8a-5b1f-4753-834d-1e31140d6fe2@oracle.com>
-Date: Tue, 4 Jun 2024 13:52:57 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 05/19] x86: Secure Launch main header file
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-kernel@vger.kernel.org,
-        x86@kernel.org, linux-integrity@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-crypto@vger.kernel.org,
-        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Cc: dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
-        ardb@kernel.org, mjg59@srcf.ucam.org,
-        James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, jgg@ziepe.ca,
-        luto@amacapital.net, nivedita@alum.mit.edu,
-        herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net,
-        ebiederm@xmission.com, dwmw2@infradead.org, baolu.lu@linux.intel.com,
-        kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
-        trenchboot-devel@googlegroups.com, ross.philipson@oracle.com
-References: <20240531010331.134441-1-ross.philipson@oracle.com>
- <20240531010331.134441-6-ross.philipson@oracle.com>
- <D1RFYH41E4ZN.2D7LJBAZP71CB@kernel.org>
-Content-Language: en-US
-From: ross.philipson@oracle.com
-In-Reply-To: <D1RFYH41E4ZN.2D7LJBAZP71CB@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0146.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::31) To DS0PR10MB7224.namprd10.prod.outlook.com
- (2603:10b6:8:f5::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2713D14B974;
+	Tue,  4 Jun 2024 20:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717534493; cv=none; b=RRooQlrOzLsIPza6riZShGbP/2Syd+X1YYvCbUuTZaZv6J/0bqshOM6eyrZv8Vt5Y6pFssWXWkk55H5WqE9EibOyJdvDLsE+xtrAEqe1rdyDNvq767eT+Dyxb1tvZ3jeVflCFJzavj+9OIEdgcjqQVNHaAbg7D06xaAvciqPvjo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717534493; c=relaxed/simple;
+	bh=jOW+1OdDSCmwWCebegpjQkPqvOoqBmesdA2lp4CRyvg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OpTuqXg0VeWFgOCZux3vin6wwRMLFYfBDoGuu3NStkJxb2TFcnTovXpyLQm6HmCwZ9+n+pn94NYffF8/f6Xy627+rRG2qSHlkkIbBan9Uicr/njELX7jev1f0265kpSJKC+w1cTJUdxAN+Gc2Ic/1ocZ6Og43yzbbRltTRlxQQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rHj/eJs6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3787C4AF0F;
+	Tue,  4 Jun 2024 20:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717534492;
+	bh=jOW+1OdDSCmwWCebegpjQkPqvOoqBmesdA2lp4CRyvg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rHj/eJs6FDv+FP8Pp+EwPfjeHNiYP6KKDBJAPsvRfBDXawsFtjsLQDvVGbc96Rjcb
+	 GR1d0d0orzMjAq+uk/3hWZkJxOeHMUBFxmyrD/u23Y4SUor4lC64HH2ErRSBpKyQzC
+	 mQ1+WvazSBhmn6AL1cLr8gnHHZPVPksRplG8/8E8s2bgf21W8Tq6AUZ8B+xH5aYytz
+	 QkaHnOrQbx3q87D6AJtJfDoOnZAU7T8Qc2XbqNu0I8rzVKBXpjyI9LQrcOuEvdpoUu
+	 VIV4Ka7CtYk66kVcm7x32YUGa5dnhurvI73M0VDYZEDxWS1rWgrWA6E3dnQGa/ScJA
+	 vTDmVdalAYgoQ==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ea9386cde0so61424911fa.2;
+        Tue, 04 Jun 2024 13:54:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX0xiLw82jGxVlAfSGYUy6aC6uiTI/q6T6f1CMs92flIptC2lcrma2xD+GbJXzzb31RFHdZxybW7kd7oT88MX2dLoOm3dcqx8GRDKIwUVjeq3DIhf9Nl6619KsJ9RMJ0JRzoyQbtnSQBOJo9oiS4pCetZyd/ZwclYKrBXYnUElzrgRksDKXoo0lyVCBUiOOY81ak9Gu2tca+rLnB3MYAmP35YX3
+X-Gm-Message-State: AOJu0Yw2Zwu4/mqx1TOR48B9tqQxGwf7S60+B/OvchZVShyGnhDME+II
+	bk9TK0AmCkEfZOPbXEWVV05Z/9WWIDEQWeHLKg7YYnjlBAXEc97PoWHEqG6cQLtIOFv0TNQfYVI
+	qkirsnR5to6wZiIfDuYsOeuipZ48=
+X-Google-Smtp-Source: AGHT+IHJDS7RbesWDkwWk7Ew2fQrx3H0XBYwx+Z4jx1MSnR1LYyQbaYNK9w0BYZBfeO823xz4XgpKZDKbAn9kgetWNo=
+X-Received: by 2002:a2e:a7c9:0:b0:2e9:756f:cde0 with SMTP id
+ 38308e7fff4ca-2eac79ed71fmr2534751fa.23.1717534490810; Tue, 04 Jun 2024
+ 13:54:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB7224:EE_|CH0PR10MB4937:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a126eb5-5159-4339-4afd-08dc84d85240
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|7416005|1800799015|376005|366007;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?SHlGRm5lTjVtWlNKSTllcXd6R2JmKzV4Mi84WmFmbGczOGJKZENFUmdyWjdU?=
- =?utf-8?B?OC9lT0JDNyszYnNzZHlmNFRMbElWY2d2UHJUT01nUGJTQjd1NVlsQ3ZjTFRp?=
- =?utf-8?B?eUs2K3RyMDNoR1FORjQ1QzFMZVF5aHhrYnVKOE5BemhTRmpBeUxuN1FDUGNN?=
- =?utf-8?B?RkJpV3BSdk9LZUNzUmZyM3dwalF1YWVWcHQybWdGdDloeU1yeTdQdXRCVG1w?=
- =?utf-8?B?bGtzLzdweXUzS3BzL3FkbzA5eWVmcGZ2WTJ3MUx2MkJwQ3BmWFgwa2RsSW8z?=
- =?utf-8?B?bElTSlBlZHFmYVpvaVE4bnQvV0tYWXB3MEJ1bjgzeDZ2dERYVXJJRHJDVVpl?=
- =?utf-8?B?NVlsZzlkeDFoUHFOZjlkSmtISXdPOXdvQUdtWENPWFQ4R25HbDFPWWlJV3Vu?=
- =?utf-8?B?N0M0M0MyZWxtTmhGaFU1cHhTdjh0dEhLU2NrMlJBS3NZZWJSM1JNSHF4UWhv?=
- =?utf-8?B?dktQK0RtR1UzY3Z6cFJkRUpTTmxyMkxRaVp1M2pib2tORUdOTFhTbGtnNkRr?=
- =?utf-8?B?d1RzQ2o2Qlc3NGFJZFR5KzhEYmw5ZHdkRVJETXZwNjdBeGJnSlVmZ3ZIUkhD?=
- =?utf-8?B?TUg3bVRiNkFLRWpNZVVNdWxUR0srOFlWcnZGZlM0cEFnOTk0SjU0TUJXSkZy?=
- =?utf-8?B?OHlJOEo2OXp6eVE2UTRvNDRWRGYxQ0RBdEcwVkl1ckVneXRYeTFkMWcxdEcw?=
- =?utf-8?B?TXhhYkgvRVR4dm5kWlhWcFN1ZnBpcDhCL291RmU1aEsvWE9JdVR3OWxRbHA3?=
- =?utf-8?B?amFBRmJPUWQzdmVpbXBFRkdsQ1ovUDBTRFVSclBZZDNRRnBnWlZudTNpdjF2?=
- =?utf-8?B?YU5lSVZDMzF1eUxUemdQNTVmSkJtYy9BdkhVSjFFdUdhSXFRcHBoTWxyckhL?=
- =?utf-8?B?QUdKenRoK1FDY2FJRzNoTTJyLzExam9hd01XbDV1dnBNTG4yYVo2NVluNDJF?=
- =?utf-8?B?ZkFQNlc1Y0VVak1jSi9pWmJKQTNLOXkzazhkVW9CT3k0WXlrd1dqMVZtbzhT?=
- =?utf-8?B?Q2JzU1c2cFZES3dMRHRhNkY2K0lNYVM4T0JmemRsMVc5ZDNMVWIyWVBVSy9h?=
- =?utf-8?B?Sm1Oa2ZuaXVDOE1mdWQwREc5TzJJSll3VkxFVVZOK29jOEF1QXdGeFpvUzc3?=
- =?utf-8?B?NVUvbUh1bVpuVWhWcWZ5MGcwaWM3anhNR2RFbjA3TGhiTVhJUG1KeFhHN0x5?=
- =?utf-8?B?M1V0QzN4aWpKbVp3dTY3bkxuc1FrNzBsUElZNVVTb0ZhcVNLTTEva3daelho?=
- =?utf-8?B?eTdjSmFwWW5yZjVzZVVFVE4wa3VQQXNPcmV0TlZnZDU2cEgzb3RxenFoTFFr?=
- =?utf-8?B?cTgzbmdtaFd5RlJGUnJSbjRnVGR1cDBGemdCczQxUFRZWnZMcURHc0tyWURp?=
- =?utf-8?B?Y3kvR0ZyK3p1WFhkYnI3SFM3MEcvMTNKMW9RVnR6Q3pIRVhFRWc0TTdqdytX?=
- =?utf-8?B?ZEhmYnNpYU5hV2gwcW1mMXpldmxYYW5oRS9uUm9LNUlIL3pHaTgzaGZ0Ykhq?=
- =?utf-8?B?UTQ5QkVqejFkNkVYWUIxYWJkZEpMUWFhTzQvT0xObE9hU0hIbjNsZUJlRVQr?=
- =?utf-8?B?MW1KWU45czA4WHRac0tBN2NESlF2RklMdi9UcTBXNHFLRU02bnZtd2JPYkE1?=
- =?utf-8?B?Q2hmOURlSTF6bVE0VEJaelBDMUh4MVBHWTd4TFJiaWxPMGNaVGRZN2FEWkhV?=
- =?utf-8?B?YVNVWWZ3MjZOMDJWZy92bUJsWGpXOFBmbGNYaWYvTDJabk0zNWlUMldnPT0=?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7224.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?a2tyVTJIYzFoVFZsM3pSK3dZNy9EVytWVUdqcnlEc08vRFlsVVJlc3JQc2pP?=
- =?utf-8?B?U0lmOFNraThaUHQ4bjkxV3FsUElsZ1BIcDBTeGc1dEJyYVh0WW1TQUtCeGs1?=
- =?utf-8?B?ZWYraHBxZVBkS2ZDQis1eUFtSzRlTENHRGZvSjBkN0NRaDZIRTQ4ZERSaXZX?=
- =?utf-8?B?ejZwMHhSV0hwQ1ByRjRmc2J5SWFIV2ZpbnFSRGhMaklYTUdndU1KeXVTR3M2?=
- =?utf-8?B?aFJLc0Urc2dBSk41ejc4MkgrL3B1YS9zYS8ySkRvakM5Q2dHK3lPTUhORzYx?=
- =?utf-8?B?bmcrVXovcG9IL2pUN0h2VExYb0VCa1ZTcDVXRTNMcEhvR0NMNEFYeTM4Tit3?=
- =?utf-8?B?OTFRVnNPempMUUZzdkduTHArUFhWQURndThlcWs4dzM3eUl1TG9YY0ZpZUNQ?=
- =?utf-8?B?RGkvTkpSYkNXZmtCdk51SHk5amdMVEI0VFpWOHhnejhBaVJ6VTJCbHVyb1cw?=
- =?utf-8?B?L0t3QmkrK0J5aklFVE1tL0x5cnNiQnE2WlJlWGIvMEdOZ0R5MXlGUUl6b2Zh?=
- =?utf-8?B?YkNqRzN3eW9sRGFUWHdZSHJwTlRENG9SSGptTGxtV0pnNTdVQkRkZSt2ZExq?=
- =?utf-8?B?eXVQNFA2SzhyQVFzWENObHhGMzVlZFJrc2RibU9NSVA3TklwbWJLUHRuVTRB?=
- =?utf-8?B?T0p6MDRXSk1oTnhtQWtDQTYzc1FrcTV6OWhmQVUvMzNjeXh6NTh4aXYyNEdJ?=
- =?utf-8?B?VEREdTNqZUR4L0V3aXFaY3RZMlovQlZ4SkNYd2toK1E5Q2xXYXk0VUZXN1VT?=
- =?utf-8?B?ejZoZVFvM0V3cFB0ekd0eGExdjZPbXRWU3FTd3VTZlBKQTltODlSTzBFMUk1?=
- =?utf-8?B?bGRnWElUNTVkMzhCVDlKZzBLNkVEN20yU01kNzQyalNhV1BBbGJPbHQ5U2JB?=
- =?utf-8?B?YVp3d2tMeldCVU1UdWtsYjRzZHVtQlNQNTdLa3hmelZ6T042UlVWRUFiUVdH?=
- =?utf-8?B?eUdEZCtBRzVmdmxQY0VCUGNFTUlIelVyUTZYdGY2M3hoN25tMW5vR1N1THJu?=
- =?utf-8?B?YTFHZlA1dStzbFpOcTVsWmg3bC9Hd3BIamo1b0ttRkdwenQ4YVRUcmYyRGNE?=
- =?utf-8?B?Y2p4NzhDNEVqWW94bGpOcE8yNnQvZkpVL2FwelFHc0YySHplRnRROEF1T0Mw?=
- =?utf-8?B?dExkN2FVTFd6MFZHZE82dWZ2SVRYU0FPTmdXMDdwNGVrM2xUOW9rMS8vWTFa?=
- =?utf-8?B?Q2lDNmZ4UTFHSDdDVmlRSndUZFhlUHJlUGFGLzI1eDV3T3RvVUZkQ0JhSkQ0?=
- =?utf-8?B?MWRtVjVPc0p5ZTNldGNHL21lVmVTNjhyaGJJNTFZSTRod1I0cHpWYTJPZTl4?=
- =?utf-8?B?Z2E0VVRKMG5OdEJwTFVKMGpxeFZPQ0EyWlU5UHlYeGlKUkdGVmtOamdiNE9K?=
- =?utf-8?B?YVVTd2ZENHNvbkhOYlZiRGo4V2xpN0lkZEpVeSsvU0VFZGdVUEdFZ3k4U2VT?=
- =?utf-8?B?NE9Sb25wY1V5RzdpOWErZ1pZbGU1MkZTQS9QV3VKbFJGS09adFVBWndZRk16?=
- =?utf-8?B?Um5xcFdxTjlJMmdRVE85V1JTbllaR055UTJNa3IyQ1NkbU13UkZYVEU2NU1n?=
- =?utf-8?B?bXZQY3NaVjhYengxcDVybXVITmR3L2YyQXJZak9oWEpxSHR2OWtwaTdPbkdF?=
- =?utf-8?B?MkwyV0Z3b09TREQ0dE11YjhsZXNZSVdJb3pqWE9maDllbXFCTDEyNWVvNHlE?=
- =?utf-8?B?K2pEZW40RW42TlNtSjZMaHNXRHg0ZzJ2Q21rL2RzNHFTV3VFWDF5cjRFcU9v?=
- =?utf-8?B?eiswN3VqZ0ZJSUlEamM1MWNhejdQTGErSExYUHV2TTVGeEJuYlM3amlXY3Qz?=
- =?utf-8?B?OW9OWEtud1RtTGFSZjZCSjRTNGoySC9Rc1l1Q0hxc1czeUFuUXFnTFZYV2p3?=
- =?utf-8?B?S0ZvQklPa2tPcjloVXFxVXZtc2pTVE1XenNhVmg2bnJuRmJZdm5DLzJXYXdl?=
- =?utf-8?B?N0VWTVRNRTdJWW1GQmdWZFVQY29zem9IT1lFdUdRK0doSDZBeDRETWZuWFhN?=
- =?utf-8?B?ZWg2MzZoUmpkaVkzTTIyYjV1U2J5N2E5aTg5SWViSEVBL1BSVkpXTmFLTERt?=
- =?utf-8?B?dlBJazYxeVYzYUhScVpxMzJaaWUxMG15L29PTFdnZXJMeTVpV1ZqNEozN0VM?=
- =?utf-8?B?MmM1ZGRkcThoazJLbkx4a3EyZ2RKbEljdmdpUkRmKy8zQ0I3aEhsemZ3aDRp?=
- =?utf-8?B?NFE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	GBpSHe8A4IE0WeNj5I8aRiA16wB+Mfi0lgu1Oj8Yx2RhJymwbhqllw+t8Nto1zTm64X6BquqjJ1ykdOudKyil4Uy5k+3/IMMeVYgMdXiB+XxLHQkLCW6Vjl5sak4OZCJLJqt2F3c8SQ+a6oQNUH9suh9PIrohek/Fagy3tbQjLcIN/QxuWJXisOKHLUUVj52V/F/jB/mKQGWSU9ZFvqG4kBnGpYfVHLu2iBHXdOw3uetM3oOMVRLsS8ShhvM6zpY6D3ZQnJR/Na49y8fQ7aBIYFik1UIPyft5UJIJq7XIWL/sOAJf29o08T8k3rDJG/tdtJDqaPZ6B/9trvAFlU1PIt7rsvvtwkmdOiDwZbMPoJD8Lx2Zfg9rMHfAv3PI8jizc+EO9zUQ68O2gpcbACA/1bGl7uQ5zM6b+krymwOx1voMYjmZh05fcSTvHLm5Ox+LKntzVo3ion8uQuKL8VcZB5pT0x43GQkbOm8NBLQ4HuLy5yABb5yjgfTns7xEw9ihQgSNWxj5ZW03oI+m+2Xj9dGTscWHTEYtihx/7cn3GK9esbNLQ8aKFAEEM8FtgvCRS+NWcXjC+bYOXogAmhEwoz/eEKF/zfC9Gh0Mmc0uXQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a126eb5-5159-4339-4afd-08dc84d85240
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7224.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2024 20:53:00.9185
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: s1AIc26IE0pxSQxsgo1ojo+KxHqDafXAtnr/6x+VNG+8620CcllnQH5tJVal0ih+c4znMUiedXdVCkOXpfh826S1u8zgW7ZGiG1aijLMoNg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB4937
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-04_11,2024-06-04_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2406040168
-X-Proofpoint-ORIG-GUID: BJ-iJVnaGAW56UwMw1vcptIbzgdObSdQ
-X-Proofpoint-GUID: BJ-iJVnaGAW56UwMw1vcptIbzgdObSdQ
+References: <20240531010331.134441-1-ross.philipson@oracle.com>
+ <20240531010331.134441-9-ross.philipson@oracle.com> <CAMj1kXHaH6atsvwr6oVPdZuhR5YEXU33-2kYEn6xb1e=gidOCw@mail.gmail.com>
+ <CAMj1kXHcYOPTLTh-hEtfHk+JaORGK+fEatTT+UOqLJww+_cNTg@mail.gmail.com>
+ <5bffa507-75e8-4cce-ac0c-fe13d6efd3bb@oracle.com> <CAMj1kXHLaqyPAw5Jjg91pqFbHoMT2jDqui4rosyerHVudRsq-w@mail.gmail.com>
+ <5b32106b-bb7b-463d-8b0b-589e3d466bf3@oracle.com>
+In-Reply-To: <5b32106b-bb7b-463d-8b0b-589e3d466bf3@oracle.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 4 Jun 2024 22:54:39 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEak-_D=B9qLsvo-M5+qJKSCrBwkoQkmC7_NoPR34+r-w@mail.gmail.com>
+Message-ID: <CAMj1kXEak-_D=B9qLsvo-M5+qJKSCrBwkoQkmC7_NoPR34+r-w@mail.gmail.com>
+Subject: Re: [PATCH v9 08/19] x86: Secure Launch kernel early boot stub
+To: ross.philipson@oracle.com
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-efi@vger.kernel.org, iommu@lists.linux-foundation.org, 
+	dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, mjg59@srcf.ucam.org, 
+	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, jarkko@kernel.org, 
+	jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu, 
+	herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net, 
+	ebiederm@xmission.com, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
+	kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com, 
+	trenchboot-devel@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/4/24 11:24 AM, Jarkko Sakkinen wrote:
-> On Fri May 31, 2024 at 4:03 AM EEST, Ross Philipson wrote:
->> Introduce the main Secure Launch header file used in the early SL stub
->> and the early setup code.
->>
->> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
-> 
-> Right and anything AMD specific should also have legit references. I
-> actually always compare to the spec when I review, so not just
-> nitpicking really.
-> 
-> I'm actually bit confused, is this usable both Intel and AMD in the
-> current state? Might be just that have not had time follow this for some
-> time.
+On Tue, 4 Jun 2024 at 19:34, <ross.philipson@oracle.com> wrote:
+>
+> On 6/4/24 10:27 AM, Ard Biesheuvel wrote:
+> > On Tue, 4 Jun 2024 at 19:24, <ross.philipson@oracle.com> wrote:
+> >>
+> >> On 5/31/24 6:33 AM, Ard Biesheuvel wrote:
+> >>> On Fri, 31 May 2024 at 13:00, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >>>>
+> >>>> Hello Ross,
+> >>>>
+> >>>> On Fri, 31 May 2024 at 03:32, Ross Philipson <ross.philipson@oracle.com> wrote:
+> >>>>>
+> >>>>> The Secure Launch (SL) stub provides the entry point for Intel TXT (and
+> >>>>> later AMD SKINIT) to vector to during the late launch. The symbol
+> >>>>> sl_stub_entry is that entry point and its offset into the kernel is
+> >>>>> conveyed to the launching code using the MLE (Measured Launch
+> >>>>> Environment) header in the structure named mle_header. The offset of the
+> >>>>> MLE header is set in the kernel_info. The routine sl_stub contains the
+> >>>>> very early late launch setup code responsible for setting up the basic
+> >>>>> environment to allow the normal kernel startup_32 code to proceed. It is
+> >>>>> also responsible for properly waking and handling the APs on Intel
+> >>>>> platforms. The routine sl_main which runs after entering 64b mode is
+> >>>>> responsible for measuring configuration and module information before
+> >>>>> it is used like the boot params, the kernel command line, the TXT heap,
+> >>>>> an external initramfs, etc.
+> >>>>>
+> >>>>> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+> >>>>> ---
+> >>>>>    Documentation/arch/x86/boot.rst        |  21 +
+> >>>>>    arch/x86/boot/compressed/Makefile      |   3 +-
+> >>>>>    arch/x86/boot/compressed/head_64.S     |  30 +
+> >>>>>    arch/x86/boot/compressed/kernel_info.S |  34 ++
+> >>>>>    arch/x86/boot/compressed/sl_main.c     | 577 ++++++++++++++++++++
+> >>>>>    arch/x86/boot/compressed/sl_stub.S     | 725 +++++++++++++++++++++++++
+> >>>>>    arch/x86/include/asm/msr-index.h       |   5 +
+> >>>>>    arch/x86/include/uapi/asm/bootparam.h  |   1 +
+> >>>>>    arch/x86/kernel/asm-offsets.c          |  20 +
+> >>>>>    9 files changed, 1415 insertions(+), 1 deletion(-)
+> >>>>>    create mode 100644 arch/x86/boot/compressed/sl_main.c
+> >>>>>    create mode 100644 arch/x86/boot/compressed/sl_stub.S
+> >>>>>
+> >>>>> diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
+> >>>>> index 4fd492cb4970..295cdf9bcbdb 100644
+> >>>>> --- a/Documentation/arch/x86/boot.rst
+> >>>>> +++ b/Documentation/arch/x86/boot.rst
+> >>>>> @@ -482,6 +482,14 @@ Protocol:  2.00+
+> >>>>>               - If 1, KASLR enabled.
+> >>>>>               - If 0, KASLR disabled.
+> >>>>>
+> >>>>> +  Bit 2 (kernel internal): SLAUNCH_FLAG
+> >>>>> +
+> >>>>> +       - Used internally by the setup kernel to communicate
+> >>>>> +         Secure Launch status to kernel proper.
+> >>>>> +
+> >>>>> +           - If 1, Secure Launch enabled.
+> >>>>> +           - If 0, Secure Launch disabled.
+> >>>>> +
+> >>>>>      Bit 5 (write): QUIET_FLAG
+> >>>>>
+> >>>>>           - If 0, print early messages.
+> >>>>> @@ -1028,6 +1036,19 @@ Offset/size:     0x000c/4
+> >>>>>
+> >>>>>      This field contains maximal allowed type for setup_data and setup_indirect structs.
+> >>>>>
+> >>>>> +============   =================
+> >>>>> +Field name:    mle_header_offset
+> >>>>> +Offset/size:   0x0010/4
+> >>>>> +============   =================
+> >>>>> +
+> >>>>> +  This field contains the offset to the Secure Launch Measured Launch Environment
+> >>>>> +  (MLE) header. This offset is used to locate information needed during a secure
+> >>>>> +  late launch using Intel TXT. If the offset is zero, the kernel does not have
+> >>>>> +  Secure Launch capabilities. The MLE entry point is called from TXT on the BSP
+> >>>>> +  following a success measured launch. The specific state of the processors is
+> >>>>> +  outlined in the TXT Software Development Guide, the latest can be found here:
+> >>>>> +  https://urldefense.com/v3/__https://www.intel.com/content/dam/www/public/us/en/documents/guides/intel-txt-software-development-guide.pdf__;!!ACWV5N9M2RV99hQ!Mng0gnPhOYZ8D02t1rYwQfY6U3uWaypJyd1T2rsWz3QNHr9GhIZ9ANB_-cgPExxX0e0KmCpda-3VX8Fj$
+> >>>>> +
+> >>>>>
+> >>>>
+> >>>> Could we just repaint this field as the offset relative to the start
+> >>>> of kernel_info rather than relative to the start of the image? That
+> >>>> way, there is no need for patch #1, and given that the consumer of
+> >>>> this field accesses it via kernel_info, I wouldn't expect any issues
+> >>>> in applying this offset to obtain the actual address.
+> >>>>
+> >>>>
+> >>>>>    The Image Checksum
+> >>>>>    ==================
+> >>>>> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> >>>>> index 9189a0e28686..9076a248d4b4 100644
+> >>>>> --- a/arch/x86/boot/compressed/Makefile
+> >>>>> +++ b/arch/x86/boot/compressed/Makefile
+> >>>>> @@ -118,7 +118,8 @@ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+> >>>>>    vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
+> >>>>>    vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+> >>>>>
+> >>>>> -vmlinux-objs-$(CONFIG_SECURE_LAUNCH) += $(obj)/early_sha1.o $(obj)/early_sha256.o
+> >>>>> +vmlinux-objs-$(CONFIG_SECURE_LAUNCH) += $(obj)/early_sha1.o $(obj)/early_sha256.o \
+> >>>>> +       $(obj)/sl_main.o $(obj)/sl_stub.o
+> >>>>>
+> >>>>>    $(obj)/vmlinux: $(vmlinux-objs-y) FORCE
+> >>>>>           $(call if_changed,ld)
+> >>>>> diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+> >>>>> index 1dcb794c5479..803c9e2e6d85 100644
+> >>>>> --- a/arch/x86/boot/compressed/head_64.S
+> >>>>> +++ b/arch/x86/boot/compressed/head_64.S
+> >>>>> @@ -420,6 +420,13 @@ SYM_CODE_START(startup_64)
+> >>>>>           pushq   $0
+> >>>>>           popfq
+> >>>>>
+> >>>>> +#ifdef CONFIG_SECURE_LAUNCH
+> >>>>> +       /* Ensure the relocation region is coverd by a PMR */
+> >>>>
+> >>>> covered
+> >>>>
+> >>>>> +       movq    %rbx, %rdi
+> >>>>> +       movl    $(_bss - startup_32), %esi
+> >>>>> +       callq   sl_check_region
+> >>>>> +#endif
+> >>>>> +
+> >>>>>    /*
+> >>>>>     * Copy the compressed kernel to the end of our buffer
+> >>>>>     * where decompression in place becomes safe.
+> >>>>> @@ -462,6 +469,29 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+> >>>>>           shrq    $3, %rcx
+> >>>>>           rep     stosq
+> >>>>>
+> >>>>> +#ifdef CONFIG_SECURE_LAUNCH
+> >>>>> +       /*
+> >>>>> +        * Have to do the final early sl stub work in 64b area.
+> >>>>> +        *
+> >>>>> +        * *********** NOTE ***********
+> >>>>> +        *
+> >>>>> +        * Several boot params get used before we get a chance to measure
+> >>>>> +        * them in this call. This is a known issue and we currently don't
+> >>>>> +        * have a solution. The scratch field doesn't matter. There is no
+> >>>>> +        * obvious way to do anything about the use of kernel_alignment or
+> >>>>> +        * init_size though these seem low risk with all the PMR and overlap
+> >>>>> +        * checks in place.
+> >>>>> +        */
+> >>>>> +       movq    %r15, %rdi
+> >>>>> +       callq   sl_main
+> >>>>> +
+> >>>>> +       /* Ensure the decompression location is covered by a PMR */
+> >>>>> +       movq    %rbp, %rdi
+> >>>>> +       movq    output_len(%rip), %rsi
+> >>>>> +       callq   sl_check_region
+> >>>>> +#endif
+> >>>>> +
+> >>>>> +       pushq   %rsi
+> >>>>
+> >>>> This looks like a rebase error.
+> >>>>
+> >>>>>           call    load_stage2_idt
+> >>>>>
+> >>>>>           /* Pass boot_params to initialize_identity_maps() */
+> >>>>> diff --git a/arch/x86/boot/compressed/kernel_info.S b/arch/x86/boot/compressed/kernel_info.S
+> >>>>> index c18f07181dd5..e199b87764e9 100644
+> >>>>> --- a/arch/x86/boot/compressed/kernel_info.S
+> >>>>> +++ b/arch/x86/boot/compressed/kernel_info.S
+> >>>>> @@ -28,6 +28,40 @@ SYM_DATA_START(kernel_info)
+> >>>>>           /* Maximal allowed type for setup_data and setup_indirect structs. */
+> >>>>>           .long   SETUP_TYPE_MAX
+> >>>>>
+> >>>>> +       /* Offset to the MLE header structure */
+> >>>>> +#if IS_ENABLED(CONFIG_SECURE_LAUNCH)
+> >>>>> +       .long   rva(mle_header)
+> >>>>
+> >>>> ... so this could just be mle_header - kernel_info, and the consumer
+> >>>> can do the math instead.
+> >>>>
+> >>>>> +#else
+> >>>>> +       .long   0
+> >>>>> +#endif
+> >>>>> +
+> >>>>>    kernel_info_var_len_data:
+> >>>>>           /* Empty for time being... */
+> >>>>>    SYM_DATA_END_LABEL(kernel_info, SYM_L_LOCAL, kernel_info_end)
+> >>>>> +
+> >>>>> +#if IS_ENABLED(CONFIG_SECURE_LAUNCH)
+> >>>>> +       /*
+> >>>>> +        * The MLE Header per the TXT Specification, section 2.1
+> >>>>> +        * MLE capabilities, see table 4. Capabilities set:
+> >>>>> +        * bit 0: Support for GETSEC[WAKEUP] for RLP wakeup
+> >>>>> +        * bit 1: Support for RLP wakeup using MONITOR address
+> >>>>> +        * bit 2: The ECX register will contain the pointer to the MLE page table
+> >>>>> +        * bit 5: TPM 1.2 family: Details/authorities PCR usage support
+> >>>>> +        * bit 9: Supported format of TPM 2.0 event log - TCG compliant
+> >>>>> +        */
+> >>>>> +SYM_DATA_START(mle_header)
+> >>>>> +       .long   0x9082ac5a  /* UUID0 */
+> >>>>> +       .long   0x74a7476f  /* UUID1 */
+> >>>>> +       .long   0xa2555c0f  /* UUID2 */
+> >>>>> +       .long   0x42b651cb  /* UUID3 */
+> >>>>> +       .long   0x00000034  /* MLE header size */
+> >>>>> +       .long   0x00020002  /* MLE version 2.2 */
+> >>>>> +       .long   rva(sl_stub_entry) /* Linear entry point of MLE (virt. address) */
+> >>>>
+> >>>> and these should perhaps be relative to mle_header?
+> >>>>
+> >>>>> +       .long   0x00000000  /* First valid page of MLE */
+> >>>>> +       .long   0x00000000  /* Offset within binary of first byte of MLE */
+> >>>>> +       .long   rva(_edata) /* Offset within binary of last byte + 1 of MLE */
+> >>>>
+> >>>> and here
+> >>>>
+> >>>
+> >>> Ugh never mind - these are specified externally.
+> >>
+> >> Can you clarify your follow on comment here?
+> >>
+> >
+> > I noticed that -as you pointed out in your previous reply- these
+> > fields cannot be repainted at will, as they are defined by an external
+> > specification.
+> >
+> > I'll play a bit more with this code tomorrow - I would *really* like
+> > to avoid the need for patch #1, as it adds another constraint on how
+> > we construct the boot image, and this is already riddled with legacy
+> > and other complications.
+>
+> Yea I should have read forward through all your replies before
+> responding to the first one but I think it clarified things as you point
+> out here. We appreciate you help and suggestions.
+>
 
-This header file mostly has TXT/Intel specific definitions in it right 
-now but that is just because TXT is the first target architecture. I am 
-working on the AMD side of things as we speak and yes, AMD specific 
-definitions will go in here and later ARM specific definitions too.
+OK, so I have a solution that does not require kernel_info at a fixed offset:
 
-If you would like to see say a comment block with links to relevant 
-specifications in this header file, that can be done and they will be 
-added as new support is added.
+- put this at the end of arch/x86/boot/compressed/vmlinux.lds.S
 
-Thanks
-Ross
+#ifdef CONFIG_SECURE_LAUNCH
+PROVIDE(kernel_info_offset      = ABSOLUTE(kernel_info - startup_32));
+PROVIDE(mle_header_offset       = kernel_info_offset +
+ABSOLUTE(mle_header - startup_32));
+PROVIDE(sl_stub_entry_offset    = kernel_info_offset +
+ABSOLUTE(sl_stub_entry - startup_32));
+PROVIDE(_edata_offset           = kernel_info_offset + ABSOLUTE(_edata
+- startup_32));
+#endif
 
-> 
-> BR, Jarkko
-> 
 
+and use this for the header fields:
+
+        /* Offset to the MLE header structure */
+#if IS_ENABLED(CONFIG_SECURE_LAUNCH)
+        .long   mle_header_offset - kernel_info
+#else
+        .long   0
+#endif
+
+
+
+SYM_DATA_START(mle_header)
+        .long   0x9082ac5a  /* UUID0 */
+        .long   0x74a7476f  /* UUID1 */
+        .long   0xa2555c0f  /* UUID2 */
+        .long   0x42b651cb  /* UUID3 */
+        .long   0x00000034  /* MLE header size */
+        .long   0x00020002  /* MLE version 2.2 */
+        .long   sl_stub_entry_offset - kernel_info /* Linear entry
+point of MLE (virt. address) */
+        .long   0x00000000  /* First valid page of MLE */
+        .long   0x00000000  /* Offset within binary of first byte of MLE */
+        .long   _edata_offset - kernel_info /* Offset within binary of
+last byte + 1 of MLE */
+        .long   0x00000227  /* Bit vector of MLE-supported capabilities */
+        .long   0x00000000  /* Starting linear address of command line
+(unused) */
+        .long   0x00000000  /* Ending linear address of command line (unused) */
 
