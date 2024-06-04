@@ -1,85 +1,86 @@
-Return-Path: <linux-efi+bounces-1157-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1158-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9148FBE49
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 23:50:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 453628FBEAF
+	for <lists+linux-efi@lfdr.de>; Wed,  5 Jun 2024 00:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E8FF1F24BE8
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 21:50:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90167B21B9A
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 22:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D46514D428;
-	Tue,  4 Jun 2024 21:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3142014B09F;
+	Tue,  4 Jun 2024 22:15:32 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDB714D2B2;
-	Tue,  4 Jun 2024 21:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EED140366;
+	Tue,  4 Jun 2024 22:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717537700; cv=fail; b=nD8uN70vLUFVk9oXuWnBu8nXqmSFK3MqRGz2fvxfr5I/hrk1ZqiqnZUD9+NMt4mzVxhdaOQkXDwJWtrBnf6t2lh8lqQccynw3x1m4LPj56Kt7b9oaenoCqeIfEft0EGuw5ZVjtyCfM78qbOUXct1pW4iyDXngS3BY0Mj0KpVj2s=
+	t=1717539332; cv=fail; b=fvfklEqrp3QJdU7KABWaLdNCheFvxCT3dQCFggGFOezfW+kB9s3PTfb6fkb+vRn3m1FxK439nQUbG5IUm14CD1cLP4a3ASIM2AhzUGjjkH57iF2+BMC4AsRtz546ZeB2q8/kK3OyciUOEBZVFR3SFH+4dtuacLdyoSwN3/NOoQc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717537700; c=relaxed/simple;
-	bh=qVCOCY6puH+7MYn9K10GlRaQ0ZJlpLvTwkkzq/xuRjc=;
+	s=arc-20240116; t=1717539332; c=relaxed/simple;
+	bh=Y7Oi3MPJEiafVBbESudm93E4ZKixLrPBal8jAkQivoE=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Qa3h8BqXc1SU/hK88YM+uLgumeyHYPshw0w7I9LXDo+S8XP56m/DNIh/2CwGzybFrihMF8SNtvFx3NwXOfETSo3g+VjGHHWNk2DhiBbH9GViIrCB3/GqR7nYMxJz7JFMG7TipM14X8sTXZcIYL0copWTa7c+Uci/UHJf0324lFE=
+	 Content-Type:MIME-Version; b=ojMACNw78skzb01gs1bjz9S1VvAJuBrAF8qsvRnu+XGToCvZLirZodKRsCQSIhrUTgFz/lkRGN5IuXfnxS/O/2tdDfo/PcC3pi4moreC0tW49A80OmdlzZ0yjtoiopdBcwGKZ1gkebRfoEP0abT5J2Si/R/TJleDhe4oL+nNj9c=
 ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; arc=fail smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 454JCq79032521;
-	Tue, 4 Jun 2024 21:47:39 GMT
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 454MEZD9016114;
+	Tue, 4 Jun 2024 22:14:49 GMT
 DKIM-Signature: =?UTF-8?Q?v=3D1;_a=3Drsa-sha256;_c=3Drelaxed/relaxed;_d=3Doracle.com;_h?=
  =?UTF-8?Q?=3Dcc:content-transfer-encoding:content-type:date:from:in-reply?=
  =?UTF-8?Q?-to:message-id:mime-version:references:subject:to;_s=3Dcorp-202?=
- =?UTF-8?Q?3-11-20;_bh=3DVa6hus7nyy5Y2yxtdHY6ILpSZbAHUORHxMlwj2tIPRE=3D;_b?=
- =?UTF-8?Q?=3DAYwJ9LxfTG7VRDo3yfFdeRyGB5mQMzb2oesyHctsCp0f0tpZSg3Qz3Hg84Js?=
- =?UTF-8?Q?WsLCEX6D_5/VPMXy19ECrlDyRyjxQmfVynGWReKBc5Tfr0yGyyRATAqXI4sZJgh?=
- =?UTF-8?Q?5miOntDmNo+z6O_HRsPVNKnVkEFbjs2nDTmOqJDxCvKJap/AgNEFoXrfbdXJd1r?=
- =?UTF-8?Q?TFU3n1Y7LbE1h06c/DkM_7fWCHcLz1J7SI8uO13V+FlLAvsdI7Q0yhPHaLFKAk6?=
- =?UTF-8?Q?lEwaJR57357Guts7O0axMITZgE_0FUP2VLQLxbZhiOEbzD72gfdWR+kTWMzGgMU?=
- =?UTF-8?Q?XE8Tu3znq9m8J5qP2Cgclx8BgSiMWFEw_8g=3D=3D_?=
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yfv6u605e-1
+ =?UTF-8?Q?3-11-20;_bh=3DE79z09MC2zOvzm6+xBwHJgwtkrvRw0HEsFgJ4m7BEaU=3D;_b?=
+ =?UTF-8?Q?=3DgHaEPlnAOqWL1HryHKt8XD42rkigGk1eda4HJ/D2AmdaMS47MYz/CAjjt1ud?=
+ =?UTF-8?Q?O67s92fo_5w3BNYTsT3aZBWmxHHVcviV5UDSKqoToAoNBAV0q7nZcpDtx0efIaM?=
+ =?UTF-8?Q?/vh7cCOKVjWouK_3JPfE3ftGtXsOFdqFVAN4m4YvNhmBGIkK6ODy9TUst8w/QlL?=
+ =?UTF-8?Q?aP08g8sLII8Jd06dGf7v_xkhCwqgqXtNGOollGA6ZT5POonbfss/fDhA5SmSBKr?=
+ =?UTF-8?Q?/t+t42fYloqgepv98VDmB+1r0O_yr7IjOpXGFdCJek5a3fJNS6JMA9QY8JEuIu5?=
+ =?UTF-8?Q?+QohbMcWN33TicV0HuV3ybRmD0NkrPuC_xA=3D=3D_?=
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yfv07x1ag-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 04 Jun 2024 21:47:38 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 454LGlYV016562;
-	Tue, 4 Jun 2024 21:47:37 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2168.outbound.protection.outlook.com [104.47.56.168])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3ygrsaq2f1-1
+	Tue, 04 Jun 2024 22:14:49 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 454L0vgw023933;
+	Tue, 4 Jun 2024 22:14:47 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3ygrqxf2y5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 04 Jun 2024 21:47:37 +0000
+	Tue, 04 Jun 2024 22:14:47 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZPixRPwqDln2ryXacVapZgXkdqR4S7eaZ/cSONUl2wUYRjyZlgCUmElImMrESsomE0NQa4DmIjC0etB2hpGpTQ4F7wMDlDWtLAkJiTy26n4+BqvtIIwMu5nlI5DTcePg6SdE1Z29NCfKNu6meQb3j/Jg7A6R8wukdYXufUYs97J22l69O7EYAjFq5evrjmtbAToqgMOVAoozYsIaWGY6IKhFoGwb7s/tcBLjP5oD/ZAt82//RgVfWSpREyFQGlQaMnVoVCjbpfhCUIDgiRl84qET0u1YIV/gIgwSPOr0DcilcLizi7jAx2uYEEZ2NvTnXwY89CVYgjkbz27aPjgt9A==
+ b=CivPoEt2SE5UVUiduq03VjMvRgLIG09/AR+r++/jHqBBJnYbmEPor+/pg/IDYzlbOwGEqCg8xOK8f98V4n4C1dKeAn3KAUACDr2ipsQUhMubRtovxiY+/pLdLwtxmCeicMi8SVA3VRUpYCg4wv3LdIkJSiCsTrCMScvaJVg8MSVXx80wS9oAmj+zaACnnAdKbrlQh1oJ2YLjfisqm+1yTo/d/vzTBxIBM973Td7FlZR8pZsGTEvtomeFXn1pdCQPUqeM3OX3dEA3VGM8e5Uk0YKbclTRTfp0YvA0iYPhEryFqqkNuyo90scklt8dk/vvqbut5Ajhyl1NlqQi71u9/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Va6hus7nyy5Y2yxtdHY6ILpSZbAHUORHxMlwj2tIPRE=;
- b=PVMv4hWWR3i7iJl6Xg3/cpnjXgPB26vVWDToKbkX4q1kgtyCJy1kCVYXRsNlYUXKFlie2sYNQ7yCYr818XWsWC/cQTDeDYhPWMKhvfkBzaGi4+ZHANX4Ty+Z19szSggkT6Lp1cfjcZTTYXbQc7oLqQVZ0wcTP76mXzc3j5PiW2RhImR0DEBUx3Z4BmAodvpaaaK1+WGeyV/Gk6dTYnKxhL7lp6VDIgn5XZN8fFXzWQRsjMU01sop2qNy4WlwUzefMh3a+pKscOOp1MU+ruVE13QIwjmQjJvBYHiqyXH9NEV0TOF0naZDSqk2f029Y28cCjSpEnOe+HXRlsBWEiqjGw==
+ bh=E79z09MC2zOvzm6+xBwHJgwtkrvRw0HEsFgJ4m7BEaU=;
+ b=HSX0F7vtGLmgA/7LWs3lRMoVP9aX4taSdutP3YhcexOo5vsQ//Vwq0mYYSz73qYGnylWdTZSzo9ZFDqY3r5mftk5Qfzh18RhbjUIKuTa7RRdXIuWLYlL1gm2OFiopxdOdx0YRk4VFQKV06TUip8Z8gOmWT6MwiLi+188sZRzPJFpc1YDR91I9YPbzMqdVqbgyYmcF1UhRjFce7mUdEbc9iaQ3y94wE9goi9sNOTHO5W0r+vMXEOucRoG/vWPhPJCsB0Tb11/uZdMhar0haV2ZBmkWu9SyLOeI0d5EznGTV+8+FnO2y1MsTBiOsZMa9rt2IUVUaiJ22XB/pPrwmozaw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Va6hus7nyy5Y2yxtdHY6ILpSZbAHUORHxMlwj2tIPRE=;
- b=DRSRGQJAJF2vg028ZARYX1wFFPeCqO7rPBwccB7Kl0DpXTtIz9jciX3W0O6LGc36wHEdat46KU6ymsrJ0veZxfglmB0LLQk4ZNV8nBgJlImlpJfeB8n38sXjj8H3O5+uggFIh4FY4n5lVIj+SG7PX2YhhFQ56vPvJQXfWxaZbYA=
+ bh=E79z09MC2zOvzm6+xBwHJgwtkrvRw0HEsFgJ4m7BEaU=;
+ b=0N22ISbVc+alfa3tZMYBklz88pyQs4sjVOVE7xsmc6FU3NuVpcjhbwpy5mXLKKRqoo1WQasimrv6pJ1VG7dovjnFZiGKIR75ZM8g4ZMhIpvTCT416ymdpFIMKpy6gJrglFRC4taYcYFUYA/ddfGEyQlViDEEig9jDaDzmwqL+t4=
 Received: from DS0PR10MB7224.namprd10.prod.outlook.com (2603:10b6:8:f5::14) by
- CH2PR10MB4183.namprd10.prod.outlook.com (2603:10b6:610:7e::8) with Microsoft
+ CH4PR10MB8025.namprd10.prod.outlook.com (2603:10b6:610:247::5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7633.31; Tue, 4 Jun 2024 21:47:34 +0000
+ 15.20.7633.31; Tue, 4 Jun 2024 22:14:45 +0000
 Received: from DS0PR10MB7224.namprd10.prod.outlook.com
  ([fe80::c57:383f:cfb2:47f8]) by DS0PR10MB7224.namprd10.prod.outlook.com
  ([fe80::c57:383f:cfb2:47f8%6]) with mapi id 15.20.7633.021; Tue, 4 Jun 2024
- 21:47:34 +0000
-Message-ID: <d95d73d2-c728-4da2-b68e-d2e39a518ae6@oracle.com>
-Date: Tue, 4 Jun 2024 14:47:27 -0700
+ 22:14:45 +0000
+Message-ID: <282fddde-d156-4bd3-906b-0318d0a3746d@oracle.com>
+Date: Tue, 4 Jun 2024 15:14:38 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 10/19] x86: Secure Launch SMP bringup support
+Subject: Re: [PATCH v9 16/19] tpm: Add ability to set the preferred locality
+ the TPM chip uses
 To: Jarkko Sakkinen <jarkko@kernel.org>, linux-kernel@vger.kernel.org,
         x86@kernel.org, linux-integrity@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-crypto@vger.kernel.org,
@@ -95,15 +96,15 @@ Cc: dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
         kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
         trenchboot-devel@googlegroups.com, ross.philipson@oracle.com
 References: <20240531010331.134441-1-ross.philipson@oracle.com>
- <20240531010331.134441-11-ross.philipson@oracle.com>
- <D1RI46IG5GSA.17H7M0DIQGRQ0@kernel.org>
+ <20240531010331.134441-17-ross.philipson@oracle.com>
+ <D1RIKP548WG9.Q5MM7K3FRH4P@kernel.org>
 Content-Language: en-US
 From: ross.philipson@oracle.com
-In-Reply-To: <D1RI46IG5GSA.17H7M0DIQGRQ0@kernel.org>
+In-Reply-To: <D1RIKP548WG9.Q5MM7K3FRH4P@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL1PR13CA0301.namprd13.prod.outlook.com
- (2603:10b6:208:2c1::6) To DS0PR10MB7224.namprd10.prod.outlook.com
+X-ClientProxiedBy: BL0PR0102CA0022.prod.exchangelabs.com
+ (2603:10b6:207:18::35) To DS0PR10MB7224.namprd10.prod.outlook.com
  (2603:10b6:8:f5::14)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -112,346 +113,203 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB7224:EE_|CH2PR10MB4183:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5989da17-c904-452d-6cfb-08dc84dff136
+X-MS-TrafficTypeDiagnostic: DS0PR10MB7224:EE_|CH4PR10MB8025:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6580f0ca-a55c-40a4-388b-08dc84e3bd80
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|7416005|376005|1800799015;
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|7416005|376005|366007;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?U2hzOG9QNUpaSVhqQ3o3a2l0VCtXNUpjdjBkZjZ4OU4raE50amtNQmtjdGxX?=
- =?utf-8?B?enlkNEF3dWhmVFBPbnF4cnRuRVNaVCtJaHYwcUxyUEhGTVBDNjVHOGIvY1ZJ?=
- =?utf-8?B?dUhLSVhPZmkyM3FIUTFUWmRYajNBdWQ2QjNpYURhQjNBbWJKai9rUzNkWWlM?=
- =?utf-8?B?T0tLOVZQY1BWQmNGYUkvNE1wVklvVUJscEg2OGdvQUJ6TGxGL2pDTnZYWFFB?=
- =?utf-8?B?RFVCdWQxY3luSnVBeUFzeEcrQzk0ckhFcTYxZVFMVjRnTHF5M1VkQUJJSzU3?=
- =?utf-8?B?NDdxaGIwZ1R5QXBDTU5mMnB1Q0VKRjJqU3BBdVlTUjBZbEFRS3c1NTJTbFRV?=
- =?utf-8?B?bmRObG5SUUlWSC9WL2VjU283T0xXMzE1RnNNbEFwTHJSUWx4cUJUT1lHRjlm?=
- =?utf-8?B?cERPeXZsOHl4OGpzTWZqNUNMa2x1UnpmZTZrREQwWWp5VFRId1N4eWNXT1Nl?=
- =?utf-8?B?cStRY0ZJUGp6YUFaMk02QWVpQlFjWGs4UWdKSE9hQXhGUFdKcUpXZ0Z3WGg2?=
- =?utf-8?B?OURvOGpNemYzU1NNL1ovcFgxaW1NbDZCa1pPT0xZK0NJejgvZXA5TWc4M1kr?=
- =?utf-8?B?SWtnQURjWjRtai9oNzFoYVQ2aHZ5Yjd4UUluc0ZVQUlmN3hZN2NjTXFQNHg1?=
- =?utf-8?B?MXErMHRVYTI2WVBxWEVOS1JPTDdteHYzR0lyVE9WY0E1d1lRR0J1LzUvUkNm?=
- =?utf-8?B?S3BmeERmT0VDTUlCUTdJcnZVZnZhc0hZYms2WG5yQlFvVnh6NGF0MzNqODk4?=
- =?utf-8?B?d2FZY0FaYk54bVZ3aXhZYmIzblZYZG5uaTI4QlhBeEc4eGRvaTJyTWNZWXJl?=
- =?utf-8?B?Wk1YdU9IRDFMd3puS2pTZUNVb2R1MS9mSVFPVWQ2LzBNV3dSVE1DSlNOWStE?=
- =?utf-8?B?UkhoMlQvZnZNRHpoVWh2aW8zdHRQQms2Q2tTNkJEOFNhaktWb1hpTWZRZTZp?=
- =?utf-8?B?RHdleTNDM0IwU24ydDgvNEVuMk1mRFJOVndKakhJdjNTZW8rYkdOMldtT0Jy?=
- =?utf-8?B?YlRMaG53ZmJvWlU3R0crMzNGNUNCTGl2QVJtdG9Pc1BIWE11THBNRWxUckRU?=
- =?utf-8?B?WHA0dld6SjBYajB0dklaMU1SRTRuc0QwQmhKWkVBUEVXZmJZQzlvSWxOdGto?=
- =?utf-8?B?VXVTVG9FVEtxTzF6eUo4TmpMOCtKajc0ektOaE5NQU5XVzd6QlBTbmdPL1lu?=
- =?utf-8?B?Q3VYT0JDaDRaL2xObkRPcUFrUGlqQUdGOTRneFV5MTY5WW5halkxUVVBbGFl?=
- =?utf-8?B?MUg1TmZrdVB2cXRMdEVwczRJU3F5SnpkeDJCWWJRbXlEWEpMbUNMa2l0Uk12?=
- =?utf-8?B?YS9xam05L3JiZS9oaFV5VXF0Q2hPOFMzSHlkaWt0NmlRazhJVGJOdFJ3N0xn?=
- =?utf-8?B?N1JSQ0xOQjgwTzBUNnAvMmdkUVhQQ1EraVBDc2FIcEw2WFBPSjJkQ3U3WDh2?=
- =?utf-8?B?ZW84bUhNaGF0RlA2SjRvdVFldkcvQzUzWUR4dVV4QTlWd1VCUnRBS0FRY1Zr?=
- =?utf-8?B?VC83OG9aMGowWEtYSU1kdzRyQ1VzNkR0anNLdUdpZnBKRXd1YjRUZ0NxcnVY?=
- =?utf-8?B?MzFIZ1JmcTlUUk5mdDNiOUxiTWRSZ0UzOElTQ3pwTUlLVzNzbVNhRk5mUVJw?=
- =?utf-8?B?VThlRWNSdmJQNlRXT1VKRHRtKy95aENSWVYyTFFJVGFabEF4aFJrSTVzS1Qv?=
- =?utf-8?B?V0JqcjVkcy9qK3hwcjJCWWtrUVZhM2QwMDQ5ZTU1V25ybmtIblJBYXVnPT0=?=
+	=?utf-8?B?U3ZPRzI2U2VHMWpwN0MxU2ZBRXdOaWlzV0llVTRQdHA1RjhTb0ZNdFlZakU2?=
+ =?utf-8?B?SlZWa1hoeGpEMlhHZGo5VzIvb2tXY2Y4YkVtZENjU3hYMTJSbi9SUW4wT1Rm?=
+ =?utf-8?B?bGozK3BFUE0wd1d4RC9MSU1NQUhIa1U5RUd2WFVXZDNDRmJrQVZPbUhxR09t?=
+ =?utf-8?B?ZkxEQmkyNERLOFcwS2RxWWI0NmFOOWxCYjNQR0libVNweUMzdHdlL1F1Q1Ux?=
+ =?utf-8?B?MWlQRHhDcGxIdE1OU0V0NTkvN0pjNmc1YlhrdG8zWTM3bWljL3FXWUNPblJT?=
+ =?utf-8?B?aXZzeTBobElEck9jY3dsazJwNENtUTY5N0pPOWQwRGcwMUhLTUVsRlBTTGZp?=
+ =?utf-8?B?a1RWOS8rbzkvVEZ1SmYzSDl2ZThkNytVMHFmdy9tZzdRdTd3aTBYMFcwcU5S?=
+ =?utf-8?B?NVNnZ1pyMWM3MFhheHAzbWxHd3M4MS9ybi9uSTNPemFiTVRSdmN3SEZNc3Ar?=
+ =?utf-8?B?NUhEcHdFQ2dpeHEwVjI1V2d5WFY5aUI0MUNXcFNhWXdKb0w0YTFIU2VNUU9W?=
+ =?utf-8?B?THpBSlcyNWxReHhqYzdKaXdMNW84NXdCRDV4a3djUmc4Qlc4OUhub3lEdjF6?=
+ =?utf-8?B?dXM4eVdWZlNhWTZTZDFlbjRyazRBVnpOY2hzRmt6ZGJGeHcvYkV0R0M4SG53?=
+ =?utf-8?B?bzdtdUJURUZmUWx3cktuaGF4ZEIwZ2R6WGNUQ3BmakF4UU81TjVaY2x2eHJD?=
+ =?utf-8?B?V29QRzBMVml4M2graitiaFJETG1JYnN1YTR1WnBYbkJNZXBpWUppT2JtQWpF?=
+ =?utf-8?B?MmNoeXd2V2pxaXFDcVNFRnpqMHN4SEkxQi83OVVPd2w3VHJ2YTlmVXZ1REJ2?=
+ =?utf-8?B?WTh3TGVvaEx6VXF2Um45cmxmYllrTWFicXJ4NitBbG1LS2h0WkdKemVQVVc3?=
+ =?utf-8?B?djFNc3R2ZXV5NmFHS0J2K1A4aU5pL2kraCtLaGVIaW9nOUloRldJSWk4RTlY?=
+ =?utf-8?B?aW9nTXlMUGlUcVBxUlhKSHVrK2l0UGM0aGZFSkpibis4eG5BRno4STRaUnNa?=
+ =?utf-8?B?ZFo0K3ltWnY5RnAzMThzK1BPYlNJQ1JUMnZDVUlieDIvbUZCNi9TYmNKNFFH?=
+ =?utf-8?B?ZEFrSEwvYXlhYkNpUlpmWUx0LzRlbXF2MWJyRnpGZmdVSVlzckhpQWN5c2hs?=
+ =?utf-8?B?cks0bHZ0UUhRNVJuTnYzNzQvbEhuYUR3NlZlWDRCbUJBdUVBRmx6MVBVRmhw?=
+ =?utf-8?B?OXlselVxSzMxZ05udXlrUkcycFNQZHdUK0tQaHhrckpzY29sTjA5eVdQa3VM?=
+ =?utf-8?B?YzlPMUltMTNnUEttWFZQdVF2UGVtVlZReDNkQ3RRM1Y1UXVPd3BRY25vaHd4?=
+ =?utf-8?B?aDgvQVRIRXNzUCtVbGJ4enpxNHh6cDQ0cjhzb1hRYUY0UTJKaTdWWjlCTkJh?=
+ =?utf-8?B?VmcrNVNtQ1VxTmV0VVBaQWlWUU15cEg4THNzT0cyRndMSGZkVFFwMzhWUVly?=
+ =?utf-8?B?K1JkZFJnRlpuNjZ0UzBaTkhYcnF5Z3YvQTBJZmx3UFBwSkJCdnN6U25DV2RL?=
+ =?utf-8?B?WW1YSy83MGNlcXZIZ3lNY21OdFk1OUwybUlPRjMxZFo3V2ZtOWJCY29DbjdB?=
+ =?utf-8?B?T1FrOElFMFkvODEwdVhQWmhZSEFWbU9SUFNrbFlxb3RwUnFFTW45SDJKVURS?=
+ =?utf-8?B?NWh2azdsblhLWnk0MDNRMGpCLzNPUnNCQ2VjdXJiek9CMDI5UjVLUWdKWmd0?=
+ =?utf-8?B?OEkwdWpqME5rSUIvQ2JjeGNwRnpFWERkRGVjVzVLM2x2OHhkSlZIaU9RPT0=?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7224.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(376005)(1800799015);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7224.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(376005)(366007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?WnJiMjNBSy9SS294TklvVmdkbXJEenozY3N0YlZ2ZnI3MXU0U3IwMXYxRWJp?=
- =?utf-8?B?OUJ0S1BiQ21pMzhPOUlWWG9ueENNVFAzMElPNGxHOGp6NDBkRTBxWVZKSGZ5?=
- =?utf-8?B?SHorYTRVSGxWSnY3T1ZLVk5kenBtT3l1QlVZczZ1bnBnMkNwazNCc3doQzd3?=
- =?utf-8?B?YTJZRndKYjh1U3gwY08zNVp5elhWUFhTRmplQXo5WkVsN3BXWGs3TXdxUXg0?=
- =?utf-8?B?RlY2RGNmaUFrYWZOZlY5VzJjTWNVRXJkd3FBVkdZZG9NOS9nRDU2RUdxZjZR?=
- =?utf-8?B?aCtwdkFxYWpTVDJOZEFwM3I3L0pIN3lIM3U5Y084UUZnZjhxN2FicW9taUdP?=
- =?utf-8?B?NGkvdWdEeVNhNkwzN013VWdROXRYdkhodHhEUEIzM29yV01DcHZDVFp3QlZZ?=
- =?utf-8?B?MVQ4eHZGUjNXUHZvTTVUZVU1YUxIdnppSGZFRGFVMWl6d0dVd0ViUENYSE5v?=
- =?utf-8?B?Tjl4RDZWOEFmVG5CdU5WZXEySWp3Y2ZtWkF0UTI4Mk5LbHB3bHZ1Z1g3VFMr?=
- =?utf-8?B?SnJ6V1VZQm1vNjNTTG9ZV1hwTTh0dk5iRjdYbXo3bzBhdThDNE9uTWhxbGh4?=
- =?utf-8?B?V3NGb2dNVzg5dHpNbWJHMEtlU3ppUVdNN2k0bnZIK1BOc2hYUUMvVXI5dEQ5?=
- =?utf-8?B?WVhPdkFRWElSZkdzQjdjN2tYRWRvZHhZYktPR09XK0pKNFl6L0pmWS9Vbm5t?=
- =?utf-8?B?bWFNYWhiVEFwZCtkWUxIdmtnamg1VmRZUURmYUd1dFhBVTloTCtHM3NQOHVQ?=
- =?utf-8?B?WU5MWTlTTURtSHRWZ3pjUWNpbkdDNm53MnBuMWlOTS9TOS9GVktVa1hLNUo2?=
- =?utf-8?B?eFIyZERvWC85RFdObGtoNTBQblM5aW1rOGRQdUk2b1FyQXJoRys1Mi8ydDRl?=
- =?utf-8?B?UkRuT1dpNk5Pa1VLdlpZSVBLQUZrUWlXMnlnWDFVY3lRL0pFaHpJM2NmNzlx?=
- =?utf-8?B?Z0J6R1VGWHFvRWk1Q0pDOW5VN01UR0I1VUw3SktVRjBKT2puR1R0UURTNXgy?=
- =?utf-8?B?bFNPLzA0encvTURXQXAyLzNwT3JWdkpkWFJoTW5FLzBZOHBaU0IzblcwZEtO?=
- =?utf-8?B?Zk9wTHkzQ0NtYzdxNTFNUWJjUWR2azBCNm1xMUVxZmJJT2RJUFFSQjVKeXZW?=
- =?utf-8?B?ZnJmZXozaUhyYmJVN3lneTFVSVdCVEdCTkxvdVBKWGkwQ2EyNHJSemVGVmRU?=
- =?utf-8?B?eWZzRzNrWG5iRUJwTWhFdFNnTHV4SlZHalhXOWk2UDl5Ky9iNkN6SXFkSktp?=
- =?utf-8?B?SDNhUWZCY1V4MGZsTncwK1FLZnd1TFFMY3VnS0ZiL28yOHNCZ0FtU1R1OGxE?=
- =?utf-8?B?UmFtN2N5WCtGZnZXWmg5NGcrMEl3K0Y5R2RrZUJLMVFoNVF5RGJPRUNsN3hq?=
- =?utf-8?B?S3MxQ2dBc0dINnllVWpJRXhSN1BCWXB6MHpEK2ZLSWl6ancya3ZQVmVidCtD?=
- =?utf-8?B?dW9vWFhKSSs3Ykp2U0ZoZ05NL2NaTjhabnBRbzZQMEhZNXZSL0gyWlBxeEtJ?=
- =?utf-8?B?bUdac3hDQXdvWFRSRTRMU2liTExTZlZ0STZWN2NKcmw4SjJXUXpMZDBLVkZh?=
- =?utf-8?B?a2VPZmtNME15MjRWcGJIY1UvMFQremJqOCtGSTVoM1NHT2lGelRFRDFlcmdB?=
- =?utf-8?B?ck1ZUW1QV1JUdW9FZmJodHdrTTVmRGF1MUk2Y1ZCbkx2cXRSL1RJSVFTekVX?=
- =?utf-8?B?eEVxTitIR0NycHhQSU1qV1pZQVZsMUtrSUpaR2FyVzQwTkJWU0ZWbmFDTDZQ?=
- =?utf-8?B?SDJ4ZUsvekFIZWFZUXFKVFh4QUg1Q0x1YjhlcUdYdkxFdjJmWnJ2WE0zcHYx?=
- =?utf-8?B?S2Jja3BuZ0tMYjhoUUI0cUhjMW5URTRrbWZXYStUYnRzRkVVYmVOV3gyOXdO?=
- =?utf-8?B?VXRoWlB3NStGYmRCS2NJb2dnWGtZSG1Yc0xiT1FPVyt0NitXdEpudDhvcWpq?=
- =?utf-8?B?REc1WVkyemMzVGhFL1hTVmU5ZnFWUEkwTGllQW5lSlpvLzhRVmFtYTRCKzVU?=
- =?utf-8?B?Vk0ycmlheXg4NWJzOXE1L1Bvcjg3WlRmN1Zvek1lQ1BXRFhkTXI2SXl6WURy?=
- =?utf-8?B?WDBsdE56S3lHOVh5OWlFQWg3dkNkd21zRndCUSt6NGx1RlFxb0RpLzFqQ0pV?=
- =?utf-8?B?cjA4eWpzQWhzelFVOEZ2Y2FFbEU1eExCVkxKajdjYXd0TTZzck1qUnEwOHZR?=
- =?utf-8?B?Q1E9PQ==?=
+	=?utf-8?B?dkVzc2dHMzlFR2Qra0pDbE56MEdIcUs2R1paMHV6b0gzSCtJVHN6U050N3Vv?=
+ =?utf-8?B?NklNbjRxcDh0UllBNW1sZzNVZWJHTmpRL2oxOEI2WEpqREk0ZUFDODlDSysz?=
+ =?utf-8?B?aVpOMHVneTJMTHVlTHlPY2lrY2gyQWk1QkU2dWkwTkN0cUFiV2NoYVdUTjZN?=
+ =?utf-8?B?cG52OW5ma0NYY2h6eW16VW1Xdi8wZXJQcGZsRzRwMDVkaVlmRUhhcXIwTDNv?=
+ =?utf-8?B?WGNOZzVYeVhTWmh6M3g4VTNPWU1BMFFidS9ld3p3UUtKVWZnUXZJaDFNaFVV?=
+ =?utf-8?B?bmY3Q0VoL2xHWmpsMHZoS0tQdTd2Wi9XZFc3cHhtcTFScUp0NTRaWGY4Z29S?=
+ =?utf-8?B?eUZ5S0s0WXp2VzNINkc0bUFFRkJFNW03STRwSC9lQkp4TDdmcXFka0NpNXMx?=
+ =?utf-8?B?L1I4U0hTYmhrTHlXeDg0TnJoaURNYXovcEhqVTQxUmU4Tmo5elVRbVJGQVd5?=
+ =?utf-8?B?ZVFTL1Y2SXNZMW1HMmZ2Rk9ZU0FuWTIxZEd3SEZyaWpxeUNnSzlLNnFFR2ky?=
+ =?utf-8?B?RC9EL3A4aTlPeiswQ1JiRFpDRE5WcEJUd0RwN1Qzc0N3bXZDbGhuK0tGZ2FD?=
+ =?utf-8?B?U0MvWE5haUo5ME8xRWI4VGJ2amZlYTNNR1lzZXM3NFJTeEtraVVudUNHQ0pI?=
+ =?utf-8?B?U0QwNFZDWml5LzRLakpmRXFYbWs3WWIxaHIwV2pLbXBaY3NwdXlKWGpZK2FV?=
+ =?utf-8?B?UkkzSG4vTnhYZnNidFNFOVI1ZmJtTzcvakhQSU0zYzQybHU1bGJqZlQwR1Fo?=
+ =?utf-8?B?YVhRa2ZGdWpOUjJMNUhXekh4MmNqMHpoUEp6c0lkTncrbXFGK0FBdk9TUFlO?=
+ =?utf-8?B?SldxcUpEdGdPeStJbWdKTEpSUmh3MGNla0ZTbVhLU2krK0NFVTd4blJ2bUJU?=
+ =?utf-8?B?QXV6WjkwaXhaYTlObHp6ZGFMeVp0djFNN0pXVTltTzMrMDU3eHlzbzcxOThC?=
+ =?utf-8?B?ak50RjhLc0pQa09OZjAwZlVDbUQ5QUV2c2ZoeWcyUm5YK25sRjk2YWtSb1U3?=
+ =?utf-8?B?RzFMckdVZm04eGkycWhNT2wwNVprOWMvNUFSU1VaUmpsV3BMTjZYS0NWTWdH?=
+ =?utf-8?B?V2hjVk8wMk81bmpjOVcwQkNQNlcrdkJsNTNkZUZyRW5wdnorNmRXeVFiZGg1?=
+ =?utf-8?B?TFF1UU1vM01GazlCOXc4L0RYeityR3lITDBscTc5dnBhajQzeVFHRlVlZjYv?=
+ =?utf-8?B?SzlHKzk4ZW9PdVpSRVZMQ1NlM3NTT1Z2cFgwNlpURjlJZU1nQzVHa0I1dDNy?=
+ =?utf-8?B?eUdrNjVtWkpWQ3ZqNnVYclUrYk42U28xQVM1K1k5aUxVYktPTmZtNUp3UDls?=
+ =?utf-8?B?OXBvQk1VOVd2dXA4TmpJRE5kWWNIUDZ5bTMvcXdUY2Z3MXd5dlY5a3hLc2s3?=
+ =?utf-8?B?R3JHUjl2UXk4TlBSRVdnWWVpZS9uc0orMzZQNktCVDJTQ29sS0plUGpnK1BW?=
+ =?utf-8?B?U3B1c3lpYlJJNGhpb0xDTXBaMlJZeVR4T2hDSkV5UFdmSEpDMkJEZy9GWWE5?=
+ =?utf-8?B?aEx5UjFkTk5pOU5xY0ZIVmFsMDhGYU1PN3FGWDdjcWFkdFR3VjhheEJta2V0?=
+ =?utf-8?B?UnlrbHEraUZMSk9JLytCZE1ocmtBeDVGdVpXeGtoUi9yQi9iODJRWWEwcnZ6?=
+ =?utf-8?B?eENDS2t2WUx5VEJ3WWVWUnhTSitFL1hHUm9HQW84aXNZQnlrNmlpUkF3U29X?=
+ =?utf-8?B?aGZQek85OVRIMEZLeXdkR3ljYjQzaXJCRHRCdFVaL0U3NjN6KzlIc3ZVa3BN?=
+ =?utf-8?B?SGpxb2IzWm0rQ1k2d0JrN1N0TEtGamtTREFYd25mc2pZMFRNRm5Yd1U3eVc3?=
+ =?utf-8?B?RTVaOXpYMHpnVjhoZFhoY2lkZ0NHU2RIQkljVVM3TFR3NDRrY0ZkVm94WXcr?=
+ =?utf-8?B?QzZRTWJobGZ1WFZhYmVrdmp2TGJIc1ltSVBHVm9qQk5JWUlyOXpWcDFHdS9M?=
+ =?utf-8?B?R0hVZWdUMWIrTTMySEF4cFdMY3owazJzTVh0Y1QwbXBPcTZjQTFPRXVkcDFl?=
+ =?utf-8?B?WVpSSkU0djNkQkQ5UEdkUWdVZUltc1E0K2F0THBCd0hDYnNObW9ON1BkN2dW?=
+ =?utf-8?B?ZFVvYjhSc0ZmK0JzSVNNWklmSjVNL2FpNmZGKzFQd2grMkRBUzNvN3l3OVc2?=
+ =?utf-8?B?U3pRV042QkI3TDFzVnFMWkFHd3JsZWZFeGRubHBTT0NFQ1Mxa3ZjTkp3TjNr?=
+ =?utf-8?B?MUE9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	cClLsQyAGgkOYXzomJwuPL7pW7cMqm9blNuEY8ypoowlHbVjia8n0NVadJ7drxf8wDv3TVRLqqP1F9huSzJXoSqiRv1J+X17D19Zl/ti63/r7SuoG+sprrPBNIEqEVVFUjvJ1DXcAFmJOnDm059O5b5nyk/tO+HOFuuBbf35tYWF9mnr/OLjYNjg798zjaYakoTAri4YUicW3uHCpiwiFHPWrAOpHv1RBeJfo40tss7wPPgficX/xXUfNCbEbvLyGNTGq44XRFeCt+NjtN4EcAJo8wny7WShUuvYj92Wa7LK3SXS99hRd/1vn3t2WIZWKzOBpRDLsVNMOfV9vya28D56gfYatCb8bkVwEOeqCO7G0UlOL5DbPGb+FMlw1m6aw5kJF5JYR8pi8UD4mQ8mXvXPQeSl3X0tKhsbt5UdQqYKc35kFyFpgx46g+HzraHaobufVEgXKKsZN5LNCHiHfF9OPqDFWN6cS/44YmVzVRyBxXJ/zHTLDZh8KlimW4LBcsilXmcgy8oFHohtimOe3oUiHGZU4eG4hqq7TbVwWkY4QHzo/BTm9EAGZoxaAHxH3BwBZ+FWywkWv2v5qCt851DBmM9RxxkRhGS8SLsHtBA=
+	TYYIfo/FAjGNzDV3sbHQhj0cZljk0HTP9+9VC1r0+fA2C8VZGuDNOX6rJnZe0HwiGLjM3zlBkp/Pooa3FLhY7bLWK6dIgrz0pJAuRQG9d3tEJAwcPbl8a3aRDU5ohbbDbJ08Yc3GLQ3M6HTJqO08yguFrpAIluanXhByXI++kSucUXx2dwYQPofvDtkQKQt3xcUA6V+YhZsnlfntLUVM4Qq4NId9UckaRJleGEhXvCmNNmlwP7sIVoPlesvSN2ZMj9ZrIRCv3Rbp5j5K9AM9Cq+tsz4Yrq3fmZkiKyPixM5LOX31Bdcww86XWIvLI/WS2LDMusSOXXHsg54bf91WgOajrY7r8DnyXiSSDhwoi94EBZPoiF4YLmPE80ANRGRjZ+3mAzYZnOVLjQp+ZB6TDzVfOt6F4ogjmwpf3KN0fd3LgKpFa6T6AjcfZzu1ZVywJJEQ33tdgUva9+OZG2ds3hA5CKtWFdvcyt63sYA1gRBO31ok79ezSDME90UOI2VITy6OKdPFX+CqO8n5YwkIODd1lqYHC6koAKbzMIsU1TCffV/PIAX4kMg2XfehrdEoDIzH0iJr/hhYtcUvG/4nHyboRSUUk3NxAj4A/Ei2m9Y=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5989da17-c904-452d-6cfb-08dc84dff136
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6580f0ca-a55c-40a4-388b-08dc84e3bd80
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7224.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2024 21:47:34.0974
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2024 22:14:45.3637
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Og0TDfYNGhWhc09KJInkG224Yr5FEK0yOgnAmXT05aJR3ILOT+O7m7ahPdznT6GUrR06++QMegjVkf8j9FXp4w1Xo6k+RFC8YRkNIGZHf2U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4183
+X-MS-Exchange-CrossTenant-UserPrincipalName: FA/NDxelLLkXOIggWIh+XbNLL0ecJHZJBFLtEgWk3Qo0qdijgepH+1odRip2zPRMwcmjYcT/wA4pEGACvkk/0Sd0lB0M1vrtUu+7/JFg7Tk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH4PR10MB8025
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-04_11,2024-06-04_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
- malwarescore=0 suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
+ phishscore=0 suspectscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2406040175
-X-Proofpoint-ORIG-GUID: J5WPSzH-kcvCWoa7VGBswKltqcWqX7WF
-X-Proofpoint-GUID: J5WPSzH-kcvCWoa7VGBswKltqcWqX7WF
+ definitions=main-2406040180
+X-Proofpoint-GUID: zBIft3hJof5EGLdWBMrp0r7bRBujpLAE
+X-Proofpoint-ORIG-GUID: zBIft3hJof5EGLdWBMrp0r7bRBujpLAE
 
-On 6/4/24 1:05 PM, Jarkko Sakkinen wrote:
+On 6/4/24 1:27 PM, Jarkko Sakkinen wrote:
 > On Fri May 31, 2024 at 4:03 AM EEST, Ross Philipson wrote:
->> On Intel, the APs are left in a well documented state after TXT performs
->> the late launch. Specifically they cannot have #INIT asserted on them so
->> a standard startup via INIT/SIPI/SIPI cannot be performed. Instead the
->> early SL stub code uses MONITOR and MWAIT to park the APs. The realmode/init.c
->> code updates the jump address for the waiting APs with the location of the
->> Secure Launch entry point in the RM piggy after it is loaded and fixed up.
->> As the APs are woken up by writing the monitor, the APs jump to the Secure
->> Launch entry point in the RM piggy which mimics what the real mode code would
->> do then jumps to the standard RM piggy protected mode entry point.
+>> Curently the locality is hard coded to 0 but for DRTM support, access
+>> is needed to localities 1 through 4.
 >>
 >> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
 >> ---
->>   arch/x86/include/asm/realmode.h      |  3 ++
->>   arch/x86/kernel/smpboot.c            | 58 +++++++++++++++++++++++++++-
->>   arch/x86/realmode/init.c             |  3 ++
->>   arch/x86/realmode/rm/header.S        |  3 ++
->>   arch/x86/realmode/rm/trampoline_64.S | 32 +++++++++++++++
->>   5 files changed, 97 insertions(+), 2 deletions(-)
+>>   drivers/char/tpm/tpm-chip.c      | 24 +++++++++++++++++++++++-
+>>   drivers/char/tpm/tpm-interface.c | 15 +++++++++++++++
+>>   drivers/char/tpm/tpm.h           |  1 +
+>>   include/linux/tpm.h              |  4 ++++
+>>   4 files changed, 43 insertions(+), 1 deletion(-)
 >>
->> diff --git a/arch/x86/include/asm/realmode.h b/arch/x86/include/asm/realmode.h
->> index 87e5482acd0d..339b48e2543d 100644
->> --- a/arch/x86/include/asm/realmode.h
->> +++ b/arch/x86/include/asm/realmode.h
->> @@ -38,6 +38,9 @@ struct real_mode_header {
->>   #ifdef CONFIG_X86_64
->>   	u32	machine_real_restart_seg;
->>   #endif
->> +#ifdef CONFIG_SECURE_LAUNCH
->> +	u32	sl_trampoline_start32;
->> +#endif
->>   };
+>> diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+>> index 854546000c92..73eac54d61fb 100644
+>> --- a/drivers/char/tpm/tpm-chip.c
+>> +++ b/drivers/char/tpm/tpm-chip.c
+>> @@ -44,7 +44,7 @@ static int tpm_request_locality(struct tpm_chip *chip)
+>>   	if (!chip->ops->request_locality)
+>>   		return 0;
 >>   
->>   /* This must match data at realmode/rm/trampoline_{32,64}.S */
->> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
->> index 0c35207320cb..adb521221d6c 100644
->> --- a/arch/x86/kernel/smpboot.c
->> +++ b/arch/x86/kernel/smpboot.c
->> @@ -60,6 +60,7 @@
->>   #include <linux/stackprotector.h>
->>   #include <linux/cpuhotplug.h>
->>   #include <linux/mc146818rtc.h>
->> +#include <linux/slaunch.h>
+>> -	rc = chip->ops->request_locality(chip, 0);
+>> +	rc = chip->ops->request_locality(chip, chip->pref_locality);
+>>   	if (rc < 0)
+>>   		return rc;
 >>   
->>   #include <asm/acpi.h>
->>   #include <asm/cacheinfo.h>
->> @@ -868,6 +869,56 @@ int common_cpu_up(unsigned int cpu, struct task_struct *idle)
->>   	return 0;
+>> @@ -143,6 +143,27 @@ void tpm_chip_stop(struct tpm_chip *chip)
 >>   }
+>>   EXPORT_SYMBOL_GPL(tpm_chip_stop);
 >>   
->> +#ifdef CONFIG_SECURE_LAUNCH
->> +
->> +static bool slaunch_is_txt_launch(void)
->> +{
->> +	if ((slaunch_get_flags() & (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT)) ==
->> +	    (SL_FLAG_ACTIVE | SL_FLAG_ARCH_TXT))
->> +		return true;
->> +
->> +	return false;
->> +}
-> 
-> static inline bool slaunch_is_txt_launch(void)
-> {
-> 	u32 mask =  SL_FLAG_ACTIVE | SL_FLAG_ARCH_TXT;
-> 
-> 	return slaunch_get_flags() & mask == mask;
-> }
-
-Actually I think I can take your suggested change and move this function 
-to the main header files since this check is done elsewhere. And later I 
-can make others like slaunch_is_skinit_launch(). Thanks.
-
-> 
-> 
->> +
->> +/*
->> + * TXT AP startup is quite different than normal. The APs cannot have #INIT
->> + * asserted on them or receive SIPIs. The early Secure Launch code has parked
->> + * the APs using monitor/mwait. This will wake the APs by writing the monitor
->> + * and have them jump to the protected mode code in the rmpiggy where the rest
->> + * of the SMP boot of the AP will proceed normally.
+>> +/**
+>> + * tpm_chip_preferred_locality() - set the TPM chip preferred locality to open
+>> + * @chip:	a TPM chip to use
+>> + * @locality:   the preferred locality
+>> + *
+>> + * Return:
+>> + * * true      - Preferred locality set
+>> + * * false     - Invalid locality specified
 >> + */
->> +static void slaunch_wakeup_cpu_from_txt(int cpu, int apicid)
+>> +bool tpm_chip_preferred_locality(struct tpm_chip *chip, int locality)
 >> +{
->> +	struct sl_ap_wake_info *ap_wake_info;
->> +	struct sl_ap_stack_and_monitor *stack_monitor = NULL;
-> 
-> struct sl_ap_stack_and_monitor *stack_monitor; /* note: no initialization */
-> struct sl_ap_wake_info *ap_wake_info;
-
-Will fix.
-
-> 
-> 
+>> +	if (locality < 0 || locality >=TPM_MAX_LOCALITY)
+>> +		return false;
 >> +
->> +	ap_wake_info = slaunch_get_ap_wake_info();
+>> +	mutex_lock(&chip->tpm_mutex);
+>> +	chip->pref_locality = locality;
+>> +	mutex_unlock(&chip->tpm_mutex);
+>> +	return true;
+>> +}
+>> +EXPORT_SYMBOL_GPL(tpm_chip_preferred_locality);
 >> +
->> +	stack_monitor = (struct sl_ap_stack_and_monitor *)__va(ap_wake_info->ap_wake_block +
->> +							       ap_wake_info->ap_stacks_offset);
->> +
->> +	for (unsigned int i = TXT_MAX_CPUS - 1; i >= 0; i--) {
->> +		if (stack_monitor[i].apicid == apicid) {
->> +			/* Write the monitor */
+>>   /**
+>>    * tpm_try_get_ops() - Get a ref to the tpm_chip
+>>    * @chip: Chip to ref
+>> @@ -374,6 +395,7 @@ struct tpm_chip *tpm_chip_alloc(struct device *pdev,
+>>   	}
+>>   
+>>   	chip->locality = -1;
+>> +	chip->pref_locality = 0;
+>>   	return chip;
+>>   
+>>   out:
+>> diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
+>> index 5da134f12c9a..35f14ccecf0e 100644
+>> --- a/drivers/char/tpm/tpm-interface.c
+>> +++ b/drivers/char/tpm/tpm-interface.c
+>> @@ -274,6 +274,21 @@ int tpm_is_tpm2(struct tpm_chip *chip)
+>>   }
+>>   EXPORT_SYMBOL_GPL(tpm_is_tpm2);
+>>   
+>> +/**
+>> + * tpm_preferred_locality() - set the TPM chip preferred locality to open
+>> + * @chip:	a TPM chip to use
+>> + * @locality:   the preferred locality
+>> + *
+>> + * Return:
+>> + * * true      - Preferred locality set
+>> + * * false     - Invalid locality specified
+>> + */
+>> +bool tpm_preferred_locality(struct tpm_chip *chip, int locality)
+>> +{
+>> +	return tpm_chip_preferred_locality(chip, locality);
+>> +}
+>> +EXPORT_SYMBOL_GPL(tpm_preferred_locality);
 > 
-> I'd remove this comment.
+>   What good does this extra wrapping do?
+> 
+>   tpm_set_default_locality() and default_locality would make so much more
+>   sense in any case.
 
-Sure.
+Are you mainly just talking about my naming choices here and in the 
+follow-on response? Can you clarify what you are requesting?
 
+Thanks
 Ross
 
 > 
->> +			stack_monitor[i].monitor = 1;
->> +			break;
->> +		}
->> +	}
->> +}
->> +
->> +#else
->> +
->> +static inline bool slaunch_is_txt_launch(void)
->> +{
->> +	return false;
->> +}
->> +
->> +static inline void slaunch_wakeup_cpu_from_txt(int cpu, int apicid)
->> +{
->> +}
->> +
->> +#endif  /* !CONFIG_SECURE_LAUNCH */
->> +
->>   /*
->>    * NOTE - on most systems this is a PHYSICAL apic ID, but on multiquad
->>    * (ie clustered apic addressing mode), this is a LOGICAL apic ID.
->> @@ -877,7 +928,7 @@ int common_cpu_up(unsigned int cpu, struct task_struct *idle)
->>   static int do_boot_cpu(u32 apicid, int cpu, struct task_struct *idle)
->>   {
->>   	unsigned long start_ip = real_mode_header->trampoline_start;
->> -	int ret;
->> +	int ret = 0;
->>   
->>   #ifdef CONFIG_X86_64
->>   	/* If 64-bit wakeup method exists, use the 64-bit mode trampoline IP */
->> @@ -922,12 +973,15 @@ static int do_boot_cpu(u32 apicid, int cpu, struct task_struct *idle)
->>   
->>   	/*
->>   	 * Wake up a CPU in difference cases:
->> +	 * - Intel TXT DRTM launch uses its own method to wake the APs
->>   	 * - Use a method from the APIC driver if one defined, with wakeup
->>   	 *   straight to 64-bit mode preferred over wakeup to RM.
->>   	 * Otherwise,
->>   	 * - Use an INIT boot APIC message
->>   	 */
->> -	if (apic->wakeup_secondary_cpu_64)
->> +	if (slaunch_is_txt_launch())
->> +		slaunch_wakeup_cpu_from_txt(cpu, apicid);
->> +	else if (apic->wakeup_secondary_cpu_64)
->>   		ret = apic->wakeup_secondary_cpu_64(apicid, start_ip);
->>   	else if (apic->wakeup_secondary_cpu)
->>   		ret = apic->wakeup_secondary_cpu(apicid, start_ip);
->> diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
->> index f9bc444a3064..d95776cb30d3 100644
->> --- a/arch/x86/realmode/init.c
->> +++ b/arch/x86/realmode/init.c
->> @@ -4,6 +4,7 @@
->>   #include <linux/memblock.h>
->>   #include <linux/cc_platform.h>
->>   #include <linux/pgtable.h>
->> +#include <linux/slaunch.h>
->>   
->>   #include <asm/set_memory.h>
->>   #include <asm/realmode.h>
->> @@ -210,6 +211,8 @@ void __init init_real_mode(void)
->>   
->>   	setup_real_mode();
->>   	set_real_mode_permissions();
->> +
->> +	slaunch_fixup_jump_vector();
->>   }
->>   
->>   static int __init do_init_real_mode(void)
->> diff --git a/arch/x86/realmode/rm/header.S b/arch/x86/realmode/rm/header.S
->> index 2eb62be6d256..3b5cbcbbfc90 100644
->> --- a/arch/x86/realmode/rm/header.S
->> +++ b/arch/x86/realmode/rm/header.S
->> @@ -37,6 +37,9 @@ SYM_DATA_START(real_mode_header)
->>   #ifdef CONFIG_X86_64
->>   	.long	__KERNEL32_CS
->>   #endif
->> +#ifdef CONFIG_SECURE_LAUNCH
->> +	.long	pa_sl_trampoline_start32
->> +#endif
->>   SYM_DATA_END(real_mode_header)
->>   
->>   	/* End signature, used to verify integrity */
->> diff --git a/arch/x86/realmode/rm/trampoline_64.S b/arch/x86/realmode/rm/trampoline_64.S
->> index 14d9c7daf90f..b0ce6205d7ea 100644
->> --- a/arch/x86/realmode/rm/trampoline_64.S
->> +++ b/arch/x86/realmode/rm/trampoline_64.S
->> @@ -122,6 +122,38 @@ SYM_CODE_END(sev_es_trampoline_start)
->>   
->>   	.section ".text32","ax"
->>   	.code32
->> +#ifdef CONFIG_SECURE_LAUNCH
->> +	.balign 4
->> +SYM_CODE_START(sl_trampoline_start32)
->> +	/*
->> +	 * The early secure launch stub AP wakeup code has taken care of all
->> +	 * the vagaries of launching out of TXT. This bit just mimics what the
->> +	 * 16b entry code does and jumps off to the real startup_32.
->> +	 */
->> +	cli
->> +	wbinvd
->> +
->> +	/*
->> +	 * The %ebx provided is not terribly useful since it is the physical
->> +	 * address of tb_trampoline_start and not the base of the image.
->> +	 * Use pa_real_mode_base, which is fixed up, to get a run time
->> +	 * base register to use for offsets to location that do not have
->> +	 * pa_ symbols.
->> +	 */
->> +	movl    $pa_real_mode_base, %ebx
->> +
->> +	LOCK_AND_LOAD_REALMODE_ESP lock_pa=1
->> +
->> +	lgdt    tr_gdt(%ebx)
->> +	lidt    tr_idt(%ebx)
->> +
->> +	movw	$__KERNEL_DS, %dx	# Data segment descriptor
->> +
->> +	/* Jump to where the 16b code would have jumped */
->> +	ljmpl	$__KERNEL32_CS, $pa_startup_32
->> +SYM_CODE_END(sl_trampoline_start32)
->> +#endif
->> +
->>   	.balign 4
->>   SYM_CODE_START(startup_32)
->>   	movl	%edx, %ss
-> 
-> BR, Jarkko
-> 
+>   BR, Jarkko
 
 
