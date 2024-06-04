@@ -1,46 +1,46 @@
-Return-Path: <linux-efi+bounces-1132-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1133-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C99D8FBB40
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 20:08:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04F78FBB68
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 20:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEAE51F26D1D
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 18:08:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D7961F2265F
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 18:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04799149DE3;
-	Tue,  4 Jun 2024 18:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4694414A09A;
+	Tue,  4 Jun 2024 18:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WrMIn52w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7dcQ/XJ"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEF5179BC;
-	Tue,  4 Jun 2024 18:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF41149009;
+	Tue,  4 Jun 2024 18:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717524487; cv=none; b=Xxp/H2XBSY8gZpFwRQKOyY93lgAOZVRHqYXtE6PdfrMb+N8pFWTCO/LMZ+w4YylvRsyVQYD55mp+Tfnkz2iZG7tBpKLv7tMGzXA1VE9/ue9D6Q6KxF8bI8Cwgfscz0gcfKuBWNaBAs4KttZXKHUrLx1GZlMpljmD/lIjkSZ1QRA=
+	t=1717525133; cv=none; b=b2odLni8eBgnI8jky5y4X7oSLMf5B9wked7tFHyjKSs2WErMUrAMpouYnn5iUiIVpjFmS+Or5Vt/X4fltZGTaoGTNxJDNtoP5Buw2Smlok/jg9BZ/guJALIsGpgpscF3jv2znDP+w/8MUKvNNKs23wj7OCJ858bum3jz+f0fkUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717524487; c=relaxed/simple;
-	bh=NSPTMuwx9KcCNJAhfWh9J5IIW23EBXou0acUEEypYOw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=jVbbZt7cGsI91qHmzNVGBOUIe/WdF32P+oIX7UXBQKot1Mr3DF2/6Z1SF+LcEkdA6NJQ4JG2p3x1oEtPEbuIQo0BeVyMM3u1u4VqG56OVZeckhHpCl1j7kFTm4sYAGTdLd663rIOtKj8hqdClH1K1rM7mGhPLM6Bjf+ZmbyYh78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WrMIn52w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C2AC2BBFC;
-	Tue,  4 Jun 2024 18:08:02 +0000 (UTC)
+	s=arc-20240116; t=1717525133; c=relaxed/simple;
+	bh=tLjjYFY5sCNOwFACQ2wDYtXISD6b1TLmfsdB964Sstc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=YxR4axpYwLTD4mQe/iKd0r4tXuScUqccCI+/hT7xWQYWdzsQoBrix2s5VmiRMihsnnTi4ss6Ang4IUH4+mtKdLu6ILh/f0OQDPmYhFVicE5DT4vLpCDMuKMVJ7tJRmBVNDeYkVwcKRhdOee+VZdqlaOeVq0bgwOziVf9BcU8kTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7dcQ/XJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B45C2BBFC;
+	Tue,  4 Jun 2024 18:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717524487;
-	bh=NSPTMuwx9KcCNJAhfWh9J5IIW23EBXou0acUEEypYOw=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=WrMIn52wdfKfEhHzGwaV1Pr93jMN7MkSqau/TchUVXcoY0bNU77+AfhtzpdY2MCOJ
-	 bprVAdu8kHTBbRtZKz0EXEr3Z445Gl8lpu9FrZURcmOZweOnMRhYDYluxlhIeDEWEi
-	 IgdX2duN3nbCrxA2aTbj29W6FZCo76WpqvtqWdYSAHJo2XgUFKQlOpf/onoGHRZx8M
-	 rSxdo6JZcLR+S7i89QvM7ip0cnzIDx9XbFnzAsRMzQ+Zr8OMTq/0dwUrrvriCqQJv/
-	 nX7kXvZyY0AxVULvlb3Rdp3roE0QB19lXelv9CHABPKSWO55soQUCypRBbM+l791T1
-	 0O7A76W1ZNf/g==
+	s=k20201202; t=1717525132;
+	bh=tLjjYFY5sCNOwFACQ2wDYtXISD6b1TLmfsdB964Sstc=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=n7dcQ/XJbYOrNgCq5ESQZ59Xa+8dYD9+SB2DAU+OfLA8+DJ598KJLqQiqzrIkhh0g
+	 UKXoqmVVDSu94Mt+rn6Kt5IiGUIlnhjkHcBKGhkcGrtM0QGZQCWFjn9oN0jIncG0fp
+	 0QlSaaAm4hwabRgHQVI9d18LWhK5wr2VVpmu2KdVihNlW73A86ZY77EafzsRt2QQ3r
+	 B5ZE8GI052OZDh6CpZHFKpgpvDaWVst//+JGORQKi6AkRNZ1/NhSToLX/ckeeFOkdO
+	 Q/yaIOC0UjL6j/KnhlbnzaO6guYALvwQyNR8Mk8553jwwkWCwCeyZlOfimTruQ5bse
+	 XlUy3IHVbRpvA==
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -49,143 +49,87 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Jun 2024 21:08:00 +0300
-Message-Id: <D1RFM5ZWU1O4.1QU546DO1UNKD@kernel.org>
-Subject: Re: [RFC PATCH v2 1/8] certs: Introduce ability to link to a system
- key
+Date: Tue, 04 Jun 2024 21:18:44 +0300
+Message-Id: <D1RFUDSAJJKJ.2MF9OSQAJGBRW@kernel.org>
+Cc: <dpsmith@apertussolutions.com>, <tglx@linutronix.de>,
+ <mingo@redhat.com>, <bp@alien8.de>, <hpa@zytor.com>,
+ <dave.hansen@linux.intel.com>, <ardb@kernel.org>, <mjg59@srcf.ucam.org>,
+ <James.Bottomley@hansenpartnership.com>, <peterhuewe@gmx.de>,
+ <jgg@ziepe.ca>, <luto@amacapital.net>, <nivedita@alum.mit.edu>,
+ <herbert@gondor.apana.org.au>, <davem@davemloft.net>, <corbet@lwn.net>,
+ <ebiederm@xmission.com>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>,
+ <kanth.ghatraju@oracle.com>, <andrew.cooper3@citrix.com>,
+ <trenchboot-devel@googlegroups.com>
+Subject: Re: [PATCH v9 01/19] x86/boot: Place kernel_info at a fixed offset
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Eric Snowberg" <eric.snowberg@oracle.com>,
- <linux-security-module@vger.kernel.org>
-Cc: <dhowells@redhat.com>, <dwmw2@infradead.org>,
- <herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
- <paul@paul-moore.com>, <jmorris@namei.org>, <serge@hallyn.com>,
- <zohar@linux.ibm.com>, <roberto.sassu@huawei.com>,
- <dmitry.kasatkin@gmail.com>, <mic@digikod.net>, <casey@schaufler-ca.com>,
- <stefanb@linux.ibm.com>, <ebiggers@kernel.org>, <rdunlap@infradead.org>,
- <linux-kernel@vger.kernel.org>, <keyrings@vger.kernel.org>,
- <linux-crypto@vger.kernel.org>, <linux-efi@vger.kernel.org>,
- <linux-integrity@vger.kernel.org>
+To: "Ross Philipson" <ross.philipson@oracle.com>,
+ <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+ <linux-integrity@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <kexec@lists.infradead.org>,
+ <linux-efi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
 X-Mailer: aerc 0.17.0
-References: <20240531003945.44594-1-eric.snowberg@oracle.com>
- <20240531003945.44594-2-eric.snowberg@oracle.com>
-In-Reply-To: <20240531003945.44594-2-eric.snowberg@oracle.com>
+References: <20240531010331.134441-1-ross.philipson@oracle.com>
+ <20240531010331.134441-2-ross.philipson@oracle.com>
+In-Reply-To: <20240531010331.134441-2-ross.philipson@oracle.com>
 
-On Fri May 31, 2024 at 3:39 AM EEST, Eric Snowberg wrote:
-> Introduce a new function to allow a keyring to link to a key contained
-> within one of the system keyrings (builtin, secondary, or platform).
-
-"Introduce system_key_link(), a new function..."
-
-I hate when the exact thing added is not immediately transparent from
-the commit message ;-) Helps a lot when bisecting for instance.
-
-> Depending on how the kernel is built, if the machine keyring is
-> available, it will be checked as well, since it is linked to the secondar=
-y
-> keyring. If the asymmetric key id matches a key within one of these
-> system keyrings, the matching key is linked into the passed in
-> keyring.
+On Fri May 31, 2024 at 4:03 AM EEST, Ross Philipson wrote:
+> From: Arvind Sankar <nivedita@alum.mit.edu>
 >
-> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-> ---
->  certs/system_keyring.c        | 31 +++++++++++++++++++++++++++++++
->  include/keys/system_keyring.h |  7 ++++++-
->  2 files changed, 37 insertions(+), 1 deletion(-)
+> There are use cases for storing the offset of a symbol in kernel_info.
+> For example, the trenchboot series [0] needs to store the offset of the
+> Measured Launch Environment header in kernel_info.
+
+So either there are other use cases that you should enumerate, or just
+be straight and state that this is done for Trenchboot.
+
+I believe latter is the case, and there is no reason to project further.
+If it does not interfere kernel otherwise, it should be fine just by
+that.
+
+Also I believe that it is written as Trenchboot, without "series" ;-)
+Think when writing commit message that it will some day be part of the
+commit log, not a series flying in the air.
+
+Sorry for the nitpicks but better to be punctual and that way also
+transparent as possible, right?
+
 >
-> diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-> index 9de610bf1f4b..94e47b6b3333 100644
-> --- a/certs/system_keyring.c
-> +++ b/certs/system_keyring.c
-> @@ -426,3 +426,34 @@ void __init set_platform_trusted_keys(struct key *ke=
-yring)
->  	platform_trusted_keys =3D keyring;
->  }
->  #endif
-> +
-> +/**
-> + * system_key_link - Link to a system key
+> Since commit (note: commit ID from tip/master)
+>
+> commit 527afc212231 ("x86/boot: Check that there are no run-time relocati=
+ons")
+>
+> run-time relocations are not allowed in the compressed kernel, so simply
+> using the symbol in kernel_info, as
+>
+> 	.long	symbol
+>
+> will cause a linker error because this is not position-independent.
+>
+> With kernel_info being a separate object file and in a different section
+> from startup_32, there is no way to calculate the offset of a symbol
+> from the start of the image in a position-independent way.
+>
+> To enable such use cases, put kernel_info into its own section which is
 
-"system_key_link() - Link to a system key"
+"To allow Trenchboot to access the fields of kernel_info..."
 
-> + * @keyring: The keyring to link into
-> + * @id: The asymmetric key id to look for in the system keyring
-> + */
+Much more understandable.
 
-Really could use some overview keyrings traversed just as a reminder.
+> placed at a predetermined offset (KERNEL_INFO_OFFSET) via the linker
+> script. This will allow calculating the symbol offset in a
+> position-independent way, by adding the offset from the start of
+> kernel_info to KERNEL_INFO_OFFSET.
+>
+> Ensure that kernel_info is aligned, and use the SYM_DATA.* macros
+> instead of bare labels. This stores the size of the kernel_info
+> structure in the ELF symbol table.
 
-> +int system_key_link(struct key *keyring, struct asymmetric_key_id *id)
-> +{
-> +	struct key *system_keyring;
-> +	struct key *key;
-> +
-> +#ifdef CONFIG_SECONDARY_TRUSTED_KEYRING
-> +	system_keyring =3D secondary_trusted_keys;
-> +#else
-> +	system_keyring =3D builtin_trusted_keys;
-> +#endif
+Aligned to which boundary and short explanation why to that boundary,
+i.e. state the obvious if you bring it up anyway here.
 
-Why not simply make secondary_trusted_keys in the first place be alias
-to builtin_trusted_keys when it is not enabled?
-
-> +
-> +	key =3D find_asymmetric_key(system_keyring, id, NULL, NULL, false);
-> +	if (!IS_ERR(key))
-> +		goto found;
-> +
-> +	key =3D find_asymmetric_key(platform_trusted_keys, id, NULL, NULL, fals=
-e);
-> +	if (!IS_ERR(key))
-> +		goto found;
-> +
-> +	return -ENOKEY;
-> +
-> +found:
-
-"link:"?
-
-Then you could see already from goto statement what will happen next
-(your call anyway).
-
-> +	key_link(keyring, key);
-> +	return 0;
-> +}
-> diff --git a/include/keys/system_keyring.h b/include/keys/system_keyring.=
-h
-> index 8365adf842ef..b47ac8e2001a 100644
-> --- a/include/keys/system_keyring.h
-> +++ b/include/keys/system_keyring.h
-> @@ -9,6 +9,7 @@
->  #define _KEYS_SYSTEM_KEYRING_H
-> =20
->  #include <linux/key.h>
-> +struct asymmetric_key_id;
-> =20
->  enum blacklist_hash_type {
->  	/* TBSCertificate hash */
-> @@ -28,7 +29,7 @@ int restrict_link_by_digsig_builtin(struct key *dest_ke=
-yring,
->  				    const union key_payload *payload,
->  				    struct key *restriction_key);
->  extern __init int load_module_cert(struct key *keyring);
-> -
-> +extern int system_key_link(struct key *keyring, struct asymmetric_key_id=
- *id);
->  #else
->  #define restrict_link_by_builtin_trusted restrict_link_reject
->  #define restrict_link_by_digsig_builtin restrict_link_reject
-> @@ -38,6 +39,10 @@ static inline __init int load_module_cert(struct key *=
-keyring)
->  	return 0;
->  }
-> =20
-> +static inline int system_key_link(struct key *keyring, struct asymmetric=
-_key_id *id)
-> +{
-> +	return 0;
-> +}
->  #endif
-> =20
->  #ifdef CONFIG_SECONDARY_TRUSTED_KEYRING
+Just seems to be progressing pretty well so taking my eye glass and
+looking into nitty gritty details...
 
 BR, Jarkko
 
