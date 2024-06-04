@@ -1,131 +1,166 @@
-Return-Path: <linux-efi+bounces-1123-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1124-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023CE8FA626
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 01:02:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D578FB82F
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 17:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B550928968D
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Jun 2024 23:02:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93E5F1C23A6E
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 15:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAC013CA87;
-	Mon,  3 Jun 2024 23:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1083554903;
+	Tue,  4 Jun 2024 15:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ICuYMLam"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ulayhAhK"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F11D5028C
-	for <linux-efi@vger.kernel.org>; Mon,  3 Jun 2024 23:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508623236
+	for <linux-efi@vger.kernel.org>; Tue,  4 Jun 2024 15:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717455763; cv=none; b=HSMhmqPEk999je2X9yfpfRiaBeX3zkV9nn799JtTM2Y8kyK7MHZjhINpwVkJs6sZbz6Wk7Ab3MKCrA/bkCH9i+CLtMpSNIOXfsQ2vZqF6OP1+j1eNTvYE/GuSYlzGmunlLlDXERKf4GJJBifFFTx0V2lx9x4H5hCx2qGUtVk218=
+	t=1717516602; cv=none; b=OVCcuDLFC+V4CZjkz3FE6Xk7UNv7Emf4YVKCsRaaAbScBTEMd9/EUkI4E2P6NQ7QkXTeCgEfIp/E0//R6pSak+Y5v25XcYMagB2D+++7g++4YLDlGbAJElxQSugWdjbwXOjCPlSDLEoCu+hMHO2HZ7OOpPj3jw4/EZxjlxYAhN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717455763; c=relaxed/simple;
-	bh=5tOD2pHjMWWdT8TSGj9EPKKaUP3pnp/j6cP/I84FMmg=;
-	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M68aRoOVe6t54g9qsuf3D2GVTFHYeS7lepsyJKFyTJ2mDTP8CF0QLxgaUATqdjaITQDztXfxG3Spl1rA0lY9LDLjhmB21AaPYoaVcb1t1bFrNT4eMZ2xZTjWMSjnSmONfkxS5vURcHYQu55nQFlAUjgRqhqZmOSU/cuf4EHc8Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ICuYMLam; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5ba33b08550so1123197eaf.2
-        for <linux-efi@vger.kernel.org>; Mon, 03 Jun 2024 16:02:39 -0700 (PDT)
+	s=arc-20240116; t=1717516602; c=relaxed/simple;
+	bh=tDbPAXcapOZ9dMwjsFGkyWmyz3tDIsEsvy1DQ5y4Cqc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pOO/8L12Tsmq3yapbkibJf+POjssz8uEfcUD3oTGfkkRvSpKBinsCXP8ybGw2LMb651pg8PlRB1sPrvpyGUYgPwWp3NSiJ2pn2Mh3Lyw8wxzIZuyGiWqvUTklSXKXJMGHb8LO6hXNUzxGSKk3z1fwMVm3jKloEC9eq7n7P7qOWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ulayhAhK; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-421179fd82bso34349075e9.1
+        for <linux-efi@vger.kernel.org>; Tue, 04 Jun 2024 08:56:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1717455759; x=1718060559; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ggaQ6J5T1IxPl9jccfKKlkkSH+FkZbGLyq3WMqICX4c=;
-        b=ICuYMLamE/chWrfVWwNlsbzjO57nSS56w+ONXVTWS8yzc71ECSuIjvJnPXBVCjYVkP
-         PrscTxhX9+Z1SKVYBYdeB4JmFPj2qYnL45xhIWlO5snkkfLV+9CAmANwx6LhlLNqVdZG
-         COsNljzFFRJpyjfhN6gQnaYAuD5bxwPSck6uQ=
+        d=google.com; s=20230601; t=1717516599; x=1718121399; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Z81hPxCGmKqYcb2AOCHcD39YzTsc81AMZa+e9UjPdA4=;
+        b=ulayhAhKqFFiXqnwLx+mELBM4OElPd0x0ivlLFoph67BIK4PwyEZJaEFK4e8sfIPPe
+         EJLsZUI8tCcc16lKF08xLuIAozB8NGrd2YGJXuF7n2rHc04bcKVYibUMaWNVptwefG0E
+         v0/j0sn/6Kv7kUpJgxw6ROkU/SKcbP0MPcIt8dANnsVeVYZwt4BTUa4pcSgmy1LbFgf2
+         L4UaaNI/+4k9DhdgbV8TWCBihsIXQ19lIx4PpNJ04/jiLEj7dPEdiVnw7KEgUgE8N05w
+         L62b278w2lSt8lihPonocnC5278JNLh4pfzabHqMMyGw/ZsndPwD9O6FXH6tHGkriDxc
+         +nvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717455759; x=1718060559;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ggaQ6J5T1IxPl9jccfKKlkkSH+FkZbGLyq3WMqICX4c=;
-        b=ICLBds/ZLxF2MWiNsJ4/kQrMTdTlvgOolz2a3huvMjejmENttIzKWuQB62x9xADMuR
-         JfM4uiNbhyC3+sD05UkfV+Lafs6JJORPe/QM3hBYzIjJ0og/nTfCCsQ2Z7znmSYBLXaS
-         Dbjw1OE3+YJhIVwqHGMtO2fJnMqplUrCVnY/uYx9yvfi1CW5QslyfdxO5saopqJ9G99x
-         i7bnxNIDXz5vL6pXnwqM20AYBSFWm5GJ8YfsMGrxYXbrGjkW/JvPMsStsHAfg4TyUMJP
-         72wolBn/2C1+sAc9poNwXYKBUF1baduNz0NoCkuQi7HubmiSMtdnEuwzj+GYtlJr3XxM
-         ZPMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVxMQR2WKOSkrM4Q3yRmtK1LGXacBcl8dGoG7dDTMEHkGpM6Of4jKXyifD7u2/YgdP5ux8WOywGv6g3TwwYaLVkIV+xicAeEc7R
-X-Gm-Message-State: AOJu0YztjVmBZuCcXK1gTmWl1P7UYR2cQuAicjc23YmDpdV+spK4xFxi
-	delCiNPWiQdOC9EXjJeowNKMUUGG2RwOoHCxY1EdJ5c72pixSy0wkBgYafGW6H/Wny5n6D+QBMd
-	9d5pMx2mmVE2gNF7AnaB7cPBAAd27YMeYEaK2
-X-Google-Smtp-Source: AGHT+IF7d/TDt2PvSfLYQF36A+sjUkHpPi0ohhg8rJGf+olIn56FTIptan9DUYCXFiaG4Z93Ic9j80AfvaYOMw8ZPZU=
-X-Received: by 2002:a05:6870:d8d3:b0:24f:d6c1:692 with SMTP id
- 586e51a60fabf-2508ba20045mr12189521fac.29.1717455759199; Mon, 03 Jun 2024
- 16:02:39 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 3 Jun 2024 16:02:38 -0700
+        d=1e100.net; s=20230601; t=1717516599; x=1718121399;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Z81hPxCGmKqYcb2AOCHcD39YzTsc81AMZa+e9UjPdA4=;
+        b=U8MbxN9Fl5xLJeg86gfbZ/jZsLv9h6cePcgRRnEp3uf2dj7t2biMSGoKt/FbjgBA5J
+         dUvVDDdNPpNl+kFg+Xb59CAewJWuZZeDczLbKx8vSoVqmOS7xrXLkob9RTtdo5SIDztH
+         zytd//PAsjRmHp6/aHfOkqKLf+MP/+NS1xA1OdgqFwe3FU1mwfxcukGFWchi2bANdnfN
+         1f7AM0DSIWjxMiuwIgtP6uIKQqm/r7F+crq0PDnc1k5a4vaeChPX+AIA5kFMUogoRSYT
+         C9vGT1PKZNlZ0YFGgU7mdJHeIwLHxcqYr1yJhpaXInc16XDwUVZpgGNJucBmG5MgaCyA
+         /CVg==
+X-Gm-Message-State: AOJu0YybWBbj0qFkynpJCG+noKoe9MJ5WJwpsdqYvCBRVePqRvmFg7fQ
+	gcxCQ60SDEI7ZWJ/pOMDkJTILQGwakRo0RpDBTJROjpyiK8FRvBRecj1KAMVOgtTColq9cNvZFE
+	XmUBtCL07wQ+Tfmju3yxAqOC06ZdsBkDdWvycBzPmr1is6v6aVbiJS2YZ83LgJpLa9rIpTXEAWS
+	D3VJdakkVLCs7ydM1fZZGstOZudw==
+X-Google-Smtp-Source: AGHT+IFe8jdXuv1aeWH7MA6yhiyWDlgI8y8inLlUvWwyqVv/uZ8Z/4ucJ/ukXR0gHdrKnKLOMWTmqhkg
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:600c:1c18:b0:41f:dfa4:52b2 with SMTP id
+ 5b1f17b1804b1-4215633fb75mr445e9.5.1717516598483; Tue, 04 Jun 2024 08:56:38
+ -0700 (PDT)
+Date: Tue,  4 Jun 2024 17:56:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20221006224212.569555-8-gpiccoli@igalia.com>
-References: <20221006224212.569555-1-gpiccoli@igalia.com> <20221006224212.569555-8-gpiccoli@igalia.com>
-From: Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date: Mon, 3 Jun 2024 16:02:38 -0700
-Message-ID: <CAE-0n50vo5xkUNK0-cF9HZRXShsxbikqmdVnmMzRsn+Z7MEJTg@mail.gmail.com>
-Subject: Re: [PATCH 7/8] efi: pstore: Follow convention for the efi-pstore
- backend name
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Cc: kernel-dev@igalia.com, kernel@gpiccoli.net, keescook@chromium.org, 
-	anton@enomsg.org, ccross@android.com, tony.luck@intel.com, 
-	linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2910; i=ardb@kernel.org;
+ h=from:subject; bh=B0UDgfaXLRjwJ5HFYpQ93lnEBVODOyfsm3LZgpoPIDg=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIS3eUqsiuu3BPdGJj5gE+0Onf9uodjnvQLLKo9knc/dej
+ dq0641lRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjI5FuMDBfVrScI35XKnXfD
+ pcz/9Iri/Z/4OB95MG2Z+DH2wvOpaXcYGTbOuTVPxIOv8v2l01djCt0C7XKOqggtn+D4bcWx+/O +nGECAA==
+X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
+Message-ID: <20240604155625.2197275-2-ardb+git@google.com>
+Subject: [PATCH] efi: Add missing __nocfi annotations to runtime wrappers
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>, 
+	Kees Cook <keescook@chromium.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Nathan Chancellor <nathan@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Quoting Guilherme G. Piccoli (2022-10-06 15:42:11)
-> For some reason, the efi-pstore backend name (exposed through the
-> pstore infrastructure) is hardcoded as "efi", whereas all the other
-> backends follow a kind of convention in using the module name.
->
-> Let's do it here as well, to make user's life easier (they might
-> use this info for unloading the module backend, for example).
+From: Ard Biesheuvel <ardb@kernel.org>
 
-This patch broke ChromeOS' crash reporter when running on EFI[1], which
-luckily isn't the typical mode of operation for Chromebooks. The problem
-was that we had hardcoded something like dmesg-efi-<number> into the
-regex logic that finds EFI pstore records. I didn't write the original
-code but I think the idea was to speed things up by parsing the
-filenames themselves to collect the files related to a crash record
-instead of opening and parsing the header from the files to figure out
-which file corresponds to which record.
+The EFI runtime wrappers are a sandbox for calling into EFI runtime
+services, which are invoked using indirect calls. When running with kCFI
+enabled, the compiler will require the target of any indirect call to be
+type annotated.
 
-I suspect the fix is pretty simple (make the driver name match either
-one via a regex) but I just wanted to drop a note here that this made
-some lives harder, not easier.
+Given that the EFI runtime services prototypes and calling convention
+are governed by the EFI spec, not the Linux kernel, adding such type
+annotations for firmware routines is infeasible, and so the compiler
+must be informed that prototype validation should be omitted.
 
->
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-> ---
->  drivers/firmware/efi/efi-pstore.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
-> index 3bddc152fcd4..97a9e84840a0 100644
-> --- a/drivers/firmware/efi/efi-pstore.c
-> +++ b/drivers/firmware/efi/efi-pstore.c
-> @@ -207,7 +207,7 @@ static int efi_pstore_erase(struct pstore_record *record)
->
->  static struct pstore_info efi_pstore_info = {
->         .owner          = THIS_MODULE,
-> -       .name           = "efi",
-> +       .name           = KBUILD_MODNAME,
->         .flags          = PSTORE_FLAGS_DMESG,
->         .open           = efi_pstore_open,
->         .close          = efi_pstore_close,
+Add the __nocfi annotation at the appropriate places in the EFI runtime
+wrapper code to achieve this.
 
-[1] https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform2/crash-reporter/kernel_collector.cc;l=54;drc=7a522166f0b2b32ece60f520b5d3d571c7545b0b
+Note that this currently only affects 32-bit ARM, given that other
+architectures that support both kCFI and EFI use an asm wrapper to call
+EFI runtime services, and this hides the indirect call from the
+compiler.
+
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/runtime-wrappers.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
+index 5d56bc40a79d..708b777857d3 100644
+--- a/drivers/firmware/efi/runtime-wrappers.c
++++ b/drivers/firmware/efi/runtime-wrappers.c
+@@ -213,7 +213,7 @@ extern struct semaphore __efi_uv_runtime_lock __alias(efi_runtime_lock);
+  * Calls the appropriate efi_runtime_service() with the appropriate
+  * arguments.
+  */
+-static void efi_call_rts(struct work_struct *work)
++static void __nocfi efi_call_rts(struct work_struct *work)
+ {
+ 	const union efi_rts_args *args = efi_rts_work.args;
+ 	efi_status_t status = EFI_NOT_FOUND;
+@@ -435,7 +435,7 @@ static efi_status_t virt_efi_set_variable(efi_char16_t *name,
+ 	return status;
+ }
+ 
+-static efi_status_t
++static efi_status_t __nocfi
+ virt_efi_set_variable_nb(efi_char16_t *name, efi_guid_t *vendor, u32 attr,
+ 			 unsigned long data_size, void *data)
+ {
+@@ -469,7 +469,7 @@ static efi_status_t virt_efi_query_variable_info(u32 attr,
+ 	return status;
+ }
+ 
+-static efi_status_t
++static efi_status_t __nocfi
+ virt_efi_query_variable_info_nb(u32 attr, u64 *storage_space,
+ 				u64 *remaining_space, u64 *max_variable_size)
+ {
+@@ -499,10 +499,9 @@ static efi_status_t virt_efi_get_next_high_mono_count(u32 *count)
+ 	return status;
+ }
+ 
+-static void virt_efi_reset_system(int reset_type,
+-				  efi_status_t status,
+-				  unsigned long data_size,
+-				  efi_char16_t *data)
++static void __nocfi
++virt_efi_reset_system(int reset_type, efi_status_t status,
++		      unsigned long data_size, efi_char16_t *data)
+ {
+ 	if (down_trylock(&efi_runtime_lock)) {
+ 		pr_warn("failed to invoke the reset_system() runtime service:\n"
+-- 
+2.45.1.288.g0e0cd299f1-goog
+
 
