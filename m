@@ -1,46 +1,46 @@
-Return-Path: <linux-efi+bounces-1139-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1140-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A9C8FBCCE
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 21:58:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AB48FBCD4
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 21:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CBBE284757
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 19:58:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2D8F28428B
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jun 2024 19:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DD6142631;
-	Tue,  4 Jun 2024 19:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A27513FD92;
+	Tue,  4 Jun 2024 19:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8SKDzmd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UylMGIDg"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C053C13FD9D;
-	Tue,  4 Jun 2024 19:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5701D13D24F;
+	Tue,  4 Jun 2024 19:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717531107; cv=none; b=Qf22LMW9mV0KnYV6je8i249y61lao3ge/Y5Hi92oAg+7qshmRkZG9NROE5zaQDixmKLp1optenKncCaSWxhM44DPHGVO0OekrjKwmitmeyG/ZnTSF/LfP1d0inlvqJ+jHTz2shQBCwMcmr+PF8ybj+C0fBqURv9hWJ8/JSCTOAM=
+	t=1717531167; cv=none; b=mZDvZmJGvgufcdIAKb8kP4H4jYsClJr60OPmvwpIXomLx9ubRicPfmSwdrK6BZj2hQu7qsCyTLNJw0wpQXVJAL15OQ1AQTvKI2bKrgxT7OeGMRYL2/FCmLriTSGEayQocGdcJl+5B8Uf/a7nu/24PTWvP3vDurM+DiDVpHDIkiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717531107; c=relaxed/simple;
-	bh=EdXREgrUFbhjr5J9t9xfAPvnQcvPhKQ1IC5dTo+Axkg=;
+	s=arc-20240116; t=1717531167; c=relaxed/simple;
+	bh=adyoGD8HAr9AhEMKf45Q/gY8eQHlMUzh9eGEMTWGPQM=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=f15D3mx1f6WWggGLQsDvcDLiIv40KThesFt6EUW7BfGl2yhJdGfmwuojarbeT3LX0iFY9ZCQxJcOURLxm00esCQQMxDmbFxriWgSZzRmPCmZ3+QsyldTKvuDyvn5NYN0BW8OyALa2tKD3xe7hwgvuuz38qig2GXPUab0Z/goO/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8SKDzmd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0E6C2BBFC;
-	Tue,  4 Jun 2024 19:58:20 +0000 (UTC)
+	 References:In-Reply-To; b=TQITkgYyldEcRQ9eoEfOD/0l8CkKFfmMTy554v6OihXaJxuE7ZBgqP0HxxLYXB24MtqxAcWPduYsmQOaW/8mX0liP3sHXAVyqFf5BwTZae9BV2G9TdF9oeZF7SIWUvPc35kSfKf5Sx5sa6rO/FZ+A+G/ys2d//fZoNELPOE/utU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UylMGIDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0531C2BBFC;
+	Tue,  4 Jun 2024 19:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717531107;
-	bh=EdXREgrUFbhjr5J9t9xfAPvnQcvPhKQ1IC5dTo+Axkg=;
+	s=k20201202; t=1717531165;
+	bh=adyoGD8HAr9AhEMKf45Q/gY8eQHlMUzh9eGEMTWGPQM=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=n8SKDzmdRAxmg/cdodk0J19d2WNc3XJ8TNLT2QE1Wnss24vGwthUtE4wxphTxOnBI
-	 7EiS2dyoKsrcu5VjuCibb4F7u0poTQqvPefUSPhWQRefKgIsY1p/p6/1gWHyJzW6cB
-	 L5jka2UwpQMtdF8SmaJeWiNCz8Pq/5Uxj4OpFCpMsHZBTtLSib52BLbff5DWT9+YE0
-	 ulAtWhzBRdPzRzapJRSs5rCZ9ADYWpT6dQB8YcMq95qUY6EBIyMeEwoKwLasS+NX7N
-	 T7wAy+5TFRHb/A444x+5RHSozYN8O6dptYC4gXpbR/qx6lIx8KQ1mNZqHivZPDqXmx
-	 vcSGHh+M/fpYg==
+	b=UylMGIDgJLWEehf+t7DF8NuRbR6al89Udi4ScfRrcCa2QN0ZXVNFmTkSK5wTztvr2
+	 NPOlR+8M00XKQtNcDmaiJr3i5nPOmYl2mBjyjqEcAvCPE8TPr/otpaL1Lo0gcC9PX3
+	 w5KXCw87V8jzkSqye0G1at/h5bm7RzEp5q8fAQgH9bbswEZsL3S4VO0uRf8TsUl+28
+	 hoDj1ploWFj8pNatF0LpslXrlmLpObjIYjD06OhdTVooXTSo858Cwt4oD09HY7BxqJ
+	 oRYksTt5fFT/JzwCbV3gvkvT5cGMS6Lx53wXep24/DEJRVdyxUHYkg2371SpV9TdbD
+	 zD9HDl21l34aQ==
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -49,8 +49,8 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Jun 2024 22:58:19 +0300
-Message-Id: <D1RHYMFSVGSW.39IL7KFK8A47N@kernel.org>
+Date: Tue, 04 Jun 2024 22:59:18 +0300
+Message-Id: <D1RHZDG3HJNK.ZWTFLXDBEXD1@kernel.org>
 Cc: <dpsmith@apertussolutions.com>, <tglx@linutronix.de>,
  <mingo@redhat.com>, <bp@alien8.de>, <hpa@zytor.com>,
  <dave.hansen@linux.intel.com>, <ardb@kernel.org>, <mjg59@srcf.ucam.org>,
@@ -78,10 +78,32 @@ On Fri May 31, 2024 at 4:03 AM EEST, Ross Philipson wrote:
 > present, various operations specific to that platform occur. This
 > includes finalizing setting for the platform late launch and verifying
 > that memory protections are in place.
+>
+> For TXT, this code also reserves the original compressed kernel setup
+> area where the APs were left looping so that this memory cannot be used.
+>
+> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+> ---
+>  arch/x86/kernel/Makefile   |   1 +
+>  arch/x86/kernel/setup.c    |   3 +
+>  arch/x86/kernel/slaunch.c  | 525 +++++++++++++++++++++++++++++++++++++
+>  drivers/iommu/intel/dmar.c |   4 +
+>  4 files changed, 533 insertions(+)
+>  create mode 100644 arch/x86/kernel/slaunch.c
+>
+> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+> index 5d128167e2e2..b35ca99ab0a0 100644
+> --- a/arch/x86/kernel/Makefile
+> +++ b/arch/x86/kernel/Makefile
+> @@ -76,6 +76,7 @@ obj-$(CONFIG_X86_32)		+=3D tls.o
+>  obj-$(CONFIG_IA32_EMULATION)	+=3D tls.o
+>  obj-y				+=3D step.o
+>  obj-$(CONFIG_INTEL_TXT)		+=3D tboot.o
+> +obj-$(CONFIG_SECURE_LAUNCH)	+=3D slaunch.o
 
-"memory protections" is not too helpful tbh.
+Hmm... should that be CONFIG_X86_SECURE_LAUNCH?
 
-Better to describe very briefly the VT-d usage.
+Just asking...
 
 BR, Jarkko
 
