@@ -1,259 +1,127 @@
-Return-Path: <linux-efi+bounces-1177-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1178-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FBE8FE441
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2024 12:28:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04F58FE6C0
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2024 14:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0490AB23109
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2024 10:28:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBA8E1C23F69
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jun 2024 12:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FF8194C66;
-	Thu,  6 Jun 2024 10:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143C94DA14;
+	Thu,  6 Jun 2024 12:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b/vMWGHl"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gp25KpTP"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A018194C87
-	for <linux-efi@vger.kernel.org>; Thu,  6 Jun 2024 10:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661F1180A64
+	for <linux-efi@vger.kernel.org>; Thu,  6 Jun 2024 12:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717669685; cv=none; b=TiOtOyIdX+ygKU51ZKMLj3el5346+TyMWRhr12f7NfLYMqt3Irwp3+dK/p/DotWyTJis8SVVOH8UMZCdwPBHYUvL7Fe8s2sPVTJhlof6L9Ro+jijy9FVtkKVx2ML70kKz++PM8EYlVk2kfOjByUIrVkQpRtWax7JqUDdGoacsZk=
+	t=1717677964; cv=none; b=KIR2qUd4FZyAf/zcHWq7cBmYqR7i9+ZcRWk/Q7Doj3VEOzSb06i6v/2yRmwkY6gc9WzFw/gQTizgziYQ3FBNNes0w9QHnrG1SjNvWuEWKf05IkQCZVPIIjaKrvYTaQwmGMdNqNOL3JVH+nuj4n/RlZS/YsDu5yyHLc2bXSmVdOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717669685; c=relaxed/simple;
-	bh=GnR0DffZh4+BA0OZC0tQ+3r4w//gw7wWsLZy9oX5z/k=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=e435r8GjxCc6pr4OS8T7ChE6WGcwuJ4Prh+Bv3cgFlKTT+5/kpGiW7V3uZ5/lm6jf+LEZqvbJLILqrjQVPbcHNoh2TFb/zU11ZG1/DbqLdS5t+wZYGyWIhkzJNENpF/CF0KMzTNDFwXda6LtwdzIPT+3I6fn9Mk5EuX/MTkNgzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b/vMWGHl; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717669683; x=1749205683;
-  h=date:from:to:cc:subject:message-id;
-  bh=GnR0DffZh4+BA0OZC0tQ+3r4w//gw7wWsLZy9oX5z/k=;
-  b=b/vMWGHl3gJ4aX45DB/GvH0maa7Nzs8F5mTiBrWzozfxEQkh7DLnkeFH
-   N5LWbVffhjUGttfuOgTD2F1WIYBTtzCBTO0Y4nU0cWUZBe7olzW0PQM22
-   S0J25QNYD5H85P24ZnFrjfel78VA/mfLVYAHnDv6uXsrIdjMbZ2XGrrJg
-   hERLt1p4TaK408bVm0mS5if88pN+Bm/omUOExKNLhKRUWukgPdbJxmTrT
-   L1dhdLL6gVmw920Tz4m7JpAJHMmBHf12U9qvPFMZ5JTiT4Zs/KFgiqyEx
-   Mm7ih4LPnbDeBkg+VcYX9c1uOh8SZno/0vEVjQv0qxsGkl5y5aYtCqdPd
-   g==;
-X-CSE-ConnectionGUID: gXowJPp0Q0KlvzOCoflGEQ==
-X-CSE-MsgGUID: k5d/JzUgQZKKpcYAlW8zhQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14165094"
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="14165094"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 03:28:02 -0700
-X-CSE-ConnectionGUID: JsKQXqcLQSCmyPkXa9JtMw==
-X-CSE-MsgGUID: TkMhb08JSp+SjnL53jeNqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="37924747"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 06 Jun 2024 03:28:01 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sFALf-0002z9-0v;
-	Thu, 06 Jun 2024 10:27:59 +0000
-Date: Thu, 06 Jun 2024 18:27:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 99280413a5b785f22d91e8a8a66dc38f4a214495
-Message-ID: <202406061810.OTqmCth5-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1717677964; c=relaxed/simple;
+	bh=vCwQ+UOs6lA3bwt9Gxf4/DF76/ADplVJke49DQD29uk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jnUC7jxZA1VWGSg5W+N6F9uspTVUHWnTp1a+ob/49gCUFlZB9weS2Zq4nNrrSNXPqs+ZP7Mdl4Vw1qZscOz3cyT7h5EBYGgImZD9unhUNXIsvrrY+on/4ueG+tQ4b3BR7p+CnkhOkAHkIKB2CyB7E4MGnSwV6CC2uF3x4e8IHTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gp25KpTP; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-42117a61bccso8396605e9.0
+        for <linux-efi@vger.kernel.org>; Thu, 06 Jun 2024 05:46:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1717677961; x=1718282761; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gnFSHXIA5tH1p+HK99iPQIajLxhweXL/1owKjLMbYw4=;
+        b=Gp25KpTPIcYqNFVMmYNiAb2JNZQVV0rT6WvpJu5Qs4pV9oMvYkBV8FepNB9yitmlI7
+         kH54q9UMCkGN/960MSAcx3OuGDq57kXSDaagDzk4lbt0UfScLKV3J84JcpBlyQG1zX7x
+         8ZslX9MGq4M59wRh/Vth52V33fIP8mdXu3fSxjpwtlN5tZRWihqY9+yHf1hiuN7aHkiF
+         Ayk1YmHmqs/Hz3P7z2ZHGJKOmG5z6uPMod9DPwcvRmozoiWVsHO/6p0nQrUf2hiMmN3Z
+         jjGRLBFEtxQgqEe2ZK472c1Dgi5cEghJgXRyxI6xp1pBZAAjj45JIvEhGcBwZX9Vc0v7
+         mwkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717677961; x=1718282761;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gnFSHXIA5tH1p+HK99iPQIajLxhweXL/1owKjLMbYw4=;
+        b=kPmAJiKmRm2jJtcxk3f5WwrR17hGBnAi7D+dg9/VlZTon4AEI/267Gr/y78JBDfIpv
+         PK0zl3RnGP78ofby6tmmkh/RNBktzq4bWyrKoMGmia1Py1mFt2EoomxtAvgyE6PDy7kM
+         q/PhSY0kEAFhSAvPu0TF1poR7yfssnKiU7cvPnaL91YuUPYdvO8UP5BrthIMue5UDXjS
+         SL45Hd+whtoDRbc/vKqFl6y2kgJ0npyhY8jrQDeyT4cWp8lcBVc3i9XfRuCPBnjHbVQa
+         9pArDFPPMNmdr7AXyBRvMiqZ0iftbwI6lGoVlA2A2+Zsua1jI14getkxRM58TpC1rzjz
+         0GnQ==
+X-Gm-Message-State: AOJu0YwMogRyDZHs5md08pAJCdm7M/lKcG962R/BvL8pmBBPmBFQcOKL
+	O/bxYF9C2CJR2MZn+sixiQfe41SVrpKUiwoAZVnDPjHhMLyCxM5CwP4iNEvDOCCSuU3NNg==
+X-Google-Smtp-Source: AGHT+IE/zkSybYPq7ecd+O9e/fM6Zzfm2JQn/WMzguQLMXYVCcW6gqP7qgo9/h23o2Eg4AS5J3BAYLjg
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:600c:310d:b0:420:d54:7004 with SMTP id
+ 5b1f17b1804b1-4215635416bmr204805e9.8.1717677960404; Thu, 06 Jun 2024
+ 05:46:00 -0700 (PDT)
+Date: Thu,  6 Jun 2024 14:45:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1373; i=ardb@kernel.org;
+ h=from:subject; bh=Xu0/OlQ3MYAiscc588qH8Z4H7pTfa7+P6l39lAq2LZw=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIS1xff2p459YjlUa50r+mLSNx+pfSumhuIVdaq7ZL/WjF
+ a5lMa/pKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABM5/5rhf2b/Jq6S52sfqGgG
+ XL9y9pSd+cpTh/00zVcYXUqbNFvWw47hr/wRvuP72r0ZWW1rq/oTgjXD+T+ki6/c+SJEmaH2wKJ EdgA=
+X-Mailer: git-send-email 2.45.1.467.gbab1589fc0-goog
+Message-ID: <20240606124550.3584379-2-ardb+git@google.com>
+Subject: [GIT PULL] EFI fixes for v6.10 #2
+From: Ard Biesheuvel <ardb+git@google.com>
+To: torvalds@linux-foundation.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 99280413a5b785f22d91e8a8a66dc38f4a214495  efi: Add missing __nocfi annotations to runtime wrappers
+From: Ard Biesheuvel <ardb@kernel.org>
 
-elapsed time: 1506m
+Hello Linus,
 
-configs tested: 166
-configs skipped: 4
+Another small batch of EFI fixes for v6.10 - please pull.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240606   gcc  
-arc                   randconfig-002-20240606   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                           omap1_defconfig   gcc  
-arm                           tegra_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-002-20240606   gcc  
-csky                             alldefconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240606   gcc  
-csky                  randconfig-002-20240606   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240605   gcc  
-i386         buildonly-randconfig-002-20240605   gcc  
-i386         buildonly-randconfig-003-20240605   gcc  
-i386         buildonly-randconfig-004-20240605   gcc  
-i386         buildonly-randconfig-004-20240606   gcc  
-i386         buildonly-randconfig-005-20240605   gcc  
-i386         buildonly-randconfig-006-20240605   gcc  
-i386         buildonly-randconfig-006-20240606   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240605   gcc  
-i386                  randconfig-002-20240605   clang
-i386                  randconfig-003-20240605   gcc  
-i386                  randconfig-004-20240605   gcc  
-i386                  randconfig-005-20240605   gcc  
-i386                  randconfig-006-20240605   gcc  
-i386                  randconfig-011-20240605   gcc  
-i386                  randconfig-012-20240605   gcc  
-i386                  randconfig-012-20240606   gcc  
-i386                  randconfig-013-20240605   clang
-i386                  randconfig-013-20240606   gcc  
-i386                  randconfig-014-20240605   clang
-i386                  randconfig-014-20240606   gcc  
-i386                  randconfig-015-20240605   gcc  
-i386                  randconfig-015-20240606   gcc  
-i386                  randconfig-016-20240605   clang
-i386                  randconfig-016-20240606   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240606   gcc  
-loongarch             randconfig-002-20240606   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                          hp300_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      maltasmvp_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240606   gcc  
-nios2                 randconfig-002-20240606   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240606   gcc  
-parisc                randconfig-002-20240606   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                        icon_defconfig   gcc  
-powerpc               randconfig-001-20240606   gcc  
-powerpc               randconfig-002-20240606   gcc  
-powerpc               randconfig-003-20240606   gcc  
-powerpc64             randconfig-003-20240606   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240606   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240606   gcc  
-s390                  randconfig-002-20240606   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                          r7785rp_defconfig   gcc  
-sh                    randconfig-001-20240606   gcc  
-sh                    randconfig-002-20240606   gcc  
-sh                      rts7751r2d1_defconfig   gcc  
-sh                  sh7785lcr_32bit_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240606   gcc  
-sparc64               randconfig-002-20240606   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-002-20240606   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240606   gcc  
-x86_64       buildonly-randconfig-002-20240606   clang
-x86_64       buildonly-randconfig-003-20240606   gcc  
-x86_64       buildonly-randconfig-004-20240606   gcc  
-x86_64       buildonly-randconfig-005-20240606   gcc  
-x86_64       buildonly-randconfig-006-20240606   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240606   gcc  
-x86_64                randconfig-002-20240606   gcc  
-x86_64                randconfig-003-20240606   gcc  
-x86_64                randconfig-005-20240606   gcc  
-x86_64                randconfig-006-20240606   gcc  
-x86_64                randconfig-011-20240606   clang
-x86_64                randconfig-012-20240606   gcc  
-x86_64                randconfig-013-20240606   clang
-x86_64                randconfig-014-20240606   clang
-x86_64                randconfig-015-20240606   clang
-x86_64                randconfig-016-20240606   clang
-x86_64                randconfig-071-20240606   clang
-x86_64                randconfig-072-20240606   gcc  
-x86_64                randconfig-073-20240606   clang
-x86_64                randconfig-074-20240606   clang
-x86_64                randconfig-075-20240606   gcc  
-x86_64                randconfig-076-20240606   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                  nommu_kc705_defconfig   gcc  
-xtensa                randconfig-001-20240606   gcc  
-xtensa                randconfig-002-20240606   gcc  
+The following changes since commit c3f38fa61af77b49866b006939479069cd451173:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+  Linux 6.10-rc2 (2024-06-02 15:44:56 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.10-2
+
+for you to fetch changes up to 99280413a5b785f22d91e8a8a66dc38f4a214495:
+
+  efi: Add missing __nocfi annotations to runtime wrappers (2024-06-05 10:18:58 +0200)
+
+----------------------------------------------------------------
+EFI fixes for v6.10 #2
+
+- Ensure that .discard sections are really discarded in the EFI zboot
+  image build
+- Return proper error numbers from efi-pstore
+- Add __nocfi annotations to EFI runtime wrappers
+
+----------------------------------------------------------------
+Ard Biesheuvel (2):
+      Merge branch 'efi/next' into efi/urgent
+      efi: Add missing __nocfi annotations to runtime wrappers
+
+Guilherme G. Piccoli (1):
+      efi: pstore: Return proper errors on UEFI failures
+
+Nathan Chancellor (1):
+      efi/libstub: zboot.lds: Discard .discard sections
+
+ drivers/firmware/efi/efi-pstore.c       |  8 ++++----
+ drivers/firmware/efi/libstub/zboot.lds  |  1 +
+ drivers/firmware/efi/runtime-wrappers.c | 13 ++++++-------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
