@@ -1,136 +1,164 @@
-Return-Path: <linux-efi+bounces-1185-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1186-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E03D901CBD
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jun 2024 10:17:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC6F902195
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jun 2024 14:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E20D1C21B98
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jun 2024 08:17:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C983B23ECB
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jun 2024 12:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CCE61FDD;
-	Mon, 10 Jun 2024 08:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8F3762D2;
+	Mon, 10 Jun 2024 12:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vLvBV7No"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IJz/5Ea2"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ECF5B69E;
-	Mon, 10 Jun 2024 08:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B4C7E58C
+	for <linux-efi@vger.kernel.org>; Mon, 10 Jun 2024 12:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718007469; cv=none; b=XbWgv3KzmCu1KkWVAf/Lybnd7ienETNfI1h22N0Dba59poll1kYYFLviyu4tmDdDrL8zQoBiPc1Fcg92P8gDOLHbwaIaeJh3vTDCFSm5VPQpiJbLS3RbTZgxlsLz40ZNT+8KbeJkJTH/PtFjwIGnDVauQImWfuWsHBCrCPjjKZw=
+	t=1718022288; cv=none; b=JTuRiNiKXTJLQb0kZbLPvqVMoEQDEFBJhsvgcynr2DzapjWdI2B0cm82UWZONTqr0rSt/PStD1zpqES8jEe9fO/F9e5/lPY/uNEUtVMquR7IOzbkwgYjIECH0/vHh5j6DCCeIqz7ho/pP7zf6iPsRX+0YWVqFbfSNT1xuj+GyPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718007469; c=relaxed/simple;
-	bh=cbNYI/JUGMzrLwfYyXouN/cF0pszrXdfoVeq804JEfc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NPMfo+w+Pf12bzLAMLJsbRZhMoRvHFzVR5jvf1UkWYcnSlXRzgL289mVqvNI6gMMz8rKVpgZKAb26aQTe1UMeWytvnDBG8KnqlbefAWuEKaCmrFk4tVyvtnNT0bs9NuqbLuyOry9VvosKq6u2Oeym87hq3UgzIKFEDCo8Q1QC0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vLvBV7No; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD21DC4AF48;
-	Mon, 10 Jun 2024 08:17:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718007468;
-	bh=cbNYI/JUGMzrLwfYyXouN/cF0pszrXdfoVeq804JEfc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=vLvBV7No0kB2BepWGhre1nP3OiOMW4b21mhPm8F0xP0Az6MTU1iZy9KteXD6rt4wq
-	 3hPV667DqfBpjob+ofl4v27cNX04ZHkJrDJ0/qXcJHkUpYaHn4HA1bRMoVyXIIDTl+
-	 eDxEbiyZ9aShZkW0/7UGx0roE010DHfisfOfpQx0nMoNs7AwvL+lrun8mXnfifVPOX
-	 0OWG0hftNlVxC79/JFjNK8gH1kQJ++DByn/78VjGYWxWJBxVlDcQ1vb7chms0rvwzj
-	 oDQL7RREM+I+MLWdDmrfWbRKQkSG3mpH5Dfh24xasB0CZtRL7OjMqaH8BQ85DTfstr
-	 5crc8Xkf5QZ3A==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2ebd95f136bso14671791fa.0;
-        Mon, 10 Jun 2024 01:17:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWOJTD0ooCiZrgX81DPnNu8LSkpm9jcqdC7F3veXLVJPhmdEkXTtqX3esJRekKG9BHyS+sGvULLffZ34ENVQSS4h2iUxh7ogwEenRI1
-X-Gm-Message-State: AOJu0YxDQFfsGCQbQCTp9XPkk4KZwsC9Zkj7AP0mlWU7Foy9BADtmHBx
-	m4C4cTvH6b8fg+Ngj+lWYGRM+nfqweGjLP/0FcbujEzy28+7Yw52aOyS2T3RXpZI1gI2aOAeTHp
-	WKZrK5fiRhkkopgWtwtwJk18xtsQ=
-X-Google-Smtp-Source: AGHT+IGr2LP3LHmaDB4qM/6C4+LArNs0Zzj0ctXZ5LyiUueT4uMS8/SxcBC+5PescZpGMznq7XkmGuvVFf6JYcOk8t4=
-X-Received: by 2002:a2e:8712:0:b0:2eb:e312:5af1 with SMTP id
- 38308e7fff4ca-2ebe3125cd4mr20814711fa.22.1718007467129; Mon, 10 Jun 2024
- 01:17:47 -0700 (PDT)
+	s=arc-20240116; t=1718022288; c=relaxed/simple;
+	bh=lODJzX7RK/3gqW7SLI4sodAzP/4RKmEiLEanCBSHskY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IdelP1kclbjJPG6bDJBixTcIWxxcuJhH4dhZxM74UzISfKYtqig1GFvj6kOC9Yz3Eb9/kd5Z12ZKHeCBzwj964xAugbkPDhbm8grJ5VTRNLsfEEW0tZZ7Vq47HGjS9ZMadiaK4+OQ8rIAIMw+pzHQA9YTsqlmWaKuSnu9kf+liI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IJz/5Ea2; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dfa5743655eso7848575276.1
+        for <linux-efi@vger.kernel.org>; Mon, 10 Jun 2024 05:24:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1718022286; x=1718627086; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=arVT1UJjpDifIxa4uEm/zmcaSk9BsvyP57DfTAzOe68=;
+        b=IJz/5Ea24zuOzqgg6PpSLl+R3ziT8umMEg0af3fKeoGGKVJwOphfQkoqicY7s1C7Bt
+         9aHg+8eqq/Ud1OtyLyFbmvbsDUJKF/s/AaCuA6FyULH7PHD43QRblVUwc6yxJf7TbIe2
+         uHwyuT4FsTwaSKOcIKpTJEpjQdT4fvYXQolvUc6g2ZgRXiFyWhPgJy2yjw2nMkpcA5b9
+         0tYd3A1TlABORhxSlg5iqW9uw17lwXOAtD+gasWODnWSygXdId54UbPVW0qNLkq++yK7
+         f2L2/01L45RHi4ruuVLKYcTsp7nQxsqctXIFwmChr5UhXwdWb1wIDSXpk3y015UE7E4f
+         W37g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718022286; x=1718627086;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=arVT1UJjpDifIxa4uEm/zmcaSk9BsvyP57DfTAzOe68=;
+        b=vS1wiqOdp4kLU1mBCJ1XAIYeXgW11eTsOts5jnzPPmRvAyrtLel8/wkxZkmL3qlFQf
+         bxgyeuRlGauDWNbAGQDGynsT6YShP9tSmteYjOllo61mElPJxK+IjAWK59O0dTXKzIwH
+         wysbuZRY5khxXLJdrDxFwHvB7ws7ijuNsDnYTkaxpk/3mmEQnqutifhTOVuaMg6BNcHi
+         oFwSkznewZym4yVpWGWoAavwNIOEPMvRNGBCCqz0PcQ2ndyF+umR6lat/1WdPoblarFA
+         IMYPcMnGp8efvyL8I/Rx/oqSupByzPPLT50xvAvMEsNZO9qCUtptMhJur4Yz2g+Ftxl6
+         9RwA==
+X-Gm-Message-State: AOJu0Yyar88MD8wR0VPP7RJIvclsZZI4Tq0QT4zYNv4MjU7RpaDXE/mC
+	m3qnDgLlXH8qW/yJpzZcdxZVTTpaYitQNT1iZV8stsCQvODsGHDhKflayx8qPpfjoNR3o5gbDj5
+	lgpjDYeDjafmNqzCWXxoz4i/STXUW//c16aukR5n0J6YjGfO3gtAmkLbm/6IycGHCJ8yxQylqSt
+	pwXhPwBwbr2Ghhq8iKK8VCX9IpiQ==
+X-Google-Smtp-Source: AGHT+IFy4fbRMOr/D5J8Mb5DIZLL8qf8J1a9nL1lZPR65XOkeoC1GSF3L7mKwVVdHZBxRxLrQKLcHzk8
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:6902:2b8b:b0:dfa:849d:3a59 with SMTP id
+ 3f1490d57ef6-dfaf667471bmr3293606276.13.1718022285824; Mon, 10 Jun 2024
+ 05:24:45 -0700 (PDT)
+Date: Mon, 10 Jun 2024 14:24:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <xm26bk4dlqnp.fsf@bsegall.svl.corp.google.com>
-In-Reply-To: <xm26bk4dlqnp.fsf@bsegall.svl.corp.google.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 10 Jun 2024 10:17:35 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGnVu7UxEAzL1g2rJB92fN80qMZ5SjT236R-VKrT3JBqQ@mail.gmail.com>
-Message-ID: <CAMj1kXGnVu7UxEAzL1g2rJB92fN80qMZ5SjT236R-VKrT3JBqQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/boot: Don't add the EFI stub to targets, again
-To: Benjamin Segall <bsegall@google.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Arvind Sankar <nivedita@alum.mit.edu>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2514; i=ardb@kernel.org;
+ h=from:subject; bh=vAdAgJhZ88ZG4Hss513g3YwUrqqEyDQZv4qPQ2fT/YE=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIS3tQzv314Nsr2KfVHF22yjY7PFVCbTY8X/dO2ax1vyLR
+ wr3iip1lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIlwlzL8L49aFu9/c9ehzi2u
+ CX7qp84E7IyYs+/uU41nMjHzn0XbZzAyvDpcPzuiKWrjxejV1juF9rHLBB0wzhWd6VfGJuxk5hP KAgA=
+X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
+Message-ID: <20240610122437.2358778-2-ardb+git@google.com>
+Subject: [PATCH] efi/arm: Disable LPAE PAN when calling EFI runtime services
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org, 
+	linux@armlinux.org.uk, Ard Biesheuvel <ardb@kernel.org>, Kees Cook <keescook@chromium.org>, 
+	Linus Walleij <linus.walleij@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 6 Jun 2024 at 23:14, Benjamin Segall <bsegall@google.com> wrote:
->
-> This is a re-commit of the commit da05b143a308 ("x86/boot: Don't add the
-> EFI stub to targets") after the tagged patch incorrectly reverted it.
->
-> To summarize: vmlinux-objs-y is added to targets, with an assumption
-> that they are all relative to $(obj); adding a $(objtree)/drivers/...
-> path causes the build to incorrectly create a useless
-> arch/x86/boot/compressed/drivers/... directory tree.
->
-> Fix this just by using a different make variable for the EFI stub.
->
-> Fixes: cb8bda8ad443 ("x86/boot/compressed: Rename efi_thunk_64.S to efi-mixed.S")
-> Signed-off-by: Ben Segall <bsegall@google.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Oops, my bad.
+EFI runtime services are remapped into the lower 1 GiB of virtual
+address space at boot, so they are guaranteed to be able to co-exist
+with the kernel virtual mappings without the need to allocate space for
+them in the kernel's vmalloc region, which is rather small.
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+This means those mappings are covered by TTBR0 when LPAE PAN is enabled,
+and so 'user' access must be enabled while such calls are in progress.
 
-Please add
+To avoid the need to refactor the code that is shared between ARM, arm64
+and other EFI architectures, fold this into efi_set_pgd(). Given that
+EFI runtime services are serialized and not pre-emptible, storing the
+flags into a global variable is reasonable here - efi_set_pgd() calls
+will always occur in pairs on a single CPU.
 
-Cc: <stable@vger.kernel.org> # v6.1+
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/arm/include/asm/efi.h | 15 +++++++++++++++
+ arch/arm/kernel/efi.c      |  4 ++++
+ 2 files changed, 19 insertions(+)
 
-One nit below.
+diff --git a/arch/arm/include/asm/efi.h b/arch/arm/include/asm/efi.h
+index 78282ced5038..773fb072c040 100644
+--- a/arch/arm/include/asm/efi.h
++++ b/arch/arm/include/asm/efi.h
+@@ -14,6 +14,7 @@
+ #include <asm/mach/map.h>
+ #include <asm/mmu_context.h>
+ #include <asm/ptrace.h>
++#include <asm/uaccess.h>
+ 
+ #ifdef CONFIG_EFI
+ void efi_init(void);
+@@ -32,6 +33,20 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md, boo
+ static inline void efi_set_pgd(struct mm_struct *mm)
+ {
+ 	check_and_switch_context(mm, NULL);
++
++	if (IS_ENABLED(CONFIG_ARM_TTBR0_PAN)) {
++		extern unsigned int efi_arm_ttbr0_pan_flags;
++
++		/*
++		 * EFI runtime services are mapped in the lower TTBR0 region,
++		 * so TTBR0 based PAN should be disabled while making a EFI
++		 * runtime service call.
++		 */
++		if (mm != current->active_mm)
++			efi_arm_ttbr0_pan_flags = uaccess_save_and_enable();
++		else
++			uaccess_restore(efi_arm_ttbr0_pan_flags);
++	}
+ }
+ 
+ void efi_virtmap_load(void);
+diff --git a/arch/arm/kernel/efi.c b/arch/arm/kernel/efi.c
+index 6f9ec7d28a71..6864338073e6 100644
+--- a/arch/arm/kernel/efi.c
++++ b/arch/arm/kernel/efi.c
+@@ -11,6 +11,10 @@
+ #include <asm/mach/map.h>
+ #include <asm/mmu_context.h>
+ 
++#ifdef CONFIG_ARM_TTBR0_PAN
++unsigned int efi_arm_ttbr0_pan_flags;
++#endif
++
+ static int __init set_permissions(pte_t *ptep, unsigned long addr, void *data)
+ {
+ 	efi_memory_desc_t *md = data;
+-- 
+2.45.2.505.gda0bf45e8d-goog
 
-
-> ---
->  arch/x86/boot/compressed/Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> index 243ee86cb1b1..5245c8fedc17 100644
-> --- a/arch/x86/boot/compressed/Makefile
-> +++ b/arch/x86/boot/compressed/Makefile
-> @@ -103,13 +103,13 @@ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
->  vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o $(obj)/tdx-shared.o
->  vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
->
->  vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
->  vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
-> -vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
-> +efi-obj-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
->
-
-I'd prefer to call this vmlinux-libs-y rather than efi-obj-y, because
-static libraries and locally built objects are being treated
-differently here. The other EFI related objects are added to
-vmlinux-objs-y, making it entirely unintuitive why this distinction
-exists.
-
-
-
-> -$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
-> +$(obj)/vmlinux: $(vmlinux-objs-y) $(efi-obj-y) FORCE
->         $(call if_changed,ld)
->
->  OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
->  $(obj)/vmlinux.bin: vmlinux FORCE
->         $(call if_changed,objcopy)
-> --
-> 2.45.2.505.gda0bf45e8d-goog
->
 
