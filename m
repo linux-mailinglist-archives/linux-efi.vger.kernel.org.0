@@ -1,53 +1,57 @@
-Return-Path: <linux-efi+bounces-1224-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1225-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32FA90A2C6
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2024 05:11:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D62D90AE23
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2024 14:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 665AB1F218D7
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2024 03:11:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3149C1F225DE
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2024 12:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16074176AB2;
-	Mon, 17 Jun 2024 03:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397FE196C98;
+	Mon, 17 Jun 2024 12:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nntBnYVE"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A7A367;
-	Mon, 17 Jun 2024 03:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA79196C72;
+	Mon, 17 Jun 2024 12:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718593865; cv=none; b=bV3JrDfrjWNqtcwJKaP+0IO42BUHwbK6PM9l645C/NnZ6v40HVrFIOjiF40pBV0Gnabx1TIBD07ga6bj6rg+Ngwv3dR85aj41MuceyYn99hb2f1bteahVzwdTjIa4oLYnAHvScJcCGxh9X9zXFzGtvfcedZp0B8QWY+CZZnFeC0=
+	t=1718628264; cv=none; b=ZrjT+R2D/yn1r0lY+7fX50S9JY26r1oYumNpNz+5n8CAhvA580ssceUcQM/zryFlcreMvzAbysrxtvYaobhirxISHTmzL5zdgNSCKGA6o6/uUzyb69z7zO3ON/MCAXA+UEjoUXwHyAQ84xoZzjsfPq/247BrJZGs/uqMWJrICQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718593865; c=relaxed/simple;
-	bh=0GXxmdVYWuMb/0ixNQuVCXsh6rU/NqGKXC2zemoFesY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T4fb3QtBNlHhF0Oo8tazh3NYysDHoyLPuRRk8THaiQ/y9GyhY5iYl4ct8QMvxL9997ATrtbbHd66/qSGYLScMVuWKQfsna3y7o5DJExqBnDm80Otnjiifx97m8eEtRKF6mOSDE39B3ze+rVtZIJ4KXwryqSf3ZO/6tAyxMzUUwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4W2ZYQ2mtBz3560M;
-	Mon, 17 Jun 2024 11:07:06 +0800 (CST)
-Received: from kwepemf500004.china.huawei.com (unknown [7.202.181.242])
-	by mail.maildlp.com (Postfix) with ESMTPS id E488D1400D6;
-	Mon, 17 Jun 2024 11:10:57 +0800 (CST)
-Received: from lihuafei.huawei.com (10.90.53.74) by
- kwepemf500004.china.huawei.com (7.202.181.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 17 Jun 2024 11:10:57 +0800
-From: Li Huafei <lihuafei1@huawei.com>
-To: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <ardb@kernel.org>, <bhe@redhat.com>, <dyoung@redhat.com>,
-	<chenhaixiang3@huawei.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
-	<yeweihua4@huawei.com>, <kexec@lists.infradead.org>, <x86@kernel.org>
-Subject: [RFC PATCH] x86: efi: Reserve all boot services regions to avoid memory reservation conflicts
-Date: Mon, 17 Jun 2024 19:11:53 +0800
-Message-ID: <20240617111153.1945652-1-lihuafei1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1718628264; c=relaxed/simple;
+	bh=bk3jaCTgEwyFqgeARzSHMxmOvQdgz0Ppwlp60WKOmQw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FD3e1PkYi/M4tGxxE9BKUy6hm++Zh1wFXzx8hz9G77SmjDZ7eRYdQCCTVKh56W9Ew3piviVLyv/1UseGnRTOklLv0T6Gi66Y6NBzB39GSzRaRfr6tGyhk8JW7IHVY04eLEs1KJQshHQmzeyU43K1fCGPrfrvU/ge/Mx34wTEdmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nntBnYVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F878C4AF1C;
+	Mon, 17 Jun 2024 12:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718628263;
+	bh=bk3jaCTgEwyFqgeARzSHMxmOvQdgz0Ppwlp60WKOmQw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nntBnYVEohFkLJK2lrDYhAJL6Dirglm7fViLEJx1cun+AEuKLjAubktVJcRIVtxox
+	 FxovPk10y+7rfn8sOdCoAfU1Mfs771FeOzuAYF1x699ODbPSfY/F4lU0sKGnPK89x/
+	 qtNgP8t1NYd2ZWHdB5KjOV6feKx6NVslrchwnFIv0sV/6p7FiJnYZwP0f5BUY0z/F5
+	 TvpkzAOHgr+qKuOTmBKS+QzqUgvUpA0E4P4pO1vf4anw+1yliUZA04dQ6ao3PG5H7Z
+	 LEbIcA9OrAn3iTpZo+HOYJ/ZoAPalXO0mPCL90aGfvvRf/nPpkTbfBHtY2Nt4XXHPL
+	 BsZqgjaoqYmZg==
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH] riscv: enable HAVE_ARCH_STACKLEAK
+Date: Mon, 17 Jun 2024 20:30:29 +0800
+Message-ID: <20240617123029.723-1-jszhang@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -55,99 +59,75 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemf500004.china.huawei.com (7.202.181.242)
 
-We encountered a conflict between kdump crashkernel reserved memory and
-bgrt reserved image_address memory:
+Add support for the stackleak feature. Whenever the kernel returns to user
+space the kernel stack is filled with a poison value.
 
-  # cat /proc/iomem
-  ...
-  2d4fd058-60efefff : System RAM
-    2d4fd058-58ffffff : System RAM
-      49000000-58ffffff : Crash kernel
-        53cbd000-53ccffff : Reserved <== Rrserved by bgrt
-  ...
+At the same time, disables the plugin in EFI stub code because EFI stub
+is out of scope for the protection.
 
-This resulted in the kexec tool generating incorrect e820 tables and the
-kdump kernel failed to boot. After analysis, the reason for the memory
-reservation conflict is that the mem_attr_table memory falls into an
-EFI_BOOT_SERVICES_DATA region, and efi_memattr_init() reserved some of
-the memory in this region, efi_reserve_boot_services() not fully
-reserving this memory region. The bgrt image_address memory happens to
-be in this region as well, thus the memory for bgrt image_address fails
-to be reserved in advance. Full details are in [1].
+Tested on qemu and milkv duo:
+/ # echo STACKLEAK_ERASING > /sys/kernel/debug/provoke-crash/DIRECT
+[   38.675575] lkdtm: Performing direct entry STACKLEAK_ERASING
+[   38.678448] lkdtm: stackleak stack usage:
+[   38.678448]   high offset: 288 bytes
+[   38.678448]   current:     496 bytes
+[   38.678448]   lowest:      1328 bytes
+[   38.678448]   tracked:     1328 bytes
+[   38.678448]   untracked:   448 bytes
+[   38.678448]   poisoned:    14312 bytes
+[   38.678448]   low offset:  8 bytes
+[   38.689887] lkdtm: OK: the rest of the thread stack is properly erased
 
-To resolve conflicts, we may need to reserve all EFI_BOOT_SERVICES_DATA
-memory in efi_reserve_boot_services(), even if there is an overlap with
-other reserved areas.
-
-[1] https://lore.kernel.org/all/ZfjshNK7Nbdz1de3@MiWiFi-R3L-srv/T/#me0e8a206833d1e6caf962b9e2c0c204bf966c769
-
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- arch/x86/platform/efi/quirks.c | 35 ++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+ arch/riscv/Kconfig                    | 1 +
+ arch/riscv/kernel/entry.S             | 4 ++++
+ drivers/firmware/efi/libstub/Makefile | 3 ++-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index f0cc00032751..02863f0305db 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -337,10 +337,26 @@ void __init efi_reserve_boot_services(void)
- 		    md->type != EFI_BOOT_SERVICES_DATA)
- 			continue;
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 0525ee2d63c7..9cbfdffec96c 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -118,6 +118,7 @@ config RISCV
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
+ 	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
+ 	select HAVE_ARCH_SECCOMP_FILTER
++	select HAVE_ARCH_STACKLEAK
+ 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT && MMU
+diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+index 68a24cf9481a..80ff55a26d13 100644
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -130,6 +130,10 @@ SYM_CODE_START_NOALIGN(ret_from_exception)
+ #endif
+ 	bnez s0, 1f
  
-+		/*
-+		 * Checks if the current region has been partially or fully
-+		 * reserved by someone else.
-+		 */
- 		already_reserved = memblock_is_region_reserved(start, size);
- 
- 		/*
--		 * Because the following memblock_reserve() is paired
-+		 * If someone else has already reserved part of the EFI Boot
-+		 * Data region (e.g. efi_memattr_init()), we should also
-+		 * reserve the remaining part. This is because some efi drivers
-+		 * rely on reserving EFI Boot Data here in advance, such as
-+		 * bgrt (see efi_bgrt_init()), otherwise the memory reserved
-+		 * by bgrt via efi_mem_reserve() will conflict with the memory
-+		 * reserved by others via memblock_reserve(). So here
-+		 * unconditionally reserve the whole EFI Boot Data region.
-+		 */
-+		memblock_reserve(start, size);
++#ifdef CONFIG_GCC_PLUGIN_STACKLEAK
++	call	stackleak_erase_on_task_stack
++#endif
 +
-+		/*
-+		 * Because the above memblock_reserve() is paired
- 		 * with memblock_free_late() for this region in
- 		 * efi_free_boot_services(), we must be extremely
- 		 * careful not to reserve, and subsequently free,
-@@ -352,18 +368,13 @@ void __init efi_reserve_boot_services(void)
- 		 * freed is page zero (first 4Kb of memory), which may
- 		 * contain boot services code/data but is marked
- 		 * E820_TYPE_RESERVED by trim_bios_range().
-+		 *
-+		 * If we are the first to reserve the region, no
-+		 * one else cares about it. We own it and can
-+		 * free it later.
- 		 */
--		if (!already_reserved) {
--			memblock_reserve(start, size);
--
--			/*
--			 * If we are the first to reserve the region, no
--			 * one else cares about it. We own it and can
--			 * free it later.
--			 */
--			if (can_free_region(start, size))
--				continue;
--		}
-+		if (!already_reserved && can_free_region(start, size))
-+			continue;
+ 	/* Save unwound kernel stack pointer in thread_info */
+ 	addi s0, sp, PT_SIZE_ON_STACK
+ 	REG_S s0, TASK_TI_KERNEL_SP(tp)
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 06f0428a723c..3a9521c57641 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -28,7 +28,8 @@ cflags-$(CONFIG_ARM)		+= -DEFI_HAVE_STRLEN -DEFI_HAVE_STRNLEN \
+ 				   -DEFI_HAVE_MEMCHR -DEFI_HAVE_STRRCHR \
+ 				   -DEFI_HAVE_STRCMP -fno-builtin -fpic \
+ 				   $(call cc-option,-mno-single-pic-base)
+-cflags-$(CONFIG_RISCV)		+= -fpic -DNO_ALTERNATIVE -mno-relax
++cflags-$(CONFIG_RISCV)		+= -fpic -DNO_ALTERNATIVE -mno-relax \
++				   $(DISABLE_STACKLEAK_PLUGIN)
+ cflags-$(CONFIG_LOONGARCH)	+= -fpie
  
- 		/*
- 		 * We don't own the region. We must not free it.
+ cflags-$(CONFIG_EFI_PARAMS_FROM_FDT)	+= -I$(srctree)/scripts/dtc/libfdt
 -- 
-2.25.1
+2.43.0
 
 
