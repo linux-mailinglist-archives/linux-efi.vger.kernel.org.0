@@ -1,131 +1,96 @@
-Return-Path: <linux-efi+bounces-1233-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1234-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570F790B273
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2024 16:39:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A564290B4E9
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2024 17:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3EFAB286F4
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2024 13:55:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A1231C21837
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Jun 2024 15:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6001F16849D;
-	Mon, 17 Jun 2024 13:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFCF14EC7D;
+	Mon, 17 Jun 2024 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+HXZI3s"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="XyYMD27m"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3397B168492;
-	Mon, 17 Jun 2024 13:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BDF28F3;
+	Mon, 17 Jun 2024 15:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630710; cv=none; b=AV1Ze0F/1wOtO1rLb+xJYcBvsVezFRWnaCXh1fmjrlzcArEDE0QNfvhIY7v48CkLUgtB70j2mKF/b8yX/JojKxF7vhfTCBXDP1vMbb99wEF75JsGvOh9UUArENkktQJmvHEfH3Wfq7HvwDw59NsBMJfsnRv7k/Hd6OkByFagFlI=
+	t=1718637398; cv=none; b=WC+jdJ9n+YNZyEzMFPNbqw6pJagU6MIHIpp71S+i5kIIja0UpKw4OLFN080XHiyRGfsoRCByev8CfO92pB8lBw676+10FLt+8fSKlsS0SABNx6v24GirFEDkUNjVQt1bqdLqHIvZVsv6dDEc1SZrp5luO7G2O6qDDrPNSW7wT2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630710; c=relaxed/simple;
-	bh=oNCSYD22b+AHp/bvLU5Dst/3JlsBB7ZaEJbPjPmXykY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9bhlctbJPSQx0yRcUfbxGczkNv/A7bnPQz7oGflplxvKa0poTsg5p2DLE5EUPu+yUmJt6cQ/eolOK5MSm7BrDIhloChMP0FwkdpP07AK07HCKZ/+g9G8V9I2n7ZnAY8Oc6/CFhpByJn50ALqlYq+AuQkyPDXhUW5ufx27PV7/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+HXZI3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1886C2BD10;
-	Mon, 17 Jun 2024 13:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630709;
-	bh=oNCSYD22b+AHp/bvLU5Dst/3JlsBB7ZaEJbPjPmXykY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+HXZI3s8jWvL82LDVyRq22DKQdHJ158QLl5AYP/2688CNxNxpx8QRwpqRJ6AOwl7
-	 gOtd7L+0LF6Zh4NyRm+ptuvRZhnkoKMXArDHOken40YBGnW+F/Ie3IzIsCgUnlnuqJ
-	 x8ywtbZDA9jgeybnJGH5b1xzVvEjMuAc3PeN/BQlhG9lK/MdLvJ6ZGK3/fkDqHjY5K
-	 mxXv1m4rNsWXfcPfTiuqbc09GZkOs+4z20KdZ9Fh2i2oY54nBxwvTTf6CIN9cKSZL5
-	 PFwe0V9I3V0tf+Q1g6lqwHz/l2kP541voCv1gZ7FYFdP4HMckgwERtB+xfX6dr1a2i
-	 YkIiw6I1KGn3Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Kees Cook <keescook@chromium.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 07/29] efi: pstore: Return proper errors on UEFI failures
-Date: Mon, 17 Jun 2024 09:24:11 -0400
-Message-ID: <20240617132456.2588952-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240617132456.2588952-1-sashal@kernel.org>
-References: <20240617132456.2588952-1-sashal@kernel.org>
+	s=arc-20240116; t=1718637398; c=relaxed/simple;
+	bh=jT0rAstJk9KMGZXnnmHWZRLkARXtg2bJVhfHUB5Hg5c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pna80lu1U947POV64w8iejSaySdBxJbH7Ztjqw4YFGx5X8gzN57pHjUN+76Cmz0y/cr4jUAxS91dCd0T5G7YrFewX3uG+UoSOkTIDpBwrgvUlc7s4wnk3N07jBU7b//mI0nZGSjgM0WbUYHwB6WIWESCdqHahD+3UfdMtySIh7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=XyYMD27m; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DweQqiSPnI73gLN0HTCwmU3H1dTkoKcPiSNA1+IYy/U=; b=XyYMD27m6qYdn6W/COMUedwjoA
+	AVafTiZuKvRBg82JmG10lDIGSlJsNG2FKUitFh7XgWN1tOuZ8NlDLqXC8k1aPtzn1duT0DMzkV77b
+	WGXhJQw2gsWJUgANcMk8wBr9VcGdcHKR39N/9qNstH24iXPbxMHr4rBw0IrCaTmP83mFcKNy34Skb
+	2PcPq4NnXBPw5mxwHn2OYARlWeh0u9JMv835ir6OctkF5OPm03FjCrTp2QkOuz8Op4sfa1RY/QyNT
+	N06zMhr/L05mMv4P3AtrLjO61tLH8H5wqBpbQ0tcQt+mRrdYAED79GhOVGck2eE3H9LhByP8m4NtX
+	q66tvrZQ==;
+Received: from [177.45.213.110] (helo=[192.168.1.60])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1sJE5o-004MgA-Sl; Mon, 17 Jun 2024 17:16:25 +0200
+Message-ID: <53728bf9-8395-831c-f6bc-be79a379fe8a@igalia.com>
+Date: Mon, 17 Jun 2024 12:16:19 -0300
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
-Content-Transfer-Encoding: 8bit
-
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH AUTOSEL 6.1 07/29] efi: pstore: Return proper errors on
+ UEFI failures
+To: Sasha Levin <sashal@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ stable@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+References: <20240617132456.2588952-1-sashal@kernel.org>
+ <20240617132456.2588952-7-sashal@kernel.org>
+Content-Language: en-US
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <20240617132456.2588952-7-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-[ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
+On 17/06/2024 10:24, Sasha Levin wrote:
+> From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+> 
+> [ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
+> 
+> Right now efi-pstore either returns 0 (success) or -EIO; but we
+> do have a function to convert UEFI errors in different standard
+> error codes, helping to narrow down potential issues more accurately.
+> 
+> So, let's use this helper here.
+> 
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Right now efi-pstore either returns 0 (success) or -EIO; but we
-do have a function to convert UEFI errors in different standard
-error codes, helping to narrow down potential issues more accurately.
+Following Ard's comment for the other releases, let's not backport this one.
 
-So, let's use this helper here.
+Thanks,
 
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/firmware/efi/efi-pstore.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
-index 3bddc152fcd43..8b2a9fc436a3f 100644
---- a/drivers/firmware/efi/efi-pstore.c
-+++ b/drivers/firmware/efi/efi-pstore.c
-@@ -107,7 +107,7 @@ static int efi_pstore_read_func(struct pstore_record *record,
- 				     &size, record->buf);
- 	if (status != EFI_SUCCESS) {
- 		kfree(record->buf);
--		return -EIO;
-+		return efi_status_to_err(status);
- 	}
- 
- 	/*
-@@ -152,7 +152,7 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
- 			return 0;
- 
- 		if (status != EFI_SUCCESS)
--			return -EIO;
-+			return efi_status_to_err(status);
- 
- 		/* skip variables that don't concern us */
- 		if (efi_guidcmp(guid, LINUX_EFI_CRASH_GUID))
-@@ -190,7 +190,7 @@ static int efi_pstore_write(struct pstore_record *record)
- 					    record->size, record->psi->buf,
- 					    true);
- 	efivar_unlock();
--	return status == EFI_SUCCESS ? 0 : -EIO;
-+	return efi_status_to_err(status);
- };
- 
- static int efi_pstore_erase(struct pstore_record *record)
-@@ -201,7 +201,7 @@ static int efi_pstore_erase(struct pstore_record *record)
- 				     PSTORE_EFI_ATTRIBUTES, 0, NULL);
- 
- 	if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
--		return -EIO;
-+		return efi_status_to_err(status);
- 	return 0;
- }
- 
--- 
-2.43.0
-
+Guilherme
 
