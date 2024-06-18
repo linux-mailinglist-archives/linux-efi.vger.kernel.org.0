@@ -1,59 +1,58 @@
-Return-Path: <linux-efi+bounces-1235-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1236-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461B090CBD5
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Jun 2024 14:37:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E3190CC02
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Jun 2024 14:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFF151F238AC
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Jun 2024 12:37:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13C73B2568F
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Jun 2024 12:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E5813A259;
-	Tue, 18 Jun 2024 12:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7478914533D;
+	Tue, 18 Jun 2024 12:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qcPY3zCg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/TtT1BL"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AD2142E9E;
-	Tue, 18 Jun 2024 12:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EB5144300;
+	Tue, 18 Jun 2024 12:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714185; cv=none; b=t3oE14rweyvH9mJWAUEE7N8QNephi56WNfgC3wdF5G+48RF2SKKIeABryv/2x6yLqsBXUqBCRbIpvgNtKXB+Iy9iZs/qjWAKcP85/mp889ezfiGVDb4uuT11mGHo/JgSL4WPYK5gqHRxveLGX0bgzbDqmzBVt0+whpaTXo4U08A=
+	t=1718714186; cv=none; b=MFPU0FMOBlCM4gBbxTeQ273SvXhyCJt//ARbtXrSiRqPAopjwyn/rQ4uEgfaMNoMJjnIc8iCF5TaL9354LwXkyZQo6WoezTw3S59/JigqxZAjH9y+C7BaYV3JrXUBhA81aL6U/KAev/W42od+ymrfyKiI4sIEmQ/yu7EuA43uhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714185; c=relaxed/simple;
-	bh=kaqaszhQnjB6MNLzi7ZVRYXuc9INOeh8YqNngcloKc4=;
+	s=arc-20240116; t=1718714186; c=relaxed/simple;
+	bh=3qO/bu8qgfFKtr3pb9LarfRM3RiaqcXJaOV4kYQdtXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0P3OOkecGxWfogoXQ5uDwJqK2bTAWEyeGREHg17Kf/gdbYpOQQ5PBSi6fyTFWGrlba2Cgtod/OuBxDKJxnuNVZSMi9lPj5i0/5+6lWnWLRV7zy7rpDgPhePosXbqFEsZEkDY3gJbbHGS+Mnsz0/vdWunLILrB7ECWwY5wuDCcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qcPY3zCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62696C3277B;
-	Tue, 18 Jun 2024 12:36:23 +0000 (UTC)
+	 MIME-Version; b=jP5ZwoiB/wfrN3uKcHAUcTzX7Wfjyta7uTL4vss3A96/lq1/lXxj53tVm5Q4zRResL0g9xL+XUZxmKsXyxXcNPNmcnzQsWJF1dThKxqlFyREL2lI+SCSNVPgJbhQe/x7OvwlE6V6tUGZFXK3y5GMxa5LszQ0rOU4MpO6H46mcRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/TtT1BL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C93C4AF48;
+	Tue, 18 Jun 2024 12:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714184;
-	bh=kaqaszhQnjB6MNLzi7ZVRYXuc9INOeh8YqNngcloKc4=;
+	s=k20201202; t=1718714185;
+	bh=3qO/bu8qgfFKtr3pb9LarfRM3RiaqcXJaOV4kYQdtXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcPY3zCgiicvBAPEXv+PeuFtrqbGdxfgeDt+RdFX7DPLDiKEor3mldxzaupgyXIV3
-	 ZRQrYMD9FQEmbmaVDLmUesYbfYVoCZbM+vAmvbXxzArzVbkz5cRi5q1KbNQgVKbacv
-	 nf/5KOJ6421EKCwhyK4Z0Ta6q5DspR2lJjqo6XVQydFGAtLVGbS1anVfZS0HxkmXMG
-	 jp/gBdapCGqau1JOPqmI8afHH2QNlHYcH7hVJIL2zc03UjdEEyqvcye5emHF8DIMgu
-	 IWIpAMhQ7dxLljKTGKJ/JuhEVqUCI1lPKCLJO4jnngTp5KVbvxNXQTlhchIOO1Gx0s
-	 AqDsP9HY33foQ==
+	b=B/TtT1BLR33d6Cc2I/l1NEOL9tB3ILUtxIkEanMr4KVtsStTCrhpLvTxab1sQu/gh
+	 8nML/QylNYoc6QAlJ1Fxx35Bpw7sp5i9CMchCMcZPOGXnC1eZKlmkjgoQxjgJUZGEP
+	 EMhB7WV+CqT17aiIxefkeo67807A3YV0w1tGIfd6hDUeV9fbsNnaEzhrd0S7eXbjj+
+	 A1njj1PUVSBbRaMv+bncf/9cWCnhzwdURNMGaUbR+krKC2TlTRg2iuJVE5QzhPE0Gw
+	 wbOdbqlsqwC0oDnJUEa0byY5PymrWxaFumLyPpYUm8HxPUX49XLiqkgABqZrc38DdA
+	 Qr3/jS6lSutmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Kees Cook <keescook@chromium.org>,
 	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	chenhuacai@kernel.org,
-	linux-efi@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.9 06/44] efi/libstub: zboot.lds: Discard .discard sections
-Date: Tue, 18 Jun 2024 08:34:47 -0400
-Message-ID: <20240618123611.3301370-6-sashal@kernel.org>
+	linux-hardening@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 07/44] efi: pstore: Return proper errors on UEFI failures
+Date: Tue, 18 Jun 2024 08:34:48 -0400
+Message-ID: <20240618123611.3301370-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
 References: <20240618123611.3301370-1-sashal@kernel.org>
@@ -68,52 +67,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 
-[ Upstream commit 5134acb15d9ef27aa2b90aad46d4e89fcef79fdc ]
+[ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
 
-When building ARCH=loongarch defconfig + CONFIG_UNWINDER_ORC=y using
-LLVM, there is a warning from ld.lld when linking the EFI zboot image
-due to the use of unreachable() in number() in vsprintf.c:
+Right now efi-pstore either returns 0 (success) or -EIO; but we
+do have a function to convert UEFI errors in different standard
+error codes, helping to narrow down potential issues more accurately.
 
-  ld.lld: warning: drivers/firmware/efi/libstub/lib.a(vsprintf.stub.o):(.discard.unreachable+0x0): has non-ABS relocation R_LARCH_32_PCREL against symbol ''
+So, let's use this helper here.
 
-If the compiler cannot eliminate the default case for any reason, the
-.discard.unreachable section will remain in the final binary but the
-entire point of any section prefixed with .discard is that it is only
-used at compile time, so it can be discarded via /DISCARD/ in a linker
-script. The asm-generic vmlinux.lds.h includes .discard and .discard.*
-in the COMMON_DISCARDS macro but that is not used for zboot.lds, as it
-is not a kernel image linker script.
-
-Add .discard and .discard.* to /DISCARD/ in zboot.lds, so that any
-sections meant to be discarded at link time are not included in the
-final zboot image. This issue is not specific to LoongArch, it is just
-the first architecture to select CONFIG_OBJTOOL, which defines
-annotate_unreachable() as an asm statement to add the
-.discard.unreachable section, and use the EFI stub.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2023
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/zboot.lds | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/efi/efi-pstore.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
-index ac8c0ef851581..af2c82f7bd902 100644
---- a/drivers/firmware/efi/libstub/zboot.lds
-+++ b/drivers/firmware/efi/libstub/zboot.lds
-@@ -41,6 +41,7 @@ SECTIONS
+diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
+index 833cbb995dd3f..194fdbd600ad1 100644
+--- a/drivers/firmware/efi/efi-pstore.c
++++ b/drivers/firmware/efi/efi-pstore.c
+@@ -136,7 +136,7 @@ static int efi_pstore_read_func(struct pstore_record *record,
+ 				     &size, record->buf);
+ 	if (status != EFI_SUCCESS) {
+ 		kfree(record->buf);
+-		return -EIO;
++		return efi_status_to_err(status);
  	}
  
- 	/DISCARD/ : {
-+		*(.discard .discard.*)
- 		*(.modinfo .init.modinfo)
- 	}
+ 	/*
+@@ -181,7 +181,7 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
+ 			return 0;
+ 
+ 		if (status != EFI_SUCCESS)
+-			return -EIO;
++			return efi_status_to_err(status);
+ 
+ 		/* skip variables that don't concern us */
+ 		if (efi_guidcmp(guid, LINUX_EFI_CRASH_GUID))
+@@ -219,7 +219,7 @@ static int efi_pstore_write(struct pstore_record *record)
+ 					    record->size, record->psi->buf,
+ 					    true);
+ 	efivar_unlock();
+-	return status == EFI_SUCCESS ? 0 : -EIO;
++	return efi_status_to_err(status);
+ };
+ 
+ static int efi_pstore_erase(struct pstore_record *record)
+@@ -230,7 +230,7 @@ static int efi_pstore_erase(struct pstore_record *record)
+ 				     PSTORE_EFI_ATTRIBUTES, 0, NULL);
+ 
+ 	if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
+-		return -EIO;
++		return efi_status_to_err(status);
+ 	return 0;
  }
+ 
 -- 
 2.43.0
 
