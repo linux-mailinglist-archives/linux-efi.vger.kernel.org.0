@@ -1,67 +1,68 @@
-Return-Path: <linux-efi+bounces-1258-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1257-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF68911072
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Jun 2024 20:13:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE9C91106F
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Jun 2024 20:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CD271C23D68
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Jun 2024 18:13:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9501B1F22908
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Jun 2024 18:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910CE1BD8F1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7231BD8EE;
 	Thu, 20 Jun 2024 18:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="symNHpEQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ACl5tPnt"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621D11B4C3A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622531B4C3D;
 	Thu, 20 Jun 2024 18:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718906515; cv=none; b=EZ5CgqKIbArrftQPSiz/1MlL3b70DIWyfegpH1+G9M/AdgQ0xiS9xzy7dWndn3ASDHi+pA5oDUO02+YoMt0lf0yS5A9laOgg/bUxQu7GyikZFv0957SJtq4DR3iZOfDPr9tCSQUmTbzFuaza+dUR4BuN/kuhCoz7smF81C4jPt0=
+	t=1718906515; cv=none; b=cYWn8WUx0rxN3WFPRGAW3W/3Hfp4ATwjU2pazrHTWM6HDc+9JuB7nL0hHGeADJDltlLAE6dQlhrWmGFhldH78E9uGwV2nMVQc2KRlQ5PH9QkXsqsrP070X/ZYaggnpPpElQyl2a9mpky17og9cmCcakFnfRgUwtx11+CKo8v6JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1718906515; c=relaxed/simple;
-	bh=CFgn74JVfqJnl7/jRSJZfwKA4G00LCTZSAG3MnmmnY4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iQqQYXUkHJ5l2BrSdKd6NHdg4Ex/pPIQI197Omsh3vlqdGtZ6F7AF5QVgdGcptA2Yt5ZdwkrdB8otmJUPTy6F1QS8Jcs0YH6x5HLl4tAgh6bQZaagtxoxUtomC1MtAlJBUVoHaUh+fUTzheFz9LmKyO2P76kqjQJaUY703w1ZMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=symNHpEQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E612C4AF09;
+	bh=RMYZrT95nApMxsG7y6LLT3Z2HeuOH/cK6XfnlqABCbY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OeIVfhRdY6lkFtgG9jOjUYDclyOBXjAldgbcvziWJgJOybRyZHZgQoYZ2dl0xU5XSgZyeC1R8SUXzZ3PkhUkJ7Xck7WF1PyriighWETQAf6uNEIwk5wpBqfEw4TB2kcklRHY7LhCMoiE9DiIJEEWWgflby7lajfulujh09Ys2Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ACl5tPnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD06C4AF07;
 	Thu, 20 Jun 2024 18:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1718906515;
-	bh=CFgn74JVfqJnl7/jRSJZfwKA4G00LCTZSAG3MnmmnY4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=symNHpEQyNcEny4fqOlFVpQj36ZBbwpre/gAG8+2EfbRr92+jO8VUiEnSthLnD/rV
-	 yuCkw5vAYcoOwx+2LAeOXdD/I9vzn12ft97tmWI0ON3ipxNi2dhl6VdguEObXUWyUO
-	 RSUzfIKwEWXmF+Vp75EuIaFt7Lt0EAyeQAWoc6/8G+2Jp5r0Ncfjzm/qycxRoagOaL
-	 kD0OL91/8yz5L3Hlvxj8hrWQl+L+oMpqv9MGu7Vkzi/Ks8hum1hjShBK4P8t3hzf3C
-	 Mxbq+e37sHO6OrOyvuF68hTQh73bPGResYZAxeVNgpPZdpzR1tteVfc+c1CdmxkPEA
-	 kgu80ErTwzTAA==
+	bh=RMYZrT95nApMxsG7y6LLT3Z2HeuOH/cK6XfnlqABCbY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ACl5tPntUOAMvhb3Wa2wWXsBJIL7DH7NNRcjUO9dEq0twiuwyL0ZrRdp95iWA6MR2
+	 LSlQ0XMFAfETA5bqERl1jwx1QSlLIGfQm2UBIs1sk1yQ3ttFbH1bdDiY9xmvzaMeTz
+	 kkC06dSLZokTiJcHgObwWjgTC/8hXq3QOlFsdpLJyxDuNWBM8tBQoVd6jJ9ZosxxTj
+	 NmLsXB/a/yZioAkcFiBoUk6kQWKuc3RbZwt+ptsecut+u5lu0PKzAoKP6Fdo5rvJce
+	 n9SxwdqjalM3MuI5gVOSoKlB3Vg0W6LP5Aygifd82eQYin1ugjHF4OSpuoyU/l95wH
+	 OMI5QhiNeiiPQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.97.1)
 	(envelope-from <mchehab@kernel.org>)
-	id 1sKM6a-00000006MRf-0ly3;
+	id 1sKM6a-00000006MRi-0wMY;
 	Thu, 20 Jun 2024 20:01:52 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: 
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	James Morse <james.morse@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-edac@vger.kernel.org,
+	"Borislav Petkov" <bp@alien8.de>,
+	"James Morse" <james.morse@arm.com>,
+	"Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+	"Shiju Jose" <shiju.jose@huawei.com>,
+	"Tony Luck" <tony.luck@intel.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH v4 0/3] Fix CPER issues related to UEFI 2.9A Errata
-Date: Thu, 20 Jun 2024 20:01:43 +0200
-Message-ID: <cover.1718906288.git.mchehab+huawei@kernel.org>
+	linux-edac@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/3] efi/cper: Adjust infopfx size to accept an extra space
+Date: Thu, 20 Jun 2024 20:01:44 +0200
+Message-ID: <a8cfcd9e9827770de748db7be44362a98c957642.1718906288.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1718906288.git.mchehab+huawei@kernel.org>
+References: <cover.1718906288.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -72,59 +73,38 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The UEFI 2.9A errata makes clear how ARM processor type encoding should
-be done: it is meant to be equal to Generic processor, using a bitmask.
+Compiling with W=1 with werror enabled produces an error:
 
-The current code assumes, for both generic and ARM processor types
-that this is an integer, which is an incorrect assumption.
+drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
+drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
+      |                                                                ^
+drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
+  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fix it. While here, also fix a compilation issue when using W=1.
+As the logic there adds an space at the end of infopx buffer.
+Add an extra space to avoid such warning.
 
-After the change, Kernel will properly decode receiving two errors at the same
-message, as defined at UEFI spec:
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ drivers/firmware/efi/cper-arm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[   75.282430] Memory failure: 0x5cdfd: recovery action for free buddy page: Recovered
-[   94.973081] {2}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-[   94.973770] {2}[Hardware Error]: event severity: recoverable
-[   94.974334] {2}[Hardware Error]:  Error 0, type: recoverable
-[   94.974962] {2}[Hardware Error]:   section_type: ARM processor error
-[   94.975586] {2}[Hardware Error]:   MIDR: 0x000000000000cd24
-[   94.976202] {2}[Hardware Error]:   Multiprocessor Affinity Register (MPIDR): 0x000000000000ab12
-[   94.977011] {2}[Hardware Error]:   error affinity level: 2
-[   94.977593] {2}[Hardware Error]:   running state: 0x1
-[   94.978135] {2}[Hardware Error]:   Power State Coordination Interface state: 4660
-[   94.978884] {2}[Hardware Error]:   Error info structure 0:
-[   94.979463] {2}[Hardware Error]:   num errors: 3
-[   94.979971] {2}[Hardware Error]:    first error captured
-[   94.980523] {2}[Hardware Error]:    propagated error captured
-[   94.981110] {2}[Hardware Error]:    overflow occurred, error info is incomplete
-[   94.981893] {2}[Hardware Error]:    error_type: 0x0006: cache error|TLB error
-[   94.982606] {2}[Hardware Error]:    error_info: 0x000000000091000f
-[   94.983249] {2}[Hardware Error]:     transaction type: Data Access
-[   94.983891] {2}[Hardware Error]:     cache error, operation type: Data write
-[   94.984559] {2}[Hardware Error]:     TLB error, operation type: Data write
-[   94.985215] {2}[Hardware Error]:     cache level: 2
-[   94.985749] {2}[Hardware Error]:     TLB level: 2
-[   94.986277] {2}[Hardware Error]:     processor context not corrupted
-
-And the error code is properly decoded according with table N.17 from UEFI 2.10
-spec:
-
-	[   94.981893] {2}[Hardware Error]:    error_type: 0x0006: cache error|TLB error
-
-Mauro Carvalho Chehab (3):
-  efi/cper: Adjust infopfx size to accept an extra space
-  efi/cper: Add a new helper function to print bitmasks
-  efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
-
- drivers/acpi/apei/ghes.c        | 10 +++---
- drivers/firmware/efi/cper-arm.c | 48 ++++++++++++---------------
- drivers/firmware/efi/cper.c     | 59 +++++++++++++++++++++++++++++++++
- include/linux/cper.h            | 13 +++++---
- 4 files changed, 94 insertions(+), 36 deletions(-)
-
+diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
+index fa9c1c3bf168..d9bbcea0adf4 100644
+--- a/drivers/firmware/efi/cper-arm.c
++++ b/drivers/firmware/efi/cper-arm.c
+@@ -240,7 +240,7 @@ void cper_print_proc_arm(const char *pfx,
+ 	int i, len, max_ctx_type;
+ 	struct cper_arm_err_info *err_info;
+ 	struct cper_arm_ctx_info *ctx_info;
+-	char newpfx[64], infopfx[64];
++	char newpfx[64], infopfx[65];
+ 
+ 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
+ 
 -- 
 2.45.2
-
 
 
