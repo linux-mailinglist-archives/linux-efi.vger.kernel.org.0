@@ -1,34 +1,34 @@
-Return-Path: <linux-efi+bounces-1276-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1275-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220F4912BAB
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2024 18:44:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6F1912BA8
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2024 18:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AD3B1F21EE8
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2024 16:44:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C2C71C2688E
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2024 16:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0045C16849B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476EB166311;
 	Fri, 21 Jun 2024 16:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lCuy782g"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ih3Si3Ao"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A82A160865;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69491607AD;
 	Fri, 21 Jun 2024 16:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718988268; cv=none; b=tLmL61a0/ucwYtioza0Bfy+P1qKv/14qiJjsaifkbc82DW1CifZ2VrurfyPoOnmC30MNYx783iBRNNDoyH1TXVjm1iKs+a4/pWwTUeHGKpuL1vaAgD6bukxBs4KTRzjlkbPe8L/pCE08LYu2i+UW0azBrdWizJjrO/AWBKmmePo=
+	t=1718988268; cv=none; b=Hx969sgQJxYpts+dr1SPmPVdI+pxrUDhI+F4YUMliLuf4Ua8yh0BlMZxhXplqR1vZnNguEeHAGYuicLZMuCySjKVJdBn8s4UPHjf9CudYP6cw8v1HlLeStUpn64th/8BNHELddIhgj0E/rtwpBbrcMiTYqd3Mm5AhhZDirDustI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1718988268; c=relaxed/simple;
-	bh=vQhv6zBl+J5Tnsr+ly6iaE4iRU0OCteyzIdlEzGRYuI=;
+	bh=1jHhrYMe7a3/ohkHtpaJJmyxwj3amjnL9BxFfmnB90E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxaT7CIGyw/2AWbgC+LWVFhCperlikG3+00kF61EDpRuPmftIlRAtFCNkYWwJ1uhhZk4tXlWQjh6WV6c2cCD5BpR7fMpAU4doaEiM7+SU1Hbd0lpNLqqZCct2l2xFy1lT+phIw444O/LYWc2n3tvqJLSn7baJYQZw2aEItbqbJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lCuy782g; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=To2WIgvZ0UpgMy07pSfHDzdErkTawiX+DCbKzBYBqwb4UZ7Nb2NOCvtndklYINMDX+aunLOsa1uDz8Cr6eF3R2fzpQdv3hHQwoNgBq5UXQb8ryR5VGvjc1B/oBePD3lOYMd+OdPfEZLSCXwLQttK602+O7lH2zCp4s20TdWesF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ih3Si3Ao; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,30 +36,30 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1718988267; x=1750524267;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vQhv6zBl+J5Tnsr+ly6iaE4iRU0OCteyzIdlEzGRYuI=;
-  b=lCuy782gOhNJ889ttFhuYVq20H7XkMAT6IlUGLm+zGnm+JQeef6mRrsT
-   86sCalfdqswI65wc1U36uvu5TMKsyZwrt4rjafTAgO/TRKpOgedgUn7vl
-   VeG0pL+dueNeJqDM2csS/8O53lIhOeBy7+jvQzW+V7Enu6FSK60BzIy7d
-   R3RF0Rf1bxBfAjInWhY3vapu/nbUWM1Rz+dREX3132siPMPaCPm8jP3m3
-   zrYxJ+ZyB1s42HF6cRQuYZjLQa0px9Aoxg2xTUz9trmisfmdEJ6vqRkxd
-   JD0v7I7GC2xp1uksPuOeI+40lOXhgd2Iktem5VQ6q4jVrtGRnF60RyA8d
-   A==;
-X-CSE-ConnectionGUID: Z3C/CHeARVOYpQXFBIuzbQ==
-X-CSE-MsgGUID: h36VyECMSpGQ5c3puvEqkQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15727182"
+  bh=1jHhrYMe7a3/ohkHtpaJJmyxwj3amjnL9BxFfmnB90E=;
+  b=ih3Si3AoW/6UskLj1aevPovzuzl60xDjrJSll/p6UOQ/64CViirMBttK
+   trOZ5EOOB9vumA+f9gemqOncG58/YaCZ5O2jaBZROFsW8TJXHC/uBRqYs
+   LyGrWEhgGAgasUEOe7j9OG3Ld9qTZPfsjB4ZLk0Z48x0FluEgaY1vFHfn
+   8PFUfmYDP7fYiCtKPw7OpPRUVJKeG6kn7BSa6K3yjG285ksGg1gzeBgao
+   co8F9ImDNKgzGtuHTIizPK3oANEc/YPqocyEASkTWzgHCCy/XMnYR+c2Y
+   Gghe/4gQZUF+Hl8cBzUBE45wY1PQtneojn0AyapgzGmLqS2061VvUhafz
+   Q==;
+X-CSE-ConnectionGUID: XMiNO8V0SLKVRFNBDeaNVg==
+X-CSE-MsgGUID: kPPvrddFRCCu1bsEIzKFvA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15727160"
 X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; 
-   d="scan'208";a="15727182"
+   d="scan'208";a="15727160"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2024 09:44:24 -0700
-X-CSE-ConnectionGUID: irTw7mS5TLWlF9ye/qQdGg==
-X-CSE-MsgGUID: s2D0gDk6ReGQKZ1Ozj6i6A==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2024 09:44:23 -0700
+X-CSE-ConnectionGUID: a4aJpdS9R9qGyjNv7x3NEg==
+X-CSE-MsgGUID: ScJEe9lLTj2jJq5Yf9OUuQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; 
-   d="scan'208";a="42745631"
+   d="scan'208";a="42745628"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmviesa010.fm.intel.com with ESMTP; 21 Jun 2024 09:44:18 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 42799122; Fri, 21 Jun 2024 19:44:17 +0300 (EEST)
+	id 4E5FB1F8; Fri, 21 Jun 2024 19:44:17 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -84,9 +84,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/3] x86/64/mm: Always use dynamic memory layout
-Date: Fri, 21 Jun 2024 19:44:04 +0300
-Message-ID: <20240621164406.256314-2-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 2/3] x86/64/mm: Make SPARSEMEM_VMEMMAP the only memory model
+Date: Fri, 21 Jun 2024 19:44:05 +0300
+Message-ID: <20240621164406.256314-3-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240621164406.256314-1-kirill.shutemov@linux.intel.com>
 References: <20240621164406.256314-1-kirill.shutemov@linux.intel.com>
@@ -98,125 +98,89 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Dynamic memory layout is used by KASLR and 5-level paging.
+5-level paging only supports SPARSEMEM_VMEMMAP. CONFIG_X86_5LEVEL is
+being phased out, making 5-level paging support mandatory.
 
-CONFIG_X86_5LEVEL is going to be removed, making 5-level paging support
-unconditional which requires unconditional support of dynamic memory
-layout.
-
-Remove CONFIG_DYNAMIC_MEMORY_LAYOUT.
+Make CONFIG_SPARSEMEM_VMEMMAP mandatory for x86-64 and eliminate
+any associated conditional statements.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/Kconfig                        | 8 --------
- arch/x86/include/asm/page_64_types.h    | 4 ----
- arch/x86/include/asm/pgtable_64_types.h | 6 ------
- arch/x86/kernel/head64.c                | 2 --
- scripts/gdb/linux/pgtable.py            | 4 +---
- 5 files changed, 1 insertion(+), 23 deletions(-)
+ arch/x86/Kconfig      | 2 +-
+ arch/x86/mm/init_64.c | 9 +--------
+ 2 files changed, 2 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index e30ea4129d2c..827928680ed6 100644
+index 827928680ed6..54ad2462e9ef 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
 @@ -1501,7 +1501,6 @@ config X86_PAE
  config X86_5LEVEL
  	bool "Enable 5-level page tables support"
  	default y
--	select DYNAMIC_MEMORY_LAYOUT
- 	select SPARSEMEM_VMEMMAP
+-	select SPARSEMEM_VMEMMAP
  	depends on X86_64
  	help
-@@ -2237,17 +2236,10 @@ config PHYSICAL_ALIGN
+ 	  5-level paging enables access to larger address space:
+@@ -1625,6 +1624,7 @@ config ARCH_SPARSEMEM_ENABLE
+ 	depends on X86_64 || NUMA || X86_32 || X86_32_NON_STANDARD
+ 	select SPARSEMEM_STATIC if X86_32
+ 	select SPARSEMEM_VMEMMAP_ENABLE if X86_64
++	select SPARSEMEM_VMEMMAP if X86_64
  
- 	  Don't change this unless you know what you are doing.
+ config ARCH_SPARSEMEM_DEFAULT
+ 	def_bool X86_64 || (NUMA && X86_32)
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index 28002cc7a37d..552a11d5829a 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -835,7 +835,6 @@ void __init paging_init(void)
+ 	zone_sizes_init();
+ }
  
--config DYNAMIC_MEMORY_LAYOUT
--	bool
--	help
--	  This option makes base addresses of vmalloc and vmemmap as well as
--	  __PAGE_OFFSET movable during boot.
--
- config RANDOMIZE_MEMORY
- 	bool "Randomize the kernel memory sections"
- 	depends on X86_64
- 	depends on RANDOMIZE_BASE
--	select DYNAMIC_MEMORY_LAYOUT
- 	default RANDOMIZE_BASE
- 	help
- 	  Randomizes the base virtual address of kernel memory sections
-diff --git a/arch/x86/include/asm/page_64_types.h b/arch/x86/include/asm/page_64_types.h
-index 06ef25411d62..c2f3c50a2787 100644
---- a/arch/x86/include/asm/page_64_types.h
-+++ b/arch/x86/include/asm/page_64_types.h
-@@ -41,11 +41,7 @@
- #define __PAGE_OFFSET_BASE_L5	_AC(0xff11000000000000, UL)
- #define __PAGE_OFFSET_BASE_L4	_AC(0xffff888000000000, UL)
- 
--#ifdef CONFIG_DYNAMIC_MEMORY_LAYOUT
- #define __PAGE_OFFSET           page_offset_base
--#else
--#define __PAGE_OFFSET           __PAGE_OFFSET_BASE_L4
--#endif /* CONFIG_DYNAMIC_MEMORY_LAYOUT */
- 
- #define __START_KERNEL_map	_AC(0xffffffff80000000, UL)
- 
-diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-index 9053dfe9fa03..09df8939b997 100644
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -130,15 +130,9 @@ extern unsigned int ptrs_per_p4d;
- #define __VMEMMAP_BASE_L4	0xffffea0000000000UL
- #define __VMEMMAP_BASE_L5	0xffd4000000000000UL
- 
--#ifdef CONFIG_DYNAMIC_MEMORY_LAYOUT
- # define VMALLOC_START		vmalloc_base
- # define VMALLOC_SIZE_TB	(pgtable_l5_enabled() ? VMALLOC_SIZE_TB_L5 : VMALLOC_SIZE_TB_L4)
- # define VMEMMAP_START		vmemmap_base
--#else
--# define VMALLOC_START		__VMALLOC_BASE_L4
--# define VMALLOC_SIZE_TB	VMALLOC_SIZE_TB_L4
--# define VMEMMAP_START		__VMEMMAP_BASE_L4
--#endif /* CONFIG_DYNAMIC_MEMORY_LAYOUT */
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP
+ #define PAGE_UNUSED 0xFD
  
  /*
-  * End of the region for which vmalloc page tables are pre-allocated.
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index a817ed0724d1..ec36ad7117ae 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -60,14 +60,12 @@ unsigned int ptrs_per_p4d __ro_after_init = 1;
- EXPORT_SYMBOL(ptrs_per_p4d);
- #endif
- 
--#ifdef CONFIG_DYNAMIC_MEMORY_LAYOUT
- unsigned long page_offset_base __ro_after_init = __PAGE_OFFSET_BASE_L4;
- EXPORT_SYMBOL(page_offset_base);
- unsigned long vmalloc_base __ro_after_init = __VMALLOC_BASE_L4;
- EXPORT_SYMBOL(vmalloc_base);
- unsigned long vmemmap_base __ro_after_init = __VMEMMAP_BASE_L4;
- EXPORT_SYMBOL(vmemmap_base);
+@@ -934,7 +933,6 @@ static void __meminit vmemmap_use_new_sub_pmd(unsigned long start, unsigned long
+ 	if (!IS_ALIGNED(end, PMD_SIZE))
+ 		unused_pmd_start = end;
+ }
 -#endif
  
- static inline bool check_la57_support(void)
- {
-diff --git a/scripts/gdb/linux/pgtable.py b/scripts/gdb/linux/pgtable.py
-index 30d837f3dfae..09aac2421fb8 100644
---- a/scripts/gdb/linux/pgtable.py
-+++ b/scripts/gdb/linux/pgtable.py
-@@ -29,11 +29,9 @@ def page_mask(level=1):
-         raise Exception(f'Unknown page level: {level}')
+ /*
+  * Memory hotplug specific functions
+@@ -1133,16 +1131,13 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr, unsigned long end,
+ 				pmd_clear(pmd);
+ 				spin_unlock(&init_mm.page_table_lock);
+ 				pages++;
+-			}
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP
+-			else if (vmemmap_pmd_is_unused(addr, next)) {
++			} else if (vmemmap_pmd_is_unused(addr, next)) {
+ 					free_hugepage_table(pmd_page(*pmd),
+ 							    altmap);
+ 					spin_lock(&init_mm.page_table_lock);
+ 					pmd_clear(pmd);
+ 					spin_unlock(&init_mm.page_table_lock);
+ 			}
+-#endif
+ 			continue;
+ 		}
  
+@@ -1490,7 +1485,6 @@ unsigned long memory_block_size_bytes(void)
+ 	return memory_block_size_probed;
+ }
  
--#page_offset_base in case CONFIG_DYNAMIC_MEMORY_LAYOUT is disabled
--POB_NO_DYNAMIC_MEM_LAYOUT = '0xffff888000000000'
- def _page_offset_base():
-     pob_symbol = gdb.lookup_global_symbol('page_offset_base')
--    pob = pob_symbol.name if pob_symbol else POB_NO_DYNAMIC_MEM_LAYOUT
-+    pob = pob_symbol.name
-     return gdb.parse_and_eval(pob)
- 
- 
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP
+ /*
+  * Initialise the sparsemem vmemmap using huge-pages at the PMD level.
+  */
+@@ -1639,4 +1633,3 @@ void __meminit vmemmap_populate_print_last(void)
+ 		node_start = 0;
+ 	}
+ }
+-#endif
 -- 
 2.43.0
 
