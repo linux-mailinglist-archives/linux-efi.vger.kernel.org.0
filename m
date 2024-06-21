@@ -1,173 +1,200 @@
-Return-Path: <linux-efi+bounces-1270-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1271-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B669121A5
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2024 12:09:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F859122ED
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2024 13:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFB421C21EC7
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2024 10:09:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BB4F282971
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Jun 2024 11:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013C6171657;
-	Fri, 21 Jun 2024 10:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBD916C841;
+	Fri, 21 Jun 2024 11:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ooct2TjO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvDLOWjg"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA54217106D;
-	Fri, 21 Jun 2024 10:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D6129A5;
+	Fri, 21 Jun 2024 11:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718964406; cv=none; b=NAtsF1/kDhNAACymeekPqQftQ8SIGxg5OcMF6H/dmJFC+FB4p1+pnHBv4WTRL/JfbJQcgCDaUVRdMh+mIusG0vUccGonxYcNUoz8ByRUmJRR6wYrcqMlgOy0Bm6t7V7TXeqwfI2OqkbPZciU7ytkc4yThYoEU1CCPChQyhkXH00=
+	t=1718967662; cv=none; b=OHivMqP1v03fIhzLkcci8ceLJdsFoVFfO6ghoV8TmisQ+Hka9syDHLnjSPnD1+Q1VTPym2gNR4DUS7PLo+rrlyA7sfzl2hCDMBgPwGmY+WGq5GJr5oNuXgRxHwGjzTYgsW9OGrnSlMN4Zqvfq4UXCbcu2eplY9KbQu5AGqhrRpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718964406; c=relaxed/simple;
-	bh=L6eYXPIPPhgP0qC3Tjf8Pjxd20/lkYjctHCuQ+kiEmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yn1HIx56Bsg1362BnKT2vpzPZmGO2jD0TKFlkMtAr+p1LLlePDGOfOD3nQtGAGOlBByGFfhv27edKkMhmJoFY6jRRy0GwmQk+SZ918i2d08eXAlnvcAWcLAzSKfxKGN6uZxuMu/9KYCKSy87KxoSNpq+ualJFpJMqT9LeEqcrSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ooct2TjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5CBC4AF08;
-	Fri, 21 Jun 2024 10:06:42 +0000 (UTC)
+	s=arc-20240116; t=1718967662; c=relaxed/simple;
+	bh=t58yRq9dzeb6Nu3F05b01twALhP774WtGGQeaGEiX94=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j22RTGfn85uCywdBT8RNUellpfOTTH2bSscKbGzcsrZR3/jmBFrW6BDroAHRRFmLiWxqpi1mqqjJBjKzDnUbVQj7TF4ncyNOSmAWKZI/I2x5b9g7CEHejUsSR/zCpJFSC2197+obgAuNbhuz2e5Cotmn9fGARY1et9vE8lgInfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvDLOWjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E95C4AF11;
+	Fri, 21 Jun 2024 11:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718964406;
-	bh=L6eYXPIPPhgP0qC3Tjf8Pjxd20/lkYjctHCuQ+kiEmc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ooct2TjOrG7BRZof/lAee0MjE2cqy9jLtv4uwJQKPA1JH98uLHGfl1F4UAYJRZcC6
-	 a8pwDXinvB4cx5g42wNY40pJwyNp30IGcbOgfkrRMeRs2j6th0guZhc0goGpDCg1Zt
-	 mnPGQ+vgIu3TtvpKYRN9hCyHGolT5zyc/YhLnswYFotXS+iv4UOk0im1z5CeKT1lZi
-	 7IOaq0Ig4giQFrvlL/IwkRVuB4Ehd0iG1bYcwckhsc9VAthHq+py0cQ4AJX8RExo34
-	 R5vNH21zGBlmCbdlwY6+9osSdIaG1Hwin9YuL0taTy593G8jUmFs/WoNVLeYtRgTe2
-	 iTViONJogcH3g==
-Date: Fri, 21 Jun 2024 10:47:15 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Shiju Jose
- <shiju.jose@huawei.com>, Tony Luck <tony.luck@intel.com>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>, "Alison
- Schofield" <alison.schofield@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
- Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Len Brown <lenb@kernel.org>, Shuai Xue
- <xueshuai@linux.alibaba.com>, <linux-acpi@vger.kernel.org>,
- <linux-edac@vger.kernel.org>, <linux-efi@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 3/3] efi/cper: align ARM CPER type with UEFI
- 2.9A/2.10 specs
-Message-ID: <20240621104706.19063944@sal.lan>
-In-Reply-To: <20240621103050.00004ec0@Huawei.com>
-References: <cover.1718906288.git.mchehab+huawei@kernel.org>
-	<d808b8b76c58054ccd4a8c49dcc2d23fee5ed397.1718906288.git.mchehab+huawei@kernel.org>
-	<20240621103050.00004ec0@Huawei.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	s=k20201202; t=1718967661;
+	bh=t58yRq9dzeb6Nu3F05b01twALhP774WtGGQeaGEiX94=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LvDLOWjgcMr+X2yvvodUTSBHE1N1YezyLhZWQ9GydahvvxDdGPftDYZclZV7bupTD
+	 EXlxwVybdyEWT5RR1FdFKEloiFoRyqg2IKAJAnUulM32h0atikOSi5M7Rc4xxzoPAn
+	 P8ZEjcbz3nu/tYAUEWcKQbNnPClkILjtRRdrS6OYmATlMabzw+ITOe3UAl4vdbGtQy
+	 2WbLR5ry2PlNhVGy4dH1Hwet5lxhnmtQCJcJHln9jooPaevmMZRXho7guaZU2dXm1W
+	 C/COiqU8IdBsAfQJ/58x38IHK/ZgkCl5+bdVzJ1Z3ckX+wKxlvJO6nhw20c60azxaT
+	 zxrDayRrqXyPQ==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ebeefb9a6eso18168701fa.1;
+        Fri, 21 Jun 2024 04:01:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVKgcSpUgefmAoXAZzvX7UATDhYev0D0ivMjyWNYkSRLPauj3Iv0Vje4J24xzm7pYmzsdLdeaPFHNG9y0wrwe2jI65Ex6Np1iilJ2mcwRU38FEnLnLVccKksy1eWm0ou3/ioHwBStop
+X-Gm-Message-State: AOJu0Ywpn4exg3Aw3xh7iOv3k1NlUMLC/+aPNQHep0I8IjBcSBj24ZMv
+	EjFKptjyNGcoAz4ycP0eyaaWteXsRiSwbXqQm6w/8rdq0c764SytRqZsmNJKdxKO3h5FlFFYqS9
+	b6GL2weirA7LWHYEejLiHdI4eqiI=
+X-Google-Smtp-Source: AGHT+IG1Y7HIXBDX8G5JP4YhV2mwXH5q57GexSHNMagkk3tJPcrRcUjo9mm/MX4Y/0X2i7V8dQT+ADERsz4gYk8KR98=
+X-Received: by 2002:a2e:7205:0:b0:2ec:1ee0:be7e with SMTP id
+ 38308e7fff4ca-2ec3cff8e8emr44018631fa.46.1718967659971; Fri, 21 Jun 2024
+ 04:00:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20240620131649.886995-1-ruanjinjie@huawei.com>
+In-Reply-To: <20240620131649.886995-1-ruanjinjie@huawei.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 21 Jun 2024 13:00:48 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE+EadkfHJZxCKQC9Ry5TwgkqExVH=r8bTxEnkAkJjoJg@mail.gmail.com>
+Message-ID: <CAMj1kXE+EadkfHJZxCKQC9Ry5TwgkqExVH=r8bTxEnkAkJjoJg@mail.gmail.com>
+Subject: Re: [PATCH] ARM: Add support for STACKLEAK gcc plugin
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: linux@armlinux.org.uk, arnd@arndb.de, afd@ti.com, 
+	akpm@linux-foundation.org, rmk+kernel@armlinux.org.uk, 
+	linus.walleij@linaro.org, eric.devolder@oracle.com, robh@kernel.org, 
+	kees@kernel.org, masahiroy@kernel.org, palmer@rivosinc.com, 
+	samitolvanen@google.com, xiao.w.wang@intel.com, alexghiti@rivosinc.com, 
+	nathan@kernel.org, jan.kiszka@siemens.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Em Fri, 21 Jun 2024 10:30:50 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
+On Thu, 20 Jun 2024 at 15:14, Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+>
+> Add the STACKLEAK gcc plugin to arm32 by adding the helper used by
+> stackleak common code: on_thread_stack(). It initialize the stack with the
+> poison value before returning from system calls which improves the kernel
+> security. Additionally, this disables the plugin in EFI stub code and
+> decompress code, which are out of scope for the protection.
+>
+> Before the test on Qemu versatilepb board:
+>         # echo STACKLEAK_ERASING  > /sys/kernel/debug/provoke-crash/DIRECT
+>         lkdtm: Performing direct entry STACKLEAK_ERASING
+>         lkdtm: XFAIL: stackleak is not supported on this arch (HAVE_ARCH_STACKLEAK=n)
+>
+> After:
+>         # echo STACKLEAK_ERASING  > /sys/kernel/debug/provoke-crash/DIRECT
+>         lkdtm: Performing direct entry STACKLEAK_ERASING
+>         lkdtm: stackleak stack usage:
+>           high offset: 80 bytes
+>           current:     280 bytes
+>           lowest:      696 bytes
+>           tracked:     696 bytes
+>           untracked:   192 bytes
+>           poisoned:    7220 bytes
+>           low offset:  4 bytes
+>         lkdtm: OK: the rest of the thread stack is properly erased
+>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>  arch/arm/Kconfig                      | 1 +
+>  arch/arm/boot/compressed/Makefile     | 1 +
+>  arch/arm/include/asm/stacktrace.h     | 5 +++++
+>  arch/arm/kernel/entry-common.S        | 3 +++
+>  drivers/firmware/efi/libstub/Makefile | 3 ++-
+>  5 files changed, 12 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 036381c5d42f..b211b7f5a138 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -86,6 +86,7 @@ config ARM
+>         select HAVE_ARCH_PFN_VALID
+>         select HAVE_ARCH_SECCOMP
+>         select HAVE_ARCH_SECCOMP_FILTER if AEABI && !OABI_COMPAT
+> +       select HAVE_ARCH_STACKLEAK
+>         select HAVE_ARCH_THREAD_STRUCT_WHITELIST
+>         select HAVE_ARCH_TRACEHOOK
+>         select HAVE_ARCH_TRANSPARENT_HUGEPAGE if ARM_LPAE
+> diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
+> index 6bca03c0c7f0..945b5975fce2 100644
+> --- a/arch/arm/boot/compressed/Makefile
+> +++ b/arch/arm/boot/compressed/Makefile
+> @@ -9,6 +9,7 @@ OBJS            =
+>
+>  HEAD   = head.o
+>  OBJS   += misc.o decompress.o
+> +CFLAGS_decompress.o += $(DISABLE_STACKLEAK_PLUGIN)
+>  ifeq ($(CONFIG_DEBUG_UNCOMPRESS),y)
+>  OBJS   += debug.o
+>  AFLAGS_head.o += -DDEBUG
+> diff --git a/arch/arm/include/asm/stacktrace.h b/arch/arm/include/asm/stacktrace.h
+> index 360f0d2406bf..a9b4b72ed241 100644
+> --- a/arch/arm/include/asm/stacktrace.h
+> +++ b/arch/arm/include/asm/stacktrace.h
+> @@ -26,6 +26,11 @@ struct stackframe {
+>  #endif
+>  };
+>
+> +static inline bool on_thread_stack(void)
+> +{
+> +       return !(((unsigned long)(current->stack) ^ current_stack_pointer) & ~(THREAD_SIZE - 1));
 
-> On Thu, 20 Jun 2024 20:01:46 +0200
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-> 
-> > Up to UEFI spec, the type byte of CPER struct for ARM processor was
-> > defined simply as:
-> > 
-> > Type at byte offset 4:
-> > 
-> > 	- Cache error
-> > 	- TLB Error
-> > 	- Bus Error
-> > 	- Micro-architectural Error
-> > 	All other values are reserved
-> > 
-> > Yet, there was no information about how this would be encoded.
-> > 
-> > Spec 2.9A errata corrected it by defining:
-> > 
-> > 	- Bit 1 - Cache Error
-> > 	- Bit 2 - TLB Error
-> > 	- Bit 3 - Bus Error
-> > 	- Bit 4 - Micro-architectural Error
-> > 	All other values are reserved
-> > 
-> > That actually aligns with the values already defined on older
-> > versions at N.2.4.1. Generic Processor Error Section.
-> > 
-> > Spec 2.10 also preserve the same encoding as 2.9A
-> > 
-> > See: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
-> > 
-> > Adjust CPER and GHES handling code for both generic and ARM
-> > processors to properly handle UEFI 2.9A and 2.10 encoding.
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
-> 
-> I think you can avoid complexity of your masking solution.
-> Cost is we don't have that function print that there were reserved bits
-> set, but that could be easily handled at the caller including notifying
-> on bits above the defined range which might be helpful.
-> 
-> > diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-> > index d9bbcea0adf4..4c101a09fd80 100644
-> > --- a/drivers/firmware/efi/cper-arm.c
-> > +++ b/drivers/firmware/efi/cper-arm.c  
-> ...
-> 
-> >  	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
-> > @@ -241,6 +232,7 @@ void cper_print_proc_arm(const char *pfx,
-> >  	struct cper_arm_err_info *err_info;
-> >  	struct cper_arm_ctx_info *ctx_info;
-> >  	char newpfx[64], infopfx[65];
-> > +	char error_type[120];
-> >  
-> >  	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
-> >  
-> > @@ -289,9 +281,11 @@ void cper_print_proc_arm(const char *pfx,
-> >  				       newpfx);
-> >  		}
-> >  
-> > -		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
-> > -			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
-> > -			cper_proc_error_type_strs[err_info->type] : "unknown");
-> > +		cper_bits_to_str(error_type, sizeof(error_type), err_info->type,
-> > +				 cper_proc_error_type_strs,
-> > +				 ARRAY_SIZE(cper_proc_error_type_strs),
-> > +				 CPER_ARM_ERR_TYPE_MASK);  
-> 
-> Maybe drop this mask complexity and just use
-> FIELD_GET() to extract the relevant field with no shift from 0.
-
-IMO not using the function will make the code here more complex, as the
-same code needs to be duplicated on two places: here and at ghes, where
-the error bits are printed using pr_warn_ratelimited():
-
-                cper_bits_to_str(error_type, sizeof(error_type), err_info->type,
-                                 cper_proc_error_type_strs,
-                                 ARRAY_SIZE(cper_proc_error_type_strs),
-                                 CPER_ARM_ERR_TYPE_MASK);
- 
-                pr_warn_ratelimited(FW_WARN GHES_PFX
-                                    "Unhandled processor error type: %s\n",
+Can we make this a bit more legible, without the redundant parens?
+Perhaps something like the below?
 
 
-Also, other parts of CPER uses cper_bits_print() for the same reason:
-to have the common print code handled inside a function instead of
-repeating the same print pattern everywhere.
+unsigned long delta = current_stack_pointer ^ (unsigned long)current->stack;
 
-> > +		printk("%serror_type: %s\n", newpfx, error_type);
-> >  		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
-> >  			printk("%serror_info: 0x%016llx\n", newpfx,
-> >  			       err_info->error_info);  
-> 
-> 
-Regards,
-Mauro
+return delta < THREAD_SIZE;
+
+
+Other than that, this looks fine to me
+
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+
+
+> +}
+> +
+>  static __always_inline
+>  void arm_get_current_stackframe(struct pt_regs *regs, struct stackframe *frame)
+>  {
+> diff --git a/arch/arm/kernel/entry-common.S b/arch/arm/kernel/entry-common.S
+> index 5c31e9de7a60..f379c852dcb7 100644
+> --- a/arch/arm/kernel/entry-common.S
+> +++ b/arch/arm/kernel/entry-common.S
+> @@ -119,6 +119,9 @@ no_work_pending:
+>
+>         ct_user_enter save = 0
+>
+> +#ifdef CONFIG_GCC_PLUGIN_STACKLEAK
+> +       bl      stackleak_erase_on_task_stack
+> +#endif
+>         restore_user_regs fast = 0, offset = 0
+>  ENDPROC(ret_to_user_from_irq)
+>  ENDPROC(ret_to_user)
+> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+> index 06f0428a723c..20d8a491f25f 100644
+> --- a/drivers/firmware/efi/libstub/Makefile
+> +++ b/drivers/firmware/efi/libstub/Makefile
+> @@ -27,7 +27,8 @@ cflags-$(CONFIG_ARM64)                += -fpie $(DISABLE_STACKLEAK_PLUGIN) \
+>  cflags-$(CONFIG_ARM)           += -DEFI_HAVE_STRLEN -DEFI_HAVE_STRNLEN \
+>                                    -DEFI_HAVE_MEMCHR -DEFI_HAVE_STRRCHR \
+>                                    -DEFI_HAVE_STRCMP -fno-builtin -fpic \
+> -                                  $(call cc-option,-mno-single-pic-base)
+> +                                  $(call cc-option,-mno-single-pic-base) \
+> +                                  $(DISABLE_STACKLEAK_PLUGIN)
+>  cflags-$(CONFIG_RISCV)         += -fpic -DNO_ALTERNATIVE -mno-relax
+>  cflags-$(CONFIG_LOONGARCH)     += -fpie
+>
+> --
+> 2.34.1
+>
+>
 
