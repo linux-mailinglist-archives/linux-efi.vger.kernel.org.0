@@ -1,148 +1,74 @@
-Return-Path: <linux-efi+bounces-1310-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1311-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AD691BFD7
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Jun 2024 15:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A9B91C283
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Jun 2024 17:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116A01F22B2D
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Jun 2024 13:45:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC0671F214DE
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Jun 2024 15:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB4C1BE250;
-	Fri, 28 Jun 2024 13:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B5D224DD;
+	Fri, 28 Jun 2024 15:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b="qrx9Vpyh"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QITENeLb"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from sandeen.net (sandeen.net [63.231.237.45])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB66E1E889;
-	Fri, 28 Jun 2024 13:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.231.237.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719582301; cv=none; b=Y4bJR6vNqlfeOzTQOBAGNuj8vlE4p8+9FkbFCfYcTQcJqyn581E487DdQmHrqUCgAFvrOTFuZaYD1jmZHdVXXtv6yyosNL4Rzbu/zAyJFUoKgxTn+ZkzhUF7tJBJq/jvXLooeXrsF6J71RCOHxyb2vkgFk+0WcJ4SbmVPasSTdI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719582301; c=relaxed/simple;
-	bh=77BI7tguWHgEq99xWrc6gnoboZnF1lacf05CuU7G42c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ragWPTPd+fUr5/cI87r0NX7dtEcNcvqO7C1+FmwJyTDXnULo7vSWLyTCIHleKOBWpDjLKq7k413Tw5FVBV9LujgBE2Tfs9Ut1BBqKhMT0s8N9Ep7JgGIsmBmPYY4a7rVPDr2LoygrnQtarbhv8qBooxQPfALsR4kM8Y5DF5mfls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sandeen.net; spf=pass smtp.mailfrom=sandeen.net; dkim=pass (2048-bit key) header.d=sandeen.net header.i=@sandeen.net header.b=qrx9Vpyh; arc=none smtp.client-ip=63.231.237.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sandeen.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandeen.net
-Received: from [10.0.0.71] (usg [10.0.0.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40132.protonmail.ch (mail-40132.protonmail.ch [185.70.40.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sandeen.net (Postfix) with ESMTPSA id B8504479AE7;
-	Fri, 28 Jun 2024 08:44:57 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 sandeen.net B8504479AE7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sandeen.net;
-	s=default; t=1719582297;
-	bh=Wm0ob2liKwaqVbn00ikDKfK69kD3HD4g+HnBrpsBtW0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qrx9Vpyhxcf6Ccxu1nuAmtF93uW/ueFYWzOccKUh54TalNBQ4t63BP5oUyWlboQhC
-	 WX+PUV2Brzf30rbzUiP594AXcjW3QoOLhz3z+XQQQWuRssk79igSO2coEA6/JvL6bf
-	 BTNwcp6VJJqsWJEZ3EbAWEh/xCJlB7Lf/ONSJtCBE97BxFAWjQA9bdLHG1KDnltvdT
-	 0+RFws1BZFMMBR0ickPmjzBuqw4WAT0BG53yvl+IW8OXJCu7NGrVSBWc8pGmx+Y18r
-	 24NKBfo0ZsCxWTtD9jxdMbrx9h+VqakxBVi/gbrwKM/r6xSc6gKvi9JHqtHgszm9vJ
-	 DhHGFwa2Bx1/Q==
-Message-ID: <7c90924d-b023-4fa7-801d-ea0a53a5e5ed@sandeen.net>
-Date: Fri, 28 Jun 2024 08:44:57 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974B0B645
+	for <linux-efi@vger.kernel.org>; Fri, 28 Jun 2024 15:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.132
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719588123; cv=none; b=BdOygLy1PD7Mugwj+w9ZbR7i3GkbQ4CKloUd1IKbx5q0kgW1Lw74vUK37pp1qw3ohq/LrlObCp76UTegiXD/7vfM/TYbwY8hfaW/fP2SnGVZPQXM2EFQUX50txQcdLuiGqojL9Fw03OBaGKMvLF9JilwV8C4lp5ShV/gndGV/nk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719588123; c=relaxed/simple;
+	bh=sM0vkoUDxLSG9pkg+ozT89atMz2SHL+WPEPGkHtMRMc=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=WNVp59SwIasm2OcPBUnjMJI0ePX+JfIWCK9AOpyKAnQZBjGcH4EFahCxIP4PRL0fu2EGbhLEo95us57vGV+Ia4KrHtpMctTvtO788z1x0QcJ48NyOXmryJiJhnfB7E7h0d5u/dVCxXNq1bym1xqE1LEE6PQ918fRBMDIfbp2plA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QITENeLb; arc=none smtp.client-ip=185.70.40.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=tvj2eq7x4rgfbg6rhktcv5t7me.protonmail; t=1719588113; x=1719847313;
+	bh=sM0vkoUDxLSG9pkg+ozT89atMz2SHL+WPEPGkHtMRMc=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=QITENeLbw3CLguMzZ9n/luWU1RGq/VstqMuxtCBiEDCB+7aCvIYj6K24RG59Po1iN
+	 ZHuHTb3M4tnrCpG2nrzJGJDtRZVt/zb0LZQt5243YAwp3As8YDLZd9ydvUqh+T47zz
+	 Eh4lWC5aLked2Y88USgq4/O3tqmHiEw6Jqn5CewSkSnEOzEZbX8afSQsK7ivJg/g9U
+	 QHAEgTi8U6M4xMT8Ss+yE/mzzvKCzRu9hLsEO6ee98ShE98lR7VxLT8cN+gKa83uct
+	 dLG1bW7T5MNoA0Am9inn0nD4yuYTQVc4Rdy/rvFcK8Fk2BWs3cRowUcv9gq72xZE5l
+	 qrfhnY4N04pXg==
+Date: Fri, 28 Jun 2024 15:21:49 +0000
+To: "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, Nathan Chancellor <nathan@kernel.org>
+From: Tj <tj.iam.tj@proton.me>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Subject: Regression: drivers/firmware/efi/libstub/zboot.lds DISCARD
+Message-ID: <6_Pz5RcQjqur8JTEHcvFxmszE0W-Ptt80fUB5Fbt8oUFUQxkrYweR2p9n9thV9_VPchd0N-zqKlC9DKXf8mNmVtshUQs_VwrV0_UNn_4nSI=@proton.me>
+Feedback-ID: 113488376:user:proton
+X-Pm-Message-ID: 1583edf21b4a66e129d3082a59324e729bb8618e
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/14] fs_parse: add uid & gid option option parsing
- helpers
-To: Jan Kara <jack@suse.cz>, Eric Sandeen <sandeen@redhat.com>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
- autofs@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- linux-efi@vger.kernel.org, Namjae Jeon <linkinjeon@kernel.org>,
- linux-ext4@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
- linux-mm@kvack.org, ntfs3@lists.linux.dev, linux-cifs@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, Hans Caniullan <hcaniull@redhat.com>,
- Alexander Viro <aviro@redhat.com>
-References: <8dca3c11-99f4-446d-a291-35c50ed2dc14@redhat.com>
- <de859d0a-feb9-473d-a5e2-c195a3d47abb@redhat.com>
- <20240628094517.ifs4bp73nlggsnxz@quack3>
-Content-Language: en-US
-From: Eric Sandeen <sandeen@sandeen.net>
-In-Reply-To: <20240628094517.ifs4bp73nlggsnxz@quack3>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 6/28/24 4:45 AM, Jan Kara wrote:
-> On Thu 27-06-24 19:26:24, Eric Sandeen wrote:
->> Multiple filesystems take uid and gid as options, and the code to
->> create the ID from an integer and validate it is standard boilerplate
->> that can be moved into common helper functions, so do that for
->> consistency and less cut&paste.
->>
->> This also helps avoid the buggy pattern noted by Seth Jenkins at
->> https://lore.kernel.org/lkml/CALxfFW4BXhEwxR0Q5LSkg-8Vb4r2MONKCcUCVioehXQKr35eHg@mail.gmail.com/
->> because uid/gid parsing will fail before any assignment in most
->> filesystems.
->>
->> Signed-off-by: Eric Sandeen <sandeen@sandeen.net>
-> 
-> I like the idea since this seems like a nobrainer but is actually
-> surprisingly subtle...
-> 
->> diff --git a/fs/fs_parser.c b/fs/fs_parser.c
->> index a4d6ca0b8971..24727ec34e5a 100644
->> --- a/fs/fs_parser.c
->> +++ b/fs/fs_parser.c
->> @@ -308,6 +308,40 @@ int fs_param_is_fd(struct p_log *log, const struct fs_parameter_spec *p,
->>  }
->>  EXPORT_SYMBOL(fs_param_is_fd);
->>  
->> +int fs_param_is_uid(struct p_log *log, const struct fs_parameter_spec *p,
->> +		    struct fs_parameter *param, struct fs_parse_result *result)
->> +{
->> +	kuid_t uid;
->> +
->> +	if (fs_param_is_u32(log, p, param, result) != 0)
->> +		return fs_param_bad_value(log, param);
->> +
->> +	uid = make_kuid(current_user_ns(), result->uint_32);
-> 
-> But here is the problem: Filesystems mountable in user namespaces need to use
-> fc->user_ns for resolving uids / gids (e.g. like fuse_parse_param()).
-> Having helpers that work for some filesystems and are subtly broken for
-> others is worse than no helpers... Or am I missing something?
+Commit 5134acb15d9ef27aa2b90aad46d4e89fcef79fdc may be the source of a regr=
+ession that means aarch64 builds are unbootable when using recent binutils =
+and GNU toolchain.
 
-Yeah, I should have pointed that out. tmpfs still does that check after the
-initial trivial parsing after this change to use the basic helper:
+Originally found in Debian [0] and reported upstream to binutils [1] it isn=
+'t entirely clear where the fix should be. The binutils bug report is the c=
+urrent focus on attention.
 
-        case Opt_uid:
-                kuid = result.uid;
-        
-                /*
-                 * The requested uid must be representable in the
-                 * filesystem's idmapping.
-                 */
-                if (!kuid_has_mapping(fc->user_ns, kuid))
-                        goto bad_value;
-        
-                ctx->uid = kuid;
-                break;
+I found that reverting this DISCARD allows aarch64 kernel to start.
 
-I can see your point about risks of a helper that doesn't cover all cases
-though.
- 
-> And the problem with fc->user_ns is that currently __fs_parse() does not
-> get fs_context as an argument... So that will need some larger work.
-
-Yup, this was discussed a little when I sent this idea as an RFC, and the
-(brief/small) consensus was that it was worth going this far for now.
-
-Getting fc back into __fs_parse looks rather tricky and Al was not keen
-on the idea, for some reason.
-
-Thanks,
--Eric
-> 								Honza
+[0] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1074111
+[1] https://sourceware.org/bugzilla/show_bug.cgi?id=3D31924
 
 
