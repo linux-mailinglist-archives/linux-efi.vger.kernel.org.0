@@ -1,252 +1,183 @@
-Return-Path: <linux-efi+bounces-1324-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1325-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B79091D16B
-	for <lists+linux-efi@lfdr.de>; Sun, 30 Jun 2024 13:27:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEB391D16E
+	for <lists+linux-efi@lfdr.de>; Sun, 30 Jun 2024 13:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83D94B20DD7
-	for <lists+linux-efi@lfdr.de>; Sun, 30 Jun 2024 11:27:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87FA4280D5F
+	for <lists+linux-efi@lfdr.de>; Sun, 30 Jun 2024 11:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2029A13AA35;
-	Sun, 30 Jun 2024 11:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DEA13AA35;
+	Sun, 30 Jun 2024 11:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="vTPrigZb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MAgDs0qv"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01olkn2042.outbound.protection.outlook.com [40.92.103.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FF628DC1;
-	Sun, 30 Jun 2024 11:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.103.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719746831; cv=fail; b=r3zhXm1a1Z5sFeVLPT9Amgp3HUi535Tif9AhCteNgJJsxDV8WLtEZucSgV2MCCKU40cSxoA7fIIZDu+KqzSj8cEJIENskAtv6POoRUegOXilHtxofJiSyW4Sdh0CLc0fZllznNABcYVBmHXCnwu/n/FvhQ67rcBhVCVrhSHYpG0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719746831; c=relaxed/simple;
-	bh=2A+xN4dWHmh55D699U8FlQ8+qha0NYvtA3nFaX/kAck=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gv0NhcbflJ1oo2jf+lKehZA2vCrsnTk1uo074iM0CzvVJC/FKm9ykJAHuurcIgjuFwQmWz9iXeHFDX+FL6Jf8mfeJD9rDa/bahBCvYCBJvmacwxQviqUAPTN9LmpEP+YvYwSxEHNqlpKX9fETrFYattlHQgR2BrLk4qYkGEfUno=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=vTPrigZb; arc=fail smtp.client-ip=40.92.103.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EUfJq5lkQwBXTgsY34vOoENwQGN2XBGO/pPR65wBeqI50CnT4v7F2ewgMP9aVII8ZZP12HVec1BI2nkLkqbPeXgr/ZNE0QJvW5mObPMRu9HgjyfpylV2V2v4V5KDurUeuUlO8n4Xfmgq8eltfW1Q3XfdF/+eR6iriQGevRxJ/QzxPrRwNHtDlIJNHYWXiP0SBJjJYtrPLmX27MnKNpXmLN6hWK37krS5Vvb7t80g7b00aPbLN5mEobN20tWAqv4pnkvo78DWn92uQa4D4WgeqKz45BN2IAgUb9xUiw+N4txOMHNIoLrtlKO00JHNfz9fF8C7WtYym6JZjuy8xjWLew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2A+xN4dWHmh55D699U8FlQ8+qha0NYvtA3nFaX/kAck=;
- b=H6gqVFveNa7wirMnhA4q/UbBTtXAClXcqZyp4DZi17wiQjA6rbe8S0j3itsxKK19Bx/pbqvKbIcCj8m7o1eMn6QvM8E/XGq9S5aBNOGsJIqtXvnwq9ZrgSmjeXntC4t5IchwFV0Ox29gMwZBenDyFX49bYwAfWZ4SLYD99FScNeWKEyzBPJxBCTNfWTEPwxSgHy+wLydXwMGHEVT7h/Xz/QVd0sjZdZ2OSuovI2mrRSyDmivZrAT2xzS7LV+jeoeSIkWiu8wIzRApAS0xDoDAJ4R0qtA5423WGQOx2KkAdQ2PD//Z3wzli8IMUwjY/m8jcl8maBF/m19JvFx0vJ8dg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2A+xN4dWHmh55D699U8FlQ8+qha0NYvtA3nFaX/kAck=;
- b=vTPrigZbmT7wAquKyrEaJjY2w0mYbkwRgaZZg6axoxCQvOVfqY9T0ngkvL20NbN/Qb/RYn6AP7iSVsgqWPpCsmmjU5Jj0JqqmWd+OyT48T4EpdNCnzaFqzOebPDfFXyBfCQjELloUfBDFUeLAKy827mrCoBdENwrDpNdiqzZd+HN6RiKdLht54r926+ITw3xvb0bkQmyl4PiptnZqcuI882bAE5Z3fMFcFplZd/l1pKm9m2g2YYK59gX4hEqy0aEywPPfpgRaF/wppImDj6jn7DDRzXL3kVDOfXQPmcLhMZ83WcLXUz93jwZw59je0zHKTmJYolzFJlDgqmE9JvlWQ==
-Received: from MA0P287MB0217.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:b3::9) by
- MA0P287MB2038.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:123::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7719.29; Sun, 30 Jun 2024 11:27:03 +0000
-Received: from MA0P287MB0217.INDP287.PROD.OUTLOOK.COM
- ([fe80::98d2:3610:b33c:435a]) by MA0P287MB0217.INDP287.PROD.OUTLOOK.COM
- ([fe80::98d2:3610:b33c:435a%7]) with mapi id 15.20.7719.028; Sun, 30 Jun 2024
- 11:27:03 +0000
-From: Aditya Garg <gargaditya08@live.com>
-To: Lukas Wunner <lukas@wunner.de>
-CC: Ard Biesheuvel <ardb@kernel.org>, Hans de Goede <hdegoede@redhat.com>,
-	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, Linux Kernel Mailing
- List <linux-kernel@vger.kernel.org>, Orlando Chamberlain
-	<orlandoch.dev@gmail.com>, Kerem Karabay <kekrby@gmail.com>
-Subject: Re: [PATCH] efi: libstub: add support for the apple_set_os protocol
-Thread-Topic: [PATCH] efi: libstub: add support for the apple_set_os protocol
-Thread-Index: AQHayqf5aNOCBZ38jE+N2QIS72Io3bHf8v+AgAATQSOAAA2MgIAADZDGgAAKMPY=
-Date: Sun, 30 Jun 2024 11:27:03 +0000
-Message-ID:
- <MA0P287MB0217B757160F7D7C96F9DE3EB8D22@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
-References: <EBE51900-DA87-4113-B389-80B9C9160F0F@live.com>
- <ZoERl1PWoc2xDGWz@wunner.de>
- <MA0P287MB021730971A804FB760463A39B8D22@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
- <ZoEtG0DUJOS4ROQC@wunner.de>
- <MA0P287MB0217B3F9B9E1CFA54FAD96CEB8D22@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
-In-Reply-To:
- <MA0P287MB0217B3F9B9E1CFA54FAD96CEB8D22@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
-Accept-Language: en-IN, en-US
-Content-Language: en-IN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn: [WmKfS40TRmWJzMZj/QTJOW5qU5VCjILvWRu7d7AxmSCZtu5OLvSd149uQDrFJoPW]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MA0P287MB0217:EE_|MA0P287MB2038:EE_
-x-ms-office365-filtering-correlation-id: 47773fdd-a5bb-4b76-1349-08dc98f79106
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8060799006|461199028|4302099013|102099032|3412199025|440099028|1602099012;
-x-microsoft-antispam-message-info:
- /oZTiMOHAkFlh8YcihAv1kIWHwr3YdAdfODOcQ4/pCkHITjx/UX95XEi7n3gqPgfG3r4kxdKvzmMw2t52axdoJUE7h4tspD39BMl/yEXGzCTPjz3TFRk6gz8RHsc8NcJtvWjr4S5dmt91AYOKm+6/RwPvQ18UD2Wl+gTlxa9M8hEMeNDboizF+yqjZ2/G0TCSqtSYhMqSQgMfSOhBk/KuzXa4cHaPSLwMk2XIOKK8Cpi/Azu4UclkURnUmoCoi46ja+DkgViqOxOug4z8uOLyAlXAm0tIfHxaiK8ZbPz6nYGbiCYOagCYnsqEEOmEb9WCtavdb/qcioZ9Xt0ayVw96r/m+rcBVCALv82dpqsC6RVd8RW1h47PH+O8G8T1EaHOVR9kDCotii3946RkphneLx65T7cvh18FZVLvTAl9CzxiOpEEM5VhCTKtFz5gYCK0vynttMgPm4O068ngYxQ2VYWs96pt4mQthvOdRmqbtDg+RaK4MjrrPtycXiGQOp7eus1pUO25tyVpILEfrB5qg5sMgBh1bBxOte3gRsAykKcoWMpoqiK0icAxSFEULUsy29cZbjKejMbVDhN2moPAbYYFdHsLyvvg0pF/YDUzlMv+NiBP17R37bBTNfDgHdDxQ7LHIt/Wqk7LKy0nunP+FNR6VKnmxJJP5Ju1ZCtPS66jG4XDcBwhGyJ+E46FWNc7wAZiwjvch52YpHL3U+jS41w2tJZ1iz0RZfyi20d3OI=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?ejY1MklwMUtYVHZFZjNJYk54bUhoSFJFNndIYmJrcGY2R2o3UHVDOXVGMSt6?=
- =?utf-8?B?V2RMMWdDK0grRmRHWEJjUWgxVnVtZEh2WXFZM3RGZjdXYnNyQUZvRGwzOFJJ?=
- =?utf-8?B?cXJubkxVWmV4Y2d6V09tc1Y1TmZycmdNcnZ0UVV5bUduMVUwM0kzWk9RQngy?=
- =?utf-8?B?c3ZFZ1dXcStlbWR0ckdKSi9lQUV2NkRsRzd5c2lLcStHWFE3Rzd2dGhkWnpC?=
- =?utf-8?B?YXM3R2RWYmRGaG5FN1dUOW00NzRjT1QwMW0yUWtLTHk3ZnhCUmxMVS9LSzB2?=
- =?utf-8?B?eGc1Z1RERm9ZblFkUVFxelg4ZHB4WmR2c0x4L3JDWHphOWEwbGJwb3BTK3FR?=
- =?utf-8?B?bEU0bFY4cWM5ZTlmc3VuMkxmS1QrYlh2YmhZT09RTW5nRWp2L2Vob1U1SEdo?=
- =?utf-8?B?ZG13NFdHSzNkTWJYbHkzbkFVc1JkbXFNekV6aWNvK1ZDSkpMSWdjSjJDMUpZ?=
- =?utf-8?B?bEhoZFVVUkNHcFFHUWhSTzN2bG9PSC93cnRGaDRwZmgzWjNrNFRJU2p6MlBD?=
- =?utf-8?B?emJsdmtKMTlZMy96M04zUFMvUzR1bml4ZHFGMklTWnZWbmJlNlFZbVMyRUly?=
- =?utf-8?B?MVRjR1FtVi9QMjI3Z1RPTEt0bUhnTmxIb3NTR0ZKaVVDV3dSYURoOUlpall5?=
- =?utf-8?B?MWdqN2VFT2tDSGttREtKVGtuMWhkeGhFZmJ5dXR6eVRRbkJVcmM2enRwL3N3?=
- =?utf-8?B?MmNMdEF1ZGdGRVBienRMZ3pHeUltb1pleUhrY3ZRVXJhcEhXdmF1ajh6SEsx?=
- =?utf-8?B?WjBvbWZ2SVZxSHVyalRuenJZd08xd0Z2a3RadnEwYlJ0S1hMcGgvVWhWcXAw?=
- =?utf-8?B?NW96U1VkRExjUTcxOXphalJBSVJtZ0xlQzJMakRYNVBxT0VGTm1qQ0hZTWpX?=
- =?utf-8?B?OXluZGZyUW1Bd25FSzlmNXJEcjNsS2ZjcmJUU0owQW9Ubis0aEJmVDJSVjVn?=
- =?utf-8?B?cnNTQTN3Ni9XKzg1U1BoTVREcVZnTTFyTU1xQldmUjJkdURMdVNCeHl4RDB1?=
- =?utf-8?B?V3I1dTR6SklFaGdBcXRqVjlnbHJWNnN4N1JjZ0pUcHVqbnR2MHVSdVFtV0c2?=
- =?utf-8?B?VGh5UVFXUkVINnFxUTlIWTVhZ1pQOWZLbDhTaFhPSHBCTHAxcGVEREZBTEY4?=
- =?utf-8?B?ck5pcFpmVm1OajVqQ3ordXpreEY0MVZKdTdEUjZ6a2FESmtKanBsMzR5eit4?=
- =?utf-8?B?YThzd2kxZTErVEhZS3ZJeGovOGtRZzJoSFV6cUZaUy9yOXVSOW1HTGdjVlRu?=
- =?utf-8?B?clAyUi9zYUJHaXZ2azRpQnZNa0cwQlFWTlFhcjU3VnM3UFZIV3krcXdVek00?=
- =?utf-8?B?UkJWYXVzcGRtVllYNVowazdNTWIxZjlmLzlrZUdCelJOWm1ROGdPQWwvZ1lq?=
- =?utf-8?B?R0FpME4wVGFGRDhsMVR6S0FSRjNpSTZ2VEFMTEZ1UDJYNmxhMEszYWRjYWVx?=
- =?utf-8?B?djlPZVVYM2VrbDgwRWxtOGJ1QVdYc3ROcnlGc01FajlvQitJdHNQVi9ReHVI?=
- =?utf-8?B?cHFUUkFmMHRKMG1MaE1JYVNtT29pdlFmdEFacjRUZGhXcXQrdnRNVEVFSlYw?=
- =?utf-8?B?Mkl3VEUrblBqM0lad1BveWFDdDNNZldlMkNCY1NVTW45SklmaURXR2xLTW14?=
- =?utf-8?B?Y2VhRlJlNkgyWGFzRHJXcXVTTVRCNFdNdGtqSCtESVgvMEhtZllGUFhLQnpw?=
- =?utf-8?B?bHdtQ3VpU1AyR1ZzSWtyT3o4Zkc3V3RrOVdjc3pqa28xcFZkTFhUaEZ5UFJs?=
- =?utf-8?Q?MiWycndjChKydD8S+o=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F7C28DC1;
+	Sun, 30 Jun 2024 11:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719746969; cv=none; b=qjKfRuBBzfmvBzn9wBot11Lli03eZPX6sMyvwZ9QIsxGZIcEgUci71w44DMhTTYWbHndwg/TxYnp8PSbr//GIaieiB3NZaIRa/+dgZBSFQD5RFHw3nbfcqTEa3iOcLUoNnP46Y7XoziDV2K9mfPLxQuQgMgoVo9qgGf/VMYkdiw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719746969; c=relaxed/simple;
+	bh=q0ku1/YvLcqEoyOyN52CBTc6RKs1Dh3689XeNRqFatM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IyoRQgVwJoOHP/YkwRGrEZ8A+DEFUn5YmSE/ZK0XjmUH4jlBhjOvmyI5AeFtVqe9Qlr1l2QT8gZSALrxzhVutCDo8rg8v++Cgis2WS0FORrnqV8xa7Tw5Ue+xma8JWcKYNgYLJCtqQfVk+o+TthKToAffd9+A26sP3CojDvPkUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MAgDs0qv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F2EC4AF0B;
+	Sun, 30 Jun 2024 11:29:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719746969;
+	bh=q0ku1/YvLcqEoyOyN52CBTc6RKs1Dh3689XeNRqFatM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MAgDs0qvEQSBpMg0PpgycdR2t9tDt4UKK4BluvziXPr6Sy88XPipuDdtsQ5VhAxT8
+	 A0hZ5oD5kPsgfT7/7+2fwR9l97PkY8KrlRpZFh1UWrgFb5Aip4h8xPI9xr5xSImuxb
+	 RUJyZjdqscIVx6j2GbI39CCUH2/G76EbjgXonyWu296TtOyvLynLcXUxdEysEqEi2r
+	 rTWZrJbKJ/whW72pQMjtx7C8uGoyEqeAaJYm2aUfkE/SqxCeOu4mJo8pW6hyso+Dgu
+	 QQ674trSFFiymiQLMIzNlC6e4CVXftRkjysev/QcKrgT+iPUs5X/zbwWTyK4f+f27I
+	 UgJz9lMnorAjA==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2eaa89464a3so22085301fa.3;
+        Sun, 30 Jun 2024 04:29:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVP1W6k9lCQXH6tDEGGRUfYc5rDoPEVNK0lltv98ea2BrDMx2nqn9m5Ls0DhwFjTyH2fo03OmdXS8ql0zmm1sj4qXongHm7KmYVOHS1eNHIjm7aTVPaLzeFm52Vr+WONaJOcIuwieZa
+X-Gm-Message-State: AOJu0Yye04HXSLZSS6xipTq1XLFmRpcf4waUQ3YDKDtvlFOfDpPTJ07u
+	5KvLTzNqAAfOStK9YRpKaBT/YIfqb+1HWqMVbAKXNTNrPw0bZ44yFydPr+p0sJUM8HI7Yg2F+99
+	PKakkGKjsxBBXQXvC+0gKxM7B3To=
+X-Google-Smtp-Source: AGHT+IHnGewgIDG494ajnWz0flNUEWHoYWvq2wMp4QSfE28hwcAUx/teeRHOTO5EaRcRMCiCP1N9aw89M2OJ3Bzem18=
+X-Received: by 2002:a05:651c:1a09:b0:2ec:c8:2755 with SMTP id
+ 38308e7fff4ca-2ee5e3bf179mr25086791fa.24.1719746967478; Sun, 30 Jun 2024
+ 04:29:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-bafef.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MA0P287MB0217.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47773fdd-a5bb-4b76-1349-08dc98f79106
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2024 11:27:03.6585
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB2038
+References: <EBE51900-DA87-4113-B389-80B9C9160F0F@live.com> <ZoERl1PWoc2xDGWz@wunner.de>
+In-Reply-To: <ZoERl1PWoc2xDGWz@wunner.de>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 30 Jun 2024 13:29:15 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFEQDir_VffzHZ0uBMjRqEReNdBZcEQs7kFhi=ipM+y9Q@mail.gmail.com>
+Message-ID: <CAMj1kXFEQDir_VffzHZ0uBMjRqEReNdBZcEQs7kFhi=ipM+y9Q@mail.gmail.com>
+Subject: Re: [PATCH] efi: libstub: add support for the apple_set_os protocol
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Aditya Garg <gargaditya08@live.com>, Hans de Goede <hdegoede@redhat.com>, 
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Orlando Chamberlain <orlandoch.dev@gmail.com>, Kerem Karabay <kekrby@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-DQoNCj4gT24gMzAgSnVuIDIwMjQsIGF0IDQ6MjDigK9QTSwgQWRpdHlhIEdhcmcgPGdhcmdhZGl0
-eWEwOEBsaXZlLmNvbT4gd3JvdGU6DQo+IA0KPiDvu78NCj4gDQo+PiBPbiAzMCBKdW4gMjAyNCwg
-YXQgMzozMuKAr1BNLCBMdWthcyBXdW5uZXIgPGx1a2FzQHd1bm5lci5kZT4gd3JvdGU6DQo+PiAN
-Cj4+IO+7v09uIFN1biwgSnVuIDMwLCAyMDI0IGF0IDA5OjEzOjMzQU0gKzAwMDAsIEFkaXR5YSBH
-YXJnIHdyb3RlOg0KPj4+Pj4gT24gMzAgSnVuIDIwMjQsIGF0IDE6MzQgUE0sIEx1a2FzIFd1bm5l
-ciA8bHVrYXNAd3VubmVyLmRlPiB3cm90ZToNCj4+Pj4+IE9uIFN1biwgSnVuIDMwLCAyMDI0IGF0
-IDA0OjQyOjU1QU0gKzAwMDAsIEFkaXR5YSBHYXJnIHdyb3RlOg0KPj4+Pj4+IEJhc2VkIG9uIHRo
-aXMgcGF0Y2ggZm9yIEdSVUIgYnkgQW5kcmVhcyBIZWlkZXIgPGFuZHJlYXNAaGVpZGVyLmlvPjoN
-Cj4+Pj4+PiBodHRwczovL2xpc3RzLmdudS5vcmcvYXJjaGl2ZS9odG1sL2dydWItZGV2ZWwvMjAx
-My0xMi9tc2cwMDQ0Mi5odG1sDQo+Pj4+PiANCj4+Pj4+IFBsZWFzZSBpbmNsdWRlIGhpcyBTaWdu
-ZWQtb2ZmLWJ5IGFuZCBjYyBoaW0uDQo+Pj4gDQo+Pj4gTm90IHN1cmUgYWJvdXQgdGhpcyBzaW5j
-ZSB0aGUgcGF0Y2ggd2FzIHNlbmQgdG8gZ3J1YiBhbmQgbm90IGxrbWwsDQo+Pj4gYW5kIGhpcyB3
-b3JrIGhhcyBiZWVuIHVzZWQgd2l0aG91dCBpbmZvcm1pbmcgaGltIGZvciB0aGlzIHBhdGNoIHNv
-bGVseQ0KPj4+IG9uIHRoZSBiYXNpcyBvZiBHUEwuDQo+Pj4gDQo+Pj4gSSd2ZSBhbHdheXMgYmVl
-biBjb25mdXNlZCBpbiBzaWduZWQtb2ZmLWJ5IGluIGNhc2Ugb2YgYXV0aG9ycyB3aG9zZSB3b3Jr
-DQo+Pj4gaGFzIGJlZW4gdXNlZCB3aXRob3V0IHRoZWlyIGV4cGxpY2l0IGNvbnNlbnQganVzdCBi
-ZWNhdXNlIHRoZSBsaWNlbnNlDQo+Pj4gcGVybWl0cyBpdC4NCj4+PiANCj4+PiBTaG91bGQgSSBz
-dGlsbCBhZGQgaGlzIHNpZ25lZC1vZmYtYnk/DQo+PiANCj4+IEkgd291bGQuDQo+PiANCj4+IA0K
-Pj4+Pj4gLS0tIGEvRG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50
-eHQNCj4+Pj4+ICsrKyBiL0RvY3VtZW50YXRpb24vYWRtaW4tZ3VpZGUva2VybmVsLXBhcmFtZXRl
-cnMudHh0DQo+Pj4+PiBAQCAtMzk5LDYgKzM5OSw4IEBADQo+Pj4+PiAgICAgICAgICAgICAgICB1
-c2VmdWwgc28gdGhhdCBhIGR1bXAgY2FwdHVyZSBrZXJuZWwgd29uJ3QgYmUNCj4+Pj4+ICAgICAg
-ICAgICAgICAgIHNob3QgZG93biBieSBOTUkNCj4+Pj4+IA0KPj4+Pj4gKyAgICBhcHBsZV9zZXRf
-b3MgICAgW0tOTF0gUmVwb3J0IHRoYXQgbWFjT1MgaXMgYmVpbmcgYm9vdGVkIHRvIHRoZSBmaXJt
-d2FyZQ0KPj4+Pj4gKw0KPj4+PiANCj4+Pj4gV2h5IHRoZSBrZXJuZWwgcGFyYW1ldGVyPyAgV2h5
-IG5vdCBkbyB0aGlzIHVuY29uZGl0aW9uYWxseT8NCj4+PiANCj4+PiAxLiBOb3QgYWxsIE1hY3Mg
-aGF2ZSBkdWFsIEdQVS4gV2UgZG9uJ3Qgd2FudCB0byB1bm5lY2Vzc2FyaWx5ICJmb29sIg0KPj4+
-IHRoZSBmaXJtd2FyZSBpbiB0aGlua2luZyBtYWNPUyBpcyBiZWluZyBib290ZWQuDQo+Pj4gMi4g
-YXBwbGUtZ211eCBpcyBhIHJldmVyc2UgZW5naW5lZXJlZCBkcml2ZXIsIGFsdGhvdWdoIHVwc3Ry
-ZWFtZWQsDQo+Pj4gbm90IHZlcnkgZWZmaWNpZW50IGluIHN3aXRjaGluZyBHUFVzLiBTbyBpdCdz
-IGJldHRlciB0byBtYWtlIHVubG9ja2luZw0KPj4+IHRoZSBHUFUgb3B0aW9uYWwuICsgbm90IGV2
-ZXJ5b25lIHdhbnRzIHRoZSBpbnRlbCBHUFUsIHBlb3BsZSBhcmUgaGFwcHkNCj4+PiB3b3JraW5n
-IHdpdGggdGhlIGRlZGljYXRlZCBBTUQgR1BVICh1c2VkIGJ5IGRlZmF1bHQgaWYgYXBwbGVfc2V0
-X29zDQo+Pj4gaXNuJ3QgZW5hYmxlZCkuDQo+PiANCj4+IFNvIG15IG9waW5pb24gaXMgdGhhdCB0
-aGVzZSBhcmVuJ3QgZ29vZCBhcmd1bWVudHMuICBXZSBzaG91bGQgYmUNCj4+IGlkZW50aWZ5aW5n
-IGFzIERhcndpbiBieSBkZWZhdWx0IGluIEVGSSwganVzdCBhcyB3ZSd2ZSBiZWVuIGRvaW5nDQo+
-PiBpbiBBQ1BJIHNpbmNlIDdiYzVhMmJhZDBiOC4gIElmIHRoZXJlIGFyZSBhbnkgYWR2ZXJzZSBl
-ZmZlY3RzLA0KPj4gd2Ugc2hvdWxkIGxvb2sgaW50byB0aGVtLCBidXQgdXNlcnMgc2hvdWxkbid0
-IGJlIGZvcmNlZCB0byBzZXQNCj4+IGFuIG9ic2N1cmUga2VybmVsIHBhcmFtZXRlciBvbmx5IHRv
-IGVuYWJsZSBjZXJ0YWluIGZlYXR1cmVzIG9mDQo+PiB0aGVpciBoYXJkd2FyZS4gIEl0IGlzIGZv
-ciB0aGlzIHJlYXNvbiB0aGF0IHlvdSdsbCB1c3VhbGx5IGdldA0KPj4gR3JlZyBLSCdzIHRyYWRl
-bWFyayAidGhpcyBpc24ndCB0aGUgOTBzIGFueW1vcmUiIGNvbW1lbnQgd2hlbg0KPj4gYWRkaW5n
-IG5ldyBrZXJuZWwgcGFyYW1ldGVycy4gIFdlIG5lZWQgdG8gaGFuZGxlIHRoZSBoYXJkd2FyZQ0K
-Pj4gY29ycmVjdGx5ICphdXRvbWF0aWNhbGx5Ki4NCj4+IA0KPiBJJ20gbm90IGluIGEgZmF2b3Vy
-IG9mICJmb3JjaW5nIiBkdWFsIEdQVSBvbiB1c2VycywgZXNwZWNpYWxseSBiZWNhdXNlIHRoZSBm
-ZWF0dXJlcyBhcmUgcXVpdGUgdW5zdGFibGUuIE9uIHNvbWUgZGlzdHJvcyBsaWtlIFVidW50dSwg
-c2luY2Uga2VybmVsIDYuOCwgdW5sb2NraW5nIHRoZSBHUFUgcmVzdWx0cyBpbiBibGFuayBzY3Jl
-ZW4gaW5zdGVhZCBvZiBpZ3B1IGR1ZSB0byBhIHJlZ3Jlc3Npb24gKG5vdGUgdGhhdCB0aGlzIHBh
-dGNoIGhhcyBub3RoaW5nIHRvIGRvIHdpdGggdGhpcyByZWdyZXNzaW9uLCBpdCdzIHNvbWV0aGlu
-ZyB0aGUgcGxhdGZvcm0gZHJpdmVycyBwZW9wbGUgd2lsbCBsb29rIGludG8pLg0KPiANCj4gT24g
-dGhlIDIwMTkgTWFjQm9vayBQcm9zIHRoZSB2Z2Fzd2l0Y2hyb28gaXMgbm90IHdvcmtpbmcgYW5k
-IGlucHV0cyBmcm9tIEFNRCBhcmUgbmlsLiBCYXNpY2FsbHkgeW91IGdldCBzdHVjayB0byB0aGUg
-SW50ZWwgR1BVIGFuZCBpZiB5b3UgdHJ5IHRvIHVzZSB0aGUgQU1EIEdQVSwgYnV0IHRoZSBHUFVz
-IHJlbWFpbiBvbiAoY3VycmVudGx5IG5vIHdheSBoYXMgYmVlbiBmb3VuZCB0byBzd2l0Y2ggb2Zm
-IHRoZSBBTUQgb25lKQ0KPiANCj4gU28gSSBndWVzcyB3ZSBoYXZlIDIgb3B0aW9uczoNCj4gDQo+
-IDEuIFdhaXQgdW50aWwgYXBwbGUtZ211eCBiZWNvbWVzIHF1aXRlIHN0YWJsZSBiZWZvcmUgbWVy
-Z2luZyB0aGlzIChmYXQgY2hhbmNlKQ0KPiAyLiBHaXZlIG1lIHNvbWUgYmV0dGVyIGlkZWEgdG8g
-aGFuZGxlIHRoaXMuDQo+IA0KU2luY2UgT3JsYW5kbyBzZWVtcyB0byBnaXZlbiBhIGZpeCwgSSBn
-dWVzcyB3ZSBjYW4gZW5hYmxlIGlzIHdpdGhvdXQgYW55IGtlcm5lbCBwYXJhbWV0ZXIsIHVubGVz
-cyB5b3UgaGF2ZSBzb21lIGJldHRlciBpZGVhIHRvIG1ha2UgaXQgb3B0aW9uYWwgTHVrYXMNCj4+
-IFRoZXJlIGlzIG9uZSBrbm93biBpc3N1ZSBhZmZlY3RpbmcgdGhlIGtleWJvYXJkIG9uIGNlcnRh
-aW4NCj4+IE1hY0Jvb2sgQWlyIG1vZGVsczogIEFwcGxlIGhhZCBiZWVuIHVzaW5nIGR1YWwgU1BJ
-IGFuZCBVU0INCj4+IGtleWJvYXJkcyBhbmQgdHJhY2twYWRzIHNpbmNlIGFib3V0IDIwMTMgYnV0
-IHN0YXJ0ZWQgdG8gc2hpcA0KPj4gU1BJLW9ubHkgbW9kZWxzIGluIDIwMTUgd2l0aCB0aGUgTWFj
-Qm9vayAxMiIuDQo+PiANCj4+IFRoZSBtb2RlbHMgdGhhdCBzaGlwcGVkIGluIHRoZSAyMDEzLzIw
-MTQgdGltZSBmcmFtZSB1c2VkIFVTQg0KPj4gYnkgZGVmYXVsdCBhbmQgd2VyZSBhdXRvbWF0aWNh
-bGx5IHN3aXRjaGVkIHRvIFNQSSBpZiBhcHBsZV9zZXRfb3MNCj4+IGlzIGludm9rZWQuICBOb3Qg
-YSBwcm9ibGVtIHNpbmNlIGRyaXZlcnMvaW5wdXQva2V5Ym9hcmQvYXBwbGVzcGkuYw0KPj4gaGFz
-IGJlZW4gaW4gbWFpbmxpbmUgZm9yIGEgd2hpbGUgbm93LCBidXQgdGhlcmUgYXJlIHNvbWUgdmVy
-eQ0KPj4gc3BlY2lmaWMgbW9kZWxzIHRoYXQgbGFjayBjZXJ0YWluIGRhdGEgaW4gdGhlIERTRFQg
-d2hpY2ggdGhlDQo+PiBhcHBsZXNwaS5jIGRyaXZlciBuZWVkczoNCj4+IA0KPj4gaHR0cHM6Ly9n
-aXRodWIuY29tL2NiMjIvbWFjYm9vazEyLXNwaS1kcml2ZXIvaXNzdWVzLzY1DQo+PiANCj4+IEhv
-d2V2ZXIgYXQgdGhpcyBwb2ludCB0aGF0IHNob3VsZG4ndCBzdG9wIHVzIGZyb20gbWFraW5nDQo+
-PiBhcHBsZV9zZXRfb3MgdGhlIGRlZmF1bHQuICBXZSBzaG91bGQgcmF0aGVyIGp1c3QgdHJ5IHRv
-IGFtZW5kDQo+PiB0aGUgYXBwbGVzcGkuYyBkcml2ZXIgd2l0aCBhIERNSSBxdWlyayBvciBzb21l
-dGhpbmcuDQo+PiBUaGF0IHJlcXVpcmVzIHNvbWVvbmUgdG8gdGVzdCBwYXRjaGVzLCBzbyB3ZSBu
-ZWVkIHRvIGZpbmQNCj4+IHNvbWVvbmUgd2l0aCBhbiBhZmZlY3RlZCBtYWNoaW5lIGJlZm9yZSB3
-ZSBjYW4gZml4IGl0Lg0KPj4gDQo+PiBCdXQgcG90ZW50aWFsIGlzc3VlcyB3aXRoIDEwKyB5ZWFy
-cyBvbGQgaGFyZHdhcmUgc2hvdWxkbid0DQo+PiBzdG9wIHVzIGZyb20gZW5hYmxpbmcgYSBmZWF0
-dXJlIGJ5IGRlZmF1bHQgdGhhdCdzIHVzZWZ1bCBvbg0KPj4gbW9yZSByZWNlbnQgaGFyZHdhcmUu
-ICBTbyBJJ20gc3Ryb25nbHkgaW4gZmF2b3Igb2YgZ2V0dGluZyByaWQNCj4+IG9mIHRoZSBrZXJu
-ZWwgcGFyYW1ldGVyIGFuZCB0aGVuIGxldCdzIHdvcmsgb24gYWRkcmVzc2luZyBzaWRlDQo+PiBl
-ZmZlY3RzIG9mIGFwcGxlX3NldF9vcyBvbmUgYnkgb25lLg0KPj4gDQo+PiANCj4+Pj4+ICtzdHJ1
-Y3QgYXBwbGVfc2V0X29zX3Byb3RvY29sIHsNCj4+Pj4+ICsgICAgdTY0IHZlcnNpb247DQo+Pj4+
-PiArICAgIGVmaV9zdGF0dXNfdCAoX19lZmlhcGkgKnNldF9vc192ZXJzaW9uKSAoY29uc3QgY2hh
-ciAqKTsNCj4+Pj4+ICsgICAgZWZpX3N0YXR1c190IChfX2VmaWFwaSAqc2V0X29zX3ZlbmRvcikg
-KGNvbnN0IGNoYXIgKik7DQo+Pj4+PiArICAgIHN0cnVjdCB7DQo+Pj4+PiArICAgICAgICB1MzIg
-dmVyc2lvbjsNCj4+Pj4+ICsgICAgICAgIHUzMiBzZXRfb3NfdmVyc2lvbjsNCj4+Pj4+ICsgICAg
-ICAgIHUzMiBzZXRfb3NfdmVuZG9yOw0KPj4+Pj4gKyAgICB9IG1peGVkX21vZGU7DQo+Pj4+PiAr
-fTsNCj4+Pj4gDQo+Pj4+IEhvdyBhYm91dCBkZWNsYXJpbmcgdGhpcyBfX3BhY2tlZCwganVzdCB0
-byBiZSBvbiB0aGUgc2FmZSBzaWRlPw0KPj4+IFlvdSBtZWFuICJzdHJ1Y3QgX19hdHRyaWJ1dGVf
-XygoX19wYWNrZWRfXykpIGFwcGxlX3NldF9vc19wcm90b2NvbCB7IiA/DQo+PiANCj4+IEp1c3Qg
-YWRkIF9fcGFja2VkIGF0IHRoZSBlbmQgb2YgdGhlIGRlY2xhcmF0aW9uLg0KPj4gU2VlIGVmaV9t
-YW5hZ2VfY2Fwc3VsZV9oZWFkZXIgaW4gaW5jbHVkZS9saW51eC9lZmkuaCBmb3IgYW4gZXhhbXBs
-ZS4NCj4+IA0KPiANCj4gQWxyaWdodC4gSSdsbCBhbHNvIHJlbW92ZSBtaXhlZF9tb2RlIGlmIHRo
-YXQgd29ya3MuDQo+IA0KPj4gSSB0aGluayB3ZSBoYXZlbid0IGJlZW4gdmVyeSBjb25zaXN0ZW50
-IHdpdGggX19wYWNrZWQgZGVjbGFyYXRpb25zLg0KPj4gVGhlIHJhdGlvbmFsZSBub3QgdG8gdXNl
-IHRoZW0gZXZlcnl3aGVyZSBpcyBwcm9iYWJseSB0aGF0IGdjYyBnZW5lcmFsbHkNCj4+IGRvZXNu
-J3QgaW5zZXJ0IHBhZGRpbmcgaWYgb25seSAzMi1iaXQgYW5kIDY0LWJpdCB0eXBlcyBhcmUgdXNl
-ZCwNCj4+IGJ1dCB0aGF0J3Mgbm90IGd1YXJhbnRlZWQgdG8gYmUgdHJ1ZSBmb3JldmVyLg0KPj4g
-DQo+PiANCj4+Pj4gDQo+Pj4+IFdoeSAibWl4ZWRfbW9kZSI/ICBTZWVtcyBsaWtlIGFuIG9kZCBu
-YW1lIGdpdmVuICJtaXhlZCBtb2RlIg0KPj4+PiBpbiBFRkkgY29udGV4dCB1c3VhbGx5IG1lYW5z
-IDY0LWJpdCBPUywgYnV0IDMyLWJpdCBFRkkuDQo+Pj4gDQo+Pj4gRUZJIGZpcm13YXJlIG9uIFQy
-IE1hY3MgZG9lc24ndCBzZWVtIHRvIGZvbGxvdyB0aGUgc3RhbmRhcmQgRUZJIHNwZWNzDQo+Pj4g
-KGV4cGVjdGVkIGZyb20gQXBwbGUpLiBFYXJsaWVyIGl0IGNsYWltZWQgdG8gZm9sbG93IEVGSSAy
-LjAsIGJ1dCB3ZQ0KPj4+IGhhZCB0byBmb3JjZSBsaW51eCB0byB1c2UgRUZJIDEuMSBmb3IgaXQu
-IFNvIGFzIGZhciBhcyBBcHBsZSBpcw0KPj4+IGNvbmNlcm5lZCwgeW91J2xsIGdldCB0byBzZWUg
-c3VjaCBzdHJhbmdlIHRoaW5ncy4NCj4+PiANCj4+PiBJIGd1ZXNzIHRoaXMgc3RyYW5nZSBiZWhh
-dmlvdXIgaXMgYmVjYXVzZSB0aGUgVDIgc2VjdXJpdHkgY2hpcCBoYW5kbGVzDQo+Pj4gdGhlIEVG
-SS4NCj4+IA0KPj4gSSBkb24ndCBxdWl0ZSBmb2xsb3cuICBBbmRyZWFzJyBncnViIHBhdGNoIGRv
-ZXNuJ3QgaGF2ZSB0aGlzDQo+PiAibWl4ZWRfbW9kZSIgc3RydWN0LCBzbyB3aGVyZSBpcyBpdCAo
-YW5kIHRoZSBuYW1lKSBjb21pbmcgZnJvbT8NCj4+IA0KPj4gVGhhbmtzLA0KPj4gDQo+PiBMdWth
-cw0K
+Hello Aditya, Lukas,
+
+On Sun, 30 Jun 2024 at 10:04, Lukas Wunner <lukas@wunner.de> wrote:
+>
+> On Sun, Jun 30, 2024 at 04:42:55AM +0000, Aditya Garg wrote:
+> > Commit 0c18184de990 brought support for T2 Macs in apple-gmux. But in order to
+>
+> Please run patches through scripts/checkpatch.pl before submission.
+> The subject of the commit is missing here and lines should be wrapped
+> at 72 or at least 74 chars.
+>
+>
+> > Based on this patch for GRUB by Andreas Heider <andreas@heider.io>:
+> > https://lists.gnu.org/archive/html/grub-devel/2013-12/msg00442.html
+>
+> Please include his Signed-off-by and cc him.
+>
+>
+
+No. You cannot simply add a signed-off-by on someone else's behalf,
+even if you cc the person.
+
+Andreas contributed code to GRUB (which is a GPLv3 project), and had
+no involvement whatsoever in creating this patch.
+
+A signed-off-by is a statement on the part of the contributor (which
+may or may not be the author) that the contribution in question
+complies with the requirements imposed by the project in terms of
+copyright and licensing. Linux is GPLv2 not v3, so this code should at
+least be dual licensed in order to be reused directly.
+
+I did not look at the GRUB patch, and IANAL, but this code invokes an
+Apple provided protocol (which is proprietary) in a hardcoded way for
+interoperability purposes, and so there is not much to
+copyright/license anyway. I would be fine with having just your
+signoff on this patch, but you could ask Andreas for a GPLv2+3 version
+of his GRUB patch if you are not sure.
+
+> > --- a/Documentation/admin-guide/kernel-parameters.txt
+> > +++ b/Documentation/admin-guide/kernel-parameters.txt
+> > @@ -399,6 +399,8 @@
+> >                             useful so that a dump capture kernel won't be
+> >                             shot down by NMI
+> >
+> > +     apple_set_os    [KNL] Report that macOS is being booted to the firmware
+> > +
+>
+> Why the kernel parameter?  Why not do this unconditionally?
+>
+>
+
+Agree that this is suboptimal. If we need a command line param for
+this, please make add it to the efi= list
+
+> > +struct apple_set_os_protocol {
+
+This should be a union not a struct
+
+> > +     u64 version;
+
+This should be unsigned long
+
+> > +     efi_status_t (__efiapi *set_os_version) (const char *);
+> > +     efi_status_t (__efiapi *set_os_vendor) (const char *);
+> > +     struct {
+> > +             u32 version;
+
+... to match the mixed_mode overlay which is u32. Alternatively, they
+could both be u64 but the current arrangement is definitely incorrect.
+
+> > +             u32 set_os_version;
+> > +             u32 set_os_vendor;
+> > +     } mixed_mode;
+> > +};
+>
+> How about declaring this __packed, just to be on the safe side?
+>
+
+I don't think that is necessary. If the mixed_mode overlay is never
+used, it doesn't really matter and you can use unsigned long vs u32,
+in which case all struct members are native word size so there is no
+padding issue.
+
+> Why "mixed_mode"?  Seems like an odd name given "mixed mode"
+> in EFI context usually means 64-bit OS, but 32-bit EFI.
+>
+
+This is how the x86 plumbing works for mixed mode. Every EFI protocol
+is a union, with a mixed_mode member describing the 32-bit view. The
+accessor macros (efi_bs_call, efi_table_attr) automatically do the
+right thing depending on the bitness of the firmware.
+
+This means, though, that even protocols that are known not to exist on
+32-bit firmware need to be implemented in the same way, or the code
+will not build.
+
+>
+> > +static void apple_set_os(void)
+> > +{
+> > +     efi_guid_t guid = APPLE_SET_OS_PROTOCOL_GUID;
+>
+> My recollection is that if you don't declare this static const,
+> gcc generates suboptimal code.  (It constructs the GUID on the
+> stack at runtime instead of storing it in .rodata.)
+> Maybe it's become smarter in the meantime, but I doubt it.
+>
+
+I don't remember the details but it looks like we stopped doing this a
+while ago. I don't mind keeping it like this.
 
