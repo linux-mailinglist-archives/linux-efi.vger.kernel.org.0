@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-1355-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1356-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0812991E1E9
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 16:10:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B35891E1EB
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 16:10:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 898861F24822
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 14:10:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C26F1C22BD6
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 14:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1352C1607A8;
-	Mon,  1 Jul 2024 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3C716191A;
+	Mon,  1 Jul 2024 14:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TaSOMf1Z"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nzcnSLtY"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5482916087B
-	for <linux-efi@vger.kernel.org>; Mon,  1 Jul 2024 14:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E94161322
+	for <linux-efi@vger.kernel.org>; Mon,  1 Jul 2024 14:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719843036; cv=none; b=H4XNtvZhofPkDa0qWVrWL2eGK2NLRoqNAiL65c3QEWmGKURq/6PR0VnKM47tHAph1HfaLmiAc0g16sxOHRtBcNhqYSZQwthUr6BvHy2l7EJZDFqr+0kPqjqSorASs3tBGspDziMWFyzqYw93CW2N2rd3RPuhUDxEk1caEgQg5To=
+	t=1719843037; cv=none; b=Fgsdue6nrbFLnkdsMDxXFsYE7JkV5RU6VYLI6WmiHULO5Zf1uTTeVDfMZwxhGUzxLApg8SaU0QF4Qo/w1aDXRJIfIrCnQ3ywi7tqBEUvaPeC1dq7Agw9Y/jo3SbrHLkgPzuscdHCaScR+ZuxdhmaXXxhKnz5jMGnCKJ2TiJaqAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719843036; c=relaxed/simple;
-	bh=l8Ualwom2J8JwCI+Zf8Aiq40+waFGySB881xmXf1eP4=;
+	s=arc-20240116; t=1719843037; c=relaxed/simple;
+	bh=jtq96ZNNa/AfL1Dtt/3ZyrKLiA4kq1Yax8bQ6F664ks=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iGohQoQQcONqdxQ1c+Y6Ixp4VumcYmqsUifRNpdUrj8D/nfXOaqUqGHr6zQNcsMEpGcgKDgt/hPd6luMteRuIgnU+SD/Gmzdrxgf/G6wCzJq8zcikP92n71dnofzaq80/wtMznXQHr+a68Frkmi+aWYY3dok8ttfB1jCbt2iza4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TaSOMf1Z; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=nzcJvXe58d9VdBYHaYXDa3FdeSAGbVOK6MflDWYyjTzydUaPEn1IbIL6d9A7kwely4jD0PnHgD9MYCphV4KVuzW6L/IIaFBdmEJTuzJ1aLtsqqmDQBbMzwL8yJAQ+K/o9RqXfxxGUrsdiNRG6vwmVCMyhCz1VcBDcSpJGDKtBbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nzcnSLtY; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-36735fbac94so2230817f8f.3
-        for <linux-efi@vger.kernel.org>; Mon, 01 Jul 2024 07:10:34 -0700 (PDT)
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e035f7b5976so4764156276.0
+        for <linux-efi@vger.kernel.org>; Mon, 01 Jul 2024 07:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719843033; x=1720447833; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1719843035; x=1720447835; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=83i245u7toDjlY+7ig/slTXd44Gu7U3/g62W19tTjqs=;
-        b=TaSOMf1Ze4qJtVkQ2EDWUg62mQISgEkefASkjQgQhpBeIkOzsdjHHyKBrEUduVcF4q
-         XTqFZIWyhiN8ZGdweM82mqHqw8mUlRUBDUOH9C7ylz6H558EBvvSlJAfIqj/zziX0KHp
-         owMs6pPN8BFaTo++TOFsFRdWyQWGGzlZhxCnnNaX3zbRz1+Ht1ObgN8YlSnk8y+DqoU3
-         9Yga3HA6sF1Mx20K8Ky/D0cRFcduwmnDv6iNFsHqGMqoHqvWa033ri+8NjXv7J2+Irw1
-         lN1HnCsaT22MfCgKe7qj3vAaT7/R/Ql0amm9O0zzhMjzNG8Mk53sX9yjtDTY3acrXNdm
-         inVw==
+        bh=+M8qUhS2HMIvcqxK7I8+OHEMcY7HHmB9uXa0ioB0Jc0=;
+        b=nzcnSLtYQhNN1+kZhPy4F75oEen61VEmA4eyuutp1nnz2Cgkh+2f5teJiw33AYH939
+         Fmem+nNUQUZH0II23Lq65vd3V5SxeILG0lmAo2gNBmnMr7Hpmkq83pYSj7MIgRbWJPdc
+         EwYQpFit6vPf17R66w4nUENPOjHP2wUyNGHaowrIEtYudnD0AVIpoBiigkyHl7ZBnSnz
+         DpXhhvLMaad9NlpQQr8zIz9z/Ef6iFtezagt28uU0R6XQvzkHDBrh5/2KTh+uQL8Ga6y
+         0SmSlerTP79ruD/SBK4BFyLMyRNwXHsejjTO9asRugma7lBwXtR4G9sNv0ehAnQbMdJF
+         N+2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719843033; x=1720447833;
+        d=1e100.net; s=20230601; t=1719843035; x=1720447835;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=83i245u7toDjlY+7ig/slTXd44Gu7U3/g62W19tTjqs=;
-        b=XsC+scLWd2K8s2YvQLkipvjYhuaf7+xRqrsvbr1v0xK1OvP8VVypGoKr9LPl+ZIOI6
-         +SJu2hBlYzY2+juKhl/EmNz2wV81qbAik4jeio5UuJvIKMwD69Kbc47HuMt8kpClogKX
-         d8hoUv1ps7xY0imAQsOCfc3zrck8ePO0ppIG/p/H2Gu5Q+W43lHZ1CrMC/Kv09N6YPOl
-         z6iFSiqaEt5JwiVvsLdOBGdDhunUNb6TYKd7P88/tdrId5e2eNflkERqJ3cQZ1n3fqB0
-         JQksHDyMYdARJOdvv87kaiE2E0R708diNAO/2Sk19SsGs48DAJSFYnY9wQZyGomvNVYy
-         cZ4Q==
-X-Gm-Message-State: AOJu0Ywjmy9JQAFpzi+86oa502qtknOqJKSI9VlgTzq2i7qMsH+YKlny
-	RptITSRvSHrNRRvyRd1LRyWuBV1/sXCXRjv5xeQpLriwQk0h6ByzQYHc1eqmMv+lA8QorY+sghM
-	l7g5PZT5BByQnssn33Y/nR20ZBprHgIcnr1iTdO/6mK8eofWreMh41Ed5e1NTZcIK6aW8wkHfb+
-	eOzXKjpOOzlV16Cr1J88wTzeNjew==
-X-Google-Smtp-Source: AGHT+IEyUOS2qvddIR+vf8YFoD0CSmbKuw1dZ0cB+7G6AtRCr17Yg+XzRC0+YIDnxu724eN8PT+xfzKd
+        bh=+M8qUhS2HMIvcqxK7I8+OHEMcY7HHmB9uXa0ioB0Jc0=;
+        b=LLnUwovUZo1WD71bfv26o81dnGWSpaS3fqQCiSdMdLkH4IRY6sQSSThvSKj9D7M5ub
+         Wko6rzxCsFLyZbmKOaT/D+FjW9tFj1lUsmod7VLNI+x3BRPY3eBKEESyK6pyzsDjGAN6
+         wP6Z9dullapPGCPsRkQ0XtnlatByrmcqV4FR/LQQrI9soU1uJLdFn7yxjRBCOxuou9lD
+         nnc0JbFruyHTucokjTP7kAy9/Olo23zTv9oDpzILN3A1B9yLHl4cjDPUyTNNPGs3VGOu
+         zOuBWNPWn847sQuSirI3nQX8ha0h0C2rSM8bC3qbrgo7e544Yzx/A/iYvdLVK0Zx+T68
+         IrrQ==
+X-Gm-Message-State: AOJu0YxMcXwtsU4lqacMoOpWLqz3CW3QSxqlXaA3f250mpJtRaXsMLFv
+	b9199ZOLH/znRdeoCgmQ1y5JrWlQXzsFArr+ek4jzz+iDAOfe7FpS4FuV/VCOexmnqw00BplBES
+	pdr+JUdjGyNracQNmzJnjoU0fOP9pynebsqcaIoHYpyWaE+JKm30YAXbJaH5FNT6dpYEdvw/+fR
+	ChrQkyjGrGgvABLO6VdQ2ZoKphDg==
+X-Google-Smtp-Source: AGHT+IHU6faq5swLr4VM252V1u8YtN9Qbf/vghFX8u/Fc1vyU3GUlL+ZgwhlUrHD4zGvuLhP4J5U2oFr
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:6000:d91:b0:35f:195f:bbe8 with SMTP id
- ffacd0b85a97d-367756b7e8bmr10484f8f.7.1719843031971; Mon, 01 Jul 2024
- 07:10:31 -0700 (PDT)
-Date: Mon,  1 Jul 2024 16:09:42 +0200
+ (user=ardb job=sendgmr) by 2002:a05:6902:124b:b0:e02:f35c:d398 with SMTP id
+ 3f1490d57ef6-e036dafd3dcmr657209276.0.1719843034670; Mon, 01 Jul 2024
+ 07:10:34 -0700 (PDT)
+Date: Mon,  1 Jul 2024 16:09:43 +0200
 In-Reply-To: <20240701140940.2340297-4-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -74,14 +74,15 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240701140940.2340297-4-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3224; i=ardb@kernel.org;
- h=from:subject; bh=rpn41rOAt7Mo+ERBc+rJJUgNYcPSipWWVF2TfCtIHfY=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIa1px7KSOI3Gxe3S617Vb05fwnTR2fml8n2F9fVSDhKZy
- uY8ZakdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCJ8ixj+e+Q9mfZoizRP8JG2
- SoZLq2zv1MlrFEtv8d+5rGuX8CRFLkaGF57f1hVEreD50nbwySSLt6U6l9fx/5SZsnLdj71diYr feAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4798; i=ardb@kernel.org;
+ h=from:subject; bh=XckN2TD4yRzsK8t8+e7/l7CLqJsGkKaE+dxkRz+/EXQ=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIa1px/KX4c+0/V6VfPsanLpEbnbjjtJ07ZMi74M0zu1M+
+ 8F/cnFGRwkLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhIy0FGhsPnN4kyGC67zbGR
+ Qeav+JKrfCH5P12kD5sWmT6s+fdYaDbDj/lh3Y8+rrdwCUw+zciXtD3CYtcEHnfb3SnMh28xnHP kBwA=
 X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-Message-ID: <20240701140940.2340297-5-ardb+git@google.com>
-Subject: [PATCH v3 1/2] efistub/x86: Enable SMBIOS protocol handling for x86
+Message-ID: <20240701140940.2340297-6-ardb+git@google.com>
+Subject: [PATCH v3 2/2] x86/efistub: Call Apple set_os protocol on dual GPU
+ Intel Macs
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
@@ -90,93 +91,134 @@ Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
 	Orlando Chamberlain <orlandoch.dev@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Aditya Garg <gargaditya08@live.com>
 
-The smbios.c source file is not currently included in the x86 build, and
-before we can do so, it needs some tweaks to build correctly in
-combination with the EFI mixed mode support.
+0c18184de990 ("platform/x86: apple-gmux: support MMIO gmux on T2 Macs")
+brought support for T2 Macs in apple-gmux. But in order to use dual GPU,
+the integrated GPU has to be enabled. On such dual GPU EFI Macs, the EFI
+stub needs to report that it is booting macOS in order to prevent the
+firmware from disabling the iGPU.
 
+This patch is also applicable for some non T2 Intel Macs.
+
+Based on this patch for GRUB by Andreas Heider <andreas@heider.io>:
+https://lists.gnu.org/archive/html/grub-devel/2013-12/msg00442.html
+
+Credits also goto Kerem Karabay <kekrby@gmail.com> for helping porting
+the patch to the Linux kernel.
+
+Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Orlando Chamberlain <orlandoch.dev@gmail.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+[ardb: limit using list of DMI matches kindly provided by Lukas]
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/Makefile |  2 +-
- drivers/firmware/efi/libstub/smbios.c | 42 +++++++++++++-------
- 2 files changed, 28 insertions(+), 16 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 72 +++++++++++++++++++-
+ include/linux/efi.h                     |  1 +
+ 2 files changed, 70 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 06f0428a723c..1f32d6cf98d6 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -76,7 +76,7 @@ lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o string.o intrinsics.o systable.o \
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 68df27bd71c9..4870950c96d5 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -225,6 +225,69 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 	}
+ }
  
- lib-$(CONFIG_ARM)		+= arm32-stub.o
- lib-$(CONFIG_ARM64)		+= kaslr.o arm64.o arm64-stub.o smbios.o
--lib-$(CONFIG_X86)		+= x86-stub.o
-+lib-$(CONFIG_X86)		+= x86-stub.o smbios.o
- lib-$(CONFIG_X86_64)		+= x86-5lvl.o
- lib-$(CONFIG_RISCV)		+= kaslr.o riscv.o riscv-stub.o
- lib-$(CONFIG_LOONGARCH)		+= loongarch.o loongarch-stub.o
-diff --git a/drivers/firmware/efi/libstub/smbios.c b/drivers/firmware/efi/libstub/smbios.c
-index c217de2cc8d5..2b54b9c289be 100644
---- a/drivers/firmware/efi/libstub/smbios.c
-+++ b/drivers/firmware/efi/libstub/smbios.c
-@@ -6,30 +6,42 @@
- 
- #include "efistub.h"
- 
--typedef struct efi_smbios_protocol efi_smbios_protocol_t;
--
--struct efi_smbios_protocol {
--	efi_status_t (__efiapi *add)(efi_smbios_protocol_t *, efi_handle_t,
--				     u16 *, struct efi_smbios_record *);
--	efi_status_t (__efiapi *update_string)(efi_smbios_protocol_t *, u16 *,
--					       unsigned long *, u8 *);
--	efi_status_t (__efiapi *remove)(efi_smbios_protocol_t *, u16);
--	efi_status_t (__efiapi *get_next)(efi_smbios_protocol_t *, u16 *, u8 *,
--					  struct efi_smbios_record **,
--					  efi_handle_t *);
--
--	u8 major_version;
--	u8 minor_version;
-+typedef union efi_smbios_protocol efi_smbios_protocol_t;
-+
-+union efi_smbios_protocol {
-+	struct {
-+		efi_status_t (__efiapi *add)(efi_smbios_protocol_t *, efi_handle_t,
-+					     u16 *, struct efi_smbios_record *);
-+		efi_status_t (__efiapi *update_string)(efi_smbios_protocol_t *, u16 *,
-+						       unsigned long *, u8 *);
-+		efi_status_t (__efiapi *remove)(efi_smbios_protocol_t *, u16);
-+		efi_status_t (__efiapi *get_next)(efi_smbios_protocol_t *, u16 *, u8 *,
-+						  struct efi_smbios_record **,
-+						  efi_handle_t *);
-+
-+		u8 major_version;
-+		u8 minor_version;
++static bool apple_match_product_name(void)
++{
++	static const char type1_product_matches[][15] = {
++		"MacBookPro11,3",
++		"MacBookPro11,5",
++		"MacBookPro13,3",
++		"MacBookPro14,3",
++		"MacBookPro15,1",
++		"MacBookPro15,3",
++		"MacBookPro16,1",
++		"MacBookPro16,4",
 +	};
-+	struct {
-+		u32 add;
-+		u32 update_string;
-+		u32 remove;
-+		u32 get_next;
++	const struct efi_smbios_type1_record *record;
++	const u8 *product;
 +
-+		u8 major_version;
-+		u8 minor_version;
-+	} mixed_mode;
- };
- 
- const struct efi_smbios_record *efi_get_smbios_record(u8 type)
- {
-+	static const efi_guid_t guid = EFI_SMBIOS_PROTOCOL_GUID;
- 	struct efi_smbios_record *record;
- 	efi_smbios_protocol_t *smbios;
- 	efi_status_t status;
- 	u16 handle = 0xfffe;
- 
--	status = efi_bs_call(locate_protocol, &EFI_SMBIOS_PROTOCOL_GUID, NULL,
++	record = (struct efi_smbios_type1_record *)efi_get_smbios_record(1);
++	if (!record)
++		return false;
++
++	product = efi_get_smbios_string(&record->header, 1, product_name);
++	if (!product)
++		return false;
++
++	for (int i = 0; i < ARRAY_SIZE(type1_product_matches); i++) {
++		if (!strcmp(product, type1_product_matches[i]))
++			return true;
++	}
++
++	return false;
++}
++
++static void apple_set_os(void)
++{
++	struct {
++		unsigned long version;
++		efi_status_t (__efiapi *set_os_version)(const char *);
++		efi_status_t (__efiapi *set_os_vendor)(const char *);
++	} *set_os;
++	static const efi_guid_t guid = APPLE_SET_OS_PROTOCOL_GUID;
++	efi_status_t status;
++
++	if (!efi_is_64bit() || !apple_match_product_name())
++		return;
++
 +	status = efi_bs_call(locate_protocol, (efi_guid_t *)&guid, NULL,
- 			     (void **)&smbios) ?:
- 		 efi_call_proto(smbios, get_next, &handle, &type, &record, NULL);
- 	if (status != EFI_SUCCESS)
++			     (void **)&set_os);
++	if (status != EFI_SUCCESS)
++		return;
++
++	if (set_os->version >= 2) {
++		status = set_os->set_os_vendor("Apple Inc.");
++		if (status != EFI_SUCCESS)
++			efi_err("Failed to set OS vendor via apple_set_os\n");
++	}
++
++	if (set_os->version > 0) {
++		/* The version being set doesn't seem to matter */
++		status = set_os->set_os_version("Mac OS X 10.9");
++		if (status != EFI_SUCCESS)
++			efi_err("Failed to set OS version via apple_set_os\n");
++	}
++}
++
+ efi_status_t efi_adjust_memory_range_protection(unsigned long start,
+ 						unsigned long size)
+ {
+@@ -335,9 +398,12 @@ static const efi_char16_t apple[] = L"Apple";
+ 
+ static void setup_quirks(struct boot_params *boot_params)
+ {
+-	if (IS_ENABLED(CONFIG_APPLE_PROPERTIES) &&
+-	    !memcmp(efistub_fw_vendor(), apple, sizeof(apple)))
+-		retrieve_apple_device_properties(boot_params);
++	if (!memcmp(efistub_fw_vendor(), apple, sizeof(apple))) {
++		if (IS_ENABLED(CONFIG_APPLE_PROPERTIES))
++			retrieve_apple_device_properties(boot_params);
++
++		apple_set_os();
++	}
+ }
+ 
+ /*
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 418e555459da..e28873eb19ed 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -385,6 +385,7 @@ void efi_native_runtime_setup(void);
+ #define EFI_MEMORY_ATTRIBUTES_TABLE_GUID	EFI_GUID(0xdcfa911d, 0x26eb, 0x469f,  0xa2, 0x20, 0x38, 0xb7, 0xdc, 0x46, 0x12, 0x20)
+ #define EFI_CONSOLE_OUT_DEVICE_GUID		EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4,  0x9a, 0x46, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ #define APPLE_PROPERTIES_PROTOCOL_GUID		EFI_GUID(0x91bd12fe, 0xf6c3, 0x44fb,  0xa5, 0xb7, 0x51, 0x22, 0xab, 0x30, 0x3a, 0xe0)
++#define APPLE_SET_OS_PROTOCOL_GUID		EFI_GUID(0xc5c5da95, 0x7d5c, 0x45e6,  0xb2, 0xf1, 0x3f, 0xd5, 0x2b, 0xb1, 0x00, 0x77)
+ #define EFI_TCG2_PROTOCOL_GUID			EFI_GUID(0x607f766c, 0x7455, 0x42be,  0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
+ #define EFI_TCG2_FINAL_EVENTS_TABLE_GUID	EFI_GUID(0x1e2ed096, 0x30e2, 0x4254,  0xbd, 0x89, 0x86, 0x3b, 0xbe, 0xf8, 0x23, 0x25)
+ #define EFI_LOAD_FILE_PROTOCOL_GUID		EFI_GUID(0x56ec3091, 0x954c, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
 -- 
 2.45.2.803.g4e1b14247a-goog
 
