@@ -1,98 +1,133 @@
-Return-Path: <linux-efi+bounces-1336-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1337-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9285F91D7BF
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 07:56:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9FC91D82B
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 08:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C47AA1C2274E
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 05:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 012A91F2323E
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 06:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7229943687;
-	Mon,  1 Jul 2024 05:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAWyzDg8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D532231C;
+	Mon,  1 Jul 2024 06:41:17 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4601842056;
-	Mon,  1 Jul 2024 05:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A0A4A0F;
+	Mon,  1 Jul 2024 06:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719813377; cv=none; b=pVja2hweg1gxPW2SB3WnyI4ltP2g49ZbXfEZriXEnpQUrrE6/PA0WYLnhHfJE5I52QfyZ/YtNH8oBMkolrTI7RauPRB6WONt3MKpxorHI/7Y11sjCX6NPSzxZBXo9SvUkHvV/uzM2EmUynkPNK7TWAf607RXbFRlvzf6YZL1Zh0=
+	t=1719816077; cv=none; b=mnLPBVLozrM+To6bfn0Q7wyC1Ajy08LFWvlEn7JRoa2Kp6kRgSCXiPmMSWbM5zfIMD8zmVJO9emFB1kLbt6WC7wRejAhcWwaj17fBfZg9BxDesJp3n7ipVDHQ1w0S2jmysWF99OMJXxHOkP21B5sQh03Is4XQzUsVWgsshRPdwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719813377; c=relaxed/simple;
-	bh=n23wtrwm8NZfNsYbcGValEvYtuaepP9EGBapwyStQYQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KEOJ000CIH6fi2Ynf7vQnhW/oY8HARaK7iHSBGQi58X/3w9QC1/cklTGBlTYe9rN8cJr+TpaxJ9zIf9aA8O0eIj0FrpEjH9Bw+pbaLQ0ZfiA5dAlUIvP0IDJgOeYSR0NMG57N4jhT9PuOIDBNX147QVF4D7MZoOX9Dsz05lzd8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAWyzDg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB209C32781;
-	Mon,  1 Jul 2024 05:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719813376;
-	bh=n23wtrwm8NZfNsYbcGValEvYtuaepP9EGBapwyStQYQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=LAWyzDg8GmO7hC28BK1mVNApnN6LZwlijF0K6vST6rq2Z0VJCtX/RMIC5gHXgX7Vo
-	 Vs0Ly83jzR2U2OUZKajdgFTVkM8rRCF5CTyFNPQURP8jPYBVPzjm3nW0CawrkZpqQB
-	 v3OJ19Ndwtw/2r2VLriFRmVVMVFZnU/jcXPjfSf/rvWj3ilKu/4U9/e0GQCKvw8pma
-	 WFKFqqvHTD3yIhqf0HnjZuiNgUwElAbl1P4RlHC5q+Pfr+FqzzJjZuvAyPtRBtyz0c
-	 2+I+O8gZzyk2bpK6allu9hlaAVHRjCNqI6YHYNIcFJdsjeOaAO3HdxvhGywk16zdwg
-	 A/Z/j9pNvrjKg==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ec1ac1aed2so30047381fa.3;
-        Sun, 30 Jun 2024 22:56:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV3fX9sN08RecWz+paOC8qzNFKpLZsxC4aEqka0KxSlyeKU/SdaZOmzaK73g4FYmr/CBwsN7jhAAOe5NZnODkiUg8fZYBb1n1KQLkGe7aTGFQm6vpGxkolfj8v1li9WtzIpp9oP0LJc
-X-Gm-Message-State: AOJu0Yyi32yVBT4uqDwlGPh0kfcG2AQmDlKG0VZWfn+c50JB9YQhSg9z
-	KdhSlbKaDqLm3yJIW1XdzZ1yOqX16ImfHavy3HFpjmxbFHvt3NriNBcM1wXHAan1tcoc4xAeBlS
-	tF3g2fqHhgMBOOdfzAUDr5rud1JQ=
-X-Google-Smtp-Source: AGHT+IH94jxkz8Pj/w6GgPayrHNJslk0NFwY62b4m10q/j1suEH0tE9VkHNy1f+wefisdCrPSdxQTY32nK/+Ui9IDMc=
-X-Received: by 2002:a2e:b52f:0:b0:2ec:5a85:66ec with SMTP id
- 38308e7fff4ca-2ee5e6f53e0mr27361211fa.48.1719813375199; Sun, 30 Jun 2024
- 22:56:15 -0700 (PDT)
+	s=arc-20240116; t=1719816077; c=relaxed/simple;
+	bh=0giSCIxMHwaDnOvFpUqp4Y73M/ZlyG2EnIUwXN/iyRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iqeaonjmTIhu+mDz0KK3rzoy5IMJdXSHBGNtXkLkLLVqbuyoxWV530PJMXg+hJjptL/G8aGiqU1OHn6ZEQhNv47qkgshCSD5Aw4GxmLkX+uSTtcF+9s1CJzndPp5bZnDiUMf3sv3HWq0/lyVxfnekK4eo4/zMQBRT/3uJ3SuTYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 0F4263000086C;
+	Mon,  1 Jul 2024 08:41:06 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 0371036558D; Mon,  1 Jul 2024 08:41:06 +0200 (CEST)
+Date: Mon, 1 Jul 2024 08:41:05 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Aditya Garg <gargaditya08@live.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+	Kerem Karabay <kekrby@gmail.com>,
+	Orlando Chamberlain <orlandoch.dev@gmail.com>
+Subject: Re: [PATCH v2] efi: libstub: add support for the apple_set_os
+ protocol
+Message-ID: <ZoJPgSlZJ3ZlU2zL@wunner.de>
+References: <75C90B50-9AB9-4F0A-B2CD-43427354D15C@live.com>
+ <ZoJAAifMqIDXdniv@wunner.de>
+ <CAMj1kXH3fvS259Y1mfYcKQbM2mUYbSfuf2ZiMXfFhjq-rzn5UA@mail.gmail.com>
+ <ZoJDuunseVIDua-m@wunner.de>
+ <CAMj1kXFKBsAXDLxinqiszH=6hEOjbJQL-nFgBsBceta4rUCN-w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <75C90B50-9AB9-4F0A-B2CD-43427354D15C@live.com>
- <ZoJAAifMqIDXdniv@wunner.de> <CAMj1kXH3fvS259Y1mfYcKQbM2mUYbSfuf2ZiMXfFhjq-rzn5UA@mail.gmail.com>
- <ZoJDuunseVIDua-m@wunner.de>
-In-Reply-To: <ZoJDuunseVIDua-m@wunner.de>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 1 Jul 2024 07:56:04 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFKBsAXDLxinqiszH=6hEOjbJQL-nFgBsBceta4rUCN-w@mail.gmail.com>
-Message-ID: <CAMj1kXFKBsAXDLxinqiszH=6hEOjbJQL-nFgBsBceta4rUCN-w@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: libstub: add support for the apple_set_os protocol
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Aditya Garg <gargaditya08@live.com>, Hans de Goede <hdegoede@redhat.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, Kerem Karabay <kekrby@gmail.com>, 
-	Orlando Chamberlain <orlandoch.dev@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXFKBsAXDLxinqiszH=6hEOjbJQL-nFgBsBceta4rUCN-w@mail.gmail.com>
 
-On Mon, 1 Jul 2024 at 07:50, Lukas Wunner <lukas@wunner.de> wrote:
->
-> On Mon, Jul 01, 2024 at 07:38:38AM +0200, Ard Biesheuvel wrote:
-> > Any thoughts on whether this should depend on CONFIG_APPLE_GMUX or not?
->
-> I tend towards *not* making it depend on CONFIG_APPLE_GMUX:
->
-> * The gpu-switch utility Orlando linked to doesn't use the apple-gmux
->   driver.  (It changes EFI variables that influence to which GPU the
->   EFI driver will switch on next reboot.)
->
-> * apple_set_os() has side effects beyond exposing the iGPU (such as
->   switching the keyboard+trackpad access method to SPI instead of USB).
->   If there are issues, they will be harder to debug if their occurrence
->   depends on a Kconfig option.
+On Mon, Jul 01, 2024 at 07:56:04AM +0200, Ard Biesheuvel wrote:
+> On Mon, 1 Jul 2024 at 07:50, Lukas Wunner <lukas@wunner.de> wrote:
+> > On Mon, Jul 01, 2024 at 07:38:38AM +0200, Ard Biesheuvel wrote:
+> > > Any thoughts on whether this should depend on CONFIG_APPLE_GMUX or not?
+> >
+> > I tend towards *not* making it depend on CONFIG_APPLE_GMUX:
+> >
+> > * The gpu-switch utility Orlando linked to doesn't use the apple-gmux
+> >   driver.  (It changes EFI variables that influence to which GPU the
+> >   EFI driver will switch on next reboot.)
+> >
+> > * apple_set_os() has side effects beyond exposing the iGPU (such as
+> >   switching the keyboard+trackpad access method to SPI instead of USB).
+> >   If there are issues, they will be harder to debug if their occurrence
+> >   depends on a Kconfig option.
+> 
+> Understood. I agree that having fewer possible combinations is
+> strongly preferred.
+> 
+> However, this change affects all Intel Macs. Is the latter side effect
+> likely to cause any regressions on Intel Mac users that don't have two
+> GPUs to begin with?
 
-Understood. I agree that having fewer possible combinations is
-strongly preferred.
+MacBook Air models introduced 2013/2014 will use SPI instead of USB
+to access the keyboard and trackpad.  And from a quick look, the
+applespi_tp_models[] array in drivers/input/keyboard/applespi.c
+seems to be missing the trackpad dimensions of those models.
+The driver may also need a quirk to work around missing properties
+in the DSDT on those models.  Back in 2018 someone tested apple_set_os()
+on such a machine and reported these issues, but the GitHub discussion
+to narrow them down and fix them fizzled out:
 
-However, this change affects all Intel Macs. Is the latter side effect
-likely to cause any regressions on Intel Mac users that don't have two
-GPUs to begin with?
+https://github.com/cb22/macbook12-spi-driver/issues/65
+
+The problem is that users of such models will generally run a
+distribution kernel which has CONFIG_APPLE_GMUX enabled,
+so constraining apple_set_os() to CONFIG_APPLE_GMUX won't help them.
+Also, there is no incentive to amend the applespi.c driver for
+affected machines if apple_set_os() is never called on them,
+which is regrettable.
+
+Another potential regression is that exposing the iGPU may consume
+more power.  Or maybe the i915 driver will autosuspend if the panel
+is not connected, I don't know.  Likewise there is no incentive to
+fix the issue if apple_set_os() is never run.
+
+I've also heard rumors that the EFI firmware configures different
+CPU frequency scaling parameters if apple_set_os() is called,
+but maybe Linux overwrites them anyway.  Apple never cared for Linux,
+so apple_set_os() basically just differentiates between macOS and
+Windows (via Boot Camp).  We generally choose to masquerade as macOS
+to get access to the full set of hardware features, not the crippled
+setup exposed to Windows.
+
+If you think that we absolutely need to avoid these potential regressions,
+a better approach than constraining to CONFIG_APPLE_GMUX would be to
+match DMI data for dual-GPU MacBook Pros.  I notice that the efistub
+has been amended with SMBIOS support through efi_get_smbios_record() +
+efi_get_smbios_string().  Would that get us to the laptop model name?
+If so that would seem to be a viable way to avoid or at least minimize
+regressions.
+
+Thanks,
+
+Lukas
 
