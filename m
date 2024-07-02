@@ -1,164 +1,136 @@
-Return-Path: <linux-efi+bounces-1364-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1365-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7892A91EB2D
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2024 00:52:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDB091EDE1
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2024 06:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 932A11C21694
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Jul 2024 22:52:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56112B239DE
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2024 04:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E0F172BAB;
-	Mon,  1 Jul 2024 22:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE491433C8;
+	Tue,  2 Jul 2024 04:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E8OPMiiU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmThOihg"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD68617279E
-	for <linux-efi@vger.kernel.org>; Mon,  1 Jul 2024 22:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1183F8E2;
+	Tue,  2 Jul 2024 04:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719874355; cv=none; b=Xhdq7cd9zG8JWv42Uex7DzsE3TwrX2CGFY82KDV1PGTjge5UjnpL69W8/ruV0P9b3NsZvLoI9JBVVmFCeK4S9HwpTAlz4WI9KWmDmAdD4ZcCwWfEwwQLD8ICUS+fGZ2RKug8xKNXvy90zOHxJZ6Ih6Zn8ckgaxQcdHIyKy77Nt4=
+	t=1719894437; cv=none; b=uNxepcjEW8w29a23JyVt6p3qvEpY5Tt1selM2Gyk6VqyMcM+54d9fCfCExXrp1jg1g3WPgrYwLesrz/jY1c455Qv+q11M99MNto8zFLPDPrhXksi0yDB4HZPEzNXdUiq3IRwMfzetZ0ItydV43t/NyTd5mVF2rap0TSqPuewDkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719874355; c=relaxed/simple;
-	bh=YHwEN9j+f050/Sz8/8W326pifoB6ZGjsp+be+sSkWJQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sT2KphOEe3OSuG07u/6CEgUc09i0rETWmeIZ3HP5Upp35Opol1AIEshCLFsmca6xd63ZLVPKkuVya+tJnJ/tLMNW9YECXRaLJJ1foKsi2BacSSgY+P8b0obUWIwTx+RqDSzIe0+uBH0BbQ3FzmJN+pShLhDKeDm1Xr6+jOIfzg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E8OPMiiU; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-64f4b849b7cso13631737b3.2
-        for <linux-efi@vger.kernel.org>; Mon, 01 Jul 2024 15:52:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719874353; x=1720479153; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=krn2FFaP01Gf7w0tt8NWoS0e5If/hiQRgvGobVehr08=;
-        b=E8OPMiiUhYGCZWaj2iFi7G9wAPUOvaHnl3/FTf7qruHBD84dqn5XbJvZPf0dLaYQ/X
-         pizELKHjbQVcDZYqO8lj7jP/whDW+FX6mAscTFD3ChAlN49FozaMJmmD7P6N7A1f+e9M
-         4xXRM619eexWOlfVgzVg3DmxbtZ9GZndT6/N1uZiSgxAixaGPWk5aM1FFrTaeP0OAwlT
-         kVSZgnStKXTEELcAXKEJ21hBdryzc/M5B67fJy4Snr0/iCCn5JiaYjaiPV1direFRyy7
-         WjGDBeM2J9SZmf8yimn8Kt7cZ5bjGtUkZkgMPJT25rcOBGHNMV9AvAM3WRVLSzKIHkYP
-         IZTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719874353; x=1720479153;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=krn2FFaP01Gf7w0tt8NWoS0e5If/hiQRgvGobVehr08=;
-        b=sjZZbF7HKl/+zpfEzBXtQW9N8ADXAFnluNbf78KfEF3PXlY8NNGejXd6eiipx+XMis
-         1RAYDXF/DYNpSwY15dDd/FozEBKSFbBuE9XQzA+4xBOBvqyKaNm3S2NgnLgQg0h7DTFh
-         nrSF7UcNjq57O5USI3GqNwjTiBCcarmdtoerUJy0RVjUUr4LtuiNKQ4pp6+Eta6IfNKO
-         kZqgIqCOpOqbN6AntA3671kaqx4rJsTpvXp2aE+bBkIQeSbOwXrIQiRk2cdO/oY8z6O4
-         rIn0OqiPpzXWhDyGRO3Hj7mVYRWHYLdNrATr7Orz/L81e3pnZobSEwlSGDyDY1GMVkkK
-         w0aQ==
-X-Gm-Message-State: AOJu0Yza0quzT2Q65m6cffdfgrHvpBROyuxBbRPT6CRKc2Nh0Ge1b/TF
-	gkkQ5Ie7MqPZtu99W2XKSXm2YcA03VyZrMDr7Z+YFPRsxIKttlX02yxE3ZrIfTnuO94F99+6woC
-	YdJTPUfBKKJzDWaNwYIn3oQQxV3W5UfOOM8QsH24MMh83VkOk2PdNNDtiV0Af6zBjyEkLwo+cLE
-	6l1QIwcCmWHMZwdj/HOykNcvqfpA==
-X-Google-Smtp-Source: AGHT+IFpbjOngKZ/nOT93FVCtI2b26qIPxcZJSKa7G2YKOjS6GyEHb1HVnRtbhNPQCaL5uq+sQUvx9IQ
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:6902:1142:b0:e03:3cfa:1aa7 with SMTP id
- 3f1490d57ef6-e036eabf996mr15043276.1.1719874352509; Mon, 01 Jul 2024 15:52:32
- -0700 (PDT)
-Date: Tue,  2 Jul 2024 00:52:25 +0200
+	s=arc-20240116; t=1719894437; c=relaxed/simple;
+	bh=Pv0BfDTulESS3H2hspa9V/qPBcr+GryRdQNP1DxU5JY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BHjo1UmSc5jUdZNWi6C4S2G6AXBMcu3yUgWMIWzCZK5ABww3irvjwLUarizT4STM4xEXdRd0ZiLWOtCz4aVDNWYdCxD1LdiEPXSjBnJ3ZIzpXljIzwON3UbV6JgPxru6xIUYzdZWMFo4CiqwT9DwEfioxfs0+cGHR2TSlRZfxrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmThOihg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27DDC116B1;
+	Tue,  2 Jul 2024 04:27:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719894437;
+	bh=Pv0BfDTulESS3H2hspa9V/qPBcr+GryRdQNP1DxU5JY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QmThOihg9UGFPaNoDYQyvvbRVQdaQkcab25Xy2SgQMsBgmC3a7qBKgUNdrsX6AoTx
+	 mJhcmZq7U/oVhTFsfpggxVdwg8WRJXrYHREzkqOw34vvGDGgZX7R90e2xCIGko+vvA
+	 qBmWLbhllc4Ea/2SnLbt4k0Kb0R8dMBE1S9D1iXW7Zt27SE0Ya2hVrO11DbQWG+2ri
+	 HqbBH6dAx7D01N9uC0MQBTZvFaqmMw13gj3qDjJVI6mwSkBuY2ATeM1/wpABIqaAhH
+	 8z+HoC0itipm7i+VVUwgjskOl6FhAVgVuLe2pHxeKVLhhG2BoVo9KTzlu0+oEK8oN3
+	 q8sGJHAxqGD8Q==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org,
+	Eric Sandeen <sandeen@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	autofs@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-efi@vger.kernel.org,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-ext4@vger.kernel.org,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	linux-mm@kvack.org,
+	Jan Kara <jack@suse.cz>,
+	ntfs3@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	Hans Caniullan <hcaniull@redhat.com>
+Subject: Re: (subset) [PATCH 0/14] New uid & gid mount option parsing helpers
+Date: Tue,  2 Jul 2024 06:25:05 +0200
+Message-ID: <20240702-putzig-krater-aea1bf2b652d@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <8dca3c11-99f4-446d-a291-35c50ed2dc14@redhat.com>
+References: <8dca3c11-99f4-446d-a291-35c50ed2dc14@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2931; i=ardb@kernel.org;
- h=from:subject; bh=l9dlW8YRRsM2dq/d8cT6jilJFrbbIWvizZcn8lcTRBs=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIa3ZWGOae2rwc54PgQ9nWe8KO6f++6wpS3T0rUP7CnVv6
- V2aZHGvo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExEx57hr8xsb/9bu0UcA2rW
- Bt+4Jlw/6ZLaYaWPUfxCEiL9RUK/VjH8Uzi9scNl6Y/ET3b3cn6tuHase5P1L/+ZefMXf5Sa/eD qNH4A
-X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-Message-ID: <20240701225224.2686901-2-ardb+git@google.com>
-Subject: [PATCH] efistub/smbios: Simplify SMBIOS enumeration API
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2869; i=brauner@kernel.org; h=from:subject:message-id; bh=Pv0BfDTulESS3H2hspa9V/qPBcr+GryRdQNP1DxU5JY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQ1N86epaB8O+RGuUfcyR2t/+MibkifPWzJrzm/ojW// bz+7/jIjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIncDGf4p3JIf1/9yu1MzKr3 pz/12149IctCKa9v5339fMP28/emGDIyXF+35fODGL28nUFvD8xImtm5d1dfRe/hRdfiA9seu4Y HcwIA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Thu, 27 Jun 2024 19:24:59 -0500, Eric Sandeen wrote:
+> Multiple filesystems take uid and gid as options, and the code to
+> create the ID from an integer and validate it is standard boilerplate
+> that can be moved into common helper functions, so do that for
+> consistency and less cut&paste.
+> 
+> This also helps avoid the buggy pattern noted by Seth Jenkins at
+> https://lore.kernel.org/lkml/CALxfFW4BXhEwxR0Q5LSkg-8Vb4r2MONKCcUCVioehXQKr35eHg@mail.gmail.com/
+> because uid/gid parsing will fail before any assignment in most
+> filesystems.
+> 
+> [...]
 
-Update the efi_get_smbios_string() macro to take a pointer to the entire
-record struct rather than the header. This removes the need to pass the
-type explicitly, as it can be inferred from the typed pointer. Also,
-drop 'type' from the prototype of __efi_get_smbios_string(), as it is
-never referenced.
+I've snatched everything but the fuse change as we should do that one in
+two steps.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/arm64.c   | 3 +--
- drivers/firmware/efi/libstub/efistub.h | 9 ++++-----
- drivers/firmware/efi/libstub/smbios.c  | 4 ++--
- 3 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/arm64.c b/drivers/firmware/efi/libstub/arm64.c
-index 446e35eaf3d9..e57cd3de0a00 100644
---- a/drivers/firmware/efi/libstub/arm64.c
-+++ b/drivers/firmware/efi/libstub/arm64.c
-@@ -39,8 +39,7 @@ static bool system_needs_vamap(void)
- 		static char const emag[] = "eMAG";
- 
- 	default:
--		version = efi_get_smbios_string(&record->header, 4,
--						processor_version);
-+		version = efi_get_smbios_string(record, processor_version);
- 		if (!version || (strncmp(version, altra, sizeof(altra) - 1) &&
- 				 strncmp(version, emag, sizeof(emag) - 1)))
- 			break;
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 27abb4ce0291..d33ccbc4a2c6 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -1204,14 +1204,13 @@ struct efi_smbios_type4_record {
- 	u16				thread_enabled;
- };
- 
--#define efi_get_smbios_string(__record, __type, __name) ({		\
--	int off = offsetof(struct efi_smbios_type ## __type ## _record,	\
--			   __name);					\
--	__efi_get_smbios_string((__record), __type, off);		\
-+#define efi_get_smbios_string(__record, __field) ({			\
-+	__typeof__(__record) __rec = __record;				\
-+	__efi_get_smbios_string(&__rec->header, &__rec->__field);	\
- })
- 
- const u8 *__efi_get_smbios_string(const struct efi_smbios_record *record,
--				  u8 type, int offset);
-+				  const u8 *offset);
- 
- void efi_remap_image(unsigned long image_base, unsigned alloc_size,
- 		     unsigned long code_size);
-diff --git a/drivers/firmware/efi/libstub/smbios.c b/drivers/firmware/efi/libstub/smbios.c
-index c217de2cc8d5..520c9079717a 100644
---- a/drivers/firmware/efi/libstub/smbios.c
-+++ b/drivers/firmware/efi/libstub/smbios.c
-@@ -38,7 +38,7 @@ const struct efi_smbios_record *efi_get_smbios_record(u8 type)
- }
- 
- const u8 *__efi_get_smbios_string(const struct efi_smbios_record *record,
--				  u8 type, int offset)
-+				  const u8 *offset)
- {
- 	const u8 *strtable;
- 
-@@ -46,7 +46,7 @@ const u8 *__efi_get_smbios_string(const struct efi_smbios_record *record,
- 		return NULL;
- 
- 	strtable = (u8 *)record + record->length;
--	for (int i = 1; i < ((u8 *)record)[offset]; i++) {
-+	for (int i = 1; i < *offset; i++) {
- 		int len = strlen(strtable);
- 
- 		if (!len)
--- 
-2.45.2.803.g4e1b14247a-goog
+Applied to the vfs.mount.api branch of the vfs/vfs.git tree.
+Patches in the vfs.mount.api branch should appear in linux-next soon.
 
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.mount.api
+
+[01/14] fs_parse: add uid & gid option option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/9f111059e725
+[02/14] autofs: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/748cddf13de5
+[03/14] debugfs: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/49abee5991e1
+[04/14] efivarfs: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/dcffad38c767
+[05/14] exfat: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/ffe1b94d7464
+[06/14] ext4: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/6b5732b5ca4f
+[08/14] hugetlbfs: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/eefc13247722
+[09/14] isofs: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/6a265845db28
+[10/14] ntfs3: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/c449cb5d1bce
+[11/14] tmpfs: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/2ec07010b6a9
+[12/14] smb: client: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/3229e3a5a374
+[13/14] tracefs: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/b548291690d1
+[14/14] vboxsf: Convert to new uid/gid option parsing helpers
+        https://git.kernel.org/vfs/vfs/c/da99d45bd551
 
