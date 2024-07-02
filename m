@@ -1,136 +1,132 @@
-Return-Path: <linux-efi+bounces-1365-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1366-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDB091EDE1
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2024 06:27:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A98924178
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2024 16:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56112B239DE
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2024 04:27:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 656541F21F86
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Jul 2024 14:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE491433C8;
-	Tue,  2 Jul 2024 04:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6412D1BA89D;
+	Tue,  2 Jul 2024 14:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmThOihg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tbxW6LU5"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1183F8E2;
-	Tue,  2 Jul 2024 04:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF3E1BA892;
+	Tue,  2 Jul 2024 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719894437; cv=none; b=uNxepcjEW8w29a23JyVt6p3qvEpY5Tt1selM2Gyk6VqyMcM+54d9fCfCExXrp1jg1g3WPgrYwLesrz/jY1c455Qv+q11M99MNto8zFLPDPrhXksi0yDB4HZPEzNXdUiq3IRwMfzetZ0ItydV43t/NyTd5mVF2rap0TSqPuewDkc=
+	t=1719932070; cv=none; b=Y26RK/3QjKLfVB6IY2Dos1DxIg6s+PaPuLug7uvhV6Q1rffQ1j6/TDoxwLoLTZWvhWZBaB8VBXKI0oWB+zwA1/2zUDdBi/Bf5mCZP1NxNUmvb4OXG8+MPoT9GbqjrG3Ph9Hi5gtxZ184WTJGF0RMN65uSeHC7mUJU5bjCTIFEgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719894437; c=relaxed/simple;
-	bh=Pv0BfDTulESS3H2hspa9V/qPBcr+GryRdQNP1DxU5JY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BHjo1UmSc5jUdZNWi6C4S2G6AXBMcu3yUgWMIWzCZK5ABww3irvjwLUarizT4STM4xEXdRd0ZiLWOtCz4aVDNWYdCxD1LdiEPXSjBnJ3ZIzpXljIzwON3UbV6JgPxru6xIUYzdZWMFo4CiqwT9DwEfioxfs0+cGHR2TSlRZfxrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmThOihg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27DDC116B1;
-	Tue,  2 Jul 2024 04:27:13 +0000 (UTC)
+	s=arc-20240116; t=1719932070; c=relaxed/simple;
+	bh=TaI+nB0ZJGeSrYMleXJBRusDkseeq1JKf+GsAnw96SU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=COLGd7FdaSJlK6Ti0//jLo28tR6erkhIjke6kSgno/2q1H8FXnPlFyTwd+aRmy+MRAhbn49BG+MXyDpIaEbGb5pvSlJl/mr47873AIIIOZ3zobU5LB3CvcSqB2w88Y1mCXBBm+aPzUjicJRD5fsATYTpRk2NLlrJak4JIDuxj6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tbxW6LU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7CBC4AF0C;
+	Tue,  2 Jul 2024 14:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719894437;
-	bh=Pv0BfDTulESS3H2hspa9V/qPBcr+GryRdQNP1DxU5JY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmThOihg9UGFPaNoDYQyvvbRVQdaQkcab25Xy2SgQMsBgmC3a7qBKgUNdrsX6AoTx
-	 mJhcmZq7U/oVhTFsfpggxVdwg8WRJXrYHREzkqOw34vvGDGgZX7R90e2xCIGko+vvA
-	 qBmWLbhllc4Ea/2SnLbt4k0Kb0R8dMBE1S9D1iXW7Zt27SE0Ya2hVrO11DbQWG+2ri
-	 HqbBH6dAx7D01N9uC0MQBTZvFaqmMw13gj3qDjJVI6mwSkBuY2ATeM1/wpABIqaAhH
-	 8z+HoC0itipm7i+VVUwgjskOl6FhAVgVuLe2pHxeKVLhhG2BoVo9KTzlu0+oEK8oN3
-	 q8sGJHAxqGD8Q==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	Eric Sandeen <sandeen@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	autofs@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-efi@vger.kernel.org,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-ext4@vger.kernel.org,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	linux-mm@kvack.org,
-	Jan Kara <jack@suse.cz>,
-	ntfs3@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Hans Caniullan <hcaniull@redhat.com>
-Subject: Re: (subset) [PATCH 0/14] New uid & gid mount option parsing helpers
-Date: Tue,  2 Jul 2024 06:25:05 +0200
-Message-ID: <20240702-putzig-krater-aea1bf2b652d@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <8dca3c11-99f4-446d-a291-35c50ed2dc14@redhat.com>
-References: <8dca3c11-99f4-446d-a291-35c50ed2dc14@redhat.com>
+	s=k20201202; t=1719932069;
+	bh=TaI+nB0ZJGeSrYMleXJBRusDkseeq1JKf+GsAnw96SU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tbxW6LU5ep5erzNL3EiwJb+I50M0eCWr/UImQXOVTgGMJtJgHDPRC2MfuK07nS0xH
+	 eeVGsFvai1Zvii6pfTYF1VtduyU2jqSNxcqnqeKsWO4lgbYijb++YuaxLG+WFGu3ET
+	 8A7l9Ap8Il3oNDN4scdS5i5Q593Cbs3u8tDedWkYBDYVqw5hi+sB+QAD0S2pcF1ZHd
+	 ixUm8vwNEcREa2VT8zU15+oFFvj/EW5f3HqBwj1jluIUctY7kh2j61jSA+zqnNIfic
+	 KceDooX7q1j/9aqszl4kbzxx5E/c/ayWQ1citKeVtCuT+kmgoKhHNuxI1m17dzXbJT
+	 Q+Q5cn/tUZXVQ==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2ee75ffce77so10538291fa.3;
+        Tue, 02 Jul 2024 07:54:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXWSwLSneNtf8RBJuYQU5z58asbqapyeWwZLpPMVyURDdrW4xKeiZRRXEpsI36rml/k1/c8pnc+8tYM4khx5YffDvQZFtJI5HvHcX7WsY9mM5MOBXXfjk0ePIhkk/aJcKDM4UrwYu0DQ+KTUerYQouYZmTxPbrUgrbk1UcPVB1GsibiLRXQwV93OxftsFejO57goQwWmjx4DBwD1jvHoao=
+X-Gm-Message-State: AOJu0YxE02DI9gI3Ea9lM3buFJK3N/jhRivN1wgHUe8+tFfa+7h/n/Si
+	RuR8lzB5gBFZCdXlA1fmH7/eMW2bcaTbuxyEvA39ywN4VY34faYRqO7I3WjD+W8lxhyQ+NXB/Kp
+	yDwl5ac5dYscH2HOskBdL7/Ps/J0=
+X-Google-Smtp-Source: AGHT+IHb3CV0ugaADa64FK+5hltnQPwSgB/QJrId5Rv7Zs0zSjmG+9VdS1AjRSt9LsoPkH80k6BYiK1TmI/EB8+bIx4=
+X-Received: by 2002:a05:651c:b14:b0:2ec:5488:cc9e with SMTP id
+ 38308e7fff4ca-2ee5e3bbd14mr72964281fa.26.1719932068120; Tue, 02 Jul 2024
+ 07:54:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2869; i=brauner@kernel.org; h=from:subject:message-id; bh=Pv0BfDTulESS3H2hspa9V/qPBcr+GryRdQNP1DxU5JY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQ1N86epaB8O+RGuUfcyR2t/+MibkifPWzJrzm/ojW// bz+7/jIjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIncDGf4p3JIf1/9yu1MzKr3 pz/12149IctCKa9v5339fMP28/emGDIyXF+35fODGL28nUFvD8xImtm5d1dfRe/hRdfiA9seu4Y HcwIA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <20240506174721.72018-1-john.allen@amd.com> <20240506174721.72018-2-john.allen@amd.com>
+ <20240627080801.GDZn0d4Sr9y0B6zvPh@fat_crate.local>
+In-Reply-To: <20240627080801.GDZn0d4Sr9y0B6zvPh@fat_crate.local>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 2 Jul 2024 16:54:17 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF534YBft=a9X=RwBthEuPb4j7usQ+F-j2PHCjFhmeZxg@mail.gmail.com>
+Message-ID: <CAMj1kXF534YBft=a9X=RwBthEuPb4j7usQ+F-j2PHCjFhmeZxg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] ACPI: PRM: Add PRM handler direct call support
+To: Borislav Petkov <bp@alien8.de>
+Cc: John Allen <john.allen@amd.com>, linux-efi <linux-efi@vger.kernel.org>, rafael@kernel.org, 
+	lenb@kernel.org, yazen.ghannam@amd.com, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 27 Jun 2024 19:24:59 -0500, Eric Sandeen wrote:
-> Multiple filesystems take uid and gid as options, and the code to
-> create the ID from an integer and validate it is standard boilerplate
-> that can be moved into common helper functions, so do that for
-> consistency and less cut&paste.
-> 
-> This also helps avoid the buggy pattern noted by Seth Jenkins at
-> https://lore.kernel.org/lkml/CALxfFW4BXhEwxR0Q5LSkg-8Vb4r2MONKCcUCVioehXQKr35eHg@mail.gmail.com/
-> because uid/gid parsing will fail before any assignment in most
-> filesystems.
-> 
-> [...]
+On Thu, 27 Jun 2024 at 10:08, Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Mon, May 06, 2024 at 05:47:20PM +0000, John Allen wrote:
+> > Platform Runtime Mechanism (PRM) handlers can be invoked from either the
+> > AML interpreter or directly by an OS driver. Implement the direct call
+> > method.
+> >
+> > Export the symbol as this will be used by modules such as the AMD
+> > Address Translation Library and likely others in the future.
+> >
+> > Signed-off-by: John Allen <john.allen@amd.com>
+> > Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> > ---
+> > v2:
+> >   - Align statements setting fields in context buffer on '='
+> > ---
+> >  drivers/acpi/prmt.c  | 24 ++++++++++++++++++++++++
+> >  include/linux/prmt.h |  5 +++++
+> >  2 files changed, 29 insertions(+)
+> >
+> > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> > index c78453c74ef5..1cfaa5957ac4 100644
+> > --- a/drivers/acpi/prmt.c
+> > +++ b/drivers/acpi/prmt.c
+> > @@ -214,6 +214,30 @@ static struct prm_handler_info *find_prm_handler(const guid_t *guid)
+> >  #define UPDATE_LOCK_ALREADY_HELD     4
+> >  #define UPDATE_UNLOCK_WITHOUT_LOCK   5
+> >
+> > +int acpi_call_prm_handler(guid_t handler_guid, void *param_buffer)
+> > +{
+> > +     struct prm_handler_info *handler = find_prm_handler(&handler_guid);
+> > +     struct prm_module_info *module = find_prm_module(&handler_guid);
+> > +     struct prm_context_buffer context;
+> > +     efi_status_t status;
+> > +
+> > +     if (!module || !handler)
+> > +             return -ENODEV;
+> > +
+> > +     memset(&context, 0, sizeof(context));
+> > +     ACPI_COPY_NAMESEG(context.signature, "PRMC");
+> > +     context.identifier         = handler->guid;
+> > +     context.static_data_buffer = handler->static_data_buffer_addr;
+> > +     context.mmio_ranges        = module->mmio_info;
+> > +
+> > +     status = efi_call_acpi_prm_handler(handler->handler_addr,
+> > +                                        (u64)param_buffer,
+> > +                                        &context);
+> > +
+> > +     return efi_status_to_err(status);
+> > +}
+>
+> + linux-efi as Rafael wanted to make sure the environment is created properly
+> for the EFI runtime services call...
+>
 
-I've snatched everything but the fuse change as we should do that one in
-two steps.
+This looks fine to me.
 
----
-
-Applied to the vfs.mount.api branch of the vfs/vfs.git tree.
-Patches in the vfs.mount.api branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.mount.api
-
-[01/14] fs_parse: add uid & gid option option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/9f111059e725
-[02/14] autofs: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/748cddf13de5
-[03/14] debugfs: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/49abee5991e1
-[04/14] efivarfs: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/dcffad38c767
-[05/14] exfat: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/ffe1b94d7464
-[06/14] ext4: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/6b5732b5ca4f
-[08/14] hugetlbfs: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/eefc13247722
-[09/14] isofs: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/6a265845db28
-[10/14] ntfs3: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/c449cb5d1bce
-[11/14] tmpfs: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/2ec07010b6a9
-[12/14] smb: client: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/3229e3a5a374
-[13/14] tracefs: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/b548291690d1
-[14/14] vboxsf: Convert to new uid/gid option parsing helpers
-        https://git.kernel.org/vfs/vfs/c/da99d45bd551
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
