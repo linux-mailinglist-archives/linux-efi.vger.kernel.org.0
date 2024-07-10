@@ -1,63 +1,63 @@
-Return-Path: <linux-efi+bounces-1396-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1397-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFB092D5DD
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jul 2024 18:12:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E52C92D5E0
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Jul 2024 18:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 645ECB21AEC
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jul 2024 16:12:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E5E4B2421D
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Jul 2024 16:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBEB19884C;
-	Wed, 10 Jul 2024 16:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84D11957F0;
+	Wed, 10 Jul 2024 16:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CKlmyhvN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gUAw9tzK"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFAE197A6A;
-	Wed, 10 Jul 2024 16:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390601957EA;
+	Wed, 10 Jul 2024 16:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720627795; cv=none; b=a3Wn+Oxdnmpmr1RYiri2+6h055CyUQ7hprX3+GBMNYbhyxhP9/yQXIbxY+jwr8crsJ01fD9GogvVIt4E47ChO5EVcafjrEmhJ/YyX1sNJ/NfTXqKT6mSRlkMQBspIRg2uBhLDaURlzHGk2T+ud+KWfvkEBsbF5vGu05VihC8QJk=
+	t=1720627809; cv=none; b=BPaJoEoRkxbrBNzpp9jj7zkNSEYPfDroC2GxvjYUZIa6LTtos65N38DScubcOIBD9abZC6aMhSt8FqoEWJumOfRYunYdweb5M59SxSk5pLupen7EYeeIL5a2t3ko/9wQbFiQKfFFyZVtdxqbvlnHwrWXPaT+5gFcOH/uSoxK1mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720627795; c=relaxed/simple;
-	bh=3ftzhE2HMy0sn2H91/T7W6LLqTlSAQgGntncMLyhsmw=;
+	s=arc-20240116; t=1720627809; c=relaxed/simple;
+	bh=NgRptb4rAMfYIdle52GXDXgskSqbD5NX6Sw8+H8rpog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGZkXQonQ0E7+6C8Rj77JY6Nu5syQNe6RJUIQbGmI5YU4RXLMQX3nRFyGWtAtrEqN8+hd8QIH3VFHppOhOSm5SpMgsd/mQOpNQY3LYtyFXHM9gqTCS3f7ahyb1L5BTaiaooq8agRdMwQYOY/BHx7DZ1f2ljy9fei75g6ShjNwfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CKlmyhvN; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=Onj5lKM6p90aItwS/yN/lHGIfvVmiMUhqxuiZopEFbMrv2a12v5dWhqsCCTbtvjvrpaIeQPGwpb83Z4Ccmq579zLza4n1QcRXsfglleDGDhBkmjbR74NCHpNNAeb8wH8HIxAZI1+NMVNdOhe6kMKAXloSzP6kcMXTKrkZ7kmFwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gUAw9tzK; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720627794; x=1752163794;
+  t=1720627808; x=1752163808;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3ftzhE2HMy0sn2H91/T7W6LLqTlSAQgGntncMLyhsmw=;
-  b=CKlmyhvNcld8U0SQomSPXaqCOhXA5MbDTPpAh1FrLna2h9wuo0Oc+2aW
-   SNi+JkxBQldnPD/jrCYwAwqex8em61Cc+NP4gEhuRZIS1sGGRSs3wyZOI
-   ZVWytjEauKOHW6njw7nSWeDStC7EaNUNXltJmRjlzoVlB3dzW8OVk2eQy
-   zbs4V2XioZvesNF/vD+9XwUXmo8NGltNvqGylYRpInIyJS4K27scrzz7C
-   p7QyY5ntLIhJctVpi/X5/kJGsUcjHEG0E1isU/CKo3f0Z6/mAl2kMoYW6
-   xBQEh/s7FrxsO4pK2raSKzj56XrbX7FRGf7v7Dgn/+sXVGtqoRUMr5Zzd
-   g==;
-X-CSE-ConnectionGUID: orBkQqbFQyO0E+N7dA04Tg==
-X-CSE-MsgGUID: ozxoi7aETneencODsdqnDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="18103121"
+  bh=NgRptb4rAMfYIdle52GXDXgskSqbD5NX6Sw8+H8rpog=;
+  b=gUAw9tzKXv14IOZ6WIL1zY6nI+h8ryZSSVCjJNN0vXQzeMPf60EqKtDD
+   PC6yZjVfSNHkFnwAPQ693oLK6HPg0FZGQ9j39QmuKWySKVtNCb7nAbmFf
+   fBwozhy8NYxQNPAx9wtnO2V6zjVG96j9XyeXqesPOVOYW5uKrMpD3yFpW
+   Q5fpwSMlazELTWsa44S44Fy2zSSDHWuzTFNowEp4LfH3940wbs0Q2Ic1F
+   Ain16G0CbNt6k4keUI/W4RpcZRp8AHe+3qtb8TEuyRLYzSf9RQk+qUpXr
+   NjBx9hr1EhjK61+xBBfFYiL8Sm+UFFwEsvCYwZeTiBKcphGGFXxhi1GHa
+   Q==;
+X-CSE-ConnectionGUID: QN1AlSuBQB6mVLtChVbVnw==
+X-CSE-MsgGUID: 2XHYgCEJSaCjeQlO5JoWRw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="18103167"
 X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; 
-   d="scan'208";a="18103121"
+   d="scan'208";a="18103167"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 09:09:53 -0700
-X-CSE-ConnectionGUID: BpNCO9AUSH+lfP+mhxvjGg==
-X-CSE-MsgGUID: VsEZXrtKSJ2exKP4UUNK1A==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 09:10:06 -0700
+X-CSE-ConnectionGUID: G9PGHujBQSyYsDVUun4mpQ==
+X-CSE-MsgGUID: 6SE6r0NrR4mUxA1tXLreqA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; 
-   d="scan'208";a="53084891"
+   d="scan'208";a="53085119"
 Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by orviesa003.jf.intel.com with ESMTP; 10 Jul 2024 09:09:41 -0700
+  by orviesa003.jf.intel.com with ESMTP; 10 Jul 2024 09:09:54 -0700
 From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -111,9 +111,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v4 07/16] x86/cpu: Defer CR pinning setup until after EFI initialization
-Date: Wed, 10 Jul 2024 19:06:43 +0300
-Message-ID: <20240710160655.3402786-8-alexander.shishkin@linux.intel.com>
+Subject: [PATCH v4 08/16] x86/vsyscall: Reorganize the #PF emulation code
+Date: Wed, 10 Jul 2024 19:06:44 +0300
+Message-ID: <20240710160655.3402786-9-alexander.shishkin@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240710160655.3402786-1-alexander.shishkin@linux.intel.com>
 References: <20240710160655.3402786-1-alexander.shishkin@linux.intel.com>
@@ -125,48 +125,121 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In order to map the EFI runtime services, set_virtual_address_map
-needs to be called, which resides in the lower half of the address
-space. This means that LASS needs to be temporarily disabled around
-this call. This can only be done before the CR pinning is set up.
+From: Sohil Mehta <sohil.mehta@intel.com>
 
-Move CR pinning setup behind the EFI initialization.
+Separate out the actual vsyscall emulation from the page fault specific
+handling in preparation for the upcoming #GP fault emulation.
 
+No functional change intended.
+
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Suggested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kernel/cpu/common.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 42 +++++++++++++++------------
+ arch/x86/include/asm/vsyscall.h       |  8 ++---
+ arch/x86/mm/fault.c                   |  2 +-
+ 3 files changed, 29 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 8aa621dc7d30..c93c59a27dfa 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1948,7 +1948,6 @@ static __init void identify_boot_cpu(void)
- 	enable_sep_cpu();
- #endif
- 	cpu_detect_tlb(&boot_cpu_data);
--	setup_cr_pinning();
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index 2fb7d53cf333..e89d7d83a594 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -112,30 +112,13 @@ static bool write_ok_or_segv(unsigned long ptr, size_t size)
+ 	}
+ }
  
- 	tsx_init();
- 	tdx_init();
-@@ -2367,10 +2366,16 @@ void __init arch_cpu_finalize_init(void)
+-bool emulate_vsyscall(unsigned long error_code,
+-		      struct pt_regs *regs, unsigned long address)
++static bool __emulate_vsyscall(struct pt_regs *regs, unsigned long address)
+ {
+ 	unsigned long caller;
+ 	int vsyscall_nr, syscall_nr, tmp;
+ 	long ret;
+ 	unsigned long orig_dx;
  
+-	/* Write faults or kernel-privilege faults never get fixed up. */
+-	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+-		return false;
+-
+-	if (!(error_code & X86_PF_INSTR)) {
+-		/* Failed vsyscall read */
+-		if (vsyscall_mode == EMULATE)
+-			return false;
+-
+-		/*
+-		 * User code tried and failed to read the vsyscall page.
+-		 */
+-		warn_bad_vsyscall(KERN_INFO, regs, "vsyscall read attempt denied -- look up the vsyscall kernel parameter if you need a workaround");
+-		return false;
+-	}
+-
  	/*
- 	 * This needs to follow the FPU initializtion, since EFI depends on it.
-+	 * It also needs to precede the CR pinning setup, because we need to be
-+	 * able to temporarily clear the CR4.LASS bit in order to execute the
-+	 * set_virtual_address_map call, which resides in lower addresses and
-+	 * would trip LASS if enabled.
- 	 */
- 	if (efi_enabled(EFI_RUNTIME_SERVICES))
- 		efi_enter_virtual_mode();
+ 	 * No point in checking CS -- the only way to get here is a user mode
+ 	 * trap to a high address, which means that we're in 64-bit user code.
+@@ -270,6 +253,29 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	return true;
+ }
  
-+	setup_cr_pinning();
++bool emulate_vsyscall_pf(unsigned long error_code, struct pt_regs *regs,
++			 unsigned long address)
++{
++	/* Write faults or kernel-privilege faults never get fixed up. */
++	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
++		return false;
 +
- 	/*
- 	 * Ensure that access to the per CPU representation has the initial
- 	 * boot CPU configuration.
++	if (!(error_code & X86_PF_INSTR)) {
++		/* Failed vsyscall read */
++		if (vsyscall_mode == EMULATE)
++			return false;
++
++		/*
++		 * User code tried and failed to read the vsyscall page.
++		 */
++		warn_bad_vsyscall(KERN_INFO, regs,
++				  "vsyscall read attempt denied -- look up the vsyscall kernel parameter if you need a workaround");
++		return false;
++	}
++
++	return __emulate_vsyscall(regs, address);
++}
++
+ /*
+  * A pseudo VMA to allow ptrace access for the vsyscall page.  This only
+  * covers the 64bit vsyscall page now. 32bit has a real VMA now and does
+diff --git a/arch/x86/include/asm/vsyscall.h b/arch/x86/include/asm/vsyscall.h
+index 472f0263dbc6..214977f4fa11 100644
+--- a/arch/x86/include/asm/vsyscall.h
++++ b/arch/x86/include/asm/vsyscall.h
+@@ -14,12 +14,12 @@ extern void set_vsyscall_pgtable_user_bits(pgd_t *root);
+  * Called on instruction fetch fault in vsyscall page.
+  * Returns true if handled.
+  */
+-extern bool emulate_vsyscall(unsigned long error_code,
+-			     struct pt_regs *regs, unsigned long address);
++extern bool emulate_vsyscall_pf(unsigned long error_code,
++				struct pt_regs *regs, unsigned long address);
+ #else
+ static inline void map_vsyscall(void) {}
+-static inline bool emulate_vsyscall(unsigned long error_code,
+-				    struct pt_regs *regs, unsigned long address)
++static inline bool emulate_vsyscall_pf(unsigned long error_code,
++				       struct pt_regs *regs, unsigned long address)
+ {
+ 	return false;
+ }
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index e6c469b323cc..44e2d1ef4128 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1318,7 +1318,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * to consider the PF_PK bit.
+ 	 */
+ 	if (is_vsyscall_vaddr(address)) {
+-		if (emulate_vsyscall(error_code, regs, address))
++		if (emulate_vsyscall_pf(error_code, regs, address))
+ 			return;
+ 	}
+ #endif
 -- 
 2.43.0
 
