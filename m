@@ -1,66 +1,66 @@
-Return-Path: <linux-efi+bounces-1406-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1407-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CD792D754
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jul 2024 19:19:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A57E92D761
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Jul 2024 19:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E79871C209A9
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Jul 2024 17:19:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CE97B209B1
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Jul 2024 17:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78705194A6E;
-	Wed, 10 Jul 2024 17:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFC4194A6E;
+	Wed, 10 Jul 2024 17:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="NCoX9DS0"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UNR7ijrZ"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1719534545;
-	Wed, 10 Jul 2024 17:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697EB192483;
+	Wed, 10 Jul 2024 17:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720631985; cv=none; b=ApmJsuqDJCJ/J7jBblA+3bu3ZCQvC7OsJrh5czf/rycNjR7ZoZfgJXWYIbRd4rmPuXnFlzxxtwy/dSt4zesJ+sMoErDTDPsIY8lVptX+13alo4p+ihFEvCxYbBoE9k8aI2RIlwxLYsEyky+liaC81voyZvewtyt2PUO5uhdyy80=
+	t=1720632128; cv=none; b=HJNR9Hq//Gaq4z2pR3C6/gd87u13bye9oUuzNcmKOpKauv7Ugr+5e7Be73AzJCt+bI1CkOz0beTC5ZdmHM/5QCmryEL2+UNKSmvPb0CEexWJimF54gzeHi9IP7+YOkBPJMe3Vk4cP8HNXHu6MVLewly1FSV0zk37D0ccU6g1oiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720631985; c=relaxed/simple;
-	bh=1WCxG06P7mAa9HcCvP5iXR0Vo/X3kjtL5preMakYO/k=;
+	s=arc-20240116; t=1720632128; c=relaxed/simple;
+	bh=GKBilYZzZSvzFe9eBoJB8C4sbemHoQd1ohpfDLjVs4U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YfPkgUMGsTn6vu4zEwOlx8dB92L3nNHVSxBfFQ84B4PvspD9RgWxGQuhUs6s1dZh44anuNeAQ+0a+mdOZoJSBWb/EPU33L64BeuDOk9oTXG0Ah2SBYwaoG9p/+4CtWOnlUtGatXPSQ8bXRbAci98wOtadtMhl2pGgHMCkVXvmL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=NCoX9DS0; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=cUsDgp09x66AQgNXWUEhg2mpbjL+v3tgMbvNrKyU7k6cxhLbSN9o2V2Sd82KTvsd49RNF2o9AN7htY/HhlV0jH3ME6Wqzw4mBJnh1iUHEKGWh2OeM7DQ79ytsd+8eKAq90Y+9SroDkRnIFQZJ8pfHK+PIWNpeoITtV2FsDUJWio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UNR7ijrZ; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 067A140E0206;
-	Wed, 10 Jul 2024 17:19:39 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C165940E019C;
+	Wed, 10 Jul 2024 17:22:03 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ewiBphV7D_KG; Wed, 10 Jul 2024 17:19:36 +0000 (UTC)
+	with ESMTP id 7OnBJBiEPE2j; Wed, 10 Jul 2024 17:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720631974; bh=eCwsCaHH3nNUtEHLmttXrdCWSWB8LWlW1inXQHgFI2g=;
+	t=1720632120; bh=A47f9h7AWiBXL3tI1gj46//myn+haFpb6GR9nxNA+H4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NCoX9DS0Ni66Z7QLBuk8BAgkpRB3a8dX0WXg52nC8Alpt048IoglDMnzFPmDykUDE
-	 vrEMEEghVqlC4rBNAlavEojIR7BspEXgwcqhUg4QxK30YOOkw/qcn+H7agBtEnS/gP
-	 GSqsFsem29H0Sr7bJnM5Y3gcoGtip61mlRSstEOoScOPINSMVh9g16slgqjYIPRjki
-	 nkdroKhfUK4oK+cztBJa+6ln1C/plo4S9bx/qonmeLxWRYXyyTbh3ycJvRKSx4peeD
-	 rpY6wnJ6YFHH4kmhMB09+6RKCkwf0RuU7Hj0cs+I35un8YJKydi8tBbkPxWyTxR0Xi
-	 nq2TTyXOo0tUciciJqfoXj2kiIEDozBP7QAeAtnHrMVEuS3g9Bj+FdnI5QbQQMRtcR
-	 z3c+42afC9o0KFKGW7PoLoldJy1DIrfXEu9zYQztsH1yBQA00bRqPpiEYBHpGSzdHe
-	 eLwK7c2zolYIV7Yh6X2u35GvmoThRluK1+ULhK5txGl0p8i24yFINvw0Sqr0KETd/y
-	 hRq4eFmWabSWSY61oCH8bie/wuTkpOvMKgBdmzqpZ7uQrdG9ycBIU/cH/uAk83uman
-	 fNPbjtQUkShDarIUH5FL14Eqm1U6Agle73ym+89GSQejo10IZJ1bMTV5LH+SbJ9iD7
-	 Azz0lvwfp9KVHAz0C/eRh7M0=
+	b=UNR7ijrZGmPUBwT5PPtNVjeDFrDBY3dtwNkHSGB5Eq3igELvuNSYjZ3fqCAOCUOXp
+	 SEwZvHwD8zudUj8ZCzXUor9FSkKT7jvtFANhcory0A6HYJqt7yFWwnozNXkTqiigMj
+	 OWEVveZn7dV0DR9C4zqENdC3GzOpdFmM+93n9Q+SIbc7vNZ3DZcIu9Hvf1xxGRuZIT
+	 d/Q8cKEn/nxBKUY/vBLK47O50Ei+HXzhl2EB7dc1RPRc94oeJ9d0TEf9VsKfF2e89p
+	 j2R+YrX6bk94cPrCjTZPsVUrGQyleAxh/CqUHXxLnIitp1UDR5Sjbs43dvdIsdxZRY
+	 0APwEgSdIHcXg0p0pB+jra/4vSZNfWLGI5Bz5+ZRXTS20rAtQTil146NOdZPbLaRTE
+	 jb1XYrmgrFbnOuTU2y8KrEOO67dE4lVCEYersZOm5VV923UdUq95epZBwnXqVfiYMj
+	 ctSWKh+V4eaW0UQST7NYmlkAZ8E6mTrflawIK3kEw9hihr+W3p0BsWqlKyN5kL7PG+
+	 1szhiojgCZiNmtXA1KPqp3JeXk780H6ChzsVi9C8b5nEBMfQPw/gbK2E4Hh2M+gWI+
+	 aITqkbqFeEGJoJaCGJ45TJVEtFEdbAiaE5s/asUtV2XmYOSOr1jY78pHPag9A0fm4Z
+	 oizOcgxSMHzz5aAGztCobSP8=
 Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8E6EC40E0027;
-	Wed, 10 Jul 2024 17:18:42 +0000 (UTC)
-Date: Wed, 10 Jul 2024 19:18:36 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7AC6240E019D;
+	Wed, 10 Jul 2024 17:21:08 +0000 (UTC)
+Date: Wed, 10 Jul 2024 19:21:07 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
@@ -105,11 +105,11 @@ Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v4 03/16] x86/alternatives: Disable LASS when patching
- kernel alternatives
-Message-ID: <20240710171836.GGZo7CbFJeZwLCZUAt@fat_crate.local>
+Subject: Re: [PATCH v4 05/16] x86/cpu: Remove redundant comment during
+ feature setup
+Message-ID: <20240710172107.GHZo7DA3pQ1Mkj8gy7@fat_crate.local>
 References: <20240710160655.3402786-1-alexander.shishkin@linux.intel.com>
- <20240710160655.3402786-4-alexander.shishkin@linux.intel.com>
+ <20240710160655.3402786-6-alexander.shishkin@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -118,18 +118,38 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240710160655.3402786-4-alexander.shishkin@linux.intel.com>
+In-Reply-To: <20240710160655.3402786-6-alexander.shishkin@linux.intel.com>
 
-On Wed, Jul 10, 2024 at 07:06:39PM +0300, Alexander Shishkin wrote:
->  static void text_poke_memcpy(void *dst, const void *src, size_t len)
->  {
-> -	memcpy(dst, src, len);
-> +	stac();
-> +	__inline_memcpy(dst, src, len);
-> +	clac();
+On Wed, Jul 10, 2024 at 07:06:41PM +0300, Alexander Shishkin wrote:
+> From: Sohil Mehta <sohil.mehta@intel.com>
+> 
+> The code below the comment is self explanatory. Instead of updating the
+> comment with the newly added LASS feature, it is better to just remove
+> it.
+> 
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+> Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> ---
+>  arch/x86/kernel/cpu/common.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+> index dcf61a66e462..33a76256a6f5 100644
+> --- a/arch/x86/kernel/cpu/common.c
+> +++ b/arch/x86/kernel/cpu/common.c
+> @@ -1841,7 +1841,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+>  	/* Disable the PN if appropriate */
+>  	squash_the_stupid_serial_number(c);
+>  
+> -	/* Set up SMEP/SMAP/UMIP */
+>  	setup_smep(c);
+>  	setup_smap(c);
+>  	setup_umip(c);
+> -- 
 
-I think you need LASS-specific stac()/clac() or an alternative_2 or so. You
-can't cause that perf penalty on !LASS machines.
+A separate patch just for that?! You're kidding, right?
+
+Just merge it with the previous one.
 
 -- 
 Regards/Gruss,
