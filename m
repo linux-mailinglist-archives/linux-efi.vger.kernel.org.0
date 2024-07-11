@@ -1,71 +1,71 @@
-Return-Path: <linux-efi+bounces-1426-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1427-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E6B92E4CC
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 12:32:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2426792E4E5
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 12:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B3C91F22150
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 10:32:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B93AE1F22AAF
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 10:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A614115278E;
-	Thu, 11 Jul 2024 10:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A63155A59;
+	Thu, 11 Jul 2024 10:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EIHGuiFy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DTxGISw4"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5380142E98;
-	Thu, 11 Jul 2024 10:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E77782D94;
+	Thu, 11 Jul 2024 10:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720693972; cv=none; b=gIDEKoLxuJVJWf30cIJ3exQeIkjRLPGFGPPhvITEST/MRZ93jGz+mH9ufiGKpAiS1iyD2R068Uwk5XANlyVxJ/AhtGXQ50NEA3hLC596BrCiojpxCZ2KiXCTtIUHta+lEcQ2CXyvYnqTtCbzfSWD3HBsboM9I9meLMm3cEjsBlk=
+	t=1720694235; cv=none; b=cngtYjPP4jxkBhDTZFwnmr7GxdBqLX07SpSHF2uPKJ5OfFi7l4Obda7raFk9mWdo/Oe44v5v7z/yTg8gjfGLSR0xDip8MDmNDy9xNeff1vzepFO+1D1vG1NZgddNgchQISV4gQ3D5ZJEbCs5xzedlZS7Ksvf5g0Bp05+x8t2WIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720693972; c=relaxed/simple;
-	bh=qazQrluIbOt8HInhmxmkHHqI9m1noD/zJQoQvWenZHw=;
+	s=arc-20240116; t=1720694235; c=relaxed/simple;
+	bh=DFEfePK8cAElLfJIiPmawLyu7JjbXJrgS7m+m6Pnd5Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BJgl0Jae+34SkjBXnUzBEq1uh8X/Oef0MQK0igUaC4pN1nBmZAr9JXL39zkdGk5EFjTaSqIDcN5+g9/Fn4WLYCG+70MTBM0IvojeOIKkMsFxhTSXnOwsogOFWwpsU1wrKbuRvFs4iQKJXCHVZtgBAPWHIA/mayHCGQvJffYlpik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EIHGuiFy; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=NonNTTUFgG1viNBhs2uII1f0rVqO5sVEfjM9DMwibMd8HdMbVcsK6DvM+DdiinAyOCE1RUl+99vPprXMqdxcC5QQGqVWaPnzv63VJhRTKEE2nK8lsfN73PS+NYHRIt0keto51XYzr0dm+JKfB7HvqVmDSdrqObV4faEhVIe0w2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DTxGISw4; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720693971; x=1752229971;
+  t=1720694234; x=1752230234;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=qazQrluIbOt8HInhmxmkHHqI9m1noD/zJQoQvWenZHw=;
-  b=EIHGuiFyWdEDlk5OpkY8eqOX+8d5CCCX07yJ/cxHCuMW7VZjkJsf2krb
-   AQL8YHodqJETb8fg0hO1RO0WGU4AaPEEGQ6vdKLHI/xKurN9qssYvlnYi
-   b7dsC8O8HxEwSmhEmzc6+QumaIMXiaTk0AH9+gMd+tke1Lx14KHtc9wXo
-   mTpT876QpFT1VhLESzqlvzZI3KdAckwYfVU8KjT3ZivLMm0b6cv281opb
-   SKiWPVLhJIJLa5f/gxFG4HnxKW6R4clLR7JLPKF6cWt1sObbsHIrVpel9
-   NtFSegnSkdE23xUMWV9jQbXpBAhiymw626QqeoCdj6107EWKF/cBc38eR
+  bh=DFEfePK8cAElLfJIiPmawLyu7JjbXJrgS7m+m6Pnd5Q=;
+  b=DTxGISw4HxEBg4N6eo2Y/r5Q5hTCl9vse9VjYw7Q9RkHup80RX6z8VPO
+   4wG2HK1RIbRGAZPEry/PnxcALaMrNLpilyaGWkphvaq+J1zISSeiL/BQf
+   JP6ZXP1+piRcqDX14LM7m15OSl6Q5guUaqfHJ8wlzC4bfkT+gXzKz/U4G
+   Y7Pfy/2U19ZZU47JsWkaCWbQOO/XNK/lWq4HhEnUNe96IwjiGrKKGDbLT
+   zpRDyl7/pqRoNLc7tlrdeyQTd6lWtXXsHg9wL/MhZuLPT0NDtwcjbdNAF
+   HqpwUr9SIfjIUDkbRa9N9C49H2JPs5q24FwrPDCoo9Cadk5n3o5YqScg6
    g==;
-X-CSE-ConnectionGUID: qjd2MoJnS1S681yIfNeGyA==
-X-CSE-MsgGUID: MyzvsBJCRJSrePhRTBOkxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="35604208"
+X-CSE-ConnectionGUID: cE3gteqFT1+i/6VXoueBlQ==
+X-CSE-MsgGUID: KMNCtYJhSp+jJ6vZI2b7Kg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="29468679"
 X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; 
-   d="scan'208";a="35604208"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 03:32:50 -0700
-X-CSE-ConnectionGUID: aoHBdD+GQfe/a4R3491UDw==
-X-CSE-MsgGUID: t3WQfsyPRdmBT/KJj58UGA==
+   d="scan'208";a="29468679"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 03:37:13 -0700
+X-CSE-ConnectionGUID: RTya0ugrQZuBYIYVmuGQgw==
+X-CSE-MsgGUID: KADa2dLDQ/mTpNQID6JOXg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; 
-   d="scan'208";a="53690801"
+   d="scan'208";a="49272803"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 11 Jul 2024 03:32:39 -0700
+  by orviesa008.jf.intel.com with ESMTP; 11 Jul 2024 03:37:02 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id DC87629E; Thu, 11 Jul 2024 13:32:36 +0300 (EEST)
-Date: Thu, 11 Jul 2024 13:32:36 +0300
+	id 0BAD329E; Thu, 11 Jul 2024 13:37:00 +0300 (EEST)
+Date: Thu, 11 Jul 2024 13:37:00 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Peter Zijlstra <peterz@infradead.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
 	Ard Biesheuvel <ardb@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
 	Josh Poimboeuf <jpoimboe@kernel.org>, Xiongwei Song <xiongwei.song@windriver.com>, 
@@ -86,15 +86,12 @@ Cc: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>,
 	Huang Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
 	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: Re: [PATCH v4 03/16] x86/alternatives: Disable LASS when patching
- kernel alternatives
-Message-ID: <5o57m7zkgo52uufitexwfpcyces5susurgbnz4yf56htsunezm@uoq5lzpqyfrl>
+Subject: Re: [PATCH v4 07/16] x86/cpu: Defer CR pinning setup until after EFI
+ initialization
+Message-ID: <3dbaf7fm65xl6kou5fj4tzty7emsdecs3juu4rm7266pgzcfk3@z3mehcszkw7j>
 References: <20240710160655.3402786-1-alexander.shishkin@linux.intel.com>
- <20240710160655.3402786-4-alexander.shishkin@linux.intel.com>
- <20240710171836.GGZo7CbFJeZwLCZUAt@fat_crate.local>
- <cqacx3crogegwyslm25kwcdcezgg2n44lhy3mg5qkka3vgn4xa@lhqsoseyduus>
- <7bbf9cae-6392-47a4-906c-7c27b1b1223d@intel.com>
- <20240711081628.GF4587@noisy.programming.kicks-ass.net>
+ <20240710160655.3402786-8-alexander.shishkin@linux.intel.com>
+ <20240711081153.GC4587@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -103,17 +100,25 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240711081628.GF4587@noisy.programming.kicks-ass.net>
+In-Reply-To: <20240711081153.GC4587@noisy.programming.kicks-ass.net>
 
-On Thu, Jul 11, 2024 at 10:16:28AM +0200, Peter Zijlstra wrote:
-> On Wed, Jul 10, 2024 at 04:05:31PM -0700, Dave Hansen wrote:
+On Thu, Jul 11, 2024 at 10:11:53AM +0200, Peter Zijlstra wrote:
+> On Wed, Jul 10, 2024 at 07:06:43PM +0300, Alexander Shishkin wrote:
+> > In order to map the EFI runtime services, set_virtual_address_map
+> > needs to be called, which resides in the lower half of the address
+> > space. This means that LASS needs to be temporarily disabled around
+> > this call. This can only be done before the CR pinning is set up.
+> > 
+> > Move CR pinning setup behind the EFI initialization.
+> > 
+> > Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> > Suggested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > 
-> > But, I'm 100% sure that we want to distinguish a LASS-necessitated
-> > stac()/clac() from a SMAP-necessitated one somehow.
-> 
-> Yeah, if only to make it easier to understand the code.
+> So the previous patch makes us not boot, and this fixes it up? Perhaps
+> order things differently?
 
-lass_disable()/lass_enable()?
+Maybe just move LASS enabling (patch 04/16) to the very end of the
+patchset?
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
