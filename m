@@ -1,56 +1,57 @@
-Return-Path: <linux-efi+bounces-1424-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1425-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AF092E1D3
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 10:16:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EF192E1DB
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 10:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02810B23EB3
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 08:16:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF871F25EAF
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 08:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE7A14F9FD;
-	Thu, 11 Jul 2024 08:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AABC1514E3;
+	Thu, 11 Jul 2024 08:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bDIS618x"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TtsbYuzi"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78F57C086;
-	Thu, 11 Jul 2024 08:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B429274416;
+	Thu, 11 Jul 2024 08:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720685727; cv=none; b=TFBEE6OSSVWokYeFF7b6kAq+KqQiAdrt5YblUReh+rk1E9xq4vfg+64dEaBQoWbx6NfwVu+XVKOwC+lzYhC8ja+5l55DrzygTr+0fat5gjtfAgVp15wVRO67cntIUn1iTDSHe3DB/F8k3348pw2Tpyto1zxdnTX7sXKbF7jxg1E=
+	t=1720685808; cv=none; b=ZxX2Z1VKaVJqxXZM4jrnn5lrmncYEv9A1uRJ1u+COX+6AtY5CPFEt/9EyKDwz1i2ka0KAWjT1sE2C2NLw3GtxwvNgR6rbVihmCj4TT2ef+ngWJ7Px54Nzfyr5R0gq0XNtUZQazquinxh2iZznFzJonPNSbTSrtwTz2SEhTcF3xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720685727; c=relaxed/simple;
-	bh=x1Jcj6NeCHQN+40mLrILfGkWZv5ImKM4gWH+YNibv8A=;
+	s=arc-20240116; t=1720685808; c=relaxed/simple;
+	bh=QgeL2GqOGBjF1DLizKD6yRiZVHfq/LMsmIek5y8EN78=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h4YNYg+9L/7dWNMMGs4pjDrw5L7q7/lMzHxK9XO8rFHbNCMTtZEjlo/xp4pF9hl3xnldEpCvsTUK+UX7T8b8wBf/NYTvo/+1MrGVNq3b4RyOp66fa6tBhmQTCkBrIFLPegmAPtnAJTuVrD53X1103CWJmzxW14IeKslqpziGS2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bDIS618x; arc=none smtp.client-ip=90.155.92.199
+	 Content-Type:Content-Disposition:In-Reply-To; b=e78/wjfPUsM2BZgAS6G6gKNmHUCXPCldysCMWGoWcfSAwNoU7q9PUsAcQ02nUnHnLRpLu9hgiV+pMl41ovuyuEw4+7fLfTUmC+Oq7HkLsWBMIZvhYMYhcvEylRIe12wotBwVRAOlFhRmr4lcPBRnqs3h+NKLa79ltDqvVX4IEp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TtsbYuzi; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6wtDOfAx6qXoOFW0qLJr9ozkAFTcFE7m6rFzVFkQzO0=; b=bDIS618xw2CxgiOtsh/B1dnK1c
-	5JxPG3AbH1eB2KbyzbpFIS68eMDIWBBCocACVVe0B0ks1BIusZuYjKgOxgUn5YaUaSuDLiX7savkg
-	qv+Ib+kmFId0ueTeEQsoI+aPpbo3dN1DGWQeGZ/laUcxWPDhYdj0dDwXR/knUfxWq2vYVNbV3vXCZ
-	hXAftDHoT3WLufeo50lSqDsPIPI9pPrXbHOscPRD57CGGM4MbercD0nOAs/1WOJRLbY0kD1PbeGps
-	/CeRzudxg3FpfW/wEJ1NfH/LEGC9fRLCIt+d0P8Hy7udIGJzm2pdYWzps+bx5H/BRQeoha+vqYmMV
-	9poUU9Bg==;
+	bh=QgeL2GqOGBjF1DLizKD6yRiZVHfq/LMsmIek5y8EN78=; b=TtsbYuziPKcH1tdpn2eTwcTjtU
+	n8A4XZ7GqNLHvESSPfJUll7xTTbgAAYN6N11zqioYiG6A5lameU28MOTp4rKr6AN9MiZO7W3nux2v
+	RNzgqOru1J9b8ebLF0GIR/tlkBmPuhycRtPGScgAEF1o7fgAV+8s/NZWvwblJxXTz8T7L3ntsfCKN
+	p/btlCalKJ8kKNxCm0WvkppjIOnoMAoEBqdlCH5gcQz/J93dt7o6KgSn1CIjeauEzvOSIOHpIPwpk
+	odoRBLHMH7CYhFTCgf5b4eESGzFBA8ym1lZDeOGl4vyj9aa8VTsR6/C6+OkalqOL4DZqNnA3/VQ+A
+	5vlW/4hA==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sRoxA-000000013Yy-0kHs;
-	Thu, 11 Jul 2024 08:15:00 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sRoya-0000000Akum-45Ao;
+	Thu, 11 Jul 2024 08:16:29 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id CCDF730050D; Thu, 11 Jul 2024 10:14:59 +0200 (CEST)
-Date: Thu, 11 Jul 2024 10:14:59 +0200
+	id 92D8830050D; Thu, 11 Jul 2024 10:16:28 +0200 (CEST)
+Date: Thu, 11 Jul 2024 10:16:28 +0200
 From: Peter Zijlstra <peterz@infradead.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>,
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -93,11 +94,12 @@ Cc: Borislav Petkov <bp@alien8.de>,
 	linux-efi@vger.kernel.org
 Subject: Re: [PATCH v4 03/16] x86/alternatives: Disable LASS when patching
  kernel alternatives
-Message-ID: <20240711081459.GE4587@noisy.programming.kicks-ass.net>
+Message-ID: <20240711081628.GF4587@noisy.programming.kicks-ass.net>
 References: <20240710160655.3402786-1-alexander.shishkin@linux.intel.com>
  <20240710160655.3402786-4-alexander.shishkin@linux.intel.com>
  <20240710171836.GGZo7CbFJeZwLCZUAt@fat_crate.local>
  <cqacx3crogegwyslm25kwcdcezgg2n44lhy3mg5qkka3vgn4xa@lhqsoseyduus>
+ <7bbf9cae-6392-47a4-906c-7c27b1b1223d@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -106,27 +108,12 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cqacx3crogegwyslm25kwcdcezgg2n44lhy3mg5qkka3vgn4xa@lhqsoseyduus>
+In-Reply-To: <7bbf9cae-6392-47a4-906c-7c27b1b1223d@intel.com>
 
-On Thu, Jul 11, 2024 at 01:33:23AM +0300, Kirill A. Shutemov wrote:
-> On Wed, Jul 10, 2024 at 07:18:36PM +0200, Borislav Petkov wrote:
-> > On Wed, Jul 10, 2024 at 07:06:39PM +0300, Alexander Shishkin wrote:
-> > >  static void text_poke_memcpy(void *dst, const void *src, size_t len)
-> > >  {
-> > > -	memcpy(dst, src, len);
-> > > +	stac();
-> > > +	__inline_memcpy(dst, src, len);
-> > > +	clac();
-> > 
-> > I think you need LASS-specific stac()/clac() or an alternative_2 or so. You
-> > can't cause that perf penalty on !LASS machines.
-> 
-> Hm. Do we have text_poke() in hot path?
-> 
-> Even if we do, I doubt flipping AC flag would make any performance
-> difference in context of all locking and TLB flushing we do in this
-> codepath.
+On Wed, Jul 10, 2024 at 04:05:31PM -0700, Dave Hansen wrote:
 
-The one where performance might matter is text_poke_early(), the full
-fat one is comically slow as you point out.
+> But, I'm 100% sure that we want to distinguish a LASS-necessitated
+> stac()/clac() from a SMAP-necessitated one somehow.
+
+Yeah, if only to make it easier to understand the code.
 
