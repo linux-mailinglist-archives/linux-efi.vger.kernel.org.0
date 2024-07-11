@@ -1,53 +1,53 @@
-Return-Path: <linux-efi+bounces-1422-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1423-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6111092E1BA
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 10:14:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F14D92E1BE
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 10:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5CBDB23330
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 08:14:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D890D1F24689
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Jul 2024 08:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE832156C69;
-	Thu, 11 Jul 2024 08:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712B71514D1;
+	Thu, 11 Jul 2024 08:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ESjpgPYL"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="e32/Jtfc"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3B4150994;
-	Thu, 11 Jul 2024 08:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D975614A601;
+	Thu, 11 Jul 2024 08:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720685543; cv=none; b=F4AcqgCRp9SDkTqlvsjWfTquuAT+FXlIlfQYlLfKJBcq97f0A82FPb7/nj8Ar5VsMfHVV8FSY8d/vwQp+tcUK2YPAAwV3BGEQLf12/fC4QkVvhS7yIRcyMM9D7suDKFksjK0IhhnRoSgpuYzmYpsbvkRFKA6+S8o8hxaOrzoIbA=
+	t=1720685617; cv=none; b=GsYgCJtBtuTAlwUr/C8gCQ/Z5oXuj6Q+t3JdB/oeqvoOg4s57KGhqxjFwIQY24nbLnZU40sJ+5/fKId7MZMg+LXFckGtaSoV8mlp1Bg9gIN1GHVwpJegcCqf4y6MhSqWI6N6QdJ/QYJlKv0xECXpQExkNp8nweElzn3m9rT1ID4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720685543; c=relaxed/simple;
-	bh=1nT1IezppDSi24B0NzwviS1DRq7kWiD9jugdZ6hlJdo=;
+	s=arc-20240116; t=1720685617; c=relaxed/simple;
+	bh=xsG4j8CUM95pevTZX83N2m0JtsePZz3hLlfpPlr4wKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B1Dz4hbOqv7MjpjiHDpKQgU54PcXYrjxnupGu4qJ0552gfMLW0VLKTYBfK4wZTPFhOJV6x+HcEcQfJiWPcU5gFt5CCfuG1m/C8snAUfTakWBqukKFHt2DTChbj3yQDy6P3Np/Q0/n2UUeFqVzsKCkFCAWWBgLBEDh46zvFJvS9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ESjpgPYL; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:Content-Disposition:In-Reply-To; b=efdy6vDwX88G5L2iQ2jxeAg9bDO7dpDRQt8aBPhcZPQXB52Od6ZnG4qaJFWQuVQr1Tgb/rIKfZ4nNTspXXLoS+k4s5MKBQ+pNsO8Vw0uH59CqP2/ELtNmT7rWtknZnO8BENv3bqrLrTChrFvGvvKD4aXrrYG5SskNl6LvymPWaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=e32/Jtfc; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QgbGXn9FcDdYcZ5NyHNWtaAcV8SlcNpiqGwWfmhxx6I=; b=ESjpgPYLgh8JR5ParmeJx2srzX
-	QIsjgvC3x/eYTU0bf6aHYbM0kMMHxnZD0wnhfW+ZCkWsc3aMY912EXd4SkaJiAPgECLo5T81SEn/Y
-	pJdhSHNRkBh6OZXsxpj4cqXneinqeB/EmdA6UHZqgMQ+ADDceMHINTaT5me4JjU1Q9UTfkBodQXU1
-	XiRarY2vhYKVWCXdj+ck5vK9yg+qfcRHAyQw8dMO40h7EHzw6cSNhz/OhKt/SK453366ZLMfEr8G2
-	zq6hu2l3NsLoluEwhc8+kzsjyWuaCRDKw63A+ArA+Tt//1iLo8y78KNpwV35gZWsIpATWEwZGK3Av
-	1oxth9Qw==;
+	bh=60rL9HOaet6vlUzwQrfSKu77VABHNI32SxBnaB3w5cU=; b=e32/JtfceHqCWcvBeGyYpWTATg
+	D3/hTYRoWVcR1zO5HI67cewxepVSWuwZZ0k9hIXtNI4rSFVTN1WSZ+/wcuOx26UPaYRUo0F75uf0R
+	D5A7ZoZGkbM9t+Qw06DJQiRBJuNntVye7JqYZl+GOQOsYz1dLKszDJGoAQweVHgv4X7Ag2xx0PXm/
+	RBd9N7T174wp/Dfewj9LTvJntoj8f3TLfs6dsUXp1/+Qw5FngxuOFtugs24UxuucOEG8ucdoAYwll
+	atQjPQivw1uy46YLS7b7yi75lU1zbymPYcMB1XoVT4qy6UitgV3wEwqtUZzXSVKJjyk5PmT2Dq2VW
+	65RHdjcw==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sRou9-0000000Ait2-3IvY;
-	Thu, 11 Jul 2024 08:11:53 +0000
+	id 1sRovW-0000000Ak7d-17YF;
+	Thu, 11 Jul 2024 08:13:18 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 6CB4930050D; Thu, 11 Jul 2024 10:11:53 +0200 (CEST)
-Date: Thu, 11 Jul 2024 10:11:53 +0200
+	id DFA3830050D; Thu, 11 Jul 2024 10:13:17 +0200 (CEST)
+Date: Thu, 11 Jul 2024 10:13:17 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
@@ -90,11 +90,10 @@ Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v4 07/16] x86/cpu: Defer CR pinning setup until after EFI
- initialization
-Message-ID: <20240711081153.GC4587@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH v4 02/16] x86/asm: Introduce inline memcpy and memset
+Message-ID: <20240711081317.GD4587@noisy.programming.kicks-ass.net>
 References: <20240710160655.3402786-1-alexander.shishkin@linux.intel.com>
- <20240710160655.3402786-8-alexander.shishkin@linux.intel.com>
+ <20240710160655.3402786-3-alexander.shishkin@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -103,55 +102,70 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240710160655.3402786-8-alexander.shishkin@linux.intel.com>
+In-Reply-To: <20240710160655.3402786-3-alexander.shishkin@linux.intel.com>
 
-On Wed, Jul 10, 2024 at 07:06:43PM +0300, Alexander Shishkin wrote:
-> In order to map the EFI runtime services, set_virtual_address_map
-> needs to be called, which resides in the lower half of the address
-> space. This means that LASS needs to be temporarily disabled around
-> this call. This can only be done before the CR pinning is set up.
+On Wed, Jul 10, 2024 at 07:06:38PM +0300, Alexander Shishkin wrote:
+> From: Peter Zijlstra <peterz@infradead.org>
 > 
-> Move CR pinning setup behind the EFI initialization.
+> Provide inline memcpy and memset functions that can be used instead of
+> the GCC builtins whenever necessary.
 > 
+> Code posted by Peter Zijlstra <peterz@infradead.org>.
+
+We haz a tag for that:
+
+Originally-by: Peter Zijlstra <peterz@infradead.org>
+
+> Link: https://lore.kernel.org/lkml/Y759AJ%2F0N9fqwDED@hirez.programming.kicks-ass.net/
+> [Missing Signed-off-by from PeterZ]
+
+There, lemme fix that for you:
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 > Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-> Suggested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-
-So the previous patch makes us not boot, and this fixes it up? Perhaps
-order things differently?
-
 > ---
->  arch/x86/kernel/cpu/common.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+>  arch/x86/include/asm/string.h | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 > 
-> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-> index 8aa621dc7d30..c93c59a27dfa 100644
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -1948,7 +1948,6 @@ static __init void identify_boot_cpu(void)
->  	enable_sep_cpu();
->  #endif
->  	cpu_detect_tlb(&boot_cpu_data);
-> -	setup_cr_pinning();
->  
->  	tsx_init();
->  	tdx_init();
-> @@ -2367,10 +2366,16 @@ void __init arch_cpu_finalize_init(void)
->  
->  	/*
->  	 * This needs to follow the FPU initializtion, since EFI depends on it.
-> +	 * It also needs to precede the CR pinning setup, because we need to be
-> +	 * able to temporarily clear the CR4.LASS bit in order to execute the
-> +	 * set_virtual_address_map call, which resides in lower addresses and
-> +	 * would trip LASS if enabled.
->  	 */
->  	if (efi_enabled(EFI_RUNTIME_SERVICES))
->  		efi_enter_virtual_mode();
->  
-> +	setup_cr_pinning();
+> diff --git a/arch/x86/include/asm/string.h b/arch/x86/include/asm/string.h
+> index c3c2c1914d65..9cb5aae7fba9 100644
+> --- a/arch/x86/include/asm/string.h
+> +++ b/arch/x86/include/asm/string.h
+> @@ -1,6 +1,32 @@
+>  /* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_X86_STRING_H
+> +#define _ASM_X86_STRING_H
 > +
->  	/*
->  	 * Ensure that access to the per CPU representation has the initial
->  	 * boot CPU configuration.
+>  #ifdef CONFIG_X86_32
+>  # include <asm/string_32.h>
+>  #else
+>  # include <asm/string_64.h>
+>  #endif
+> +
+> +static __always_inline void *__inline_memcpy(void *to, const void *from, size_t len)
+> +{
+> +	void *ret = to;
+> +
+> +	asm volatile("rep movsb"
+> +		     : "+D" (to), "+S" (from), "+c" (len)
+> +		     : : "memory");
+> +	return ret;
+> +}
+> +
+> +static __always_inline void *__inline_memset(void *s, int v, size_t n)
+> +{
+> +	void *ret = s;
+> +
+> +	asm volatile("rep stosb"
+> +		     : "+D" (s), "+c" (n)
+> +		     : "a" ((uint8_t)v)
+> +		     : "memory");
+> +	return ret;
+> +}
+> +
+> +#endif /* _ASM_X86_STRING_H */
 > -- 
 > 2.43.0
 > 
