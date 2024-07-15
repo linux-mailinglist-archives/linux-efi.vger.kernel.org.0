@@ -1,305 +1,159 @@
-Return-Path: <linux-efi+bounces-1434-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1435-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF6F93043A
-	for <lists+linux-efi@lfdr.de>; Sat, 13 Jul 2024 09:16:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C832931A89
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jul 2024 20:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389261C2116F
-	for <lists+linux-efi@lfdr.de>; Sat, 13 Jul 2024 07:16:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52B312830C8
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Jul 2024 18:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F291C28E;
-	Sat, 13 Jul 2024 07:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7267A77102;
+	Mon, 15 Jul 2024 18:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y8Rw+jHc"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="dKnidXV1"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A701BC3F
-	for <linux-efi@vger.kernel.org>; Sat, 13 Jul 2024 07:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D755025E;
+	Mon, 15 Jul 2024 18:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720854972; cv=none; b=htmVKjK5vc3CKSWop9zpl7vt0cXLIMhQS51VyJYU9zfD1u6MQHocCJI7hrpP+valdgE/bEA7Zllr0C0l8FeEHRUa+TWu+0aFEj1JQ9VciCyyhVUoznEgZ1p7faMYFJxqAcLgDbSILTakys7QSlvf/XqrUhvzIVUo7uYAdLcE+a0=
+	t=1721069669; cv=none; b=m2+KMowta6lAnq9Ayol9SJqZ1dqg4ogH3vLxUoMu27DSoTp8ghS5+EHn9HqIIigidPlz3Fsx6fsEQa810azHogWiFX7pTmltucUC6sEU1GYzUbnH4KNd2HksbTZqoUcFYDVrVWCyXc2Y4wWlUzkBYiVb9C3AmxRE2m3zxiBMFmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720854972; c=relaxed/simple;
-	bh=ob7EjrcSMa65jTbPS44WKzD/S5lgmR5v67s4la633u0=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=hYorzgSGaey8RlL6dP2TiK7Cd5f0DpikkJOUsn41X9FX9Ehjh0TZcRbD8z4Lit6QWT9nUCLdb6UBYEASVFL0ymtcEG7RBLtYl3cPl8tAuPw1qPd7VVzCCZ6u5jlS7kHSoDz7ClWTH4kgqtHctw+bOZzS6Ilyf8HviebLHDYQ+10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y8Rw+jHc; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720854970; x=1752390970;
-  h=date:from:to:cc:subject:message-id;
-  bh=ob7EjrcSMa65jTbPS44WKzD/S5lgmR5v67s4la633u0=;
-  b=Y8Rw+jHcROmwobx+01129VtPvZ+KHiaAUiRqw5aGl8iTox9C+pvXw2vg
-   ViB03Qa4oCDxFy6pJk43gqMmXcoXy13spM9oI/awKQPtZzlnequjJJeK6
-   f+lLSEjpkVag0lzVNqePNnTTKEU9qDTvHFk/wwZeZY4+F1pFZIMyOu0TV
-   54vKaD0fkWSKc6P7Dwl18Z5wqyVGcDQ9b49fkHjaA8KQv35RK25m6u2VH
-   YdOXftA6ZBQ0Ipd3+Rxu0NFNc3G3uDpwJ7yQ8WbOO9rTiNdaFGSLu4I8Q
-   CYvoz0+SkFJoS8xxldRm267K1uyyfHk9vV3DX0ZQPuy5Kx1qmNMwJ2oTV
-   g==;
-X-CSE-ConnectionGUID: HhQDWtUyR8K9z6IacnZF3w==
-X-CSE-MsgGUID: ZVaqa2pUT/KIDiQZ2+6FXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11131"; a="22066283"
-X-IronPort-AV: E=Sophos;i="6.09,205,1716274800"; 
-   d="scan'208";a="22066283"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2024 00:16:08 -0700
-X-CSE-ConnectionGUID: rig1+8jPTKGvQ8Ue6UFUNw==
-X-CSE-MsgGUID: SIBmBwDNR0WfNkN3z8ARHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,205,1716274800"; 
-   d="scan'208";a="53692147"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 13 Jul 2024 00:16:07 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sSWzF-000bok-1G;
-	Sat, 13 Jul 2024 07:16:05 +0000
-Date: Sat, 13 Jul 2024 15:15:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS
- 4a2ebb082297f41803742729642961532e54079e
-Message-ID: <202407131504.MCEnBOx0-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1721069669; c=relaxed/simple;
+	bh=HGSZKVTayl9anNVOn7uxdN8IS2btIxM0VpD+0pVQVVI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S0p77v0+nH96YmTGNhzPNLTSolris0YagOpbuNrPZMr+FuZnIrNKSBYqim5QhVWod5H6tUkv0MDi8Z2WHVFKRdQvBNuQVuA83M32TC/VaLPyD1VVELeYqN5/MmHebishYR7T7hPVkN3FigQm+Lf0E0/LWFI3D022hn3OLqyvZwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=dKnidXV1; arc=none smtp.client-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0134421.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46FHX5r3012894;
+	Mon, 15 Jul 2024 18:53:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pps0720; bh=CEmvAFnikYXYXe4xHWa9PD
+	0T95AUEAKIxnZFw5nCu8w=; b=dKnidXV1YGCz3u2JscWM8pDNzg1VjPB0sR8Mns
+	X0G4zg6YWUyZtRUZ1ZSk6zudj809F9l2o8U21LBbAWA1fOhQrcq5rKKtATSGBIz0
+	P0j+mksKA9qQaXnOP2yg6PHSZ7Ozx76rJ5KcRPikVlGyOHhWg4q84u3hAJC/b7nB
+	2oVkOvYWO8Zds4zO6dSYkXU9eOXELoX5itBuiVMEtT1A7mMqCTuHxOkIVVOdvFXN
+	9h5mmYIZJR/RlNFkC8xTGRR35/CFVuoHerOxrt31HfC0b7eDwsmegMu/jWN7D5ly
+	kqL/TQf5TinzYCfz+pDj4wo3H19kYLxAy/mSZN9DT+yYwqKw==
+Received: from p1lg14879.it.hpe.com ([16.230.97.200])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 40bfsd1333-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jul 2024 18:53:14 +0000 (GMT)
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 63148147B9;
+	Mon, 15 Jul 2024 18:53:13 +0000 (UTC)
+Received: from dog.eag.rdlabs.hpecorp.net (unknown [16.231.227.39])
+	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 57EFF8032AE;
+	Mon, 15 Jul 2024 18:53:11 +0000 (UTC)
+Received: by dog.eag.rdlabs.hpecorp.net (Postfix, from userid 200934)
+	id D2EB530000731; Mon, 15 Jul 2024 13:53:09 -0500 (CDT)
+From: Steve Wahl <steve.wahl@hpe.com>
+To: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+        Pavin Joseph <me@pavinjoseph.com>, Eric Hagberg <ehagberg@gmail.com>
+Cc: Simon Horman <horms@verge.net.au>, Eric Biederman <ebiederm@xmission.com>,
+        Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
+        Russ Anderson <rja@hpe.com>, Dimitri Sivanich <sivanich@hpe.com>,
+        Hou Wenlong <houwenlong.hwl@antgroup.com>,
+        Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
+        Yuntao Wang <ytcoode@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+        Joerg Roedel <jroedel@suse.de>, Michael Roth <michael.roth@amd.com>,
+        Tao Liu <ltao@redhat.com>, kexec@lists.infradead.org,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Subject: [PATCH v2 0/2] Resolve problems with kexec identity mapping
+Date: Mon, 15 Jul 2024 13:53:07 -0500
+Message-Id: <20240715185309.1637839-1-steve.wahl@hpe.com>
+X-Mailer: git-send-email 2.26.2
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: S2k7F1NsCRgblYVuBiocWasUYqQH04_6
+X-Proofpoint-ORIG-GUID: S2k7F1NsCRgblYVuBiocWasUYqQH04_6
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-15_13,2024-07-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 adultscore=0 mlxscore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 mlxlogscore=826 impostorscore=0 spamscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407150147
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 4a2ebb082297f41803742729642961532e54079e  efi: Replace efi_memory_attributes_table_t 0-sized array with flexible array
+Creating kexec identity maps using only GB pages can include a lot of
+extra address space past that requested, including areas marked
+reserved by the BIOS, which on UV systems can cause system halts.
 
-elapsed time: 1349m
+The previous attempt to fix this problem,
 
-configs tested: 212
-configs skipped: 4
+       7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+caused a regression on a small number of AMD systems, and was later reverted.
 
-tested configs:
-alpha                             allnoconfig   gcc-13.3.0
-alpha                            allyesconfig   gcc-13.3.0
-alpha                               defconfig   gcc-13.2.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                          axs103_defconfig   gcc-13.2.0
-arc                                 defconfig   gcc-13.2.0
-arc                   randconfig-001-20240713   gcc-13.2.0
-arc                   randconfig-002-20240713   gcc-13.2.0
-arm                              allmodconfig   gcc-13.2.0
-arm                               allnoconfig   clang-19
-arm                              allyesconfig   gcc-13.2.0
-arm                     davinci_all_defconfig   gcc-13.2.0
-arm                                 defconfig   gcc-13.2.0
-arm                       imx_v4_v5_defconfig   gcc-13.2.0
-arm                      integrator_defconfig   gcc-13.2.0
-arm                       omap2plus_defconfig   gcc-14.1.0
-arm                          pxa168_defconfig   gcc-13.2.0
-arm                             pxa_defconfig   gcc-13.2.0
-arm                   randconfig-001-20240713   gcc-13.2.0
-arm                   randconfig-002-20240713   gcc-13.2.0
-arm                   randconfig-003-20240713   gcc-13.2.0
-arm                   randconfig-004-20240713   gcc-13.2.0
-arm                             rpc_defconfig   gcc-13.2.0
-arm64                            allmodconfig   gcc-13.2.0
-arm64                             allnoconfig   gcc-14.1.0
-arm64                               defconfig   gcc-13.2.0
-arm64                 randconfig-001-20240713   gcc-13.2.0
-arm64                 randconfig-002-20240713   gcc-13.2.0
-arm64                 randconfig-003-20240713   gcc-13.2.0
-arm64                 randconfig-004-20240713   gcc-13.2.0
-csky                              allnoconfig   gcc-14.1.0
-csky                                defconfig   gcc-13.2.0
-csky                  randconfig-001-20240713   gcc-13.2.0
-csky                  randconfig-002-20240713   gcc-13.2.0
-hexagon                          allmodconfig   clang-19
-hexagon                           allnoconfig   clang-19
-hexagon                          allyesconfig   clang-19
-i386                             allmodconfig   clang-18
-i386                             allmodconfig   gcc-13
-i386                              allnoconfig   clang-18
-i386                              allnoconfig   gcc-13
-i386                             allyesconfig   clang-18
-i386                             allyesconfig   gcc-13
-i386         buildonly-randconfig-001-20240712   gcc-9
-i386         buildonly-randconfig-001-20240713   clang-18
-i386         buildonly-randconfig-002-20240712   clang-18
-i386         buildonly-randconfig-002-20240713   clang-18
-i386         buildonly-randconfig-003-20240712   clang-18
-i386         buildonly-randconfig-003-20240713   clang-18
-i386         buildonly-randconfig-004-20240712   clang-18
-i386         buildonly-randconfig-004-20240713   clang-18
-i386         buildonly-randconfig-005-20240712   gcc-11
-i386         buildonly-randconfig-005-20240713   clang-18
-i386         buildonly-randconfig-006-20240712   clang-18
-i386         buildonly-randconfig-006-20240713   clang-18
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240712   clang-18
-i386                  randconfig-001-20240713   clang-18
-i386                  randconfig-002-20240712   clang-18
-i386                  randconfig-002-20240713   clang-18
-i386                  randconfig-003-20240712   clang-18
-i386                  randconfig-003-20240713   clang-18
-i386                  randconfig-004-20240712   clang-18
-i386                  randconfig-004-20240713   clang-18
-i386                  randconfig-005-20240712   clang-18
-i386                  randconfig-005-20240713   clang-18
-i386                  randconfig-006-20240712   clang-18
-i386                  randconfig-006-20240713   clang-18
-i386                  randconfig-011-20240712   clang-18
-i386                  randconfig-011-20240713   clang-18
-i386                  randconfig-012-20240712   clang-18
-i386                  randconfig-012-20240713   clang-18
-i386                  randconfig-013-20240712   clang-18
-i386                  randconfig-013-20240713   clang-18
-i386                  randconfig-014-20240712   gcc-10
-i386                  randconfig-014-20240713   clang-18
-i386                  randconfig-015-20240712   gcc-10
-i386                  randconfig-015-20240713   clang-18
-i386                  randconfig-016-20240712   gcc-12
-i386                  randconfig-016-20240713   clang-18
-loongarch                        alldefconfig   gcc-14.1.0
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch                           defconfig   gcc-13.2.0
-loongarch             randconfig-001-20240713   gcc-13.2.0
-loongarch             randconfig-002-20240713   gcc-13.2.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                         apollo_defconfig   gcc-13.2.0
-m68k                       bvme6000_defconfig   gcc-14.1.0
-m68k                                defconfig   gcc-13.2.0
-m68k                           sun3_defconfig   gcc-14.1.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                          defconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-14.1.0
-mips                     loongson1b_defconfig   gcc-14.1.0
-mips                      malta_kvm_defconfig   gcc-14.1.0
-mips                      maltasmvp_defconfig   gcc-14.1.0
-mips                        omega2p_defconfig   gcc-13.2.0
-nios2                         3c120_defconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-14.1.0
-nios2                               defconfig   gcc-13.2.0
-nios2                 randconfig-001-20240713   gcc-13.2.0
-nios2                 randconfig-002-20240713   gcc-13.2.0
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-14.1.0
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-14.1.0
-parisc                randconfig-001-20240713   gcc-13.2.0
-parisc                randconfig-002-20240713   gcc-13.2.0
-parisc64                            defconfig   gcc-13.2.0
-powerpc                     akebono_defconfig   gcc-14.1.0
-powerpc                          allmodconfig   gcc-14.1.0
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                          allyesconfig   clang-19
-powerpc                          allyesconfig   gcc-14.1.0
-powerpc                    gamecube_defconfig   gcc-13.2.0
-powerpc                    ge_imp3a_defconfig   gcc-13.2.0
-powerpc                   motionpro_defconfig   gcc-14.1.0
-powerpc                     mpc5200_defconfig   gcc-14.1.0
-powerpc                 mpc8313_rdb_defconfig   gcc-13.2.0
-powerpc                 mpc834x_itx_defconfig   gcc-13.2.0
-powerpc               randconfig-001-20240713   gcc-13.2.0
-powerpc               randconfig-002-20240713   gcc-13.2.0
-powerpc               randconfig-003-20240713   gcc-13.2.0
-powerpc                        warp_defconfig   gcc-13.2.0
-powerpc64             randconfig-001-20240713   gcc-13.2.0
-powerpc64             randconfig-002-20240713   gcc-13.2.0
-powerpc64             randconfig-003-20240713   gcc-13.2.0
-riscv                            allmodconfig   clang-19
-riscv                            allmodconfig   gcc-14.1.0
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   clang-19
-riscv                            allyesconfig   gcc-14.1.0
-riscv                               defconfig   gcc-14.1.0
-riscv                    nommu_k210_defconfig   gcc-14.1.0
-riscv                 randconfig-001-20240713   gcc-13.2.0
-riscv                 randconfig-002-20240713   gcc-13.2.0
-s390                             allmodconfig   clang-19
-s390                              allnoconfig   clang-19
-s390                              allnoconfig   gcc-14.1.0
-s390                             allyesconfig   clang-19
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   gcc-14.1.0
-s390                  randconfig-001-20240713   gcc-13.2.0
-s390                  randconfig-002-20240713   gcc-13.2.0
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                         ap325rxa_defconfig   gcc-14.1.0
-sh                                  defconfig   gcc-14.1.0
-sh                ecovec24-romimage_defconfig   gcc-14.1.0
-sh                    randconfig-001-20240713   gcc-13.2.0
-sh                    randconfig-002-20240713   gcc-13.2.0
-sh                          sdk7780_defconfig   gcc-13.2.0
-sh                             shx3_defconfig   gcc-14.1.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-14.1.0
-sparc64               randconfig-001-20240713   gcc-13.2.0
-sparc64               randconfig-002-20240713   gcc-13.2.0
-um                               allmodconfig   clang-19
-um                               allmodconfig   gcc-13.3.0
-um                                allnoconfig   clang-17
-um                                allnoconfig   gcc-14.1.0
-um                               allyesconfig   gcc-13
-um                               allyesconfig   gcc-13.3.0
-um                                  defconfig   gcc-14.1.0
-um                             i386_defconfig   gcc-14.1.0
-um                    randconfig-001-20240713   gcc-13.2.0
-um                    randconfig-002-20240713   gcc-13.2.0
-um                           x86_64_defconfig   gcc-14.1.0
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240713   clang-18
-x86_64       buildonly-randconfig-002-20240713   clang-18
-x86_64       buildonly-randconfig-003-20240713   clang-18
-x86_64       buildonly-randconfig-004-20240713   clang-18
-x86_64       buildonly-randconfig-005-20240713   clang-18
-x86_64       buildonly-randconfig-006-20240713   clang-18
-x86_64                              defconfig   clang-18
-x86_64                              defconfig   gcc-13
-x86_64                randconfig-001-20240713   clang-18
-x86_64                randconfig-002-20240713   clang-18
-x86_64                randconfig-003-20240713   clang-18
-x86_64                randconfig-004-20240713   clang-18
-x86_64                randconfig-005-20240713   clang-18
-x86_64                randconfig-006-20240713   clang-18
-x86_64                randconfig-011-20240713   clang-18
-x86_64                randconfig-012-20240713   clang-18
-x86_64                randconfig-013-20240713   clang-18
-x86_64                randconfig-014-20240713   clang-18
-x86_64                randconfig-015-20240713   clang-18
-x86_64                randconfig-016-20240713   clang-18
-x86_64                randconfig-071-20240713   clang-18
-x86_64                randconfig-072-20240713   clang-18
-x86_64                randconfig-073-20240713   clang-18
-x86_64                randconfig-074-20240713   clang-18
-x86_64                randconfig-075-20240713   clang-18
-x86_64                randconfig-076-20240713   clang-18
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
-xtensa                randconfig-001-20240713   gcc-13.2.0
-xtensa                randconfig-002-20240713   gcc-13.2.0
-xtensa                    xip_kc705_defconfig   gcc-14.1.0
+The cause of this regression was that the EFI Config Table Array was
+not explicitly included in the kexec identity map. While this array was
+often included in the identity map by luck, when it was not, code that
+checks whether the AMD SEV feature should be enabled takes a page
+fault due to the array's address not being mapped.  This happens before
+the new kernel is able to set up a page fault handler, so it is fatal.
+
+The patch that was reverted greatly reduced the chance that the EFI
+Config Table Array got mapped by luck, which is why this problem
+appeared.  The kernel command line option "nogbpages" also causes the
+problem to show, and was used for debugging and illustrative purposes.
+
+The first patch in this series explicitly adds the EFI Config Table
+array to the kexec identity map so this problem will not occur.
+
+The second patch in the series re-instates the previously reverted
+patch that reduces usage of gbpages in creating the identity map.
+
+All three of the people who reported regression with my earlier patch
+have retested with this patch series and found it to work where my
+single patch previously did not.  With current kernels, all fail to
+kexec when "nogbpages" is on the command line, but all succeed with
+"nogbpages" after the series is applied.
+
+Series version 2:
+
+  * Removed a patch (formerly #2) that also added the CC blob to the
+    identity map, as this was proactive, but not proved necessary.
+
+  * Rewrote this cover letter and patch commit messages to include
+    discussion on previous version.
+
+V1: https://lore.kernel.org/all/20240520183633.1457687-1-steve.wahl@hpe.com/
+
+Steve Wahl (1):
+  x86/mm/ident_map: Use gbpages only where full GB page should be
+    mapped.
+
+Tao Liu (1):
+  x86/kexec: Add EFI config table identity mapping for kexec kernel
+
+ arch/x86/kernel/machine_kexec_64.c | 35 ++++++++++++++++++++++++++----
+ arch/x86/mm/ident_map.c            | 23 +++++++++++++++-----
+ 2 files changed, 49 insertions(+), 9 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.26.2
+
 
