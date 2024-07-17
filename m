@@ -1,62 +1,63 @@
-Return-Path: <linux-efi+bounces-1453-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1454-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84449343EC
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Jul 2024 23:33:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467609343EE
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Jul 2024 23:33:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 944162842ED
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Jul 2024 21:33:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB7221F20F9D
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Jul 2024 21:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8313A187327;
-	Wed, 17 Jul 2024 21:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5670D18C171;
+	Wed, 17 Jul 2024 21:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="mDHLBAc0"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="HpijY0CB"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C201F95E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B598A1F94D;
 	Wed, 17 Jul 2024 21:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721251975; cv=none; b=s2MGBmiFvwFuuGATxN3uTv2dkC7BstcYbxk7is6ohVVWKoN0I/5IILAvgftOo/KvnSs8GGxGz8+2D3Z4lrEDpwRrb188XwJH0nUa0Dpnzvxetv0Y9JgwE7PdzhDyZHZCJQDA3mVsDD+2UtkXJ447TeLif9lDeaDWlP/ULex0CU4=
+	t=1721251979; cv=none; b=Mzgj/5JRrCzuduRQkafK9Q1+oQGqIqFJuysU1JB0s0kcYrFuBaKE/RgQj6XWtaoO1dnVIjJaRG5Uq5uWRNxqTD/kuOrdyfvDuc9Ewp/F+XZ/4hNFs7fiwjWQFE1DR6blDiPUnGe5RpFabloIdNUKCVtLN+B6LUOdVUzoxBiQPvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721251975; c=relaxed/simple;
-	bh=jAqASVbOGDrayX320WlZ2he6/a0Mqy/3Sa7ghz3Thgw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k3oGQLxbas5Sg90QPKRz7EndVmMtFubop/fR+ogVUwUCGWx+w+xz4qoBL61jdjI5NkZxZa5eT9iH7TXaWLvdb1Cr25nKF+QVIPc0WLnjRILd2lbpItCZqrkGaRbFw+W/TmQqBqLnzASFLUFIm+PWsWTNUcJ90DqzNLlH0i+sau8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=mDHLBAc0; arc=none smtp.client-ip=148.163.147.86
+	s=arc-20240116; t=1721251979; c=relaxed/simple;
+	bh=OLY9Bx7/nzbjKiMIAGVuuXnkquyU7vJpkYIRB4XQE/A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=C6kUSk7XoQeOmb28GH3MwafKMqPs5rQPVRnyqE5bg96+SjmiNpslQUx3N74po+acMKKLkwLfWvEC0QvzkXnZ/C8M2XHC/MJXUn2xePbgVMWjGtkM/JFqrFq5XqkEiyAzsncJz/hK/LgG4J9ZZndql5obKvZ/jpd/H6vcMFGcOQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=HpijY0CB; arc=none smtp.client-ip=148.163.147.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46HEofNS002946;
+	by mx0a-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46HDaBoL025060;
 	Wed, 17 Jul 2024 21:31:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from
-	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pps0720; bh=808SU6qyaK/Um857JBYO8r
-	S2Bl8LCNVBrZBok6IKwwE=; b=mDHLBAc0rPzJ0DNjqfFEzkKXPo4oM8PhTOFKQ1
-	HuJUpQPfnyug8cPcDiqB3fj0HwIx+r3ujhrK2eLvGBgL8/FwVPkrlvbtSEzdmqut
-	/IRFW+T8imeLqrJyeYRDer2YKF75NpOuspGovuiqtAIPnO7Ff+3mZ2K5SA3XtjAs
-	XWwmX5GDnPW/zAyR5EBRQEj/fT3K761hZyDuPw0wVg2f6dIb6oJnFR2+VNUpBt7E
-	R8fAko62JGJApVURJAeq9UQzajzdqT3eGWfjUWUOpA8NJjV68QmbLlOxIv0jWmln
-	cOESQm/SrX8LMrNjgd66POhuHiphUlW4pqPwvuYZ1IF/tPXA==
-Received: from p1lg14880.it.hpe.com ([16.230.97.201])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 40dwf02w6p-1
+	:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding; s=pps0720; bh=AEHglC0ER
+	2F2UT1A2l5u2EFWiKzkYSHcBmHpYY1hFJQ=; b=HpijY0CBnnYL6mrCmUVcxphF4
+	vX1tR53y0XsXxotZa9UEPDvKtk7rz0djZza0gFm46HQogRVis4J6FS8wGxA7rzxL
+	aDAMRZtit/Wk3/ZLAtpJjn87ZWdImFUzbJIkqjHG/YOX6xhrtK1XF8HgUE2hhtAW
+	35KupU+JuqGpx9kVRf8xXDunoADPe2RFFFuoOdbXxh60nujiYW2zXk79qxzt3HdU
+	cArUt6cgss9yl/9briaBr3sfkbLiX9l3x2lnZb8sWCVdJgh92F93+aJQ6+Ppb947
+	lmm398phhWzCJktBxxJsG5V9BiLWRfa36yONZ4fIFbjuvmkKMpEzO6m0itjgw==
+Received: from p1lg14881.it.hpe.com ([16.230.97.202])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 40dwf02w6q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 17 Jul 2024 21:31:26 +0000 (GMT)
 Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id B9C1E80026E;
+	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id B9F088059E3;
 	Wed, 17 Jul 2024 21:31:24 +0000 (UTC)
-Received: from dog.eag.rdlabs.hpecorp.net (unknown [16.231.227.36])
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 71C0480FDCA;
+Received: from dog.eag.rdlabs.hpecorp.net (unknown [16.231.227.39])
+	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 5730780478F;
 	Wed, 17 Jul 2024 21:31:22 +0000 (UTC)
 Received: by dog.eag.rdlabs.hpecorp.net (Postfix, from userid 200934)
-	id 36CDD300BB4C9; Wed, 17 Jul 2024 16:31:21 -0500 (CDT)
+	id 3C152300BB4CB; Wed, 17 Jul 2024 16:31:21 -0500 (CDT)
 From: Steve Wahl <steve.wahl@hpe.com>
 To: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
@@ -75,10 +76,12 @@ Cc: Simon Horman <horms@verge.net.au>, Eric Biederman <ebiederm@xmission.com>,
         Tao Liu <ltao@redhat.com>, kexec@lists.infradead.org,
         "Kalra, Ashish" <ashish.kalra@amd.com>,
         Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH v3 0/2] Resolve problems with kexec identity mapping
-Date: Wed, 17 Jul 2024 16:31:19 -0500
-Message-Id: <20240717213121.3064030-1-steve.wahl@hpe.com>
+Subject: [PATCH v3 1/2] x86/kexec: Add EFI config table identity mapping for kexec kernel
+Date: Wed, 17 Jul 2024 16:31:20 -0500
+Message-Id: <20240717213121.3064030-2-steve.wahl@hpe.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20240717213121.3064030-1-steve.wahl@hpe.com>
+References: <20240717213121.3064030-1-steve.wahl@hpe.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -86,76 +89,125 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: ho06VTQBQgjQyTsV5tShzxTP38dasqcr
-X-Proofpoint-ORIG-GUID: ho06VTQBQgjQyTsV5tShzxTP38dasqcr
+X-Proofpoint-GUID: VoHJkPaaSpjVEq-jCxqVNjto46UGH-jy
+X-Proofpoint-ORIG-GUID: VoHJkPaaSpjVEq-jCxqVNjto46UGH-jy
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-17_16,2024-07-17_02,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=893
+ lowpriorityscore=0 phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
  priorityscore=1501 mlxscore=0 adultscore=0 impostorscore=0 clxscore=1015
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2407110000 definitions=main-2407170162
 
-Creating kexec identity maps using only GB pages can include a lot of
-extra address space past that requested, including areas marked
-reserved by the BIOS, which on UV systems can cause system halts.
+From: Tao Liu <ltao@redhat.com>
 
-The previous attempt to fix this problem,
+A kexec kernel boot failure is sometimes observed on AMD CPUs due to
+an unmapped EFI config table array.  This can be seen when "nogbpages"
+is on the kernel command line, and has been observed as a full BIOS
+reboot rather than a successful kexec.
 
-       7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
+This was also the cause of reported regressions attributed to Commit
+7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page
+should be mapped.") which was subsequently reverted.
 
-caused a regression on a small number of AMD systems, and was later reverted.
+To avoid this page fault, explicitly include the EFI config table
+array in the kexec identity map.
 
-The cause of this regression was that the EFI Config Table Array was
-not explicitly included in the kexec identity map. While this array was
-often included in the identity map by luck, when it was not, code that
-checks whether the AMD SEV feature should be enabled takes a page
-fault due to the array's address not being mapped.  This happens before
-the new kernel is able to set up a page fault handler, so it is fatal.
+Further explanation:
 
-The patch that was reverted greatly reduced the chance that the EFI
-Config Table Array got mapped by luck, which is why this problem
-appeared.  The kernel command line option "nogbpages" also causes the
-problem to show, and was used for debugging and illustrative purposes.
+The following 2 commits caused the EFI config table array to be
+accessed when enabling sev at kernel startup.
 
-The first patch in this series explicitly adds the EFI Config Table
-array to the kexec identity map so this problem will not occur.
+    commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
+                          earlier during boot")
+    commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
+                          detection/setup")
 
-The second patch in the series re-instates the previously reverted
-patch that reduces usage of gbpages in creating the identity map.
+This is in the code that examines whether SEV should be enabled or
+not, so it can even affect systems that are not SEV capable.
 
-All three of the people who reported regression with my earlier patch
-have retested with this patch series and found it to work where my
-single patch previously did not.  With current kernels, all fail to
-kexec when "nogbpages" is on the command line, but all succeed with
-"nogbpages" after the series is applied.
+This may result in a page fault if the EFI config table array's
+address is unmapped. Since the page fault occurs before the new kernel
+establishes its own identity map and page fault routines, it is
+unrecoverable and kexec fails.
 
-Series version 3:
-  * In patch 1, do not change name of map_efi_systab, and fix comment.
+Most often, this problem is not seen because the EFI config table
+array gets included in the map by the luck of being placed at a memory
+address close enough to other memory areas that *are* included in the
+map created by kexec.
 
-Series version 2:
+Both the "nogbpages" command line option and the "use gpbages only
+where full GB page should be mapped" patch greatly reduce the chance
+of being included in the map by luck, which is why the problem
+appears.
 
-  * Removed a patch (formerly #2) that also added the CC blob to the
-    identity map, as this was proactive, but not proved necessary.
+Signed-off-by: Tao Liu <ltao@redhat.com>
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Tested-by: Pavin Joseph <me@pavinjoseph.com>
+Tested-by: Sarah Brofeldt <srhb@dbc.dk>
+Tested-by: Eric Hagberg <ehagberg@gmail.com>
+---
 
-  * Rewrote this cover letter and patch commit messages to include
-    discussion on previous version.
-
-V1: https://lore.kernel.org/all/20240520183633.1457687-1-steve.wahl@hpe.com/
-
-Steve Wahl (1):
-  x86/mm/ident_map: Use gbpages only where full GB page should be
-    mapped.
-
-Tao Liu (1):
-  x86/kexec: Add EFI config table identity mapping for kexec kernel
+Version 3: Do not rename map_efi_systab to map_efi_tables, and don't add
+'config table' to the comments, per Ard Biesheuvel request.
 
  arch/x86/kernel/machine_kexec_64.c | 27 +++++++++++++++++++++++++++
- arch/x86/mm/ident_map.c            | 23 ++++++++++++++++++-----
- 2 files changed, 45 insertions(+), 5 deletions(-)
+ 1 file changed, 27 insertions(+)
 
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index cc0f7f70b17b..9c9ac606893e 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -28,6 +28,7 @@
+ #include <asm/setup.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpu.h>
++#include <asm/efi.h>
+ 
+ #ifdef CONFIG_ACPI
+ /*
+@@ -87,6 +88,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+ {
+ #ifdef CONFIG_EFI
+ 	unsigned long mstart, mend;
++	void *kaddr;
++	int ret;
+ 
+ 	if (!efi_enabled(EFI_BOOT))
+ 		return 0;
+@@ -102,6 +105,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+ 	if (!mstart)
+ 		return 0;
+ 
++	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
++	if (ret)
++		return ret;
++
++	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
++	if (!kaddr) {
++		pr_err("Could not map UEFI system table\n");
++		return -ENOMEM;
++	}
++
++	mstart = efi_config_table;
++
++	if (efi_enabled(EFI_64BIT)) {
++		efi_system_table_64_t *stbl = (efi_system_table_64_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_64_t) * stbl->nr_tables;
++	} else {
++		efi_system_table_32_t *stbl = (efi_system_table_32_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_32_t) * stbl->nr_tables;
++	}
++
++	memunmap(kaddr);
++
+ 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
+ #endif
+ 	return 0;
 -- 
 2.26.2
 
