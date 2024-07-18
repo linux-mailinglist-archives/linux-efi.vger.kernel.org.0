@@ -1,61 +1,61 @@
-Return-Path: <linux-efi+bounces-1462-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1463-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F8D1934A91
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Jul 2024 10:59:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1400C934A92
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Jul 2024 10:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 545241C20DF4
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Jul 2024 08:59:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5C9328592E
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Jul 2024 08:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2237A724;
-	Thu, 18 Jul 2024 08:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E77C7F484;
+	Thu, 18 Jul 2024 08:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XMcQjuhW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cljem0p2"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9147A715
-	for <linux-efi@vger.kernel.org>; Thu, 18 Jul 2024 08:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742E17A715
+	for <linux-efi@vger.kernel.org>; Thu, 18 Jul 2024 08:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721293152; cv=none; b=fsJJ5N2ju6eJxkExwNgufvDqfzurkNhNc7E2GJ7JSyi1L2HNprKpX38VQZo6IMIqL25T6PIGy56VNP7d29wseJDohFLI6KXN+BiUmI0tMqg1P56qR06bYnNeOIW6Mw7w+1aPmfv7y4lU6udmszaash4CzpCvOgSoHCdOQu9oTzc=
+	t=1721293160; cv=none; b=arYRFyEeyTTOTtN2HbACIA8Xhky3NZtXvAXXho5/m2j2x2foKqVbnmucXEvgSuasnXs5VtsjSevEyM6VyGmMVr0L7ytCppVVbj5Ouv1IBBfDpamNU7pTqURgcgpcHMnTMb86kVYPtYfZKWHmtFJHlHiANQRrXK+1AzX23oV9zEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721293152; c=relaxed/simple;
-	bh=pLbTxH8m3Pu5d2m2lDWp6Z1THC/A+jDNHTYZyc+OQUY=;
+	s=arc-20240116; t=1721293160; c=relaxed/simple;
+	bh=Rwc+Z9bYlpYjE73SsPLbEFcVwo5dDaEVDQguWUeVBVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUNsRDnd8Q6RZiZu4AFG/QYpYx5jX8p4LutJQ1vw0qsJzyE6Vj3HMIc436IVAW7K1GunD+YNFeSBqRLA+YA+e4Y9u5UNecvbrzxsRyN726KfTvCX/rBdQOemJdVcgKufrTdaBTjibgxnMPn73pKjIKnRTd8ZFuyrIkASlbB1DBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XMcQjuhW; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=akApZln12so9odAy+qUm8n275sSRfeSg97MbQnzgUsTPpmUpEjQ0fiLJVtv/uRTgrkqXub/3FODtyV4Kd3rukvbOiWxMyR/Y6xiT+ikXukOvE3548JqdEYlCLVRgoFDLfQ3E7QUFlQzo98vO0UZrP8j636a7kmkfuKdZwaP2fdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cljem0p2; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721293149;
+	s=mimecast20190719; t=1721293157;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zCmuPnEyTzB6M7DQihQfFxfvOrguOlS28iXHft0X5VU=;
-	b=XMcQjuhWfJGr85MabQcSsYXDlxynnspHc8am4HL2xo6ChVVxWueOtWCCU3NXR9aLu6XVCl
-	zq/ZWNMtVxSvq0RrmMYyzxcR56Q50SUBr7Be0qyWJ2pYEoNLAT+E+M/CJLl1IXpvb+S51j
-	vS+10yUjAD5P+nZ14SvfnKaNwdwBh2M=
+	bh=3hNfYZDiuxS1NyyJIIF1E+E75SCF0d1XgAjWnjU5K1g=;
+	b=cljem0p2JoihKvvwHnEBe/rFQqFiK472qes0QC0+ETnkYUpHPGWBibKRw0Zd/fjywMu+ts
+	SWXPinO1km5IWZoFbasRDIe+Dp7P/X89PJsLIaQLvXUTEK4sDbSRnSWdapHEH042M7hrDh
+	KlwY/mZdm6y+WjLwR7ELbfpVYyB+Vrg=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-ya1IOQc7NVm-WgfSceEv2g-1; Thu,
- 18 Jul 2024 04:59:04 -0400
-X-MC-Unique: ya1IOQc7NVm-WgfSceEv2g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-D31q2u5bOAauFQDGlbOiXQ-1; Thu,
+ 18 Jul 2024 04:59:14 -0400
+X-MC-Unique: D31q2u5bOAauFQDGlbOiXQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4ABFE1955BED;
-	Thu, 18 Jul 2024 08:59:02 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1EF131955D5C;
+	Thu, 18 Jul 2024 08:59:11 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.72.112.125])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6EBBC3000185;
-	Thu, 18 Jul 2024 08:58:54 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 13330300018A;
+	Thu, 18 Jul 2024 08:59:02 +0000 (UTC)
 From: Pingfan Liu <piliu@redhat.com>
 To: linux-arm-kernel@lists.infradead.org,
 	kexec@lists.infradead.org,
@@ -71,9 +71,9 @@ Cc: Pingfan Liu <piliu@redhat.com>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [RFC 5/7] arm64: mm: Change to prototype of
-Date: Thu, 18 Jul 2024 16:57:55 +0800
-Message-ID: <20240718085759.13247-6-piliu@redhat.com>
+Subject: [RFC 6/7] arm64: kexec: Prepare page table for emulator
+Date: Thu, 18 Jul 2024 16:57:56 +0800
+Message-ID: <20240718085759.13247-7-piliu@redhat.com>
 In-Reply-To: <20240718085759.13247-1-piliu@redhat.com>
 References: <20240718085759.13247-1-piliu@redhat.com>
 Precedence: bulk
@@ -85,13 +85,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-The current allocator of __create_pgd_mapping_locked() takes only one
-parameter, which reflects the current level of page table.
+The emulator will run in identity mapping, and the first kernel prepares
+for it. The special allocator resorts to kimage_alloc_control_pages(),
+which can avoid the allocation on the spot of the destination and
+overwritten during copying the kernel.
 
-But kexec_page_alloc() should extra control information from the
-parameter kimage. In order to make kexec_page_alloc() as an allocator,
-re-shape the prototype of the allocator and hence of the
-__create_pgd_mapping_locked().
+The identity mapping covers only all of the kexec segments, and this
+reduces the memory consumption of page table.
 
 Signed-off-by: Pingfan Liu <piliu@redhat.com>
 Cc: Ard Biesheuvel <ardb@kernel.org>
@@ -108,282 +108,191 @@ To: linux-arm-kernel@lists.infradead.org
 To: kexec@lists.infradead.org
 To: linux-efi@vger.kernel.org
 ---
- arch/arm64/include/asm/mmu.h |  6 ++++
- arch/arm64/mm/mmu.c          | 67 ++++++++++++++++++++----------------
- 2 files changed, 44 insertions(+), 29 deletions(-)
+ arch/arm64/kernel/machine_kexec.c | 90 +++++++++++++++++++++++++++++--
+ include/linux/kexec.h             |  5 +-
+ 2 files changed, 89 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/include/asm/mmu.h b/arch/arm64/include/asm/mmu.h
-index 65977c7783c58..4b908e0650105 100644
---- a/arch/arm64/include/asm/mmu.h
-+++ b/arch/arm64/include/asm/mmu.h
-@@ -64,6 +64,12 @@ extern void arm64_memblock_init(void);
- extern void paging_init(void);
- extern void bootmem_init(void);
- extern void __iomem *early_io_map(phys_addr_t phys, unsigned long virt);
-+extern void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
-+					unsigned long virt, phys_addr_t size,
-+					pgprot_t prot,
-+					phys_addr_t (*pgtable_alloc)(int, void *),
-+					void *arg,
-+					int flags);
- extern void create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 				   phys_addr_t size, pgprot_t prot);
- extern void create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index c927e9312f102..875e2bc0cfb39 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -106,7 +106,7 @@ pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
- }
- EXPORT_SYMBOL(phys_mem_access_prot);
+diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
+index 82e2203d86a31..ae76874879188 100644
+--- a/arch/arm64/kernel/machine_kexec.c
++++ b/arch/arm64/kernel/machine_kexec.c
+@@ -14,6 +14,7 @@
+ #include <linux/reboot.h>
+ #include <linux/set_memory.h>
+ #include <linux/smp.h>
++#include <linux/efi_emulator.h>
  
--static phys_addr_t __init early_pgtable_alloc(int shift)
-+static phys_addr_t __init early_pgtable_alloc(int shift, void *unused)
- {
- 	phys_addr_t phys;
- 
-@@ -190,7 +190,8 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
- static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
- 				unsigned long end, phys_addr_t phys,
- 				pgprot_t prot,
--				phys_addr_t (*pgtable_alloc)(int),
-+				phys_addr_t (*pgtable_alloc)(int, void *arg),
-+				void *arg,
- 				int flags)
- {
- 	unsigned long next;
-@@ -205,7 +206,7 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
- 		if (flags & NO_EXEC_MAPPINGS)
- 			pmdval |= PMD_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
--		pte_phys = pgtable_alloc(PAGE_SHIFT);
-+		pte_phys = pgtable_alloc(PAGE_SHIFT, arg);
- 		ptep = pte_set_fixmap(pte_phys);
- 		init_clear_pgtable(ptep);
- 		ptep += pte_index(addr);
-@@ -241,7 +242,9 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
- 
- static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 		     phys_addr_t phys, pgprot_t prot,
--		     phys_addr_t (*pgtable_alloc)(int), int flags)
-+		     phys_addr_t (*pgtable_alloc)(int, void *),
-+		     void *arg,
-+		     int flags)
- {
- 	unsigned long next;
- 
-@@ -263,7 +266,7 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 						      READ_ONCE(pmd_val(*pmdp))));
- 		} else {
- 			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
--					    pgtable_alloc, flags);
-+					    pgtable_alloc, arg, flags);
- 
- 			BUG_ON(pmd_val(old_pmd) != 0 &&
- 			       pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
-@@ -275,7 +278,9 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
- static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
- 				unsigned long end, phys_addr_t phys,
- 				pgprot_t prot,
--				phys_addr_t (*pgtable_alloc)(int), int flags)
-+				phys_addr_t (*pgtable_alloc)(int, void *),
-+				void * arg,
-+				int flags)
- {
- 	unsigned long next;
- 	pud_t pud = READ_ONCE(*pudp);
-@@ -292,7 +297,7 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
- 		if (flags & NO_EXEC_MAPPINGS)
- 			pudval |= PUD_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
--		pmd_phys = pgtable_alloc(PMD_SHIFT);
-+		pmd_phys = pgtable_alloc(PMD_SHIFT, arg);
- 		pmdp = pmd_set_fixmap(pmd_phys);
- 		init_clear_pgtable(pmdp);
- 		pmdp += pmd_index(addr);
-@@ -312,7 +317,7 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
- 		    (flags & NO_CONT_MAPPINGS) == 0)
- 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
- 
--		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
-+		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, arg, flags);
- 
- 		pmdp += pmd_index(next) - pmd_index(addr);
- 		phys += next - addr;
-@@ -323,7 +328,8 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
- 
- static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
- 			   phys_addr_t phys, pgprot_t prot,
--			   phys_addr_t (*pgtable_alloc)(int),
-+			   phys_addr_t (*pgtable_alloc)(int, void *),
-+			   void *arg,
- 			   int flags)
- {
- 	unsigned long next;
-@@ -337,7 +343,7 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
- 		if (flags & NO_EXEC_MAPPINGS)
- 			p4dval |= P4D_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
--		pud_phys = pgtable_alloc(PUD_SHIFT);
-+		pud_phys = pgtable_alloc(PUD_SHIFT, arg);
- 		pudp = pud_set_fixmap(pud_phys);
- 		init_clear_pgtable(pudp);
- 		pudp += pud_index(addr);
-@@ -368,7 +374,7 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
- 						      READ_ONCE(pud_val(*pudp))));
- 		} else {
- 			alloc_init_cont_pmd(pudp, addr, next, phys, prot,
--					    pgtable_alloc, flags);
-+					    pgtable_alloc, arg, flags);
- 
- 			BUG_ON(pud_val(old_pud) != 0 &&
- 			       pud_val(old_pud) != READ_ONCE(pud_val(*pudp)));
-@@ -381,7 +387,8 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
- 
- static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 			   phys_addr_t phys, pgprot_t prot,
--			   phys_addr_t (*pgtable_alloc)(int),
-+			   phys_addr_t (*pgtable_alloc)(int, void *),
-+			   void *arg,
- 			   int flags)
- {
- 	unsigned long next;
-@@ -395,7 +402,7 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 		if (flags & NO_EXEC_MAPPINGS)
- 			pgdval |= PGD_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
--		p4d_phys = pgtable_alloc(P4D_SHIFT);
-+		p4d_phys = pgtable_alloc(P4D_SHIFT, arg);
- 		p4dp = p4d_set_fixmap(p4d_phys);
- 		init_clear_pgtable(p4dp);
- 		p4dp += p4d_index(addr);
-@@ -411,7 +418,7 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 		next = p4d_addr_end(addr, end);
- 
- 		alloc_init_pud(p4dp, addr, next, phys, prot,
--			       pgtable_alloc, flags);
-+			       pgtable_alloc, arg, flags);
- 
- 		BUG_ON(p4d_val(old_p4d) != 0 &&
- 		       p4d_val(old_p4d) != READ_ONCE(p4d_val(*p4dp)));
-@@ -422,10 +429,11 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- 	p4d_clear_fixmap();
+ #include <asm/cacheflush.h>
+ #include <asm/cpu_ops.h>
+@@ -86,8 +87,22 @@ static void kexec_segment_flush(const struct kimage *kimage)
+ 	}
  }
  
--static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
-+void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
- 					unsigned long virt, phys_addr_t size,
- 					pgprot_t prot,
--					phys_addr_t (*pgtable_alloc)(int),
-+					phys_addr_t (*pgtable_alloc)(int, void *),
-+					void *arg,
- 					int flags)
++/* todo: alloc page for the pgtable used by efi emulator in crashkernel range */
++static phys_addr_t crash_page_alloc(int unused, void *arg)
++{
++	struct kimage *kimage = (struct kimage *)arg;
++	int i;
++
++	//skip kimage->segment[].mem
++	for (i = 0; i < kimage->nr_segments; i ++) {
++		//seg = &kimage->segment[i];
++	}
++	//skip any range allocated
++	return -1;
++}
++
+ /* Allocates pages for kexec page table */
+-static void *kexec_page_alloc(void *arg)
++static void *__kexec_page_alloc(void *arg)
  {
- 	unsigned long addr, end, next;
-@@ -445,7 +453,7 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
- 	do {
- 		next = pgd_addr_end(addr, end);
- 		alloc_init_p4d(pgdp, addr, next, phys, prot, pgtable_alloc,
--			       flags);
-+			       arg, flags);
- 		phys += next - addr;
- 	} while (pgdp++, addr = next, addr != end);
- }
-@@ -453,12 +461,13 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
- static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
- 				 unsigned long virt, phys_addr_t size,
- 				 pgprot_t prot,
--				 phys_addr_t (*pgtable_alloc)(int),
-+				 phys_addr_t (*pgtable_alloc)(int, void *),
-+				 void *arg,
- 				 int flags)
- {
- 	mutex_lock(&fixmap_lock);
- 	__create_pgd_mapping_locked(pgdir, phys, virt, size, prot,
--				    pgtable_alloc, flags);
-+				    pgtable_alloc, arg, flags);
- 	mutex_unlock(&fixmap_lock);
+ 	struct kimage *kimage = arg;
+ 	struct page *page = kimage_alloc_control_pages(kimage, 0);
+@@ -102,6 +117,69 @@ static void *kexec_page_alloc(void *arg)
+ 	return vaddr;
  }
  
-@@ -466,10 +475,10 @@ static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
- extern __alias(__create_pgd_mapping_locked)
- void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys, unsigned long virt,
- 			     phys_addr_t size, pgprot_t prot,
--			     phys_addr_t (*pgtable_alloc)(int), int flags);
-+			     phys_addr_t (*pgtable_alloc)(int, void *), void *arg, int flags);
- #endif
- 
--static phys_addr_t __pgd_pgtable_alloc(int shift)
-+static phys_addr_t __pgd_pgtable_alloc(int shift, void *unused)
++static phys_addr_t kexec_page_alloc(int unused, void *arg)
++{
++	void *vaddr;
++
++	vaddr = __kexec_page_alloc(arg);
++	if (!vaddr)
++		return (phys_addr_t)-1;
++	return virt_to_phys(vaddr);
++}
++
++/*
++ * This function should be called after all kimage segments have been profiled 
++ * Return physical address of page table's root
++ */
++phys_addr_t arch_emulator_prepare_pgtable(struct kimage *kimage,
++		struct efi_emulator_param *param)
++{
++	struct kexec_segment *seg;
++	unsigned long paddr, sz;
++	pgd_t *pgd;
++	typedef phys_addr_t (* alloc_fn)(int, void *);
++	alloc_fn alloc;
++	phys_addr_t pgd_paddr;
++	int i;
++
++	/*
++	 * Set up pgtable of emulator, either for crash or for reboot.
++	 * All of the segments have been profiled, and kimage_alloc_normal_control_pages()
++	 * will allocate page in safe zone.
++	 * On the other hand, these pages are not in any segment, which means they are
++	 * left, not copied. Hence the radix tree laying out on them is not broken.
++	 */
++	if (kimage->head & IND_DONE)
++		alloc = crash_page_alloc;
++	else
++		alloc = kexec_page_alloc;
++	pgd_paddr = alloc(0, kimage);
++	pgd = (pgd_t *)phys_to_virt(pgd_paddr);
++	for (i = 0; i < kimage->nr_segments; i ++) {
++		seg = &kimage->segment[i];
++		paddr = ALIGN_DOWN(seg->mem, PAGE_SIZE);
++		sz = ALIGN(seg->mem - paddr + seg->memsz, PAGE_SIZE);
++		kexec_dprintk("Set up mapping for phyaddr: 0x%lx, size:0x%lx", paddr, sz);
++		//todo: distinguish executable segment
++		__create_pgd_mapping_locked(pgd, paddr, paddr, sz,
++				PAGE_KERNEL_EXEC, alloc, kimage, 0);
++	}
++
++	/*
++	 * Per UEFI specification, SetVirtualAddressMap() is oneshot, which means
++	 * efi stub should not call EFI runtime service without setting up mapping.
++	 * As a result, emulator does not need to set up the mapping for
++	 * EFI_RUNTIME_SERVICES_CODE etc.
++	 */
++
++	if (param->print_enabled)
++		__create_pgd_mapping_locked(pgd, param->earlycon_reg_base,
++				param->earlycon_reg_base, param->earlycon_reg_sz,
++				pgprot_device(PAGE_KERNEL), alloc, kimage, 0);
++
++	return pgd_paddr;
++}
++
+ int machine_kexec_post_load(struct kimage *kimage)
  {
- 	/* Page is zeroed by init_clear_pgtable() so don't duplicate effort. */
- 	void *ptr = (void *)__get_free_page(GFP_PGTABLE_KERNEL & ~__GFP_ZERO);
-@@ -478,9 +487,9 @@ static phys_addr_t __pgd_pgtable_alloc(int shift)
- 	return __pa(ptr);
- }
+ 	int rc;
+@@ -109,7 +187,7 @@ int machine_kexec_post_load(struct kimage *kimage)
+ 	void *reloc_code = page_to_virt(kimage->control_code_page);
+ 	long reloc_size;
+ 	struct trans_pgd_info info = {
+-		.trans_alloc_page	= kexec_page_alloc,
++		.trans_alloc_page	= __kexec_page_alloc,
+ 		.trans_alloc_arg	= kimage,
+ 	};
  
--static phys_addr_t pgd_pgtable_alloc(int shift)
-+static phys_addr_t pgd_pgtable_alloc(int shift, void *unused)
- {
--	phys_addr_t pa = __pgd_pgtable_alloc(shift);
-+	phys_addr_t pa = __pgd_pgtable_alloc(shift, unused);
- 	struct ptdesc *ptdesc = page_ptdesc(phys_to_page(pa));
+@@ -129,7 +207,7 @@ int machine_kexec_post_load(struct kimage *kimage)
+ 	}
+ 
+ 	/* Create a copy of the linear map */
+-	trans_pgd = kexec_page_alloc(kimage);
++	trans_pgd = __kexec_page_alloc(kimage);
+ 	if (!trans_pgd)
+ 		return -ENOMEM;
+ 	rc = trans_pgd_create_copy(&info, &trans_pgd, PAGE_OFFSET, PAGE_END);
+@@ -145,6 +223,7 @@ int machine_kexec_post_load(struct kimage *kimage)
+ 				  &kimage->arch.t0sz, reloc_code);
+ 	if (rc)
+ 		return rc;
++
+ 	kimage->arch.phys_offset = virt_to_phys(kimage) - (long)kimage;
+ 
+ 	/* Flush the reloc_code in preparation for its execution. */
+@@ -175,7 +254,6 @@ void machine_kexec(struct kimage *kimage)
+ 		"Some CPUs may be stale, kdump will be unreliable.\n");
+ 
+ 	pr_info("Bye!\n");
+-
+ 	local_daif_mask();
  
  	/*
-@@ -512,7 +521,7 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 			&phys, virt);
- 		return;
- 	}
--	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-+	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, NULL,
- 			     NO_CONT_MAPPINGS);
- }
+@@ -192,7 +270,8 @@ void machine_kexec(struct kimage *kimage)
  
-@@ -528,7 +537,7 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
- 		flags = NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
- 
- 	__create_pgd_mapping(mm->pgd, phys, virt, size, prot,
--			     pgd_pgtable_alloc, flags);
-+			     pgd_pgtable_alloc, NULL, flags);
- }
- 
- static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
-@@ -540,7 +549,7 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- 		return;
+ 		cpu_install_idmap();
+ 		restart = (void *)__pa_symbol(cpu_soft_restart);
+-		restart(is_hyp_nvhe(), kimage->start, kimage->arch.dtb_mem,
++		/* kimage->start can be either the entry of kernel or efi emulator */
++		restart(is_hyp_nvhe(), kimage->start, kimage->arch.param_mem,
+ 			0, 0);
+ 	} else {
+ 		void (*kernel_reloc)(struct kimage *kimage);
+@@ -201,6 +280,7 @@ void machine_kexec(struct kimage *kimage)
+ 			__hyp_set_vectors(kimage->arch.el2_vectors);
+ 		cpu_install_ttbr0(kimage->arch.ttbr0, kimage->arch.t0sz);
+ 		kernel_reloc = (void *)kimage->arch.kern_reloc;
++		//tell between the emulator and normal kernel inside the relocate code 
+ 		kernel_reloc(kimage);
  	}
  
--	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
-+	__create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, NULL,
- 			     NO_CONT_MAPPINGS);
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index cff6b6869498b..c68427f796d31 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -22,6 +22,7 @@
  
- 	/* flush the TLBs after updating live kernel mappings */
-@@ -551,7 +560,7 @@ static void __init __map_memblock(pgd_t *pgdp, phys_addr_t start,
- 				  phys_addr_t end, pgprot_t prot, int flags)
- {
- 	__create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
--			     prot, early_pgtable_alloc, flags);
-+			     prot, early_pgtable_alloc, NULL, flags);
- }
+ #include <uapi/linux/kexec.h>
+ #include <linux/verification.h>
++#include <linux/efi_emulator.h>
  
- void __init mark_linear_text_alias_ro(void)
-@@ -742,7 +751,7 @@ static int __init map_entry_trampoline(void)
- 	memset(tramp_pg_dir, 0, PGD_SIZE);
- 	__create_pgd_mapping(tramp_pg_dir, pa_start, TRAMP_VALIAS,
- 			     entry_tramp_text_size(), prot,
--			     __pgd_pgtable_alloc, NO_BLOCK_MAPPINGS);
-+			     __pgd_pgtable_alloc, NULL, NO_BLOCK_MAPPINGS);
+ extern note_buf_t __percpu *crash_notes;
  
- 	/* Map both the text and data into the kernel page table */
- 	for (i = 0; i < DIV_ROUND_UP(entry_tramp_text_size(), PAGE_SIZE); i++)
-@@ -1344,7 +1353,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+@@ -463,7 +464,9 @@ static inline int arch_kexec_post_alloc_pages(void *vaddr, unsigned int pages, g
+ static inline void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages) { }
+ #endif
  
- 	__create_pgd_mapping(swapper_pg_dir, start, __phys_to_virt(start),
--			     size, params->pgprot, __pgd_pgtable_alloc,
-+			     size, params->pgprot, __pgd_pgtable_alloc, NULL,
- 			     flags);
+-extern phys_addr_t arch_emulator_prepare_pgtable(struct kimage *kimage);
++extern phys_addr_t arch_emulator_prepare_pgtable(struct kimage *kimage,
++		struct efi_emulator_param *param);
++
+ extern bool kexec_file_dbg_print;
  
- 	memblock_clear_nomap(start, size);
+ #define kexec_dprintk(fmt, arg...) \
 -- 
 2.41.0
 
