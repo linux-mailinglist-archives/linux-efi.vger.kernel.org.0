@@ -1,266 +1,138 @@
-Return-Path: <linux-efi+bounces-1475-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1476-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D48D938F20
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Jul 2024 14:34:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FEB939655
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Jul 2024 00:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F36A41F21B8C
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Jul 2024 12:34:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376001F20CCA
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Jul 2024 22:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAAA16C846;
-	Mon, 22 Jul 2024 12:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F8049641;
+	Mon, 22 Jul 2024 22:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H2CUzptM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2m+7L3g"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0EF3A8D0
-	for <linux-efi@vger.kernel.org>; Mon, 22 Jul 2024 12:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47EB4963D;
+	Mon, 22 Jul 2024 22:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721651687; cv=none; b=C9Nkcb2yIphQsun5rIbL3rasCmY+Eja8RkLCEgBdvN+wZOn0bOPJ6HED+D6pKCt9TDfvMMMBJM30af0fYPVF+rdw56nwg6CpvozFu+RRWx3/39bcR3xHSJlgqSdhcQ4/T+tg9j9bstiePA5sdqJcoRqdolEkmZ3STwXJQ4rdVuQ=
+	t=1721686482; cv=none; b=ARmkj4tc8Rvm2AwlMU8YAlDAzbQT8dgL4NF1XYleEh8agRNzf4S8CYda87AJ5Z25rf9J2Xcqzg1keR/SlSvaSwp5aYd58EU83UwCLqi2ZFBd9BM5oBsWMZG2yussKsiA2zUJ3GI+pj7XdSJvaJTNrNluRmg/CZrnh4l8Ug7yF+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721651687; c=relaxed/simple;
-	bh=Ik762HhGn2ZeDlDKoRrH8hE0HLCrKfhIyjraaYjPH/A=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=PhwJUXhLb6vCXxzWCt9kCyyYs/NO+6QQdAlFrcYglQyPC+nhhY+eKD7DCvM4EvqRX4eFBRWtp6cNb8UNpyKVzFajFdMqn7UynE2IdQnRfW855O76LEon50cmb+pQdmMJqz5HmV/mCAS9dEdDmOda19+WDv9DMvpxJe9zhujYIvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H2CUzptM; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721651685; x=1753187685;
-  h=date:from:to:cc:subject:message-id;
-  bh=Ik762HhGn2ZeDlDKoRrH8hE0HLCrKfhIyjraaYjPH/A=;
-  b=H2CUzptMAWSgggYxD6sP9PuCfo8s4Pi1O34crkgKzUbDS+W1ZwQsla4W
-   Q2zWPxvw+W04FseMeAM798yxVVqzCyjG3T61gHc8bLqA8QD8Pajt7FBBJ
-   81CzXcj4EDvKeRc1q1WfgkFqtbp3ytK/2Z/che+F2jQYDi7T8rz75ZirX
-   +8CWdA+rhDfc53fr3BpWPRGm3w0QRuliKEK5clVMwaTtPN+i4p4oUcbG7
-   X6oQAlhOXGXYFEQ0qhzm1qdSuU1lNLgXR2O7crZX92p6sveevIjIhlSKD
-   38fg49RZY/e3CYGi9N1K8/5hCH1p7gjzzew8Ylfgm9w1Mktw/uNhXKGF8
-   Q==;
-X-CSE-ConnectionGUID: QQtLbMFjQlCncOOOpPuvZQ==
-X-CSE-MsgGUID: 9wsB5w3LTYGtrDCmE4Arvw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="30643459"
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; 
-   d="scan'208";a="30643459"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2024 05:34:45 -0700
-X-CSE-ConnectionGUID: Yn2UT3MORuW2LIDBmXyrxw==
-X-CSE-MsgGUID: 9AygrS1eQsqrOuumCZCXOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; 
-   d="scan'208";a="82510698"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 22 Jul 2024 05:34:43 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sVsFU-000l8y-0n;
-	Mon, 22 Jul 2024 12:34:40 +0000
-Date: Mon, 22 Jul 2024 20:34:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- ae835a96d72cd025421910edb0e8faf706998727
-Message-ID: <202407222028.W8PVVdg4-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1721686482; c=relaxed/simple;
+	bh=Jgmyw4r1hTvfrHmVFdlwtVqOx4dBD6X3d4dEdsO2pXw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z5Ty59SCRwuz0FLsWyVFSYVGBxR1syjO2+mwkEiZ/M358nz2ktmsSrVuEUg1T9Jm3Nmb0FFeBklI3HJtDbNv0hcr1u4kHBQkgdu3fzJb2klu+5mOuQn6Vivv1CsWytsnZiu18/dZUS0jQgeH/25svVm+G9tCHutqDHafMOiR53Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2m+7L3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46859C4AF10;
+	Mon, 22 Jul 2024 22:14:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721686482;
+	bh=Jgmyw4r1hTvfrHmVFdlwtVqOx4dBD6X3d4dEdsO2pXw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=u2m+7L3g7fIokE3qxZL2ebzvJO7F3sAbzQojsyTUotcxb12wN1LnXEfW2HfuD4tVT
+	 O8qf5xqC3wnQtRsA7lBav39Z7FwZsSanzTaExmSZquKrN3QCIE6iIRh9Z7sQPNo9ii
+	 eUQCpEVDPZDFcQkr6jVU9j/hH2Ow3eIA71uHFlT+qePe+AvSvdBMOKIMLlhBE8gpl6
+	 2HHTTmr/f4G1mMPJBIPhAiOaGxvv9nnv3+z46M+h39DqV7ScwikX1POgiJJgwY0ch4
+	 62ytocgp7Hd2XpPS7dA9fK54gpECIpmbByLj+M+zyf/ZO+oM8EieysKi5GsxF2cw8D
+	 bXg8KGc843lMQ==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52f01ec08d6so2267140e87.2;
+        Mon, 22 Jul 2024 15:14:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUc+NZ1z0JPwj6reNGC/KikYWa9NEiR+tUfpq9V/tteWJvKY2i1C3SgaaLgUemR4o7v5RBimjSRxkdFx/vA7IwyWaWiFSx4Dunam8W9
+X-Gm-Message-State: AOJu0YzgFWtYBZmyRojyposTE6yNJZvV0CaKbwDMx1cm35yUxJFUA2ru
+	IPBV1KUY0cPxZfanogB7AK+K6TTOyjYt/UmY9GEwMYRA9Rsy1ibygSDYb32+4MhkcZu0bF9fF3D
+	1cTEmuunJGGK/Ap3EwsETmuQno8A=
+X-Google-Smtp-Source: AGHT+IHAn2/WwFGgmciXyJ+SkgPaePaYXDpeZImlbBDYaQjv4ZkkBCoW0NyGUjfUOPaJWKbmh+BmdrWrPMgTUtNcLng=
+X-Received: by 2002:a05:6512:e88:b0:52c:881b:73c0 with SMTP id
+ 2adb3069b0e04-52fc4046a8fmr751322e87.17.1721686480596; Mon, 22 Jul 2024
+ 15:14:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <DS7PR19MB570996A580C6F5D2C9CACCE48BA32@DS7PR19MB5709.namprd19.prod.outlook.com>
+ <DS7PR19MB5709B2A263E769B461091B0D8BA32@DS7PR19MB5709.namprd19.prod.outlook.com>
+ <CAMj1kXHBSNxrzbQoaDea7HFcjN9HHk5==tXg1WLHDzW61aj4cg@mail.gmail.com>
+ <DS7PR19MB5709B39C90153DAA27DA122D8BAE2@DS7PR19MB5709.namprd19.prod.outlook.com>
+ <CAMj1kXHS0rr9DfKCeD-Zz7y1Bk-3ncn2cEgVmnWE0Jq1B=+Acg@mail.gmail.com> <DS7PR19MB570924EC5BB1BA3F321A65B98BA82@DS7PR19MB5709.namprd19.prod.outlook.com>
+In-Reply-To: <DS7PR19MB570924EC5BB1BA3F321A65B98BA82@DS7PR19MB5709.namprd19.prod.outlook.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 23 Jul 2024 00:14:29 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFjWBpOij5V3=-9etqTW9p8guqPDCGU3DK0Yxq6zrBiBQ@mail.gmail.com>
+Message-ID: <CAMj1kXFjWBpOij5V3=-9etqTW9p8guqPDCGU3DK0Yxq6zrBiBQ@mail.gmail.com>
+Subject: Re: [Patch] Do not clear BSS region in x86 stub
+To: "Shao, Marshall" <Marshall.Shao@dell.com>
+Cc: "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	"Mishra, Ashish" <Ashish.Mishra4@dell.com>, "Chia, Jia Yuan" <JiaYuan.Chia@dell.com>, 
+	"Dion, Christopher" <Christopher.Dion@dell.com>, "Caisse, Joe" <Joe.Caisse@dell.com>, 
+	"Mukundan, Govind" <Govind.Mukundan@dell.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: ae835a96d72cd025421910edb0e8faf706998727  x86/efistub: Revert to heap allocated boot_params for PE entrypoint
+On Mon, 22 Jul 2024 at 13:48, Shao, Marshall <Marshall.Shao@dell.com> wrote=
+:
+>
+> Hi Ard,
+>
+> > Given that GRUB now supports the native EFI entrypoint properly,
+> > the handover protocol is essentially deprecated.
+>
+> In my case, the systemd-boot jumped into the EFI stub code via
+> handover protocol, this may not be an orthodox way to boot the kernel
+> but it performs well on the others, I have tested on at least
+> 6 firmware.
+>
 
-elapsed time: 1156m
+systemd-boot does not implement the EFI handover protocol.
+systemd-stub does implement it (for UKIs) but only for kernel versions
+v5.8 or older.
 
-configs tested: 173
-configs skipped: 6
+The EFI handover protocol is known to be problematic as the loaders
+often fail to allocate memory for the entire image, and only allocate
+enough pages to load the bzImage itself.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This means that clearing BSS will wipe unrelated memory if the region
+after the image happens to be used already. It also means that not
+clearing BSS is just a crutch, and the correct fix is to ensure that
+systemd-stub allocates the correct number of pages, and clears the
+ones that are not covered by the bzImage payload.
 
-tested configs:
-alpha                             allnoconfig   gcc-13.3.0
-alpha                            allyesconfig   gcc-13.3.0
-alpha                               defconfig   gcc-13.2.0
-alpha                               defconfig   gcc-13.3.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                                 defconfig   gcc-13.2.0
-arc                   randconfig-001-20240722   gcc-13.2.0
-arc                   randconfig-002-20240722   gcc-13.2.0
-arm                              allmodconfig   gcc-14.1.0
-arm                               allnoconfig   clang-19
-arm                              allyesconfig   gcc-14.1.0
-arm                         assabet_defconfig   clang-15
-arm                     davinci_all_defconfig   clang-19
-arm                                 defconfig   clang-14
-arm                                 defconfig   gcc-13.2.0
-arm                       imx_v4_v5_defconfig   clang-16
-arm                           imxrt_defconfig   clang-19
-arm                            mps2_defconfig   clang-19
-arm                   randconfig-001-20240722   gcc-14.1.0
-arm                   randconfig-002-20240722   clang-19
-arm                   randconfig-003-20240722   clang-19
-arm                   randconfig-004-20240722   clang-19
-arm                         socfpga_defconfig   clang-19
-arm                       versatile_defconfig   gcc-14.1.0
-arm64                            allmodconfig   clang-19
-arm64                             allnoconfig   gcc-14.1.0
-arm64                               defconfig   gcc-13.2.0
-arm64                               defconfig   gcc-14.1.0
-arm64                 randconfig-001-20240722   clang-19
-arm64                 randconfig-002-20240722   clang-19
-arm64                 randconfig-003-20240722   clang-15
-arm64                 randconfig-004-20240722   gcc-14.1.0
-csky                             alldefconfig   gcc-14.1.0
-csky                              allnoconfig   gcc-14.1.0
-csky                                defconfig   gcc-13.2.0
-csky                                defconfig   gcc-14.1.0
-csky                  randconfig-001-20240722   gcc-14.1.0
-csky                  randconfig-002-20240722   gcc-14.1.0
-hexagon                          allmodconfig   clang-19
-hexagon                           allnoconfig   clang-19
-hexagon                          allyesconfig   clang-19
-hexagon                             defconfig   clang-19
-hexagon               randconfig-001-20240722   clang-17
-hexagon               randconfig-002-20240722   clang-19
-i386                             allmodconfig   gcc-13
-i386                              allnoconfig   gcc-13
-i386                             allyesconfig   gcc-13
-i386         buildonly-randconfig-001-20240722   gcc-13
-i386         buildonly-randconfig-002-20240722   gcc-13
-i386         buildonly-randconfig-003-20240722   clang-18
-i386         buildonly-randconfig-004-20240722   clang-18
-i386         buildonly-randconfig-005-20240722   gcc-9
-i386         buildonly-randconfig-006-20240722   clang-18
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240722   clang-18
-i386                  randconfig-002-20240722   clang-18
-i386                  randconfig-003-20240722   gcc-11
-i386                  randconfig-004-20240722   clang-18
-i386                  randconfig-005-20240722   clang-18
-i386                  randconfig-006-20240722   gcc-13
-i386                  randconfig-011-20240722   gcc-13
-i386                  randconfig-012-20240722   clang-18
-i386                  randconfig-013-20240722   clang-18
-i386                  randconfig-014-20240722   clang-18
-i386                  randconfig-015-20240722   clang-18
-i386                  randconfig-016-20240722   gcc-13
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch                           defconfig   gcc-13.2.0
-loongarch                           defconfig   gcc-14.1.0
-loongarch             randconfig-001-20240722   gcc-14.1.0
-loongarch             randconfig-002-20240722   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                                defconfig   gcc-13.2.0
-m68k                                defconfig   gcc-14.1.0
-m68k                          hp300_defconfig   gcc-14.1.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                          defconfig   gcc-13.2.0
-microblaze                          defconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-14.1.0
-mips                        bcm63xx_defconfig   clang-19
-mips                         db1xxx_defconfig   clang-19
-mips                      fuloong2e_defconfig   clang-19
-mips                     loongson1c_defconfig   clang-19
-mips                      malta_kvm_defconfig   clang-19
-mips                  maltasmvp_eva_defconfig   clang-19
-mips                        qi_lb60_defconfig   clang-19
-mips                          rb532_defconfig   clang-19
-nios2                             allnoconfig   gcc-14.1.0
-nios2                               defconfig   gcc-13.2.0
-nios2                               defconfig   gcc-14.1.0
-nios2                 randconfig-001-20240722   gcc-14.1.0
-nios2                 randconfig-002-20240722   gcc-14.1.0
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-14.1.0
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-14.1.0
-parisc                randconfig-001-20240722   gcc-14.1.0
-parisc                randconfig-002-20240722   gcc-14.1.0
-parisc64                            defconfig   gcc-13.2.0
-parisc64                            defconfig   gcc-14.1.0
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                     asp8347_defconfig   clang-19
-powerpc                      chrp32_defconfig   clang-19
-powerpc                        fsp2_defconfig   gcc-14.1.0
-powerpc                   lite5200b_defconfig   clang-19
-powerpc                 mpc8313_rdb_defconfig   gcc-14.1.0
-powerpc                  mpc885_ads_defconfig   clang-19
-powerpc                         ps3_defconfig   gcc-14.1.0
-powerpc               randconfig-001-20240722   clang-19
-powerpc               randconfig-002-20240722   clang-19
-powerpc               randconfig-003-20240722   gcc-14.1.0
-powerpc                     redwood_defconfig   clang-19
-powerpc                     tqm8541_defconfig   clang-15
-powerpc64                        alldefconfig   clang-19
-powerpc64             randconfig-001-20240722   gcc-14.1.0
-powerpc64             randconfig-002-20240722   gcc-14.1.0
-powerpc64             randconfig-003-20240722   clang-19
-riscv                            allmodconfig   clang-19
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   clang-19
-riscv                               defconfig   clang-19
-riscv                               defconfig   gcc-14.1.0
-riscv                 randconfig-001-20240722   clang-19
-riscv                 randconfig-002-20240722   clang-17
-s390                             allmodconfig   clang-19
-s390                              allnoconfig   clang-19
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   clang-19
-s390                                defconfig   gcc-14.1.0
-s390                  randconfig-001-20240722   gcc-14.1.0
-s390                  randconfig-002-20240722   gcc-14.1.0
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                                  defconfig   gcc-14.1.0
-sh                          lboxre2_defconfig   gcc-14.1.0
-sh                    randconfig-001-20240722   gcc-14.1.0
-sh                    randconfig-002-20240722   gcc-14.1.0
-sh                          rsk7201_defconfig   gcc-14.1.0
-sh                   sh7724_generic_defconfig   gcc-14.1.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-14.1.0
-sparc64               randconfig-001-20240722   gcc-14.1.0
-sparc64               randconfig-002-20240722   gcc-14.1.0
-um                               allmodconfig   clang-19
-um                                allnoconfig   clang-17
-um                               allyesconfig   gcc-13
-um                                  defconfig   clang-19
-um                                  defconfig   gcc-14.1.0
-um                             i386_defconfig   gcc-13
-um                             i386_defconfig   gcc-14.1.0
-um                    randconfig-001-20240722   gcc-13
-um                    randconfig-002-20240722   clang-19
-um                           x86_64_defconfig   clang-15
-um                           x86_64_defconfig   gcc-14.1.0
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64                              defconfig   gcc-13
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
-xtensa                  cadence_csp_defconfig   gcc-14.1.0
-xtensa                randconfig-001-20240722   gcc-14.1.0
-xtensa                randconfig-002-20240722   gcc-14.1.0
+> I understand that the handover protocol is going to be deprecated.
+> However, as of now, I can't guarantee which EFI loader will be
+> used to load my bzImage. Although it=E2=80=99s not very common, booting
+> from the handover protocol with uncleaned BSS memory is possible.
+>
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+systemd-boot does not use the EFI handover protocol. Please try to
+determine where this confusion comes from: are you using a UKI image
+perhaps?
+
+> >> memset(_bss+0x10000, 0, _ebss - _bss - 0x10000)
+>
+> > So now you are applying the memset only to part of BSS, right? How
+> > does this help?
+>
+> This part doesn't work without increasing the BOOT_STACK_SIZE.
+>
+
+... because the 0x10000 value would be incorrect otherwise?
+
+I am trying to understand *why* this particular change works around
+the issue. Please elaborate.
+
+My preliminary conclusion here is that your implementation of the EFI
+handover protocol (which I fail to understand where it comes from) is
+not allocating enough memory. This should be fixed on the bootloader
+side, as not clearing the BSS does not prevent this memory from being
+corrupted.
 
