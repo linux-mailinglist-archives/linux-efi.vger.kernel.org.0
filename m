@@ -1,162 +1,129 @@
-Return-Path: <linux-efi+bounces-1507-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1508-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908E993EDE5
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Jul 2024 09:04:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448C493EE67
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Jul 2024 09:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B33171C21E7B
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Jul 2024 07:04:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF3361F212E6
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Jul 2024 07:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234C312C460;
-	Mon, 29 Jul 2024 07:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556A286267;
+	Mon, 29 Jul 2024 07:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="X6sEyyDV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VInkPxI3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBRL7kxS"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from flow2-smtp.messagingengine.com (flow2-smtp.messagingengine.com [103.168.172.137])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B9084D25;
-	Mon, 29 Jul 2024 07:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC5D85931;
+	Mon, 29 Jul 2024 07:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722236566; cv=none; b=guwHU4SkqLnZRVz3byGBL3ClV3lWXj016JxoUdqsOmgYlopZVJxHLtnpSw7s/qUo12QlbPE3TOLCnESkgceuz5F3xIuGyspSkAVttdssQDqFiBzRZxfYg97FmTfiIT6J79sWSSq4vQLnMEj4nxAkrHGR/MJMZo9iN7JG76CL1ro=
+	t=1722238084; cv=none; b=TWFhCORnWmNw47XgpWStFa36RIcNcsmon65IWvvpCWV2xcN7vIXi9KwS+oRDy999SVY7n5U1a0ga4gwd3y7CsVZC0B3vbwu+AHd9kLIM7w4rooTcDgLgLB/pfFnpWc9DVqAcTvjZ2o3l+A32ycpJxkVabwlihyBirwkmEHJcWyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722236566; c=relaxed/simple;
-	bh=xljAVq2AI+HXD6xrKTZ/yyxJY5ISMHdHtrKDNx8zAs0=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=UZRKSfv6IT7aODtLO8Y7A6/iOMJpcaxgWpb0IoamFZUsQ3ln7KqbqMFgmgcFXe8VtgLF3mxCjPm3YYdPYBi6qbjDcjlViRiw+3XnhdkFRrk88+pqXFKQJcYexoW4m/7NKUHmx/upwjv6KOMz2A5iejNkf11qbJ6OiRvPL9NXoCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=X6sEyyDV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VInkPxI3; arc=none smtp.client-ip=103.168.172.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 674302000ED;
-	Mon, 29 Jul 2024 03:02:42 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute4.internal (MEProxy); Mon, 29 Jul 2024 03:02:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1722236562; x=1722243762; bh=hGG+ePgWzn
-	dtOiaFUWIwTWUzuqt+6sQvsZYw00TGxkU=; b=X6sEyyDVP2R0prfFfX3zKXdYCZ
-	WeYLYbsQQ9K7lAxhXT5032spSI05phsmkLSkY2BT3xaqQ2dNGE60gIoP9m+dvW8M
-	guc1NQtfaC5+SPx//VR+TUauVTVQ1VO1DKt5m/ACh6SL1shEKvP3Zj2dS09rIfRA
-	Ye3HtphwUT7LIT3XtYeONHtOsbVGN8JhykqEmKrELZNrOx5XoLNygkcV86F8HMPJ
-	uoU1PrV77xmdTKUMfGsmsm05WdaVRsz7L8IbyFTonFrp8i3ZnlmpDI7OK33AjvgP
-	/Zdc7msQ5bA4rL+Mxcax/OYkRhUaobKDveCmzPW3g6vlDIxD+ii0juqMo0oA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1722236562; x=1722243762; bh=hGG+ePgWzndtOiaFUWIwTWUzuqt+
-	6sQvsZYw00TGxkU=; b=VInkPxI3AbZmQ/Bb6DLUoOfg+9WhiERb6BjcAy4481ue
-	cHUx1hFM2q73XsJ0jNz25wNZ3ILFsZsoU30Z+sacvVGQEdG4DOKnC/XgPk7/iVpG
-	0vzv0fLvARr8NM0XTGS1+GNleUIRihSw+LNRnr7+yPY3SRxwdPqKQjKE29J6cTJV
-	lTxNeXE60u9pqry883UNmYPhYEd2xFk/VvFtuIH3XwINgqA+Q6Fm85NTSoqoK+2y
-	1/QuwE2WQUK+/8h84noe29dGAzR68uLZp6QAPP2zcc5VWGuy0etV08iR9Hw44gXP
-	FNba82LFNVH4cCz5an5BLf76EZjP8Hq/+K9M5Nliog==
-X-ME-Sender: <xms:kT6nZoHGI9fDnNOyHkKN1VAKI0jeWw_UnFgUgHt4TuHaVWI7KXLejg>
-    <xme:kT6nZhWHdeNTsl7w0QoUspMKnrmZGAbgFqxeuUYi6Dbvtp3fH7BkVFAMqpbWMZuTN
-    s1uAQwGZUDcz4CdK3k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrjedugdduudehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtoheptd
-X-ME-Proxy: <xmx:kT6nZiK6IyX_uKW1-DGEa6I5VkL_oAGUmnvHSfGCHJpgnebVlOFMbw>
-    <xmx:kT6nZqE4rEE_v38OJku2Y2s6-7h5xt8qVfo6jBLqkDCFShTnKEMVjw>
-    <xmx:kT6nZuWG5L9Mc9loue7ddy0zBNZh0caTfY03uElmbUTHR1X5OetaJQ>
-    <xmx:kT6nZtPJgXdejwN1ov-n-O97a1torKEmnmP_vZXz_NMnTDJQmaN9MQ>
-    <xmx:kj6nZrluBx0db4vbNToIRt_Vs9SKbkfPxfl15oyufOl6u3dEWh2NQRWy>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 038B4B6008D; Mon, 29 Jul 2024 03:02:41 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-582-g5a02f8850-fm-20240719.002-g5a02f885
+	s=arc-20240116; t=1722238084; c=relaxed/simple;
+	bh=nTe+LEwmiTqq7Wz4+BdXJBXIFgMWqWI6PEk+/MQWfSA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NsJ4bIv6yYQjNEDZErBTSrzFLuoSrya8RGqWFj+7TpIxTlaXOPuRjxbMoQ2Z+FkAVE1TYu9gGB2iA9DSKMhHs+JEQgjwGcxegpPLSeZ4HAr7fzz9nzSPYt9dpx7U80cZHSGlcrz6q4fmF6/wjjte9o1DEaLiAKpDZ4MZPD9WHZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBRL7kxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5369C4AF0A;
+	Mon, 29 Jul 2024 07:28:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722238083;
+	bh=nTe+LEwmiTqq7Wz4+BdXJBXIFgMWqWI6PEk+/MQWfSA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bBRL7kxSfQNXUNdka0ix/8yVf7BHRiwXNgTER3e7t0qx946gOZTmqLlsz5S0nnMWW
+	 Tgxk0Mh6jf4K7nsiiDbD08Pd3dNz+zRmV60TU7jK3UaAp0c9zC0rTaRe+/kZNwnIqB
+	 6wsznrqbaApYJll3n/BSFBO60h7EZUiwDPC/2sU27rkzuvDTRm8tDdJ3DOzHPcHsOm
+	 0dQKePBvWUXmF+i2ujiOBVx9PA90UgkPDE7YpzGT6JSdainHwQxidDYM9Pp8bE8pPe
+	 tyyIh5aj4CbvuTMZKhfEpssCiPUN0GCxQC9ntdn7Z1twWDAAk/+2jUVvukFX0jHmv5
+	 57x38QTOa3xGg==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52ed741fe46so3220025e87.0;
+        Mon, 29 Jul 2024 00:28:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVO63eK9deuCYkYxuAhtwz8v8fFXEAr+vQvwpWd4CeEpAF2UGwpXMDKhpj0idN/UZPV/g4BmMUHbMIYYHbIiFlRKTGANJW+C5feGpcqWcky1zCNpeKXOF1z7HLof21siEwOUrFv/4IE
+X-Gm-Message-State: AOJu0YwVuWOfged83eWjz6AygZjj4EquUlYZTNrkpkbcb/OX5xKN0jJH
+	yVx7HQdciXjIRUtIDNE8KbMdZVQqR8uVN8b15CxnCOepzECtecqXVlBDfqL2TVMxRCAroEXHwIU
+	oXSjFkbvZ0FnV/TFcUNh23LE1SWc=
+X-Google-Smtp-Source: AGHT+IF6E/EJSyzV/z6BavQ/MNgNZ/Am/TVKHY91KVCycq5PMVyti+hTtB4ojcls+9EnMjH9ZvIbILPAwTFSftdt9IU=
+X-Received: by 2002:a05:6512:458:b0:52e:764b:b20d with SMTP id
+ 2adb3069b0e04-5309b27be39mr4134890e87.28.1722238082058; Mon, 29 Jul 2024
+ 00:28:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <63eb1654-c614-4f6a-9bc5-8c8085eadf8c@app.fastmail.com>
-In-Reply-To: <20240728203001.2551083-7-xur@google.com>
-References: <20240728203001.2551083-1-xur@google.com>
- <20240728203001.2551083-7-xur@google.com>
-Date: Mon, 29 Jul 2024 09:02:20 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Rong Xu" <xur@google.com>, "Han Shen" <shenhan@google.com>,
- "Sriraman Tallam" <tmsriram@google.com>, "David Li" <davidxl@google.com>,
- "Jonathan Corbet" <corbet@lwn.net>,
- "Masahiro Yamada" <masahiroy@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Nicolas Schier" <nicolas@fjasle.eu>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Ard Biesheuvel" <ardb@kernel.org>,
- "Josh Poimboeuf" <jpoimboe@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Nick Desaulniers" <ndesaulniers@google.com>,
- "Bill Wendling" <morbo@google.com>,
- "Justin Stitt" <justinstitt@google.com>,
- "Vegard Nossum" <vegard.nossum@oracle.com>, "John Moon" <john@jmoon.dev>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Luis Chamberlain" <mcgrof@kernel.org>,
- "Samuel Holland" <samuel.holland@sifive.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- "Rafael Aquini" <aquini@redhat.com>, "Petr Pavlu" <petr.pavlu@suse.com>,
- "Eric DeVolder" <eric.devolder@oracle.com>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- "Randy Dunlap" <rdunlap@infradead.org>,
- "Benjamin Segall" <bsegall@google.com>,
- "Breno Leitao" <leitao@debian.org>,
- "Wei Yang" <richard.weiyang@gmail.com>,
- "Brian Gerst" <brgerst@gmail.com>, "Juergen Gross" <jgross@suse.com>,
- "Palmer Dabbelt" <palmer@rivosinc.com>,
- "Alexandre Ghiti" <alexghiti@rivosinc.com>,
- "Kees Cook" <kees@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>,
- "Xiao W Wang" <xiao.w.wang@intel.com>,
- "Jan Kiszka" <jan.kiszka@siemens.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-efi@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>, llvm@lists.linux.dev,
- "Krzysztof Pszeniczny" <kpszeniczny@google.com>,
- "Stephane Eranian" <eranian@google.com>
-Subject: Re: [PATCH 6/6] Add Propeller configuration for kernel build.
-Content-Type: text/plain
+References: <ZqElRH38f_XV3fKK@wunner.de> <20240728220343.40fc64f7@redecorated-mbp>
+In-Reply-To: <20240728220343.40fc64f7@redecorated-mbp>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 29 Jul 2024 09:27:50 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHw0_MicBifz0FdLCOcjjD73AJcM-dyG1J6Ah=BjuQNcw@mail.gmail.com>
+Message-ID: <CAMj1kXHw0_MicBifz0FdLCOcjjD73AJcM-dyG1J6Ah=BjuQNcw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] efi/x86: Call set_os() protocol on dual GPU Macs
+To: Orlando Chamberlain <orlandoch.dev@gmail.com>
+Cc: lukas@wunner.de, gargaditya08@live.com, hdegoede@redhat.com, 
+	kekrby@gmail.com, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	sharpenedblade@proton.me
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Jul 28, 2024, at 22:29, Rong Xu wrote:
->  Documentation/dev-tools/index.rst     |   1 +
->  Documentation/dev-tools/propeller.rst | 188 ++++++++++++++++++++++++++
->  MAINTAINERS                           |   7 +
->  Makefile                              |   1 +
->  arch/Kconfig                          |  22 +++
->  arch/x86/Kconfig                      |   1 +
->  arch/x86/boot/compressed/Makefile     |   3 +
->  arch/x86/kernel/vmlinux.lds.S         |   4 +
->  arch/x86/platform/efi/Makefile        |   1 +
->  drivers/firmware/efi/libstub/Makefile |   2 +
->  include/asm-generic/vmlinux.lds.h     |   8 +-
->  scripts/Makefile.lib                  |  10 ++
->  scripts/Makefile.propeller            |  25 ++++
->  tools/objtool/check.c                 |   1 +
+On Sun, 28 Jul 2024 at 14:03, Orlando Chamberlain
+<orlandoch.dev@gmail.com> wrote:
+>
+> On Wed, 24 Jul 2024 18:01:08 +0200, Lukas Wunner Wrote:
+> > On Tue, Jul 23, 2024 at 04:25:19PM +0000, Aditya Garg wrote:
+> > > On Wed, Jul 17, 2024 at 04:35:15PM +0000, Aditya Garg wrote:
+> > > > For the Macs having a single GPU, in case a person uses an eGPU,
+> > > > they still need this apple-set-os quirk for hybrid graphics.
+> > >
+> > > Sending this message again as for some reason it got sent only to
+> > > Lukas:
+> > >
+> > > Full model name: Mac mini (2018) (Macmini8,1)
+> > >
+> > > The drive link below has the logs:
+> > >
+> > > https://drive.google.com/file/d/1P3-GlksU6WppvzvWC0A-nAoTZh7oPPxk/view?usp=drive_link
+> >
+> > Some observations:
+> >
+> > * dmesg-with-egpu.txt:  It seems the system was actually booted
+> >   *without* an eGPU, so the filename appears to be a misnomer.
+> >
+> > * The two files in the with_apple_set_os_efi directory only contain
+> >   incomplete dmesg output.  Boot with log_buf_len=16M to solve this.
+> >   Fortunately the truncated log is sufficient to see what's going on.
+>
+> Hi Lukas, in case it helps, I got the user with the macmini and egpu to
+> get logs that don't have the start cut off [0].
+>
+> >   We could constrain apple_set_os to newer models by checking for
+> >   presence of the T2 PCI device [106b:1802].  Alternatively, we could
+> >   use the BIOS date (DMI_BIOS_DATE in SMBIOS data) to enforce a
+> >   cut-off such that only machines with a recent BIOS use apple_set_os.
+>
+> It might be simpler to match "iBridge" in the DMI bios_version as this
+> indicates that a computer has the T2 (aka iBridge which runs bridgeOS).
+> I don't think there have been any issues from when the downstream T2
+> kernels had apple-set-os unconditionally so it should be fine to enable
+> for all T2 macs at least. This would exclude the T1 Macs with possibly
+> missing trackpad dimensions in applespi that you mentioned [1].
+>
+> On my MacBookPro16,1:
+>
+> $ cat /sys/class/dmi/id/bios_version
+> 1715.60.5.0.0 (iBridge: 19.16.10647.0.0,0)
+>
+> [0]: https://gist.github.com/Redecorating/8111324065016363223b5ce719e48676/
+> [1]: https://lore.kernel.org/all/ZoJPgSlZJ3ZlU2zL@wunner.de/
+>
 
-I have not looked in much detail, but I see that you need
-a special case for arch/x86/boot/compressed and
-drivers/firmware/efi, which makes it likely that you
-need to also disable properller support for
-arch/x86/purgatory/Makefile, which tends to have similar
-requirements.
+Thanks, this seems useful.
 
-     Arnd
+Does this mean we can drop the type1 product name list, and just look
+for 'iBridge' in the type0 version string? Or does that list contain
+non-T2 hardware as well?
 
