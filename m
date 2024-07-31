@@ -1,79 +1,69 @@
-Return-Path: <linux-efi+bounces-1525-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1526-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B56942D55
-	for <lists+linux-efi@lfdr.de>; Wed, 31 Jul 2024 13:37:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8DB942D69
+	for <lists+linux-efi@lfdr.de>; Wed, 31 Jul 2024 13:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8252AB20C4D
-	for <lists+linux-efi@lfdr.de>; Wed, 31 Jul 2024 11:37:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D62CE1C22849
+	for <lists+linux-efi@lfdr.de>; Wed, 31 Jul 2024 11:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2A51AD3E9;
-	Wed, 31 Jul 2024 11:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1488E1AD40E;
+	Wed, 31 Jul 2024 11:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CwDK/pds"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rdfXlEsA"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1F01A8BEF;
-	Wed, 31 Jul 2024 11:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864CD1A8BEF;
+	Wed, 31 Jul 2024 11:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722425817; cv=none; b=UXO5zBm2McbBmx0cT1coK2C1UzDkxldT/3A7tvdFndOpXudvJjzhR4OK5HO38TtPxwga7f69V0ypfk6SGwfpzCS++oVaQFFdPDVEqVg1z+0k6p4XlZo7lEGYB9D8IXkm7bwfIP5QLlWsSL9r7vyBgEDBySHVI3e6mfdwoXKEDfc=
+	t=1722426021; cv=none; b=AjJK32vnEIRJV5VlYR6/mfPH7KOhT/IAel2Jnx90auvSMty7qEUf7kMa1XCTxdqZG6RjmlqiWSw/RMkpVQLSkD2Q/DWpQr/CS/bY7IAP6ebETJ7eQ4AEbzk4S3yT6Bpk09xudRpP5EZZoN22AFErVk6HSMMX8iMHiFZZyiNi6Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722425817; c=relaxed/simple;
-	bh=DvxRYb8t1EwWUAm27DIBnObbDa/lEizruMwpmgZsz2c=;
+	s=arc-20240116; t=1722426021; c=relaxed/simple;
+	bh=VB8zuIkGeiks0g6qaKKdnBCfHjxgfC4ibEqG9JE2fpA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DnMK0GjCTrrg0a8ddG9qAwQsrx8QiMAdCbWRUCVWNkOIUqOuduCuVn19Wo4+JzwdE3/KptAZQ98Oa671xNkeZhdMRVvYrMNPE+xTcvpRwgm7v75XewrZIwIBH38CcuN/U5WXBT482fW5+pGuFFK8N7aN/xJwM+pTQEelIXnzils=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CwDK/pds; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722425816; x=1753961816;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DvxRYb8t1EwWUAm27DIBnObbDa/lEizruMwpmgZsz2c=;
-  b=CwDK/pdskefcQYijEjOrMSOShcnxg6P5CzvAu9EnHvBqN1G37o+QehDz
-   ziEuGNRQJV5aI/XA3naR+LfBXznFG9xpAf3U+L4bVGb9L1/A69yeWQsiV
-   8PBIehBRYUBbjkYX63XDG043VSotI1GwFmmH/83/pO4xsi9Cg98ReZqEK
-   om1yjfpvSJQM1lbAlDTHSFKSUZYNM96v1g+MJlPkMDJW2ucoNVnEOrASb
-   BLAdxp4ivv1zzRp6BJ0F6xP/wSgvWahzm9fkul/Fs35eYuu7onmZroCd6
-   BTiGHJFQlh0yrdjELRWKoCWGQItQRF9G/5gJ2KfYjZ0Uiyn314SvoP8/z
-   g==;
-X-CSE-ConnectionGUID: oG+WMpGASje1sIhozbvZtQ==
-X-CSE-MsgGUID: TWjuMWt0QOaVZoKP9qd3Uw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="20454552"
-X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; 
-   d="scan'208";a="20454552"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2024 04:36:55 -0700
-X-CSE-ConnectionGUID: GOq9DN9kTZ+xvVgfLA40KA==
-X-CSE-MsgGUID: RfkRdjaTSzehKNbqcHf2aw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; 
-   d="scan'208";a="54651188"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa009.jf.intel.com with ESMTP; 31 Jul 2024 04:36:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 479C516B; Wed, 31 Jul 2024 14:36:47 +0300 (EEST)
-Date: Wed, 31 Jul 2024 14:36:47 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Shivank Garg <shivankg@amd.com>
-Cc: ardb@kernel.org, bp@alien8.de, brijesh.singh@amd.com, corbet@lwn.net, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, jan.kiszka@siemens.com, jgross@suse.com, 
-	kbingham@kernel.org, linux-doc@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org, michael.roth@amd.com, 
-	mingo@redhat.com, peterz@infradead.org, rick.p.edgecombe@intel.com, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=bJ21bmbCytBgKFlHQr0LogfTg+QBG39kdyb+Hrbi7/NFR7M3masaPNB+NlcMcGoM9QIOtAS0prNFSJptHehdhHQK/yWE3lr3sXeeGNoFX/mjqqtHN8VveIOS31bJ+wG8XBT3dNXBUtJ8z0jfRtlmLF8xGDMANan3I8mL3pMgMs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rdfXlEsA; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2iiBapHi5E4yCyY0JG3xWUh4YuuU45iPPgouplI2hYc=; b=rdfXlEsAuUDE+tc0RwDhVPiUPT
+	yQRkMAOiOUZONJLi8qJLFJFzzS+XyZLEabzmTKR/DJiOskzEO93Hw05cX8UZuC/DfFE7uFCL2w0CV
+	66NNG1mfMq0TkwZcGYDYhVgAVkMn00eXOpr1pAd5kNxl8yJeQencJOVV0gs9qIvocFIKJvF+ZMPCG
+	qt6TDhO4IFp7mnqTdIemPm47zi36pEv8KQeY0uzRXF9I1fVAPx5GoEZ7vH4G34YfXABkTJQiYqliI
+	rIOZXWecIqN/EAkib4htRzYlrEBFTYI8J5x5vAEtxxrcD5aTVPaycmeOyoOooWk9MURYmwhxxqCuN
+	ShYi6ymg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sZ7gX-0000000G3oZ-1riD;
+	Wed, 31 Jul 2024 11:40:01 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id A9120300820; Wed, 31 Jul 2024 13:40:00 +0200 (CEST)
+Date: Wed, 31 Jul 2024 13:40:00 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Shivank Garg <shivankg@amd.com>,
+	ardb@kernel.org, bp@alien8.de, brijesh.singh@amd.com,
+	corbet@lwn.net, dave.hansen@linux.intel.com, hpa@zytor.com,
+	jan.kiszka@siemens.com, jgross@suse.com, kbingham@kernel.org,
+	linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org,
+	michael.roth@amd.com, mingo@redhat.com, rick.p.edgecombe@intel.com,
 	sandipan.das@amd.com, thomas.lendacky@amd.com, x86@kernel.org
 Subject: Re: [PATCH 0/3] x86: Make 5-level paging support unconditional for
  x86-64
-Message-ID: <jczq52e6vrluqobqzejakdo3mdxqiqohdzbwmq64uikrm2h52n@l2bgf4ir7pj6>
+Message-ID: <20240731114000.GC33588@noisy.programming.kicks-ass.net>
 References: <80734605-1926-4ac7-9c63-006fe3ea6b6a@amd.com>
  <87wml16hye.ffs@tglx>
+ <jczq52e6vrluqobqzejakdo3mdxqiqohdzbwmq64uikrm2h52n@l2bgf4ir7pj6>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -82,52 +72,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87wml16hye.ffs@tglx>
+In-Reply-To: <jczq52e6vrluqobqzejakdo3mdxqiqohdzbwmq64uikrm2h52n@l2bgf4ir7pj6>
 
-On Wed, Jul 31, 2024 at 11:15:05AM +0200, Thomas Gleixner wrote:
-> On Wed, Jul 31 2024 at 14:27, Shivank Garg wrote:
-> > lmbench:lat_pagefault: Metric- page-fault time (us) - Lower is better
-> >                 4-Level PT              5-Level PT		% Change
-> > THP-never       Mean:0.4068             Mean:0.4294		5.56
-> >                 95% CI:0.4057-0.4078    95% CI:0.4287-0.4302
-> >
-> > THP-Always      Mean: 0.4061            Mean: 0.4288		% Change
-> >                 95% CI: 0.4051-0.4071   95% CI: 0.4281-0.4295	5.59
-> >
-> > Inference:
-> > 5-level page table shows increase in page-fault latency but it does
-> > not significantly impact other benchmarks.
+On Wed, Jul 31, 2024 at 02:36:47PM +0300, Kirill A. Shutemov wrote:
+> The risk with your proposal is that 5-level paging will not get any
+> testing and rot over time.
 > 
-> 5% regression on lmbench is a NONO.
+> I would like to keep it on, if possible.
 
-Yeah, that's a biggy.
-
-In our testing (on Intel HW) we didn't see any significant difference
-between 4- and 5-level paging. But we were focused on TLB fill latency.
-In both bare metal and in VMs. Maybe something wrong in the fault path?
-
-It requires a closer look.
-
-Shivank, could you share how you run lat_pagefault? What file size? How
-parallel you run it?...
-
-It would also be nice to get perf traces. Maybe it is purely SW issue.
-
-> 5-level page tables add a cost in every hardware page table walk. That's
-> a matter of fact and there is absolutely no reason to inflict this cost
-> on everyone.
->
-> The solution to this to make the 5-level mechanics smarter by evaluating
-> whether the machine has enough memory to require 5-level tables and
-> select the depth at boot time.
-
-Let's understand the reason first.
-
-The risk with your proposal is that 5-level paging will not get any
-testing and rot over time.
-
-I would like to keep it on, if possible.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Well, if it is boot time, you just tell your CI to force enable 5level
+and you're done, right? Then the rest of us use 4 and we all good.
 
