@@ -1,113 +1,84 @@
-Return-Path: <linux-efi+bounces-1536-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1537-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0683C94A50F
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Aug 2024 12:06:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C92B694BF21
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Aug 2024 16:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 371181C20FC7
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Aug 2024 10:06:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70D812889E8
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Aug 2024 14:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50ED71D3650;
-	Wed,  7 Aug 2024 10:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PFVF49K4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0963D18E052;
+	Thu,  8 Aug 2024 14:08:09 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2E71D363B
-	for <linux-efi@vger.kernel.org>; Wed,  7 Aug 2024 10:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47E718C90C;
+	Thu,  8 Aug 2024 14:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723025188; cv=none; b=n0r2fLKS7mEz/SNur+S0a6BgbgYTXPFU4xmRdElIJHkWfkwzz33VAWrzD6GA84105aodu+xna/37IoliF0x45BuWJNFSEII/EGfxHcuvqrJUmrO0M9wBCr526S7sWAeHV1vXXVXWeSPFYFFevOzFe6geYUVWzddd0PE/oib2aas=
+	t=1723126088; cv=none; b=MWHIRKLSXgM1fD0BtCx5kCanTsygSR2ko4p5dfT2TAycOTH3ooPXP4m769+aI2k2Zx18SIHVDsCiQVyD6iMezYdyfklufmqbph4IT+tofHSsbjOsqjxIhsDfDrnsCsOp1x+rcC937Nn3ti5ACot5VgqaCl6nGZ5k4cADGqpB+kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723025188; c=relaxed/simple;
-	bh=kJ5T6A32kDeNCl0GvaRC+V4muNe1lMPSaqgtsY31RDg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qv/vp+6r+YIwgJjzuyr6737jBo2DNJ7KgDGa1BdSYwzvKQa4tWhmHhNYR/k5Owd92XEy9VlXX5nANWHuw5XZ3H2g0gNrP3QWUqrh9P5Z/9WJrdMNFTwcXST6HW1jZIpi6R3PXffw8+sHeibDxI6fVCnQ1+d4iwnguYnbvGHgquc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PFVF49K4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8815C4AF12
-	for <linux-efi@vger.kernel.org>; Wed,  7 Aug 2024 10:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723025187;
-	bh=kJ5T6A32kDeNCl0GvaRC+V4muNe1lMPSaqgtsY31RDg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PFVF49K4vZDP6W7mhcjSUh/4S2l67jdsek7aPDIiwxdSwxiQ84z5WOJcddomPDXKC
-	 xgMqAfUlenBc8LTbNavmPiLYYoumnhWuEseOIMZplD3DXL0lNSM7CRO9tl137iCUYM
-	 IKZpdYf+MmkPlTMDEfrfKo+YmbVj1ezLnyTOu8yMKkRy1oZBI7med2fzm0+Au21vjb
-	 J1LWyvaE/liODVqM8V0ulEUTsf/oFgdiuSa+v4FLKc3xirkz+f8OocATcwA+BhIpBe
-	 8gPoEuD6PO4LTti1a2WMYXjzu5Mb8A8kmluuy+Bv2aGaScPUGw6RrbEgZwnuIq0w86
-	 OeryhvGw1f32g==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5a2a90243c9so1528557a12.0
-        for <linux-efi@vger.kernel.org>; Wed, 07 Aug 2024 03:06:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW3pzK6f0OupDWwsxT7g9Wd3d2sBZNMmoiQBh8EFQba2TAs1myNpEtR8Y0qdNidf71aDqDHYCzXYxS61VEZ5UPRCWXu6bQr+E/8
-X-Gm-Message-State: AOJu0YyyrRVh7X7QUhd+5k0dJKMT/EOasPJDoO1G2MZVjgxWCk5rqfsd
-	4z8snacWdC2xxdy6KiVAw3yM4Zj4cr8bvtFqh4QfTUAgCVGROeGGRVKwEdrXfib7kzL+0eOBvJP
-	QVIFkxMDVQmBp/Ffc3WNCLqQ156k=
-X-Google-Smtp-Source: AGHT+IFDjCYDdrt0fm2Iy8PHjml6fyYttKXQez8vg+/KWK4r/1FbA8ALNFpyI+7n/fLFRt3x728tp3DzDjIzebiy9XY=
-X-Received: by 2002:a17:906:4788:b0:a7a:a30b:7b91 with SMTP id
- a640c23a62f3a-a7dc51be557mr1313655066b.64.1723025186480; Wed, 07 Aug 2024
- 03:06:26 -0700 (PDT)
+	s=arc-20240116; t=1723126088; c=relaxed/simple;
+	bh=jUWTMyOw24El92k4qsB0MCjub1KUx+N7wb4tKB9ZL6U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eCIiUUq0EubN5moQSyUgIAOSCOT/t9Sygf7iRNYC65bn1jM9kHMjWjwgnSTbG0qenD4u4DBsgCpgigxrtPyASHqpR4sxqbz3laHqkf5C7sGBbNIpcksfHHh3t8JiLjiiIpCyEb3udN/7xaseafWpB9ZQXtMVuw47SvPdxBQz89E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Wfpjq4V4VzDqc3;
+	Thu,  8 Aug 2024 22:06:07 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0DD2D140796;
+	Thu,  8 Aug 2024 22:08:02 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 8 Aug
+ 2024 22:08:01 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <ardb@kernel.org>
+CC: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH -next] efi: Remove unused declaration efi_initialize_iomem_resources()
+Date: Thu, 8 Aug 2024 22:05:54 +0800
+Message-ID: <20240808140554.2498398-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <66b309e9.050a0220.a8344.6d9eSMTPIN_ADDED_BROKEN@mx.google.com>
-In-Reply-To: <66b309e9.050a0220.a8344.6d9eSMTPIN_ADDED_BROKEN@mx.google.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 7 Aug 2024 18:06:13 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5g1azDU+Oscr0CT3CxgN8f_VOsihMCERLvgjLci+CTgQ@mail.gmail.com>
-Message-ID: <CAAhV-H5g1azDU+Oscr0CT3CxgN8f_VOsihMCERLvgjLci+CTgQ@mail.gmail.com>
-Subject: Re: [PATCH] loongarch/efi: enable general efi poweroff
-To: shankerwangmiao@gmail.com
-Cc: loongarch@lists.linux.dev, linux-efi@vger.kernel.org, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, WANG Xuerui <kernel@xen0n.name>, 
-	Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Applied with small modifications, thanks.
+Since commit cf8e8658100d ("arch: Remove Itanium (IA-64) architecture"),
+this is not used anymore.
 
-Huacai
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ include/linux/efi.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-On Wed, Aug 7, 2024 at 1:45=E2=80=AFPM Miao Wang via B4 Relay
-<devnull+shankerwangmiao.gmail.com@kernel.org> wrote:
->
-> From: Miao Wang <shankerwangmiao@gmail.com>
->
-> efi_shutdown_init can register a general sys_off handler,
-> efi_power_off. Enable this by providing efi_poweroff_required,
-> like arm and x86, since this is also supported on loongarch.
->
-> Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
-> ---
->  arch/loongarch/kernel/efi.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
-> index 000825406c1f..df57c2674758 100644
-> --- a/arch/loongarch/kernel/efi.c
-> +++ b/arch/loongarch/kernel/efi.c
-> @@ -73,6 +73,11 @@ struct screen_info screen_info __section(".data");
->  EXPORT_SYMBOL_GPL(screen_info);
->  #endif
->
-> +bool efi_poweroff_required(void)
-> +{
-> +       return efi_enabled(EFI_RUNTIME_SERVICES);
-> +}
-> +
->  static void __init init_screen_info(void)
->  {
->         struct screen_info *si;
-> --
-> 2.43.0
->
->
->
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 6bf3c4fe8511..e28d88066033 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -764,8 +764,6 @@ extern int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md);
+ extern int __efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md);
+ extern void efi_mem_reserve(phys_addr_t addr, u64 size);
+ extern int efi_mem_reserve_persistent(phys_addr_t addr, u64 size);
+-extern void efi_initialize_iomem_resources(struct resource *code_resource,
+-		struct resource *data_resource, struct resource *bss_resource);
+ extern u64 efi_get_fdt_params(struct efi_memory_map_data *data);
+ extern struct kobject *efi_kobj;
+ 
+-- 
+2.34.1
+
 
