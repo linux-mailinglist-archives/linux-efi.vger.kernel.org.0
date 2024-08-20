@@ -1,165 +1,130 @@
-Return-Path: <linux-efi+bounces-1561-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1562-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794A8957AA2
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Aug 2024 02:58:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8A5958B33
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Aug 2024 17:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19C08B22EF3
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Aug 2024 00:58:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2A44B23029
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Aug 2024 15:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA8CE541;
-	Tue, 20 Aug 2024 00:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126101A00F5;
+	Tue, 20 Aug 2024 15:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ax39Rzc2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YYij2JgH"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD262BA4D
-	for <linux-efi@vger.kernel.org>; Tue, 20 Aug 2024 00:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11A219FA93;
+	Tue, 20 Aug 2024 15:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724115500; cv=none; b=Mx2utXtT1myMyJMKipuNVIKBumrgtKnoABepiWW8UrzMA7GiRhzd8vibz6WhV/26TERtaIvimujmV+LbtYkdnzMBxVb9u4KGPYvfSOzuchucL0MLd6O8nM41fuF6nzodA/w0M1sJBMwYxpE0CabSnAihh/b1ei3LewawzCralVI=
+	t=1724167596; cv=none; b=A8NfyzQcQ89CCTmvyhUTjGOzV48HBHvezjHkcxZSQPp+GtS7W9ExjX27lmzTsBe4hSLwHreB9ORW3+bkXPUTAV6GydXLwCRGsm6b4PwNmsz62aq3z4nh7esgTkGMmKVPfiIXs0l9g4tG6QnImQpUFhXnYdJjijAP1Mt70mpGxH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724115500; c=relaxed/simple;
-	bh=0VoB3F+f1M56dPnDJTyh/ZvXxKagqoILbksn7eR9ay8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Eldkq1mWTB/ZuOcj5TaSsY3Us9EstAiMA19UQ3at4dQTJKzVB7Fu6dMxsoaoTQKx9McAaWJcRygggWI4IEgoIxeq9idcxa8QFMyJCe7IV3olY+TKOAdzxR2r6KBi2GCFC4x/K2J5L7u1fKoAzvNP3dFd689VTqng1V+Z0pbcVWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ax39Rzc2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724115497;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Op+U6UEfg5C/ACRy0vig7Q1iaemd/rbZGUWcAuZTPyw=;
-	b=Ax39Rzc2dpgZ5vpZA+qwAUTy+M0g0cB+mHS/c6pCELrsQ1lnlAsKJU+8CmkPMux5WUiSgo
-	phzZrKDJvAPo3bZKq3uaQRq5x0ZYgcbtnKLmuEMD5WJ7sc/eIZWI0ZJIUNTVbDwOqPyjRr
-	IrJVOto2gAXZ/WX+8B3G1GZdY54P4sk=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-385-UyKQDEdGPlKfHPYatIrqHQ-1; Mon, 19 Aug 2024 20:58:13 -0400
-X-MC-Unique: UyKQDEdGPlKfHPYatIrqHQ-1
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6bf88568489so31842586d6.0
-        for <linux-efi@vger.kernel.org>; Mon, 19 Aug 2024 17:58:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724115493; x=1724720293;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Op+U6UEfg5C/ACRy0vig7Q1iaemd/rbZGUWcAuZTPyw=;
-        b=mpjOg06I9ujAZW5lFLqmsJjR4x0fS4opoJJ3VwqK0xvgHkiaFTD3jXNea2PURYAvG3
-         gn5b4GfzNeGgvsNKKTFXdNApdq8RSwcl98l9K2ntB0xjoa88mdMn0adi6Pa/l41h4/r9
-         QZNp3NONxc+RUzQgFjJ1ydJcoWqCA5jkDsb7nzol65KiHwtvErxgFZO5WvB9UWCKFCGy
-         w+pyMPJYsLwgrrfOag7AjcCZbyVdAbGk/lVmXix0gqofCJy6dVi7xibDSfBHnrmf11X2
-         7CZwM8W9b+OKBoiolOqTF7V5XWBz/7f4XisosbFKW5sk544l7bQLk/27ARRhclX733kP
-         zYXw==
-X-Gm-Message-State: AOJu0YzW2J+Bf0t6iQQIxNqi8ES+Cl7SNXVLwQDWeHrFV3Inu/PQPFxe
-	tCIIrbrWjWGDQqXjWlqD3dH8atoxylJOubV0G3tM6SiE45k7DJWUS08P2ew8p1SWsqrqOOZ330z
-	wdrG91fY+lLG5yIviBrSM6v2uy/5K73iINXRVn5RfizTCpm1xfN6hk4rZyKp23bOpa8y0nFD753
-	w8wyIBRSjC8892r+YRXeXIXVLpMrIXN0Kc
-X-Received: by 2002:a05:6214:3d98:b0:6b7:980b:e0ac with SMTP id 6a1803df08f44-6bf7ce06a55mr152730916d6.32.1724115493013;
-        Mon, 19 Aug 2024 17:58:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0xEAdTPZqQ0R37bhm+bI8tZ08r0K84Li3rZ/xKsFzl+U1c+/gTnEWiG6hFEZE3WA3cmHWfdPmI8H8H/7457I=
-X-Received: by 2002:a05:6214:3d98:b0:6b7:980b:e0ac with SMTP id
- 6a1803df08f44-6bf7ce06a55mr152730866d6.32.1724115492656; Mon, 19 Aug 2024
- 17:58:12 -0700 (PDT)
+	s=arc-20240116; t=1724167596; c=relaxed/simple;
+	bh=cul7AYUW/oUYJetixYQFOVkrNIZzj7nX7ZdNR4EJkYY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=JDmV8VyKaR2F4n0MRkPpM2lOqxbzQ4tMnzAy7z9ELjjixds9k2wvXvhG4MjgnP8LL7POX0FnxKZZ52f5JaudhfyFJ9RsqmMUu1QCEnBbDn/kVo5PN0nKmW+zcvw3g0y3TSEhjKcTxABmwM6IUPLYMsTQqQKBIB5krFwX8gnT1H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YYij2JgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51E3C4AF14;
+	Tue, 20 Aug 2024 15:26:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724167595;
+	bh=cul7AYUW/oUYJetixYQFOVkrNIZzj7nX7ZdNR4EJkYY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YYij2JgHvU1AVhaIiSFSmqh3C4f+ic8eJASZifn6Evsee/JMB21kiEgUtpOIBAzfw
+	 WhPHhWbdxcAJ3GX75aIWxGKoIE+TbIbkElRQxkSiCM1gSh7PD6MUNxSUUoVKCpdCo5
+	 Br49eRY1Fh7j8jsrdqPjohHKrKIQUkf6RV1BkZp3Zhod/8qnYQgViR4l08DXR6aSmW
+	 DulskVJSqnfDMUzs1+E910tAcZopB11i46RMlqd/GfDzeV8Bwbz6KJUBtopdAKLoXo
+	 UJG9b6LftIfnK02/OMGuvfBF4uYp8xc4JKrLL2vskwO7qu1TbpCs1VTOoV0Mv/xjHN
+	 vN7mHGvix1P4A==
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240819145417.23367-1-piliu@redhat.com> <20240819145417.23367-2-piliu@redhat.com>
- <D3K31JJ5PZQG.2XW6Y6OR1CTLG@kernel.org>
-In-Reply-To: <D3K31JJ5PZQG.2XW6Y6OR1CTLG@kernel.org>
-From: Pingfan Liu <piliu@redhat.com>
-Date: Tue, 20 Aug 2024 08:58:01 +0800
-Message-ID: <CAF+s44TK1RZ6m=b3RX_KTsptRQ06XZO_knn3=39eWXLv64AxoA@mail.gmail.com>
-Subject: Re: [RFCv2 1/9] efi/libstub: Ask efi_random_alloc() to skip unusable memory
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
-	Jan Hendrik Farr <kernel@jfarr.cc>, Philipp Rudo <prudo@redhat.com>, 
-	Lennart Poettering <mzxreary@0pointer.de>, Eric Biederman <ebiederm@xmission.com>, 
-	Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Aug 2024 18:26:31 +0300
+Message-Id: <D3KUEGW4Q63K.NEFOY5C6ZG2O@kernel.org>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Matthew Garrett" <mjg59@srcf.ucam.org>
+Cc: "Andrew Cooper" <andrew.cooper3@citrix.com>, "Thomas Gleixner"
+ <tglx@linutronix.de>, "Daniel P. Smith" <dpsmith@apertussolutions.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, "Eric Biggers"
+ <ebiggers@kernel.org>, "Ross Philipson" <ross.philipson@oracle.com>,
+ <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+ <linux-integrity@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <kexec@lists.infradead.org>,
+ <linux-efi@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
+ <mingo@redhat.com>, <bp@alien8.de>, <hpa@zytor.com>,
+ <dave.hansen@linux.intel.com>, <ardb@kernel.org>,
+ <James.Bottomley@hansenpartnership.com>, <peterhuewe@gmx.de>,
+ <jgg@ziepe.ca>, <luto@amacapital.net>, <nivedita@alum.mit.edu>,
+ <herbert@gondor.apana.org.au>, <davem@davemloft.net>, <corbet@lwn.net>,
+ <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>,
+ <kanth.ghatraju@oracle.com>, <trenchboot-devel@googlegroups.com>
+Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
+ early measurements
+X-Mailer: aerc 0.17.0
+References: <20240531010331.134441-1-ross.philipson@oracle.com>
+ <20240531010331.134441-7-ross.philipson@oracle.com>
+ <20240531021656.GA1502@sol.localdomain>
+ <874jaegk8i.fsf@email.froward.int.ebiederm.org>
+ <5b1ce8d3-516d-4dfd-a976-38e5cee1ef4e@apertussolutions.com>
+ <87ttflli09.ffs@tglx> <550d15cd-5c48-4c20-92c2-f09a7e30adc9@citrix.com>
+ <D3HAP4O4OVS3.2LOSH5HMQ34OZ@kernel.org> <Zr+dTMYZNY1b9cRV@srcf.ucam.org>
+ <D3K35VBCWZSW.2WCXJMW1HGGD5@kernel.org> <ZsONwsWs3zCln70O@srcf.ucam.org>
+In-Reply-To: <ZsONwsWs3zCln70O@srcf.ucam.org>
 
-On Tue, Aug 20, 2024 at 2:00=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.org>=
- wrote:
+On Mon Aug 19, 2024 at 9:24 PM EEST, Matthew Garrett wrote:
+> On Mon, Aug 19, 2024 at 09:05:47PM +0300, Jarkko Sakkinen wrote:
+> > On Fri Aug 16, 2024 at 9:41 PM EEST, Matthew Garrett wrote:
+> > > On Fri, Aug 16, 2024 at 02:22:04PM +0300, Jarkko Sakkinen wrote:
+> > >
+> > > > For (any) non-legacy features we can choose, which choices we choos=
+e to
+> > > > support, and which we do not. This is not an oppositive view just s=
+aying
+> > > > how it is, and platforms set of choices is not a selling argument.
+> > >
+> > > NIST still permits the use of SHA-1 until 2030, and the most signific=
+ant=20
+> > > demonstrated weaknesses in it don't seem applicable to the use case=
+=20
+> > > here. We certainly shouldn't encourage any new uses of it, and anyone=
+=20
+> > > who's able to use SHA-2 should be doing that instead, but it feels li=
+ke=20
+> > > people are arguing about not supporting hardware that exists in the r=
+eal=20
+> > > world for vibes reasons rather than it being a realistically attackab=
+le=20
+> > > weakness (and if we really *are* that concerned about SHA-1, why are =
+we=20
+> > > still supporting TPM 1.2 at all?)
+> >=20
+> > We are life-supporting TPM 1.2 as long as necessary but neither the
+> > support is extended nor new features will gain TPM 1.2 support. So
+> > that is at least my policy for that feature.
 >
-> On Mon Aug 19, 2024 at 5:53 PM EEST, Pingfan Liu wrote:
-> > efi_random_alloc() demands EFI_ALLOCATE_ADDRESS when allocate_pages(),
-> > but the current implement can not ensure the selected target locates
-> > inside free area, that is to exclude EFI_BOOT_SERVICES_*,
-> > EFI_RUNTIME_SERVICES_* etc.
-> >
-> > Fix the issue by checking md->type.
->
-> If it is a fix shouldn't this have a fixes tag?
->
-Yes, I will supplement the following in the next version
-Fixes: 2ddbfc81eac8 ("efi: stub: add implementation of efi_random_alloc()")
+> But the fact that we support it and provide no warning labels is a=20
+> pretty clear indication that we're not actively trying to prevent people=
+=20
+> from using SHA-1 in the general case. Why is this a different case?=20
+> Failing to support it actually opens an entire separate set of footgun=20
+> opportunities in terms of the SHA-1 banks now being out of sync with the=
+=20
+> SHA-2 ones, so either way we're leaving people open to making poor=20
+> choices.
 
-> >
-> > Signed-off-by: Pingfan Liu <piliu@redhat.com>
-> > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > To: linux-efi@vger.kernel.org
-> > ---
-> >  drivers/firmware/efi/libstub/randomalloc.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmw=
-are/efi/libstub/randomalloc.c
-> > index c41e7b2091cdd..7304e767688f2 100644
-> > --- a/drivers/firmware/efi/libstub/randomalloc.c
-> > +++ b/drivers/firmware/efi/libstub/randomalloc.c
-> > @@ -79,6 +79,8 @@ efi_status_t efi_random_alloc(unsigned long size,
-> >               efi_memory_desc_t *md =3D (void *)map->map + map_offset;
-> >               unsigned long slots;
-> >
->
-> I'd add this inline comment:
->
-> /* Skip "unconventional" memory: */
->
+This is a fair and enclosing argument. I get where you are coming from
+now. Please as material for the commit message.
 
-Adopt.
-
-Thanks for your kind review.
-
-Best Regards,
-
-Pingfan
-
-> > +             if (!(md->type & (EFI_CONVENTIONAL_MEMORY || EFI_PERSISTE=
-NT_MEMORY)))
-> > +                     continue;
-> >               slots =3D get_entry_num_slots(md, size, ilog2(align), all=
-oc_min,
-> >                                           alloc_max);
-> >               MD_NUM_SLOTS(md) =3D slots;
-> > @@ -111,6 +113,9 @@ efi_status_t efi_random_alloc(unsigned long size,
-> >               efi_physical_addr_t target;
-> >               unsigned long pages;
-> >
-> > +             if (!(md->type & (EFI_CONVENTIONAL_MEMORY || EFI_PERSISTE=
-NT_MEMORY)))
-> > +                     continue;
-> > +
-> >               if (total_mirrored_slots > 0 &&
-> >                   !(md->attribute & EFI_MEMORY_MORE_RELIABLE))
-> >                       continue;
->
-> BR, Jarkko
->
+BR, Jarkko
 
 
