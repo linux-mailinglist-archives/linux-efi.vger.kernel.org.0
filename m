@@ -1,185 +1,182 @@
-Return-Path: <linux-efi+bounces-1574-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1575-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916F395B873
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 16:32:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2B895BE3C
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 20:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16106B2A3E5
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 14:29:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2906C1F24CBA
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 18:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0CB1CB333;
-	Thu, 22 Aug 2024 14:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98E71CEAC6;
+	Thu, 22 Aug 2024 18:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ieUXMPKu"
+	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="LWndbxnZ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from sender3-of-o57.zoho.com (sender3-of-o57.zoho.com [136.143.184.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC251CB135
-	for <linux-efi@vger.kernel.org>; Thu, 22 Aug 2024 14:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724336987; cv=none; b=Esyq1kjfXFsP80zuRYy9bYOnjXzCsAjS9Z7DQGGcZyJe7SMF9TRYpcrMlhmUSR1lGfkd2n6bqOka2MHTQpLOj2aWDlixycfxer+sZdWkDMW9fVGnJuKweUkvwq//U5fBwjFPRYHOOxXq9cz+VSB2jhtRaDBwkyfHtGsR1TwlCuM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724336987; c=relaxed/simple;
-	bh=4hgjKSXqmD4wuXTEVqitwJr2+8LzfnOsifWBPu0BPjg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cNkgxEOmNA2g0POWEyBuO8uhoJWCkavbfwoukozIF6PyHb3vQaAa0CHeMyF7HRB+Hzg3O9RWuswIGeGioEi1vTt7dCE4+fEFnZqNwCkux+7ukhdGTas5n0/AbVLn9I7G9O2HJtFncQvvW/5ORtzXoM9MDd9nNVQHMjEtpZNfF64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ieUXMPKu; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724336984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m/6AxOb6WsbLr7G2jGoOD1ehnx93Ji/pJCnzGUX2sbo=;
-	b=ieUXMPKudHQJwcGfxF4bEEoq0HLjaseBjTYWF84/a0S7a0Gvxma/JUZkkPhHpqnHn96WhP
-	1IXr3J6Qq18aO2Z6iONCskNPT4S5/kJmqQyVEd4FzC6HZRADVXthtlhgx4XJ8I/vo7gvV6
-	B9GN+UIO9x7y21SZjNSHAGFNMhuYeC8=
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
- [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-ftONQUUdNdWtFp1vOfs18A-1; Thu, 22 Aug 2024 10:29:43 -0400
-X-MC-Unique: ftONQUUdNdWtFp1vOfs18A-1
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-5dc9ed1d3baso981442eaf.0
-        for <linux-efi@vger.kernel.org>; Thu, 22 Aug 2024 07:29:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724336983; x=1724941783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m/6AxOb6WsbLr7G2jGoOD1ehnx93Ji/pJCnzGUX2sbo=;
-        b=iu2J1A4TZQBDXJSluzrf/4Z5Ugi8m8Eq+kH7Wjh12g1LMbjfnDjlw4+D3OlO0gYMh3
-         XeiwB4yTTUIR6VBXSCtQiE02uazX5ffIY/IcGC/cuts+a0ULHlbrwXVj9cN6605qVVHN
-         +sqUpzDAPX/BeMc+p7GQ6clcmoAqkZlS/C/1sQFPmge/27XvKhuug/pW+w1YYDR3SEEk
-         +FuCvxgnGJaoAai8HNLxqWEYuhGkZZdEx1+GVYKmxV+bXd9cH1D74YfKVe3LIvOfTcdP
-         rRPAPbCfYQvEi5U/9cHuYq2yr/CIH2lwBLFkQy9QEOmFImrS1Tbq7AeXDTsek1z7C1iO
-         /GoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ2V8Lx9yxPUtkolrNRjikSQiRQoSD90jtFrZw4y4aPIL66vvOGsmGUEOuYB2E9Ha1VIxR2GMCbwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMrHKzT2yKt/dhpE9CidHF2Lu9COsFXxqdmzXPUB/WlAyRrsP1
-	Eg13pf8DxE7eE5Wp7V/sPGBTBJZol6uwEJHZbWh6NDe3yZ2hEL6nP1cOjsWN9OJLaEdD8Dbn17J
-	k8/TTRSoDXT5osSMiPs9VpNPFzH7JCIxhj+v3nEFqh524uH8yCdLINNMJXulOVHC8xM/0qQXk/Z
-	EfgdBFGJ9ITZlFNa1X813qbOvRQ/glJ2Be
-X-Received: by 2002:a05:6358:980d:b0:1b5:a037:f238 with SMTP id e5c5f4694b2df-1b5a037f311mr612518155d.0.1724336982765;
-        Thu, 22 Aug 2024 07:29:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+brQfGyYU0BpsvYX3In5ntxKlxV2usDwSemakngx24acx/det+Wm07KEOH4KNbGPDEw/r7dG0Fhsa3BZCjPg=
-X-Received: by 2002:a05:6358:980d:b0:1b5:a037:f238 with SMTP id
- e5c5f4694b2df-1b5a037f311mr612515255d.0.1724336982430; Thu, 22 Aug 2024
- 07:29:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86DFEC5;
+	Thu, 22 Aug 2024 18:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724351476; cv=pass; b=DjtlAO4jxEDjb5OCzhDa6aC9dqZcDzuWs2vbKD5M2zonlfxDgH7CBSrZ2B2ZfvzaZoai1+MVtCYKp3IGF3FGzlQZ/mxdx3eF5IpARPPC+7sKMSp3nYGByWTQqVC6cNJ5Yt2GqgY0gV5WH7F1Ex3LcFXcWBO50sokM5ViOFEfpfE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724351476; c=relaxed/simple;
+	bh=agHBdZkQ8BulJoORPycTlSOnOyfy9kfTwiKBhxMAjag=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VkQwmhFYO7roLIV4f+GbFbuS4asXoazYfaCyLI0+rIiytKmygp1j8G6FNMayAE5LNaFeZA5YwleJvGdIt7b2409PvLPC7VzX/bJzh62zUo6KxPuxgfQwg6SqljzeEinSvV5q2cbyKEbJH1WzL5ydL4b0TY9iZpQd1giLUDHxsHw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=LWndbxnZ; arc=pass smtp.client-ip=136.143.184.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apertussolutions.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724351396; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ensxJanajnfNH4lrohozTfRp/kJ8ndAR/I5SeOCvPtvZpwA/RS3UKS9IzW5MnGlu3KwD9JZgR/559mn/GKEg7+II30GBHjPG+RHQQXv6qYJ8VO6d6q5godbIQcqq8y5Wsi0Giv6acyQMSSuozV5LPKeS57s5x4o9g8w+sokW13c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724351396; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=MyQlkXBuBh5D5+ORO/Ajt6ntHefewg/FMRXibyLJvKQ=; 
+	b=fPGGbQa6PDJETfzD86dOnyy2nf1dhiCXht9Z7kAfpQDeTDuKfPlCsPgzwzvQy4C7qDUHI6mVeTa8+DiKlK4twHkkFW7Rmr4iNCsDZl/Ko9tv8Bi0jkphPJpIC2WLsxxLAEHGJm+ZQJ0UDZdtX2DQt0UJL9HnfiEXQoDXnto9fHQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=apertussolutions.com;
+	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
+	dmarc=pass header.from=<dpsmith@apertussolutions.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724351396;
+	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=MyQlkXBuBh5D5+ORO/Ajt6ntHefewg/FMRXibyLJvKQ=;
+	b=LWndbxnZqsXgRW0zxX0skSHrs/RICB+4zvHapAfsJIHhBjt1SzpRUZ8bMV2l5ynf
+	xRPob/zjMHRjYX8ykLglY1hM59kdZCqo6e2s59dYvXpsTBX6lSomKRhRHWTKfRE2XAz
+	FMGosfle+46Swp76HbPabYQUH+ZMH+FO0Ir/i62I=
+Received: by mx.zohomail.com with SMTPS id 1724351393878947.9797156192928;
+	Thu, 22 Aug 2024 11:29:53 -0700 (PDT)
+Message-ID: <281c3bb3-13f6-47a2-9a9a-134e397bf686@apertussolutions.com>
+Date: Thu, 22 Aug 2024 14:29:48 -0400
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819145417.23367-1-piliu@redhat.com> <ZsX5QNie3pzocSfT@gardel-login>
- <CAF+s44S2Ph1_nFcZYy3j0Jr4yuHayb5zdNu1YXg8ce_Lf3TOgQ@mail.gmail.com> <Zsb1isJ2cYRp2jpj@gardel-login>
-In-Reply-To: <Zsb1isJ2cYRp2jpj@gardel-login>
-From: Pingfan Liu <piliu@redhat.com>
-Date: Thu, 22 Aug 2024 22:29:31 +0800
-Message-ID: <CAF+s44SQtRxZz=2eSJ-xP44ORLqvq0doEQ8qrw+1RaKFhoje8w@mail.gmail.com>
-Subject: Re: [RFCv2 0/9] UEFI emulator for kexec
-To: Lennart Poettering <mzxreary@0pointer.de>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Jan Hendrik Farr <kernel@jfarr.cc>, Philipp Rudo <prudo@redhat.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Eric Biederman <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>, 
-	Dave Young <dyoung@redhat.com>, Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, kexec@lists.infradead.org, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
+ early measurements
+To: Thomas Gleixner <tglx@linutronix.de>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Eric Biggers <ebiggers@kernel.org>
+Cc: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+ linux-efi@vger.kernel.org, iommu@lists.linux-foundation.org,
+ mingo@redhat.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
+ ardb@kernel.org, mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
+ peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
+ nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net,
+ corbet@lwn.net, dwmw2@infradead.org, baolu.lu@linux.intel.com,
+ kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
+ trenchboot-devel@googlegroups.com
+References: <20240531010331.134441-1-ross.philipson@oracle.com>
+ <20240531010331.134441-7-ross.philipson@oracle.com>
+ <20240531021656.GA1502@sol.localdomain>
+ <874jaegk8i.fsf@email.froward.int.ebiederm.org>
+ <5b1ce8d3-516d-4dfd-a976-38e5cee1ef4e@apertussolutions.com>
+ <87ttflli09.ffs@tglx>
+Content-Language: en-US
+From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
+In-Reply-To: <87ttflli09.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On Thu, Aug 22, 2024 at 4:23=E2=80=AFPM Lennart Poettering <mzxreary@0point=
-er.de> wrote:
->
-> On Do, 22.08.24 13:42, Pingfan Liu (piliu@redhat.com) wrote:
->
->  > On Wed, Aug 21, 2024 at 10:27=E2=80=AFPM Lennart Poettering
-> > <mzxreary@0pointer.de> wrote:
-> > >
-> > > On Mo, 19.08.24 22:53, Pingfan Liu (piliu@redhat.com) wrote:
-> > >
-> > > > *** Background ***
-> > > >
-> > > > As more PE format kernel images are introduced, it post challenge t=
-o kexec to
-> > > > cope with the new format.
-> > > >
-> > > > In my attempt to add support for arm64 zboot image in the kernel [1=
-],
-> > > > Ard suggested using an emulator to tackle this issue.  Last year, w=
-hen
-> > > > Jan tried to introduce UKI support in the kernel [2], Ard mentioned=
- the
-> > > > emulator approach again [3]
-> > >
-> > > Hmm, systemd's systemd-stub code tries to load certain "side-car"
-> > > files placed next to the UKI, via the UEFI file system APIs. What's
-> > > your intention with the UEFI emulator regarding that? The sidecars ar=
-e
-> > > somewhat important, because that's how we parameterize otherwise
-> > > strictly sealed, immutable UKIs.
-> > >
-> > IIUC, you are referring to UKI addons.
->
-> Yeah, UKI addons, as well as credential files, and sysext/confext
-> DDIs.
->
-> The addons are the most interesting btw, because we load them into
-> memory as PE files, and ask the UEFI to authenticate them.
->
-> > > Hence, what's the story there? implement some form of fs driver (for
-> > > what fs precisely?) in the emulator too?
-> > >
-> > As for addon, that is a missing part in this series. I have overlooked
-> > this issue. Originally, I thought that there was no need to implement
-> > a disk driver and vfat file system, just preload them into memory, and
-> > finally present them through the uefi API. I will take a closer look
-> > at it and chew on it.
->
-> It doesn't have to be VFAT btw. It just has to be something. For
-> example, it might suffice to take these files, pack them up as cpio or
-> so and pass them along with the UEFI execution. The UEFI emulator
-> would then have to expose them as a file system then.
->
-> We are not talking of a bazillion of files here, it's mostly a
-> smallish number of sidecar files I'd expect.
->
-> > > And regarding tpm? tpms require drivers and i guess at the moment uef=
-i
-> > > emulator would run those aren't available anymore? but we really
-> > > should do a separator measurement then. (also there needs to be some
-> > > way to pass over measurement log of that measurement?)
-> >
-> > It is a pity that it is a common issue persistent with kexec-reboot
-> > kernel nowadays.
-> > I am not familiar with TPM and have no clear idea for the time being.
-> > (emulating Platform Configuration Registers ?).  But since this
-> > emulator is held inside a linux kernel image, and the UKI's signature
-> > is checked during kexec_file_load. All of them are safe from
-> > modification, this security is not an urgent issue.
->
-> Hmm, I'd really think about this with some priority. The measurement
-> stuff should not be an afterthought, it typically has major
-> implications on how you design your transitions, because measurements
-> of some component always need to happen *before* you pass control to
-> it, otherwise they are pointless.
->
+On 8/15/24 15:10, Thomas Gleixner wrote:
+> On Thu, Aug 15 2024 at 13:38, Daniel P. Smith wrote:
+>> On 5/31/24 09:54, Eric W. Biederman wrote:
+>>> Eric Biggers <ebiggers@kernel.org> writes:
+>>>> That paragraph is also phrased as a hypothetical, "Even if we'd prefer to use
+>>>> SHA-256-only".  That implies that you do not, in fact, prefer SHA-256 only.  Is
+>>>> that the case?  Sure, maybe there are situations where you *have* to use SHA-1,
+>>>> but why would you not at least *prefer* SHA-256?
+>>>
+>>> Yes.  Please prefer to use SHA-256.
+>>>
+>>> Have you considered implementing I think it is SHA1-DC (as git has) that
+>>> is compatible with SHA1 but blocks the known class of attacks where
+>>> sha1 is actively broken at this point?
+>>
+>> We are using the kernel's implementation, addressing what the kernel
+>> provides is beyond our efforts. Perhaps someone who is interested in
+>> improving the kernel's SHA1 could submit a patch implementing/replacing
+>> it with SHA1-DC, as I am sure the maintainers would welcome the help.
+> 
+> Well, someone who is interested to get his "secure" code merged should
+> have a vested interested to have a non-broken SHA1 implementation if
+> there is a sensible requirement to use SHA1 in that new "secure" code,
+> no?
+> 
+> Just for the record. The related maintainers can rightfully decide to
+> reject known broken "secure" code on a purely technical argument.
+> 
+> Thanks,
+> 
+>          tglx
+> 
 
-At present, my emulator returns false to is_efi_secure_boot(), so
-systemd-stub does not care about the measurement, and moves on.
+There is one simple question, does allowing the Secure Launch code to 
+record SHA1 measurements make the system insecure, and the answer is 
+absolutely not.
 
-Could you enlighten me about how systemd utilizes the measurement? I
-grepped 'TPM2_PCR_KERNEL_CONFIG', and saw the systemd-stub asks to
-extend PCR. But where is the value checked? I guess the systemd will
-hang if the check fails.
+The role of the Secure Launch code base in the context of the larger 
+launch process is to function as observer. Within this role, its only 
+responsibility is continuing the trust chain(s) that were started by the 
+CPU/Hardware. It does so by measuring the components and configuration 
+it is responsible for loading and applying, i.e. in TCG parlance, it is 
+continuing the construction of the transitive trust for the system. In 
+this aspect, the only degradation of security that can affect the 
+kernel's role is whether all the necessary entities are safely measured 
+and not what algorithms are used.
 
-Thanks,
+If the system integrator, whether that be the OEM, your employer, the 
+distro maintainer, the system administrator, or the end user, configures 
+the DL preamble to only use SHA1 or used older hardware that has a 
+TPM1.2, then they are accepting the risk it creates in their solution. 
+In fact, a greater threat to the security of the launch is the 
+misconfiguration of the IOMMU, which risks the kernel's ability to 
+safely make measurements, as compared to the use of SHA1. Yet it was 
+insisted in past reviews that we allow the user to specify an incorrect 
+IOMMU policy.
 
-Pingfan
+In the end, the "security" of an RTM solution is how and what 
+measurements are used to assess the health of a system. Thus bringing it 
+back to the opening question, if SHA1 measurements are made but not 
+used, i.e. the attestation enforcement only uses SHA2, then it has zero 
+impact on the security of the system.
 
+Another fact to consider is that the current Intel's TXT MLE 
+specification dictates SHA1 as a valid configuration. Secure Launch's 
+use of SHA1 is therefore to comply with Intel's specification for TXT. 
+And like the IOMMU situation, having the option available allows the 
+user to determine how they ultimately want to integrate Secure Launch 
+into their integrity management. And because Secure Launch will only 
+attempt SHA1 if it was in the TXT configuration, when either Intel 
+removes SHA1 from the MLE specification or firmware manufactures begin 
+disabling the SHA1 banks, this will obviously mean that Secure Launch 
+will not produce SHA1 measurements.
+
+On a side note, with my remote attestation hat on, the SHA1 measurements 
+can in fact be extremely useful. If an attestation was made containing 
+both SHA1 and SHA2 chains, and the SHA1 of an event was correct but the 
+SHA2 was not, either a natural collision happened or someone maliciously 
+caused a collision. The former has an extremely low probability, while 
+the latter is highly probable.
+
+Thus, with this information alone, it is possible to make the reasonable 
+determination the device is compromised. Whereas if both hashes are 
+mismatched, without any additional information it is equally probable of 
+either misconfiguration or compromise. And to state the obvious, with 
+only SHA2, further information is needed to distinguish between 
+misconfiguration and compromise.
+
+V/r,
+Daniel P. Smith
 
