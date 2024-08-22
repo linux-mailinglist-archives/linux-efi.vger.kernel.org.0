@@ -1,75 +1,76 @@
-Return-Path: <linux-efi+bounces-1573-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1574-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453AA95B48C
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 14:04:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916F395B873
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 16:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 728101C226A3
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 12:04:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16106B2A3E5
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 14:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033A817D374;
-	Thu, 22 Aug 2024 12:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0CB1CB333;
+	Thu, 22 Aug 2024 14:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pvtk2j+5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ieUXMPKu"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA12183CB7
-	for <linux-efi@vger.kernel.org>; Thu, 22 Aug 2024 12:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC251CB135
+	for <linux-efi@vger.kernel.org>; Thu, 22 Aug 2024 14:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724328292; cv=none; b=FBrPDdC/LhyZUrxRch9f5kn2rmib0nZCn5yAsVAY69NS7kASStk2FWAvWj6NrE2oVvCx8/BQv0q3Zxer1W8Xm4RJkG/M4TCdZ0JwcCeWRA38nY5UYeg2AJrUuRSIrX3scA2uEAH3z0B+tcqgo2/c/jayn0LwwgOlGVzGnEi48+I=
+	t=1724336987; cv=none; b=Esyq1kjfXFsP80zuRYy9bYOnjXzCsAjS9Z7DQGGcZyJe7SMF9TRYpcrMlhmUSR1lGfkd2n6bqOka2MHTQpLOj2aWDlixycfxer+sZdWkDMW9fVGnJuKweUkvwq//U5fBwjFPRYHOOxXq9cz+VSB2jhtRaDBwkyfHtGsR1TwlCuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724328292; c=relaxed/simple;
-	bh=5SgOUrh4ft4Sq8is6/BnTYKWCGGAiSuIZR7fQr9RQFE=;
+	s=arc-20240116; t=1724336987; c=relaxed/simple;
+	bh=4hgjKSXqmD4wuXTEVqitwJr2+8LzfnOsifWBPu0BPjg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eohMHtiOLf5Wx1WKVwnQzyEqVoNvzGtX8fzCkoCuSLxwo1gCYkaiEZaexDh7rGK0IrRHeKCtpSLt/kXcIA5S7t6zp9dlbt7A4+/0HaHOEJaDgKIeY+1bRwsfvlBmCyIjjW8bNyZBlFeS7Bbd5kN9+1SNeYLiNIvRYtF6/CfdOPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pvtk2j+5; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=cNkgxEOmNA2g0POWEyBuO8uhoJWCkavbfwoukozIF6PyHb3vQaAa0CHeMyF7HRB+Hzg3O9RWuswIGeGioEi1vTt7dCE4+fEFnZqNwCkux+7ukhdGTas5n0/AbVLn9I7G9O2HJtFncQvvW/5ORtzXoM9MDd9nNVQHMjEtpZNfF64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ieUXMPKu; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724328290;
+	s=mimecast20190719; t=1724336984;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZRxqb0+LBWgvJI7l0bIvtzhcmJ+Lii5dEsLzcEYoGcQ=;
-	b=Pvtk2j+55t9yphVBHTIQrxvDDAhgwDaguxB1Fq+7oXJi1J+LK0JJdhRF9nLDo4Yk8Gnn5V
-	PvOnov/m5H0Ynca8h0fkpqN42QP4R7GpC83dBKg+Q/xxRp7Pqbe/bZdZkUS8FTzGdPPo4a
-	DVrzU/Th8YkHV4znukVkkRmxyJdivFc=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=m/6AxOb6WsbLr7G2jGoOD1ehnx93Ji/pJCnzGUX2sbo=;
+	b=ieUXMPKudHQJwcGfxF4bEEoq0HLjaseBjTYWF84/a0S7a0Gvxma/JUZkkPhHpqnHn96WhP
+	1IXr3J6Qq18aO2Z6iONCskNPT4S5/kJmqQyVEd4FzC6HZRADVXthtlhgx4XJ8I/vo7gvV6
+	B9GN+UIO9x7y21SZjNSHAGFNMhuYeC8=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-493-EHel0_BSNM-RrJjR9ip8CA-1; Thu, 22 Aug 2024 08:04:48 -0400
-X-MC-Unique: EHel0_BSNM-RrJjR9ip8CA-1
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-201f27cdafcso7481225ad.1
-        for <linux-efi@vger.kernel.org>; Thu, 22 Aug 2024 05:04:48 -0700 (PDT)
+ us-mta-694-ftONQUUdNdWtFp1vOfs18A-1; Thu, 22 Aug 2024 10:29:43 -0400
+X-MC-Unique: ftONQUUdNdWtFp1vOfs18A-1
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-5dc9ed1d3baso981442eaf.0
+        for <linux-efi@vger.kernel.org>; Thu, 22 Aug 2024 07:29:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724328288; x=1724933088;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZRxqb0+LBWgvJI7l0bIvtzhcmJ+Lii5dEsLzcEYoGcQ=;
-        b=BXjDUm0VvUXDsLuUiCCRy2ZWuGdUhxJSgQyKCbCzuW/60GQwISEw0w3m/wfV+4ZK4d
-         URhVJTOYmnZmiDPq/zqZ5ml3r2aCiImCy2PFU4bBO4DsbKB/5iYRdeABizQq9/GC5R8q
-         m5fM/4gGHQHkqYPBa76ErxI1lBDONaC/eZaUtXuS0Ag6yHhFvtOD2/w5DCHT7MCzr3Fg
-         TfmihPUmAe4PdYpEPwv0DMlNBpceIK1xXSmfJ27cayMRnKNSrEuCNhLalEv5p8ZaNEKH
-         ADIb+buhh/aE2/ndseJkLvN0WiYrCG8393ef5p0X3z0S5wywQUAPLUtu1McdicH0T3YO
-         0/zg==
-X-Forwarded-Encrypted: i=1; AJvYcCXLtq4xxX/auhDQCDpp7aeLg7YQrWmamRi2arKqFd8egEmyAv8rOrcrBhzFZj8zk5zoiaiTbm0imsM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo7cm+h7QV6KQzVzppFv6+EyCqGea8Opzoy3606SkJJMVBFC+o
-	PcuA9p8DLy5vMcSPeyPdgdfbzyW3imJtCtTvzjSnJLtGVRy1etHVLw81sVOSodGskccAmJHIvtC
-	e0KGXr8Ss7Uav8M0OLvhvX8Tu4Ld4796R9jj9RxPUS+tWnus6Eao3neODIZBt74++HydBt7jpx5
-	tAYnV4Z0dILDQYuTt99UYJlul8TmP7WmFr
-X-Received: by 2002:a17:902:d2cb:b0:1fc:6901:9c35 with SMTP id d9443c01a7336-20367d074f8mr59135005ad.20.1724328287746;
-        Thu, 22 Aug 2024 05:04:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF1v+uoAtKSiDZxaczWF08SLG9Gd1AAeF2w/dT8PMJW73gjNN5rmBu3aiwmk+3SOVpzCwbWmyF+g/abINV5+U0=
-X-Received: by 2002:a17:902:d2cb:b0:1fc:6901:9c35 with SMTP id
- d9443c01a7336-20367d074f8mr59134625ad.20.1724328287380; Thu, 22 Aug 2024
- 05:04:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724336983; x=1724941783;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m/6AxOb6WsbLr7G2jGoOD1ehnx93Ji/pJCnzGUX2sbo=;
+        b=iu2J1A4TZQBDXJSluzrf/4Z5Ugi8m8Eq+kH7Wjh12g1LMbjfnDjlw4+D3OlO0gYMh3
+         XeiwB4yTTUIR6VBXSCtQiE02uazX5ffIY/IcGC/cuts+a0ULHlbrwXVj9cN6605qVVHN
+         +sqUpzDAPX/BeMc+p7GQ6clcmoAqkZlS/C/1sQFPmge/27XvKhuug/pW+w1YYDR3SEEk
+         +FuCvxgnGJaoAai8HNLxqWEYuhGkZZdEx1+GVYKmxV+bXd9cH1D74YfKVe3LIvOfTcdP
+         rRPAPbCfYQvEi5U/9cHuYq2yr/CIH2lwBLFkQy9QEOmFImrS1Tbq7AeXDTsek1z7C1iO
+         /GoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ2V8Lx9yxPUtkolrNRjikSQiRQoSD90jtFrZw4y4aPIL66vvOGsmGUEOuYB2E9Ha1VIxR2GMCbwE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMrHKzT2yKt/dhpE9CidHF2Lu9COsFXxqdmzXPUB/WlAyRrsP1
+	Eg13pf8DxE7eE5Wp7V/sPGBTBJZol6uwEJHZbWh6NDe3yZ2hEL6nP1cOjsWN9OJLaEdD8Dbn17J
+	k8/TTRSoDXT5osSMiPs9VpNPFzH7JCIxhj+v3nEFqh524uH8yCdLINNMJXulOVHC8xM/0qQXk/Z
+	EfgdBFGJ9ITZlFNa1X813qbOvRQ/glJ2Be
+X-Received: by 2002:a05:6358:980d:b0:1b5:a037:f238 with SMTP id e5c5f4694b2df-1b5a037f311mr612518155d.0.1724336982765;
+        Thu, 22 Aug 2024 07:29:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+brQfGyYU0BpsvYX3In5ntxKlxV2usDwSemakngx24acx/det+Wm07KEOH4KNbGPDEw/r7dG0Fhsa3BZCjPg=
+X-Received: by 2002:a05:6358:980d:b0:1b5:a037:f238 with SMTP id
+ e5c5f4694b2df-1b5a037f311mr612515255d.0.1724336982430; Thu, 22 Aug 2024
+ 07:29:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -77,50 +78,108 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240819145417.23367-1-piliu@redhat.com> <ZsX5QNie3pzocSfT@gardel-login>
- <CAF+s44S2Ph1_nFcZYy3j0Jr4yuHayb5zdNu1YXg8ce_Lf3TOgQ@mail.gmail.com>
- <CALu+AoQRdxJUpNK_eCjKJ=ydRZ4av2S3xBaz3CYJZp12xqm=jQ@mail.gmail.com> <ec8befa0-f193-4de3-acea-8e37f8437c7e@app.fastmail.com>
-In-Reply-To: <ec8befa0-f193-4de3-acea-8e37f8437c7e@app.fastmail.com>
-From: Dave Young <dyoung@redhat.com>
-Date: Thu, 22 Aug 2024 20:04:58 +0800
-Message-ID: <CALu+AoR3=a6suS0KyC7HJBOca8zBA0Y2AteF4=b=21j=pVKm1g@mail.gmail.com>
+ <CAF+s44S2Ph1_nFcZYy3j0Jr4yuHayb5zdNu1YXg8ce_Lf3TOgQ@mail.gmail.com> <Zsb1isJ2cYRp2jpj@gardel-login>
+In-Reply-To: <Zsb1isJ2cYRp2jpj@gardel-login>
+From: Pingfan Liu <piliu@redhat.com>
+Date: Thu, 22 Aug 2024 22:29:31 +0800
+Message-ID: <CAF+s44SQtRxZz=2eSJ-xP44ORLqvq0doEQ8qrw+1RaKFhoje8w@mail.gmail.com>
 Subject: Re: [RFCv2 0/9] UEFI emulator for kexec
-To: Jan Hendrik Farr <kernel@jfarr.cc>
-Cc: Pingfan Liu <piliu@redhat.com>, Lennart Poettering <mzxreary@0pointer.de>, 
-	Ard Biesheuvel <ardb@kernel.org>, Philipp Rudo <prudo@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Eric Biederman <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
+To: Lennart Poettering <mzxreary@0pointer.de>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Jan Hendrik Farr <kernel@jfarr.cc>, Philipp Rudo <prudo@redhat.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Eric Biederman <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>, 
+	Dave Young <dyoung@redhat.com>, Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
 	Catalin Marinas <catalin.marinas@arm.com>, kexec@lists.infradead.org, 
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 22 Aug 2024 at 18:56, Jan Hendrik Farr <kernel@jfarr.cc> wrote:
+On Thu, Aug 22, 2024 at 4:23=E2=80=AFPM Lennart Poettering <mzxreary@0point=
+er.de> wrote:
 >
-> Hi Dave,
+> On Do, 22.08.24 13:42, Pingfan Liu (piliu@redhat.com) wrote:
 >
-> > I forgot why we can not just extract the kernel from UKI and then load
-> > it directly,  if the embedded kernel is also signed it should be good?
+>  > On Wed, Aug 21, 2024 at 10:27=E2=80=AFPM Lennart Poettering
+> > <mzxreary@0pointer.de> wrote:
+> > >
+> > > On Mo, 19.08.24 22:53, Pingfan Liu (piliu@redhat.com) wrote:
+> > >
+> > > > *** Background ***
+> > > >
+> > > > As more PE format kernel images are introduced, it post challenge t=
+o kexec to
+> > > > cope with the new format.
+> > > >
+> > > > In my attempt to add support for arm64 zboot image in the kernel [1=
+],
+> > > > Ard suggested using an emulator to tackle this issue.  Last year, w=
+hen
+> > > > Jan tried to introduce UKI support in the kernel [2], Ard mentioned=
+ the
+> > > > emulator approach again [3]
+> > >
+> > > Hmm, systemd's systemd-stub code tries to load certain "side-car"
+> > > files placed next to the UKI, via the UEFI file system APIs. What's
+> > > your intention with the UEFI emulator regarding that? The sidecars ar=
+e
+> > > somewhat important, because that's how we parameterize otherwise
+> > > strictly sealed, immutable UKIs.
+> > >
+> > IIUC, you are referring to UKI addons.
 >
-> The problem is that in the basic usecase for UKI you only sign the entire
-> UKI PE file and not the included kernel, because you only want that kernel
-> to be run with that one initrd and that one kernel cmdline.
-
-Hmm,  as replied to Pinfan I thought that both the included kernel and
-UKI can be signed, and for kdump case kexec_file_load can be used
-simply.
-
+> Yeah, UKI addons, as well as credential files, and sysext/confext
+> DDIs.
 >
-> So at a minimum you have to have the signature on the whole UKI checked by
-> the kernel and than have the kernel extract UKI into its parts unless you
-> somehow want to extent trust into userspace to have a helper program do that.
+> The addons are the most interesting btw, because we load them into
+> memory as PE files, and ask the UEFI to authenticate them.
+>
+> > > Hence, what's the story there? implement some form of fs driver (for
+> > > what fs precisely?) in the emulator too?
+> > >
+> > As for addon, that is a missing part in this series. I have overlooked
+> > this issue. Originally, I thought that there was no need to implement
+> > a disk driver and vfat file system, just preload them into memory, and
+> > finally present them through the uefi API. I will take a closer look
+> > at it and chew on it.
+>
+> It doesn't have to be VFAT btw. It just has to be something. For
+> example, it might suffice to take these files, pack them up as cpio or
+> so and pass them along with the UEFI execution. The UEFI emulator
+> would then have to expose them as a file system then.
+>
+> We are not talking of a bazillion of files here, it's mostly a
+> smallish number of sidecar files I'd expect.
+>
+> > > And regarding tpm? tpms require drivers and i guess at the moment uef=
+i
+> > > emulator would run those aren't available anymore? but we really
+> > > should do a separator measurement then. (also there needs to be some
+> > > way to pass over measurement log of that measurement?)
+> >
+> > It is a pity that it is a common issue persistent with kexec-reboot
+> > kernel nowadays.
+> > I am not familiar with TPM and have no clear idea for the time being.
+> > (emulating Platform Configuration Registers ?).  But since this
+> > emulator is held inside a linux kernel image, and the UKI's signature
+> > is checked during kexec_file_load. All of them are safe from
+> > modification, this security is not an urgent issue.
+>
+> Hmm, I'd really think about this with some priority. The measurement
+> stuff should not be an afterthought, it typically has major
+> implications on how you design your transitions, because measurements
+> of some component always need to happen *before* you pass control to
+> it, otherwise they are pointless.
+>
 
-extend trust into userspace is hard, previously when Vivek created the
-kexec_file_load this has been explored and he gave up this option. :(
+At present, my emulator returns false to is_efi_secure_boot(), so
+systemd-stub does not care about the measurement, and moves on.
 
-Pingfan,  nice to see you have something done as POC at least, and
-good to see this topic is live. I just have some worries about the
-complexity of the emulator though.
+Could you enlighten me about how systemd utilizes the measurement? I
+grepped 'TPM2_PCR_KERNEL_CONFIG', and saw the systemd-stub asks to
+extend PCR. But where is the value checked? I guess the systemd will
+hang if the check fails.
 
-Thanks
-Dave
+Thanks,
+
+Pingfan
 
 
