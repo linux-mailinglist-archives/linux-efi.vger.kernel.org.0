@@ -1,182 +1,193 @@
-Return-Path: <linux-efi+bounces-1575-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1576-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2B895BE3C
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 20:31:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AEC95C265
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Aug 2024 02:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2906C1F24CBA
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Aug 2024 18:31:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B62A1283881
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Aug 2024 00:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98E71CEAC6;
-	Thu, 22 Aug 2024 18:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181AFB653;
+	Fri, 23 Aug 2024 00:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="LWndbxnZ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SMkJDJA0"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from sender3-of-o57.zoho.com (sender3-of-o57.zoho.com [136.143.184.57])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2051.outbound.protection.outlook.com [40.107.220.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86DFEC5;
-	Thu, 22 Aug 2024 18:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B1A1643A;
+	Fri, 23 Aug 2024 00:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724351476; cv=pass; b=DjtlAO4jxEDjb5OCzhDa6aC9dqZcDzuWs2vbKD5M2zonlfxDgH7CBSrZ2B2ZfvzaZoai1+MVtCYKp3IGF3FGzlQZ/mxdx3eF5IpARPPC+7sKMSp3nYGByWTQqVC6cNJ5Yt2GqgY0gV5WH7F1Ex3LcFXcWBO50sokM5ViOFEfpfE=
+	t=1724372686; cv=fail; b=BEvt6sogY9B4Hjm5UzIJNJrFJmXWD1ReKqMAKGhvJopr/SAas/IYOM1iwgpg7egDHpiU7wFKG/zSNlIaG4oqBXAEYMuTu7u/ySbbg0w0oGF6OOhuuTITQ4VidSOfV02KZ+ZfqK4AoEsvszT8jZoJy9iknwtvXPYDG3ezH92AAoM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724351476; c=relaxed/simple;
-	bh=agHBdZkQ8BulJoORPycTlSOnOyfy9kfTwiKBhxMAjag=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VkQwmhFYO7roLIV4f+GbFbuS4asXoazYfaCyLI0+rIiytKmygp1j8G6FNMayAE5LNaFeZA5YwleJvGdIt7b2409PvLPC7VzX/bJzh62zUo6KxPuxgfQwg6SqljzeEinSvV5q2cbyKEbJH1WzL5ydL4b0TY9iZpQd1giLUDHxsHw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=LWndbxnZ; arc=pass smtp.client-ip=136.143.184.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apertussolutions.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724351396; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ensxJanajnfNH4lrohozTfRp/kJ8ndAR/I5SeOCvPtvZpwA/RS3UKS9IzW5MnGlu3KwD9JZgR/559mn/GKEg7+II30GBHjPG+RHQQXv6qYJ8VO6d6q5godbIQcqq8y5Wsi0Giv6acyQMSSuozV5LPKeS57s5x4o9g8w+sokW13c=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1724351396; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=MyQlkXBuBh5D5+ORO/Ajt6ntHefewg/FMRXibyLJvKQ=; 
-	b=fPGGbQa6PDJETfzD86dOnyy2nf1dhiCXht9Z7kAfpQDeTDuKfPlCsPgzwzvQy4C7qDUHI6mVeTa8+DiKlK4twHkkFW7Rmr4iNCsDZl/Ko9tv8Bi0jkphPJpIC2WLsxxLAEHGJm+ZQJ0UDZdtX2DQt0UJL9HnfiEXQoDXnto9fHQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=apertussolutions.com;
-	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
-	dmarc=pass header.from=<dpsmith@apertussolutions.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724351396;
-	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=MyQlkXBuBh5D5+ORO/Ajt6ntHefewg/FMRXibyLJvKQ=;
-	b=LWndbxnZqsXgRW0zxX0skSHrs/RICB+4zvHapAfsJIHhBjt1SzpRUZ8bMV2l5ynf
-	xRPob/zjMHRjYX8ykLglY1hM59kdZCqo6e2s59dYvXpsTBX6lSomKRhRHWTKfRE2XAz
-	FMGosfle+46Swp76HbPabYQUH+ZMH+FO0Ir/i62I=
-Received: by mx.zohomail.com with SMTPS id 1724351393878947.9797156192928;
-	Thu, 22 Aug 2024 11:29:53 -0700 (PDT)
-Message-ID: <281c3bb3-13f6-47a2-9a9a-134e397bf686@apertussolutions.com>
-Date: Thu, 22 Aug 2024 14:29:48 -0400
+	s=arc-20240116; t=1724372686; c=relaxed/simple;
+	bh=Z9j6cJYdPVGxGzFxXTDq82r8yjeeZHf15nsJwULvnVg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W2vKkoB9MYCIgimgo3gHMDxt7W4rmrHreI5K+y/Ac8cVBI48u9xfdezC3GXDueEU2uDMf6DVFY85gfAL73jXN2e8DTIRbRGjg2vKOAdWnuTnSRZTo5Y9YKJ5UQLMCeY0Vg1Idh14sLFbJj1RvsYqniRtmL23DJ6ThqSY75Lbsgk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SMkJDJA0; arc=fail smtp.client-ip=40.107.220.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f1juQ/DBcjTFZRhcTRKvjiwM+W+7+lvaAiAvnkWwEIC5NolxctrAOOl4rtQpMRWb09ZS/Zs6P+5gbhEDZj7OguAHqnhEEsCLaA46Q9hNJj5pD4p87gulBQi5Wm7QDqry2kjqxbgSOnnKBTy1Z46gQCv2i/NjUKfqDAg2orw3Mf7fYWXZJwcWJjhGR24hiCjFBtZR8ptaStOjPQbgWXlrxoLYVcnpysRXRI0wpXFx6R5plNC0e61IocF1Uma1F1LTf494DblhQkbTZwUAt/HwDc3mZZWKSoo5k8d2eha4eWFDczTW1NmpIAridWMQ67IEmhsYgrRnPi2m67flUVFihQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RK03vw/gx5D+32F9ADyDnRXGyHBMr5ScWahcR0aI9kE=;
+ b=s6uON2hFgCp3+L//HOR1xKdxO0GO+ieHd7jmr1+EJHZQKNQ3toylGcyB7IACCZp7k2Z8XRBVSKGhkhDhOK66S1S3ezw23YAMVsQuZHFLpDM8xR0PdibzKnoXH+3QvlmJrrk/02FXd1n78DryOqeg65/TKx7kQNHE7u7o+gDb9Oa14HCLRo00M5Z6xPVIUQ/vAlTwgarUikkUCihV9yiOBNpkliJlwW8xVjn+FpJ1ppcg8Xgt13Jpz6iecwRwPspuHcTLkDe39ciww6IbV5wRfuLPJIAAhrN3vfw+Qg67yLj+mCMHFZ/xcGPz09r9trlBcenHRzpZ1vsmRkcpt8+8tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RK03vw/gx5D+32F9ADyDnRXGyHBMr5ScWahcR0aI9kE=;
+ b=SMkJDJA05UZ95XrEr5tpoKL903k6AdGavB1uIKWuy8Bhi+h7LICWZU75aAmecz54+MlPCDfeqqJ7Z91GuXyPCl5LORhQijCtO7MXmTakZ2dI5GuHHmSUOLNGJJp7f9cd+cb4mwL47r6jFmoyoqxSENoPcPuj+vQd2rEF+MozITA=
+Received: from CH0PR03CA0306.namprd03.prod.outlook.com (2603:10b6:610:118::35)
+ by PH8PR12MB6986.namprd12.prod.outlook.com (2603:10b6:510:1bd::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.26; Fri, 23 Aug
+ 2024 00:24:40 +0000
+Received: from CH3PEPF0000000A.namprd04.prod.outlook.com
+ (2603:10b6:610:118:cafe::21) by CH0PR03CA0306.outlook.office365.com
+ (2603:10b6:610:118::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21 via Frontend
+ Transport; Fri, 23 Aug 2024 00:24:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH3PEPF0000000A.mail.protection.outlook.com (10.167.244.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7897.11 via Frontend Transport; Fri, 23 Aug 2024 00:24:39 +0000
+Received: from titanite-d354host.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 22 Aug 2024 19:24:36 -0500
+From: Avadhut Naik <avadhut.naik@amd.com>
+To: <linux-efi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <ardb@kernel.org>, <bp@alien8.de>,
+	<james.morse@arm.com>, <tony.luck@intel.com>,
+	<ilpo.jarvinen@linux.intel.com>, <ira.weiny@intel.com>,
+	<yazen.ghannam@amd.com>, <avadnaik@amd.com>
+Subject: [PATCH] efi/cper: Print correctable AER information
+Date: Thu, 22 Aug 2024 19:24:22 -0500
+Message-ID: <20240823002422.3056599-1-avadhut.naik@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
- early measurements
-To: Thomas Gleixner <tglx@linutronix.de>,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- Eric Biggers <ebiggers@kernel.org>
-Cc: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
- linux-efi@vger.kernel.org, iommu@lists.linux-foundation.org,
- mingo@redhat.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
- ardb@kernel.org, mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
- peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
- nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net,
- corbet@lwn.net, dwmw2@infradead.org, baolu.lu@linux.intel.com,
- kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
- trenchboot-devel@googlegroups.com
-References: <20240531010331.134441-1-ross.philipson@oracle.com>
- <20240531010331.134441-7-ross.philipson@oracle.com>
- <20240531021656.GA1502@sol.localdomain>
- <874jaegk8i.fsf@email.froward.int.ebiederm.org>
- <5b1ce8d3-516d-4dfd-a976-38e5cee1ef4e@apertussolutions.com>
- <87ttflli09.ffs@tglx>
-Content-Language: en-US
-From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
-In-Reply-To: <87ttflli09.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000A:EE_|PH8PR12MB6986:EE_
+X-MS-Office365-Filtering-Correlation-Id: b968506c-b10a-4413-f050-08dcc309f9eb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?oMJuqOhn19SuPZA6ZVvUkPyfLghwwIi3TpdVYtWRULnlWzb7qXX5p9sd+2Z7?=
+ =?us-ascii?Q?nCmclnyTWtiYky55TnpXOLiiJ2qQt7uO9VGgyEPCg5NWI9ispfhD2FeDq5f3?=
+ =?us-ascii?Q?o0atSqJKA6cOUiNaOzcOV13gXOiA0nDhsbJPSWVgiODm69i0041gJJhO31M7?=
+ =?us-ascii?Q?8ltcWpF9Akg56ZZRA/sqPMvaSFQ2vAxUZbMb7tUD3ApfCF7KurayvmSv+BVS?=
+ =?us-ascii?Q?h8JRzlGxFPDLRvBUTg1nWRW9SXqcv9niu1GBSyO0mtK4YYFAGdvWtE/zKCHr?=
+ =?us-ascii?Q?6fcQR8YbdeyUeYEMDyiqM53/Mtw2vJQsLnMahlf1xTPn85ZPuyxgMOJC4tn3?=
+ =?us-ascii?Q?Qy6RlCvHF63D2XcG6rBp2VT7o17PdvO4+5URl5R6NM9G30yVmPNaPx39xOLf?=
+ =?us-ascii?Q?EmrDKsLUgAXUs+kmgmNT+WHTsIHucHFXuhRDE0tXAqrVSnSU8OLOrQlKVdT6?=
+ =?us-ascii?Q?JJweXgLsBK0MfxMx97Tm1MXdeXX366UEC6k2jrEosIlRFHyZAEfnGi9QUJCd?=
+ =?us-ascii?Q?54FwwM63OzPKpDvQcJ3yvi3pgi18FDMDlh9LCo+69DVLN5y3GOG8wdjRKDFe?=
+ =?us-ascii?Q?F9Ge1x2s4H8IBYN8nALd5O9PMneWtTbHNnmTgUR8qjShnvhSUvbcUAM5PT7p?=
+ =?us-ascii?Q?ntSUMZU5Mo98oo3ekMqJAuEOhmYIgajmDhnCi85a7NAjoJlxq+KfJcovvAQq?=
+ =?us-ascii?Q?uqJuF8jiIr2NnyI1/zza39Lx8Ig6MQCNWEKz2ZyZknNZRD1FX2XtSDGS127m?=
+ =?us-ascii?Q?t5blX8YzEpxRkAvy/mFcnXHOX1fJER2VBh/2qVcMEwxlC8TJ5okvzvQEogvH?=
+ =?us-ascii?Q?XCa4EZTJzvLUGRHzQ7kGeuFb+3LFjQ1FIvXxElaFK1cLW4h1hhfgiY383KiZ?=
+ =?us-ascii?Q?chjOxKu0OjlwHPRu9Q7Slgop5qFuqpFFnvEcXtFtUfHRpDdRtThoDiewm6a/?=
+ =?us-ascii?Q?kBvE1qqu0ZXxOWSxrhULrdLC8U0RkDr+Xfm8C5OO1ThtXrsQ/eiMRsDdObfU?=
+ =?us-ascii?Q?sPp527Mr0jUHMeQBC5J9RumHy/yhOf3ITiTeAkxd6T//x+7hNxE3fJpCFcoO?=
+ =?us-ascii?Q?MpEUrtknANQriHC8//SXBsDEnv7MfXaXhFlotSqfwDQxKoTTIWQFsEMi6WCu?=
+ =?us-ascii?Q?d31f9xqg9jogGfBmfBWDn9w4gT4aIicwsnRPkx5xkJorzeclshHDSRV4Mf4w?=
+ =?us-ascii?Q?Xd51bnePnE/O4hOPH9Zuv063MR45/Jb0/9zYooMMQgW7WWJ5u3icwPlqoHI3?=
+ =?us-ascii?Q?kMva/xnNqfKTq4EzO4pgY3HuPPHM2bKUkDxFBuEslqQX0Daunw8IyFMNkLca?=
+ =?us-ascii?Q?L79eF+ufIQADCvugh0gbFopTsYojJGOMUyDpvuUelBil9icAVNKR5YqJPDIv?=
+ =?us-ascii?Q?/2Sa8EXtkOi2pOQoOmVHqAUFpWND1XB/vkro9VTBUsRArF+qAcFVQE2swoJ1?=
+ =?us-ascii?Q?R+SDcENi7JKcqU56raElaQJvVRHwuIOp?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2024 00:24:39.4097
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b968506c-b10a-4413-f050-08dcc309f9eb
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF0000000A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6986
 
-On 8/15/24 15:10, Thomas Gleixner wrote:
-> On Thu, Aug 15 2024 at 13:38, Daniel P. Smith wrote:
->> On 5/31/24 09:54, Eric W. Biederman wrote:
->>> Eric Biggers <ebiggers@kernel.org> writes:
->>>> That paragraph is also phrased as a hypothetical, "Even if we'd prefer to use
->>>> SHA-256-only".  That implies that you do not, in fact, prefer SHA-256 only.  Is
->>>> that the case?  Sure, maybe there are situations where you *have* to use SHA-1,
->>>> but why would you not at least *prefer* SHA-256?
->>>
->>> Yes.  Please prefer to use SHA-256.
->>>
->>> Have you considered implementing I think it is SHA1-DC (as git has) that
->>> is compatible with SHA1 but blocks the known class of attacks where
->>> sha1 is actively broken at this point?
->>
->> We are using the kernel's implementation, addressing what the kernel
->> provides is beyond our efforts. Perhaps someone who is interested in
->> improving the kernel's SHA1 could submit a patch implementing/replacing
->> it with SHA1-DC, as I am sure the maintainers would welcome the help.
-> 
-> Well, someone who is interested to get his "secure" code merged should
-> have a vested interested to have a non-broken SHA1 implementation if
-> there is a sensible requirement to use SHA1 in that new "secure" code,
-> no?
-> 
-> Just for the record. The related maintainers can rightfully decide to
-> reject known broken "secure" code on a purely technical argument.
-> 
-> Thanks,
-> 
->          tglx
-> 
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-There is one simple question, does allowing the Secure Launch code to 
-record SHA1 measurements make the system insecure, and the answer is 
-absolutely not.
+Currently, cper_print_pcie() only logs Uncorrectable Error Status, Mask
+and Severity registers along with the TLP header.
 
-The role of the Secure Launch code base in the context of the larger 
-launch process is to function as observer. Within this role, its only 
-responsibility is continuing the trust chain(s) that were started by the 
-CPU/Hardware. It does so by measuring the components and configuration 
-it is responsible for loading and applying, i.e. in TCG parlance, it is 
-continuing the construction of the transitive trust for the system. In 
-this aspect, the only degradation of security that can affect the 
-kernel's role is whether all the necessary entities are safely measured 
-and not what algorithms are used.
+If a correctable error is received immediately preceding or following an
+Uncorrectable Fatal Error, its information is lost since Correctable
+Error Status and Mask registers are not logged.
 
-If the system integrator, whether that be the OEM, your employer, the 
-distro maintainer, the system administrator, or the end user, configures 
-the DL preamble to only use SHA1 or used older hardware that has a 
-TPM1.2, then they are accepting the risk it creates in their solution. 
-In fact, a greater threat to the security of the launch is the 
-misconfiguration of the IOMMU, which risks the kernel's ability to 
-safely make measurements, as compared to the use of SHA1. Yet it was 
-insisted in past reviews that we allow the user to specify an incorrect 
-IOMMU policy.
+As such, to avoid skipping any possible error information, Correctable
+Error Status and Mask registers should also be logged.
 
-In the end, the "security" of an RTM solution is how and what 
-measurements are used to assess the health of a system. Thus bringing it 
-back to the opening question, if SHA1 measurements are made but not 
-used, i.e. the attestation enforcement only uses SHA2, then it has zero 
-impact on the security of the system.
+Additionally, ensure that AER information is also available through
+cper_print_pcie() for Correctable and Uncorrectable Non-Fatal Errors.
 
-Another fact to consider is that the current Intel's TXT MLE 
-specification dictates SHA1 as a valid configuration. Secure Launch's 
-use of SHA1 is therefore to comply with Intel's specification for TXT. 
-And like the IOMMU situation, having the option available allows the 
-user to determine how they ultimately want to integrate Secure Launch 
-into their integrity management. And because Secure Launch will only 
-attempt SHA1 if it was in the TXT configuration, when either Intel 
-removes SHA1 from the MLE specification or firmware manufactures begin 
-disabling the SHA1 banks, this will obviously mean that Secure Launch 
-will not produce SHA1 measurements.
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Tested-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+---
+ drivers/firmware/efi/cper.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-On a side note, with my remote attestation hat on, the SHA1 measurements 
-can in fact be extremely useful. If an attestation was made containing 
-both SHA1 and SHA2 chains, and the SHA1 of an event was correct but the 
-SHA2 was not, either a natural collision happened or someone maliciously 
-caused a collision. The former has an extremely low probability, while 
-the latter is highly probable.
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index 7d2cdd9e2227..b69e68ef3f02 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -434,12 +434,17 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
+ 	"%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
+ 	pfx, pcie->bridge.secondary_status, pcie->bridge.control);
+ 
+-	/* Fatal errors call __ghes_panic() before AER handler prints this */
+-	if ((pcie->validation_bits & CPER_PCIE_VALID_AER_INFO) &&
+-	    (gdata->error_severity & CPER_SEV_FATAL)) {
++	/*
++	 * Print all valid AER info. Record may be from BERT (boot-time) or GHES (run-time).
++	 *
++	 * Fatal errors call __ghes_panic() before AER handler prints this.
++	 */
++	if (pcie->validation_bits & CPER_PCIE_VALID_AER_INFO) {
+ 		struct aer_capability_regs *aer;
+ 
+ 		aer = (struct aer_capability_regs *)pcie->aer_info;
++		printk("%saer_cor_status: 0x%08x, aer_cor_mask: 0x%08x\n",
++		       pfx, aer->cor_status, aer->cor_mask);
+ 		printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
+ 		       pfx, aer->uncor_status, aer->uncor_mask);
+ 		printk("%saer_uncor_severity: 0x%08x\n",
 
-Thus, with this information alone, it is possible to make the reasonable 
-determination the device is compromised. Whereas if both hashes are 
-mismatched, without any additional information it is equally probable of 
-either misconfiguration or compromise. And to state the obvious, with 
-only SHA2, further information is needed to distinguish between 
-misconfiguration and compromise.
+base-commit: fdf969bbceb389f5a7c69e226daf2cb724ea66ba
+-- 
+2.34.1
 
-V/r,
-Daniel P. Smith
 
