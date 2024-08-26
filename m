@@ -1,67 +1,67 @@
-Return-Path: <linux-efi+bounces-1597-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1598-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B19095FD2F
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2024 00:46:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE35695FD36
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Aug 2024 00:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93BBFB22E87
-	for <lists+linux-efi@lfdr.de>; Mon, 26 Aug 2024 22:46:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 656741F2290F
+	for <lists+linux-efi@lfdr.de>; Mon, 26 Aug 2024 22:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68AF1A01B7;
-	Mon, 26 Aug 2024 22:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8253019E80F;
+	Mon, 26 Aug 2024 22:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="nx1JYboW"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="jeqxygkF"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DBB1A01C3;
-	Mon, 26 Aug 2024 22:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B2D19DF5F;
+	Mon, 26 Aug 2024 22:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724712223; cv=none; b=U/OKjw8fnC1Th8y8fxpmAdpswP46bXpVv4ORJxMSQnlZMV/JLhYu5+DXtMUSdNcRiqr4vYD6KvZGOc9abRDKtQ5KxU03iaZI99LSCazNpm2nJ12s7s39zLaehYl8j+wHdQ9zQlkfSfpgsVyoMpqlKG9FSbrXNWBpbxcsmdBkrjM=
+	t=1724712232; cv=none; b=gF7Tq+RkwCnPnUn7RF+D5B69GYHlRZaOboU722/U6nBwEqiGOtyckVWC7f5gG0YshBFDhEcZeKa925wUaonuOtCGhXrWsh+7x8wEETAJgwJ0+jnIxTv2vyGpycoNK+n6t7NT6uo+F4XjvwSMDBamYROALCWX1lX3SQmPtHmy6RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724712223; c=relaxed/simple;
-	bh=6VklqdpAhOQif72ie2ZJ2O87HQ2EVS+Qyb9b9Oii8f4=;
+	s=arc-20240116; t=1724712232; c=relaxed/simple;
+	bh=2Dx1poMFInj5NHx9OAbSKdQ7X35FioAzcok5qUhAaf8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bEVUH75/Z66DrOunom1LlBC+cHxH9PNghd0oUKGmbwsKAwo6JQfhVNce07LZfHkXZIXVlRytnOKYgmhFDEm4b1pieDEyjh2NcpM05owhN57Al+0dSyrIxbo8C8Wb8cSnqo87BjkVHO+WT/bUvM5Kv1RzuQJecst0zZghakugttQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=nx1JYboW; arc=none smtp.client-ip=205.220.165.32
+	 MIME-Version; b=shNL52Wh1p7FkrC49HB5wfUuSqWNdSEZVQ8CwB7Zmr5H3PSVfQsPBm05L3RNIOHmtFFFluGs/PyDBR1VgOscQBxPULr51jzy2xRl8fJPyJJgy0BktvI1tNErjPQFrUoEoE/KyMDiAYGSVo/rBo8lkLsqvt3jZW9RQ2DwHVA3liY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=jeqxygkF; arc=none smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47QKtU44025555;
-	Mon, 26 Aug 2024 22:43:17 GMT
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47QKtTWb020332;
+	Mon, 26 Aug 2024 22:43:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=l
-	419xnxIlrdKc2MeM5kPwsD9/TP4Pu3o1MSBGPxPvRE=; b=nx1JYboW3+M2T3svU
-	PxpQrzuuDw4SIVMeVN+GTg9407BJl2LOKE8jODPWwRK/akGDgAwI+51xz+05lXv/
-	lvInb6NEutpf/yAb69bSmCcB1G+a29XXjKvL1w5lvrwRO+43h181Jv3luiIs2wLR
-	5GzM4CAHlgO3cs2/DcDAyr/85j7xUE5V1cDT0quLG7JWtzBH3f9geoiEg74YRJPr
-	llr/je5+g0PTPt9y9IiDB6wQ4tdR0cUulGKgoAcA8wa5/hXStjkqlnyiOtSftO7d
-	iQn4bLd71JksKDqSevN6kc/Nq3f6CyUWgY+uP2GIgp+CSD54A+s/4F20Z1zdvMML
-	uVclg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4177npc8qs-1
+	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=9
+	Nw22CaxXzlTl2N9NHPGDeoB6dwSTixh6nR+/z+gl9o=; b=jeqxygkFu/fcP4SNl
+	SHQo1dGrS8ZndD/MxeVXlGJGES2s+ipRofe2/Zc1ovx3Bwy8CsGTdmunR2NvGEP9
+	zm5/paY+0krrxs6eN9yKpwfJzqW+Jea/MzHrXj0Gu+T9iwNgXOgIbKsr9AZJrCCn
+	+1nfcbbUWr1GmM0FhqCEmvnEoAQHwv2o04PXXwSiiTrTwCzq+GVkNeXEOarAkQxd
+	23qmorYCkyZdsQkcZcJSj23DtbcPDZvkZ6zEiZKfT22lrtj1DYwS8uShFcdl6lBc
+	fVrnJq2ymHgMHBisTxDVdWRPPSqdp0hmPq6RW2L7EI9VDU15Lrfrx5pI3h3l75/H
+	Tu9EA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4177hwm9fs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Aug 2024 22:43:17 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 47QKx3xc034678;
-	Mon, 26 Aug 2024 22:43:16 GMT
+	Mon, 26 Aug 2024 22:43:25 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 47QM8PZR032584;
+	Mon, 26 Aug 2024 22:43:23 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4189ss8ft0-1
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 418a0t5sar-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 26 Aug 2024 22:43:16 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47QMhF3S025028;
-	Mon, 26 Aug 2024 22:43:15 GMT
+	Mon, 26 Aug 2024 22:43:23 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47QMhMoM027970;
+	Mon, 26 Aug 2024 22:43:22 GMT
 Received: from localhost.us.oracle.com (bur-virt-x6-2-100.us.oracle.com [10.153.92.40])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4189ss8fr1-1
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 418a0t5s9p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 26 Aug 2024 22:43:15 +0000
+	Mon, 26 Aug 2024 22:43:22 +0000
 From: Ross Philipson <ross.philipson@oracle.com>
 To: linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
@@ -77,9 +77,9 @@ Cc: ross.philipson@oracle.com, dpsmith@apertussolutions.com,
         dwmw2@infradead.org, baolu.lu@linux.intel.com,
         kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
         trenchboot-devel@googlegroups.com
-Subject: [PATCH v10 15/20] tpm: Ensure tpm is in known state at startup
-Date: Mon, 26 Aug 2024 15:38:30 -0700
-Message-Id: <20240826223835.3928819-16-ross.philipson@oracle.com>
+Subject: [PATCH v10 16/20] tpm: Make locality requests return consistent values
+Date: Mon, 26 Aug 2024 15:38:31 -0700
+Message-Id: <20240826223835.3928819-17-ross.philipson@oracle.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240826223835.3928819-1-ross.philipson@oracle.com>
 References: <20240826223835.3928819-1-ross.philipson@oracle.com>
@@ -93,72 +93,78 @@ Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-08-26_16,2024-08-26_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 suspectscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999 mlxscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 adultscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
  definitions=main-2408260174
-X-Proofpoint-GUID: Ul4w-SF58LxeeZq1XSHJBdCgLaU0JYzq
-X-Proofpoint-ORIG-GUID: Ul4w-SF58LxeeZq1XSHJBdCgLaU0JYzq
+X-Proofpoint-GUID: Ck6Hl6bqb-unCqdkzb6jKQrtjjLk0AoY
+X-Proofpoint-ORIG-GUID: Ck6Hl6bqb-unCqdkzb6jKQrtjjLk0AoY
 
 From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
 
-When tis_tis_core initializes, it assumes all localities are closed. There
-are cases when this may not be the case. This commit addresses this by
-ensuring all localities are closed before initializing begins.
+The function tpm_tis_request_locality() is expected to return the locality
+value that was requested, or a negative error code upon failure. If it is called
+while locality_count of struct tis_data is non-zero, no actual locality request
+will be sent. Because the ret variable is initially set to 0, the
+locality_count will still get increased, and the function will return 0. For a
+caller, this would indicate that locality 0 was successfully requested and not
+the state changes just mentioned.
+
+Additionally, the function __tpm_tis_request_locality() provides inconsistent
+error codes. It will provide either a failed IO write or a -1 should it have
+timed out waiting for locality request to succeed.
+
+This commit changes __tpm_tis_request_locality() to return valid negative error
+codes to reflect the reason it fails. It then adjusts the return value check in
+tpm_tis_request_locality() to check for a non-negative return value before
+incrementing locality_cout. In addition, the initial value of the ret value is
+set to a negative error to ensure the check does not pass if
+__tpm_tis_request_locality() is not called.
 
 Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
 Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
 ---
- drivers/char/tpm/tpm_tis_core.c | 11 ++++++++++-
- include/linux/tpm.h             |  6 ++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/char/tpm/tpm_tis_core.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index a6967f312837..22ebf679ea69 100644
+index 22ebf679ea69..20a8b341be0d 100644
 --- a/drivers/char/tpm/tpm_tis_core.c
 +++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -1107,7 +1107,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 	u32 intmask;
- 	u32 clkrun_val;
- 	u8 rid;
--	int rc, probe;
-+	int rc, probe, i;
- 	struct tpm_chip *chip;
- 
- 	chip = tpmm_chip_alloc(dev, &tpm_tis);
-@@ -1169,6 +1169,15 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 		goto out_err;
+@@ -210,7 +210,7 @@ static int __tpm_tis_request_locality(struct tpm_chip *chip, int l)
+ again:
+ 		timeout = stop - jiffies;
+ 		if ((long)timeout <= 0)
+-			return -1;
++			return -EBUSY;
+ 		rc = wait_event_interruptible_timeout(priv->int_queue,
+ 						      (check_locality
+ 						       (chip, l)),
+@@ -229,18 +229,21 @@ static int __tpm_tis_request_locality(struct tpm_chip *chip, int l)
+ 			tpm_msleep(TPM_TIMEOUT);
+ 		} while (time_before(jiffies, stop));
  	}
+-	return -1;
++	return -EBUSY;
+ }
  
-+	/*
-+	 * There are environments, for example, those that comply with the TCG D-RTM
-+	 * specification that requires the TPM to be left in Locality 2.
-+	 */
-+	for (i = 0; i <= TPM_MAX_LOCALITY; i++) {
-+		if (check_locality(chip, i))
-+			tpm_tis_relinquish_locality(chip, i);
-+	}
+ static int tpm_tis_request_locality(struct tpm_chip *chip, int l)
+ {
+ 	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
+-	int ret = 0;
++	int ret = -EBUSY;
 +
- 	/* Take control of the TPM's interrupt hardware and shut it off */
- 	rc = tpm_tis_read32(priv, TPM_INT_ENABLE(priv->locality), &intmask);
- 	if (rc < 0)
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index e93ee8d936a9..98f2c7c1c52e 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -147,6 +147,12 @@ struct tpm_chip_seqops {
-  */
- #define TPM2_MAX_CONTEXT_SIZE 4096
++	if (l < 0 || l > TPM_MAX_LOCALITY)
++		return -EINVAL;
  
-+/*
-+ * The maximum locality (0 - 4) for a TPM, as defined in section 3.2 of the
-+ * Client Platform Profile Specification.
-+ */
-+#define TPM_MAX_LOCALITY		4
-+
- struct tpm_chip {
- 	struct device dev;
- 	struct device devs;
+ 	mutex_lock(&priv->locality_count_mutex);
+ 	if (priv->locality_count == 0)
+ 		ret = __tpm_tis_request_locality(chip, l);
+-	if (!ret)
++	if (ret >= 0)
+ 		priv->locality_count++;
+ 	mutex_unlock(&priv->locality_count_mutex);
+ 	return ret;
 -- 
 2.39.3
 
