@@ -1,245 +1,191 @@
-Return-Path: <linux-efi+bounces-1614-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1615-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1772962E31
-	for <lists+linux-efi@lfdr.de>; Wed, 28 Aug 2024 19:08:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B7B962E34
+	for <lists+linux-efi@lfdr.de>; Wed, 28 Aug 2024 19:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FB721F23B84
-	for <lists+linux-efi@lfdr.de>; Wed, 28 Aug 2024 17:08:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ACA91C21E50
+	for <lists+linux-efi@lfdr.de>; Wed, 28 Aug 2024 17:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FB01A4F31;
-	Wed, 28 Aug 2024 17:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2411A3BC3;
+	Wed, 28 Aug 2024 17:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRH0EvcH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P9Mi28WN"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC894D108;
-	Wed, 28 Aug 2024 17:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4B213C3D5;
+	Wed, 28 Aug 2024 17:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724864907; cv=none; b=F3TQZ53+OQ4V4NJQH8u7l4J7pIevHFMMmA0fKRY+iZqsz0iTHsoAhORaTeO50wv0p7R1IbbBxjV/pHpa6IxCgSmgSkmvNIBbUuzwhf4xOZjul2pJIKNvC3+vf/qttPeh2VIjzb0fH7Z6cn+HnUC+fI7yCC1zHqDBR9+RW0I9mN4=
+	t=1724864971; cv=none; b=ewJL5zQ4LF3pXvPDH4Ai6/UVJRp3JXwfTM5Fb+anTs64UEYcfyPy5zDjDTwU7usNyVlR+0RREnFt25KjiRt7h82fPg1XP6huFMrUUBvpveXoXM9QA5IEFTLsXtnaWJBuUvWu6KOZpbggNR2uRhobCEvSCxBuKQNRbFMH4GF+AY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724864907; c=relaxed/simple;
-	bh=JxsueSnSgpUq0E0aiVi/UwfMSleCE1Xyjsfg7oEDTFw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CJ35b8udKL7/s4jgGG6kijuE3PXd4qvAztJyDGFYBTXOLYae/USqgiZqCwBb1WFRxhqnQJBmSRQS9t1DkttEzJhW/zxxUNCzveLqc0KNV4/ZsWqf795uCrVWLinISviLFleUkiTl/mmDyUH/Cy18rk/e5B5Rt9YnsZABGRv/oyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRH0EvcH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3265AC4CEC3;
-	Wed, 28 Aug 2024 17:08:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724864907;
-	bh=JxsueSnSgpUq0E0aiVi/UwfMSleCE1Xyjsfg7oEDTFw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BRH0EvcH+Vf2h2JQptTFfaqw70GB1v8ey3mn8+o4f5Dqn1PyHiWV3JWRz8Kq0Sfa+
-	 KFAzysOwWiTLxF3Ydl/Vb1MmtBbiqJj6JCKJ1Wy5XE1oB41wLINGphF2skeD2r2p2k
-	 owaaSBnevfNjd/ms0z56BpWo7VYpl7BNLEEANDzU2n6sHtdKSq1+C09+Sk/rlZch3P
-	 q12nKu0699SoiP+IB4FTmO2nuLFWGip2VXP+z+nWrs3Ybx+RDYZmZSHGx1XWb/6mJQ
-	 mdmt8ioIqBWcWU9UbvW+8cyTeG6unyZVpwEJrXaaky39YnKtoYt3Gd4YNHTmiz/fAj
-	 Fv1ct9W49ZReg==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5353cd2fa28so371552e87.3;
-        Wed, 28 Aug 2024 10:08:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVTK70vFkRsgkkZDMGysKtYHDJKN8fJ03Hq9KxLTdKtjC8/keOYXfuP+HECiw3nO83kl7rx4KeiiNNC+JcM@vger.kernel.org, AJvYcCWJvqkcNYCdCCC0AS54XtObu3W+dSxAuwUhke93lHK4ViEAAuRbR64ipBDHbJznHskmX9CxZ/JgcKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw11SqmWFydgw390H+S7br57FbrvTOhiAuvDOjqEnyGW5AzFotE
-	Yt9Tzt+QiC38NTfa6rm5dGa18JR4mozVZ0J1pWmyR0tQhj3KG2kNSX4mPDizUtFJ/BTrOvBR0jO
-	Twoxm6Z3jeE2Hwp1naw2hBPZ3v+Y=
-X-Google-Smtp-Source: AGHT+IHL7Ap08nLbek7EV+lukGhBuzhm3LbdLGJwk2IXYMk/XLLc7Z1Z6xC/2CfmMMQQmBth0h1Tvc9Xpf4we8hI8PA=
-X-Received: by 2002:a05:6512:6c8:b0:52c:f2e0:db23 with SMTP id
- 2adb3069b0e04-5343886124bmr12461107e87.40.1724864905510; Wed, 28 Aug 2024
- 10:08:25 -0700 (PDT)
+	s=arc-20240116; t=1724864971; c=relaxed/simple;
+	bh=Lt/vVZGxbPxIVeHUQrwZ9LbuJ1MJIFdjEIvRXf/Rn54=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JGNdAMQb7Tc8TIDef/byUNvK5F5c56wsvXSy/exb63Pf6u3PvMUf2sFj41hwxtBW9J8pD3x73lup42G4IKydpZMpO0CmN0bn4WGTiwE12uUt6Id92svLSYhQSIf2LSLt6IfNAGMIgn9JlSf5kOHk9H3oPfhTLNkmXzLm69PmDQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P9Mi28WN; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724864969; x=1756400969;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Lt/vVZGxbPxIVeHUQrwZ9LbuJ1MJIFdjEIvRXf/Rn54=;
+  b=P9Mi28WN8R/Yz4qzhHxAUlcABxkGWrjwtpKYCAoXsqUNLeo/aSBERTjL
+   pNxMBvia7CGnK0ATN6O+mptPBEsHASFfLOU1pkAwSZA/mex22P/GUMrIb
+   AsLyNcxxaOWSODm+mIIrP971+Louha0/JrbS6obQ//qtguKhescA6dKlG
+   QVBngLqcmESMiYPrO0eyXTAmDiIVj5ZnPFphnGYU31BjOy7pHT1QjIqJ1
+   DK+L5mmPoBX/KtcMIUuypnwqLKkeepTNRG46H69lbJSA81nwCJ2qw848f
+   RsL+eYT9m3+Ok7d42G17l96jbboLJDoGjGpgHosmtxL2mJVvlUqZpfRnI
+   Q==;
+X-CSE-ConnectionGUID: EQXEFky9QwKFN3Sqe1vzeA==
+X-CSE-MsgGUID: dEMdHLFGRZq56eKIwWgD9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11178"; a="23572342"
+X-IronPort-AV: E=Sophos;i="6.10,183,1719903600"; 
+   d="scan'208";a="23572342"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2024 10:09:28 -0700
+X-CSE-ConnectionGUID: suS3Usx0QSylOdqWws6zyg==
+X-CSE-MsgGUID: NbAZYs2EQZqfjlEChoUyUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,183,1719903600"; 
+   d="scan'208";a="100787474"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 28 Aug 2024 10:09:22 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sjMAZ-000LBE-0t;
+	Wed, 28 Aug 2024 17:09:19 +0000
+Date: Thu, 29 Aug 2024 01:09:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ross Philipson <ross.philipson@oracle.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+	linux-efi@vger.kernel.org, iommu@lists.linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, ross.philipson@oracle.com,
+	dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
+	ardb@kernel.org, mjg59@srcf.ucam.org,
+	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de,
+	jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
+	nivedita@alum.mit.edu, herbert@gondor.apana.org.au,
+	davem@davemloft.net, corbet@lwn.net, ebiederm@xmission.com,
+	dwmw2@infradead.org, baolu.lu@linux.intel.com,
+	kanth.ghatraju@oracle.com
+Subject: Re: [PATCH v10 20/20] x86/efi: EFI stub DRTM launch support for
+ Secure Launch
+Message-ID: <202408290030.FEbUhHbr-lkp@intel.com>
+References: <20240826223835.3928819-21-ross.philipson@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819145417.23367-1-piliu@redhat.com>
-In-Reply-To: <20240819145417.23367-1-piliu@redhat.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 28 Aug 2024 19:08:14 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGB3VF=NAQBADkdmodSVaZyf8h2n0FXwi5fXLUE2WgXag@mail.gmail.com>
-Message-ID: <CAMj1kXGB3VF=NAQBADkdmodSVaZyf8h2n0FXwi5fXLUE2WgXag@mail.gmail.com>
-Subject: Re: [RFCv2 0/9] UEFI emulator for kexec
-To: Pingfan Liu <piliu@redhat.com>
-Cc: Jan Hendrik Farr <kernel@jfarr.cc>, Philipp Rudo <prudo@redhat.com>, 
-	Lennart Poettering <mzxreary@0pointer.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Eric Biederman <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, kexec@lists.infradead.org, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240826223835.3928819-21-ross.philipson@oracle.com>
 
-On Mon, 19 Aug 2024 at 16:55, Pingfan Liu <piliu@redhat.com> wrote:
->
-> *** Background ***
->
-> As more PE format kernel images are introduced, it post challenge to kexec to
-> cope with the new format.
->
-> In my attempt to add support for arm64 zboot image in the kernel [1],
-> Ard suggested using an emulator to tackle this issue.  Last year, when
-> Jan tried to introduce UKI support in the kernel [2], Ard mentioned the
-> emulator approach again [3]
->
-> After discussion, Ard's approach seems to be a more promising solution
-> to handle PE format kernels once and for all.  This series follows that
-> approach and implements an emulator to emulate EFI boot time services,
-> allowing the efistub kernel to self-extract and boot.
->
-> Another year has passed, and UKI kernel is more and more frequently used
-> in product. I think it is time to pay effort to resolve this issue.
->
->
-> *** Overview of implement ***
-> The whole model consits of three parts:
->
-> -1. The emulator
-> It is a self-relocatable PIC code, which is finally linked into kernel, but not
-> export any internal symbol to kernel.  It mainly contains: a PE file parser,
-> which loads PE format kernel, a group of functions to emulate efi boot service.
->
-> -2. inside kernel, PE-format loader
-> Its main task is to set up two extra kexec_segment, one for emulator, the other
-> for passing information from the first kernel to emulator.
->
-> -3. set up identity mapping only for the memory used by the emulator.
-> Here it relies on kimage_alloc_control_pages() to get pages, which will not
-> stamped during the process of kexec relocate (cp from src to dst). And since the
-> mapping only covers a small range of memory, it cost small amount memory.
->
->
-> *** To do ***
->
-> Currently, it only works on arm64 virt machine. For x86, it needs some slightly
-> changes. (I plan to do it in the next version)
->
-> Also, this series does not implement a memory allocator, which I plan to
-> implement with the help of bitmap.
->
-> About console, currently it hard code for arm64 virt machine, later it should
-> extract the information through ACPI table.
->
-> For kdump code, it is not implmented yet. But it should share the majority of
-> this series.
->
->
-> *** Test of this series ***
-> I have tested this series on arm64 virt machine. There I booted the vmlinuz.efi
-> and kexec_file_load a UKI image, then switch to the second kernel.
->
-> I used a modified kexec-tools [4], which just skips the check of the file format and passes the file directly to kernel.
->
-> [1]: https://lore.kernel.org/linux-arm-kernel/ZBvKSis+dfnqa+Vz@piliu.users.ipa.redhat.com/T/#m42abb0ad3c10126b8b3bfae8a596deb707d6f76e
-> [2]: https://lore.kernel.org/lkml/20230918173607.421d2616@rotkaeppchen/T/
-> [3]: https://lore.kernel.org/lkml/20230918173607.421d2616@rotkaeppchen/T/#mc60aa591cb7616ceb39e1c98f352383f9ba6e985
-> [4]: https://github.com/pfliu/kexec-tools.git branch: kexec_uefi_emulator
->
->
-> RFCv1 -> RFCv2:
-> -1.Support to run UKI kernel by: add LoadImage() and StartImage(), add
->    PE file relocation support, add InstallMultiProtocol()
-> -2.Also set up idmap for EFI runtime memory descriptor since UKI's
->    systemd-stub calls runtime service
-> -3.Move kexec_pe_image.c from arch/arm64/kernel to kernel/, since it
->    aims to provide a more general architecture support.
->
-> RFCv1: https://lore.kernel.org/linux-efi/20240718085759.13247-1-piliu@redhat.com/
-> RFCv2: https://github.com/pfliu/linux.git  branch kexec_uefi_emulator_RFCv2
->
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Jan Hendrik Farr <kernel@jfarr.cc>
-> Cc: Philipp Rudo <prudo@redhat.com>
-> Cc: Lennart Poettering <mzxreary@0pointer.de>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: Eric Biederman <ebiederm@xmission.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Dave Young <dyoung@redhat.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: kexec@lists.infradead.org
-> Cc: linux-efi@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
->
->
->
-> Pingfan Liu (9):
->   efi/libstub: Ask efi_random_alloc() to skip unusable memory
->   efi/libstub: Complete efi_simple_text_output_protocol
->   efi/emulator: Initial rountines to emulate EFI boot time service
->   efi/emulator: Turn on mmu for arm64
->   kexec: Introduce kexec_pe_image to parse and load PE file
->   arm64: kexec: Introduce a new member param_mem to kimage_arch
->   arm64: mm: Change to prototype of
->   arm64: kexec: Prepare page table for emulator
->   arm64: kexec: Enable kexec_pe_image
->
+Hi Ross,
 
-Thanks for putting this RFC together. This is useful work, and gives
-us food for thought and discussion.
+kernel test robot noticed the following build warnings:
 
-There are a few problems that become apparent when going through these changes.
+[auto build test WARNING on tip/x86/core]
+[also build test WARNING on char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus herbert-cryptodev-2.6/master efi/next linus/master v6.11-rc5]
+[cannot apply to herbert-crypto-2.6/master next-20240828]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-1. Implementing UEFI entirely is intractable, and unnecessary.
-Implementing the subset of UEFI that is actually needed to boot Linux
-*is* tractable, though, but we need to work together to write this
-down somewhere.
-  - the EFI stub needs the boot services for the EFI memory map and
-the allocation routines
-  - GRUB needs block I/O
-  - systemd-stub/UKI needs file I/O to look for sidecars
-  - etc etc
+url:    https://github.com/intel-lab-lkp/linux/commits/Ross-Philipson/Documentation-x86-Secure-Launch-kernel-documentation/20240827-065225
+base:   tip/x86/core
+patch link:    https://lore.kernel.org/r/20240826223835.3928819-21-ross.philipson%40oracle.com
+patch subject: [PATCH v10 20/20] x86/efi: EFI stub DRTM launch support for Secure Launch
+config: i386-randconfig-062-20240828 (https://download.01.org/0day-ci/archive/20240829/202408290030.FEbUhHbr-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240829/202408290030.FEbUhHbr-lkp@intel.com/reproduce)
 
-I implemented a Rust 'efiloader' crate a while ago that encapsulates
-most of this (it can boot Linux/arm64 on QEMU and boot x86 via GRUB in
-user space **). Adding file I/O to this should be straight-forward -
-as Lennart points out, we only need the protocol, it doesn't need to
-be backed by an actual file system, it just needs to be able to expose
-other files in the right way.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408290030.FEbUhHbr-lkp@intel.com/
 
-2. Running the UEFI emulator on bare metal is not going to scale.
-Cloning UART driver code and MMU code etc is a can of worms that you
-want to leave closed. And as Lennart points out, there is other
-hardware (TPM) that needs to be accessible as well. Providing a
-separate set of drivers for all hardware that the EFI emulator may
-need to access is not a tractable problem either.
+sparse warnings: (new ones prefixed by >>)
+>> drivers/firmware/efi/libstub/x86-stub.c:945:41: sparse: sparse: non size-preserving pointer to integer cast
+   drivers/firmware/efi/libstub/x86-stub.c:953:65: sparse: sparse: non size-preserving pointer to integer cast
+>> drivers/firmware/efi/libstub/x86-stub.c:980:70: sparse: sparse: non size-preserving integer to pointer cast
+   drivers/firmware/efi/libstub/x86-stub.c:1014:45: sparse: sparse: non size-preserving integer to pointer cast
 
-The fix for this, as I see it, is to run the EFI emulator in user
-space, to the point where the payload calls ExitBootServices(). This
-will allow all I/O and memory protocol to be implemented trivially,
-using C library routines. I have a crude prototype** of this running
-to the point where ExitBootServices() is called (and then it crashes).
-The tricky yet interesting bit here is how we migrate a chunk of user
-space memory to the bare metal context that will be created by the
-kexec syscall later (in which the call to ExitBootServices() would
-return and proceed with the boot). But the principle is rather
-straight-forward, and would permit us, e.g., to kexec an OS installer
-too.
+vim +945 drivers/firmware/efi/libstub/x86-stub.c
 
-3. We need to figure out how to support TPM and PCRs in the context of
-kexec. This is a fundamental issue with verified boot, given that the
-kexec PCR state is necessarily different from the boot state, and so
-we cannot reuse the TPM directly if we want to pretend that we are
-doing an ordinary boot in kexec. The alternative is to leave the TPM
-in a state where the kexec kernel can access its sealed secrets, and
-mock up the TCG2 EFI protocols using a shim that sits between the TPM
-hardware (as the real TCG2 protocols will be long gone) and the EFI
-payload. But as I said, this is a fundamental issue, as the ability to
-pretend that a kexec boot is a pristine boot would mean that verified
-boot is broken.
+   927	
+   928	static bool efi_secure_launch_update_boot_params(struct slr_table *slrt,
+   929							 struct boot_params *boot_params)
+   930	{
+   931		struct slr_entry_intel_info *txt_info;
+   932		struct slr_entry_policy *policy;
+   933		struct txt_os_mle_data *os_mle;
+   934		bool updated = false;
+   935		int i;
+   936	
+   937		txt_info = slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_INTEL_INFO);
+   938		if (!txt_info)
+   939			return false;
+   940	
+   941		os_mle = txt_os_mle_data_start((void *)txt_info->txt_heap);
+   942		if (!os_mle)
+   943			return false;
+   944	
+ > 945		os_mle->boot_params_addr = (u64)boot_params;
+   946	
+   947		policy = slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_ENTRY_POLICY);
+   948		if (!policy)
+   949			return false;
+   950	
+   951		for (i = 0; i < policy->nr_entries; i++) {
+   952			if (policy->policy_entries[i].entity_type == SLR_ET_BOOT_PARAMS) {
+   953				policy->policy_entries[i].entity = (u64)boot_params;
+   954				updated = true;
+   955				break;
+   956			}
+   957		}
+   958	
+   959		/*
+   960		 * If this is a PE entry into EFI stub the mocked up boot params will
+   961		 * be missing some of the setup header data needed for the second stage
+   962		 * of the Secure Launch boot.
+   963		 */
+   964		if (image) {
+   965			struct setup_header *hdr = (struct setup_header *)((u8 *)image->image_base +
+   966						    offsetof(struct boot_params, hdr));
+   967			u64 cmdline_ptr;
+   968	
+   969			boot_params->hdr.setup_sects = hdr->setup_sects;
+   970			boot_params->hdr.syssize = hdr->syssize;
+   971			boot_params->hdr.version = hdr->version;
+   972			boot_params->hdr.loadflags = hdr->loadflags;
+   973			boot_params->hdr.kernel_alignment = hdr->kernel_alignment;
+   974			boot_params->hdr.min_alignment = hdr->min_alignment;
+   975			boot_params->hdr.xloadflags = hdr->xloadflags;
+   976			boot_params->hdr.init_size = hdr->init_size;
+   977			boot_params->hdr.kernel_info_offset = hdr->kernel_info_offset;
+   978			efi_set_u64_form(boot_params->hdr.cmd_line_ptr, boot_params->ext_cmd_line_ptr,
+   979					 &cmdline_ptr);
+ > 980			boot_params->hdr.cmdline_size = strlen((const char *)cmdline_ptr);
+   981		}
+   982	
+   983		return updated;
+   984	}
+   985	
 
-
-As future work, I'd like to propose to collaborate on some alignment
-regarding a UEFI baseline for Linux, i.e., the parts that we actually
-need to boot Linux.
-
-For this series in particular, I don't see a way forward where we
-adopt this approach, and carry all this code inside the kernel.
-
-Thanks.
-Ard.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
