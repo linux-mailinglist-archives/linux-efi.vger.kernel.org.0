@@ -1,139 +1,202 @@
-Return-Path: <linux-efi+bounces-1625-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1626-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55ADE9647B3
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Aug 2024 16:13:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B1E9648B0
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Aug 2024 16:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7E18B22BBA
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Aug 2024 14:12:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 524571C228ED
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Aug 2024 14:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00011AD419;
-	Thu, 29 Aug 2024 14:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D8C1B011C;
+	Thu, 29 Aug 2024 14:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="fRJYXpXL"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UD1HV6vp"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from sender4-of-o51.zoho.com (sender4-of-o51.zoho.com [136.143.188.51])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9034E1A3BDD;
-	Thu, 29 Aug 2024 14:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724940747; cv=pass; b=MbqgQEZK5Xk+2D+sOpjtK2h+HFdl+0bfkj37W1K1Uds1NxXSt78iZyNW93HJ2rFrgcJzjKZMxgYrhyvsJpTZ87TKTGpadfQfoTBwhTaexdPGBv5T7SB1uCKGR37iXhBTzW/4zZHknpr67Vv3YwgMiqf/Ah8ym8wJMIiAo15+A/o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724940747; c=relaxed/simple;
-	bh=7hB/1UOJaiqQ99Joa1DObT9nogjXVp6w2U15f4FVo3Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lxb0veOerT8BEIzmJq9Tk7r/EASVTsWNexoWFtVdf0MxZOZfnpPtwQ+VtE1GHfeH/V3xMNoD2tNr8GuK6Y7VWRCRCJgqDLDOKK6CpYcj5wwtUJWS9N4ED2EpPwtwequwRmLlVNfxbsu3UpsA0DFVu51hnzxJ/y8gQzsIfBRX+jA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=fRJYXpXL; arc=pass smtp.client-ip=136.143.188.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apertussolutions.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724940676; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=E7EusWO6er6F2xI1Zxfssj17795cFIrBU9nS7H5PyLGs+6UWBCNXAkfV+JQpsvkn4X6QnDjZg59GcAbdwpZwp541+ugqTaxP6T/nv6M351s7VISQpTXJZegJ/QpLmHKW8PhIgd5ObyYNwREe1/OqSZxAHGA/WYAAlVOJLcXTMDk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1724940676; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HgDBKtReaNoT627XPwozc8cV/1MN4aAoTtHPOciy3pM=; 
-	b=F8+Ieta99m9Sb6grjg5r5Hse1Vt8cQANARXzRz4E2JRoFdXjGYznYWVRmMvi/k0t3GJxjfgkNXCi7mbnz93mta8ovG1WRwOCa2szi73evgpHYzIgytv1sd3soamVZ71SpJYmuyZoaySGKcb25OExw2BJMSP43syvz3OmqKbf23o=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=apertussolutions.com;
-	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
-	dmarc=pass header.from=<dpsmith@apertussolutions.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724940676;
-	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=HgDBKtReaNoT627XPwozc8cV/1MN4aAoTtHPOciy3pM=;
-	b=fRJYXpXL9J45pXy0RROxungza/op8PLpbcAgBCB2imI/b3vHv4nw02sEX8neAivz
-	PPiCX2FneFCwIi7K74vsx1xZ2NcmUIkgDl+v3rZoRF1EkHBouBvTymaYqasGUoGZL83
-	itV4OEfBmfm1uvXSAhidcGZMH/LIAtY/V/1UW3+4=
-Received: by mx.zohomail.com with SMTPS id 1724940674239491.862092879441;
-	Thu, 29 Aug 2024 07:11:14 -0700 (PDT)
-Message-ID: <e3194ad1-e976-40a6-a8f3-98081b0b07ea@apertussolutions.com>
-Date: Thu, 29 Aug 2024 10:11:11 -0400
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E6E19049D;
+	Thu, 29 Aug 2024 14:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724942332; cv=none; b=i1Ihz2WXazqzSOnyMGeqytnL9xp+UkT+EImfhy+Ww2TQhiyF5VT2Q/5Rf+KQPeyftz9QJjjzOTiZyA5yB88uwac/lr2RDujYy+PRP3l04SeuY00vhZyBrG1tCDpSW2vUyxOGWct/guOfXve65E90isBJHD8Wi6YF4HchUJR6seY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724942332; c=relaxed/simple;
+	bh=FMQS2O5d+DRmHBkg5Fp2Zk5YiN6kMZNZGivHCXdxMUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jEcRkkc+MA3Z/qExFj77H49TQbpTcmcTndk3ON1OlKH+AqKXA4lhey7VVcvwoqJlTk5BvGV1mN9CaIW5G7gSAvt1uinE7MPRCAWAUCRcpTut6YYTk95IG73ytKTfy4n/8A9CTSW3MfB0Xlehwy2aEGcyhLE5kLMHIe57tJtmApU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UD1HV6vp; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1787840E0275;
+	Thu, 29 Aug 2024 14:38:48 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id uUNMbPNF293b; Thu, 29 Aug 2024 14:38:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1724942322; bh=IO4ma28zS0rS9FhCeUmCpz2/rGp6VmKJbKIMwcc+1F0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UD1HV6vpZJUxduYovLkMvLS0T/08vD4bd6QC/Qc6UZQ5q5PFCjm/pl1tWsXDeJpE4
+	 8k+ad0bOaxZmLf6dKGMLkVc0sNSNzDUJVU0wL8PywLCYnTNBZTB/Z7hfsv5xtBsjJS
+	 4ashoQf0art9MJdepehxRQDON52OM7rvWVHGdvErwrP3RsNo0wuCoiwPJQFHlFJdvW
+	 fE2TSjoIOUJXdCqPDes6RUJqv8mewMNGiq6k1HgiHHsMUbDeutdnbbMjYf9GV+VQz1
+	 wOPhvSokUGktO6yB8np165FQgZa392Tc/8IPkUdBLC8cppUcH0N036LAj7Wk461IZz
+	 kxILcqH7t37FABY89MiNhVOwnsDwGAtM/2laYYdiY4nYoSl069JUZW1V31kKTy9bej
+	 By+ETEUFVzTjTepec+Rq2ewEciHN9UMmfwWTeISISGJNYM5SHS0hRqRwiAAXTF5I2p
+	 JXaFkAI1MSRivKw6A4vkjn5gB8CnPeA437PDO/90LDwEL4fkCrOUsCHEijuPoU66SU
+	 GseDgw55JeWprDUmwEeevhoboxdc+SlKUUfJKfR62mtW6ghAvPYFpKcxqcInHxKpVD
+	 FH7cDzNXIWTVWRl7Zh1D/2SzrH5hhHEQw+WkNa/JvKAB9N/plfS3B/g7fRjXhx6l6a
+	 qKXHhqDNpZFFmF1dmCtO6i8s=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6413E40E0169;
+	Thu, 29 Aug 2024 14:38:19 +0000 (UTC)
+Date: Thu, 29 Aug 2024 16:38:11 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Tony Luck <tony.luck@intel.com>,
+	Daniel Ferguson <danielf@os.amperecomputing.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morse <james.morse@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Len Brown <lenb@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tyler Baicar <tbaicar@codeaurora.org>,
+	Will Deacon <will@kernel.org>, Xie XiuQi <xiexiuqi@huawei.com>,
+	linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Shengwei Luo <luoshengwei@huawei.com>,
+	Jason Tian <jason@os.amperecomputing.com>
+Subject: Re: [PATCH v2 1/5] RAS: Report all ARM processor CPER information to
+ userspace
+Message-ID: <20240829143811.GDZtCH07BFEdbbv9wx@fat_crate.local>
+References: <cover.1720679234.git.mchehab+huawei@kernel.org>
+ <3853853f820a666253ca8ed6c7c724dc3d50044a.1720679234.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 01/15] x86/boot: Place kernel_info at a fixed offset
-To: Ard Biesheuvel <ardb@kernel.org>, Stuart Yoder <stuart.yoder@arm.com>
-Cc: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
- linux-efi@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
- mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
- peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
- nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net,
- kanth.ghatraju@oracle.com, trenchboot-devel@googlegroups.com
-References: <20240214221847.2066632-1-ross.philipson@oracle.com>
- <20240214221847.2066632-2-ross.philipson@oracle.com>
- <CAMj1kXH3Gvr3vDRLDdXuc0s7ZAQYE6+D7tmCRBjJWwWt2fn4-w@mail.gmail.com>
- <9d01a6d2-4dd9-4331-8fc9-b01c07cfdbb5@apertussolutions.com>
- <CAMj1kXHn6xeAskWiDLvvA4oG3j9_tqx+iMYJXMqmgvyX4pMzgg@mail.gmail.com>
-Content-Language: en-US
-From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
-In-Reply-To: <CAMj1kXHn6xeAskWiDLvvA4oG3j9_tqx+iMYJXMqmgvyX4pMzgg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3853853f820a666253ca8ed6c7c724dc3d50044a.1720679234.git.mchehab+huawei@kernel.org>
 
-On 8/28/24 13:45, Ard Biesheuvel wrote:
-> (cc Stuart)
+On Thu, Jul 11, 2024 at 08:28:52AM +0200, Mauro Carvalho Chehab wrote:
+> In addition to those data, it also exports two fields that are
+> parsed by the GHES driver when firmware reports it, e. g.:
 > 
-> On Thu, 21 Mar 2024 at 15:46, Daniel P. Smith
-> <dpsmith@apertussolutions.com> wrote:
->>
->> Hi Ard!
->>
->> On 2/15/24 02:56, Ard Biesheuvel wrote:
->>> On Wed, 14 Feb 2024 at 23:31, Ross Philipson <ross.philipson@oracle.com> wrote:
->>>>
->>>> From: Arvind Sankar <nivedita@alum.mit.edu>
->>>>
->>>> There are use cases for storing the offset of a symbol in kernel_info.
->>>> For example, the trenchboot series [0] needs to store the offset of the
->>>> Measured Launch Environment header in kernel_info.
->>>>
->>>
->>> Why? Is this information consumed by the bootloader?
->>
->> Yes, the bootloader needs a standardized means to find the offset of the
->> MLE header, which communicates a set of meta-data needed by the DCE in
->> order to set up for and start the loaded kernel. Arm will also need to
->> provide a similar metadata structure and alternative entry point (or a
->> complete rewrite of the existing entry point), as the current Arm entry
->> point is in direct conflict with Arm DRTM specification.
->>
+> - error severity
+> - cpu logical index
+
+s/cpu/CPU/g
+
+check your whole set pls.
+
+> Report all of these information to userspace via trace uAPI, So that
+> userspace can properly record the error and take decisions related
+> to cpu core isolation according to error severity and other info.
 > 
-> Digging up an old thread here: could you elaborate on this? What do
-> you mean by 'Arm entry point' and how does it conflict directly with
-> the Arm DRTM specification? The Linux/arm64 port predates that spec by
-> about 10 years, so I would expect the latter to take the former into
-> account. If that failed to happen, we should fix the spec while we
-> still can.
+> After this patch, all the data from ARM Processor record from table
 
-Yes, we have been working with Stuart regarding the specification and 
-crafting a compliant implementation approach. It is still very early 
-days, we are attempting to draft a plan around the specification with no 
-physical implementation to validate against. After some discussion, the 
-concern that a separate entry point may be needed has faded and in fact 
-it likely will not be needed. As always, the devil is in the details, 
-and until we have a hardware that has implemented the specification, and 
-we attempt to light it up, we won't know what will be needed for the 
-implementation.
+Avoid having "This patch" or "This commit" in the commit message. It is
+tautologically useless.
 
-In short, at this point it was determined no update to the DRTM spec is 
-needed. As hardware becomes available, and we do battle with it, Stuart 
-will be kept up to date. We will work with him to ensure any changes are 
-captured that will help reduce chances that vendors and developers do 
-not misinterpret the spec.
+Also, do
 
-V/r,
-Daniel P. Smith
+$ git grep 'This patch' Documentation/process
+
+for more details.
+
+...
+
+> [mchehab: modified patch description, solve merge conflicts and fix coding style]
+> Fixes: e9279e83ad1f ("trace, ras: add ARM processor error trace event")
+> Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
+> Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
+> Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com>
+
+What is this SOB chain trying to tell me?
+
+All those folks handled the patch?
+
+> Tested-by: Shiju Jose <shiju.jose@huawei.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-section
+> ---
+>  drivers/acpi/apei/ghes.c | 11 ++++-----
+>  drivers/ras/ras.c        | 45 +++++++++++++++++++++++++++++++++++--
+>  include/linux/ras.h      | 16 +++++++++++---
+>  include/ras/ras_event.h  | 48 +++++++++++++++++++++++++++++++++++-----
+>  4 files changed, 103 insertions(+), 17 deletions(-)
+
+...
+
+> -void log_arm_hw_error(struct cper_sec_proc_arm *err)
+> +void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev)
+>  {
+> -	trace_arm_event(err);
+> +	struct cper_arm_err_info *err_info;
+> +	struct cper_arm_ctx_info *ctx_info;
+> +	u8 *ven_err_data;
+> +	u32 ctx_len = 0;
+> +	int n, sz, cpu;
+> +	s32 vsei_len;
+> +	u32 pei_len;
+> +	u8 *pei_err;
+> +	u8 *ctx_err;
+> +
+> +	pei_len = sizeof(struct cper_arm_err_info) * err->err_info_num;
+> +	pei_err = (u8 *)err + sizeof(struct cper_sec_proc_arm);
+> +
+> +	err_info = (struct cper_arm_err_info *)(err + 1);
+> +	ctx_info = (struct cper_arm_ctx_info *)(err_info + err->err_info_num);
+> +	ctx_err = (u8 *)ctx_info;
+> +	for (n = 0; n < err->context_info_num; n++) {
+> +		sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
+> +		ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
+> +		ctx_len += sz;
+> +	}
+> +
+> +	vsei_len = err->section_length - (sizeof(struct cper_sec_proc_arm) +
+> +					  pei_len + ctx_len);
+> +	if (vsei_len < 0) {
+> +		pr_warn(FW_BUG
+> +			"section length: %d\n", err->section_length);
+> +		pr_warn(FW_BUG
+> +			"section length is too small\n");
+> +		pr_warn(FW_BUG
+> +			"firmware-generated error record is incorrect\n");
+
+No need to break those lines.
+
+> +		vsei_len = 0;
+> +	}
+> +	ven_err_data = (u8 *)ctx_info;
+> +
+> +	cpu = GET_LOGICAL_INDEX(err->mpidr);
+> +	/* when return value is invalid, set cpu index to -1 */
+
+Obvious comment - no need for it.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
