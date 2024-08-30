@@ -1,81 +1,80 @@
-Return-Path: <linux-efi+bounces-1633-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1634-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42AC1966B60
-	for <lists+linux-efi@lfdr.de>; Fri, 30 Aug 2024 23:43:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAAD966B72
+	for <lists+linux-efi@lfdr.de>; Fri, 30 Aug 2024 23:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EE86B221C7
-	for <lists+linux-efi@lfdr.de>; Fri, 30 Aug 2024 21:43:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 555DFB22939
+	for <lists+linux-efi@lfdr.de>; Fri, 30 Aug 2024 21:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62104176AB6;
-	Fri, 30 Aug 2024 21:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB34176FAB;
+	Fri, 30 Aug 2024 21:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="WlJFPFNf"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="oW3eEVx2"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11C0175D5E
-	for <linux-efi@vger.kernel.org>; Fri, 30 Aug 2024 21:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4E1176FA0
+	for <linux-efi@vger.kernel.org>; Fri, 30 Aug 2024 21:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725054194; cv=none; b=e6S2cyvXVMH8jOIW3opE//+xP5pcOpph1iMCpv3RULRQgF+SAEaGsxgqfkOQllLmDdMKf+aOEtD6mffJH1vvkuKVxcD4vo8iFytIi8KNvGqHQCH1VXJGdnL7BbB8+rW6WGWuicadWVFhRPsABucLHRmrz2YwazCL3qCeUPs5nXw=
+	t=1725054312; cv=none; b=Dh3XJXuCbc0ss2zT0fD1mOKxQ611JUDa9dFoJrFsQvgZd9jXGGa/qW7s7GsGz7f4KmntcWec8i8d7i0SgvuAI2VUQRBFkEY60VMhJIIgNZW+Kw1VEQkS1hwKW6DBj9KIxKN4lyn3imiCJcUOkODb+OIg4E8Y7cL8PMu0ZhziWlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725054194; c=relaxed/simple;
-	bh=6vpszAzZ8zhxPZm0vbs72sc/ik01KeziA9Wp0qLkkR4=;
+	s=arc-20240116; t=1725054312; c=relaxed/simple;
+	bh=jY2f6hdUNrBcTP3s1l6HmvunmvX/o4bAQuAo1MwTAV8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MgzgGynvjE/DYihX/mYtOfR0+9ak1qbZXkswVeK2c5MNWvZ7T8CMHYKT5XPxtxvjiHc1I/9Hv6/49Z7G4X9aVAyHb7xE75xC75cZrZrG0I50DQBsR+mjblbvRiJpf30/dtD+9WPa/fQWrWlPpf3bzWaqFGw0ac893O1RAsqTFxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=WlJFPFNf; arc=none smtp.client-ip=209.85.221.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=FNwMg5clw+HUcRnlbWbq3u/NHLVar8kZBVumYqoMJKdd1ajkbw9Pe7X4WUfa/7npx9n3w8hXNNT6xhHerQFVOxU07YyrGjnVgfHISSF79xG7/DjhxOVjQ34V0CNZkBTsOXRsQSg1rBVeeufj67tRHa2e5qcJpEnC9oO42Hsrnag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=oW3eEVx2; arc=none smtp.client-ip=209.85.160.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-4fd0d7fe6f6so887660e0c.2
-        for <linux-efi@vger.kernel.org>; Fri, 30 Aug 2024 14:43:12 -0700 (PDT)
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-273c8514254so1423881fac.0
+        for <linux-efi@vger.kernel.org>; Fri, 30 Aug 2024 14:45:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1725054191; x=1725658991; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1725054310; x=1725659110; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gK1TmJ2KEIYeKgjrqy3yOpMjy3RK0PZ6y/agh65IDBQ=;
-        b=WlJFPFNfstWQgSn8NTWzpD/Vt74TVAeMqZ+cXan9rmxO/PlWSkWctRhGxFNAZhX6SL
-         pgxHEXxiS/lYXMA577FS2NJcBjZJYRBYAw+sWp2Fryr0yRpRQmTY/czMfx8sj89qZy5q
-         jxQrjCsnYWrxLIttcuHPN1vRLXyVobPFulxbQCazCvYG9D7S8x7gHz0E4auAAfKQwwMC
-         ylWPW+o+JL7l2Fn+H9aSV4LLGkPzp/jIhuIntZz7wTV4YDMHMGQaf2q6wYQpGjcgLV/1
-         csiPRurPkcfR2bYXK2aQLLE50cQHsyqYVDzdCKmhFoMFZEZooQ2xuY49DFuMYuoUScak
-         T5bQ==
+        bh=Xylz0mwWzjFrdaZpGrna2u+Ajnu8hOvOrwmJ4DUtico=;
+        b=oW3eEVx2TcOHMm3XCG1rrTBNx2MBIsCaR/iuLaqQ0OIHKlUi/aCQY3Bf58wnF6q+Uo
+         xdLvRb3p0lEomYmExMuGu16njWqs9r5gAXPcD73QCsgGDcUJL8mDdtv5bBEQ3jf8dh15
+         lv7SopRbd/U5KAmPMkqHxbedzPyAH2QiMmvEoLxCh+2LJYa8dlO/o6UG9T21NIBcWU60
+         pAIRcEhoRg2+aiO5VKfq7BWhEratlugsVZiRJc3vFt1fuLWQe3LO7Ya7hZR6wUabIxjq
+         jxCuMSfbNhB+xpYwoZQ9kym7omMvHzv2idpcXk1VRkS9LigzoeRBXKmSn2s2gHgtzaFc
+         nkig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725054191; x=1725658991;
+        d=1e100.net; s=20230601; t=1725054310; x=1725659110;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gK1TmJ2KEIYeKgjrqy3yOpMjy3RK0PZ6y/agh65IDBQ=;
-        b=xJquBWk+tyHBtLNBladc+/vGhnS6ulmTDuj/2MM7Jp7hlYkXuDP8Wi30Q/f1dR/5r4
-         M7fYgIIBV/Xii9GeBd3jdi6/0lkhNaOltLcoQTs+lgsU0zekF7vZIL3zimO4NCbtC63n
-         WslFkXQSfGuDLofmOsKxAD7he8evdrG0CPPiKPBuj9C1ATG3F/r5IP4a0R29KKNAueq6
-         /1DBXhAJIr8QMXQ6RLNJeGAp12EvrQSah4jYWy7+MD3bJ/Vzc4F8MF+GWWyEhaNZ5FC9
-         /O2OUxDGKYQHgFzfCsZw2g7PQAHi+QRSY7V9Lw9hEIdQK9sqZm0RzO0NXI/9Db4J+JO2
-         f7xA==
-X-Forwarded-Encrypted: i=1; AJvYcCWi/dRa7GPS25xHBVY6QzkqLNyJEJOhmsyoiaq8pQwXsOlMKa1B3Gd3tOpwnzDvt7LRZA+UPb9uS2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHDVULxswmEV1g9XaucxbCS7mZYE6jSjItK/1rJBv1gm7Lvemi
-	OrQEfH3hoQawgJ+Op2scSMi0tgRdPAPbOdR4Vc/LtEa1YUBPA3+KB2UaVOjFQf1qrECgN0pxG7d
-	q
-X-Google-Smtp-Source: AGHT+IEzXHtKKFUaMSJ2VDer9feg3251XT2e/e+34Xgsy/KadnOVVzaUG7VMQWc8Ic9njNqbiVu3vw==
-X-Received: by 2002:a05:6122:2009:b0:4f5:f65:26be with SMTP id 71dfb90a1353d-5009ad65a4fmr906180e0c.0.1725054191319;
-        Fri, 30 Aug 2024 14:43:11 -0700 (PDT)
+        bh=Xylz0mwWzjFrdaZpGrna2u+Ajnu8hOvOrwmJ4DUtico=;
+        b=FRuKDkK1PgodFsQCeHXtZW5OEyohW4kkE/CgAAZUwzlqZRQ1V44P1kAxafLh6j8maP
+         QdFp1+LXIFCLI6+zAwmrUXS7Xtq8LyhCdYrW9OdPMK8pcbRsZbjKBLlezLenNAqBj/Tg
+         F4ZgtPSc0t/mn9Wh40nEOapnweB98pRt/O22UhxhV4CKDl6c9tFeXCHCrJdlLMw32CgS
+         meo0mc6Tc2zgL3m/VsJVaIVqs/gdhwV+S4tQbPNkGvI+8af3MLMYHsxquinLEAdz4AMH
+         G8IZlIn2u9m5loPadTNHpWOLrUPeVvnm4MwFOhRyVUDs7fNPZor06vaXZEut9mfpLSvh
+         /jOg==
+X-Gm-Message-State: AOJu0Yx93NTIAxyABrJV3lazzTN9ATOkCn13r/AAwTh42yH7ts/rLD3w
+	mcTW09VS0GbR1wYeujn9OKIPM/hjK2NWc8ZfDGAjpMiyuoS8qRKQA1NklpNIsF4=
+X-Google-Smtp-Source: AGHT+IHwLTZAKBqQ7a2kydEg3gYbyQRt34soHL4MRlYgHN1moHi71IiUobsJkYMso64jNXFA45ybig==
+X-Received: by 2002:a05:6870:c98b:b0:277:cc56:2300 with SMTP id 586e51a60fabf-277cc56360bmr437328fac.12.1725054309775;
+        Fri, 30 Aug 2024 14:45:09 -0700 (PDT)
 Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c340dafffdsm18165806d6.140.2024.08.30.14.43.10
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a806c241bfsm182988885a.28.2024.08.30.14.45.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Aug 2024 14:43:10 -0700 (PDT)
-Date: Fri, 30 Aug 2024 17:42:50 -0400
+        Fri, 30 Aug 2024 14:45:09 -0700 (PDT)
+Date: Fri, 30 Aug 2024 17:44:48 -0400
 From: Gregory Price <gourry@gourry.net>
 To: Usama Arif <usamaarif642@gmail.com>
-Cc: ardb@kernel.org, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, leitao@debian.org
-Subject: Re: [PATCH] efi: reserve memory for tpm_log only if TPM final events
- table is valid
-Message-ID: <ZtI82gt30kUhwkFY@PC2K9PVX.TheFacebook.com>
-References: <20240830212852.2794145-1-usamaarif642@gmail.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ardb@kernel.org
+Subject: Re: [PATCH 2/2] tpm: do not ignore memblock_reserve return value
+Message-ID: <ZtI9ULGWeBKAVqUV@PC2K9PVX.TheFacebook.com>
+References: <20240830132303.6665-1-gourry@gourry.net>
+ <20240830132303.6665-2-gourry@gourry.net>
+ <3f79211f-f82c-4e41-9b40-e0abcbb4bdf0@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -84,60 +83,46 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240830212852.2794145-1-usamaarif642@gmail.com>
+In-Reply-To: <3f79211f-f82c-4e41-9b40-e0abcbb4bdf0@gmail.com>
 
-On Fri, Aug 30, 2024 at 10:28:52PM +0100, Usama Arif wrote:
-> If efi.tpm_log is corrupted, log_tbl->size can be garbage (and
-> negative). This can result in a large memblock reservation, resulting
-> in the kernel booting without sufficient memory. Move the memblock
-> reservation after log_tbl->version check, and check the value of
-> both tbl_size and memblock_reserve.
+On Fri, Aug 30, 2024 at 10:33:22PM +0100, Usama Arif wrote:
 > 
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> ---
->  drivers/firmware/efi/tpm.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-> index e8d69bd548f3..cfc6a065f441 100644
-> --- a/drivers/firmware/efi/tpm.c
-> +++ b/drivers/firmware/efi/tpm.c
-> @@ -59,9 +59,6 @@ int __init efi_tpm_eventlog_init(void)
->  		return -ENOMEM;
->  	}
->  
-> -	tbl_size = sizeof(*log_tbl) + log_tbl->size;
-> -	memblock_reserve(efi.tpm_log, tbl_size);
-> -
->  	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
->  		pr_info("TPM Final Events table not present\n");
->  		goto out;
+> On 30/08/2024 09:23, Gregory Price wrote:
+> > tpm code currently ignores a relevant failure case silently.
+> > Add an error to make this failure non-silent.
+> > 
+> > Signed-off-by: Gregory Price <gourry@gourry.net>
+> > ---
+> >  drivers/firmware/efi/tpm.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+> > index 9c3613e6af15..b6939a6d44d9 100644
+> > --- a/drivers/firmware/efi/tpm.c
+> > +++ b/drivers/firmware/efi/tpm.c
+> > @@ -61,7 +61,11 @@ int __init efi_tpm_eventlog_init(void)
+> >  	}
+> >  
+> >  	tbl_size = sizeof(*log_tbl) + log_tbl->size;
+> > -	memblock_reserve(efi.tpm_log, tbl_size);
+> > +	if (memblock_reserve(efi.tpm_log, tbl_size)) {
+> > +		pr_err("TPM Event Log memblock reserve fails 0x%lx - %x\n",
+> > +		       efi.tpm_log, tbl_size);
+> > +		goto out;
+> > +	}
+> >  
+> >  	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
+> >  		pr_info("TPM Final Events table not present\n");
+> 
+> This was not a proper fix for the issue, sent a bit quickly!
+> 
+> I have sent it here https://lore.kernel.org/all/20240830212852.2794145-1-usamaarif642@gmail.com/
+> 
 
-The final event table is not present in TCG 1_2 format, but the
-tpm log still needs to be mapped.  So this change is incorrect for
-v1_2.
+This change addresses a separately, discrete issue and the two
+changes should be different patches (this is aside from the change
+you posted being incorrect for v1_2).
 
-> @@ -70,6 +67,19 @@ int __init efi_tpm_eventlog_init(void)
->  		goto out;
->  	}
->  
-> +	tbl_size = sizeof(*log_tbl) + log_tbl->size;
-> +	if (tbl_size < 0) {
-> +		pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
-> +		ret = -EINVAL;
-> +		goto out;
-> +	}
-> +	if (memblock_reserve(efi.tpm_log, tbl_size)) {
-> +		pr_err("TPM Event Log memblock reserve fails 0x%lx - %x\n",
-> +		       efi.tpm_log, tbl_size);
-> +		ret = -ENOMEM;
-> +		goto out;
-> +	}
-> +
->  	final_tbl = early_memremap(efi.tpm_final_log, sizeof(*final_tbl));
->  
->  	if (!final_tbl) {
-> -- 
-> 2.43.5
-> 
+~Gregory
 
