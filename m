@@ -1,256 +1,210 @@
-Return-Path: <linux-efi+bounces-1640-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1641-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BF9967E61
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Sep 2024 06:12:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC644967EDF
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Sep 2024 07:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63279282185
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Sep 2024 04:12:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23201F224F6
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Sep 2024 05:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2433514A0AB;
-	Mon,  2 Sep 2024 04:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17EC145B14;
+	Mon,  2 Sep 2024 05:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArKX447D"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CkI+z5Hx"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0518320E;
-	Mon,  2 Sep 2024 04:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B911144D0A
+	for <linux-efi@vger.kernel.org>; Mon,  2 Sep 2024 05:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725250365; cv=none; b=tIDtYW2jfbFoDngXija4rVufFAyN9wL2zjqB/IPM586fjxm/iFlJjm6XIwqzwRRw8OliNaMYmu5osBVOZQxeswObDgDcdvwieUjHzbRfpkg0eefKYG77RrdmA9Uy1WK1OobCPXt+g9u7i5IvP1xzyX5kF6Igqhj2g2gBjPyRnUw=
+	t=1725255648; cv=none; b=RMuvimm2gsRmbuQtdmLENFfB1dgJeJELQKOBh0tWI5jJfOxrXCLMpqK+Psy1yk38SMvBXVfJjZKTLRZRFXc5fTV4vLspN/7n/y/IXGsgYAP2iECvY0RWnvq6RNvN8TB4ADN+97CAb6dbjfdFva6D2gsZCx5rsmQljbz0Vg6aCgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725250365; c=relaxed/simple;
-	bh=2Yzl1TCxAvmFEWxCD0hG1tgfKeB5Qtda3UkGw1hGLdM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Am2oFAy+EFyuxJJ4PoQ+Hd9aFm3PDMxuzBOJ2X1E9RicuN17AKJVFWd8fjqjJiWdUz36iPiBIKcVC+Z19+7YMFAVVO8eyxpmutPOMbQadWOIGkZq1qmWf82+voikU6lN0MAc3OgKxh/RiLqUwentx8uSPuUOVMsXgIzV2GF210c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArKX447D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F93DC4CEC2;
-	Mon,  2 Sep 2024 04:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725250364;
-	bh=2Yzl1TCxAvmFEWxCD0hG1tgfKeB5Qtda3UkGw1hGLdM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ArKX447DIZlHbpZgEW+XCefFC+aKgwQjSxdrGmu5T0lNo+fL5d0vFpaAWDsbVXWKq
-	 xnk1QR1Mu7/j8jktl94zL+lbsL2TH3FnWXbLc3n2FR++uDBZobxmLaOhqxKim1b6zM
-	 p7GfLW64xoD0YnE2plga4ZMlq0FX1EvSdbkNy2n+I2UXjVUhW22xzq08LnuiayWE5J
-	 yyF1QwW55J1ChjEXMIJM6heDyvNU6r7u+l6ke1nPxHeDRpAfV29/PHST5e6RJZtn5p
-	 cYFmvqZNxdt5iEK/CDpyCkWgXC6bewqouFZ7YCkxbhium5f9vIH54A4ybaVXaTNJYv
-	 ASd6WFKUiekrA==
-Date: Mon, 2 Sep 2024 06:12:36 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Tony Luck <tony.luck@intel.com>, Daniel Ferguson
- <danielf@os.amperecomputing.com>, Ard Biesheuvel <ardb@kernel.org>, James
- Morse <james.morse@arm.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Len Brown <lenb@kernel.org>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Shiju Jose <shiju.jose@huawei.com>, Dan
- Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Shuai Xue <xueshuai@linux.alibaba.com>, Steven
- Rostedt <rostedt@goodmis.org>, Tyler Baicar <tbaicar@codeaurora.org>, Will
- Deacon <will@kernel.org>, Xie XiuQi <xiexiuqi@huawei.com>,
- linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, Shengwei Luo
- <luoshengwei@huawei.com>, Jason Tian <jason@os.amperecomputing.com>,
- m.chehab@huawei.com
-Subject: Re: [PATCH v2 1/5] RAS: Report all ARM processor CPER information
- to userspace
-Message-ID: <20240902061236.7cfc97fd@foz.lan>
-In-Reply-To: <20240829143811.GDZtCH07BFEdbbv9wx@fat_crate.local>
-References: <cover.1720679234.git.mchehab+huawei@kernel.org>
-	<3853853f820a666253ca8ed6c7c724dc3d50044a.1720679234.git.mchehab+huawei@kernel.org>
-	<20240829143811.GDZtCH07BFEdbbv9wx@fat_crate.local>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1725255648; c=relaxed/simple;
+	bh=ZKgLXVxqGBlMX/HSes9KJsdiqRiK6uEOxtIu0/mc+1o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AraAiHzmoJC2Sl+rsfpv2wJY22NbvIX4KrE7+deCJR1zeKZy6zts7fvCZdOz2+2wsHv9l1QIZZb1oSsZn9TDtqBZmT80LzVwmfyKJVohrLO4BTaub97eGoEXSjhcaSjojNGhfSFPYVpUSCJec/7QwaZA0a5TRJlDArPpEkgOLko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CkI+z5Hx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725255646;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eRnSBt/Y5eceLh55m3HnCPqU2nMHi0V+SDsqesK2W8g=;
+	b=CkI+z5Hx18ajs7DF2Dvx7iz6FopIzK63wEKXNUPc0aADgVnK+0vS+giDDuqRQp6txdSJqi
+	V4QgUK2cBT/YKbkjta7Fj+igXnQznrvrZbkLV76oU4q4EQuGnMr348n3xVhR2Dh+Cdjcz1
+	MI+eRIgjDMM5IFBjvCTIF+XuSM3eM9I=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-Wi3a7N_6NPeLmYAAKeWW_Q-1; Mon, 02 Sep 2024 01:40:44 -0400
+X-MC-Unique: Wi3a7N_6NPeLmYAAKeWW_Q-1
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-457d84fd0d7so11704151cf.0
+        for <linux-efi@vger.kernel.org>; Sun, 01 Sep 2024 22:40:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725255644; x=1725860444;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eRnSBt/Y5eceLh55m3HnCPqU2nMHi0V+SDsqesK2W8g=;
+        b=f5pZDlnafbe8W6FNrWn3FDgwfTPN74iOMPl6DAFySGl1bVq+7NtZ1FW+ZaNo0l91QH
+         26NwwBE66b6LaNv9QJnBTM+T8gcq2wMfvhqQ0pax/2yI4GPIdra4pGPKf56dIpxiL7Nz
+         j+l1Zh8qCySHxMurWheKk8Amq6VtLTvU1/Kfb33BveyrdGCAEqp3+6zPlayqKHkH4gmo
+         UJUEhSP+gRKShvSWnJGBvYRwhXKiDf5vgsja5VpcYxUXvpGyfogZvy7xGwM/tJhBZdWM
+         DCjZKp1DUNaPpsYr0kHPcsC0sSea88h/1lnm3kio4xUuAFY9qLU4nhJFH2CmUwLu01Hw
+         mBCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXohasp1yYDxUsgblIOW4GTOTTbmVo5P6/jWhArLgnksXRWJxHF6qL7/5EBlT21GktSKY0xYOsR69s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws9oGLIP1KBZA19VDi5HHrahry/mLKdYBIZwEkHyjUiJarV9Us
+	iRGqfyBkcgaw88cib1c7da1UPujse85waZm4dK7F7xi44hxrMdKvwpZ+HoXpGTy36KogdglfaEY
+	Zx+wFdmOGVAO6n1S9rYn91MqP0bxrTu+H4TefrKVewT4gldRlba17n+eJeQYIbCyJ3cz3Egx6yX
+	TiRxrA/Zm5N2imhAiZqX/IocOCLiDFfzWd
+X-Received: by 2002:a05:6214:412:b0:6bd:738c:842e with SMTP id 6a1803df08f44-6c33f33ba2dmr247845006d6.7.1725255644361;
+        Sun, 01 Sep 2024 22:40:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHLG3n6qFXQd6j9fD3rpLTzswKzCAwE4mH3nVuq4KI5nupSC1ibIcr0+CQALAep1tMuUKdJQcZNOkRaJG2tSkY=
+X-Received: by 2002:a05:6214:412:b0:6bd:738c:842e with SMTP id
+ 6a1803df08f44-6c33f33ba2dmr247844836d6.7.1725255643983; Sun, 01 Sep 2024
+ 22:40:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20240819145417.23367-1-piliu@redhat.com> <CAMj1kXGB3VF=NAQBADkdmodSVaZyf8h2n0FXwi5fXLUE2WgXag@mail.gmail.com>
+In-Reply-To: <CAMj1kXGB3VF=NAQBADkdmodSVaZyf8h2n0FXwi5fXLUE2WgXag@mail.gmail.com>
+From: Pingfan Liu <piliu@redhat.com>
+Date: Mon, 2 Sep 2024 13:40:33 +0800
+Message-ID: <CAF+s44QWjyswV3Huh5AWJzDwRCjvdjjEX2WDPaie9KrH0QOxOg@mail.gmail.com>
+Subject: Re: [RFCv2 0/9] UEFI emulator for kexec
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Jan Hendrik Farr <kernel@jfarr.cc>, Philipp Rudo <prudo@redhat.com>, 
+	Lennart Poettering <mzxreary@0pointer.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Eric Biederman <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, kexec@lists.infradead.org, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Boris,
+On Thu, Aug 29, 2024 at 1:08=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
+>
+[...]
 
-Em Thu, 29 Aug 2024 16:38:11 +0200
-Borislav Petkov <bp@alien8.de> escreveu:
+Hi Ard,
 
-> On Thu, Jul 11, 2024 at 08:28:52AM +0200, Mauro Carvalho Chehab wrote:
-> > In addition to those data, it also exports two fields that are
-> > parsed by the GHES driver when firmware reports it, e. g.:
-> > 
-> > - error severity
-> > - cpu logical index  
-> 
-> s/cpu/CPU/g
-> 
-> check your whole set pls.
+Thanks for sharing your insight and thoughts.
 
-Ok. Will address those at the hole series, sending you later today
-a new version. Except for those, are patches 2-5 ok?
+>
+> Thanks for putting this RFC together. This is useful work, and gives
+> us food for thought and discussion.
+>
+> There are a few problems that become apparent when going through these ch=
+anges.
+>
+> 1. Implementing UEFI entirely is intractable, and unnecessary.
+> Implementing the subset of UEFI that is actually needed to boot Linux
+> *is* tractable, though, but we need to work together to write this
+> down somewhere.
+>   - the EFI stub needs the boot services for the EFI memory map and
+> the allocation routines
+>   - GRUB needs block I/O
+>   - systemd-stub/UKI needs file I/O to look for sidecars
+>   - etc etc
+>
+> I implemented a Rust 'efiloader' crate a while ago that encapsulates
+> most of this (it can boot Linux/arm64 on QEMU and boot x86 via GRUB in
+> user space **). Adding file I/O to this should be straight-forward -
+> as Lennart points out, we only need the protocol, it doesn't need to
+> be backed by an actual file system, it just needs to be able to expose
+> other files in the right way.
+>
+> 2. Running the UEFI emulator on bare metal is not going to scale.
+> Cloning UART driver code and MMU code etc is a can of worms that you
+> want to leave closed. And as Lennart points out, there is other
 
-Regards,
-Mauro
+As for MMU code, if the 1st kernel does not turn it off, it can be
+eliminated from the emulator code, which should not be hard to
+implement on arm64. And already done in x86.
 
-> > Report all of these information to userspace via trace uAPI, So that
-> > userspace can properly record the error and take decisions related
-> > to cpu core isolation according to error severity and other info.
-> > 
-> > After this patch, all the data from ARM Processor record from table  
-> 
-> Avoid having "This patch" or "This commit" in the commit message. It is
-> tautologically useless.
-> 
-> Also, do
-> 
-> $ git grep 'This patch' Documentation/process
-> 
-> for more details.
+> hardware (TPM) that needs to be accessible as well. Providing a
+> separate set of drivers for all hardware that the EFI emulator may
+> need to access is not a tractable problem either.
+>
+> The fix for this, as I see it, is to run the EFI emulator in user
+> space, to the point where the payload calls ExitBootServices(). This
+> will allow all I/O and memory protocol to be implemented trivially,
+> using C library routines. I have a crude prototype** of this running
 
-Usually, I don't use "this patch". In this specific case, I wanted
-to bold the new fields that were added to the ARM trace event, making
-clear that before the changeset, none of such fields exist; they were
-added on such change. On other words, the keyword here is not patch,
-but instead "After". Maybe I can replace it with "now", e. g.:
+Yes, that is a definitely promising method, By this way, we can handle
+device operations more elegantly. In fact, I used it to develop and
+debug part of my emulator service code.
 
-	The updated ARM trace event now contains the following fields:
+But when debugging x86 efi-stub, I encounter some problem with the
+privileged instruction, which causes segment fault. It originates from
+kaslr_get_random_long().  I think it can be worked around by emulating
+the instruction if the instruction reads the system state. But if the
+instruction tries to update system state, it can not be fixed since
+the system is still owned by the kernel instead of owned by the
+emulator exclusively.
 
-	======================================	=============================
-	UEFI field on table N.16		ARM Processor trace fields
-	======================================	=============================
-	Validation				handled when filling data for
-						affinity MPIDR and running
-						state.
-	ERR_INFO_NUM				pei_len
-	CONTEXT_INFO_NUM			ctx_len
-	Section Length				indirectly reported by
-						pei_len, ctx_len and oem_len
-	Error affinity level			affinity
-	MPIDR_EL1				mpidr
-	MIDR_EL1				midr
-	Running State				running_state
-	PSCI State				psci_state
-	Processor Error Information Structure	pei_err - count at pei_len
-	Processor Context			ctx_err- count at ctx_len
-	Vendor Specific Error Info		oem - count at oem_len
-	======================================	=============================
+So here we need another agreement on the stub's behavior before
+ExitBootServices().
+
+> to the point where ExitBootServices() is called (and then it crashes).
+> The tricky yet interesting bit here is how we migrate a chunk of user
+> space memory to the bare metal context that will be created by the
+> kexec syscall later (in which the call to ExitBootServices() would
+> return and proceed with the boot). But the principle is rather
+> straight-forward, and would permit us, e.g., to kexec an OS installer
+> too.
+>
+> 3. We need to figure out how to support TPM and PCRs in the context of
+> kexec. This is a fundamental issue with verified boot, given that the
+> kexec PCR state is necessarily different from the boot state, and so
+> we cannot reuse the TPM directly if we want to pretend that we are
+> doing an ordinary boot in kexec. The alternative is to leave the TPM
+
+Here, I miss the big picture. Could you enlighten me more about this?
+As I thought, the linux kernel will not lock itself down onto a
+specific firmware. So the trust is one direction, i.e. from bootloader
+to kernel. In UKI case, systemd-stub takes the measurement and extends
+the PCR 11/12/13 as in
+https://uapi-group.org/specifications/specs/linux_tpm_pcr_registry/
+
+Later systemd-pcrlock appraises the value in those registers. If the
+sections in UKI are intact, the kexec reboot will go smoothly.
 
 
-> 
-> ...
-> 
-> > [mchehab: modified patch description, solve merge conflicts and fix coding style]
-> > Fixes: e9279e83ad1f ("trace, ras: add ARM processor error trace event")
-> > Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
-> > Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
-> > Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com>  
-> 
-> What is this SOB chain trying to tell me?
-> 
-> All those folks handled the patch?
+> in a state where the kexec kernel can access its sealed secrets, and
+> mock up the TCG2 EFI protocols using a shim that sits between the TPM
+> hardware (as the real TCG2 protocols will be long gone) and the EFI
+> payload. But as I said, this is a fundamental issue, as the ability to
+> pretend that a kexec boot is a pristine boot would mean that verified
+> boot is broken.
+>
+>
+> As future work, I'd like to propose to collaborate on some alignment
+> regarding a UEFI baseline for Linux, i.e., the parts that we actually
+> need to boot Linux.
+>
 
-They reflect what happened with past attempts of upstreaming this
-change at the EDAC mailing list.
+Do you mean that user space code and kernel code? And I think for the
+user space code, it should be better to integrate the code in
+kexec-tools so that we have a uniform interface for kexec boot.
 
-See, originally this seems to come from Jason Tian in 2021:
-	https://lore.kernel.org/linux-edac/20210205022229.313030-1-jason@os.amperecomputing.com/
-	https://lore.kernel.org/linux-edac/20210422084944.3718-1-jason@os.amperecomputing.com/
-	https://lore.kernel.org/linux-edac/20210802135929.5283-1-shijie@os.amperecomputing.com/
+Looking forward to the collaboration to make kexec able to boot UKI soon.
 
-In 2022, it came a new version from Shengwei Luo:
-	https://lore.kernel.org/lkml/20220126030906.56765-1-lostway@zju.edu.cn/
-	https://lore.kernel.org/linux-edac/20220214030813.135766-1-lostway@zju.edu.cn/
-
-A new version from Daniel Ferguson arrived in 2023:
-	https://lore.kernel.org/linux-edac/20231214232330.306526-2-danielf@os.amperecomputing.com/
-
-Hard to reconstruct the entire history of this changeset, as there were
-several attempts to fix it, and patches got renamed on some of such
-attempts.
-
-Anyway, it sounds that the custody chan can better be written as:
-
-	Co-authored-by: Jason Tian <jason@os.amperecomputing.com>
-	Co-authored-by: Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
-	Co-authored-by: Daniel Ferguson <danielf@os.amperecomputing.com>  
-	Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
-	Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
-	Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com>  
-
-It probably makes sense to also indicate the original author of
-it by change the "From" metadata to:
-
-	From: Jason Tian <jason@os.amperecomputing.com>
-
-> 
-> > Tested-by: Shiju Jose <shiju.jose@huawei.com>
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-section
-> > ---
-> >  drivers/acpi/apei/ghes.c | 11 ++++-----
-> >  drivers/ras/ras.c        | 45 +++++++++++++++++++++++++++++++++++--
-> >  include/linux/ras.h      | 16 +++++++++++---
-> >  include/ras/ras_event.h  | 48 +++++++++++++++++++++++++++++++++++-----
-> >  4 files changed, 103 insertions(+), 17 deletions(-)  
-> 
-> ...
-> 
-> > -void log_arm_hw_error(struct cper_sec_proc_arm *err)
-> > +void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev)
-> >  {
-> > -	trace_arm_event(err);
-> > +	struct cper_arm_err_info *err_info;
-> > +	struct cper_arm_ctx_info *ctx_info;
-> > +	u8 *ven_err_data;
-> > +	u32 ctx_len = 0;
-> > +	int n, sz, cpu;
-> > +	s32 vsei_len;
-> > +	u32 pei_len;
-> > +	u8 *pei_err;
-> > +	u8 *ctx_err;
-> > +
-> > +	pei_len = sizeof(struct cper_arm_err_info) * err->err_info_num;
-> > +	pei_err = (u8 *)err + sizeof(struct cper_sec_proc_arm);
-> > +
-> > +	err_info = (struct cper_arm_err_info *)(err + 1);
-> > +	ctx_info = (struct cper_arm_ctx_info *)(err_info + err->err_info_num);
-> > +	ctx_err = (u8 *)ctx_info;
-> > +	for (n = 0; n < err->context_info_num; n++) {
-> > +		sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
-> > +		ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
-> > +		ctx_len += sz;
-> > +	}
-> > +
-> > +	vsei_len = err->section_length - (sizeof(struct cper_sec_proc_arm) +
-> > +					  pei_len + ctx_len);
-> > +	if (vsei_len < 0) {
-> > +		pr_warn(FW_BUG
-> > +			"section length: %d\n", err->section_length);
-> > +		pr_warn(FW_BUG
-> > +			"section length is too small\n");
-> > +		pr_warn(FW_BUG
-> > +			"firmware-generated error record is incorrect\n");  
-> 
-> No need to break those lines.
-> 
-> > +		vsei_len = 0;
-> > +	}
-> > +	ven_err_data = (u8 *)ctx_info;
-> > +
-> > +	cpu = GET_LOGICAL_INDEX(err->mpidr);
-> > +	/* when return value is invalid, set cpu index to -1 */  
-> 
-> Obvious comment - no need for it.
-> 
-
-Will address at the next review.
 
 Thanks,
-Mauro
+
+Pingfan
+
 
