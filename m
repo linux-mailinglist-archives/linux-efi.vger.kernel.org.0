@@ -1,57 +1,67 @@
-Return-Path: <linux-efi+bounces-1690-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1691-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D834972B3F
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Sep 2024 09:55:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B600F973933
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Sep 2024 15:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 253CF1F24EB0
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Sep 2024 07:55:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F22BEB22CCC
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Sep 2024 13:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C89E17F4F1;
-	Tue, 10 Sep 2024 07:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55C8192D60;
+	Tue, 10 Sep 2024 13:58:51 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AF51514DA;
-	Tue, 10 Sep 2024 07:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209C218CBE0
+	for <linux-efi@vger.kernel.org>; Tue, 10 Sep 2024 13:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725954903; cv=none; b=Bq5Gke+diCcM/O/kOcGONPbRxN9iFGyYlPivjy+gTaq0gbWOrKwFI6lh97xzlMKIFLX2s82+DekyaM7CpyFMntawBwU+2qtIxd5y2BA9W9dnDEXuirgycrDiktWk+6PviUMcqheV9ypSTICZRN0GUQD1ej/QlPn4arDXodlUZy0=
+	t=1725976731; cv=none; b=k1BOpgEylGnUUDbMLHVofZ6SPszPed87+RYd2+mPv3WfnWWKsMrjmdHwme9+gj30XCz2dj2VmaJvifzX69JvzCeFRYOZeUx1n1ZSd3yhyZkGbF2boZWwRFMHM/czXyOa4i90dmM4Q0Gd1CPTNZihOvsu/JGPWWyrIC2iqWiY0jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725954903; c=relaxed/simple;
-	bh=dAqbUvE34+3cz9SUYngGdTclZEmS/HeIqrBNZXoOcC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pTIHtJKXVnMolc1ETrb4zzZstYtW3DjFZs+6JiE/ckBA9Bo4jBMat052/cwZaomBRSsVvDOV1G0/9MPk07i/7uuh7pXLSQKDLK8eydEGf9MT+QETC8Qsqjd4QMRmNpqHyoVOPIaPwlwRAO5zYahUWLoHYSkTIwGXDe2jPoh6vpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de; spf=pass smtp.mailfrom=0pointer.de; arc=none smtp.client-ip=85.214.157.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0pointer.de
-Received: from gardel-login.0pointer.net (gardel-mail [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
-	by gardel.0pointer.net (Postfix) with ESMTP id 9711EE80261;
-	Tue, 10 Sep 2024 09:54:57 +0200 (CEST)
-Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
-	id D3D26160143; Tue, 10 Sep 2024 09:54:56 +0200 (CEST)
-Date: Tue, 10 Sep 2024 09:54:56 +0200
-From: Lennart Poettering <mzxreary@0pointer.de>
-To: Jan Hendrik Farr <kernel@jfarr.cc>
-Cc: Philipp Rudo <prudo@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Pingfan Liu <piliu@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Eric Biederman <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>, Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	kexec@lists.infradead.org, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFCv2 0/9] UEFI emulator for kexec
-Message-ID: <Zt_7UEdDfTAQKp4I@gardel-login>
-References: <20240819145417.23367-1-piliu@redhat.com>
- <CAMj1kXGB3VF=NAQBADkdmodSVaZyf8h2n0FXwi5fXLUE2WgXag@mail.gmail.com>
- <20240906125438.1e54c5f6@rotkaeppchen>
- <Zt7EbvWjF9WPCYfn@gardel-login>
- <Zt7RJepoCiCMRZSu@archlinux>
+	s=arc-20240116; t=1725976731; c=relaxed/simple;
+	bh=bkDvHm5EBdiBTdjt08qWdfm63p48PLEGx94epGOUYbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=R8QKaDWlf8VnHfnps/6v9+xq8KBeML0LXHIfZ4ZNMVQ9eSouUK8J1XTWczPdBFjfdqJEBk9eJb/D/yOKToxDhCsAEWL6510vwcsd+8e6A3ve7+8pWSwsQ/4yBmm2dcaUHjXSV36fk74X7D7kqayRJbitr7imBvvqHfO6Vt1cwWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53653682246so1003908e87.1
+        for <linux-efi@vger.kernel.org>; Tue, 10 Sep 2024 06:58:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725976728; x=1726581528;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MgIpDVcWYMf0vuk5YN9yMPDXZSWDvspzC2nEKP5HOCI=;
+        b=PAyh9rdD5GscnETY//Xh0aPf8RtN6XtAOp0fpkTbchfJR3vMvRJfTxm5w0IMku4EB4
+         4CvK/EWp7jH4jti85Emw2RMexhgChZKbJbC0GpgQU0o1TvgXdaAyEKle7HkEsQxvQ7v0
+         FE+F2GeGpr6ICXjq23mPIdVmUN+QtLP/IqFfHFht1Qa5XGAlda/fOkMrydDzmdkX1i5C
+         5mo5GOxTNp9bpjaZiKmOZYdCcGOUYgoC358xztl6lyXu5LBN63cSQEEkuxZIMw0Dnbcf
+         T5uRn6P7ywdkR2hSfBqmx4lriGuvmOXAxjnDaYjmAl5JtUqgADIQlmpx5OWwMhedFRsZ
+         YO5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUu0wHTYR4ZvZDyO0KalNzea/KiuirGI08aByrZv21ZJkW8e7O9qWRmrarxi3DVGKyegKCOjywO6/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWjdLja2eO47NTpBk8RVxCOSZRG7LTPRTx2wjiFiOApTEhnCKq
+	Mda3V2iTmXWK7sMuH7vF9xx0QAjxarna3KjxBp3N0aY0eLLJsZU/
+X-Google-Smtp-Source: AGHT+IHhEuv8mrvn4438U00xZWueYNo2K4Ra1vZJaFUb6cxmb836Wz2QI3yrmjwC9AzNyQBdfgDXfg==
+X-Received: by 2002:a05:6512:2215:b0:530:e228:7799 with SMTP id 2adb3069b0e04-53658813717mr11032307e87.58.1725976727247;
+        Tue, 10 Sep 2024 06:58:47 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-002.fbsv.net. [2a03:2880:30ff:2::face:b00c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d2593cffcsm486589666b.55.2024.09.10.06.58.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2024 06:58:46 -0700 (PDT)
+Date: Tue, 10 Sep 2024 06:58:44 -0700
+From: Breno Leitao <leitao@debian.org>
+To: ardb@kernel.org, linux-efi@vger.kernel.org, kexec@lists.infradead.org,
+	bhe@redhat.com, vgoyal@redhat.com, devel@edk2.groups.io,
+	ebiederm@xmission.com
+Cc: rppt@kernel.org, usamaarif642@gmail.com, gourry@gourry.net,
+	rmikey@meta.com
+Subject: EFI table being corrupted during Kexec
+Message-ID: <20240910-juicy-festive-sambar-9ad23a@devvm32600>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -61,51 +71,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zt7RJepoCiCMRZSu@archlinux>
 
-On Mo, 09.09.24 12:42, Jan Hendrik Farr (kernel@jfarr.cc) wrote:
 
-> On 09 11:48:30, Lennart Poettering wrote:
-> > On Fr, 06.09.24 12:54, Philipp Rudo (prudo@redhat.com) wrote:
-> >
-> > > I mostly agree on what you have wrote. But I see a big problem in
-> > > running the EFI emulator in user space when it comes to secure boot.
-> > > The chain of trust ends in the kernel. So it's the kernel that needs to
-> > > verify that the image to be loaded can be trusted. But when the EFI
-> > > runtime is in user space the kernel simply cannot do that. Which means,
-> > > if we want to go this way, we would need to extend the chain of trust
-> > > to user space. Which will be a whole bucket of worms, not just a
-> > > can.
-> >
-> > May it would be nice to have a way to "zap" userspace away, i.e. allow
-> > the kernel to get rid of all processes in some way, reliable. And then
-> > simply start a new userspace, from a trusted definition. Or in other
-> > words: if you don't want to trust the usual userspace, then let's
-> > maybe just terminate it, and create it anew, with a clean, pristine
-> > definition the old userspace cannot get access to.
->
-> Well, this is an interesting idea!
->
-> However, I'm sceptical if this could be done in a secure way. How do we
-> ensure that nothing the old userspace did with the various interfaces to
-> the kernel has no impact on the new userspace? Maybe others can chime in
-> on this? Does kernel_lockdown give more guarantees related to this?
+We've seen a problem in upstream kernel kexec, where a EFI TPM log event table
+is being overwritten.  This problem happen on real machine, as well as in a
+recent EDK2 qemu VM.
 
-Yeah, it's not a trivial thing. I.e. I guess things like sysfs and
-procfs will retain ownership/access mode. sysctls and sysfs attrs are
-going to retain their most recently written contents and things like
-that. Synthetic network interfaces, DM devices, loopback devices all
-would survive this.
+Digging deep, the table is being overwritten during kexec, more precisely when
+relocating kernel (relocate_kernel() function).
 
-So, no idea how realistic this is, but I would *love* it, not only for
-this purpose here, but also for the "soft-reboot" logic we have in
-system these days, which shuts down userspace and starts it up again,
-as a form of super-fast reboot that doesn't replace the kernel. If we
-could reliably reset sysfs/sysctl/procfs/… during this, this would be
-really lovely.
+I've also found that the table is being properly reserved using
+memblock_reserve() early in the boot, and that range gets overwritten later in
+by relocate_kernel(). In other words, kexec is overwriting a memory that was
+previously reserved (as memblock_reserve()).
 
-Lennart
+Usama found that kexec only honours memory reservations from /sys/firmware/memmap
+which comes from e820_table_firmware table.
 
---
-Lennart Poettering, Berlin
+Looking at the TPM spec, I found the following part:
+
+	If the ACPI TPM2 table contains the address and size of the Platform Firmware TCG log,
+	firmware “pins” the memory associated with the Platform Firmware TCG log, and reports
+	this memory as “Reserved” memory via the INT 15h/E820 interface.
+
+
+From: https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientPlatform_Profile_for_TPM_2p0_Systems_v49_161114_public-review.pdf
+
+I am wondering if that memory region/range should be part of e820 table that is
+passed by EFI firmware to kernel, and if it is not passed (as it is not being
+passed today), then the kernel doesn't need to respect it, and it is free to
+overwrite (as it does today). In other words, this is a firmware bug and not a
+kernel bug.
+
+Am I missing something?
+
+Thanks
+--breno
 
