@@ -1,129 +1,118 @@
-Return-Path: <linux-efi+bounces-1716-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1717-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BD1976E30
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Sep 2024 17:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3D0976E95
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Sep 2024 18:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 238431C2131A
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Sep 2024 15:52:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DB521C23A9A
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Sep 2024 16:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D5844C8F;
-	Thu, 12 Sep 2024 15:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FD51448DC;
+	Thu, 12 Sep 2024 16:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LPZmSpCU"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="JtpFVzTI";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="JtpFVzTI"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A2E199948
-	for <linux-efi@vger.kernel.org>; Thu, 12 Sep 2024 15:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5946E126C0E;
+	Thu, 12 Sep 2024 16:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726156327; cv=none; b=twSTIAVjTdBUeC0wEqt/ImxvLRqEAJWn3jmIjtWRfeHa3SMz0753I6qYkToo9AhNjqRnWiaUBbel8JsuCXrKxysI7msc7r+UNrJ10ENUNba0tUJeH56UbCHrhiTzkwG5ZyfoaXMLMgVrb0icFjPCwg8FkewVhuFqN0ur1xit9PE=
+	t=1726158126; cv=none; b=qaEKoor4AP/3qqa80Mj4u4z5Y6ocifUMMMB593r8twNcIgerqF1PTWtAxTfI2d+fX28hrawfKryTSRyCvo0FjVTA3P6aMscQ6+vdDlOOvLTZcOxXI1yOU6SG6aejuzDAVDvCJI4u3SBdI+Hu5/gUqiMl23zg5jw65MGIuHi122Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726156327; c=relaxed/simple;
-	bh=YezmWpeZ9VSPUA0ukgdqKU2YkESG/xVBdN+gFUJACig=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=INyOKk1mJQZZWYjJLtXCy8QvCjUpiWA8mnjRrIyqqizzfq3Fk/T2cBE7vLDQpP8W6EsNBT0UhK6Xk5dkhso6NTnZt1ONBnsy8nf4/BSE0CyeFtr/eJct1sE6BLh5tBntIDVjsfklAOUW4SlVtg1isLMQodq1cR+bulBmnjB0wrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LPZmSpCU; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e165fc5d94fso2139312276.2
-        for <linux-efi@vger.kernel.org>; Thu, 12 Sep 2024 08:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726156325; x=1726761125; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+6IeGNcZT5xpb/RoyFddkias/4tHQZMY5eNb96jVXQ8=;
-        b=LPZmSpCUo3xBO7lM7LsLAPCxsV4DrGPm3j3dLBfKLywOdGw0gzABXaW9T5xkyXUrIL
-         BXA3e90G+WhodsgOk1lW1nBJ4kFEwi0M/gbYzBbZcmhLkjE9+ps2aHrZ7HhR8sxfKW5f
-         6r1+Q0IugUSAG7fTy8Nkr9sSHb0+Ejcga3qKKpbC1KCeMPKPuxtqqu6UX+EbgW9xYKjD
-         qS+zwqWkgn01im9m8DGhDkuZOCFbQE73AIVbH8ysaV774FHu9I3cIV0GuRh9KlTPoUz5
-         4iK/x2+4Prp3winCsolB8aDPG7ij25zKjs6fadCnZmdpLjVXUtvYF8G9v0b4A1Gmq9O8
-         0joA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726156325; x=1726761125;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+6IeGNcZT5xpb/RoyFddkias/4tHQZMY5eNb96jVXQ8=;
-        b=JT4Yp2Z6RxGgRwEo+14UX1K9rBhDamI8fWyZa9LuXiyW0EheFO0lMoLWVhjUstvkTv
-         f/5zRzdxTeqAZJbea//nRytEuiYI3wF/TJn/WrngiclDaxFbNveXYIxmFrtKMHG2plm5
-         Nfs8FiS0JYzoqPqvBbJiE2cFIEU93TRfMNUfvfj1x0bKaw+B8YQcBl4yKSc7lrCUyIce
-         Knl9yRByT40+s/KNvV4WVx/PNw4+XZEi1oQDCYMKLc6QQNLUZDNqKQQwZths+Cirqarz
-         9QEc8+YNOyy1Bm9YNz6k6eUUIbMA5Kn3jbsmU5Nn+bMzIUJieB1vuN178zLLMXksd7EO
-         6/JQ==
-X-Gm-Message-State: AOJu0YwxPBbTGjMCkfgwVOpqMclXZi0YJCO/NLHNSPX9+tmNmskSVBnb
-	Op7MC8aTACSg84sOTvL38ZClr5MlDB1E3VwZisGug61n63h1KSWWalwDcY3w74RgPj6xebznJEV
-	OJj0kWgwyE5S2fVfQBQET+8MBsqgBPElOmLpif38frKbHtyhiQV0pp8SZ0qgElYDXhwZrLMSiAD
-	LVaFYVn0ZugRUg5lTZqXaeYJ5vkw==
-X-Google-Smtp-Source: AGHT+IEaFrTaUbZMAdb/oNCgMY9WERez272JGPYIYXm2jin3aYEbtG6HFvgUb4cCXwOddl+LYX9j0zsK
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
- (user=ardb job=sendgmr) by 2002:a25:ec02:0:b0:e1d:2e2:f6fe with SMTP id
- 3f1490d57ef6-e1d9dc66ffdmr6457276.11.1726156324559; Thu, 12 Sep 2024 08:52:04
- -0700 (PDT)
-Date: Thu, 12 Sep 2024 17:52:00 +0200
+	s=arc-20240116; t=1726158126; c=relaxed/simple;
+	bh=1RRoQ/B4c+/9l2rOSmetknZ/zgMtHUG3tKaFxUMUnaY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KMradQvEtbMCPYY2a7lZzvMhocEUstcdLPeH7xf/ab0/z+I8aJDiZllLfrr6PC/weQay+2KISne4mlg1HwUXaxHot0YefDK13u+VonTrzMJSJEKD1cI70mKMrj0EvL/glrqG4/fDRvuUyU6Tx2YPVL6hFqSvpPfcPZOnRC3z8q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=JtpFVzTI; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=JtpFVzTI; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1726158124;
+	bh=1RRoQ/B4c+/9l2rOSmetknZ/zgMtHUG3tKaFxUMUnaY=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=JtpFVzTIHu3vcsWd8FnI4U69MrrUlIzg5yn0PYJIfCV2mTy/nJC87hx4HiuS43Acy
+	 DmTv7hmcKZpVcjWZUUx9oD5gZbLVAcRLUX+dLpiEUqThuhVl3TNJYDxzzrzmlCJgAZ
+	 6/JNrn5qT7MuDwJCK/KZkKCZeNzteWZszWuC4gks=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 6ADBF1287751;
+	Thu, 12 Sep 2024 12:22:04 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id gI1Frh6cg5OL; Thu, 12 Sep 2024 12:22:04 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1726158124;
+	bh=1RRoQ/B4c+/9l2rOSmetknZ/zgMtHUG3tKaFxUMUnaY=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=JtpFVzTIHu3vcsWd8FnI4U69MrrUlIzg5yn0PYJIfCV2mTy/nJC87hx4HiuS43Acy
+	 DmTv7hmcKZpVcjWZUUx9oD5gZbLVAcRLUX+dLpiEUqThuhVl3TNJYDxzzrzmlCJgAZ
+	 6/JNrn5qT7MuDwJCK/KZkKCZeNzteWZszWuC4gks=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 1084A128765B;
+	Thu, 12 Sep 2024 12:22:02 -0400 (EDT)
+Message-ID: <d9df5012cd3306afa2eddd5187e643a3bbdfd866.camel@HansenPartnership.com>
+Subject: Re: [RFC] efi/tpm: add efi.tpm_log as a reserved region in
+ 820_table_firmware
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>
+Cc: Usama Arif <usamaarif642@gmail.com>, linux-efi@vger.kernel.org, 
+ kexec@lists.infradead.org, ebiederm@xmission.com, bhe@redhat.com, 
+ vgoyal@redhat.com, tglx@linutronix.de, dave.hansen@linux.intel.com,
+ x86@kernel.org,  linux-kernel@vger.kernel.org, rmikey@meta.com,
+ gourry@gourry.net
+Date: Thu, 12 Sep 2024 12:22:01 -0400
+In-Reply-To: <20240912-wealthy-gabby-tamarin-aaba3c@leitao>
+References: <20240911104109.1831501-1-usamaarif642@gmail.com>
+	 <CAMj1kXFVyQEwBTf2bG8yBXUktM16dzrcPH-Phz_toAsCK-NfMA@mail.gmail.com>
+	 <2542182d-aa79-4705-91b6-fa593bacffa6@gmail.com>
+	 <CAMj1kXGi+N6AukJt6EGQTao=-1Ud_=bzwPvdjEzhmzEraFU98w@mail.gmail.com>
+	 <20240912-wealthy-gabby-tamarin-aaba3c@leitao>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1651; i=ardb@kernel.org;
- h=from:subject; bh=9jEAXdaHNXB4dtbQr0AWEtURl6TwUgvit3ZL8yfX20k=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIe0xn0L7mY/pYaxs+/euYudqORZTfsQ7vW3Kg44l9btCF
- /q1fdzSUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACbysZ2R4U/c8d03c5NY7R+f
- 0GJ8Hxi/O3ProWvaNtfvpaf5MVfNec/I8PmNzPKE1z8FTC4s3LtRbWJkgtFn/W8eC+f2Xf428aL VPg4A
-X-Mailer: git-send-email 2.46.0.662.g92d0881bb0-goog
-Message-ID: <20240912155159.1951792-2-ardb+git@google.com>
-Subject: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org, 
-	Breno Leitao <leitao@debian.org>, Usama Arif <usamaarif642@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Thu, 2024-09-12 at 06:03 -0700, Breno Leitao wrote:
+> Hello Ard,
+> 
+> On Thu, Sep 12, 2024 at 12:51:57PM +0200, Ard Biesheuvel wrote:
+> > I don't see how this could be an EFI bug, given that it does not
+> > deal with E820 tables at all.
+> 
+> I want to back up a little bit and make sure I am following the
+> discussion.
+> 
+> From what I understand from previous discussion, we have an EFI bug
+> as the root cause of this issue.
+> 
+> This happens because the EFI does NOT mark the EFI TPM event log
+> memory region as reserved (EFI_RESERVED_TYPE). Not having an entry
+> for the event table memory in EFI memory mapped, then libstub will
+> ignore it completely (the TPM event log memory range) and not
+> populate e820 table with it.
 
-The TPM event log table is a Linux specific construct, where the data
-produced by the GetEventLog() boot service is cached in memory, and
-passed on to the OS using a EFI configuration table.
+Wait, that's not correct.  The TPM log is in memory that doesn't
+survive ExitBootServices (by design in case the OS doesn't care about
+it).  So the EFI stub actually copies it over to a new configuration
+table that is in reserved memory before it calls ExitBootServices. 
+This new copy should be in kernel reserved memory regardless of its
+e820 map status.
 
-The use of EFI_LOADER_DATA here results in the region being left
-unreserved in the E820 memory map constructed by the EFI stub, and this
-is the memory description that is passed on to the incoming kernel by
-kexec, which is therefore unaware that the region should be reserved.
+Regards,
 
-Even though the utility of the TPM2 event log after a kexec is
-questionable, any corruption might send the parsing code off into the
-weeds and crash the kernel. So let's use EFI_ACPI_RECLAIM_MEMORY
-instead, which is always treated as reserved by the E820 conversion
-logic.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: Breno Leitao <leitao@debian.org>
-Tested-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/tpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
-index df3182f2e63a..1fd6823248ab 100644
---- a/drivers/firmware/efi/libstub/tpm.c
-+++ b/drivers/firmware/efi/libstub/tpm.c
-@@ -96,7 +96,7 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
- 	}
- 
- 	/* Allocate space for the logs and copy them. */
--	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
-+	status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
- 			     sizeof(*log_tbl) + log_size, (void **)&log_tbl);
- 
- 	if (status != EFI_SUCCESS) {
--- 
-2.46.0.662.g92d0881bb0-goog
+James
 
 
