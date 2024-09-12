@@ -1,136 +1,152 @@
-Return-Path: <linux-efi+bounces-1712-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1713-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B795976C15
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Sep 2024 16:29:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4471B976DA4
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Sep 2024 17:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D19E1C23E04
-	for <lists+linux-efi@lfdr.de>; Thu, 12 Sep 2024 14:29:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8E0A1F27964
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Sep 2024 15:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BCB1AB6E9;
-	Thu, 12 Sep 2024 14:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FB11B982B;
+	Thu, 12 Sep 2024 15:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iB4Rzoob"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58281A4E7C;
-	Thu, 12 Sep 2024 14:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE8A1B5EC6;
+	Thu, 12 Sep 2024 15:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726151356; cv=none; b=XuxX9dNIt+8bMP7MbfVgNWHjbnGlGRc+SilQU22GL8DJ1CYZP1rOmbhQdwtex5g6HoN95W/g5rKEhFCyvwVCMtcwnwiwB0jPnWHWwddHyPcSFW9I51YKGnaWqFDcoHExqAk4VxNuqp59rIjUbjLkSsuwqO60/5HILB14AkeJgZY=
+	t=1726154481; cv=none; b=MmaS1VZFHXhi47Nx+UA9ZrIDlowvpBTkMhVSTmddB2pmxzuGBLZbKtG2Hv3VQgYC3CE0sCZoK2amvBpG7E83vrjtislw7uKJUQOEyOg+gK1ftVZgFqvWCkeEyB+7AXPkh7Gl/+SgtW9cvTZITzidXKtr1WxQUAh79Je3BkBUe/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726151356; c=relaxed/simple;
-	bh=AiewB2nyHhDhsCafWFsV1VNzT9dDxzWOrcgwaYLm81s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bfv+5M2YP40a76upUdAfFwrMw2cbfcVrUXukzqJXT1SkDe4JDIhL+MYn6QUYIlRNtjiOjilYDnBPDs6CjvZeF9tBlQ30myyvX2dJOkW2tl+9Ca3aZihK1CwbmQhQJ1giZoNte3lDpBINrk8iFl4Xx1ug+BSC2k9tQwvz24ogaxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a8d64b27c45so164652466b.3;
-        Thu, 12 Sep 2024 07:29:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726151353; x=1726756153;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ojlwVPNe7KlSzk6swI2y1+uEfsmH3zHy4IiUElclC0=;
-        b=KCnGaE/27FvU+FBot/fOWYywyV7LMaoCbdspOCBmof/wM5QPIT0z5UmqhWzBbrmSji
-         XkqN9S1+vMOar728rkzR+tV5zcqzY7b1Hl+gK2vm9UVnxxNqdkH5FsjwcGjhmq44gxtE
-         Ak/A+3Ykw6tZkmLPeD5npceTLmBBrgChdoTcsYKvcr/jKXme6kloi+QopompAJLHGLNB
-         DSeK6KMqF352372htwbtWfHxP1Nq4FDRVxF1nBIga8FBpCguYHY8RWG/cPa1Wmlcw0PS
-         E6+b9yBSTxSpFwdopscUtkaspFyln6Ovkxdz8zIRKmAiLWbnVIPCTO9zNPU2VKcfkNap
-         tWUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+/4IjrMlD4oBXHv1qBPuHqzp8E2hIXCtVEoa2xhw0pwDkq0twZBrGm8oq1ktRih6xRuj5IFl8Dbo=@vger.kernel.org, AJvYcCU37um6A+SElhJ69giGAilCPxVZHd8mlrldWxE6bB1VAWe+BOeK9mBFqp59jcN3DfYt0y6PZ14I/5SFowf4@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7ixGN+9txyP7ZkG0u0K/f7BQguTQFzYFD3ljyPG3ynkYy6AJV
-	4ScMrRKoNXgTtCN/ujINibRyYQwUg1ap7qMwmWjI5nXNXWJ7tn5v
-X-Google-Smtp-Source: AGHT+IHNDDf/Q8uWvQAGDtFVftOcPwKOzxFnfjPmpTmeeCiD52hd3Vd9S9TsRJFtVvbr7CyIHyR95A==
-X-Received: by 2002:a17:907:e21b:b0:a86:842a:104a with SMTP id a640c23a62f3a-a9029636efbmr290362266b.57.1726151352792;
-        Thu, 12 Sep 2024 07:29:12 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-001.fbsv.net. [2a03:2880:30ff:1::face:b00c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25d65c8asm754656466b.215.2024.09.12.07.29.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2024 07:29:12 -0700 (PDT)
-Date: Thu, 12 Sep 2024 07:29:09 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Usama Arif <usamaarif642@gmail.com>, linux-efi@vger.kernel.org,
-	kexec@lists.infradead.org, ebiederm@xmission.com, bhe@redhat.com,
-	vgoyal@redhat.com, tglx@linutronix.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, linux-kernel@vger.kernel.org, rmikey@meta.com,
-	gourry@gourry.net
-Subject: Re: [RFC] efi/tpm: add efi.tpm_log as a reserved region in
- 820_table_firmware
-Message-ID: <20240912-sapphire-koala-of-focus-918cff@leitao>
-References: <20240911104109.1831501-1-usamaarif642@gmail.com>
- <CAMj1kXFVyQEwBTf2bG8yBXUktM16dzrcPH-Phz_toAsCK-NfMA@mail.gmail.com>
- <2542182d-aa79-4705-91b6-fa593bacffa6@gmail.com>
- <CAMj1kXGi+N6AukJt6EGQTao=-1Ud_=bzwPvdjEzhmzEraFU98w@mail.gmail.com>
- <20240912-wealthy-gabby-tamarin-aaba3c@leitao>
- <CAMj1kXHh-Kov8c1pto0LJL6debugz1og6GFMYCwvfu+RiQGreA@mail.gmail.com>
+	s=arc-20240116; t=1726154481; c=relaxed/simple;
+	bh=XoAQWmOKdAGe2LxePsrGsTfGlOK7zWHOGSNbSW1eKAw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m76p6WEVUJ1HVecawto4gNxIvQEPV7yr02jj+LBntNNCt9KbOP/BpUk52fIcju86WoWI1dZxP+XDp7lA0MMAn/7dyPUjLrtnGmiZL2JwancGQM5fB+P0WTgQyMja8MKqgKgayHG48MPq6+sBgf9LqWqdj1mCtyINZ1FcHEQm1ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iB4Rzoob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0C6C4CEC5;
+	Thu, 12 Sep 2024 15:21:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726154480;
+	bh=XoAQWmOKdAGe2LxePsrGsTfGlOK7zWHOGSNbSW1eKAw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=iB4RzoobDJ2QP8gIiVB5vpjnOnZDlVGB7EKeqxbvLAc5+wcnN2Xzaxyg8xeRnHXuS
+	 gCgauQvCaV6+IFQ1Yix3jIvb5q0hG6ad/rYoHR6wgqGoKGQAGohn1+HM8RFThsLsfF
+	 R9CudEYY7kAfIeH3ce9942Wfh9z7QTurMOkdp6AIu0tIJFZCMtc20i8We2ZEGfaw+u
+	 9B01gIQamFsl1sgyiPPwl9CmBpQDlgLRjVDhdFflYplNt7WVR+d7g79dmL75wRqNOH
+	 4RvKOTHjg+khA3w+i+2au9mKMywnBQ2rpDck8SM9BtXvDi8L742Owh23Poh3igr4hF
+	 Icp2b7RhXFI1w==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-535dc4ec181so981246e87.3;
+        Thu, 12 Sep 2024 08:21:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV5dLlBWTmZiqhyMms5TVpAg1eDXWbqOMwl43ylRec6Khbx031X3g5zjlASlD8+1psC1z75KDP0tt0=@vger.kernel.org, AJvYcCVPIHl7bANpzbEZLgpTLtHqtsOes1jpGOKeoqP2noOSdmX0jjnJOl6YYE/9k0dKmDBdrdQuww99FmWVmVFB@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZZ+PXlNaTfrulgEblwTRB/ZYs6cPKgCkEsdvj7PXc8uVXUkdB
+	JrC3e9QqYfpYADKqj47vdSyM3UmkRBn07eT0kMKah3h/DINMX97ISTc1YuZ46n9ZRcAt7GGmGQH
+	U249OyrlS5ZAzb1LT1xGnKfIRveg=
+X-Google-Smtp-Source: AGHT+IHgOs3mfCFDWSz8kmWB+CF7guYg1lA3puiGFoO0qOIGPDEteJfcHHhRjaQATWNg9FoAOzw2KhmhqqNzjmioQ3k=
+X-Received: by 2002:a05:6512:3b0e:b0:536:5551:79ec with SMTP id
+ 2adb3069b0e04-53678faa022mr2183618e87.4.1726154479251; Thu, 12 Sep 2024
+ 08:21:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMj1kXHh-Kov8c1pto0LJL6debugz1og6GFMYCwvfu+RiQGreA@mail.gmail.com>
+References: <20240911104109.1831501-1-usamaarif642@gmail.com>
+ <CAMj1kXFVyQEwBTf2bG8yBXUktM16dzrcPH-Phz_toAsCK-NfMA@mail.gmail.com>
+ <2542182d-aa79-4705-91b6-fa593bacffa6@gmail.com> <CAMj1kXGi+N6AukJt6EGQTao=-1Ud_=bzwPvdjEzhmzEraFU98w@mail.gmail.com>
+ <20240912-wealthy-gabby-tamarin-aaba3c@leitao> <CAMj1kXHh-Kov8c1pto0LJL6debugz1og6GFMYCwvfu+RiQGreA@mail.gmail.com>
+ <20240912-sapphire-koala-of-focus-918cff@leitao>
+In-Reply-To: <20240912-sapphire-koala-of-focus-918cff@leitao>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 12 Sep 2024 17:21:08 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXG842OSYu4GPm-ocyvpBDowPGaXAftqGExxjZ4=dGyt5g@mail.gmail.com>
+Message-ID: <CAMj1kXG842OSYu4GPm-ocyvpBDowPGaXAftqGExxjZ4=dGyt5g@mail.gmail.com>
+Subject: Re: [RFC] efi/tpm: add efi.tpm_log as a reserved region in 820_table_firmware
+To: Breno Leitao <leitao@debian.org>
+Cc: Usama Arif <usamaarif642@gmail.com>, linux-efi@vger.kernel.org, 
+	kexec@lists.infradead.org, ebiederm@xmission.com, bhe@redhat.com, 
+	vgoyal@redhat.com, tglx@linutronix.de, dave.hansen@linux.intel.com, 
+	x86@kernel.org, linux-kernel@vger.kernel.org, rmikey@meta.com, 
+	gourry@gourry.net
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 12, 2024 at 03:10:43PM +0200, Ard Biesheuvel wrote:
-> On Thu, 12 Sept 2024 at 15:03, Breno Leitao <leitao@debian.org> wrote:
-> > On Thu, Sep 12, 2024 at 12:51:57PM +0200, Ard Biesheuvel wrote:
-> > > I don't see how this could be an EFI bug, given that it does not deal
-> > > with E820 tables at all.
+On Thu, 12 Sept 2024 at 16:29, Breno Leitao <leitao@debian.org> wrote:
+>
+> On Thu, Sep 12, 2024 at 03:10:43PM +0200, Ard Biesheuvel wrote:
+> > On Thu, 12 Sept 2024 at 15:03, Breno Leitao <leitao@debian.org> wrote:
+> > > On Thu, Sep 12, 2024 at 12:51:57PM +0200, Ard Biesheuvel wrote:
+> > > > I don't see how this could be an EFI bug, given that it does not deal
+> > > > with E820 tables at all.
+> > >
+> > > I want to back up a little bit and make sure I am following the
+> > > discussion.
+> > >
+> > > From what I understand from previous discussion, we have an EFI bug as
+> > > the root cause of this issue.
+> > >
+> > > This happens because the EFI does NOT mark the EFI TPM event log memory
+> > > region as reserved (EFI_RESERVED_TYPE).
 > >
-> > I want to back up a little bit and make sure I am following the
-> > discussion.
+> > Why do you think EFI should use EFI_RESERVED_TYPE in this case?
 > >
-> > From what I understand from previous discussion, we have an EFI bug as
-> > the root cause of this issue.
+> > The EFI spec is very clear that EFI_RESERVED_TYPE really shouldn't be
+> > used for anything by EFI itself. It is quite common for EFI
+> > configuration tables to be passed as EfiRuntimeServicesData (SMBIOS),
+> > EfiBootServicesData (ESRT) or EFiAcpiReclaim (ACPI tables).
 > >
-> > This happens because the EFI does NOT mark the EFI TPM event log memory
-> > region as reserved (EFI_RESERVED_TYPE).
-> 
-> Why do you think EFI should use EFI_RESERVED_TYPE in this case?
-> 
-> The EFI spec is very clear that EFI_RESERVED_TYPE really shouldn't be
-> used for anything by EFI itself. It is quite common for EFI
-> configuration tables to be passed as EfiRuntimeServicesData (SMBIOS),
-> EfiBootServicesData (ESRT) or EFiAcpiReclaim (ACPI tables).
-> 
-> Reserved memory is mostly for memory that even the firmware does not
-> know what it is for, i.e., particular platform specific uses.
-> 
-> In general, it is up to the OS to ensure that EFI configuration tables
-> that it cares about should be reserved in the correct way.
+> > Reserved memory is mostly for memory that even the firmware does not
+> > know what it is for, i.e., particular platform specific uses.
+> >
+> > In general, it is up to the OS to ensure that EFI configuration tables
+> > that it cares about should be reserved in the correct way.
+>
+> Thanks for the explanation.
+>
+> So, if I understand what you meant here, the TPM event log memory range
+> shouldn't be listed as a memory region in EFI memory map (as passed by
+> the firmware to the OS).
+>
+> Hence, this is not a EFI firmware bug, but a OS/Kernel bug.
+>
+> Am I correct with the statements above?
+>
 
-Thanks for the explanation.
+No, not entirely. But I also missed the face that this table is
+actually created by the EFI stub in Linux, not the firmware. It is
+*not* the same memory region that the TPM2 ACPI table describes, and
+so what the various specs say about that is entirely irrelevant.
 
-So, if I understand what you meant here, the TPM event log memory range
-shouldn't be listed as a memory region in EFI memory map (as passed by
-the firmware to the OS).
+The TPM event log configuration table is created by the EFI stub,
+which uses the TCG2::GetEventLog () protocol method to obtain it. This
+must be done by the EFI stub because these protocols will no longer be
+available once the OS boots. But the data is not used by the EFI stub,
+only by the OS, which is why it is passed in memory like this.
 
-Hence, this is not a EFI firmware bug, but a OS/Kernel bug.
+The memory in question is allocated as EFI_LOADER_DATA, and so we are
+relying on the OS to know that this memory is special, and needs to be
+preserved.
 
-Am I correct with the statements above?
+I think the solution here is to use a different memory type:
 
-Another question, looking at the Spec[1] it says:
+--- a/drivers/firmware/efi/libstub/tpm.c
++++ b/drivers/firmware/efi/libstub/tpm.c
+@@ -96,7 +96,7 @@ static void efi_retrieve_tcg2_eventlog(int version,
+efi_physical_addr_t log_loca
+        }
 
-	If the ACPI TPM2 table contains the address and size of the Platform Firmware TCG log,
-	firmware “pins” the memory associated with the Platform Firmware TCG log, and reports
-	this memory as “Reserved” memory via the INT 15h/E820 interface
+        /* Allocate space for the logs and copy them. */
+-       status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
++       status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
+                             sizeof(*log_tbl) + log_size, (void **)&log_tbl);
 
+        if (status != EFI_SUCCESS) {
 
-What is the 'firmware' in the statement above, that says that reports
-the memory as reserved? (Is it libstub?!)
-
-Thank you so much for guiding us here,
---breno
-
-[1] https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientPlatform_Profile_for_TPM_2p0_Systems_v49_161114_public-review.pdf
+which will be treated appropriately by the existing EFI-to-E820
+conversion logic.
 
