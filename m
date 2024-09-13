@@ -1,81 +1,80 @@
-Return-Path: <linux-efi+bounces-1721-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1722-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD5D97790C
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 08:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F8B977913
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 09:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5722EB24149
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 06:59:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB080B23263
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 07:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B201BA87D;
-	Fri, 13 Sep 2024 06:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28704185B7D;
+	Fri, 13 Sep 2024 07:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NN4q5Sbz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s0qN/Puc"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3033143C40
-	for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 06:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6D9142E9F
+	for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 07:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726210782; cv=none; b=m61h+f+/itlNf2tESKcegoq1a9gQUffhwnw2/lPxPQCIPYdCd3ZTaqWP+eohqCN6OvPF7NZs4L/ZhVFcyaXuL8tavFUoKzVIuzPE2K9n5LuCqBd0l4gzhWfZnPOOnU9nIZQ9iqpRhAUeO68JtXhea5YJL3bouUYCKksu1fwh3z4=
+	t=1726210995; cv=none; b=H/A5dxxQzekRzYnY5zuDz8yx2F4nLfDgDBqG5H0MmFDLfxYdojQRYshX8k34NohiTQOOWKFII39NEKFbAEnAFMrBpdvkKJp2sZCXSzBckfF4M909Sg6QxvOLZgobBgqvPTv6Q/PuECrO0H/pCZvFMvcwvSVvXhiLGY4BjO07n1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726210782; c=relaxed/simple;
-	bh=ShV9L2+m2YMDLJikbnfq0WaVdFpP9KMaCDxND8LBJXk=;
+	s=arc-20240116; t=1726210995; c=relaxed/simple;
+	bh=Pcxc+EYTY/Zox/ijAp5jY27pQLDu+ZiYXpSY++OkQ/Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eKwv/GY6p2GaGq7CBSUm9FtGjNEuAvy3R0wBbdehVFPnpc1YTaxJQ/a/8h6D3i9gzs517tK4UvKDcZPr3//e5AkcCiD3gwPvYhhM11nX1HOekM/c3lSoGKDlknmk9MkbMdosFlSVgrU/MST4THPnDVGYTIE29vdGr3yWquiC5W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NN4q5Sbz; arc=none smtp.client-ip=209.85.160.52
+	 To:Cc:Content-Type; b=p5dlyuGAAHHKMP7Kj2/xKjD7wXscpOswG2eR4XgMNOUa92tTk+g7QYGdIrRL3Ox7xrQa4d0OTVWQdCcK245hGkNExm168B95/BhsXA//3uJcKeoFrQtpWm4yKrq+xRbKAkELAqoPQ9NETH6IVAzCHfo6MsGJ9DRO/HKkIBUkI8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s0qN/Puc; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-27051f63018so265573fac.3
-        for <linux-efi@vger.kernel.org>; Thu, 12 Sep 2024 23:59:40 -0700 (PDT)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-719232ade93so540498b3a.2
+        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 00:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1726210780; x=1726815580; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1726210993; x=1726815793; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WGEhhXmzUtJuI/Eu5jyvUKPq++9pzn31gG5DMuWre94=;
-        b=NN4q5SbzwrsWAJof1O4fMAFDhikxlWYTR2QFWiRnKtCKOe/Trzl3N+HzA1smGC5Wq6
-         7OTdGSFK96ANra+AAaLZbHDikax2eQaAgzWESljY4SI+uN594OO4I/VUNKE0PrMqMVSs
-         lrIX+Qb3Vf0RzYyRJSPgw2eAiwHMW3PQ2VR9JZ73veY/1JuNRNq7m2v1WG/xZuWfNvpz
-         4MubYuKh6ZTAJGkcZ//qqGiWCjA+uzRBA6hHME8jbItVDgghlzfq/h/fUj6sL+9Xi8zN
-         gTyR46nQjemHaO/aAB7FldOwOp9RMLTsxHVTdQmewS+l4b94Q5ZndkL8p2AV/00FeYYp
-         bcAQ==
+        bh=j5e2APrvIr0iBdhPUANMRU+/4M8viwko7EsgvUm5WX0=;
+        b=s0qN/Puc8JdEXh7vGiJaPN10UqXa7b/3VwovD9Dny+jak+GaXN0YlQytIyV3101qmk
+         qZLAmumL/FFDcAwT2NLthbBE+rSbVXAaNJYE6+oLawdfSnWLNCB2k8GdrX47MGdzWfAp
+         re5IN8HBZkwoO81zqptan5NHoURmwwwHAcjwUeKDyvyVqQ6U22bngJo+cAKMpybTMxfg
+         0NBjlZPSKM1wrN2PCavkx0w9BaCvbXhtMLBxn7ImSIOm+8pH1t1WeQJ6HhPtWMPHdhxc
+         130jfiUh4qvzLj/NyklAkPi6ELoXLnxneR5q+ZwxKpwJW5pEkeuck1bCLNA6106sVcxh
+         IrvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726210780; x=1726815580;
+        d=1e100.net; s=20230601; t=1726210993; x=1726815793;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WGEhhXmzUtJuI/Eu5jyvUKPq++9pzn31gG5DMuWre94=;
-        b=nnsAvsf0eQUEq3c6WJ27TCq/qAdjx8kv+q83qPvZcR64MKco/6SF5QwfjT3K0RqSqE
-         sMSbV2f4sBbRf0Ee972Ty1Whrydk89wcXYk3u9lcXu9oApu7cXct3fiaDpEXupXbsT2I
-         8lHTIeY/nbYbgLA3VNxFEhTuFKjXDNLNK+KQmsxx4/PH3xiy1nvchKWkdioegXKmJi5b
-         /B5SVfm3nCIrHbKuGXRewO3DE2NdFlhnityAVl2Ju5P/EqXAr4yyAfqYe3TnDA2Ly+wz
-         XpHxevG7Fh+0C2VPVvD9xsDftSLsHa+dWzi10VjLiMwqv/14H2A+umJtbh+ZLy7TpICl
-         ZTJA==
-X-Gm-Message-State: AOJu0Yyu2cLEkhctKDcjq36ntbWi98ZkDiRUYH2Cy/b+d3Au8QOIvrfu
-	LAengNwlNdDM0w7iAdGUl6j1WyePky06fFDPgYXlhJRWEIs4ysi7J+K2C7DYEAC94jLBo7c88B8
-	CSdjqCIEu9H7konEnofDOW50ewx9rHw9jMCiaybMNXp52qEP6
-X-Google-Smtp-Source: AGHT+IH4x1Nyy2kdekN+2vcx0ajRcsHd0284Xn+MFt0Wjvy/NVo4Jer090xNhjugTxFqBBn6DLgvGUkMXHiHOqgMw/E=
-X-Received: by 2002:a05:6870:56a2:b0:27b:6e04:d13a with SMTP id
- 586e51a60fabf-27c68a154ecmr1156192fac.26.1726210779632; Thu, 12 Sep 2024
- 23:59:39 -0700 (PDT)
+        bh=j5e2APrvIr0iBdhPUANMRU+/4M8viwko7EsgvUm5WX0=;
+        b=Daowcr4w6ljvl6j/bOa4gA1XCZYfYXaD8sc6vQhLMAedbBq/ebODxMj2RJnRppe6j6
+         5W9tGeZRLn0989OmJ20K8J7rYXMhA4MnsccRtqG7+AyGKrKv8uwIZgTOB/PJ0i6YcU6O
+         b4SA8V+fSwXNpsLsrOhUP2DmS5oEpjgJQzpKxyBSpWaUhR7XdwGvgFkFz7HKGqsO3MK6
+         TenUKIepSojXap4iYe/nCc7jpWMdAOIAvqw16u5mqLHaTNkT74Kp4Y1PDj3GQxBYKcU2
+         7Nupt2gYk1A3cfKrIkyIk83BkJiHc98CLR42vNMkwDH8hKHLx029F/OGic83/3IHgulP
+         lUmA==
+X-Gm-Message-State: AOJu0YxqovE1hOR+bZfWQ1Lmj64P0BB5kTYEo6afxcZm9cfW+r6yKeSR
+	Wxz7cqGm2MxU1f8OECY5f+ODVa+8wtoje4ntKyxAr9Juf+kqT/q0ROf6GUP9So7sbeR08APRR1t
+	tR8F38W9Z64qLI6nX52dHV6CdxBTpyJ0+QBiqd5KzbwInmWsV
+X-Google-Smtp-Source: AGHT+IFhKBfHCLTcdF96fnJQ8ermuXuYfnTgJ0TMseCuYjTqXM+6WuATSh9HMOgGDabIf59nSEaJTHpjDm3iEFsC3hU=
+X-Received: by 2002:a05:6a00:2d17:b0:717:9483:5887 with SMTP id
+ d2e1a72fcca58-71936a4b6a0mr2799151b3a.8.1726210992805; Fri, 13 Sep 2024
+ 00:03:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240906202745.11159-1-gourry@gourry.net> <20240906202745.11159-4-gourry@gourry.net>
-In-Reply-To: <20240906202745.11159-4-gourry@gourry.net>
+References: <20240906202745.11159-1-gourry@gourry.net> <20240906202745.11159-3-gourry@gourry.net>
+In-Reply-To: <20240906202745.11159-3-gourry@gourry.net>
 From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Fri, 13 Sep 2024 09:59:03 +0300
-Message-ID: <CAC_iWj+uieGoH1ouc6nwdZjirULgjYk+H6YFQQHSHcAySdaFog@mail.gmail.com>
-Subject: Re: [PATCH 3/6] libstub,tpm: provide indication of failure when
- getting event log
+Date: Fri, 13 Sep 2024 10:02:32 +0300
+Message-ID: <CAC_iWjK6EXf1g-CwBALTFmhhnRJaHcrdCS787aDDksdhSJxJTA@mail.gmail.com>
+Subject: Re: [PATCH 2/6] tpm: do not ignore memblock_reserve return value
 To: Gregory Price <gourry@gourry.net>
 Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, ardb@kernel.org, 
 	leitao@debian.org, usamaarif642@gmail.com, 
@@ -86,38 +85,37 @@ Hi Gregory,
 
 On Fri, 6 Sept 2024 at 23:28, Gregory Price <gourry@gourry.net> wrote:
 >
-> If get_event_log fails, at least provide an indicator of this failure
-> to assist debugging later failures that attempt to interact with it.
+> tpm code currently ignores a relevant failure case silently.
+> Add an error to make this failure non-silent.
 >
 > Signed-off-by: Gregory Price <gourry@gourry.net>
 > ---
->  drivers/firmware/efi/libstub/tpm.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  drivers/firmware/efi/tpm.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
-> index df3182f2e63a..192914e04e0f 100644
-> --- a/drivers/firmware/efi/libstub/tpm.c
-> +++ b/drivers/firmware/efi/libstub/tpm.c
-> @@ -185,8 +185,10 @@ void efi_retrieve_eventlog(void)
->                         get_efi_config_table(EFI_CC_FINAL_EVENTS_TABLE_GUID);
+> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+> index 9c3613e6af15..6e03eed0dc6f 100644
+> --- a/drivers/firmware/efi/tpm.c
+> +++ b/drivers/firmware/efi/tpm.c
+> @@ -61,7 +61,11 @@ int __init efi_tpm_eventlog_init(void)
 >         }
 >
-> -       if (status != EFI_SUCCESS || !log_location)
-> +       if (status != EFI_SUCCESS || !log_location) {
-> +               efi_err("TPM unable to provide Event Log\n");
+>         tbl_size = sizeof(*log_tbl) + log_tbl->size;
+> -       memblock_reserve(efi.tpm_log, tbl_size);
+> +       if (memblock_reserve(efi.tpm_log, tbl_size)) {
+> +               pr_err("TPM Event Log memblock reserve fails (0x%lx, 0x%x)\n",
+> +                      efi.tpm_log, tbl_size);
+> +               goto out;
+> +       }
 
-s/provide/retrieve/ and yes the print is going to be useful.  Do you
-know if the EventLog is mandatory. Reading at the spec GetEventlog
-only has 2 return values, which implies you can't return "Not
-supported", but it's not explicitly stated anywhere
+ret is going to be 0 here. I haven't followed the rest of the code and
+where this function is used, but you probably need to return -ENOMEM
 
 Thanks
 /Ilias
->                 return;
-> +       }
 >
->         efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
->                                    truncated, final_events_table);
+>         if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
+>                 pr_info("TPM Final Events table not present\n");
 > --
 > 2.43.0
 >
