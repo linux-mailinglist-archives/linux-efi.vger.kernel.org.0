@@ -1,118 +1,149 @@
-Return-Path: <linux-efi+bounces-1731-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1732-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E5C978088
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 14:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B15978098
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 14:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86E31F253AB
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 12:53:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 111281F26E27
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 12:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE111DA61A;
-	Fri, 13 Sep 2024 12:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FE91DA620;
+	Fri, 13 Sep 2024 12:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OpyoIk5y"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="JmPrWifi"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33A61DA616
-	for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 12:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48461D86DC
+	for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 12:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726231965; cv=none; b=hwx3xMpb/bT6quTHuJMrIkewG/YFcdqYB/MNxEPdvmy4mTnFxY7uURN3brgllOVQJeqVb/GXmexhQXuNPCV/8fS6OiCM50ne409L0WfqO0QuiTjCUDQQl0IT7VUPmqAZTggFuvO4kA+j4dc7ns7Y9a//AXc58uV2z0/DUIduFrw=
+	t=1726232229; cv=none; b=nZeQXeQW8SAlp7rG6iMxbbH80e+a+R1J+ZfZKrBMpVbO29i/72TS58DUKhfIpbTfZjkFX8olpfByoyJt1B2UXj2vU68vA7UPlMByKs3oIyb9bVG5lBuQe/P4qToCaObb3R7nKJOuyt57BMjQEGYpUmlxHEev0hwfV5ZM7k12Voo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726231965; c=relaxed/simple;
-	bh=Z58w98GTT+/pVEgLgwYQuU09XTZYDUL29uYY9jlootM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Db/0pPAHeYir3Phd9z512JElOaeiN+I0F9US2d2P/QO+DEjavDINLWGZUx+nQu1U55Zeo3PbE1aTXcASkBWC+8HLWpdQGFoY59idnQ7pmpDXJxf9rHiPKgOlSsC/qcgXvWTeF+pcly4aNQsKDELgpXsiShTroj/SnZwBs7F/M4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OpyoIk5y; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726231962;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Wl05HquAsncJfGKJSFBrSFOKrrN2t2JKKgtLUktSM2A=;
-	b=OpyoIk5yxyE9yBoXda//56on19ow4huPITyGoy5zre6ojWbM9Ufb4qsq6jsYIdUOm+j1Mp
-	+ODKBFqn7lVOMpm2rwkBZaFSPHqSaxOjgMG2gNdTez06QQOuS1BeTfEpaf+ZECDrXpx6Cf
-	HIyIPJjNmm8oZj3XFDeyA+VtRk+seZE=
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
- [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-287-1SUewF8KN4-Yvov2EMSs4Q-1; Fri, 13 Sep 2024 08:52:41 -0400
-X-MC-Unique: 1SUewF8KN4-Yvov2EMSs4Q-1
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a08f88aeceso1577405ab.0
-        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 05:52:41 -0700 (PDT)
+	s=arc-20240116; t=1726232229; c=relaxed/simple;
+	bh=tH23dET3W+bdUFx3YCiAyQJxC1I7bsxbztXcNDlgBao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FC0O/50c7ogrCt8UDdw0S2V9jxKbPijsvAWqgB8Qoners8A6SmVH6kKgulW3dIFmsOqP80UVGDXTy1sSdzXgMk1pzJfD3h3Tw7DH76QlY7orzyoyRIYoHL0jZ+OV3X5fzU8EGa2ow+XhMEzxcS09flowFAyU+uK4dqvZLHEOQ6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=JmPrWifi; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6d5893cd721so7243787b3.0
+        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 05:57:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1726232225; x=1726837025; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0GW3d9XB2yvL3Rb81kUGiyxRHSm6TQz1BPOKouSAWkE=;
+        b=JmPrWifisCMDhsoZtejUU7hgXv+oQ32i6f+0D4dk/5vVGO/G0wrAj+qv0AkGlUyM56
+         julHMpo70zUKDYpoVv59+LTYkJz75EQsdXO4ApgcIqBNVsZ1ZfugJC8itjBlpU93UY/B
+         Gs3xqp8wJ73gf6B5bl7e1jrOYcuFgTnwaBAvu8s7kb3wylurhR+vbaKVq5cSERVxh2bq
+         S7B3rbAz00NzWT4BcFrDZORqUyDZY6YqgaaYH2wQiFQMj3NxjMPvCVo2vXumhaKeJQiQ
+         rbwrRBt6wlNwC96KL1tdDXKDb7JEBn7TcDBBllJMEfObGh81BVGpk/e38yDFqeBeguoZ
+         UhfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726231960; x=1726836760;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wl05HquAsncJfGKJSFBrSFOKrrN2t2JKKgtLUktSM2A=;
-        b=RxDUBQN0mccdll9Dp928MlImGjYMF/gxxxsTpVWDr0SXntONKIJASYFvZvevk6Rwlr
-         BNPM7axaZll6aCN0bpFo3J+taQQekzTcNF4mSyFoIfnxn9qIhW005MRlpc9kjfNO+OGy
-         MPtkkGez6Hq7PDVJ0vSzkPnveJBAiBd+3WFA7B0hmO6M0ujTVnkErUbKpg3KVPrzQET5
-         LrveWeU2tgmxV8Om5EgLbU/OVq0fiO2X3PvGkOMtfn1GpSGyUNhVqTi9eyYgcYl+es+z
-         t0BYylS/O/AOUJ8fcdDQxwiZ4lIZY79qZ4kn+dXVt85DVVLJ9RhYpdXQOnepAUP33A9X
-         AMsw==
-X-Forwarded-Encrypted: i=1; AJvYcCXPssIEIHJpq3egbGVqzpiCFM74aAfJybM+/cw4IJVQcnd/XMgv9obY3m3pRTM6PF/VCqeaV/PHLzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzyjc8JmKcqBTnlP5+3Tiv+Wtol6RA/PVMebfqNslNRrhNaeNgQ
-	XLf//oTUExn3nfuwkH/S3gLwgU7TOqsNKpvj4rzLbvXzjwypDMiJDGNJPdcSOgbvmZbpUYH0heU
-	mp+QaIVuOg64Asn1lZqxbnRy5+JHZmkS1Com68X+sPdLPX05MvUi8vD3ft48XeSyj1H1s5rCt+E
-	Y5m4iMpcPAublFO+cTB7FhMcqHDaCy9rliZ1Wxm+Yc
-X-Received: by 2002:a05:6e02:1383:b0:39f:5abe:ec25 with SMTP id e9e14a558f8ab-3a08495478amr60011655ab.19.1726231960114;
-        Fri, 13 Sep 2024 05:52:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFwLSNinCxdMGjUdbfB8K3Nj35P1O2ZHOuUti0jQxahFf7ERb5uddFQ5NioJygZfBUzuO8uwTkyZu28jvB7vZ0=
-X-Received: by 2002:a05:6e02:1383:b0:39f:5abe:ec25 with SMTP id
- e9e14a558f8ab-3a08495478amr60011405ab.19.1726231959796; Fri, 13 Sep 2024
- 05:52:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726232225; x=1726837025;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0GW3d9XB2yvL3Rb81kUGiyxRHSm6TQz1BPOKouSAWkE=;
+        b=oMlU61ZrroNbz+ypCmvHV4Lak6GQhWZoFu8xGzY7qfvym6r7eWF5I5qaDOZoJINug4
+         7zyF1jwoVg1Gzeq/i6gSJoFLar1+Wg1v7ukM2m8r9xYDtm1b5L0KTvSSyfnvlhlIHmTx
+         oEh7oK7MEzHxy88TbX3flKTNROfVKAt4Kyl9lu7p4ZraFkk1QWwZp39U4ljK0hca7HuL
+         VhP+kHf6pg0fSKeIMhruMRc5kVAlWAjKkqYcF3ofJRCASrfjEcfbQQ03iAuyW0giLDwO
+         jTNZviAfeVG+uufYA2oJ/fFr19txJB28XYKD+J40PyDnViJQFxOmoLg5S2q1JprX17YP
+         W46g==
+X-Gm-Message-State: AOJu0Yxyaou4VAmrkNT/AGGMl5U8my7onlm36fryiXOeFWpEnak3t752
+	KU0ixkiTBOSHxTBx3w4oMakF0Yrga1KMGDZgpQ/US5YrlpNxuP167S0orXkemVU=
+X-Google-Smtp-Source: AGHT+IH2KJfuTonzsyo/Sd1YERlzxE9cGr+D8Ohd+W3CmCb32/3paJvxaNSRxv2evMvRbEczbK1V4Q==
+X-Received: by 2002:a05:690c:f91:b0:65f:77c3:63a0 with SMTP id 00721157ae682-6dbcc24eb37mr22834977b3.7.1726232225602;
+        Fri, 13 Sep 2024 05:57:05 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a9a796ae09sm658425385a.49.2024.09.13.05.57.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 05:57:05 -0700 (PDT)
+Date: Fri, 13 Sep 2024 08:56:19 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ardb@kernel.org, leitao@debian.org, usamaarif642@gmail.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH 4/6] tpm: sanity check the log version before using it
+Message-ID: <ZuQ2c7XOptYMJEtD@PC2K9PVX.TheFacebook.com>
+References: <20240906202745.11159-1-gourry@gourry.net>
+ <20240906202745.11159-5-gourry@gourry.net>
+ <CAC_iWjJizjQWucDbrqKGdZTcj7FFxiPN97=p1zwfnPE=sAC6RQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240911104109.1831501-1-usamaarif642@gmail.com>
- <CAMj1kXFVyQEwBTf2bG8yBXUktM16dzrcPH-Phz_toAsCK-NfMA@mail.gmail.com>
- <2542182d-aa79-4705-91b6-fa593bacffa6@gmail.com> <CAMj1kXGi+N6AukJt6EGQTao=-1Ud_=bzwPvdjEzhmzEraFU98w@mail.gmail.com>
- <20240912-wealthy-gabby-tamarin-aaba3c@leitao> <CAMj1kXHh-Kov8c1pto0LJL6debugz1og6GFMYCwvfu+RiQGreA@mail.gmail.com>
- <6b2cc4c4-4354-4b29-bc73-c1384b90dfc6@gmail.com> <CAMj1kXG1hbiafKRyC5qM1Vj5X7x-dmLndqqo2AYnHMRxDz-80w@mail.gmail.com>
- <CAMj1kXFr+N9LMj0=wULchYosUpV0ygZSKUj1vdUP0KWEANKasw@mail.gmail.com>
- <CALu+AoS9+OxPmVJB9fAJFkjsX9xUVw6K_uXiOi0-XsK6-b4THg@mail.gmail.com>
- <1c37546a-e15e-465f-bcbb-6f39c0fcf82d@gmail.com> <CALu+AoQ_Db=1naa1YffvdV7ziY8FPzugUutw6ggg8O5P0Z2ofA@mail.gmail.com>
- <CALu+AoSdN4Zh5gPbyTGS8gJ7wDFfOq81ANNH4wmv3z1vs-34Rw@mail.gmail.com> <c76e9653-d991-4319-8924-5883e6829d17@gmail.com>
-In-Reply-To: <c76e9653-d991-4319-8924-5883e6829d17@gmail.com>
-From: Dave Young <dyoung@redhat.com>
-Date: Fri, 13 Sep 2024 20:52:48 +0800
-Message-ID: <CALu+AoStijsAxNvX0h2w7jBt-4sHr0O9AEtyyoxNbLBtgmZB7g@mail.gmail.com>
-Subject: Re: [RFC] efi/tpm: add efi.tpm_log as a reserved region in 820_table_firmware
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>, linux-efi@vger.kernel.org, 
-	kexec@lists.infradead.org, ebiederm@xmission.com, bhe@redhat.com, 
-	vgoyal@redhat.com, tglx@linutronix.de, dave.hansen@linux.intel.com, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, rmikey@meta.com, 
-	gourry@gourry.net
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAC_iWjJizjQWucDbrqKGdZTcj7FFxiPN97=p1zwfnPE=sAC6RQ@mail.gmail.com>
 
-Hi Usama,
-
-> > Anyway I was not aware very much about the firmware e820 tables and
-> > kexec tables when they were created.   I suspect that a cleanup and
-> > revisit is needed.  I will have a look at that.
+On Fri, Sep 13, 2024 at 09:40:30AM +0300, Ilias Apalodimas wrote:
+> Hi Gregory,
+> 
+> On Fri, 6 Sept 2024 at 23:28, Gregory Price <gourry@gourry.net> wrote:
+> >
+> > If the log version is not sane (0 or >2), don't attempt to use
+> > the rest of the log values for anything to avoid potential corruption.
+> >
+> > Signed-off-by: Gregory Price <gourry@gourry.net>
+> > ---
+> >  drivers/firmware/efi/tpm.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+> > index 6e03eed0dc6f..9a080887a3e0 100644
+> > --- a/drivers/firmware/efi/tpm.c
+> > +++ b/drivers/firmware/efi/tpm.c
+> > @@ -60,6 +60,15 @@ int __init efi_tpm_eventlog_init(void)
+> >                 return -ENOMEM;
+> >         }
+> >
+> > +       if (!log_tbl->version ||
+> > +           log_tbl->version > EFI_TCG2_EVENT_LOG_FORMAT_TCG_2) {
+> > +               pr_err(FW_BUG "TPM Events table version invalid (%x)\n",
+> > +                      log_tbl->version);
+> > +               early_memunmap(log_tbl, sizeof(*log_tbl));
+> > +               efi.tpm_log = EFI_INVALID_TABLE_ADDR;
+> > +               return -EINVAL;
+> 
+> I don't think we need this check at all. Did you actually see this happening?
+> efi_retrieve_eventlog() that runs during the efistub tries to retrieve
+> the log and the EFI protocol itself explicitly says that the firmware
+> *must* return EFI_INVALID_PARAMETER if the event log is not in 1.2 or
+> 2.0 format. If the firmware does something wrong, we should report the
+> FW BUG in that function, instead of installing the config tables Linux
+> uses internally to handover the log and catching it late.
+> 
+> Thanks
+> /Ilias
 >
-> Yes, I feel like there is one too many tables! From reading the code
-> I understand that /sys/firmware/memmap should contain the untouched map
-> at time of boot, i.e. e820_table_firmware. But I would be in favour of
-> getting rid of e820_table_firmware, and just having e820_table_kexec.
-> And /sys/firmware/memmap gets data from e820_table_kexec.
 
-Agreed, I have the same feelings.
+We saw this happen and discovered it was a disagreement between EFI/OS/kexec
+causing the table to be overwritten during kexec.  We've since found a fix for
+that.  So the result was that it appeared the firmware was doing something
+wrong. The sanity check at least allowed us to boot without immediately
+crashing - because the tables don't get reinstalled, they get re-used
+(at least that's by best understanding of the whole interaction).
 
-Thanks
-Dave
-
+If the check seems superfluous, i can drop it.
+ 
+> 
+> 
+> > +       }
+> > +
+> >         tbl_size = sizeof(*log_tbl) + log_tbl->size;
+> >         if (memblock_reserve(efi.tpm_log, tbl_size)) {
+> >                 pr_err("TPM Event Log memblock reserve fails (0x%lx, 0x%x)\n",
+> > --
+> > 2.43.0
+> >
 
