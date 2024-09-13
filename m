@@ -1,72 +1,72 @@
-Return-Path: <linux-efi+bounces-1774-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1775-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC2F978BCA
-	for <lists+linux-efi@lfdr.de>; Sat, 14 Sep 2024 01:21:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A6F978BCC
+	for <lists+linux-efi@lfdr.de>; Sat, 14 Sep 2024 01:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B3841F26D32
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 23:21:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD07F1C24F9C
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 23:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE45F188590;
-	Fri, 13 Sep 2024 23:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FD918BBB1;
+	Fri, 13 Sep 2024 23:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="orcj1T0v"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="ppu8EzRu"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6492E185B47
-	for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 23:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2E917BECD
+	for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 23:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726269646; cv=none; b=heueWkPacB+x78xCBA6wYQAUuvS58qtenyiQNw2NME1u+WcITbQ6QJHgnBWTib24iv+boazImVCxjgmBDQx424/KVs6bx3y/ZoU8bRCjywj3PiBK5AnqZZNQoIrkrcAVJYQ8XJR/YcOI7Ghmgn7WywPJH+ePBUTunk97L5UN9jk=
+	t=1726269648; cv=none; b=OeJzFHz2xrFFDo5NS2n9KXCZh46yiSwebCUFZ8mnskxu9y/eISF0mxs89W55AqyIPGaDOplta91qQTIk+/00klPCtluzelZiQUQzS0Q1yTGp+AkdSzP118NveSX3/MbJkGRbkYvzqAMtJcnsdY7wOfblKMKY25eVd423HaqmPzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726269646; c=relaxed/simple;
-	bh=wpENg5K7Akr//dxuFB0ettmRrYVh6xPRVyKwVZ5+LdA=;
+	s=arc-20240116; t=1726269648; c=relaxed/simple;
+	bh=67vrryU9UsTS+odD3Hr++7bs/r/n/mJM7bxXmT5GFXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLWM6b4KH0HV5qQMqZE0d+VATq8wdz0s3z8miWqnadqNkK5qIxC1ZGGcXwh4US/lzGzl1EzwwD64JRNh7NRV/TJO7feH+lf1HBw9oQn9HkA/4Tafxb2wZglom5xw7uAYEEBdtZdIq7t95KHyZGAWXmu07eFqQ3lW/mxnjHxgRT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=orcj1T0v; arc=none smtp.client-ip=209.85.160.177
+	 MIME-Version; b=Yfil/HKA70NWKQF6N84lDxG7VPSZdzotgwwF4s5topE1TrvWmDX56gQ7GQ8jPTizSyaoy56Hym7DlttYMemwAlslfPLt/kCcFPGA5nTpmxmH469k0LB+KKMTD1riGFYNtN4uyAVOyzE2ETPocQPFvevzM+q1xvAnHqGXdvMAlWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=ppu8EzRu; arc=none smtp.client-ip=209.85.160.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-458362e898aso22328581cf.0
-        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 16:20:45 -0700 (PDT)
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-45821ebb4e6so21401861cf.2
+        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 16:20:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1726269644; x=1726874444; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1726269645; x=1726874445; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mK/BpjWFhfY+uS5/8x0nkKgbHvfXWYi9NIxTZR2LU/o=;
-        b=orcj1T0vmMbUesoQIcl2Od9wP3R3KjRLueA0eSxs9CO4ysG8kYwDMQ68XUc5rv9uKq
-         HoAFaJGoYH1ZxhVJ7dJ3heo4doLDIwn+Cjklxemasaa+rEH/ReO5+llq8EOX66yDYMiE
-         Rx6VUtnqGvn84MJBRhXxelBdgaFOJ5kRFfiYuALPQDzVNIRCBJ2XeJ+unn2NzSb+9jRW
-         ndbEO/A0pFYVyVUUVvDcCCkTjiYKxjLMVolX5N397NgakHQB1PlkDHxoQPaZd6tevix1
-         hO6+gH79RNPpB/rJqS8du0WQFDufJgWapzqJehPVEkeY2j18KcUWP9mw12NgRZ7sbT1h
-         UfYw==
+        bh=5qmyPO2gV2TdLvoy/ahfQtBr82+inMJIdQs23EMKWKs=;
+        b=ppu8EzRuBCtot/9pVwqKfojTcHOa6UFnKCl25Klu0ZXuHLPcDnDDqZdirctt1HdGv9
+         zmoIXrzZlzmuv+hZ8NvAt0MlXVWKVk2nYUU9BcOZUyxv79bii28Ep43XUQ6RPTG6pyZX
+         d2IiHRpx0+NWiqgB8OBwGDeY5k8slc2o3J+aPFScCQVkk29RdQbuATnhX5+O7wlHvdko
+         Zd8MvixTD32fFaVU8EwAgprUZLg3UIe3Au8HEApq4MM08Vtt4UC57k79eeTLS5qQP5YU
+         LqtzoG0NGxPsmrhT9JzNEk4jsQnZ8Yz3GqZdYy82g//g2QlYVJizyn9levz+l430MXkM
+         aIvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726269644; x=1726874444;
+        d=1e100.net; s=20230601; t=1726269645; x=1726874445;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mK/BpjWFhfY+uS5/8x0nkKgbHvfXWYi9NIxTZR2LU/o=;
-        b=GfFL9T1U116SQ8XNAuh9EE4ojJadqIdwMDGQOS2xziiPg0PKjlOZbEj8pUMdqJbURT
-         MKQ0eNnDirlcEh2ofiJ0SF+GI9AKeERE5rj6M7DpgqJpaQxiTIeqeFiwAhv8EnVVsiNJ
-         OZ8gqkNafqzx+W9+2mTOkVK7VYpYVumA2sFDWuK3qBwmwtU3T5iYg19uVCuIrYDUjoC3
-         LXqoLiNYXuUlPEVLTMMlgWZJciRHkbi0ybuMqIpSnixzFislmUyyGm0O8OdxmpPDg3m6
-         e/e8Z7HFNXSlLvcGOHk/8Sfzxq8ZY3P1Gbv1LKK3OPw7bkyJ1WUzhnF393mGoCu/6fr3
-         FhpQ==
-X-Gm-Message-State: AOJu0YyOCyM/klmJ8M6R4xt1kTvCfKsDZBgsyNUliZCPymfQi1W8jnOq
-	cnndkDtM2Ny0NFVZCaPxFGBEJSW6a0jxkl5kIQtyYjJ4jAxMj3fYROMu6jjJGbVquOIlYjpqol4
-	+
-X-Google-Smtp-Source: AGHT+IHU5jGSje/03tzXLhSjKsNALxLWzuMQn7LkdG77pbKLrDkPmNHZPN14O+1c5KiHQTAmeDwWnQ==
-X-Received: by 2002:ac8:5fc2:0:b0:456:802c:a67f with SMTP id d75a77b69052e-458602a9264mr127611441cf.3.1726269643753;
-        Fri, 13 Sep 2024 16:20:43 -0700 (PDT)
+        bh=5qmyPO2gV2TdLvoy/ahfQtBr82+inMJIdQs23EMKWKs=;
+        b=iRbVBtaR5S0Yv4M/UXSM3Dzes+tjlgAT18f8+pMmiqlntthNUHE60aHGQMMXb1VioI
+         GLg+prlXJzLJnRcSbAxEqMF4bTx87X77FmiD0Xm00T3A7gxpeNqFEGd+BevJrj2cAQyf
+         7ZAW6feU0/OKn0oIx7bDzFXsumv8OAhF38/t+i4W/eJE/KcM/SvzM5Q6wua5wu3/CL1e
+         R2tS9WjpvDQ7Fl88vwIom32L12HCZFoNbSzP+pO68n91CRH2mbCpQ4znMpAfa3vFxMCY
+         nU9UzDRjUG8+cmWbayqsRhbAotF8DEJBitYWaF0YsZmK3LPR5JEXbPFJRmTnj6/bkqpc
+         W7jw==
+X-Gm-Message-State: AOJu0YyjIu87R7jETF4ebJIGwlj+8tbPfXIDOuoSDr4YUr9gPsSe2sYA
+	dJ7vweTD+zXnnGnzawmQEzYxcQyl868VH07VYycIFqPypjJEka8jp6tTdBwl6tZtYUFz2s9/O0/
+	S
+X-Google-Smtp-Source: AGHT+IEv2T5u2KP3uo5VZTlultKi7QNfE9nP2N/YxwrZuzhrSep3tbOlZyBFH3cqwRpFuYqPrBzOSg==
+X-Received: by 2002:a05:622a:1892:b0:458:4c0d:bbd0 with SMTP id d75a77b69052e-4586032a0bamr103252871cf.30.1726269645075;
+        Fri, 13 Sep 2024 16:20:45 -0700 (PDT)
 Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-459aac7fb7bsm1245801cf.21.2024.09.13.16.20.43
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-459aac7fb7bsm1245801cf.21.2024.09.13.16.20.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 16:20:43 -0700 (PDT)
+        Fri, 13 Sep 2024 16:20:44 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-efi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -75,9 +75,9 @@ Cc: linux-kernel@vger.kernel.org,
 	usamaarif642@gmail.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com,
 	ilias.apalodimas@linaro.org
-Subject: [PATCH v2 2/4] tpm: do not ignore memblock_reserve return value
-Date: Fri, 13 Sep 2024 19:19:52 -0400
-Message-ID: <20240913231954.20081-3-gourry@gourry.net>
+Subject: [PATCH v2 3/4] tpm: fix unsigned/signed mismatch errors related to __calc_tpm2_event_size
+Date: Fri, 13 Sep 2024 19:19:53 -0400
+Message-ID: <20240913231954.20081-4-gourry@gourry.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240913231954.20081-1-gourry@gourry.net>
 References: <20240913231954.20081-1-gourry@gourry.net>
@@ -89,32 +89,68 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tpm code currently ignores a relevant failure case silently.
-Add an error to make this failure non-silent.
+__calc_tpm2_event_size returns 0 or a positive length, but return values
+are often interpreted as ints.  Convert everything over to u32 to avoid
+signed/unsigned logic errors.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- drivers/firmware/efi/tpm.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/tpm.c | 6 +++---
+ drivers/firmware/efi/tpm.c         | 2 +-
+ include/linux/tpm_eventlog.h       | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+index df3182f2e63a..f194e43f00ad 100644
+--- a/drivers/firmware/efi/libstub/tpm.c
++++ b/drivers/firmware/efi/libstub/tpm.c
+@@ -57,7 +57,7 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+ 	struct linux_efi_tpm_eventlog *log_tbl = NULL;
+ 	unsigned long first_entry_addr, last_entry_addr;
+ 	size_t log_size, last_entry_size;
+-	int final_events_size = 0;
++	u32 final_events_size = 0;
+ 
+ 	first_entry_addr = (unsigned long) log_location;
+ 
+@@ -110,9 +110,9 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+ 	 */
+ 	if (final_events_table && final_events_table->nr_events) {
+ 		struct tcg_pcr_event2_head *header;
+-		int offset;
++		u32 offset;
+ 		void *data;
+-		int event_size;
++		u32 event_size;
+ 		int i = final_events_table->nr_events;
+ 
+ 		data = (void *)final_events_table;
 diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index 9c3613e6af15..b0cc2cc11d7e 100644
+index b0cc2cc11d7e..cdd431027065 100644
 --- a/drivers/firmware/efi/tpm.c
 +++ b/drivers/firmware/efi/tpm.c
-@@ -61,7 +61,12 @@ int __init efi_tpm_eventlog_init(void)
- 	}
+@@ -19,7 +19,7 @@ EXPORT_SYMBOL(efi_tpm_final_log_size);
+ static int __init tpm2_calc_event_log_size(void *data, int count, void *size_info)
+ {
+ 	struct tcg_pcr_event2_head *header;
+-	int event_size, size = 0;
++	u32 event_size, size = 0;
  
- 	tbl_size = sizeof(*log_tbl) + log_tbl->size;
--	memblock_reserve(efi.tpm_log, tbl_size);
-+	if (memblock_reserve(efi.tpm_log, tbl_size)) {
-+		pr_err("TPM Event Log memblock reserve fails (0x%lx, 0x%x)\n",
-+		       efi.tpm_log, tbl_size);
-+		ret = -ENOMEM;
-+		goto out;
-+	}
+ 	while (count > 0) {
+ 		header = data + size;
+diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+index 7d68a5cc5881..891368e82558 100644
+--- a/include/linux/tpm_eventlog.h
++++ b/include/linux/tpm_eventlog.h
+@@ -157,7 +157,7 @@ struct tcg_algorithm_info {
+  * Return: size of the event on success, 0 on failure
+  */
  
- 	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
- 		pr_info("TPM Final Events table not present\n");
+-static __always_inline int __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
++static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 					 struct tcg_pcr_event *event_header,
+ 					 bool do_mapping)
+ {
 -- 
 2.43.0
 
