@@ -1,206 +1,150 @@
-Return-Path: <linux-efi+bounces-1745-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1746-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3090E97858C
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 18:14:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1439786E9
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 19:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD11228B3BF
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 16:14:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5D721F23CDB
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Sep 2024 17:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633436AFAE;
-	Fri, 13 Sep 2024 16:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB8F8289E;
+	Fri, 13 Sep 2024 17:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="E2Lun5z6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qc+RtkFk";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="E2Lun5z6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qc+RtkFk"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="mbocISez"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A518D502
-	for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 16:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0313E823AF
+	for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 17:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726244091; cv=none; b=Zip/isILT5vnEp1CKP0hGKDJIZechu+3qgx0akvHQWQ78gmPtZ3f29K2Z3vchyFjCKsYOJcxubCpQpjzSW3bMlHNzHKpUeTzsJmz8vNL0ybHTjJxuWBBpJSrQX/qbjNeontTTPFDOkbDSfbEodP6L6d7Zk9WMyAirrKomKZ+wXU=
+	t=1726249034; cv=none; b=Gzpsa0b62ot6Z57UxI1Kvk+xTG5PRXZkgUL88pqEoNHYYd945Hqmzcs4npOvnSMGtxcAm49Fmh6eYpGjnaioQRqraH1j/YRftzvsZqt7nWYl9dJ6MQ66hznOUnzD7fyueA47ll15hXkfOAwpiRPxALcRUpeuRXHFU1DLtBSc2DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726244091; c=relaxed/simple;
-	bh=ohNklpXWOzSi8oRuq+vrsqLSiDjYp5zqf4QII4GWBzc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rpXzl4kOIu27m8IpPCYqW4rdGLx6UgCW6palZivbNZkTKvSek45F+HBhGkQcvNgRBAmZBDxF32H+sec2MpBeVZg7r2qyP2fQBV0CfL6BJ/ohbY/bvFsMTxxIZXWm9WqICIfjXqJTBeIROOSoxZzgkTje/XPLWlLdj9X6+ct2GWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=E2Lun5z6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qc+RtkFk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=E2Lun5z6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qc+RtkFk; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B086D1F385;
-	Fri, 13 Sep 2024 16:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726244087; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mrBeYJV+4chn9B3QqvucR1/leZJAsrR0TSkzzerEj/Q=;
-	b=E2Lun5z6ke9/jxNEFAEz2MnkNwLck2E3i4iPLnyiytMvdL4Idu3j8ToTW8wvlcUZTlXv4p
-	ttYfD+rIyo+V6PsxeMjHzqc3jUm2hJBG92GNV44cLpoiBMPUyWT+YaoXZQaDjk+6DxNmV7
-	Aag1fHnkNWYGQW4a9uqfjDaIXIXLdWg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726244087;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mrBeYJV+4chn9B3QqvucR1/leZJAsrR0TSkzzerEj/Q=;
-	b=qc+RtkFkC6xnXfmbM9m7RiR/uLSuQGVha7r56ShcRwphyxMsueMAYaGOlJhSHRs7UqE9DC
-	ibnMgKva9YeEJIDA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=E2Lun5z6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qc+RtkFk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726244087; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mrBeYJV+4chn9B3QqvucR1/leZJAsrR0TSkzzerEj/Q=;
-	b=E2Lun5z6ke9/jxNEFAEz2MnkNwLck2E3i4iPLnyiytMvdL4Idu3j8ToTW8wvlcUZTlXv4p
-	ttYfD+rIyo+V6PsxeMjHzqc3jUm2hJBG92GNV44cLpoiBMPUyWT+YaoXZQaDjk+6DxNmV7
-	Aag1fHnkNWYGQW4a9uqfjDaIXIXLdWg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726244087;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mrBeYJV+4chn9B3QqvucR1/leZJAsrR0TSkzzerEj/Q=;
-	b=qc+RtkFkC6xnXfmbM9m7RiR/uLSuQGVha7r56ShcRwphyxMsueMAYaGOlJhSHRs7UqE9DC
-	ibnMgKva9YeEJIDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8530A13A73;
-	Fri, 13 Sep 2024 16:14:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id C98vH/dk5GZzWwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 13 Sep 2024 16:14:47 +0000
-Message-ID: <12349d45-1e88-4363-a2a2-e84304e04f25@suse.de>
-Date: Fri, 13 Sep 2024 18:14:46 +0200
+	s=arc-20240116; t=1726249034; c=relaxed/simple;
+	bh=dUCpUCzCTQzlHOUafZp+vbPiQRMStQj0JXyNOKtJPhU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nDbEHYiQuyJcw9tVzpKaOh5bzIvp6Yhg1OyRummv6QrfQG2XiQ6Y5YnktWAS4aD5pBh7zp2kdwuQb5Sq0IADhxhackBLg2T7ZyslOrM+00/EDyytutqAwWmV8PF6DfzwcYR67MO7jXY6lwYzP9xHiaolN6GvZ8B+nmpJSNhz56I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=mbocISez; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4585721f6edso9380601cf.2
+        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 10:37:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1726249031; x=1726853831; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=b9dJXzMGlJLqrAQ9o+Vc2RqzvgiZJjLx1kqE3WmHF9c=;
+        b=mbocISezNMCygpFXaduluIokl2C1cKJFdBGU4WBAoTi/NWIp+D7TvKug0/4bN5kBKz
+         PrFiBG8nffWVS+KTvkcIa7LWHwPxakmnoKiDPmmx8i5CpGWvB03Oa0ePHAz68JiyLiRh
+         gTiMHg3ffKFXkMNxX7kg5N4kdOuFQRY6qkXY+kjQodaR+jQ6mHs9yjP6aKXLYP4OmdnH
+         IGvK0q1OgGmP+29dN0JsZLh8CcOpkx6t2Lo41rHm4QcK8A8kzFeiJIcSJlDRHfpG62qA
+         9PKxmlxwNEziLEyRRPQKW7UUq9lUQ5GIjcM2DiKHDHMOUSX8TsHhFbebhaFMRfaf/+iS
+         3vtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726249031; x=1726853831;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b9dJXzMGlJLqrAQ9o+Vc2RqzvgiZJjLx1kqE3WmHF9c=;
+        b=XiAVRUFUr+Y+7h+zPUwOZytPZPymfpDOF7yWXjxyBOkMxomH/dbXxqXb+6cULGieCw
+         Z3k00nfReDov8+zF5pW/k1fsf4bLMwyTbrzTUSWC8TKiKg5px8b0hNMjjLsa4xXgdTIc
+         tmFkAAIZoiDLz/w8lzm1mctBVgul0zz53Ih9Mv/WgaG9K7Ha65g2SCBcm6yifqHXQgD0
+         bHQTCjP/OMqqJrxSABoeYlBuHmEffZRzqANwKQn8nwPYn3Rdzfr2kzhSxU4rZpw/THDW
+         PYOfaGq4cnlB2LzBlKUr97/ZLXJCQi+FcR7B2KsuTljZ22iuaMW0zwYgW5QDqxaVS7+5
+         ExpQ==
+X-Gm-Message-State: AOJu0YyTzk8BVn4BgRZPH2uPIdwMgM0vWN04kK+a1eQ5rA6QHwdkaKFa
+	YCCRfRtcHD+dAJB+RQmnQf5g3p2RyBtGNfQhEV+pMKIn2p6Dex0NLhBi5bas0yk+Fg9r6sBcAQv
+	0
+X-Google-Smtp-Source: AGHT+IF99vSVYAPg5qiz9PS9VXQEetrF1jAxdpVZcbXfZvWNP4xT8rH9ih22k1ewCgvXurstnbJd4g==
+X-Received: by 2002:a05:622a:547:b0:458:4e9e:634e with SMTP id d75a77b69052e-4599d224953mr52447361cf.11.1726249031507;
+        Fri, 13 Sep 2024 10:37:11 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822e98a1dsm67754741cf.40.2024.09.13.10.37.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 10:37:11 -0700 (PDT)
+Date: Fri, 13 Sep 2024 13:36:26 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	leitao@debian.org, usamaarif642@gmail.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	ilias.apalodimas@linaro.org
+Subject: Re: [PATCH 6/6] libstub,tpm: do not ignore failure case when reading
+ final event log
+Message-ID: <ZuR4GsERfsyJnG06@PC2K9PVX.TheFacebook.com>
+References: <20240906202745.11159-1-gourry@gourry.net>
+ <20240906202745.11159-7-gourry@gourry.net>
+ <CAMj1kXHRkDCnUCjBR17jSCwceGT8fyE_WdERmVpYY7c6eBsgFA@mail.gmail.com>
+ <ZuRaT75h0wcopILx@PC2K9PVX.TheFacebook.com>
+ <CAMj1kXHEH5PE=7swKMJUP-gTAuyoJH5E8NL+RuFnMceF=MpoWQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: No more /sys/bus/platform/drivers/efi-framebuffer since
- simpledrm?
-To: Ard Biesheuvel <ardb@kernel.org>, Richard Hughes <richard@hughsie.com>,
- Javier Martinez Canillas <javierm@redhat.com>
-Cc: "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
- "jk@ozlabs.org" <jk@ozlabs.org>
-References: <b6Fl9paVpZ66bxYu2jwpQPAIcEZ6UzY2iGUGKd7GSdr9dBRhvK1aLYUG-FWbVdT7YoV-x53b4kleO-krBFTrzKVDdLiCHlVsvVxGgG_cW64=@hughsie.com>
- <CAMj1kXEaigChABCMrUAnkxFrEQq=Np9Zbo+CU+LdMrzu9mjYmQ@mail.gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <CAMj1kXEaigChABCMrUAnkxFrEQq=Np9Zbo+CU+LdMrzu9mjYmQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B086D1F385
-X-Spam-Score: -5.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	SUBJECT_ENDS_QUESTION(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHEH5PE=7swKMJUP-gTAuyoJH5E8NL+RuFnMceF=MpoWQ@mail.gmail.com>
 
-(cc'ing Javier)
+On Fri, Sep 13, 2024 at 05:59:17PM +0200, Ard Biesheuvel wrote:
+> On Fri, 13 Sept 2024 at 17:30, Gregory Price <gourry@gourry.net> wrote:
+> >
+> > On Fri, Sep 13, 2024 at 05:25:27PM +0200, Ard Biesheuvel wrote:
+> > > On Fri, 6 Sept 2024 at 22:28, Gregory Price <gourry@gourry.net> wrote:
+> > > >
+> > > > Current code fails to check for an error case when reading events from
+> > > > final event log to calculate offsets.  Check the error case, report the
+> > > > error, and break early because all subsequent calls will also fail.
+> > > >
+> > > > Signed-off-by: Gregory Price <gourry@gourry.net>
+> > > > ---
+> > > >  drivers/firmware/efi/libstub/tpm.c | 4 ++++
+> > > >  1 file changed, 4 insertions(+)
+> > > >
+> > > > diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+> > > > index 4f9f0e049a7a..c71b0d3e66d2 100644
+> > > > --- a/drivers/firmware/efi/libstub/tpm.c
+> > > > +++ b/drivers/firmware/efi/libstub/tpm.c
+> > > > @@ -124,6 +124,10 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+> > > >                         event_size = __calc_tpm2_event_size(header,
+> > > >                                                    (void *)(long)log_location,
+> > > >                                                    false);
+> > > > +                       if (!event_size) {
+> > > > +                               efi_err("Invalid TPM Final Event Log Entry\n");
+> > > > +                               break;
+> > > > +                       }
+> > >
+> > > I don't object to this in principle, the only problem is that these
+> > > log prints are not recorded anywhere: they are printed to the EFI boot
+> > > console by the EFI stub, which may not even be visible, and is
+> > > definitely not captured by the kernel logging routines.
+> >
+> > Could simply drop the err and break if you think it's just going to get
+> > lost anyway.  Not sure there's a good way to generate a signal at this point.
+> >
+> 
+> Yeah. For the record, I absolutely detest the kludgy code there, how
+> we parse the map, parse and unmap the event header for every entry in
+> the log.
+> 
+> So while I highly appreciate the effort you are putting in to polish
+> this code, I wonder if it wouldn't be better to code this up properly
+> instead.
 
-Am 13.09.24 um 15:53 schrieb Ard Biesheuvel:
-> Hi Richard,
->
-> On Thu, 5 Sept 2024 at 11:22, Richard Hughes <richard@hughsie.com> wrote:
->> Hi all,
->>
->> The fwupd daemon used to read /sys/bus/platform/drivers/efi-framebuffer to get the EFI framebuffer size so we can choose the UX capsule bitmap for the correct size (and set the correct position) -- and make the UEFI firmware update for users a little nicer.
->>
->> We've found out that that API has disappeared without warning in Fedora 40. Seemingly the only way to get the info now is to scrape the kernel event log -- but that can't be the right way to do it? I also don't think we can use the DRI interface as we don't know what card/crt the firmware used for booting.
->>
->> We pondered if this was a regression from the conversion from efifb to simpledrm. I'm using a standard Fedora 40 distro kernel, with the config of https://people.freedesktop.org/~hughsient/temp/config-6.10.6-200.fc40.x86_64 if that helps. Any advice most welcome.
->>
-> cc'ing Thomas, who was involved in this work.
+Mostly I was both amused and triggered by a patch trying to fix a
+signed/unsigned bug introducing another signed/unsigned bug lol.
 
-I think that is the issue that has been discussed (and maybe resolved) at
+Then I found more and felt this injustice cannot stand x_x
 
-   https://github.com/fwupd/fwupd/issues/7598
+I'll at least push another version of these fixed up and i'll just
+drop this print. Probably improving this code isn't worth it unless
+it's fundamentally broken (which it does not *appear* to be, i spent
+a day auditing it against the spec, and to my eye it looks largely ok).
 
-Best regards
-Thomas
-
-
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+~Gregory
 
