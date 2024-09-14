@@ -1,214 +1,168 @@
-Return-Path: <linux-efi+bounces-1778-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1779-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6FF978D34
-	for <lists+linux-efi@lfdr.de>; Sat, 14 Sep 2024 05:57:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6628978E7D
+	for <lists+linux-efi@lfdr.de>; Sat, 14 Sep 2024 08:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0950F2869DF
-	for <lists+linux-efi@lfdr.de>; Sat, 14 Sep 2024 03:57:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCECB1C22413
+	for <lists+linux-efi@lfdr.de>; Sat, 14 Sep 2024 06:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D462117BC9;
-	Sat, 14 Sep 2024 03:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F811A727F;
+	Sat, 14 Sep 2024 06:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="vR7au40n"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gA/ca8XY"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832EA175A1
-	for <linux-efi@vger.kernel.org>; Sat, 14 Sep 2024 03:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBD81A42C7
+	for <linux-efi@vger.kernel.org>; Sat, 14 Sep 2024 06:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726286261; cv=none; b=WRkIKLPfGk+0vZrScreK7A7jwIJWGT/ze2mZAPrg3U/tMyM+ALEAFdA7NNpavwCIIwNRKQIVjzqZz/KqdLWcms+1vnyREc3GnJe2TeDW2rLq0OySduG402ooGdRztlsFE019fBq5L5f3wg4Fe4sKPsK+bLunqHjDAUXnP3htmT4=
+	t=1726296364; cv=none; b=EroW/rfFmofIRGvIbCZ7SeHfDsy7pZSA8DoBKxLxyztuZwhevN0v8Jgc/O64Enirk8blDau9qCiCkwOC/Vehji0Aa725C1PLKawiagLy3e9TLSSvzU42rcP67J4qLl7VfLxSM9q/5HZC3kgGj7ktNM8sz9O3aj2r6N/RRtorIMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726286261; c=relaxed/simple;
-	bh=aRgmPo7f3AmEdTXRKPcw6X/eIdDGPE6hhYHHXau80y0=;
+	s=arc-20240116; t=1726296364; c=relaxed/simple;
+	bh=B+tUlhexzHIKFHjAPKP/mBUd1RPqfSazamtOQbN+/2w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dQ8AxnSXqTgLYGIBQmx1pAGJPqbmctEDzxRCbVFZneLhjZZuydJs4rnqBs7yhPjxWkCoUaN8ZOXkq6Zjri+XOkuUWQt1H8Uco5XZ/U1mXzoN+4HnAKhMJG+6wCQUgo3eXRy9fK3pSzDv02h+6lZH+f3Mxn1dDFtIhX0cgCoh0Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=vR7au40n; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a8b155b5e9eso359034766b.1
-        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 20:57:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1726286255; x=1726891055; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=frVOq4/VrOFSBx4qkzHXmRGBdSpABDY2CbvRjZSeHl4=;
-        b=vR7au40nmoUd/bkD7oG92swR6jeZzYrEWFeuOpib874KEJjSh8Gd7DVfXzyI4HBdBg
-         bzafgWsfDS3ZzMkRVJwfSWZKx5EvsyhsNcCGZZPKynmy08389hcSYbXNvpW5vZEx3p+A
-         Q+rQ/+kQQ/dRqtsCtVPbmsam00uJsXdRIDe5KwOPA3/VwNLbV1wKxIqKUL9dgJrERAXR
-         M9VwXlGTgOugrKPh/BFsL0ip6wGbXni7FGxRgg6Y2Y1+zMYxdHU1EZfrmNbAxBfAmdFI
-         DOCu1YHaTn4ycrXnQGWwrIphBSklLaK0mu1TixbHgLkNub9pdCqyhmqDqD4t1bKgVCEN
-         uexg==
+	 To:Cc:Content-Type; b=HoIyg9BGtmSQKM1iZ2rGu/NEOSxJPk4ofmdxMCKRSm0bB+tqknZMp5xA0G/taSUoTa0Uf64nJpzld1AFStfpDFscXeWcjv5hPFo8na2YmOa846bzPCcgVPTMAID7yAsbvzE7wmR+qQoXJJNMaOHz4Ih0oeNh1jQO2x0YsEpqLYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gA/ca8XY; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726296360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eE+sUtCjdi/s3uFDNMp4FAK3ec8qOZ3QSC8oSZ6JDTs=;
+	b=gA/ca8XYiBr2KFPQLV8C6Vh76njsxMtp9DBmiNHfnd9KRtsFLjDDYRw0MpCM0KGxQNjeIc
+	ztrLbJuoFW9Lgtdgu3s/GN/64nzpe08AflKEXALddTJ0BV4UH1V1QT7DhQ0oFTtDcJRBul
+	mzbuWs7ttlOra7qOFCevSpSlE4nIRTg=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-599-J0mhoOiwMbunu0gIvvfcEw-1; Sat, 14 Sep 2024 02:45:58 -0400
+X-MC-Unique: J0mhoOiwMbunu0gIvvfcEw-1
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-39f56ac8d88so43129485ab.2
+        for <linux-efi@vger.kernel.org>; Fri, 13 Sep 2024 23:45:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726286255; x=1726891055;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=frVOq4/VrOFSBx4qkzHXmRGBdSpABDY2CbvRjZSeHl4=;
-        b=FL9iUfqahENxwDvQYZjtYVU5zxyrt24OawlVCgJRWSiBskPXICokRc89NBYM92p4ir
-         xo+BmcJCCuv0seEaeG6XOfL+NlHBjOtDVRmaB54mC3/D4GeDNI98Q0n5WDFvQfVEysWN
-         YJj4no6Hj3SiaNnfel87dUuYtQWw209VwqRWoj94SDlDuNvUDkd7xqEqS4q/ubSn+S8a
-         RDFoZLHJ3i3Ue+qZPLCmV1kcbNtFHd3c4Op2D3edDyOygLaPhvFaxeg9dT+VrEukKHYH
-         isxyYcDq/tEjxQ811XrXNJI6r2pevnOGrdRK6E59ltmwCAws/GmO/BtxF/Xffb0hCQNj
-         2GcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVA2d1vKxkOoo0AIHBuga99dgauNP3sgod9QmnTbq7zfXZKRbpK2TwpxBy8ey6qgGkobGWV+Ti0QLI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHMzoNJRLYuwwxnkUNCOG9SP4+kwB08zvWByH/ENkEuzxr2Swz
-	uoZr71IOdL5rlnKDWC+Ggu6RVhb/89XS1XkescCoC2IKgfNlrkOf1JOwiv2jAP+Wmz9fZFNdkYO
-	3gSQVlg41lAkMSV7Iu5g4MT5PkJ/03/ZpuOBq
-X-Google-Smtp-Source: AGHT+IFF2MbJ6XCRo0MrZkYw3trl3AWEems+cbTpyeTHsgyTn4kgHQumH79FhKTJSbYKsaxyQDqJvjTVXWhQXbeHEQ0=
-X-Received: by 2002:a17:907:e2a5:b0:a8a:926a:d012 with SMTP id
- a640c23a62f3a-a9029490673mr781104466b.26.1726286254571; Fri, 13 Sep 2024
- 20:57:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726296358; x=1726901158;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eE+sUtCjdi/s3uFDNMp4FAK3ec8qOZ3QSC8oSZ6JDTs=;
+        b=kdE9yKNmCZ2/EC8J/KEN3myXvDGxDxtoWrS88V3O0wRT5vRObqhKVrZlHKiV6rsSaX
+         cwVr2M+LRfD+Z7E3Y47EEZNbK978Lq1SL+wSVRW5cpJ09YF5c5zwh555Et0bgmBKzen3
+         78uTvT1EVd2IROJuWqymTJ0GrWQCE0MT1SgJEk+Rrzmg3VcSmPxR0mC1gEpoUB8JU0eT
+         te7dyXY1U86ANUA/Q2hQQokHm/VRAEFnaWkA6ZWGeJduNxCrnj+QBzZ95tXa4+WSX0k3
+         fL5Yv8nxfvGywZD3wg4N534IyQlzZmHIxKHiGxf9U82jt1ZYaWm0aElqb3GQPbJVXShm
+         4Naw==
+X-Gm-Message-State: AOJu0Yx9JOxVn3kyMwgwODx17w90k7GF9tGNY4Ibboz7+D14hR3pbTnV
+	Cxv2WF2wEx4tUmzfk5/TbpRzAr+bTzY3TGwo0h2xCFRPybLD/w7d6KsNsvTacHjYdLWUeEdNb5f
+	oftJ8YXoc8GcYlSYUyArlwAMuOEGVqk9KdoAMziISe2X9e0Xr8YVSzDqtG9/1zUUQky4AySpHxI
+	GdqvF0Ql/sdZjcCNN/W3IA17Yv8v+HdWsh
+X-Received: by 2002:a05:6e02:20c3:b0:3a0:65a0:460a with SMTP id e9e14a558f8ab-3a08b7853d2mr56807675ab.19.1726296358185;
+        Fri, 13 Sep 2024 23:45:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKtOV06MvITuNSFqCNIuipejGNDZMGs5HGBfR92MW39oPD8LiixfpPzOKJFy295hNSsVybcQ9a493Mk9E08Vc=
+X-Received: by 2002:a05:6e02:20c3:b0:3a0:65a0:460a with SMTP id
+ e9e14a558f8ab-3a08b7853d2mr56807495ab.19.1726296357859; Fri, 13 Sep 2024
+ 23:45:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240531010331.134441-1-ross.philipson@oracle.com>
- <20240531010331.134441-7-ross.philipson@oracle.com> <20240531021656.GA1502@sol.localdomain>
- <874jaegk8i.fsf@email.froward.int.ebiederm.org> <5b1ce8d3-516d-4dfd-a976-38e5cee1ef4e@apertussolutions.com>
- <87ttflli09.ffs@tglx> <CALCETrXQ7rChWLDqTG0+KY7rsfajSPguMnHO1G4VJi_mgwN9Zw@mail.gmail.com>
- <1a1f0c41-70de-4f46-b91d-6dc7176893ee@apertussolutions.com> <8a0b59a4-a5a2-42ae-bc1c-1ddc8f2aad16@apertussolutions.com>
-In-Reply-To: <8a0b59a4-a5a2-42ae-bc1c-1ddc8f2aad16@apertussolutions.com>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Fri, 13 Sep 2024 20:57:23 -0700
-Message-ID: <CALCETrX8caT5qvCUu24hQfxUF_wUC2XdGpS2YFP6SR++7FiM3Q@mail.gmail.com>
-Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
- early measurements
-To: "Daniel P. Smith" <dpsmith@apertussolutions.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, "Eric W. Biederman" <ebiederm@xmission.com>, 
-	Eric Biggers <ebiggers@kernel.org>, Ross Philipson <ross.philipson@oracle.com>, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, linux-integrity@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-efi@vger.kernel.org, 
-	iommu@lists.linux-foundation.org, mingo@redhat.com, bp@alien8.de, 
-	hpa@zytor.com, dave.hansen@linux.intel.com, ardb@kernel.org, 
-	mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, 
-	jarkko@kernel.org, jgg@ziepe.ca, nivedita@alum.mit.edu, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net, 
-	dwmw2@infradead.org, baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com, 
-	andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
+References: <20240911104109.1831501-1-usamaarif642@gmail.com>
+ <CAMj1kXFVyQEwBTf2bG8yBXUktM16dzrcPH-Phz_toAsCK-NfMA@mail.gmail.com>
+ <2542182d-aa79-4705-91b6-fa593bacffa6@gmail.com> <CAMj1kXGi+N6AukJt6EGQTao=-1Ud_=bzwPvdjEzhmzEraFU98w@mail.gmail.com>
+ <20240912-wealthy-gabby-tamarin-aaba3c@leitao> <CAMj1kXHh-Kov8c1pto0LJL6debugz1og6GFMYCwvfu+RiQGreA@mail.gmail.com>
+ <6b2cc4c4-4354-4b29-bc73-c1384b90dfc6@gmail.com> <CAMj1kXG1hbiafKRyC5qM1Vj5X7x-dmLndqqo2AYnHMRxDz-80w@mail.gmail.com>
+ <CAMj1kXFr+N9LMj0=wULchYosUpV0ygZSKUj1vdUP0KWEANKasw@mail.gmail.com> <CALu+AoS9+OxPmVJB9fAJFkjsX9xUVw6K_uXiOi0-XsK6-b4THg@mail.gmail.com>
+In-Reply-To: <CALu+AoS9+OxPmVJB9fAJFkjsX9xUVw6K_uXiOi0-XsK6-b4THg@mail.gmail.com>
+From: Dave Young <dyoung@redhat.com>
+Date: Sat, 14 Sep 2024 14:46:07 +0800
+Message-ID: <CALu+AoTQ6NFDuM6-5ng7yXrDAmezdAsdsPvh7KKUVdW4FXPe7w@mail.gmail.com>
+Subject: Re: [RFC] efi/tpm: add efi.tpm_log as a reserved region in 820_table_firmware
+To: Ard Biesheuvel <ardb@kernel.org>, Usama Arif <usamaarif642@gmail.com>, 
+	Breno Leitao <leitao@debian.org>
+Cc: linux-efi@vger.kernel.org, kexec@lists.infradead.org, 
+	ebiederm@xmission.com, bhe@redhat.com, vgoyal@redhat.com, tglx@linutronix.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	rmikey@meta.com, gourry@gourry.net
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 12, 2024 at 5:34=E2=80=AFPM Daniel P. Smith
-<dpsmith@apertussolutions.com> wrote:
+On Fri, 13 Sept 2024 at 18:56, Dave Young <dyoung@redhat.com> wrote:
 >
-> Hey again,
+> On Thu, 12 Sept 2024 at 22:15, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > (cc Dave)
 >
-> On 9/4/24 21:01, Daniel P. Smith wrote:
-> > Hi Luto.
-> >
-> > On 8/28/24 23:17, Andy Lutomirski wrote:
-> >> On Thu, Aug 15, 2024 at 12:10=E2=80=AFPM Thomas Gleixner <tglx@linutro=
-nix.de>
-> >> wrote:
-> >>>
-> >>> On Thu, Aug 15 2024 at 13:38, Daniel P. Smith wrote:
-> >>>> On 5/31/24 09:54, Eric W. Biederman wrote:
-> >>>>> Eric Biggers <ebiggers@kernel.org> writes:
-> >>>>>> That paragraph is also phrased as a hypothetical, "Even if we'd
-> >>>>>> prefer to use
-> >>>>>> SHA-256-only".  That implies that you do not, in fact, prefer
-> >>>>>> SHA-256 only.  Is
-> >>>>>> that the case?  Sure, maybe there are situations where you *have*
-> >>>>>> to use SHA-1,
-> >>>>>> but why would you not at least *prefer* SHA-256?
-> >>>>>
-> >>>>> Yes.  Please prefer to use SHA-256.
-> >>>>>
-> >>>>> Have you considered implementing I think it is SHA1-DC (as git has)
-> >>>>> that
-> >>>>> is compatible with SHA1 but blocks the known class of attacks where
-> >>>>> sha1 is actively broken at this point?
-> >>>>
-> >>>> We are using the kernel's implementation, addressing what the kernel
-> >>>> provides is beyond our efforts. Perhaps someone who is interested in
-> >>>> improving the kernel's SHA1 could submit a patch implementing/replac=
-ing
-> >>>> it with SHA1-DC, as I am sure the maintainers would welcome the help=
-.
-> >>>
-> >>> Well, someone who is interested to get his "secure" code merged shoul=
-d
-> >>> have a vested interested to have a non-broken SHA1 implementation if
-> >>> there is a sensible requirement to use SHA1 in that new "secure" code=
-,
-> >>> no?
-> >>>
-> >>> Just for the record. The related maintainers can rightfully decide to
-> >>> reject known broken "secure" code on a purely technical argument.
-> >>>
-> >>
-> >> Wait, hold on a second.
-> >>
-> >> SHA1-DC isn't SHA1.  It's a different hash function that is mostly
-> >> compatible with SHA1, is different on some inputs, and is maybe more
-> >> secure.  But the _whole point_ of using SHA1 in the TPM code (well,
-> >> this really should be the whole point for new applications) is to
-> >> correctly cap the SHA1 PCRs so we can correctly _turn them off_ in the
-> >> best way without breaking compatibility with everything that might
-> >> read the event log.  I think that anyone suggesting using SHA1-DC for
-> >> this purpose should give some actual analysis as to why they think
-> >> it's an improvement, let alone even valid.
-> >
-> > I would say at a minimum it is to provide a means to cap the PCRs.
-> > Devices with TPM1.2 are still prevalent in the wild for which members o=
-f
-> > the TrenchBoot community support, and there are still valid (and secure=
-)
-> > verification uses for SHA1 that I outlined in my previous response.
-> >
-> >> Ross et al, can you confirm that your code actually, at least by
-> >> default and with a monstrous warning to anyone who tries to change the
-> >> default, caps SHA1 PCRs if SHA256 is available?  And then can we maybe
-> >> all stop hassling the people trying to develop this series about the
-> >> fact that they're doing their best with the obnoxious system that the
-> >> TPM designers gave them?
-> >
-> > Our goal is to keep control in the hands of the user, not making
-> > unilateral decisions on their behalf. In the currently deployed
-> > solutions it is left to the initrd (user) to cap the PCRs. After some
-> > thinking, we can still ensure user control and give an option to cap th=
-e
-> > PCRs earlier. We hope to post a v11 later this week or early next week
-> > that introduces a new policy field to the existing measurement policy
-> > framework. Will add/update the kernel docs with respect to the policy
-> > expansion. We are also looking the best way we might add a warning to
-> > the kernel log if the SHA1 bank is used beyond capping the PCRs.
+> Thanks for ccing me.
 >
-> As the attempt was made to lay in the policy logic, it started to become
-> convoluted and unnecessarily complicated. Thus creating more risk with
-> all the bookkeeping and yet sha1 hashes still have to be sent, the null
-> hash in this case, since the TPM driver will reject extends that do not
-> have hashes for all active banks. At this point, we have opted to keep
-> the logic simple and add a section to our documentation advising of the
-> potential risk should one choose to incorporate SHA1 in their
-> attestations of the platform.
+> >
+> > Full thread here:
+> > https://lore.kernel.org/all/CAMj1kXG1hbiafKRyC5qM1Vj5X7x-dmLndqqo2AYnHMRxDz-80w@mail.gmail.com/T/#u
+> >
+> > On Thu, 12 Sept 2024 at 16:05, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Thu, 12 Sept 2024 at 15:55, Usama Arif <usamaarif642@gmail.com> wrote:
+> > > >
+> > > >
+> > > >
+> > > > On 12/09/2024 14:10, Ard Biesheuvel wrote:
+> > > > > Does the below help at all?
+> > > > >
+> > > > > --- a/drivers/firmware/efi/tpm.c
+> > > > > +++ b/drivers/firmware/efi/tpm.c
+> > > > > @@ -60,7 +60,7 @@ int __init efi_tpm_eventlog_init(void)
+> > > > >         }
+> > > > >
+> > > > >         tbl_size = sizeof(*log_tbl) + log_tbl->size;
+> > > > > -       memblock_reserve(efi.tpm_log, tbl_size);
+> > > > > +       efi_mem_reserve(efi.tpm_log, tbl_size);
+> > > > >
+> > > > >         if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
+> > > > >                 pr_info("TPM Final Events table not present\n");
+> > > >
+> > > > Unfortunately not. efi_mem_reserve updates e820_table, while kexec looks at /sys/firmware/memmap
+> > > > which is e820_table_firmware.
+> > > >
+> > > > arch_update_firmware_area introduced in the RFC patch does the same thing as efi_mem_reserve does at
+> > > > its end, just with e820_table_firmware instead of e820_table.
+> > > > i.e. efi_mem_reserve does:
+> > > >         e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
+> > > >         e820__update_table(e820_table);
+> > > >
+> > > > while arch_update_firmware_area does:
+> > > >         e820__range_update_firmware(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
+> > > >         e820__update_table(e820_table_firmware);
+> > > >
+> > >
+> > > Shame.
+> > >
+> > > Using efi_mem_reserve() is appropriate here in any case, but I guess
+> > > kexec on x86 needs to be fixed to juggle the EFI memory map, memblock
+> > > table, and 3 (!) versions of the E820 table in the correct way
+> > > (e820_table, e820_table_kexec and e820_table_firmware)
+> > >
+> > > Perhaps we can put this additional logic in x86's implementation of
+> > > efi_arch_mem_reserve()? AFAICT, all callers of efi_mem_reserve() deal
+> > > with configuration tables produced by the firmware that may not be
+> > > reserved correctly if kexec looks at e820_table_firmware[] only.
+> >
+>
+> I have not read all the conversations,  let me have a look and response later.
 >
 
-I've read the TPM standard a bit, but it's been awhile, and it's too
-complicated anyway.  So, can you remind me (and probably 3/4 of the
-other people on this thread, too):
+I'm still confused after reading the code about why this issue can
+still happen with a efi_mem_reserve.
+Usama, Breno, could any of you share the exact steps on how to
+reproduce this issue with a kvm guest?
 
-What, exactly, is your patchset doing that requires hashing at all?
-(I assume it's extending a PCR and generating an event log entry.).
-What, exactly, does it mean to "cap" a PCR?  How is this different
-from what your patchset does?
+Thanks
+Daev
 
-With that answered, it will hopefully be easy to see that you're
-making the right call :)
-
---Andy
-
---=20
-Andy Lutomirski
-AMA Capital Management, LLC
 
