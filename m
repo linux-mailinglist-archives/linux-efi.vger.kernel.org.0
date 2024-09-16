@@ -1,106 +1,138 @@
-Return-Path: <linux-efi+bounces-1783-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1784-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C776A979CCA
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Sep 2024 10:30:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E061979FB5
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Sep 2024 12:47:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E09FA1C212BA
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Sep 2024 08:30:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBF0F287192
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Sep 2024 10:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F8C13D8B0;
-	Mon, 16 Sep 2024 08:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7559314EC4B;
+	Mon, 16 Sep 2024 10:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sGbCsTMo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OwbqEI51"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFE33770C;
-	Mon, 16 Sep 2024 08:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C607B34CC4;
+	Mon, 16 Sep 2024 10:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726475402; cv=none; b=Q3eUPDG7qtozPrPfda1yOMSdLSOihoPL3lpVsqpQSa4WKLOd221M3BsuAuMVO80l4EpqdhPkvBv5OOYwGWw4/toBUPMeBt3Et5IEqaOwLS2/9cIvcdG29vZlorZpwU4LCJxhaUJ3mzzyp+O+b4ucsnVjfDroGg0wtlWPtHVnf4U=
+	t=1726483654; cv=none; b=Sgz4ihet8mT8xzzEzAmRbLhnqOeem1CchSYs3Di70kAl5fYRovEe9LdQeqzs1jNl0iCzjP70ojnMYog537wLiHUKcaIv5cpaUxXmSd4ko/n0mhGTlSrEdYnDN72McPWAotGl3mt9ubOA62jeF3Zrk+vSZ5PYm+iMwfGqapm37H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726475402; c=relaxed/simple;
-	bh=yfBFDbB93iEmu5WRyN3txgKZPZ1pPumVZZsmFoI6+r4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LNRAbQj3qtJaCyZlhquWK8RDcmPb2fZxkq1//YUu6Cnl7LW8aeG8iB1S50TCjeRe8BpHS5mTekJyJb1uOt57Np/m2l5n1iq9DNuerGHrcyS7U1bwSE82kWAHZ4pNJRh3fr80AsxAUOZqPOpXxHyRkb9vV/xtwZMO7naHgITdhzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sGbCsTMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42987C4CECC;
-	Mon, 16 Sep 2024 08:30:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726475401;
-	bh=yfBFDbB93iEmu5WRyN3txgKZPZ1pPumVZZsmFoI6+r4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sGbCsTMoCY3c66R9QUrs6zy7mO3MDoscPw+hxXhdSP6C+EmuBPoRIBsxcMT6B9tVA
-	 S1lWgRz7F0GQHpMqkp7LCvdAQf7+AFuc4p9sgqbLy8SL/g+gA5r6D/M8AU0YEtFlX7
-	 rAAGmxG9/jjL8vJfsG2XrH0OTTPZNviUgAJHzNHHhs4c3OZKO6wOd1+8FkiG+SKuLq
-	 //Ql7zobhO9vF2c+mtqju3hsRR4NmhlGF91FGaPIFHJzTSrN5S5biA+kXrhP99afr5
-	 JLZrak3RYM8dBnHGxzCo3fDiZzs55kDKahk8sJjLbR6wm3PQd2TzSkvTXNGq0XZZWr
-	 Vjg9fVYYaLJ/g==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2f6580c2bbfso45864771fa.1;
-        Mon, 16 Sep 2024 01:30:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVgKM5hzIFyJ0biZvwUFWtk4zPfNle708zs7t2OTBU/z4tP8ww184s8RSZdMVLpQhMlN0Ae/FJ64DqFISk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnTSvc3exfrQzXjMpA6Jdy9L2boIpX2umb19tdS14Zyfeyls6v
-	pAYPAuuEu+mwLYSMtp8PpM8EIBHe5+uLfcOgIsX5pUpgqHNHdstR1s8CyCcU85EYDMQK9PDhAsz
-	MdV2bjP1WyRBNX4gvD0qYUl+B9hE=
-X-Google-Smtp-Source: AGHT+IEZX4IxWSr7/56EKB8ikJTe+xpkGjICaT97FvK0IV4bmcKJwBp7nEQDn7i8Qq9aphDKzXMZDzUHN4V/mU+NbRY=
-X-Received: by 2002:a2e:a58b:0:b0:2f7:708f:d1c6 with SMTP id
- 38308e7fff4ca-2f7a4b012d2mr14174991fa.12.1726475399647; Mon, 16 Sep 2024
- 01:29:59 -0700 (PDT)
+	s=arc-20240116; t=1726483654; c=relaxed/simple;
+	bh=LwPMTDOEgB8HyD450hSuRIBCkam14G4uFTnIfXIGh7s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TLHTjXgQZ+kmEuNZL34UKR5w44OtjkfW2OtDHYC0zSgNS4y3sjcExhjdYVjULtiDvNzn4ZC/Lq92dTf3nbdvPSYl/Ron0b68BIlFJ6hWxijgm9v1An4ggbB3/3kV9foVJIxFRTX/U/qldcWPTZL9D+PgTITsLEAq9A9Oi3g+Lck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OwbqEI51; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-375e5c12042so2319359f8f.3;
+        Mon, 16 Sep 2024 03:47:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726483651; x=1727088451; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FUfSPTxRR+PneERlzFcQtWtgSIwzFTWRZQHaHy/Sf94=;
+        b=OwbqEI510dGSlRWDDj5clhnAOBwijvE+AnCbjYxFqyGFQh2ywgyZJ7MtBsnEpPYR70
+         IzswH/MPLmP82z4eVdjN9qxFwUSdj3ueRSEur3l9D8OjopM0u//u+cGW9h7iWQOlsKVW
+         S2RDLnhIQVFXe9yKIW7TbVii2yxUBBNTUVxzWB9+H6JGF9fcZINI+cwwss6moO0gv0A0
+         v55fFCbkVd/enPbgLzpeboyqfgX0cK9+1dWuhXf47dxnfrjEnpJ5J/4DbyDSOoHX526A
+         7Vq3sbGh3C+0D1uRMYV5xq0MnZMT8EkZxQwW4+Laq6G8stBD0G49/toi/OWDOYUhB8Bm
+         OnxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726483651; x=1727088451;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FUfSPTxRR+PneERlzFcQtWtgSIwzFTWRZQHaHy/Sf94=;
+        b=NibTpsylZeFwM78x4Dd7GByEOKmtp/oFAcWdhYNjQbK3kKQGB47ptyKo1vy0dmzEwv
+         TRWwN5XbiB4lRxAFcSmJcbpib1Uj2MHZOY9TPLwldkueI5H+gm/H8zvDnwvcAWkEzN6P
+         ZpCChgA4ULxkGvDyAgXT3XaMtV9bTxpbheDjcRzkrmYX6/W0iDJXDHuE3pfGXXy8fZTw
+         olAC/GmO7rN7u7RJRFKGpkCkKA48WmhYGXLwu7ACoGC9rB1kQXsaiw/BEls11ysbk8Z/
+         3V7S22jINK9CUFL6tYGZOA9RdgEhZ+DUO0iOLUulQ1jOEk287gyJsPcTT/6xS9nP7Oec
+         cSGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUOgLVE3NrBVgTrhp8QY8QzfvmNGemDt9IIxo+zMASESeCOsQM10gBSOVn9XknZQVwl4Fpq96JXQW3zx30=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy20AhkifntGmWJxJ90CI7KMeRmN7LN/Nm9UAAD6rxsLXQLUVUG
+	Q+ga0T92bqsUWlJNGbXB5YwlNnIvhIrHp1wR/iAe9NhW+WPjjYN7
+X-Google-Smtp-Source: AGHT+IH9HrOfNBxvdg4E0kJYcBtVVCCv1F4onM6EWVNYOWevwv05LUffHKOcwAF/sp4lve9y0JIT4Q==
+X-Received: by 2002:adf:fbc3:0:b0:374:cb5c:2966 with SMTP id ffacd0b85a97d-378c2d5a6f5mr8415481f8f.40.1726483650173;
+        Mon, 16 Sep 2024 03:47:30 -0700 (PDT)
+Received: from ?IPV6:2a02:6b6f:e750:7600:c5:51ce:2b5:970b? ([2a02:6b6f:e750:7600:c5:51ce:2b5:970b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e73e8388sm6881772f8f.32.2024.09.16.03.47.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Sep 2024 03:47:29 -0700 (PDT)
+Message-ID: <c23b8ec6-117f-4843-af37-507961520482@gmail.com>
+Date: Mon, 16 Sep 2024 11:47:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240913231954.20081-1-gourry@gourry.net> <20240913231954.20081-3-gourry@gourry.net>
-In-Reply-To: <20240913231954.20081-3-gourry@gourry.net>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 16 Sep 2024 10:29:48 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH+QE+C78n84jRUn6ACUPbO9pU_EeeTcTa-nWitCKpt-Q@mail.gmail.com>
-Message-ID: <CAMj1kXH+QE+C78n84jRUn6ACUPbO9pU_EeeTcTa-nWitCKpt-Q@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/4] tpm: do not ignore memblock_reserve return value
-To: Gregory Price <gourry@gourry.net>, Dave Young <dyoung@redhat.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, leitao@debian.org, 
-	usamaarif642@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
-	ilias.apalodimas@linaro.org
-Content-Type: text/plain; charset="UTF-8"
+To: Ard Biesheuvel <ardb@kernel.org>, Gregory Price <gourry@gourry.net>,
+ Dave Young <dyoung@redhat.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ leitao@debian.org, sathyanarayanan.kuppuswamy@linux.intel.com,
+ ilias.apalodimas@linaro.org
+References: <20240913231954.20081-1-gourry@gourry.net>
+ <20240913231954.20081-3-gourry@gourry.net>
+ <CAMj1kXH+QE+C78n84jRUn6ACUPbO9pU_EeeTcTa-nWitCKpt-Q@mail.gmail.com>
+Content-Language: en-US
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <CAMj1kXH+QE+C78n84jRUn6ACUPbO9pU_EeeTcTa-nWitCKpt-Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-(cc Dave)
 
-On Sat, 14 Sept 2024 at 15:26, Gregory Price <gourry@gourry.net> wrote:
->
-> tpm code currently ignores a relevant failure case silently.
-> Add an error to make this failure non-silent.
->
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  drivers/firmware/efi/tpm.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-> index 9c3613e6af15..b0cc2cc11d7e 100644
-> --- a/drivers/firmware/efi/tpm.c
-> +++ b/drivers/firmware/efi/tpm.c
-> @@ -61,7 +61,12 @@ int __init efi_tpm_eventlog_init(void)
->         }
->
->         tbl_size = sizeof(*log_tbl) + log_tbl->size;
-> -       memblock_reserve(efi.tpm_log, tbl_size);
-> +       if (memblock_reserve(efi.tpm_log, tbl_size)) {
-> +               pr_err("TPM Event Log memblock reserve fails (0x%lx, 0x%x)\n",
-> +                      efi.tpm_log, tbl_size);
-> +               ret = -ENOMEM;
-> +               goto out;
-> +       }
->
 
-Given the discussion in the other thread, I wonder if this should be
-efi_mem_reserve() instead - might as well fix that too.
+On 16/09/2024 09:29, Ard Biesheuvel wrote:
+> (cc Dave)
+> 
+> On Sat, 14 Sept 2024 at 15:26, Gregory Price <gourry@gourry.net> wrote:
+>>
+>> tpm code currently ignores a relevant failure case silently.
+>> Add an error to make this failure non-silent.
+>>
+>> Signed-off-by: Gregory Price <gourry@gourry.net>
+>> ---
+>>  drivers/firmware/efi/tpm.c | 7 ++++++-
+>>  1 file changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+>> index 9c3613e6af15..b0cc2cc11d7e 100644
+>> --- a/drivers/firmware/efi/tpm.c
+>> +++ b/drivers/firmware/efi/tpm.c
+>> @@ -61,7 +61,12 @@ int __init efi_tpm_eventlog_init(void)
+>>         }
+>>
+>>         tbl_size = sizeof(*log_tbl) + log_tbl->size;
+>> -       memblock_reserve(efi.tpm_log, tbl_size);
+>> +       if (memblock_reserve(efi.tpm_log, tbl_size)) {
+>> +               pr_err("TPM Event Log memblock reserve fails (0x%lx, 0x%x)\n",
+>> +                      efi.tpm_log, tbl_size);
+>> +               ret = -ENOMEM;
+>> +               goto out;
+>> +       }
+>>
+> 
+> Given the discussion in the other thread, I wonder if this should be
+> efi_mem_reserve() instead - might as well fix that too.
+> 
+> Dave?
 
-Dave?
+I dont believe efi_mem_reserve is needed after your patch in
+https://lore.kernel.org/all/20240912155159.1951792-2-ardb+git@google.com/
+
+which will cover both kexec_load and kexec_file_load cases.
+
+Thanks,
+Usama
 
