@@ -1,74 +1,58 @@
-Return-Path: <linux-efi+bounces-1791-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1792-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA13497C8C2
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Sep 2024 13:52:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9904697DE56
+	for <lists+linux-efi@lfdr.de>; Sat, 21 Sep 2024 20:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40909286682
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Sep 2024 11:52:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1B7AB20D24
+	for <lists+linux-efi@lfdr.de>; Sat, 21 Sep 2024 18:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216F419CC34;
-	Thu, 19 Sep 2024 11:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9720B2B9A5;
+	Sat, 21 Sep 2024 18:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhMpvkHE"
+	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="T1NF7p1R"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender3-of-o57.zoho.com (sender3-of-o57.zoho.com [136.143.184.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEDD193432;
-	Thu, 19 Sep 2024 11:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726746772; cv=none; b=KMxpVI7fr3XZ2j5VA3CmeB4f0uZpGx4GGXyRMx9XP8d47lS+GPb5fr/Rq4U2NvOMNVx7N4ktiDyOrAgYAIiG8R0dVoGO+vgS3OOKB5pu5l3THezXscSQLy+6hSLS11NsysliXO5bFrEoArvmmL03yurM+rmPmbkrxM1+luJ4rAE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726746772; c=relaxed/simple;
-	bh=n2c8rCWw8z/lpoN5wgFADrTYkKDIlTR04TekYHp1qSo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE63B3BB48;
+	Sat, 21 Sep 2024 18:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726943915; cv=pass; b=DaCxcdBHBZlzl80N9uJ844kHe5WOf3nIdGwjm2SnjbnwX72DW6ON3fK08pi3ZYGd0GQifWjiBGNUV8QHhAlVWCWxK+Se9Bn8GnfMSBtb46+kPhg/psqaJKdGlKsnDZrf0k3fwwKElaEjQeTE4hwfXNnqFg4SowLtXbH6XpDI1xI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726943915; c=relaxed/simple;
+	bh=WpadbEHEfXCgwZTQEX+7bHS29I7aOtuKslLsrT04Dzw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bt63beBM0aj2ubebMvzIMrutSZIMq8AmUTluj9W4C7fKf71PQjOBV5z+Cv7k04Y+j49DWWS8uq+iyx9DpMyJyDLfYCvICyWU5F7d2dTH3WcGwCH4r/wRHTUnNrFH56YXqZGAr8IymXLc33GBmkSLizSoXQwxHx8o1WM/HZ6cTgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhMpvkHE; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4582face04dso6581531cf.1;
-        Thu, 19 Sep 2024 04:52:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726746769; x=1727351569; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n2c8rCWw8z/lpoN5wgFADrTYkKDIlTR04TekYHp1qSo=;
-        b=OhMpvkHEdrEcd46I9hl6lNb8nnvZuJRKYxN4HiaJdxe6d0ygRqYOAS7G/iusxZMkQn
-         7QLJpWeGV0ryE6XQcZKPz+zzLkWEAttxQ2K5ZYZ+s5q6sC0Nt6IpvBscjof8qckmA5cu
-         08WUcPs3LDwoMlCYwHkYh5GdHOguQQxpUAalcqMMGw7MjtKiK1rdfcCbAEd3/hruofdu
-         IFYZ8bcQ4QLKbhg+D8Z9Vf3OWMzzl0kuX77LlUrVRFsgT2TSRBYu8qKYYSC135J2m1ov
-         kywK6Xz2ac3GbhDY2+Xvc/aql3OHUH/L9Jo3YOM/bme0zFH+abHjtMYGCDIw/hOZXR6x
-         oBTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726746769; x=1727351569;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n2c8rCWw8z/lpoN5wgFADrTYkKDIlTR04TekYHp1qSo=;
-        b=aX5zq4rlnrBzooFVkcwd0rLRfjhufIjtXS0gdJLll7sRuvGPgX79DTFKuQysP91nQU
-         cwfdBMPIsR01T/5gonwYeUj36n+kuT90D4hpdfR2kfAiOt+4oSgo+pMelf1ECjxeB+Te
-         4Ebz/Mt5bLfYSyqcA8VvoTXBtrc2VuAgjF/5WwZ5bAalFp7VynoQJ+VLqF7iW9AgEs2V
-         74uZTiiX4FtIx5VWzbNzEH0qng7f1gTZhr9CPAzaSsLwXF2N0zL8E3wV5WTX6T4pM+Mc
-         VSWPQlcHPjOGNI7m5yFeEo8xus3JtLkKYK2otMGaLZvjcgQD7k13gjH1hg5eFUJRd/dk
-         gCkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVF8Bc4uToV/790BRj8gFf0ZTHII9mlflkYdSCJQ1DMSvhprBQlC4aUD5/wPNM5xf6JehIBdFkCPyqYQSiC@vger.kernel.org, AJvYcCVaCUIWkKv4QbiZVdrsonc55eG03oMGbfDGsAKiBtgfWivVbDV1j/ORNbj4LJwdY7eaxd4pTbu7DgXZ@vger.kernel.org, AJvYcCWbZsLkUGxQqVBMfQw4YAgFrBnQ/qPq8IUssmpCGJVr7xaFHljDVQYMjVgtpZLHN1+quxwJwbG4/qEo+Kgh@vger.kernel.org, AJvYcCXBuVylbFLlTiv3bEF3KNWwhWx6VzlnymIsDH1vL2gpyj1pepGIiu3sNTDf65mFbrFj8PP0PSap5j8A@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJbgtUn6ov2J7WUeywtbzkxX0JxB/XTrwQF6u3oG9cA26qUV9+
-	3Z5ivlK72GHRMMp5viOpHlfrSNsRkhEU53CqIGu7XrHcuhaO7CfX
-X-Google-Smtp-Source: AGHT+IGQcZIp8iyJg2gTDfan3U3gpkE7chV5pJXxPcG09Udi1LvNQFGlfel4EdOFjiYN4XeQ62uD+g==
-X-Received: by 2002:a05:622a:1ba8:b0:456:953f:6fe6 with SMTP id d75a77b69052e-45b1602db49mr44449971cf.8.1726746769446;
-        Thu, 19 Sep 2024 04:52:49 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c0a8:11d1::1023? ([2620:10d:c091:400::5:4589])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45b1788f56dsm6783921cf.56.2024.09.19.04.52.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Sep 2024 04:52:48 -0700 (PDT)
-Message-ID: <c65a07ef-6436-4e04-a263-7cad9758e9be@gmail.com>
-Date: Thu, 19 Sep 2024 13:52:37 +0200
+	 In-Reply-To:Content-Type; b=GTZjLdyoNt/lFMNkqGZ/q9reNk0CQg5KyHTM/C9eAvlNpk0albWLsKVfUpu9P24zzgXTFZ7XRlTXHofhaFRnPUmhNRVvYe5i5JyXeXSPD2IltEfHj5FNvI1E/hTPFHPdpiLHSEB31gXDODU0qExGXtRuSqsQW0F1Lq2nNrZLcnQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=T1NF7p1R; arc=pass smtp.client-ip=136.143.184.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apertussolutions.com
+ARC-Seal: i=1; a=rsa-sha256; t=1726943834; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Isu+KNxmEdff4Yf8v+8NIVgqd1KCyNgZK+jRYblRct4+s63Fu1VdgNY+M14Y2pOA4BelJ1fkDlz6rpFcX2n9z+5hFvWgLO6UoLBdT3BokM9arPI4q4s+oaIj4sTIuuP1sl1/fJIdkhZjBibY1wVUqBQU0DG+TGZ9FlNn4/7RqWk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1726943834; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=epVfrURWgC20QBuvtkf5SBZ7wdGePGXbAnPnMOgBIC8=; 
+	b=akg5M36Efr83ZaGZr4tah8q5qwThdoBARKYSFfDrSEnLwQRYUe3CojwDtZhe7qga86BxANRNPH7H/t9vDdPD24UZCYUnEsc+4bJAPdb0yWs9nh+0CSkk6oN0MnLZclXDF3ziTf3S6u7Wf5N9qqYIseUjEIpRuaKjIt3gamJqESI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=apertussolutions.com;
+	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
+	dmarc=pass header.from=<dpsmith@apertussolutions.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1726943834;
+	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=epVfrURWgC20QBuvtkf5SBZ7wdGePGXbAnPnMOgBIC8=;
+	b=T1NF7p1RrY7do2w/YnOlDlPCBTTaewBsDGRb3wToOj7vxq+uyrWbNkuXqe0v7ikm
+	fVyli/s99EXCa5tZkKzlfoMHeiNKS4LpdfvPMyvXyJTPWh5mC9Broq5SqKNAS9Y+uvq
+	X+P/OtTvPsQH9O+fB8+5pkmUQS7yT6rtiL+YDmWk=
+Received: by mx.zohomail.com with SMTPS id 1726943833180834.882107651291;
+	Sat, 21 Sep 2024 11:37:13 -0700 (PDT)
+Message-ID: <c466ed57-35a8-41c0-9647-c70e588ad1d3@apertussolutions.com>
+Date: Sat, 21 Sep 2024 14:36:58 -0400
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -76,75 +60,199 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] Add Propeller configuration for kernel build.
-To: Rong Xu <xur@google.com>, Han Shen <shenhan@google.com>,
- Sriraman Tallam <tmsriram@google.com>, David Li <davidxl@google.com>,
- Jonathan Corbet <corbet@lwn.net>, Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
- Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Vegard Nossum <vegard.nossum@oracle.com>, John Moon <john@jmoon.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Heiko Carstens
- <hca@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>,
- Samuel Holland <samuel.holland@sifive.com>, Mike Rapoport <rppt@kernel.org>,
- "Paul E . McKenney" <paulmck@kernel.org>, Rafael Aquini <aquini@redhat.com>,
- Petr Pavlu <petr.pavlu@suse.com>, Eric DeVolder <eric.devolder@oracle.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Randy Dunlap <rdunlap@infradead.org>,
- Benjamin Segall <bsegall@google.com>, Breno Leitao <leitao@debian.org>,
- Wei Yang <richard.weiyang@gmail.com>, Brian Gerst <brgerst@gmail.com>,
- Juergen Gross <jgross@suse.com>, Palmer Dabbelt <palmer@rivosinc.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>, Kees Cook <kees@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Xiao Wang <xiao.w.wang@intel.com>,
- Jan Kiszka <jan.kiszka@siemens.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-arch@vger.kernel.org, llvm@lists.linux.dev,
- Krzysztof Pszeniczny <kpszeniczny@google.com>,
- Stephane Eranian <eranian@google.com>
-References: <20240728203001.2551083-1-xur@google.com>
- <20240728203001.2551083-7-xur@google.com>
+Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
+ early measurements
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Eric Biggers <ebiggers@kernel.org>,
+ Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+ linux-efi@vger.kernel.org, iommu@lists.linux-foundation.org,
+ mingo@redhat.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
+ ardb@kernel.org, mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
+ peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, nivedita@alum.mit.edu,
+ herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net,
+ dwmw2@infradead.org, baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
+ andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
+References: <20240531010331.134441-1-ross.philipson@oracle.com>
+ <20240531010331.134441-7-ross.philipson@oracle.com>
+ <20240531021656.GA1502@sol.localdomain>
+ <874jaegk8i.fsf@email.froward.int.ebiederm.org>
+ <5b1ce8d3-516d-4dfd-a976-38e5cee1ef4e@apertussolutions.com>
+ <87ttflli09.ffs@tglx>
+ <CALCETrXQ7rChWLDqTG0+KY7rsfajSPguMnHO1G4VJi_mgwN9Zw@mail.gmail.com>
+ <1a1f0c41-70de-4f46-b91d-6dc7176893ee@apertussolutions.com>
+ <8a0b59a4-a5a2-42ae-bc1c-1ddc8f2aad16@apertussolutions.com>
+ <CALCETrX8caT5qvCUu24hQfxUF_wUC2XdGpS2YFP6SR++7FiM3Q@mail.gmail.com>
 Content-Language: en-US
-From: Maksim Panchenko <max4bolt@gmail.com>
-In-Reply-To: <20240728203001.2551083-7-xur@google.com>
+From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
+In-Reply-To: <CALCETrX8caT5qvCUu24hQfxUF_wUC2XdGpS2YFP6SR++7FiM3Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Sun, Jul 28, 2024 at 01:29:56PM -0700, Rong Xu wrote:
-> Add the build support for using Clang's Propeller optimizer. Like
-> AutoFDO, Propeller uses hardware sampling to gather information
-> about the frequency of execution of different code paths within a
-> binary. This information is then used to guide the compiler's
-> optimization decisions, resulting in a more efficient binary.
+On 9/13/24 23:57, Andy Lutomirski wrote:
+> On Thu, Sep 12, 2024 at 5:34 PM Daniel P. Smith
+> <dpsmith@apertussolutions.com> wrote:
+>>
+>> Hey again,
+>>
+>> On 9/4/24 21:01, Daniel P. Smith wrote:
+>>> Hi Luto.
+>>>
+>>> On 8/28/24 23:17, Andy Lutomirski wrote:
+>>>> On Thu, Aug 15, 2024 at 12:10 PM Thomas Gleixner <tglx@linutronix.de>
+>>>> wrote:
+>>>>>
+>>>>> On Thu, Aug 15 2024 at 13:38, Daniel P. Smith wrote:
+>>>>>> On 5/31/24 09:54, Eric W. Biederman wrote:
+>>>>>>> Eric Biggers <ebiggers@kernel.org> writes:
+>>>>>>>> That paragraph is also phrased as a hypothetical, "Even if we'd
+>>>>>>>> prefer to use
+>>>>>>>> SHA-256-only".  That implies that you do not, in fact, prefer
+>>>>>>>> SHA-256 only.  Is
+>>>>>>>> that the case?  Sure, maybe there are situations where you *have*
+>>>>>>>> to use SHA-1,
+>>>>>>>> but why would you not at least *prefer* SHA-256?
+>>>>>>>
+>>>>>>> Yes.  Please prefer to use SHA-256.
+>>>>>>>
+>>>>>>> Have you considered implementing I think it is SHA1-DC (as git has)
+>>>>>>> that
+>>>>>>> is compatible with SHA1 but blocks the known class of attacks where
+>>>>>>> sha1 is actively broken at this point?
+>>>>>>
+>>>>>> We are using the kernel's implementation, addressing what the kernel
+>>>>>> provides is beyond our efforts. Perhaps someone who is interested in
+>>>>>> improving the kernel's SHA1 could submit a patch implementing/replacing
+>>>>>> it with SHA1-DC, as I am sure the maintainers would welcome the help.
+>>>>>
+>>>>> Well, someone who is interested to get his "secure" code merged should
+>>>>> have a vested interested to have a non-broken SHA1 implementation if
+>>>>> there is a sensible requirement to use SHA1 in that new "secure" code,
+>>>>> no?
+>>>>>
+>>>>> Just for the record. The related maintainers can rightfully decide to
+>>>>> reject known broken "secure" code on a purely technical argument.
+>>>>>
+>>>>
+>>>> Wait, hold on a second.
+>>>>
+>>>> SHA1-DC isn't SHA1.  It's a different hash function that is mostly
+>>>> compatible with SHA1, is different on some inputs, and is maybe more
+>>>> secure.  But the _whole point_ of using SHA1 in the TPM code (well,
+>>>> this really should be the whole point for new applications) is to
+>>>> correctly cap the SHA1 PCRs so we can correctly _turn them off_ in the
+>>>> best way without breaking compatibility with everything that might
+>>>> read the event log.  I think that anyone suggesting using SHA1-DC for
+>>>> this purpose should give some actual analysis as to why they think
+>>>> it's an improvement, let alone even valid.
+>>>
+>>> I would say at a minimum it is to provide a means to cap the PCRs.
+>>> Devices with TPM1.2 are still prevalent in the wild for which members of
+>>> the TrenchBoot community support, and there are still valid (and secure)
+>>> verification uses for SHA1 that I outlined in my previous response.
+>>>
+>>>> Ross et al, can you confirm that your code actually, at least by
+>>>> default and with a monstrous warning to anyone who tries to change the
+>>>> default, caps SHA1 PCRs if SHA256 is available?  And then can we maybe
+>>>> all stop hassling the people trying to develop this series about the
+>>>> fact that they're doing their best with the obnoxious system that the
+>>>> TPM designers gave them?
+>>>
+>>> Our goal is to keep control in the hands of the user, not making
+>>> unilateral decisions on their behalf. In the currently deployed
+>>> solutions it is left to the initrd (user) to cap the PCRs. After some
+>>> thinking, we can still ensure user control and give an option to cap the
+>>> PCRs earlier. We hope to post a v11 later this week or early next week
+>>> that introduces a new policy field to the existing measurement policy
+>>> framework. Will add/update the kernel docs with respect to the policy
+>>> expansion. We are also looking the best way we might add a warning to
+>>> the kernel log if the SHA1 bank is used beyond capping the PCRs.
+>>
+>> As the attempt was made to lay in the policy logic, it started to become
+>> convoluted and unnecessarily complicated. Thus creating more risk with
+>> all the bookkeeping and yet sha1 hashes still have to be sent, the null
+>> hash in this case, since the TPM driver will reject extends that do not
+>> have hashes for all active banks. At this point, we have opted to keep
+>> the logic simple and add a section to our documentation advising of the
+>> potential risk should one choose to incorporate SHA1 in their
+>> attestations of the platform.
+>>
+> 
+> I've read the TPM standard a bit, but it's been awhile, and it's too
+> complicated anyway.  So, can you remind me (and probably 3/4 of the
+> other people on this thread, too):
 
-Thank you for submitting the patches with the latest compiler features.
+Sure, but honestly if you were to ask me in person, I would have given 
+you the explanation as provided in the Secure Launch Overview in the 
+documentation patch.
 
-Regarding Propeller, I want to quickly mention that I plan to send a
-patch to include BOLT as a profile-based post-link optimizer for the
-kernel. I'd like it to be considered an alternative that is selectable
-at build time.
+> What, exactly, is your patchset doing that requires hashing at all?
+> (I assume it's extending a PCR and generating an event log entry.).
+> What, exactly, does it mean to "cap" a PCR?  How is this different
+> from what your patchset does?
 
-BOLT also uses sampling, and the profile can be collected on virtually
-any kernel (with some caveats).  There are no constraints on the
-compiler (i.e., any version of GCC or Clang is acceptable), while Linux
-perf is the only external dependency used for profile collection and
-conversion. BOLT works on top of AutoFDO and LTO but can be used without
-them if the user desires. The build overhead is a few seconds.
 
-As you've heard from the LLVM discussion
-(https://discourse.llvm.org/t/optimizing-the-linux-kernel-with-autofdo-including-thinlto-and-propeller)
-and LPC talk (https://lpc.events/event/18/contributions/1921/), at Meta,
-we've also successfully optimized the kernel and got similar results.
+The SINIT ACM is provided a structure that basically says, here is an 
+address and size of what it will execute next. It will use that 
+information to take its transitive trust measurement of the kernel 
+before handing control to the Linux kernel. The Secure Launch code is 
+responsible for ensuring everything that can influences its execution to 
+be measured and stored into the TPM for attestations to be made at a 
+latter time. The most important part is the transitive trust measurement 
+of the next part to be executed, the initramfs. Specifically, the Secure 
+Launch code must be able to handle the situation where the initramfs 
+independent of the kernel and loaded separately. Additionally, the 
+policy function provided for optional system state to also be measured 
+and recorded, as the attestation evaluator might want them.
 
-Again, this is a heads-up before the patch, and I would like to hear
-what people think about having a binary optimizer as a user-selectable
-alternative to Propeller.
+At the end of the day, this capability is strictly a passive (mostly, 
+see note [1] below) solution with the responsibility to maintain the 
+DRTM trust chain by taking meaningful measurements. This includes the 
+next component in the trust chain and then hand execution to that next 
+component.
 
-Thanks,
-Maksim
+The TCG specs and good practices provide that a component in either SRTM 
+or DRTM trust chains should extend a non-event record to the tpm and/or 
+its log. This is to indicate the transition point from one component in 
+the trust chain to the next component. Under the client profile, 
+firmware is required to do this by extending an event of type 
+EV_SEPARATOR before "Ready to Boot".
 
+I did not see the term actually defined in the client profile, but the 
+term "cap" refers to the specific action of hashing a value across a set 
+of PCRs. This is to reflect that certain events have occurred and will 
+result in a different but predictable change to the PCR value. Often 
+times this is to ensure that if there are TPM objects sealed to the 
+system with either that event having or have not occurred, they cannot 
+be unsealed. Thus, one has "capped" the PCRs as a means to close access 
+to the “acceptable” system state.
+
+To close and reiterate, Secure Launch only responsibility is to send 
+measurements to the TPM. The TPM and TPM driver has an expectation that 
+every PCR extend event contains a hash for every active algorithm bank. 
+For Secure Launch, to send SHA1 measurements has zero impact on the 
+security of the system. Whether those measurements are used for TPM 
+integrity reporting and security policy enforcement by user space or an 
+enterprise is outside the scope of the Secure Launch capability and the 
+kernel.
+
+[1] A future expansion of Secure Launch will be to enable usage of 
+Intel's Hardware Shield, link below, to provide runtime trustworthy 
+determination of SMM. The full extent of this capability can only be 
+achieved under a DRTM launch of the system with Intel TXT. When enabled,
+this can be used to verify the SMM protections are in place and inform 
+the kernel's memory management which regions of memory are safe from SMM 
+tampering.
+
+https://www.intel.com/content/dam/www/central-libraries/us/en/documents/drtm-based-computing-whitepaper.pdf
+
+> With that answered, it will hopefully be easy to see that you're
+> making the right call :)
+> 
+> --Andy
+> 
 
