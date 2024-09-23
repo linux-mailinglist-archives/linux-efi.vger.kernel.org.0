@@ -1,200 +1,162 @@
-Return-Path: <linux-efi+bounces-1793-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1794-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8ADD97DF78
-	for <lists+linux-efi@lfdr.de>; Sun, 22 Sep 2024 00:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9C397E647
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Sep 2024 08:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94DE82822BA
-	for <lists+linux-efi@lfdr.de>; Sat, 21 Sep 2024 22:40:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12DEF2811FC
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Sep 2024 06:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81928155759;
-	Sat, 21 Sep 2024 22:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C0A2A1D8;
+	Mon, 23 Sep 2024 06:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="Ak4b8MLT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fWytdbSi"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0D21741DA
-	for <linux-efi@vger.kernel.org>; Sat, 21 Sep 2024 22:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1684E8F66
+	for <linux-efi@vger.kernel.org>; Mon, 23 Sep 2024 06:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726958415; cv=none; b=qlcXB1miiFlAt2URoikxxieuUPrDBQFudioZX6aEKCTMYF3IAMdSO/W/DQ2NJpnoM5KuiEnjOFAivFOndv43k9SCnKijKHT/6jkKHaqalLFtzetCF3P7szC7F7oIuSq5ZAbSqcFaCO8PwhSzOc7rz7Q+zMQnnCbKudFX4lCAQO0=
+	t=1727074681; cv=none; b=gZ9i/LRJ7DB/O2tBlibgYT1UDcwcq1iRK5I/LsclDrVXXyAFN/aUjsIExRgUQc9pGQv4qicwj72vd7cRDRqky/NM46lPfpeLmLV+Gf8YKG/disdIsOpilRIkV4cmSVHDRcpNgVKjGamiHvzIFuDBRx9LEIfcCWOaIq7nw5IjSUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726958415; c=relaxed/simple;
-	bh=EbrLSVOKANzOSZo2hOV4ZpTq3Ltbi4iuLjDm1MN0uic=;
+	s=arc-20240116; t=1727074681; c=relaxed/simple;
+	bh=X6m0UNRfEntKZMqrBloClIeqX+UDhTDwCPIrSNeLses=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HbgQmfZNx/oYRPz27X2LcqhpZVT9Uz6VZmYE+rkv6C42rPMAOLtM3zB6rhwld7A588CLE/YqGkEjZYchtLlTAHR3rFnJgYaU3m6e5CkkWkIUmU/T8mV0JU8PiY89pJXDQm4B05hOGmN8KTJFbAP5LPfQweR+DaMEMpw/JRYgnro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=Ak4b8MLT; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a8d2b24b7a8so767376566b.1
-        for <linux-efi@vger.kernel.org>; Sat, 21 Sep 2024 15:40:13 -0700 (PDT)
+	 To:Cc:Content-Type; b=Q6/ZL+1+c3aK6uU+Vg2IbsdSIbp/kl3qvTkdAsy7MPMUIas8h1RceqSw4jiLsh8V9GelIuVKrg3zASb6S73LeNvWyqTEMx39pfuFaLALjygmerlDTBoNcb1udno2Ybd3gDWwFE+wjVGhRJQyXKURKr4iIQYHKyHsSYOf2Rw37jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fWytdbSi; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-71971d20ad9so2595596b3a.3
+        for <linux-efi@vger.kernel.org>; Sun, 22 Sep 2024 23:57:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1726958412; x=1727563212; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xvnFCbAvrKO16MD1V3kSEfcktT7GG58Kq8nfwUeCeG8=;
-        b=Ak4b8MLTBs8a+8/i0qQkiqhM5pBBohuZhYC8TqD5SbAwpvfYOz9O7/iWiEiIzqU6rU
-         itEWZYs0RG1UVGY3IPwQ5n5tHq2MNyNnel5vtkVvCfreXlewCKO7dvu2y04bJRYKKcpQ
-         iU20e94ZfHmviKcod/jypOHsVe+mHhzK9vMGxTRtX8xHRnammhz2vBhoC7a757JbV29t
-         HQIT8jge2O7gua+YcZuHAGJToUB8zOKgzBnMdH6FkwTwyj2Vnl8bl2eakqBq0WQQ9QpM
-         1ef0XXkqo3yi6Sxar9iELLQEXV307RbEUE5pCT9+RWwpCNDZoMUhjPCeLb3S6uH+bUQx
-         yQvw==
+        d=linaro.org; s=google; t=1727074679; x=1727679479; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pkusHDhxYhOwHV3orDxc1X5yP7fzkJVdSKdHPv2nwN0=;
+        b=fWytdbSicmWiDshLEof2V9O9rTU9oEvBm08TNHukXWUmQGcGvQGjIZmvNO9+XPMMZD
+         ZfQZ9xndT+FK5RShrmJc7HtHbnV32hMmODsnoOMpnfT+xwbvkSR1iFGofrPeG8n+84Ir
+         pveYDYmWvOfm2e35PYb/nZ6xw0UD4PHyLk63ZevyiymDYFPnDVfJKV/ENo4J46MSMbaY
+         kG17ePLSKIRfb6A3iKvGuK71HS2E6p8IrP5LnvKEwl2dwZGUhxB9OLrpE2wg/REDAKwx
+         b44nxssdHO72+mcixYSXmpf3fX4obMf8aieRigNYxM3xymEofpxvWZAPKTTxQ/xRvNgX
+         m2Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726958412; x=1727563212;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xvnFCbAvrKO16MD1V3kSEfcktT7GG58Kq8nfwUeCeG8=;
-        b=wnJijtS/N1jvinYOKfgCn9ulkftBg1/QDUTBZXtkyPKI+XpdyStDm+na9DfXaZWQ30
-         WGAEJbt9z6/L+VQNIy+FEFzE742pPa1ez3F2FETOTjDXNr6Q4IB7OJU+nIyb+wAMP5gT
-         +CfLwICm3jr6o9U97kbnIyUeIgRw0bqs+c5Fb2Bs7m1OdRsoHxbqrlKQfLP1YWrTLyov
-         7dRpINTHawKZAd2By/tKZdGU/OZI3sH/CJDSfBNndVcMoHb938WUvcaf6LmvqVsi83hZ
-         qyxfgt8VvIA6HCQvP6uRO16zUm+NQ1JWU0xdMBmlXak+Y98mYZOyFZojksyv2SQ9BUYL
-         5wVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVJubkyvfGIOAc2d/JY4Gwete30r/Fgchw72YQ9r5+lFtHCRpP6BDzVjG6X5e/PjQf+asjMldQZ7nc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8SCZfMCzWuvdhC522JukBm48UGuWvbPLOhhF5endgj7mHISDp
-	ZNUEnUIG0bzFrull11Q5XjfqDyuN35nOnd/TZw8t18IAh0Ys+xDZ2uNbzs3Nu0dY3MPSQ6IioCa
-	NtrMaX77NKRjTiofHZhOADj/6/lCLHgqcqYq6
-X-Google-Smtp-Source: AGHT+IFaL72COl44ZtDaFEd6ElmKPYw0sykZuhkEsvikJ8ZrALW1TY8Zoa3MjMgvyB4XF620eo77HLnUVANX4vO022w=
-X-Received: by 2002:a17:906:730b:b0:a8d:65f4:c7c6 with SMTP id
- a640c23a62f3a-a90c1d6ecabmr1190329166b.24.1726958411374; Sat, 21 Sep 2024
- 15:40:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727074679; x=1727679479;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pkusHDhxYhOwHV3orDxc1X5yP7fzkJVdSKdHPv2nwN0=;
+        b=LGOmxysicMswNw9zZpK8eOMQg1JBJlxHY27+GnRcUAwUnTocidWUHjSn2373Z/BsbL
+         CB0oa8/KoWxYX3ZnsYICvEBCv891ZGskKV6KwSHXsTvExkIoyyuBVVHyQKQt4w2mK/3o
+         fDq2Xd+Pi/9Ni75O/XOKFRMHZmjN6HWVndkQtJpHh8YIB5hNimfp/RtgAEiFIrXhk6lY
+         HnIayaqH4mgnQIJneDJDSSSa0h+WUDVN/atkUL63Mj2by/LCx8Ujn4zAl/93Ce3lr9sm
+         c3mxB4X3XRaRQbii5XkT7WdY/IGuoiApOvWAD9fj6WCrTjJ7MWrdFAooiUSgCVNEDm7w
+         FiLg==
+X-Gm-Message-State: AOJu0YwFO5KF43ZvcqyDjP3k05wo9eOF4d4Bpcj3qPbxwPsh+EXnxd1I
+	jDtW4kw2xg4hjNwhIgTKra8aPAZmwyTYGTyditfa4aunB/gRtAArUpt+CITvqiRKl2cCQkVVuxz
+	d0vcCiYLYz1UpOqQ5J5An9aYzYZQYG5cpObMS3OpL/RolW1rruAc=
+X-Google-Smtp-Source: AGHT+IGY0ecO8UbJMituimRhZAv/jdCoeJy6X6X+k4RAZ8zVLV3b4OxIACoaBwjBM/NPeOPhWCSytL15SQpCuIHDq2Q=
+X-Received: by 2002:a05:6a00:1896:b0:714:17b5:c1d9 with SMTP id
+ d2e1a72fcca58-7199c97ce01mr15682172b3a.1.1727074679361; Sun, 22 Sep 2024
+ 23:57:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240531010331.134441-1-ross.philipson@oracle.com>
- <20240531010331.134441-7-ross.philipson@oracle.com> <20240531021656.GA1502@sol.localdomain>
- <874jaegk8i.fsf@email.froward.int.ebiederm.org> <5b1ce8d3-516d-4dfd-a976-38e5cee1ef4e@apertussolutions.com>
- <87ttflli09.ffs@tglx> <CALCETrXQ7rChWLDqTG0+KY7rsfajSPguMnHO1G4VJi_mgwN9Zw@mail.gmail.com>
- <1a1f0c41-70de-4f46-b91d-6dc7176893ee@apertussolutions.com>
- <8a0b59a4-a5a2-42ae-bc1c-1ddc8f2aad16@apertussolutions.com>
- <CALCETrX8caT5qvCUu24hQfxUF_wUC2XdGpS2YFP6SR++7FiM3Q@mail.gmail.com> <c466ed57-35a8-41c0-9647-c70e588ad1d3@apertussolutions.com>
-In-Reply-To: <c466ed57-35a8-41c0-9647-c70e588ad1d3@apertussolutions.com>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Sat, 21 Sep 2024 15:40:00 -0700
-Message-ID: <CALCETrW9WNNGh1dEPKfQoeU+m5q6_m97d0_bzRkZsv2LxqB_ew@mail.gmail.com>
-Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
- early measurements
-To: "Daniel P. Smith" <dpsmith@apertussolutions.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, "Eric W. Biederman" <ebiederm@xmission.com>, 
-	Eric Biggers <ebiggers@kernel.org>, Ross Philipson <ross.philipson@oracle.com>, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, linux-integrity@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-efi@vger.kernel.org, 
-	iommu@lists.linux-foundation.org, mingo@redhat.com, bp@alien8.de, 
-	hpa@zytor.com, dave.hansen@linux.intel.com, ardb@kernel.org, 
-	mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, 
-	jarkko@kernel.org, jgg@ziepe.ca, nivedita@alum.mit.edu, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net, 
-	dwmw2@infradead.org, baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com, 
-	andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
+References: <20240913231954.20081-1-gourry@gourry.net> <20240913231954.20081-2-gourry@gourry.net>
+In-Reply-To: <20240913231954.20081-2-gourry@gourry.net>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Mon, 23 Sep 2024 09:57:22 +0300
+Message-ID: <CAC_iWjLf2ttNXdsmcFw+CnqPzoRPa__cg5vpNvwqoW6jwxEPKA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] tpm: fix signed/unsigned bug when checking event logs
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, ardb@kernel.org, 
+	leitao@debian.org, usamaarif642@gmail.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 21, 2024 at 11:37=E2=80=AFAM Daniel P. Smith
-<dpsmith@apertussolutions.com> wrote:
+On Sat, 14 Sept 2024 at 02:20, Gregory Price <gourry@gourry.net> wrote:
 >
-> On 9/13/24 23:57, Andy Lutomirski wrote:
-> > On Thu, Sep 12, 2024 at 5:34=E2=80=AFPM Daniel P. Smith
-> > <dpsmith@apertussolutions.com> wrote:
-> >>
-
-> > What, exactly, is your patchset doing that requires hashing at all?
-> > (I assume it's extending a PCR and generating an event log entry.).
-> > What, exactly, does it mean to "cap" a PCR?  How is this different
-> > from what your patchset does?
+> A prior bugfix that fixes a signed/unsigned error causes
+> another signed unsigned error.
 >
+> A situation where log_tbl->size is invalid can cause the
+> size passed to memblock_reserve to become negative.
+>
+> log_size from the main event log is an unsigned int, and
+> the code reduces to the following
+>
+> u64 value = (int)unsigned_value;
+>
+> This results in sign extension, and the value sent to
+> memblock_reserve becomes effectively negative.
+>
+> Fixes: be59d57f9806 ("efi/tpm: Fix sanity check of unsigned tbl_size being less than zero")
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
+>  drivers/firmware/efi/tpm.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+> index e8d69bd548f3..9c3613e6af15 100644
+> --- a/drivers/firmware/efi/tpm.c
+> +++ b/drivers/firmware/efi/tpm.c
+> @@ -40,7 +40,8 @@ int __init efi_tpm_eventlog_init(void)
+>  {
+>         struct linux_efi_tpm_eventlog *log_tbl;
+>         struct efi_tcg2_final_events_table *final_tbl;
+> -       int tbl_size;
+> +       unsigned int tbl_size;
+
+nit, perhaps u32 is better here
+
+> +       int final_tbl_size;
+>         int ret = 0;
+>
+>         if (efi.tpm_log == EFI_INVALID_TABLE_ADDR) {
+> @@ -80,26 +81,26 @@ int __init efi_tpm_eventlog_init(void)
+>                 goto out;
+>         }
+>
+> -       tbl_size = 0;
+> +       final_tbl_size = 0;
+>         if (final_tbl->nr_events != 0) {
+>                 void *events = (void *)efi.tpm_final_log
+>                                 + sizeof(final_tbl->version)
+>                                 + sizeof(final_tbl->nr_events);
+>
+> -               tbl_size = tpm2_calc_event_log_size(events,
+> -                                                   final_tbl->nr_events,
+> -                                                   log_tbl->log);
+> +               final_tbl_size = tpm2_calc_event_log_size(events,
+> +                                                         final_tbl->nr_events,
+> +                                                         log_tbl->log);
+>         }
+>
+> -       if (tbl_size < 0) {
+> +       if (final_tbl_size < 0) {
+>                 pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
+>                 ret = -EINVAL;
+>                 goto out_calc;
+>         }
+>
+>         memblock_reserve(efi.tpm_final_log,
+> -                        tbl_size + sizeof(*final_tbl));
+> -       efi_tpm_final_log_size = tbl_size;
+> +                        final_tbl_size + sizeof(*final_tbl));
+> +       efi_tpm_final_log_size = final_tbl_size;
+>
+>  out_calc:
+>         early_memunmap(final_tbl, sizeof(*final_tbl));
+> --
+> 2.43.0
 >
 
-...
-
-> I did not see the term actually defined in the client profile, but the
-> term "cap" refers to the specific action of hashing a value across a set
-> of PCRs. This is to reflect that certain events have occurred and will
-> result in a different but predictable change to the PCR value. Often
-> times this is to ensure that if there are TPM objects sealed to the
-> system with either that event having or have not occurred, they cannot
-> be unsealed. Thus, one has "capped" the PCRs as a means to close access
-> to the =E2=80=9Cacceptable=E2=80=9D system state.
-
-Okay, so I read Ross's earlier email rather differently:
-
-> Even if we'd prefer to use SHA-256-only, if firmware elected to start us
-> with the SHA-1 and SHA-256 backs active, we still need SHA-1 to parse
-> the TPM event log thus far, and deliberately cap the SHA-1 PCRs in order
-> to safely use SHA-256 for everything else.
-
-I assumed that "deliberately cap" meant that there was an actual
-feature where you write something to the event log (if applicable) and
-extend the PCR in a special way that *turns that PCR off*.  That is,
-it does something such that later-loaded software *can't* use that PCR
-to attest or unseal anything, etc.
-
-But it sounds like you're saying that no such feature exists.  And a
-quick skim of the specs doesn't come up with anything.  And the SHA1
-banks may well be susceptible to a collision attack.
-
-So what are the kernel's choices wrt the SHA-1 PCRs?  It can:
-
-a) Perform business as usual: extend them consistently with the
-SHA-256 PCRs.  This is sort of *fine*: the kernel code in question is
-not relying on the security of SHA-1, but it is making it possible for
-future code to (unwisely) rely on them.  (Although, if the kernel is
-loading a trustworthy initramfs, then there won't be a collision, and
-there is no known second-preimage attack against SHA-1.)
-
-b) Same as (a), but with countermeasures: do something to the effect
-of *detecting* the attack a la SHA1-DC and panic if an attack is
-detected.  Maybe this is wise; maybe it's not.
-
-c) Do not extend the SHA-1 PCRs and pretend they don't exist.  This
-seems likely to cause massive security problems, and having the kernel
-try to defend its behavior by saying "we don't support SHA-1 -- this
-is a problem downstream" seems unwise to me.
-
-d) Extend them but in an unconventional way that makes using them
-extra secure.  For example, calculate SHA-256(next stage), then extend
-with (next stage || "Linux thinks this is better" || SHA-256(next
-stage).  This makes the SHA-1 banks usable, and it seems like it will
-probably defeat anything resembling a current attack.  But maybe this
-is silly.  It would probably require doing the same thing to the
-SHA-256 banks for the benefit of any software that checks whether the
-SHA-1 and SHA-256 banks are consistent with each other.
-
-e) Actually try to make the SHA-1 PCRs unusable.  For example, extend
-them with random numbers.
-
-My inclination is that having some kind of Linux "policy" that SHA-1
-is forbidden adds no actual security value.  Option (a) honestly seems
-fine.  Nothing in the kernel *relies* on the SHA-1 hash being secure.
-But option (b) also seems okay if someone is willing to put the effort
-into implementing it and creating a proper test case.
-
-But the description of all this could certainly do a better job of
-explaining what's going on.
-
---Andy
-
-> [1] A future expansion of Secure Launch will be to enable usage of
-> Intel's Hardware Shield, link below, to provide runtime trustworthy
-> determination of SMM. The full extent of this capability can only be
-> achieved under a DRTM launch of the system with Intel TXT. When enabled,
-> this can be used to verify the SMM protections are in place and inform
-> the kernel's memory management which regions of memory are safe from SMM
-> tampering.
->
-> https://www.intel.com/content/dam/www/central-libraries/us/en/documents/d=
-rtm-based-computing-whitepaper.pdf
-
-Wow.  I skimmed this paper.  What an overcomplicated solution to a
-problem that doesn't deserve to exist in the first place.
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
