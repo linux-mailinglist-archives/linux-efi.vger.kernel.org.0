@@ -1,191 +1,295 @@
-Return-Path: <linux-efi+bounces-1795-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1796-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C0659842D5
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Sep 2024 12:00:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3BC986236
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2024 17:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF1961C22DDE
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Sep 2024 10:00:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB4BF1F2813C
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Sep 2024 15:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62421714B3;
-	Tue, 24 Sep 2024 10:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F39F39FEB;
+	Wed, 25 Sep 2024 15:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HBWrXLE+"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FFB161302
-	for <linux-efi@vger.kernel.org>; Tue, 24 Sep 2024 10:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DFE3A1BA
+	for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2024 15:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727172029; cv=none; b=PfwEVgkWFMIqI2/aAHpRA9rSJjXTN3V2yGl68fiXP810G6t8JSUYQQS/YDdRre6H++aVDc7s0duim13uyfXQ6pah+xF2v5ndaNbtekh4qbt7qvjAWQDw2xyY8O4/QNKejrLbgxOpNaT3F8oEjHrjizmPMxA+C/IcXYQXafg/X+k=
+	t=1727276513; cv=none; b=LOP3COz2LTgrDTdJDPeJI7umDAhp7z0MumPmtRdKeFvMUsyEVHFXaOcM4DV8mnSWSC3ZwnRNy+bzlke1qEOcmr6Rr9f3l1NwursknjF64gnjI+kBPAjmK7jrHCefFEaSdJw34qbH9VhJVZf3B23zeRKISX/qYkpmeEj6xBgK01s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727172029; c=relaxed/simple;
-	bh=MW7uAMBxOxYvLczeiayMBeBe4tJ6ZSEA1YN1+9gK99E=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=s0jwRdqSZcD7nAhuHmiKz1OnFUUsD1svQn54B/nwNVkZN8qb0SPax4JXxGG1SrQcmIbAsy4ydlXvxbyEvrO3QTxsejmvWSSHUB7pBja+gTBWRaAoX+p543ZyI9vHA0ehZb3nmomYeyzcI3Aha6dLNQsEO6bohodNiqeobLjfqXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-82ce92f8779so510691039f.3
-        for <linux-efi@vger.kernel.org>; Tue, 24 Sep 2024 03:00:27 -0700 (PDT)
+	s=arc-20240116; t=1727276513; c=relaxed/simple;
+	bh=GyK5LYy4hT2Mza2Xl9rezrZ2kXob9EVtau0/Aicjkyk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=eXZtcrZHMQKKJ9CPZ5+CzI5DScUZ1R1q7G6QwrKeoG85AkjSdYpz+7rQlTmriIU/HnPuFSTciSA7OJIA0IMgXJayHetUps5pS7OtHW13uLGVjoWkxvlpWbUQ7kwsMv67DIEzqZSJljS0wLykO8yXQjiDqF2yO6fkUoGdfO63r90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HBWrXLE+; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e24a0daf98eso1853216276.1
+        for <linux-efi@vger.kernel.org>; Wed, 25 Sep 2024 08:01:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727276509; x=1727881309; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6z7k17OsGZKMVFB80yPIaoy18RpZ7zGlccSFIk096uA=;
+        b=HBWrXLE+RxrFNPpG2yxPXm0QKtrpPQwtZYwyUTWmsAgybBjgE+ZkiheCe+wEK2qhIC
+         d/OwUrHaR7BnsDQ13NmYMQ/T/Wxi2ngNY5h8VPXXWaJHhYbetQqkeu8aq1hjPTj5c9PW
+         F12qtXfhVCgQvbKpGGLwXP3lVR+FS4RxBTRCl4juHGkPeUJSzdGXWNveVg8EvVuJ4N0b
+         n4j2jj9BHczdrpbNCNb7o8/n3xibw3CH9qigfds7ZpiBeSfkGorPGe2XFwqB9V8/L7xS
+         WpgVQZn1xoY3UU0VM6Rs1+gNKrmFDLnP0OE/Gjp0Wlkz6a4YqIRuRZD34s3EH2vnC4ok
+         KCnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727172027; x=1727776827;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a01in42YpZacjQNq2gwoU1Xzi0dMyhrMcy5fwZ6YU+0=;
-        b=dFFXkZdRMjnOIdG6gWUktdftPCWnzvopRrEYNyKXXvlv66nox5omV5emRTFRKxFem0
-         Dav/bGovpVXWEILtuvE21Ze21Dw7uwXqI4jPPsfmcXe1ggbiZx/XiYmBbgPyhkVrbTZu
-         K80MHL0+KgFuysGvpoLjbDkLq5xM/Z5Ycn05yTv0ctJNtojCw+ZirrTJ880SNPLrLAbU
-         jDRqBvnILytb6c7VAdJJ5HgSaDch7PygEcUA3MfVFt1AEPwECfwz9Utws4CoU8QbXn0K
-         VCGjl/iCosdpvtZltOROYD0Z+tu8vNjP0iOf3UEJC8ZSJs39X+zcJtyPvbN6rZZGQBki
-         uY4w==
-X-Forwarded-Encrypted: i=1; AJvYcCU/ksimgLT1jsysaZy7ursimYdazTeeK51PbymozTaPra0GDWtprNOAfqcONCnMPJDLRpVlDpp75QM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXsnVCrPZpPEOeu7jQlSUrIPhneOVj1/UnELKQEwZ/aioYAlUE
-	BMCVgwqhBEb+XF6kwrlA/T355bzLXpCmdZ7TWjCu8nkc6Y6ICDPgS3gIe2t8f0gqKnCa6V7B3rD
-	vRHyzqarwyXLIC9zT9Xpf7AUpBbuCTtp6wL5gr7xJAPUO96ISLv7GISs=
-X-Google-Smtp-Source: AGHT+IFEyPIqDOU0BgXapvNJ0AprH4g0Xhtxo+g/M18pZBOlY2RfqAs7/63imA7TvnWzXPr2FXqpLW98eVcT5vclBsQfy1g3Zgnj
+        d=1e100.net; s=20230601; t=1727276509; x=1727881309;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6z7k17OsGZKMVFB80yPIaoy18RpZ7zGlccSFIk096uA=;
+        b=ffEL3v6RSzntAAcyyDAHKd1JGbDjMpooRl20ZUq/cxCobuWlQe5lubeLQehEv7Bsca
+         ESrQeM+KHHESEQQIwoVyhFOaGN8rpeorrtmNya7lrd95g+pA90sgyoAKPK+iGjXhjWTv
+         EBS+zyq9Ss4qvs/xTs3VkrrqOrAOI+kE5wP/vMdpmA18fVcyAWWrULCf7HW90mDBHk0c
+         yayHK4ebZXuC2n8vj9Q/SSoPrg0SFSFwZTI6YfEoBuf0FduzUJrWiJotSPNmfPxvShoG
+         DWUVc9M7qn6BcmpdCnrez5zowkSt0wZcl5QZqhtgtCkN7QDNUaMChIzrKtx6TeVXCdDZ
+         h6IA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFtSa4kcnB92pSSrfSVtvLXtrbqw30oVwaFwLDb//n7RiU2Ro5liiTJyKcP4yhZR4EsOSxN526Xos=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEbLCwkXP+ZCuqu+gOBQfySNELAoAVcD5r5dDhqRUi4Fvvh3J5
+	p3ffWwY3RcWXr4bxgJPuUIQcGcOPxU3ScYn6bWTDSOfKSflNpeG9tBOrUgtsrZF8bCIm2A==
+X-Google-Smtp-Source: AGHT+IGRJUFrs1DoPRrR5c+MJEZ6tG0DheITTu8FPFLiXZOk+NGplm3eXqMcHGaqBYVKwyJOtED+Rs3U
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
+ (user=ardb job=sendgmr) by 2002:a25:d695:0:b0:e24:9ec4:7297 with SMTP id
+ 3f1490d57ef6-e24da58666emr14424276.11.1727276509248; Wed, 25 Sep 2024
+ 08:01:49 -0700 (PDT)
+Date: Wed, 25 Sep 2024 17:01:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1789:b0:3a0:bc39:2d8c with SMTP id
- e9e14a558f8ab-3a0c8d2e653mr99327325ab.25.1727172027017; Tue, 24 Sep 2024
- 03:00:27 -0700 (PDT)
-Date: Tue, 24 Sep 2024 03:00:26 -0700
-In-Reply-To: <0000000000005b6b0e0622220846@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <66f28dba.050a0220.3eed3.0028.GAE@google.com>
-Subject: Re: [syzbot] [ntfs3?] kernel panic: corrupted stack end in
- kernel_init (2)
-From: syzbot <syzbot+ec17b78de14721dd3bdc@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, almaz.alexandrovich@paragon-software.com, 
-	ardb@kernel.org, linux-block@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com, virtualization@lists.linux.dev
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9188; i=ardb@kernel.org;
+ h=from:subject; bh=vMX7ogGZLEc8VPljv97RuDVJFn/JAzUBXeH6mBcebRA=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIe2L6pr9k37ZPn8uK8IvcW92T9PETT9Xrz4h19DckCOrf
+ uS7om11RykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZiIeBIjQ8cjt/vNFnlpcQoK
+ wSbqqaeUo8XjLsnZ2/zNu6XorPO9luG/9+LkrdV5d/tnvdg2VzHvwaxNexRvHney2v1TP02udn4 IIwA=
+X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
+Message-ID: <20240925150059.3955569-30-ardb+git@google.com>
+Subject: [RFC PATCH 00/28] x86: Rely on toolchain for relocatable code
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Uros Bizjak <ubizjak@gmail.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-syzbot has found a reproducer for the following issue on:
+From: Ard Biesheuvel <ardb@kernel.org>
 
-HEAD commit:    5f5673607153 Merge branch 'for-next/core' into for-kernelci
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=1298499f980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=dedbcb1ff4387972
-dashboard link: https://syzkaller.appspot.com/bug?extid=ec17b78de14721dd3bdc
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-userspace arch: arm64
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11323107980000
+The x86_64 port has a number of historical quirks that result in a
+reliance on toolchain features that are either poorly specified or
+basically implementation details of the toolchain:
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/40172aed5414/disk-5f567360.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/58372f305e9d/vmlinux-5f567360.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d2aae6fa798f/Image-5f567360.gz.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/33ba6e22aaa5/mount_0.gz
+- the 'kernel' C model implemented by the compiler is intended for
+  position dependent code residing in the 'negative' 2 GiB of the
+  virtual address space, but is used to create a position independent
+  executable (for virtual KASLR);
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ec17b78de14721dd3bdc@syzkaller.appspotmail.com
+- the 'kernel' C model has other properties that are not written down
+  anywhere, and may therefore deviate between compilers and versions,
+  which now includes the Rust compilers too (e.g., use %gs not %fs for
+  per-CPU references); 
 
-x8 : 8f1719b15e27f800 x7 : 0000000000000000 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000008 x3 : 0000000000000000
-x2 : ffff0000d7975ac0 x1 : 0000000000000000 x0 : ffff800080872848
-Kernel panic - not syncing: kernel stack overflow
-CPU: 1 UID: 0 PID: 16523 Comm: syz.3.4916 Not tainted 6.11.0-rc7-syzkaller-g5f5673607153 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:319
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:326
- __dump_stack lib/dump_stack.c:93 [inline]
- dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:119
- dump_stack+0x1c/0x28 lib/dump_stack.c:128
- panic+0x300/0x884 kernel/panic.c:354
- nmi_panic+0x11c/0x23c kernel/panic.c:205
- panic_bad_stack+0x200/0x28c arch/arm64/kernel/traps.c:917
- enter_from_kernel_mode+0x0/0x74 arch/arm64/kernel/entry-common.c:928
- __bad_stack+0x78/0x7c arch/arm64/kernel/entry.S:566
- el1h_64_sync+0x0/0x68 arch/arm64/kernel/entry.S:591
-SMP: stopping secondary CPUs
-Kernel Offset: disabled
-CPU features: 0x10,00000207,00200128,42017203
-Memory Limit: none
+- the relocation format used to perform the PIE relocation at boot is
+  complicated and non-standard, as it deals with 3 types of
+  displacements, including 32-bit negative displacements for
+  RIP-relative per-CPU references that are not subject to relocation
+  fixups (as they are places in a separate, disjoint address space);
 
-================================
-WARNING: inconsistent lock state
-6.11.0-rc7-syzkaller-g5f5673607153 #0 Not tainted
---------------------------------
-inconsistent {INITIAL USE} -> {IN-NMI} usage.
-syz.3.4916/16523 [HC1[1]:SC0[0]:HE0:SE1] takes:
-ffff800091c892b8 ((efivars_lock).lock){....}-{2:2}, at: down_trylock+0x28/0xd8 kernel/locking/semaphore.c:139
-{INITIAL USE} state was registered at:
-  lock_acquire+0x240/0x728 kernel/locking/lockdep.c:5759
-  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-  _raw_spin_lock_irqsave+0x5c/0x7c kernel/locking/spinlock.c:162
-  down_interruptible+0x3c/0xfc kernel/locking/semaphore.c:83
-  efivars_register+0x2c/0x10c drivers/firmware/efi/vars.c:68
-  generic_ops_register drivers/firmware/efi/efi.c:229 [inline]
-  efisubsys_init+0x414/0x5f8 drivers/firmware/efi/efi.c:433
-  do_one_initcall+0x24c/0x9c0 init/main.c:1267
-  do_initcall_level+0x154/0x214 init/main.c:1329
-  do_initcalls+0x58/0xac init/main.c:1345
-  do_basic_setup+0x8c/0xa0 init/main.c:1364
-  kernel_init_freeable+0x324/0x478 init/main.c:1578
-  kernel_init+0x24/0x2a0 init/main.c:1467
-  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-irq event stamp: 10106
-hardirqs last  enabled at (10105): [<ffff80008b3388f8>] __exit_to_kernel_mode arch/arm64/kernel/entry-common.c:85 [inline]
-hardirqs last  enabled at (10105): [<ffff80008b3388f8>] exit_to_kernel_mode+0xdc/0x10c arch/arm64/kernel/entry-common.c:95
-hardirqs last disabled at (10106): [<ffff80008b42e1b4>] __raw_spin_lock_irq include/linux/spinlock_api_smp.h:117 [inline]
-hardirqs last disabled at (10106): [<ffff80008b42e1b4>] _raw_spin_lock_irq+0x28/0x70 kernel/locking/spinlock.c:170
-softirqs last  enabled at (8930): [<ffff8000800307f8>] local_bh_enable+0x10/0x34 include/linux/bottom_half.h:32
-softirqs last disabled at (8928): [<ffff8000800307c4>] local_bh_disable+0x10/0x34 include/linux/bottom_half.h:19
+- the relocation table is generated from static relocation metadata
+  taken from the ELF input objects into the linker, and these describe
+  the input not the output - relaxations or other linker tweaks may
+  result in a mismatch between the two, and GNU ld and LLD display
+  different behavior here;
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+- this disjoint per-CPU address space requires elaborate hacks in the
+  linker script and the startup code;
 
-       CPU0
-       ----
-  lock((efivars_lock).lock);
-  <Interrupt>
-    lock((efivars_lock).lock);
+- some of the startup code executes from a 1:1 mapping of memory, where
+  RIP-relative references are mandatory, whereas RIP-relative per-CPU
+  variable references can only work correctly from the kernel virtual
+  mapping (as they need to wrap around from the negative 2 GiB space
+  into the 0x0 based per-CPU region);
 
- *** DEADLOCK ***
+The reason for this odd situation wrt per-CPU variable addressing is the
+fact that we rely on the user-space TLS arrangement for per-task stack
+cookies, and this was implemented using a fixed offset of 40 bytes from
+%GS. If we bump the minimum GCC version to 8.1, we can switch to symbol
+based stack cookie references, allowing the same arrangement to be
+adopted as on other architectures, i.e., where the CPU register carries
+the per-CPU offset, and UP or boot-time per-CPU references point into
+the per-CPU load area directly (using an offset of 0x0).
 
-1 lock held by syz.3.4916/16523:
- #0: ffff0000ef1b60e0 (&type->s_umount_key#52/1){+.+.}-{3:3}, at: alloc_super+0x1b0/0x83c fs/super.c:344
+With that out of the way, we can untangle this whole thing, and replace
+the bespoke tooling and relocation formats with ordinary, linker
+generated relocation tables, using the RELR format that reduces the
+memory footprint of the relocation table by 20x. The compilers can
+efficiently generate position independent code these days, without
+unnecessary indirections via the Global Object Table (GOT) except for a
+handful of special cases (see the KVM patch for an example where a
+GOT-based indirection is the best choice for pushing the absolute
+address of a symbol onto the stack in a position independent manner when
+there are no free GPRs)
 
-stack backtrace:
-CPU: 1 UID: 0 PID: 16523 Comm: syz.3.4916 Not tainted 6.11.0-rc7-syzkaller-g5f5673607153 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:319
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:326
- __dump_stack lib/dump_stack.c:93 [inline]
- dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:119
- dump_stack+0x1c/0x28 lib/dump_stack.c:128
- print_usage_bug+0x698/0x9ac kernel/locking/lockdep.c:4000
- verify_lock_unused+0xc0/0x114 kernel/locking/lockdep.c:5691
- lock_acquire+0x3b0/0x728 kernel/locking/lockdep.c:5750
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x5c/0x7c kernel/locking/spinlock.c:162
- down_trylock+0x28/0xd8 kernel/locking/semaphore.c:139
- efivar_trylock+0x20/0xa0 drivers/firmware/efi/vars.c:160
- efi_pstore_write+0x21c/0x63c drivers/firmware/efi/efi-pstore.c:223
- pstore_dump+0x764/0xad0 fs/pstore/platform.c:354
- kmsg_dump+0x17c/0x274 kernel/printk/printk.c:4214
- panic+0x34c/0x884 kernel/panic.c:385
- nmi_panic+0x11c/0x23c kernel/panic.c:205
- panic_bad_stack+0x200/0x28c arch/arm64/kernel/traps.c:917
- enter_from_kernel_mode+0x0/0x74 arch/arm64/kernel/entry-common.c:928
- __bad_stack+0x78/0x7c arch/arm64/kernel/entry.S:566
- el1h_64_sync+0x0/0x68 arch/arm64/kernel/entry.S:591
+It also brings us much closer to the ordinary PIE relocation model used
+for most of user space, which is therefore much better supported and
+less likely to create problems as we increase the range of compilers and
+linkers that need to be supported.
 
+Tested on GCC 8 - 14 and Clang 15 - 17, using EFI and bare metal boot
+using a variety of entry points (decompressor, EFI stub, XenPV, PVH)
+ 
+Cc: x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Keith Packard <keithp@keithp.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Kan Liang  <kan.liang@linux.intel.com>
+Cc: linux-doc@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: kvm@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org
+Cc: linux-efi@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-sparse@vger.kernel.org
+Cc: linux-kbuild@vger.kernel.org
+Cc: linux-perf-users@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org
+Cc: llvm@lists.linux.dev
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Ard Biesheuvel (28):
+  x86/pvh: Call C code via the kernel virtual mapping
+  Documentation: Bump minimum GCC version to 8.1
+  x86/tools: Use mmap() to simplify relocs host tool
+  x86/boot: Permit GOTPCREL relocations for x86_64 builds
+  x86: Define the stack protector guard symbol explicitly
+  x86/percpu: Get rid of absolute per-CPU variable placement
+  scripts/kallsyms: Avoid 0x0 as the relative base
+  scripts/kallsyms: Remove support for absolute per-CPU variables
+  x86/tools: Remove special relocation handling for per-CPU variables
+  x86/xen: Avoid relocatable quantities in Xen ELF notes
+  x86/pvh: Avoid absolute symbol references in .head.text
+  x86/pm-trace: Use RIP-relative accesses for .tracedata
+  x86/kvm: Use RIP-relative addressing
+  x86/rethook: Use RIP-relative reference for return address
+  x86/sync_core: Use RIP-relative addressing
+  x86/entry_64: Use RIP-relative addressing
+  x86/hibernate: Prefer RIP-relative accesses
+  x86/boot/64: Determine VA/PA offset before entering C code
+  x86/boot/64: Avoid intentional absolute symbol references in
+    .head.text
+  x64/acpi: Use PIC-compatible references in wakeup_64.S
+  x86/head: Use PIC-compatible symbol references in startup code
+  asm-generic: Treat PIC .data.rel.ro sections as .rodata
+  tools/objtool: Mark generated sections as writable
+  tools/objtool: Treat indirect ftrace calls as direct calls
+  x86: Use PIE codegen for the core kernel
+  x86/boot: Implement support for ELF RELA/RELR relocations
+  x86/kernel: Switch to PIE linking for the core kernel
+  x86/tools: Drop x86_64 support from 'relocs' tool
+
+ Documentation/admin-guide/README.rst    |   2 +-
+ Documentation/arch/x86/zero-page.rst    |   3 +-
+ Documentation/process/changes.rst       |   2 +-
+ arch/x86/Kconfig                        |   3 +-
+ arch/x86/Makefile                       |  22 +-
+ arch/x86/boot/Makefile                  |   1 +
+ arch/x86/boot/compressed/Makefile       |   2 +-
+ arch/x86/boot/compressed/misc.c         |  16 +-
+ arch/x86/entry/calling.h                |   9 +-
+ arch/x86/entry/entry_64.S               |  12 +-
+ arch/x86/entry/vdso/Makefile            |   1 +
+ arch/x86/include/asm/desc.h             |   1 -
+ arch/x86/include/asm/init.h             |   2 +-
+ arch/x86/include/asm/percpu.h           |  22 -
+ arch/x86/include/asm/pm-trace.h         |   4 +-
+ arch/x86/include/asm/processor.h        |  14 +-
+ arch/x86/include/asm/setup.h            |   3 +-
+ arch/x86/include/asm/stackprotector.h   |   4 -
+ arch/x86/include/asm/sync_core.h        |   3 +-
+ arch/x86/include/uapi/asm/bootparam.h   |   2 +-
+ arch/x86/kernel/acpi/wakeup_64.S        |  11 +-
+ arch/x86/kernel/head64.c                |  76 +++-
+ arch/x86/kernel/head_64.S               |  40 +-
+ arch/x86/kernel/irq_64.c                |   1 -
+ arch/x86/kernel/kvm.c                   |   8 +-
+ arch/x86/kernel/relocate_kernel_64.S    |   6 +-
+ arch/x86/kernel/rethook.c               |   3 +-
+ arch/x86/kernel/setup_percpu.c          |   9 +-
+ arch/x86/kernel/vmlinux.lds.S           |  75 ++--
+ arch/x86/platform/pvh/head.S            |  57 ++-
+ arch/x86/power/hibernate_asm_64.S       |   4 +-
+ arch/x86/realmode/rm/Makefile           |   1 +
+ arch/x86/tools/Makefile                 |   2 +-
+ arch/x86/tools/relocs.c                 | 425 +++-----------------
+ arch/x86/tools/relocs.h                 |  11 +-
+ arch/x86/tools/relocs_64.c              |  18 -
+ arch/x86/tools/relocs_common.c          |  11 +-
+ arch/x86/xen/xen-head.S                 |  16 +-
+ drivers/base/power/trace.c              |   6 +-
+ drivers/firmware/efi/libstub/x86-stub.c |   2 +
+ include/asm-generic/vmlinux.lds.h       |  10 +-
+ include/linux/compiler.h                |   2 +-
+ init/Kconfig                            |   5 -
+ kernel/kallsyms.c                       |  12 +-
+ scripts/kallsyms.c                      |  53 +--
+ scripts/link-vmlinux.sh                 |   4 -
+ tools/objtool/check.c                   |  43 +-
+ tools/objtool/elf.c                     |   2 +-
+ tools/objtool/include/objtool/special.h |   2 +-
+ tools/perf/util/annotate.c              |   4 +-
+ 50 files changed, 380 insertions(+), 667 deletions(-)
+ delete mode 100644 arch/x86/tools/relocs_64.c
+
+-- 
+2.46.0.792.g87dc391469-goog
+
 
