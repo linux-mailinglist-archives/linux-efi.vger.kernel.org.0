@@ -1,304 +1,213 @@
-Return-Path: <linux-efi+bounces-1887-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1888-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FFC98E4A3
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 23:12:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710EC98E68E
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Oct 2024 01:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6011C284766
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 21:12:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BD9A1C220DF
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 23:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B30E217337;
-	Wed,  2 Oct 2024 21:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D6A199929;
+	Wed,  2 Oct 2024 23:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GaacTp+/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nh+TltQc"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4431D1E60;
-	Wed,  2 Oct 2024 21:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727903510; cv=none; b=atvtM3FyDqBRa3yinT+Czve5q/609Rvd2W1SxP0fQgACUuPuaRTUVtqDiHzRfOnXOR5I3mjAwXA8TxMby4jRHfGwdERU9Xz9d7rPdad11QOlekn0XbMTcxKuTlA0VZVTc75JTe7dnSdeoVgovGbWrvxH0ZLIqcJKOkYOxbUc2+c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727903510; c=relaxed/simple;
-	bh=h2hkGlrWp+ilrEQxBBn348t9IrI0rV3FgPcHG9zYLCU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qvb6eyzJYAVJzsPY7qZyi3qshFPuyt7JrVryJTzVOSeU+KanKTyzKkTqp2bTGROp9TvK+hGrwtGmag2rirP2DETKp7KzYR/905MupLWMtMpulsOfTErQiznkdXLdbYl8ujpOKnu9JEy4+k5y3zVCX/FWz8cwaHnju9QP3bs6o5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GaacTp+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FEDC4CECF;
-	Wed,  2 Oct 2024 21:11:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727903509;
-	bh=h2hkGlrWp+ilrEQxBBn348t9IrI0rV3FgPcHG9zYLCU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GaacTp+/lYKvPZc+QQOBDr6qF9Z0L+71MJr0a9x7rzxmWL2ZWYig/1foGU1yAoW+P
-	 pnC27yiW0bjhdH1VLP0WxzL4W1/0MKmfHTAhRUEcJR619/JEXUs/J+3ekS5uyadn/n
-	 fsQwBRHxhJOxtMA3CesxgsmOFXid3xmlZA7shR3YeyEkqEc0/Mr6CsxXknvJ165/VL
-	 w2rYcnJkJXmMbthc1nKS9yKD2ZTNC6Y/hDhCQ8Wrua3/Y6RO5A3ijmim58UFciWKWX
-	 4b1VYbDzYcZhZnHyR0azkpSqUN/bXlMmXmccgYWu/ZfdSQERhLjh1P2QvhnEuMqhQM
-	 UBisNjBKn9xHQ==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5398996acbeso219407e87.1;
-        Wed, 02 Oct 2024 14:11:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVM6RTXMKaLvNR117ZFw4+3hfK2fVEOCzHL9+1fpzyWfp86UirdtKTziZWvaR8MXjMsMdn+cjQSlAdd@vger.kernel.org, AJvYcCVl59wSgB6g0VmX9p//EBydX0D52x8vtiblnko72G2/OiznfD6uYzpc5fF1zxZhhXaE1f5+H0IN+s6d@vger.kernel.org, AJvYcCWWpllot7XiTuZ1RHlrip86SS+U6APA3rhfNIreb13e4RwuHaZylDRCepmrJAVORQLysIV+X28oBKmGn0cP@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYBYMT6BraNgkpOfzdccBYMVZgQN5umkJqy5HuGVRUiS5QPRkF
-	bcGrR6DXWe91pUQoZI7MmRlDT/mKA76tTSUUpyZYYGgtiyQi0RNvn8PN8WqKemDf2DjCj/+H3+O
-	i1bKqyO7iGtIyEPWPofHNskSCAsY=
-X-Google-Smtp-Source: AGHT+IES9jvCPq3yE6PJbBdhAXs1kKVc6zV/xm0+yUBEGXFjN18dIfZ9NuoUPGUzoC+CA1o24HpqcmQDU+MZIJmqL+I=
-X-Received: by 2002:a05:6512:10cd:b0:536:568f:c5ed with SMTP id
- 2adb3069b0e04-539a06586f7mr2651783e87.1.1727903507817; Wed, 02 Oct 2024
- 14:11:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B098286A;
+	Wed,  2 Oct 2024 23:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727910150; cv=fail; b=d3rCLNbIsUDWFKngEf6oMdxt/aVfAcjpSbgzvdv14l/qmEf/bDnCWrM/RDrQO2fIY6JOyQ7HNZ1IU014ph3H9i6OZ2xMsxQih1/b9ovokSXRnEk/2FL8WuiyHteXh+1UKpNUkOrRcJar8f4IB8tVeymFclMhgBCE1Eld7mtciuE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727910150; c=relaxed/simple;
+	bh=3NAhTXHzfxJ2BU2mIRsYG7dteOzNI/nRuOPCXNCrAtc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mXw492zbv8QsLxz/yK0xXSGUClDa1yYTDzqYHvFCyr3e1IR8Uc8ZpV8PZQEfpyWo2tErl/jRNWFLuDXpuFkm58W7SCQYiW+Z1q3jxO/kQyP7zdYybAx3wJARR1PfRTfDIx6DfMPyEvjJjs5HSBhBSuA54dBYPDBrwc+i2HliE9o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nh+TltQc; arc=fail smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727910147; x=1759446147;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=3NAhTXHzfxJ2BU2mIRsYG7dteOzNI/nRuOPCXNCrAtc=;
+  b=nh+TltQc838H+zywbrzVIWPYyMhyK9hkMsL+hMVevemvqDHCLoa9NTQh
+   GW/G2/4IY3zSyglUzUDIOb8R5Brvix1N+/MmqoGUeyTAd5Hj/czh+t7HQ
+   cmzN3mzjsLlrI6hSLsYsplTf0AlE6cwoBtDZJv8Qz7jNo6bQDIkW1hm7p
+   vx36gILM8MwyEavE26NkaEwNuySCttpVMdu/knbrFnf3Eapkm6rlHFHFj
+   sUpBr/m4tWwaohWecjmQU936lnmdFzCAoMOUXHAdoHRz+sn6/y/+OfGP/
+   2014UpfhWYu2rrMXki1LCkhok8IsXISam17pZkCet8G/tsaCFwtXu9PgL
+   Q==;
+X-CSE-ConnectionGUID: Ixl6NksnTfOrjdYEiUGX1A==
+X-CSE-MsgGUID: 4Nwj81MoSlOnCkbLg6oa0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="30800447"
+X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
+   d="scan'208";a="30800447"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 16:02:26 -0700
+X-CSE-ConnectionGUID: TlZKp/MgS6GqPRKejzHhFA==
+X-CSE-MsgGUID: QvqlyAbpQOqBNNzsv6y8aA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
+   d="scan'208";a="74268424"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Oct 2024 16:02:26 -0700
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 2 Oct 2024 16:02:25 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 2 Oct 2024 16:02:25 -0700
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 2 Oct 2024 16:02:25 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 2 Oct 2024 16:02:25 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.172)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 2 Oct 2024 16:02:25 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C+I6NpzPEFYRJTnrAZWq5EdqqK87n0f2Kk0glDIzl/i+W616rqgRc/jObqksVCS0MPuTK1GDomYiUSxguPzctOd/WgP+u8yLTv1hEgJ9sUrF3hOQfECOrmZcLj5lEyJEV5eI+C6tgQi1S1R+P8K2TiTDBtgxKzTgEQonIeMJfyLSxmKC+ktrgpfWU1F7DszUY9j3wPVdqZRXtMmmDyC6rS5kbVXqdLkUqdET+Xf/LEzMcdhaC8CbYOEj3k9JQH1/spgHwA5WmwCFY6Ey0Au13NnGHFuaymKVnc1H+70SzWCpDXLFFB7YjczIccMuxkpqTCzds7dvGAXvPwWeUO60tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H6GQrewqZg2Ap5t8EOc+RcH86yPXZHnn8erMAuo1nyU=;
+ b=WyF6LjLzZ2jZmhwwYvqMmySsVYH7SXuh4TGUocSSIqzTuTdqLv+qNomRYWpBVds3DQC4setuJjPNiSL7qFPlvqr1pRrOOY9SFLnkd1y4+XqnQkmlvBNpgtcP/mscsduwXN4vT0ncrgN2a9JlERK+YCXU5q4vjuaaomMaW4McPPOvKj3Y2jM3oMPCEeaeezokjEiU4admfd9Ll4tn/83UkKWgt9Z4jf7m73g8Af54ak5/RLp2YtFbzkV1U7Zdr0EkFoF93pmBDCopPVQjjvhSzE+YYh6fkxrKT1YwqhqAdgDKUutuDHt4pHWnIlTBkP2rNmMKGMk079Ejx4N3r1o1oQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by PH7PR11MB6723.namprd11.prod.outlook.com (2603:10b6:510:1af::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Wed, 2 Oct
+ 2024 23:02:17 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8026.016; Wed, 2 Oct 2024
+ 23:02:17 +0000
+Date: Wed, 2 Oct 2024 16:02:14 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>
+CC: Ard Biesheuvel <ardb@kernel.org>, Alison Schofield
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
+ Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Yazen Ghannam
+	<yazen.ghannam@amd.com>, Bowman Terry <terry.bowman@amd.com>
+Subject: Re: [PATCH v2 1/4] efi/cper, cxl: Make definitions and structures
+ global
+Message-ID: <66fdd0f6314c2_964f229426@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20241001005234.61409-1-Smita.KoralahalliChannabasappa@amd.com>
+ <20241001005234.61409-2-Smita.KoralahalliChannabasappa@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241001005234.61409-2-Smita.KoralahalliChannabasappa@amd.com>
+X-ClientProxiedBy: MW4PR04CA0112.namprd04.prod.outlook.com
+ (2603:10b6:303:83::27) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240911155536.3900579-1-kobak@nvidia.com> <CAJZ5v0gQVPcmMNL4J7UskHsTx8vugJ6pZ_T=Ob3qjsrGmhnFAw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gQVPcmMNL4J7UskHsTx8vugJ6pZ_T=Ob3qjsrGmhnFAw@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 2 Oct 2024 23:11:36 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH+xsEj6vC-+z=NcNyGNA6EVePd35iToLB-J-8LhKdD-w@mail.gmail.com>
-Message-ID: <CAMj1kXH+xsEj6vC-+z=NcNyGNA6EVePd35iToLB-J-8LhKdD-w@mail.gmail.com>
-Subject: Re: [PATCH V5] acpi/prmt: find block with specific type
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: KobaK <kobak@nvidia.com>, Matt Ochs <mochs@nvidia.com>, Len Brown <lenb@kernel.org>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Zhang Rui <rui.zhang@intel.com>, linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH7PR11MB6723:EE_
+X-MS-Office365-Filtering-Correlation-Id: 878444f1-93bd-4a76-eabf-08dce33642ce
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?5WYlwjXzoyCsL7hCEniHub8nNMcQ7tJWlm4WKW4C1dCtpnXpUJjFC/1Mux80?=
+ =?us-ascii?Q?vW6DMLQAR3gcSqyQoKZue50KemtPMVY3kusWvlJHy7+GYkt+4YTDMeII5zkl?=
+ =?us-ascii?Q?4sD2B+S0xn0f9qgjDKnH7lDclrgViKu2SbLTwzE6/lczKWolR0aMtCkPwUj8?=
+ =?us-ascii?Q?K+BGbifpPaDsYi5vxOOKnv2HG9yqtoaeVxh3PTuzyDSFnmm5//AfF/rWKDwk?=
+ =?us-ascii?Q?hFThSqLtJZCkXw0uAZ9c8Qeb7ZtYXQTYDAZmxudd6QOcDFe5V5gRNh3HHN+r?=
+ =?us-ascii?Q?md32CeI7UXrfEhNpvh6t/jBLz2seSsxFxq5qptRUi//NpwXmsbhB2Wx7vjVG?=
+ =?us-ascii?Q?URZAgGKBl0qCnvgXHSXhJApBH6jRFku54t7nVVi9LckatZ7ssyO+O0pgKdX+?=
+ =?us-ascii?Q?fagIMGBqWE4Vn9O0CubbfQB0TQYrokkAkMeurXmSt4BBIrG0+3+2aUVhhQEk?=
+ =?us-ascii?Q?slAahqvrm/PdjrjPBF6cEGTkXFHCjys24tu1OmPePkSz4RnS/nrdkXNq4Ypi?=
+ =?us-ascii?Q?STuGaJY/Bj5UDgOjTD87wOKwvAt3cHIYvat8F5+rM1ERBKd08wv19Mp+iVLP?=
+ =?us-ascii?Q?WJdoA+n3BgHQVaQrZ7oFShcRaXeiLqOc4YvaTrmb4eZooF8Sr2DXc03Edz7w?=
+ =?us-ascii?Q?8CZ97+1515geHwqw6ZGY7TpWXU2Zsg3YlKFfs8gblyk2AW+gSR2dx0RwYOmB?=
+ =?us-ascii?Q?0Ai81gMK+iBOkojiu4/DNSbOdYvwi6rlU6E3lwySMbzKniKVwSjmprXbK2hA?=
+ =?us-ascii?Q?yzXLXwk+VJ11hQnZqklz9dDKfnXsYC9E7pf73GcfmouEgIw7rxjkSDP2UVJH?=
+ =?us-ascii?Q?UnXy+bdmEMvLZe4C0bALntLUuvkN3a//3RLhUfaUEXr9y10h7bTkVyuoQw0e?=
+ =?us-ascii?Q?HA4AoYWLc92aZDkxqtEmp0fgJpoHy7RhszsHXkjlY/9bid7iWDiCC6d2B9vX?=
+ =?us-ascii?Q?kjv4z2YdSdJd5KSsHHSsxDlJdHf8ZG4sUJO+sFVBE/Jm6DL3qFvbp2Ks34Tg?=
+ =?us-ascii?Q?dTcHsS4w4kbClH/D/wRquO0JrRN0ZLpLOHyJYuzZ6r4K76k+SV/nbxJswVIA?=
+ =?us-ascii?Q?VLIrGQiX69GwO3Uttg/vOml+etuYruy33p287DwV2BJb13Wm8y3T/WS/F7PA?=
+ =?us-ascii?Q?AcGhQhEfJq4AZaT2iFNvu8nv8rYlFy9iZNqEboDhqVKUYkqFjopUXlMSuJDA?=
+ =?us-ascii?Q?b4G2gaRz0y1zMxgMd5cQtqhyEcv9vPlQScHYbSMkMmy6cNG/UQhgViNWd+yX?=
+ =?us-ascii?Q?Gns7rJ/5ZlpuecFjWLevuO1mHWkdpFdcFbiiU5WxlA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?121lsIn96i/sPsA76XTYt2wba13LHge6bWHrYzqNPmpwcULUoo/RUF+OxdPk?=
+ =?us-ascii?Q?pU2+RwRNaKdLVGmxCQfrDbnnGyfM9AXWdDxn5I4ag88i6KBrrRFzO6bwyZHp?=
+ =?us-ascii?Q?GjTVJOXBlnf1S8llVWJAJ2WzHDPmc14FZAjll62SLJ2Lm1cOhyBgtNFv81Ot?=
+ =?us-ascii?Q?JlvGPls7Kr9IbAbENxCSLMjZuqGSihYucMgi4IBISqmHUv9BDTqNDC5so3Bm?=
+ =?us-ascii?Q?dq7bAEmjWI9lu2d5V4qF9SUw+MgkvrBjZzDLCaEz4eAjcRua9aU2LDKBF4hp?=
+ =?us-ascii?Q?x4/AhBFL5JiDVP8u8n74Mmn2p5P7p35ThYShNy1XXG3oRk7Kn7xC0Y/QVbyY?=
+ =?us-ascii?Q?P04Zb9iP0Kr5ajFWZTV34t4STpXsvH3pWlLywU593nPkDdZcxli7K3tJb8N7?=
+ =?us-ascii?Q?GH5jJyaVfn8n99N2ZgZfcAEqaNut3FB4n/BRWdetj8RhLXtO5ZYwYKiH/KVc?=
+ =?us-ascii?Q?7B297bj3x1R1lAX/7c523YT3qbrg75HEG8vfmHsgPjaU8+80alN0KK+2Nlo4?=
+ =?us-ascii?Q?BCXtaoU4qK4JIXHKSXhwudPmPwAAAW+zPc5o+6jKeMaJ3ZhZlXJsb1Y4VXkK?=
+ =?us-ascii?Q?PSqvHf1eUpadrx6Wn4kILW6wVIFDrm6jzPnSTbV8tA/aPevq9T2FChkEzX7t?=
+ =?us-ascii?Q?68m1HMupLZJwZkQenNV/x+k7MVWqD6NDpOHk5lJUXKZnEDPcPHndS7NDZo0A?=
+ =?us-ascii?Q?OAwCJlogCDzX9U6/fPgcOmjIBgFgIuLe4c0wg9Hp5OcMGV4XXkaqXV1DvsXo?=
+ =?us-ascii?Q?u3GZ1wqRsthnTw2dF9Gik9Fb76o2KUyh+QWs1JDpGZkE+u9rYYY3L1tFyC6S?=
+ =?us-ascii?Q?qF1R8xICLUylm5ydI4Tc5+S3Q8bgh+5TdEEMgK0xhgULWLrNomjA9r1BhI5b?=
+ =?us-ascii?Q?4Ycq7Ipo+orZzBJscwEPji2Ie57LBOLgSUpFlNvd3b/VuhmS6Ry24KCkOVVE?=
+ =?us-ascii?Q?KsflP+B8JcEY5CAkeuwbfm5yPXcVHS68vvt+8LOO0oQmG/QHnh6aGnUJx65v?=
+ =?us-ascii?Q?jkcFO8cFn/eJlZKJ3EJ7g1WPaUvsTtQhY45OMlAKok72D+StxiVzwpu1Wc1O?=
+ =?us-ascii?Q?GBaTFrbhnAzgwcE4XEKr/a9TJeVFcDGP9Y2dgdpfJJ/WKfrA0CxsCpsya5Bt?=
+ =?us-ascii?Q?Kh2/Y+cEYpOtdZIz0I6fcSk+a7lqJs30B+RnKOx9l5o2oXmjU8xsGZUMrF4l?=
+ =?us-ascii?Q?dUn3ryOsBdAyotdsgMcrCTpmb7YQE36Fq9kTLsnQx59JD6BnTnrsNdHpJPvN?=
+ =?us-ascii?Q?btmp8Js/fvVPgwcNN0mYeHVs/liW3tni7M3J80ykBGHMEaKtbPbKPRb8lqRf?=
+ =?us-ascii?Q?sppuzVab8vWt3NVLzMDndLNYxQDJaDpRg97NmV934DZ5MTu5DwatRmKzxZba?=
+ =?us-ascii?Q?IoKRcUIzqfDevICMRIL4apC5TYsklDa0SsPa8wgCwbMXHRqgDoAPkr3Pp1/W?=
+ =?us-ascii?Q?14TfBFsfv0Xg1Mcyh8q24QkjO2A/okRepeN1PpeitB60W5n3ubKf6l+XH8df?=
+ =?us-ascii?Q?YjCJqs9WtQ+lPIO7t/r4kUyAgxxgqfbC/af+Sckirj5As1TTp37fge3RsM7R?=
+ =?us-ascii?Q?Ky1TeGn1NlOGcmeMOEkolBt0VS9Y0C3Src3uZlGyrrwu9W4p3T6CL1gxq2tB?=
+ =?us-ascii?Q?ng=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 878444f1-93bd-4a76-eabf-08dce33642ce
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 23:02:16.9581
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oYXNwHOUzKngBcBYKmGAcnbpibQpC5Zzz/Q+QseYN3RICAEBA3PQrzNoxYsorw4Bybom4DKbXAoMrHb8hBAsrE3oJWusSbc9HImQFu+PKdc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6723
+X-OriginatorOrg: intel.com
 
-On Wed, 2 Oct 2024 at 20:06, Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Wed, Sep 11, 2024 at 5:55=E2=80=AFPM KobaK <kobak@nvidia.com> wrote:
-> >
-> > PRMT needs to find the correct type of block to
-> > translate the PA-VA mapping for EFI runtime services.
-> >
-> > The issue arises because the PRMT is finding a block of
-> > type EFI_CONVENTIONAL_MEMORY, which is not appropriate for
-> > runtime services as described in Section 2.2.2 (Runtime
-> > Services) of the UEFI Specification [1]. Since the PRM handler is
-> > a type of runtime service, this causes an exception
-> > when the PRM handler is called.
-> >
-> >     [Firmware Bug]: Unable to handle paging request in EFI runtime serv=
-ice
-> >     WARNING: CPU: 22 PID: 4330 at drivers/firmware/efi/runtime-wrappers=
-.c:341
-> >         __efi_queue_work+0x11c/0x170
-> >     Call trace:
-> >       __efi_queue_work+0x11c/0x170
-> >       efi_call_acpi_prm_handler+0x68/0xd0
-> >       acpi_platformrt_space_handler+0x198/0x258
-> >       acpi_ev_address_space_dispatch+0x144/0x388
-> >       acpi_ex_access_region+0x9c/0x118
-> >       acpi_ex_write_serial_bus+0xc4/0x218
-> >       acpi_ex_write_data_to_field+0x168/0x218
-> >       acpi_ex_store_object_to_node+0x1a8/0x258
-> >       acpi_ex_store+0xec/0x330
-> >       acpi_ex_opcode_1A_1T_1R+0x15c/0x618
-> >       acpi_ds_exec_end_op+0x274/0x548
-> >       acpi_ps_parse_loop+0x10c/0x6b8
-> >       acpi_ps_parse_aml+0x140/0x3b0
-> >       acpi_ps_execute_method+0x12c/0x2a0
-> >       acpi_ns_evaluate+0x210/0x310
-> >       acpi_evaluate_object+0x178/0x358
-> >       acpi_proc_write+0x1a8/0x8a0 [acpi_call]
-> >       proc_reg_write+0xcc/0x150
-> >       vfs_write+0xd8/0x380
-> >       ksys_write+0x70/0x120
-> >       __arm64_sys_write+0x24/0x48
-> >       invoke_syscall.constprop.0+0x80/0xf8
-> >       do_el0_svc+0x50/0x110
-> >       el0_svc+0x48/0x1d0
-> >       el0t_64_sync_handler+0x15c/0x178
-> >       el0t_64_sync+0x1a8/0x1b0
-> >
-> > Find a block with specific type to fix this.
-> > prmt find a block with EFI_RUNTIME_SERVICES_DATA for prm handler and
-> > find a block with EFI_RUNTIME_SERVICES_CODE for prm context.
-> > If no suitable block is found, a warning message will be prompted
-> > but the procedue continues to manage the next prm handler.
-> > However, if the prm handler is actullay called without proper allocatio=
-n,
-> > it would result in a failure during error handling.
-> >
-> > By using the correct memory types for runtime services,
-> > Ensure that the PRM handler and the context are
-> > properly mapped in the virtual address space during runtime,
-> > preventing the paging request error.
-> >
-> > [1] https://uefi.org/sites/default/files/resources/UEFI_Spec_2_10_Aug29=
-.pdf
->
-> I need input from EFI people on this, so can you please resend the
-> patch with a CC to linux-efi@vger.kernel.org?
->
-> > Fixes: cefc7ca46235 ("ACPI: PRM: implement OperationRegion handler for =
-the PlatformRtMechanism subtype")
-> > Signed-off-by: KobaK <kobak@nvidia.com>
+Smita Koralahalli wrote:
+> In preparation to add tracepoint support, move protocol error UUID
+> definition to a common location and make CXL RAS capability struct
+> global for use across different modules.
+> 
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Please use your full name.
+LGTM
 
-> > Reviewed-by: Matthew R. Ochs <mochs@nvidia.com>
-> > ---
-> > V2:
-> > 1. format the changelog and add more about error handling.
-> > 2. replace goto
-> > V3: Warn if parts of handler are missed during va-pa translating.
-> > V4: Fix the 0day
-> > V5: Fix typo and pr_warn warning
-> > ---
-> >  drivers/acpi/prmt.c | 49 +++++++++++++++++++++++++++++++--------------
-> >  1 file changed, 34 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> > index c78453c74ef5..cd4a7f5491d6 100644
-> > --- a/drivers/acpi/prmt.c
-> > +++ b/drivers/acpi/prmt.c
-> > @@ -72,15 +72,17 @@ struct prm_module_info {
-> >         struct prm_handler_info handlers[] __counted_by(handler_count);
-> >  };
-> >
-> > -static u64 efi_pa_va_lookup(u64 pa)
-> > +static u64 efi_pa_va_lookup(u64 pa, u32 type)
-> >  {
-> >         efi_memory_desc_t *md;
-> >         u64 pa_offset =3D pa & ~PAGE_MASK;
-> >         u64 page =3D pa & PAGE_MASK;
-> >
-> >         for_each_efi_memory_desc(md) {
-> > -               if (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZ=
-E * md->num_pages)
-> > +               if ((md->type =3D=3D type) &&
-> > +                       (md->phys_addr < pa && pa < md->phys_addr + PAG=
-E_SIZE * md->num_pages)) {
-> >                         return pa_offset + md->virt_addr + page - md->p=
-hys_addr;
-> > +               }
-> >         }
-> >
-> >         return 0;
-> > @@ -148,9 +150,18 @@ acpi_parse_prmt(union acpi_subtable_headers *heade=
-r, const unsigned long end)
-> >                 th =3D &tm->handlers[cur_handler];
-> >
-> >                 guid_copy(&th->guid, (guid_t *)handler_info->handler_gu=
-id);
-> > -               th->handler_addr =3D (void *)efi_pa_va_lookup(handler_i=
-nfo->handler_address);
-> > -               th->static_data_buffer_addr =3D efi_pa_va_lookup(handle=
-r_info->static_data_buffer_address);
-> > -               th->acpi_param_buffer_addr =3D efi_pa_va_lookup(handler=
-_info->acpi_param_buffer_address);
-> > +               th->handler_addr =3D
-> > +                       (void *)efi_pa_va_lookup(handler_info->handler_=
-address, EFI_RUNTIME_SERVICES_CODE);
-
-Wouldn't it make more sense to test the EFI_MEMORY_RUNTIME attribute
-rather than expecting/assuming a certain memory type in each case?
-That attribute is precisely what controls whether or not a region has
-been remapped into the firmware's page tables.
-
-> > +               th->static_data_buffer_addr =3D
-> > +                       efi_pa_va_lookup(handler_info->static_data_buff=
-er_address, EFI_RUNTIME_SERVICES_DATA);
-> > +               th->acpi_param_buffer_addr =3D
-> > +                       efi_pa_va_lookup(handler_info->acpi_param_buffe=
-r_address, EFI_RUNTIME_SERVICES_DATA);
-> > +
-> > +               if (!th->handler_addr || !th->static_data_buffer_addr |=
-| !th->acpi_param_buffer_addr)
-> > +                       pr_warn(
-> > +                               "Idx: %llu, Parts of handler(GUID: %pUL=
-) are missed, handler_addr %p, data_addr %p, param_addr %p",
-
-Please improve this diagnostic: 'are missed' is not very helpful.
-
-
-> > +                               cur_handler, &th->guid, th->handler_add=
-r,
-> > +                               (void *)th->static_data_buffer_addr, (v=
-oid *)th->acpi_param_buffer_addr);
-> >         } while (++cur_handler < tm->handler_count && (handler_info =3D=
- get_next_handler(handler_info)));
-> >
-> >         return 0;
-> > @@ -250,8 +261,16 @@ static acpi_status acpi_platformrt_space_handler(u=
-32 function,
-> >
-> >                 handler =3D find_prm_handler(&buffer->handler_guid);
-> >                 module =3D find_prm_module(&buffer->handler_guid);
-> > -               if (!handler || !module)
-> > -                       goto invalid_guid;
-> > +               if (!handler || !module) {
-> > +                       buffer->prm_status =3D PRM_HANDLER_GUID_NOT_FOU=
-ND;
-> > +                       return AE_OK;
-> > +               }
-> > +
-> > +               if (!handler->handler_addr || !handler->static_data_buf=
-fer_addr ||
-> > +                       !handler->acpi_param_buffer_addr) {
-> > +                       buffer->prm_status =3D PRM_HANDLER_ERROR;
-> > +                       return AE_OK;
-> > +               }
-> >
-> >                 ACPI_COPY_NAMESEG(context.signature, "PRMC");
-> >                 context.revision =3D 0x0;
-> > @@ -274,8 +293,10 @@ static acpi_status acpi_platformrt_space_handler(u=
-32 function,
-> >         case PRM_CMD_START_TRANSACTION:
-> >
-> >                 module =3D find_prm_module(&buffer->handler_guid);
-> > -               if (!module)
-> > -                       goto invalid_guid;
-> > +               if (!module) {
-> > +                       buffer->prm_status =3D PRM_HANDLER_GUID_NOT_FOU=
-ND;
-> > +                       return AE_OK;
-> > +               }
-
-What is the reason for this change, and the ones down below?
-
-> >
-> >                 if (module->updatable)
-> >                         module->updatable =3D false;
-> > @@ -286,8 +307,10 @@ static acpi_status acpi_platformrt_space_handler(u=
-32 function,
-> >         case PRM_CMD_END_TRANSACTION:
-> >
-> >                 module =3D find_prm_module(&buffer->handler_guid);
-> > -               if (!module)
-> > -                       goto invalid_guid;
-> > +               if (!module) {
-> > +                       buffer->prm_status =3D PRM_HANDLER_GUID_NOT_FOU=
-ND;
-> > +                       return AE_OK;
-> > +               }
-> >
-> >                 if (module->updatable)
-> >                         buffer->prm_status =3D UPDATE_UNLOCK_WITHOUT_LO=
-CK;
-> > @@ -302,10 +325,6 @@ static acpi_status acpi_platformrt_space_handler(u=
-32 function,
-> >         }
-> >
-> >         return AE_OK;
-> > -
-> > -invalid_guid:
-> > -       buffer->prm_status =3D PRM_HANDLER_GUID_NOT_FOUND;
-> > -       return AE_OK;
-> >  }
-> >
-> >  void __init init_prmt(void)
-> > --
-> > 2.43.0
-> >
-> >
->
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
