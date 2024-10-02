@@ -1,47 +1,47 @@
-Return-Path: <linux-efi+bounces-1872-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1873-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F391798CA09
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 02:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCC998CA65
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 03:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05A7028684D
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 00:31:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87E1028323E
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 01:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF018138E;
-	Wed,  2 Oct 2024 00:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C59110E9;
+	Wed,  2 Oct 2024 01:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PE6jT2YQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sho8SlHD"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DA1391;
-	Wed,  2 Oct 2024 00:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3758F54;
+	Wed,  2 Oct 2024 01:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727829061; cv=none; b=n7YY40wNmZNo1qzRTfXP3fAUTUwcIkSv4d2Q6uroihhvuqNYuWwdi3e6V54DfTSb8wFT53gO8w+pHIjrboAZFBBXgVEZJk+crc99sQYL0L9EKemr0h5GZjUzAeT0gSSGPV22DFPAMtsgOFWzabAApzVFpEoNK4zPPKSD10Kdx/E=
+	t=1727831434; cv=none; b=lUbyL6Dqe5HEZR9+h5sZ4IaDhkIbfiVlxsgjNKTTYFJdgL3n71CbTUeN/ZjEN3mm7gJjdlFVMGNO5LRJwFMe5d7+JDcNYz5YsN5KaP6LDcBBYl27q3fZiiVExiho64+uIMOHn4WZJTfywG5dgayJlJyH+vrvMyVGu0NDuqCEgYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727829061; c=relaxed/simple;
-	bh=BxPeAVwstxQ1ZJ84CwLHPEPKo/cBlSdPvkP8DRN5uK4=;
+	s=arc-20240116; t=1727831434; c=relaxed/simple;
+	bh=Q+WLhUfeuPYe+YwBIu9cv5kqenpZRo6iBvTiMFaMBnE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yu5GXPSQXvvWsoLSuCM/fjE6OMhFNxxZMd3IeedFAwJCX39oQ/+fh4I4E3dVzSXfngCIm135yPuq4dpnVabLUo7PddlycVc/IEHcvJS8rOURp8iPYaHsu3UM+R53+HpFA4GhAOO9rGQ1J2VT90gqq+6uKW7579Wlb+0/6aP5QWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PE6jT2YQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AB9C4CEC6;
-	Wed,  2 Oct 2024 00:30:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=C+8CFj8UDpdEQR3isgxLcFd/KKiZM0UooEYoaddD97Zm0lE38QZiInh1mVZcA1+k9NHeSpvx2XoLVRuT8a+i6kb16YQ4oovOm51jVJd0QGIy7EEQUuEl1lSjoqGB6D43luUEFy8UKhZBQgGwSvjVqYn9Wi3UhSSMz2vQXCFaYC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sho8SlHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB71C4CED1;
+	Wed,  2 Oct 2024 01:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727829060;
-	bh=BxPeAVwstxQ1ZJ84CwLHPEPKo/cBlSdPvkP8DRN5uK4=;
+	s=k20201202; t=1727831434;
+	bh=Q+WLhUfeuPYe+YwBIu9cv5kqenpZRo6iBvTiMFaMBnE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PE6jT2YQaZdkUbaGKw4pSJAdOvVjTXy11QHLRyTlXG4ovw5/38hAr9SuULf/Azdjs
-	 ZEZMC3d+UiHzdxC2HmPtaIrnp/QmtwnnkNe4vUlGZX173WkU2AJk7EapZo7InyliDQ
-	 /5JPC66Ocx4TgM4XcCPqSgwb1+Z2qoIdeymJW06Asr+tIjrYdu7tkJptccj/enfRfm
-	 adirRpJlVWytzCyl7F8egM9yzEJtv48Wjb0GJgHXPcsnn+adbjjRy6yOG4xHnuYlAG
-	 WCz2Y3nS6k6LeucH3EFARyU/b42JUEazEIqo0852TpuoZ/xPLmzrFD/E2smR7rprbK
-	 sYYXQrqnS86jA==
-Date: Tue, 1 Oct 2024 17:30:56 -0700
+	b=sho8SlHDgM9QtRx5x92MvTCntChyTYm4prV/iGFeeUhXypMRVp9ao4YLyziO/OZek
+	 BIk206znNNHzWafswtzL6KqNW+XKS31+lFmOqCA7TADRTloPec1aciIpBKE11gtLgX
+	 COfBMh3OW0gqIa8De5P3yoetb5enTe3owVTlmzOdlfqGk1SS8T4rvWjSm3QfaNM++N
+	 KClrmJJZDsR6b+WImVdynHaPKe8JuKd/f6twjLWXQS2UIVS9ydavPXiWFmQf8ebvjM
+	 KWMcHGZDcGjPuAxbHas6sN/9OHDhMIgy6q5tuJ6oLyO3/6KTuHAQ8v6kZx5kB3lgHZ
+	 wku2m6/5Top5g==
+Date: Tue, 1 Oct 2024 18:10:30 -0700
 From: Nathan Chancellor <nathan@kernel.org>
 To: Wentao Zhang <wentaoz5@illinois.edu>
 Cc: Matt.Kelly2@boeing.com, akpm@linux-foundation.org,
@@ -63,12 +63,11 @@ Cc: Matt.Kelly2@boeing.com, akpm@linux-foundation.org,
 	samitolvanen@google.com, samuel.sarkisian@boeing.com,
 	steven.h.vanderleest@boeing.com, tglx@linutronix.de,
 	tingxur@illinois.edu, tyxu@illinois.edu, x86@kernel.org
-Subject: Re: [PATCH v2 1/4] llvm-cov: add Clang's Source-based Code Coverage
- support
-Message-ID: <20241002003056.GA555609@thelio-3990X>
+Subject: Re: [PATCH v2 2/4] llvm-cov: add Clang's MC/DC support
+Message-ID: <20241002011030.GB555609@thelio-3990X>
 References: <20240824230641.385839-1-wentaoz5@illinois.edu>
  <20240905043245.1389509-1-wentaoz5@illinois.edu>
- <20240905043245.1389509-2-wentaoz5@illinois.edu>
+ <20240905043245.1389509-3-wentaoz5@illinois.edu>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -77,174 +76,129 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240905043245.1389509-2-wentaoz5@illinois.edu>
+In-Reply-To: <20240905043245.1389509-3-wentaoz5@illinois.edu>
 
 Hi Wentao,
 
-On Wed, Sep 04, 2024 at 11:32:42PM -0500, Wentao Zhang wrote:
-> Add infrastructure to support Clang's source-based code coverage [1]. This
-> includes debugfs entries for serializing profiles and resetting
-> counters/bitmaps.  Also adds coverage flags and kconfig options.
+On Wed, Sep 04, 2024 at 11:32:43PM -0500, Wentao Zhang wrote:
+> Add infrastructure to enable Clang's Modified Condition/Decision Coverage
+> (MC/DC) [1].
+> 
+> Clang has added MC/DC support as of its 18.1.0 release. MC/DC is a fine-
+> grained coverage metric required by many automotive and aviation industrial
+> standards for certifying mission-critical software [2].
+> 
+> In the following example from arch/x86/events/probe.c, llvm-cov gives the
+> MC/DC measurement for the compound logic decision at line 43.
+> 
+>    43|     12|			if (msr[bit].test && !msr[bit].test(bit, data))
+>   ------------------
+>   |---> MC/DC Decision Region (43:8) to (43:50)
+>   |
+>   |  Number of Conditions: 2
+>   |     Condition C1 --> (43:8)
+>   |     Condition C2 --> (43:25)
+>   |
+>   |  Executed MC/DC Test Vectors:
+>   |
+>   |     C1, C2    Result
+>   |  1 { T,  F  = F      }
+>   |  2 { T,  T  = T      }
+>   |
+>   |  C1-Pair: not covered
+>   |  C2-Pair: covered: (1,2)
+>   |  MC/DC Coverage for Decision: 50.00%
+>   |
+>   ------------------
+>    44|      5|				continue;
+> 
+> As the results suggest, during the span of measurement, only condition C2
+> (!msr[bit].test(bit, data)) is covered. That means C2 was evaluated to both
+> true and false, and in those test vectors C2 affected the decision outcome
+> independently. Therefore MC/DC for this decision is 1 out of 2 (50.00%).
 
-Some superficial comments below. My general understanding of
-implementing a standalone compiler-rt interface is not super deep, so I
-won't really comment on that code, but it seems generally fine to me.
-From a coding style perspective, everything seems reasonable, assuming
-it passes checkpatch.pl (I didn't check). The Kbuild bits look good as
-well, they match the gcov implementation.
+Thanks a lot for the detail in the commit message. Your first talk at
+LPC in the Refereed Track was excellent as well. If the video for that
+talk becomes available soon, it would be helpful to link that in the
+commit message as well.
 
-As most of my comments are more nits than anything else, feel free to
-carry this over:
+> As of Clang 19, users can determine the max number of conditions in a
+> decision to measure via option LLVM_COV_KERNEL_MCDC_MAX_CONDITIONS, which
+> controls -fmcdc-max-conditions flag of Clang cc1 [3]. Since MC/DC
+> implementation utilizes bitmaps to track the execution of test vectors,
+> more memory is consumed if larger decisions are getting counted. The
+
+Some of this could potentially be in the Kconfig text below as it seems
+relevant for users to make a decision on modifying its value.
+
+> maximum value supported by Clang is 32767. According to local experiments,
+> the working maximum for Linux kernel is 46, with the largest decisions in
+> kernel codebase (with 47 conditions, as of v6.11) excluded, otherwise the
+> kernel image size limit will be exceeded. The largest decisions in kernel
+> are contributed for example by macros checking CPUID.
+> 
+> Code exceeding LLVM_COV_KERNEL_MCDC_MAX_CONDITIONS will produce compiler
+> warnings.
+> 
+> As of LLVM 19, certain expressions are still not covered, and will produce
+> build warnings when they are encountered:
+> 
+> "[...] if a boolean expression is embedded in the nest of another boolean
+>  expression but separated by a non-logical operator, this is also not
+>  supported. For example, in x = (a && b && c && func(d && f)), the d && f
+>  case starts a new boolean expression that is separated from the other
+>  conditions by the operator func(). When this is encountered, a warning
+>  will be generated and the boolean expression will not be
+>  instrumented." [4]
+
+These two sets of warnings appear to be pretty noisy in my build
+testing... Is there any way to shut them up? Perhaps it is good for
+users to see these limitations but it basically makes the build output
+useless. If there were switches, then they could be disabled in the
+default case with a Kconfig option to turn them on if the user is
+concerned with seeing which parts of their code are not instrumented. I
+could see developers wanting to run this for writing tests and they
+might not care about this as much as someone else might.
+
+I did leave LLVM_COV_KERNEL_MCDC_MAX_CONDITIONS at its default value.
+Perhaps there is a more reasonable default that would result in less
+noisy build output but not run afoul of potential memory usage concerns?
+I assume that mention means that memory usage may be a concern for the
+type of deployments this technology would commonly be used with?
+
+> Link: https://en.wikipedia.org/wiki/Modified_condition%2Fdecision_coverage [1]
+> Link: https://digital-library.theiet.org/content/journals/10.1049/sej.1994.0025 [2]
+> Link: https://discourse.llvm.org/t/rfc-coverage-new-algorithm-and-file-format-for-mc-dc/76798 [3]
+> Link: https://clang.llvm.org/docs/SourceBasedCodeCoverage.html#mc-dc-instrumentation [4]
+
+Thank you for using this link format :)
+
+> Signed-off-by: Wentao Zhang <wentaoz5@illinois.edu>
+> Reviewed-by: Chuck Wolber <chuck.wolber@boeing.com>
+> Tested-by: Chuck Wolber <chuck.wolber@boeing.com>
+
+From an actual code perspective, this looks good to me.
 
 Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-> diff --git a/kernel/llvm-cov/Kconfig b/kernel/llvm-cov/Kconfig
-> new file mode 100644
-> index 000000000..9241fdfb0
-> --- /dev/null
-> +++ b/kernel/llvm-cov/Kconfig
-> @@ -0,0 +1,64 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +menu "Clang's source-based kernel coverage measurement (EXPERIMENTAL)"
-> +
-> +config ARCH_HAS_LLVM_COV
-> +	bool
-> +
-> +config ARCH_HAS_LLVM_COV_PROFILE_ALL
-> +	bool
+> diff --git a/Makefile b/Makefile
+> index 51498134c..1185b38d6 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -740,6 +740,12 @@ all: vmlinux
+>  CFLAGS_LLVM_COV := -fprofile-instr-generate -fcoverage-mapping
+>  export CFLAGS_LLVM_COV
+>  
+> +CFLAGS_LLVM_COV_MCDC := -fcoverage-mcdc
+> +ifdef CONFIG_LLVM_COV_KERNEL_MCDC_MAX_CONDITIONS
+> +CFLAGS_LLVM_COV_MCDC += -Xclang -fmcdc-max-conditions=$(CONFIG_LLVM_COV_KERNEL_MCDC_MAX_CONDITIONS)
 
-It might be worth mentioning somewhere in here what architectures need
-to do to implement this in their architectures. I can surmise from the
-x86 patches that it appears to just be excluding files from
-instrumentation that need to be free from it and adding the sections to
-their linker file but if there are any gotchas, documentation would help
-other architectures impelement this, since it seems pretty useful for
-development.
+Why is -Xclang needed here? Is this not a full frontend flag?
 
-> +config LLVM_COV_KERNEL
-> +	bool "Enable Clang's source-based kernel coverage measurement"
-> +	depends on DEBUG_FS
-> +	depends on ARCH_HAS_LLVM_COV
-> +	depends on CC_IS_CLANG && CLANG_VERSION >= 180000
-> +	default n
-
-Drop this, it is the default.
-
-> +	help
-> +	  This option enables Clang's Source-based Code Coverage.
+> +endif
+> +export CFLAGS_LLVM_COV_MCDC
 > +
-> +	  If unsure, say N.
-> +
-> +	  On a kernel compiled with this option, run your test suites, and
-> +	  download the raw profile from /sys/kernel/debug/llvm-cov/profraw.
-> +	  This file can then be converted into the indexed format with
-> +	  llvm-profdata and used to generate coverage reports with llvm-cov.
-> +
-> +	  Additionally specify CONFIG_LLVM_COV_PROFILE_ALL=y to get profiling
-> +	  data for the entire kernel. To enable profiling for specific files or
-> +	  directories, add a line similar to the following to the respective
-> +	  Makefile:
-> +
-> +	  For a single file (e.g. main.o):
-> +	          LLVM_COV_PROFILE_main.o := y
-> +
-> +	  For all files in one directory:
-> +	          LLVM_COV_PROFILE := y
-> +
-> +	  To exclude files from being profiled even when
-> +	  CONFIG_LLVM_COV_PROFILE_ALL is specified, use:
-> +
-> +	          LLVM_COV_PROFILE_main.o := n
-> +	  and:
-> +	          LLVM_COV_PROFILE := n
-> +
-> +	  Note that a kernel compiled with coverage flags will be significantly
-> +	  larger and run slower.
-> +
-> +	  Note that the debugfs filesystem has to be mounted to access the raw
-> +	  profile.
-> +
-> +config LLVM_COV_PROFILE_ALL
-> +	bool "Profile entire Kernel"
-> +	depends on !COMPILE_TEST
-> +	depends on LLVM_COV_KERNEL
-> +	depends on ARCH_HAS_LLVM_COV_PROFILE_ALL
-> +	default n
-
-Ditto as above.
-
-> +	help
-> +	  This options activates profiling for the entire kernel.
-> +
-> +	  If unsure, say N.
-> +
-> +	  Note that a kernel compiled with profiling flags will be significantly
-> +	  larger and run slower.
-> +
-> +endmenu
-> diff --git a/kernel/llvm-cov/Makefile b/kernel/llvm-cov/Makefile
-> new file mode 100644
-> index 000000000..f6a236562
-> --- /dev/null
-> +++ b/kernel/llvm-cov/Makefile
-> @@ -0,0 +1,5 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +GCOV_PROFILE		:= n
-
-Adding this seems to imply that GCOV and llvm-cov can be active at the
-same time and work together? Does that make sense? Are there things that
-GCOV can track that llvm-cov cannot? If any of the answers to those
-questions are no, would it make sense to make these mutually exclusive
-via Kconfig?
-
-> +LLVM_COV_PROFILE	:= n
-> +
-> +obj-y	+= fs.o
-...
-> diff --git a/kernel/llvm-cov/llvm-cov.h b/kernel/llvm-cov/llvm-cov.h
-> new file mode 100644
-> index 000000000..d9551a685
-> --- /dev/null
-> +++ b/kernel/llvm-cov/llvm-cov.h
-> @@ -0,0 +1,156 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2019	Sami Tolvanen <samitolvanen@google.com>, Google, Inc.
-> + * Copyright (C) 2024	Jinghao Jia   <jinghao7@illinois.edu>,   UIUC
-> + * Copyright (C) 2024	Wentao Zhang  <wentaoz5@illinois.edu>,   UIUC
-> + *
-> + * This software is licensed under the terms of the GNU General Public
-> + * License version 2, as published by the Free Software Foundation, and
-> + * may be copied, distributed, and modified under those terms.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-
-FWIW, I think you can drop this boilerplate text when you include the
-SPDX indentifier:
-
-"An alternative to boilerplate text is the use of Software Package Data
-Exchange (SPDX) license identifiers in each source file."
-
-https://www.kernel.org/doc/html/latest/process/license-rules.html
-
-> +#if defined(CONFIG_CC_IS_CLANG) && CONFIG_CLANG_VERSION >= 190000
-> +#define INSTR_PROF_RAW_VERSION		10
-> +#define INSTR_PROF_DATA_ALIGNMENT	8
-> +#define IPVK_LAST			2
-> +#elif defined(CONFIG_CC_IS_CLANG) && CONFIG_CLANG_VERSION >= 180000
-> +#define INSTR_PROF_RAW_VERSION		9
-> +#define INSTR_PROF_DATA_ALIGNMENT	8
-> +#define IPVK_LAST			1
-> +#endif
-
-It might be interesting to note the commit from LLVM 19 that introduced
-the need for this change and what happens when it is not updated so that
-any future breakage can be quickly addressed by people other than
-yourself.
-
-Cheers,
-Nathan
+>  CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
+>  ifdef CONFIG_CC_IS_GCC
+>  CFLAGS_GCOV	+= -fno-tree-loop-im
 
