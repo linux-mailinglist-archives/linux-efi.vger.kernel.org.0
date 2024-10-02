@@ -1,47 +1,47 @@
-Return-Path: <linux-efi+bounces-1875-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1876-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A57598CA98
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 03:19:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B856A98CC38
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 06:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA6671C22438
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 01:19:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63DCD283776
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Oct 2024 04:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98955138E;
-	Wed,  2 Oct 2024 01:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E54179A8;
+	Wed,  2 Oct 2024 04:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qZrB0rAt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEkKxegf"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622BA567D;
-	Wed,  2 Oct 2024 01:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453EC11187;
+	Wed,  2 Oct 2024 04:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727831942; cv=none; b=PXuxc6+3eRkCcLtxnBN0a8ZU2p0nBEqxHANnim4GREVBnvNr34pwOrUm+s9acoJhxjx3sYQd23m+b8JiNA4ecSxCjSQ4xdDXSAn4Gs4hNqxo+eMavB4UqkWDhCnfZOBen45XsQtf5jrEQ2seM4dQUIHHlmOG41lWaAd4CXyCF6k=
+	t=1727844832; cv=none; b=nqioNcvCzatyIGqCGChqycNpkyOdH4LQY4mAST6gZsWbyAnDdiGAs5JeH75FWg/H2BuoZyrQaKub7Mp27Uv1+g08OLsatM03VEyicA5ylBbMX5gbGFiL6UF6rbkGC6DdROarjsIj0hHoxWWo4BCDqu30ha4rN+BlXPgE9cv5U+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727831942; c=relaxed/simple;
-	bh=z31U8u7Saetd9Yh86iw2djS1AiJmkXhk8gUFFgbOklo=;
+	s=arc-20240116; t=1727844832; c=relaxed/simple;
+	bh=B2ZAQKodtjVu7cBwU2oU+uI8JVPYDT8FSzV0LYMamag=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8hFMhXcEo5lddmBUCiKG4ZNUmhjIhZggC3nC2sE2GkkZCLfg8N59VN7tVWWdC8dEQvoByIego8uG17orPcMByJXe8tsa3WbuCHgTPDDxNP3hgNDltKoAIE1fYq14UX9HO+9vNjXedzkYJqjgSu04+0FVRvUUI6L3i5Thclstb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qZrB0rAt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9690BC4CEC6;
-	Wed,  2 Oct 2024 01:18:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=V6y8he0t4VGMI2so2t1iMOKkO0dfm5gQ5DLjmxm1hILqwm+wUWDcYGhlfiN0W1hFJoSPEVH96mNJPCbo2O0eXq94N3mxFhkKJdF2pVIhKg5MhzZCi0vW2YcX1VFMLydjIluhp4LmgHlk1Oh+X7LUFTs1XlI+uEK4vl1XduCNzk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEkKxegf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31909C4CEC5;
+	Wed,  2 Oct 2024 04:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727831942;
-	bh=z31U8u7Saetd9Yh86iw2djS1AiJmkXhk8gUFFgbOklo=;
+	s=k20201202; t=1727844831;
+	bh=B2ZAQKodtjVu7cBwU2oU+uI8JVPYDT8FSzV0LYMamag=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qZrB0rAteuEIVVZH0mMb3PsniT3C5p5hMCdpGmD1l63d1VJnq+tHzzVGhZt+LE48c
-	 tgkULQ4U/nNcebkdhObCHGtO2MnETeQzx1mfkN66t+tFejs9SN0NaQXejFMSLZc5XR
-	 hFMq07gRUIIN1ZUveDzNKEf8w6849Bse3NZngil87XKkl02Izr5BWVkXnJHXlaLuyP
-	 tdWFgqLtz5h5R94CQfiNVfT3cbHtpDi3trI9QkfOTJrGItQ5ocTmOoU1/8JQf6ynRn
-	 gJC01fd6253tQcb0lF2Ge+R5u1VCC24QeB+8S99cpPoR6OopmwS6zE8IoLKVU7LS7k
-	 vDcfFB7h2gD3A==
-Date: Tue, 1 Oct 2024 18:18:58 -0700
+	b=CEkKxegfpkX4Zw2CaHm5skQNLmPRJhWvRWrfwNVlh+TFSz9BPuRZdgUJT+gZ23vFJ
+	 IxhXfrAdi/5Tzs2K9tvjU3gGZB7VVKI4WK6iDn0vYP8Or/TvoXD3w3WnjkCdL7pIqo
+	 yAvyTAGmv5OmjrtPe8R7vrLNoxKPxUOfc15RGQ+nZr1J+I99IYLiEMGzK5HchaL0Rb
+	 fCgXSnWAkdoQPpNtPUVza5lz7aLWm5cSFY86HH4WWW1emta+IbTxS2QRhxf7N54ops
+	 vKi+l2ymUNL9BK54SZfzJOyLLVNlGP4C8ThAbAA+5rGKWDt7DLBpJn9rzmHQgg9i3o
+	 dEWzEr1A+63LQ==
+Date: Tue, 1 Oct 2024 21:53:47 -0700
 From: Nathan Chancellor <nathan@kernel.org>
 To: Wentao Zhang <wentaoz5@illinois.edu>
 Cc: Matt.Kelly2@boeing.com, akpm@linux-foundation.org,
@@ -63,11 +63,11 @@ Cc: Matt.Kelly2@boeing.com, akpm@linux-foundation.org,
 	samitolvanen@google.com, samuel.sarkisian@boeing.com,
 	steven.h.vanderleest@boeing.com, tglx@linutronix.de,
 	tingxur@illinois.edu, tyxu@illinois.edu, x86@kernel.org
-Subject: Re: [PATCH v2 4/4] x86: enable llvm-cov support
-Message-ID: <20241002011858.GD555609@thelio-3990X>
+Subject: Re: [PATCH v2 0/4] Enable measuring the kernel's Source-based Code
+ Coverage and MC/DC with Clang
+Message-ID: <20241002045347.GE555609@thelio-3990X>
 References: <20240824230641.385839-1-wentaoz5@illinois.edu>
  <20240905043245.1389509-1-wentaoz5@illinois.edu>
- <20240905043245.1389509-5-wentaoz5@illinois.edu>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -76,54 +76,44 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240905043245.1389509-5-wentaoz5@illinois.edu>
+In-Reply-To: <20240905043245.1389509-1-wentaoz5@illinois.edu>
 
-On Wed, Sep 04, 2024 at 11:32:45PM -0500, Wentao Zhang wrote:
-> Set ARCH_HAS_* options to "y" in kconfig and include section description in
+Hi Wentao,
 
-Is description the right word here? Maybe "include the compiler generated
-sections"? Open to other suggestions.
+I took this series for a spin on next-20241001 with LLVM 19.1.0 using a
+distribution configuration tailored for a local development VM using
+QEMU. You'll notice on the rebase for 6.12-rc1 but there is a small
+conflict in kernel/Makefile due to commit 0e8b67982b48 ("mm: move
+kernel/numa.c to mm/").
 
-> linker script.
-> 
-> Signed-off-by: Wentao Zhang <wentaoz5@illinois.edu>
-> Reviewed-by: Chuck Wolber <chuck.wolber@boeing.com>
-> Tested-by: Chuck Wolber <chuck.wolber@boeing.com>
+I initially did the build on one of my test machines which has 16
+threads with 32GB of RAM and ld.lld got killed while linking vmlinux.o.
+Is your comment in the MC/DC patch "more memory is consumed if larger
+decisions are getting counted" relevant here or is that talking about
+runtime memory on the target device? I assume the latter but I figured I
+would make sure. If not, it might be worth a comment somewhere that this
+can also require some heftier build resources possibly? If that is not
+expected, I am happy to help look into why it is happening.
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+I was able to successfully build that same configuration and setup with
+my primary workstation, which is much beefier. Unfortunately, the
+resulting kernel did not boot with my usual VM testing setup. I will see
+if I can narrow down a particular configuration option that causes this
+tomorrow because I did a test with defconfig +
+CONFIG_LLVM_COV_PROFILE_ALL and it booted fine. Perhaps some other
+option that is not compatible with this? I'll follow up with more
+information as I have it.
 
-> ---
->  arch/x86/Kconfig              | 2 ++
->  arch/x86/kernel/vmlinux.lds.S | 2 ++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 007bab9f2..e0a8f7b42 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -85,6 +85,8 @@ config X86
->  	select ARCH_HAS_FORTIFY_SOURCE
->  	select ARCH_HAS_GCOV_PROFILE_ALL
->  	select ARCH_HAS_KCOV			if X86_64
-> +	select ARCH_HAS_LLVM_COV		if X86_64
-> +	select ARCH_HAS_LLVM_COV_PROFILE_ALL	if X86_64
->  	select ARCH_HAS_KERNEL_FPU_SUPPORT
->  	select ARCH_HAS_MEM_ENCRYPT
->  	select ARCH_HAS_MEMBARRIER_SYNC_CORE
-> diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-> index 6e73403e8..904337722 100644
-> --- a/arch/x86/kernel/vmlinux.lds.S
-> +++ b/arch/x86/kernel/vmlinux.lds.S
-> @@ -191,6 +191,8 @@ SECTIONS
->  
->  	BUG_TABLE
->  
-> +	LLVM_COV_DATA
-> +
->  	ORC_UNWIND_TABLE
->  
->  	. = ALIGN(PAGE_SIZE);
-> -- 
-> 2.45.2
-> 
+On the integration front, I think the -mm tree, run by Andrew Morton,
+would probably be the best place to land this with Acks from the -tip
+folks for the x86 bits? Once the issue above has been understood, I
+think you can send v3 with any of the comments I made addressed and a
+potential fix for the above issue if necessary directly to him, instead
+of just on cc, so that it gets his attention. Other maintainers are free
+to argue that it should go through their trees instead but I think it
+would be good to decide on that sooner rather than later so this
+patchset is not stuck in limbo.
+
+Cheers,
+Nathan
 
