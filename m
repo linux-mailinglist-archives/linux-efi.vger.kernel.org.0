@@ -1,89 +1,79 @@
-Return-Path: <linux-efi+bounces-1905-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1906-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCD599006A
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Oct 2024 12:02:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BE69903A7
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Oct 2024 15:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC9A91C238C6
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Oct 2024 10:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7CE31C21D6D
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Oct 2024 13:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6C0149C7B;
-	Fri,  4 Oct 2024 10:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B83E210188;
+	Fri,  4 Oct 2024 13:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UNjlsAZz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kjjnc/L9"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A3A146A72;
-	Fri,  4 Oct 2024 10:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0FD33D5;
+	Fri,  4 Oct 2024 13:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728036114; cv=none; b=LVvx6h1A1Y7dnQnqjZIF+G5vg/Lzcd8juilIXmmjWPy80WEUd1c4VZKbj11i/OpmdJtIdFL2cCsrlMSXw8Vvi7WWc3+3jH8MGKB8/qEnPtI6+82C0MsPGUA4OE95YG3rvr4JD9vLBvlwBuPGgME0vjqI6Pzl7W8wNrjW3lM5zrY=
+	t=1728047737; cv=none; b=d9DT47shIa10mgdOzP7sht/xD87J/ufz2CffKYROPQt2ndY1t8yyk65uoxHtIchvcC14WQfGctnnhLrtWZ1jhcJ+/CI0nmW1n5RxnLHmlm5ZyHdfJ7vHcqyvLagyxdkNG4DLXA1/WsMZ7XiiWzpdVxE9uJ3tDnbThUp8OvbFKtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728036114; c=relaxed/simple;
-	bh=nuE9Wx0dXnlPfKn5kpp9tKPB9VOjIJcG2joICPhGO2k=;
+	s=arc-20240116; t=1728047737; c=relaxed/simple;
+	bh=1JZwYefyhSOCZB3CuZertgMGY1R4ZnxNXU0IyQGN6qM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dxuDaNkUWZeLGBipsBdeCkhm6Mej4WktzAc6c+HhnzgApFvpstkfBdjGFYWORpjLDzEffawWbJCZRYBNRWCv74pTI1h5Rqt+euN4zAwby+phc3yR/CLWG7Qtx70Afr6RhBKhxBQJWvruta4wuVkbmdtE/aorvMxTZU3ee0e7v84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UNjlsAZz; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2faccada15bso20055361fa.3;
-        Fri, 04 Oct 2024 03:01:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728036111; x=1728640911; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cieeCIQbn3uKGp6ANoCcdjT0voB4iLaxe9sLqJZ6O1w=;
-        b=UNjlsAZz7sXdg9PcAuShFuTpjC5GIO3G7ZtoMn/gCYPFhFP6szeN6CMksFj2Mz7CX9
-         25E2h7rpMX8Yy7FK0nJlHpqOfNHH7OsiuX5yXdjLrS3BUNUDTsmagyFzmyayhb0/KvuM
-         bXHYcRlukQ3AwkuhIt2hoOKF+IwgXkmX0A73CKaCZ2sHUApI0UffEZuwngDk9UIBElEb
-         Z28/ABXaoxNiF0Pg8YwjQdTYrw4aEr/VmzBY47CwdQvVwvp5GEYM0H/TsPONY4+RZcSA
-         gKWMDhlSUAOt8oP72N2S0dQPs15n3DPYf59+4hc/TD7AWGtzQDgTVCkWio0vUxK5tZWj
-         t0Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728036111; x=1728640911;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cieeCIQbn3uKGp6ANoCcdjT0voB4iLaxe9sLqJZ6O1w=;
-        b=GDf7o7thQUd4t/9w7KIlh1KmxPFRcaD6uklICZwdEnHm3/yndanZx3Sw6CQDASJIqf
-         7Z/tWYi9XvQ1pPcPwdKsGePmpQMXPAJskAy0pIaO7QzY2jCvxS1lQDt9U3ZC6+Pgns35
-         zBjg+kEKzUnUvyzQprtsVQXayLLjdx8HBVQrf8aVDxAx7ZaXX4pgZdBC5eN19GeUNb9y
-         FicRdcNpsZnEJEUCXEZuJkQAWPM28TCJDktw3KxFzJYySBj7tBT8vquP+we/aoHNhnxz
-         Bwr2+gY8+thv6rmh5RTYzDp/FRWy6E1ULpVMMEvzzbd54K9cfIC4hfTCwNXa9+Ic4ox9
-         U/4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU84yheG384U6F9uEf227dUGedLNtPKxD4sgwOjafNm4coPN0Vay10n5gQR2dDuY02UR+4=@vger.kernel.org, AJvYcCU8MaO+7GOuKN1euj5QwNyqnAlWjxFkdgspotEa/YpNXFgneBOA8LxcBLa5JuLr7PUafSuw+2LftcL5evfc@vger.kernel.org, AJvYcCUqAT0d+M8dC+FDiTd8RL09YjbHdGtfjkGALZPRLcAi00ATgc4fG/Vsxz5ZVPRrkht6fzsOWLfeU+o=@vger.kernel.org, AJvYcCVYedjxx8giapV3RYq3wRyoRTRyTIK/WIi9aukN/dyXpxKlsR/fKgZUYDcAyl9lPvxLssjlQexNvHAJFCHIIkc=@vger.kernel.org, AJvYcCWOi9kaT7Qj8ZkFH74IawTmk3VlIHs2choKSxkvObE30vTwMvnp8rUKU96oCkQztuH5O+tRLB+hZ9YnGFt0@vger.kernel.org, AJvYcCWQ+cGSwMhisD7ZFcXR5KHuZeAz8DXcw5QHYvaxaozvNNQhoaTNio27cKMrPKjDqsp3TJLOnbybNbv0@vger.kernel.org, AJvYcCX5hZ5Sa0eVKmquPw9TYFXfnx1MkqK75toj5gz6jTR31v0LmacNgJePNN4j4Ga5OgukOW8XrbPOY/6euYKVuHc7EQ==@vger.kernel.org, AJvYcCXoInKUyj9p/A+snT8qzUOE+x0AOGHl07pMAmUBFhJdxABlIDAOZdLAf4Eq9eFjMN0FlOZsUJwJGJQI@vger.kernel.org, AJvYcCXpqKwrQdjWjD1Pij3zUecNM9k0oYVOsRU7bieE4++E+Yjw7GkQgkSTZzwstI21foPmU8hWSadWw1F0uw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8f8ucLTA9BwO78upx78NfYlu5K7z1qJt1N7ESvd8czW9KXuNd
-	TDOdMP7qL6FxQfSbBTtNH+P34Xsf/LD6fy65nBPt7yLsxcGhLSB4T72dIaRjHTGKEf6ftknGjaz
-	QLSBrX/ROQ2TLf5jYRsSc3atwJCo=
-X-Google-Smtp-Source: AGHT+IFNljN6dwZlkogrdacVOY8k+lgMnJISEE8yVKjz9PNhP8aN8ZuhCudCHYoRMsLr1EPgwfyfZf3qjEWBYLSi1O4=
-X-Received: by 2002:a2e:b889:0:b0:2ef:20ae:d113 with SMTP id
- 38308e7fff4ca-2faf3d8a95emr9412991fa.40.1728036110938; Fri, 04 Oct 2024
- 03:01:50 -0700 (PDT)
+	 To:Cc:Content-Type; b=FlgaPWhJ+EOxi1ZQc3ajSdI5kBpOAuwHU4/d0jOy2WK63DXND8085wBbMLqOEhRwllPAyrD60ssL8NqnMcMxSIRPtI390w+HDBYQdQvdhu99zZozOOPrNHB9bvHZvzBXnWMtkyVTASefFQ6kSJrzjqWiZWEr8c0DruvIhJ1f7mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kjjnc/L9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8116C4CEC7;
+	Fri,  4 Oct 2024 13:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728047736;
+	bh=1JZwYefyhSOCZB3CuZertgMGY1R4ZnxNXU0IyQGN6qM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Kjjnc/L90TMtexTjGYxAYy1SQ1QLyKkvF/CbvX4DRZe3QZLNjgmA043In5Mn3i/rw
+	 6B5X+WF05mnRkF5MPsreCu1/RWhlYy0+kTzNNOgDa8rsLpPqegA7XxXK7Rhx0nUxa6
+	 IBkZJ2pdiTlc6pHGbh4RfTk0ZTnhtJZsbARiZlcRcR6BaSSw9ooGopO2oN7M88zaKP
+	 i9ZukewwH6dgft/J+7smkC7XLiCKWNYuCiKQdA/fHzzcPvpm6QIq/WKqZBvWKoD11P
+	 SHCZ55g+iyuo9/ex9afVt1+UpR3QIha2xI0NPLiyaKR+gtHkWFsHfMyaquC5SiCFd1
+	 mpOvPGs/3yVlw==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539983beb19so2824507e87.3;
+        Fri, 04 Oct 2024 06:15:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU+38R09j1hQxllWs0EaTrFh1t2MRF8v0dzcOegKbfaiS5alnA6Rjl00TvgfJBZhTuhQYhmcALOH+cVNDXP@vger.kernel.org, AJvYcCULDnRsmKZmGZZ98TwuF1ZH4+GH7Fr530imtFW9lxbETVqJVXZfU65rPPvDlmojIxNvhVcVdFKYkLvoQKojN1s=@vger.kernel.org, AJvYcCUVTF6W9Sbppy6KFSyHwLvooq67LPP5VL802W4CWiAe7IpDMTY6khkzpo7hGsWxMvwFstIz5DO0q5KIahrn@vger.kernel.org, AJvYcCV91q/sGry1hbxKADzHDs0ju/SACiuwk/yFnHXON8Sb0iW9D5RNGxPFtCuSBgKe3pXkmkRh4WRAhxiRcOjz@vger.kernel.org, AJvYcCVVVpSpkuylnUz66AK6tJcyw4LZB2j74FsXSFsP0DqiHVPWk5fLLwyai5rqa4y17bBqWT4cJHG5vKMj+jMXhkLiSg==@vger.kernel.org, AJvYcCWA2gfASVi9frLe93G6t17nR1yShVtHaTnLCkoVFhtMIjQ5GeUHLYmbOeTOkZumD6zxFAnLKKMrieJQ@vger.kernel.org, AJvYcCWFdmrYIxjlAVrycNuUVzUwiS2ehdmzsxQi5FyJdWnVQlacT2uPeomp2Rj39SXjQvFEJI54ElEmzJRZ@vger.kernel.org, AJvYcCWtd9b6skN2pLy2u9KwqX+NKHfaGn0v4Eo1OIzGas8ESpGURmF32XiV/9LlvVt1ROFCivAcoJZkyJU=@vger.kernel.org, AJvYcCXKOkcGvbcFlTu4Hf/DZIPOnRvbIM9GbnXAqdnXQ5I5efT3uUdsXrog/lxFo5cNHWM2sZtyCkhdBINWFA==@vger.kernel.org, AJvYcCXrnVncpaUX
+ YrLcbTnyhKaiVGFWHwnAFNkCOaIqEWUE9xcl3y/O9QfJdzbzJLPzS8sXceg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI7+FGOM+QMg4bA9wtb9EgMm5mg3L7T78RlRBywebeG3xWaWEe
+	xwsBzJ8fB6aGyarypEtg6a+7SG31yiREjBfrIsOIqHnNPvJniclUQgEP7RblozXftN1YC0//0MZ
+	a5IzbyggY1NuLWKORTrUOKMOkzQ8=
+X-Google-Smtp-Source: AGHT+IEuHrt3V5yx40A/FQDIn91vq5WH5zeRnx8eS4s+O/De09fFFzzyl2W2oN2bUPJ3C1JSY+Ea24ADde6nXP4PqRA=
+X-Received: by 2002:a05:6512:3096:b0:539:a2e0:4e75 with SMTP id
+ 2adb3069b0e04-539ab8662d1mr1636973e87.14.1728047734917; Fri, 04 Oct 2024
+ 06:15:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925150059.3955569-30-ardb+git@google.com> <20240925150059.3955569-35-ardb+git@google.com>
-In-Reply-To: <20240925150059.3955569-35-ardb+git@google.com>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Fri, 4 Oct 2024 12:01:39 +0200
-Message-ID: <CAFULd4an+aN4iJ7T0DdMQDOBWrTZPJ4Oyy9ULm6R29fLNQND9Q@mail.gmail.com>
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-35-ardb+git@google.com> <CAFULd4ZNwfPZO-yDjrtT2ANV509HeeYgR80b9AFachaVW5zqrg@mail.gmail.com>
+ <CAMzpN2j4uj=mhdi7QHaA7y_NLtaHuRpnit38quK6RjvxdUYQew@mail.gmail.com>
+In-Reply-To: <CAMzpN2j4uj=mhdi7QHaA7y_NLtaHuRpnit38quK6RjvxdUYQew@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 4 Oct 2024 15:15:22 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF3_Hj9j2f_cBtwTFWvEmB0UoEs_cGkRiWc4AErDx0ftQ@mail.gmail.com>
+Message-ID: <CAMj1kXF3_Hj9j2f_cBtwTFWvEmB0UoEs_cGkRiWc4AErDx0ftQ@mail.gmail.com>
 Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+To: Brian Gerst <brgerst@gmail.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
 	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
 	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
@@ -99,51 +89,61 @@ Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, x86@kernel.o
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 25, 2024 at 5:02=E2=80=AFPM Ard Biesheuvel <ardb+git@google.com=
-> wrote:
+On Sat, 28 Sept 2024 at 15:41, Brian Gerst <brgerst@gmail.com> wrote:
 >
-> From: Ard Biesheuvel <ardb@kernel.org>
+> On Wed, Sep 25, 2024 at 2:33=E2=80=AFPM Uros Bizjak <ubizjak@gmail.com> w=
+rote:
+> >
+> > On Wed, Sep 25, 2024 at 5:02=E2=80=AFPM Ard Biesheuvel <ardb+git@google=
+.com> wrote:
+> > >
+> > > From: Ard Biesheuvel <ardb@kernel.org>
+> > >
+> > > Specify the guard symbol for the stack cookie explicitly, rather than
+> > > positioning it exactly 40 bytes into the per-CPU area. Doing so remov=
+es
+> > > the need for the per-CPU region to be absolute rather than relative t=
+o
+> > > the placement of the per-CPU template region in the kernel image, and
+> > > this allows the special handling for absolute per-CPU symbols to be
+> > > removed entirely.
+> > >
+> > > This is a worthwhile cleanup in itself, but it is also a prerequisite
+> > > for PIE codegen and PIE linking, which can replace our bespoke and
+> > > rather clunky runtime relocation handling.
+> >
+> > I would like to point out a series that converted the stack protector
+> > guard symbol to a normal percpu variable [1], so there was no need to
+> > assume anything about the location of the guard symbol.
+> >
+> > [1] "[PATCH v4 00/16] x86-64: Stack protector and percpu improvements"
+> > https://lore.kernel.org/lkml/20240322165233.71698-1-brgerst@gmail.com/
+> >
+> > Uros.
 >
-> Specify the guard symbol for the stack cookie explicitly, rather than
-> positioning it exactly 40 bytes into the per-CPU area. Doing so removes
-> the need for the per-CPU region to be absolute rather than relative to
-> the placement of the per-CPU template region in the kernel image, and
-> this allows the special handling for absolute per-CPU symbols to be
-> removed entirely.
+> I plan on resubmitting that series sometime after the 6.12 merge
+> window closes.  As I recall from the last version, it was decided to
+> wait until after the next LTS release to raise the minimum GCC version
+> to 8.1 and avoid the need to be compatible with the old stack
+> protector layout.
 >
-> This is a worthwhile cleanup in itself, but it is also a prerequisite
-> for PIE codegen and PIE linking, which can replace our bespoke and
-> rather clunky runtime relocation handling.
->
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/x86/Makefile                     |  4 ++++
->  arch/x86/include/asm/init.h           |  2 +-
->  arch/x86/include/asm/processor.h      | 11 +++--------
->  arch/x86/include/asm/stackprotector.h |  4 ----
->  tools/perf/util/annotate.c            |  4 ++--
->  5 files changed, 10 insertions(+), 15 deletions(-)
->
-> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-> index 6b3fe6e2aadd..b78b7623a4a9 100644
-> --- a/arch/x86/Makefile
-> +++ b/arch/x86/Makefile
-> @@ -193,6 +193,10 @@ else
->          KBUILD_RUSTFLAGS +=3D -Cno-redzone=3Dy
->          KBUILD_RUSTFLAGS +=3D -Ccode-model=3Dkernel
->
-> +        ifeq ($(CONFIG_STACKPROTECTOR),y)
-> +                KBUILD_CFLAGS +=3D -mstack-protector-guard-symbol=3Dfixe=
-d_percpu_data
 
-Looking at:
+Hi Brian,
 
-> +        * Since the irq_stack is the object at %gs:0, the bottom 8 bytes=
- of
-> +        * the irq stack are reserved for the canary.
+I'd be more than happy to compare notes on that - I wasn't aware of
+your intentions here, or I would have reached out before sending this
+RFC.
 
-Please note that %gs:0 can also be achieved with
--mstack-protector-guard-offset=3D0
+There are two things that you would need to address for Clang support
+to work correctly:
+- the workaround I cc'ed you on the other day [0],
+- a workaround for the module loader so it tolerates the GOTPCRELX
+relocations that Clang emits [1]
 
-Uros.
+
+
+[0] https://lore.kernel.org/all/20241002092534.3163838-2-ardb+git@google.co=
+m/
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?=
+id=3Da18121aabbdd
 
