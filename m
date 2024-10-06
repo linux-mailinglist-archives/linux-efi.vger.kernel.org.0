@@ -1,127 +1,137 @@
-Return-Path: <linux-efi+bounces-1915-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1916-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECE6992033
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Oct 2024 20:01:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA1799209E
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Oct 2024 21:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF9261C21762
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Oct 2024 18:01:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D46CB20B8E
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Oct 2024 19:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEA118A933;
-	Sun,  6 Oct 2024 18:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B21E18991E;
+	Sun,  6 Oct 2024 19:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nqJZAGjG"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC629189BB3
-	for <linux-efi@vger.kernel.org>; Sun,  6 Oct 2024 18:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB2154C08;
+	Sun,  6 Oct 2024 19:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728237676; cv=none; b=UBf/YapzNmG+im4o+nYhVDce+oxIKf5nakZfdSmDbB5xFgLsyIAnVw9mQ7yX0a0PBiOHeRwWaJt66Hqoq8YVrHY8NW/3Rhq+MNu0Gkxo9jZJnb4DCdRDoQpaVBxafNxTPUq6v+MycrGQi0BQiUAnUj2PNT1qED3Dl+Tc5GKs270=
+	t=1728242276; cv=none; b=X4y1XklkJQ1AO/GduMJsSpM+e6bc+mrNDskKhdjv7U9NM+ZIM7525ickjTSvRa/jluZN7Xe5lZxCJQCwyMjSUkNjm+KW31W2RcycSZi9KfYLH+V2lZmuYryaZ0I9gU3oaGMc/99h1D4pqQjSXaO9xuqDkVX2EHBdrgY8RvwOBvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728237676; c=relaxed/simple;
-	bh=FkhNFIIFvw1W8y+fSpzP+oy4ku0OcIzn7m22e7sZu8I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=CVCpWflFQPAMT/ruWeZB0Dz+XkDjB4qfrCMYvOdvNqgu/lOPQrilBisl+hkUM5ihbMXg9mhWMehkCOGe7slLalILXCQNLdmmfMI8WbeBzsQXtcV3hi1RyF6dLawtHOsvd9xZDTPIe4XkZk2UKo4IKXTghuopN0X1mZazEoq5GFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-241-ir4EC8PtM6i_SZDW15CpKA-1; Sun, 06 Oct 2024 19:01:03 +0100
-X-MC-Unique: ir4EC8PtM6i_SZDW15CpKA-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sun, 6 Oct
- 2024 19:00:09 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Sun, 6 Oct 2024 19:00:09 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Uros Bizjak' <ubizjak@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>
-CC: Ard Biesheuvel <ardb@kernel.org>, Linus Torvalds
-	<torvalds@linux-foundation.org>, Ard Biesheuvel <ardb+git@google.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>, Andy Lutomirski <luto@kernel.org>, "Peter
- Zijlstra" <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo
-	<tj@kernel.org>, Christoph Lameter <cl@linux.com>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	"Vitaly Kuznetsov" <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>,
-	"Boris Ostrovsky" <boris.ostrovsky@oracle.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada
-	<masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, Nathan Chancellor
-	<nathan@kernel.org>, Keith Packard <keithp@keithp.com>, Justin Stitt
-	<justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, "Arnaldo
- Carvalho de Melo" <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
-	"Jiri Olsa" <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian
- Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "xen-devel@lists.xenproject.org"
-	<xen-devel@lists.xenproject.org>, "linux-efi@vger.kernel.org"
-	<linux-efi@vger.kernel.org>, "linux-arch@vger.kernel.org"
-	<linux-arch@vger.kernel.org>, "linux-sparse@vger.kernel.org"
-	<linux-sparse@vger.kernel.org>, "linux-kbuild@vger.kernel.org"
-	<linux-kbuild@vger.kernel.org>, "linux-perf-users@vger.kernel.org"
-	<linux-perf-users@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>, "llvm@lists.linux.dev"
-	<llvm@lists.linux.dev>
-Subject: RE: [RFC PATCH 25/28] x86: Use PIE codegen for the core kernel
-Thread-Topic: [RFC PATCH 25/28] x86: Use PIE codegen for the core kernel
-Thread-Index: AQHbF8Wqw+hKPqg6T0aWZJZtJXxJh7J5/LJw
-Date: Sun, 6 Oct 2024 18:00:09 +0000
-Message-ID: <bfa1a86c3e4348159049e8277e9859dd@AcuMS.aculab.com>
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-55-ardb+git@google.com>
- <99446363-152f-43a8-8b74-26f0d883a364@zytor.com>
- <CAMj1kXG7ZELM8D7Ft3H+dD5BHqENjY9eQ9kzsq2FzTgP5+2W3A@mail.gmail.com>
- <CAHk-=wj0HG2M1JgoN-zdCwFSW=N7j5iMB0RR90aftTS3oqwKTg@mail.gmail.com>
- <CAMj1kXEU5RU0i11zqD0433_LMMyNQH2gCoSkU7GeXmaRXGF1Yw@mail.gmail.com>
- <5c7490bb-aa74-427b-849e-c28c343b7409@zytor.com>
- <CAFULd4Yj9LfTnWFu=c1M7Eh44+XFk0ibwL57r5H7wZjvKZ8yaA@mail.gmail.com>
- <3bbb85ae-8ba5-4777-999f-d20705c386e7@zytor.com>
- <CAFULd4b==a7H0zdGVfABntL0efrS-F3eeHGu-63oyz1eh1DwXQ@mail.gmail.com>
-In-Reply-To: <CAFULd4b==a7H0zdGVfABntL0efrS-F3eeHGu-63oyz1eh1DwXQ@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1728242276; c=relaxed/simple;
+	bh=tbSrHUSflgwuD4ZHPRPJ5BZRTLC2CQwiCglTSKbl7rw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f1cK9hNjyECDEz7JV4Oh697bXVyFU64nq4KwverqiNQCxy5m2CqNOlCyha2H/edosyVir8fz9F61BztWlHzR+Gar/nraYJ77sTANv3ULzefpC8NGr7q3iR30HmVvRS4jEyI9IbKtX70PE8jo+j9GN4mcWhVW9tYNXducxGF6FL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nqJZAGjG; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2facf48166bso42281771fa.0;
+        Sun, 06 Oct 2024 12:17:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728242272; x=1728847072; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tbSrHUSflgwuD4ZHPRPJ5BZRTLC2CQwiCglTSKbl7rw=;
+        b=nqJZAGjGx4QcYHx6vtJxdlCgaOAcMSe2jDOuWHn7czwwT+rukTwbEcCBdrZb+MDYce
+         El3eWXMD1/08x4k1Od9IUZ8oK/RcGIGZ5QNKthpSkza3lqahfX8I1sZv74tt3hDwPEd4
+         4EQiBqEUsf/rVh2JRXzPTYkpewLwya6FRpgs+LbeZsJhPilczYHE6xl1/RH6YK85JYcH
+         kDC4aQ2I6g6oSMm4fauCGs/0fGwbb1Jg6yANtaSTpoRTVeClRvmY7vu1dtQqukRlCNzc
+         fpbpoWPuQadmUKa3TlzIYdrBBTbg/4gvWFCjZMMy02t+j9l6vmEO1OydmyTHSAPXzvpa
+         H0QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728242272; x=1728847072;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tbSrHUSflgwuD4ZHPRPJ5BZRTLC2CQwiCglTSKbl7rw=;
+        b=GzRMpVNBvc9glGmyWj4o9UUc10D8dCBg8l0oG6WVYX9JtF7eLxX7leZ/1xBUONXo7R
+         QhDdbjkE71s8xAUubb+cJWzcMb0Yj50y3qKtoTcY77MeWwgkgEx0fOdfLdb+nM42Wgw+
+         18HtIxWHSpS8FsLrARclB/D4UxWsm1lBu6iDM5nGKe1v/I8zhHhtKUPkvlCXtnuGgiNC
+         XIxixDMD3GJsStm2f0aDWRaLDxbZJwX1x9MysqIRGojC6WcMvxmG6hODDr8byDrX7QOI
+         RJ5lNu72p2G9fd4q9As2yjl73GXKE+gXZTMhU2bKOQFEbEtwMqTaHZfyOLImPZoza9qD
+         khFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUX54RdEo4+WCVcc8shQTb0S89bqx/sVnxmktgouSGhEV3pxNCAa3ZEn8bz3iOyxJQm79BTvXbjcNPOBR+K@vger.kernel.org, AJvYcCVHk2TldaaYr18KXMm9rYtsCiKAsyuglqfq7IlhlJqE6mdYszqGcLn+H5IBdMOR0DcjMEvb22482oJO@vger.kernel.org, AJvYcCVI8K1PFq1oB09cfvBDlPvGZurDwyHUwBj3OMK8FpmrxEApeypcR1k8FS9C9irb3aZoVrGhOKURGmdRkRrv@vger.kernel.org, AJvYcCVNwSnfA8IA5LrhPAzsDB/p4xY1eD7HtBwI8asvuDmAmI9SjbDx6oSCyT0ESJETaYlhcKrWP4SRSsY=@vger.kernel.org, AJvYcCVPPASJxbzGb8Z7kDar7JpPIQBrvvoNN6PH204DIzLb2bAVt1ccMiVx+yCJCu+6+guFBHCl5CykeLcQzQ==@vger.kernel.org, AJvYcCVwGk2t0Quv217Bm8ubzE1qGIR5WJ4hFL1qeUtS4F0h9eIzYcyDa7uhiwymJ8nJzfSZ5YQPHCl3WvzN@vger.kernel.org, AJvYcCW+zerJslmiB5lCj92zqbzd/LjOBpCk5p+7oMNebxsDG0GdfBTJQP3w3ibl78tmblqk5Bg/h6kB4zXkhjCJ@vger.kernel.org, AJvYcCWtZvfXzjS7lwmZxxgsdMnDcTK/XGKTYAHs0TYG97zCt9oUCyvY57OxvfrNQNPf0b4wMSSAm/wnhur2wWZ8tDBodg==@vger.kernel.org, AJvYcCX1pl5bQAlCjt7UqIW5IpvCZmJWg8O0kx3vYRzpAenh2r7U3QunDX32lXnlJY2RiWqEKJy3+gLv9zfmsZrn/Z8=@vger.kernel.org, AJvYcCXIF6brVLDy
+ 2oh4bcSpJ5wR1Bmcp4jeYVALCNJZsO/HLiaGLDv0lGtzo/IDaQfNg5Izuz4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yze1K/eoLNaL7AHnszPzsfpP9yR4RmYvRQRJuYIXyJ+Ho7OPuoB
+	IHFfEVqTjdMmMBs+zFZTr0PzFYWAoXTCLuJoa1cRD1WfzX4ULpCPwc3rD7wf4t2mb2T+U6wFL7G
+	4n+S9HBrqAwMt+2PTM0QbwIjj2TM=
+X-Google-Smtp-Source: AGHT+IGRTqhJhTusYfDXEbEiyI+dDRincUEm84afE7n1AFszrvf4EDsRGd1dnnPyUdXRuJKezOE3wzgwR0sUUmJI06c=
+X-Received: by 2002:a05:651c:548:b0:2fa:cdd1:4f16 with SMTP id
+ 38308e7fff4ca-2faf3c150bdmr36366491fa.14.1728242272173; Sun, 06 Oct 2024
+ 12:17:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-55-ardb+git@google.com> <99446363-152f-43a8-8b74-26f0d883a364@zytor.com>
+ <CAMj1kXG7ZELM8D7Ft3H+dD5BHqENjY9eQ9kzsq2FzTgP5+2W3A@mail.gmail.com>
+ <CAHk-=wj0HG2M1JgoN-zdCwFSW=N7j5iMB0RR90aftTS3oqwKTg@mail.gmail.com>
+ <CAMj1kXEU5RU0i11zqD0433_LMMyNQH2gCoSkU7GeXmaRXGF1Yw@mail.gmail.com>
+ <5c7490bb-aa74-427b-849e-c28c343b7409@zytor.com> <CAFULd4Yj9LfTnWFu=c1M7Eh44+XFk0ibwL57r5H7wZjvKZ8yaA@mail.gmail.com>
+ <3bbb85ae-8ba5-4777-999f-d20705c386e7@zytor.com> <CAFULd4b==a7H0zdGVfABntL0efrS-F3eeHGu-63oyz1eh1DwXQ@mail.gmail.com>
+ <bfa1a86c3e4348159049e8277e9859dd@AcuMS.aculab.com>
+In-Reply-To: <bfa1a86c3e4348159049e8277e9859dd@AcuMS.aculab.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Sun, 6 Oct 2024 21:17:40 +0200
+Message-ID: <CAFULd4awNUm8MpZQ6XhPTRs6+2ZLtfnr=6vkK5DrY9L2rGR-5w@mail.gmail.com>
+Subject: Re: [RFC PATCH 25/28] x86: Use PIE codegen for the core kernel
+To: David Laight <David.Laight@aculab.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Ard Biesheuvel <ardb+git@google.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
+	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, 
+	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>, 
+	"linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>, 
+	"linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, 
+	"llvm@lists.linux.dev" <llvm@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Li4uDQo+IER1ZSB0byB0aGUgbm9uLW5lZ2xpZ2libGUgaW1wYWN0IG9mIFBJRSwgcGVyaGFwcyBz
-b21lIGtpbmQgb2YNCj4gQ09ORklHX1BJRSBjb25maWcgZGVmaW5pdGlvbiBzaG91bGQgYmUgaW50
-cm9kdWNlZCwgc28gdGhlIGFzc2VtYmx5DQo+IGNvZGUgd291bGQgYmUgYWJsZSB0byBjaG9vc2Ug
-b3B0aW1hbCBhc20gc2VxdWVuY2Ugd2hlbiBQSUUgYW5kIG5vbi1QSUUNCj4gaXMgcmVxdWVzdGVk
-Pw0KDQpJIHdvdWxkbid0IGhhdmUgdGhvdWdodCB0aGF0IHBlcmZvcm1hbmNlIG1hdHRlcmVkIGlu
-IHRoZSBhc20gY29kZQ0KdGhhdCBydW5zIGR1cmluZyBzdGFydHVwPw0KDQpXaGlsZSB4ODYtODQg
-Y29kZSAoaWdub3JpbmcgZGF0YSByZWZlcmVuY2VzKSBpcyBwcmV0dHkgbXVjaCBhbHdheXMNCnBv
-c2l0aW9uIGluZGVwZW5kZW50LCB0aGUgc2FtZSBpc24ndCB0cnVlIG9mIGFsbCBhcmNoaXRlY3R1
-cmVzLg0KU29tZSAoYXQgbGVhc3QgTmlvcy1JSSkgb25seSBoYXZlIGFic29sdXRlIGNhbGwgaW5z
-dHJ1Y3Rpb25zLg0KU28geW91IGNhbid0IHJlYWxseSBtb3ZlIHRvIHBpYyBjb2RlIGdsb2JhbGx5
-Lg0KDQpZb3UnZCBhbHNvIHdhbnQgJ2JhZCcgcGljIGNvZGUgdGhhdCBjb250YWluZWQgc29tZSBm
-aXh1cHMgdGhhdA0KbmVlZGVkIHRoZSBjb2RlIHBhdGNoaW5nLg0KKFdoaWNoIHlvdSByZWFsbHkg
-ZG9uJ3Qgd2FudCBmb3IgYSBzaGFyZWQgbGlicmFyeS4pDQpPdGhlcndpc2UgeW91IGdldCBhbiBl
-eHRyYSBpbnN0cnVjdGlvbiBmb3Igbm9uLXRyaXZpYWwgZGF0YQ0KYWNjZXNzZXMuDQoNClRoaW5r
-aW5nLi4uLg0KRG9lc24ndCB0aGUgY29kZSBnZW5lcmF0ZWQgZm9yIC1mcGljIGFzc3VtZSB0aGF0
-IHRoZSBkeW5hbWljIGxvYWRlcg0KaGFzIHByb2Nlc3NlZCB0aGUgcmVsb2NhdGlvbnMgYmVmb3Jl
-IGl0IGlzIHJ1bj8NCkJ1dCB0aGUga2VybmVsIHN0YXJ0dXAgY29kZSBpcyBydW5uaW5nIGJlZm9y
-ZSB0aGV5IGNhbiBoYXZlIGJlZW4gZG9uZT8NClNvIGV2ZW4gaWYgdGhhdCBDIGNvZGUgd2VyZSAn
-cGljJyBpdCBjb3VsZCBzdGlsbCBjb250YWluIHRoaW5ncyB0aGF0DQphcmUgaW52YWxpZCAocHJv
-YmFibHkgYXJyYXlzIG9mIHBvaW50ZXJzPykuDQpTbyB5b3UgbG9zZSBvbmUgc2V0IG9mIGJ1Z3Mg
-YW5kIGdhaW4gYW5vdGhlci4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtl
-c2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBV
-Sw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+On Sun, Oct 6, 2024 at 8:01=E2=80=AFPM David Laight <David.Laight@aculab.co=
+m> wrote:
+>
+> ...
+> > Due to the non-negligible impact of PIE, perhaps some kind of
+> > CONFIG_PIE config definition should be introduced, so the assembly
+> > code would be able to choose optimal asm sequence when PIE and non-PIE
+> > is requested?
+>
+> I wouldn't have thought that performance mattered in the asm code
+> that runs during startup?
 
+No, not the code that runs only once, where performance impact can be toler=
+ated.
+
+This one:
+
+https://lore.kernel.org/lkml/20240925150059.3955569-44-ardb+git@google.com/
+
+Uros.
 
