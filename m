@@ -1,180 +1,183 @@
-Return-Path: <linux-efi+bounces-1922-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1923-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76339947DC
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Oct 2024 14:00:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587569951E2
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Oct 2024 16:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C951D1C24960
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Oct 2024 12:00:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 178FB2836BE
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Oct 2024 14:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7820A1CCB44;
-	Tue,  8 Oct 2024 11:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8681DFE3E;
+	Tue,  8 Oct 2024 14:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q+xcJE6K"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nmUog/XW"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23761D8E01
-	for <linux-efi@vger.kernel.org>; Tue,  8 Oct 2024 11:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33BA1DFE17;
+	Tue,  8 Oct 2024 14:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728388793; cv=none; b=aFW3BtBiuw9p/U0d/1bdEDLE/5anLX+bxHdoHmj1r+UVE5LKTs58ZgindmMTZKttxwrIBtzA0QwDS1768lE9Gy6WZHNd4Lyj3URclXh6R6qFElqJ4AMb3zHim3H2JQMeTKU68r2nbEqsmGbJhN/fGTIxN/xI8AivZp4x8xR5+zA=
+	t=1728398179; cv=none; b=nWL4YamAYOBUMnVel+vkt2OycmsrM6gfmDlH2MbpFl2FLspuMV3NuJE2XJdkQ7LtK5GSI7sjcBMsOtRY7gvHqtU/sjKqiBg5Wa4yVKd+HnzoP3qvqklI3ixi0GqDU70YSG9JLtSPUlWxetsufsAFYWbnMEfhRPqmLnOXOLScy1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728388793; c=relaxed/simple;
-	bh=ibSI5cw70YlzypkcFvottxsO6l9I+7EejtPji06w3+8=;
+	s=arc-20240116; t=1728398179; c=relaxed/simple;
+	bh=gxxx5O9eecv163qWQ61f/5In0s1MkC0h2hYsYBgpd4o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=arTSsb7r589RoYBEfT+KzSTPHmADQ4uKeE38CEFVC1O42k+PKUbkXoEUSQnoOS7X1FFJpzqCN/FiLfxTYlyQI0VsEoULiScqVD/k9LLuxNPGwd0irxTfVMV8LFq+SMlucRXbVrJvfelWSp7FkzoOKAoj5JbZqfWT478wS9O8FFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q+xcJE6K; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728388790;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iIFABVwlYN6z1gPY1Am/qwHJ+gGFXbVoWW3PcOPdoLQ=;
-	b=Q+xcJE6KdIqwVj0zTk/sDNTIKs5sHNt4Ds25rP27jcckVN9ViWqSYVoav+9KU2A+0gl6FU
-	4nnY+sadKF17zA3VEDIcYlfmRsVJC9m1pMU+cVo8WGBKy5FS4xpie1EVwPb3wbo9kbPlFa
-	9b8G0p7m+Hy4JE7DvJWzDcIwipMgfiM=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-297-2AuDJGkGPkKPoriTjj5KRA-1; Tue, 08 Oct 2024 07:59:48 -0400
-X-MC-Unique: 2AuDJGkGPkKPoriTjj5KRA-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6c513582b05so100288266d6.3
-        for <linux-efi@vger.kernel.org>; Tue, 08 Oct 2024 04:59:48 -0700 (PDT)
+	 To:Cc:Content-Type; b=S/zO1Y80mmqXqTMlScSxEJVGhXux7CI3+0h3l1ITSR0pAxNutZWEtYPlD1L1ILqXY4Obv1k3kDD/b0fs47HVIWiJ+KR5gxwzJvwngpKZV88XMLkADWzqKt4dbEa4UHxZDAO+MsCJysGykz8ZvJ6j3ZtlKUC9Gu0oF4qBFkqm5KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nmUog/XW; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5398df2c871so6110679e87.1;
+        Tue, 08 Oct 2024 07:36:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728398176; x=1729002976; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RAzASSCUQ2aUVsiLqBLU+OR2T2BBF/GKBA/6/Hrht2Y=;
+        b=nmUog/XWxHE98vP1aRBWOdqqiTdra1AWS575jFpoHyM53Y6e7zQN/FcquPeBMs14bf
+         aPuy8kgYFX4JqI1OEv6cuEYAJkv41Tv58BA3MLW378DfwBfALhXp0zSiXBDrK6w7hoW3
+         SG9RMRTkD8IVJ42W+dtP+a6tAMQEg1rJYKi/saiMrSfX5FJsZrQrmOEKrYBQV59PGzpI
+         IgXkUWLLJ3LOEIu4wlQNrUJEkpUiZ7oLKlMCMO5E3EhblLMHa1t47qP28WXxD19DHR4I
+         rTKc3hWJ5y8llNFRd5BhofZh2BWz/9wUnCLGFOznXC6rfN+BioUMPiQDaJZ7Ke4/hRW4
+         NwVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728388788; x=1728993588;
+        d=1e100.net; s=20230601; t=1728398176; x=1729002976;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iIFABVwlYN6z1gPY1Am/qwHJ+gGFXbVoWW3PcOPdoLQ=;
-        b=sa1qTgFQB4ZwJGsjumwfXLmhpegspeEs8FkX91RLIU3p8XbPmbuwc2riMMfUkHFiug
-         DnXx2cXKRQFQcFFv6E5tb7sFWFAcW17RU3hYGyT3Pkav/fEfeXq6J9J8VHwjcC4ojq54
-         p2ZZlmwYb6RlzAwJFDzfxTDdX6tNvvMrM28Birn9ekE2KPt8o2o8IGqLnxUMkxakvUcr
-         f3PUsoaRQFFHtQuEUKRcbSAbIFsxKngyWPVTS1GK9EiOj93KOuVneggswo74KNuuu/A/
-         O4ZduGK0SgtAWfDTzyhF9bYWHAMFIiqOIgKk1jF5YKhj3NPw+SkyeCgWvh7rqrvKXBXu
-         ms2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXsE7Bs28VSjMqiPv0iiei8gRyYttKyIm79+GoEqvsQDXXMktFbxa/kBv7xve0uFiEteD5TK+mEyj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAcLQgMyffXnb+rF4Ml+104JX3b9i0ekaYe29Fgu0waqMuCD5Q
-	iE2LSCm+m4uXI2f9vWrFqKFpQV5COvOAzY6K8tt6m57OvKDwxuXUZFtaGb3tSiW70o0P8OLZGv1
-	qfdcgJaYzOj8111GmDRZGs3IT3cmQ+bg4PDN8AvR9ZCmxCAxG52u4SCGl9FgAJhzQjPz3AkoQDW
-	1ZYoyFOZ4Ch8TXENZz5ZpkOfRWa+bMm3R+
-X-Received: by 2002:a05:6214:4341:b0:6cb:3d9e:4f0f with SMTP id 6a1803df08f44-6cb9a2ed6a6mr239302346d6.1.1728388788050;
-        Tue, 08 Oct 2024 04:59:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGyTU2oDPRA8pDwdxAwmkXFDkUDJtk+0gQ1yQnI6Iw1CeZllQSy0r3Wl4WVMcMUozYzPXRgfmAZg4oe2m9uSyE=
-X-Received: by 2002:a05:6214:4341:b0:6cb:3d9e:4f0f with SMTP id
- 6a1803df08f44-6cb9a2ed6a6mr239302016d6.1.1728388787608; Tue, 08 Oct 2024
- 04:59:47 -0700 (PDT)
+        bh=RAzASSCUQ2aUVsiLqBLU+OR2T2BBF/GKBA/6/Hrht2Y=;
+        b=cYrnuD6RbOItIqsgKi4Co2aWslD+EwsN3jUQhNiAtOp6qvExTX6N9+ftVK+/AZGwiH
+         JxTsDcZhuTt+TMDo2KtZsyRGE6t6Bto6S4ayh9f47KEolDx1AVBt2hYdXjWNsFGdVY8G
+         +6HtqRc7CWHDRV6iq1c0e+aLo/dS3rthVgz3OLWpP0xe3ME93FK+H67o0MNpAIqiQ2mP
+         3EY3L+6H9cWtEnM4/hw3HSRIBRgXupPWhFZhnEBgzymHGSDH5MxhWC8ByX3HiUEKa0/4
+         BPEu3CoBjRl3COPCGOinc3kVND830H7LjlrvpDM/jCSBPiG1GXFF9v6aduIhwNK6R6mR
+         jjvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJtH3awfDZ/nC626VnAxYOHkTfVIoH3kIfaoPqDVOK+deP8D57oWriGhIVI7f1VE1Nc88=@vger.kernel.org, AJvYcCUbgGK+kyLacPBfXwZh6DEUgiTVHXLqk+aXtuYMPOhFH+/s+wGhu0dOB7i0wxyaju3rnxRqg/5J97wWBAJ+OeU=@vger.kernel.org, AJvYcCV2rCp5g1JppC/inIrPY76DYPlOaZ2xdBwksr4sgPt/Jd/MlJKupA6Ss8yv/s7PmIv0dqsyysSJTTA=@vger.kernel.org, AJvYcCV9IJ38l6X5LroDzXttFFINdkD3yzgOGnA1lfHoX1xiWG07l8nircOfoo/CsvDyIKP8qCEoSAbLz9hRx0Fi@vger.kernel.org, AJvYcCVWn6u/U1hLaeP8nOPLa/UO6ryUAre4UzB1KTNdeCyAeBTsUrbB955DjqJ/0egzzQSkzPZFeRObE6bh@vger.kernel.org, AJvYcCVZr08z2eEiFB9qZZQPQKg8EQQs1YfSFER4TatCiaj9fipOsjvktYDR35dyW9iYDSkA8vsM9JAdwBB0i5AJ@vger.kernel.org, AJvYcCVzdyFAcpZ+cokUng73bgS8Mm6UjHR1k2FuWrlvxUoysZiXou+QER3OJJFz/rCqDionXvoGGH39/cyMTa34HNMNVA==@vger.kernel.org, AJvYcCW2ura4tB0AkWNuocgWJ/GET8txWB1PrLflKqFDMyIXRUY+r7qInkWU7DBBDWFKZ3mASs4deA9mHlQuCU4b@vger.kernel.org, AJvYcCXOwPz5SHzaAEeTdRy4S8wp0rdekZ+too4VPiu6TVIcNiu1UZgMWkMEqQIw9/6EEkH6qPERZIuOt1AOmQ==@vger.kernel.org, AJvYcCXRdDe3dubXYb9lSLHe
+ HJulIH3EjKyZ63P0AScc+aR+KbyToGrF5T8LxAHKUceMsS0bCo0zyrlwIn5B@vger.kernel.org
+X-Gm-Message-State: AOJu0YzliAqJ64I6yuE+5ZCA/YTG3cGnD2sjQRftKzH5Y0Ebmv6K1Sl/
+	C4xahBG5gp7Vs51HXDV0eE5S8WzB4cq5Df6LvATxzE6KbikHc3Na75TCB4u8MbFmIeHdl+CRyiR
+	6oNV9T++a/Dw7Kxvp+mbzH/8JrA==
+X-Google-Smtp-Source: AGHT+IFk7uSGpMKxSJMgul6omDcmQyMQl5Zy1l8C5NVTbpCgjnnjxrxdxyhpPaT355keXYtQRCu422aiN8olYIcP4XU=
+X-Received: by 2002:a05:6512:3085:b0:539:8a9a:4e56 with SMTP id
+ 2adb3069b0e04-539ab8c6fb8mr8574397e87.53.1728398175714; Tue, 08 Oct 2024
+ 07:36:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819145417.23367-1-piliu@redhat.com> <CAMj1kXGB3VF=NAQBADkdmodSVaZyf8h2n0FXwi5fXLUE2WgXag@mail.gmail.com>
-In-Reply-To: <CAMj1kXGB3VF=NAQBADkdmodSVaZyf8h2n0FXwi5fXLUE2WgXag@mail.gmail.com>
-From: Pingfan Liu <piliu@redhat.com>
-Date: Tue, 8 Oct 2024 19:59:35 +0800
-Message-ID: <CAF+s44RqwOXVQ_t=w922GAAdQAqx4H_EsccDmDd1h8qWAGvPBg@mail.gmail.com>
-Subject: Re: [RFCv2 0/9] UEFI emulator for kexec
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-35-ardb+git@google.com> <CAFULd4ZNwfPZO-yDjrtT2ANV509HeeYgR80b9AFachaVW5zqrg@mail.gmail.com>
+ <CAMzpN2j4uj=mhdi7QHaA7y_NLtaHuRpnit38quK6RjvxdUYQew@mail.gmail.com> <CAMj1kXF3_Hj9j2f_cBtwTFWvEmB0UoEs_cGkRiWc4AErDx0ftQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXF3_Hj9j2f_cBtwTFWvEmB0UoEs_cGkRiWc4AErDx0ftQ@mail.gmail.com>
+From: Brian Gerst <brgerst@gmail.com>
+Date: Tue, 8 Oct 2024 10:36:03 -0400
+Message-ID: <CAMzpN2jWRV8-JzM2FjSvSz+VoDrNVeEJPgF7N5ksLaADHpnHsA@mail.gmail.com>
+Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
 To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Jan Hendrik Farr <kernel@jfarr.cc>, Philipp Rudo <prudo@redhat.com>, 
-	Lennart Poettering <mzxreary@0pointer.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Eric Biederman <ebiederm@xmission.com>, Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, kexec@lists.infradead.org, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 29, 2024 at 1:08=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
-ote:
+On Fri, Oct 4, 2024 at 9:15=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wro=
+te:
 >
-[...]
+> On Sat, 28 Sept 2024 at 15:41, Brian Gerst <brgerst@gmail.com> wrote:
+> >
+> > On Wed, Sep 25, 2024 at 2:33=E2=80=AFPM Uros Bizjak <ubizjak@gmail.com>=
+ wrote:
+> > >
+> > > On Wed, Sep 25, 2024 at 5:02=E2=80=AFPM Ard Biesheuvel <ardb+git@goog=
+le.com> wrote:
+> > > >
+> > > > From: Ard Biesheuvel <ardb@kernel.org>
+> > > >
+> > > > Specify the guard symbol for the stack cookie explicitly, rather th=
+an
+> > > > positioning it exactly 40 bytes into the per-CPU area. Doing so rem=
+oves
+> > > > the need for the per-CPU region to be absolute rather than relative=
+ to
+> > > > the placement of the per-CPU template region in the kernel image, a=
+nd
+> > > > this allows the special handling for absolute per-CPU symbols to be
+> > > > removed entirely.
+> > > >
+> > > > This is a worthwhile cleanup in itself, but it is also a prerequisi=
+te
+> > > > for PIE codegen and PIE linking, which can replace our bespoke and
+> > > > rather clunky runtime relocation handling.
+> > >
+> > > I would like to point out a series that converted the stack protector
+> > > guard symbol to a normal percpu variable [1], so there was no need to
+> > > assume anything about the location of the guard symbol.
+> > >
+> > > [1] "[PATCH v4 00/16] x86-64: Stack protector and percpu improvements=
+"
+> > > https://lore.kernel.org/lkml/20240322165233.71698-1-brgerst@gmail.com=
+/
+> > >
+> > > Uros.
+> >
+> > I plan on resubmitting that series sometime after the 6.12 merge
+> > window closes.  As I recall from the last version, it was decided to
+> > wait until after the next LTS release to raise the minimum GCC version
+> > to 8.1 and avoid the need to be compatible with the old stack
+> > protector layout.
+> >
 >
-> Thanks for putting this RFC together. This is useful work, and gives
-> us food for thought and discussion.
+> Hi Brian,
 >
-> There are a few problems that become apparent when going through these ch=
-anges.
+> I'd be more than happy to compare notes on that - I wasn't aware of
+> your intentions here, or I would have reached out before sending this
+> RFC.
 >
-> 1. Implementing UEFI entirely is intractable, and unnecessary.
-> Implementing the subset of UEFI that is actually needed to boot Linux
-> *is* tractable, though, but we need to work together to write this
-> down somewhere.
->   - the EFI stub needs the boot services for the EFI memory map and
-> the allocation routines
->   - GRUB needs block I/O
->   - systemd-stub/UKI needs file I/O to look for sidecars
->   - etc etc
+> There are two things that you would need to address for Clang support
+> to work correctly:
+> - the workaround I cc'ed you on the other day [0],
+> - a workaround for the module loader so it tolerates the GOTPCRELX
+> relocations that Clang emits [1]
 >
+>
+>
+> [0] https://lore.kernel.org/all/20241002092534.3163838-2-ardb+git@google.=
+com/
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit=
+/?id=3Da18121aabbdd
 
-I have created a git repo to hold the record for the current status.
-[https://github.com/rhkdump/kexec_uefi.git]
-And uefi_subset.md records the minimal requirement of uefi.
+The first patch should be applied independently as a bug fix, since it
+already affects the 32-bit build with clang.
 
-But I have a question about "GRUB needs block I/O", is it required? As
-I know, the kernel image e.g. UKI, zboot will be supported. But why
-should grub be supported too?
+I don't have an environment with an older clang compiler to test the
+second patch, but I'll assume it will be necessary.  I did run into an
+issue with the GOTPCRELX relocations before [1], but I thought it was
+just an objtool issue and didn't do more testing to know if modules
+were broken or not.
 
-Thanks,
+Brian Gerst
 
-Pingfan
-
-> I implemented a Rust 'efiloader' crate a while ago that encapsulates
-> most of this (it can boot Linux/arm64 on QEMU and boot x86 via GRUB in
-> user space **). Adding file I/O to this should be straight-forward -
-> as Lennart points out, we only need the protocol, it doesn't need to
-> be backed by an actual file system, it just needs to be able to expose
-> other files in the right way.
->
-> 2. Running the UEFI emulator on bare metal is not going to scale.
-> Cloning UART driver code and MMU code etc is a can of worms that you
-> want to leave closed. And as Lennart points out, there is other
-> hardware (TPM) that needs to be accessible as well. Providing a
-> separate set of drivers for all hardware that the EFI emulator may
-> need to access is not a tractable problem either.
->
-> The fix for this, as I see it, is to run the EFI emulator in user
-> space, to the point where the payload calls ExitBootServices(). This
-> will allow all I/O and memory protocol to be implemented trivially,
-> using C library routines. I have a crude prototype** of this running
-> to the point where ExitBootServices() is called (and then it crashes).
-> The tricky yet interesting bit here is how we migrate a chunk of user
-> space memory to the bare metal context that will be created by the
-> kexec syscall later (in which the call to ExitBootServices() would
-> return and proceed with the boot). But the principle is rather
-> straight-forward, and would permit us, e.g., to kexec an OS installer
-> too.
->
-> 3. We need to figure out how to support TPM and PCRs in the context of
-> kexec. This is a fundamental issue with verified boot, given that the
-> kexec PCR state is necessarily different from the boot state, and so
-> we cannot reuse the TPM directly if we want to pretend that we are
-> doing an ordinary boot in kexec. The alternative is to leave the TPM
-> in a state where the kexec kernel can access its sealed secrets, and
-> mock up the TCG2 EFI protocols using a shim that sits between the TPM
-> hardware (as the real TCG2 protocols will be long gone) and the EFI
-> payload. But as I said, this is a fundamental issue, as the ability to
-> pretend that a kexec boot is a pristine boot would mean that verified
-> boot is broken.
->
->
-> As future work, I'd like to propose to collaborate on some alignment
-> regarding a UEFI baseline for Linux, i.e., the parts that we actually
-> need to boot Linux.
->
-> For this series in particular, I don't see a way forward where we
-> adopt this approach, and carry all this code inside the kernel.
->
-> Thanks.
-> Ard.
->
-
+[1] https://lore.kernel.org/all/20231026160100.195099-6-brgerst@gmail.com/
 
