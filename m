@@ -1,82 +1,81 @@
-Return-Path: <linux-efi+bounces-1940-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1941-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A3999B4AB
-	for <lists+linux-efi@lfdr.de>; Sat, 12 Oct 2024 13:58:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5368599B4B7
+	for <lists+linux-efi@lfdr.de>; Sat, 12 Oct 2024 14:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57DC1B243BF
-	for <lists+linux-efi@lfdr.de>; Sat, 12 Oct 2024 11:58:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF8F4281BAA
+	for <lists+linux-efi@lfdr.de>; Sat, 12 Oct 2024 12:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EA114F9CC;
-	Sat, 12 Oct 2024 11:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291DF16F8E5;
+	Sat, 12 Oct 2024 12:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b="G0uPOVnP"
+	dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b="Xt2/rHFd"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41091552FD
-	for <linux-efi@vger.kernel.org>; Sat, 12 Oct 2024 11:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679B51527AC
+	for <linux-efi@vger.kernel.org>; Sat, 12 Oct 2024 12:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728734330; cv=none; b=chwqq3hEchBbkY0/oKMisVLZKWJH3BUdGwuXl+XlzbN/Y462BEkCbfr1Sv0A5dMqRDBg73QiIEk05o6KTTXa5R6g8Jq9s7E1oFHM29Pvvq8TrfTqTMi20Hc6O/AkwrklFi/Tyv75stl7GsdZX/cdVzJ/L67l51ZotgaCAZtxhKE=
+	t=1728734655; cv=none; b=krYDiV3WmSu1dPbGzFAwwND5PESI7JI2z2qWRaGgLSeaVFmwT72e4x6UGApwzWPmC40WaNmb1IOIZ95pKwXg/EyAsw5N6KFdWsXc88xUCJ1pUfzszMBRJnbJgk9zmjpAcsfKI1E827MBA0ex40FAPdpuScNptrXzbsbU+K5KEzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728734330; c=relaxed/simple;
-	bh=eUse1WaKbLNTi+lH1lFNxvAR/3Z5+DaPJh8J6RQchok=;
+	s=arc-20240116; t=1728734655; c=relaxed/simple;
+	bh=noG0YQk4AKAzIpwtZMmmdWIl0V0E+WcBE7c4INGOCBg=;
 	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=JdIAlXwBLPF5E51BNGhKkAbK5e9OnNEv4wcRjyq+dSV4Y+i/UjZ75/LagcfJxJoEj9Cooqc77MOWz+YMdvXAsELrw1I83tDmIJOF73CqO6z1maXjzWKOfnCoV9usr5rZEZcMm3Ir137m6ncezzz6176S+rUWzfCN1yps0bU2XJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca; spf=pass smtp.mailfrom=marek.ca; dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b=G0uPOVnP; arc=none smtp.client-ip=209.85.160.177
+	 In-Reply-To:Content-Type; b=q+Q4UZLEOMDfnSXqmjX/ruuFzr6rYJ13OCjeQfLnXW/X42YLTZnmPARdCQeye7VyI4wjCge0GW4gNPS0xYFiyUlyNUkya8JNHcUR3EMRmWQwvM5+VNBvMUUJtZjPfkshLrSQUCi5cp8o21FJAqLg8wi5ia6LFsKroRjzvYv5yXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca; spf=pass smtp.mailfrom=marek.ca; dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b=Xt2/rHFd; arc=none smtp.client-ip=209.85.222.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marek.ca
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-45efe3c46b5so32384521cf.2
-        for <linux-efi@vger.kernel.org>; Sat, 12 Oct 2024 04:58:47 -0700 (PDT)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7afc847094fso199524585a.2
+        for <linux-efi@vger.kernel.org>; Sat, 12 Oct 2024 05:04:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=marek.ca; s=google; t=1728734326; x=1729339126; darn=vger.kernel.org;
+        d=marek.ca; s=google; t=1728734652; x=1729339452; darn=vger.kernel.org;
         h=content-transfer-encoding:content-language:in-reply-to:mime-version
          :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Diub50GAsamJSYxMpuxJNl2q4XzBU/QQSzsDe5urvxI=;
-        b=G0uPOVnPlaEHdTMT4knYoOwCjZ8N4ezGYLG/RMmu1Tx4k8Kd5Lc6UMXyDaJ6eydT1t
-         CJTo3zyNcdeolc3SJGROQWLGOczciIJKWfbNPArt1mUu2l2VKtHR54MLjWeDRQ71solV
-         wzm2FJR46TaHphr3WKKvq+X6D6EH1TGs/gj2/BWFdnasU4wBqhPqpmN1iYK8Ww0flAqn
-         9k/Cil9ibkZGGI0ew4v7CAr4PV4dbEo2E5GxFJcA0LnqfMPf3V+gFKn1vUL8GC55lXfi
-         H0BkNq8HAhatnRPnpA2EjqObpFkmfGCicCaxwBDLn1/r1QKyV3GVz0Ur3rSJrz226D9L
-         GpAw==
+        bh=zcvXzTkUD4t3i3Zn8ka0/LCsGo1YvE7yZbwo8Zz+Hyc=;
+        b=Xt2/rHFdbgr53QbYLmuIKPs3//64ADAXK035gXTiT9VJ5x9PcFVqJFjRBqNQulVbyu
+         hJSXq2apSxNaPbONMBtO7bfKObKWVwsTUA7wYAQIKdVnMVkNL/VwUfwd5ja807hQT8v4
+         5T2b2bcl5a4RQgbD+zthEs+J/2Wo1Wi+QhBbGfCR14USFNhKBuvVFqkBTkth4s2J5wt4
+         z/Hbbn2kKWLG5N/Kw58hhbbYzGGfvK9iV0V7ybtSCud8g4RFmq3G8bjB4okQDUFbQB82
+         jv9aM8ch68yTg2oi7eHvcGPivqgzRTRkXO86BZUZZoONiCSQhMy27wSmpuv9dBGS6EU7
+         78hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728734326; x=1729339126;
+        d=1e100.net; s=20230601; t=1728734652; x=1729339452;
         h=content-transfer-encoding:content-language:in-reply-to:mime-version
          :user-agent:date:message-id:from:references:cc:to:subject
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Diub50GAsamJSYxMpuxJNl2q4XzBU/QQSzsDe5urvxI=;
-        b=o48PALfxDZN9vogjNMAVZyC2q1ZjUMX8+Ax9Pl32dOkXphR9nuDdDaVwNx85kH7QfI
-         hCWyCLoThurO7uk1qsl4ggf+UQwMXJMkVH1xCuo6/Czqmg9jaIyjdljnhfnYQ3IixYUK
-         9TN/IcLDadUZeSnLlWZbC1Kgtpi4hLl65nRRX4DS9XoDXk3HKuN/cCd6jP4mUZc17hSR
-         PSk7VcoQRp3M74PdZDT2U7ghu0JGP/ezPNmsXZN8QXHnj5kGO37K08Kka1MzRyNaJ7Bw
-         sCnrJBJYQpnRVymuMKPrMrXi9rzQj2OTGRl9eFL2HCGN73HO2L5az0WZW5I5RuRZ51LK
-         78Rg==
-X-Gm-Message-State: AOJu0YzFXbPiixsqTB8OdEhchdxlXLE03MpcMIEGg76m6qXBGonX+P2P
-	QWErl+ihZpBK4o4TBcpN8KehUctqzqXfN/9Mv1jd3foBQgodHawNGDs/CVPYVaw=
-X-Google-Smtp-Source: AGHT+IG48YvSRedxV9qgCtTINLv1hMQ+u3WbGEyfbf2QUOxBeV0LQCrBJBQXamJYXZzcuASZZIqS8Q==
-X-Received: by 2002:a05:622a:11d6:b0:458:3a34:b7b5 with SMTP id d75a77b69052e-4604bbccd65mr84992431cf.26.1728734326462;
-        Sat, 12 Oct 2024 04:58:46 -0700 (PDT)
+        bh=zcvXzTkUD4t3i3Zn8ka0/LCsGo1YvE7yZbwo8Zz+Hyc=;
+        b=UQyZQSGQfd7fTYfDOEvi7cdHJcQAGoXoLDi5ddjG5ZNTWiGBs71to7e/yboOxewCYG
+         ACdQ79R8BKE3tQ5TR9GKOUcq1kwXI/C5skMpfIA8rGq1yluWYqjieDWZ76f9O/z2qzNN
+         yUDi2XuJ5+gyhfom8PRbvGiafSmRn2Fx4x3xdjix60J4SP5E//mfYw8vSFamDrokyOMW
+         MoUZRfkjgiGJirUgAeW11kheOMXe7Ay2iUMtDHzrjl/17OSgXULJXy72dX1d4iWUf+oa
+         HbTqL+ggLWxAPBYCdTC/5UMvwGPTz9hmhuH7iNfMafkfEdtKvfVtIiljtOg+c1Cr1sH3
+         Pptg==
+X-Gm-Message-State: AOJu0YxJSng2K4UZQWYmKv859WzjvSEHQACc2ooIlQAlHvguZaTSiSXz
+	LgogjstXQT6u95SP5MuWry3EqJOmds+Q4m6KjJl5Ou0/3MabdsaJG1UtDUZSkig=
+X-Google-Smtp-Source: AGHT+IGb+V4w4h+7VW2ElzRpArzYr/67eK4xwSv3ABQzrua0zVyHo075Gf5huXn7GcTGGAucSa6wKQ==
+X-Received: by 2002:a05:620a:450e:b0:7ac:bb00:cd42 with SMTP id af79cd13be357-7b11a36b4c9mr770216685a.27.1728734652196;
+        Sat, 12 Oct 2024 05:04:12 -0700 (PDT)
 Received: from [192.168.0.189] (modemcable125.110-19-135.mc.videotron.ca. [135.19.110.125])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46042895a9csm24040501cf.91.2024.10.12.04.58.45
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4604287df23sm24060211cf.67.2024.10.12.05.04.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 12 Oct 2024 04:58:46 -0700 (PDT)
-Subject: Re: [PATCH 1/3] efi/libstub: fix efi_parse_options() ignoring the
- default command line
+        Sat, 12 Oct 2024 05:04:11 -0700 (PDT)
+Subject: Re: [PATCH 3/3] efi/libstub: consider CONFIG_CMDLINE for initrd= and
+ dtb= options
 To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Ingo Molnar <mingo@kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: linux-efi@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
 References: <20241011224812.25763-1-jonathan@marek.ca>
- <CAMj1kXFstg+2j9nYCO=_=L3LAd4PYc5vO3OX4EtHfFA90BXv5Q@mail.gmail.com>
+ <20241011224812.25763-3-jonathan@marek.ca>
+ <CAMj1kXHgFVs5Gt5hNao6DTZxqw4dO89OuUMH2tvdWPY1kxfc0Q@mail.gmail.com>
 From: Jonathan Marek <jonathan@marek.ca>
-Message-ID: <5364ea9f-9042-3fba-5cb1-c42ae94b0d4b@marek.ca>
-Date: Sat, 12 Oct 2024 07:55:21 -0400
+Message-ID: <acdd3e0d-8ce4-264d-2328-05e7dc353817@marek.ca>
+Date: Sat, 12 Oct 2024 08:00:47 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 Precedence: bulk
@@ -85,71 +84,41 @@ List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXFstg+2j9nYCO=_=L3LAd4PYc5vO3OX4EtHfFA90BXv5Q@mail.gmail.com>
+In-Reply-To: <CAMj1kXHgFVs5Gt5hNao6DTZxqw4dO89OuUMH2tvdWPY1kxfc0Q@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
-On 10/12/24 3:46 AM, Ard Biesheuvel wrote:
-> Hi Jonathan,
-> 
-> Please use a cover letter when sending more than a single patch.
-> 
-> On Sat, 12 Oct 2024 at 00:51, Jonathan Marek <jonathan@marek.ca> wrote:
+
+
+On 10/12/24 3:54 AM, Ard Biesheuvel wrote:
+> On Sat, 12 Oct 2024 at 00:52, Jonathan Marek <jonathan@marek.ca> wrote:
 >>
->> efi_convert_cmdline() always returns a size of at least 1 because it counts
->> the NUL terminator, so the "cmdline_size == 0" condition is not possible.
+>> Replace cmdline with CONFIG_CMDLINE when it should be used instead of
+>> load_options.
 >>
->> Change it to compare against 1 to get the intended behavior: to use
->> CONFIG_CMDLINE when load_options_size is 0.
+>> In the EXTEND case, it may be necessary to combine both CONFIG_CMDLINE and
+>> load_options. In that case, keep the old behavior and print a warning about
+>> the incorrect behavior.
 >>
->> Fixes: 60f38de7a8d4 ("efi/libstub: Unify command line param parsing")
->> Signed-off-by: Jonathan Marek <jonathan@marek.ca>
->> ---
->>   drivers/firmware/efi/libstub/efi-stub.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
->> index 958a680e0660d..709ae2d41a632 100644
->> --- a/drivers/firmware/efi/libstub/efi-stub.c
->> +++ b/drivers/firmware/efi/libstub/efi-stub.c
->> @@ -129,7 +129,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
->>
->>          if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
->>              IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
->> -           cmdline_size == 0) {
->> +           cmdline_size == 1) {
 > 
-> I'd prefer it if we could keep the weirdness local to
-> efi_convert_cmdline(). Would the below fix things too?
+> The core kernel has its own handling for EXTEND/FORCE, so while we
+> should parse it in the EFI stub to look for options that affect the
+> stub's own behavior, we should not copy it into the command line that
+> the stub provides to the core kernel.
 > 
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -395,9 +395,7 @@
->                  }
->          }
+> E.g., drivers/of/fdt.c takes the bootargs from the DT and combines
+> them with CONFIG_CMDLINE.
 > 
-> -       options_bytes++;        /* NUL termination */
-> -
-> -       status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, options_bytes,
-> +       status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, options_bytes + 1,
->                               (void **)&cmdline_addr);
->          if (status != EFI_SUCCESS)
->                  return NULL;
-> 
-> Note that the only other caller of efi_convert_cmdline() in x86-stub.c
-> ignores this value entirely.
 > 
 
-Just changing this would just make things more broken, the following 
-snprintf would remove the last character of the command line because it 
-uses options_bytes.
+I'm aware of that - the replacement the commit message is referring to 
+is specifically for handle_cmdline_files() which this commit is modifying.
 
-Since this patch has a Fixes: tag, I wanted to make the fix as simple as 
-possible. If you think comparing the size to 1 is "weird", the fix could 
-instead check if cmdline[0] is non-NUL (or just strlen(cmdline)==0 if 
-you don't like that either).
+Currently efistub completely ignores initrd= and dtb= options provided 
+through CONFIG_CMDLINE (handle_cmdline_files() only parses the EFI options)
 
-And then my followup cleanup patch can just remove the cmd_line_len 
-argument from efi_convert_cmdline().
+For the EXTEND case, I didn't implement the full solution because its 
+more complex and EXTEND is not available on arm64 anyway, so I went with 
+just printing a warning instead.
 
