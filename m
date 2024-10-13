@@ -1,81 +1,85 @@
-Return-Path: <linux-efi+bounces-1957-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1958-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABCC99B849
-	for <lists+linux-efi@lfdr.de>; Sun, 13 Oct 2024 07:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AC599B84C
+	for <lists+linux-efi@lfdr.de>; Sun, 13 Oct 2024 07:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CAFC1C209FE
-	for <lists+linux-efi@lfdr.de>; Sun, 13 Oct 2024 05:17:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9A701C209FE
+	for <lists+linux-efi@lfdr.de>; Sun, 13 Oct 2024 05:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E08713A89B;
-	Sun, 13 Oct 2024 05:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F13136345;
+	Sun, 13 Oct 2024 05:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b="RW4owqNQ"
+	dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b="c7kXOqTK"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B211304AB
-	for <linux-efi@vger.kernel.org>; Sun, 13 Oct 2024 05:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D86E13C67C
+	for <linux-efi@vger.kernel.org>; Sun, 13 Oct 2024 05:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728796606; cv=none; b=M9jLsO2wdpLU3fqTUJ4rjjYT5b+3Qd/Davn7EJKPSihMac5SBvG6vH0xNMhV1tijtBbtqiGsWLs19CcMNvMZKWt3EjILA5KdYcbWV12KYdj/w0+URHtf/BJDua3pzccqt9tn7BWAwc9CMaH990IsjuulmSsTwpYA2WsOaKa7t8E=
+	t=1728796617; cv=none; b=pIn8dH/T4DRO1U3i1RfM/Qg/579ANjxB7lX8o1z9TU2ZcxU6rCmXDH4dQiECzLvcFzIqUwjH0HWGllCXxIUceEe9vXweH11AXlOyhHK0QbkwGyqJ8z23r/Gjg/AT8toossmApvcnduHKnW2krNIZYAEWP/b3sZ+3USkJ4kLTuBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728796606; c=relaxed/simple;
-	bh=sRtVbwNxdfVu2vbZgaqrwb50MI2xFXkt8+JflgP2Ng4=;
+	s=arc-20240116; t=1728796617; c=relaxed/simple;
+	bh=fIzRBXSOO+dxpaYVoJyqkg9GLudSmxuh9CFKoFX8k14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIAbxmxoPO5lpxXCRBd69uXddiZhK39HoG13/NhjCyYYy6BxCjQphYTESeWaR9TbJID0ynD9EFsd3gzTm3GB9SoM517nsk0qbxKr0XCK7mWXl31AhAJaJb/jVtjmY041N1FowNnCY+DjbHO2XBVDEzAbFPLhAo80ENeW72H2JoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca; spf=pass smtp.mailfrom=marek.ca; dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b=RW4owqNQ; arc=none smtp.client-ip=209.85.160.175
+	 MIME-Version; b=lTHN/sKrH6Jd21f+gddFC5yc9W/4acBiox8blmCzM39Be2AqbmZQVhA/okBXcdN5aEbk+cjnBrKr/UdUCb/Rh7y+ATSLgTRM/2+uASRPlQzVT2xd3b/uWJDYkf5OrzxfFGqCXgJhcVEQHQW0m9mm+vOH59Gykmg86uoRQ4vBoPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca; spf=pass smtp.mailfrom=marek.ca; dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b=c7kXOqTK; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marek.ca
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4606347c791so4308621cf.2
-        for <linux-efi@vger.kernel.org>; Sat, 12 Oct 2024 22:16:44 -0700 (PDT)
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-46041d86566so17204681cf.3
+        for <linux-efi@vger.kernel.org>; Sat, 12 Oct 2024 22:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=marek.ca; s=google; t=1728796603; x=1729401403; darn=vger.kernel.org;
+        d=marek.ca; s=google; t=1728796613; x=1729401413; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lsemdzDcD3ScL7UtYb4qSNAEzD93a7YTEXoVruVLDeo=;
-        b=RW4owqNQM8VT51X8ZyiQs+6hMruDBp5Ybm88tYEaoXz8aZtIlhTpWkDNUBhTBLZvnr
-         s/BH4w9G0GFD+7PNQsjCTk8nBCOiCw4IqOAD8r+ND06mXuGbdN5v/TCFVORsiD4xAKml
-         cPWBNqi+U/4zme24QZNHEKar4mtY6VsO6iiqML3ZRhWBVXlcSERPIYYFMXf4xZ/BXwIO
-         Yx7WbhZJ66hbVZQkODG+b3WFJWNXJ3noL2TnegCKCJtHsg8QrUDiEl6ukqodJSgUb1zI
-         e4TNEdWJgpodW13sbxv077tZyw+Hgzcc7cDHVXOfXvqQvDzyALxbeaF/nWt4lVQLB3LN
-         SNCw==
+        bh=UFCs9PVCOi6nYpoct0VXtnvh8Q54CTxgvHENhcgbqFw=;
+        b=c7kXOqTKuWxcUSIXOLiWlQnthDTpRpzu1Bmp32d1jXx/eC8BUzpZczF9Sh2TXG5e8y
+         9oiTCYwomBROXwtUhzLaRS+eMrfQ9QlN8+0tFuVW7vbh6H90Ar8aiXuS+VmO5ZWaQHXp
+         +IKFdncOptkUvcvJ/Q0KQSx8SBrq7HicTdjFSDkLd/w6prZPd3tUsCyLoL8BBw5Ho6AL
+         /3grdBKgqeaP44hmgl1RNiKXRzwcQOYuoBLf1Tx3vFuiusZnfK3qyqrd/u/Oso+0fCrw
+         PAC52Gny/DuMnoq8pnqvJ1dIBO8u9NWC0gwL0KP1P0+r6OgqO8gfJvIsgQM0HglttYuR
+         O4mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728796603; x=1729401403;
+        d=1e100.net; s=20230601; t=1728796613; x=1729401413;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lsemdzDcD3ScL7UtYb4qSNAEzD93a7YTEXoVruVLDeo=;
-        b=gLGa+6AG1vxepq0WHDDtEdZocvWGwQP5ZvBToDj81f4X0VOp4wZi+vpElbireEG7CN
-         XGzPkxf5BTsOkn9JI8sZeiXGgtcZtjiVpeonZxS7WfsKhn5w61QByHhYJEmpEVliK5CT
-         sn+Hk297UIAWEvDLkswn8juyGDgsbJ8b68ujLhIsObEceNjnwk4jZxZZJQ1g85vfcJQl
-         bvO8pYCC7oRCVg6XP9HUwC/4LHMgmM4/JMLWn/69Q2TXlqyY+iWjfHYFCeQ4LaeT2jHp
-         83wrLfTDgEeSgnn5qezqg4K+GB6Vy+v+g115681uWM+YvG/tksnaASxjgwIDRB9xnPa+
-         VWwA==
-X-Gm-Message-State: AOJu0Yx0LNCVbZ6piO6KFSX9CXSgZd5EYE3KXKbspQHMrtd79eDDhJoe
-	fgmA/sxbcTrjaItPDfFAsSEs9rq+hdwCqZV1jaoWcrqxiksyw75mSJ+Hjo2LjWY/MVhYiDuwZTu
-	k/8I=
-X-Google-Smtp-Source: AGHT+IEJcVxGqbdsBJXR94Q+RFwE89gyLs20hW2lUTpW+OZmmGTlP++w1tn9M0e5g55xMNBBUkWP1A==
-X-Received: by 2002:a05:622a:1a1b:b0:458:5e19:b3a4 with SMTP id d75a77b69052e-460584b4f3bmr83882861cf.38.1728796603424;
-        Sat, 12 Oct 2024 22:16:43 -0700 (PDT)
+        bh=UFCs9PVCOi6nYpoct0VXtnvh8Q54CTxgvHENhcgbqFw=;
+        b=N/K1KMrtgEik9KLHywV5QdaEdOggJWgNOg7X3aAuhfxHPgBGSBdljCHz4rjpKebgp4
+         31knFwo2rQyyD8vZRE/AxqCFQXjSliVYFNzExwQSHXoFwadcw2LGwX11cp9MCPPC5ryu
+         d7vK3Goamrzstlxiku/9MdTScpXqOYSQEYEhpRbc7jwoJZt5o6yQrSw17CzWG8ugUwWW
+         yRFCvSFva3TGShBW4KEakvrba205CPlVvKoFT571Z0wfEQlvydDuXXjYcvaRyPfwSoJt
+         n71BygJ6goUs4vs4j5kG24smA7c6K+0DCNHOBZDiVM67bVKS9pttmR/Z29T6aAVwW1PC
+         WhKg==
+X-Gm-Message-State: AOJu0Yy7AGKLwwLN8XaSVqIGyH/kMwgz7794SyBmQHbDsq4GsCJbVVzg
+	FCyGvf0Ksp1WnYXBNokRT6N7zgSWMWKwrOct8Ox6SIYKEXD5crP65A9tgC3Ybjh3nuPYgeaJL84
+	GnxA=
+X-Google-Smtp-Source: AGHT+IHG/xSyGmuyE8zwbcJNVk9iuBjHLpkXy8T1dg6AUG/GGj7Wobe9jHwQHwbRGzlAQ/O6I9nPgQ==
+X-Received: by 2002:ac8:7d47:0:b0:458:4eae:6c6c with SMTP id d75a77b69052e-4604bbcccb2mr102971461cf.30.1728796613223;
+        Sat, 12 Oct 2024 22:16:53 -0700 (PDT)
 Received: from localhost.localdomain (modemcable125.110-19-135.mc.videotron.ca. [135.19.110.125])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-460427dafc0sm31457681cf.35.2024.10.12.22.16.42
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-460427dafc0sm31457681cf.35.2024.10.12.22.16.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Oct 2024 22:16:43 -0700 (PDT)
+        Sat, 12 Oct 2024 22:16:52 -0700 (PDT)
 From: Jonathan Marek <jonathan@marek.ca>
 To: linux-efi@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Aditya Garg <gargaditya08@live.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 1/2] efi/libstub: fix efi_parse_options() ignoring the default command line
-Date: Sun, 13 Oct 2024 01:11:56 -0400
-Message-ID: <20241013051239.22564-2-jonathan@marek.ca>
+Subject: [PATCH v2 2/2] efi/libstub: remove unnecessary cmd_line_len from efi_convert_cmdline()
+Date: Sun, 13 Oct 2024 01:11:57 -0400
+Message-ID: <20241013051239.22564-3-jonathan@marek.ca>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20241013051239.22564-1-jonathan@marek.ca>
 References: <20241013051239.22564-1-jonathan@marek.ca>
@@ -87,31 +91,107 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-efi_convert_cmdline() always returns a size of at least 1 because it counts
-the NUL terminator, so the "cmdline_size == 0" condition is not possible.
+efi_convert_cmdline() always sets cmdline_size to at least 1 on success,
+so the "cmdline_size > 0" does nothing and can be removed (the intent was
+to avoid parsing an empty string, but there is nothing wrong with parsing
+an empty string, it is only making boot negligibly slower).
 
-Change it to check if the string starts with a NUL character to get the
-intended behavior: to use CONFIG_CMDLINE when load_options_size is 0.
+Then the cmd_line_len argument to efi_convert_cmdline can be removed
+because there is nothing left using it.
 
-Fixes: 60f38de7a8d4 ("efi/libstub: Unify command line param parsing")
 Signed-off-by: Jonathan Marek <jonathan@marek.ca>
 ---
- drivers/firmware/efi/libstub/efi-stub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 3 +--
+ drivers/firmware/efi/libstub/efi-stub.c        | 5 ++---
+ drivers/firmware/efi/libstub/efistub.h         | 2 +-
+ drivers/firmware/efi/libstub/x86-stub.c        | 3 +--
+ 4 files changed, 5 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index de659f6a815fd..e7346f8edb38c 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -327,7 +327,7 @@ static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
+  * Size of memory allocated return in *cmd_line_len.
+  * Returns NULL on error.
+  */
+-char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
++char *efi_convert_cmdline(efi_loaded_image_t *image)
+ {
+ 	const efi_char16_t *options = efi_table_attr(image, load_options);
+ 	u32 options_size = efi_table_attr(image, load_options_size);
+@@ -405,7 +405,6 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
+ 	snprintf((char *)cmdline_addr, options_bytes, "%.*ls",
+ 		 options_bytes - 1, options);
+ 
+-	*cmd_line_len = options_bytes;
+ 	return (char *)cmdline_addr;
+ }
+ 
 diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index 958a680e0660d..2a1b43f9e0fa2 100644
+index 2a1b43f9e0fa2..f09e277ba2108 100644
 --- a/drivers/firmware/efi/libstub/efi-stub.c
 +++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -129,7 +129,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+@@ -112,7 +112,6 @@ static u32 get_supported_rt_services(void)
  
- 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
- 	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
--	    cmdline_size == 0) {
-+	    cmdline[0] == 0) {
- 		status = efi_parse_options(CONFIG_CMDLINE);
+ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+ {
+-	int cmdline_size = 0;
+ 	efi_status_t status;
+ 	char *cmdline;
+ 
+@@ -121,7 +120,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+ 	 * protocol. We are going to copy the command line into the
+ 	 * device tree, so this can be allocated anywhere.
+ 	 */
+-	cmdline = efi_convert_cmdline(image, &cmdline_size);
++	cmdline = efi_convert_cmdline(image);
+ 	if (!cmdline) {
+ 		efi_err("getting command line via LOADED_IMAGE_PROTOCOL\n");
+ 		return EFI_OUT_OF_RESOURCES;
+@@ -137,7 +136,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+ 		}
+ 	}
+ 
+-	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE) && cmdline_size > 0) {
++	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE)) {
+ 		status = efi_parse_options(cmdline);
  		if (status != EFI_SUCCESS) {
  			efi_err("Failed to parse options\n");
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 685098f9626f2..76e44c185f29e 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -1056,7 +1056,7 @@ void efi_free(unsigned long size, unsigned long addr);
+ 
+ void efi_apply_loadoptions_quirk(const void **load_options, u32 *load_options_size);
+ 
+-char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len);
++char *efi_convert_cmdline(efi_loaded_image_t *image);
+ 
+ efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
+ 				bool install_cfg_tbl);
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index f8e465da344d5..188c8000d245e 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -537,7 +537,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
+ 	struct boot_params *boot_params;
+ 	struct setup_header *hdr;
+-	int options_size = 0;
+ 	efi_status_t status;
+ 	unsigned long alloc;
+ 	char *cmdline_ptr;
+@@ -569,7 +568,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	hdr->initrd_addr_max = INT_MAX;
+ 
+ 	/* Convert unicode cmdline to ascii */
+-	cmdline_ptr = efi_convert_cmdline(image, &options_size);
++	cmdline_ptr = efi_convert_cmdline(image);
+ 	if (!cmdline_ptr) {
+ 		efi_free(PARAM_SIZE, alloc);
+ 		efi_exit(handle, EFI_OUT_OF_RESOURCES);
 -- 
 2.45.1
 
