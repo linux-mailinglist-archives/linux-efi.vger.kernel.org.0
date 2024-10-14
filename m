@@ -1,103 +1,107 @@
-Return-Path: <linux-efi+bounces-1961-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1962-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FF099C686
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Oct 2024 11:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3D899C69E
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Oct 2024 12:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453311F22A82
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Oct 2024 09:55:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D6B1F2273D
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Oct 2024 10:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A22158DD8;
-	Mon, 14 Oct 2024 09:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF92158A04;
+	Mon, 14 Oct 2024 10:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VLC1+hWa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6GzxhkQ"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB98154C0F;
-	Mon, 14 Oct 2024 09:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1573CA48;
+	Mon, 14 Oct 2024 10:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728899725; cv=none; b=CVSQ02vGhhx0ggyV+cYkQ/kUYKHogydwEze9NbHcfH4TLoXmM5TNTJAKhMQUmz4n4LcQBrsIrwsm55u1U2myq7a9PXu7LRoNgQ3FRZ52YS/1QBytvAm9hTdlQLGj3p0iQWUuzWL5dbz5U0TXGy2O5TI1hPvXPR2NJA3K80BCsoY=
+	t=1728900069; cv=none; b=CcfcWWfPSeQmnnbPuxlCIpsouF4F8vaL5laap547+4G06c2NDmhKpDHmHGjA8XHKwF8bheS2FSoBBvpYrbS4tSFBwksx7eggG2+1jWe9+L0erHnxGW4lsXUOrUlXA+qdX9BwNoAGPLbKEX/oW9sXHejxUnBUVJ9fIyUSKJXO9ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728899725; c=relaxed/simple;
-	bh=3ZMSNdQ+QTXt0UQdH7cLlWIiwKzGSC3ZEQVfekTB6WY=;
+	s=arc-20240116; t=1728900069; c=relaxed/simple;
+	bh=UNS2MVwFWUAjxnME6SOqf6B7sXg8vJ2mbNhPcUcqDDQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CqI2pdraWAldsKXJ7SzN8StBrMM29O5XR29UYLmfYSjaPyWfBeex5vGGthqN5cPlaM5ZhVvLiS9oMY2cWXiVGsCMLyPC+qmGl9IK2FQMrt1Ty/KRXk3FlPyMXGixMLiNoAKyZSFs3y3K2DOA37X65PEy68liV6DXB7I6GXc6fTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VLC1+hWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C46C4CEC7;
-	Mon, 14 Oct 2024 09:55:24 +0000 (UTC)
+	 To:Cc:Content-Type; b=gwPJF78Ol1cfoPNrg/Z/aCe8VNLzCAkUZ0ibALNWyOut4/pCXWZpqX1BqdhhyvSi5c+8oMZBeP1Zd42+SShgo17OAwNhw3IpHudUZn9lp94ZaHZcUmZpa88+T/IAE3maKzYAtRfmew/5pFbyErd71UihjvyMaS+wXU6kcOdFzu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6GzxhkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9843EC4CED1;
+	Mon, 14 Oct 2024 10:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728899724;
-	bh=3ZMSNdQ+QTXt0UQdH7cLlWIiwKzGSC3ZEQVfekTB6WY=;
+	s=k20201202; t=1728900068;
+	bh=UNS2MVwFWUAjxnME6SOqf6B7sXg8vJ2mbNhPcUcqDDQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VLC1+hWalODqOMM+bV8GENTNfw9u/qqY84g0az0Q52OQuzyB2r/LOAVavyYHiU7PZ
-	 CKZe0PxYuva+bokZD4V1DZXc4vit3Tj2P1qlILBpLf1rdXKsOgrX9L8gL2pbQlkCG8
-	 OfHwgVBQ3ySrl8hvXdOdlqFgmWYAeViyG/RihFzUPZuVsTz78gyhEYHKmqTdzVpCHq
-	 sQxckcq9ADGghs6wP8AI0giD4etj3tJ0Axqb0atUTbVJFlxE95ep6SuuXTVjFlAn8a
-	 2qIVPIrsYHHOPBj4fr5r/Zj67FEYyIPssR1+B8s/2EknsV1WbQmOVkn9qpvCyTfMgG
-	 4XSRwYwymMx9g==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-539e63c8678so1576443e87.0;
-        Mon, 14 Oct 2024 02:55:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXs4hO1be/0g9vcX7SmbCH7H0EtfDyBfw0fAXMWaO+d3hGcKwvjBXPLWv0usF5tSYUnihN+KwMKHFlyim4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweBP0ItrCBownD97bvMrtj5yjVImFZW4hTuoSG/2flebDav9FT
-	6iKNEqGUAmpesYAZC1G6iGcMKcD/W92K4aIVy1dBA3E7An3DcPmGcvUnlGxzPPIJ7u9z/LUNiJ6
-	+lfNunHEySDSs3bZmyaK8Wmya7is=
-X-Google-Smtp-Source: AGHT+IFMzNxgnEYcg2RS1dxa0nLzOYTnVQy8ri+bd8Yhbe52Y7JuSitH+4b0zobiJZv4UMc9RBk3poZWzp8s/obvi/4=
-X-Received: by 2002:a05:6512:31d2:b0:537:a855:7d6f with SMTP id
- 2adb3069b0e04-539e5518b62mr2722261e87.34.1728899723292; Mon, 14 Oct 2024
- 02:55:23 -0700 (PDT)
+	b=a6GzxhkQ4eautPtzLeyU/2aqESv/18Ee0gObqeR5iPOIjpU9OBuR+5FyLX/s2bBhI
+	 HwS01+WoWVIK6HT5ZnDbqBLiYASNA+JuQYbxZxDsCjLtgMXnJlyOxmeO5zuSQaDSqw
+	 9jOBAzZGMKiGNJPjw08kmkh5xOpx7pl7mYdbIfQ30Y52YfrjsqD/963RAPjpqFlPxV
+	 KHl4iSQeP7ge8d+zGsa8v0Tn4PLh9u2lHJ/Apsjkg9jn90QtM/OJnx3KqPMUtpWJlm
+	 Qn2ddGaVoCFE54mLxBnyTSgqFtt8EjMa4ze1KJuKKCZzgcLFXlOS9nSRr4i1e7PQOr
+	 HDJSJ1F48Obew==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539e1543ab8so3679261e87.2;
+        Mon, 14 Oct 2024 03:01:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVbpwTcZOWYrP8fnWcPLjSWQVtyiNB8Tz7wInztT9Tn88irFhhSu4Vn5b7STuyk11+fk/9JyjGW0Fyj@vger.kernel.org, AJvYcCW3ROYDzOCjeToxf//49kSNmU2RsyepSZl6dIKa1lQZvF4vLddUpULqKaFKIvrvuxV+Wu6Kgzuapni9wqhu@vger.kernel.org, AJvYcCWzmU1nVG/lmn6HUEo/YdQePBulXOeKzjc08q+SVo/Y9BhXVSBALNtbfEZDPnQa+ZMhPrcBVwBrR+1CnA==@vger.kernel.org, AJvYcCXsD2RK3rgBIRzkJOC+7B0GQKTMdpuy+EdHI4DuBGghSUiSjjp/s1KgCLwRr1xbqVQltYxgA0SqzfSW@vger.kernel.org, AJvYcCXyqmYbGc1Iq+SfgwRk6UeUDRX6zGWGojitfaG/tPOTJpEjs//JbJuuPfL3wztrblfREveWh5CF+QUO@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjQpvmDrbhb/a2sJZ3izP6MmPoMwU5QLZMQX4XAJdwSulCQE8f
+	rOEbA+6APkcpEAQmdjxw7009YRYq+7GR3EXxUN5MDKsWMgZkWP4JTq2T3vK8uIisI3Y/M/AqBJU
+	5oPDY+/yf0x4iklyQJJ7bTNSEXsc=
+X-Google-Smtp-Source: AGHT+IHQHJpa3JQRRAOQ2EbKcF3gvrh9bS5qYKnSRZDxhtEZKuUYMLy6xhfIzk3zgOavhyTTW1zVFEtyd3KDITjvTqI=
+X-Received: by 2002:a05:6512:3b27:b0:539:8fbd:5218 with SMTP id
+ 2adb3069b0e04-539e5728316mr3615537e87.56.1728900066993; Mon, 14 Oct 2024
+ 03:01:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241013051239.22564-1-jonathan@marek.ca> <CAMj1kXHvOgGysdPSNNk1bUR2f5tzRaxr4=saqF8KFXq+q6gDCA@mail.gmail.com>
- <b13dc40b-cb72-02f6-0379-358499696eb2@marek.ca>
-In-Reply-To: <b13dc40b-cb72-02f6-0379-358499696eb2@marek.ca>
+References: <cover.1725429659.git.mchehab+huawei@kernel.org> <20241011115707.GCZwkSk5ybx-s9AqMM@fat_crate.local>
+In-Reply-To: <20241011115707.GCZwkSk5ybx-s9AqMM@fat_crate.local>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 14 Oct 2024 11:55:11 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGbuZnM8GoHasWNxs2YOnUDL-JViRmvGdVc91WHkMbdqA@mail.gmail.com>
-Message-ID: <CAMj1kXGbuZnM8GoHasWNxs2YOnUDL-JViRmvGdVc91WHkMbdqA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] efi/libstub: fix efi_parse_options() ignoring the
- default command line
-To: Jonathan Marek <jonathan@marek.ca>
-Cc: linux-efi@vger.kernel.org, Aditya Garg <gargaditya08@live.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Borislav Petkov (AMD)" <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>, 
-	Kees Cook <kees@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	open list <linux-kernel@vger.kernel.org>, Nikolay Borisov <nik.borisov@suse.com>
+Date: Mon, 14 Oct 2024 12:00:56 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGQSgeshrns7-EwTkG_c1dHgaxaVxO_FxWumdFx6m4vRQ@mail.gmail.com>
+Message-ID: <CAMj1kXGQSgeshrns7-EwTkG_c1dHgaxaVxO_FxWumdFx6m4vRQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] Fix issues with ARM Processor CPER records
+To: Borislav Petkov <bp@alien8.de>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, James Morse <james.morse@arm.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-edac@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 13 Oct 2024 at 21:25, Jonathan Marek <jonathan@marek.ca> wrote:
+On Fri, 11 Oct 2024 at 13:57, Borislav Petkov <bp@alien8.de> wrote:
 >
-> On 10/13/24 1:30 PM, Ard Biesheuvel wrote:
-> > On Sun, 13 Oct 2024 at 07:16, Jonathan Marek <jonathan@marek.ca> wrote:
-> >>
-> >> v2:
-> >>   - changed to check for NUL character instead of size==1
-> >>   - reworked cleanup patch to remove cmd_line_len
-> >>   - moved 3rd commit out of this series
-> >>
-> >> Jonathan Marek (2):
-> >>    efi/libstub: fix efi_parse_options() ignoring the default command line
-> >>    efi/libstub: remove unnecessary cmd_line_len from
-> >>      efi_convert_cmdline()
-> >>
+> On Wed, Sep 04, 2024 at 08:07:13AM +0200, Mauro Carvalho Chehab wrote:
+> > Jason Tian (1):
+> >   RAS: Report all ARM processor CPER information to userspace
 > >
-> > Thanks. I'm inclined to fold these together and just merge them as a
-> > single patch. Any objections?
+> > Mauro Carvalho Chehab (4):
+> >   efi/cper: Adjust infopfx size to accept an extra space
+> >   efi/cper: Add a new helper function to print bitmasks
+> >   efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
+> >   docs: efi: add CPER functions to driver-api
 > >
+> >  .../driver-api/firmware/efi/index.rst         | 11 +++-
+> >  drivers/acpi/apei/ghes.c                      | 27 ++++----
+> >  drivers/firmware/efi/cper-arm.c               | 52 ++++++++--------
+> >  drivers/firmware/efi/cper.c                   | 62 ++++++++++++++++++-
+> >  drivers/ras/ras.c                             | 41 +++++++++++-
+> >  include/linux/cper.h                          | 12 ++--
+> >  include/linux/ras.h                           | 16 ++++-
+> >  include/ras/ras_event.h                       | 48 ++++++++++++--
+> >  8 files changed, 210 insertions(+), 59 deletions(-)
 >
-> No objections (its not important to me, but if you want to get the fix
-> into stable I think the separate commits makes that easier?)
+> With the issues to patch 1 fixed:
+>
+> Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+>
+> I'm presuming this'll go through Ard's tree. Alternatively, I can pick it up
+> too with Ard's ack.
+>
 
-Yeah good point. I am not going to send these out as fixes anyway,
-given that they affect boot behavior, and there are some other things
-to fix.
+Either works for me.
+
+Mauro: please put all maintainers on cc of the code you are touching - thanks.
 
