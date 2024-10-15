@@ -1,123 +1,120 @@
-Return-Path: <linux-efi+bounces-1969-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1970-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0311999F4FD
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 20:16:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BAF99F4FF
+	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 20:16:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01F9C1C232C4
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 18:16:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C73641C23181
+	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 18:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CC81F8F17;
-	Tue, 15 Oct 2024 18:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4072E1F8F17;
+	Tue, 15 Oct 2024 18:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0+0zc2eR"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ueAvDDbw"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CB41FAEF3
-	for <linux-efi@vger.kernel.org>; Tue, 15 Oct 2024 18:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52811FAEF3
+	for <linux-efi@vger.kernel.org>; Tue, 15 Oct 2024 18:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729016161; cv=none; b=XibpRf8KyNmYsQbzrDf8J8S8BoSOTZmt9UpTxff9rIUhpA9ZQAgCZxuBHUS5DoIl/nvrnZQZz9vIK5fmdinFIh5NgLGCcN6qIaoDNKTroF5q2xLnyla3ZqzZG1pECddMfQi8mt0ZlUO3dbTQf9d/xSuM7f4Pg0zgec+XM9BB7gs=
+	t=1729016163; cv=none; b=XFxdnG3t/4dmgJ7Jzo9zfGl0IjU9kYeAT52y2mN8lVwCyB1xyp5vfQUwHKOVCPN+CmqDgulzvgMJTxJk+RqbCIfqY5c8Y8rNuwWR2PbztWUipGzZF0Ih+mQQi9ZSdEJicROMWikF6gAN4SL3ujsv6+JqQ/d+ukzJVYb8ahdQOv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729016161; c=relaxed/simple;
-	bh=Io01pTFYMIte9yxemTwKWh2HZlTI2RwLBGB6qdLs3TQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fnyCndPWYGB7uPhDYg5DXlaY7s4BMmiU7D40RVOvVcNHiB2NWMBgiPjS4MvncEV3MYD6oz7+qaX5Bc3p+pIhjyFZiJpf3bskYe6dr8bNvWPaXGpuEAiRRWDbrEJ2vMhUdzGLjWqoKKaow4w2U9+EaSiMFrTR2B50tMqpWwMgwpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0+0zc2eR; arc=none smtp.client-ip=209.85.221.73
+	s=arc-20240116; t=1729016163; c=relaxed/simple;
+	bh=1T6yD1P7ph0N1EELkpHc9HmNiM6TWkRhIMzSNPpxag8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pKXz4bagYvnf6/jWs6v3dpOfGB5usDWUNmssIVGnc8mX9ADHNvmia9P7Ta9juh/94iIVd2P0lf2w7ho0texiJ4ODAmDVyBAiU5GOjXnpD/A2/oak6wJAGDhpFa2T86Mj3h5whK/EwKvGLSFZoY3WZ4TV7cBck251p/UL9aoE8D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ueAvDDbw; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-37d45de8bbfso3588222f8f.3
-        for <linux-efi@vger.kernel.org>; Tue, 15 Oct 2024 11:15:59 -0700 (PDT)
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e38fabff35so38585397b3.0
+        for <linux-efi@vger.kernel.org>; Tue, 15 Oct 2024 11:16:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729016158; x=1729620958; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=djozh5uPHkhGo9UNi3Y9YhvBqfn2inN4dQSDVEKC3H4=;
-        b=0+0zc2eRTeZ5IrCCmbJn5ahLrwg4e1pwCBkDEm6WeROARsgKGd0W+OB0xeDBSHSEbQ
-         WS2GLH9yBySLAVrHUCHrUd5TtElrUsS4Du/LgwGJnaaI4e0rR+QdRtNb6oy8u55gOA7p
-         yNk+yafJ6VwkSU3/5JNCS6jhGA7KoufGKsAVIC6tsr8KCzEX+JJlwyO1c1cHgdQUe2gi
-         fbX/lyO54CaHgJsG1MfyUSy01e+UXIkS46+5I34gVUQ21doun8ZTe2spRHh0fBQIGWxG
-         VnR6GQJpa4ke92rnZh1reVeKUr6lYRkXqt1Wf6fTrV8PAiGjlr6qjCDRwUWGlN8qwweW
-         2Siw==
+        d=google.com; s=20230601; t=1729016161; x=1729620961; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vb0F1D/URMqrEFjwIj8UXRbubquki/NP7m91+7wn/AA=;
+        b=ueAvDDbw79bIL3Hf6xn9SqB96rGdC3WNIVGeUzdilFOsxnqeo+JG0bqL4xbDakBDRS
+         snwZ3zijZaDY7CqJstutRKvvNdNNPd1YAuzFmhbUjSzeWKsqkgMW8stm62X79lv9FVsc
+         iLoxIwDEyBYZt45vGPNd7lyE4PSt9g9pHdmFuK95WawFFj3kFEIkunf5Kq5hLptDHZ74
+         oaWeltIw94nHEFFCqV0UzYj6LpQ5Ze9XSNeHwEDuK8waLKvdnS+Pjo7k3zPzIL6bhi2U
+         PFRFT31+7A5+xWmWVTEQ29ZKIGlkEm6u56ZDYjgMynBLuttCjJYYjK1qPxbnBFNJortp
+         q0Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729016158; x=1729620958;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=djozh5uPHkhGo9UNi3Y9YhvBqfn2inN4dQSDVEKC3H4=;
-        b=IJp8qSwVZoZqUB0cCL6+7mow2/AWiuQgey3BICx8eTpYb/DyyDcWzVl0gfPmDSQnCC
-         O5JfaRJ7gD+1dtYplTX1BhHLVUEk8nwfQVQxXXEwhB+PTeWJDlBjREToJiR5DMbmizzJ
-         S06EGe2BlmByaiDjsGu+YNM2rrj3tOT/73HDTlealVeoi6lC2eQnjpStrzIHj8Pkt4A9
-         mbDchhMuKtcVrenSSSrSt1lzs3ng68U47eQAl5lfMN+0AGV3YJOp5oASmZayqm8m9M7+
-         IuRruskz7ht6OhRgJxabccdIE8TGjLUdattsGF0tjSwCjAHDvp6PNhU5H41q3L3siav2
-         8zXw==
-X-Gm-Message-State: AOJu0YxEggMW4k0q4TCYWsCigPCTfUwCvM0wTQOw1KnhZshRDhdodgiH
-	koGDBdtNFYFh2h5TdIBdNDx7Hry5jE4Yo4voe41ixhv37aOObJ44IeUq1bYwvkycjWhXjKVNMun
-	9s7/CP38zSsmaFgqwvA2BV31Z1YRbS6VJ+lXgvi4Loxf7t7EcJkLzxuKmayNMSAszlmn/iO1biv
-	3Of0F6wb3xeew8lPF03ai28lc+5w==
-X-Google-Smtp-Source: AGHT+IG4Uy9PI8UTU9F3FRndbtgnqsTldhV9xKQgyAhjmwPGeg1iI5C46nO1uWYKJDjFKIqWqpHzH+z6
+        d=1e100.net; s=20230601; t=1729016161; x=1729620961;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vb0F1D/URMqrEFjwIj8UXRbubquki/NP7m91+7wn/AA=;
+        b=NNJX7o6JstSEO1IE0DXr2wVKb0kRQ4GsczldFAkyz4Kv7oxhKYjudMxJ87r2KxqRP0
+         AhcYbkYzOXEgHR+0pE7KXo8P96ZuKDpz+/vWDOPaAM0s0skvedqGmaH1/N9Nrou5AAnA
+         g8EG9ilT7dporD3lHXREcimnYGKmt3dhT4+eHTxBIglZ/qdI2tZp9MfxAfmWMyGuPn/f
+         MByOiP24W6vTExJD4/XwahXvXZm68HkeShqdXV2uEBF/gN+UKZpnc8FoozQG0G6i8Q5p
+         biYD5W3vQ/GQKYqrMbouB5EW7xTdyTV/BmlbYRcU3nPUdMRzGlBwLcPsOvwW8KOOkOur
+         +jbA==
+X-Gm-Message-State: AOJu0YxT9HY8gTVg3j8EqedZTM9uG1RRMZ3fGZvyboM0+7RTeUaCDsOb
+	B+d/TU/XP8P4WLPyXdyIsvJqNKVBqFLZFtYu2tXZvYSEdVx0EgnD9debHYWYBTnoGwYePyEwHTv
+	ruiSX+wybKrDAJlanMndK+aiCW+dLwM3Jv4OznBzm0jYfXPFMHoIOTsupPHIVKStkgVjQ6E2t1/
+	xnCLoVpQkrYxqzV1PZx1zyPAchZQ==
+X-Google-Smtp-Source: AGHT+IF0ZFpt5BuaaKZZKmArgpOmwAK2y4TVZ0ZMvSmzW3l/nsz2mOo0qLLkWGNat2clvzQKDi0jqUQU
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
- (user=ardb job=sendgmr) by 2002:adf:f810:0:b0:37c:cfb6:cbaa with SMTP id
- ffacd0b85a97d-37d86d2bba3mr678f8f.7.1729016157392; Tue, 15 Oct 2024 11:15:57
- -0700 (PDT)
-Date: Tue, 15 Oct 2024 20:15:50 +0200
+ (user=ardb job=sendgmr) by 2002:a05:690c:7406:b0:6e3:8562:ffa with SMTP id
+ 00721157ae682-6e3d41bede4mr387857b3.5.1729016160512; Tue, 15 Oct 2024
+ 11:16:00 -0700 (PDT)
+Date: Tue, 15 Oct 2024 20:15:51 +0200
+In-Reply-To: <20241015181549.3121999-6-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20241015181549.3121999-6-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1577; i=ardb@kernel.org;
- h=from:subject; bh=bvf6wCIdyOAFYcyFQzZ9oiRaXWmrTQSbnH5NqlRgblA=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZ1vY1jQhwcfBfJNS3o4PNVzYy6UmR6+w8ESfveA1wP3e
- KH/OeIdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCJupxn+pwoIFHy589lmwvfT
- flFtr9MYHxd86Kqftk4p8MXTjFNbxRj+ChecZ7/5rFafvzPSj6GXa8+pvwreqTHbXBlF73Cd+bq PEQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1035; i=ardb@kernel.org;
+ h=from:subject; bh=DUEag0n79tEu8RYPtJV8R8SWhGsqbJq47gyRYXEDML4=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZ1vY/iTL6tc/x0yfv/90ClBTt75/3geTTy8iWGhjNmd5
+ ZtCJ6g6d5SyMIhxMMiKKbIIzP77bufpiVK1zrNkYeawMoEMYeDiFICJzFvD8D970vqGxVwcRr1b
+ 50Zsd57Su/LzvgvJ3xQYDKVrOH2UGp4x/K/OL1PLdl/kekB0cnbZhubNv3f9aWQ3cJlzhPOThvw Tdw4A
 X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241015181549.3121999-6-ardb+git@google.com>
-Subject: [PATCH 0/4] efi/libstub: Clean up command line handling
+Message-ID: <20241015181549.3121999-7-ardb+git@google.com>
+Subject: [PATCH 1/4] efi/libstub: Free correct pointer on failure
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, Jonathan Marek <jonathan@marek.ca>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Jonathan Marek <jonathan@marek.ca>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-This is a follow-up to the patches sent out by Jonathan last week
-[0][1], to fix the broken command line handling in the EFI stub, which
-currently fails to use the built-on command line as a fallback as it
-never considers the bootloader provided command line to be empty.
+cmdline_ptr is an out parameter, which is not allocated by the function
+itself, and likely points into the caller's stack.
 
-This series fixes some more identified issues:
-- free the correct pointer on error
-- parse the built-in command line *after* the bootloader provided one,
-  if both are available, to match the core kernel's behavior
-- implement the missing fallback handling when loading files provided on
-  the command line via initrd= or dtb=
-- ignore the bootloader provided command line when FORCE or OVERRIDE are
-  configured
+cmdline refers to the pool allocation that should be freed when cleaning
+up after a failure, so pass this instead to free_pool().
 
-The latter is provided as a separate change, as it changes behavior in a
-way that could result in regressions, however unlikely.
+Fixes: 42c8ea3dca09 ("efi: libstub: Factor out EFI stub entrypoint ...")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/efi-stub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[0] https://lore.kernel.org/all/20241011224812.25763-1-jonathan@marek.ca/#r
-[1] https://lore.kernel.org/all/CAMj1kXGbuZnM8GoHasWNxs2YOnUDL-JViRmvGdVc91WHkMbdqA@mail.gmail.com/T/#u
-
-Cc: Jonathan Marek <jonathan@marek.ca>
-
-Ard Biesheuvel (4):
-  efi/libstub: Free correct pointer on failure
-  efi/libstub: Parse builtin command line after bootloader provided one
-  efi/libstub: Fix command line fallback handling when loading files
-  efi/libstub: Take command line overrides into account for loaded files
-
- drivers/firmware/efi/libstub/efi-stub.c | 21 +++++++++-----------
- drivers/firmware/efi/libstub/file.c     | 21 ++++++++++++++++++++
- 2 files changed, 30 insertions(+), 12 deletions(-)
-
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index f09e277ba210..fc71dcab43e0 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -148,7 +148,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+ 	return EFI_SUCCESS;
+ 
+ fail_free_cmdline:
+-	efi_bs_call(free_pool, cmdline_ptr);
++	efi_bs_call(free_pool, cmdline);
+ 	return status;
+ }
+ 
 -- 
 2.47.0.rc1.288.g06298d1525-goog
 
