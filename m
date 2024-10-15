@@ -1,122 +1,162 @@
-Return-Path: <linux-efi+bounces-1973-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1974-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84F999F503
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 20:16:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CEA99F527
+	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 20:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98227280A97
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 18:16:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59821C229C1
+	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 18:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34221F9EA8;
-	Tue, 15 Oct 2024 18:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6145D2216AF;
+	Tue, 15 Oct 2024 18:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BQQvVp9k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gOD/JAw2"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D571C4A2C
-	for <linux-efi@vger.kernel.org>; Tue, 15 Oct 2024 18:16:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39319212640;
+	Tue, 15 Oct 2024 18:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729016169; cv=none; b=PGEZuSPK8xSC10aGzghypjWwsGvhQ6kfj+9f+9pzG+6rS94vorVSjGk/CDbioHK0TP5GHS3GiS/JaGyFM5Fi1bIkpKUQo+CK7Q7X2LcDCrX7VnDdDkvbY5RhNLh3knQouRp8eEoeDY2yfssyeXiopSU9JmnSXyWZR7/kW4iTXzk=
+	t=1729016652; cv=none; b=S1cIuvmVLC6IheBRrg6DmNQ+sdOImAqMMlFBLmkCg7tOK8i5XrNnDjDqECCpidr/aNaxUbRSteN6cuPBmBv3L36674hTWN1s4NVaE9R9k0gE3pqOgm2TkQgJUIcWNt0/rCq+25yqC8kdTTEXgLTSS3bvxsBf9EbJKgFWqxHcIXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729016169; c=relaxed/simple;
-	bh=BJZj/dEBYUvetfEZcPn6U2INkGIIWdrX/wfmsQx2rxI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LFE8Pl4+DTrv8uc9dte9Mt0El6JsvXaKfcK4rDqtdi6aMleoTovZ+KjfNSSFMdjG5yKnPpj63HYW8weaNU0sCM5PvOVONnNR26oYikt+zdIt1A2cLwNiN2iAcA1atADEcUwyFOuzqdcNrRJh1PKqkKmM1DnGu3rBbJ0woE74Bt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BQQvVp9k; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e000d68bb1so1417717b3.1
-        for <linux-efi@vger.kernel.org>; Tue, 15 Oct 2024 11:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729016167; x=1729620967; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aLB4hXLLxRt5W1gNs5r4BTRK4JBX5nV19kECJ9LPoq8=;
-        b=BQQvVp9kH7y0tvjfxk3ezh63eP5PdUTTrkA9YyP7goiVidA6GSOgFFBQTQPghvHmeT
-         xWzNqa+P0pTNgbv4IOrWVwwszXrcKcVuVME38HCg7XDZ/KbdyhgUlejdtd/LJHi0z+S6
-         0DjeNuuUXGLrN4tQvtuoX0aFN/4ZPJqVxL3lFLBU703Cr3f+ZEIQLeIFefffTD+jRwuk
-         l0eQmtEx46yTpt1kO0AAR2eAZJwjbd3+7HZWvWE3ByRKRnhKDE10CHPXw33s5DAJS+5R
-         1VpzPxJtcjvOrEXfHB26uCR8BpzWlseK5lgkqYKGeXmlbq+Hb6JUQWiUThRz+R+jdfrK
-         vi/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729016167; x=1729620967;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aLB4hXLLxRt5W1gNs5r4BTRK4JBX5nV19kECJ9LPoq8=;
-        b=ZlVc6hLjOVKxcKG8IlLKY5Y67EHXjapNM6D+Plc2ANHNcW0wbj++HnbOk4ABHlQJqI
-         VyRxiaaCWsxZ17zKp6aeW9yfmJ0AmaaJSX490f92XIh8o5BK4sWFFwJOTWRuTuk7fiqp
-         w6QPpee5I5i3WxScIS9MtsHOOYhqfvyl7G4mP5WdfP0KsxP55iotMqflChB7zUiLAfYl
-         bldvKo4m0JtKjBJnnSj6F9EF/X1rMCgoiauc418slbvEXNGsK+XxbkxyUAl6h7b7WyMr
-         Iz3SVjgt/km+HXsvSjemS3i1+aWgpOtfnUxovcxFhNpSBbAN5P2u9rQqp9XYdTCf2IrF
-         JlRw==
-X-Gm-Message-State: AOJu0YzyTzHhfSq5nobPBipEcsTiQGwdRpazjqFYhYEFxbXxizRvrbEV
-	dCRBFrdqe1AzRokSiKmX4/usR4RSuW7COzigvC0x9RBtNI57KkvPu3k2za5ar0lv37EGhjaW78G
-	ki+/F3K3UNTySkXCL9qRGBpHKa/+uFFFg6I0XsOewNAxztfEtmJ3R1Hufd5+ilbn4ntZnPxCuk8
-	r3hCfUS12RBcp+eSHqrkCV6AJL5A==
-X-Google-Smtp-Source: AGHT+IGKAM7sU9sXkondbx1hiQgcs9CSlRrfIWUr3OyF6Of+7LZoTMoTYcZyQ6Rw1HfX60fHOnFDi0sq
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
- (user=ardb job=sendgmr) by 2002:a05:6902:1ca:b0:e28:e97f:5397 with SMTP id
- 3f1490d57ef6-e2977518269mr3960276.3.1729016167269; Tue, 15 Oct 2024 11:16:07
- -0700 (PDT)
-Date: Tue, 15 Oct 2024 20:15:54 +0200
-In-Reply-To: <20241015181549.3121999-6-ardb+git@google.com>
+	s=arc-20240116; t=1729016652; c=relaxed/simple;
+	bh=upWiI//rYiJLMKe4yJasEb1zsuVr65vUUAay7scsqIo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ahwWb9X34R/xdX411XqESahlustFXtPv/xHKNj/DJF6NB+1642ujwEJQV1SbLFbLPEGIs38Bm/mX4KqzCazFSYyPrQfQmLXorDImLGCyESHhbBNDb/rMWW5Y8gZbtapfnCBG/EFozR3lkTTxYL9AFaU7/16AbzfZO4kPPYVc4kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gOD/JAw2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A13C4AF09;
+	Tue, 15 Oct 2024 18:24:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729016651;
+	bh=upWiI//rYiJLMKe4yJasEb1zsuVr65vUUAay7scsqIo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gOD/JAw2huOzSx4oo6mE2aERtlExe+t8XzFk2ho0psqIPh1eENDUjwTTRyGIgxoed
+	 HCuAgzTdhffQqxj9YPG4aeHxOOs4HnOGxTWt4uZwZ2I9PHzpY3wu89n5yY8a2BBCni
+	 5yhn/XwjxeV61UhQ5v1ZIzZVilmgK6KUpQUdlo7wUXx9G9ReMXFrAHukv9Hg3S665d
+	 qwliX/lGIwUwZUWw/gb/rXu/1UgA9XNlnQ3b9SVYblgitqSJc+OBZIuK2uH6CT/D8J
+	 oDJ4W35GckOEy2WFWTjpiVcW+/Q6Tz6y9Sw14oILXhEHhvCSotpd5yK0bM2UmUA3Rh
+	 DCnnE2wh3q8uw==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-539f84907caso2914509e87.3;
+        Tue, 15 Oct 2024 11:24:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW6HKL/Qxqzjnxn8Qb8Xxndx3seUNr6IkTy6nXffJ3gXghhtS4dNzpp68MOY7UPtmYWvcZFJ3H/9DQ=@vger.kernel.org, AJvYcCWUCBMn7+pQASEpnDE7TPJOLd6vrnJCoX9qsj6DESp+wbWlFBdxg7CT34UnnAQVQKJGYCc3kwUrJePZB/cG@vger.kernel.org
+X-Gm-Message-State: AOJu0YydRwa9CIIyiFT8ZMsxGkfSXn25KCWmhOfKeWeamvA2oZ5o3HsZ
+	J8ncl45ktIGGISyC1nU+bg3J4FZCgiSSkb5QijK/RpAcUQ7hOmnst/QnP3pBZFUPkOPf+nUxpEd
+	3eK4HBSrLuk7KwEBsLNlO6qs8veo=
+X-Google-Smtp-Source: AGHT+IEqxVDXB+67x2LNye5De4wern0VGF7eTCBuNTaTpqVe3ApOmkkxRNI+6XI3r/iORIhQq67NA6NmjkUJKvg1GQM=
+X-Received: by 2002:a05:6512:3d24:b0:539:f4d8:ee43 with SMTP id
+ 2adb3069b0e04-53a03f29dacmr951250e87.22.1729016649970; Tue, 15 Oct 2024
+ 11:24:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241015181549.3121999-6-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1208; i=ardb@kernel.org;
- h=from:subject; bh=6m7aUuA46M4Ug0AbSzb6lLfveQg53ri9buly5/TPwIc=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZ1vY6R5g152/SnOR5NXlHs3xVk1fQzsXzl/cQTfL5sdD
- 08Hm+3pKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABPhSGFkWHmoctPMZ7UPOebP
- +7L/X3HAL1Gdfk32BecjBd7nc01fasrwP0LbUmK1yOOc3qz8Ip+/kVOrGsLf1xRsbzoQ0SU/YdY 3LgA=
-X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241015181549.3121999-10-ardb+git@google.com>
-Subject: [PATCH 4/4] efi/libstub: Take command line overrides into account for
- loaded files
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, Jonathan Marek <jonathan@marek.ca>
+MIME-Version: 1.0
+References: <20241001032028.483199-1-jeremy.linton@arm.com>
+ <CAMj1kXEwsB2JZeE451Qf=tad7mapWATu_-ty+r7fcMTcxQ=StQ@mail.gmail.com>
+ <CAC_iWjJH8JwdPbL9Et6xNLf4vV1AQDm8ZZh8zYVkb+VFLXedTg@mail.gmail.com>
+ <0bed3801-47c0-439a-8b46-53c2704e9bb0@arm.com> <CAC_iWjLo3j73J1x1Bw01szxN4uHUU+tPstWkYk3=+7t7DziHpw@mail.gmail.com>
+ <c0121455-6c46-468e-a386-6be2180dd7a3@arm.com> <CAC_iWjKB479Wbg01bgbo46rM_OyNzDmxqH9OkusNr8+8GafcPQ@mail.gmail.com>
+In-Reply-To: <CAC_iWjKB479Wbg01bgbo46rM_OyNzDmxqH9OkusNr8+8GafcPQ@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 15 Oct 2024 20:23:58 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFYqon3u74_cV9v-UtQs2UQR6bVkdieW0b7QsX42AMfVg@mail.gmail.com>
+Message-ID: <CAMj1kXFYqon3u74_cV9v-UtQs2UQR6bVkdieW0b7QsX42AMfVg@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub: measure initrd to PCR9 independent of source
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: Jeremy Linton <jeremy.linton@arm.com>, linux-efi@vger.kernel.org, bp@alien8.de, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Wed, 2 Oct 2024 at 20:25, Ilias Apalodimas
+<ilias.apalodimas@linaro.org> wrote:
+>
+> Hi Jeremy,
+>
+> [...]
+>
+> > >>>
+> > >>> Back when we added this we intentionally left loading an initramfs
+> > >>> loaded via the command line out.
+> > >>> We wanted people to start using the LoadFile2 protocol instead of the
+> > >>> command line option, which suffered from various issues  -- e.g could
+> > >>> only be loaded if it resided in the same filesystem as the kernel and
+> > >>> the bootloader had to reason about the kernel memory layout.
+> > >>> I don't think measuring the command line option as well is going to
+> > >>> cause any problems, but isn't it a step backward?
+> > >>
+> > >> Thanks for looking at this. Since no one else seems to have commented, I
+> > >> will just express IMHO, that both methods are useful in differing
+> > >> circumstances.
+> > >>
+> > >> For a heavyweight Linux aware bootloader like grub/sd-boot the
+> > >> INITRD_MEDIA_GUID is obviously preferred. But, for booting strictly out
+> > >> out of a pure UEFI environment or Linux unaware bootloader (ex: UEFI
+> > >> shell),
+> > >
+> > > I am not sure I am following on the EfiShell. It has to run from an
+> > > EFI firmware somehow. The two open-source options I am aware of are
+> > > U-Boot and EDK2.
+> > > U-Boot has full support for the LoadFile2 protocol (and the
+> > > INITRD_MEDIA_GUID). In fact, you can add the initramfs/dtb/kernel
+> > > triplets as your boot options, supported by the EfiBoot manager and
+> > > you don't need grub/systemd boot etc.
+> > >
+> > > I don't think you can do that from EDK2 -- encode the initrd in a boot
+> > > option, but you can configure the initramfs to be loaded via LoadFile2
+> > > in OMVF via the 'initrd' shell command.
+> >
+> > Oh, I guess the shell is a bad example because I was unaware that there
+> > was a initrd option in it now. I'm buying into the boot loader/boot
+> > manager distinction, where the manager is largely unaware of the target
+> > OS's specific needs (in this case, having the initrd GUID set).
+>
+> Yes, FWIW what was added in U-Boot needs to be aware of the
+> Linux-specific GUID, but as far as the EFI BootOptions defined in the
+> Boot manager, we aren't violating anything in the EFI spec. On the
+> contrary, we use the _EFI_LOAD_OPTION exactly as the spec describes.
+>
+> >
+> >
+> > >
+> > >> the commandline based initrd loader is a useful function.
+> > >> Because, the kernel stub should continue to serve as a complete, if
+> > >> minimal implementation for booting Linux out of a pure UEFI environment
+> > >> without additional support infrastructure (shim/grub/etc). So, it seems
+> > >> that unless there is a reason for divergent behavior it shouldn't exist.
+> > >> And at the moment, the two primary linux bootloaders grub2 and sdboot
+> > >> are both using the INITRD_MEDIA_GUID. Given the battering ram has been
+> > >> successful, it isn't a step backward.
+> > >
+> > > I am not saying we shouldn't. As I said I don't think this patch
+> > > breaks anything. I am just wondering if enhancing EDK2 to load the
+> > > initramfs via LoadFile2 for more than OVMF is a better option.
+> >
+> > There is a separation of concerns argument here. People regularly
+> > complain about firmware implementations tuned for windows, but making
+> > the FW aware of this GUID is doing the same thing for Linux.
+> > So, IMHO
+> > that should be avoided, rather assuring the firmware is made as OS
+> > agnostic as possible, and the OS specifics are moved into the OS boot
+> > loader, one of which is this stub. It would make more logical sense to
+> > have the stub set the GUID from built in command line defaults. To be
+> > clear, i'm not suggesting that.
+>
+> I get the separation point but ....
+> If you do it the other way around you *force* people to use specific
+> OS loaders that implement OS-specific protocols. And the EFI stub is
+> not the problem here nor are distros that use such loaders. However,
+> vertical distros for embedded boards which don't need all the added
+> complexity have a reasonable way out.
+>
+> Anyway, since Ard doesn't plan to deprecate initrd=, the patch is
+> reasonable, I have no objections
+>
 
-When CONFIG_CMDLINE_OVERRIDE or CONFIG_CMDLINE_FORCE are configured, the
-command line provided by the boot stack should be ignored, and only the
-built-in command line should be taken into account.
-
-Add the required handling of this when dealing with initrd= or dtb=
-command line options in the EFI stub.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/file.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
-index 17bf25dccc07..0e41b88238b1 100644
---- a/drivers/firmware/efi/libstub/file.c
-+++ b/drivers/firmware/efi/libstub/file.c
-@@ -189,7 +189,8 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
- 				  unsigned long *load_addr,
- 				  unsigned long *load_size)
- {
--	const bool ignore_load_options = false;
-+	const bool ignore_load_options = IS_ENABLED(CONFIG_CMDLINE_OVERRIDE) ||
-+					 IS_ENABLED(CONFIG_CMDLINE_FORCE);
- 	const efi_char16_t *cmdline = efi_table_attr(image, load_options);
- 	u32 cmdline_len = efi_table_attr(image, load_options_size);
- 	unsigned long efi_chunk_size = ULONG_MAX;
--- 
-2.47.0.rc1.288.g06298d1525-goog
-
+I've queued this up now - thanks all.
 
