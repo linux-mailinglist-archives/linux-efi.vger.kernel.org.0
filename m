@@ -1,104 +1,126 @@
-Return-Path: <linux-efi+bounces-1975-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1976-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F6599F599
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 20:34:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AED349A03E8
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2024 10:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1E662821F8
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Oct 2024 18:34:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FDB0B28EF3
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2024 08:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4ED227B86;
-	Tue, 15 Oct 2024 18:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A3zcE+T9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC4E1D1F4F;
+	Wed, 16 Oct 2024 08:14:50 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5760227397;
-	Tue, 15 Oct 2024 18:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C8B1D1F63;
+	Wed, 16 Oct 2024 08:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729016954; cv=none; b=NBd+WHAayrL9KXnpDJB+d/zE4js3fpYHTF/x5a+2ioVhgLZIqSJ7aNnsrF+eUMn/Fvkh1kcdouaHJY/uqr5fzSiGtgE7aLHKJ96PdFzddh2I8UFxrelkvHFahkKdGwylVDMJieOR8FtoDDuDg7YIq/Vv6TKNwkdMS0QUCitDWh0=
+	t=1729066490; cv=none; b=BzMJZEri99Sv4Bk5fPEPiIR0cqAje6VSgY4vMo1Sggtmu5TjXjcrZoTuhoa2K6lmb/sUn20uAhVHaDP8n/GS+jQFXJg9ofjPrtWwbdIbG1aROwsIUn7tS/oyCofDkGDKByBRJ4STHQUKMUocXifIB/jpze1M7n6RUwF8K3JdRWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729016954; c=relaxed/simple;
-	bh=m6b13lVpucu+ncZUA0xOOWzdAXwwiWt6kGLy0UGwYeA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pyJPd6ClTflarWkQv/llMN/n0LBbt79jyYscWrPHzYcju6iXq0zqT1ogaFSjUlZYBWlPXSAvThLaQtYsXPMbTjl7wTphaSwd0gnhiiERvPRlXlJGtuoVlMRjRKC0T9dGl8+vgi9Hu7D4a/D6YbxEoga+wqwHhyiAPYhgAF3dWjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A3zcE+T9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2691EC4CEC7;
-	Tue, 15 Oct 2024 18:29:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729016954;
-	bh=m6b13lVpucu+ncZUA0xOOWzdAXwwiWt6kGLy0UGwYeA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=A3zcE+T9d5FBjYIEjMgBl/sFqFN0CAQM10MYrflC4/mzYgQwblGVxozpGlJdPw6Ks
-	 rd85t1K+DW564ju5hD5v2Qp0gxCfvBw+6Og2sXlQ+JRMXI5PSko2Fd4P36W3aiCmIN
-	 59jO+5s5YSO8nwZBB8fR7TxnkbYsmHUjr/SVBrtQy/wXs/PaGwYrDpz+uEmdk8KVTF
-	 tBHf1tWa7wi+EQIheGaTgX42CiFVbwBHIh69UhcMUD94s4cvQRGQT9lHqKjywhkZhD
-	 wULLHtK4dXECw+8Y9n1Gx2iQVwv+X57NxwPIPj909yNExEhAkwyphPkz74W/ro5mKQ
-	 GamfEloAbu7vw==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539ebb5a20aso3248276e87.2;
-        Tue, 15 Oct 2024 11:29:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWud2+YGVtWiXnrDj2DLXAgRm83bZuCM+AorVS+vCC+rjaCB02PpKEU9vexB1CAag6HjADEcKgNlkVtH8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3cT9WpN7HRiJNrzfY8cSBn9W9HJRNiaRDyKne7jp1bu98DSWq
-	XnudIt1g7dLXHJzqJlf/KZdf7JBmSv1S2sin054TKja+B8vdlwjZajacYQlHVEwveq1gYyNeM1g
-	gvtIDkVkcIgx9eRazOIHKbqdgtqM=
-X-Google-Smtp-Source: AGHT+IFvq6Z3oYwoeIvyDsc2ily/xnp7ZIhTAkohj1VaGoB+j/yXF7++CXmXZzykz9tSxkujf35lVy0R6vZT5sxX1F8=
-X-Received: by 2002:a05:6512:2346:b0:539:94aa:d512 with SMTP id
- 2adb3069b0e04-539e572830bmr7026468e87.53.1729016952517; Tue, 15 Oct 2024
- 11:29:12 -0700 (PDT)
+	s=arc-20240116; t=1729066490; c=relaxed/simple;
+	bh=wxQg2GJ5ktlDu9srXxIIKK0Wg/EJpooJh/rWWUWYADg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CqHFC+jaso7g+/wvVBCycH4OQ979BOAr+Dm/d/WKixA+iobpII6rBb76n86Rp2DVW4CQl9DHFA28EZn8lk4UabIM3DnqgUIgP9g0OzKttnbiDOTPG5Zy69qREXlT1UYbMac5Ppwa8oxvE6jTE8namYIpBmGJBCWKxQg37sGcFzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D218FEC;
+	Wed, 16 Oct 2024 01:15:16 -0700 (PDT)
+Received: from [10.57.86.207] (unknown [10.57.86.207])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 399FC3F71E;
+	Wed, 16 Oct 2024 01:14:43 -0700 (PDT)
+Message-ID: <daecf1d1-04c7-4513-86db-397c2ef6f768@arm.com>
+Date: Wed, 16 Oct 2024 09:14:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240913231954.20081-1-gourry@gourry.net>
-In-Reply-To: <20240913231954.20081-1-gourry@gourry.net>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 15 Oct 2024 20:29:01 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGXwtvNgbR1YdvpbHxcU2Mz=hES+0d7Lrue=5j_+3_NRw@mail.gmail.com>
-Message-ID: <CAMj1kXGXwtvNgbR1YdvpbHxcU2Mz=hES+0d7Lrue=5j_+3_NRw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] libstub,tpm: fix small bugs and improve error reporting
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, leitao@debian.org, 
-	usamaarif642@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
-	ilias.apalodimas@linaro.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 57/57] arm64: Enable boot-time page size selection
+Content-Language: en-GB
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ David Hildenbrand <david@redhat.com>, Greg Marsden
+ <greg.marsden@oracle.com>, Ivan Ivanov <ivan.ivanov@suse.com>,
+ Kalesh Singh <kaleshsingh@google.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Matthias Brugger <mbrugger@suse.com>,
+ Miroslav Benes <mbenes@suse.cz>, Oliver Upton <oliver.upton@linux.dev>,
+ Will Deacon <will@kernel.org>, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20241014105514.3206191-1-ryan.roberts@arm.com>
+ <20241014105912.3207374-1-ryan.roberts@arm.com>
+ <20241014105912.3207374-57-ryan.roberts@arm.com>
+ <CD2DC486-F4B1-4043-82BC-0CB2AA513A99@nvidia.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <CD2DC486-F4B1-4043-82BC-0CB2AA513A99@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 14 Sept 2024 at 15:26, Gregory Price <gourry@gourry.net> wrote:
->
-> The efi/tpm code has a number of small signed/unsigned bugs and
-> inaccuracies are prone to cause further bugs in a difficult to
-> debug manner.  For example, there is a signed/unsigned mismatch
-> in efi/tpm.c that can lead to calling memblock_reserve on a range
-> with an effectively negative length.
->
-> Additionally, there are silently ignored error conditions may
-> result in undefined behavior.  Address these.
->
-> Signed-off-by: Gregory Price <gourry@gourry.net>
->
-> Gregory Price (4):
->   tpm: fix signed/unsigned bug when checking event logs
->   tpm: do not ignore memblock_reserve return value
->   tpm: fix unsigned/signed mismatch errors related to
->     __calc_tpm2_event_size
->   libstub,tpm: do not ignore failure case when reading final event log
->
+On 15/10/2024 18:42, Zi Yan wrote:
+> On 14 Oct 2024, at 6:59, Ryan Roberts wrote:
+> 
+>> Introduce a new Kconfig, ARM64_BOOT_TIME_PAGE_SIZE, which can be
+>> selected instead of a page size. When selected, the resulting kernel's
+>> page size can be configured at boot via the command line.
+>>
+>> For now, boot-time page size kernels are limited to 48-bit VA, since
+>> more work is required to support LPA2. Additionally MMAP_RND_BITS and
+>> SECTION_SIZE_BITS are configured for the worst case (64K pages). Future
+>> work could be implemented to be able to configure these at boot time for
+>> optimial page size-specific values.
+>>
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> ---
+> 
+> <snip>
+> 
+>>
+>> @@ -1588,9 +1601,10 @@ config XEN
+>>  # 4K  |       27          |      12      |       15             |         10              |
+>>  # 16K |       27          |      14      |       13             |         11              |
+>>  # 64K |       29          |      16      |       13             |         13              |
+>> +# BOOT|       29          |    16 (max)  |       13             |         13              |
+>>  config ARCH_FORCE_MAX_ORDER
+>>  	int
+>> -	default "13" if ARM64_64K_PAGES
+>> +	default "13" if ARM64_64K_PAGES || ARM64_BOOT_TIME_PAGE_SIZE
+>>  	default "11" if ARM64_16K_PAGES
+>>  	default "10"
+>>  	help
+> 
+> So boot-time page size kernel always has the highest MAX_PAGE_ORDER, which
+> means the section size increases for 4KB and 16KB page sizes. Any downside
+> for this?
 
-Now queued up - thanks.
+I guess there is some cost to the buddy when MAX_PAGE_ORDER is larger than it
+needs to be - I expect you can explain those details much better than I can. I'm
+just setting it to the worst case for now as it was the easiest solution for the
+initial series.
 
->  drivers/firmware/efi/libstub/tpm.c |  9 ++++++---
->  drivers/firmware/efi/tpm.c         | 26 ++++++++++++++++----------
->  include/linux/tpm_eventlog.h       |  2 +-
->  3 files changed, 23 insertions(+), 14 deletions(-)
->
-> --
-> 2.43.0
->
+> 
+> Is there any plan (not in this patchset) to support boot-time MAX_PAGE_ORDER
+> to keep section size the same?
+
+Yes absolutely. I should have documented MAX_PAGE_ORDER in the commit log along
+with the comments for MMAP_RND_BITS and SECTION_SIZE_BITS - that was an
+oversight and I'll fix it in the next version. I plan to look at making all 3
+values boot-time configurable in future (although I have no idea at this point
+how involved that will be).
+
+Thanks,
+Ryan
+
+> 
+> Best Regards,
+> Yan, Zi
+
 
