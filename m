@@ -1,656 +1,280 @@
-Return-Path: <linux-efi+bounces-1977-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1978-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1499A0400
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2024 10:17:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFD69A0C7A
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2024 16:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 939D1B25F0D
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2024 08:17:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0CA31C209C1
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Oct 2024 14:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6FE1D2793;
-	Wed, 16 Oct 2024 08:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803D41422DD;
+	Wed, 16 Oct 2024 14:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZklIxHf/"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3391D0F6B;
-	Wed, 16 Oct 2024 08:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729066645; cv=none; b=a+zuX0HjUfPKuldftzqcUk3nykri+cL98DsBw2QUBXgkM/BP6Mtcaium6I+liwHLWSMjPDLzbwUzfrsb8em5URuRMeQGVMNxTU0jja4yAtdNF2BnzRVdDpeRRKbaWFx4IB9gUSNzKJLvfa8PkRKFTlJ9ILymUgO7kO9qfh0WVTg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729066645; c=relaxed/simple;
-	bh=gCFeMuaZEaSzbn+r82vEe9C9uyPMyumM7btn/b9ZhKY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jQ7naWLx6FDlY0n95lcx1OKpVcXbxq3P6KmZC81+0293OjW/rbcP/AKu4pUI+VSFeImygIz3lGevuIiT+fnrJhgytQrLb8OIi1yRCGtwnooq/BtwGQKU7sPFZMe6/rSa4c6BryYn3+0wtz5/eagT24EpYRi9/1ffYcW1UpQIKbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 79647FEC;
-	Wed, 16 Oct 2024 01:17:51 -0700 (PDT)
-Received: from [10.57.86.207] (unknown [10.57.86.207])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 72AAA3F71E;
-	Wed, 16 Oct 2024 01:17:18 -0700 (PDT)
-Message-ID: <3dbb68bb-2aa6-477c-a903-188a26596fb1@arm.com>
-Date: Wed, 16 Oct 2024 09:17:16 +0100
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2065.outbound.protection.outlook.com [40.107.92.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD1621E3C1;
+	Wed, 16 Oct 2024 14:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729088489; cv=fail; b=bJt1Ldh5TWakIQ0x9QhhRBIgUPdwMtSqlfDD+2EKv8CiECgQkyw3+TgJ/37R+hRFvYQxhKSGE1BaRvi80zjU8QKS3iH8kP8d1oDO1vAxUiAG2VVEiEGd8/g9AHOmuBle54l5hkGm7P4OqqBfD7O0hx7u2ECsA2t2elNado0K0Uc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729088489; c=relaxed/simple;
+	bh=GBMtQ3Fdh6sp79slgX5cBNZ8JpvCuoP69/jH4ptIq7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=H44ylMQl4zaYisPHOIAoNTJ3P5YWatzRKIrhKzIk0GJR7NvCfl1GW6Z3A2u42xsk2oWIsvkNiNa652eu1/7rYx/LzMGk2D+YEXimsGut81hPsvet+3opX7L76pLvdraF+x4fRUDv+8iIqjdYuQ6LPR9GI9GjImItbbvclMxCrjM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZklIxHf/; arc=fail smtp.client-ip=40.107.92.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h29IE96nul1VhrRW79v32whG4F5C6FS1G1v2C5E0eOvuktCNnwFKkNss6arMSb0e6zhVNiHvGV965KDlc6VBgM72djMJrGoGOYamoq+7uuDzZjQBIDfTWy+3UM8fY5TptgjnVpATfakpydTnKblcZCBG0q5RYCCTvEUc4SpoXK/PCY6xzK+q6jyJzxUr2USj939sJMoa9cyxjoPDvLqhNB29hh72JMcDzHtc/VMj8mvgGBlpzl514c99IaF4R9OoadgqPG353vLVsGvNL2eIQ+ieaP3TZDZS8cI3Ku5H0iwRgBH0jxoB4H/e8SbWZpChlmvotRoQJf5cGfpQ7ML49g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Zk0BP6yrSFYB3xtvTxZUcxiHOjcjKmeh2pNLtLMzCPU=;
+ b=tRgtvW2YQEwr+0wqnHW9+k7870npd8Bo5BlQnhtK3DjKQAYiSKPeu/pUe6Kyg7e+4xsmK54lWjOKYt4o/zKvn1hOs5PQmbSkiiesGE2ysAFkb0z66+NBXcO7w/iCTRkxtDCuyu7ubQDzq6wd0J4oDznC7u9yBE6rVGHaPsfBy9kjxz3fZoKwE7B/GcT9m9U5vhGONfU2ycu8Gt3+6zLqDWYzjECT6TlEM/KTpFCDztmwU/NM62sGToNAdNj+bSiZSlmx53oVzhJEJRodd5jjBs6d9VmRITSyF/XvAPJ6B5pL8ivO+ec6Xsx6+wEX5YJT3cig8hsmeQD+Mn3CAx/f8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Zk0BP6yrSFYB3xtvTxZUcxiHOjcjKmeh2pNLtLMzCPU=;
+ b=ZklIxHf/AgaY/Q1xfXeyqqx59WSR6gGlJQfF5WaCNy/8BatrvbYf0xaDEl8U+ePHPcrvFbSD7B93xRoqWBTmxazlrAUW0Zq0S6VujU8Pt8b+r5Q2bxfh7qfA+IrsGJtAzuKpfWTV8NY1dy/bKluovdvQgSd5egjNJJD6+2PQ7WnUJgzriqCH+kTsZfIqjez3ejSv3j+0QjH1CZwcQPwFRe8u7J06tmBk8OzKnhrZ3KodbUGNZmaSpqEbqOFkjTAFVwDVYXACVhblsljW4yNKZ7dxRNiaQ48pjgp2PCrK6UjDqdV3uoEaJU8ggPp2N3MqFG0kjd2f96MIZQX9jRJuxA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ IA1PR12MB8237.namprd12.prod.outlook.com (2603:10b6:208:3f3::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Wed, 16 Oct
+ 2024 14:21:23 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%7]) with mapi id 15.20.8048.020; Wed, 16 Oct 2024
+ 14:21:23 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Greg Marsden <greg.marsden@oracle.com>, Ivan Ivanov <ivan.ivanov@suse.com>,
+ Kalesh Singh <kaleshsingh@google.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Matthias Brugger <mbrugger@suse.com>,
+ Miroslav Benes <mbenes@suse.cz>, Oliver Upton <oliver.upton@linux.dev>,
+ Will Deacon <will@kernel.org>, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v1 57/57] arm64: Enable boot-time page size selection
+Date: Wed, 16 Oct 2024 10:21:18 -0400
+X-Mailer: MailMate (1.14r6065)
+Message-ID: <6C0A53C0-C332-46B3-A84A-3232E9D71003@nvidia.com>
+In-Reply-To: <daecf1d1-04c7-4513-86db-397c2ef6f768@arm.com>
+References: <20241014105514.3206191-1-ryan.roberts@arm.com>
+ <20241014105912.3207374-1-ryan.roberts@arm.com>
+ <20241014105912.3207374-57-ryan.roberts@arm.com>
+ <CD2DC486-F4B1-4043-82BC-0CB2AA513A99@nvidia.com>
+ <daecf1d1-04c7-4513-86db-397c2ef6f768@arm.com>
+Content-Type: multipart/signed;
+ boundary="=_MailMate_8B77AFF2-B39C-4BA1-B5FB-D7051CA6DD16_=";
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+X-ClientProxiedBy: MN2PR22CA0005.namprd22.prod.outlook.com
+ (2603:10b6:208:238::10) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 57/57] arm64: Enable boot-time page size selection
-Content-Language: en-GB
-To: Michael Kelley <mhklinux@outlook.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- David Hildenbrand <david@redhat.com>, Greg Marsden
- <greg.marsden@oracle.com>, Ivan Ivanov <ivan.ivanov@suse.com>,
- Kalesh Singh <kaleshsingh@google.com>, Marc Zyngier <maz@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Matthias Brugger <mbrugger@suse.com>,
- Miroslav Benes <mbenes@suse.cz>, Oliver Upton <oliver.upton@linux.dev>,
- Will Deacon <will@kernel.org>
-Cc: "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <20241014105514.3206191-1-ryan.roberts@arm.com>
- <20241014105912.3207374-1-ryan.roberts@arm.com>
- <20241014105912.3207374-57-ryan.roberts@arm.com>
- <SN6PR02MB415789255D94336BCC9B1E0AD4452@SN6PR02MB4157.namprd02.prod.outlook.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <SN6PR02MB415789255D94336BCC9B1E0AD4452@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA1PR12MB8237:EE_
+X-MS-Office365-Filtering-Correlation-Id: 066f0854-90db-4b43-f1c8-08dcededcfdb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?GdykYoxz5oaPLPE4XoEdEjd+IRFedQHgXPHDTIjRZIBjF5CnCtxSX1Yjkv8M?=
+ =?us-ascii?Q?Mmdz5yi7XspPv9KiKRnztmRjJNeL7I9yzX9xNP9eS2ovy33epcBRrPEtuRzl?=
+ =?us-ascii?Q?Ez4XTKf0RoJ82PRCz3WR/ycFR1SJ9hkMH9mR+PcVgvcElhUC+1O7qni8W6ql?=
+ =?us-ascii?Q?++cAVefzzh1mIW+jHD+VQyLGjAdJo785bdcKVS7S0kd2Uka+lY4pRCDNHJhH?=
+ =?us-ascii?Q?ODH4Re2ihnLiZUpAqfXCdLNMJR04osRH0KmdPpDpqkx0lVGI2cmI2/vjFS+X?=
+ =?us-ascii?Q?v9yp6Xd3gqi8PS/Ugzwz4IWXQsxbEKl2F6cVp08tAcGcg/FdU3DrfedmM3XS?=
+ =?us-ascii?Q?2CuVK8zSVMWC3+JfB75X8Fyh5WF9fL2zEAv7igv683PXWhQ3qsfo5VIxOCtO?=
+ =?us-ascii?Q?sHD9iXfpSiFErzJruCxZ2j6ylOqe0EnHLsQv6VJcoNnFwR78PHoYWzqvrRrT?=
+ =?us-ascii?Q?uT1Vf7tQnRpSSllaCc5DdO/tbLKRUuPa8bl+Xljafy9FEREU55sWiV1oLdMI?=
+ =?us-ascii?Q?SfaMfp/x10St34xwF1s3iOVrCPPrjRuCPDr8pwKlo3YnI0KD3oY8yRBLw6LH?=
+ =?us-ascii?Q?Rp5kaYLj2yGLa4H0TnPlqVav5WJq80aJcxgqn9Blgjg5MbHzWwIe2fdWOc20?=
+ =?us-ascii?Q?UIXzfT0/Z1BfdnGwj43gMfSNYupVx39THfhGfcyJH3k+Qrm7Vd9FP0m7voCn?=
+ =?us-ascii?Q?Qhj/V5zGY3vWjFM9riQ1LaJkLCD1NN2zf7fIM5epRW3xdEIaLEQ7mgumhK7r?=
+ =?us-ascii?Q?+JZiOQxY36yvg9OgOdRG8q1TxfAHTg6e9WCKji+UI4w7rez1nr48fdsFMQ/V?=
+ =?us-ascii?Q?CUSS1fDXLvUkUwPhWLZCLfEhUP2oa79zLdyesbkWmSsCwaGbfhUTU4/mdHgx?=
+ =?us-ascii?Q?JxjHl9Z97UY45/2+5HYzFk1KKYmP3+yeSZgv5BNLTRFBFScbHd0c7Pa0tPKd?=
+ =?us-ascii?Q?3eH1zRZPAgPgkqu8NKxFhoALRatINHVVbzuzbmDHrvmsA0qEPplUFwkyh4nB?=
+ =?us-ascii?Q?Hq3XOVBeBWro9QpUM+x9Wj4whIFk4QlJBQbsfwzxD85nC8ZNvdRAbXvpCJZA?=
+ =?us-ascii?Q?Npe8TWn10gPuD/f4LViMlc3DEfZKtBcDJEkPs1co/9VLIHkzqZTOp8HjykgI?=
+ =?us-ascii?Q?9TT8yK7USQJXzX/6+7aTVbrwIRDt/enct1QvHjlErrOVhBIMNVusTwpGMKvc?=
+ =?us-ascii?Q?48B/a5V2xvHufP7IQrxsml+9m8WuIrs8MhP+Nv95cmWPwyvpL60kFvgBwclX?=
+ =?us-ascii?Q?Emr0JvYrstnO9vIloRWDFt9e3bnfjUu5YbLPOjikPg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jEiZIm9nlElmczEEwRdX4J7e1/xjZ9vTlMgMOQ1h5cC8VTHihyGsLaM/Edq2?=
+ =?us-ascii?Q?5LfkPb2mBx21DvdVHxGzPbeZPEbkrfNisuBRKMgraxHWkEUmjL2eky2SIgE1?=
+ =?us-ascii?Q?M1+bxu5AgVjmlDm1pTWWAhujs6NQ6tF4NKYMCkcvwtIfSjah10frQPnpj985?=
+ =?us-ascii?Q?mit2Xdo2tFUXUF74o2d5E0BLtB7rmkxUq8NAONiWwI4DMHudmWmR8P/t+yg0?=
+ =?us-ascii?Q?bxA6MnnvdGHiQj5PLUSIdL6DTFIdxSKShx+aRh2fKQuYEnfayCjMLmGmCgcE?=
+ =?us-ascii?Q?K1D2dO73GEA4jsJRlD3I8zzEPtxWM8uANFFN+FiA4CxQqAR1FtJa9bxB6wO0?=
+ =?us-ascii?Q?Xc7waySrvkb0pr20uk1UG7K2OsjqE9JrwNcflhJ4jC5gyo9YSZ9Wp4izfs/H?=
+ =?us-ascii?Q?k4DtVl+NbM89n6DxY8AnJQGR4ts8TvjKiljqe6LVWGscbcsytYgyprh9ygiG?=
+ =?us-ascii?Q?5sWAV10CTyHWkkblzXvYX8dZYJcf9FVM2bYPH/H/hPmQtqZCEOPWQtZdaIwp?=
+ =?us-ascii?Q?ZgDIX5jhM1OOvlwXZibGghbtzeKih7DnDJ9h0gksE4PbtNhEh1+X4Ewwqcl4?=
+ =?us-ascii?Q?D8FgqgSSlrIv6WQLgn6VsHJI9m7oZKxK3k0fGDo59i1vaeXPThDll91I6bFO?=
+ =?us-ascii?Q?Mu3x/b0w8OsZ7f3uSIrCAEeP+dLhDu3duz7wfzeUI9bJA7/bh69taITRj0pH?=
+ =?us-ascii?Q?LnI7Ifi0TKj0EnBDBgKQn6lLoYs+Bq3lTGgEgfRVJPSBfIUvvpaY+ofpdW9v?=
+ =?us-ascii?Q?SfnY6CnwJDDBChdVpeJ85zvRm3uv0YOOOcrZjD6i/QiUfYC9SISzmCG3qmnn?=
+ =?us-ascii?Q?Q6xjd+csWUiEx0lI8R81Oyy93lGV5u7DGYczClvLCqNOj/hHSVblS3hgR+WM?=
+ =?us-ascii?Q?USvt9sLt72jFxy0qeiGEC05DGTb8YwsWDJzk/ru/LovkMCuOFBO3Tf/10WQe?=
+ =?us-ascii?Q?d5iimEk+99aM3hFU0/hOMEe/IsmFYnskTjoqfWaSlf36ab//lnjTyAHxtcGG?=
+ =?us-ascii?Q?qYHk4a0t/Cb/csk84yiODowm5UtGvMlualo0MgHKAofs8Efg4zhvfDPkwn4F?=
+ =?us-ascii?Q?RaC+uviabSc2p+0/WGM6LyXk1CDyRyl+dATsWBor4ubXb6o1Bmh7WJo0DhwW?=
+ =?us-ascii?Q?nG9tWDVBNTvhAr6eXxCmIUy/ekGP2P25ztpsmPRcHeJFvlM03iL/e4Ge/wLC?=
+ =?us-ascii?Q?+o+RgSVc00rdRzjEiVznwx+60r6E1gWRXxuXk6MB1lK//bGRosysk2WQZDYf?=
+ =?us-ascii?Q?yM7N7ozs8MHDqnzvfdQ4XtULmgjWuVlbJbO3UG1Er6Q63YI8jy11FPrqzk+n?=
+ =?us-ascii?Q?BIqdjU8/zSxudQN9hhZXx/hCAQEPYSSZB+VdlU31E0T+ILOrJGpuRH62J1+x?=
+ =?us-ascii?Q?ZMy0xqd+qML/8gFo4oLrkV5hoPcV55VRtNm5SkN+f/jO/L7wCzog0wBq/XNq?=
+ =?us-ascii?Q?TsDBgQZK2mW9C0kmnL+94ZWTHoFBh9D+T/FgJKnM/6VuFp0irnCVtiNBbHT3?=
+ =?us-ascii?Q?PwC/58kZi8bxblMcxbwQLJikcGmMdd2KMQjgDjAr7OmQWWxNNRZeHqkLQRKx?=
+ =?us-ascii?Q?8rB48bGHZX+SjRNulW1P3TGqhlpdsFdlBNIrnphQ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 066f0854-90db-4b43-f1c8-08dcededcfdb
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2024 14:21:23.1214
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rMsyJViJEG2XLx2kxjhdhHHeN7pZdIA9lHAGZFqy0l2dj7/82/p35yJ1cC/B0qlZ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8237
 
-On 15/10/2024 18:52, Michael Kelley wrote:
-> From: Ryan Roberts <ryan.roberts@arm.com> Sent: Monday, October 14, 2024 3:59 AM
->>
->> Introduce a new Kconfig, ARM64_BOOT_TIME_PAGE_SIZE, which can be
->> selected instead of a page size. When selected, the resulting kernel's
->> page size can be configured at boot via the command line.
->>
->> For now, boot-time page size kernels are limited to 48-bit VA, since
->> more work is required to support LPA2. Additionally MMAP_RND_BITS and
->> SECTION_SIZE_BITS are configured for the worst case (64K pages). Future
->> work could be implemented to be able to configure these at boot time for
->> optimial page size-specific values.
->>
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> ---
->>
->> ***NOTE***
->> Any confused maintainers may want to read the cover note here for context:
->> https://lore.kernel.org/all/20241014105514.3206191-1-ryan.roberts@arm.com/
->>
->>  arch/arm64/Kconfig                         | 26 ++++++++++---
->>  arch/arm64/include/asm/kvm_hyp.h           | 11 ++++++
->>  arch/arm64/include/asm/pgtable-geometry.h  | 22 ++++++++++-
->>  arch/arm64/include/asm/pgtable-hwdef.h     |  6 +--
->>  arch/arm64/include/asm/pgtable.h           | 10 ++++-
->>  arch/arm64/include/asm/sparsemem.h         |  4 ++
->>  arch/arm64/kernel/image-vars.h             | 11 ++++++
->>  arch/arm64/kernel/image.h                  |  4 ++
->>  arch/arm64/kernel/pi/map_kernel.c          | 45 ++++++++++++++++++++++
->>  arch/arm64/kvm/arm.c                       | 10 +++++
->>  arch/arm64/kvm/hyp/nvhe/Makefile           |  1 +
->>  arch/arm64/kvm/hyp/nvhe/pgtable-geometry.c | 16 ++++++++
->>  arch/arm64/mm/Makefile                     |  1 +
->>  arch/arm64/mm/pgd.c                        | 10 +++--
->>  arch/arm64/mm/pgtable-geometry.c           | 24 ++++++++++++
->>  drivers/firmware/efi/libstub/arm64.c       |  3 +-
->>  16 files changed, 187 insertions(+), 17 deletions(-)
->>  create mode 100644 arch/arm64/kvm/hyp/nvhe/pgtable-geometry.c
->>  create mode 100644 arch/arm64/mm/pgtable-geometry.c
->>
->> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->> index a2f8ff354ca67..573d308741169 100644
->> --- a/arch/arm64/Kconfig
->> +++ b/arch/arm64/Kconfig
->> @@ -121,6 +121,7 @@ config ARM64
->>  	select BUILDTIME_TABLE_SORT
->>  	select CLONE_BACKWARDS
->>  	select COMMON_CLK
->> +	select CONSTRUCTORS if ARM64_BOOT_TIME_PAGE_SIZE
->>  	select CPU_PM if (SUSPEND || CPU_IDLE)
->>  	select CPUMASK_OFFSTACK if NR_CPUS > 256
->>  	select CRC32
->> @@ -284,18 +285,20 @@ config MMU
->>
->>  config ARM64_CONT_PTE_SHIFT
->>  	int
->> +	depends on !ARM64_BOOT_TIME_PAGE_SIZE
->>  	default 5 if PAGE_SIZE_64KB
->>  	default 7 if PAGE_SIZE_16KB
->>  	default 4
->>
->>  config ARM64_CONT_PMD_SHIFT
->>  	int
->> +	depends on !ARM64_BOOT_TIME_PAGE_SIZE
->>  	default 5 if PAGE_SIZE_64KB
->>  	default 5 if PAGE_SIZE_16KB
->>  	default 4
->>
->>  config ARCH_MMAP_RND_BITS_MIN
->> -	default 14 if PAGE_SIZE_64KB
->> +	default 14 if ARM64_64K_PAGES || ARM64_BOOT_TIME_PAGE_SIZE
->>  	default 16 if PAGE_SIZE_16KB
->>  	default 18
->>
->> @@ -306,15 +309,15 @@ config ARCH_MMAP_RND_BITS_MAX
->>  	default 24 if ARM64_VA_BITS=39
->>  	default 27 if ARM64_VA_BITS=42
->>  	default 30 if ARM64_VA_BITS=47
->> -	default 29 if ARM64_VA_BITS=48 && ARM64_64K_PAGES
->> +	default 29 if ARM64_VA_BITS=48 && (ARM64_64K_PAGES ||
->> ARM64_BOOT_TIME_PAGE_SIZE)
->>  	default 31 if ARM64_VA_BITS=48 && ARM64_16K_PAGES
->>  	default 33 if ARM64_VA_BITS=48
->> -	default 14 if ARM64_64K_PAGES
->> +	default 14 if ARM64_64K_PAGES || ARM64_BOOT_TIME_PAGE_SIZE
->>  	default 16 if ARM64_16K_PAGES
->>  	default 18
->>
->>  config ARCH_MMAP_RND_COMPAT_BITS_MIN
->> -	default 7 if ARM64_64K_PAGES
->> +	default 7 if ARM64_64K_PAGES || ARM64_BOOT_TIME_PAGE_SIZE
->>  	default 9 if ARM64_16K_PAGES
->>  	default 11
->>
->> @@ -362,6 +365,7 @@ config FIX_EARLYCON_MEM
->>
->>  config PGTABLE_LEVELS
->>  	int
->> +	default 4 if ARM64_BOOT_TIME_PAGE_SIZE # Advertise max supported levels
->>  	default 2 if ARM64_16K_PAGES && ARM64_VA_BITS_36
->>  	default 2 if ARM64_64K_PAGES && ARM64_VA_BITS_42
->>  	default 3 if ARM64_64K_PAGES && (ARM64_VA_BITS_48 ||
->> ARM64_VA_BITS_52)
->> @@ -1316,6 +1320,14 @@ config ARM64_64K_PAGES
->>  	  look-up. AArch32 emulation requires applications compiled
->>  	  with 64K aligned segments.
->>
->> +config ARM64_BOOT_TIME_PAGE_SIZE
->> +	bool "Boot-time selection"
->> +	select HAVE_PAGE_SIZE_64KB # Advertise largest page size to core
->> +	help
->> +	  Select desired page size (4KB, 16KB or 64KB) at boot-time via the
->> +	  kernel command line option "arm64.pagesize=4k", "arm64.pagesize=16k"
->> +	  or "arm64.pagesize=64k".
->> +
->>  endchoice
->>
->>  choice
->> @@ -1348,6 +1360,7 @@ config ARM64_VA_BITS_48
->>  config ARM64_VA_BITS_52
->>  	bool "52-bit"
->>  	depends on ARM64_PAN || !ARM64_SW_TTBR0_PAN
->> +	depends on !ARM64_BOOT_TIME_PAGE_SIZE
->>  	help
->>  	  Enable 52-bit virtual addressing for userspace when explicitly
->>  	  requested via a hint to mmap(). The kernel will also use 52-bit
->> @@ -1588,9 +1601,10 @@ config XEN
->>  # 4K  |       27          |      12      |       15             |         10              |
->>  # 16K |       27          |      14      |       13             |         11              |
->>  # 64K |       29          |      16      |       13             |         13              |
->> +# BOOT|       29          |    16 (max)  |       13             |         13              |
->>  config ARCH_FORCE_MAX_ORDER
->>  	int
->> -	default "13" if ARM64_64K_PAGES
->> +	default "13" if ARM64_64K_PAGES || ARM64_BOOT_TIME_PAGE_SIZE
->>  	default "11" if ARM64_16K_PAGES
->>  	default "10"
->>  	help
->> @@ -1663,7 +1677,7 @@ config ARM64_TAGGED_ADDR_ABI
->>
->>  menuconfig COMPAT
->>  	bool "Kernel support for 32-bit EL0"
->> -	depends on ARM64_4K_PAGES || EXPERT
->> +	depends on ARM64_4K_PAGES || ARM64_BOOT_TIME_PAGE_SIZE || EXPERT
->>  	select HAVE_UID16
->>  	select OLD_SIGSUSPEND3
->>  	select COMPAT_OLD_SIGACTION
->> diff --git a/arch/arm64/include/asm/kvm_hyp.h
->> b/arch/arm64/include/asm/kvm_hyp.h
->> index c838309e4ec47..9397a14642afa 100644
->> --- a/arch/arm64/include/asm/kvm_hyp.h
->> +++ b/arch/arm64/include/asm/kvm_hyp.h
->> @@ -145,4 +145,15 @@ extern unsigned long kvm_nvhe_sym(__icache_flags);
->>  extern unsigned int kvm_nvhe_sym(kvm_arm_vmid_bits);
->>  extern unsigned int kvm_nvhe_sym(kvm_host_sve_max_vl);
->>
->> +#ifdef CONFIG_ARM64_BOOT_TIME_PAGE_SIZE
->> +extern int kvm_nvhe_sym(ptg_page_shift);
->> +extern int kvm_nvhe_sym(ptg_pmd_shift);
->> +extern int kvm_nvhe_sym(ptg_pud_shift);
->> +extern int kvm_nvhe_sym(ptg_p4d_shift);
->> +extern int kvm_nvhe_sym(ptg_pgdir_shift);
->> +extern int kvm_nvhe_sym(ptg_cont_pte_shift);
->> +extern int kvm_nvhe_sym(ptg_cont_pmd_shift);
->> +extern int kvm_nvhe_sym(ptg_pgtable_levels);
->> +#endif /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->> +
->>  #endif /* __ARM64_KVM_HYP_H__ */
->> diff --git a/arch/arm64/include/asm/pgtable-geometry.h
->> b/arch/arm64/include/asm/pgtable-geometry.h
->> index 62fe125909c08..18a8c8d499ecc 100644
->> --- a/arch/arm64/include/asm/pgtable-geometry.h
->> +++ b/arch/arm64/include/asm/pgtable-geometry.h
->> @@ -6,16 +6,33 @@
->>  #define ARM64_PAGE_SHIFT_16K	14
->>  #define ARM64_PAGE_SHIFT_64K	16
->>
->> +#ifdef CONFIG_ARM64_BOOT_TIME_PAGE_SIZE
->> +#define PAGE_SHIFT_MIN		ARM64_PAGE_SHIFT_4K
->> +#define PAGE_SHIFT_MAX		ARM64_PAGE_SHIFT_64K
->> +#else /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->>  #define PAGE_SHIFT_MIN		CONFIG_PAGE_SHIFT
->> +#define PAGE_SHIFT_MAX		CONFIG_PAGE_SHIFT
->> +#endif /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->> +
->>  #define PAGE_SIZE_MIN		(_AC(1, UL) << PAGE_SHIFT_MIN)
->>  #define PAGE_MASK_MIN		(~(PAGE_SIZE_MIN-1))
->> -
->> -#define PAGE_SHIFT_MAX		CONFIG_PAGE_SHIFT
->>  #define PAGE_SIZE_MAX		(_AC(1, UL) << PAGE_SHIFT_MAX)
->>  #define PAGE_MASK_MAX		(~(PAGE_SIZE_MAX-1))
->>
->>  #include <asm-generic/pgtable-geometry.h>
->>
->> +#ifdef CONFIG_ARM64_BOOT_TIME_PAGE_SIZE
->> +#ifndef __ASSEMBLY__
->> +extern int ptg_page_shift;
->> +extern int ptg_pmd_shift;
->> +extern int ptg_pud_shift;
->> +extern int ptg_p4d_shift;
->> +extern int ptg_pgdir_shift;
->> +extern int ptg_cont_pte_shift;
->> +extern int ptg_cont_pmd_shift;
->> +extern int ptg_pgtable_levels;
->> +#endif /* __ASSEMBLY__ */
->> +#else /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->>  #define ptg_page_shift		CONFIG_PAGE_SHIFT
->>  #define ptg_pmd_shift		ARM64_HW_PGTABLE_LEVEL_SHIFT(2)
->>  #define ptg_pud_shift		ARM64_HW_PGTABLE_LEVEL_SHIFT(1)
->> @@ -24,5 +41,6 @@
->>  #define ptg_cont_pte_shift	(CONFIG_ARM64_CONT_PTE_SHIFT + PAGE_SHIFT)
->>  #define ptg_cont_pmd_shift	(CONFIG_ARM64_CONT_PMD_SHIFT + PMD_SHIFT)
->>  #define ptg_pgtable_levels	CONFIG_PGTABLE_LEVELS
->> +#endif /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->>
->>  #endif /* ASM_PGTABLE_GEOMETRY_H */
->> diff --git a/arch/arm64/include/asm/pgtable-hwdef.h
->> b/arch/arm64/include/asm/pgtable-hwdef.h
->> index ca8bcbc1fe220..da5404617acbf 100644
->> --- a/arch/arm64/include/asm/pgtable-hwdef.h
->> +++ b/arch/arm64/include/asm/pgtable-hwdef.h
->> @@ -52,7 +52,7 @@
->>  #define PMD_SHIFT		ptg_pmd_shift
->>  #define PMD_SIZE		(_AC(1, UL) << PMD_SHIFT)
->>  #define PMD_MASK		(~(PMD_SIZE-1))
->> -#define PTRS_PER_PMD		(1 << (PAGE_SHIFT - 3))
->> +#define PTRS_PER_PMD		(ptg_pgtable_levels > 2 ? (1 << (PAGE_SHIFT -
->> 3)) : 1)
->>  #define MAX_PTRS_PER_PMD	(1 << (PAGE_SHIFT_MAX - 3))
->>  #endif
->>
->> @@ -63,7 +63,7 @@
->>  #define PUD_SHIFT		ptg_pud_shift
->>  #define PUD_SIZE		(_AC(1, UL) << PUD_SHIFT)
->>  #define PUD_MASK		(~(PUD_SIZE-1))
->> -#define PTRS_PER_PUD		(1 << (PAGE_SHIFT - 3))
->> +#define PTRS_PER_PUD		(ptg_pgtable_levels > 3 ? (1 << (PAGE_SHIFT -
->> 3)) : 1)
->>  #define MAX_PTRS_PER_PUD	(1 << (PAGE_SHIFT_MAX - 3))
->>  #endif
->>
->> @@ -71,7 +71,7 @@
->>  #define P4D_SHIFT		ptg_p4d_shift
->>  #define P4D_SIZE		(_AC(1, UL) << P4D_SHIFT)
->>  #define P4D_MASK		(~(P4D_SIZE-1))
->> -#define PTRS_PER_P4D		(1 << (PAGE_SHIFT - 3))
->> +#define PTRS_PER_P4D		(ptg_pgtable_levels > 4 ? (1 << (PAGE_SHIFT -
->> 3)) : 1)
->>  #define MAX_PTRS_PER_P4D	(1 << (PAGE_SHIFT_MAX - 3))
->>  #endif
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index 8ead41da715b0..ad9f75f5cc29a 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -755,7 +755,7 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
->>
->>  static __always_inline bool pgtable_l3_enabled(void)
->>  {
->> -	return true;
->> +	return ptg_pgtable_levels > 2;
->>  }
->>
->>  static inline bool mm_pmd_folded(const struct mm_struct *mm)
->> @@ -888,6 +888,8 @@ static inline bool pgtable_l3_enabled(void) { return false; }
->>
->>  static __always_inline bool pgtable_l4_enabled(void)
->>  {
->> +	if (IS_ENABLED(CONFIG_ARM64_BOOT_TIME_PAGE_SIZE))
->> +		return ptg_pgtable_levels > 3;
->>  	if (CONFIG_PGTABLE_LEVELS > 4 || !IS_ENABLED(CONFIG_ARM64_LPA2))
->>  		return true;
->>  	if (!alternative_has_cap_likely(ARM64_ALWAYS_BOOT))
->> @@ -935,6 +937,8 @@ static inline phys_addr_t p4d_page_paddr(p4d_t p4d)
->>
->>  static inline pud_t *p4d_to_folded_pud(p4d_t *p4dp, unsigned long addr)
->>  {
->> +	if (IS_ENABLED(CONFIG_ARM64_BOOT_TIME_PAGE_SIZE))
->> +		return (pud_t *)p4dp;
->>  	return (pud_t *)PTR_ALIGN_DOWN(p4dp, PAGE_SIZE) + pud_index(addr);
->>  }
->>
->> @@ -1014,6 +1018,8 @@ static inline bool pgtable_l4_enabled(void) { return false; }
->>
->>  static __always_inline bool pgtable_l5_enabled(void)
->>  {
->> +	if (IS_ENABLED(CONFIG_ARM64_BOOT_TIME_PAGE_SIZE))
->> +		return ptg_pgtable_levels > 4;
->>  	if (!alternative_has_cap_likely(ARM64_ALWAYS_BOOT))
->>  		return vabits_actual == VA_BITS;
->>  	return alternative_has_cap_unlikely(ARM64_HAS_VA52);
->> @@ -1059,6 +1065,8 @@ static inline phys_addr_t pgd_page_paddr(pgd_t pgd)
->>
->>  static inline p4d_t *pgd_to_folded_p4d(pgd_t *pgdp, unsigned long addr)
->>  {
->> +	if (IS_ENABLED(CONFIG_ARM64_BOOT_TIME_PAGE_SIZE))
->> +		return (p4d_t *)pgdp;
->>  	return (p4d_t *)PTR_ALIGN_DOWN(pgdp, PAGE_SIZE) + p4d_index(addr);
->>  }
->>
->> diff --git a/arch/arm64/include/asm/sparsemem.h
->> b/arch/arm64/include/asm/sparsemem.h
->> index a05fdd54014f7..2daf1263ba638 100644
->> --- a/arch/arm64/include/asm/sparsemem.h
->> +++ b/arch/arm64/include/asm/sparsemem.h
->> @@ -17,6 +17,10 @@
->>   * entries could not be created for vmemmap mappings.
->>   * 16K follows 4K for simplicity.
->>   */
->> +#ifdef CONFIG_ARM64_BOOT_TIME_PAGE_SIZE
->> +#define SECTION_SIZE_BITS	29
->> +#else
->>  #define SECTION_SIZE_BITS	(PAGE_SIZE == SZ_64K ? 29 : 27)
->> +#endif
->>
->>  #endif
->> diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
->> index a168f3337446f..9968320f83bc4 100644
->> --- a/arch/arm64/kernel/image-vars.h
->> +++ b/arch/arm64/kernel/image-vars.h
->> @@ -36,6 +36,17 @@ PROVIDE(__pi___memcpy			=
->> __pi_memcpy);
->>  PROVIDE(__pi___memmove			= __pi_memmove);
->>  PROVIDE(__pi___memset			= __pi_memset);
->>
->> +#ifdef CONFIG_ARM64_BOOT_TIME_PAGE_SIZE
->> +PROVIDE(__pi_ptg_page_shift		= ptg_page_shift);
->> +PROVIDE(__pi_ptg_pmd_shift		= ptg_pmd_shift);
->> +PROVIDE(__pi_ptg_pud_shift		= ptg_pud_shift);
->> +PROVIDE(__pi_ptg_p4d_shift		= ptg_p4d_shift);
->> +PROVIDE(__pi_ptg_pgdir_shift		= ptg_pgdir_shift);
->> +PROVIDE(__pi_ptg_cont_pte_shift		= ptg_cont_pte_shift);
->> +PROVIDE(__pi_ptg_cont_pmd_shift		= ptg_cont_pmd_shift);
->> +PROVIDE(__pi_ptg_pgtable_levels		= ptg_pgtable_levels);
->> +#endif /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->> +
->>  PROVIDE(__pi_id_aa64isar1_override	= id_aa64isar1_override);
->>  PROVIDE(__pi_id_aa64isar2_override	= id_aa64isar2_override);
->>  PROVIDE(__pi_id_aa64mmfr0_override	= id_aa64mmfr0_override);
->> diff --git a/arch/arm64/kernel/image.h b/arch/arm64/kernel/image.h
->> index 7bc3ba8979019..01502fc3b891b 100644
->> --- a/arch/arm64/kernel/image.h
->> +++ b/arch/arm64/kernel/image.h
->> @@ -47,7 +47,11 @@
->>  #define __HEAD_FLAG_BE		ARM64_IMAGE_FLAG_LE
->>  #endif
->>
->> +#ifdef CONFIG_ARM64_BOOT_TIME_PAGE_SIZE
->> +#define __HEAD_FLAG_PAGE_SIZE	0
->> +#else
->>  #define __HEAD_FLAG_PAGE_SIZE	((PAGE_SHIFT - 10) / 2)
->> +#endif
->>
->>  #define __HEAD_FLAG_PHYS_BASE	1
->>
->> diff --git a/arch/arm64/kernel/pi/map_kernel.c b/arch/arm64/kernel/pi/map_kernel.c
->> index deb8cd50b0b0c..22b3c70e04f9c 100644
->> --- a/arch/arm64/kernel/pi/map_kernel.c
->> +++ b/arch/arm64/kernel/pi/map_kernel.c
->> @@ -221,6 +221,49 @@ static void __init map_fdt(u64 fdt, int page_shift)
->>  	dsb(ishst);
->>  }
->>
->> +#ifdef CONFIG_ARM64_BOOT_TIME_PAGE_SIZE
->> +static void __init ptg_init(int page_shift)
->> +{
->> +	ptg_pgtable_levels =
->> +		__ARM64_HW_PGTABLE_LEVELS(page_shift,
->> CONFIG_ARM64_VA_BITS);
->> +
->> +	ptg_pgdir_shift = __ARM64_HW_PGTABLE_LEVEL_SHIFT(page_shift,
->> +				4 - ptg_pgtable_levels);
->> +
->> +	ptg_p4d_shift = ptg_pgtable_levels >= 5 ?
->> +				__ARM64_HW_PGTABLE_LEVEL_SHIFT(page_shift, 0) :
->> +				ptg_pgdir_shift;
->> +
->> +	ptg_pud_shift = ptg_pgtable_levels >= 4 ?
->> +				__ARM64_HW_PGTABLE_LEVEL_SHIFT(page_shift, 1) :
->> +				ptg_pgdir_shift;
->> +
->> +	ptg_pmd_shift = ptg_pgtable_levels >= 3 ?
->> +				__ARM64_HW_PGTABLE_LEVEL_SHIFT(page_shift, 2) :
->> +				ptg_pgdir_shift;
->> +
->> +	ptg_page_shift = page_shift;
->> +
->> +	switch (page_shift) {
->> +	case ARM64_PAGE_SHIFT_64K:
->> +		ptg_cont_pte_shift = ptg_page_shift + 5;
->> +		ptg_cont_pmd_shift = ptg_pmd_shift + 5;
->> +		break;
->> +	case ARM64_PAGE_SHIFT_16K:
->> +		ptg_cont_pte_shift = ptg_page_shift + 7;
->> +		ptg_cont_pmd_shift = ptg_pmd_shift + 5;
->> +		break;
->> +	default: /* ARM64_PAGE_SHIFT_4K */
->> +		ptg_cont_pte_shift = ptg_page_shift + 4;
->> +		ptg_cont_pmd_shift = ptg_pmd_shift + 4;
->> +	}
->> +}
->> +#else /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->> +static inline void ptg_init(int page_shift)
->> +{
->> +}
->> +#endif /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->> +
->>  asmlinkage void __init early_map_kernel(u64 boot_status, void *fdt)
->>  {
->>  	static char const chosen_str[] __initconst = "/chosen";
->> @@ -247,6 +290,8 @@ asmlinkage void __init early_map_kernel(u64 boot_status, void
->> *fdt)
->>  	if (!page_shift)
->>  		page_shift = early_page_shift;
->>
->> +	ptg_init(page_shift);
->> +
->>  	if (va_bits > 48) {
->>  		u64 page_size = early_page_size(page_shift);
->>
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index 9bef7638342ef..c835a50b8b768 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -2424,6 +2424,16 @@ static void kvm_hyp_init_symbols(void)
->>  	kvm_nvhe_sym(id_aa64smfr0_el1_sys_val) =
->> read_sanitised_ftr_reg(SYS_ID_AA64SMFR0_EL1);
->>  	kvm_nvhe_sym(__icache_flags) = __icache_flags;
->>  	kvm_nvhe_sym(kvm_arm_vmid_bits) = kvm_arm_vmid_bits;
->> +#ifdef CONFIG_ARM64_BOOT_TIME_PAGE_SIZE
->> +	kvm_nvhe_sym(ptg_page_shift) = ptg_page_shift;
->> +	kvm_nvhe_sym(ptg_pmd_shift) = ptg_pmd_shift;
->> +	kvm_nvhe_sym(ptg_pud_shift) = ptg_pud_shift;
->> +	kvm_nvhe_sym(ptg_p4d_shift) = ptg_p4d_shift;
->> +	kvm_nvhe_sym(ptg_pgdir_shift) = ptg_pgdir_shift;
->> +	kvm_nvhe_sym(ptg_cont_pte_shift) = ptg_cont_pte_shift;
->> +	kvm_nvhe_sym(ptg_cont_pmd_shift) = ptg_cont_pmd_shift;
->> +	kvm_nvhe_sym(ptg_pgtable_levels) = ptg_pgtable_levels;
->> +#endif /* CONFIG_ARM64_BOOT_TIME_PAGE_SIZE */
->>  }
->>
->>  static int __init kvm_hyp_init_protection(u32 hyp_va_bits)
->> diff --git a/arch/arm64/kvm/hyp/nvhe/Makefile
->> b/arch/arm64/kvm/hyp/nvhe/Makefile
->> index b43426a493df5..a8fcbb84c7996 100644
->> --- a/arch/arm64/kvm/hyp/nvhe/Makefile
->> +++ b/arch/arm64/kvm/hyp/nvhe/Makefile
->> @@ -27,6 +27,7 @@ hyp-obj-y := timer-sr.o sysreg-sr.o debug-sr.o switch.o tlb.o hyp-
->> init.o host.o
->>  	 cache.o setup.o mm.o mem_protect.o sys_regs.o pkvm.o stacktrace.o ffa.o
->>  hyp-obj-y += ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.o \
->>  	 ../fpsimd.o ../hyp-entry.o ../exception.o ../pgtable.o
->> +hyp-obj-$(CONFIG_ARM64_BOOT_TIME_PAGE_SIZE) += pgtable-geometry.o
->>  hyp-obj-$(CONFIG_LIST_HARDENED) += list_debug.o
->>  hyp-obj-y += $(lib-objs)
->>
->> diff --git a/arch/arm64/kvm/hyp/nvhe/pgtable-geometry.c
->> b/arch/arm64/kvm/hyp/nvhe/pgtable-geometry.c
->> new file mode 100644
->> index 0000000000000..17f807450a31a
->> --- /dev/null
->> +++ b/arch/arm64/kvm/hyp/nvhe/pgtable-geometry.c
->> @@ -0,0 +1,16 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Copyright (C) 2024 ARM Ltd.
->> + */
->> +
->> +#include <linux/cache.h>
->> +#include <asm/pgtable-geometry.h>
->> +
->> +int ptg_page_shift __ro_after_init;
->> +int ptg_pmd_shift __ro_after_init;
->> +int ptg_pud_shift __ro_after_init;
->> +int ptg_p4d_shift __ro_after_init;
->> +int ptg_pgdir_shift __ro_after_init;
->> +int ptg_cont_pte_shift __ro_after_init;
->> +int ptg_cont_pmd_shift __ro_after_init;
->> +int ptg_pgtable_levels __ro_after_init;
->> diff --git a/arch/arm64/mm/Makefile b/arch/arm64/mm/Makefile
->> index 60454256945b8..2ba30d06b35fe 100644
->> --- a/arch/arm64/mm/Makefile
->> +++ b/arch/arm64/mm/Makefile
->> @@ -3,6 +3,7 @@ obj-y				:= dma-mapping.o extable.o
->> fault.o init.o \
->>  				   cache.o copypage.o flush.o \
->>  				   ioremap.o mmap.o pgd.o mmu.o \
->>  				   context.o proc.o pageattr.o fixmap.o
->> +obj-$(CONFIG_ARM64_BOOT_TIME_PAGE_SIZE) += pgtable-geometry.o
->>  obj-$(CONFIG_ARM64_CONTPTE)	+= contpte.o
->>  obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
->>  obj-$(CONFIG_PTDUMP_CORE)	+= ptdump.o
->> diff --git a/arch/arm64/mm/pgd.c b/arch/arm64/mm/pgd.c
->> index 4b106510358b1..c052d0dcb0c69 100644
->> --- a/arch/arm64/mm/pgd.c
->> +++ b/arch/arm64/mm/pgd.c
->> @@ -21,10 +21,12 @@ static bool pgdir_is_page_size(void)
->>  {
->>  	if (PGD_SIZE == PAGE_SIZE)
->>  		return true;
->> -	if (CONFIG_PGTABLE_LEVELS == 4)
->> -		return !pgtable_l4_enabled();
->> -	if (CONFIG_PGTABLE_LEVELS == 5)
->> -		return !pgtable_l5_enabled();
->> +	if (!IS_ENABLED(CONFIG_ARM64_BOOT_TIME_PAGE_SIZE)) {
->> +		if (CONFIG_PGTABLE_LEVELS == 4)
->> +			return !pgtable_l4_enabled();
->> +		if (CONFIG_PGTABLE_LEVELS == 5)
->> +			return !pgtable_l5_enabled();
->> +	}
->>  	return false;
->>  }
->>
->> diff --git a/arch/arm64/mm/pgtable-geometry.c b/arch/arm64/mm/pgtable-
->> geometry.c
->> new file mode 100644
->> index 0000000000000..ba50637f1e9d0
->> --- /dev/null
->> +++ b/arch/arm64/mm/pgtable-geometry.c
->> @@ -0,0 +1,24 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Copyright (C) 2024 ARM Ltd.
->> + */
->> +
->> +#include <linux/cache.h>
->> +#include <asm/pgtable-geometry.h>
->> +
->> +/*
->> + * TODO: These should be __ro_after_init, but we need to write to them from the
->> + * pi code where they are mapped in the early page table as read-only.
->> + * __ro_after_init doesn't become writable until later when the swapper pgtable
->> + * is fully set up. We should update the early page table to map __ro_after_init
->> + * as read-write.
->> + */
->> +
->> +int ptg_page_shift __read_mostly;
->> +int ptg_pmd_shift __read_mostly;
-> 
-> I found that ptg_page_shift and ptg_pmd_shift need
-> EXPORT_SYMBOL_GPL for cases where code compiled
-> as a module is using PAGE_SIZE/PAGE_SHIFT or
-> PMD_SIZE/PMD_SHIFT. Some of the others below
-> might also need EXPORT_SYMBOL_GPL.
+--=_MailMate_8B77AFF2-B39C-4BA1-B5FB-D7051CA6DD16_=
+Content-Type: text/plain
 
-Ahh good spot - thanks! I'll fix this in the next version.
+On 16 Oct 2024, at 4:14, Ryan Roberts wrote:
 
-I wonder if these should really be EXPORT_SYMBOL() and not limited to GPL? I
-guess having access to PAGE_SIZE is a pretty fundamental thing? Anybody know the
-policy here?
-
-Thanks,
-Ryan
-
-> 
-> Michael
-> 
->> +int ptg_pud_shift __read_mostly;
->> +int ptg_p4d_shift __read_mostly;
->> +int ptg_pgdir_shift __read_mostly;
->> +int ptg_cont_pte_shift __read_mostly;
->> +int ptg_cont_pmd_shift __read_mostly;
->> +int ptg_pgtable_levels __read_mostly;
->> diff --git a/drivers/firmware/efi/libstub/arm64.c
->> b/drivers/firmware/efi/libstub/arm64.c
->> index e57cd3de0a00f..8db9dba7d5423 100644
->> --- a/drivers/firmware/efi/libstub/arm64.c
->> +++ b/drivers/firmware/efi/libstub/arm64.c
->> @@ -68,7 +68,8 @@ efi_status_t check_platform_features(void)
->>  		efi_novamap = true;
+> On 15/10/2024 18:42, Zi Yan wrote:
+>> On 14 Oct 2024, at 6:59, Ryan Roberts wrote:
 >>
->>  	/* UEFI mandates support for 4 KB granularity, no need to check */
->> -	if (IS_ENABLED(CONFIG_ARM64_4K_PAGES))
->> +	if (IS_ENABLED(CONFIG_ARM64_4K_PAGES) ||
->> +	    IS_ENABLED(CONFIG_ARM64_BOOT_TIME_PAGE_SIZE))
->>  		return EFI_SUCCESS;
+>>> Introduce a new Kconfig, ARM64_BOOT_TIME_PAGE_SIZE, which can be
+>>> selected instead of a page size. When selected, the resulting kernel's
+>>> page size can be configured at boot via the command line.
+>>>
+>>> For now, boot-time page size kernels are limited to 48-bit VA, since
+>>> more work is required to support LPA2. Additionally MMAP_RND_BITS and
+>>> SECTION_SIZE_BITS are configured for the worst case (64K pages). Future
+>>> work could be implemented to be able to configure these at boot time for
+>>> optimial page size-specific values.
+>>>
+>>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>>> ---
 >>
->>  	tg = (read_cpuid(ID_AA64MMFR0_EL1) >>
->> ID_AA64MMFR0_EL1_TGRAN_SHIFT) & 0xf;
->> --
->> 2.43.0
+>> <snip>
 >>
-> 
+>>>
+>>> @@ -1588,9 +1601,10 @@ config XEN
+>>>  # 4K  |       27          |      12      |       15             |         10              |
+>>>  # 16K |       27          |      14      |       13             |         11              |
+>>>  # 64K |       29          |      16      |       13             |         13              |
+>>> +# BOOT|       29          |    16 (max)  |       13             |         13              |
+>>>  config ARCH_FORCE_MAX_ORDER
+>>>  	int
+>>> -	default "13" if ARM64_64K_PAGES
+>>> +	default "13" if ARM64_64K_PAGES || ARM64_BOOT_TIME_PAGE_SIZE
+>>>  	default "11" if ARM64_16K_PAGES
+>>>  	default "10"
+>>>  	help
+>>
+>> So boot-time page size kernel always has the highest MAX_PAGE_ORDER, which
+>> means the section size increases for 4KB and 16KB page sizes. Any downside
+>> for this?
+>
+> I guess there is some cost to the buddy when MAX_PAGE_ORDER is larger than it
+> needs to be - I expect you can explain those details much better than I can. I'm
+> just setting it to the worst case for now as it was the easiest solution for the
+> initial series.
 
+From my past experience (around 5.19), the perf impact (using vm-scalability)
+seems very small due to MAX_PAGE_ORDER increases [1] (I made MAX_PAGE_ORDER
+a boot time variable and increased it to 20 for my 1GB THP experiments).
+
+Larger MAX_PAGE_ORDER means larger section size and larger mem_block size,
+so the granularity of memory hotplug also increases. In this case:
+1. ARM64 4KB: mem_block size increases from 4MB to 32MB,
+2. ARM64 16KB: mem_block size increases from 32MB to 128MB,
+3. ARM64 64KB: mem_block size keeps the same, 512MB.
+
+DavidH was concerned about large mem_block size before. He might have some
+opinion on this.
+
+
+>
+>>
+>> Is there any plan (not in this patchset) to support boot-time MAX_PAGE_ORDER
+>> to keep section size the same?
+>
+> Yes absolutely. I should have documented MAX_PAGE_ORDER in the commit log along
+> with the comments for MMAP_RND_BITS and SECTION_SIZE_BITS - that was an
+> oversight and I'll fix it in the next version. I plan to look at making all 3
+> values boot-time configurable in future (although I have no idea at this point
+> how involved that will be).
+
+In [1], I tried to make MAX_PAGE_ORDER a boot time variable,
+but for a different purpose, allocating 1GB THP. I needed some additional
+changes in my patchset, since I assumed MAX_PAGE_ORDER can go beyond
+section size, which makes things a little bit complicated. For your case,
+I assume you are not planning to make MAX_PAGE_ORDER bigger than section
+size, then I should be able to revive my patchset with fewer changes.
+
+In terms of SECTION_SIZE_BITS, why do you want to make it a boot time variable?
+Since it decides the minimum memory hotplug size, I assume we should keep
+it unchanged or as small as possible to make virtual machine memory usage
+efficient.
+
+
+[1] https://lore.kernel.org/linux-mm/20220811231643.1012912-1-zi.yan@sent.com/
+
+
+Best Regards,
+Yan, Zi
+
+--=_MailMate_8B77AFF2-B39C-4BA1-B5FB-D7051CA6DD16_=
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename=signature.asc
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJDBAEBCgAtFiEEh7yFAW3gwjwQ4C9anbJR82th+ooFAmcPy98PHHppeUBudmlk
+aWEuY29tAAoJEJ2yUfNrYfqKrW8QAJ2uBRtl+yXCwoBAaqxvhEeK7DB+wQzwCrQf
+rPFdb4WCXunE2bn5FNAOPqzNGV4BJhM/zkUgbcdeE5hQZ/16aVZbzbVI8lMhG+SL
+RYdRKcT7+MzEH0JqbalpW4BqTr4uqQNcTiiSCyiS+gtNqP0+g0dVWrIdd6tcbdK4
+E7Lfu7hnQFD754/Ej6nvT4nMHfOViNauFVyh7wLEtw7XJu9cSEbvQWv0awM6kLQD
+GoSUQBOInFu8otVpQ5T7rlltLVP35tWJVEV1iSVwnNpumVnwYGC6ajq/7ulanqyZ
+nd0FZ/Qo+4m0aw5QWLFqKFxXP7hqH9F35rI5cbXdl+8z/2egK7PK6Hqt2SFDdJbV
+loU4T6HAiMmK54hg/ssT4h96YIumUR9dzwixFJPUmlTlewZtTEvx7Z9TpCs2Q5Oi
+EylqTG3H1W9yJEFSoW7V2ONkmqGiSamJcBZ1qDIUn9nOT4FMIRaYRfvkXk1mPjuI
+okyAcs4erYl41OBCOEDz+6ZjbDECYd6piWUzv/f2v43LjBuZJreI324H5w3kLtlA
+nCAxMjbdmmLeKh/uL7d7nLX1H4lcEcWJObiQEbXl0OOY5ePp9wn61LoK5kMA8k3f
+urOorSjfIqbe0vkmWX389dIiIqxTvXxdT60pUwQLTF5AVdi/xCBn1P3RSLnlpHtq
+zyJz9smB
+=N6Et
+-----END PGP SIGNATURE-----
+
+--=_MailMate_8B77AFF2-B39C-4BA1-B5FB-D7051CA6DD16_=--
 
