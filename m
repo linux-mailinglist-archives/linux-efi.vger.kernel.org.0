@@ -1,85 +1,85 @@
-Return-Path: <linux-efi+bounces-1991-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-1984-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2459A27A5
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2024 17:59:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01B59A2781
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2024 17:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 826251F2300D
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2024 15:59:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D43811C25541
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Oct 2024 15:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BF81E008A;
-	Thu, 17 Oct 2024 15:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7F51DF257;
+	Thu, 17 Oct 2024 15:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="GBqCpiyb";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="qiXK/IO5"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CltL2m6i";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="xZrqgWLV"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F451DFE16;
-	Thu, 17 Oct 2024 15:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB951DED69;
+	Thu, 17 Oct 2024 15:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729180617; cv=fail; b=QFllSi593x7IuH/QU1nYQsXQfhH6ktq50WdQ7RFhwmISGN/IMENv4n5jI6zMyIpy9BdLL6he9p0Kq5SMP3YWpgmiH01P7Walq/jXf/FAuRkrqL1+8Ga0CMlQnTYO9GfDr4e55pGih7iRUGH8tUEcOi0yaQWT0NDgt/0PGomSqQw=
+	t=1729180609; cv=fail; b=cyZmINmNDGqJlmQFO4X/kw3nWu7J/EYDXZoqe8Q3pWFaqDVVoBHnw30mrHnVOXxAGY3G4VCzVEQ42d/PemD0FNRJ09K5Z0wSWm7YLTq/gqO1z48Ck4sz9mfaPAMySKaVehNHPrqJmtJBVGL5iPhvJXgROCmIDPgcoZ44uRbAVXY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729180617; c=relaxed/simple;
-	bh=PoO0Ac/eDyqjnv12t43kphD28yEuzzr8t58hT5IqhFQ=;
+	s=arc-20240116; t=1729180609; c=relaxed/simple;
+	bh=mnqIockSMDoXhMbpzrwug+dmIAa0y/oimbOWgfHWlFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kM2v4lYbP2eFVoH7OzR5CZt6ggO+kwRNbd3oJ7oUGxOW7Xr8NevfQ1TAKa84FvBQusXWlrnZ5rrFryF/J+6Nt1ongWB5DoL4cjnfq3SkqhqML5N58R3iKU3YDkEIhtg8VzSXX3WpQLTACFF1mTWteU2gof4x+d8RTvMR3CbN9cc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=GBqCpiyb; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=qiXK/IO5; arc=fail smtp.client-ip=205.220.177.32
+	 Content-Type:MIME-Version; b=AQAB2fMQZdz/6CiGZ5GCthp3WUQGPVHaT2HEXBAxpTMxk6sQav09t5aAVbs24YsGxCIi2BpXUuWu7PA0ZUGPJGxfjSKX/LMhsMeTpcSmUcrpdwdygaYgBFimBz+9IK74tpis6JmT/YaKbhc6MlWMKKjqvUEE8KIA0x88FaXLNg8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CltL2m6i; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=xZrqgWLV; arc=fail smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBrMD028923;
-	Thu, 17 Oct 2024 15:56:11 GMT
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBnU9002180;
+	Thu, 17 Oct 2024 15:56:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=RNu0atCC/CaTHi28ICJ2AfLFW/9yMfSjcd4hKj6n5BE=; b=
-	GBqCpiyblgoZF6L4n1m6KLNvw65x0KKRrLTmvfnpwduaMRjCLdaR/9eIxtbkLGNC
-	Vsu+Um3y+lk+4vIfa+tCOnbIyTpF057ktBF+eXlmxcujzKAmqtHhFyYTtzKmfZRp
-	M1kJjhHYJ7UMjJjrYhxC5gn4sv3jVPRtFVHPT0eJv6nRuS83G/fAN8OJt5mRZX7/
-	dvlgZcsVEpwRLiMJK4uXH2YYrbC3SPegGyJGFzMh9vNptlFBURv281TA50xz78h2
-	nVQSeJsWttOvZBYetsLfcZvpZRG08w1UzLuvLKKvNl9eiCfSVKqxxxm4jIEV4pxd
-	laKJFolY/nkTb+wSOcmWPQ==
+	corp-2023-11-20; bh=AMxfp9IG1I1xk1Rm/78tvPu4e2bT8HCS8BLAhK0tzkA=; b=
+	CltL2m6isN23zi82cKqdq3dN1Toh1/dKBX0GdJQf7TJgrWxbCOMm5/NiFPyW076w
+	Rs65WoIsVCY6aVl1sTiu5IDsVp5p+5fIqnH/UUW+0/ChAGiMScE0ShIyUASojN/X
+	N0S07T4OjghH7g+6HWxbglTok/8dYnJT2kbr2BnVkAN2MADfBjK/3zCCMA0x+eAV
+	X5eymDh+K2QlvPuolt16m/Tduwv1QOTVpYbzCdLLOHkz8m76qiwrLOiPZ7lUkWqc
+	KuluwxKMTyYSGVN1dRG9zBiKo+X0N1jVqkagq5Ds0jsKxAAQw7gCkGPUmBRfhiqS
+	Y/tf8CVyXHCSj+XSEjoZrA==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427gqt6te0-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fw2pxey-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Oct 2024 15:56:11 +0000 (GMT)
+	Thu, 17 Oct 2024 15:56:12 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFfHAu026407;
-	Thu, 17 Oct 2024 15:56:10 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFfHAv026407;
+	Thu, 17 Oct 2024 15:56:11 GMT
 Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2045.outbound.protection.outlook.com [104.47.70.45])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 427fjaej4g-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 427fjaej4g-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Oct 2024 15:56:10 +0000
+	Thu, 17 Oct 2024 15:56:11 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a/BtaRgh/1tWZSiWX0p5CYv0RvwTc7y6/DqkHqXfYVQUFwzMnD631Ktb++HJVVDJ1Aqz26L3AyP0bb8m+WIIM1WXqcLTMoAka4wa9N/mmOSmU7xLTxpSyRNunMDecGb0fU8PNWtRu0uyKuU9cmdbG4yCCpxuAWHOjDTM6ZTtxlyrnLouyQzOOnjX4mo7ZSP5jzCD5ksOnGIP7xitBGs9sPO5bm25hS78M01fbzNrGsylQFVU/rAS3hbwUhvFhxrvz84Ts4Bo07cyllTPmjVJWbmudjFdzBlc6ljb/OJkMeVnj27HEov4F4TGBa/ikr2LfQzJ9rs4nDKjWGVBnnZ7XA==
+ b=H3WyClCO9PlJ3u78FwzhTHLJgwafgWktYxSWR3A63I/CBQ6/CkEesr0X4GFlvNyA+luEteaisohuf4+EQIMGyLmEfjIwESJrJDoyAyvDZbAABbIdN+n2+Iy/N1eYC2I8gYJExmr2bm1QaJQGyaeEHdipGyTC20lfLbdiz/esYxgR3BPmGH/v1jmkxT/8J/axZyPHYxOxm7lnEv1nJu3KolA9iWar+sAYPzqlazWwmvMMrUX1rUiX6LZMsMQCEEOo+Ty7/nbEU6A5vW4GVvQPzUPx04s5wHHinEz+Mj3DB2zEfIFdtqxvLRPLyKwd1r235x0RuW1ksJnrba78ZTWbvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RNu0atCC/CaTHi28ICJ2AfLFW/9yMfSjcd4hKj6n5BE=;
- b=A0zpcWbUWio//TBayWVu5ra6slEDlFU0q1hniySt3RlCulZU29Od1I3gNFSI8vF+4BfHwodwZRRpa9C9wLzSX76xAkhoMwWCOwxmyuXI5qIClvcsOM2lqWJbXioAHKJ5McrvefYPjoVnZwvbjew6LTnmOBEB4mvDPrkaVVL/IFmVd5sXuNaYXqeG2ey79UEuPgvdFyc9lPUt+0h9rwwMu3AboSyHSyv/o39FnlJwMGXTv2MEnw97+IPXwIMZZs/24gLax8DqdMPB1KBMNOkiL2gxqZpA4DQ3fwOcfn1ruemEJDMnYA+rHfr6GRzucGs3RkHzlhzoKfVORtdVLuI3zg==
+ bh=AMxfp9IG1I1xk1Rm/78tvPu4e2bT8HCS8BLAhK0tzkA=;
+ b=LkjQcL25A/E3JJbuLc8BzLB1HQq1WV6FhIcrLVbJiVaau7UC8V0DFPEPZgQdIyf0pQcKtbl9VpgcpCD8dU6oYZbcpNLuqp1rrvl3AX/lZlD9gHnmxjVqDNwiWrSsE9WA8Ok1afiBn5OgM3G1YyMvfxDz90c+bTWZzJkxEj5pBrbw4A1ETwT7wPaRoZv1jeMduoRY1U8e4Ym1vWaj1cbX8slGLsg2s551nOMN1Pk//P1JRAqKyVTP6OPWDoMFAZRPheczg+kaL2aj9VaXvnY6xBS1hU/3kewDrtQVprqoh7QTuO9LptM271MPAbNquH6ncE6h6rAXbAcC7zLAkNeedw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RNu0atCC/CaTHi28ICJ2AfLFW/9yMfSjcd4hKj6n5BE=;
- b=qiXK/IO5oD+K/xtqUmFF3g+tSCe/YOXNlelKAJ1jL32jdguoMBBowyPKyMJwrzb/2qhWFH8DhgE1XpMyWNeZHgZd8A1sBpJlM5raEYN3moBPjMEJW/q8x2TSZJBPHNuVjn2COidL1H869QQWDluj1X2AzKL3cifTHq+s2Dra8oY=
+ bh=AMxfp9IG1I1xk1Rm/78tvPu4e2bT8HCS8BLAhK0tzkA=;
+ b=xZrqgWLVospiJyTYmehwYJGxyw8tTy4eajLeCYq5lajt4RQ3zyYTyIO8cW4Wf5xYuwPZ1Z5IKnp6iE5DH7OFzmqKmTLNClSUgQNAdIwkmjiPsUalSITTTUZq97mTG590QJlQlbGf/D4k8ci8Bp5+L/LVVGx/8E0Prvtc+GkFgDg=
 Received: from PH7PR10MB7730.namprd10.prod.outlook.com (2603:10b6:510:308::13)
  by PH0PR10MB5846.namprd10.prod.outlook.com (2603:10b6:510:14c::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.17; Thu, 17 Oct
- 2024 15:56:07 +0000
+ 2024 15:56:08 +0000
 Received: from PH7PR10MB7730.namprd10.prod.outlook.com
  ([fe80::7ac6:2653:966f:9411]) by PH7PR10MB7730.namprd10.prod.outlook.com
  ([fe80::7ac6:2653:966f:9411%5]) with mapi id 15.20.8048.017; Thu, 17 Oct 2024
- 15:56:07 +0000
+ 15:56:08 +0000
 From: Eric Snowberg <eric.snowberg@oracle.com>
 To: linux-security-module@vger.kernel.org
 Cc: dhowells@redhat.com, dwmw2@infradead.org, herbert@gondor.apana.org.au,
@@ -91,16 +91,16 @@ Cc: dhowells@redhat.com, dwmw2@infradead.org, herbert@gondor.apana.org.au,
         rdunlap@infradead.org, linux-kernel@vger.kernel.org,
         keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: [RFC PATCH v3 09/13] clavis: Allow user to define acl at build time
-Date: Thu, 17 Oct 2024 09:55:12 -0600
-Message-ID: <20241017155516.2582369-10-eric.snowberg@oracle.com>
+Subject: [RFC PATCH v3 10/13] efi: Make clavis boot param persist across kexec
+Date: Thu, 17 Oct 2024 09:55:13 -0600
+Message-ID: <20241017155516.2582369-11-eric.snowberg@oracle.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20241017155516.2582369-1-eric.snowberg@oracle.com>
 References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MN2PR18CA0007.namprd18.prod.outlook.com
- (2603:10b6:208:23c::12) To PH7PR10MB7730.namprd10.prod.outlook.com
+X-ClientProxiedBy: SJ0P220CA0014.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:41b::22) To PH7PR10MB7730.namprd10.prod.outlook.com
  (2603:10b6:510:308::13)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -110,79 +110,79 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH7PR10MB7730:EE_|PH0PR10MB5846:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9638a801-6a60-4ee8-466e-08dceec4358e
+X-MS-Office365-Filtering-Correlation-Id: bbaaf9b8-61e8-4be8-4e53-08dceec43702
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pHdf70g/EyBtzrFj0E+3CVJ4WsAFK9qahu9ZCsXePOE0SLks9yFI24eZQB8Q?=
- =?us-ascii?Q?+6YFayCw7Y6wu0fdE70atQ7ONFesVLnHY5Slh/UncZIyXmSitZAkTjeMW6qO?=
- =?us-ascii?Q?BqhSNfvMd1oW7bwI2sv/C6htqpC1nbhSxlhfKI1JzJVlagQnoeCTvzzpbA2r?=
- =?us-ascii?Q?bFMFDL4q0ShZShv315p7UskssO3QL4t386+BTv5NxJZP4pc5kUL6mjdki+Hs?=
- =?us-ascii?Q?EZO9rUoiT4BGS7yjEq8hDGJvpF6RP7B1yINetfZHlGatBXVJYqFyD5y6s4Yc?=
- =?us-ascii?Q?eru9DFVD1PCPvPioDBBfuhEAZPb+tatHO3dUgfK+wT5/MJxtDIA9U0as5bQo?=
- =?us-ascii?Q?7RH0e6ytd99aKqjvjmr1eL/Raa7Z5W4S0Z4ImY6OjtuTjNSLAKLnDoiAZP1y?=
- =?us-ascii?Q?yHG6Wl6b/u1s+yBjovyaPt6E/wD/sJ7dbwt5YM7tUjsXjAgMroFYb/iw3WZa?=
- =?us-ascii?Q?1RC4DZdnntAOcJGfbomotknzIzwNvVwutmQidx6LjazTQdAWZbjvnkfrJ6qa?=
- =?us-ascii?Q?tIQ+Xba51SZ8L/E9jIH8B/ayQQUCC04+bvfeohxixcPMI0pZwOskzNA5w4bc?=
- =?us-ascii?Q?7h1tY7+0XsLQ495sHZ5xLsnCe4YkQdqRRko6zPhYJ5qqHKDROdSP4XcUWsGA?=
- =?us-ascii?Q?l/eRQqtosvyaBDvjDAj51qShfiaP93WemRTrpoBD6LTG0urElOSpHpldLuFW?=
- =?us-ascii?Q?sfzluwO+9mNvsiGNpTYe18CzH63KvdHEIu/cKCJUqn3N+AF1aGdrtVt75rMU?=
- =?us-ascii?Q?V4HJce3dJ74jU6zYhGfaQgbHLpihX4T6NulA/LXyTa+06ya2G3Y5dkT7ZMY7?=
- =?us-ascii?Q?KuAVp1TAn3luuUWjzMd1Y+ynVH6BgxOepAqNAfE12Yyl0NESicsMJLBhbbN0?=
- =?us-ascii?Q?zru1raJc0LZhG2faEUEd1NG/JJKF/oEyspRBCYA2M8fDsBHiR6JOctd6WTL0?=
- =?us-ascii?Q?jqiCtSS0+l7joPai1f/wvme0E/S/6G7pNfduHWKFjZ2v5M6lICdIZLhqVDHY?=
- =?us-ascii?Q?DHf/JrG7LXHOGc+oD7LPEjmW9YbcqlhVEAIaM9ilyvPVA/1sOD08qkFPrO0q?=
- =?us-ascii?Q?uuFVyV1RGi/A/7TDFj7x08XCI3OJm3Yfct3uuWpPxtV7wwMhASD3NiCux5XV?=
- =?us-ascii?Q?Yqs+IMykRBucjKp1VSU/k+wruWARTPXzYoW/KCfa8j9ojh1BfDQWKwdr1c/Q?=
- =?us-ascii?Q?91F/u+/wyElvKuG0+LN85e2sIAPc9HqJT0KAv/53or279qsc+BPLIYrtoBgD?=
- =?us-ascii?Q?cwxGICYGAKI+mEyG4QYAgInVmHIySk/lsRns2IY7OzDe5TnNMg9C7UG0UNwf?=
- =?us-ascii?Q?LJM8Q8P6VFs3QqkQuD8qxCwq?=
+	=?us-ascii?Q?mFIJ6Z8WiiPL3934Xasz3rFafI04PlI3jfc9mrlBhIusSujer/tkudcQ+FnO?=
+ =?us-ascii?Q?5sYKBXeIkLntnJ3RMyg9leuRc5kQggfN1V6xnuN4juQCqepGaDsx5059ocVe?=
+ =?us-ascii?Q?jXdCCdTtxVrwFoAaLz3vAo185VV/e+8SKTX0/2tqDqoxpbFxLyUASOxDvjGy?=
+ =?us-ascii?Q?Krijcy9GC1kYS+3G+CL9cytYiY8OyV6X783pVUmQyHQYBlfuKUCFJZxG+Yjc?=
+ =?us-ascii?Q?qgy/yyvUkVoKPKkkKjI7xSL3DCLUeuvAbfaEJfJFnyGmgWTDNeRIZzwcwkDT?=
+ =?us-ascii?Q?iYLHKUvPnW26oZnrwPI2F/8VmHBX0fhX+bS1bO/unl1wVYH+qYHXvyRKMgQw?=
+ =?us-ascii?Q?XuIhNQZwxL9zGzHSwEj50LqNw2XEJcFZV+55e1uIG2mplhGia1Z4UK3cUKj8?=
+ =?us-ascii?Q?Ta1vwDzM7bkkx6Gz/cUXtHIkbExNsOpfpQeyqTXKeRYmmUMy3wSrCzfg3TAo?=
+ =?us-ascii?Q?+56bYdAjqtGkDgLB03+ZIUV15L0GiEesh/Gq892OREzDe1YDw4RZTco5y82t?=
+ =?us-ascii?Q?mo1QmZB064vjXJEzg4M1D1N7MCuwi1YcBwnIOLYn0gD2lklyvj0//1RlGxOV?=
+ =?us-ascii?Q?P21Xe8FG5msnFM9qQemj3SKPkfISRDKsiY7ypt81xOh2GTS/XByUZGhk7S56?=
+ =?us-ascii?Q?/FoTIdDZkp/HamnCtrcKpA8ninX53P6IDwArpX4D2wYSjLYn51VK9FQ864xD?=
+ =?us-ascii?Q?FWUXWyLtWmMhU9BNCtBrK0j550bp/hEIyNDHHY21VwZxITlLX+1aeIG4+sb+?=
+ =?us-ascii?Q?qFeKP7MglqmdPpvC6i+FnXQlchwBvSf7YJ99eA3QNZqnJHYvWQCcAZJI5ILE?=
+ =?us-ascii?Q?DvTc1HBS5j3F+t2ejUVQdibGGaG7uTL0MFomHCEYgU8SoQL42O4PHIz9dDCW?=
+ =?us-ascii?Q?PG6A+UbJsvjbsacfi6EVwWV7UWM1VJRvmfji/dg7Mh57sUdxKPxbWwAo7QSC?=
+ =?us-ascii?Q?aatdXJ22E9yhoUGWQMj80lE45gGUTTu13eWzNNln8cF4r1O0aIqf7o770h1y?=
+ =?us-ascii?Q?Go7bsKX1YLO1hctHhANj9GoRHqsJlNB0CnyZsE0mwYJjv+A5Y5zYucVgj09m?=
+ =?us-ascii?Q?zXhSfEBtfr2bS386NvYRNhc8GU1hT/KEpTCMchJiyZhaR+HoYDwrVzlI/7f6?=
+ =?us-ascii?Q?8LGVAV8MF0vfmoLe/PyqPw4Fa5OVfSWmMVm9KaS4iY2Z1+btq6GRKj4lnhDs?=
+ =?us-ascii?Q?5L5VfzGa1d5IQR7siYtUCf18N00nJg0HRJOU6cmOsrDZ2YvGt9XLJambKhrO?=
+ =?us-ascii?Q?O2NEnXtVtnRSWinTktPPmj2hS/NxCqAjLopz6bAjdHKT2zpTsMv5ZPJdIE5c?=
+ =?us-ascii?Q?VVaHFkOsJx3w5A10n0yCY/lm?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR10MB7730.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TiJi+Htb1ErwwUlkZ4UhxArm/dddf00qqRk0OB2sno+n2DEG4uepfUWkvwHm?=
- =?us-ascii?Q?9vIxuIlM4fl9j7JvEYQBBDNF0vbkS7IM5buEry3l+POYAeTeMJtAZfQ3gAN8?=
- =?us-ascii?Q?TQdDWLmKo/hU3Cc80GGWlfN6hQe4jOD3U88zfx/fEm7SdZOP1uqjfbBAHUNR?=
- =?us-ascii?Q?i8fk/pblXOoWU9UcHXP2rCcvoGcEe+WCKe1x9UbiqEX/pO+byIU13z9bC/6i?=
- =?us-ascii?Q?5PGPwf8PgLEzvEWvaN3Zl1Op06hIGI/g6kHGgKGwc7Io9kBNFAa9/DUYVY7t?=
- =?us-ascii?Q?9x+JEgU2aF5ZeplO+wwgzL+93YxynnebJBnE7VXpK5AV2G02wmk4nSeLJmvK?=
- =?us-ascii?Q?yrN39RUm3r5IrZGIN1q0SyPaZ5A6zkbsD91CIHtoLTvbH0o9SogLjG6BvK7W?=
- =?us-ascii?Q?Qw5XmutkIBsqP+n+CJl+dJHWv219AuJOFyw63ek2lxiVJoQGKslULoQopFM1?=
- =?us-ascii?Q?TZsbLtiiSRHsYTUcDAlh6l6aRw2a754lp3mnCo2ShUjbOtBr3wGek2aC89bB?=
- =?us-ascii?Q?+I5Xk6Evoj+c4tSe7Ck8mW5IlFTi2rqbQT1FgaQ0crWSNi0B+ADZ+IeTmBmu?=
- =?us-ascii?Q?+20pRrvMK53cCK1mPSbCp/tRcstorTbKgFJwJOh0cOzp8vm2Ay439IGX8sAh?=
- =?us-ascii?Q?qfFIbE9R+1SPJpVVaa8t5xavxNA3QcK3pQF4ZIyR9BwDVMFismEAD5X3H7b0?=
- =?us-ascii?Q?ucZfW2NG5r6eQz9p1uGo6/jdKE4Qnu5+u1t5K955flBKdL3U9bryHqRxsW6G?=
- =?us-ascii?Q?0Tj3SDLjMcBxsVNRH8lpB5U90BBGwcL0zPBIqyS125tlCeQVmDk/Tl2TRvbp?=
- =?us-ascii?Q?/SqYizdZtc/jIVxKAFZuQHP4mDQUQr/2tMPy9WFsOCsYi2yexUy+Nt2zQECM?=
- =?us-ascii?Q?dV/dStIQsb57767vMDx1CMkPOQdZFchLAk8qUVIpfyCIsxuCKO9SewvPrf0A?=
- =?us-ascii?Q?/23IVbYXL9PCUq29B1xli/yEEs3iqcxgl4DP9V9pcVoc5CIjmVYugQKXUG+J?=
- =?us-ascii?Q?KiazwvUdZCKxcgcrzlPiI+pus+sbcOh57QkdsfUtPxxZPZqICplbxhS2Vxxn?=
- =?us-ascii?Q?inKvozEzoJ7/x8OyDPx+k0lK09bw2fU3MXhW6K3PwzY6we+Wus0Vfh1DbvOm?=
- =?us-ascii?Q?L6dmEe5WBcZ1XcKFs7nv2salZQAlueRobdUpmGixwtlg/2wDu85JAK7pyClz?=
- =?us-ascii?Q?3UohCCpRB8vjydV+iQHulfcRs24BwEO8XfdV1C/AJKpVV7O0mTgXVUyAbiYW?=
- =?us-ascii?Q?LQYicuXSMxwF2YC4XxQYwEGlZ9TxufCwYCc+J1cRXe/IY0kK8x/Jw6I4P5N6?=
- =?us-ascii?Q?OA30mN4YvnSbI69nNlitLYD4hbomcQoDmM6ble6E8A7aCRLb4EiCfLKLJLFd?=
- =?us-ascii?Q?nPA+d2azEOJCObSuJZCSnEMfcXlUFOtVxnbPRxGxnJHev7TEeMrG3liUujgC?=
- =?us-ascii?Q?qhNe30niku+4qxbSExC4/QrtVtybmAOK7Yad7u4og4WjDcYJ7XBB07MkLhJB?=
- =?us-ascii?Q?Y/g49BX3DoNmk2xMSvRAr/ZZtE15ByycH2GWk+VBwDlLaPxvrJbJ1pckSBKL?=
- =?us-ascii?Q?OPlezbtVo9hxvpYiXFehXXaNQ0T0YYLpw9kEzEXh4H2UXuDkJR2GQZWqEGJK?=
- =?us-ascii?Q?bQ=3D=3D?=
+	=?us-ascii?Q?mic/G0WeqAv6Bw6Dh5iutDSYsdGI2O+6ijbi07XjjGStOoRzVsWHBhkNRfQP?=
+ =?us-ascii?Q?Z7EwG1Dus9C3EgAcXo+AMQ5LFLvSoPWNHFJXvAGqC/KZ32fvtSIzAJAJRTZK?=
+ =?us-ascii?Q?3IdGYFb6xajQ4lFG1HUH9iscF4bgDtZSRKan8usi4Ji6UhOTOh6VAlCA9tr2?=
+ =?us-ascii?Q?cUBqx3KQjsQu4Gl2owXFttb2poVVpV/AGWfMzD4W/gn+Wr//rpCiCUZbWj0P?=
+ =?us-ascii?Q?FSMWO2A13I2FHkALSbPFSyaTm9Zid6aOyBafZ/ZIW0lflOBNmdO6fcp4Pfrk?=
+ =?us-ascii?Q?v7EmLnojk0ADJYhtc8Vk9yrROXJl3znqfqkIA/qsLUBLvpa77jMB+8+2Pd5H?=
+ =?us-ascii?Q?XO9P5YHADUCCVdfEeRSx72VEpuwXwX847WuXpbnjCFf9iTGVE+RwABvuMkLu?=
+ =?us-ascii?Q?mZfRpPmvFpzKnCgydwdtyKsC7Ef/GCWjWu3FHRo9LnLsldMHCWfbFoPK2Hw7?=
+ =?us-ascii?Q?jhmNDKS7wYx41Bpthp/PX0EURNPSYzP1t9I+50ZCl67B3KuG5nP27YyqfxB/?=
+ =?us-ascii?Q?LIH3sz4B4sTXsgxrgAZGDLqWcn/oerOChGCXuu57ZJ2br7pWRsILQUgsZD4C?=
+ =?us-ascii?Q?8QCd/ApUorKcPOL6ktKn3cP/z6EQoGg4jdL+vImZms1bsWwvgkVKjzL8NwSS?=
+ =?us-ascii?Q?GA2pbvy8a2I15fOpy6UTnOy2NUFKmOGkBhN5TJFaPNeHEGqok662KNVFRMJT?=
+ =?us-ascii?Q?47iSnqiet0Wy87zabLx7lLqikjth26aHmP9S+uYKoohibAS0PdNrdqcG39hN?=
+ =?us-ascii?Q?cFI6aM7+G7ydkqa4xCGqBNMZI0avIVyHwaRNYkG1PrAqZm8hX7EWuLMm4XO+?=
+ =?us-ascii?Q?ACbslOp5WCORWebGKUvNytvuBk716Jl9BWB4lE6PKuwZ22b5TNJuYktRo8x+?=
+ =?us-ascii?Q?eTQsbEPorxPhIHdN7tlPbWTPgDCimW/xsGM3Hpqg2ifJ0MiXhszC0hqMTUGG?=
+ =?us-ascii?Q?J6+Xfd21q2NGyPfAyCuQASmI5Wqe4DaGGbpqt5keF3MpWlLMBeTuliNOqq45?=
+ =?us-ascii?Q?qrfIW/NZbYzHxK9K2sAm4sI8DHWPE2yVPjdiMD2MiqY13TSQb6Kl8LuOv1cw?=
+ =?us-ascii?Q?kREvO6pOvIHxRV+O3m5sFeA6lxJeyc/FblvynL9GC9miOMxbDZGWvMTlty/+?=
+ =?us-ascii?Q?tWgilvDXn/xMje54Fa2rvfTgv1rS4xWb28cwdESffwBqvZ1bZEdwqp+eKDSa?=
+ =?us-ascii?Q?lwd1DvL9Co56usAO6JEsyRgrdyOjDSIljfPE5I0IOVEYnhRUN32/PKMnFEM3?=
+ =?us-ascii?Q?vj5XJUnqpsgwixLPXSnKQnAi0d0OYL1jM3aljG+6CybZ8gFvAEseEzAx+W+Z?=
+ =?us-ascii?Q?RrqRqesJmeQDA7vQvQAv/oaOUfzCaG9N5ERNfYy+LMHjYSjY+5q/FheXids5?=
+ =?us-ascii?Q?qCUGyEa7zBlGsmJpzC5nz9HtHeIYvUwRr+xBGkApCugFDkZDE9lkzAnho8Sq?=
+ =?us-ascii?Q?LmJL39jd+19qwcONO1CW/cJtE0o7KlB9/dagYQ4Ba/ZjkobFM95vsCogdZK6?=
+ =?us-ascii?Q?mCRhZ3sufIqZtbRrQ+Q3XtcJnTiN1zEYglagxWMem7tNRF1EEFtz8dVCpMeM?=
+ =?us-ascii?Q?3aQBfFzFm0LzMHWIDTS4G8YwLa4AXFwkHfJh98bfNAHrPIJ57G5Fpu/hiOEI?=
+ =?us-ascii?Q?tA=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	SbUCcmK738lIOSYXwuefMa1KyEQUhJdoGMRV6/lVRHQNtQLeaOZGeqasPM/ts6dCuOUsrf7YBUxrnDsgST/vyWkHp4EOXJ544dlzhTEaqxhCPW4Y88DiFFLhrtgbZlBhHRguJQYhPlWftIU2WhY+x6eVtWz6ZkAxqNxh+XJqUNf9IJa9XW3x4dsMFmCu79VxKVGb9JRn+Eys8mMJ3ssP0ZzV6x9CXwAiEZwyl+iWe8SkyXTTDvTkMgD+Fg7Rih9+0zb5LWl/GcaevKefVaDsr4xPjrXv41Bq3h/E3wdaaK1edsthZ+jzNU4kRjKiFni9c/61aXzTHezXRxIpaHzVaB0BcfOw8s66vmKOVoNVjVg3o29ln4Ohjfkhd7o/beUBPphiXIJ3qA3mm8g3FYT63tWh422OWP+EU1xfBLXL1D+URJ2eRjGoPChhB9cCFYHdpsnk8mi4+rSZGJBU6Itdb88uyF5q+qVsB1fzWHg2pYhG5isygJCoeB6vCUeoi1sLJh6PtI5obiTEiX1BoiBhk3CtsH5YEqda6WX8IXrVscl+5sK9tBFue2Lu7Mgkl9d1mJhK460qwfmaHgA3COHvd86ON6lBA7EEDtFwa06Wf28=
+	LLckYKQC7ERRet/JH/K0LiccnxybR7c7eIU03sqUMlZRcG5rF5cJMSV53Grtp91NfZQDF49nw1B5CCz5thr+qmXNJXCTUKt6vIfI6myLwdl7o5+nv62rk+0p1L8lW1zQy/KkyZwaA6TZoA+Fy94a2d//u+lSB00Cdy0ZGQYx1fdQ8doqM0mflINgSzHlF/mROQ0BESWJLqeKpsSYZ/hSoZDmsLl2ddyDbcgoUslqiPMH0GrH06MwqS6LClJHSGod/5sS+Kdg2EA6vXTihnQlWErxT75TsCxwQtBJ20ZgCB7Kx+IW5xnV292G6FoFQjQkQ75eAV+w+ievFVlSKkj8ND9jeV+Ibl45QB9IBLkkRt3XcXptHePLLro72Iv2weKozivd+MjVhofMZVUG5vuFTZYTalhKlqoXRmDyYBLnRgiNwtb22/+oZBofIrvfL2k6AX8MxsTlbKFXD+HyTJznN966GhESADhZtcafmuZGiEeEtb2wyk/TqJjGuF0FGscufOHF+vhSth7P1/PgnPoqDoTvTgEzcuaAcw42AcvTsAba3JbJb1RNg0e8yAGsSAWjRGB+mjmgj35RvMbWqV3V7fCo4RwV1JHECC3jBNrdOM8=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9638a801-6a60-4ee8-466e-08dceec4358e
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbaaf9b8-61e8-4be8-4e53-08dceec43702
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR10MB7730.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2024 15:56:06.0781
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2024 15:56:08.5324
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HR5jKUR7Q1U/8QxPeq7xVqmIKIF6HNdGtUMX3WGchuZKIWO9yFjm0mWCf3X4oNW4+3zUnFS2nE5p5KreJEOnX94s3AdX8boe9svspdx4P6A=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4QjTKbpGXY/el6NZkMDj+lSy0duF1yG9CGqSOUbCqLj1bDmjGGiyJm5PSrZvCiGWqkLAiki5dbg+ghDa7fNswBQ+7ArxV6cMJKEmTdRFVCc=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB5846
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
@@ -191,115 +191,179 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwar
  bulkscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
  definitions=main-2410170110
-X-Proofpoint-GUID: U5p-hYNPRFGLqGcPBixGVQXJMCsoWuuV
-X-Proofpoint-ORIG-GUID: U5p-hYNPRFGLqGcPBixGVQXJMCsoWuuV
+X-Proofpoint-GUID: dft_VKIB8sPRI9Ng7Q83w5RfjJ2yswtH
+X-Proofpoint-ORIG-GUID: dft_VKIB8sPRI9Ng7Q83w5RfjJ2yswtH
 
-Add a new Kconfig called Security_CLAVIS_ACL_LIST. If set, this option
-should be the file name of a list of clavis ACL entries. This will be
-included into a C wrapper to incorporate the acl list into the kernel.
-The file contents must be in the following format: <two digit key usage
-number>:<subject key id>. If more than one entry is added, add a carriage
-return after each entry.
+Add the ability for the clavis boot param to persist across kexec.  This is
+done by creating a RT variable before ExitBootServices is called. The new
+variable is called Clavis with a new GUID
+193ccef6-348b-4f1f-a81b-0ea4b899dbf2.  This variable does not have NVRAM
+set, signifying it was created during the Boot Services phase.  This
+variable will persist across a kexec, however it will not persist across
+a power on reset.  This same type of functionality is currently used
+within EFI shim to mirror MOK variables into the kernel.  It is being used
+here so the clavis boot param can not be changed via kexec.  If a different
+clavis boot param is used, the one stored in the RT variable will be used
+instead. Enforcement of which boot param to use will be done in a follow
+on patch.
 
 Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
 ---
- security/clavis/.gitignore           |  1 +
- security/clavis/Kconfig              | 10 ++++++++++
- security/clavis/Makefile             | 16 ++++++++++++++++
- security/clavis/clavis.h             |  2 ++
- security/clavis/clavis_builtin_acl.c |  7 +++++++
- security/clavis/clavis_keyring.c     |  1 +
- 6 files changed, 37 insertions(+)
- create mode 100644 security/clavis/.gitignore
- create mode 100644 security/clavis/clavis_builtin_acl.c
+ drivers/firmware/efi/Kconfig                  | 12 +++++++
+ drivers/firmware/efi/libstub/Makefile         |  1 +
+ drivers/firmware/efi/libstub/clavis.c         | 33 +++++++++++++++++++
+ .../firmware/efi/libstub/efi-stub-helper.c    |  2 ++
+ drivers/firmware/efi/libstub/efi-stub.c       |  2 ++
+ drivers/firmware/efi/libstub/efistub.h        |  8 +++++
+ drivers/firmware/efi/libstub/x86-stub.c       |  2 ++
+ include/linux/efi.h                           |  1 +
+ 8 files changed, 61 insertions(+)
+ create mode 100644 drivers/firmware/efi/libstub/clavis.c
 
-diff --git a/security/clavis/.gitignore b/security/clavis/.gitignore
-new file mode 100644
-index 000000000000..c1b60bee049e
---- /dev/null
-+++ b/security/clavis/.gitignore
-@@ -0,0 +1 @@
-+/builtin_acl
-diff --git a/security/clavis/Kconfig b/security/clavis/Kconfig
-index 04f7565f2e2b..b702311ec905 100644
---- a/security/clavis/Kconfig
-+++ b/security/clavis/Kconfig
-@@ -9,3 +9,13 @@ config SECURITY_CLAVIS
- 	  keyrings (builtin, secondary, or platform).  One way to add this key
- 	  is during boot by passing in the asymmetric key id within the "clavis=" boot
- 	  param.  This keyring is required by the Clavis LSM.
-+
-+config SECURITY_CLAVIS_ACL_LIST
-+	string "Clavis ACL list to preload into the clavis keyring"
-+	depends on SECURITY_CLAVIS
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 72f2537d90ca..8dcb5326d05d 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -186,6 +186,18 @@ config RESET_ATTACK_MITIGATION
+ 	  have been evicted, since otherwise it will trigger even on clean
+ 	  reboots.
+ 
++config EARLY_CLAVIS
++	bool "Early clavis"
++	depends on EFI_STUB
 +	help
-+	  If set, this option should be the file name of a list of clavis ACL
-+	  entries. This will be included into a C wrapper to incorporate the
-+	  acl list into the kernel. The file contents must be in the following
-+	  format: <two digit key usage number>:<subject key id>.  If more than
-+	  one entry is added, add a carriage return after each entry.
-diff --git a/security/clavis/Makefile b/security/clavis/Makefile
-index a3430dd6bdf9..082e6d3c0934 100644
---- a/security/clavis/Makefile
-+++ b/security/clavis/Makefile
-@@ -2,3 +2,19 @@
++	  Allow the clavis boot param to persist across kexec. This will create a
++	  variable called Clavis with a 193ccef6-348b-4f1f-a81b-0ea4b899dbf2 GUID.
++	  This variable does not have NVRAM set, signifying it was created during
++	  the Boot Services phase.  This variable will persist across a kexec,
++	  however it will not persist across a power on reset. During kexec, if
++	  a different clavis boot param is used, the one stored in the RT variable
++	  will be used instead.
++
+ config EFI_RCI2_TABLE
+ 	bool "EFI Runtime Configuration Interface Table Version 2 Support"
+ 	depends on X86 || COMPILE_TEST
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index ed4e8ddbe76a..b5243543ccc9 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -86,6 +86,7 @@ lib-$(CONFIG_X86)		+= x86-stub.o smbios.o
+ lib-$(CONFIG_X86_64)		+= x86-5lvl.o
+ lib-$(CONFIG_RISCV)		+= kaslr.o riscv.o riscv-stub.o
+ lib-$(CONFIG_LOONGARCH)		+= loongarch.o loongarch-stub.o
++lib-$(CONFIG_EARLY_CLAVIS)	+= clavis.o
  
- obj-$(CONFIG_SECURITY_CLAVIS) += clavis_keyring.o
- obj-$(CONFIG_SECURITY_CLAVIS) += clavis.o
-+obj-$(CONFIG_SECURITY_CLAVIS) += clavis_builtin_acl.o
-+
-+ifeq ($(CONFIG_SECURITY_CLAVIS_ACL_LIST),)
-+quiet_cmd_make_builtin_acl = GEN     $@
-+      cmd_make_builtin_acl = \
-+	echo > $@
-+else
-+quiet_cmd_make_builtin_acl = GEN     $@
-+      cmd_make_builtin_acl = \
-+	sed 's/^[ \t]*//; s/.*/"&",/' $< | tr '[:upper:]' '[:lower:]' > $@
-+endif
-+
-+$(obj)/builtin_acl: $(CONFIG_SECURITY_CLAVIS_ACL_LIST) FORCE
-+	$(call if_changed,make_builtin_acl)
-+
-+$(obj)/clavis_builtin_acl.o: $(obj)/builtin_acl
-diff --git a/security/clavis/clavis.h b/security/clavis/clavis.h
-index b77e4ec8edbe..7099a517b111 100644
---- a/security/clavis/clavis.h
-+++ b/security/clavis/clavis.h
-@@ -14,6 +14,8 @@ struct asymmetric_setup_kid {
- 	unsigned char data[CLAVIS_BIN_KID_MAX];
- };
+ CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
  
-+extern const char __initconst *const clavis_builtin_acl_list[];
-+
- #ifndef CONFIG_SYSTEM_TRUSTED_KEYRING
- const char __initconst *const clavis_module_acl[] = {
- 	 NULL
-diff --git a/security/clavis/clavis_builtin_acl.c b/security/clavis/clavis_builtin_acl.c
+diff --git a/drivers/firmware/efi/libstub/clavis.c b/drivers/firmware/efi/libstub/clavis.c
 new file mode 100644
-index 000000000000..c98b6df05413
+index 000000000000..3a715e87a13a
 --- /dev/null
-+++ b/security/clavis/clavis_builtin_acl.c
-@@ -0,0 +1,7 @@
++++ b/drivers/firmware/efi/libstub/clavis.c
+@@ -0,0 +1,33 @@
 +// SPDX-License-Identifier: GPL-2.0
-+#include "clavis.h"
++#include <linux/efi.h>
++#include <asm/efi.h>
++#include "efistub.h"
 +
-+const char __initconst *const clavis_builtin_acl_list[] = {
-+#include "builtin_acl"
-+	NULL
-+};
-diff --git a/security/clavis/clavis_keyring.c b/security/clavis/clavis_keyring.c
-index 1e1fbb54f6be..a4a95a931b50 100644
---- a/security/clavis/clavis_keyring.c
-+++ b/security/clavis/clavis_keyring.c
-@@ -300,6 +300,7 @@ int __init clavis_keyring_init(void)
- 		panic("Can't allocate clavis keyring\n");
++#define MAX_PARAM_LENGTH 64
++static const efi_char16_t clavis_param_name[] = L"Clavis";
++static const efi_guid_t clavis_guid = LINUX_EFI_CLAVIS_GUID;
++static unsigned char param_data[MAX_PARAM_LENGTH];
++static size_t param_len;
++
++void efi_parse_clavis(char *option)
++{
++	if (!option)
++		return;
++
++	param_len = strnlen(option, MAX_PARAM_LENGTH);
++	memcpy(param_data, option, param_len);
++}
++
++void efi_setup_clavis(void)
++{
++	efi_status_t error;
++
++	if (param_len) {
++		error = set_efi_var(clavis_param_name, &clavis_guid,
++				    EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS,
++				    param_len, &param_data);
++	}
++
++	if (error)
++		efi_err("Failed to set Clavis\n");
++}
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index de659f6a815f..3c45eaec325d 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -100,6 +100,8 @@ efi_status_t efi_parse_options(char const *cmdline)
+ 		} else if (!strcmp(param, "video") &&
+ 			   val && strstarts(val, "efifb:")) {
+ 			efi_parse_option_graphics(val + strlen("efifb:"));
++		} else if (!strcmp(param, "clavis") && val) {
++			efi_parse_clavis(val);
+ 		}
+ 	}
+ 	efi_bs_call(free_pool, buf);
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index 958a680e0660..c15cd0d9e71f 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -183,6 +183,8 @@ efi_status_t efi_stub_common(efi_handle_t handle,
  
- 	clavis_add_acl(clavis_module_acl, clavis_keyring);
-+	clavis_add_acl(clavis_builtin_acl_list, clavis_keyring);
+ 	install_memreserve_table();
  
- 	return 0;
- }
++	efi_setup_clavis();
++
+ 	status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
+ 
+ 	free_screen_info(si);
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 685098f9626f..ddd51d7f19c3 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -1142,6 +1142,14 @@ static inline void
+ efi_enable_reset_attack_mitigation(void) { }
+ #endif
+ 
++#ifdef CONFIG_EARLY_CLAVIS
++void efi_parse_clavis(char *option);
++void efi_setup_clavis(void);
++#else
++static inline void efi_parse_clavis(char *option) { }
++static inline void efi_setup_clavis(void) { }
++#endif
++
+ void efi_retrieve_eventlog(void);
+ 
+ struct screen_info *alloc_screen_info(void);
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index f8e465da344d..facec319d978 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -1044,6 +1044,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 
+ 	setup_unaccepted_memory();
+ 
++	efi_setup_clavis();
++
+ 	status = exit_boot(boot_params, handle);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("exit_boot() failed!\n");
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index e28d88066033..a6ab5d30d25c 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -423,6 +423,7 @@ void efi_native_runtime_setup(void);
+ #define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID	EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+ 
+ #define RISCV_EFI_BOOT_PROTOCOL_GUID		EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
++#define LINUX_EFI_CLAVIS_GUID			EFI_GUID(0x193ccef6, 0x348b, 0x4f1f,  0xa8, 0x1b, 0x0e, 0xa4, 0xb8, 0x99, 0xdb, 0xf2)
+ 
+ /*
+  * This GUID may be installed onto the kernel image's handle as a NULL protocol
 -- 
 2.45.0
 
