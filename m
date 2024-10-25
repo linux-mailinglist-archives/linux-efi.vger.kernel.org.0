@@ -1,151 +1,188 @@
-Return-Path: <linux-efi+bounces-2017-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2018-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814C19AF90E
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Oct 2024 07:03:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B74F9AF914
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Oct 2024 07:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A45E71C21C5A
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Oct 2024 05:03:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF54728331F
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Oct 2024 05:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACCF18C353;
-	Fri, 25 Oct 2024 05:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC35189B9F;
+	Fri, 25 Oct 2024 05:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h1WAhLvf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBQbHn3o"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6EA18BC05;
-	Fri, 25 Oct 2024 05:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357B322B641;
+	Fri, 25 Oct 2024 05:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729832627; cv=none; b=jbUPyJ+DjQmEYsI4UczFALNI7tskd4Mh9MkuYP6hRha7U5X5wYaVS2njH/zDbIkL93HPqBLAdorI8E2jxPpnOtYurqyZhp4TGng8+tFjoH1lGtTf8NmF8Jdg+GuN265gsSndbaRYXVtstYKP1y6JrGBMAi5NsOTwsw+a3czPk7Q=
+	t=1729832870; cv=none; b=WELhDsu3dyap8KQduUQ0nq4gFhUzzY+8QLt0n/UcvUtCicSTYjdbeaA1uNKmOTrDyd1JQk/HX3PP8OgoMbfM0gSO1+WOisR8PpfDfNpllt9FTJtMZjMV0aY7kdjfhm00Eqf+FOjKV7vODovYqSG0k95GVNcZbqiWGtX7/NrYpWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729832627; c=relaxed/simple;
-	bh=k/3YIX2cJB3IDhrvzlIsnk9CNBlCnPkg+bpj8kp+nZQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cF+ETT6e6xORu5d+onXKCdTiIQvULwpW5G1+l6RzQchRM+jUSnSctOXtxjGm2MbSeB7a/YuvyswZsbn+0E3eeTu1V7JsKlxXBprvaM/S6L2M3oLAG0/tcGcqFW9LM+YZ6k2CgOKEXyzOp1t3gCLtNl06xlevu5IJXVxUZfPN0Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h1WAhLvf; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729832625; x=1761368625;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=k/3YIX2cJB3IDhrvzlIsnk9CNBlCnPkg+bpj8kp+nZQ=;
-  b=h1WAhLvfDLaIt3QsO1x2Daw6unekOmNR5wm/auetvKEEhO1EMI1Y32sq
-   8zkHMkzpWzohP/tUWJ3+N8BuZDizZ9HStWGvyuYfu7VDHC7bbaqwN1j/3
-   c0gQ2bSwLuOW3/1MSfPTW2vs/qnovCJwa5qUjLYxWBtzfvlfXgA/Dh64+
-   AQGh3OtQtoX/5uetf1auodaYH/pQVqCRFSQsObIyVpuYI/9S5q6QxvZOU
-   yJYePm/fSTJ8/jB4+K00c2dELVq35iVf979fDb+TD43THBwvw/halW5CV
-   44kzFAMLOhAQ5buH1n18QFWTT4pQKEh6/f3B43kQfu8dnEw5pzbfiZ5oW
-   w==;
-X-CSE-ConnectionGUID: VEv9+eDkRGm8HWSE8++FTA==
-X-CSE-MsgGUID: mP7+yizxSdeJAkKifDJ8vg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="29392905"
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; 
-   d="scan'208";a="29392905"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 22:03:44 -0700
-X-CSE-ConnectionGUID: hWcveicxSgGnL22dtfsTBw==
-X-CSE-MsgGUID: q5FeS5fsRbu3j/lMYyR0vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; 
-   d="scan'208";a="81123475"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 24 Oct 2024 22:03:42 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t4CU7-000Xc2-2d;
-	Fri, 25 Oct 2024 05:03:39 +0000
-Date: Fri, 25 Oct 2024 13:03:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zeng Heng <zengheng4@huawei.com>, bp@suse.de, javierm@redhat.com,
-	ardb@kernel.org, tzimmermann@suse.de, simona.vetter@ffwll.ch
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	bobo.shaobowang@huawei.com, linux-efi@vger.kernel.org
-Subject: Re: [PATCH] drivers/firmware: Fix unused const variable
- 'efifb_fwnode_ops'
-Message-ID: <202410251211.Jze0KkZR-lkp@intel.com>
-References: <20241024084435.165333-1-zengheng4@huawei.com>
+	s=arc-20240116; t=1729832870; c=relaxed/simple;
+	bh=iTbP6xU6PxFBTH1u3OLkHDGz/Js+zFobMw1YPFwXD6o=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=MbfOXAtmWfAS6hO29MewOKTnFtHN4P0oZsvaWmi+oTbdQzXW5f8ne7m/47sPl7kCebPYh5a3Mg08xTBdzAcR8ZH6vusc9ZvMGO1KYMzwEIXKFZdSo03WC9F+w7EJAhTI6t/gFHu1oxGeZtTQEpd+3oZYpNIMYgqe424TmNmirsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBQbHn3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57557C4CEC3;
+	Fri, 25 Oct 2024 05:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729832869;
+	bh=iTbP6xU6PxFBTH1u3OLkHDGz/Js+zFobMw1YPFwXD6o=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=SBQbHn3oZa3kL+RxAclmK3qA53vBUjiXvow6H4iaPmCRKJbY8yD4PZlytYG+XCKJ1
+	 3qhNi3I42YfNZbK5UmGm2Ql4oPtQYTte1FFUY6fd4mdDlTfYPzCh6rSL2j1CW2WN9v
+	 jbBr1d41hWiAY2hj1bqJ2WN4vBYkh+uGKkdBkHVx6IU00uqm0bJZkSXWV9+yzVp366
+	 2k3RybBYGZBpMiMAKi/eJug3OM9gc2k0cu2kt0NnoKJGUBcB02p4O+RibvQONRat+Z
+	 aHXzlwG7fTeCdI629uYyPoRegq5uFavtg7qEcBoRzSGA1NAfLugsE6SdgHhrnI5MaY
+	 Dx5fo5y+zRSzw==
+Message-ID: <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org>
+Date: Fri, 25 Oct 2024 07:07:46 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024084435.165333-1-zengheng4@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
+ avoid corruption
+From: Jiri Slaby <jirislaby@kernel.org>
+To: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
+ Breno Leitao <leitao@debian.org>, Usama Arif <usamaarif642@gmail.com>
+References: <20240912155159.1951792-2-ardb+git@google.com>
+ <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Zeng,
+On 24. 10. 24, 18:20, Jiri Slaby wrote:
+> On 12. 09. 24, 17:52, Ard Biesheuvel wrote:
+>> From: Ard Biesheuvel <ardb@kernel.org>
+>>
+>> The TPM event log table is a Linux specific construct, where the data
+>> produced by the GetEventLog() boot service is cached in memory, and
+>> passed on to the OS using a EFI configuration table.
+>>
+>> The use of EFI_LOADER_DATA here results in the region being left
+>> unreserved in the E820 memory map constructed by the EFI stub, and this
+>> is the memory description that is passed on to the incoming kernel by
+>> kexec, which is therefore unaware that the region should be reserved.
+>>
+>> Even though the utility of the TPM2 event log after a kexec is
+>> questionable, any corruption might send the parsing code off into the
+>> weeds and crash the kernel. So let's use EFI_ACPI_RECLAIM_MEMORY
+>> instead, which is always treated as reserved by the E820 conversion
+>> logic.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Reported-by: Breno Leitao <leitao@debian.org>
+>> Tested-by: Usama Arif <usamaarif642@gmail.com>
+>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>> ---
+>>   drivers/firmware/efi/libstub/tpm.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/ 
+>> efi/libstub/tpm.c
+>> index df3182f2e63a..1fd6823248ab 100644
+>> --- a/drivers/firmware/efi/libstub/tpm.c
+>> +++ b/drivers/firmware/efi/libstub/tpm.c
+>> @@ -96,7 +96,7 @@ static void efi_retrieve_tcg2_eventlog(int version, 
+>> efi_physical_addr_t log_loca
+>>       }
+>>       /* Allocate space for the logs and copy them. */
+>> -    status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
+>> +    status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
+>>                    sizeof(*log_tbl) + log_size, (void **)&log_tbl);
+> 
+> Hi,
+> 
+> this, for some reason, corrupts system configuration table. On good 
+> boots, memattr points to 0x77535018, on bad boots (this commit applied), 
+> it points to 0x77526018.
+> 
+> And the good content at 0x77526018:
+> tab=0x77526018 size=16+45*48=0x0000000000000880
+> 
+> bad content at 0x77535018:
+> tab=0x77535018 size=16+2*1705353216=0x00000000cb4b4010
+> 
+> This happens only on cold boots. Subsequent boots (having the commit or 
+> not) are all fine.
+> 
+> Any ideas?
 
-kernel test robot noticed the following build warnings:
+====
+EFI_ACPI_RECLAIM_MEMORY
 
-[auto build test WARNING on efi/next]
-[also build test WARNING on linus/master v6.12-rc4 next-20241024]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This memory is to be preserved by the UEFI OS loader and OS until ACPI
+is enabled. Once ACPI is enabled, the memory in this range is available 
+for general use.
+====
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zeng-Heng/drivers-firmware-Fix-unused-const-variable-efifb_fwnode_ops/20241024-163259
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-patch link:    https://lore.kernel.org/r/20241024084435.165333-1-zengheng4%40huawei.com
-patch subject: [PATCH] drivers/firmware: Fix unused const variable 'efifb_fwnode_ops'
-config: x86_64-buildonly-randconfig-002-20241025 (https://download.01.org/0day-ci/archive/20241025/202410251211.Jze0KkZR-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241025/202410251211.Jze0KkZR-lkp@intel.com/reproduce)
+BTW doesn't the above mean it is released by the time TPM actually reads it?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410251211.Jze0KkZR-lkp@intel.com/
+Isn't the proper fix to actually memblock_reserve() that TPM portion. 
+The same as memattr in efi_memattr_init()?
 
-All warnings (new ones prefixed by >>):
-
->> drivers/firmware/efi/sysfb_efi.c:328:12: warning: 'efifb_add_links' defined but not used [-Wunused-function]
-     328 | static int efifb_add_links(struct fwnode_handle *fwnode)
-         |            ^~~~~~~~~~~~~~~
->> drivers/firmware/efi/sysfb_efi.c:94:19: warning: 'efifb_set_system' defined but not used [-Wunused-function]
-      94 | static int __init efifb_set_system(const struct dmi_system_id *id)
-         |                   ^~~~~~~~~~~~~~~~
-
-
-vim +/efifb_add_links +328 drivers/firmware/efi/sysfb_efi.c
-
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  320  
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  321  /*
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  322   * If the efifb framebuffer is backed by a PCI graphics controller, we have
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  323   * to ensure that this relation is expressed using a device link when
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  324   * running in DT mode, or the probe order may be reversed, resulting in a
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  325   * resource reservation conflict on the memory window that the efifb
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  326   * framebuffer steals from the PCIe host bridge.
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  327   */
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25 @328  static int efifb_add_links(struct fwnode_handle *fwnode)
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  329  {
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  330  	struct device_node *sup_np;
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  331  
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  332  	sup_np = find_pci_overlap_node();
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  333  
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  334  	/*
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  335  	 * If there's no PCI graphics controller backing the efifb, we are
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  336  	 * done here.
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  337  	 */
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  338  	if (!sup_np)
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  339  		return 0;
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  340  
-75cde56a5b504d Saravana Kannan          2024-03-04  341  	fwnode_link_add(fwnode, of_fwnode_handle(sup_np), 0);
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  342  	of_node_put(sup_np);
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  343  
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  344  	return 0;
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  345  }
-8633ef82f101c0 Javier Martinez Canillas 2021-06-25  346  
-
+> DMI: Dell Inc. Latitude 7290/09386V, BIOS 1.39.0 07/04/2024
+> 
+> This was reported downstream at:
+> https://bugzilla.suse.com/show_bug.cgi?id=1231465
+> 
+> thanks,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+js
+suse labs
+
 
