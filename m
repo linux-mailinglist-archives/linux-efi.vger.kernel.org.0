@@ -1,63 +1,63 @@
-Return-Path: <linux-efi+bounces-2038-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2039-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891FE9B3621
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C7D9B3624
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16501B2462A
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 16:14:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97A2CB24776
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 16:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D748B1DED5C;
-	Mon, 28 Oct 2024 16:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCB31DF270;
+	Mon, 28 Oct 2024 16:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mpWj6jqy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cm9K52mq"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E4015C13A;
-	Mon, 28 Oct 2024 16:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21CA1DFDA5;
+	Mon, 28 Oct 2024 16:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730131962; cv=none; b=HEDJvdsjDfEVQQvNv56/oL1I9o80WdxDomrXbi1zEmvHx6a6q1aqA/WYgSXTU+a7z0QQF5FoxLZqtFoC76RzZq8Ju/yIC5LVLd+C9kaiOAi16ERHmkXA+PEf/W/yzoKfgzKmRYgtOA5fvkJFcz5pi/BxYJEo8MKCn7NG592u7bw=
+	t=1730131967; cv=none; b=PLcnT7FnhI8qyVyK1jpESEZklqa1IxxLjoiWOdvVr9uH8S/ejVGE9xgSuNF1i2B+YI5TFFdDbstEZQC1rUYLyX50JRKvWWPWYFw9PgSb3EG4MKPBglRuzTgo9UGOTnpt1Gs5+ywyVB9QxMz7oV15jZcvRICg2MLOje/ZdPty7I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730131962; c=relaxed/simple;
-	bh=NevhFlPE+KNvQiSPEghiI9LcPvmTS2/0EMqAIFv1Klc=;
+	s=arc-20240116; t=1730131967; c=relaxed/simple;
+	bh=dl3XZyhTS8Djp7/powdEYQthWqXNlLd0T3UVJapIuyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEcDtV/kfmmBSIERwF6zd3Fq7q50VUVKklhD2104qtQr5CMQ9yoA59a4TVyTPFvfnPpVczG71yIXB7E02wLTndCHYeA3oHUSkohhwGZzjTmhFbnfG81rxk9yGenoD75Vbp8nPqyn5zB0Fs0QQxJ9ztAtfNG/N57GhmB6Ro6I/Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mpWj6jqy; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=DfaWLs0jEn1Eew7Tc1tcTF1VsJiezE0MFP/qrE3DkCruTUR+fWonoohZ5jUNWcZmJNCMiXXtYoF8IN7kmlUm4EYkNB7A306ucjc/FgZQJctMGPHbOvjigQVazxmoO+beTjPpOgJHjEnQiVCrOpNjZRcUaZdlg3/UK/e1sRtRvYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cm9K52mq; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730131961; x=1761667961;
+  t=1730131966; x=1761667966;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NevhFlPE+KNvQiSPEghiI9LcPvmTS2/0EMqAIFv1Klc=;
-  b=mpWj6jqyOodbrV9V3c5zPc51iUBXx+LkYQ8GW9KcMUk0mykF8i24ESrZ
-   JUGmNZgI6IA9Xdp0WQXVxRZZG3PYSOGL22VH+jH8TbTcFUiNx2eo6ff+r
-   pCTf2D8xJEJKiQYDw0JWpIDOOnSu+UUnPLGk6P9pf6N9tfDeIyiHYNRGM
-   gBImZ80icHCdLb8VQWUk4KAM2U1fWlfyOwmyilCbROfIgbE+3e42yEQRH
-   WLn8Ip33S5dnCwlH1oCjf+NJGk+me18OHGVDZAcCSsg3fm1kkQ3qFQnas
-   BsjpWEN/k2K+yO2ndvtDjsbJmGqV59vgqQ9arBw/0gypp6HcvTTZYD5Dh
-   Q==;
-X-CSE-ConnectionGUID: XJcpD+AuQQqvuII3irmZcQ==
-X-CSE-MsgGUID: YYqIDF1UR2Kcp2gjLm01YQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32594375"
+  bh=dl3XZyhTS8Djp7/powdEYQthWqXNlLd0T3UVJapIuyQ=;
+  b=Cm9K52mqV6xBskDt85V+2IphJGVJYfgnqRb1pYeAVpv9yXsvutFqad6Z
+   wigjwIG8RQQ6KmgIE8yB8sfhvrzI60YvecEEyouOh/CxnRY4SoN3t6clp
+   6Nha/KVC4996DLTjUwj5jBA+ur5KYVGfDFb9kPFkBA/PITLJ+frGGkEG2
+   VSuck4bOE4MImOmgYDWhbUa6gPpnHQKRc9429tG27FV4g+IMnn/hK+Cd0
+   tdPe5hfoSsXQj2svwsZ6p9YQy4HYXWlkh4Q4NnVVt52293tv73wPm8ORq
+   14CfvtcIM4BulNukhBIBJrVF40jAiHWoHTmy+jLlQWFNfh+EbF3tdpezG
+   w==;
+X-CSE-ConnectionGUID: QjFofTcvREWsrGle7pwC6Q==
+X-CSE-MsgGUID: 0k+WfTdHTEmbXw1aZ1uRuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32594417"
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="32594375"
+   d="scan'208";a="32594417"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:12:34 -0700
-X-CSE-ConnectionGUID: IYTBZ+s6S1iSYr7YEVFIsQ==
-X-CSE-MsgGUID: ihsFtu3hRuy/yB1N+Qhmog==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:12:45 -0700
+X-CSE-ConnectionGUID: Gy1JfNpnSbKOqqaDJjmWRA==
+X-CSE-MsgGUID: /7wgu1DMQkCap2RejVcAAw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="112478968"
+   d="scan'208";a="112479044"
 Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:12:22 -0700
+  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:12:33 -0700
 From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -110,9 +110,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v5 15/16] x86/cpu: Enable LASS during CPU initialization
-Date: Mon, 28 Oct 2024 18:08:03 +0200
-Message-ID: <20241028160917.1380714-16-alexander.shishkin@linux.intel.com>
+Subject: [PATCH v5 16/16] Revert "x86/lam: Disable ADDRESS_MASKING in most cases"
+Date: Mon, 28 Oct 2024 18:08:04 +0200
+Message-ID: <20241028160917.1380714-17-alexander.shishkin@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
 References: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
@@ -124,50 +124,32 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sohil Mehta <sohil.mehta@intel.com>
+This reverts commit 3267cb6d3a174ff83d6287dcd5b0047bbd912452.
 
-Being a security feature, enable LASS by default if the platform
-supports it.
+LASS mitigates the Spectre based on LAM (SLAM) [1] and an earlier
+commit made LAM depend on LASS, so we no longer need to disable LAM at
+compile time, so revert the commit that disables LAM.
 
-While at it, get rid of the comment above the SMAP/SMEP/UMIP/LASS setup
-instead of updating it to mention LASS as well, as the whole sequence is
-quite self-explanatory.
+[1] https://download.vusec.net/papers/slam_sp24.pdf
 
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+CC: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 ---
- arch/x86/kernel/cpu/common.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index f8eed9548ea1..2f5faa5979a9 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -400,6 +400,12 @@ static __always_inline void setup_umip(struct cpuinfo_x86 *c)
- 	cr4_clear_bits(X86_CR4_UMIP);
- }
- 
-+static __always_inline void setup_lass(struct cpuinfo_x86 *c)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_LASS))
-+		cr4_set_bits(X86_CR4_LASS);
-+}
-+
- /* These bits should not change their value after CPU init is finished. */
- static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
- 					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED |
-@@ -1848,10 +1854,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 	/* Disable the PN if appropriate */
- 	squash_the_stupid_serial_number(c);
- 
--	/* Set up SMEP/SMAP/UMIP */
- 	setup_smep(c);
- 	setup_smap(c);
- 	setup_umip(c);
-+	setup_lass(c);
- 
- 	/* Enable FSGSBASE instructions if available. */
- 	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 0bdb7a394f59..192d5145f54e 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2257,7 +2257,6 @@ config RANDOMIZE_MEMORY_PHYSICAL_PADDING
+ config ADDRESS_MASKING
+ 	bool "Linear Address Masking support"
+ 	depends on X86_64
+-	depends on COMPILE_TEST || !CPU_MITIGATIONS # wait for LASS
+ 	help
+ 	  Linear Address Masking (LAM) modifies the checking that is applied
+ 	  to 64-bit linear addresses, allowing software to use of the
 -- 
 2.45.2
 
