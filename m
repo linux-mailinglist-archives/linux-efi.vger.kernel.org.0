@@ -1,193 +1,162 @@
-Return-Path: <linux-efi+bounces-2040-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2041-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249C99B382E
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 18:49:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 681369B3C0C
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 21:42:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8B6F282DDD
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:49:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF5871F22DF7
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 20:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB6D1DEFE7;
-	Mon, 28 Oct 2024 17:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889C01DFD95;
+	Mon, 28 Oct 2024 20:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ciW/c3Xi"
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="B7aBkbFp";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Q3fPSrT4"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593381D6DB6;
-	Mon, 28 Oct 2024 17:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB9718E03D;
+	Mon, 28 Oct 2024 20:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730137753; cv=none; b=gdqFllS7Nk6Qd2KHpt3l3F9YqJm9Qdc+Re/ftxLswIxXBSW9Mo+7v4Xy4phsD3ePC6YIASSVCJN1/SAFk1UAMJ+8yLDFGst7IKimudKpQLDv6lRgca/RC+RyCoFq6lJVDXEGaH1JEH3XFKjhT7/WHJm9IW1aywQTHgRa+94PGvc=
+	t=1730148139; cv=none; b=c0nbmXl+Iq2TRqcN248JizBlTGvatq8HHa6c/jQoGijZxGefQ57R+e9ZQr7lxUPwr1uHHFQsGfGUQylQjVblDUHCBYcaegqxClYSXAhaQxtV89wxsZ+i5rcduQ5UkkLCSvlmLZ8lMIq+OWypic+6olfeTEEweTI4JlNifn7vhKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730137753; c=relaxed/simple;
-	bh=dtey4PkSZMbph64YIT0bvMc0x6dNXgLft4nU8l6Q/AY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tlfcArAAvsZU2lmSr5r30vpC9hAnkdpojxjo3QqvHh78yYe1A1i0KZClR1QUGjxWnbf9h5GI+o/GboZDihcqtC9FagLfy1uucz4ciGaz9zZenoyeAKXOhuOnxEd+KFrcC4YNW5qNE8qlM+k4RCzZ42L7VC9qKYsNugOdlCEn0ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ciW/c3Xi; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730137752; x=1761673752;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dtey4PkSZMbph64YIT0bvMc0x6dNXgLft4nU8l6Q/AY=;
-  b=ciW/c3XiXBukJRIHin+PwcdReBDo5YkP587kh0X5IiRXRhLYmGbpFlkD
-   zdWI7ycIRK1grC3jdUje7dbuT+OPB4USeQSJ9ZIrCS8vvIyfbhsBFGnqT
-   qE5S90Gm7cZictXrT+tO97YkOXK3O/au05QipLuJEXdgtPVQwrSgNJRAu
-   eYI5kcmtkTLRp5DYYJZDUET5s8d8UjecFBKTf4Cjn2VamGjWs5T/g4W+1
-   TyvqNMEIOiOjrpi7bBXAkoYi2CPfLOJu8P6NWulzbjr2qQ9zd5gbTjwzx
-   oSDGzZ0ifkoOLO6KoSHUiL3UjH1RauxXfOJR0KrhctkHIl8TzUNpqaG0r
-   A==;
-X-CSE-ConnectionGUID: YD0rroYKQd+1duomgidoAQ==
-X-CSE-MsgGUID: Uoq0Okv0QTyzBkQif+4gkQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="29855517"
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="29855517"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 10:49:11 -0700
-X-CSE-ConnectionGUID: 295bhvfkSBeEN9eIX0skgQ==
-X-CSE-MsgGUID: xO88w0cwR2iFjDKbmmEAiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="82017489"
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.124.222.224]) ([10.124.222.224])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 10:49:08 -0700
-Message-ID: <7897bc3e-2d68-4aef-8668-f6eb9f8efd7f@intel.com>
-Date: Mon, 28 Oct 2024 10:49:07 -0700
+	s=arc-20240116; t=1730148139; c=relaxed/simple;
+	bh=1b3wEfHTCpF0AXxOoU3n+1fQPTTY8V4zPHmhz1VF+UI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mvckNjf/+VCjlEwHF8glEoCS1DnHmfOrbTugLexbYgSf+Qv05AvPn4GPF5WGZq/IhjbGOENG3H/ZVnUsZsvbIK2Zsj6UB7EUnmhawGX/VcJTjfTxqE72QGtjmGIsKCeDzNaMz0chKgksAfohK749777+7ffm6N39yW/D9c9GGIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=B7aBkbFp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Q3fPSrT4; arc=none smtp.client-ip=103.168.172.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 19B882006F0;
+	Mon, 28 Oct 2024 16:42:16 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 28 Oct 2024 16:42:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1730148136; x=
+	1730155336; bh=qyX0k5CJSPl4swUA6LpoOKwTmR0F2riD6PvL9n3i/VI=; b=B
+	7aBkbFptw/oXycTtJhJ2C6gGtE5PZkkSC5Nj4HB0UiZTKAmPvrp6282Dt2T5/LBl
+	FjPJrHBt14f38y24uU46hz/HHBwXpkaPKXGpTTnd5nWEQc07NsEpHYiFFhpPS7zR
+	JIiB5auMsMT7CKcY43NyYO3zyNgHZfSlcei+/3dR9fGCLTF1cP7401lT8dU/vbAK
+	ugoxQjLexWIzCQEGvnXXkM+LwDbB20mec7omJGSWZJpvws+rNkNcA9ZPh2TMjmoN
+	2caeDOnyZn3IZBbLI/+gMF5FLkNSknel2mSkgGDp/2pyIAAS1qCTY4MX6AQDNmnG
+	InzHXwcvuibGR6yiEeixg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1730148136; x=1730155336; bh=qyX0k5CJSPl4swUA6LpoOKwTmR0F
+	2riD6PvL9n3i/VI=; b=Q3fPSrT4GLl0OulFr5HDlvaFEU7EXA4STiZcwrkgAp2k
+	1zeToNyJ5VmXlOKqRIDqTnmtGdjzZxNw2uSJn8SLrMTLz359WSXhN7hAQe7kVmK4
+	TqH4i9dnDbAdo12ss99gvb0ASaEDJG/soADnuOSZUYJxRFlurjbt97pUf8QeX1HZ
+	H+RN99T0PCWRHeJ4y+3dsQHeQJIbHzC1kVHWi99LV0+iS89WAbT9eJF6i65uMuNU
+	AFaNN2O/E4w2hptX97UrsjMF7YnVbxHgQX5fcPr1KrbCiBJ+/t7YVApWNt9yJOus
+	nYwf2MCNT5sw1/FU/iL57k5jhiXV3ZvqgQXDZAanJA==
+X-ME-Sender: <xms:JvcfZz_t21KkK0mw6erepLFmrrM_LY-A9WQ_2vcJB05j_o9keUUn-g>
+    <xme:JvcfZ_u51H4QfAC4uSl6bGSxk1cYiJfoDMhGlETWJRJFkU2QWy_ZXltVxjUrkxi9d
+    6WNs7ePvOdn9cZqPRE>
+X-ME-Received: <xmr:JvcfZxAKbzSkUXn-eDy4H8hOFLOtWxZo6Rf9Zhxj4qxbWblcAWak_5LgRZi9a2XUnbmk4w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejledguddufecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddv
+    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
+    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepkeevteduffekleef
+    teevvefgudeltdettdeikeejkeeuudekvdetkeeffeeftedtnecuffhomhgrihhnpehvuh
+    hsvggtrdhnvghtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+    rhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhope
+    ehuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlvgigrghnuggvrhdrshhh
+    ihhshhhkihhnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhuthhose
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdgu
+    vgdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsph
+    esrghlihgvnhekrdguvgdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhig
+    rdhinhhtvghlrdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohephhhprgesiiihthhorhdrtghomhdprhgtphhtthhopehpvghtvghriiesihhn
+    fhhrrgguvggrugdrohhrgh
+X-ME-Proxy: <xmx:JvcfZ_cU9YGCtH9KLR0DHxB_tC2Sr2ZhjE8ySD4IFQkZz3sKbIhvKQ>
+    <xmx:JvcfZ4ObJ0gQBv0jbp8LdkLks-xiQ27KNgFqceGmr1npGuVT-wUoBw>
+    <xmx:JvcfZxmFP8ad3skwpR-ZV8bdcVwzKEuU8ijIAtcZxf2NX1vQXfixQw>
+    <xmx:JvcfZyuzSU5oAKHiEl719bVQeOLcNg8beYJ_S4Xv5B9G8zsqL_Tnvw>
+    <xmx:KPcfZ0SgVfRC2UtF8RgPG45rq6wBV8LF8xgr4RWL5lm8XBdojhXtsijE>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 28 Oct 2024 16:42:00 -0400 (EDT)
+Date: Mon, 28 Oct 2024 22:41:56 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, 	Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, 	Peter Zijlstra <peterz@infradead.org>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ 	"Paul E. McKenney" <paulmck@kernel.org>,
+ Josh Poimboeuf <jpoimboe@kernel.org>,
+ 	Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>,
+ 	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Brijesh Singh <brijesh.singh@amd.com>,
+ 	Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>,
+ 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Alexey Kardashevskiy <aik@amd.com>, 	Jonathan Corbet <corbet@lwn.net>,
+ Sohil Mehta <sohil.mehta@intel.com>, 	Ingo Molnar <mingo@kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ 	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>, 	Sandipan Das <sandipan.das@amd.com>,
+ Breno Leitao <leitao@debian.org>,
+ 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, 	Hou Tao <houtao1@huawei.com>,
+ Juergen Gross <jgross@suse.com>,
+ 	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>,
+ Eric Biggers <ebiggers@google.com>, 	Jason Gunthorpe <jgg@ziepe.ca>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ 	Andrew Morton <akpm@linux-foundation.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, 	Yuntao Wang <ytcoode@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ 	Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>,
+ 	Huang Shijie <shijie@os.amperecomputing.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ 	Namhyung Kim <namhyung@kernel.org>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>, 	linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: Re: [PATCH v5 16/16] Revert "x86/lam: Disable ADDRESS_MASKING in
+ most cases"
+Message-ID: <qhnyso6yukxdyox5hkod2yzrgg56vkr7er4howolgat35dvtd4@6qh6f5r425hi>
+References: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
+ <20241028160917.1380714-17-alexander.shishkin@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/16] x86/alternatives: Disable LASS when patching
- kernel alternatives
-To: Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
- Ard Biesheuvel <ardb@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>,
- Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>,
- Tony Luck <tony.luck@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Alexey Kardashevskiy <aik@amd.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>,
- Ingo Molnar <mingo@kernel.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Daniel Sneddon <daniel.sneddon@linux.intel.com>,
- Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
- Breno Leitao <leitao@debian.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>,
- Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>,
- Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>,
- Eric Biggers <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>,
- Changbin Du <changbin.du@huawei.com>,
- Huang Shijie <shijie@os.amperecomputing.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Namhyung Kim <namhyung@kernel.org>,
- Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-References: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
- <20241028160917.1380714-4-alexander.shishkin@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20241028160917.1380714-4-alexander.shishkin@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241028160917.1380714-17-alexander.shishkin@linux.intel.com>
 
-On 10/28/24 09:07, Alexander Shishkin wrote:
->  static void text_poke_memcpy(void *dst, const void *src, size_t len)
->  {
-> -	memcpy(dst, src, len);
-> +	lass_stac();
-> +	__inline_memcpy(dst, src, len);
-> +	lass_clac();
->  }
->  
->  static void text_poke_memset(void *dst, const void *src, size_t len)
->  {
->  	int c = *(const int *)src;
->  
-> -	memset(dst, c, len);
-> +	lass_stac();
-> +	__inline_memset(dst, c, len);
-> +	lass_clac();
->  }
+On Mon, Oct 28, 2024 at 06:08:04PM +0200, Alexander Shishkin wrote:
+> This reverts commit 3267cb6d3a174ff83d6287dcd5b0047bbd912452.
+> 
+> LASS mitigates the Spectre based on LAM (SLAM) [1] and an earlier
+> commit made LAM depend on LASS, so we no longer need to disable LAM at
+> compile time, so revert the commit that disables LAM.
+> 
+> [1] https://download.vusec.net/papers/slam_sp24.pdf
+> 
+> Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> CC: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-These are the _only_ users of lass_stac/clac() or the new inlines.
+Before re-enabling LAM, you need to uncomment X86_FEATURE_LAM check in
+arch/x86/kernel/cpu/common.c introduced in recent 86e6b1547b3d ("x86: fix
+user address masking non-canonical speculation issue").
 
-First of all, I totally agree that the _existing_ strict objtool
-behavior around STAC/CLAC is a good idea.
-
-But text poking really is special and the context is highly unlikely to
-result in bugs or exploits.  My first instinct here would have been to
-tell objtool that the text poking code is OK and to relax objtool's
-STAC/CLAC paranoia here.
-
-Looking at objtool, I can see how important it is to keep the STAC/CLAC
-code as dirt simple and foolproof as possible.  I don't see an obvious
-way to except the text poking code without adding at least some complexity.
-
-Basically what I'm asking for is if the goal is to keep objtool simple,
-please *SAY* that.  Because on the surface this doesn't look like a good
-idea.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
