@@ -1,63 +1,63 @@
-Return-Path: <linux-efi+bounces-2035-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2036-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4EB49B3610
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:13:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBC99B3613
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D87CC1C238D4
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 16:13:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B2D91C23B74
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 16:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2D01DED46;
-	Mon, 28 Oct 2024 16:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314F51D79A6;
+	Mon, 28 Oct 2024 16:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m2246HPw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U/1prSLy"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BEF1DEFEE;
-	Mon, 28 Oct 2024 16:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A061DED6B;
+	Mon, 28 Oct 2024 16:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730131922; cv=none; b=YetBVwE3W+YkKw/S8mxYuT8VkwaHtfNYFrFlVh8Prv5OHI0fhb1Ogo6tNwMql4NhdNmK/hCfWaMj/Ri+zEZ3GWlIww4eijyDAUJzupHlEnkEhPmgU0XCqpMAc9yz4qW/YOQbKyyjkbJyRsCNGT87k7cq8kdogr2XLn+4IdABqZw=
+	t=1730131933; cv=none; b=mMP5zJT3PPDJHJhlmbqeXNLm6CukP/ej2CbgO0NPmh8b14bGgfGb5oQ1QVsUpy3VWwhOaRukR9+55MSqbGn2JaOBN/YWDW1D4X2blGJa/7nqv8cmS5E2YdJIvP6YOPpmxz6Jiz/rd/dUO6+xt9Q9VS9S7R1poGDPtgBxjlI9o+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730131922; c=relaxed/simple;
-	bh=wOMJ6l35iG3/UV7cdqJrNVNPNZiJ7wbNmpeZyTJVyao=;
+	s=arc-20240116; t=1730131933; c=relaxed/simple;
+	bh=93VnYKIFxvP/5UMU/Ce687kY9FqRNs9gkUoibkzkDyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNRpniNTYC9Nvj4z5uqavrUYJW9Q5Mt7DqhlCW5A/STVoGBc8wbGCVUUnuvU9l68RcIG9LSJ2Ds2/Jncw6FYWQ63P/nlcPZcZnod0yDzjSIzpYijyquIdjg55CJbidJG7QA1nZSolsMMqNh+GOHALpxO3GwfVs9yGkUqV9b3oLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m2246HPw; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=NejWv2s7KXcSpXtdQ9kLFrnsS1OqRdIUzJU0YmJT9oiP7smTPZl6EhRxdfnwq/VCymIBNd/YMPhsO3KZF2rRtBpwfCn3i5NiAUdz4+n5cZBWiPIsYpYfX8YxcRuHV998I370AtxVZ/hu4PxxCB/4ENFjzHvIEIn1YGGAlmVa46Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U/1prSLy; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730131921; x=1761667921;
+  t=1730131931; x=1761667931;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wOMJ6l35iG3/UV7cdqJrNVNPNZiJ7wbNmpeZyTJVyao=;
-  b=m2246HPwerG0/mFHltHuGfXkSBOnBLkn0PHW3rG1GFCB7s8RHmBIYmm6
-   TFhOaMdGlZ2U8v62ts19qYcD3fkOGL70YrZhuSPRJ4IdupCMrdDIHgbse
-   R3DoXU5NYnbMW+WiFgjCSsHmTx97QMvxarf8DlgVbPlCTbUJqCpODIeVR
-   TLh1Q1PLdkzgmOlTJDeA4H6WcOzhjJliAgF+bFTMgZg7ioj6XEk2Khos8
-   LAYw1wuMQF+M8SXk3Ot2ED5bcYPqsFNPFHtLJfaMRdgunaj9TzthACqKY
-   vUo92CcMQumy5EVNXg+ucQwuRSxd43xJ/ac7snwqWMcP9GWd3vRGJ+DWW
-   A==;
-X-CSE-ConnectionGUID: l2SwnE9HRm6pBKGBxFhfbA==
-X-CSE-MsgGUID: PvGTuqlKQYOgRV4OEkhkgw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32594219"
+  bh=93VnYKIFxvP/5UMU/Ce687kY9FqRNs9gkUoibkzkDyU=;
+  b=U/1prSLyI9C/zuZfTJzcyWyffnwyuxMZPLgKn4jtqEGc8W651x0KYc5m
+   eGuSRDPGsRK9b5mIVlMqon1LZDlv1rk9EiBMGV+0kzkim8/HRi04tbTzE
+   /n02mDPLBxrwM7q28hE3PgINpNiKsixKgew6tl+HEAMhdV4jbV4Gp0M6d
+   Fba/WHmvqEOVZ5VeI4hYrXFfCmRomX7PqFusPY5/p4eWntSz2rWVavipb
+   4eDwmtJEm3w5i1hkgSXd+oVBh1G9Wn6eI2OYGJ+SSj8Pu1Hftitcaw+qm
+   vgGSJJmGs2E1JKI2OpKsajfveBlBN6wcCtL5XjOJ26fwTF0ovgrpmgoaY
+   w==;
+X-CSE-ConnectionGUID: fwQqsWwJSNeBTSJwJMSPIQ==
+X-CSE-MsgGUID: Wy2v1xv9RMCPCUW172GsMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32594259"
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="32594219"
+   d="scan'208";a="32594259"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:11:59 -0700
-X-CSE-ConnectionGUID: r0rgbptQS7+frk7w52MmQg==
-X-CSE-MsgGUID: 1hDCkkhiQ2icapOXK47IBQ==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:12:11 -0700
+X-CSE-ConnectionGUID: KTVTLQ8eSnS72cz6fo1PsA==
+X-CSE-MsgGUID: AEy7ZPIVTkGNCkEvhm3plQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="112478650"
+   d="scan'208";a="112478747"
 Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:11:47 -0700
+  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:11:59 -0700
 From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -109,11 +109,10 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	Yian Chen <yian.chen@intel.com>
-Subject: [PATCH v5 12/16] x86/cpu: Set LASS CR4 bit as pinning sensitive
-Date: Mon, 28 Oct 2024 18:08:00 +0200
-Message-ID: <20241028160917.1380714-13-alexander.shishkin@linux.intel.com>
+	linux-efi@vger.kernel.org
+Subject: [PATCH v5 13/16] x86/traps: Communicate a LASS violation in #GP message
+Date: Mon, 28 Oct 2024 18:08:01 +0200
+Message-ID: <20241028160917.1380714-14-alexander.shishkin@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
 References: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
@@ -125,32 +124,60 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Yian Chen <yian.chen@intel.com>
+Provide a more helpful message on #GP when a kernel side LASS violation
+is detected.
 
-Security features such as LASS are not expected to be disabled once
-initialized. Add LASS to the CR4 pinned mask.
-
-Signed-off-by: Yian Chen <yian.chen@intel.com>
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
 ---
- arch/x86/kernel/cpu/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/traps.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index c249fd0aa3fb..f8eed9548ea1 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -402,7 +402,8 @@ static __always_inline void setup_umip(struct cpuinfo_x86 *c)
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index bae635cc6971..89e35ab8dbd9 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -537,7 +537,8 @@ DEFINE_IDTENTRY(exc_bounds)
+ enum kernel_gp_hint {
+ 	GP_NO_HINT,
+ 	GP_NON_CANONICAL,
+-	GP_CANONICAL
++	GP_CANONICAL,
++	GP_LASS_VIOLATION
+ };
  
- /* These bits should not change their value after CPU init is finished. */
- static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
--					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED;
-+					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED |
-+					     X86_CR4_LASS;
- static DEFINE_STATIC_KEY_FALSE_RO(cr_pinning);
- static unsigned long cr4_pinned_bits __ro_after_init;
+ /*
+@@ -573,6 +574,8 @@ static enum kernel_gp_hint get_kernel_gp_address(struct pt_regs *regs,
+ 	if (*addr < ~__VIRTUAL_MASK &&
+ 	    *addr + insn.opnd_bytes - 1 > __VIRTUAL_MASK)
+ 		return GP_NON_CANONICAL;
++	else if (*addr < ~__VIRTUAL_MASK && cpu_feature_enabled(X86_FEATURE_LASS))
++		return GP_LASS_VIOLATION;
+ #endif
  
+ 	return GP_CANONICAL;
+@@ -696,6 +699,11 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
+ 	char desc[sizeof(GPFSTR) + 50 + 2*sizeof(unsigned long) + 1] = GPFSTR;
+ 	enum kernel_gp_hint hint = GP_NO_HINT;
+ 	unsigned long gp_addr;
++	static char *help[] = {
++		[GP_NON_CANONICAL]	= "probably for non-canonical address",
++		[GP_CANONICAL]		= "maybe for address",
++		[GP_LASS_VIOLATION]	= "LASS prevented access to address"
++	};
+ 
+ 	if (user_mode(regs) && try_fixup_enqcmd_gp())
+ 		return;
+@@ -735,9 +743,7 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
+ 		hint = get_kernel_gp_address(regs, &gp_addr);
+ 
+ 	if (hint != GP_NO_HINT)
+-		snprintf(desc, sizeof(desc), GPFSTR ", %s 0x%lx",
+-			 (hint == GP_NON_CANONICAL) ? "probably for non-canonical address"
+-						    : "maybe for address",
++		snprintf(desc, sizeof(desc), GPFSTR ", %s 0x%lx", help[hint],
+ 			 gp_addr);
+ 
+ 	/*
 -- 
 2.45.2
 
