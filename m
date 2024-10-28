@@ -1,63 +1,63 @@
-Return-Path: <linux-efi+bounces-2027-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2028-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2693B9B35F4
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:11:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524959B35F8
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF2C4B230A5
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 16:10:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6429B2313B
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 16:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C9A1DEFD7;
-	Mon, 28 Oct 2024 16:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56101DED5B;
+	Mon, 28 Oct 2024 16:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cuCmtkvi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oHYEM2kJ"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5047A1DED6D;
-	Mon, 28 Oct 2024 16:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9821DE88D;
+	Mon, 28 Oct 2024 16:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730131828; cv=none; b=uiasrgQWd9YDZM22dAPu9uFDUYwYWoYMJPxKEXG+INchxM9/H/Jiynlqns3UXn7fmQof/U6fO0yigS6l9RnpZnVbz7Q+OHu1KtU6nIrNvL+EtODfVhaFGWtolH2JVd7nHrcEzLiJe5CfRlokrXi/IU6zgxLfp2JbSlnthVhHOgE=
+	t=1730131839; cv=none; b=nfKPpusFzsK6Y5A49qmOChRk8SBIgJ08+sMQgGl4gCv9SvWWQE+hT3QH7W640e9Vf7AKoMW/z/8pUEMPark0I2HFHGoSuEuI4M5KSZFxXrQsyMAHq3goTpsUS/3tzBrNc2ATKamqP+VSQVVjhLUSNDSHk9wEjt/Z8HtVAvYbtEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730131828; c=relaxed/simple;
-	bh=NS1oZqVmDFSqOd7suxOZQbWGb+FfwQyfnc6oWKU6zlU=;
+	s=arc-20240116; t=1730131839; c=relaxed/simple;
+	bh=dIp/wj6YZYefOa08wFUaFvuDpIEOByeQWZvphyXBK5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Czj33TWc9ndPKQJeRUSzgEVDDqr9Hv1QdSGwebY+DdkNjx3pSAy508WRsTNu5xZgSJng4gTtDuMl4ltQU5CgTtMf6zMcfvDLY12ygTYkQXR46X7nsmJeX8lul8iUc9Ke1zmmslIObRzYuroO/DIDVe8PGWTS7k8WkZ2hWDQZhOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cuCmtkvi; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=i/YAEoQ4toUaFIliOsPGwefiMRXOV8de7iGtt1tI9hegSjIwBtNR/zLw7QiYlUCDqSQ40EQ1VYMjg5u5WaMUFeg+8VLdnuW2Rrff7k8VgwrneiMX4d4URCBEunrFReKSP90HmHZNCpElnEFjhTZyId8AQLM+HHzM/X+/dGlm5ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oHYEM2kJ; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730131827; x=1761667827;
+  t=1730131838; x=1761667838;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NS1oZqVmDFSqOd7suxOZQbWGb+FfwQyfnc6oWKU6zlU=;
-  b=cuCmtkvitEPJgPO4vzlQJf1PrEpsDapQioAcAy6TdS87N4oT2++vEPQ/
-   818R8HtePCPTcHEEbjbfbN+fwt6JKLkiah8sc5Tc0U5SdFM15R0c20Rze
-   0H2H+nmkE8/lLycnE+0cvOSGY9giqbSQ0C4OydAf0n1jSah+7Rk/hJS7n
-   t4iW2Femz8cEpJ8JOn0ibi5dBluH6AZYWH81HwUVMCVrMgLwX1o1T7DtM
-   ZNKqLcuzXzqnMNscf6OWP/UugqjSCpfGcZHDtYGj3vkBkcK7aIxWQ8SX6
-   EXwND0Ks+BYfsyUL3sCwULL/x7/3/UxTOSmLsCIASlwcHvwBzKOunHM6c
-   Q==;
-X-CSE-ConnectionGUID: RG/G9f/xRNmwGYrlC7f6Sg==
-X-CSE-MsgGUID: Ja4spV/ATwiJ7B2XvoIN1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32593829"
+  bh=dIp/wj6YZYefOa08wFUaFvuDpIEOByeQWZvphyXBK5g=;
+  b=oHYEM2kJVfcgqMcWfaqTf4zE8s5U0AdJpon+POkj06qDycvTQvaitGKG
+   H/ZVVp6qbN1MUBOJ++E3KCVpGAOW4HAdOdRX9z3MVmlyT4FhSa+bPnEKN
+   igDXBXdbQVluLtC6eYQCQuiOR+lwE1DEipp4IGhv6gXmBlhNyveVTXdoO
+   iB7bbpqPeNwoFpyIhtuBpzMneon6Ln1u5P8r2IDk+EiMPre/T4G4YzMWu
+   QEbp63UAcMuo7q2SBewMRHZDrf7fTcg6WzmcUyey2Ekch/VsohABlCKVh
+   cX+7ashc/WD+Q7gCi32Pf7iiya6wMA9f7HabEjMWiPiILCUtbmm7c9ohd
+   g==;
+X-CSE-ConnectionGUID: /yvpvkIXRfaHE42J2hdljQ==
+X-CSE-MsgGUID: z8uYN9N4R5+Tyx+jegcO6g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32593868"
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="32593829"
+   d="scan'208";a="32593868"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:10:26 -0700
-X-CSE-ConnectionGUID: k0VhDcnvRoK3Cl8XAKKg0w==
-X-CSE-MsgGUID: dV8sUVfnRK6J46aXc35MXQ==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:10:37 -0700
+X-CSE-ConnectionGUID: HVJrAmVbSk+8Rwa408FxTg==
+X-CSE-MsgGUID: Bnbh2LWZTASaTBk7pQCRPQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="112478007"
+   d="scan'208";a="112478049"
 Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:10:14 -0700
+  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:10:26 -0700
 From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -110,9 +110,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v5 04/16] init/main.c: Move EFI runtime service initialization to x86/cpu
-Date: Mon, 28 Oct 2024 18:07:52 +0200
-Message-ID: <20241028160917.1380714-5-alexander.shishkin@linux.intel.com>
+Subject: [PATCH v5 05/16] x86/cpu: Defer CR pinning setup until after EFI initialization
+Date: Mon, 28 Oct 2024 18:07:53 +0200
+Message-ID: <20241028160917.1380714-6-alexander.shishkin@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
 References: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
@@ -124,67 +124,48 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The EFI call in start_kernel() is guarded by #ifdef CONFIG_X86. Move
-the thing to the arch_cpu_finalize_init() path on x86 and get rid of
-the #ifdef in start_kernel().
+In order to map the EFI runtime services, set_virtual_address_map
+needs to be called, which resides in the lower half of the address
+space. This means that LASS needs to be temporarily disabled around
+this call. This can only be done before the CR pinning is set up.
 
-No functional change intended.
+Move CR pinning setup behind the EFI initialization.
 
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Suggested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kernel/cpu/common.c | 7 +++++++
- init/main.c                  | 5 -----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/common.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 8f41ab219cf1..b24ad418536e 100644
+index b24ad418536e..c249fd0aa3fb 100644
 --- a/arch/x86/kernel/cpu/common.c
 +++ b/arch/x86/kernel/cpu/common.c
-@@ -26,6 +26,7 @@
- #include <linux/pgtable.h>
- #include <linux/stackprotector.h>
- #include <linux/utsname.h>
-+#include <linux/efi.h>
+@@ -1953,7 +1953,6 @@ static __init void identify_boot_cpu(void)
+ 	enable_sep_cpu();
+ #endif
+ 	cpu_detect_tlb(&boot_cpu_data);
+-	setup_cr_pinning();
  
- #include <asm/alternative.h>
- #include <asm/cmdline.h>
-@@ -2382,6 +2383,12 @@ void __init arch_cpu_finalize_init(void)
- 	fpu__init_system();
- 	fpu__init_cpu();
+ 	tsx_init();
+ 	tdx_init();
+@@ -2385,10 +2384,16 @@ void __init arch_cpu_finalize_init(void)
  
-+	/*
-+	 * This needs to follow the FPU initializtion, since EFI depends on it.
-+	 */
-+	if (efi_enabled(EFI_RUNTIME_SERVICES))
-+		efi_enter_virtual_mode();
+ 	/*
+ 	 * This needs to follow the FPU initializtion, since EFI depends on it.
++	 * It also needs to precede the CR pinning setup, because we need to be
++	 * able to temporarily clear the CR4.LASS bit in order to execute the
++	 * set_virtual_address_map call, which resides in lower addresses and
++	 * would trip LASS if enabled.
+ 	 */
+ 	if (efi_enabled(EFI_RUNTIME_SERVICES))
+ 		efi_enter_virtual_mode();
+ 
++	setup_cr_pinning();
 +
  	/*
  	 * Ensure that access to the per CPU representation has the initial
  	 * boot CPU configuration.
-diff --git a/init/main.c b/init/main.c
-index c4778edae797..1d3a0a82d136 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -51,7 +51,6 @@
- #include <linux/cpu.h>
- #include <linux/cpuset.h>
- #include <linux/cgroup.h>
--#include <linux/efi.h>
- #include <linux/tick.h>
- #include <linux/sched/isolation.h>
- #include <linux/interrupt.h>
-@@ -1072,10 +1071,6 @@ void start_kernel(void)
- 
- 	pid_idr_init();
- 	anon_vma_init();
--#ifdef CONFIG_X86
--	if (efi_enabled(EFI_RUNTIME_SERVICES))
--		efi_enter_virtual_mode();
--#endif
- 	thread_stack_cache_init();
- 	cred_init();
- 	fork_init();
 -- 
 2.45.2
 
