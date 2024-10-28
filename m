@@ -1,63 +1,63 @@
-Return-Path: <linux-efi+bounces-2036-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2037-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBC99B3613
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:13:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E479B361B
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 17:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B2D91C23B74
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 16:13:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA1F1282B11
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Oct 2024 16:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314F51D79A6;
-	Mon, 28 Oct 2024 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7795E1DED5A;
+	Mon, 28 Oct 2024 16:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U/1prSLy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DqWFAGtL"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A061DED6B;
-	Mon, 28 Oct 2024 16:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D12C1DED7C;
+	Mon, 28 Oct 2024 16:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730131933; cv=none; b=mMP5zJT3PPDJHJhlmbqeXNLm6CukP/ej2CbgO0NPmh8b14bGgfGb5oQ1QVsUpy3VWwhOaRukR9+55MSqbGn2JaOBN/YWDW1D4X2blGJa/7nqv8cmS5E2YdJIvP6YOPpmxz6Jiz/rd/dUO6+xt9Q9VS9S7R1poGDPtgBxjlI9o+o=
+	t=1730131944; cv=none; b=uh+JykL4f+5wgUXlvSd2bcwPN7JAkrMaEteQZBNypRf3L3AuY/of42BsF4/YjLgTQvez7y79BR4HW929aFuR7CMgISFaiyvD81nrAmk+ftAL9hPWuT/ScVmWlLlOUGH5raKXC7eqnz4518WehsaZ9v4xMN4p+o5FFGB0ubM4wzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730131933; c=relaxed/simple;
-	bh=93VnYKIFxvP/5UMU/Ce687kY9FqRNs9gkUoibkzkDyU=;
+	s=arc-20240116; t=1730131944; c=relaxed/simple;
+	bh=0UbvcEXBzd96pFeQsY9BD0bfGY00eu1UunRcSxKT5fU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NejWv2s7KXcSpXtdQ9kLFrnsS1OqRdIUzJU0YmJT9oiP7smTPZl6EhRxdfnwq/VCymIBNd/YMPhsO3KZF2rRtBpwfCn3i5NiAUdz4+n5cZBWiPIsYpYfX8YxcRuHV998I370AtxVZ/hu4PxxCB/4ENFjzHvIEIn1YGGAlmVa46Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U/1prSLy; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=VSGWvkrizX9yACgN+3srQTug34YMP40Dg6lY0ZffVeSVDOvKKMGNkk7lrgVysQegC5dfoRJtZj2v0+d59GRTMlDNliwJb4lIMpW6XapuAJ3PTutFpv89e15eNRefodh3qiEI1g90DTYnebBCcg0wUB5V5XkGO6tUrV0NDYTXPk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DqWFAGtL; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730131931; x=1761667931;
+  t=1730131943; x=1761667943;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=93VnYKIFxvP/5UMU/Ce687kY9FqRNs9gkUoibkzkDyU=;
-  b=U/1prSLyI9C/zuZfTJzcyWyffnwyuxMZPLgKn4jtqEGc8W651x0KYc5m
-   eGuSRDPGsRK9b5mIVlMqon1LZDlv1rk9EiBMGV+0kzkim8/HRi04tbTzE
-   /n02mDPLBxrwM7q28hE3PgINpNiKsixKgew6tl+HEAMhdV4jbV4Gp0M6d
-   Fba/WHmvqEOVZ5VeI4hYrXFfCmRomX7PqFusPY5/p4eWntSz2rWVavipb
-   4eDwmtJEm3w5i1hkgSXd+oVBh1G9Wn6eI2OYGJ+SSj8Pu1Hftitcaw+qm
-   vgGSJJmGs2E1JKI2OpKsajfveBlBN6wcCtL5XjOJ26fwTF0ovgrpmgoaY
-   w==;
-X-CSE-ConnectionGUID: fwQqsWwJSNeBTSJwJMSPIQ==
-X-CSE-MsgGUID: Wy2v1xv9RMCPCUW172GsMA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32594259"
+  bh=0UbvcEXBzd96pFeQsY9BD0bfGY00eu1UunRcSxKT5fU=;
+  b=DqWFAGtLb907DCbwlBPrMqOkr5TwiejP5h+sO+j8GkYA80c35VwtybCQ
+   c1rK4Hfwn/wCmLqeGVVxFVw1VLuxYX6eK0Sumi0KAKA4v8wJNu4D6EqE2
+   eJgPnsq9CFXqk7HGbf4hq2JVWMHw/UuhBusM5MnXSENOQoTsK7AOnhOUp
+   GoW6Jb7Fli43Ik+EE2NQznGSvAli15wBnY+qpb12gBnOvkzuPPmQ+jQVp
+   zbOZhK02DmJ2QXpLOZFCjo3m14YI7j5dJb8RL1Qd4S5Scds/30sdKL8Z3
+   3BogiCDJ17SCmNZJKjzZGP6aPG7ZoOKgSZUaq5D+9rtiFwlUDw0D6jx9U
+   A==;
+X-CSE-ConnectionGUID: b0Z6s+9CR2OW6MTab+kvsA==
+X-CSE-MsgGUID: amLNDxlLSFGK0S3kKLRkIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="32594311"
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="32594259"
+   d="scan'208";a="32594311"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:12:11 -0700
-X-CSE-ConnectionGUID: KTVTLQ8eSnS72cz6fo1PsA==
-X-CSE-MsgGUID: AEy7ZPIVTkGNCkEvhm3plQ==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:12:22 -0700
+X-CSE-ConnectionGUID: Rjo4v9BvTwSSynfELkT3AQ==
+X-CSE-MsgGUID: bNFLXTAdSx2iW22Mb41jqQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="112478747"
+   d="scan'208";a="112478842"
 Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:11:59 -0700
+  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:12:10 -0700
 From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -110,9 +110,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v5 13/16] x86/traps: Communicate a LASS violation in #GP message
-Date: Mon, 28 Oct 2024 18:08:01 +0200
-Message-ID: <20241028160917.1380714-14-alexander.shishkin@linux.intel.com>
+Subject: [PATCH v5 14/16] x86/cpu: Make LAM depend on LASS
+Date: Mon, 28 Oct 2024 18:08:02 +0200
+Message-ID: <20241028160917.1380714-15-alexander.shishkin@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
 References: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
@@ -124,60 +124,29 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Provide a more helpful message on #GP when a kernel side LASS violation
-is detected.
+To prevent exploits for Spectre based on LAM as demonstrated by the
+whitepaper [1], make LAM depend on LASS, which avoids this type of
+vulnerability.
+
+[1] https://download.vusec.net/papers/slam_sp24.pdf
 
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 ---
- arch/x86/kernel/traps.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/cpuid-deps.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index bae635cc6971..89e35ab8dbd9 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -537,7 +537,8 @@ DEFINE_IDTENTRY(exc_bounds)
- enum kernel_gp_hint {
- 	GP_NO_HINT,
- 	GP_NON_CANONICAL,
--	GP_CANONICAL
-+	GP_CANONICAL,
-+	GP_LASS_VIOLATION
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index 3f73c4b03348..d9fb2423605e 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -84,6 +84,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_SHSTK,			X86_FEATURE_XSAVES    },
+ 	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
+ 	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
++	{ X86_FEATURE_LAM,			X86_FEATURE_LASS      },
+ 	{}
  };
  
- /*
-@@ -573,6 +574,8 @@ static enum kernel_gp_hint get_kernel_gp_address(struct pt_regs *regs,
- 	if (*addr < ~__VIRTUAL_MASK &&
- 	    *addr + insn.opnd_bytes - 1 > __VIRTUAL_MASK)
- 		return GP_NON_CANONICAL;
-+	else if (*addr < ~__VIRTUAL_MASK && cpu_feature_enabled(X86_FEATURE_LASS))
-+		return GP_LASS_VIOLATION;
- #endif
- 
- 	return GP_CANONICAL;
-@@ -696,6 +699,11 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
- 	char desc[sizeof(GPFSTR) + 50 + 2*sizeof(unsigned long) + 1] = GPFSTR;
- 	enum kernel_gp_hint hint = GP_NO_HINT;
- 	unsigned long gp_addr;
-+	static char *help[] = {
-+		[GP_NON_CANONICAL]	= "probably for non-canonical address",
-+		[GP_CANONICAL]		= "maybe for address",
-+		[GP_LASS_VIOLATION]	= "LASS prevented access to address"
-+	};
- 
- 	if (user_mode(regs) && try_fixup_enqcmd_gp())
- 		return;
-@@ -735,9 +743,7 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
- 		hint = get_kernel_gp_address(regs, &gp_addr);
- 
- 	if (hint != GP_NO_HINT)
--		snprintf(desc, sizeof(desc), GPFSTR ", %s 0x%lx",
--			 (hint == GP_NON_CANONICAL) ? "probably for non-canonical address"
--						    : "maybe for address",
-+		snprintf(desc, sizeof(desc), GPFSTR ", %s 0x%lx", help[hint],
- 			 gp_addr);
- 
- 	/*
 -- 
 2.45.2
 
