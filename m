@@ -1,277 +1,202 @@
-Return-Path: <linux-efi+bounces-2058-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2060-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12609B5714
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Oct 2024 00:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE039B5B31
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Oct 2024 06:25:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41F251F238A9
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Oct 2024 23:42:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467A41F21D5A
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Oct 2024 05:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F3F20ADFC;
-	Tue, 29 Oct 2024 23:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430721993B7;
+	Wed, 30 Oct 2024 05:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CwXx+WkA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rqa9lkn8"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF78190665;
-	Tue, 29 Oct 2024 23:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730245320; cv=fail; b=XVDYxKFX9BcywYB1FivgiMeYoEOF1QebOPnw2b/QDoo1070zC4ohpZ7zhlmJ9JP19D5CUIn123Fz6oneo1kFNEQuE4omkS6LZxK0co7r9P1EuNE1gR4G0CbcJyNnnD1wA9i7viqwwvU7mcGPkDQrCqxT3S4fazkg7u7zHaCFsrY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730245320; c=relaxed/simple;
-	bh=HOA0NKeoZIUvv0w+VzS12iqjz2VUG4AEN/LBWcfWHx8=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RWC4p6PJOIUS5H44kBRHXJPOYuUY6F1V142SSZs4eFfCJ6MVAPmHedXFkV/YJb7FbNMsBbXYU9laj09+/nGKyzX0F1DP3++6NDMerWwpx0Hw0WswI3x71U2nkoev6lsudWnlNEJt/aoTdc3VZDhYsAko/fYQTQygB7THkLnNors=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CwXx+WkA; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730245319; x=1761781319;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=HOA0NKeoZIUvv0w+VzS12iqjz2VUG4AEN/LBWcfWHx8=;
-  b=CwXx+WkAs8TKfEYkDgdI1KSl9oFUpqHQcY6GBGR3wuNpj8oUECFd6Avf
-   t9NDq+klwWRpbNsg7ubQ1xoNv4sYWnA83fk5yY2PEP2Jqet/7LAYM9+us
-   02Y22hN2Y/Fvf51S921xOVtAoCTp6vbRE0rFjHDZee2CqYxjUebqxrpjB
-   iYCnTfReRSuksHUKfAbhIrrcSD2+Ca4RnjYCEm1PdGbSEF0Fp/AErU2im
-   mMSe5l5CSndmv3ufrCqldYxgBTjQHCCkoCiGYB/BdrZjtM02j4KTEJXNF
-   XtRqmZ2ibKqM5pwmPTbEUehW72dCGNO8u6mTB1rsTH5Al9RQlyWf0tvXL
-   A==;
-X-CSE-ConnectionGUID: jSxQL1BfTNit3RDOWre4Gw==
-X-CSE-MsgGUID: BdSxt3g/Q/GddvJmp2nwaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="29344455"
-X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; 
-   d="scan'208";a="29344455"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 16:41:57 -0700
-X-CSE-ConnectionGUID: WGzxJZahRHaWW5ZpGW9l0w==
-X-CSE-MsgGUID: iGShF16NT7K0JwqmGHDQOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; 
-   d="scan'208";a="82053421"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 29 Oct 2024 16:41:57 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 29 Oct 2024 16:41:56 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 29 Oct 2024 16:41:56 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.40) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 29 Oct 2024 16:41:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BwUcO1MEATV/X+Ljifcda95n386kst9bZEWCVlU90K9ofNDnR2wRWDZM5cvaip58bQAGWQ9FyjdYMVLW80ZfIql52oW9XmbTViHUuX29SFvt5SpLpxPAUGA6jZgKtJrFmSuhdl3m+5EifZQT/3opNkweMJnA7N5kNC98kBOoYidTo0IdNiahBqSjmtl/ukSRXCf2lTpw+OWxhPHGvKFoG6L+D3AJY4I2aYujpIXAKiyhJ0RZ9o/w5J4SelE0ss42oviNBTzJoGz/q1Ur2cEXFxnbUs7lLobLca9rTPam3DAHblOpGyzZAn24AWQ5ctRcwBCDTKDDTKC8mV3rtVhXNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Mv88GwO97lbySZSjJ6rpDbqI1HSfHXLUhDVLuQM2qA=;
- b=kn0pCENW5bLdQdDLByGTSSvm5J9NMaq0gaI0482FBkgcyu6dOXCdIDMY1dn5IkrCJwDBE8D8Sosr8Kn7IbR/lSt4NSL/34MhN+nNmBYiIshBeDqndghpklWz5pZMaVEuRUfmyqne2YoYO9U8VuffikhZcogjGOMwunIyNXw+pfrmXuFve32Jslm9Pt1MhYNYI5QZ0KTxz5IXCTTZwY2D3W4yLZYWaVVg8YJMZurMfOgz+gW5HUjAQtLttmVBpuHp4DQfi97J1ftkjqQLY3qfOa5gk+sDMfaCbzD21PUJwHu+kOtYb40/DG1CEYdn4c3+GZmBk+XAv9St9M6aXr/WRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BYAPR11MB3320.namprd11.prod.outlook.com (2603:10b6:a03:18::25)
- by MW4PR11MB7101.namprd11.prod.outlook.com (2603:10b6:303:219::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Tue, 29 Oct
- 2024 23:41:53 +0000
-Received: from BYAPR11MB3320.namprd11.prod.outlook.com
- ([fe80::e8c4:59e3:f1d5:af3b]) by BYAPR11MB3320.namprd11.prod.outlook.com
- ([fe80::e8c4:59e3:f1d5:af3b%5]) with mapi id 15.20.8093.024; Tue, 29 Oct 2024
- 23:41:53 +0000
-Message-ID: <576e3c53-6417-4027-8d4c-b9f5703b634f@intel.com>
-Date: Tue, 29 Oct 2024 16:41:51 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/16] x86/vsyscall: Document the fact that
- vsyscall=emulate disables LASS
-To: Alexander Shishkin <alexander.shishkin@linux.intel.com>, Andy Lutomirski
-	<luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel
-	<ardb@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf
-	<jpoimboe@kernel.org>, Xiongwei Song <xiongwei.song@windriver.com>, Xin Li
-	<xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh
-	<brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, Tony Luck
-	<tony.luck@intel.com>, "Kirill A. Shutemov"
-	<kirill.shutemov@linux.intel.com>, Alexey Kardashevskiy <aik@amd.com>
-CC: Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>, "Pawan
- Gupta" <pawan.kumar.gupta@linux.intel.com>, Daniel Sneddon
-	<daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>, "Sandipan
- Das" <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, Rick Edgecombe
-	<rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>, Hou Tao
-	<houtao1@huawei.com>, Juergen Gross <jgross@suse.com>, Vegard Nossum
-	<vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>, Eric Biggers
-	<ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu
- (Google)" <mhiramat@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
-	"Rasmus Villemoes" <linux@rasmusvillemoes.dk>, Christophe Leroy
-	<christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du
-	<changbin.du@huawei.com>, Huang Shijie <shijie@os.amperecomputing.com>,
-	"Geert Uytterhoeven" <geert+renesas@glider.be>, Namhyung Kim
-	<namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-efi@vger.kernel.org>, Dave Hansen <dave.hansen@intel.com>
-References: <20241028160917.1380714-1-alexander.shishkin@linux.intel.com>
- <20241028160917.1380714-12-alexander.shishkin@linux.intel.com>
-Content-Language: en-US
-From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <20241028160917.1380714-12-alexander.shishkin@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0004.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::15) To BYAPR11MB3320.namprd11.prod.outlook.com
- (2603:10b6:a03:18::25)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0838215B980;
+	Wed, 30 Oct 2024 05:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730265915; cv=none; b=Yqa+gz2MC5OeN6ybnbDyfQ7yr0uMoF4THV0l9x7oQY8YECzqFEx2WXwEaH3ygAGfwyafMzfkhSO6P2p0uq+nuXHyIROo9QBMiv4L9hHw8+DQqOxz9xBqyCoMQvYpG+f9FiaCF6412exrLge3cSnwJGp3GDf5YVVJIrsN1dBBQQQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730265915; c=relaxed/simple;
+	bh=3pxvVu1LcZtFf0OBJ0dZ3lWSrDnrJAieNPJtibI+UgU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qvGi381eL0CtJJIs69EQpKhoN8jji6w9sL/2YYWMxVfstrt9mRL0Fp+9yel/WZWYjsiv0wBF0CuQw3p0x5gcNxBthAIXe+hUs5LV06LYBkJZTLlBU6NUg/kBKvj2dkX+BXBDDEpETUaqvmPjOhQwbSsUaM2Ut9WLWqC3XBcalr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rqa9lkn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A96EC4CEE4;
+	Wed, 30 Oct 2024 05:25:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730265914;
+	bh=3pxvVu1LcZtFf0OBJ0dZ3lWSrDnrJAieNPJtibI+UgU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Rqa9lkn8X2t4BVcjaEGeRtYJ44+sg+v5c0RqvbNK4zxtSXmweMfW+mI+9j3coJswE
+	 kqTYjNIUlzCOlAtplQAYZNLKLrkLSu1wL7i2LnkmZiP60T4qWCU/dNhCMpb/V5/dZe
+	 DB/Nyh5pmOtSvj5OwaZSfGXdAqJqOPAaKSi4iS9TNZ4CHzHsaMAOsBg21eJsvxjhnO
+	 hIibTqXlWOQwnWShMX2vxTOS6Nl6cqkRguM7fT+fQ76vu8GIJugKcHQ160HfcvXrW3
+	 sPA6gDpEj9sNwFvztj4m8oi2Z2xvdTBpezHK52OP9524SnfpfCHapHMRzuejI68mBS
+	 1tSq57jw/JjRg==
+Message-ID: <b7501b2c-d85f-40aa-9be5-f9e5c9608ae4@kernel.org>
+Date: Wed, 30 Oct 2024 06:25:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR11MB3320:EE_|MW4PR11MB7101:EE_
-X-MS-Office365-Filtering-Correlation-Id: 45e28d0b-5f76-44dc-c461-08dcf8734433
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WGhMdjZ1T1lTbmsrc0dlbGlONHQzVGZaSmQrYTdFczlobkFIN3BoWjREbW9T?=
- =?utf-8?B?Y1RQeVJicnBJL0hWc0dFdmpYS05lN0NPUXNKL0tzQW1YYkw4OERUc2pRQWZq?=
- =?utf-8?B?MS9ONUNHM3dyN0Z2Sno3bElkMURmbDUrTTZlakhqNGVJeUkrN2ZEWGZweFdC?=
- =?utf-8?B?SkdBVXY5ejJuVlJRUi9IckJCd0JqNnE0NHVIK0dVU1NQSnc4enBnd1JJNGls?=
- =?utf-8?B?ZmpOdGZJeDhEUFg0bXB1bjAyRzBScnlpcnQ5d25JaHBpRHRyTURKL1hMVTl5?=
- =?utf-8?B?dGpTbXRISk5GSHJpakxpU1hkbDNEMmxmN0xrMGRkTURCS01nRE5tc3JMUjFF?=
- =?utf-8?B?ZDI2a2Q5c05TSHFEYkVjV1RybnlHdHI5eklvMHRiajkrMTg4a0NuSjJYWGx1?=
- =?utf-8?B?ZC9RZE5sYkhSMDA4MjNhaXJUUGJpRkR6b1NUdis1Y2hMb0NzVGtoWmVYV25V?=
- =?utf-8?B?bG43Z29FTXg5YXZYYUIydVdJR1ArVlUrTThrWnZnSldESW52VVROM2kvdXUw?=
- =?utf-8?B?UkpkcDI4K2k3bnI1RHV3bzF4ZGlCRE94MEsxdGFad2pVVlFpaVFSVS91TmZO?=
- =?utf-8?B?R2tnQlNPSXUrcFdGWjcrYXR2Rnhrd251SEJTYktMRDRGNlJlTWZLeDR3ZEhi?=
- =?utf-8?B?Rmk5NTd4Wkw3TlMvT0h5UzZCT1BWdzdCZElsTEpCcCtQSW9ja2NUaitZVCt4?=
- =?utf-8?B?emRCM2lYVmVIemhsdHFvMGdBK09jYjBRUkFHbktvcFVkTEZQT0xCK3RkNWRU?=
- =?utf-8?B?eFpram5KbzNQb0lIdlBWeFhUNHFqcUhaaDlzRE9TMjdvdDE5ajVwSHQySjBE?=
- =?utf-8?B?bVdoUklxR0lSQWlTTXRzOGVNa1Z3cTNJMEV6VmpSRW00bFI2SkJSUVMrcTZz?=
- =?utf-8?B?dVdtOCtRcElQaFBuMHZ4VjJqZkE0Q2h0R0Z0emZGNDJBc0R2Nk9mdzFKOEhH?=
- =?utf-8?B?azVEdEk1RUMvbGJwdFd2REplUlp3c0JEV3ZpVlJMcW5GY0l3VkgzenFqamNR?=
- =?utf-8?B?WjBTQm1La2FYWjJwRTZzRDMvMUZtamV5eFZYOVhBZTMwRWJzdEtnSmNPQU52?=
- =?utf-8?B?UVZOYVNBZFhjNCtuZysrQ2MvbXFUZnBOUklNVXUvZ1hDOWJWN0dvVHVMUDdr?=
- =?utf-8?B?L0lBdU83cExadlBSUzJOUk9FdmN2WUtCNWFHMXcxOGUwbU9vYTBjdjZYeVZl?=
- =?utf-8?B?K2I1NlZoa1hqdllkWmVHTXl0ZTFXWUhHTHJWa2hmTWtyZFk0WU9mckd1MHhN?=
- =?utf-8?B?YnVZVDMrQnNuUEtMT0tTamhUamd0cGRUYk1wY1N6Zm1RWG1WditTMEZUcTlo?=
- =?utf-8?B?VFRYRURlUSs1TzluY1Z3SDJpUmNTMzBPSmVQTXdKempLcWcrSExwMkEremlI?=
- =?utf-8?B?QkpiT0QrRkFHL0paaE5qcjN5Mm9lYUFIbkhwSXU2TkVwN3dqajl6UmxDMytH?=
- =?utf-8?B?bnRVVHJnbG5kaklpNUR0aGNnekZKU3UzclhMVGpYZy9lTDhyR2ptQ3pia3BO?=
- =?utf-8?B?U1IxOVIyYmQrQ0ZCaERDT1p2WU0yOGs4cGhtMkRWdFhoaGxZWVM5bEVBUkFN?=
- =?utf-8?B?Z2FDTENNRitaOUc2ZFM3ZnQ5bFhJeDc3cEVZQWdHYjRUQTU4OXh2bUYrOWlO?=
- =?utf-8?B?VGl1MkVrSTJoVXRyemU0MnNVNllPQTFER085ZGJsS2U4OVRTaEtBWDhqVHBu?=
- =?utf-8?B?cWlKbHJCbXFPcFJNN3Q3R0U2R3V2RFRtd2l1RTRRR256MzQwOTZQakhKVk11?=
- =?utf-8?B?OEtDaW1wRXJUZXFNRTZDZktSU25oZHNsckhya2pBVmFhd0ZORW1TWXRFR2JP?=
- =?utf-8?Q?IseWSzWaXTAi2W1vSvD6mArOGKHjLRJMlPVhE=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3320.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eUthME5USGlkK2Z6WFRrSk1XeW5mSW9zZTExQnJIZ05UbGxOdFM0Y2xxV1Zo?=
- =?utf-8?B?eXU4RXFoQWM4aHVxcjRnVG5Oakd0dDZYRzhIYm11WWFwU29qamZsM3B0WTdO?=
- =?utf-8?B?SmE3MzJOOUluVDQzNUNRWEFKMVdBSzAwWUdkTS9SaitpUWpkTjc1MmtEZzdx?=
- =?utf-8?B?dUVlS2pKRUgzMEZKb1hFWVlKT0tMUjdXSFM2UjlQZ245V2JDZENCNDgxMkdu?=
- =?utf-8?B?REJSQ0hXeUV3N29kMWRlQU5HckZCL08xZUVqMko2S0gwcnRHU1VYdVU5ak5k?=
- =?utf-8?B?L2VsNlVFNWZXZzE5NUJzU1lZRGNwcUR5eDZzNm5TOGd1UVArNkR0L1RIUXlX?=
- =?utf-8?B?Y04wRldJWGIyR2lnVWJyeit3ZU1BNFN2SHFMcFZoYnVpbnl5Y1FoRnV1M0dS?=
- =?utf-8?B?TU9Tc3Z6czEzRE85N0ZmdVFIZVRYUzhJaTdOa0p4bWZ2L21lU3htQkZPdGtq?=
- =?utf-8?B?OTVva05kZERJZ1pYOC94N0RjakhWNkoyeENqK1M1WE8zZlN6cXA0Zmx0VnY2?=
- =?utf-8?B?bUFxdExtZVhDZ1FuNFl2enRNV2U5Z041bFdmZ2MrSUFKOXpsWWNKeGNlTG45?=
- =?utf-8?B?Z0xoaytIeTUzY3lqVitZMndJUFJqb1pTd0JJdzhsN2lpOG5RN0U5TDBaQk44?=
- =?utf-8?B?OUNOWDM3aVJUZ28rK2xuOFdmb0Z4K3NCVGlHWHNsNHpqdERieWJwVG5OYlNF?=
- =?utf-8?B?bEVEVDNtU1l4TTJJRWxXVmxpYzEyU3hMdW80TWIzNkhSWTlqLy9YbkthWG9F?=
- =?utf-8?B?WnJhSXRaU1FKWnUzYWpEWTVOTkZBd0t1Z2pjSEVzZDdRRk9oMk4vODZFVWl3?=
- =?utf-8?B?Q285WkMrODlpemVmUnQrRVY4V3R6SDVwNW5MUzJQYnFsdDRjS1BFTjBjVDBo?=
- =?utf-8?B?bUgyTk5LNWJ5L0xSeWhDTE5DWEdUeENTbTNoTVBrbnQ2LzZMUkIvUUk5b2c1?=
- =?utf-8?B?NGxwSlMzV29CZEtxczNhQ2xtYWw0M1RGV0Vqc2xSSUJVRXNxOTUxdzNCaTBn?=
- =?utf-8?B?KzVIVFA0enFQcGZjcTRtYkE0RE5XQ3k3NFcxa0FGZW5Xc2M1RitBTnF0cWdH?=
- =?utf-8?B?TVRveWVESFgxY0NBYWhtQmJTQVVzcVgzVURiTVU2TTg0ZGhxOEJQUzlwV2ho?=
- =?utf-8?B?cUwxRGRSYzBkZzZ2QzBNY3YxOUJyNm1mZ0RlZ28vUlhscXNGRUUyT2hkWDZL?=
- =?utf-8?B?N1QvMVBuNytITE1aOHF4Zi9ZRjJMcEoxSTQvMVY2WHh0NDVxTm9OWXRrTy9t?=
- =?utf-8?B?WURKUnhZcGhhOUxuY0FHKzlTNmh1WkFVSHVObXNSSUlIY3lpV3Mrd3l3RUNh?=
- =?utf-8?B?S2w4UWk3UGNXNlJRMjdqMnQzRG42U2NSN3pJWVNlaTE2WFMxLzBIb0VGOURo?=
- =?utf-8?B?VVgrSkNYdHd5Vk1Tb0JuL2o0TnJPcUZ6ckhBWDhWM1JYYmlRcFdtWGZYbFJr?=
- =?utf-8?B?aXJkQ0Z0WVp2OFFqNzEzMlZMUnExTnQ2Z0pwUUE4eHloS1p4K2R2SkI1UDR6?=
- =?utf-8?B?V3NjQ3QvSEF2eVFXSXJNajZnbHBaV2dQcDQySVRlMmlEcmt3S05hRkpBeGFw?=
- =?utf-8?B?MWtmU3EySXQycU1aTVFnVWRzRVJjbDk5bHFxUFlzazMzdmtCYytOT2ordnlP?=
- =?utf-8?B?cTZlN1gzdnJBSmgzYnZ3cU5EaEovME9vL1dDVXNBck8yUmpCOXNXcGdwOGRI?=
- =?utf-8?B?SFdHczZEUGJWYm9HTkZGUm93VGxQMjZaekN3UVMzYUZZTkhUR0kzaVJyRkhO?=
- =?utf-8?B?MkFNemVLeFNabjhRamtDVkxpZW5WTU13NjBrK0RFSmpaa080OTdXeHoybjRS?=
- =?utf-8?B?THFZZ2VPanRoRG5seFM0RTNPTTErQTdOL0JmMlJGOWJJTytaSE5tRklMWjZB?=
- =?utf-8?B?S1NNN1A1RDlxV2V2VDU5b0lrYnhpcVpKdlA2NlliQTBhTjJGQzRsWmtob09k?=
- =?utf-8?B?bWRWaTQveE9Xa0RjZ1pVYnJZQ1J2ZEdBOFVEL3ZKejluZ3BJdmJ0WXpvN2p1?=
- =?utf-8?B?SytIZ0pGOXR5aEVrRndQUzBuK2J4Q3dXQ3dYSmxyOXJwSVlYWDc5cC83V2R2?=
- =?utf-8?B?L0s0ajlIa1lxR1kwOURkaHB4Nko1Zk9FeXFXUVo5TWg2bDR0T1ltVjlTWlpP?=
- =?utf-8?Q?i85ZeImTGhz9RoKJgfp8PN5pN?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45e28d0b-5f76-44dc-c461-08dcf8734433
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3320.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 23:41:53.0199
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +AFTsoSWBIa2/S1RPf2f5+fpBlJwwmKy5NqEwrNhq0wsdPGx+BMk+QS/Dzu3Uot82vlQFS/gMCHDhWskovTpHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7101
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
+ avoid corruption
+To: Usama Arif <usamaarif642@gmail.com>, Ard Biesheuvel
+ <ardb+git@google.com>, linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
+ Breno Leitao <leitao@debian.org>
+References: <20240912155159.1951792-2-ardb+git@google.com>
+ <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
+ <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org>
+ <58da4824-523c-4368-9da1-05984693c811@kernel.org>
+ <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 10/28/2024 9:07 AM, Alexander Shishkin wrote:
-> Since EMULATE mode of vsyscall disables LASS, because fixing the LASS
-> violations during the EMULATE mode would need complex instruction
-> decoding, document this fact in kernel-parameters.txt.
-> 
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Suggested-by: Dave Hansen <dave.hansen@intel.com>
-> Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-> ---
->  Documentation/admin-guide/kernel-parameters.txt | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
+On 25. 10. 24, 15:27, Usama Arif wrote:
+> Could you share the e820 map, reserve setup_data and TPMEventLog address with and without the patch?
+> All of these should be just be in the dmesg.
 
-It might be better to combine this patch with the previous one. Both the
-patches are small enough and related to the same thing.
+It's shared in the aforementioned bug [1] already.
 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 1518343bbe22..4091dc48670a 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -7391,7 +7391,9 @@
->  
->  			emulate     Vsyscalls turn into traps and are emulated
->  			            reasonably safely.  The vsyscall page is
-> -				    readable.
-> +				    readable.  This also disables the LASS
-> +				    feature to allow userspace to poke around
-> +				    the vsyscall page.
->  
+6.11.2 dmesg (bad run):
+https://bugzilla.suse.com/attachment.cgi?id=877874
 
-I am not sure if the person reading this guide would be aware of LASS.
-Also the way the sentence is structured it might be easy to misinterpret
-its meaning.
+6.12-rc2 dmesg (good run):
+https://bugzilla.suse.com/attachment.cgi?id=877887
 
-How about something like:
+FWIW from https://bugzilla.suse.com/attachment.cgi?id=878051:
+good TPMEventLog=0x682aa018
+bad  TPMEventLog=0x65a6b018
 
-emulate     Vsyscalls turn into traps and are emulated
-            reasonably safely.  The vsyscall page is
-	    readable.  This disables the linear
-	    address space separation (LASS) security
-	    feature and makes the system less secure.
+[1] https://bugzilla.suse.com/show_bug.cgi?id=1231465
+
+wdiff of e820:
+wdiff -n bad good |colordiff
+BIOS-e820: [mem 0x0000000000000000-0x0000000000057fff] usable
+BIOS-e820: [mem 0x0000000000058000-0x0000000000058fff] reserved
+BIOS-e820: [mem 0x0000000000059000-0x000000000009efff] usable
+BIOS-e820: [mem 0x000000000009f000-0x00000000000fffff] reserved
+BIOS-e820: [mem [-0x0000000000100000-0x0000000065a6efff]-] 
+{+0x0000000000100000-0x00000000682abfff]+} usable
+BIOS-e820: [mem [-0x0000000065a6f000-0x0000000065a7dfff]-] 
+{+0x00000000682ac000-0x00000000682bafff]+} ACPI data
+BIOS-e820: [mem [-0x0000000065a7e000-0x000000006a5acfff]-] 
+{+0x00000000682bb000-0x000000006a5acfff]+} usable
+BIOS-e820: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
+BIOS-e820: [mem 0x000000006a5ae000-0x000000006a5aefff] reserved
+BIOS-e820: [mem 0x000000006a5af000-0x0000000079e83fff] usable
+BIOS-e820: [mem 0x0000000079e84000-0x000000007a246fff] reserved
+BIOS-e820: [mem 0x000000007a247000-0x000000007a28efff] ACPI data
+BIOS-e820: [mem 0x000000007a28f000-0x000000007abf0fff] ACPI NVS
+BIOS-e820: [mem 0x000000007abf1000-0x000000007b5fefff] reserved
+BIOS-e820: [mem 0x000000007b5ff000-0x000000007b5fffff] usable
+BIOS-e820: [mem 0x000000007b600000-0x000000007f7fffff] reserved
+BIOS-e820: [mem 0x00000000f0000000-0x00000000f7ffffff] reserved
+BIOS-e820: [mem 0x00000000fe000000-0x00000000fe010fff] reserved
+BIOS-e820: [mem 0x00000000fec00000-0x00000000fec00fff] reserved
+BIOS-e820: [mem 0x00000000fee00000-0x00000000fee00fff] reserved
+BIOS-e820: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+BIOS-e820: [mem 0x0000000100000000-0x000000087e7fffff] usable
+NX (Execute Disable) protection: active
+APIC: Static calls initialized
+e820: update [mem [-0x65a5e018-0x65a6e457]-] {+0x6829b018-0x682ab457]+} 
+usable ==> usable
+extended physical RAM map:
+reserve setup_data: [mem 0x0000000000000000-0x0000000000057fff] usable
+reserve setup_data: [mem 0x0000000000058000-0x0000000000058fff] reserved
+reserve setup_data: [mem 0x0000000000059000-0x000000000009efff] usable
+reserve setup_data: [mem 0x000000000009f000-0x00000000000fffff] reserved
+reserve setup_data: [mem [-0x0000000000100000-0x0000000065a5e017]-] 
+{+0x0000000000100000-0x000000006829b017]+} usable
+reserve setup_data: [mem [-0x0000000065a5e018-0x0000000065a6e457]-] 
+{+0x000000006829b018-0x00000000682ab457]+} usable
+reserve setup_data: [mem [-0x0000000065a6e458-0x0000000065a6efff]-] 
+{+0x00000000682ab458-0x00000000682abfff]+} usable
+reserve setup_data: [mem [-0x0000000065a6f000-0x0000000065a7dfff]-] 
+{+0x00000000682ac000-0x00000000682bafff]+} ACPI data
+reserve setup_data: [mem [-0x0000000065a7e000-0x000000006a5acfff]-] 
+{+0x00000000682bb000-0x000000006a5acfff]+} usable
+reserve setup_data: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
+reserve setup_data: [mem 0x000000006a5ae000-0x000000006a5aefff] reserved
+reserve setup_data: [mem 0x000000006a5af000-0x0000000079e83fff] usable
+reserve setup_data: [mem 0x0000000079e84000-0x000000007a246fff] reserved
+reserve setup_data: [mem 0x000000007a247000-0x000000007a28efff] ACPI data
+reserve setup_data: [mem 0x000000007a28f000-0x000000007abf0fff] ACPI NVS
+reserve setup_data: [mem 0x000000007abf1000-0x000000007b5fefff] reserved
+reserve setup_data: [mem 0x000000007b5ff000-0x000000007b5fffff] usable
+reserve setup_data: [mem 0x000000007b600000-0x000000007f7fffff] reserved
+reserve setup_data: [mem 0x00000000f0000000-0x00000000f7ffffff] reserved
+reserve setup_data: [mem 0x00000000fe000000-0x00000000fe010fff] reserved
+reserve setup_data: [mem 0x00000000fec00000-0x00000000fec00fff] reserved
+reserve setup_data: [mem 0x00000000fee00000-0x00000000fee00fff] reserved
+reserve setup_data: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+reserve setup_data: [mem 0x0000000100000000-0x000000087e7fffff] usable
+efi: EFI v2.6 by American Megatrends
+efi: ACPI=0x7a255000 ACPI 2.0=0x7a255000 SMBIOS=0x7b140000 SMBIOS 
+3.0=0x7b13f000 TPMFinalLog=0x7a892000 ESRT=0x7b0deb18 
+[-MEMATTR=0x77535018-] {+MEMATTR=0x77526018+} MOKvar=0x7b13e000 
+RNG=0x7a254018 [-TPMEventLog=0x65a6f018-] {+TPMEventLog=0x682ac018+}
 
 
->  			xonly       [default] Vsyscalls turn into traps and are
->  			            emulated reasonably safely.  The vsyscall
-
+thanks,
+-- 
+js
+suse labs
 
