@@ -1,122 +1,144 @@
-Return-Path: <linux-efi+bounces-2076-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2077-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B979B7705
-	for <lists+linux-efi@lfdr.de>; Thu, 31 Oct 2024 10:04:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA599B78E6
+	for <lists+linux-efi@lfdr.de>; Thu, 31 Oct 2024 11:44:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A966A1C20CA2
-	for <lists+linux-efi@lfdr.de>; Thu, 31 Oct 2024 09:04:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74BDA1F24DC8
+	for <lists+linux-efi@lfdr.de>; Thu, 31 Oct 2024 10:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E142A156967;
-	Thu, 31 Oct 2024 09:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00451993B9;
+	Thu, 31 Oct 2024 10:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvpcFSCh"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zzREUiqq"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03FA1BD9ED;
-	Thu, 31 Oct 2024 09:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A2F1993B2
+	for <linux-efi@vger.kernel.org>; Thu, 31 Oct 2024 10:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730365458; cv=none; b=i4KW4A0VzPNZdEcY82tTvuKJmqqm+ZEVbIHQrkFeLce/KFW5jyf+wnx6IoEvJUHom45jo+mC+nVNnzBl+Fx0fcGlaEMeXaPaXm4jhJCUr2rYdNnjkPKE6RJmQBdH31MAfjPuaklxaf1Aw7BphfHWXHH+hI6qAffuzu84JngsAsw=
+	t=1730371447; cv=none; b=I6X8pfwkU1EVJYvDxMPgat2J3MeB7VuVf3cyX9pHo2sJj8UULeJbAZVRYyOQbzskd2lbLZulTrLT1UUNqw7wHEYwseBxBuM6GdmFb8lFndT0ixYJZsVHa07p/brMOjTIjSc+YZLFnw5Ftj7YCYo3jnQo6j/K0Ex28w6ZV9AN7So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730365458; c=relaxed/simple;
-	bh=rMmsPAoNj0T1N+l/5gpxXVO0BT9K5uhQHYV8kE0cJ70=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fK02IernB/9gmY2LgeJmb3R86XZiS6QREiwFmSIMEXpmJDaEy+5ulz9X7LoXdF4OHFkRULmud4gswq2BFUl2IK6lO4erJqS4o0oZxQaOGJAgmZdunlsN5yRdvwi32HW9z9CoqP1+/LvNB+dMd5lf3ZFEjbmQApuCaRNO9DW3WyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvpcFSCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C61C4CED0;
-	Thu, 31 Oct 2024 09:04:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730365458;
-	bh=rMmsPAoNj0T1N+l/5gpxXVO0BT9K5uhQHYV8kE0cJ70=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tvpcFSCh5n5OBqS4K8WTCFRIZwHV5YAAIXEg6BW7CRnS5as2PKEMei03IRBtvwD0e
-	 EIwm/VknrJ+rP5g58Ffhr3Ik/CMgigmF8IqC9vFHNiEbYnOi96kJsIcRshXqX0gbq7
-	 pCDzJHJoipkVae+1cP0YkSZJvYKn45qRLdYMFxd4bpM8Nun7OSKg52EJbHQ0rjVnFX
-	 zE8M4MpVoM1CtIVaMbL1+AjSrCVuDc2PIN9ieNKWDJawMu/pB5JF5TtFqKyXNZj7hY
-	 CVEuO+zhEZrGf27xqWDSWcnWDNDAlEofTM7kitqjDP2EmwOWJ/Xh6qxD+Ie0gMcMMQ
-	 R18MkltOchLyA==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb57f97d75so6169781fa.2;
-        Thu, 31 Oct 2024 02:04:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUIwrmscWqdKkzXmlAI5EL3QyyC0fQCzJqRzaFU0O7QSgcf8UqxQC1kP2Ik/AfTUpECnNpxws2xu7s=@vger.kernel.org, AJvYcCXx9odxyPMG2zumITmRZchlhdWfz5+6CzfvbMLqdD/1MPMnlBB9chnd0Wjpb3AjR6DjKAKXM7RZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YylXSey/T/z2CtyW6ChxPt+P9+Zr1lGj8kYRGtndPSDRSW3XCUi
-	kFK+hb3bZrEE9dbdyfHqgUkOzCD5LOdOnQ/MUfrUCCI+JkoAjPE6nCQ9jP6Kd24MUsw/B9OpEaK
-	L9WFiDlgfiPUx2tkX7qbYbXxDWMU=
-X-Google-Smtp-Source: AGHT+IG7QBQVAG1QN+7HH/QUvI9Uk9k85ubl7PpKZYwi+Mf+MpFSDbMXLt2gTL++cPavCYwF/up0DfB2hjKRe82iSic=
-X-Received: by 2002:a05:651c:554:b0:2fa:c0df:3d7b with SMTP id
- 38308e7fff4ca-2fcbdfbb31cmr79419021fa.22.1730365456646; Thu, 31 Oct 2024
- 02:04:16 -0700 (PDT)
+	s=arc-20240116; t=1730371447; c=relaxed/simple;
+	bh=+jdnU8yaC6Ttu85x3D7p+RaWzPhmu87nzbmph0dKCT0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J4kjajtUiYfPLrfMpHfyCNbAWEcVK6i2g8gXk3L0mfoBL268W27ZgcsAKCoPY9i5yopMhYddJZWlRl+5NrXLAI3tp2aOZGgtiD5ZYrlvzp8m/r+zEFJW2Yk0FPV33wt8sl2XA72f9RGbIBuynEoqKjYeC/6PzUTFSvWVSo00Cq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zzREUiqq; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6ea527764c3so18664057b3.0
+        for <linux-efi@vger.kernel.org>; Thu, 31 Oct 2024 03:44:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730371444; x=1730976244; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1Qql+cO7gNh6Zg6CVr4V9xIPeo03B8wrHYOSmlk1J0E=;
+        b=zzREUiqqbtc9RCeCzvQ2BLdJjk+nolnTcugN/6D4xJSKGHZBjG6liLi03Zqo7qKhkY
+         fWzItt4hQOeiBmOeVESGis0BiABL8Ea3tLEklKbvinfdGX/b16OxziUKHOjPPGRGE/DK
+         vkFJWd2L/3S4A7Atx8GFtCOqXqb0qpgCO3gVIvzSKCrtpxpiehu0TAk3Vs/+t17KahPw
+         7Cly/v3Jxa3wFppgUmuDbvronZJcc3qZhoOg0YgrLPIAir52CM6s2ekNjk+uULJjlwHQ
+         ltOPJCLtq8MY73swHDDa2PBeYGOav4riwiAUaZDCUrmZelm9I+Fza5EAL/+oWXNwvJQH
+         jsrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730371444; x=1730976244;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1Qql+cO7gNh6Zg6CVr4V9xIPeo03B8wrHYOSmlk1J0E=;
+        b=wWeqjFpe56FUf5rvkONakafiu9Awtq9Fd7w7AbSc07Z7Xa+k+igrZt0QZ/UVFoJzTA
+         LHA4c0icR5vzn3MOCqGkFW3czv6Qy7nb0DhX7R0A3+gJSdYPDHw/58q+/j20R+yq6Ue+
+         0AicEi5syXxRBYk4W2x6s3tsbgg6NhEosAuFBwzyZKFsfwr6sVD4f9KSoOWD1iCUK4XX
+         KJV51eDccbjJVbEN9lxhDnO4D//cLrkbmNQk+4lIbIVmVIEnnQWAUudrXJ9nQkvLPLHQ
+         ln0VZHNpLzm5CDbURf+S1vrgIQ6LZpjCaWSTC0LSC8E5GCxXLtQCUIij0niycwWsamE0
+         hnqg==
+X-Gm-Message-State: AOJu0YzBHoyYxQLgcNm0zzrpooKvFXW+Ri314SngYagaqZp5+7Pkq4Zv
+	VbWGU1oD9ADBJN+jQgP+epMS1oGnI2ooZYZaIRhFRmKKUlJA2lcHl2SBwAOJWfsRvvHoy7hSaY6
+	dBtWJNStagLS3k7V/R11LXQ2AnU+ikphjcKZPNSza46Q7qp2XPjkruGMDCEUVypnzmHebWaMqD/
+	OMQN8wwUvGyraxxbvw79I66mZNJA==
+X-Google-Smtp-Source: AGHT+IF7BAKMU7br1kHal9pp0gqUHrEIILb66GgpgSTXqZDiRnZqbY0ecq8R6i7QfmbAlHWy+NgBtORX
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
+ (user=ardb job=sendgmr) by 2002:a05:690c:6901:b0:6e3:b08:92cb with SMTP id
+ 00721157ae682-6ea3b759216mr1673687b3.0.1730371444213; Thu, 31 Oct 2024
+ 03:44:04 -0700 (PDT)
+Date: Thu, 31 Oct 2024 11:44:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240912155159.1951792-2-ardb+git@google.com> <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
- <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org> <58da4824-523c-4368-9da1-05984693c811@kernel.org>
- <CAMj1kXHqgZ-fD=oSAr7E0h9kTj_yzDv=_o2ifCCD0cYNgXv9RQ@mail.gmail.com> <9ce8eef8-592b-4170-adf9-a1906e008c5c@kernel.org>
-In-Reply-To: <9ce8eef8-592b-4170-adf9-a1906e008c5c@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 31 Oct 2024 10:04:05 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEKK2asZ8iT9+n6wz1yve2JY8U5Dd5+TriStuVssrG3UQ@mail.gmail.com>
-Message-ID: <CAMj1kXEKK2asZ8iT9+n6wz1yve2JY8U5Dd5+TriStuVssrG3UQ@mail.gmail.com>
-Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
- avoid corruption
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, stable@vger.kernel.org, 
-	Breno Leitao <leitao@debian.org>, Usama Arif <usamaarif642@gmail.com>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2291; i=ardb@kernel.org;
+ h=from:subject; bh=hEybNvR5bGgdl/+HX7BWyWKmRyJwvciBr4ZWqAoljK8=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIV05voCrafc6oyarjTeyM0/M2Ph+rWGTuvKLBx79otxZm
+ a0q+R87SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwERa4xgZlt5Xlf534fBHqVVn
+ J/2TbXwzfXHoCmGHq/NWp7TxKc1zmcrI8EOhIF1npfmk59NTZqrc9hU6Kp7y2aKpd3L7PY7KM3I HmAA=
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+Message-ID: <20241031104359.2613133-2-ardb+git@google.com>
+Subject: [PATCH] efi/memattr: Ignore table if the size is clearly bogus
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, Gregory Price <gourry@gourry.net>, 
+	Usama Arif <usamaarif642@gmail.com>, Jiri Slaby <jirislaby@kernel.org>, 
+	Breno Leitao <leitao@debian.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 31 Oct 2024 at 08:55, Jiri Slaby <jirislaby@kernel.org> wrote:
->
-> On 25. 10. 24, 9:30, Ard Biesheuvel wrote:
-> > To me, it seems like the use of EFI_ACPI_RECLAIM_MEMORY in this case
-> > simply tickles a bug in the firmware that causes it to corrupt the
-> > memory attributes table. The fact that cold boot behaves differently
-> > is a strong indicator here.
-> >
-> > I didn't see the results of the memory attribute table dumps on the
-> > bugzilla thread, but dumping this table from EFI is not very useful
-> > because it will get regenerated/updated at ExitBootServices() time.
-> > Unfortunately, that also takes away the console so capturing the state
-> > of that table before the EFI stub boots the kernel is not an easy
-> > thing to do.
-> >
-> > Is the memattr table completely corrupted? It also has a version
-> > field, and only versions 1 and 2 are defined so we might use that to
-> > detect corruption.
->
-> So from a today test:
-> https://bugzilla.suse.com/attachment.cgi?id=878296
->
->  > efi: memattr: efi_memattr_init: tab=0x7752f018 ver=1
-> size=16+2*1705287680=0x00000000cb494010
->
-> version is NOT corrupted :).
->
+From: Ard Biesheuvel <ardb@kernel.org>
 
-OK, so the struct looks like this
+There are reports [0] of cases where a corrupt EFI Memory Attributes
+Table leads to out of memory issues at boot because the descriptor size
+and entry count in the table header are still used to reserve the entire
+table in memory, even though the resulting region is gigabytes in size.
 
-typedef struct {
-        u32 version;
-        u32 num_entries;
-        u32 desc_size;
-        u32 flags;
-        efi_memory_desc_t entry[];
-} efi_memory_attributes_table_t;
+Given that the EFI Memory Attributes Table is supposed to carry up to 3
+entries for each EfiRuntimeServicesCode region in the EFI memory map,
+and given that there is no reason for the descriptor size used in the
+table to exceed the one used in the EFI memory map, 3x the size of the
+entire EFI memory map is a reasonable upper bound for the size of this
+table. This means that sizes exceeding that are highly likely to be
+based on corrupted data, and the table should just be ignored instead.
 
-and in the correct case, num_entries == 45 and desc_size == 48.
+[0] https://bugzilla.suse.com/show_bug.cgi?id=1231465
 
-It is quite easy to sanity check this structure: desc_size should be
-equal to the desc_size in the memory map, and num_entries can never
-exceed 2x the number of entries in the EFI memory map.
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Usama Arif <usamaarif642@gmail.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/all/20240912155159.1951792-2-ardb+git@google.com/
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/memattr.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-I'll go and implement something that performs the check right after
-ExitBootServices(), and just drops the table if it is bogus (it isn't
-that important anyway)
+diff --git a/drivers/firmware/efi/memattr.c b/drivers/firmware/efi/memattr.c
+index 164203429fa7..d85363d0422a 100644
+--- a/drivers/firmware/efi/memattr.c
++++ b/drivers/firmware/efi/memattr.c
+@@ -40,6 +40,20 @@ int __init efi_memattr_init(void)
+ 	}
+ 
+ 	tbl_size = sizeof(*tbl) + tbl->num_entries * tbl->desc_size;
++
++	/*
++	 * Sanity check: the Memory Attributes Table contains up to 3 entries
++	 * for each entry of type EfiRuntimeServicesCode in the EFI memory map.
++	 * So if the size of the table exceeds 3x the size of the entire EFI
++	 * memory map, there is clearly something wrong, and the table should
++	 * just be ignored altogether.
++	 */
++	if (tbl_size > 3 * efi.memmap.nr_map * efi.memmap.desc_size) {
++		pr_warn(FW_BUG "Corrupted EFI Memory Attributes Table detected! (version == %u, desc_size == %u, num_entries == %u)\n",
++			tbl->version, tbl->desc_size, tbl->num_entries);
++		goto unmap;
++	}
++
+ 	memblock_reserve(efi_mem_attr_table, tbl_size);
+ 	set_bit(EFI_MEM_ATTR, &efi.flags);
+ 
+-- 
+2.47.0.163.g1226f6d8fa-goog
+
 
