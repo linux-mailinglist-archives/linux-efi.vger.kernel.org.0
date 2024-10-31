@@ -1,48 +1,48 @@
-Return-Path: <linux-efi+bounces-2074-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2075-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4329B7639
-	for <lists+linux-efi@lfdr.de>; Thu, 31 Oct 2024 09:19:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6319B769F
+	for <lists+linux-efi@lfdr.de>; Thu, 31 Oct 2024 09:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B4B51C218C7
-	for <lists+linux-efi@lfdr.de>; Thu, 31 Oct 2024 08:19:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF89EB21721
+	for <lists+linux-efi@lfdr.de>; Thu, 31 Oct 2024 08:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FA91531D2;
-	Thu, 31 Oct 2024 08:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF68A1552EE;
+	Thu, 31 Oct 2024 08:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TX0cvDjE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQKkET2I"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D5714EC46;
-	Thu, 31 Oct 2024 08:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9565ED517;
+	Thu, 31 Oct 2024 08:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730362772; cv=none; b=EPULGV/ND1JHRgZcxVizScSaqI4wqXIarNkF5IKW5BRyvbCiasH5fsFn7+M/vdRIWi4076rMY/xIwPYULssCFLO6KwjrAKZ0OnhTopMj01mqMR0c/emhNCDGeORY72ZQjKuLfuirn0oVVP8UAK9+emdkJErfzhe+Lzk0V9p90So=
+	t=1730363934; cv=none; b=qUxX6MWxPniMun52Y3PTGtNGLimLSNjsPlQeG+h/HtTHvLXU+ehrEdAekqwJGF/pZmIqrlHuDeYsI8UOgxzik5uXCCj+W/XYBLqLF9ezBjl5XtMT4P8OziHtnTI6/lHlS6bv92vi8NR7DyG3EweKutHoC3mJAvhygWKb4JzKFeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730362772; c=relaxed/simple;
-	bh=Lo+ctqvZbbEgV0nxQ5/egm3cJkGJWBIng58Z57HWev0=;
+	s=arc-20240116; t=1730363934; c=relaxed/simple;
+	bh=cm/v1kzbIezMQxmU5NpIlNL1u/w90ZyIbDSAkvOdDC0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b0seDFQTt+2F3kOpBzENHadJmFZns7paAA+RIAAYfjFmauL3KcZ0hYtti9Md5pHoh8hjYw9i3KezMuHr+c381k6/anyDN9Vhl7LeGO3nHS5NNIxrVUMPR0Y2HAAX5/OZSuMcTL2xOdLAlBUGTTsBYg3higdT6M8dS6qZVh88YnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TX0cvDjE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBABC4CEC3;
-	Thu, 31 Oct 2024 08:19:30 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=TBcVRYEddU9Wg8o9CAPJyDmu7a5GzeZ49O4Q3OiYH+JPBarhmTNaXMAgAlHK0wEuleTo9GBNV8AFAuClOk8Pqmp+5oVsdO0gkmX1qe722rFXECF3yE1XLiMf5Xqz+8Qf9fWqLkOWawapLt9k3qVHXvwVXoMfAAZqEjVGjzeqZlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQKkET2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8399C4CEC3;
+	Thu, 31 Oct 2024 08:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730362771;
-	bh=Lo+ctqvZbbEgV0nxQ5/egm3cJkGJWBIng58Z57HWev0=;
+	s=k20201202; t=1730363934;
+	bh=cm/v1kzbIezMQxmU5NpIlNL1u/w90ZyIbDSAkvOdDC0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TX0cvDjEDdPtFMKleTSZ2OYsTutBsy3u1jQoh77/sEE49iCnulJRSsr4WvS1ZJL7Q
-	 IQeLhCAr1YHAC0/JrMtJNpRx66SVRZF67UtTKYjRZCLZNqMbnWabgokbgbDTTq/XKC
-	 3HcrOz+c+Nss8a89nJBkDjjQRRNFUaXxGaWhjmyFNjo4J+v6f6yxG/KOgp4yEynpF/
-	 GWny1iFAm/GQ0t48VOjwgsjOV/RZnpjbylNqYxzL80M2OwUUdv2hA9mEvgTH5GFEV/
-	 v3YOkAzhXn1/Go4U5kqJaqazaWsKLrBazBAIYNT3q4Rkz1OJ8B+XjiQ3NPuKwx+nb8
-	 +MOtmKzjADbYg==
-Message-ID: <c7ec5844-93b8-4603-a12d-a19d9c22a685@kernel.org>
-Date: Thu, 31 Oct 2024 09:19:28 +0100
+	b=WQKkET2IeoBIjonqHvhocH8LPa1CeOUIM5L+xtOLiJHr8Hdoh8tqVXWUs7GiR4DcY
+	 G/Ot7AqKQD0vTC6EgbiuOmKjh9si/ozjjcvLZ9gW/fULTUGzs3ownelJDK6V5PLICC
+	 b3/IMSZqKKw9ONYe15SyrN5MiftOEBLPoUgQHFNfGD+OWZb3kz+c0zmVmKF27Mzu7L
+	 D40/RLSJZKX38gbIcndeQSCgalASSAec3SzrvILd9A8RGoGB/NESB3ZMNyqP1DAbjf
+	 +sVtxqBAkE3JhGix/4zJqiUTx+X8MFw32rZoAr4zmhDgieQBkGfqvS9cKCmP2UT4Ai
+	 e0Nc/c8N1DOCg==
+Message-ID: <309cfc74-62f5-45e6-96a9-c9cd085d9fee@kernel.org>
+Date: Thu, 31 Oct 2024 09:38:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -52,7 +52,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
  avoid corruption
-To: Gregory Price <gourry@gourry.net>, Usama Arif <usamaarif642@gmail.com>
+To: Usama Arif <usamaarif642@gmail.com>, Gregory Price <gourry@gourry.net>
 Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org,
  Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
  Breno Leitao <leitao@debian.org>
@@ -63,7 +63,8 @@ References: <20240912155159.1951792-2-ardb+git@google.com>
  <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com>
  <b7501b2c-d85f-40aa-9be5-f9e5c9608ae4@kernel.org>
  <e42149a6-7c1f-48d1-be94-1c1082b450e0@gmail.com>
- <ZyJ6QHc9FetDckqo@PC2K9PVX.TheFacebook.com>
+ <ZyJ0r_zZ5UD8pvzX@PC2K9PVX.TheFacebook.com>
+ <30899696-def7-4f1e-a54b-65fc6901a998@gmail.com>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -108,33 +109,86 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <ZyJ6QHc9FetDckqo@PC2K9PVX.TheFacebook.com>
+In-Reply-To: <30899696-def7-4f1e-a54b-65fc6901a998@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 30. 10. 24, 19:26, Gregory Price wrote:
-> you may also want to investigate this patch set:
-> 
-> https://lore.kernel.org/all/20240913231954.20081-1-gourry@gourry.net/
-> 
-> which I believe would have caught your "eat all memory" sign extention issue.
+On 30. 10. 24, 19:24, Usama Arif wrote:
+> This is a good point. I think if we suspect this patch, it would be good to compare
+> dmesg of kernel cold boot with this patch vs the commit just before this patch, rather
+> than comparing with 6.12.
 
-But it's memattr what is corrupted, not tpmeventlog.
+Here it goes then:
 
-The reporter is using this for some time and it indeed works:
---- a/drivers/firmware/efi/memattr.c
-+++ b/drivers/firmware/efi/memattr.c
-@@ -12,7 +12,7 @@
+dmesg for 2e6871a632a99d9 (bad -- patch applied):
+https://bugzilla.suse.com/attachment.cgi?id=878297
 
-  #include <asm/early_ioremap.h>
+dmesg for bc2846c7ab029f0 (good -- before the patch, i.e. 2e6871a632a99d9^):
+https://bugzilla.suse.com/attachment.cgi?id=878298
 
--static int __initdata tbl_size;
-+static phys_addr_t __initdata tbl_size;
-  unsigned long __ro_after_init efi_mem_attr_table = EFI_INVALID_TABLE_ADDR;
+(6.11-stable SHAs ^^^)
 
-  /*
+$ wdiff -n good bad |colordiff
+BIOS-e820: [mem 0x0000000000000000-0x0000000000057fff] usable
+BIOS-e820: [mem 0x0000000000058000-0x0000000000058fff] reserved
+BIOS-e820: [mem 0x0000000000059000-0x000000000009efff] usable
+BIOS-e820: [mem 0x000000000009f000-0x00000000000fffff] reserved
+BIOS-e820: [mem [-0x0000000000100000-0x000000006a5acfff]-] 
+{+0x0000000000100000-0x0000000066a17fff] usable+}
+{+BIOS-e820: [mem 0x0000000066a18000-0x0000000066a27fff] ACPI data+}
+{+BIOS-e820: [mem 0x0000000066a28000-0x000000006a5acfff]+} usable
+BIOS-e820: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
+BIOS-e820: [mem 0x000000006a5ae000-0x000000006a5aefff] reserved
+BIOS-e820: [mem 0x000000006a5af000-0x0000000079e83fff] usable
+BIOS-e820: [mem 0x0000000079e84000-0x000000007a246fff] reserved
+BIOS-e820: [mem 0x000000007a247000-0x000000007a28efff] ACPI data
+BIOS-e820: [mem 0x000000007a28f000-0x000000007abf0fff] ACPI NVS
+BIOS-e820: [mem 0x000000007abf1000-0x000000007b5fefff] reserved
+BIOS-e820: [mem 0x000000007b5ff000-0x000000007b5fffff] usable
+BIOS-e820: [mem 0x000000007b600000-0x000000007f7fffff] reserved
+BIOS-e820: [mem 0x00000000f0000000-0x00000000f7ffffff] reserved
+BIOS-e820: [mem 0x00000000fe000000-0x00000000fe010fff] reserved
+BIOS-e820: [mem 0x00000000fec00000-0x00000000fec00fff] reserved
+BIOS-e820: [mem 0x00000000fee00000-0x00000000fee00fff] reserved
+BIOS-e820: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+BIOS-e820: [mem 0x0000000100000000-0x000000087e7fffff] usable
+NX (Execute Disable) protection: active
+APIC: Static calls initialized
+e820: update [mem 0x66a07018-0x66a17457] usable ==> usable
+extended physical RAM map:
+reserve setup_data: [mem 0x0000000000000000-0x0000000000057fff] usable
+reserve setup_data: [mem 0x0000000000058000-0x0000000000058fff] reserved
+reserve setup_data: [mem 0x0000000000059000-0x000000000009efff] usable
+reserve setup_data: [mem 0x000000000009f000-0x00000000000fffff] reserved
+reserve setup_data: [mem 0x0000000000100000-0x0000000066a07017] usable
+reserve setup_data: [mem 0x0000000066a07018-0x0000000066a17457] usable
+reserve setup_data: [mem [-0x0000000066a17458-0x000000006a5acfff]-] 
+{+0x0000000066a17458-0x0000000066a17fff] usable+}
+{+reserve setup_data: [mem 0x0000000066a18000-0x0000000066a27fff] ACPI 
+data+}
+{+reserve setup_data: [mem 0x0000000066a28000-0x000000006a5acfff]+} usable
+reserve setup_data: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
+reserve setup_data: [mem 0x000000006a5ae000-0x000000006a5aefff] reserved
+reserve setup_data: [mem 0x000000006a5af000-0x0000000079e83fff] usable
+reserve setup_data: [mem 0x0000000079e84000-0x000000007a246fff] reserved
+reserve setup_data: [mem 0x000000007a247000-0x000000007a28efff] ACPI data
+reserve setup_data: [mem 0x000000007a28f000-0x000000007abf0fff] ACPI NVS
+reserve setup_data: [mem 0x000000007abf1000-0x000000007b5fefff] reserved
+reserve setup_data: [mem 0x000000007b5ff000-0x000000007b5fffff] usable
+reserve setup_data: [mem 0x000000007b600000-0x000000007f7fffff] reserved
+reserve setup_data: [mem 0x00000000f0000000-0x00000000f7ffffff] reserved
+reserve setup_data: [mem 0x00000000fe000000-0x00000000fe010fff] reserved
+reserve setup_data: [mem 0x00000000fec00000-0x00000000fec00fff] reserved
+reserve setup_data: [mem 0x00000000fee00000-0x00000000fee00fff] reserved
+reserve setup_data: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+reserve setup_data: [mem 0x0000000100000000-0x000000087e7fffff] usable
+efi: EFI v2.6 by American Megatrends
+efi: ACPI=0x7a255000 ACPI 2.0=0x7a255000 SMBIOS=0x7b140000 SMBIOS 
+3.0=0x7b13f000 TPMFinalLog=0x7a892000 ESRT=0x7b0deb18 
+[-MEMATTR=0x77536298-] {+MEMATTR=0x7752f018+} MOKvar=0x7b13e000 
+RNG=0x7a254018 TPMEventLog=0x66a18018
 
-
+thanks,
 -- 
 js
 suse labs
