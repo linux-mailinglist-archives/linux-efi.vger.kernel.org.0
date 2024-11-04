@@ -1,154 +1,186 @@
-Return-Path: <linux-efi+bounces-2120-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2121-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB4C9BA157
-	for <lists+linux-efi@lfdr.de>; Sat,  2 Nov 2024 17:04:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BBF9BB3D5
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2024 12:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8967281EB8
-	for <lists+linux-efi@lfdr.de>; Sat,  2 Nov 2024 16:04:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 571DBB22CA7
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2024 11:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FD219E990;
-	Sat,  2 Nov 2024 16:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539C718A6B6;
+	Mon,  4 Nov 2024 11:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="g6BcZpKV";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="g6BcZpKV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gOV0EX5h"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97B018A6A6;
-	Sat,  2 Nov 2024 16:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D47D23A6;
+	Mon,  4 Nov 2024 11:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730563485; cv=none; b=fdPtHmaLBaqyvFA2VElXKR+kH8dygdHeTLHEGClrbcf6sp0F1/G8x6Zz7LOPMvVSDPY4Poo+qti8NpvZVtHnrbz24fKPUIOIf/CgIGJoAO8TOZiZnbVhXNEZh9yhCHn2wfnwDVxCxgp8jrWGXLkLQ9/3MlSV7ge4eW5mLzR6OIQ=
+	t=1730720631; cv=none; b=ub74TbEohl19ZnxuClElxl07nSvs02Bac2+7DEDXFJC2W3lhnMFBY90wK8EpE5fYI+2eMCdj8a+z8gADMPoKN4EA03ltsXfBUM/W1TR2uIQ8kyQTjACrMrL9u5hZuVmVWIYf2zHpMondUTxJtdszfiY3OgJhB0rYbl8iRPdCh7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730563485; c=relaxed/simple;
-	bh=61z7O+6nYz3jsRlzVcw6dm9APvP6OG4QQ5C+u9mEglw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jOFWNRKN5IujHgkUTE5tSSkJney8PHfyaBNNzqWQjE/8VI8X5tKe9Ha2Ui1JT92AWJhwfIOn6MvRbJzyVsdcPiXnHM7xeJg8TH/Sy4uHAEQkIIQBSgoyHU2/GnPUOZ2yju3HKRN9WuEHfCew0oa+NXeE1l+GG14dTMNTH25CYXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=g6BcZpKV; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=g6BcZpKV; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1730563482;
-	bh=61z7O+6nYz3jsRlzVcw6dm9APvP6OG4QQ5C+u9mEglw=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=g6BcZpKVf4c46S0HHQsfEVkmCR8vytCzuWg9yhUnzVRbPLPFtf832nknEPRo/XaP6
-	 OUUji43vQhQYci5494j27o3BQsk6r2iQlc0QcFMIMlOdd/IEd2l/gK7g2/DxSdD0q5
-	 ZUfWqe3HLLulPV4tZt26FTf3aBgqJisq50jO1ABw=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 536AF12868A1;
-	Sat, 02 Nov 2024 12:04:42 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id 9dgDmt7D3IjF; Sat,  2 Nov 2024 12:04:42 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1730563482;
-	bh=61z7O+6nYz3jsRlzVcw6dm9APvP6OG4QQ5C+u9mEglw=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=g6BcZpKVf4c46S0HHQsfEVkmCR8vytCzuWg9yhUnzVRbPLPFtf832nknEPRo/XaP6
-	 OUUji43vQhQYci5494j27o3BQsk6r2iQlc0QcFMIMlOdd/IEd2l/gK7g2/DxSdD0q5
-	 ZUfWqe3HLLulPV4tZt26FTf3aBgqJisq50jO1ABw=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id C75741286824;
-	Sat, 02 Nov 2024 12:04:39 -0400 (EDT)
-Message-ID: <446cf9c70184885e4cec6dd4514ae8daf7accdcb.camel@HansenPartnership.com>
-Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
- early measurements
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: "Daniel P. Smith" <dpsmith@apertussolutions.com>, Andy Lutomirski
-	 <luto@amacapital.net>
-Cc: Thomas Gleixner <tglx@linutronix.de>, "Eric W. Biederman"
- <ebiederm@xmission.com>, Eric Biggers <ebiggers@kernel.org>, Ross Philipson
- <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
- linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-crypto@vger.kernel.org, kexec@lists.infradead.org, 
- linux-efi@vger.kernel.org, iommu@lists.linux-foundation.org,
- mingo@redhat.com,  bp@alien8.de, hpa@zytor.com,
- dave.hansen@linux.intel.com, ardb@kernel.org,  mjg59@srcf.ucam.org,
- peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca,  nivedita@alum.mit.edu,
- herbert@gondor.apana.org.au, davem@davemloft.net,  corbet@lwn.net,
- dwmw2@infradead.org, baolu.lu@linux.intel.com,  kanth.ghatraju@oracle.com,
- andrew.cooper3@citrix.com,  trenchboot-devel@googlegroups.com
-Date: Sat, 02 Nov 2024 11:04:38 -0500
-In-Reply-To: <ff0c8eed-8981-48c4-81d9-56b040ef1c7b@apertussolutions.com>
-References: <20240531010331.134441-1-ross.philipson@oracle.com>
-	 <20240531010331.134441-7-ross.philipson@oracle.com>
-	 <20240531021656.GA1502@sol.localdomain>
-	 <874jaegk8i.fsf@email.froward.int.ebiederm.org>
-	 <5b1ce8d3-516d-4dfd-a976-38e5cee1ef4e@apertussolutions.com>
-	 <87ttflli09.ffs@tglx>
-	 <CALCETrXQ7rChWLDqTG0+KY7rsfajSPguMnHO1G4VJi_mgwN9Zw@mail.gmail.com>
-	 <1a1f0c41-70de-4f46-b91d-6dc7176893ee@apertussolutions.com>
-	 <8a0b59a4-a5a2-42ae-bc1c-1ddc8f2aad16@apertussolutions.com>
-	 <CALCETrX8caT5qvCUu24hQfxUF_wUC2XdGpS2YFP6SR++7FiM3Q@mail.gmail.com>
-	 <c466ed57-35a8-41c0-9647-c70e588ad1d3@apertussolutions.com>
-	 <CALCETrW9WNNGh1dEPKfQoeU+m5q6_m97d0_bzRkZsv2LxqB_ew@mail.gmail.com>
-	 <ff0c8eed-8981-48c4-81d9-56b040ef1c7b@apertussolutions.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1730720631; c=relaxed/simple;
+	bh=6cZrjlqDP9qVoHVK8n/qqIaWJapezYHGXflMcQcPads=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=U8fVupgkPybki19rlCefT9RjyQEhdLhqVOL/62A4pcFlHUF0sk1m3nPVE17Pu2g7gMqccrhSePKYEE5uVtbSUAxPJgBuFaKDlc8UWYONxzp0Gt1DaFaft5eygWrRwZk+7rBdEVibMow/KSgrIQqf/W80VIN57M5CWVChYgo72zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOV0EX5h; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fb3debdc09so28605351fa.3;
+        Mon, 04 Nov 2024 03:43:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730720628; x=1731325428; darn=vger.kernel.org;
+        h=user-agent:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yyhmjhlw3L5uzKJvXgYEOHuWe4ZiY7h27g/SLzwsVCU=;
+        b=gOV0EX5hY+8tAuXe4FGEmvyLpaokpFLB9bx4ns6QJa3cTxfK90gfB+Rnu8fo8DuxTe
+         6lh1Io9Z8shbe/T+vlbr4BY5kqKKF9lI1SRq0IxGDEad+PNpySHwM0IfbO1Tsrhst68I
+         HHL/2Z+WnDQSOQ8JrPKc3Beekpi1gMLNyeVvkh4xpMd9/bn5Fh/Bymupvbt2RJogLu/S
+         8/8d6XYb+JrB1Q/leli0qZLHV2nGNTUzqsX1teHovwQ4e/I32h/Ku6EuOSWfjGjFwNXo
+         +d1pYqb8cGhbXL66ciZsN6kM0KhP1ytve7UCBV+Jt6+bRSqglc35FQVzmmcS/rggHbgj
+         R44A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730720628; x=1731325428;
+        h=user-agent:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yyhmjhlw3L5uzKJvXgYEOHuWe4ZiY7h27g/SLzwsVCU=;
+        b=M6vvgH/leJaGOWATRbKtk+G+oRUUWLvuNml3Gr25y5JjcxX00T1PEKD2nbCxkvFAuG
+         P/4xa9OWnZU2rB0nqZOcbM61E7ti6JNMLwKeinFpxLcmSGzyLBGM3A7XpbU9idrDtIMC
+         PLiILRNwuzY6lCUj7u+AsfC39eVt78sJMuYq+r4mQSZJlCs+X6wWCFM+CqyiFSvV9Rca
+         SA/U5xzFlEUCwBax5Gum3+ezWzvaITPyM+rwKOXkhtIEarnSnqkeALlvk72kTV0bc/Mz
+         awHwjZBKmK2H5XBVPAWzNq7brGU3f+FSwR2sIELvghpFjvZTN+b0aF3fovgWjwfg3MEc
+         7GVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIYo9LCgnflxcjYqDCduM9Hu84NwYaY6f6sOkH+Dis8dfcYkkSMGZxV+QXpc5+OpduKBS9v+275qk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8MWC4n7mMYNc5KQii3wkxWHNgstuyWf/tuyf9f/mkqTJgs4hI
+	8emYbKEcU+ZjdmrF1sycAc7/NVIaFRWVrihb5EkBGASwwYb3fbhXMjxMEEeL
+X-Google-Smtp-Source: AGHT+IEon6g8rsUOAKboBUan5eSh7SftyIJAVjz48aAdfBHNIfNNaYYuAiLKX1ddFnZzTf0PmskSSg==
+X-Received: by 2002:a05:651c:2204:b0:2fb:50e9:34b4 with SMTP id 38308e7fff4ca-2fdec47a3f4mr74687091fa.8.1730720627448;
+        Mon, 04 Nov 2024 03:43:47 -0800 (PST)
+Received: from grain.localdomain ([5.18.251.97])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fdef3b7243sm16309651fa.23.2024.11.04.03.43.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 03:43:47 -0800 (PST)
+Received: by grain.localdomain (Postfix, from userid 1000)
+	id 52C6F5A003D; Mon,  4 Nov 2024 14:43:46 +0300 (MSK)
+Date: Mon, 4 Nov 2024 14:43:46 +0300
+From: Cyrill Gorcunov <gorcunov@gmail.com>
+To: LKML <linux-kernel@vger.kernel.org>, linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi: Fix memory leak in efivar_ssdt_load
+Message-ID: <ZyizcvscUWIyZYdE@grain>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-On Sat, 2024-11-02 at 10:53 -0400, Daniel P. Smith wrote:
-> Hi Luto,
-> 
-> My apologies, I missed this response and the active on v11 cause me
-> to 
-> get an inquiry why I hadn't responded.
-> 
-> On 9/21/24 18:40, Andy Lutomirski wrote:
-[...]
-> > I assumed that "deliberately cap" meant that there was an actual
-> > feature where you write something to the event log (if applicable)
-> > and extend the PCR in a special way that *turns that PCR off*. 
-> > That is, it does something such that later-loaded software *can't*
-> > use that PCR to attest or unseal anything, etc.
-> > 
-> > But it sounds like you're saying that no such feature exists.  And
-> > a quick skim of the specs doesn't come up with anything.  And the
-> > SHA1 banks may well be susceptible to a collision attack.
-> 
-> Correct, the only entity that can disable PCR banks is the firmware. 
+When we load ssdt from efi variable (specified with efivar_ssdt=something
+boot command line argument) a name for the variable is allocated
+dynamically because we traverse all efi variables. Unlike an acpi table
+data, which is later used by acpi engine, the name is no longer needed
+once traverse is complete -- don't forget to free this memory.
 
-No, that's not correct.  Any user can use TPM_PCR_Allocate to activate
-or deactivate individual banks.  The caveat is the change is not
-implemented until the next TPM reset (which should involve a reboot). 
-BIOS also gets to the TPM before the kernel does, so it can, in theory,
-check what banks a TPM has and call TPM_PCR_Allocate to change them. 
-In practice, because this requires a reboot, this is usually only done
-from the BIOS menus not on a direct boot ... so you can be reasonably
-sure that whatever changes were made will stick.
+Same time we silently ignore any errors happened here lets print
+a message if something went wrong (but do not exit since this is
+not a critical error and the system should continue to boot).
 
-> When it initializes the TPM, it can disable banks/algorithms. After 
-> that, when an extend operation is done, the TPM is expecting an entry
-> for all active PCR banks and the TPM itself does the extend hash that
-> is stored into the PCRs.
+Also while here -- add a note why we keep ssdt table on success.
 
-This, also, is not quite correct: an extend is allowed to specify banks
-that don't exist (in which case nothing happens and no error is
-reported) and miss banks that do (in which case no extend is done to
-that bank).  In the early days of TPM2, some BIOS implementations only
-extended sha1 for instance, meaning the sha256 banks were all zero when
-the kernel started.
+Signed-off-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/efi.c |   38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
 
-Even today, if you activate a bank the BIOS doesn't know about, it
-likely won't extend it.  You can see this in VM boots with OVMF and
-software TPMs having esoteric banks like SM3.
-
-Regards,
-
-James
-
+Index: linux-tip.git/drivers/firmware/efi/efi.c
+===================================================================
+--- linux-tip.git.orig/drivers/firmware/efi/efi.c
++++ linux-tip.git/drivers/firmware/efi/efi.c
+@@ -273,6 +273,7 @@ static __init int efivar_ssdt_load(void)
+ 	efi_char16_t *name = NULL;
+ 	efi_status_t status;
+ 	efi_guid_t guid;
++	int ret = 0;
+ 
+ 	if (!efivar_ssdt[0])
+ 		return 0;
+@@ -294,8 +295,8 @@ static __init int efivar_ssdt_load(void)
+ 			efi_char16_t *name_tmp =
+ 				krealloc(name, name_size, GFP_KERNEL);
+ 			if (!name_tmp) {
+-				kfree(name);
+-				return -ENOMEM;
++				ret = -ENOMEM;
++				goto out;
+ 			}
+ 			name = name_tmp;
+ 			continue;
+@@ -309,26 +310,37 @@ static __init int efivar_ssdt_load(void)
+ 		pr_info("loading SSDT from variable %s-%pUl\n", efivar_ssdt, &guid);
+ 
+ 		status = efi.get_variable(name, &guid, NULL, &data_size, NULL);
+-		if (status != EFI_BUFFER_TOO_SMALL || !data_size)
+-			return -EIO;
++		if (status != EFI_BUFFER_TOO_SMALL || !data_size) {
++			ret = -EIO;
++			goto out;
++		}
+ 
+ 		data = kmalloc(data_size, GFP_KERNEL);
+-		if (!data)
+-			return -ENOMEM;
++		if (!data) {
++			ret = -ENOMEM;
++			goto out;
++		}
+ 
+ 		status = efi.get_variable(name, &guid, NULL, &data_size, data);
+ 		if (status == EFI_SUCCESS) {
+ 			acpi_status ret = acpi_load_table(data, NULL);
+-			if (ret)
+-				pr_err("failed to load table: %u\n", ret);
+-			else
++			if (ret) {
++				pr_err("efivar_ssdt: failed to load table: %u\n", ret);
++			} else {
++				/*
++				 * The @data will be in use by ACPI engine,
++				 * do not free it!
++				 */
+ 				continue;
++			}
+ 		} else {
+-			pr_err("failed to get var data: 0x%lx\n", status);
++			pr_err("efivar_ssdt: failed to get var data: 0x%lx\n", status);
+ 		}
+ 		kfree(data);
+ 	}
+-	return 0;
++out:
++	kfree(name);
++	return ret;
+ }
+ #else
+ static inline int efivar_ssdt_load(void) { return 0; }
+@@ -433,7 +445,9 @@ static int __init efisubsys_init(void)
+ 		error = generic_ops_register();
+ 		if (error)
+ 			goto err_put;
+-		efivar_ssdt_load();
++		error = efivar_ssdt_load();
++		if (error)
++			pr_err("efi: failed to load SSDT, error %d.\n", error);
+ 		platform_device_register_simple("efivars", 0, NULL, 0);
+ 	}
+ 
 
