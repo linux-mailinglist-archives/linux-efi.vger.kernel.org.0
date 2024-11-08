@@ -1,197 +1,174 @@
-Return-Path: <linux-efi+bounces-2123-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2124-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A05A9BB45F
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2024 13:14:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710749C1CE5
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Nov 2024 13:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D8C61C21A8C
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Nov 2024 12:14:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEBFF1F22870
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Nov 2024 12:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745C91B85D1;
-	Mon,  4 Nov 2024 12:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A601E6DDE;
+	Fri,  8 Nov 2024 12:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eJJqf0TI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cjj0205a"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896C21B652B;
-	Mon,  4 Nov 2024 12:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607B67B3E1
+	for <linux-efi@vger.kernel.org>; Fri,  8 Nov 2024 12:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730722440; cv=none; b=JtIOgBpJiUn8rTb/AZqdVXxMF7wX52Ogh1CDYJ2Zf5xs9V0zpEn442BZhGsopYTNqSYRFIKFWpe+68fhiMcxF0m9UjkgLLANJJ6mk4Rr5NVo8/F4H1cbuiQojXX0ZhGX6ruZha4rlyWyRIvXUEpZW+qHDExYsbqaM4m7pOK3Usc=
+	t=1731068789; cv=none; b=NjNX31xdKZ8PNAPZWdDPO8NDJXOfIRcWgNg2+Q7ca5a6BIVFv2Q6g2f8f1Nh2bbSVmVGJYj77u+W4FWsCIyMn+B5h6g683+bHyDAHwE2NyHU9YCyjdfoTDTWBfvocObTD4biZBf3ofwrT/Pgln3tm1wck1podHqorW/DUxmZyG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730722440; c=relaxed/simple;
-	bh=+FgPmna2yZYdpj3UFinnNH2q5GuuHS84mHOrxv7TxxM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uR4m53kN5gNXlwySb0TkerQCF8xDF2oFiWLlgw6JaSONzM9DZPtzbLmprqNDLNYlzzOHBPwKGYlHddBNqxYiuC1wzzqrUcIX0IbsEwlFYXQ7nAorqBnvtAoNJn5hQpCpO9tS4i/5n4UgXolag2MnY+Uk8z2+d6dU1nRJEjhenP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eJJqf0TI; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539e13375d3so4154478e87.3;
-        Mon, 04 Nov 2024 04:13:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730722437; x=1731327237; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FYskZ8T2jr5T8EblrfJJEhdK6BsHIwyTYKsdEZJGC9g=;
-        b=eJJqf0TIkl8oal7cuwK+ijQFIXcW00ywgxq7L6UlJIltcUV0LZnVuPdMWOgSD634J2
-         nIGMjp1PGoVwNIXgqWVtTNB5roFwvhdcBUxWD+kbW26ylsj0saQA8UirUq6LJ/mcEWBP
-         nZkBvmXlhlNdEOhkWH6usubp1B+oach/Hu/6psfdKdowoOTbrlbcjXdKs+pGfZKdP9AV
-         QYf9+nAph09MPjTt2P5t/18cIyqe30mX70Lope7gxZqhzYAoDzS7hYe+Xrl9U3xbyV7K
-         E63Tvdb28Gb+a8FQklx2b4pgxH1iAGpJIOB4QC8YV+x0tojhSmaRdRfsG0gi8piWGGM7
-         vGNQ==
+	s=arc-20240116; t=1731068789; c=relaxed/simple;
+	bh=bRCGf/Wgy4FWDjxjm3445qpC2UR9lA5sk1A8y9SMWRI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=dWZ/SMQeaVJ/7kEv9Rx7mv3b0D+rN7JOYZm6CzEq7EuOLxDjtWqC699mZE/P+PiWmmqY6sGxzRMedwkyUCG3FcyoM3cGxkvhSyYiQmO5+hX8wVrhtyLeKk0uIwXL84ubLBwzx0LVnxbGXkp0ChAjC+cR3cVSFUdWDch26qf0Ycc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cjj0205a; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731068785;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=zXwAvU705aOAOAu5VxWMi2RxSodq3/VIqQ5cCCgEPB4=;
+	b=Cjj0205aVIU/y1opilXowBQvUuu1B4pHgi2TmqFomlIKHhoaHS15M+BVqSeSkDx80f1tEM
+	wd4U/kcl2wrykZ2ZtpyqMgUfCZ8kah82oB4vgD87HhDbg6FQ5N7wQoSIFQ2xIlunBEkG/M
+	aXNnwndr7KPfjlas81dkT/xjmmviVNg=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-440-ZqQ_-GTAMnCMj0x4MHry7g-1; Fri, 08 Nov 2024 07:26:23 -0500
+X-MC-Unique: ZqQ_-GTAMnCMj0x4MHry7g-1
+X-Mimecast-MFC-AGG-ID: ZqQ_-GTAMnCMj0x4MHry7g
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3df19f2433cso171256b6e.3
+        for <linux-efi@vger.kernel.org>; Fri, 08 Nov 2024 04:26:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730722437; x=1731327237;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FYskZ8T2jr5T8EblrfJJEhdK6BsHIwyTYKsdEZJGC9g=;
-        b=o6K1LZC+OF2O2pNIqnQkz8iU/ZS9aXSI4cbX419nVEBgzxm9nBSbJVzc5wqb/4o8O1
-         SXvVBC9e5J0KUiifm3uxjs3dm5ggcCFS4IzYevsDwAExogsaNc32ZpyIoXPxYfEcpBew
-         Pid+jBwfA0bxMcmsF9zfyNN2WPQGNEIgroOXoedVKCkzt08YVevIx9yUEFJKK9ogNIdY
-         XtTT2ezGdGmJ0tBdWL2LY39kuilXAkXxrUehveeEwBfZTNh2mQ9CWQ4DrDQArQUHhQRQ
-         VGzxiB4zPrYp8W/vV55IdjqOuQa5c5wJ0JncnsZPchn/qHIP+cUe3pOulfJU9GhYioQS
-         rVYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyZ3Sz1xDXUMEbQb92t3Qo6j+Eg5w1btmJ+YgTcxFJZnAPDHdm4HDGnU7Ly2oSCtUqy53OGea9oP0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz72GxfeDJh7zCnbaL1wAyLkvvYeJAsBbCvenCuge6hdATG8v0I
-	qHyP/8tyL91BZv3EdY3183Gf+aJcLRXfdB61gUB9ZWziDiX1LTgZPG5xFHMw
-X-Google-Smtp-Source: AGHT+IFbNToplnnRUfn1KF9Fr4torBzIilIwgS+jtoCykgAETFELOGlixWAh20O2s93UKXwn7sRtWw==
-X-Received: by 2002:a05:6512:1595:b0:539:e2cc:d380 with SMTP id 2adb3069b0e04-53c79e494ebmr7420697e87.27.1730722436375;
-        Mon, 04 Nov 2024 04:13:56 -0800 (PST)
-Received: from grain.localdomain ([5.18.251.97])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bde3265sm1666224e87.278.2024.11.04.04.13.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 04:13:56 -0800 (PST)
-Received: by grain.localdomain (Postfix, from userid 1000)
-	id 6CF475A0127; Mon,  4 Nov 2024 15:13:55 +0300 (MSK)
-Date: Mon, 4 Nov 2024 15:13:55 +0300
-From: Cyrill Gorcunov <gorcunov@gmail.com>
-To: LKML <linux-kernel@vger.kernel.org>, linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v2] efi: Fix memory leak in efivar_ssdt_load
-Message-ID: <Zyi6g8W0OqKcng6S@grain>
-References: <ZyizcvscUWIyZYdE@grain>
- <Zyi11v-6V_ivKS5x@grain>
+        d=1e100.net; s=20230601; t=1731068783; x=1731673583;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zXwAvU705aOAOAu5VxWMi2RxSodq3/VIqQ5cCCgEPB4=;
+        b=Z1w17SlzjKXvljyXjlUavm5kWss9HQCvm5xp9JuMolLzVatiphtRluq0jY4ljkGmwI
+         V+kkl4vq9a2Lv1dUtteyMNm7b2w5hJoxmE/5Uh1x38MUhH0ZMl7d9blrqPXYRozXoGjI
+         dR12sKMe6ci/2U1N9iOpFCH16jkxM8P2/1C1a91jigTxr/7369CHBRpCVu5GSEH1lCig
+         TjjwqJx3ZjQLuBHyNeo4Q5Qk+N+onGooFByBN7Qn6WZYaz6f/S8wuZxC1iJo3wGMbR8s
+         tsgwHJB/SlNeGwwLSL5JFS9DJoASeDGPIa2AtKrQDr8+7bFzpwAU+gc2m8cy8mjnTsip
+         V5uw==
+X-Forwarded-Encrypted: i=1; AJvYcCVuUmnny8G70kLKo2TlPcTIgv6LO1Efbylat0Ds605r+w44A5Lu7yafygN41Q3NRYPXQhffknpvvMs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSyllhl4iIkMNx6ynHrbQnzfDSaIZCy4mVySzyObtDLHVk8NUy
+	59fFMCM6/2lKcX3lCo4rN7KD555UveNv1feFjLgJuqVmHF2s6VkYHkiDzFe/f7hW6Lod4M7R0lx
+	mhPBgwP99aCKkn4N+ZrDEXUG/qV/IiOw1QpLOaVHnbHB3JXJJi2cGP/PaVB4XBRlX33ss2vU3ds
+	L2Mdwq3luEUbbzuuoAoKz31bxaIxpaf9oo
+X-Received: by 2002:a05:6808:bd6:b0:3e6:49e0:f16b with SMTP id 5614622812f47-3e79464ffbemr561214b6e.1.1731068783035;
+        Fri, 08 Nov 2024 04:26:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEDh9xZLbDlbWxWwt0Ee/VQnmLbaHr7eXwqcgUZluZ+iMr9vgrajudEgifQ9sAYdMtcBXTBSmyV5BbZCxOsCjU=
+X-Received: by 2002:a05:6808:bd6:b0:3e6:49e0:f16b with SMTP id
+ 5614622812f47-3e79464ffbemr561207b6e.1.1731068782692; Fri, 08 Nov 2024
+ 04:26:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zyi11v-6V_ivKS5x@grain>
-User-Agent: Mutt/2.2.12 (2023-09-09)
+From: Enric Balletbo i Serra <eballetb@redhat.com>
+Date: Fri, 8 Nov 2024 13:26:12 +0100
+Message-ID: <CALE0LRvJ-n77oU=O9__NdSLw2v33zMK+WYkn2LcwWMwHCbohQw@mail.gmail.com>
+Subject: optee-based efi runtime variable service on TI j784s4 platforms
+To: Ard Biesheuvel <ardb@kernel.org>, Sumit Garg <sumit.garg@linaro.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Masahisa Kojima <masahisa.kojima@linaro.org>, 
+	linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org, 
+	Manorit Chawdhry <m-chawdhry@ti.com>, Udit Kumar <u-kumar1@ti.com>, "Menon, Nishanth" <nm@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 
-When we load ssdt from efi variable (specified with efivar_ssdt=something
-boot command line argument) a name for the variable is allocated
-dynamically because we traverse all efi variables. Unlike an acpi table
-data, which is later used by acpi engine, the name is no longer needed
-once traverse is complete -- don't forget to free this memory.
+Hi all,
 
-Same time we silently ignore any errors happened here lets print
-a message if something went wrong (but do not exit since this is
-not a critical error and the system should continue to boot).
+I'm looking for any advice/clue to help me to progress on enabling
+TEE-base EFI Runtime Variable Service on TI a j784s4 platforms.
 
-Also while here -- add a note why we keep ssdt table on success.
+I basically followed the steps described in u-boot documentation [1],
+I enabled some debugging messages but I think I'm at the point that
+the problem might be in the StandaloneMM application, and I'm not sure
+how to debug it.
 
-Signed-off-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
----
-It is still unclear for me why we don't exit with error if acpi_load_table
-failed but continue to iterate keys and don't report a caller with error
-instead. I didn't change this logic for backward compatibility sake but
-still looks suspicious.
+What I see is that when I run the tee-supplicant daemon, it looks like
+the tee_client_open_session() call loops forever and the tee_stmm_efi
+driver never ends to probe.
 
- drivers/firmware/efi/efi.c |   41 ++++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+With debug enabled I got the following messages.
 
-Index: linux-tip.git/drivers/firmware/efi/efi.c
-===================================================================
---- linux-tip.git.orig/drivers/firmware/efi/efi.c
-+++ linux-tip.git/drivers/firmware/efi/efi.c
-@@ -273,6 +273,7 @@ static __init int efivar_ssdt_load(void)
- 	efi_char16_t *name = NULL;
- 	efi_status_t status;
- 	efi_guid_t guid;
-+	int ret = 0;
- 
- 	if (!efivar_ssdt[0])
- 		return 0;
-@@ -294,8 +295,8 @@ static __init int efivar_ssdt_load(void)
- 			efi_char16_t *name_tmp =
- 				krealloc(name, name_size, GFP_KERNEL);
- 			if (!name_tmp) {
--				kfree(name);
--				return -ENOMEM;
-+				ret = -ENOMEM;
-+				goto out;
- 			}
- 			name = name_tmp;
- 			continue;
-@@ -309,26 +310,38 @@ static __init int efivar_ssdt_load(void)
- 		pr_info("loading SSDT from variable %s-%pUl\n", efivar_ssdt, &guid);
- 
- 		status = efi.get_variable(name, &guid, NULL, &data_size, NULL);
--		if (status != EFI_BUFFER_TOO_SMALL || !data_size)
--			return -EIO;
-+		if (status != EFI_BUFFER_TOO_SMALL || !data_size) {
-+			ret = -EIO;
-+			goto out;
-+		}
- 
- 		data = kmalloc(data_size, GFP_KERNEL);
--		if (!data)
--			return -ENOMEM;
-+		if (!data) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
- 
- 		status = efi.get_variable(name, &guid, NULL, &data_size, data);
- 		if (status == EFI_SUCCESS) {
--			acpi_status ret = acpi_load_table(data, NULL);
--			if (ret)
--				pr_err("failed to load table: %u\n", ret);
--			else
-+			acpi_status acpi_ret = acpi_load_table(data, NULL);
-+			if (ACPI_FAILURE(acpi_ret)) {
-+				pr_err("efivar_ssdt: failed to load table: %u\n",
-+				       acpi_ret);
-+			} else {
-+				/*
-+				 * The @data will be in use by ACPI engine,
-+				 * do not free it!
-+				 */
- 				continue;
-+			}
- 		} else {
--			pr_err("failed to get var data: 0x%lx\n", status);
-+			pr_err("efivar_ssdt: failed to get var data: 0x%lx\n", status);
- 		}
- 		kfree(data);
- 	}
--	return 0;
-+out:
-+	kfree(name);
-+	return ret;
- }
- #else
- static inline int efivar_ssdt_load(void) { return 0; }
-@@ -433,7 +446,9 @@ static int __init efisubsys_init(void)
- 		error = generic_ops_register();
- 		if (error)
- 			goto err_put;
--		efivar_ssdt_load();
-+		error = efivar_ssdt_load();
-+		if (error)
-+			pr_err("efi: failed to load SSDT, error %d.\n", error);
- 		platform_device_register_simple("efivars", 0, NULL, 0);
- 	}
- 
+# tee-supplicant
+D/TC:? 0 tee_ta_init_session_with_context:557 Re-open trusted service
+7011a688-ddde-4053-a5a9-7b3c4ddf13b8
+D/TC:? 0 load_stmm:297 stmm load address 0x40004000
+D/TC:? 0 spm_handle_scall:859 Received FFA version
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+
+And tracing the function calls gives me that:
+
+      tee_stmm_efi_probe() {
+             tee_client_open_context() {
+               optee_get_version() {
+                 tee_get_drvdata(); (ret=0xffff000002e55800)
+               } (ret=0xd)
+               tee_ctx_match(); (ret=0x1)
+               optee_smc_open() {
+                 tee_get_drvdata(); (ret=0xffff000002e55800)
+                 optee_open() {
+                   tee_get_drvdata(); (ret=0xffff000002e55800)
+                 } (ret=0x0)
+               } (ret=0x0)
+             } (ret=0xffff000004e71c80)
+             tee_client_open_session() {
+               optee_open_session() {
+                 tee_get_drvdata(); (ret=0xffff000002e55800)
+                 optee_get_msg_arg() {
+                   tee_get_drvdata(); (ret=0xffff000002e55800)
+                   tee_shm_get_va(); (ret=0xffff000002909000)
+                 } (ret=0xffff000002909000)
+                 tee_session_calc_client_uuid(); (ret=0x0)
+                 optee_to_msg_param(); (ret=0x0)
+                 optee_smc_do_call_with_arg() {
+                   tee_get_drvdata(); (ret=0xffff000002e55800)
+                   tee_shm_get_va(); (ret=0xffff000002909000)
+                   tee_shm_get_va(); (ret=0xffff000002909060)
+                   optee_cq_wait_init(); (ret=0xffff000002e55910)
+                   optee_smccc_smc(); (ret=0xffff0004)
+                   tee_get_drvdata(); (ret=0xffff000002e55800)
+                   optee_smccc_smc(); (ret=0xffff0004)
+                   tee_get_drvdata(); (ret=0xffff000002e55800)
+                   optee_smccc_smc(); (ret=0xffff0004)
+                   tee_get_drvdata(); (ret=0xffff000002e55800)
+                   optee_smccc_smc(); (ret=0xffff0004)
+                   tee_get_drvdata(); (ret=0xffff000002e55800)
+                   optee_smccc_smc(); (ret=0xffff0004)
+     ... continues sending this forever ...
+     ... Hit ^C to stop recording ...
+                   tee_get_drvdata(); (ret=0xffff000002e55800)
+                   optee_smccc_smc() {
+
+[1] https://docs.u-boot.org/en/latest/develop/uefi/uefi.html#using-op-tee-for-efi-variables
+
+Thanks in advance,
+   Enric
+
 
