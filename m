@@ -1,174 +1,190 @@
-Return-Path: <linux-efi+bounces-2124-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2125-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710749C1CE5
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Nov 2024 13:26:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D752F9C20FB
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Nov 2024 16:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEBFF1F22870
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Nov 2024 12:26:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95647285659
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Nov 2024 15:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A601E6DDE;
-	Fri,  8 Nov 2024 12:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C55521B425;
+	Fri,  8 Nov 2024 15:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cjj0205a"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SJS/UOdH"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607B67B3E1
-	for <linux-efi@vger.kernel.org>; Fri,  8 Nov 2024 12:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01431E8843
+	for <linux-efi@vger.kernel.org>; Fri,  8 Nov 2024 15:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731068789; cv=none; b=NjNX31xdKZ8PNAPZWdDPO8NDJXOfIRcWgNg2+Q7ca5a6BIVFv2Q6g2f8f1Nh2bbSVmVGJYj77u+W4FWsCIyMn+B5h6g683+bHyDAHwE2NyHU9YCyjdfoTDTWBfvocObTD4biZBf3ofwrT/Pgln3tm1wck1podHqorW/DUxmZyG4=
+	t=1731080924; cv=none; b=kzuwP9nqh9ciDw0O3EOAqMCLlj5NPbpQrPQ1pnk7XeFT0ZoSeAhEkaE4gdJ/9rguUklbUXC2eNfpptCyzN972Olpp25m90d/mtwaVK5k86mZCR52vt66eVwR0KkmJ60iPoIYjG0kVeiFzTU435HcYKIVfnKpvWRWQCCyeyLa/qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731068789; c=relaxed/simple;
-	bh=bRCGf/Wgy4FWDjxjm3445qpC2UR9lA5sk1A8y9SMWRI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=dWZ/SMQeaVJ/7kEv9Rx7mv3b0D+rN7JOYZm6CzEq7EuOLxDjtWqC699mZE/P+PiWmmqY6sGxzRMedwkyUCG3FcyoM3cGxkvhSyYiQmO5+hX8wVrhtyLeKk0uIwXL84ubLBwzx0LVnxbGXkp0ChAjC+cR3cVSFUdWDch26qf0Ycc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cjj0205a; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731068785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=zXwAvU705aOAOAu5VxWMi2RxSodq3/VIqQ5cCCgEPB4=;
-	b=Cjj0205aVIU/y1opilXowBQvUuu1B4pHgi2TmqFomlIKHhoaHS15M+BVqSeSkDx80f1tEM
-	wd4U/kcl2wrykZ2ZtpyqMgUfCZ8kah82oB4vgD87HhDbg6FQ5N7wQoSIFQ2xIlunBEkG/M
-	aXNnwndr7KPfjlas81dkT/xjmmviVNg=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-ZqQ_-GTAMnCMj0x4MHry7g-1; Fri, 08 Nov 2024 07:26:23 -0500
-X-MC-Unique: ZqQ_-GTAMnCMj0x4MHry7g-1
-X-Mimecast-MFC-AGG-ID: ZqQ_-GTAMnCMj0x4MHry7g
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3df19f2433cso171256b6e.3
-        for <linux-efi@vger.kernel.org>; Fri, 08 Nov 2024 04:26:23 -0800 (PST)
+	s=arc-20240116; t=1731080924; c=relaxed/simple;
+	bh=7QA17N/od4sbcewZwd2iYlP32bPFX9QEZoHMZU/b6Hk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rnfmo2ibd07RW0LiCWcBs5IdgI9KUzEi1gs6BZ8SCBbV8kewU7gbdo88dbG7rY1af2E2Zs5UaDDYLU/B+ufvK6wJNs2Y2OUi18hg6yU3FPmUlAL1DqLgnp7i7AFwjWme7eThqpp6IwX5Pd2TISS7mDVuPKSTfSzsvn122I+pKRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SJS/UOdH; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2e2a97c2681so1817788a91.2
+        for <linux-efi@vger.kernel.org>; Fri, 08 Nov 2024 07:48:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1731080922; x=1731685722; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xw86N2iYX57qGc8nq79PlFANOzXfD7Duu0m6WN54d9M=;
+        b=SJS/UOdHCh5nxVjWS8m8RSlPcpgQ6GTIMqMrc91zA3UJ77vva7ZFxp9okES4gLiXLS
+         1FEH7n/iSw09j0+Az14UBE5MvQtWmwF7jzBYet6JL8oQ+xTRFj61Q5PH+wy/D6IF5t7D
+         W6wF3JkeYDw0V4aE/JdDjTqRwOk0drHYkZDKAoRBwcX+BvuYlejuloGHSbCyVGeRcMqV
+         cw9l+ubOgyhtbAu8Vld3+HrBGb0q/QHj71BGln+Y5mobgneLjjLe3YIjJ/isTdN3Jmio
+         blYMLTIgRu03zgre5O0qJs43CzquaFz7zRKOP9aOqu5PDK/9kbLlqLNcverCQOEIeSDb
+         gt7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731068783; x=1731673583;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zXwAvU705aOAOAu5VxWMi2RxSodq3/VIqQ5cCCgEPB4=;
-        b=Z1w17SlzjKXvljyXjlUavm5kWss9HQCvm5xp9JuMolLzVatiphtRluq0jY4ljkGmwI
-         V+kkl4vq9a2Lv1dUtteyMNm7b2w5hJoxmE/5Uh1x38MUhH0ZMl7d9blrqPXYRozXoGjI
-         dR12sKMe6ci/2U1N9iOpFCH16jkxM8P2/1C1a91jigTxr/7369CHBRpCVu5GSEH1lCig
-         TjjwqJx3ZjQLuBHyNeo4Q5Qk+N+onGooFByBN7Qn6WZYaz6f/S8wuZxC1iJo3wGMbR8s
-         tsgwHJB/SlNeGwwLSL5JFS9DJoASeDGPIa2AtKrQDr8+7bFzpwAU+gc2m8cy8mjnTsip
-         V5uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVuUmnny8G70kLKo2TlPcTIgv6LO1Efbylat0Ds605r+w44A5Lu7yafygN41Q3NRYPXQhffknpvvMs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSyllhl4iIkMNx6ynHrbQnzfDSaIZCy4mVySzyObtDLHVk8NUy
-	59fFMCM6/2lKcX3lCo4rN7KD555UveNv1feFjLgJuqVmHF2s6VkYHkiDzFe/f7hW6Lod4M7R0lx
-	mhPBgwP99aCKkn4N+ZrDEXUG/qV/IiOw1QpLOaVHnbHB3JXJJi2cGP/PaVB4XBRlX33ss2vU3ds
-	L2Mdwq3luEUbbzuuoAoKz31bxaIxpaf9oo
-X-Received: by 2002:a05:6808:bd6:b0:3e6:49e0:f16b with SMTP id 5614622812f47-3e79464ffbemr561214b6e.1.1731068783035;
-        Fri, 08 Nov 2024 04:26:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEDh9xZLbDlbWxWwt0Ee/VQnmLbaHr7eXwqcgUZluZ+iMr9vgrajudEgifQ9sAYdMtcBXTBSmyV5BbZCxOsCjU=
-X-Received: by 2002:a05:6808:bd6:b0:3e6:49e0:f16b with SMTP id
- 5614622812f47-3e79464ffbemr561207b6e.1.1731068782692; Fri, 08 Nov 2024
- 04:26:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731080922; x=1731685722;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xw86N2iYX57qGc8nq79PlFANOzXfD7Duu0m6WN54d9M=;
+        b=e0OuYGcGvFxEOO5do6htRT+1yiFnAl5Z7HAelKsHqxqRdAzNu9fVti7r5SaFT4r4ez
+         qcI4EYlLoI99Jm6b75zQg3a6Lg7RwQUy7IXTXWM6X4z4hmXaCsgtHQAd8yQUCI9y8SVz
+         jQlCH/wd+NzeP8r6Ut0TZDuRrtrty0cUZ4Y1OLuWFhbjjgnYRcrtvYuY6+V6O9zBbx8h
+         h+LIePL6xviW2ZSLEkkm3D3lPyg9RJd8jQB9gGi9yJrfhGnqd9dUAcB98bOgk2qNYl9H
+         DpcmLHy/lahVXY0dpv0BVpe6TvC2S7E61+tnIKXBYX2aQ5vtCnRHr8jt5pwEIvXNdVPC
+         Bo3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXhZd62K4V+7raZEr7DZ10xBsO96EudHHUqDqCAuIyiWne33JdK8H1IrmU/b35wCfUVXgxVM3wtr90=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3LjK/pCUghwSAroYmSycqPKvzjMl+L7vDAndhhlCfh/U2eao/
+	HEO8t4VMOKRc8D4CddEyrFL/kvc4S9CZZl5LC9xIxbsdL1Qv12UQXJUBeQERoSe9fQrfDdcMJII
+	uq3L01x1ma8KvdrB+7elDE6VTnbQBLz0m6AiRGw==
+X-Google-Smtp-Source: AGHT+IEJSlU2p83YLTbA+mJi+Uych4Hya5wMY9x1p6MnGvfZMWTmJClKKkw978ZNI1ECwUZVj92+bIAzxb8n2MpYNOo=
+X-Received: by 2002:a17:90b:1649:b0:2e8:f58e:27bb with SMTP id
+ 98e67ed59e1d1-2e9b1655850mr4391856a91.8.1731080921787; Fri, 08 Nov 2024
+ 07:48:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Enric Balletbo i Serra <eballetb@redhat.com>
-Date: Fri, 8 Nov 2024 13:26:12 +0100
-Message-ID: <CALE0LRvJ-n77oU=O9__NdSLw2v33zMK+WYkn2LcwWMwHCbohQw@mail.gmail.com>
-Subject: optee-based efi runtime variable service on TI j784s4 platforms
-To: Ard Biesheuvel <ardb@kernel.org>, Sumit Garg <sumit.garg@linaro.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Masahisa Kojima <masahisa.kojima@linaro.org>, 
-	linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org, 
-	Manorit Chawdhry <m-chawdhry@ti.com>, Udit Kumar <u-kumar1@ti.com>, "Menon, Nishanth" <nm@ti.com>
+References: <CALE0LRvJ-n77oU=O9__NdSLw2v33zMK+WYkn2LcwWMwHCbohQw@mail.gmail.com>
+In-Reply-To: <CALE0LRvJ-n77oU=O9__NdSLw2v33zMK+WYkn2LcwWMwHCbohQw@mail.gmail.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Fri, 8 Nov 2024 15:48:05 +0000
+Message-ID: <CAC_iWjJEXU+dodjvWQYM9ohPa3P2p0bFG=exGoi-iYFrLLbCTA@mail.gmail.com>
+Subject: Re: optee-based efi runtime variable service on TI j784s4 platforms
+To: Enric Balletbo i Serra <eballetb@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Sumit Garg <sumit.garg@linaro.org>, 
+	Masahisa Kojima <masahisa.kojima@linaro.org>, linux-efi@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	op-tee@lists.trustedfirmware.org, Manorit Chawdhry <m-chawdhry@ti.com>, 
+	Udit Kumar <u-kumar1@ti.com>, "Menon, Nishanth" <nm@ti.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+Hi Enric,
 
-I'm looking for any advice/clue to help me to progress on enabling
-TEE-base EFI Runtime Variable Service on TI a j784s4 platforms.
+On Fri, 8 Nov 2024 at 12:26, Enric Balletbo i Serra <eballetb@redhat.com> wrote:
+>
+> Hi all,
+>
+> I'm looking for any advice/clue to help me to progress on enabling
+> TEE-base EFI Runtime Variable Service on TI a j784s4 platforms.
+>
+> I basically followed the steps described in u-boot documentation [1],
+> I enabled some debugging messages but I think I'm at the point that
+> the problem might be in the StandaloneMM application, and I'm not sure
+> how to debug it.
+>
+> What I see is that when I run the tee-supplicant daemon, it looks like
+> the tee_client_open_session() call loops forever and the tee_stmm_efi
+> driver never ends to probe.
+>
+> With debug enabled I got the following messages.
 
-I basically followed the steps described in u-boot documentation [1],
-I enabled some debugging messages but I think I'm at the point that
-the problem might be in the StandaloneMM application, and I'm not sure
-how to debug it.
+I assume reading and storing variables already works in U-Boot right?
 
-What I see is that when I run the tee-supplicant daemon, it looks like
-the tee_client_open_session() call loops forever and the tee_stmm_efi
-driver never ends to probe.
+>
+> # tee-supplicant
+> D/TC:? 0 tee_ta_init_session_with_context:557 Re-open trusted service
+> 7011a688-ddde-4053-a5a9-7b3c4ddf13b8
+> D/TC:? 0 load_stmm:297 stmm load address 0x40004000
+> D/TC:? 0 spm_handle_scall:859 Received FFA version
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+> D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+>
+> And tracing the function calls gives me that:
+>
+>       tee_stmm_efi_probe() {
+>              tee_client_open_context() {
+>                optee_get_version() {
+>                  tee_get_drvdata(); (ret=0xffff000002e55800)
+>                } (ret=0xd)
+>                tee_ctx_match(); (ret=0x1)
+>                optee_smc_open() {
+>                  tee_get_drvdata(); (ret=0xffff000002e55800)
+>                  optee_open() {
+>                    tee_get_drvdata(); (ret=0xffff000002e55800)
+>                  } (ret=0x0)
+>                } (ret=0x0)
+>              } (ret=0xffff000004e71c80)
+>              tee_client_open_session() {
+>                optee_open_session() {
+>                  tee_get_drvdata(); (ret=0xffff000002e55800)
+>                  optee_get_msg_arg() {
+>                    tee_get_drvdata(); (ret=0xffff000002e55800)
+>                    tee_shm_get_va(); (ret=0xffff000002909000)
+>                  } (ret=0xffff000002909000)
+>                  tee_session_calc_client_uuid(); (ret=0x0)
+>                  optee_to_msg_param(); (ret=0x0)
+>                  optee_smc_do_call_with_arg() {
+>                    tee_get_drvdata(); (ret=0xffff000002e55800)
+>                    tee_shm_get_va(); (ret=0xffff000002909000)
+>                    tee_shm_get_va(); (ret=0xffff000002909060)
+>                    optee_cq_wait_init(); (ret=0xffff000002e55910)
+>                    optee_smccc_smc(); (ret=0xffff0004)
+>                    tee_get_drvdata(); (ret=0xffff000002e55800)
+>                    optee_smccc_smc(); (ret=0xffff0004)
+>                    tee_get_drvdata(); (ret=0xffff000002e55800)
+>                    optee_smccc_smc(); (ret=0xffff0004)
+>                    tee_get_drvdata(); (ret=0xffff000002e55800)
+>                    optee_smccc_smc(); (ret=0xffff0004)
+>                    tee_get_drvdata(); (ret=0xffff000002e55800)
+>                    optee_smccc_smc(); (ret=0xffff0004)
+>      ... continues sending this forever ...
+>      ... Hit ^C to stop recording ...
+>                    tee_get_drvdata(); (ret=0xffff000002e55800)
+>                    optee_smccc_smc() {
+>
+> [1] https://docs.u-boot.org/en/latest/develop/uefi/uefi.html#using-op-tee-for-efi-variables
+>
+> Thanks in advance,
 
-With debug enabled I got the following messages.
+The most common problem with this is miscompiling the tee_supplicant
+application.
+Since we don't know if the system has an RPMB, we emulate it in the
+tee_supplicant. How did you get the supplicant and can you check if it
+was compiled with RPMB_EMU=0 or 1?
 
-# tee-supplicant
-D/TC:? 0 tee_ta_init_session_with_context:557 Re-open trusted service
-7011a688-ddde-4053-a5a9-7b3c4ddf13b8
-D/TC:? 0 load_stmm:297 stmm load address 0x40004000
-D/TC:? 0 spm_handle_scall:859 Received FFA version
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-D/TC:? 0 spm_handle_scall:867 Received FFA direct request
+Thanks
+/Ilias
 
-And tracing the function calls gives me that:
-
-      tee_stmm_efi_probe() {
-             tee_client_open_context() {
-               optee_get_version() {
-                 tee_get_drvdata(); (ret=0xffff000002e55800)
-               } (ret=0xd)
-               tee_ctx_match(); (ret=0x1)
-               optee_smc_open() {
-                 tee_get_drvdata(); (ret=0xffff000002e55800)
-                 optee_open() {
-                   tee_get_drvdata(); (ret=0xffff000002e55800)
-                 } (ret=0x0)
-               } (ret=0x0)
-             } (ret=0xffff000004e71c80)
-             tee_client_open_session() {
-               optee_open_session() {
-                 tee_get_drvdata(); (ret=0xffff000002e55800)
-                 optee_get_msg_arg() {
-                   tee_get_drvdata(); (ret=0xffff000002e55800)
-                   tee_shm_get_va(); (ret=0xffff000002909000)
-                 } (ret=0xffff000002909000)
-                 tee_session_calc_client_uuid(); (ret=0x0)
-                 optee_to_msg_param(); (ret=0x0)
-                 optee_smc_do_call_with_arg() {
-                   tee_get_drvdata(); (ret=0xffff000002e55800)
-                   tee_shm_get_va(); (ret=0xffff000002909000)
-                   tee_shm_get_va(); (ret=0xffff000002909060)
-                   optee_cq_wait_init(); (ret=0xffff000002e55910)
-                   optee_smccc_smc(); (ret=0xffff0004)
-                   tee_get_drvdata(); (ret=0xffff000002e55800)
-                   optee_smccc_smc(); (ret=0xffff0004)
-                   tee_get_drvdata(); (ret=0xffff000002e55800)
-                   optee_smccc_smc(); (ret=0xffff0004)
-                   tee_get_drvdata(); (ret=0xffff000002e55800)
-                   optee_smccc_smc(); (ret=0xffff0004)
-                   tee_get_drvdata(); (ret=0xffff000002e55800)
-                   optee_smccc_smc(); (ret=0xffff0004)
-     ... continues sending this forever ...
-     ... Hit ^C to stop recording ...
-                   tee_get_drvdata(); (ret=0xffff000002e55800)
-                   optee_smccc_smc() {
-
-[1] https://docs.u-boot.org/en/latest/develop/uefi/uefi.html#using-op-tee-for-efi-variables
-
-Thanks in advance,
-   Enric
-
+>    Enric
+>
 
