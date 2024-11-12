@@ -1,581 +1,245 @@
-Return-Path: <linux-efi+bounces-2143-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2145-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5789C5CD2
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Nov 2024 17:08:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E28A79C60D7
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Nov 2024 19:53:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B26B283E29
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Nov 2024 16:08:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72EEC1F23871
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Nov 2024 18:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23109206E97;
-	Tue, 12 Nov 2024 16:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DE3217F31;
+	Tue, 12 Nov 2024 18:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ME4LXGhI"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="r7GPgT0U"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B19B2040AA
-	for <linux-efi@vger.kernel.org>; Tue, 12 Nov 2024 16:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4A217455;
+	Tue, 12 Nov 2024 18:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731427399; cv=none; b=KZ/qpP10aantdi6dQgqKUiv7qcIZOwc+0Sroj01J8oAvmWZcvBfEhPLTWMfMTtEneaBC0czswgYFxGzNLj1oi3N1qjcdpde83Jj1OXXBKsL4GQDPI8bkUiG1d8wDDdNHTKFdcIuVTa7mSzmrocL4lrYuoxsCO5MXC1taBduYaIA=
+	t=1731437579; cv=none; b=mGjNy1QwMD4Umw/88i/JAqlanDu7KMI8GwAHjCYoEQEVFfSbrYVN6chpraVPac+1lEWh/DFjaORcr1njbIoYyoyIvV9TBnYGtBW0c19ZQps9/WeAtL4moa2QRzgmU4TXp2uOEp7KVJfD7ZiVE+Y3swh65dvs0lXXI+Wc9ixT/QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731427399; c=relaxed/simple;
-	bh=diQxAT+E5lOTi+/dgq2Ao1VMNrV6gxJsBPnA38LAlmw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rykafjw1XmgWBPAul3RUaR1TdyczyFG5hIibNHqoxBTk+hSZdbcKYLW0GMuziSI4ku8diNOf2T7aWoqK0Q34l/P2Pq0W2dveOi3qHyL/B4GD0Dl2gTn8AOVkt/yUkkyGIbolWExbq6hiQcxFcPdnpkE514KoyUrzl1FQFwUooxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ME4LXGhI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731427395;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lGjpopU//5Z3ijsaSdLB1L4ysYnNj5d6t1WIT5/TMSI=;
-	b=ME4LXGhISvfQeratkAwqLkGO8suqycqHncwzPYfN787I8pv5KUfM2qXkNGNbuEzD9te8sF
-	VHTwsrFS69seG3zIUL2liEn47rKswhU+nh1jBbT1GrGdvrG/S7m8wt6jnzz7J+5yP6KIgt
-	XCWGno+thzfUelglfKdbEI5YDWJ3oD0=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-1FsEDW7PMCuzrUu4ZK795A-1; Tue, 12 Nov 2024 11:03:14 -0500
-X-MC-Unique: 1FsEDW7PMCuzrUu4ZK795A-1
-X-Mimecast-MFC-AGG-ID: 1FsEDW7PMCuzrUu4ZK795A
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-5ee4374a08bso34305eaf.2
-        for <linux-efi@vger.kernel.org>; Tue, 12 Nov 2024 08:03:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731427393; x=1732032193;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lGjpopU//5Z3ijsaSdLB1L4ysYnNj5d6t1WIT5/TMSI=;
-        b=v7EShbiZ3niJcC63lPESQROFGCB/Ss1ngNfYkvg6u2wMYA0rqA2yEnhWtphUoMLdYD
-         2CFzXAGDtkPIS/tY/pfdWuhUn9ctoHw1fjWqQLpK+JUxG90DvNX3Tg/soM+NR2xYbZQ+
-         Jrpq8RiHEznAmd/fXEFhLRGGvZxs2EUG1XVCUb9HyCnjCpANIrwP2ZbDv3apXpiJkX9L
-         fMMsLQwUNP5zUOC241CMp0vrfOFvXgcG5py4YgMyw86GXIahIMJ85ba2dy4f2bwChLOb
-         G3/6IC78Xu9HV4Y5u4hGfagkY76Pqxm+0gv51AkpcJh00CjDUxPwJT/A+evTbCkINRm5
-         7QVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUS/OLiBRQlh1/KXjsNnWa1k27CkXn1ARYn5bl7rSKejadzKve28eG/j20llJJCB+1YSpfVSCzRzbI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+H94rWoQ6rQgrad2/cVuwudTS95KYekigu7UfwuLe/Q0P9qaW
-	GR2bHZxfjC9qO4KDFvNlJir/jO0Ey5gAEriM1G+liIZCdGL3sQDAM6/DAEVpnInX4lB96NzVsc3
-	WeAVWzboNU90oziXDgWx6LTUHqB36wBrYNVHTza+yAXggq1ZFeoTofl1gFpQCPbAzih5uoNbto0
-	jRgzUnvs1B99V1EE3TG9OYw7NI1Jpyi+Ak
-X-Received: by 2002:a05:6870:9d18:b0:291:cb6:f3cd with SMTP id 586e51a60fabf-295600f04b3mr3378952fac.8.1731427392798;
-        Tue, 12 Nov 2024 08:03:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG6K30AckXB3aEumZtFVfs7n1j8qvpk6yUxT6SWtcwB5Q41cmA94cAVxxZej7fXm079vvCRy6HcYFAc5PeZ48s=
-X-Received: by 2002:a05:6870:9d18:b0:291:cb6:f3cd with SMTP id
- 586e51a60fabf-295600f04b3mr3378934fac.8.1731427392148; Tue, 12 Nov 2024
- 08:03:12 -0800 (PST)
+	s=arc-20240116; t=1731437579; c=relaxed/simple;
+	bh=YgHRSbxC/ZXv72RVmDXFLg/VmGfgqNxNSpewO/fOLmI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kfr6vEaLsVprQyHhKS7yM6i0eVOHquFLZsps4VlwxCga5MHKmPZtOkIexUCkpP5KjOXfvpVwgpNKb00taVM4zORE7cx9zjo51nsI/nxj75EoeBchKptl6dIfL7YB3AeU+D+yNmA5K0B5w7aezPreuVd9iHIjCNdWxT7nJRQLvF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.es; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=r7GPgT0U; arc=none smtp.client-ip=52.95.48.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731437577; x=1762973577;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FPTdqkauhYcoU/yyHwIv52pl8ORMHMvmHcj/aCkgZf8=;
+  b=r7GPgT0UKy8JSPVK7BnhjSS8/UC8MZgfGIywipX6/iYYxlbxsoB9Fpjt
+   xpYCkNPcDdqjI41pmR1tVhm3hzxEZfc6Zm3YNLrBt7Oy3xb8iv4N13buq
+   9vjNV7oVXH92GrYjj2dy3OKs5hwtNEhp/QGy+/hTNSMKR10aD8N8h0D/s
+   Q=;
+X-IronPort-AV: E=Sophos;i="6.12,148,1728950400"; 
+   d="scan'208";a="439046280"
+Received: from iad6-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 18:52:54 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.17.79:52042]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.46.11:2525] with esmtp (Farcaster)
+ id 85d768d5-4ef5-4937-9808-bf7aff734ffc; Tue, 12 Nov 2024 18:52:53 +0000 (UTC)
+X-Farcaster-Flow-ID: 85d768d5-4ef5-4937-9808-bf7aff734ffc
+Received: from EX19D004EUC001.ant.amazon.com (10.252.51.190) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 12 Nov 2024 18:52:53 +0000
+Received: from dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com (10.13.235.138)
+ by EX19D004EUC001.ant.amazon.com (10.252.51.190) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 12 Nov 2024 18:52:49 +0000
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Matt Fleming
+	<matt@codeblueprint.co.uk>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stanspas@amazon.de>,
+	<nh-open-source@amazon.com>, Nicolas Saenz Julienne <nsaenz@amazon.com>
+Subject: [PATCH v2 1/2] x86/efi: Drop support for the EFI_PROPERTIES_TABLE
+Date: Tue, 12 Nov 2024 18:52:16 +0000
+Message-ID: <20241112185217.48792-1-nsaenz@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALE0LRvJ-n77oU=O9__NdSLw2v33zMK+WYkn2LcwWMwHCbohQw@mail.gmail.com>
- <CAC_iWjJEXU+dodjvWQYM9ohPa3P2p0bFG=exGoi-iYFrLLbCTA@mail.gmail.com>
- <CALE0LRtUz8hd4pdR9sX2Sb6tOn=K4wkRnGG9B7f72qU8JFQSYQ@mail.gmail.com>
- <CAC_iWjJLSSTO0Ca7rgOWAHfWzbkBkKHkQedRUbcwsoU0dtrsGA@mail.gmail.com>
- <CALE0LRvN3tYgWig1XnCiAZvdzE8x=cdLanGxbUvpPr5nfexSPQ@mail.gmail.com>
- <CAC_iWjL4mp-sTsp5a+yFkUauXuMvZ1yoTAk_60nm-CCKUgwayw@mail.gmail.com>
- <CALE0LRsYXXaao2uCUMFkd8Y6f5Mxgoc-Qpft_y8wWW3ZiekbbA@mail.gmail.com>
- <CAC_iWjL+J9tNxEdh0AoYD19h013N4nk=KmaT=RACo4-oVwuRCA@mail.gmail.com>
- <CALE0LRu2oDSo6KOhO2fTDMiqX7iqjqNjNGD_67MJFS7BJWqT_w@mail.gmail.com>
- <CALE0LRvFT3fDdoBLXHK2e47cibD02pxXAuZ83rTqEfrzU3HnKA@mail.gmail.com>
- <CAC_iWj+STZib+VOZrQtZk95skWzyLqe7_HpNM60G6axNa3Lnnw@mail.gmail.com>
- <CALE0LRsqc6L9EunhOyvyOR_KgG28zb10YBR1qN2qgZ9iJvaHEw@mail.gmail.com>
- <CAC_iWjKLqDFb1wSUQ1uMqOfbeRtzGNX9gyTHtQy5-71WvBiiLA@mail.gmail.com>
- <CALE0LRt7cwwwQ0Rh+0qJsUzTsNULEQSYgAoviQp5F5SXeJk8LQ@mail.gmail.com> <CAC_iWjKkdS71Fh3LZ0CJR-vnC+PwGKGndxjU3WjjUPnZ84DYWg@mail.gmail.com>
-In-Reply-To: <CAC_iWjKkdS71Fh3LZ0CJR-vnC+PwGKGndxjU3WjjUPnZ84DYWg@mail.gmail.com>
-From: Enric Balletbo i Serra <eballetb@redhat.com>
-Date: Tue, 12 Nov 2024 17:03:01 +0100
-Message-ID: <CALE0LRt2ct8onNyPvTNzy3Ps1kqduqx-OMmnQse-SXsk5M451Q@mail.gmail.com>
-Subject: Re: optee-based efi runtime variable service on TI j784s4 platforms
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Sumit Garg <sumit.garg@linaro.org>, linux-efi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	op-tee@lists.trustedfirmware.org, Manorit Chawdhry <m-chawdhry@ti.com>, 
-	Udit Kumar <u-kumar1@ti.com>, "Menon, Nishanth" <nm@ti.com>, 
-	Masahisa Kojima <kojima.masahisa@socionext.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D039UWB003.ant.amazon.com (10.13.138.93) To
+ EX19D004EUC001.ant.amazon.com (10.252.51.190)
 
-On Tue, Nov 12, 2024 at 4:07=E2=80=AFPM Ilias Apalodimas
-<ilias.apalodimas@linaro.org> wrote:
->
-> On Tue, 12 Nov 2024 at 16:39, Enric Balletbo i Serra
-> <eballetb@redhat.com> wrote:
-> >
-> > On Tue, Nov 12, 2024 at 2:23=E2=80=AFPM Ilias Apalodimas
-> > <ilias.apalodimas@linaro.org> wrote:
-> > >
-> > > [...]
-> > >
-> > > > > > > >
-> > > > > > >
-> > > > > > > Unfortunately that didn't help, but I don't see this code bei=
-ng run.
-> > > > >
-> > > > > That's weird, look below.
-> > > > >
-> > > > > > > Who sets for the first place the uefi variables, is this u-bo=
-ot
-> > > > > > > writing them to the rpmb? or is optee itself?
-> > > > >
-> > > > > U-Boot sets the variables, but it does so via StandAloneMM.
-> > > > >
-> > > > > > >
-> > > > > >
-> > > > > > I tried to compare the behaviour between optee_rpmb (works) and
-> > > > > > efidebug (doesn't worrk). I see that the first thing optee_rpmb
-> > > > > > command does is open a session against the TA application, some=
-thing
-> > > > > > that efidebug doesn't do, shouldn't efidebug do the same to acc=
-ess to
-> > > > > > the rpmb device and read or write the efi variables?
-> > > > > >
-> > > > >
-> > > > > That's a bit more complicated and explained to one of the blog po=
-sts I
-> > > > > pasted above.
-> > > > > We do open an OP-TEE session, but not for talking to a TA. We sen=
-d the
-> > > > > messages to StandAloneMM, which then usese OPTEE RPMB APIs to wri=
-te
-> > > > > the flash.
-> > > > >
-> > > > > The weird thing is why OP-TEE does not format your RPMB when comp=
-iling
-> > > > > with that flag.
-> > > > > If done correctly, OP-TEE will wipe the RPMB contents the first t=
-ime
-> > > > > it tries to access it.
-> > > > >
-> > > >
-> > > > It does if I call optee_rpmb command
-> > > >
-> > > > E/TC:? 0 rpmb_fs_setup:2143 **** Clearing Storage ****
-> > > >
-> > > > But I don't see any attempt to write efi variables to the rpmb
-> > > > partition if I use the normal boot workflow or calling any efi comm=
-and
-> > > > from the prompt.
-> > > >
-> > > > I think I need to read a bit more about all the pieces because I mi=
-ght
-> > > > miss something.
-> > >
-> > > You don't need the command above to store variables. You need this in
-> > > case you need to use the RPMB from the command line.
-> > > Do a 'printenv -e && setenv -e -bs -rt -nv test test1 && printenv -e'=
-.
-> > > Does that work ?
-> > >
-> >
-> > No, `printenv -e` gets stuck. This is the log with some debug messages =
-I added.
-> >
-> > =3D> printenv -e
-> > > lib/efi_loader/efi_setup.c:227 Initialize once only
-> >   > lib/efi_loader/efi_setup.c:234 Set up console modes
-> >   > lib/efi_loader/efi_setup.c:242 Proble block devices to find the ESP
-> > MMC: no card present
-> > mmc_init: -123, time 2002
-> >   > lib/efi_loader/efi_setup.c:249 Initialize variable services
-> >      > lib/efi_loader/efi_var_mem.c:223 efi_allocate_pages
-> >      > lib/efi_loader/efi_var_mem.c:236 efi_create_event
-> >   < lib/efi_loader/efi_var_mem.c:244 - ret=3D0
-> > D/TC:? 0 load_stmm:297 stmm load address 0x40004000
->
-> Please try again with the FAT reset config flag in OP-TEE and without
-> doing any reads and writes from the U-Boot console
->
-> > D/TC:? 0 spm_handle_scall:859 Received FFA version
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > ... stuck here ... traces indicates never outs from the efi_setup, so
-> > looks like hungs
-> >
-> > Let me try with BeaglePlay and read a bit more, as I feel I'm a bit
-> > lost right now.
->
-> Sure, let me know if you need anything else.
->
+Drop support for the EFI_PROPERTIES_TABLE. It was a failed, short-lived
+experiment that broke the boot both on Linux and Windows, and was
+replaced by the EFI_MEMORY_ATTRIBUTES_TABLE shortly after.
 
-Same behaviour on BeaglePlay, so either it's currently broken or I'm
-making the same mistake in my process on both boards.
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+---
+ arch/x86/platform/efi/efi.c    | 19 ---------------
+ arch/x86/platform/efi/efi_64.c | 42 ----------------------------------
+ include/linux/efi.h            | 17 +++-----------
+ 3 files changed, 3 insertions(+), 75 deletions(-)
 
-Ilias, by chance, do you have in which versions did you test?
-
-Thanks,
-  Enric
-> /Ilias
-> >
-> > > >
-> > > > =3D> optee_rpmb read test 4
-> > > > D/TC:? 0 tee_ta_init_pseudo_ta_session:303 Lookup pseudo TA
-> > > > 023f8f1a-292a-432b-8fc4-de8471358067
-> > > > D/TC:? 0 ldelf_load_ldelf:110 ldelf load address 0x40007000
-> > > > D/LD:  ldelf:142 Loading TS 023f8f1a-292a-432b-8fc4-de8471358067
-> > > > F/TC:? 0 trace_syscall:147 syscall #3 (syscall_get_property)
-> > > > F/TC:? 0 trace_syscall:147 syscall #5 (syscall_open_ta_session)
-> > > > D/TC:? 0 ldelf_syscall_open_bin:135 > ldelf_syscall_open_bin
-> > > > D/TC:? 0 ldelf_syscall_open_bin:164 Lookup user TA ELF
-> > > > 023f8f1a-292a-432b-8fc4-de8471358067 (early TA)
-> > > > D/TC:? 0 ldelf_syscall_open_bin:168 res=3D0
-> > > > F/TC:? 0 trace_syscall:147 syscall #7 (syscall_invoke_ta_command)
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 trace_syscall:147 syscall #11 (syscall_mask_cancellation)
-> > > > F/TC:? 0 trace_syscall:147 syscall #7 (syscall_invoke_ta_command)
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 492 bytes
-> > > > F/TC:? 0 trace_syscall:147 syscall #3 (syscall_get_property)
-> > > > F/TC:? 0 trace_syscall:147 syscall #8 (syscall_check_access_rights)
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > F/TC:? 0 read_compressed:178 532 bytes
-> > > > F/TC:? 0 read_compressed:178 924 bytes
-> > > > F/TC:? 0 trace_syscall:147 syscall #8 (syscall_check_access_rights)
-> > > > F/TC:? 0 read_compressed:178 248 bytes
-> > > > F/TC:? 0 read_compressed:178 760 bytes
-> > > > F/TC:? 0 trace_syscall:147 syscall #6 (syscall_close_ta_session)
-> > > > F/TC:? 0 trace_syscall:147 syscall #3 (syscall_get_property)
-> > > > D/LD:  ldelf:176 ELF (023f8f1a-292a-432b-8fc4-de8471358067) at 0x40=
-048000
-> > > > F/TC:? 0 trace_syscall:147 syscall #33 (syscall_cryp_random_number_=
-generate)
-> > > > F/TC:? 0 trace_syscall:147 syscall #8 (syscall_check_access_rights)
-> > > > F/TC:? 0 trace_syscall:147 syscall #8 (syscall_check_access_rights)
-> > > > F/TC:? 0 trace_syscall:147 syscall #4 (syscall_get_property_name_to=
-_index)
-> > > > F/TC:? 0 trace_syscall:147 syscall #8 (syscall_check_access_rights)
-> > > > F/TC:? 0 trace_syscall:147 syscall #41 (syscall_storage_obj_open)
-> > > > D/TC:? 0 rpmb_fs_open_internal:2356 >>> rpmb_fs_open_internal
-> > > > D/TC:? 0 tee_rpmb_init:1205 >>> core/tee/tee_rpmb_fs.c:1205
-> > > > D/TC:? 0 tee_rpmb_init:1214 >>> core/tee/tee_rpmb_fs.c:1214
-> > > > D/TC:? 0 tee_rpmb_init:1253 >>> core/tee/tee_rpmb_fs.c:1253
-> > > > D/TC:? 0 legacy_rpmb_init:1142 Trying legacy RPMB init
-> > > > D/TC:? 0 rpmb_set_dev_info:1111 RPMB: Syncing device information
-> > > > D/TC:? 0 rpmb_set_dev_info:1113 RPMB: RPMB size is 32*128 KB
-> > > > D/TC:? 0 rpmb_set_dev_info:1114 RPMB: Reliable Write Sector Count i=
-s 1
-> > > > D/TC:? 0 rpmb_set_dev_info:1116 RPMB: CID
-> > > > D/TC:? 0 rpmb_set_dev_info:1117 000000009e93ab30  13 01 4e 47 31 4d=
- 31
-> > > > 35  4c 10 27 91 28 07 a9 00
-> > > > D/TC:? 0 legacy_rpmb_init:1162 RPMB INIT: Deriving key
-> > > > D/TC:? 0 tee_rpmb_key_gen:308 RPMB: Using test key
-> > > > D/TC:? 0 legacy_rpmb_init:1176 RPMB INIT: Verifying Key
-> > > > F/TC:? 0 plat_prng_add_jitter_entropy:68 0x61
-> > > > D/TC:? 0 legacy_rpmb_init:1180 Found working RPMB device
-> > > > D/TC:? 0 tee_rpmb_init:1205 >>> core/tee/tee_rpmb_fs.c:1205
-> > > > D/TC:? 0 tee_rpmb_init:1214 >>> core/tee/tee_rpmb_fs.c:1214
-> > > > D/TC:? 0 tee_rpmb_read:1362 Read 1 block at index 0
-> > > > D/TC:? 0 tee_rpmb_write_blk:1494 Write 1 block at index 0
-> > > > D/TC:? 0 tee_rpmb_init:1205 >>> core/tee/tee_rpmb_fs.c:1205
-> > > > D/TC:? 0 tee_rpmb_init:1214 >>> core/tee/tee_rpmb_fs.c:1214
-> > > > D/TC:? 0 tee_rpmb_init:1205 >>> core/tee/tee_rpmb_fs.c:1205
-> > > > D/TC:? 0 tee_rpmb_init:1214 >>> core/tee/tee_rpmb_fs.c:1214
-> > > > D/TC:? 0 tee_rpmb_read:1362 Read 1 block at index 0
-> > > > E/TC:? 0 rpmb_fs_setup:2143 **** Clearing Storage ****
-> > > > D/TC:? 0 tee_rpmb_write_blk:1494 Write 1 block at index 2
-> > > > F/TC:? 0 plat_prng_add_jitter_entropy:68 0xD3
-> > > > D/TC:? 0 tee_rpmb_read:1362 Read 1 block at index 0
-> > > > D/TC:? 0 tee_rpmb_write_blk:1494 Write 1 block at index 0
-> > > > D/TC:? 0 tee_rpmb_read:1362 Read 8 blocks at index 2
-> > > > F/TC:? 0 dump_fat:1951 flags 0x2, size 0, address 0, filename ''
-> > > > D/TC:? 0 read_fat:2221 fat_address 0
-> > > > D/TC:? 0 tee_rpmb_read:1362 Read 8 blocks at index 2
-> > > > F/TC:? 0 plat_prng_add_jitter_entropy:68 0x18
-> > > > E/TA:  read_persist_value:338 Can't open named object value, res =
-=3D 0xffff0008
-> > > > D/TC:? 0 tee_ta_invoke_command:798 Error: ffff0008 of 4
-> > > > D/TC:? 0 tee_ta_close_session:460 csess 0x9e925a50 id 1
-> > > > D/TC:? 0 tee_ta_close_session:479 Destroy session
-> > > > D/TC:? 0 destroy_context:318 Destroy TA ctx (0x9e9259f0)
-> > > > Failed to read persistent value
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > > > Cheers
-> > > > > /Ilias
-> > > > >
-> > > > > > =3D> optee_rpmb read test 4
-> > > > > > D/TC:? 0 tee_ta_init_pseudo_ta_session:303 Lookup pseudo TA
-> > > > > > 023f8f1a-292a-432b-8fc4-de8471358067
-> > > > > > D/TC:? 0 ldelf_load_ldelf:110 ldelf load address 0x40007000
-> > > > > > D/LD:  ldelf:142 Loading TS 023f8f1a-292a-432b-8fc4-de847135806=
-7
-> > > > > > F/TC:? 0 trace_syscall:147 syscall #3 (syscall_get_property)
-> > > > > > F/TC:? 0 trace_syscall:147 syscall #5 (syscall_open_ta_session)
-> > > > > > D/TC:? 0 ldelf_syscall_open_bin:163 Lookup user TA ELF
-> > > > > > 023f8f1a-292a-432b-8fc4-de8471358067 (early TA)
-> > > > > > D/TC:? 0 ldelf_syscall_open_bin:167 res=3D0
-> > > > > > F/TC:? 0 trace_syscall:147 syscall #7 (syscall_invoke_ta_comman=
-d)
-> > > > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > > > F/TC:? 0 read_compressed:178 1024 bytes
-> > > > > > F/TC:? 0 trace_syscall:147 syscall #11 (syscall_mask_cancellati=
-on)
-> > > > > > F/TC:? 0 trace_syscall:147 syscall #7 (syscall_invoke_ta_comman=
-d)
-> > > > > >
-> > > > > > =3D> efidebug query -bs -rt -nv
-> > > > > > MMC: no card present
-> > > > > > mmc_init: -123, time 2002
-> > > > > > D/TC:? 0 load_stmm:297 stmm load address 0x40004000
-> > > > > > D/TC:? 0 spm_handle_scall:859 Received FFA version
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > >
-> > > > > >
-> > > > > >
-> > > > > > >
-> > > > > > > > Thanks
-> > > > > > > > /Ilias
-> > > > > > > > >
-> > > > > > > > > =3D> efidebug query -bs -rt -nv
-> > > > > > > > > D/TC:? 0 load_stmm:297 stmm load address 0x40004000
-> > > > > > > > > D/TC:? 0 spm_handle_scall:859 Received FFA version
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > D/TC:? 0 spm_handle_scall:867 Received FFA direct request
-> > > > > > > > > ... stuck here ... I need to reset the board
-> > > > > > > > >
-> > > > > > > > > Will continue to see if I can get more useful messages
-> > > > > > > > >
-> > > > > > > > > Thanks,
-> > > > > > > > >   Enric
-> > > > > > > > >
-> > > > > > > > > > Thanks
-> > > > > > > > > > /Ilias
-> > > > > > > > > > >
-> > > > > > > > > > > I'll try to add some more prints to verify if REE is =
-used as a store
-> > > > > > > > > > > system, I assume this should say something about RPMB=
-. Am I right with
-> > > > > > > > > > > this?
-> > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > >
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > And tracing the function calls gives me that:
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > >       tee_stmm_efi_probe() {
-> > > > > > > > > > > > > > >              tee_client_open_context() {
-> > > > > > > > > > > > > > >                optee_get_version() {
-> > > > > > > > > > > > > > >                  tee_get_drvdata(); (ret=3D0x=
-ffff000002e55800)
-> > > > > > > > > > > > > > >                } (ret=3D0xd)
-> > > > > > > > > > > > > > >                tee_ctx_match(); (ret=3D0x1)
-> > > > > > > > > > > > > > >                optee_smc_open() {
-> > > > > > > > > > > > > > >                  tee_get_drvdata(); (ret=3D0x=
-ffff000002e55800)
-> > > > > > > > > > > > > > >                  optee_open() {
-> > > > > > > > > > > > > > >                    tee_get_drvdata(); (ret=3D=
-0xffff000002e55800)
-> > > > > > > > > > > > > > >                  } (ret=3D0x0)
-> > > > > > > > > > > > > > >                } (ret=3D0x0)
-> > > > > > > > > > > > > > >              } (ret=3D0xffff000004e71c80)
-> > > > > > > > > > > > > > >              tee_client_open_session() {
-> > > > > > > > > > > > > > >                optee_open_session() {
-> > > > > > > > > > > > > > >                  tee_get_drvdata(); (ret=3D0x=
-ffff000002e55800)
-> > > > > > > > > > > > > > >                  optee_get_msg_arg() {
-> > > > > > > > > > > > > > >                    tee_get_drvdata(); (ret=3D=
-0xffff000002e55800)
-> > > > > > > > > > > > > > >                    tee_shm_get_va(); (ret=3D0=
-xffff000002909000)
-> > > > > > > > > > > > > > >                  } (ret=3D0xffff000002909000)
-> > > > > > > > > > > > > > >                  tee_session_calc_client_uuid=
-(); (ret=3D0x0)
-> > > > > > > > > > > > > > >                  optee_to_msg_param(); (ret=
-=3D0x0)
-> > > > > > > > > > > > > > >                  optee_smc_do_call_with_arg()=
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 88a96816de9a..375ebd78296a 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -54,14 +54,12 @@
+ #include <asm/uv/uv.h>
+ 
+ static unsigned long efi_systab_phys __initdata;
+-static unsigned long prop_phys = EFI_INVALID_TABLE_ADDR;
+ static unsigned long uga_phys = EFI_INVALID_TABLE_ADDR;
+ static unsigned long efi_runtime, efi_nr_tables;
+ 
+ unsigned long efi_fw_vendor, efi_config_table;
+ 
+ static const efi_config_table_type_t arch_tables[] __initconst = {
+-	{EFI_PROPERTIES_TABLE_GUID,	&prop_phys,		"PROP"		},
+ 	{UGA_IO_PROTOCOL_GUID,		&uga_phys,		"UGA"		},
+ #ifdef CONFIG_X86_UV
+ 	{UV_SYSTEM_TABLE_GUID,		&uv_systab_phys,	"UVsystab"	},
+@@ -82,7 +80,6 @@ static const unsigned long * const efi_tables[] = {
+ 	&efi_runtime,
+ 	&efi_config_table,
+ 	&efi.esrt,
+-	&prop_phys,
+ 	&efi_mem_attr_table,
+ #ifdef CONFIG_EFI_RCI2_TABLE
+ 	&rci2_table_phys,
+@@ -502,22 +499,6 @@ void __init efi_init(void)
+ 		return;
+ 	}
+ 
+-	/* Parse the EFI Properties table if it exists */
+-	if (prop_phys != EFI_INVALID_TABLE_ADDR) {
+-		efi_properties_table_t *tbl;
+-
+-		tbl = early_memremap_ro(prop_phys, sizeof(*tbl));
+-		if (tbl == NULL) {
+-			pr_err("Could not map Properties table!\n");
+-		} else {
+-			if (tbl->memory_protection_attribute &
+-			    EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA)
+-				set_bit(EFI_NX_PE_DATA, &efi.flags);
+-
+-			early_memunmap(tbl, sizeof(*tbl));
+-		}
+-	}
+-
+ 	set_bit(EFI_RUNTIME_SERVICES, &efi.flags);
+ 	efi_clean_memmap();
+ 
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index 91d31ac422d6..ac57259a432b 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -412,51 +412,9 @@ static int __init efi_update_mem_attr(struct mm_struct *mm, efi_memory_desc_t *m
+ 
+ void __init efi_runtime_update_mappings(void)
  {
-> > > > > > > > > > > > > > >                    tee_get_drvdata(); (ret=3D=
-0xffff000002e55800)
-> > > > > > > > > > > > > > >                    tee_shm_get_va(); (ret=3D0=
-xffff000002909000)
-> > > > > > > > > > > > > > >                    tee_shm_get_va(); (ret=3D0=
-xffff000002909060)
-> > > > > > > > > > > > > > >                    optee_cq_wait_init(); (ret=
-=3D0xffff000002e55910)
-> > > > > > > > > > > > > > >                    optee_smccc_smc(); (ret=3D=
-0xffff0004)
-> > > > > > > > > > > > > > >                    tee_get_drvdata(); (ret=3D=
-0xffff000002e55800)
-> > > > > > > > > > > > > > >                    optee_smccc_smc(); (ret=3D=
-0xffff0004)
-> > > > > > > > > > > > > > >                    tee_get_drvdata(); (ret=3D=
-0xffff000002e55800)
-> > > > > > > > > > > > > > >                    optee_smccc_smc(); (ret=3D=
-0xffff0004)
-> > > > > > > > > > > > > > >                    tee_get_drvdata(); (ret=3D=
-0xffff000002e55800)
-> > > > > > > > > > > > > > >                    optee_smccc_smc(); (ret=3D=
-0xffff0004)
-> > > > > > > > > > > > > > >                    tee_get_drvdata(); (ret=3D=
-0xffff000002e55800)
-> > > > > > > > > > > > > > >                    optee_smccc_smc(); (ret=3D=
-0xffff0004)
-> > > > > > > > > > > > > > >      ... continues sending this forever ...
-> > > > > > > > > > > > > > >      ... Hit ^C to stop recording ...
-> > > > > > > > > > > > > > >                    tee_get_drvdata(); (ret=3D=
-0xffff000002e55800)
-> > > > > > > > > > > > > > >                    optee_smccc_smc() {
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > [1] https://docs.u-boot.org/en/latest/develop=
-/uefi/uefi.html#using-op-tee-for-efi-variables
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > Thanks in advance,
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > The most common problem with this is miscompili=
-ng the tee_supplicant
-> > > > > > > > > > > > > > application.
-> > > > > > > > > > > > > > Since we don't know if the system has an RPMB, =
-we emulate it in the
-> > > > > > > > > > > > > > tee_supplicant. How did you get the supplicant =
-and can you check if it
-> > > > > > > > > > > > > > was compiled with RPMB_EMU=3D0 or 1?
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > I'm using the tee-supplicant provided by the fedo=
-ra package which is
-> > > > > > > > > > > > > built with ` -DRPMB_EMU=3D0`, I think that's corr=
-ect, right?
-> > > > > > > > > > > > >
-> > > > > > > > > > > >
-> > > > > > > > > > > > Yes, this is correct. We fixed the Fedora package t=
-o compile the
-> > > > > > > > > > > > supplicant correctly a while back.
-> > > > > > > > > > > >
-> > > > > > > > > > > > [0] https://www.linaro.org/blog/uefi-secureboot-in-=
-u-boot/
-> > > > > > > > > > > > [1] https://apalos.github.io/Protected%20UEFI%20var=
-iables%20with%20U-Boot.html#Protected%20UEFI%20variables%20with%20U-Boot
-> > > > > > > > > > > >
-> > > > > > > > > > > >
-> > > > > > > > > > > > Regards
-> > > > > > > > > > > > /Ilias
-> > > > > > > > > > > > > Thanks,
-> > > > > > > > > > > > >    Enric
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > > Thanks
-> > > > > > > > > > > > > > /Ilias
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > >    Enric
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > >
-> > > > > > > > > > > >
-> > > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > >
-> > > > > > > >
-> > > > > >
-> > > > >
-> > > >
-> > >
-> >
->
+-	efi_memory_desc_t *md;
+-
+-	/*
+-	 * Use the EFI Memory Attribute Table for mapping permissions if it
+-	 * exists, since it is intended to supersede EFI_PROPERTIES_TABLE.
+-	 */
+ 	if (efi_enabled(EFI_MEM_ATTR)) {
+ 		efi_disable_ibt_for_runtime = false;
+ 		efi_memattr_apply_permissions(NULL, efi_update_mem_attr);
+-		return;
+-	}
+-
+-	/*
+-	 * EFI_MEMORY_ATTRIBUTES_TABLE is intended to replace
+-	 * EFI_PROPERTIES_TABLE. So, use EFI_PROPERTIES_TABLE to update
+-	 * permissions only if EFI_MEMORY_ATTRIBUTES_TABLE is not
+-	 * published by the firmware. Even if we find a buggy implementation of
+-	 * EFI_MEMORY_ATTRIBUTES_TABLE, don't fall back to
+-	 * EFI_PROPERTIES_TABLE, because of the same reason.
+-	 */
+-
+-	if (!efi_enabled(EFI_NX_PE_DATA))
+-		return;
+-
+-	for_each_efi_memory_desc(md) {
+-		unsigned long pf = 0;
+-
+-		if (!(md->attribute & EFI_MEMORY_RUNTIME))
+-			continue;
+-
+-		if (!(md->attribute & EFI_MEMORY_WB))
+-			pf |= _PAGE_PCD;
+-
+-		if ((md->attribute & EFI_MEMORY_XP) ||
+-			(md->type == EFI_RUNTIME_SERVICES_DATA))
+-			pf |= _PAGE_NX;
+-
+-		if (!(md->attribute & EFI_MEMORY_RO) &&
+-			(md->type != EFI_RUNTIME_SERVICES_CODE))
+-			pf |= _PAGE_RW;
+-
+-		if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+-			pf |= _PAGE_ENC;
+-
+-		efi_update_mappings(md, pf);
+ 	}
+ }
+ 
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index e28d88066033..e5815867aba9 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -379,7 +379,6 @@ void efi_native_runtime_setup(void);
+ #define EFI_SYSTEM_RESOURCE_TABLE_GUID		EFI_GUID(0xb122a263, 0x3661, 0x4f68,  0x99, 0x29, 0x78, 0xf8, 0xb0, 0xd6, 0x21, 0x80)
+ #define EFI_FILE_SYSTEM_GUID			EFI_GUID(0x964e5b22, 0x6459, 0x11d2,  0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ #define DEVICE_TREE_GUID			EFI_GUID(0xb1b621d5, 0xf19c, 0x41a5,  0x83, 0x0b, 0xd9, 0x15, 0x2c, 0x69, 0xaa, 0xe0)
+-#define EFI_PROPERTIES_TABLE_GUID		EFI_GUID(0x880aaca3, 0x4adc, 0x4a04,  0x90, 0x79, 0xb7, 0x47, 0x34, 0x08, 0x25, 0xe5)
+ #define EFI_RNG_PROTOCOL_GUID			EFI_GUID(0x3152bca5, 0xeade, 0x433d,  0x86, 0x2e, 0xc0, 0x1c, 0xdc, 0x29, 0x1f, 0x44)
+ #define EFI_RNG_ALGORITHM_RAW			EFI_GUID(0xe43176d7, 0xb6e8, 0x4827,  0xb7, 0x84, 0x7f, 0xfd, 0xc4, 0xb6, 0x85, 0x61)
+ #define EFI_MEMORY_ATTRIBUTES_TABLE_GUID	EFI_GUID(0xdcfa911d, 0x26eb, 0x469f,  0xa2, 0x20, 0x38, 0xb7, 0xdc, 0x46, 0x12, 0x20)
+@@ -580,15 +579,6 @@ struct efi_mem_range {
+ 	u64 attribute;
+ };
+ 
+-typedef struct {
+-	u32 version;
+-	u32 length;
+-	u64 memory_protection_attribute;
+-} efi_properties_table_t;
+-
+-#define EFI_PROPERTIES_TABLE_VERSION	0x00010000
+-#define EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA	0x1
+-
+ typedef struct {
+ 	u16 version;
+ 	u16 length;
+@@ -871,10 +861,9 @@ static inline int efi_range_is_wc(unsigned long start, unsigned long len)
+ #define EFI_PARAVIRT		6	/* Access is via a paravirt interface */
+ #define EFI_ARCH_1		7	/* First arch-specific bit */
+ #define EFI_DBG			8	/* Print additional debug info at runtime */
+-#define EFI_NX_PE_DATA		9	/* Can runtime data regions be mapped non-executable? */
+-#define EFI_MEM_ATTR		10	/* Did firmware publish an EFI_MEMORY_ATTRIBUTES table? */
+-#define EFI_MEM_NO_SOFT_RESERVE	11	/* Is the kernel configured to ignore soft reservations? */
+-#define EFI_PRESERVE_BS_REGIONS	12	/* Are EFI boot-services memory segments available? */
++#define EFI_MEM_ATTR		9	/* Did firmware publish an EFI_MEMORY_ATTRIBUTES table? */
++#define EFI_MEM_NO_SOFT_RESERVE	10	/* Is the kernel configured to ignore soft reservations? */
++#define EFI_PRESERVE_BS_REGIONS	11	/* Are EFI boot-services memory segments available? */
+ 
+ #ifdef CONFIG_EFI
+ /*
+-- 
+2.40.1
 
 
