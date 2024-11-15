@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-2151-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2152-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A669CDB8B
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 10:28:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7DC9CDB8C
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 10:29:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A911F22B5D
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 09:28:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B286D2832D4
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 09:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F71218DF89;
-	Fri, 15 Nov 2024 09:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2F218F2FC;
+	Fri, 15 Nov 2024 09:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jaa8fHs2"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R3J71PUY"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BBB18785D
-	for <linux-efi@vger.kernel.org>; Fri, 15 Nov 2024 09:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1431418F2DF
+	for <linux-efi@vger.kernel.org>; Fri, 15 Nov 2024 09:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731662935; cv=none; b=t+1XaJVMEp2mAsSp1AHLmxn4a54zJwvIml7Il1NtGJcz/d3BQjamAXoE8vW8DoIi8DTRDLqlD+Lxpp9E3/KrADNndpYfV/1PJAEfyVZE7sM8Ze+DH/fGpYY7uirqdEmThNSvG67vd1UUj42xIiromW6oqPZhODBt96uT3xrVaCU=
+	t=1731662938; cv=none; b=EyySxOJE2v15ylgOiJJ/wGxUv7L6bZFybfa7Sv6pS48egfN017YheFsR4BYLfsgZsJqFjOTMpnYrShq09G5R+bEG/Stv2bgy3ID8LGuVHwpUFESzWpJ/PV8gMWlaGxyapY0tPtk6NVCwFe6rJBQRyItqu+ZSuoBHm3BsWEunAqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731662935; c=relaxed/simple;
-	bh=90tPx57ecYokCX8TFKoiDt+c5cNgo6hbf2UHFyjECIo=;
+	s=arc-20240116; t=1731662938; c=relaxed/simple;
+	bh=iQh/kUEx5mLTNivlK5u38x0gMayvSDZuosv34V9o22A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QfOZPtAaAuv6OW4/ez/EVQOoCmBtbgFZgb+EKrXBGPWdqCtetSZRAth1rauQ7Eri8xP9RsJK1Tr8g1vIFuGYDCJ/h3FAvfNtrzOJ5Oa0sXyOQPowvkkz8BdCh/RJBfRCeTiKnEvOxisOEs3TY69Y+t9ILBAKOZvHGQvS0oGKHoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jaa8fHs2; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=DMOIbfEqUFTwS1kAM30lSKpMs+3D4lhgtl2jGmSBFeP8lqLx78+M+usIzh9WYlZnxfc5ovEmwKOgzIv+Je3omLEFT36wYkTtQkaJ0PsyFBpnXGT1A8Md0kFfeOWUhU+w0L4e2SW2PdSykaVDw/MUy0V6GDPdDWdjIR/NUOEmYBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R3J71PUY; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4316e2dde9eso14643685e9.2
-        for <linux-efi@vger.kernel.org>; Fri, 15 Nov 2024 01:28:53 -0800 (PST)
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e9d6636498so10224767b3.2
+        for <linux-efi@vger.kernel.org>; Fri, 15 Nov 2024 01:28:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731662932; x=1732267732; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1731662936; x=1732267736; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KDr83wTkAKDBKCmJsAmga2K6mdI7ocsaso6pmKyg8Jw=;
-        b=jaa8fHs2n9zk7VvyBd5Kc9wFfOMy4DpNpKHjKT3wOKqVi11AePM9AsieByEHEIVyiR
-         ZWz7gS6JA3b0m+VnVhno8BiwLE5P1HByTm7ejm7jh1B031crGl35zPnOqcDw2pPNxYlN
-         S27ZFzuIhDaQJq3GaWXe2qa0Uq4QWR6Z/GsepTa+6qxFDARbygBbPqQ0BNTdaXp7GhJ9
-         KR30vm/Q8ZFu3xBzyNAzeyM3RZXMTVmB5AlMrYOInFQm41+LROTcYKYtzKjOPjdFW0X0
-         YsVQ/WTqDyfsZIxkBsZc5nN18V3aYcz+itPAYqlmg93pb/0SUkQZFnvl/fikk/ciiO4F
-         jUvw==
+        bh=4sekui0Rzn6acjcPm+2mnR/RCVbfrAoOiui+n+xR7G8=;
+        b=R3J71PUYuXmb4JrZBAnjfle5CEyveeJ1PCV0i+MYB62ePtL3a1tu13qkDC2AYEM1wJ
+         ulMdR7tRqS2cVJIDrHXvGJZdS6smfVYMH/q7EyZTBEc4OYGAkYB172gWsKdswfaZ3wSa
+         fAw5Q2v3UEJMr79V+Rn7PjcYbxJPTaUdLSng+ja+CaukuLdlESOzsRCm6HYrEFkUTE0p
+         sh1ANCgrVhgLIYUs68PGzxbQ0PnrVy4fGIDjlnN+/2NTLqdaocGlf2KFLCa2eNtosOlT
+         HEU7a6H0BZcrWS64g+wvtR54bBhoh4TVmeiQ99vKlDq3/f0BB+kBWJEuiQc7MgLRzBr2
+         9IFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731662932; x=1732267732;
+        d=1e100.net; s=20230601; t=1731662936; x=1732267736;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KDr83wTkAKDBKCmJsAmga2K6mdI7ocsaso6pmKyg8Jw=;
-        b=PwyzRpZXfpM+rWn8WsqS3k7cqABJJXc9D0MHza0xs86/Tw5zNDd+tG1nT9QbKHdg5N
-         uBkljcw4Zh1VqqAReXKf6bGuAAfm3Zib/d2yMBoDatSRj7Zd184F/QrWeaIeVZ8aPHYX
-         /kDDb4wTcla7vxtWQqJqzp0lCecahKtwZSf4xuzz3Wr6hisyJ/Y9CHPyBZOgXbP8c9Vd
-         MxaQZPawDnUjhlE5ioi4vbgAeHz4L3B5EzhlOPQck+4XCV/dyNvA31VpbeDMvkPgezsu
-         EdLyo8Hdyi6Q0rZyl5MGr2zq2x4pAHuC3iBDMlHWsRbaWvLjVip9Ktqb0rxQhA1PbXHC
-         ehPQ==
-X-Gm-Message-State: AOJu0YzfahXKjICPz2bhOFLoRUKmjuDUKtugEzqDVQ+feViy5/ipMRBa
-	gaO003y1o+gHBSvPYcJgxwqq5KF9UgfPxbaRNGGVf6ELCjzERpqtJ1Cb3jV+toQVStBWt6c1Jk0
-	PSNwUnTeGSLIyuUPCC/5mftE5mq9EW11Z9svaZ1TFsefnsGEHXbGuX9ZC5FjUBW1bvmhmTjsk0w
-	22nfPV6+ccbtN0fHrzPCoa02S5qw==
-X-Google-Smtp-Source: AGHT+IGDaaj7JD5P8b86+te4zrGMjd4Lv0gMV1VsaNlSXu8ljJ9nAUBwwlTHMbe6bV7/CfGtWpYhu/ej
+        bh=4sekui0Rzn6acjcPm+2mnR/RCVbfrAoOiui+n+xR7G8=;
+        b=mQKC8vDRbBjK7GA2//4b+2Xfpi2se1xO4CfPXokCGyCKW5jzu5y+Zt2pd4XW7xxlTi
+         k6Z0gP95qFMdZYuJTVqtdRt2gWLgOC2dBwVplYK5NrV4Hq6txNw+t/7prWREz2lUCd9r
+         pvaidpXO8g7WSPBrXON1A7yCog2hCtSyUbxrgjWIDw/KQPmlXnXgWSb4ik35oZGvcu5e
+         nZnszuFZuWj2vcS2zPiEAMz0Zj1h7/YG6rY+geVwFHHWHydIlXoClXo3uYAYVdkJWLRN
+         34Xk0WOZQ087JCcUhpBlK3JWnEs1tzb2MqYt7EE/h2+csaMkOG0iWt/vLSiF3wNNAXLZ
+         nYOw==
+X-Gm-Message-State: AOJu0Yz04wEqZkpK2utDca3p51D3SX53hSPwe1s02VReWvSKgOOoA48l
+	7soOsbPRdAJRDnsuNZxNqGccvNWXeiHrgKMNBDwjXe0/3kcpt/P2F0CdxcBuby5b90tQHhUrJ9g
+	dc0pS9uEPgIrl3754/p4MxZzpLhFVXFLUsYW3fdkayixXSj19TQ3yRZyL4FpE1J/SFEcPvj8iLe
+	enH39EqOmW4ebTGdTgh0BdcYnAYQ==
+X-Google-Smtp-Source: AGHT+IF1QR6EiyriCz7QfNcUAu7JlB3LRWeTdcwBx5hedakCcuzaCo13aunL9UYQldnFew+tpB3rm25X
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
- (user=ardb job=sendgmr) by 2002:a7b:c34f:0:b0:42c:a585:5ec3 with SMTP id
- 5b1f17b1804b1-432df78aa15mr15775e9.4.1731662931569; Fri, 15 Nov 2024 01:28:51
- -0800 (PST)
-Date: Fri, 15 Nov 2024 10:28:40 +0100
+ (user=ardb job=sendgmr) by 2002:a05:690c:6585:b0:6e2:371f:4aef with SMTP id
+ 00721157ae682-6ee55c95c78mr564817b3.3.1731662936179; Fri, 15 Nov 2024
+ 01:28:56 -0800 (PST)
+Date: Fri, 15 Nov 2024 10:28:41 +0100
 In-Reply-To: <20241115092838.3080857-5-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -74,15 +74,15 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241115092838.3080857-5-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2038; i=ardb@kernel.org;
- h=from:subject; bh=Od9s2orxtV/zBkZhZ0hqQkiFfS0N/e9PjgNv2GVoxvg=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JId1cxP3k11et0Ul1b/f/erAh4suVHQzGKm8D53/RqLe71
- pva9XlxRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjIbkmGf3ZPY+1uHRJ4JPqp
- eeOq8yosi3Xb9FW3unv+zmjR37O51ZXhn9HrtsPVp1I1zn67XTfjyb8Du1s8nbZMWH4wvlSvzIm /hAsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2448; i=ardb@kernel.org;
+ h=from:subject; bh=HAIqdILGN1fACR5AG6BEqTRu8a6kaqqL140MqGyYquM=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JId1cxMNJhc+De7rWljI5bz6XSJNzsx+F9WYzbpyeY2Izb
+ UZUXXJHKQuDGAeDrJgii8Dsv+92np4oVes8SxZmDisTyBAGLk4BmIh8LCPD/VcT5EOWvmwKilj0
+ MmOhieKXqKoH8qkpthNnFz+3iFh1n5FhT92NDNfYc+k7zlVtq13ud1Tb5kn34c2XTLu/Rrv773n EAAA=
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241115092838.3080857-6-ardb+git@google.com>
-Subject: [PATCH 2/4] efi/libstub: Parse builtin command line after bootloader
- provided one
+Message-ID: <20241115092838.3080857-7-ardb+git@google.com>
+Subject: [PATCH 3/4] efi/libstub: Fix command line fallback handling when
+ loading files
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: Jonathan Marek <jonathan@marek.ca>, Ard Biesheuvel <ardb@kernel.org>
@@ -90,64 +90,75 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-When CONFIG_CMDLINE_EXTEND is set, the core kernel command line handling
-logic appends CONFIG_CMDLINE to the bootloader provided command line.
-The EFI stub does the opposite, and parses the builtin one first.
+CONFIG_CMDLINE, when set, is supposed to serve either as a fallback when
+no command line is provided by the bootloader, or to be taken into account
+unconditionally, depending on the configured options.
 
-The usual behavior of command line options is that the last one takes
-precedence if it appears multiple times, unless there is a meaningful
-way to combine them. In either case, parsing the builtin command line
-first while the core kernel does it in the opposite order is likely to
-produce inconsistent results in such cases.
+The initrd and dtb loader ignores CONFIG_CMDLINE in either case, and
+only takes the EFI firmware provided load options into account. This
+means that configuring the kernel with initrd= or dtb= on the built-in
+command line does not produce the expected result.
 
-Therefore, switch the order in the stub to match the core kernel.
+Fix this by doing a separate pass over the built-in command line when
+dealing with initrd= or dtb= options.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/firmware/efi/libstub/file.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index fc71dcab43e0..382b54f40603 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -126,28 +126,25 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
- 		return EFI_OUT_OF_RESOURCES;
- 	}
+diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
+index d6a025df07dc..17bf25dccc07 100644
+--- a/drivers/firmware/efi/libstub/file.c
++++ b/drivers/firmware/efi/libstub/file.c
+@@ -189,6 +189,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 				  unsigned long *load_addr,
+ 				  unsigned long *load_size)
+ {
++	const bool ignore_load_options = false;
+ 	const efi_char16_t *cmdline = efi_table_attr(image, load_options);
+ 	u32 cmdline_len = efi_table_attr(image, load_options_size);
+ 	unsigned long efi_chunk_size = ULONG_MAX;
+@@ -197,6 +198,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 	unsigned long alloc_addr;
+ 	unsigned long alloc_size;
+ 	efi_status_t status;
++	bool twopass;
+ 	int offset;
  
-+	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE)) {
-+		status = efi_parse_options(cmdline);
-+		if (status != EFI_SUCCESS)
-+			goto fail_free_cmdline;
+ 	if (!load_addr || !load_size)
+@@ -209,6 +211,21 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 		efi_chunk_size = EFI_READ_CHUNK_SIZE;
+ 
+ 	alloc_addr = alloc_size = 0;
++
++	if (!ignore_load_options && cmdline_len > 0) {
++		twopass = IS_ENABLED(CONFIG_CMDLINE_BOOL) ||
++			  IS_ENABLED(CONFIG_CMDLINE_EXTEND);
++	} else {
++do_builtin:
++#ifdef CONFIG_CMDLINE
++		static const efi_char16_t builtin_cmdline[] = L"" CONFIG_CMDLINE;
++
++		cmdline	    = builtin_cmdline;
++		cmdline_len = ARRAY_SIZE(builtin_cmdline) - 1;
++#endif
++		twopass     = false;
 +	}
 +
- 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
- 	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
- 	    cmdline[0] == 0) {
- 		status = efi_parse_options(CONFIG_CMDLINE);
--		if (status != EFI_SUCCESS) {
--			efi_err("Failed to parse options\n");
--			goto fail_free_cmdline;
--		}
--	}
--
--	if (!IS_ENABLED(CONFIG_CMDLINE_FORCE)) {
--		status = efi_parse_options(cmdline);
--		if (status != EFI_SUCCESS) {
--			efi_err("Failed to parse options\n");
-+		if (status != EFI_SUCCESS)
- 			goto fail_free_cmdline;
--		}
- 	}
+ 	do {
+ 		struct finfo fi;
+ 		unsigned long size;
+@@ -290,6 +307,9 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 		efi_call_proto(volume, close);
+ 	} while (offset > 0);
  
- 	*cmdline_ptr = cmdline;
- 	return EFI_SUCCESS;
++	if (twopass)
++		goto do_builtin;
++
+ 	*load_addr = alloc_addr;
+ 	*load_size = alloc_size;
  
- fail_free_cmdline:
-+	efi_err("Failed to parse options\n");
- 	efi_bs_call(free_pool, cmdline);
- 	return status;
- }
 -- 
 2.47.0.338.g60cca15819-goog
 
