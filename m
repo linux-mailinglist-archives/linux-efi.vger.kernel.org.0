@@ -1,126 +1,126 @@
-Return-Path: <linux-efi+bounces-2160-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2161-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58CA9CDDAF
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 12:47:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 306659CF1DB
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 17:42:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B842280A1E
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 11:47:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E45B72861E8
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 16:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C058F149C53;
-	Fri, 15 Nov 2024 11:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3031D61AC;
+	Fri, 15 Nov 2024 16:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kODFfmSE"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD9852F9E
-	for <linux-efi@vger.kernel.org>; Fri, 15 Nov 2024 11:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425131D61A3;
+	Fri, 15 Nov 2024 16:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731671230; cv=none; b=DfunwwEK57IXmD9IE8UEGo3h56roPaCPNoO3LMBgNYSKIlGAQLbQipXwA7bnma7fHJwG7uPp+CWyI83tQ1x476DBuuD+y1/qng1zPu9jrG3tpKe7kWV+fiCMjyWJ3gN5pVPUNGGu04AgYXr7kpf9oNcG8FMx028lbo0wlFMlIAY=
+	t=1731688798; cv=none; b=sDb8DzWyFIXEvj91Gctkpz4qQw3jHvSjurgA5bkiq0ajalEcZmtgUezJcixAg85W/9u+SUxEh8QHQYU1fHiIU/rFzCdE1rrhkxz+Vc0g+fb0427QtKWjpuImubBl9zUw5wAIiFZu4qziizgU3s+4Ws5KQghTNUdK5CJeJnQR+7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731671230; c=relaxed/simple;
-	bh=F03nWzAVRYHWEg+ISJ4bjRjR3SFFpo6fvfLGx9FGTdM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V7Y2mBmht0umXohpSaZCvxNQNTW0Bul8IcypwjGDEA0A0npS192Q2ks9hKUE0Tfht501GfBr1BsdD2748sZGCCzajRTGnGvLzOGXDVK9xxhXLCFLtABlUnCyw+TYrDEiyDET1fs4Y0N+yctTU4fJ1o6Q9FDyTMsdgtfCBmaCKIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5cf764e50a3so3307085a12.1
-        for <linux-efi@vger.kernel.org>; Fri, 15 Nov 2024 03:47:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731671227; x=1732276027;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8ydOhXtQ8y/lJFhQ7HxBZ7nq8FExAnfI5B1/sjoeY/s=;
-        b=tEdbhGZABrR7EJ+akxf5jxy3TPeWEaifW8sxGAW7qtA6O7oZPuheSg3zR4ekU8kXBl
-         1ZDOU0S7Zxk6+94IcDGkacz6Vdbi1ocDDAcCWG9ATdDB3JDnlJ/UOG9ihwIEQx4FgooQ
-         KiMfgR61Xdj/rhzy/TaolDIJ2GwJRcKEchlqL5b1D3tkL3GQwS/+3mr80nIxzQ0uYCZX
-         QRY2Y+rZRgyL93DCFvXVDZLjrFY2CHfkW7AhCzPJoxHiXnlgM9JGLneA6kTC7/uKmpTe
-         eZ/gHMipzGRzTNZk5jL5uxwSx6vdVVo+w0BRFoXCqBD4YZ3+rZEO9q6hfLjUcN3prxbB
-         zeyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUy9iQkR+0WkX4ksmB/ofX4PshqeSucsvjW5Pjidf84djDuaXzPuwRRBOW7P7iprdatYgLKnf+obNA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqZGE3EeLwOwDxPDDW8P6lPeGyQ5TH1axbywb0Xt/QpU0saP6L
-	1snh5G1FEnRR0pvryJ7FBDm7e/ujf1G+KNS36G1oPAdCTcCJ886tLc9lNQ==
-X-Google-Smtp-Source: AGHT+IG4nKYrapwja/ZIsFL2NQwlINWlMTsyxbxfXV5LKcs+Vk0ytNfAUxxxIlxJBr2hiEZJoyjnNQ==
-X-Received: by 2002:a05:6402:42c2:b0:5cf:1214:8146 with SMTP id 4fb4d7f45d1cf-5cf754baadcmr6824664a12.4.1731671226772;
-        Fri, 15 Nov 2024 03:47:06 -0800 (PST)
-Received: from gmail.com (fwdproxy-lla-005.fbsv.net. [2a03:2880:30ff:5::face:b00c])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf79b9fabdsm1568119a12.30.2024.11.15.03.47.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 03:47:05 -0800 (PST)
-Date: Fri, 15 Nov 2024 03:47:02 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
-	linux-efi@vger.kernel.org, Gregory Price <gourry@gourry.net>,
-	Usama Arif <usamaarif642@gmail.com>
-Subject: Re: [PATCH v2] efi/memattr: Ignore table if the size is clearly bogus
-Message-ID: <20241115-tamarin-of-regular-pleasure-59d243@leitao>
-References: <20241031175822.2952471-2-ardb+git@google.com>
- <20241115-honored-macho-deer-dc6def@leitao>
- <CAMj1kXFjjMcHkbFAsSWJuqtzi2raJgLikx37ipxAB9f0ymXNQA@mail.gmail.com>
- <0ee375db-c720-4af3-a74b-d95777212f6e@kernel.org>
- <CAMj1kXFN48MynLN7gDqYOrA61R5k62pr4NHwvUAKwMGs6xMvdA@mail.gmail.com>
+	s=arc-20240116; t=1731688798; c=relaxed/simple;
+	bh=t1mHSIeHwWXgRLmkrrmBgqlQYmk5zzZwd34nRRtso6o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pc/vBjne8z/LtG01oxVxYxS8/2ktkobVWj6XFUQKdE//KxWneBL+LhnwOGc/qTEofQjscp2IVsJQZFf40Es9cngs2CU8m0xphC1xmlm29BG/c/XlQPhOCxzmR2mpg+Fs1dVb6pEs4X6XckWb/buxpnrk4hs3c36EPuD2LPcnk2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kODFfmSE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E77C4CED5;
+	Fri, 15 Nov 2024 16:39:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731688798;
+	bh=t1mHSIeHwWXgRLmkrrmBgqlQYmk5zzZwd34nRRtso6o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=kODFfmSEDCffQECaHSSMMg50IhTVq8FxxtH+YcScfmllBgDrqQVxS8dKrV1crrlUP
+	 Fmrc9StfUxoQ33m4RcZDFamAbzMJT9pacgugwYQYydD5fGcRXTgMJ50U7rl6r/nLWz
+	 5N5PXhs1+qsL/f+r5jOLtU+iaRXZM9Z4JBG7RK2ZQDs7iYiwLN6xM5GlTCbKO74U9/
+	 L/IIDsHcvouGBokmAYgRxxi/zP47uWxrj+znvYKyfI0lw8etxD1gZSIU/ayMc9CdGT
+	 OJ4/02Ww6N5awcEDmoUbSvvfAk4V3IpMzI9PD9qXJelbHNvnYHevrKm662M+wkP2M7
+	 VApSEY43o0FBA==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53da5a27771so2352942e87.2;
+        Fri, 15 Nov 2024 08:39:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUIZAnbEIqZGGLnYujafiCEtRn4ctkY6MbUKKTbVoYF8GzRYfj8zhuWen3MKTbmqZFagzvynMJifa9gN2aZ@vger.kernel.org, AJvYcCV8sKgmjm4haVuN16JjH7IlZoXKIGb2zZsJtVwczUo+Q2v2WJvHok5ca2uBzJHnpq3KJAylYufiN4U=@vger.kernel.org, AJvYcCWiNJZuDoYJeS/4tswCCm6p1Yn73vxHwPH2T03gpMItMOT0TUM5dtmQeEHlVmmWIDGQIf6RsTav@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvXR9y3lE6Xa9zUt4tlag35j0wPreVfFzg/j80KECnwXl5X2X/
+	TSWP8612dmgPew5sjqCSGM9vmB8DkGYEK0U4k2bx/RQa+mKKECPFKpnpzsz9BYs6Vk5MBOoRnSd
+	gNk/aBAGMfyr1LzCX/o+hoDpOyhY=
+X-Google-Smtp-Source: AGHT+IFLsie8pokR3jzGTAZqEFIhmQehBwU5ZZj22RDpZvJo+/+0M2kyNHP4E9apz6b9Okiyf78iEXFW/nZqzt0La7g=
+X-Received: by 2002:a05:6512:398f:b0:539:f827:2fbc with SMTP id
+ 2adb3069b0e04-53dab2a21dcmr1494682e87.26.1731688796514; Fri, 15 Nov 2024
+ 08:39:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFN48MynLN7gDqYOrA61R5k62pr4NHwvUAKwMGs6xMvdA@mail.gmail.com>
+References: <20241112185217.48792-1-nsaenz@amazon.com> <20241112185217.48792-2-nsaenz@amazon.com>
+In-Reply-To: <20241112185217.48792-2-nsaenz@amazon.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 15 Nov 2024 17:39:45 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGopsux6+xnsXW6vvQDJH9Y3_Ofq_QYvDa-SGt8AJ0nWQ@mail.gmail.com>
+Message-ID: <CAMj1kXGopsux6+xnsXW6vvQDJH9Y3_Ofq_QYvDa-SGt8AJ0nWQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] x86/efi: Apply EFI Memory Attributes after kexec
+To: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Matt Fleming <matt@codeblueprint.co.uk>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stanspas@amazon.de, nh-open-source@amazon.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Nov 15, 2024 at 12:01:38PM +0100, Ard Biesheuvel wrote:
-> On Fri, 15 Nov 2024 at 11:51, Jiri Slaby <jirislaby@kernel.org> wrote:
-> >
-> > On 15. 11. 24, 11:21, Ard Biesheuvel wrote:
-> > > On Fri, 15 Nov 2024 at 11:10, Breno Leitao <leitao@debian.org> wrote:
-> > >>
-> > >> Hello Ard,
-> > >>
-> > >> On Thu, Oct 31, 2024 at 06:58:23PM +0100, Ard Biesheuvel wrote:
-> > >>> From: Ard Biesheuvel <ardb@kernel.org>
-> > >>>
-> > >>> There are reports [0] of cases where a corrupt EFI Memory Attributes
-> > >>> Table leads to out of memory issues at boot because the descriptor size
-> > >>> and entry count in the table header are still used to reserve the entire
-> > >>> table in memory, even though the resulting region is gigabytes in size.
-> > >>>
-> > >>> Given that the EFI Memory Attributes Table is supposed to carry up to 3
-> > >>> entries for each EfiRuntimeServicesCode region in the EFI memory map,
-> > >>> and given that there is no reason for the descriptor size used in the
-> > >>> table to exceed the one used in the EFI memory map, 3x the size of the
-> > >>> entire EFI memory map is a reasonable upper bound for the size of this
-> > >>> table. This means that sizes exceeding that are highly likely to be
-> > >>> based on corrupted data, and the table should just be ignored instead.
-> > >>
-> > >> I haven't seen this patch landing in net-next tree yet.
-> > >> Do you have plan to have this merged into 6.13?
-> > >>
-> > >
-> > > Nobody replied to it, so I wasn't going to.
-> > >
-> > > Would you like this patch to be taken for v6.13? Does it fix the
-> > > issues you have been observing?
-> >
-> > For the reporter at:
-> >    https://bugzilla.suse.com/show_bug.cgi?id=1231465#c50
-> > definitely!
-> >
-> > I was expected this to land in the tree too... (Without any further
-> > notifications to you.)
-> >
-> 
-> Excellent. I'll take this as an ack from both of you.
+On Tue, 12 Nov 2024 at 19:53, Nicolas Saenz Julienne <nsaenz@amazon.com> wrote:
+>
+> Kexec bypasses EFI's switch to virtual mode. In exchange, it has its own
+> routine, kexec_enter_virtual_mode(), which replays the mappings made by
+> the original kernel. Unfortunately, that function fails to reinstate
+> EFI's memory attributes, which would've otherwise been set after
+> entering virtual mode. Remediate this by calling
+> efi_runtime_update_mappings() within kexec's routine.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 18141e89a76c ("x86/efi: Add support for EFI_MEMORY_ATTRIBUTES_TABLE")
+> Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+>
+> ---
+>
+> Notes:
+> - Tested with QEMU/OVMF.
+>
 
-Thanks! I've just send a "formal" ack to keep it registered.
 
-Thanks again for solving it.
---breno
+I'll queue these up, but I am going drop the cc stable: the memory
+attributes table is an overlay of the EFI memory map with restricted
+permissions for EFI runtime services regions, which are only mapped
+while a EFI runtime call is in progress.
+
+So if the table is not taken into account after kexec, the runtime
+code and data mappings will all be RWX but I think this is a situation
+we can live with. If nothing breaks, we can always revisit this later
+if there is an actual need.
+
+Thanks,
+
+
+>  arch/x86/platform/efi/efi.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index 375ebd78296a..a7ff189421c3 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -765,6 +765,7 @@ static void __init kexec_enter_virtual_mode(void)
+>
+>         efi_sync_low_kernel_mappings();
+>         efi_native_runtime_setup();
+> +       efi_runtime_update_mappings();
+>  #endif
+>  }
+>
+> --
+> 2.40.1
+>
 
