@@ -1,138 +1,98 @@
-Return-Path: <linux-efi+bounces-2154-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2155-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC4E9CDBAC
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 10:34:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 471029CDC2E
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 11:10:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 901E3283838
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 09:34:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C19D0B21F3A
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Nov 2024 10:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F9118DF89;
-	Fri, 15 Nov 2024 09:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lj5jP3Cm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025F5192B9D;
+	Fri, 15 Nov 2024 10:10:09 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29886161328;
-	Fri, 15 Nov 2024 09:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA9D18FC91
+	for <linux-efi@vger.kernel.org>; Fri, 15 Nov 2024 10:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731663277; cv=none; b=rNhYc8uQ2EZFWF2tdaBda2AomuPPv5fp1F14KpDayqvVX2VV5hdDUI6oXwR/jW+l3g9OPV1T8GMFqNZHa8fuhhSe6E7U4I27tdT64KpHcVODyl6AEqUp+C6nLZgckwSDVxEsqfTPYmdKkGjPjRVgIh7XR069iAMUhrak10/5s84=
+	t=1731665408; cv=none; b=QoUEBi31e/bii1uVsdmy0MczK8YSi/bbFJyHBNFBsZq9iT4cVHRQZ0ftmroXOJcs1cc0O8JpYp9qZBA2vaGl6fTND6sCvif+EuKhVmpOIO7QQyeBCyuxtW+NbeWH6QJKLckPdo/E6uw+8hpG2eL2CvQSca3vOrlYc4KLKpc9n28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731663277; c=relaxed/simple;
-	bh=JQlPKqTpFyA0j2thumzbxP70BwmQdn+q21TxSdA55Zc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ccwe8+WETFsnelMiMdgcRBRwi6K5yFQx+7QJ3YUeGB7YOAS3CN8xV0qkc+/9BwNnD5qCwrLxOFfX5F9QvqAFnnwdmJYbLJYseD4NCwEyahH0ZS+d7RpPMuq6U64Nc7ALgFRbZSey/MjnSj11Bl4wmcMpKh6vauFe90rzMlAUHvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lj5jP3Cm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E6EC4CED6;
-	Fri, 15 Nov 2024 09:34:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731663276;
-	bh=JQlPKqTpFyA0j2thumzbxP70BwmQdn+q21TxSdA55Zc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lj5jP3CmUlDRlrVBOLX7TGO2SKqkmRA230KTRUPbG5DYl/r0PRUhTg5pgevx4GBb/
-	 I3zxGppJodNo9iZdqcCkwYmnZHYasg8GA8UYNzBxZzbHijme+hh86tVLKem31WPPdp
-	 4ybxWlwwhrTc2rseuURFZnriMrWNYcHuPkhN3MOekdOVx9quqXC4vbwiwepgiWR916
-	 NM5cMM1IG+s3NUC97aFoEt9rBZPgLUcbGH5wQhB7o/82iXnon1qzZs3jLoZtb48Am4
-	 emZmBqd7NdZ9MuQmqhdfHCOVu8vNG62+6/m2eJ6oZ31VABaiKNqJwM3W7sOSqPskk7
-	 px/yW0C4JB9Zg==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53c779ef19cso531535e87.3;
-        Fri, 15 Nov 2024 01:34:36 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUtqWBK+radAfIIP0VhltZAyvNPOXrY+SisbrNqGhx7ELK1v9g8O5NHoo6+yFeMrfYx6RXaRPlNHts=@vger.kernel.org, AJvYcCW7s3FzcNt6IdFEinuofQKYBjC+LQ9yIewqsQssdP0GtEe7uFBimnnrtORLZb/Nawb7fP859xB4y5CO4Qve@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFL2QV5nKzzI2dVQYkaHcoZ6MKMIaK0pVZDjJj6JS5yNtywIGK
-	+vungim6q3M1SVmJsZfxXTK/SiWqzv8wa4BrTiQtqm9xKy/6G53O+dyJFXIhEwIKRWZISbI1xMo
-	brqBoAXMDpVhvj4GbcoFMkLCkLSo=
-X-Google-Smtp-Source: AGHT+IHpyqw2Jkp7a3n7b6aXQH6kbbyi+avVgVFVLmvDxKCUf6uJ6IogfuMUe0NMe5QbqJH3axf02kJIjxgrXsFSU4M=
-X-Received: by 2002:a05:6512:3c87:b0:53d:a2cb:349e with SMTP id
- 2adb3069b0e04-53dab291a9amr840915e87.4.1731663275009; Fri, 15 Nov 2024
- 01:34:35 -0800 (PST)
+	s=arc-20240116; t=1731665408; c=relaxed/simple;
+	bh=UgnuYNW02zUCBhXOUdb6vAEEFpXNxuMjIkqVqUqPgH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XYqDfEwXe5bMYaBs3rJXD37YrfDWm0Pq27Vq9ebEhSPunRhXMAQvA4Go+3TCCpRblpRgr3Mdb5YNnT3VJNnJf/r+IdAacN7JuSlg9J9o/CwS5Yd+lkaZ65T7mj7VsaNZIT/yIsnnCmrK+z68E+oqpEOTTmEzfA/Z5QEzK4KN+EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a9a6acac4c3so270172666b.0
+        for <linux-efi@vger.kernel.org>; Fri, 15 Nov 2024 02:10:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731665406; x=1732270206;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ux7Wg0cpA6sgHR7iVbSVOd3P3/4F/cesVpf2dl76X+o=;
+        b=l1ow16xhKaTatcjwm2IC1N7zf2Bct4Uw+li1rAtgO86wuQ3Bs14BnAmKloK7tLdse1
+         DoxkTDoYg5z6GJtblZN9pQS3k2Emu6ewerMAU2hUA3pgPI7QaHV9JafGP+imQtqxVZaL
+         6JaYVkMsQf127ut848+gYb0YY0GVHHNrvO1aR9IonMauvUKLqrZd8bIqIAJ11EKoF+vd
+         023MzNbE4AerzL5HMFocnXmCbHivxYjLH5uzOfCBscMxE8ZZcdoYI8R/jCAX0jicEnhd
+         utR6odfqKLeTYr2DVSKnmu8c+aoHhMdWVdulOvgfcKVO1uFrofOn/ria3lXCw/O0ODOc
+         EwYw==
+X-Gm-Message-State: AOJu0Yzm3jU8xb0n0ecs4jWmErIgQwyt04k3E+rzSlPrEv2zoSg5c1GN
+	1s5+UozEcn0flnP3KjQ3IInN0YfRww7C4rJagsiSF/jgZ1nqPxqH
+X-Google-Smtp-Source: AGHT+IEBkAJUevvh9cwFoUetYRuuSG6HcINGHTAdEMNZfpq+IQkWNHxov6Ty5oHQ4CWNBvlr/0vfHA==
+X-Received: by 2002:a17:907:3f86:b0:a9a:a3a:6c58 with SMTP id a640c23a62f3a-aa4834261f2mr190528866b.22.1731665404905;
+        Fri, 15 Nov 2024 02:10:04 -0800 (PST)
+Received: from gmail.com (fwdproxy-lla-002.fbsv.net. [2a03:2880:30ff:2::face:b00c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20e0452a0sm162526566b.148.2024.11.15.02.10.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2024 02:10:04 -0800 (PST)
+Date: Fri, 15 Nov 2024 02:10:02 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH v2] efi/memattr: Ignore table if the size is clearly bogus
+Message-ID: <20241115-honored-macho-deer-dc6def@leitao>
+References: <20241031175822.2952471-2-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241026070228.3240177-1-zengheng4@huawei.com>
-In-Reply-To: <20241026070228.3240177-1-zengheng4@huawei.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 15 Nov 2024 10:34:23 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXETHkWvHEs9TuRxB61KvFr11SrLnQGuQTiVtupeAvFCMA@mail.gmail.com>
-Message-ID: <CAMj1kXETHkWvHEs9TuRxB61KvFr11SrLnQGuQTiVtupeAvFCMA@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: sysfb_efi: Fix unused const variable 'efifb_fwnode_ops'
-To: Zeng Heng <zengheng4@huawei.com>
-Cc: tzimmermann@suse.de, javierm@redhat.com, andriy.shevchenko@intel.com, 
-	bp@suse.de, simona.vetter@ffwll.ch, bobo.shaobowang@huawei.com, 
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241031175822.2952471-2-ardb+git@google.com>
 
-On Sat, 26 Oct 2024 at 08:48, Zeng Heng <zengheng4@huawei.com> wrote:
->
-> Fix the following compilation warning:
->
-> drivers/firmware/efi/sysfb_efi.c:345:39: warning:
-> =E2=80=98efifb_fwnode_ops=E2=80=99 defined but not used [-Wunused-const-v=
-ariable=3D]
->   345 | static const struct fwnode_operations efifb_fwnode_ops =3D {
->
-> drivers/firmware/efi/sysfb_efi.c:238:35: warning:
-> =E2=80=98efifb_dmi_swap_width_height=E2=80=99 defined but not used
-> [-Wunused-const-variable=3D]
->   238 | static const struct dmi_system_id
->         efifb_dmi_swap_width_height[] __initconst =3D {
->
-> drivers/firmware/efi/sysfb_efi.c:188:35: warning:
-> =E2=80=98efifb_dmi_system_table=E2=80=99 defined but not used
-> [-Wunused-const-variable=3D]
->   188 | static const struct dmi_system_id
->         efifb_dmi_system_table[] __initconst =3D {
->
-> In addition to the above warning messages, a series of unused warnings
-> because of cascading dependencies were found. The variables and functions
-> related to warnings are only used after CONFIG_EFI enabled. Therefore,
-> these warnings are addressed and fixed in this commit.
->
-> Fixes: 8633ef82f101 ("drivers/firmware: consolidate EFI framebuffer setup=
- for all arches")
-> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-> ---
->  drivers/firmware/efi/sysfb_efi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+Hello Ard,
 
-Is there any reason to build this file in the first place if
-CONFIG_EFI is disabled? Should we fix this in the Makefile instead?
+On Thu, Oct 31, 2024 at 06:58:23PM +0100, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> There are reports [0] of cases where a corrupt EFI Memory Attributes
+> Table leads to out of memory issues at boot because the descriptor size
+> and entry count in the table header are still used to reserve the entire
+> table in memory, even though the resulting region is gigabytes in size.
+> 
+> Given that the EFI Memory Attributes Table is supposed to carry up to 3
+> entries for each EfiRuntimeServicesCode region in the EFI memory map,
+> and given that there is no reason for the descriptor size used in the
+> table to exceed the one used in the EFI memory map, 3x the size of the
+> entire EFI memory map is a reasonable upper bound for the size of this
+> table. This means that sizes exceeding that are highly likely to be
+> based on corrupted data, and the table should just be ignored instead.
 
+I haven't seen this patch landing in net-next tree yet.
+Do you have plan to have this merged into 6.13?
 
-> diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysf=
-b_efi.c
-> index cc807ed35aed..0cfc11ecc98b 100644
-> --- a/drivers/firmware/efi/sysfb_efi.c
-> +++ b/drivers/firmware/efi/sysfb_efi.c
-> @@ -82,6 +82,7 @@ void efifb_setup_from_dmi(struct screen_info *si, const=
- char *opt)
->         }
->  }
->
-> +#ifdef CONFIG_EFI
->  #define choose_value(dmivalue, fwvalue, field, flags) ({       \
->                 typeof(fwvalue) _ret_ =3D fwvalue;                \
->                 if ((flags) & (field))                          \
-> @@ -346,7 +347,6 @@ static const struct fwnode_operations efifb_fwnode_op=
-s =3D {
->         .add_links =3D efifb_add_links,
->  };
->
-> -#ifdef CONFIG_EFI
->  static struct fwnode_handle efifb_fwnode;
->
->  __init void sysfb_apply_efi_quirks(void)
-> --
-> 2.25.1
->
+Thanks
+--breno
 
