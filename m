@@ -1,162 +1,229 @@
-Return-Path: <linux-efi+bounces-2165-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2166-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3D59D0220
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Nov 2024 06:38:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA479D06A6
+	for <lists+linux-efi@lfdr.de>; Sun, 17 Nov 2024 23:03:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D485F284E81
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Nov 2024 05:38:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43D52282573
+	for <lists+linux-efi@lfdr.de>; Sun, 17 Nov 2024 22:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B78219E0;
-	Sun, 17 Nov 2024 05:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6693B1DA313;
+	Sun, 17 Nov 2024 22:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hPBgQeoV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZQ9MemDj"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38E214286
-	for <linux-efi@vger.kernel.org>; Sun, 17 Nov 2024 05:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4291284A4E
+	for <linux-efi@vger.kernel.org>; Sun, 17 Nov 2024 22:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731821882; cv=none; b=MB2lD+y/ZYs7kPRMQIKRleZPcL5QxNoKHwCB9CdlXW1xFwbOaQAH9hzo00RmgdYzUfrZYY8YKz8wi1Fy9uv4VjFo93H0+t7TXdx5bJAV4/ZHCdO+0ipQh0RuBcvmUxYo1nemIjSjaeUqfLJjIxcD3WtT2wTJDhdpJxtZCy6dNLI=
+	t=1731881021; cv=none; b=i/295FPw0r3RY7jGDiKYtcwIXc6sWjuUIVIyr2jNXYsiGAiOhyFsxVVq5R+cehq8ZGDJNyeCqT9pDOcw/8P3QBWTTELhx0mXY4rz95ACqh6f6d961XDGQQpzVSJ5wvxesvVFgJWhc2QNznJxg0rgKfvAYoNWjL/fmyl6p3sNQWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731821882; c=relaxed/simple;
-	bh=1rU+rrNHSxWz+VIIrutIfxWwgu/pCSkSxyykc4ugoTg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=qQQfjaPg+8oJnB2mBWle5nXDWJlhoaZ0+Cfpvwkk9JfV05thRVWIV4Ppn90R5Szy0KDfRu1NXaVbdXIYF40PvBkKfg9KybFCxjPkR4HdZYzTjyx6vhAjhd4kFqJJ32zQioaMaG2yIWdJ2juFdjM2w37c8wK5K7R1pkgOFc2B7Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hPBgQeoV; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1731881021; c=relaxed/simple;
+	bh=oUn1HcQnEtCGgMIbrUr3/Of+6raFRzFycopu1eOj8WQ=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=gCMshJpNFGzMc6oy6hNMz4sSTFugRfaniCH2X+w3w62Cb+q4hEj+Fil72juTB27ChzJA2rm/LU+S5+NmblcxoJafggoQtCAY5ribgvFvzTtVYDbLK3USK4cO6URFqKqhZJmoAH23izGWnpKYQGilMGLh4istwykicE+mhRdVX8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZQ9MemDj; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731821880; x=1763357880;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=1rU+rrNHSxWz+VIIrutIfxWwgu/pCSkSxyykc4ugoTg=;
-  b=hPBgQeoVAhCHVk8Hczsu0qg55oySB4D3a/UcYkZhs9BvDpXWcbnBWezU
-   WVk0G6Q08OoJikrtQMmszqWMAMU8nFyIxN65tWnZ/C5cE2Ugr0omWMR3z
-   arj/RNzVrQlcQmQGORBVyD2bzlBWFb/gf90JHhzMl9lw5dKHCO9aez6q1
-   cJBb7filUncin8kkwrksWx35Yl6HW9BTz62DhVPTJHNrKX74H9r9+WNY5
-   NTFpOCiVXSV7KpV5I69BLo5jw7GDQNfDu/92BCLzzWjhW2HX0/82gTqGZ
-   X1273/bYmlN8MiDZR4l5zSqxedgw3OttJDT7V84Y+4GS5V8aHWULEl7U+
-   w==;
-X-CSE-ConnectionGUID: rQUN/AQ+SZaGWTh5hU5fHQ==
-X-CSE-MsgGUID: T5VZFdk/RwKxjux1IXz+Dw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11258"; a="32035552"
-X-IronPort-AV: E=Sophos;i="6.12,161,1728975600"; 
-   d="scan'208";a="32035552"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2024 21:38:00 -0800
-X-CSE-ConnectionGUID: cff0JyC/SN6p+b7UXxc50Q==
-X-CSE-MsgGUID: v7r7N5hNSyaHIcCkq/JePA==
+  t=1731881019; x=1763417019;
+  h=date:from:to:cc:subject:message-id;
+  bh=oUn1HcQnEtCGgMIbrUr3/Of+6raFRzFycopu1eOj8WQ=;
+  b=ZQ9MemDjuGq71b8Yuqe5Vg7web8EQWxKFBgWFKD5a9mt+0WUwPNerdKI
+   xKpqD9b6pXJFx/l+SkhoB0LNWpw4MkkosfuP9TAjMOPZvKtsq2DKT8c9w
+   /RZJ31Yo0Rtuu5n/ZGosRRIpeCn6pLQyby3A3oC0sJP3NN6SR3I0xkkcI
+   utKFcaI7/a0XqPplFMRhupNOkRolh+8sI15WFo39n8p4m1DMnaqa2P2Cn
+   EjYRDg0ljc+ABdneotocQqfQYgyW9d4BKN2H3s6VF/aQ1+63UmOY0sZcd
+   9LQYdlWc+E/NesPpDlE/x+tIrKVbChd+faifJbnxeK3177Ltvr69+oQDc
+   Q==;
+X-CSE-ConnectionGUID: 06zE6ggJSZqKQOc0H3jOCg==
+X-CSE-MsgGUID: dYBPdq1WTqSWrrrBDuNu8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="19432081"
+X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
+   d="scan'208";a="19432081"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2024 14:03:39 -0800
+X-CSE-ConnectionGUID: qHm67G1fRwyW/wcTY3bdaw==
+X-CSE-MsgGUID: HOjhPpubSgadtMp6ZwBs+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,161,1728975600"; 
-   d="scan'208";a="88817834"
+X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
+   d="scan'208";a="93510518"
 Received: from lkp-server01.sh.intel.com (HELO 1e3cc1889ffb) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 16 Nov 2024 21:37:59 -0800
+  by fmviesa005.fm.intel.com with ESMTP; 17 Nov 2024 14:03:38 -0800
 Received: from kbuild by 1e3cc1889ffb with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1tCXyu-0001ZT-0q;
-	Sun, 17 Nov 2024 05:37:56 +0000
-Date: Sun, 17 Nov 2024 13:37:33 +0800
+	id 1tCnMl-00023d-1U;
+	Sun, 17 Nov 2024 22:03:35 +0000
+Date: Mon, 18 Nov 2024 06:03:22 +0800
 From: kernel test robot <lkp@intel.com>
 To: Ard Biesheuvel <ardb@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-efi@vger.kernel.org
-Subject: [efi:next 14/16] drivers/firmware/efi/libstub/file.c:221:3: error:
- expected expression
-Message-ID: <202411171307.NTJaEkIS-lkp@intel.com>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS
+ c5d91b16f525ea8c98b3fd8efc5105106d17fe9a
+Message-ID: <202411180616.OJFc7ANH-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-head:   8e060452c658e09ce7bcdeaa19dc080d74176a56
-commit: 257f826a691aa9eff8767f0ca5b82a3368b3d02a [14/16] efi/libstub: Fix command line fallback handling when loading files
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20241117/202411171307.NTJaEkIS-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241117/202411171307.NTJaEkIS-lkp@intel.com/reproduce)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: c5d91b16f525ea8c98b3fd8efc5105106d17fe9a  efi: Fix memory leak in efivar_ssdt_load
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411171307.NTJaEkIS-lkp@intel.com/
+elapsed time: 795m
 
-All errors (new ones prefixed by >>):
+configs tested: 136
+configs skipped: 5
 
->> drivers/firmware/efi/libstub/file.c:221:3: error: expected expression
-                   static const efi_char16_t builtin_cmdline[] = L"" CONFIG_CMDLINE;
-                   ^
->> drivers/firmware/efi/libstub/file.c:223:17: error: use of undeclared identifier 'builtin_cmdline'
-                   cmdline     = builtin_cmdline;
-                                 ^
-   drivers/firmware/efi/libstub/file.c:224:28: error: use of undeclared identifier 'builtin_cmdline'
-                   cmdline_len = ARRAY_SIZE(builtin_cmdline) - 1;
-                                            ^
-   drivers/firmware/efi/libstub/file.c:224:28: error: use of undeclared identifier 'builtin_cmdline'
-   drivers/firmware/efi/libstub/file.c:224:28: error: use of undeclared identifier 'builtin_cmdline'
-   5 errors generated.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    clang-20
+alpha                               defconfig    gcc-14.2.0
+arc                              allmodconfig    clang-20
+arc                               allnoconfig    gcc-14.2.0
+arc                              allyesconfig    clang-20
+arc                                 defconfig    gcc-14.2.0
+arm                              allmodconfig    clang-20
+arm                               allnoconfig    gcc-14.2.0
+arm                              allyesconfig    clang-20
+arm                                 defconfig    gcc-14.2.0
+arm                       imx_v4_v5_defconfig    gcc-14.2.0
+arm                       imx_v6_v7_defconfig    gcc-14.2.0
+arm64                            allmodconfig    clang-20
+arm64                             allnoconfig    gcc-14.2.0
+arm64                               defconfig    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+csky                                defconfig    gcc-14.2.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    gcc-14.2.0
+hexagon                          allyesconfig    clang-20
+hexagon                             defconfig    gcc-14.2.0
+i386                             allmodconfig    clang-19
+i386                              allnoconfig    clang-19
+i386                             allyesconfig    clang-19
+i386        buildonly-randconfig-001-20241117    clang-19
+i386        buildonly-randconfig-002-20241117    clang-19
+i386        buildonly-randconfig-003-20241117    clang-19
+i386        buildonly-randconfig-004-20241117    clang-19
+i386        buildonly-randconfig-005-20241117    clang-19
+i386        buildonly-randconfig-006-20241117    clang-19
+i386                                defconfig    clang-19
+i386                  randconfig-001-20241117    clang-19
+i386                  randconfig-002-20241117    clang-19
+i386                  randconfig-003-20241117    clang-19
+i386                  randconfig-004-20241117    clang-19
+i386                  randconfig-005-20241117    clang-19
+i386                  randconfig-006-20241117    clang-19
+i386                  randconfig-011-20241117    clang-19
+i386                  randconfig-012-20241117    clang-19
+i386                  randconfig-013-20241117    clang-19
+i386                  randconfig-014-20241117    clang-19
+i386                  randconfig-015-20241117    clang-19
+i386                  randconfig-016-20241117    clang-19
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch                           defconfig    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                                defconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+microblaze                          defconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                        bcm63xx_defconfig    gcc-14.2.0
+mips                          eyeq6_defconfig    gcc-14.2.0
+mips                           gcw0_defconfig    gcc-14.2.0
+mips                           ip30_defconfig    gcc-14.2.0
+mips                          rb532_defconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+openrisc                          allnoconfig    clang-20
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-12
+parisc                           alldefconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    clang-20
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-12
+parisc64                            defconfig    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    clang-20
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    gcc-14.2.0
+riscv                            allmodconfig    gcc-14.2.0
+riscv                             allnoconfig    clang-20
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    gcc-14.2.0
+riscv                               defconfig    gcc-12
+s390                             allmodconfig    gcc-14.2.0
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    gcc-12
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-12
+sh                        edosk7705_defconfig    gcc-14.2.0
+sh                               j2_defconfig    gcc-14.2.0
+sh                           se7705_defconfig    gcc-14.2.0
+sh                        sh7785lcr_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc64                             defconfig    gcc-12
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-17
+um                                allnoconfig    clang-20
+um                               allyesconfig    clang-20
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20241117    gcc-12
+x86_64      buildonly-randconfig-002-20241117    gcc-12
+x86_64      buildonly-randconfig-003-20241117    gcc-12
+x86_64      buildonly-randconfig-004-20241117    gcc-12
+x86_64      buildonly-randconfig-005-20241117    gcc-12
+x86_64      buildonly-randconfig-006-20241117    gcc-12
+x86_64                              defconfig    clang-19
+x86_64                                  kexec    clang-19
+x86_64                                  kexec    gcc-12
+x86_64                randconfig-001-20241117    gcc-12
+x86_64                randconfig-002-20241117    gcc-12
+x86_64                randconfig-003-20241117    gcc-12
+x86_64                randconfig-004-20241117    gcc-12
+x86_64                randconfig-005-20241117    gcc-12
+x86_64                randconfig-006-20241117    gcc-12
+x86_64                randconfig-011-20241117    gcc-12
+x86_64                randconfig-012-20241117    gcc-12
+x86_64                randconfig-013-20241117    gcc-12
+x86_64                randconfig-014-20241117    gcc-12
+x86_64                randconfig-015-20241117    gcc-12
+x86_64                randconfig-016-20241117    gcc-12
+x86_64                randconfig-071-20241117    gcc-12
+x86_64                randconfig-072-20241117    gcc-12
+x86_64                randconfig-073-20241117    gcc-12
+x86_64                randconfig-074-20241117    gcc-12
+x86_64                randconfig-075-20241117    gcc-12
+x86_64                randconfig-076-20241117    gcc-12
+x86_64                               rhel-8.3    gcc-12
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                  cadence_csp_defconfig    gcc-14.2.0
 
-vim +221 drivers/firmware/efi/libstub/file.c
-
-   177	
-   178	/*
-   179	 * Check the cmdline for a LILO-style file= arguments.
-   180	 *
-   181	 * We only support loading a file from the same filesystem as
-   182	 * the kernel image.
-   183	 */
-   184	efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
-   185					  const efi_char16_t *optstr,
-   186					  int optstr_size,
-   187					  unsigned long soft_limit,
-   188					  unsigned long hard_limit,
-   189					  unsigned long *load_addr,
-   190					  unsigned long *load_size)
-   191	{
-   192		const bool ignore_load_options = false;
-   193		const efi_char16_t *cmdline = efi_table_attr(image, load_options);
-   194		u32 cmdline_len = efi_table_attr(image, load_options_size);
-   195		unsigned long efi_chunk_size = ULONG_MAX;
-   196		efi_file_protocol_t *volume = NULL;
-   197		efi_file_protocol_t *file;
-   198		unsigned long alloc_addr;
-   199		unsigned long alloc_size;
-   200		efi_status_t status;
-   201		bool twopass;
-   202		int offset;
-   203	
-   204		if (!load_addr || !load_size)
-   205			return EFI_INVALID_PARAMETER;
-   206	
-   207		efi_apply_loadoptions_quirk((const void **)&cmdline, &cmdline_len);
-   208		cmdline_len /= sizeof(*cmdline);
-   209	
-   210		if (IS_ENABLED(CONFIG_X86) && !efi_nochunk)
-   211			efi_chunk_size = EFI_READ_CHUNK_SIZE;
-   212	
-   213		alloc_addr = alloc_size = 0;
-   214	
-   215		if (!ignore_load_options && cmdline_len > 0) {
-   216			twopass = IS_ENABLED(CONFIG_CMDLINE_BOOL) ||
-   217				  IS_ENABLED(CONFIG_CMDLINE_EXTEND);
-   218		} else {
-   219	do_builtin:
-   220	#ifdef CONFIG_CMDLINE
- > 221			static const efi_char16_t builtin_cmdline[] = L"" CONFIG_CMDLINE;
-   222	
- > 223			cmdline	    = builtin_cmdline;
-
--- 
+--
 0-DAY CI Kernel Test Service
 https://github.com/intel/lkp-tests/wiki
 
