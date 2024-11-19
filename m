@@ -1,208 +1,205 @@
-Return-Path: <linux-efi+bounces-2171-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2172-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288D69D1965
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2024 21:02:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841B79D1C9E
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Nov 2024 01:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 710C6B21302
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Nov 2024 20:02:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18EDC1F21E5C
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Nov 2024 00:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614101E47CE;
-	Mon, 18 Nov 2024 20:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942C617557;
+	Tue, 19 Nov 2024 00:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="M5Vg+RuI"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Rt6Sx1dq"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2074.outbound.protection.outlook.com [40.107.223.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570B61BD9C1
-	for <linux-efi@vger.kernel.org>; Mon, 18 Nov 2024 20:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731960149; cv=none; b=Q/wxgwz9Gh6QAUqXgey79t7xK4X3bGJATuA0AwVezwhQr6m8v3y3zo5LVjol2iGJdzyaF3UKm3Ln1YMCtADnIxrZcg9X5jZ1wQlV2/K/wCnSylGGzHPc3dFDHvFEJa1a2XEm9hnK+l1dJcwuvILScp6RjHIcU1fuqMWbC/ZyGcI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731960149; c=relaxed/simple;
-	bh=E+LBwBRF8DHoVawLtfgdfdbwEfo68/6NPCRK+oRI+No=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A2uPedJ29pvDZlwAnQeZ8N01woMSFMiHF3Jqw4luxf+Yp5VpVviYo6t/5Yae7cOcJyG+SoSoVHFCGepSW2nNOq1mEVvzV3LtSBLod+b5LeEohApPTC4P/I6qs6HCNNUpSJW3RXi6KfDjsdBwKv+y6XD+g7OplDUVOr5rhquBuCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=M5Vg+RuI; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a9a4031f69fso29516866b.0
-        for <linux-efi@vger.kernel.org>; Mon, 18 Nov 2024 12:02:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1731960144; x=1732564944; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F56XnCiPK1ucbtbbIcuwS+1n5yBs1+kTrZwft20AGGo=;
-        b=M5Vg+RuIEJo5nRlwRuJBceZfl7J/tp7FoRljht/aHjwm80g8gaL4PAKFGneLmac5UA
-         huSPyBi/fanJIwXS8dXkMJtp5Dcx3N2CmMWu53Bymxf5xKqPzMmeKxXpYP3E3puqyzpu
-         J/fmz+9M9Lb8KyShD9HYNb5A3p3pXfkLMkT8blTdBWRJh+YFA8PXqWFG521vWbmES848
-         tBRvstqL/iJJmmUzW7WrS2wLG1qlQpCf3f0Y5Kf1h9bG/eG2KTis3yxBjjtyrGqchec0
-         T0jjenqN5ThrFV3h6Exs7LALNdLFKzDyh/vSdyUauzmqodePjGToGNrMUUTo4FUvxQwg
-         4wpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731960144; x=1732564944;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F56XnCiPK1ucbtbbIcuwS+1n5yBs1+kTrZwft20AGGo=;
-        b=Ot6XGjc3x2WwDq2lSdb3wBJxrBYYHln7N15R15ZG9AZdixNjVCSxtYrD1Xlj1uXADe
-         k/UXyOGyOFw/RwDev0hN3m3G0roru4W6p59sTcUqfdxjg/P0h8vSe3KlZt4zvOBGfXdI
-         h2WRv1Uvh8ld24r0090EBTvDjvkwOmp2+vVrHnjewtppAa+rBXPDb8F7NFgW1djSWV2q
-         SEIN+DfJrQ1ABh22cAMyUzMaBUkHMMRb20cGmOmc7jtzGfOrmcmEc/a60krHV3p9IrAG
-         QjgBBqRCV5seCc+YZejbjKPVRfdTStr6pk3tPtYoneTiiJbYIE7wdCpaThIzfMAoWQ6+
-         KYcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXdLu1OOkaIPcZLWHWzAovEScQeThIaRBlkB1Qf2u1aEfO+ZkIWpW+6TeubmAmat96L0ujYmCwnMko=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRZWh3fZIRmn3EL3NRS3i8STe4gRaSoTNiglHu8p5fzRrX84G+
-	/TLAnuhV78fKCXiopi7efFD+Y2LDSoBmCW5bUKuCNECXVvmzYPX1F+ZTuEi9vTPRU3le2PWw736
-	QmuGWKxil1xxR869Tnz3nfUDFl7VT/vPbtDQ1
-X-Google-Smtp-Source: AGHT+IFoQ/M1Rp3ASKc7+vFPOEp+9oiYAQ8ueOL2fLtrqLS19jm7uOri1Atv932nS8Gcqo/IWYlS3CoMIuiDqjl4zlU=
-X-Received: by 2002:a17:907:9412:b0:a9e:d7e3:ccae with SMTP id
- a640c23a62f3a-aa483427760mr1375196366b.16.1731960144547; Mon, 18 Nov 2024
- 12:02:24 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4148825;
+	Tue, 19 Nov 2024 00:39:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731976771; cv=fail; b=QXZMNuum9vbxKxfm7PEWQO2J14mgyd+klyPP+airbzr12sW8SuXD9rGELJTDJzXXImFWhD3gBHVKfcdRb6We9aUj6zS22csPK5ZmpfqmV1zRr+MfJmtqPXr0jKigEByMWsHDxCn0QXj39VGgU0q42kF3tzWrvpy6nud7HuEyzlA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731976771; c=relaxed/simple;
+	bh=uDMGYcL+XLWGKPyQMmwJ/zGDeZ8pWEQWxwuO+NpzWXg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dvokNX8hz7xRG72fIMhaPqk+km1w4i2Tc/+vsBIF5zLXs90ksqq7f+tvGlskZIqL0U0I5hlpg0GX/rxdqolFYvRAhQUA2QqmQ1O6QyssZI45adw1ch1ygdMBdfd4mG0bMOJ30kMNd5RHTsC6No7DziZOdlzttORwFrKS4td1bDk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Rt6Sx1dq; arc=fail smtp.client-ip=40.107.223.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JTe6zpY6/aIEmuST3UZn65tK2zHvxRj0q0iuCz+7JmyuMz7SbOVBhIdgZCzZW+C57XCXFgMZv1VT/pA4ZF8zn4ZsV7HjqvXoouSt5Y96387pepdzJ8ToOJ2FMWqqhlpGNjC0/R8wBGIa3/jBG6jircQk88OCZWLj2rPOT9XE/TNTnMCTeP5n1qDrTBXMmXBZ+8rz+nIbVqDml9/BaOFDsfxczi1jAynZAz8JhEA5Fj4BDedN9YkYRL8eH4pdjGp1gp4paseCBecnhpFQj3ULxfPX+H06OHiV67M0uxivL5tSRLgq3yhM0hXQu2SmVEXxyPYb1oT4aPAjTJgfRsEglA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=npLRdjlj8mH6FrxgIHDG+pOwFOBIlycwrCsQ1xxMtfI=;
+ b=MwaZbvCZwRKIcTGasDAo30lcghdSlm0fj/JohZ6pzpcE1THD/kwVg/k8yuISvV17s/dmZyW4lpv3UHWY4LfL01l1luKvq7uw4TV8Pp7kliMH++iqYytcaCPPMFEy6X92+d+yJv0kEHsfee9UjaYfwLdrBRlBkrA9v04o5tlpNBJAaJ8PyHEa0MZ6oAHekRwtW2a4Amx2NgEzPXj2gqBy1bryMXMGQcP6PM7tfKOBwvqhaWiU9c7AFtZuAvKcKGo/BKifD9mc0YPP6Cbpixif7+CKbANynto5h+sz8aGpLzLIpQCRSid/OkCQNbv/WFOhnn6E57lNgxJ86xz47zYvBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.12) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=npLRdjlj8mH6FrxgIHDG+pOwFOBIlycwrCsQ1xxMtfI=;
+ b=Rt6Sx1dqd5LDPfLX0Rcp8vwjzIzspwdHg6PzP2912G3CTD5tG+o1qNn1Ntq9NCg1CaItotH8xSEKLW4DfBHijUld75kKkm9XM35Kb9cyLQDVz2tnc9ukvdLJYsjw+MIBVXT+NfYvmpAiInweRPcIyAILq1X5sKo/MUVS07mTNh4=
+Received: from DM6PR10CA0012.namprd10.prod.outlook.com (2603:10b6:5:60::25) by
+ SA0PR12MB7464.namprd12.prod.outlook.com (2603:10b6:806:24b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.22; Tue, 19 Nov
+ 2024 00:39:26 +0000
+Received: from DS1PEPF0001709B.namprd05.prod.outlook.com
+ (2603:10b6:5:60:cafe::ad) by DM6PR10CA0012.outlook.office365.com
+ (2603:10b6:5:60::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23 via Frontend
+ Transport; Tue, 19 Nov 2024 00:39:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.12)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.12 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.12; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.12) by
+ DS1PEPF0001709B.mail.protection.outlook.com (10.167.18.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8158.14 via Frontend Transport; Tue, 19 Nov 2024 00:39:26 +0000
+Received: from ethanolx50f7host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 18 Nov
+ 2024 18:39:24 -0600
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+To: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>
+CC: Ard Biesheuvel <ardb@kernel.org>, Alison Schofield
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
+ Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Yazen Ghannam
+	<yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>, "Smita
+ Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>
+Subject: [PATCH v3 0/7] acpi/ghes, cper, cxl: Process CXL CPER Protocol errors
+Date: Tue, 19 Nov 2024 00:39:08 +0000
+Message-ID: <20241119003915.174386-1-Smita.KoralahalliChannabasappa@amd.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240531010331.134441-1-ross.philipson@oracle.com>
- <20240531010331.134441-7-ross.philipson@oracle.com> <20240531021656.GA1502@sol.localdomain>
- <874jaegk8i.fsf@email.froward.int.ebiederm.org> <5b1ce8d3-516d-4dfd-a976-38e5cee1ef4e@apertussolutions.com>
- <87ttflli09.ffs@tglx> <CALCETrXQ7rChWLDqTG0+KY7rsfajSPguMnHO1G4VJi_mgwN9Zw@mail.gmail.com>
- <1a1f0c41-70de-4f46-b91d-6dc7176893ee@apertussolutions.com>
- <8a0b59a4-a5a2-42ae-bc1c-1ddc8f2aad16@apertussolutions.com>
- <CALCETrX8caT5qvCUu24hQfxUF_wUC2XdGpS2YFP6SR++7FiM3Q@mail.gmail.com>
- <c466ed57-35a8-41c0-9647-c70e588ad1d3@apertussolutions.com>
- <CALCETrW9WNNGh1dEPKfQoeU+m5q6_m97d0_bzRkZsv2LxqB_ew@mail.gmail.com>
- <ff0c8eed-8981-48c4-81d9-56b040ef1c7b@apertussolutions.com>
- <446cf9c70184885e4cec6dd4514ae8daf7accdcb.camel@HansenPartnership.com>
- <5d1e41d6-b467-4013-a0d0-45f9511c15c6@apertussolutions.com>
- <CALCETrW6vMYZo-b7N9ojVSeZLVxhZjLBjnMHsULMGP6TaVYRHA@mail.gmail.com> <9c80e779b6268fde33c93ed3765ff93b1d6d007b.camel@HansenPartnership.com>
-In-Reply-To: <9c80e779b6268fde33c93ed3765ff93b1d6d007b.camel@HansenPartnership.com>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Mon, 18 Nov 2024 12:02:13 -0800
-Message-ID: <CALCETrX4vHnVorqWjPEOP0XLaA0uUWkKikDcCXWtbs2a7EBuiA@mail.gmail.com>
-Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
- early measurements
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: "Daniel P. Smith" <dpsmith@apertussolutions.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	"Eric W. Biederman" <ebiederm@xmission.com>, Eric Biggers <ebiggers@kernel.org>, 
-	Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-efi@vger.kernel.org, iommu@lists.linux-foundation.org, mingo@redhat.com, 
-	bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, ardb@kernel.org, 
-	mjg59@srcf.ucam.org, peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, 
-	nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net, 
-	corbet@lwn.net, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com, 
-	trenchboot-devel@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001709B:EE_|SA0PR12MB7464:EE_
+X-MS-Office365-Filtering-Correlation-Id: 38d65fd4-84e5-4212-709c-08dd08329ec0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qEMwvRQL8Vzdlv7wwrtoYz5EC1o1tCPME6MRtTfKJR7bLRwOE1sGE5QcIz74?=
+ =?us-ascii?Q?suEql+0W/t+/tva/UUjmFHrU9Xll6p0gJsrTZ8zvm23MuqBQ0vFoPmFeMQ/k?=
+ =?us-ascii?Q?sVHXrKSfPRVBPYatMCWH5cROmnkOq/LA9wKoWOgTHMDUq3omBlY0IHGkqUIU?=
+ =?us-ascii?Q?8eJkruPXCjJc/Or3zIvxyK+slR6nh6n4on/Bn8uguKqzk5QeXC6NidAt164o?=
+ =?us-ascii?Q?yU5P3NqpA448tRsop3BifLtdjGnBCBfU6Zk4ynXlxVS+BvnZh8ZZp7VR/Gv/?=
+ =?us-ascii?Q?af/qxU+j81gJQuYhXmPUBjbDTGTabGONI3Sc+dEQB6SEvVBLlfopQPRjJ+9i?=
+ =?us-ascii?Q?QMqvXnvUYNhUHoKVu0UgEOp++pUcEcdJc++LIr0P8iV/zXPmgxFDagaVqfN7?=
+ =?us-ascii?Q?L4N4YKT49f6c21pJKZbflwJvIrPl1otAdOuzn9q5Ej+VUb5EPpvLDLVypTdW?=
+ =?us-ascii?Q?nUCI55RXwG+h7HgUUkSGKYr5IAjSR6Ra2tn5LTMZQ3Car8X0j/axCm21WM3U?=
+ =?us-ascii?Q?DRMICIL1rhY9ET3VSLBoCO640AJR0ylLksXzBvOJ/wHHBcOwAutiDRKzzOjZ?=
+ =?us-ascii?Q?4UzwnNCoFJmmEX6bMnblECklsv3NNL0VyV9SJ+xo/Y0xpv2o7d3Zd3b/RM2E?=
+ =?us-ascii?Q?3cIL/3U/3BQzMo3ZtKaoAWlr4mgVjmOHIFWsH9IuC9BGuja2qEAepBnVL+H9?=
+ =?us-ascii?Q?dOSiPq5tukn6X522C1tDh9MK5C4+22MD7fMWn93NYd1wcuPuXScI70hIbEeP?=
+ =?us-ascii?Q?13PRI5bP0VWp1PboLJKUiCxMGsEzdTexNsmzmK6HsIOv/aW+lGtaqI4LFhY2?=
+ =?us-ascii?Q?//oB4nUeMby+0eiRt8N44fa10V3aBIogLE76qMpzEiAiV5Nczg7HkCPL/o57?=
+ =?us-ascii?Q?KvDwlNQeRYjLPAr6H5lLbaPSQmhvByDMPMLy0QZyukWDGNlIeyvxepA0dY/A?=
+ =?us-ascii?Q?r3BorW7orkxcZPiokvSZx+hObO6RofNYZ18kJ4mmr5JjComtGlK2r4A+lMod?=
+ =?us-ascii?Q?DTU13vMEOssIeocUceT2RcZaNrjv3QpeLNnx24z4iU/QW4JtRKWdgy9BsQP+?=
+ =?us-ascii?Q?M9KODZVS75G+eucVlYYl3F6kdnyJZT410LAvX0DJO5z3JxTCesbAveejWQgL?=
+ =?us-ascii?Q?xcYAnG5qWWMSWtDURjyZqwWDhQTumkmw8+u9IAAVDR49wFD2mFAkValxkKq5?=
+ =?us-ascii?Q?fX87mp+sPbWLCkIBFPiAg2WvTqk2Pe5VU14nlpcbibb+QnM2R6OyyaE+C0Ek?=
+ =?us-ascii?Q?HOWLMMpBHDf+6mPIO4RlmQK93YnI+KbpDzRJZLaeN9CaAsJpSY7xLIANzqYL?=
+ =?us-ascii?Q?GZc4G+G07GHpzAfrLCaSs0FSZzpUsVyfxZbaIGkASSt7OkEIVysrVL0Paamn?=
+ =?us-ascii?Q?LHs0YxYbPdhVV9jpmV0da2mDcB4EAyxbOxZP416APnwiwNqDQORSLE9Dessd?=
+ =?us-ascii?Q?8SFHydaAZdQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.12;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:atlvpn-bp.amd.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 00:39:26.0183
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38d65fd4-84e5-4212-709c-08dd08329ec0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.12];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF0001709B.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7464
 
-On Mon, Nov 18, 2024 at 11:12=E2=80=AFAM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> On Mon, 2024-11-18 at 10:43 -0800, Andy Lutomirski wrote:
-> > Linux should not use TPM2_PCR_Extend *at all*.  Instead, Linux should
-> > exclusively use TPM2_PCR_Event.  I would expect that passing, say,
-> > the entire kernel image to TPM2_PCR_Event would be a big mistake, so
-> > instead Linux should hash the relevant data with a reasonable
-> > suggestion of hashes (which includes, mandatorily, SHA-384 and *does
-> > not* include SHA-1, and may or may not be configurable at build time
-> > to include things like SM3), concatenate them, and pass that to
-> > TPM2_PCR_Event.  And Linux should make the value that it passed to
-> > TPM2_PCR_Event readily accessible to software using it, and should
-> > also include some straightforward tooling to calculate it from a
-> > given input so that software that wants to figure out what value to
-> > expect in a PCR can easily do so.
->
-> Just for clarity, this is about how the agile log format works.  Each
-> event entry in the log contains a list of bank hashes and the extends
-> occur in log event order, so replaying a log should get you to exactly
-> the head PCR value of each bank.  If a log doesn't understand a format,
-> like SM3, then an entry for it doesn't appear in the log and a replay
-> says nothing about the PCR value.
+This patchset adds logging support for CXL CPER endpoint and port protocol
+errors.
 
-I have no idea what the "agile log format" is or what all the formats
-in existence are.  I found section 4.2.4 here:
+The first 5 patches update the existing codebase to support CXL CPER
+Protocol error reporting.
 
-https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p41_p=
-ub.pdf
+The last 2 patches introduce recognizing and reporting CXL CPER Protocol
+errors.
 
-It says:
+Should be based on top of:
+https://lore.kernel.org/linux-cxl/20241113215429.3177981-1-terry.bowman@amd.com
 
-This field contains the list of the digest values Extended. The Extend
-method varies with TPM command, so there is
-no uniform meaning of TPM Extend in this instance, and separate
-descriptions are unavoidable. If using the
-TPM2_PCR_Extend command, this field is the data sent to the TPM (i.e.,
-not the resulting value of the PCR after the
-TPM2_PCR_Extend command completes). If using the TPM2_PCR_Event
-command, this field contains the digest
-structure returned by the TPM2_PCR_Event command (that contains the
-digest(s) submitted to each PCR bank as
-the internal Extend operation). This field SHALL contain the
-information from the TPML_DIGEST_VALUES used in
-the Extend operation.
+Link to v2:
+https://lore.kernel.org/linux-cxl/20241001005234.61409-1-Smita.KoralahalliChannabasappa@amd.com/
 
-So we're logging the values with which we extend the PCRs.  Once upon
-a time, someone decided it was okay to skip extending a PCR bank:
+Changes in v2 -> v3:
+[Dan]: Define a new workqueue for CXL CPER Protocol errors and avoid
+reusing existing workqueue which handles CXL CPER events.
+[Dan] Update function and struct names.
+[Ira] Don't define common function get_cxl_devstate().
+[Dan] Use switch cases rather than defining array of structures.
+[Dan] Pass the entire cxl_cper_prot_err struct for CXL subsystem.
+[Dan] Use pr_err_ratelimited().
+[Dan] Use AER_ severities directly. Don't define CXL_ severities.
+[Dan] Limit either to Device ID or Agent Info check.
+[Dan] Validate size of RAS field matches expectations.
 
-https://google.github.io/security-research/pocs/bios/tpm-carte-blanche/writ=
-eup.html
+Changes in v2 -> v1:
+[Jonathan] Refactor code for trace support. Rename get_cxl_dev()
+to get_cxl_devstate().
+[Jonathan] Cleanups for get_cxl_devstate().
+[Alison, Jonathan]: Define array of structures for Device ID and Serial
+number comparison.
+[Dave] p_err -> rec/p_rec.
+[Jonathan] Remove pr_warn.
 
-and it was not a great idea.
+Smita Koralahalli (7):
+  efi/cper, cxl: Prefix protocol error struct and function names with
+    cxl_
+  efi/cper, cxl: Make definitions and structures global
+  efi/cper, cxl: Remove cper_cxl.h
+  acpi/ghes, cxl: Rename cxl_cper_register_work to
+    cxl_cper_register_event_work
+  acpi/ghes, cxl: Refactor work registration functions to support
+    multiple workqueues
+  acpi/ghes, cper: Recognize and cache CXL Protocol errors
+  acpi/ghes, cxl/pci: Process CXL CPER Protocol Errors
 
-There seem to be six (!) currently defined hashes: SHA1, SHA256,
-SHA384, SHA512, SM2 and SM3.  I haven't spotted anything promising not
-to add more.  It seems to be that Linux really really ought to:
+ drivers/acpi/apei/ghes.c        | 129 +++++++++++++++++++++++++++++---
+ drivers/cxl/core/pci.c          |  50 +++++++++++++
+ drivers/cxl/cxlpci.h            |   6 ++
+ drivers/cxl/pci.c               |  59 ++++++++++++++-
+ drivers/firmware/efi/cper.c     |   6 +-
+ drivers/firmware/efi/cper_cxl.c |  39 +---------
+ drivers/firmware/efi/cper_cxl.h |  66 ----------------
+ include/cxl/event.h             | 109 ++++++++++++++++++++++++++-
+ include/linux/cper.h            |   8 ++
+ 9 files changed, 351 insertions(+), 121 deletions(-)
+ delete mode 100644 drivers/firmware/efi/cper_cxl.h
 
-(a) extend all banks.  Not all banks that the maintainers like, and
-not all banks that the maintainers knew about when having this
-discussion.  *All* banks.  That means TPM2_PCR_Event().  (Or we refuse
-to boot if there's a bank we don't like.)
+-- 
+2.17.1
 
-(b) Make a best effort to notice if something is wrong with the TPM
-and/or someone is MITMing us and messing with us.  That means
-computing the hash algorithms we actually support and checking whether
-TPM2_PCR_Event() returns the right thing.  I'm not seeing a specific
-attack that seems likely that this prevents, but it does seem like
-decent defense in depth, and if someone chooses to provision a machine
-by reading its event log and then subsequently getting an attestation
-that a future event log matches what was read, then avoiding letting
-an attacker who temporarily controls the TPM connection from
-corrupting the results seems wise.  And I don't see anything at all
-that we gain by removing a check that (TPM's reported SHA1 =3D=3D what we
-calculated) in the name of "not supporting SHA1") other than a few
-hundred bytes of object code.  (And yes, SHA1 is much more likely to
-be supported than SM3, so it's not absurd to implement SHA1 and not
-implement SM3.)
-
->
-> For some events, the hash is actually the hash of the event entry
-> itself and for others, the entry is just a hint and the hash is of
-> something else.
->
-> I think part of the confusion stems from the twofold issues of PCRs: at
-> their simplest they were expected to provide the end policy values
-> (this turns out to be problematic because there are quite a few ways,
-> that will produce different end PCR values, that a system could get to
-> the same state).  If you don't trust a bank (or don't know about it),
-> you don't code it into a required policy statement and its value
-> becomes irrelevant.
-
-I think that "you" refers to multiple entities, and this is a problem.
-
-If the vendor of an attestation-dependent thing trusts SM3 but *Linux*
-does not like SM3, then the vendor's software should not become wildly
-insecure because Linux does not like SM3.  And, as that 2004 CVE
-shows, even two groups that are nominally associated with Microsoft
-can disagree on which banks they like, causing a vulnerability.
 
