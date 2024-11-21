@@ -1,72 +1,72 @@
-Return-Path: <linux-efi+bounces-2183-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2184-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FD99D5457
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Nov 2024 21:55:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A91819D5594
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Nov 2024 23:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AE7B283CD7
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Nov 2024 20:55:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E4341F24E56
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Nov 2024 22:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4751E1C9EA4;
-	Thu, 21 Nov 2024 20:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4115C1DBB19;
+	Thu, 21 Nov 2024 22:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="eZcYIJSB"
+	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="wR4ErVwr"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A8D1C6F55
-	for <linux-efi@vger.kernel.org>; Thu, 21 Nov 2024 20:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFD31AAE06
+	for <linux-efi@vger.kernel.org>; Thu, 21 Nov 2024 22:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732222499; cv=none; b=fCBhs2onqZ9OjWGzU1ZEpKhOyHJ1lM2neV8Et0SxDpxtCoP2LJisAEhOUT7RepmTnKTywhrplIH3uoIuSP4n/aDfg2GM34dGXWzoE4MFrk3FXVEXXF2cmRTApJ3W8mukslGRE9jtNzkDZmgFwLQrpVNsy8W2Ng9V8mjtl/rCYl0=
+	t=1732228968; cv=none; b=XBWOVl+Bq1fpXKCUevOcxROdxKUZokYWuMUdZImJscwhIhP1/wIm1dU6tG6xJz8eXwf96zjWCdTz9Gif2pseRNbzD4Feth3oz8YKPLpXM+OgqbjQQOJIZrNFA26OsUQ1uLkE7La92C5G0KnussuA3TCIY9f5jpKmubFK6uV3mFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732222499; c=relaxed/simple;
-	bh=Biph9Y81tJzpyne82IE5JL3yDDDlbt96oHwe7pZJBKY=;
+	s=arc-20240116; t=1732228968; c=relaxed/simple;
+	bh=M8DVUXQGR6NcXFE188QjZG7fKBPLaNmu+KGvMT6oh00=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aOZWMhxPb98GEQmYW+3GY5/hK3BY0STi6NmCVPLuNkopbjKzkFPbEXn4vb/jGF9GWL0SXzCVNxXFKMaTMaYy12KPUUC5ncJ6/gfz+s76X0b/3mKOmTO9T4vJC5JVQ4KHShJUWrCGzwJwsgVijBdYFMD5izZu4G4nLT40+Z7MEEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=eZcYIJSB; arc=none smtp.client-ip=209.85.218.53
+	 To:Cc:Content-Type; b=Yzf/ajVom/OEfMw07CHg53z1nKxTYESeiniQZEBIbgMp8nVPUZuJmDQLhyl4QbI/LakeI6y2vTmMjrH+yq2kcQa8xwXQG0Fi0yi7hms1ddVsJxCmE9QXd3Lch0J0QrDLmWKMSfABaY10Ltl3RCyGpGExQvQwHs3HOnMI3wAexII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=wR4ErVwr; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9ec86a67feso244310966b.1
-        for <linux-efi@vger.kernel.org>; Thu, 21 Nov 2024 12:54:57 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9a6acac4c3so248595766b.0
+        for <linux-efi@vger.kernel.org>; Thu, 21 Nov 2024 14:42:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1732222496; x=1732827296; darn=vger.kernel.org;
+        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1732228965; x=1732833765; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UxlYJjettiAZ+zfwr/z60w9a0TTUnSB4Ghtw8Ez8qss=;
-        b=eZcYIJSBJzbNyIV95VSGlyICxqMVXWjwSXpvTaA1Gm8a+z1DXPgzZL4xx9sQQGpQTB
-         00pw0awYeN+lqtORfWf1yxOJTBJSLaNcCr7EXEm7idN8sqruZGwZy5E/v4dz7mgRlZXC
-         RbgJ70q5sLZmuKuzcSEbcOdTfoEaPwK760R0ESJjlXjHJ03Fpe9z3FvidZFBJ1piroLq
-         iTnaAX2n4caikgul4HOHDnqaAQaUbAz1jjJIRk5d2rwQlsvwtOKJpwl0DbPwtGb922ls
-         udtnN2YBNHEohJ6teTzGDXFijlc/y2yEO+4PyReZIQ8OXv14LtIcLR/tRTipz3fo+fM8
-         QMyw==
+        bh=lpl29WxoyNcOaT5g0KSW5/agiiklTO12tp7HkumeaXI=;
+        b=wR4ErVwrSZWHysH/me/V8xUKSiEUW8QhCEer658KLg6ybrKfZHFhCRIbz4MYbRlHO/
+         Z/D3nBq8/lvFIH4TeF5JyVtqekD10nV988figyGVaE8qia5dcuf7x3i0ENm1pUedtQ7y
+         T8IVEORocf63jwbuPomdk/tSrYyIkREpU5CaugTZiEw3DXrhQji3dVE0fwk826TJ16Rs
+         K+8RQxVpy4XMqhZ9eJqeQGIwVi7+ab7wKdO2zjlNZbqmwEjpPUNU98/nluefp+uLuFr2
+         YnGuB3a4jUziDDuhitZX8cMKlyAi+pKaGySaHE5rmo39/9/8wPBgxFKhRV5Xe0U72P3n
+         5afA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732222496; x=1732827296;
+        d=1e100.net; s=20230601; t=1732228965; x=1732833765;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UxlYJjettiAZ+zfwr/z60w9a0TTUnSB4Ghtw8Ez8qss=;
-        b=w4f38XLw5emOwvQ9THrlsUIjzZVZ2Duimikr+EGoYWOI5OSG32XCULMKKfpmdCHAC1
-         etnR5lgrqGnBocl3lWXiFmflMZ/OyWkim81TfrOhmORCcw6lxyY+LaSVRXfyXWM/ebtL
-         1w/zBPY7IbLecFgd+Fi+soyAabvHnqS/YVj123FOXytBvbZhhXQJyxDVoUhhzL0zSlMM
-         HkpGtgFgsKAb8KhF0iVNnrQ9bo8ISP+pkNmtUrYvlgYcdPAZ1mMh+/666WQZlRclHBox
-         J0SZHE2m/ChFsYDwA1wtqthYcQVSWP1AtykumwWezFjBO1oHme/oAtJk9dgslFPjpiN7
-         OKjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURFk7L3CBFf1N1RuZyzHlU8yTytIoQ5zDki8otx1oPt6enwFJ7jNn8dxUj9WGkYpuXXzAWeC4MARk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgZ7p/a4ma8JhMbBokTptuwvigkS2+7dI9Q4tsp0jjY8tF8r6W
-	SnKI4Y+i9oZ/IR0dOKgxL8/BUiCmcSXVBD+o8CnfQkkluCp1Vo6AbUZhbf8yRpAWnzczD63cOXH
-	u/pBGV2Beg6UtI3G6JSMcRIasif73YDz6kVff
-X-Gm-Gg: ASbGnctOsZ8YCB7AFEepWVsNz1acldCdpaymy56gF1EAK4HnvGIMlMlvi66+4Y2/l2X
-	lUeJN8baqv4kYxZUyNG5i+h8Jx3uyfw==
-X-Google-Smtp-Source: AGHT+IFX8qcopmb73820lJ1EeujV0jQkdCVa2KfAGp/XQ+pR8ULYDdyGXnU+d5xuQGgKClmQdL5XGK0efADwdQnx/XY=
-X-Received: by 2002:a17:907:ab5:b0:a9e:b2da:b4a3 with SMTP id
- a640c23a62f3a-aa509bc13ffmr38783066b.42.1732222495578; Thu, 21 Nov 2024
- 12:54:55 -0800 (PST)
+        bh=lpl29WxoyNcOaT5g0KSW5/agiiklTO12tp7HkumeaXI=;
+        b=kM2wh2aNTs5sSNXnmaQPQjjTod9rAxUNidI7JhsbOxatebUEoUSoupO+slr6buzXy9
+         PikkBr7VWHcX/MoN0b13m5BE1AfcJloSjPWNw84ACA6y3kLxebGDMH74/ekJMssL8Ojk
+         Vy3op8GgViSE9R177Z01BfJYo1IzT4uXDALipJTaaWMXz0dSbkrEz2fcM0F2NPX7a4+J
+         /dPaQDbik6YOe+G3KYO8VhTQqtJh/cY7Q0CdkOV8JJD0OnL6rm/kjWlQRx12nqP77aUp
+         m8hszTnlebqA9HAszdBAMDz6Ztn2YakC4/Wu5mzD8AOxkmY74T9CaVejgxBPAXAmX4YH
+         k54w==
+X-Forwarded-Encrypted: i=1; AJvYcCVfWfTiidiMkmQp8gwQxHfz1zfchstJ0mw1CC/ZsMyuUsgXfGA0IRDFIfdwhWNM0hAPLkMCF2MR4hM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwETLtQZDPEuM8bsNLxLe3MsMreNTmu1rc1oO3zJQ+Ui69sJW/i
+	sgSNwCK66koQgl2RNvd6A43xM/UuY1u9JWIrUDGgJnjPi7uhixfhVX/ogtgeVHDHxftxyeHaWjj
+	LQTK61GEk4eYR5XV54AMhe5fZ9ZW951em0soo
+X-Gm-Gg: ASbGncu9EHWxeqGvY3gcWVWQC+Hlh8i+jGqVcHYuDHa4ZylpiKddgR00PVYFSYG8EN7
+	/0qhvzNA2zj4ZcL3Lcjx5sSiapsj7Fg==
+X-Google-Smtp-Source: AGHT+IEJBb9KISPdLeRNueM+M6hMlDiEZBnKX/0BK3HOiT007/scaGSB3LtwJa2rfHw9qXCKhSH2k1VVwUmlKXIZfpk=
+X-Received: by 2002:a17:907:1dd7:b0:a9a:8a4:e090 with SMTP id
+ a640c23a62f3a-aa509bca598mr60753666b.50.1732228964782; Thu, 21 Nov 2024
+ 14:42:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -86,11 +86,12 @@ References: <20240531010331.134441-1-ross.philipson@oracle.com>
  <5d1e41d6-b467-4013-a0d0-45f9511c15c6@apertussolutions.com>
  <CALCETrW6vMYZo-b7N9ojVSeZLVxhZjLBjnMHsULMGP6TaVYRHA@mail.gmail.com>
  <9c80e779b6268fde33c93ed3765ff93b1d6d007b.camel@HansenPartnership.com>
- <CALCETrX4vHnVorqWjPEOP0XLaA0uUWkKikDcCXWtbs2a7EBuiA@mail.gmail.com> <66fabe21-7d0d-4978-806e-9a4af3e9257a@oracle.com>
-In-Reply-To: <66fabe21-7d0d-4978-806e-9a4af3e9257a@oracle.com>
+ <CALCETrX4vHnVorqWjPEOP0XLaA0uUWkKikDcCXWtbs2a7EBuiA@mail.gmail.com>
+ <66fabe21-7d0d-4978-806e-9a4af3e9257a@oracle.com> <CALCETrXXsta0OdgXb5Ti87psaty7gp5WRr-w8vTuEhOLuoGyXg@mail.gmail.com>
+In-Reply-To: <CALCETrXXsta0OdgXb5Ti87psaty7gp5WRr-w8vTuEhOLuoGyXg@mail.gmail.com>
 From: Andy Lutomirski <luto@amacapital.net>
-Date: Thu, 21 Nov 2024 12:54:44 -0800
-Message-ID: <CALCETrXXsta0OdgXb5Ti87psaty7gp5WRr-w8vTuEhOLuoGyXg@mail.gmail.com>
+Date: Thu, 21 Nov 2024 14:42:32 -0800
+Message-ID: <CALCETrV=PSLvDn4K6o1qoQLwTQtaPU6ESVPZTwRBJF5Pj_XJwg@mail.gmail.com>
 Subject: Re: [PATCH v9 06/19] x86: Add early SHA-1 support for Secure Launch
  early measurements
 To: ross.philipson@oracle.com
@@ -110,82 +111,78 @@ Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 21, 2024 at 12:11=E2=80=AFPM <ross.philipson@oracle.com> wrote:
+On Thu, Nov 21, 2024 at 12:54=E2=80=AFPM Andy Lutomirski <luto@amacapital.n=
+et> wrote:
 >
-> On 11/18/24 12:02 PM, Andy Lutomirski wrote:
-
-> > If the vendor of an attestation-dependent thing trusts SM3 but *Linux*
-> > does not like SM3, then the vendor's software should not become wildly
-> > insecure because Linux does not like SM3.  And, as that 2004 CVE
-> > shows, even two groups that are nominally associated with Microsoft
-> > can disagree on which banks they like, causing a vulnerability.
+> On Thu, Nov 21, 2024 at 12:11=E2=80=AFPM <ross.philipson@oracle.com> wrot=
+e:
+> >
+> > On 11/18/24 12:02 PM, Andy Lutomirski wrote:
 >
-> Thanks everyone for all the feedback and discussions on this. I
-> understand it is important and perhaps the Linux TPM code should be
-> modified to do the extend operations differently but this seems like it
-> is outside the scope of our Secure Launch feature patch set.
-
-It's absolutely not outside the scope.  Look, this is quoted verbatim
-from your patchset (v11, but I don't think this has materially
-changed):
-
-+       /* Early SL code ensured there was a max count of 2 digests */
-+       for (i =3D 0; i < event->count; i++) {
-+               dptr =3D (u8 *)alg_id_field + sizeof(u16);
-+
-+               for (j =3D 0; j < tpm->nr_allocated_banks; j++) {
-+                       if (digests[j].alg_id !=3D *alg_id_field)
-+                               continue;
-
-^^^^^^^^^^^^^^^^^^^^^ excuse me?
-
-+
-+                       switch (digests[j].alg_id) {
-+                       case TPM_ALG_SHA256:
-+                               memcpy(&digests[j].digest[0], dptr,
-+                                      SHA256_DIGEST_SIZE);
-+                               alg_id_field =3D (u16 *)((u8 *)alg_id_field=
- +
-+                                       SHA256_DIGEST_SIZE + sizeof(u16));
-+                               break;
-+                       case TPM_ALG_SHA1:
-+                               memcpy(&digests[j].digest[0], dptr,
-+                                      SHA1_DIGEST_SIZE);
-+                               alg_id_field =3D (u16 *)((u8 *)alg_id_field=
- +
-+                                       SHA1_DIGEST_SIZE + sizeof(u16));
-+                               break;
-+                       default:
-+                               break;
-+                       }
-+               }
-+       }
-+
-+       ret =3D tpm_pcr_extend(tpm, event->pcr_idx, digests);
-+       if (ret) {
-+               pr_err("Error extending TPM20 PCR, result: %d\n", ret);
-+               slaunch_txt_reset(txt, "Failed to extend TPM20 PCR\n",
-+                                 SL_ERROR_TPM_EXTEND);
-+       }
-
-I haven't even tried to see what happens if there are more than two
-allocated banks, but regardless, that 'continue' statement is a
-vulnerability, and it's introduced in the patchset.  I'm not the
-maintainer of this code, but I would NAK this.
-
-I'm sure there's some reason that the TPM spec even makes code like
-this possible, but it sure looks like the TPM2_PCR_Event operation
-exists more or less to avoid this vulnerability.  I think you should
-either use it or you should explain, convincingly, why Linux should
-add code that does not use it and thus has a vulnerability in certain,
-entirely plausible, firmware configurations.
-
-This is brand new code that is explicitly security code.  I don't
-think it's valid to spell "crud, we can't handle this case at all, and
-failing to handle it is a security vulnerability" as "continue".  If
-*I* were writing this code, I would use TPM2_PCR_Event, which is
-entirely immune to this particular failure as far as I can see.
+> > > If the vendor of an attestation-dependent thing trusts SM3 but *Linux=
+*
+> > > does not like SM3, then the vendor's software should not become wildl=
+y
+> > > insecure because Linux does not like SM3.  And, as that 2004 CVE
+> > > shows, even two groups that are nominally associated with Microsoft
+> > > can disagree on which banks they like, causing a vulnerability.
+> >
+> > Thanks everyone for all the feedback and discussions on this. I
+> > understand it is important and perhaps the Linux TPM code should be
+> > modified to do the extend operations differently but this seems like it
+> > is outside the scope of our Secure Launch feature patch set.
+>
+> It's absolutely not outside the scope.  Look, this is quoted verbatim
+> from your patchset (v11, but I don't think this has materially
+> changed):
 
 
---Andy
+... I apologize -- I've misread the code.  That code is still wrong, I
+think, but for an entirely different reason:
+
+>
+> +       /* Early SL code ensured there was a max count of 2 digests */
+> +       for (i =3D 0; i < event->count; i++) {
+> +               dptr =3D (u8 *)alg_id_field + sizeof(u16);
+> +
+> +               for (j =3D 0; j < tpm->nr_allocated_banks; j++) {
+> +                       if (digests[j].alg_id !=3D *alg_id_field)
+> +                               continue;
+>
+> ^^^^^^^^^^^^^^^^^^^^^ excuse me?
+>
+> +
+> +                       switch (digests[j].alg_id) {
+> +                       case TPM_ALG_SHA256:
+> +                               memcpy(&digests[j].digest[0], dptr,
+> +                                      SHA256_DIGEST_SIZE);
+> +                               alg_id_field =3D (u16 *)((u8 *)alg_id_fie=
+ld +
+> +                                       SHA256_DIGEST_SIZE + sizeof(u16))=
+;
+> +                               break;
+> +                       case TPM_ALG_SHA1:
+> +                               memcpy(&digests[j].digest[0], dptr,
+> +                                      SHA1_DIGEST_SIZE);
+> +                               alg_id_field =3D (u16 *)((u8 *)alg_id_fie=
+ld +
+> +                                       SHA1_DIGEST_SIZE + sizeof(u16));
+> +                               break;
+> +                       default:
+> +                               break;
+> +                       }
+> +               }
+> +       }
+
+If we fall off the end of the loop, we never increase alg_id_field,
+and subsequent iterations will malfunction.  But we apparently will
+write zeros (or fail?) if we have an unsupported algorithm, because we
+are asking to extend all allocated banks.  I think.  This code is
+gross.  It's plausible that this whole sequence is impossible unless
+something malicious is going on.
+
+Also, and I'm sort of replying to the wrong patch here, how
+trustworthy is the data that's used to populate tpm_algs in the stub?
+I don't think the results will be very pretty if tpm_algs ends up
+being incorrect.
 
