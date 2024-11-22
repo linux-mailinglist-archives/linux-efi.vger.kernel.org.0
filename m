@@ -1,98 +1,115 @@
-Return-Path: <linux-efi+bounces-2186-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2187-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DBE9D5D4A
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Nov 2024 11:31:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 929C69D5ECF
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Nov 2024 13:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F81528355E
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Nov 2024 10:31:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19E1A1F2379B
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Nov 2024 12:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E1216EB5D;
-	Fri, 22 Nov 2024 10:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158B41DF246;
+	Fri, 22 Nov 2024 12:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="HgANCMKs"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LQQILLiK"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D331304BA;
-	Fri, 22 Nov 2024 10:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172181DEFF5;
+	Fri, 22 Nov 2024 12:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732271485; cv=none; b=cHW2Vepo+13+rz2RsxFReYYOBIrhXwvVZR3SItZJCS7SX7pg48ab+hAZLNgSnYxJ4nETfortuwm5vBmdehWDDxRRP4ivbBdgcOXfbjCes3x81DI5rRab2hTedRKhVWnSIL/mYvM6/Acj5qj32XjZcqeXRvCPAnbTYaPDlYwSLcs=
+	t=1732278446; cv=none; b=VNj4yVS/uNxpFd2Nxbf2KhQ0UZmZQPQcC+ng9XqocjmAAHc4cQAPW8FXeQ7gPyURzwuRXvVWYOpMA5aRI3S7mLZSm3RgwW99sI4ShoVQSZ7TMFMrXoDb3z5TXPEKH+eDxxa7pMVQj3r2wxccK2szHIb7uTp86mK3ip8pAIwqAQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732271485; c=relaxed/simple;
-	bh=lz5JV+UPq/FCPgqu3dAGSu1fJIPEU5uoda5RjDr51TQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ibtnEgNvTEjy5PFN88HGIURKjt0GC4DhZTLDHLOXrq/2tn1ROAK5KbsHsMsZCa/6eFj4ig9nbIcaGotoz7772f+OLb99ctFFEv5EyBnxs+UYpnHTGSIb8hvHD6VmymCL3MnBqVyZNzCn4DJghSQlvDfUEkWHpNKjc4Ld6QB+9iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=HgANCMKs; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1732271479;
-	bh=lz5JV+UPq/FCPgqu3dAGSu1fJIPEU5uoda5RjDr51TQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=HgANCMKsnGedoo7ZS+kRhaiiJ7a361nd/PFP6nvGhTI6rqly5nqN5Grtmp9TlRO5Q
-	 UvgSuVHElPLizP5dieltnj3KDDAQq90RNYjVnXSYOHCZ/vINiPEbS8NHne2A3Kkl6P
-	 8BWxdq05ZkBDRdshFKo701N+6XMXmBBGMdskfh5g=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Fri, 22 Nov 2024 11:31:15 +0100
-Subject: [PATCH] efi: rci2: mark bin_attribute as __ro_after_init
+	s=arc-20240116; t=1732278446; c=relaxed/simple;
+	bh=0kGSHw8JTyuHlCkouecYymNm2X42fBKssXcFo3omKQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ForVg/v9m5OJS2twog7vIlQlgW7CqMjG0fjzeNKRqwFsWIY2Kj7D5v7Fsbdn89R2vY8kUdbh51gJ5vIJoLinkyEOoQn4sX4d9yYGu0cswEUA4uHWwhWDdwacbEC7EVHp5YPfX90ZAejaDymETJbDL6KKucoOZtWNjDquUHMcgzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LQQILLiK; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0kGSHw8JTyuHlCkouecYymNm2X42fBKssXcFo3omKQc=; b=LQQILLiKYSM3aRqMyif85PqZM8
+	g+46MJsI6aZvdT+t7iqH03XXfsjBleDyps7waXsLLQ+pNGWuMUkV+AHXnqwTkVqN5y6XqNOIPQV9I
+	FhBcPw0n9AYFeONmqGBOlLQEnqviwwcx/A5ibdcdi78J/DhlhstftDI6WnCczfzFFAIzYSJyhwjCw
+	m2ZRVvpUZnb6mJLPpkh7Vr3l8qdHWfDEZ7+3DRFMeUpI9VQzUX+bzHkd1TBi7oTgOGVrGfH6r+VEP
+	BkPpm7G9DK5B6zS1b9UKLCNZIck4BLXsmuygD8rmMbIQwo+KRr1uVKl/WETCy5X6f4SDP8Ze7BNS2
+	oQbg1QbQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tESka-00000000hcd-0TQO;
+	Fri, 22 Nov 2024 12:27:04 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id B386A30066A; Fri, 22 Nov 2024 13:27:03 +0100 (CET)
+Date: Fri, 22 Nov 2024 13:27:03 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Wentao Zhang <wentaoz5@illinois.edu>, Matt.Kelly2@boeing.com,
+	akpm@linux-foundation.org, andrew.j.oppelt@boeing.com,
+	anton.ivanov@cambridgegreys.com, ardb@kernel.org, arnd@arndb.de,
+	bhelgaas@google.com, bp@alien8.de, chuck.wolber@boeing.com,
+	dave.hansen@linux.intel.com, dvyukov@google.com, hpa@zytor.com,
+	jinghao7@illinois.edu, johannes@sipsolutions.net,
+	jpoimboe@kernel.org, justinstitt@google.com, kees@kernel.org,
+	kent.overstreet@linux.dev, linux-arch@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-um@lists.infradead.org, llvm@lists.linux.dev, luto@kernel.org,
+	marinov@illinois.edu, masahiroy@kernel.org, maskray@google.com,
+	mathieu.desnoyers@efficios.com, matthew.l.weber3@boeing.com,
+	mhiramat@kernel.org, mingo@redhat.com, morbo@google.com,
+	ndesaulniers@google.com, oberpar@linux.ibm.com, paulmck@kernel.org,
+	richard@nod.at, rostedt@goodmis.org, samitolvanen@google.com,
+	samuel.sarkisian@boeing.com, steven.h.vanderleest@boeing.com,
+	tglx@linutronix.de, tingxur@illinois.edu, tyxu@illinois.edu,
+	x86@kernel.org
+Subject: Re: [PATCH v2 0/4] Enable measuring the kernel's Source-based Code
+ Coverage and MC/DC with Clang
+Message-ID: <20241122122703.GW24774@noisy.programming.kicks-ass.net>
+References: <20241002045347.GE555609@thelio-3990X>
+ <20241002064252.41999-1-wentaoz5@illinois.edu>
+ <20241003232938.GA1663252@thelio-3990X>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241122-sysfs-const-bin_attr-rci2-v1-1-3db1ec9aa203@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAHJdQGcC/x3MwQqDMAyA4VeRnBewoazgq8iQtktnLnUkRSbiu
- 1t2/A7/f4KxChtMwwnKu5hstcM9BshrrB9GeXcDjeSdI0I7rBjmrVrDJHWJrSlqFsLgc0r+WQL
- HAL3/Khf5/d/z67puaMnut2sAAAA=
-X-Change-ID: 20241122-sysfs-const-bin_attr-rci2-74cbb46f7ea7
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732271477; l=1011;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=lz5JV+UPq/FCPgqu3dAGSu1fJIPEU5uoda5RjDr51TQ=;
- b=fHUOrtR7NIQS7KukROanGonWdnybWrd6DyZ4LfFK9Iecs0gt9uH6ca95iyRlvlWOqvs4yqCK7
- AtKoLXbjr0vAM9LYqFd6sKcp2PcKM/a0DvKYfJ3xByJ11V+b/apnIKL
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241003232938.GA1663252@thelio-3990X>
 
-The attribute is only modified during __init phase.
-Protect it against accidental or intentional modifications afterwards.
+On Thu, Oct 03, 2024 at 04:29:38PM -0700, Nathan Chancellor wrote:
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/firmware/efi/rci2-table.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> $ /usr/bin/time -v make -skj"$(nproc)" ARCH=x86_64 LLVM=1 mrproper {def,amd_mem_encrypt.,fortify_source.,llvm_cov.}config bzImage
+> ...
+> vmlinux.o: warning: objtool: __sev_es_nmi_complete+0x6e: call to kasan_check_write() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: do_syscall_64+0x141: call to lockdep_hardirqs_off() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: do_int80_emulation+0x138: call to lockdep_hardirqs_off() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: handle_bug+0x5: call to kmsan_unpoison_entry_regs() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: syscall_enter_from_user_mode_prepare+0x105: call to lockdep_hardirqs_off() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: syscall_exit_to_user_mode+0x73: call to user_enter_irqoff() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: irqentry_enter_from_user_mode+0x105: call to lockdep_hardirqs_off() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: irqentry_exit_to_user_mode+0x62: call to user_enter_irqoff() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: irqentry_enter+0x45: call to lockdep_hardirqs_off() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: irqentry_exit+0x4a: call to lockdep_hardirqs_on() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: irqentry_nmi_enter+0x4: call to lockdep_off() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: irqentry_nmi_exit+0x67: call to lockdep_on() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: enter_s2idle_proper+0xb5: call to lockdep_hardirqs_off() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: cpuidle_enter_state+0x113: call to lockdep_hardirqs_off() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: default_idle_call+0xad: call to lockdep_hardirqs_on() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: cpu_idle_poll+0x29: call to lockdep_hardirqs_on() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: acpi_idle_enter_bm+0x118: call to lockdep_hardirqs_on() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: acpi_idle_do_entry+0x4: call to perf_lopwr_cb() leaves .noinstr.text section
 
-diff --git a/drivers/firmware/efi/rci2-table.c b/drivers/firmware/efi/rci2-table.c
-index 4fd45d6f69a4d8b3233b2e49dc91f0b734a338e9..c1bedd244817b2c53d6cfc4cc8b13f479ba3caa9 100644
---- a/drivers/firmware/efi/rci2-table.c
-+++ b/drivers/firmware/efi/rci2-table.c
-@@ -40,7 +40,7 @@ static u8 *rci2_base;
- static u32 rci2_table_len;
- unsigned long rci2_table_phys __ro_after_init = EFI_INVALID_TABLE_ADDR;
- 
--static BIN_ATTR_SIMPLE_ADMIN_RO(rci2);
-+static __ro_after_init BIN_ATTR_SIMPLE_ADMIN_RO(rci2);
- 
- static u16 checksum(void)
- {
+Just saw this fly by, that looks like something is buggered bad. Notably
+lockdep_hardirqs_{on,off}() are noinstr.
 
----
-base-commit: 28eb75e178d389d325f1666e422bc13bbbb9804c
-change-id: 20241122-sysfs-const-bin_attr-rci2-74cbb46f7ea7
-
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
-
+Is this patch-set causing this, or what?
 
