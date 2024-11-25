@@ -1,103 +1,84 @@
-Return-Path: <linux-efi+bounces-2196-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2197-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4B39D89A3
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Nov 2024 16:48:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D790162690
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Nov 2024 15:48:51 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D477D29415;
-	Mon, 25 Nov 2024 15:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHgeyn6y"
-X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4479D8B4B
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Nov 2024 18:27:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91F9291E;
-	Mon, 25 Nov 2024 15:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 744B4B330A4
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Nov 2024 17:08:11 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09051B3943;
+	Mon, 25 Nov 2024 17:08:05 +0000 (UTC)
+X-Original-To: linux-efi@vger.kernel.org
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D38178378;
+	Mon, 25 Nov 2024 17:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732549730; cv=none; b=ABjntcsblD7J/whJREYxZveLPSIuVOBsiOF1pF37/n0+RqFlbjdgg7cAL7xfKQfpfNdhfZN2ZPX/ZG91fezrGKuDKydulVS/894fUCbbRGU5q0aOdsy5Bx/uMRngdgU3VC76FnYZJspUEXzv/6kgEfvINIvzB0KPXcRPfzLjuQk=
+	t=1732554485; cv=none; b=OMaaaTZpWHOHbArgQN4cVhDsEkFOo69hgdmYwcm5PR/49ZU3SVrid2jy1l933kLlKYWJxy3GrDnk2lHxXx/ZDGg+eFGZZhqAN3v9FTpL7HUegaYpnMjJpUk3YhfGyVIO1nbxniJcWbEcYfri5GYXXVzoUVyRunN7UchAcc0M15U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732549730; c=relaxed/simple;
-	bh=Jb/Nq2waVTH1amIlog0YhIHHgr3jAVLm6cbL0GKgILo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iVOKFlLc0SiDt+B3Ibbp8LM3EWRR4C4qyIpUsVTcOF2MSPfSKjgUsjbNNUt8TwpGIQN0AeRsFk9roIFLaTKp4dw9H7Eb38zBuYbx0MWb7lAj7F5TdROxSDCJRhlD52WoErWjuDK0tlcMhxmhLZWYVec4p6yok5e2QV9MUDqqkSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHgeyn6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F35AC4CECE;
-	Mon, 25 Nov 2024 15:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732549730;
-	bh=Jb/Nq2waVTH1amIlog0YhIHHgr3jAVLm6cbL0GKgILo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IHgeyn6yO0S1PnqKQRn16ps0yWms0cpUjYN40YLAltVL66O1BhyMVRH/Z+Xeaz1D6
-	 QrfSFpFUE2jVsCZrCbCrF92geoGZsj8300zP7uCrT2rx4JY7QFddTvQb/VAHUYO7cA
-	 0iwKBJFxyoyau2gHgm2eYSFx3LnqCWDgX2iExLw+3Upt0diTG0C0VfZ5WKg5iCSw6C
-	 SuaxL6I/dyoZuZe8zFBn1gFdLdv+K7jRszuq8JMKJov+ABtX5U+zdORh8Rm8Ra/ZDQ
-	 nl6V8Nn9j/CdzIMgg3msaCGSQGJlcmSkJ6gh9zg00Mz8aTImwMvAMjRjk3fj5p1Wkl
-	 cteX+Ng594+AA==
-Date: Mon, 25 Nov 2024 15:48:44 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, sudeep.holla@arm.com,
-	guohanjun@huawei.com, gshan@redhat.com, prarit@redhat.com,
-	Jonathan.Cameron@huawei.com, dwmw@amazon.co.uk, ardb@kernel.org,
-	hagarhem@amazon.com, linux-arm-kernel@lists.infradead.org,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, nd@arm.com
-Subject: Re: [PATCH 1/2] arm64/acpi: panic when failed to init acpi table
- with acpi=force option
-Message-ID: <4c8e92ac-1e16-4d0f-8710-96a167d75d97@sirena.org.uk>
-References: <20241125145848.506347-1-yeoreum.yun@arm.com>
- <20241125145848.506347-2-yeoreum.yun@arm.com>
+	s=arc-20240116; t=1732554485; c=relaxed/simple;
+	bh=livMxtHLQQFDWZamd9xynctckPyU9+CiEALRZxsigKI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s84fv21E/r4khv5w4yl9HYkzaIj3whQF3W9Zm5ed6jd/rnEFReERS5JcZ9O8hIm+f1L3GBXmjfKIpdRIWSNbVj3tnYe82ut9TapIjnWSBjvx4RFM/dG2u2YbQAYuJBol/ZwVMryR3LzVFSfhPn5u2Ja9TzDLALrNqqPqGNBLF90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 389F51692;
+	Mon, 25 Nov 2024 09:08:33 -0800 (PST)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 237913F58B;
+	Mon, 25 Nov 2024 09:08:01 -0800 (PST)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: ardb@kernel.org,
+	broonie@kernel.org,
+	sami.mujawar@arm.com,
+	sudeep.holla@arm.com,
+	pierre.gondois@arm.com,
+	hagarhem@amazon.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	guohanjun@huawei.com,
+	Jonathan.Cameron@huawei.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v2 0/2] small fixes when boot with acpi=force option
+Date: Mon, 25 Nov 2024 17:07:56 +0000
+Message-Id: <20241125170758.518943-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nrxKW/jgHeBrIHYk"
-Content-Disposition: inline
-In-Reply-To: <20241125145848.506347-2-yeoreum.yun@arm.com>
-X-Cookie: This bag is recyclable.
+Content-Transfer-Encoding: 8bit
 
+When acpi=force option is used, the dt should be ignored whether it's
+invalid, passed from command line or from configuration table but it
+doesn't so it produces error message
+while scanning dt early time thou it isn't used in booting process.
 
---nrxKW/jgHeBrIHYk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Change to ignore dt when acpi=force option is used.
 
-On Mon, Nov 25, 2024 at 02:58:47PM +0000, Yeoreum Yun wrote:
+v2:
+  - ignore getting dtb from configuration table when acpi=force option is used
 
-> when the acpi=force option is used,
-> the system does not fall back to the device tree (DT).
-> If it fails to initialize the ACPI table, it cannot proceed further.
-> In such cases, the system should invoke panic() to avoid contradicting
-> the user's explicit intent, as failing or
-> proceeding with unintended behavior would violate their wishes.
+Yeoreum Yun (2):
+  arm64/acpi: panic when failed to init acpi table with acpi=force
+    option
+  efi/fdt: ignore dtb when acpi option is used with force
 
-This makes sense to me:
+ arch/arm64/kernel/acpi.c           |  2 ++
+ drivers/firmware/efi/libstub/fdt.c | 10 ++++++----
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
+--
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
---nrxKW/jgHeBrIHYk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdEnFsACgkQJNaLcl1U
-h9BoiQf9E4P/46IN4hopKj75eay7kahmNncSYrOyfwgfTPR/lXVrTdqs3+yA0AQM
-NXmioMTbFo07sWI6RLLZP32VPcTGS/Q7pJS6KThRhsOgqKc9FOfU6DDTcSDmceXq
-mhbIz3MDvFuzXJc56oBcpEtD6ZkpZIfihSsdrXDXS8G/GTW6dnoglQoaFEoJuPY6
-Hn78P46ynaz0Q8C10qldRrcfBi/EcfiLNmAhn7KX4ZwBdyLLX5Mw8y5LwpITtTHb
-Q3ISd1I0ltakdhUZ44AHH3h7kPXZIMkCK7rPnuWLzJKC85YTcqNDrIpo/nTcJzX9
-hu9gHBBtLO0iRyYYLjZnCrlsEnSAoQ==
-=N3Jw
------END PGP SIGNATURE-----
-
---nrxKW/jgHeBrIHYk--
 
