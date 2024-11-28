@@ -1,120 +1,204 @@
-Return-Path: <linux-efi+bounces-2228-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2229-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E829DB636
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Nov 2024 12:05:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CACCA9DB9DA
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Nov 2024 15:46:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C48BB22893
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Nov 2024 11:05:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C4FD1642A0
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Nov 2024 14:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0581925B3;
-	Thu, 28 Nov 2024 11:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C524194A7C;
+	Thu, 28 Nov 2024 14:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgadpRYk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLqxnHeL"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A63E1494A3;
-	Thu, 28 Nov 2024 11:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5912233A;
+	Thu, 28 Nov 2024 14:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732791922; cv=none; b=GhRrnxreOJsZupLVqEWasXwU5jSys0uxy0RGxhgz0b4e0l3db+2GC9CFAtvBpAK17e/L+aewupnBq0eKzj95J99AlLmcdKwc2Q8Dorhq/PnPzvmEWCfOb5E4j7CKJxBY933bwjdDBHVOcMFPGlqsKTIPBFkubxCx3sOxuBBb2+E=
+	t=1732805181; cv=none; b=ZTiHwTUGlmDJ21V+PKQ+N3TxEv0kfMRYEJwWS3hpG/ksEUu4Dg6o1YC9nNqCiTNIw7MmHUicDyzJ3nglhZXk7FPbWTSBRVoYFkXoiiZOc4M+hYh9B0fI9ku4wPXXDVTYqsf+lN8IUN0FOJBq/CM0SD9+Hjz4kzp3PbRqMrOWgWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732791922; c=relaxed/simple;
-	bh=Tk3SgBmzxf75v8mpHFOojCa1eU5RK95fb1ARplAvCr8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dhrv8+MgC6XrUOfhzs3k1ue5fsGN2Fpw2CA3S+dMLJgL0vGbZ6WiDSOrPXqPUIRbzCXFB4mZHFlrwZGXZsKhQBIbiOARJNZ1lgowmnEdj1fKynnB7zZ8hjQTTS51VnZ8pCciGo3JOnZRs0kIaMMfH9vhsGQNIkr5cr5KaqbK9gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgadpRYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06343C4CECE;
-	Thu, 28 Nov 2024 11:05:22 +0000 (UTC)
+	s=arc-20240116; t=1732805181; c=relaxed/simple;
+	bh=nM1YIPt3xK38HIq6W7KgltvqgYeZUWpbOdjuEOs7MXI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rw9JyXTnJ+otFxUYcbRmG87zUq70KnQKmxefoaK6Vdb7yenF7IGYM6Gv9WLXXcrKRzgpwMihlNBeRpfoURxxUYM3S3OfYEScxjYYRzX+folYrS+mnc7pmX86sR3UojNkfcG+6P3HxbflIuvs6cM1jXXyxjvVr/u3h60EeyS8+DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLqxnHeL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF529C4CECE;
+	Thu, 28 Nov 2024 14:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732791922;
-	bh=Tk3SgBmzxf75v8mpHFOojCa1eU5RK95fb1ARplAvCr8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sgadpRYkuUXFkpjw24NWlB9pvIl8IEIcSrCdtE5h4/Cz8ycnW82hdweipurtpcoeG
-	 u1eS8gWZ8oKiDO9M9Nx8k5YsKx0hzTFL/sdclt+pdjqjfCyk08lG+FPgI+k34C/pjF
-	 dL5WYpQmFoEsLJ5q8+vTFdGKyrCR3HZ1zrRhVSQOukrKFqc11yXU2bUkRhtBNLkqXW
-	 U+kqunmAlnqI4wV+AYmOb2muUQWTjySJLk//zpB0DxGOcfi5SRSL8RS67OO0nQKeaf
-	 38H7M0Twjhn+fim4YzHOrHXLiYD+WtyPdgPlV/zEuJIznC4lwChKKVkvNmyLRzLtEZ
-	 Yzj11q9xJ+e+Q==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ffbfee94d7so6049601fa.3;
-        Thu, 28 Nov 2024 03:05:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUt3WT9luNfmNelNRa0hqLhRGEHAUUGN+WIOvlosnqkj/kEibm67xpPqyWSaZjeJoGfDX/DjqRfh8QN@vger.kernel.org, AJvYcCVrw43qur+723jvHh4i/bTmCHnpZw26XQ8sYCfxXRcXztc8ze29BIhBH2aD7hO/PsXDgU0hC3hWigMKnqfl@vger.kernel.org, AJvYcCW8SON0fBJ4Y129WlcfZTVnp59+hM3Ro1XxZ6EpbAjyCrO0ab7gaYNQCHcDhPNDtieN4M443gDlDRjeCmh+@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt+FnrxqSikEU+qfQzjTJEtuwhrOcOpx/3S21LCj4Z+i//rwZy
-	lFvg45Kp3wxTRnpH3wYP6iHIaKNqojOcXONahB/0vJ5k7KhqTKpd9kfNDUw2LrG2SSzSdGsdXmT
-	e/p6Zh3YqZNJMXOB/aYD/fi5S62E=
-X-Google-Smtp-Source: AGHT+IGfCryE9/9cOqbIgjCEMT/F26Kog+spNc3XbOBLC67DHHd+EO0spiyPdSSyrDsU90ykUHitPdH7fxi0sBZnjRk=
-X-Received: by 2002:a05:651c:545:b0:2ff:a89b:4348 with SMTP id
- 38308e7fff4ca-2ffd5fcc351mr23066001fa.1.1732791920303; Thu, 28 Nov 2024
- 03:05:20 -0800 (PST)
+	s=k20201202; t=1732805179;
+	bh=nM1YIPt3xK38HIq6W7KgltvqgYeZUWpbOdjuEOs7MXI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gLqxnHeLM6Tw/I4WrTnBd+q5Uip3+dASDuKZZ+2tZkbtfbXXus/i9H/fgp1VIv8h3
+	 bHF9y9Ct3P4EJ9Pq0xMLSj6dwcu0K+NA/O1nReIJ9yzLaXHqBXL2H+brl+ldE6EcxT
+	 bl7p8iyuAxF+s2kQWETekR0krUKRVJv7WLaFJOXEBZg0My5hVNk4PR/f1ppPwlP+uJ
+	 jPp+08iIJPZ7+Zh8ehE2ZUT/kLYuzOm4QE/fNGtl3LMyPAKyk5HgjiFytkJXyVjWVr
+	 LiEPYZWf8/1W0itAZav+k6pyqaQGn9vMi+yAZi2W0vATufEi1YsU3RS3nRFUukuMFw
+	 9T63WSdwRJfdQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tGfmW-000000000mo-0NFf;
+	Thu, 28 Nov 2024 15:46:12 +0100
+Date: Thu, 28 Nov 2024 15:46:12 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Ricardo Salveti <ricardo@foundries.io>,
+	Marc Zyngier <maz@kernel.org>, linux-efi@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: UEFI EBS() failures on Lenovo T14s
+Message-ID: <Z0iCNJVWNzBzdq0C@hovoldconsulting.com>
+References: <Z0gn1N3IsP8r3gTA@hovoldconsulting.com>
+ <CAMj1kXGjiA1HydMaY82MQsYvkchpN7v7CMOB5i3NEdqcYGn19Q@mail.gmail.com>
+ <Z0g_HL01eqXu4cwQ@hovoldconsulting.com>
+ <CAMj1kXFtr7ejEjjSRj9dcRa7YbO0SR5OR3pm+K6OvbX2=RfhAQ@mail.gmail.com>
+ <CAMj1kXHS_TY=jfBT=dqUQSXf2pBXbt12uaLsMw-FLX3uU_X6uA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z0gn1N3IsP8r3gTA@hovoldconsulting.com> <CAMj1kXGjiA1HydMaY82MQsYvkchpN7v7CMOB5i3NEdqcYGn19Q@mail.gmail.com>
- <Z0g_HL01eqXu4cwQ@hovoldconsulting.com> <CAMj1kXFtr7ejEjjSRj9dcRa7YbO0SR5OR3pm+K6OvbX2=RfhAQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXFtr7ejEjjSRj9dcRa7YbO0SR5OR3pm+K6OvbX2=RfhAQ@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 28 Nov 2024 12:05:09 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHS_TY=jfBT=dqUQSXf2pBXbt12uaLsMw-FLX3uU_X6uA@mail.gmail.com>
-Message-ID: <CAMj1kXHS_TY=jfBT=dqUQSXf2pBXbt12uaLsMw-FLX3uU_X6uA@mail.gmail.com>
-Subject: Re: UEFI EBS() failures on Lenovo T14s
-To: Johan Hovold <johan@kernel.org>
-Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Ricardo Salveti <ricardo@foundries.io>, Marc Zyngier <maz@kernel.org>, linux-efi@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHS_TY=jfBT=dqUQSXf2pBXbt12uaLsMw-FLX3uU_X6uA@mail.gmail.com>
 
-On Thu, 28 Nov 2024 at 11:21, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Thu, 28 Nov 2024 at 11:00, Johan Hovold <johan@kernel.org> wrote:
-> >
-> > On Thu, Nov 28, 2024 at 09:52:33AM +0100, Ard Biesheuvel wrote:
-> >
-> ...
-> > > In upstream EDK2, the map key is just a monotonic counter that gets
-> > > incremented on every memory map update, so one experiment worth
-> > > conducting is to repeat the second call to ExitBootServices() a couple
-> > > of times, increasing the map key each time.
-> >
-> > I had already tried repeating the second call (GMM + EBS) by running it
-> > in a loop, and I do see the map_key increasing for each iteration (e.g.
-> > by 0x1a).
-> >
-> > > Or use GetMemoryMap() to
-> > > just grab the map key without the actual memory map, and printing it
-> > > to the console (although the timer is disabled on the first call so
-> > > anything that relies on that will be shut down at this point)
-> >
-> > I just tried adding another inner loop just calling GetMemoryMap() a few
-> > times and I see the map_key increasing there too for each iteration
-> > (e.g. by 0x6).
-> >
-> > (The map size remains constant.)
-> >
-> > I do get the feeling that efi_printk() contributes to the memory map
-> > updates, and I can indeed get the reference design fw to similarly fail
-> > if I try to print the map_key after each call to GetMemoryMap() in a
-> > retry loop.
->
-> Per the spec, the only thing you are permitted to call if
-> ExitBootServices() fails is GetMemoryMap(), and so this is not a spec
-> violation.
->
-> If GetMemoryMap() itself causes the map key to assume a different
-> value than the one it returns, or if ExitBootServices() invokes event
-> callbacks on the second call that may cause the map key to get updated
-> before it manages to check it, there is obviously something wrong in
-> the firmware implementation.
+On Thu, Nov 28, 2024 at 12:05:09PM +0100, Ard Biesheuvel wrote:
 
-If you're happy to experiment more, you could try and register a
-notification for EFI_EVENT_GROUP_BEFORE_EXIT_BOOT_SERVICES using
-CreateEventEx(), and see if it gets called when ExitBootServices() is
-called. That would at least help narrow it down.
+> If you're happy to experiment more, you could try and register a
+> notification for EFI_EVENT_GROUP_BEFORE_EXIT_BOOT_SERVICES using
+> CreateEventEx(), and see if it gets called when ExitBootServices() is
+> called. That would at least help narrow it down.
+
+Thanks for the suggestion.
+
+I see the notify function being called when I signal it as well as on
+each ExitBootServices().
+
+With an efi_printk() in the callback ExitBootServices() fails as
+expected, but with an empty function the kernel seems to start every
+time.
+
+Interestingly, ExitBootServices() now succeeds also if I add back the
+CloseEvent() call. In fact, it works also if I never signal the event
+(i.e. if I just create and close the event).
+
+The patch below should suffice as a workaround I can carry until the
+firmware has been fixed.
+
+Johan
+
+
+From 1464360c7c16d1a6ce454bf88ee5815663f27283 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Wed, 27 Nov 2024 16:05:37 +0100
+Subject: [PATCH] hack: efi/libstub: fix t14s exit_boot_services() failure
+
+The UEFI firmware on the Lenovo ThinkPad T14s is broken and
+ExitBootServices() often fails and prevents the kernel from starting:
+
+	EFI stub: Exiting boot services...
+	EFI stub: Exit boot services failed.
+
+One bootloader entry may fail to start almost consistently (once in a
+while it may start), while a second entry may always work even when the
+kernel, dtb and initramfs images are copies of the failing entry on the
+same ESP.
+
+This can be worked around by starting and exiting a UEFI shell from the
+bootloader or by starting the bootloader manually via the Boot Menu
+(F12) before starting the kernel.
+
+Notably starting the kernel automatically from the shell startup.nsh
+does not work, while calling the same script manually works.
+
+Experiments have revealed that allocating an event before calling
+ExitBootServices() can make the call succeed. When providing a
+notification function there apparently is no need to actually signal the
+event group and CloseEvent() could also be called directly.
+
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ .../firmware/efi/libstub/efi-stub-helper.c    | 24 +++++++++++++++++++
+ drivers/firmware/efi/libstub/efistub.h        |  4 ++--
+ 2 files changed, 26 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index de659f6a815f..9c9c7a1f1718 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -409,6 +409,13 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
+ 	return (char *)cmdline_addr;
+ }
+ 
++#define EFI_EVENT_GROUP_BEFORE_EXIT_BOOT_SERVICES \
++	EFI_GUID(0x8be0e274, 0x3970, 0x4b44,  0x80, 0xc5, 0x1a, 0xb9, 0x50, 0x2f, 0x3b, 0xfc)
++
++static void efi_before_ebs_notify(efi_event_t event, void *context)
++{
++}
++
+ /**
+  * efi_exit_boot_services() - Exit boot services
+  * @handle:	handle of the exiting image
+@@ -429,10 +436,27 @@ efi_status_t efi_exit_boot_services(void *handle, void *priv,
+ {
+ 	struct efi_boot_memmap *map;
+ 	efi_status_t status;
++	efi_guid_t guid = EFI_EVENT_GROUP_BEFORE_EXIT_BOOT_SERVICES;
++	efi_event_t event;
+ 
+ 	if (efi_disable_pci_dma)
+ 		efi_pci_disable_bridge_busmaster();
+ 
++	status = efi_bs_call(create_event_ex, EFI_EVT_NOTIFY_SIGNAL,
++			     EFI_TPL_CALLBACK, efi_before_ebs_notify, NULL,
++			     &guid, &event);
++	if (status == EFI_SUCCESS) {
++		status = efi_bs_call(signal_event, event);
++		if (status != EFI_SUCCESS)
++			efi_err("%s - signal event failed: %02lx\n", __func__, status);
++
++		status = efi_bs_call(close_event, event);
++		if (status != EFI_SUCCESS)
++			efi_err("%s - close event failed: %02lx\n", __func__, status);
++	} else {
++		efi_err("%s - create event ex failed: %02lx\n", __func__, status);
++	}
++
+ 	status = efi_get_memory_map(&map, true);
+ 	if (status != EFI_SUCCESS)
+ 		return status;
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 685098f9626f..e3f710823a29 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -272,7 +272,7 @@ union efi_boot_services {
+ 		efi_status_t (__efiapi *wait_for_event)(unsigned long,
+ 							efi_event_t *,
+ 							unsigned long *);
+-		void *signal_event;
++		efi_status_t (__efiapi *signal_event)(efi_event_t);
+ 		efi_status_t (__efiapi *close_event)(efi_event_t);
+ 		void *check_event;
+ 		void *install_protocol_interface;
+@@ -322,7 +322,7 @@ union efi_boot_services {
+ 		void *calculate_crc32;
+ 		void (__efiapi *copy_mem)(void *, const void *, unsigned long);
+ 		void (__efiapi *set_mem)(void *, unsigned long, unsigned char);
+-		void *create_event_ex;
++		efi_status_t (__efiapi *create_event_ex)(u32, int, void *, void *, void *, efi_event_t *);
+ 	};
+ 	struct {
+ 		efi_table_hdr_t hdr;
+-- 
+2.45.2
+
 
