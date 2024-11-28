@@ -1,111 +1,115 @@
-Return-Path: <linux-efi+bounces-2230-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2231-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFF49DBA66
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Nov 2024 16:21:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B1491644AA
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Nov 2024 15:21:27 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2134E1BBBE5;
-	Thu, 28 Nov 2024 15:21:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UWo+Lk5v"
-X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219B59DBAF1
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Nov 2024 16:58:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9DA1B86E9;
-	Thu, 28 Nov 2024 15:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7800B229D6
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Nov 2024 15:58:23 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2081BD9CF;
+	Thu, 28 Nov 2024 15:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="TSix07Kq"
+X-Original-To: linux-efi@vger.kernel.org
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779711AA1D5;
+	Thu, 28 Nov 2024 15:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.190.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732807283; cv=none; b=nDlsgcuaZGatBT1LiqJ9oSd78uVInELyWStFZtT9tOqVEbBHyerIxnf6Wn7Zy9du7needhje81FLe1rwY8Dend2CH/kxRdnBMQr0m7Y9rDre0r6VcHuC0apPaY/bYjJDRP1UFIehHw7ReaenKCRAarxUZaP+wBDa33oRNvXzYQs=
+	t=1732809498; cv=none; b=sj4bCZ+s9IK0azmS5qhlpvAFg8xUn/bTLeyWPOr00WJuSXOAyelK22h5w/RGeQ3oAZ5HI/0TT92MTHdQpf5rY4iA0ZJfQDwt9FhP0pxW28p3hqaQAGpc0gjb/zqiCmiaEnGXKZHgwb6785eSdvUjPEHuy512nLr8ehFG/D7hW5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732807283; c=relaxed/simple;
-	bh=KwPswigeoYrfDYJtdMcEwRzcAGQAejZN5dhixRMkbQw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DhU8HgDXN7FBw1uOJpu7kNVpR5E8aEUXJAHoWwzE8PJfadg62Ajevwq9zNW7+NfMv2RYHNdZN7kCCv2mm8PTKEaWgebNZTy5JY4ueTKhVRoZKKTKnpI6fgZf9nNGV4nmgo/JLtcdFkeH0Rq3GkoWhcnQZd8Gbdj8atR22kjldxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UWo+Lk5v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6266CC4CED2;
-	Thu, 28 Nov 2024 15:21:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732807282;
-	bh=KwPswigeoYrfDYJtdMcEwRzcAGQAejZN5dhixRMkbQw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UWo+Lk5vNuDy8tBOM3Ww+BPuyIt360DAkV9VWzV16v6Vu7OQzD6zf5o0T2UAII2XZ
-	 Rf1v1jaNZoQMXTQUH1vuAPdLbNLDkEWj4P457t0j971xTFxfz/q5PJv6ohO+7DDBet
-	 djQsZu+/QKETqRULA+VPz1YtXfAtbb2tCD5lwV5mhFF0dRFKA2p80moHjQjxmvTIva
-	 COfO8GkJl4S0pIOWPicXB4fFjL3eJ2qfdoCeSEmzF4gSX+t+SQ3wpIwDfMOuB8ce2q
-	 8/N9NbTCfQvT/4/QrLUS6mjPHI12PFqFLrwsPIuWa0lG793OokYnjzd0JfcM0SuF71
-	 hCDkZfYzUSa3w==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53df1d1b726so1088785e87.0;
-        Thu, 28 Nov 2024 07:21:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUJuAvYFcm0t30QsOhWkQk+BqQCi8TFWeGoOgoPn3ES2uNnXXpuVLALiJBJXkAVT7h6nXUS0VN+sNvFgq90@vger.kernel.org, AJvYcCWWq+a6jCFThDecuGpR0rSCDekDbuKHEho+mHMqkyLjQfiElXX8BnQD5leYnQFYhkrv0Aj6HLDyZZPh@vger.kernel.org, AJvYcCX3BwI9HcBiT2V5Ca/QQrsBNn50mDIEFalPXRBcJfpdcAQrXMaa8ug6pbAa2p1rNkYpILwBNrs8/KOaBCDf@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFha0rD9bzKA9l2n7foJB6fS3a9IokI61zWiP51WKWrbptz763
-	a7h7zeo0LSHeW40f2L7RBpVsgEa6xi3eswEqv88hvdqShommKv7HoLjxtV5epR3uL6AXAQO8lBn
-	45/RA3UJszwkvFCsNnJZkf2gQa4w=
-X-Google-Smtp-Source: AGHT+IH5AzxePrQfm/g3C9Rp5Yo42677DLUre4lr1G2GByUnqv2vCF3ncOHe8H5mYdDAWk6MQDbEnY2XInxuuPyirs8=
-X-Received: by 2002:a05:6512:39c9:b0:53d:c322:e782 with SMTP id
- 2adb3069b0e04-53df00d9c87mr4513660e87.28.1732807280609; Thu, 28 Nov 2024
- 07:21:20 -0800 (PST)
+	s=arc-20240116; t=1732809498; c=relaxed/simple;
+	bh=wzhPYq6ef+ZWDFaSZXznhUC64rBsiaZOuaBa3TgCewE=;
+	h=MIME-Version:Content-Type:Date:Message-ID:Subject:From:To:CC:
+	 References:In-Reply-To; b=hwrJ0rRQSE5wU1f8Pha+7ecgbmLSskhZtRtNjGHiE2PmrAc4cND1YmSmZNXQwSPWEJMXuDGHmcQhEYCqkSgjNPJIJ9NTxmlm94WrHInFvnT/5oF1eJ3FJ1/yVPGsKs6FyRSIJqk38E4DVZ/QGtL8FpLJLgg+8XuNqHNepl3Sk2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.es; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=TSix07Kq; arc=none smtp.client-ip=207.171.190.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1732809498; x=1764345498;
+  h=mime-version:content-transfer-encoding:date:message-id:
+   subject:from:to:cc:references:in-reply-to;
+  bh=z2xmP1cZOfYevSvzD/k3N5akpqcpBaaiEKDmAcJtr6A=;
+  b=TSix07Kqv5QTzvpUjF/NtmQnTRHuTFTATf+YJ8GJhpNruxxtXoghIrPP
+   N7mK0bm1FxnOEveYVXNeHo0qMu3Zb+NpN/JSZ448MZlcOgtWhd0E5VZVx
+   o1ZEB56X3n5uTjshddimi83QNsKCw2TwofiFtB91wmPnzpuct6BrtZOyB
+   0=;
+X-IronPort-AV: E=Sophos;i="6.12,192,1728950400"; 
+   d="scan'208";a="389106589"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2024 15:58:11 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [10.0.43.254:12251]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.26.116:2525] with esmtp (Farcaster)
+ id aa97e48e-099c-4014-b6d4-1285e8d7c9c0; Thu, 28 Nov 2024 15:58:10 +0000 (UTC)
+X-Farcaster-Flow-ID: aa97e48e-099c-4014-b6d4-1285e8d7c9c0
+Received: from EX19D004EUC001.ant.amazon.com (10.252.51.190) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Thu, 28 Nov 2024 15:58:10 +0000
+Received: from localhost (10.13.235.138) by EX19D004EUC001.ant.amazon.com
+ (10.252.51.190) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Thu, 28 Nov 2024
+ 15:58:05 +0000
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z0gn1N3IsP8r3gTA@hovoldconsulting.com> <CAMj1kXGjiA1HydMaY82MQsYvkchpN7v7CMOB5i3NEdqcYGn19Q@mail.gmail.com>
- <Z0g_HL01eqXu4cwQ@hovoldconsulting.com> <CAMj1kXFtr7ejEjjSRj9dcRa7YbO0SR5OR3pm+K6OvbX2=RfhAQ@mail.gmail.com>
- <CAMj1kXHS_TY=jfBT=dqUQSXf2pBXbt12uaLsMw-FLX3uU_X6uA@mail.gmail.com> <Z0iCNJVWNzBzdq0C@hovoldconsulting.com>
-In-Reply-To: <Z0iCNJVWNzBzdq0C@hovoldconsulting.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 28 Nov 2024 16:21:09 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXF0Mmr5CyyeKXO6-Ot+5cfSV6t2jPmn+TGVyjUsoYwGtw@mail.gmail.com>
-Message-ID: <CAMj1kXF0Mmr5CyyeKXO6-Ot+5cfSV6t2jPmn+TGVyjUsoYwGtw@mail.gmail.com>
-Subject: Re: UEFI EBS() failures on Lenovo T14s
-To: Johan Hovold <johan@kernel.org>
-Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Ricardo Salveti <ricardo@foundries.io>, Marc Zyngier <maz@kernel.org>, linux-efi@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
+Date: Thu, 28 Nov 2024 15:58:02 +0000
+Message-ID: <D5XXP2PU3PUK.3HN27QB1GEW09@amazon.com>
+Subject: Re: [PATCH v2 2/2] x86/efi: Apply EFI Memory Attributes after kexec
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+To: Dave Young <dyoung@redhat.com>
+CC: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H . Peter Anvin"
+	<hpa@zytor.com>, Matt Fleming <matt@codeblueprint.co.uk>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stanspas@amazon.de>, <nh-open-source@amazon.com>, <stable@vger.kernel.org>,
+	<kexec@lists.infradead.org>
+X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
+References: <20241112185217.48792-1-nsaenz@amazon.com>
+ <20241112185217.48792-2-nsaenz@amazon.com>
+ <CALu+AoTnrPPFkRZpYDpYxt1gAoQuo_O7YZeLvTZO4qztxgSXHw@mail.gmail.com>
+In-Reply-To: <CALu+AoTnrPPFkRZpYDpYxt1gAoQuo_O7YZeLvTZO4qztxgSXHw@mail.gmail.com>
+X-ClientProxiedBy: EX19D044UWB001.ant.amazon.com (10.13.139.171) To
+ EX19D004EUC001.ant.amazon.com (10.252.51.190)
 
-On Thu, 28 Nov 2024 at 15:46, Johan Hovold <johan@kernel.org> wrote:
->
-> On Thu, Nov 28, 2024 at 12:05:09PM +0100, Ard Biesheuvel wrote:
->
-> > If you're happy to experiment more, you could try and register a
-> > notification for EFI_EVENT_GROUP_BEFORE_EXIT_BOOT_SERVICES using
-> > CreateEventEx(), and see if it gets called when ExitBootServices() is
-> > called. That would at least help narrow it down.
->
-> Thanks for the suggestion.
->
-> I see the notify function being called when I signal it as well as on
-> each ExitBootServices().
->
+Hi Dave,
 
-Interesting. That means the EDK2 fork is fairly recent.
-
-FYI https://github.com/tianocore/edk2/pull/6481
-
-
-> With an efi_printk() in the callback ExitBootServices() fails as
-> expected, but with an empty function the kernel seems to start every
-> time.
+On Fri Nov 22, 2024 at 1:03 PM UTC, Dave Young wrote:
+> On Wed, 13 Nov 2024 at 02:53, Nicolas Saenz Julienne <nsaenz@amazon.com> =
+wrote:
+>>
+>> Kexec bypasses EFI's switch to virtual mode. In exchange, it has its own
+>> routine, kexec_enter_virtual_mode(), which replays the mappings made by
+>> the original kernel. Unfortunately, that function fails to reinstate
+>> EFI's memory attributes, which would've otherwise been set after
+>> entering virtual mode. Remediate this by calling
+>> efi_runtime_update_mappings() within kexec's routine.
 >
-> Interestingly, ExitBootServices() now succeeds also if I add back the
-> CloseEvent() call. In fact, it works also if I never signal the event
-> (i.e. if I just create and close the event).
->
+> In the function __map_region(), there are playing with the flags
+> similar to the efi_runtime_update_mappings though it looks a little
+> different.  Is this extra callback really necessary?
 
-Is it still invoked by the firmware if you closed the event before EBS()?
+EFI Memory attributes aren't tracked through
+`/sys/firmware/efi/runtime-map`, and as such, whatever happens in
+`__map_region()` after kexec will not honor them.
 
-> The patch below should suffice as a workaround I can carry until the
-> firmware has been fixed.
->
+> Have you seen a real bug happened?
 
-Ok. I'd prefer to get this fixed on the firmware side as well.
+If lowered security posture after kexec counts as a bug, yes. The system
+remains stable otherwise.
+
+Nicolas
 
