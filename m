@@ -1,176 +1,163 @@
-Return-Path: <linux-efi+bounces-2237-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2238-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03F79DEA1B
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Nov 2024 17:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 542389DEB6B
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Nov 2024 18:03:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00403B212ED
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Nov 2024 16:04:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65C4CB209B4
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Nov 2024 17:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4092613D619;
-	Fri, 29 Nov 2024 16:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C23146D59;
+	Fri, 29 Nov 2024 17:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="kiwMH+vj";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="gMBfpksh"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Tye4+Wyc"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27847168DA;
-	Fri, 29 Nov 2024 16:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF292C18C;
+	Fri, 29 Nov 2024 17:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732896245; cv=none; b=YjSf23F0ujHq0wnEOeriNdY6LaDBVTyfRAiaaoZuXZmske2/XPQxZ5Mh3vYkHvzmIsDJbHvXfnVfbZKFv5oBjPwNEBOsHdXqxVRQ8h6TrW3L9ZY62ucqHN9UOu8xZmOHtoacmQcbmoe7rj54bg21nn3WszIRceintywnw4f2mw8=
+	t=1732899810; cv=none; b=bA+oVvEprlyyoEYn5msYkd3qKHgDqcsXvIapCVew0RbUO+xQnR62FeEv3XccQBUmouKtNjgQdrOgg8W9MuA+oqpCS/QpQALiEGSLvIUWJa90M7G9pP4AndjPqPuiEtaniLdSSx/9jR0CMLbUdhJ+A7meTatgaOslmkOvu8RhMIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732896245; c=relaxed/simple;
-	bh=eJcwKX6ItFr4x/AT4MvoWM+YZf2mke1byCryuNUysrE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=t8JpmNGF298lD0pGFsgu7EYZL3zT+IAB+I5QV2HzfXKbEGsdFB2MncJEdgNER54Gpm2UZlkD1Zb1li/cKDcSxADY+2q2U56fIOd6tut6jyG4DiW0PjXPKiN46EwRoNUiXgTUghj6EOs8wrraWKXotYslynX7Zt1z2l03QmazOjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=kiwMH+vj; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=gMBfpksh; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1732896242;
-	bh=eJcwKX6ItFr4x/AT4MvoWM+YZf2mke1byCryuNUysrE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=kiwMH+vjBFFwIKiNJlaK8GDSaiK3cokBYEGoKvG5pI++T8kYA7x/tL9zLiFlQIRbj
-	 RN79gILbr7U92IkWn2ceI2XTchgE8hOBP80GMUOxj6kbql4n1ejOIrKIBCe+AAWw8U
-	 N2oVd/e83WOegR8nCeoYlna/ywWMTiE4HOjY/FNs=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 1F5A0128791E;
-	Fri, 29 Nov 2024 11:04:02 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id IFaNvKTXbY5o; Fri, 29 Nov 2024 11:04:02 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1732896241;
-	bh=eJcwKX6ItFr4x/AT4MvoWM+YZf2mke1byCryuNUysrE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=gMBfpkshrWCnhoUZZh9yt6spyvumqyJ0TuXa/7L/XiT80LNLIqErC67Vwt0iCv1W8
-	 vU1jr6icVQSlSCHzymRvFAI2HkAPUWa1qnYBF+Ih/o4hQm3SRJxbg4nDf1RQzWb1Vw
-	 PIvw9SIRxv3C5TmHLsDfSzy1ND1JdlV8e5mPZBYs=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 2B7D81287960;
-	Fri, 29 Nov 2024 11:04:01 -0500 (EST)
-Message-ID: <02060553aafac7e145e96510a66a6845d389d6ff.camel@HansenPartnership.com>
-Subject: Re: TPM/EFI issue [Was: Linux 6.12]
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jiri Slaby <jirislaby@kernel.org>, Linus Torvalds
-	 <torvalds@linux-foundation.org>, Linux Kernel Mailing List
-	 <linux-kernel@vger.kernel.org>
-Cc: Peter =?ISO-8859-1?Q?H=FCwe?= <PeterHuewe@gmx.de>, Jarkko Sakkinen
-	 <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	linux-integrity@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
-	"linux-efi@vger.kernel.org"
-	 <linux-efi@vger.kernel.org>
-Date: Fri, 29 Nov 2024 11:03:59 -0500
-In-Reply-To: <7773891b-b699-4f1d-b9ba-220c649aee9d@kernel.org>
-References: 
-	<CAHk-=wgtGkHshfvaAe_O2ntnFBH3EprNk1juieLmjcF2HBwBgQ@mail.gmail.com>
-	 <9c893c52-e960-4f30-98ce-ba7d873145bb@kernel.org>
-	 <ca741d8eade72aa68c389a88d2520f4fe541a1e7.camel@HansenPartnership.com>
-	 <2a238b61-fa03-4ae4-9dc4-f73834aa3228@kernel.org>
-	 <70bc83bd7cfb236da030e584e93bfc62c1d9eb6a.camel@HansenPartnership.com>
-	 <7773891b-b699-4f1d-b9ba-220c649aee9d@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1732899810; c=relaxed/simple;
+	bh=aT6HpKP/0fyEHI0Q3ZmEu36cwBE9d+nL15fPzclz0aM=;
+	h=Subject:MIME-Version:Content-Type:Date:Message-ID:CC:From:To:
+	 References:In-Reply-To; b=s7dBFj7uTnE5kSDvMf3pYBh7EGTUpxqdPndA9qzhEIFf/9ivPVwcSI+anfwgmaxMy1Wo87CNRYqjdTYIGKSlXIjfB6ViyRg9eBf6Fg7+nm8pkbPbMKQ0USP2+KtbFzOnFdITx4+4z6YLlRv4G7sV+l95lK83mGhh9MKQdk9/8eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.es; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Tye4+Wyc; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1732899809; x=1764435809;
+  h=mime-version:content-transfer-encoding:date:message-id:
+   cc:from:to:references:in-reply-to:subject;
+  bh=NtnAJBiaXOZ9zNEkjDYjYXdU6aFjbbL/ZqV4zjqWvX8=;
+  b=Tye4+WycvlJzScatYnPrLY4sA6FGwVgD6I8vSlWn4oln6CI3pJXpEJDV
+   W1e482tN80UuqrYEyjjQoiYbEsMGvk6JNBYTi9UoaEn5WxOy2FRFiOth2
+   xwt0Hcupd3BrrYlBSt0qtWDm2bc0bZuSvXwuCZFFDCshFD3lKnwZCwq3u
+   A=;
+X-IronPort-AV: E=Sophos;i="6.12,196,1728950400"; 
+   d="scan'208";a="356747171"
+Subject: Re: [PATCH v2 2/2] x86/efi: Apply EFI Memory Attributes after kexec
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 17:03:25 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [10.0.10.100:37136]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.26.13:2525] with esmtp (Farcaster)
+ id 47e3b7c1-6e2d-419d-82e4-56743fc7e28b; Fri, 29 Nov 2024 17:03:23 +0000 (UTC)
+X-Farcaster-Flow-ID: 47e3b7c1-6e2d-419d-82e4-56743fc7e28b
+Received: from EX19D004EUC001.ant.amazon.com (10.252.51.190) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Fri, 29 Nov 2024 17:03:22 +0000
+Received: from localhost (10.13.235.138) by EX19D004EUC001.ant.amazon.com
+ (10.252.51.190) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Fri, 29 Nov 2024
+ 17:03:18 +0000
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Date: Fri, 29 Nov 2024 17:03:15 +0000
+Message-ID: <D5YTPJS0CBZE.3I95FH2WL1ZJK@amazon.com>
+CC: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H . Peter Anvin"
+	<hpa@zytor.com>, Matt Fleming <matt@codeblueprint.co.uk>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stanspas@amazon.de>, <nh-open-source@amazon.com>, <stable@vger.kernel.org>,
+	<kexec@lists.infradead.org>
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+To: Dave Young <dyoung@redhat.com>
+X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
+References: <20241112185217.48792-1-nsaenz@amazon.com>
+ <20241112185217.48792-2-nsaenz@amazon.com>
+ <CALu+AoTnrPPFkRZpYDpYxt1gAoQuo_O7YZeLvTZO4qztxgSXHw@mail.gmail.com>
+ <D5XXP2PU3PUK.3HN27QB1GEW09@amazon.com>
+ <CALu+AoSDY6tmD-1nzqBoUh53-9C+Yr1dOktc0eaeSx+uYYEnzw@mail.gmail.com>
+ <CALu+AoTAQ_v7SL-_c_F74TfXWmwYMNV_MRD9zWVyiHuXfa6WtA@mail.gmail.com>
+In-Reply-To: <CALu+AoTAQ_v7SL-_c_F74TfXWmwYMNV_MRD9zWVyiHuXfa6WtA@mail.gmail.com>
+X-ClientProxiedBy: EX19D039UWB002.ant.amazon.com (10.13.138.79) To
+ EX19D004EUC001.ant.amazon.com (10.252.51.190)
 
-On Fri, 2024-11-29 at 07:36 +0100, Jiri Slaby wrote:
-> On 28. 11. 24, 17:13, James Bottomley wrote:
-[...]
-> > Yes, it tells me the entries in the log for PCR0-7,14 match the log
-> > entries (for both sha1 and sha256).  However there are entries for
-> > PCR9,12 which don't match.  The log shows shim starting at entry
-> > 32, grub starting at entry 37 and the kernel loading at entry 39 
-> > the kernel command line logged at 40 to PCR 12, which is
-> > mismatching.
-> > 
-> > The next two entries (41,42) are for the mismatching PCR9 and are
-> > of the initrd and the options and come from the libstub code in the
-> > kernel early boot (efi-stub-helper.c).
-> 
-> Note that ovmf logged:
-> Called TcgDxeHashLogExtendEvent 0 58683000 1B1E78C 5FE63C00 5E3492AA
-> Data 28 B5 2F FD ... E1 29 FE 0
-> 
-> But initrd on disk is 1B1E78B long, not 1B1E78C. So the excessive 0
-> at the end above brews the mismatch. See:
->    https://bugzilla.suse.com/show_bug.cgi?id=1233752#c14
-> "By adding the 0 byte I can replicate the measured digest."
-> 
-> So there is something aligning the initrd. kernel's libstub just uses
-> and passes load_file2's size down to TcgDxeHashLogExtendEvent, AIUI.
-> So it'd be sdb, ovmf or something. BTW how are sizes stored
-> in/fetched from vfat?
+On Fri Nov 29, 2024 at 7:31 AM UTC, Dave Young wrote:
+> CAUTION: This email originated from outside of the organization. Do not c=
+lick links or open attachments unless you can confirm the sender and know t=
+he content is safe.
+>
+>
+>
+> On Fri, 29 Nov 2024 at 15:11, Dave Young <dyoung@redhat.com> wrote:
+>>
+>> Hi Nicolas,
+>>
+>> On Thu, 28 Nov 2024 at 23:58, Nicolas Saenz Julienne <nsaenz@amazon.com>=
+ wrote:
+>> >
+>> > Hi Dave,
+>> >
+>> > On Fri Nov 22, 2024 at 1:03 PM UTC, Dave Young wrote:
+>> > > On Wed, 13 Nov 2024 at 02:53, Nicolas Saenz Julienne <nsaenz@amazon.=
+com> wrote:
+>> > >>
+>> > >> Kexec bypasses EFI's switch to virtual mode. In exchange, it has it=
+s own
+>> > >> routine, kexec_enter_virtual_mode(), which replays the mappings mad=
+e by
+>> > >> the original kernel. Unfortunately, that function fails to reinstat=
+e
+>> > >> EFI's memory attributes, which would've otherwise been set after
+>> > >> entering virtual mode. Remediate this by calling
+>> > >> efi_runtime_update_mappings() within kexec's routine.
+>> > >
+>> > > In the function __map_region(), there are playing with the flags
+>> > > similar to the efi_runtime_update_mappings though it looks a little
+>> > > different.  Is this extra callback really necessary?
+>> >
+>> > EFI Memory attributes aren't tracked through
+>> > `/sys/firmware/efi/runtime-map`, and as such, whatever happens in
+>> > `__map_region()` after kexec will not honor them.
+>>
+>> From the comment below the reason to do the mappings update is that
+>> firmware could perform some fixups.  But for kexec case I think doing
+>> the mapping correctly in the mapping code would be good enough.
+>>
+>>         /*
+>>          * Apply more restrictive page table mapping attributes now that
+>>          * SVAM() has been called and the firmware has performed all
+>>          * necessary relocation fixups for the new virtual addresses.
+>>          */
+>>         efi_runtime_update_mappings();
+>>
+>> Otherwise /sys/firmware/efi/runtime-map is a copy for kexec-tools to
+>> create the virtual efi memmap,  but I think the __map_region is called
+>> after kexecing into the 2nd kernel, so I feel that at that time the
+>> mem attr table should be usable.
+>
+> Another thing I'm not sure why the updated mem attr is not stored in
+> the memmap md descriptor "attribute" field, if that is possible then
+> the runtime-map will carry them,  anyway, the __map_region still needs
+> tweaking to use the attribute.
 
-Well, I was going to explain what EFI does, but it doesn't look
-relevant now I've had a crash course reading the systemd-boot code.  It
-looks like run() calls image_start() which loads the initrd itself. 
-Then in initrd.c:initrd_prepare() it actually installs its own load
-file2 protocol which is the protocol the kernel picks up when it loads
-the initrd.  So whatever length the kernel is picking up is, in fact,
-provided by systemd-boot.
+AFAIK there isn't a technical reason we why couldn't do it through the
+runtime-map, but it's annoying to do so because EFI Memory Attributes
+are allowed to segment EFI memory regions into smaller sections with
+distinct attributes. We'd have to carefully update the kernel's
+representation of the EFI runtime memory map as we apply the attributes
+(the one that's ultimately used to populate
+`/sys/firmware/efi/runtime-map`).
 
-I'd suspect something in this double indirection of load file protocols
-is causing your length mismatch.
+On the other hand, the config table and memory region that holds the
+attributes is already being persisted through kexec, so using it is
+straightforward.
 
->  But well, fs/fat/ received no significant changes either.
-
-We don't use that at all in the EFI stub (and neither does systemd-
-boot).  We use the protocols EFI provides to read fat volumes, so any
-issue would be in the edk2 (or in your case ovmf) FatPkg.
-
-> > This code was last updated in 6.9, so it seems unlikely to have
-> > suddenly caused a problem.  Event 43,44 are exit boot services
-> > (logged to PCR 5 which matches). line 40 is anomalous: grub is
-> > supposed to measure the options to the string PCR which should be 8
-> > not 12 ... did you patch grub to change this?
-> 
-> All this is with sdb, not grub, actually.
-
-It is?  Grub clearly appears in your log in event 37:
-
->     SubType 04 File Path
->       Path Name: \EFI\systemd\grub.efi
->     Type 7f End of Hardware Device Path
-
-But I figured it out: shim is hard coded to look for grub.efi  In any
-case, the entries match what systemd-boot would write (it seems to
-insist that the string PCR is 12 instead of 8, which explains the log
-entry).
-
-However, this still doesn't explain the mismatch between the log and
-the PCRs (even if you've got the wrong initrd hash, it should be
-correctly recorded), but I suspect something updates them later in the
-boot sequence without adding a log entry.
-
-
-> > The log can't be corrupt because PCR8 is zero, so nothing got
-> > logged to it.
-> > 
-> > And do you have the same thing for a working system?
-> 
-> Let me try.
-
-Thanks, that will at least tell me if something booting via systemd is
-supposed to be able to match log entries on these PCRs (I'm suspecting
-no is the answer).
-
-I'm also trying to set up my own systemd-boot system.
-
-James
-
+Nicolas
 
