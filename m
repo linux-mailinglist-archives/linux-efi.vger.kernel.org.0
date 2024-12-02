@@ -1,48 +1,48 @@
-Return-Path: <linux-efi+bounces-2243-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2244-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1159B9DFB70
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Dec 2024 08:52:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871B19DFB82
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Dec 2024 08:57:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D18163351
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Dec 2024 07:52:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD744B23D65
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Dec 2024 07:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7101D88C7;
-	Mon,  2 Dec 2024 07:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DF01FA15B;
+	Mon,  2 Dec 2024 07:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKVpUTV3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Plvk89ER"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D97A94A;
-	Mon,  2 Dec 2024 07:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430991FA157;
+	Mon,  2 Dec 2024 07:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733125958; cv=none; b=ayzoPtDH3LaecxS9BUpZnSbDbStVH3E1k4vuQJILs+e1lNqTQOCup7q80PNp/Q0KhuAbWx41LNA2771eECQxpdQtWMaGLXvsq0KCR/IX7SjT9m+/+qqe7um8GcmioujLWPcH2RRDSDIorj/LV1RRrypPRyYM3gxRIqf8o/BjYJc=
+	t=1733126175; cv=none; b=IP7PC+1Npx0J4bn2mc7KimKea07oy/TdjPSReNZFNMcKUNrD4nGQK1zgWvWBmdNn7RgKb4HPIwDrrOyuIq6tU8qBh6BtACU4W5qcYynU8DuLkJvYZ4F/Snzndq3MLdYiRtUn03VtWcOkdTKXgAE9oxEvtC1GR6jBZzOcNmRafys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733125958; c=relaxed/simple;
-	bh=jtwxVxx1nqFej0FNvp1jM/jX+1uGavCLsw17TkpcWTM=;
+	s=arc-20240116; t=1733126175; c=relaxed/simple;
+	bh=O91504jWoV1Vdb7DXpja5nd5Wlw+MKpnDaHe5rIB1DE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jCuTBO+dQ4VZ43afZK+zy7VHDdf2eo6qVgckQ6Wysl27EhjHnLKRX2UYoYlt8TxQRJptX5ZF0Ec9I4tX/Mb6aP+7SZf/hS6gVieWmk2LE5Nj97u3j6SnJ9udY4Zj9MMQZAvf4s+05xSihu9zXg37vmqdCpXqzX1qoaRQnZV1m88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKVpUTV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854F7C4CED2;
-	Mon,  2 Dec 2024 07:52:36 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=qfKgwNQXuvyJKtkX5TDczqwhUvvcBKzhsx0mqhcX9FmulA5EIOWnQIzB5gCd0in4Y3oK7rnc4QtD/oF88ubKaqPr28VFSvWgsk830WHFoA3lrWR5QRWpB/qtXQAO18931KOAi5Nq61AMetZHFeZG4uBB1hnoyHEFCW+MkAngRFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Plvk89ER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4045C4CED9;
+	Mon,  2 Dec 2024 07:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733125958;
-	bh=jtwxVxx1nqFej0FNvp1jM/jX+1uGavCLsw17TkpcWTM=;
+	s=k20201202; t=1733126174;
+	bh=O91504jWoV1Vdb7DXpja5nd5Wlw+MKpnDaHe5rIB1DE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MKVpUTV39GeFFXNTzPTBtWWBRi9aTQFk87ENFLHLH9FFKabRaRjyqHnvrxzr7y9ly
-	 eJCSmnuUhTPhDUb7wcUguq0bmWdso28xjx4pllsTJ++lO3dIC1jlimk2H8FwDnkAiu
-	 FkI5xm7ye/07zJHZZeR2Uas2N75fyrGdPHXgblVB5K6hT+y4pDXnZRXo5UMTZl/pUR
-	 ye8XZDeNI3U2kzR8yeBqWjgCPUXgMtFzZ1f6FgYwOI95fNlFoERTITusKOoL9ED5UV
-	 3m/uJjXh3jWfPpJ8iBbXyUvZc+xLD2jT0RPegtVOZdzHubOnnxJAr75F8/9TRWjZ1U
-	 vYoTwxm7uCUpg==
-Message-ID: <39f16df2-9f4b-49e9-b004-b0e702d08dad@kernel.org>
-Date: Mon, 2 Dec 2024 08:52:34 +0100
+	b=Plvk89ER2WJyD6I5FEIQXgOlqxgrzQuVoqJWLugEcJGb4wuylPpPxr0oYHrAhzgWI
+	 kDHjW+TYlrGLryC007qmWYbaX4XcWl4jYKoTdEGedorn8f5es9Vc0UcgjJ/p79QaEX
+	 4W4EVcb8IUyp5qCsV/iSyO0CZI/Zd5aA2oaq/atQsu/L7PBj7UXWF6gFXpGmVvelFs
+	 N4As2UYlrE/8BoQsC01TPzeFWOKOptTxZ3NX0Ur1YLHmNBFhUrWVXVal78ODAQGRRm
+	 jRtBea5MeltVLvAlBP27CkfAUmKOsIPZRigZjLuQ8YIcEvoGKnuCDfvhTZju5QtswM
+	 kXDpT8vq1bC/g==
+Message-ID: <c119df40-5cd9-40f8-b7b7-4085b87e90e5@kernel.org>
+Date: Mon, 2 Dec 2024 08:56:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -51,16 +51,21 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: TPM/EFI issue [Was: Linux 6.12]
-To: Jarkko Sakkinen <jarkko@kernel.org>,
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
  Linus Torvalds <torvalds@linux-foundation.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Cc: =?UTF-8?Q?Peter_H=C3=BCwe?= <PeterHuewe@gmx.de>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-integrity@vger.kernel.org,
- Ard Biesheuvel <ardb@kernel.org>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-integrity@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
  "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
 References: <CAHk-=wgtGkHshfvaAe_O2ntnFBH3EprNk1juieLmjcF2HBwBgQ@mail.gmail.com>
  <9c893c52-e960-4f30-98ce-ba7d873145bb@kernel.org>
- <D5Z66HQJNNNL.1CPU2KF13269F@kernel.org>
+ <ca741d8eade72aa68c389a88d2520f4fe541a1e7.camel@HansenPartnership.com>
+ <2a238b61-fa03-4ae4-9dc4-f73834aa3228@kernel.org>
+ <70bc83bd7cfb236da030e584e93bfc62c1d9eb6a.camel@HansenPartnership.com>
+ <7773891b-b699-4f1d-b9ba-220c649aee9d@kernel.org>
+ <02060553aafac7e145e96510a66a6845d389d6ff.camel@HansenPartnership.com>
+ <5c474ef503f45745d511c5188addd82a6bf25338.camel@HansenPartnership.com>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -105,61 +110,73 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <D5Z66HQJNNNL.1CPU2KF13269F@kernel.org>
+In-Reply-To: <5c474ef503f45745d511c5188addd82a6bf25338.camel@HansenPartnership.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 30. 11. 24, 3:49, Jarkko Sakkinen wrote:
-> On Wed Nov 27, 2024 at 8:46 AM EET, Jiri Slaby wrote:
->> Cc TPM + EFI guys.
+On 29. 11. 24, 22:08, James Bottomley wrote:
+> On Fri, 2024-11-29 at 11:03 -0500, James Bottomley wrote:
+>> On Fri, 2024-11-29 at 07:36 +0100, Jiri Slaby wrote:
+>>> On 28. 11. 24, 17:13, James Bottomley wrote:
+>> [...]
+>>>> Yes, it tells me the entries in the log for PCR0-7,14 match the
+>>>> log entries (for both sha1 and sha256).  However there are
+>>>> entries for PCR9,12 which don't match.  The log shows shim
+>>>> starting at entry 32, grub starting at entry 37 and the kernel
+>>>> loading at entry 39 the kernel command line logged at 40 to PCR
+>>>> 12, which is mismatching.
+>>>>
+>>>> The next two entries (41,42) are for the mismatching PCR9 and are
+>>>> of the initrd and the options and come from the libstub code in
+>>>> the kernel early boot (efi-stub-helper.c).
+>>>
+>>> Note that ovmf logged:
+>>> Called TcgDxeHashLogExtendEvent 0 58683000 1B1E78C 5FE63C00
+>>> 5E3492AA Data 28 B5 2F FD ... E1 29 FE 0
+>>>
+>>> But initrd on disk is 1B1E78B long, not 1B1E78C. So the excessive 0
+>>> at the end above brews the mismatch. See:
+>>>     https://bugzilla.suse.com/show_bug.cgi?id=1233752#c14
+>>> "By adding the 0 byte I can replicate the measured digest."
+>>>
+>>> So there is something aligning the initrd. kernel's libstub just
+>>> uses and passes load_file2's size down to TcgDxeHashLogExtendEvent,
+>>> AIUI. So it'd be sdb, ovmf or something. BTW how are sizes stored
+>>> in/fetched from vfat?
 >>
->> On 17. 11. 24, 23:26, Linus Torvalds wrote:
->>> But before the merge window opens, please give this a quick test to
->>> make sure we didn't mess anything up. The shortlog below gives you the
->>> summary for the last week, and nothing really jumps out at me. A
->>> number of last-minute reverts, and some random fairly small fixes
->>> fairly spread out in the tree.
+>> Well, I was going to explain what EFI does, but it doesn't look
+>> relevant now I've had a crash course reading the systemd-boot code.
+>> It looks like run() calls image_start() which loads the initrd
+>> itself. Then in initrd.c:initrd_prepare() it actually installs its
+>> own load file2 protocol which is the protocol the kernel picks up
+>> when it loads the initrd.  So whatever length the kernel is picking
+>> up is, in fact, provided by systemd-boot.
 >>
->> Hi,
->>
->> there is a subtle bug in 6.12 wrt TPM (in TPM, EFI, or perhaps in
->> something else):
->> https://bugzilla.suse.com/show_bug.cgi?id=1233752
->>
->> Our testing (openQA) fails with 6.12:
->> https://openqa.opensuse.org/tests/4657304#step/trup_smoke/26
->>
->> The last good is with 6.11.7:
->> https://openqa.opensuse.org/tests/4648526
->>
->> In sum:
->> TPM is supposed to provide a key for decrypting the root partitition,
->> but fails for some reason.
->>
->> It's extremely hard (so far) to reproduce outside of openQA (esp. when
->> trying custom kernels).
-
-Mark "X".
-
->> Most of the 6.12 TPM stuff already ended in (good) 6.11.7. I tried to
->> revert:
->>     423893fcbe7e tpm: Disable TPM on tpm2_create_primary() failure
->> from 6.12 but that still fails.
->>
->> We are debugging this further, this is just so you know.
->>
->> Or maybe you have some immediate ideas?
+>> I'd suspect something in this double indirection of load file
+>> protocols is causing your length mismatch.
 > 
-> Nothing immediate but I've had to tweak quite a lot of TPM bus
-> integrity protection feature so it is a possibility that I've
-> made a mistake in a point or another.
+> OK, confirmed it's the Load File2 protocol installed by systemd-boot
+> that's doing this.  It seems to be by design: it zero pads and aligns
+> on 4 bytes:
 > 
-> Can you bisect the issue possibly?
+> https://github.com/systemd/systemd/blob/3f3b4959e2cb9bca1e1ed527a0692c9a8b6a18ea/src/boot/boot.c#L2498-L2504
+> 
+> I managed to construct a debian secure boot vm image with the latest
+> systemd just to check and sure enough the linux boot stub is using the
+> systemd-boot Load file2 protocol module and so does have this zero
+> padding issue.
+> 
+> Although it's a problem if you do a flat file hash, and obviously
+> violates the linux stub assumption that that's how we compute the hash,
+> I'd have to be reasonably certain that the systemd tools take the zero
+> padding into account when constructing the pcr lock values.
 
-No, see mark "X" :).
+Thanks for the investigation. Just for info, the ball looks to be on the 
+systemd side now. So as noted to the downstream bug [1], this was also 
+reported to systemd [2].
 
-But follow the downstream bug for progress:
-https://bugzilla.suse.com/show_bug.cgi?id=1233752
+[1] https://bugzilla.suse.com/show_bug.cgi?id=1233752#c19
+[2] https://github.com/systemd/systemd/issues/35439
 
 thanks,
 -- 
