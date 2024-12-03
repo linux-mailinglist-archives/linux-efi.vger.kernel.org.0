@@ -1,53 +1,54 @@
-Return-Path: <linux-efi+bounces-2254-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2255-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E38F9E100F
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2024 01:37:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3B89E1018
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2024 01:38:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26E5E282591
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2024 00:37:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D65CA164CF1
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2024 00:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA29617B50E;
-	Tue,  3 Dec 2024 00:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2830C13C67C;
+	Tue,  3 Dec 2024 00:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="D949jriR"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="ObmVCSyK"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from pv50p00im-zteg10011501.me.com (pv50p00im-zteg10011501.me.com [17.58.6.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D51C2E0
-	for <linux-efi@vger.kernel.org>; Tue,  3 Dec 2024 00:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003FE224F0
+	for <linux-efi@vger.kernel.org>; Tue,  3 Dec 2024 00:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733186188; cv=none; b=ejixPUillQ1pFvOzCJgtwouV++6FECguytgZgWoCF2Bhg1hzm0o1EvUBWlxCmOBYQlk16Ko7hqJY1gG0rcsvPIkjs4BKcM+LfcFBxlW9xLlM8PNBFc6VoPPZ2C7a1jlagQHlrgf2M90XamdZ8cRgEFYKgshxrOZ9lzqiKlF/TtQ=
+	t=1733186209; cv=none; b=pgDZ0E4q28U5quV/ZuXC72aEqAc///mCV242L1h6o//b6VJxZcWupuFT6Syi42T8Uq1+CzFJjz8tHkSqbvum7YN1m3WnyWpylnuSnrG35nVTLBZZCbVI2bJAvi/pL8Vdm4m+mBoMGJIq3H+uBMojsfRVUx5ypJO9AH5hlExiGUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733186188; c=relaxed/simple;
-	bh=Pmw7vYn6qgzOMO6/dIiRil2NNEOTXXUDIaI88Xs0kLk=;
+	s=arc-20240116; t=1733186209; c=relaxed/simple;
+	bh=0pmkVmkdexMzVD7CitPN355aISpwyo5n7HnGnW8xvtI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hCdkFcLOeKb/7dFpwzbvq9f0YogXnoWV+T9jGt34IUNUPYqydaAJOveoPIqshwzRmAwOyXP7OO1SFxwecjJvKe7EbBw49V749Ql3RTfs9SWCnx+hbws9wTJiC8stnXDMZ0N8rj+ZA0uCtagJ8XyZzS+DPivHz1mZv/1DhgmhOmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=D949jriR; arc=none smtp.client-ip=17.58.6.42
+	 In-Reply-To:To:Cc; b=Ej+exKvl/stVwHFPDchCguFNSqoQvOXhgf4zgBlvM3UQyMGRqjhFdo709c0ao0HorxXd/DsVbOSUJvmVDLCOehEL1y7Gkxb8I6dH7W0DU2vo7bk8emT23fWJhMCAw3rFs1wZAe04RkoAhEluSExXybNLCryiVOtMd5gqNGHgt3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=ObmVCSyK; arc=none smtp.client-ip=17.58.6.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733186184;
-	bh=IiwvAxmsMkXtcn4MTTv7QwRfPfONTV00nftEb1rZOV4=;
+	s=1a1hai; t=1733186205;
+	bh=SSnfrLpaIqpTBx9QqpuhLFeoWIynMtinyOBbC22fWs0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
 	 x-icloud-hme;
-	b=D949jriRjnEuZv55IaXlTezpTBP0oTLN0tjcD66KylzVfRFBw5FJVnVNc4HzKEued
-	 BSRukh6XUyf33FKsfmGlDk8dN+oY2dNTKTa6nMS2l44qgvuRByVm2v6+qhEIWFg4fK
-	 lIlc8VhpxiiBHYqk5vUmEm3zlGDQJy5/RN4T55qbH6oM5KZBaViTjQ3nU2jXukxAeG
-	 YYgoVOhnfwedNrVGZHSiDwSDPpc6wWi7XfhckaneCDIJ7mJ3fhmvdw/XrDSqTeCH4i
-	 Z2tEHG5XQQnYmrEbxupyotVkgN3Wqn+jO1CSnQVck6og9N1GeAyOAmWta96i0owje9
-	 5szmAPOowFNYQ==
+	b=ObmVCSyKqUug4GAR5yet0Vp5Bq6987z1bM/OQ/bP62dBxm5XJGn3KX3dNawO542Ww
+	 tb5XHH4umbuLfEQOVXx9Txu0UeLNIV22VMn1pe2J8magDSHsF1Ejf5v8XwVSIZu1Yo
+	 BgA4d0yOrZeQp8JQEO++Q+wrZHQfhRTRe/f4piT6itW1DCkH938yBM5laOHKjdHxPL
+	 VnT2Y9SUP5bbBWH5EQal391Kg/YvKlrGNj5ogF2vCLUHQGt1a6iE1dXf4watf+gSOC
+	 Yfd0VnhAlIreTlytB5FCQakfQXZ6TluqubGcqjByuE8XvabG+NiGEAWljIJN8v1UOX
+	 EQKIHiwksD2Pg==
 Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id 804FE4A00B8;
-	Tue,  3 Dec 2024 00:36:03 +0000 (UTC)
+	by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id CF7184A0114;
+	Tue,  3 Dec 2024 00:36:24 +0000 (UTC)
 From: Zijun Hu <zijun_hu@icloud.com>
-Date: Tue, 03 Dec 2024 08:33:26 +0800
-Subject: [PATCH v2 04/32] hwmon: Adapt for constified device_find_child()
+Date: Tue, 03 Dec 2024 08:33:27 +0800
+Subject: [PATCH v2 05/32] media: pci: mgb4: Adapt for constified
+ device_find_child()
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -56,7 +57,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-const_dfc_done-v2-4-7436a98c497f@quicinc.com>
+Message-Id: <20241203-const_dfc_done-v2-5-7436a98c497f@quicinc.com>
 References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
 In-Reply-To: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -113,8 +114,8 @@ Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org,
  arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org, 
  linux-remoteproc@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
 X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: hnVgDw1K1lIcz6xDWLO_ZLGwCsDdmTOX
-X-Proofpoint-ORIG-GUID: hnVgDw1K1lIcz6xDWLO_ZLGwCsDdmTOX
+X-Proofpoint-GUID: W-g9c5jPAdNx4vqI0xaEwGs2JJSxHZXa
+X-Proofpoint-ORIG-GUID: W-g9c5jPAdNx4vqI0xaEwGs2JJSxHZXa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2024-12-02_14,2024-12-02_01,2024-11-22_01
@@ -129,25 +130,34 @@ From: Zijun Hu <quic_zijuhu@quicinc.com>
 device_find_child() has been constified to take new match function type:
 typedef int (*device_match_t)(struct device *dev, const void *data);
 
-Make hwmon_match_device() take a const pointer to adapt for the new type.
+Make its match functions take a const pointer to adapt for the new type.
 
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 ---
- drivers/hwmon/hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/mgb4/mgb4_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-index 49b366254529fe6c03e8af6870ebd269cdcfd70c..9325bec83ae52d6519bcbd72b2e6213cfaee0b6d 100644
---- a/drivers/hwmon/hwmon.c
-+++ b/drivers/hwmon/hwmon.c
-@@ -341,7 +341,7 @@ static int hwmon_attr_base(enum hwmon_sensor_types type)
+diff --git a/drivers/media/pci/mgb4/mgb4_core.c b/drivers/media/pci/mgb4/mgb4_core.c
+index bc63dc81bcae0d20924174be74b93a2139d5879f..697d50bedfe285d74c702efde61e510df87c1229 100644
+--- a/drivers/media/pci/mgb4/mgb4_core.c
++++ b/drivers/media/pci/mgb4/mgb4_core.c
+@@ -123,7 +123,7 @@ static const struct hwmon_chip_info temp_chip_info = {
+ };
+ #endif
  
- static DEFINE_MUTEX(hwmon_pec_mutex);
- 
--static int hwmon_match_device(struct device *dev, void *data)
-+static int hwmon_match_device(struct device *dev, const void *data)
+-static int match_i2c_adap(struct device *dev, void *data)
++static int match_i2c_adap(struct device *dev, const void *data)
  {
- 	return dev->class == &hwmon_class;
+ 	return i2c_verify_adapter(dev) ? 1 : 0;
+ }
+@@ -139,7 +139,7 @@ static struct i2c_adapter *get_i2c_adap(struct platform_device *pdev)
+ 	return dev ? to_i2c_adapter(dev) : NULL;
+ }
+ 
+-static int match_spi_adap(struct device *dev, void *data)
++static int match_spi_adap(struct device *dev, const void *data)
+ {
+ 	return to_spi_device(dev) ? 1 : 0;
  }
 
 -- 
