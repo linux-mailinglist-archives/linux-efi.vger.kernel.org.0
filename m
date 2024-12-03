@@ -1,53 +1,54 @@
-Return-Path: <linux-efi+bounces-2257-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2258-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E933C9E102B
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2024 01:38:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC99E1049
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2024 01:39:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 482EEB23F4E
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2024 00:38:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3678F1658DB
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Dec 2024 00:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877FA136341;
-	Tue,  3 Dec 2024 00:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3E84F218;
+	Tue,  3 Dec 2024 00:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="RdJmst+O"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="UKcm2SW/"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from pv50p00im-zteg10011501.me.com (pv50p00im-zteg10011501.me.com [17.58.6.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852A343AB0
-	for <linux-efi@vger.kernel.org>; Tue,  3 Dec 2024 00:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4E515CD78
+	for <linux-efi@vger.kernel.org>; Tue,  3 Dec 2024 00:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733186251; cv=none; b=S5tEguCknvST+jZpf2NkLUQR/JzdetwjlVfYilKK7Sw+YJKPiNqo0/W76nGXpuDJvNq1pvr05YLR2LL+RPx2hI9MXYtXs6JQQbX4G8AHeUDYoQwO/bA0d+5qfJ0ki1uCnQ8m2aKf8sCunONPESA6QyNLXFnvRIxLKX2JdFdkT5M=
+	t=1733186273; cv=none; b=FUww5pswXyxMS6zFyAM1zjJ5iVon+2BEwqmd0hFFljPPCGjXHaDDyGgLqyzyvofxvwT00dpeNeoNdhBbOSGc4ab/CugkKzSDotfPJCpXg/4hwUcU+S5naUiGzGk6IikeWsYcjozxuwjJuNRhhMHtnAVwOCzW/fKIJ9dHry5lovk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733186251; c=relaxed/simple;
-	bh=7FciL78UUlibZsHod7F7YNBV/ooO8nagTnWXq3BkucY=;
+	s=arc-20240116; t=1733186273; c=relaxed/simple;
+	bh=kckpiht9UOAZ8h4hX724d1EuZjmZtFQtu4qyTDpELvY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Yk9xF+SBkiUBzHd7F704DP4nuOpRcJISSNK2vaQVZe/95o6wHaTMIusi8JeFbb4A1OISyUx5QqWEvM8XLmMuL5BJWdTaaTwKHFY3d+ii02/d7dsrStu6B5tD9o9TApUHKzVOGaNPPwADrQoDaCriAmWogRnkhrb7oN23MtQlsvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=RdJmst+O; arc=none smtp.client-ip=17.58.6.42
+	 In-Reply-To:To:Cc; b=Di8brsUHQA8m3nriRg+ncd7SoaZX9JNI0A9LkjIsEU95Uv9hR3fXqFaU3R+XjBqQ+bWuaqewCEJrVADmk3JMYqgVbDGoffrkxq0bB2o1R8hQ3Kh2crmghhXoTolhg5BxgZnJXQqiuXcnOhoBNp5uXTSiCRrWZMPJlfxWqInRDps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=UKcm2SW/; arc=none smtp.client-ip=17.58.6.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733186249;
-	bh=+s67f8n4U38kNtBzbNjBtNPtsaYtVPWfyTOydyoL87U=;
+	s=1a1hai; t=1733186270;
+	bh=mRQc1IggNJY/rPZE8m/3aGBJNmzc9wdQYiWlpcKiZr0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
 	 x-icloud-hme;
-	b=RdJmst+OGS1bX18zihPRnq3E4k8Mn0X9gd0De5cMNzdIENXb3O8qhxJoISLLIHPnX
-	 SmVWOv6lgiW8uxFqHQVn6CIL8UWhU+SQ5/c/GaDeD/ZBOanvXDqxIB47dCFo4/Mg9S
-	 Y7nXCVjY03OUPd8tAeu/s13OFpuatFHhJ9ranKymnlfaFEXP5HHYhXF0dGVFb7uXqO
-	 U1Tfsb6uMZjwNnqQJ47gVvxhIu5AP5uoR1PmpdGvjUdq7Oan2xvuwvvrb3ROxUCIGX
-	 4JXq2krogrKZuYlhTFe06UWFxW1I8oIFHJR9yuwEC6FRuV/L//g7Y+QppMj7DwPT6C
-	 BvaISGX1MT84g==
+	b=UKcm2SW/8CW5YwMeuN/yD7BQrEXZzpJgSSS9mmQzXaH+Qu4DFGq4nqCyJG9+0qi6U
+	 tid6yGvERRe7ouGsnCfG3pXlqy3bOvoQuiKIupkt31WIkBKOX3soG4OaJgPaiCswOI
+	 erb9JgGraykTBhigXqRiQP1MXjW7/fiV1eKvLPofDVGmeDdZ8vDL1zow1dztgh5qks
+	 +vtJIwSRU+kkgAP1AuQ2LME/Ij65aZr8i7iq7wDARDnqqNuoLfqKGPROi40qf8OID2
+	 USTBgnpgBbWj4Jy0f2mEBXbyMiMkZ/32oz1tjZ0gTycfe0ns3parnBLpjZvaCo0AXS
+	 0RPo92J3cMwVQ==
 Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id 626224A0614;
-	Tue,  3 Dec 2024 00:37:08 +0000 (UTC)
+	by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id D007D4A062B;
+	Tue,  3 Dec 2024 00:37:29 +0000 (UTC)
 From: Zijun Hu <zijun_hu@icloud.com>
-Date: Tue, 03 Dec 2024 08:33:29 +0800
-Subject: [PATCH v2 07/32] gpio: sim: Remove gpio_sim_dev_match_fwnode()
+Date: Tue, 03 Dec 2024 08:33:30 +0800
+Subject: [PATCH v2 08/32] net: dsa: Adapt for constified
+ device_find_child()
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -56,7 +57,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-const_dfc_done-v2-7-7436a98c497f@quicinc.com>
+Message-Id: <20241203-const_dfc_done-v2-8-7436a98c497f@quicinc.com>
 References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
 In-Reply-To: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -113,8 +114,8 @@ Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org,
  arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org, 
  linux-remoteproc@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
 X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: LUw6jrNTlWvafXG6SgNBaGnBoiXYHqLl
-X-Proofpoint-ORIG-GUID: LUw6jrNTlWvafXG6SgNBaGnBoiXYHqLl
+X-Proofpoint-GUID: 5T08U2fdwosbWa0fjnlCkTPfz9LFd33w
+X-Proofpoint-ORIG-GUID: 5T08U2fdwosbWa0fjnlCkTPfz9LFd33w
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2024-12-02_14,2024-12-02_01,2024-11-22_01
@@ -129,39 +130,26 @@ From: Zijun Hu <quic_zijuhu@quicinc.com>
 device_find_child() has been constified to take new match function type:
 typedef int (*device_match_t)(struct device *dev, const void *data);
 
-So device_match_fwnode() is applicable for the new type directly, and
-remove its unnecessary wrapper gpio_sim_dev_match_fwnode().
+Make dev_is_class() take a const pointer to adapt for the new type.
 
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 ---
- drivers/gpio/gpio-sim.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ net/dsa/dsa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
-index f387dad81f2960b5ec3c1b5fd04081ee501cc75b..b1f33cbaaaa78aca324f99c45a868e7e79a9d672 100644
---- a/drivers/gpio/gpio-sim.c
-+++ b/drivers/gpio/gpio-sim.c
-@@ -413,11 +413,6 @@ static int gpio_sim_setup_sysfs(struct gpio_sim_chip *chip)
- 	return devm_add_action_or_reset(dev, gpio_sim_sysfs_remove, chip);
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index 5a7c0e565a894545ee14f0e0186ed3c46b809b16..e827775baf2ee1d0e1c0ce5807c2cca5c372fc75 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1367,7 +1367,7 @@ static int dsa_switch_parse_of(struct dsa_switch *ds, struct device_node *dn)
+ 	return dsa_switch_parse_ports_of(ds, dn);
  }
  
--static int gpio_sim_dev_match_fwnode(struct device *dev, void *data)
--{
--	return device_match_fwnode(dev, data);
--}
--
- static int gpio_sim_add_bank(struct fwnode_handle *swnode, struct device *dev)
+-static int dev_is_class(struct device *dev, void *class)
++static int dev_is_class(struct device *dev, const void *class)
  {
- 	struct gpio_sim_chip *chip;
-@@ -503,7 +498,7 @@ static int gpio_sim_add_bank(struct fwnode_handle *swnode, struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	chip->dev = device_find_child(dev, swnode, gpio_sim_dev_match_fwnode);
-+	chip->dev = device_find_child(dev, swnode, device_match_fwnode);
- 	if (!chip->dev)
- 		return -ENODEV;
- 
+ 	if (dev->class != NULL && !strcmp(dev->class->name, class))
+ 		return 1;
 
 -- 
 2.34.1
