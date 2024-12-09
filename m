@@ -1,166 +1,240 @@
-Return-Path: <linux-efi+bounces-2333-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2334-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F859E9D33
-	for <lists+linux-efi@lfdr.de>; Mon,  9 Dec 2024 18:41:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D7609E9DBA
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Dec 2024 19:00:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42A61887B34
-	for <lists+linux-efi@lfdr.de>; Mon,  9 Dec 2024 17:41:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB6D01652E2
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Dec 2024 18:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B7E13AA2F;
-	Mon,  9 Dec 2024 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BCF15666A;
+	Mon,  9 Dec 2024 18:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ey7evH4y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WochORv4"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A65233151
-	for <linux-efi@vger.kernel.org>; Mon,  9 Dec 2024 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165561537C3;
+	Mon,  9 Dec 2024 18:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733766115; cv=none; b=Fy8c3x/9aA8o9AN3Yug6MXSE/T4xwDH7xNCrTdtjbY7L6vzGWuFj7hwzmKSXncmu6tZO6wkXqiR+x7tSYbwTy3PBaybJhszehYeoSNuPcC8GbTPpmDoYirVgODNFa8pD0gT488qn9I5gL98H/HKqAPvMj6smBT/YylwslSuIkm8=
+	t=1733767216; cv=none; b=P2lE5akdE/2eoiNwc8Tkl76EQsKk42LdcIsFLF9XnxQ7G0wkiQlXpTc2jMo+4iBdfykqcAhRvtMWgMCLEpe3y9jFqlnMDi6JCpbBo+TeUd1lrGhaEAEUwO0i/CNfFkklU0Wnq0rMV1QXB+h1oL04b1Tgx4vSu0G97A30C+roT6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733766115; c=relaxed/simple;
-	bh=AIDmB/kPWmHVy7R7dhSOwe3Dq7bzeTzQeMrxfzWBRqY=;
+	s=arc-20240116; t=1733767216; c=relaxed/simple;
+	bh=bHM3Cp2XFUeSskQHRGNxXjQKVYYNtnn3YxdzVGxd8PQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IU4Qv+SbZyQDM9+IYFVqrabtWYD2sNmuJ4lIK4gw0QqU75+R0sJSr8+99zPfNZRNJG9x6UQ6mSnjFWF4jjs5AUXGNgATo9ltrIw0lZvH/AVGYPZt49tiP66qyUFHa3oNVA6xH3z2M9Cjw6cJ6L1SBQ3qu5qpeUhup2kLOi8/DeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ey7evH4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B68C4AF09
-	for <linux-efi@vger.kernel.org>; Mon,  9 Dec 2024 17:41:54 +0000 (UTC)
+	 To:Cc:Content-Type; b=Kp0k87T/mL4KXaeSyuZBK5XKrwqVomdnDQ5wMkiXdqLr37tZAGAb7Geq6VJI2HuLSXxmc5zdKGye/zVDSkNOSadac+SkAD7DRkkrd3UojfLkMk/M8jALKJ0+Frh1e/AcgUpRuZT7CUMZmGJQkh/DfTsy0MlYc+CTT0e6PSMts3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WochORv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAE4C4CEE2;
+	Mon,  9 Dec 2024 18:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733766114;
-	bh=AIDmB/kPWmHVy7R7dhSOwe3Dq7bzeTzQeMrxfzWBRqY=;
+	s=k20201202; t=1733767215;
+	bh=bHM3Cp2XFUeSskQHRGNxXjQKVYYNtnn3YxdzVGxd8PQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ey7evH4yUQTQPeRgD3h1MvX2Bj/D61r/cjki8kmK3Zam0NfG6Rv2kYZymI3jIdiXc
-	 hj784EpHKOnikd8PXIGwoUuCQ8xOEHYGHQoRsOEC2NWjtDaGH21yXiQwxyxmvAX1wy
-	 BAiKJgLHEHGEdauR6EmBzQHL2ITmLLFExnASHX86TKyBUpRlAkou7k8dheQwS/ixgS
-	 QNYZw7eWhhzLAPbmMv78cNcJPKAEGL2fLVkyvPRW4EqR+MNZi8wVxCPNnTMBH/pKPb
-	 z0BWsxf5YhNdb0P/BE4ZeXAJ4z0h3eZluoL9ss+QgsyK98BAiTGd6v3PBluJv5oeh/
-	 jqxTIfMrthDYA==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-53e3778bffdso3218424e87.0
-        for <linux-efi@vger.kernel.org>; Mon, 09 Dec 2024 09:41:54 -0800 (PST)
-X-Gm-Message-State: AOJu0Yy7IXkEmclw/5eVNWOWXpqvTpToXFGsv8CAzpWEonEJ1zONUKjW
-	el/qNHjPKu/j5r4dWI5CIpaC9Ma3ZYIkk1+0H42h8Wtn0k5Tcnx4s25FiIeLVLXl4PlTDVfIUOP
-	/iGeBhkHaxKldAS6r1xX4j9Epl0o=
-X-Google-Smtp-Source: AGHT+IFBw4cG9/3a0lP6LoyQBxXmeF8b2ZbTe7ZuGwUS8J/pYh7VMSTrc9x2WCnTZQSrPNLDl4Qy89qXCI+/1ZfaZ6c=
-X-Received: by 2002:a05:6512:3b0d:b0:53e:335b:4348 with SMTP id
- 2adb3069b0e04-54024113004mr493662e87.40.1733766113197; Mon, 09 Dec 2024
- 09:41:53 -0800 (PST)
+	b=WochORv4Pr/ifmCvgBRYX1Ul1Hr32SZ62yzQSBTy19kQwyIjz8KSGb/p35E/dMrS6
+	 rh1l5bZKVWkdwLlaysNOlxlRecSwmsZ20r7GA3kUJ1/EKhCNNvi7avmuj81Xhh+aBR
+	 jyZg67macFzWpSFNjumqal2cNjzdGGYhyUM5+1vq9AJbmzqx55YQBh7avEKJW9tCzt
+	 2qgCoKRol/if9SNHim9DyUII2hS1TArdquMf0o/ijpPjGWMOkSB3m36XDj6XkS5Xgp
+	 oH0nrjrWWg6jojyA/xDDwEblE8mKoWaAHV6yv6lK1zi/PyjBhrh15XxO2Z0zDSkFzz
+	 RiJ3kddu62Z2Q==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ffd6b7d77aso55433361fa.0;
+        Mon, 09 Dec 2024 10:00:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUWKH1MwVvCy23fDOadsBkm8IJyzgQWCBXRGuVHIqfqtW7OpVuKKBPXEOq1zhIfu/gQppKxk6Rj96iaDFY=@vger.kernel.org, AJvYcCVFyMkksLMsQgAlKVpka0IM1inp7HfVrFC6nBblSeCPxQxWlNWn6JBWcXB9X9f9+uv6zDxS7+XC@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSP1EWYt/inHqaRB+4nBCkiqyLcsO9UzNA4sAPOI6A8IigoiTT
+	bmV5NcPTsXPG3DhMgBHV/aDyMPN92oKophkaHH0XJ2FeyedS0o8pqT7ZrLYa/K5LaekRLYnRQ/Y
+	uYuaxZn0e57cI+rlkfrDJeSJXzzo=
+X-Google-Smtp-Source: AGHT+IEoon9SsUEzcxQ33uPU1JoEeHSO1ZmTwdIBbFz5a/nQQaFY474MxXcF6HJu6+1bHcrgxrLDfKXS6ZG6AS9/QUY=
+X-Received: by 2002:a2e:b891:0:b0:300:3de4:ff7f with SMTP id
+ 38308e7fff4ca-3003de5096dmr48316171fa.6.1733767213727; Mon, 09 Dec 2024
+ 10:00:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241208183415.21181-1-James.Bottomley@HansenPartnership.com>
- <CAMj1kXEULbHRF4ywSGeRGPJeVe9P5r1D_Gvt55TZBKHvGsEdGw@mail.gmail.com>
- <e6f802491e912b0907d2990c712210b0350db9aa.camel@HansenPartnership.com>
- <CAMj1kXE0o+ct7v+Ab9+auXnWphMXXK5b9iz3vn6nBfuhOu_QRA@mail.gmail.com> <1b7da8f615c6d632e00acaf326b9809c10088cc6.camel@HansenPartnership.com>
-In-Reply-To: <1b7da8f615c6d632e00acaf326b9809c10088cc6.camel@HansenPartnership.com>
+References: <20241209162449.48390-1-hamzamahfooz@linux.microsoft.com>
+ <CAMj1kXF=f-QAhXJA=U=jbn++Vyzf+e2k+cCS+Jk4Om4p0puD5Q@mail.gmail.com> <380bbf4b-0828-444e-9b93-fa639cc23a1a@linux.microsoft.com>
+In-Reply-To: <380bbf4b-0828-444e-9b93-fa639cc23a1a@linux.microsoft.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 9 Dec 2024 18:41:42 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXG6r_pVQXUFmCkcm2exLiS=6S+YoukCvujyBkxEFXkgOA@mail.gmail.com>
-Message-ID: <CAMj1kXG6r_pVQXUFmCkcm2exLiS=6S+YoukCvujyBkxEFXkgOA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] efivarfs: bug fixes
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-efi@vger.kernel.org, Jeremy Kerr <jk@ozlabs.org>
+Date: Mon, 9 Dec 2024 19:00:02 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFAbycLk5fLtyDXw2ApPp2ztJ0J7B-De5=eXKtUjvyAfw@mail.gmail.com>
+Message-ID: <CAMj1kXFAbycLk5fLtyDXw2ApPp2ztJ0J7B-De5=eXKtUjvyAfw@mail.gmail.com>
+Subject: Re: [PATCH] efi: make the min and max mmap slack slots configurable
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Cc: linux-efi@vger.kernel.org, stable@vger.kernel.org, 
+	Tyler Hicks <code@tyhicks.com>, Brian Nguyen <nguyenbrian@microsoft.com>, 
+	Jacob Pan <panj@microsoft.com>, Allen Pais <apais@microsoft.com>, 
+	Jonathan Marek <jonathan@marek.ca>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Jeremy Linton <jeremy.linton@arm.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+	=?UTF-8?B?S09ORE8gS0FaVU1BKOi/keiXpCDlkoznnJ8p?= <kazuma-kondo@nec.com>, 
+	Kees Cook <kees@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>, Yuntao Wang <ytcoode@gmail.com>, 
+	Aditya Garg <gargaditya08@live.com>, open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 9 Dec 2024 at 15:38, James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
+On Mon, 9 Dec 2024 at 18:02, Hamza Mahfooz
+<hamzamahfooz@linux.microsoft.com> wrote:
 >
-> On Mon, 2024-12-09 at 14:49 +0100, Ard Biesheuvel wrote:
-> > On Mon, 9 Dec 2024 at 14:34, James Bottomley
-> > <James.Bottomley@hansenpartnership.com> wrote:
-> > >
-> > > On Mon, 2024-12-09 at 10:20 +0100, Ard Biesheuvel wrote:
-> > > > On Sun, 8 Dec 2024 at 19:34, James Bottomley
-> > > > <James.Bottomley@hansenpartnership.com> wrote:
-> > > > >
-> > > > > Patch 1 is stand alone, but 2 depends on 3
-> > > > >
-> > > > > Regards,
-> > > > >
-> > > > > James
-> > > > >
-> > > > > ---
-> > > > >
-> > > > > James Bottomley (3):
-> > > > >   efivarfs: fix error on non-existent file
-> > > > >   efivarfs: fix memory leak on variable removal
-> > > > >   efivarfs: fix incorrect variable creation
-> > > > >
-> > > >
-> > > > Thanks James,
-> > > >
-> > > > I've queued these up now.
-> > >
-> > > Thanks, but I need to redo 3/3: there's a bug where if the variable
-> > > is created to do a write which fails, it remains on the list even
-> > > though the entry is freed.
-> > >
+> Hi Ard,
+>
+> On 12/9/24 11:40, Ard Biesheuvel wrote:
+> > Hello Hamza,
 > >
-> > OK. I'm a bit out of my depth here with the VFS stuff.
+> > Thanks for the patch.
 > >
-> > So efivarfs_create() creates the file and efivarfs_file_write()
-> > writes the contents of the variables, right?
->
-> Right.
->
-> >  So what is the correct behavior here if the write fails? If the file
-> > exists as an empty file, but might still be open, surely we cannot
-> > just drop it from the list?
->
-> I don't think it's a race that can be mediated in the current
-> mechanism, although the efivar lock seems to do some of it.  In the
-> ordinary course of filesystems it should be mediated by the dentry
-> objects (any racing open/write with delete can either succeed or get an
-> error).
->
-> > > It also begs the question: why does this list of variables exist?
-> > > All it does is cause management complexity and overhead and its
-> > > only function seems to be to free the entries when the filesystem
-> > > is unmounted, which could much more easily be accomplished by
-> > > implementing a superblock evict_inode() callback that kfree's
-> > > i_private, which would mean the entry was freed when the inode was
-> > > and thus wouldn't have to be explicitly freed anywhere.
-> > >
+> > On Mon, 9 Dec 2024 at 17:25, Hamza Mahfooz
+> > <hamzamahfooz@linux.microsoft.com> wrote:
+> >>
+> >> Recent platforms
 > >
-> > I have no idea - this code existed before I got involved with EFI.
-> >
-> > However, a related issue came up here [0]: the list may get out of
-> > sync after a resume from hibernate, and so it needs to be brought up
-> > to date. Not having a list in the first place seems like a step in
-> > the right direction, as we'd need to synchronize that with the
-> > updated varstore as well.
+> > Which platforms are you referring to here?
 >
-> Yes, that's the same issue I was complaining about and trying to fix in
-> patch 3/3.
->
-> > So IIUC, you are suggesting to keep the caching behavior of the name
-> > and attributes, but not keep a list at all? Would that work with the
-> > needed resync above?
->
-> Yes.  If we simply let the dentries behave correctly as filesystem
-> objects, they'll mediate the race and if the inode gets evicted then we
-> also free the entry (so we tie efivarfs entry lifetimes to the inode).
-> There would still be a corner case where you could call open(O_CREAT)
-> but *not* write on the file.  That would still create a zero length
-> variable entry which would disappear on reboot because it would have no
-> corresponding EFI variable.  This is an inevitable consequence of our
-> required semantics of not creating the variable until something is
-> written to it although it may be possible to flag the dentry in create
-> as being not visible to others until it gets written (i.e. effectively
-> open it as a deleted but open file and promote it to not deleted on a
-> successful write).
->
-> If you want me to look into doing the above instead of patches 2-3, I
-> can.  I think patch 1 can be safely applied.
+> Grace Blackwell 200 in particular.
 >
 
-That would be much appreciated. I'll keep only patch #1 for now.
+Those are arm64 systems, right?
+
+> >
+> >> require more slack slots than the current value of
+> >> EFI_MMAP_NR_SLACK_SLOTS, otherwise they fail to boot. So, introduce
+> >> EFI_MIN_NR_MMAP_SLACK_SLOTS and EFI_MAX_NR_MMAP_SLACK_SLOTS
+> >> and use them to determine a number of slots that the platform
+> >> is willing to accept.
+> >>
+> >
+> > What does 'acceptance' mean in this case?
+>
+> Not having allocate_pool() return EFI_BUFFER_TOO_SMALL.
+>
+
+I think you may have gotten confused here - see below
+
+> >
+> >> Cc: stable@vger.kernel.org
+> >> Cc: Tyler Hicks <code@tyhicks.com>
+> >> Tested-by: Brian Nguyen <nguyenbrian@microsoft.com>
+> >> Tested-by: Jacob Pan <panj@microsoft.com>
+> >> Reviewed-by: Allen Pais <apais@microsoft.com>
+> >
+> > I appreciate the effort of your colleagues, but if these
+> > tested/reviewed-bys were not given on an open list, they are
+> > meaningless, and I am going to drop them unless the people in question
+> > reply to this thread.
+> >
+> >> Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> >> ---
+...
+> >> diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
+> >> index 4f1fa302234d..cab25183b790 100644
+> >> --- a/drivers/firmware/efi/libstub/mem.c
+> >> +++ b/drivers/firmware/efi/libstub/mem.c
+> >> @@ -13,32 +13,47 @@
+> >>   *                     configuration table
+> >>   *
+> >>   * Retrieve the UEFI memory map. The allocated memory leaves room for
+> >> - * up to EFI_MMAP_NR_SLACK_SLOTS additional memory map entries.
+> >> + * up to CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS additional memory map entries.
+> >>   *
+> >>   * Return:     status code
+> >>   */
+> >>  efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
+> >> -                               bool install_cfg_tbl)
+> >> +                               bool install_cfg_tbl,
+> >> +                               unsigned int *n)
+> >
+> > What is the purpose of 'n'? Having single letter names for function
+> > parameters is not great for legibility.
+> >
+> >>  {
+> >>         int memtype = install_cfg_tbl ? EFI_ACPI_RECLAIM_MEMORY
+> >>                                       : EFI_LOADER_DATA;
+> >>         efi_guid_t tbl_guid = LINUX_EFI_BOOT_MEMMAP_GUID;
+> >> +       unsigned int nr = CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS;
+> >>         struct efi_boot_memmap *m, tmp;
+> >>         efi_status_t status;
+> >>         unsigned long size;
+> >>
+> >> +       BUILD_BUG_ON(!is_power_of_2(CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS) ||
+> >> +                    !is_power_of_2(CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS) ||
+> >> +                    CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS >=
+> >> +                    CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS);
+> >> +
+> >>         tmp.map_size = 0;
+> >>         status = efi_bs_call(get_memory_map, &tmp.map_size, NULL, &tmp.map_key,
+> >>                              &tmp.desc_size, &tmp.desc_ver);
+> >>         if (status != EFI_BUFFER_TOO_SMALL)
+> >>                 return EFI_LOAD_ERROR;
+> >>
+> >> -       size = tmp.map_size + tmp.desc_size * EFI_MMAP_NR_SLACK_SLOTS;
+> >> -       status = efi_bs_call(allocate_pool, memtype, sizeof(*m) + size,
+> >> -                            (void **)&m);
+> >> +       do {
+> >> +               size = tmp.map_size + tmp.desc_size * nr;
+> >> +               status = efi_bs_call(allocate_pool, memtype, sizeof(*m) + size,
+> >> +                                    (void **)&m);
+> >> +               nr <<= 1;
+> >> +       } while (status == EFI_BUFFER_TOO_SMALL &&
+> >> +                nr <= CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS);
+> >> +
+> >
+> > Under what circumstances would you expect AllocatePool() to return
+> > EFI_BUFFER_TOO_SMALL? What is the purpose of this loop?
+>
+> We have observed that allocate_pool() will return EFI_BUFFER_TOO_SMALL
+> if EFI_MMAP_NR_SLACK_SLOTS is less than 32. The loop is there so only
+> the minimum number of extra slots are allocated.
+>
+
+But allocate_pool() *never* returns EFI_BUFFER_TOO_SMALL. It is
+get_memory_map() that may return EFI_BUFFER_TOO_SMALL if the memory
+map is larger than the provided buffer. In this case, allocate_pool()
+needs to be called again to allocate a buffer of the appropriate size.
+
+So the loop needs to call get_memory_map() again, but given that the
+size is returned directly when the first call fails, this iterative
+logic seems misguided.
+
+I also think you might be misunderstanding the purpose of the slack
+slots. They exist to reduce the likelihood that the memory map grows
+more entries than can be accommodated in the buffer in cases where the
+first call to ExitBootServices() fails, and GetMemoryMap() needs to be
+called again; at that point, memory allocations are no longer possible
+(although the UEFI spec was relaxed in this regard between 2.6 and
+2.10).
+
+
+> >
+> > How did you test this code?
+>
+> I was able to successfully boot the platform with this patch applied,
+> without it we need to append `efi=disable_early_pci_dma` to the kernel's
+> cmdline be able to boot the system.
+>
+
+allocate_pool() never returns EFI_BUFFER_TOO_SMALL, and so your loop
+executes only once. I cannot explain how this happens to fix the boot
+for you, but your patch as presented is deeply flawed.
+
+If bumping the number of slots to 32 also solves the problem, I'd
+happily consider that instead,
+
+
+>
+> >
+> >>         if (status != EFI_SUCCESS)
+> >>                 return status;
+> >>
+> >> +       if (n)
+> >> +               *n = nr;
+> >> +
+
+It seems to me that at this point, nr has been doubled after it was
+used to perform the allocation, so you are returning a wrong value
+here.
 
