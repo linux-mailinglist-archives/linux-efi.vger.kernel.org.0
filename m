@@ -1,150 +1,170 @@
-Return-Path: <linux-efi+bounces-2319-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2320-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61FBA9E8754
-	for <lists+linux-efi@lfdr.de>; Sun,  8 Dec 2024 19:35:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 956C09E895A
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Dec 2024 03:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CCC41885510
-	for <lists+linux-efi@lfdr.de>; Sun,  8 Dec 2024 18:35:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F38163593
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Dec 2024 02:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D18189B83;
-	Sun,  8 Dec 2024 18:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76B81C28E;
+	Mon,  9 Dec 2024 02:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ca+KBrEG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DyKCmR0X"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC30F145324
-	for <linux-efi@vger.kernel.org>; Sun,  8 Dec 2024 18:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055DE4C91
+	for <linux-efi@vger.kernel.org>; Mon,  9 Dec 2024 02:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733682929; cv=none; b=VEF41Q7WZ1vJze4I/gCWWl66iOQSdZvQrYOaJ0hXtkBstPbBsjiNUe2q2SBij7UDeGTXwg5Nh0Ew8O7RFn39jyXcn/Jbi1RWVWSGiwrrBcxZjmQ3CestwHyF6NNhKJZG5HGBaYRbYQjy1v0f+FNXzEAaBuFE2exwURsZuA4PA4w=
+	t=1733712441; cv=none; b=I6Ph8qiP/tDz0YT+nzNQYQUp2MYOhr5vWgR/JsKkLbQGr64LDKJik/GO4C7HMy6NsOGbw5J6AQrEzsb66ByhrBKkwI12e4PPsPHKYnVCyrFSDMrm2RupVANFeGIX5uX+uI91TEwhtItgiir8uAl8eSAWRn89MwbYB47auYQ1+HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733682929; c=relaxed/simple;
-	bh=KOHlmiAFZTvd0H67ILWQv96xLNHHmTcIL27QVMw+bPE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OYk5IoOYQ6Kihtb0dFRWcrpRPGCMJqA/Ul/wdCRimNvy+DYlNucxuWPzwFJlX2RDM12ZIpNYCTwnGgTL77is6hrcUJ6RO6r215I8PTWPz+iG2mKM2FAHw5O3Ady34SBf361QHHA8zfFFzmRZH8s7Qn+KL8ZgmC1xpWK9dkFHQNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ca+KBrEG; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1733682925;
-	bh=KOHlmiAFZTvd0H67ILWQv96xLNHHmTcIL27QVMw+bPE=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:From;
-	b=ca+KBrEG8nsiL5YzyEskA2UWOorpxGI1OiwNiCRrgjJ8/b1Gm9rmU/r+Gn2dJ6LFS
-	 AdXlKi4PD4Z5OOz6rELMnvm0XAbEcoaDJPXsIYIFdgsZ+kMk3q1c9dAvgbucPAcv5a
-	 MILW65qX+C2uX+z5oUxz3EY1WMJCFsJONKVYuaeE=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id D1A17128B0C3;
-	Sun, 08 Dec 2024 13:35:25 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id MXR9ZRfW9bvX; Sun,  8 Dec 2024 13:35:25 -0500 (EST)
-Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 50F0B128B0C1;
-	Sun, 08 Dec 2024 13:35:25 -0500 (EST)
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: linux-efi@vger.kernel.org
-Cc: Jeremy Kerr <jk@ozlabs.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 3/3] efivarfs: fix incorrect variable creation
-Date: Sun,  8 Dec 2024 13:34:15 -0500
-Message-Id: <20241208183415.21181-4-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20241208183415.21181-1-James.Bottomley@HansenPartnership.com>
-References: <20241208183415.21181-1-James.Bottomley@HansenPartnership.com>
+	s=arc-20240116; t=1733712441; c=relaxed/simple;
+	bh=CpwHVcHS2iXzQe+xy2O2yAOdeRUd12i7ffLAr7Hwrj8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HnG/WO0TepMrqcEbhcfzL/W7dTswoqzcFZUxmYKh6af6gUxa/4Ut/TPUKZYRmd2aFI8k2qHJUUSSXYnQq3tRrycIkt3PAEQWwYOPG/1yJQ7ExmmoKEIQ+piEkWtxUx4W1nrJnZbg1TtbMxERyNTq3Ux8pvdMRllmf92JPucAagk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DyKCmR0X; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733712439;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bU8S5e406R7aWO3RRyuQUoErXuoSCwc2cREjDhNAD6k=;
+	b=DyKCmR0XfDGI9nWLffzGm5+feUq8AfPE6dZr+cr5VcDgKKzhfZmv/sGc9ifCgnK6r2Kv+M
+	hZn1R9539SOABEw7sIxOzjQml55J6vp/9nLj9NviVHR3OCcG49CULFCLxxRVBh/T10cB6r
+	1Wa/4IY2jU1KtQb9EoYwReoO5fqfjx8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-HfkUkQLPPSql1A_ZrDSRag-1; Sun,
+ 08 Dec 2024 21:47:15 -0500
+X-MC-Unique: HfkUkQLPPSql1A_ZrDSRag-1
+X-Mimecast-MFC-AGG-ID: HfkUkQLPPSql1A_ZrDSRag
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2025C19560A2;
+	Mon,  9 Dec 2024 02:47:14 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.98])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A73231956056;
+	Mon,  9 Dec 2024 02:47:12 +0000 (UTC)
+Date: Mon, 9 Dec 2024 10:47:09 +0800
+From: Pingfan Liu <piliu@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Peter Jones <pjones@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+	linux-efi@vger.kernel.org, Will Deacon <will@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>, Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Philipp Rudo <prudo@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: Re: [PATCH 1/2] Makefile.zboot: Sign Image before packing into
+ EFI-STUB shell
+Message-ID: <Z1ZaLbZFm9OPRbQi@fedora>
+References: <20241206021000.8953-1-piliu@redhat.com>
+ <20241206021000.8953-2-piliu@redhat.com>
+ <CAMj1kXGFnwdQZzb_t5kC8nGyDz+MQ0wq6s2oTGNBmV7ebVgSGA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGFnwdQZzb_t5kC8nGyDz+MQ0wq6s2oTGNBmV7ebVgSGA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-If an EFI variable is created by an open and write but returns an
-error in set_variable, it isn't removed but hangs around in efivarfs
-with invalid inode attributes.  This happens because the entry is
-created in efivarfs_create but the EFI set_variable problem isn't
-discovered until efivarfs_file_write().  Fix by having set_variable
-failure in efivarfs_file_write() check if the variable existed before
-or is newly created and remove it again on the latter.  The signal for
-a newly created variable is that var.Attributes is empty.  This cannot
-happen for a real variable because one of the flags in
-EFI_VARIABLE_MASK must be set.
+On Fri, Dec 06, 2024 at 09:03:30AM +0100, Ard Biesheuvel wrote:
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- fs/efivarfs/file.c | 31 ++++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+Also cc Jan, Philipp, who are also engaged in related topic (UKI)
 
-diff --git a/fs/efivarfs/file.c b/fs/efivarfs/file.c
-index 41b2f5a7239c..5ef88c577e03 100644
---- a/fs/efivarfs/file.c
-+++ b/fs/efivarfs/file.c
-@@ -23,18 +23,23 @@ static ssize_t efivarfs_file_write(struct file *file,
- 	ssize_t bytes;
- 	bool set = false;
- 
-+	bytes = -EINVAL;
- 	if (count < sizeof(attributes))
--		return -EINVAL;
-+		goto err;
- 
-+	bytes = -EFAULT;
- 	if (copy_from_user(&attributes, userbuf, sizeof(attributes)))
--		return -EFAULT;
-+		goto err;
- 
-+	bytes = -EINVAL;
- 	if (attributes & ~(EFI_VARIABLE_MASK))
--		return -EINVAL;
-+		goto err;
- 
- 	data = memdup_user(userbuf + sizeof(attributes), datasize);
--	if (IS_ERR(data))
--		return PTR_ERR(data);
-+	if (IS_ERR(data)) {
-+		bytes = PTR_ERR(data);
-+		goto err;
-+	}
- 
- 	bytes = efivar_entry_set_get_size(var, attributes, &datasize,
- 					  data, &set);
-@@ -45,10 +50,7 @@ static ssize_t efivarfs_file_write(struct file *file,
- 	}
- 
- 	if (bytes == -ENOENT) {
--		drop_nlink(inode);
--		d_delete(file->f_path.dentry);
--		dput(file->f_path.dentry);
--		kfree(var);
-+		var->var.Attributes = 0;
- 	} else {
- 		inode_lock(inode);
- 		i_size_write(inode, datasize + sizeof(attributes));
-@@ -60,6 +62,17 @@ static ssize_t efivarfs_file_write(struct file *file,
- 
- out:
- 	kfree(data);
-+err:
-+	if (var->var.Attributes == 0) {
-+		/*
-+		 * variable got deleted or didn't exist before we
-+		 *  tried to set it
-+		 */
-+		drop_nlink(inode);
-+		d_delete(file->f_path.dentry);
-+		dput(file->f_path.dentry);
-+		kfree(var);
-+	}
- 
- 	return bytes;
- }
--- 
-2.35.3
+> (cc Peter, Gerd)
+> 
+> On Fri, 6 Dec 2024 at 03:10, Pingfan Liu <piliu@redhat.com> wrote:
+> >
+> > At present, the kexec_file_load of either zboot or UKI kernel relies on
+> > the user space to parse and extract the Image, and then pass the Image
+> > through that syscall. During this process, the outmost signature on
+> > zboot or UKI kernel is stripped and discarded.
+> >
+> > On the other hand, a secure boot platform enforces the signature
+> > verfiication on the kernel image passed through the kexec_file_load
+> > syscall. To cater to this requirement, this patch applies signature on
+> > the PE format 'Image' before padding.
+> >
+> 
+> The whole point of the EFI zboot format was avoiding the need to sign
+> the compressed payload.
+> 
+> Now, we are back to signing the payload along with the full image
+> using PE based tools, even though the payload is intended to be booted
+> as a raw image.
+> 
+
+I remember that I sent out a zboot image parser in the kernel to tackle
+with this signature issue.  But that will complicate the kernel image
+parser, as a result, we defer resolving it, and finally we have it
+implemented in the user space kexec-tools.
+
+The emergence of UKI makes things more complicated. Jan introduced "UKI
+format parser in linux kernel". For arm64, the UKI support in kernel
+means that a UKI format parser should be followed by a zboot format
+parser. 
+
+So we tried emulator solution instead of parser. ( I have a summary on:
+https://github.com/rhkdump/kexec_uefi/blob/main/overview.md)
+
+But either of the emulator methods have their own drawback:
+	-1.the purgatory-style method has trouble in the hardware scaling.
+	-2.the user space emulator can not ensure the security. (also I
+           think it can not resolve the hardware issue since at that time,
+           it can not alter the hardware status arbitrarily)
+
+
+> I'm not sure I see the point of this: EFI zboot is a trivial container
+> format which records the compression type and the start and length of
+> the payload in its header at a known offset.
+> 
+> Perhaps we should just make EFI zboot gzip-only, rather than
+> supporting 7 different compression methods because that is what the
+> legacy decompressors on ARM and x86 support - I struggle to see the
+> point of that tbh (even though I implemented that myself)
+> 
+> That way, the kernel can authenticate the outer PE zboot image as
+> usual, and perform the decompression itself, without having to carry
+> code for all compression formats it might encounter.
+> 
+
+It is always good to keep things simple. But this seems helpless to step
+around the kexec_file_load issue.
+
+> (Apologies if we are sending you in circles, but if we get this wrong
+> now, we're stuck with another kexec-related maintenance nightmare so I
+> really don't want to commit to something tooo hastily)
+> 
+
+Although this issue has come full circle, we now have a clear
+understanding of its solutions' limitations, advantages, and disadvantages.
+
+Unlike the forecast of this issue about three years ago, we are now
+facing real customer pressure.
+
+
+Thanks,
+
+Pingfan
+
+
+> -- 
+> Ard.
 
 
