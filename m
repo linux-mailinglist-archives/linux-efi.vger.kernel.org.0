@@ -1,121 +1,218 @@
-Return-Path: <linux-efi+bounces-2339-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2340-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9849EB19D
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 14:04:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB0A9EB1C2
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 14:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319A41881F04
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 13:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 380D21688B1
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 13:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757101A0B15;
-	Tue, 10 Dec 2024 13:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925F11A2846;
+	Tue, 10 Dec 2024 13:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="q4pb9jgd";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Agwvew+k"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="csvi+fGj"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03021A3AB1;
-	Tue, 10 Dec 2024 13:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AEA19DF99
+	for <linux-efi@vger.kernel.org>; Tue, 10 Dec 2024 13:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733835879; cv=none; b=ac48H2s8tOixN40dCMNMWtg+5Cx9CAmGze67h5yFdG6Vxziy0lh2j6emwoUY7XFSAg8C7XeuwTrHgOWuXfdTcMCZezxyaTpV2nnAZZYytjSn7HpZdbWGhFeAw0PbG+bPgRS5LmnneNJzTM10IIk/HQoXX5UjBzS+mJp50D23ZDw=
+	t=1733836776; cv=none; b=PX7ny91SNybr9VPkSQLf1hNFyd4OYa7xsEwyzWbG/mZBkzv37/vGBJHDpPiKAdvqHbkezTTTWTx+cNUpeR1V5jrON2ASRZmPSS8hrt9UAG/oIAcHde9gb5FdqgL5CQ8C0Hn9+KAaqNUJgVD5kDB0scRlYFKCMegTEh1aQBGa7gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733835879; c=relaxed/simple;
-	bh=VvN9FYSNCkoFMcyKSVhsCAhYYZInwHxYGswpfrol008=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QQWXvDe7kHD/pDrQIGmvRhT5g7wmpWZOpYAYVF9TfAlFjIpR7uWRMeXCqrF5MrDApIgScoZ573N8Fl6Nl15C2WFcjv5ckja6Bw969G7/bfCKplu58mBY1ZqmSOlCKl8oCz7zB7phv04aKEx930bNsfyePFOIUh9hnR+CNKKRyJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=q4pb9jgd; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Agwvew+k; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1733836776; c=relaxed/simple;
+	bh=PLD1tyUvuz5onreygdz0Q/TmPG4XRwoy95kauL57Ys8=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=uMME20VrzQqieg+Oxj08VdU5a37Bbh66O9ICTrKS0VlPmrwafJTr4Yb3z+eB9mPB/qQUsp8tmC5a95+mqoDx4mtFRzGY9ipnAkAS9Q1dSdEEWOM3ld3z9AsmB9wg9sSlxlNArlv3EjhfX9pNe+YoDx+TljFSP0nZZjm24tMPc10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=csvi+fGj; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1733835875;
-	bh=VvN9FYSNCkoFMcyKSVhsCAhYYZInwHxYGswpfrol008=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=q4pb9jgdNlZbY44rtSzRs3lUbKsNjG2m4n4aSrhmF8fJvyM5esDOC5HH46FSO7D2m
-	 k7iPOfGUPTLdCpcM7ctapOr2iDGYKyud8DEkB3CndG4OKXh2J7Qyk/f+A/LFnGj1Ou
-	 75f/yq5UmWB9TUS+1MQrnWezOFkNDCecW1QA0KyM=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 82F311285CB9;
-	Tue, 10 Dec 2024 08:04:35 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id D6ffbscE564v; Tue, 10 Dec 2024 08:04:35 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1733835873;
-	bh=VvN9FYSNCkoFMcyKSVhsCAhYYZInwHxYGswpfrol008=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Agwvew+kq96tTSc8V8kGL4qi3wVcVNhcqLLY6ophzYlXn6CgeYsPw7SSmTMJ0uPQD
-	 M2toeMnTbJN0fWsQH5BKItdQHVIKxOX4F2j5XWQnCF0Owcf5iIndSThiYk8C1aUlYR
-	 JRMD7KJpKfKkcGZle3n0cpeqX/Q8E3Jh7EsiPxD4=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 26EA5128165E;
-	Tue, 10 Dec 2024 08:04:33 -0500 (EST)
-Message-ID: <878beebf9064abb7911c015d894192077f17ef0b.camel@HansenPartnership.com>
-Subject: Re: TPM/EFI issue [Was: Linux 6.12]
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jiri Slaby <jirislaby@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>, 
- Linus Torvalds <torvalds@linux-foundation.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>
-Cc: Peter =?ISO-8859-1?Q?H=FCwe?= <PeterHuewe@gmx.de>, Jason Gunthorpe
- <jgg@ziepe.ca>, linux-integrity@vger.kernel.org, Ard Biesheuvel
- <ardb@kernel.org>,  "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
-Date: Tue, 10 Dec 2024 08:04:31 -0500
-In-Reply-To: <b33007e9-c468-4395-8eac-8e0f9860562a@kernel.org>
-References: 
-	<CAHk-=wgtGkHshfvaAe_O2ntnFBH3EprNk1juieLmjcF2HBwBgQ@mail.gmail.com>
-	 <9c893c52-e960-4f30-98ce-ba7d873145bb@kernel.org>
-	 <D5Z66HQJNNNL.1CPU2KF13269F@kernel.org>
-	 <39f16df2-9f4b-49e9-b004-b0e702d08dad@kernel.org>
-	 <D65GMNDAP2VG.1OM0JQG5Q934M@kernel.org>
-	 <D676OAD5YQU7.26INY71381WIO@kernel.org>
-	 <b33007e9-c468-4395-8eac-8e0f9860562a@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733836774; x=1765372774;
+  h=date:from:to:cc:subject:message-id;
+  bh=PLD1tyUvuz5onreygdz0Q/TmPG4XRwoy95kauL57Ys8=;
+  b=csvi+fGjfCVy9hbFiqeslYX4BHjccX3aY/j0TiiXP3YMWlE1wN7egfn7
+   9s9/h9ripNyMjLJPoTyVXPrOC3Y6z5iwzMKA/jiFfZia0mh86j2R9F2cJ
+   80wSLcWezwgtcE0wBq0bVDb9CW16IqBCyML4p86jxeHQU4Rd1o5xMz1L/
+   8UamIzgilNAfYkwisVNzf3R4IlJDYXsclmRkWRb3cDfSZGo3MjhHkkIlh
+   32bycissCQ1meWxQBgUuy2w+RnTRM5SASGjtUBTfSfAR1C/MbnR8Wp1fl
+   9fLJw9bX/itt2tJ0PnAtkjTLDom7Zne6CzR2N7O2Av1cUR5vcBlleZ6Kl
+   w==;
+X-CSE-ConnectionGUID: JzIi+oqYQkiGVQLWJOcIKw==
+X-CSE-MsgGUID: XDDPz1WiTuCw3bD0hIXZYQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="37962524"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
+   d="scan'208";a="37962524"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 05:19:34 -0800
+X-CSE-ConnectionGUID: MgNyppCRRBiHeZXH+67c8A==
+X-CSE-MsgGUID: NrxzurZ+Q46J2mbXiib9+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
+   d="scan'208";a="95876474"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 10 Dec 2024 05:19:32 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tL09C-0005Zl-26;
+	Tue, 10 Dec 2024 13:19:30 +0000
+Date: Tue, 10 Dec 2024 21:18:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 2ab0837cb91b7de507daa145d17b3b6b2efb3abf
+Message-ID: <202412102141.5UuNngkb-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-On Tue, 2024-12-10 at 07:13 +0100, Jiri Slaby wrote:
-[...]
-> Perhaps, you can give a hint why those happen exclusively with 6.12+?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 2ab0837cb91b7de507daa145d17b3b6b2efb3abf  efivarfs: Fix error on non-existent file
 
-For which one: the ramdisk size not being modulo 4 or the unseal
-getting a PCR changed error?  For the former I don't have much of an
-idea, it would seem to be a dracut (or whatever initrd builder you use)
-issue; the kernel doesn't care about the ramdisk size.  For the latter,
-I would suspect something is delaying IMA measurements such that
-they're still going on when you're trying to unseal.  The error you're
-getting occurs if any PCR changes, not just the ones the policy is
-locked to (thanks TCG).  We have had syzbot reports of processes
-getting stuck in measurement that have been identified as exfat
-related:
+elapsed time: 1116m
 
-https://syzkaller.appspot.com/bug?extid=1de5a37cb85a2d536330
+configs tested: 125
+configs skipped: 1
 
-But it could be a more generic filesystem issue that measurement is
-slowing but not enough to trigger the stuck process warning.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-In particular systemd parallelizes a lot of stuff, so if it's doing
-something that causes IMA measurement in parallel with the unseal and
-this parallel process finished before unseal on an earlier kernel, that
-would explain it.  You could probably verify this by adding more
-dependencies to the tpm target, but I'm not really well versed in
-systemd.
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    clang-20
+arc                              allmodconfig    clang-18
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-14.2.0
+arc                              allyesconfig    clang-18
+arc                              allyesconfig    gcc-13.2.0
+arc                   randconfig-001-20241210    gcc-13.2.0
+arc                   randconfig-002-20241210    gcc-13.2.0
+arm                              allmodconfig    clang-18
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    gcc-14.2.0
+arm                              allyesconfig    clang-18
+arm                              allyesconfig    gcc-14.2.0
+arm                   randconfig-001-20241210    clang-20
+arm                   randconfig-002-20241210    gcc-14.2.0
+arm                   randconfig-003-20241210    clang-20
+arm                   randconfig-004-20241210    clang-20
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20241210    clang-20
+arm64                 randconfig-002-20241210    clang-20
+arm64                 randconfig-003-20241210    clang-20
+arm64                 randconfig-004-20241210    clang-20
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20241210    gcc-14.2.0
+csky                  randconfig-002-20241210    gcc-14.2.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    gcc-14.2.0
+hexagon                          allyesconfig    clang-20
+hexagon               randconfig-001-20241210    clang-16
+hexagon               randconfig-002-20241210    clang-14
+i386                             allmodconfig    clang-19
+i386                              allnoconfig    clang-19
+i386                             allyesconfig    clang-19
+i386        buildonly-randconfig-001-20241210    gcc-12
+i386        buildonly-randconfig-002-20241210    clang-19
+i386        buildonly-randconfig-002-20241210    gcc-12
+i386        buildonly-randconfig-003-20241210    gcc-12
+i386        buildonly-randconfig-004-20241210    clang-19
+i386        buildonly-randconfig-004-20241210    gcc-12
+i386        buildonly-randconfig-005-20241210    clang-19
+i386        buildonly-randconfig-005-20241210    gcc-12
+i386        buildonly-randconfig-006-20241210    clang-19
+i386        buildonly-randconfig-006-20241210    gcc-12
+i386                                defconfig    clang-19
+i386                  randconfig-001-20241210    clang-19
+i386                  randconfig-002-20241210    clang-19
+i386                  randconfig-003-20241210    clang-19
+i386                  randconfig-004-20241210    clang-19
+i386                  randconfig-005-20241210    clang-19
+i386                  randconfig-006-20241210    clang-19
+i386                  randconfig-007-20241210    clang-19
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20241210    gcc-14.2.0
+loongarch             randconfig-002-20241210    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20241210    gcc-14.2.0
+nios2                 randconfig-002-20241210    gcc-14.2.0
+openrisc                          allnoconfig    clang-20
+openrisc                         allyesconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    clang-20
+parisc                           allyesconfig    gcc-14.2.0
+parisc                randconfig-001-20241210    gcc-14.2.0
+parisc                randconfig-002-20241210    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    clang-20
+powerpc                          allyesconfig    clang-16
+powerpc                          allyesconfig    gcc-14.2.0
+powerpc               randconfig-001-20241210    clang-20
+powerpc               randconfig-002-20241210    clang-20
+powerpc               randconfig-003-20241210    clang-20
+powerpc64             randconfig-001-20241210    gcc-14.2.0
+powerpc64             randconfig-002-20241210    gcc-14.2.0
+powerpc64             randconfig-003-20241210    gcc-14.2.0
+riscv                            allmodconfig    clang-20
+riscv                            allmodconfig    gcc-14.2.0
+riscv                             allnoconfig    clang-20
+riscv                            allyesconfig    clang-20
+riscv                            allyesconfig    gcc-14.2.0
+riscv                 randconfig-001-20241210    clang-19
+riscv                 randconfig-002-20241210    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                             allmodconfig    gcc-14.2.0
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                  randconfig-001-20241210    gcc-14.2.0
+s390                  randconfig-002-20241210    gcc-14.2.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                    randconfig-001-20241210    gcc-14.2.0
+sh                    randconfig-002-20241210    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20241210    gcc-14.2.0
+sparc                 randconfig-002-20241210    gcc-14.2.0
+sparc64               randconfig-001-20241210    gcc-14.2.0
+sparc64               randconfig-002-20241210    gcc-14.2.0
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-20
+um                               allyesconfig    clang-20
+um                    randconfig-001-20241210    clang-20
+um                    randconfig-002-20241210    gcc-12
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20241210    gcc-12
+x86_64      buildonly-randconfig-002-20241210    clang-19
+x86_64      buildonly-randconfig-003-20241210    clang-19
+x86_64      buildonly-randconfig-004-20241210    gcc-12
+x86_64      buildonly-randconfig-005-20241210    gcc-12
+x86_64      buildonly-randconfig-006-20241210    clang-19
+x86_64                              defconfig    clang-19
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20241210    gcc-14.2.0
+xtensa                randconfig-002-20241210    gcc-14.2.0
 
-Regards,
-
-James
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
