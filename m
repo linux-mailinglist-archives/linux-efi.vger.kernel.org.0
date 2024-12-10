@@ -1,120 +1,136 @@
-Return-Path: <linux-efi+bounces-2341-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2342-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5EA9EB22E
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 14:49:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5489EB754
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 18:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FAF1164647
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 13:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 054F0167D75
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 17:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3871A08A8;
-	Tue, 10 Dec 2024 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CDC231C9F;
+	Tue, 10 Dec 2024 17:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxc8ezmA"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="J00syFpX"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9571E515;
-	Tue, 10 Dec 2024 13:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF8F230D30;
+	Tue, 10 Dec 2024 17:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733838592; cv=none; b=AtD4RiFFgrMtYG5AcyooG5C3d0rATV6wxlOfCvIpxY17w3MEll1SXv5uhGJg3aD6Glvbnyl0LhOpeEzU6MVYD4KuxPScDzmtQ6kvT+McFY05HSpChipdMYCI6Ssvsazlp8umIetM3rl4GPEcfyRWDgvtckwqh1vGzQ36Se5Wbnw=
+	t=1733850150; cv=none; b=UttKbTPP4OANxISwCWd5IDQtVgl4ybzq0EFXWPu4Q1M5/iiP3+vkD2dM0p0N7jESuhyJ6YiXwkW3FmdkE2Cf0vhi97FgWez8S5FZqDMpFLqRgh6f6ANKKfIvSH6k4bwCR9vWmOL6gDc8wKimzWojTrrKFbbpa87FGBmaX/exRHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733838592; c=relaxed/simple;
-	bh=e0jZuI/DKh2/Xu1++9G8Hh1Ryx/GiiP7Fc2SzdCbW/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QR2aSdvfO7dZNOsDjRkE5oBDLqHWWVkjjwzHyjz/SzdgQDEmKnllcRFst70g0U9rwDBETJ988+/XCJ/qD7NGsV7s+h6GyVTeR6TJVMhm3uaIBcx9bEeVLazH3N9LcJgBn1l/9Z/tO2aTgfyvrQRVCg0LOo3qwpyCuL4rD9UMaR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxc8ezmA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20BCC4CED6;
-	Tue, 10 Dec 2024 13:49:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733838591;
-	bh=e0jZuI/DKh2/Xu1++9G8Hh1Ryx/GiiP7Fc2SzdCbW/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nxc8ezmAQKuVvEC4VDxSFSlaB/KhNZSOwO0U5V0DM1Zzjdjs64Vf89mZd6WE+vD3c
-	 gcMBush/8NmtIkKoKKABT2qJF5dk4V4XEHL6t4ej5lDfsouIKKlE9tQhAYPi9+jqgK
-	 segniSDhLUt34iiHcDJMoKF6sYlZVrDPAVtMT9e20g646XY+cR8rMOHFA7g4z8lBHo
-	 t31lsTHyqBR+lkDSsq+OlUKcxdycDqAkNHS5B75SN1zl24Bd7Xvs0qI/8gNqnM73xk
-	 FbSkK/kTbKhbSPtfMCFt/7/yDbfC92s9Kfv5EhJh7eRz2d2g/2kKA1QfHsjuetLPx0
-	 r3IOU8hNLpCrA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tL0cc-0000000039o-1jgo;
-	Tue, 10 Dec 2024 14:49:54 +0100
-Date: Tue, 10 Dec 2024 14:49:54 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Leif Lindholm <leif.lindholm@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Ricardo Salveti <ricardo@foundries.io>,
-	Marc Zyngier <maz@kernel.org>, linux-efi@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: UEFI EBS() failures on Lenovo T14s
-Message-ID: <Z1hHAtAcgivajR7i@hovoldconsulting.com>
-References: <Z0gn1N3IsP8r3gTA@hovoldconsulting.com>
- <CAMj1kXGjiA1HydMaY82MQsYvkchpN7v7CMOB5i3NEdqcYGn19Q@mail.gmail.com>
- <Z0g_HL01eqXu4cwQ@hovoldconsulting.com>
- <CAMj1kXFtr7ejEjjSRj9dcRa7YbO0SR5OR3pm+K6OvbX2=RfhAQ@mail.gmail.com>
- <CAMj1kXHS_TY=jfBT=dqUQSXf2pBXbt12uaLsMw-FLX3uU_X6uA@mail.gmail.com>
- <Z0iCNJVWNzBzdq0C@hovoldconsulting.com>
+	s=arc-20240116; t=1733850150; c=relaxed/simple;
+	bh=YytALilx4OmKj/97ejQ67SkqWDQISUj0+qCIPrDo4kw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BNg+cEjaUaMPrRWCjXEbkpqqUuJEAxhLM0QN5jgruqvMDiIViIFwmwNGG3rUlucaoSzk7XYVKj9W2UntaPDGfTq6QRBBYzIZE4HAaWdy3uxRQ1FLqF56igIK+OPBIlhjH16P/NRnGXQEQq0mBQx0CoueyrQRModv8JHomj7vccQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=J00syFpX; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1733850147;
+	bh=YytALilx4OmKj/97ejQ67SkqWDQISUj0+qCIPrDo4kw=;
+	h=From:To:Subject:Date:Message-Id:From;
+	b=J00syFpXGamYIn7DYikqAf7ibABQ63BubF+Y9fS2ih7rUNehGju7sOsiKryZhfeH1
+	 169tZtlGHV841ZHDhbtskFDATZLLw/2S9ogBKD0NUf2Z0QldBJum++qo6gnt4Hp/+u
+	 +ElWbaptsftpysAjH813XEZ0Sptl/ENYAM/cmHPg=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 93F7312813BB;
+	Tue, 10 Dec 2024 12:02:27 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id 9MrwQ7N1ldRB; Tue, 10 Dec 2024 12:02:27 -0500 (EST)
+Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id C7E8512813B6;
+	Tue, 10 Dec 2024 12:02:26 -0500 (EST)
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Jeremy Kerr <jk@ozlabs.org>
+Subject: [PATCH 0/6] convert efivarfs to manage object data correctly
+Date: Tue, 10 Dec 2024 12:02:18 -0500
+Message-Id: <20241210170224.19159-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z0iCNJVWNzBzdq0C@hovoldconsulting.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 28, 2024 at 03:46:12PM +0100, Johan Hovold wrote:
+I've added fsdevel because I'm hopping some kind vfs person will check
+the shift from efivarfs managing its own data to its data being
+managed as part of the vfs object lifetimes.  The following paragraph
+should describe all you need to know about the unusual features of the
+filesystem.
 
-> From 1464360c7c16d1a6ce454bf88ee5815663f27283 Mon Sep 17 00:00:00 2001
-> From: Johan Hovold <johan+linaro@kernel.org>
-> Date: Wed, 27 Nov 2024 16:05:37 +0100
-> Subject: [PATCH] hack: efi/libstub: fix t14s exit_boot_services() failure
-> 
-> The UEFI firmware on the Lenovo ThinkPad T14s is broken and
-> ExitBootServices() often fails and prevents the kernel from starting:
-> 
-> 	EFI stub: Exiting boot services...
-> 	EFI stub: Exit boot services failed.
-> 
-> One bootloader entry may fail to start almost consistently (once in a
-> while it may start), while a second entry may always work even when the
-> kernel, dtb and initramfs images are copies of the failing entry on the
-> same ESP.
-> 
-> This can be worked around by starting and exiting a UEFI shell from the
-> bootloader or by starting the bootloader manually via the Boot Menu
-> (F12) before starting the kernel.
-> 
-> Notably starting the kernel automatically from the shell startup.nsh
-> does not work, while calling the same script manually works.
-> 
-> Experiments have revealed that allocating an event before calling
-> ExitBootServices() can make the call succeed. When providing a
-> notification function there apparently is no need to actually signal the
-> event group and CloseEvent() could also be called directly.
+efivarfs is a filesystem projecting the current state of the UEFI
+variable store and allowing updates via write.  Because EFI variables
+contain both contents and a set of attributes, which can't be mapped
+to filesystem data, the u32 attribute is prepended to the output of
+the file and, since UEFI variables can't be empty, this makes every
+file at least 5 characters long.  EFI variables can be removed either
+by doing an unlink (easy) or by doing a conventional write update that
+reduces the content to zero size, which means any write update can
+potentially remove the file.
 
-As feared, this does not really fix anything and probably just works
-by changing timing or alignment or similar.
+Currently efivarfs has two bugs: it leaks memory and if a create is
+attempted that results in an error in the write, it creates a zero
+length file remnant that doesn't represent an EFI variable (i.e. the
+state reflection of the EFI variable store goes out of sync).
 
-When trying to find a workaround for the EBS() failure I had moved
-loading of the dtb and initamfs images from systemd-boot to the stub as
-that seemed to increase the chance of getting the kernel to start.
+The code uses inode->i_private to point to additionaly allocated
+information but tries to maintain a global list of the shadowed
+varibles for internal tracking.  Forgetting to kfree() entries in this
+list when they are deleted is the source of the memory leak.
 
-When I tried moving the loading back to the bootloader the other day I
-saw EBS() fail with the event hack still in place in the stub. This time
-it did not seem to fail gracefully however, and the machine was reset by
-the hypervisor after a timeout.
+I've tried to make the patches as easily reviewable by non-EFI people
+as possible, so some possible cleanups (like consolidating or removing
+the efi lock handling and possibly removing the additional entry
+allocation entirely in favour of simply converting the dentry name to
+the variable name and guid) are left for later.
 
-And now I'm occasionally seeing EBS() fail also when the stub is loading
-the images.
+The first patch removes some unused fields in the entry; patches 2-3
+eliminate the list search for duplication (some EFI variable stores
+have buggy iterators) and replaces it with a dcache lookup.  Patch 4
+move responsibility for freeing the entry data to inode eviction which
+both fixes the memory leak and also means we no longer need to iterate
+over the variable list and free its entries in kill_sb.  Since the
+variable list is now unused, patch 5 removes it and its helper
+functions.
 
-Johan
+Patch 6 fixes the second bug by introducing a file_operations->release
+method that checks to see if the inode size is zero when the file is
+closed and removes it if it is.  Since all files must be at least 5 in
+length we use a zero i_size as an indicator that either the variable
+was removed on write or that it wasn't correctly created in the first
+place.
+
+James
+
+---
+
+James Bottomley (6):
+  efivarfs: remove unused efi_varaible.Attributes and .kobj
+  efivarfs: add helper to convert from UC16 name and GUID to utf8 name
+  efivarfs: make variable_is_present use dcache lookup
+  efivarfs: move freeing of variable entry into evict_inode
+  efivarfs: remove unused efivarfs_list
+  efivarfs: fix error on write to new variable leaving remnants
+
+ fs/efivarfs/file.c     |  31 ++++---
+ fs/efivarfs/inode.c    |   5 --
+ fs/efivarfs/internal.h |  20 ++---
+ fs/efivarfs/super.c    |  59 +++++++-------
+ fs/efivarfs/vars.c     | 179 ++++++++++-------------------------------
+ 5 files changed, 99 insertions(+), 195 deletions(-)
+
+-- 
+2.35.3
+
 
