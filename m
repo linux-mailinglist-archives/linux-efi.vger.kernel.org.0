@@ -1,149 +1,202 @@
-Return-Path: <linux-efi+bounces-2348-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2349-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB7A9EB764
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 18:04:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E0A9EB800
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 18:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344D8188054C
-	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 17:04:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43E141888CB2
+	for <lists+linux-efi@lfdr.de>; Tue, 10 Dec 2024 17:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DBB231C91;
-	Tue, 10 Dec 2024 17:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0776723ED62;
+	Tue, 10 Dec 2024 17:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="FL+7cC82"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F2q6Z3eE"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ACE1BC09F;
-	Tue, 10 Dec 2024 17:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD7423ED6E
+	for <linux-efi@vger.kernel.org>; Tue, 10 Dec 2024 17:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733850250; cv=none; b=K+u90X6A/wzbQ+Vi07hD8lQLb5duQmeVgilZ1qdKvEu1tI5O1tA4e3CwDIyc83iizgfnG2K1iYKyOd1/vssFONDd9tOCLFk7SOptvBu6ASEQI1dRcKrn5CXOIGAEhpc1N19fMxGP2Wj0+MoB0gP0b4aX/mJ0kmrnhHFPaTt7t0M=
+	t=1733850866; cv=none; b=lmXDMApxbWdJmU35PYUnvCnpszR8VHKsX5W7J2Rodh0MXFmkhJ5QBHJqZOrAPb9B/P9R5GidiNU6J+QjR6HybVmIFy4iQX8e9Ndl8J24OZsI2VMZlh+Ilj7/r6IoxDbHHGXxP8tlHB9ATWDln3whYkdMyBuq2uGNz8ZlzsAXNBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733850250; c=relaxed/simple;
-	bh=OPxYu+JRY+hSaT08tIK0Mu9O8A/1onhr3l9stHMosLk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aQBGmXxt8aIs8mWXiiVwM57Xx0U42PneS/cQXJsrBa/28/3QbbiqYKDVE5Wv7z/k0g0dwvDMLRW/v/FHYloVZw1nB3caOL9yZFATYvSXhgqQMfCcDTiTf+VUS94mw5w84e+U7lhwZfZG9RHt6Dy18NOtBUzzFqDxi2sqe4c7M0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=FL+7cC82; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1733850248;
-	bh=OPxYu+JRY+hSaT08tIK0Mu9O8A/1onhr3l9stHMosLk=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:From;
-	b=FL+7cC82YdywisEaU4wrHQe68rie6Dh4ZR/EFT9HlzqyrGupXj66LVahVbsKKJ/a7
-	 WswozqsHgVrQiMtj6OrFSXyKnugxuHzqAd8iD081mx1TCpMKTojPXExS1zC0VZ5Ocx
-	 IkWfBTGcST3HQYb0B+QI6WEAA7x4RyH/YS2pEzVI=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 463481281701;
-	Tue, 10 Dec 2024 12:04:08 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id fOoGqsTqAgSo; Tue, 10 Dec 2024 12:04:08 -0500 (EST)
-Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 91E31128165E;
-	Tue, 10 Dec 2024 12:04:07 -0500 (EST)
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Jeremy Kerr <jk@ozlabs.org>
-Subject: [PATCH 6/6] efivarfs: fix error on write to new variable leaving remnants
-Date: Tue, 10 Dec 2024 12:02:24 -0500
-Message-Id: <20241210170224.19159-7-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20241210170224.19159-1-James.Bottomley@HansenPartnership.com>
-References: <20241210170224.19159-1-James.Bottomley@HansenPartnership.com>
+	s=arc-20240116; t=1733850866; c=relaxed/simple;
+	bh=pg6PCkAQESYCuXYSd+fcow4PqFanbzQovGB2rPsyh2A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OSK3Ziku4JT3uV4u1cpvL7j7XLwo31pJyJIl1nSIdMBX3IHhm34Y0xfo2zZ8jdTSROqpmwBu4ekEpmTpVAT9ZEVMYkrHvYqO9hoa7ldK8IVJ4ZNhCkFxuI/HUcQN6/y8+MvY6sP5iozyazfJwTQt0gm4f0eAiRJ65YEdqRe8kTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F2q6Z3eE; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9f1c590ecdso1108962466b.1
+        for <linux-efi@vger.kernel.org>; Tue, 10 Dec 2024 09:14:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733850864; x=1734455664; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LLa40PH/Tbq3M6b/+V/XDch1i2DV24C5EIkLCdmLkko=;
+        b=F2q6Z3eEmyICCp600eBBpKyuHwREEjFb+fHMg5cq07gvM6PNZ0x5/C398Q2LPztCnh
+         v15U62dg8L1DWcexAeXR/QlE61x+P4qHOjgvV8Y3HOeTjNNBl/LBfyz9lXWoy6JGdN2S
+         ovWEKBgZE0Kd/4JXkN/B+r7S7CSCFNJ8WMkECfDVas31pRRjMgRd/E3YMD7SqAorLcaB
+         s8UB/PFmVeWK3lrWKGed1sBgJPEjLVNRmYkvWuIAJ8sOTTlzLY9t4A7P1T4zK/2q5McH
+         N5zGmL9cwMffRZFM1E2ALKm6/OgA9KR0dReFBf2W3W1/X9W6DZRNZNjicC1tHypCNOUJ
+         M5Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733850864; x=1734455664;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LLa40PH/Tbq3M6b/+V/XDch1i2DV24C5EIkLCdmLkko=;
+        b=wkzZrYbMi7nFtLBRjKakifx2WVZ/9f+tJ65OubxklU3gqnj0aH3zeRe8JRkKKhVClP
+         99phYf/JT0UUIQbaGTBM61u3pXKYHZHA/Ku8HdpV5i2pDcQDMWLk6tyg5dppLpx2QfNv
+         uVAWLJqrtFEH9q0pGeQoLKcpsNPy3G4/z9xnN7dgvZUlmMGDsGz/W2i3D9YGkUZKbq4g
+         J6Si38xuoBA1mG0msm7flZAwhNO4za7Rb/ujDsDoLwWvsHW2vhCB6SwgO3fa6P3t2xTR
+         5gSFX25dCboPjdcyJhZZ46Qe5eDKYBKF8CqIlMbrJGp2O/7N5OE++J4fDC87Z01AS+Kk
+         c8sA==
+X-Forwarded-Encrypted: i=1; AJvYcCXxhnZAhwSHUaZ98nUb1v07lEI66qRxF7VK7d2lcbUaVKrMvIzZourS77SXADdJxqL4hd8J4nm4i7w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKGv43dGi8+Tdg7cpZc+blY4tsxATX7NXu1Z8vH0gbPEURKQwN
+	GV4df2wAQ1a0dxVaM0qCp6oVjAm+dNDSl4+9KiOa0LSBjVTRXrBTWls8N43bp5LcbiNNRuJR7/i
+	NY3Dnymelo5oYaKzWZjHVIB3PCpKg46wI0X8F
+X-Gm-Gg: ASbGncu/1ScxX+2GHs7D7srTSF+E8PMrfPqS3n30vOmdm2StlwXrzt9KMij2g7+pBry
+	O7O72cdFHN3rbaH18M8qnpehxanUJ9/9gikM=
+X-Google-Smtp-Source: AGHT+IFXWYL2SzbDBfEJlksb8gpNuE+GkJfSEULi1cVyKKhpiP54QWCzdhSMm4iaNZTNIwwZy45pMnSRj/8AmdFYZOs=
+X-Received: by 2002:a17:907:1dee:b0:aa6:7027:7b01 with SMTP id
+ a640c23a62f3a-aa69cd5d757mr579212466b.20.1733850863442; Tue, 10 Dec 2024
+ 09:14:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241210170224.19159-1-James.Bottomley@HansenPartnership.com> <20241210170224.19159-4-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20241210170224.19159-4-James.Bottomley@HansenPartnership.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 10 Dec 2024 09:14:11 -0800
+X-Gm-Features: AZHOrDmJc5KDd4w3kl_yozhs3fB0y-MMK8wkfhEaJhBB4hWqpacedF8XnBUWxbw
+Message-ID: <CAAH4kHaDnzY_KWkRy+fGzxOh5b9oViSfSWZ4CcQSa8n3dF2v2A@mail.gmail.com>
+Subject: Re: [PATCH 3/6] efivarfs: make variable_is_present use dcache lookup
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Make variable cleanup go through the fops release mechanism and use
-zero inode size as the indicator to delete the file.  Since all EFI
-variables must have an initial u32 attribute, zero size occurs either
-because the update deleted the variable or because an unsuccessful
-write after create caused the size never to be set in the first place.
+On Tue, Dec 10, 2024 at 9:03=E2=80=AFAM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
 
-Even though this fixes the bug that a create either not followed by a
-write or followed by a write that errored would leave a remnant file
-for the variable, the file will appear momentarily globally visible
-until the close of the fd deletes it.  This is safe because the normal
-filesystem operations will mediate any races; however, it is still
-possible for a directory listing at that instant between create and
-close contain a variable that doesn't exist in the EFI table.
+>  extern const struct file_operations efivarfs_file_operations;
+>  extern const struct inode_operations efivarfs_dir_inode_operations;
+> @@ -64,4 +66,6 @@ extern struct inode *efivarfs_get_inode(struct super_bl=
+ock *sb,
+>                         const struct inode *dir, int mode, dev_t dev,
+>                         bool is_removable);
+>
+> +
+> +
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- fs/efivarfs/file.c | 31 ++++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+Unnecessary
+>  #endif /* EFIVAR_FS_INTERNAL_H */
+> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> index b22441f7f7c6..dc3870ae784b 100644
+> --- a/fs/efivarfs/super.c
+> +++ b/fs/efivarfs/super.c
+> @@ -181,6 +181,26 @@ static struct dentry *efivarfs_alloc_dentry(struct d=
+entry *parent, char *name)
+>         return ERR_PTR(-ENOMEM);
+>  }
+>
+> +bool efivarfs_variable_is_present(efi_char16_t *variable_name,
+> +                                 efi_guid_t *vendor, void *data)
+> +{
+> +       char *name =3D efivar_get_utf8name(variable_name, vendor);
+> +       struct super_block *sb =3D data;
+> +       struct dentry *dentry;
+> +       struct qstr qstr;
+> +
+> +       if (!name)
+> +               return true;
 
-diff --git a/fs/efivarfs/file.c b/fs/efivarfs/file.c
-index 23c51d62f902..edf363f395f5 100644
---- a/fs/efivarfs/file.c
-+++ b/fs/efivarfs/file.c
-@@ -38,22 +38,24 @@ static ssize_t efivarfs_file_write(struct file *file,
- 
- 	bytes = efivar_entry_set_get_size(var, attributes, &datasize,
- 					  data, &set);
--	if (!set && bytes) {
-+	if (!set) {
- 		if (bytes == -ENOENT)
- 			bytes = -EIO;
- 		goto out;
- 	}
- 
-+	inode_lock(inode);
- 	if (bytes == -ENOENT) {
--		drop_nlink(inode);
--		d_delete(file->f_path.dentry);
--		dput(file->f_path.dentry);
-+		/*
-+		 * zero size signals to release that the write deleted
-+		 * the variable
-+		 */
-+		i_size_write(inode, 0);
- 	} else {
--		inode_lock(inode);
- 		i_size_write(inode, datasize + sizeof(attributes));
- 		inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
--		inode_unlock(inode);
- 	}
-+	inode_unlock(inode);
- 
- 	bytes = count;
- 
-@@ -106,8 +108,19 @@ static ssize_t efivarfs_file_read(struct file *file, char __user *userbuf,
- 	return size;
- }
- 
-+static int efivarfs_file_release(struct inode *inode, struct file *file)
-+{
-+	if (i_size_read(inode) == 0) {
-+		drop_nlink(inode);
-+		d_delete(file->f_path.dentry);
-+		dput(file->f_path.dentry);
-+	}
-+	return 0;
-+}
-+
- const struct file_operations efivarfs_file_operations = {
--	.open	= simple_open,
--	.read	= efivarfs_file_read,
--	.write	= efivarfs_file_write,
-+	.open		= simple_open,
-+	.read		= efivarfs_file_read,
-+	.write		= efivarfs_file_write,
-+	.release	= efivarfs_file_release,
- };
--- 
-2.35.3
+Why is this true? I understand the previous implementation would have
+hit a null dereference trying to calculate strsize1 on null, so this
+isn't worse, but if we considered its length to be 0, it would not be
+found.
 
+> +
+> +       qstr.name =3D name;
+> +       qstr.len =3D strlen(name);
+> +       dentry =3D d_hash_and_lookup(sb->s_root, &qstr);
+> +       kfree(name);
+> +       if (dentry)
+> +               dput(dentry);
+> +       return dentry !=3D NULL;
+> +}
+> +
+>  static int efivarfs_callback(efi_char16_t *name16, efi_guid_t vendor,
+>                              unsigned long name_size, void *data,
+>                              struct list_head *list)
+> diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
+> index 7a07b767e2cc..f6380fdbe173 100644
+> --- a/fs/efivarfs/vars.c
+> +++ b/fs/efivarfs/vars.c
+> @@ -313,28 +313,6 @@ efivar_variable_is_removable(efi_guid_t vendor, cons=
+t char *var_name,
+>         return found;
+>  }
+>
+> -static bool variable_is_present(efi_char16_t *variable_name, efi_guid_t =
+*vendor,
+> -                               struct list_head *head)
+> -{
+> -       struct efivar_entry *entry, *n;
+> -       unsigned long strsize1, strsize2;
+> -       bool found =3D false;
+> -
+> -       strsize1 =3D ucs2_strsize(variable_name, EFI_VAR_NAME_LEN);
+> -       list_for_each_entry_safe(entry, n, head, list) {
+> -               strsize2 =3D ucs2_strsize(entry->var.VariableName, EFI_VA=
+R_NAME_LEN);
+> -               if (strsize1 =3D=3D strsize2 &&
+> -                       !memcmp(variable_name, &(entry->var.VariableName)=
+,
+> -                               strsize2) &&
+> -                       !efi_guidcmp(entry->var.VendorGuid,
+> -                               *vendor)) {
+> -                       found =3D true;
+> -                       break;
+> -               }
+> -       }
+> -       return found;
+> -}
+> -
+>  /*
+>   * Returns the size of variable_name, in bytes, including the
+>   * terminating NULL character, or variable_name_size if no NULL
+> @@ -439,8 +417,8 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_=
+t, unsigned long, void *,
+>                          * we'll ever see a different variable name,
+>                          * and may end up looping here forever.
+>                          */
+> -                       if (variable_is_present(variable_name, &vendor_gu=
+id,
+> -                                               head)) {
+> +                       if (efivarfs_variable_is_present(variable_name,
+> +                                                        &vendor_guid, da=
+ta)) {
+>                                 dup_variable_bug(variable_name, &vendor_g=
+uid,
+>                                                  variable_name_size);
+>                                 status =3D EFI_NOT_FOUND;
+> --
+> 2.35.3
+>
+>
+
+
+--=20
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
 
