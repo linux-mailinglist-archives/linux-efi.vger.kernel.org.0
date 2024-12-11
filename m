@@ -1,204 +1,118 @@
-Return-Path: <linux-efi+bounces-2366-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2367-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE1F9ECAF2
-	for <lists+linux-efi@lfdr.de>; Wed, 11 Dec 2024 12:19:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D529ECC30
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Dec 2024 13:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA4611888DA8
-	for <lists+linux-efi@lfdr.de>; Wed, 11 Dec 2024 11:19:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7621216499D
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Dec 2024 12:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18429239BDA;
-	Wed, 11 Dec 2024 11:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024B8229124;
+	Wed, 11 Dec 2024 12:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/AIR7OD"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="PZEQmSQ9";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="RvF/YvFd"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E6F239BBE;
-	Wed, 11 Dec 2024 11:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A4C229120;
+	Wed, 11 Dec 2024 12:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733915977; cv=none; b=U1+d/rLNRgslifnUVL4Zowdwe1NqFpIPW/WzolN8o2HXfUYbpCY5IOM5xfYDYQ6N0j1dbV5Vf/aNDCB063/BqN7HMUHKD9TGSXlrdvYXT2fisILm3LIp424NLqBt0GDabIKSwjbOw8yQBnBGmqzNgLFKbOVZQqqU65hlI7L3HKI=
+	t=1733920756; cv=none; b=G1t9OiB+fjCqeVnnOBo++5m555Lh9L5HrD0669BUQaC55dT/YPTNtbQMIrYMRPbc/pxbQfT1U3ec9sokcWJNUD7BO81Hg35RFHggO06pm81X5UoxNP6gfHCtTg118jhr7l2lKtTzWxuTs8yuAgHxvkSQuc4dSykgU5bs09P2898=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733915977; c=relaxed/simple;
-	bh=EVb57XMlb/Lgk1t3Q0klEV1VUb7ld/Y5xaHnDAGpgcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PHK43QXKVt7EyRV9kZmEHUy9Bc+cfAwefcdiz6UqNP9snlYuFhJ6LYKSR34sFr3xGAHGweJdNFwmORVIlp6k4556icFa+jdMm7UBIfObF3Z1d36U/KAdRjR2xGg15qCDV8wjWnWc1SwTzPk80X4S3t9LDzVLEBR0WFYtUf+IpKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/AIR7OD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B2DC4CED2;
-	Wed, 11 Dec 2024 11:19:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733915976;
-	bh=EVb57XMlb/Lgk1t3Q0klEV1VUb7ld/Y5xaHnDAGpgcI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g/AIR7ODR+UsV7bk/Ej+MYMnZhZhGB1zNexy0qNcqB1CisbrZcVmDax6LRs4gXqhE
-	 IN/ezE0jKcwFNJrtMw8WJu5kYMkRuwuOqisYTfZz5ZPUSRwgdC9bg0CWHbsuxBSod2
-	 VK5XbTLyzKqbPE9FYyltISD1iQsxzhckkDOT0eAMjKHtQ7QxAhNG3Yu4avQw/0Onpm
-	 F1BNUQczyjKDDazqlv6TGtLGAbGUn8Csz3e/0pgcDJpNxgmM2j1ykvn7DEMI4DhNKm
-	 7WR3N/pH2FXpEg+8G7FM+OvmK/eNPOZUZBS8SO6j+KxwG5inwbAoAUgwRGR7E1MoJp
-	 EOFQUBlN4qYfg==
-Date: Wed, 11 Dec 2024 12:19:32 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>
-Subject: Re: [PATCH 4/6] efivarfs: move freeing of variable entry into
- evict_inode
-Message-ID: <20241211-mitmensch-worte-fda3fe1d7760@brauner>
+	s=arc-20240116; t=1733920756; c=relaxed/simple;
+	bh=MGeGJkBE/DUZAyOavqGTBVaVgwpva4kxhtVY0X7JtpY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ffH3j7QIgUFX+x+5e27BzWkRaVvTwYwXNwyWf8t6JpS2QY+W70NbVgp7Aj24GuUCG4aV4AFVfJ9ZtR40FXAvb+iwCoPLGCRW6+SuRwts0byyE3kqggL2q2/Nz8gvUj51l+faKU8nM7ca26AosIBERt2rxGgtvB8IX8k7GW1B4RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=PZEQmSQ9; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=RvF/YvFd; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1733920754;
+	bh=MGeGJkBE/DUZAyOavqGTBVaVgwpva4kxhtVY0X7JtpY=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=PZEQmSQ9HOLxAuV5w7AmoQDaID35GWC+Gno0kSZDzbDRTJc57wM1Jqafqw6hXoAob
+	 A0JKraOo8Hx/Wul6+NuBnFMrIcM5mhzA8Dcazy/gl31RTG2gW8nUEsC/BpQv0CChmh
+	 Uq+yjwuX69RZDqiFeS9R78vY013qLhLm8zQWawG0=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 1CBDF1280B72;
+	Wed, 11 Dec 2024 07:39:14 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id xa4rWMpl1qkm; Wed, 11 Dec 2024 07:39:14 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1733920753;
+	bh=MGeGJkBE/DUZAyOavqGTBVaVgwpva4kxhtVY0X7JtpY=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=RvF/YvFd63OoihQZL+ncoL8d9uMUUulNYrn9pJjS3rrWo/V3WGoMkNDLZ167tyZGC
+	 nQyAZCF/EpnfcYIwuxZ6jFPH8NSTKQRJD2vDzTr0pZTCpy2wGDPEguLO36HOnrPDFm
+	 jgPL0oakUn3TwG7K46Hv1LMwR8ENNLadVSj6LFrc=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 6E9CB12809C0;
+	Wed, 11 Dec 2024 07:39:13 -0500 (EST)
+Message-ID: <049209daadc928ecbf3bdb17d80634fa55842263.camel@HansenPartnership.com>
+Subject: Re: [PATCH 6/6] efivarfs: fix error on write to new variable
+ leaving remnants
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, Ard Biesheuvel
+	 <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>
+Date: Wed, 11 Dec 2024 07:39:11 -0500
+In-Reply-To: <20241211-krabben-tresor-9f9c504e5bd7@brauner>
 References: <20241210170224.19159-1-James.Bottomley@HansenPartnership.com>
- <20241210170224.19159-5-James.Bottomley@HansenPartnership.com>
+	 <20241210170224.19159-7-James.Bottomley@HansenPartnership.com>
+	 <20241211-krabben-tresor-9f9c504e5bd7@brauner>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241210170224.19159-5-James.Bottomley@HansenPartnership.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 10, 2024 at 12:02:22PM -0500, James Bottomley wrote:
-> Make the inodes the default management vehicle for struct
-> efivar_entry, so they are now all freed automatically if the file is
-> removed and on unmount in kill_litter_super().  Remove the now
-> superfluous iterator to free the entries after kill_litter_super().
+On Wed, 2024-12-11 at 12:16 +0100, Christian Brauner wrote:
+> On Tue, Dec 10, 2024 at 12:02:24PM -0500, James Bottomley wrote:
+[...]
+> > +static int efivarfs_file_release(struct inode *inode, struct file
+> > *file)
+> > +{
+> > +       if (i_size_read(inode) == 0) {
+> > +               drop_nlink(inode);
+> > +               d_delete(file->f_path.dentry);
+> > +               dput(file->f_path.dentry);
+> > +       }
 > 
-> Also fixes a bug where some entry freeing was missing causing efivarfs
-> to leak memory.
+> Without wider context the dput() looks UAF-y as __fput() will do:
 > 
-> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> ---
+> struct dentry *dentry = file->f_path.dentry;
+> if (file->f_op->release)
+>         file->f_op->release(inode, file);
+> dput(dentry);
+> 
+> Is there an extra reference on file->f_path.dentry taken somewhere?
 
-This looks like a good idea to me.
+Heh, well, this is why I cc'd fsdevel to make sure I got all the fs
+bits I used to be familiar with, but knowledge of which has atrophied,
+correct.
 
->  fs/efivarfs/internal.h |  1 -
->  fs/efivarfs/super.c    | 15 +++++++--------
->  fs/efivarfs/vars.c     | 39 +++------------------------------------
->  3 files changed, 10 insertions(+), 45 deletions(-)
-> 
-> diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
-> index 84a36e6fb653..d768bfa7f12b 100644
-> --- a/fs/efivarfs/internal.h
-> +++ b/fs/efivarfs/internal.h
-> @@ -37,7 +37,6 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *,
->  
->  int efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
->  void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
-> -void efivar_entry_remove(struct efivar_entry *entry);
->  int efivar_entry_delete(struct efivar_entry *entry);
->  
->  int efivar_entry_size(struct efivar_entry *entry, unsigned long *size);
-> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-> index dc3870ae784b..70b99f58c906 100644
-> --- a/fs/efivarfs/super.c
-> +++ b/fs/efivarfs/super.c
-> @@ -41,6 +41,12 @@ static int efivarfs_ops_notifier(struct notifier_block *nb, unsigned long event,
->  
->  static void efivarfs_evict_inode(struct inode *inode)
->  {
-> +	struct efivar_entry *entry = inode->i_private;
-> +
-> +	if (entry)  {
-> +		list_del(&entry->list);
-> +		kfree(entry);
-> +	}
->  	clear_inode(inode);
->  }
->  
-> @@ -269,13 +275,6 @@ static int efivarfs_callback(efi_char16_t *name16, efi_guid_t vendor,
->  	return err;
->  }
->  
-> -static int efivarfs_destroy(struct efivar_entry *entry, void *data)
-> -{
-> -	efivar_entry_remove(entry);
-> -	kfree(entry);
-> -	return 0;
-> -}
-> -
->  enum {
->  	Opt_uid, Opt_gid,
->  };
-> @@ -398,7 +397,7 @@ static void efivarfs_kill_sb(struct super_block *sb)
->  	kill_litter_super(sb);
->  
->  	/* Remove all entries and destroy */
-> -	efivar_entry_iter(efivarfs_destroy, &sfi->efivarfs_list, NULL);
-> +	WARN_ON(!list_empty(&sfi->efivarfs_list));
->  	kfree(sfi);
->  }
->  
-> diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
-> index f6380fdbe173..bda8e8b869e8 100644
-> --- a/fs/efivarfs/vars.c
-> +++ b/fs/efivarfs/vars.c
-> @@ -485,34 +485,6 @@ void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head)
->  	list_add(&entry->list, head);
->  }
->  
-> -/**
-> - * efivar_entry_remove - remove entry from variable list
-> - * @entry: entry to remove from list
-> - *
-> - * Returns 0 on success, or a kernel error code on failure.
-> - */
-> -void efivar_entry_remove(struct efivar_entry *entry)
-> -{
-> -	list_del(&entry->list);
-> -}
-> -
-> -/*
-> - * efivar_entry_list_del_unlock - remove entry from variable list
-> - * @entry: entry to remove
-> - *
-> - * Remove @entry from the variable list and release the list lock.
-> - *
-> - * NOTE: slightly weird locking semantics here - we expect to be
-> - * called with the efivars lock already held, and we release it before
-> - * returning. This is because this function is usually called after
-> - * set_variable() while the lock is still held.
-> - */
-> -static void efivar_entry_list_del_unlock(struct efivar_entry *entry)
-> -{
-> -	list_del(&entry->list);
-> -	efivar_unlock();
-> -}
-> -
->  /**
->   * efivar_entry_delete - delete variable and remove entry from list
->   * @entry: entry containing variable to delete
-> @@ -536,12 +508,10 @@ int efivar_entry_delete(struct efivar_entry *entry)
->  	status = efivar_set_variable_locked(entry->var.VariableName,
->  					    &entry->var.VendorGuid,
->  					    0, 0, NULL, false);
-> -	if (!(status == EFI_SUCCESS || status == EFI_NOT_FOUND)) {
-> -		efivar_unlock();
-> +	efivar_unlock();
-> +	if (!(status == EFI_SUCCESS || status == EFI_NOT_FOUND))
->  		return efi_status_to_err(status);
-> -	}
->  
-> -	efivar_entry_list_del_unlock(entry);
->  	return 0;
->  }
->  
-> @@ -679,10 +649,7 @@ int efivar_entry_set_get_size(struct efivar_entry *entry, u32 attributes,
->  				    &entry->var.VendorGuid,
->  				    NULL, size, NULL);
->  
-> -	if (status == EFI_NOT_FOUND)
-> -		efivar_entry_list_del_unlock(entry);
-> -	else
-> -		efivar_unlock();
-> +	efivar_unlock();
->  
->  	if (status && status != EFI_BUFFER_TOO_SMALL)
->  		return efi_status_to_err(status);
-> -- 
-> 2.35.3
-> 
+I think it's paired with the extra dget() just after d_instantiate() in
+fs/efivarfs/inode.c:efivarfs_create().  The reason being this is a
+pseudo-filesystem so all the dentries representing objects have to be
+born with a positive reference count to prevent them being reclaimed
+under memory pressure.
+
+Regards,
+
+James
+
 
