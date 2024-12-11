@@ -1,46 +1,46 @@
-Return-Path: <linux-efi+bounces-2368-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2369-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301819ED514
-	for <lists+linux-efi@lfdr.de>; Wed, 11 Dec 2024 19:53:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76DC09ED567
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Dec 2024 20:00:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4627283D55
-	for <lists+linux-efi@lfdr.de>; Wed, 11 Dec 2024 18:53:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D2F282049
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Dec 2024 19:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D36623A1B8;
-	Wed, 11 Dec 2024 18:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A278248811;
+	Wed, 11 Dec 2024 18:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abKh4clN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aeSLY7T/"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECAB23A1B1;
-	Wed, 11 Dec 2024 18:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2AE248FBC;
+	Wed, 11 Dec 2024 18:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943064; cv=none; b=iwV3ZAYiR8sZga0HSvTE4gpot37m/llg34WAf0yvkcbPu4qd3vtHWXZxlr6LSdhr9EDdv3hQ0BW4JzTyIIhLPeibnb5YekE2hoS8nbQaG2D/9OpNPXtMDSXv9K4Q+sNSvgOds7IYs/iiWODJT1mtG2FjJkV4KJCx98/MW+iDreY=
+	t=1733943154; cv=none; b=X30jD6Bzd03u6t8MbSEWuo6hMWtZzaMTZH4l1OXYF3+Xj8ynOmQkEcdfpXEHkN/lTkhd0oyyRp+oX/c1qeePr91aRmZq0/JziEu7V8F6a5RaYvMjODCNv37kQ5MiSfydSRsFOQ7U3C0JqVQIcz3lnVicVd3+zsoonFcUUOhl7RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943064; c=relaxed/simple;
-	bh=XpjM7a+7izOGlFclTN59w0Ey+CkM7rqzLdE0f8idMNQ=;
+	s=arc-20240116; t=1733943154; c=relaxed/simple;
+	bh=l/nACr1/gui4Ot7CYT7tF6FVb1oiQZbn/0HryvqdUyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt7vJs82osF+rdlCaFJoy5sEeA4lYyU6C/AuK6EYdqfbQAnGqwFW/W3h03xRKJ1lf9gM9n4UHkfrb7mqGmeClKEQsZyQ05n/6y9uyPb0aSV2emHK2t8fSzbPm1XQVJD9HoyJpP4fTFsgSR9wWgpcEgrLOoxPaTnTyb+DnO4qxXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=abKh4clN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DE8C4CED4;
-	Wed, 11 Dec 2024 18:51:02 +0000 (UTC)
+	 MIME-Version; b=QyJ4JYcn6QRs+xVTH9aHWRdTmCUe5M9PP/lr7jXWTOOf7qmgEx7ExHJnu3ZUq6wEsZEqjhOsQoomWadov+3rHsrf0aSW/dOTxsO0hVf9jiq6L77Vx61q/gz9wtUghFEQtO9wpZZhpEFEqLQqyto/Gd4acEeZW+xGcfza54Xu64I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aeSLY7T/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0615BC4CED4;
+	Wed, 11 Dec 2024 18:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943063;
-	bh=XpjM7a+7izOGlFclTN59w0Ey+CkM7rqzLdE0f8idMNQ=;
+	s=k20201202; t=1733943154;
+	bh=l/nACr1/gui4Ot7CYT7tF6FVb1oiQZbn/0HryvqdUyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=abKh4clNNnlpW4MsBsHero2ZTK/YqZLZqlZAGKEkqgWZrRMF4pn2fODlK7n813/WE
-	 /dtLsj3sqv07KIpwcVtW9KEiS6MIwkKlyISkMaep39tfYn/xoAeiGOSydAAfjn3Nos
-	 M+mHE9mrj9tAK3lHtEz+yBOc8oQViLTIElqlb6bzGQ0/etYoMS7yENg25IcgIbS6l+
-	 bno61RayjTIRUN5D+5u5IbkfLGWglpfvV4IUqiZ8FurtXLtMw8C7e0etoUztyx0UD0
-	 peH0wcxdJOrotERLVbRUXXzaldJahbwtomB7JkxZ9Fy1CdOvy8nQ2O8y5ykjK59ceq
-	 POJqj1Uv7IcnA==
+	b=aeSLY7T/X80aVW6ZDHkCjgRQllVL9l4w+0Id+sJaS0bgw80fMrfNOiWNJggANV6fh
+	 BmrpuGNvKELwvcGEyFqBZx33Qj5h3dbiG4CDKikUNWCwhVtGFsp7wxEE+Ha3rhBXdM
+	 fjAMhI+moRjtfcaBLPHUn+OvVAUDF3yJ7eOof7AKcTVQI7WfcEt4sk51ej6hm7ZJmf
+	 IhkauyfVbV4bXj7WdDo1wU/Aj7vQfBHUswWq/5KPY5DZGMW7SWJwXzxGabHMCoZCZs
+	 cKtPrcA0d1Ksl83KTM46Br5rL83RcLlVt3DE/DryaAdCOeouZAj1vUDrcKD1/sCaKr
+	 qifCtL+gCg7Rw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -53,12 +53,12 @@ Cc: Huacai Chen <chenhuacai@loongson.cn>,
 	chenhuacai@kernel.org,
 	linux-efi@vger.kernel.org,
 	loongarch@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 17/36] LoongArch: Fix reserving screen info memory for above-4G firmware
-Date: Wed, 11 Dec 2024 13:49:33 -0500
-Message-ID: <20241211185028.3841047-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 10/23] LoongArch: Fix reserving screen info memory for above-4G firmware
+Date: Wed, 11 Dec 2024 13:51:47 -0500
+Message-ID: <20241211185214.3841978-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
-References: <20241211185028.3841047-1-sashal@kernel.org>
+In-Reply-To: <20241211185214.3841978-1-sashal@kernel.org>
+References: <20241211185214.3841978-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.4
+X-stable-base: Linux 6.6.65
 Content-Transfer-Encoding: 8bit
 
 From: Huacai Chen <chenhuacai@loongson.cn>
@@ -89,10 +89,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
-index 2bf86aeda874c..de21e72759eeb 100644
+index de4f3def4af0b..4ae77e9300d58 100644
 --- a/arch/loongarch/kernel/efi.c
 +++ b/arch/loongarch/kernel/efi.c
-@@ -95,7 +95,7 @@ static void __init init_screen_info(void)
+@@ -90,7 +90,7 @@ static void __init init_screen_info(void)
  	memset(si, 0, sizeof(*si));
  	early_memunmap(si, sizeof(*si));
  
