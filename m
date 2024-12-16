@@ -1,107 +1,79 @@
-Return-Path: <linux-efi+bounces-2380-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2381-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11AC9F245A
-	for <lists+linux-efi@lfdr.de>; Sun, 15 Dec 2024 15:16:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CCD9F277F
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Dec 2024 01:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 560CE188494C
-	for <lists+linux-efi@lfdr.de>; Sun, 15 Dec 2024 14:16:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6950164D59
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Dec 2024 00:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D644417C208;
-	Sun, 15 Dec 2024 14:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E110A4C79;
+	Mon, 16 Dec 2024 00:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="I/VdOhWR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aF7unOvf"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC13D23DE;
-	Sun, 15 Dec 2024 14:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEAB4A35
+	for <linux-efi@vger.kernel.org>; Mon, 16 Dec 2024 00:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734272154; cv=none; b=hUjehRxbuA0SYls5SNsydlgGZoZ/a7uHqsOhFpfhCReDR05f9rIL71nPCEzJWg+hfYDbOKM+M4G0ETvpOI8gKtX7patWwOBXWbossVnGouY0EqB7L4YqFsMEbthxsg2S7ndZq38SLob6v6uadwauL6v2S/6HoptTx+Vzr2SdgIU=
+	t=1734307997; cv=none; b=Zn5c74aJKXbpwBAYejuHoXyQdcES4zqIdWMx4H32NDp1gOq7dn3wnsrJdeiTUZFlBLVQYeF2lULI+iVi+ypVLOwX23eGm7f58Olg5emiEaqy2yElpGfs/4HGWhnBIEfvte6YjUU3byaIaVkx+4TZZLgc5EVPSM16+Ktaarz/syo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734272154; c=relaxed/simple;
-	bh=/bN1xOCiMkmH5hf6Worwh/k4fuOBgN2GMpOl9WV1TRA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Xq417KjuTT8RoHxhA2LgZTujK5Dv+3aX6GVJwlWkpw7bV6wNRfxPcjfh6dOR1DqiMuwYcd7BRItR5slq2aFKb4X7Nce6DpHRB3Ss2vYOkGA+ApWhgoLv4rABoUVK0TbF+m7AKkldrcE3pXj52OGhNncxD4Ifiqk+ttdfVINIu8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=I/VdOhWR; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1734272150;
-	bh=/bN1xOCiMkmH5hf6Worwh/k4fuOBgN2GMpOl9WV1TRA=;
-	h=From:Date:Subject:To:Cc:From;
-	b=I/VdOhWRm8mLJVEp/44JhCZdf/w1iOWOeZvp7sVRm53C/a2GDYbJxuhg897NVdYJR
-	 PqHvxcbFbAhLpXmXnIe32U0wuq6EOinHTxYFqzXQ6rHDAHB69iYm/Oz2sHzP/W7lu2
-	 IUQ+9l4NaGX7mxXbY0+ObQBY8Xl7SyA3Gg45xe1c=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sun, 15 Dec 2024 15:15:48 +0100
-Subject: [PATCH] efi/mokvar: Use const 'struct bin_attribute' callback
+	s=arc-20240116; t=1734307997; c=relaxed/simple;
+	bh=utDrwxE2RTNWxcK3MaacgMKa7sXQWpDdAwdQB20Uf+U=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=pjUikTTOZIcIra8Rz7GlIXc4yHnV32l4DCP43lhEyK+NCJCtuVZU3RpU4WaXHro5yMlN+Sfjb7WfUd9lpwD0E7X76jrQPcPt2dDy5twJ5azG9MPn5gS8JJDFSTxrndM7GONhBhBxiwHk3B3eHAj9vFJ/yxvrEHVNDyETQXq/QHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aF7unOvf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E07FC4CECE;
+	Mon, 16 Dec 2024 00:13:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734307997;
+	bh=utDrwxE2RTNWxcK3MaacgMKa7sXQWpDdAwdQB20Uf+U=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=aF7unOvfjnsemC5fu432ABTeIHM5I5ZBD7ABsfEnvp9upDLBOmaCP+GQCfnN2ztSa
+	 OkDILEAoUQs/Drgklnp3cCVYm9Q3wyaEjfgmdr9ptsOu7zVYl5oRnsVCzPwN8zzLdY
+	 /Q/HIpQXRMaktsLmMPyA4vhPMtbRoELuo8UDMb6KlnZYfIuyXjPvLZ3xjPhjkRAjK4
+	 gdIYG2DfAFVEJsCW9i9mZtDS25bG7Q6HTkc7hWS9tRG0MT1QL9Ds6kfGvkyCJc0C/L
+	 9w9kb6upsz1o89Iy9zcGRqr14f2LvvKHTfZ+I75y318bht/DcihKQEugpHm8z9XVfL
+	 Q5uqCRVQfCPOQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 714AC3806656;
+	Mon, 16 Dec 2024 00:13:35 +0000 (UTC)
+Subject: Re: [GIT PULL] First batch of EFI fixes for v6.13
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20241215135047.8749-2-ardb+git@google.com>
+References: <20241215135047.8749-2-ardb+git@google.com>
+X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20241215135047.8749-2-ardb+git@google.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.13-1
+X-PR-Tracked-Commit-Id: 145ac100b63732291c0612528444d7f5ab593fb2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 7031a38ab74cfe997d2a767d18e3af7445547d07
+Message-Id: <173430801410.3608335.17762170656885793417.pr-tracker-bot@kernel.org>
+Date: Mon, 16 Dec 2024 00:13:34 +0000
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: torvalds@linux-foundation.org, linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241215-sysfs-const-bin_attr-mokvar-v1-1-d5a3d1fff8d1@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAJPkXmcC/x3MUQrCMAwA0KuMfBtoyyy6q4iMuiUaZK0kZUzG7
- m7x8/28HYxUyGDodlBaxaTkBn/qYHql/CSUuRmCC70P/oz2NTacSraKD8ljqlVxKe81Kc4cOcX
- o2F2u0IaPEsv232/34/gB78PCEG0AAAA=
-X-Change-ID: 20241215-sysfs-const-bin_attr-mokvar-df6fa660f089
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734272150; l=1635;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=/bN1xOCiMkmH5hf6Worwh/k4fuOBgN2GMpOl9WV1TRA=;
- b=q9Eoel5Uge8U4bhpCLAJvumkhN+esbL/rNwcTN/sU4SKrp8q25f/yO/uzCc1Ivz60BeG4Vgvh
- WsZzhZhw5jxBA8Salye7YLkmNN3nlJxQXoWd0gpOYipErdNnXcylWd+
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-The sysfs core now provides callback variants that explicitly take a
-const pointer. Use them so the non-const variants can be removed.
+The pull request you sent on Sun, 15 Dec 2024 14:50:48 +0100:
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/firmware/efi/mokvar-table.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.13-1
 
-diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
-index 5ed0602c2f75f06a247971ade04b87069d59ffa6..59b090849a2a80e013f2537dfdeed50eef871771 100644
---- a/drivers/firmware/efi/mokvar-table.c
-+++ b/drivers/firmware/efi/mokvar-table.c
-@@ -266,7 +266,7 @@ struct efi_mokvar_table_entry *efi_mokvar_entry_find(const char *name)
-  * amount of data in this mokvar config table entry.
-  */
- static ssize_t efi_mokvar_sysfs_read(struct file *file, struct kobject *kobj,
--				 struct bin_attribute *bin_attr, char *buf,
-+				 const struct bin_attribute *bin_attr, char *buf,
- 				 loff_t off, size_t count)
- {
- 	struct efi_mokvar_table_entry *mokvar_entry = bin_attr->private;
-@@ -343,7 +343,7 @@ static int __init efi_mokvar_sysfs_init(void)
- 		mokvar_sysfs->bin_attr.attr.name = mokvar_entry->name;
- 		mokvar_sysfs->bin_attr.attr.mode = 0400;
- 		mokvar_sysfs->bin_attr.size = mokvar_entry->data_size;
--		mokvar_sysfs->bin_attr.read = efi_mokvar_sysfs_read;
-+		mokvar_sysfs->bin_attr.read_new = efi_mokvar_sysfs_read;
- 
- 		err = sysfs_create_bin_file(mokvar_kobj,
- 					   &mokvar_sysfs->bin_attr);
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/7031a38ab74cfe997d2a767d18e3af7445547d07
 
----
-base-commit: 2d8308bf5b67dff50262d8a9260a50113b3628c6
-change-id: 20241215-sysfs-const-bin_attr-mokvar-df6fa660f089
+Thank you!
 
-Best regards,
 -- 
-Thomas Weißschuh <linux@weissschuh.net>
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
