@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-2391-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2392-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE2D9F696B
+	by mail.lfdr.de (Postfix) with ESMTPS id E431A9F696C
 	for <lists+linux-efi@lfdr.de>; Wed, 18 Dec 2024 16:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E04E188D19B
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAC9B188D3C0
 	for <lists+linux-efi@lfdr.de>; Wed, 18 Dec 2024 15:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F611C5CDD;
-	Wed, 18 Dec 2024 15:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA0A182C5;
+	Wed, 18 Dec 2024 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pwmuQfAh"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mVCEaD/i"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D081B042F
-	for <linux-efi@vger.kernel.org>; Wed, 18 Dec 2024 15:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF561B425F
+	for <linux-efi@vger.kernel.org>; Wed, 18 Dec 2024 15:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734534220; cv=none; b=k1gbM2NK5hbtxJyiumtfnzCCsgbzLA89DbVQTAV9S/l90JU7KJwIM7gtDvnY9j27I80qFMhs2yrH5T8/Hrl9r2JwXJuP57Q6tMmBBQhnlqoR2MaH+t/a2KxF6DOGLKDIWVaGrmN+LyyQCJeBWB90CLl804ujSrViqOFPJTh9t/4=
+	t=1734534222; cv=none; b=qAbaQDa6HGJlPb87KAQaYz9uI1+O23YQTdDBTPQJRLbxsnx+4WYzgytTKuk8PR9mzLFYmA+UJrtZqfnm6sQ8bCQrnwDvYkf2/tj6I0DpZAI4bouynb8mEp/h3zPbszlpF+gFl+5F6eqm9tTEE7BQ/6RZAFQX3eHkoXdJYweJBxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734534220; c=relaxed/simple;
-	bh=UkEQAPU0BOE7Cvbr49Sj5hH1WmXbgLg2wGhFh652QNc=;
+	s=arc-20240116; t=1734534222; c=relaxed/simple;
+	bh=gbn/sr6lKWzSFEyjMNNuLZ20Ed7uHNh9ByYZj5qat/M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Krq2g54t3rrJvok5HVR3oZcoNMAWN6cTAKbIjkQ0gZ94JskVadxp5U7Iq4PMaO3PO6J6D6TpNsHYxkgnb020fi5LwzxGfPP/B3rrfsNoL26pSPaAglwBE9lAB6QW6w/EX7oJG0RIRFnv0e1WqKCgpd5Z2GDHHCwGhrXXnVFPlZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pwmuQfAh; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=fVwhwhrbpJOrkPhnbota1+uyQKyjmsl2Mr/nnD/QS9cfoYqmeW45+eW9O2YXIx7viDYSxru/HVYN1+I/XAyqnRgmi0nJSk1cRhh5J48yfwLZ/IwD1ybZ9n2v6BRfxRUQWTB0Tt4WFJTLqEizgdXMloA2Zgr96Uzo2KuAjP6pMxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mVCEaD/i; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43627bb20b5so52095685e9.1
-        for <linux-efi@vger.kernel.org>; Wed, 18 Dec 2024 07:03:38 -0800 (PST)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43625ceae52so37118005e9.0
+        for <linux-efi@vger.kernel.org>; Wed, 18 Dec 2024 07:03:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734534216; x=1735139016; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1734534219; x=1735139019; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KuIlLWp32KxrnX+b+TFBJxsTzZwQ84RmgJbgBG8fYVY=;
-        b=pwmuQfAhMTc1HCZFd1trx1HZhcMVKpdOJ1SWtywb61hh544bY/SLQ+hwc5TrgRjn7L
-         n+V3E2Fwt5X+b2+YzxN3c0ws4NZiP5yuxau5FybHkt05+tdyUPgCkQbT+tLpWPvwFKK5
-         KbxzpL6xT/CNEwJqJJyILfEEb5Lkuc9WXiuc05ZaxtQ7F40FPSm63bJNCtoLCltjAiiU
-         T+6aHBYXSDEhY4IxIyeC40hsxnZhBBZnfRIbczxwgY7x8U2r5DNKEHEDxMaVIZk6qm4a
-         E6RdgZhevRb75OvbFWiy310htZk4I+lX61cRAziWBDN9c7MGspXnfLNDFTiBCJgFtYF1
-         DD9w==
+        bh=tlXVUt3o80MSmJGhEnnWhOtf5ByGllnGOXqBF1r6osY=;
+        b=mVCEaD/irn0oekH8w+k1bzHqw4ucbyEQkbEBBXGkAPtG+zZe5Dt0+JY2qZx+AtjDRN
+         UhLX5hgK7G6qap97SNSqbI4A9pY1GZu6hA1pZzrtwAjn/GJ5rwKWQr86NGuD2bAphmma
+         ozx9nyDzzd/hDNq7XxilDvCzgvmPZ/syVdbKPANs+HUQmO7/WjIGGchtcQErMtN4Z0/E
+         X/l1g4R0kDDoGeF0By797JRWz2An+SM/ag7cScdQWrhMpoQYToytlPnBuH6yRKTjYEeS
+         w1fTnSbuNMZCvusPz5Qz4dr7FycyDwXjo++oaPqaJ8hqk89ernpTvGxNopyIYIewRQ2+
+         OjtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734534217; x=1735139017;
+        d=1e100.net; s=20230601; t=1734534219; x=1735139019;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KuIlLWp32KxrnX+b+TFBJxsTzZwQ84RmgJbgBG8fYVY=;
-        b=Xjr7Um+hbXddPMBZitLQ+k9Xk03CHoCZ/80mtKvsZrhrpMg1pNhhwzfQi7CWkrPoYd
-         W7VAyqdstFG0Me3MARoPuSKxgZ06nm3CJoeqccvoFAzL0KvwURr5d7/J2lmv1TksUesT
-         SOH+PcgweDint7yCadpHA4A5KWH/rOEWV0X30DcN9eAitT8v6UCM2XBm6HsvyboC8+8z
-         a4tamHoXTaJOLFuGbTlMzAyLLVD/eXPQ3X4v186Qnh2DWebuXx8R204391DZjEvyiXzP
-         U9z47fc5J1ApoqFp1aki0obLreFsjaTpt+YS+vF+YCoYWVJ7Er6kLUUMZnXJVBg+px9L
-         pOzw==
-X-Gm-Message-State: AOJu0Yw7BN+Hn74N+tQnuKN2m2hPlEYjQD5HOatEerLBtlIJnQQcsPh3
-	BQFSVECjiOUjlmFmEXlReDF/6F2uPGhDxlB2B06MhLZjXz+/kDHwpz61fMnhHqTLbK6AJ8VJpxw
-	u4kL0fiEXVl+ikK1ymGisKpYknRtFEtGdk/FyWSqhw5U1L0rzoI1qDaEQE2iWV3KkYpDyEcMLgn
-	EtvUK/OQpXEciq31ihtkGQDhwMzA==
-X-Google-Smtp-Source: AGHT+IHUywDhYzEQoh8qG89QtR2fYeZOhh/y11YZQtpRYKYnPH/DXnov2cw8yVX+5sfOgjyqqIWOAgGk
-X-Received: from wmbew11.prod.google.com ([2002:a05:600c:808b:b0:434:9da4:2fa5])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:154c:b0:42c:c28c:e477
- with SMTP id 5b1f17b1804b1-436553e9de5mr22498345e9.23.1734534216426; Wed, 18
- Dec 2024 07:03:36 -0800 (PST)
-Date: Wed, 18 Dec 2024 16:03:19 +0100
+        bh=tlXVUt3o80MSmJGhEnnWhOtf5ByGllnGOXqBF1r6osY=;
+        b=laB2bDQQai/8X0YMQhD6sXys7h6qRxHmgTl40zn4CdBJusl3UZRZYbQsHilb7BJZY1
+         YUThLpk5iwZy1IBoi8rqqYCq82FjPVdfFRfB+6EFPk9JDS8bcc6WTzQ6YaE74lbMM1Q9
+         XT8ntVKra8dhdQpMMbDDcjXjgE1Ql+VXmsyhpKBn6XkqTRdfzHIMebkVPi+70Kug2DxZ
+         +FBOCjwtED7cmLwzUj7zvObIGFS8ehERX24jgo7H4QPKs/v5l08HToGlMawBgSV/bLdg
+         AhAEPHqSGDB7532LMThizogbLGOwuz8kYvS78GeApzOjmC1cdKKdGWYxQtQbXBgD4wtt
+         29uw==
+X-Gm-Message-State: AOJu0Yx8/v3Pn9Rdx5RG8qKmr/S/qR0uyYdwNd4j0Ejht4nqQB/txfOA
+	cnskubisvpTkbxivRmulgnQ8h5zMg8CvcSa9sjnK8O88qxRMCHuYvqb6ltVOd/Ax9O+hFcBMe9i
+	mNT+6FcMTT0rQEkOCrQP9YlMQP6RaK2h0QzfgSlHRNrXYFK9ihKD0Pk1v0bzK/Ppg87sN4oBAFW
+	42ZZvsqBOUwT5NM1gkyn5cIpb+HA==
+X-Google-Smtp-Source: AGHT+IElZoDBtrV078cb504PgSiVgLf/jzQIBTrfLTI3yRr6HCB+vv7sFozB63FztHxOEuvBcRNPEYhQ
+X-Received: from wmbfl17.prod.google.com ([2002:a05:600c:b91:b0:434:fc6f:e8c3])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:468c:b0:433:c76d:d57e
+ with SMTP id 5b1f17b1804b1-436553433ebmr27744215e9.5.1734534218766; Wed, 18
+ Dec 2024 07:03:38 -0800 (PST)
+Date: Wed, 18 Dec 2024 16:03:20 +0100
 In-Reply-To: <20241218150316.1583806-6-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -74,14 +74,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241218150316.1583806-6-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2496; i=ardb@kernel.org;
- h=from:subject; bh=9vtzUeuZVMHbyIAsApU0U8bu7QdcmCaocZ+3CwCVfC4=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIT3piaUno547e6+JR9A/T93Xr8ODTxv9nO16fum1uPkOI
- WeSUnZ3lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgImYz2FkaJn6tCnlud+MmkNC
- 9Xtndx32tApetqxm41l9eS7PNaxnRRkZtkpuiE3dvOWI5odN+7+9+jOdgWXP6XcfO65srvu0lOf VRxYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3423; i=ardb@kernel.org;
+ h=from:subject; bh=tH1lCvrU4ctbGRiyycueYH4HRv9gwLP/NbEyTuvF2dQ=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIT3piRU/Q+e6qE1WGt+dZ75t+5Uc/2cmz8J4i1mfMrVN3
+ 4e5y3N2lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIksfsbwm6WiznfjvikBDDYM
+ ysEfzi+d6Jqx6us6DZ6NYnw37jbKtDIy/DWQfH3R+33fxBkf2OpPni0s+rxg6ufZt9zV1zUFtgh xcwEA
 X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241218150316.1583806-9-ardb+git@google.com>
-Subject: [RFC PATCH 3/4] arm64/boot: Populate vmlinux ELF program headers
+Message-ID: <20241218150316.1583806-10-ardb+git@google.com>
+Subject: [RFC PATCH 4/4] efi/arm64: Use ELF payload for EFI zboot
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>, 
@@ -92,110 +92,103 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-In order to be able to use the ELF vmlinux image as the [zboot
-compressed] boot image, populate the program headers explicitly to
-describe text+rodata+inittext as R-X and initdata+data+bss as RW-.
+Instead of a raw binary executable, embed an ELF build of the core
+kernel into the EFI zboot image. Given that the memory layout of the
+kernel executable is described by ELF program headers, this removes the
+need to rely on symbols injected into the build to describe things like
+the size of the text area, which are not accessible to other consumers
+of the EFI zboot format, e.g., the kexec loader.
+
+Given that the EFI zboot loader only decompresses those parts of the
+payload covered by PT_LOAD program headers, stripping the encapsulated
+ELF image is not strictly necessary, making the EFI zboot format
+suitable for distributing the bootable image and the debug symbols in a
+single compressed image.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/kernel/vmlinux.lds.S | 33 +++++++++++++-------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+ arch/arm64/boot/Makefile               | 4 ----
+ arch/arm64/kernel/image-vars.h         | 4 ----
+ drivers/firmware/efi/libstub/arm64.c   | 4 ----
+ drivers/firmware/efi/libstub/zboot.lds | 6 ------
+ 4 files changed, 18 deletions(-)
 
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index f84c71f04d9e..33d9c683e434 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -59,6 +59,7 @@
+diff --git a/arch/arm64/boot/Makefile b/arch/arm64/boot/Makefile
+index b5a08333bc57..cfd76bcbb81f 100644
+--- a/arch/arm64/boot/Makefile
++++ b/arch/arm64/boot/Makefile
+@@ -46,12 +46,8 @@ $(obj)/Image.xz: $(obj)/Image FORCE
+ $(obj)/image.fit: $(obj)/Image $(obj)/dts/dtbs-list FORCE
+ 	$(call if_changed,fit)
  
- #define RO_EXCEPTION_TABLE_ALIGN	4
- #define RUNTIME_DISCARD_EXIT
-+#define LOAD_OFFSET			KIMAGE_VADDR
+-EFI_ZBOOT_PAYLOAD	:= Image
+ EFI_ZBOOT_BFD_TARGET	:= elf64-littleaarch64
+ EFI_ZBOOT_MACH_TYPE	:= ARM64
+ EFI_ZBOOT_FORWARD_CFI	:= $(CONFIG_ARM64_BTI_KERNEL)
  
- #include <asm-generic/vmlinux.lds.h>
- #include <asm/cache.h>
-@@ -70,7 +71,9 @@
- #include "image.h"
+-EFI_ZBOOT_OBJCOPY_FLAGS	= --add-symbol zboot_code_size=0x$$( \
+-				$(NM) vmlinux|grep _kernel_codesize|cut -d' ' -f1)
+-
+ include $(srctree)/drivers/firmware/efi/libstub/Makefile.zboot
+diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
+index 8f5422ed1b75..7e1c3f1f1372 100644
+--- a/arch/arm64/kernel/image-vars.h
++++ b/arch/arm64/kernel/image-vars.h
+@@ -140,8 +140,4 @@ KVM_NVHE_ALIAS(kvm_protected_mode_initialized);
  
- OUTPUT_ARCH(aarch64)
--ENTRY(_text)
-+ENTRY(elf_entry)
-+
-+elf_entry = ABSOLUTE(primary_entry - KIMAGE_VADDR);
+ #endif /* CONFIG_KVM */
  
- jiffies = jiffies_64;
- 
-@@ -150,6 +153,11 @@ PECOFF_FILE_ALIGNMENT = 0x200;
- #define PECOFF_EDATA_PADDING
+-#ifdef CONFIG_EFI_ZBOOT
+-_kernel_codesize = ABSOLUTE(__inittext_end - _text);
+-#endif
+-
+ #endif /* __ARM64_KERNEL_IMAGE_VARS_H */
+diff --git a/drivers/firmware/efi/libstub/arm64.c b/drivers/firmware/efi/libstub/arm64.c
+index f6c8e1992e54..b339fa34d2f2 100644
+--- a/drivers/firmware/efi/libstub/arm64.c
++++ b/drivers/firmware/efi/libstub/arm64.c
+@@ -88,8 +88,6 @@ efi_status_t check_platform_features(void)
+ #define DCTYPE	"cvau"
  #endif
  
-+PHDRS {
-+	text PT_LOAD FLAGS(5);          /* R_X */
-+	data PT_LOAD FLAGS(6);          /* RW_ */
-+}
-+
+-u32 __weak code_size;
+-
+ void efi_cache_sync_image(unsigned long image_base,
+ 			  unsigned long alloc_size)
+ {
+@@ -112,8 +110,6 @@ void efi_cache_sync_image(unsigned long image_base,
+ 	asm("ic ialluis");
+ 	dsb(ish);
+ 	isb();
+-
+-	efi_remap_image(image_base, alloc_size, code_size);
+ }
+ 
+ void __noreturn efi_enter_kernel(unsigned long entrypoint,
+diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
+index 9ecc57ff5b45..143597d0e5dc 100644
+--- a/drivers/firmware/efi/libstub/zboot.lds
++++ b/drivers/firmware/efi/libstub/zboot.lds
+@@ -2,8 +2,6 @@
+ 
+ ENTRY(__efistub_efi_zboot_header);
+ 
+-PROVIDE(zboot_code_size = ABSOLUTE(0));
+-
  SECTIONS
  {
- 	/*
-@@ -166,10 +174,10 @@ SECTIONS
+ 	.head : ALIGN(4096) {
+@@ -21,10 +19,6 @@ SECTIONS
+ 		__efistub__gzdata_end = .;
+ 		*(.rodata* .init.rodata* .srodata*)
  
- 	. = KIMAGE_VADDR;
- 
--	.head.text : {
-+	.head.text : AT (0x0) {
- 		_text = .;
- 		HEAD_TEXT
--	}
-+	} :text
- 	.text : ALIGN(SEGMENT_ALIGN) {	/* Real text segment		*/
- 		_stext = .;		/* Text and read-only data	*/
- 			IRQENTRY_TEXT
-@@ -248,10 +256,6 @@ SECTIONS
- 	__inittext_end = .;
- 	__initdata_begin = .;
- 
--	init_idmap_pg_dir = .;
--	. += INIT_IDMAP_DIR_SIZE;
--	init_idmap_pg_end = .;
+-		. = ALIGN(4);
+-		__efistub_code_size = .;
+-		LONG(zboot_code_size);
 -
- 	.init.data : {
- 		INIT_DATA
- 		INIT_SETUP(16)
-@@ -259,13 +263,18 @@ SECTIONS
- 		CON_INITCALL
- 		INIT_RAM_FS
- 		*(.init.altinstructions .init.bss)	/* from the EFI stub */
--	}
-+	} :data
- 	.exit.data : {
- 		EXIT_DATA
+ 		_etext = ALIGN(4096);
+ 		. = _etext;
  	}
- 
- 	RUNTIME_CONST_VARIABLES
- 
-+	. = ALIGN(PAGE_SIZE);
-+	init_idmap_pg_dir = .;
-+	. += INIT_IDMAP_DIR_SIZE;
-+	init_idmap_pg_end = .;
-+
- 	PERCPU_SECTION(L1_CACHE_BYTES)
- 	HYPERVISOR_PERCPU_SECTION
- 
-@@ -325,10 +334,12 @@ SECTIONS
- 	init_pg_end = .;
- 	/* end of zero-init region */
- 
--	. += SZ_4K;		/* stack for the early C runtime */
--	early_init_stack = .;
-+	.early_init_stack : {
-+		. += SZ_4K;		/* stack for the early C runtime */
-+		early_init_stack = .;
- 
--	. = ALIGN(SEGMENT_ALIGN);
-+		. = ALIGN(SEGMENT_ALIGN);
-+	}
- 	__pecoff_data_size = ABSOLUTE(. - __initdata_begin);
- 	_end = .;
- 
 -- 
 2.47.1.613.gc27f4b7a9f-goog
 
