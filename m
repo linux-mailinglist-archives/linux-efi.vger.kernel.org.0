@@ -1,195 +1,113 @@
-Return-Path: <linux-efi+bounces-2392-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2393-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E431A9F696C
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Dec 2024 16:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C71D9F7994
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 11:27:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAC9B188D3C0
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Dec 2024 15:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 229B61896A8E
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 10:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA0A182C5;
-	Wed, 18 Dec 2024 15:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6107D222D50;
+	Thu, 19 Dec 2024 10:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mVCEaD/i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrfUh7BC"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF561B425F
-	for <linux-efi@vger.kernel.org>; Wed, 18 Dec 2024 15:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37459222D44;
+	Thu, 19 Dec 2024 10:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734534222; cv=none; b=qAbaQDa6HGJlPb87KAQaYz9uI1+O23YQTdDBTPQJRLbxsnx+4WYzgytTKuk8PR9mzLFYmA+UJrtZqfnm6sQ8bCQrnwDvYkf2/tj6I0DpZAI4bouynb8mEp/h3zPbszlpF+gFl+5F6eqm9tTEE7BQ/6RZAFQX3eHkoXdJYweJBxE=
+	t=1734603995; cv=none; b=R+lyGhlwRy+1+Z/VROVZpMbMd1p0YGPF4wahvOfYwXr2f0XECOrguROugrNMES906XqNIp0GXdRtXfXv33JbUl0AGTlN5TxjivDdn6Jfbs9YDp92Tw+rSGg+3m7RQ0oaZjpht+FynqUsLag3QAfZ1F2cYo7RDNZl8gYwAPIsAao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734534222; c=relaxed/simple;
-	bh=gbn/sr6lKWzSFEyjMNNuLZ20Ed7uHNh9ByYZj5qat/M=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fVwhwhrbpJOrkPhnbota1+uyQKyjmsl2Mr/nnD/QS9cfoYqmeW45+eW9O2YXIx7viDYSxru/HVYN1+I/XAyqnRgmi0nJSk1cRhh5J48yfwLZ/IwD1ybZ9n2v6BRfxRUQWTB0Tt4WFJTLqEizgdXMloA2Zgr96Uzo2KuAjP6pMxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mVCEaD/i; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43625ceae52so37118005e9.0
-        for <linux-efi@vger.kernel.org>; Wed, 18 Dec 2024 07:03:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734534219; x=1735139019; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tlXVUt3o80MSmJGhEnnWhOtf5ByGllnGOXqBF1r6osY=;
-        b=mVCEaD/irn0oekH8w+k1bzHqw4ucbyEQkbEBBXGkAPtG+zZe5Dt0+JY2qZx+AtjDRN
-         UhLX5hgK7G6qap97SNSqbI4A9pY1GZu6hA1pZzrtwAjn/GJ5rwKWQr86NGuD2bAphmma
-         ozx9nyDzzd/hDNq7XxilDvCzgvmPZ/syVdbKPANs+HUQmO7/WjIGGchtcQErMtN4Z0/E
-         X/l1g4R0kDDoGeF0By797JRWz2An+SM/ag7cScdQWrhMpoQYToytlPnBuH6yRKTjYEeS
-         w1fTnSbuNMZCvusPz5Qz4dr7FycyDwXjo++oaPqaJ8hqk89ernpTvGxNopyIYIewRQ2+
-         OjtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734534219; x=1735139019;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tlXVUt3o80MSmJGhEnnWhOtf5ByGllnGOXqBF1r6osY=;
-        b=laB2bDQQai/8X0YMQhD6sXys7h6qRxHmgTl40zn4CdBJusl3UZRZYbQsHilb7BJZY1
-         YUThLpk5iwZy1IBoi8rqqYCq82FjPVdfFRfB+6EFPk9JDS8bcc6WTzQ6YaE74lbMM1Q9
-         XT8ntVKra8dhdQpMMbDDcjXjgE1Ql+VXmsyhpKBn6XkqTRdfzHIMebkVPi+70Kug2DxZ
-         +FBOCjwtED7cmLwzUj7zvObIGFS8ehERX24jgo7H4QPKs/v5l08HToGlMawBgSV/bLdg
-         AhAEPHqSGDB7532LMThizogbLGOwuz8kYvS78GeApzOjmC1cdKKdGWYxQtQbXBgD4wtt
-         29uw==
-X-Gm-Message-State: AOJu0Yx8/v3Pn9Rdx5RG8qKmr/S/qR0uyYdwNd4j0Ejht4nqQB/txfOA
-	cnskubisvpTkbxivRmulgnQ8h5zMg8CvcSa9sjnK8O88qxRMCHuYvqb6ltVOd/Ax9O+hFcBMe9i
-	mNT+6FcMTT0rQEkOCrQP9YlMQP6RaK2h0QzfgSlHRNrXYFK9ihKD0Pk1v0bzK/Ppg87sN4oBAFW
-	42ZZvsqBOUwT5NM1gkyn5cIpb+HA==
-X-Google-Smtp-Source: AGHT+IElZoDBtrV078cb504PgSiVgLf/jzQIBTrfLTI3yRr6HCB+vv7sFozB63FztHxOEuvBcRNPEYhQ
-X-Received: from wmbfl17.prod.google.com ([2002:a05:600c:b91:b0:434:fc6f:e8c3])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:468c:b0:433:c76d:d57e
- with SMTP id 5b1f17b1804b1-436553433ebmr27744215e9.5.1734534218766; Wed, 18
- Dec 2024 07:03:38 -0800 (PST)
-Date: Wed, 18 Dec 2024 16:03:20 +0100
-In-Reply-To: <20241218150316.1583806-6-ardb+git@google.com>
+	s=arc-20240116; t=1734603995; c=relaxed/simple;
+	bh=V/LvbmXhr4PQumbo/yEFLI7Dz/+3vbbiDOhDZ+EYP2o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gSpsNLZDcDrGL1tqp41vqyFEb1AS3BRzD5CAULbgk4WiVn3jO6HKXu8ODJm+HCLySUEWJXtOWkwNSdGeGYfiMlLc+S14PFUZbCAYXKuv8SR4Ym3qGqxtD7czya7OGq08JvIxamyMrH4KZCuNI+iHPrN37BfMk62UxyLo7zhslqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrfUh7BC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5AAC4CEDD;
+	Thu, 19 Dec 2024 10:26:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734603994;
+	bh=V/LvbmXhr4PQumbo/yEFLI7Dz/+3vbbiDOhDZ+EYP2o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NrfUh7BC000XbV5a8Eb6CVJ0Hg+wqtPpoOK3l0gChPZdiwYlRcdxu4lJp5CTcQUJe
+	 R5ACYgla1MqoyTFMRbZXTP076MOkzCQYGbi9mx1c0zCKUIG3piqbu/3dFXHLEJzTIH
+	 lm3+9yAbydaozwAAg+eFNciawF0qkxsRvPC4aBOPe00FFyrQ1ncZfb8wTqiP58GqEg
+	 6EIUSNp6GzwYbQ/TnvIHRk97ScJMmbzaFdPYICkGc8UmMIE1pH1dzkLoQkhRxEhMIQ
+	 5bQlL6U5ij9BZ6pFsv6cCEpK+6A/xn3uw/hQQAeiYrfeb5joVRAb2c7TiogMKtEM2o
+	 SBWfoX1eM0IrA==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-540218726d5so496404e87.2;
+        Thu, 19 Dec 2024 02:26:33 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXhZ+Q/WGDRcBbnMDaoV66nQwwuwb7f/F/+ma7gchB1ty6K4MADWsVBIpjQIcDO5OoKia8PLJ+YKXr/RTw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+DVpGzRZbKUAdaLBoKklpkPqnrAa3D7bEjbTqoHC8gGOZ99f1
+	cxDJOgTMqCVLCjjvOxEkp/ezSuPwHILYBwdFWmw+V1jAlz43aeaaEQRTOPNHGO99ZF194ZdFLOJ
+	7E+TSDmwFgWelk5qmcc4DXrKV9yM=
+X-Google-Smtp-Source: AGHT+IEFnkwlkJcjhhURezL8MYVQ6z4dd5Ea8uKH2gGNexkkH5+8L5fM88B3L3bU1xMahmHI5fnvGdF2312gDj0z1zE=
+X-Received: by 2002:a05:6512:3c86:b0:540:21f1:e9e7 with SMTP id
+ 2adb3069b0e04-541ed8e4c9emr2587654e87.16.1734603992182; Thu, 19 Dec 2024
+ 02:26:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241218150316.1583806-6-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3423; i=ardb@kernel.org;
- h=from:subject; bh=tH1lCvrU4ctbGRiyycueYH4HRv9gwLP/NbEyTuvF2dQ=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIT3piRU/Q+e6qE1WGt+dZ75t+5Uc/2cmz8J4i1mfMrVN3
- 4e5y3N2lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIksfsbwm6WiznfjvikBDDYM
- ysEfzi+d6Jqx6us6DZ6NYnw37jbKtDIy/DWQfH3R+33fxBkf2OpPni0s+rxg6ufZt9zV1zUFtgh xcwEA
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241218150316.1583806-10-ardb+git@google.com>
-Subject: [RFC PATCH 4/4] efi/arm64: Use ELF payload for EFI zboot
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>, 
-	Gerd Hoffmann <kraxel@redhat.com>, Pingfan Liu <piliu@redhat.com>, Dave Young <dyoung@redhat.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Kees Cook <kees@kernel.org>
+MIME-Version: 1.0
+References: <20241209182041.60286-1-hamzamahfooz@linux.microsoft.com> <CAMj1kXEnxgsy6LkyWGFmwDxVroDofeGYdUd2BvfJ=bNgj0TYVg@mail.gmail.com>
+In-Reply-To: <CAMj1kXEnxgsy6LkyWGFmwDxVroDofeGYdUd2BvfJ=bNgj0TYVg@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 19 Dec 2024 11:26:21 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHmB9RAwfCDZN+CDhXD4D6Z1sE6vg5HN3SUEZ+uLnEnWg@mail.gmail.com>
+Message-ID: <CAMj1kXHmB9RAwfCDZN+CDhXD4D6Z1sE6vg5HN3SUEZ+uLnEnWg@mail.gmail.com>
+Subject: Re: [PATCH] efi: bump up EFI_MMAP_NR_SLACK_SLOTS to 32
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Cc: linux-efi@vger.kernel.org, stable@kernel.org, 
+	Allen Pais <apais@linux.microsoft.com>, Tyler Hicks <code@tyhicks.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Marek <jonathan@marek.ca>, open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Tue, 10 Dec 2024 at 10:59, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Mon, 9 Dec 2024 at 19:20, Hamza Mahfooz
+> <hamzamahfooz@linux.microsoft.com> wrote:
+> >
+> > Recent platforms require more slack slots than the current value of
+> > EFI_MMAP_NR_SLACK_SLOTS, otherwise they fail to boot. The current
+> > workaround is to append `efi=disable_early_pci_dma` to the kernel's
+> > cmdline. So, bump up EFI_MMAP_NR_SLACK_SLOTS to 32 to allow those
+> > platforms to boot with the aforementioned workaround.
+> >
+> > Cc: stable@kernel.org
+> > Cc: Ard Biesheuvel <ardb@kernel.org>
+> > Cc: Allen Pais <apais@linux.microsoft.com>
+> > Cc: Tyler Hicks <code@tyhicks.com>
+> > Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> > ---
+> >  drivers/firmware/efi/libstub/efistub.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> > index 76e44c185f29..e95ce6ae5c26 100644
+> > --- a/drivers/firmware/efi/libstub/efistub.h
+> > +++ b/drivers/firmware/efi/libstub/efistub.h
+> > @@ -171,7 +171,7 @@ void efi_set_u64_split(u64 data, u32 *lo, u32 *hi)
+> >   * the EFI memory map. Other related structures, e.g. x86 e820ext, need
+> >   * to factor in this headroom requirement as well.
+> >   */
+> > -#define EFI_MMAP_NR_SLACK_SLOTS        8
+> > +#define EFI_MMAP_NR_SLACK_SLOTS        32
+> >
+> >  typedef struct efi_generic_dev_path efi_device_path_protocol_t;
+> >
+>
+> Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-Instead of a raw binary executable, embed an ELF build of the core
-kernel into the EFI zboot image. Given that the memory layout of the
-kernel executable is described by ELF program headers, this removes the
-need to rely on symbols injected into the build to describe things like
-the size of the text area, which are not accessible to other consumers
-of the EFI zboot format, e.g., the kexec loader.
-
-Given that the EFI zboot loader only decompresses those parts of the
-payload covered by PT_LOAD program headers, stripping the encapsulated
-ELF image is not strictly necessary, making the EFI zboot format
-suitable for distributing the bootable image and the debug symbols in a
-single compressed image.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/boot/Makefile               | 4 ----
- arch/arm64/kernel/image-vars.h         | 4 ----
- drivers/firmware/efi/libstub/arm64.c   | 4 ----
- drivers/firmware/efi/libstub/zboot.lds | 6 ------
- 4 files changed, 18 deletions(-)
-
-diff --git a/arch/arm64/boot/Makefile b/arch/arm64/boot/Makefile
-index b5a08333bc57..cfd76bcbb81f 100644
---- a/arch/arm64/boot/Makefile
-+++ b/arch/arm64/boot/Makefile
-@@ -46,12 +46,8 @@ $(obj)/Image.xz: $(obj)/Image FORCE
- $(obj)/image.fit: $(obj)/Image $(obj)/dts/dtbs-list FORCE
- 	$(call if_changed,fit)
- 
--EFI_ZBOOT_PAYLOAD	:= Image
- EFI_ZBOOT_BFD_TARGET	:= elf64-littleaarch64
- EFI_ZBOOT_MACH_TYPE	:= ARM64
- EFI_ZBOOT_FORWARD_CFI	:= $(CONFIG_ARM64_BTI_KERNEL)
- 
--EFI_ZBOOT_OBJCOPY_FLAGS	= --add-symbol zboot_code_size=0x$$( \
--				$(NM) vmlinux|grep _kernel_codesize|cut -d' ' -f1)
--
- include $(srctree)/drivers/firmware/efi/libstub/Makefile.zboot
-diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-index 8f5422ed1b75..7e1c3f1f1372 100644
---- a/arch/arm64/kernel/image-vars.h
-+++ b/arch/arm64/kernel/image-vars.h
-@@ -140,8 +140,4 @@ KVM_NVHE_ALIAS(kvm_protected_mode_initialized);
- 
- #endif /* CONFIG_KVM */
- 
--#ifdef CONFIG_EFI_ZBOOT
--_kernel_codesize = ABSOLUTE(__inittext_end - _text);
--#endif
--
- #endif /* __ARM64_KERNEL_IMAGE_VARS_H */
-diff --git a/drivers/firmware/efi/libstub/arm64.c b/drivers/firmware/efi/libstub/arm64.c
-index f6c8e1992e54..b339fa34d2f2 100644
---- a/drivers/firmware/efi/libstub/arm64.c
-+++ b/drivers/firmware/efi/libstub/arm64.c
-@@ -88,8 +88,6 @@ efi_status_t check_platform_features(void)
- #define DCTYPE	"cvau"
- #endif
- 
--u32 __weak code_size;
--
- void efi_cache_sync_image(unsigned long image_base,
- 			  unsigned long alloc_size)
- {
-@@ -112,8 +110,6 @@ void efi_cache_sync_image(unsigned long image_base,
- 	asm("ic ialluis");
- 	dsb(ish);
- 	isb();
--
--	efi_remap_image(image_base, alloc_size, code_size);
- }
- 
- void __noreturn efi_enter_kernel(unsigned long entrypoint,
-diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
-index 9ecc57ff5b45..143597d0e5dc 100644
---- a/drivers/firmware/efi/libstub/zboot.lds
-+++ b/drivers/firmware/efi/libstub/zboot.lds
-@@ -2,8 +2,6 @@
- 
- ENTRY(__efistub_efi_zboot_header);
- 
--PROVIDE(zboot_code_size = ABSOLUTE(0));
--
- SECTIONS
- {
- 	.head : ALIGN(4096) {
-@@ -21,10 +19,6 @@ SECTIONS
- 		__efistub__gzdata_end = .;
- 		*(.rodata* .init.rodata* .srodata*)
- 
--		. = ALIGN(4);
--		__efistub_code_size = .;
--		LONG(zboot_code_size);
--
- 		_etext = ALIGN(4096);
- 		. = _etext;
- 	}
--- 
-2.47.1.613.gc27f4b7a9f-goog
-
+I've queued this up for v6.14 now - once we are confident it does not
+cause any regressions, we can backport it to stable branches too.
 
