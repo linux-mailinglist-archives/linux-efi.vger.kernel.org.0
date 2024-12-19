@@ -1,169 +1,130 @@
-Return-Path: <linux-efi+bounces-2395-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2396-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3286A9F7AE1
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 13:03:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29DC9F819F
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 18:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C188165DE1
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 12:03:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A8C0188C963
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 17:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5080C223707;
-	Thu, 19 Dec 2024 12:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37901A262A;
+	Thu, 19 Dec 2024 17:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="hXPuViTW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ai01Jq9/"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="pPptSqYd";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="xWBtlMme"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A67A22145D;
-	Thu, 19 Dec 2024 12:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4BC19DFA5;
+	Thu, 19 Dec 2024 17:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734609799; cv=none; b=RQpmB1JnruusagIg4nawAAqFfkydYaTJqWcdAwJ5YXQ57xYvW3KcFEoSH9M79G0V7dWH9UKuU4Ucr4wXDsuC10+5oMERnlqOf72OEPC32xI+DtEufJ2jIZqlKNXdJvVbi0A6caBU5CHLwCX6rIpmJT7at9ZkH2uuWGNoiudLWIA=
+	t=1734628477; cv=none; b=RooQgnxX1e7NyOf+t2Dq+0oZ4j5A+Cz+fGbLBp6cfTwtcgc58oRk3BLwa/AEaK5sD6oOVnWgoCINb7XpAbEJgCYfpFD7QfppCa5qH0OPWTrfuwyVswAEDWeD8d4reX6q5YeFIw76hrQRhg57LqsFZ5KVSmbN/LHeyaXNUwsRiYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734609799; c=relaxed/simple;
-	bh=Qg3sRh/NrBVXvAQf4LtjFbJFl+QuBJMpT2uDuNKPfUs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=gGE5l3jyEP6HZwsTlMvI7cGA6lI8h+YzDiKr9jk72vENFZQj4tehu6crx2tojGzLvJbZZgGB2oe1EciY51xXJV8bEah3yKKJtxgMA5qo3sHduSjvRuzNO/u01ECdE0xD6LZ6fbmT8BwBWmcDE+wYnQPlQcksvgjewnR2AnDBWxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=hXPuViTW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ai01Jq9/; arc=none smtp.client-ip=103.168.172.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailflow.phl.internal (Postfix) with ESMTP id 716412004CE;
-	Thu, 19 Dec 2024 07:03:15 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Thu, 19 Dec 2024 07:03:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1734609795;
-	 x=1734616995; bh=HsWGYit1QfbykpeRihgbuA09LwqwIdTOxzn2rND9d44=; b=
-	hXPuViTWoL+d8uTD8HWKH6l9JI3Qeg2+RU0afqJ+27Me3anlO7iAkrJodDU6SDBN
-	Q072WguaY7168vuinaZpdAtQ10DTGk5RYTaX/LadyRHQOzWPD3JbXXKn0mlciYNp
-	/X0ieAaHbhoMwp3jLFOIUY9qD8vUGL6DA6lT6SSUUoc7L2j+JHlZHXtf+NE7YFbT
-	eOs3kJAp5E5/dY87oP0aB928LrOITs5+5CDiuYcjTHYJJciZmW9Z0XBEYdV4CiNk
-	Wx0h3kLrKDDoQBv9F7H04Cd/klAwrIBGOvI957eyJztC01JCmdqrxlQ1BlkaCsQa
-	jWQXaNegO8DxO9+esrj5GA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734609795; x=
-	1734616995; bh=HsWGYit1QfbykpeRihgbuA09LwqwIdTOxzn2rND9d44=; b=A
-	i01Jq9/TVKRojX7wRVqPg0h5WKcLpoStUlzFB/1DKY70YpqmGkR7fHOcpORUn0um
-	O3veblgy+PhgwTHKsaLsX62avtsXgZfoU3nI7C6pm24TvWQrJZfq+Rh9JerC4NLS
-	ciJ2sAoN9cCbyrQeR85kewBkWKH6IQre7lcblf9ImmbyUTndDKyoIi7iBFB4FLD3
-	0KT6+xxFdEY0omS5lwTLd8ccH+7S9mGeb77Qi1x6f+uVivOh3MspIan1aTLYH7mp
-	jKgm3f81NG86TuM3m3J6GqmunKFMUSCLyYI+YxETM8+cFfzgpaomgMZfCdOwfBTG
-	wCLqOyPW6qgnvCJJQUe3A==
-X-ME-Sender: <xms:ggtkZ9XFnFb5Shp28v0VE5L4v36r3JhISx0lVUCjHpWxkY9h9zUZvA>
-    <xme:ggtkZ9m1zxghtWwVIpwNk_zL1gyrBICU15_y-0Zl2SKXv0fhrUuFhEsigWuxSN5vN
-    yjOkbkuwRFOCJ_P5pY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddttddgfeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepgedu
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnugesrg
-    hrmhdrtghomhdprhgtphhtthhopehmrghthhhivghurdguvghsnhhohigvrhhssegvfhhf
-    ihgtihhoshdrtghomhdprhgtphhtthhopehusghiiihjrghksehgmhgrihhlrdgtohhmpd
-    hrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehi
-    rhhoghgvrhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopehjuhhsthhinhhsthhith
-    htsehgohhoghhlvgdrtghomhdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggr
-    ugdrohhrghdprhgtphhtthhopegrughrihgrnhdrhhhunhhtvghrsehinhhtvghlrdgtoh
-    hmpdhrtghpthhtohepkhgvihhthhhpsehkvghithhhphdrtghomh
-X-ME-Proxy: <xmx:ggtkZ5a7PffbNu-Ay1FQMOqZTJrFGnnXD5tGmRrSyWO2ytuqef_FkQ>
-    <xmx:ggtkZwUP_QJ3AoR1Af7G1uuLVO1kijbfSFTGznwbJEEi8KUxCINq9Q>
-    <xmx:ggtkZ3mnHQzr0RzOZWTVBet3C-Iqpqn-7c60fklTEsnKTuixPrkLGA>
-    <xmx:ggtkZ9egiZ9brX4PP9vRZHihWLda5MfhHjVBPTo81Ntc2DfeKXzPOA>
-    <xmx:gwtkZ1q8kWVe1DguqO4AMWKc4WtDvHUh-cbDE_TCaSipIJZV6Dnl5eox>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1C9372220072; Thu, 19 Dec 2024 07:03:14 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1734628477; c=relaxed/simple;
+	bh=mvSUgxWzg4ua88OO42ymyaWrC9482DQkJDq/AzwCXik=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kSaZO5b9YOzxhJZdP3KJQrAjAf86lBlSWjYVv2WPDRaaegA6VN94/FkNVK5+j/KoaFjwQkoYoMgDaLACjePK5Dnv14hlkg39DkA1CYtBlVnUNqCgaZ8+2LH3apbaE3kNaCBXRbsWrrzHUWIeuF85oG6ntTG5hkD+U2K2TwWoxhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=pPptSqYd; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=xWBtlMme; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1734628475;
+	bh=mvSUgxWzg4ua88OO42ymyaWrC9482DQkJDq/AzwCXik=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=pPptSqYd8t7ClnbAMKRoMhTiBFhVQQzwEiKuGWlEKJXUt3kmNVGIioOmiIY+8cUB8
+	 yGuWSrnKGWroP7DTrNZqLdJNzrMvEcIs8gTZtH9yIa0S0Woslcd+DjKxuj8QFWLf3J
+	 pPkWhPCL6ncIzTh6agI7iwnk7ZJYnUliH79Vwk+g=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0CB7F1280C50;
+	Thu, 19 Dec 2024 12:14:35 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id i2GyJq7_JHCq; Thu, 19 Dec 2024 12:14:34 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1734628474;
+	bh=mvSUgxWzg4ua88OO42ymyaWrC9482DQkJDq/AzwCXik=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=xWBtlMmecNqCM0ZvGlK2UAQc7UDbt0fEh56RxSA+Gu+TO4UuGYGWQSTOjFodohPvb
+	 NcZUe5GWPU/1MGTsWqSkN4kNVzQRGVGBkyepBXNc6Li8d+w/RzjBWWOwP/o0kdJrt2
+	 9a2TKr0b5MvaYutz4vEVbHt3fim2AlEyL1rn5atM=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 1565412804E8;
+	Thu, 19 Dec 2024 12:14:34 -0500 (EST)
+Message-ID: <6e09c8a812a85cb96a75391abcc48bee3b2824e9.camel@HansenPartnership.com>
+Subject: Re: [PATCH 6/6] efivarfs: fix error on write to new variable
+ leaving remnants
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>, Christian
+	Brauner <christian@brauner.io>, Lennart Poettering <mzxreary@0pointer.de>
+Date: Thu, 19 Dec 2024 12:14:32 -0500
+In-Reply-To: <20241210170224.19159-7-James.Bottomley@HansenPartnership.com>
+References: <20241210170224.19159-1-James.Bottomley@HansenPartnership.com>
+	 <20241210170224.19159-7-James.Bottomley@HansenPartnership.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 19 Dec 2024 13:02:46 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Mark Rutland" <mark.rutland@arm.com>
-Cc: "Ard Biesheuvel" <ardb+git@google.com>, linux-kernel@vger.kernel.org,
- "Ard Biesheuvel" <ardb@kernel.org>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Andy Lutomirski" <luto@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Uros Bizjak" <ubizjak@gmail.com>, "Dennis Zhou" <dennis@kernel.org>,
- "Tejun Heo" <tj@kernel.org>, "Christoph Lameter" <cl@linux.com>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>,
- "Vitaly Kuznetsov" <vkuznets@redhat.com>,
- "Juergen Gross" <jgross@suse.com>,
- "Boris Ostrovsky" <boris.ostrovsky@oracle.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Masahiro Yamada" <masahiroy@kernel.org>, "Kees Cook" <kees@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Keith Packard" <keithp@keithp.com>,
- "Justin Stitt" <justinstitt@google.com>,
- "Josh Poimboeuf" <jpoimboe@kernel.org>,
- "Arnaldo Carvalho de Melo" <acme@kernel.org>,
- "Namhyung Kim" <namhyung@kernel.org>, "Jiri Olsa" <jolsa@kernel.org>,
- "Ian Rogers" <irogers@google.com>,
- "Adrian Hunter" <adrian.hunter@intel.com>,
- "Kan Liang" <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org,
- linux-pm@vger.kernel.org, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-sparse@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org,
- rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Message-Id: <0afeae21-a663-43c9-91ff-f0357f5ac06b@app.fastmail.com>
-In-Reply-To: <Z2QJKZBsgvPMgRo_@J2N7QTR9R3>
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-32-ardb+git@google.com>
- <c4868f63-b688-4489-a112-05bf04280bde@app.fastmail.com>
- <Z2QJKZBsgvPMgRo_@J2N7QTR9R3>
-Subject: Re: [RFC PATCH 02/28] Documentation: Bump minimum GCC version to 8.1
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 19, 2024, at 12:53, Mark Rutland wrote:
-> On Wed, Sep 25, 2024 at 03:58:38PM +0000, Arnd Bergmann wrote:
->> On Wed, Sep 25, 2024, at 15:01, Ard Biesheuvel wrote:
->> > From: Ard Biesheuvel <ardb@kernel.org>
->> 
->> We obviously need to go through all the other version checks
->> to see what else can be cleaned up. I would suggest we also
->> raise the binutils version to 2.30+, which is what RHEL8
->> shipped alongside gcc-8. I have not found other distros that
->> use older binutils in combination with gcc-8 or higher,
->> Debian 10 uses binutils-2.31.
->> I don't think we want to combine the additional cleanup with
->> your series, but if we can agree on the version, we can do that
->> in parallel.
->
-> Were you planning to send patches to that effect, or did you want
-> someone else to do that? I think we were largely agreed on making those
-> changes, but it wasn't clear to me who was actually going to send
-> patches, and I couldn't spot a subsequent thread on LKML.
+On Tue, 2024-12-10 at 12:02 -0500, James Bottomley wrote:
+> Even though this fixes the bug that a create either not followed by a
+> write or followed by a write that errored would leave a remnant file
+> for the variable, the file will appear momentarily globally visible
+> until the close of the fd deletes it.  This is safe because the
+> normal filesystem operations will mediate any races; however, it is
+> still possible for a directory listing at that instant between create
+> and close contain a variable that doesn't exist in the EFI table.
 
-I hadn't planned on doing that, but I could help (after my
-vacation). As Ard already posted the the patch for gcc, I
-was expecting that this one would get merged along with the
-other patches in the series.
+Systemd doesn't like 0 length files appearing in efivarfs, even if only
+momentarily, so I think this needs updating to prevent even momentary
+instances of zero length files:
 
-Ard, what is the status of your series, is this likely to
-make it into 6.14, or should we have a separate patch to
-just raise the minimum gcc and binutils version independent
-of your work?
+https://github.com/systemd/systemd/issues/34304
 
-      Arnd
+These occur for two reasons
+
+   1. The system has hibernated and resumed and the dcache entries are
+      now out of sync with the original variables
+   2. between the create and a successful write of a variable being
+      created in efivarfs
+
+1. can only really be fixed by adding a hibernation hook to the
+filesystem code, which would be a separate patch set (which I'll work
+on after we get this upstream); but 2. can be fixed by ensuring that
+all variables returned from .create aren't visible in the directory
+listing until a successful write.
+
+Since we need the file to be visible to lookups but not the directory,
+the only two ways of doing this are either to mark the directory in a
+way that libfs.c:dcache_readdir() won't see it ... I think this would
+have to be marking it as a cursor (we'd remove the cursor mark on
+successful write); or to implement our own .iterate_shared function and
+hijack the actor to skip newly created files (this is similar to what
+overlayfs does to merge directories) which would be identified as
+having zero size.
+
+Do the fs people have a preference? The cursor mark is simpler to
+implement but depends on internal libfs.c magic. The actor hijack is at
+least something that already exists, so would be less prone to breaking
+due to internal changes.
+
+Regards,
+
+James
+
+
+
 
