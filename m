@@ -1,113 +1,121 @@
-Return-Path: <linux-efi+bounces-2393-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2394-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C71D9F7994
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 11:27:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5758B9F7ABF
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 12:53:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 229B61896A8E
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 10:27:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5426162927
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Dec 2024 11:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6107D222D50;
-	Thu, 19 Dec 2024 10:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrfUh7BC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5681C22371B;
+	Thu, 19 Dec 2024 11:53:28 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37459222D44;
-	Thu, 19 Dec 2024 10:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A101223330;
+	Thu, 19 Dec 2024 11:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734603995; cv=none; b=R+lyGhlwRy+1+Z/VROVZpMbMd1p0YGPF4wahvOfYwXr2f0XECOrguROugrNMES906XqNIp0GXdRtXfXv33JbUl0AGTlN5TxjivDdn6Jfbs9YDp92Tw+rSGg+3m7RQ0oaZjpht+FynqUsLag3QAfZ1F2cYo7RDNZl8gYwAPIsAao=
+	t=1734609208; cv=none; b=iXrBucITUBCsE2n5tbT59F/qFquEoluhOd4yqQVfgPm9iptiZ5OzsAcwQvjAu2Csk2pidURsXze9GjzZxNPn45tEjKN1l1h3xzjUjsszFCBUOGRI9Aouja4D2XhTJcdgyI4Es89RFqSyOjyPzYlBFvZsMKJ5uXKt6iCTEmATCXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734603995; c=relaxed/simple;
-	bh=V/LvbmXhr4PQumbo/yEFLI7Dz/+3vbbiDOhDZ+EYP2o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gSpsNLZDcDrGL1tqp41vqyFEb1AS3BRzD5CAULbgk4WiVn3jO6HKXu8ODJm+HCLySUEWJXtOWkwNSdGeGYfiMlLc+S14PFUZbCAYXKuv8SR4Ym3qGqxtD7czya7OGq08JvIxamyMrH4KZCuNI+iHPrN37BfMk62UxyLo7zhslqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrfUh7BC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5AAC4CEDD;
-	Thu, 19 Dec 2024 10:26:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734603994;
-	bh=V/LvbmXhr4PQumbo/yEFLI7Dz/+3vbbiDOhDZ+EYP2o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NrfUh7BC000XbV5a8Eb6CVJ0Hg+wqtPpoOK3l0gChPZdiwYlRcdxu4lJp5CTcQUJe
-	 R5ACYgla1MqoyTFMRbZXTP076MOkzCQYGbi9mx1c0zCKUIG3piqbu/3dFXHLEJzTIH
-	 lm3+9yAbydaozwAAg+eFNciawF0qkxsRvPC4aBOPe00FFyrQ1ncZfb8wTqiP58GqEg
-	 6EIUSNp6GzwYbQ/TnvIHRk97ScJMmbzaFdPYICkGc8UmMIE1pH1dzkLoQkhRxEhMIQ
-	 5bQlL6U5ij9BZ6pFsv6cCEpK+6A/xn3uw/hQQAeiYrfeb5joVRAb2c7TiogMKtEM2o
-	 SBWfoX1eM0IrA==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-540218726d5so496404e87.2;
-        Thu, 19 Dec 2024 02:26:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXhZ+Q/WGDRcBbnMDaoV66nQwwuwb7f/F/+ma7gchB1ty6K4MADWsVBIpjQIcDO5OoKia8PLJ+YKXr/RTw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+DVpGzRZbKUAdaLBoKklpkPqnrAa3D7bEjbTqoHC8gGOZ99f1
-	cxDJOgTMqCVLCjjvOxEkp/ezSuPwHILYBwdFWmw+V1jAlz43aeaaEQRTOPNHGO99ZF194ZdFLOJ
-	7E+TSDmwFgWelk5qmcc4DXrKV9yM=
-X-Google-Smtp-Source: AGHT+IEFnkwlkJcjhhURezL8MYVQ6z4dd5Ea8uKH2gGNexkkH5+8L5fM88B3L3bU1xMahmHI5fnvGdF2312gDj0z1zE=
-X-Received: by 2002:a05:6512:3c86:b0:540:21f1:e9e7 with SMTP id
- 2adb3069b0e04-541ed8e4c9emr2587654e87.16.1734603992182; Thu, 19 Dec 2024
- 02:26:32 -0800 (PST)
+	s=arc-20240116; t=1734609208; c=relaxed/simple;
+	bh=7SYHZIs/WrMiFnJV+UNkilY+ZLz4Hxrf5N56/tTsSDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s1mMaFYGchudiRdpSATSPBLucSshHkp8+k/jy5+rldeNyLU8/INF+CI0aCyKIyreEFsrunngBdSe2e1pFDcOnbli0R2XOJU3RsSw9Yi960YVMAdhyHUjhkb/atYPtn0R/pBZwjywQ0iSaHNf9N/tiCZRWaryb0TBxXyxgCKHCLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C3EC1477;
+	Thu, 19 Dec 2024 03:53:53 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A4C173F720;
+	Thu, 19 Dec 2024 03:53:19 -0800 (PST)
+Date: Thu, 19 Dec 2024 11:53:13 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Keith Packard <keithp@keithp.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org,
+	Linux-Arch <linux-arch@vger.kernel.org>,
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [RFC PATCH 02/28] Documentation: Bump minimum GCC version to 8.1
+Message-ID: <Z2QJKZBsgvPMgRo_@J2N7QTR9R3>
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-32-ardb+git@google.com>
+ <c4868f63-b688-4489-a112-05bf04280bde@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209182041.60286-1-hamzamahfooz@linux.microsoft.com> <CAMj1kXEnxgsy6LkyWGFmwDxVroDofeGYdUd2BvfJ=bNgj0TYVg@mail.gmail.com>
-In-Reply-To: <CAMj1kXEnxgsy6LkyWGFmwDxVroDofeGYdUd2BvfJ=bNgj0TYVg@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 19 Dec 2024 11:26:21 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHmB9RAwfCDZN+CDhXD4D6Z1sE6vg5HN3SUEZ+uLnEnWg@mail.gmail.com>
-Message-ID: <CAMj1kXHmB9RAwfCDZN+CDhXD4D6Z1sE6vg5HN3SUEZ+uLnEnWg@mail.gmail.com>
-Subject: Re: [PATCH] efi: bump up EFI_MMAP_NR_SLACK_SLOTS to 32
-To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Cc: linux-efi@vger.kernel.org, stable@kernel.org, 
-	Allen Pais <apais@linux.microsoft.com>, Tyler Hicks <code@tyhicks.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Marek <jonathan@marek.ca>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4868f63-b688-4489-a112-05bf04280bde@app.fastmail.com>
 
-On Tue, 10 Dec 2024 at 10:59, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Mon, 9 Dec 2024 at 19:20, Hamza Mahfooz
-> <hamzamahfooz@linux.microsoft.com> wrote:
+Hi Arnd,
+
+On Wed, Sep 25, 2024 at 03:58:38PM +0000, Arnd Bergmann wrote:
+> On Wed, Sep 25, 2024, at 15:01, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
 > >
-> > Recent platforms require more slack slots than the current value of
-> > EFI_MMAP_NR_SLACK_SLOTS, otherwise they fail to boot. The current
-> > workaround is to append `efi=disable_early_pci_dma` to the kernel's
-> > cmdline. So, bump up EFI_MMAP_NR_SLACK_SLOTS to 32 to allow those
-> > platforms to boot with the aforementioned workaround.
+> > Bump the minimum GCC version to 8.1 to gain unconditional support for
+> > referring to the per-task stack cookie using a symbol rather than
+> > relying on the fixed offset of 40 bytes from %GS, which requires
+> > elaborate hacks to support.
 > >
-> > Cc: stable@kernel.org
-> > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > Cc: Allen Pais <apais@linux.microsoft.com>
-> > Cc: Tyler Hicks <code@tyhicks.com>
-> > Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 > > ---
-> >  drivers/firmware/efi/libstub/efistub.h | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> > index 76e44c185f29..e95ce6ae5c26 100644
-> > --- a/drivers/firmware/efi/libstub/efistub.h
-> > +++ b/drivers/firmware/efi/libstub/efistub.h
-> > @@ -171,7 +171,7 @@ void efi_set_u64_split(u64 data, u32 *lo, u32 *hi)
-> >   * the EFI memory map. Other related structures, e.g. x86 e820ext, need
-> >   * to factor in this headroom requirement as well.
-> >   */
-> > -#define EFI_MMAP_NR_SLACK_SLOTS        8
-> > +#define EFI_MMAP_NR_SLACK_SLOTS        32
-> >
-> >  typedef struct efi_generic_dev_path efi_device_path_protocol_t;
-> >
->
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> >  Documentation/admin-guide/README.rst | 2 +-
+> >  Documentation/process/changes.rst    | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> As we discussed during plumbers, I think this is reasonable,
+> both the gcc-8.1 version and the timing after the 6.12-LTS
+> kernel.
+> 
+> We obviously need to go through all the other version checks
+> to see what else can be cleaned up. I would suggest we also
+> raise the binutils version to 2.30+, which is what RHEL8
+> shipped alongside gcc-8. I have not found other distros that
+> use older binutils in combination with gcc-8 or higher,
+> Debian 10 uses binutils-2.31.
+> I don't think we want to combine the additional cleanup with
+> your series, but if we can agree on the version, we can do that
+> in parallel.
 
-I've queued this up for v6.14 now - once we are confident it does not
-cause any regressions, we can backport it to stable branches too.
+Were you planning to send patches to that effect, or did you want
+someone else to do that? I think we were largely agreed on making those
+changes, but it wasn't clear to me who was actually going to send
+patches, and I couldn't spot a subsequent thread on LKML.
+
+Mark.
 
