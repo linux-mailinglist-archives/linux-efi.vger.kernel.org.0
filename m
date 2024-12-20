@@ -1,84 +1,87 @@
-Return-Path: <linux-efi+bounces-2417-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2418-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F349F9108
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Dec 2024 12:22:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312909F9109
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Dec 2024 12:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5BAA16C169
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Dec 2024 11:22:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F5471896B0A
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Dec 2024 11:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3364B1C3039;
-	Fri, 20 Dec 2024 11:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA061C4A16;
+	Fri, 20 Dec 2024 11:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tjjjyRqy"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z63j0k5M"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349742AE96
-	for <linux-efi@vger.kernel.org>; Fri, 20 Dec 2024 11:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEF01C07E4
+	for <linux-efi@vger.kernel.org>; Fri, 20 Dec 2024 11:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734693761; cv=none; b=OecNAO/2eObyxb8qADhADQf9CvcsWdvVa3Kxdz8UEbE/QeI+OEzNaX1mGH0DdrG4Buai+Qu58Mv1uwqMVDwStV6abiA+Ih1DECCNFFSv+X5kz1zNh3rhsEZ69WSlcpo/mkbbPK5V6XKYRN9ujhM5yt5ZE+idOTFk7GFaKDMjCuU=
+	t=1734693761; cv=none; b=ALmiLoVoKCVAN5UpHAS4p2Z/UGxgzGzghReTnhQ06zkgGKtZMYhWs0V49Ooe5toyx6ZR2l2gPZ5YVcMVrv0Zzg/TufrarRrHiiI3VDr8tSI/a3c8PuFWYmvIlvu51MkJlel1bbK4kqB6YQhxv4+iwmtc6ol1rzZ27KKYgiSIdOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734693761; c=relaxed/simple;
-	bh=ihtSIvxedJmGrTzj66wP7EcRb9mmAs+EUS4+g34KiWQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iuWbVkPGVWHW9+kw72tRDW7PLamR7P/nfw4QuBSmLW0xJjkqyDFw8UZ+at5tsDCbUTTSJFKEDaj1DViCW2/TMzMlSqho/hoBETFJ1Z9y6u5MOd8wnyUWeJA9hLXwsO25IzpDQdx2orYvAzIsal4olZAQdwmgmXzWPt/zlmpnb+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tjjjyRqy; arc=none smtp.client-ip=209.85.128.73
+	bh=aIauqGBYHpW4ez5NfIDLYO5bWWI87u7AWHcSTVi1nKM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OpMgjWmLTCmgay2tHj3IjhgfdEJt8VTyI63lUPgPW41lfCOuZQ0lrHU6hyCix77MtyxeiaCDAsE+Akem15bHWgdkC4wQbudFNoyr/yHV634rwdcy1TFpPmIGlD0/QmsecUBKbwpP2wGpy3921LAJ7TsE/27q1F5umccU5EPUlyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z63j0k5M; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4361c040ba8so10529005e9.1
-        for <linux-efi@vger.kernel.org>; Fri, 20 Dec 2024 03:22:37 -0800 (PST)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43631d8d9c7so10200175e9.1
+        for <linux-efi@vger.kernel.org>; Fri, 20 Dec 2024 03:22:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734693756; x=1735298556; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IrbRpqJQnbcKzfpfJpgvTLF1FyOQSBkypq55+GAgg3s=;
-        b=tjjjyRqyltYWVnDRp4iEXt3f7HbWUfsi0PAbMUwHHKZiHLkw9tDKjz/5vorjDjhHo2
-         OisjSAbnAnHJqvSyrhnGrPTkPyirn0dvCFoZjD08W+74OOjeXXfzVqtPWQqVH9tSC66Q
-         JVUha9tOM+rdY9tHViCBICWXjSBjqmg9YMulMl+fD8TvwRvVxYFzBRoC937cZXrQzel2
-         3g3EojEcF02Y3yhTuOAnM+cjIS9YjoQuJDY0WYqkKpAhwfeOvDrPH4B5BlywYmwo5hhj
-         gdopI+GPt51Mcn+YtV4rocoAtZwHKFBNCQA1SDO+oOWbC53UnA7kNyOJtzCF+71dlXuR
-         UGUQ==
+        d=google.com; s=20230601; t=1734693758; x=1735298558; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=G4YTq/ftOlxzsFyBK5qpik8kRgidp3qaC0bsdTEKQfI=;
+        b=Z63j0k5MRKPRnKB855cF0osTjU+cQLYfjz8awGx/5S8yUeOZ871wp/iQYsepTV+D7u
+         FESBFzUnj3+ZiAwbppt/YW2HIUNlZRuv9SqwtDHKLI//OCYlaTgiekrH0tcKHPHc8IJK
+         kncWxnhOYEXJfDiUE9P1Yn9vmieJDv5OhUs5BO1/e39zjQlKwARFbgHPYAVaJ5TFqGcs
+         AlBE00gUo/8jfjQqWO4oTI5i/f7PdhE73ivAMh45jY+MCoVdcS6UVqXMEr+5b6CtjCit
+         3AWQkUZqHrypqn+F9/q9HZ1DMn5df2SzZbwpkqctLOHFH02UlO8Gi6GISAegFhF7009K
+         AWqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734693756; x=1735298556;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IrbRpqJQnbcKzfpfJpgvTLF1FyOQSBkypq55+GAgg3s=;
-        b=nzfHQPzP6HwgghXIj6pkFlHhRH0I+jWcG7NBOlXJolZWCW4qWuUWnhIPbmpShBu6zZ
-         oEcOdzsBre2xb20FtvfAqKSxy2Q9thZSoCHmHO/2tstINpVafI2qx0ftRzCCVz8iHRsV
-         p+nHp0VWx2yD7Fk1gdjm189p4ZqGjLsparzQqVLSfXuzP1rVO7VRcYBJhHH94jG+jX9t
-         UcJgk5gPQUMCl9mhOhQ54Iqx1N6+5hyekUWeh2HiC6traOG5H4IVipMeXTozUnwkV4Zk
-         oLj2uNJtRan4J6vuvWAkFX6TWU6mY+DH8kL+5YRBAGtKuJqYDIAfxiWQJzMds+B8VfWl
-         0gzw==
-X-Gm-Message-State: AOJu0Yw8VIcNvT3FjRFPC4kZ8l1ygezO1N16OQ61YQ+r3X1PDIV045YN
-	4nTJpWIVAetrP1ue0HFLBrkppCdySbhWj9eMCmXCKRMRuvPoV6UucgAPxeoBHi5pUeazQJy/Eoc
-	O6k5SxMtObQgZk7qDo7LCYBmdvZKw6O/0ziZ5vMbVRFVmoeeEpiNRVqczgyDpTzBKa5KjG+0PCK
-	GL1LVGLHkjvmx4kVTVe7i5EVb0VQ==
-X-Google-Smtp-Source: AGHT+IGiCdwQXxWRq5+8wDWiU78fduIEalA4L32vX4MwN6Smwpd3KTgBJ/RQ6tzE/lKJKRf9F/L6nlXR
-X-Received: from wmsp24.prod.google.com ([2002:a05:600c:1d98:b0:434:a7ab:5eea])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1c1a:b0:434:eb73:b0c0
- with SMTP id 5b1f17b1804b1-43668548301mr18852745e9.5.1734693756471; Fri, 20
- Dec 2024 03:22:36 -0800 (PST)
-Date: Fri, 20 Dec 2024 12:22:15 +0100
+        d=1e100.net; s=20230601; t=1734693758; x=1735298558;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G4YTq/ftOlxzsFyBK5qpik8kRgidp3qaC0bsdTEKQfI=;
+        b=fU9CqmHP6+MgQ8A2K/lJM3sU6/w+/jf93F7Cg3i1FpTvDklE7ujtO3eeauqvXURWSE
+         ce8jZe9ZqhqA/JFwik6rrrAVVrTP7/f/KTTYGGvTEXIetpBw/BuCTdech5hVXGOXMhJH
+         x9hpn2D+jp3W47dFfCvO1jUJk6zKmrKlG7ZS3Jmovi1AEAZ8O5oJr8xqGps1S5BnhKPK
+         Eo6QhptxlSOIb3zB0vlw2Ou3TIajBBIVFCQZ4hN5DFTfDHDufvXUP/jm11XH006LHPF2
+         OFbmblQHDHMi5lN6dMFE6O9rwI4GDV1lvN1tH37ltQCvjMYTqThc2C71x5xWQbH+u8rx
+         bVQQ==
+X-Gm-Message-State: AOJu0Yw4FwI46iMU1qU4pL73rh6BE8hRApZQa8euUaIIwqol1ZDfn2sl
+	oAMahizI2ooh2VADrnZ7oCjuhvT7B1oZkvuBQlhoyiv/25XGkTWsLNd58JvRl58bkmRJL+Gf19w
+	V9qHazp6/sx8lR1rFc/dfY/eQ1ACgyek1Yyvj/Wnalm0vrWjvrnhpUK+TZ+oZLY4wpr8xAxyws2
+	gXUeW2ArD9VDJsVQjaQeeo6/+R5A==
+X-Google-Smtp-Source: AGHT+IEFIi4SExocJjw8kszjhCQw70qFejd1sU8fWDynz2b6RMGHYdSgLx1AafOwUuQhZpTI//tUZJaS
+X-Received: from wmbjj16.prod.google.com ([2002:a05:600c:6a10:b0:434:e9fe:f913])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b8c:b0:434:ff08:202e
+ with SMTP id 5b1f17b1804b1-436699ff9famr20916095e9.8.1734693758603; Fri, 20
+ Dec 2024 03:22:38 -0800 (PST)
+Date: Fri, 20 Dec 2024 12:22:16 +0100
+In-Reply-To: <20241220112214.2598872-9-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20241220112214.2598872-9-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1530; i=ardb@kernel.org;
- h=from:subject; bh=45Yf+auFr7e7QAfQcac/EKl6kDZSpozjg+MSmfgIymM=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIT01OP2+76Vza31jFqvJxRlLHg49uOhHSH6Fybwy89nrW
- PakVsZ0lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIkY72T4Z2P/SPyIjZ0wf+C9
- 2K3X0yQajm/SDwn+qZix3Zkhye/2YkaGlf+2TH1R7dx1kYun0ODNvYnnA6QWcq6Rv7vc+/mRJfr /OQE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6232; i=ardb@kernel.org;
+ h=from:subject; bh=cMbTqyf6fcVFSGOV1gvDHpolf1J3659U3OaWiXwGbLI=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIT01ONP46G6h5UVddxZM8VPZ1L0k90xTVue95YYxeqGtg
+ c0ZdUEdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCIHxBh+s/8+VDZdZuvPlDiJ
+ B13pp9/GT3l3KSzNLLA700DqcOjNUIa/oj8bC14ej7XfYPF4q1BbP0/EylObXM+Khuo4xkz8zT6 PBQA=
 X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241220112214.2598872-9-ardb+git@google.com>
-Subject: [PATCH 0/7] EFI stub cleanup work
+Message-ID: <20241220112214.2598872-10-ardb+git@google.com>
+Subject: [PATCH 1/7] x86/efistub: Drop long obsolete UGA support
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
@@ -86,36 +89,173 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Some code cleanup for the EFI stub, to drop obsolete code, and to switch
-to newer and more ergonomic APIs for managing pool allocations and EFI
-handle buffers.
+UGA is the EFI graphical output protocol that preceded GOP, and has been
+long obsolete. Drop support for it from the x86 implementation of the
+EFI stub - other architectures never bothered to implement it (save for
+ia64)
 
-No functional changes intended, except for the UGA removal.
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/x86/platform/efi/efi.c             |  2 -
+ drivers/firmware/efi/libstub/x86-stub.c | 90 --------------------
+ include/linux/efi.h                     |  2 -
+ 3 files changed, 94 deletions(-)
 
-Ard Biesheuvel (7):
-  x86/efistub: Drop long obsolete UGA support
-  efi/libstub: Use C99-style for loop to traverse handle buffer
-  efi/libstub: Simplify GOP handling code
-  efi/libstub: Refactor and cleanup GOP resolution picker code
-  efi/libstub: Simplify PCI I/O handle buffer traversal
-  efi/libstub: Use cleanup helpers for freeing copies of the memory map
-  efi/libstub: Use __free() helper for pool deallocations
-
- arch/x86/include/asm/efi.h                     |   3 +
- arch/x86/platform/efi/efi.c                    |   2 -
- drivers/firmware/efi/libstub/efi-stub-helper.c |   9 +-
- drivers/firmware/efi/libstub/efi-stub.c        |  49 ++-
- drivers/firmware/efi/libstub/efistub.h         |  16 +-
- drivers/firmware/efi/libstub/gop.c             | 323 ++++++++------------
- drivers/firmware/efi/libstub/kaslr.c           |   4 +-
- drivers/firmware/efi/libstub/mem.c             |  20 +-
- drivers/firmware/efi/libstub/pci.c             |  34 +--
- drivers/firmware/efi/libstub/randomalloc.c     |   4 +-
- drivers/firmware/efi/libstub/relocate.c        |  10 +-
- drivers/firmware/efi/libstub/x86-stub.c        | 164 ++--------
- include/linux/efi.h                            |   2 -
- 13 files changed, 198 insertions(+), 442 deletions(-)
-
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index a7ff189421c3..41fc2254f007 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -60,7 +60,6 @@ static unsigned long efi_runtime, efi_nr_tables;
+ unsigned long efi_fw_vendor, efi_config_table;
+ 
+ static const efi_config_table_type_t arch_tables[] __initconst = {
+-	{UGA_IO_PROTOCOL_GUID,		&uga_phys,		"UGA"		},
+ #ifdef CONFIG_X86_UV
+ 	{UV_SYSTEM_TABLE_GUID,		&uv_systab_phys,	"UVsystab"	},
+ #endif
+@@ -72,7 +71,6 @@ static const unsigned long * const efi_tables[] = {
+ 	&efi.acpi20,
+ 	&efi.smbios,
+ 	&efi.smbios3,
+-	&uga_phys,
+ #ifdef CONFIG_X86_UV
+ 	&uv_systab_phys,
+ #endif
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 188c8000d245..0c51d8307000 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -405,96 +405,13 @@ static void setup_quirks(struct boot_params *boot_params)
+ 	}
+ }
+ 
+-/*
+- * See if we have Universal Graphics Adapter (UGA) protocol
+- */
+-static efi_status_t
+-setup_uga(struct screen_info *si, efi_guid_t *uga_proto, unsigned long size)
+-{
+-	efi_status_t status;
+-	u32 width, height;
+-	void **uga_handle = NULL;
+-	efi_uga_draw_protocol_t *uga = NULL, *first_uga;
+-	efi_handle_t handle;
+-	int i;
+-
+-	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
+-			     (void **)&uga_handle);
+-	if (status != EFI_SUCCESS)
+-		return status;
+-
+-	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
+-			     uga_proto, NULL, &size, uga_handle);
+-	if (status != EFI_SUCCESS)
+-		goto free_handle;
+-
+-	height = 0;
+-	width = 0;
+-
+-	first_uga = NULL;
+-	for_each_efi_handle(handle, uga_handle, size, i) {
+-		efi_guid_t pciio_proto = EFI_PCI_IO_PROTOCOL_GUID;
+-		u32 w, h, depth, refresh;
+-		void *pciio;
+-
+-		status = efi_bs_call(handle_protocol, handle, uga_proto,
+-				     (void **)&uga);
+-		if (status != EFI_SUCCESS)
+-			continue;
+-
+-		pciio = NULL;
+-		efi_bs_call(handle_protocol, handle, &pciio_proto, &pciio);
+-
+-		status = efi_call_proto(uga, get_mode, &w, &h, &depth, &refresh);
+-		if (status == EFI_SUCCESS && (!first_uga || pciio)) {
+-			width = w;
+-			height = h;
+-
+-			/*
+-			 * Once we've found a UGA supporting PCIIO,
+-			 * don't bother looking any further.
+-			 */
+-			if (pciio)
+-				break;
+-
+-			first_uga = uga;
+-		}
+-	}
+-
+-	if (!width && !height)
+-		goto free_handle;
+-
+-	/* EFI framebuffer */
+-	si->orig_video_isVGA	= VIDEO_TYPE_EFI;
+-
+-	si->lfb_depth		= 32;
+-	si->lfb_width		= width;
+-	si->lfb_height		= height;
+-
+-	si->red_size		= 8;
+-	si->red_pos		= 16;
+-	si->green_size		= 8;
+-	si->green_pos		= 8;
+-	si->blue_size		= 8;
+-	si->blue_pos		= 0;
+-	si->rsvd_size		= 8;
+-	si->rsvd_pos		= 24;
+-
+-free_handle:
+-	efi_bs_call(free_pool, uga_handle);
+-
+-	return status;
+-}
+-
+ static void setup_graphics(struct boot_params *boot_params)
+ {
+ 	efi_guid_t graphics_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+ 	struct screen_info *si;
+-	efi_guid_t uga_proto = EFI_UGA_PROTOCOL_GUID;
+ 	efi_status_t status;
+ 	unsigned long size;
+ 	void **gop_handle = NULL;
+-	void **uga_handle = NULL;
+ 
+ 	si = &boot_params->screen_info;
+ 	memset(si, 0, sizeof(*si));
+@@ -505,13 +422,6 @@ static void setup_graphics(struct boot_params *boot_params)
+ 	if (status == EFI_BUFFER_TOO_SMALL)
+ 		status = efi_setup_gop(si, &graphics_proto, size);
+ 
+-	if (status != EFI_SUCCESS) {
+-		size = 0;
+-		status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
+-				     &uga_proto, NULL, &size, uga_handle);
+-		if (status == EFI_BUFFER_TOO_SMALL)
+-			setup_uga(si, &uga_proto, size);
+-	}
+ }
+ 
+ 
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index e5815867aba9..234200469146 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -363,7 +363,6 @@ void efi_native_runtime_setup(void);
+ #define ACPI_20_TABLE_GUID			EFI_GUID(0x8868e871, 0xe4f1, 0x11d3,  0xbc, 0x22, 0x00, 0x80, 0xc7, 0x3c, 0x88, 0x81)
+ #define SMBIOS_TABLE_GUID			EFI_GUID(0xeb9d2d31, 0x2d88, 0x11d3,  0x9a, 0x16, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ #define SMBIOS3_TABLE_GUID			EFI_GUID(0xf2fd1544, 0x9794, 0x4a2c,  0x99, 0x2e, 0xe5, 0xbb, 0xcf, 0x20, 0xe3, 0x94)
+-#define UGA_IO_PROTOCOL_GUID			EFI_GUID(0x61a4d49e, 0x6f68, 0x4f1b,  0xb9, 0x22, 0xa8, 0x6e, 0xed, 0x0b, 0x07, 0xa2)
+ #define EFI_GLOBAL_VARIABLE_GUID		EFI_GUID(0x8be4df61, 0x93ca, 0x11d2,  0xaa, 0x0d, 0x00, 0xe0, 0x98, 0x03, 0x2b, 0x8c)
+ #define UV_SYSTEM_TABLE_GUID			EFI_GUID(0x3b13a7d4, 0x633e, 0x11dd,  0x93, 0xec, 0xda, 0x25, 0x56, 0xd8, 0x95, 0x93)
+ #define LINUX_EFI_CRASH_GUID			EFI_GUID(0xcfc8fc79, 0xbe2e, 0x4ddc,  0x97, 0xf0, 0x9f, 0x98, 0xbf, 0xe2, 0x98, 0xa0)
+@@ -373,7 +372,6 @@ void efi_native_runtime_setup(void);
+ #define EFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID	EFI_GUID(0x8b843e20, 0x8132, 0x4852,  0x90, 0xcc, 0x55, 0x1a, 0x4e, 0x4a, 0x7f, 0x1c)
+ #define EFI_DEVICE_PATH_FROM_TEXT_PROTOCOL_GUID	EFI_GUID(0x05c99a21, 0xc70f, 0x4ad2,  0x8a, 0x5f, 0x35, 0xdf, 0x33, 0x43, 0xf5, 0x1e)
+ #define EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID	EFI_GUID(0x9042a9de, 0x23dc, 0x4a38,  0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a)
+-#define EFI_UGA_PROTOCOL_GUID			EFI_GUID(0x982c298b, 0xf4fa, 0x41cb,  0xb8, 0x38, 0x77, 0xaa, 0x68, 0x8f, 0xb8, 0x39)
+ #define EFI_PCI_IO_PROTOCOL_GUID		EFI_GUID(0x4cf5b200, 0x68b8, 0x4ca5,  0x9e, 0xec, 0xb2, 0x3e, 0x3f, 0x50, 0x02, 0x9a)
+ #define EFI_FILE_INFO_ID			EFI_GUID(0x09576e92, 0x6d3f, 0x11d2,  0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ #define EFI_SYSTEM_RESOURCE_TABLE_GUID		EFI_GUID(0xb122a263, 0x3661, 0x4f68,  0x99, 0x29, 0x78, 0xf8, 0xb0, 0xd6, 0x21, 0x80)
 -- 
 2.47.1.613.gc27f4b7a9f-goog
 
