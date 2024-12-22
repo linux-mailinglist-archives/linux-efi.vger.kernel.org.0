@@ -1,116 +1,73 @@
-Return-Path: <linux-efi+bounces-2430-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2431-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA119FA2EC
-	for <lists+linux-efi@lfdr.de>; Sun, 22 Dec 2024 00:29:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5299FA52F
+	for <lists+linux-efi@lfdr.de>; Sun, 22 Dec 2024 11:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1741318840AE
-	for <lists+linux-efi@lfdr.de>; Sat, 21 Dec 2024 23:29:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4DB51888ADE
+	for <lists+linux-efi@lfdr.de>; Sun, 22 Dec 2024 10:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3181DE8B2;
-	Sat, 21 Dec 2024 23:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B6A17BB16;
+	Sun, 22 Dec 2024 10:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aPCV5QbM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4pO863C"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C619B1DE3DD;
-	Sat, 21 Dec 2024 23:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B122166307;
+	Sun, 22 Dec 2024 10:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734823741; cv=none; b=PirVcdv+IOOLCGclE9D4QJVlvrbig0ul0mq9MxHuvZQHWHKljg/HYJziwCy7yq4is4b/UaX7v4/A7uW1z9TgBVyEsFqb0jSZawTiPGdHG2DLzX8N690yVD6YBwKrMBk9sfz/+WyczIZ7ptYz/+PjJz40dlbb6sKCYCJX36uMuDQ=
+	t=1734862329; cv=none; b=CG/1gBM8KZunnpsrLhMcTylNdlGGIH3uPeYqDAExzo9bFovRXczDBE60NeSdUVSlnCv17t+FcIer95GPLSTUc+3+gQykCv16Fw3QjVAhG+3bihCqPi72ZF85AIbrgFiRcgcYrorTGtUVGMcuL2KbmkwCAab5ibHCVm8kMOSp32Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734823741; c=relaxed/simple;
-	bh=1+aAgOPDSjnLAePAC69Z6dC8JwBpDYKJiZOGw5bW4I8=;
+	s=arc-20240116; t=1734862329; c=relaxed/simple;
+	bh=1a/VWzSTWvMsj0hpc/06I4Wuwlht3P8XrS/Yg3s+rHE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N4qa+A0MUDgwD+LMtHLbuMGldKe3LGuBkkmGqQMLlJ0jelr3LR0dWAgQkm6HQsQtQCSfriR5hxLChDqsiCq93LQn49zL3sXC0p6/rsH/11z6GOHiaSCwDNUgmyzs7GEW/y0UNdCiwgdgbNYsDtZ5q/i1vbvzNzgCZ1/zePtRC8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aPCV5QbM; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734823738; x=1766359738;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1+aAgOPDSjnLAePAC69Z6dC8JwBpDYKJiZOGw5bW4I8=;
-  b=aPCV5QbMv/LEnbrXJzA1dp18iHhbYfiAAgR8bZWEQx+E/S8gbN3yqKp2
-   WQ7wpqWOaQ9QxylL58UBBQChkQiuWCqANqd4e+30+yvYOJ/kRcwWrW1IC
-   XZ06LBw56FGla5OFMYM4jQBvT2Vaf0MXBlCmy6SWpLUtpvjTj63s+xvyh
-   t2nsBnOizPTvnCJ8iI47gRYe3VdHsS2tnrwZmznT5tvNdFNPa9kPvUwYk
-   4EHagfBDQk9hvNp24Jss09w5a/nOMxqHGRe6ctfN2e5uIlkMFF3Y3C80j
-   D6b9pZyOjQF7rCqjJFyFPynbFrcQs2uOwg0bn5OZyPN7qwq7NlCbgmhVH
-   Q==;
-X-CSE-ConnectionGUID: E7SpFTQCTmaUh5NMhUAIHw==
-X-CSE-MsgGUID: VegQJYhDT8OyIX+FzovqGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11293"; a="46342016"
-X-IronPort-AV: E=Sophos;i="6.12,254,1728975600"; 
-   d="scan'208";a="46342016"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2024 15:28:57 -0800
-X-CSE-ConnectionGUID: 8v1WbsIkQg+D/QDA6fXyrQ==
-X-CSE-MsgGUID: 2RrLNAJaTTab8oHc0hyK4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="99323289"
-Received: from lkp-server01.sh.intel.com (HELO a46f226878e0) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 21 Dec 2024 15:28:56 -0800
-Received: from kbuild by a46f226878e0 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tP8tx-0002Yp-1e;
-	Sat, 21 Dec 2024 23:28:53 +0000
-Date: Sun, 22 Dec 2024 07:28:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zhou Ding <zhouding@cmss.chinamobile.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Zhou Ding <zhouding@cmss.chinamobile.com>,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] efi: Fix missing `efi_handover_entry` prototype
-Message-ID: <202412220717.yUDPy17I-lkp@intel.com>
-References: <20241212161517.443855-1-zhouding@cmss.chinamobile.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EwwM6Y1+qhMjca1YKfWcAh3DeyOdGKvSp6TmYDGk2EbRRJzyibPgh4t0X/iX+E6/LJc8Y1lFBi1nYuUnp9ERm+dO7v2f4MihEE0KiNgTvOzlVnpJKKfsABFnz1VFqGY+ksySJxRV9jGNMoi8xVA+DbUtm9rP+9tTtMNnUAsqdH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4pO863C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82C4C4CECD;
+	Sun, 22 Dec 2024 10:12:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734862328;
+	bh=1a/VWzSTWvMsj0hpc/06I4Wuwlht3P8XrS/Yg3s+rHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b4pO863CNudzApW679dCKY6oEHNfLnRGrTgF7YgWRdi9hQkPU5EIWwKLy2Hxa5MCe
+	 KhTdDDZaS+vKKf5dU7ZtgH80yduLz9x/zDVi1OvZ2+acALsm1t7/+XGdvRvTAz4gUH
+	 aqWqjceV7UhvmAVWjFrxdge07Jkk2D4GS0MTCF83NtzKd7PARSAgjhxbOaSa65s0Qa
+	 Nzph0cXb5vuv1iMhoDDT1AjjN/dDYFiS4oh2jlJKxuMCY6nE+rCbsKQKwgbOnHQfNB
+	 5kijrs+eKQPjRdKctZApnCQLAbtGQsys2nOqFOh7ZJL8hwuVKiX8xpbnI93TtOoLfX
+	 UQYTDR8bYQEkw==
+Date: Sun, 22 Dec 2024 11:12:03 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>, 
+	Christian Brauner <christian@brauner.io>, Lennart Poettering <mzxreary@0pointer.de>
+Subject: Re: [PATCH 6/6] efivarfs: fix error on write to new variable leaving
+ remnants
+Message-ID: <20241222-anmut-liegt-fe3ab4c1fee5@brauner>
+References: <20241210170224.19159-1-James.Bottomley@HansenPartnership.com>
+ <20241210170224.19159-7-James.Bottomley@HansenPartnership.com>
+ <6e09c8a812a85cb96a75391abcc48bee3b2824e9.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241212161517.443855-1-zhouding@cmss.chinamobile.com>
+In-Reply-To: <6e09c8a812a85cb96a75391abcc48bee3b2824e9.camel@HansenPartnership.com>
 
-Hi Zhou,
+> Do the fs people have a preference? The cursor mark is simpler to
+> implement but depends on internal libfs.c magic. The actor hijack is at
+> least something that already exists, so would be less prone to breaking
+> due to internal changes.
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on efi/next]
-[also build test ERROR on linus/master v6.13-rc3 next-20241220]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Zhou-Ding/efi-Fix-missing-efi_handover_entry-prototype/20241213-175109
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-patch link:    https://lore.kernel.org/r/20241212161517.443855-1-zhouding%40cmss.chinamobile.com
-patch subject: [PATCH] efi: Fix missing `efi_handover_entry` prototype
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20241222/202412220717.yUDPy17I-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241222/202412220717.yUDPy17I-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412220717.yUDPy17I-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> ld.lld: error: undefined symbol: efi_handover_entry
-   >>> referenced by arch/x86/boot/compressed/efi_mixed.o:(efi64_stub_entry)
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I think making this filesystem specific is better than plumbing this
+into dcache_readdir().
 
