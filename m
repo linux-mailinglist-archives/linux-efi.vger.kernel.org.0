@@ -1,45 +1,45 @@
-Return-Path: <linux-efi+bounces-2449-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2450-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086139FB5BF
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Dec 2024 21:49:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90449FB5D8
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Dec 2024 21:53:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60AE51882304
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Dec 2024 20:49:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B7807A10E7
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Dec 2024 20:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8421D5ABA;
-	Mon, 23 Dec 2024 20:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF0B1D61A5;
+	Mon, 23 Dec 2024 20:53:00 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1CF183CCA;
-	Mon, 23 Dec 2024 20:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0101AE01E;
+	Mon, 23 Dec 2024 20:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734986939; cv=none; b=FAOtyobZnLjkJl7+Y/gj4kMZ7d0BpLUrw/A6cS5glUWft/V5hvp1YWhoe65n1eT1vs+duhci8WSYOJrMDisWueh9lln6qQpVn4XwC4rmgRyQhsSEtatNPFvD1xp7ZbsfjRTEuhBxgJuXNAL98ZyV6PznxJ+hfngb7+EljwiN1aM=
+	t=1734987180; cv=none; b=L5J18H2qHdkP0W04n/zjahRpWFjtM0YaqIcaGtjCq4SxHKU9IBMZKD66fDgduibXcPz9qEY6R08bUT4Dogt8mLsN5EsyYNU00arbTG/8kqjIzmnAtqXxE2k39I86FDec2YQxiYfuVFz2ZfNn2d6noqV6HPd07V4qMn377tVAORk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734986939; c=relaxed/simple;
-	bh=oRSjJGvVb5IAjOiiFlqdIhrCt8cKW3fQl+pz26q3vTs=;
+	s=arc-20240116; t=1734987180; c=relaxed/simple;
+	bh=rKOBVJ18KO/XxbrIs6wnq7uYvmLiERzT2M7jzyWvEEs=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lO4ebZ2XepBQOE53kUOLDaFylHAl2w4Yjp/hN6pA4F//szpwO68Vyc5jElSNlF/zdF378onB0bPfpOZKEjw66TTtbDj8dun2Vj+smuL/lHDaNxH4v/1pY7L7yDTRJZ1NHAwZjO0+ZFG7uMWAo+ucQ7oXINCbq2nzR+gU9J7td94=
+	 MIME-Version:Content-Type; b=W/G7vkGJfzdeYOK3dfEGpRJjJSbdXfx8tS5ocJpunaDjn5uYiVyiRQgnCDuKJHbEwA/VW5h3BnjrD+oex2MZx4rE8yppAQs7SxViRxfEoEryg9kNCNjtC2RnyObFGGfhvfQVoQ/sZ6h8NhafntrSHxifzOf73sWG7ZfYbDX5kCE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YH94w3CSYz6K5lq;
-	Tue, 24 Dec 2024 04:45:04 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YH99X3N2zz6K5Zf;
+	Tue, 24 Dec 2024 04:49:04 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6C27E140517;
-	Tue, 24 Dec 2024 04:48:55 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 78F9C14039E;
+	Tue, 24 Dec 2024 04:52:55 +0800 (CST)
 Received: from localhost (10.47.75.118) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 23 Dec
- 2024 21:48:53 +0100
-Date: Mon, 23 Dec 2024 20:48:52 +0000
+ 2024 21:52:54 +0100
+Date: Mon, 23 Dec 2024 20:52:52 +0000
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 To: Zijun Hu <zijun_hu@icloud.com>
 CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linus Walleij
@@ -56,14 +56,13 @@ CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linus Walleij
 	<linux-media@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
 	<linux-remoteproc@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
 	<linux-usb@vger.kernel.org>, <linux-serial@vger.kernel.org>,
-	<netdev@vger.kernel.org>, Zijun Hu <quic_zijuhu@quicinc.com>, "Alison
- Schofield" <alison.schofield@intel.com>
-Subject: Re: [PATCH v4 10/11] cxl/pmem: Replace match_nvdimm_bridge() with
- API device_match_type()
-Message-ID: <20241223204852.000021d5@huawei.com>
-In-Reply-To: <20241211-const_dfc_done-v4-10-583cc60329df@quicinc.com>
+	<netdev@vger.kernel.org>, Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: Re: [PATCH v4 11/11] usb: typec: class: Remove both cable_match()
+ and partner_match()
+Message-ID: <20241223205252.00003d6b@huawei.com>
+In-Reply-To: <20241211-const_dfc_done-v4-11-583cc60329df@quicinc.com>
 References: <20241211-const_dfc_done-v4-0-583cc60329df@quicinc.com>
-	<20241211-const_dfc_done-v4-10-583cc60329df@quicinc.com>
+	<20241211-const_dfc_done-v4-11-583cc60329df@quicinc.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -73,64 +72,116 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
  frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, 11 Dec 2024 08:08:12 +0800
+On Wed, 11 Dec 2024 08:08:13 +0800
 Zijun Hu <zijun_hu@icloud.com> wrote:
 
 > From: Zijun Hu <quic_zijuhu@quicinc.com>
 > 
-> Static match_nvdimm_bridge(), as matching function of device_find_child()
-> matches a device with device type @cxl_nvdimm_bridge_type, and its task
-> can be simplified by the recently introduced API device_match_type().
+> cable_match(), as matching function of device_find_child(), matches
+> a device with device type @typec_cable_dev_type, and its task can be
+> simplified by the recently introduced API device_match_type().
 > 
-> Replace match_nvdimm_bridge() usage with device_match_type().
+> partner_match() is similar with cable_match() but with a different
+> device type @typec_partner_dev_type.
 > 
-> Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+> Remove both functions and use the API plus respective device type instead.
+> 
 > Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Looks good, but there is the same trade off here between internal
+detail of type identification and reducing the use of helpers
+where the generic ones are fine.  Here is less obvious even than
+the CXL one as the helper macros do have other uses in these
+files.
 
-I don't see any uses of is_cxl_nvdimm_bridge() other than this one
-Drop that as well?
-
-This one is a bit of a trade off because the way is_cxl_nvdimm_bridge()
-is identified is kind of an internal detail, but it's been true for a long
-time so I'm fine with this change.
+So, it's on for USB folk to decide on and I won't be giving a tag
+as a result.
 
 Jonathan
 
-
 > ---
->  drivers/cxl/core/pmem.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+>  drivers/usb/typec/class.c | 27 ++++++++++++---------------
+>  1 file changed, 12 insertions(+), 15 deletions(-)
 > 
-> diff --git a/drivers/cxl/core/pmem.c b/drivers/cxl/core/pmem.c
-> index a8473de24ebfd92f12f47e0556e28b81a29cff7c..0f8166e793e14fc0b1c04ffda79e756a743d9e6b 100644
-> --- a/drivers/cxl/core/pmem.c
-> +++ b/drivers/cxl/core/pmem.c
-> @@ -57,11 +57,6 @@ bool is_cxl_nvdimm_bridge(struct device *dev)
->  }
->  EXPORT_SYMBOL_NS_GPL(is_cxl_nvdimm_bridge, "CXL");
+> diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+> index 601a81aa1e1024265f2359393dee531a7779c6ea..3a4e0bd0131774afd0d746d2f0a306190219feec 100644
+> --- a/drivers/usb/typec/class.c
+> +++ b/drivers/usb/typec/class.c
+> @@ -1282,11 +1282,6 @@ const struct device_type typec_cable_dev_type = {
+>  	.release = typec_cable_release,
+>  };
 >  
-> -static int match_nvdimm_bridge(struct device *dev, const void *data)
+> -static int cable_match(struct device *dev, const void *data)
 > -{
-> -	return is_cxl_nvdimm_bridge(dev);
+> -	return is_typec_cable(dev);
 > -}
 > -
 >  /**
->   * cxl_find_nvdimm_bridge() - find a bridge device relative to a port
->   * @port: any descendant port of an nvdimm-bridge associated
-> @@ -75,7 +70,9 @@ struct cxl_nvdimm_bridge *cxl_find_nvdimm_bridge(struct cxl_port *port)
->  	if (!cxl_root)
->  		return NULL;
+>   * typec_cable_get - Get a reference to the USB Type-C cable
+>   * @port: The USB Type-C Port the cable is connected to
+> @@ -1298,7 +1293,8 @@ struct typec_cable *typec_cable_get(struct typec_port *port)
+>  {
+>  	struct device *dev;
 >  
-> -	dev = device_find_child(&cxl_root->port.dev, NULL, match_nvdimm_bridge);
-> +	dev = device_find_child(&cxl_root->port.dev,
-> +				&cxl_nvdimm_bridge_type,
+> -	dev = device_find_child(&port->dev, NULL, cable_match);
+> +	dev = device_find_child(&port->dev, &typec_cable_dev_type,
 > +				device_match_type);
->  
 >  	if (!dev)
 >  		return NULL;
+>  
+> @@ -2028,16 +2024,12 @@ const struct device_type typec_port_dev_type = {
+>  /* --------------------------------------- */
+>  /* Driver callbacks to report role updates */
+>  
+> -static int partner_match(struct device *dev, const void *data)
+> -{
+> -	return is_typec_partner(dev);
+> -}
+> -
+>  static struct typec_partner *typec_get_partner(struct typec_port *port)
+>  {
+>  	struct device *dev;
+>  
+> -	dev = device_find_child(&port->dev, NULL, partner_match);
+> +	dev = device_find_child(&port->dev, &typec_partner_dev_type,
+> +				device_match_type);
+>  	if (!dev)
+>  		return NULL;
+>  
+> @@ -2170,7 +2162,9 @@ void typec_set_pwr_opmode(struct typec_port *port,
+>  	sysfs_notify(&port->dev.kobj, NULL, "power_operation_mode");
+>  	kobject_uevent(&port->dev.kobj, KOBJ_CHANGE);
+>  
+> -	partner_dev = device_find_child(&port->dev, NULL, partner_match);
+> +	partner_dev = device_find_child(&port->dev,
+> +					&typec_partner_dev_type,
+> +					device_match_type);
+>  	if (partner_dev) {
+>  		struct typec_partner *partner = to_typec_partner(partner_dev);
+>  
+> @@ -2334,7 +2328,9 @@ int typec_get_negotiated_svdm_version(struct typec_port *port)
+>  	enum usb_pd_svdm_ver svdm_version;
+>  	struct device *partner_dev;
+>  
+> -	partner_dev = device_find_child(&port->dev, NULL, partner_match);
+> +	partner_dev = device_find_child(&port->dev,
+> +					&typec_partner_dev_type,
+> +					device_match_type);
+>  	if (!partner_dev)
+>  		return -ENODEV;
+>  
+> @@ -2361,7 +2357,8 @@ int typec_get_cable_svdm_version(struct typec_port *port)
+>  	enum usb_pd_svdm_ver svdm_version;
+>  	struct device *cable_dev;
+>  
+> -	cable_dev = device_find_child(&port->dev, NULL, cable_match);
+> +	cable_dev = device_find_child(&port->dev, &typec_cable_dev_type,
+> +				      device_match_type);
+>  	if (!cable_dev)
+>  		return -ENODEV;
+>  
 > 
 
 
