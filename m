@@ -1,140 +1,231 @@
-Return-Path: <linux-efi+bounces-2457-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2458-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE0A9FB822
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2024 02:13:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50BE9FB911
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2024 05:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87DBD16465B
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2024 01:13:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 236611884835
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Dec 2024 04:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07348F66;
-	Tue, 24 Dec 2024 01:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAC321348;
+	Tue, 24 Dec 2024 04:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sTvRZ8WV"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="HcwtCYcv";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="HcwtCYcv"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EBF372;
-	Tue, 24 Dec 2024 01:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C558442C;
+	Tue, 24 Dec 2024 04:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735002781; cv=none; b=FZ48E3GMqaUPAwnSNC2svVvOhYwo1cPfInWJ9vWrcjcxroY2enTUW3U3Ss8zT05+HYUiTqKzvG3lWjGFGAUqdNmRSpHL3KGfUfR/l+zGRc3eOxm/MAmQvM39rIcYszxU/OitcWhenK0x3X3SvWBJ8zbcrwFE9Z261nubsIs+c3U=
+	t=1735013104; cv=none; b=mXY6xtH2cv0n2KGDF3XcZoJvmbAkKhfTt/+yJ1CkWdUH9Q7U1VTJzcMzn3t0UoJk6NDau+F4YX5/z2PUWGOsnNvvBsfsTIPBdBImPTMDj5IVCnfC4R5UOgNdirYlFnsbVT4A7APurv+70PvAL7UXc3GXMDPdlGhXyzgRFtJKGlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735002781; c=relaxed/simple;
-	bh=gBzo0TsTHVq5EE7cP3zJjMmpv03XvuAwlF+cgKEGl4g=;
+	s=arc-20240116; t=1735013104; c=relaxed/simple;
+	bh=MfOLkJPwCOs2uTuF4yOW27AD93N3RLE2TLRIsHp4KOc=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HXK/4F/8RrfWSQ3JBXwm0qapiWirpdE7e+SiirnGXQOqBqBV9xXh1x5fHju3PhKKuJ/EgV91aG3P33Ed9lFLEEIh4lngw3YdMKyzHF6YyVtMVAdA4efYXf0Y5whp0cJ+WQnOSKxBcw0qUFvgJo528Kq/ok/mcf5SbnFbIXsK9iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sTvRZ8WV; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BNEdUPK020183;
-	Tue, 24 Dec 2024 01:11:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=7LTy3+
-	qcIMcjFutY9FBmUWQ9rexhOuVgFr1GEJJnLEI=; b=sTvRZ8WVh6k6YhRihVlIeF
-	NdfcuScfbirQSCTU6YSL68AQ8cksJ7URyflvs8h2GUCXVbqA1N3Ws5da1xPchXlq
-	ObatPmjOkCLsXNHpXFxYZvtSaDsSWWt+DEGWUGwPGF6zWD0y3buhJQOVCRs017qu
-	rk/oBEqVo0IRcnGNh1C0yFBOOe+mILExvUCkapCy38lZc3G5iePdxGrrp81Emois
-	uN8LkhOQ/Gwh3UFig5fU2BCYRK4PAKiMpQEXNKqCNazCjjvGs/iK1Wev/q1Wa3Po
-	ZcNoWK7nXzn48fSrG0cOO0h7kIAJ5LpJFNe/GEmnjdIqKyuZhErjCh6bCzMvAo8Q
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43q0bh4x77-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Dec 2024 01:11:39 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BO1AuLp021037;
-	Tue, 24 Dec 2024 01:11:38 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43q0bh4x73-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Dec 2024 01:11:38 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BNNfTiX020197;
-	Tue, 24 Dec 2024 01:11:37 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43p8cy84nc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Dec 2024 01:11:37 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BO1BaCR9765402
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Dec 2024 01:11:36 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5DD158043;
-	Tue, 24 Dec 2024 01:11:36 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 75A4558059;
-	Tue, 24 Dec 2024 01:11:34 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.60.117])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Dec 2024 01:11:34 +0000 (GMT)
-Message-ID: <110996a70889fcd9f8452b7bb993732b716c919a.camel@linux.ibm.com>
-Subject: Re: [RFC PATCH v3 13/13] clavis: Kunit support
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Eric Snowberg <eric.snowberg@oracle.com>,
-        linux-security-module@vger.kernel.org
-Cc: dhowells@redhat.com, dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, ardb@kernel.org, jarkko@kernel.org,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        roberto.sassu@huawei.com, dmitry.kasatkin@gmail.com, mic@digikod.net,
-        casey@schaufler-ca.com, stefanb@linux.ibm.com, ebiggers@kernel.org,
-        rdunlap@infradead.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-Date: Mon, 23 Dec 2024 20:11:33 -0500
-In-Reply-To: <20241017155516.2582369-14-eric.snowberg@oracle.com>
-References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
-	 <20241017155516.2582369-14-eric.snowberg@oracle.com>
+	 Content-Type:MIME-Version; b=SIuVYHeUnBK/xQYzYiozhaAlI6PQ9/f3siUt1n+1TPrhgPxVqBMhDxuECNpJjoQuVHh60+1olVCjPstdzwfnTo93NhVlq9C9n9JzEKByDTvdBddGw+ekuw/NZKckjGWkXBWf4GRrVyL3BiJ7RM7gLjp8HLt6Yu/EDY20x9u8iyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=HcwtCYcv; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=HcwtCYcv; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1735013101;
+	bh=MfOLkJPwCOs2uTuF4yOW27AD93N3RLE2TLRIsHp4KOc=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=HcwtCYcvV8fBrRimEi5aiyszOxLCwN+bsgSuqPSDFVF+t9yYVIREebrYU0MocCCcY
+	 8f/ns4LOv87BAygK5tv7OTPcOJAS3q3UQ4rMVFkaoIpyrKLxdXRZXFFGcPesGy7fo/
+	 ME06NNpCXBAVRqUyVQnAHfWUiCMDlZedNoDzKRXk=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id C766C1286465;
+	Mon, 23 Dec 2024 23:05:01 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id dIQZlNWgqb6p; Mon, 23 Dec 2024 23:05:01 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1735013101;
+	bh=MfOLkJPwCOs2uTuF4yOW27AD93N3RLE2TLRIsHp4KOc=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=HcwtCYcvV8fBrRimEi5aiyszOxLCwN+bsgSuqPSDFVF+t9yYVIREebrYU0MocCCcY
+	 8f/ns4LOv87BAygK5tv7OTPcOJAS3q3UQ4rMVFkaoIpyrKLxdXRZXFFGcPesGy7fo/
+	 ME06NNpCXBAVRqUyVQnAHfWUiCMDlZedNoDzKRXk=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id EE658128645C;
+	Mon, 23 Dec 2024 23:05:00 -0500 (EST)
+Message-ID: <41df6ecc304101b688f4b23040859d6b21ed15d8.camel@HansenPartnership.com>
+Subject: Re: [PATCH 6/6] efivarfs: fix error on write to new variable
+ leaving remnants
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr
+	 <jk@ozlabs.org>
+Date: Mon, 23 Dec 2024 23:04:58 -0500
+In-Reply-To: <20241223231218.GQ1977892@ZenIV>
+References: <20241210170224.19159-1-James.Bottomley@HansenPartnership.com>
+	 <20241210170224.19159-7-James.Bottomley@HansenPartnership.com>
+	 <20241211-krabben-tresor-9f9c504e5bd7@brauner>
+	 <049209daadc928ecbf3bdb17d80634fa55842263.camel@HansenPartnership.com>
+	 <f9690563fe9d7ae4db31dd37650777e02580b332.camel@HansenPartnership.com>
+	 <20241223200513.GO1977892@ZenIV>
+	 <72a3f304b895084a1da0a8a326690a57fce541b7.camel@HansenPartnership.com>
+	 <20241223231218.GQ1977892@ZenIV>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: OUgtaAXRwi0YGR_kRmEbEBgacM-JjVxY
-X-Proofpoint-GUID: PsIxg0Y5V-rtSmUTSczEGELShNeEb-vw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 spamscore=0
- impostorscore=0 malwarescore=0 adultscore=0 mlxscore=0 clxscore=1015
- mlxlogscore=999 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2412240005
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-10-17 at 09:55 -0600, Eric Snowberg wrote:
-> +config SECURITY_CLAVIS_KUNIT_TEST
-> +	bool "KUnit tests for Clavis" if !KUNIT_ALL_TESTS
-> +	depends on SECURITY_CLAVIS && KUNIT
+On Mon, 2024-12-23 at 23:12 +0000, Al Viro wrote:
+> On Mon, Dec 23, 2024 at 05:56:04PM -0500, James Bottomley wrote:
+> > > Let me look into that area...
+> > 
+> > I thought about this some more.  I could see a twisted container
+> > use case where something like this might happen (expose some but
+> > not all efi variables to the container).
+> > 
+> > So, help me understand the subtleties here.  If it's the target of
+> > a bind mount, that's all OK, because you are allowed to delete the
+> > target.  If something is bind mounted on to an efivarfs object, the
+> > is_local_mountpoint() check in vfs_unlink would usually trip and
+> > prevent deletion (so the subtree doesn't become unreachable).  If I
+> > were to duplicate that, I think the best way would be simply to do
+> > a d_put() in the file->release function and implement drop_nlink()
+> > in d_prune (since last put will always call __dentry_kill)?
+> 
+> Refcounting is not an issue.  At all.
+> 
+> Inability to find and evict the mount, OTOH, very much is.  And after
+> your blind d_delete() that's precisely what will happen.
+> 
+> You are steadily moving towards more and more convoluted crap, in
+> places where it really does not belong.
+> 
+> If anything, simple_recursive_removal() should be used for that,
+> instead of trying to open-code bizarre subsets of its
+> functionality...
 
-Change KUNIT -> KUNIT=3Dy
+OK, so like the below?
 
-> +	default KUNIT_ALL_TESTS
-> +	select SYSTEM_BLACKLIST_KEYRING
-> +	select SYSTEM_REVOCATION_LIST
-> +	help
-> +	=C2=A0 Build KUnit tests for Clavis.
-> +
-> +	=C2=A0 See the KUnit documentation in Documentation/dev-tools/kunit
-> +
-> +	=C2=A0 Run all KUnit tests for Clavis with:
-> +	=C2=A0 ./tools/testing/kunit/kunit.py run --kunitconfig security/clavis
-> +
-> +	=C2=A0 If you are unsure how to answer this question, answer N.
+In my defence, simple_recursive_removal() isn't mentioned in
+Documentation/filesystems and the function itself also has no
+documentation, so even if I had stumbled across it in libfs.c the
+recursive in the name would have lead me to believe it wasn't for
+single dentry removal.
 
-thanks,
+Regards,
 
-Mimi
+James
+
+---8>8>8><8<8<8---
+
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+Subject: [PATCH] efivarfs: fix error on write to new variable leaving remnants
+
+Make variable cleanup go through the fops release mechanism and use
+zero inode size as the indicator to delete the file.  Since all EFI
+variables must have an initial u32 attribute, zero size occurs either
+because the update deleted the variable or because an unsuccessful
+write after create caused the size never to be set in the first place.
+
+Even though this fixes the bug that a create either not followed by a
+write or followed by a write that errored would leave a remnant file
+for the variable, the file will appear momentarily globally visible
+until the close of the fd deletes it.  This is safe because the normal
+filesystem operations will mediate any races; however, it is still
+possible for a directory listing at that instant between create and
+close contain a variable that doesn't exist in the EFI table.
+
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+---
+ fs/efivarfs/file.c | 40 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
+
+diff --git a/fs/efivarfs/file.c b/fs/efivarfs/file.c
+index 23c51d62f902..0e545c8be173 100644
+--- a/fs/efivarfs/file.c
++++ b/fs/efivarfs/file.c
+@@ -36,28 +36,41 @@ static ssize_t efivarfs_file_write(struct file *file,
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
+ 
++	inode_lock(inode);
++	if (d_unhashed(file->f_path.dentry)) {
++		/*
++		 * file got removed; don't allow a set.  Caused by an
++		 * unsuccessful create or successful delete write
++		 * racing with us.
++		 */
++		bytes = -EIO;
++		goto out;
++	}
++
+ 	bytes = efivar_entry_set_get_size(var, attributes, &datasize,
+ 					  data, &set);
+-	if (!set && bytes) {
++	if (!set) {
+ 		if (bytes == -ENOENT)
+ 			bytes = -EIO;
+ 		goto out;
+ 	}
+ 
+ 	if (bytes == -ENOENT) {
+-		drop_nlink(inode);
+-		d_delete(file->f_path.dentry);
+-		dput(file->f_path.dentry);
++		/*
++		 * zero size signals to release that the write deleted
++		 * the variable
++		 */
++		i_size_write(inode, 0);
+ 	} else {
+-		inode_lock(inode);
+ 		i_size_write(inode, datasize + sizeof(attributes));
+ 		inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+-		inode_unlock(inode);
+ 	}
+ 
+ 	bytes = count;
+ 
+ out:
++	inode_unlock(inode);
++
+ 	kfree(data);
+ 
+ 	return bytes;
+@@ -106,8 +119,17 @@ static ssize_t efivarfs_file_read(struct file *file, char __user *userbuf,
+ 	return size;
+ }
+ 
++static int efivarfs_file_release(struct inode *inode, struct file *file)
++{
++	if (i_size_read(inode) == 0)
++		simple_recursive_removal(file->f_path.dentry, NULL);
++
++	return 0;
++}
++
+ const struct file_operations efivarfs_file_operations = {
+-	.open	= simple_open,
+-	.read	= efivarfs_file_read,
+-	.write	= efivarfs_file_write,
++	.open		= simple_open,
++	.read		= efivarfs_file_read,
++	.write		= efivarfs_file_write,
++	.release	= efivarfs_file_release,
+ };
+-- 
+2.35.3
+
 
 
