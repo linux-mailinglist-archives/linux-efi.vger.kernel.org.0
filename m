@@ -1,168 +1,84 @@
-Return-Path: <linux-efi+bounces-2486-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2487-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988249FDC3B
-	for <lists+linux-efi@lfdr.de>; Sat, 28 Dec 2024 21:36:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8A69FDE5E
+	for <lists+linux-efi@lfdr.de>; Sun, 29 Dec 2024 11:00:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 382A4161541
-	for <lists+linux-efi@lfdr.de>; Sat, 28 Dec 2024 20:36:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 048DC1882648
+	for <lists+linux-efi@lfdr.de>; Sun, 29 Dec 2024 10:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D1C16C69F;
-	Sat, 28 Dec 2024 20:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fyralabs.com header.i=@fyralabs.com header.b="eUo8spD5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4541D6F073;
+	Sun, 29 Dec 2024 10:00:00 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from hosted.mailcow.de (hosted.mailcow.de [5.1.76.202])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6191E515;
-	Sat, 28 Dec 2024 20:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.1.76.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83786C148;
+	Sun, 29 Dec 2024 09:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735418168; cv=none; b=B0nmaAnPyaIrjk0gD/gaJLpZXl8p0LuS9gnGyQ+Pss6FXzNpQA6AuNqBbNLZLLvOBfdwmc99KOEa+6zXZ3D0aRQ3GB/gI4B+5yLfvghuDT92P1y4lNOpue3I7TX16pjaXfGiwiC3EhcwPRJBzltV0XELDtuRJrZ90YgzvFNTvQ0=
+	t=1735466400; cv=none; b=ejbj9lMsAUAAKLXWVj2ji9MUGuj15BV8HMp0GBNGoo4rJScBbjZg8TZ7NlcEU9EZq6rcSDpipe6c9FtQiNAfeTSdWJ7JJNAJpMedOZK9BwIEqJ7DtbBfPHx+FbpEwJFeOQI5HEo1GCJ6kxqfVoiW7wyXqgos6tvnpSg8DSdqqsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735418168; c=relaxed/simple;
-	bh=KffvmpUB2jEZ5UfemKmUbVgUyON5bdLnmSoj7ZfH3Jg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gz+ZW8c7IfIKYyJDDSSSXyyGkDsG1xo5fTN4GYF4Ee2rL+liLZ5qliNqiWw29nmXE1GHNV+NrVUcf/XMWOmcOomhyijg37YBcuJm3Vp61y9Dgs58AgwgWZAn7Y6ae9KfNB8r3GNQFGb2J0d/GOPCDjY1EYI2NNsL0KRzSng0FVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fyralabs.com; spf=fail smtp.mailfrom=fyralabs.com; dkim=pass (2048-bit key) header.d=fyralabs.com header.i=@fyralabs.com header.b=eUo8spD5; arc=none smtp.client-ip=5.1.76.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fyralabs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fyralabs.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fyralabs.com;
-	s=default; t=1735417557; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=q8njUUoU33aoapvcUM1e8V9ZxhyGAziGiKStM32tCYQ=;
-	b=eUo8spD5tvv+zQacezG5lgde4smzegb0Cm7VoajMY9Wcv52cRo+cUBGiwepiQJqKy7JnCU
-	8Hw4KdgMyx1WlniIhVoi0sAVFd3eDjYZ1FWUjPH7ML+Qf6cEOj2ruhMiPZypxpnI9lh54E
-	gvvwiKrsAUuK2NqXbzcKstomzPSQgfgM1hqXN/gHU9TCvrR9mBxx/2z+nWHG0GDEesMZXE
-	DVDn3cAg6gfxk6X/X77u9Uzp1GsWtJ0BIDaIQKkVOGeNZJxrey3nGKb0XaRHzodY4O0BAl
-	1ylUWrEofu2maN0pYTaXtuxDBa7cF+OMyxLWpAX16qIk/lUcGtzJwv88N14REg==
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5E69B5C0175;
-	Sat, 28 Dec 2024 21:25:53 +0100 (CET)
-From: Lleyton Gray <lleyton@fyralabs.com>
-To: 
-Cc: gargaditya08@live.com,
-	Lleyton Gray <lleyton@fyralabs.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Huth <thuth@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Xiongwei Song <xiongwei.song@windriver.com>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Jonathan Marek <jonathan@marek.ca>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Kees Cook <kees@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: [PATCH] x86/efistub: Add options for forcing Apple set_os protocol
-Date: Sat, 28 Dec 2024 12:21:58 -0800
-Message-ID: <20241228202212.89069-1-lleyton@fyralabs.com>
+	s=arc-20240116; t=1735466400; c=relaxed/simple;
+	bh=iaeXZKZr5l62L7O1oC1TbZtZRowcJiaBdtqSOqyr4go=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gZgmao3aFjVTaBf6EQ2Z63X9SbCQU07BvJ7OxDFjucAR3bjQ0qso8UWT5J2qB47AkTtZEQJUKcGSsU96YvlQ/Ah+ZQmWgD/PwEC0wub2yK8/EdJWGzvFt/G/GHHk6d/lIMoQi/DNjpnsYDLnTLam8JFolGWPY5LxcXr8/QkB/MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 9CB68100D9414;
+	Sun, 29 Dec 2024 10:59:46 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 5D74630F866; Sun, 29 Dec 2024 10:59:46 +0100 (CET)
+Date: Sun, 29 Dec 2024 10:59:46 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Lleyton Gray <lleyton@fyralabs.com>
+Cc: gargaditya08@live.com, Ard Biesheuvel <ardb@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: Re: [PATCH] x86/efistub: Add options for forcing Apple set_os
+ protocol
+Message-ID: <Z3EdkuCBzTGzTHK3@wunner.de>
+References: <20241228202212.89069-1-lleyton@fyralabs.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241228202212.89069-1-lleyton@fyralabs.com>
 
-commit 71e49eccdca6 ("x86/efistub: Call Apple set_os protocol on dual GPU
-Intel Macs") calls the Apple set_os protocol, but only on T2 Macbook Pro
-models. This causes issues on other T2 models when an egpu is used.
-Add two options which allow force enabling or disabling usage of the
-protocol to fix.
+On Sat, Dec 28, 2024 at 12:21:58PM -0800, Lleyton Gray wrote:
+> commit 71e49eccdca6 ("x86/efistub: Call Apple set_os protocol on dual GPU
+> Intel Macs") calls the Apple set_os protocol, but only on T2 Macbook Pro
+> models. This causes issues on other T2 models when an egpu is used.
 
-Signed-off-by: Lleyton Gray <lleyton@fyralabs.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 7 ++++++-
- drivers/firmware/efi/libstub/efi-stub-helper.c  | 6 ++++++
- drivers/firmware/efi/libstub/efistub.h          | 2 ++
- drivers/firmware/efi/libstub/x86-stub.c         | 3 ++-
- 4 files changed, 16 insertions(+), 2 deletions(-)
+How so?  The commit specifically constrains the quirk only to
+affected dual GPU MacBook Pros.  So I don't quite see how this
+would affect other T2 models?
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 1518343bbe22..1d1b88c57c44 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1447,7 +1447,8 @@
- 	efi=		[EFI,EARLY]
- 			Format: { "debug", "disable_early_pci_dma",
- 				  "nochunk", "noruntime", "nosoftreserve",
--				  "novamap", "no_disable_early_pci_dma" }
-+				  "novamap", "no_disable_early_pci_dma",
-+				  "enable_apple_set_os", "disable_apple_set_os" }
- 			debug: enable misc debug output.
- 			disable_early_pci_dma: disable the busmaster bit on all
- 			PCI bridges while in the EFI boot stub.
-@@ -1464,6 +1465,10 @@
- 			novamap: do not call SetVirtualAddressMap().
- 			no_disable_early_pci_dma: Leave the busmaster bit set
- 			on all PCI bridges while in the EFI boot stub
-+			enable_apple_set_os: Report that macOS is being booted
-+			to the firmware, even if the device is not a dual GPU Mac.
-+			disable_apple_set_os: Disable reporting that macOS is being booted
-+			to the firmware, even if the device is a dual GPU Mac.
- 
- 	efi_no_storage_paranoia [EFI,X86,EARLY]
- 			Using this parameter you can use more than 50% of
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index de659f6a815f..c33bb98bf79d 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -20,6 +20,8 @@
- bool efi_nochunk;
- bool efi_nokaslr = !IS_ENABLED(CONFIG_RANDOMIZE_BASE);
- bool efi_novamap;
-+bool efi_enable_apple_set_os;
-+bool efi_disable_apple_set_os;
- 
- static bool efi_noinitrd;
- static bool efi_nosoftreserve;
-@@ -95,6 +97,10 @@ efi_status_t efi_parse_options(char const *cmdline)
- 				efi_disable_pci_dma = true;
- 			if (parse_option_str(val, "no_disable_early_pci_dma"))
- 				efi_disable_pci_dma = false;
-+			if (parse_option_str(val, "enable_apple_set_os"))
-+				efi_enable_apple_set_os = true;
-+			if (parse_option_str(val, "disable_apple_set_os"))
-+				efi_disable_apple_set_os = true;
- 			if (parse_option_str(val, "debug"))
- 				efi_loglevel = CONSOLE_LOGLEVEL_DEBUG;
- 		} else if (!strcmp(param, "video") &&
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 685098f9626f..3be4b5393812 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -39,6 +39,8 @@ extern bool efi_nokaslr;
- extern int efi_loglevel;
- extern int efi_mem_encrypt;
- extern bool efi_novamap;
-+extern bool efi_enable_apple_set_os;
-+extern bool efi_disable_apple_set_os;
- extern const efi_system_table_t *efi_system_table;
- 
- typedef union efi_dxe_services_table efi_dxe_services_table_t;
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index f8e465da344d..566118195f92 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -265,7 +265,8 @@ static void apple_set_os(void)
- 	} *set_os;
- 	efi_status_t status;
- 
--	if (!efi_is_64bit() || !apple_match_product_name())
-+	if (efi_disable_apple_set_os || !efi_is_64bit() ||
-+		!efi_enable_apple_set_os && !apple_match_product_name())
- 		return;
- 
- 	status = efi_bs_call(locate_protocol, &APPLE_SET_OS_PROTOCOL_GUID, NULL,
--- 
-2.47.0
+And what kind of issues are you seeing?  Could you provide
+specifics please?
 
+> Add two options which allow force enabling or disabling usage of the
+> protocol to fix.
+
+We generally try to avoid command line options.  The kernel
+should automatically determine whether to apply the quirk
+or not.  So I think the proper solution is to amend the
+quirk such that it's applied to additional models or not
+applied under certain circumstances.
+
+Thanks,
+
+Lukas
 
