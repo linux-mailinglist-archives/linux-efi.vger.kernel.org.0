@@ -1,65 +1,66 @@
-Return-Path: <linux-efi+bounces-2508-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2509-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D345CA0301C
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2025 20:03:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE3E2A0301E
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2025 20:03:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8643A2619
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2025 19:03:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1419163840
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Jan 2025 19:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102EAAD24;
-	Mon,  6 Jan 2025 19:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C701DF745;
+	Mon,  6 Jan 2025 19:03:06 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C99FBF6;
-	Mon,  6 Jan 2025 19:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA2813775E;
+	Mon,  6 Jan 2025 19:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736190184; cv=none; b=r39gqLiK7vIi41DVbKEcsROPJsucQAtHx2F6K2wkuDR1/r4z9zqvVvdrQ+E1IuTJm0Aw7GOzW5YruexaVtLZmoLi87zTM7R/AwC5WePkcpX53s0+m5DNDHfpGXVFJ0SLRKjNVuWNlN2Bbqg4+98UiYiY4KLsNIFnDzPEOsw/7HE=
+	t=1736190186; cv=none; b=YamvmA5lnYBU2bFo5nswVIP0TwZzkTCcsaS1P2KuIE8EN8nEbd/SqhIShB7aOs0a7PQqUQftPF6/SpT9TchlqBHVrLKcwM94ouDbPx8NG2wn0t+NkVGRri/xnbjLMR9xE4piHXvt587dCftqLbpP3TA79eYFMDLNKw1FgfwdC0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736190184; c=relaxed/simple;
-	bh=Kaun2XjQcGqhzdwfUnkMMyGC1AiD2sat5V8rYb8U8cw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QofExGHVqHYnbJs6+pTWQxtuSi2b9k6JTbd5boH2di19GhNQzecXiBtYHUti40kjn4p1aFF/Od//PIThcO4tiscIO/21AxEXvJlolEEC+MIn7LTBgP/RzrfEow8HClivEqnzFVGoMKISGvThOvfwO1TEgVknRf+KRMmcomSJwuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.43
+	s=arc-20240116; t=1736190186; c=relaxed/simple;
+	bh=1hFbOdAyQ1Rf/EUjbs+J0s/+S7tHE+WNNrA0yz7O9Yw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QI//glxFPsHNbmGM/4Z1WI7yuX6HF5U/SBHXAh/Rr1CACOB6WJQaaGXFE3j7TOtibXv5kXiV/cv5H9Zd/h0SSxOtbVMgSKFOvaUwtdcrf8Nl+lCON4yt1seV6K8CsA+CQe+zez/yxEvOo5YvfQyErv2GEqAZzTabhhLxOLAMcOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5d3f28a4fccso23396525a12.2;
-        Mon, 06 Jan 2025 11:03:01 -0800 (PST)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5d8c1950da7so14080321a12.3;
+        Mon, 06 Jan 2025 11:03:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736190180; x=1736794980;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6qNhJ1zft8sno13WbTWkqhMT68/uGe7LglCUiwLVtfU=;
-        b=aS+eVSXwKUavZLMs4Y+zGA2kyX0WrqqIQPVhmdVGeroNOdN0QRkB65IW8stux6qzFq
-         DmMHjedtSoMmaqiXtOHEhV5LjH1Nhg9lpAIV4kK9OS5VXFop99Qh7ola+u2DJ1JrCDEo
-         zUHLd9A5a3ft1/DDM+MRztQZtpSpEqu7/mzt5+y3sJdoqvAuFjv2B7CU7rFub9ssdeP+
-         dYcOW/chOLIa9Npk+s8+c1rpNvoEos6ZK11t+r0zNMYDAu3/NU0B1JuqGqoa5E5QMEDV
-         7+Xe2UuGEgublLX7t2JArQ/GYkGN5rKLO5EfrmgRzwSOnoof5NAULX8prah5/xI79B4B
-         2DQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlEYEDmS+Vhh/DlTI3YRpqzObMs/dw43ggTFwAGrPN0HGsgukzkj2jezAc/RxQhHdMZkEJp+HDhaY=@vger.kernel.org, AJvYcCWGcVxE0ubBB9Jq5CNg7R3PuzBP83kcu+3AvVLSVPguD3Qai0yxKsqnh3TQFiKRolyNAL4lcMWWsud9VwEn@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVcPmKtdnfwzDJWWmTZFOSwqcKcYM4GTlE8Lj6luurKlA1CRdR
-	/pAFgzMxgyLUkDEMu1QRXEZ3unNubRHsBtAK2JLS7Sd27D8ZWArF/jBGzQ==
-X-Gm-Gg: ASbGncv7BSmmy8gxsSFkFYde1gVdehz90dzUHuFoX//0GZz/ZPPN3z9yIzvmpY1Gb02
-	MLrKR0QYpJixG7AQKWDziYuR+M9p8N1fP4YccYRfwhuSVwHJwZUMfF0Wk27z6YrKFRkXuXdCBM8
-	GYygZ3F3MZEG0SqxWtRWDYUD3TcvJu03ZO+5u+h8ihpRC8g0rD5ZHzqS6xH27H0+WJheBsU2d6S
-	ppL0P0U4RA24on6gxDHbSVmOKr77MCq15QO48184GlT342g
-X-Google-Smtp-Source: AGHT+IER5syycIY1WmwuwZdCNh9Tv3i8fC81I/fw3iG07o6dSFSwA+8PUpTxZQ06nMLcjHgDDIFMqg==
-X-Received: by 2002:a17:906:6a1c:b0:aa6:88ae:22a with SMTP id a640c23a62f3a-aac34650b1amr4790270866b.37.1736190179994;
-        Mon, 06 Jan 2025 11:02:59 -0800 (PST)
-Received: from localhost ([2a03:2880:30ff:74::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0eae74e4sm2274599666b.91.2025.01.06.11.02.59
+        d=1e100.net; s=20230601; t=1736190182; x=1736794982;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lFUta7O3eGoSELPg3GbEEtx457MSNjK6QkV3l6hmYuo=;
+        b=h1l9aAib46L5SXIXHQ9w+ZnFFByrXUgm3AJzHxrQPCH6Po6u0IywUz9UCMj939P+Ao
+         D/rRTpEswNmj7wW3Zmpl9AGqbrVOc+XMuFVpJPCTuWtvoKqRW2M+e9A6ZbqdVKCkYnw5
+         R/EjHvz8swLm3t0kuI3M4qffKMRtrd2AXslwo3TtvC2U1GB3ARv25hgfhFUWkJzHArMf
+         6Fmar5HXTZH/4TRfAVlY7uZayhIemdv/W1cH74PLuc7Hhu4F+xwli1QDMVPidSHXg4qN
+         0xhj7BPkwZ5l94PxyiSxkgf9MHIOlIXRDWEGaC10R52wSLjm3CYriFO3BN1TTfNzqXBF
+         D2hA==
+X-Forwarded-Encrypted: i=1; AJvYcCVfo0qHQ89oK/2ms0RR/2AnkfPo+1RMhEwU0UMpHjSA5T2HIuCydI8VL1WVAGk+se+MtuVYrKCSBYQ=@vger.kernel.org, AJvYcCXmiCElRir/6u8i7CVzFTmX8wZDq5Pq/InPN6GrvECOdeQVRJH9fFJyizTDS/RxmBs9aYNY0LoxGN42BVSk@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOlDcp3/QcwWGtwKYpz00aJBhhGTMuiKGio+k2GClUio5kL751
+	YxhKroUIb2vvVafY02+Rxmq1rt3gKlciEQD/FSqzmYjfqz9SWWc6
+X-Gm-Gg: ASbGncvQq0eae7CeS8h2PvjZSZ31mNnrQPnq1z9fcy+K/e68TkGufQG0uvdPCOeAD1D
+	8mGHvjFLt0UNUCcvO/KzaacwSlr/ZHvRn44zuQ45YeRUQN9/stOCR6rz/2oaWxGMRa9KCWW5WCR
+	CBuEyVsT6d5DoOOCL02n+jv45R9wWEVkR/eJPT3vptD63j7VCQeYgqaJQbwgHgyq/aZeRQu9+Pv
+	atMCNv7yncAc1U9W07zoJ93yeY1AgcqoxOu2R49I9w1aWg=
+X-Google-Smtp-Source: AGHT+IE+XIbJ69aMgudvHSBCpUZQ4L1FmQMMDEoQc0G7bmFIAbk+dw2hprAQKQU+eN+6hfKB3OdcjQ==
+X-Received: by 2002:a05:6402:430c:b0:5d2:fa65:c5e2 with SMTP id 4fb4d7f45d1cf-5d81de1fd2amr56989550a12.22.1736190182391;
+        Mon, 06 Jan 2025 11:03:02 -0800 (PST)
+Received: from localhost ([2a03:2880:30ff:9::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d80701abd1sm23290505a12.76.2025.01.06.11.03.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 11:02:59 -0800 (PST)
+        Mon, 06 Jan 2025 11:03:01 -0800 (PST)
 From: Breno Leitao <leitao@debian.org>
-Subject: [PATCH 0/3] efi/memattr: Improve the efi_memattr_init function.
-Date: Mon, 06 Jan 2025 11:02:49 -0800
-Message-Id: <20250106-efi_fw_bug-v1-0-01a8eb40bfeb@debian.org>
+Date: Mon, 06 Jan 2025 11:02:50 -0800
+Subject: [PATCH 1/3] efi/memattr: Convert efi_memattr_init() return type to
+ void
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -68,60 +69,91 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANoofGcC/x3MWwqAIBAF0K0M9ztBpSLdSoT0GGt+KpQeEO096
- CzgPMichDM8PUh8SpZthSdTEMalX2dWMsETrLaVNrpWHCXEKwzHrOxQW3Z9aRrnUBD2xFHuP2u
- 79/0AATn8F1wAAAA=
-X-Change-ID: 20250106-efi_fw_bug-2b62e9a41899
+Message-Id: <20250106-efi_fw_bug-v1-1-01a8eb40bfeb@debian.org>
+References: <20250106-efi_fw_bug-v1-0-01a8eb40bfeb@debian.org>
+In-Reply-To: <20250106-efi_fw_bug-v1-0-01a8eb40bfeb@debian.org>
 To: Ard Biesheuvel <ardb@kernel.org>
 Cc: Gregory Price <gourry@gourry.net>, Usama Arif <usamaarif642@gmail.com>, 
  linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Breno Leitao <leitao@debian.org>, kernel-team@meta.com
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1081; i=leitao@debian.org;
- h=from:subject:message-id; bh=Kaun2XjQcGqhzdwfUnkMMyGC1AiD2sat5V8rYb8U8cw=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBnfCjim1m5pcj7w4GkathuoF6RCtdQlN+zf7OmA
- NuSj+Z4MeaJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ3wo4gAKCRA1o5Of/Hh3
- bfn6EACd4dP275uMaURYkHOlSxvQTzceTqMNPNNljOKcNPQ1sXCiaFbs71+0yKh75L4CiLazGqt
- SWBHKAF+Piwdnf7R3VJiEfqOCW3znhn0wI/ZnHqMDOWu636uaiLhK9h7SXEVNGaBf76RBt72lZX
- jo8WxlLPwGM/eTanguXTJ2GEWMnLXGkCiQE2M4CoYm4r1BE61BukSG9IoPlp55u73ddNdT5Oq+R
- WBWlG4SLNTq3iuPZ4UWvrqr+thuMpW97hqxtt0lDloRPCjjZSQNlSsjCfocGOJDruhm4sxiGWKu
- GCiQ26UO5sdSbnNmln4zzGXABVPHGdyyDcZMYyvKhRRo6Ltzos1mQKxFZSW6vwlJCbV7ow2/6NI
- ikLbfFODeACpgpdy7+86aOd9t6qgxWxMI9xpHD77e++okYqf7SHNFVbLPIGQAnUD2EVITjxyioo
- 5XI1XFSWjlVKBBvYxOG3wI6OmUd+EXCyMgZFQEvNI8zyfFiQmf0i4DSHXFfR/RSrA8a7xfqOr+K
- BvtljHx2rhVw+EC0ivXGNn4aosNJuTVx03/07HN49Vp60kA+oYHh2siXTb5Tb/uqvNl30Vf1+kG
- MikJn3LjsstaxkWjQOe5ZLxboSSYmiJftt8j6f32gt/yk3on3evB1g0vLQ7Ud5+kCkMIZ2/GmvO
- VabuYUoi0GMql5g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1970; i=leitao@debian.org;
+ h=from:subject:message-id; bh=1hFbOdAyQ1Rf/EUjbs+J0s/+S7tHE+WNNrA0yz7O9Yw=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBnfCjiY8XLy7iF+bqCOSZPKiTSz6qUyBBUuXVdV
+ f3aAi7QwuSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ3wo4gAKCRA1o5Of/Hh3
+ bbLsD/wJT5/SAuVqCFsYBTW5no/3EC6EdYKEtOyRooM4UaiuMjx0G0tRFHlX0k2u3zIZl4lM71z
+ 4VrfrfOCb74KTFveNv8do6AmkIkopjMTYXf7bAYc+O1PjxEVzzgM+WUETtCI1M2Z1sYY2QzVnlR
+ bayJvzoX8w1LDxaXqjk3lJMxQnxDgeemPtMewCsDy90jGPQB9OqJhHiekrOAw9x2nLlsRXbcWIv
+ MZo1SssKaVj6SIVEHWzKIi4n/xUuOsxI+w7uZy4eN75p3PvxUhjRcYtX0UKVrzCCRaQyGQkL4yU
+ VHd3ApAC/PDLwnip3qjwo01laRUoRqBFxjOxlCW0S8iHss33mJGFMOvZIFEmSdwi8h9fSzhiH/4
+ LAs4bGwPUBBlu4oc4DixPeP1GCbOjs9bhnDGAEIli3pdHzbKuw0DMecD5WEIEdOTURIqw1nSoHs
+ fxcIpouiJfG8XgaSfofhZ4lyXseyfkx9MSnoPxMvw5KmKzBZqUAeMTJ44a3IqfXlRXtKK0S9jmr
+ Bel0L8hUN00Df6usisKmZmburA6mFCOYwoyc442r7TFZIdAC+gnCOqCa/4a0Bks3noUNM8H4Sx4
+ 7AqYYf9Rkc/IpmG4xRN04bLwMyNxUTV4vmALWlS6TRmwKez96j+AkL9ovFfaaoSX0jKvG/YGjqr
+ AaPD/Fpe69rg6gg==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-After 8fbe4c49c0ccac ("efi/memattr: Ignore table if the size is clearly
-bogus") landed, we are seeing a lot of firmware bugs in the Meta fleet.
-
-There is an indication that this might be related to kexec, but, more on
-this later.
-
-While debugging the current issue, I modified the efi_memattr_init()
-function in a way that I think it might be useful upstream.
-
-The changes will help to detect EFI problems at scale, by making it more
-verbose and easy to categorize early FW bugs.
+The efi_memattr_init() function's return values (0 and -ENOMEM) are never
+checked by callers. Convert the function to return void since the return
+status is unused.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-Breno Leitao (3):
-      efi/memattr: Convert efi_memattr_init() return type to void
-      efi/memattr: Add FW_BUG prefix to firmware error messages
-      efi/memattr: Include EFI memmap size in corruption warnings
+ drivers/firmware/efi/memattr.c | 7 +++----
+ include/linux/efi.h            | 2 +-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
- drivers/firmware/efi/memattr.c | 20 ++++++++++----------
- include/linux/efi.h            |  2 +-
- 2 files changed, 11 insertions(+), 11 deletions(-)
----
-base-commit: c8e17339185951589d109ba81e8854513ab3d26f
-change-id: 20250106-efi_fw_bug-2b62e9a41899
+diff --git a/drivers/firmware/efi/memattr.c b/drivers/firmware/efi/memattr.c
+index c38b1a335590d4f6b75012414a936e66f22dcd9a..e727cc5909cb676c47d787ab0d7754b6fdcb493d 100644
+--- a/drivers/firmware/efi/memattr.c
++++ b/drivers/firmware/efi/memattr.c
+@@ -19,19 +19,19 @@ unsigned long __ro_after_init efi_mem_attr_table = EFI_INVALID_TABLE_ADDR;
+  * Reserve the memory associated with the Memory Attributes configuration
+  * table, if it exists.
+  */
+-int __init efi_memattr_init(void)
++void __init efi_memattr_init(void)
+ {
+ 	efi_memory_attributes_table_t *tbl;
+ 	unsigned long size;
+ 
+ 	if (efi_mem_attr_table == EFI_INVALID_TABLE_ADDR)
+-		return 0;
++		return;
+ 
+ 	tbl = early_memremap(efi_mem_attr_table, sizeof(*tbl));
+ 	if (!tbl) {
+ 		pr_err("Failed to map EFI Memory Attributes table @ 0x%lx\n",
+ 		       efi_mem_attr_table);
+-		return -ENOMEM;
++		return;
+ 	}
+ 
+ 	if (tbl->version > 2) {
+@@ -61,7 +61,6 @@ int __init efi_memattr_init(void)
+ 
+ unmap:
+ 	early_memunmap(tbl, sizeof(*tbl));
+-	return 0;
+ }
+ 
+ /*
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index e5815867aba971a64091bf0ea017d95f21115124..5404939df81bdc870f6ee5d0fb7cbb53394a2304 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -771,7 +771,7 @@ extern unsigned long efi_mem_attr_table;
+  */
+ typedef int (*efi_memattr_perm_setter)(struct mm_struct *, efi_memory_desc_t *, bool);
+ 
+-extern int efi_memattr_init(void);
++extern void efi_memattr_init(void);
+ extern int efi_memattr_apply_permissions(struct mm_struct *mm,
+ 					 efi_memattr_perm_setter fn);
+ 
 
-Best regards,
 -- 
-Breno Leitao <leitao@debian.org>
+2.43.5
 
 
