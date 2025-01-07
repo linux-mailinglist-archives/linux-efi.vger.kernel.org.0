@@ -1,324 +1,121 @@
-Return-Path: <linux-efi+bounces-2527-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2528-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A99A04BCF
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2025 22:34:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D6AA04DE9
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Jan 2025 00:53:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CDC51621AF
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2025 21:34:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 572301887BAD
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2025 23:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCA41F669F;
-	Tue,  7 Jan 2025 21:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4DF1F37C8;
+	Tue,  7 Jan 2025 23:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="eqsRnceJ"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FVEQh6DK"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [104.223.66.194])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4061F76C4;
-	Tue,  7 Jan 2025 21:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.223.66.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B2619AD48;
+	Tue,  7 Jan 2025 23:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736285605; cv=none; b=ddO7ULcnq+iOam8YR1bcuxSBCxeodymnxDgXdWfap3+jhXIVctbLrnmFI4FzBATQ/sRTal39efLBOzmg160WqCPOmDCutpJ3GgAONlyGKBBuL05qSKjhGR4aYdXPsVGKSjvWhpb0BlUAyPah3omVarKKHgyEZPLmC/A5iztjOOE=
+	t=1736294001; cv=none; b=MJwA09q1Tagm+fXJx1QVJHALBgFxHCRbz0G6uT7HWsMPmo0XFXWDBrDBbGE3t6zi+5YCIjorg0EFIgVrONg51nl7XoR5uQIwgmiHf/jckTXUqUCM4pFbTLew9mZzmsBOUd/zVjQTrjEGUvdmF3wFB4kxb5DQzcsKrwmxuq1KVpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736285605; c=relaxed/simple;
-	bh=a8Mrn17PRNJn6hSgrx3WnNcaM6pjfNfZ9l7IUOAETb0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nXLNeWFE7XH9+xRaDs9vnkSIGmDxWZlFmG9+l96Bz9/2Zwvy6KPwJPLOt1xt2NVOdyhBGWYtod3nUOiFF2oQFkfrSaxmX55D4MPMX2cNmveLeV34QDryluNSvC+qT+1igXKIkbBcytOCScnZYihNAb4vYFFpIJvkbUS9aTefqCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=eqsRnceJ; arc=none smtp.client-ip=104.223.66.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1736285602;
-	bh=a8Mrn17PRNJn6hSgrx3WnNcaM6pjfNfZ9l7IUOAETb0=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:From;
-	b=eqsRnceJwmY4fNSgS0X6URVGL/90QYqUd9iGGKMyUguPCKz//A2QHH/1EPXQPt2G+
-	 +ATM2M5SKn+Mqrz2B8yCaIV3Yr8NKV37Uebs1c49vX9F+OlCt6tc1/ndt8g/bGHA8M
-	 Qj+6Tsr36xX4FHle0lhvzkWZ+T8je2GLsPMzgQ4U=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 14EC11286BD6;
-	Tue, 07 Jan 2025 16:33:22 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id eSW1rxi7RHWk; Tue,  7 Jan 2025 16:33:21 -0500 (EST)
-Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 396DB1286B13;
-	Tue, 07 Jan 2025 16:33:21 -0500 (EST)
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Jeremy Kerr <jk@ozlabs.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Lennart Poettering <mzxreary@0pointer.de>
-Subject: [PATCH 2/2] efivarfs: add variable resync after hibernation
-Date: Tue,  7 Jan 2025 13:31:29 -0800
-Message-Id: <20250107213129.28454-3-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250107213129.28454-1-James.Bottomley@HansenPartnership.com>
-References: <20250107213129.28454-1-James.Bottomley@HansenPartnership.com>
+	s=arc-20240116; t=1736294001; c=relaxed/simple;
+	bh=RApKzr4uhkLoYg8X2Hl7QnpCHOmEeDth7c9X8vBvK+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qjYloG3EBKeWe6dSB0Eap2G2wfwSvRdm6NyaJHMY0nv5Q938XZm5yQvLEAl4w45rPsS1eS7djcOWe25MyDOEH8/DzoSbo+0OpJRCzeNTD2APZ2BD2dBILpel+AP3QJEMOvjQYVhLeYUqQgul2uuzNLOlN2VoU3K4FvTjVzNVyJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FVEQh6DK; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=zPpjL/4ixNVqrRxYgtV8l3W7ne2I3km7/b5GHbiSXo8=; b=FVEQh6DKB/gK7QYBasjCMo3d1n
+	LFtp7HGesNbG6c8Ggwsk+oR5kt2UeMLDs+FUfXlTFffc7DOvhXtWG5vdbRF7vOQAKA/v0dPjwr7Df
+	WdH3HXMClYvjPHLu77hQtHyYu2phabiZyxz+pQjMbWvMqLK51k80eJ/bxBGgClB8BzBmgGV8EgDen
+	GBwl/A7hxshrK2EmLLABXEJ4jJ2Mwdg3l0YiGaFIdRnJsvYW2h1cH8k6HvY9v6wdhCy8o+uCNFjP1
+	HvEQwJk+voSBVOBZRgiVePjfidOh+0VBLLrG658+iqCa+CYJ28Z8u1ymzN81ohGNsxrzxL3oCnASK
+	A9asTvUA==;
+Received: from [50.53.2.24] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tVJNr-00000006ar8-3kng;
+	Tue, 07 Jan 2025 23:53:15 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	kernel test robot <lkp@intel.com>,
+	David Rheinsberg <david@readahead.eu>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Peter Jones <pjones@redhat.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-fbdev@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-efi@vger.kernel.org
+Subject: [PATCH] efi: sysfb_efi: fix W=1 warnings when EFI is not set
+Date: Tue,  7 Jan 2025 15:53:09 -0800
+Message-ID: <20250107235312.236247-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hibernation allows other OSs to boot and thus the variable state might
-be altered by the time the hibernation image is resumed.  Resync the
-variable state by looping over all the dentries and update the size
-(in case of alteration) delete any which no-longer exist.  Finally,
-loop over all efi variables creating any which don't have
-corresponding dentries.
+A build with W=1 fails because there are code and data that are not
+needed or used when CONFIG_EFI is not set. Move the "#ifdef CONFIG_EFI"
+block to earlier in the source file so that the unused code/data are
+not built.
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+drivers/firmware/efi/sysfb_efi.c:345:39: warning: ‘efifb_fwnode_ops’ defined but not used [-Wunused-const-variable=]
+  345 | static const struct fwnode_operations efifb_fwnode_ops = {
+      |                                       ^~~~~~~~~~~~~~~~
+drivers/firmware/efi/sysfb_efi.c:238:35: warning: ‘efifb_dmi_swap_width_height’ defined but not used [-Wunused-const-variable=]
+  238 | static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/firmware/efi/sysfb_efi.c:188:35: warning: ‘efifb_dmi_system_table’ defined but not used [-Wunused-const-variable=]
+  188 | static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: 15d27b15de96 ("efi: sysfb_efi: fix build when EFI is not set")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071933.20nlmJJt-lkp@intel.com/
+Cc: David Rheinsberg <david@readahead.eu>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: linux-fbdev@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
 ---
- fs/efivarfs/internal.h |   3 +-
- fs/efivarfs/super.c    | 151 ++++++++++++++++++++++++++++++++++++++++-
- fs/efivarfs/vars.c     |   5 +-
- 3 files changed, 155 insertions(+), 4 deletions(-)
+ drivers/firmware/efi/sysfb_efi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
-index 32b83f644798..48ab75d69b26 100644
---- a/fs/efivarfs/internal.h
-+++ b/fs/efivarfs/internal.h
-@@ -17,6 +17,7 @@ struct efivarfs_fs_info {
- 	struct efivarfs_mount_opts mount_opts;
- 	struct super_block *sb;
- 	struct notifier_block nb;
-+	struct notifier_block pm_nb;
- };
+--- linux-next-20250106.orig/drivers/firmware/efi/sysfb_efi.c
++++ linux-next-20250106/drivers/firmware/efi/sysfb_efi.c
+@@ -91,6 +91,7 @@ void efifb_setup_from_dmi(struct screen_
+ 		_ret_;						\
+ 	})
  
- struct efi_variable {
-@@ -30,7 +31,7 @@ struct efivar_entry {
- };
- 
- int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
--		void *data);
-+		void *data, bool duplicate_check);
- 
- int efivar_entry_delete(struct efivar_entry *entry);
- 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 2523030caeda..961264f628dc 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -13,6 +13,7 @@
- #include <linux/pagemap.h>
- #include <linux/ucs2_string.h>
- #include <linux/slab.h>
-+#include <linux/suspend.h>
- #include <linux/magic.h>
- #include <linux/statfs.h>
- #include <linux/notifier.h>
-@@ -356,7 +357,7 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (err)
- 		return err;
- 
--	return efivar_init(efivarfs_callback, sb);
-+	return efivar_init(efivarfs_callback, sb, true);
- }
- 
- static int efivarfs_get_tree(struct fs_context *fc)
-@@ -380,6 +381,148 @@ static const struct fs_context_operations efivarfs_context_ops = {
- 	.reconfigure	= efivarfs_reconfigure,
- };
- 
-+struct efivarfs_ctx {
-+	struct dir_context ctx;
-+	struct super_block *sb;
-+	struct dentry *dentry;
-+};
-+
-+static bool efivarfs_actor(struct dir_context *ctx, const char *name, int len,
-+			   loff_t offset, u64 ino, unsigned mode)
-+{
-+	unsigned long size;
-+	struct efivarfs_ctx *ectx = container_of(ctx, struct efivarfs_ctx, ctx);
-+	struct qstr qstr = { .name = name, .len = len };
-+	struct dentry *dentry = d_hash_and_lookup(ectx->sb->s_root, &qstr);
-+	struct inode *inode;
-+	struct efivar_entry *entry;
-+	int err;
-+
-+	if (IS_ERR_OR_NULL(dentry))
-+		return true;
-+
-+	inode = d_inode(dentry);
-+	entry = inode->i_private;
-+
-+	err = efivar_entry_size(entry, &size);
-+	size += sizeof(__u32);	/* attributes */
-+	if (err)
-+		size = 0;
-+
-+	inode_lock(inode);
-+	i_size_write(inode, size);
-+	inode_unlock(inode);
-+
-+	if (!size) {
-+		ectx->dentry = dentry;
-+		return false;
-+	}
-+
-+	dput(dentry);
-+
-+	return true;
-+}
-+
-+static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
-+				  unsigned long name_size, void *data)
-+{
-+	char *name;
-+	struct super_block *sb = data;
-+	struct dentry *dentry;
-+	struct qstr qstr;
-+	int err;
-+
-+	if (guid_equal(&vendor, &LINUX_EFI_RANDOM_SEED_TABLE_GUID))
-+		return 0;
-+
-+	name = efivar_get_utf8name(name16, &vendor);
-+	if (!name)
-+		return -ENOMEM;
-+
-+	qstr.name = name;
-+	qstr.len = strlen(name);
-+	dentry = d_hash_and_lookup(sb->s_root, &qstr);
-+	if (IS_ERR(dentry)) {
-+		err = PTR_ERR(dentry);
-+		goto out;
-+	}
-+
-+	if (!dentry) {
-+		/* found missing entry */
-+		pr_info("efivarfs: creating variable %s\n", name);
-+		return efivarfs_create_dentry(sb, name16, name_size, &vendor, name);
-+	}
-+
-+	dput(dentry);
-+	err = 0;
-+
-+ out:
-+	kfree(name);
-+
-+	return err;
-+}
-+
-+static int efivarfs_pm_notify(struct notifier_block *nb, unsigned long action,
-+			      void *ptr)
-+{
-+	struct efivarfs_fs_info *sfi = container_of(nb, struct efivarfs_fs_info,
-+						    pm_nb);
-+	struct path path = { .mnt = NULL, .dentry = sfi->sb->s_root, };
-+	struct efivarfs_ctx ectx = {
-+		.ctx = {
-+			.actor	= efivarfs_actor,
-+		},
-+		.sb = sfi->sb,
-+	};
-+	struct file *file;
-+	static bool rescan_done = true;
-+
-+	if (action == PM_HIBERNATION_PREPARE) {
-+		rescan_done = false;
-+		return NOTIFY_OK;
-+	} else if (action != PM_POST_HIBERNATION) {
-+		return NOTIFY_DONE;
-+	}
-+
-+	if (rescan_done)
-+		return NOTIFY_DONE;
-+
-+	pr_info("efivarfs: resyncing variable state\n");
-+
-+	/* O_NOATIME is required to prevent oops on NULL mnt */
-+	file = kernel_file_open(&path, O_RDONLY | O_DIRECTORY | O_NOATIME,
-+				current_cred());
-+	if (!file)
-+		return NOTIFY_DONE;
-+
-+	rescan_done = true;
-+
-+	/*
-+	 * First loop over the directory and verify each entry exists,
-+	 * removing it if it doesn't
-+	 */
-+	file->f_pos = 2;	/* skip . and .. */
-+	do {
-+		ectx.dentry = NULL;
-+		iterate_dir(file, &ectx.ctx);
-+		if (ectx.dentry) {
-+			pr_info("efivarfs: removing variable %pd\n",
-+				ectx.dentry);
-+			simple_recursive_removal(ectx.dentry, NULL);
-+			dput(ectx.dentry);
-+		}
-+	} while (ectx.dentry);
-+	fput(file);
-+
-+	/*
-+	 * then loop over variables, creating them if there's no matching
-+	 * dentry
-+	 */
-+	efivar_init(efivarfs_check_missing, sfi->sb, false);
-+
-+	return NOTIFY_OK;
-+}
-+
- static int efivarfs_init_fs_context(struct fs_context *fc)
++#ifdef CONFIG_EFI
+ static int __init efifb_set_system(const struct dmi_system_id *id)
  {
- 	struct efivarfs_fs_info *sfi;
-@@ -396,6 +539,11 @@ static int efivarfs_init_fs_context(struct fs_context *fc)
+ 	struct efifb_dmi_info *info = id->driver_data;
+@@ -346,7 +347,6 @@ static const struct fwnode_operations ef
+ 	.add_links = efifb_add_links,
+ };
  
- 	fc->s_fs_info = sfi;
- 	fc->ops = &efivarfs_context_ops;
-+
-+	sfi->pm_nb.notifier_call = efivarfs_pm_notify;
-+	sfi->pm_nb.priority = 0;
-+	register_pm_notifier(&sfi->pm_nb);
-+
- 	return 0;
- }
+-#ifdef CONFIG_EFI
+ static struct fwnode_handle efifb_fwnode;
  
-@@ -405,6 +553,7 @@ static void efivarfs_kill_sb(struct super_block *sb)
- 
- 	blocking_notifier_chain_unregister(&efivar_ops_nh, &sfi->nb);
- 	kill_litter_super(sb);
-+	unregister_pm_notifier(&sfi->pm_nb);
- 
- 	kfree(sfi);
- }
-diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
-index d0beecbf9441..d720d780648b 100644
---- a/fs/efivarfs/vars.c
-+++ b/fs/efivarfs/vars.c
-@@ -371,7 +371,7 @@ static void dup_variable_bug(efi_char16_t *str16, efi_guid_t *vendor_guid,
-  * Returns 0 on success, or a kernel error code on failure.
-  */
- int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
--		void *data)
-+		void *data, bool duplicate_check)
- {
- 	unsigned long variable_name_size = 512;
- 	efi_char16_t *variable_name;
-@@ -415,7 +415,8 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 			 * we'll ever see a different variable name,
- 			 * and may end up looping here forever.
- 			 */
--			if (efivarfs_variable_is_present(variable_name,
-+			if (duplicate_check &&
-+			    efivarfs_variable_is_present(variable_name,
- 							 &vendor_guid, data)) {
- 				dup_variable_bug(variable_name, &vendor_guid,
- 						 variable_name_size);
--- 
-2.35.3
-
+ __init void sysfb_apply_efi_quirks(void)
 
