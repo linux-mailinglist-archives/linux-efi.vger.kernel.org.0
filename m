@@ -1,136 +1,117 @@
-Return-Path: <linux-efi+bounces-2522-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2523-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2F5A038DB
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2025 08:36:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35815A03D9C
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2025 12:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0196B1886568
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2025 07:37:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAAA516588C
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Jan 2025 11:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7784B154C15;
-	Tue,  7 Jan 2025 07:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B861E1322;
+	Tue,  7 Jan 2025 11:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qXFDF/JI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldes8mxw"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5FC14F70;
-	Tue,  7 Jan 2025 07:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6818E1E0DB3;
+	Tue,  7 Jan 2025 11:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736235414; cv=none; b=YCmqHKRszzT5ZaW5Te9TPZFVrHbq+cMsgfFNT/0ufPjE5mv34VT7O2msDvoES00sd/yaLnBptHmr94jZq5+r6YSLNdOIfY6otqkCpjYSULlVzqBGpUUU8BWWPgjPjdV4qZzU7XRYSji4bvSRHFFVAy/61CBhJWLc2i/zmzqqqX0=
+	t=1736249058; cv=none; b=LuYlKCv8vwmiTxRNB5+/Io7V2QwIUZBR6rXD8mop0e1ZKnUS9DhJ2EDhkKdnh0OmnTAoVlJtKqlygtei94BWwkE9OmHQjurZwlT/7y+KrIyEnUotsTIbA/vPmnXBWpiOt1QJsv/JDtsjOD8U8hTKdjhkPSA0I+mLFo/4eeTE6XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736235414; c=relaxed/simple;
-	bh=450lMuau3ge71dUQh/4nnXDvWTEzOSz2lqm5heD5NXU=;
+	s=arc-20240116; t=1736249058; c=relaxed/simple;
+	bh=dt2X7/PCxcdjMgA20b9Usa+3WoU2yvBBl6+5rt7S5Vs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kQHoFyqdqdrXszqovjrCehwKRLgbof/INZnhyGcm0D6XErzmx7rZK+x4pUL89rOYa/YVDPR2MMz5OZqbY5UX/Lm0fxbjGllFqDy0aGmr/eKYoDTEcKBvLVfRECobYozGyLMFmMdl6f348yDJ3HqR0FTT/8UMXUeJt052WJ3FnJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qXFDF/JI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AE7C4CEE0;
-	Tue,  7 Jan 2025 07:36:53 +0000 (UTC)
+	 To:Cc:Content-Type; b=t07JRO2BU4QWU341nZbkXjB7cTK/1zoAv04scUMAjM4YYwoQnP2ll56+iBR1RyQ+m906oY7kVWVaAPm1pLZlF/bBe36M6JlALviaE427hJ2GY+MxC97A29JTGbC4C03xv6Z48VZayqvQE+Z/XhlXYBoS/TzygC8pO08qsSUWJ6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldes8mxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF5BC4CED6;
+	Tue,  7 Jan 2025 11:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736235413;
-	bh=450lMuau3ge71dUQh/4nnXDvWTEzOSz2lqm5heD5NXU=;
+	s=k20201202; t=1736249056;
+	bh=dt2X7/PCxcdjMgA20b9Usa+3WoU2yvBBl6+5rt7S5Vs=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qXFDF/JIz2XSgZeT3m2q4hKxvacYMW8Rb+rqakeaKD+QTSPp+ZPVOF+1NCWw4H/p2
-	 5o4/p/aL3F+YEdLgYBrmXUjlbbLhJOiTup8x6fojrZRnRQMPTF6eBO89uhxx/H7sLu
-	 b6Rq8ibhc6pfIoR2/OIY0H39JX7SLZC0olqne5haEiXxwuv/VAZCfN2NfOHzu+Y/Oh
-	 5j/WHN+sv9L23Ut8vK+EIB8ZQeqhTtD3k/ZXMG2NKth+g1jtocEwctXageXQX5mKCd
-	 21xmNV9nb09xZzIFKPYG14YjomLCuHvYny4qZSUS3AJWGXqTeLj7HfgyKZ8MQ873Qi
-	 HZ+huqFzrLGbg==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5401bd6ccadso15127024e87.2;
-        Mon, 06 Jan 2025 23:36:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUpc4LCXH+PFvx2r+R5mDkJuf9W38OObphlPRgjURzn9pRq+NL0B1JQCgsleu+1AjeDkkMEtOi7vH4=@vger.kernel.org, AJvYcCWez2sxeC3VXkXzO7tU4YJ0sANUZ88yYbzTDJSGs5XFPcdS74BUDLmAYXexLYkacsjo/I3YeTHyRbuRrXS4@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdWmIMDNy9ou/Uttljz6ZpCtpGzEohtWI/LfNAhf8wGTRZhRwK
-	nmS2i/ZPcW+p6/FrjgO7FFQVadL2GuEZDxjb8dRK3fgNiuyLHDnWEjqCMTrbLSz87SF07OkiPLv
-	/2gKoOOOUmsThOl/OiVZpWu60feA=
-X-Google-Smtp-Source: AGHT+IGPUosH6afU/CZKDhPOuZ+SIz9KInC8qNvf/oURLrED3KVV2AgUAPTeAHmJBvVuNOaVOZp7aHHY5/DxTMlRZzk=
-X-Received: by 2002:a05:6512:3a90:b0:542:249c:2156 with SMTP id
- 2adb3069b0e04-54229530077mr19659517e87.15.1736235412131; Mon, 06 Jan 2025
- 23:36:52 -0800 (PST)
+	b=ldes8mxwG4HDlFj+tk4mTgqhRKvJd1Ox4k5nYetXOoyj+4j2+Zgh7/0Go8iT3g/co
+	 kW+T8tbqWO+EOgAaJe0ysbIGQ8MKx+JvptMgxUe5eDRepZ69J07d5VyxKQ0y15HdCW
+	 0ydc2Pza/eYxyUTutXwu+tAabKYn1h9Eqhj48Bsl6Xfb0kM67Ild7ac9wrOVPNH9op
+	 6rioE/xaM+xv0SQ/z+xaVnpeSkOHagDxx4991+UFlKDbIWr0wBaaNu25xmwejSedH+
+	 F2nSEvIKJArbrjU3r0ZP0o5kKLpXtOHX0qfMaUOcD57d8uE4kVZ2otkzUBWEKTuTAC
+	 epBErD1th59XQ==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53e3778bffdso17021237e87.0;
+        Tue, 07 Jan 2025 03:24:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUMHcUGcIgTSo+6WHg28N7G8hLvG6+PoaAWBe4abCk5BffDvLp7l6LyvBZ9JL2UpNbKnlV2mxVv30DbOrLP@vger.kernel.org, AJvYcCWviz2t9npeUAgHtlr03Lx1oyoE4lAMpBd52Nd1gVZLFdZMwCofT2kXlu9t7Lp9U+MiShKu4BqIuyk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+9pp09C34vg21llYzZl8Gg0m1UK0GPqjOpAXG0yrWZ+gi7PL/
+	11xm9JoK8hDHLlrUFpehjpjhCFhID7F7NwoNcUQR6UuTtFbkOYNNUO4i3WHVdoRr4M7ERcPOysi
+	9XoKj0fTM1RGUigOA9QTfzMIpA3s=
+X-Google-Smtp-Source: AGHT+IGAOcAFwK8GBPrxeeNWlh1XI2i4kKeMGKAGvBgXrGITxts5+I1PjRMxW13me8QtRk3RpSOAMH1XydpYC0hkrEU=
+X-Received: by 2002:a05:6512:3b1e:b0:542:2a20:e695 with SMTP id
+ 2adb3069b0e04-5422a20e76emr14148344e87.9.1736249055255; Tue, 07 Jan 2025
+ 03:24:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209182041.60286-1-hamzamahfooz@linux.microsoft.com>
- <CAMj1kXEnxgsy6LkyWGFmwDxVroDofeGYdUd2BvfJ=bNgj0TYVg@mail.gmail.com>
- <CAMj1kXHmB9RAwfCDZN+CDhXD4D6Z1sE6vg5HN3SUEZ+uLnEnWg@mail.gmail.com> <CAGRPHEJuJfJ+k72bDKVt=MgbKi3O1e-Zf+9kFTm2aN2naEzbDw@mail.gmail.com>
-In-Reply-To: <CAGRPHEJuJfJ+k72bDKVt=MgbKi3O1e-Zf+9kFTm2aN2naEzbDw@mail.gmail.com>
+References: <20250106-efi_fw_bug-v1-0-01a8eb40bfeb@debian.org> <20250106-efi_fw_bug-v1-3-01a8eb40bfeb@debian.org>
+In-Reply-To: <20250106-efi_fw_bug-v1-3-01a8eb40bfeb@debian.org>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 7 Jan 2025 08:36:40 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHrNXdXHCF9vVOA3jsLTkcxRB3dX6SL8BbPbECugPsbLQ@mail.gmail.com>
-X-Gm-Features: AbW1kvbpRcLM9TDPqiwYiln6YAzNs7ZWzSMO1Ma3fWdYJ7IGa-8KF30Lm4psnRY
-Message-ID: <CAMj1kXHrNXdXHCF9vVOA3jsLTkcxRB3dX6SL8BbPbECugPsbLQ@mail.gmail.com>
-Subject: Re: [PATCH] efi: bump up EFI_MMAP_NR_SLACK_SLOTS to 32
-To: =?UTF-8?Q?V=C3=ADctor_Gonzalo?= <victor.gonzalo@anddroptable.net>
-Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, linux-efi@vger.kernel.org, 
-	stable@kernel.org, Allen Pais <apais@linux.microsoft.com>, 
-	Tyler Hicks <code@tyhicks.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Marek <jonathan@marek.ca>, open list <linux-kernel@vger.kernel.org>
+Date: Tue, 7 Jan 2025 12:24:03 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFn7CeT6R2w_XKAJoj5WUYObOWKeUO2istY8sULQTwomQ@mail.gmail.com>
+X-Gm-Features: AbW1kvaCKoi9P0uI7pcQB2zWKLzs0pLgDPKKtQOrBb6EPE5AurwzIJVVRbTIhvk
+Message-ID: <CAMj1kXFn7CeT6R2w_XKAJoj5WUYObOWKeUO2istY8sULQTwomQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] efi/memattr: Include EFI memmap size in corruption warnings
+To: Breno Leitao <leitao@debian.org>
+Cc: Gregory Price <gourry@gourry.net>, Usama Arif <usamaarif642@gmail.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 31 Dec 2024 at 12:12, V=C3=ADctor Gonzalo
-<victor.gonzalo@anddroptable.net> wrote:
+On Mon, 6 Jan 2025 at 20:03, Breno Leitao <leitao@debian.org> wrote:
 >
-> El jue, 19 dic 2024 a las 12:27, Ard Biesheuvel (<ardb@kernel.org>) escri=
-bi=C3=B3:
-> >
-> > On Tue, 10 Dec 2024 at 10:59, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > On Mon, 9 Dec 2024 at 19:20, Hamza Mahfooz
-> > > <hamzamahfooz@linux.microsoft.com> wrote:
-> > > >
-> > > > Recent platforms require more slack slots than the current value of
-> > > > EFI_MMAP_NR_SLACK_SLOTS, otherwise they fail to boot. The current
-> > > > workaround is to append `efi=3Ddisable_early_pci_dma` to the kernel=
-'s
-> > > > cmdline. So, bump up EFI_MMAP_NR_SLACK_SLOTS to 32 to allow those
-> > > > platforms to boot with the aforementioned workaround.
-> > > >
-> > > > Cc: stable@kernel.org
-> > > > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > > > Cc: Allen Pais <apais@linux.microsoft.com>
-> > > > Cc: Tyler Hicks <code@tyhicks.com>
-> > > > Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-> > > > ---
-> > > >  drivers/firmware/efi/libstub/efistub.h | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmw=
-are/efi/libstub/efistub.h
-> > > > index 76e44c185f29..e95ce6ae5c26 100644
-> > > > --- a/drivers/firmware/efi/libstub/efistub.h
-> > > > +++ b/drivers/firmware/efi/libstub/efistub.h
-> > > > @@ -171,7 +171,7 @@ void efi_set_u64_split(u64 data, u32 *lo, u32 *=
-hi)
-> > > >   * the EFI memory map. Other related structures, e.g. x86 e820ext,=
- need
-> > > >   * to factor in this headroom requirement as well.
-> > > >   */
-> > > > -#define EFI_MMAP_NR_SLACK_SLOTS        8
-> > > > +#define EFI_MMAP_NR_SLACK_SLOTS        32
-> > > >
-> > > >  typedef struct efi_generic_dev_path efi_device_path_protocol_t;
-> > > >
-> > >
-> > > Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > I've queued this up for v6.14 now - once we are confident it does not
-> > cause any regressions, we can backport it to stable branches too.
-> >
+> Add EFI memory map size to warning messages when a corrupted Memory
+> Attributes Table is detected, making it easier to diagnose firmware issues.
 >
-> Hi. I had this issue three years ago, suggested the bump and then
-> missed the reply.
-> We bumped it to 16 and have not had any issue or side effects in three ye=
-ars.
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  drivers/firmware/efi/memattr.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/memattr.c b/drivers/firmware/efi/memattr.c
+> index 5f83cdea88b05cb325e9f90c14a0048131e53cfa..2c276bcc0df48352bec6cd96b69edf67a16f6069 100644
+> --- a/drivers/firmware/efi/memattr.c
+> +++ b/drivers/firmware/efi/memattr.c
+> @@ -22,7 +22,7 @@ unsigned long __ro_after_init efi_mem_attr_table = EFI_INVALID_TABLE_ADDR;
+>  void __init efi_memattr_init(void)
+>  {
+>         efi_memory_attributes_table_t *tbl;
+> -       unsigned long size;
+> +       unsigned long size, efi_map_size;
+>
+>         if (efi_mem_attr_table == EFI_INVALID_TABLE_ADDR)
+>                 return;
+> @@ -49,9 +49,10 @@ void __init efi_memattr_init(void)
+>          * just be ignored altogether.
+>          */
+>         size = tbl->num_entries * tbl->desc_size;
+> -       if (size > 3 * efi.memmap.nr_map * efi.memmap.desc_size) {
+> -               pr_warn(FW_BUG "Corrupted EFI Memory Attributes Table detected! (version == %u, desc_size == %u, num_entries == %u)\n",
+> -                       tbl->version, tbl->desc_size, tbl->num_entries);
+> +       efi_map_size = efi.memmap.nr_map * efi.memmap.desc_size;
+> +       if (size > 3 * efi_map_size) {
+> +               pr_warn(FW_BUG "Corrupted EFI Memory Attributes Table detected! (version == %u, desc_size == %u, num_entries == %u, efi_map_size == %lu)\n",
+> +                       tbl->version, tbl->desc_size, tbl->num_entries, efi_map_size);
+>                 goto unmap;
+>         }
+>
+>
 
-Thanks for the data point.
+Hello Breno,
+
+I don't mind the patch per se, but I don't think it is terribly useful either.
+
+Could you explain how this helps?
 
