@@ -1,158 +1,183 @@
-Return-Path: <linux-efi+bounces-2544-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2545-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB651A0791A
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Jan 2025 15:25:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10298A079B2
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Jan 2025 15:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 214D33A17FD
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Jan 2025 14:25:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02E29188B4A7
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Jan 2025 14:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DD321A458;
-	Thu,  9 Jan 2025 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A1521C9E3;
+	Thu,  9 Jan 2025 14:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rILD4UmZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uZk0iJ3Q"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A751219EB6;
-	Thu,  9 Jan 2025 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB7421C16F;
+	Thu,  9 Jan 2025 14:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736432687; cv=none; b=XNa1U1GFQdPkxPZynWDf83/LPzAgH+Vv7pqsgj3Pd6+2dX8tI0+CQkcLpapTVKEp+s8T/TurESJmxXMJBVi59Gw/Oe4VG1tEivNDrNrM0URoUApuo45u3YTplN0G4yhFD95C8lLjWfqyH/gDfaH+kzrmDLLPyIKib4Q3xQ7NCp4=
+	t=1736434149; cv=none; b=oIpit1P89Kkq7VZvGvtiWGckyv1g5r6oGmrcGHykWzqh05Fm18sKFzUCytfg0lSxhEXX76FWKZJ2IYTP0kTqsQ8hL7fbMuMFqpJKl4UOl6O0NedYqXf1H9loQd8RqgvLeEkou6NEUqjpKgbWR2Z+XXFAa6zB7iDsbP4VAxtzi4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736432687; c=relaxed/simple;
-	bh=jaa6R9FjR24fTZ569p2L8SukGki7KN9rrIQk1/kuRiU=;
+	s=arc-20240116; t=1736434149; c=relaxed/simple;
+	bh=qq3hACfvtQfc2ipUXFPbhbynoe3D/LRZY3O74eue9qY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=akfax1x4Vpn+MIDwDWBm8G3rUsztjgXNGEHXxwVAY1wUUzhzfs3Yx/ItDz6YN72oQSBnu27XDPUlRvERW/o/pIqM5in5zD897Y1voGOf0bOOjcB8gFZB2Xe5p+UVs0iI7sfsdi4gwibeI52W7UJVNn39OR75HfQcMQ9r1/ULZFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rILD4UmZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85F9C4CEE4;
-	Thu,  9 Jan 2025 14:24:46 +0000 (UTC)
+	 To:Cc:Content-Type; b=t+B62hk41fkVi74LkzJtnH50ytedjMWyRfRNsC1NulfRZsUQpETjxPo2GYB8NMrJZwNoBn5j2aCwMeWDqvxAwaVLjOc17sjunhZMnnlF/JK05bsPFUrZ9ZaDFtk+iVCSLoMnjd8khn8blUr71GlILybP+5PsG05doxDqLNbFnqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uZk0iJ3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198B4C4CEE6;
+	Thu,  9 Jan 2025 14:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736432686;
-	bh=jaa6R9FjR24fTZ569p2L8SukGki7KN9rrIQk1/kuRiU=;
+	s=k20201202; t=1736434149;
+	bh=qq3hACfvtQfc2ipUXFPbhbynoe3D/LRZY3O74eue9qY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rILD4UmZfMJG6phrxvs8Cohdem3rRIGhmlA8aFNwTgNhOP+lYCJay62CyntH58dun
-	 qk0oM/GEiWr+0SUTn2AxzOXtgYlo+OI+rTWt2tGvlh+8MLGSEBiGS0Zu2r4H5p0trV
-	 kGaTHta9vmtIM0NSFGaDjulqxL8/pe/UBAZD7OOrIE+srwygMEoQ98f66nD103Xlq8
-	 25IoyrSInPYYYAT+M1vKQQGVhwcDo3lxlqZSdYgXrlq8Xbj+qm+jbSU1bFcpWFKc6K
-	 j4JzyjnQy5vZPeKzIrbQHskBD+WUQGSpb2H/R3yFoN5JC7mc8jGADZfEWfsMbYcc6C
-	 omQG9PqUpBG7g==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30167f4c1deso7993471fa.1;
-        Thu, 09 Jan 2025 06:24:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUlPpY0YPMQF2/AGmRd0fm2m+KeQu+V5W0JhdBMdejbzIypPSvf9qIAxip4znmpMvEQH6mWTCSGLQ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweCGBo5STmIrZ/qVbkMQ0vSeGHg3npC3yn02HiaodCz2J9Mhs2
-	UO+OodPmwFzlPEqG44pfrjQWR1wEOiZQuntp46XJ2g/XjqCWCc4kDMs5xeyx9cEeEWaRaTxbjK8
-	FhvSthrYOG+9qUic1mIy4XZzdVak=
-X-Google-Smtp-Source: AGHT+IHuf/paA/0BAgb13qtejl2qZTrQHqYTLErf3suy1S359kZezvJ8LIhwAmSlbUWffvhWq5fAO6khyKtmQggGOdA=
-X-Received: by 2002:a2e:b8c7:0:b0:2ff:a89b:4210 with SMTP id
- 38308e7fff4ca-305f453383amr22875691fa.8.1736432685132; Thu, 09 Jan 2025
- 06:24:45 -0800 (PST)
+	b=uZk0iJ3Q2gAKtpBk9UWyktbE4ite2gTonPVq4mCkEddeH4Tc5Tx90xyLf9OmXaM7/
+	 HgKgrNfHkz2547nWQz8KUADjy5mdJkiy9It9Fll9oz0F9YQpnP6Eaq/mQcbiTcMl2J
+	 AQuoa+R0DM7+5fP/ZlP7nJZQ4LrSUVcn3vW56lAZq6+lb/8McPDD8mfxXfkrqEjWok
+	 jyzVkZaQ0LcbY2Pr1UN+J2VUxMHhafn5KaXrctC7d8+hUV4QgflVQ/IuHYnr/K7/jF
+	 2I/GPCDigQsV0IWXr0k3TLxmHLRtOi7Ccdcbfa8REwhIZieJti9YZoDdIWZYcDEZRx
+	 AXW/VqkdQzkkw==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-540201cfedbso959466e87.3;
+        Thu, 09 Jan 2025 06:49:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVfbB4+J2EkdG64+T20/UH+5yEJicYOcBQ1t4TJmA4O1rytSmrb0I4Ct0CRDxcPfjjL2shGVn2Qhu5/QnqZ@vger.kernel.org, AJvYcCXE+Q2OM97lIMeLeePTPi4iOtLSo0l6UQ5Q4fA9LXpUTzSaZ9nTqIjx4BN7xTj4Pi5/2hA2KKsEUI0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjMYikFrNOE1fpmAeiWiOtbrNd/8WpahQhbxwwKIHARKPCBxOs
+	2+aZVtvc2bfe45nuoN936zU8WonGit/idUX/p+g3Ji7e1MwIrFFmFBtMR4i/P7U1wS/ID02GMoI
+	vLvwQKRP4gBhsIvE28HT4ouE3r9o=
+X-Google-Smtp-Source: AGHT+IF2nBYsKBCUEIGuvQHkwNJJBtlgyOsf7KoLwbY12xzwwh3z4mK+ezgQjTCp3Fl2I5hiUI6TzO7HTXst9CBMMBA=
+X-Received: by 2002:a05:6512:2205:b0:540:2542:cba6 with SMTP id
+ 2adb3069b0e04-54284527758mr1880020e87.21.1736434147285; Thu, 09 Jan 2025
+ 06:49:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107023525.11466-1-James.Bottomley@HansenPartnership.com> <CAMj1kXHy+D2GDANFyYJLOZj1fPmgoX+Ed6CRy3mSSCeutsO07w@mail.gmail.com>
-In-Reply-To: <CAMj1kXHy+D2GDANFyYJLOZj1fPmgoX+Ed6CRy3mSSCeutsO07w@mail.gmail.com>
+References: <20250106-efi_fw_bug-v1-0-01a8eb40bfeb@debian.org>
+ <20250106-efi_fw_bug-v1-3-01a8eb40bfeb@debian.org> <CAMj1kXFn7CeT6R2w_XKAJoj5WUYObOWKeUO2istY8sULQTwomQ@mail.gmail.com>
+ <20250107-versatile-loyal-mussel-2dba59@leitao>
+In-Reply-To: <20250107-versatile-loyal-mussel-2dba59@leitao>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 9 Jan 2025 15:24:34 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFMMSQB9oyNkpEmd1RMBYc_3GuPPOPjxQyWKFgUNdqtWQ@mail.gmail.com>
-X-Gm-Features: AbW1kvZJSXK8qLPcFbWBljtbIVVv-mxItBnUHPgKi7mzQ2eoCaLitx_gOblRutI
-Message-ID: <CAMj1kXFMMSQB9oyNkpEmd1RMBYc_3GuPPOPjxQyWKFgUNdqtWQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] convert efivarfs to manage object data correctly
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Jeremy Kerr <jk@ozlabs.org>, Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
+Date: Thu, 9 Jan 2025 15:48:56 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEjzM0YmPt8Ysh139ruPKUR9NJJYOz0Pw6aWBP9V7fpag@mail.gmail.com>
+X-Gm-Features: AbW1kvaihH4YtHuquSE9lfyUmzf08-ScfHVuhBn6ofVkq69AzdSb4002X3SwiYw
+Message-ID: <CAMj1kXEjzM0YmPt8Ysh139ruPKUR9NJJYOz0Pw6aWBP9V7fpag@mail.gmail.com>
+Subject: Re: [PATCH 3/3] efi/memattr: Include EFI memmap size in corruption warnings
+To: Breno Leitao <leitao@debian.org>
+Cc: Gregory Price <gourry@gourry.net>, Usama Arif <usamaarif642@gmail.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 9 Jan 2025 at 10:50, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Tue, 7 Jan 2025 at 13:05, Breno Leitao <leitao@debian.org> wrote:
 >
-> On Tue, 7 Jan 2025 at 03:36, James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> >
-> > I've added fsdevel because I'm hopping some kind vfs person will check
-> > the shift from efivarfs managing its own data to its data being
-> > managed as part of the vfs object lifetimes.  The following paragraph
-> > should describe all you need to know about the unusual features of the
-> > filesystem.
-> >
-> > efivarfs is a filesystem projecting the current state of the UEFI
-> > variable store and allowing updates via write.  Because EFI variables
-> > contain both contents and a set of attributes, which can't be mapped
-> > to filesystem data, the u32 attribute is prepended to the output of
-> > the file and, since UEFI variables can't be empty, this makes every
-> > file at least 5 characters long.  EFI variables can be removed either
-> > by doing an unlink (easy) or by doing a conventional write update that
-> > reduces the content to zero size, which means any write update can
-> > potentially remove the file.
-> >
-> > Currently efivarfs has two bugs: it leaks memory and if a create is
-> > attempted that results in an error in the write, it creates a zero
-> > length file remnant that doesn't represent an EFI variable (i.e. the
-> > state reflection of the EFI variable store goes out of sync).
-> >
-> > The code uses inode->i_private to point to additionaly allocated
-> > information but tries to maintain a global list of the shadowed
-> > varibles for internal tracking.  Forgetting to kfree() entries in this
-> > list when they are deleted is the source of the memory leak.
-> >
-> > I've tried to make the patches as easily reviewable by non-EFI people
-> > as possible, so some possible cleanups (like consolidating or removing
-> > the efi lock handling and possibly removing the additional entry
-> > allocation entirely in favour of simply converting the dentry name to
-> > the variable name and guid) are left for later.
-> >
-> > The first patch removes some unused fields in the entry; patches 2-3
-> > eliminate the list search for duplication (some EFI variable stores
-> > have buggy iterators) and replaces it with a dcache lookup.  Patch 4
-> > move responsibility for freeing the entry data to inode eviction which
-> > both fixes the memory leak and also means we no longer need to iterate
-> > over the variable list and free its entries in kill_sb.  Since the
-> > variable list is now unused, patch 5 removes it and its helper
-> > functions.
-> >
-> > Patch 6 fixes the second bug by introducing a file_operations->release
-> > method that checks to see if the inode size is zero when the file is
-> > closed and removes it if it is.  Since all files must be at least 5 in
-> > length we use a zero i_size as an indicator that either the variable
-> > was removed on write or that it wasn't correctly created in the first
-> > place.
-> >
-> > v2: folded in feedback from Al Viro: check errors on lookup and delete
-> >     zero length file on last close
-> >
-> > James
-> >
-> > ---
-> >
-> > James Bottomley (6):
-> >   efivarfs: remove unused efi_varaible.Attributes and .kobj
-> >   efivarfs: add helper to convert from UC16 name and GUID to utf8 name
-> >   efivarfs: make variable_is_present use dcache lookup
-> >   efivarfs: move freeing of variable entry into evict_inode
-> >   efivarfs: remove unused efivarfs_list
-> >   efivarfs: fix error on write to new variable leaving remnants
-> >
+> Hello Ard,
 >
-> Thanks James,
+> On Tue, Jan 07, 2025 at 12:24:03PM +0100, Ard Biesheuvel wrote:
+> > On Mon, 6 Jan 2025 at 20:03, Breno Leitao <leitao@debian.org> wrote:
+> > >
+> > > Add EFI memory map size to warning messages when a corrupted Memory
+> > > Attributes Table is detected, making it easier to diagnose firmware issues.
+> > >
+> > > Signed-off-by: Breno Leitao <leitao@debian.org>
+> > > ---
+> > >  drivers/firmware/efi/memattr.c | 9 +++++----
+> > >  1 file changed, 5 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/drivers/firmware/efi/memattr.c b/drivers/firmware/efi/memattr.c
+> > > index 5f83cdea88b05cb325e9f90c14a0048131e53cfa..2c276bcc0df48352bec6cd96b69edf67a16f6069 100644
+> > > --- a/drivers/firmware/efi/memattr.c
+> > > +++ b/drivers/firmware/efi/memattr.c
+> > > @@ -22,7 +22,7 @@ unsigned long __ro_after_init efi_mem_attr_table = EFI_INVALID_TABLE_ADDR;
+> > >  void __init efi_memattr_init(void)
+> > >  {
+> > >         efi_memory_attributes_table_t *tbl;
+> > > -       unsigned long size;
+> > > +       unsigned long size, efi_map_size;
+> > >
+> > >         if (efi_mem_attr_table == EFI_INVALID_TABLE_ADDR)
+> > >                 return;
+> > > @@ -49,9 +49,10 @@ void __init efi_memattr_init(void)
+> > >          * just be ignored altogether.
+> > >          */
+> > >         size = tbl->num_entries * tbl->desc_size;
+> > > -       if (size > 3 * efi.memmap.nr_map * efi.memmap.desc_size) {
+> > > -               pr_warn(FW_BUG "Corrupted EFI Memory Attributes Table detected! (version == %u, desc_size == %u, num_entries == %u)\n",
+> > > -                       tbl->version, tbl->desc_size, tbl->num_entries);
+> > > +       efi_map_size = efi.memmap.nr_map * efi.memmap.desc_size;
+> > > +       if (size > 3 * efi_map_size) {
+> > > +               pr_warn(FW_BUG "Corrupted EFI Memory Attributes Table detected! (version == %u, desc_size == %u, num_entries == %u, efi_map_size == %lu)\n",
+> > > +                       tbl->version, tbl->desc_size, tbl->num_entries, efi_map_size);
+> > >                 goto unmap;
+> > >         }
+> > >
+> > >
+> >
+> > Hello Breno,
+> >
+> > I don't mind the patch per se, but I don't think it is terribly useful either.
+> >
+> > Could you explain how this helps?
 >
-> I've tentatively queued up this series, as well as the hibernate one,
-> to get some coverage from the robots while I run some tests myself.
+> We are seeing a bunch of `Corrupted EFI Memory Attributes Table
+> detected!` in the Meta fleet, and this is something we are
+> investigating.
+>
+> We highly think this is related to some kexec overwrites, and when we
+> get here, the EFI table is completely garbage. I haven't seen this
+> problem on cold boot.
 >
 
-For the record,
+It likely means the memory is not reserved correctly.
 
-Tested-by: Ard Biesheuvel <ardb@kernel.org>
+Could you check whether this
 
-including the hibernation pieces. It looks pretty to me solid to me.
+--- a/drivers/firmware/efi/memattr.c
++++ b/drivers/firmware/efi/memattr.c
+@@ -56,7 +56,7 @@ int __init efi_memattr_init(void)
+        }
 
-I'd add a Reviewed-by: as well if I wasn't so clueless about VFS
-stuff, so I'll gladly take one from the audience.
+        tbl_size = sizeof(*tbl) + size;
+-       memblock_reserve(efi_mem_attr_table, tbl_size);
++       efi_mem_reserve(efi_mem_attr_table, tbl_size);
+        set_bit(EFI_MEM_ATTR, &efi.flags);
 
-Thanks again, James - this is a really nice cleanup.
+ unmap:
+
+
+makes any difference?
+
+
+> Here are sof the instances I see:
+>
+>         efi: memattr: [Firmware Bug]: Corrupted EFI Memory Attributes Table detected! (version == 0, desc_size == 18058, num_entries == 33554432)
+>         efi: memattr: [Firmware Bug]: Corrupted EFI Memory Attributes Table detected! (version == 1, desc_size == 2072184435, num_entries == 3248688968)
+>         efi: memattr: [Firmware Bug]: Corrupted EFI Memory Attributes Table detected! (version == 0, desc_size == 83886080, num_entries == 304)
+>         efi: memattr: [Firmware Bug]: Corrupted EFI Memory Attributes Table detected! (version == 2, desc_size == 48, num_entries == 40)
+>
+
+The last one looks like a false positive: each of those values seems
+perfectly reasonable.
+
+Any chance you could dump the memory map and this table (boot using
+efi=debug) on this system?
+
+
+> Anyway, back to you question, this patch helped us to narrow down and
+> find where the problem was, by printing all variables taken in
+> consideration to get the conclusion that the firmware is buggy.
+>
+
+Fair enough.
+
+> Regarding the problem, Usama and I are suspecting that it might be
+> related to some 77d48d39e99170 ("efistub/tpm: Use ACPI reclaim memory for
+> event log to avoid corruption"), but at this time with memattr table, where it
+> might not preserved during kexec(?).
+>
+
+Please see the suggestion above.
 
