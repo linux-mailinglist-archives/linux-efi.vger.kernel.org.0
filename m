@@ -1,133 +1,436 @@
-Return-Path: <linux-efi+bounces-2576-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2577-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C648A09897
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 18:33:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4920A099A4
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 19:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 037B4188F1AB
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 17:33:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 049413AAFA7
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 18:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAA1212B17;
-	Fri, 10 Jan 2025 17:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6531021505A;
+	Fri, 10 Jan 2025 18:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8xJR0kI"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pys6Ek8C"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1124D2F3E;
-	Fri, 10 Jan 2025 17:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B37621422B
+	for <linux-efi@vger.kernel.org>; Fri, 10 Jan 2025 18:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736530421; cv=none; b=tYYiVX54aKQJjdFaJpo9YxUySdWFhxvG6HH3hfKZqtCMciMwr4LTd10ZWphqpmazZeKEFgDS1JVHRM/LlSHoRm4tYDV4GG0eh+OzYoLVdJeKXogQ1TP+Il+9mx4AZ6rvqW50LRKJ+8vCGTyHYk1fxqzwAlEV7asFOAfRv07qu+4=
+	t=1736534454; cv=none; b=E1cEU19vwimlMnYqHdEcpYL0W0DZw58xHV8dkH7fYcOlQX6UzqrAj+gxt+3wLCE+89pS46eazs6es+w6fYIhtWnCS2yQbzSl5cnXPOpT6CLxxwTx8F0WRti/xInD1bDX2OPOgOlVJNJ8r+/picnBAv34YI3X/iBE+efprGvFsVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736530421; c=relaxed/simple;
-	bh=2LgNlM5UDL6ChRle2mp0Np/L6evW51T2Zb82b3nCV2U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kgg38nkONkQxgZK0L7vQ7urG7I5JNP5sWVaOg8n1/b/kwkVUByatHkU4IeYhsy0t1eW5LLocsNIQ+4tjqZfWzBEImXIrVu8AcX7it4VnmOrn3Gmi5sFBGSqajmyfZj9uOZFXHlnSAU/btGl1CRp/U3QgCBAdQ9oVKknCmsSx0cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8xJR0kI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80103C4CED6;
-	Fri, 10 Jan 2025 17:33:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736530420;
-	bh=2LgNlM5UDL6ChRle2mp0Np/L6evW51T2Zb82b3nCV2U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=j8xJR0kIkN4IsONbSKw4WLRCqit1GiDdwWWEqOgpHFI7p0Dx2/Gs7+CQMNpDpiCKW
-	 XL4grZ2YsobUcMRGAYh4Yo0fwW3Vsjuqs14GlMtc8B7ITUcP2trVwBDqz6JfFY/WUp
-	 7gZtdcuEj0nff2KmH4741MJj+fslpo2joPvL7AwgB6aR9I4vBgpwzYK0ZsgiwLun2H
-	 Mkj2bDezF9nLGPevq/hZeqfcC0CRe2vfSeoWiJTvrolC39IZVNMXrSnICGaKyzknWH
-	 27Tc058QMe3oKoK70u9ZEG2nE9nrZGE7IbZZcjq/YvyMBUQnorl2ntq7AYBW3xmggV
-	 hi5Qk1ubs4MYQ==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2ffa49f623cso26294811fa.1;
-        Fri, 10 Jan 2025 09:33:40 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWt/GJsIJHuo7QaMBwFNOTMhU6h9nmN0wvnhNH1hcS+prk5KbSHvl1GGbBVJIa2pTIKtIAaxrlwHHM=@vger.kernel.org, AJvYcCWvSpNz5nTsgMLzNzeKJcaV4pHILOPjo/uXFYNEDe/Z3NBf0Greik4VJ7Mdya1R3CPz64etPvLFTvvZxjuE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGyif7i6TtGvSUmfGPYDoJxkm61Fg5ETJRxoc14DRJhbsdP0zS
-	YMy6m9qkysSH9Rwv6KixVkGwbuI74hkg7UujnTYzM5xJ75+HPPhKMEdGlAYYP3XplsMacPqVj59
-	AnTRVN7AzyzOGLIfvkHqj04eRneg=
-X-Google-Smtp-Source: AGHT+IEuxGh8/T/s4PRuzCDPZjJ30Nh6MVT+V5a4g3NgK4duCm/rvIxWbI/taLS4BGyAZZsJuYhCJRUHs5tmVT5suFI=
-X-Received: by 2002:a05:6512:3f12:b0:542:6366:762a with SMTP id
- 2adb3069b0e04-54284545e1bmr3182431e87.25.1736530418923; Fri, 10 Jan 2025
- 09:33:38 -0800 (PST)
+	s=arc-20240116; t=1736534454; c=relaxed/simple;
+	bh=kJv1BSQAWYUAWJ98dDzHdbU35is+ci0Kcab30EKlIOY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=T9KzHGFHLVENi83bEFb+9zwBdz+CcxkKqgzSNsGeg5ZL0CFJANSENjb22QoRHXphBftc6Pv1yHz9jHSBwlKUYCKTJ0uAXRalr1h1N7Sc7LQS2LIQMU06DjPKl6HsDG5A7M7F3Caffu5MZqA/H6ICfHgEtjx8jsxVLSAQvJRbSgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pys6Ek8C; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4361eb83f46so20335495e9.3
+        for <linux-efi@vger.kernel.org>; Fri, 10 Jan 2025 10:40:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736534446; x=1737139246; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jjtB5lRt7h5DA7GIgQanvF90WYFKTK1R3LPSOzDiibI=;
+        b=pys6Ek8CJb8EfLfUmV87iBGG0PSkMCO5/oEsttsorElIJSUQH4gjs/SEN5q9Nx4T+M
+         U7uSBERdfRwiPSsFRGr9ptM4cA5/MuduyyfuKIKcA762vPJMp85X8T5/xchjE/rmFXMK
+         L8HjeM0qER6kMyum3EKcU3BsKSiGF6kmRB5fOASXvhm3AlOjksWZMUJn230k/93dYsyK
+         LCc+W2HaDeWRtjVHxW8haCvd+7GlZJjKdUEmuXk5pK+OpUJa060S4JpcO6YxGjfoWI3r
+         vMkNvczMiHwi+AVoYdYvBch+/4I6rCwyb20ruKr0mP/WJZ4wnxkbgJL4fPV4EubkDatP
+         Pv1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736534446; x=1737139246;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jjtB5lRt7h5DA7GIgQanvF90WYFKTK1R3LPSOzDiibI=;
+        b=At/z7TDVhvTzCqRXx3oUNVsHniSx9/RyK4tb2DYmxJ2Crbxlhxu+hKVWQh470Mdl6X
+         AGoxTfZlaHciLR+IH1LboKwNMVledv/i0TMXDacAJ8rSM5G8pSD3UXBpeXe+h1usWWul
+         0kB7EPLrWC1zG37zwOBO0JlyJ6+xr4cfMcThSHlVErbD2WjwHJIDJ3BJyxLfZcLHhi++
+         jXJbw5mtT+u5uPyg4wRGcqZ++huGFFUu8XYu5KSiK6frrywBG3lMvOYE5H4dnaT7835R
+         EAP/YNndwwQOIEHoBoWDLPE/NEfsB8PzvH4vFk1bCfla/cHBi/MqlVIP1aj7w/kF7zrR
+         IIcg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBH/m3dUpr7hXGROxFJmaFuQKsJzPSCg1d2yA2U14+UkEqfuQPrcLbSjCAeEUHkNh3dawRlI8pX64=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzR9enpUmxjbDfsM4BgAPY9sn7QTuW32VmjkJEd+5lXgQZJeZlk
+	CnQmo80qn9/2Gz9i5fghAkSQTwjYEhxQr56r59izRNB4Jj5FomgZlAIE0xp4mQT2CFjVRwYYYSt
+	8VteYbJkMig==
+X-Google-Smtp-Source: AGHT+IGn62s/zpmNlw6cS/dnEppCTrQbKdqDl7tm1TqotCpul8Aao0CteIYxi5s8bW0nJPjX7qZkFnpNt2sQAQ==
+X-Received: from wmbjw19.prod.google.com ([2002:a05:600c:5753:b0:434:a4bc:534f])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a7b:c315:0:b0:434:ffb2:f9df with SMTP id 5b1f17b1804b1-436e26adf94mr117996365e9.17.1736534445509;
+ Fri, 10 Jan 2025 10:40:45 -0800 (PST)
+Date: Fri, 10 Jan 2025 18:40:26 +0000
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250108215957.3437660-1-usamaarif642@gmail.com>
- <20250108215957.3437660-3-usamaarif642@gmail.com> <CAMj1kXFWZNRwx1H2HT8V9hNvUKDi0O3kcLku+g94UOvNBzz5eQ@mail.gmail.com>
- <cade51c5-5fcc-4208-b46c-f2e2038f03e7@gmail.com> <CAMj1kXFwgnQT4jQF8zsX05PdrF_QDXK0+Z-6DD6LiSgjqY738A@mail.gmail.com>
- <20250110-tricky-grasshopper-of-maturity-21771f@leitao>
-In-Reply-To: <20250110-tricky-grasshopper-of-maturity-21771f@leitao>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 10 Jan 2025 18:33:27 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFjJZKGS1VDcUw3Uw9xB0R5+Q3q-21hojw4NMbr__XmgA@mail.gmail.com>
-X-Gm-Features: AbW1kvZLYSGGczVN_3S8j4nI__QcdSl-X1qZVWuLdX8pTn1lTfcnMroSAbHPcAM
-Message-ID: <CAMj1kXFjJZKGS1VDcUw3Uw9xB0R5+Q3q-21hojw4NMbr__XmgA@mail.gmail.com>
-Subject: Re: [RFC 2/2] efi/memattr: add efi_mem_attr_table as a reserved
- region in 820_table_firmware
-To: Breno Leitao <leitao@debian.org>
-Cc: Usama Arif <usamaarif642@gmail.com>, linux-efi@vger.kernel.org, devel@edk2.groups.io, 
-	kexec@lists.infradead.org, hannes@cmpxchg.org, dyoung@redhat.com, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, gourry@gourry.net, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJtpgWcC/z2NwQrCMBBEf6Xs2ZVsTLX1JAh+gFfpIWnTdkEbS
+ SQoJf9uzMHjvGHerBCsZxvgWK3gbeTAbslBbiroZ71MFnnIGaSQiohq1IHRjz1GifXQGmNU5s0
+ e8uDp7cjvIrvB9XKGLsOZw8v5TzmIVKqfSxxI/l1SYSQUSEqZHbVaiaE5Tc5Nd7vt3QO6lNIXN mCbbqoAAAA=
+X-Change-Id: 20241115-asi-rfc-v2-5d9bbb441186
+X-Mailer: b4 0.15-dev
+Message-ID: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+Subject: [PATCH RFC v2 00/29] Address Space Isolation (ASI)
+From: Brendan Jackman <jackmanb@google.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mike Rapoport <rppt@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
+	Brendan Jackman <jackmanb@google.com>, Junaid Shahid <junaids@google.com>, 
+	Ofir Weisse <oweisse@google.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Kevin Cheng <chengkev@google.com>, Reiji Watanabe <reijiw@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 10 Jan 2025 at 12:36, Breno Leitao <leitao@debian.org> wrote:
->
-> Hello Ard,
->
-> On Fri, Jan 10, 2025 at 08:32:08AM +0100, Ard Biesheuvel wrote:
-> > On Thu, 9 Jan 2025 at 17:32, Usama Arif <usamaarif642@gmail.com> wrote:
->
-> > > I think in the end whoevers' responsibility it is, the easiest path forward
-> > > seems to be in kernel? (and not firmware or libstub)
-> > >
-> >
-> > Agreed. But as I pointed out in the other thread, the memory
-> > attributes table only augments the memory map with permission
-> > information, and can be disregarded, and given how badly we mangle the
-> > memory map on x86, maybe this is the right choice here.
->
-> If this augmented memory is not preserved accross kexec, then the next
-> kexec'ed kernel will be able to find the original table?
->
-> I understand that the memattr region(s) need to be always (in each kexec
-> instances) `memblocked_reserved` to protect it from being used as a
-> System RAM, right?
->
-> Thus, if it is not passed throught e820, kexec'ed kernel needs to fetch
-> it again from original EFI table at kexec/boot time.
->
+ASI is a technique to mitigate a broad class of CPU vulnerabilities
+by unmapping sensitive data from the kernel address space. If no data
+is mapped that needs protecting, this class of exploits cannot leak
+that data and so the kernel can skip expensive mitigation actions.
+For a more detailed overview, see the v1 RFC (which was wrongly
+labeled as a PATCH) [0].
 
-Not sure what 'fetching' means here.
+This new iteration adds support for protecting against bare-metal
+processes as well as KVM guests. The basic principle is unchanged.
 
-> This brings me another question.
->
-> If the kexec'ed kernel sees the original memory, why can't it
-> augment/update the RX permissions *again*, instead of passing the
-> previous augmented version from previous kernel in this crazy dance.
->
+.:: Multi-class ASI
 
-I don't understand what original memory means. I think we're talking
-past each other tbh.
+So far ASI has been a KVM-only solution, although I've been claiming
+that in principle it can be extended to also sandbox userspace.
+Dave Hansen's most important feedback at LPC [1] was that he wanted
+some evidence to support this claim. If it can be shown that ASI is
+just as powerful for bare-metal as for KVM, it's much more likely to
+actually offer an escape path from maintaining and reactively
+developing per-exploit mitigations.
 
-> > This is a kexec problem (on x86 only) so let's fix it there.
->
-> Would you mind explaining what kexec needs to be done differently?
-> Should it preserve the augmented memattr table independently if it is
-> mapped in e820?
->
+v1 already supported a notion of "ASI classes", with the only class
+being KVM. This RFC introduces a second class for userspace. Each
+process has a separate restricted address space ("domain") for each
+class.
 
-I don't know what 'mapped in e820' means.
+In v1, the only possible ASI transitions were between the KVM
+restricted address space, and the unrestricted address space. Now
+that there are multiple classes, it's possible to transition directly
+between two restricted address spaces.
 
-Let's forget about what the memory attributes table actually contains,
-and just assume we can live without it, ok?
+(Could we dodge this complexity by just transitioning via the
+ unrestricted address space? Yes, but experience from Google's
+ internal deployment suggests there's a significant benefit in
+ avoiding an asi_exit() when switching between userspace and KVM,
+ despite all the optimizations that exist to avoid that switching).
 
-So when booting x86 via kexec (which is already detected in
-arch/x86/platform/efi/efi.c), the kernel should pretend that the table
-does not exist.
+Compared to v1, this version has a new mechanism to determine
+what mitigation actions are required when switching between address
+spaces.  ASI classes provide a "taint policy" which describes what
+uarch state their sandboxee might leave behind, and what uarch state
+needs to be purged before their sandboxee can safely be run. The ASI
+core takes care of doing the actual flushes.
+
+This enables a reasonably advanced model of what flushes are needed
+when; for example the kernel is now able to model "when transitioning
+from a VMM to its KVM guest there is no point in flushing speculative
+control flow state, but if we _later_ exit to the unrestricted
+address space we do need to flush it". It's quite possible this is
+actually more advanced than what is needed so suggestions are
+welcome.
+
+.:: Performance issues: bogus mitigation costs
+
+Although this implementation of ASI is pretty generous in what it
+considers "nonsensitive", there remain unnecessary performance costs
+that need to be addressed. For example:
+
+- The entire page cache is removed from the direct map. Traditional
+  file operations will hit an asi_exit(), paying a pointless cost to
+  protect data from a process that obviously has the right to read
+  that data.
+- Anything that accesses guest or user memory via the direct map
+  instead of the user address space will hit an asi_exit().
+- Pages being zeroed in the page allocator
+
+Most of these issues existed in v1 too, but now that ASI sandboxes
+userspace processes, the page-cache issue becomes very significant.
+For FIO 4k read (I suppose this workload is maximally sensitive to
+this issue) I saw a 70% degradation in throughput, with a Sapphire
+Rapids machine hard-coded to perform IBPB and RSB-stuffing on
+asi_exit().
+
+Given a result like that I haven't gone into more detailed analysis.
+Note also that I ran with an unrealistic mitigation policy, results
+would be much different if ran with platform-appropriate flushes, but
+it would presumably lead to the same conclusion.
+
+There are some interesting discussions to be had about tackling that
+problem (e.g. reintroducing "local-nonsensitivity" from Junaid's 2022
+ASI implementation [2], or creating ephemeral CPU-local mappings),
+but for this RFC I prefer to focus on deciding if the overall
+framework makes sense.
+
+.:: Next steps
+
+Aside from lack of userspace support, all the other issues listed in
+RFCv1 remain. I'll also need a proof-of-concept solution for the
+page-cache issue before we can credibly claim to be reaching a
+[PATCH], but before that I want to develop a more complete page_alloc
+integration. I plan to propose a topic about that at LSF/MM/BPF.
+
+Anyway, despite the further research needed on my side I think
+there's still useful stuff to discuss here. For example:
+
+ - Does the "tainting" model make intuitive sense? Is there a simpler
+   way to achieve something similar?
+
+ - The taints offer a model for different parts of the kernel to
+   communicate with each other about what mitigations they've taken
+   care of. For example, KVM could clear ASI taints if it existing
+   conditional-L1D-flush logic fires. Does it make sense to take
+   advantage of this? (I think yes). How does this influence the
+   design of the bugs.c kernel arguments?
+
+ - Suggestions on how to map file pages into processes that can read
+   them, while minimizing TLB management pain.
+
+Finally, a more extensive branch can be found at [3]. It has some tests
+and some of the lower-hanging fruit for optimising performance of KVM
+guests.
+
+[0] RFC v1:
+    https://lore.kernel.org/linux-mm/20240712-asi-rfc-24-v1-0-144b319a40d8@=
+google.com/
+
+[1] LPC session: https://lpc.events/event/18/contributions/1761/
+
+[2] Junaid=E2=80=99s RFC:
+    https://lore.kernel.org/all/20220223052223.1202152-1-junaids@google.com=
+/
+
+[3] GitHub branch:
+    https://github.com/googleprodkernel/linux-kvm/tree/asi-rfcv2-preview
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	 Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	 Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	 Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	 Alexandre Chartre <alexandre.chartre@oracle.com>,
+	Liran Alon <liran.alon@oracle.com>,
+	 Jan Setje-Eilers <jan.setjeeilers@oracle.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	 Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	 Andrew Morton <akpm@linux-foundation.org>,
+	Mel Gorman <mgorman@suse.de>,
+	 Lorenzo Stoakes <lstoakes@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	 Michal Hocko <mhocko@kernel.org>,
+	Khalid Aziz <khalid.aziz@oracle.com>,
+	 Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	 Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	 Valentin Schneider <vschneid@redhat.com>,
+	Paul Turner <pjt@google.com>, Reiji Watanabe <reijiw@google.com>,
+	 Junaid Shahid <junaids@google.com>,
+	Ofir Weisse <oweisse@google.com>,
+	 Yosry Ahmed <yosryahmed@google.com>,
+	Patrick Bellasi <derkling@google.com>,
+	 KP Singh <kpsingh@google.com>,
+	Alexandra Sandulescu <aesa@google.com>,
+	 Matteo Rizzo <matteorizzo@google.com>,
+	Jann Horn <jannh@google.com>
+	 kvm@vger.kernel.org, Brendan Jackman <jackmanb@google.com>,
+	Dennis Zhou <dennis@kernel.org>
+
+---
+Changes in v2:
+- Added support for sandboxing userspace processes.
+- Link to v1: https://lore.kernel.org/r/20240712-asi-rfc-24-v1-0-144b319a40=
+d8@google.com
+
+---
+Brendan Jackman (21):
+      mm: asi: Make some utility functions noinstr compatible
+      x86: Create CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
+      mm: asi: Introduce ASI core API
+      mm: asi: Add infrastructure for boot-time enablement
+      mm: asi: ASI support in interrupts/exceptions
+      mm: asi: Avoid warning from NMI userspace accesses in ASI context
+      mm: Add __PAGEFLAG_FALSE
+      mm: asi: Map non-user buddy allocations as nonsensitive
+      [TEMP WORKAROUND] mm: asi: Workaround missing partial-unmap support
+      mm: asi: Map kernel text and static data as nonsensitive
+      mm: asi: Map vmalloc/vmap data as nonsensitive
+      mm: asi: Stabilize CR3 in switch_mm_irqs_off()
+      mm: asi: Make TLB flushing correct under ASI
+      KVM: x86: asi: Restricted address space for VM execution
+      mm: asi: exit ASI before accessing CR3 from C code where appropriate
+      mm: asi: Add infrastructure for mapping userspace addresses
+      mm: asi: Restricted execution fore bare-metal processes
+      x86: Create library for flushing L1D for L1TF
+      mm: asi: Add some mitigations on address space transitions
+      x86/pti: Disable PTI when ASI is on
+      mm: asi: Stop ignoring asi=3Don cmdline flag
+
+Junaid Shahid (4):
+      mm: asi: Make __get_current_cr3_fast() ASI-aware
+      mm: asi: ASI page table allocation functions
+      mm: asi: Functions to map/unmap a memory range into ASI page tables
+      mm: asi: Add basic infrastructure for global non-sensitive mappings
+
+Ofir Weisse (1):
+      mm: asi: asi_exit() on PF, skip handling if address is accessible
+
+Reiji Watanabe (1):
+      mm: asi: Map dynamic percpu memory as nonsensitive
+
+Yosry Ahmed (2):
+      mm: asi: Use separate PCIDs for restricted address spaces
+      mm: asi: exit ASI before suspend-like operations
+
+ arch/alpha/include/asm/Kbuild            |    1 +
+ arch/arc/include/asm/Kbuild              |    1 +
+ arch/arm/include/asm/Kbuild              |    1 +
+ arch/arm64/include/asm/Kbuild            |    1 +
+ arch/csky/include/asm/Kbuild             |    1 +
+ arch/hexagon/include/asm/Kbuild          |    1 +
+ arch/loongarch/include/asm/Kbuild        |    3 +
+ arch/m68k/include/asm/Kbuild             |    1 +
+ arch/microblaze/include/asm/Kbuild       |    1 +
+ arch/mips/include/asm/Kbuild             |    1 +
+ arch/nios2/include/asm/Kbuild            |    1 +
+ arch/openrisc/include/asm/Kbuild         |    1 +
+ arch/parisc/include/asm/Kbuild           |    1 +
+ arch/powerpc/include/asm/Kbuild          |    1 +
+ arch/riscv/include/asm/Kbuild            |    1 +
+ arch/s390/include/asm/Kbuild             |    1 +
+ arch/sh/include/asm/Kbuild               |    1 +
+ arch/sparc/include/asm/Kbuild            |    1 +
+ arch/um/include/asm/Kbuild               |    2 +-
+ arch/x86/Kconfig                         |   27 +
+ arch/x86/boot/compressed/ident_map_64.c  |   10 +
+ arch/x86/boot/compressed/pgtable_64.c    |   11 +
+ arch/x86/include/asm/asi.h               |  306 +++++++++
+ arch/x86/include/asm/cpufeatures.h       |    1 +
+ arch/x86/include/asm/disabled-features.h |    8 +-
+ arch/x86/include/asm/idtentry.h          |   50 +-
+ arch/x86/include/asm/kvm_host.h          |    3 +
+ arch/x86/include/asm/l1tf.h              |   11 +
+ arch/x86/include/asm/nospec-branch.h     |    2 +
+ arch/x86/include/asm/pgalloc.h           |    6 +
+ arch/x86/include/asm/pgtable_64.h        |    4 +
+ arch/x86/include/asm/processor-flags.h   |   24 +
+ arch/x86/include/asm/processor.h         |   20 +-
+ arch/x86/include/asm/pti.h               |    6 +-
+ arch/x86/include/asm/special_insns.h     |   45 +-
+ arch/x86/include/asm/tlbflush.h          |    6 +
+ arch/x86/kernel/process.c                |    2 +
+ arch/x86/kernel/process_32.c             |    2 +-
+ arch/x86/kernel/process_64.c             |    2 +-
+ arch/x86/kernel/traps.c                  |   22 +
+ arch/x86/kvm/Kconfig                     |    1 +
+ arch/x86/kvm/svm/svm.c                   |    2 +
+ arch/x86/kvm/vmx/nested.c                |    6 +
+ arch/x86/kvm/vmx/vmx.c                   |  113 ++--
+ arch/x86/kvm/x86.c                       |   81 ++-
+ arch/x86/lib/Makefile                    |    1 +
+ arch/x86/lib/l1tf.c                      |   96 +++
+ arch/x86/lib/retpoline.S                 |   10 +
+ arch/x86/mm/Makefile                     |    1 +
+ arch/x86/mm/asi.c                        | 1039 ++++++++++++++++++++++++++=
+++++
+ arch/x86/mm/fault.c                      |  124 +++-
+ arch/x86/mm/init.c                       |    7 +-
+ arch/x86/mm/init_64.c                    |   25 +-
+ arch/x86/mm/mm_internal.h                |    3 +
+ arch/x86/mm/pti.c                        |   14 +-
+ arch/x86/mm/tlb.c                        |  167 ++++-
+ arch/x86/virt/svm/sev.c                  |    2 +-
+ arch/xtensa/include/asm/Kbuild           |    1 +
+ drivers/firmware/efi/libstub/x86-5lvl.c  |    2 +-
+ include/asm-generic/asi.h                |  113 ++++
+ include/asm-generic/vmlinux.lds.h        |   11 +
+ include/linux/entry-common.h             |   11 +
+ include/linux/gfp.h                      |    5 +
+ include/linux/gfp_types.h                |   15 +-
+ include/linux/mm_types.h                 |    7 +
+ include/linux/page-flags.h               |   18 +
+ include/linux/pgtable.h                  |    3 +
+ include/trace/events/mmflags.h           |   12 +-
+ init/main.c                              |    2 +
+ kernel/entry/common.c                    |    1 +
+ kernel/fork.c                            |    5 +
+ kernel/sched/core.c                      |    9 +
+ mm/init-mm.c                             |    4 +
+ mm/internal.h                            |    2 +
+ mm/mm_init.c                             |    1 +
+ mm/page_alloc.c                          |  160 ++++-
+ mm/percpu-vm.c                           |   50 +-
+ mm/percpu.c                              |    4 +-
+ mm/vmalloc.c                             |   53 +-
+ tools/perf/builtin-kmem.c                |    1 +
+ 80 files changed, 2582 insertions(+), 190 deletions(-)
+---
+base-commit: ebd6ea9c6976c64ed5af3e6dce672616447e8e62
+change-id: 20241115-asi-rfc-v2-5d9bbb441186
+
+Best regards,
+--=20
+Brendan Jackman <jackmanb@google.com>
+
 
