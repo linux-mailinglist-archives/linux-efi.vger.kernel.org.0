@@ -1,151 +1,188 @@
-Return-Path: <linux-efi+bounces-2562-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2563-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E62AA088F5
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 08:34:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8A4A08E9D
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 11:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 934133A9256
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 07:34:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 729627A168A
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 10:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D622066CB;
-	Fri, 10 Jan 2025 07:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D34205ACB;
+	Fri, 10 Jan 2025 10:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSWPXrXq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eWO24Od3"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3284205E05;
-	Fri, 10 Jan 2025 07:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB105206F14;
+	Fri, 10 Jan 2025 10:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736494493; cv=none; b=BtUImU4oB03/opvcZfLjjfrcYMxP/KZWqe4GKfFosFdWrTIInNb0iGFvESqv22tOXPR9yTU4HJiFZ89dzUy5A78vwu1PybVL+gtA7w07kON0R+IXNChQuCVa4Sm8LOploeVrICAoN+ghmn4cGZBfd72lgXLA2qSOPgdtp3Fi6rI=
+	t=1736506438; cv=none; b=rRt/8YLZ9E0Pdpb6vkPmhCBsp55NciLk6XyW1zZSjSveE7Uew2jCVbXNtnW+NZtzeUaTrVUCON9NlvgW4WOzQ+zGEZFC+tdmE3reB5j5kyQd2rYNcolji7qJPJwDw0drxwjPJZTBozt97YhbHYaWZyCpmXfbWzgt+FfparJ0tBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736494493; c=relaxed/simple;
-	bh=kYqbSLzknzruTkzUb3qvktdfdDW95zy1Jf8hzJJDvMM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jbqap/L4znnyKaVMRbHT2/Ov+ZTqKhpeOe/KBIi/h06D/UqKEynZ41DPM8flh+D7E+Uidpd3O+WjSTt+sxi//4Qu1BgLJQotIBl26N5eslqkcAhm3x5rHp0d+Q7TNJhJAqSO/qNjZvwe17WQ+sF3CsatEwoq1YL5GYA2VjUMnv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSWPXrXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D75DC4CEE0;
-	Fri, 10 Jan 2025 07:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736494492;
-	bh=kYqbSLzknzruTkzUb3qvktdfdDW95zy1Jf8hzJJDvMM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RSWPXrXq938Ij3QM6DZYS+bTFT/0HhHNLE+f8evIgqGIN0HqrHunna1C8DUEBqgh+
-	 GMPIBrYuEkYWG3JYpbDeDsPA98WOnKmPZBehjAkSrLB7QJwR8Lns9q0P3FkB2c1Ky9
-	 og172lpGKRWO0JB2zRIv2bNTsz3Iu6MPx8+qtCZIk7LfkRF7YyBrQGpKbVUVgA2qMC
-	 A1gYS9/2xdmgx9Px0SHQqKZfxUo4oMQRUIoKjbcbMQXr4S9V+1blVFsWg9hFXUciHH
-	 N5mM7PCnFnWIVEtogOsNS7xoiBSxJwXz2gnSOZhkNkJsTHd+xYjMXx17Q1e7WGqKdC
-	 jlf3/Rsnpk4RQ==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53e399e3310so1838140e87.1;
-        Thu, 09 Jan 2025 23:34:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUkaewyXkeyFecRzfvx2zYolT5RPIosVRxktcCaRX0X+T7KwbcmonBpjgvBojgUqU8TFRp8Wxb3a/VWWzw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7Lgvu4FbLaJmSM3PEmkZQJUrjCsAzLeYYtaFq6SOJBozR/gPO
-	GhS0iSkJQvRd81lgAnx59G8UrlXihVV5+AcXSS9ooZkmcBzJuSSrIzKfa9H3hbDjoKJq8slhMqs
-	qmeK9M8ualyAKXLvCFz+zuDJMHTw=
-X-Google-Smtp-Source: AGHT+IHcf2xM9VvsYkjaloDENOtP+ZvDGKm/5QwUX3w3+EsHJCn4Dx75mqct7KEITe06bcj8EHmwCzJigOu+TQuR7FA=
-X-Received: by 2002:ac2:4e08:0:b0:540:2ff1:309d with SMTP id
- 2adb3069b0e04-542845c56cfmr3059582e87.34.1736494490953; Thu, 09 Jan 2025
- 23:34:50 -0800 (PST)
+	s=arc-20240116; t=1736506438; c=relaxed/simple;
+	bh=UuGnCjwVsCeergVV3WzYt6Khp3mVrZEP6da6u4OCHFY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZCDSklBV1UYLOJrVurRv8Ztn6a5NA47iWPQCdFV0QSPmsjbrmEfCQIohJ2f143s0itaouKs+0sh3qRvM59awXvGPXjW03BmwdCnBoAeMueEUqauRv+Y/piG97shV/tb57anBq93yybrhSKhGNe46HlX0FbRPWdfJEL8MQWqQIqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eWO24Od3; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5d90a5581fcso3097252a12.1;
+        Fri, 10 Jan 2025 02:53:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736506435; x=1737111235; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ve3lNtLuYnUEedIKyQHjHUym+uf/AdZFMUlHp8J/SPs=;
+        b=eWO24Od33k7p0a4Fim8cI+ugEqmmEkYeUo5+fQE/GOuydJBhQ+/YMqZEMeuJJbWzYI
+         jBW7BD/gEdyCFb/+DhQC0WgCvrSo5jKO6rnMYMAu+wv/2gVtr/rKGWcULMgK9KoF1Ezu
+         x9QQivI78zvkmQnpHV+ogHGR8Bh2UMRxkkOOkGBw50wCeqfoG9+S1OMGtKK4HTxXPmSL
+         +EM7X+4N9cJVSQgm9AYGNtZJY0Hsdn63GhhJ5u6S/G066NLSNw+CPhKj4mBmrTL3C372
+         RWMA2+Mew9DvdXyM3DomwaW8wfphGp/QHm1W7FFKEH0gCKfkP6MSw4IF5xHN51EX3UQb
+         PEHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736506435; x=1737111235;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ve3lNtLuYnUEedIKyQHjHUym+uf/AdZFMUlHp8J/SPs=;
+        b=IL5C9qeXMmGiuhuj+ZKkNgcyYCCZnlwm7exnQYShg0o8NG4tQ6PtBuOs416FKXua8J
+         dXCNj5aiBU49FuZUPXrSmBQgty/vOa/cmKwEKxepXKjvW4c5VPfeJzhdM2y+Qq34+Zz2
+         BOSioZs+olpzv7gc4VvOlW68EVf+ywZAl+9sKTq0kYScK3CcxTQHlPaqlhCRQVDqsE2b
+         UcatCBfxmRNTi+3c36JVInvTAfHQJqqaapCLy2V/b64Rmf1qcTFnAE+xafaGazq9EeCG
+         wzB8YuynvsQCb6bkvbH67WfgyN7LGiEleWf0g7Nj83OF9m+6WzkivvWaoWJIi9MWnJbj
+         Wrjw==
+X-Forwarded-Encrypted: i=1; AJvYcCU2U2+Pd6Q82VucmruHiFVSqmKSHftMf7vq3LMldyWNYMgEG2qdCt+QJU0GTN5jM7OLYAtd+SaSLAjBQFI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyx/NHbJ8RulMNFVSGHjoDsuEtzgqTCDxX3sjPv5LrVP+qY1qUY
+	cUhtMTn+xEbwbAaTBkUBIpZ9Rs3EfqNjnHPTh5FyBDXX+Fdw6ra8
+X-Gm-Gg: ASbGncsYVXUQO/iwX2QflE9LVCtQx4wr++bdetxkZKq//we1Ln5ATavCGtuPRQ1jkF+
+	LWBdkK86+Dn3/yViaZbL3pp2+cStTLbxctpE9y1qJMKut2lN50h25sHGJibaFjw9KPJdTGhyO97
+	sAnf5IUDYa+2d4EIPKwZF0Er6+rXttsSdvPkn5bQre3XLZkgcwZptgvmIXrpHoWZ6aevsKb3zGS
+	M+LZlPUASVqIsSCV0Xus3q725QlIqJYjIcOvBa9+Dl08mRnOp/XyHJF5vZeCkEpuRSrIrwE4BZe
+	Dzcd7s1RPsac4iyxmxv5ToK0ihBM
+X-Google-Smtp-Source: AGHT+IHUoKF5CCleTB2jU9vLsvOAEPHxoqMfeJizDfgZZl9x+zXjW5TDWSL8oHA1WM8ocRBnyA/UtQ==
+X-Received: by 2002:a05:6402:2347:b0:5d2:729f:995f with SMTP id 4fb4d7f45d1cf-5d972e6f957mr8778390a12.29.1736506435017;
+        Fri, 10 Jan 2025 02:53:55 -0800 (PST)
+Received: from ?IPV6:2a03:83e0:1126:4:829:739b:3caa:6500? ([2620:10d:c092:500::5:e213])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d98fe8f68csm1544698a12.0.2025.01.10.02.53.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jan 2025 02:53:54 -0800 (PST)
+Message-ID: <8613563a-ee7c-4271-b1f0-4d1ac365ad3a@gmail.com>
+Date: Fri, 10 Jan 2025 10:53:53 +0000
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 1/2] efi/memattr: Use desc_size instead of total size to
+ check for corruption
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org, devel@edk2.groups.io,
+ kexec@lists.infradead.org, hannes@cmpxchg.org, dyoung@redhat.com,
+ x86@kernel.org, linux-kernel@vger.kernel.org, leitao@debian.org,
+ gourry@gourry.net, kernel-team@meta.com
 References: <20250108215957.3437660-1-usamaarif642@gmail.com>
- <20250108215957.3437660-3-usamaarif642@gmail.com> <CAMj1kXFWZNRwx1H2HT8V9hNvUKDi0O3kcLku+g94UOvNBzz5eQ@mail.gmail.com>
- <cade51c5-5fcc-4208-b46c-f2e2038f03e7@gmail.com>
-In-Reply-To: <cade51c5-5fcc-4208-b46c-f2e2038f03e7@gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 10 Jan 2025 08:32:08 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFwgnQT4jQF8zsX05PdrF_QDXK0+Z-6DD6LiSgjqY738A@mail.gmail.com>
-X-Gm-Features: AbW1kvad1Ep7ZJNKHY5SzNw-aw7vA2PCxxRZNUDwL7taXhAPV5dXJQCNTI_QuUA
-Message-ID: <CAMj1kXFwgnQT4jQF8zsX05PdrF_QDXK0+Z-6DD6LiSgjqY738A@mail.gmail.com>
-Subject: Re: [RFC 2/2] efi/memattr: add efi_mem_attr_table as a reserved
- region in 820_table_firmware
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: linux-efi@vger.kernel.org, devel@edk2.groups.io, kexec@lists.infradead.org, 
-	hannes@cmpxchg.org, dyoung@redhat.com, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, leitao@debian.org, gourry@gourry.net, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
+ <20250108215957.3437660-2-usamaarif642@gmail.com>
+ <CAMj1kXH54Y0ae1OGwBe7-UiRBq9cFkDHbjxos_rEZPtan7NNzQ@mail.gmail.com>
+ <d9c84079-6593-43f4-9483-648b665f03db@gmail.com>
+ <CAMj1kXGYsJrqDzy_+g_wSAAEuQ_OnxvyJ8ZE+4gbr6KOY7iuow@mail.gmail.com>
+Content-Language: en-US
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <CAMj1kXGYsJrqDzy_+g_wSAAEuQ_OnxvyJ8ZE+4gbr6KOY7iuow@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 9 Jan 2025 at 17:32, Usama Arif <usamaarif642@gmail.com> wrote:
->
->
->
-> On 09/01/2025 16:15, Ard Biesheuvel wrote:
-> > On Wed, 8 Jan 2025 at 23:00, Usama Arif <usamaarif642@gmail.com> wrote:
-> >>
-> >> When this area is not reserved, it comes up as usable in
-> >> /sys/firmware/memmap. This means that kexec, which uses that memmap
-> >> to find usable memory regions, can select the region where
-> >> efi_mem_attr_table is and overwrite it and relocate_kernel.
-> >>
-> >> Since the patch in [1] was merged, all boots after kexec
-> >> are producing the warning that it introduced.
-> >>
-> >> Having a fix in firmware can be difficult to get through.
-> >
-> > I don't follow. I don't think there is anything wrong with the
-> > firmware here. Could you elaborate?
-> >
->
-> So the problem is, kexec sees this memory as System RAM, and decides
-> it can be used to place an image here.
->
-> I guess the question is (and I actually don't know the answer here),
-> whose responsibility is it to mark this region as reserved so that
-> its not touched by anyone else. I would have thought it should be
-> firmware?
->
 
-No, it is the OS. The firmware only reserves regions that are needed
-for its own correct operation at runtime. For informational tables
-such as this one, it is up to the OS whether it wants to reserve it
-and keep it in place, consume it and release the memory, or ignore it
-altogether.
 
-> Maybe its not the firmwares' job to mark it as reserved, but just pass
-> it to kernel and the kernel is supposed to make sure it gets reserved
-> in a proper way, even across kexecs.
->
+On 10/01/2025 07:21, Ard Biesheuvel wrote:
+> On Thu, 9 Jan 2025 at 17:36, Usama Arif <usamaarif642@gmail.com> wrote:
+>>
+>>
+>>
+>> On 09/01/2025 15:45, Ard Biesheuvel wrote:
+>>> On Wed, 8 Jan 2025 at 23:00, Usama Arif <usamaarif642@gmail.com> wrote:
+>>>>
+>>>> The commit in [1] introduced a check to see if EFI memory attributes
+>>>> table was corrupted. It assumed that efi.memmap.nr_map remains
+>>>> constant, but it changes during late boot.
+>>>> Hence, the check is valid during cold boot, but not in the subsequent
+>>>> kexec boot.
+>>>>
+>>>> This is best explained with an exampled. At cold boot, for a test
+>>>> machine:
+>>>> efi.memmap.nr_map=91,
+>>>> memory_attributes_table->num_entries=48,
+>>>> desc_size = 48
+>>>> Hence, the check introduced in [1] where 3x the size of the
+>>>> entire EFI memory map is a reasonable upper bound for the size of this
+>>>> table is valid.
+>>>>
+>>>> In late boot __efi_enter_virtual_mode calls 2 functions that updates
+>>>> efi.memmap.nr_map:
+>>>> - efi_map_regions which reduces the `count` of map entries
+>>>>   (for e.g. if should_map_region returns false) and which is reflected
+>>>>   in efi.memmap by __efi_memmap_init.
+>>>>   At this point efi.memmap.nr_map becomes 46 in the test machine.
+>>>> - efi_free_boot_services which also reduces the number of memory regions
+>>>>   available (for e.g. if md->type or md->attribute is not the right value).
+>>>>   At this point efi.memmap.nr_map becomes 9 in the test machine.
+>>>> Hence when you kexec into a new kernel and pass efi.memmap, the
+>>>> paramaters that are compared are:
+>>>> efi.memmap.nr_map=9,
+>>>> memory_attributes_table->num_entries=48,
+>>>> desc_size = 48
+>>>> where the check in [1] is no longer valid with such a low efi.memmap.nr_map
+>>>> as it was reduced due to efi_map_regions and efi_free_boot_services.
+>>>>
+>>>> A more appropriate check is to see if the description size reported by
+>>>> efi and memory attributes table is the same.
+>>>>
+>>>> [1] https://lore.kernel.org/all/20241031175822.2952471-2-ardb+git@google.com/
+>>>>
+>>>> Fixes: 8fbe4c49c0cc ("efi/memattr: Ignore table if the size is clearly bogus")
+>>>> Reported-by: Breno Leitao <leitao@debian.org>
+>>>> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+>>>> ---
+>>>>  drivers/firmware/efi/memattr.c | 16 ++++++----------
+>>>>  1 file changed, 6 insertions(+), 10 deletions(-)
+>>>>
+>>>
+>>> The more I think about this, the more I feel that kexec on x86 should
+>>> simply discard this table, and run with the firmware code RWX (which
+>>> is not the end of the world).
+>>
+>>
+>> By discard this table, do you mean kexec not use e820_table_firmware?
+> 
+> No, I mean kexec ignores the memory attributes table.
+> 
+>> Also a very basic question, what do you mean by run with the firmware RWX?
+>>
+> 
+> The memory attributes table is an overlay for the EFI memory map that
+> describes which runtime code regions may be mapped with restricted
+> permissions. Without this table, everything will be mapped writable as
+> well as executable, but only in the EFI page tables, which are only
+> active when an EFI call is in progress.
+> 
 
-Indeed.
+Thanks for explaining!
 
-> I think in the end whoevers' responsibility it is, the easiest path forward
-> seems to be in kernel? (and not firmware or libstub)
->
+So basically get rid of memattr.c :)
 
-Agreed. But as I pointed out in the other thread, the memory
-attributes table only augments the memory map with permission
-information, and can be disregarded, and given how badly we mangle the
-memory map on x86, maybe this is the right choice here.
+Do you mean get rid of it only for kexec, or not do it for any
+boot (including cold boot)?
+I do like this idea! I couldn't find this in the git history,
+but do you know if this was added in the linux kernel just
+because EFI spec added support for it, or if there was a
+specific security problem?
 
-> >
-> >> The next ideal place would be in libstub. However, it looks like
-> >> InstallMemoryAttributesTable [2] is not available as a boot service
-> >> call option [3], [4], and install_configuration_table does not
-> >> seem to work as a valid substitute.
-> >>
-> >
-> > To do what, exactly?
-> >
->
-> To change the memory type from System RAM to either reserved or
-> something more appropriate, i.e. any type that is not touched by
-> kexec or any other userspace.
->
-> Basically the example code I attached at the end of the cover letter in
-> https://lore.kernel.org/all/20250108215957.3437660-1-usamaarif642@gmail.com/
-> It could be EFI_ACPI_RECLAIM_MEMORY or EFI_RESERVED_TYPE, both of which aren't
-> touched by kexec.
->
-
-This is a kexec problem (on x86 only) so let's fix it there.
+Thanks!
 
