@@ -1,79 +1,65 @@
-Return-Path: <linux-efi+bounces-2570-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2571-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C64A09665
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 16:50:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998E1A096FC
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 17:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9B837A01D0
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 15:50:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 094F91670BE
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 16:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9332116EF;
-	Fri, 10 Jan 2025 15:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BE1212FBA;
+	Fri, 10 Jan 2025 16:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C96mk95V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cBdDLWf5"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DE42066E5;
-	Fri, 10 Jan 2025 15:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292BB212FB7;
+	Fri, 10 Jan 2025 16:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736524207; cv=none; b=izPB+hmQqcDbczGKRLQKBCo17N2s/fAK893lyS7k90ibWmooy90lTiJoJmVZU+H6ilRzcHF/YtisZ4jFHsemqbXch5rCZq6AQ06j3rbX/A2bB9FJrOq9R6XLDHU2CVDBNqgKHNjeP/DCOk6Q49mtzFscrWHfEXmslfjiO8S27mk=
+	t=1736525821; cv=none; b=GV7YHqwbjDVlI42fXPrVMVvXMjKIDZt7ma32o3swqE/8UOaDTnVShZW6aEvii8qy+xkGN+BEFKloiinwgKeoWplkQlAYiw/biiHJVGtUED0+va+6ZO955U+jnE2hC/e5crUPAGwtRBXy/0KmSnwWXGDrPynHQLMHDQ5TEmMsLGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736524207; c=relaxed/simple;
-	bh=oTHYO7HEQm1XrszJqfRQqaxI8WoE7SDwzxT+yVuAeTk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=X+1MUW7OSQq7EbLxFTuhbYaZ9CJVkM+LiNyKL3atdGGSFVp4LBRLoZoMSNXDlHIl972no3FOg+fbPfevVls5HWt9N1ZJiibClxnq5gwIe9m4LuB6GSNBTpazSyke+r+iLEDDOHmA6dA4XNDWNe2XnT/yFwq5EXPuQy0v97Bp/VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C96mk95V; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-385df53e559so1758491f8f.3;
-        Fri, 10 Jan 2025 07:50:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736524204; x=1737129004; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7/c1zoXGuzll6xGx17OnRXhTktRZuXOkRRbzbli15PE=;
-        b=C96mk95VBgLeAmpTlRsZgnUhua4NhDq6ItfsVMvdG66NQrRXVMZEvyMzg9a4iumd2p
-         972AoKK3OttVqb+ZB3AhY8zlml3qq6KTyLD/9xpU6q4mScrUvRpVLif/xROb8rAkURtg
-         GaJUh/UMQzga4uBq6qcNSd8L/dG7MQku3K+3USq8uyOV3b9Mhcr0PWZ+t6gR0tv2GUmz
-         HASD/ZXDVcLgaAw11Iv6V+hbtkigIPnVwRsh/3mfOV3yfHZ5KIGSN8vGqGk6n14dbGli
-         +bwFAsYe5wyCKwQYM+aCQrXz5YzNT9K6YM2yjgN/wyaIChqR009YMG8pzwNHtAbuqFhT
-         SmdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736524204; x=1737129004;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7/c1zoXGuzll6xGx17OnRXhTktRZuXOkRRbzbli15PE=;
-        b=HKNOj4/G9WEF2OXIdbY5MBdcZtVnJIbmpyHcqG/TBLiSeCBg2MWzkvBPeJlhjStXE8
-         yFPQkTZpuGODw8XCBK8OxCqL3QkxQdfaYLUG/nDcWzhvyKrO4aaZ07fV0XwGB0qWxQp3
-         UEsgkIVR7a5Q//Lg31C1wb1Ew1GICntk7Xv6FTni8+/6KDlIH86/QGo8wrVdRhqFiO5O
-         RF+hio+U5mRJjdK0yLxLvPY5tUukuOMWmkDCl/xWS4CEf9RgBKpKCEWbEUkQ1VmCpcLy
-         doIcXJ9rj5XXm0kVUSYG7Ta33BndYxdaxMvxV8rQ8+Upcvs0ZoR+c4RSzfHG46wpuBLQ
-         TlbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXCYWEsts82qykbgRsJjOLSf868WxfbYt2pMazo32pQnvkatFbFzoE3+W+4z22u39Wks6iwZv5x5es2PM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqWpIwhoCFfRSM45qr7GukTEYNJo+zdO/eAv7XSMVP+YZlZd/+
-	kQhhZXsITuIeqRjfLbcl3XJR1n7JhCZkVLP4ppaYWC1zzh6R9ojs
-X-Gm-Gg: ASbGncvsqKWoRNoi8RwdrLBD94RpOKpH/9hJKG+ZDpJzc7hJP9NgR9jS9rnBMQ9dqdZ
-	VuHS8bSNISFQw//GT7ResHbqoYHtEJ4lb+bNLmVtTWRGfPYCdNkZmC+2r31U/vu7tcP/AVkLO//
-	DzhKD4WxaxNNq/t3dOXH2S3EwF/Dof3eg4gdJ+0gYgnlpNhHENU+OZ1xl7LiVreN7nfTSCSJcKR
-	u03P8wqXjQKDEQF86NRAEYi7nP2dBTgiWDR3Qiw7+KlfVPydZMk7GgiwXvFdBaDQunsyLheWG3C
-	jvHhYoYJufTcJxkJZtvhWZ16ib3RL4/bG8bEK1Y2D4eaeWA7xg==
-X-Google-Smtp-Source: AGHT+IG99ba+3EjbnJDKEadpRExVV0uXfnt4rvpxoh7E9vujPX4RITwsVLvUeQ3NSOG9KobH9SAa/A==
-X-Received: by 2002:a5d:598e:0:b0:38a:8b56:f6c with SMTP id ffacd0b85a97d-38a8b56119emr6950772f8f.14.1736524203663;
-        Fri, 10 Jan 2025 07:50:03 -0800 (PST)
-Received: from ?IPV6:2a02:6b67:d752:5f00:c46:86ac:45ea:7590? ([2a02:6b67:d752:5f00:c46:86ac:45ea:7590])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4c1dc6sm4864460f8f.96.2025.01.10.07.50.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Jan 2025 07:50:03 -0800 (PST)
-Message-ID: <fd63613c-fd26-42de-b5ed-cc734f72eb36@gmail.com>
-Date: Fri, 10 Jan 2025 15:50:02 +0000
+	s=arc-20240116; t=1736525821; c=relaxed/simple;
+	bh=qmOleW+GmQZJO00FFUFPH/v0GiIRiVand8Fs4J6FNYo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dk3iYQmQvYFax91dWPhfTteSV4cvmvnSW5OpSO5F203eILNhAdNs2+VjyxV6pOCuUpE1dwhh6ENJWxOxxS08AxXKu1fHIeaYtFodzvnFUgTwp6Wkp7op0jGniGczfSiIEGeTdo333WKjMtmtJuOeuM3dlELw9yPPLICgEBx6jJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cBdDLWf5; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736525820; x=1768061820;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=qmOleW+GmQZJO00FFUFPH/v0GiIRiVand8Fs4J6FNYo=;
+  b=cBdDLWf5362Jc4B/t8MlvXlxE6l6CIOHsECMAlFZagRIH9f0Tgqvfekz
+   /AOUkggB8BQFsqxFN3W6Il8Xnft64PtQCg9jDpxlrhn2S04FSA4eLmeMy
+   dEN4zBkvJyA8N3Ab5qVYGq++OkFZzwV7sqpxCl5T97JAb4g3uueYA8dp1
+   JWaE4Lj0aN1Z9njtZm4Jx4Cm0XHeKVCvcHewsIO2r+Ad9gQ+QN0Js2K31
+   n/2NviLtg+lbcNs31tLF+LKx1ZGu8sWZKLPoDGvkXAleUdLGQ7GjpqjrH
+   UY9vNCe7+PfCbCP/6A+K3GEAvuWlukI5EUAu5kDlXhCL2blipVNmj7ZhB
+   A==;
+X-CSE-ConnectionGUID: mKLmdV5MTzmo/0QoDhmfJA==
+X-CSE-MsgGUID: Q7fhIG3lQCabyg+FhUFP0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="62194936"
+X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
+   d="scan'208";a="62194936"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 08:17:00 -0800
+X-CSE-ConnectionGUID: 7fiJ0JT7RfmyxCnCr7yT0A==
+X-CSE-MsgGUID: x8Ks8Mn3Tl6PRryQ52NRXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="108407235"
+Received: from ehanks-mobl1.amr.corp.intel.com (HELO [10.125.111.175]) ([10.125.111.175])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 08:16:58 -0800
+Message-ID: <eeecc2ea-0c06-4fca-88bf-2c8a467404e1@intel.com>
+Date: Fri, 10 Jan 2025 09:16:57 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -81,94 +67,98 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 2/2] efi/memattr: add efi_mem_attr_table as a reserved
- region in 820_table_firmware
-From: Usama Arif <usamaarif642@gmail.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, devel@edk2.groups.io,
- kexec@lists.infradead.org, hannes@cmpxchg.org, dyoung@redhat.com,
- x86@kernel.org, linux-kernel@vger.kernel.org, leitao@debian.org,
- gourry@gourry.net, kernel-team@meta.com
-References: <20250108215957.3437660-1-usamaarif642@gmail.com>
- <20250108215957.3437660-3-usamaarif642@gmail.com>
- <CAMj1kXFWZNRwx1H2HT8V9hNvUKDi0O3kcLku+g94UOvNBzz5eQ@mail.gmail.com>
- <cade51c5-5fcc-4208-b46c-f2e2038f03e7@gmail.com>
- <CAMj1kXFwgnQT4jQF8zsX05PdrF_QDXK0+Z-6DD6LiSgjqY738A@mail.gmail.com>
- <d3ee6521-fae3-41b2-a759-e454681dde6f@gmail.com>
+Subject: Re: [PATCH v4 1/5] efi/cper, cxl: Prefix protocol error struct and
+ function names with cxl_
+To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Yazen Ghannam <yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>
+References: <20241217022032.87298-1-Smita.KoralahalliChannabasappa@amd.com>
+ <20241217022032.87298-2-Smita.KoralahalliChannabasappa@amd.com>
 Content-Language: en-US
-In-Reply-To: <d3ee6521-fae3-41b2-a759-e454681dde6f@gmail.com>
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20241217022032.87298-2-Smita.KoralahalliChannabasappa@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 10/01/2025 14:31, Usama Arif wrote:
+On 12/16/24 7:20 PM, Smita Koralahalli wrote:
+> Rename the protocol error struct from struct cper_sec_prot_err to
+> struct cxl_cper_sec_prot_err and cper_print_prot_err() to
+> cxl_cper_print_prot_err() to maintain naming consistency. No
+> functional changes.
 > 
-> 
-> On 10/01/2025 07:32, Ard Biesheuvel wrote:
->> On Thu, 9 Jan 2025 at 17:32, Usama Arif <usamaarif642@gmail.com> wrote:
->>>
->>>
->>>
->>> On 09/01/2025 16:15, Ard Biesheuvel wrote:
-> 
->>> I think in the end whoevers' responsibility it is, the easiest path forward
->>> seems to be in kernel? (and not firmware or libstub)
->>>
->>
->> Agreed. But as I pointed out in the other thread, the memory
->> attributes table only augments the memory map with permission
->> information, and can be disregarded, and given how badly we mangle the
->> memory map on x86, maybe this is the right choice here.
->>
->>>>
->>>>> The next ideal place would be in libstub. However, it looks like
->>>>> InstallMemoryAttributesTable [2] is not available as a boot service
->>>>> call option [3], [4], and install_configuration_table does not
->>>>> seem to work as a valid substitute.
->>>>>
->>>>
->>>> To do what, exactly?
->>>>
->>>
->>> To change the memory type from System RAM to either reserved or
->>> something more appropriate, i.e. any type that is not touched by
->>> kexec or any other userspace.
->>>
->>> Basically the example code I attached at the end of the cover letter in
->>> https://lore.kernel.org/all/20250108215957.3437660-1-usamaarif642@gmail.com/
->>> It could be EFI_ACPI_RECLAIM_MEMORY or EFI_RESERVED_TYPE, both of which aren't
->>> touched by kexec.
->>>
->>
->> This is a kexec problem (on x86 only) so let's fix it there.
-> 
-> 
-> I don't believe we can accurately tell if we are booting from a cold boot or kexec.
-> There is bootloader_type available for x86, but not sure if we should rely on
-> that. I think a way forward would be to move it behind a Kconfig option, something like
-> below, which defaults to n for x86. Anyone who needs it can enable it. What do you think?
-> 
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-Or we can do something like below?
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-diff --git a/drivers/firmware/efi/memattr.c b/drivers/firmware/efi/memattr.c
-index d131781e2d7b..4add694b18d0 100644
---- a/drivers/firmware/efi/memattr.c
-+++ b/drivers/firmware/efi/memattr.c
-@@ -24,6 +24,15 @@ int __init efi_memattr_init(void)
-        efi_memory_attributes_table_t *tbl;
-        unsigned long size;
- 
-+#ifdef CONFIG_X86_64
-+       /*
-+        * On x86_64, do not initialize memory attributes table
-+        * if booting from kexec
-+        */
-+       if (bootloader_type >> 4 == 0xd)
-+               return 0;
-+#endif
-+
-        if (efi_mem_attr_table == EFI_INVALID_TABLE_ADDR)
-                return 0;
+> ---
+>  drivers/firmware/efi/cper.c     | 4 ++--
+>  drivers/firmware/efi/cper_cxl.c | 3 ++-
+>  drivers/firmware/efi/cper_cxl.h | 5 +++--
+>  3 files changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> index b69e68ef3f02..8e5762f7ef2e 100644
+> --- a/drivers/firmware/efi/cper.c
+> +++ b/drivers/firmware/efi/cper.c
+> @@ -624,11 +624,11 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
+>  		else
+>  			goto err_section_too_small;
+>  	} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
+> -		struct cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
+> +		struct cxl_cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
+>  
+>  		printk("%ssection_type: CXL Protocol Error\n", newpfx);
+>  		if (gdata->error_data_length >= sizeof(*prot_err))
+> -			cper_print_prot_err(newpfx, prot_err);
+> +			cxl_cper_print_prot_err(newpfx, prot_err);
+>  		else
+>  			goto err_section_too_small;
+>  	} else {
+> diff --git a/drivers/firmware/efi/cper_cxl.c b/drivers/firmware/efi/cper_cxl.c
+> index a55771b99a97..cbaabcb7382d 100644
+> --- a/drivers/firmware/efi/cper_cxl.c
+> +++ b/drivers/firmware/efi/cper_cxl.c
+> @@ -55,7 +55,8 @@ enum {
+>  	USP,	/* CXL Upstream Switch Port */
+>  };
+>  
+> -void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err)
+> +void cxl_cper_print_prot_err(const char *pfx,
+> +			     const struct cxl_cper_sec_prot_err *prot_err)
+>  {
+>  	if (prot_err->valid_bits & PROT_ERR_VALID_AGENT_TYPE)
+>  		pr_info("%s agent_type: %d, %s\n", pfx, prot_err->agent_type,
+> diff --git a/drivers/firmware/efi/cper_cxl.h b/drivers/firmware/efi/cper_cxl.h
+> index 86bfcf7909ec..0e3ab0ba17c3 100644
+> --- a/drivers/firmware/efi/cper_cxl.h
+> +++ b/drivers/firmware/efi/cper_cxl.h
+> @@ -18,7 +18,7 @@
+>  #pragma pack(1)
+>  
+>  /* Compute Express Link Protocol Error Section, UEFI v2.10 sec N.2.13 */
+> -struct cper_sec_prot_err {
+> +struct cxl_cper_sec_prot_err {
+>  	u64 valid_bits;
+>  	u8 agent_type;
+>  	u8 reserved[7];
+> @@ -61,6 +61,7 @@ struct cper_sec_prot_err {
+>  
+>  #pragma pack()
+>  
+> -void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err);
+> +void cxl_cper_print_prot_err(const char *pfx,
+> +			     const struct cxl_cper_sec_prot_err *prot_err);
+>  
+>  #endif //__CPER_CXL_
+
 
