@@ -1,79 +1,79 @@
-Return-Path: <linux-efi+bounces-2563-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2564-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8A4A08E9D
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 11:54:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E5FA08EE6
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 12:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 729627A168A
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 10:54:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBEC5166518
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 11:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D34205ACB;
-	Fri, 10 Jan 2025 10:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A26209F5E;
+	Fri, 10 Jan 2025 11:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eWO24Od3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBPctC/L"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB105206F14;
-	Fri, 10 Jan 2025 10:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C47D204F93;
+	Fri, 10 Jan 2025 11:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736506438; cv=none; b=rRt/8YLZ9E0Pdpb6vkPmhCBsp55NciLk6XyW1zZSjSveE7Uew2jCVbXNtnW+NZtzeUaTrVUCON9NlvgW4WOzQ+zGEZFC+tdmE3reB5j5kyQd2rYNcolji7qJPJwDw0drxwjPJZTBozt97YhbHYaWZyCpmXfbWzgt+FfparJ0tBY=
+	t=1736507565; cv=none; b=hPTWb1XqSTu1J1KL0LZj8YxaGJLEoeZTVVYCrLlrHrzeCHGeVlksUBBAl1XJEiCGQpa46suYgsmYMgtZ4ondOq9rDrcP4pOcssx1CkmaE2Pf2zC5t382nNG5SJk67qm+GQz26Qc15DW8v1Cykr1f5obcrQ2y23VvS2yffEXZg3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736506438; c=relaxed/simple;
-	bh=UuGnCjwVsCeergVV3WzYt6Khp3mVrZEP6da6u4OCHFY=;
+	s=arc-20240116; t=1736507565; c=relaxed/simple;
+	bh=M36w9PvoteLCBYRraBScyp3o//xy80YkWIXJGAp8F7c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZCDSklBV1UYLOJrVurRv8Ztn6a5NA47iWPQCdFV0QSPmsjbrmEfCQIohJ2f143s0itaouKs+0sh3qRvM59awXvGPXjW03BmwdCnBoAeMueEUqauRv+Y/piG97shV/tb57anBq93yybrhSKhGNe46HlX0FbRPWdfJEL8MQWqQIqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eWO24Od3; arc=none smtp.client-ip=209.85.208.50
+	 In-Reply-To:Content-Type; b=qqubOoQT0mko2I2lLHiOqUIBDDYxsmXKzUp/P6rCHPTMWN5SotUgSt9Z+16HYFAmqrnh//czLRsrLLv6nTyc7nYj8cTYI4247AnB7rG/PFLFblUpMsJb6qfs2yFOLc2BSgtQOiuUr2z4KyhBGY9pAgeiE5yUiX8aTCtS6qododc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBPctC/L; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5d90a5581fcso3097252a12.1;
-        Fri, 10 Jan 2025 02:53:56 -0800 (PST)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aaee0b309adso316384366b.3;
+        Fri, 10 Jan 2025 03:12:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736506435; x=1737111235; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736507562; x=1737112362; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ve3lNtLuYnUEedIKyQHjHUym+uf/AdZFMUlHp8J/SPs=;
-        b=eWO24Od33k7p0a4Fim8cI+ugEqmmEkYeUo5+fQE/GOuydJBhQ+/YMqZEMeuJJbWzYI
-         jBW7BD/gEdyCFb/+DhQC0WgCvrSo5jKO6rnMYMAu+wv/2gVtr/rKGWcULMgK9KoF1Ezu
-         x9QQivI78zvkmQnpHV+ogHGR8Bh2UMRxkkOOkGBw50wCeqfoG9+S1OMGtKK4HTxXPmSL
-         +EM7X+4N9cJVSQgm9AYGNtZJY0Hsdn63GhhJ5u6S/G066NLSNw+CPhKj4mBmrTL3C372
-         RWMA2+Mew9DvdXyM3DomwaW8wfphGp/QHm1W7FFKEH0gCKfkP6MSw4IF5xHN51EX3UQb
-         PEHw==
+        bh=hRwtHfP1JQU5+YPorhBGMH6eYlGfleBI3Cl5YY7QQEI=;
+        b=eBPctC/L6T9QWrHac0g8TljoYooC+r6U4AOFtdUa9jQyeSUAPzSnrbn71kXTTEnRCW
+         oQjN2erkboshk7e1M3Kh3Zh5BubtooS21HrV6W3r/xV0LVGdCBHxp3+ewkcnkMvlh7T6
+         e+ow2+FnSGWixS5MOkpDgWdHQKMtX7p5XPPfXtkKIdhpHxA98ijO8jZf+YvNydFI2dyD
+         403uORX0h//lF2aD5wSh0AfMgQ9SxIs9oBDSqbg6zy74XneZlJtSWk48e8UZIqUhG/F9
+         VYfjfOn24WQWH+uvtxxwLVFcIWfXDAfjYjgwJP6kz7TJbkPCm8+aWfkrK5Qz1KmB07DL
+         Iz9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736506435; x=1737111235;
+        d=1e100.net; s=20230601; t=1736507562; x=1737112362;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ve3lNtLuYnUEedIKyQHjHUym+uf/AdZFMUlHp8J/SPs=;
-        b=IL5C9qeXMmGiuhuj+ZKkNgcyYCCZnlwm7exnQYShg0o8NG4tQ6PtBuOs416FKXua8J
-         dXCNj5aiBU49FuZUPXrSmBQgty/vOa/cmKwEKxepXKjvW4c5VPfeJzhdM2y+Qq34+Zz2
-         BOSioZs+olpzv7gc4VvOlW68EVf+ywZAl+9sKTq0kYScK3CcxTQHlPaqlhCRQVDqsE2b
-         UcatCBfxmRNTi+3c36JVInvTAfHQJqqaapCLy2V/b64Rmf1qcTFnAE+xafaGazq9EeCG
-         wzB8YuynvsQCb6bkvbH67WfgyN7LGiEleWf0g7Nj83OF9m+6WzkivvWaoWJIi9MWnJbj
-         Wrjw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2U2+Pd6Q82VucmruHiFVSqmKSHftMf7vq3LMldyWNYMgEG2qdCt+QJU0GTN5jM7OLYAtd+SaSLAjBQFI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyx/NHbJ8RulMNFVSGHjoDsuEtzgqTCDxX3sjPv5LrVP+qY1qUY
-	cUhtMTn+xEbwbAaTBkUBIpZ9Rs3EfqNjnHPTh5FyBDXX+Fdw6ra8
-X-Gm-Gg: ASbGncsYVXUQO/iwX2QflE9LVCtQx4wr++bdetxkZKq//we1Ln5ATavCGtuPRQ1jkF+
-	LWBdkK86+Dn3/yViaZbL3pp2+cStTLbxctpE9y1qJMKut2lN50h25sHGJibaFjw9KPJdTGhyO97
-	sAnf5IUDYa+2d4EIPKwZF0Er6+rXttsSdvPkn5bQre3XLZkgcwZptgvmIXrpHoWZ6aevsKb3zGS
-	M+LZlPUASVqIsSCV0Xus3q725QlIqJYjIcOvBa9+Dl08mRnOp/XyHJF5vZeCkEpuRSrIrwE4BZe
-	Dzcd7s1RPsac4iyxmxv5ToK0ihBM
-X-Google-Smtp-Source: AGHT+IHUoKF5CCleTB2jU9vLsvOAEPHxoqMfeJizDfgZZl9x+zXjW5TDWSL8oHA1WM8ocRBnyA/UtQ==
-X-Received: by 2002:a05:6402:2347:b0:5d2:729f:995f with SMTP id 4fb4d7f45d1cf-5d972e6f957mr8778390a12.29.1736506435017;
-        Fri, 10 Jan 2025 02:53:55 -0800 (PST)
+        bh=hRwtHfP1JQU5+YPorhBGMH6eYlGfleBI3Cl5YY7QQEI=;
+        b=ujwnUlKnqCg7Uo4t1Hj5K912O6K+5o5jqzuaEidKNQXHcTuNRyVY6eN35XcXG3PRQj
+         fvY4MAhzxSldNUbRrIBN14VAh5n0EMaT2w+vY73dUxBEAxRfxhNf522PBdZ3q5zKRKGz
+         9VSHqK6T53MtEyysmSzcMuucMPyprv2waK9DeTpkwAYUdmHBMl9lt40jY3Kgxn92q/3z
+         c2Q3kaDgUrJLmBhKrrN5GJ8uQlBPKc3JnA6D4+rZagcefN59iWguBQ3/Ho/5LCNN9Gs0
+         wgrZbiF7ZKm2II7Qm7AQ1qqr6YZX7X1tpdaBNup9APL+a9v9XjyMCVWOJ9F2+AIPVQo0
+         r1cA==
+X-Forwarded-Encrypted: i=1; AJvYcCXGZ5inXWgJHdV7mW65H+ogf+NiHYY/gSjj74mG18sQ6l2mXeYxlRPQ+h0VYO7/4bKsAxjp1gvqfR59HOI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXwuiHot5XGG8H35TuWOw8Rchu3bObSJ5p/AfukXKB1m91AMBF
+	VJjtXRxmNq9qEypguEuCKzQW1WE5YTXTDGs2jratAnbRjinovM9Yq7mXlMQHBGdCGg==
+X-Gm-Gg: ASbGncsRsevLIM9HGe0vdYnfifrBF6cN8xTslc8kTzvvAKTrWMWy6NvzRmbwA+NEMY2
+	0HQEhRXHnEciyrfEV0N0SHPQ0vAa+Kg3FRtm4+W4TMqJADgs+EwHP9EjvwQ4csGnqoxxGC2Mdb5
+	ukCgQmF/AykA3mWCsNYABKQL7QzgzfjrRcVtmoD+fk50XwZJVmeyooR6Mp4EuQMn+1P1YjGU9cK
+	1TehqNdDz08E0MI3LdTj5suUylXP4I9uCm654LeOnsqTvEa3I+tVSxOwpQU83nAAfOfOpexejPo
+	xb3Q8MsNGAJaWiKt01Ts+PuucyrZ
+X-Google-Smtp-Source: AGHT+IEr3DYjbmxJfOi4g+OJHmU/3Mg1uURC8lJFwHS/uzBUjhDVzsWaDhSM2tE7YGlD4il6vC880g==
+X-Received: by 2002:a17:906:dc8d:b0:aaf:4008:5e2c with SMTP id a640c23a62f3a-ab2ab66fea4mr827120266b.2.1736507562473;
+        Fri, 10 Jan 2025 03:12:42 -0800 (PST)
 Received: from ?IPV6:2a03:83e0:1126:4:829:739b:3caa:6500? ([2620:10d:c092:500::5:e213])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d98fe8f68csm1544698a12.0.2025.01.10.02.53.53
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c905f0b3sm157026166b.21.2025.01.10.03.12.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Jan 2025 02:53:54 -0800 (PST)
-Message-ID: <8613563a-ee7c-4271-b1f0-4d1ac365ad3a@gmail.com>
-Date: Fri, 10 Jan 2025 10:53:53 +0000
+        Fri, 10 Jan 2025 03:12:42 -0800 (PST)
+Message-ID: <4ed67e5b-c2ea-4dc3-b4c5-f8f112b0cd40@gmail.com>
+Date: Fri, 10 Jan 2025 11:12:41 +0000
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -81,108 +81,53 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/2] efi/memattr: Use desc_size instead of total size to
- check for corruption
-To: Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [RFC 2/2] efi/memattr: add efi_mem_attr_table as a reserved
+ region in 820_table_firmware
+To: Dave Young <dyoung@redhat.com>
 Cc: linux-efi@vger.kernel.org, devel@edk2.groups.io,
- kexec@lists.infradead.org, hannes@cmpxchg.org, dyoung@redhat.com,
+ kexec@lists.infradead.org, ardb@kernel.org, hannes@cmpxchg.org,
  x86@kernel.org, linux-kernel@vger.kernel.org, leitao@debian.org,
  gourry@gourry.net, kernel-team@meta.com
 References: <20250108215957.3437660-1-usamaarif642@gmail.com>
- <20250108215957.3437660-2-usamaarif642@gmail.com>
- <CAMj1kXH54Y0ae1OGwBe7-UiRBq9cFkDHbjxos_rEZPtan7NNzQ@mail.gmail.com>
- <d9c84079-6593-43f4-9483-648b665f03db@gmail.com>
- <CAMj1kXGYsJrqDzy_+g_wSAAEuQ_OnxvyJ8ZE+4gbr6KOY7iuow@mail.gmail.com>
+ <20250108215957.3437660-3-usamaarif642@gmail.com>
+ <CALu+AoTgjdq+kUbv-5CGQr=UTLd2+zDLbHt=kXaoMYYptBYnAA@mail.gmail.com>
 Content-Language: en-US
 From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <CAMj1kXGYsJrqDzy_+g_wSAAEuQ_OnxvyJ8ZE+4gbr6KOY7iuow@mail.gmail.com>
+In-Reply-To: <CALu+AoTgjdq+kUbv-5CGQr=UTLd2+zDLbHt=kXaoMYYptBYnAA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 10/01/2025 07:21, Ard Biesheuvel wrote:
-> On Thu, 9 Jan 2025 at 17:36, Usama Arif <usamaarif642@gmail.com> wrote:
->>
->>
->>
->> On 09/01/2025 15:45, Ard Biesheuvel wrote:
->>> On Wed, 8 Jan 2025 at 23:00, Usama Arif <usamaarif642@gmail.com> wrote:
->>>>
->>>> The commit in [1] introduced a check to see if EFI memory attributes
->>>> table was corrupted. It assumed that efi.memmap.nr_map remains
->>>> constant, but it changes during late boot.
->>>> Hence, the check is valid during cold boot, but not in the subsequent
->>>> kexec boot.
->>>>
->>>> This is best explained with an exampled. At cold boot, for a test
->>>> machine:
->>>> efi.memmap.nr_map=91,
->>>> memory_attributes_table->num_entries=48,
->>>> desc_size = 48
->>>> Hence, the check introduced in [1] where 3x the size of the
->>>> entire EFI memory map is a reasonable upper bound for the size of this
->>>> table is valid.
->>>>
->>>> In late boot __efi_enter_virtual_mode calls 2 functions that updates
->>>> efi.memmap.nr_map:
->>>> - efi_map_regions which reduces the `count` of map entries
->>>>   (for e.g. if should_map_region returns false) and which is reflected
->>>>   in efi.memmap by __efi_memmap_init.
->>>>   At this point efi.memmap.nr_map becomes 46 in the test machine.
->>>> - efi_free_boot_services which also reduces the number of memory regions
->>>>   available (for e.g. if md->type or md->attribute is not the right value).
->>>>   At this point efi.memmap.nr_map becomes 9 in the test machine.
->>>> Hence when you kexec into a new kernel and pass efi.memmap, the
->>>> paramaters that are compared are:
->>>> efi.memmap.nr_map=9,
->>>> memory_attributes_table->num_entries=48,
->>>> desc_size = 48
->>>> where the check in [1] is no longer valid with such a low efi.memmap.nr_map
->>>> as it was reduced due to efi_map_regions and efi_free_boot_services.
->>>>
->>>> A more appropriate check is to see if the description size reported by
->>>> efi and memory attributes table is the same.
->>>>
->>>> [1] https://lore.kernel.org/all/20241031175822.2952471-2-ardb+git@google.com/
->>>>
->>>> Fixes: 8fbe4c49c0cc ("efi/memattr: Ignore table if the size is clearly bogus")
->>>> Reported-by: Breno Leitao <leitao@debian.org>
->>>> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
->>>> ---
->>>>  drivers/firmware/efi/memattr.c | 16 ++++++----------
->>>>  1 file changed, 6 insertions(+), 10 deletions(-)
->>>>
->>>
->>> The more I think about this, the more I feel that kexec on x86 should
->>> simply discard this table, and run with the firmware code RWX (which
->>> is not the end of the world).
->>
->>
->> By discard this table, do you mean kexec not use e820_table_firmware?
+On 10/01/2025 02:50, Dave Young wrote:
+> Hi Usama,
 > 
-> No, I mean kexec ignores the memory attributes table.
-> 
->> Also a very basic question, what do you mean by run with the firmware RWX?
+> On Thu, 9 Jan 2025 at 06:00, Usama Arif <usamaarif642@gmail.com> wrote:
 >>
+>> When this area is not reserved, it comes up as usable in
+>> /sys/firmware/memmap. This means that kexec, which uses that memmap
+>> to find usable memory regions, can select the region where
+>> efi_mem_attr_table is and overwrite it and relocate_kernel.
 > 
-> The memory attributes table is an overlay for the EFI memory map that
-> describes which runtime code regions may be mapped with restricted
-> permissions. Without this table, everything will be mapped writable as
-> well as executable, but only in the EFI page tables, which are only
-> active when an EFI call is in progress.
+> Is the attr table BOOT SERVICE DATA?  If so, does efi_mem_reserve()
+> work for you?
+> Just refer to esrt.c.
 > 
 
-Thanks for explaining!
+Hi Dave,
 
-So basically get rid of memattr.c :)
+Its a bit difficult to reproduce the problem and therefore test the fix, but
+we are seeing it a lot in production. Ard proposed the same thing in 
+https://lore.kernel.org/all/6b4780a5-ada0-405e-9f0a-4d2186177f29@gmail.com/
+but as I mentioned there, I dont think that efi_mem_reserve would help,
+as efi_mem_reserve changes e820_table, while kexec looks at
+/sys/firmware/memmap which uses e820_table_firmware.
 
-Do you mean get rid of it only for kexec, or not do it for any
-boot (including cold boot)?
-I do like this idea! I couldn't find this in the git history,
-but do you know if this was added in the linux kernel just
-because EFI spec added support for it, or if there was a
-specific security problem?
+Thanks,
+Usama
 
-Thanks!
+> Thanks
+> Dave
+> 
+
 
