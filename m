@@ -1,143 +1,123 @@
-Return-Path: <linux-efi+bounces-2566-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2567-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCEDA08F08
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 12:20:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4945BA08F90
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 12:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28B94188C4B5
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 11:20:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A8C63A5D13
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Jan 2025 11:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA8320B80A;
-	Fri, 10 Jan 2025 11:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BqmW/RIk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DE3205AB1;
+	Fri, 10 Jan 2025 11:36:44 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1531FF602
-	for <linux-efi@vger.kernel.org>; Fri, 10 Jan 2025 11:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C713D1F5435;
+	Fri, 10 Jan 2025 11:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508040; cv=none; b=Zc2y7GWv50TZGmPCLEGl5LPZjKplaFgpG4BFy/POeNT7x+mG8h41QjuqjP2jy/19IWj2N/ZTgaVC/YgKvNrdr2AhLpTFA0GInP8SfCCy8TJWKw6TjPV+Vac2C8FXScz/54bOttcKMnJinzD+CIdZiNMMkfthUzuX48vVTn3e8Cs=
+	t=1736509004; cv=none; b=tqyiEme5B6tgyGEYVWXZw2l4mWi7bdErSidliTQre3cD/1DUMpSWoo6w1/D5s0VwuyT77gUxlUjU/8GQQk/Utbv0cvIfxZnDCsCsrwinaufIZ0K3izZy1n2+Ho378CpVXbuseJSj2bX90q/nvMgeVQ7Imz8fVIkQgqLr08E/HRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736508040; c=relaxed/simple;
-	bh=htEbFVaXgs98wVsAOJ75eYlpraw43Isv2EBkz8lg09I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HClkxrGC6a0tCR9KSENzzWxISw90HT3I301qmkVq2SscuMf0JQEt2lZR6fMtr6cPWrjZnB1hd8k1/paKxnOSx6QviESLzcPTJtOep8CmJspvGqmEuGF/p0THKIlvDRnwJIgU17lVhpht1+/4jRj8CzV79LdI99iv2J+6Hl+soOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BqmW/RIk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736508038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x1TCeMy2kehH/G5/Ac6gcakvpunAPT8hClM5DzIPErQ=;
-	b=BqmW/RIkLERAekEUkyZ/q6DPuEv5FI1MNsebJ4a8jVbiFEwr1g9jvuY2xL5d9IUqGHnGi9
-	15QNm0Y7T6YbXW1JejV/WA4HEDAf7/C+XV7MyYgGTRAgGt7xyCG2U1bhQ6vJS3BzBwsYoZ
-	iAGujwT538xTenowamI/kbvTZv/i4ik=
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-VSST-fgqPvCtylD6slQ2Cg-1; Fri, 10 Jan 2025 06:20:37 -0500
-X-MC-Unique: VSST-fgqPvCtylD6slQ2Cg-1
-X-Mimecast-MFC-AGG-ID: VSST-fgqPvCtylD6slQ2Cg
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a7e39b48a2so32644525ab.0
-        for <linux-efi@vger.kernel.org>; Fri, 10 Jan 2025 03:20:36 -0800 (PST)
+	s=arc-20240116; t=1736509004; c=relaxed/simple;
+	bh=qDGrMfHmx1rR7hUQzYYruZ4g+XZ+A+QQq1r7QplZ3bk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bHOwL3YvUTkJfqlvD54jf2NXEjlxT3EAuwYZzcKW5G22A7GAjxSX3IPZd+zGhWQ0gG4bWnHoHSA5I/VSpDwMH/87WoL0E2z2K7bA9JRlWj4QewJDehlZCjL7e8ZI8O1G4A2zn1ePS2k45L2Md2Qn9zqRJFmBU4EAflC9RVbJmv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ab2aea81cd8so274217866b.2;
+        Fri, 10 Jan 2025 03:36:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736508036; x=1737112836;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x1TCeMy2kehH/G5/Ac6gcakvpunAPT8hClM5DzIPErQ=;
-        b=PcuRo1eniu/65Az8qPUElYeL8T8mD70JB4fu5yPsI41s3tWEcEid1veHGzv3gT7Xi/
-         2qgwoDYpzN3e8JbhI/c3ItE3Ox6pqRy9s57Fpr32TJaiLRcRMjjFsUPyee5t06Axi+ba
-         Yao6acvi9rVkLvscXQU8l2tNj/3hCauQtB6u6HNUPYoRXCHENfH9isuq6DTccvypTEMY
-         BGm6Hfn+Jka+EG2ROwtQUzb56OaOKqNW+xKBij3wPSA6J4pOxCkd1ii4VqjM5apNvA2S
-         EjDLLrSnTy98M1FAL91hjS4zMfcmHGsR164x5ah4BID4UwOMtok34jbGV3aupDQ5pL3z
-         3yeA==
-X-Gm-Message-State: AOJu0YzJsW80Ga1bRwAckyNBrN9SEZsscAN5329bs7AjlURQ9RUzg2eg
-	kug4KYWenIKvvRkJJFxdRItmnI/lVJu4QIptm6I2vbj5S1BkLm/GjpxJi8JpbLimaYWomAwuyR3
-	JUifWidZ1oyLBN8Uug8aEJs6t3pA8KtiCnPAvfz3pub4JaWw5HLCemgPrnoCgMQufKGNOzIwmr/
-	1v1tPPGTOWS5L8dFEOTsOZBBAyOFIZQjrJ
-X-Gm-Gg: ASbGnctSA/icOEzln7OM+Fw9oUc/mzWsbWu3MhrYMrjWPkBE0ePvJV3Q1j388ao3EHO
-	ercsgDl4DdllpnJJ5uYUrX2wGgh1qo0Vc5RIx7/o=
-X-Received: by 2002:a05:6e02:19c6:b0:3a7:81a4:a54d with SMTP id e9e14a558f8ab-3ce3aa7c305mr88727835ab.20.1736508036317;
-        Fri, 10 Jan 2025 03:20:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE/ZGZxn93BTZUgwgl5385CpZFhIe8wtltjq3xgYCHF4KnVPQrulNtY+5TAzkMXX76hdNVwHy/TuoHO3lYD9qo=
-X-Received: by 2002:a05:6e02:19c6:b0:3a7:81a4:a54d with SMTP id
- e9e14a558f8ab-3ce3aa7c305mr88727725ab.20.1736508036092; Fri, 10 Jan 2025
- 03:20:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736509001; x=1737113801;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JSxjuNyxDuPeZYeh/mDIk1/h0nKxV8R1eU/I8hrKgcA=;
+        b=MMlFPM1iha/s2SUFQkXGwM08YV5MHjaOZccyQffIS+pEymOcdJgF6FL4c2ufmSzL3M
+         NbwdLbAA0unbnWvv7Umxkqni1c+58tKvz5KOQhX+OqKgDybaNsOJMjPRApamA+rWZxaz
+         7H2biZGZjrwBZ5weYobcW+hxfMe/dVNji8BYc2hW7qi9Wdxi55da1Y0EYEp1Z0wHWR3i
+         upE89hwnbIWf3d9Pneb09f3bEPqg9TC7V3vGZNerxrBZU7C6OEOQkWf3JoezIh3G77JJ
+         qpiaSbBQw6NuspMy4BD5LJzGfH/aujL+ILY3g9UCDuHBAlwdoiKdGgAfjVEApVIovoQO
+         l8Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJdsi92Lhfm9egfBbO5mifM0uyyGnF5FugaFWo+T8VyDL82nkFt3iars0rBky3qjiqJVy/fFpGO9yvKNsf@vger.kernel.org, AJvYcCWhZlrnHctQ/hWAVuU8ovmxqqs0V0aqy+pSCg0ZVi0MUNfvjnkmtbYltUHRBJQaZBsb5lw1uLemGLU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxsWkCU1eVnHFuHiNAvSZtj41oIDpaawl+4ct8n7jl0QrR+HU4
+	z9BvMnDIN1oXjedEMFy+/+2PFV23q3FiSrthKLg8NXXsHa7Em9W+
+X-Gm-Gg: ASbGncvJY9mmtm18v+EPrTS+YOO7EvdWdAi+6rtt+eSLKfegunRgS4DsiqsTsIGh1mT
+	w7uEy0z2ppetk2P0H2MZ5UT4i8Dj/lBGuhUEsAMhHx6CmB8giSbXOt4UniF43pBpAcu0o0SEP+W
+	8U9/Q7r2vjELlP4qbYTduGxmMaofTORE8zkQUCwfKlxkZXRZulwxGHgKIK0iE8N17OfqOiqx0Xi
+	zTstuyxss4Npkta+V1kFKHzIXu1COT1kRqC1gnBJwAinho=
+X-Google-Smtp-Source: AGHT+IGIZlaaiO27kV1c6pYvSmK5yivViBw4/s4Cw1C7tk9hpsncmsora6RSQ36sS5AvV4d5XB7zDw==
+X-Received: by 2002:a17:906:7311:b0:aab:7467:3f6a with SMTP id a640c23a62f3a-ab2ab6a45f5mr887149666b.21.1736509000764;
+        Fri, 10 Jan 2025 03:36:40 -0800 (PST)
+Received: from gmail.com ([2a03:2880:30ff:4::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c905ec09sm157964566b.32.2025.01.10.03.36.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 03:36:40 -0800 (PST)
+Date: Fri, 10 Jan 2025 03:36:38 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Usama Arif <usamaarif642@gmail.com>, linux-efi@vger.kernel.org,
+	devel@edk2.groups.io, kexec@lists.infradead.org, hannes@cmpxchg.org,
+	dyoung@redhat.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+	gourry@gourry.net, kernel-team@meta.com
+Subject: Re: [RFC 2/2] efi/memattr: add efi_mem_attr_table as a reserved
+ region in 820_table_firmware
+Message-ID: <20250110-tricky-grasshopper-of-maturity-21771f@leitao>
+References: <20250108215957.3437660-1-usamaarif642@gmail.com>
+ <20250108215957.3437660-3-usamaarif642@gmail.com>
+ <CAMj1kXFWZNRwx1H2HT8V9hNvUKDi0O3kcLku+g94UOvNBzz5eQ@mail.gmail.com>
+ <cade51c5-5fcc-4208-b46c-f2e2038f03e7@gmail.com>
+ <CAMj1kXFwgnQT4jQF8zsX05PdrF_QDXK0+Z-6DD6LiSgjqY738A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250108215957.3437660-1-usamaarif642@gmail.com>
- <20250108215957.3437660-3-usamaarif642@gmail.com> <CALu+AoTgjdq+kUbv-5CGQr=UTLd2+zDLbHt=kXaoMYYptBYnAA@mail.gmail.com>
- <4ed67e5b-c2ea-4dc3-b4c5-f8f112b0cd40@gmail.com> <CALu+AoSKrzcvP_wCRqPLO1+VBZzt-kuspiFf3dax8WDMDtCMgg@mail.gmail.com>
-In-Reply-To: <CALu+AoSKrzcvP_wCRqPLO1+VBZzt-kuspiFf3dax8WDMDtCMgg@mail.gmail.com>
-From: Dave Young <dyoung@redhat.com>
-Date: Fri, 10 Jan 2025 19:20:41 +0800
-X-Gm-Features: AbW1kvbbbsAFGnLq07CQCS7hEathkhH1cwo6Bz0H1Eer0IQxRMwEsY9rVx_lHSM
-Message-ID: <CALu+AoSg7=AJ5_x=ssznVCcssy+USHAGW_pHNpo7+_+KWRc+ag@mail.gmail.com>
-Subject: Re: [RFC 2/2] efi/memattr: add efi_mem_attr_table as a reserved
- region in 820_table_firmware
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: linux-efi@vger.kernel.org, devel@edk2.groups.io, kexec@lists.infradead.org, 
-	ardb@kernel.org, hannes@cmpxchg.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, leitao@debian.org, gourry@gourry.net, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXFwgnQT4jQF8zsX05PdrF_QDXK0+Z-6DD6LiSgjqY738A@mail.gmail.com>
 
-On Fri, 10 Jan 2025 at 19:18, Dave Young <dyoung@redhat.com> wrote:
->
-> On Fri, 10 Jan 2025 at 19:12, Usama Arif <usamaarif642@gmail.com> wrote:
-> >
-> >
-> >
-> > On 10/01/2025 02:50, Dave Young wrote:
-> > > Hi Usama,
-> > >
-> > > On Thu, 9 Jan 2025 at 06:00, Usama Arif <usamaarif642@gmail.com> wrote:
-> > >>
-> > >> When this area is not reserved, it comes up as usable in
-> > >> /sys/firmware/memmap. This means that kexec, which uses that memmap
-> > >> to find usable memory regions, can select the region where
-> > >> efi_mem_attr_table is and overwrite it and relocate_kernel.
-> > >
-> > > Is the attr table BOOT SERVICE DATA?  If so, does efi_mem_reserve()
-> > > work for you?
-> > > Just refer to esrt.c.
-> > >
-> >
-> > Hi Dave,
-> >
-> > Its a bit difficult to reproduce the problem and therefore test the fix, but
-> > we are seeing it a lot in production. Ard proposed the same thing in
-> > https://lore.kernel.org/all/6b4780a5-ada0-405e-9f0a-4d2186177f29@gmail.com/
-> > but as I mentioned there, I dont think that efi_mem_reserve would help,
-> > as efi_mem_reserve changes e820_table, while kexec looks at
-> > /sys/firmware/memmap which uses e820_table_firmware.
->
-> I sent a question to pm people, if the sysfs memmap comes from
-> e820_table then it will be fine. Let's see:
-s/e820_table/e820_table_kexec
+Hello Ard,
 
-> https://lore.kernel.org/all/CALu+AoS-nk4u=9UYP7BLS=diOxjJRf+vfv7KHXG=uXozoYazsw@mail.gmail.com/
->
-> >
-> > Thanks,
-> > Usama
-> >
-> > > Thanks
-> > > Dave
-> > >
-> >
+On Fri, Jan 10, 2025 at 08:32:08AM +0100, Ard Biesheuvel wrote:
+> On Thu, 9 Jan 2025 at 17:32, Usama Arif <usamaarif642@gmail.com> wrote:
 
+> > I think in the end whoevers' responsibility it is, the easiest path forward
+> > seems to be in kernel? (and not firmware or libstub)
+> >
+> 
+> Agreed. But as I pointed out in the other thread, the memory
+> attributes table only augments the memory map with permission
+> information, and can be disregarded, and given how badly we mangle the
+> memory map on x86, maybe this is the right choice here.
+
+If this augmented memory is not preserved accross kexec, then the next
+kexec'ed kernel will be able to find the original table?
+
+I understand that the memattr region(s) need to be always (in each kexec
+instances) `memblocked_reserved` to protect it from being used as a
+System RAM, right?
+
+Thus, if it is not passed throught e820, kexec'ed kernel needs to fetch
+it again from original EFI table at kexec/boot time. 
+
+This brings me another question.
+
+If the kexec'ed kernel sees the original memory, why can't it
+augment/update the RX permissions *again*, instead of passing the
+previous augmented version from previous kernel in this crazy dance.
+
+> This is a kexec problem (on x86 only) so let's fix it there.
+
+Would you mind explaining what kexec needs to be done differently?
+Should it preserve the augmented memattr table independently if it is
+mapped in e820?
+
+Thank you!
+--breno
 
