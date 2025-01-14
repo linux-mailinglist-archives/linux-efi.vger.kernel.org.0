@@ -1,61 +1,61 @@
-Return-Path: <linux-efi+bounces-2619-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2620-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2EFA1061D
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2025 13:04:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE05A1061E
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2025 13:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A1801699D7
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D699B3A86F0
 	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2025 12:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8CE229614;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28E022DC5D;
 	Tue, 14 Jan 2025 12:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AwXZosBi"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="By5+hI02"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2050.outbound.protection.outlook.com [40.107.100.50])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2047.outbound.protection.outlook.com [40.107.94.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1D820F985;
-	Tue, 14 Jan 2025 12:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A1120F98F;
+	Tue, 14 Jan 2025 12:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736856287; cv=fail; b=cGo5idlMenhXaP6kbhilXNnQgFZbFvRqDl05RcIuMjSNkFi1QaUfNRlFFtNL0+v50CfkxAzCYPujnq6r8XOXMVC1soKtWwJBuj+dS+pR5NEq1nR53+j45uJPEe/rGoen0W4/ayzeWgfJTsVpYygAutJwHwEixORsZ6lkkVTGB/8=
+	t=1736856287; cv=fail; b=gmvpJWlXoDszF4agnAgdzEKMAfR+vt+vNV+P/ykeIfr0MhG34HvPuEQaE5q/d7h5lJ0B3vKT6CxNcZsSnsTc1GWcOaAiRpH/hHH8PmQGInNIs4WDCm0SGex0QHAo+esSQnGJ4sy6i6kfC6QoBDniFPIZvP10d29g4FUqdnYq9Ig=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736856287; c=relaxed/simple;
-	bh=dFATjiEsqWPrNpXInOlOEZiH5vSDzDmvifr8RXVavlw=;
+	bh=UBL/b/K7iVFHLAvBrL5eqfd279v4PDKw8UD8L6hhQQw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eaFamt0iqjAi/Z4VL59EwlwrA65lh8kaIE8EyIaWCdtZhpuw80Mm14ozNFYbIluwe3NLtGoMr2WWjl88Kl753clZZ+9y8TJ0SZFswHZZlk7HJOZ/aQRH2GS3H+9tSLVXjSZn+d9jfINNH5J9SesxaQQzf1WTgIc60ZXh5kinJ2s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AwXZosBi; arc=fail smtp.client-ip=40.107.100.50
+	 MIME-Version:Content-Type; b=byS6s5b9PVXrobvqPRlNwlaHd9Yz749tvNFHlKCXR+KUKbdIYbgPNLyw3r1W/CuiRJ8E1TQBHcCKh+K90KABc1APLJqruyazVfKGp1+i65MY44j0T5cmSQie8ztiCcz3hhHVXwKNelSFSyd7Cb15B+kH4WLdF/RrLiJw0l5K4eI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=By5+hI02; arc=fail smtp.client-ip=40.107.94.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Dpv/WSZnwR4OMi/ArPspwKp4PI4ycFBJgkDCjZ2I3WoOGj6zVZZz+4fc/9X4c+8jLd/LZq4glNUQSz33Bb1u386/O6zMwNEKV1zVvR2gPAkxzCtvB5gwZYGwWErxto1JumwkgNK+BOC5PgXRRcGsZWByBu0kvvf+ZpAqBcEqHUiQ7+DKSjeCg/F93uQ29//X+HBb1VjXuSKrXdCQuBoE51SizvlhqxU+7TfZacUxDTctIopA01kr2I0ws5lrE4FjNXHhLAen/Hr1U3o1t0Ni1+1qCObRBtgdz1MMz3AC2B/EgKq5USm2hnQ6mNBYIfKsYp0lFsM4G8UONHNaroT4Kw==
+ b=pc4R+7V/UuKxgPscOCfBTCXcVQxs2ob7piyD6eXOgnneqi9CEjn0FfCAm4CalbJrsx8ZuljXjNqvsDDUGvtbKj/nMIXnJUH8uL+r6dr3j58+yUBwwGFYj7oRo3edu7b874GBJMW1q/HrEvhHTVmhib3jH0WMlpkJZUWCUGEwzc1nBoCOo1bIYaN5hMz9+j6kD1gUyctzGeGoldlvywrI2dfWR4xaUAObE7biBUGHC8bAR43x9Zeoi3Hu11004zi1umQwBynJ1MgB1HYLuw5GuvTdKHm0hzE6RxJzVscoryIeQ2KguxqMYt5lNzz3VL9DwFY4b3AYfIt5ItXM2VzFrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JHfzDc8hxvCj/BV+aIO8xtZPQXrTUJi3McVEavgo4pU=;
- b=ux+VpxWnBe77wd6NyLWs1/Hrk39jiHZI6K5z5Vd/4fPSMk/lwX+DJoNX3G0AvOWTecrVKmO+va4wYo/fYyzTuKItqf8yGAuFTXmk6BVPWxiTheictG5RzackvZrZVvB/bjv6EeMx7vXyF60vOunul0Hz0AQnBkve/uRhQ513noqXDYWX+XFi/2EAHOQDCIYMwSV/etNfvJ988uYnjIsr2MCVzQlfr+g6MvOzHhv6uFdHruuTw+sQ9Uve8B90OiIbJVSclbKLh/1A1f0rGBiA5y9kp8bfpdXGaTejpgKtv4oFAc/mGuVukzyH1u2azIUUSgeKzOBfwgyK5cMjGkVCLA==
+ bh=0B94FjdI/9BIi6raps7RIhArGu1oRNOzA/PlrSPnx8E=;
+ b=Q78VXl9DM6ZOH+GTzQvfYv8cDdkX3yMxiDKqQ8bHyLms2VmkgVM5UPa52+v8D+YpKVFMkCFcmZ5QO28AMZHOcmicFXHO/c1/qRjrcYHJGCgMHhU/DZR1HPL1XWv8EtMM6tombUIu4i/ea8bX5GnZCK4ykkfGeX4MY9KEcEecyoJQ+Oeas5N180vZjnHwrW84dFFPmGuAESyI7IsLJqbhiqUFsUtQbQAnKfGHefwqTbfH3ghA+PiQz2aDm00IM/NpOo096DY0BuRK43Z7+PBNZ59jRVxuLCs4fEGP0rgywDFsx6d5NbpuEermRmKWieyGPEx7lAYhIXgjD6N8SKEi0w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JHfzDc8hxvCj/BV+aIO8xtZPQXrTUJi3McVEavgo4pU=;
- b=AwXZosBi2gPQ9ojK7UJKzGG4qCJ74Qolc9NZu1dfvYZAzpR6NdfFMlo91/0LWUY0ekHmxZXc3fntvT04h6jjkk9/xOQ+GNIL16t6CdWG6IYhQEO4Qf8YX3jq7pz3uRKCdxQHsbBYqo6kG7cW0Ak2yyuoQ4cLQPk4yO75oQVxv4A=
-Received: from SA1P222CA0119.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c5::18)
- by DM6PR12MB4331.namprd12.prod.outlook.com (2603:10b6:5:21a::20) with
+ bh=0B94FjdI/9BIi6raps7RIhArGu1oRNOzA/PlrSPnx8E=;
+ b=By5+hI026bjIwKp4aAVsKyei7WyfFchEzHP1QyTwfT/eu0UtL53Dgjfo/mBa5AadVdViOUiAdwflG2ubIPf5imYKUOyKqx06smpDyW85dt8Oqa4PkbAQV2jXh99MgJ5ABUQz+GGAbtiFrIIoNx/ASVtE2augeizQg3+yoe6/lmk=
+Received: from SA1P222CA0116.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c5::20)
+ by DS7PR12MB8276.namprd12.prod.outlook.com (2603:10b6:8:da::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.19; Tue, 14 Jan
- 2025 12:04:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.12; Tue, 14 Jan
+ 2025 12:04:43 +0000
 Received: from SN1PEPF00026369.namprd02.prod.outlook.com
- (2603:10b6:806:3c5:cafe::1e) by SA1P222CA0119.outlook.office365.com
- (2603:10b6:806:3c5::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.18 via Frontend Transport; Tue,
- 14 Jan 2025 12:04:41 +0000
+ (2603:10b6:806:3c5:cafe::e4) by SA1P222CA0116.outlook.office365.com
+ (2603:10b6:806:3c5::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.13 via Frontend Transport; Tue,
+ 14 Jan 2025 12:04:42 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -65,11 +65,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  SN1PEPF00026369.mail.protection.outlook.com (10.167.241.134) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8356.11 via Frontend Transport; Tue, 14 Jan 2025 12:04:41 +0000
+ 15.20.8356.11 via Frontend Transport; Tue, 14 Jan 2025 12:04:42 +0000
 Received: from ethanolx50f7host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 14 Jan
- 2025 06:04:40 -0600
+ 2025 06:04:41 -0600
 From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 To: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-cxl@vger.kernel.org>
@@ -79,9 +79,9 @@ CC: Ard Biesheuvel <ardb@kernel.org>, Alison Schofield
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Yazen Ghannam
 	<yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>, "Smita
  Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>
-Subject: [PATCH v5 1/5] efi/cper, cxl: Prefix protocol error struct and function names with cxl_
-Date: Tue, 14 Jan 2025 12:04:23 +0000
-Message-ID: <20250114120427.149260-2-Smita.KoralahalliChannabasappa@amd.com>
+Subject: [PATCH v5 2/5] efi/cper, cxl: Make definitions and structures global
+Date: Tue, 14 Jan 2025 12:04:24 +0000
+Message-ID: <20250114120427.149260-3-Smita.KoralahalliChannabasappa@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20250114120427.149260-1-Smita.KoralahalliChannabasappa@amd.com>
 References: <20250114120427.149260-1-Smita.KoralahalliChannabasappa@amd.com>
@@ -96,122 +96,305 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00026369:EE_|DM6PR12MB4331:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79634c6e-9069-4792-df10-08dd3493a0ae
+X-MS-TrafficTypeDiagnostic: SN1PEPF00026369:EE_|DS7PR12MB8276:EE_
+X-MS-Office365-Filtering-Correlation-Id: c547b58e-3fc4-4c3d-5178-08dd3493a102
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CJPUZ0Rnhag7POzadld80mLTtPjKxa4+4txQuVKKuE3N+3QmqV7AQtQ01d/V?=
- =?us-ascii?Q?CxXWeu1kGSgE2nF3/zV0nTxcsIRkOhf4oHadmZ98H2ADdO3DY0uT1oMiRjMQ?=
- =?us-ascii?Q?MNlB+ncD1wfybtqxo4glZ9XNrvNlbxg9wxz0Ohc4ri1wryZcAUr43HQlk1Yu?=
- =?us-ascii?Q?CRsf/Y6dXkY99cbZ9QoGV3IAVtChSZJ3J+f65zjIztee4X8owNYj3R2nXTDi?=
- =?us-ascii?Q?P/pyk1vNzbbwF4QpUS+esJjqJcFlCoelNQHz1Sw+my3bJT8ne3SEZvsPDejW?=
- =?us-ascii?Q?8ShTimAYFmVx5zlKIZPkD5lk39q/YMITciM5tSVmaEf70rZNt9zpv0D3aJ1q?=
- =?us-ascii?Q?xyaWHTt0t8XnS3FwNA8hjXBNLALp6iCUEu9qGd4V8Fv6sYASyy/g1zYGigbQ?=
- =?us-ascii?Q?PYXiMZIv+601jT4fI+qGMzGKQpJ8dIdji/BBjsY2WAQt52Ym2M16c7/kvdCO?=
- =?us-ascii?Q?KAbDsUU6DQXlBoq/twlvPs/J6RWz6t3/Tz0HekyJCxC66tKTd2MWVVNbR3HM?=
- =?us-ascii?Q?lR03Oj1WcgwbDTabgZc11LEDYAs7xWlH2APEHzquNwrsBMqazr3qHmudWOFO?=
- =?us-ascii?Q?3UFerA6QjsP21E4XP4O9LA5wgHOmbGTA+p0GJi4+1K61S+eFBzXd/gc9MSVh?=
- =?us-ascii?Q?G5ryJ9oSQ/IU/3UvgY0IuoT3KQzwv6046hrd5gf9IfIasypc9lwhn+Yt0q9R?=
- =?us-ascii?Q?SWW6UkyPUoYn0FDXRfWVmRyn5sr1SpUyy/tymVRMyzon8oeUT+ef3iYm+PZS?=
- =?us-ascii?Q?zP2C5sKe34T3WqYF0nz7VzNqBpmupZHdWBHi8NNIzEVN4Xuj87Z3Z2mXK8S9?=
- =?us-ascii?Q?35lEw2tWMqmKXok+wtHW8IZFErMhZpsGmNh6nxR0tlWsPl51HX9PbZJEZ7Dj?=
- =?us-ascii?Q?OjjOiHUDzF0vV0dGKEi1NvNsPhlZ8CpH65tGpSFsnIp865tUPmXMCfgnxpu4?=
- =?us-ascii?Q?VMbfoSLlRPQMPvf02BebjnW9OjVwnlwMe/bP1yAAkS2hDQTdk+jpx9f6ohjZ?=
- =?us-ascii?Q?gcjAXccONkOEa16nVxGqi6YRvUrWovF35xnMmFC7g/eJVryFTWXlZX+uNADf?=
- =?us-ascii?Q?Z9W/gsq5SvCy5oZ4PezgF/GIm/cEiiUek+c6EUrdYrcpzQY9guHlSJAeuXCP?=
- =?us-ascii?Q?ZDxE0lPyzG21oWnKGj06gEbgEqQQWs1Q6lx0uR0lmYDG3brs3zcmZPFVjD9x?=
- =?us-ascii?Q?B7AJmMEtpO3y4BvVnikYLl2tI3s5nNIFA5Vu/tejmxoEsr3isqcS4cs6c8yj?=
- =?us-ascii?Q?nBNH0eeUKMGOWAISobjWEsK3L+Pga/RFPUyzjXMvQoCgVmCCl0N5gxUj7/ez?=
- =?us-ascii?Q?4m/Y0J9Tyv872/L5+VRnIkQIFB8zLg926IjKsyr4XwiQuCVFp5A8Tn0OyGSn?=
- =?us-ascii?Q?5bcwXcBWDso5wBcMXcUo+nJgupr8Jr5JmiF9OJgBkzzXa/uxdyoAbQ6F+3RB?=
- =?us-ascii?Q?CENNpIwAerboxDBb3L6toeIMTwWvy2o4eFwIwIY5qNVOrruEJBANRq7xzEm5?=
- =?us-ascii?Q?dFzvv2t/g3iL1Y8=3D?=
+	=?us-ascii?Q?cv1VO11fr0iUU6mweBp3WizeCf7rJVwxolDUD9qbDl1D+nsaLozzpwShBIlw?=
+ =?us-ascii?Q?DiMfKVufWuFWi2E85vUqRxf+px99GnlrLolSY5W7RHSeq/E7GuA6A74WH+LZ?=
+ =?us-ascii?Q?6vPJIpgabeGrHtDda56BWC0OrOwNNyn8ScELeWNmXr7UXCCBR8GDJSKLZS4j?=
+ =?us-ascii?Q?JUDLDBygBtVhaM8UBBMK9uCPOOuJQlc4px+Qz3R4uqM9FxWKNv2qgKcoC+k6?=
+ =?us-ascii?Q?o9R3pS0kdK5edxZpaut6Xi7BERko5GJKQ5cioUYqN/dOqzuivGAkgtxa8BXT?=
+ =?us-ascii?Q?VAiIuuomyNHdvbbdtGznlVlyv+mx+frGHBSDOIb1os8FFSMnks+/vplAkJmS?=
+ =?us-ascii?Q?szE5VB0YsK/1gtbi7jtBY2cG8wOOv0d0zjvLoN5giXnYzoUhcl0ovcsU0dB6?=
+ =?us-ascii?Q?NIJVrVZtuKzaFdl3Xtn32AeddhIxIwphRMxRw4cvhfGU+VRwPBq3LlQwcL0k?=
+ =?us-ascii?Q?cyPkOhDGTrVN/dVJkgrzFa48pqp7uVMW4/cNdwkq8r6k4C5PjJuHm6G5Pkip?=
+ =?us-ascii?Q?7VOnvzXCyiTs8d+GltunP8vcPoBrnSSf6ixm7za96wdEip00x1d00pGtslca?=
+ =?us-ascii?Q?qOxpMbOoUFi3sKQE5AgC+2ohc0ke0T62BC/U1ygQWzeNNkcOJogpRDWl+Mlu?=
+ =?us-ascii?Q?nRrspgIN0kUgyr+kMpB5ekbpTEOPkt8YIuzE9LVLqyD+193OEr/g3r8Yu0bR?=
+ =?us-ascii?Q?xQE22BUCiml/94vm/zrU+u+9a65hMH1dNHiL0xOsz6C2TxUojEgnl+ycoE5w?=
+ =?us-ascii?Q?fDG1dadZu7MwLG/eUv+mVmpu+nDgLe5nDKMbK3C0jL7xYpWAlUjPoJ0n4frv?=
+ =?us-ascii?Q?xH9D+jLPwIq8ILqWAdJgSeeZXn7rVt1bKfy5oy2u1gqlqXQcjfVdwdf38E4k?=
+ =?us-ascii?Q?51rpxN1iztTBfGStIb/c7/eznuX1ETxzdw0qe5OwQquanWKFPdL3Fjak4AaH?=
+ =?us-ascii?Q?cse+xAS61dZmhghFsum2S/QNXgr/5fBE9IVXfUgVm+ZHjxgfKYf34Dwu/Iyi?=
+ =?us-ascii?Q?/J5r02DROV84i2MP3qimvXstOPO15M+1BN+3AcSEmSoGHIZ9ENs1lZZhzWSk?=
+ =?us-ascii?Q?h69EC/Uvb3kALYST83bDmfJ5PNNbvJuQQ2uwSwp5z1O7iIR3Q4WgKSDMIJ/+?=
+ =?us-ascii?Q?8XhqxZlG/E1zc4BQnBfMiPj2bBxXVT1FWpkD2Me9G+tPZHFoBv/uvTtVV9j5?=
+ =?us-ascii?Q?jObf7BTpBA9HNlRFu86dK/0xKZR00gmHzrB0rXFGbmQpWLV4rb3jVmiCf6/Z?=
+ =?us-ascii?Q?ODonunSJP9Zlg2+4a/Nme6IwqL/EVS60+QXJGiuAP1GSo1LW8jCF4QXaDlku?=
+ =?us-ascii?Q?6AcSb6SK8nTBYA7T6nZ9ZTzMpWlPNqMm97YOL0+ruu6QnNr7IuG06MMNrGnf?=
+ =?us-ascii?Q?qa91IJcj+HTiYmD4hSEcgz8fMyNpAxmEb+69XtXLXAZuBeP/caFxAXQScfwa?=
+ =?us-ascii?Q?2qnqgkPBsBI50Ck0EqCNUy886SV1x734zKxp4f4qKrWORyvg8LBRzIk7Uk/N?=
+ =?us-ascii?Q?cLhfpad7+H+Jl7Q=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 12:04:41.6349
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 12:04:42.1817
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79634c6e-9069-4792-df10-08dd3493a0ae
+X-MS-Exchange-CrossTenant-Network-Message-Id: c547b58e-3fc4-4c3d-5178-08dd3493a102
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	SN1PEPF00026369.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4331
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8276
 
-Rename the protocol error struct from struct cper_sec_prot_err to
-struct cxl_cper_sec_prot_err and cper_print_prot_err() to
-cxl_cper_print_prot_err() to maintain naming consistency. No
-functional changes.
+In preparation to add tracepoint support, move protocol error UUID
+definition to a common location, Also, make struct CXL RAS capability,
+cxl_cper_sec_prot_err and CPER validation flags global for use across
+different modules.
 
 Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 ---
- drivers/firmware/efi/cper.c     | 4 ++--
- drivers/firmware/efi/cper_cxl.c | 3 ++-
- drivers/firmware/efi/cper_cxl.h | 5 +++--
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/firmware/efi/cper.c     |  1 +
+ drivers/firmware/efi/cper_cxl.c | 35 +--------------
+ drivers/firmware/efi/cper_cxl.h | 51 ---------------------
+ include/cxl/event.h             | 80 +++++++++++++++++++++++++++++++++
+ include/linux/cper.h            |  4 ++
+ 5 files changed, 86 insertions(+), 85 deletions(-)
 
 diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index b69e68ef3f02..8e5762f7ef2e 100644
+index 8e5762f7ef2e..ae1953e2b214 100644
 --- a/drivers/firmware/efi/cper.c
 +++ b/drivers/firmware/efi/cper.c
-@@ -624,11 +624,11 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
- 		else
- 			goto err_section_too_small;
- 	} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
--		struct cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
-+		struct cxl_cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
+@@ -24,6 +24,7 @@
+ #include <linux/bcd.h>
+ #include <acpi/ghes.h>
+ #include <ras/ras_event.h>
++#include <cxl/event.h>
+ #include "cper_cxl.h"
  
- 		printk("%ssection_type: CXL Protocol Error\n", newpfx);
- 		if (gdata->error_data_length >= sizeof(*prot_err))
--			cper_print_prot_err(newpfx, prot_err);
-+			cxl_cper_print_prot_err(newpfx, prot_err);
- 		else
- 			goto err_section_too_small;
- 	} else {
+ /*
 diff --git a/drivers/firmware/efi/cper_cxl.c b/drivers/firmware/efi/cper_cxl.c
-index a55771b99a97..cbaabcb7382d 100644
+index cbaabcb7382d..64c0dd27be6e 100644
 --- a/drivers/firmware/efi/cper_cxl.c
 +++ b/drivers/firmware/efi/cper_cxl.c
-@@ -55,7 +55,8 @@ enum {
- 	USP,	/* CXL Upstream Switch Port */
+@@ -8,27 +8,9 @@
+  */
+ 
+ #include <linux/cper.h>
++#include <cxl/event.h>
+ #include "cper_cxl.h"
+ 
+-#define PROT_ERR_VALID_AGENT_TYPE		BIT_ULL(0)
+-#define PROT_ERR_VALID_AGENT_ADDRESS		BIT_ULL(1)
+-#define PROT_ERR_VALID_DEVICE_ID		BIT_ULL(2)
+-#define PROT_ERR_VALID_SERIAL_NUMBER		BIT_ULL(3)
+-#define PROT_ERR_VALID_CAPABILITY		BIT_ULL(4)
+-#define PROT_ERR_VALID_DVSEC			BIT_ULL(5)
+-#define PROT_ERR_VALID_ERROR_LOG		BIT_ULL(6)
+-
+-/* CXL RAS Capability Structure, CXL v3.0 sec 8.2.4.16 */
+-struct cxl_ras_capability_regs {
+-	u32 uncor_status;
+-	u32 uncor_mask;
+-	u32 uncor_severity;
+-	u32 cor_status;
+-	u32 cor_mask;
+-	u32 cap_control;
+-	u32 header_log[16];
+-};
+-
+ static const char * const prot_err_agent_type_strs[] = {
+ 	"Restricted CXL Device",
+ 	"Restricted CXL Host Downstream Port",
+@@ -40,21 +22,6 @@ static const char * const prot_err_agent_type_strs[] = {
+ 	"CXL Upstream Switch Port",
  };
  
--void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err)
-+void cxl_cper_print_prot_err(const char *pfx,
-+			     const struct cxl_cper_sec_prot_err *prot_err)
+-/*
+- * The layout of the enumeration and the values matches CXL Agent Type
+- * field in the UEFI 2.10 Section N.2.13,
+- */
+-enum {
+-	RCD,	/* Restricted CXL Device */
+-	RCH_DP,	/* Restricted CXL Host Downstream Port */
+-	DEVICE,	/* CXL Device */
+-	LD,	/* CXL Logical Device */
+-	FMLD,	/* CXL Fabric Manager managed Logical Device */
+-	RP,	/* CXL Root Port */
+-	DSP,	/* CXL Downstream Switch Port */
+-	USP,	/* CXL Upstream Switch Port */
+-};
+-
+ void cxl_cper_print_prot_err(const char *pfx,
+ 			     const struct cxl_cper_sec_prot_err *prot_err)
  {
- 	if (prot_err->valid_bits & PROT_ERR_VALID_AGENT_TYPE)
- 		pr_info("%s agent_type: %d, %s\n", pfx, prot_err->agent_type,
 diff --git a/drivers/firmware/efi/cper_cxl.h b/drivers/firmware/efi/cper_cxl.h
-index 86bfcf7909ec..0e3ab0ba17c3 100644
+index 0e3ab0ba17c3..5ce1401ee17a 100644
 --- a/drivers/firmware/efi/cper_cxl.h
 +++ b/drivers/firmware/efi/cper_cxl.h
-@@ -18,7 +18,7 @@
- #pragma pack(1)
+@@ -10,57 +10,6 @@
+ #ifndef LINUX_CPER_CXL_H
+ #define LINUX_CPER_CXL_H
  
- /* Compute Express Link Protocol Error Section, UEFI v2.10 sec N.2.13 */
--struct cper_sec_prot_err {
+-/* CXL Protocol Error Section */
+-#define CPER_SEC_CXL_PROT_ERR						\
+-	GUID_INIT(0x80B9EFB4, 0x52B5, 0x4DE3, 0xA7, 0x77, 0x68, 0x78,	\
+-		  0x4B, 0x77, 0x10, 0x48)
+-
+-#pragma pack(1)
+-
+-/* Compute Express Link Protocol Error Section, UEFI v2.10 sec N.2.13 */
+-struct cxl_cper_sec_prot_err {
+-	u64 valid_bits;
+-	u8 agent_type;
+-	u8 reserved[7];
+-
+-	/*
+-	 * Except for RCH Downstream Port, all the remaining CXL Agent
+-	 * types are uniquely identified by the PCIe compatible SBDF number.
+-	 */
+-	union {
+-		u64 rcrb_base_addr;
+-		struct {
+-			u8 function;
+-			u8 device;
+-			u8 bus;
+-			u16 segment;
+-			u8 reserved_1[3];
+-		};
+-	} agent_addr;
+-
+-	struct {
+-		u16 vendor_id;
+-		u16 device_id;
+-		u16 subsystem_vendor_id;
+-		u16 subsystem_id;
+-		u8 class_code[2];
+-		u16 slot;
+-		u8 reserved_1[4];
+-	} device_id;
+-
+-	struct {
+-		u32 lower_dw;
+-		u32 upper_dw;
+-	} dev_serial_num;
+-
+-	u8 capability[60];
+-	u16 dvsec_len;
+-	u16 err_len;
+-	u8 reserved_2[4];
+-};
+-
+-#pragma pack()
+-
+ void cxl_cper_print_prot_err(const char *pfx,
+ 			     const struct cxl_cper_sec_prot_err *prot_err);
+ 
+diff --git a/include/cxl/event.h b/include/cxl/event.h
+index 0bea1afbd747..66d85fc87701 100644
+--- a/include/cxl/event.h
++++ b/include/cxl/event.h
+@@ -152,6 +152,86 @@ struct cxl_cper_work_data {
+ 	struct cxl_cper_event_rec rec;
+ };
+ 
++#define PROT_ERR_VALID_AGENT_TYPE		BIT_ULL(0)
++#define PROT_ERR_VALID_AGENT_ADDRESS		BIT_ULL(1)
++#define PROT_ERR_VALID_DEVICE_ID		BIT_ULL(2)
++#define PROT_ERR_VALID_SERIAL_NUMBER		BIT_ULL(3)
++#define PROT_ERR_VALID_CAPABILITY		BIT_ULL(4)
++#define PROT_ERR_VALID_DVSEC			BIT_ULL(5)
++#define PROT_ERR_VALID_ERROR_LOG		BIT_ULL(6)
++
++/*
++ * The layout of the enumeration and the values matches CXL Agent Type
++ * field in the UEFI 2.10 Section N.2.13,
++ */
++enum {
++	RCD,	/* Restricted CXL Device */
++	RCH_DP,	/* Restricted CXL Host Downstream Port */
++	DEVICE,	/* CXL Device */
++	LD,	/* CXL Logical Device */
++	FMLD,	/* CXL Fabric Manager managed Logical Device */
++	RP,	/* CXL Root Port */
++	DSP,	/* CXL Downstream Switch Port */
++	USP,	/* CXL Upstream Switch Port */
++};
++
++#pragma pack(1)
++
++/* Compute Express Link Protocol Error Section, UEFI v2.10 sec N.2.13 */
 +struct cxl_cper_sec_prot_err {
- 	u64 valid_bits;
- 	u8 agent_type;
- 	u8 reserved[7];
-@@ -61,6 +61,7 @@ struct cper_sec_prot_err {
++	u64 valid_bits;
++	u8 agent_type;
++	u8 reserved[7];
++
++	/*
++	 * Except for RCH Downstream Port, all the remaining CXL Agent
++	 * types are uniquely identified by the PCIe compatible SBDF number.
++	 */
++	union {
++		u64 rcrb_base_addr;
++		struct {
++			u8 function;
++			u8 device;
++			u8 bus;
++			u16 segment;
++			u8 reserved_1[3];
++		};
++	} agent_addr;
++
++	struct {
++		u16 vendor_id;
++		u16 device_id;
++		u16 subsystem_vendor_id;
++		u16 subsystem_id;
++		u8 class_code[2];
++		u16 slot;
++		u8 reserved_1[4];
++	} device_id;
++
++	struct {
++		u32 lower_dw;
++		u32 upper_dw;
++	} dev_serial_num;
++
++	u8 capability[60];
++	u16 dvsec_len;
++	u16 err_len;
++	u8 reserved_2[4];
++};
++
++#pragma pack()
++
++/* CXL RAS Capability Structure, CXL v3.0 sec 8.2.4.16 */
++struct cxl_ras_capability_regs {
++	u32 uncor_status;
++	u32 uncor_mask;
++	u32 uncor_severity;
++	u32 cor_status;
++	u32 cor_mask;
++	u32 cap_control;
++	u32 header_log[16];
++};
++
+ #ifdef CONFIG_ACPI_APEI_GHES
+ int cxl_cper_register_work(struct work_struct *work);
+ int cxl_cper_unregister_work(struct work_struct *work);
+diff --git a/include/linux/cper.h b/include/linux/cper.h
+index 265b0f8fc0b3..5c6d4d5b9975 100644
+--- a/include/linux/cper.h
++++ b/include/linux/cper.h
+@@ -89,6 +89,10 @@ enum {
+ #define CPER_NOTIFY_DMAR						\
+ 	GUID_INIT(0x667DD791, 0xC6B3, 0x4c27, 0x8A, 0x6B, 0x0F, 0x8E,	\
+ 		  0x72, 0x2D, 0xEB, 0x41)
++/* CXL Protocol Error Section */
++#define CPER_SEC_CXL_PROT_ERR						\
++	GUID_INIT(0x80B9EFB4, 0x52B5, 0x4DE3, 0xA7, 0x77, 0x68, 0x78,	\
++		  0x4B, 0x77, 0x10, 0x48)
  
- #pragma pack()
- 
--void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err);
-+void cxl_cper_print_prot_err(const char *pfx,
-+			     const struct cxl_cper_sec_prot_err *prot_err);
- 
- #endif //__CPER_CXL_
+ /* CXL Event record UUIDs are formatted as GUIDs and reported in section type */
+ /*
 -- 
 2.17.1
 
