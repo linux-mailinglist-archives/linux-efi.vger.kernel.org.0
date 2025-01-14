@@ -1,164 +1,201 @@
-Return-Path: <linux-efi+bounces-2627-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2628-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F945A10B2B
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2025 16:41:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7208CA10B46
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2025 16:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EA6316A953
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2025 15:41:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D7EA1614A4
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jan 2025 15:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7AB1FC112;
-	Tue, 14 Jan 2025 15:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8089B159209;
+	Tue, 14 Jan 2025 15:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkpW/t/r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KpbWhxiF"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8961E1FC109
-	for <linux-efi@vger.kernel.org>; Tue, 14 Jan 2025 15:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C870149C57;
+	Tue, 14 Jan 2025 15:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736869140; cv=none; b=nuUDd4OEzYjdGlohTbuBRKZxEjtll+EASLOjUdhQjNAJvsCaZgJ04uqPRmuYbVLklxsDlGFKSxRCIOjHaLNZc0S9USHMYi05DwvlofSKJSMPLDSEcyeh1XU0JHtLr752FrAZ1CWKsYFLMFrtlSmPfRXU/sekcLRBQGwWzDF3RSY=
+	t=1736869236; cv=none; b=lq2gHYCEKdHTHvRF6xrIHQWAX7R12A1utJPaRMwFqPXnzT+gnc3IBKcyn7jba+mp9Az6+c3OamwU6WvAuK7bomPBJk7ERxLlMd2clmRWuz1GOwfFa+8Ej+JQxW2QXv/uTmYXfdgSVZ1QHFKbvQpyD6y0sDsIiagsbr6klDa1WwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736869140; c=relaxed/simple;
-	bh=WaRLGDxUsU1Cw0VlRHdgDUeYcIvEDnebAfUA6KCkI8c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sgMHgaGE4NF965wfsRdpwdPII0yOYjxR13OeeyDMnpAzx6OSKCAUiDhyjQ1sevh+46p4qNjyAts0SbeqB+4dpoDJxLA/b4YCrHsPIK5u8hzm8YduoZinSveerV2sa3DP59KJuKBLKVJ+9NkdyXYOAdWc/+cYRwefBnaxNH6TrX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkpW/t/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC839C4CEDD
-	for <linux-efi@vger.kernel.org>; Tue, 14 Jan 2025 15:38:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736869139;
-	bh=WaRLGDxUsU1Cw0VlRHdgDUeYcIvEDnebAfUA6KCkI8c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RkpW/t/r6CtfebXHaqLHfz16eT6sB0ObZ+93Ps6IeCuXuQo0QHqWreW1D37IQ+SLd
-	 +/hAvH9UYXiFpMwcsYd6dsko8mR/fmHuTcwhBJLds35gBuGrdwVn+z5idgPcgeSGg4
-	 Tbjln+TU1p2YrZS+vA8Az/UUEyNveg0Wi2e1iBO4T6VQMK0ol2+ulLXftn1PJwJGt1
-	 dqhi3DG3MX94POzWwkccmjaT8n6C0MjHbJiXFgNy9JW3o53QunhWq0UoXb9FeDF/Ae
-	 IfkSpyCzSr6RJvNp1ajKk31CKSakgNT0fjBpWyU8B5ThhjpOu3zrSJxzzk54svfsIA
-	 K/JgkOxaZY+XQ==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-304d757a9c1so51739621fa.0
-        for <linux-efi@vger.kernel.org>; Tue, 14 Jan 2025 07:38:59 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWI3mWJSAfNtGYmT7vgY03c1Vu1sFLJJ0FKWE4wSqMfeb3VavKdgYXd1XazDSpWImSc177QIpYKsqU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/jpDWNpkpQgBVSUaG3U7M3jxiL59D5lboRwu9XfpgTilownkC
-	2g6UVk73yP3BcTTEburmnOUIgCC98V2AD3gj8ESCGmuKIvlwUIVx71L0Y5hcV6G3/Nzv0WkjDnJ
-	/VEl95XUPHDAgLTMrnvr2vNTYY4U=
-X-Google-Smtp-Source: AGHT+IFHhN1x591d88MpeYAYeeybMu0ontEtog+602uQqMJihIu1Frb6lnKiGvoubU/aCAGN+5G8bcgh6kwBGulgahI=
-X-Received: by 2002:a2e:a542:0:b0:300:31dc:8a4a with SMTP id
- 38308e7fff4ca-305fd20a693mr83831811fa.18.1736869138265; Tue, 14 Jan 2025
- 07:38:58 -0800 (PST)
+	s=arc-20240116; t=1736869236; c=relaxed/simple;
+	bh=EXSVcHZr13xDJlJ13qdV5eLNwcKS7ozyesIncTS9lUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=US8ri2m/mBC8+bjiB1adnR14ONMlD6Svq5XNMSftdM2ufsL0M0zssXdiEVSlHc7kSUQ2h3HXCnbxMsdozTnNUDnAMEEcsHgk+kUfP97b+LP/HRulUpqWz+Whz+U+Dtr2cbqLSjmSqwS3F5bQ33fcQ+ulTUJsIGC1xnXSXxuYrLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KpbWhxiF; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736869234; x=1768405234;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EXSVcHZr13xDJlJ13qdV5eLNwcKS7ozyesIncTS9lUc=;
+  b=KpbWhxiFjN/62nhx0IKCHmICGagQ7tZg+n/8XNdkr3cc0LtsbeHhFWGi
+   fFRLZyKopBQQp3R277SQVMRtcQwNcRDe/cnZpnV5YJZEZhowWoeV92hzN
+   cOMQkFr4yioUrJLFJNwqOlDKyVsOuadGOWhxTcVCWutkGK2zNnavkP/fb
+   FOJc3bc8vyj3j8Y+FSrVe5RiASpXx0KhCKgTeLaKedyIupLQhA9PMTJbV
+   mmCeMgvY3Bieia201G78og0bQ6uL8v8gpBmian4m7kKT8KblL52nfJyf9
+   6CFihOKCfUjHMcHUQzDj/MXC9YEtvemdoe7lLZHYCbHqbgjCYY+gO+seS
+   g==;
+X-CSE-ConnectionGUID: wevlWOWsS7uO9Z05C2BsBg==
+X-CSE-MsgGUID: l+p3ChlnQ9CH+/P6UrShkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="54588963"
+X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; 
+   d="scan'208";a="54588963"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 07:40:34 -0800
+X-CSE-ConnectionGUID: 5reZp7ytQDqLMoZkf4+27Q==
+X-CSE-MsgGUID: gS/viDhjREOlzPhzriuONg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="128087772"
+Received: from inaky-mobl1.amr.corp.intel.com (HELO [10.125.108.148]) ([10.125.108.148])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 07:40:25 -0800
+Message-ID: <08417bb6-ffc5-44e8-a0c4-b38e914c107c@intel.com>
+Date: Tue, 14 Jan 2025 08:40:23 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241218150316.1583806-6-ardb+git@google.com> <20241218150316.1583806-7-ardb+git@google.com>
- <3d6f2bb7-3c23-4df7-a787-034bb30bff19@roeck-us.net> <CAMj1kXGz=dazpagUsxoDGHd4-n6QkoZta90h-c0DCBZPWuc_vg@mail.gmail.com>
- <CAMj1kXEgdUS3qxGe9_uQF5jNxwnFAR2giA0dTvE-kQ=u7Bmh=Q@mail.gmail.com>
- <e5e1f492-1050-4c4c-9e61-6ff4a68c58d2@roeck-us.net> <CAMj1kXGtspGNfV2ESk4bR8Tysr_GTRAbU1AQ6ZHtbkEGKYNv-g@mail.gmail.com>
-In-Reply-To: <CAMj1kXGtspGNfV2ESk4bR8Tysr_GTRAbU1AQ6ZHtbkEGKYNv-g@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 14 Jan 2025 16:38:47 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGFWLKf3R3N-5uetBBARA0UqSoOsExSpMS6ZFXW+_yJuA@mail.gmail.com>
-X-Gm-Features: AbW1kvb4URYKAoIpWgYq-6XeuTMZHvqARbHUHSy5Oc3VNeKUkGFIit4meT-7u28
-Message-ID: <CAMj1kXGFWLKf3R3N-5uetBBARA0UqSoOsExSpMS6ZFXW+_yJuA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/4] efi/libstub: Avoid legacy decompressor zlib/zstd wrappers
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
-	Jeremy Linton <jeremy.linton@arm.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Pingfan Liu <piliu@redhat.com>, Dave Young <dyoung@redhat.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/5] acpi/ghes, cper: Recognize and cache CXL Protocol
+ errors
+To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Yazen Ghannam <yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>
+References: <20250114120427.149260-1-Smita.KoralahalliChannabasappa@amd.com>
+ <20250114120427.149260-5-Smita.KoralahalliChannabasappa@amd.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250114120427.149260-5-Smita.KoralahalliChannabasappa@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 14 Jan 2025 at 16:34, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Tue, 14 Jan 2025 at 16:08, Guenter Roeck <linux@roeck-us.net> wrote:
-> >
-> > On 1/14/25 03:40, Ard Biesheuvel wrote:
-> > > On Tue, 14 Jan 2025 at 08:33, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >>
-> > >> On Tue, 14 Jan 2025 at 01:31, Guenter Roeck <linux@roeck-us.net> wrote:
-> > >>>
-> > >>> Hi,
-> > >>>
-> > >>> On Wed, Dec 18, 2024 at 04:03:17PM +0100, Ard Biesheuvel wrote:
-> > >>>> From: Ard Biesheuvel <ardb@kernel.org>
-> > >>>>
-> > >>>> Remove the dependency on the decompression wrappers used by the legacy
-> > >>>> decompressor, which do some odd things like providing a barebones
-> > >>>> malloc() implementation. Instead, implement GZIP deflate and ZSTD
-> > >>>> decompression in terms of the underlying libraries.
-> > >>>>
-> > >>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > >>>
-> > >>> With this patch in linux-next, my loongarch boot tests with qemu
-> > >>> no longer boot. Log message is:
-> > >>>
-> > >>> qemu log:
-> > >>> EFI stub: Decompressing Linux Kernel...
-> > >>> EFI stub: EFI_RNG_PROTOCOL unavailable
-> > >>> EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path
-> > >>> EFI stub: Exiting boot services
-> > >>>
-> > >>> ... and then there is nothing until I abort the emulation.
-> > >>>
-> > >>> Reverting this patch results in a build failure, so I awas not able to
-> > >>> test it. Bisect results are atatched for reference.
-> > >>>
-> > >>
-> > >> Thanks for the report - I'll drop the patch for now, and try again next cycle.
-> > >
-> > > Mind sharing your config/firmware/command line details? I'm failing to
-> > > reproduce the issue.
-> >
-> > qemu-system-loongarch64 -M virt -cpu \
-> >       la464 -kernel arch/loongarch/boot/vmlinuz.efi -smp 2 \
-> >       -no-reboot -m 4G -initrd rootfs.cpio \
-> >       -bios QEMU_EFI-loongarch64.fd \
-> >       --append "panic=-1 kunit.stats_enabled=2 kunit.filter=speed>slow rdinit=/sbin/init console=ttyS0,115200 earlycon=uart8250,mmio,0x1fe001e0,115200n8" \
-> >       -nographic -serial stdio -monitor none
-> >
-> > qemu version is 9.1. The EFI image is at
-> > https://github.com/groeck/linux-build-test/blob/master/rootfs/firmware/QEMU_EFI-loongarch64.fd
-> > and the initrd is at
-> > https://github.com/groeck/linux-build-test/blob/master/rootfs/loongarch/rootfs.cpio.gz
-> >
-> > Configuration is defconfig with various debug options enabled.
-> >
-> > I'll be happy to make a test directory available with all information needed
-> > if that helps. Please let me know.
-> >
->
-> Everything works fine with my distro QEMU:
->
-> $ qemu-system-loongarch64 --version
-> QEMU emulator version 8.2.4 (Debian 1:8.2.4+ds-1+build1)
-> Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
->
-> and it doesn't matter if I use your firmware or my own (grabbed
-> randomly from [0])
->
-> When I build QEMU from source (stable-9.2), things still work happily
-> if I use that same firmware. With your firmware, my QEMU 9.2 is
-> completely dead.
->
-> Where did you find that image? I tried rebuilding it myself from a
-> recent EDK2 base, but that doesn't work at all either.
->
-> [0] https://github.com/AOSC-Dev/LoongArchQemuVirtFirmware
 
-... actually, turns out I built the wrong platform. If I build
 
-OvmfPkg/LoongArchVirt/LoongArchVirtQemu.dsc
+On 1/14/25 5:04 AM, Smita Koralahalli wrote:
+> Add support in GHES to detect and process CXL CPER Protocol errors, as
+> defined in UEFI v2.10, section N.2.13.
+> 
+> Define struct cxl_cper_prot_err_work_data to cache CXL protocol error
+> information, including RAS capabilities and severity, for further
+> handling.
+> 
+> These cached CXL CPER records will later be processed by workqueues
+> within the CXL subsystem.
+> 
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-from the EDK2 repository, I can boot the kernel with my change
-applied, using your command line.
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+>  drivers/acpi/apei/ghes.c | 54 ++++++++++++++++++++++++++++++++++++++++
+>  include/cxl/event.h      |  6 +++++
+>  2 files changed, 60 insertions(+)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 07789f0b59bc..4ab3c8ae1360 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -676,6 +676,56 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
+>  	schedule_work(&entry->work);
+>  }
+>  
+> +static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+> +				   int severity)
+> +{
+> +#ifdef CONFIG_ACPI_APEI_PCIEAER
+> +	struct cxl_cper_prot_err_work_data wd;
+> +	u8 *dvsec_start, *cap_start;
+> +
+> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
+> +		pr_err_ratelimited("CXL CPER invalid agent type\n");
+> +		return;
+> +	}
+> +
+> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
+> +		pr_err_ratelimited("CXL CPER invalid protocol error log\n");
+> +		return;
+> +	}
+> +
+> +	if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
+> +		pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
+> +				   prot_err->err_len);
+> +		return;
+> +	}
+> +
+> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
+> +		pr_warn(FW_WARN "CXL CPER no device serial number\n");
+> +
+> +	switch (prot_err->agent_type) {
+> +	case RCD:
+> +	case DEVICE:
+> +	case LD:
+> +	case FMLD:
+> +	case RP:
+> +	case DSP:
+> +	case USP:
+> +		memcpy(&wd.prot_err, prot_err, sizeof(wd.prot_err));
+> +
+> +		dvsec_start = (u8 *)(prot_err + 1);
+> +		cap_start = dvsec_start + prot_err->dvsec_len;
+> +
+> +		memcpy(&wd.ras_cap, cap_start, sizeof(wd.ras_cap));
+> +		wd.severity = cper_severity_to_aer(severity);
+> +		break;
+> +	default:
+> +		pr_err_ratelimited("CXL CPER invalid agent type: %d\n",
+> +				   prot_err->agent_type);
+> +		return;
+> +	}
+> +#endif
+> +}
+> +
+>  /* Room for 8 entries for each of the 4 event log queues */
+>  #define CXL_CPER_FIFO_DEPTH 32
+>  DEFINE_KFIFO(cxl_cper_fifo, struct cxl_cper_work_data, CXL_CPER_FIFO_DEPTH);
+> @@ -779,6 +829,10 @@ static bool ghes_do_proc(struct ghes *ghes,
+>  		}
+>  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+>  			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
+> +		} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
+> +			struct cxl_cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
+> +
+> +			cxl_cper_post_prot_err(prot_err, gdata->error_severity);
+>  		} else if (guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA_GUID)) {
+>  			struct cxl_cper_event_rec *rec = acpi_hest_get_payload(gdata);
+>  
+> diff --git a/include/cxl/event.h b/include/cxl/event.h
+> index 66d85fc87701..ee1c3dec62fa 100644
+> --- a/include/cxl/event.h
+> +++ b/include/cxl/event.h
+> @@ -232,6 +232,12 @@ struct cxl_ras_capability_regs {
+>  	u32 header_log[16];
+>  };
+>  
+> +struct cxl_cper_prot_err_work_data {
+> +	struct cxl_cper_sec_prot_err prot_err;
+> +	struct cxl_ras_capability_regs ras_cap;
+> +	int severity;
+> +};
+> +
+>  #ifdef CONFIG_ACPI_APEI_GHES
+>  int cxl_cper_register_work(struct work_struct *work);
+>  int cxl_cper_unregister_work(struct work_struct *work);
 
-Perhaps I should try your .config as well?
 
