@@ -1,87 +1,86 @@
-Return-Path: <linux-efi+bounces-2634-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2635-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534CCA125B3
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 15:15:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B675A125BB
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 15:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7757D188900E
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 14:15:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7141160122
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 14:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC4924A7DA;
-	Wed, 15 Jan 2025 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9723D45005;
+	Wed, 15 Jan 2025 14:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KkVedJ8j"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CcwM/Sx6"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA4924A7EC;
-	Wed, 15 Jan 2025 14:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A3F35958;
+	Wed, 15 Jan 2025 14:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736950531; cv=none; b=YN2fTnkfxuicF71ljCrLxHWuhOGQJSI+ipsY9RWpC+gPfUpOrhO/5o5MvP864AHNrNS0N/2xQ/8UshLy2yq/IB+3W/OGMnAeBf4iioH8YdlRsCgCN9w+UXB1DdF0c7UfLaClb37vLvDCNf76QagKQuaZniRXoOPwbcDECsofC84=
+	t=1736950620; cv=none; b=D4s7rG024Bp5oP36tD1rZ3kuA0wx+Ir1+Id+J2ZhZD1Tse1bWQUWLzL8kfVw2WkWYEVcoqvt09EpbjKbgsei6GWzzKEvwNNu0qHM3xACxgZOCxGWEzZ37wTX0JMhs11jurgQyk8AFN7WkUUqTZQeT58UDBHIlOYI2d1SOXS7gjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736950531; c=relaxed/simple;
-	bh=HYSn3ig1jzOaoeCtyY4wvNYc36b13JHtY9u6Rc8dqIg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OW4oyEv2OLd135XGyQWETgHDXNP+7hRLAcX3o//R6TIBGfVQ0pXmrf4jMTDyHosHeioFf9OO7y4meDv77aY/johTmsepJRKAqpGXuwRMH4ZS3AP2he9TQzkbevM86EyreLygL2EuP43k59SbkuKCZvHhcY+zGkOe4KJyVDlheEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KkVedJ8j; arc=none smtp.client-ip=209.85.222.173
+	s=arc-20240116; t=1736950620; c=relaxed/simple;
+	bh=rbcdyPUZNFkLVtX5RT4e3NSCN9pmRK9zP4QBk1j88nM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LWTy8xVkvP6PoD89vkd552uVgGs7sxnP2Egl/hYVY8+r8e3eHM7wlaw77RDiGFHH3yVXqcWCYhYJxBeDpmYABpUc3U5ktduRxE+9zYmM+8qJl9RuxTsW+6zPjFAY6XsT6aCsSa5y47qQzVbDVem8VpAbcGF3xa0klc/IjmlsqM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CcwM/Sx6; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b6f53c12adso536939685a.1;
-        Wed, 15 Jan 2025 06:15:29 -0800 (PST)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21661be2c2dso121648135ad.1;
+        Wed, 15 Jan 2025 06:16:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736950528; x=1737555328; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736950617; x=1737555417; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LT0hR5zZjxEEo/cbZvgv4GcWsiMG25s7+uYGrVeJ2gU=;
-        b=KkVedJ8j+dHo3qjLL3lH/Q+UvRENiskafgH1r5JHRpVEb119rIEg5+z6xiwK/yxncK
-         gJmsc3da07PIDo84PGeDFUKnQWx7PBn0cHTrNAQFKOtv7GnioX/p7yWGjrdgu2dxhr6W
-         ClOpr8hqhMHWB8JaqWBIBg4g+cgzYcSeIHthE2GhfY1ZE40EC0xNXJLcrTkGOk45sE3r
-         KZnss8eeN/J9/5A+a8fl2LsErSYFES2hTPny5QO/KnpyF1mDjzTvDRstzublcYa6hVEn
-         HdcoGfHRmPO/cUAGsOpWJnS3MOVInd+ykFzYkd2HddyNfO9DbSvWKgcfjq7gXK9PlTSv
-         ABVA==
+        bh=+Yz/4YNAJmEQe+bHvqsoKLsb7NdDyag6+bw5DYwZOyk=;
+        b=CcwM/Sx6SIcqPIQ5tAthh7QJPHRDN3k2DU0n3ljx91S5tU3avZsFEZURZcSXhQlZ+c
+         XLsLJUgZzWirBT5c2Kdq1XKmixiOGwOFpqDvOqkoh79EFTDPJvSsraSq6zlZvzA2e9rl
+         JA/X/CkrcQVlQhANQZAG2eAi259hyTV2M6c/luiwnGhfLlHxi0I/D7OTvnda/hynnSbA
+         edIkYfwM1AMGS+LFtuico35TacI156Gbu3r0XkUGxBjCg4xn0E5ZwpN+ORCYIQL2bbt0
+         BjnqXWFI1m4UWOEi5Om24S6LghaV9DlPiyQEGfnJTHnDRvLGooTgGCPVGEivLD3VORdw
+         s/6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736950528; x=1737555328;
+        d=1e100.net; s=20230601; t=1736950617; x=1737555417;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LT0hR5zZjxEEo/cbZvgv4GcWsiMG25s7+uYGrVeJ2gU=;
-        b=gs3bDChzU97S1qNkmwkY90i70VMC2MK2Tox9t3nGI+xCPDV4gIHGRbOKRtUNSF//Jp
-         QMw6Fwe6UWshDOmSM/HtPGs+jwAUbBo2fBcel9MaFsBLvAlSYnwY+ItDMcqtzTMJRlYS
-         sfA/GIOX03I9C35Gsn2PIKa/HX9358mAOgI7oUljCpzMmVl/IicGcUNDlDzADziWBcVz
-         R8Am79e3DK0dn6DcPTTsey+YjbUPd21GwiSW8jiBF9XBLAn4qn2D5CvuR1K8PbIoMrcg
-         W7A3QNZmQfXA/7zRJungbIZ/5hl/KAL2aLSFwfMSv7mi7M8OYEesbcN/OIxayyr2Kef+
-         qm7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXPOvMkzZd/ipwz5ylT6P6duNvfWFqknpY5qiDUuJNMXrWfuh27cIt+rcb8udMAMWBafxU8Czwwyt70v3/6@vger.kernel.org, AJvYcCXwbsnDcTohtZoM61sBWnBEIJeXUlxX+977aLS4GFmdpeEVb1Z4mgqczVJavB1cGxMb0zPx0lF1byI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxySxZ04AzX0TzycAuKEnyRr3TrrQBwSFbyrttoqEMQOwbnzNLC
-	uN//VseBd76ki9e+1BR152r6O54TDQk9KyPXX2h4zOtS8zRLwSbF
-X-Gm-Gg: ASbGncvLcOTRhsLttDV6prk/LYGEcNu025UAm+zzidpTzwMgNJIsYxDXhNF1ukIJ+/a
-	iB+f7iMsRzK8YVd7lkO4DTmVXlWT6lvQMiX/aMkyYYnVTckEX0L78rqFAvJb1BIDk6eOC1Nq1fn
-	swHSJSefGecEqFa56fgewxLGA8NNP7GyduCazKITU7xCAxH+LJqRDpEL22TSdK5XTyH+PLlLKp5
-	vy99GgahHUvdbzIhDyhZhudYfJDWK0sCLoGNfYKpLqq/ieTzAvd7Tw9/pUeaeIkdw==
-X-Google-Smtp-Source: AGHT+IH/cMbfA8A7cg6gwGDkl+bJy9xDs8Rn7s3XXoR/XsEdNGuCR6o2izOM4Rnr1JCDdIyYRLj6Hg==
-X-Received: by 2002:a05:620a:2688:b0:7b6:dc74:829f with SMTP id af79cd13be357-7bcd97279a6mr5250961485a.7.1736950527701;
-        Wed, 15 Jan 2025 06:15:27 -0800 (PST)
-Received: from ownia.localdomain ([2401:b60:5:867d:3631:b7db:c3f4:aae2])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce3502a56sm719646385a.91.2025.01.15.06.15.23
+        bh=+Yz/4YNAJmEQe+bHvqsoKLsb7NdDyag6+bw5DYwZOyk=;
+        b=L8H1iPaypMRlTzQ1O62dI9hIZJ7b9qZCI8eQTda8sIx1OkIv+x8ZqHJGpW62idlLjT
+         8oIKaUL74tkeezhn6plaNfoIjdVgQEMXbRlc3F78BI2iqgFIxlF9mGZtmbKA3CLR/url
+         3KzB7gua+4gYALIDynSeXvgPthyvybVbSBknTs8jSD3qkPfDE1CnzRXB+r+sPylH8Wpv
+         E2PL3MXAe1yT/7NKK2P7g469w9TNSCLhxsX49wWza7oI9H1kC0vG2wm8VgUHADtD5xRo
+         LXj5y+i7IPGpCCkfVxiUCba/bQqYczO78vNRfC9TjFAVSZbzr5pSEWjV+QAACkthq9+9
+         P4+w==
+X-Forwarded-Encrypted: i=1; AJvYcCX85msxK6rwT4VMgxRHh5MfKBJ2S4wBSb5vZnuInDTidq9WUiFgx/AbUUd9SkWDi4NDT5Y8dZLtM6voUWY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH9JW09doJFgzK+Q3xipxIcnJOxU/TmRVtLzW4BPPrPTxahjLc
+	z2WradGj+OOmDYMQqshYk/hE2G7mt8v6ONMK7NfKQL8Fg1MXjrwH
+X-Gm-Gg: ASbGncvOvP0zpRMFhKcRiL5R0Zsk6FXWVWprUz1r/7uVa7P+1WocTecyzSPfdSb1VH+
+	DNijVW8xNrZD/xpX8AXL+i8AJv5kJgbhJOOf9o5fyV+A1nqTSzaBtbOcgAKmWMwfiDNPqPZHrt+
+	zazIrTnHwDOvR0L4Pqu/5mmLQsX+ENxPZHKKtf0x6ALLc+1J02gwWLWBXhHcWW7yxpD5lvve3+Z
+	r2nnPbS6g4UCXA3Fj1pBnQa2JOM/KYg8q5svJlJSZTLzEaVdozDsFo8miLntQ==
+X-Google-Smtp-Source: AGHT+IF+CC3MVXmez5mTxYi7/GfORVJ/+mlUh0rIvmMjTjvoRYffJHfRmgYGoipTnJGQlJQwgncFqQ==
+X-Received: by 2002:a05:6a20:3943:b0:1e8:bd15:6819 with SMTP id adf61e73a8af0-1e8bd156be3mr27651787637.22.1736950617281;
+        Wed, 15 Jan 2025 06:16:57 -0800 (PST)
+Received: from eleanor-wkdl.. ([140.116.96.205])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d40568dccsm9184933b3a.47.2025.01.15.06.16.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 06:15:27 -0800 (PST)
-From: Weizhao Ouyang <o451686892@gmail.com>
-To: Jonathan Corbet <corbet@lwn.net>,
-	Jeremy Kerr <jk@ozlabs.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Weizhao Ouyang <o451686892@gmail.com>,
-	Tim Schumacher <timschumi@gmx.de>
-Cc: linux-doc@vger.kernel.org,
+        Wed, 15 Jan 2025 06:16:56 -0800 (PST)
+From: Yu-Chun Lin <eleanor15x@gmail.com>
+To: ardb@kernel.org
+Cc: linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: [RFC PATCH] efivarfs: Introduce efivarfs refresh remount
-Date: Wed, 15 Jan 2025 22:14:58 +0800
-Message-ID: <20250115141458.9182-1-o451686892@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	visitorckw@gmail.com,
+	jserv@ccns.ncku.edu.tw,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] efi: sysfb_efi: guard EFI-specific code with CONFIG_EFI
+Date: Wed, 15 Jan 2025 22:16:50 +0800
+Message-ID: <20250115141650.3658827-1-eleanor15x@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -90,93 +89,55 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, when setting efi variables through the runtime service,
-efivarfs cannot sync variable updates properly. Introduce efivarfs
-refresh remount to support efivarfs information updates from other
-sources.
+As reported by the kernel test robot, the following warnings occur:
 
-Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
+>> drivers/firmware/efi/sysfb_efi.c:331:39: warning: 'efifb_fwnode_ops' defined but not used [-Wunused-const-variable=]
+     331 | static const struct fwnode_operations efifb_fwnode_ops = {
+         |                                       ^~~~~~~~~~~~~~~~
+>> drivers/firmware/efi/sysfb_efi.c:240:35: warning: 'efifb_dmi_swap_width_height' defined but not used [-Wunused-const-variable=]
+     240 | static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
+         |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/firmware/efi/sysfb_efi.c:190:35: warning: 'efifb_dmi_system_table' defined but not used [-Wunused-const-variable=]
+     190 | static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
+         |                                   ^~~~~~~~~~~~~~~~~~~~~~
+
+Unused variables, functions, and macro are conditionally compiled under
+CONFIG_EFI. This includes 'efifb_fwnode_ops',
+'efifb_dmi_swap_width_height[]', 'efifb_dmi_system_table[]',
+'efifb_add_links', 'find_pci_overlap_node','efifb_set_system',
+'efifb_overlaps_pci_range', and the 'EFIFB_DMI_SYSTEM_ID' macro.
+
+Suppress unused symbol warnings and ensure inclusion only in relevant
+configurations.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501051626.SMkizYIE-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
 ---
- Documentation/filesystems/efivarfs.rst |  6 ++++
- fs/efivarfs/super.c                    | 40 +++++++++++++++++++++++++-
- 2 files changed, 45 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/sysfb_efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/filesystems/efivarfs.rst b/Documentation/filesystems/efivarfs.rst
-index f646c3f0980f..58461e02ad01 100644
---- a/Documentation/filesystems/efivarfs.rst
-+++ b/Documentation/filesystems/efivarfs.rst
-@@ -18,6 +18,12 @@ efivarfs is typically mounted like this::
- 
- 	mount -t efivarfs none /sys/firmware/efi/efivars
- 
-+To support efivar updates from other sources (efi_test ioctl, runtime
-+driver, etc.), set ``efivarfs.refresh=1``. After that, remount will
-+update the efivar information in efivarfs, like this::
-+
-+	mount -t efivarfs none /sys/firmware/efi/efivars -o remount
-+
- Due to the presence of numerous firmware bugs where removing non-standard
- UEFI variables causes the system firmware to fail to POST, efivarfs
- files that are not well-known standardized variables are created
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index beba15673be8..7ae22ca120e3 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -277,6 +277,44 @@ static const struct fs_parameter_spec efivarfs_parameters[] = {
- 	{},
- };
- 
-+static bool efivarfs_refresh_default __read_mostly;
-+module_param_named(refresh, efivarfs_refresh_default, bool, 0444);
-+
-+static void efivarfs_clean_dentry(struct dentry *dentry)
-+{
-+	struct dentry *child;
-+
-+	if (!dentry)
-+		return;
-+
-+	if (d_is_dir(dentry)) {
-+		spin_lock(&dentry->d_lock);
-+		hlist_for_each_entry(child, &dentry->d_children, d_sib) {
-+			if (child)
-+				efivarfs_clean_dentry(child);
-+		}
-+		spin_unlock(&dentry->d_lock);
-+	} else {
-+		d_invalidate(dentry);
-+	}
-+}
-+
-+static int efivarfs_refresh(struct fs_context *fc)
-+{
-+	struct efivarfs_fs_info *sbi = fc->s_fs_info;
-+
-+	if (!efivarfs_refresh_default)
-+		return 0;
-+
-+	if (!fc->root)
-+		return -EINVAL;
-+
-+	efivarfs_clean_dentry(fc->root);
-+	efivar_init(efivarfs_callback, fc->root->d_sb, &sbi->efivarfs_list);
-+
-+	return 0;
-+}
-+
- static int efivarfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- {
- 	struct efivarfs_fs_info *sbi = fc->s_fs_info;
-@@ -351,7 +389,7 @@ static int efivarfs_reconfigure(struct fs_context *fc)
- 		return -EINVAL;
- 	}
- 
--	return 0;
-+	return efivarfs_refresh(fc);
+diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
+index cc807ed35aed..4efe383cc470 100644
+--- a/drivers/firmware/efi/sysfb_efi.c
++++ b/drivers/firmware/efi/sysfb_efi.c
+@@ -174,6 +174,7 @@ static int __init efifb_set_system(const struct dmi_system_id *id)
+ 	return 1;
  }
  
- static const struct fs_context_operations efivarfs_context_ops = {
++#ifdef CONFIG_EFI
+ #define EFIFB_DMI_SYSTEM_ID(vendor, name, enumid)		\
+ 	{							\
+ 		efifb_set_system,				\
+@@ -346,7 +347,6 @@ static const struct fwnode_operations efifb_fwnode_ops = {
+ 	.add_links = efifb_add_links,
+ };
+ 
+-#ifdef CONFIG_EFI
+ static struct fwnode_handle efifb_fwnode;
+ 
+ __init void sysfb_apply_efi_quirks(void)
 -- 
-2.45.2
+2.43.0
 
 
