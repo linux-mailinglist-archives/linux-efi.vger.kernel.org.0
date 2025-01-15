@@ -1,132 +1,116 @@
-Return-Path: <linux-efi+bounces-2637-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2638-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50FC9A12673
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 15:48:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C266CA12679
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 15:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7282E3A9A76
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 14:46:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E81DF161EDA
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 14:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAAA433CA;
-	Wed, 15 Jan 2025 14:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6014314B959;
+	Wed, 15 Jan 2025 14:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dnjyuXHJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSFTwu3I"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403D724A7FF;
-	Wed, 15 Jan 2025 14:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB5714B077;
+	Wed, 15 Jan 2025 14:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736952419; cv=none; b=scA7Pm6UAIPG5Sb0DNXPRBh6zFHoCDC2CV0ql4GnGEyGUffC6Nqgxm0xfH7fQ6hWMlYNCQJ/MqBJgxIjM/GiyXM6rQBNDoXHtJayhdLHWpoicLNHBCzvrnk9ywRmsVNW9nrItMJ63Ea92QmRvtCHL2VGIj78YNAdi17KYzmiu1U=
+	t=1736952578; cv=none; b=TM7SMvDf2dPFqEizCJlrofm6o4QtbhsvWJ79K4VgJIH1Sfxe8MPfSsmVamMgTDvQZgj73aK2YokiejErNT6vxqOcBQ453PjujLtdy1oPpUmRcN36722Uo3JDy9z5mpGxHQDusndLKXEBt/banAEl84UpfBrMJnvQdEz68dPg9OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736952419; c=relaxed/simple;
-	bh=FQXBwXon/Fhp3Ey/R4C8SnzqxvZDF13OmPZXeSZDqoo=;
+	s=arc-20240116; t=1736952578; c=relaxed/simple;
+	bh=HYmDns0/ZHClPcY3GHW30oQcrRcty2cPWMgZUsCgKN4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cPyRfasCWn7pdhqJDhoveRa/JEvPi3Xo4K/gOb/9ykG41zb2xnDxl27OIXy6Da0On/0mQ54/IaR0GwaM78xM0v/GyzYrxCwCEM/fyAVxh/4AuN5czh8h2HP39OE8C1anBYqt8XGaOQFzUWRFe/5yVljPw3//Q3fzM7AnF6wTbus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dnjyuXHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF18C4CED1;
-	Wed, 15 Jan 2025 14:46:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736952418;
-	bh=FQXBwXon/Fhp3Ey/R4C8SnzqxvZDF13OmPZXeSZDqoo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dnjyuXHJxx++z1giYHFq3VrdQel5acqA60le5wJ5zJrBF5mAJbTTJfRv7kNKC5YKG
-	 KvBboeeEqueviIOA7UEuKbq6jVbBe/3hlXih1gFp+VeMxA+dqAxPMT488zKF/f4hJb
-	 Tb8GqktgiUtPWWstmZqIK7USjw8zRgMxbVCl2UO+7dxDKucm3rMbRrF+9/nP5+kGrN
-	 Rp7pdUm4N7y+B+XxniptpNPPrnw5D7kpoVTYv8Dbe+McL57cIL+zfAzyxh68z++MhR
-	 ZwFHDZ7Z1s/z8Up5Df6l2xIlyvcHYSi905MD/GSEa0/JK0QZXYpabyPIflYlfUch1M
-	 /eUemrA9R+kzg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3002c324e7eso64372701fa.3;
-        Wed, 15 Jan 2025 06:46:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXm4KMn55RbiTS+1mblDbq2FAZPWoZ+OuyC67oy6lNunq6LadzKp7Jkx//ICwo03kOkHCkeWWT5yKtI/H4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEapU1wZxvqrtjgS2RY6koUwFKvA++oNfox/YOy+TUdkOCaT9+
-	vQbbgFlbSvD9muXUK7nbzo8vSSkyR8SzqbTGunjSfPSr7y9DV57H/c/cod2vNUPHB7we6EOeMzr
-	NJCxGNwuQ4s7TtaXi1RiNmkC3JvA=
-X-Google-Smtp-Source: AGHT+IE8+K7SCmFYjUu+coroLDvCFxXrAU2bFwyE1s0NKuPTYxe5T1II2jxPPIIUZXwxmtAaAx6N8Ykbc0W9N/Z5LHY=
-X-Received: by 2002:a05:651c:a0a:b0:300:360b:bc3f with SMTP id
- 38308e7fff4ca-305f4543372mr94751951fa.15.1736952417177; Wed, 15 Jan 2025
- 06:46:57 -0800 (PST)
+	 To:Cc:Content-Type; b=fPG13UEbcOAM9gPzy584Tu1jSteZlNajbCGPpcDi0XjqLr0yJvAxMnN3g+vzJURZe9WHKlZSa49lH9I7Rwj6CJ522pmYpZv1AEG02rnXoJx6j2hwFEZdmUSeDUQt/cY4vDbPEkmGzVsnwyKH/s+dWr35/Py2krzt+hiAoyd1Jhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSFTwu3I; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaef00ab172so1064787966b.3;
+        Wed, 15 Jan 2025 06:49:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736952575; x=1737557375; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tj2rjdqrFe/GVBz4nuOUzGX5ROmEJSFNmYf29Er6Gz0=;
+        b=TSFTwu3IKFTEKc0/4S/mA4KqxS8KvJdjEVmY1KHzK0Fj+OQpgNgU7i+8O1e1GUlwr3
+         mNlMpuSzL3HEKVyiDaI8BrWlMxfhiOZ+CHYM0rQsijZHsz0IegDPBbKi0KXqOrETuICd
+         XVJcIyIXMsioQhVya5ylu5r/63OhTmA+IAWz+3Hng/74J8QDWZDwW3+cOwCxwRbzoRsH
+         Xmj1kx+NIoT1jH0ePlLTuSLxY4lCCmtCwyKNtkftWS/FcA2EXMaewW3m0BjhoBdDx5Nf
+         BCFnNDw7AHARMSaTKApQ2pnj9VxaTVcRSTNV0CvqeZuLNCV+LzG5uswU2E4b9VxYq0z8
+         W00A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736952575; x=1737557375;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tj2rjdqrFe/GVBz4nuOUzGX5ROmEJSFNmYf29Er6Gz0=;
+        b=roZZro8JWUba7kuw/LUeUAh03FbhdL1Rfh9zzIfTdtK6KUevmpl7ypFs+CGKN2BUI9
+         +zGh4Zqvd2aGLhVngfn2U2O4yKunJfIxgRQELHVU78bvuQhc/AC4N6uMJqQAb2URZHU0
+         o27LlvTlOTeBe56pqDwPaM+30pSTXqLefI/oeVPj3z3hkJ6gbsnFB8E/0ELXFzgSKTQb
+         c4EkuqTx5B09BcJJWl+euvMn3UZsZn+G+qRzjj37mD29sxi48m/2sMan3xCPIH8Fgi5z
+         AB2VC2E5JNVRBqBcX+N/s+04Uv32nyy1rHYE3mVmNcGZqWJOVQcAzv+JyD5DgU9lHmDG
+         Wdwg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2tujXKUGqhFtl7HAqV/3kNQQlNzClZcaFvCF9yD2hDseNIAVII+YtaIZeLr0gKlMz9e2Eq4AFd7w=@vger.kernel.org, AJvYcCVkg0iVEBBqakS5z7UgEflrCwOsD4poNlUHo5GFhl7ZAYnjULNeAnpjbq85tRY6ky6/GSeXamJ7DjZB@vger.kernel.org, AJvYcCWRHtsEppPbgzRtr+W9eLxfjaLIjIyAWF8ofczMllzh5Rf3tKpU+jSDXfWGeDAaJRrR98I0ttZbdxJk5CPp@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYti1gfCbILl6+Q/Hn+ljw0ZbIuHAC/ZPpB4gNKnmT/OQyDLQw
+	emSOeKscxxDn0TkqA1beum+1Aa+3bv1YwrOuCD6ZY94pVdDaj1OPtskZ94U6l+3IGxpVCVvyCgy
+	sBz1XFl30P0ox6Q5y+5zJPyUunde+CMyP2s9hmQ==
+X-Gm-Gg: ASbGncsZOgyn60w9AXNDrr6/D8npMflzIAYI6xpJjOPUoUnAOaqd/bWP/odXoLeKDNN
+	hRiJJ5jXwNjTpczJMc7D/djT4C5S66ofok87/pA==
+X-Google-Smtp-Source: AGHT+IFkExYCfIQy2nWN8Lcxq+824AjZpo0o0ZXDeoa+FU5IAuF5qAII3OFz94PIXwQ8kmpFdQ5FrPAmlN0hsXjg/NI=
+X-Received: by 2002:a05:6402:1e94:b0:5d9:fa36:5964 with SMTP id
+ 4fb4d7f45d1cf-5d9fa365c32mr13866849a12.2.1736952574317; Wed, 15 Jan 2025
+ 06:49:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250115141650.3658827-1-eleanor15x@gmail.com>
-In-Reply-To: <20250115141650.3658827-1-eleanor15x@gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 15 Jan 2025 15:46:46 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFGrTQHONPCJMvMJ5aaswh1YF9aCcufS_9YsS5F+uYJpQ@mail.gmail.com>
-X-Gm-Features: AbW1kvbMiMel4vdzFQZGl7VMCiNI09UpPJ-RKUAF3Rme45lT6K6TgNcc1L4Gz68
-Message-ID: <CAMj1kXFGrTQHONPCJMvMJ5aaswh1YF9aCcufS_9YsS5F+uYJpQ@mail.gmail.com>
-Subject: Re: [PATCH] efi: sysfb_efi: guard EFI-specific code with CONFIG_EFI
-To: Yu-Chun Lin <eleanor15x@gmail.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	visitorckw@gmail.com, jserv@ccns.ncku.edu.tw, 
-	kernel test robot <lkp@intel.com>
+References: <20250115141458.9182-1-o451686892@gmail.com> <28105c4069a81c017b501551df7aa67aba743241.camel@HansenPartnership.com>
+In-Reply-To: <28105c4069a81c017b501551df7aa67aba743241.camel@HansenPartnership.com>
+From: Weizhao Ouyang <o451686892@gmail.com>
+Date: Wed, 15 Jan 2025 22:49:23 +0800
+X-Gm-Features: AbW1kvZp0KkYQAY1Mv2PdvpKtvqB8cpxzH5bAfI691hY0HJfIyOalcetItoLkbs
+Message-ID: <CAHk0HovnRgxrKu0uoj1x3XSB1vrTaGtMn-7iaoSR5Fs+=EYd5g@mail.gmail.com>
+Subject: Re: [RFC PATCH] efivarfs: Introduce efivarfs refresh remount
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Tim Schumacher <timschumi@gmx.de>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 15 Jan 2025 at 15:17, Yu-Chun Lin <eleanor15x@gmail.com> wrote:
+On Wed, Jan 15, 2025 at 10:34=E2=80=AFPM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
 >
-> As reported by the kernel test robot, the following warnings occur:
+> On Wed, 2025-01-15 at 22:14 +0800, Weizhao Ouyang wrote:
+> > Currently, when setting efi variables through the runtime service,
+> > efivarfs cannot sync variable updates properly. Introduce efivarfs
+> > refresh remount to support efivarfs information updates from other
+> > sources.
 >
-> >> drivers/firmware/efi/sysfb_efi.c:331:39: warning: 'efifb_fwnode_ops' defined but not used [-Wunused-const-variable=]
->      331 | static const struct fwnode_operations efifb_fwnode_ops = {
->          |                                       ^~~~~~~~~~~~~~~~
-> >> drivers/firmware/efi/sysfb_efi.c:240:35: warning: 'efifb_dmi_swap_width_height' defined but not used [-Wunused-const-variable=]
->      240 | static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
->          |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >> drivers/firmware/efi/sysfb_efi.c:190:35: warning: 'efifb_dmi_system_table' defined but not used [-Wunused-const-variable=]
->      190 | static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
->          |                                   ^~~~~~~~~~~~~~~~~~~~~~
->
-> Unused variables, functions, and macro are conditionally compiled under
-> CONFIG_EFI. This includes 'efifb_fwnode_ops',
-> 'efifb_dmi_swap_width_height[]', 'efifb_dmi_system_table[]',
-> 'efifb_add_links', 'find_pci_overlap_node','efifb_set_system',
-> 'efifb_overlaps_pci_range', and the 'EFIFB_DMI_SYSTEM_ID' macro.
->
-> Suppress unused symbol warnings and ensure inclusion only in relevant
-> configurations.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202501051626.SMkizYIE-lkp@intel.com/
-> Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-> ---
->  drivers/firmware/efi/sysfb_efi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+> What other sources could there possibly be?  While the Linux kernel has
+> sole possession of the EFI RT interface after ExitBootServices has been
+> called, nothing else should be able to update the variables except
+> efivarfs.  This is a guarantee from UEFI so why do you think we can't
+> rely on it?
 
-Is your patch better than the one already in linux-next?
+One route that may exist is: drivers/firmware/efi/test/efi_test.c holds
+some ioctls to call runtime service.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=19fdc68aa7b90b1
+BR,
+Weizhao
 
-> diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-> index cc807ed35aed..4efe383cc470 100644
-> --- a/drivers/firmware/efi/sysfb_efi.c
-> +++ b/drivers/firmware/efi/sysfb_efi.c
-> @@ -174,6 +174,7 @@ static int __init efifb_set_system(const struct dmi_system_id *id)
->         return 1;
->  }
 >
-> +#ifdef CONFIG_EFI
->  #define EFIFB_DMI_SYSTEM_ID(vendor, name, enumid)              \
->         {                                                       \
->                 efifb_set_system,                               \
-> @@ -346,7 +347,6 @@ static const struct fwnode_operations efifb_fwnode_ops = {
->         .add_links = efifb_add_links,
->  };
+> Regards,
 >
-> -#ifdef CONFIG_EFI
->  static struct fwnode_handle efifb_fwnode;
->
->  __init void sysfb_apply_efi_quirks(void)
-> --
-> 2.43.0
+> James
 >
 
