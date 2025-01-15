@@ -1,143 +1,98 @@
-Return-Path: <linux-efi+bounces-2635-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2636-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B675A125BB
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 15:17:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B6AA1260F
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 15:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7141160122
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 14:17:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 026351671DA
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jan 2025 14:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9723D45005;
-	Wed, 15 Jan 2025 14:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D997080B;
+	Wed, 15 Jan 2025 14:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CcwM/Sx6"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Z855/GzH";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Z855/GzH"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [104.223.66.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A3F35958;
-	Wed, 15 Jan 2025 14:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF4341C6C;
+	Wed, 15 Jan 2025 14:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.223.66.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736950620; cv=none; b=D4s7rG024Bp5oP36tD1rZ3kuA0wx+Ir1+Id+J2ZhZD1Tse1bWQUWLzL8kfVw2WkWYEVcoqvt09EpbjKbgsei6GWzzKEvwNNu0qHM3xACxgZOCxGWEzZ37wTX0JMhs11jurgQyk8AFN7WkUUqTZQeT58UDBHIlOYI2d1SOXS7gjk=
+	t=1736951643; cv=none; b=tvAQYZl0N/jIDSrqQ2DYbKlKHhqK5R7WSHE2rcYaFt5YIxKkLgWTfvZTNzaAf09m0SMiasDYhORZ9Y+rCrpUw/UiXkTO5M4pd+Sk95PVATU/t3ojp6fHboFHNDvwu0Svb3LIBveqFxW4WSaHHKou/TESb3yRqjiearQuum76QqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736950620; c=relaxed/simple;
-	bh=rbcdyPUZNFkLVtX5RT4e3NSCN9pmRK9zP4QBk1j88nM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LWTy8xVkvP6PoD89vkd552uVgGs7sxnP2Egl/hYVY8+r8e3eHM7wlaw77RDiGFHH3yVXqcWCYhYJxBeDpmYABpUc3U5ktduRxE+9zYmM+8qJl9RuxTsW+6zPjFAY6XsT6aCsSa5y47qQzVbDVem8VpAbcGF3xa0klc/IjmlsqM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CcwM/Sx6; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21661be2c2dso121648135ad.1;
-        Wed, 15 Jan 2025 06:16:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736950617; x=1737555417; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Yz/4YNAJmEQe+bHvqsoKLsb7NdDyag6+bw5DYwZOyk=;
-        b=CcwM/Sx6SIcqPIQ5tAthh7QJPHRDN3k2DU0n3ljx91S5tU3avZsFEZURZcSXhQlZ+c
-         XLsLJUgZzWirBT5c2Kdq1XKmixiOGwOFpqDvOqkoh79EFTDPJvSsraSq6zlZvzA2e9rl
-         JA/X/CkrcQVlQhANQZAG2eAi259hyTV2M6c/luiwnGhfLlHxi0I/D7OTvnda/hynnSbA
-         edIkYfwM1AMGS+LFtuico35TacI156Gbu3r0XkUGxBjCg4xn0E5ZwpN+ORCYIQL2bbt0
-         BjnqXWFI1m4UWOEi5Om24S6LghaV9DlPiyQEGfnJTHnDRvLGooTgGCPVGEivLD3VORdw
-         s/6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736950617; x=1737555417;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+Yz/4YNAJmEQe+bHvqsoKLsb7NdDyag6+bw5DYwZOyk=;
-        b=L8H1iPaypMRlTzQ1O62dI9hIZJ7b9qZCI8eQTda8sIx1OkIv+x8ZqHJGpW62idlLjT
-         8oIKaUL74tkeezhn6plaNfoIjdVgQEMXbRlc3F78BI2iqgFIxlF9mGZtmbKA3CLR/url
-         3KzB7gua+4gYALIDynSeXvgPthyvybVbSBknTs8jSD3qkPfDE1CnzRXB+r+sPylH8Wpv
-         E2PL3MXAe1yT/7NKK2P7g469w9TNSCLhxsX49wWza7oI9H1kC0vG2wm8VgUHADtD5xRo
-         LXj5y+i7IPGpCCkfVxiUCba/bQqYczO78vNRfC9TjFAVSZbzr5pSEWjV+QAACkthq9+9
-         P4+w==
-X-Forwarded-Encrypted: i=1; AJvYcCX85msxK6rwT4VMgxRHh5MfKBJ2S4wBSb5vZnuInDTidq9WUiFgx/AbUUd9SkWDi4NDT5Y8dZLtM6voUWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzH9JW09doJFgzK+Q3xipxIcnJOxU/TmRVtLzW4BPPrPTxahjLc
-	z2WradGj+OOmDYMQqshYk/hE2G7mt8v6ONMK7NfKQL8Fg1MXjrwH
-X-Gm-Gg: ASbGncvOvP0zpRMFhKcRiL5R0Zsk6FXWVWprUz1r/7uVa7P+1WocTecyzSPfdSb1VH+
-	DNijVW8xNrZD/xpX8AXL+i8AJv5kJgbhJOOf9o5fyV+A1nqTSzaBtbOcgAKmWMwfiDNPqPZHrt+
-	zazIrTnHwDOvR0L4Pqu/5mmLQsX+ENxPZHKKtf0x6ALLc+1J02gwWLWBXhHcWW7yxpD5lvve3+Z
-	r2nnPbS6g4UCXA3Fj1pBnQa2JOM/KYg8q5svJlJSZTLzEaVdozDsFo8miLntQ==
-X-Google-Smtp-Source: AGHT+IF+CC3MVXmez5mTxYi7/GfORVJ/+mlUh0rIvmMjTjvoRYffJHfRmgYGoipTnJGQlJQwgncFqQ==
-X-Received: by 2002:a05:6a20:3943:b0:1e8:bd15:6819 with SMTP id adf61e73a8af0-1e8bd156be3mr27651787637.22.1736950617281;
-        Wed, 15 Jan 2025 06:16:57 -0800 (PST)
-Received: from eleanor-wkdl.. ([140.116.96.205])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d40568dccsm9184933b3a.47.2025.01.15.06.16.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 06:16:56 -0800 (PST)
-From: Yu-Chun Lin <eleanor15x@gmail.com>
-To: ardb@kernel.org
-Cc: linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	visitorckw@gmail.com,
-	jserv@ccns.ncku.edu.tw,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] efi: sysfb_efi: guard EFI-specific code with CONFIG_EFI
-Date: Wed, 15 Jan 2025 22:16:50 +0800
-Message-ID: <20250115141650.3658827-1-eleanor15x@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1736951643; c=relaxed/simple;
+	bh=KF1QKRfwKX151N3i5TLiAndTN6awwnxv8Ge/05gM7Lo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Nbsd/5817PaYUF5cFyrTVK8k0ZUIvKyFUdctPXaHvQNIb4dfgMdHrnPOu1ztHfmvRMaDZiclOXg3BZzbHCfOpOjwGLdHGzKahE9URecyQPrmxRV1TnMZLTosFu+IMUmdDZ9Wes50SvFSLjIaz8k3VTNylOOyfjbc68no8CcvCZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Z855/GzH; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Z855/GzH; arc=none smtp.client-ip=104.223.66.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1736951640;
+	bh=KF1QKRfwKX151N3i5TLiAndTN6awwnxv8Ge/05gM7Lo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Z855/GzHwvPY1kD4vi0o/ZwUtRVwrEZf1Ju8lfdcgcLlaBj2Jp6Q6XRupi71TBwOz
+	 sCIRfv2YKvPnlu8/XmUQ7bCfXsgZT69yvSmRzqFTBgAl1GgXK2J7AcGmh7I0yYa7AD
+	 rP7NkKpZ7whFRNq1sLmhf+/yEcOwcon+iM9c2M3M=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id D67D712873E0;
+	Wed, 15 Jan 2025 09:34:00 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id gRoKM-JdsTVT; Wed, 15 Jan 2025 09:34:00 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1736951640;
+	bh=KF1QKRfwKX151N3i5TLiAndTN6awwnxv8Ge/05gM7Lo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Z855/GzHwvPY1kD4vi0o/ZwUtRVwrEZf1Ju8lfdcgcLlaBj2Jp6Q6XRupi71TBwOz
+	 sCIRfv2YKvPnlu8/XmUQ7bCfXsgZT69yvSmRzqFTBgAl1GgXK2J7AcGmh7I0yYa7AD
+	 rP7NkKpZ7whFRNq1sLmhf+/yEcOwcon+iM9c2M3M=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 0074C12873BB;
+	Wed, 15 Jan 2025 09:33:59 -0500 (EST)
+Message-ID: <28105c4069a81c017b501551df7aa67aba743241.camel@HansenPartnership.com>
+Subject: Re: [RFC PATCH] efivarfs: Introduce efivarfs refresh remount
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Weizhao Ouyang <o451686892@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+  Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, Tim
+ Schumacher <timschumi@gmx.de>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org
+Date: Wed, 15 Jan 2025 09:33:58 -0500
+In-Reply-To: <20250115141458.9182-1-o451686892@gmail.com>
+References: <20250115141458.9182-1-o451686892@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-As reported by the kernel test robot, the following warnings occur:
+On Wed, 2025-01-15 at 22:14 +0800, Weizhao Ouyang wrote:
+> Currently, when setting efi variables through the runtime service,
+> efivarfs cannot sync variable updates properly. Introduce efivarfs
+> refresh remount to support efivarfs information updates from other
+> sources.
 
->> drivers/firmware/efi/sysfb_efi.c:331:39: warning: 'efifb_fwnode_ops' defined but not used [-Wunused-const-variable=]
-     331 | static const struct fwnode_operations efifb_fwnode_ops = {
-         |                                       ^~~~~~~~~~~~~~~~
->> drivers/firmware/efi/sysfb_efi.c:240:35: warning: 'efifb_dmi_swap_width_height' defined but not used [-Wunused-const-variable=]
-     240 | static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
-         |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
->> drivers/firmware/efi/sysfb_efi.c:190:35: warning: 'efifb_dmi_system_table' defined but not used [-Wunused-const-variable=]
-     190 | static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
-         |                                   ^~~~~~~~~~~~~~~~~~~~~~
+What other sources could there possibly be?  While the Linux kernel has
+sole possession of the EFI RT interface after ExitBootServices has been
+called, nothing else should be able to update the variables except
+efivarfs.  This is a guarantee from UEFI so why do you think we can't
+rely on it?
 
-Unused variables, functions, and macro are conditionally compiled under
-CONFIG_EFI. This includes 'efifb_fwnode_ops',
-'efifb_dmi_swap_width_height[]', 'efifb_dmi_system_table[]',
-'efifb_add_links', 'find_pci_overlap_node','efifb_set_system',
-'efifb_overlaps_pci_range', and the 'EFIFB_DMI_SYSTEM_ID' macro.
+Regards,
 
-Suppress unused symbol warnings and ensure inclusion only in relevant
-configurations.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501051626.SMkizYIE-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
----
- drivers/firmware/efi/sysfb_efi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-index cc807ed35aed..4efe383cc470 100644
---- a/drivers/firmware/efi/sysfb_efi.c
-+++ b/drivers/firmware/efi/sysfb_efi.c
-@@ -174,6 +174,7 @@ static int __init efifb_set_system(const struct dmi_system_id *id)
- 	return 1;
- }
- 
-+#ifdef CONFIG_EFI
- #define EFIFB_DMI_SYSTEM_ID(vendor, name, enumid)		\
- 	{							\
- 		efifb_set_system,				\
-@@ -346,7 +347,6 @@ static const struct fwnode_operations efifb_fwnode_ops = {
- 	.add_links = efifb_add_links,
- };
- 
--#ifdef CONFIG_EFI
- static struct fwnode_handle efifb_fwnode;
- 
- __init void sysfb_apply_efi_quirks(void)
--- 
-2.43.0
+James
 
 
