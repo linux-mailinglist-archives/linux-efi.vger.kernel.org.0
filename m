@@ -1,117 +1,119 @@
-Return-Path: <linux-efi+bounces-2663-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2664-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2D2A15C26
-	for <lists+linux-efi@lfdr.de>; Sat, 18 Jan 2025 10:27:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4F0A15D3E
+	for <lists+linux-efi@lfdr.de>; Sat, 18 Jan 2025 14:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACCA9166AB6
-	for <lists+linux-efi@lfdr.de>; Sat, 18 Jan 2025 09:27:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61CE516716E
+	for <lists+linux-efi@lfdr.de>; Sat, 18 Jan 2025 13:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059035789D;
-	Sat, 18 Jan 2025 09:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7E0195FE5;
+	Sat, 18 Jan 2025 13:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="j6cJJBrb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Y5Rg6+It"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="nfUUXjid";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="nfUUXjid"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [104.223.66.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36081A32;
-	Sat, 18 Jan 2025 09:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBDB19067C;
+	Sat, 18 Jan 2025 13:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.223.66.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737192462; cv=none; b=c+xBR0sKw8Tvi6WrFIR/N/lAGIOVz0uRuBFB9JLvmtB8LEOjQD6zGECke//xnClMEsEZAOBfura8UUgPu7ccsEmdht4TdajZ1y9QyOczowHyeHCrW1yDsWbPSytroNufm7Mh8cu7R3A8EuivXZiGJEHCztcOfDyLIZlhBVgl1Ss=
+	t=1737208396; cv=none; b=XwTgjH21hGrPUS7GmncMdnWwC/GL9DlJovw1ehBjEE+NGRBV0iyKOaITyP9rcVbRz8w8ACscyvUvosN9tnt261lMmsnmgAHHNlE1oiHomRBdV9OIONZXttgw0xwCJ1P2J1KtpayBHzio3JP+b84ar6FN8IqBvcNI2keleyIUNNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737192462; c=relaxed/simple;
-	bh=QfFpxojFlK1cR6s836/jrQOwflKa0RmdYDZcDOcslH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bCF7u4bu2eGrhl4clQb1sDKRJaljvhEpte2JVV/jW6WFCcNHLc8mgtYDIO1h+1GNpk/7mi21/kKYoZPlZjZX/WcZlZdEdmHWK7bSOV+YTfEOnMm6otjFEi9AECzzcE76gGQ0k8g8n7bpSBxSXsQIvf0H2Ek41QfwkrX7f/+xyFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=j6cJJBrb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Y5Rg6+It; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id F27051140142;
-	Sat, 18 Jan 2025 04:27:38 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Sat, 18 Jan 2025 04:27:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1737192458; x=1737278858; bh=hbbn5s1hjV
-	hA5LwIyMZO8QF6OuOBer8UprGir9N3N+Q=; b=j6cJJBrbMHoVNQFPn1Wjt6y+nS
-	tvAOBdojQrjrTHpw7Qnij8VUXNMa6v47xXzhHY/atIdw8BmSF2r81HIFI7OCx61o
-	jx5wyqHQR9Ay3QYjY9zW1PCErmc2dNlYkv3IAu7tsuqyvGrC7nx7gtfwJTCFJFvk
-	/jyNEdIpKOLrIL+NNvsX05iebJxlQVqe7qy/3b0Z32WKW3vpOxdP1cF2CUWV7ZJ3
-	Bk4nwYSjD+lq2EX7LXaods9OvwfQjF1QAJ2Dl0dYSDBsZ+hwXVVXnX1DXF5tlJ+4
-	2q2oYb1isxYVo1G85ukEjsX07FIeTdSbTYBs+DaI6P6yGHd97wldtx26vrZw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1737192458; x=1737278858; bh=hbbn5s1hjVhA5LwIyMZO8QF6OuOBer8UprG
-	ir9N3N+Q=; b=Y5Rg6+ItKcPSj5jm7gbGr8i8zlNq6w+EsqcUHF1vW+YBe+a831z
-	jLjLYOCGCc7BP4Ku2xNlKYkWguLiPv+zC56fRc0AGKdJ9iC+J/umoRz7x+4T8rV+
-	JW8Lr1cOUw/u4jEBoVTCSJ0ftSeowRG8h81lTZMDue5LXSXL+DYJ1bdrWCGgS9oW
-	w8s2AdQ632/hkP1Yfgb1UvEQvaPLTYSQH4sfU0CRLscyNhqSS2/r4eDV2bTNzLYS
-	7vEgMH6xGt6P4Epk11qr5+vavg9OeiO1RkstTjgjBfK/PLndRqh7oQBcioV+yNcF
-	dr4vSBuQMkE/KRzCzB9lEXUUuoBf4k/iYJw==
-X-ME-Sender: <xms:CnSLZxj9ytDnMrHlhlIQcOZkxK9ECZxSnDROTVXLaDNpvguJCXDq5A>
-    <xme:CnSLZ2Bv56_wDipr-PTRRhDoCLC95hEj-_Fs0r9mVmSFSCrSBagHJMgykWPAXdlMK
-    JxsGTlVYD-bPQ>
-X-ME-Received: <xmr:CnSLZxEEe7epnMwtgXKM1REft3ughQds-sP4zt9YRa76atJqpM91I_WTDgbyFzpUmEgWmci4emFFj5qcDOLhgwyxtZY6K2B5bMyjbg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeihedgtdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefh
-    gfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeeipdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopegrrhgusgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqvghfihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:CnSLZ2Rtl2eEZD_GaSHAwPe9ZeZS7HaeSPOecDIy2mKK69nxTeBQSA>
-    <xmx:CnSLZ-wvNfSHNTrPmssysYm0s5Rsun5NxU7Td6DSvzwmjRL0fs-Yow>
-    <xmx:CnSLZ84LKhrTnHduzjIiJ18_Y1J-i4-nF7ckEOI5nYuKUmmBR8Yx9g>
-    <xmx:CnSLZzysB-NXC7fA_jywXk4AP0cUtcV6YSr-s42-4N-13F3iET0X3w>
-    <xmx:CnSLZ1nY0fN7me7qxE7RqlLzrSGPehvB0TbkB7dPVjoiuVfHxBfH_69G>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 18 Jan 2025 04:27:38 -0500 (EST)
-Date: Sat, 18 Jan 2025 10:27:36 +0100
-From: Greg KH <greg@kroah.com>
+	s=arc-20240116; t=1737208396; c=relaxed/simple;
+	bh=4xuedTlTRdyuSybBq8oZvujcPhw1NKUNjrddZwKc/yI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZDbMwl2N+cOlA/x7plMybntz58M8dHzN2ydo/BdBbNz+oGJE3YeL4blsAV3r+z1uZ4hgjUO5JsXFFD4UMH6vzfK90zKEDBkfUFHaCaOrFgxUYancrjZUSgdsDmYe0kd086As2XqInfBsXUK/+N5De4v4UKxL7Od1lrE/yFOpZWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=nfUUXjid; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=nfUUXjid; arc=none smtp.client-ip=104.223.66.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1737208394;
+	bh=4xuedTlTRdyuSybBq8oZvujcPhw1NKUNjrddZwKc/yI=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=nfUUXjidVbsdn8+NM3qy99PmoiVwli+E6rNAE7NCv+Foo2S/UqPUXYHaEwow1q3e4
+	 D7m3vR8RpwsZm4p0nMvAiQJF482rtoF5UpV6HU9NhQVi7C7CHIsFwVaViluW86InJM
+	 82grT3TQYUrqP9ZmfGTGwCWPrk0TCDFNQIla8oFc=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 4B4FE128635D;
+	Sat, 18 Jan 2025 08:53:14 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id WGMuOgsNdTMf; Sat, 18 Jan 2025 08:53:14 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1737208394;
+	bh=4xuedTlTRdyuSybBq8oZvujcPhw1NKUNjrddZwKc/yI=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=nfUUXjidVbsdn8+NM3qy99PmoiVwli+E6rNAE7NCv+Foo2S/UqPUXYHaEwow1q3e4
+	 D7m3vR8RpwsZm4p0nMvAiQJF482rtoF5UpV6HU9NhQVi7C7CHIsFwVaViluW86InJM
+	 82grT3TQYUrqP9ZmfGTGwCWPrk0TCDFNQIla8oFc=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 873701286343;
+	Sat, 18 Jan 2025 08:53:13 -0500 (EST)
+Message-ID: <1242f7acd71dfdabfd5507b2d439e2380343ca8a.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 0/6] convert efivarfs to manage object data correctly
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 To: Ard Biesheuvel <ardb@kernel.org>
-Cc: "# 3.4.x" <stable@vger.kernel.org>,
-	linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: backport request
-Message-ID: <2025011828-nutmeg-reverence-4063@gregkh>
-References: <CAMj1kXFiGMeyQSMsYWuEgSnXVU4GfVC3JDLGhZ7L2=BEvxHVsQ@mail.gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, Jeremy Kerr
+	 <jk@ozlabs.org>, Christian Brauner <brauner@kernel.org>, Al Viro
+	 <viro@zeniv.linux.org.uk>
+Date: Sat, 18 Jan 2025 08:53:11 -0500
+In-Reply-To: <CAMj1kXHy+D2GDANFyYJLOZj1fPmgoX+Ed6CRy3mSSCeutsO07w@mail.gmail.com>
+References: <20250107023525.11466-1-James.Bottomley@HansenPartnership.com>
+	 <CAMj1kXHy+D2GDANFyYJLOZj1fPmgoX+Ed6CRy3mSSCeutsO07w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFiGMeyQSMsYWuEgSnXVU4GfVC3JDLGhZ7L2=BEvxHVsQ@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jan 18, 2025 at 10:10:11AM +0100, Ard Biesheuvel wrote:
-> Please backport
-> 
-> 0b2c29fb68f8bf3e87a9
-> efi/zboot: Limit compression options to GZIP and ZSTD
-> 
-> to v6.12. Future work on kexec and EFI zboot will only support those
-> compression methods, and currently, only Loongarch on Debian uses this
-> with a different compression method (XZ) and so now is the time to
-> make this change.
+On Thu, 2025-01-09 at 10:50 +0100, Ard Biesheuvel wrote:
+> Are there any existing test suites that cover efivarfs that you could
+> recommend?
 
-Now queued up, thanks.
+The good news is there is actually an existing test suite.  I was
+writing some for selftests/filesystems/efivarfs, but it turns out they
+exist in selftests/efivarfs.  You can run them from the kernel source
+tree (in a VM with your changes) as:
 
-greg k-h
+make -C tools/testing/selftests TARGETS=efivarfs run_tests
+
+So I've merged all the testing I had here and started writing new ones.
+
+The bad news is that writing new tests I've run across another corner
+case in the efivarfs code: you can set the inode size to anything you
+want (as root) which means you can take a real variable and get it to
+mimic an uncommitted one (at least to stat):
+
+# ls -l /sys/firmware/efi/efivars/PK-8be4df61-93ca-11d2-aa0d-00e098032b8c 
+-rw-r--r-- 1 root root 841 Jan 18 13:40 /sys/firmware/efi/efivars/PK-8be4df61-93ca-11d2-aa0d-00e098032b8c
+# chattr -i /sys/firmware/efi/efivars/PK-8be4df61-93ca-11d2-aa0d-00e098032b8c
+# > /sys/firmware/efi/efivars/PK-8be4df61-93ca-11d2-aa0d-00e098032b8c
+# ls -l /sys/firmware/efi/efivars/PK-8be4df61-93ca-11d2-aa0d-00e098032b8c
+-rw-r--r-- 1 root root 0 Jan 18 13:40 /sys/firmware/efi/efivars/PK-8be4df61-93ca-11d2-aa0d-00e098032b8c
+
+I'm not sure how much of a bug this is for the old code (only systemd
+seems to check for zero size files), and it's only in the cache inode,
+so if you cat the file you get the fully 841 bytes.  However, obviously
+it becomes a huge problem with my new code because you can use the
+truncate inode to actually delete the variable file (even thought the
+variable is still there) so I need to add a fix for it to my series. 
+I'll post it separately when I have it to see what you think.
+
+Regards,
+
+James
+
 
