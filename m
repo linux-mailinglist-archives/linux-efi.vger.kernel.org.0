@@ -1,143 +1,130 @@
-Return-Path: <linux-efi+bounces-2684-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2685-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A243A1631B
-	for <lists+linux-efi@lfdr.de>; Sun, 19 Jan 2025 18:00:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56522A1632C
+	for <lists+linux-efi@lfdr.de>; Sun, 19 Jan 2025 18:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98021884735
-	for <lists+linux-efi@lfdr.de>; Sun, 19 Jan 2025 17:00:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 317FA7A1C69
+	for <lists+linux-efi@lfdr.de>; Sun, 19 Jan 2025 17:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6244C1DFD8E;
-	Sun, 19 Jan 2025 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463321DE8BD;
+	Sun, 19 Jan 2025 17:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFzIQPA6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qErCJXIh"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D371DFD8D;
-	Sun, 19 Jan 2025 16:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15530184;
+	Sun, 19 Jan 2025 17:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737305998; cv=none; b=GUPUd8JqpArRYUtuxBtd8srXAY10/uJQ2cHUgwY1+tICOlNbTLKXomR5VZKYAPrI8l3QUigxx+OdiQqeHuN6j78QF76vUxZyzX2j3nvXlYwti03l2FWPwzpPABKeKx96kbhWvYs5wEQaazGOoB/kfGBUJCYlntBK6cUzJXnSols=
+	t=1737306693; cv=none; b=IauvcaVI1FNjZOw3wyYSYI3mI8R/LNsY9FvjllyNg1+375Yk72HnYih+PVUuTwo0E4KrjtsrIYPTjZiqcCHQ/WRkrsYmNzqaQYv2OrzdwxOhxTKpcRj21oTaycxU1GJawX0CNcTHqxPbKCIe5s6yD34s2MVodQOEZfdsS/dt7xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737305998; c=relaxed/simple;
-	bh=xSxN7ORDgJ47ETUkUaFbjfX5uYAfWwvFPw18aE+hpNo=;
+	s=arc-20240116; t=1737306693; c=relaxed/simple;
+	bh=2KdIgeLzRQqc/qr8dNXMLRa99hB5pwAg/GwCUdOTvK4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IpXFbNdHEmt4o5QQzCAwd+gFoZr7jcLNY9BLAJyl2fNMRbh5MWVqFvsVZuu/7YTd4AJuiN0gDYFsohPXBZDcFWz34RjzztAryGSc4hSa/9s2c6jcvJWOeYXloipCyiS77i9DMPhu2KM6bklJZDvYkG2jHzFwLQZcKm/VskrIj7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFzIQPA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D8DC4CEE0;
-	Sun, 19 Jan 2025 16:59:57 +0000 (UTC)
+	 To:Cc:Content-Type; b=dP+cXY/siPkOk9RORzwnszPyaXW+xBOnq98Krhix5gGt2As0intsbEf63lNZndrbAN5Oyn6r9Zp+wi7ubXV8hveyKf/BtTzxp4SUFdqcFKuYe5zEsFFs9dzdoOWaGenz+ykF6RJGOCOQGr503dSEI2yKBhwEXvGk5U02Wt1kd6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qErCJXIh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B551C4CED6;
+	Sun, 19 Jan 2025 17:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737305997;
-	bh=xSxN7ORDgJ47ETUkUaFbjfX5uYAfWwvFPw18aE+hpNo=;
+	s=k20201202; t=1737306692;
+	bh=2KdIgeLzRQqc/qr8dNXMLRa99hB5pwAg/GwCUdOTvK4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OFzIQPA6FzL9pi4EwH/+H6OAB2njU37Tc6ALUmznZghPsoJ2c/8OQG7OsOkp3Fmyj
-	 vf21Cuk6TRPQNtL4Ytvd6WeKtRLHuRredD4B8HnaxF4FmSGztnc8w2ks4//M9MOU+w
-	 xRCbfL1ukE8HR5mTGNemUV0c0pmMw+YuVqRl8rB2XjhaX1UV+pxYb2/vE6L9JBnu9K
-	 d7DD25TvkoMFjJrMj1efNVE7FCSIqojbb8iCxoX+keoVeZV5B0RlQKBm8/eQJYeQBz
-	 KGpmzoM+aRYS2McndN+KOX1hmZU/y+lFId/zaJKIMDntWI5a/9znu4TcInRp3oG7Ru
-	 8B8i85YouG+og==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-304e4562516so36771581fa.1;
-        Sun, 19 Jan 2025 08:59:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVq9RNQSeY7WsuL/QoaXvlwAtySyhffZ2EdV3CQCi60J571eVlfoCiwU/a1HfE/zJ7hpb4/rE21rKQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR0EMruwjoI9Fu1Iy9h/ZE+v6t+tUHJL8JJI46oFfbQyJrshzV
-	pQa/kTcJGOUbVo9UJ4UuhCT13loAJxCVx9tJzY2e1TAIQywPScUd72W0IAvYwrh9MzWfABd8H+8
-	wmUO4Oix4/oUeFANXLeA1pSXc7dc=
-X-Google-Smtp-Source: AGHT+IEWVz68Te3YCn4yv2lQ324m1D1oemIj4cM9mFQESFw82Rl9IsB51R6quBSEbnQoIPfKBPlQ7C9AWPkLX7+5cgU=
-X-Received: by 2002:a2e:a589:0:b0:302:49b6:dfaf with SMTP id
- 38308e7fff4ca-3072d1a8e75mr32811901fa.20.1737305996019; Sun, 19 Jan 2025
- 08:59:56 -0800 (PST)
+	b=qErCJXIhj/DU8y59SrxVFL8tZP5Pa1p0p1tHrLH0lxYAYprQJ1aumnH4fe8jvRUhO
+	 7fIKM2zKfao75t/Rkrf5sGQkwHYtillTl6DODclJqTj4mzVjimScAAARqOXeaUwDik
+	 Dvj8y9jABtUyhP+aP1Nt4dT7ezx28fs4asMDU3LFpmXCtIeJsGcn8LT2naFiCIGCgk
+	 8tThrCUzDTwtDX3r/Nw30QKC0TPxVczdjFWUkloLe0eMwgHD/xdx7Zk/XaVNRPoMbx
+	 pt7FjFE55w0ElnxyPM8XQb1751TJKgO+GQ75Lg7ZcESnqGvo4xIbcPJfmePAsIJs1w
+	 xcyJGKXjHLbbg==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-304d760f12aso33884451fa.2;
+        Sun, 19 Jan 2025 09:11:32 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVrbFDdBSf+iFMF2+0o9srxCVuT0elhsjf2AhRPPARKotvV3LESjxqDl9cF6rmpaBdVIsjE1N7RnGkLNCIQ@vger.kernel.org, AJvYcCWyUadZDpqUFDYuN48PLDDf8+5+QKedcQmcQUYMA5WVL3aGac8e/PbUemCN4LAFYCMhauc+Y/+LPW0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSz3z/SuyalgC0PV8iQqEub6S3T5coMGX7rdQCxaA6ZXATu0Ed
+	kBaMWkTLqcNLZNO7XwByictmp2atXe1jN3V7D3QjwopwwAkUOXlcwvC2VdDwqsrMP0xLSGB2GiN
+	GeQ34L/HOhMJhZBvDj8OdVO8YJJY=
+X-Google-Smtp-Source: AGHT+IHaFS/2ql4oe4qNDGFHVGy0NHrDx/ThywVeydYIXUlGAn3mZuQ/7FQX+g2Tc7Hq4ivgdywtX+9SfZOu1dPnxNY=
+X-Received: by 2002:a05:651c:b0e:b0:2ff:df01:2b43 with SMTP id
+ 38308e7fff4ca-3072ca9abd3mr44177951fa.18.1737306690802; Sun, 19 Jan 2025
+ 09:11:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250119151214.23562-1-James.Bottomley@HansenPartnership.com>
-In-Reply-To: <20250119151214.23562-1-James.Bottomley@HansenPartnership.com>
+References: <20250117024452.2691546-1-linux@t4c.dev>
+In-Reply-To: <20250117024452.2691546-1-linux@t4c.dev>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 19 Jan 2025 17:59:44 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEaWBaL2YtqFrEGD1i5tED8kjZGmc1G7bhTqwkHqTfHbg@mail.gmail.com>
-X-Gm-Features: AbW1kvZRY1dld9PxYYrWq1YM36Gr3m64B6fBAnZM4AxSlqSb_msOdjcwFrdaKB8
-Message-ID: <CAMj1kXEaWBaL2YtqFrEGD1i5tED8kjZGmc1G7bhTqwkHqTfHbg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] convert efivarfs to manage object data correctly
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Jeremy Kerr <jk@ozlabs.org>, Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
+Date: Sun, 19 Jan 2025 18:11:19 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGLGmKU1Nvz8oo-aui1AtWo_8YDdT9cGtVweV9d6K6D3A@mail.gmail.com>
+X-Gm-Features: AbW1kvaIpeJ69NSCuf4e1mE7Y5fMvk7JdISWnR05cB6dU9c04GbMHzJ70zNRaEU
+Message-ID: <CAMj1kXGLGmKU1Nvz8oo-aui1AtWo_8YDdT9cGtVweV9d6K6D3A@mail.gmail.com>
+Subject: Re: [PATCH] efistub: add efi=quiet parameter to selectively silence
+ efistub alone
+To: linux@t4c.dev
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 19 Jan 2025 at 16:12, James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
+On Fri, 17 Jan 2025 at 03:46, Hendrik 'T4cC0re' Meyer <linux@t4c.dev> wrote:
 >
-> I've added fsdevel because I'm hopping some kind vfs person will check
-> the shift from efivarfs managing its own data to its data being
-> managed as part of the vfs object lifetimes.  The following paragraph
-> should describe all you need to know about the unusual features of the
-> filesystem.
+> While the general `quiet` kernel parameter is available to silence
+> output from the efistub, setting this comes with side-effects.
+> This patch adds a parameter efi=quiet to selectively set the loglevel
+> for the stub alone to quiet, as the polar oppoosite to efi=debug.
 >
-> efivarfs is a filesystem projecting the current state of the UEFI
-> variable store and allowing updates via write.  Because EFI variables
-> contain both contents and a set of attributes, which can't be mapped
-> to filesystem data, the u32 attribute is prepended to the output of
-> the file and, since UEFI variables can't be empty, this makes every
-> file at least 5 characters long.  EFI variables can be removed either
-> by doing an unlink (easy) or by doing a conventional write update that
-> reduces the content to zero size, which means any write update can
-> potentially remove the file.
+> Signed-off-by: Hendrik 'T4cC0re' Meyer <linux@t4c.dev>
+> ---
+>  Documentation/admin-guide/kernel-parameters.txt | 3 ++-
+>  drivers/firmware/efi/libstub/efi-stub-helper.c  | 2 ++
+>  2 files changed, 4 insertions(+), 1 deletion(-)
 >
-> Currently efivarfs has two bugs: it leaks memory and if a create is
-> attempted that results in an error in the write, it creates a zero
-> length file remnant that doesn't represent an EFI variable (i.e. the
-> state reflection of the EFI variable store goes out of sync).
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 3872bc6ec..94a2f6ae7 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -1454,7 +1454,7 @@
+>         efi=            [EFI,EARLY]
+>                         Format: { "debug", "disable_early_pci_dma",
+>                                   "nochunk", "noruntime", "nosoftreserve",
+> -                                 "novamap", "no_disable_early_pci_dma" }
+> +                                 "novamap", "no_disable_early_pci_dma", "quiet" }
+>                         debug: enable misc debug output.
+>                         disable_early_pci_dma: disable the busmaster bit on all
+>                         PCI bridges while in the EFI boot stub.
+> @@ -1471,6 +1471,7 @@
+>                         novamap: do not call SetVirtualAddressMap().
+>                         no_disable_early_pci_dma: Leave the busmaster bit set
+>                         on all PCI bridges while in the EFI boot stub
+> +                       quiet: disable most log messages.
 >
-> The code uses inode->i_private to point to additionaly allocated
-> information but tries to maintain a global list of the shadowed
-> varibles for internal tracking.  Forgetting to kfree() entries in this
-> list when they are deleted is the source of the memory leak.
->
-> I've tried to make the patches as easily reviewable by non-EFI people
-> as possible, so some possible cleanups (like consolidating or removing
-> the efi lock handling and possibly removing the additional entry
-> allocation entirely in favour of simply converting the dentry name to
-> the variable name and guid) are left for later.
->
-> The first patch removes some unused fields in the entry; patches 2-3
-> eliminate the list search for duplication (some EFI variable stores
-> have buggy iterators) and replaces it with a dcache lookup.  Patch 4
-> move responsibility for freeing the entry data to
-> inode_alloc/inode_free which both fixes the memory leak and also means
-> we no longer need to iterate over the variable list and free its
-> entries in kill_sb.  Since the variable list is now unused, patch 5
-> removes it and its helper functions.
->
-> Patch 6 fixes the second bug by introducing a file_operations->release
-> method that checks to see if the inode size is zero when the file is
-> closed and removes it if it is.  Since all files must be at least 5 in
-> length we use a zero i_size as an indicator that either the variable
-> was removed on write or that it wasn't correctly created in the first
-> place.
->
-> Patch 7 fixes the old self tests which check for zero length files
-> on incorrect variable creation (these are now removed).
->
-> Patch 8 adds a new set of self tests for multi threaded variable
-> updates checking for the new behaviour.
->
-> v2: folded in feedback from Al Viro: check errors on lookup and delete
->     zero length file on last close
->
-> v3: convert to alloc/free instead of evict and use a boolean in
->     efivar_entry under the inode lock to indicate removal and add
->     additional selftests
->
+>         efi_no_storage_paranoia [EFI,X86,EARLY]
+>                         Using this parameter you can use more than 50% of
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index c0c81ca42..b8ad629cc 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -97,6 +97,8 @@ efi_status_t efi_parse_options(char const *cmdline)
+>                                 efi_disable_pci_dma = false;
+>                         if (parse_option_str(val, "debug"))
+>                                 efi_loglevel = CONSOLE_LOGLEVEL_DEBUG;
+> +                       if (parse_option_str(val, "quiet"))
+> +                               efi_loglevel = CONSOLE_LOGLEVEL_QUIET;
+>                 } else if (!strcmp(param, "video") &&
+>                            val && strstarts(val, "efifb:")) {
+>                         efi_parse_option_graphics(val + strlen("efifb:"));
 
-Thanks James. I've queued up this version now, so we'll get some
-coverage from the robots. I'll redo my own testing tomorrow, but I'll
-omit these changes from my initial PR to Linus. If we're confident
-that things are sound, I'll send another PR during the second half of
-the merge window.
+Hello Hendrik,
+
+Could you explain the use case please? Your concern is that removing
+'quiet' from the command line is producing a few additional lines of
+output from the EFI stub at boot? How is that a problem compared to
+the fact that you get the entire kernel log printed to the console? Is
+every single line printed there relevant to you, and only the ones
+emitted by the EFI stub are not?
 
