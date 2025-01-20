@@ -1,112 +1,115 @@
-Return-Path: <linux-efi+bounces-2697-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2698-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9452AA17032
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Jan 2025 17:31:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF94AA172DD
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Jan 2025 19:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5F59163191
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Jan 2025 16:31:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23B5816AC1C
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Jan 2025 18:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3734A143888;
-	Mon, 20 Jan 2025 16:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB461E32DB;
+	Mon, 20 Jan 2025 18:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwyipF9f"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="liD4/p6m";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="liD4/p6m"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [104.223.66.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0BB36124;
-	Mon, 20 Jan 2025 16:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7855D7DA82;
+	Mon, 20 Jan 2025 18:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.223.66.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737390714; cv=none; b=ChfodeEnRLcI6OXf4fpD/nIagLc+3XpdV1pzxRdgTJYt/bhwGhyutzDBBzJl+qRUZtlpuM4WnviSzQP1PWnjSGWdouiFaLMPJ0gnxkIsqcufx1NBQpDxT2lBXmV+lnFM7TzQr+kFUbKJYaDeltQUa/MVW48gIXY0Y/8ejIzckNg=
+	t=1737399477; cv=none; b=TDbaheHIOUCM6n4P/v3DRVy5VTqsnS/pV9bEBRhwmNWuYbsI/J8yUb1ploZZ2uKcs5dqqnL2VeSsaPWjY4QTptoMeBWuMNM/BczW4hXDIbGaTWfF0oT6o0dV11YJq7SymeBIRS5kBf3HQmN/xN817Et6aCFXKzMHuS+LlimUQi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737390714; c=relaxed/simple;
-	bh=+XWtE3i4aEw+fjG0QBy+V+sB5Y10HD2kDuWZjrt8LMs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EgVaqaqtyYFvZWjAcgRlMiyELI4TCBjx08H1gg6NkexNrc+FSDzt8B3G3KTTp9Chw5rH64qWnIncXIw3tuwK9LkQ7wwqKY67oujFAeUsy1WJPvKzLFZSQ4Blya857/AZYwKad+U5lg58jyfRKX6A5vcEKJ2yUwZ45SouK2J+PMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwyipF9f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B77C4CEE2;
-	Mon, 20 Jan 2025 16:31:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737390713;
-	bh=+XWtE3i4aEw+fjG0QBy+V+sB5Y10HD2kDuWZjrt8LMs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dwyipF9f0aX/XPVNHhJBN1ceN+3HeHxsQerweuvU7s/Ktn7hvsfHIuuulWyFlqT10
-	 /xKuct37Hi939R0c70OWFaTpy9AgDS0vfTYjkW6Pbfz8hJs6fxrP5l4w6FEugavzo2
-	 w8XVt8YVtDIIRZAbqZeERlT+eS9Hz4+YBchGWNrJC790Wrwi+zrVF5HP7laA+d5SMm
-	 JvfyXPYYtqnAXuz8SK2G63wF7XcbUFI/iryuaWs4H70GUHmnOME4ZSFKaTC9mEk+O3
-	 C7vOp9o3zAcqjX2DeqggGSGJaNttIWHk4Gn6eS1Fk6a8dlJLnvexuvl+wwo3aR03np
-	 LG16dJ0BcaGCA==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5401bd6cdb7so4484963e87.2;
-        Mon, 20 Jan 2025 08:31:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWMrNtCo9bU4MX1K26k2KoaOTbr86/gXkiDtu3xSbS426q3WH9tsmyNZy5OHTbyAKJTjQAYwubSTPI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl1iDVwn0uZfqjvSsXo2/CIZ4eAGyYxMRBzKtyBcPItZuKw8lu
-	/LZlHptXtwiJnpf62v79wcWhxgTLx7PZZ9M+EqxZ8KqN2tsDXDlY8mXprcWJvZORCcSRnzwF2n0
-	NuMbyZXZEOqOtnmEJVgXI9hM2TwI=
-X-Google-Smtp-Source: AGHT+IHGjVmwfU3SDRNViVe/C/BAke1oP2EtLom01VZ3KOSZKON0kx1V8rpz+Bx983TJABd8twEnbNXztk32iv4OW9g=
-X-Received: by 2002:ac2:5197:0:b0:540:228d:b8d3 with SMTP id
- 2adb3069b0e04-5439c218dd7mr3354161e87.1.1737390711845; Mon, 20 Jan 2025
- 08:31:51 -0800 (PST)
+	s=arc-20240116; t=1737399477; c=relaxed/simple;
+	bh=UzgRE03mDOrdWjy1kf/GZBCcOWxOtlWOojHoQ30Kdp0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bUKHVeK5WTvF3x8yf3EG3zlgvC4h+abN2/r+ip4MW55gp11h9XByguM8TWJRUehQZImyfHQwTVFjY9WkyobQBKQrk8Krv0K+PJ0tcjVfNhh95/SA2Ga9txaxk/NJ1ra6V2EESZM/NwiNMmh9P/GM0sIJPsxdBn7m1J74vK/n9oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=liD4/p6m; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=liD4/p6m; arc=none smtp.client-ip=104.223.66.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1737399474;
+	bh=UzgRE03mDOrdWjy1kf/GZBCcOWxOtlWOojHoQ30Kdp0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=liD4/p6mdfJP/hVAE3v9i/ZKUgskDa5bNyS2mTtqy3X74o5vRUNaKvdgEgAgqsw0x
+	 L+FhJK6+HuGILheLqAPJvGWrJdwKuLPhpujSoPMnm4iLb4esJ7XtmPZqwzpKkjZ605
+	 W858gp0V8XjVC1EXMtkz7NeRcxr3RchyIgawjQSk=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 7DBA11286702;
+	Mon, 20 Jan 2025 13:57:54 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id Uk3gH9umEJmW; Mon, 20 Jan 2025 13:57:54 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1737399474;
+	bh=UzgRE03mDOrdWjy1kf/GZBCcOWxOtlWOojHoQ30Kdp0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=liD4/p6mdfJP/hVAE3v9i/ZKUgskDa5bNyS2mTtqy3X74o5vRUNaKvdgEgAgqsw0x
+	 L+FhJK6+HuGILheLqAPJvGWrJdwKuLPhpujSoPMnm4iLb4esJ7XtmPZqwzpKkjZ605
+	 W858gp0V8XjVC1EXMtkz7NeRcxr3RchyIgawjQSk=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id B6608128650C;
+	Mon, 20 Jan 2025 13:57:53 -0500 (EST)
+Message-ID: <7217bfc596e48cf228bd63aec68e4b18c64524f5.camel@HansenPartnership.com>
+Subject: Re: [PATCH v3 0/8] convert efivarfs to manage object data correctly
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, Jeremy Kerr
+	 <jk@ozlabs.org>, Christian Brauner <brauner@kernel.org>, Al Viro
+	 <viro@zeniv.linux.org.uk>
+Date: Mon, 20 Jan 2025 13:57:51 -0500
+In-Reply-To: <CAMj1kXG1L_pYiXoy+OOFKko4r8NhsPX7qLXcwzMdTTHBS1Yibw@mail.gmail.com>
+References: <20250119151214.23562-1-James.Bottomley@HansenPartnership.com>
+	 <CAMj1kXEaWBaL2YtqFrEGD1i5tED8kjZGmc1G7bhTqwkHqTfHbg@mail.gmail.com>
+	 <CAMj1kXG1L_pYiXoy+OOFKko4r8NhsPX7qLXcwzMdTTHBS1Yibw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250119151214.23562-1-James.Bottomley@HansenPartnership.com> <CAMj1kXEaWBaL2YtqFrEGD1i5tED8kjZGmc1G7bhTqwkHqTfHbg@mail.gmail.com>
-In-Reply-To: <CAMj1kXEaWBaL2YtqFrEGD1i5tED8kjZGmc1G7bhTqwkHqTfHbg@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 20 Jan 2025 17:31:40 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXG1L_pYiXoy+OOFKko4r8NhsPX7qLXcwzMdTTHBS1Yibw@mail.gmail.com>
-X-Gm-Features: AbW1kvZRfXXaOmmYM1JCVCwFdSyMn_7oNiaUoyl80PmwR7GWDM4qeYeVnazQ5nU
-Message-ID: <CAMj1kXG1L_pYiXoy+OOFKko4r8NhsPX7qLXcwzMdTTHBS1Yibw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] convert efivarfs to manage object data correctly
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Jeremy Kerr <jk@ozlabs.org>, Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-On Sun, 19 Jan 2025 at 17:59, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Sun, 19 Jan 2025 at 16:12, James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> >
-...
->
-> Thanks James. I've queued up this version now, so we'll get some
-> coverage from the robots. I'll redo my own testing tomorrow, but I'll
-> omit these changes from my initial PR to Linus. If we're confident
-> that things are sound, I'll send another PR during the second half of
-> the merge window.
+On Mon, 2025-01-20 at 17:31 +0100, Ard Biesheuvel wrote:
+> On Sun, 19 Jan 2025 at 17:59, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > 
+> > On Sun, 19 Jan 2025 at 16:12, James Bottomley
+> > <James.Bottomley@hansenpartnership.com> wrote:
+> > > 
+> ...
+> > 
+> > Thanks James. I've queued up this version now, so we'll get some
+> > coverage from the robots. I'll redo my own testing tomorrow, but
+> > I'll
+> > omit these changes from my initial PR to Linus. If we're confident
+> > that things are sound, I'll send another PR during the second half
+> > of
+> > the merge window.
+> 
+> I'm hitting the failure cases below. The first one appears to hit the
+> same 'Operation not permitted' condition on the write, the error
+> message is just hidden by the /dev/null redirect.
+> 
+> I'm running the make command from a root shell. Using printf from the
+> command line works happily so I suspect there is some issue with the
+> concurrency and the subshells?
 
-I'm hitting the failure cases below. The first one appears to hit the
-same 'Operation not permitted' condition on the write, the error
-message is just hidden by the /dev/null redirect.
+It could be that the file isn't opened until the subshell is spawned. 
+I can probably use the pipe to wait for the subshell to start; I'll try
+to code that up.
 
-I'm running the make command from a root shell. Using printf from the
-command line works happily so I suspect there is some issue with the
-concurrency and the subshells?
+Regards,
 
+James
 
-
-# --------------------
-# running test_multiple_zero_size
-# --------------------
-#   [FAIL]
-# --------------------
-# running test_multiple_create
-# --------------------
-# ./efivarfs.sh: line 294:
-/sys/firmware/efi/efivars/test_multiple-210be57c-9849-4fc7-a635-e6382d1aec27:
-Operation not permitted
-#   [FAIL]
-# --------------------
-# running test_multiple_delete_on_write
-# --------------------
-#   [PASS]
-not ok 1 selftests: efivarfs: efivarfs.sh # exit=1
 
