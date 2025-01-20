@@ -1,112 +1,81 @@
-Return-Path: <linux-efi+bounces-2687-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2688-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F145BA16853
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Jan 2025 09:45:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A074FA16876
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Jan 2025 09:53:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31B76162B3C
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Jan 2025 08:45:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57A9A1889405
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Jan 2025 08:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0186170A26;
-	Mon, 20 Jan 2025 08:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC0A1974FE;
+	Mon, 20 Jan 2025 08:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JZCr8zZR"
+	dkim=pass (2048-bit key) header.d=t4c.dev header.i=@t4c.dev header.b="bSOPBCtt"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from qs51p00im-qukt01072702.me.com (qs51p00im-qukt01072702.me.com [17.57.155.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2A97E1;
-	Mon, 20 Jan 2025 08:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3D8194C92
+	for <linux-efi@vger.kernel.org>; Mon, 20 Jan 2025 08:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737362743; cv=none; b=IaMsWg91EVhRrTAqzZEckgiEJDwhBWSGlS/lYkYEy9sGfA/9qNLYR7g/28kS8YApRfYVUruBOF8EkNu6T8q1oyqXbkl1UWK50CEjp/Xczvirr/mdOmLt86SjiW5Pz+d0Qxa6wN6IYTpTSJsNabJozuphE62+oa8+h/v64gPmkf0=
+	t=1737363194; cv=none; b=VPBkGTMIvNLtVuJZvtRJWFV5wxY3ZzZkSc+Vdg+Tbh9F8I0pjR9vx5OG0wainRiPByBJRY0pXMem/LSyx9+R1faeyqzuBTvWoIyrU/HdR5EgbckF/iqdkrrMYCxE6f5Jal2cuFKl7e0Gx/jlQPy8fGgbRhP6wKR4yiulzVTmKyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737362743; c=relaxed/simple;
-	bh=U++a4NdqFq4gJLMKAMpS0Xnn6qZhb+CIv8p4/SSgBwU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gzsPYvYPi8IzQXC9geB/DbmdpyViWotFwuxBI4Z0uvCTKnCDgfroc+HWdEXrkJ6dyoI3aeEcjIgH1reu+FqqGGMqk2zax43bIUliinv5tlpu1uFH4nIWM2LpzIsRXMrfKzMK6Och5fmAc1BYwNmCRrgv7zkgrOoqaRijaGCPlEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JZCr8zZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E307FC4CEE3;
-	Mon, 20 Jan 2025 08:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737362742;
-	bh=U++a4NdqFq4gJLMKAMpS0Xnn6qZhb+CIv8p4/SSgBwU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JZCr8zZRmQZrsjaLTOQQ/1Al+wWJNEiT/Som+AL5BwwqtTRldGnDGdB2WazhPI3gC
-	 xfGaqlVjdusOOS5miNL619rCCQIs9GjaazA2fAp/Tt73WwdQkTD33gv6ly646L1LQ8
-	 wrXCTbkl0ZnUmdeWxu+7pIZhhRLZwSC0Bp3IblPsQCg/eIFuo/De+JBzoR8iB4feEY
-	 oxBD4BIjQnA47DCHvnICzONPWAQ3eoxI0WHnLv+qmln0FKJkp4LKegAmGrd8/Te0Qz
-	 IBukWH+F6rU2b4mycWAIFyWXck3elBauwH4/+Z0bTki3bD6tzBuDza2N7kYivmgZQ/
-	 uMhLCSN6UvzjA==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30737db1ab1so15729621fa.1;
-        Mon, 20 Jan 2025 00:45:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV87Q/J+xPbBhresew/8aSqD1li3sxEynSGXyEi5BP5yQ6aaFYGAEr29UulEAubGegvOVyz1v511vo=@vger.kernel.org, AJvYcCW8i9Q5Q6wJkzLJOyvgvtRXgJZqj/QBgXxedTO8bWBUNzUy61Eh/qN7PhAbNGbQfHgRSX0IK/Rv2VDtixFC@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmY9ROrSrLRi9kwqfVgg9rMm212t8RVtCnf34h5AUcBb6PT54d
-	iLQST8iUZp2O4rxvSamzExS1zdGsr+5EIqYEt/65OOI+x3/2rSrk/Di5A8K6Vss/oE0J+tJDjid
-	7JzElJD26yKNRf0/Ofn7uGyiLG10=
-X-Google-Smtp-Source: AGHT+IEhw6olVGuAcpT5NmYmRmJ3RIwUr2GsCNyVENOToogeWobDWLsciqIf/BtomOem0c6TUygs2Ul1TXNWUmKwePs=
-X-Received: by 2002:a2e:b554:0:b0:300:2731:4120 with SMTP id
- 38308e7fff4ca-3072ca8b0a7mr32478761fa.15.1737362741288; Mon, 20 Jan 2025
- 00:45:41 -0800 (PST)
+	s=arc-20240116; t=1737363194; c=relaxed/simple;
+	bh=852lip/wfJFnxoF9XrRiP8ZoG657RE218TpXlGdjgsY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i9EjPtt2KqV4wcLlh0ekdZjIdMYZuYG5jtkd7ncurB4N6TMVj8tWZ7heU7h3u0u6uGTMXBUiG9he5o6DVQ4zNF4vNaVi8HNl7nd8CepzCaWFfWEiEGJeyjj5p64te2YVZp/HqrVwIbXRlFVNeNyTWR8TBqA9BUYl8vBuAkscOXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=t4c.dev; spf=pass smtp.mailfrom=t4c.dev; dkim=pass (2048-bit key) header.d=t4c.dev header.i=@t4c.dev header.b=bSOPBCtt; arc=none smtp.client-ip=17.57.155.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=t4c.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t4c.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t4c.dev; s=sig1;
+	bh=852lip/wfJFnxoF9XrRiP8ZoG657RE218TpXlGdjgsY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
+	b=bSOPBCttmm1Vtl8w4faw2ENmlVVp71RNdnItxubaRn+irAkZ2VJi3HR+OysXL5HMc
+	 ngSd8Kb06kZkHE32Qn/9o/z6PaLDpZeZJk4xYVf6WK01MgodtVVndg+y34NBRJVpQo
+	 KEvrHHfhHHE2qEQOivSWceIKwO7YVLXjQlPf1fE0+M97z+tkIToEkDBvUXMmTLsmZl
+	 9XIs/ddounquBwLkcJMTpykU6vXIQvJlTZM3pvcnPQ4w6x1ie6R26hZVb2MO9Vcyo9
+	 8sw2oOaUFeVp1jsXzmpziauQ4Drhd1EJLxFxvtmivDqONXhDYHf4GrlbS5KVfHvwlG
+	 Lxmixqfvn3kFQ==
+Received: from localhost.localdomain (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+	by qs51p00im-qukt01072702.me.com (Postfix) with ESMTPSA id C5A661680104;
+	Mon, 20 Jan 2025 08:53:08 +0000 (UTC)
+From: Hendrik 'T4cC0re' Meyer <linux@t4c.dev>
+To: ardb@kernel.org
+Cc: linux-doc@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux@t4c.dev
+Subject: [PATCH] efistub: add efi=quiet parameter to selectively silence efistub alone
+Date: Mon, 20 Jan 2025 09:52:43 +0100
+Message-ID: <20250120085243.2990309-1-linux@t4c.dev>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <CAMj1kXEeJattXAkvitfyu3KRRokkSMJZR0xgg_+DG2Mk-tMuoA@mail.gmail.com>
+References: <CAMj1kXEeJattXAkvitfyu3KRRokkSMJZR0xgg_+DG2Mk-tMuoA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMj1kXGLGmKU1Nvz8oo-aui1AtWo_8YDdT9cGtVweV9d6K6D3A@mail.gmail.com>
- <20250119173205.2965649-1-linux@t4c.dev>
-In-Reply-To: <20250119173205.2965649-1-linux@t4c.dev>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 20 Jan 2025 09:45:29 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEeJattXAkvitfyu3KRRokkSMJZR0xgg_+DG2Mk-tMuoA@mail.gmail.com>
-X-Gm-Features: AbW1kvYtZjcVSfBgsQjaSLDe9EVl1zo-e9COqIfi_rfz-99V9ja7wIAd5RV69N8
-Message-ID: <CAMj1kXEeJattXAkvitfyu3KRRokkSMJZR0xgg_+DG2Mk-tMuoA@mail.gmail.com>
-Subject: Re: [PATCH] efistub: add efi=quiet parameter to selectively silence
- efistub alone
-To: "Hendrik 'T4cC0re' Meyer" <linux@t4c.dev>
-Cc: linux-doc@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: lZmZTlnACRLFukfsgSQsb1HbsW-vDGSK
+X-Proofpoint-ORIG-GUID: lZmZTlnACRLFukfsgSQsb1HbsW-vDGSK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-20_01,2025-01-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 mlxscore=0
+ phishscore=0 bulkscore=0 clxscore=1030 malwarescore=0 spamscore=0
+ mlxlogscore=558 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2501200073
 
-On Sun, 19 Jan 2025 at 18:32, Hendrik 'T4cC0re' Meyer <linux@t4c.dev> wrote:
->
-> Hello!
->
-> > Could you explain the use case please? Your concern is that removing
-> 'quiet' from the command line is producing a few additional lines of
-> output from the EFI stub at boot?
->
-> Sure :) I boot a UKI (with Secure Boot and TPM measurements)  with an
-> embedded splash image, and the cmdline
-> 'memtest=2 earlyprintk=serial,ttyS0,115200 console=ttyS0,115200n8'
->
-> The stub by default (without 'quiet') will print messages regarding
-> the UKI and it being measured into the TPM on the efifb (I assume)
-> rendering on top of the displayed splash image.
->
-> "EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path"
->  and "EFI stub: Measured initrd data into PCR 9" to be specific.
->
-> > How is that a problem compared to
-> the fact that you get the entire kernel log printed to the console?
->
-> Very relevant question. Because of the 'memtest=2' flag, there is a
-> delay during boot, which should be logged (with memtest progress) to
-> the serial console. 'quiet' will silence these logs.
->
-> > Is every single line printed there relevant to you, and only the ones
-> emitted by the EFI stub are not?
->
-> Basically, yes. I want the kernel's printk's, but not have the output
-> of the efistub dipsplayed on top of the splash screen of the UKI.
->
-> I did not find a way to redirect this output, and adding a 'efi=quiet'
-> option seemed like a low hanging fruit.
->
+> I'd prefer to just raise the verbosity level of those messages instead.
 
-I'd prefer to just raise the verbosity level of those messages instead.
+Agreed. I'll send in a new patch setting the verbosity of those messages one
+above the default.
+
+Hendrik
 
