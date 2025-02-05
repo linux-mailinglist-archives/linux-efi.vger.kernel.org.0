@@ -1,82 +1,80 @@
-Return-Path: <linux-efi+bounces-2751-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2752-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFECA29A3A
-	for <lists+linux-efi@lfdr.de>; Wed,  5 Feb 2025 20:36:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFDFA29A5B
+	for <lists+linux-efi@lfdr.de>; Wed,  5 Feb 2025 20:50:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528973A7C6D
-	for <lists+linux-efi@lfdr.de>; Wed,  5 Feb 2025 19:35:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1886D167AF4
+	for <lists+linux-efi@lfdr.de>; Wed,  5 Feb 2025 19:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90D21FF1B3;
-	Wed,  5 Feb 2025 19:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A258DF5C;
+	Wed,  5 Feb 2025 19:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="B57nyCL9"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="q9k7rDL9"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60C7155335
-	for <linux-efi@vger.kernel.org>; Wed,  5 Feb 2025 19:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A741E0DE4
+	for <linux-efi@vger.kernel.org>; Wed,  5 Feb 2025 19:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738784150; cv=none; b=qhFCvuoXkySdiy7D9Q37qT7CcYb2KBWi0B4v6JHM0qFl3JSzce/u+0sEqkehqWAKQgCUVJSMK+c9HRED3vUBAeUeWhY9HliurgvIHRne3pRDPrb09y1ZLsfQy7kj1pn2aeAHhrkd4TiYNCFCvXVbNX2jOdREbjK0K5YyhgtiU1I=
+	t=1738785029; cv=none; b=PRiROWs7i0+8Ol60GNafhLn5Mz5odiHLAJh9QeiHoHk4r4r5FLZ4MaTKER9eHxBY0arWjUSVnPwwPcl3EEghbu63QSS3kkr/PsvLC7bRR5qNbIat5ozUHVnCNpQGElA5h8/R9BfYJI0CqdKQGoVQpbO5QYimdhJtJVy0mjo4Dkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738784150; c=relaxed/simple;
-	bh=7rmeXiOFyHpHUc2gcEBdx9CMM3a6bCCbvMpYqWexx08=;
+	s=arc-20240116; t=1738785029; c=relaxed/simple;
+	bh=n8j3DGOLUHU7uRmc+FhLpi4ngVKHsDZJ/NqvWTWKGcY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PzATNSNDBt4W2O7Q0oMBCYaMAxkpWCgnWB+wa21l0P1HTd3O8SSM4wumiGKl8TqX9M3BDmEa5+x+46wackQnWk51wZdFAMcyPBHP5m82zOVtvo6e7r4oD6h0njfObqeHG5tKrp5hZ9bMk/nwFMKV5ayORnIwfkc/ghu+hQfXJwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=B57nyCL9; arc=none smtp.client-ip=209.85.219.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=hvGUZu1am8ShlBZbOU407qz9VPIPGwZRhPNzIaO0cnXJQ98gy+wULm5MqwYK7pzxCPVnAztXlZ7Rv8kjhvVEb+SOe1cnojltH37iy/YNdpfbjISdzSr9z+ZvnNVutX5GYOAA0U8izta2MidbmdZF2mDyFZ0hIGJQ6N879sxN5C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=q9k7rDL9; arc=none smtp.client-ip=209.85.222.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6dcdd9a3e54so1513326d6.3
-        for <linux-efi@vger.kernel.org>; Wed, 05 Feb 2025 11:35:48 -0800 (PST)
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7b6f53c12adso8522385a.1
+        for <linux-efi@vger.kernel.org>; Wed, 05 Feb 2025 11:50:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1738784148; x=1739388948; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1738785025; x=1739389825; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hEv6FH3+8Q9Xxcq199dXGOrCJLqcmfKdGm0I8JED3Qw=;
-        b=B57nyCL9AhXYhtMwVGvTNU96zns54sLmY88t0Y2E1nwT9B7IljwGmbHRK6n9RA4A2j
-         NFiDmUQoS7jeM493Xg/pgf7fMqjiXqaHzZfFN3scwms944w6zmmvWUaQYMY32maIdIKG
-         pdig2tjOjTXAmyAJ4c/RM3FmI7lkSd6dCFnPunqQULBOwNtj+4OqkboDOSMou3SJ2jUi
-         JyYAQ54Ljwv6ubKXCbjKwB0xtB+OHPY8UMAfGrBxohnwr8XfBIgJsf/unt2EwblVF6lL
-         19iOWjqK1omu1AJBJpdiV2qLm4rq1wqWk6PP5tg3N1Snk+S31CYZDIqN3uKV2si1mdTf
-         8VOQ==
+        bh=JB1QhklLlkYCU54lqW0Pm1NXVvCDDXyC2idxgwvRo9A=;
+        b=q9k7rDL9USHXqJYagynqTeWaqNWXooVFaKv4xC8LkdZmIJ/DQHRzFAwuNo6xNgepDb
+         Uj3oef18e/jHX/CQfS9WStux1RPBpIxiXz6FeDDIp/5zDrLIqk+BCRUuH89lXkfsyja7
+         4fk1twEZBpwHepIzwizC89qadIImAsx1ddtPY9AolaDtPy4EPp2w5W/ZpeTc5RkarUH4
+         mwGf5XGH4QAswMR4uLHfo4ffc70w4UXSN1JFgUfmjbwlLeRxXPnI14DaryOXKwpdZ19B
+         04oo++rpYP11iN/6HnJ4exH0FThIKopmy6SomPBMtPuFmel1x94fho3NOrYXShmXnVRJ
+         6HFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738784148; x=1739388948;
+        d=1e100.net; s=20230601; t=1738785025; x=1739389825;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hEv6FH3+8Q9Xxcq199dXGOrCJLqcmfKdGm0I8JED3Qw=;
-        b=G4NMIzNgjXYXlwYPnyfVEfUKqEgzKEzLuU/PyiHVhaJ+I0yU8pL16JAyzD/aroEvZG
-         NQfIjuN7hE2AgVTbLn9K9A85+bbtI4YXLtnxwdTjpIC0GWT+PJS3a3uRfWTNugExRRkq
-         iipGtsIqf4f8MmxhGzta+BbkRC5LFWEgcN5gsU1mX0isPcI5PdTDXt4N6fRu5uRz1R9b
-         kEdZPcCR1G7Hwx2cj5O7scHuDBAPndKzqP8W9gXKPjiafFHTqrgl0EhMMVfUIbEkP5uO
-         oLWyyee4UD/MgfzsXTdnpmnleC765CA9aXraRvpgs1vRFc5nsbHhuKRfc5O1er6XP77k
-         CYiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfp55wO5a3nvarQB0RGpb9DY1kVLhkYPcEb6PxzEFyRBQWAoc1984YzimOEv+ZKD1hLIjD4xjfvU4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPt1vOQKDZLht5SVxoxtxIs+rrapZ3u6QhYw0MQqXyD16TXepR
-	zo60I8SmHltRfBBw3Xo6fqOY1ntjzaBRLY5mBTfdpfyL6HDvczWEbDzttkzenco=
-X-Gm-Gg: ASbGncuePOHi9DlAV1pqkfDeexaWnOcjZ6I5ifOzqZlNgrajHbfnfwuTnUkkSAZPHII
-	qODYs+sJel3A7DAuRJc7rVoUUAA9cKtKDKPrWBjRhg5y5gt0s4Foupiv24nXaZ8/6rK21F54rKp
-	jQzfK/yxiC9uzeRRyFXRO9OUasnnobDeKUUFQS+CQbNtwFo1sk7rpyQvk+zoH83ATUm26odwZlO
-	f4gymypW7dhRcC+Z95UeUqisP9K6lylKpOzDp1Hu1NjaVKl69Rk8JLmmpuqp8cQIFIaHCHv+9R6
-	vAJ6HD/eVquiitnJJWGfP3eNfXSNHZROHt713HZ0J7L0Pp8oqpwUk3+EWZwan0LxotTjVN3XDA=
+        bh=JB1QhklLlkYCU54lqW0Pm1NXVvCDDXyC2idxgwvRo9A=;
+        b=u2sgkOkLwWKwzj8G6mmwIecTwwJuvnwWhrt43YFdufRW1UeCJomABKmAuAlD1Rz7/2
+         m9ZK6Qk/2ZYoI/ofo3C1GdRwWnFToVTTkxE9sdPEd1pwg7ylFpGDPYtYzVBH8ac/L5R3
+         RPjYOxjb2wxj3/+dmJyNCH1XunacJfOfR7NbFguhGK7giDQ/kEqOD5hfTWRD99ZrYFhR
+         d4cHh0RxZ9MxLu0m4JoEc0TpS/nHkn5dsDBs4Gh/Mf+xWpCU8rkh1QVDkCiQGZ/BFG6e
+         4osbvwBJV/uxWnb7aDcDLalgj0uBbexLsaHItuQeT1NHzbycTHtN0vAL8+TMwaYpZxFr
+         EcDA==
+X-Gm-Message-State: AOJu0YxxhVvWL28K1XS4ao+0p+HIfilnaNoDHVhFdS1A9OlulZAnIg/q
+	z7Zrph6yf6hCR4PtiyUDD9XOsWH82AOH0ZHAhLGGfOW7mqbG6a4/QlQ+3J2FIo8=
+X-Gm-Gg: ASbGnctWQLjvlZe8VAMlGynY8rmktxcgdFgDnyNB4AhGDAJQ8l1PtaVvU3mR4vI7aBa
+	NFEvb/pCpyC9U263uQBUKkh8AvrGF7fW3L8Uns8FYVyyegfBrfJ3qr1r+L+KAAqMGgiJaC27z19
+	gp2E0CZzT7c8oUxbfJJ9XHD/2SF51SgsPyewvI+Ek3lfHiuOAIA5WXSyWbLChcuyRWTSP6AenBo
+	CtYDSWTInLxsqNq/JuBIZJ5igbK4ctKiKsfI9AGwr4JY60SqnLtmdbSjYhz8MwCTWWVMjkjltuO
+	8PwofNepzZmd0G7S3T7M910E2BvT6qCIxu9SR1I4UzZSHN+uGRsM1b75lCZe7VS+VkdBM91H8A=
 	=
-X-Google-Smtp-Source: AGHT+IEsah4I9S4q0Ze9aL8MG/O/dUCKPZO+7vyWCLiabhjOKyO3me8+KzmnUjKFwsULcJvzrFX+tw==
-X-Received: by 2002:a05:6214:4613:b0:6d4:142d:8119 with SMTP id 6a1803df08f44-6e42fcdc639mr53221046d6.42.1738784147737;
-        Wed, 05 Feb 2025 11:35:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGcFSjOMu8RpqfHkHlk/VsaPfJwj2d6oLcZx7tPWUMVQrzAwbXbG3wdktaK5qXTF1GIr6IVqA==
+X-Received: by 2002:a05:6214:21ed:b0:6d8:af37:ae5b with SMTP id 6a1803df08f44-6e42fc83442mr59146136d6.43.1738785025216;
+        Wed, 05 Feb 2025 11:50:25 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e42778c9dbsm20875296d6.113.2025.02.05.11.35.46
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e42169524csm23923566d6.125.2025.02.05.11.50.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 11:35:47 -0800 (PST)
-Date: Wed, 5 Feb 2025 14:35:45 -0500
+        Wed, 05 Feb 2025 11:50:24 -0800 (PST)
+Date: Wed, 5 Feb 2025 14:50:22 -0500
 From: Gregory Price <gourry@gourry.net>
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-cxl@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
 	Alison Schofield <alison.schofield@intel.com>,
 	Vishal Verma <vishal.l.verma@intel.com>,
@@ -85,12 +83,11 @@ Cc: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Yazen Ghannam <yazen.ghannam@amd.com>,
 	Terry Bowman <terry.bowman@amd.com>
-Subject: Re: [PATCH v6 4/6] acpi/ghes, cper: Recognize and cache CXL Protocol
- errors
-Message-ID: <Z6O9kVCDqiKwQcYi@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v6 5/6] acpi/ghes, cxl/pci: Process CXL CPER Protocol
+ Errors
+Message-ID: <Z6PA_hN-3ZtWbhUh@gourry-fedora-PF4VCD3F>
 References: <20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com>
- <20250123084421.127697-5-Smita.KoralahalliChannabasappa@amd.com>
- <Z6ESAm79OIAQaXM-@agluck-desk3>
+ <20250123084421.127697-6-Smita.KoralahalliChannabasappa@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -99,48 +96,30 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z6ESAm79OIAQaXM-@agluck-desk3>
+In-Reply-To: <20250123084421.127697-6-Smita.KoralahalliChannabasappa@amd.com>
 
-On Mon, Feb 03, 2025 at 10:59:14AM -0800, Luck, Tony wrote:
-> On Thu, Jan 23, 2025 at 08:44:19AM +0000, Smita Koralahalli wrote:
-> > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> > index b72772494655..4d725d988c43 100644
-> > --- a/drivers/acpi/apei/ghes.c
-> > +++ b/drivers/acpi/apei/ghes.c
-> > @@ -674,6 +674,56 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
-> >  	schedule_work(&entry->work);
-> >  }
-> >  
-> > +static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> > +				   int severity)
-> > +{
-> > +#ifdef CONFIG_ACPI_APEI_PCIEAER
+On Thu, Jan 23, 2025 at 08:44:20AM +0000, Smita Koralahalli wrote:
+> When PCIe AER is in FW-First, OS should process CXL Protocol errors from
+> CPER records. Introduce support for handling and logging CXL Protocol
+> errors.
 > 
-> #ifdef in ".c" code is ugly. But I don't see a less ugly way to deal
-> with this. Moving this elsewhere and adding an empty stub function
-> for when CONFIG_ACPI_APEI_PCIEAER isn't configured doesn't make things
-> any better.
->
-
-The generally accepted ways I've seen for static funcs in .c is:
-
-#ifdef CONFIG_ACPI_APEI_PCIEAER
-static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
-{
-	...
-}
-#else
-static void ghes_handle_aer(struct acpi_hest_generic_data *gdata) { }
-#endif
-
-This at least makes the function that does stuff easier to read and
-gives you a spot to throw out a "Config not enabled" error if its
-beneficial.
-
-More of a style nit than anything else.
-
-
-But either way,
+> The defined trace events cxl_aer_uncorrectable_error and
+> cxl_aer_correctable_error trace native CXL AER endpoint errors. Reuse them
+> to trace FW-First Protocol errors.
+> 
+> Since the CXL code is required to be called from process context and
+> GHES is in interrupt context, use workqueues for processing.
+> 
+> Similar to CXL CPER event handling, use kfifo to handle errors as it
+> simplifies queue processing by providing lock free fifo operations.
+> 
+> Add the ability for the CXL sub-system to register a workqueue to
+> process CXL CPER protocol errors.
+> 
+> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
 Reviewed-by: Gregory Price <gourry@gourry.net>
 
