@@ -1,125 +1,174 @@
-Return-Path: <linux-efi+bounces-2766-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2767-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC1AA2AEE9
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 18:32:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847B8A2B15C
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 19:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 863A23A5F85
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 17:32:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7B9C163618
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 18:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC1A166F06;
-	Thu,  6 Feb 2025 17:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1613C195962;
+	Thu,  6 Feb 2025 18:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="HbtTq2HJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MA7ngQ2q"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D4923958D
-	for <linux-efi@vger.kernel.org>; Thu,  6 Feb 2025 17:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126B017B50B;
+	Thu,  6 Feb 2025 18:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738863140; cv=none; b=JL2nAPo+7qopJ2V5BEI6S+jriu6/9eWyHt76qvZwkSxwdPfakWK0St25u7OZrsiVcp+cJ1t/O0wOxgbsMu2HBeSnWW0toOk8u4g44uKOxdZTPRpmj4RMQPq/+es5hDijH3tddj7FT1kb6NzzloA+c4EKhZnwwYk7qIM5bL3IEjs=
+	t=1738867087; cv=none; b=Xvc1av1KjJhLfk+EyckrIdpjlBybPirouv0taDsYBU9nGLHBeK+5lWfHBZ3hQ37LquafF0hXSbTLyRBA+vfELl1yffU662M/8/rotc1a7LrZpNEdy1JOv3dwl13VqhdgFc+WdFTOfD614HIDSfQfHHdLJSBvUOkEjx1b2Z5XqBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738863140; c=relaxed/simple;
-	bh=qXL4u5HtBh7zMGEdVRYSIwU4cTJd5ZFAEgvCBEfFL4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MU2wSJpLPzOW/QpPg8cxcRvpBJSq+ckK/FD5JXrs8ZxAA0nVPBbV3Oh/m+nJppXlV7DDSwIIJOkafZX/yZDYpl6kuIkydij01GrBTJAOwlXMtznmghh2c47EZXLboPzJnVEbXo/e8RwHI5SC5Sx3SNGUOr0k9IFyfybIq/UFWgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=HbtTq2HJ; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6d8e8445219so9064746d6.0
-        for <linux-efi@vger.kernel.org>; Thu, 06 Feb 2025 09:32:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1738863138; x=1739467938; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kdXR13Nx3/oP+ZXCK66mPCS4i0K090PQPzNpGMGIMKk=;
-        b=HbtTq2HJnz8V8lPUqCjTbbkxzetcVylU6mZtZ0XDNr/3uUXPv4q+V9LmPPHlTwPSLR
-         1g1NcJftDolMVRPxoJ/B4gHQxdOgvnIbW2+5EGUl/e0RntWkjCmgAj5WmbuujZEW9UAV
-         ywPJ087jZCNglTiDHKDU0LoVQp1ivrlzhpUB8s0ceaicD4j56Q/6lD5j3V8Xb1sC7KDF
-         KaWKQx73vO1F1f1S6cOCdKG7xrCGtuMxzcKthPBoT7sp273hMe2VSakSVODYvwpyAAvb
-         aMVOUQxPWotsD+YiLyetUbts5nc+eSAvtNwpnSWwyNbMS38UYYviyh6odY3b4KY3dBnI
-         aYkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738863138; x=1739467938;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kdXR13Nx3/oP+ZXCK66mPCS4i0K090PQPzNpGMGIMKk=;
-        b=TawFQz8n1ZkISHc1ivGkttoQn+iuChfGFPgMu0cPy8lpzWv6w4YoeGQUCzu2O8SJKm
-         AcXKps+yKQ2K/7LuOA4tqUex0GfKK/a/Y2whjvmeOnyrsEnl1ar7Ax4wqrStDfPhnwPP
-         /nold7Z0YFGLXV+K2Clp62Mk6WiK9VPlYjo45nojg13/GC6PgIiXOVEeO2AhtIXo+3rk
-         nZ22YZq5ZiyovlxNxEAeLUibxxob2W6LJ4XQluqV+F/xmvwf7CLRXrFSjamwLHB5p4FG
-         dkeTHuCvAfXcCe+2PPDQ1I9QK/yBz0EVrnvmig2avxtQ+AIA5bcODZSceTdbWL2D67jW
-         EMbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVzXyB2zbHwDJYcOSR9RJnxh+32x/IBw3R2JY6YJ/+WHTcSZgFh27hkrT6A1+KiRNsbtiUu9kceuds=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywel/nwuoN5szB1qbz9h2aFvO4WSmUZzbY2WrqZlpi9D3Ok6Zxy
-	ipSLMQbwdWjmj3+IBdoCZSxF3Zue3wpl1pkuQxuaFUg6TNW3WOhtkLbKwNREnqc=
-X-Gm-Gg: ASbGncseht5C2mG1hDVmJRRdaw35P7AgR/HBb2bDovb4x4UnVmXog+Bm1oy5vBOt0rL
-	jiZ2m2yOOD1rNbuTskS6uzbZ7b0i0weDTHfnCDCcwkdPBtKAcRaqW1sP9qLiH6seZrCJrOs7E5e
-	Y8lVmRAqhf+sPe79dESA5ycnCoQCcL6K7QJtLEc/PLjB17mFrW4vIEpIBZpENPMEDmPQGFUB23u
-	hBvgcuWUDVOFFZAZ0OvWfB/5TkYZU4JOcyjfRkh15gI5J94rCBD3KaCPUgrsnt5D7YFoczUWYsU
-	wcJg3q04Di+cc32w5WCCCB05GK2gGKBVPQ4IBbvHfWZfp3W3WhfJRrHgY4DkLYacDJ33clezYg=
-	=
-X-Google-Smtp-Source: AGHT+IH+rTWcE0XmrlwB22b0oxWBjkrRHByjuXKCpywQFJ2469+IJXhpsIXyAxZX6kYsM3joAVpyQw==
-X-Received: by 2002:a05:6214:5d85:b0:6d8:a148:9ac9 with SMTP id 6a1803df08f44-6e42fc53a18mr80698996d6.30.1738863137803;
-        Thu, 06 Feb 2025 09:32:17 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e43babbaf3sm7680136d6.109.2025.02.06.09.32.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 09:32:17 -0800 (PST)
-Date: Thu, 6 Feb 2025 12:32:15 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Terry Bowman <terry.bowman@amd.com>
-Subject: Re: [PATCH v6 2/6] efi/cper, cxl: Make definitions and structures
- global
-Message-ID: <Z6TyHwbrxTcbhtzy@gourry-fedora-PF4VCD3F>
-References: <20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com>
- <20250123084421.127697-3-Smita.KoralahalliChannabasappa@amd.com>
- <Z6O5JqL30lFr4S8Q@gourry-fedora-PF4VCD3F>
- <20250206105403.00007062@huawei.com>
- <Z6Tf0ZvZMfqth_t1@gourry-fedora-PF4VCD3F>
- <20250206-pretty-gabby-loon-d4e4c4@lemur>
+	s=arc-20240116; t=1738867087; c=relaxed/simple;
+	bh=Zzxphwb+mkc3jCYIqYGiRvaLTPrUew14PSbPsbPi6WI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m6zQL+j226Mp/pUBgGHSgZd9JcxkXlaUMsb7ryd+bJQejCFydf+jNEkMhZUjJEWxj4TE3DK71BUdutSBHzeEGxN9OimUcXc4Xt8sjHMlB0QWqeCiZodBWcCOTUbYXU7zUjG9rIXCHUzk2lFHs8R8wldcwlBBSjYrq75hTr2UBJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MA7ngQ2q; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738867085; x=1770403085;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Zzxphwb+mkc3jCYIqYGiRvaLTPrUew14PSbPsbPi6WI=;
+  b=MA7ngQ2qXGJzvraYGmFhlrsBf0i9bNdj8C+UlvbTdsvjWZyH1GqmYPyW
+   wjwY4VOUHQqN9vLeNoD/EqZ+w/PhdS/bBcjO7Q5u2/gegFTKc+k1qbg+q
+   OFzC+wIBePdv18be3IzTnnjHP4lDG9/pBagxYDdHpep7KntLGtf3XDW8P
+   xLNso9uhH6HvopPAaKkynuYJOiJYUW7bMU91HZ5TNC0i5Dj6/WsAeVAHS
+   7zJCI2ftRMPdhN+lRI598/2/F38tl5+EbgD0kcCfoCcCNKgjLJuyzmxxN
+   oVVHg7InadpRNR6Pg0Y9bHLv0qvbbOCvCIzq+vHCOnTLYJMnt30r8bW84
+   Q==;
+X-CSE-ConnectionGUID: Bi6289HgRKiOXRHJ9aJV5w==
+X-CSE-MsgGUID: 1T+8cj+oQAq8NsjcBfSMiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="43250242"
+X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
+   d="scan'208";a="43250242"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 10:38:05 -0800
+X-CSE-ConnectionGUID: 1iq3TuweRCynJm18yGqK0A==
+X-CSE-MsgGUID: FYohjPr9QViutmATWg+kSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="111726704"
+Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.110.242]) ([10.125.110.242])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 10:38:04 -0800
+Message-ID: <f55263fe-b555-4dc3-b2a5-dc3db60bfbe6@intel.com>
+Date: Thu, 6 Feb 2025 11:38:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250206-pretty-gabby-loon-d4e4c4@lemur>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/6] acpi/ghes, cper, cxl: Process CXL CPER Protocol
+ errors
+To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Yazen Ghannam <yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>,
+ "Luck, Tony" <tony.luck@intel.com>
+References: <20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 06, 2025 at 12:14:03PM -0500, Konstantin Ryabitsev wrote:
-> On Thu, Feb 06, 2025 at 11:14:09AM -0500, Gregory Price wrote:
-> > trivia: The last upstream `Reveiwed` patch was 2017
-> > 
-> > Funny enough b4 takes the tag as-is.
+
+
+On 1/23/25 1:44 AM, Smita Koralahalli wrote:
+> This patchset adds logging support for CXL CPER endpoint and port protocol
+> errors.
 > 
-> Yeah, we can't possibly keep track of all the tags people use, with some
-> projects getting creative with "Reviewed-and-edited-by:" or similar combined
-> trailers. So, we just blanket accept any person-tags (that have a "Person Name
-> <adddress@example.com>" format).
+> The first 3 patches update the existing codebase to support CXL CPER
+> Protocol error reporting.
 > 
-> -K
+> The last 3 patches introduce recognizing and reporting CXL CPER Protocol
+> errors.
 
-Wasn't suggesting a change, I just found it kinda funny.
+Patches 1-4 applied to cxl-next. I fixed up Gregory's review tag. :)
+Patches 5 and 6 needs to address comments raised by Dan.
 
-Should suggest tag-search on lwn.net to find all the fun typos.
+> 
+> Link to v5:
+> https://lore.kernel.org/linux-cxl/20250114120427.149260-1-Smita.KoralahalliChannabasappa@amd.com
+> 
+> Changes in v5 -> v6:
+> [Dave, Jonathan, Ira]: Reviewed-by tags.
+> [Dave]: Check for cxlds before assigning fe.
+> Merge one of the patches (Port error trace logging) from Terry's Port
+> error handling.
+> Rename host -> parent.
+> 
+> Changes in v4 -> v5:
+> [Dave]: Reviewed-by tags.
+> [Jonathan]: Remove blank line.
+> [Jonathan, Ira]: Change CXL -> "CXL".
+> [Ira]: Fix build error for CONFIG_ACPI_APEI_PCIEAER.
+> 
+> Changes in v3 -> v4:
+> [Ira]: Use memcpy() for RAS Cap struct.
+> [Jonathan]: Commit description edits.
+> [Jonathan]: Use separate work registration functions for protocol and
+> component errors.
+> [Jonathan, Ira]: Replace flags with separate functions for port and
+> device errors.
+> [Jonathan]: Use goto for register and unregister calls.
+> 
+> Changes in v2 -> v3:
+> [Dan]: Define a new workqueue for CXL CPER Protocol errors and avoid
+> reusing existing workqueue which handles CXL CPER events.
+> [Dan] Update function and struct names.
+> [Ira] Don't define common function get_cxl_devstate().
+> [Dan] Use switch cases rather than defining array of structures.
+> [Dan] Pass the entire cxl_cper_prot_err struct for CXL subsystem.
+> [Dan] Use pr_err_ratelimited().
+> [Dan] Use AER_ severities directly. Don't define CXL_ severities.
+> [Dan] Limit either to Device ID or Agent Info check.
+> [Dan] Validate size of RAS field matches expectations.
+> 
+> Changes in v2 -> v1:
+> [Jonathan] Refactor code for trace support. Rename get_cxl_dev()
+> to get_cxl_devstate().
+> [Jonathan] Cleanups for get_cxl_devstate().
+> [Alison, Jonathan]: Define array of structures for Device ID and Serial
+> number comparison.
+> [Dave] p_err -> rec/p_rec.
+> [Jonathan] Remove pr_warn.
+> 
+> Smita Koralahalli (6):
+>   efi/cper, cxl: Prefix protocol error struct and function names with
+>     cxl_
+>   efi/cper, cxl: Make definitions and structures global
+>   efi/cper, cxl: Remove cper_cxl.h
+>   acpi/ghes, cper: Recognize and cache CXL Protocol errors
+>   acpi/ghes, cxl/pci: Process CXL CPER Protocol Errors
+>   cxl/pci: Add trace logging for CXL PCIe Port RAS errors
+> 
+>  drivers/acpi/apei/ghes.c        | 103 ++++++++++++++++++++++++++++++++
+>  drivers/cxl/core/pci.c          |  62 +++++++++++++++++++
+>  drivers/cxl/core/trace.h        |  47 +++++++++++++++
+>  drivers/cxl/cxlpci.h            |   9 +++
+>  drivers/cxl/pci.c               |  59 +++++++++++++++++-
+>  drivers/firmware/efi/cper.c     |   6 +-
+>  drivers/firmware/efi/cper_cxl.c |  39 +-----------
+>  drivers/firmware/efi/cper_cxl.h |  66 --------------------
+>  include/cxl/event.h             | 101 +++++++++++++++++++++++++++++++
+>  include/linux/cper.h            |   8 +++
+>  10 files changed, 394 insertions(+), 106 deletions(-)
+>  delete mode 100644 drivers/firmware/efi/cper_cxl.h
+> 
 
-~Gregory
 
