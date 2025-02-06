@@ -1,134 +1,135 @@
-Return-Path: <linux-efi+bounces-2763-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2764-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB35A2A9AA
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 14:22:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7DEA2AD68
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 17:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17FD93AAB87
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 13:21:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A2181699CC
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 16:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC472500DC;
-	Thu,  6 Feb 2025 13:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4781A5B90;
+	Thu,  6 Feb 2025 16:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="OTShSsiU"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="MXSIOQbK"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BE624634C
-	for <linux-efi@vger.kernel.org>; Thu,  6 Feb 2025 13:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5181E2144A5
+	for <linux-efi@vger.kernel.org>; Thu,  6 Feb 2025 16:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738848027; cv=none; b=mfrglEue8Fq+Enex4kZmTVSVR8IbPJuY8qH36KCd7/GjkwEsOr1l0Hk7rgK0rXKVyaf4PweIsv9L1V4jx5GG5e8sXCWDqhPbPoJ58ZkU1sZOJCBClKLphi+SKLNJKJ9LCjuRKWjxgAOGDtVq1kAO7WvVPgMPjulYbLKD8ectAa8=
+	t=1738858454; cv=none; b=XiMlzYOIJR5mDcrPFqMc4B+OLtDqfOy0FtQx6HoeMG7qFv4FI+A7yw1GvpHI8yDqZZv3G5lhuGu+mDHoGBcBzalG+wWs7oyYbAdtvbp2sKNPPLO1Qka6oaSkd9qaOvf86ZwWA3qdad9iWYG39sFbgG04tCbk9e6WGD0YZGgHlWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738848027; c=relaxed/simple;
-	bh=/8yDtOhiTSdR/J3JnQgABqnDOPtJ5A90copPotre4SA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=drKKAU3rqOGpDA4tf8nNGR0tJzRQQHCT7LBZVk48y/FPfGABMLbceDFL3Yos7JY/r2Wa+R4Hs0pTJZqqDszC/orXMnkypxf7EPupBTrhmYUvFciSioXnzVvF6YU6cMI6qg8mZE4INTLT5kfOmwwtzlsueVs+73IT1kr/+PP12K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=OTShSsiU; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21f49bd087cso766045ad.0
-        for <linux-efi@vger.kernel.org>; Thu, 06 Feb 2025 05:20:25 -0800 (PST)
+	s=arc-20240116; t=1738858454; c=relaxed/simple;
+	bh=nrsb/6slrFvGTvXm0j6jKPf8WGzk1y3PJkT9vMo0J6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IBSrBykxar8D9xzkws05SVNSZElxdLqbGc+ddzYKJU6DIbKF6IlkGbQEYQpGOMo00yhvvFt9QyRXnpk7JGSnrU4G0Ipt9rKd/UruqKaxTeh/l4oFl7YceHzftEIrNmd6cFSLNwbcKaoeKJgy15NAURjhegMd+f14dRzoyA+Ly/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=MXSIOQbK; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6ddcff5a823so8143006d6.0
+        for <linux-efi@vger.kernel.org>; Thu, 06 Feb 2025 08:14:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1738848025; x=1739452825; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xce49/BY9vfXB35z8CeRZ6MSP3HJqpKyFsN4Gqyc7dc=;
-        b=OTShSsiUIG0spRMll8phJSoMy2YnBIKT52PySrZSXQGBfSBizhbax4N8RZTyX0WWRE
-         P3bjyjwtpdrpP5tIo3oD8sCh1vROHPd2nh0gEVOxUy8F8MtnBo2MEbefIff5KuyJWNyx
-         itUNEYwym67Lx6hwo4YINDES0RftGwJJLcZCGnLC6qT3dz1ThwMyJNPRA5NSysEYIoxi
-         RC1mFRSK2rqAwgs0TXXYx8VUZqzRdUYXUV262J0+64TxeocBhEUOPxOXwglSKf37ZXpb
-         VyZ5ILFLB3LtvMqsu5q2GTanJOMVtQFt+eaEq9Kpfm08NJnvDkP21vjWEm1HoQi1adY5
-         5xhg==
+        d=gourry.net; s=google; t=1738858452; x=1739463252; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+lewjv5vC1GR7f3hvHTYC7l4Dem4ZyJ3lIDyklSVdf8=;
+        b=MXSIOQbKzUhMJgC2KgT13lK30usYCjG8wmjIQI3l61TJsDYwmYVqM9u0BpBd+LfwA+
+         BhsXP1hWS8FGpZ/ZU8WgQly1pvIcIFeGSl0CGB1zzBXGuhw8fbKZKurHmzVUG+bb91b/
+         QZ01xuwDDP66llHu8c/Rs1Qw5ElbAOEJiQJgUntOEnAJHsvNpW99ALlLekhS81355jq7
+         4uL98hNkH5dbtPvqU33ewYJaP2qgzZqRvWjKsFwxa7ZVufzP9VDN/ttSSMIh9yxT+dDw
+         TW7ceMxTXyH3wKyx0gfgT1FMlEkoS28zSD/PbARL7hp+JpLeq6PeRfqJnK/CfKrjtyuM
+         X9wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738848025; x=1739452825;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xce49/BY9vfXB35z8CeRZ6MSP3HJqpKyFsN4Gqyc7dc=;
-        b=Yehq00EupCdxVt8LtOKWWvad/3ow0NvDlhhVNE/oLR+ZvQtSZdUB3Z/nOkZS9MzoPT
-         oMvCnn0jbMj6IKizvFvOkLJ3B6CnOKPGSh30/TZ+GhJCtDl8SqCEpROiHc6+iLV97fDj
-         8dckKtDzNAXP5yn7mAcL50b33dBCHlLd1KrdquUJ6j07LV2o0AvWRxDRorKh1dcoxfXL
-         jPvTqAA1Pkl3TBC0tWv7Wm/2qgkrMttYBmdPI4svmTPqii6ixrr75qUXtjXPVxvk6lR8
-         cVtYL71+Y4oJvxiNk+AbqgZm2Ooo6UHpSC899unnXu+cKjZyWF2slRrBJ3QhWboR6nBx
-         AtFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCR4wjmMbs2CY+4Uvf5UZqFZrm2QTYP3i1GrfPFjbtOw/cB6pYepBunWLp79azC8U8ovbv3j+shNw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwevewavT18R4uwsTU6tb2BT1rfRxq8+z2brNTC1fbWi0Z/mjBU
-	M0DsnxCsMLyJZ/6CAWKQuMCq9LBfhvXNyxnibUuh8wYSwjAziiDkJasUlQyLWbE=
-X-Gm-Gg: ASbGncsRG9r2FdrzN3vuZT+O+e0KU9aq8eDZgfIM0OXSMP2CkCwL2kmQTxpvsMffkcs
-	BV5b9wJ4MACLObcB4pp69FsXGxy5c495q4fp4bmuOkFfLODJ8xO9LFBxHQXsueX031sBdQvMxQl
-	YjmOcW8cdYbQp8e57QWJl65VsENqOkKsl/29iu6UCkzxVEHgh+0wk2MoUaGs/IOhoMyTpja0+Xg
-	P8scixO0HsSXa9Jf7DULVyDktMRr/iaLarutc0nr03qgdTWFZbLzaIYjYleYdGogdFk9fQt4Oln
-	ntgcSBco0kgPjEkWqA==
-X-Google-Smtp-Source: AGHT+IFcNT/rNgI2uCAPNRIwNCrMXf037u5qAVa3V5iSa1fu7wy92g99/HkKLyrbAq4szqQ1+3GzCQ==
-X-Received: by 2002:a17:902:eccc:b0:21f:1af3:b318 with SMTP id d9443c01a7336-21f1af3b387mr108852145ad.53.1738848025272;
-        Thu, 06 Feb 2025 05:20:25 -0800 (PST)
-Received: from L4CR4519N7.bytedance.net ([203.208.189.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d987sm12170775ad.120.2025.02.06.05.20.20
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 06 Feb 2025 05:20:25 -0800 (PST)
-From: Rui Qi <qirui.001@bytedance.com>
-X-Google-Original-From: Rui Qi
-To: paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	ardb@kernel.org,
-	haibo1.xu@intel.com,
-	guohanjun@huawei.com,
-	sunilvl@ventanamicro.com,
-	samuel.holland@sifive.com,
-	parri.andrea@gmail.com,
-	ericchancf@google.com
-Cc: linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	Rui Qi <qirui.001@bytedance.com>
-Subject: [RFC 5/5] RISC-V: define ioremap_cache
-Date: Thu,  6 Feb 2025 21:19:26 +0800
-Message-Id: <20250206131926.91289-6-qirui.001@bytedance.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20250206131926.91289-1-qirui.001@bytedance.com>
-References: <20250206131926.91289-1-qirui.001@bytedance.com>
+        d=1e100.net; s=20230601; t=1738858452; x=1739463252;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+lewjv5vC1GR7f3hvHTYC7l4Dem4ZyJ3lIDyklSVdf8=;
+        b=eav3I+tNoS0pS+x4nvJ0JlvXP1z90wQ3sMbuS44BN4G6IFD8zJKnJuxGM+IIMr11L+
+         rRg0OCJw6FTroOKYIgu4XvBm0qhetoaeIw6dBGkr8cG2OCFHmrQ+ivFQhbfamw3RMJgi
+         vjk5Q4kWdM5FvKfGaC5lyu34DcqdxIahSnSlBTI3/4NYj8DqjD5XYud0XDvr3UghLEA8
+         9rAl50zrgx4eTV3LtR+aHeqJSmMTQz5TWX64yE5tE9SnfdKP0egjlhnL/RInlwTqLDkP
+         lGVmdT0FKfp1ES8MEjhbOXFjTDjuo8Vc9plRjGuI3wNfpr5KIb08rj6JlyTwop/1DJ6/
+         Ij2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVEW4n4gJAH2Q9o9kTSw4mufPwx8Nw8idpirAZh84bEEK2jixLT7PtwSxo9P+CXvlnCI5q/NnvrStY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVCnc5fIgusO7SL6M2P+zBF6TLTzeD6kBBXdGRJv4F0zVDe50W
+	vSTT5l6jRKWqpbf7zMjGjxVJscCupv1/adqnwnegVdPcu9WTRywUiTwRRUbQQwE=
+X-Gm-Gg: ASbGncuIeOCwMfz3Mvo2aQDToi5/RSX6e0KmDPiNnDCErBnGTK/8kLdznMMmnNLmEq7
+	fEurSBLXJ/QaoqP4zD3+uAjhrehemTnlzM7/WoCtnGxxKtc0osH9lJuV4V4c8KtNmSmYtEwxhX9
+	U0lUqXO8i2z0u9/QTUH7hSuaKlrf+PAVbEDwftW7kb97yHxSgXSg+0U2P19tZRsw276CHQ2tORi
+	c2v/7urJhYI7C/Xz4i6b7jCRjcqPROf9SFhyZPxTycJXcOvEWdBtV3XpLWTNidT+0LmVUzzkjbX
+	PCmVh+yw04WlCmBE0AYP26fFVb7d02IssWw7WGQ8/dsiN/Q+KbpLcjMhNIBHbm4N9vzwJwFF1w=
+	=
+X-Google-Smtp-Source: AGHT+IHCPJkVR/Y9XWSDTzf6oo12O1B1UvudAIA23zaHHHxZzlraEKKuGMKsqWMkD3DIEDgloKWNDQ==
+X-Received: by 2002:ad4:5ca8:0:b0:6d8:a946:eee5 with SMTP id 6a1803df08f44-6e42fbc629bmr106479266d6.23.1738858452144;
+        Thu, 06 Feb 2025 08:14:12 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e43babbaf3sm7039996d6.109.2025.02.06.08.14.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 08:14:11 -0800 (PST)
+Date: Thu, 6 Feb 2025 11:14:09 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Terry Bowman <terry.bowman@amd.com>
+Subject: Re: [PATCH v6 2/6] efi/cper, cxl: Make definitions and structures
+ global
+Message-ID: <Z6Tf0ZvZMfqth_t1@gourry-fedora-PF4VCD3F>
+References: <20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com>
+ <20250123084421.127697-3-Smita.KoralahalliChannabasappa@amd.com>
+ <Z6O5JqL30lFr4S8Q@gourry-fedora-PF4VCD3F>
+ <20250206105403.00007062@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250206105403.00007062@huawei.com>
 
-From: Rui Qi <qirui.001@bytedance.com>
+On Thu, Feb 06, 2025 at 10:54:03AM +0000, Jonathan Cameron wrote:
+> On Wed, 5 Feb 2025 14:16:54 -0500
+> Gregory Price <gourry@gourry.net> wrote:
+> 
+> > On Thu, Jan 23, 2025 at 08:44:17AM +0000, Smita Koralahalli wrote:
+> > > In preparation to add tracepoint support, move protocol error UUID
+> > > definition to a common location, Also, make struct CXL RAS capability,
+> > > cxl_cper_sec_prot_err and CPER validation flags global for use across
+> > > different modules.
+> > > 
+> > > Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> > > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> > > Reviewed-by: Dave Jiang <dave.jiang@intel.com>  
+> > 
+> > Reveiwed-by: Gregory Price <gourry@gourry.net>
+> 
+> Reviewed...
+> 
+> If Dave picks this up will need to tweak that.
+> > 
+> 
 
-Define ioremap_cache for riscv, otherwise it will
-cause compile errors for bert.c and einj.c
+that egg on your face when someone has to spellcheck your tags
+:facepalm:
 
-Signed-off-by: Rui Qi <qirui.001@bytedance.com>
----
- arch/riscv/include/asm/io.h | 5 +++++
- 1 file changed, 5 insertions(+)
+trivia: The last upstream `Reveiwed` patch was 2017
 
-diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
-index 1c5c641075d2..c81d2de007bc 100644
---- a/arch/riscv/include/asm/io.h
-+++ b/arch/riscv/include/asm/io.h
-@@ -134,6 +134,11 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
- #endif
- 
- #include <asm-generic/io.h>
-+#define ioremap_cache ioremap_cache
-+static inline void __iomem *ioremap_cache(phys_addr_t addr, size_t size)
-+{
-+	return (__force void *)ioremap_prot(addr, size, _PAGE_KERNEL);
-+}
- 
- #ifdef CONFIG_MMU
- #define arch_memremap_wb(addr, size)	\
--- 
-2.20.1
+Funny enough b4 takes the tag as-is.
 
+~Gregory
 
