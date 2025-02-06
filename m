@@ -1,77 +1,77 @@
-Return-Path: <linux-efi+bounces-2762-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2763-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E6AA2A9A1
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 14:21:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB35A2A9AA
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 14:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E55169A61
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 13:21:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17FD93AAB87
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Feb 2025 13:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD3D2451E8;
-	Thu,  6 Feb 2025 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC472500DC;
+	Thu,  6 Feb 2025 13:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="eg+qu9yA"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="OTShSsiU"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C254D246350
-	for <linux-efi@vger.kernel.org>; Thu,  6 Feb 2025 13:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BE624634C
+	for <linux-efi@vger.kernel.org>; Thu,  6 Feb 2025 13:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738848022; cv=none; b=UliizaGbIN0vc5kmGenhz9FbggmZlhSafnYRDAROnAzB9I/PNtLnh1s1ej8lwPB65GV1U1IkLIiM1Bhd8jdd+wAoB5Wx2ZZ6GDyKo/+UMYKrYO9x45KAghwZSqQmZfww9r13qNa5a3IbHRI5gE0gry6wGpiGWZ3L190fV1m9fXo=
+	t=1738848027; cv=none; b=mfrglEue8Fq+Enex4kZmTVSVR8IbPJuY8qH36KCd7/GjkwEsOr1l0Hk7rgK0rXKVyaf4PweIsv9L1V4jx5GG5e8sXCWDqhPbPoJ58ZkU1sZOJCBClKLphi+SKLNJKJ9LCjuRKWjxgAOGDtVq1kAO7WvVPgMPjulYbLKD8ectAa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738848022; c=relaxed/simple;
-	bh=CyIeWg1B56bF5Vmqh8TDQAwEQXNhWeXPgR5Lr1nU1/w=;
+	s=arc-20240116; t=1738848027; c=relaxed/simple;
+	bh=/8yDtOhiTSdR/J3JnQgABqnDOPtJ5A90copPotre4SA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qikk0za1uVVq0mEMwB151vtEl1WhOx5Uvuzwb04Zmr+8JUAOk1DWtAEKVxzR63JZ8y9VjROAf+nadWaVd6g1TyfTdsUzZ0A2LHBiHVBwUGXKXcsr3nw8v7L1WhebLc9kXtd17vR//zP3W+tsXcFnrDkt5q3rSqsiXBvU6kV0BmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=eg+qu9yA; arc=none smtp.client-ip=209.85.214.178
+	 MIME-Version; b=drKKAU3rqOGpDA4tf8nNGR0tJzRQQHCT7LBZVk48y/FPfGABMLbceDFL3Yos7JY/r2Wa+R4Hs0pTJZqqDszC/orXMnkypxf7EPupBTrhmYUvFciSioXnzVvF6YU6cMI6qg8mZE4INTLT5kfOmwwtzlsueVs+73IT1kr/+PP12K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=OTShSsiU; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-219f8263ae0so17777195ad.0
-        for <linux-efi@vger.kernel.org>; Thu, 06 Feb 2025 05:20:20 -0800 (PST)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-21f49bd087cso766045ad.0
+        for <linux-efi@vger.kernel.org>; Thu, 06 Feb 2025 05:20:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1738848020; x=1739452820; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1738848025; x=1739452825; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VrDRN4Xst5SkS3JM77fVw4KRP+DFTnf94c/mEjZvbjk=;
-        b=eg+qu9yAsAzJDEX9+JXlClGz1m7Gc05X5dBgSrNoglXdhWf2AVqQFP0xHR0sSRC0DY
-         3uUJjDrUJIVAFHXQkZaRXBtN83yv5nwvjZpsUrqsBVux+NCgUi15YWhJpeEfjtTqEB8o
-         lAhUk+zY8Pm72KMizOEozBuNLpIwZQNR/GVNK5sysCWnbnDcEFJpO8NNLxpVoP8Qow/I
-         m/5AegbmL63tr+Qpml4TBAMmKIBahd56/nNY40Qc5NH2/UV4zgcrRSfBZIJPE0snYbjo
-         yxFEcD+pOaJlHM1cH0J7KDWegyDr0Yd4ODq2lJeF7w8Jq/Cl5BA4X+Ljm4DQFYKQbtJe
-         LRJw==
+        bh=xce49/BY9vfXB35z8CeRZ6MSP3HJqpKyFsN4Gqyc7dc=;
+        b=OTShSsiUIG0spRMll8phJSoMy2YnBIKT52PySrZSXQGBfSBizhbax4N8RZTyX0WWRE
+         P3bjyjwtpdrpP5tIo3oD8sCh1vROHPd2nh0gEVOxUy8F8MtnBo2MEbefIff5KuyJWNyx
+         itUNEYwym67Lx6hwo4YINDES0RftGwJJLcZCGnLC6qT3dz1ThwMyJNPRA5NSysEYIoxi
+         RC1mFRSK2rqAwgs0TXXYx8VUZqzRdUYXUV262J0+64TxeocBhEUOPxOXwglSKf37ZXpb
+         VyZ5ILFLB3LtvMqsu5q2GTanJOMVtQFt+eaEq9Kpfm08NJnvDkP21vjWEm1HoQi1adY5
+         5xhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738848020; x=1739452820;
+        d=1e100.net; s=20230601; t=1738848025; x=1739452825;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VrDRN4Xst5SkS3JM77fVw4KRP+DFTnf94c/mEjZvbjk=;
-        b=FtY509ZHgcJydOpwcX8YDgA9hg6TgqCM+X377f0R/67ITojvS2gM0qNJpiVofpVtQ/
-         godeq3eTMV5XU5gVB7cgwUUen9Jq81jYEmNi2tvKTYtWYZihtH9YQy26oA26/rEYlpId
-         Kw/cKZRzEr8j5Hz1nJ4wAWpC/dLfvQut7lUJgFRWp8hudMNzWx/3chAZElNd+Rn0Vaku
-         pLfEUCLHAfUBju6XBbJCu+EbrFh6vjAniHBRBlKF4B0Y0pRMsaJdj2dNCqOlHysjpFiE
-         l4c6xPkBQcV4viRiWGVQIOgcXNJEeLEOPtcHvaIfanMFC4k2jNwVW6mPuc5WQn+Jj1+g
-         v/uw==
-X-Forwarded-Encrypted: i=1; AJvYcCUq+pROUlnPq6D+spXrlv1L3u0CFZUZgiJAkm6KUy95Bea7X4+/Dvase8gqUUtBd6EFyfrP+DF5bv4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzO8SDJnsVY3vzw/1paZ1qZt3hQKy1wbTHPWB2saeWZlp5EnsZf
-	4Av967acVouV4Eddyl342YPUB/9MXpotZb9frsre0p6j6opu1CCeOCn6lIGWQrE=
-X-Gm-Gg: ASbGnctUM+Xu0dwKQWbabTGkxzomqyNIBUrNazqJgTx5S8+2vHu61/Sr2g6mIXrd0O2
-	wbabdws9JDbgd29gDg3EAOFABHXV85KHwICBGfmi01W/kC7en7uBm9ZZL78QH9gho0YtLlf8y8s
-	xGESsWt2/CQdjbO8C+2x3mXCEcHYpPNi9Gshqqgq99tL79SZFRd/GVb6TTMXJXhMiXfjjAQispg
-	QnZ5Gabupr3KEIGNGwLhpTp0TWVubIkagi8lzyuTz3t1m98m7FYm2pe3VCFD15DmQLVVDL0XyEs
-	maW4NEkZ45pngtuyUA==
-X-Google-Smtp-Source: AGHT+IFoKcEdPqNHWZEzdZAOUsizoappgIzPDtN89x/XcnGf3N+z1xzF2ftk+OYeq3D0U9lyU9Xq3Q==
-X-Received: by 2002:a17:903:2406:b0:215:8dd3:536a with SMTP id d9443c01a7336-21f17e2a49fmr111715285ad.4.1738848019982;
-        Thu, 06 Feb 2025 05:20:19 -0800 (PST)
+        bh=xce49/BY9vfXB35z8CeRZ6MSP3HJqpKyFsN4Gqyc7dc=;
+        b=Yehq00EupCdxVt8LtOKWWvad/3ow0NvDlhhVNE/oLR+ZvQtSZdUB3Z/nOkZS9MzoPT
+         oMvCnn0jbMj6IKizvFvOkLJ3B6CnOKPGSh30/TZ+GhJCtDl8SqCEpROiHc6+iLV97fDj
+         8dckKtDzNAXP5yn7mAcL50b33dBCHlLd1KrdquUJ6j07LV2o0AvWRxDRorKh1dcoxfXL
+         jPvTqAA1Pkl3TBC0tWv7Wm/2qgkrMttYBmdPI4svmTPqii6ixrr75qUXtjXPVxvk6lR8
+         cVtYL71+Y4oJvxiNk+AbqgZm2Ooo6UHpSC899unnXu+cKjZyWF2slRrBJ3QhWboR6nBx
+         AtFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCR4wjmMbs2CY+4Uvf5UZqFZrm2QTYP3i1GrfPFjbtOw/cB6pYepBunWLp79azC8U8ovbv3j+shNw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwevewavT18R4uwsTU6tb2BT1rfRxq8+z2brNTC1fbWi0Z/mjBU
+	M0DsnxCsMLyJZ/6CAWKQuMCq9LBfhvXNyxnibUuh8wYSwjAziiDkJasUlQyLWbE=
+X-Gm-Gg: ASbGncsRG9r2FdrzN3vuZT+O+e0KU9aq8eDZgfIM0OXSMP2CkCwL2kmQTxpvsMffkcs
+	BV5b9wJ4MACLObcB4pp69FsXGxy5c495q4fp4bmuOkFfLODJ8xO9LFBxHQXsueX031sBdQvMxQl
+	YjmOcW8cdYbQp8e57QWJl65VsENqOkKsl/29iu6UCkzxVEHgh+0wk2MoUaGs/IOhoMyTpja0+Xg
+	P8scixO0HsSXa9Jf7DULVyDktMRr/iaLarutc0nr03qgdTWFZbLzaIYjYleYdGogdFk9fQt4Oln
+	ntgcSBco0kgPjEkWqA==
+X-Google-Smtp-Source: AGHT+IFcNT/rNgI2uCAPNRIwNCrMXf037u5qAVa3V5iSa1fu7wy92g99/HkKLyrbAq4szqQ1+3GzCQ==
+X-Received: by 2002:a17:902:eccc:b0:21f:1af3:b318 with SMTP id d9443c01a7336-21f1af3b387mr108852145ad.53.1738848025272;
+        Thu, 06 Feb 2025 05:20:25 -0800 (PST)
 Received: from L4CR4519N7.bytedance.net ([203.208.189.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d987sm12170775ad.120.2025.02.06.05.20.15
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d987sm12170775ad.120.2025.02.06.05.20.20
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 06 Feb 2025 05:20:19 -0800 (PST)
+        Thu, 06 Feb 2025 05:20:25 -0800 (PST)
 From: Rui Qi <qirui.001@bytedance.com>
 X-Google-Original-From: Rui Qi
 To: paul.walmsley@sifive.com,
@@ -88,9 +88,9 @@ Cc: linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org,
 	Rui Qi <qirui.001@bytedance.com>
-Subject: [RFC 4/5] RISC-V: ACPI: define arch_apei_get_mem_attribute
-Date: Thu,  6 Feb 2025 21:19:25 +0800
-Message-Id: <20250206131926.91289-5-qirui.001@bytedance.com>
+Subject: [RFC 5/5] RISC-V: define ioremap_cache
+Date: Thu,  6 Feb 2025 21:19:26 +0800
+Message-Id: <20250206131926.91289-6-qirui.001@bytedance.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20250206131926.91289-1-qirui.001@bytedance.com>
 References: <20250206131926.91289-1-qirui.001@bytedance.com>
@@ -104,44 +104,30 @@ Content-Transfer-Encoding: 8bit
 
 From: Rui Qi <qirui.001@bytedance.com>
 
-we need arch_apei_get_mem_attribute to get protection bits
-for a given physical address. These protection
-bits are then used to map the physical address.
+Define ioremap_cache for riscv, otherwise it will
+cause compile errors for bert.c and einj.c
 
 Signed-off-by: Rui Qi <qirui.001@bytedance.com>
 ---
- arch/riscv/include/asm/acpi.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/riscv/include/asm/io.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
-index 6e13695120bc..c35dd4e5a84d 100644
---- a/arch/riscv/include/asm/acpi.h
-+++ b/arch/riscv/include/asm/acpi.h
-@@ -90,6 +90,24 @@ static inline void acpi_get_cbo_block_size(struct acpi_table_header *table,
+diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
+index 1c5c641075d2..c81d2de007bc 100644
+--- a/arch/riscv/include/asm/io.h
++++ b/arch/riscv/include/asm/io.h
+@@ -134,6 +134,11 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
+ #endif
  
- #endif /* CONFIG_ACPI */
- 
-+#ifdef CONFIG_ACPI_APEI
-+/*
-+ * acpi_disable_cmcff is used in drivers/acpi/apei/hest.c for disabling
-+ * IA-32 Architecture Corrected Machine Check (CMC) Firmware-First mode
-+ * with a kernel command line parameter "acpi=nocmcoff". But we don't
-+ * have this IA-32 specific feature on RISC-V, this definition is only
-+ * for compatibility.
-+ */
-+#define acpi_disable_cmcff 1
-+static inline pgprot_t arch_apei_get_mem_attribute(phys_addr_t addr)
+ #include <asm-generic/io.h>
++#define ioremap_cache ioremap_cache
++static inline void __iomem *ioremap_cache(phys_addr_t addr, size_t size)
 +{
-+	return PAGE_KERNEL_IO;
++	return (__force void *)ioremap_prot(addr, size, _PAGE_KERNEL);
 +}
-+
-+#else
-+#define acpi_disable_cmcff 0
-+#endif
-+
- #ifdef CONFIG_ACPI_NUMA
- void acpi_map_cpus_to_nodes(void);
- #else
+ 
+ #ifdef CONFIG_MMU
+ #define arch_memremap_wb(addr, size)	\
 -- 
 2.20.1
 
