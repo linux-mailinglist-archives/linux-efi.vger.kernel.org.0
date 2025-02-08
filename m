@@ -1,33 +1,33 @@
-Return-Path: <linux-efi+bounces-2771-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2772-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18C1A2D43B
-	for <lists+linux-efi@lfdr.de>; Sat,  8 Feb 2025 07:21:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A5EA2D904
+	for <lists+linux-efi@lfdr.de>; Sat,  8 Feb 2025 22:51:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A5CE16BDC9
-	for <lists+linux-efi@lfdr.de>; Sat,  8 Feb 2025 06:21:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D3D03A0399
+	for <lists+linux-efi@lfdr.de>; Sat,  8 Feb 2025 21:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ED9194096;
-	Sat,  8 Feb 2025 06:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907D31AA1C4;
+	Sat,  8 Feb 2025 21:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=truemaisha.co.tz header.i=@truemaisha.co.tz header.b="DlCsYoor"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=truemaisha.co.tz header.i=@truemaisha.co.tz header.b="efVs9fZ+"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from server-598995.kolorio.com (server-598995.kolorio.com [162.241.152.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BA015098A
-	for <linux-efi@vger.kernel.org>; Sat,  8 Feb 2025 06:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DCC244E83
+	for <linux-efi@vger.kernel.org>; Sat,  8 Feb 2025 21:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.241.152.247
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738995658; cv=none; b=k1GEHmf9MStV7SoxVt88/jgowl5FOXkcqXKPr1tpBnVfug5yUMLCR2mFxZ/hIrWOBsgnn9GgEbK2svpkqpWDEveBTwqNeuE3VZ+WZ9VxLpdFA9vP6eEBpj3CE9FiypPwF1qoHZMp6rRqqbK/WE7UfMssVF2x+fd4xZjOY7esOJU=
+	t=1739051474; cv=none; b=u6wzZrlPHBtlRpZ9noFugkTiBMvgKWN/EVPI2Rv52a1csfVV18sandt2GQI4yxT2m9PEt/JiRimIeUunnqhqWx/v38Hql2udivq4yc2fiW5kYqGSytIn1dExyjQKAoOCJHlpgPXGn8JaKDCUhsH1rSatr29gJIj6BhQhUnZRH4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738995658; c=relaxed/simple;
+	s=arc-20240116; t=1739051474; c=relaxed/simple;
 	bh=gl4+7vNxgV9+JzZtw7EthQ6aGDgi0WVn3wQV/lnKiyo=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EO1tHdqtVnlcHVCZBmKJMWrx94nYOwfphYuoan73G9tHllCiwuTGCKSh3ipVPNncvmWp8cup5seVKmVmhCfdhxUAsGmkVkevmR2mRxFQVFAn9IgNupRzCQ9fm0WzAPT4DnaUY44xi1uvTEpRoWUsdMuhG9uUO6sEVULaVcNw3Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=truemaisha.co.tz; spf=pass smtp.mailfrom=truemaisha.co.tz; dkim=pass (2048-bit key) header.d=truemaisha.co.tz header.i=@truemaisha.co.tz header.b=DlCsYoor; arc=none smtp.client-ip=162.241.152.247
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CDfWYVaU67Cou3i8as1buCK6F0/NK0PQBYVPQPvi9AKbE2qZhVY7YLbwWsDijbBwRfvPpP3UMOGOyh3kk/g/ujNby0aJkmJn/b9cugtM76b99mN/uLMlA/sNmNei2t8mXCNa2yuf81QpWaFSE1DRVT768mTKRH//04DSnUqLCh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=truemaisha.co.tz; spf=pass smtp.mailfrom=truemaisha.co.tz; dkim=pass (2048-bit key) header.d=truemaisha.co.tz header.i=@truemaisha.co.tz header.b=efVs9fZ+; arc=none smtp.client-ip=162.241.152.247
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=truemaisha.co.tz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=truemaisha.co.tz
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -36,25 +36,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gl4+7vNxgV9+JzZtw7EthQ6aGDgi0WVn3wQV/lnKiyo=; b=DlCsYoorzRI/pOIfKxgT2qwcPs
-	MiXwrHg3Hnu6mjP122uYkTh8E3RRCZo/lt8//uEOBLHp0C5RL46Mg5V2U3ztSbMJ1TfXU/BBbF57/
-	uqNIA0kdg9pT2wJi7v8f4ryx30Hsn1v8jkC/lj1snLrbsQzXxuFfXLHgRST7lOAAeVMCgZMdcfry3
-	yQpGsimfACI5TgSCdJp3HDHfOgQxBMuW36ndzor8LFRF/fMQKfHIuu+S4BdfBEOFvsldHNFoOotl3
-	wTN13eFS8YLMGcDDLHFn4c5G1N0lggSsdM7WRp7jCtVeSUsStW+4KjooaFHhnlDvB4c1KN9YHuE8K
-	XG42j9Vg==;
-Received: from [74.208.124.33] (port=54039 helo=truemaisha.co.tz)
+	bh=gl4+7vNxgV9+JzZtw7EthQ6aGDgi0WVn3wQV/lnKiyo=; b=efVs9fZ+qGDNY89N/h77gpVVi4
+	tVDtCDQxCqY8JGOzaYqGOFK082vAieTdhoIQis+jAZZ1I4J0g+nFbmZf+Xi94NNElw56iIQ/NEJcp
+	JYVasMVazwkLkQwGVo1PbGImxI011lmYf1DliJ+udDVuqev8dBKK+YTMRf5WsaidQGBfM+ONm+ku0
+	ZV+5stffJ6OOmGwetufHd3jQbIAOlM91ibphHgFDufi2NVY49BVrlFmzqts6ys4v2Zzoy8x3heFux
+	KJPiqYJcKcjiiaCmHr+AdXd3NgUIwPs0xbhszat3i+d56N3Ov+tY1Ssyz36SVRD1z0uN5k+82vi72
+	kIKbO9Bg==;
+Received: from [74.208.124.33] (port=58887 helo=truemaisha.co.tz)
 	by server-598995.kolorio.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <chrispinerick@truemaisha.co.tz>)
-	id 1tgeCz-0003OZ-0Y
+	id 1tgsjF-0000lH-1A
 	for linux-efi@vger.kernel.org;
-	Sat, 08 Feb 2025 00:20:54 -0600
+	Sat, 08 Feb 2025 15:51:10 -0600
 Reply-To: dsong@aa4financialservice.com
 From: David Song <chrispinerick@truemaisha.co.tz>
 To: linux-efi@vger.kernel.org
 Subject: Re: The business loan- 
-Date: 08 Feb 2025 06:20:55 +0000
-Message-ID: <20250208015436.552D9D97B3ED6299@truemaisha.co.tz>
+Date: 08 Feb 2025 21:51:11 +0000
+Message-ID: <20250208210541.613D25BF1B01F9AD@truemaisha.co.tz>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
