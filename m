@@ -1,146 +1,106 @@
-Return-Path: <linux-efi+bounces-2783-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2784-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30CEA2F5DD
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2025 18:51:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9138AA2F89A
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2025 20:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A41C16796A
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2025 17:51:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D0AB3A0704
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Feb 2025 19:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4E325B66B;
-	Mon, 10 Feb 2025 17:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JZoLnnnu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3352566CB;
+	Mon, 10 Feb 2025 19:25:55 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FAD25742F
-	for <linux-efi@vger.kernel.org>; Mon, 10 Feb 2025 17:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B2A25E46C;
+	Mon, 10 Feb 2025 19:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739209818; cv=none; b=RphUEE9cKa2doFPYvVqIY9Ma3YqRjobw+DZleYyzINYfb6UoZV+ABUDb8kcBXx4jEMXJXxyArZ6kmp/7ujAvEILeM7K+5WAQlG27u2brAglP5vzCRuj7Xmg3Syh2kB7G1atCllqL1sBvGwafylUk9kverEz+bqzLEavNJs7y/VE=
+	t=1739215555; cv=none; b=NWqf09S0iyXSu41ITE3SKGkMoJyu0dDEh+hwQEzvsMX/+VUbNpcRu7uMTbTKv1e9HXq57OwZymVb/BNHW1m2IxEIvgrXqyMoUw1k3g67trl6SuHDppbv+pPROLoPgCwY/e+uHIeUYDG7UzH/5toVqmL7YfCspEHU35dH8siQceU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739209818; c=relaxed/simple;
-	bh=b5Y7ZBwua8q6S8xoX8bJWja8rSBdbaXg1go2fucz19o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KJn8FMCHN5Xd5/ij3aHifXVgu8bIrAGUa6cIKuptf7KodvurwnVESS3AYeE7+r4+TvBH+17PqDMMcodqw+0iDoPK+hVPZCCNxxTzcBKj1dYOGzDUhAXlOCB8SBreke89CfTxgWyU1YCwQmCoWQrnZ/Ft4n2O2wv9B3TdTdtRgPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JZoLnnnu; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-38ddba9814bso682575f8f.3
-        for <linux-efi@vger.kernel.org>; Mon, 10 Feb 2025 09:50:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739209815; x=1739814615; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2tIHDOPF0PNls1nT25rio5qx/bjBew1n2yApk83FuUI=;
-        b=JZoLnnnuc1RB97KG6XplP2Rn0PPRj2d1gHHMA337tl2VduP9TZbVUUMqIdxNxCvnJX
-         Elg9ABrpMGDZD4A5vV5h7jrAYQsnkhJCzC/matektP1++y9lzA+85icjRoGzS0y1XnBk
-         zUt/96acAa7dW4j+o7G2DnguflAxELymuc6+n0bcnzwwFIOu3HthfgmAJn6j7p5a/1rj
-         J/M8CrBe3MrKRMhdV05w6GMT/Nc5uuTCyD31+zu5atB/xSjuz24CwvyJ02yx6kZI4NNO
-         12OjpgAcLSam2T3cxgT9BZU1WhU1ARg8nmERIbSOuTNDLs//pwKn65ot/2HSlAUFhGy9
-         eW7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739209815; x=1739814615;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2tIHDOPF0PNls1nT25rio5qx/bjBew1n2yApk83FuUI=;
-        b=G46A7yxAEUlqkxwsad3tzg0xB0vmK+JED83E3ePR1///yQVAvBkWQT4YsCW8ZcXwlY
-         FMijz28QDu+NW4bW1vN+58m+vRcFY24aw3J19mkK4gzDRQ2wr7JfUYyh/v/N2hGJQexp
-         px5Cjmw2zmot8JgkM0eR+Pu16Ww5ViCIeIkzjr2hNwhmTbec9dTS6NIrQ0U9t2D9B8if
-         63phwwVXuz3tHxqaN2mlSC4H84eNE3oF+nQTp+m3fnkwXVcppn5fhICZFTITnoXyG3TJ
-         +PCS7sBDK8M2KAM+KqUlqz7dh1wYj9SuubaTwu8TzcJEMCfRNakG3pynn41Hrcb6yus9
-         n2Rw==
-X-Gm-Message-State: AOJu0YyQcAXCHBOEswpeWD8iBcrrTzj5NYuogv2rtLZyNkdVC7nu3InG
-	U9hN5/Diuc+hzJfMKZQIduf5fQ8U5gm4XzHe+ybbzHn5fD6Q86XEzitF98JHK0/RC8LNh95UDTX
-	7AHBsHm+q9DhnfzuSkqf/9j7AXom+SpikGHUzyfrlFGyjqNoC2ryqdK/gxD/04V7dKG5fM7pAqY
-	1Tn8M1umlzjoVc2jEtuglUVTLzoQ==
-X-Google-Smtp-Source: AGHT+IHAUj/EzxRvKtgJ7QJN3LKDxgNe/A0xr0/YERyNf+9C200o4bBPmgSHauUpcJYocmkxvKfPsVKl
-X-Received: from wmqd4.prod.google.com ([2002:a05:600c:34c4:b0:439:4c13:57e5])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:1883:b0:385:f7ef:a57f
- with SMTP id ffacd0b85a97d-38dc9233968mr11826038f8f.27.1739209814970; Mon, 10
- Feb 2025 09:50:14 -0800 (PST)
-Date: Mon, 10 Feb 2025 18:49:49 +0100
-In-Reply-To: <20250210174941.3251435-9-ardb+git@google.com>
+	s=arc-20240116; t=1739215555; c=relaxed/simple;
+	bh=JLrIHvcMfDESnQCoY0goFByP4FrecpGOavPA8S3yvAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DLGRFbTQYvL3Jnzj1vJ7z9mo+BCTCeVz8473NvdPRd6pXN5QV8WaemmhSMUzNAnmatRPHmV0s3DFLjxUWgj/AAxlCXEIB/7Dw8eGGnQnhObWbzY4By6rOEIz17v+S7REfq8QwbRxyxyhmzDPrDyGyaWjfj22GDwla48IaMI1/10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 4761228008798;
+	Mon, 10 Feb 2025 20:25:50 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 17F603EB81E; Mon, 10 Feb 2025 20:25:50 +0100 (CET)
+Date: Mon, 10 Feb 2025 20:25:50 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Lleyton Gray <lleyton@fyralabs.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, gargaditya08@live.com,
+	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: Re: [PATCH] x86/efistub: Add options for forcing Apple set_os
+ protocol
+Message-ID: <Z6pSvg1qzALcuV94@wunner.de>
+References: <20241228202212.89069-1-lleyton@fyralabs.com>
+ <Z3EdkuCBzTGzTHK3@wunner.de>
+ <CAMj1kXHWoD78QdFnEY_=Mtz02zN3rhN5+Skgv=fHG91TD8Mmvw@mail.gmail.com>
+ <Z3EmoNWbkbYZ7NZO@wunner.de>
+ <CAMj1kXEb9NPSwEr2brHYJtFQhnW55hoPycjcAgoPAfjU5ZFqZw@mail.gmail.com>
+ <abe2274b-4341-4212-85a8-113273ce1b18@fyralabs.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250210174941.3251435-9-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2573; i=ardb@kernel.org;
- h=from:subject; bh=f8GMXZVc+ZgqfzipyO2wKCTDym84g0qfwV9FVQOEoyI=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIX2VjfW5siSre++kNEo+q6+8viNWfFN8/+R3PvYS7nNvr
- 55w3Um7o5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEyk6wQjw1olLrm/vxfb6H+u
- kegTlJXMky4WvijZf2PV6t8O07gijzEyNF955r9ATrrvxU37RbOPae2Ovuw9wf0A88JtW90XOB7 ZywIA
-X-Mailer: git-send-email 2.48.1.502.g6dc24dfdaf-goog
-Message-ID: <20250210174941.3251435-16-ardb+git@google.com>
-Subject: [PATCH v2 7/7] x86/efi/mixed: Move mixed mode startup code into libstub
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, hdegoede@redhat.com, 
-	Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abe2274b-4341-4212-85a8-113273ce1b18@fyralabs.com>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+Hi Lleyton,
 
-The EFI mixed mode code has been decoupled from the legacy decompressor,
-in order to be able to reuse it with generic EFI zboot images for x86.
+my apologies for the delay.
 
-Move the source file into the libstub source directory to facilitate
-this.
+On Sun, Dec 29, 2024 at 07:09:15PM -0800, Lleyton Gray wrote:
+> On 12/29/24 10:22, Ard Biesheuvel wrote:
+> > On Sun, 29 Dec 2024 at 11:38, Lukas Wunner <lukas@wunner.de> wrote:
+> > > The original issue was that the integrated GPU is hidden (powered off)
+> > > unless the set_os protocol is used.  So only the discrete GPU is
+> > > available, which results in terrible battery life.  Using set_os
+> > > keeps the iGPU exposed so the OS can switch to it and power off
+> > > the dGPU.
+> > 
+> > Yeah, so it would be good to know what issue are trying to fix with
+> > this patch.
+>
+> I believe this is another issue that requires the same set_os quirk. In
+> specific, amdgpu fails to initialize when using an AMD eGPU in a T2 system,
+> unless the set_os protocol is used. Because it's currently quirked for the
+> product names of dual-gpu T2 Macs, if you're on a system that doesn't match
+> those names (ex. 2018 Mac Mini), there's no way to enable the protocol to
+> get an eGPU working.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/boot/compressed/Makefile                                                | 1 -
- drivers/firmware/efi/libstub/Makefile                                            | 3 +++
- arch/x86/boot/compressed/efi_mixed.S => drivers/firmware/efi/libstub/x86-mixed.S | 0
- 3 files changed, 3 insertions(+), 1 deletion(-)
+How does the amdgpu initialization issue manifest itself exactly?
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index f2051644de94..fc5563704466 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -104,7 +104,6 @@ vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o $(obj)/td
- vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
- 
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
--vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
- vmlinux-libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
- 
- $(obj)/vmlinux: $(vmlinux-objs-y) $(vmlinux-libs-y) FORCE
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 1141cd06011f..903afd2d3d58 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -62,6 +62,8 @@ KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_LTO), $(KBUILD_CFLAGS))
- # `-fdata-sections` flag from KBUILD_CFLAGS_KERNEL
- KBUILD_CFLAGS_KERNEL := $(filter-out -fdata-sections, $(KBUILD_CFLAGS_KERNEL))
- 
-+KBUILD_AFLAGS			:= $(KBUILD_CFLAGS) -D__ASSEMBLY__
-+
- lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o \
- 				   file.o mem.o random.o randomalloc.o pci.o \
- 				   skip_spaces.o lib-cmdline.o lib-ctype.o \
-@@ -83,6 +85,7 @@ lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o string.o intrinsics.o systable.o \
- lib-$(CONFIG_ARM)		+= arm32-stub.o
- lib-$(CONFIG_ARM64)		+= kaslr.o arm64.o arm64-stub.o smbios.o
- lib-$(CONFIG_X86)		+= x86-stub.o smbios.o
-+lib-$(CONFIG_EFI_MIXED)		+= x86-mixed.o
- lib-$(CONFIG_X86_64)		+= x86-5lvl.o
- lib-$(CONFIG_RISCV)		+= kaslr.o riscv.o riscv-stub.o
- lib-$(CONFIG_LOONGARCH)		+= loongarch.o loongarch-stub.o
-diff --git a/arch/x86/boot/compressed/efi_mixed.S b/drivers/firmware/efi/libstub/x86-mixed.S
-similarity index 100%
-rename from arch/x86/boot/compressed/efi_mixed.S
-rename to drivers/firmware/efi/libstub/x86-mixed.S
--- 
-2.48.1.362.g079036d154-goog
+Could you either provide full dmesg output both for the failing case
+and the success case (i.e. with your patch)?
 
+E.g. could you open a bug on bugzilla.kernel.org and attach the dmesg
+output or at least provide a dmesg excerpt with the relevant amdgpu
+initialization messages?
+
+Any patch to fix the issue needs to provide a proper explanation
+of what's going wrong without the patch and why, so that anyone
+working on the code in the future can understand why the change
+was made.  Just stating that amdgpu fails to initialize isn't
+sufficient in my view.
+
+Thanks,
+
+Lukas
 
