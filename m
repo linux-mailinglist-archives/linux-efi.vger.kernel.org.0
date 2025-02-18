@@ -1,86 +1,88 @@
-Return-Path: <linux-efi+bounces-2796-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2797-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A19CA39E21
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Feb 2025 15:01:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B03A39E28
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Feb 2025 15:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F6CF168376
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Feb 2025 14:00:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E0E4188BAA9
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Feb 2025 14:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83037269AEC;
-	Tue, 18 Feb 2025 13:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3165D269B17;
+	Tue, 18 Feb 2025 14:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="QUvHzR5o"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="Um3ATsac"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5F32417F5
-	for <linux-efi@vger.kernel.org>; Tue, 18 Feb 2025 13:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9BC269822
+	for <linux-efi@vger.kernel.org>; Tue, 18 Feb 2025 14:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739887195; cv=none; b=JKNW8GWBunbziIq6ZpSUGZzuvnJQqMOWtC3OhaiUOQka0pK04pOXjapaLlkgXwmqmfZd8WliccuRXLP86B/e+QLYtxYRSYa1sZr3l2n4fabp7Tcrsv6lS9M9zwqXuz/7gJ59fziBbR5sGiaVSN3gR9dZIAbgy7o20uyXkrjID7A=
+	t=1739887286; cv=none; b=Bh9okc22urT1PzaaeoY1LANMbepMPWW1dfGb3RpknFE3zSZp77a2mWbWcnke9+sW2z3RlREHFcJK9EWa3KkVL7+Uf8SWC9EU3fLdcynvBqOQWZxUtu6oFTEPGaTdOph/LJHFEMraNN9d5mk5JF5o4NyUINNrYLZIoXcFxllljjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739887195; c=relaxed/simple;
-	bh=oLapzg2kmr8ra4GmoxtioxQBLEe8tuDRu4pDXkNj86s=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=hTti4BUzW1nXmGerty9wQZdwBI4yekB661djxkcSxUy5e/3jRyvXP05jGrKaTcqGRbh2b4iKyCD8VTc1W5Ab3mqmPBnDO1ByKRk6j8k+BODPTuez+yUnstSxh1Jx1dbwHCatWLtN9SIWZdjm1/NkEvJZJNBOSVM6wrELRG8mjoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=QUvHzR5o; arc=none smtp.client-ip=185.125.188.122
+	s=arc-20240116; t=1739887286; c=relaxed/simple;
+	bh=CUUtLbg/V9NQg+AuWoIWQTSD1MxC1DHpXmOuggSU0+o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FEicPkTO6C+6UYAMG1XwajGbelZTXRJFAGWLm/En7myjR8dNnmnb8zyga1Co36IyVIRp/rQc7CHOyv4/TbWutW6afE2qKc8tlFbFnUBWKNONKEADqk5SAyVdPKVkuTAP95dtDfquCuCdK5XwAnSL3KRzENMYYBs27s9Z2uqjZDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=Um3ATsac; arc=none smtp.client-ip=185.125.188.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id DF0633FA50
-	for <linux-efi@vger.kernel.org>; Tue, 18 Feb 2025 13:59:47 +0000 (UTC)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 927443F47B
+	for <linux-efi@vger.kernel.org>; Tue, 18 Feb 2025 14:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1739887187;
-	bh=TFVkVW8mqzZvRa2FQ2uGvuEytv7Dg/puiNRGWYVs8Vg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type;
-	b=QUvHzR5oTp70JOo2wgCJP9JMcxSACzzX2Bc70kevRR2UgepF6eD0/jBW5PgTi/Hcq
-	 gn8Ae8xSAKx/qRL8AwugpiUcpwMm1k7aFmqu0GtYnTFdCyo85e7dG2xM1v9rxfpB0s
-	 fFu72fDOdeTVFXWctYBeltZlhfnG2WldjLf6jOH6F0KwgUQEjmDCxo8WOIBOG9gBuw
-	 urAFs06U5V/ND7DuCIspj6m5OhrRhLGdYkgTE+IhLfAnY43yBfENq2rmL0OneRRxCo
-	 DIhEgfycs7hFsktlpFEKNZsggwoox0aduoXXi50R9hnsKjGP28X5aUnVdCY2gCJ9L/
-	 pGvbM8PokgZXg==
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4393e89e910so29467725e9.0
-        for <linux-efi@vger.kernel.org>; Tue, 18 Feb 2025 05:59:47 -0800 (PST)
+	s=20210705; t=1739887282;
+	bh=9baZ8MtjuJOAuAOdwVfX6siiAQJttTW47fGC4JGW+8U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type;
+	b=Um3ATsacydxoajA+6qIHvR4BppeUUPmI01GQZzKcZbNTol5o3hADsUFo6Vmv7itRb
+	 gif8NAABp+zxCIvnYQlpv0IK8YJdwjzn3a5EL62HtGHIjtgfaWluZu1x+jUwJ8yspI
+	 yKIuRsYVh5WcaWNmMo7TekLf6h+VpvryvbWLKksezxM9qT2FXtk00YQEuIm3MJ5yNc
+	 e4cV3qEcgdAFhxx/qrU+mBwrDqoVKU3lwIkib6na4qcVUM/+xlPdOI1I7CTyxziqfC
+	 6wygwWyRoZygc9ZZ4oUHmIktj9S6w0AlcRnULKdDN7OK33Q7Zwq/82yjvprjO9kJVv
+	 Y1C32bK5MCTkQ==
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38f4e6e004fso1572260f8f.1
+        for <linux-efi@vger.kernel.org>; Tue, 18 Feb 2025 06:01:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739887187; x=1740491987;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TFVkVW8mqzZvRa2FQ2uGvuEytv7Dg/puiNRGWYVs8Vg=;
-        b=SUXW1JsmwECQLuX4IFZ98Wf11IjR0d2xD1dSUbImIR7dTwbhbcgl1YOeAtFgpsWAQu
-         y41Fzr6KsUaA5yQNeBjQjPNW9i195okTvv5kveLTQk08jwfR8QaPgJzJMy+dJsDmX3pE
-         7Xy0zKaIzotB3BQ8+scd0fOAA6L5bzUMZWiUsd6beYR/2NkQgmqd7GecLi6efgX8iUgZ
-         RzfCe8pNeFH40N+YKil3MRXr3RPppvgreLiMoCBT3Hk0J+Ks79+eSLxVV0SdtFFmlvSq
-         /qsJUI9c92qI06gVP/Wgu4UKFbrc/63dxTidybw0MXOtudC3+5vtlWrnAQs6LO+cYFyX
-         dGRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUU8MZHGqXHHJcj+Pga/GHtXAS6E/j4FeZIwidC6bVQWBWiQtkTUb98eMTX7jhIZBHpev3j4L6YEHk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0zXDLr/R3ZfXATHG/idsRolTzxma6pTR1udwwUuS8nRYfAYrd
-	gpk2OYEh4rsXrELicbasXW1j86ou8w7j6qDXmBBhVLewQPATSENqIgBh3otXDB6zEywN/xr3J2Z
-	iZeSUkJzCf/WIcIau92a94RwDACfponMm//NCVEOg5qdElECAetjIecwIq7B8JA1Nrq04TJTAzA
+        d=1e100.net; s=20230601; t=1739887281; x=1740492081;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9baZ8MtjuJOAuAOdwVfX6siiAQJttTW47fGC4JGW+8U=;
+        b=w6m0AsNi+XcrOOXnvwLe6vO1FCk+ZSSpg3Lp2o0ziIXGBHZiwG6b5zWDHfbPaeicjb
+         Ei4UkWQ3wKM5Fjpe2GaVsoDBozBzSX0kk0saH+KGEP8G6V7DfZETs13iegc/MAxsCq1T
+         OakgJ1wM5v5hZXY58Fwh1YvN4eQoxdwwiX+Gnut4waG1XchuCWX3xs53n8PjXUrPLzvc
+         Drk/jodNCtkj31tVhUkffP249wKbhs0+hWSSyug/sItHIXkueTmF4lWB6wmMGTFM7u6a
+         eC8ST9KNNCCBGzzA5uXGKlMMAAQ2s4vezP/WS8up0HR7T+vqmLfVs7/05Y+54BZ9+GIS
+         buQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXL8FAMe1FrVSRmiClZI09Sg6UOxoSyVdUnDIfapjSCTHnEnZL0oJ0h69SBCAnCMsIxvsRZQtGxYkQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvKRJ6VRgAWJp3g9FdeEPZVTA4GHvnXjCZRCg3LtgZfH2t9Pqm
+	aipjgs0egL/qmaWCaqdosSDfvfRE52ewQofTzYfNJcq7CLbbcVTjA2nu5fq361uzSd4jjWivJzR
+	GHHrMDRSwY0Z5XR1Camz+TQ+k1S5z2UmP4+yxqMLlhkgUgJa+gtXybOV36ElQi9sfDfKP1f9Reg
 	==
-X-Gm-Gg: ASbGncv6M4E4oUKnmIZonPNUTwNpaAc4cpXAN8Q1dp/DLYGw3fHrg4Y+maQOnrSzXEy
-	3Amn2pIMlohnYhVWHnHqFPEqaxmriPZGZ9BIvjEW2FE1SHRZZckkDbRX7oAfVjMdWy2EMbjaPeL
-	YNQ434ZGknd6tQ58096vDcHHRX6WX/zdCkGec0EAJdqDReOZtfCwitTNwY+7T3W4J2QSjbuGCtm
-	Rm5tXZ09u2GXcuxZrDjwKqebV5D8jH4IPP43bzm5T52LiAHlXrFLcS1MGyqakUArkZ+CpXSVMSG
-	raVQk302WjAqjLnrNYmUbkBrUp6H+1GC9S3H0uMzGfOfS7HEW3I=
-X-Received: by 2002:a05:600c:1c28:b0:439:42c6:f11f with SMTP id 5b1f17b1804b1-4396e6ab033mr122972775e9.4.1739887187456;
-        Tue, 18 Feb 2025 05:59:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHkuueM4q9zjyh2zOdRzt+GIWkGfCPkA6ywuytmuiaFKbIi3h6FEUwjrGAeEowaXsN5ZS1O9Q==
-X-Received: by 2002:a05:600c:1c28:b0:439:42c6:f11f with SMTP id 5b1f17b1804b1-4396e6ab033mr122972595e9.4.1739887187111;
-        Tue, 18 Feb 2025 05:59:47 -0800 (PST)
+X-Gm-Gg: ASbGnctiRcT5Bt0KfpwgTZlFOdK+D66cAfE+PGSr17Keju6mjuYECvBCdBgZ3KawA8n
+	4LSA56iofsHgpE8F+XW/VsakDBzUm2CcVdjSfeabt3WPp+F7ZXN9maAXpJ3q748exopUt3VGUzK
+	UrUN0ySt/9UH//o0BrxqZ9hQpokLvD71aC2JbWBT4iPeV6QOQYdvGhKihEPX6SpGIoOHZm6R2VH
+	Zh/UFRg2f2oe5I4Pf17PNLxRj6nMp1YAYfb1TqCoahpAFwBh6voQvXpzSo13QKbmG9BlSKuULbr
+	AgzE0HdpCnygYqJ6SgEDbeVILqR6exSsXO3oJPnd5NO8Y71Fc44=
+X-Received: by 2002:a5d:5f82:0:b0:38f:2a32:abbb with SMTP id ffacd0b85a97d-38f33f14a34mr9766459f8f.4.1739887279391;
+        Tue, 18 Feb 2025 06:01:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF3bFoFj7AvC39E0Kp9bB9u3iWm4LdGhfLWfOqb0TEnl13m+51JdBvSgkS7pO5yYT484fKs6g==
+X-Received: by 2002:a5d:5f82:0:b0:38f:2a32:abbb with SMTP id ffacd0b85a97d-38f33f14a34mr9766394f8f.4.1739887278805;
+        Tue, 18 Feb 2025 06:01:18 -0800 (PST)
 Received: from [192.168.80.20] (51.169.30.93.rev.sfr.net. [93.30.169.51])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a1b8397sm182603185e9.36.2025.02.18.05.59.46
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258ccd51sm15105057f8f.29.2025.02.18.06.01.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Feb 2025 05:59:46 -0800 (PST)
-Message-ID: <54095d2f-daea-4e4a-9542-f6a2b7603672@canonical.com>
-Date: Tue, 18 Feb 2025 14:59:45 +0100
+        Tue, 18 Feb 2025 06:01:18 -0800 (PST)
+Message-ID: <4cac90c2-e414-4ebb-ae62-2a4589d9dc6e@canonical.com>
+Date: Tue, 18 Feb 2025 15:01:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -88,57 +90,78 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Olivier Gayot <olivier.gayot@canonical.com>
-Subject: [PATCH v2 0/1 RESEND] block: fix conversion of GPT partition name to
+Subject: [PATCH v2 1/1 RESEND] block: fix conversion of GPT partition name to
  7-bit
 To: Davidlohr Bueso <dave@stgolabs.net>, Jens Axboe <axboe@kernel.dk>,
  Ming Lei <ming.lei@redhat.com>, Pavel Begunkov <asml.silence@gmail.com>,
  linux-efi@vger.kernel.org, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Cc: olivier.gayot@canonical.com, daniel.bungert@canonical.com
+Cc: daniel.bungert@canonical.com, Olivier Gayot <olivier.gayot@canonical.com>
+References: <54095d2f-daea-4e4a-9542-f6a2b7603672@canonical.com>
+Content-Language: en-US
+From: Olivier Gayot <olivier.gayot@canonical.com>
+In-Reply-To: <54095d2f-daea-4e4a-9542-f6a2b7603672@canonical.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Dear maintainers,
 
-This is a resend of a patch that I originally sent in May 2023.
+The utf16_le_to_7bit function claims to, naively, convert a UTF-16
+string to a 7-bit ASCII string. By naively, we mean that it:
+ * drops the first byte of every character in the original UTF-16 string
+ * checks if all characters are printable, and otherwise replaces them
+   by exclamation mark "!".
 
-Resending with an updated list of recipients since the list has been updated.
+This means that theoretically, all characters outside the 7-bit ASCII
+range should be replaced by another character. Examples:
 
-Original submission:
+ * lower-case alpha (ɒ) 0x0252 becomes 0x52 (R)
+ * ligature OE (œ) 0x0153 becomes 0x53 (S)
+ * hangul letter pieup (ㅂ) 0x3142 becomes 0x42 (B)
+ * upper-case gamma (Ɣ) 0x0194 becomes 0x94 (not printable) so gets
+   replaced by "!"
 
-https://lore.kernel.org/linux-efi/f19a6d8a-c85a-963e-412e-efaa7f520453@canonical.com/T/#t
-http://www.uwsg.indiana.edu/hypermail/linux/kernel/2305.2/08638.html
+The result of this conversion for the GPT partition name is passed to
+user-space as PARTNAME via udev, which is confusing and feels questionable.
 
---
+However, there is a flaw in the conversion function itself. By dropping
+one byte of each character and using isprint() to check if the remaining
+byte corresponds to a printable character, we do not actually guarantee
+that the resulting character is 7-bit ASCII.
 
-While investigating a userspace issue, we noticed that the PARTNAME udev
-property for GPT partitions is not always valid ASCII / UTF-8.
+This happens because we pass 8-bit characters to isprint(), which
+in the kernel returns 1 for many values > 0x7f - as defined in ctype.c.
 
-The value of the PARTNAME property for GPT partitions is initially set
-by the kernel using the utf16_le_to_7bit function.
+This results in many values which should be replaced by "!" to be kept
+as-is, despite not being valid 7-bit ASCII. Examples:
 
-This function does a very basic conversion from UTF-16 to 7-bit ASCII by
-dropping the first byte of each UTF-16 character and replacing the
-remaining byte by "!" if it is not printable.
+ * e with acute accent (é) 0x00E9 becomes 0xE9 - kept as-is because
+   isprint(0xE9) returns 1.
+ * euro sign (€) 0x20AC becomes 0xAC - kept as-is because isprint(0xAC)
+   returns 1.
 
-Essentially, it means that characters outside the ASCII range get
-"converted" to other characters which are unrelated. Using this function
-for data that is presented in userspace feels questionable and using a
-proper conversion to UTF-8 would probably be preferable. However, the
-patch attached does not attempt to change this design.
+Fixed by using a mask of 7 bits instead of 8 bits before calling
+isprint.
 
-The patch attached actually addresses an implementation issue in the
-utf16_le_to_7bit function, which causes the output of the function to
-not always be valid 7-bit ASCII.
-
-Olivier Gayot (1):
-  block: fix conversion of GPT partition name to 7-bit ASCII
+Signed-off-by: Olivier Gayot <olivier.gayot@canonical.com>
+---
+ V1 -> V2: No change - resubmitted with subsystem maintainers in CC
 
  block/partitions/efi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Olivier
+diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+index 5e9be13a56a8..7acba66eed48 100644
+--- a/block/partitions/efi.c
++++ b/block/partitions/efi.c
+@@ -682,7 +682,7 @@ static void utf16_le_to_7bit(const __le16 *in, unsigned int size, u8 *out)
+ 	out[size] = 0;
+ 
+ 	while (i < size) {
+-		u8 c = le16_to_cpu(in[i]) & 0xff;
++		u8 c = le16_to_cpu(in[i]) & 0x7f;
+ 
+ 		if (c && !isprint(c))
+ 			c = '!';
+
+
 
