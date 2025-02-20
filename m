@@ -1,330 +1,177 @@
-Return-Path: <linux-efi+bounces-2803-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2804-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56CE1A3C0EA
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2025 15:00:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CC8A3D6C6
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Feb 2025 11:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBA8C17093E
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Feb 2025 13:55:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 684B816ABD9
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Feb 2025 10:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05451EE019;
-	Wed, 19 Feb 2025 13:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lSy1zEcG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A40F1F12E0;
+	Thu, 20 Feb 2025 10:31:59 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019FC1EDA33
-	for <linux-efi@vger.kernel.org>; Wed, 19 Feb 2025 13:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AD71EE7C6;
+	Thu, 20 Feb 2025 10:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739973200; cv=none; b=i3tNL63QMd9O2+zodb1LQo/St5XiEOJHxairxk3TYDWaQWwAxx1rfEvJ8joDo1rb445JsjIcL5bnAW3M7ZLgvCGtBOS4luwDaKLGAWQa35zjTjKgvmyrKZTDB/rRs7xmNv6A587ApOgoxiY7ge6ME8Ozw87lKClnFCvDtH76vQQ=
+	t=1740047519; cv=none; b=P71DJb4zuuc6akjegZk53SqnX8mzZbHthJMFh6XmeUtsxvjb3GkP4H3KFeGdf64gW/ODhNs3LmiH+IAhkPFgVovTs1dCqxcPR5aMnVDxZ4+l83oY2O0QLDVNLkNW5Quma+D1iyz5ywMxwyEXjfupp9YFPcIg5D3GIvpSvkn8BO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739973200; c=relaxed/simple;
-	bh=+yGgqqM6m67SHcWQ5C/LyqeoOn2NxRwpbuq8bb0rr8I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LcY9TJL2k/IFn0VXPoCQYT81ERF+BUUXNfD9B+PN1aNtKANVn+MgpW/v9UXdXLOjn/IeGNwfd5hPj3aVFE3+nKuMDavVU3E666I5b45bG5MXdJKEJDEDV8CVU0TLNe23g73GNrtVbMRcGG9sDlYsr7lkdJ4GE+wTpzIENu2/UsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lSy1zEcG; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-471fa3b19bcso606741cf.0
-        for <linux-efi@vger.kernel.org>; Wed, 19 Feb 2025 05:53:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739973195; x=1740577995; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UdmAiMEeKrPEDg3p+jo+2xFKJGKxXYyTYb14zoBH7Bo=;
-        b=lSy1zEcGSTYGQw70X6tKAtWz/LXQxnAQVGCidhqUixZKNP4DnMDx3a/y6EVbyQhfUT
-         SBrZBOQaeFbQS8UyRxmavFpsGEZm6oNFcgkvJpDIOsH+0bw3JcpN6sUFfh3t5Qz3tsA9
-         62w6GpRcgcttSb4UcPefwaGJjhbBj5imkqEJTCvqt1KcYA1NdbYmN3ZmMzihkeFytWkv
-         DnSAC+JzANuLJZFt7KOrNCvZuXGWEl+LvlemmMkt7+FZ0BoIdcO6oPw9C18iez86S0ry
-         ENmUkJp03cZgfJvA4Ep5aEi6ZicaQIC2Spu0AkiTwL2Jv/CyKQthblEd51YI+fJ1tAgH
-         yl+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739973195; x=1740577995;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UdmAiMEeKrPEDg3p+jo+2xFKJGKxXYyTYb14zoBH7Bo=;
-        b=g4rEV/8solNsWq1l0L/EOpP10YhAmQMhChXIeakOe8ABl67ePpAmH0slZijh+d3tg4
-         CWHgIRthlcqFE4mstz8FHCaWjCuqGg8Lx1SUKinz275Usw7cIHJ8ns447GK35gPXzTaq
-         r1OTMJFT0rG/QMSbqcCtc9Q/wrSRz9eQJkQvmCU9eOFPZy3T952NIGpER06nVwt1z1at
-         CJKO+TXhUY1V0ZGrlvwm0ZCjvx+2CGBKxTUnf5OdjYwC7C/kNQTeJL5NMqadaxfkOXOb
-         Go3aUMttLhKCIbqwXkmYNx74R3PVCVFw13TAa4HMFqGe60saXiZl3tKNSgppTbMT+tc4
-         UuLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUKyaaWRA1ZT6AI7gGuORuy7EKsnEbmwDhHNntW0h2sR8zE/z37ygUzvOVWkma4SiWqRAlUNCb2iqI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqIM+U7wdH8IGFSweyf/0n5fSCMTwTQpeBoYbuRCesTgqeEOzg
-	1Ik0QskvwBK0HRNb/I5S9Nd+6hmWy4W7HdSA5ik5dWxG3WI0J+VIgSCv2qqlrYJn5PPxYEpCztc
-	XlH7rRypI805kPT7blxLao4pbaIZFbV1u8LS/
-X-Gm-Gg: ASbGncuBU8FkawZFykz4XOADCq1RICbmmU+QpT70zH702aP9kGlpTvL7uwWXzYF5BxA
-	p382d1hTI9fdb/UpFI8Jym6OKsR1w4unPdg1F8cp4ih+OI1KIPBVaYcWTKPQgf7/3TICsijvNLI
-	mg+S9g0gqi8joJb/YrdkCvDMhQQqg=
-X-Google-Smtp-Source: AGHT+IENNUmIuZuxSQylUApjIg4cKkgEiog4c3mRT0+zySA3cwktAnc8eGuiyh3/xKClKXO5dwBsFhWfn2uiV/6urfI=
-X-Received: by 2002:a05:622a:85:b0:471:b772:c717 with SMTP id
- d75a77b69052e-472097c2b32mr3540781cf.26.1739973194577; Wed, 19 Feb 2025
- 05:53:14 -0800 (PST)
+	s=arc-20240116; t=1740047519; c=relaxed/simple;
+	bh=EoE8bMHv7xu0prvb8E0epB/K/6l0shvsMw5QSn1M2s4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D8BPmiZJO3S1rOon0zYt1JRfAsvkONRUbeIJN9QyyLOyh4wFT+5q7DSDUNPB/wr5MyG2Iu6vn4WoYOyRJXOq1OhqdjvyO/PHEOd2SsEFC0s2fFgBhpgNYNqqGA9dmRDuj0bPfdDS7k+61YXc8rQ8/szdWHXAaXIQAydq/3aLF3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66793C4CED1;
+	Thu, 20 Feb 2025 10:31:52 +0000 (UTC)
+Message-ID: <6dc1e10e-9c40-4da3-b0e0-72bdc9daa827@xs4all.nl>
+Date: Thu, 20 Feb 2025 11:31:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
- <20250110-asi-rfc-v2-v2-3-8419288bc805@google.com> <20250219105503.GKZ7W4h6QW1CNj48U9@fat_crate.local>
-In-Reply-To: <20250219105503.GKZ7W4h6QW1CNj48U9@fat_crate.local>
-From: Brendan Jackman <jackmanb@google.com>
-Date: Wed, 19 Feb 2025 14:53:03 +0100
-X-Gm-Features: AWEUYZnAiIsbh62TRn4xLoxaltzDiT1dCIBY-Pnf2HWy-DCtrTT9-DxdH-ccpBo
-Message-ID: <CA+i-1C2xK8hzMQ8Y-=-7iYy+27nnouQZu1NdWG0qa35t+OQLqw@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 03/29] mm: asi: Introduce ASI core API
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mike Rapoport <rppt@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Ofir Weisse <oweisse@google.com>, Junaid Shahid <junaids@google.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 04/12] driver core: Constify API device_find_child()
+ and adapt for various usages
+To: Zijun Hu <zijun_hu@icloud.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+ linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-sound@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux1394-devel@lists.sourceforge.net, arm-scmi@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-gpio@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+ linux-hwmon@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-serial@vger.kernel.org, netdev@vger.kernel.org,
+ Zijun Hu <quic_zijuhu@quicinc.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Takashi Sakamoto <o-takashi@sakamocchi.jp>
+References: <20241224-const_dfc_done-v5-0-6623037414d4@quicinc.com>
+ <20241224-const_dfc_done-v5-4-6623037414d4@quicinc.com>
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <20241224-const_dfc_done-v5-4-6623037414d4@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Argh, sorry, GMail switched back to HTML mode somehow. Maybe I have to
-get a proper mail client after all.
+On 24/12/2024 14:05, Zijun Hu wrote:
+> From: Zijun Hu <quic_zijuhu@quicinc.com>
+> 
+> Constify the following API:
+> struct device *device_find_child(struct device *dev, void *data,
+> 		int (*match)(struct device *dev, void *data));
+> To :
+> struct device *device_find_child(struct device *dev, const void *data,
+>                                  device_match_t match);
+> typedef int (*device_match_t)(struct device *dev, const void *data);
+> with the following reasons:
+> 
+> - Protect caller's match data @*data which is for comparison and lookup
+>   and the API does not actually need to modify @*data.
+> 
+> - Make the API's parameters (@match)() and @data have the same type as
+>   all of other device finding APIs (bus|class|driver)_find_device().
+> 
+> - All kinds of existing device match functions can be directly taken
+>   as the API's argument, they were exported by driver core.
+> 
+> Constify the API and adapt for various existing usages.
+> 
+> BTW, various subsystem changes are squashed into this commit to meet
+> 'git bisect' requirement, and this commit has the minimal and simplest
+> changes to complement squashing shortcoming, and that may bring extra
+> code improvement.
+> 
+> Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+> Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+> Acked-by: Uwe Kleine-König <ukleinek@kernel.org> # for drivers/pwm
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 
-Here's the clean version.
+<snip>
 
-On Wed, 19 Feb 2025 at 11:57, Borislav Petkov <bp@alien8.de> wrote:
->
-> > + * Runtime usage:
-> > + *
-> > + * 1. Call asi_enter() to switch to the restricted address space. This can't be
-> > + *    from an interrupt or exception handler and preemption must be disabled.
-> > + *
-> > + * 2. Execute untrusted code.
-> > + *
-> > + * 3. Call asi_relax() to inform the ASI subsystem that untrusted code execution
-> > + *    is finished. This doesn't cause any address space change. This can't be
-> > + *    from an interrupt or exception handler and preemption must be disabled.
-> > + *
-> > + * 4. Either:
-> > + *
-> > + *    a. Go back to 1.
-> > + *
-> > + *    b. Call asi_exit() before returning to userspace. This immediately
-> > + *       switches to the unrestricted address space.
->
-> So only from reading this, it does sound weird. Maybe the code does it
-> differently - I'll see soon - but this basically says:
->
-> I asi_enter(), do something, asi_relax() and then I decide to do something
-> more and to asi_enter() again!? And then I can end it all with a *single*
-> asi_exit() call?
->
-> Hm, definitely weird API. Why?
+> diff --git a/drivers/media/pci/mgb4/mgb4_core.c b/drivers/media/pci/mgb4/mgb4_core.c
+> index bc63dc81bcae0d20924174be74b93a2139d5879f..697d50bedfe285d74c702efde61e510df87c1229 100644
+> --- a/drivers/media/pci/mgb4/mgb4_core.c
+> +++ b/drivers/media/pci/mgb4/mgb4_core.c
+> @@ -123,7 +123,7 @@ static const struct hwmon_chip_info temp_chip_info = {
+>  };
+>  #endif
+>  
+> -static int match_i2c_adap(struct device *dev, void *data)
+> +static int match_i2c_adap(struct device *dev, const void *data)
+>  {
+>  	return i2c_verify_adapter(dev) ? 1 : 0;
+>  }
+> @@ -139,7 +139,7 @@ static struct i2c_adapter *get_i2c_adap(struct platform_device *pdev)
+>  	return dev ? to_i2c_adapter(dev) : NULL;
+>  }
+>  
+> -static int match_spi_adap(struct device *dev, void *data)
+> +static int match_spi_adap(struct device *dev, const void *data)
+>  {
+>  	return to_spi_device(dev) ? 1 : 0;
+>  }
 
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
 
-OK, sounds like I need to rewrite this explanation! It's only been
-read before by people who already knew how this thing worked so this
-might take a few attempts to make it clear.
+Regards,
 
-Maybe the best way to make it clear is to explain this with reference
-to KVM. At a super high level, That looks like:
-
-ioctl(KVM_RUN) {
-    enter_from_user_mode()
-    while !need_userspace_handling() {
-        asi_enter();  // part 1
-        vmenter();  // part 2
-        asi_relax(); // part 3
-    }
-    asi _exit(); // part 4b
-    exit_to_user_mode()
-}
-
-So part 4a is just referring to continuation of the loop.
-
-This explanation was written when that was the only user of this API
-so it was probably clearer, now we have userspace it seems a bit odd.
-
-With my pseudocode above, does it make more sense? If so I'll try to
-think of a better way to explain it.
-
-> /*
->  * Leave the "tense" state if we are in it, i.e. end the critical section. We
->  * will stay relaxed until the next asi_enter.
->  */
-> void asi_relax(void);
->
-> Yeah, so there's no API functions balance between enter() and relax()...
-
-
-asi_enter() is actually balanced with asi_relax(). The comment says
-"if we are in it" because technically if you call this asi_relax()
-outside of the critical section, it's a nop. But, there's no reason to
-do that, so we could definitely change the comment and WARN if that
-happens.
-
->
-> > +#define ASI_TAINT_OTHER_MM_CONTROL   ((asi_taints_t)BIT(6))
-> > +#define ASI_NUM_TAINTS                       6
-> > +static_assert(BITS_PER_BYTE * sizeof(asi_taints_t) >= ASI_NUM_TAINTS);
->
-> Why is this a typedef at all to make the code more unreadable than it needs to
-> be? Why not a simple unsigned int or char or whatever you need?
-
-
-My thinking was just that it's nicer to see asi_taints_t and know that
-it means "it holds taint flags and it's big enough" instead of having
-to remember the space needed for these flags. But yeah I'm fine with
-making it a raw integer type.
-
-> > +#define ASI_TAINTS_CONTROL_MASK \
-> > +     (ASI_TAINT_USER_CONTROL | ASI_TAINT_GUEST_CONTROL | ASI_TAINT_OTHER_MM_CONTROL)
-> > +
-> > +#define ASI_TAINTS_DATA_MASK \
-> > +     (ASI_TAINT_KERNEL_DATA | ASI_TAINT_USER_DATA | ASI_TAINT_OTHER_MM_DATA)
-> > +
-> > +#define ASI_TAINTS_GUEST_MASK (ASI_TAINT_GUEST_DATA | ASI_TAINT_GUEST_CONTROL)
-> > +#define ASI_TAINTS_USER_MASK (ASI_TAINT_USER_DATA | ASI_TAINT_USER_CONTROL)
-> > +
-> > +/* The taint policy tells ASI how a class interacts with the CPU taints */
-> > +struct asi_taint_policy {
-> > +     /*
-> > +      * What taints would necessitate a flush when entering the domain, to
-> > +      * protect it from attack by prior domains?
-> > +      */
-> > +     asi_taints_t prevent_control;
->
-> So if those necessitate a flush, why isn't this var called "taints_to_flush"
-> or whatever which exactly explains what it is?
-
-
-Well it needs to be disambiguated from the field below (currently
-protect_data) but it could be control_to_flush (and data_to_flush).
-
-The downside of that is that having one say "prevent" and one say
-"protect" is quite meaningful. prevent_control is describing things we
-need to do to protect the system from this domain, protect_data is
-about protecting the domain from the system. However, while that
-difference is meaningful it might not actually be helpful for the
-reader of the code so I'm not wed to it.
-
-Also worth noting that we could just combine these fields. At present
-they should have disjoint bits set. But, they're used in separate
-contexts and have separate (although conceptually very similar)
-meanings, so I think that would reduce clarity.
-
->
-> Spellchecker please. Go over your whole set.
-
-
-Ack, I've set up a local thingy to spellcheck all my commits so
-hopefully you should encounter less of that noise in future.
-
-For the pronouns stuff I will do my best but you might still spot
-violations in older text, sorry about that.
-
-> > +     /* What taints should be set when entering the domain? */
-> > +     asi_taints_t set;
->
->
-> So "required_taints" or so... hm?
-
-
-What this field is describing is: when we run the untrusted code, what
-happens? I don't mean "what does the kernel do" but what physically
-happens on the CPU from an exploit point of view.
-
-For example setting ASI_TAINT_USER_DATA in this field means "when we
-run the untrusted code (i.e. userspace), userspace data gets left
-behind in sidechannels".
-
-"Should be set" in the comment means "this field should be set to
-record that a thing has happened" not "this field being set is a
-requirement for some API" or something. So I don't think "required" is
-right but this is hard to name.
-
-That commentary should also be expanded I think, since "should be set"
-is pretty ambiguous. And maybe if we called it "to_set" it would be
-more obvious that "set" is a verb? I'm very open to suggestions.
-
->
-> > +
-> > +void asi_init_mm_state(struct mm_struct *mm);
-> > +
-> > +int asi_init_class(enum asi_class_id class_id, struct asi_taint_policy *taint_policy);
-> > +void asi_uninit_class(enum asi_class_id class_id);
->
-> "uninit", meh. "exit" perhaps? or "destroy"
-
-
->
-> And you have "asi_destroy" already so I guess you can do:
->
-> asi_class_init()
-> asi_class_destroy()
->
-> to have the namespace correct.
-
-
-Yeah, not sure what I was thinking here!
-
->
-> > +static __always_inline bool asi_is_tense(void)
-> > +{
-> > +     return !asi_is_relaxed();
-> > +}
->
-> So can we tone down the silly helpers above? You don't really need
-> asi_is_tense() for example. It is still very intuitive if I read
->
->         if (!asi_is_relaxed())
->
-Yep that sounds good.
+	Hans
 
