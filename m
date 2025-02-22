@@ -1,55 +1,63 @@
-Return-Path: <linux-efi+bounces-2812-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2813-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FE0A3F94D
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2025 16:46:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A3AA40873
+	for <lists+linux-efi@lfdr.de>; Sat, 22 Feb 2025 13:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33BF19E1507
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Feb 2025 15:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8165B17F020
+	for <lists+linux-efi@lfdr.de>; Sat, 22 Feb 2025 12:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D8F1D7E37;
-	Fri, 21 Feb 2025 15:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050FF20767E;
+	Sat, 22 Feb 2025 12:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jn/Dd6oF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ob2mvSpE"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077241D6DB9;
-	Fri, 21 Feb 2025 15:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79BE20766E;
+	Sat, 22 Feb 2025 12:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740152584; cv=none; b=c92k8a6UTdF5THsB2O1ynIu2rnl9bg6/t09tV4WJdKHrb3Afk6F/QFOzfmLLPdUAE401gt6ccFKJkldmQ1l+MnQlx+qYBZKN1u/9Qdsrv1CCA0Gkqc3XhyXBYFLdXJEdPqAFL5nqAOgfunFMfXVPJdpjP777R94o5UbobptZ8Iw=
+	t=1740228730; cv=none; b=iwQPtNgrTJXkhAhd3vVO/8iIUDhdFWn8UNnU7LP6Nd3hfEcxCEB46aWJa5TJ6HOpXDYKjMvt2VSWQXoo3Q+R9IkON4Eqig05ZjWAgiejfmg4CDYWuqIYKy1U0s3mzIMtHpOSUjrtejpFszMYJ+fBjp/8GzNAvXWStmWK/PgruqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740152584; c=relaxed/simple;
-	bh=7xi8uvF/5YUSk7sp6b7nIulrDXB9vRthhzIK/7gO8FU=;
+	s=arc-20240116; t=1740228730; c=relaxed/simple;
+	bh=AcH7rRnJqyV3m9vAmkcNvvMPMLHZWqAuVkoH6/mGW/o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mlWBBXTCz4iE5tBD0Bcy9kU6jwUq1QFTo4kM7XmdoTPmfksB2Ug+4aIeqSQ29pLtRS3msU5Aip1+AkimOEW+MGWHDn2w4k8aC5VO0ObGLYu2jHTWAU7HO14YFchaB0erA/h5Jhxoe5RaHTRuyChhTZdDh6Jr6Aij/+sCOBlhRQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jn/Dd6oF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E479AC4CED6;
-	Fri, 21 Feb 2025 15:43:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TbGs/EKgTaQlG+g7UmnmGKd7+dI1wPTSi7vH7jBIb55lM9DJ8jiAJttQ3aTOHDr51WjFZLdcP+ZN//1PQIB4KdWdpfiib551fX89+QRzKEaTD93Vg0KdDVSyCZ0TjkdhURQwJf7IzdCvj98ZOM0N8wb6SpduDMUUVgbQ5tpHHsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ob2mvSpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7B2C4CED1;
+	Sat, 22 Feb 2025 12:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740152583;
-	bh=7xi8uvF/5YUSk7sp6b7nIulrDXB9vRthhzIK/7gO8FU=;
+	s=k20201202; t=1740228730;
+	bh=AcH7rRnJqyV3m9vAmkcNvvMPMLHZWqAuVkoH6/mGW/o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jn/Dd6oFEOaOJ5aGccbZTMfv5ZJZogO59bArTHkcRRKFIu2guukvJpxvYGlhtziVm
-	 PFVg4P+o9giv/21a9OFpoyYLmpyu2ku8NXIO1ZpVNSJcvPkGLLjwmT2dkSG2wjkufM
-	 8KXa7QpqTKEZXAh+OBXi3F6IaSqPnzQF77oh4ygWQvSd8KvAabEUt3L/7k/W/VTzs4
-	 HFfdZSSfadFpgpsag8Cww6I8n44QvzgTeM69E/aBU1ENhnyAwB+c32TFyEy4h5ueHl
-	 Nrk/fkFfsesf24LQ6KQx3Nla7zQL69wtbZYeHv2FJWSuc1mXm5T0YsLjXnxvSBXBqj
-	 0j/ADcH8JUm1Q==
-Date: Fri, 21 Feb 2025 16:42:51 +0100
+	b=ob2mvSpEi/X14XT1aFy64FEAHY4VipFwPx+gcrqac5d9vM33oc1zLSwHmT4ADivFv
+	 A9V64jG2iBeNQd4rbjBspihwfs+U0Y3mV7BZItUl+ym5Gh4KXZADv22ShWj2LND/ZD
+	 KH7LHISbB4wEAp1r9aj7hYxqouc4kxjeOGjcCMDXzqogAHTq4fxOKHWD3VYxjEOJ+L
+	 VRFqh255zSyUjNxqG/YPE/QNJPzBiLURGaex5qSoCQWoB2Jt/sFWl31t8VRA/pkz/c
+	 WDb0Gorm67qbertOet6F1RXxLUgY3c6+WsBXo0T9DBvtm8Yhd/M/EZq+H8UytAaBQu
+	 GbDO1TbhC5xnw==
+Date: Sat, 22 Feb 2025 13:51:58 +0100
 From: Ingo Molnar <mingo@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org, hdegoede@redhat.com
-Subject: Re: [PATCH v2 0/7] x86/efi/mixed: Decouple from legacy decompressor
-Message-ID: <Z7ie-zG0cJFX0MOz@gmail.com>
-References: <20250210174941.3251435-9-ardb+git@google.com>
- <CAMj1kXHOqMM5uGxLTYuEf9KrxY5WzYvwo847JzoB-Qa2SN67Sg@mail.gmail.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Sam James <sam@gentoo.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, stable@vger.kernel.org,
+	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
+	Jakub Jelinek <jakub@redhat.com>
+Subject: Re: [PATCH 0/2] A couple of build fixes for x86 when using GCC 15
+Message-ID: <Z7nIbng2JHSg9in_@gmail.com>
+References: <20250121-x86-use-std-consistently-gcc-15-v1-0-8ab0acf645cb@kernel.org>
+ <202501300804.20D8CC2@keescook>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -58,71 +66,31 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXHOqMM5uGxLTYuEf9KrxY5WzYvwo847JzoB-Qa2SN67Sg@mail.gmail.com>
+In-Reply-To: <202501300804.20D8CC2@keescook>
 
 
-* Ard Biesheuvel <ardb@kernel.org> wrote:
+* Kees Cook <kees@kernel.org> wrote:
 
-> On Mon, 10 Feb 2025 at 18:50, Ard Biesheuvel <ardb+git@google.com> wrote:
-> >
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Since commit
-> >
-> >   a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
-> >
-> > booting via the EFI stub no longer relies on the legacy decompressor,
-> > and instead, the kernel proper is decompressed by code executing in the
-> > context of the EFI boot services, and subsequently invoked directly.
-> >
-> > The only remaining dependency is the EFI mixed mode startup code, which
-> > makes a detour via the legacy decompressor's 32-bit entrypoint, in order
-> > to obtain a 1:1 mapping of memory, which is a prerequisite for 64-bit
-> > execution on x86.
-> >
-> > This detour requires some fiddly setup on the part of the mixed mode
-> > startup code, which has to stash the firmware stack pointer and boot
-> > arguments in memory, and create a fake struct boot_params to trick the
-> > code in startup_32 to behave as intended.
-> >
-> > This dependency also impedes reuse of the EFI stub code in other
-> > contexts, such as generic EFI zboot, which will reuse the EFI stub but
-> > not the legacy decompressor.
-> >
-> > So remove this dependency, by replacing this detour with a minimal
-> > reimplementation of the 1:1 mapping code. With some further cleanup
-> > applied on top, the line count drops substantially, but without loss of
-> > functionality. The resulting code can operate independently from the
-> > legacy decompressor, and is therefore moved out of arch/x86/boot/ and
-> > into the EFI libstub/ directory.
-> >
-> > Changes since v1 [0]:
-> > - Create new long mode GDT that extends the firmware's 32-bit only GDT
-> >   so that preserving/restoring data segment selectors or swapping out
-> >   GDTs and IDTs is no longer needed at all.
-> > - Rebase onto v6.14-rc1
-> >
-> > [0] https://lore.kernel.org/all/20250108182218.1453754-8-ardb+git@google.com/
-> >
-> > Ard Biesheuvel (7):
-> >   x86/efistub: Merge PE and handover entrypoints
-> >   x86/efi/mixed: Check CPU compatibility without relying on verify_cpu()
-> >   x86/efi/mixed: Factor out and clean up long mode entry
-> >   x86/efi/mixed: Set up 1:1 mapping of lower 4GiB in the stub
-> >   x86/efi/mixed: Remove dependency on legacy startup_32 code
-> >   x86/efi/mixed: Simplify and document thunking logic
-> >   x86/efi/mixed: Move mixed mode startup code into libstub
-> >
+> On Tue, Jan 21, 2025 at 06:11:32PM -0700, Nathan Chancellor wrote:
+> > GCC 15 changed the default C standard version from gnu17 to gnu23, which
+> > reveals a few places in the kernel where a C standard version was not
+> > set, resulting in build failures because bool, true, and false are
+> > reserved keywords in C23 [1][2]. Update these places to use the same C
+> > standard version as the rest of the kernel, gnu11.
 > 
-> Unless anyone minds, I'd like to queue this up in the EFI tree.
+> Hello x86 maintainers!
 > 
-> Boris, Ingo?
+> I think this would be valuable to get into -rc1 since we're getting very
+> close to a GCC 15 release. Can someone get this into -tip urgent,
+> please? If everyone is busy I can take it via the hardening tree, as we
+> appear to be the ones tripping over it the most currently. :)
 
-Sure!
+Just an update, the x86 fix is now upstream via:
 
-Acked-by: Ingo Molnar <mingo@kernel.org>
+  ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
 
 Thanks,
 
 	Ingo
+
 
