@@ -1,184 +1,97 @@
-Return-Path: <linux-efi+bounces-2815-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2816-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338C6A40E29
-	for <lists+linux-efi@lfdr.de>; Sun, 23 Feb 2025 11:54:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76D0A40F96
+	for <lists+linux-efi@lfdr.de>; Sun, 23 Feb 2025 16:45:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2EEB16C37C
-	for <lists+linux-efi@lfdr.de>; Sun, 23 Feb 2025 10:53:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 616213A4D68
+	for <lists+linux-efi@lfdr.de>; Sun, 23 Feb 2025 15:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F74A204F98;
-	Sun, 23 Feb 2025 10:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B761249EB;
+	Sun, 23 Feb 2025 15:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCtnGQRB"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B1204C17
-	for <linux-efi@vger.kernel.org>; Sun, 23 Feb 2025 10:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0990717D2;
+	Sun, 23 Feb 2025 15:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740308006; cv=none; b=Dpa3DD8aWd98hYg8T71olMl5Lh7rTKiLx9eOVvuNfYqz35JCDhu1zDoYc+l430FvsKXcwngIY73ZROuCewiz3QlTsU/KDqTK+liBXLzZ3k4C4rRGAjah3ObKpRitxr0EUiFlZpTytiQIrWIs4MLr/qhi2L9KYetYzHxz5xax6x4=
+	t=1740325532; cv=none; b=JYqOW10R8KH7mJXhItBkjETtBKqHGYzQHYXwtdnNCCtYk1I2AfFrkN8ltAs5gBjtH+jN+Zn7I9MssQglgu+hp8K/SYr7SNY5YvwdeyoLCJ9/OGc5NXjW8IAogHtVrMF0wwY0Q7PfS7bmkZHhCwxpVEdvYyLZJnguA4lJU1vRFDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740308006; c=relaxed/simple;
-	bh=AHO7laaTifAW5dt9m9AopSHStlrCSiPNTqUC0306dbo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=cSYHDzCByIwdtFRjg64/DUUZvhVb2j0SBFRf/9cXdcBF8OKEMzalYlbaoHHcJg15itHQmDe9Yp6t2HSDwlZlTB+m9TUv/HtG5rYls4BffVp2wCPP5VeKU8VWIcByrj5WbXlj/4cH3Bgb4Xb9RMpN1RlgpF/LHL7eC1zCGnCBpNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3d190ae831fso73350305ab.3
-        for <linux-efi@vger.kernel.org>; Sun, 23 Feb 2025 02:53:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740308003; x=1740912803;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=labABXKuLNGyrtUOxWIIn3XWVMM47LlHKowaDLL1Rm4=;
-        b=rOji2jOkSicVtVJfl3EZcDPho8IYXRjkfQUygkB6QFdx/QdABtcUzcQ16sMwW8bfTD
-         p8zz7INTE2q5BvJAdeHwFnthtqH1WSpjuyfNoELqsl3YI468ZREWi/DNwzUhdglLhqK/
-         Gsip+EtQNq/k7l+x/SlpGdYc/Z5ObgbbxUfvDX+bW7pSIKpcAX6GICY/BJS5KVPIiHWw
-         5W5Y4LwEQLchWoRABnRgDDtR2uqQIaQraXKeoiyDPpHBvWAYdYCuma7C/VAfhwGz9+/2
-         ngYZqOi72887rRMCd8fULiA9euVgrfTlWqUP4o6eqNeN7bmWFp4SzG6BFE27IDsG0wJj
-         mjHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXdQx3Yk3c8YDGVml/G4C8vnMQ1RU2JWDCfSQIvd4eEesUISbWF54RNYo9gDd8AFQOLgKMfHGxuRow=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhogTVbPi39hqp+Wvwv6gLRqZb7J0O3No2qJXCMfkuzPTAZbx9
-	8eKrLqA8eHdL6inUV0Ou+ijIi/oqQGdtsyK2Jx+y07VMApiWp9/gLifVcV/0VV3vFZjyluTrOeN
-	o9MgiqhecP3ge0isvJJCxS4P6Qj0xpuD0K++YU37tQH25m54yWGNq/0g=
-X-Google-Smtp-Source: AGHT+IHY5YiFUVTTLeHRmsPwEcNgVIoVmrsXiM7452gr41wCJVprBmr4u3ifaayuaRYc2zNeqjoungbsRXBnldmuyCJtSpiI/rxs
+	s=arc-20240116; t=1740325532; c=relaxed/simple;
+	bh=QFi71j3t7L8FalzRGOLODni9crxX2Z9gNtF3Bz8Bfls=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UdP7tViDO6fg3eCPb6b0HE5/hbGS+wxcucxmcss0RUbcuuC6vygrjT1moSEWqUTS8/Hf6G2RNsk6GIU8iKMHcNbADUTSD+wp5V5XkuJWKOZBCESr7xSYeUYyn0i9FU7CNUgWH5tT/Kd0xEAgdIM1UYV5udh52DgzBQs3g/ALzkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCtnGQRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B128C4CEDD;
+	Sun, 23 Feb 2025 15:45:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740325530;
+	bh=QFi71j3t7L8FalzRGOLODni9crxX2Z9gNtF3Bz8Bfls=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gCtnGQRB93IVr5xoC+Y9aqkyT2Da66sbYPg5tlOexCaL+X66C5hrOLKP8Uh4AlyUg
+	 CEvFRlD4xgqZkvteDGw70NVG48LK/Ao1R1Ho/YQOeiQvzc7MRq76Bh+2EAxpIEzSjh
+	 ZmlDxgOdRYhagWgVMpzdRfqbNxMkZFh5Ga7bDv9qD/dxjn20UkZBe6SjTHdXeFxfmZ
+	 FjLvjJtjKVR0F+6A6bkSE/LHdW+yokJoU29olVgqiBIQk10+eBQU2Mb/QkSrSBjLJw
+	 m6Dkt6Nu2UDLl8JizT071BmQ2bqMpmNzx+CDRk8GMN8whmPctyid+VN8Nh/aRupdHY
+	 j6aokvNpOsntg==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-307bc125e2eso33914741fa.3;
+        Sun, 23 Feb 2025 07:45:30 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW6Pi4CYrYDgE6wgqIwEyPZxB1t438pDFKXrZu99uVTy/iCsVgQ/JENS7HFSzIkI68EMA+msk3tyirYoqwf@vger.kernel.org, AJvYcCX86skN5vD5Oifa3afzAj7owJC7+jXds6ROpYVcscI/n3Yx1g4sQAV+8kmgT7VI9vMOwEpIAX3GCblHAxdVEQ==@vger.kernel.org, AJvYcCXZa5ixDkM+QmlHt3Kef+gbHA2IiWcnWAQKEwRrosBw7fQjzx7bm1Q8Na0P+lFFrZq80wuT04lLygc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCktxkdx03BJOP0UUnXa9Gmd1Hn7fSgoQ060oe9OxoR2olFMjk
+	25hzTz+1l79kr8rKLgjou+4Hk74OUsBjsIGc22uAUyABMMsxGK5HJNB6zcL8NqbxcVQZUq0TRsY
+	irJB/zp/hD1HIa9lEhixRD+jXAfo=
+X-Google-Smtp-Source: AGHT+IFPMG1zOPXS0E5ESbB2FCi44a1GD+soKxuNdFM7CWZAbww6yk48RaVa8jHEiiIG+yMbKGz+XJIMUJAv4H6qa4s=
+X-Received: by 2002:a05:6512:ba5:b0:543:9a61:a2e5 with SMTP id
+ 2adb3069b0e04-54838ef78cemr4226110e87.23.1740325528840; Sun, 23 Feb 2025
+ 07:45:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2163:b0:3d0:237e:c29c with SMTP id
- e9e14a558f8ab-3d2cae8cf13mr114975415ab.12.1740308003656; Sun, 23 Feb 2025
- 02:53:23 -0800 (PST)
-Date: Sun, 23 Feb 2025 02:53:23 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67bafe23.050a0220.bbfd1.0017.GAE@google.com>
-Subject: [syzbot] [efi?] [fs?] BUG: unable to handle kernel paging request in efivarfs_pm_notify
-From: syzbot <syzbot+00d13e505ef530a45100@syzkaller.appspotmail.com>
-To: ardb@kernel.org, jk@ozlabs.org, linux-efi@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+References: <67bafe23.050a0220.bbfd1.0017.GAE@google.com>
+In-Reply-To: <67bafe23.050a0220.bbfd1.0017.GAE@google.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 23 Feb 2025 16:45:17 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXG1mhe1_eB0oeWukpA_FMTzH5F6zFFszpDTr_x2smvzig@mail.gmail.com>
+X-Gm-Features: AWEUYZlq56gSuDcK4AMca3N4fpNm-cMsBQvbloeKgU8qj87zK9lNdlTlqURLZ-8
+Message-ID: <CAMj1kXG1mhe1_eB0oeWukpA_FMTzH5F6zFFszpDTr_x2smvzig@mail.gmail.com>
+Subject: Re: [syzbot] [efi?] [fs?] BUG: unable to handle kernel paging request
+ in efivarfs_pm_notify
+To: syzbot <syzbot+00d13e505ef530a45100@syzkaller.appspotmail.com>
+Cc: jk@ozlabs.org, linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+#syz test:
+git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
 
-syzbot found the following issue on:
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -367,6 +367,8 @@ static int efivarfs_fill_super(struct super_block
+*sb, struct fs_context *fc)
+        if (err)
+                return err;
 
-HEAD commit:    a1c24ab82279 Merge branch 'for-next/el2-enable-feat-pmuv3p..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=127d53b8580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f6b108de97771157
-dashboard link: https://syzkaller.appspot.com/bug?extid=00d13e505ef530a45100
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-userspace arch: arm64
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17e7a7a4580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17457498580000
++       register_pm_notifier(&sfi->pm_nb);
++
+        return efivar_init(efivarfs_callback, sb, true);
+ }
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/9581dbc26f55/disk-a1c24ab8.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/50aec9ab8b8b/vmlinux-a1c24ab8.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/3a018984f8f5/Image-a1c24ab8.gz.xz
+@@ -552,7 +554,6 @@ static int efivarfs_init_fs_context(struct fs_context *fc)
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+00d13e505ef530a45100@syzkaller.appspotmail.com
+        sfi->pm_nb.notifier_call = efivarfs_pm_notify;
+        sfi->pm_nb.priority = 0;
+-       register_pm_notifier(&sfi->pm_nb);
 
-random: crng reseeded on system resumption
-Unable to handle kernel paging request at virtual address dfff80000000000d
-KASAN: null-ptr-deref in range [0x0000000000000068-0x000000000000006f]
-Mem abort info:
-  ESR = 0x0000000096000005
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x05: level 1 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[dfff80000000000d] address between user and kernel address ranges
-Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 1 UID: 0 PID: 6436 Comm: syz-executor261 Not tainted 6.14.0-rc3-syzkaller-ga1c24ab82279 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : efivarfs_pm_notify+0xcc/0x350 fs/efivarfs/super.c:480
-lr : efivarfs_pm_notify+0x8c/0x350 fs/efivarfs/super.c:477
-sp : ffff80009cba7260
-x29: ffff80009cba7300 x28: 0000000000000000 x27: 1fffe00019fdce21
-x26: dfff800000000000 x25: ffff700013974e4c x24: 0000000000000068
-x23: ffff80009cba7288 x22: 0000000000000005 x21: ffff80009cba7280
-x20: ffff80009cba7260 x19: ffff0000cfee7108 x18: ffff80009cba6e00
-x17: 000000000000d2a0 x16: ffff8000832b5a70 x15: 0000000000000001
-x14: 0000000000000000 x13: 0000000000000003 x12: ffff0000c2620000
-x11: ffff800082da568c x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : 000000000000000d x7 : 0000000000000000 x6 : 0000000000000000
-x5 : ffff800093813f70 x4 : 0000000000000002 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : 0000000000000005 x0 : ffff0000cfee7128
-Call trace:
- efivarfs_pm_notify+0xcc/0x350 fs/efivarfs/super.c:480 (P)
- notifier_call_chain+0x1c4/0x550 kernel/notifier.c:85
- notifier_call_chain_robust kernel/notifier.c:120 [inline]
- blocking_notifier_call_chain_robust+0xdc/0x1bc kernel/notifier.c:345
- pm_notifier_call_chain_robust+0x34/0x64 kernel/power/main.c:102
- snapshot_open+0x11c/0x270 kernel/power/user.c:87
- misc_open+0x2b8/0x328 drivers/char/misc.c:179
- chrdev_open+0x3b0/0x4bc fs/char_dev.c:414
- do_dentry_open+0xb7c/0x1538 fs/open.c:956
- vfs_open+0x48/0x2d8 fs/open.c:1086
- do_open fs/namei.c:3830 [inline]
- path_openat+0x2308/0x2b1c fs/namei.c:3989
- do_filp_open+0x1e8/0x404 fs/namei.c:4016
- do_sys_openat2+0x124/0x1b8 fs/open.c:1428
- do_sys_open fs/open.c:1443 [inline]
- __do_sys_openat fs/open.c:1459 [inline]
- __se_sys_openat fs/open.c:1454 [inline]
- __arm64_sys_openat+0x1f0/0x240 fs/open.c:1454
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
-Code: f940027c 9100a297 9101a398 d343ff08 (387a6908) 
----[ end trace 0000000000000000 ]---
-----------------
-Code disassembly (best guess):
-   0:	f940027c 	ldr	x28, [x19]
-   4:	9100a297 	add	x23, x20, #0x28
-   8:	9101a398 	add	x24, x28, #0x68
-   c:	d343ff08 	lsr	x8, x24, #3
-* 10:	387a6908 	ldrb	w8, [x8, x26] <-- trapping instruction
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+        return 0;
+ }
 
