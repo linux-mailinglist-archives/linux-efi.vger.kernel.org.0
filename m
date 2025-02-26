@@ -1,207 +1,128 @@
-Return-Path: <linux-efi+bounces-2831-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2832-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35390A46C30
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 21:19:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AAAA46DE3
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 22:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A713AA4EC
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 20:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB5DC188B865
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 21:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066C01527B4;
-	Wed, 26 Feb 2025 20:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A62238178;
+	Wed, 26 Feb 2025 21:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QjX6udSE"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ScVZNQw6"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C10C2755F8
-	for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2025 20:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141F62566FB
+	for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2025 21:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740601130; cv=none; b=tJ4UOarfKEXu5FCjP/O342+B484+gn+YZhrLp6c4zpJbor1JupLxx49KOBVZDsU3GDVu51ZraS/BScF1Nzde2di38i1mhn6r4G4CSlKuzbBfjTaIckAGRBd35jSmf23GaUHhKwTBdkN9qm0idQx1G7zm8VWcQVu/opEeepiYdfw=
+	t=1740606511; cv=none; b=AhlUc05p2i2ezgl/oxOIfT22YzwYLbYwcv1ZWYkAx6pWFntHCt7vR6lC9eCfSo2sCaZ5fzeCLEatQMpJGyFnj/+CNKTfI4ayAJFKO0cYQyQ4stgM+uFVEnYoDhpQzR5OCz1vlDbdRI6uwnybMWYZPjSmzGhiPWbrBErYN9E4y8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740601130; c=relaxed/simple;
-	bh=a6Gr2fGBsSIxKNBsdnR8AcB356TYiEQ2ev9BeMjs/7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uZfIMi6lw0dXsOlqicCHRN1C00QpSy12zGYsb9fsrpf/mGW4oUO0tYFps5PO2mTjrnrzdnT3Jt12acP9TaJLSBbFuCtKGz3CnoRvgBwPzs8SgR1tKjSt3Y0YPBYxVZv03iP9T70TNEDiyGFErIGOpQhpfxRm5RZzx8y7oPBL8rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QjX6udSE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740601128;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=DnRnPXT+HxB6Fa3LnjUopL2yefmMufyBefSBY059ozY=;
-	b=QjX6udSEOwEndUyPp6W+p6B/B5lB8Xf5uRKaRCalmxiMMrSlHQawxbjQwRaDE5s7J3Vdlf
-	e2Hm1wNoPoWsoBC//f6+Z4Zg1Zud3PTiD8CBDwiQO8pDM/JAHgxFOkF/IEUsVoHE/Aofhk
-	NOQ4+ANca+YgBuHcqwDc4YOo1mDThpY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-DoOsbRtPN8qMr5OBIIobMA-1; Wed,
- 26 Feb 2025 15:18:45 -0500
-X-MC-Unique: DoOsbRtPN8qMr5OBIIobMA-1
-X-Mimecast-MFC-AGG-ID: DoOsbRtPN8qMr5OBIIobMA_1740601124
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B20A418009A5;
-	Wed, 26 Feb 2025 20:18:42 +0000 (UTC)
-Received: from random.internal.datastacks.com (unknown [10.22.82.64])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9C5B7180035E;
-	Wed, 26 Feb 2025 20:18:41 +0000 (UTC)
-From: Peter Jones <pjones@redhat.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	Lenny Szubowicz <lszubowi@redhat.com>,
-	Peter Jones <pjones@redhat.com>
-Subject: [PATCH] efi: don't map the entire mokvar table to determine its size
-Date: Wed, 26 Feb 2025 15:18:39 -0500
-Message-ID: <20250226201839.2374631-1-pjones@redhat.com>
+	s=arc-20240116; t=1740606511; c=relaxed/simple;
+	bh=VSK4Vg5h78Ke8UP3GOYEWJO7vs6OZiTXzhp/791gLmA=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=tYJUzBMtdwuRcMzls9U3apqKpiES7rPgHcLWIQLcO60zKP8YuDS4KOVyqeMFh14GEpI6X0hZ0sqjnT6auIiMHElo7YOPYX4xIpNt4uVIzzMpYv0VZbFdkSGQtO0NpfNDrq7xtsgUPxD50v8jbK9kUqH8kQYnDbj/VPWes2HhtGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ScVZNQw6; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1740606507;
+	bh=VSK4Vg5h78Ke8UP3GOYEWJO7vs6OZiTXzhp/791gLmA=;
+	h=Message-ID:Subject:From:To:Date:From;
+	b=ScVZNQw6yAuVQHzv5bSs7CIErGxcZOrYbJwzg2+DpC+xaHcPn0GMpp5n4kifKTIfQ
+	 x5rLj2XsvYFmjkRf95MAzDoFNYcPsigbR/huDaCZSaiNflzlZX9+6dkUVsAkgGff8i
+	 W0ZQE9SbltEUYmwKHKwuxFKa+9RnVJAlVISBZ+6g=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id B7EC41C0BDB;
+	Wed, 26 Feb 2025 16:48:27 -0500 (EST)
+Message-ID: <63837c36eceaf8cf2af7933dccca54ff4dd9f30d.camel@HansenPartnership.com>
+Subject: [PATCH] efivarfs: allow creation of zero length files
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: linux-efi@vger.kernel.org
+Cc: Richard Hughes <richard@hughsie.com>, "ardb@kernel.org" <ardb@kernel.org>
+Date: Wed, 26 Feb 2025 16:48:26 -0500
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Currently when validating the mokvar table, we (re)map the entire table
-on each iteration of the loop, adding space as we discover new entries.
-If the table grows over a certain size, this fails due to limitations of
-early_memmap(), and we get a failure and traceback:
+Temporarily allow the creation of zero length files in efivarfs so the
+Linux Vendor Firmware Service can continue to operate. This hack should
+be reverted as soon as the LVFS mechanisms for updating firmware have
+been fixed.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 0 at mm/early_ioremap.c:139 __early_ioremap+0xef/0x220
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.12.15-200.fc41.x86_64 #1
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20250221-6.copr8698600 02/21/2025
-  RIP: 0010:__early_ioremap+0xef/0x220
-  Code: e5 00 f0 ff ff 48 81 e5 00 f0 ff ff 4c 89 6c 24 08 41 81 e4 ff 0f 00 00 4c 29 ed 48 89 e8 48 c1 e8 0c 41 89 c7 83 f8 40 76 04 <0f> 0b eb 82 45 6b ee c0 41 81 c5 ff 05 00 00 45 85 ff 74 36 83 3d
-  RSP: 0000:ffffffff96803dd8 EFLAGS: 00010002 ORIG_RAX: 0000000000000000
-  RAX: 0000000000000041 RBX: 0000000000000001 RCX: ffffffff97768250
-  RDX: 8000000000000163 RSI: 0000000000000001 RDI: 000000007c4c3000
-  RBP: 0000000000041000 R08: ffffffffff201630 R09: 0000000000000030
-  R10: 000000007c4c3000 R11: ffffffff96803e20 R12: 0000000000000000
-  R13: 000000007c4c3000 R14: 0000000000000001 R15: 0000000000000041
-  FS:  0000000000000000(0000) GS:ffffffff97291000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffff9f1d8000040e CR3: 00000000653a4000 CR4: 00000000000000f0
-  Call Trace:
-   <TASK>
-   ? __early_ioremap+0xef/0x220
-   ? __warn.cold+0x93/0xfa
-   ? __early_ioremap+0xef/0x220
-   ? report_bug+0xff/0x140
-   ? early_fixup_exception+0x5d/0xb0
-   ? early_idt_handler_common+0x2f/0x3a
-   ? __early_ioremap+0xef/0x220
-   ? efi_mokvar_table_init+0xce/0x1d0
-   ? setup_arch+0x864/0xc10
-   ? start_kernel+0x6b/0xa10
-   ? x86_64_start_reservations+0x24/0x30
-   ? x86_64_start_kernel+0xed/0xf0
-   ? common_startup_64+0x13e/0x141
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-  mokvar: Failed to map EFI MOKvar config table pa=0x7c4c3000, size=265187.
+LVFS has been coded to open a firmware file, close it, remove the
+immutable bit and write to it.  Since commit 908af31f4896 ("efivarfs:
+fix error on write to new variable leaving remnants") this behaviour
+results in the first close removing the file which causes the second
+write to fail.  To allow LVFS to keep working code up an indicator of
+size 1 if a write fails and only remove the file on that condition (so
+create at zero size is allowed).
 
-Mapping the entire structure isn't actually necessary, as we don't ever
-need more than one entry header mapped at once.
-
-This patch changes efi_mokvar_table_init() to only map each entry
-header, not the entire table, when determining the table size.  Since
-we're not mapping any data past the variable name, it also changes the
-code to enforce that each variable name is NUL terminated, rather than
-attempting to verify it in place.
-
-Signed-off-by: Peter Jones <pjones@redhat.com>
+Tested-by: Richard Hughes <richard@hughsie.com>
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 ---
- drivers/firmware/efi/mokvar-table.c | 41 +++++++++--------------------
- 1 file changed, 13 insertions(+), 28 deletions(-)
+This should be reverted in the 6.15 release
 
-diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
-index 5ed0602c2f7..66eb83a0f12 100644
---- a/drivers/firmware/efi/mokvar-table.c
-+++ b/drivers/firmware/efi/mokvar-table.c
-@@ -103,7 +103,6 @@ void __init efi_mokvar_table_init(void)
- 	void *va = NULL;
- 	unsigned long cur_offset = 0;
- 	unsigned long offset_limit;
--	unsigned long map_size = 0;
- 	unsigned long map_size_needed = 0;
- 	unsigned long size;
- 	struct efi_mokvar_table_entry *mokvar_entry;
-@@ -134,48 +133,34 @@ void __init efi_mokvar_table_init(void)
- 	 */
- 	err = -EINVAL;
- 	while (cur_offset + sizeof(*mokvar_entry) <= offset_limit) {
--		mokvar_entry = va + cur_offset;
--		map_size_needed = cur_offset + sizeof(*mokvar_entry);
--		if (map_size_needed > map_size) {
--			if (va)
--				early_memunmap(va, map_size);
--			/*
--			 * Map a little more than the fixed size entry
--			 * header, anticipating some data. It's safe to
--			 * do so as long as we stay within current memory
--			 * descriptor.
--			 */
--			map_size = min(map_size_needed + 2*EFI_PAGE_SIZE,
--				       offset_limit);
--			va = early_memremap(efi.mokvar_table, map_size);
--			if (!va) {
--				pr_err("Failed to map EFI MOKvar config table pa=0x%lx, size=%lu.\n",
--				       efi.mokvar_table, map_size);
--				return;
--			}
--			mokvar_entry = va + cur_offset;
-+		if (va)
-+			early_memunmap(va, sizeof(*mokvar_entry));
-+		va = early_memremap(efi.mokvar_table + cur_offset, sizeof(*mokvar_entry));
-+		if (!va) {
-+			pr_err("Failed to map EFI MOKvar config table pa=0x%lx, size=%zu.\n",
-+			       efi.mokvar_table + cur_offset, sizeof(*mokvar_entry));
-+			return;
- 		}
-+		mokvar_entry = va;
- 
- 		/* Check for last sentinel entry */
- 		if (mokvar_entry->name[0] == '\0') {
- 			if (mokvar_entry->data_size != 0)
- 				break;
- 			err = 0;
-+			map_size_needed = cur_offset + sizeof(*mokvar_entry);
- 			break;
- 		}
- 
--		/* Sanity check that the name is null terminated */
--		size = strnlen(mokvar_entry->name,
--			       sizeof(mokvar_entry->name));
--		if (size >= sizeof(mokvar_entry->name))
--			break;
-+		/* Enforce that the name is null terminated */
-+		mokvar_entry->name[sizeof(mokvar_entry->name)-1] = '\0';
- 
- 		/* Advance to the next entry */
--		cur_offset = map_size_needed + mokvar_entry->data_size;
-+		cur_offset += sizeof(*mokvar_entry) + mokvar_entry->data_size;
- 	}
- 
- 	if (va)
--		early_memunmap(va, map_size);
-+		early_memunmap(va, sizeof(*mokvar_entry));
- 	if (err) {
- 		pr_err("EFI MOKvar config table is not valid\n");
- 		return;
--- 
-2.48.1
+ fs/efivarfs/file.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/fs/efivarfs/file.c b/fs/efivarfs/file.c
+index cb1b6d0c3454..c294a8fc566d 100644
+--- a/fs/efivarfs/file.c
++++ b/fs/efivarfs/file.c
+@@ -57,10 +57,11 @@ static ssize_t efivarfs_file_write(struct file
+*file,
+=20
+ 	if (bytes =3D=3D -ENOENT) {
+ 		/*
+-		 * zero size signals to release that the write deleted
+-		 * the variable
++		 * FIXME: temporary workaround for fwupdate, signal
++		 * failed write with a 1 to keep created but not
++		 * written files
+ 		 */
+-		i_size_write(inode, 0);
++		i_size_write(inode, 1);
+ 	} else {
+ 		i_size_write(inode, datasize + sizeof(attributes));
+ 		inode_set_mtime_to_ts(inode,
+inode_set_ctime_current(inode));
+@@ -124,7 +125,8 @@ static int efivarfs_file_release(struct inode
+*inode, struct file *file)
+ 	struct efivar_entry *var =3D inode->i_private;
+=20
+ 	inode_lock(inode);
+-	var->removed =3D (--var->open_count =3D=3D 0 && i_size_read(inode)
+=3D=3D 0);
++	/* FIXME: temporary work around for fwupdate */
++	var->removed =3D (--var->open_count =3D=3D 0 && i_size_read(inode)
+=3D=3D 1);
+ 	inode_unlock(inode);
+=20
+ 	if (var->removed)
+--=20
+2.43.0
+
 
 
