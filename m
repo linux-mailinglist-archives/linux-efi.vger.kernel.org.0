@@ -1,128 +1,215 @@
-Return-Path: <linux-efi+bounces-2832-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2833-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AAAA46DE3
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 22:49:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 029ADA46E3C
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 23:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB5DC188B865
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 21:48:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863B41885108
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 22:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A62238178;
-	Wed, 26 Feb 2025 21:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C429A26BD83;
+	Wed, 26 Feb 2025 22:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="ScVZNQw6"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Nf3HlTkc"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2074.outbound.protection.outlook.com [40.107.94.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141F62566FB
-	for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2025 21:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740606511; cv=none; b=AhlUc05p2i2ezgl/oxOIfT22YzwYLbYwcv1ZWYkAx6pWFntHCt7vR6lC9eCfSo2sCaZ5fzeCLEatQMpJGyFnj/+CNKTfI4ayAJFKO0cYQyQ4stgM+uFVEnYoDhpQzR5OCz1vlDbdRI6uwnybMWYZPjSmzGhiPWbrBErYN9E4y8o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740606511; c=relaxed/simple;
-	bh=VSK4Vg5h78Ke8UP3GOYEWJO7vs6OZiTXzhp/791gLmA=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=tYJUzBMtdwuRcMzls9U3apqKpiES7rPgHcLWIQLcO60zKP8YuDS4KOVyqeMFh14GEpI6X0hZ0sqjnT6auIiMHElo7YOPYX4xIpNt4uVIzzMpYv0VZbFdkSGQtO0NpfNDrq7xtsgUPxD50v8jbK9kUqH8kQYnDbj/VPWes2HhtGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=ScVZNQw6; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1740606507;
-	bh=VSK4Vg5h78Ke8UP3GOYEWJO7vs6OZiTXzhp/791gLmA=;
-	h=Message-ID:Subject:From:To:Date:From;
-	b=ScVZNQw6yAuVQHzv5bSs7CIErGxcZOrYbJwzg2+DpC+xaHcPn0GMpp5n4kifKTIfQ
-	 x5rLj2XsvYFmjkRf95MAzDoFNYcPsigbR/huDaCZSaiNflzlZX9+6dkUVsAkgGff8i
-	 W0ZQE9SbltEUYmwKHKwuxFKa+9RnVJAlVISBZ+6g=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id B7EC41C0BDB;
-	Wed, 26 Feb 2025 16:48:27 -0500 (EST)
-Message-ID: <63837c36eceaf8cf2af7933dccca54ff4dd9f30d.camel@HansenPartnership.com>
-Subject: [PATCH] efivarfs: allow creation of zero length files
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: linux-efi@vger.kernel.org
-Cc: Richard Hughes <richard@hughsie.com>, "ardb@kernel.org" <ardb@kernel.org>
-Date: Wed, 26 Feb 2025 16:48:26 -0500
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A0326B95B;
+	Wed, 26 Feb 2025 22:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740607934; cv=fail; b=idg8nNQ1jHKVKyW9/iWVRz8DW2DTe4r68n/XwsUpVqTuvXfjkqtNR6vDEfe78NztP/Q7rSW/0l1lTky1pmRBC8ULVamuQwoK0pKOzfgBx9QaFqCm/6VjGTc8XRG0KI72qQpGupNA1CIgXdxE9NKJ568ziOFWSMcwbAZaVueId6U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740607934; c=relaxed/simple;
+	bh=hwUyM4njh4cOzXYWT3DVA5BzxB3mOlJ/W9tw1gUn+SQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZF/jwO0qc0n/JlmsLMH9rVG5jOC9TD2noBPVXi29Rl3MYcmWdH5bPgcmj8jd6kjL4aB4q4zfN+4gegjiX1hWmU9Z444UCsCAfc8fV8aJWVYaP2FuYXsrDLXp5RsdgdGmQQffL0fZqRKIA89fBB6FUT43zG8EzrAuebyB0iB6+a4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Nf3HlTkc; arc=fail smtp.client-ip=40.107.94.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=naz9pkjJ/wycxfYZM9YM9lB3ZE4SaKLDVvem7GFE9MGY/ZgYCyXMGABRz+aW4FfyzgyeajF5oXDIqjsVNuO39SuraK0kbBzjcLvKQ6bVsT33gLAGAJs6t2N+LheWCXmDjDDSF0NxcAhc3bmjmziLG+z+fem1oELz0cfRe0N19Ib3Ay71qoWypyzJ7c7m4EcXcdI3XPt4XIYHmxV1sDZa1Fn13+MFPW93BlPQGV6Z/fJptLMIvJpv7UrmSpeV3t4U1Sx/lqIveKri9raLGBgbNxiRKu73BvR7HMEiZNrZenRixm4XCMQau8TxBNSQFspDEOP6ny++xrMZg+P17hgS0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aY6CDvkfOchfnWgnYB2zpRg1IBAbWUnObA1PEMpsQHo=;
+ b=sk+zE5UzXmcqhTp9Jwa7aqDt4263XoVUKlltVPlU5k5f24dPpF9OSe+WBgOpnO4OCq9iFcsM9WcCISODMbiH6t3287JVlGhIudMR/OZB7M6h+uV18bo6/E/O8nzxeH33E4eRaX1KYA7TN4poDWW5xGlFkRlutpkTNRaiVP++dydw8X3QwWZ1yhW+uHeJq7XZKabSno2L16YBn8tYSYnwdZYIML7CscbvyWHRSHjOxOHRifmpYBKpJYigauDs9do3Ru3ppvY/LlkjJGNFy/wQ0Wv0Oq0XAguN5/g91IMooc9X6MKs7kk+UQ8yw5og3R0WCpGo+qNSygdVdWR0mEWq5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aY6CDvkfOchfnWgnYB2zpRg1IBAbWUnObA1PEMpsQHo=;
+ b=Nf3HlTkcdcbwZvbMh/v1YJJqZZW2s6XIbls2GsoVGW9/W6NEWEJ011ZQ2mgC/bjBcMfGrW5haNrcfollXNMkIabURn203eZuWGH5fS6QmGdfXgq1bpkQbcrdBnB+pWJWfkeLzX9ANaNiGKP1JbIdMMz6Nvb2ezbhELbcmFX6vqU=
+Received: from BL1PR13CA0357.namprd13.prod.outlook.com (2603:10b6:208:2c6::32)
+ by SJ1PR12MB6172.namprd12.prod.outlook.com (2603:10b6:a03:459::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Wed, 26 Feb
+ 2025 22:12:09 +0000
+Received: from BN1PEPF0000467F.namprd03.prod.outlook.com
+ (2603:10b6:208:2c6:cafe::83) by BL1PR13CA0357.outlook.office365.com
+ (2603:10b6:208:2c6::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.16 via Frontend Transport; Wed,
+ 26 Feb 2025 22:12:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN1PEPF0000467F.mail.protection.outlook.com (10.167.243.84) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8489.16 via Frontend Transport; Wed, 26 Feb 2025 22:12:08 +0000
+Received: from ethanolx50f7host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Feb
+ 2025 16:12:07 -0600
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+To: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>
+CC: Ard Biesheuvel <ardb@kernel.org>, Alison Schofield
+	<alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
+ Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Yazen Ghannam
+	<yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>, "Smita
+ Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>
+Subject: [PATCH v7 0/2] acpi/ghes, cper, cxl: Process CXL CPER Protocol errors
+Date: Wed, 26 Feb 2025 22:11:55 +0000
+Message-ID: <20250226221157.149406-1-Smita.KoralahalliChannabasappa@amd.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000467F:EE_|SJ1PR12MB6172:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69665647-2886-4412-6369-08dd56b29c90
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ngpnM336q24PkebbtTUvzQKzTZwy3Zxjkg1bfe7altb+c/VAN2Tf8/toh6/i?=
+ =?us-ascii?Q?E8f2p/ysWV/0wUNEyH7+pj2Jswq2RmY7dJolOHXPRkQDNqVYoulyZNOyInpr?=
+ =?us-ascii?Q?2EYLCbEfZOV5M4do8D8fAFcFTJYbzuhXkb8WNM6PRWrmABfIbKB3XWu5hMHR?=
+ =?us-ascii?Q?dZWZ0fjqyaLJS9Q6/6TmUi31XLmBWUwrUfizAIPtE0tE/zeHXH50J/UfD/MK?=
+ =?us-ascii?Q?ORa9N5cvzLdeFtXEROFXe1iM/mmmxC79SqdZJBdQCoglAJapb/F4ZRy3Sl9h?=
+ =?us-ascii?Q?ZQkjSPZCA7+nUN3THzt0L0PtXQ+Xi2GPqqHolPNPGhH637zTKPNeVoy5fVMa?=
+ =?us-ascii?Q?3o1yqVJmEwzZOHF7wyqeDmyY9KyDZyEad5gF+5nVTsiLb13yR3VPKj4xX7+e?=
+ =?us-ascii?Q?5Yn6G3FuQnLHGBWmi3thdaojHUQk9ENfP0Lqk/+2JJX0j4qq0UW9V+6Ccx9Y?=
+ =?us-ascii?Q?88/Z2Y7L3yxJNDtooEhxEzrY3LMKIYD3NxAm4BqEVcsjDoG/pbzQHM5zHRy4?=
+ =?us-ascii?Q?1Rh3WBBw49hxcw1F36za07Z6VJnbftmEBJch78PaNAyfh+DJ0HdUcBNJrRnR?=
+ =?us-ascii?Q?l8F65FvMcz5FgXc2xH7XcLa6qV7sCClfBx1EkQbIjwGVMvuyG6y+0FQAwadV?=
+ =?us-ascii?Q?l3NZNRQ+SF9cLNeIVhqviswamsEgjKm5lZQ6Xy+4+koDjCkcdvgwdxJLOWAS?=
+ =?us-ascii?Q?vaeJ9P1+QLQo32J9ptbRTk1zSuiY3hPi/BQISJe9sCiYcvcKIM6t+1cmzpqT?=
+ =?us-ascii?Q?FI7ammB/DwQ1/8fkjgvII/fa5kgt4XrgFzMs+k9aMJzhsguSXNbmRj3789nV?=
+ =?us-ascii?Q?9zmmqw7+CpbStiwXrpxF69rjpddxvWywzObLhaYeL3DsfYZV2wsbWnojeYpY?=
+ =?us-ascii?Q?idx9KmAQcdVy9E13oStgAJSJBFeBIXJyL7sCvLnTwvuDyvSvJzF3pj83Izb4?=
+ =?us-ascii?Q?4C95lYTfRCRmX8Hf9taNgIt8S2yuf9RddmHG49HfcSMo41pagy7PoplxCzxz?=
+ =?us-ascii?Q?Cr9rDXNQenpHrf7nV7u7Ts+PBAV7QrCzYxmkXiP7HhnGc+crfPKAY953DUfE?=
+ =?us-ascii?Q?Yd9oQbFj5tjBLMC8EwfJSGW0GjMJKm637GoBzQLFXfLbk7dQf4hO4E72G2Ej?=
+ =?us-ascii?Q?ZHD2IV5RpLKRDx/QLCAs62tUornL3aFFg8ICYW7TMy+BL80ccC/x70575zPx?=
+ =?us-ascii?Q?vzBOoz/eo2TB83ylfyTVCoOEIpsfLRsedeRZCCkqsLpWUg6lMM+k8PsCoIe5?=
+ =?us-ascii?Q?wzVP0lgczlE8MBiXvE37EvQ4PatPRTbtPhfRaINIOpvC6TsarZs1zESjyl2N?=
+ =?us-ascii?Q?g8j7BWP2QlhJxdXhg3XCIJl8ZvfmCWcl7BWnfCoBv1rPrzTmO6ynjypPw3GJ?=
+ =?us-ascii?Q?WpKd3pVWUHLh7wKTpIeixQwhpZVI8ADTTeoD0DiHjSMLTZpyRM+jihXPUKxc?=
+ =?us-ascii?Q?/JlOg0u7XevX/dKC4vZwVj+lS6Af9OaWLEWyBO9+dKf+E6QE9RASqehhiRTI?=
+ =?us-ascii?Q?8wjFTHlX67n1qnU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 22:12:08.6729
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69665647-2886-4412-6369-08dd56b29c90
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0000467F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6172
 
-Temporarily allow the creation of zero length files in efivarfs so the
-Linux Vendor Firmware Service can continue to operate. This hack should
-be reverted as soon as the LVFS mechanisms for updating firmware have
-been fixed.
+This patchset adds logging support for CXL CPER endpoint and port Protocol
+errors.
 
-LVFS has been coded to open a firmware file, close it, remove the
-immutable bit and write to it.  Since commit 908af31f4896 ("efivarfs:
-fix error on write to new variable leaving remnants") this behaviour
-results in the first close removing the file which causes the second
-write to fail.  To allow LVFS to keep working code up an indicator of
-size 1 if a write fails and only remove the file on that condition (so
-create at zero size is allowed).
+Based on top of cxl-next.
 
-Tested-by: Richard Hughes <richard@hughsie.com>
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
-This should be reverted in the 6.15 release
+Link to v6:
+https://lore.kernel.org/linux-cxl/20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com
 
- fs/efivarfs/file.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Changes in v6 -> v7:
+Reworked to move registration and protocol error handling into a new
+file inside CXL core. (cxl/core/ras.c).
 
-diff --git a/fs/efivarfs/file.c b/fs/efivarfs/file.c
-index cb1b6d0c3454..c294a8fc566d 100644
---- a/fs/efivarfs/file.c
-+++ b/fs/efivarfs/file.c
-@@ -57,10 +57,11 @@ static ssize_t efivarfs_file_write(struct file
-*file,
-=20
- 	if (bytes =3D=3D -ENOENT) {
- 		/*
--		 * zero size signals to release that the write deleted
--		 * the variable
-+		 * FIXME: temporary workaround for fwupdate, signal
-+		 * failed write with a 1 to keep created but not
-+		 * written files
- 		 */
--		i_size_write(inode, 0);
-+		i_size_write(inode, 1);
- 	} else {
- 		i_size_write(inode, datasize + sizeof(attributes));
- 		inode_set_mtime_to_ts(inode,
-inode_set_ctime_current(inode));
-@@ -124,7 +125,8 @@ static int efivarfs_file_release(struct inode
-*inode, struct file *file)
- 	struct efivar_entry *var =3D inode->i_private;
-=20
- 	inode_lock(inode);
--	var->removed =3D (--var->open_count =3D=3D 0 && i_size_read(inode)
-=3D=3D 0);
-+	/* FIXME: temporary work around for fwupdate */
-+	var->removed =3D (--var->open_count =3D=3D 0 && i_size_read(inode)
-=3D=3D 1);
- 	inode_unlock(inode);
-=20
- 	if (var->removed)
---=20
-2.43.0
+Changes in v5 -> v6:
+[Dave, Jonathan, Ira]: Reviewed-by tags.
+[Dave]: Check for cxlds before assigning fe.
+Merge one of the patches (Port error trace logging) from Terry's Port
+error handling.
+Rename host -> parent.
 
+Changes in v4 -> v5:
+[Dave]: Reviewed-by tags.
+[Jonathan]: Remove blank line.
+[Jonathan, Ira]: Change CXL -> "CXL".
+[Ira]: Fix build error for CONFIG_ACPI_APEI_PCIEAER.
+
+Changes in v3 -> v4:
+[Ira]: Use memcpy() for RAS Cap struct.
+[Jonathan]: Commit description edits.
+[Jonathan]: Use separate work registration functions for protocol and
+component errors.
+[Jonathan, Ira]: Replace flags with separate functions for port and
+device errors.
+[Jonathan]: Use goto for register and unregister calls.
+
+Changes in v2 -> v3:
+[Dan]: Define a new workqueue for CXL CPER Protocol errors and avoid
+reusing existing workqueue which handles CXL CPER events.
+[Dan] Update function and struct names.
+[Ira] Don't define common function get_cxl_devstate().
+[Dan] Use switch cases rather than defining array of structures.
+[Dan] Pass the entire cxl_cper_prot_err struct for CXL subsystem.
+[Dan] Use pr_err_ratelimited().
+[Dan] Use AER_ severities directly. Don't define CXL_ severities.
+[Dan] Limit either to Device ID or Agent Info check.
+[Dan] Validate size of RAS field matches expectations.
+
+Changes in v2 -> v1:
+[Jonathan] Refactor code for trace support. Rename get_cxl_dev()
+to get_cxl_devstate().
+[Jonathan] Cleanups for get_cxl_devstate().
+[Alison, Jonathan]: Define array of structures for Device ID and Serial
+number comparison.
+[Dave] p_err -> rec/p_rec.
+[Jonathan] Remove pr_warn.
+
+Smita Koralahalli (2):
+  acpi/ghes, cxl/pci: Process CXL CPER Protocol Errors
+  cxl/pci: Add trace logging for CXL PCIe Port RAS errors
+
+ drivers/acpi/apei/ghes.c  |  49 +++++++++++++++
+ drivers/cxl/core/Makefile |   1 +
+ drivers/cxl/core/core.h   |   3 +
+ drivers/cxl/core/port.c   |   7 +++
+ drivers/cxl/core/ras.c    | 122 ++++++++++++++++++++++++++++++++++++++
+ drivers/cxl/core/trace.h  |  47 +++++++++++++++
+ include/cxl/event.h       |  15 +++++
+ 7 files changed, 244 insertions(+)
+ create mode 100644 drivers/cxl/core/ras.c
+
+-- 
+2.17.1
 
 
