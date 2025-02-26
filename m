@@ -1,108 +1,105 @@
-Return-Path: <linux-efi+bounces-2829-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2830-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF039A46043
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 14:09:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B67FAA462D0
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 15:31:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3F473A8FCD
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 13:09:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14EBC177006
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Feb 2025 14:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943DC1891A9;
-	Wed, 26 Feb 2025 13:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730A822170B;
+	Wed, 26 Feb 2025 14:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="s8eQwiR/"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hughsie.com header.i=@hughsie.com header.b="HvKK5eBr"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+Received: from mail-4022.protonmail.ch (mail-4022.protonmail.ch [185.70.40.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FCC13EFE3
-	for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2025 13:09:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9892222AC
+	for <linux-efi@vger.kernel.org>; Wed, 26 Feb 2025 14:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740575363; cv=none; b=TgudnToaT6fdoCMQJNDm7SecU+vn9f3lMyteXH2IXZHJ8SRoHfj1hGc7OI0f5BENkI+UrU71p+4f4rHPblN3W1row0D6RpuvkebSBpAwVcphANym/pVEUWmB4Rp3g9lspIsGprxKXg54LJXvduAib94Ia2czRUrT/qxH4BAks+8=
+	t=1740580086; cv=none; b=PY9T4X/qLoi5KhCpX9jIm5uGChgdA/TU3h73KIc7fKKF+WQRwB43H2KCU7WmA8/zVf3aKSHG2zKyE27y68XhEzi/bbzk1tdFdBwLgjOcnYPLNHEeokE4td+jiP0ML42dUawKOSyWuBIITxZNjS4tnvfU8IKrGw2zopgVr462nNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740575363; c=relaxed/simple;
-	bh=uIyUSljdr0K6UKjsNEAZbjqRMbXyoWohlgLxxYRx7U0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uu++iFNS1J58wBOawaZSsaoKmQOhBbZH4xLqA3ySH8MankGFduowwPIhgXZbUiMd+pO9fiTtjEgM7Y/MDvkkhOCh44XizXiKfyT5cKGhFUNvlw4AyZyy4lWay7kqiF2iR70FdV9jO/Jtgu9DCwKKcoQIYPa3/VLHNpGLi2Wo5lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=s8eQwiR/; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1740575360;
-	bh=uIyUSljdr0K6UKjsNEAZbjqRMbXyoWohlgLxxYRx7U0=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=s8eQwiR/zshf4DGXMvOWWefMQac+jGO2rKDXNhA6u7rmWqqPZHYTC0VFwAtAtMefx
-	 cy/5lWlKZdONcPuzAZwJUg78Z/urr1TnLF8K6SAvQopHnnRFPfcVBCfUsfyxjTN4Bw
-	 Zkx1aPCUD5oPn6TixUL7PGZc9ZzB+rK9hSCOjebM=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 565BF1C0871;
-	Wed, 26 Feb 2025 08:09:20 -0500 (EST)
-Message-ID: <4c60f747aaffe1b0323ec5103cdb32ab19c3b04d.camel@HansenPartnership.com>
+	s=arc-20240116; t=1740580086; c=relaxed/simple;
+	bh=UkzS8/j0EF+ZpsnCWDoKKd9UmMOsQt3K1CInLN7sSo8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s7wceVDUNx8qw6AQlpf6wdZwh6DP5pe67dmmPUMJIpuStyeY2cRK8AYn+1A3DiQjuNqwtj+C2rTkfKzC1QsWTo69kka1RoFOMk4XHoKNBHNXBcwXmqfEx5OssHKqnZf88OyoxvFQ0dJppUCy5be7b2kU2NXQjUw1rynm87x4dus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hughsie.com; spf=pass smtp.mailfrom=hughsie.com; dkim=pass (2048-bit key) header.d=hughsie.com header.i=@hughsie.com header.b=HvKK5eBr; arc=none smtp.client-ip=185.70.40.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hughsie.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hughsie.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hughsie.com;
+	s=protonmail2; t=1740580075; x=1740839275;
+	bh=UkzS8/j0EF+ZpsnCWDoKKd9UmMOsQt3K1CInLN7sSo8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=HvKK5eBra76BffNFhQLAWcXzs7gB2NcP29PgUXsHctvYPE3Lws0sBzPSrsBz3qZLe
+	 pfZNFI6l4t4SXEwbaXgQX9GKUveg0VKLHf9zv0HxRfeOdErefWyWqENmCrjfU7IUh+
+	 SMw5v6+pCOohFigANcncBWyHM+uUqvadcGM7HwKZlWNLLfdXxafxTrZrkrJ9K9qz+x
+	 hy81VWTsk2Kf7l0rkNNvptAp3AmL19TRSyrjfiwlI7YRGwwd9RXbzVOrDIqKSWHouY
+	 hfISKcczjLKuPoWMQETvEH5j5afxve2nLDKDI/ZV27Z0E0unUFilDxN7Pr9zWfjR3K
+	 XMtSYCotQiL5Q==
+Date: Wed, 26 Feb 2025 14:27:48 +0000
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+From: Richard Hughes <richard@hughsie.com>
+Cc: linux-efi@vger.kernel.org, "ardb@kernel.org" <ardb@kernel.org>
 Subject: Re: efivarfs: fix error on write to new variable leaving remnants
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Richard Hughes <richard@hughsie.com>, linux-efi@vger.kernel.org
-Date: Wed, 26 Feb 2025 08:09:19 -0500
-In-Reply-To: <CAMj1kXGsZVAWmG7NV+6fevvZy6RwEXrw2avT1EBRWjn5Kk_hvw@mail.gmail.com>
-References: 
-	<SBFUY-p4-fI9JOrQa51x141vKHs_rbFLw4q9kfPGAK8Z76PQfgYl6zM3nUjlOeIPY6PgEhqLFaSJkW0vdBVzET3MDYUBZwzmYCJuNK4TaYU=@hughsie.com>
-	 <ffd953c76d3a0bc0f88aeb319589632e8da032dc.camel@HansenPartnership.com>
-	 <CAMj1kXGsZVAWmG7NV+6fevvZy6RwEXrw2avT1EBRWjn5Kk_hvw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+Message-ID: <9ziS2HeSBUHZ8sb4nJ3yo6Jymg5oFq2sw3AAOXHFrtaa9YK8M9liyjvOCx4qMg-ga9AV2XaXTdRsA6WQykLHnF3PRq2uygywmyZ5-ItXgVM=@hughsie.com>
+In-Reply-To: <ffd953c76d3a0bc0f88aeb319589632e8da032dc.camel@HansenPartnership.com>
+References: <SBFUY-p4-fI9JOrQa51x141vKHs_rbFLw4q9kfPGAK8Z76PQfgYl6zM3nUjlOeIPY6PgEhqLFaSJkW0vdBVzET3MDYUBZwzmYCJuNK4TaYU=@hughsie.com> <ffd953c76d3a0bc0f88aeb319589632e8da032dc.camel@HansenPartnership.com>
+Feedback-ID: 110239754:user:proton
+X-Pm-Message-ID: 3acbd84e8507d2783365b36efa797d5172b222c6
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2025-02-26 at 12:30 +0100, Ard Biesheuvel wrote:
-> On Tue, 25 Feb 2025 at 13:59, James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-[...]
-> > Reading the code in the fix, it looks like you were creating a file
-> > in EFI (which is naturally zero length), then closing it (because
-> > glib gio specifically has an API for this), then clearing the
-> > immutable bit and then writing to it to actually create a variable?
-> > 
-> > However, none of that dance is at all required.  A newly created
-> > file naturally allows writing on the file descriptor you used to
-> > create it. It's only if you open it again that the entry becomes
-> > immutable.
-> 
-> Should we be doing this in the first place? It makes sense for
-> efivarfs to mark variables that it doesn't know about as immutable if
-> they are present at boot - the original rationale here was systems
-> with buggy firmware, where an inadvertent 'rm -r
-> /sys/firmware/efivars/*' would brick the device.
-> 
-> But the fact that a newly created file becomes immutable once you
-> close and reopen it seems unnecessarily strict to me.
-> 
-> (I am aware that this is orthogonal to the issue at hand, but it is
-> something we might fix nonetheless)
+On Tuesday, 25 February 2025 at 12:59, James Bottomley <James.Bottomley@Han=
+senPartnership.com> wrote:
+> Reading the code in the fix, it looks like you were creating a file in
+> EFI (which is naturally zero length), then closing it (because glib gio
+> specifically has an API for this), then clearing the immutable bit and
+> then writing to it to actually create a variable?
 
-Well, I've always thought it was silly ever since it was introduced:
+Correct.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ed8b0de5a33d2a2557dce7f9429dca8cb5bc5879
+> However, none of that dance is at all required. A newly created file
+> naturally allows writing on the file descriptor you used to create it.
 
-The rationale it was because root could brick their system by doing rm
--fr never made any sense, since if root is going to do rm -fr they're
-asking to become unbootable anyway.
+Yes, the original code was ported from libefivar iirc, hence why it's not e=
+xactly idiomatic.
 
-All of us who have code that manipulates the variables simply added
-remove immutable flag code like the above.  If it does get removed,
-efivarfs will still need to respond to get/setfsxattr though to make
-sure that code keeps working, so it can't be a clean revert.
+> It's only if you open it again that the entry becomes immutable. So
+> your update has the correct logic: if file exists clear immutable and
+> write otherwise add O_CREAT.
 
-Regards,
+Agree.
 
-James
+> The change is rather embedded in a set of other fixes now. If we
+> wanted a temporary and quickly removable work around for the current
+> kernel, I think using i_size to signal whether the file is newly
+> created and not written (0) or failed a write (1) and only removing the
+> file if it failed a write might be a simple two line fix. That way we
+> still keep the benefit of cleanup on a failed write while not impacting
+> your pattern.
+> Can you confirm this has that effect?
+
+The fixup does seem to work so please feel free to add "Tested-by: Richard =
+Hughes <richard@hughsie.com>" -- you can revert it after a few months if yo=
+u like. It'll certainly take the pressure off, and we have a "known issue" =
+we can use on the LVFS for people reporting problems: https://github.com/fw=
+upd/fwupd/wiki/LVFS-Triaged-Issue:-Linux-6.14-efivarfs-regression
+
+Thanks!
+
+Richard.
 
 
