@@ -1,91 +1,111 @@
-Return-Path: <linux-efi+bounces-2839-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2840-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409DCA47A50
-	for <lists+linux-efi@lfdr.de>; Thu, 27 Feb 2025 11:29:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D63A47AFC
+	for <lists+linux-efi@lfdr.de>; Thu, 27 Feb 2025 11:58:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14E8D7A0744
-	for <lists+linux-efi@lfdr.de>; Thu, 27 Feb 2025 10:28:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33FE11891117
+	for <lists+linux-efi@lfdr.de>; Thu, 27 Feb 2025 10:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B634C228C99;
-	Thu, 27 Feb 2025 10:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F9522A4D8;
+	Thu, 27 Feb 2025 10:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZlOxCYy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ajZ1sRb4"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91933227EB2
-	for <linux-efi@vger.kernel.org>; Thu, 27 Feb 2025 10:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786491DC997;
+	Thu, 27 Feb 2025 10:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740652182; cv=none; b=mBjmOkc6O8s4i29ve9jdR8wZWUHwmJZPkTviYLG5AmHxxnBXkOmVI/wNYI/CGGz4UEGuQc4Eyy6HKH7PhVzG3TbudUO8wZDkKCUvMRFJR5B6eRweQGTcNuY2EWd2m5D3NgfzvW0VD0NXR2ElHPbEh1GLlV1peMwqqcBFFxAVvvg=
+	t=1740653861; cv=none; b=QBlyempMreOQ0w5ogdK0HObiX/0iG2hZsYXxAEFrfUoy5EgRKqmPvupdHiOkJsY2yeEdUYCTD1RAjPt+vVUdAq3/qltjvO9elhRrBy2p6k6pdw2upX9wzhIukVLTsR5cI3zJ2cOOweEHnijignWtjwm0WOIm+NnqFs3aCrHI8R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740652182; c=relaxed/simple;
-	bh=aQ9w2vqwJpvxqXhWn8pylIr0UfFSffhXnosGhT8iLOI=;
+	s=arc-20240116; t=1740653861; c=relaxed/simple;
+	bh=zKmpACgApZGDf+VVI+CD4Rv/C4u2prcVyBajdqkzEAY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jLKQdihiwoWmk7AEgBE+iZTFB2Pvotm6kisyINQdl4boBu1a0uKhbzY+b1KGV6FmkMCIcB8DOVtN4K7GkLB4Gzy/4fp9rPwZ5md47tmFPqgTKtECorxNWOXg+mA0CrWFB6qCLmVosRkcqvTIscq2n8HMczdTytifBNr6l7Jx4Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZlOxCYy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02407C4CEE4
-	for <linux-efi@vger.kernel.org>; Thu, 27 Feb 2025 10:29:41 +0000 (UTC)
+	 To:Cc:Content-Type; b=rMLHJwP9OPRCxgW2EDbcBMlM0t/iGaA5l0Z+kdS/qN7D6V+NO+uLzRJ0rEwQ1oBYsvApOkUQQWuV2VLOZeOUX4vXt7pDw1zn0qBpX09yCwZKwlYyzxkb2K3dWFE1xkvkAIOnGW+UNxu9R07rJ8mEieq4KHr+D9M9Ino5yXSN9HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ajZ1sRb4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF557C4CEEA;
+	Thu, 27 Feb 2025 10:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740652182;
-	bh=aQ9w2vqwJpvxqXhWn8pylIr0UfFSffhXnosGhT8iLOI=;
+	s=k20201202; t=1740653860;
+	bh=zKmpACgApZGDf+VVI+CD4Rv/C4u2prcVyBajdqkzEAY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XZlOxCYy3ufGxVyJ2vPsXjX/XurfP/EURN4rX0Mhd4ye+JyENSifiZCDA5PuUVryJ
-	 Q1GArf9a07kV9KzXN5d3FAl0kF8x+RgD6S7xbnC2eYZAkGCqT4l1JCnJMD5Kp4xY7y
-	 g0vksc2+oOAAaH9sjcPi4zkbWo+EC5w4HtT+0mIOaftzpBY6hESsw3RtZswLw0k2T9
-	 e6kdjCz3v24ztoU+jpBzaY1X9hiSYJt+bwvIuMVyVNmlOI92u6ZrXGdFT4IuIHeOcq
-	 q+KCbqjAknjyIaVRLBUN+6IoPu3PYQnxesGC3XCpCHV0rRJlsEy3VocyXs6tK2R+lZ
-	 cDm29/mdDZzaQ==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-54605bfcc72so2224223e87.0
-        for <linux-efi@vger.kernel.org>; Thu, 27 Feb 2025 02:29:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV/qVPeeWSdElGOzgHlFHjcWyl+amJOkyhucdkMy8Y/qjDIpp8o2Jxkfl5XTzi4TWxoGPcdqhd7wuI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXAcuqsdIJyeny0zyhryXWQYaoj07LSqnrq1em0KLgNWf4Ps/1
-	fOw8WxgCCwGl2MBvCQUkRuBq3C1J5GGNZwcINlJ4n/AzsRU7Sy5rHs52RXw1PaYnbn8bCfw2BSv
-	uoT+dqSb/ES07sOxb1HReiVYMcz8=
-X-Google-Smtp-Source: AGHT+IGPtOot3yAXLwDaCmB+rL2dXfd1qe5vUM+NsanrGMDwgKgyJcuwldZg97DB1iZHgl3MXolsmEIDwn4sMABSTtA=
-X-Received: by 2002:ac2:4f03:0:b0:546:1ea9:6230 with SMTP id
- 2adb3069b0e04-549432ccb0dmr1004514e87.1.1740652180324; Thu, 27 Feb 2025
- 02:29:40 -0800 (PST)
+	b=ajZ1sRb4WGbQlMkMnR5NUXYlyL3JVy5W/qWCQJQAJL/+jcVEd7DMC21IS5nFWnlv/
+	 ptP10ao67t+cs2AqdFrsYxWx4vUZJDGeWQ8bw3gkWFmWLLXHmwcpA7Z7Q3+raxeZym
+	 4h47DKowUE59La+k13AyRQns759eEztKNdfTOU0s75K4ga/ZK0Ksi8b+XQQZvtMsLj
+	 WRwWypYzoYOTcdzZzhggGU3EZ7WgABGOStkxv/G/wGdF59Re3akC4uk5e5hNMno1r1
+	 pp58hZMc7NMGj9ZCORnJBFp7Ok7EOVrBiKs+w8Ma0pA0unj5QO1RcMU/sgsT7jFIno
+	 pc2sqwwn3hSLQ==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-545284eac3bso670044e87.0;
+        Thu, 27 Feb 2025 02:57:40 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVDrYV2RD9lGqwvcOBPKecZXHyyCxYfVKLfChMaX6irVnXvKmL9atM6+rB37+TgruV2xut9tB2xLskl0pA+@vger.kernel.org, AJvYcCXnLAKpwC+2DdoT9JqW5DMxlf3v3bJKAv2bIkVRmi3zF87yGQ9msYr0FW3w5tfqQDmSG5Yczsjm4vc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy920Fx2V0qC9p/lhvwB6hRPZ5z6yMI2eOEhktXGlLRt5igX0Ux
+	ZQCBVO1A4XMW4V5kW3mH2kJKxPyKfKRckXPpHPxlt/98Qqek3wHLm09vHvk/gmDj0TbepPrMCdV
+	qKMp10y8+vHcK7fo7CHfwH27b+1s=
+X-Google-Smtp-Source: AGHT+IHCNs4mhzQpOJmEg+Z4O/xKEexEtXl4q3kKZgwS/e6iNYNl47Lg0JFc8Q620FD7wUA0kPo2yMqNj/LZfJwKk8I=
+X-Received: by 2002:a05:6512:104d:b0:545:2e76:495c with SMTP id
+ 2adb3069b0e04-5493c57a8camr3793713e87.25.1740653859248; Thu, 27 Feb 2025
+ 02:57:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <63837c36eceaf8cf2af7933dccca54ff4dd9f30d.camel@HansenPartnership.com>
- <CAMj1kXFqFHZHntOp78wmhpBzTMoCcSQXVDd1yOVv3Z3VpRj0pw@mail.gmail.com> <NIeHAFFHF2oBnFOiEzczq-JCgaJIzUEcexhq-mAxNYqhqxjnFILSFxotUBWDw6n-uOq34hV4hyKOd5BZzFXxQslovRvatHJAjQOK1GiHuqA=@hughsie.com>
-In-Reply-To: <NIeHAFFHF2oBnFOiEzczq-JCgaJIzUEcexhq-mAxNYqhqxjnFILSFxotUBWDw6n-uOq34hV4hyKOd5BZzFXxQslovRvatHJAjQOK1GiHuqA=@hughsie.com>
+References: <20250210174941.3251435-9-ardb+git@google.com> <CAMj1kXHOqMM5uGxLTYuEf9KrxY5WzYvwo847JzoB-Qa2SN67Sg@mail.gmail.com>
+ <20250220124831.GFZ7cknypjWiZoZzK5@fat_crate.local> <CAMj1kXEkkShwDfbwJ5abc9Q+LaqbvTNh1O5rVXy3EW85DdYTuQ@mail.gmail.com>
+ <2d4924d6-1ae3-4993-a6b0-aae6f00bab88@redhat.com>
+In-Reply-To: <2d4924d6-1ae3-4993-a6b0-aae6f00bab88@redhat.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 27 Feb 2025 11:29:28 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHFgqTZ_ib2QMbPT7aqU0PndYGhX1tz8Qvgp=-imMjSdw@mail.gmail.com>
-X-Gm-Features: AQ5f1Jri7Rl9bXDEeYmxWgnM7uQXGVsxVKHlrTt8YvAnK_nJTGOXxWza2SxVnyA
-Message-ID: <CAMj1kXHFgqTZ_ib2QMbPT7aqU0PndYGhX1tz8Qvgp=-imMjSdw@mail.gmail.com>
-Subject: Re: [PATCH] efivarfs: allow creation of zero length files
-To: Richard Hughes <richard@hughsie.com>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, linux-efi@vger.kernel.org
+Date: Thu, 27 Feb 2025 11:57:28 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGmqcTy7a8hTxRgeNpLT4tu_660Wx+o0FJbynB-a_ZsWA@mail.gmail.com>
+X-Gm-Features: AQ5f1JoT20AKU9XGXKKaeIqG0K4DhE3kTw3XvvmQi-cn5DDU2wPKf39ic3Olcbc
+Message-ID: <CAMj1kXGmqcTy7a8hTxRgeNpLT4tu_660Wx+o0FJbynB-a_ZsWA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] x86/efi/mixed: Decouple from legacy decompressor
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-> On Thursday, 27 February 2025 at 07:54, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Thu, 20 Feb 2025 at 14:38, Hans de Goede <hdegoede@redhat.com> wrote:
 >
-
-> > Thanks James. Mind resending this with a MUA that doesn't mangle patches?
+> Hi Ard,
+>
+> On 20-Feb-25 1:54 PM, Ard Biesheuvel wrote:
+> > On Thu, 20 Feb 2025 at 13:48, Borislav Petkov <bp@alien8.de> wrote:
+> >>
+> >> On Thu, Feb 20, 2025 at 12:29:30PM +0100, Ard Biesheuvel wrote:
+> >>> Unless anyone minds, I'd like to queue this up in the EFI tree.
+> >>>
+> >>> Boris, Ingo?
+> >>
+> >> FWIW, it looks like a nice cleanup to me and it boots in my 64-bit OVMF guest
+> >> but that doesn't mean a whole lot.
+> >>
 > >
-
-On Thu, 27 Feb 2025 at 09:40, Richard Hughes <richard@hughsie.com> wrote:
+> > Thanks. For the record, I tested this both on 32-bit OVMF and on a
+> > mixed mode tablet (with 32-bit AMI firmware) that I keep for testing
+> > purposes. Notably, 32-bit OVMF boots with paging (and PAE) enabled
+> > whereas the AMI firmware doesn't.
 >
-> Also, a tiny nit -- "fwupd" is the program that actually deploys the capsule updates -- the "LVFS" is just the webservice that vendors upload firmware to. Thanks.
+> Ah good to know that you're still using the mixed-mode tablet
+> for testing.
 >
 
-Never mind - I fixed up the patch by hand, and replaced LVFS with
-fwupd in the commit message.
+Yes, thanks again for sending me that thing - it has been quite
+useful. I bricked my mixed mode iMac24, but that thing is just too old
+now anyway.
 
-Unless more time is needed, I will queue the revert of this patch for v6.15
+> I've just added this series to my personal kernel testing-tree which
+> I regularly boot on various models of these kinda tablets. I'll let
+> you know if I hit any problems.
+>
 
-And for the record, I checked the libefivar sources, and there the
-problem does not appear to exist.
+Thanks. These changes are in -next now, so that give some more
+coverage until the next merge window.
 
