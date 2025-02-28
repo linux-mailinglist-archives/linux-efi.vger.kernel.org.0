@@ -1,214 +1,425 @@
-Return-Path: <linux-efi+bounces-2860-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2861-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBC2A49B87
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2025 15:12:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A80AA49D87
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2025 16:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 605FC3B2C7F
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2025 14:11:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26EBA1899328
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Feb 2025 15:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9846226E970;
-	Fri, 28 Feb 2025 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6338F12CDAE;
+	Fri, 28 Feb 2025 15:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RqFyqPgU"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vKo+YcgI"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B506426E174;
-	Fri, 28 Feb 2025 14:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F23C188CCA
+	for <linux-efi@vger.kernel.org>; Fri, 28 Feb 2025 15:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740751777; cv=none; b=RcF9fi6mgD8bXQQTnAmLb4LNmdHlEJ/uSHx6168Bks/Opql3j+QqvxLv56tPJQyGFIV4C/q7ArNU3tFdj+B83pHm/PWtMg5+ttRXqUAiA1vl+xd73+vajTyObAURGfa8gHO0EUtxeD3V5+t/ky8F3kMRFp6B3A8Um+h+ccrXRqA=
+	t=1740756803; cv=none; b=H7BKs5ugp4BO5cJk44t1qUHALRv4wIKNzgvKLrWmW8HQKBkXpGJQfdRFWrV+Gmcfk1VWibIDwwMLVgb3EdaThnwyB8qhqQhcJjH3j8ea49lEcRETHxS16u/HvDGnXigmPMMCUJPNQ/9xzXoX99JEO/EDdET27MVYH2x99t9ivrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740751777; c=relaxed/simple;
-	bh=qwiwX7ilQe4AxIwbOiZQdwGCH/mPZg+/LA5+GbPnb5U=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 MIME-Version:Date; b=VouxBkWoXTIaJ01NzGtUrbr7b3qNFeS3d5UikIffsYEaF9H0/yOf7uHEQe2TENHUOZsScAC1M1VcEbFwV11QXyJrOLqB9We3Z1lfmrDOaIXoMfVEpQMSVoepibXKjeDRFQggtwpInw2ttdNPUr7cKZRfZgFs27LRwldxCFSukSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RqFyqPgU; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51S6PdnB031358;
-	Fri, 28 Feb 2025 14:09:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ZlHYAH
-	d+v8kB7zXgWIauJWsRMxKuy43e8Nv9TXFnhUM=; b=RqFyqPgUfhgKOXFJ0rsDX4
-	p/NdL5k3rUXrWw2VgUmuMAr0IqF9jU/mXxvUcNw8baXqrxqHDbKq01WK8Zd/hjhc
-	LOlhaC2zZkLUUxJC2qTiLpIjWmAKLB5xxdUrdtLVF0MxH8eT4UYpo6/Jwcvz15NT
-	BQvT4yX2wIh0NH/E0D+k3951W1+j/18BlRUuSyZJtpD/Tq5fN/sk9UFlllviIv7r
-	OYBqX1+U7ZszZa3krlqdtRvKtfkU1p7EFkFQ1DtHbxLf9VVQtjzdBCRr4sIe4xAw
-	ly4eyTRb4gQP+O33cUeohn6ikqw3eC2vv9f9EbuCvLDom3dxRuF4/eyTwj0DmOaA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4537v6j1xd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Feb 2025 14:09:04 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51SDxGMS020959;
-	Fri, 28 Feb 2025 14:09:04 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4537v6j1xa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Feb 2025 14:09:03 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51SDiGDU026269;
-	Fri, 28 Feb 2025 14:09:03 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswnxsuq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Feb 2025 14:09:03 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51SE92Uv25231764
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Feb 2025 14:09:02 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6315D5806A;
-	Fri, 28 Feb 2025 14:09:02 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F77558061;
-	Fri, 28 Feb 2025 14:09:01 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.61.143])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 28 Feb 2025 14:09:01 +0000 (GMT)
-Message-ID: <c580811716f550ed5d6777db5e143afe4ad06edc.camel@linux.ibm.com>
-Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>,
-        David Howells
- <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "open
- list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>,
-        David
- Woodhouse <dwmw2@infradead.org>,
-        "herbert@gondor.apana.org.au"
- <herbert@gondor.apana.org.au>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-        "Serge
- E. Hallyn" <serge@hallyn.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        "casey@schaufler-ca.com" <casey@schaufler-ca.com>,
-        Stefan Berger
- <stefanb@linux.ibm.com>,
-        "ebiggers@kernel.org" <ebiggers@kernel.org>,
-        Randy
- Dunlap <rdunlap@infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
-In-Reply-To: <CAHC9VhTsZntLdGBV7=4suauS+rzSQv1O4UAoGcy2vEB02wRkoA@mail.gmail.com>
-References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
-	 <c490397315c2704e9ef65c8ad3fefedb239f1997.camel@linux.ibm.com>
-	 <72F52F71-C7F3-402D-8441-3D636A093FE8@oracle.com>
-	 <CAHC9VhRHEw5c+drC=aX4xTqWoQJJZ+qkJ7aHUT5dcu+Q5f7BqA@mail.gmail.com>
-	 <CAHC9VhSJpnaAK1efgs1Uk0Tr3CaDNR1LiDU-t_yDKDQG6J-74Q@mail.gmail.com>
-	 <E20C617B-EA01-4E69-B5E2-31E9AAD6F7A2@oracle.com>
-	 <506e8e58e5236a4525b18d84bafa9aae80b24452.camel@linux.ibm.com>
-	 <CAHC9VhTsZntLdGBV7=4suauS+rzSQv1O4UAoGcy2vEB02wRkoA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1740756803; c=relaxed/simple;
+	bh=uP5cllxHcBAkoxx0Kn4W8H9CqjahWgT+m4heApmQscU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tos45K/OOlJLnje4MDf0qljECclhoo05gpZeBo+L7od+JPVOF97qr+txSOl/6rnZm1DReB05HxOGNKUKpuHW4PVTnXUyfvZ79P2ONGe1AJtfVvTqY6I95Bb2RY0lp24LX8Z1oE6NuFWzNnpsKRn5F2nFk/XPg+5azSeV6FpreQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vKo+YcgI; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Fri, 28 Feb 2025 15:32:54 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740756788;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n9eLJrzvCc/jZ3rhdLc/8pJEkV1JMKG56goBetbpxb4=;
+	b=vKo+YcgI7v6lDON+yTHR9woNAvbankK+1SDMyOP89t52IYlLrAIepafV5H3+8AgeYWL/pp
+	TS1LqRGd7URb1EH84E98UhU8R08SptbuJvlIbJ9mZtK4wuupGbI0JiYANqWOM+DDaj9sTC
+	yy53IqVA9z5qtTyqinZcyR4dcB12SbQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH RFC v2 25/29] mm: asi: Restricted execution fore
+ bare-metal processes
+Message-ID: <Z8HXJnhMPFPyDJW5@google.com>
+References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+ <20250110-asi-rfc-v2-v2-25-8419288bc805@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 28 Feb 2025 09:08:33 -0500
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: AeDZ_ey0lISVUY625VsQIU2sGo9yqqm5
-X-Proofpoint-GUID: ZodbjM8bn3G8bxv9jpetEvBt5Lej-tp7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-28_03,2025-02-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=870 mlxscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
- adultscore=0 bulkscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502280102
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250110-asi-rfc-v2-v2-25-8419288bc805@google.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, 2025-02-27 at 17:22 -0500, Paul Moore wrote:
-> On Thu, Feb 27, 2025 at 3:41=E2=80=AFPM Mimi Zohar <zohar@linux.ibm.com> =
-wrote:
-> > On Mon, 2025-01-06 at 17:15 +0000, Eric Snowberg wrote:
-> > > > On Jan 5, 2025, at 8:40=E2=80=AFPM, Paul Moore <paul@paul-moore.com=
-> wrote:
-> > > > On Fri, Jan 3, 2025 at 11:48=E2=80=AFPM Paul Moore <paul@paul-moore=
-.com> wrote:
-> > > > >=20
-> > > > > Regardless, back to Clavis ... reading quickly through the cover
-> > > > > letter again, I do somewhat wonder if this isn't better integrate=
-d
-> > > > > into the keyring proper; have you talked to both David and Jarkko
-> > > > > about this?
-> > > >=20
-> > > > I realize I should probably expand on my thinking a bit, especially
-> > > > since my comment a while regarding LSMs dedicated to enforcing acce=
-ss
-> > > > control on keys is what was given as a reason for making Clavis a L=
-SM.
-> > > >=20
-> > > > I still stand by my comment from over a year ago that I see no reas=
-on
-> > > > why we couldn't support a LSM that enforces access controls on
-> > > > keyrings/keys.  What gives me pause with the Clavis LSM is that so
-> > > > much of Clavis is resident in the keyrings themselves, e.g. Clavis
-> > > > policy ACLs and authorization keys, that it really feels like it
-> > > > should be part of the keys subsystem and not a LSM.  Yes, existing
-> > > > LSMs do have LSM specific data that resides outside of the LSM and =
-in
-> > > > an object's subsystem, but that is usually limited to security
-> > > > identifiers and similar things, not the LSM's security policy.
-> >=20
-> > Hi Jarkko, David,
-> >=20
-> > Both Paul's and my main concerns with this patch set is storing policy =
-in the
-> > keyring.  We would appreciate your chiming in here about storing key po=
-licy in
-> > the keyring itself.
->=20
-> I'd still also like to see some discussion about moving towards the
-> addition of keyrings oriented towards usage instead of limiting
-> ourselves to keyrings that are oriented on the source of the keys.
-> Perhaps I'm missing some important detail which makes this
-> impractical, but it seems like an obvious improvement to me and would
-> go a long way towards solving some of the problems that we typically
-> see with kernel keys.
+(Trimming the CC list as my email server refuses the number of CCs)
 
-The proliferation of keyrings won't solve the key usage problem for IMA-
-appraisal.  IMA-appraisal can be used to verify the kexec image, kernel mod=
-ules,
-firwmare, etc, but it also verifies file signatures contained in userspace
-packages.  To support the latter case, keyrings would need to be applicatio=
-n
-specific.  (This version of Clavis doesn't solve the latter key usage for I=
-MA-
-appraisal either.)
+On Fri, Jan 10, 2025 at 06:40:51PM +0000, Brendan Jackman wrote:
+> Now userspace gets a restricted address space too. The critical section
+> begins on exit to userspace and ends when it makes a system call.
+> Other entries from userspace just interrupt the critical section via
+> asi_intr_enter().
+> 
+> The reason why system calls have to actually asi_relax() (i.e. fully
+> terminate the critical section instead of just interrupting it) is that
+> system calls are the type of kernel entry that can lead to transition
+> into a _different_ ASI domain, namely the KVM one: it is not supported
+> to transition into a different domain while a critical section exists
+> (i.e. while asi_state.target is not NULL), even if it has been paused by
+> asi_intr_enter() (i.e. even if asi_state.intr_nest_depth is nonzero) -
+> there must be an asi_relax() between any two asi_enter()s.
+> 
+> The restricted address space for bare-metal tasks naturally contains the
+> entire userspace address region, although the task's own memory is still
+> missing from the direct map.
+> 
+> This implementation creates new userspace-specific APIs for asi_init(),
+> asi_destroy() and asi_enter(), which seems a little ugly, maybe this
+> suggest a general rework of these APIs given that the "generic" version
+> only has one caller. For RFC code this seems good enough though.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  arch/x86/include/asm/asi.h   |  8 ++++++--
+>  arch/x86/mm/asi.c            | 49 ++++++++++++++++++++++++++++++++++++++++----
+>  include/asm-generic/asi.h    |  9 +++++++-
+>  include/linux/entry-common.h | 11 ++++++++++
+>  init/main.c                  |  2 ++
+>  kernel/entry/common.c        |  1 +
+>  kernel/fork.c                |  4 +++-
+>  7 files changed, 76 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/asi.h b/arch/x86/include/asm/asi.h
+> index e925d7d2cfc85bca8480c837548654e7a5a7009e..c3c1a57f0147ae9bd11d89c8bf7c8a4477728f51 100644
+> --- a/arch/x86/include/asm/asi.h
+> +++ b/arch/x86/include/asm/asi.h
+> @@ -140,19 +140,23 @@ DECLARE_PER_CPU_ALIGNED(struct asi *, curr_asi);
+>  
+>  void asi_check_boottime_disable(void);
+>  
+> -void asi_init_mm_state(struct mm_struct *mm);
+> +int asi_init_mm_state(struct mm_struct *mm);
+>  
+>  int asi_init_class(enum asi_class_id class_id, struct asi_taint_policy *taint_policy);
+> +void asi_init_userspace_class(void);
+>  void asi_uninit_class(enum asi_class_id class_id);
+>  const char *asi_class_name(enum asi_class_id class_id);
+>  
+>  int asi_init(struct mm_struct *mm, enum asi_class_id class_id, struct asi **out_asi);
+>  void asi_destroy(struct asi *asi);
+> +void asi_destroy_userspace(struct mm_struct *mm);
+>  void asi_clone_user_pgtbl(struct mm_struct *mm, pgd_t *pgdp);
+>  
+>  /* Enter an ASI domain (restricted address space) and begin the critical section. */
+>  void asi_enter(struct asi *asi);
+>  
+> +void asi_enter_userspace(void);
+> +
+>  /*
+>   * Leave the "tense" state if we are in it, i.e. end the critical section. We
+>   * will stay relaxed until the next asi_enter.
+> @@ -294,7 +298,7 @@ void asi_handle_switch_mm(void);
+>   */
+>  static inline bool asi_maps_user_addr(enum asi_class_id class_id)
+>  {
+> -	return false;
+> +	return class_id == ASI_CLASS_USERSPACE;
+>  }
+>  
+>  #endif /* CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION */
+> diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
+> index 093103c1bc2677c81d68008aca064fab53b73a62..1e9dc568e79e8686a4dbf47f765f2c2535d025ec 100644
+> --- a/arch/x86/mm/asi.c
+> +++ b/arch/x86/mm/asi.c
+> @@ -25,6 +25,7 @@ const char *asi_class_names[] = {
+>  #if IS_ENABLED(CONFIG_KVM)
+>  	[ASI_CLASS_KVM] = "KVM",
+>  #endif
+> +	[ASI_CLASS_USERSPACE] = "userspace",
+>  };
+>  
+>  DEFINE_PER_CPU_ALIGNED(struct asi *, curr_asi);
+> @@ -67,6 +68,32 @@ int asi_init_class(enum asi_class_id class_id, struct asi_taint_policy *taint_po
+>  }
+>  EXPORT_SYMBOL_GPL(asi_init_class);
+>  
+> +void __init asi_init_userspace_class(void)
+> +{
+> +	static struct asi_taint_policy policy = {
+> +		/*
+> +		 * Prevent going to userspace with sensitive data potentially
+> +		 * left in sidechannels by code running in the unrestricted
+> +		 * address space, or another MM. Note we don't check for guest
+> +		 * data here. This reflects the assumption that the guest trusts
+> +		 * its VMM (absent fancy HW features, which are orthogonal).
+> +		 */
+> +		.protect_data = ASI_TAINT_KERNEL_DATA | ASI_TAINT_OTHER_MM_DATA,
+> +		/*
+> +		 * Don't go into userspace with control flow state controlled by
+> +		 * other processes, or any KVM guest the process is running.
+> +		 * Note this bit is about protecting userspace from other parts
+> +		 * of the system, while data_taints is about protecting other
+> +		 * parts of the system from the guest.
+> +		 */
+> +		.prevent_control = ASI_TAINT_GUEST_CONTROL | ASI_TAINT_OTHER_MM_CONTROL,
+> +		.set = ASI_TAINT_USER_CONTROL | ASI_TAINT_USER_DATA,
+> +	};
+> +	int err = asi_init_class(ASI_CLASS_USERSPACE, &policy);
+> +
+> +	WARN_ON(err);
+> +}
+> +
+>  void asi_uninit_class(enum asi_class_id class_id)
+>  {
+>  	if (!boot_cpu_has(X86_FEATURE_ASI))
+> @@ -385,7 +412,8 @@ int asi_init(struct mm_struct *mm, enum asi_class_id class_id, struct asi **out_
+>  	int err = 0;
+>  	uint i;
+>  
+> -	*out_asi = NULL;
+> +	if (out_asi)
+> +		*out_asi = NULL;
+>  
+>  	if (!boot_cpu_has(X86_FEATURE_ASI))
+>  		return 0;
+> @@ -424,7 +452,7 @@ int asi_init(struct mm_struct *mm, enum asi_class_id class_id, struct asi **out_
+>  exit_unlock:
+>  	if (err)
+>  		__asi_destroy(asi);
+> -	else
+> +	else if (out_asi)
+>  		*out_asi = asi;
+>  
+>  	__asi_init_user_pgds(mm, asi);
+> @@ -515,6 +543,12 @@ static __always_inline void maybe_flush_data(struct asi *next_asi)
+>  	this_cpu_and(asi_taints, ~ASI_TAINTS_DATA_MASK);
+>  }
+>  
+> +void asi_destroy_userspace(struct mm_struct *mm)
+> +{
+> +	VM_BUG_ON(!asi_class_initialized(ASI_CLASS_USERSPACE));
+> +	asi_destroy(&mm->asi[ASI_CLASS_USERSPACE]);
+> +}
+> +
+>  noinstr void __asi_enter(void)
+>  {
+>  	u64 asi_cr3;
+> @@ -584,6 +618,11 @@ noinstr void asi_enter(struct asi *asi)
+>  }
+>  EXPORT_SYMBOL_GPL(asi_enter);
+>  
+> +noinstr void asi_enter_userspace(void)
+> +{
+> +	asi_enter(&current->mm->asi[ASI_CLASS_USERSPACE]);
+> +}
+> +
+>  noinstr void asi_relax(void)
+>  {
+>  	if (static_asi_enabled()) {
+> @@ -633,13 +672,15 @@ noinstr void asi_exit(void)
+>  }
+>  EXPORT_SYMBOL_GPL(asi_exit);
+>  
+> -void asi_init_mm_state(struct mm_struct *mm)
+> +int asi_init_mm_state(struct mm_struct *mm)
+>  {
+>  	if (!boot_cpu_has(X86_FEATURE_ASI))
+> -		return;
+> +		return 0;
+>  
+>  	memset(mm->asi, 0, sizeof(mm->asi));
+>  	mutex_init(&mm->asi_init_lock);
+> +
+> +	return asi_init(mm, ASI_CLASS_USERSPACE, NULL);
 
-The keys baked into the kernel are trusted because the kernel itself was si=
-gned
-and verified (secure boot).  Anyone building a kernel can build a key into =
-the
-kernel image, which establishes a "root of trust".  That key can then be us=
-ed to
-verify and load other keys onto the IMA keyring.
+I think this call here is problematic. This can be called from
+asi_global_init().
 
-The problem is how to safely establish a root of trust without baking the k=
-ey
-into the kernel image and then limiting that trust to specific usages or
-applications.
+An example is:
 
-Mimi
+start_kernel()
+poking_init()
+mm_alloc()
+mm_init()
+asi_init_mm_state()
+
+But the same also happen through dup_mm(), for example:
+
+kernel_thread()
+kernel_clone()
+copy_process()
+copy_mm()
+dup_mm()
+
+asi_global_init() is called later from do_initcalls() (run in a kthread
+by kernel_init()). In this case, asi_init() copies the kernel PGDs from
+asi_global_nonsensitive_pgd, but those PGDs won't be initialized yet.
+
+It could be fine for the current code because all these threads created
+during init never enter userspace, but I am not sure if that's always
+true. It also makes me a bit nervous to have partially initialized ASI
+domains hanging around.
+
+I'd rather we either:
+- Move asi_global_init() earlier, but we have to be careful not to move
+  it too early before some of the mappings it clones are created (or
+  before we can make allocations). In this case, we should also add a
+  warning in asi_init() in case the code changes and it is ever called
+  before asi_global_init().
+
+- Explicitly avoid calling asi_init_mm_state() or asi_init() in these
+  cases. This may be easy-ish in the case of kthreads, but for things
+  like poking_init() we would need to plump more context through.
+  Alternatively we can just make asi_init() a noop if asi_global_init()
+  isn't called yet, but the silent failure makes me a bit worried too.
+
+>  }
+>  
+>  void asi_handle_switch_mm(void)
+> diff --git a/include/asm-generic/asi.h b/include/asm-generic/asi.h
+> index d103343292fad567dcd73e45e986fb3974e59898..c93f9e779ce1fa61e3df7835f5ab744cce7d667b 100644
+> --- a/include/asm-generic/asi.h
+> +++ b/include/asm-generic/asi.h
+> @@ -15,6 +15,7 @@ enum asi_class_id {
+>  #if IS_ENABLED(CONFIG_KVM)
+>  	ASI_CLASS_KVM,
+>  #endif
+> +	ASI_CLASS_USERSPACE,
+>  	ASI_MAX_NUM_CLASSES,
+>  };
+>  static_assert(order_base_2(X86_CR3_ASI_PCID_BITS) <= ASI_MAX_NUM_CLASSES);
+> @@ -37,8 +38,10 @@ int asi_init_class(enum asi_class_id class_id,
+>  
+>  static inline void asi_uninit_class(enum asi_class_id class_id) { }
+>  
+> +static inline void asi_init_userspace_class(void) { }
+> +
+>  struct mm_struct;
+> -static inline void asi_init_mm_state(struct mm_struct *mm) { }
+> +static inline int asi_init_mm_state(struct mm_struct *mm) { return 0; }
+>  
+>  static inline int asi_init(struct mm_struct *mm, enum asi_class_id class_id,
+>  			   struct asi **out_asi)
+> @@ -48,8 +51,12 @@ static inline int asi_init(struct mm_struct *mm, enum asi_class_id class_id,
+>  
+>  static inline void asi_destroy(struct asi *asi) { }
+>  
+> +static inline void asi_destroy_userspace(struct mm_struct *mm) { }
+> +
+>  static inline void asi_enter(struct asi *asi) { }
+>  
+> +static inline void asi_enter_userspace(void) { }
+> +
+>  static inline void asi_relax(void) { }
+>  
+>  static inline bool asi_is_relaxed(void) { return true; }
+> diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
+> index 1e50cdb83ae501467ecc30ee52f1379d409f962e..f04c4c038556f84ddf3bc09b6c1dd22a9dbd2f6b 100644
+> --- a/include/linux/entry-common.h
+> +++ b/include/linux/entry-common.h
+> @@ -191,6 +191,16 @@ static __always_inline long syscall_enter_from_user_mode(struct pt_regs *regs, l
+>  {
+>  	long ret;
+>  
+> +	/*
+> +	 * End the ASI critical section for userspace. Syscalls are the only
+> +	 * place this happens - all other entry from userspace is handled via
+> +	 * ASI's interrupt-tracking. The reason syscalls are special is that's
+> +	 * where it's possible to switch to another ASI domain within the same
+> +	 * task (i.e. KVM_RUN), an asi_relax() is required here in case of an
+> +	 * upcoming asi_enter().
+> +	 */
+> +	asi_relax();
+> +
+>  	enter_from_user_mode(regs);
+>  
+>  	instrumentation_begin();
+> @@ -355,6 +365,7 @@ static __always_inline void exit_to_user_mode_prepare(struct pt_regs *regs)
+>   */
+>  static __always_inline void exit_to_user_mode(void)
+>  {
+> +
+>  	instrumentation_begin();
+>  	trace_hardirqs_on_prepare();
+>  	lockdep_hardirqs_on_prepare();
+> diff --git a/init/main.c b/init/main.c
+> index c4778edae7972f512d5eefe8400075ac35a70d1c..d19e149d385e8321d2f3e7c28aa75802af62d09c 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -953,6 +953,8 @@ void start_kernel(void)
+>  	/* Architectural and non-timekeeping rng init, before allocator init */
+>  	random_init_early(command_line);
+>  
+> +	asi_init_userspace_class();
+> +
+>  	/*
+>  	 * These use large bootmem allocations and must precede
+>  	 * initalization of page allocator
+> diff --git a/kernel/entry/common.c b/kernel/entry/common.c
+> index 5b6934e23c21d36a3238dc03e391eb9e3beb4cfb..874254ed5958d62eaeaef4fe3e8c02e56deaf5ed 100644
+> --- a/kernel/entry/common.c
+> +++ b/kernel/entry/common.c
+> @@ -218,6 +218,7 @@ __visible noinstr void syscall_exit_to_user_mode(struct pt_regs *regs)
+>  	__syscall_exit_to_user_mode_work(regs);
+>  	instrumentation_end();
+>  	exit_to_user_mode();
+> +	asi_enter_userspace();
+>  }
+>  
+>  noinstr void irqentry_enter_from_user_mode(struct pt_regs *regs)
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index bb73758790d08112265d398b16902ff9a4c2b8fe..54068d2415939b92409ca8a45111176783c6acbd 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -917,6 +917,7 @@ void __mmdrop(struct mm_struct *mm)
+>  	/* Ensure no CPUs are using this as their lazy tlb mm */
+>  	cleanup_lazy_tlbs(mm);
+>  
+> +	asi_destroy_userspace(mm);
+>  	WARN_ON_ONCE(mm == current->active_mm);
+>  	mm_free_pgd(mm);
+>  	destroy_context(mm);
+> @@ -1297,7 +1298,8 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+>  	if (mm_alloc_pgd(mm))
+>  		goto fail_nopgd;
+>  
+> -	asi_init_mm_state(mm);
+> +	if (asi_init_mm_state(mm))
+> +		goto fail_nocontext;
+>  
+>  	if (init_new_context(p, mm))
+>  		goto fail_nocontext;
+> 
+> -- 
+> 2.47.1.613.gc27f4b7a9f-goog
+> 
 
