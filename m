@@ -1,188 +1,422 @@
-Return-Path: <linux-efi+bounces-2903-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2904-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B9DA55DD5
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Mar 2025 03:47:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD79A55FCB
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Mar 2025 06:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2598C1896B17
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Mar 2025 02:47:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B67BF3AAA0A
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Mar 2025 05:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121EA188904;
-	Fri,  7 Mar 2025 02:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9537148FF9;
+	Fri,  7 Mar 2025 05:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="FuWqQjbw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sz9AmOC/"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374E4322A
-	for <linux-efi@vger.kernel.org>; Fri,  7 Mar 2025 02:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B014F29408;
+	Fri,  7 Mar 2025 05:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741315618; cv=none; b=q1ccr1MZM6QiG3LLHDQkppin0GIQGWGJORCI5uVqp6R5KD5zN7bFWTg4Pu2AgersV9Q+xPQUmBaig61veKNjC30OzR/M5vi0M+rG+j2INgTg5M7bwS1Ieeuhx62AzmCGnghWWti285pQYw4hpA1WanhgFtX7eln5jP8KixLBUnk=
+	t=1741324246; cv=none; b=YT7tRSko+i1NVimVGHrUWBsMdy6xVTNM+mNxS9pFAHdCryYHMXFBpIMxYig5Xh3M0UYvLbFDEWP+grNjdwl4pAo44i1dg5O5EZd68X0A8e4p2/2+5JwGjMJQJiQnc67gSic70AmL8Yf9v75YdsD0+mZmjYBu7ZTH/uOopHWmJO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741315618; c=relaxed/simple;
-	bh=YEYXLGg/CsKOrCincve+KY8W009xIGLNHMSjNI16DOw=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=DewBJe/lHtgNconz4L3djYS8PitPYF8CkEQKkiEx4FrQbAL4/z/2bnjMa3XBq01OTyzMoRorT5Tw6NKpVRnTwcg7bmwuLITrPkqgmsCwhNj2/7t2TscWvcVxKF0leIuvGKLlotAfQw2QJge6WKMbTuF7GJXfsY+6/uAUSrJPqns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=FuWqQjbw; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6dd049b5428so13287256d6.2
-        for <linux-efi@vger.kernel.org>; Thu, 06 Mar 2025 18:46:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1741315615; x=1741920415; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rt0sh+iXDwTk92DHQ0mAKFAW9RB3PuEnSeOiB/9VL1E=;
-        b=FuWqQjbw3bleVbiTxE2Nk++EiZch5q88L6qp/N12jiPd/QJgZQIpRA7UWr4ztV150x
-         g6E3VTvMfm0s8UFo60DTY70lCj+2UhdwCAEmJJCvszfs8rOrWsxpqey0PqV2OI49GZO8
-         cVzDLZPI5w82SzqtetIy0qZKI8sHIIiefnlnLiNyN/b6lSuIrwBsa4R+ORrj0wjashjd
-         achPZsMj5eYiOJdoA6kUWQWCiRWZZTUTHUGIp42+YEr/z5AnVka3meSW9OW2gklcXeyV
-         9BVd3hIhZc2UP7XDe1cJ1+5cjupwbdBeefrSAoOd2JhXH4zVey4I1LsQy8gUGXF/PazS
-         iWVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741315615; x=1741920415;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rt0sh+iXDwTk92DHQ0mAKFAW9RB3PuEnSeOiB/9VL1E=;
-        b=lX1ffZmn8dW9WGBJ/ndvbCPr4x9RMnmEyCEc/g/hGME2WtkGopAU2XUfFn1r2dmTdG
-         X3QFRhlx3Xjo3LUNlUmfRSb1Rk88smpu+NNbxVSn+cWBi6J1P7PXI7+mfHO3xwMAKhpE
-         QxbG09VOytzGEMjBTDhnp1MkeamxtRgiWWrNXgmLyJy5qu+eKbwYZPzG9cDL2+Le5niM
-         GJDnxLEKbfX7IWMePQR5VTvzsJPiVAxCx4pE8I2C2mvlyh4L4jL/HMsajh8+R2sydiYB
-         3AI2DqgcLjpftIDCFw3tAIz3Pt5fSXz5gtOLX/8F6d0lUAeO01bXMQiFAord2EBRpVOX
-         n8RQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXs+1yqnDBQFwoI1jhY7CRYuEVCYQwn0DYnD9pyH+v/dZPSP2mWtLDwzE+RYZWq0OMm3rNOxZPwMG4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiUxK2FyTGimuMdbnVigK59XdjaKmYKEC8p9On1inr/wuaW7u+
-	VUyfSarS38k5dMiBy2RSfDeoM2nEhGIojyx81N1MttXT4QZflwQhK38cLxuCNw==
-X-Gm-Gg: ASbGncvubuadU7wgRftyvf978F8OdNI1BDYecbdY6c4DFFaWMgA48LpnvfQl2ECVR04
-	lzazyiMvQDh9OOE59z9Bx18L7LnwQpBWkW13PjnXpnPMEJ6Tx45Xb4vWgoKb1fI6H0J1kZjwClq
-	6EqwBFfq8bTyg+/UhzV1ajGt92QlOxcnuQLUz2fJRTs8qXYjC4oYQuNeFz5VWGYcpQPVMLmvETl
-	XiNtnBh0O4MB1LNqT+UTGBIxLeQGFvZcJE6VDfc87hapcMDASLNPZnRVJWETWG9Wbdlw+bn5DTx
-	IdTEi7hqOb3+VRKymu1NZLDnNiYlCcnK/C76ZLnVoOfLClMI3UH2xU4jGS7Mux2ISajIneMgScS
-	4VFdM8K1OlUUYfptJfaE=
-X-Google-Smtp-Source: AGHT+IGN6nnpAum+jUxAhktZIXBBlDfUMfEpdXCUFvRXot6sALexlQzFAHfqQmACtG8oGghU6a73MQ==
-X-Received: by 2002:a05:6214:500f:b0:6e4:4011:9df7 with SMTP id 6a1803df08f44-6e9005f79a2mr19925486d6.16.1741315614964;
-        Thu, 06 Mar 2025 18:46:54 -0800 (PST)
-Received: from [192.168.7.16] (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f7182af0sm14044486d6.119.2025.03.06.18.46.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Mar 2025 18:46:54 -0800 (PST)
-From: Paul Moore <paul@paul-moore.com>
-To: Eric Snowberg <eric.snowberg@oracle.com>
-CC: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, "open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, David Woodhouse <dwmw2@infradead.org>, <herbert@gondor.apana.org.au>, <davem@davemloft.net>, Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, <casey@schaufler-ca.com>, Stefan Berger <stefanb@linux.ibm.com>, <ebiggers@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, open list <linux-kernel@vger.kernel.org>, <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>, <linux-efi@vger.kernel.org>, <linux-integrity@vger.kernel.org>
-Date: Thu, 06 Mar 2025 21:46:52 -0500
-Message-ID: <1956e7f9d60.28a7.85c95baa4474aabc7814e68940a78392@paul-moore.com>
-In-Reply-To: <EB757F96-E152-4EAB-B3F7-75C1DBE3A03B@oracle.com>
-References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
- <c490397315c2704e9ef65c8ad3fefedb239f1997.camel@linux.ibm.com>
- <72F52F71-C7F3-402D-8441-3D636A093FE8@oracle.com>
- <CAHC9VhRHEw5c+drC=aX4xTqWoQJJZ+qkJ7aHUT5dcu+Q5f7BqA@mail.gmail.com>
- <CAHC9VhSJpnaAK1efgs1Uk0Tr3CaDNR1LiDU-t_yDKDQG6J-74Q@mail.gmail.com>
- <E20C617B-EA01-4E69-B5E2-31E9AAD6F7A2@oracle.com>
- <506e8e58e5236a4525b18d84bafa9aae80b24452.camel@linux.ibm.com>
- <CAHC9VhTsZntLdGBV7=4suauS+rzSQv1O4UAoGcy2vEB02wRkoA@mail.gmail.com>
- <c580811716f550ed5d6777db5e143afe4ad06edc.camel@linux.ibm.com>
- <CAHC9VhTz6U5rRdbJBWq0_U4BSKTsiGCsaX=LTgisNNoZXZokOA@mail.gmail.com>
- <FD501FB8-72D2-4B10-A03A-F52FC5B67646@oracle.com>
- <CAHC9VhR961uTFueovLXXaOf-3ZAnvQCWOTfw-wCRuAKOKPAOKw@mail.gmail.com>
- <73B78CE7-1BB8-4065-9EBA-FB69E327725E@oracle.com>
- <CAHC9VhRMUkzLVT5GT5c5hgpfaaKubzcPOTWFDpOmhNne0sswPA@mail.gmail.com>
- <1A222B45-FCC4-4BBD-8E17-D92697FE467D@oracle.com>
- <CAHC9VhTObTee95SwZ+C4EwPotovE9R3vy0gVXf+kATtP3vfXrg@mail.gmail.com>
- <EB757F96-E152-4EAB-B3F7-75C1DBE3A03B@oracle.com>
-User-Agent: AquaMail/1.54.1 (build: 105401536)
-Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
+	s=arc-20240116; t=1741324246; c=relaxed/simple;
+	bh=VcUVlFIitotGE0i9+kH0vpVYTvtPQGTwCoxsoWlqZYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oYIXWlT38ID/QPaZuqEF0n83zxyLlIGdKxLZMoN4PYcwXobKz/+VbMBCg/4PwZ7oSv639QwjR4cqhIzVn0R+YGigGQ7Giy/t0PySpak8alsaOyjMtZZy5LVJqaFyf4eyddXmA+bbXl/MYiuyNLYkPXTSd6q9SOTjG2yOME3lWdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sz9AmOC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39949C4CEE3;
+	Fri,  7 Mar 2025 05:10:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741324246;
+	bh=VcUVlFIitotGE0i9+kH0vpVYTvtPQGTwCoxsoWlqZYQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sz9AmOC/0FvKvhT31zFnCJzvgv0W8jNaph+1VbsfE4p27+b2BCgpTwevfLQRxGAw9
+	 faosXIp5bn0xPabPqe093AbqpIp/j9AyBM/EozwEMMDEZuuDs2MWhQVJ6IYvMk2lLs
+	 uETJ5RJ5paej3TvE8rdDWh66LyE+3yMbEJP5DdJVCtOv5i4ZUqLiLRdJ405rx1mbyU
+	 aqyC7wigemvLP/Rta/5U46UQMi3HyoneaRc5N2S/4ytLxgK0cTs1bokaayy5vOMoPH
+	 v0uXkw/mPxlHdS62MW/sJ/LqIG9ONM/tBfopTal0KiWM+7LP/bbM6W2HBtU1FRbOnu
+	 5ZKwutMSQpEtw==
+Date: Fri, 7 Mar 2025 07:10:41 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Ross Philipson <ross.philipson@oracle.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+	linux-efi@vger.kernel.org, iommu@lists.linux-foundation.org,
+	dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
+	ardb@kernel.org, mjg59@srcf.ucam.org,
+	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de,
+	jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu,
+	herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net,
+	ebiederm@xmission.com, dwmw2@infradead.org,
+	baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
+	andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
+Subject: Re: [PATCH v12 01/19] Documentation/x86: Secure Launch kernel
+ documentation
+Message-ID: <Z8p_0UfZ3ByzmPfK@kernel.org>
+References: <20241219194216.152839-1-ross.philipson@oracle.com>
+ <20241219194216.152839-2-ross.philipson@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241219194216.152839-2-ross.philipson@oracle.com>
 
-On March 6, 2025 5:29:36 PM Eric Snowberg <eric.snowberg@oracle.com> wrote:
->> On Mar 5, 2025, at 6:12 PM, Paul Moore <paul@paul-moore.com> wrote:
->>
->> On Wed, Mar 5, 2025 at 4:30 PM Eric Snowberg <eric.snowberg@oracle.com> wrote:
->>>> On Mar 4, 2025, at 5:23 PM, Paul Moore <paul@paul-moore.com> wrote:
->>>> On Tue, Mar 4, 2025 at 9:47 AM Eric Snowberg <eric.snowberg@oracle.com> wrote:
->>>>>> On Mar 3, 2025, at 3:40 PM, Paul Moore <paul@paul-moore.com> wrote:
->>>>>> On Fri, Feb 28, 2025 at 12:52 PM Eric Snowberg <eric.snowberg@oracle.com> 
->>>>>> wrote:
->>>>>>>> On Feb 28, 2025, at 9:14 AM, Paul Moore <paul@paul-moore.com> wrote:
->>>>>>>> On Fri, Feb 28, 2025 at 9:09 AM Mimi Zohar <zohar@linux.ibm.com> wrote:
->>>>>>>>> On Thu, 2025-02-27 at 17:22 -0500, Paul Moore wrote:
->>>>>>>>>>
->>>>>>>>>> I'd still also like to see some discussion about moving towards the
->>>>>>>>>> addition of keyrings oriented towards usage instead of limiting
->>>>>>>>>> ourselves to keyrings that are oriented on the source of the keys.
->>>>>>>>>> Perhaps I'm missing some important detail which makes this
->>>>>>>>>> impractical, but it seems like an obvious improvement to me and would
->>>>>>>>>> go a long way towards solving some of the problems that we typically
->>>>>>>>>> see with kernel keys.
->>>>>>>
->>>>>>> The intent is not to limit ourselves to the source of the key.  The main
->>>>>>> point of Clavis is to allow the end-user to determine what kernel keys
->>>>>>> they want to trust and for what purpose, irrespective of the originating
->>>>>>> source (.builtin_trusted, .secondary, .machine, or .platform). If we could
->>>>>>> go back in time, individual keyrings could be created that are oriented
->>>>>>> toward usage.   The idea for introducing Clavis is to bridge what we
->>>>>>> have today with kernel keys and allow them to be usage based.
->>>>>>
->>>>>> While it is unlikely that the current well known keyrings could be
->>>>>> removed, I see no reason why new usage oriented keyrings could not be
->>>>>> introduced.  We've seen far more significant shifts in the kernel over
->>>>>> the years.
->>>>>
->>>>> Could you further clarify how a usage oriented keyring would work?  For
->>>>> example, if a kernel module keyring was added, how would the end-user
->>>>> add keys to it while maintaining a root of trust?
->>>>
->>>> Consider it an exercise left to the reader :)
->>>>
->>>> I imagine there are different ways one could do that, either using
->>>> traditional user/group/capability permissions and/or LSM permissions,
->>>> it would depend on the environment and the security goals of the
->>>> overall system.
->>>
->>> These keys are used by the Lockdown LSM to provide signature
->>> validation.
->>>
->>> I realize the contents that follow in this paragraph is outside the
->>> boundary of mainline kernel code.  Every distro that wants their
->>> shim signed must explain how their kernel enforces lockdown
->>> mode.  The minimum requirement is lockdown in integrity mode.
->>> Also, the expectation is lockdown enforcement continues on
->>> through a kexec.
->>
->> I personally find it very amusing the UEFI Secure Boot shim is reliant
->> on an unmaintained and only marginally supported LSM, Lockdown.  Has
->> anyone recently verified that Lockdown's protections are still intact
->> and comprehensive enough to be worthwhile?  Sorry, this is a bit of a
->> digression, but since you were the one to bring up Lockdown I thought
->> it would be important to mention that I don't have much faith that it
->> is still working to the same level as it originally was intended.  I
->> have a TODO list item to draft a policy around deprecating
->> unmaintained LSMs after an extended period of time, and once that is
->> in place if we don't have a qualified maintainer for Lockdown it will
->> likely fall into the deprecation process (whatever that may be).
->
-> Does this mean Microsoft will begin signing shims in the future without
-> the lockdown requirement?
+ On Thu, Dec 19, 2024 at 11:41:58AM -0800, Ross Philipson wrote:
+> From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
+> 
+> Introduce background, overview and configuration/ABI information
+> for the Secure Launch kernel feature.
+> 
+> Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
+> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+> Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> ---
+>  Documentation/security/index.rst              |   1 +
+>  .../security/launch-integrity/index.rst       |  11 +
+>  .../security/launch-integrity/principles.rst  | 317 ++++++++++
+>  .../secure_launch_details.rst                 | 587 ++++++++++++++++++
+>  .../secure_launch_overview.rst                | 252 ++++++++
+>  5 files changed, 1168 insertions(+)
+>  create mode 100644 Documentation/security/launch-integrity/index.rst
+>  create mode 100644 Documentation/security/launch-integrity/principles.rst
+>  create mode 100644 Documentation/security/launch-integrity/secure_launch_details.rst
+>  create mode 100644 Documentation/security/launch-integrity/secure_launch_overview.rst
+> 
+> diff --git a/Documentation/security/index.rst b/Documentation/security/index.rst
+> index 3e0a7114a862..f89741271ed0 100644
+> --- a/Documentation/security/index.rst
+> +++ b/Documentation/security/index.rst
+> @@ -20,3 +20,4 @@ Security Documentation
+>     landlock
+>     secrets/index
+>     ipe
+> +   launch-integrity/index
+> diff --git a/Documentation/security/launch-integrity/index.rst b/Documentation/security/launch-integrity/index.rst
+> new file mode 100644
+> index 000000000000..838328186dd2
+> --- /dev/null
+> +++ b/Documentation/security/launch-integrity/index.rst
+> @@ -0,0 +1,11 @@
+> +=====================================
+> +System Launch Integrity documentation
+> +=====================================
+> +
+> +.. toctree::
+> +   :maxdepth: 1
+> +
+> +   principles
+> +   secure_launch_overview
+> +   secure_launch_details
+> +
+> diff --git a/Documentation/security/launch-integrity/principles.rst b/Documentation/security/launch-integrity/principles.rst
+> new file mode 100644
+> index 000000000000..a0553d1d93c2
+> --- /dev/null
+> +++ b/Documentation/security/launch-integrity/principles.rst
+> @@ -0,0 +1,317 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +.. Copyright (c) 2019-2024 Daniel P. Smith <dpsmith@apertussolutions.com>
+> +
+> +=======================
+> +System Launch Integrity
+> +=======================
+> +
+> +:Author: Daniel P. Smith
+> +:Date: August 2024
+> +
+> +This document serves to establish a common understanding of what a system
+> +launch is, the integrity concern for system launch, and why using a Root of Trust
+> +(RoT) from a Dynamic Launch may be desirable. Throughout this document,
+> +terminology from the Trusted Computing Group (TCG) and National Institute for
+> +Standards and Technology (NIST) is used to ensure that vendor natural language is
+> +used to describe and reference security-related concepts.
+> +
+> +System Launch
+> +=============
+> +
+> +There is a tendency to only consider the classical power-on boot as the only
+> +means to launch an Operating System (OS) on a computer system. In fact, most
+> +modern processors support two system launch methods. To provide clarity,
+> +it is important to establish a common definition of a system launch: during
+> +a single power life cycle of a system, a system launch consists of an initialization
+> +event, typically in hardware, that is followed by an executing software payload
+> +that takes the system from the initialized state to a running state. Driven by
+> +the Trusted Computing Group (TCG) architecture, modern processors are able to
+> +support two methods of system launch. These two methods of system launch are known
+> +as Static Launch and Dynamic Launch.
+> +
+> +Static Launch
+> +-------------
+> +
+> +Static launch is the system launch associated with the power cycle of the CPU.
+> +Thus, static launch refers to the classical power-on boot where the
+> +initialization event is the release of the CPU from reset and the system
+> +firmware is the software payload that brings the system up to a running state.
+> +Since static launch is the system launch associated with the beginning of the
+> +power lifecycle of a system, it is therefore a fixed, one-time system launch.
+> +It is because of this that static launch is referred to and thought of as being
+> +"static".
+> +
+> +Dynamic Launch
+> +--------------
+> +
+> +Modern CPUs architectures provides a mechanism to re-initialize the system to a
+> +"known good" state without requiring a power event. This re-initialization
+> +event is the event for a dynamic launch and is referred to as the Dynamic
+> +Launch Event (DLE). The DLE functions by accepting a software payload, referred
+> +to as the Dynamic Configuration Environment (DCE), that execution is handed to
+> +after the DLE is invoked. The DCE is responsible for bringing the system back
+> +to a running state. Since the dynamic launch is not tied to a power event like
+> +the static launch, this enables a dynamic launch to be initiated at any time
+> +and multiple times during a single power life cycle. This dynamism is the
+> +reasoning behind referring to this system launch as "dynamic".
+> +
+> +Because a dynamic launch can be conducted at any time during a single power
+> +life cycle, they are classified into one of two types: an early launch or a
+> +late launch.
+> +
+> +:Early Launch: When a dynamic launch is used as a transition from a static
+> +   launch chain to the final Operating System.
+> +
+> +:Late Launch: The usage of a dynamic launch by an executing Operating System to
+> +   transition to a "known good" state to perform one or more operations, e.g. to
+> +   launch into a new Operating System.
+> +
+> +System Integrity
+> +================
+> +
+> +A computer system can be considered a collection of mechanisms that work
+> +together to produce a result. The assurance that the mechanisms are functioning
+> +correctly and producing the expected result is the integrity of the system. To
+> +ensure a system's integrity, there is a subset of these mechanisms, commonly
+> +referred to as security mechanisms, that is present to help ensure the system
+> +produces the expected result or at least detects the potential of an unexpected
+> +result. Since the security mechanisms are relied upon to ensue the integrity of
+> +the system, these mechanisms are trusted. Upon inspection, these security
+> +mechanisms each have a set of properties and these properties can be evaluated
+> +to determine how susceptible a mechanism might be to failure. This assessment is
+> +referred to as the Strength of Mechanism, which allows the trustworthiness of
+> +that mechanism to be quantified.
+> +
+> +For software systems, there are two system states for which the integrity is
+> +critical: when the software is loaded into memory and when the software is
+> +executing on the hardware. Ensuring that the expected software is loaded into
+> +memory is referred to as load-time integrity while ensuring that the software
+> +executing is the expected software is the runtime integrity of that software.
 
-That's not a question I can answer, you'll need to discuss that with the 
-UEFI SB people.
+I'd consider deleting the first paragraph. It really does not provide
+anything useful. The 2nd paragraph is totally sufficient introduction to
+the topic, and makes factors more sense.
 
---
-paul-moore.com
+We don't need a phrase in kernel documentation stating that computer is
+a system that produces a result :-)
+
+Should be at least easy enough change to make. I don't think it even
+needs any refined version as the text below provides more than enough
+(in many places useful) detail to the topic.
+
+> +
+> +Load-time Integrity
+> +-------------------
+> +
+> +It is critical to understand what load-time integrity establishes about a
+> +system and what is assumed, i.e. what is being trusted. Load-time integrity is
+
+I'd delete the very first sentence completely. It serves zero purpose.
+This would be so much less exhausting read if I could just start on
+getting the information what load-time integrity is.
+
+Reassurance serves zero purpose. It is up to the read of kernel
+documentation to make such evaluation.
+
+> +when a trusted entity, i.e. an entity with an assumed integrity, takes an
+> +action to assess an entity being loaded into memory before it is used. A
+> +variety of mechanisms may be used to conduct the assessment, each with
+> +different properties. A particular property is whether the mechanism creates an
+> +evidence of the assessment. Often either cryptographic signature checking or
+> +hashing are the common assessment operations used.
+> +
+> +A signature checking assessment functions by requiring a representation of the
+> +accepted authorities and uses those representations to assess if the entity has
+> +been signed by an accepted authority. The benefit to this process is that
+> +assessment process includes an adjudication of the assessment. The drawbacks
+> +are that 1) the adjudication is susceptible to tampering by the Trusted
+> +Computing Base (TCB), 2) there is no evidence to assert that an untampered
+> +adjudication was completed, and 3) the system must be an active participant in
+> +the key management infrastructure.
+> +
+> +A cryptographic hashing assessment does not adjudicate the assessment, but
+
+This is actually language barrier: is "cryptographic hashing assesment"
+same as "cryptographic measurement"? I'd consider using latter as it has
+wider reach. Most people know what measurement means if they know any of
+cryptography.
+
+> +instead generates evidence of the assessment to be adjudicated independently.
+> +The benefits to this approach is that the assessment may be simple such that it
+> +may be implemented in an immutable mechanism, e.g. in hardware.  Additionally,
+> +it is possible for the adjudication to be conducted where it cannot be tampered
+> +with by the TCB. The drawback is that a compromised environment will be allowed
+> +to execute until an adjudication can be completed.
+> +
+> +Ultimately, load-time integrity provides confidence that the correct entity was
+> +loaded and in the absence of a run-time integrity mechanism assumes, i.e.
+> +trusts, that the entity will never become corrupted.
+> +
+> +Runtime Integrity
+> +-----------------
+> +
+> +Runtime integrity in the general sense is when a trusted entity makes an
+> +assessment of an entity at any point in time during the assessed entity's
+> +execution. A more concrete explanation is the taking of an integrity assessment
+
+Great, this is better than the last subsection as it gets straight into
+the topic! No reassurance part ;-)
+
+> +of an active process executing on the system at any point during the process'
+> +execution. Often the load-time integrity of an operating system's user-space,
+> +i.e. the operating environment, is confused with the runtime integrity of the
+> +system, since it is an integrity assessment of the "runtime" software. The
+> +reality is that actual runtime integrity is a very difficult problem and thus
+> +not very many solutions are public and/or available. One example of a runtime
+> +integrity solution would be Johns Hopkins Advanced Physics Laboratory's (APL)
+> +Linux Kernel Integrity Module (LKIM).
+> +
+> +Trust Chains
+> +============
+> +
+> +Building upon the understanding of security mechanisms to establish load-time
+> +integrity of an entity, it is possible to chain together load-time integrity
+> +assessments to establish the integrity of the whole system. This process is
+> +known as transitive trust and provides the concept of building a chain of
+> +load-time integrity assessments, commonly referred to as a trust chain. These
+> +assessments may be used to adjudicate the load-time integrity of the whole
+> +system. This trust chain is started by a trusted entity that does the first
+> +assessment. This first entity is referred to as the Root of Trust(RoT) with the
+> +entities name being derived from the mechanism used for the assessment, i.e.
+> +RoT for Verification (RTV) and RoT for Measurement (RTM).
+> +
+> +A trust chain is itself a mechanism, specifically a mechanism of mechanisms,
+> +and therefore it also has a Strength of Mechanism. The factors that contribute
+> +to the strength of a trust chain are:
+> +
+> +  - The strength of the chain's RoT
+> +  - The strength of each member of the trust chain
+> +  - The length, i.e. the number of members, of the chain
+> +
+> +Therefore, the strongest trust chains should start with a strong RoT and should
+> +consist of members being of low complexity and minimize the number of members
+> +participating. In a more colloquial sense, a trust chain is only as strong as its
+> +weakest link, thus more links increase the probability of a weak link.
+> +
+> +Dynamic Launch Components
+> +=========================
+> +
+> +The TCG architecture for dynamic launch is composed of a component series
+> +used to set up and then carry out the launch. These components work together to
+> +construct an RTM trust chain that is rooted in the dynamic launch and thus commonly
+> +referred to as the Dynamic Root of Trust for Measurement (DRTM) chain.
+> +
+> +What follows is a brief explanation of each component in execution order. A
+> +subset of these components are what establishes the dynamic launch's trust
+> +chain.
+> +
+> +Dynamic Configuration Environment Preamble
+> +------------------------------------------
+> +
+> +The Dynamic Configuration Environment (DCE) Preamble is responsible for setting
+> +up the system environment in preparation for a dynamic launch. The DCE Preamble
+> +is not a part of the DRTM trust chain.
+> +
+> +Dynamic Launch Event
+> +--------------------
+> +
+> +The dynamic launch event is the event, typically a CPU instruction, that
+> +triggers the system's dynamic launch mechanism to begin the launch process. The
+> +dynamic launch mechanism is also the RoT for the DRTM trust chain.
+> +
+> +Dynamic Configuration Environment
+> +---------------------------------
+> +
+> +The dynamic launch mechanism may have resulted in a reset of a portion of the
+> +system. To bring the system back to an adequate state for system software, the
+> +dynamic launch will hand over control to the DCE. Prior to handing over this
+> +control, the dynamic launch will measure the DCE. Once the DCE is complete, it
+> +will proceed to measure and then execute the Dynamic Launch Measured
+> +Environment (DLME).
+> +
+> +Dynamic Launch Measured Environment
+> +-----------------------------------
+> +
+> +The DLME is the first system kernel to have control of the system, but may not
+> +be the last. Depending on the usage and configuration, the DLME may be the
+> +final/target operating system, or it may be a bootloader that will load the
+> +final/target operating system.
+> +
+> +Why DRTM
+> +========
+
+Nit: maybe 
+
+Why DTRM?
+=========
 
 
+> +
+> +It is a fact that DRTM increases the load-time integrity of the system by
+> +providing a trust chain that has an immutable hardware RoT, uses a limited
+> +number of small, special purpose code to establish the trust chain that starts
+> +the target operating system. As mentioned in the Trust Chain section, these are
+> +the main three factors in driving up the strength of a trust chain. As has been
+> +seen with the BootHole exploit, which in fact did not affect the integrity of
+> +DRTM solutions, the sophistication of attacks targeting system launch is at an
+> +all-time high. There is no reason a system should not employ every available
+> +hardware integrity measure. This is the crux of a defense-in-depth
+> +approach to system security. In the past, the now closed SMI gap was often
+> +pointed to as invalidating DRTM, which in fact was nothing but a straw man
+> +argument. As has continued to be demonstrated, if/when SMM is corrupted, it can
+> +always circumvent all load-time integrity (SRTM and DRTM) because it is a
+> +run-time integrity problem. Regardless, Intel and AMD have both deployed
+> +runtime integrity for SMI and SMM which is tied directly to DRTM such that this
+> +perceived deficiency is now non-existent and the world is moving forward with
+> +an expectation that DRTM must be present.
 
+Here's my general feeling about text up to this point. It's way too
+verbose and has bad reach especially for non-native speakers.
+
+I don't want nitpick every possible sentence that I think could be
+made for punctual.
+
+What I'd suggest instead would be to go through this internalla at
+Oracle with some group of people couple of times and try to cut out
+all the extra fat.
+
+I gave those review comments in order to give an idea what kind of
+stuff look up for. The benefit is that if you get this document more
+readable that also as a side-effect lowers the barrier to review the
+patch series. Right now this is more exhausting to read than some of
+the actualy science papers I've read.
+
+Hope no one takes this personally. What comes after this is much better
+fit but I'd still do similar assessment.
+
+Roughly estimated you could have a document 50% of the current length
+without loss of information content just by being a factor more
+punctual. I'm worried that the series gets ignored partly because
+the documentation is already like climbing to a mountain.
+
+BR, Jarkko
+
+ 
 
