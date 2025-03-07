@@ -1,47 +1,47 @@
-Return-Path: <linux-efi+bounces-2914-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2915-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0344A56178
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Mar 2025 08:05:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C5CA5617D
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Mar 2025 08:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A74C1897841
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Mar 2025 07:05:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4954176CF9
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Mar 2025 07:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64A419E7E2;
-	Fri,  7 Mar 2025 07:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F19719E7E2;
+	Fri,  7 Mar 2025 07:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+TToUeV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnRSXatN"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D51A176FB0;
-	Fri,  7 Mar 2025 07:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D942176FB0;
+	Fri,  7 Mar 2025 07:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741331144; cv=none; b=Y7GaNGEb3lHc++936fqJfhqdCUA8KJA89w4vJddn6I9Ub5MZ2gJRTi+vvLPiQVHmMb3ZjhtcOmqPbAdzuZDhm22/8zvASBod3B871wmExqGMh9a2K2gVuHBkRxMeNaxZIn6Aq4LLBUKl7+1V+yd4XFWTWVsKvBtc3ddmBwNJkeA=
+	t=1741331230; cv=none; b=dqOW8TxGrjOud8SclhAa0fjrk62Bn9JJb7aw1XUzo+Lag5i9pTcpvRIxjrrKUkh+yFzqCmo+Lnp7ZIZ2Tgwk6WLDyD+TEBG656XiYFn3y22NAFiPrHIG3Pgr/HFw3rkKlqZED8K4I6qLlf/Y5ug6C7n9jV5h8W0blIadlLdRxEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741331144; c=relaxed/simple;
-	bh=sg8lIGdAcGl0Nr7oC/i8DO5aGMtK0VBBp7rTicPtVSk=;
+	s=arc-20240116; t=1741331230; c=relaxed/simple;
+	bh=NfUCXLX47qnl3g7ntvt7VcFk3/TMUuqaEmjkzg006yY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FGj5+YIpUFYAEA6TNHFcFo4g+y/Eyt0I6MyLNaPm7bhl5P3qgAQcBaO0dHgNRVpgzVp9k/d04ctvHCA/n+zoavy57tgeIJq/UuyTcjrgKBF48LD3JJrDrIUDc0LZ050gYTFiHEG9/o8Wbs8fJQvJjC/sd2ySat9sg49L+as5Veg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+TToUeV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DDDC4CED1;
-	Fri,  7 Mar 2025 07:05:43 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lzf1lMDE5TL2VsoS9TNmvlgPDVkpzRGDiKBkXQfbkb8ZNMPggZWIf3qUy5G/6Rn/vHXL/ZAKoImwVcqZD1zj4wQ6nRiJYg+Fc6BugKxfRk52rzZSUcXSRSuR0UgmQSvXUQilbOpnySVwjnRHzYipaaDqKwQbuAeSUqoOsE9APkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnRSXatN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3853C4CEE2;
+	Fri,  7 Mar 2025 07:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741331144;
-	bh=sg8lIGdAcGl0Nr7oC/i8DO5aGMtK0VBBp7rTicPtVSk=;
+	s=k20201202; t=1741331229;
+	bh=NfUCXLX47qnl3g7ntvt7VcFk3/TMUuqaEmjkzg006yY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K+TToUeVCHBzNksGAEG0u+yLGt8bvrcxM7loUzqKPduGAUIlplwWspTULdQPdjlH4
-	 GiIHNjrpiuW7p+QViOsfTzbBmyCiyApLGI5cCE2MFrSQ0RrJYp5TgavHxM9owckfo7
-	 NMglh+EaRJwTZ3teO30vIMBPemxWXlznQAg2i1MHbowYQWEvEaGY7ENdAydD1TyH67
-	 w2kgj5te2Uhvtan2sHnLEdv9rhdXCkkJU8/djRahDRp/Z6nQlO/+Yu08ym29ot3XPi
-	 stHDV+5JeyLLIGeEw57wTTTeQTZntvfQ0G0PMMoNrAI5y+srz6NQ6G9rAzc8aOzmXl
-	 0ZJOQUqSdSzlA==
-Date: Fri, 7 Mar 2025 09:05:39 +0200
+	b=hnRSXatNyhfeQym42Mwoaq7lXelXEckosZP/mDV2JsO53Q/pdmGwCVIxA4HMR3gXi
+	 a80cDvOig0TFhlfN9ill252VOAEoJ93bhhUPi0Ep8OEbEuFLuK4sMFGTI+CZZ4PV7I
+	 6v0zPTnQEmi3kfiDq2fr+8IBi57gDTkX1FZTw54+d5Uu2RPcSveKf/3iwqZ1vXvsTC
+	 RENa8d/Vwk9Es8Ro7RKoOHs6i+TBVf1yGBK89hiID6vLXWim/BANWKGV/Nhnyfe8Mb
+	 Vxgz5W0wuTTUq+i33pEb4Ox+O9+zqan+JmGiMty1H0pQpL+KT4wqxwtg9L4rrxRrYe
+	 tml2ZPM3hvkyA==
+Date: Fri, 7 Mar 2025 09:07:05 +0200
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: Ross Philipson <ross.philipson@oracle.com>
 Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
@@ -57,10 +57,11 @@ Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
 	ebiederm@xmission.com, dwmw2@infradead.org,
 	baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
 	andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
-Subject: Re: [PATCH v12 14/19] tpm, tpm_tis: Close all localities
-Message-ID: <Z8qaw4XwH3QljLEM@kernel.org>
+Subject: Re: [PATCH v12 15/19] tpm, tpm_tis: Address positive localities in
+ tpm_tis_request_locality()
+Message-ID: <Z8qbGZwi0yFyus0J@kernel.org>
 References: <20241219194216.152839-1-ross.philipson@oracle.com>
- <20241219194216.152839-15-ross.philipson@oracle.com>
+ <20241219194216.152839-16-ross.philipson@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -69,86 +70,50 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241219194216.152839-15-ross.philipson@oracle.com>
+In-Reply-To: <20241219194216.152839-16-ross.philipson@oracle.com>
 
-On Thu, Dec 19, 2024 at 11:42:11AM -0800, Ross Philipson wrote:
+On Thu, Dec 19, 2024 at 11:42:12AM -0800, Ross Philipson wrote:
 > From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
 > 
-> There are environments, for example, those that comply with the TCG D-RTM
-> specification that requires the TPM to be left in locality 2. Prepare
-> kernel for such environments by closing all the localities.
+> Validate that the input locality is within the correct range, as specified
+> by TCG standards, and increase the locality count also for the positive
+> localities.
 > 
 > Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
 > Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
 > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 > ---
->  drivers/char/tpm/tpm_tis_core.c | 11 ++++++++++-
->  include/linux/tpm.h             |  6 ++++++
->  2 files changed, 16 insertions(+), 1 deletion(-)
+>  drivers/char/tpm/tpm_tis_core.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-> index fdef214b9f6b..c58f360fb4a4 100644
+> index c58f360fb4a4..c86100ad743a 100644
 > --- a/drivers/char/tpm/tpm_tis_core.c
 > +++ b/drivers/char/tpm/tpm_tis_core.c
-> @@ -1104,7 +1104,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
->  	u32 intmask;
->  	u32 clkrun_val;
->  	u8 rid;
-> -	int rc, probe;
-> +	int rc, probe, i;
->  	struct tpm_chip *chip;
+> @@ -234,10 +234,13 @@ static int tpm_tis_request_locality(struct tpm_chip *chip, int l)
+>  	struct tpm_tis_data *priv = dev_get_drvdata(&chip->dev);
+>  	int ret = 0;
 >  
->  	chip = tpmm_chip_alloc(dev, &tpm_tis);
-> @@ -1166,6 +1166,15 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
->  		goto out_err;
->  	}
->  
-> +	/*
-> +	 * There are environments, for example, those that comply with the TCG D-RTM
-> +	 * specification that requires the TPM to be left in Locality 2.
-> +	 */
+> +	if (l < 0 || l > TPM_MAX_LOCALITY)
+> +		return -EINVAL;
 
-I'd just shorten this into
+I would mind if we put do dev_warn() here because it is unexpected
+condition or even perhaps dev_err(). Or am I missing something?
 
-/*
- * In order to comply with the TCG D-RTM specification, relinquish all
- * the localities.
- */
-
-And that's it. It's a punctual reminder and that is what source code
-comments should be for.
-
-
-> +	for (i = 0; i <= TPM_MAX_LOCALITY; i++) {
-> +		if (check_locality(chip, i))
-> +			tpm_tis_relinquish_locality(chip, i);
-> +	}
 > +
->  	/* Take control of the TPM's interrupt hardware and shut it off */
->  	rc = tpm_tis_read32(priv, TPM_INT_ENABLE(priv->locality), &intmask);
->  	if (rc < 0)
-> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-> index 20a40ade8030..c5a4a2d7dd15 100644
-> --- a/include/linux/tpm.h
-> +++ b/include/linux/tpm.h
-> @@ -147,6 +147,12 @@ struct tpm_chip_seqops {
->   */
->  #define TPM2_MAX_CONTEXT_SIZE 4096
->  
-> +/*
-> + * The maximum locality (0 - 4) for a TPM, as defined in section 3.2 of the
-> + * Client Platform Profile Specification.
-> + */
-> +#define TPM_MAX_LOCALITY		4
-> +
->  struct tpm_chip {
->  	struct device dev;
->  	struct device devs;
+>  	mutex_lock(&priv->locality_count_mutex);
+>  	if (priv->locality_count == 0)
+>  		ret = __tpm_tis_request_locality(chip, l);
+> -	if (!ret)
+> +	if (ret >= 0)
+>  		priv->locality_count++;
+>  	mutex_unlock(&priv->locality_count_mutex);
+>  	return ret;
 > -- 
 > 2.39.3
 > 
 
-Otherwise, this is great.
+I agree with this now.
 
 BR, Jarkko
 
