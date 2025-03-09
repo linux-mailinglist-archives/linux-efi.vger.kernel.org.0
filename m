@@ -1,176 +1,162 @@
-Return-Path: <linux-efi+bounces-2944-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2945-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DD6A582F0
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 11:15:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A06A586EA
+	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 19:13:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15EB17A2353
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 10:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C330168E77
+	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 18:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678CA1474B8;
-	Sun,  9 Mar 2025 10:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3931E5200;
+	Sun,  9 Mar 2025 18:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="UuUzvmCW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=bens.haus header.i=@bens.haus header.b="go8JZcHf"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04499EAC7
-	for <linux-efi@vger.kernel.org>; Sun,  9 Mar 2025 10:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1AF1DF244
+	for <linux-efi@vger.kernel.org>; Sun,  9 Mar 2025 18:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741515306; cv=none; b=dwDbo98hPR6kAB6+xJZSSqIp8/qcIp5kN34skTGkRMaMlygjOi7EDFKsb8V7TpgstmhbhTZpbnRrL3LDtlfUp2d8TLko2VTZ3SSJ0oSSTUENDq3M24gvi0acll7vs6judEjZ29q2NRNWeW/PZnT6EGII48gHqFtmoUrpsC2NSD0=
+	t=1741543986; cv=none; b=SoOk5qeCT339VdpsBjJDNQftrqqo2YIZcqUU2VtRYTowM96wxsiou9WIwLZQRhPMICpWVtPlZXt7H6Ouc6Nb3qWQiZmu36KX2GlULNq7jjqoNDpw72D9ZSvQrkklHfBrY1ZJixT9BeVFAal1aJGImDwCeadwoPIqvZsvNWlHRl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741515306; c=relaxed/simple;
-	bh=6+sx/uKbcT/XifleL+nJx9XxBtH/gNc4zUHID3ZvHVg=;
-	h=Message-ID:Date:MIME-Version:In-Reply-To:To:Cc:From:Subject:
-	 Content-Type; b=dW5cZQ5YC/Xo3CgnXV654FKg0H4HCFH/9lOf1PAGEQxWpY28I85q4cG8E+UWcs63dQn4pc8PzjMRw6ODl5lCCWli5TT4YeLf50NYr/VaHxuEB5jIoaBGFAxjI2FE6i/8Bow+G4ikPqlShLGMZjRE7s3kGdYGqoFg4dkr++sZf+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=UuUzvmCW; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id BBF4A1C08C3
-	for <linux-efi@vger.kernel.org>; Sun,  9 Mar 2025 13:14:57 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:content-type:content-type:subject
-	:subject:from:from:to:in-reply-to:content-language:user-agent
-	:mime-version:date:date:message-id; s=dkim; t=1741515296; x=
-	1742379297; bh=6+sx/uKbcT/XifleL+nJx9XxBtH/gNc4zUHID3ZvHVg=; b=U
-	uUzvmCW53rHbxf1z49zariKpociRs0dp8Q91pMZSrcMnrXcIVZXLiL3J8etiNpwg
-	aRnqrud+ke4No/JUd7aQNcdyGSIORsuGhSx1992mMoc9oiC67s5rBkrm3zXu1tla
-	dO+iL1aBjfs686sIY/uIE0xVK3e4zYC59LJOHMRKMs=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 9ocWS6R22X70 for <linux-efi@vger.kernel.org>;
-	Sun,  9 Mar 2025 13:14:56 +0300 (MSK)
-Received: from [192.168.1.67] (unknown [46.72.98.152])
-	by mail.nppct.ru (Postfix) with ESMTPSA id DCEC91C0B18;
-	Sun,  9 Mar 2025 13:14:52 +0300 (MSK)
-Message-ID: <c315940b-dbdb-4acb-b319-d3b0fd53eb0d@nppct.ru>
-Date: Sun, 9 Mar 2025 13:14:51 +0300
+	s=arc-20240116; t=1741543986; c=relaxed/simple;
+	bh=zyvv6LE5+/RI+8XoWGFK9P0N4tsvDV6NnM+TvTUIRp4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dgW4x3NOkv3CaoONmfOdTv7G0c5nqKGVSPI5iW2UAvYEA3FhxuGcb0xuDINlekAzu7z1Jqex/mvr9af9M9U94OJ2NtYrl2fGnNg4JuG+tJqOttLYrumWuuovZa3f1vhO9XmOLmt1/qM8VVn/f/o+bgUwMPga6RxdZfXAM7h206I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bens.haus; spf=pass smtp.mailfrom=bens.haus; dkim=pass (2048-bit key) header.d=bens.haus header.i=@bens.haus header.b=go8JZcHf; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bens.haus
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bens.haus
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bens.haus;
+	s=protonmail; t=1741543967; x=1741803167;
+	bh=D+ZO3yA/5q2BYOGvFkMiUSl/RH69JsisG9aWYBA4aYc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=go8JZcHfC6W3WMsZZo4FydfgyW8vyXV/S2H5CIWQgJjqbigkJNnLdVdFQ6vX6AHka
+	 GXbY/DRk0dp5ZfjB03RaC9BRvFVkv3PwhKDrEIXdpRyT/bIEfc6YdZ3HejqKdqjVfB
+	 zzECymQ6PfLpdM63tdAPLU864up++rUdXKXt0tYjk2hkPIo/avPqsBJePuByEa/qyz
+	 7POKMSytMlcyfrrkgXq89QeSTJaISzSClEPAzP6ePRBkm02DXTevdbs6NUlPWFgIBN
+	 3M9wVCyfx/6V97UeQcJ85O4lMJzezh2d6PN/f7NqlpueaGrPvbcefxAtstjkyONFzU
+	 cAhxq2s25YLyw==
+Date: Sun, 09 Mar 2025 18:12:45 +0000
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+From: Ben Schneider <ben@bens.haus>
+Cc: Ard Biesheuvel <ardb@kernel.org>, "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
+Subject: Re: efi_random_alloc() returning EFI_NOT_FOUND
+Message-ID: <PkBypGXyjiJ7T845148vEiHaoabJOyVg26qTLI-SygtRbQ9aQjnMWUddWHiYB9KPR8JVqDFQ1pZRnRUq06vIRR7L4CDLERwJL9-2LdvcxBc=@bens.haus>
+In-Reply-To: <CAC_iWj+LdNXYO-nTzenCvhQN=--hmfJLzH1w_D5g676_6wQ8=g@mail.gmail.com>
+References: <5BK24Nc0mA4pe8BFp-FUgN4Q9lCFpR1TUFMKB8mRUJIhOG1hP3yYcVIulRsDSQA_7MvOOH9dg1nUiDvQSkQ2tS1vZeiZbMEFEnsMbPzB0cg=@bens.haus> <CAMj1kXHN4qTTUzCUvERy1iZVMy6jQ_-iha0EyHBsE5jH0_WaUQ@mail.gmail.com> <YT8Nabg2mhqfljPaZg1ruLmAwW-C6iNOaSA4yUC3h8tkwEgaHJswhIP0fKxb_0Tvmsc6muBWW7TRgnCgXejXrXZ5zxx8gMc1aMFZW0A8-v0=@bens.haus> <CAC_iWj+LdNXYO-nTzenCvhQN=--hmfJLzH1w_D5g676_6wQ8=g@mail.gmail.com>
+Feedback-ID: 124562356:user:proton
+X-Pm-Message-ID: 0e3c5e7a52cc5901918cbaa23fa57dd5a8eabeaf
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: ru
-In-Reply-To: <Y8bTM3cbL3x9nhKa@google.com>
-To: lee@kernel.org
-Cc: ardb@kernel.org, greg@kroah.com, keescook@chromium.org,
- linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
- samitolvanen@google.com, stable@vger.kernel.org, will@kernel.org,
- lvc-project@linuxtesting.org
-From: SDL <sdl@nppct.ru>
-Subject: Re: [PATCH 1/2] arm64: efi: Execute runtime services from a dedicated
- stack
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Dear Linux Kernel Developers,
-I have reason to believe that the commit 
-4012603cbd469223f225637d265a233f034c567a, which was backported to the 
-linux-5.10 branch, is introducing a bug that leads to a kernel crash.
+Hi Ilias, thank you for connecting the threads. I'm clearly
+struggling a bit and appreciate how patient and helpful
+everyone has been.
 
-Environment Details:
+On Saturday, March 8th, 2025 at 5:43 PM, Ilias Apalodimas <ilias.apalodimas=
+@linaro.org> wrote:
+> The 'efidebug' command will dump the EFI memory map. Can you send that?
 
-Kernel Version: linux-5.10.234
-Architecture: aarch64
-Kernel Configuration: Available at
-https://syzkaller.appspot.com/bug?extid=75dc11b3aa0369757b7c
-QEMU Version: 8.2.2
+This is what U-Boot reports:
 
-QEMU Launch Command:
+Type             Start            End              Attributes
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+CONVENTIONAL     0000000000000000-0000000004000000 WB
+BOOT DATA        0000000004000000-0000000004200000 WB
+CONVENTIONAL     0000000004200000-0000000004400000 WB
+BOOT DATA        0000000004400000-0000000005400000 WB
+CONVENTIONAL     0000000005400000-000000003eabc000 WB
+BOOT DATA        000000003eabc000-000000003eac1000 WB
+RUNTIME DATA     000000003eac1000-000000003eac2000 WB|RT
+BOOT DATA        000000003eac2000-000000003eac3000 WB
+RUNTIME DATA     000000003eac3000-000000003eae5000 WB|RT
+BOOT DATA        000000003eae5000-000000003eaee000 WB
+BOOT CODE        000000003eaee000-000000003fb8a000 WB
+RUNTIME DATA     000000003fb8a000-000000003fb8b000 WB|RT
+BOOT CODE        000000003fb8b000-000000003ff00000 WB
+RUNTIME CODE     000000003ff00000-000000003ff10000 WB|RT
+BOOT CODE        000000003ff10000-0000000040000000 WB
 
-qemu-system-aarch64 \
-     -m 4G \
-     -smp 4,sockets=1,cores=4,threads=1 \
-     -cpu cortex-a57 \
-     -machine virt,accel=tcg \
-     -kernel /home/user/lvc/linux-stable/arch/arm64/boot/Image \
-     -append "console=ttyS0 root=/dev/vda2 earlyprintk=serial 
-net.ifnames=0 rw debug loglevel=8" \
-     -drive 
-file=/home/user/lvc/image/disk.raw,format=raw,if=virtio,index=1 \
-     -bios /usr/share/AAVMF/AAVMF_CODE.fd \
-     -netdev user,id=net0,hostfwd=tcp::10022-:22 \
-     -device virtio-net-device,netdev=net0 \
-     -nographic
+> Any idea if we can reproduce this on QEMU?
 
-Steps to Reproduce:
+I have not attempted to reproduce with QEMU.
 
-mount -t sysfs sysfs /sys
-mount -t proc proc /proc
-mount -t efivarfs efivarfs /sys/firmware/efi/efivars
-tools/testing/selftests/efivarfs/efivarfs.sh
+From what I can tell on my device, total_slots is 467 and
+target_slot seems to always start with a value of 0 despite the
+comment that it should be a random value in [0, total_slots).
 
-Crash log:
+In the first iteration through the second for loop,
+MD_NUM_SLOTS(md) appears to have a value of 24 and since
+target_slot is always 0, it never reaches the 'continue'
+statement. With current builds, &target appears to have a value of
+3faee138. U-Boot appears to send this address to map_to_sysmem()
+[1] which seems to return 0, which is then what results in the
+EFI_NOT_FOUND.
 
-[  101.403235][   T38] Unable to handle kernel paging request at virtual 
-address ffffa00023b20000
-[  101.403905][   T38] Mem abort info:
-[  101.404159][   T38]   ESR = 0x96000047
-[  101.404448][   T38]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  101.404748][   T38]   SET = 0, FnV = 0
-[  101.404988][   T38]   EA = 0, S1PTW = 0
-[  101.405233][   T38] Data abort info:
-[  101.405469][   T38]   ISV = 0, ISS = 0x00000047
-[  101.405721][   T38]   CM = 0, WnR = 1
-[  101.406070][   T38] swapper pgtable: 4k pages, 48-bit VAs, 
-pgdp=0000000103336000
-[  101.406415][   T38] [ffffa00023b20000] pgd=000000013ffff003, 
-p4d=000000013ffff003, pud=000000013fffe003, pmd=000000013fff9003, 
-pte=0000000000000000
-[  101.407997][   T38] Internal error: Oops: 0000000096000047 [#1] 
-PREEMPT SMP
-[  101.408446][   T38] Modules linked in:
-[  101.409010][   T38] CPU: 1 PID: 38 Comm: kworker/u8:2 Not tainted 
-5.10.234 #61
-[  101.409376][   T38] Hardware name: QEMU QEMU Virtual Machine, BIOS 
-2024.02-2ubuntu0.1 10/25/2024
-[  101.410689][   T38] Workqueue: efi_rts_wq efi_call_rts
-[  101.411219][   T38] pstate: 000003c5 (nzcv DAIF -PAN -UAO -TCO BTYPE=--)
-[  101.411574][   T38] pc : el1_sync+0xc/0x140
-[  101.411930][   T38] lr : 0x0
-[  101.412132][   T38] sp : ffffa00023b1ffd0
-[  101.412363][   T38] x29: 0000000000000000 x28: ffff0000cc741a80
-[  101.412761][   T38] x27: 0000000000000001 x26: 0000000000e800e8
-[  101.413117][   T38] x25: 0000000000800080 x24: ffff940004765298
-[  101.413465][   T38] x23: 00000000100003c5 x22: ffffa00018c95600
-[  101.413809][   T38] x21: ffffa0001923a980 x20: ffffa00018d30380
-[  101.414170][   T38] x19: ffffa0001bab8008 x18: 1fffe000198e8491
-[  101.414515][   T38] x17: 0000000000000000 x16: ffffa000102a26c0
-[  101.414882][   T38] x15: 0000000000000001 x14: ffff0000ccf34400
-[  101.415277][   T38] x13: 000000000000003c x12: ffff0000ccf34000
-[  101.415656][   T38] x11: 0000000000000018 x10: 0000000000000054
-[  101.416072][   T38] x9 : 4fc79849210be57c x8 : 11d293ca8be4df61
-[  101.416446][   T38] x7 : 0000000041b58ab3 x6 : ffff94000476522a
-[  101.416820][   T38] x5 : 0000002200000000 x4 : 0000000200000000
-[  101.417190][   T38] x3 : 1fffe000198e8352 x2 : ffffa0001923a820
-[  101.417560][   T38] x1 : ffff0000cc741a80 x0 : 0000000000000000
-[  101.418109][   T38] Call trace:
-[  101.418601][   T38] Code: d503201f a90007e0 a9010fe2 a90217e4 (a9031fe6)
-[  101.419579][   T38] ---[ end trace 61316cddfdbbcb95 ]---
-[  103.623221][   T38] Kernel panic - not syncing: Oops: Fatal exception
-[  103.623723][   T38] SMP: stopping secondary CPUs
-[  105.221708][   T38] SMP: failed to stop secondary CPUs 0-3
-[  105.222306][   T38] Kernel Offset: disabled
-[  105.222711][   T38] CPU features: 0x28240022,61002082
-[  105.222969][   T38] Memory Limit: none
+I went back to try figure out why it is somehow working when I
+block the 'break' statement with the condition status =3D=3D
+EFI_SUCCESS. Doing so causes the loop to start its second
+iteration when EFI_NOT_FOUND comes back. In the second iteration,
+MD_NUM_SLOTS(md) is 0 so we reach the 'continue' statement. This
+happens for the third and fourth iteration too. On the fifth
+iteration, MD_NUM_SLOTS(md) is 443 so it makes its second call to
+efi_allocate_pages(). On all iterations, target_slot remains 0.
 
-I identified this commit as the potential cause of the crash using git 
-bisect. The issue is reproducible with the above setup and 
-configuration. If you need more details or logs, I am more than willing 
-to provide them. Thank you for your attention to this matter.
+What is confusing is this second call to efi_allocate_pages()
+seems to have the same value for &target of 3faee138, but this
+time when U-Boot calls map_to_sysmem() it returns a value of
+88080384 instead of 0. As a result, we get EFI_SUCCESS and the
+kernel boots.
 
-Best regards,
+U-Boot also reports a new reservation in its lmb map between the
+first and second calls to efi_allocate_pages().
 
-Alexey Nepomnyashih
+During first call to efi_allocate_pages():
+
+lmb_dump_all:
+ memory.count =3D 0x1
+ memory[0]=09[0x0-0x3fffffff], 0x40000000 bytes, flags: none
+ reserved.count =3D 0x5
+ reserved[0]=09[0x4000000-0x41fffff], 0x200000 bytes, flags: none
+ reserved[1]=09[0x4400000-0x53fffff], 0x1000000 bytes, flags: none
+ reserved[2]=09[0x3dae3000-0x3e2c8fff], 0x7e6000 bytes, flags: no-overwrite=
+, no-map
+ reserved[3]=09[0x3ea6c000-0x3eaedfff], 0x82000 bytes, flags: no-overwrite,=
+ no-map
+ reserved[4]=09[0x3eaee960-0x3fffffff], 0x15116a0 bytes, flags: no-map
+
+During second call to efi_allocate_pages():
+
+lmb_dump_all:
+ memory.count =3D 0x1
+ memory[0]=09[0x0-0x3fffffff], 0x40000000 bytes, flags: none
+ reserved.count =3D 0x6
+ reserved[0]=09[0x0-0x113ffff], 0x1140000 bytes, flags: no-overwrite, no-ma=
+p
+ reserved[1]=09[0x4000000-0x41fffff], 0x200000 bytes, flags: none
+ reserved[2]=09[0x4400000-0x53fffff], 0x1000000 bytes, flags: none
+ reserved[3]=09[0x3dae3000-0x3e2c8fff], 0x7e6000 bytes, flags: no-overwrite=
+, no-map
+ reserved[4]=09[0x3ea6c000-0x3eaedfff], 0x82000 bytes, flags: no-overwrite,=
+ no-map
+ reserved[5]=09[0x3eaee960-0x3fffffff], 0x15116a0 bytes, flags: no-map
+
+[1] https://github.com/u-boot/u-boot/blob/master/lib/efi_loader/efi_memory.=
+c#L493
+
 
