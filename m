@@ -1,113 +1,116 @@
-Return-Path: <linux-efi+bounces-2940-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2941-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B14A57FEB
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 01:03:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2276AA5803D
+	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 02:28:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77F283B0CCE
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 00:03:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC58A7A5851
+	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 01:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA624380;
-	Sun,  9 Mar 2025 00:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322ADDDCD;
+	Sun,  9 Mar 2025 01:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=bens.haus header.i=@bens.haus header.b="VUUXi7vf"
+	dkim=pass (2048-bit key) header.d=ethancedwards.com header.i=@ethancedwards.com header.b="yPNZGgS2"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-10626.protonmail.ch (mail-10626.protonmail.ch [79.135.106.26])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277B336C
-	for <linux-efi@vger.kernel.org>; Sun,  9 Mar 2025 00:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9789460;
+	Sun,  9 Mar 2025 01:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741478619; cv=none; b=rdT8YsDd2G6l6gwg3RnSRTS/X2Y6yz2IbjAY43lQNNYNImGYYa539kmghY0kn/o1VS6b3lgt7ZKvWD2f1iYGwcArYs2omHHUjGwiKJIlOM9FvAf7RafG+EMe/k+v8k427sLr6h8QdDt05M8Rne0c05lGiLy1g0wn3yPtYkykim8=
+	t=1741483678; cv=none; b=kAOK8rktVTeHVyQc03kdn8RbN8qE/O4FF8Zi49kUowcPDnbk0AwHDd4QLq+sZmtVFay7M+huMyaep8Qzi6aELF/lL7tvdm1m/F8MawRBjJkjfdbPwEslvK+3j6qWch0S+4NNJxDyHHY/tsNRpmR30sudJLCVvI3vhjuXsKSejRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741478619; c=relaxed/simple;
-	bh=J+XTXd1Wz8T5YSo4dwAKjborFVB1YVduG7AGjrRY8N0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uj+48UYotHOH8x6IzyZwJ0HVuDt4jbvZ/4G7SGlRo/0G9vPZWEw01fo9Hhe7MXzHZOZkutgedovrMTMNlXFA04ds9BfM62l1kf7QtC7c8FRlo7Qk2JdtK1pr4ulTktNU3BHyMWOppeu8Gx8L0dXdo36SDwlVn7AWScBE95trKvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bens.haus; spf=pass smtp.mailfrom=bens.haus; dkim=pass (2048-bit key) header.d=bens.haus header.i=@bens.haus header.b=VUUXi7vf; arc=none smtp.client-ip=79.135.106.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bens.haus
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bens.haus
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bens.haus;
-	s=protonmail; t=1741478606; x=1741737806;
-	bh=J+XTXd1Wz8T5YSo4dwAKjborFVB1YVduG7AGjrRY8N0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=VUUXi7vfsbMwoSxiVUPQKytgrCF7XqSfEFqzIqiz4GNT+QU3ZHXwYhVPgkS6Pvflj
-	 xuu9eOf3569QpZGZceKRIKMiln0r8tf5MsOxOoQCxRyxDfIJmF/zfvzzBgLeqXyemj
-	 yNu3H8ZxF98fsba/iY+eu45zWaZCP6rAbdI4PTDSyK7t3YGI0b/CHKZC1Fp4B7ZDCl
-	 jnLOcImiTTWr7JnffYATHt2WaZnd21QQBt0I07+JdmsZj4m9K6uK378Wobz5PWlWSE
-	 /Ad8wWjoaZy1+nV0jILTB4vh28ZvtNxDnH838M8rPhcbZAcvaWcvoEHQ64KVL+qLBg
-	 NPmXgAAri2Otg==
-Date: Sun, 09 Mar 2025 00:03:21 +0000
-To: Ard Biesheuvel <ardb@kernel.org>
-From: Ben Schneider <ben@bens.haus>
-Cc: "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
-Subject: Re: efi_random_alloc() returning EFI_NOT_FOUND
-Message-ID: <YT8Nabg2mhqfljPaZg1ruLmAwW-C6iNOaSA4yUC3h8tkwEgaHJswhIP0fKxb_0Tvmsc6muBWW7TRgnCgXejXrXZ5zxx8gMc1aMFZW0A8-v0=@bens.haus>
-In-Reply-To: <CAMj1kXHN4qTTUzCUvERy1iZVMy6jQ_-iha0EyHBsE5jH0_WaUQ@mail.gmail.com>
-References: <5BK24Nc0mA4pe8BFp-FUgN4Q9lCFpR1TUFMKB8mRUJIhOG1hP3yYcVIulRsDSQA_7MvOOH9dg1nUiDvQSkQ2tS1vZeiZbMEFEnsMbPzB0cg=@bens.haus> <CAMj1kXHN4qTTUzCUvERy1iZVMy6jQ_-iha0EyHBsE5jH0_WaUQ@mail.gmail.com>
-Feedback-ID: 124562356:user:proton
-X-Pm-Message-ID: 17a255198128883daad4a962a08225616b836c27
+	s=arc-20240116; t=1741483678; c=relaxed/simple;
+	bh=xJPFbbCqg6D1eGooecE45eWO6eo2FRhq7cqhpX/lTuc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=owcoF3zNbbulzWIK3JbH6Qj9/4aRCMU3A/BMz4/p8p6aWRU9XsRPP+4czWNzpu9DmiQ89VvG8JB/5W9SiX5+mA6O1i4V+3fqKjOU6WpUusgi4t8DsICdi9xkPlUZAO52Rkr6zZjzVjq6jQxNftoVEexueBRvffhMJnh7JIxXjy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ethancedwards.com; spf=pass smtp.mailfrom=ethancedwards.com; dkim=pass (2048-bit key) header.d=ethancedwards.com header.i=@ethancedwards.com header.b=yPNZGgS2; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ethancedwards.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ethancedwards.com
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4Z9MpT5LQ6z9sTd;
+	Sun,  9 Mar 2025 02:27:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ethancedwards.com;
+	s=MBO0001; t=1741483666;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tuC52dWg8Ua+xArW/iLzWfqJB+lNGdXuO8bhICk80qY=;
+	b=yPNZGgS2P5Xhj0FZuR4IlwaaqI0vgSIw1KOnJx9YPo2OpM0jtus0XMuoK5e+vFbkeqYCNy
+	HXWfI0cqPhV1rEfb8zhCEyye2+df8V8c4DF24QGgufrGl1jxnyl9zOdO5rBrfWl1DWCRyM
+	oo6+aef6h8pB9kCkc5viO/c1C2fsTPtSJqE4//im+/evGsgRNMFWiBbtshD5cUfM/A9Vrs
+	eWRIAGSxt00ML7+27GPZnHDSQXZCDmq5orb57AtNUC6MRlohBf/bPdW4HE7vdaBSrVVCVk
+	J5Fz9+3yU3Ok5DxcCZ8/VkpbhpnjnOdairkKMzbE8Pr/HMa8Gf+nYfIM4dXVbQ==
+From: Ethan Carter Edwards <ethan@ethancedwards.com>
+Date: Sat, 08 Mar 2025 20:27:41 -0500
+Subject: [PATCH] efi: efibc: change kmalloc(size * count, ...) to
+ kmalloc_array()
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250308-efibc-kmalloc_array-v1-1-7bfc4013986f@ethancedwards.com>
+X-B4-Tracking: v=1; b=H4sIAIzuzGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDYwML3dS0zKRk3ezcxJyc/OT4xKKixErdpERzCwNL80QDcwMLJaDOgiK
+ gqgqwqdGxtbUAQ0c37GUAAAA=
+X-Change-ID: 20250308-efibc-kmalloc_array-ba78097a0708
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, 
+ Ethan Carter Edwards <ethan@ethancedwards.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1167;
+ i=ethan@ethancedwards.com; h=from:subject:message-id;
+ bh=xJPFbbCqg6D1eGooecE45eWO6eo2FRhq7cqhpX/lTuc=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkp2QXk4ekFKWGJEOXFoNThlVGp6e
+ GhQcXlVeHBKOTUxeXRlOWlmMVhiWFdsWTJicHo5ZVppYnFLS0oyCitBcWpqK0R0dE96Y3p5dldu
+ WFB2S0dWaEVPTmlrQlZUWlBtZm81ejJVSE9Hd3M2L0xrMHdjMWlaUUlZd2NIRUsKd0VUVUZ6RXl
+ yUGgvdzVOTDVMM3IyZnZobjdmRTdBOHB1YnJzNWk3UlY4OGkwM2RMbXljZWZzZndUMjBuMDZ4Zg
+ oxcVlpOWJuM3ZxeWNWZUpmZTBrbWk2dE83cnJkeGNONzFxeXo1d0FBcE9wUkhBPT0KPXlLWGMKL
+ S0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=ethan@ethancedwards.com; a=openpgp;
+ fpr=2E51F61839D1FA947A7300C234C04305D581DBFE
+X-Rspamd-Queue-Id: 4Z9MpT5LQ6z9sTd
 
-On Saturday, March 8th, 2025 at 2:49 PM, Ard Biesheuvel <ardb@kernel.org> w=
-rote:
->
-> what happens is that the second loop only considers memory regions that w=
-ere found to be available during the first loop.
+Open coded arithmetic in allocator arguments is discouraged. Helper
+functions like kcalloc or, in this case, kmalloc_array are preferred.
 
-Ah, I see what the intention is now. Sorry I missed that.
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments
 
-> What firmware are you using?
+Signed-off-by: Ethan Carter Edwards <ethan@ethancedwards.com>
+---
+ drivers/firmware/efi/efibc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-U-Boot 2025.04-rc3 which I use to load systemd-boot which then
-tries to load the kernel.
+diff --git a/drivers/firmware/efi/efibc.c b/drivers/firmware/efi/efibc.c
+index 4f9fb086eab7b0e22252d22e59e5aae55865322d..0a7c764dcc614fbba3cbcd94183dc07939837a03 100644
+--- a/drivers/firmware/efi/efibc.c
++++ b/drivers/firmware/efi/efibc.c
+@@ -47,7 +47,7 @@ static int efibc_reboot_notifier_call(struct notifier_block *notifier,
+ 	if (ret || !data)
+ 		return NOTIFY_DONE;
+ 
+-	wdata = kmalloc(MAX_DATA_LEN * sizeof(efi_char16_t), GFP_KERNEL);
++	wdata = kmalloc_array(MAX_DATA_LEN, sizeof(efi_char16_t), GFP_KERNEL);
+ 	if (!wdata)
+ 		return NOTIFY_DONE;
+ 
 
-> Can you share the contents of the EFI memory map?
+---
+base-commit: 0a2f889128969dab41861b6e40111aa03dc57014
+change-id: 20250308-efibc-kmalloc_array-ba78097a0708
 
-This is the memory map at power-on (before systemd-boot has
-loaded):
+Best regards,
+-- 
+Ethan Carter Edwards <ethan@ethancedwards.com>
 
-lmb_dump_all:
- memory.count =3D 0x1
- memory[0]=09[0x0-0x3fffffff], 0x40000000 bytes, flags: none
- reserved.count =3D 0x4
- reserved[0]=09[0x4000000-0x41fffff], 0x200000 bytes, flags: no-map
- reserved[1]=09[0x4400000-0x53fffff], 0x1000000 bytes, flags: no-map
- reserved[2]=09[0x3eaf3000-0x3eaf5fff], 0x3000 bytes, flags: no-notify, no-=
-overwrite
- reserved[3]=09[0x3eaf6950-0x3fffffff], 0x15096b0 bytes, flags: no-overwrit=
-e
-
-When efi_allocate_pages() is first called, U-Boot reports the
-memory map looks like this:
-
-lmb_dump_all:
- memory.count =3D 0x1
- memory[0]=09[0x0-0x3fffffff], 0x40000000 bytes, flags: none
- reserved.count =3D 0x5
- reserved[0]=09[0x4000000-0x41fffff], 0x200000 bytes, flags: none
- reserved[1]=09[0x4400000-0x53fffff], 0x1000000 bytes, flags: none
- reserved[2]=09[0x3dae6000-0x3e2cbfff], 0x7e6000 bytes, flags: no-overwrite=
-, no-map
- reserved[3]=09[0x3ea6f000-0x3eaf0fff], 0x82000 bytes, flags: no-overwrite,=
- no-map
- reserved[4]=09[0x3eaf1960-0x3fffffff], 0x150e6a0 bytes, flags: no-map
-
-It also seems like when it makes that first call it is asking for
-4,416 pages at address 0x3faf1138. It seemed to me like this was
-inside an already reserved range which I assumed is why U-Boot
-returns EFI_NOT_FOUND.
 
