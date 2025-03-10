@@ -1,106 +1,154 @@
-Return-Path: <linux-efi+bounces-2948-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2950-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41C6A59DD9
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 18:26:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4526BA5A29E
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 19:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 788D516FF1C
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 17:25:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DE51175A19
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 18:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E22B233D88;
-	Mon, 10 Mar 2025 17:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BBB2309BD;
+	Mon, 10 Mar 2025 18:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pt3cuynU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HxIi/1Wm"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC4E22AE7C;
-	Mon, 10 Mar 2025 17:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA871C3F34;
+	Mon, 10 Mar 2025 18:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741627453; cv=none; b=ZGJGtw6SpM1ZKa532v2MLl4JrwzTTp5wbz0t/Y4SP4C/Fx1KCSvKJBFImQsoS7DRUF4+mwHQsXg8Oe7dRmBZPhQnlc4WMKGuE9s8gge17GMpilzTIobvXVWPGS/TI8D59VrSG8BUOJp3hslW1abxpPMPVFzyO42LMdwdOT79KOo=
+	t=1741630926; cv=none; b=pGfD8l+qyXuUePiCoi1E/GuZx3te7Nx5dDIyVkxJSCyaHRFbIlSpdmdRy5S5kMZzWJCQwAVDAAEs0De7Yp2tVK46okzefZQcn6sfdL1lCQQoItSedqI+AkcgbuuusqlYJN4CXNkH4n3UwE9XmrVcphH39fHB6CVDJcZwvzoF8uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741627453; c=relaxed/simple;
-	bh=KxCVrFtEEQ489IO+8LWASMRjBenAxwUf883ccdADMVc=;
+	s=arc-20240116; t=1741630926; c=relaxed/simple;
+	bh=SkjOumrPZ8pqrIzJ1V5CWQluO4ng3WvoP3slVoeW3oo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hXoSGCHg4ybUNCilarScnhno2Fz0X44zcoxSq0CyIIQEMzFuMKjEpotdBQPACqbDs/h4b1SaQ3hDavbxWLyhzjQfmtUzjAOy+H9cdktw46W1P6dnbxrtTs4PwNk95RSj9lR2Hj/0v0MEkyaQOp6FYmIIfhIR9OTuy2PD2eLe19c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pt3cuynU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AC4C4CEEC;
-	Mon, 10 Mar 2025 17:24:12 +0000 (UTC)
+	 To:Cc:Content-Type; b=UWCdOY4FMrd61/npqd4D5pCxSWV9c9AKKclE6/6OCJ1v6e0qYZbGwVJs/TgnSYHqQ5/R6NHXjyHAeQnFE3FAywdQypJvlNIiGqgjPThaTq+CJSGE93NcKZKrCtnzmUTjcLpyn8M3txTPCq/UCsFK4qsi3urDOzeflAijnKH1CTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HxIi/1Wm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226E6C4CEEE;
+	Mon, 10 Mar 2025 18:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741627452;
-	bh=KxCVrFtEEQ489IO+8LWASMRjBenAxwUf883ccdADMVc=;
+	s=k20201202; t=1741630926;
+	bh=SkjOumrPZ8pqrIzJ1V5CWQluO4ng3WvoP3slVoeW3oo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Pt3cuynUjtE+SMseBKPGdQYThBoNnPCnoJwgIL0KGM5Ixz0N3mCXFufKTs9kkSFsH
-	 kotbgn9hmuA9XQu5LX0coGkGs+/v6b9jm2PfsNvHj0MHc+SBjsEl+guByNBzS3nCZR
-	 615PZLM5isfmdCN7xk1S0aDZn8Hh2X/GsXDcBRObtjn0PDtBEvDixCqpT2l13hy7CG
-	 As8CP9unJ2bnI6QAvpjQmFONddNeFeM+giBRkh+4hs792q+I1mcBa+bn2s5H3MmhFC
-	 cs1REYTNtcwepOAoE/wX/VReN8YT8DVyIjMtCjnfxYbqj7idUILczrUfSq1Z3fljgD
-	 B4QSzSWe+RCDA==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30bf251025aso34247471fa.1;
-        Mon, 10 Mar 2025 10:24:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWpFiIjixI31TEawQARX4CafUigwrU7f1ZbpIJxChytzzT4vm9mMfuKpQEHk1mnBYhTkYf8OhhQ2kSMNEdx@vger.kernel.org, AJvYcCWtYxHG0UHC7Kn/IrdZ0EWXuokzEF28+PYmUi8ncYeQimiA3X3cQjpbVmXwe9dL0e+sraFTFvCunafL63fPIZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydE3k38yVFxtMOkDLSW4GNEa9ITQYR2xn9k1TqfRU9HpzgY1ZD
-	Ump9ybTsM55lKblTsG/beglPbbOQYnanlrINcg7QF0Pp8q3dVPu5KjeJKCYKSWLzdgkPuI5R+m6
-	PsQq+QLAJWF6/Q/PyALTkIx2hhiI=
-X-Google-Smtp-Source: AGHT+IGDP35HxL6L4rAJ9cayRi1yFXnNJWJ+1hc45NrBGj/WElMB/wxvCYz04jCP6aYQds3stLvQSAMSUrqB0yhFHXw=
-X-Received: by 2002:a2e:9d05:0:b0:309:23ea:5919 with SMTP id
- 38308e7fff4ca-30bf462423dmr40930191fa.31.1741627451205; Mon, 10 Mar 2025
- 10:24:11 -0700 (PDT)
+	b=HxIi/1Wm03gmXfbzvtISFLsBvvMmetPAt7JCEgwfvNoUzzLDa3+BP9lJGcUMokP4q
+	 RdQJ2Tl9dTM0bT69Z0dDvbOArqtmgpsH8pBpn0NULzDOJIA3K6O/ZsNRAumVqIYfNr
+	 eBe2NpfkqSeve02qTaKaWuzSuRrJ7wLGUc4GKxsm5MExMBnPSrq9y74PTgWgf0A13g
+	 ENgga/+BHraI2lPfLeev3b+en4iA5flMP5OEAVrMiu1P7FgQktLlpdI5tMGJD0ptcD
+	 Pv13FGAvCSA0n7YPSpatPKhw+MaM68+nDRq3Nxe3vkaqM00oBB9k8/j6D6F5icuQfB
+	 9dXLxcY9RhJ4A==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-54943bb8006so5118691e87.0;
+        Mon, 10 Mar 2025 11:22:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVdsfrFssH/M8nNjTo7PCKnMBVXR69v5o+Qc84TnJ7/JGqQ+uUYVhf5S8WxcCwSO/SJJMrX6maeb+Y=@vger.kernel.org, AJvYcCWD9aV4MVfa3aTwHJtFJse7G0g1nOxUXmL4SsMyloX4o4XFAJY42HT23j5mw7LnEkEfKG7+g88Wo/N1tmJkMw==@vger.kernel.org, AJvYcCWwIgH5oU00PJuvDOqsI9wXcck+IX7HCl/uwGR0MEW4zJNn0tzIPi+LbgaI5lTxnsD5bmLw6J+Y/v7fm11A@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRJC/IRaHu7U48LPg2cvkJeNnnc+aFSOdmeDib3iCdfpGDEQoW
+	hGobT09OV1Jcfm3Dhfp5uxY5FByW4Wyi7T7AK2s1aolpcQRjW4+0vg8YExaKYvJrhwE9lx78xXQ
+	4b0Dt1qXRcYRPzEbcvXpn1GPYVYM=
+X-Google-Smtp-Source: AGHT+IF7GoDCUbQdzcJ6DIyWWAIySKv+qn9qgrauGfCi9A1X9uKn03VlhxmcPGNsWa43LGR/2J4P1S95NSjRQdBl51Q=
+X-Received: by 2002:a05:6512:b14:b0:545:532:fd2f with SMTP id
+ 2adb3069b0e04-54990e5da2cmr4479337e87.12.1741630924469; Mon, 10 Mar 2025
+ 11:22:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250308-efibc-kmalloc_array-v1-1-7bfc4013986f@ethancedwards.com>
-In-Reply-To: <20250308-efibc-kmalloc_array-v1-1-7bfc4013986f@ethancedwards.com>
+References: <67cd0276.050a0220.14db68.006c.GAE@google.com> <8cf7d7efdc069772d69f913b02e5f67feadce18e.camel@HansenPartnership.com>
+In-Reply-To: <8cf7d7efdc069772d69f913b02e5f67feadce18e.camel@HansenPartnership.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 10 Mar 2025 18:23:59 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHuMt5QfkKbErmou3TB=5aOENPW=0+Vexom_Y_iFd98qA@mail.gmail.com>
-X-Gm-Features: AQ5f1Jp7a1_yGUrVfOp-0rUojPlpvr9tH7JA_CWRKmb9aQX44_SaGdio6iKyS_Q
-Message-ID: <CAMj1kXHuMt5QfkKbErmou3TB=5aOENPW=0+Vexom_Y_iFd98qA@mail.gmail.com>
-Subject: Re: [PATCH] efi: efibc: change kmalloc(size * count, ...) to kmalloc_array()
-To: Ethan Carter Edwards <ethan@ethancedwards.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
+Date: Mon, 10 Mar 2025 19:21:53 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXH0Myy3bV-hFNWnoUk6ZAa6MAd1zFTM-X6dXiJPx==w0A@mail.gmail.com>
+X-Gm-Features: AQ5f1JrLbe1rn0WB5HUKTnGtdoEau4kOg9QVT7Mpm8s0v1YpGXXtA4_W0dv3ECE
+Message-ID: <CAMj1kXH0Myy3bV-hFNWnoUk6ZAa6MAd1zFTM-X6dXiJPx==w0A@mail.gmail.com>
+Subject: Re: [syzbot] [efi?] [fs?] possible deadlock in efivarfs_actor
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: syzbot <syzbot+019072ad24ab1d948228@syzkaller.appspotmail.com>, jk@ozlabs.org, 
+	linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 9 Mar 2025 at 02:27, Ethan Carter Edwards
-<ethan@ethancedwards.com> wrote:
+On Mon, 10 Mar 2025 at 17:50, James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
 >
-> Open coded arithmetic in allocator arguments is discouraged. Helper
-> functions like kcalloc or, in this case, kmalloc_array are preferred.
+> On Sat, 2025-03-08 at 18:52 -0800, syzbot wrote:
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    e056da87c780 Merge remote-tracking branch 'will/for-
+> > next/p..
+> > git tree:
+> > git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-
+> > kernelci
+> > console output:
+> > https://syzkaller.appspot.com/x/log.txt?x=14ce9c64580000
+> > kernel config:
+> > https://syzkaller.appspot.com/x/.config?x=d6b7e15dc5b5e776
+> > dashboard link:
+> > https://syzkaller.appspot.com/bug?extid=019072ad24ab1d948228
+> > compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for
+> > Debian) 2.40
+> > userspace arch: arm64
+> > syz repro:
+> > https://syzkaller.appspot.com/x/repro.syz?x=111ed7a0580000
+> > C reproducer:
+> > https://syzkaller.appspot.com/x/repro.c?x=13b97c64580000
+> >
+> > Downloadable assets:
+> > disk image:
+> > https://storage.googleapis.com/syzbot-assets/3d8b1b7cc4c0/disk-e056da87.raw.xz
+> > vmlinux:
+> > https://storage.googleapis.com/syzbot-assets/b84c04cff235/vmlinux-e056da87.xz
+> > kernel image:
+> > https://storage.googleapis.com/syzbot-assets/2ae4d0525881/Image-e056da87.gz.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the
+> > commit:
+> > Reported-by: syzbot+019072ad24ab1d948228@syzkaller.appspotmail.com
+> >
+> > efivarfs: resyncing variable state
+> > ============================================
+> > WARNING: possible recursive locking detected
+> > 6.14.0-rc4-syzkaller-ge056da87c780 #0 Not tainted
+> > --------------------------------------------
+> > syz-executor772/6443 is trying to acquire lock:
+> > ffff0000c6826558 (&sb->s_type->i_mutex_key#16){++++}-{4:4}, at:
+> > inode_lock include/linux/fs.h:877 [inline]
+> > ffff0000c6826558 (&sb->s_type->i_mutex_key#16):4}, at:
+> > iterate_dir+0x3b4/0x5f4 fs/readdir.c:101
+> >
+> > other info that might help us debug this:
+> >  Possible unsafe locking scenario:
+> >
+> >        CPU0
+> >        ----
+> >   lock(&sb->s_type->i_mutex_key#16);
+> >   lock(&sb->s_type->i_mutex_key#16);
+> >
+> >  *** DEADLOCK ***
 >
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments
+> I can't figure out how you got here.  the shared lock in readdir.c is
+> on the directory and the inode_lock in the actor is on the files within
+> the directory.  The only way to get those to be the same is if the
+> actor gets called on the '.' element, which efivarfs_pm_notify is
+> supposed to skip with the
 >
-> Signed-off-by: Ethan Carter Edwards <ethan@ethancedwards.com>
-> ---
->  drivers/firmware/efi/efibc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>         file->f_pos = 2;        /* skip . and .. */
 >
-> diff --git a/drivers/firmware/efi/efibc.c b/drivers/firmware/efi/efibc.c
-> index 4f9fb086eab7b0e22252d22e59e5aae55865322d..0a7c764dcc614fbba3cbcd94183dc07939837a03 100644
-> --- a/drivers/firmware/efi/efibc.c
-> +++ b/drivers/firmware/efi/efibc.c
-> @@ -47,7 +47,7 @@ static int efibc_reboot_notifier_call(struct notifier_block *notifier,
->         if (ret || !data)
->                 return NOTIFY_DONE;
->
-> -       wdata = kmalloc(MAX_DATA_LEN * sizeof(efi_char16_t), GFP_KERNEL);
-> +       wdata = kmalloc_array(MAX_DATA_LEN, sizeof(efi_char16_t), GFP_KERNEL);
->         if (!wdata)
->                 return NOTIFY_DONE;
->
->
-> ---
-> base-commit: 0a2f889128969dab41861b6e40111aa03dc57014
-> change-id: 20250308-efibc-kmalloc_array-ba78097a0708
+> line.  Emitting the '.' and '..' in positions 0 and 1 is hard coded
+> into libfs.c:dcache_readdir() unless you're also applying a patch that
+> alters that behaviour?
 >
 
-Queued up in efi/next, thanks.
+The repro log also has
+
+program crashed: BUG: unable to handle kernel paging request in
+efivarfs_pm_notify
+
+preceding the other log output regarding the locks, so the deadlock
+might be a symptom of another problem.
 
