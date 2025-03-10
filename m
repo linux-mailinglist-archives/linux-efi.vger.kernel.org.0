@@ -1,172 +1,255 @@
-Return-Path: <linux-efi+bounces-2951-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2952-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3A4A5A2E0
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 19:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D24D1A5A3F7
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 20:45:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD9C1884BAF
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 18:25:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56C00189290D
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 19:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B812343D4;
-	Mon, 10 Mar 2025 18:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24444347B4;
+	Mon, 10 Mar 2025 19:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ngwhcv3B"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="af8mDcPh"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFFF233D98;
-	Mon, 10 Mar 2025 18:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA4F288A5
+	for <linux-efi@vger.kernel.org>; Mon, 10 Mar 2025 19:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741631096; cv=none; b=hWsKl6nRI8KDloltttSqSqxjpVe9qTEROra7uVS78XImXP8Kb+Zi+wQZSNDcVvfUqkMT9/itqRopoeeQLZi32H4omtqhjC6bWFuD3I4M30AfPppaJ+xSGws2ZsGFkKrGo5PhnGbWH5PKPro+ZZGnUCgMGyC2ISmirssryvyEtN8=
+	t=1741635922; cv=none; b=mhMt0UM8OsO0IfmS2Yl4y+jVwIci/f9W9h5aMgTVaZrAibKT1jQ/jkf7utiOchquGJNGGikZNBZTZsyajQG3PewiNYrsc5kaOKJW7m9Kjfx5239JDFtNeV+v/fsWcA5gErr4xeSxIZj/R4PjA2qCB3RlvmgZcQSWHG0sqINTMCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741631096; c=relaxed/simple;
-	bh=IkGd7DLrk2ypLCT9DhcVtWOLsLwvcrPe7Zl9iOboKg8=;
+	s=arc-20240116; t=1741635922; c=relaxed/simple;
+	bh=5zgFnWmXH5a4GCH3xdsxPyj7DVl9hjZCYcNGTu7oE8Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RWrqybWwG7mKXpVwleM3SW4ryxzTarFKJi5LhTKSeYpJ/rmkWZfLjUyWLqv1GyQpu8baArZ8CHxyJLatuvvnFFO8dpxIpqBSfDkJt3gali4+VmRPKfKUZpy5XbQHBODhdTTUCnFX4Ss69jNJnQ2uv6QHx8rgIOZYp6NcJakj07c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ngwhcv3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCAAC4CEEC;
-	Mon, 10 Mar 2025 18:24:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741631096;
-	bh=IkGd7DLrk2ypLCT9DhcVtWOLsLwvcrPe7Zl9iOboKg8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ngwhcv3BBxZOn17k3Nr2ahQxspTK7eZxkThDzamNsjJniSP80hUhfhEqyc6jYskBk
-	 I9v6rWag7ijnmPCL8VIp9Df6oO/UBMgMWVhorw8h5TYIovhX/KRtkvYl/nbo7Nt//q
-	 FFq3mTkPn8T9DfG7HQwHlHqBLpN3zEYvs8htN4jfQ1+NQve56Eo4G89n7sCEZocS61
-	 bIs0LilUq1Pdwa3Yzl9G/3FLP96DZ/Go1+OsqXYU+h52mBBfuuzLOaOHYkwymROy9w
-	 XOo9E2OxG4Rc/APv2sdl0Gt5Ozlfy8g+iRhNOFSvYS6filL6rMC7NDUp+JxbtPryNL
-	 zBjjCUlWZMQmg==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-549967c72bcso3126293e87.3;
-        Mon, 10 Mar 2025 11:24:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVxus5DaYZXGnJtX3DAL6zsDqh8+nxpBTuTLR57nBcRqB9F41Z1X71SXSwja9Cq66jduLK+xj2hdR3NtWEL@vger.kernel.org, AJvYcCX0JHM3ThhE64eMXWrMrEmpzKg8eQF8JrCGEjZ8jBHrHNHAbTG0AhUlz3LXA0u9Kpqpjr9cADK9Ik/TK+AAlw==@vger.kernel.org, AJvYcCXu4A4kNUqO/hHx0buQCNUsDIFVvlm91KNnuRNsqp1fpUIsATkbV9HBvVPOXQXFW4GLp2dW5bn/eVI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiALLlqFaZ/9CWjx8TT4cUYl108OIL09xfUef9On0iw41eMZ/+
-	QR7DyLAHOzQfc8QI71bSm2sctkUtk0C6zBWnUNUWAHabyxGCsuZYOXfGk7tqIbRHmIjE62pG46D
-	x19Eh6jcT4p6W2zcxWmv8jiwW78Q=
-X-Google-Smtp-Source: AGHT+IEYVX/TK3hkXMZJ+vXbq9P9RIUDJi2lu9r1F0cMejB1V+b4vDNeCWZM2Il+u9q9HjZn/hR39ZvBd/um7iOropM=
-X-Received: by 2002:a05:6512:3993:b0:549:792a:a382 with SMTP id
- 2adb3069b0e04-549910b59bdmr4658691e87.32.1741631094697; Mon, 10 Mar 2025
- 11:24:54 -0700 (PDT)
+	 To:Cc:Content-Type; b=eKTzjo3ZpC5/xTcny4BI4xjXxdpc7p5qawOnjWabJ4PYxhpmjq1M5VluMSjti3jD3Bb5tg+kBLRgfRILsa+2HVU8eZJqEDrOpJ0I4H1+YhuJkHAlmkFfXbP63J1UprsdaiY+ZS1tJ98bjZiTUz5jMfWpwSStetvY+qzteHeBPE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=af8mDcPh; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e5dcc411189so4282331276.0
+        for <linux-efi@vger.kernel.org>; Mon, 10 Mar 2025 12:45:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741635918; x=1742240718; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=tqWgGBygD81G0N674tqdfSvRInpCyOsgpZJOfXWVfYM=;
+        b=af8mDcPhYGyCqJojYmfGHLJqyn6RhxzEezW+1iO/OcSgcjWUOZ416qqI6L8Sm4NwPz
+         hJ07eNTfHxRdHLL7ZKB7AUD3U+gHyECWToFRr0CWk5/qPkBrbi0vf5z+uASmwQ2xHrsQ
+         TbgWyS/OB98wG0H9+VlleP1z5AcbSjzqBLR0vgyrU5hp/+vE1B2Ci0ZhY/Wejt0TeCco
+         X1ecKLmzEnnB4RSvfrAzJf5p2AxWYBJlH/wUGJqS0/Xln+J8qc3wHo66SGuwgSrogCpN
+         gQJcZwtE5HX7ZWaZW2J2+SibFwYpvkHpN86mAJtyhL+5sZX1D+G/Vc2P92NtjuUB01TE
+         j8ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741635918; x=1742240718;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tqWgGBygD81G0N674tqdfSvRInpCyOsgpZJOfXWVfYM=;
+        b=nCrUzQTVb6XQvSXv//74k7A3A3QOj7PKEYKaDed95+pbYiQEJnW93z4EmDWBUWeoFK
+         fbQElBMWXBON1hzT8rnAfxk7l7z7yqtC/O3ubNnB/V0VdnNtHZxGvrFdEE2a+qn64c7n
+         88TIxkZra20Vp1+LAAnN9sJBG8GUwk+Flf1gQXNtuvGO1A9UK1DSLGKGihsMwuj0vtsU
+         Oi/VIv4ZFHsqaLrV6r9SQb9x8KL1U/JWuu8EZulMJ7L55E7qycqD6i/0xFDojm7rcDwl
+         Zth+lyKs5GNByt4R1PMSX8m2e/+Nqn5Cu2Kh3SBdeqfOagXxJV5T8xD77RG8FSjc0g80
+         jXtA==
+X-Forwarded-Encrypted: i=1; AJvYcCUTUIjJeQe6PYzUXi9Ar+SGGTFLro5hgdDNN5ZIoirFg6MVyDZFiGyheNTcEHVE44yrFneZ9OclsNk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF3GQk7LgdAvMIernp0t8AVw7f+56KD+p90S2vH4owBrovpo+g
+	CGoJEjPKaxfYdAmJ0UpY+PgoJFAyn1XPd8dOeVU0FZpvYSKc9LPzov4Ddr8ed/B7vl5L/060clH
+	6aBMjakPuzFDHiIOHGFbD9U0cOy7nRp/zYBp4EQ==
+X-Gm-Gg: ASbGncs8l9l2AI1PMCZPBBZizvOY4Y96ILao3aFQzBquq5Q2/LVNylktmiShv9HyXiI
+	fCCUyaGlt6zdbxyzKMud0FUEFr6f6t+r3xyFOF+fyFhjAHFvYHQTiuGDTpXVUqdfcBWgflhydAb
+	xn5Lffkv+qP3JEorxFMKBW5RGBQFM=
+X-Google-Smtp-Source: AGHT+IEbFwLQNm8mqLUNaM41246kTuzKXsyEv1y0ze5twEF9pbxo2U9oQEoqCmIFj+D6SzWuyZiskrvAFW7IavkpXF8=
+X-Received: by 2002:a05:6902:3302:b0:e58:14b:6f99 with SMTP id
+ 3f1490d57ef6-e635c10115fmr16252325276.1.1741635918088; Mon, 10 Mar 2025
+ 12:45:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <67cd0276.050a0220.14db68.006c.GAE@google.com> <8cf7d7efdc069772d69f913b02e5f67feadce18e.camel@HansenPartnership.com>
- <CAMj1kXH0Myy3bV-hFNWnoUk6ZAa6MAd1zFTM-X6dXiJPx==w0A@mail.gmail.com>
-In-Reply-To: <CAMj1kXH0Myy3bV-hFNWnoUk6ZAa6MAd1zFTM-X6dXiJPx==w0A@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 10 Mar 2025 19:24:43 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEfG=Q3pk6PsVZxf5qCjEBTwTjUCJcNwBPO3PqNmSp=hw@mail.gmail.com>
-X-Gm-Features: AQ5f1Jqwty5yqdg2G3GZwGtOQrAbPKtEBOr05ar2n3rX90ReMnstOFG_G9GGZqE
-Message-ID: <CAMj1kXEfG=Q3pk6PsVZxf5qCjEBTwTjUCJcNwBPO3PqNmSp=hw@mail.gmail.com>
-Subject: Re: [syzbot] [efi?] [fs?] possible deadlock in efivarfs_actor
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: syzbot <syzbot+019072ad24ab1d948228@syzkaller.appspotmail.com>, jk@ozlabs.org, 
-	linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+References: <5BK24Nc0mA4pe8BFp-FUgN4Q9lCFpR1TUFMKB8mRUJIhOG1hP3yYcVIulRsDSQA_7MvOOH9dg1nUiDvQSkQ2tS1vZeiZbMEFEnsMbPzB0cg=@bens.haus>
+ <CAMj1kXHN4qTTUzCUvERy1iZVMy6jQ_-iha0EyHBsE5jH0_WaUQ@mail.gmail.com>
+ <YT8Nabg2mhqfljPaZg1ruLmAwW-C6iNOaSA4yUC3h8tkwEgaHJswhIP0fKxb_0Tvmsc6muBWW7TRgnCgXejXrXZ5zxx8gMc1aMFZW0A8-v0=@bens.haus>
+ <CAC_iWj+LdNXYO-nTzenCvhQN=--hmfJLzH1w_D5g676_6wQ8=g@mail.gmail.com> <PkBypGXyjiJ7T845148vEiHaoabJOyVg26qTLI-SygtRbQ9aQjnMWUddWHiYB9KPR8JVqDFQ1pZRnRUq06vIRR7L4CDLERwJL9-2LdvcxBc=@bens.haus>
+In-Reply-To: <PkBypGXyjiJ7T845148vEiHaoabJOyVg26qTLI-SygtRbQ9aQjnMWUddWHiYB9KPR8JVqDFQ1pZRnRUq06vIRR7L4CDLERwJL9-2LdvcxBc=@bens.haus>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Mon, 10 Mar 2025 21:44:41 +0200
+X-Gm-Features: AQ5f1JqSqrqdwNJ_JMx33AI1sHDGK0YJMAHOfI8pjBTgdBJlBPq2VSOJ9bUVee8
+Message-ID: <CAC_iWj+YFNMZZneaQ+zh3ziM2iogB-whRsH81A8hKyNVPY0H9w@mail.gmail.com>
+Subject: Re: efi_random_alloc() returning EFI_NOT_FOUND
+To: Ben Schneider <ben@bens.haus>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 10 Mar 2025 at 19:21, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Mon, 10 Mar 2025 at 17:50, James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> >
-> > On Sat, 2025-03-08 at 18:52 -0800, syzbot wrote:
-> > > Hello,
-> > >
-> > > syzbot found the following issue on:
-> > >
-> > > HEAD commit:    e056da87c780 Merge remote-tracking branch 'will/for-
-> > > next/p..
-> > > git tree:
-> > > git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-
-> > > kernelci
-> > > console output:
-> > > https://syzkaller.appspot.com/x/log.txt?x=14ce9c64580000
-> > > kernel config:
-> > > https://syzkaller.appspot.com/x/.config?x=d6b7e15dc5b5e776
-> > > dashboard link:
-> > > https://syzkaller.appspot.com/bug?extid=019072ad24ab1d948228
-> > > compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for
-> > > Debian) 2.40
-> > > userspace arch: arm64
-> > > syz repro:
-> > > https://syzkaller.appspot.com/x/repro.syz?x=111ed7a0580000
-> > > C reproducer:
-> > > https://syzkaller.appspot.com/x/repro.c?x=13b97c64580000
-> > >
-> > > Downloadable assets:
-> > > disk image:
-> > > https://storage.googleapis.com/syzbot-assets/3d8b1b7cc4c0/disk-e056da87.raw.xz
-> > > vmlinux:
-> > > https://storage.googleapis.com/syzbot-assets/b84c04cff235/vmlinux-e056da87.xz
-> > > kernel image:
-> > > https://storage.googleapis.com/syzbot-assets/2ae4d0525881/Image-e056da87.gz.xz
-> > >
-> > > IMPORTANT: if you fix the issue, please add the following tag to the
-> > > commit:
-> > > Reported-by: syzbot+019072ad24ab1d948228@syzkaller.appspotmail.com
-> > >
-> > > efivarfs: resyncing variable state
-> > > ============================================
-> > > WARNING: possible recursive locking detected
-> > > 6.14.0-rc4-syzkaller-ge056da87c780 #0 Not tainted
-> > > --------------------------------------------
-> > > syz-executor772/6443 is trying to acquire lock:
-> > > ffff0000c6826558 (&sb->s_type->i_mutex_key#16){++++}-{4:4}, at:
-> > > inode_lock include/linux/fs.h:877 [inline]
-> > > ffff0000c6826558 (&sb->s_type->i_mutex_key#16):4}, at:
-> > > iterate_dir+0x3b4/0x5f4 fs/readdir.c:101
-> > >
-> > > other info that might help us debug this:
-> > >  Possible unsafe locking scenario:
-> > >
-> > >        CPU0
-> > >        ----
-> > >   lock(&sb->s_type->i_mutex_key#16);
-> > >   lock(&sb->s_type->i_mutex_key#16);
-> > >
-> > >  *** DEADLOCK ***
-> >
-> > I can't figure out how you got here.  the shared lock in readdir.c is
-> > on the directory and the inode_lock in the actor is on the files within
-> > the directory.  The only way to get those to be the same is if the
-> > actor gets called on the '.' element, which efivarfs_pm_notify is
-> > supposed to skip with the
-> >
-> >         file->f_pos = 2;        /* skip . and .. */
-> >
-> > line.  Emitting the '.' and '..' in positions 0 and 1 is hard coded
-> > into libfs.c:dcache_readdir() unless you're also applying a patch that
-> > alters that behaviour?
-> >
->
-> The repro log also has
->
-> program crashed: BUG: unable to handle kernel paging request in
-> efivarfs_pm_notify
->
-> preceding the other log output regarding the locks, so the deadlock
-> might be a symptom of another problem.
+Hi Ben
 
-And one of the other logs has
+On Sun, 9 Mar 2025 at 20:12, Ben Schneider <ben@bens.haus> wrote:
+>
+> Hi Ilias, thank you for connecting the threads. I'm clearly
+> struggling a bit and appreciate how patient and helpful
+> everyone has been.
 
-[   47.650966][ T6617] syz.2.9/6617 is trying to acquire lock:
-[   47.652339][ T6617] ffff0000d69f6558
-(&sb->s_type->i_mutex_key#25){++++}-{4:4}, at:
-efivarfs_actor+0x1b8/0x2b8
-[   47.654943][ T6617]
-[   47.654943][ T6617] but task is already holding lock:
-[   47.656931][ T6617] ffff0000f5b84558
-(&sb->s_type->i_mutex_key#25){++++}-{4:4}, at: iterate_dir+0x3b4/0x5f4
+No worries, I'd rather help than leave a bug lingering around. They
+tend to come back biting
 
-where the locks have the same name but the address is different.
+>
+> On Saturday, March 8th, 2025 at 5:43 PM, Ilias Apalodimas <ilias.apalodimas@linaro.org> wrote:
+> > The 'efidebug' command will dump the EFI memory map. Can you send that?
+>
+> This is what U-Boot reports:
+>
+> Type             Start            End              Attributes
+> ================ ================ ================ ==========
+> CONVENTIONAL     0000000000000000-0000000004000000 WB
+> BOOT DATA        0000000004000000-0000000004200000 WB
+> CONVENTIONAL     0000000004200000-0000000004400000 WB
+> BOOT DATA        0000000004400000-0000000005400000 WB
+> CONVENTIONAL     0000000005400000-000000003eabc000 WB
+> BOOT DATA        000000003eabc000-000000003eac1000 WB
+> RUNTIME DATA     000000003eac1000-000000003eac2000 WB|RT
+> BOOT DATA        000000003eac2000-000000003eac3000 WB
+> RUNTIME DATA     000000003eac3000-000000003eae5000 WB|RT
+> BOOT DATA        000000003eae5000-000000003eaee000 WB
+> BOOT CODE        000000003eaee000-000000003fb8a000 WB
+> RUNTIME DATA     000000003fb8a000-000000003fb8b000 WB|RT
+> BOOT CODE        000000003fb8b000-000000003ff00000 WB
+> RUNTIME CODE     000000003ff00000-000000003ff10000 WB|RT
+> BOOT CODE        000000003ff10000-0000000040000000 WB
+>
+> > Any idea if we can reproduce this on QEMU?
+>
+> I have not attempted to reproduce with QEMU.
+>
+> From what I can tell on my device, total_slots is 467 and
+> target_slot seems to always start with a value of 0 despite the
+> comment that it should be a random value in [0, total_slots).
+>
+> In the first iteration through the second for loop,
+> MD_NUM_SLOTS(md) appears to have a value of 24 and since
+> target_slot is always 0, it never reaches the 'continue'
+> statement. With current builds, &target appears to have a value of
+> 3faee138.
 
-So there is something dodgy going on here, and I'm inclined to just ignore it.
+&target is the stack-allocated address -- it makes sense to be
+identical. What we really want to print is 'target,' which is the
+requested address.
+Can you print 'target' in both of your success/fail cases and also
+apply the patch below to u-boot:
+
+diff --git a/lib/efi_loader/efi_memory.c b/lib/efi_loader/efi_memory.c
+index 6d00b1862505..421206d3c4a9 100644
+--- a/lib/efi_loader/efi_memory.c
++++ b/lib/efi_loader/efi_memory.c
+@@ -456,6 +456,9 @@ efi_status_t efi_allocate_pages(enum efi_allocate_type type,
+        uint flags;
+        efi_status_t ret;
+        phys_addr_t addr;
++        efi_uintn_t map_size;
++       struct efi_mem_desc *memmap, *map;
++        int i;
+
+        /* Check import parameters */
+        if (memory_type >= EFI_PERSISTENT_MEMORY_TYPE &&
+@@ -490,6 +493,18 @@ efi_status_t efi_allocate_pages(enum
+efi_allocate_type type,
+                if (*memory & EFI_PAGE_MASK)
+                        return EFI_NOT_FOUND;
+
++               efi_get_memory_map_alloc(&map_size, &memmap);
++
++#define EFI_PHYS_ADDR_WIDTH (int)(sizeof(efi_physical_addr_t) * 2)
++               for (i = 0, map = memmap; i < map_size / sizeof(*map);
+map++, i++) {
++                       printf("%-x %.*llx-%.*llx\n", map->type,
+EFI_PHYS_ADDR_WIDTH,
++                              (u64)map_to_sysmem((void *)(uintptr_t)
+map->physical_start),
++                              EFI_PHYS_ADDR_WIDTH,
++                              (u64)map_to_sysmem((void *)(uintptr_t)
+(map->physical_start + map->num_pages * EFI_PAGE_SIZE)));
++               }
++
++               efi_free_pool(memmap);
++
+                addr = map_to_sysmem((void *)(uintptr_t)*memory);
+                addr = (u64)lmb_alloc_addr(addr, len, flags);
+                if (!addr)
+
+That will print the memory map, right before the efi_allocate_pages() request.
+
+>  U-Boot appears to send this address to map_to_sysmem()
+> [1] which seems to return 0, which is then what results in the
+> EFI_NOT_FOUND.
+
+map_to_sysmem() does nothing in actual hardware, it's there for an
+internal platform called 'sandbox'. What fails is the call to
+efi_allocate_pages().
+
+>
+> I went back to try figure out why it is somehow working when I
+> block the 'break' statement with the condition status ==
+> EFI_SUCCESS. Doing so causes the loop to start its second
+> iteration when EFI_NOT_FOUND comes back. In the second iteration,
+> MD_NUM_SLOTS(md) is 0 so we reach the 'continue' statement. This
+> happens for the third and fourth iteration too. On the fifth
+> iteration, MD_NUM_SLOTS(md) is 443 so it makes its second call to
+> efi_allocate_pages(). On all iterations, target_slot remains 0.
+>
+> What is confusing is this second call to efi_allocate_pages()
+> seems to have the same value for &target of 3faee138, but this
+> time when U-Boot calls map_to_sysmem() it returns a value of
+> 88080384 instead of 0. As a result, we get EFI_SUCCESS and the
+> kernel boots.
+
+Look above, what changes is the physical address not the pointer itself.
+What I assume is happening here, is that the first call requests an
+address which U-Boot somehow has already allocated, or the requested
+length exceeds what we have available. Then you move to the next slot
+and the new address happens to be ok.
+
+>
+> U-Boot also reports a new reservation in its lmb map between the
+> first and second calls to efi_allocate_pages().
+>
+
+Yes internally efi_allocate_pages() uses the lmb APIs to allocate and
+manage memory so that's normal.
+
+> During first call to efi_allocate_pages():
+>
+> lmb_dump_all:
+>  memory.count = 0x1
+>  memory[0]      [0x0-0x3fffffff], 0x40000000 bytes, flags: none
+>  reserved.count = 0x5
+>  reserved[0]    [0x4000000-0x41fffff], 0x200000 bytes, flags: none
+>  reserved[1]    [0x4400000-0x53fffff], 0x1000000 bytes, flags: none
+>  reserved[2]    [0x3dae3000-0x3e2c8fff], 0x7e6000 bytes, flags: no-overwrite, no-map
+>  reserved[3]    [0x3ea6c000-0x3eaedfff], 0x82000 bytes, flags: no-overwrite, no-map
+>  reserved[4]    [0x3eaee960-0x3fffffff], 0x15116a0 bytes, flags: no-map
+>
+> During second call to efi_allocate_pages():
+>
+> lmb_dump_all:
+>  memory.count = 0x1
+>  memory[0]      [0x0-0x3fffffff], 0x40000000 bytes, flags: none
+>  reserved.count = 0x6
+>  reserved[0]    [0x0-0x113ffff], 0x1140000 bytes, flags: no-overwrite, no-map
+>  reserved[1]    [0x4000000-0x41fffff], 0x200000 bytes, flags: none
+>  reserved[2]    [0x4400000-0x53fffff], 0x1000000 bytes, flags: none
+>  reserved[3]    [0x3dae3000-0x3e2c8fff], 0x7e6000 bytes, flags: no-overwrite, no-map
+>  reserved[4]    [0x3ea6c000-0x3eaedfff], 0x82000 bytes, flags: no-overwrite, no-map
+>  reserved[5]    [0x3eaee960-0x3fffffff], 0x15116a0 bytes, flags: no-map
+>
+> [1] https://github.com/u-boot/u-boot/blob/master/lib/efi_loader/efi_memory.c#L493
+>
+
+Cheers
+/Ilias
 
