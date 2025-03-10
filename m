@@ -1,162 +1,190 @@
-Return-Path: <linux-efi+bounces-2945-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2946-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A06A586EA
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 19:13:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309FCA58CB3
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 08:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C330168E77
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Mar 2025 18:13:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5DE83AC9FF
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 07:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3931E5200;
-	Sun,  9 Mar 2025 18:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDD41D5AC0;
+	Mon, 10 Mar 2025 07:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=bens.haus header.i=@bens.haus header.b="go8JZcHf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G2q588JQ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1AF1DF244
-	for <linux-efi@vger.kernel.org>; Sun,  9 Mar 2025 18:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FFE1D5AAD;
+	Mon, 10 Mar 2025 07:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741543986; cv=none; b=SoOk5qeCT339VdpsBjJDNQftrqqo2YIZcqUU2VtRYTowM96wxsiou9WIwLZQRhPMICpWVtPlZXt7H6Ouc6Nb3qWQiZmu36KX2GlULNq7jjqoNDpw72D9ZSvQrkklHfBrY1ZJixT9BeVFAal1aJGImDwCeadwoPIqvZsvNWlHRl0=
+	t=1741591309; cv=none; b=euD7EgKRupDyc6hy/J07IB7Tf8VtNYrR3fdD0b1PduIuw1GT0lQfaLa5Q3OeHVnS2anmRAX9TW/lDuBu8eJaWTRhkmcQf+/JQ7W90Qc02zk0TljonZh4yMH4Qw2keXNM0y+UxX04USSKdKeatb/XfJdF+tPsEoHcV4VK8082Hcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741543986; c=relaxed/simple;
-	bh=zyvv6LE5+/RI+8XoWGFK9P0N4tsvDV6NnM+TvTUIRp4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dgW4x3NOkv3CaoONmfOdTv7G0c5nqKGVSPI5iW2UAvYEA3FhxuGcb0xuDINlekAzu7z1Jqex/mvr9af9M9U94OJ2NtYrl2fGnNg4JuG+tJqOttLYrumWuuovZa3f1vhO9XmOLmt1/qM8VVn/f/o+bgUwMPga6RxdZfXAM7h206I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bens.haus; spf=pass smtp.mailfrom=bens.haus; dkim=pass (2048-bit key) header.d=bens.haus header.i=@bens.haus header.b=go8JZcHf; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bens.haus
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bens.haus
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bens.haus;
-	s=protonmail; t=1741543967; x=1741803167;
-	bh=D+ZO3yA/5q2BYOGvFkMiUSl/RH69JsisG9aWYBA4aYc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=go8JZcHfC6W3WMsZZo4FydfgyW8vyXV/S2H5CIWQgJjqbigkJNnLdVdFQ6vX6AHka
-	 GXbY/DRk0dp5ZfjB03RaC9BRvFVkv3PwhKDrEIXdpRyT/bIEfc6YdZ3HejqKdqjVfB
-	 zzECymQ6PfLpdM63tdAPLU864up++rUdXKXt0tYjk2hkPIo/avPqsBJePuByEa/qyz
-	 7POKMSytMlcyfrrkgXq89QeSTJaISzSClEPAzP6ePRBkm02DXTevdbs6NUlPWFgIBN
-	 3M9wVCyfx/6V97UeQcJ85O4lMJzezh2d6PN/f7NqlpueaGrPvbcefxAtstjkyONFzU
-	 cAhxq2s25YLyw==
-Date: Sun, 09 Mar 2025 18:12:45 +0000
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-From: Ben Schneider <ben@bens.haus>
-Cc: Ard Biesheuvel <ardb@kernel.org>, "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
-Subject: Re: efi_random_alloc() returning EFI_NOT_FOUND
-Message-ID: <PkBypGXyjiJ7T845148vEiHaoabJOyVg26qTLI-SygtRbQ9aQjnMWUddWHiYB9KPR8JVqDFQ1pZRnRUq06vIRR7L4CDLERwJL9-2LdvcxBc=@bens.haus>
-In-Reply-To: <CAC_iWj+LdNXYO-nTzenCvhQN=--hmfJLzH1w_D5g676_6wQ8=g@mail.gmail.com>
-References: <5BK24Nc0mA4pe8BFp-FUgN4Q9lCFpR1TUFMKB8mRUJIhOG1hP3yYcVIulRsDSQA_7MvOOH9dg1nUiDvQSkQ2tS1vZeiZbMEFEnsMbPzB0cg=@bens.haus> <CAMj1kXHN4qTTUzCUvERy1iZVMy6jQ_-iha0EyHBsE5jH0_WaUQ@mail.gmail.com> <YT8Nabg2mhqfljPaZg1ruLmAwW-C6iNOaSA4yUC3h8tkwEgaHJswhIP0fKxb_0Tvmsc6muBWW7TRgnCgXejXrXZ5zxx8gMc1aMFZW0A8-v0=@bens.haus> <CAC_iWj+LdNXYO-nTzenCvhQN=--hmfJLzH1w_D5g676_6wQ8=g@mail.gmail.com>
-Feedback-ID: 124562356:user:proton
-X-Pm-Message-ID: 0e3c5e7a52cc5901918cbaa23fa57dd5a8eabeaf
+	s=arc-20240116; t=1741591309; c=relaxed/simple;
+	bh=bwzwOjpoJdTp8dStniYCS+eiqWFCsaTpoCpnmRYoBVQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XTUfMnS079z3IZ9MMfJelUSFFm9AXsdxL3gNjfwjoehjE9nyBNvyLYxpptkRdGf+QQbBIbkjavremBTKzclNSBybHrKeSIzOPg9ikhiei74dkbEKQGgJaaZU4mLJUczu8nUQlVGFIkSqsf82z8ayiMHloOKjoxJccUmw0gaYUB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G2q588JQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C27C4CEE5;
+	Mon, 10 Mar 2025 07:21:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741591309;
+	bh=bwzwOjpoJdTp8dStniYCS+eiqWFCsaTpoCpnmRYoBVQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=G2q588JQEantEptls1igKb1mCeSfH0cMWDtWBrm35xkL9CaLjxWwxAnJPpsOe5Qft
+	 gZaw/kn0KbqvcWeuy6qer3a2ZwLeywtAxbQB+z5IJc5Olwhfq0h9rLClfmIigdvEnD
+	 Xoeh8nDmG8nWK0dcT+0yPwH+se0FuMRDysYq4Vx6I2MASDUwff9loljo3qXg/dutqa
+	 fL95cvVm3Tc+7+HmVr29TgIuUoIuc6bzZCqFRrcdTW0/2MHaiNXurDrPVrVjXhSlf5
+	 J4Y0yZwxK59Rkvzt1S6eiswe3UMv2UUg9PvifQomJbPF9lerc+0qAtlddPT6wrA0zV
+	 mK2QFRvujxR2Q==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30761be8fa8so42718641fa.2;
+        Mon, 10 Mar 2025 00:21:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV+sjia7lDk3ELfd1/1oNb6Iu3tH9Z2avt8Bsh3xI781LuGFoYMNKZZ/l/C2paW2HaIluW6lyQGyYhnqVrD@vger.kernel.org, AJvYcCV2imihIXc3eMrJYFwAo9jgs+5DLsWX3mpSAoayFrPaIsMXd0dVZr8/Mg1CqBeY//Qz+0gLcBclQlR7RdTOwA==@vger.kernel.org, AJvYcCWdOFOs89rsP1Wnpf/RODGTFS3qwE7gWAcRER49Z19KG/x8k3/Y+P/nLMZ4YuE19XJIuGfuOO+iGCE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVmnANHeuyrLkJ3L4w7OAfCxVKs1hGz2i96LEv+ezC5rffhI49
+	Dqg8ECcVqtGfKEUlBgMyMc4YvYD/a3B0/6CSpu4T6dGTLLd0GRjhVOcdvJbTIezKQAw4rqaLpyj
+	D2LrPy9JL8SiiDetGVCy/hWrOeO8=
+X-Google-Smtp-Source: AGHT+IGge2A+fnL8sOyilyTq9nCYuH103mq7sQ/sC1+LPZhomoy5MIoKYB8jPThuj9l7/H8hSZJKNPij57l1IvvXYPA=
+X-Received: by 2002:a2e:960a:0:b0:307:e498:1254 with SMTP id
+ 38308e7fff4ca-30bf4613baemr36896451fa.35.1741591307671; Mon, 10 Mar 2025
+ 00:21:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <67cd0276.050a0220.14db68.006c.GAE@google.com>
+In-Reply-To: <67cd0276.050a0220.14db68.006c.GAE@google.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 10 Mar 2025 08:21:36 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXER-4ErtQiU6oPWfOEsmTz8pqPOsQ3GB8EGQeHhHXS0_w@mail.gmail.com>
+X-Gm-Features: AQ5f1Jp_t0I_OP6aZ1QHAnkD4_UsvVHnzfc1Q5x29HnwX01uUG60SpbDECqNSO8
+Message-ID: <CAMj1kXER-4ErtQiU6oPWfOEsmTz8pqPOsQ3GB8EGQeHhHXS0_w@mail.gmail.com>
+Subject: Re: [syzbot] [efi?] [fs?] possible deadlock in efivarfs_actor
+To: syzbot <syzbot+019072ad24ab1d948228@syzkaller.appspotmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
+Cc: jk@ozlabs.org, linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Ilias, thank you for connecting the threads. I'm clearly
-struggling a bit and appreciate how patient and helpful
-everyone has been.
+(cc James)
 
-On Saturday, March 8th, 2025 at 5:43 PM, Ilias Apalodimas <ilias.apalodimas=
-@linaro.org> wrote:
-> The 'efidebug' command will dump the EFI memory map. Can you send that?
-
-This is what U-Boot reports:
-
-Type             Start            End              Attributes
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-CONVENTIONAL     0000000000000000-0000000004000000 WB
-BOOT DATA        0000000004000000-0000000004200000 WB
-CONVENTIONAL     0000000004200000-0000000004400000 WB
-BOOT DATA        0000000004400000-0000000005400000 WB
-CONVENTIONAL     0000000005400000-000000003eabc000 WB
-BOOT DATA        000000003eabc000-000000003eac1000 WB
-RUNTIME DATA     000000003eac1000-000000003eac2000 WB|RT
-BOOT DATA        000000003eac2000-000000003eac3000 WB
-RUNTIME DATA     000000003eac3000-000000003eae5000 WB|RT
-BOOT DATA        000000003eae5000-000000003eaee000 WB
-BOOT CODE        000000003eaee000-000000003fb8a000 WB
-RUNTIME DATA     000000003fb8a000-000000003fb8b000 WB|RT
-BOOT CODE        000000003fb8b000-000000003ff00000 WB
-RUNTIME CODE     000000003ff00000-000000003ff10000 WB|RT
-BOOT CODE        000000003ff10000-0000000040000000 WB
-
-> Any idea if we can reproduce this on QEMU?
-
-I have not attempted to reproduce with QEMU.
-
-From what I can tell on my device, total_slots is 467 and
-target_slot seems to always start with a value of 0 despite the
-comment that it should be a random value in [0, total_slots).
-
-In the first iteration through the second for loop,
-MD_NUM_SLOTS(md) appears to have a value of 24 and since
-target_slot is always 0, it never reaches the 'continue'
-statement. With current builds, &target appears to have a value of
-3faee138. U-Boot appears to send this address to map_to_sysmem()
-[1] which seems to return 0, which is then what results in the
-EFI_NOT_FOUND.
-
-I went back to try figure out why it is somehow working when I
-block the 'break' statement with the condition status =3D=3D
-EFI_SUCCESS. Doing so causes the loop to start its second
-iteration when EFI_NOT_FOUND comes back. In the second iteration,
-MD_NUM_SLOTS(md) is 0 so we reach the 'continue' statement. This
-happens for the third and fourth iteration too. On the fifth
-iteration, MD_NUM_SLOTS(md) is 443 so it makes its second call to
-efi_allocate_pages(). On all iterations, target_slot remains 0.
-
-What is confusing is this second call to efi_allocate_pages()
-seems to have the same value for &target of 3faee138, but this
-time when U-Boot calls map_to_sysmem() it returns a value of
-88080384 instead of 0. As a result, we get EFI_SUCCESS and the
-kernel boots.
-
-U-Boot also reports a new reservation in its lmb map between the
-first and second calls to efi_allocate_pages().
-
-During first call to efi_allocate_pages():
-
-lmb_dump_all:
- memory.count =3D 0x1
- memory[0]=09[0x0-0x3fffffff], 0x40000000 bytes, flags: none
- reserved.count =3D 0x5
- reserved[0]=09[0x4000000-0x41fffff], 0x200000 bytes, flags: none
- reserved[1]=09[0x4400000-0x53fffff], 0x1000000 bytes, flags: none
- reserved[2]=09[0x3dae3000-0x3e2c8fff], 0x7e6000 bytes, flags: no-overwrite=
-, no-map
- reserved[3]=09[0x3ea6c000-0x3eaedfff], 0x82000 bytes, flags: no-overwrite,=
- no-map
- reserved[4]=09[0x3eaee960-0x3fffffff], 0x15116a0 bytes, flags: no-map
-
-During second call to efi_allocate_pages():
-
-lmb_dump_all:
- memory.count =3D 0x1
- memory[0]=09[0x0-0x3fffffff], 0x40000000 bytes, flags: none
- reserved.count =3D 0x6
- reserved[0]=09[0x0-0x113ffff], 0x1140000 bytes, flags: no-overwrite, no-ma=
-p
- reserved[1]=09[0x4000000-0x41fffff], 0x200000 bytes, flags: none
- reserved[2]=09[0x4400000-0x53fffff], 0x1000000 bytes, flags: none
- reserved[3]=09[0x3dae3000-0x3e2c8fff], 0x7e6000 bytes, flags: no-overwrite=
-, no-map
- reserved[4]=09[0x3ea6c000-0x3eaedfff], 0x82000 bytes, flags: no-overwrite,=
- no-map
- reserved[5]=09[0x3eaee960-0x3fffffff], 0x15116a0 bytes, flags: no-map
-
-[1] https://github.com/u-boot/u-boot/blob/master/lib/efi_loader/efi_memory.=
-c#L493
-
+On Sun, 9 Mar 2025 at 03:52, syzbot
+<syzbot+019072ad24ab1d948228@syzkaller.appspotmail.com> wrote:
+>
+> Hello,
+>
+> syzbot found the following issue on:
+>
+> HEAD commit:    e056da87c780 Merge remote-tracking branch 'will/for-next/p..
+> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+> console output: https://syzkaller.appspot.com/x/log.txt?x=14ce9c64580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=d6b7e15dc5b5e776
+> dashboard link: https://syzkaller.appspot.com/bug?extid=019072ad24ab1d948228
+> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+> userspace arch: arm64
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=111ed7a0580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13b97c64580000
+>
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/3d8b1b7cc4c0/disk-e056da87.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/b84c04cff235/vmlinux-e056da87.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/2ae4d0525881/Image-e056da87.gz.xz
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+019072ad24ab1d948228@syzkaller.appspotmail.com
+>
+> efivarfs: resyncing variable state
+> ============================================
+> WARNING: possible recursive locking detected
+> 6.14.0-rc4-syzkaller-ge056da87c780 #0 Not tainted
+> --------------------------------------------
+> syz-executor772/6443 is trying to acquire lock:
+> ffff0000c6826558 (&sb->s_type->i_mutex_key#16){++++}-{4:4}, at: inode_lock include/linux/fs.h:877 [inline]
+> ffff0000c6826558 (&sb->s_type->i_mutex_key#16){++++}-{4:4}, at: efivarfs_actor+0x1b8/0x2b8 fs/efivarfs/super.c:422
+>
+> but task is already holding lock:
+> ffff0000c6c7a558 (&sb->s_type->i_mutex_key#16){++++}-{4:4}, at: iterate_dir+0x3b4/0x5f4 fs/readdir.c:101
+>
+> other info that might help us debug this:
+>  Possible unsafe locking scenario:
+>
+>        CPU0
+>        ----
+>   lock(&sb->s_type->i_mutex_key#16);
+>   lock(&sb->s_type->i_mutex_key#16);
+>
+>  *** DEADLOCK ***
+>
+>  May be due to missing lock nesting notation
+>
+> 3 locks held by syz-executor772/6443:
+>  #0: ffff80008fc57208 (system_transition_mutex){+.+.}-{4:4}, at: lock_system_sleep+0x68/0xc0 kernel/power/main.c:56
+>  #1: ffff80008fc75d70 ((pm_chain_head).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x58/0xa0 kernel/notifier.c:379
+>  #2: ffff0000c6c7a558 (&sb->s_type->i_mutex_key#16){++++}-{4:4}, at: iterate_dir+0x3b4/0x5f4 fs/readdir.c:101
+>
+> stack backtrace:
+> CPU: 0 UID: 0 PID: 6443 Comm: syz-executor772 Not tainted 6.14.0-rc4-syzkaller-ge056da87c780 #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
+> Call trace:
+>  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
+>  __dump_stack lib/dump_stack.c:94 [inline]
+>  dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:120
+>  dump_stack+0x1c/0x28 lib/dump_stack.c:129
+>  print_deadlock_bug+0x4e8/0x668 kernel/locking/lockdep.c:3039
+>  check_deadlock kernel/locking/lockdep.c:3091 [inline]
+>  validate_chain kernel/locking/lockdep.c:3893 [inline]
+>  __lock_acquire+0x6240/0x7904 kernel/locking/lockdep.c:5228
+>  lock_acquire+0x23c/0x724 kernel/locking/lockdep.c:5851
+>  down_write+0x50/0xc0 kernel/locking/rwsem.c:1577
+>  inode_lock include/linux/fs.h:877 [inline]
+>  efivarfs_actor+0x1b8/0x2b8 fs/efivarfs/super.c:422
+>  dir_emit include/linux/fs.h:3849 [inline]
+>  dcache_readdir+0x2dc/0x4e8 fs/libfs.c:209
+>  iterate_dir+0x46c/0x5f4 fs/readdir.c:108
+>  efivarfs_pm_notify+0x2f4/0x350 fs/efivarfs/super.c:517
+>  notifier_call_chain+0x1c4/0x550 kernel/notifier.c:85
+>  blocking_notifier_call_chain+0x70/0xa0 kernel/notifier.c:380
+>  pm_notifier_call_chain+0x2c/0x3c kernel/power/main.c:109
+>  snapshot_release+0x128/0x1b8 kernel/power/user.c:125
+>  __fput+0x340/0x760 fs/file_table.c:464
+>  ____fput+0x20/0x30 fs/file_table.c:492
+>  task_work_run+0x230/0x2e0 kernel/task_work.c:227
+>  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+>  do_notify_resume+0x178/0x1f4 arch/arm64/kernel/entry-common.c:151
+>  exit_to_user_mode_prepare arch/arm64/kernel/entry-common.c:169 [inline]
+>  exit_to_user_mode arch/arm64/kernel/entry-common.c:178 [inline]
+>  el0_svc+0xac/0x168 arch/arm64/kernel/entry-common.c:745
+>  el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
+>  el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+>
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+>
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+>
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+>
+> If you want to undo deduplication, reply with:
+> #syz undup
 
