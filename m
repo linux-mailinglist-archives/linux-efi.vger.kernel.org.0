@@ -1,50 +1,50 @@
-Return-Path: <linux-efi+bounces-2959-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2960-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA36A5ACE5
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Mar 2025 00:25:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F12BA5B04D
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Mar 2025 00:58:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FDD31892292
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 23:25:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6FD17A63E5
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Mar 2025 23:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6159E2206B9;
-	Mon, 10 Mar 2025 23:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4524E221F21;
+	Mon, 10 Mar 2025 23:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Bz5nNjVZ"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="ZXxaa+B0"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B33C1D5AA0;
-	Mon, 10 Mar 2025 23:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016CE1CAA8D;
+	Mon, 10 Mar 2025 23:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741649138; cv=none; b=fURoJiqUxqJFCqNXYW5yDIkq+rXnNJUgcaRUjDY5zLWoV9vKQ/GcuYhZ/1wIHduOMG9oMjTQaCD/Q2aqBpflwPZB1MjNlVm9GVcd6r88KRUI5kx0JfAlk8RlP8z78WmfN/KReOb3MiDSWHSZyOIG6D81kFOdfpLMtQ/TtwkDBI8=
+	t=1741651116; cv=none; b=n4Mz7Q7JcdyzxcI5QsI0qkQn7/wtyOAl06rX9Y1auRCyMs2to5/hoTyboKPfHoXPC+1KP2oO2xkZZQ2BCtBxYcEfrY4XbDJCLp3eBhfy8o6soyOibSgDRE43FW3I9JF0Q6TyZGme4pVLPv1kvDcyi0Vcg3Q6EE+0PtrtJ5NCFhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741649138; c=relaxed/simple;
-	bh=nIHGcSGPN84c/tiS/NAVq2Cguqv4thMhE5BRLAhRbTQ=;
+	s=arc-20240116; t=1741651116; c=relaxed/simple;
+	bh=HRL9dvhLGHgZ+t15fYgJdlkg9n7P/vSyCsVNBTwdSM8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OEB4y0r1D4RmDLzu17czx7U/I7A2CppJTAOHdQjQnmuSCrKRdNnSRFgEspTLob/c1YsJo+6dmS+QIp5buNHtXnCN/Uxa9E/BOFB9STz3vEndYKb1+GfRw9SNdq5ewPUVVIzi40VWNerx48toA/tPDKFdssl/s4a0+DFirYIXfyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Bz5nNjVZ; arc=none smtp.client-ip=62.89.141.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=bAVv2NsR3jyVnje4oR7i+VCjG+nZHZSuBdEsDrjz4HMbXL8DUmDCb8Srj7hOlkegfbTTvBEbTim9SDwgYv/Xr9WPHzcGExYFP2oPb9e8+uPt6GyGcy6zaMAHEDiwDIuZfEWEMyCpXnkSquvrHHxFrjKxFVeHoGfOrRTUWWHtJn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=ZXxaa+B0; arc=none smtp.client-ip=62.89.141.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6GHLZ5U+wRtHtT6lnv8lowfQ2tF7tmCMz43Byi27gzE=; b=Bz5nNjVZPYQDlAwZyaOtmQM2Wm
-	4dO5rn0GOrU2oseYiEO8i3YQhTNQCzEpNqC12T5kgiXU4OTDR+uUrrJWvXnls8k35D9x56aX3Ube8
-	YQYOKAmbzJxMzjYTXMNCrkO94M/b9dLCe5Rr1En60q5BpjvK2NHevJOidUeBYIffjyM/J1z/0KlqU
-	6JvI5Qawn0lgWoZb4spUkI3N4PEYyaqvQC4RV5PvpwI6tsxyiE5ePqcIrWZ/NIFaIrzifMYAXqbHW
-	/q0IS2Se2WnWZ4I1gWDKEkG8sDBRu6LKDuxW3wJCGBHApqenFOOhyaulbVLFYCag+H6IqvilP7oB3
-	M8M2FHzg==;
+	bh=O6tK3nGR9KVemkXaRkWRrwdgE+3x50H2PRIQcPyhrvo=; b=ZXxaa+B0/9a66QMHGuH2l4nkZ2
+	M4zkg/q7zAYTmX6PBs1NOhDVV6YH91BM48dIe4VSD6vLIQ4BMiDJgbTRms6c0OvFw1QlTWUIKJLbM
+	xiY4VaLuqMKlllfgRQZDb15WXl8F5xxQ/K9ZboE+Bi+xUJwLS34oO5zB/iyMEq28JuxyJRQ4WpxI2
+	kF5PL6n8epgUirusUxs8k7l8ZFihWvRomDR6yZ/jS2nPXjkyhLBda2N6/NFc7tUx/cYkt2o4H6pEw
+	XGSotvNcz1AuuKVjtdNYGafNGjTxHRxEtzrPBJAX5b5T83GSMBdrOcuOVP6FoFnQqBUe5qUKhllfm
+	Xto2AsOA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1trmV0-00000002lqx-0Yo1;
-	Mon, 10 Mar 2025 23:25:30 +0000
-Date: Mon, 10 Mar 2025 23:25:30 +0000
+	id 1trn0x-00000002rRM-0zDw;
+	Mon, 10 Mar 2025 23:58:31 +0000
+Date: Mon, 10 Mar 2025 23:58:31 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Ard Biesheuvel <ardb@kernel.org>
 Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
@@ -53,11 +53,10 @@ Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	syzkaller-bugs@googlegroups.com
 Subject: Re: [syzbot] [efi?] [fs?] possible deadlock in efivarfs_actor
-Message-ID: <20250310232530.GK2023217@ZenIV>
+Message-ID: <20250310235831.GL2023217@ZenIV>
 References: <67cd0276.050a0220.14db68.006c.GAE@google.com>
  <8cf7d7efdc069772d69f913b02e5f67feadce18e.camel@HansenPartnership.com>
  <CAMj1kXH0Myy3bV-hFNWnoUk6ZAa6MAd1zFTM-X6dXiJPx==w0A@mail.gmail.com>
- <CAMj1kXEfG=Q3pk6PsVZxf5qCjEBTwTjUCJcNwBPO3PqNmSp=hw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -66,28 +65,23 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXEfG=Q3pk6PsVZxf5qCjEBTwTjUCJcNwBPO3PqNmSp=hw@mail.gmail.com>
+In-Reply-To: <CAMj1kXH0Myy3bV-hFNWnoUk6ZAa6MAd1zFTM-X6dXiJPx==w0A@mail.gmail.com>
 Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Mon, Mar 10, 2025 at 07:24:43PM +0100, Ard Biesheuvel wrote:
+On Mon, Mar 10, 2025 at 07:21:53PM +0100, Ard Biesheuvel wrote:
 
-> And one of the other logs has
+> The repro log also has
 > 
-> [   47.650966][ T6617] syz.2.9/6617 is trying to acquire lock:
-> [   47.652339][ T6617] ffff0000d69f6558
-> (&sb->s_type->i_mutex_key#25){++++}-{4:4}, at:
-> efivarfs_actor+0x1b8/0x2b8
-> [   47.654943][ T6617]
-> [   47.654943][ T6617] but task is already holding lock:
-> [   47.656931][ T6617] ffff0000f5b84558
-> (&sb->s_type->i_mutex_key#25){++++}-{4:4}, at: iterate_dir+0x3b4/0x5f4
+> program crashed: BUG: unable to handle kernel paging request in
+> efivarfs_pm_notify
 > 
-> where the locks have the same name but the address is different.
-> 
-> So there is something dodgy going on here, and I'm inclined to just ignore it.
+> preceding the other log output regarding the locks, so the deadlock
+> might be a symptom of another problem.
 
-That one is a false positive - iterate_dir() locks parent, then
-callback locks child, but without bothering to tell lockdep about
-that.  IOW, in actor you should use inode_lock_nested(inode, INODE_CHILD);
-instead of inode_lock(inode).
+This:
+        struct path path = { .mnt = NULL, .dentry = sfi->sb->s_root, };
+
+_What_ .mnt = NULL?  That's already a bug.  There is no such thing
+as mountless open file; how would the kernel know not to shut the
+damn thing down right under you?
 
