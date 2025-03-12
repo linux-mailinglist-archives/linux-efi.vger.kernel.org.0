@@ -1,104 +1,173 @@
-Return-Path: <linux-efi+bounces-2976-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2977-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2F6A5E40A
-	for <lists+linux-efi@lfdr.de>; Wed, 12 Mar 2025 20:00:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC95A5E59C
+	for <lists+linux-efi@lfdr.de>; Wed, 12 Mar 2025 21:47:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FBD87AE07B
-	for <lists+linux-efi@lfdr.de>; Wed, 12 Mar 2025 18:59:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 803283AEEDB
+	for <lists+linux-efi@lfdr.de>; Wed, 12 Mar 2025 20:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EC42586CC;
-	Wed, 12 Mar 2025 19:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3CE258A;
+	Wed, 12 Mar 2025 20:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TtdcsGrH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RxSY6SdT"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FA823F388;
-	Wed, 12 Mar 2025 19:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0608C18DB0B
+	for <linux-efi@vger.kernel.org>; Wed, 12 Mar 2025 20:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741806002; cv=none; b=bsh1RmO+p0EOQxQU3N1WV60AkhyHfqR/Flld0r+7IHDJniFK87AQTdtDe6UL35Ob8r9GvqfIa3tskkAp9c9vbdwPU/vWOnV7K+daKATHw7dw8sMyaoq92CDe4YC0sTatZUvnu5Eap8R+0/l6ljj0UfzviYPlmmLXEg/YaOTcSm8=
+	t=1741812453; cv=none; b=MCldttZD44GYhFvwSW5ZuUljtWLK6Ubwjq/hjkxSkGJDRkTkDzc3IKmCNFlrY6LyJ6waS+HFzSlVF2GAwoSB6o4YV0hILTAGrv9Y9PzQJUBnU0KV8fx15koEOrsJu5oV3oKStEgJgWDSMA2S/hpjU2Bo9jZAvKzZpMI5iD3W10Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741806002; c=relaxed/simple;
-	bh=kGIMlxZvq6PH3ad4OhpiRECFgFh3c214pczSuZX0A4M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rBnxkn46CvYhlJZsmZvbnG+kipn6bFATIEiGv8HG3iRY0ZhgLVNGlSrdRp8ul9QS0JfQoBCz6lQuguFro4amWU/pdGU6HM9/LGZCs7iQ91ouf3refceeEfq1KZMRLR0H7XqBsJI6N+6y3BvT1w9x8c0kdk8tLPQy0X7B85O7Dmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TtdcsGrH; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741806001; x=1773342001;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kGIMlxZvq6PH3ad4OhpiRECFgFh3c214pczSuZX0A4M=;
-  b=TtdcsGrHG8PqORjVd/8/pkmewN6ZeitG3XEgqgF+Qi1D+21AvjtcInwJ
-   RI9LM/NR+uLZ1qvAS1/1AA0L2vCFGydfTAJCoSn2phcX3vqi0xrS2jmRX
-   Q4iP+EnOLBRXtFpQBKro8V8r21oVdrQKNcQLNM/oSsaF8TGNvODSqcnIF
-   6HCuV95tjkOhPe1QQtmuq5YQ//QLAdN48S8dBExHgwpsDnebS/3+94H2T
-   D9P3bGJJHkBamlGG3D87gIOF9+sStLelquKvGAKQzdCWa4ndhoTyDzQLb
-   m7pgdlszZEsXDB2vwSi46WtteXVZX50XpkYfQopom3erQYu4yJE08VyDe
-   Q==;
-X-CSE-ConnectionGUID: l1RpPqPmTZuKJ0rcQcB6uQ==
-X-CSE-MsgGUID: oAEsFaOAQrS8P+13vhhfYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="54272016"
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="54272016"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 12:00:00 -0700
-X-CSE-ConnectionGUID: DwSZyZZ1Rb29xF6An1cmgw==
-X-CSE-MsgGUID: EpbEPYrlROWPSOh8Z46pPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="125797228"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.108.10])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 11:59:58 -0700
-Date: Wed, 12 Mar 2025 11:59:57 -0700
-From: Alison Schofield <alison.schofield@intel.com>
-To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Terry Bowman <terry.bowman@amd.com>
-Subject: Re: [PATCH v8 2/2] cxl/pci: Add trace logging for CXL PCIe Port RAS
- errors
-Message-ID: <Z9HZrXtSEx8wT3Eb@aschofie-mobl2.lan>
-References: <20250310223839.31342-1-Smita.KoralahalliChannabasappa@amd.com>
- <20250310223839.31342-3-Smita.KoralahalliChannabasappa@amd.com>
+	s=arc-20240116; t=1741812453; c=relaxed/simple;
+	bh=zQw8UyRUd7yGeaJCsbE+Z4AsB8Y7qjnaQUXhsAswgcE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AOX876gsZdBDpi6O7k4vRS0wCyfO4F0CnrwL7Rrg6sdJ+ibdxYtCGczvbvvUv/QAieR0aMgCmasJSA5KkxUR6SqQDIp2Hw/yd6RETDOnzsb0OWnsK/GGK16mxCvU9zwnmYBUfD6wUL/zTvRYblr/Q13Iy4hPothja5EBj5bpKv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RxSY6SdT; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e6343c68b8fso221670276.2
+        for <linux-efi@vger.kernel.org>; Wed, 12 Mar 2025 13:47:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741812451; x=1742417251; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zQw8UyRUd7yGeaJCsbE+Z4AsB8Y7qjnaQUXhsAswgcE=;
+        b=RxSY6SdToNkmq8g4SBt0vVamAAlcUpEe6PKY+1tAu558WwjRPsanoAON6mJOInNhBa
+         B0WzC8Fqg+gXyee54PbjnsF/aFNdfVMYIIyB4+grl2EHhamBAoOyJXH/gDXrKrgOyNuR
+         G1iFF5CZYj2PyN/8ygIn45UmVvKRtfSCfDburpchLHdIBm4NfOKJ/3qdH1UljoymduzS
+         EKvXDPUxIvNpj/bMxfdTf3TzTY7MgL4LD+BGNkVdGLZg//zDr+QI5fig4YYlzzFScUhP
+         VieQSUpwkC01qMhws2vMSXoS8lACUrK5nM/Dj5bJuEZfWMfhRonE0s/nDZZaQSjpRXCG
+         KJaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741812451; x=1742417251;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zQw8UyRUd7yGeaJCsbE+Z4AsB8Y7qjnaQUXhsAswgcE=;
+        b=qrhtmaj6Kug83ohYorpu8cBBNA7QAKlY3GZsnAXe8qpBJ/NQ7/SDCWB94yjIaXhPn7
+         YHFmIDiYyd4qlG8MLLjHKYTc2OHtQXz8P8SgVSKyiKWbltQ21CheXHhkfmWVcMkrvqrP
+         hOt+ACNzLVJEZg1zkG4IoewhsyVfAYHF+QoA25TTp3kd0YqMGGsBJX6yTTNJiEYBXEQg
+         8azz02RhkMXkPnvQSp9EPe5EF/4WqujCfy/JNk2vLw1r+rE5HiMHxtBVQv15IDK+k2DF
+         SmNnRvImX8y2BDHRTFmaLXBh/ut65jPOhgabftQb2odNE6IwigOMKgQc+imxPlLFMYvO
+         ZyfA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqBRc+3m0QS13Almz+b5HQ6J3Kd8sSYcK96v2qikuc1lqxasB8g5PVSsC0VAAJPr6meHLYG/coXX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEqvFM7tuxWrgCoJ0jQXY7DBR7CjGfNsi6aPJRh/B4VQqYYa3q
+	Ymc+9lhNvlV0opuvYR8fH+eqr23Ut9M6Tsb2UvJ92jHMq4qxQ/Os0g9eg5gHRtVbLBxhADdVoD9
+	6C6SIn2v4ao4pMp9GI9CYuOyglUWZogkQvBgw3XleXwFhZoZuOoU=
+X-Gm-Gg: ASbGnctCUzP5iKi/ugCe90l1GkGwHWX3lKSX7TqOIJyIfDqKPbaihgUsVtlBZ5SlR/Y
+	3hl8skHYB0Bd57tNfdQnue8SJQtfNU2KGQ61mKhD2nGKjUmJb3sxkay3KDmcXVL+PUP8QtBuOlm
+	fXghmvkcWbXQp5cy9kwCZo2sVVdEQ=
+X-Google-Smtp-Source: AGHT+IHvlKNNvIVaGV6n19LBNB4WzBuMcTWdiwTN6ypVlCWnsCT6GIq6kIYeX142iCq56PC7bI5mfYSbfsl2J7gxP2k=
+X-Received: by 2002:a25:1504:0:b0:e63:6d28:1492 with SMTP id
+ 3f1490d57ef6-e6386586a68mr16650567276.13.1741812450300; Wed, 12 Mar 2025
+ 13:47:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250310223839.31342-3-Smita.KoralahalliChannabasappa@amd.com>
+References: <5BK24Nc0mA4pe8BFp-FUgN4Q9lCFpR1TUFMKB8mRUJIhOG1hP3yYcVIulRsDSQA_7MvOOH9dg1nUiDvQSkQ2tS1vZeiZbMEFEnsMbPzB0cg=@bens.haus>
+ <CAMj1kXHN4qTTUzCUvERy1iZVMy6jQ_-iha0EyHBsE5jH0_WaUQ@mail.gmail.com>
+ <YT8Nabg2mhqfljPaZg1ruLmAwW-C6iNOaSA4yUC3h8tkwEgaHJswhIP0fKxb_0Tvmsc6muBWW7TRgnCgXejXrXZ5zxx8gMc1aMFZW0A8-v0=@bens.haus>
+ <CAC_iWj+LdNXYO-nTzenCvhQN=--hmfJLzH1w_D5g676_6wQ8=g@mail.gmail.com>
+ <PkBypGXyjiJ7T845148vEiHaoabJOyVg26qTLI-SygtRbQ9aQjnMWUddWHiYB9KPR8JVqDFQ1pZRnRUq06vIRR7L4CDLERwJL9-2LdvcxBc=@bens.haus>
+ <CAC_iWj+YFNMZZneaQ+zh3ziM2iogB-whRsH81A8hKyNVPY0H9w@mail.gmail.com>
+ <CihxtexZ2w9qfxFQ1v6_JhRD4eYGMDbKtlXqd7KTBfgKhNif3Qq3yaJriSzdiInTiywwgk-CxDDPCYqRPdfYKK3hf93yx774aFfjJKeIhs0=@bens.haus>
+ <CAC_iWj+9DNswD7qCc7V8UxsAOaBTzx7QTYA7Yo8py5pEuHdWDw@mail.gmail.com>
+ <gqqWrf3trBPlLLAJDR55YYQBffE1dToIMzSMgebh-GuI-06E3pX4WcYuFU7XOF3s_ZEjK70ePUUJBXu_V0tAxKc8dmNcQjlqR55cLRAHAJI=@bens.haus>
+ <CAC_iWjKL7nSkr8CyFW6hOzfOTiCU+tES_PsEYC7hkcCA9gAp=Q@mail.gmail.com> <xPmYxk1shimT-7PEuiLsqTN03MY68Lcvo9Yud8PBo6IW7UdpvL-sS60VXmLbH3o3CgkyG4bH7kpZ2sgWaVQPn2y69m1vCj_AC_ukMKJKaz4=@bens.haus>
+In-Reply-To: <xPmYxk1shimT-7PEuiLsqTN03MY68Lcvo9Yud8PBo6IW7UdpvL-sS60VXmLbH3o3CgkyG4bH7kpZ2sgWaVQPn2y69m1vCj_AC_ukMKJKaz4=@bens.haus>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Wed, 12 Mar 2025 22:46:54 +0200
+X-Gm-Features: AQ5f1Jp4lTONnTyTokLCaGpp5exOT6N1LXW-QwpIL-K16Y2TDeJXt_Zvqz6jhM8
+Message-ID: <CAC_iWj+L9CJjg9ZMdT5aOM26osXo=90Xw1JKz+u102wa50W0jQ@mail.gmail.com>
+Subject: Re: efi_random_alloc() returning EFI_NOT_FOUND
+To: Ben Schneider <ben@bens.haus>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 10, 2025 at 10:38:39PM +0000, Smita Koralahalli wrote:
-> The CXL drivers use kernel trace functions for logging endpoint and
-> Restricted CXL host (RCH) Downstream Port RAS errors. Similar functionality
-> is required for CXL Root Ports, CXL Downstream Switch Ports, and CXL
-> Upstream Switch Ports.
-> 
-> Introduce trace logging functions for both RAS correctable and
-> uncorrectable errors specific to CXL PCIe Ports. Use them to trace
-> FW-First Protocol errors.
-> 
-> Co-developed-by: Terry Bowman <terry.bowman@amd.com>
-> Signed-off-by: Terry Bowman <terry.bowman@amd.com>
-> Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+On Wed, 12 Mar 2025 at 20:05, Ben Schneider <ben@bens.haus> wrote:
+>
+> On Wednesday, March 12th, 2025 at 4:24 AM, Ilias Apalodimas <ilias.apalodimas@linaro.org> wrote:
+> >
+> > Can you please apply[...]to make
+> > sure the map doesn't change from the time the slots were calculated.
+>
+> It doesn't seem like they do. This is the output:
+>
+> 7 0-4000000
+> 0 4000000-4200000
+> 7 4200000-4400000
+> 0 4400000-5400000
+> 7 5400000-3daef000
+> 1 3daef000-3e2d5000
+> 7 3e2d5000-3ea78000
+> 2 3ea78000-3ea7b000
+> 1 3ea7b000-3eaa1000
+> 4 3eaa1000-3eaa7000
+> 2 3eaa7000-3eaba000
+> 4 3eaba000-3eabb000
+> 2 3eabb000-3eabd000
+> 4 3eabd000-3eabe000
+> 9 3eabe000-3eac5000
+> 4 3eac5000-3eac9000
+> 6 3eac9000-3eaca000
+> 4 3eaca000-3eacb000
+> 6 3eacb000-3eaed000
+> 4 3eaed000-3eaf6000
+> 3 3eaf6000-3fb92000
+> 6 3fb92000-3fb93000
+> 3 3fb93000-3ff00000
+> 5 3ff00000-3ff10000
+> 3 3ff10000-40000000
+>
+> Inside get_entry_num_slots() it skips everything that's not
+> conventional which just leaves these four entries:
+>
+> 7 0-4000000
+> 7 4200000-4400000
+> 7 5400000-3daef000
+> 7 3e2d5000-3ea78000
+>
+> As a reminder, size is 18087936.
 
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+This is a decimal right ?
 
+>
+> For the first entry, I am seeing region_end = 67108863, first_slot
+> = 0, last_slot = 48234496 so the function returns 24. This is the
+> entry that is then subsequently used in the efi_allocate_pages()
+> call that returns EFI_NOT_FOUND.
+>
+> For the second entry, first_slot > last_slot so we return 0.
+>
+> For the third entry, I am seeing region_end = 1034874879,
+> first_slot = 88080384, last_slot = 1015021568 so the function
+> returns 443. This is the entry that, when used by allocate pages
+> by ignoring the first EFI_NOT_FOUND, returns EFI_SUCCESS and we
+> continue to boot.
+>
+> For the fourth entry, first_slot > last_slot so we return 0.
+
+Ok this helps. I don't think there's anything wrong in the kernel.
+U-Boot has 64mb available and you are requesting to allocate ~17mb which fails.
+On top of that, if you skip the failed allocation, the kernel tries
+the next available slot starting at 0x5400000 which corresponds to the
+correct memory map.
+
+Since this seems a U-Boot issue, I'll send a patch over to the other
+thread and we can continue from there
+
+Thanks
+/Ilias
+>
+> Ben
 
