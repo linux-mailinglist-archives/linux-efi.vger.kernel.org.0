@@ -1,129 +1,132 @@
-Return-Path: <linux-efi+bounces-2983-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2984-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE38A60F99
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Mar 2025 12:09:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670F5A60FC6
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Mar 2025 12:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0E0F189A1A4
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Mar 2025 11:09:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE92E3BC09C
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Mar 2025 11:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F66B1F3B94;
-	Fri, 14 Mar 2025 11:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA3D78C9C;
+	Fri, 14 Mar 2025 11:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BnxZ9DWZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ShRGV+7s"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774801A5B82
-	for <linux-efi@vger.kernel.org>; Fri, 14 Mar 2025 11:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D112AF1D
+	for <linux-efi@vger.kernel.org>; Fri, 14 Mar 2025 11:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741950540; cv=none; b=YgtlKgiJno+Vs8jYAQ7azyaOICHADtoqRKILZ/pAuddYR8nSUAXKImMCzieSPIxI0laFGRfwjDxTfFFiiQwYpEqIJwdRreCJbAah0Fr2IvIrUgT0wT/AgmctpSpAsZkqsWbf/oVvEMVW7yVMdraoI6B1MrsBSMwffUrQoXWS3Ms=
+	t=1741951159; cv=none; b=aLmyW/pqNGWn84JgnUQ0AhkOLAuP/947hHGE1GM2mywi77e4Cx/3h658tNl44C8m9l2RGN+Do5c4qYhvvdNKxxyOL6qEZX7Wd6ouTurOR0T1wLgmaOMNyCi9FnB4+GeedcgwTKUv9GGpgnC1tWH7JF64yRvm7JRe7T+Sw3wjvqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741950540; c=relaxed/simple;
-	bh=E8iF8oWyPdvUAglnFT0dHbI9wimCvz+4QmMo0HXqZcg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MtmMbeRLGHEZfMB+jtoP3vPlfML04eZlklSF07Spans9tIrV7UnnG9BwEg95B7iwGPBd6I4E7iGIX4au/KX0nnTvoONr42me9GaNx4UimaocxGz+zaQv1fDGvd3LX1s/A+UgZMwUSbkT/+qcata5w0KrRyRgaP6yyF/9G9FDD6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BnxZ9DWZ; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-39131f2bbe5so897128f8f.3
-        for <linux-efi@vger.kernel.org>; Fri, 14 Mar 2025 04:08:58 -0700 (PDT)
+	s=arc-20240116; t=1741951159; c=relaxed/simple;
+	bh=uyPXRUEywIIGjH5mLsHV9aJh575YYv57O7OmHdHUCwQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cxukxzx42GkbPIPXswuynUAU8aRhVtekVP2Hpecl2/pBzVth6T7nPuQP+/iJ5+nsuKXBCq3fjYzJCrR92sie+aVB5w8X1Hq0q7+h7qFbdTeUBUq+6mhwUN4XUEZQpGVGnTlCzAHhhZdWMu/wn9ucCt+2YnuXMbBbR+XI9tb6ato=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ShRGV+7s; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e4930eca0d4so1649982276.3
+        for <linux-efi@vger.kernel.org>; Fri, 14 Mar 2025 04:19:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741950537; x=1742555337; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rNTOC7FV6xdM7uEThDA54pXldfk/yY8KmRhaaVRIhUM=;
-        b=BnxZ9DWZBakNAj/1Ztirarxsh4KBngTOkk4OzHZjcoLMTNsNpQ2qNXr4RiyLq14wzi
-         ikjNXB3bu34DzjO0bvqs0UN2MfReDXO1e4tF8M7KTT9r6pnyr/SnX96lbxrB2dBwM/U0
-         3WO3pf+AnDfGzahypA+/NFBTQrHIm8lUCrBN5bn+g9AIBoOk1H3Jg9lKbSUDskYku0wA
-         uUpYV7kxhESa2a29X9C7bp0VbivrOLHrDzU4EvjSIYBak31J/YtN5A3yhpmoB+aQKCmg
-         dDvIqkDVFtuaMBcsl0Blz/5NrIftJJd+mDl/E9NyaveFwnNpjsECv6Vc8a7AfkBpl6yP
-         sYFQ==
+        d=linaro.org; s=google; t=1741951157; x=1742555957; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mX3flr3fDjs5f9zj5ZX2lgdbN3QeZ+oPwK27uaI5w5Y=;
+        b=ShRGV+7s2kwoMm6WHx+mOYjeKHjzQJz+fbM27lH3t+ciM2d7FImxlaA/uNeXfi/Roj
+         VMCyUHGDjAaQZMPiaaXYauijEK4aCfVju8gGMuwrrY9vd5Rv5P9sycrC+ZDzVCFFCrgx
+         p+ZeaYAzC/kerFRRG7uOmb9kxeMEsBFQCcaIpVU1MMEIp8JPVZb0Y+XM2YQ4KKMjp1Os
+         nHHIkbqfU8nUOMPko9B04/0jJQTef3GaigLp4f7WrRpRIzM96pKs65X8Btfpb4ltDFJK
+         mf74kgQNvOuZAw2Iu0sFRIP8nNU/fGggZiv6yoYmkn7tO+Aqr3pqV6egBDMQu4BE/5fE
+         IOqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741950537; x=1742555337;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rNTOC7FV6xdM7uEThDA54pXldfk/yY8KmRhaaVRIhUM=;
-        b=UhheoQZd9abg4rhtVfqcrxot47s0Eem1tEH2i9AShfgjHHwMGpdVGGwPsbPpqUH4Sj
-         CD5Vn3eaQBC8lux70ZOnhQBy7f3i+IObWUqpKy/BoYjV7wjJHGs8faF2cfv0xrSnuYLk
-         f8qWte6l6L1fF5FylMByvqOpkV2/Gn7vuEyKzEAY74vMkpv9sI5a7MV3Q3K6BFXhKGAd
-         I/Ka5YVLnVeKXC5qUamugjz4HxFZFLkEVE+Wnt5yWfeNW8Kj682zlU25oJ8pn43laM0h
-         8NTaYcGC1H5NE1pDkeCIAOk8uBPK6DB6t3DuitjNe9ejS6NgTE9sXqeLUI2MtHT+J4w2
-         KJRw==
-X-Gm-Message-State: AOJu0YwfWOW3wdNrEgD6qFClyQTiboonC+rqUz/oYbTEjXrmuZWKSEt0
-	oySuJHbAeZsc42bVT1oiRtwU6w/boyVmaEwGWqkBZwhb7sgFpF8aZuUyg2ta34asrcgIWMuad++
-	OvjMflFk80YnnC48LYe8yHCtlBBtj36d96t3t7lMnRdJCzSgqLkZvmStK1xxtEhBRtuwCqiNI8b
-	XeD5fSKJoU0PMhflUb4RNaR5KyEA==
-X-Google-Smtp-Source: AGHT+IHai/HTLC5J1t9U/w+QMuGAVLtIGNxRHJG6gN9zuIEW9dmYIU9JRCKQVa7XEe+B9TjdHF1hXSwv
-X-Received: from wmbay5.prod.google.com ([2002:a05:600c:1e05:b0:43c:f8ae:4d6c])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:4025:b0:391:42f2:5c7b
- with SMTP id ffacd0b85a97d-3971d51fec1mr2815472f8f.16.1741950536845; Fri, 14
- Mar 2025 04:08:56 -0700 (PDT)
-Date: Fri, 14 Mar 2025 12:08:46 +0100
+        d=1e100.net; s=20230601; t=1741951157; x=1742555957;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mX3flr3fDjs5f9zj5ZX2lgdbN3QeZ+oPwK27uaI5w5Y=;
+        b=u/DbxS4ECcZHvM4coMNvTxECQ4dXkfHtoMMnOcZvCyei0eXSSqDVRlRJAhpM/XY78v
+         LeNduHnJEYgR3E73DUb9As9NSfvsaovHoAvDbRxVtICGM8lFk+QFr1EBAHDAvcTybBSd
+         RAUSB01JXlst44T5J5wSSm60frFS17xqCvL9XoWlcDkUgv7OfihbfQJ3yhnQXLR3nhJA
+         MS8XwhTjekBqwZvNuDeFbzVm4uMAoe9fSVAE2beZ6iEIPuP4KVzncJIAviWEtQiBU0hb
+         cfwdsVKKWztUmaSSbFoLIhbvBBEuBoxkNiM0aPfPxA0UjhFOLbr2SlxUFBuhanIgbMfN
+         jytw==
+X-Gm-Message-State: AOJu0YxGaN9LKWcIFEJhF9kOvC/pGT1XUCx7Nz40hVzyu4FM/IiCibzy
+	0QUtOi7tvNPsPxOGW80ogUHTar8/ulMb44cMd/7JWUAnbeq0fIFAaw7gDtXh3TxXlKNjIkxmpim
+	Bkn+C3FPEIxY8nzQ+m5jFa5XPUDp4v2U38lM6ObrqcCPOpKUlQCo=
+X-Gm-Gg: ASbGnctSHk4ae6gokpDCMihLPollL7m0KwP8lf2FgbaDBEzBlrqfT+UO5wCu2/XTB0C
+	dxsPasWyPBJMY9CVplyuvn6zCXKMxEdJrZGXf3roFha3aT+HJEVhpieaBopTaZyZE16/p72MhS+
+	YgbXdJGaobuuY2HvLISOdp5NQ0lOM=
+X-Google-Smtp-Source: AGHT+IFPcEANgjttSt3I8BJgliGPzqqKLdWZ6re30J5z3rYFCUhSwm9JsfuQF8KHwN14zbjDUiM2u/67TImz07aQavI=
+X-Received: by 2002:a05:6902:2e0e:b0:e63:eea7:8f95 with SMTP id
+ 3f1490d57ef6-e63f65c52edmr2266819276.38.1741951156894; Fri, 14 Mar 2025
+ 04:19:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1497; i=ardb@kernel.org;
- h=from:subject; bh=WZPdywFWv1OYfssxRiWJZFTbqtXSM9mx+P2KIwdgpEs=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIf0Kn52GTERdbaDDG9Pzd3tP7OqeX+FyfKLw5P6FzsYzD
- fflpM/pKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABPxqmVkePVJlc/cyn/+1Nmz
- OrQXPA7+uHSb3ZdqmX1Ta/9wzPza/Ivhf/4R/s9Hzjw/27nq1Q+/rm4ru768KDvnnctXtd8++jz oOy8A
-X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
-Message-ID: <20250314110845.1559302-2-ardb+git@google.com>
-Subject: [PATCH] efi/libstub: Avoid physical address 0x0 when doing random allocation
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, Ben Schneider <ben@bens.haus>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+MIME-Version: 1.0
+References: <20250314110845.1559302-2-ardb+git@google.com>
+In-Reply-To: <20250314110845.1559302-2-ardb+git@google.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Fri, 14 Mar 2025 13:18:41 +0200
+X-Gm-Features: AQ5f1JohZygpVwxxW5sM0Zk9Bi2bjdmMvVjrUt-2FI8ljsN0LwaQOM4k1_GHobY
+Message-ID: <CAC_iWjJteoXnGWvJYa4PhyNR3_ozm0M1R93=UJ0bfDnZ-f9_Cg@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub: Avoid physical address 0x0 when doing random allocation
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	Ben Schneider <ben@bens.haus>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Fri, 14 Mar 2025 at 13:08, Ard Biesheuvel <ardb+git@google.com> wrote:
+>
+> From: Ard Biesheuvel <ardb@kernel.org>
+>
+> Ben reports spurious EFI zboot failures on a system where physical RAM
+> starts at 0x0. When doing random memory allocation from the EFI stub on
+> such a platform, a random seed of 0x0 (which means no entropy source is
+> available) will result in the allocation to be placed at address 0x0 if
+> sufficient space is available.
+>
+> When this allocation is subsequently passed on to the decompression
+> code, the 0x0 address is mistaken for NULL and the code complains and
+> gives up.
+>
+> So avoid address 0x0 when doing random allocation, and set the minimum
+> address to the minimum alignment.
+>
+> Reported-by: Ben Schneider <ben@bens.haus>
+> Tested-by: Ben Schneider <ben@bens.haus>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/libstub/randomalloc.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+> index 5a732018be36..fd80b2f3233a 100644
+> --- a/drivers/firmware/efi/libstub/randomalloc.c
+> +++ b/drivers/firmware/efi/libstub/randomalloc.c
+> @@ -75,6 +75,10 @@ efi_status_t efi_random_alloc(unsigned long size,
+>         if (align < EFI_ALLOC_ALIGN)
+>                 align = EFI_ALLOC_ALIGN;
+>
+> +       /* Avoid address 0x0, as it can be mistaken for NULL */
+> +       if (alloc_min == 0)
+> +               alloc_min = align;
+> +
+>         size = round_up(size, EFI_ALLOC_ALIGN);
+>
+>         /* count the suitable slots in each memory map entry */
+> --
+> 2.49.0.rc1.451.g8f38331e32-goog
+>
 
-Ben reports spurious EFI zboot failures on a system where physical RAM
-starts at 0x0. When doing random memory allocation from the EFI stub on
-such a platform, a random seed of 0x0 (which means no entropy source is
-available) will result in the allocation to be placed at address 0x0 if
-sufficient space is available.
-
-When this allocation is subsequently passed on to the decompression
-code, the 0x0 address is mistaken for NULL and the code complains and
-gives up.
-
-So avoid address 0x0 when doing random allocation, and set the minimum
-address to the minimum alignment.
-
-Reported-by: Ben Schneider <ben@bens.haus>
-Tested-by: Ben Schneider <ben@bens.haus>
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/randomalloc.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
-index 5a732018be36..fd80b2f3233a 100644
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -75,6 +75,10 @@ efi_status_t efi_random_alloc(unsigned long size,
- 	if (align < EFI_ALLOC_ALIGN)
- 		align = EFI_ALLOC_ALIGN;
- 
-+	/* Avoid address 0x0, as it can be mistaken for NULL */
-+	if (alloc_min == 0)
-+		alloc_min = align;
-+
- 	size = round_up(size, EFI_ALLOC_ALIGN);
- 
- 	/* count the suitable slots in each memory map entry */
--- 
-2.49.0.rc1.451.g8f38331e32-goog
-
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
