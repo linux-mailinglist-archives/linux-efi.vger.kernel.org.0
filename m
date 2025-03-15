@@ -1,311 +1,320 @@
-Return-Path: <linux-efi+bounces-2987-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2988-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350A3A62A9D
-	for <lists+linux-efi@lfdr.de>; Sat, 15 Mar 2025 11:04:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC44A62C00
+	for <lists+linux-efi@lfdr.de>; Sat, 15 Mar 2025 12:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ED4D3B91C7
-	for <lists+linux-efi@lfdr.de>; Sat, 15 Mar 2025 10:04:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7A1C3BE407
+	for <lists+linux-efi@lfdr.de>; Sat, 15 Mar 2025 11:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020441F866A;
-	Sat, 15 Mar 2025 10:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC931F8726;
+	Sat, 15 Mar 2025 11:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4+BzWJx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gsy3osmO"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63C11F78F2;
-	Sat, 15 Mar 2025 10:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED08818B494
+	for <linux-efi@vger.kernel.org>; Sat, 15 Mar 2025 11:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742033072; cv=none; b=RM0uqEu1ZooCL3uJ3NaMbsTjGRYZ5ejymQHaYM5SC/7mpqQckHIJdj0DYN8YijVjl+R4hNzFj6d56dhGTaaI6KIHCc32llyfrBKpw/OfJUDZHpD+uY+vCxnjS/XZShDgOE5MXrPBZ7wwQD7+Vvm/hdTFinhdD0wuZ7Qd/DehWoY=
+	t=1742039017; cv=none; b=omzBudXXIwnZk/0qD+dOIFP1OVDcQ2ozPfc//kfH6965q4Cd2hYPjwUZ0SQ6KC76KeeymV3pdgGE9rM0qiFXrKdL1wndcydEqDSboXO4pqsvQ2MvEASzzRB3gmXsd9FX29eoF9hdomyodb8XXdyRET08qdMyTPCwQ64SIQ36ZJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742033072; c=relaxed/simple;
-	bh=sgoE4KaTkEICWPyMIldBS31ZkAE5Kpu+EwC0W3Tm230=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DfEIFzJUuTYWlaxxJS4lSHj0qPD30YybA/Wk6/uguUtCW84tWBIDEhdtOlNFV81MQRqBhKi+I803Thh+g87INFsR7L5/Ea+hMZjyHjVtXGLgfQ4yADW6+OGPaznuO/Zejwv9dq2cXX0A0N33Sy/iaWdaTrTZe8YbSRP0e7YY5UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4+BzWJx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E7CC4CEE5;
-	Sat, 15 Mar 2025 10:04:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742033072;
-	bh=sgoE4KaTkEICWPyMIldBS31ZkAE5Kpu+EwC0W3Tm230=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p4+BzWJxqNeeAZsNVkMbb9JeblSciWj7AmANIeefv3vngcXYH9oLUT8DITwjtW0lA
-	 tcrAOR4XGDWFn0OZvuVg+D99Wtt+H+oIIvBUr9Eo2pmyIEoojNczhdzxN3LY04nk9z
-	 QHW7SjdiiEgQMKhmKsH9l2tCCpHTaEdydy+im5iAwRD7qNRyI8vZ6GbMVSt/EAKpLR
-	 YfrZzDCLF1rpzkk89BDoYPLyCKthAGrPu0G6vQ6xrPHkNOKjViDNyplZOE9Dm/3uer
-	 a+GBSoy3+SxOdl9fDtMFc/WC+/Dbs9gp2SX66BNbGaNlze5fo0RjcUlk3SQq3nhruU
-	 lZpfJ3itvQpCw==
-Date: Sat, 15 Mar 2025 11:04:26 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Ryan Lee <ryan.lee@canonical.com>, Malte =?utf-8?B?U2NocsO2ZGVy?= <malte.schroeder@tnxip.de>, 
-	linux-security-module@vger.kernel.org, apparmor <apparmor@lists.ubuntu.com>, linux-efi@vger.kernel.org, 
-	John Johansen <john.johansen@canonical.com>, "jk@ozlabs.org" <jk@ozlabs.org>, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC 1/1] fix NULL mnt [was Re: apparmor NULL pointer
- dereference on resume [efivarfs]]
-Message-ID: <20250315-allemal-fahrbahn-9afc7bc0008d@brauner>
-References: <e54e6a2f-1178-4980-b771-4d9bafc2aa47@tnxip.de>
- <CAKCV-6s3_7RzDfo_yGQj9ndf4ZKw_Awf8oNc6pYKXgDTxiDfjw@mail.gmail.com>
- <465d1d23-3b36-490e-b0dd-74889d17fa4c@tnxip.de>
- <CAKCV-6uuKo=RK37GhM+fV90yV9sxBFqj0s07EPSoHwVZdDWa3A@mail.gmail.com>
- <ea97dd9d1cb33e28d6ca830b6bff0c2ece374dbe.camel@HansenPartnership.com>
- <CAMj1kXGLXbki1jezLgzDGE7VX8mNmHKQ3VLQPq=j5uAyrSomvQ@mail.gmail.com>
- <20250311-visite-rastplatz-d1fdb223dc10@brauner>
- <814a257530ad5e8107ce5f48318ab43a3ef1f783.camel@HansenPartnership.com>
- <7bdcc2c5d8022d2f1a7ec23c0351f7816d4464c8.camel@HansenPartnership.com>
+	s=arc-20240116; t=1742039017; c=relaxed/simple;
+	bh=/I/Jisz0oHr1xMJg66FjYLk7X14eL8/SaX7AnvzUwDQ=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=sWkQneTIwsI93ivTc4lYwH25HJ6nK9xshfl0VpOLA810c9mO7p2guIZwi3nV7YDBmSMhy/l8EIkYm1hO/wmI8omIB9pt5z44Z3xjGVSq7uEiyTqmbkKUqOy+ZuHoy8xS/KrUlLVAEu7fWSsmyD/6zVSkx2zAmCYHTvG/S2UPMYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gsy3osmO; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742039016; x=1773575016;
+  h=date:from:to:cc:subject:message-id;
+  bh=/I/Jisz0oHr1xMJg66FjYLk7X14eL8/SaX7AnvzUwDQ=;
+  b=gsy3osmOJvNvgy+ZzTRbYJEqQDaBAJo0K5sW3ziNnMIjr76qQjzxN1nv
+   wsXbEtxmz8I4oBgutuXWUbUIl7ejZCLJppwNrPFAqKS8oWGB/p8Gy2iL+
+   EaD56k48TLNQBgazOJvPAuUhCUDnaS0CdiubmNagvbzhUC/Vcku3u7K8c
+   qr/j4w4JRgUaEBWZrj31FPJmtk+yKA3NnOuBT0dVZak575fTj/hbCQ/va
+   j7A2ly3JupBn+y6Tk5dajYC/qCAGeyk2LiboeTHg2d7X3UCW199zf9QXe
+   dpw3DC7FidA6qjnWT+otS5yuYdD95+MPVg0T5MffluTV/LsU1eTbtNknz
+   A==;
+X-CSE-ConnectionGUID: PGyu27ItRSSTu9Ge4lItjA==
+X-CSE-MsgGUID: l99fiVy5SvOSqHkQ73eM/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11373"; a="53822260"
+X-IronPort-AV: E=Sophos;i="6.14,250,1736841600"; 
+   d="scan'208";a="53822260"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2025 04:43:35 -0700
+X-CSE-ConnectionGUID: upsa7rdlQZ20hkQIV1ZANg==
+X-CSE-MsgGUID: oa5neH06SQSGCAS1O4TzYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,250,1736841600"; 
+   d="scan'208";a="122006794"
+Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 15 Mar 2025 04:43:34 -0700
+Received: from kbuild by a4747d147074 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ttPvP-000BJX-1Q;
+	Sat, 15 Mar 2025 11:43:31 +0000
+Date: Sat, 15 Mar 2025 19:43:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ cb16dfed0093217a68c0faa9394fa5823927e04c
+Message-ID: <202503151920.U1E9prQu-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7bdcc2c5d8022d2f1a7ec23c0351f7816d4464c8.camel@HansenPartnership.com>
 
-On Fri, Mar 14, 2025 at 10:59:14AM -0400, James Bottomley wrote:
-> On Tue, 2025-03-11 at 09:01 -0400, James Bottomley wrote:
-> > On Tue, 2025-03-11 at 09:45 +0100, Christian Brauner wrote:
-> [...]
-> > > But since efivars does only ever have a single global superblock,
-> > > one possibility is to an internal superblock that always exits and
-> > > is resurfaced whenever userspace mounts efivarfs. That's
-> > > essentially the devtmpfs model.
-> > > 
-> > > Then you can stash:
-> > > 
-> > > static struct vfsmount *efivarfs_mnt;
-> > > 
-> > > globally and use that in efivarfs_pm_notify() to fill in struct
-> > > path.
-> > 
-> > I didn't see devtmpfs when looking for examples, since it's hiding
-> > outside of the fs/ directory.  However, it does seem to be a bit
-> > legacy nasty as an example to copy.  However, I get the basics: we'd
-> > instantiate the mnt and superblock on init (stashing mnt in the sfi
-> > so the notifier gets it).  Then we can do the variable population on
-> > reconfigure, just in case an EFI system doesn't want to mount
-> > efivarfs to save memory.
-> > 
-> > I can code that up if I can get an answer to the uid/gid parameter
-> > question above.
-> 
-> I coded up the naive implementation and it definitely works, but it
-> suffers from the problem that everything that pins in the module init
-> routine (like configfs) does in that once inserted the module can never
-> be removed.  Plus, for efivarfs, we would allocate all resources on
-> module insertion not on first mount.  The final problem we'd have is
-> that the uid/gid parameters for variable creation would be taken from
-> the kernel internal mount, so if they got specified on a user mount,
-> they'd be ignored (because the variable inodes are already created).
-> 
-> To answer some of your other questions:
-> 
-> > (1) Is it guaranteed that efivarfs_pm_notify() is only called once a
-> >     superblock exists?
-> 
-> Yes, as you realized.
-> 
-> > (2) Is it guaranteed that efivarfs_pm_notify() is only called when
-> >     and while a mount for the superblock exists?
-> 
-> No, but the behaviour is correct because the notifier needs to update
-> the variable list and we create the variable list in
-> efivarfs_fill_super.  Now you can argue this is suboptimal because if
-> userspace didn't ever mount, we'd simply destroy it all again on last
-> put of the superblock so it's wasted effort, but its function is
-> correct.
-> 
-> > Another question is whether the superblock can be freed while
-> > efivarfs_pm_notify() is running? I think that can't happen because
-> > blocking_notifier_chain_unregister(&efivar_ops_nh, &sfi->nb) will
-> > block in efivarfs_kill_sb() until all outstanding calls to
-> > efivarfs_pm_notify() are finished?
-> 
-> That's right: a blocking notifier is called under the notifier list
-> rwsem.  It's taken read for calls but write for register/unregister, so
-> efivarfs_kill_sb would block in the unregister until the call chain was
-> executed.
-> 
-> Taking into account the module removal issue, the simplest way I found
-> to fix the issue was to call vfs_kern_mount() from the notifier to get
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: cb16dfed0093217a68c0faa9394fa5823927e04c  efi/libstub: Avoid physical address 0x0 when doing random allocation
 
-Yeah, Al had already mentioned that. I initially had the same idea but
-since I didn't know enough about the notifier block stuff I wasn't sure
-whether there's some odd deadlock that could be caused by this.
+elapsed time: 1446m
 
-> a struct vfsmount before opening the path.  We ensure it's gone by
-> calling mntput immediately after open, but, by that time, the open file
-> is pinning the vfsmnt if the open was successful.
-> 
-> If this looks OK to everyone I'll code it up as a fix which can be cc'd
-> to stable.
-> 
-> Regards,
-> 
-> James
-> 
-> ---
-> 
-> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-> index 6eae8cf655c1..e2e6575b5abf 100644
-> --- a/fs/efivarfs/super.c
-> +++ b/fs/efivarfs/super.c
-> @@ -474,12 +474,14 @@ static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
->  	return err;
->  }
->  
-> +static struct file_system_type efivarfs_type;
-> +
->  static int efivarfs_pm_notify(struct notifier_block *nb, unsigned long action,
->  			      void *ptr)
->  {
->  	struct efivarfs_fs_info *sfi = container_of(nb, struct efivarfs_fs_info,
->  						    pm_nb);
-> -	struct path path = { .mnt = NULL, .dentry = sfi->sb->s_root, };
-> +	struct path path;
->  	struct efivarfs_ctx ectx = {
->  		.ctx = {
->  			.actor	= efivarfs_actor,
-> @@ -501,9 +503,17 @@ static int efivarfs_pm_notify(struct notifier_block *nb, unsigned long action,
->  
->  	pr_info("efivarfs: resyncing variable state\n");
->  
-> -	/* O_NOATIME is required to prevent oops on NULL mnt */
-> +	path.dentry = sfi->sb->s_root;
-> +	path.mnt = vfs_kern_mount(&efivarfs_type, SB_KERNMOUNT,
-> +				  efivarfs_type.name, NULL);
-> +	if (IS_ERR(path.mnt)) {
-> +		pr_err("efivarfs: internal mount failed\n");
-> +		return PTR_ERR(path.mnt);
-> +	}
+configs tested: 227
+configs skipped: 4
 
-I see some issues with this. A umount by another task could already hit:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-sb->kill_sb == efivarfs_kill_super()
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+alpha                               defconfig    gcc-14.2.0
+arc                              allmodconfig    clang-18
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-14.2.0
+arc                              allyesconfig    clang-18
+arc                              allyesconfig    gcc-13.2.0
+arc                                 defconfig    gcc-14.2.0
+arc                   randconfig-001-20250314    gcc-13.2.0
+arc                   randconfig-001-20250315    gcc-14.2.0
+arc                   randconfig-002-20250314    gcc-13.2.0
+arc                   randconfig-002-20250315    gcc-14.2.0
+arm                              allmodconfig    clang-18
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    gcc-14.2.0
+arm                              allyesconfig    clang-18
+arm                              allyesconfig    gcc-14.2.0
+arm                                 defconfig    gcc-14.2.0
+arm                          exynos_defconfig    clang-21
+arm                            hisi_defconfig    gcc-14.2.0
+arm                   randconfig-001-20250314    clang-21
+arm                   randconfig-001-20250315    gcc-14.2.0
+arm                   randconfig-002-20250314    gcc-14.2.0
+arm                   randconfig-002-20250315    gcc-14.2.0
+arm                   randconfig-003-20250314    gcc-14.2.0
+arm                   randconfig-003-20250315    gcc-14.2.0
+arm                   randconfig-004-20250314    gcc-14.2.0
+arm                   randconfig-004-20250315    gcc-14.2.0
+arm                        vexpress_defconfig    gcc-14.2.0
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                               defconfig    gcc-14.2.0
+arm64                 randconfig-001-20250314    gcc-14.2.0
+arm64                 randconfig-001-20250315    gcc-14.2.0
+arm64                 randconfig-002-20250314    clang-21
+arm64                 randconfig-002-20250315    gcc-14.2.0
+arm64                 randconfig-003-20250314    clang-15
+arm64                 randconfig-003-20250315    gcc-14.2.0
+arm64                 randconfig-004-20250314    clang-21
+arm64                 randconfig-004-20250315    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+csky                                defconfig    gcc-14.2.0
+csky                  randconfig-001-20250314    gcc-14.2.0
+csky                  randconfig-001-20250315    gcc-14.2.0
+csky                  randconfig-002-20250314    gcc-14.2.0
+csky                  randconfig-002-20250315    gcc-14.2.0
+hexagon                           allnoconfig    gcc-14.2.0
+hexagon                          allyesconfig    clang-18
+hexagon                             defconfig    gcc-14.2.0
+hexagon               randconfig-001-20250314    clang-21
+hexagon               randconfig-001-20250315    gcc-14.2.0
+hexagon               randconfig-002-20250314    clang-21
+hexagon               randconfig-002-20250315    gcc-14.2.0
+i386                             allmodconfig    clang-19
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    clang-19
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    clang-19
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250314    clang-19
+i386        buildonly-randconfig-001-20250315    clang-19
+i386        buildonly-randconfig-002-20250314    clang-19
+i386        buildonly-randconfig-002-20250315    clang-19
+i386        buildonly-randconfig-003-20250314    gcc-12
+i386        buildonly-randconfig-003-20250315    clang-19
+i386        buildonly-randconfig-004-20250314    gcc-12
+i386        buildonly-randconfig-004-20250315    clang-19
+i386        buildonly-randconfig-005-20250314    gcc-12
+i386        buildonly-randconfig-005-20250315    clang-19
+i386        buildonly-randconfig-006-20250314    gcc-12
+i386        buildonly-randconfig-006-20250315    clang-19
+i386                                defconfig    clang-19
+i386                  randconfig-001-20250315    clang-19
+i386                  randconfig-002-20250315    clang-19
+i386                  randconfig-003-20250315    clang-19
+i386                  randconfig-004-20250315    clang-19
+i386                  randconfig-005-20250315    clang-19
+i386                  randconfig-006-20250315    clang-19
+i386                  randconfig-007-20250315    clang-19
+i386                  randconfig-011-20250315    gcc-12
+i386                  randconfig-012-20250315    gcc-12
+i386                  randconfig-013-20250315    gcc-12
+i386                  randconfig-014-20250315    gcc-12
+i386                  randconfig-015-20250315    gcc-12
+i386                  randconfig-016-20250315    gcc-12
+i386                  randconfig-017-20250315    gcc-12
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch                           defconfig    gcc-14.2.0
+loongarch             randconfig-001-20250314    gcc-14.2.0
+loongarch             randconfig-001-20250315    gcc-14.2.0
+loongarch             randconfig-002-20250314    gcc-14.2.0
+loongarch             randconfig-002-20250315    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                                defconfig    gcc-14.2.0
+m68k                          multi_defconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+microblaze                          defconfig    gcc-14.2.0
+microblaze                      mmu_defconfig    clang-21
+mips                              allnoconfig    gcc-14.2.0
+mips                        bcm63xx_defconfig    clang-21
+mips                        qi_lb60_defconfig    clang-21
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+nios2                 randconfig-001-20250314    gcc-14.2.0
+nios2                 randconfig-001-20250315    gcc-14.2.0
+nios2                 randconfig-002-20250314    gcc-14.2.0
+nios2                 randconfig-002-20250315    gcc-14.2.0
+openrisc                          allnoconfig    clang-15
+openrisc                            defconfig    gcc-12
+parisc                            allnoconfig    clang-15
+parisc                              defconfig    gcc-12
+parisc                randconfig-001-20250314    gcc-14.2.0
+parisc                randconfig-001-20250315    gcc-14.2.0
+parisc                randconfig-002-20250314    gcc-14.2.0
+parisc                randconfig-002-20250315    gcc-14.2.0
+parisc64                            defconfig    gcc-14.2.0
+powerpc                           allnoconfig    clang-15
+powerpc                       holly_defconfig    clang-21
+powerpc                    mvme5100_defconfig    gcc-14.2.0
+powerpc               randconfig-001-20250314    clang-21
+powerpc               randconfig-001-20250315    gcc-14.2.0
+powerpc               randconfig-002-20250314    gcc-14.2.0
+powerpc               randconfig-002-20250315    gcc-14.2.0
+powerpc               randconfig-003-20250314    gcc-14.2.0
+powerpc               randconfig-003-20250315    gcc-14.2.0
+powerpc64             randconfig-001-20250314    gcc-14.2.0
+powerpc64             randconfig-001-20250315    gcc-14.2.0
+powerpc64             randconfig-002-20250314    clang-17
+powerpc64             randconfig-002-20250315    gcc-14.2.0
+powerpc64             randconfig-003-20250314    clang-21
+powerpc64             randconfig-003-20250315    gcc-14.2.0
+riscv                             allnoconfig    clang-15
+riscv                               defconfig    gcc-12
+riscv                 randconfig-001-20250314    clang-19
+riscv                 randconfig-001-20250315    gcc-14.2.0
+riscv                 randconfig-002-20250314    gcc-14.2.0
+riscv                 randconfig-002-20250315    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                             allmodconfig    gcc-14.2.0
+s390                              allnoconfig    clang-15
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    gcc-12
+s390                  randconfig-001-20250314    gcc-14.2.0
+s390                  randconfig-001-20250315    gcc-14.2.0
+s390                  randconfig-002-20250314    gcc-14.2.0
+s390                  randconfig-002-20250315    gcc-14.2.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-12
+sh                    randconfig-001-20250314    gcc-14.2.0
+sh                    randconfig-001-20250315    gcc-14.2.0
+sh                    randconfig-002-20250314    gcc-14.2.0
+sh                    randconfig-002-20250315    gcc-14.2.0
+sh                           se7619_defconfig    gcc-14.2.0
+sh                           se7724_defconfig    clang-21
+sh                   secureedge5410_defconfig    gcc-14.2.0
+sh                           sh2007_defconfig    clang-21
+sh                   sh7770_generic_defconfig    gcc-14.2.0
+sh                            shmin_defconfig    clang-21
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250314    gcc-14.2.0
+sparc                 randconfig-001-20250315    gcc-14.2.0
+sparc                 randconfig-002-20250314    gcc-14.2.0
+sparc                 randconfig-002-20250315    gcc-14.2.0
+sparc64                             defconfig    gcc-12
+sparc64               randconfig-001-20250314    gcc-14.2.0
+sparc64               randconfig-001-20250315    gcc-14.2.0
+sparc64               randconfig-002-20250314    gcc-14.2.0
+sparc64               randconfig-002-20250315    gcc-14.2.0
+um                               allmodconfig    clang-21
+um                                allnoconfig    clang-15
+um                               allyesconfig    gcc-12
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250314    gcc-12
+um                    randconfig-001-20250315    gcc-14.2.0
+um                    randconfig-002-20250314    gcc-12
+um                    randconfig-002-20250315    gcc-14.2.0
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250314    clang-19
+x86_64      buildonly-randconfig-001-20250315    clang-19
+x86_64      buildonly-randconfig-002-20250314    clang-19
+x86_64      buildonly-randconfig-002-20250315    clang-19
+x86_64      buildonly-randconfig-003-20250314    gcc-12
+x86_64      buildonly-randconfig-003-20250315    clang-19
+x86_64      buildonly-randconfig-004-20250314    clang-19
+x86_64      buildonly-randconfig-004-20250315    clang-19
+x86_64      buildonly-randconfig-005-20250314    gcc-12
+x86_64      buildonly-randconfig-005-20250315    clang-19
+x86_64      buildonly-randconfig-006-20250314    gcc-12
+x86_64      buildonly-randconfig-006-20250315    clang-19
+x86_64                              defconfig    clang-19
+x86_64                              defconfig    gcc-11
+x86_64                                  kexec    clang-19
+x86_64                randconfig-001-20250315    clang-19
+x86_64                randconfig-002-20250315    clang-19
+x86_64                randconfig-003-20250315    clang-19
+x86_64                randconfig-004-20250315    clang-19
+x86_64                randconfig-005-20250315    clang-19
+x86_64                randconfig-006-20250315    clang-19
+x86_64                randconfig-007-20250315    clang-19
+x86_64                randconfig-008-20250315    clang-19
+x86_64                randconfig-071-20250315    clang-19
+x86_64                randconfig-072-20250315    clang-19
+x86_64                randconfig-073-20250315    clang-19
+x86_64                randconfig-074-20250315    clang-19
+x86_64                randconfig-075-20250315    clang-19
+x86_64                randconfig-076-20250315    clang-19
+x86_64                randconfig-077-20250315    clang-19
+x86_64                randconfig-078-20250315    clang-19
+x86_64                               rhel-9.4    clang-19
+xtensa                           alldefconfig    gcc-14.2.0
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250314    gcc-14.2.0
+xtensa                randconfig-001-20250315    gcc-14.2.0
+xtensa                randconfig-002-20250314    gcc-14.2.0
+xtensa                randconfig-002-20250315    gcc-14.2.0
 
-which means the superblock is already marked as dying.
-
-By calling vfs_kern_mount() unconditionally you end up calling
-vfs_get_tree() and then get_tree_single() again. That would mean
-efivarfs_pm_notify() now waits for the old superblock to be dead.
-
-But the old superblock waits in efivarfs_kill_sb() for
-efivarfs_pm_notify() to finish before actually killing the old
-superblock.
-
-So this would deadlock.
-
-So you need to make sure that the superbock a) isn't dead and b) doesn't
-go away behind your back:
-
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 6eae8cf655c1..6a4f95c27697 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -474,6 +474,8 @@ static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
-        return err;
- }
-
-+static struct file_system_type efivarfs_type;
-+
- static int efivarfs_pm_notify(struct notifier_block *nb, unsigned long action,
-                              void *ptr)
- {
-@@ -499,6 +501,31 @@ static int efivarfs_pm_notify(struct notifier_block *nb, unsigned long action,
-        if (rescan_done)
-                return NOTIFY_DONE;
-
-+       /*
-+        * Ensure that efivarfs is still alive and cannot go away behind
-+        * our back.
-+        */
-+       if (!atomic_inc_not_zero(&sfi->sb->s_active))
-+               return NOTIFY_DONE;
-+
-+       path.mnt = vfs_kern_mount(&efivarfs_type, SB_KERNMOUNT,
-+                                 efivarfs_type.name, NULL);
-
-Since efivars uses a single global superblock and we know that sfi->sb
-is still alive (After all we've just pinned it above.) vfs_kern_mount()
-will reuse the same superblock.
-
-There's two cases to consider:
-
-(1) vfs_kern_mount() was successful. In this case path->mnt will hold an
-    active superblock reference that will be released asynchronously via
-    __fput(). That is safe and correct.
-
-(2) vfs_kern_mount() fails. That's an issue because you need to call
-    deactivate_super() which will have a similar deadlock problem.
-
-    If efivarfs_pm_notify() now holds the last reference to the
-    superblock then deactivate_super() super will put that last
-    reference and call efivarfs_kill_super() which in turn will wait for
-    efivarfs_pm_notify() to finish. => deadlock
-
-So in the error case you need to offload the call to deactivate_super()
-to a workqueue.
-
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 6eae8cf655c1..288c1dd8622b 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -474,6 +474,8 @@ static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
-        return err;
- }
-
-+static struct file_system_type efivarfs_type;
-+
- static int efivarfs_pm_notify(struct notifier_block *nb, unsigned long action,
-                              void *ptr)
- {
-@@ -499,6 +501,39 @@ static int efivarfs_pm_notify(struct notifier_block *nb, unsigned long action,
-        if (rescan_done)
-                return NOTIFY_DONE;
-
-+       /*
-+        * Ensure that efivarfs is still alive and cannot go away behind
-+        * our back.
-+        */
-+       if (!atomic_inc_not_zero(&sfi->sb->s_active))
-+               return NOTIFY_DONE;
-+
-+       path.mnt = vfs_kern_mount(&efivarfs_type, SB_KERNMOUNT,
-+                                 efivarfs_type.name, NULL);
-+       /*
-+        * Since efivars uses a single global superblock and we know
-+        * that sfi->sb is still alive (After all we've just pinned it
-+        * above.) vfs_kern_mount() will reuse the same superblock.
-+        *
-+        * If vfs_kern_mount() was successful path->mnt will hold an
-+        * active superblock reference that will be released
-+        * asynchronously via __fput().
-+        *
-+        * If vfs_kern_mount() fails we might be the ones to hold the
-+        * last reference now so we need to call deactivate_super(). But
-+        * we need to ensure that this is done asynchronously so
-+        * efivarfs_kill_super() doesn't deadlock by waiting on
-+        * efivarfs_pm_notify() to finish.
-+        */
-+       if (IS_ERR(path.mnt)) {
-+
-+               /* TODO: offload to workqueue so that we don't deadlock. */
-+               deactivate_super(sfi->sb);
-+               pr_err("efivarfs: internal mount failed\n");
-+               return PTR_ERR(path.mnt);
-+       }
-+       atomic_dec(&sfi->sb->s_active);
-+
-        pr_info("efivarfs: resyncing variable state\n");
-
-        /* O_NOATIME is required to prevent oops on NULL mnt */
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
