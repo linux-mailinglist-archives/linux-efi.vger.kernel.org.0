@@ -1,142 +1,131 @@
-Return-Path: <linux-efi+bounces-2995-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-2996-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B85A64661
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Mar 2025 09:57:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF53A64917
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Mar 2025 11:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 836BF7A53D1
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Mar 2025 08:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76BB188C7DB
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Mar 2025 10:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441EC221558;
-	Mon, 17 Mar 2025 08:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njcCKsv9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1650231CB1;
+	Mon, 17 Mar 2025 10:13:54 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146471B412B;
-	Mon, 17 Mar 2025 08:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24C322257F;
+	Mon, 17 Mar 2025 10:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742201822; cv=none; b=TyslbrCAm49VgrUk3tpqBBy/HmiNDUMcnThhxxzoXKg0RkhQoDffbwKaCjIkf1MQRlauwNGHeEpra55FYzLCqzm8X5HwlHPWxfACwTorw6CBZks2Q8bChuF+714PK4J7cScSkXVZTBKiblbglFkOAzLAFj4cPh8+xiL51stmkUQ=
+	t=1742206434; cv=none; b=sVqPf1uq/1G2DjJ+WAiI5W+Hha/aHzDlzUIX6W7E9doOGNPYn2gE1gZR9+gxM3HbQ1yMdHJ1uBfMJibLs/lqe4fuflvfdenKIDmltnxpeLrNrQkOc2IUfd9juQoQ5ucra3iB+nDuXiH3DBvYWwM2wQRSWamOHd/OtqMi6GJSJR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742201822; c=relaxed/simple;
-	bh=ywlphlxpwCbbPyYcOlpQM+tQkwstJ8CoKCBbl1Omctg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BDRVANsfAM+DmaTsm9jlPtGXm6csWt54a1Rqqt1PIBYBM6VCAVoMCOyZncBJbgxxdhL1hNaa43yKuqSStZz/qNiXi7c3hKTtQRR6yk7kV8NoD7oNlBgPZ4oBLIdImIBBsT49INCnj+MVdeg8pdd40t2ToWVVVc74U9oAPJnMx3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njcCKsv9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C619C4CEE3;
-	Mon, 17 Mar 2025 08:56:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742201821;
-	bh=ywlphlxpwCbbPyYcOlpQM+tQkwstJ8CoKCBbl1Omctg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=njcCKsv9iXfeuAqtf22Aoj3cXDpO82NMV6YXnb4cMRONWBaOjoS/BLaMzhGLK3984
-	 o43sWUkgw8B/ofiiaaUm85Y2LF0+YyJu+U27im+JEzUTgxY6xqeea40663LJ4Z6vIT
-	 oncktrJDsZBd6JB7bB1YQMxzgXxELEf4Xt3SbiyX1CprO33Y+14dw2KbkIxArKwnA6
-	 RzzUy5rF9z19lBw3EKvDedt2AsZtLG6eyk4UlSQSJgvEmKVzBvl42OsUVd4h+wSzyM
-	 hMmt/xy4aHOj5aINlORD20C3Ki8x3f8jhz+QCZSFX3RV7W2I+ljVTwH+LXdbzsyc/D
-	 7hQs4reau5ihQ==
-Date: Mon, 17 Mar 2025 09:56:54 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Ryan Lee <ryan.lee@canonical.com>, Malte =?utf-8?B?U2NocsO2ZGVy?= <malte.schroeder@tnxip.de>, 
-	linux-security-module@vger.kernel.org, apparmor <apparmor@lists.ubuntu.com>, linux-efi@vger.kernel.org, 
-	John Johansen <john.johansen@canonical.com>, "jk@ozlabs.org" <jk@ozlabs.org>, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC 1/1] fix NULL mnt [was Re: apparmor NULL pointer
- dereference on resume [efivarfs]]
-Message-ID: <20250317-luftdicht-mehrweg-aab410542864@brauner>
-References: <CAKCV-6uuKo=RK37GhM+fV90yV9sxBFqj0s07EPSoHwVZdDWa3A@mail.gmail.com>
- <ea97dd9d1cb33e28d6ca830b6bff0c2ece374dbe.camel@HansenPartnership.com>
- <CAMj1kXGLXbki1jezLgzDGE7VX8mNmHKQ3VLQPq=j5uAyrSomvQ@mail.gmail.com>
- <20250311-visite-rastplatz-d1fdb223dc10@brauner>
- <814a257530ad5e8107ce5f48318ab43a3ef1f783.camel@HansenPartnership.com>
- <7bdcc2c5d8022d2f1a7ec23c0351f7816d4464c8.camel@HansenPartnership.com>
- <20250315-allemal-fahrbahn-9afc7bc0008d@brauner>
- <bad92b18f389256d26a886b2b0706d04c8c6c336.camel@HansenPartnership.com>
- <20250316-vergibt-hausrat-b23d525a1d24@brauner>
- <b2086c64d47463a019ac9fc9e5d7ee7f70becc8d.camel@HansenPartnership.com>
+	s=arc-20240116; t=1742206434; c=relaxed/simple;
+	bh=/Q8Aa9fYv9wbyrx2wObs4CMSJP+hTNYqKzlwyrJhFsM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YN9l0KVFSyecyFL1B7mn2mSxeHeYsdL4XmU6fNVw+mPMuJ9yisgVUGw9yhOg2QXbOZryB/AFq8d1x0POIy9Bw6uk1TEW1L1I4GiHbKMTglIDfGL588XAaIDPqjYkUitMiqHnXCZBuDQafn3RA8RO+FH+naSqTiTUHp37qxmPyfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3E2813D5;
+	Mon, 17 Mar 2025 03:14:00 -0700 (PDT)
+Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B7D03F673;
+	Mon, 17 Mar 2025 03:13:47 -0700 (PDT)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 0/9] drivers: Transition to the faux device interface
+Date: Mon, 17 Mar 2025 10:13:12 +0000
+Message-Id: <20250317-plat2faux_dev-v1-0-5fe67c085ad5@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b2086c64d47463a019ac9fc9e5d7ee7f70becc8d.camel@HansenPartnership.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALv112cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDY0NT3YKcxBKjtMTSiviU1DJdi2QjiyRj06RUS7NEJaCegqLUtMwKsHn
+ RsbW1AJ+HYAdfAAAA
+X-Change-ID: 20250315-plat2faux_dev-8c28b35be96a
+To: linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
+ Andre Przywara <andre.przywara@arm.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-crypto@vger.kernel.org, 
+ Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ linux-rtc@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, 
+ Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+ netdev@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
+ linux-acpi@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2229; i=sudeep.holla@arm.com;
+ h=from:subject:message-id; bh=/Q8Aa9fYv9wbyrx2wObs4CMSJP+hTNYqKzlwyrJhFsM=;
+ b=owEBbQKS/ZANAwAIAQBBurwxfuKYAcsmYgBn1/XaXg/cczfp9LKToTU0Xvg1jjtICG+G14QuE
+ jF8HdVkidyJAjMEAAEIAB0WIQS6ceUSBvMeskPdk+EAQbq8MX7imAUCZ9f12gAKCRAAQbq8MX7i
+ mL+sEACUOKVk2OIBxRBYI5oleTH4ttn1o568PHz46upYDllAy68d3qhxx0E4xnIdB60mEjQBzDu
+ pZD62v90A+KDS4L4tmUprsU7NWILTGj7z8ga03muX133xHYBl3IBUvax/9o/+bum82neHCv1Pba
+ d8H+us51UfUHU9RNZlv0RBm5VVa/c8Uw1HgXOr5pKwbjSb8e3qQCqNIHDnZlch9Nieifbsr/76z
+ gG6mbYz1uW4/b7QLjmoUjKSeUxVj+2GPLep8+YRtNuA1S4RPJK5HAWWzuehomacfsXjmB58nG+q
+ RnT2Myy8yJNRXSJ2M4hQ4q0xSovkDs1Fs3BsAWVhnk34koAzgflqjj2nSvvviGN1NfHBDbkbsIn
+ ICmtLUmPDj6wh+Iuh95Z7TR2a2bxv4ZcvOdEjiSE3ePYG3mtX71NIGCtGLT/U+heYKLFl80Q288
+ NDDOuKCfChTKQnT1TO4A3iHJBUcm2GH5eQfKisbIr0fGMwWJmzfkkbw/JRUDDgsPLZf+gg4zpbg
+ YuDDMuht91nrSsN6M3frGjU78FZxQBTizKPNnlYBi9rEhb+sN0amzbmmQHOiOLtx/CWe71UQuQu
+ xZRpzua8GypLhrf83niYHYJRoY3H6cihvbNg4Yh/mS87pjun48IYIRWWPRW8PyPsuDd+Zfow2uU
+ 2BgXIq8hNqRm+cw==
+X-Developer-Key: i=sudeep.holla@arm.com; a=openpgp;
+ fpr=7360A21742ADF5A11767C1C139CFD4755FE2D5B4
 
-On Sun, Mar 16, 2025 at 10:26:12AM -0400, James Bottomley wrote:
-> On Sun, 2025-03-16 at 07:46 +0100, Christian Brauner wrote:
-> > On Sat, Mar 15, 2025 at 02:41:43PM -0400, James Bottomley wrote:
-> [...]
-> > > However, there's another problem: the mntput after kernel_file_open
-> > > may synchronously call cleanup_mnt() (and thus deactivate_super())
-> > > if the open fails because it's marked MNT_INTERNAL, which is caused
-> > > by SB_KERNMOUNT.  I fixed this just by not passing the SB_KERNMOUNT
-> > > flag, which feels a bit hacky.
-> > 
-> > It actually isn't. We know that vfs_kern_mount() will always
-> > resurface the single superblock that's exposed to userspace because
-> > we've just taken a reference to it earlier in efivarfs_pm_notify().
-> > So that SB_KERNMOUNT flag is ignored because no new superblock is
-> > allocated. It would only matter if we'd end up allocating a new
-> > superblock which we never do.
-> 
-> I agree with the above: fc->sb_flags never propagates to the existing
-> superblock.  However, nothing propagates the superblock flags back to
-> fc->sb_flags either.  The check in vfs_create_mount() is on fc-
-> >sb_flags.  Since the code is a bit hard to follow I added a printk on
-> the path.mnt flags and sure enough it comes back with MNT_INTERNAL when
-> SB_KERNMOUNT is set.
-> 
-> > And if we did it would be a bug because the superblock we allocate
-> > could be reused at any time if a userspace task mounts efivarfs
-> > before efivarfs_pm_notify() has destroyed it (or the respective
-> > workqueue). But that superblock would then have SB_KERNMOUNT for
-> > something that's not supposed to be one.
-> 
-> True, but the flags don't propagate to the superblock, so no bug.
+Recently when debugging why one of the scmi platform device was not
+showing up under /sys/devices/platform/firmware:scmi instead was
+appearing directly under /sys/devices/platform, I noticed the new
+faux interface /sys/devices/faux.
 
-SB_KERNMOUNT does propagate to the superblock if it is newly allocated
-via sget_fc(): alloc_super(fc->fs_type, fc->sb_flags, user_ns);
+Looking through the discussion and the background, I got excited and
+took the opportunity to clear all the platform devices under
+/sys/devices/platform on the Arm Juno/FVP platforms that are really
+faux devices. Only the platform devices created for the device nodes
+from the DT remain under /sys/devices/platform after these changes.
 
-But you misunderstood. "If we did it" means "If efivarfs_pm_notify()
-somehow were to allocate a new superblock (which it doesn't) then having
-SB_KERNMOUNT raised on the newly allocated superblock would be bug
-because the superblock could be reused by userspace mounting efivars.
+All the patches are independent of each other.
 
-So removing it is the correct thing in either case. It's just confusing
-to anyone maintaining that code thinking that it'd be possible for a
-superblock to resurface with SB_KERNMOUNT.
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+Greg Kroah-Hartman (1):
+      regulator: dummy: convert to use the faux device interface
 
-> 
-> > And whether or not that helper mount has MNT_INTERNAL is immaterial
-> > to what you're doing here afaict.
-> 
-> I think the problem is the call chain mntput() -> mntput_no_expire()
-> which directly calls cleanup_mnt() -> deactivate_super() if that flag
-> is set.  Though I don't see that kernel_file_open() could ever fail
-> except for some catastrophic reason like out of memory, so perhaps it
-> isn't worth quibbling about.
+Sudeep Holla (8):
+      cpuidle: psci: Transition to the faux device interface
+      hwrng: arm-smccc-trng - transition to the faux device interface
+      efi: Remove redundant creation of the "efivars" platform device
+      rtc: efi: Transition to the faux device interface
+      virt: efi_secret: Transition to the faux device interface
+      ASoC: soc-utils: Transition to the faux device interface
+      net: phy: fixed_phy: transition to the faux device interface
+      ACPI: APEI: EINJ: Transition to the faux device interface
 
-Not what I'm saying. Not having MNT_INTERNAL is paramount to not
-deadlocking but by not having it you're not losing anything.
+ drivers/acpi/apei/einj-core.c             | 32 +++++++++---------------
+ drivers/char/hw_random/arm_smccc_trng.c   | 40 +++++++++++++++++++++---------
+ drivers/cpuidle/cpuidle-psci.c            | 26 +++++++-------------
+ drivers/firmware/efi/efi.c                | 10 --------
+ drivers/firmware/smccc/smccc.c            | 21 ----------------
+ drivers/net/phy/fixed_phy.c               | 16 ++++++------
+ drivers/regulator/dummy.c                 | 37 +++++++---------------------
+ drivers/rtc/rtc-efi.c                     | 31 ++++++++++++++++-------
+ drivers/virt/coco/efi_secret/efi_secret.c | 41 ++++++++++++++++++-------------
+ sound/soc/soc-utils.c                     | 34 +++++++++----------------
+ 10 files changed, 124 insertions(+), 164 deletions(-)
+---
+base-commit: 80e54e84911a923c40d7bee33a34c1b4be148d7a
+change-id: 20250315-plat2faux_dev-8c28b35be96a
+-- 
+Regards,
+Sudeep
 
-> 
-> > So not passing the SB_KERNMOUNT flag is the right thing (see devtmpfs
-> > as well). You could slap a comment in here explaining that we never
-> > allocate a new superblock so it's clear to people not familiar with
-> > this particular code.
-> 
-> OK, so you agree that the code as written looks correct? Even if we
-> don't necessarily quite agree on why.
-
-We agree but you just misunderstood. :)
 
