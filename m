@@ -1,145 +1,103 @@
-Return-Path: <linux-efi+bounces-3008-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3009-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 168CCA6551C
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Mar 2025 16:09:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE4BA6599B
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Mar 2025 18:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061EB16A168
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Mar 2025 15:09:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 636E47AAAE2
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Mar 2025 17:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD43721CC5C;
-	Mon, 17 Mar 2025 15:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C9B186E2D;
+	Mon, 17 Mar 2025 17:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZkHujuMV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XVytgnHJ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AB9221568
-	for <linux-efi@vger.kernel.org>; Mon, 17 Mar 2025 15:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989A818787A;
+	Mon, 17 Mar 2025 17:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742224149; cv=none; b=ZT+yAbOSeZD9dBsB92ZpHOpIIsfOwhvEOOftuwWJiMuOY7SqcjbZpeQ3KZEn/KyvrtSMDm24vEpi0XoJv1hxVz8WZmbbKvN+3wbnrRTEvPRHj4dbzwCxWsZQ0NKzdYw2asdmr5ILg+yDuuFWSrAwJ3MfZUgySm2dSXoxSrDiO/E=
+	t=1742231197; cv=none; b=Zz+3x4Qx2GE/l17xc7fORExj7qb0jdSM5iePIAIojgrEs83K7ygXXUIM7CxoHHBqXA0PZfQVnMIy8xK//CArNRAYg9ttRABM2RaD8s23MSYvMgNMJWGpf5ft501VNnBcnbJ6m+7AKP9rKh64iydSCIzjNXI6d3HpuxplCgDkKls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742224149; c=relaxed/simple;
-	bh=Ck8xWHa15YjzQmKK9w2kTGM38RzjSZWr/Mo19kvV+ls=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Xss7gqhX5hFWVLTfKbQ5hGGpu4KOdyetFW8AmQklzyTYBtAhanPv1U95OOiS7DmSvKuEI1lgbbWY/IYiANvD3+IRxllcl4zCRg59osUPnSTnKhD6cYIIe+h1LDkL7ypt5Hn9Ki9S1L8oOTl/wcBSFxIWqu2p4nZ1AGw1ba5xP6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZkHujuMV; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742224148; x=1773760148;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Ck8xWHa15YjzQmKK9w2kTGM38RzjSZWr/Mo19kvV+ls=;
-  b=ZkHujuMV+3hLArrahyMbcmHC+mq2cTs7vTp55Ey5ko6SEP0MdhRqCnCZ
-   xmAmY1MW3DNlV2XoDbqs07mUpMpazLGvB6TM7kDVWnXok/jWj2TIf25oH
-   CxRpVXds4rn08m5biGsauHjyyHS/J3Ey4cSA3g7in7ZZ6joRR6yY6ouYQ
-   tS4oqm3+pYHC9qNQ4kVPpme86I2F2gzDlW7ljSljNXQ3BOYrzTTkXZLLN
-   KjoVygNonO2PJTNvlZrk7usg9OeJurBV3JZOeb7C8Q+tr3vqAuGlaLWxK
-   NStBiABVMmyQbVfUSc13OHE0BARNErnQg68UPm7L2UHv3JbS51bpX2dO0
-   w==;
-X-CSE-ConnectionGUID: Mw0a9BTDQG+Cy+wxbNLCpw==
-X-CSE-MsgGUID: So0q5IFBTzKYY0VXwHZ5ZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="65787220"
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; 
-   d="scan'208";a="65787220"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 08:09:07 -0700
-X-CSE-ConnectionGUID: uzFlDnwOS2ChbyHkv7ABoQ==
-X-CSE-MsgGUID: LSoRpkSHQ+eU7Coj602z8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; 
-   d="scan'208";a="121689790"
-Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 17 Mar 2025 08:09:07 -0700
-Received: from kbuild by a4747d147074 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tuC5K-000Crv-1S;
-	Mon, 17 Mar 2025 15:08:59 +0000
-Date: Mon, 17 Mar 2025 23:08:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-efi@vger.kernel.org
-Subject: [efi:urgent 10/10] fs/efivarfs/super.c:424:34: error: 'INODE_CHILD'
- undeclared; did you mean 'I_MUTEX_CHILD'?
-Message-ID: <202503172331.vqCmniUS-lkp@intel.com>
+	s=arc-20240116; t=1742231197; c=relaxed/simple;
+	bh=sLNQSbl0TkH6y7EASnxzkx+y3wCavvX+Q9NF5vgcOtc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OMXADPqVcnzwcEIrqaWsrrdbXPdyRAQ9JbW5T7S0doV4AeBbp531eB4PreAOG3EDP70tJq4amDfjhz8f0thZwKzJHkg70NAV9DgzGyz20Wo6tYokYz1Zi0nWOFUt6tZVsToTjN/5HezFbaHS1WEwEK8Kc6dM4fFzY3m8WAFGOLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XVytgnHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F16EC4CEE3;
+	Mon, 17 Mar 2025 17:06:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742231197;
+	bh=sLNQSbl0TkH6y7EASnxzkx+y3wCavvX+Q9NF5vgcOtc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XVytgnHJORt5fBrvWySWYVLEU6Zbr7JCakRxx2Y/FOTn6+6Tjbu28xk4zKRv45OED
+	 hX5H5kReNUxOiy/9FWhW++4iugJVyt+RtkGY08oxELcUxm4QS7gVP1Er7dXJfzDrlV
+	 Z1sJLCSWFbdBFlrtlcOoroCzA2ouDg0p6bNV72PsyRHl47FPeo8ytwBehQDO6EdJsb
+	 DZ0AFSlY7h0yiEsG7SW3JmIBmSAovDUlwFS1N6UlJuqtQDNGHB5RR52s5MLRyNdNvY
+	 UZNjEsw2DjkozbRLzZL8EbcCBlaGygXQswwcZsOSirIdn8n0SonQo/BHn15yJcGl7U
+	 LBQPqhmpOMJoA==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30761be8fcfso51555111fa.0;
+        Mon, 17 Mar 2025 10:06:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXy0HcjL/t+h83ngx7NoRX9b8qABor0xTb1NPDamQ5vrOW/+XLAqdI+5tCiPQq3QjttLx2R+9wezfo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzssbbCyxgsroIuos7sIpOJqHU+k+Uh8i8CkPNpPKpFooDnwGZg
+	pChZTxnNQ2nPdMqV7CQFeva8JdL32futqE59jxcMtQq9mvqW9H+W7x1TibFiRfKj2QH8cE1d4J2
+	Uv8cj8d2bblgoabMNraiPSqK5iqA=
+X-Google-Smtp-Source: AGHT+IERF0n+pA9W18Wvlnp1Z9YqN77YTorPRreSKdvnYxg3VYGHd79F7+XYUdVbAxG3VnwS7ZocmUrzwEzxW2UnY74=
+X-Received: by 2002:a05:6512:3091:b0:545:6cf:6f3e with SMTP id
+ 2adb3069b0e04-549c3989ac9mr8420296e87.49.1742231195393; Mon, 17 Mar 2025
+ 10:06:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250317-plat2faux_dev-v1-0-5fe67c085ad5@arm.com> <20250317-plat2faux_dev-v1-3-5fe67c085ad5@arm.com>
+In-Reply-To: <20250317-plat2faux_dev-v1-3-5fe67c085ad5@arm.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 17 Mar 2025 18:06:24 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEejZr2RCUJ59HfLwxQ1zFnWqj7vJ_ObrPTztE5s2UUcQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jqf1O8iSYFfzLZH3qq1LKMRuI87oQw6DruwoLkOlzXICX9hN0zaV-Yd_gk
+Message-ID: <CAMj1kXEejZr2RCUJ59HfLwxQ1zFnWqj7vJ_ObrPTztE5s2UUcQ@mail.gmail.com>
+Subject: Re: [PATCH 3/9] efi: Remove redundant creation of the "efivars"
+ platform device
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: linux-kernel@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-head:   2379221e8c43a4be62811f4d8a71cfffc23df5b0
-commit: 2379221e8c43a4be62811f4d8a71cfffc23df5b0 [10/10] efivarfs: use INODE_CHILD nested lock to traverse variables on resume
-config: riscv-randconfig-001-20250317 (https://download.01.org/0day-ci/archive/20250317/202503172331.vqCmniUS-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250317/202503172331.vqCmniUS-lkp@intel.com/reproduce)
+On Mon, 17 Mar 2025 at 11:13, Sudeep Holla <sudeep.holla@arm.com> wrote:
+>
+> The "efivars" platform device is created but never tracked or used,
+> as there is no driver associated with it. Since this device serves
+> no functional purpose, removing its creation without affecting any
+> functionality.
+>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: linux-efi@vger.kernel.org
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> ---
+>  drivers/firmware/efi/efi.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 7309394b8fc98cf7a3424af209b752f0251c8c89..eec173cb1f398d3b4f28b42c917e50e1728dc277 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -446,7 +446,6 @@ static int __init efisubsys_init(void)
+>                 error = efivar_ssdt_load();
+>                 if (error)
+>                         pr_err("efi: failed to load SSDT, error %d.\n", error);
+> -               platform_device_register_simple("efivars", 0, NULL, 0);
+>         }
+>
+>         BLOCKING_INIT_NOTIFIER_HEAD(&efivar_ops_nh);
+>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503172331.vqCmniUS-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   fs/efivarfs/super.c: In function 'efivarfs_actor':
->> fs/efivarfs/super.c:424:34: error: 'INODE_CHILD' undeclared (first use in this function); did you mean 'I_MUTEX_CHILD'?
-     424 |         inode_lock_nested(inode, INODE_CHILD);
-         |                                  ^~~~~~~~~~~
-         |                                  I_MUTEX_CHILD
-   fs/efivarfs/super.c:424:34: note: each undeclared identifier is reported only once for each function it appears in
-
-
-vim +424 fs/efivarfs/super.c
-
-   401	
-   402	static bool efivarfs_actor(struct dir_context *ctx, const char *name, int len,
-   403				   loff_t offset, u64 ino, unsigned mode)
-   404	{
-   405		unsigned long size;
-   406		struct efivarfs_ctx *ectx = container_of(ctx, struct efivarfs_ctx, ctx);
-   407		struct qstr qstr = { .name = name, .len = len };
-   408		struct dentry *dentry = d_hash_and_lookup(ectx->sb->s_root, &qstr);
-   409		struct inode *inode;
-   410		struct efivar_entry *entry;
-   411		int err;
-   412	
-   413		if (IS_ERR_OR_NULL(dentry))
-   414			return true;
-   415	
-   416		inode = d_inode(dentry);
-   417		entry = efivar_entry(inode);
-   418	
-   419		err = efivar_entry_size(entry, &size);
-   420		size += sizeof(__u32);	/* attributes */
-   421		if (err)
-   422			size = 0;
-   423	
- > 424		inode_lock_nested(inode, INODE_CHILD);
-   425		i_size_write(inode, size);
-   426		inode_unlock(inode);
-   427	
-   428		if (!size) {
-   429			ectx->dentry = dentry;
-   430			return false;
-   431		}
-   432	
-   433		dput(dentry);
-   434	
-   435		return true;
-   436	}
-   437	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+IIRC the efi-pstore module autoloads based on this platform device
 
