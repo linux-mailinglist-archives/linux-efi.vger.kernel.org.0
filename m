@@ -1,139 +1,286 @@
-Return-Path: <linux-efi+bounces-3017-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3018-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A0AA673A0
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Mar 2025 13:16:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B48A67506
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Mar 2025 14:26:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96C13175BF3
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Mar 2025 12:15:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB53719A2E8A
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Mar 2025 13:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6D518A959;
-	Tue, 18 Mar 2025 12:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1B61E5209;
+	Tue, 18 Mar 2025 13:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="mBu/48BE"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PM3uKoNZ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F7E1E515;
-	Tue, 18 Mar 2025 12:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA768148827
+	for <linux-efi@vger.kernel.org>; Tue, 18 Mar 2025 13:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742300152; cv=none; b=Kl0hh4+hK6VYKmY4uxRBi687LUG1T2OVULFXNpR7vdNtfUmDrSC830I1/plinNGm3dTzK7W1yKdCtSxTEyPdEJpG84C1fWXa3Bfkr02eLdsydViIInax+l64PmR8Jib4zQZ6O6rxfrn8eSdnRbK3QMJryn1OTP7raNNjZShunnU=
+	t=1742304273; cv=none; b=FOh5M3ose5GFEvxNBrxDWF8QAZpiSdXXXKhXj2dubBZcFtX84KjPy8IL8h3end0OY2IMUp1ENRmUH2tjpL18OuKCf0GlbkqF/ZijYe85flEw8x+YrQneINilvrbrdn6ckX7TSunNNfRys18x/FdrMT/FPaBNAP9TWEpG/bgIFZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742300152; c=relaxed/simple;
-	bh=dO9RRJuIlZunI4HttBHgSRVwqzOP/4OZ/LJ+N2ZudwE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pJnKvCAX1bLNltsog1kZcw2+WI9ijG4/Z/pSsYnHiy6rMDjj+IXjt0AXtfA8E+tEVvfnLw0SddBi6fqy2K5IMJlGdR8R3BmQTpquPMDMM1iTzHHIYfA5AfEQUKLWf8A0cav/FthUML5vOnx2gHnxTYuJsPHNOn/XODrkgYWxDJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=mBu/48BE; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1742300144;
-	bh=dO9RRJuIlZunI4HttBHgSRVwqzOP/4OZ/LJ+N2ZudwE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=mBu/48BETtHKpWM/Gxc+Zl4IWiKs24dKO94e2jCKSYZ/iZVf7DRZAP2dhKMeyCNMW
-	 0Shk95zASr9cTiYh6rFiBr4p4RklPsazOM6E6UFRuqJEyErBXx8sz6/wda8028kmcE
-	 Z6eST6vMzAkBCaEi+dN9IYDBTbWdWfFR0j564RnI=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 7DDA81C0160;
-	Tue, 18 Mar 2025 08:15:44 -0400 (EDT)
-Message-ID: <45fd31662f2c99788a0d1cf7b75d4fd265550c27.camel@HansenPartnership.com>
-Subject: Re: [PATCH] efivarfs: fix NULL dereference on resume
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Al Viro <viro@zeniv.linux.org.uk>, Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org, Ryan Lee
-	 <ryan.lee@canonical.com>, Malte =?ISO-8859-1?Q?Schr=F6der?=
-	 <malte.schroeder@tnxip.de>, Christian Brauner <brauner@kernel.org>
-Date: Tue, 18 Mar 2025 08:15:43 -0400
-In-Reply-To: <20250318074922.GX2023217@ZenIV>
-References: 
-	<3e998bf87638a442cbc6864cdcd3d8d9e08ce3e3.camel@HansenPartnership.com>
-	 <20250318033738.GV2023217@ZenIV>
-	 <CAMj1kXHOqzvpUOMTpfQfny10B7M3WnwPYdm1jVX7saP4cy2F=A@mail.gmail.com>
-	 <20250318074922.GX2023217@ZenIV>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1742304273; c=relaxed/simple;
+	bh=AUg642Y2fRNp9T9XGQIDMCFm8FgF6ru/Gkj3tqLjGlo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nV2+Ed7R3fRQax5k2Bsv3qFWPIskhqmEmHcxMP3lz0tou+9u3tNc5JrwNJLW4h1hft7TH6P4dWIqd34IJl5/Pa1Re5OSx5ztvobiAYB4ywSo6AX7Qc6beVedcry9cHe+11CHtoUTQxWEiwem0U0TCjvHOnu89GFf244Dz1S/roY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PM3uKoNZ; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-438e4e9a53fso20900655e9.1
+        for <linux-efi@vger.kernel.org>; Tue, 18 Mar 2025 06:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742304270; x=1742909070; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DEgzWr2E2NAy7FDuPhBSzhgvxiM8c4iYHbXwNyOFveY=;
+        b=PM3uKoNZb6CeILCc2/osxWGdLCXF2w+h/YJL8OuZZQHWcJ4GMBgtgkP5O06JeqJ1Sc
+         RIi6Alu8AjwHYVreFOMKIPG/RmMrRhn9FckzDkz6B7gFibsQzws1Hf1z+4E45tvtAMzZ
+         cFUyDIwJICiRJmgumXQ9QlnaM0fmPlHyo7JyH/Q2t83WLt0oatqMlNITxJVFWu/Kxvlt
+         ZTGe2ZPvZfGser3Q26PLIpF7eMgyv4z3HLpfF6mULa4yWTpiImDqBCMtNvGEUJgdFles
+         LGSDX+G4HyRzP2XLDvmr1M9A8gAIlEx4skmTecU+32+CD7jUNnaeeUeXqO2QD3Uj7atO
+         7UVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742304270; x=1742909070;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DEgzWr2E2NAy7FDuPhBSzhgvxiM8c4iYHbXwNyOFveY=;
+        b=AFORkdgBkTPFUcaMXhmKT1C0MR7EATHbtlXq8oXPtnR8+Qfy4x7Y/bDbgWozLsa0s2
+         hDlTOrq5C0MKvkHW0i0ecnLOlHIB4r10C4DKPIhlO0QslEHzS2k6xjmgGBOIOB2ntA8I
+         o1kAM2AspxBvfzzXWhPPePBVQwVl5RffAqc6CBXVE5MSgTjadZumVWaYBK3GIn0q43h0
+         Odc5V5s54WySk9SZqP4iGsgTlCWVMkvLgqEV9+TiWMyzvYG18rkvXXERSm3ErCt1H6dS
+         pfTnIN+ce2zR2j8tggwlHPioxifB8xVH7kc7Co3Fq+/KGbaCY/Xo9LsuTQeiz8B8T4xg
+         CFZg==
+X-Gm-Message-State: AOJu0Yx5G/rngo7riCDsFBt4WdDJLgJPDSd3yBT3Bcx1MSpGzUKJrgLu
+	l2/xbg+WMgAEcStm2Md6O9pGNbNikWkb6W5bB5ndoPaH51FzJ9oRRkwpsmh6looybz8b1A==
+X-Google-Smtp-Source: AGHT+IG88/y2gUxFHhZYjd0nXNVh9L0hGC3+X2VVnSItfQsqi/IKCNxpAkyqMZIO+vJlAmNrXHgC/TLn
+X-Received: from wmbes18.prod.google.com ([2002:a05:600c:8112:b0:43b:c7e5:66e0])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3ca6:b0:43c:f8fc:f6a6
+ with SMTP id 5b1f17b1804b1-43d3b9865c2mr25721555e9.9.1742304270191; Tue, 18
+ Mar 2025 06:24:30 -0700 (PDT)
+Date: Tue, 18 Mar 2025 14:24:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6366; i=ardb@kernel.org;
+ h=from:subject; bh=hrpsKvpCDfcxtB4oZkUT6QqF+MEdOioUp4OeO1ExQqs=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIf1mCZvJcoufl57vnFTjEG+c+XVH492zdVylekv8Oxnsj
+ Rx+dB3vKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABPhu8zIsH/SoVfT3F+KmDBP
+ 3plybImVemfvRMYWbU6P55v4v6ruD2VkOKrd4HbzkWuKRYThDtNN13xLN64OMQ5Ot/LKXLLQxmw xMwA=
+X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
+Message-ID: <20250318132421.3155799-2-ardb+git@google.com>
+Subject: [PATCH] arm64/fpsimd: Avoid unnecessary per-CPU buffers for EFI
+ runtime calls
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: linux-efi@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org, 
+	mark.rutland@arm.com, broonie@kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 2025-03-18 at 07:49 +0000, Al Viro wrote:
-> On Tue, Mar 18, 2025 at 08:04:59AM +0100, Ard Biesheuvel wrote:
->=20
-> > the latter is only needed when it is mounted to begin with, and as
-> > a VFS non-expert, I struggle to understand why it is a) ok and b)
-> > preferred to create a new mount to pass to kernel_file_open().
-> > Could we add a paragraph to the commit log that explains this?
->=20
-> I'm not at all convinced that iterate_dir() is the right thing to use
-> there, but *IF* we go that way, yes, we need a reference to struct
-> mount.=C2=A0 We are not going to introduce a very special kind of struct
-> file, along with the arseloads of checking for that crap all over the
-> place - not for the sake of one weird case in one weird filesystem.
->=20
-> file->f_path is a valid struct path, which means that ->mnt->mnt_sb
-> =3D=3D ->dentry->d_sb and refcount of ->mnt is positive as long as struct
-> file exists.
->=20
-> Keeping a persistent internal struct mount is, of course, possible,
-> but it will make the damn thing impossible to rmmod, etc. - it will
-> remain in place until the reboot.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Right, that's the configfs problem and we do want the module to be
-removable (and not occupying memory) when it's not mounted in
-userspace.
+The EFI specification has some elaborate rules about which runtime
+services may be called while another runtime service call is already in
+progress. In Linux, however, for simplicity, all EFI runtime service
+invocations are serialized via the efi_runtime_lock semaphore.
 
-> It might be possible to put together something like "grab a reference
-> to superblock and allocate a temporary struct mount refering to it"
-> (which is what that vfs_kern_mount() boils down to).=C2=A0 But I would
-> very much prefer to have it go over the list of children of ->s_root
-> manually, instead of playing silly buggers with iterate_dir().
+This implies that calls to the helper pair arch_efi_call_virt_setup()
+and arch_efi_call_virt_teardown() are serialized too, and are guaranteed
+not to nest.  Furthermore, the arm64 arch code has its own spinlock to
+serialize use of the EFI runtime stack, of which only a single instance
+exists.
 
-I did think of that ... how hard, after all can it be just to traverse
-all the single level children (we never do subdirectories in efivarfs).
-However, doing that seemed to involve replicating the whole of
-libfs.c:dcache_readdir() and scan_positives() plus the cursor
-allocation it uses is currently marked as an internal interface.  If
-there's a simpler way of doing it, I'm all ears, but the code in
-libfs.c is subtle and complex and should probably stay there.
+This all means that the FP/SIMD and SVE state preserve/restore logic in
+__efi_fpsimd_begin() and __efi_fpsimd_end() are also serialized, and
+only a single instance of the associated per-CPU variables can ever be
+in use at the same time. There is therefore no need at all for per-CPU
+variables here, and they can all be replaced with singleton instances.
+This saves a non-trivial amount of memory on systems with many CPUs.
 
-So I think the only route to this would be to extract most of the guts
-of dcache_readdir() into a helper function that takes a callback where
-it currently does dir_emit() and expose that for filesystem use.  Is
-that a route you'd like me to investigate?
+To be more robust against potential future changes in the core EFI code
+that may invalidate the reasoning above, move the invocations of
+__efi_fpsimd_begin() and __efi_fpsimd_end() into the critical section
+covered by the efi_rt_lock spinlock.
 
-> And yes, it would require exclusion with dissolving dentry tree on
-> umount, for obvious reasons.=C2=A0 Which might be done with ->s_active
-> or simply by unregistering that notifier chain as the very first step
-> in ->kill_sb() there.
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/arm64/kernel/efi.c    |  4 +--
+ arch/arm64/kernel/fpsimd.c | 54 ++++++++++++++++++--------------------
+ 2 files changed, 27 insertions(+), 31 deletions(-)
 
-I can move it above kill_litter_super(), sure.  However, the check on
-s_active at the top of efivarfs_pm_notify() should ensure nothing
-dissolves the tree until we're finished.
-
-Regards,
-
-James
+diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+index 1d25d8899dbf..250e9d7c08a7 100644
+--- a/arch/arm64/kernel/efi.c
++++ b/arch/arm64/kernel/efi.c
+@@ -169,14 +169,14 @@ static DEFINE_RAW_SPINLOCK(efi_rt_lock);
+ void arch_efi_call_virt_setup(void)
+ {
+ 	efi_virtmap_load();
+-	__efi_fpsimd_begin();
+ 	raw_spin_lock(&efi_rt_lock);
++	__efi_fpsimd_begin();
+ }
+ 
+ void arch_efi_call_virt_teardown(void)
+ {
+-	raw_spin_unlock(&efi_rt_lock);
+ 	__efi_fpsimd_end();
++	raw_spin_unlock(&efi_rt_lock);
+ 	efi_virtmap_unload();
+ }
+ 
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 2b601d88762d..788cc3ad6101 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -180,12 +180,12 @@ static inline void set_sve_default_vl(int val)
+ 	set_default_vl(ARM64_VEC_SVE, val);
+ }
+ 
+-static void __percpu *efi_sve_state;
++static u8 *efi_sve_state;
+ 
+ #else /* ! CONFIG_ARM64_SVE */
+ 
+ /* Dummy declaration for code that will be optimised out: */
+-extern void __percpu *efi_sve_state;
++extern u8 *efi_sve_state;
+ 
+ #endif /* ! CONFIG_ARM64_SVE */
+ 
+@@ -1131,15 +1131,15 @@ static void __init sve_efi_setup(void)
+ 	if (!sve_vl_valid(max_vl))
+ 		goto fail;
+ 
+-	efi_sve_state = __alloc_percpu(
+-		SVE_SIG_REGS_SIZE(sve_vq_from_vl(max_vl)), SVE_VQ_BYTES);
++	efi_sve_state = kmalloc(SVE_SIG_REGS_SIZE(sve_vq_from_vl(max_vl)),
++				GFP_KERNEL);
+ 	if (!efi_sve_state)
+ 		goto fail;
+ 
+ 	return;
+ 
+ fail:
+-	panic("Cannot allocate percpu memory for EFI SVE save/restore");
++	panic("Cannot allocate memory for EFI SVE save/restore");
+ }
+ 
+ void cpu_enable_sve(const struct arm64_cpu_capabilities *__always_unused p)
+@@ -1973,10 +1973,10 @@ EXPORT_SYMBOL_GPL(kernel_neon_end);
+ 
+ #ifdef CONFIG_EFI
+ 
+-static DEFINE_PER_CPU(struct user_fpsimd_state, efi_fpsimd_state);
+-static DEFINE_PER_CPU(bool, efi_fpsimd_state_used);
+-static DEFINE_PER_CPU(bool, efi_sve_state_used);
+-static DEFINE_PER_CPU(bool, efi_sm_state);
++static struct user_fpsimd_state efi_fpsimd_state;
++static bool efi_fpsimd_state_used;
++static bool efi_sve_state_used;
++static bool efi_sm_state;
+ 
+ /*
+  * EFI runtime services support functions
+@@ -2009,18 +2009,16 @@ void __efi_fpsimd_begin(void)
+ 		 * If !efi_sve_state, SVE can't be in use yet and doesn't need
+ 		 * preserving:
+ 		 */
+-		if (system_supports_sve() && likely(efi_sve_state)) {
+-			char *sve_state = this_cpu_ptr(efi_sve_state);
++		if (system_supports_sve() && efi_sve_state != NULL) {
+ 			bool ffr = true;
+ 			u64 svcr;
+ 
+-			__this_cpu_write(efi_sve_state_used, true);
++			efi_sve_state_used = true;
+ 
+ 			if (system_supports_sme()) {
+ 				svcr = read_sysreg_s(SYS_SVCR);
+ 
+-				__this_cpu_write(efi_sm_state,
+-						 svcr & SVCR_SM_MASK);
++				efi_sm_state = svcr & SVCR_SM_MASK;
+ 
+ 				/*
+ 				 * Unless we have FA64 FFR does not
+@@ -2030,19 +2028,18 @@ void __efi_fpsimd_begin(void)
+ 					ffr = !(svcr & SVCR_SM_MASK);
+ 			}
+ 
+-			sve_save_state(sve_state + sve_ffr_offset(sve_max_vl()),
+-				       &this_cpu_ptr(&efi_fpsimd_state)->fpsr,
+-				       ffr);
++			sve_save_state(efi_sve_state + sve_ffr_offset(sve_max_vl()),
++				       &efi_fpsimd_state.fpsr, ffr);
+ 
+ 			if (system_supports_sme())
+ 				sysreg_clear_set_s(SYS_SVCR,
+ 						   SVCR_SM_MASK, 0);
+ 
+ 		} else {
+-			fpsimd_save_state(this_cpu_ptr(&efi_fpsimd_state));
++			fpsimd_save_state(&efi_fpsimd_state);
+ 		}
+ 
+-		__this_cpu_write(efi_fpsimd_state_used, true);
++		efi_fpsimd_state_used = true;
+ 	}
+ }
+ 
+@@ -2054,12 +2051,10 @@ void __efi_fpsimd_end(void)
+ 	if (!system_supports_fpsimd())
+ 		return;
+ 
+-	if (!__this_cpu_xchg(efi_fpsimd_state_used, false)) {
++	if (!efi_fpsimd_state_used) {
+ 		kernel_neon_end();
+ 	} else {
+-		if (system_supports_sve() &&
+-		    likely(__this_cpu_read(efi_sve_state_used))) {
+-			char const *sve_state = this_cpu_ptr(efi_sve_state);
++		if (system_supports_sve() && efi_sve_state_used) {
+ 			bool ffr = true;
+ 
+ 			/*
+@@ -2068,7 +2063,7 @@ void __efi_fpsimd_end(void)
+ 			 * streaming mode.
+ 			 */
+ 			if (system_supports_sme()) {
+-				if (__this_cpu_read(efi_sm_state)) {
++				if (efi_sm_state) {
+ 					sysreg_clear_set_s(SYS_SVCR,
+ 							   0,
+ 							   SVCR_SM_MASK);
+@@ -2082,14 +2077,15 @@ void __efi_fpsimd_end(void)
+ 				}
+ 			}
+ 
+-			sve_load_state(sve_state + sve_ffr_offset(sve_max_vl()),
+-				       &this_cpu_ptr(&efi_fpsimd_state)->fpsr,
+-				       ffr);
++			sve_load_state(efi_sve_state + sve_ffr_offset(sve_max_vl()),
++				       &efi_fpsimd_state.fpsr, ffr);
+ 
+-			__this_cpu_write(efi_sve_state_used, false);
++			efi_sve_state_used = false;
+ 		} else {
+-			fpsimd_load_state(this_cpu_ptr(&efi_fpsimd_state));
++			fpsimd_load_state(&efi_fpsimd_state);
+ 		}
++
++		efi_fpsimd_state_used = false;
+ 	}
+ }
+ 
+-- 
+2.49.0.rc1.451.g8f38331e32-goog
 
 
