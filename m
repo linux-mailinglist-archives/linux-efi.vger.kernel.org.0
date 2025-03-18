@@ -1,50 +1,50 @@
-Return-Path: <linux-efi+bounces-3036-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3037-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBEC2A680DC
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Mar 2025 00:45:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4024A680E4
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Mar 2025 00:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB60D3BD668
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Mar 2025 23:45:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1332B1898A8B
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Mar 2025 23:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89894207A07;
-	Tue, 18 Mar 2025 23:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D7C1F4C80;
+	Tue, 18 Mar 2025 23:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="ikKD40mE"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="AVYDKxY+"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DC9209677;
-	Tue, 18 Mar 2025 23:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41431DD0D5;
+	Tue, 18 Mar 2025 23:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742341510; cv=none; b=jjE5Oc4Ew3NelYa2rZ8OA+d1ReisgrylmG8ssziD0lfwyepkuC8JzNvTu06pUuSPh9JjbFIamnSeiSLMK5WJY/WDXwXXqA7achcAYOWQkqvCSYZNWo/0VSfHl95+/eKdWA304XgotOITSacAXi4JVUgxOmpSnWRZkE7BG+8S46o=
+	t=1742341792; cv=none; b=ga0ZAy2hHpSN5y6p1Ur6j1ksMJhRhFzKk1kH/DMLRu2kWZsij8zHuC9eAUeiW699LERERKdotJ98WhKILdVn4DI29kxrX2XiZuNuTD/z68UBKIpZn7np63a56w0JKlwXPPr/kYYxW41CsPXeIK+20x6Wgrm1MXKJ9hpEB8+B3pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742341510; c=relaxed/simple;
-	bh=JGEW5En0spsK+qioi/VgL3Fsb4SXZg/2HDGfbAmp5F4=;
+	s=arc-20240116; t=1742341792; c=relaxed/simple;
+	bh=UhWm3Bxzfa1AaPPwzlEgd85EabPEm+XOozm36h56kXg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=brmfE+NmJWwlfKPzgfr0xFXsTXp4js6vz4cYbYZ1Nsawpfgu4zFj4XlxEJk1dB2P1XTWSsFyvzoS2b9ZXLGD5Fs/jru3jUfxfyl9oBo16gkkcSgV1r9Eg9Mk4iXHPiP2v2cCqMWgqSiAoWe8E79A3mgcekihp1kKC8kAK3mV4Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=ikKD40mE; arc=none smtp.client-ip=62.89.141.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=DfGI4EjE+KY/IQNu69Ug/CkqjsS2mqrKrUHo5/w+kBZ7O+Mo2iKAGSmWprG4O5ti3j51GZ2GEsoA8B/WIPpolqv1nX4ly1Z2UeIczi2c2s2OHLHh49YPaKqNIok/jtfCVP8sCARQrGpTlgBalFVl9NWjG3bavX49eCKbOYR6JDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=AVYDKxY+; arc=none smtp.client-ip=62.89.141.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Qub+wuCERDJRI+/4NwsOUFn7xvjjWzxr1pC9JJhxxAc=; b=ikKD40mEFbekgfKZ9OxcymMwWI
-	p67KyLcSVJGZ4cJ0hBVJWNH+Sp8+tY6W+DLRZrwq04IFZd6Pvs5pdZLfubPkNOjgz7q/oKeO5xAss
-	1YiTF5ursYBekbdOzs51jXSCef1CgyxTBBLnY3W7NZ2UmjAjwdfMEikXR5xTwN48rGuau1rqzduVs
-	6Y0OaocXugLDzH1wZT45RwTdCUihFm4WvocaeCTcb6nfsHXLmDiQGsvo5JjKdqw6bFu+bXfx6LAl7
-	84mYs8fEXA4X06at89CcUPXbRrrFNycRyShW9Azrb5lTVlkMKXDX6ypfZ2cCu4NpZF2j3r45PP6Fb
-	E4AfZAnQ==;
+	bh=MDM21kfd3jK3uD883UtXPvJsKUruvqnmYwxu1cep/E4=; b=AVYDKxY+Fckh47iPYwt/Ir1Pq4
+	1RWW+QfCfE/rqkpgQ+Zr6ENN4dsJnva6UUTrGe0WVNNGyN45E4GznDwZXdgL5+srIr4yHj8eXpVMY
+	Pa7wUeiuhnqdugaxmpY09SdO2J7B/UYJZhUS41CGYMTTQyz+OzhQvQwtob213XoPtdCj/i0SifvKn
+	hXuhO9mSy/8DDDyIZ0WFZmTvjB1M3zYv69zRsoTRSV9Kn9NLfIhTJI+BoKKwWYV4NnFbOlVb6yu0H
+	z1bnQyfJJkg2YvylOZReoUsUqk1OqLTlo8DuUg6tN1SF7n8oSWS9okm8Qp/tCGTOTnOxZWP2EOVBp
+	y1NSxmdg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tugcL-0000000HHwx-1EHq;
-	Tue, 18 Mar 2025 23:45:05 +0000
-Date: Tue, 18 Mar 2025 23:45:05 +0000
+	id 1tuggu-0000000HIZ4-1KWY;
+	Tue, 18 Mar 2025 23:49:48 +0000
+Date: Tue, 18 Mar 2025 23:49:48 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: James Bottomley <James.Bottomley@hansenpartnership.com>
 Cc: linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
@@ -52,8 +52,9 @@ Cc: linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>
 Subject: Re: [RFC PATCH 0/3] create simple libfs directory iterator and make
  efivarfs use it
-Message-ID: <20250318234505.GY2023217@ZenIV>
+Message-ID: <20250318234948.GZ2023217@ZenIV>
 References: <20250318194111.19419-1-James.Bottomley@HansenPartnership.com>
+ <20250318234505.GY2023217@ZenIV>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -62,46 +63,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250318194111.19419-1-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20250318234505.GY2023217@ZenIV>
 Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Tue, Mar 18, 2025 at 03:41:08PM -0400, James Bottomley wrote:
-> [Note this is built on top of the previous patch to populate path.mnt]
-> 
-> This turned out to be much simpler than I feared.  The first patch
-> breaks out the core of the current dcache_readdir() into an internal
-> function with a callback (there should be no functional change).  The
-> second adds a new API, simple_iterate_call(), which loops over the
-> dentries in the next level and executes a callback for each one and
-> the third which removes all the efivarfs superblock and mnt crud and
-> replaces it with this simple callback interface.  I think the
-> diffstats of the third patch demonstrate how much nicer it is for us:
+On Tue, Mar 18, 2025 at 11:45:05PM +0000, Al Viro wrote:
+> and it becomes just a simple loop -
+> 	child = NULL;
+> 	while ((child = find_next_child(parent, child)) != NULL) {
+					that being root, obviously.
 
-I suspect that you are making it too generic for its own good.
-
-dcache_readdir() needs to cope with the situation when there are
-fuckloads of opened-and-unliked files in there.  That's why we
-play those games with cursors under if (need_resched()) there.
-That's not the case for efivarfs.  There you really want just
-"grab a reference to the next positive, drop the reference we
-were given" and that's it.
-
-IOW, find_next_child() instead of scan_positives().  Export that
-and it becomes just a simple loop -
-	child = NULL;
-	while ((child = find_next_child(parent, child)) != NULL) {
-		struct inode *inode = d_inode(child);
-		struct efivar_entry *entry = efivar_entry(inode);
-
-		err = efivar_entry_size(entry, &size);
-
-		inode_lock(inode);
-		i_size_write(inode, err ? 0 : size + sizeof(__u32));
-		inode_unlock(inode);
-
-		if (err)
-			simple_recursive_removal(child, NULL);
-	}
-and that's it.  No callbacks, no cursors, no iterators - just an
-export of helper already there.
+And we might want a better function name than that...
 
