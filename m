@@ -1,209 +1,422 @@
-Return-Path: <linux-efi+bounces-3042-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3043-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4CAA6954A
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Mar 2025 17:47:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D470BA69688
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Mar 2025 18:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D499461BBA
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Mar 2025 16:46:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6653719C3F72
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Mar 2025 17:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198541DF248;
-	Wed, 19 Mar 2025 16:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990D01EE029;
+	Wed, 19 Mar 2025 17:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="m+/RUR2+"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OPuKnj8n"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2E91A316D;
-	Wed, 19 Mar 2025 16:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAB21DE884;
+	Wed, 19 Mar 2025 17:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742402776; cv=none; b=Bb2lMjuFZsKX56sU8Ne5rH2/HdkRYDbP68IqrVBauFBrrFNaAcgEtqPPtmGY/zZhdJEzdN0/+4PW58gGSVsE2Kbgn3F+6/K6ouHVrWL1YXSgu19t72hZEVq5NU2XkgAwCSz9kJJ+qtBskWnC/Vb6GAmyLbXt2qclYBqg365bKCw=
+	t=1742405500; cv=none; b=kBPqAOOn9dIyW9KOYMF4FLq3KQxmbf/5RK7wKcZ+k/+GcwJ+yj+55snO7WX97gv5/W5VNPKTH/B/ZxkZVHsthPZxbKD8UGjpIWcCtepWVZVDCoTwwW5lSI71s2PRUCL3tqA3c82xZLL/k/nwjU0cmKw/TmT1+oERurpVCteuqyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742402776; c=relaxed/simple;
-	bh=Hsgb7vgc9KTQb2GSm51SF37B7oBqcQeWcpkD54fK9FM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hn/c6BFxTryFy4vgX4bs+PTGXRW5MsueOzghfnFBt1SufZpSZ1BrolL3WUl3pq0PzDODRnJPBMUHvlB/8f8NZLUJWy7xN+oiU3UN+wIuzUZNOOkH8lkYgOw9vFzdAuJS8ScsSj7A6Fy8UA150u24csT8h0FSMvf8eT1CepGbOo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=m+/RUR2+; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1742402771;
-	bh=Hsgb7vgc9KTQb2GSm51SF37B7oBqcQeWcpkD54fK9FM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=m+/RUR2+1SKvVJZsqo9wc2Rh+kZzpJkdTNTuMXg6aYsQWQGeIHYsVXhoy0GTj4Co6
-	 bHAESMaFRioliub9mKIJArRBU6j5vNJ0PQUWqDpDS5ULPLUdIr2fyIa4QUbdCwqrZy
-	 Lt/YsdxLDWh2RjQuy3wxF14tcG5CzdumcTmdTayQ=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	s=arc-20240116; t=1742405500; c=relaxed/simple;
+	bh=1krTOqoQmK+AUaaMBs+P36+1kPk82EwrMREbbAaX5hA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JqTcL/IiImOau7Q/O8iD8Zntdz3P0pydCGhtlpAjnozWRaiZMbkycIUcXfQHAl0clWlB2viOve6pbq9lYTYE0Gx4SSTw2mKBzynQFPC8I0AM3VLbcquX7a0agUQ1ls7CpISweCyz4VxV66eCpFepiMWQ7+eSwH+nX6EBVKRaVaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OPuKnj8n; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 033E640E01D1;
+	Wed, 19 Mar 2025 17:31:33 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id EOIBCM-ZWxOR; Wed, 19 Mar 2025 17:31:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1742405488; bh=y4IueNFhKFDuJLhg35AaumVxylQHY1jpwsFPITe81G8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OPuKnj8nSqrVhz24YDL81CfCg2gKR9pIWbtbaHWonnfkdzAOYbC52VlJf5R+D42NL
+	 p+FEyIidvNStF1js+JfxT0C7rZGoAMoejdM1WgsnqZOgssxdFq7zcrdehkdBOhwBCf
+	 6qn9py1y7c1kbXSMeviUQDURN49OG5fv/WjXQdW5IkqHVFOA0DbDKfAETmttIs75Qp
+	 okPexPU9CehnEmaY3d7p6wh5PbiGuNMNTVx27sDHmdjIb3Dtjbu4HRwbY4Q14i4bwJ
+	 dsbkbZltr+kVU6ilR9D0zZyxFpO/sh1scDlcoWBs6e/bo71ONMVPvUCTlG7i2ceeA5
+	 wLaaxTPNfgLMm+60LsvQKf3f4DtxJ37YimbXvOnTV9Uiwo+mADi/UxAjzpM0rP7ZL9
+	 wo6QkkCKHUim+f+duFQ3p6m3NNZfUI/OdPhNo3Vh4zPkc4ReJUxDq/sHn7PoTceDKC
+	 dFHviztK56ka7KdDhZc4xg9gEecFpX/b8YeeHYnRAAy42UF9NNurT+CJRgEvMwDn9o
+	 EmwYWflsznK/wu6GRntJJGeTc65/wswB2vmGe19QbC0B8PxXLmDLJ6Gvkm3RlzDUX4
+	 /qN979SHOM73h+ayNLsjM9Jni661c+WpiCH3Ao/36bsD+FjghQdcQsWiSHsw8vbL4o
+	 RjebWhOYASgWk0sBPvsbIbnY=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id BBC421C0015;
-	Wed, 19 Mar 2025 12:46:11 -0400 (EDT)
-Message-ID: <70ba7c8e2cdc4c76f71274c9aaf77b360692613d.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH 0/3] create simple libfs directory iterator and make
- efivarfs use it
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org, Ard Biesheuvel
-	 <ardb@kernel.org>, Christian Brauner <brauner@kernel.org>
-Date: Wed, 19 Mar 2025 12:46:10 -0400
-In-Reply-To: <20250318234505.GY2023217@ZenIV>
-References: <20250318194111.19419-1-James.Bottomley@HansenPartnership.com>
-	 <20250318234505.GY2023217@ZenIV>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 73B2040E015E;
+	Wed, 19 Mar 2025 17:29:43 +0000 (UTC)
+Date: Wed, 19 Mar 2025 18:29:35 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, Junaid Shahid <junaids@google.com>,
+	Yosry Ahmed <yosryahmed@google.com>
+Subject: Re: [PATCH RFC v2 04/29] mm: asi: Add infrastructure for boot-time
+ enablement
+Message-ID: <20250319172935.GMZ9r-_zzXhyhHBLfj@fat_crate.local>
+References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+ <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com>
 
-On Tue, 2025-03-18 at 23:45 +0000, Al Viro wrote:
-[...]
-> I suspect that you are making it too generic for its own good.
->=20
-> dcache_readdir() needs to cope with the situation when there are
-> fuckloads of opened-and-unliked files in there.=C2=A0 That's why we
-> play those games with cursors under if (need_resched()) there.
+On Fri, Jan 10, 2025 at 06:40:30PM +0000, Brendan Jackman wrote:
+> Add a boot time parameter to control the newly added X86_FEATURE_ASI.
+> "asi=on" or "asi=off" can be used in the kernel command line to enable
+> or disable ASI at boot time. If not specified, ASI enablement depends
+> on CONFIG_ADDRESS_SPACE_ISOLATION_DEFAULT_ON, which is off by default.
 
-Yes, but those games will never really activate for the efivarfs code
-because we expect to be mostly positive.  What I was aiming for was to
-make sure there's no duplication of the subtle code,  so someone can't
-forget to update it in two places, so doing a callback approach seemed
-natural.
+I don't know yet why we need this default-on thing...
 
-> That's not the case for efivarfs.=C2=A0 There you really want just
-> "grab a reference to the next positive, drop the reference we
-> were given" and that's it.
->=20
-> IOW, find_next_child() instead of scan_positives().=C2=A0 Export that
-> and it becomes just a simple loop -
-> 	child =3D NULL;
-> 	while ((child =3D find_next_child(parent, child)) !=3D NULL) {
-> 		struct inode *inode =3D d_inode(child);
-> 		struct efivar_entry *entry =3D efivar_entry(inode);
->=20
-> 		err =3D efivar_entry_size(entry, &size);
->=20
-> 		inode_lock(inode);
-> 		i_size_write(inode, err ? 0 : size + sizeof(__u32));
-> 		inode_unlock(inode);
->=20
-> 		if (err)
-> 			simple_recursive_removal(child, NULL);
-> 	}
-> and that's it.=C2=A0 No callbacks, no cursors, no iterators - just an
-> export of helper already there.
+> asi_check_boottime_disable() is modeled after
+> pti_check_boottime_disable().
+> 
+> The boot parameter is currently ignored until ASI is fully functional.
+> 
+> Once we have a set of ASI features checked in that we have actually
+> tested, we will stop ignoring the flag. But for now let's just add the
+> infrastructure so we can implement the usage code.
+> 
+> Ignoring checkpatch.pl CONFIG_DESCRIPTION because the _DEFAULT_ON
+> Kconfig is trivial to explain.
 
-So we don't mind the callbacks; we have to do it for efivar_init()
-lower down anyway.  However, I did take a cut at doing this based on
-simple positive (see below).  I assume you won't like the way I have to
-allocate and toss a cursor for each iteration, nor the fact that
-there's still the cond_resched() in there?  I think I can fix that but
-I'd have to slice apart simple_positive(), which is a bigger
-undertaking.
+Those last two paragraphs go...
 
-> And we might want a better function name than that...
+> Checkpatch-args: --ignore CONFIG_DESCRIPTION
+> Co-developed-by: Junaid Shahid <junaids@google.com>
+> Signed-off-by: Junaid Shahid <junaids@google.com>
+> Co-developed-by: Yosry Ahmed <yosryahmed@google.com>
+> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
 
-I went for simple_next_child() ...
+... here as that's text not really pertaining to the contents of the patch.
 
-Regards,
+>  arch/x86/Kconfig                         |  9 +++++
+>  arch/x86/include/asm/asi.h               | 19 ++++++++--
+>  arch/x86/include/asm/cpufeatures.h       |  1 +
+>  arch/x86/include/asm/disabled-features.h |  8 ++++-
+>  arch/x86/mm/asi.c                        | 61 +++++++++++++++++++++++++++-----
+>  arch/x86/mm/init.c                       |  4 ++-
+>  include/asm-generic/asi.h                |  4 +++
+>  7 files changed, 92 insertions(+), 14 deletions(-)
 
-James
+...
 
----
+>   * the N ASI classes.
+>   */
+>  
+> +#define static_asi_enabled() cpu_feature_enabled(X86_FEATURE_ASI)
 
- fs/libfs.c         | 41 +++++++++++++++++++++++++++++++++++++++++
- include/linux/fs.h |  2 ++
- 2 files changed, 43 insertions(+)
+Yeah, as already mentioned somewhere else, whack that thing pls.
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 8444f5cc4064..86f29cc2b85a 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -146,6 +146,47 @@ static struct dentry *scan_positives(struct dentry *cu=
-rsor,
- 	return found;
- }
-=20
-+/**
-+ * simple_next_child - get next child of the parent directory
-+ *
-+ * @parent: the directory to scan
-+ * @child: last child (or NULL to start at the beginning)
-+ *
-+ * returns the next positive child in sequence with the reference
-+ * elevated but if a child is passed in will drop that
-+ * reference. Returns NULL on either error or when directory has been
-+ * fully scanned.
-+ *
-+ * The intended use is as an iterator because all the references will
-+ * be dropped by the end of the while loop:
-+ *
-+ *     child =3D NULL
-+ *     while(child =3D simple_next_child(parent, child)) {
-+ *          // do something
-+ *     }
-+ */
-+struct dentry *simple_next_child(struct dentry *parent, struct dentry *chi=
-ld)
-+{
-+	struct hlist_node **p;
-+	struct dentry *cursor =3D d_alloc_cursor(parent);
+> +
+>  /*
+>   * ASI uses a per-CPU tainting model to track what mitigation actions are
+>   * required on domain transitions. Taints exist along two dimensions:
+> @@ -131,6 +134,8 @@ struct asi {
+>  
+>  DECLARE_PER_CPU_ALIGNED(struct asi *, curr_asi);
+>  
+> +void asi_check_boottime_disable(void);
+> +
+>  void asi_init_mm_state(struct mm_struct *mm);
+>  
+>  int asi_init_class(enum asi_class_id class_id, struct asi_taint_policy *taint_policy);
+> @@ -155,7 +160,9 @@ void asi_exit(void);
+>  /* The target is the domain we'll enter when returning to process context. */
+>  static __always_inline struct asi *asi_get_target(struct task_struct *p)
+>  {
+> -	return p->thread.asi_state.target;
+> +	return static_asi_enabled()
+> +	       ? p->thread.asi_state.target
+> +	       : NULL;
+
+Waaay too fancy for old people:
+
+	if ()
+		return...
+	else
+		return NULL;
+
+:-)
+
+The others too pls.
+
+>  static __always_inline void asi_set_target(struct task_struct *p,
+> @@ -166,7 +173,9 @@ static __always_inline void asi_set_target(struct task_struct *p,
+>  
+>  static __always_inline struct asi *asi_get_current(void)
+>  {
+> -	return this_cpu_read(curr_asi);
+> +	return static_asi_enabled()
+> +	       ? this_cpu_read(curr_asi)
+> +	       : NULL;
+>  }
+>  
+>  /* Are we currently in a restricted address space? */
+> @@ -175,7 +184,11 @@ static __always_inline bool asi_is_restricted(void)
+>  	return (bool)asi_get_current();
+>  }
+>  
+> -/* If we exit/have exited, can we stay that way until the next asi_enter? */
+> +/*
+> + * If we exit/have exited, can we stay that way until the next asi_enter?
+
+What is that supposed to mean here?
+
+> + *
+> + * When ASI is disabled, this returns true.
+> + */
+>  static __always_inline bool asi_is_relaxed(void)
+>  {
+>  	return !asi_get_target(current);
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index 913fd3a7bac6506141de65f33b9ee61c615c7d7d..d6a808d10c3b8900d190ea01c66fc248863f05e2 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -474,6 +474,7 @@
+>  #define X86_FEATURE_CLEAR_BHB_HW	(21*32+ 3) /* BHI_DIS_S HW control enabled */
+>  #define X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT (21*32+ 4) /* Clear branch history at vmexit using SW loop */
+>  #define X86_FEATURE_FAST_CPPC		(21*32 + 5) /* AMD Fast CPPC */
+> +#define X86_FEATURE_ASI			(21*32+6) /* Kernel Address Space Isolation */
+>  
+>  /*
+>   * BUG word(s)
+> diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
+> index c492bdc97b0595ec77f89dc9b0cefe5e3e64be41..c7964ed4fef8b9441e1c0453da587787d8008d9d 100644
+> --- a/arch/x86/include/asm/disabled-features.h
+> +++ b/arch/x86/include/asm/disabled-features.h
+> @@ -50,6 +50,12 @@
+>  # define DISABLE_PTI		(1 << (X86_FEATURE_PTI & 31))
+>  #endif
+>  
+> +#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
+> +# define DISABLE_ASI		0
+> +#else
+> +# define DISABLE_ASI		(1 << (X86_FEATURE_ASI & 31))
+> +#endif
+> +
+>  #ifdef CONFIG_MITIGATION_RETPOLINE
+>  # define DISABLE_RETPOLINE	0
+>  #else
+> @@ -154,7 +160,7 @@
+>  #define DISABLED_MASK17	0
+>  #define DISABLED_MASK18	(DISABLE_IBT)
+>  #define DISABLED_MASK19	(DISABLE_SEV_SNP)
+> -#define DISABLED_MASK20	0
+> +#define DISABLED_MASK20	(DISABLE_ASI)
+>  #define DISABLED_MASK21	0
+>  #define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
+>  
+
+Right, that hunk is done this way now:
+
+diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
+index e12d5b7e39a2..f219eaf664fb 100644
+--- a/arch/x86/Kconfig.cpufeatures
++++ b/arch/x86/Kconfig.cpufeatures
+@@ -199,3 +199,7 @@ config X86_DISABLED_FEATURE_SEV_SNP
+ config X86_DISABLED_FEATURE_INVLPGB
+ 	def_bool y
+ 	depends on !BROADCAST_TLB_FLUSH
 +
-+	if (!cursor) {
-+		dput(child);
-+		return NULL;
-+	}
-+
-+	if (child)
-+		p =3D &child->d_sib.next;
-+	else
-+		p =3D &parent->d_children.first;
-+
-+	child =3D scan_positives(cursor, p, 1, child);
-+	dput(cursor);
-+
-+	return child;
-+}
-+EXPORT_SYMBOL(simple_next_child);
-+
- loff_t dcache_dir_lseek(struct file *file, loff_t offset, int whence)
- {
- 	struct dentry *dentry =3D file->f_path.dentry;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 2788df98080f..dd84d1c3b8af 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3531,6 +3531,8 @@ extern int simple_rename(struct mnt_idmap *, struct i=
-node *,
- 			 unsigned int);
- extern void simple_recursive_removal(struct dentry *,
-                               void (*callback)(struct dentry *));
-+extern struct dentry *simple_next_child(struct dentry *parent,
-+					struct dentry *child);
- extern int noop_fsync(struct file *, loff_t, loff_t, int);
- extern ssize_t noop_direct_IO(struct kiocb *iocb, struct iov_iter *iter);
- extern int simple_empty(struct dentry *);
---=20
-2.43.0
++config X86_DISABLED_FEATURE_ASI
++	def_bool y
++	depends on !MITIGATION_ADDRESS_SPACE_ISOLATION
 
 
+> diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
+> index 105cd8b43eaf5c20acc80d4916b761559fb95d74..5baf563a078f5b3a6cd4b9f5e92baaf81b0774c4 100644
+> --- a/arch/x86/mm/asi.c
+> +++ b/arch/x86/mm/asi.c
+> @@ -4,6 +4,7 @@
+>  #include <linux/percpu.h>
+>  #include <linux/spinlock.h>
+>  
+> +#include <linux/init.h>
+>  #include <asm/asi.h>
+>  #include <asm/cmdline.h>
+>  #include <asm/cpufeature.h>
+> @@ -29,6 +30,9 @@ static inline bool asi_class_id_valid(enum asi_class_id class_id)
+>  
+>  static inline bool asi_class_initialized(enum asi_class_id class_id)
+>  {
+> +	if (!boot_cpu_has(X86_FEATURE_ASI))
+
+check_for_deprecated_apis: WARNING: arch/x86/mm/asi.c:33: Do not use boot_cpu_has() - use cpu_feature_enabled() instead.
+
+Check your whole set pls.
+
+> +		return 0;
+> +
+>  	if (WARN_ON(!asi_class_id_valid(class_id)))
+>  		return false;
+>  
+> @@ -51,6 +55,9 @@ EXPORT_SYMBOL_GPL(asi_init_class);
+>  
+>  void asi_uninit_class(enum asi_class_id class_id)
+>  {
+> +	if (!boot_cpu_has(X86_FEATURE_ASI))
+> +		return;
+> +
+>  	if (!asi_class_initialized(class_id))
+>  		return;
+>  
+> @@ -66,10 +73,36 @@ const char *asi_class_name(enum asi_class_id class_id)
+>  	return asi_class_names[class_id];
+>  }
+>  
+> +void __init asi_check_boottime_disable(void)
+> +{
+> +	bool enabled = IS_ENABLED(CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION_DEFAULT_ON);
+> +	char arg[4];
+> +	int ret;
+> +
+> +	ret = cmdline_find_option(boot_command_line, "asi", arg, sizeof(arg));
+> +	if (ret == 3 && !strncmp(arg, "off", 3)) {
+> +		enabled = false;
+> +		pr_info("ASI disabled through kernel command line.\n");
+> +	} else if (ret == 2 && !strncmp(arg, "on", 2)) {
+> +		enabled = true;
+> +		pr_info("Ignoring asi=on param while ASI implementation is incomplete.\n");
+> +	} else {
+> +		pr_info("ASI %s by default.\n",
+> +			enabled ? "enabled" : "disabled");
+> +	}
+> +
+> +	if (enabled)
+> +		pr_info("ASI enablement ignored due to incomplete implementation.\n");
+
+Incomplete how?
+
+> +}
+> +
+>  static void __asi_destroy(struct asi *asi)
+>  {
+> -	lockdep_assert_held(&asi->mm->asi_init_lock);
+> +	WARN_ON_ONCE(asi->ref_count <= 0);
+> +	if (--(asi->ref_count) > 0)
+
+Switch that to
+
+include/linux/kref.h
+
+It gives you a sanity-checking functionality too so you don't need the WARN...
+
+> +		return;
+>  
+> +	free_pages((ulong)asi->pgd, PGD_ALLOCATION_ORDER);
+> +	memset(asi, 0, sizeof(struct asi));
+
+And then you can do:
+
+	if (kref_put())
+		free_pages...
+
+and so on.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
