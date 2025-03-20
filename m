@@ -1,129 +1,204 @@
-Return-Path: <linux-efi+bounces-3046-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3047-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5D6A69FE1
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Mar 2025 07:37:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BFCA6A3EA
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Mar 2025 11:44:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B1753A6327
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Mar 2025 06:37:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F247422A07
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Mar 2025 10:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C395143748;
-	Thu, 20 Mar 2025 06:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6505D222560;
+	Thu, 20 Mar 2025 10:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e5aQKXjN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kdj3JpaA"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9F829A0
-	for <linux-efi@vger.kernel.org>; Thu, 20 Mar 2025 06:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC9B22424E
+	for <linux-efi@vger.kernel.org>; Thu, 20 Mar 2025 10:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742452674; cv=none; b=nopYsXlc1HWeHgYeZksSr3kyeGfrCltyndzanhj2+Fk9gR9vBVvUCCvtlb0UM42NVUjBWqk4yWxpRFXDynBNI02+eHuiHxxIdBGkSGwcRg46dEZFEookxdScWJI7a8MtrwO/3Q4dv+ZfrnlODHeVc/d/YFlPlimewW7naYTLwgk=
+	t=1742467484; cv=none; b=Cs5D2x7+lDtSHBu3cVK0/K2lDjVEUCSUzr1W0e+G4lg2EJ4KArXNLxzcSyQZRpZ2ZX924Me8Qsq9I6Xe+G4AKSJSMQgD+b/YOViScxSdar2nBnt+pP6eVVxTilpyD8O0254vrDVbQDca9KcDGaaWznmPbgvrR82tcd+VqESZdi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742452674; c=relaxed/simple;
-	bh=L1MmH0h3kJSrGhRmI2suggn8bkdsfX5St7meYMUsBk8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OLpo+uZG5Ux1XJsrPdjFotwWK9qP+mVSKtWCGAJXWGfaoIKBrkfvLddo+i6G2BiKeibLtaXSPob4zAYhSn3MmlpNC1cyRPOzEmGAKvUBRd32y5sPz+T5+8qZsGLN7Yo0FdnA6yjdQ4JAdY0VnRgSlZha8kDD1eXGBAYIi2jm79Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e5aQKXjN; arc=none smtp.client-ip=209.85.221.74
+	s=arc-20240116; t=1742467484; c=relaxed/simple;
+	bh=O8zyyL1p84aMCSSYT842uw6SFy2rTfsgAblLzeFkCR0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lJ8eonGPsmPvyK72szt0OP3t+VTT6Pr0d/d1GNxdhK5JZzVvTCtz3bDuf3KkjD3/+387AghssP/h9R+6nx+ZJBeJM3bBCP1huby4+jMl2QlGiZ6p2zGWzoqNhvOIExGZaoJ9aKTNEZD7qGKJ8YYR+iQg1J/3iUbngcTi7FtKXJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kdj3JpaA; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3912580843fso278110f8f.2
-        for <linux-efi@vger.kernel.org>; Wed, 19 Mar 2025 23:37:52 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d22c304adso7494465e9.0
+        for <linux-efi@vger.kernel.org>; Thu, 20 Mar 2025 03:44:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742452671; x=1743057471; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cTQzeSTn0/32b0jJbv0Le3HqoI48U3RMBJiD1YXcXfs=;
-        b=e5aQKXjNBxRaC6hh1uBv1+zqx8bNR2i42DOJgePW3RjV3LBDXEWTM4E1Vjs6DYjTUL
-         bFu+QmjY84oV93Sg4DhBUi1WbvC0F25d9z+FtrMv7PrRT2JrnOkvCl8AvUC1BSA2egjG
-         av1CGmmbGcpLjx/o5Da/u4/bNqL7HCXSV/vFZ6kIJbWm2xNwkkmShAcxDhufvxVIJoLa
-         vXEm5mbN4d+F22dp2pKNRYaeOEE3qtVjtoZk2X4kQYrfHxB2auxDr6cFmk2J7FHo5cGG
-         9pxbxRjJIaDTsjmvk1S0UQxtndlhJ3hmG3j9ATG4tsnwrRsgx2fX89lJPXPrpWZsb114
-         W/2g==
+        d=google.com; s=20230601; t=1742467480; x=1743072280; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j11DFSETqOLtc+vMOz1k4rHgXFA118EedepjEdU8Zqw=;
+        b=Kdj3JpaAcTMsJX0fWv0whfnlnrjaZjQkUoIxaVNNWymywgQ1lxYjwO8r7iq1JNp6QM
+         Ojbu13PJrvGpih/A3lZ8h//bm+lQo87tlhkP9QV9OC12v7CPJ6kEgjQXJce0C5ni+hLc
+         WK8hRYGR3L0Fg1Ms6LVwx4HmFLLx967l5J71fKJh2+DS8uT7oCIJlhzicsDfSOQYSkWF
+         sHWVXfORZG9aTGDrruW97o37vT+nFRgMDzAibG+h4BCecMAJVWL9zR8i+Q2//u9V8cvF
+         qTDTgtuLxb6b7EYFGNlNI/IdDW+67sG2wCaCd7GvxlgTKp/aIF7rCtp1mbYDuCw4iql2
+         FLfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742452671; x=1743057471;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cTQzeSTn0/32b0jJbv0Le3HqoI48U3RMBJiD1YXcXfs=;
-        b=QhRR+6IpRL7CkBJU3i5JHonNMGl2LQcGQ7hs9P9UYJR3hiPbYa7TskG+ptT4U1+PQ8
-         0W9hDqwlg08kTR3l8vPd4YQHjDY7SzBejzGoIIrnS3LDC6BtAEn+ygvpw/4Ldms9Ri9e
-         P6N9u9Se1S29y1kjOyAacT+09EYh2nvVDuShRVaAYap06VMJKBLD69vp2bna8r6ee8ME
-         MOZVCI0d2BJDf+Xw2bIUUlcP+fxKP7sxLiip02op8IvSqawp7twgF4LzRScnZebb780i
-         X3uQ3LFUeS3TQ00nUh48kAyMsulHtKcJSJ5VvkrcTQIjl8Q5V3mhg8PXFf6+nYvgGbNi
-         wcsQ==
-X-Gm-Message-State: AOJu0YzZnD+pLH+MfiYE2XpmzL6jJvZ/JPgD2VwEGnKOgVX2LHhCmtE8
-	Lq+l5GwDHmd2bHmiN113BWwEXMT1Lk768MilZadjtboE64mWxivnM1MiecQHKyjEUwim3A==
-X-Google-Smtp-Source: AGHT+IFc8hk1KoeUwDd9x5nZhTeyxo1t4+8qm8k9NG02y2NLF6RLJhg3ksSmb1/yP1oSQgN+YwRXbtt1
-X-Received: from wrgb10.prod.google.com ([2002:a05:6000:3ca:b0:391:281c:9942])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:18af:b0:391:329b:893e
- with SMTP id ffacd0b85a97d-399739b437amr4529235f8f.5.1742452671082; Wed, 19
- Mar 2025 23:37:51 -0700 (PDT)
-Date: Thu, 20 Mar 2025 07:37:47 +0100
+        d=1e100.net; s=20230601; t=1742467480; x=1743072280;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j11DFSETqOLtc+vMOz1k4rHgXFA118EedepjEdU8Zqw=;
+        b=KcRvoSiT1wFeuSTmugLAOJRBN9qlLWPtL13aENOCO1XxN6Vmex0baYXwGS8sk3e/Yr
+         pUC3rug3kSIWSoQN0Bc9DL1TmyH21nttSHMlgAk+ivnH3m8+TdS1BztbGbA4j8+sMieB
+         CpvgkLSkOaXEybmsi1QbPkExWoO6knQvofPHMe7nlpOhwDY7NlmGjVyIb/61M2KYKmmo
+         qGxXbqZuzq82MWp5DlsSahOP/SdGJzPKE/HJkowyKuWfEq7yZ4zNc7ST2L0bj92C+Zjd
+         HZwRCaFW/BFYIGs93u5KHLw2lIj8pHsNIfMnDDSMHX+OVKnZ269wAzNs0ippxNHdglHV
+         HPhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUmYefac3LsszhmVFkm2E0+eqyQzqxqzuGhCyZemwrri+P2lqKgRcTrEPPFTS0wfftBJNPQnk6MIUs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGAqUWicdY0OFffgVODLU7gHQbsMFMesu0DAqlyc/BMd/qQNjT
+	nnn0ymNE1X9Wt+dre+xaI0xd+nL3lfjaRROaynseMWaZBMXybwIsv3OrGTIBeIp9frc4C3ghl/C
+	z9X0MAZOvMw==
+X-Google-Smtp-Source: AGHT+IHmhdHTuCMOMffmpvyIMCzJObzjHJotMPvb7/CKZriBN1WJ2Qe2CHVhTxdEuiWThlixsbw8H9oOiShQMA==
+X-Received: from wmgg15.prod.google.com ([2002:a05:600d:f:b0:43b:c450:ea70])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1da2:b0:439:5f04:4f8d with SMTP id 5b1f17b1804b1-43d49187ba9mr20806165e9.12.1742467480075;
+ Thu, 20 Mar 2025 03:44:40 -0700 (PDT)
+Date: Thu, 20 Mar 2025 10:44:38 +0000
+In-Reply-To: <Z9sRQ0cK0rupEiT-@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1567; i=ardb@kernel.org;
- h=from:subject; bh=+ivhOjQ6eXvusO1RqxCuuXYXi4ybWXnRQ+iffx9sFtA=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIf329t3sIa/MTpou/ZqVGvuKKf0M3/7+u64Pn3iKfmhYK
- nFf6IJFRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhIYBjDT8acVUG11zrPeT2v
- mLV212L3WzdazO9atImuVW7uzn22qIiR4b7yseN3Y1dJlH1Rubr+w1Qd2yuetj36B6prdY5/qNm ynAUA
-X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
-Message-ID: <20250320063746.4177561-2-ardb+git@google.com>
-Subject: [GIT PULL] EFI fixes for v6.14 #3
-From: Ard Biesheuvel <ardb+git@google.com>
-To: torvalds@linux-foundation.org
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+ <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com> <20250319172935.GMZ9r-_zzXhyhHBLfj@fat_crate.local>
+ <Z9sRQ0cK0rupEiT-@google.com>
+X-Mailer: aerc 0.18.2
+Message-ID: <D8L164U8HBTB.G5MS86AIISLM@google.com>
+Subject: Re: [PATCH RFC v2 04/29] mm: asi: Add infrastructure for boot-time enablement
+From: Brendan Jackman <jackmanb@google.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>, Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-alpha@vger.kernel.org>, <linux-snps-arc@lists.infradead.org>, 
+	<linux-arm-kernel@lists.infradead.org>, <linux-csky@vger.kernel.org>, 
+	<linux-hexagon@vger.kernel.org>, <loongarch@lists.linux.dev>, 
+	<linux-m68k@lists.linux-m68k.org>, <linux-mips@vger.kernel.org>, 
+	<linux-openrisc@vger.kernel.org>, <linux-parisc@vger.kernel.org>, 
+	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>, 
+	<linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>, 
+	<sparclinux@vger.kernel.org>, <linux-um@lists.infradead.org>, 
+	<linux-arch@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<linux-trace-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>, 
+	<kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>, 
+	Junaid Shahid <junaids@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Wed Mar 19, 2025 at 6:47 PM UTC, Yosry Ahmed wrote:
+> On Wed, Mar 19, 2025 at 06:29:35PM +0100, Borislav Petkov wrote:
+> > On Fri, Jan 10, 2025 at 06:40:30PM +0000, Brendan Jackman wrote:
+> > > Add a boot time parameter to control the newly added X86_FEATURE_ASI.
+> > > "asi=on" or "asi=off" can be used in the kernel command line to enable
+> > > or disable ASI at boot time. If not specified, ASI enablement depends
+> > > on CONFIG_ADDRESS_SPACE_ISOLATION_DEFAULT_ON, which is off by default.
+> > 
+> > I don't know yet why we need this default-on thing...
+>
+> It's a convenience to avoid needing to set asi=on if you want ASI to be
+> on by default. It's similar to HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
+> or ZSWAP_DEFAULT_ON.
+>
+> [..]
+> > > @@ -175,7 +184,11 @@ static __always_inline bool asi_is_restricted(void)
+> > >  	return (bool)asi_get_current();
+> > >  }
+> > >  
+> > > -/* If we exit/have exited, can we stay that way until the next asi_enter? */
+> > > +/*
+> > > + * If we exit/have exited, can we stay that way until the next asi_enter?
+> > 
+> > What is that supposed to mean here?
+>
+> asi_is_relaxed() checks if the thread is outside an ASI critical
+> section.
+>
+> I say "the thread" because it will also return true if we are executing
+> an interrupt that arrived during the critical section, even though the
+> interrupt handler is not technically part of the critical section.
+>
+> Now the reason it says "if we exit we stay that way" is probably
+> referring to the fact that an asi_exit() when interrupting a critical
+> section will be undone in the interrupt epilogue by re-entering ASI.
+>
+> I agree the wording here is confusing. We should probably describe this
+> more explicitly and probably rename the function after the API
+> discussions you had in the previous patch.
 
-Hi Linus,
+Yeah, this is confusing. It's trying to very concisely define the
+concept of "relaxed" but now I see it through Boris' eyes I realise
+it's really unhelpful to try and do that. And yeah we should probably
+just rework the terminology/API.
 
-Here's a final batch of EFI fixes for v6.14. The efivarfs ones are fixes for
-changes that were made this cycle. James's fix is somewhat of a band-aid, but
-it was blessed by the VFS folks, who are working with James to come up with
-something better for the next cycle.
+To re-iterate what Yosry said, aside from my too-clever comment style
+the more fundamental thing that's confusing here is that, using the
+terminology currently in the code there are two concepts at play:
 
-Please pull.
+- The critical section: this is the path from asi_enter() to
+  asi_relax(). The critical section can be interrupted, and code
+  running in those interupts is not said to be "in the critical
+  section".
 
-The following changes since commit e3cf2d91d0583cae70aeb512da87e3ade25ea912:
+- Being "tense" vs "relaxed". Being "tense" means the _task_ is in a
+  critical section, but the current code might not be.
 
-  efi/mokvar-table: Avoid repeated map/unmap of the same page (2025-02-27 18:25:44 +0100)
+This distinction is theoretically relevant because e.g. it's a bug to
+access sensitive data in a critical section, but it's OK to access it
+while in the tense state (we will switch to the restricted address
+space, but this is OK because we will have a chance to asi_enter()
+again before we get back to the untrusted code). 
 
-are available in the Git repository at:
+BTW, just to be clear:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.14-3
+1. Both of these are only relevant to code that's pretty deeply aware
+   of ASI. (TLB flushing code, entry code, stuff like that).
 
-for you to fetch changes up to 11092db5b57377ac99e6339cfd16ca35ef011f3c:
+2. To be honest whenever you write:
 
-  efivarfs: fix NULL dereference on resume (2025-03-18 08:46:08 +0100)
+     if (asi_in_critical_section())
 
-----------------------------------------------------------------
-EFI fixes for v6.14 #3
+   You probably mean:
 
-- Avoid physical address 0x0 for random page allocations
+     if (WARN_ON(asi_in_critical_section()))
 
-- Add correct lockdep annotation when traversing efivarfs on resume
+   For example if we try to flush the TLB in the critical section,
+   there's a thing we can do to handle it. But that really shouldn't
+   be necessary.  We want the critical section code to be very small
+   and straight-line code.
 
-- Avoid NULL mount in kernel_file_open() when traversing efivarfs on
-  resume
+   And indeed in the present code we don't use
+   asi_in_critical_section() for anything bur WARNing.
 
-----------------------------------------------------------------
-Ard Biesheuvel (2):
-      efi/libstub: Avoid physical address 0x0 when doing random allocation
-      efivarfs: use I_MUTEX_CHILD nested lock to traverse variables on resume
+> asi_is_relaxed() checks if the thread is outside an ASI critical
+> section.
 
-James Bottomley (1):
-      efivarfs: fix NULL dereference on resume
+Now I see it written this way, this is probably the best way to
+conceptualise it. Instead of having two concepts "tense/relaxed" vs
+"ASI critical section" we could just say "the task is in a critical
+section" vs "the CPU is in a critical section". So we could have
+something like:
 
- drivers/firmware/efi/libstub/randomalloc.c |  4 +++
- fs/efivarfs/super.c                        | 52 ++++++++++++++++++++++++++++--
- 2 files changed, 53 insertions(+), 3 deletions(-)
+bool asi_task_critical(void);
+bool asi_cpu_critical(void);
+
+(They could also accept an argument for the task/CPU, but I can't see
+any reason why you'd peek at another context like that).
+
+--
+
+For everything else, Ack to Boris or +1 to Yosry respectively.
 
