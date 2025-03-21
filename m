@@ -1,137 +1,194 @@
-Return-Path: <linux-efi+bounces-3056-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3058-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0A8A6C13A
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 18:22:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F19A6C24F
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 19:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE2B63ADEF3
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 17:22:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39F947AA72B
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 18:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561AD22D7AD;
-	Fri, 21 Mar 2025 17:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A229322FF4D;
+	Fri, 21 Mar 2025 18:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h0Iq/Lzu"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="gjhOQg7+"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEF91E492D;
-	Fri, 21 Mar 2025 17:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF83C22D7B8
+	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 18:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742577745; cv=none; b=Lo5OnzMjr+7CTxm1HEG0Lf/uGp7YyAp5+Ys6NOF0zKY0vjb62wQjunIHkn46Ix50Y6tBnMGyh2JeyzerNss7YI6AUskvguLn8BnK5OqwDzfEc3ez65m8mWI0IKlofeiWmDt88q6DQYSa8k/Yd41kWp185XAdMO8QyntPY6R5cig=
+	t=1742581321; cv=none; b=LfH7wlsKNU3c4LSEyIilrqgzOz/huZpxnAKzfN1DNKe5dB+0lM80eOtDE/dp9eOBGn8NCoGogFJ7oH3JqaWZZ+nZtYDViWBigAyiEWwNVrvM6l1pffPh9+wjQHALImFxfamrflgtfTaRfbfMmTs8kIPPdhakMOHiRMudz1p23oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742577745; c=relaxed/simple;
-	bh=Q/2cpfOpAi/WqpaXdWrKInZtwyOQwN+cMfoLexqZElo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B9aEsVbjcIc6/+S3BkCTg7qJAgg91VjULn4H1E9LvgFpgNGod82t3308/x4X8gQTnEbyz9D3ezMFzdGGwNcVWg9zUPmNFWlc/XSBziuPisT20IOWv99qtDvtBESmOvo3yApSuj1+F7jQgMis446BKcI8PQJ2LCg2h9TQdt3V5XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h0Iq/Lzu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414AFC4CEE3;
-	Fri, 21 Mar 2025 17:22:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742577744;
-	bh=Q/2cpfOpAi/WqpaXdWrKInZtwyOQwN+cMfoLexqZElo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h0Iq/Lzu/fvBg6TikKkrUEV8vlYsZPsdOUVPaIxE9HNzmrMgjA1mEGh3tzqmFBb3Y
-	 1QpS7lKxvUNGqXtIkGyFvV048zaYXK8QIbx+grS08m9+UdHAM/ZHpF+xk9GeKB4gBf
-	 7mU/sCxeCxKNMvYfFYSWkNmHyWagXLz5T0d8ZSVTic1cgCi2U/TE3bjCO4s6rsEioZ
-	 q/Ji5eCevxYQdXSlHE6J2gLAyDn0WYGWUY/b9VfFtGnHKZCrXU1GNATo2ZZVsGhReG
-	 tzpIUwNGJBIwTnZJ0B7PAlPKKKsv45Tii8i2Yp/cEp/ypaGXqMeVXltf25OTaco4+P
-	 S1gb9rbHh1g6Q==
-Date: Fri, 21 Mar 2025 19:22:21 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-	"casey@schaufler-ca.com" <casey@schaufler-ca.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	"ebiggers@kernel.org" <ebiggers@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
-Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
-Message-ID: <Z92gTQj6QkedbH0K@kernel.org>
-References: <FD501FB8-72D2-4B10-A03A-F52FC5B67646@oracle.com>
- <CAHC9VhR961uTFueovLXXaOf-3ZAnvQCWOTfw-wCRuAKOKPAOKw@mail.gmail.com>
- <73B78CE7-1BB8-4065-9EBA-FB69E327725E@oracle.com>
- <CAHC9VhRMUkzLVT5GT5c5hgpfaaKubzcPOTWFDpOmhNne0sswPA@mail.gmail.com>
- <1A222B45-FCC4-4BBD-8E17-D92697FE467D@oracle.com>
- <CAHC9VhTObTee95SwZ+C4EwPotovE9R3vy0gVXf+kATtP3vfXrg@mail.gmail.com>
- <EB757F96-E152-4EAB-B3F7-75C1DBE3A03B@oracle.com>
- <1956e7f9d60.28a7.85c95baa4474aabc7814e68940a78392@paul-moore.com>
- <A3A29FB9-E015-4C87-B5F0-190A4C779CB3@oracle.com>
- <CAHC9VhQMN6cgWbxdAgBNffpCAo=ogGdm4qBGS_kKdDmiT8b3cw@mail.gmail.com>
+	s=arc-20240116; t=1742581321; c=relaxed/simple;
+	bh=GlgWYN9/cnYfBQ3q33i/hcaHJ7knAqnJ5VcqkWXrObU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JFDwjOKKuN3ZNe4vyQM1kMFCPWyep+MLLqKlkoVNCwmlYYWTaGTOQt14A7+5ZysTXdAB+zUAv86SRXNmhaJn8jObiF/AdOpeuiZMqOFTE4t9v1cr66l9Vm7KvAzktTJr2CbVXARWqQ2K/cvI/VNyy7kUwBORokQU0vDT9KJaM7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=gjhOQg7+; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id 6CC881C1794
+	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 21:21:46 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1742581301; x=
+	1743445302; bh=GlgWYN9/cnYfBQ3q33i/hcaHJ7knAqnJ5VcqkWXrObU=; b=g
+	jhOQg7+jitcmKcBcJuzUFEnNXQHsRe84lxVuOs3eZz5sFDVxYj+M8xspuQ8sQbGg
+	2MVv9PjrD873/7ZVNPAjQwkkz+JJlDn0/Ue3VOXHVbjNP16SH51icn8uYsXEecmk
+	mYU0BUwHAiQzvYzPSD5iI1BRYJ86CdxM+3MgsIkE0Y=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bCscVHUkiQlc for <linux-efi@vger.kernel.org>;
+	Fri, 21 Mar 2025 21:21:41 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 721371C0628;
+	Fri, 21 Mar 2025 21:21:35 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	Jeremy Kerr <jk@ozlabs.org>,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10 1/2] efi: vars: Use locking version to iterate over efivars linked lists
+Date: Fri, 21 Mar 2025 18:21:24 +0000
+Message-ID: <20250321182126.1716111-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhQMN6cgWbxdAgBNffpCAo=ogGdm4qBGS_kKdDmiT8b3cw@mail.gmail.com>
 
-On Thu, Mar 20, 2025 at 05:36:41PM -0400, Paul Moore wrote:
-> On Thu, Mar 20, 2025 at 12:29 PM Eric Snowberg <eric.snowberg@oracle.com> wrote:
-> > > On Mar 6, 2025, at 7:46 PM, Paul Moore <paul@paul-moore.com> wrote:
-> > > On March 6, 2025 5:29:36 PM Eric Snowberg <eric.snowberg@oracle.com> wrote:
-> 
-> ...
-> 
-> > >> Does this mean Microsoft will begin signing shims in the future without
-> > >> the lockdown requirement?
-> > >
-> > > That's not a question I can answer, you'll need to discuss that with the UEFI SB people.
-> >
-> > Based on your previous lockdown comments, I thought you might have
-> > some new information.  Having lockdown enforcement has always been
-> > a requirement to get a shim signed by Microsoft.
-> 
-> I want to address two things, the first, and most important, is that
-> while I am currently employed by Microsoft, I do not speak for
-> Microsoft and the decisions and actions I take as an upstream Linux
-> kernel maintainer are not vetted by Microsoft in any way.  I think you
-> will find that many upstream kernel maintainers operate in a similar
-> way for a variety of very good reasons.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-This is understood. If one takes a kernel maintainer role, one should
-unconditionally disobey any vetting by the employer (even at the cost of
-the job, or alternatively at the cost of giving up the maintainership).
+commit 3a75f9f2f9ad19bb9a0f566373ae91d8f09db85e upstream.
 
-And with you in particular I don't think anyone has any trust issues,
-no matter which group of villains you might be employed by ;-)
+Both efivars and efivarfs uses __efivar_entry_iter() to go over the
+linked list that shadows the list of EFI variables held by the firmware,
+but fail to call the begin/end helpers that are documented as a
+prerequisite.
 
-> 
-> The second issue is that my main focus is on ensuring we have a
-> secure, safe, and well maintained LSM subsystem within the upstream
-> Linux kernel.  While I do care about downstream efforts, e.g. UEFI
-> Secure Boot, those efforts are largely outside the scope of the
-> upstream Linux kernel and not my first concern.  If the developer
-> groups who are focused on things like UEFI SB want to rely on
-> functionality within the upstream Linux kernel they should be prepared
-> to stand up and contribute/maintain those features or else they may go
-> away at some point in the future.  In very blunt terms, contribute
-> upstream or Lockdown dies.
+So switch to the proper version, which is efivar_entry_iter(). Given
+that in both cases, efivar_entry_remove() is invoked with the lock held
+already, don't take the lock there anymore.
 
-Could Lockdown functionality be re-implemented with that eBPF LSM? I
-have not really looked into it so far...
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+---
+ drivers/firmware/efi/efivars.c | 8 ++------
+ drivers/firmware/efi/vars.c    | 9 +--------
+ fs/efivarfs/super.c            | 9 +++------
+ include/linux/efi.h            | 3 ++-
+ 4 files changed, 8 insertions(+), 21 deletions(-)
 
-BR, Jarkko
+diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
+index e6b16b3a17a8..b925571ee593 100644
+--- a/drivers/firmware/efi/efivars.c
++++ b/drivers/firmware/efi/efivars.c
+@@ -608,10 +608,7 @@ static int efivars_sysfs_callback(efi_char16_t *name, efi_guid_t vendor,
+ 
+ static int efivar_sysfs_destroy(struct efivar_entry *entry, void *data)
+ {
+-	int err = efivar_entry_remove(entry);
+-
+-	if (err)
+-		return err;
++	efivar_entry_remove(entry);
+ 	efivar_unregister(entry);
+ 	return 0;
+ }
+@@ -621,8 +618,7 @@ static void efivars_sysfs_exit(void)
+ 	/* Remove all entries and destroy */
+ 	int err;
+ 
+-	err = __efivar_entry_iter(efivar_sysfs_destroy, &efivar_sysfs_list,
+-				  NULL, NULL);
++	err = efivar_entry_iter(efivar_sysfs_destroy, &efivar_sysfs_list, NULL);
+ 	if (err) {
+ 		pr_err("efivars: Failed to destroy sysfs entries\n");
+ 		return;
+diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+index eaed1ddcc803..010febd2ab6b 100644
+--- a/drivers/firmware/efi/vars.c
++++ b/drivers/firmware/efi/vars.c
+@@ -534,17 +534,10 @@ EXPORT_SYMBOL_GPL(efivar_entry_add);
+ /**
+  * efivar_entry_remove - remove entry from variable list
+  * @entry: entry to remove from list
+- *
+- * Returns 0 on success, or a kernel error code on failure.
+  */
+-int efivar_entry_remove(struct efivar_entry *entry)
++void efivar_entry_remove(struct efivar_entry *entry)
+ {
+-	if (down_interruptible(&efivars_lock))
+-		return -EINTR;
+ 	list_del(&entry->list);
+-	up(&efivars_lock);
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(efivar_entry_remove);
+ 
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 99d002438008..24a0c5ef4169 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -180,10 +180,7 @@ static int efivarfs_callback(efi_char16_t *name16, efi_guid_t vendor,
+ 
+ static int efivarfs_destroy(struct efivar_entry *entry, void *data)
+ {
+-	int err = efivar_entry_remove(entry);
+-
+-	if (err)
+-		return err;
++	efivar_entry_remove(entry);
+ 	kfree(entry);
+ 	return 0;
+ }
+@@ -219,7 +216,7 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	err = efivar_init(efivarfs_callback, (void *)sb, true, &efivarfs_list);
+ 	if (err)
+-		__efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL, NULL);
++		efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL);
+ 
+ 	return err;
+ }
+@@ -255,7 +252,7 @@ static void efivarfs_kill_sb(struct super_block *sb)
+ 	kill_litter_super(sb);
+ 
+ 	/* Remove all entries and destroy */
+-	__efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL, NULL);
++	efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL);
+ }
+ 
+ static struct file_system_type efivarfs_type = {
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 5554d26f91d8..7c5beec4287a 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -994,7 +994,8 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 		void *data, bool duplicates, struct list_head *head);
+ 
+ int efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
+-int efivar_entry_remove(struct efivar_entry *entry);
++void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
++void efivar_entry_remove(struct efivar_entry *entry);
+ 
+ int __efivar_entry_delete(struct efivar_entry *entry);
+ int efivar_entry_delete(struct efivar_entry *entry);
+-- 
+2.43.0
+
 
