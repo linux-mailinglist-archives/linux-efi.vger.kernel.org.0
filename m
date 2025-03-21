@@ -1,119 +1,165 @@
-Return-Path: <linux-efi+bounces-3061-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3062-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E853AA6C2ED
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 20:01:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D53A6C2F4
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 20:06:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BAEE18916A3
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 19:01:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F83C1B6227B
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 19:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7F71EA7D7;
-	Fri, 21 Mar 2025 19:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5671EB1A1;
+	Fri, 21 Mar 2025 19:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQb5Jn26"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="QzyzWv0U"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3293D86250;
-	Fri, 21 Mar 2025 19:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E9154426
+	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 19:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742583649; cv=none; b=TPWKdafgYZKO5m10jt2D8RNsPTf59VHxSJZaEqY252onh/71wuo1w21ROkynVJJUtAbGGHCc4oweNptS3vUrlW2F1Dew/2E58ZfjHogWVqJqVb+8s8Aep/eVsVmcnzeXxy65dQPJDs9wffjo7ox5bhN72r6vEmzo5e7vhzQB91M=
+	t=1742583960; cv=none; b=VWbaroDoiuXexPmGv66f65w+xfKpEWsv++i7Wtx7e9NkKnPGyuJRv83y7zC/JhDIuCErBBAvb1uAiToBjAtyOsUkCwO7b+J1nxHU+HxyWCsDepFCTlIIOiUxv1D0Ap+KjqiFV3abK2QBp4tuQT1UscjX1hkaEsNQONpKkD3PTwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742583649; c=relaxed/simple;
-	bh=kI8/Ktbo4bXHZBHuFJiJpt1zlW7YKWggmvRDSjyVR/4=;
+	s=arc-20240116; t=1742583960; c=relaxed/simple;
+	bh=sPA3YMc7zB5fmsVIwEgENpeTURZ/iV7aheO5rZV+wXc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KWeEwVKLgNNd3MIBga4S3tZgQDHhaWdxQs5vO+x1iQz9iB21xYRRs9yUdTwvVbTIQqv0mIx2nomAdZlq5KT11ldhLu7LdYJTnIBauD4t9qWmTcS+E0j6ZdySi1M6Cce7ADD7cnw/hXeHPTR+Ay5Lxsk+AMGzclXXD/PUTz6Mx1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQb5Jn26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9610EC4CEEA;
-	Fri, 21 Mar 2025 19:00:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742583648;
-	bh=kI8/Ktbo4bXHZBHuFJiJpt1zlW7YKWggmvRDSjyVR/4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YQb5Jn26+WwIClqQvwYcBQaD3iMrUoa4kE3yiwhdLPCIk2E6Trjl/YjTnbAvdLzW4
-	 ryrjhKnBpXMHja6g1OZkvHkXVjOjRtaANc9FmmbmX0B/jTYy3t4uRSsg64M99G6IUq
-	 tepc9tvcrXRjl9lM+1PsSnxWijVD08xhP0hkoM4R/kJmrmJCF1i4+1dU34miQwhT3u
-	 foAMF7lnq1+xvyXQMzKE7Pwu9crqbgdvOeKP9lc2+YcspZRxG+XG40r+sDx4SPLLCs
-	 41rmFVHXm46xtXmBOkz9L8/H3795j4cj4xqCS83wFcezxM99OziNY1pz2HMqW+IoOQ
-	 EJqdeBlbnFLAg==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-543d8badc30so2671763e87.0;
-        Fri, 21 Mar 2025 12:00:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXJ+AFq01b6IUVfGt8s19ivjyYkkt+qFiD5yMcjvMonXeBSz//zOi5fChYTU+jR7HUfPZ3SP/079vCe7xoY@vger.kernel.org, AJvYcCXmmHujUFI5/TC+qhC4GenhHLJrAJHKBUBMHDPauspw0Tk1Q9U1iifPQNZUAezDaJMxlGAWBFyHSHI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyEP5ltnbMnE5c2oXHKme+SM7WG/QjPxBj1+bWKp5AP9olA0+i
-	7ZGbg3zd21isaD8YE6HKQmSj47yTJ2cfpGrK5yJ+UkQNPvfacy8n88zDinu9NNiVNrGcKpfbFI2
-	4nPd6uIz612gC0tpfpOKJVh8hIOA=
-X-Google-Smtp-Source: AGHT+IHVtFvm9jig31iFYh/ebZbe5ZEY4GpJWCcsd3+Ea0fK5mulYd2Ssx1Wy7Nqbzs6Z0uJWKxSLgFdGiz8PKTAK5g=
-X-Received: by 2002:a05:6512:3da1:b0:545:8c5:44cb with SMTP id
- 2adb3069b0e04-54ad649651emr1899366e87.31.1742583646891; Fri, 21 Mar 2025
- 12:00:46 -0700 (PDT)
+	 To:Cc:Content-Type; b=HDOhkfwU3lBU9KslXnrr1HT/zE4g1x2mcHEO+jzeOzlKJRBXpfsQowtLaCnkjLslOOlJ9dZ4UC1l2WP4x3pA+EHJd9UdL8C2n9irqxiRmCMoe0ZqsiKbDXEqlMWHbACY9HrRH+iGnnCMXe2BUNZVpt9kqhEAyIxbzi6u5GClcK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=QzyzWv0U; arc=none smtp.client-ip=209.85.219.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e6405b5cd9bso1892856276.1
+        for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 12:05:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1742583958; x=1743188758; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4nSFzAgQaMCuwvxmSdJkfWwEiaWngP9LwXhsN0dSMzo=;
+        b=QzyzWv0UsSB9n0BSMggyaQDbx0K7uUYe4W56nBfIoMvQKo2MQIJ0noaY+PXOUBB6Ib
+         /6a13LgR6b2DNyZSDK0qE/T1RxpeGzd1htX855y9dlqEEtGN3gdK69JYRB4pGTssA1B4
+         Rr1z21+vbDeAW+g6KcQuRrABkrqSZAzYCwnvH1REVjkCoEIEQJyQroAzegCiisgUMqrU
+         G9b5IYDClVCacDEZJak4rfYlNhurx3gMUkhZAEQ3/CzXZeLHMhYPs4gKjxp903YTtrl9
+         2JSnkuhBX4eWTAv3it7/WIgfmdkUNolVVePF3Ml3s5XFjSSFhJmBk0seCk+yUGjPeIv6
+         43yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742583958; x=1743188758;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4nSFzAgQaMCuwvxmSdJkfWwEiaWngP9LwXhsN0dSMzo=;
+        b=Q2XqkOAV1/mu8sy0uWLJZVMWuSTFoAqGmKhqXrw3WkoWRzLtt5haTIXttQ3uEmFltS
+         T3p6PPxKFTAPKNVpwSGZDzkdhI7iH8tNiTjoO+gfJSmE9Bf+LukzkyzkeHfsmUulUT/H
+         ku4nsr7LpsQoN5RmwM4lRn200qTBEoyMGmeybxbhKtz5z0GAYpUPwpHoq13pmrr43Y9O
+         9BBMKN/jD4wGrKSQXjRq23vW7zjE7ZLasNGCTwnSL65wzYFkZY6G3I8oyvq/tLYY1qSG
+         5X+ypsXXGxzocA4utZSvQy4ZpZx8v56Fw7ydzaQ7XjZkG0VDSz6S95F/x4PjYsrcpfe0
+         IkHA==
+X-Forwarded-Encrypted: i=1; AJvYcCWuuklgCnZFRg4wlPxOaSBVs98gVa0/hca9bBY5bsDoMurCIdef1frI2Jng62kip2XzO57cC2YUwLY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuwsuz4u3/Mn6cxIHj6paFL3IXJ1P0AhCaGheQQC7xqJTLWzyl
+	iQ6W7kBHKYKrwZIuJIMyEwv6tf5ZgOApJgoa8mSAzYyoJSLPodkk9xnCu+Aes//hCRVTejiXftI
+	rwyNMsrBf+vCamHbbyqgO4JSt4+yDAc/eJ3Ld
+X-Gm-Gg: ASbGncvEvUClOg0ZMOgnYc8GoqCohw7+/Cceq0kcpcF8uCF/ALpvbT4iCJBk9BM+DaW
+	Z7bmLltU7Q26aVYsQLMmyloYLlfS0wSnoNk6pMtLMVWk6GWS2LYDc7II12JN7XVearQkuqoullR
+	IHBSRfInCcRI6h/5zPP2/Wr8KxFg==
+X-Google-Smtp-Source: AGHT+IH/+vybMPgjTy+Q/lR+WQGG9I7BYYRaZ8XGvbeWqhA0zAi7QHXEcXle+vpl3pUGz1AEgz4oOGz9sgmGVmlf3/8=
+X-Received: by 2002:a05:6902:4a8d:b0:e66:a274:7fff with SMTP id
+ 3f1490d57ef6-e66a2748117mr6225899276.21.1742583948895; Fri, 21 Mar 2025
+ 12:05:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250321184028.1797879-1-sdl@nppct.ru>
-In-Reply-To: <20250321184028.1797879-1-sdl@nppct.ru>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 21 Mar 2025 20:00:35 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEatQ6o8dt7x-1mkX0+ct01ThbXDE-kmctWtEnZbC1gEQ@mail.gmail.com>
-X-Gm-Features: AQ5f1Jrsqm5ZKw1ssQ6i1BzrR7cxcAa9fGii9HAvF6CAdcYyX2Hh7WEQJN-jTCo
-Message-ID: <CAMj1kXEatQ6o8dt7x-1mkX0+ct01ThbXDE-kmctWtEnZbC1gEQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1] efivarfs: Move efivarfs list into superblock s_fs_info
-To: Alexey Nepomnyashih <sdl@nppct.ru>
-Cc: Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org, 
-	syzbot+1902c359bfcaf39c46f2@syzkaller.appspotmail.com, 
-	syzbot+246ea4feed277471958a@syzkaller.appspotmail.com
+References: <FD501FB8-72D2-4B10-A03A-F52FC5B67646@oracle.com>
+ <CAHC9VhR961uTFueovLXXaOf-3ZAnvQCWOTfw-wCRuAKOKPAOKw@mail.gmail.com>
+ <73B78CE7-1BB8-4065-9EBA-FB69E327725E@oracle.com> <CAHC9VhRMUkzLVT5GT5c5hgpfaaKubzcPOTWFDpOmhNne0sswPA@mail.gmail.com>
+ <1A222B45-FCC4-4BBD-8E17-D92697FE467D@oracle.com> <CAHC9VhTObTee95SwZ+C4EwPotovE9R3vy0gVXf+kATtP3vfXrg@mail.gmail.com>
+ <EB757F96-E152-4EAB-B3F7-75C1DBE3A03B@oracle.com> <1956e7f9d60.28a7.85c95baa4474aabc7814e68940a78392@paul-moore.com>
+ <A3A29FB9-E015-4C87-B5F0-190A4C779CB3@oracle.com> <CAHC9VhQMN6cgWbxdAgBNffpCAo=ogGdm4qBGS_kKdDmiT8b3cw@mail.gmail.com>
+ <Z92gTQj6QkedbH0K@kernel.org>
+In-Reply-To: <Z92gTQj6QkedbH0K@kernel.org>
+From: Paul Moore <paul@paul-moore.com>
+Date: Fri, 21 Mar 2025 15:05:38 -0400
+X-Gm-Features: AQ5f1JoCVuy6gH5pZ3qt9eL4_YTiGz_EbkGoV-AHORqyWmdnqKeKo0JNC59Hn0c
+Message-ID: <CAHC9VhSi06azJ+b5YgLuDM6xff2401ArMM6LoP0vsqsUgz6VNA@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Eric Snowberg <eric.snowberg@oracle.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	David Howells <dhowells@redhat.com>, 
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, 
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	"casey@schaufler-ca.com" <casey@schaufler-ca.com>, Stefan Berger <stefanb@linux.ibm.com>, 
+	"ebiggers@kernel.org" <ebiggers@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
+	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 21 Mar 2025 at 19:40, Alexey Nepomnyashih <sdl@nppct.ru> wrote:
->
-> From: Ard Biesheuvel <ardb@kernel.org>
->
-> commit cdb46a8aefbf7fd36772bb206aaaf7e45d7cf8f6 upstream.
->
-> syzbot reports issues with concurrent fsopen()/fsconfig() invocations on
-> efivarfs, which are the result of the fact that the efivarfs list (which
-> caches the names and GUIDs of existing EFI variables) is a global
-> structure. In normal use, these issues are unlikely to trigger, even in
-> the presence of multiple mounts of efivarfs, but the execution pattern
-> used by the syzkaller reproducer may result in multiple instances of the
-> superblock that share the global efivarfs list, and this causes list
-> corruption when the list is reinitialized by one user while another is
-> traversing it.
->
-> So let's move the list head into the superblock s_fs_info field, so that
-> it will never be shared between distinct instances of the superblock. In
-> the common case, there will still be a single instance of this list, but
-> in the artificial syzkaller case, no list corruption can occur any
-> longer.
->
-> Reported-by: syzbot+1902c359bfcaf39c46f2@syzkaller.appspotmail.com
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> Reported-by: syzbot+246ea4feed277471958a@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=246ea4feed277471958a
-> Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-> ---
->  fs/efivarfs/inode.c    |  3 ++-
->  fs/efivarfs/internal.h |  9 ++++++---
->  fs/efivarfs/super.c    | 26 +++++++++++++++++---------
->  fs/efivarfs/vars.c     |  5 +++--
->  4 files changed, 28 insertions(+), 15 deletions(-)
->
+On Fri, Mar 21, 2025 at 1:22=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org>=
+ wrote:
+> On Thu, Mar 20, 2025 at 05:36:41PM -0400, Paul Moore wrote:
 
-The original commit has
+...
 
- fs/efivarfs/inode.c    |  3 ++-
- fs/efivarfs/internal.h |  6 +++---
- fs/efivarfs/super.c    | 19 ++++++++++---------
- fs/efivarfs/vars.c     |  5 +++--
- 4 files changed, 18 insertions(+), 15 deletions(-)
+> > I want to address two things, the first, and most important, is that
+> > while I am currently employed by Microsoft, I do not speak for
+> > Microsoft and the decisions and actions I take as an upstream Linux
+> > kernel maintainer are not vetted by Microsoft in any way.  I think you
+> > will find that many upstream kernel maintainers operate in a similar
+> > way for a variety of very good reasons.
+>
+> This is understood. If one takes a kernel maintainer role, one should
+> unconditionally disobey any vetting by the employer (even at the cost of
+> the job, or alternatively at the cost of giving up the maintainership).
+>
+> And with you in particular I don't think anyone has any trust issues,
+> no matter which group of villains you might be employed by ;-)
 
-so you will need to explain where those extra 10 lines came from.
+Haha :D
+
+> > The second issue is that my main focus is on ensuring we have a
+> > secure, safe, and well maintained LSM subsystem within the upstream
+> > Linux kernel.  While I do care about downstream efforts, e.g. UEFI
+> > Secure Boot, those efforts are largely outside the scope of the
+> > upstream Linux kernel and not my first concern.  If the developer
+> > groups who are focused on things like UEFI SB want to rely on
+> > functionality within the upstream Linux kernel they should be prepared
+> > to stand up and contribute/maintain those features or else they may go
+> > away at some point in the future.  In very blunt terms, contribute
+> > upstream or Lockdown dies.
+>
+> Could Lockdown functionality be re-implemented with that eBPF LSM? I
+> have not really looked into it so far...
+
+I haven't looked at it too closely, but the kernel code is very
+simplistic so I would be surprised if it couldn't be implemented in
+eBPF, although there might be some issues about *very* early boot
+(Lockdown can run as an "early" LSM) and integrity which would need to
+be addressed (there is work ongoing in that are, see the recent Hornet
+posting as one example of that work).  Beyond that there are
+policy/political issues around that would need to be worked out;
+nothing that couldn't be done, but it would be something that we would
+need to sort out.
+
+However, as I mentioned earlier, with Lockdown already present in the
+kernel, deprecation and removal is really only an option of last
+resort, and I'm hopeful we won't come to that.  We've seen some proper
+Lockdown patches submitted overnight (!!!) and I'm discussing
+maintainer roles with a couple of people off-list; with a bit of luck
+I'm thinking Lockdown might be properly maintained after this upcoming
+merge window.  Fingers crossed :)
+
+--=20
+paul-moore.com
 
