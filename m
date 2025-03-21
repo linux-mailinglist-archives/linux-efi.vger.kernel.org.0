@@ -1,165 +1,248 @@
-Return-Path: <linux-efi+bounces-3062-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3063-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D53A6C2F4
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 20:06:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AF6A6C377
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 20:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F83C1B6227B
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 19:06:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3789F48257F
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 19:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5671EB1A1;
-	Fri, 21 Mar 2025 19:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C327F22D781;
+	Fri, 21 Mar 2025 19:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="QzyzWv0U"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="FyXF57qu"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E9154426
-	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 19:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B76918FC75
+	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 19:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742583960; cv=none; b=VWbaroDoiuXexPmGv66f65w+xfKpEWsv++i7Wtx7e9NkKnPGyuJRv83y7zC/JhDIuCErBBAvb1uAiToBjAtyOsUkCwO7b+J1nxHU+HxyWCsDepFCTlIIOiUxv1D0Ap+KjqiFV3abK2QBp4tuQT1UscjX1hkaEsNQONpKkD3PTwg=
+	t=1742586180; cv=none; b=At0x8FavwCR2g4HvJsCF1vNiigmM+WpS1SDIlzHps56GZsTdaG87YDWgTqXWQHmUNjgeZNbDy20tXInJ5viB+FRx4Zm1hF7pT5adeoRRCsrBt4eC00sxsBujsJLx9/y5I+sxaeKvCLmhHCg9oc9mGTvZDT1ttF3gCXKNbX0O1aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742583960; c=relaxed/simple;
-	bh=sPA3YMc7zB5fmsVIwEgENpeTURZ/iV7aheO5rZV+wXc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HDOhkfwU3lBU9KslXnrr1HT/zE4g1x2mcHEO+jzeOzlKJRBXpfsQowtLaCnkjLslOOlJ9dZ4UC1l2WP4x3pA+EHJd9UdL8C2n9irqxiRmCMoe0ZqsiKbDXEqlMWHbACY9HrRH+iGnnCMXe2BUNZVpt9kqhEAyIxbzi6u5GClcK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=QzyzWv0U; arc=none smtp.client-ip=209.85.219.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e6405b5cd9bso1892856276.1
-        for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 12:05:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1742583958; x=1743188758; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4nSFzAgQaMCuwvxmSdJkfWwEiaWngP9LwXhsN0dSMzo=;
-        b=QzyzWv0UsSB9n0BSMggyaQDbx0K7uUYe4W56nBfIoMvQKo2MQIJ0noaY+PXOUBB6Ib
-         /6a13LgR6b2DNyZSDK0qE/T1RxpeGzd1htX855y9dlqEEtGN3gdK69JYRB4pGTssA1B4
-         Rr1z21+vbDeAW+g6KcQuRrABkrqSZAzYCwnvH1REVjkCoEIEQJyQroAzegCiisgUMqrU
-         G9b5IYDClVCacDEZJak4rfYlNhurx3gMUkhZAEQ3/CzXZeLHMhYPs4gKjxp903YTtrl9
-         2JSnkuhBX4eWTAv3it7/WIgfmdkUNolVVePF3Ml3s5XFjSSFhJmBk0seCk+yUGjPeIv6
-         43yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742583958; x=1743188758;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4nSFzAgQaMCuwvxmSdJkfWwEiaWngP9LwXhsN0dSMzo=;
-        b=Q2XqkOAV1/mu8sy0uWLJZVMWuSTFoAqGmKhqXrw3WkoWRzLtt5haTIXttQ3uEmFltS
-         T3p6PPxKFTAPKNVpwSGZDzkdhI7iH8tNiTjoO+gfJSmE9Bf+LukzkyzkeHfsmUulUT/H
-         ku4nsr7LpsQoN5RmwM4lRn200qTBEoyMGmeybxbhKtz5z0GAYpUPwpHoq13pmrr43Y9O
-         9BBMKN/jD4wGrKSQXjRq23vW7zjE7ZLasNGCTwnSL65wzYFkZY6G3I8oyvq/tLYY1qSG
-         5X+ypsXXGxzocA4utZSvQy4ZpZx8v56Fw7ydzaQ7XjZkG0VDSz6S95F/x4PjYsrcpfe0
-         IkHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWuuklgCnZFRg4wlPxOaSBVs98gVa0/hca9bBY5bsDoMurCIdef1frI2Jng62kip2XzO57cC2YUwLY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyuwsuz4u3/Mn6cxIHj6paFL3IXJ1P0AhCaGheQQC7xqJTLWzyl
-	iQ6W7kBHKYKrwZIuJIMyEwv6tf5ZgOApJgoa8mSAzYyoJSLPodkk9xnCu+Aes//hCRVTejiXftI
-	rwyNMsrBf+vCamHbbyqgO4JSt4+yDAc/eJ3Ld
-X-Gm-Gg: ASbGncvEvUClOg0ZMOgnYc8GoqCohw7+/Cceq0kcpcF8uCF/ALpvbT4iCJBk9BM+DaW
-	Z7bmLltU7Q26aVYsQLMmyloYLlfS0wSnoNk6pMtLMVWk6GWS2LYDc7II12JN7XVearQkuqoullR
-	IHBSRfInCcRI6h/5zPP2/Wr8KxFg==
-X-Google-Smtp-Source: AGHT+IH/+vybMPgjTy+Q/lR+WQGG9I7BYYRaZ8XGvbeWqhA0zAi7QHXEcXle+vpl3pUGz1AEgz4oOGz9sgmGVmlf3/8=
-X-Received: by 2002:a05:6902:4a8d:b0:e66:a274:7fff with SMTP id
- 3f1490d57ef6-e66a2748117mr6225899276.21.1742583948895; Fri, 21 Mar 2025
- 12:05:48 -0700 (PDT)
+	s=arc-20240116; t=1742586180; c=relaxed/simple;
+	bh=r+9rFxKYels7aSBQsUwzD3uvlUggPtmt0su+Trdw/gM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VOp75CbXjWOrnyH9jRyDXZtr+weImdTh8sYcp9jVjeigNj7MrpPXieP9JBCe5rA1o8jRDLzM94wk+OY0wq6dzN5VlPvDzQFZAOCFQwqks1otEE+NgjtGqTF3AYUc2Z1Gea+W5tyG3leyxp89XZR/tHx3zGkeNhc6B+rSumgyUg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=FyXF57qu; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id 483051C1652
+	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 22:42:54 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1742586168; x=
+	1743450169; bh=r+9rFxKYels7aSBQsUwzD3uvlUggPtmt0su+Trdw/gM=; b=F
+	yXF57qu+nVE4I3OzfK9arvEeOkfdLBPTTT0nJUQdJ4mHovh4+LQgqysnOLcPCVPy
+	0yrjLoCpRbJzhbDadDtBnpqbG9e1xz8Iza/g1URx304iUdgQWELNKJyEy2pRdpiK
+	cbzmoetkog7Yn9noM2nI0Qr/W4rbO/lAgK19Ttbe9w=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id X65EQhCEjpAN for <linux-efi@vger.kernel.org>;
+	Fri, 21 Mar 2025 22:42:48 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 45B8E1C0604;
+	Fri, 21 Mar 2025 22:42:35 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	Jeremy Kerr <jk@ozlabs.org>,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Jiao Zhou <jiaozhou@google.com>,
+	Matthew Garrett <mgarrett@aurora.tech>
+Subject: [PATCH 6.1 v2 1/2] efivarfs: Add uid/gid mount options
+Date: Fri, 21 Mar 2025 19:42:26 +0000
+Message-ID: <20250321194230.1928571-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <FD501FB8-72D2-4B10-A03A-F52FC5B67646@oracle.com>
- <CAHC9VhR961uTFueovLXXaOf-3ZAnvQCWOTfw-wCRuAKOKPAOKw@mail.gmail.com>
- <73B78CE7-1BB8-4065-9EBA-FB69E327725E@oracle.com> <CAHC9VhRMUkzLVT5GT5c5hgpfaaKubzcPOTWFDpOmhNne0sswPA@mail.gmail.com>
- <1A222B45-FCC4-4BBD-8E17-D92697FE467D@oracle.com> <CAHC9VhTObTee95SwZ+C4EwPotovE9R3vy0gVXf+kATtP3vfXrg@mail.gmail.com>
- <EB757F96-E152-4EAB-B3F7-75C1DBE3A03B@oracle.com> <1956e7f9d60.28a7.85c95baa4474aabc7814e68940a78392@paul-moore.com>
- <A3A29FB9-E015-4C87-B5F0-190A4C779CB3@oracle.com> <CAHC9VhQMN6cgWbxdAgBNffpCAo=ogGdm4qBGS_kKdDmiT8b3cw@mail.gmail.com>
- <Z92gTQj6QkedbH0K@kernel.org>
-In-Reply-To: <Z92gTQj6QkedbH0K@kernel.org>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 21 Mar 2025 15:05:38 -0400
-X-Gm-Features: AQ5f1JoCVuy6gH5pZ3qt9eL4_YTiGz_EbkGoV-AHORqyWmdnqKeKo0JNC59Hn0c
-Message-ID: <CAHC9VhSi06azJ+b5YgLuDM6xff2401ArMM6LoP0vsqsUgz6VNA@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	David Howells <dhowells@redhat.com>, 
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, 
-	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
-	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	"casey@schaufler-ca.com" <casey@schaufler-ca.com>, Stefan Berger <stefanb@linux.ibm.com>, 
-	"ebiggers@kernel.org" <ebiggers@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
-	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
-	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 21, 2025 at 1:22=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org>=
- wrote:
-> On Thu, Mar 20, 2025 at 05:36:41PM -0400, Paul Moore wrote:
+From: Jiao Zhou <jiaozhou@google.com>
 
-...
+commit 5329aa5101f73c451bcd48deaf3f296685849d9c upstream.
 
-> > I want to address two things, the first, and most important, is that
-> > while I am currently employed by Microsoft, I do not speak for
-> > Microsoft and the decisions and actions I take as an upstream Linux
-> > kernel maintainer are not vetted by Microsoft in any way.  I think you
-> > will find that many upstream kernel maintainers operate in a similar
-> > way for a variety of very good reasons.
->
-> This is understood. If one takes a kernel maintainer role, one should
-> unconditionally disobey any vetting by the employer (even at the cost of
-> the job, or alternatively at the cost of giving up the maintainership).
->
-> And with you in particular I don't think anyone has any trust issues,
-> no matter which group of villains you might be employed by ;-)
+Allow UEFI variables to be modified by non-root processes in order to
+run sandboxed code. This doesn't change the behavior of mounting
+efivarfs unless uid/gid are specified; by default both are set to root.
 
-Haha :D
+Signed-off-by: Jiao Zhou <jiaozhou@google.com>
+Acked-by: Matthew Garrett <mgarrett@aurora.tech>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+---
+ fs/efivarfs/inode.c    |  4 +++
+ fs/efivarfs/internal.h |  9 ++++++
+ fs/efivarfs/super.c    | 68 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 81 insertions(+)
 
-> > The second issue is that my main focus is on ensuring we have a
-> > secure, safe, and well maintained LSM subsystem within the upstream
-> > Linux kernel.  While I do care about downstream efforts, e.g. UEFI
-> > Secure Boot, those efforts are largely outside the scope of the
-> > upstream Linux kernel and not my first concern.  If the developer
-> > groups who are focused on things like UEFI SB want to rely on
-> > functionality within the upstream Linux kernel they should be prepared
-> > to stand up and contribute/maintain those features or else they may go
-> > away at some point in the future.  In very blunt terms, contribute
-> > upstream or Lockdown dies.
->
-> Could Lockdown functionality be re-implemented with that eBPF LSM? I
-> have not really looked into it so far...
+diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
+index b3dc7ff42400..e93f2afd6741 100644
+--- a/fs/efivarfs/inode.c
++++ b/fs/efivarfs/inode.c
+@@ -21,8 +21,12 @@ struct inode *efivarfs_get_inode(struct super_block *sb,
+ 				dev_t dev, bool is_removable)
+ {
+ 	struct inode *inode = new_inode(sb);
++	struct efivarfs_fs_info *fsi = sb->s_fs_info;
++	struct efivarfs_mount_opts *opts = &fsi->mount_opts;
+ 
+ 	if (inode) {
++		inode->i_uid = opts->uid;
++		inode->i_gid = opts->gid;
+ 		inode->i_ino = get_next_ino();
+ 		inode->i_mode = mode;
+ 		inode->i_atime = inode->i_mtime = inode->i_ctime = current_time(inode);
+diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
+index dcb973d8736c..0762c0a1d207 100644
+--- a/fs/efivarfs/internal.h
++++ b/fs/efivarfs/internal.h
+@@ -9,6 +9,15 @@
+ #include <linux/list.h>
+ #include <linux/efi.h>
+ 
++struct efivarfs_mount_opts {
++	kuid_t uid;
++	kgid_t gid;
++};
++
++struct efivarfs_fs_info {
++	struct efivarfs_mount_opts mount_opts;
++};
++
+ struct efi_variable {
+ 	efi_char16_t  VariableName[EFI_VAR_NAME_LEN/sizeof(efi_char16_t)];
+ 	efi_guid_t    VendorGuid;
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index b8c4641ed152..b4f1c46ea06f 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -8,6 +8,7 @@
+ #include <linux/efi.h>
+ #include <linux/fs.h>
+ #include <linux/fs_context.h>
++#include <linux/fs_parser.h>
+ #include <linux/module.h>
+ #include <linux/pagemap.h>
+ #include <linux/ucs2_string.h>
+@@ -24,10 +25,26 @@ static void efivarfs_evict_inode(struct inode *inode)
+ 	clear_inode(inode);
+ }
+ 
++static int efivarfs_show_options(struct seq_file *m, struct dentry *root)
++{
++	struct super_block *sb = root->d_sb;
++	struct efivarfs_fs_info *sbi = sb->s_fs_info;
++	struct efivarfs_mount_opts *opts = &sbi->mount_opts;
++
++	if (!uid_eq(opts->uid, GLOBAL_ROOT_UID))
++		seq_printf(m, ",uid=%u",
++				from_kuid_munged(&init_user_ns, opts->uid));
++	if (!gid_eq(opts->gid, GLOBAL_ROOT_GID))
++		seq_printf(m, ",gid=%u",
++				from_kgid_munged(&init_user_ns, opts->gid));
++	return 0;
++}
++
+ static const struct super_operations efivarfs_ops = {
+ 	.statfs = simple_statfs,
+ 	.drop_inode = generic_delete_inode,
+ 	.evict_inode = efivarfs_evict_inode,
++	.show_options = efivarfs_show_options,
+ };
+ 
+ /*
+@@ -183,6 +200,45 @@ static int efivarfs_destroy(struct efivar_entry *entry, void *data)
+ 	return 0;
+ }
+ 
++enum {
++	Opt_uid, Opt_gid,
++};
++
++static const struct fs_parameter_spec efivarfs_parameters[] = {
++	fsparam_u32("uid", Opt_uid),
++	fsparam_u32("gid", Opt_gid),
++	{},
++};
++
++static int efivarfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
++{
++	struct efivarfs_fs_info *sbi = fc->s_fs_info;
++	struct efivarfs_mount_opts *opts = &sbi->mount_opts;
++	struct fs_parse_result result;
++	int opt;
++
++	opt = fs_parse(fc, efivarfs_parameters, param, &result);
++	if (opt < 0)
++		return opt;
++
++	switch (opt) {
++	case Opt_uid:
++		opts->uid = make_kuid(current_user_ns(), result.uint_32);
++		if (!uid_valid(opts->uid))
++			return -EINVAL;
++		break;
++	case Opt_gid:
++		opts->gid = make_kgid(current_user_ns(), result.uint_32);
++		if (!gid_valid(opts->gid))
++			return -EINVAL;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ {
+ 	struct inode *inode = NULL;
+@@ -236,11 +292,22 @@ static int efivarfs_reconfigure(struct fs_context *fc)
+ 
+ static const struct fs_context_operations efivarfs_context_ops = {
+ 	.get_tree	= efivarfs_get_tree,
++	.parse_param	= efivarfs_parse_param,
+ 	.reconfigure	= efivarfs_reconfigure,
+ };
+ 
+ static int efivarfs_init_fs_context(struct fs_context *fc)
+ {
++	struct efivarfs_fs_info *sfi;
++
++	sfi = kzalloc(sizeof(*sfi), GFP_KERNEL);
++	if (!sfi)
++		return -ENOMEM;
++
++	sfi->mount_opts.uid = GLOBAL_ROOT_UID;
++	sfi->mount_opts.gid = GLOBAL_ROOT_GID;
++
++	fc->s_fs_info = sfi;
+ 	fc->ops = &efivarfs_context_ops;
+ 	return 0;
+ }
+@@ -261,6 +328,7 @@ static struct file_system_type efivarfs_type = {
+ 	.name    = "efivarfs",
+ 	.init_fs_context = efivarfs_init_fs_context,
+ 	.kill_sb = efivarfs_kill_sb,
++	.parameters = efivarfs_parameters,
+ };
+ 
+ static __init int efivarfs_init(void)
+-- 
+2.43.0
 
-I haven't looked at it too closely, but the kernel code is very
-simplistic so I would be surprised if it couldn't be implemented in
-eBPF, although there might be some issues about *very* early boot
-(Lockdown can run as an "early" LSM) and integrity which would need to
-be addressed (there is work ongoing in that are, see the recent Hornet
-posting as one example of that work).  Beyond that there are
-policy/political issues around that would need to be worked out;
-nothing that couldn't be done, but it would be something that we would
-need to sort out.
-
-However, as I mentioned earlier, with Lockdown already present in the
-kernel, deprecation and removal is really only an option of last
-resort, and I'm hopeful we won't come to that.  We've seen some proper
-Lockdown patches submitted overnight (!!!) and I'm discussing
-maintainer roles with a couple of people off-list; with a bit of luck
-I'm thinking Lockdown might be properly maintained after this upcoming
-merge window.  Fingers crossed :)
-
---=20
-paul-moore.com
 
