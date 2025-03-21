@@ -1,57 +1,55 @@
-Return-Path: <linux-efi+bounces-3057-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3059-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853B7A6C24E
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 19:24:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C2CA6C2A6
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 19:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A207177F0D
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 18:23:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 926963BBDA2
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Mar 2025 18:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCB722FF55;
-	Fri, 21 Mar 2025 18:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC7D22F389;
+	Fri, 21 Mar 2025 18:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="Mzb0kVyL"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="ikyDawYk"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED7822FF41
-	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 18:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061E61EB9E1
+	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 18:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742581320; cv=none; b=Ekul4i0Er3MbxQVQjRfBGpnJ5IWWx/suOXuDHalrEwxDYfH/+a5dK6Hoyl+LXIYFNGq8Fjtrjfr0N3OSUiMv5yZfGq49zP9vwu77xXNMCjlw7pJcAshyaKqfETidGtoPI/vtZZ3NqM7W0r5cUEVPWsvHeVZvCq9od6qHFKiyJVI=
+	t=1742582450; cv=none; b=QHayl0B521DhcoV2yMU/mkvYd1cY6R2oAUt29IU5R5GBBxgYpDnmVYa70vFcYtCh/okXjiO1eL7evtwg6HejWkqqtDSKr4M0WaAqRejfdPXVpDgkQWxaXxqg/hsirmBSvYB2uU4zQ/0iNjd9WdKoqAPm1bh6Q/asMruoSbOdiZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742581320; c=relaxed/simple;
-	bh=Km/lmJT7WXfeyoWCsjE3+40++PbnaxaMlPsWDIjYSO4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sh9SgeWFG46neQXvgHbloMwE1+gMmOjJxg8Vz78uBZGobPMhEa5fQuBknQcRXJT1W7sWnzjfeXtQNgXkx04/c2aUZrO6Gwop723lAvQzHwWi2EiU4DyFEFwXZt/qi0FzgKX9zFK7hJA+odVi6bW/XC4ZxZZ57Eou/vfbcqapHA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=Mzb0kVyL; arc=none smtp.client-ip=195.133.245.4
+	s=arc-20240116; t=1742582450; c=relaxed/simple;
+	bh=RcRiL01nJNn8jL/MfIZbJZbJpnLteETpwfU/AMcqA9Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nnFg8gb7L9Zvc0204L1Azm9JbjTRrh5oPimPHBbfCtY9A3HOF2RQL54g8cS1a1Z3sNlz503NGfdIOVUSVrNNxCHotWGHWuQQ4hZSpyT+eRCH9WR3JZhqaqXO82B6AROkWQPjao5MUTdoyCM4U/qXSQK3YFBFF5buPWHn1Up46S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=ikyDawYk; arc=none smtp.client-ip=195.133.245.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
 Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id 5AA491C16F4
-	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 21:21:54 +0300 (MSK)
+	by mail.nppct.ru (Postfix) with ESMTP id 6C90B1C16F4
+	for <linux-efi@vger.kernel.org>; Fri, 21 Mar 2025 21:40:39 +0300 (MSK)
 Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
 	reason="pass (just generated, assumed good)" header.d=nppct.ru
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:to:from:from; s=
-	dkim; t=1742581309; x=1743445310; bh=Km/lmJT7WXfeyoWCsjE3+40++Pb
-	naxaMlPsWDIjYSO4=; b=Mzb0kVyLlMdhNBD8shJWDo+K4QEPcYSwgTSqMtQrqXW
-	eV4GnjTZg7OCrqm8uqE2jcMh73hS2fit/zrCu5mf+OECIOhQjMaazThG6R+/UgRl
-	NPd/haUtD0xmmiv4s5n08xvXsd6oFkVHYiYwe3wavqFi+l1yDGXkdpdU60AFfPm0
-	=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1742582436; x=
+	1743446437; bh=RcRiL01nJNn8jL/MfIZbJZbJpnLteETpwfU/AMcqA9Q=; b=i
+	kyDawYkXr042023anweuly2B8fR0CFOCahh0lle6xexy3dL4Ua2Zt/r+tTEjXET9
+	/mwYrseM2U97q4/hrONUW9B+Zah7xCJR3gTm4x8AJomArUB2M/jnp2NzSWQpvea1
+	6z49D+1GmdM00tVeGFoT+GgdPxummlXfLB/Q9lEQ8s=
 X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
 Received: from mail.nppct.ru ([127.0.0.1])
 	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id qYDiwjLdNp_p for <linux-efi@vger.kernel.org>;
-	Fri, 21 Mar 2025 21:21:49 +0300 (MSK)
+	with ESMTP id uvg-oWi0Br9I for <linux-efi@vger.kernel.org>;
+	Fri, 21 Mar 2025 21:40:36 +0300 (MSK)
 Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 2E4521C0628;
-	Fri, 21 Mar 2025 21:21:49 +0300 (MSK)
+	by mail.nppct.ru (Postfix) with ESMTPSA id A46DD1C0628;
+	Fri, 21 Mar 2025 21:40:36 +0300 (MSK)
 From: Alexey Nepomnyashih <sdl@nppct.ru>
 To: Ard Biesheuvel <ardb@kernel.org>
 Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
@@ -59,13 +57,12 @@ Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org,
+	syzbot+1902c359bfcaf39c46f2@syzkaller.appspotmail.com,
 	syzbot+246ea4feed277471958a@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 2/2] efivarfs: Add efivars_lock to synchronize list operations
-Date: Fri, 21 Mar 2025 18:21:25 +0000
-Message-ID: <20250321182126.1716111-2-sdl@nppct.ru>
+Subject: [PATCH 6.1] efivarfs: Move efivarfs list into superblock s_fs_info
+Date: Fri, 21 Mar 2025 18:40:20 +0000
+Message-ID: <20250321184028.1797879-1-sdl@nppct.ru>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250321182126.1716111-1-sdl@nppct.ru>
-References: <20250321182126.1716111-1-sdl@nppct.ru>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -74,100 +71,194 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-No upstream commit exists for this patch.
-    
-The bug was fixed by upstream commit cdb46a8aefbf ("efivarfs: Move
-efivarfs list into superblock s_fs_info") but it depends on major changes
-done in the mainline kernel and 5.10.y needs its own patch.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Add locking around efivarfs_list operations to prevent race conditions
-during processing of multiple filesystem superblock instances.
+commit cdb46a8aefbf7fd36772bb206aaaf7e45d7cf8f6 upstream.
 
-list_del corruption. prev->next should be ffff0000d86d6828, but was ffff800016216e60. (prev=ffff800016216e60)
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:61!
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 4299 Comm: syz-executor237 Not tainted 6.1.119-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
-lr : __list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
-Call trace:
-__list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
-__list_del_entry include/linux/list.h:134 [inline]
-list_del include/linux/list.h:148 [inline]
-efivar_entry_remove+0x38/0x110 fs/efivarfs/vars.c:493
-efivarfs_destroy+0x20/0x3c fs/efivarfs/super.c:184
-efivar_entry_iter+0x94/0xdc fs/efivarfs/vars.c:720
-efivarfs_kill_sb+0x58/0x70 fs/efivarfs/super.c:258
-deactivate_locked_super+0xac/0x124 fs/super.c:332
-deactivate_super+0xf0/0x110 fs/super.c:363
-cleanup_mnt+0x394/0x41c fs/namespace.c:1186
-__cleanup_mnt+0x20/0x30 fs/namespace.c:1193
+syzbot reports issues with concurrent fsopen()/fsconfig() invocations on
+efivarfs, which are the result of the fact that the efivarfs list (which
+caches the names and GUIDs of existing EFI variables) is a global
+structure. In normal use, these issues are unlikely to trigger, even in
+the presence of multiple mounts of efivarfs, but the execution pattern
+used by the syzkaller reproducer may result in multiple instances of the
+superblock that share the global efivarfs list, and this causes list
+corruption when the list is reinitialized by one user while another is
+traversing it.
 
+So let's move the list head into the superblock s_fs_info field, so that
+it will never be shared between distinct instances of the superblock. In
+the common case, there will still be a single instance of this list, but
+in the artificial syzkaller case, no list corruption can occur any
+longer.
+
+Reported-by: syzbot+1902c359bfcaf39c46f2@syzkaller.appspotmail.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Reported-by: syzbot+246ea4feed277471958a@syzkaller.appspotmail.com
 Closes: https://syzkaller.appspot.com/bug?extid=246ea4feed277471958a
-Fixes: e14ab23dde12 ("efivars: efivar_entry API")
 Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
 ---
- drivers/firmware/efi/vars.c | 11 +++++++----
- fs/efivarfs/super.c         |  4 ++++
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ fs/efivarfs/inode.c    |  3 ++-
+ fs/efivarfs/internal.h |  9 ++++++---
+ fs/efivarfs/super.c    | 26 +++++++++++++++++---------
+ fs/efivarfs/vars.c     |  5 +++--
+ 4 files changed, 28 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index 010febd2ab6b..517bf886ba14 100644
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -417,6 +417,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 	const struct efivar_operations *ops;
- 	unsigned long variable_name_size = 512;
- 	efi_char16_t *variable_name;
-+	bool var_present = false;
- 	efi_status_t status;
- 	efi_guid_t vendor_guid;
- 	int err = 0;
-@@ -451,8 +452,12 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 						&vendor_guid);
- 		switch (status) {
- 		case EFI_SUCCESS:
--			if (duplicates)
-+			if (duplicates) {
-+				var_present = variable_is_present(variable_name,
-+									&vendor_guid,
-+									head);
- 				up(&efivars_lock);
-+			}
+diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
+index b3dc7ff42400..a999351e6615 100644
+--- a/fs/efivarfs/inode.c
++++ b/fs/efivarfs/inode.c
+@@ -73,6 +73,7 @@ static bool efivarfs_valid_name(const char *str, int len)
+ static int efivarfs_create(struct user_namespace *mnt_userns, struct inode *dir,
+ 			   struct dentry *dentry, umode_t mode, bool excl)
+ {
++	struct efivarfs_fs_info *info = dir->i_sb->s_fs_info;
+ 	struct inode *inode = NULL;
+ 	struct efivar_entry *var;
+ 	int namelen, i = 0, err = 0;
+@@ -110,7 +111,7 @@ static int efivarfs_create(struct user_namespace *mnt_userns, struct inode *dir,
+ 	inode->i_private = var;
+ 	kmemleak_ignore(var);
  
- 			variable_name_size = var_name_strnsize(variable_name,
- 							       variable_name_size);
-@@ -465,9 +470,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 			 * we'll ever see a different variable name,
- 			 * and may end up looping here forever.
- 			 */
--			if (duplicates &&
--			    variable_is_present(variable_name, &vendor_guid,
--						head)) {
-+			if (duplicates && var_present) {
- 				dup_variable_bug(variable_name, &vendor_guid,
- 						 variable_name_size);
- 				status = EFI_NOT_FOUND;
+-	err = efivar_entry_add(var, &efivarfs_list);
++	err = efivar_entry_add(var, &info->efivarfs_list);
+ 	if (err)
+ 		goto out;
+ 
+diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
+index dcb973d8736c..1745be16ff65 100644
+--- a/fs/efivarfs/internal.h
++++ b/fs/efivarfs/internal.h
+@@ -9,6 +9,10 @@
+ #include <linux/list.h>
+ #include <linux/efi.h>
+ 
++struct efivarfs_fs_info {
++	struct list_head efivarfs_list;
++};
++
+ struct efi_variable {
+ 	efi_char16_t  VariableName[EFI_VAR_NAME_LEN/sizeof(efi_char16_t)];
+ 	efi_guid_t    VendorGuid;
+@@ -24,7 +28,8 @@ struct efivar_entry {
+ 	struct kobject kobj;
+ };
+ 
+-int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
++int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *,
++			    struct list_head *),
+ 		void *data, bool duplicates, struct list_head *head);
+ 
+ int efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
+@@ -54,6 +59,4 @@ extern struct inode *efivarfs_get_inode(struct super_block *sb,
+ 			const struct inode *dir, int mode, dev_t dev,
+ 			bool is_removable);
+ 
+-extern struct list_head efivarfs_list;
+-
+ #endif /* EFIVAR_FS_INTERNAL_H */
 diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 24a0c5ef4169..7a6e2676b312 100644
+index b8c4641ed152..a2c13af6c090 100644
 --- a/fs/efivarfs/super.c
 +++ b/fs/efivarfs/super.c
-@@ -212,7 +212,11 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+@@ -17,8 +17,6 @@
+ 
+ #include "internal.h"
+ 
+-LIST_HEAD(efivarfs_list);
+-
+ static void efivarfs_evict_inode(struct inode *inode)
+ {
+ 	clear_inode(inode);
+@@ -102,7 +100,8 @@ static struct dentry *efivarfs_alloc_dentry(struct dentry *parent, char *name)
+ }
+ 
+ static int efivarfs_callback(efi_char16_t *name16, efi_guid_t vendor,
+-			     unsigned long name_size, void *data)
++			     unsigned long name_size, void *data,
++			     struct list_head *list)
+ {
+ 	struct super_block *sb = (struct super_block *)data;
+ 	struct efivar_entry *entry;
+@@ -154,7 +153,7 @@ static int efivarfs_callback(efi_char16_t *name16, efi_guid_t vendor,
+ 	}
+ 
+ 	__efivar_entry_get(entry, NULL, &size, NULL);
+-	__efivar_entry_add(entry, &efivarfs_list);
++	__efivar_entry_add(entry, list);
+ 
+ 	/* copied by the above to local storage in the dentry. */
+ 	kfree(name);
+@@ -185,6 +184,7 @@ static int efivarfs_destroy(struct efivar_entry *entry, void *data)
+ 
+ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ {
++	struct efivarfs_fs_info *sfi = sb->s_fs_info;
+ 	struct inode *inode = NULL;
+ 	struct dentry *root;
+ 	int err;
+@@ -210,11 +210,10 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
  	if (!root)
  		return -ENOMEM;
  
-+	err = efivar_entry_iter_begin();
-+	if (err)
-+		return err;
- 	INIT_LIST_HEAD(&efivarfs_list);
-+	efivar_entry_iter_end();
- 
- 	err = efivar_init(efivarfs_callback, (void *)sb, true, &efivarfs_list);
+-	INIT_LIST_HEAD(&efivarfs_list);
+-
+-	err = efivar_init(efivarfs_callback, (void *)sb, true, &efivarfs_list);
++	err = efivar_init(efivarfs_callback, (void *)sb, true,
++			  &sfi->efivarfs_list);
  	if (err)
+-		efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL);
++		efivar_entry_iter(efivarfs_destroy, &sfi->efivarfs_list, NULL);
+ 
+ 	return err;
+ }
+@@ -241,6 +240,15 @@ static const struct fs_context_operations efivarfs_context_ops = {
+ 
+ static int efivarfs_init_fs_context(struct fs_context *fc)
+ {
++	struct efivarfs_fs_info *sfi;
++
++	sfi = kzalloc(sizeof(*sfi), GFP_KERNEL);
++	if (!sfi)
++		return -ENOMEM;
++
++	INIT_LIST_HEAD(&sfi->efivarfs_list);
++
++	fc->s_fs_info = sfi;
+ 	fc->ops = &efivarfs_context_ops;
+ 	return 0;
+ }
+@@ -252,7 +260,7 @@ static void efivarfs_kill_sb(struct super_block *sb)
+ 	kill_litter_super(sb);
+ 
+ 	/* Remove all entries and destroy */
+-	efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL);
++	efivar_entry_iter(efivarfs_destroy, &sfi->efivarfs_list, NULL);
+ 	kfree(sfi);
+ }
+ 
+diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
+index 13bc60698955..2ad377818d0f 100644
+--- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -369,7 +369,8 @@ static void dup_variable_bug(efi_char16_t *str16, efi_guid_t *vendor_guid,
+  *
+  * Returns 0 on success, or a kernel error code on failure.
+  */
+-int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
++int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *,
++			    struct list_head *),
+ 		void *data, bool duplicates, struct list_head *head)
+ {
+ 	unsigned long variable_name_size = 512;
+@@ -421,7 +422,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 				status = EFI_NOT_FOUND;
+ 			} else {
+ 				err = func(variable_name, vendor_guid,
+-					   variable_name_size, data);
++					   variable_name_size, data, head);
+ 				if (err)
+ 					status = EFI_NOT_FOUND;
+ 			}
 -- 
 2.43.0
 
