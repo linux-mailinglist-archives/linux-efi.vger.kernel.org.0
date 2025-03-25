@@ -1,227 +1,178 @@
-Return-Path: <linux-efi+bounces-3075-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3076-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C6BA6EC56
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Mar 2025 10:16:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64243A7004B
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Mar 2025 14:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CFB83A739F
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Mar 2025 09:16:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF1819A1B7F
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Mar 2025 13:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48EA1DDA35;
-	Tue, 25 Mar 2025 09:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D832D25B67C;
+	Tue, 25 Mar 2025 12:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P51vDcby"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i1STrdND"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C58115666B
-	for <linux-efi@vger.kernel.org>; Tue, 25 Mar 2025 09:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2D325B673
+	for <linux-efi@vger.kernel.org>; Tue, 25 Mar 2025 12:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742894183; cv=none; b=Z0YhJ7WOz6as1bsFLpqlMHHmxbdFGkKJ7o8+QDjmDAPtZNVuw6Uk5BL1WkmkBp+mRwk4p7E7+2gXXR0ZoEvo103p0HxPub4yJhCI1/BsnfNdLK27UPM6eJI716ZnLef5/DUgTVeCDexuYjRVUFLnDrhzisxfQ0BlBp/cdX9fcWQ=
+	t=1742905967; cv=none; b=f/JvyyoomNTfCKoXtFobaohuKrhX1EKnTa2vMt2YTiQndThDWEm7Ws9LTUq9YeOhuukGjbT0giDQKUAJgb4CSVuIvRraDgfVTQ2bBvK3BpaBeRRp+7/BSzFjBq9WzQbk/5IgXmvgGBIRBgPPrmGNd8F2lOlTPMoi6a8rwGovsgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742894183; c=relaxed/simple;
-	bh=ek4ovIye96+8XTAu5CwMIOlsZQ5eMdqX+mKTFqbt3WU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QJyCz593H6fYMdxfLRwS0VJaUpZxz6MsYOLYaU1CNZTDMIHQu7IKOliaBEd50ZhwoN0psgHfeGhG2533bTTKnSncWTJVyTkZmlL3YavNbssLhKeTcjLhhJcWjeo8xMHYmV2DRum97HhLWFnTD9OCx3qFtKbqNVHDOgbCH4eyiOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P51vDcby; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4394c489babso24296415e9.1
-        for <linux-efi@vger.kernel.org>; Tue, 25 Mar 2025 02:16:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742894179; x=1743498979; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5E07m/Jva03uFHXfamqgR/Yccgbktzh+JjZw8SY61/U=;
-        b=P51vDcby3gTFyum2eYdXUyvUIRb9NlcLeEATyhYfdkUa4UtFLAjAJSoa7Y5PdWY07h
-         rYBRkQjDpVEcRxggBf1xVkTjnWzvk0K7GeF7S5H5tf2vJ99Fatvza0Founn+w9uNCiDT
-         4CSZdwYOAexPfL3yyKWXh0kfkBFL4c7qoBCgj2Lm7AVbxs1wBf39nYSOpPP4cTcLzWcu
-         SlyMHC7LrZxog4xSFdUiTiUArdAAyIcIvyDNxT0N7P2G+lXZnfYWJtRViAw2uu7qbBPm
-         moItXmcV1fIii4zsL/C+6BjNyvwlnJbPG35MYpAaXQsTfW96LREcWA+APJcdyVkBQ+24
-         a5OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742894179; x=1743498979;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5E07m/Jva03uFHXfamqgR/Yccgbktzh+JjZw8SY61/U=;
-        b=Wwlkw6OctqFL2cy4APk17s6Knga4yvLOXOte6U/HQowDwWuhlXYZA4AvHkWQE6FygY
-         GFer3DbVBVyFj28e3S6hDQnz5qiMsd4cmQ7YoYXkHEl/hmhpWRGQSdYyA9iReJJ4bfkS
-         t3L2UxaVucvOMhnh9zOIl9lNRpD3WHc371YGqkmVPRB5iq/yOUcju5E5UoFf/jOQI9Zi
-         8R/x2GLgsYMbjZeJllhBoqo2NhBdEHXqS6wWWiKZgfj+v/whVgAW9mKI3p6iHBpU1Dfs
-         gCmGzECM60NWceOcbNRopeTFT4Jf6oNJy0m1Tok5th1CPp9MkYn6B1+uh2DDq7psr97Y
-         iHgA==
-X-Gm-Message-State: AOJu0YzBa+1NO1eKvVyxD6BdZLOf8FZ8uJ0ddrT5NbNj9Qg8PJSHolau
-	1XlP+8OqWHJE/D+Nks4cEHMrjxMb1w5m7tRPkEO16HHTOoAPdEF0bsBZR4597VSpu5zlrNOvFT7
-	ACeFgybn/jrmAUlI8yNbF3WMve226yL1VlZkJd0RVMWOFg4t3lbMvKL4GCnLQGX0njQ1uirzksF
-	umDFopiLi6UIW2bOyj0VVVNoc57Q==
-X-Google-Smtp-Source: AGHT+IEuIxq07LFotZWzKxBHbLPA2nAlzEHe5Q6wotVFExEFee6t7vH7UALTB5edczb+i90kXNFoGt/r
-X-Received: from wmbz12.prod.google.com ([2002:a05:600c:c08c:b0:43d:56fa:9b95])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:45d4:b0:43c:e8ca:5140
- with SMTP id 5b1f17b1804b1-43d50a3189fmr151264805e9.23.1742894179559; Tue, 25
- Mar 2025 02:16:19 -0700 (PDT)
-Date: Tue, 25 Mar 2025 10:16:15 +0100
+	s=arc-20240116; t=1742905967; c=relaxed/simple;
+	bh=CJ2JgB4X/7bBjAdlWsI3U4EG5eE2L4NLvVyyTJik6bc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=csK7k3oaGPPzoKCv9jNEzSUGCVYYK3DEOI+h5bC6xFuPD6uJE5fIMs7k8TCeH1a5xVLxdR9L6alF26OyfgJKaR4FUtvddtVKZ+TIWHSH71KLG1IITL9/a08aFcElvyf+EieWcNFoQrXkllVCSTDxjoekYCdbbt+A58jwDwpz05w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i1STrdND; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742905966; x=1774441966;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CJ2JgB4X/7bBjAdlWsI3U4EG5eE2L4NLvVyyTJik6bc=;
+  b=i1STrdND2/fz0/pahjqeSurLuw74DmMX6scgmb3ajdrSkFfCf6pUfPLT
+   h1Fi/eGo09j0Ay8sN9jd6ISCbpoy/5js9idrbQ67AgHquEnMSruK3pT2e
+   Ph3KpYnOUoDD/6F7zDrBu1/UpWmOflf9N+qpYvazu5rVMMXD+rKtvbAO6
+   shRKpUhBi9BoXt7fTKOWDPwDtGlVF+cpktOoS2OSHR5HFL2tqtRxZ6dYW
+   G5NU2fxu5ThjxbBMH0XwjTI6eS3+W5kAp2Icpfu1ZKpR6ntuTbwQ7L6Ih
+   JoLt7cfeeDNWgXP+2AxmqrX3rrVzmT+++2kBW0KjO6P3nupU71vDpSbmk
+   g==;
+X-CSE-ConnectionGUID: A3WIsHLNScGcV9ucdD+utA==
+X-CSE-MsgGUID: qSwA2soqQ5Ce0l7j8PVa+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="69507680"
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
+   d="scan'208";a="69507680"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 05:32:46 -0700
+X-CSE-ConnectionGUID: 2LHCIRU1RhCZG3XSZaYBBA==
+X-CSE-MsgGUID: XZf5VGwSTMWt/atvkGUdlg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
+   d="scan'208";a="129408237"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa004.jf.intel.com with ESMTP; 25 Mar 2025 05:32:44 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 13790367; Tue, 25 Mar 2025 14:32:42 +0200 (EET)
+Date: Tue, 25 Mar 2025 14:32:42 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, 
+	linux-efi <linux-efi@vger.kernel.org>, linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>
+Subject: Re: query regarding SEV logic in early boot
+Message-ID: <zuz27i7ffrsa3hksveuroxpwxos5qx65py23gvupaadizwrsss@uhb6ye4j2eqn>
+References: <CAMj1kXHacRusnpmGJecMU3L2CCyQtopBL6KqoSVuF7tDW85TUg@mail.gmail.com>
+ <874299e9-eb4f-7775-4ea4-69d449ca1e05@amd.com>
+ <CAMj1kXGu-2KNKLwYvRYRv7sd3d2XR8Q0wDOdRK84FYXOirO54g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5240; i=ardb@kernel.org;
- h=from:subject; bh=pznmp7CUr+aXXkMuVpoylycZESSo0CispcErImT3wO0=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIf1RSbyugZB9dMuflZHhXC8D/lVdkGrNkxFy4Pab/m9T+
- L/5h8Q7SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwESktjEyNEalHJOyrH2SPztO
- KK7pScraZz8Db/xWspbOtZpcvbNkNSNDk+H2HbPf/A747JCXsNrgoMvtmfOdzro61vbZ/F383yq CEwA=
-X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
-Message-ID: <20250325091614.1203411-2-ardb+git@google.com>
-Subject: [PATCH] efi/libstub: Do not accept parts of memory before ExitBootServices()
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGu-2KNKLwYvRYRv7sd3d2XR8Q0wDOdRK84FYXOirO54g@mail.gmail.com>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Tue, Mar 25, 2025 at 08:22:50AM +0100, Ard Biesheuvel wrote:
+> (cc Kirill)
+> 
+> On Mon, 24 Mar 2025 at 20:14, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+> >
+> > On 3/24/25 12:28, Ard Biesheuvel wrote:
+> > > L.S.,
+> > >
+> > > As I am trying to disentangle the Linux early SEV boot code, the
+> > > legacy decompressor and the EFI stub, I noticed something that looks
+> > > broken to me, but I'm not quite sure how to fix it.
+> > >
+> > > When booting via the EFI stub, the following call chain may occur:
+> > >
+> > > setup_e820()
+> > >  process_unaccepted_memory()
+> > >   arch_accept_memory()
+> > >    snp_accept_memory()
+> > >     early_setup_ghcb()
+> > >      set_page_decrypted()
+> > >       set_clr_page_flags()
+> > >
+> > > where the latter function relies on mapping_info to remap the GHCB
+> > > page as unencrypted. However, when entering via the EFI stub, this
+> > > struct is never initialized, and so I am struggling to see why this
+> > > works at all.
+> >
+> ...
+> > So, yes, this does appear broken.
+> >
+> 
+> OK, thanks for the analysis.
+> 
+> > The latter function reads from the target page so that the page gets
+> > faulted in via do_boot_page_fault(). do_boot_page_fault() calls
+> > kernel_add_identity_map(), which calls kernel_ident_mapping_init() and
+> > initializes the mapping_info struct.
+> >
+> > At least that is how it is supposed to happen coming through the
+> > decompressor. I couldn't recreate the path you sited until I tried an odd
+> > size memory argument that was not 2M aligned (using 4097M on the qemu
+> > command line fixed that). However, even that causes issues, because the
+> > SEV_STATUS MSR doesn't get read until sev_enable() is called, which is
+> > called after setup_e820(), so we actually can't even take the
+> > snp_accept_memory() path.
+> >
+> 
+> So we should never hit the page fault that triggers
+> kernel_ident_mapping_init() because all memory is already mapped (and
+> boot_ghcb_page is part of the image so it will definitely be mapped
+> even when not booting via EFI)
+> 
+> (For future reference, could you share the QEMU command line that you used?)
+> 
+> > But faking the SEV_STATUS MSR value does cause the code to get down to the
+> > set_clr_page_flags() function and reading the input address contents
+> > doesn't trigger do_boot_page_fault() to run because load_stage2_idt()
+> > hasn't been called, which probably wouldn't matter anyway since the code
+> > is running under the EFI page tables.
+> >
+> 
+> Exactly, and that was the whole point of separating those code paths,
+> i.e., to get rid of all the demand paging logic and execute under the
+> EFI page tables (which use strict permissions for code and data, which
+> is a Microsoft requirement for secure boot signing)
+> 
+> So in a nutshell, the problem is that snp_accept_memory() calls into
+> the SEV code before sev_enable() has been called. But I wonder why
+> accepting memory is needed in the EFI stub at all?
+> (asking Kirill) Is it just to ensure that all unaccepted memory is at
+> the granularity provided by the bitmap? That could explain why nobody
+> ever noticed this.
+> 
+> Is there a problem with being conservative in the bitmap, and marking
+> misaligned chunks of accepted memory as unaccepted? AIUI, that would
+> remove the need entirely to accept any memory in the EFI stub - only
+> the decompressor code path would have a need for it.
 
-Currently, setup_e820() in the x86 EFI stub records unaccepted memory in
-the associated bitmap, which has a 2 MiB granularity. To avoid
-ambiguities, any unaccepted region that is not aligned to 2 MiB will be
-partially accepted upfront, so that all regions recorded into the bitmap
-are aligned to the bitmap's granularity.
+Yes, it is a problem.
 
-On SEV-SNP, this results in calls into the SEV support code before it is
-initialized, and crucially, before ExitBootServices() is called, which
-means that the firmware is still in charge at that point, and
-initializing the SEV support code is not even permitted.
+It allows for double-accept (accept memory that is already accepted) which
+opens us to manipulation from VMM. Malicious VMM can zero memory these
+margins:
 
-So instead, round the unaccepted regions outwards, so that all
-unaccepted memory is recorded as such in the bitmap, along with possibly
-some pages that have already been accepted. This is less efficient in
-theory, but should rarely occur -and therefore not matter- in practice.
+1. VMM remove memory in the margins.
+2. VMM re-add the memory there.
+3. Guest blindly accepts the memory.
 
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>,
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
-Cc: Kevin Loughlin <kevinloughlin@google.com>
-Fixes: 745e3ed85f71 ("efi/libstub: Implement support for unaccepted memory")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/unaccepted_memory.c | 75 ++++----------------
- 1 file changed, 14 insertions(+), 61 deletions(-)
+And now previously accepted memory is zeroed by VMM.
 
-diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
-index 757dbe734a47..8d783fda5ce3 100644
---- a/drivers/firmware/efi/libstub/unaccepted_memory.c
-+++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
-@@ -88,86 +88,39 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
- 
- /*
-  * The accepted memory bitmap only works at unit_size granularity.  Take
-- * unaligned start/end addresses and either:
-- *  1. Accepts the memory immediately and in its entirety
-- *  2. Accepts unaligned parts, and marks *some* aligned part unaccepted
-+ * unaligned start/end addresses and round them outwards, so that unaccepted
-+ * memory is never misidentified as already accepted.
-  *
-  * The function will never reach the bitmap_set() with zero bits to set.
-  */
- void process_unaccepted_memory(u64 start, u64 end)
- {
- 	u64 unit_size = unaccepted_table->unit_size;
--	u64 unit_mask = unaccepted_table->unit_size - 1;
- 	u64 bitmap_size = unaccepted_table->size;
- 
--	/*
--	 * Ensure that at least one bit will be set in the bitmap by
--	 * immediately accepting all regions under 2*unit_size.  This is
--	 * imprecise and may immediately accept some areas that could
--	 * have been represented in the bitmap.  But, results in simpler
--	 * code below
--	 *
--	 * Consider case like this (assuming unit_size == 2MB):
--	 *
--	 * | 4k | 2044k |    2048k   |
--	 * ^ 0x0        ^ 2MB        ^ 4MB
--	 *
--	 * Only the first 4k has been accepted. The 0MB->2MB region can not be
--	 * represented in the bitmap. The 2MB->4MB region can be represented in
--	 * the bitmap. But, the 0MB->4MB region is <2*unit_size and will be
--	 * immediately accepted in its entirety.
--	 */
--	if (end - start < 2 * unit_size) {
--		arch_accept_memory(start, end);
--		return;
--	}
--
--	/*
--	 * No matter how the start and end are aligned, at least one unaccepted
--	 * unit_size area will remain to be marked in the bitmap.
--	 */
--
--	/* Immediately accept a <unit_size piece at the start: */
--	if (start & unit_mask) {
--		arch_accept_memory(start, round_up(start, unit_size));
--		start = round_up(start, unit_size);
--	}
--
--	/* Immediately accept a <unit_size piece at the end: */
--	if (end & unit_mask) {
--		arch_accept_memory(round_down(end, unit_size), end);
--		end = round_down(end, unit_size);
--	}
-+	start = round_down(start, unit_size);
-+	end   = round_up(end, unit_size);
- 
- 	/*
--	 * Accept part of the range that before phys_base and cannot be recorded
-+	 * Ignore the range before phys_base that cannot be recorded
- 	 * into the bitmap.
- 	 */
--	if (start < unaccepted_table->phys_base) {
--		arch_accept_memory(start,
--				   min(unaccepted_table->phys_base, end));
-+	if (start < unaccepted_table->phys_base)
- 		start = unaccepted_table->phys_base;
--	}
--
--	/* Nothing to record */
--	if (end < unaccepted_table->phys_base)
--		return;
- 
- 	/* Translate to offsets from the beginning of the bitmap */
- 	start -= unaccepted_table->phys_base;
- 	end -= unaccepted_table->phys_base;
- 
--	/* Accept memory that doesn't fit into bitmap */
--	if (end > bitmap_size * unit_size * BITS_PER_BYTE) {
--		unsigned long phys_start, phys_end;
--
--		phys_start = bitmap_size * unit_size * BITS_PER_BYTE +
--			     unaccepted_table->phys_base;
--		phys_end = end + unaccepted_table->phys_base;
-+	/*
-+	 * Disregard unaccepted memory that did not exist yet when the bitmap
-+	 * was dimensioned and allocated. This shouldn't happen in practice.
-+	 */
-+	end = min(end, bitmap_size * unit_size * BITS_PER_BYTE);
- 
--		arch_accept_memory(phys_start, phys_end);
--		end = bitmap_size * unit_size * BITS_PER_BYTE;
--	}
-+	/* Nothing to record */
-+	if (end <= start)
-+		return;
- 
- 	/*
- 	 * 'start' and 'end' are now both unit_size-aligned.
+Information in the bitmap must be precise.
+
 -- 
-2.49.0.395.g12beb8f557-goog
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
