@@ -1,137 +1,140 @@
-Return-Path: <linux-efi+bounces-3094-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3095-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4C8A7133A
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Mar 2025 10:00:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AD1A713B1
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Mar 2025 10:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B35F13AE07C
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Mar 2025 08:59:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1301D170DC2
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Mar 2025 09:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03FE1A4E98;
-	Wed, 26 Mar 2025 09:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C9D19ADBA;
+	Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuW7T6SN"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F131A2C25;
-	Wed, 26 Mar 2025 08:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C139A1531C5
+	for <linux-efi@vger.kernel.org>; Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742979600; cv=none; b=WIl33/dQWk03gHTNOMBUDWgmviuO7ggKshc1GvRMtkcv1Wy4F23N4fA91umS3uFxWQoTogKptSGrERevf0xU5L/R2FkKh0IH/6Nj0qBnzRnu5pn342EfgbPXbw2obgy8Ac7rgPHPKK8gcBWp+TWRghbtz/uw4zPc5tutmFI3oYM=
+	t=1742981324; cv=none; b=CqFdzsfc7cP/5pwYaznvEpPey1jMNatm3fQMPOuPq8OV/rJXVHN/HxvO289qyRbQ7F2yLCS1Uikj0yOJyFeejbRwXPBxBkKUsNuIRfLQunyWnl8VeMdPDvmK7cCLc9wSxDWPKEF9Zd/S/L7TW6/FHkI5JNMIfxlUjPe/BAPvsus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742979600; c=relaxed/simple;
-	bh=cEOMS4NEOhLRyL6A1qhVyFvxw9AAqRQ8LmqLAn9RWWE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=awIQ2ohJghWsFeRAug8Lv0gY8H9z6txaw5DzTcLXFh0kAduDbheQ2f0qf20NCqVcb2aU+LmcsDZ7D19kN+oJFwe+43aKc3QxudV1ZeoTf00jRReuOg11Zj+IH5xtYpe+KCC4f+DTOWlYb9xTiobxWojB775WimlrE54hO1gUqRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: o70urK2iR1yea92pXgJPpA==
-X-CSE-MsgGUID: JHN6j5gRTl+Y2VsvhCeAkA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="43409486"
-X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; 
-   d="scan'208";a="43409486"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 01:59:58 -0700
-X-CSE-ConnectionGUID: pyw8qMDbTZqZu4Krs27rzw==
-X-CSE-MsgGUID: R7zM2+QWTt6T8FnX4whgMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; 
-   d="scan'208";a="161898657"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 01:59:56 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andy@kernel.org>)
-	id 1txMc4-000000061Ja-3Xo1;
-	Wed, 26 Mar 2025 10:59:52 +0200
-Date: Wed, 26 Mar 2025 10:59:52 +0200
-From: Andy Shevchenko <andy@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH RFC 2/2] wcslen() prototype in string.h
-Message-ID: <Z-PCCCAPS4uvL3jZ@smile.fi.intel.com>
-References: <20250325-string-add-wcslen-for-llvm-opt-v1-0-b8f1e2c17888@kernel.org>
- <20250325-string-add-wcslen-for-llvm-opt-v1-2-b8f1e2c17888@kernel.org>
- <Z-LXHssrcpdtFqqn@smile.fi.intel.com>
- <20250325165847.GA2603000@ax162>
- <Z-LiWDbrEvVaTLZU@smile.fi.intel.com>
- <20250325214516.GA672870@ax162>
- <20250326003303.GA2394@ax162>
+	s=arc-20240116; t=1742981324; c=relaxed/simple;
+	bh=q9/n6xLXsg9cP0fsy15b0++dlcAF+G/WhyWx6lN0+Zs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ouEgy/VW/C6lv/ktZNCBYnFx2BrDqwPoOPsOA5IeFFS0l9UIqaHjLM0g4LkYkLYS3SCZPEJM+kvAlY1dN386jajUTUV8od2T0VqUnj3Wl4oS47EX8FKlaguzc+n9XlCBhM/lFTNrliSdVEWipxqEDTvcTnINUOIiXji2QXyLTY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuW7T6SN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B39C4CEEA
+	for <linux-efi@vger.kernel.org>; Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742981324;
+	bh=q9/n6xLXsg9cP0fsy15b0++dlcAF+G/WhyWx6lN0+Zs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CuW7T6SNRUALRP1iNFIjI2o768oBi3xAhd15l2JUAOG43EQrKpF+8tDeT44K2HxCj
+	 g5VtY96x44p3ynHZg7pQdiub5MhHR3X8lqYvM862WGOSMxAg5zSY4deGCiGrGsj9tr
+	 XPz8OyNtB3CxNnyF5NVcVRx5wl6pxR5cnBKcJi2aBllwEJHv8iy2WWKUJG3ZHJHqul
+	 QvpQqrQpydRV7VJW+ESBxG9EOzW5LXNZpHraUK3M64n0Ksxh1dfK3X8WD7Hg5nt8XI
+	 s/hwSjmIKMvuiXJp3EAw0Kd4SZpGWBkUz16zMYNSzMsSlWNljOheVI1i8FXxp24Qpo
+	 JCS/KIAjbUg4A==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54af20849adso718989e87.1
+        for <linux-efi@vger.kernel.org>; Wed, 26 Mar 2025 02:28:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUUBN3joc42U+dFs8UDy5GrAnDzwNrtktM34qKQemzDr3YmtGwKtBCZSLNuiNRgaoBPF4P7Hb24dsk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsE65jsBekL0ilRZx6O+FD9RmZoWw77t+XK43yiEs/GcOzjJSU
+	CbMWi5m6SBCyzTNbiFKRa37nWIJWsQydsGk8MLbDXTTeJnl61Ln6WVnL8ipl1Y62UXv+F/V5V8i
+	kVgXV8td9PLYJTWRWzh+RJNP7xEQ=
+X-Google-Smtp-Source: AGHT+IFXWbs1fX8iTQbUdYaL5sHwQsN622JIoeRiZKLkfZCQUyfP3od4fb8/AWHW7pdVSkn65pic8TS75oiivWFYFM4=
+X-Received: by 2002:a05:6512:6cd:b0:54a:f743:3137 with SMTP id
+ 2adb3069b0e04-54afaca81acmr974655e87.19.1742981322689; Wed, 26 Mar 2025
+ 02:28:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250326003303.GA2394@ax162>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250325091614.1203411-2-ardb+git@google.com> <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
+ <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
+ <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
+ <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
+ <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
+ <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com> <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
+In-Reply-To: <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 26 Mar 2025 10:28:31 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
+X-Gm-Features: AQ5f1Jpnd9eYwLni4mh8jwISb_Oxtq4dxdAx4qp4jDGul2n1bzqdn0OFaRBdMIY
+Message-ID: <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before ExitBootServices()
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
+	linux-efi@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Mar 25, 2025 at 05:33:03PM -0700, Nathan Chancellor wrote:
-> On Tue, Mar 25, 2025 at 02:45:21PM -0700, Nathan Chancellor wrote:
+On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 3/25/25 09:39, Ard Biesheuvel wrote:
+> > On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
+> > <kirill.shutemov@linux.intel.com> wrote:
+> >>
+> >> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
+> >>>> Since the problem happens before ExitBootServices(), can we allocate this
+> >>>> memory range with EFI API and free it back?
+> >>>>
+> >>>
+> >>> In principle, yes - we could allocate these misaligned chunks as
+> >>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
+> >>> would become available to the OS automatically.
+> >>>
+> >>> But doing this in setup_e820() is tricky, because every page
+> >>> allocation modifies the EFI memory map, and we may have to restart
+> >>> from the beginning. And there is no guarantee that some asynchronous
+> >>> event in the firmware context does not attempt to allocate some pages,
+> >>> in a way that might result in another misaligned unaccepted region.
+> >>
+> >> Looking again at the code, setup_e820() (and therefore
+> >> process_unaccepted_memory()) called after efi_exit_boot_services() in
+> >> exit_boot(), so we can't use EFI API to allocate memory.
+> >>
+> >
+> > Ah yes, I misremembered that. It also means that it is fine in
+> > principle to take over the communication with the hypervisor.
+> >
+> > However, this is still tricky, because on SEV-SNP, accepting memory
+> > appears to rely on the GHCB page based communication being enabled,
+> > and this involves mapping it down to a single page so the C bit can be
+> > cleared. It would be nice if we could simply use the MSR based
+> > protocol for accepting memory.
+>
+> We can probably do something along this line since there is an existing
+> function, __page_state_change(), that performs MSR protocol PSC. If we
+> change the arch_accept_memory() calls in process_unaccepted_memory() to
+> arch_accept_memory_early() then we can differentiate between this early
+> alignment setup timeframe. The early function can also use
+> sev_get_status() instead of sev_snp_enabled().
+>
+> Let me mess around with it a bit and see what I come up with.
+>
 
-...
+Cheers.
 
-> > +#include <linux/nls.h>		/* for wchar_t */
-> 
-> Good thing I waited :) This include makes s390 unhappy:
-> 
-> https://lore.kernel.org/202503260611.MDurOUhF-lkp@intel.com/
-> 
-> It is possible that should be fixed by adding -Wno-pointer-sign to
-> KBUILD_CFLAGS_DECOMPRESSOR so that arch/s390/boot matches the rest of
-> the kernel but...
+So IIUC, it would be sufficient to check sev_get_status() against
+MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
+unaccepted page that is in the misaligned head or tail of the region
+to private.
 
-Ah, yes, you beat me up to commenting on this, the string.h and string.c made
-in a way that they may be and are used in early boot code, i.e. it must not be
-dirtyfied with the kernel code.
+Pardon my ignorance, but does that mean that in principle,
+sev_enable() et al could be deferred to early startup of the kernel
+proper (where the other SEV startup code lives) ?
 
-...
-
-> >  #include <linux/errno.h>
-> >  #include <linux/limits.h>
-> >  #include <linux/linkage.h>
-> > +#include <linux/nls.h>
-> >  #include <linux/stddef.h>
-> >  #include <linux/string.h>
-> >  #include <linux/types.h>
-> 
-> I wonder if would be better to do something like the below patch in lieu
-> of the EFI change above (since there is no chance for a collision) then
-> change both of the includes for wchar_t in this diff to nls_types.h? I
-> have no strong opinion but this seems like it would be cleaner for the
-> sake of backports while not being a bad solution upstream?
-
->  #define _LINUX_NLS_H
->  
->  #include <linux/init.h>
-
-As I just replied to your previous mail, consider fixing this list as well
-by adding module.h and types.h.
-
-...
-
-Overall, can you browse the Ingo's series [1] for the stuff related to this,
-if any?
-
-I would avoid doing double efforts or different approaches if we already have
-something ready.
-
-[1]: https://lore.kernel.org/linux-kernel/YjBr10JXLGHfEFfi@gmail.com/
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+We have been playing whack-a-mole with PIC codegen issues there, and
+so it might make sense to consolidate that logic into a single [PIC]
+chunk of code that is somewhat isolated from the rest of the code
+(like the kernel/pi code on arm64)
 
