@@ -1,140 +1,105 @@
-Return-Path: <linux-efi+bounces-3095-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3096-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AD1A713B1
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Mar 2025 10:29:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63408A71AEE
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Mar 2025 16:44:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1301D170DC2
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Mar 2025 09:28:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FAC71890374
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Mar 2025 15:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C9D19ADBA;
-	Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5F11FECB4;
+	Wed, 26 Mar 2025 15:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuW7T6SN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tql2Tv4G"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C139A1531C5
-	for <linux-efi@vger.kernel.org>; Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD921F874C;
+	Wed, 26 Mar 2025 15:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742981324; cv=none; b=CqFdzsfc7cP/5pwYaznvEpPey1jMNatm3fQMPOuPq8OV/rJXVHN/HxvO289qyRbQ7F2yLCS1Uikj0yOJyFeejbRwXPBxBkKUsNuIRfLQunyWnl8VeMdPDvmK7cCLc9wSxDWPKEF9Zd/S/L7TW6/FHkI5JNMIfxlUjPe/BAPvsus=
+	t=1743003481; cv=none; b=fjbLqSc1+Kx/SfBmdZD+Xk6gYv5N4tGdSloYSO+u3DouW/CE4rTutNq4XSaHt+nX6WBxTLYUFELx95xNf26bsf0BuR7J28/SqHXaXOMPXuGKmkEVByUGuiVVibomaEtLMpzMrONvGofFt3gUzAplOvqnJgrNgO0pT/1UVEsqjVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742981324; c=relaxed/simple;
-	bh=q9/n6xLXsg9cP0fsy15b0++dlcAF+G/WhyWx6lN0+Zs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ouEgy/VW/C6lv/ktZNCBYnFx2BrDqwPoOPsOA5IeFFS0l9UIqaHjLM0g4LkYkLYS3SCZPEJM+kvAlY1dN386jajUTUV8od2T0VqUnj3Wl4oS47EX8FKlaguzc+n9XlCBhM/lFTNrliSdVEWipxqEDTvcTnINUOIiXji2QXyLTY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuW7T6SN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B39C4CEEA
-	for <linux-efi@vger.kernel.org>; Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
+	s=arc-20240116; t=1743003481; c=relaxed/simple;
+	bh=kqyu7iIKKcrq0py45Bc1ihHEX3l7PlNXupd3mSuHM/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lgllUPtih0Srs1YE7peG/CmQbwFXpk5LaJVxmYJ1KcgwgOFwG4bFUvxwNX8qGwARsrFkkEb4XscbwI1TlupCVy9n5W45yuVFyvj5gAIifmma11G5bA7frHCG13vh11rhE2PkVqifDl1CVkIw8A0wXJVsPL7l8yOfysBZMJn1vQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tql2Tv4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AE0C4CEE2;
+	Wed, 26 Mar 2025 15:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742981324;
-	bh=q9/n6xLXsg9cP0fsy15b0++dlcAF+G/WhyWx6lN0+Zs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CuW7T6SNRUALRP1iNFIjI2o768oBi3xAhd15l2JUAOG43EQrKpF+8tDeT44K2HxCj
-	 g5VtY96x44p3ynHZg7pQdiub5MhHR3X8lqYvM862WGOSMxAg5zSY4deGCiGrGsj9tr
-	 XPz8OyNtB3CxNnyF5NVcVRx5wl6pxR5cnBKcJi2aBllwEJHv8iy2WWKUJG3ZHJHqul
-	 QvpQqrQpydRV7VJW+ESBxG9EOzW5LXNZpHraUK3M64n0Ksxh1dfK3X8WD7Hg5nt8XI
-	 s/hwSjmIKMvuiXJp3EAw0Kd4SZpGWBkUz16zMYNSzMsSlWNljOheVI1i8FXxp24Qpo
-	 JCS/KIAjbUg4A==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54af20849adso718989e87.1
-        for <linux-efi@vger.kernel.org>; Wed, 26 Mar 2025 02:28:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUUBN3joc42U+dFs8UDy5GrAnDzwNrtktM34qKQemzDr3YmtGwKtBCZSLNuiNRgaoBPF4P7Hb24dsk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsE65jsBekL0ilRZx6O+FD9RmZoWw77t+XK43yiEs/GcOzjJSU
-	CbMWi5m6SBCyzTNbiFKRa37nWIJWsQydsGk8MLbDXTTeJnl61Ln6WVnL8ipl1Y62UXv+F/V5V8i
-	kVgXV8td9PLYJTWRWzh+RJNP7xEQ=
-X-Google-Smtp-Source: AGHT+IFXWbs1fX8iTQbUdYaL5sHwQsN622JIoeRiZKLkfZCQUyfP3od4fb8/AWHW7pdVSkn65pic8TS75oiivWFYFM4=
-X-Received: by 2002:a05:6512:6cd:b0:54a:f743:3137 with SMTP id
- 2adb3069b0e04-54afaca81acmr974655e87.19.1742981322689; Wed, 26 Mar 2025
- 02:28:42 -0700 (PDT)
+	s=k20201202; t=1743003481;
+	bh=kqyu7iIKKcrq0py45Bc1ihHEX3l7PlNXupd3mSuHM/M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Tql2Tv4Gvc5tL9W7/XKvSDorRJIiOp4xBj+KE2MMa/4GrTt6HbTJGlVchnzqVa/6k
+	 06ldhRv0vT8+AB3WiP5cGsjlVnqK4RJM5+o//bCBu5/MstN86ywFP3zUcVqLj0w3m0
+	 rBmaSkLj9TA+foV0N6r1Fv6PX6bqOl8qCt2h7m8o2GE314d3FuNDzYRfrEWn3yWw1r
+	 m/2MIRKyagwpNP0AtdTBET43WSsYwmtDbXo3Qjwr0F9innFqpiQN6r2xXrUZQFQzUf
+	 cOlPEDVngqgPJ9fog10wX5zL2UlCja6iOo/RiPMDZ95mCLfsjuhFDEA47+aeWQWDAv
+	 5KRPAupo96keg==
+Date: Wed, 26 Mar 2025 08:37:56 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH RFC 2/2] wcslen() prototype in string.h
+Message-ID: <20250326153756.GB1105284@ax162>
+References: <20250325-string-add-wcslen-for-llvm-opt-v1-0-b8f1e2c17888@kernel.org>
+ <20250325-string-add-wcslen-for-llvm-opt-v1-2-b8f1e2c17888@kernel.org>
+ <Z-LXHssrcpdtFqqn@smile.fi.intel.com>
+ <20250325165847.GA2603000@ax162>
+ <Z-LiWDbrEvVaTLZU@smile.fi.intel.com>
+ <20250325214516.GA672870@ax162>
+ <20250326003303.GA2394@ax162>
+ <Z-PCCCAPS4uvL3jZ@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250325091614.1203411-2-ardb+git@google.com> <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
- <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
- <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
- <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
- <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
- <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com> <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
-In-Reply-To: <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 26 Mar 2025 10:28:31 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
-X-Gm-Features: AQ5f1Jpnd9eYwLni4mh8jwISb_Oxtq4dxdAx4qp4jDGul2n1bzqdn0OFaRBdMIY
-Message-ID: <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before ExitBootServices()
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-efi@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z-PCCCAPS4uvL3jZ@smile.fi.intel.com>
 
-On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->
-> On 3/25/25 09:39, Ard Biesheuvel wrote:
-> > On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
-> > <kirill.shutemov@linux.intel.com> wrote:
-> >>
-> >> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
-> >>>> Since the problem happens before ExitBootServices(), can we allocate this
-> >>>> memory range with EFI API and free it back?
-> >>>>
-> >>>
-> >>> In principle, yes - we could allocate these misaligned chunks as
-> >>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
-> >>> would become available to the OS automatically.
-> >>>
-> >>> But doing this in setup_e820() is tricky, because every page
-> >>> allocation modifies the EFI memory map, and we may have to restart
-> >>> from the beginning. And there is no guarantee that some asynchronous
-> >>> event in the firmware context does not attempt to allocate some pages,
-> >>> in a way that might result in another misaligned unaccepted region.
-> >>
-> >> Looking again at the code, setup_e820() (and therefore
-> >> process_unaccepted_memory()) called after efi_exit_boot_services() in
-> >> exit_boot(), so we can't use EFI API to allocate memory.
-> >>
-> >
-> > Ah yes, I misremembered that. It also means that it is fine in
-> > principle to take over the communication with the hypervisor.
-> >
-> > However, this is still tricky, because on SEV-SNP, accepting memory
-> > appears to rely on the GHCB page based communication being enabled,
-> > and this involves mapping it down to a single page so the C bit can be
-> > cleared. It would be nice if we could simply use the MSR based
-> > protocol for accepting memory.
->
-> We can probably do something along this line since there is an existing
-> function, __page_state_change(), that performs MSR protocol PSC. If we
-> change the arch_accept_memory() calls in process_unaccepted_memory() to
-> arch_accept_memory_early() then we can differentiate between this early
-> alignment setup timeframe. The early function can also use
-> sev_get_status() instead of sev_snp_enabled().
->
-> Let me mess around with it a bit and see what I come up with.
->
+On Wed, Mar 26, 2025 at 10:59:52AM +0200, Andy Shevchenko wrote:
+> On Tue, Mar 25, 2025 at 05:33:03PM -0700, Nathan Chancellor wrote:
+> >  #define _LINUX_NLS_H
+> >  
+> >  #include <linux/init.h>
+> 
+> As I just replied to your previous mail, consider fixing this list as well
+> by adding module.h and types.h.
+> 
+> ...
+> 
+> Overall, can you browse the Ingo's series [1] for the stuff related to this,
+> if any?
+> 
+> I would avoid doing double efforts or different approaches if we already have
+> something ready.
 
-Cheers.
+In Ingo's last fast-headers tree [1], nls.h only has export.h and init.h
+included, so it does not look like anything around this was changed from
+what I can tell.
 
-So IIUC, it would be sufficient to check sev_get_status() against
-MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
-unaccepted page that is in the misaligned head or tail of the region
-to private.
+types.h is going to be included via the new nls_types.h and while it
+does definitely look like module.h should be included, I do not really
+have the time and build capacity at the moment to incorporate testing
+that change into this series. I will stick with these two changes for
+now then I, you, or someone else can revisit cleaning up nls.h later.
 
-Pardon my ignorance, but does that mean that in principle,
-sev_enable() et al could be deferred to early startup of the kernel
-proper (where the other SEV startup code lives) ?
+[1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/mingo/tip.git/tree/include/linux/nls.h?h=sched/headers
 
-We have been playing whack-a-mole with PIC codegen issues there, and
-so it might make sense to consolidate that logic into a single [PIC]
-chunk of code that is somewhat isolated from the rest of the code
-(like the kernel/pi code on arm64)
+Cheers,
+Nathan
 
