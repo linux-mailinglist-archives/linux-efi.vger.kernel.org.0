@@ -1,117 +1,106 @@
-Return-Path: <linux-efi+bounces-3124-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3125-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745ECA7577C
-	for <lists+linux-efi@lfdr.de>; Sat, 29 Mar 2025 19:46:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91687A757A9
+	for <lists+linux-efi@lfdr.de>; Sat, 29 Mar 2025 20:08:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2352116BBC2
-	for <lists+linux-efi@lfdr.de>; Sat, 29 Mar 2025 18:46:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8B6D188EC88
+	for <lists+linux-efi@lfdr.de>; Sat, 29 Mar 2025 19:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9B3DDBC;
-	Sat, 29 Mar 2025 18:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B6613DDB9;
+	Sat, 29 Mar 2025 19:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VO8sTBf0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltYSxjaV"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6438F6D
-	for <linux-efi@vger.kernel.org>; Sat, 29 Mar 2025 18:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF9A3D3B3
+	for <linux-efi@vger.kernel.org>; Sat, 29 Mar 2025 19:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743273983; cv=none; b=QcHZO3Pq5bklLRLQ9SAkx3WqBsB5/7oTMNdntg5Gxo+/xT3Smyq9mmde0jhDdzixoaMVNyq6bX12PlQ8XCBKlRANozHWBkr3MzwQB5yEKr7L3FvsBYvvHfWyJNlzD/X+be/2PCHGhWBsZlOoFAkU76JZ+Dcsk/APVm0DEWD/544=
+	t=1743275286; cv=none; b=D8Pjcc+gysZopnFIG++XxxfRVouqxWazxDYc1rMwefobRfzZxmfyFl2KZhcI0HxlckqhF3tHfu1ByO0wxOpgRt3A+CtKUHiiCAMteJVAet+eQ/wgwKmlXpQjrZxyIFWwDIxnMhlGH8fK6NEJHPVSb454tdgNG9SIJm4kuS+wENo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743273983; c=relaxed/simple;
-	bh=i5CLfO1/0iS9DdTrGvRRtjil16gzSrlH5JHr5MbrmGQ=;
+	s=arc-20240116; t=1743275286; c=relaxed/simple;
+	bh=88f4kxK43QaAHu4nRt+1/fEw3CB2VsGeOO6Ma5D71sQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jdyClBJjLKOCapOxXO/S0ehgBrp3m3bKFZj0AqK9Ng4wQq0dCA7eqC2Vz2sAPz3w2a83UQitIBsf706eSE4Yyhi5v5Rj/B7PaLIroMEedcUVQi14EP7TGOOIYUvsXML7aQ3MyFjU812vkRQ8PKFYxBifRn3mZTqAL1f9a5Ov1Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VO8sTBf0; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-abbd96bef64so510622266b.3
-        for <linux-efi@vger.kernel.org>; Sat, 29 Mar 2025 11:46:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1743273979; x=1743878779; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2/qA61NZttuMTMsMasQtR1+95HTiG2Rp+53LpR7zRLE=;
-        b=VO8sTBf0cj/T0JWbEPwQuOk/QGn/aP9E6gEgl+cVobrDUj3lJVqpg/OvHCduaMqHPy
-         JxOKkJzwX7KkSu2uTiFE5ORXyxAU/z3pCaQT5ZYekSZJaKSu3RIvBRenOVues2G1d547
-         BUWb4QC7UpygpEvogoO7Ui+btHso0ESDOGEOE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743273979; x=1743878779;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2/qA61NZttuMTMsMasQtR1+95HTiG2Rp+53LpR7zRLE=;
-        b=DhxlyG9JYw07ab+cxmLIgUHm11kkZBX1VOtB4eXi9mqLQmyU/5vD4VLVUd2uP/wgFi
-         llAl1HmvB+rgp8JhmlO48Aljkuh88A2/j9iOobmY+5f4Gj+RN96AYojlle0prTMbh6FI
-         LCFywcCnjqK/JwmXdyKzObaM+eccesBjobnLmKzJg2ahpIwx91gojPHWMMUkrKLT77QP
-         F7RmrEjb/Fth1xTfQaIaUV9hPXuvbxKG+hAYe/CCj7P4DAQbJjiih+hh3bnz0CSKpBoO
-         MeZoTVeLtcOMn49CwURVEzx66/LBT3kYqgPyFyEViY7uJp0IWIe5fTX+/2xRd/+fZpQd
-         fsqg==
-X-Gm-Message-State: AOJu0YxsUi2mrdMbL/gAGNByfGV9MqGNjF8bWa2m9LJxLcl1Fx7ST+NU
-	aOjf3oa+PWH/NXksxKgJwdqBHTB1swLgSrx8Qs88iJ5kdktUrDp9M2HIYvGJLLCjSY+gMxaihGT
-	QzRU=
-X-Gm-Gg: ASbGnctyaUEyCfL/yDgve/EKB9aWJtuyIvmzAprZNmd3xmI9hOShcojB2X/P0nxh+kb
-	RZWl+Vcwsuod2Txck9ptjMkSI9X7vonA2SxyR1N9hde+WZSnHxC1r4wG9Yy1bqYh0NiJvq7Qwtn
-	XZA0hCJLdR0TSOdAjXHChXuEzh1MsVVlW8LCKEaJ4+CIVDFlFlhGpc5eohPIp5vxC7gWMqEiq2u
-	PAaCXyZ5PrKlx8PakuGF23I+MqmeR+8oMlpxcVvsQHB/iXKEhKgxIRV+A0x+oYoSUdFPHg2TSfk
-	03hSxH9rsXOR3pqt+fvqpfXJ4EUCAElS7MHu21sWdfR6LyPePVuxIXtsvm1TAB1FYabXjFLrKGF
-	x5XCc3moxLQNi1KFUpz0=
-X-Google-Smtp-Source: AGHT+IHc3DKgPXl/fE9AOWhTwKjGbxKVj8RGmLficF8f3+gSom28FkEX51TTeLnsYCnj2aEmJzNEhA==
-X-Received: by 2002:a17:907:7da7:b0:ac3:b613:a651 with SMTP id a640c23a62f3a-ac7389e6792mr318691766b.17.1743273978904;
-        Sat, 29 Mar 2025 11:46:18 -0700 (PDT)
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com. [209.85.218.43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71922ccc0sm372157966b.26.2025.03.29.11.46.18
-        for <linux-efi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Mar 2025 11:46:18 -0700 (PDT)
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac339f53df9so578984666b.1
-        for <linux-efi@vger.kernel.org>; Sat, 29 Mar 2025 11:46:18 -0700 (PDT)
-X-Received: by 2002:a17:907:86a2:b0:ac1:e1a7:9445 with SMTP id
- a640c23a62f3a-ac738975d4emr351958666b.12.1743273977695; Sat, 29 Mar 2025
- 11:46:17 -0700 (PDT)
+	 To:Cc:Content-Type; b=MTmMCJBDPqsYU4kb5aU0Hnswd/fHgGyMFtJm73Iwy8aneizn8iMDoeQUsEH3VHQek4JbEx6tPJteo5ML4/5O92e4gBS1bIPhiD7btIlK3jCUR7I9PJ676wHNIGGOB6K+M7dwUXCfpJ+Bh5BLh6+Z8osKDvohSsNU8B0nM6EUc8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltYSxjaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0271C4CEE2
+	for <linux-efi@vger.kernel.org>; Sat, 29 Mar 2025 19:08:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743275286;
+	bh=88f4kxK43QaAHu4nRt+1/fEw3CB2VsGeOO6Ma5D71sQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ltYSxjaVUfvvZ2iNVvcehU2q23UncJkRLQnVnEwHM7qvCqYR9IZUKHkUfNebsQthE
+	 U0Vr3f9vNi3xvQG7GX7X6oYtlF5l7RjqyZ38BMoC9tgboVCep9MVcNGoYARI9LLqCS
+	 5O8Hnu8VL02MEfhQ3udgXxzKnm1uaBDb7CdB84J1ouG5X3CgrWEhvDcQkukhvnlu7x
+	 hr2r3Wwv4NzbvEBZVwBYYcdxw/X698ZdvOSzHrRNO5A/Uh6wTF9dRGf5pKGO0KuEOg
+	 Fd46ANQlJWTxoOwQB2SNEsQhOPoK5v3vjdq7RuaeJyE9kq2k+AcVom4Z6XrIK31xmg
+	 Z0UV4IDtldSCA==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30bee1cb370so30322131fa.1
+        for <linux-efi@vger.kernel.org>; Sat, 29 Mar 2025 12:08:06 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyL2sEIkkfEdRN6nbszcUt+Pbn6sFhD4qwOj1DeSEJp7V5viAep
+	RPTUHfHcsjbTvA9yzHo/L2AfdWsz7gf00a4YXPxvRKLNwIohVdYvN8QlrL6CeZDa/jEyK4kV51T
+	JVLqAm+nkKJEw0JAiDny1bqQaN+s=
+X-Google-Smtp-Source: AGHT+IEXQJD2/pZqnmant8rQt4s3o3xyq4fICdTpAyJbwcpNb+gz0umuUp8OhCaU3IHme2HAo5wC1PAwtD17WYjSY9c=
+X-Received: by 2002:a2e:be07:0:b0:30b:f15f:1c02 with SMTP id
+ 38308e7fff4ca-30de0278c24mr11680611fa.18.1743275284985; Sat, 29 Mar 2025
+ 12:08:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250328070525.2248563-2-ardb+git@google.com>
-In-Reply-To: <20250328070525.2248563-2-ardb+git@google.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 29 Mar 2025 11:46:01 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjc-EAEtv02iUFGej6RZs9C7ALAMtuh4rFNYs5VUt+4UA@mail.gmail.com>
-X-Gm-Features: AQ5f1JrZMbVkpCilIpYStOc9X05zxRyXGaZ5axmvENFeOBiaNPbaPEHQa0c61AA
-Message-ID: <CAHk-=wjc-EAEtv02iUFGej6RZs9C7ALAMtuh4rFNYs5VUt+4UA@mail.gmail.com>
+References: <20250328070525.2248563-2-ardb+git@google.com> <CAHk-=wjc-EAEtv02iUFGej6RZs9C7ALAMtuh4rFNYs5VUt+4UA@mail.gmail.com>
+In-Reply-To: <CAHk-=wjc-EAEtv02iUFGej6RZs9C7ALAMtuh4rFNYs5VUt+4UA@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sat, 29 Mar 2025 20:07:53 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF61PeyercrHdkevq+UdKvBsfJ4QV2RFJyXMWAYtJ95oQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JpBHc_kgXyQEP7aVLMzf4l_Bj4G1dCH1z2yX1IBDEozHFkLczfe508mvZY
+Message-ID: <CAMj1kXF61PeyercrHdkevq+UdKvBsfJ4QV2RFJyXMWAYtJ95oQ@mail.gmail.com>
 Subject: Re: [GIT PULL] EFI updates for v6.15
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@kernel.org>
+Cc: linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 28 Mar 2025 at 00:05, Ard Biesheuvel <ardb+git@google.com> wrote:
+(cc Ingo)
+
+On Sat, 29 Mar 2025 at 19:46, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
->  arch/x86/boot/compressed/efi_mixed.S               | 341 ---------------------
->  drivers/firmware/efi/libstub/x86-mixed.S           | 253 +++++++++++++++
+> On Fri, 28 Mar 2025 at 00:05, Ard Biesheuvel <ardb+git@google.com> wrote:
+> >
+> >  arch/x86/boot/compressed/efi_mixed.S               | 341 ---------------------
+> >  drivers/firmware/efi/libstub/x86-mixed.S           | 253 +++++++++++++++
+>
+> I've pulled this, but I'm not super-happy about it.
+>
+> We have been pretty successful in keeping assembler files in the arch/
+> directory, and I really think we should strive to continue that.
+>
+> Do we have a few drivers that have arch-specific assembly code? Yes.
+> But it certainly isn't something to make more common.
+>
+> And did we already do that zboot-header.S thing earlier? Also yes, but
+> that one is afaik actually architecture-neutral and doesn't have any
+> architecture *instructions* in it, it's just data layout afaik (and
+> no, I don't know why it was done as a '*.S' file)
+>
+> IOW, I really wish you would move this back to arch/x86 somewhere. Please?
+>
 
-I've pulled this, but I'm not super-happy about it.
+Fair enough. Note that this applies to la57toggle.S as well, which was
+moved in a patch that went via the -tip tree this cycle.
 
-We have been pretty successful in keeping assembler files in the arch/
-directory, and I really think we should strive to continue that.
+It doesn't matter that much where the files live, as long as they are
+disentangled from the traditional decompressor. (For C files, it is
+important that they are built using the EFI stub's C flags, but for
+asm files, that makes little difference)
 
-Do we have a few drivers that have arch-specific assembly code? Yes.
-But it certainly isn't something to make more common.
-
-And did we already do that zboot-header.S thing earlier? Also yes, but
-that one is afaik actually architecture-neutral and doesn't have any
-architecture *instructions* in it, it's just data layout afaik (and
-no, I don't know why it was done as a '*.S' file)
-
-IOW, I really wish you would move this back to arch/x86 somewhere. Please?
-
-               Linus
+Does arch/x86/lib sound like a reasonable place?
 
