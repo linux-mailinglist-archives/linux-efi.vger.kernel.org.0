@@ -1,383 +1,163 @@
-Return-Path: <linux-efi+bounces-3134-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3135-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D8DA76639
-	for <lists+linux-efi@lfdr.de>; Mon, 31 Mar 2025 14:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CBBA7672E
+	for <lists+linux-efi@lfdr.de>; Mon, 31 Mar 2025 15:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 217581654C0
-	for <lists+linux-efi@lfdr.de>; Mon, 31 Mar 2025 12:42:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A86CB167D48
+	for <lists+linux-efi@lfdr.de>; Mon, 31 Mar 2025 13:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4B320298C;
-	Mon, 31 Mar 2025 12:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6700212B0C;
+	Mon, 31 Mar 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M7LaTGKH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwuco2tM"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EAC155393;
-	Mon, 31 Mar 2025 12:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AB3211A3C
+	for <linux-efi@vger.kernel.org>; Mon, 31 Mar 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743424957; cv=none; b=fHWDNBckRva9Q4Wvo4Jp1GO+sWDWW32QKy8MekYLk5+SflUIyhEgnuZovdpxFKGceQJit6wm/iP9ekrQgm+Jk7uKfNIsRAm6hypcB4OC4CqR4f55qHTz992ty2rowaJU+3KOWegIcw9//9JRbDh9zMTb3s/g2bV/tymy3rNJ+xk=
+	t=1743429340; cv=none; b=Me16xrOWhTRGfvi72o6u4ZM7WJPXZSsZHp7Ka8UexqRp4fEeI/uOAZuUxLgioQpanSTzx6tE9qi56zfmAtsZq2nsoTjkJs203QrEmWVl2VeKYQUO1zwJoarrjVnyK0QRaWLqm8DsaZRNEByXYkHsyMgZ/azgzWUuPxSoU000aI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743424957; c=relaxed/simple;
-	bh=Lc007aEuHorTCRuZvzw28cSxiGhASElsj7NvgrkOgYs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p0WD69ofDI91QBQ70EhIcEBLU19GEb6YMb/nNJ5uEyXKzU0FgXo2Je19C/onQfRbm8uQTgI0AYXs5Vu7pkQol7NyN7EXpDpBFLHFMELdokglUjp2XEOJpyn+0he0bAKONXlll6BXgqwKbrYfhPFV6yCMytFbbjI2RlxttCkf7jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M7LaTGKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA213C4CEE3;
-	Mon, 31 Mar 2025 12:42:32 +0000 (UTC)
+	s=arc-20240116; t=1743429340; c=relaxed/simple;
+	bh=PZcPYzDgKlasM7M5ULjVvoRUDdglTCy5kSysnckWNcc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f85JPxKDiyJaMMKn9FpOVhRw35rm/AHNGQ/dWDcy0U/OXuv7jPxCxQPwfHfXvB0Aj+nsZNRKBwk7pdp9tvhYdw1fgucOf+BNFAqYnFrtY3Ph49lo2AB13MfCmB+/VjIhy7Bjt7dyKVt8xCvYV/Hf8eyMiAKkMt0KfwhXeh5Trzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwuco2tM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37248C4CEE3
+	for <linux-efi@vger.kernel.org>; Mon, 31 Mar 2025 13:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743424956;
-	bh=Lc007aEuHorTCRuZvzw28cSxiGhASElsj7NvgrkOgYs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7LaTGKHqdUHMM0pXPj6gOmSihJKJdBMj4Au4tJtko8uaBbEDzdQ8zzL8rgtBBbI3
-	 t/VPts7zPkmr8UVhXzMauI74VYmZyySh+//J2jX4XsWbTfHiVJxfGsybkhJNmknLVN
-	 J4MWDpOZUBZzE3ldtgIMdwUaVPfRsl1+E+R7/g6SWkOUAIeTDZrDihsAjqSyoDP/ZP
-	 DrdUhpvIac0dILZchQSNJoWusUJyiWBMxwf3EA1v7pAe8NIqa665VCXPxGAENsPgc+
-	 IjeCLlnNVzAzY1mnstXtoVcfhFOUbgZBoAIOLDcMrpOZCEiSBZFPqK1S2sqZBkDy48
-	 BtqwSPAsSj6Qw==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	jack@suse.cz,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	mcgrof@kernel.org,
-	hch@infradead.org,
-	david@fromorbit.com,
-	rafael@kernel.org,
-	djwong@kernel.org,
-	pavel@kernel.org,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	boqun.feng@gmail.com
-Subject: [PATCH 2/2] efivarfs: support freeze/thaw
-Date: Mon, 31 Mar 2025 14:42:12 +0200
-Message-ID: <20250331-work-freeze-v1-2-6dfbe8253b9f@kernel.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250331-work-freeze-v1-0-6dfbe8253b9f@kernel.org>
-References: <20250331-work-freeze-v1-0-6dfbe8253b9f@kernel.org>
+	s=k20201202; t=1743429340;
+	bh=PZcPYzDgKlasM7M5ULjVvoRUDdglTCy5kSysnckWNcc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jwuco2tMfy/B/DsP0swF3ht+YrO1oGVoHcqGNKHanXns/8iJV2WuK7GEazA/EtfgM
+	 1mCPwowEW+2jCMaGR6h20UyqdQWrtsQCphoT8vIgAUwJlK09JcLkXEiiBtM4FcRcOk
+	 K7xBrMG73YSVBZFbqfggThDhc/f9xB/uWLUDaFXdgng3kpWIvcfUBLz0h0feDswpAA
+	 XGLlqnEC3djx5GdIX+nikSUxQx9uiy9LaxeVErZQaUmIEBXJkZFFy7/srXuHZDDKYB
+	 686kpGe+QAt1otGF8hus2wX6AMF1/udrImQF80R8ufCQNCmsGqDnSLcpP1mLw1atvT
+	 UWdnxib2YoFQw==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-30db3f3c907so43098311fa.1
+        for <linux-efi@vger.kernel.org>; Mon, 31 Mar 2025 06:55:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVjKq30fN4NxB/eBCVQXWcm6e/cx9au5UMxF3rXGkvV3rue+72+TSTqVf8Q9QBQ/KUk9V3o8rbp7Sk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYo3f+RDAJYzbWgXFgrSLAKO5n8oztVSBDu3Q8+B2OJ7FDNWDI
+	ESQ4HhcYKDSFjmgc1vsJFZZKnsaY8GRuZUQMTtR8170GTOmHLesdBtd3u6Xock6wsW16PerUxAE
+	Iv7fvS9U2vy9LMk5htNE2zklw1x4=
+X-Google-Smtp-Source: AGHT+IEiP9ieoq+Yk97yfkSlVMBC2QdBMBj1qqKwZImdS8dO3N8O/qTlYA0dmd8YcnN2Dq+WKC1Z6yWL4aPf47KaH4Q=
+X-Received: by 2002:a2e:9fcb:0:b0:30b:bdb0:f09d with SMTP id
+ 38308e7fff4ca-30de030102amr33108881fa.32.1743429338515; Mon, 31 Mar 2025
+ 06:55:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-42535
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8738; i=brauner@kernel.org; h=from:subject:message-id; bh=Lc007aEuHorTCRuZvzw28cSxiGhASElsj7NvgrkOgYs=; b=kA0DAAoWkcYbwGV43KIByyZiAGfqjaXIK1bKyoFYvCIgxTtX1GQG972OLpjX6oTaIkTOsBCkO Yh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmfqjaUACgkQkcYbwGV43KI5IgD/VDI8 M3DEtkFFvDpvtrma4iu8MK7c80H4hNeXBrALV8ABAIku4X5VRZb0ihP5WxZ2f4OaaVbm3/7XNsV CZm1++uoG
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <20250328070525.2248563-2-ardb+git@google.com> <CAHk-=wjc-EAEtv02iUFGej6RZs9C7ALAMtuh4rFNYs5VUt+4UA@mail.gmail.com>
+ <CAMj1kXF61PeyercrHdkevq+UdKvBsfJ4QV2RFJyXMWAYtJ95oQ@mail.gmail.com> <Z-j8b7Z5oja05cCI@gmail.com>
+In-Reply-To: <Z-j8b7Z5oja05cCI@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 31 Mar 2025 15:55:26 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEpYG7LFgDiM2g4VsBVy1-+8pPxSwy6Xc9DS5u9f8aQZg@mail.gmail.com>
+X-Gm-Features: AQ5f1JryfSF8DmfT67uvBGyUzSCTx6V082ApgZpUsKmdWyqURZv6_gM1h-D2qEs
+Message-ID: <CAMj1kXEpYG7LFgDiM2g4VsBVy1-+8pPxSwy6Xc9DS5u9f8aQZg@mail.gmail.com>
+Subject: Re: [GIT PULL] EFI updates for v6.15
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Allow efivarfs to partake to resync variable state during system
-hibernation and suspend. Add freeze/thaw support.
+On Sun, 30 Mar 2025 at 10:10, Ingo Molnar <mingo@kernel.org> wrote:
+>
+>
+> * Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> > (cc Ingo)
+> >
+> > On Sat, 29 Mar 2025 at 19:46, Linus Torvalds
+> > <torvalds@linux-foundation.org> wrote:
+> > >
+> > > On Fri, 28 Mar 2025 at 00:05, Ard Biesheuvel <ardb+git@google.com> wrote:
+> > > >
+> > > >  arch/x86/boot/compressed/efi_mixed.S               | 341 ---------------------
+> > > >  drivers/firmware/efi/libstub/x86-mixed.S           | 253 +++++++++++++++
+> > >
+> > > I've pulled this, but I'm not super-happy about it.
+> > >
+> > > We have been pretty successful in keeping assembler files in the
+> > > arch/ directory, and I really think we should strive to continue
+> > > that.
+> > >
+> > > Do we have a few drivers that have arch-specific assembly code?
+> > > Yes. But it certainly isn't something to make more common.
+> > >
+> > > And did we already do that zboot-header.S thing earlier? Also yes,
+> > > but that one is afaik actually architecture-neutral and doesn't
+> > > have any architecture *instructions* in it, it's just data layout
+> > > afaik (and no, I don't know why it was done as a '*.S' file)
+> > >
+> > > IOW, I really wish you would move this back to arch/x86 somewhere.
+> > > Please?
+> > >
+> >
+> > Fair enough. Note that this applies to la57toggle.S as well, which
+> > was moved in a patch that went via the -tip tree this cycle.
+> >
+> > It doesn't matter that much where the files live, as long as they are
+> > disentangled from the traditional decompressor. (For C files, it is
+> > important that they are built using the EFI stub's C flags, but for
+> > asm files, that makes little difference)
+> >
+> > Does arch/x86/lib sound like a reasonable place?
+>
+> So all of this is boot code (early EFI runtime calls), right? Please
+> move anything fundamentally low level boot related to arch/x86/boot/.
+> We can open up arch/x86/boot/efi/ or so, to decouple it from the
+> decompressor.
+>
 
-This is a pretty straightforward implementation. We simply add regular
-freeze/thaw support for both userspace and the kernel. This works
-without any big issues and congrats afaict efivars is the first
-pseudofilesystem that adds support for filesystem freezing and thawing.
+As you surely remember, one of the other issues I am trying to solve
+is the use of C code in the early startup code of the kernel proper
+that needs to tolerate being executed from the 1:1 mapping of RAM
+(i.e., all the C files that use RIP_REL_REF() currently). This is
+mainly related to SEV-SNP and 5-level paging.
 
-The simplicity comes from the fact that we simply always resync variable
-state after efivarfs has been frozen. It doesn't matter whether that's
-because of suspend, userspace initiated freeze or hibernation. Efivars
-is simple enough that it doesn't matter that we walk all dentries. There
-are no directories and there aren't insane amounts of entries and both
-freeze/thaw are already heavy-handed operations. We really really don't
-need to care.
+So there is code that
+- is conceptually part of the EFI stub but written in asm (x86-mixed.S)
+- is shared between the EFI stub and the decompressor (la57toggle.S)
+- is conceptually part of the EFI stub but shares code with the
+decompressor (handling of unaccepted memory when populating the e820
+memory map from the EFI one)
+- is split between the decompressor/EFI stub and kernel proper
+(SME/SEV-SNP initialization)
+- is only needed by the decompressor (SEV-SNP handling of 'demand
+paging' logic and TDX/SEV acceptance of memory that was just carved
+out based on the e820 map rather than allocated via the EFI APIs)
+- early startup code in the kernel proper that creates the (4 or 5
+level) kernel virtual mapping while executing from the 1:1 mapping.
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- fs/efivarfs/internal.h |   1 -
- fs/efivarfs/super.c    | 196 +++++++++++++------------------------------------
- 2 files changed, 51 insertions(+), 146 deletions(-)
+IOW, absolute chaos.
 
-diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
-index ac6a1dd0a6a5..f913b6824289 100644
---- a/fs/efivarfs/internal.h
-+++ b/fs/efivarfs/internal.h
-@@ -17,7 +17,6 @@ struct efivarfs_fs_info {
- 	struct efivarfs_mount_opts mount_opts;
- 	struct super_block *sb;
- 	struct notifier_block nb;
--	struct notifier_block pm_nb;
- };
- 
- struct efi_variable {
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 0486e9b68bc6..567e849a03fe 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -20,6 +20,7 @@
- #include <linux/printk.h>
- 
- #include "internal.h"
-+#include "../internal.h"
- 
- static int efivarfs_ops_notifier(struct notifier_block *nb, unsigned long event,
- 				 void *data)
-@@ -119,12 +120,18 @@ static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 
- 	return 0;
- }
-+
-+static int efivarfs_freeze_fs(struct super_block *sb);
-+static int efivarfs_unfreeze_fs(struct super_block *sb);
-+
- static const struct super_operations efivarfs_ops = {
- 	.statfs = efivarfs_statfs,
- 	.drop_inode = generic_delete_inode,
- 	.alloc_inode = efivarfs_alloc_inode,
- 	.free_inode = efivarfs_free_inode,
- 	.show_options = efivarfs_show_options,
-+	.freeze_fs = efivarfs_freeze_fs,
-+	.unfreeze_fs = efivarfs_unfreeze_fs,
- };
- 
- /*
-@@ -367,8 +374,6 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (err)
- 		return err;
- 
--	register_pm_notifier(&sfi->pm_nb);
--
- 	return efivar_init(efivarfs_callback, sb, true);
- }
- 
-@@ -393,48 +398,6 @@ static const struct fs_context_operations efivarfs_context_ops = {
- 	.reconfigure	= efivarfs_reconfigure,
- };
- 
--struct efivarfs_ctx {
--	struct dir_context ctx;
--	struct super_block *sb;
--	struct dentry *dentry;
--};
--
--static bool efivarfs_actor(struct dir_context *ctx, const char *name, int len,
--			   loff_t offset, u64 ino, unsigned mode)
--{
--	unsigned long size;
--	struct efivarfs_ctx *ectx = container_of(ctx, struct efivarfs_ctx, ctx);
--	struct qstr qstr = { .name = name, .len = len };
--	struct dentry *dentry = d_hash_and_lookup(ectx->sb->s_root, &qstr);
--	struct inode *inode;
--	struct efivar_entry *entry;
--	int err;
--
--	if (IS_ERR_OR_NULL(dentry))
--		return true;
--
--	inode = d_inode(dentry);
--	entry = efivar_entry(inode);
--
--	err = efivar_entry_size(entry, &size);
--	size += sizeof(__u32);	/* attributes */
--	if (err)
--		size = 0;
--
--	inode_lock_nested(inode, I_MUTEX_CHILD);
--	i_size_write(inode, size);
--	inode_unlock(inode);
--
--	if (!size) {
--		ectx->dentry = dentry;
--		return false;
--	}
--
--	dput(dentry);
--
--	return true;
--}
--
- static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
- 				  unsigned long name_size, void *data)
- {
-@@ -474,111 +437,59 @@ static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
- 	return err;
- }
- 
--static void efivarfs_deactivate_super_work(struct work_struct *work)
--{
--	struct super_block *s = container_of(work, struct super_block,
--					     destroy_work);
--	/*
--	 * note: here s->destroy_work is free for reuse (which
--	 * will happen in deactivate_super)
--	 */
--	deactivate_super(s);
--}
--
- static struct file_system_type efivarfs_type;
- 
--static int efivarfs_pm_notify(struct notifier_block *nb, unsigned long action,
--			      void *ptr)
-+static int efivarfs_freeze_fs(struct super_block *sb)
- {
--	struct efivarfs_fs_info *sfi = container_of(nb, struct efivarfs_fs_info,
--						    pm_nb);
--	struct path path;
--	struct efivarfs_ctx ectx = {
--		.ctx = {
--			.actor	= efivarfs_actor,
--		},
--		.sb = sfi->sb,
--	};
--	struct file *file;
--	struct super_block *s = sfi->sb;
--	static bool rescan_done = true;
--
--	if (action == PM_HIBERNATION_PREPARE) {
--		rescan_done = false;
--		return NOTIFY_OK;
--	} else if (action != PM_POST_HIBERNATION) {
--		return NOTIFY_DONE;
--	}
--
--	if (rescan_done)
--		return NOTIFY_DONE;
--
--	/* ensure single superblock is alive and pin it */
--	if (!atomic_inc_not_zero(&s->s_active))
--		return NOTIFY_DONE;
--
--	pr_info("efivarfs: resyncing variable state\n");
-+	/* Nothing for us to do. */
-+	return 0;
-+}
- 
--	path.dentry = sfi->sb->s_root;
-+static int efivarfs_unfreeze_fs(struct super_block *sb)
-+{
-+	struct dentry *child = NULL;
- 
- 	/*
--	 * do not add SB_KERNMOUNT which a single superblock could
--	 * expose to userspace and which also causes MNT_INTERNAL, see
--	 * below
-+	 * Unconditionally resync the variable state on a thaw request.
-+	 * Given the size of efivarfs it really doesn't matter to simply
-+	 * iterate through all of the entries and resync. Freeze/thaw
-+	 * requests are rare enough for that to not matter and the
-+	 * number of entries is pretty low too. So we really don't care.
- 	 */
--	path.mnt = vfs_kern_mount(&efivarfs_type, 0,
--				  efivarfs_type.name, NULL);
--	if (IS_ERR(path.mnt)) {
--		pr_err("efivarfs: internal mount failed\n");
--		/*
--		 * We may be the last pinner of the superblock but
--		 * calling efivarfs_kill_sb from within the notifier
--		 * here would deadlock trying to unregister it
--		 */
--		INIT_WORK(&s->destroy_work, efivarfs_deactivate_super_work);
--		schedule_work(&s->destroy_work);
--		return PTR_ERR(path.mnt);
-+	pr_info("efivarfs: resyncing variable state\n");
-+	for (;;) {
-+		int err;
-+		size_t size;
-+		struct inode *inode;
-+		struct efivar_entry *entry;
-+
-+		child = find_next_child(sb->s_root, child);
-+		if (!child)
-+			break;
-+
-+		inode = d_inode(child);
-+		entry = efivar_entry(inode);
-+
-+		err = efivar_entry_size(entry, &size);
-+		if (err)
-+			size = 0;
-+		else
-+			size += sizeof(__u32);
-+
-+		inode_lock(inode);
-+		i_size_write(inode, size);
-+		inode_unlock(inode);
-+
-+		if (!err)
-+			continue;
-+
-+		/* The variable doesn't exist anymore, delete it. */
-+		simple_recursive_removal(child, NULL);
- 	}
- 
--	/* path.mnt now has pin on superblock, so this must be above one */
--	atomic_dec(&s->s_active);
--
--	file = kernel_file_open(&path, O_RDONLY | O_DIRECTORY | O_NOATIME,
--				current_cred());
--	/*
--	 * safe even if last put because no MNT_INTERNAL means this
--	 * will do delayed deactivate_super and not deadlock
--	 */
--	mntput(path.mnt);
--	if (IS_ERR(file))
--		return NOTIFY_DONE;
--
--	rescan_done = true;
--
--	/*
--	 * First loop over the directory and verify each entry exists,
--	 * removing it if it doesn't
--	 */
--	file->f_pos = 2;	/* skip . and .. */
--	do {
--		ectx.dentry = NULL;
--		iterate_dir(file, &ectx.ctx);
--		if (ectx.dentry) {
--			pr_info("efivarfs: removing variable %pd\n",
--				ectx.dentry);
--			simple_recursive_removal(ectx.dentry, NULL);
--			dput(ectx.dentry);
--		}
--	} while (ectx.dentry);
--	fput(file);
--
--	/*
--	 * then loop over variables, creating them if there's no matching
--	 * dentry
--	 */
--	efivar_init(efivarfs_check_missing, sfi->sb, false);
--
--	return NOTIFY_OK;
-+	efivar_init(efivarfs_check_missing, sb, false);
-+	pr_info("efivarfs: finished resyncing variable state\n");
-+	return 0;
- }
- 
- static int efivarfs_init_fs_context(struct fs_context *fc)
-@@ -598,9 +509,6 @@ static int efivarfs_init_fs_context(struct fs_context *fc)
- 	fc->s_fs_info = sfi;
- 	fc->ops = &efivarfs_context_ops;
- 
--	sfi->pm_nb.notifier_call = efivarfs_pm_notify;
--	sfi->pm_nb.priority = 0;
--
- 	return 0;
- }
- 
-@@ -608,9 +516,7 @@ static void efivarfs_kill_sb(struct super_block *sb)
- {
- 	struct efivarfs_fs_info *sfi = sb->s_fs_info;
- 
--	blocking_notifier_chain_unregister(&efivar_ops_nh, &sfi->nb);
- 	kill_litter_super(sb);
--	unregister_pm_notifier(&sfi->pm_nb);
- 
- 	kfree(sfi);
- }
+I have been trying to disentangle this from the EFI side, but the
+5-level paging and SEV-SNP/TDX code clearly needs some attention too.
 
--- 
-2.47.2
+What the C code has in common here is that it needs to be built in a
+special way, i.e., PIC codegen with all instrumentation/paravirt/etc
+disabled. And ideally, each object needs to be checked to ensure that
+no absolute relocations are present.
 
+So what I would like to propose for this arch/x86/boot/<something>
+subdirectory is to move all these source files there, and build a
+static library that can be pulled into the kernel proper as well as
+the decompressor, using C flags etc that ensure that all code it
+contains is safe for execution from the 1:1 mapping. This is how the
+EFI stub static library is built, and also how the code in
+arch/arm64/kernel/pi/ is constructed to ensure that it can safely run
+from a virtual mapping that doesn't match the one the linker used at
+build time.
+
+How does that sound?
 
