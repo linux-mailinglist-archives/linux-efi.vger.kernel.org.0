@@ -1,267 +1,180 @@
-Return-Path: <linux-efi+bounces-3147-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3148-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C6FA771FC
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 02:35:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30041A7723E
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 03:11:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C9773A8CC7
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 00:35:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD59C16B489
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 01:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C8A78F34;
-	Tue,  1 Apr 2025 00:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81F913C9C4;
+	Tue,  1 Apr 2025 01:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pMY+ijcA"
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="vEZCj0z3"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5213B2A0;
-	Tue,  1 Apr 2025 00:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504B713A258
+	for <linux-efi@vger.kernel.org>; Tue,  1 Apr 2025 01:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743467632; cv=none; b=Z+/oJYO0ihm9NxwpUTUquADeobKSInDW0saw41fI2de7VnyQg5Uuc3P6FfoE6D0KagUuzXtg/44Uphz8Kv7ybizKse0Z4vfJU6iSV8Db8rw5NyitANS1dRfGJHVJNQKXX0jRNyL2bWurguDk8sp1kG77eRgN0lEo6GsmtVdzl3g=
+	t=1743469870; cv=none; b=kT4HKZB+UHYUpn0f0gc4Q/SvR4f8UdCcpevRXAt2tcE5sC8OWnd/i4UsKSKa1Eui2EYdtmd6/0WoLdnQ322FTVnLg5rFSU0c/YmYEUCx8BxdSEPJ+sGsdoa38ynj5DlcCCjoMujuk3DzbI8ERi9vkbptlTpulJpJildaVe82G18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743467632; c=relaxed/simple;
-	bh=E6uWVHHjoPhRtgz4oW7o0triLrpRj/wcC1z2auGXS0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SxPlW3k+Rm+ddP1BAoT+K9R3rvTce9+TG//f8U875xzJ0fURlYRYL4FxkoV0jjo5NaYUnSKQ9zWat3zsX50HCkGukgM+it1yoOsLY3kYLC/F83uoeQNHGP4azXK7t7kzb2WdPAbW2lnYDt2it+mVM8db9WQeGwnF9Kbyw4zIlZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pMY+ijcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949EAC4CEEB;
-	Tue,  1 Apr 2025 00:33:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743467631;
-	bh=E6uWVHHjoPhRtgz4oW7o0triLrpRj/wcC1z2auGXS0M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMY+ijcAI7yJeb3c2qVB4U/X3FzVcvqBCOGQLKKQV7m26dzqMtW8Gp7b4tNikTo/G
-	 6h9wydXvkgrtPzqItacfLtD2I2uMUsg05Juigl86a4/8OrImYLPVf6I/TqbTlhFdy9
-	 t5utlaStPLY7dQ2cAgqp5E0nADwx/ZEI3Rc40H9sUTDJD9oiAc0v2BM3l3JHnvqat4
-	 NFpneF43NtP16WRGCDu7BUIc3A/xeavmb1xGp5/cfelw38N2ng19IwGfPtBSCZgZ5Y
-	 9rBSWNPRW6verGErN85+OCku2Ug0Rsg9o+GsKT5Wx2s49yPdY0/L1bTxFMhVEtQgqm
-	 8tnw0XU61XX+A==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	jack@suse.cz
-Cc: Christian Brauner <brauner@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org,
+	s=arc-20240116; t=1743469870; c=relaxed/simple;
+	bh=c4VRjFgdPHYVEXSgwVTJK9NOPjH1pvGIrhY1YvoLmpg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sv9uB3QsBI0M4zpKezlgQ8DVhTyB7sI6B4izBL7qR0tjQ6d8er+jUoCZfDvSqqPmn/2ufokJ2noHrPaaCfHwv/AJO4+zfyZ3AaVeM/S70VhsQMMnjtz2rJsEjIbJ5ESA7U8VgCxba+5wVxz0SOkGkGl+eTabJY0wC4aEgLG+YPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=vEZCj0z3; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2243803b776so21408075ad.0
+        for <linux-efi@vger.kernel.org>; Mon, 31 Mar 2025 18:11:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1743469868; x=1744074668; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lSOCXG/bLgDc7ME6ApTEkqOXZXXVJMqkGl0AyQAQOxU=;
+        b=vEZCj0z3Tjcqz6RBOsS5Whdq4AUiNMkctqwkdVKEg9yxZRxzC9Fg6Fv8JMfs9r8UZd
+         ACKrNII4bULPCYXSEzFsSaJVb4w/HQdFnBCnU7tkDkjQAzVebmotcu57DI3ERsmlFIK8
+         zPZmEPznvvXHGU/lXDLh+yXxyiXZ3CDvxz7iu0C0VkVlAd4dNCAKoxAK2DOSJF+uUThh
+         lfFgJSpUENtqATDkE0sSFfAD8R6QceelfQk4Gbtz1RHDpebBHJcO8kTPOcU97Kqo9QBo
+         +E6FLFqi/PZdguLMv0Kqa81aNLkAZmqFwkoxGWe820fP5ZN99ld60s+eFFx0lkZO7pVY
+         HU5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743469868; x=1744074668;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lSOCXG/bLgDc7ME6ApTEkqOXZXXVJMqkGl0AyQAQOxU=;
+        b=Urqc+frA60UHPBADsXspYEVM/QFe/Xy3CFDmefKUD7AD7wWJ+7zs/VeBB2A/JmuUZ/
+         uVzG0NBNo6Hh4OFA00+0dqajogeZeSBAbq7C0+Drj9cCzyrAa+wS97jDB69VooaHBHkQ
+         doRWQPexnjrCsJl6uSqZ5yL/EudNZOscb4RwKr/4nhnZlPDiCmQFI2a7HTS+QnJzUzTF
+         GatR4RemcMmCXACiJo60IzVZIovRl4vV+1LVqZLb1wVisxG/X1NJ0ukfuG8JHgPDAYeO
+         HpRTbR0lJ71KQr5x9aOX/NtlGSkspz7TDUi/NbTTp9Z/TAPNrMrpVe9S8W7Ew8db6EMW
+         SXIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXsSSLzgc7bM3R+AoaotMv8vkl1iiJa+x9UpOaU6YpXmbSwF4oFafzfO+fogEPJm9AhJM8UteRnhkc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/CSaUornWzcVB3QXqokHabO5gzpGFsvncdGBIMehwC0XXtWhs
+	7+UDt95l6hoFYeoN5f9Eic/pvmF67n4Ry5cFWD/4TAaEEJs/fensg+oDeVxVJ+A=
+X-Gm-Gg: ASbGncu/gY1CkkO6CMF6uU5y4+qS2TVb0em3XAYRN85oRkH1lAKC043cnePbIa4Lx0j
+	Q6CL736OUkvdAqq5IYP8mSuehniChSER/cvZ9R1eics3HRDqeH8NLY8UYP6DJDxFC3G4UchVIF9
+	FRtAYJDaf2my+a4F9fubfLdBgy02ezdwhAknDpq7ORh6TiIeegEiaCrwwAnCPUkc2INq0qTVqkk
+	msEyVdtx1TCt7gs4OVJOrMfaudSWaYjS2miyOsFyDfR7nDjRuPPyN9Kr/nSCszYnPKCGH7Kpd5s
+	S6+OKYJohTQm61mLSe4avzOOkQ1ItVW3bY6/WPOloFBCP6tAMuwOiHw6eOioLYUFj8rQWcHhX8+
+	OC+cLtRD4a9B6mI4k3A2QSDqQ2oQq
+X-Google-Smtp-Source: AGHT+IFLfpDROybDyATP4hEqXJeYrPhcFQxWBwYKhCahugcasGxplhhifiK5A1Cetc20wuxbo6MSnA==
+X-Received: by 2002:a17:902:9689:b0:224:584:6f04 with SMTP id d9443c01a7336-2292f95d89bmr122418275ad.18.1743469868573;
+        Mon, 31 Mar 2025 18:11:08 -0700 (PDT)
+Received: from dread.disaster.area (pa49-181-60-96.pa.nsw.optusnet.com.au. [49.181.60.96])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73971063d24sm7614688b3a.86.2025.03.31.18.11.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Mar 2025 18:11:08 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.98)
+	(envelope-from <david@fromorbit.com>)
+	id 1tzQ9g-00000002u8k-2xKY;
+	Tue, 01 Apr 2025 12:11:04 +1100
+Date: Tue, 1 Apr 2025 12:11:04 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	mcgrof@kernel.org,
-	hch@infradead.org,
-	david@fromorbit.com,
-	rafael@kernel.org,
-	djwong@kernel.org,
-	pavel@kernel.org,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	boqun.feng@gmail.com
-Subject: [PATCH 6/6] power: freeze filesystems during suspend/resume
-Date: Tue,  1 Apr 2025 02:32:51 +0200
-Message-ID: <20250401-work-freeze-v1-6-d000611d4ab0@kernel.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
+	mcgrof@kernel.org, hch@infradead.org, rafael@kernel.org,
+	djwong@kernel.org, pavel@kernel.org, peterz@infradead.org,
+	mingo@redhat.com, will@kernel.org, boqun.feng@gmail.com
+Subject: Re: [PATCH 3/6] xfs: replace kthread freezing with auto fs freezing
+Message-ID: <Z-s9KG-URzB9DwUb@dread.disaster.area>
 References: <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
+ <20250401-work-freeze-v1-3-d000611d4ab0@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-42535
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5971; i=brauner@kernel.org; h=from:subject:message-id; bh=E6uWVHHjoPhRtgz4oW7o0triLrpRj/wcC1z2auGXS0M=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS/NrHVrnxZbjJVjeXVhehQe53H83N8Fpw+qHfdp7Gvy 1fpZO6yjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInMa2Bk2LXaaWmP/8On4jlT 1xbK7ua2ti88/GypceBnFffe5xvevmFkWM6QeoB5rrpYN0fI8oN8oWY2/Eq9f15psWTrz3M9OHE CLwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401-work-freeze-v1-3-d000611d4ab0@kernel.org>
 
-Now all the pieces are in place to actually allow the power subsystem
-to freeze/thaw filesystems during suspend/resume. Filesystems are only
-frozen and thawed if the power subsystem does actually own the freeze.
+On Tue, Apr 01, 2025 at 02:32:48AM +0200, Christian Brauner wrote:
+> From: Luis Chamberlain <mcgrof@kernel.org>
+> 
+> The kernel power management now supports allowing the VFS
+> to handle filesystem freezing freezes and thawing. Take advantage
+> of that and remove the kthread freezing. This is needed so that we
+> properly really stop IO in flight without races after userspace
+> has been frozen. Without this we rely on kthread freezing and
+> its semantics are loose and error prone.
+> 
+> The filesystem therefore is in charge of properly dealing with
+> quiescing of the filesystem through its callbacks if it thinks
+> it knows better than how the VFS handles it.
+> 
+.....
 
-Othwerwise it risks thawing filesystems it didn't own. This could be
-done differently be e.g., keepin the filesystems that were actually
-frozen on a list and then unfreezing them from that list. This is
-disgustingly unclean though and reeks of an ugly hack.
+> diff --git a/fs/xfs/xfs_trans_ail.c b/fs/xfs/xfs_trans_ail.c
+> index 0fcb1828e598..ad8183db0780 100644
+> --- a/fs/xfs/xfs_trans_ail.c
+> +++ b/fs/xfs/xfs_trans_ail.c
+> @@ -636,7 +636,6 @@ xfsaild(
+>  	unsigned int	noreclaim_flag;
+>  
+>  	noreclaim_flag = memalloc_noreclaim_save();
+> -	set_freezable();
+>  
+>  	while (1) {
+>  		/*
+> @@ -695,8 +694,6 @@ xfsaild(
+>  
+>  		__set_current_state(TASK_RUNNING);
+>  
+> -		try_to_freeze();
+> -
+>  		tout = xfsaild_push(ailp);
+>  	}
+>  
 
-If the filesystem is already frozen by the time we've frozen all
-userspace processes we don't care to freeze it again. That's userspace's
-job once the process resumes. We only actually freeze filesystems if we
-absolutely have to and we ignore other failures to freeze for now.
+So what about the TASK_FREEZABLE flag that is set in this code
+before sleeping?
 
-We could bubble up errors and fail suspend/resume if the error isn't
-EBUSY (aka it's already frozen) but I don't think that this is worth it.
-Filesystem freezing during suspend/resume is best-effort. If the user
-has 500 ext4 filesystems mounted and 4 fail to freeze for whatever
-reason then we simply skip them.
+i.e. this code before we schedule():
 
-What we have now is already a big improvement and let's see how we fare
-with it before making our lives even harder (and uglier) than we have
-to.
+                if (tout && tout <= 20)
+                        set_current_state(TASK_KILLABLE|TASK_FREEZABLE);
+                else
+                        set_current_state(TASK_INTERRUPTIBLE|TASK_FREEZABLE);
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- fs/super.c               | 14 ++++++++++----
- kernel/power/hibernate.c | 13 ++++++++++++-
- kernel/power/suspend.c   |  8 ++++++++
- 3 files changed, 30 insertions(+), 5 deletions(-)
+Shouldn't TASK_FREEZABLE go away, too?
 
-diff --git a/fs/super.c b/fs/super.c
-index 606072a3fab9..dd0d6def4a55 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -1187,6 +1187,8 @@ static inline bool get_active_super(struct super_block *sb)
- 	return active;
- }
- 
-+static const void *filesystems_freeze_ptr;
-+
- static void filesystems_freeze_callback(struct super_block *sb, void *unused)
- {
- 	if (!sb->s_op->freeze_fs && !sb->s_op->freeze_super)
-@@ -1196,9 +1198,11 @@ static void filesystems_freeze_callback(struct super_block *sb, void *unused)
- 		return;
- 
- 	if (sb->s_op->freeze_super)
--		sb->s_op->freeze_super(sb, FREEZE_MAY_NEST | FREEZE_HOLDER_KERNEL);
-+		sb->s_op->freeze_super(sb, FREEZE_EXCL | FREEZE_HOLDER_KERNEL,
-+				       filesystems_freeze_ptr);
- 	else
--		freeze_super(sb, FREEZE_MAY_NEST | FREEZE_HOLDER_KERNEL);
-+		freeze_super(sb, FREEZE_EXCL | FREEZE_HOLDER_KERNEL,
-+			     filesystems_freeze_ptr);
- 
- 	deactivate_super(sb);
- }
-@@ -1218,9 +1222,11 @@ static void filesystems_thaw_callback(struct super_block *sb, void *unused)
- 		return;
- 
- 	if (sb->s_op->thaw_super)
--		sb->s_op->thaw_super(sb, FREEZE_MAY_NEST | FREEZE_HOLDER_KERNEL);
-+		sb->s_op->thaw_super(sb, FREEZE_EXCL | FREEZE_HOLDER_KERNEL,
-+				     filesystems_freeze_ptr);
- 	else
--		thaw_super(sb, FREEZE_MAY_NEST | FREEZE_HOLDER_KERNEL);
-+		thaw_super(sb, FREEZE_EXCL | FREEZE_HOLDER_KERNEL,
-+			   filesystems_freeze_ptr);
- 
- 	deactivate_super(sb);
- }
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 50ec26ea696b..1803b7d24757 100644
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -777,6 +777,7 @@ int hibernate(void)
- 		goto Restore;
- 
- 	ksys_sync_helper();
-+	filesystems_freeze();
- 
- 	error = freeze_processes();
- 	if (error)
-@@ -841,6 +842,7 @@ int hibernate(void)
- 			error = load_image_and_restore();
- 	}
- 	thaw_processes();
-+	filesystems_thaw();
- 
- 	/* Don't bother checking whether freezer_test_done is true */
- 	freezer_test_done = false;
-@@ -881,6 +883,8 @@ int hibernate_quiet_exec(int (*func)(void *data), void *data)
- 	if (error)
- 		goto restore;
- 
-+	filesystems_freeze();
-+
- 	error = freeze_processes();
- 	if (error)
- 		goto exit;
-@@ -940,6 +944,7 @@ int hibernate_quiet_exec(int (*func)(void *data), void *data)
- 	thaw_processes();
- 
- exit:
-+	filesystems_thaw();
- 	pm_notifier_call_chain(PM_POST_HIBERNATION);
- 
- restore:
-@@ -1028,19 +1033,25 @@ static int software_resume(void)
- 	if (error)
- 		goto Restore;
- 
-+	filesystems_freeze();
-+
- 	pm_pr_dbg("Preparing processes for hibernation restore.\n");
- 	error = freeze_processes();
--	if (error)
-+	if (error) {
-+		filesystems_thaw();
- 		goto Close_Finish;
-+	}
- 
- 	error = freeze_kernel_threads();
- 	if (error) {
- 		thaw_processes();
-+		filesystems_thaw();
- 		goto Close_Finish;
- 	}
- 
- 	error = load_image_and_restore();
- 	thaw_processes();
-+	filesystems_thaw();
-  Finish:
- 	pm_notifier_call_chain(PM_POST_RESTORE);
-  Restore:
-diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-index 8eaec4ab121d..4c476271f7f2 100644
---- a/kernel/power/suspend.c
-+++ b/kernel/power/suspend.c
-@@ -30,6 +30,7 @@
- #include <trace/events/power.h>
- #include <linux/compiler.h>
- #include <linux/moduleparam.h>
-+#include <linux/fs.h>
- 
- #include "power.h"
- 
-@@ -374,6 +375,8 @@ static int suspend_prepare(suspend_state_t state)
- 	if (error)
- 		goto Restore;
- 
-+	if (sync_on_suspend_enabled)
-+		filesystems_freeze();
- 	trace_suspend_resume(TPS("freeze_processes"), 0, true);
- 	error = suspend_freeze_processes();
- 	trace_suspend_resume(TPS("freeze_processes"), 0, false);
-@@ -550,6 +553,8 @@ int suspend_devices_and_enter(suspend_state_t state)
- static void suspend_finish(void)
- {
- 	suspend_thaw_processes();
-+	if (sync_on_suspend_enabled)
-+		filesystems_thaw();
- 	pm_notifier_call_chain(PM_POST_SUSPEND);
- 	pm_restore_console();
- }
-@@ -587,6 +592,7 @@ static int enter_state(suspend_state_t state)
- 		trace_suspend_resume(TPS("sync_filesystems"), 0, true);
- 		ksys_sync_helper();
- 		trace_suspend_resume(TPS("sync_filesystems"), 0, false);
-+		filesystems_freeze();
- 	}
- 
- 	pm_pr_dbg("Preparing system for sleep (%s)\n", mem_sleep_labels[state]);
-@@ -609,6 +615,8 @@ static int enter_state(suspend_state_t state)
- 	pm_pr_dbg("Finishing wakeup.\n");
- 	suspend_finish();
-  Unlock:
-+	if (sync_on_suspend_enabled)
-+		filesystems_thaw();
- 	mutex_unlock(&system_transition_mutex);
- 	return error;
- }
+> diff --git a/fs/xfs/xfs_zone_gc.c b/fs/xfs/xfs_zone_gc.c
+> index c5136ea9bb1d..1875b6551ab0 100644
+> --- a/fs/xfs/xfs_zone_gc.c
+> +++ b/fs/xfs/xfs_zone_gc.c
+> @@ -993,7 +993,6 @@ xfs_zone_gc_handle_work(
+>  	}
+>  
+>  	__set_current_state(TASK_RUNNING);
+> -	try_to_freeze();
+>  
+>  	if (reset_list)
+>  		xfs_zone_gc_reset_zones(data, reset_list);
+> @@ -1041,7 +1040,6 @@ xfs_zoned_gcd(
+>  	unsigned int		nofs_flag;
+>  
+>  	nofs_flag = memalloc_nofs_save();
+> -	set_freezable();
+>  
+>  	for (;;) {
+>  		set_current_state(TASK_INTERRUPTIBLE | TASK_FREEZABLE);
 
+Same question here for this newly merged code, too...
+
+-Dave.
 -- 
-2.47.2
-
+Dave Chinner
+david@fromorbit.com
 
