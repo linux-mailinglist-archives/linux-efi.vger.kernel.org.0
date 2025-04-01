@@ -1,124 +1,420 @@
-Return-Path: <linux-efi+bounces-3175-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3176-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59412A780F6
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 19:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC18A78269
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 20:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E8857A31DB
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 17:01:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 156327A3423
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 18:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93401F0985;
-	Tue,  1 Apr 2025 17:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B502220E33F;
+	Tue,  1 Apr 2025 18:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="jXqL/2yh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2siRzmp"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B732EAF7;
-	Tue,  1 Apr 2025 17:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E83C20D51E
+	for <linux-efi@vger.kernel.org>; Tue,  1 Apr 2025 18:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743526931; cv=none; b=pBqg2/UZjUn0xLrbJRwOYa3OhyhjmrcooffjIfDuqLOAFrOHjsvtSWH/y4CHAtweAPRBwqENqUIHP+R1pr+RovjaN6c02alRek4QXIjp9q2gumuNqqT9GHoEbs+1ktILqavlRv4ZoM8oGSiOmAQo0TAw/K5ppYEftRWa6Nkg7t4=
+	t=1743533150; cv=none; b=eTVauEAmjh9NHDrvWRk7ueLngpzQQcoom1kVMCHIGD0CoCFOwEET51oDVwJmBca/35hmAeKLbzjc8BDewlQcav+xRF64L8wr0WDyl665SpASVQm6JoWFx7YA3eLaxRZkC7hVzLDlaesyA5L6fiTm1jIxHOTJjOKGorGptYIk8I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743526931; c=relaxed/simple;
-	bh=CenOX3ZG3axcJusNwTRyKjMpdi+GvSUx/ICXN9F7i/4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pwu5kDobYeZKvkmXgG/kIj6qUdqtxvuyTbAoTfgApW2itxAVPZRr+9ub23Ijl0/jJ5M149Bs0BdYCplqjnGbQOFP0ufqwoAK/rwYQv49lzlh4hRjzK7OIzqsPHJt8zbgy4C9IrJd/gxtzoWJFo7vMykpzi3Pn5+J2HLd6HD7nI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=jXqL/2yh; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1743526928;
-	bh=CenOX3ZG3axcJusNwTRyKjMpdi+GvSUx/ICXN9F7i/4=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=jXqL/2yhi/UG5mNgvzE8vWQx5cAFE/UzmVBGfmZfJuFmSVRkcBPrQg6u4GwavMxvN
-	 yNX53e6d5xSAK8g70s13sPqT18NTm1U7Cv5NadTZWgA/h/T6rYkJXongzqV1QH4X08
-	 WLQh45FUPb5+XyqXincBnfGR4nnBRT7CnVG27++Y=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 40CA11C02DF;
-	Tue, 01 Apr 2025 13:02:08 -0400 (EDT)
-Message-ID: <ddee7c1ce2d1ff1a8ced6e9b6ac707250f70e68b.camel@HansenPartnership.com>
-Subject: Re: [PATCH 0/6] power: wire-up filesystem freeze/thaw with
- suspend/resume
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	jack@suse.cz, rafael@kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, mcgrof@kernel.org, hch@infradead.org, 
- david@fromorbit.com, djwong@kernel.org, pavel@kernel.org,
- peterz@infradead.org,  mingo@redhat.com, will@kernel.org,
- boqun.feng@gmail.com
-Date: Tue, 01 Apr 2025 13:02:07 -0400
-In-Reply-To: <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
-References: <20250331-work-freeze-v1-0-6dfbe8253b9f@kernel.org>
-	 <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1743533150; c=relaxed/simple;
+	bh=P1VJDqdlcScdk8mP/cMnGmVzjAvz0ds0HzSLfAdE4qU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n1fnhU41HqDsGfnav4E20ggHvX2+tk+US474WwlDvB6nvQZScT/h3U2xoeAWIGQKp0neETXg+lLL9lUCGkki5VJXhyHpPFhcaie01ioNM1ViqYXk59C4KD3yit20Haz1CZqAM/ELv6BE2pcRsaH7D1hJ7Ekpx5u7wrbSX1ob8xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2siRzmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1CBC4CEEA
+	for <linux-efi@vger.kernel.org>; Tue,  1 Apr 2025 18:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743533150;
+	bh=P1VJDqdlcScdk8mP/cMnGmVzjAvz0ds0HzSLfAdE4qU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=B2siRzmp5CcvgsI0DL11wSIVKXfl/mYkEkoJH8lSdrg9PwBRpVYONEhRWoJg3VqR8
+	 UEBvh92feOn+WHCE+rpJMk84YDwUxUqOT1+uUXp5adRvBLR9ViqUHsSQNlDNyUMXWn
+	 KSVhunpdwLERtqfKxVyNzz5BXYIh1zl7qNIfGmQaVJObHmqVqaE9UHfUCbldTNS/0G
+	 JASv1XDBrQ0IS98b+DyZdw//sr382tyYk7ZOtekPMPExlHTm+fF8gXRunaSi6uV88D
+	 sr9UUcl7I72g91kNCDpF2/1RbfrkP2oOqxQYtDHBEp4D/XixkDfvrUo9CHCahG3aTY
+	 6PQoq5yec/OhA==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54993c68ba0so1591726e87.2
+        for <linux-efi@vger.kernel.org>; Tue, 01 Apr 2025 11:45:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXw9uO3OgWqdto6+TBi3HsofJ3Ea06Cw4C30CzR6Txjr8ywVkU7XSDZkO6fGfhuvaDfQ5hog4TnvdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiNT6OA4mNxY2xW6c+GDmOr5uJXVq5l7g8e8mohM07n0DPzc7k
+	RfgOJ+TRkD/gKN/WTHRUjktQuR+QE4N2oxo+ic20utO6Oog9GDKEoO45oUngW3pZOerV0PsEu7v
+	lgALRrFhUQb0xIDNN9R7RHq8pOIA=
+X-Google-Smtp-Source: AGHT+IEYbRpldzYSsutlTu9wu42EqGv8gBSb+TaaAwLs88n2ixqNqz9FzG1J8RBFWf1ZDfWHnzHVAz3s0FlwHCR6UZU=
+X-Received: by 2002:a05:651c:158b:b0:307:e368:6bd6 with SMTP id
+ 38308e7fff4ca-30eecd8cf02mr16542101fa.32.1743533148375; Tue, 01 Apr 2025
+ 11:45:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250325091614.1203411-2-ardb+git@google.com> <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
+ <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
+ <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
+ <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
+ <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
+ <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com>
+ <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com> <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
+ <121a6769-3b86-b1a7-1d90-524cdd82790b@amd.com>
+In-Reply-To: <121a6769-3b86-b1a7-1d90-524cdd82790b@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 1 Apr 2025 21:45:37 +0300
+X-Gmail-Original-Message-ID: <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
+X-Gm-Features: AQ5f1JrD_yZ0dmD3gZOyVSC0d4NEy8CKTfymmvNCRvvJZWiVeu0lsanB8VHbd3o
+Message-ID: <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before ExitBootServices()
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
+	linux-efi@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 2025-04-01 at 02:32 +0200, Christian Brauner wrote:
-> The whole shebang can also be found at:
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/log/?h=3D=
-work.freeze
->=20
-> I know nothing about power or hibernation. I've tested it as best as
-> I could. Works for me (TM).
+On Tue, 1 Apr 2025 at 18:51, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 3/26/25 04:28, Ard Biesheuvel wrote:
+> > On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+> >>
+> >> On 3/25/25 09:39, Ard Biesheuvel wrote:
+> >>> On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
+> >>> <kirill.shutemov@linux.intel.com> wrote:
+> >>>>
+> >>>> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
+> >>>>>> Since the problem happens before ExitBootServices(), can we allocate this
+> >>>>>> memory range with EFI API and free it back?
+> >>>>>>
+> >>>>>
+> >>>>> In principle, yes - we could allocate these misaligned chunks as
+> >>>>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
+> >>>>> would become available to the OS automatically.
+> >>>>>
+> >>>>> But doing this in setup_e820() is tricky, because every page
+> >>>>> allocation modifies the EFI memory map, and we may have to restart
+> >>>>> from the beginning. And there is no guarantee that some asynchronous
+> >>>>> event in the firmware context does not attempt to allocate some pages,
+> >>>>> in a way that might result in another misaligned unaccepted region.
+> >>>>
+> >>>> Looking again at the code, setup_e820() (and therefore
+> >>>> process_unaccepted_memory()) called after efi_exit_boot_services() in
+> >>>> exit_boot(), so we can't use EFI API to allocate memory.
+> >>>>
+> >>>
+> >>> Ah yes, I misremembered that. It also means that it is fine in
+> >>> principle to take over the communication with the hypervisor.
+> >>>
+> >>> However, this is still tricky, because on SEV-SNP, accepting memory
+> >>> appears to rely on the GHCB page based communication being enabled,
+> >>> and this involves mapping it down to a single page so the C bit can be
+> >>> cleared. It would be nice if we could simply use the MSR based
+> >>> protocol for accepting memory.
+> >>
+> >> We can probably do something along this line since there is an existing
+> >> function, __page_state_change(), that performs MSR protocol PSC. If we
+> >> change the arch_accept_memory() calls in process_unaccepted_memory() to
+> >> arch_accept_memory_early() then we can differentiate between this early
+> >> alignment setup timeframe. The early function can also use
+> >> sev_get_status() instead of sev_snp_enabled().
+> >>
+> >> Let me mess around with it a bit and see what I come up with.
+> >>
+> >
+> > Cheers.
+>
+> This is what I came up with below. @Ard and @Kirill, let me know if it
+> looks ok to you and, if so, I'll submit a formal patch where we can work
+> on naming, etc.
+>
 
-I'm testing the latest you have in work.freeze and it doesn't currently
-work for me.  Patch 7b315c39b67d ("power: freeze filesystems during
-suspend/resume") doesn't set filesystems_freeze_ptr so it ends up being
-NULL and tripping over this check=20
+Thanks for putting this together.
 
-+static inline bool may_unfreeze(struct super_block *sb, enum
-freeze_holder who,
-+                               const void *freeze_owner)
-+{
-+       WARN_ON_ONCE((who & ~FREEZE_FLAGS));
-+       WARN_ON_ONCE(hweight32(who & FREEZE_HOLDERS) > 1);
-+
-+       if (who & FREEZE_EXCL) {
-+               if (WARN_ON_ONCE(sb->s_writers.freeze_owner =3D=3D NULL))
-+                       return false;
+Some questions below.
 
+> >
+> > So IIUC, it would be sufficient to check sev_get_status() against
+> > MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
+> > unaccepted page that is in the misaligned head or tail of the region
+> > to private.
+> >
+> > Pardon my ignorance, but does that mean that in principle,
+> > sev_enable() et al could be deferred to early startup of the kernel
+> > proper (where the other SEV startup code lives) ?
+>
+> I'm not sure if it can be. There is a bunch of code in the sev_enable()
+> path that I'm not sure can be moved. I'd have to look a lot closer to
+> determine that.
+>
+> Thanks,
+> Tom
+>
+> >
+> > We have been playing whack-a-mole with PIC codegen issues there, and
+> > so it might make sense to consolidate that logic into a single [PIC]
+> > chunk of code that is somewhat isolated from the rest of the code
+> > (like the kernel/pi code on arm64)
+>
+> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+> index dbba332e4a12..b115a73ca25e 100644
+> --- a/arch/x86/boot/compressed/mem.c
+> +++ b/arch/x86/boot/compressed/mem.c
+> @@ -32,19 +32,42 @@ static bool early_is_tdx_guest(void)
+>         return is_tdx;
+>  }
+>
+> -void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+> +static bool is_sev_snp_enabled(bool early)
+> +{
+> +       return early ? early_sev_snp_enabled() : sev_snp_enabled();
 
-in f15a9ae05a71 ("fs: add owner of freeze/thaw") and failing to resume
-from hibernate.  Setting it to __builtin_return_address(0) in
-filesystems_freeze() makes everything work as expected, so that's what
-I'm testing now.
+Why is the latter test not suitable early on? Simply because
+sev_status is not initialized yet?
 
-I suppose one minor, minor nit is that the vagaries of English grammar
-mean that the verbs fail and succeed don't take the same grammatical
-construction, so failed can take the infinitive (failed to thaw)
-perfectly well, but succeeded takes a prepositional gerund construction
-instead: "succeeded at/in thawing" instead of the infinitive "succeeded
-to thaw" ... I've no idea why, but I'd probably blame the Victorians
-...
+> +}
+> +
+> +static void __arch_accept_memory(phys_addr_t start, phys_addr_t end, bool early)
+>  {
+>         /* Platform-specific memory-acceptance call goes here */
+>         if (early_is_tdx_guest()) {
+>                 if (!tdx_accept_memory(start, end))
+>                         panic("TDX: Failed to accept memory\n");
+> -       } else if (sev_snp_enabled()) {
+> -               snp_accept_memory(start, end);
+> +       } else if (is_sev_snp_enabled(early)) {
+> +               /*
+> +                * Calls when memory acceptance is being setup require SNP
+> +                * to use the GHCB protocol because the current pagetable
+> +                * mappings can't change the early GHCB page to shared.
+> +                */
+> +               if (early)
 
-Regards,
+I think it would be better to structure this slightly differently.
+I'll have a stab at this myself and get back to you.
 
-James
+> +                       snp_accept_memory_early(start, end);
+> +               else
+> +                       snp_accept_memory(start, end);
+>         } else {
+>                 error("Cannot accept memory: unknown platform\n");
+>         }
+>  }
+>
+> +void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +       __arch_accept_memory(start, end, false);
+> +}
+> +
+> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end)
+> +{
+> +       __arch_accept_memory(start, end, true);
+> +}
+> +
+>  bool init_unaccepted_memory(void)
+>  {
+>         guid_t guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index bb55934c1cee..162484d662f1 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -157,6 +157,12 @@ static int svsm_perform_call_protocol(struct svsm_call *call)
+>         return ret;
+>  }
+>
+> +/* Used before sev_enable() has been called during unaccepted memory init */
+> +bool early_sev_snp_enabled(void)
+> +{
+> +       return sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED;
+> +}
+> +
+>  bool sev_snp_enabled(void)
+>  {
+>         return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
+> @@ -164,10 +170,7 @@ bool sev_snp_enabled(void)
+>
+>  static void __page_state_change(unsigned long paddr, enum psc_op op)
+>  {
+> -       u64 val;
+> -
+> -       if (!sev_snp_enabled())
+> -               return;
+> +       u64 val, msr;
+>
 
+Could you explain how the below code now knows how to decide whether
+to use the MSR protocol or the GHCB page based one?
+
+>         /*
+>          * If private -> shared then invalidate the page before requesting the
+> @@ -176,6 +179,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>         if (op == SNP_PAGE_STATE_SHARED)
+>                 pvalidate_4k_page(paddr, paddr, false);
+>
+> +       /* Save the current GHCB MSR value */
+> +       msr = sev_es_rd_ghcb_msr();
+> +
+>         /* Issue VMGEXIT to change the page state in RMP table. */
+>         sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+>         VMGEXIT();
+> @@ -185,6 +191,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>         if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
+>                 sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
+>
+> +       /* Restore the GHCB MSR value */
+> +       sev_es_wr_ghcb_msr(msr);
+> +
+>         /*
+>          * Now that page state is changed in the RMP table, validate it so that it is
+>          * consistent with the RMP entry.
+> @@ -195,11 +204,17 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>
+>  void snp_set_page_private(unsigned long paddr)
+>  {
+> +       if (!sev_snp_enabled())
+> +               return;
+> +
+>         __page_state_change(paddr, SNP_PAGE_STATE_PRIVATE);
+>  }
+>
+>  void snp_set_page_shared(unsigned long paddr)
+>  {
+> +       if (!sev_snp_enabled())
+> +               return;
+> +
+>         __page_state_change(paddr, SNP_PAGE_STATE_SHARED);
+>  }
+>
+> @@ -261,6 +276,11 @@ static phys_addr_t __snp_accept_memory(struct snp_psc_desc *desc,
+>         return pa;
+>  }
+>
+> +/*
+> + * The memory acceptance support uses the boot GHCB page to perform
+> + * the required page state change operation before validating the
+> + * pages.
+> + */
+>  void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>  {
+>         struct snp_psc_desc desc = {};
+> @@ -275,6 +295,23 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>                 pa = __snp_accept_memory(&desc, pa, end);
+>  }
+>
+> +/*
+> + * The early version of memory acceptance is needed when being called
+> + * from the EFI stub driver. The pagetable manipulation to mark the
+> + * boot GHCB page as shared can't be performed at this stage, so use
+> + * the GHCB page state change MSR protocol instead.
+> + */
+> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end)
+> +{
+> +       phys_addr_t pa;
+> +
+> +       pa = start;
+> +       while (pa < end) {
+
+Nit: please make this
+
+for (phys_addr_t pa = start; pa < end; pa += PAGE_SIZE)
+
+and drop the braces
+
+> +               __page_state_change(pa, SNP_PAGE_STATE_PRIVATE);
+> +               pa += PAGE_SIZE;
+> +       }
+> +}
+> +
+>  void sev_es_shutdown_ghcb(void)
+>  {
+>         if (!boot_ghcb)
+> diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
+> index fc725a981b09..8a135c9c043a 100644
+> --- a/arch/x86/boot/compressed/sev.h
+> +++ b/arch/x86/boot/compressed/sev.h
+> @@ -10,13 +10,17 @@
+>
+>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>
+> +bool early_sev_snp_enabled(void);
+>  bool sev_snp_enabled(void);
+>  void snp_accept_memory(phys_addr_t start, phys_addr_t end);
+> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end);
+>
+>  #else
+>
+> +static inline bool early_sev_snp_enabled(void) { return false; }
+>  static inline bool sev_snp_enabled(void) { return false; }
+>  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
+> +static inline void snp_accept_memory_early(phys_addr_t start, phys_addr_t end) { }
+>
+>  #endif
+>
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index d96d4494070d..676aa30df52e 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -1233,5 +1233,6 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
+>  void process_unaccepted_memory(u64 start, u64 end);
+>  void accept_memory(phys_addr_t start, unsigned long size);
+>  void arch_accept_memory(phys_addr_t start, phys_addr_t end);
+> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end);
+>
+>  #endif
+> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
+> index 757dbe734a47..1955eddc85f1 100644
+> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
+> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
+> @@ -118,7 +118,7 @@ void process_unaccepted_memory(u64 start, u64 end)
+>          * immediately accepted in its entirety.
+>          */
+>         if (end - start < 2 * unit_size) {
+> -               arch_accept_memory(start, end);
+> +               arch_accept_memory_early(start, end);
+>                 return;
+>         }
+>
+> @@ -129,13 +129,13 @@ void process_unaccepted_memory(u64 start, u64 end)
+>
+>         /* Immediately accept a <unit_size piece at the start: */
+>         if (start & unit_mask) {
+> -               arch_accept_memory(start, round_up(start, unit_size));
+> +               arch_accept_memory_early(start, round_up(start, unit_size));
+>                 start = round_up(start, unit_size);
+>         }
+>
+>         /* Immediately accept a <unit_size piece at the end: */
+>         if (end & unit_mask) {
+> -               arch_accept_memory(round_down(end, unit_size), end);
+> +               arch_accept_memory_early(round_down(end, unit_size), end);
+>                 end = round_down(end, unit_size);
+>         }
+>
+> @@ -144,8 +144,8 @@ void process_unaccepted_memory(u64 start, u64 end)
+>          * into the bitmap.
+>          */
+>         if (start < unaccepted_table->phys_base) {
+> -               arch_accept_memory(start,
+> -                                  min(unaccepted_table->phys_base, end));
+> +               arch_accept_memory_early(start,
+> +                                        min(unaccepted_table->phys_base, end));
+>                 start = unaccepted_table->phys_base;
+>         }
+>
+> @@ -165,7 +165,7 @@ void process_unaccepted_memory(u64 start, u64 end)
+>                              unaccepted_table->phys_base;
+>                 phys_end = end + unaccepted_table->phys_base;
+>
+> -               arch_accept_memory(phys_start, phys_end);
+> +               arch_accept_memory_early(phys_start, phys_end);
+>                 end = bitmap_size * unit_size * BITS_PER_BYTE;
+>         }
+>
+>
+>
 
