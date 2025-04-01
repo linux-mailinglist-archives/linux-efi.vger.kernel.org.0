@@ -1,61 +1,60 @@
-Return-Path: <linux-efi+bounces-3161-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3162-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63220A77B2E
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 14:46:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44488A77B99
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 15:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B59BE188DB83
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 12:46:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A013A6B5C
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 13:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD181F1921;
-	Tue,  1 Apr 2025 12:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CF4202961;
+	Tue,  1 Apr 2025 13:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r4QkaICZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iF1PWZIm"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08F126AF3;
-	Tue,  1 Apr 2025 12:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09115155A30;
+	Tue,  1 Apr 2025 13:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743511555; cv=none; b=YGlw0fJFLjEVySG9Hn8dxVnq06nkImjCjq8DGEfTnBCShNqrSuQhWdXv2dtUAfDbg7Y5Cye5EBykZ8fidN185G/6xD9EN2nEBuGzvrlKbeWRRGN4fikuvusVFByt+PknK4vGj5zHFeBgFkZbR+asqB15zRQYUr+KyZKgFyySqTg=
+	t=1743512620; cv=none; b=vGvUvy0e3UEZCqL8CIVRxviSD3XxU9WvCC+DJpglsIhL1oi0ZGIK4Uc3mSzERMetBjKuWZQuj4BvJ8GYfw8PuJ5/EGQ3YtO5HNQiFYuNhfSBRc5yF7BB757E1Ot6neslmx86oQihMkiCNxa+goes2XqokX465MHZuyH3Zq53bu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743511555; c=relaxed/simple;
-	bh=5kmgdEAsQqihiNsR3taaVx0rqImbTvhfajN7gqFQAHw=;
+	s=arc-20240116; t=1743512620; c=relaxed/simple;
+	bh=IfPNnUAgREsDtieKgyqwxU3MQRWieUHArEzsESiBSSk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ABZE12v6hqMYJ8F1LXGPP9hpYi3AMIgEVbcR+ZOyO+TDNtFNpf/+fGOgp4rxgtx5qKtX1plP+u3RFZejZwCvyhGd4LzYT+P1XQvT1lgdbvLl3mAFODOCadR+zprRJLFCQQyHFBlmyfdgYduHCt9GV3tQFjY6S8PoAbI32pCNVcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r4QkaICZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA805C4CEE4;
-	Tue,  1 Apr 2025 12:45:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=tZWg6mhGsC5RYnpVgVToJIrOOJvAd2W/7ZJb3UX2etQ6Eyr+wEz9Yww1s+ggztmwxH/9pr9ZIKZxptoyJVAeBFMx04cRHRche1GPcy/0XSPUR+9jofXJYbpZU5AA9cLCbXWbmuKC8KFsp1rWji0v3JlW+qPok9Pb568cnTRMGac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iF1PWZIm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD417C4CEE5;
+	Tue,  1 Apr 2025 13:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743511554;
-	bh=5kmgdEAsQqihiNsR3taaVx0rqImbTvhfajN7gqFQAHw=;
+	s=k20201202; t=1743512619;
+	bh=IfPNnUAgREsDtieKgyqwxU3MQRWieUHArEzsESiBSSk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r4QkaICZKu94q1MuFUPbbFeHr7OkoHLxG7/scJsU9qQZ+/PyIVGpKP1XKXq+6e4nc
-	 1nJL4rSwMRCTBsV9mFCk+YfVoqPJrd/+EnOWJbXK9G+sQb0t9tRbNHxLTRtFQXwoRS
-	 TsMs+zymEBuszTRAAsvO06yYOO1rGcgX4ek6LxtzXcthpHWCMwG9HeaOpHeMO3CZCV
-	 giwYnpKnVKkfiwyrjAyxbXFIHiTtcDutO1o38Oz7uqfCTIlnqlEy2Yc8PHaw24NvZO
-	 wsMlfnE3nXLHqVJC0d8AHd5a5hd0yTaQJnhaLbrznojl5SvSO+toXT3L/+GWwoEXg4
-	 7tVe+K3bUlbAQ==
-Date: Tue, 1 Apr 2025 14:45:48 +0200
+	b=iF1PWZImdgmJodvlmJsnW1yNFF3eOjqfkHF9QrZ9o5pURWuPCAkufILXmLC7Y779I
+	 +zgThECJTwsE0MXVfz29LLVeFxgsBZRqvfzdHnl5wEUL31LjRXIa+3grRcUwOzPzI1
+	 2dzsbZhUkHDpaqhQRwsic51EQtTegpRAOa03MXFBiX9vy4x1CUMRw6i/d6SGsxcllN
+	 2QTLmx/vP4N0zd+TwIuDTsmbw02dtNWRK4/IQ8kMDULrXWR5PrJW9c/NlUXO4RUAAh
+	 r0wBSVRxU75/w1KcNu7C9t4BQaP8urV6pencghCtBk5KBDogfYBJcSnT0IGcbJsW4r
+	 gyxJVAdC3KaRA==
+Date: Tue, 1 Apr 2025 15:03:33 +0200
 From: Christian Brauner <brauner@kernel.org>
-To: Dave Chinner <david@fromorbit.com>
-Cc: linux-fsdevel@vger.kernel.org, jack@suse.cz, 
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, rafael@kernel.org, 
 	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, mcgrof@kernel.org, hch@infradead.org, rafael@kernel.org, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, mcgrof@kernel.org, hch@infradead.org, david@fromorbit.com, 
 	djwong@kernel.org, pavel@kernel.org, peterz@infradead.org, mingo@redhat.com, 
 	will@kernel.org, boqun.feng@gmail.com
-Subject: Re: [PATCH 3/6] xfs: replace kthread freezing with auto fs freezing
-Message-ID: <20250401-packung-kurzfassung-696cefc2e3da@brauner>
-References: <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
- <20250401-work-freeze-v1-3-d000611d4ab0@kernel.org>
- <Z-s9KG-URzB9DwUb@dread.disaster.area>
- <20250401-baubeginn-ausdehnen-3a7387b756aa@brauner>
- <Z-vPnmL7wn_8cFim@dread.disaster.area>
+Subject: Re: [PATCH 0/6] power: wire-up filesystem freeze/thaw with
+ suspend/resume
+Message-ID: <20250401-kindisch-lagen-cd19c8f66103@brauner>
+References: <20250331-work-freeze-v1-0-6dfbe8253b9f@kernel.org>
+ <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
+ <s6rnz3ysjlu3rp6m56vua3vnlj53hbgxbbe3nj7v2ib5fg4l2i@py4pkvsgk2lr>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -64,44 +63,56 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Z-vPnmL7wn_8cFim@dread.disaster.area>
+In-Reply-To: <s6rnz3ysjlu3rp6m56vua3vnlj53hbgxbbe3nj7v2ib5fg4l2i@py4pkvsgk2lr>
 
-On Tue, Apr 01, 2025 at 10:35:58PM +1100, Dave Chinner wrote:
-> On Tue, Apr 01, 2025 at 09:17:12AM +0200, Christian Brauner wrote:
-> > On Tue, Apr 01, 2025 at 12:11:04PM +1100, Dave Chinner wrote:
-> > > On Tue, Apr 01, 2025 at 02:32:48AM +0200, Christian Brauner wrote:
-> > > > diff --git a/fs/xfs/xfs_zone_gc.c b/fs/xfs/xfs_zone_gc.c
-> > > > index c5136ea9bb1d..1875b6551ab0 100644
-> > > > --- a/fs/xfs/xfs_zone_gc.c
-> > > > +++ b/fs/xfs/xfs_zone_gc.c
-> > > > @@ -993,7 +993,6 @@ xfs_zone_gc_handle_work(
-> > > >  	}
-> > > >  
-> > > >  	__set_current_state(TASK_RUNNING);
-> > > > -	try_to_freeze();
-> > > >  
-> > > >  	if (reset_list)
-> > > >  		xfs_zone_gc_reset_zones(data, reset_list);
-> > > > @@ -1041,7 +1040,6 @@ xfs_zoned_gcd(
-> > > >  	unsigned int		nofs_flag;
-> > > >  
-> > > >  	nofs_flag = memalloc_nofs_save();
-> > > > -	set_freezable();
-> > > >  
-> > > >  	for (;;) {
-> > > >  		set_current_state(TASK_INTERRUPTIBLE | TASK_FREEZABLE);
-> > > 
-> > > Same question here for this newly merged code, too...
-> >
-> > I'm not sure if this is supposed to be a snipe or not but just in case
-> > this is a hidden question:
+On Tue, Apr 01, 2025 at 11:32:49AM +0200, Jan Kara wrote:
+> On Tue 01-04-25 02:32:45, Christian Brauner wrote:
+> > The whole shebang can also be found at:
+> > https://web.git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/log/?h=work.freeze
+> > 
+> > I know nothing about power or hibernation. I've tested it as best as I
+> > could. Works for me (TM).
+> > 
+> > I need to catch some actual sleep now...
+> > 
+> > ---
+> > 
+> > Now all the pieces are in place to actually allow the power subsystem to
+> > freeze/thaw filesystems during suspend/resume. Filesystems are only
+> > frozen and thawed if the power subsystem does actually own the freeze.
+> > 
+> > Othwerwise it risks thawing filesystems it didn't own. This could be
+> > done differently be e.g., keeping the filesystems that were actually
+> > frozen on a list and then unfreezing them from that list. This is
+> > disgustingly unclean though and reeks of an ugly hack.
+> > 
+> > If the filesystem is already frozen by the time we've frozen all
+> > userspace processes we don't care to freeze it again. That's userspace's
+> > job once the process resumes. We only actually freeze filesystems if we
+> > absolutely have to and we ignore other failures to freeze.
 > 
-> No, I meant that this is changing shiny new just-merged XFS code
-> (part of zone device support). It only just arrived this merge
-> window and is largely just doing the same thing as the older aild
-> code. It is probably safe to assume that this new code has never
-> been tested against hibernate...
+> Hum, I don't follow here. I supposed we'll use FREEZE_MAY_NEST |
+> FREEZE_HOLDER_KERNEL for freezing from power subsystem. As far as I
+> remember we have specifically designed nesting of freeze counters so that
+> this way power subsystem can be sure freezing succeeds even if the
+> filesystem is already frozen (by userspace or the kernel) and similarly
+> power subsystem cannot thaw a filesystem frozen by somebody else. It will
+> just drop its freeze refcount... What am I missing?
 
-Ah, my brain is completely fried. Apparently reading English is a skill
-I've lost since coming back from Montreal. Thanks!
+If we have 10 filesystems and suspend/hibernate manges to freeze 5 and
+then fails on the 6th for whatever odd reason (current or future) then
+power needs to undo the freeze of the first 5 filesystems. We can't just
+walk the list again because while it's unlikely that a new filesystem
+got added in the meantime we still cannot tell what filesystems the
+power subsystem actually managed to get a freeze reference count on that
+we need to drop during thaw.
+
+There's various ways out of this ugliness. Either we record the
+filesystems the power subsystem managed to freeze on a temporary list in
+the callbacks and then walk that list backwards during thaw to undo the
+freezing or we make sure that the power subsystem just actually
+exclusively freezes things it can freeze and marking such filesystems as
+being owned by power for the duration of the suspend or resume cycle. I
+opted for the latter as that seemed the clean thing to do even if it
+means more code changes. What are your thoughts on this?
 
