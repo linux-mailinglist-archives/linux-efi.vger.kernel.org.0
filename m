@@ -1,136 +1,151 @@
-Return-Path: <linux-efi+bounces-3149-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3150-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54FBA774A8
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 08:44:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6AEA77512
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 09:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAFA43A9717
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 06:44:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10B001889A2B
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 07:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5A51E520B;
-	Tue,  1 Apr 2025 06:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B191E7C32;
+	Tue,  1 Apr 2025 07:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lV3JNy3Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7DEBEBh"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4701E5206
-	for <linux-efi@vger.kernel.org>; Tue,  1 Apr 2025 06:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383B01E47A6;
+	Tue,  1 Apr 2025 07:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743489882; cv=none; b=YS/i/gljeW2uYj6qDDZgLPLJ2/IJHzacFXrM5ApEGwQr+IFTmaGCLDIUZZogXrKpgunQDANEbL3kUkhupaQBzImmhpUjvVpGk1BAWLlkP8JI3ihwcClGkBeUyYCcQsFyQ2T5I+HNk7ChpEg7ra2zq0mlg3xxOHOJPrDlRY+Z4lA=
+	t=1743491840; cv=none; b=E3qa/vSCTlgj6sEI5sndjy0JAP2zV+bkE+kU7zpdTHaAL7BdNqm9bXb/N/Vr0UeAfBZXC6rB74ZiXFIENIC2R/4FZ4DdIMX1C30Ny3K+VdK604D8j7DOER6JRzOI+Rhzaye8b7CF8QCHm56Vpd5uS9XGhwfecn2MUht2TDfZP5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743489882; c=relaxed/simple;
-	bh=iXPpOVS3zyefCMEUb8FrlnmS7g5rp6frzlaCqVkPN8o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F85XdzQYuZaneIcPW0QQ0H3WaG+u3YAJUhcrTmWWyxy1ePThyCfjisk6bf22x8qHT2htHeB46T8FwSAiYACetOsrHBnYln4ArBwhMXtTO47eH858F7Rmtm/t2oTlawLeZHIDmU1tOXtZ59OpLPI6vQNn9PIGaIeNAzymKtT1KHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lV3JNy3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5F6C4CEE8
-	for <linux-efi@vger.kernel.org>; Tue,  1 Apr 2025 06:44:42 +0000 (UTC)
+	s=arc-20240116; t=1743491840; c=relaxed/simple;
+	bh=yGVuOK8QsrbzJeHeZyfdHkem1uNLnG6KfYUZfHdCoG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jxz3SrmZYixJspEefoFgKYvoKxMfuu3npjn9Iz1v8YIh00W0rjAi4fsC7uwrIi+UOPGOBvcetXyTJRVxiPQkNaj0QeQ8uZKukvk0MEWGuB8rp783Kbammp0ANm+vj0+ovtc7FjKyH57c10u+wQ0d3u4xkJqzVYIevJU9ugXQFko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7DEBEBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8A2C4CEE8;
+	Tue,  1 Apr 2025 07:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743489882;
-	bh=iXPpOVS3zyefCMEUb8FrlnmS7g5rp6frzlaCqVkPN8o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lV3JNy3ZdtYHljPjGjvEu2P7vU7bymHCFAslMFlvCNMCfvhraXxla7Wf1NgrJ+PWP
-	 Am74DlEpIptWae7wkOW124K5idbgizbyzUGoQN4F6olcCo+AzZw3U1id3UpWqDlrQv
-	 nZ6oBVDE24XnV8SuYbiZNnQFzx4hU/XtgWRAwfBvoLxwSJWRniXtK45REit3VzxSOY
-	 G6UDie/vmOL9rFYDf1so56oyxRHcsiqEHDKycJBoyjuvCqZqe2wS1ALxlJDnYZbrUN
-	 1OyZpTCAeEGhdTk4dGGxKnnrxQPfsKYyZRdCXHMHZORowNCJAdUX2GNMP4dgoSXrvE
-	 LQVOlNv3h7iBQ==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-307c13298eeso58976241fa.0
-        for <linux-efi@vger.kernel.org>; Mon, 31 Mar 2025 23:44:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVfHg2tqqjPVW0pkFF+rzL46QzFZurfnquL+ACnPdR2CB0LQXQCzZ0/5WefiPkAKnK/yVWrwMdZh90=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjOvFBHXWHuweAkN/IN9NR1rAbSxC4StrmgdGiD8Gp+B9LeHXh
-	k6wrdHArWrgT+TY2PjpNvizzeVpFwN0pP9ZYU8W1oXztgDQAKTAPzDH34mFSQn8uPsayeRaUjph
-	S3/7AmhwxnIXa5i3K9n8JKc2mMHk=
-X-Google-Smtp-Source: AGHT+IHDsUg8nSeRVl0ArHJC5ULHb5OYh4l3ftfk7kVYJrYZMZeAdi9IStI1w5UyujrcIn2cLKE8ekrdb5UoWogBi5A=
-X-Received: by 2002:a2e:a416:0:b0:30c:432c:5f36 with SMTP id
- 38308e7fff4ca-30dd3fd6c59mr52225151fa.5.1743489880668; Mon, 31 Mar 2025
- 23:44:40 -0700 (PDT)
+	s=k20201202; t=1743491839;
+	bh=yGVuOK8QsrbzJeHeZyfdHkem1uNLnG6KfYUZfHdCoG0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C7DEBEBh3oAtCdSwwszho06IfxX1ZpBRXC5zlUlXBKZFKeOhDBre8bA+ZZ1c2ddBC
+	 H1BK6RQGj2Xd0hzjrS3LwxQ5PnF/XkEs1O89lq7MtqZ8Mux027RH2odhXsGtFa4mGx
+	 Gs3zKhetuLRgetKrsEQEu8ZXmZhuuA+aZ+s4sV7KO+46J+OgsmchRxn6QPDxeOh+FR
+	 RKIqeCbPzTS7JBXF3c9MT2VDrUblR2bj54usuPMZ+JK3xC7zyKN6RTKsfWD1WaGITO
+	 0ghMzNrJtEdTRQSNLJb1A6H8wLaiQlZcKjUiwvHB56SpQsUF4BqlvODqbQ0CCXcPNX
+	 UC383ZZOgMEuQ==
+Date: Tue, 1 Apr 2025 09:17:12 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Dave Chinner <david@fromorbit.com>
+Cc: linux-fsdevel@vger.kernel.org, jack@suse.cz, 
+	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, mcgrof@kernel.org, hch@infradead.org, rafael@kernel.org, 
+	djwong@kernel.org, pavel@kernel.org, peterz@infradead.org, mingo@redhat.com, 
+	will@kernel.org, boqun.feng@gmail.com
+Subject: Re: [PATCH 3/6] xfs: replace kthread freezing with auto fs freezing
+Message-ID: <20250401-baubeginn-ausdehnen-3a7387b756aa@brauner>
+References: <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
+ <20250401-work-freeze-v1-3-d000611d4ab0@kernel.org>
+ <Z-s9KG-URzB9DwUb@dread.disaster.area>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250328070525.2248563-2-ardb+git@google.com> <CAHk-=wjc-EAEtv02iUFGej6RZs9C7ALAMtuh4rFNYs5VUt+4UA@mail.gmail.com>
- <CAMj1kXF61PeyercrHdkevq+UdKvBsfJ4QV2RFJyXMWAYtJ95oQ@mail.gmail.com>
- <Z-j8b7Z5oja05cCI@gmail.com> <CAMj1kXEpYG7LFgDiM2g4VsBVy1-+8pPxSwy6Xc9DS5u9f8aQZg@mail.gmail.com>
- <Z-rJESxkzhg438vo@gmail.com>
-In-Reply-To: <Z-rJESxkzhg438vo@gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 1 Apr 2025 08:44:27 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFEgLz2LCzOVZ=+V9aESJEReWr2mguDJzV=roTKQpZccg@mail.gmail.com>
-X-Gm-Features: AQ5f1JrtpS_4psgY1lpjN7nkLbKZQhXUUzLq7pBXQnTx-KWLLLQbWxK0BX2kduI
-Message-ID: <CAMj1kXFEgLz2LCzOVZ=+V9aESJEReWr2mguDJzV=roTKQpZccg@mail.gmail.com>
-Subject: Re: [GIT PULL] EFI updates for v6.15
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z-s9KG-URzB9DwUb@dread.disaster.area>
 
-On Mon, 31 Mar 2025 at 18:55, Ingo Molnar <mingo@kernel.org> wrote:
->
->
-> * Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> > So what I would like to propose for this arch/x86/boot/<something>
-> > subdirectory is to move all these source files there, and build a
-> > static library that can be pulled into the kernel proper as well as
-> > the decompressor, using C flags etc that ensure that all code it
-> > contains is safe for execution from the 1:1 mapping. This is how the
-> > EFI stub static library is built, and also how the code in
-> > arch/arm64/kernel/pi/ is constructed to ensure that it can safely run
-> > from a virtual mapping that doesn't match the one the linker used at
-> > build time.
-> >
-> > How does that sound?
->
-> Sounds fantastic, related code should be together, like friends around
-> a campfire.
->
-> Proposed locations, if it's 99% boot/init code (SYSTEM_BOOTING code):
->
->         arch/x86/boot/efi/
->         arch/x86/boot/efi/lib/
->         arch/x86/boot/efilib/
->         arch/x86/boot/lib/efi/
->
-> ... or if there's a substantial runtime code (SYSTEM_RUNNING code):
->
->         arch/x86/platform/efi/   # <--- already exists
->         arch/x86/kernel/efi/
->
+On Tue, Apr 01, 2025 at 12:11:04PM +1100, Dave Chinner wrote:
+> On Tue, Apr 01, 2025 at 02:32:48AM +0200, Christian Brauner wrote:
+> > From: Luis Chamberlain <mcgrof@kernel.org>
+> > 
+> > The kernel power management now supports allowing the VFS
+> > to handle filesystem freezing freezes and thawing. Take advantage
+> > of that and remove the kthread freezing. This is needed so that we
+> > properly really stop IO in flight without races after userspace
+> > has been frozen. Without this we rely on kthread freezing and
+> > its semantics are loose and error prone.
+> > 
+> > The filesystem therefore is in charge of properly dealing with
+> > quiescing of the filesystem through its callbacks if it thinks
+> > it knows better than how the VFS handles it.
+> > 
+> .....
+> 
+> > diff --git a/fs/xfs/xfs_trans_ail.c b/fs/xfs/xfs_trans_ail.c
+> > index 0fcb1828e598..ad8183db0780 100644
+> > --- a/fs/xfs/xfs_trans_ail.c
+> > +++ b/fs/xfs/xfs_trans_ail.c
+> > @@ -636,7 +636,6 @@ xfsaild(
+> >  	unsigned int	noreclaim_flag;
+> >  
+> >  	noreclaim_flag = memalloc_noreclaim_save();
+> > -	set_freezable();
+> >  
+> >  	while (1) {
+> >  		/*
+> > @@ -695,8 +694,6 @@ xfsaild(
+> >  
+> >  		__set_current_state(TASK_RUNNING);
+> >  
+> > -		try_to_freeze();
+> > -
+> >  		tout = xfsaild_push(ailp);
+> >  	}
+> >  
+> 
+> So what about the TASK_FREEZABLE flag that is set in this code
+> before sleeping?
+> 
+> i.e. this code before we schedule():
+> 
+>                 if (tout && tout <= 20)
+>                         set_current_state(TASK_KILLABLE|TASK_FREEZABLE);
+>                 else
+>                         set_current_state(TASK_INTERRUPTIBLE|TASK_FREEZABLE);
+> 
+> Shouldn't TASK_FREEZABLE go away, too?
 
-It is all boot code, along with some lower level plumbing that may be
-shared with the runtime code, but that shouldn't matter
-(Alternatively, we could have two copies but let's only do that when
-needed)
+Thanks for spotting! Yes, yesterday late at night I just took Luis
+patches as they are and had only gotten around to testing btrfs. The
+coccinelle scripts seemed to have missed those. I'll wait for comments
+and will do another pass and send out v2.
 
-My primary concern is that some of this code is used by non-EFI boot
-as well, so perhaps an efi/ subdirectory is not the best place.
+> > diff --git a/fs/xfs/xfs_zone_gc.c b/fs/xfs/xfs_zone_gc.c
+> > index c5136ea9bb1d..1875b6551ab0 100644
+> > --- a/fs/xfs/xfs_zone_gc.c
+> > +++ b/fs/xfs/xfs_zone_gc.c
+> > @@ -993,7 +993,6 @@ xfs_zone_gc_handle_work(
+> >  	}
+> >  
+> >  	__set_current_state(TASK_RUNNING);
+> > -	try_to_freeze();
+> >  
+> >  	if (reset_list)
+> >  		xfs_zone_gc_reset_zones(data, reset_list);
+> > @@ -1041,7 +1040,6 @@ xfs_zoned_gcd(
+> >  	unsigned int		nofs_flag;
+> >  
+> >  	nofs_flag = memalloc_nofs_save();
+> > -	set_freezable();
+> >  
+> >  	for (;;) {
+> >  		set_current_state(TASK_INTERRUPTIBLE | TASK_FREEZABLE);
+> 
+> Same question here for this newly merged code, too...
 
-> I'm a bit against the arch/x86/lib/ location for the simple reason
-> that the x86 library functions are usually simple self-contained
-> regular-runtime facilities in C or asm with very little magic, which
-> the EFI boot/stub code is as far away from as technologically possible.
-> ;-)
->
-
-Fair point.
-
-> Look into arch/x86/lib/ and you'll see that EFI functionality doesn't
-> really fit there.
->
-
-Again, EFI is only one aspect of this. The SEV-SNP startup code and
-the early 5-level paging are used by non-EFI boot as well. But they
-suffer from the same issue (C code that runs so early that it does not
-tolerate ordinary non-PIC codegen with instrumentation etc)
-
-Should we maybe classify this as startup code? And put it in
-arch/x86/boot/startup or arch/x86/kernel/startup?
+I'm not sure if this is supposed to be a snipe or not but just in case
+this is a hidden question: This isn't merged. Per the cover letter this
+is in a work.* branch. Anything that is considered mergable is in
+vfs-6.16.* branches. But since we're pre -rc1 even those branches are
+not yet showing up in -next.
 
