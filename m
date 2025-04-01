@@ -1,105 +1,97 @@
-Return-Path: <linux-efi+bounces-3159-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3160-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD4BA77876
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 12:08:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27725A779A4
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 13:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD2DE7A2B9A
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 10:07:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C6516B402
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Apr 2025 11:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5BE1F03EA;
-	Tue,  1 Apr 2025 10:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8047C1F91CD;
+	Tue,  1 Apr 2025 11:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="PYY8ydHB";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="LKmuADDT";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="PYY8ydHB";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="LKmuADDT"
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="DB+RAUeq"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2D91EBA08
-	for <linux-efi@vger.kernel.org>; Tue,  1 Apr 2025 10:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696781FAC30
+	for <linux-efi@vger.kernel.org>; Tue,  1 Apr 2025 11:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743502108; cv=none; b=i+xnhJ4f7TFXdU9LErIyAIGlUMlphesR+rU8YjYmBaNQ4uEjLQlS1tSowTbtywvL4q9DXMfbfZNeIzEy090opnmkS1JPaW6vh9DEXVoJWnwIf0U+SVet4Nr7HAvR+vBuPx533ZzE8FsSRe51PQHhcRNcdrCggJUWJhYJsMbqXj4=
+	t=1743507365; cv=none; b=NB43dPSxosfmXmYuxgwVYhesR2QydH8GmzT/NcvtLxVIlh5e1elMpbSpW5EzlEAwoa/RpGsz5zgwoGGblN75MYIAyz6YBOcIbG56aLgncekLR1KrwpPYak4jFAkyQxM0OMxrnGE4sTdOjhpvGoez5uSOwjrNCdob2NK8NnjhVq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743502108; c=relaxed/simple;
-	bh=++urWKNC5cfWd08urLWmZ0ardJRYr+sbgQ55JmwHDrw=;
+	s=arc-20240116; t=1743507365; c=relaxed/simple;
+	bh=R7SoiPCBNIDNzLkKbNN/bk7U6Bot5GWsF1bFWcdnudY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tJAJnsa/y75HPghw95yetV1L5hIZVYAB9kZ9LFp0IkN0QQ0/jWP2A8eU5G2D2cqIuyy7ZoFLqYdX+S4x4hh58gBQtxKRm5GUIBvrHu/7Ct3SeDQLJZ3xwhQt0uZ2NRQhZSUrgIlpr2TPVl2z0g+L4ZrMGDpKZ7UA6FG1Cx7cFnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=PYY8ydHB; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=LKmuADDT; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=PYY8ydHB; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=LKmuADDT; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 15CEF1F38E;
-	Tue,  1 Apr 2025 10:08:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1743502105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=suSfpVgBId8IpI/9A13Qm+aO2xaK6bvk0WIrZ6mJqfA=;
-	b=PYY8ydHB/BRKkb/f3uJZM9WIn6uy/Nfx8TSP6hkW5iebHUuThEl8ebraeZsLbQ6sE/aQ/a
-	Q7OnyH7q+A2YF3dxvliPf9T0+yFPLqHXsNgc3h+o+p94GlxdiZDmy0LzB5RJmi0CsTqcqv
-	hNOmIXk6ftY7zJWt39c1JHaPRMEFt0E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1743502105;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=suSfpVgBId8IpI/9A13Qm+aO2xaK6bvk0WIrZ6mJqfA=;
-	b=LKmuADDTSRI+wAfkOuD8IZKmzy14iQ//uKy8wxs4aZxgA3/E+p7wAEUCDZxwDoe5qKImX0
-	wRx/yN98+xBVuFBg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1743502105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=suSfpVgBId8IpI/9A13Qm+aO2xaK6bvk0WIrZ6mJqfA=;
-	b=PYY8ydHB/BRKkb/f3uJZM9WIn6uy/Nfx8TSP6hkW5iebHUuThEl8ebraeZsLbQ6sE/aQ/a
-	Q7OnyH7q+A2YF3dxvliPf9T0+yFPLqHXsNgc3h+o+p94GlxdiZDmy0LzB5RJmi0CsTqcqv
-	hNOmIXk6ftY7zJWt39c1JHaPRMEFt0E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1743502105;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=suSfpVgBId8IpI/9A13Qm+aO2xaK6bvk0WIrZ6mJqfA=;
-	b=LKmuADDTSRI+wAfkOuD8IZKmzy14iQ//uKy8wxs4aZxgA3/E+p7wAEUCDZxwDoe5qKImX0
-	wRx/yN98+xBVuFBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 043E9138A5;
-	Tue,  1 Apr 2025 10:08:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id XomxABm762cjDgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 01 Apr 2025 10:08:25 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id AAF3FA07E6; Tue,  1 Apr 2025 12:08:24 +0200 (CEST)
-Date: Tue, 1 Apr 2025 12:08:24 +0200
-From: Jan Kara <jack@suse.cz>
+	 Content-Type:Content-Disposition:In-Reply-To; b=KXtWXGZD1fN8WurqJmf2vurb9NL5mMZLIjTf/pX2frpkAevw93sz9yH9SGKe0fv7vT6kguaCabhE7mbYN1OubyWp81MNgQCA/aNHrG3BS654KnZQdPouE5nVUz69IXFl9jsK62BdvgeIH3lsPVVD71ORCOVFotQBaPE03w4jn54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=DB+RAUeq; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2260c915749so74920815ad.3
+        for <linux-efi@vger.kernel.org>; Tue, 01 Apr 2025 04:36:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1743507363; x=1744112163; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g2+c00bn9QMrYYncqUoX4E1bu9uetuu45V5+u5h/AVY=;
+        b=DB+RAUeql1+nxpXAllys+DY0MWr8w5xmkNVokRa+THxevO3nJW98NCMMu9rLD+NfJf
+         x6Q+EWEP8Xhy79EyhyCbczCvb0zc/d9Y4S2+JNzogcfHDbSrjhhzjyHJkSIWplBAK7LS
+         hPhKwBZRNeMOofAfSXT6NtNKeGESU17JT7+/w+Iuir8ryjphV/WXfR/NnSJ6X5VPGd1j
+         eykZlspMb67ul8+M0gsCZ1cM21hOyAUXxnKy6EI/canQf7/0G4diLLqAoPDad07lrlUw
+         IdJS9Vyqq9/5YoQWDrLeDBzfHu7E47pMTHs+2+X3LT2l96UUysq0sw9Cs0en9Qyhglou
+         mkfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743507363; x=1744112163;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g2+c00bn9QMrYYncqUoX4E1bu9uetuu45V5+u5h/AVY=;
+        b=sr4meR/oBDLAluKNBoSpemxtVOg/ckdzKruPkoItgkGcW4ObBJ4Oo/bT/ChfVFStnZ
+         wBUiFssHDRcmVJao0ok+syTwwdEeFFLI+sSK64rvw7c8U5gIxXCMM99mDKB3RLjYHUuR
+         YBOH7vDrfTbPRZvE9OZ2kxTBQRQtuB3QEsUHCzW9Oos9YCz2A0yjnxPTlDEnGs2aLkBz
+         MTMDtIciwuhi7ab67OKwzvYgBHCLD3mchcWHaf7dGkI26L2N5pA4nA2IFBJoWWnzELM9
+         1huvQjlk5zPQhFJSH/loXX1V+R16Z9kfldZirj/9zncNKm3WFizpaKoXAvr9lUoHmbwA
+         UNcg==
+X-Forwarded-Encrypted: i=1; AJvYcCW+ui4s6De+VO2qMt2nxo+xhAyy3uPhbERXwwwHtLX+TDQK/TnUJNCvn6SMf0sV0+sPOV7VaORGXJw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybJ9mgkxGXdj7E5xEVTS9T+eaKancdEARcr6k1kOpvvLulzmMz
+	BXZI7XKSSQ1RP8Y0K7oqf1tugNhR7q83RgiYV3LGlEtev43OLpooPYxZavnkjHY=
+X-Gm-Gg: ASbGncunzkDb4J9gUDQ6fX2Z0qsU40pfdSqQVnozRzWyyr0IaOIR4RNUT6frtzf7ejz
+	BG8BkgXLLQ3Nif01i4J8kR6F/kx5PXkH2zSjZYiG9vnVg80gLbmjcuCVAKte/DiBlMb6hG8VUq5
+	Wr4AyGfjFDVSg0xfbBlYau3argYyNHgamjKKeNC2DHhtHB2JU/lQb09y6al31sQALZQZj2hDX8+
+	KfBowPqxQsmhCG0iky/PXklL4QMY+HNwrR9UOgcPkZ5QOTn4SLe9HmUzBy6lgEAbx5vDkurBNoa
+	pQxkhe0gCnwYAl/H4EvkYRA2yk/x2CFUVS5rJT/JdgUFizHCY9dQ/HJ5vi6BV98iYklUqB+jFSa
+	mDCJefwHTbsoBq+H9gA==
+X-Google-Smtp-Source: AGHT+IGBEYa638WvHr8VMrPemZg8f/SzTMUOvkeQN2v3HXx0k+tLbTzE07k8CRKzbkFjDvvHpsuneg==
+X-Received: by 2002:a05:6a00:3a23:b0:736:3979:369e with SMTP id d2e1a72fcca58-73980387a87mr16755789b3a.9.1743507362409;
+        Tue, 01 Apr 2025 04:36:02 -0700 (PDT)
+Received: from dread.disaster.area (pa49-181-60-96.pa.nsw.optusnet.com.au. [49.181.60.96])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73970e22449sm8647733b3a.49.2025.04.01.04.36.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 04:36:01 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.98)
+	(envelope-from <david@fromorbit.com>)
+	id 1tzZuQ-000000035eq-3DKl;
+	Tue, 01 Apr 2025 22:35:58 +1100
+Date: Tue, 1 Apr 2025 22:35:58 +1100
+From: Dave Chinner <david@fromorbit.com>
 To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, mcgrof@kernel.org, hch@infradead.org, david@fromorbit.com, 
-	rafael@kernel.org, djwong@kernel.org, pavel@kernel.org, peterz@infradead.org, 
+Cc: linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	mcgrof@kernel.org, hch@infradead.org, rafael@kernel.org,
+	djwong@kernel.org, pavel@kernel.org, peterz@infradead.org,
 	mingo@redhat.com, will@kernel.org, boqun.feng@gmail.com
-Subject: Re: [PATCH 1/6] ext4: replace kthread freezing with auto fs freezing
-Message-ID: <2nqlkokmbkvamnrza3fpjjmye3w3fy7gf5bqpjt2cxeviks5ax@u4wqm4ldxuy6>
+Subject: Re: [PATCH 3/6] xfs: replace kthread freezing with auto fs freezing
+Message-ID: <Z-vPnmL7wn_8cFim@dread.disaster.area>
 References: <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
- <20250401-work-freeze-v1-1-d000611d4ab0@kernel.org>
- <z3zqumhqgzq3agjps4ufdcqqrgip7t7xtr6v5kymchkdjfnwhp@i76pwshkydig>
- <20250401-konsens-nahebringen-fa1c80956371@brauner>
+ <20250401-work-freeze-v1-3-d000611d4ab0@kernel.org>
+ <Z-s9KG-URzB9DwUb@dread.disaster.area>
+ <20250401-baubeginn-ausdehnen-3a7387b756aa@brauner>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -108,75 +100,45 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250401-konsens-nahebringen-fa1c80956371@brauner>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,kernel.org,hansenpartnership.com,infradead.org,fromorbit.com,redhat.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
-X-Spam-Score: -2.30
-X-Spam-Flag: NO
+In-Reply-To: <20250401-baubeginn-ausdehnen-3a7387b756aa@brauner>
 
-On Tue 01-04-25 11:35:56, Christian Brauner wrote:
-> On Tue, Apr 01, 2025 at 11:16:18AM +0200, Jan Kara wrote:
-> > > ---
-> > >  fs/ext4/mballoc.c | 2 +-
-> > >  fs/ext4/super.c   | 3 ---
-> > >  2 files changed, 1 insertion(+), 4 deletions(-)
-> > > 
-> > > diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-> > > index 0d523e9fb3d5..ae235ec5ff3a 100644
-> > > --- a/fs/ext4/mballoc.c
-> > > +++ b/fs/ext4/mballoc.c
-> > > @@ -6782,7 +6782,7 @@ static ext4_grpblk_t ext4_last_grp_cluster(struct super_block *sb,
+On Tue, Apr 01, 2025 at 09:17:12AM +0200, Christian Brauner wrote:
+> On Tue, Apr 01, 2025 at 12:11:04PM +1100, Dave Chinner wrote:
+> > On Tue, Apr 01, 2025 at 02:32:48AM +0200, Christian Brauner wrote:
+> > > diff --git a/fs/xfs/xfs_zone_gc.c b/fs/xfs/xfs_zone_gc.c
+> > > index c5136ea9bb1d..1875b6551ab0 100644
+> > > --- a/fs/xfs/xfs_zone_gc.c
+> > > +++ b/fs/xfs/xfs_zone_gc.c
+> > > @@ -993,7 +993,6 @@ xfs_zone_gc_handle_work(
+> > >  	}
 > > >  
-> > >  static bool ext4_trim_interrupted(void)
-> > >  {
-> > > -	return fatal_signal_pending(current) || freezing(current);
-> > > +	return fatal_signal_pending(current);
-> > >  }
+> > >  	__set_current_state(TASK_RUNNING);
+> > > -	try_to_freeze();
+> > >  
+> > >  	if (reset_list)
+> > >  		xfs_zone_gc_reset_zones(data, reset_list);
+> > > @@ -1041,7 +1040,6 @@ xfs_zoned_gcd(
+> > >  	unsigned int		nofs_flag;
+> > >  
+> > >  	nofs_flag = memalloc_nofs_save();
+> > > -	set_freezable();
+> > >  
+> > >  	for (;;) {
+> > >  		set_current_state(TASK_INTERRUPTIBLE | TASK_FREEZABLE);
 > > 
-> > This change should not happen. ext4_trim_interrupted() makes sure FITRIM
-> > ioctl doesn't cause hibernation failures and has nothing to do with kthread
-> > freezing...
-> > 
-> > Otherwise the patch looks good.
-> 
-> Afaict, we don't have to do these changes now. Yes, once fsfreeze
-> reliably works in the suspend/resume codepaths then we can switch all
-> that off and remove the old freezer. But we should only do that once we
-> have some experience with the new filesystem freezing during
-> suspend/hibernate. So we should place this under a
-> /sys/power/freeze_filesystems knob and wait a few kernel releases to see
-> whether we see significant problems. How does that sound to you?
+> > Same question here for this newly merged code, too...
+>
+> I'm not sure if this is supposed to be a snipe or not but just in case
+> this is a hidden question:
 
-I agree that enabling this with some knob to allow easy way out if things
-don't work makes sense. And the removal of kthread freezing can be done
-somewhat later when we are more confident filesystem freezing on
-hibernation is solid.
+No, I meant that this is changing shiny new just-merged XFS code
+(part of zone device support). It only just arrived this merge
+window and is largely just doing the same thing as the older aild
+code. It is probably safe to assume that this new code has never
+been tested against hibernate...
 
-								Honza
+-Dave.
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Dave Chinner
+david@fromorbit.com
 
