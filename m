@@ -1,105 +1,137 @@
-Return-Path: <linux-efi+bounces-3179-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3180-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B73A7891A
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Apr 2025 09:46:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9654A790B9
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Apr 2025 16:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1B6F7A502F
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Apr 2025 07:45:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D4B4188A4DC
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Apr 2025 14:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52443230BF9;
-	Wed,  2 Apr 2025 07:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FED223814A;
+	Wed,  2 Apr 2025 14:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Veke8DoD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qAZKmy2T"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AA41362;
-	Wed,  2 Apr 2025 07:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1115317BB6;
+	Wed,  2 Apr 2025 14:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743579996; cv=none; b=kZk5r8iGAMfJP0l5j2oWjQl5hXGt+DnU/LerVhgCg+EKp4JvX7EKPcM68ue/CT2hxHnO0MVquEI/OZtp/2F28SwdT5QE8iViWJe1ike8OrHVvlVCFqVLPpZ+BzVPHozdSk5F8o4rzzi2xgAp5ALlMPcAh7DHaQ1Us+okiZUqi28=
+	t=1743602897; cv=none; b=m3OXE8J/EUI3Fwu6K6SS12VsWvENc6RibPqZ1mOlCYWAlAeYcUYhTGyiQ0AOujDxt0vECoGyge0w7mohktOlsjfylVj5VBRHBH8DQ6zhf0oNy9AVqUOCE0XJIOaraLhk2RNUOdssBPFbPBxRC9x1BoxRHzexcaRoq7OkLEuGnD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743579996; c=relaxed/simple;
-	bh=0CyNYZbp3M9spA2X7521UflkqjTTBTzPZEk3HRxyFLc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u11R8zqPXt9H//83uLnXou/69S5UhBrxEcW8TCC8Jq8Ew8MT7brgfLXY7vSMt7GSD0o8bdDhzpzkTWb2pJvzaUh//0orESbYgy17hD+hiDHJ3hS1hEo29q9zJ+1EKM00s1BZKbeSxQi31y4k4qBSRxJhglSNetQj4ZfOxhbmB/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Veke8DoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00019C4CEDD;
-	Wed,  2 Apr 2025 07:46:31 +0000 (UTC)
+	s=arc-20240116; t=1743602897; c=relaxed/simple;
+	bh=5LSN8xbr1mSlhFYbFKGSzQEbQQIkR41oBPOPFGrZKHc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=acC3zFWQXFXTPfhwxXXHAwYMjgiOyxNpZvHwlqMx8uwWJBhr5S0yQIo4hDVliIj+OWJb0s65rneK2zC8q180Y65zxi0n1zr91RL6/LnsERSAC0PLsJ/qwMjTzjTD6ocYYThFYdpZLYFHbjQng22OgyqhPUee2ssMi5Se+ujQSYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qAZKmy2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCB2C4CEE9;
+	Wed,  2 Apr 2025 14:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743579995;
-	bh=0CyNYZbp3M9spA2X7521UflkqjTTBTzPZEk3HRxyFLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Veke8DoD/W1xjnE/1pEkqK9yPlVbXAfGzjnEc/vCPg8ZiziFAGPIzFjLqdcTBFcgH
-	 tZ1CRC6EcRKXEONk8qCHBYOpNlNQmYZG/TSDdn2MW7St4w1HvzZr/iDOuxjRMukVDE
-	 k4XvYQ8C95pgEpK9VV2gBc1eJvRnmGVLuqMUH6dxQhlo+CodTl7kskiiKET0qj3+eo
-	 cG8pem0DQXgeDhdxNOOtcg0Axx9JZBU4GqqQAG7etDQvdBt1amyScW3VL/kVRECWxG
-	 FcXBCp/c2NsMaKHj6IfAAo/nDuuRzzfThnh0suFt2nW7gBLwhHEDF1IADhgn2lpBAH
-	 mFTzJDd7Nu5Xg==
-Date: Wed, 2 Apr 2025 09:46:29 +0200
+	s=k20201202; t=1743602896;
+	bh=5LSN8xbr1mSlhFYbFKGSzQEbQQIkR41oBPOPFGrZKHc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qAZKmy2TLrzWHjuSZVHbJOy1ksb1IPe2yGDtRbs5XL4mXSXoKRzuVRImVNr13co6l
+	 GqORv9ixdGSf2DPoItQR3urSEdeBMv4QLmmHMMiBzOq6Po+annHiQfyNaCacRTO/r5
+	 kY2Hf0iUGHduBnPcA2ef0gOKQysuyFyBvzpeMPF8kmaZpXzKtzVoaEXGzjZqxGchYH
+	 MYwd0T+iWBesX4U6BztU/16zqsznjWihUocOgdPVSWCmK/osor6ETt8MvSUfdcpv8P
+	 EWQV3KYyaaM9rSoBP8aAfTydD9KTyCvyCnwG1d868YfnGwphFeRLxmWkRXviShk9T3
+	 qKD+Gu4m3AiwQ==
 From: Christian Brauner <brauner@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-fsdevel@vger.kernel.org, jack@suse.cz, rafael@kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mcgrof@kernel.org, hch@infradead.org, david@fromorbit.com, djwong@kernel.org, 
-	pavel@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org, 
+To: linux-fsdevel@vger.kernel.org,
+	jack@suse.cz
+Cc: Christian Brauner <brauner@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	mcgrof@kernel.org,
+	hch@infradead.org,
+	david@fromorbit.com,
+	rafael@kernel.org,
+	djwong@kernel.org,
+	pavel@kernel.org,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
 	boqun.feng@gmail.com
-Subject: Re: [PATCH 0/6] power: wire-up filesystem freeze/thaw with
- suspend/resume
-Message-ID: <20250402-radstand-neufahrzeuge-198b40c2d073@brauner>
-References: <20250331-work-freeze-v1-0-6dfbe8253b9f@kernel.org>
- <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
- <ddee7c1ce2d1ff1a8ced6e9b6ac707250f70e68b.camel@HansenPartnership.com>
+Subject: [PATCH v2 0/4] power: wire-up filesystem freeze/thaw with suspend/resume
+Date: Wed,  2 Apr 2025 16:07:30 +0200
+Message-ID: <20250402-work-freeze-v2-0-6719a97b52ac@kernel.org>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <5tiim72iyudzgmjbyvavfumprrifydt2mfb3h3wycsnqybek23@2ftdyt47yhyl>
+References: <5tiim72iyudzgmjbyvavfumprrifydt2mfb3h3wycsnqybek23@2ftdyt47yhyl>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ddee7c1ce2d1ff1a8ced6e9b6ac707250f70e68b.camel@HansenPartnership.com>
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20250401-work-freeze-693b5b5a78e0
+X-Mailer: b4 0.15-dev-42535
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2454; i=brauner@kernel.org; h=from:subject:message-id; bh=5LSN8xbr1mSlhFYbFKGSzQEbQQIkR41oBPOPFGrZKHc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS/dVk5L3v5e3GXp2eVHcISWtruB5ps/MgXoOrLImH94 ZuPQdD6jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlk+TIyPHlk+u6O8TO/N5Mc nL6Ui0zx/9dlWbzjkcOtK+qKOwqvHmdkmGZV9dzjvfnipHmRi/TWM8jwL5NO488w1sp8u6VFvdu UDwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 01, 2025 at 01:02:07PM -0400, James Bottomley wrote:
-> On Tue, 2025-04-01 at 02:32 +0200, Christian Brauner wrote:
-> > The whole shebang can also be found at:
-> > https://web.git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/log/?h=work.freeze
-> > 
-> > I know nothing about power or hibernation. I've tested it as best as
-> > I could. Works for me (TM).
-> 
-> I'm testing the latest you have in work.freeze and it doesn't currently
-> work for me.  Patch 7b315c39b67d ("power: freeze filesystems during
-> suspend/resume") doesn't set filesystems_freeze_ptr so it ends up being
-> NULL and tripping over this check 
+Now all the pieces are in place to actually allow the power subsystem to
+freeze/thaw filesystems during suspend/resume. Filesystems are only
+frozen and thawed if the power subsystem does actually own the freeze.
 
-I haven't pushed the new version there. Sorry about that. I only have it
-locally.
+Othwerwise it risks thawing filesystems it didn't own. This could be
+done differently be e.g., keeping the filesystems that were actually
+frozen on a list and then unfreezing them from that list. This is
+disgustingly unclean though and reeks of an ugly hack.
 
-> 
-> +static inline bool may_unfreeze(struct super_block *sb, enum
-> freeze_holder who,
-> +                               const void *freeze_owner)
-> +{
-> +       WARN_ON_ONCE((who & ~FREEZE_FLAGS));
-> +       WARN_ON_ONCE(hweight32(who & FREEZE_HOLDERS) > 1);
-> +
-> +       if (who & FREEZE_EXCL) {
-> +               if (WARN_ON_ONCE(sb->s_writers.freeze_owner == NULL))
-> +                       return false;
-> 
-> 
-> in f15a9ae05a71 ("fs: add owner of freeze/thaw") and failing to resume
-> from hibernate.  Setting it to __builtin_return_address(0) in
-> filesystems_freeze() makes everything work as expected, so that's what
-> I'm testing now.
+If the filesystem is already frozen by the time we've frozen all
+userspace processes we don't care to freeze it again. That's userspace's
+job once the process resumes. We only actually freeze filesystems if we
+absolutely have to and we ignore other failures to freeze.
 
-+1
+We could bubble up errors and fail suspend/resume if the error isn't
+EBUSY (aka it's already frozen) but I don't think that this is worth it.
+Filesystem freezing during suspend/resume is best-effort. If the user
+has 500 ext4 filesystems mounted and 4 fail to freeze for whatever
+reason then we simply skip them.
 
-I'll send the final version out in a bit.
+What we have now is already a big improvement and let's see how we fare
+with it before making our lives even harder (and uglier) than we have
+to.
+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+---
+Changes in v2:
+- Drop all patches that remove TASK_FREEZABLE.
+- Expand commit messages a bit.
+- Link to v1: https://lore.kernel.org/r/20250401-work-freeze-v1-0-d000611d4ab0@kernel.org
+
+---
+Christian Brauner (4):
+      fs: add owner of freeze/thaw
+      fs: allow all writers to be frozen
+      power: freeze filesystems during suspend/resume
+      kernfs: add warning about implementing freeze/thaw
+
+ fs/f2fs/gc.c                |  6 ++--
+ fs/gfs2/super.c             | 20 ++++++-----
+ fs/gfs2/sys.c               |  4 +--
+ fs/ioctl.c                  |  8 ++---
+ fs/kernfs/mount.c           | 15 +++++++++
+ fs/super.c                  | 82 ++++++++++++++++++++++++++++++++++++---------
+ fs/xfs/scrub/fscounters.c   |  4 +--
+ fs/xfs/xfs_notify_failure.c |  6 ++--
+ include/linux/fs.h          | 16 +++++----
+ kernel/power/hibernate.c    | 16 ++++++++-
+ kernel/power/main.c         | 31 +++++++++++++++++
+ kernel/power/power.h        |  4 +++
+ kernel/power/suspend.c      |  7 ++++
+ 13 files changed, 174 insertions(+), 45 deletions(-)
+---
+base-commit: 62dfd8d59e2d16873398ede5b1835e302df789b3
+change-id: 20250401-work-freeze-693b5b5a78e0
+
 
