@@ -1,231 +1,138 @@
-Return-Path: <linux-efi+bounces-3200-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3201-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9A5A7BAA8
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Apr 2025 12:24:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E40CA7C03D
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Apr 2025 17:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6311F7A4358
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Apr 2025 10:23:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A8857A7658
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Apr 2025 15:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9F41A238E;
-	Fri,  4 Apr 2025 10:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950651F3D58;
+	Fri,  4 Apr 2025 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixYM1hnu"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fKhYDN4I"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A9B19DF66;
-	Fri,  4 Apr 2025 10:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00981A3172
+	for <linux-efi@vger.kernel.org>; Fri,  4 Apr 2025 15:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743762280; cv=none; b=SVZgH+T+K2TezqjYITNCC0PwFnwx9g+HhNY2+p5h0ULXcUNwRky4D0Q9PtJJYk8BNcLaqZBTMTYdYwohW0Hzt3vYiqS61nd3ntm/gGk4J3qKrO9AZ8jyTVnbOplGotnRlX8psYB17FsfRcAM0xttfg5EyAWaKY93E2zTc36T0cU=
+	t=1743779239; cv=none; b=aSFjhm9QVee2dOqQCsFLDZCs702GfgH7S6VHXEs8UNjmjQGI1ehpiY8UzoP+dJSYb/UisE5yW6BtmjHtmGNBqXjnFdQBGBnUNxAaGiJnI7BIW9Fe1EzmZZWX2MLSMUQx/SA9NvYuisfTRj5Vot2jf6qNmtLu09KK6m3xhfZ1jtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743762280; c=relaxed/simple;
-	bh=7XhvsaAR1vcF0yyiP58bhi1Lq1t+C31IiBxcJ1YTFd0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ebr7kyCrdwnLi6TFf8yLkK6uykVkH7CtpgrILOZt8nRzJfQ2L8T+5J1oVgrgwSkQhPLw9tTK3waN6ps5SF2F4icIFBmgrf1ki3pDKSFj/sJxEL5k9aVaXaXTtAR1K9L51Ij1GXslkT5FBkCgsbezm5ucvfzRSUB3xJC05uzkYRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixYM1hnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813E6C4CEDD;
-	Fri,  4 Apr 2025 10:24:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743762280;
-	bh=7XhvsaAR1vcF0yyiP58bhi1Lq1t+C31IiBxcJ1YTFd0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixYM1hnuNyixIb7Ehti6HV/1A1n4LO9AHCzk4LSVvDq1DfBBZvh36tt7u54aWD1mS
-	 UDOkVj1nD1IxTSiHzT/MMjftL48YTbvDM39pHNtEIl0Hu4yRxE42AVtpbX9rNzExSJ
-	 8MP1O1VkDSzkL13dsN4bEdJ7kER0vs4/e4t3YNF3yYjXxTkf6704R1s0LRJXVjd5qd
-	 ls9QVYB9AJPtveEvQ3JckTQvvdLPgIQkcbXBKOBUbSEFimVhZd84VKr2QkgCNctzgk
-	 m1mUN6VMt1UwMHE3rPDj/tp79Q9OsRh+aPSG7OoleTFvqIZfm8hRnMNuvg7xIgK3kb
-	 2BVwJX7nJYwQQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	mcgrof@kernel.org,
-	hch@infradead.org,
-	david@fromorbit.com,
-	rafael@kernel.org,
-	djwong@kernel.org,
-	pavel@kernel.org,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	boqun.feng@gmail.com
-Subject: [PATCH] fs: allow nesting with FREEZE_EXCL
-Date: Fri,  4 Apr 2025 12:24:09 +0200
-Message-ID: <20250404-work-freeze-v1-1-31f9a26f7bc9@kernel.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <ilwyxf34ixfkhbylev6d76tz5ufzg2sdxxhy6i3tr4ko5dbefr@57yuviqrftzr>
-References: <ilwyxf34ixfkhbylev6d76tz5ufzg2sdxxhy6i3tr4ko5dbefr@57yuviqrftzr>
+	s=arc-20240116; t=1743779239; c=relaxed/simple;
+	bh=zjH61skezqD/tzvm29Me2P3Co+mAG43uQMEf1jjgfpU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S/SkHvJ1WJKPvrMlfhS/00f9RsN5l/emBZaiVg+mkHeSNAZYqtVSuc3VTZH4KZiisEckJw5AlKkwwD5SJGTIkZGdhT5gncWYLG2hNbebq60QID4hM648cpWK3VuzLN3pCclY5h22g0bYVMcJY5sNAc9HfL7W1VZDbDClpgEcb2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fKhYDN4I; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ac339f53df9so357285966b.1
+        for <linux-efi@vger.kernel.org>; Fri, 04 Apr 2025 08:07:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1743779236; x=1744384036; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zjH61skezqD/tzvm29Me2P3Co+mAG43uQMEf1jjgfpU=;
+        b=fKhYDN4IWujKw2EwXewviOKx7np1F1bTg4uXGipT82BkDEecyDAxNFguvM1/WqEg5n
+         Kz1ZM08Fq2DhDCiW9v15l7MHlSSqKPa2Yx4dE14i2/qmUkYRQxYiXjKzcXO55EnpI/dl
+         w4+Rb+T+6q6Tt5O2+e1OevxaqnooXHjSQ2+d62HtzveGgBgpELfJ/KXJ1agP5RwsYDot
+         whE4LAKy4XsyTWE+k9d4S84L0jFkUrCUhr9jGfBsRAnY1Ws9WKXZN76E0P5sROXC3z22
+         g44t+dtW91Jfesjh5iiLrAidw6dAcN0y7gYofv9fgOHzqTHUfBlu/NFYs3wMAEMpG+ND
+         cuUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743779236; x=1744384036;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zjH61skezqD/tzvm29Me2P3Co+mAG43uQMEf1jjgfpU=;
+        b=mpD7l7AkeUdIZZY86vas8S/vn1V5b8D4QoSrvC18Dg65FmbuSuXbLg90XfYGP+A7Nj
+         AR5z47sBwSjRqgvALnCcfb/GYM9fUNTsdgZCG2s4tVgw9cpxGoj2Psdic+pPJcMg+sKT
+         DhlJ5gZ7enFrwPcbgYMkKpDD2EiT1BBLOEejasqteaMct7Od+25i9hp2xuBopDWKLh8V
+         XfVM6W76R4qKOZSzmRvKXoQPIAHa8bxB2jQAMaHP3f/g7ikUKU9vbunwhu2kBrJxsofz
+         gDOSH+Zu9+2AUuTZaVJLbT0weBXT+UJ1l0syWhXie5d43gvvKyC02das2kFjg5EnWBZJ
+         mr7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUNTKLzI0gZlYXCHv7UfsB2PjEFpOXrnicEpLZfdC1CgPzWEI7UyW9D37JrEOFbU++EsgtUKf5idMI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMyv6pPd/V2w7pS4sgdfql4sA0hiRE3LFFfB0hpFzIGc6EANug
+	Auk2mZ5uue6qP1sAPxAbzJRuRO6902rfxZqFcV9BOzv9JPCFuiEWVbjh7aez6krt6VI/pZxomsi
+	AJ5jbt75y9o2rU7F6t1UATF2LtCae1YY/SfbQ
+X-Gm-Gg: ASbGnct3ujnyzA6WroViJarE0Uk4V5jlqHcPePbnKWSn2lI0hctYyMuI/niTtQfVjpr
+	DXbTw6cOypssDDMK53JrU5UEuWW3F1G9bsOcKRlxBj/pdmX7nLqa9KZ2WqWhLlLNBN9hjrDqyzf
+	oDscT5ikhuq+9o4Njwd0MNR3O3dQ==
+X-Google-Smtp-Source: AGHT+IHoHYIgjnTqNf/koXP1ZSa7N4fhejRbYw9l8KvhvhtNeBsuIxWeqajQ7XAq8z7bAk2STRMZANtpn6Q1WObbEIA=
+X-Received: by 2002:a17:907:7f90:b0:abf:19ac:771 with SMTP id
+ a640c23a62f3a-ac7d185479bmr395006366b.2.1743779235688; Fri, 04 Apr 2025
+ 08:07:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20250404-work-freeze-5eacb515f044
-X-Mailer: b4 0.15-dev-c25d1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5320; i=brauner@kernel.org; h=from:subject:message-id; bh=7XhvsaAR1vcF0yyiP58bhi1Lq1t+C31IiBxcJ1YTFd0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS/3xzDZb7MRtpzQfyEmY0Cu/ZeM40yU4/OKVrp+XvbN J7+64a5HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNRLWJkmD7Tq4Wn8LYYI3t8 5NMkCy/7ReKX+5qzlmixO25SzL9exfDfad/X2eGMrlnhsfefKR8OeLT8xNWU2mctH/Zw5059JdP IBQA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <20250404082921.2767593-5-ardb+git@google.com> <20250404082921.2767593-8-ardb+git@google.com>
+ <l6izksy3qtvo6t6l3v44xhuzmrnl2ijv7fx5ypvaz7kjxvpwhh@4zwlvxyfrp43> <CAMj1kXGwnTkb1bUDaRpkh3ES8thcUVQE7+qgfZQw+RORtvtv-g@mail.gmail.com>
+In-Reply-To: <CAMj1kXGwnTkb1bUDaRpkh3ES8thcUVQE7+qgfZQw+RORtvtv-g@mail.gmail.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Fri, 4 Apr 2025 08:07:03 -0700
+X-Gm-Features: ATxdqUG8b4-wASJzngQs_3ZF1ziQG91_baB_efphAg_aCiOaBYtqHZwyn4feFV8
+Message-ID: <CAAH4kHbxMDGQy3v9ef1ZdqK0TNzpm==BJgx1KiUpRP-CRKDx4w@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] x86/boot: Implement early memory acceptance for SEV-SNP
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If hibernation races with filesystem freezing (e.g. DM reconfiguration),
-then hibernation need not freeze a filesystem because it's already
-frozen but userspace may thaw the filesystem before hibernation actually
-happens.
+On Fri, Apr 4, 2025 at 1:46=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wro=
+te:
+>
+> On Fri, 4 Apr 2025 at 11:43, Kirill A. Shutemov
+> <kirill.shutemov@linux.intel.com> wrote:
+> >
+> > On Fri, Apr 04, 2025 at 10:29:25AM +0200, Ard Biesheuvel wrote:
+> > > From: Ard Biesheuvel <ardb@kernel.org>
+> > >
+> > > Switch to a different API for accepting memory in SEV-SNP guests, one
+> > > which is actually supported at the point during boot where the EFI st=
+ub
+> > > may need to accept memory, but the SEV-SNP init code has not executed
+> > > yet.
+> >
+> > I probably miss the point, but why cannot decompressor use the same _ea=
+rly
+> > version of accept too and avoid code duplication?
+> >
+> > Maybe spell it out in the commit message for someone like me :P
+> >
+>
+> I assumed there was a reason that the shared GHCB page is used early
+> on. Maybe it is faster than accepting memory page by page?
 
-If the race happens the other way around, DM reconfiguration may
-unexpectedly fail with EBUSY.
+This is correct. The MSR protocol does a round trip per page, whereas
+the GHCB page can communicate hundreds of state changes per round
+trip.
+>
+> It also depends on how important the memory acceptance is for the
+> legacy decompressor - AIUI the use case is primarily kexec, but
+> wouldn't the first kernel have accepted all memory already? I.e., if
 
-So allow FREEZE_EXCL to nest with other holders. An exclusive freezer
-cannot be undone by any of the other concurrent freezers.
+The first kernel may not accept all memory due to the laziness of
+unaccepted memory transitions.
+I'm not sure if we have the planned background acceptance process in
+place (probably not), but we
+can't expect that to have finished before the first kexec.
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- fs/super.c         | 71 ++++++++++++++++++++++++++++++++++++++++++------------
- include/linux/fs.h |  2 +-
- 2 files changed, 56 insertions(+), 17 deletions(-)
+> it is slower, we might not care if it is a rare case.
 
-diff --git a/fs/super.c b/fs/super.c
-index b4bdbc509dba..e2fee655fbed 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -1979,26 +1979,34 @@ static inline int freeze_dec(struct super_block *sb, enum freeze_holder who)
- 	return sb->s_writers.freeze_kcount + sb->s_writers.freeze_ucount;
- }
- 
--static inline bool may_freeze(struct super_block *sb, enum freeze_holder who)
-+static inline bool may_freeze(struct super_block *sb, enum freeze_holder who,
-+			      const void *freeze_owner)
- {
-+	lockdep_assert_held(&sb->s_umount);
-+
- 	WARN_ON_ONCE((who & ~FREEZE_FLAGS));
- 	WARN_ON_ONCE(hweight32(who & FREEZE_HOLDERS) > 1);
- 
- 	if (who & FREEZE_EXCL) {
- 		if (WARN_ON_ONCE(!(who & FREEZE_HOLDER_KERNEL)))
- 			return false;
--
--		if (who & ~(FREEZE_EXCL | FREEZE_HOLDER_KERNEL))
-+		if (WARN_ON_ONCE(who & ~(FREEZE_EXCL | FREEZE_HOLDER_KERNEL)))
- 			return false;
--
--		return (sb->s_writers.freeze_kcount +
--			sb->s_writers.freeze_ucount) == 0;
-+		if (WARN_ON_ONCE(!freeze_owner))
-+			return false;
-+		/* This freeze already has a specific owner. */
-+		if (sb->s_writers.freeze_owner)
-+			return false;
-+		/*
-+		 * This is already frozen multiple times so we're just
-+		 * going to take a reference count and mark it as
-+		 * belonging to use.
-+		 */
-+		if (sb->s_writers.freeze_kcount + sb->s_writers.freeze_ucount)
-+			sb->s_writers.freeze_owner = freeze_owner;
-+		return true;
- 	}
- 
--	/* This filesystem is already exclusively frozen. */
--	if (sb->s_writers.freeze_owner)
--		return false;
--
- 	if (who & FREEZE_HOLDER_KERNEL)
- 		return (who & FREEZE_MAY_NEST) ||
- 		       sb->s_writers.freeze_kcount == 0;
-@@ -2011,20 +2019,51 @@ static inline bool may_freeze(struct super_block *sb, enum freeze_holder who)
- static inline bool may_unfreeze(struct super_block *sb, enum freeze_holder who,
- 				const void *freeze_owner)
- {
-+	lockdep_assert_held(&sb->s_umount);
-+
- 	WARN_ON_ONCE((who & ~FREEZE_FLAGS));
- 	WARN_ON_ONCE(hweight32(who & FREEZE_HOLDERS) > 1);
- 
- 	if (who & FREEZE_EXCL) {
--		if (WARN_ON_ONCE(sb->s_writers.freeze_owner == NULL))
--			return false;
- 		if (WARN_ON_ONCE(!(who & FREEZE_HOLDER_KERNEL)))
- 			return false;
--		if (who & ~(FREEZE_EXCL | FREEZE_HOLDER_KERNEL))
-+		if (WARN_ON_ONCE(who & ~(FREEZE_EXCL | FREEZE_HOLDER_KERNEL)))
-+			return false;
-+		if (WARN_ON_ONCE(!freeze_owner))
-+			return false;
-+		if (WARN_ON_ONCE(sb->s_writers.freeze_kcount == 0))
- 			return false;
--		return sb->s_writers.freeze_owner == freeze_owner;
-+		/* This isn't exclusively frozen. */
-+		if (!sb->s_writers.freeze_owner)
-+			return false;
-+		/* This isn't exclusively frozen by us. */
-+		if (sb->s_writers.freeze_owner != freeze_owner)
-+			return false;
-+		/*
-+		 * This is still frozen multiple times so we're just
-+		 * going to drop our reference count and undo our
-+		 * exclusive freeze.
-+		 */
-+		if ((sb->s_writers.freeze_kcount + sb->s_writers.freeze_ucount) > 1)
-+			sb->s_writers.freeze_owner = NULL;
-+		return true;
-+	}
-+
-+	if (who & FREEZE_HOLDER_KERNEL) {
-+		/*
-+		 * Someone's trying to steal the reference belonging to
-+		 * @sb->s_writers.freeze_owner.
-+		 */
-+		if (sb->s_writers.freeze_kcount == 1 &&
-+		    sb->s_writers.freeze_owner)
-+			return false;
-+		return sb->s_writers.freeze_kcount > 0;
- 	}
- 
--	return sb->s_writers.freeze_owner == NULL;
-+	if (who & FREEZE_HOLDER_USERSPACE)
-+		return sb->s_writers.freeze_ucount > 0;
-+
-+	return false;
- }
- 
- /**
-@@ -2095,7 +2134,7 @@ int freeze_super(struct super_block *sb, enum freeze_holder who, const void *fre
- 
- retry:
- 	if (sb->s_writers.frozen == SB_FREEZE_COMPLETE) {
--		if (may_freeze(sb, who))
-+		if (may_freeze(sb, who, freeze_owner))
- 			ret = !!WARN_ON_ONCE(freeze_inc(sb, who) == 1);
- 		else
- 			ret = -EBUSY;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 1edcba3cd68e..7a3f821d2723 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2270,7 +2270,7 @@ extern loff_t vfs_dedupe_file_range_one(struct file *src_file, loff_t src_pos,
-  * @FREEZE_HOLDER_KERNEL: kernel wants to freeze or thaw filesystem
-  * @FREEZE_HOLDER_USERSPACE: userspace wants to freeze or thaw filesystem
-  * @FREEZE_MAY_NEST: whether nesting freeze and thaw requests is allowed
-- * @FREEZE_EXCL: whether actual freezing must be done by the caller
-+ * @FREEZE_EXCL: a freeze that can only be undone by the owner
-  *
-  * Indicate who the owner of the freeze or thaw request is and whether
-  * the freeze needs to be exclusive or can nest.
+If the GHCB is available, we should always prefer it.
 
----
-base-commit: a83fe97e0d53f7d2b0fc62fd9a322a963cb30306
-change-id: 20250404-work-freeze-5eacb515f044
-
+--=20
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
 
