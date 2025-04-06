@@ -1,138 +1,102 @@
-Return-Path: <linux-efi+bounces-3201-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3202-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E40CA7C03D
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Apr 2025 17:07:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C03A7CFCD
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Apr 2025 20:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A8857A7658
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Apr 2025 15:06:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E23193A9B8F
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Apr 2025 18:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950651F3D58;
-	Fri,  4 Apr 2025 15:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34CD158535;
+	Sun,  6 Apr 2025 18:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fKhYDN4I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXiFq8Nn"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00981A3172
-	for <linux-efi@vger.kernel.org>; Fri,  4 Apr 2025 15:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74D525634;
+	Sun,  6 Apr 2025 18:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743779239; cv=none; b=aSFjhm9QVee2dOqQCsFLDZCs702GfgH7S6VHXEs8UNjmjQGI1ehpiY8UzoP+dJSYb/UisE5yW6BtmjHtmGNBqXjnFdQBGBnUNxAaGiJnI7BIW9Fe1EzmZZWX2MLSMUQx/SA9NvYuisfTRj5Vot2jf6qNmtLu09KK6m3xhfZ1jtE=
+	t=1743965486; cv=none; b=krZtM/lZx80xr0ifk2hc6ASeJt2SE5527Q/EutDZecRj6nAPNIEJx8+s3gCBy9F+hV8jqdUV+HmGfWcxlL8XCXSIovQvO8j81IQlm9bhU5tRPNZoFGRTzl41RbtfPwXzMyb1LLlMB3SxoqymotceXDq0DTW/uLBRIFcZpbmKSFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743779239; c=relaxed/simple;
-	bh=zjH61skezqD/tzvm29Me2P3Co+mAG43uQMEf1jjgfpU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S/SkHvJ1WJKPvrMlfhS/00f9RsN5l/emBZaiVg+mkHeSNAZYqtVSuc3VTZH4KZiisEckJw5AlKkwwD5SJGTIkZGdhT5gncWYLG2hNbebq60QID4hM648cpWK3VuzLN3pCclY5h22g0bYVMcJY5sNAc9HfL7W1VZDbDClpgEcb2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fKhYDN4I; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ac339f53df9so357285966b.1
-        for <linux-efi@vger.kernel.org>; Fri, 04 Apr 2025 08:07:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1743779236; x=1744384036; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zjH61skezqD/tzvm29Me2P3Co+mAG43uQMEf1jjgfpU=;
-        b=fKhYDN4IWujKw2EwXewviOKx7np1F1bTg4uXGipT82BkDEecyDAxNFguvM1/WqEg5n
-         Kz1ZM08Fq2DhDCiW9v15l7MHlSSqKPa2Yx4dE14i2/qmUkYRQxYiXjKzcXO55EnpI/dl
-         w4+Rb+T+6q6Tt5O2+e1OevxaqnooXHjSQ2+d62HtzveGgBgpELfJ/KXJ1agP5RwsYDot
-         whE4LAKy4XsyTWE+k9d4S84L0jFkUrCUhr9jGfBsRAnY1Ws9WKXZN76E0P5sROXC3z22
-         g44t+dtW91Jfesjh5iiLrAidw6dAcN0y7gYofv9fgOHzqTHUfBlu/NFYs3wMAEMpG+ND
-         cuUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743779236; x=1744384036;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zjH61skezqD/tzvm29Me2P3Co+mAG43uQMEf1jjgfpU=;
-        b=mpD7l7AkeUdIZZY86vas8S/vn1V5b8D4QoSrvC18Dg65FmbuSuXbLg90XfYGP+A7Nj
-         AR5z47sBwSjRqgvALnCcfb/GYM9fUNTsdgZCG2s4tVgw9cpxGoj2Psdic+pPJcMg+sKT
-         DhlJ5gZ7enFrwPcbgYMkKpDD2EiT1BBLOEejasqteaMct7Od+25i9hp2xuBopDWKLh8V
-         XfVM6W76R4qKOZSzmRvKXoQPIAHa8bxB2jQAMaHP3f/g7ikUKU9vbunwhu2kBrJxsofz
-         gDOSH+Zu9+2AUuTZaVJLbT0weBXT+UJ1l0syWhXie5d43gvvKyC02das2kFjg5EnWBZJ
-         mr7w==
-X-Forwarded-Encrypted: i=1; AJvYcCUNTKLzI0gZlYXCHv7UfsB2PjEFpOXrnicEpLZfdC1CgPzWEI7UyW9D37JrEOFbU++EsgtUKf5idMI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMyv6pPd/V2w7pS4sgdfql4sA0hiRE3LFFfB0hpFzIGc6EANug
-	Auk2mZ5uue6qP1sAPxAbzJRuRO6902rfxZqFcV9BOzv9JPCFuiEWVbjh7aez6krt6VI/pZxomsi
-	AJ5jbt75y9o2rU7F6t1UATF2LtCae1YY/SfbQ
-X-Gm-Gg: ASbGnct3ujnyzA6WroViJarE0Uk4V5jlqHcPePbnKWSn2lI0hctYyMuI/niTtQfVjpr
-	DXbTw6cOypssDDMK53JrU5UEuWW3F1G9bsOcKRlxBj/pdmX7nLqa9KZ2WqWhLlLNBN9hjrDqyzf
-	oDscT5ikhuq+9o4Njwd0MNR3O3dQ==
-X-Google-Smtp-Source: AGHT+IHoHYIgjnTqNf/koXP1ZSa7N4fhejRbYw9l8KvhvhtNeBsuIxWeqajQ7XAq8z7bAk2STRMZANtpn6Q1WObbEIA=
-X-Received: by 2002:a17:907:7f90:b0:abf:19ac:771 with SMTP id
- a640c23a62f3a-ac7d185479bmr395006366b.2.1743779235688; Fri, 04 Apr 2025
- 08:07:15 -0700 (PDT)
+	s=arc-20240116; t=1743965486; c=relaxed/simple;
+	bh=CT7VH8lT/JzXbkz7oy9ZRmE+XEGESB2lfJrCxuVOh6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bCActv8hE1rdVN60fjSeDf24PTV9zyDAPaKKPF8OrEo2D02iXEPRlHACSjRnuBKY05CX9pZT7DPGzj1BzpSZs/D1HkgXNZrEp/SQ7Y5W6RYpL5Fj/jZxxWUWIsRF3v+GVJrUhVAkRgTP5lG3HahGeRDG3gtJuv+PdVhZcYJQis8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXiFq8Nn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DABC4CEE3;
+	Sun,  6 Apr 2025 18:51:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743965486;
+	bh=CT7VH8lT/JzXbkz7oy9ZRmE+XEGESB2lfJrCxuVOh6M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pXiFq8NnzeA070oRtEG2Z/cTdtC/0gjblZCoCil5hLwLjarkC+th9ZwRfIsOx00tv
+	 bomEnkNK/nppLFCyJ0YDy9qftR7KKd4iqoXlneHX6dkYYyDAElBGKYyChNya1ZzyOA
+	 HYpstoEOvjrit7dQZL8WEofWSUkn7gsYiqisudkka+doKtYl+DVcZdbYD+R4HjXxJ/
+	 RWmMdAp/H6NctaQG9FWot/rdzaq5yXDkYO6e6opUds08PPxVT2otV0d0i6JnCvPmWJ
+	 yWlb33+Ruat+eHm1v+HrUmOVbhrrq2IfwV85OBhuHQGfXf5fldMn7HeAYMfK69ErNw
+	 DhhECKeQoIKog==
+Date: Sun, 6 Apr 2025 20:51:16 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Kevin Loughlin <kevinloughlin@google.com>
+Subject: Re: [RFC PATCH 5/6] x86/boot: Move early kernel mapping code into
+ startup/
+Message-ID: <Z_LNJO3q5QN82LN0@gmail.com>
+References: <20250401133416.1436741-8-ardb+git@google.com>
+ <20250401133416.1436741-13-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250404082921.2767593-5-ardb+git@google.com> <20250404082921.2767593-8-ardb+git@google.com>
- <l6izksy3qtvo6t6l3v44xhuzmrnl2ijv7fx5ypvaz7kjxvpwhh@4zwlvxyfrp43> <CAMj1kXGwnTkb1bUDaRpkh3ES8thcUVQE7+qgfZQw+RORtvtv-g@mail.gmail.com>
-In-Reply-To: <CAMj1kXGwnTkb1bUDaRpkh3ES8thcUVQE7+qgfZQw+RORtvtv-g@mail.gmail.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Fri, 4 Apr 2025 08:07:03 -0700
-X-Gm-Features: ATxdqUG8b4-wASJzngQs_3ZF1ziQG91_baB_efphAg_aCiOaBYtqHZwyn4feFV8
-Message-ID: <CAAH4kHbxMDGQy3v9ef1ZdqK0TNzpm==BJgx1KiUpRP-CRKDx4w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] x86/boot: Implement early memory acceptance for SEV-SNP
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>, 
-	Kevin Loughlin <kevinloughlin@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401133416.1436741-13-ardb+git@google.com>
 
-On Fri, Apr 4, 2025 at 1:46=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wro=
-te:
->
-> On Fri, 4 Apr 2025 at 11:43, Kirill A. Shutemov
-> <kirill.shutemov@linux.intel.com> wrote:
-> >
-> > On Fri, Apr 04, 2025 at 10:29:25AM +0200, Ard Biesheuvel wrote:
-> > > From: Ard Biesheuvel <ardb@kernel.org>
-> > >
-> > > Switch to a different API for accepting memory in SEV-SNP guests, one
-> > > which is actually supported at the point during boot where the EFI st=
-ub
-> > > may need to accept memory, but the SEV-SNP init code has not executed
-> > > yet.
-> >
-> > I probably miss the point, but why cannot decompressor use the same _ea=
-rly
-> > version of accept too and avoid code duplication?
-> >
-> > Maybe spell it out in the commit message for someone like me :P
-> >
->
-> I assumed there was a reason that the shared GHCB page is used early
-> on. Maybe it is faster than accepting memory page by page?
 
-This is correct. The MSR protocol does a round trip per page, whereas
-the GHCB page can communicate hundreds of state changes per round
-trip.
->
-> It also depends on how important the memory acceptance is for the
-> legacy decompressor - AIUI the use case is primarily kexec, but
-> wouldn't the first kernel have accepted all memory already? I.e., if
+* Ard Biesheuvel <ardb+git@google.com> wrote:
 
-The first kernel may not accept all memory due to the laziness of
-unaccepted memory transitions.
-I'm not sure if we have the planned background acceptance process in
-place (probably not), but we
-can't expect that to have finished before the first kexec.
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> The startup code that constructs the kernel virtual mapping runs from
+> the 1:1 mapping of memory itself, and therefore, cannot use absolute
+> symbol references. Move this code into a separate source file under
+> arch/x86/boot/startup/ where all such code will be kept from now on.
+> 
+> Since all code here is constructed in a manner that ensures that it
+> tolerates running from the 1:1 mapping of memory, any uses of the
+> RIP_REL_REF() macro can be dropped, along with __head annotations for
+> placing this code in a dedicated startup section.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/x86/boot/startup/Makefile     |   2 +-
+>  arch/x86/boot/startup/map_kernel.c | 232 ++++++++++++++++++++
+>  arch/x86/kernel/head64.c           | 228 +------------------
+>  3 files changed, 234 insertions(+), 228 deletions(-)
 
-> it is slower, we might not care if it is a rare case.
+So this patch breaks the x86-64 allmodconfig build:
 
-If the GHCB is available, we should always prefer it.
+ ERROR: modpost: "page_offset_base" [arch/x86/crypto/aegis128-aesni.ko] undefined!
+ ERROR: modpost: "vmemmap_base" [arch/x86/crypto/aegis128-aesni.ko] undefined!
+ ERROR: modpost: "page_offset_base" [arch/x86/crypto/aesni-intel.ko] undefined!
+ ERROR: modpost: "vmemmap_base" [arch/x86/crypto/aesni-intel.ko] undefined!
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+I suppose EXPORT_SYMBOL() in the new startup code isn't properly 
+extracted?
+
+Thanks,
+
+	Ingo
 
