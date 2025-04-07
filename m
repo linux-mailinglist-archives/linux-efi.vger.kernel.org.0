@@ -1,107 +1,170 @@
-Return-Path: <linux-efi+bounces-3218-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3219-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A893A7EE59
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Apr 2025 22:04:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E56EA7EF89
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Apr 2025 23:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48A791896BF5
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Apr 2025 20:02:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 100C118932F2
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Apr 2025 21:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97ED2218AC4;
-	Mon,  7 Apr 2025 20:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FFE215F43;
+	Mon,  7 Apr 2025 21:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mpRX+AW+"
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="dVgljzSM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZaHWAluz"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCC316F8F5;
-	Mon,  7 Apr 2025 20:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82041EF0A1;
+	Mon,  7 Apr 2025 21:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744056001; cv=none; b=LVxwyoKznQDSAyMMgxVciamUnP9yJuW5MtvEWAWbJxTg0xBhwYPoYmgBhP6Gw2x5TnH1dDD6p3MX7ppyjNrCjhvVWjOVI46WSWXCC3fM5VS7qK/3p47Z6Xfi0ymDRuUhwZkoEdpegD1ghEo4s+a5eKMLEW4bV2iQs8S4T90fCFE=
+	t=1744060118; cv=none; b=Ki3KsAWm0tzdIEpMgD3EnMsAXeURdWcMOniFJRbVtUf1a24XpuGyrUuj05ZSHkEncE22Upz3HXISNNMs00qUKTXzzk2vaNA0b0tWUX4OOd2gmquvRdp9OK4gO7/32Z2SK3PvmBTo2hn3eZf0jhWUl9GN4Dho4UaPsDtzpp3A+wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744056001; c=relaxed/simple;
-	bh=jPRArkwWUfbOU/XmMI296o3CkNdz7RofAbOMlmEBgxA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e/CvN0i0ca5v8yvXZX+QwBmbHLGHNwKyH367TGJlCBS06xsRd6y6pIpyOR8g41J925wq7Jr7XVCMSjV9kgU2nkxGt+KLjzlbLvuwjtEe682dqjq9uyDf7o33e1Re69RbGnJdOkkbtNIfZURGMwtUd/VZ5eUfLpoQXcQAzNfvaKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mpRX+AW+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4783C4AF09;
-	Mon,  7 Apr 2025 20:00:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744056000;
-	bh=jPRArkwWUfbOU/XmMI296o3CkNdz7RofAbOMlmEBgxA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mpRX+AW+s+M2LcUkMmxAunMhDtp1Xiz6r4EwypsJgEsqgNPrptJs0BHOY7iVf8VTB
-	 mfTVytkN21wXnNsJCvnYMM76Q4ssPaTgHk3S5etCv0opm8fRK4ln2WLpJFCi9gXyaP
-	 E8mP94s1QRkBY8Kwxw3k7f/MyhOmgnJXGg3b+Y1Gef+HGCgfISXCiRDUUOS6HsCLCP
-	 HT+WQKs+ya/HJSI77BGctITUwvzvfnkNgxuxd1NBDWcqOvsJJcErowmqTqhDb0DLzZ
-	 ly5dCECd7q9B6loPNsVW0ebBCV6s6zXx5g+5IYGkyok3q0wkZa3PrutU3K/p+UsIws
-	 i+qLylMJDk/ow==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30bfe0d2b6dso46078151fa.3;
-        Mon, 07 Apr 2025 13:00:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWI1MaezShBg2AqkAoTYKwA5bPL2WEylSiLVj6Qt8tF10YtTdPoNtgDIXGqP/DaaKjNy3Mwp0jC5DE=@vger.kernel.org, AJvYcCXfZGDp2DD9PxWAjEnpzalJtHcP3O+OfwOgHsx+hZORv0+TfuKbjKZsxfgpXxHwKyD1AuuykuHEg/3pvHty@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUPhrw3StAuu6i7JR1smqZaZZgOklc3Hy5UjMAyKZ2aQac9jGT
-	DWBlpo3cytAksP+mQvRW2HZDSmnqCmQy828AQeVgDHWuDrhcQ/pnJjeoQ/BaUKten56GE21aoEs
-	iURSuwXg+ITTorQqLHUCLwAdy8HY=
-X-Google-Smtp-Source: AGHT+IFoDfcm0yl+QexjJ4s3y8T2IraFKcLrX17H37lK1ZDrd+qbjAVpTBnzZ03NtT9f6RWVYq1+KQ62wdWkXhCWgJ8=
-X-Received: by 2002:a2e:bd13:0:b0:30c:523a:a84 with SMTP id
- 38308e7fff4ca-30f0c050547mr45773741fa.32.1744055999296; Mon, 07 Apr 2025
- 12:59:59 -0700 (PDT)
+	s=arc-20240116; t=1744060118; c=relaxed/simple;
+	bh=WkcvTRYspnESz6gLqavJF30kPibHjQxjvDEtMkjjOPw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TUZxhC3SFOan3yUV6ZPGueWpNY2+0nNDQAjPRzomUQDd1Dft9sBybwwEpL4OgiMIN9dbg+OS+q6bZi4MTfCbcgs/31dkLAZsHhiAhKIIlpxhTyMo9mH4k0OhM+EuTbKzX3VXxysctpVQzeGVoD/el8ePAUYHttCE9IDt1GYpXLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=dVgljzSM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZaHWAluz; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
+	by mailfout.phl.internal (Postfix) with ESMTP id ED2A613811B0;
+	Mon,  7 Apr 2025 17:08:33 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Mon, 07 Apr 2025 17:08:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1744060113; x=
+	1744146513; bh=h1peeUsk7FcP1jakLjVZgwWrgqF1Mde4rlg/PA+xMpQ=; b=d
+	VgljzSMbZWrgPrS3o5cSEtrnxusAVgdDTirUvcEI6/A36Ks0NRYZyg441rwUGbQ/
+	O0pKNxldMuedgBxH+F/p1qpReCAlqfCe0pvfErsKlckeZS6C+x4IuyfnaM0d/SCe
+	R9L271tJonV9FsbFCD7ZfQzPyHM5OKsKSo7ity7npgML7appEnu8rY962R6Aa7W1
+	M0Vhrr38FtWDyafOUaiEuVVgoa+n4LC/qvhSAd2ijdHSUI0nGrqcFAavb4JAL+a1
+	zumLQUY8xkXYbHHKWIiVuh8XZ9cg4LZ62xi/ECumsbjdYf/TEEr7t67Z8FT0CPCD
+	MuqPnIAqbbiS2NVX5MGxg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1744060113; x=1744146513; bh=h1peeUsk7FcP1jakLjVZgwWrgqF1Mde4rlg
+	/PA+xMpQ=; b=ZaHWAluz1rXePNQnICfvFitFCXmQoI9a1xr5JUxF2C+qbCyT+Ph
+	L+wCkqB7+xFZGly2Su505Y4Zd3hBUjDTsHP92/hNreMc2SE5HELdcn9o4pmlN/8C
+	VRDW2Jpa/8swDqIm06W8RW3bYljR5JLOUDc6UthCMapHgkFAl6wQlAFJ5o0aTIFD
+	18K4XeBvq/9HyVzsPmw3okLcQrQnkdgBcExGhnJUngJtVHNHaYuWdFoSrQnax/p0
+	Qiu3bOsdsLP8GcOkX9hJud/uuUpkLvNutzbUNNJVvaBCgnDDa0cvb5F9Go9yFsAL
+	KHvHsP1wdGQKYG1+8X+CcwC4ob2ikT72PEQ==
+X-ME-Sender: <xms:0D70Z-5RJaTazvew3m-h0gp3_ILffdHENyp5EOAgrX36_aGbaquYpA>
+    <xme:0D70Z37S3Z6qapQ_bCLQmduVM4vmDbSOiUqWCrGtVX9beJf6MyspfVKDZGKXLXE1d
+    BkU3XBrsM4VUK7PSPY>
+X-ME-Received: <xmr:0D70Z9crGDeezMSSXb8dE25VdJC7eMgBmd_ODAvoRvvCym95PX_ejW9pAz5ZO7A27vpAXg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdduvdefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddt
+    vdenucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilh
+    hlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeffvdevueetudfh
+    hfffveelhfetfeevveekleevjeduudevvdduvdelteduvefhkeenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghm
+    ohhvrdhnrghmvgdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprh
+    gtphhtthhopegrrhgusgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhinhhgohes
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhirhhilhhlrdhshhhuthgvmhhovheslh
+    hinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeguihhonhhnrghglhgriigvsehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopegrrhgusgdoghhithesghhoohhglhgvrdgtoh
+    hmpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehthhhomhgr
+    shdrlhgvnhgurggtkhihsegrmhgurdgtohhm
+X-ME-Proxy: <xmx:0T70Z7JAxU1jzTWV-RNGCHhdsSqe7Mg_VaygbtkPiAOrfok80HM1eQ>
+    <xmx:0T70ZyI8eJEzWYQxzR7leU6YesWMaeoJBc-dd707B00vL2igy1g24A>
+    <xmx:0T70Z8zCdmLxsRrxHcsSD0Lz_EVm4XknA-WS6W6MnQV44GlYkZaoFA>
+    <xmx:0T70Z2LKQY5664dZApn1cBh4ZEoTQ0nrNb_IIcfXLc0cbLnqmGq8MA>
+    <xmx:0T70Z1a23ls62NLy-qXRZoDlT7cVb77pGEHLWM3KWNsLj7hgS2jDdWQ->
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Apr 2025 17:08:29 -0400 (EDT)
+Date: Tue, 8 Apr 2025 00:08:25 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Kevin Loughlin <kevinloughlin@google.com>
+Subject: Re: [PATCH v2 3/3] x86/boot: Implement early memory acceptance for
+ SEV-SNP
+Message-ID: <7u74hxavnqqtcaciqco4ra37rep7k4f4cnv65mk5rmcu3fuo6n@kdhc2oceeu2p>
+References: <20250404082921.2767593-5-ardb+git@google.com>
+ <20250404082921.2767593-8-ardb+git@google.com>
+ <l6izksy3qtvo6t6l3v44xhuzmrnl2ijv7fx5ypvaz7kjxvpwhh@4zwlvxyfrp43>
+ <CAMj1kXGwnTkb1bUDaRpkh3ES8thcUVQE7+qgfZQw+RORtvtv-g@mail.gmail.com>
+ <CAAH4kHbxMDGQy3v9ef1ZdqK0TNzpm==BJgx1KiUpRP-CRKDx4w@mail.gmail.com>
+ <ldrma6tce2bwhenu5kobjzvk7cz445ubfmpcynwadqudgvzuh3@aibigcdzui6m>
+ <Z_QA6GwqoxdW6D0e@gmail.com>
+ <CAMj1kXGWPopQupteK0=mqd5z29Oj4Ye6KyPfgup-nHQO863Qow@mail.gmail.com>
+ <grmalijxenphqg664brbqbreitq3qkancb7qv32yjdwzfoqowy@6tavdslt75i7>
+ <CAMj1kXHcdT8X8uUyd+9eEF1Nc=CBNj2M4z172DUU7g_pJ5BHuw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250404082921.2767593-5-ardb+git@google.com> <20250404082921.2767593-8-ardb+git@google.com>
- <l6izksy3qtvo6t6l3v44xhuzmrnl2ijv7fx5ypvaz7kjxvpwhh@4zwlvxyfrp43>
- <CAMj1kXGwnTkb1bUDaRpkh3ES8thcUVQE7+qgfZQw+RORtvtv-g@mail.gmail.com>
- <CAAH4kHbxMDGQy3v9ef1ZdqK0TNzpm==BJgx1KiUpRP-CRKDx4w@mail.gmail.com>
- <ldrma6tce2bwhenu5kobjzvk7cz445ubfmpcynwadqudgvzuh3@aibigcdzui6m> <9f689ba2-add6-cca2-e7b3-fa0393fe2b98@amd.com>
-In-Reply-To: <9f689ba2-add6-cca2-e7b3-fa0393fe2b98@amd.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 7 Apr 2025 21:59:48 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXERL=8Y51RUJSqgLWVMs4PJa9aQK0puvKaCpg6eRu0t8g@mail.gmail.com>
-X-Gm-Features: ATxdqUHe-N-0lwN7IIcNDq9Z-VBGM7h6JMwe_XEsIq9i5_R6mnOjPGjaytAjlUk
-Message-ID: <CAMj1kXERL=8Y51RUJSqgLWVMs4PJa9aQK0puvKaCpg6eRu0t8g@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] x86/boot: Implement early memory acceptance for SEV-SNP
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
-	Dionna Amalie Glaze <dionnaglaze@google.com>, Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
-	Kevin Loughlin <kevinloughlin@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHcdT8X8uUyd+9eEF1Nc=CBNj2M4z172DUU7g_pJ5BHuw@mail.gmail.com>
 
-On Mon, 7 Apr 2025 at 20:05, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->
-> On 4/7/25 04:25, Kirill A. Shutemov wrote:
-> > On Fri, Apr 04, 2025 at 08:07:03AM -0700, Dionna Amalie Glaze wrote:
-> >> If the GHCB is available, we should always prefer it.
+On Mon, Apr 07, 2025 at 07:45:59PM +0200, Ard Biesheuvel wrote:
+> On Mon, 7 Apr 2025 at 19:33, Kirill A. Shutemov <kirill@shutemov.name> wrote:
 > >
-> > I believe we should consider the cost of code duplication in this
-> > situation.
+> > On Mon, Apr 07, 2025 at 07:21:17PM +0200, Ard Biesheuvel wrote:
+> > > On Mon, 7 Apr 2025 at 18:44, Ingo Molnar <mingo@kernel.org> wrote:
+> > > >
+> > > >
+> > > > * Kirill A. Shutemov <kirill.shutemov@linux.intel.com> wrote:
+> > > >
+> > > > > On Fri, Apr 04, 2025 at 08:07:03AM -0700, Dionna Amalie Glaze wrote:
+> > > > > > If the GHCB is available, we should always prefer it.
+> > > > >
+> > > > > I believe we should consider the cost of code duplication in this
+> > > > > situation.
+> > > > >
+> > > > > If the non-early version is only used in the kexec path, it will not be
+> > > > > tested as frequently and could be more easily broken. I think it would be
+> > > > > acceptable for kexec to be slightly slower if it results in more
+> > > > > maintainable code.
+> > > >
+> > > > Absolutely so.
+> > > >
+> > >
+> > > It would be nice if someone could quantify 'slightly slower' - I am
+> > > leaning to the same conclusion but I have no clue what the actual
+> > > performance impact is.
 > >
-> > If the non-early version is only used in the kexec path, it will not be
-> > tested as frequently and could be more easily broken. I think it would be
-> > acceptable for kexec to be slightly slower if it results in more
-> > maintainable code.
+> > If we can survive the performance of the initial boot, we can live with it
+> > for kexec.
 > >
->
-> Is accept_memory() in the decompressor or efistub only used in the kexec
-> path?
->
+> 
+> The initial boot does not occur via the decompressor, but via the EFI
+> stub, where memory acceptance is handled by the firmware (as it
+> should).
 
-The EFI stub does not call accept_memory(), only the decompressor
-does. The only use case for explicit memory acceptance in the EFI stub
-is process_unaccepted_memory(), which accepts the misaligned chunk of
-memory that cannot be described at 2M granularity by the accepted
-memory table.
+I wounder what protocol BIOS uses.
 
-Remember that the EFI stub no longer calls into the legacy
-decompressor at all - it decompresses the kernel while executing the
-EFI boot services and branches straight to it.
+> Given that the traditional decompressor carves out an allocation from
+> the raw E820 map without using any of the higher level APIs, it has to
+> accept the memory itself if it is marked as unaccepted in the table.
+> 
+> Perhaps the decompressor should try to avoid unaccepted memory?
+
+It limits KASLR. I would rather wait more on kexec.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
