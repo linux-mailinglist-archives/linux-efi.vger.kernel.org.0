@@ -1,140 +1,107 @@
-Return-Path: <linux-efi+bounces-3217-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3218-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B693FA7E96B
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Apr 2025 20:09:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A893A7EE59
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Apr 2025 22:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B933A9745
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Apr 2025 18:07:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48A791896BF5
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Apr 2025 20:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8244122172E;
-	Mon,  7 Apr 2025 18:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97ED2218AC4;
+	Mon,  7 Apr 2025 20:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zc1cm2TS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mpRX+AW+"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598DE221727;
-	Mon,  7 Apr 2025 18:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCC316F8F5;
+	Mon,  7 Apr 2025 20:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049213; cv=none; b=dELH+zhfUaMxa6JyJx/g8Q113yW58ySqVU4Uz83af0ty/JtwUMJEVE+Ysvbu0JTZ/CMlSClbjVF1ulSvKXABtv63fwhaD+SzQepWYnkvF2jfH3zOivJKYrKJkRvsJT1sMyoF1stEB1M4rTYoRgoW9zYptwuw31q+xebh1Hnetww=
+	t=1744056001; cv=none; b=LVxwyoKznQDSAyMMgxVciamUnP9yJuW5MtvEWAWbJxTg0xBhwYPoYmgBhP6Gw2x5TnH1dDD6p3MX7ppyjNrCjhvVWjOVI46WSWXCC3fM5VS7qK/3p47Z6Xfi0ymDRuUhwZkoEdpegD1ghEo4s+a5eKMLEW4bV2iQs8S4T90fCFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049213; c=relaxed/simple;
-	bh=MK/LnMtUtop8kC8hvXlfOeYWUUjyZpSdxLnXtoMexRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oSbd8ETyksHRcXXuW5v97lZ1Qq7ma/08tR2qWeLJmiecvYtnQLAMvunIVmLhoktBJx6M3eXDqC8ajL+v86luxpNEcnndUn/+ZXvAm1VcV5SY7ebt3lo0HodVUDWDn5hF0enGznHdofEzIhr6N7tk8a+mCZO7tyGtlT3DB5tVdE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zc1cm2TS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7443FC4AF0F;
-	Mon,  7 Apr 2025 18:06:51 +0000 (UTC)
+	s=arc-20240116; t=1744056001; c=relaxed/simple;
+	bh=jPRArkwWUfbOU/XmMI296o3CkNdz7RofAbOMlmEBgxA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e/CvN0i0ca5v8yvXZX+QwBmbHLGHNwKyH367TGJlCBS06xsRd6y6pIpyOR8g41J925wq7Jr7XVCMSjV9kgU2nkxGt+KLjzlbLvuwjtEe682dqjq9uyDf7o33e1Re69RbGnJdOkkbtNIfZURGMwtUd/VZ5eUfLpoQXcQAzNfvaKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mpRX+AW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4783C4AF09;
+	Mon,  7 Apr 2025 20:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049212;
-	bh=MK/LnMtUtop8kC8hvXlfOeYWUUjyZpSdxLnXtoMexRM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zc1cm2TSqOlLEFcIlP4EqxOjLHlqGhTSVFRbpYInc5qF32rS7se6YTmw+iHMFtsKm
-	 tCz9FREtA+crPOHFqTnlh9HTWfKhnqFAej2S8WZUBv1Ul5OmcqpIiwNuv6ZQ3nSVap
-	 IvxtPqoh74FC94G1yd3FWKX5+Ln9EUeDx2YTwY6fwywFe/JiDaScUOez1hpGo16cw5
-	 J3J6mwXgLq/Gsu3bDdE2FRTyNDOqYq19fke4C+ZoHxmN+ak1AoUrBoVOvR5iQeQqmf
-	 T8zvi9989EJAZSUcyPGgYc9A/cZ1pOHKMZG9qOlJ1tkumxQQl1IMqJnVzrLE10fjh5
-	 VMmCPMM48rnag==
-Date: Mon, 7 Apr 2025 20:06:48 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] x86/boot: Move early kernel mapping code into
- startup/
-Message-ID: <Z_QUOPyVwyPShwH_@gmail.com>
-References: <20250407061132.69315-4-ardb+git@google.com>
- <20250407061132.69315-5-ardb+git@google.com>
- <Z_QO8QybPCwzRwms@gmail.com>
- <CAMj1kXGGpZp_OgUuQ2CkpJdDgsRzxuLz3wjesKxDyHvveuUqUA@mail.gmail.com>
+	s=k20201202; t=1744056000;
+	bh=jPRArkwWUfbOU/XmMI296o3CkNdz7RofAbOMlmEBgxA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mpRX+AW+s+M2LcUkMmxAunMhDtp1Xiz6r4EwypsJgEsqgNPrptJs0BHOY7iVf8VTB
+	 mfTVytkN21wXnNsJCvnYMM76Q4ssPaTgHk3S5etCv0opm8fRK4ln2WLpJFCi9gXyaP
+	 E8mP94s1QRkBY8Kwxw3k7f/MyhOmgnJXGg3b+Y1Gef+HGCgfISXCiRDUUOS6HsCLCP
+	 HT+WQKs+ya/HJSI77BGctITUwvzvfnkNgxuxd1NBDWcqOvsJJcErowmqTqhDb0DLzZ
+	 ly5dCECd7q9B6loPNsVW0ebBCV6s6zXx5g+5IYGkyok3q0wkZa3PrutU3K/p+UsIws
+	 i+qLylMJDk/ow==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30bfe0d2b6dso46078151fa.3;
+        Mon, 07 Apr 2025 13:00:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWI1MaezShBg2AqkAoTYKwA5bPL2WEylSiLVj6Qt8tF10YtTdPoNtgDIXGqP/DaaKjNy3Mwp0jC5DE=@vger.kernel.org, AJvYcCXfZGDp2DD9PxWAjEnpzalJtHcP3O+OfwOgHsx+hZORv0+TfuKbjKZsxfgpXxHwKyD1AuuykuHEg/3pvHty@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUPhrw3StAuu6i7JR1smqZaZZgOklc3Hy5UjMAyKZ2aQac9jGT
+	DWBlpo3cytAksP+mQvRW2HZDSmnqCmQy828AQeVgDHWuDrhcQ/pnJjeoQ/BaUKten56GE21aoEs
+	iURSuwXg+ITTorQqLHUCLwAdy8HY=
+X-Google-Smtp-Source: AGHT+IFoDfcm0yl+QexjJ4s3y8T2IraFKcLrX17H37lK1ZDrd+qbjAVpTBnzZ03NtT9f6RWVYq1+KQ62wdWkXhCWgJ8=
+X-Received: by 2002:a2e:bd13:0:b0:30c:523a:a84 with SMTP id
+ 38308e7fff4ca-30f0c050547mr45773741fa.32.1744055999296; Mon, 07 Apr 2025
+ 12:59:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXGGpZp_OgUuQ2CkpJdDgsRzxuLz3wjesKxDyHvveuUqUA@mail.gmail.com>
+References: <20250404082921.2767593-5-ardb+git@google.com> <20250404082921.2767593-8-ardb+git@google.com>
+ <l6izksy3qtvo6t6l3v44xhuzmrnl2ijv7fx5ypvaz7kjxvpwhh@4zwlvxyfrp43>
+ <CAMj1kXGwnTkb1bUDaRpkh3ES8thcUVQE7+qgfZQw+RORtvtv-g@mail.gmail.com>
+ <CAAH4kHbxMDGQy3v9ef1ZdqK0TNzpm==BJgx1KiUpRP-CRKDx4w@mail.gmail.com>
+ <ldrma6tce2bwhenu5kobjzvk7cz445ubfmpcynwadqudgvzuh3@aibigcdzui6m> <9f689ba2-add6-cca2-e7b3-fa0393fe2b98@amd.com>
+In-Reply-To: <9f689ba2-add6-cca2-e7b3-fa0393fe2b98@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 7 Apr 2025 21:59:48 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXERL=8Y51RUJSqgLWVMs4PJa9aQK0puvKaCpg6eRu0t8g@mail.gmail.com>
+X-Gm-Features: ATxdqUHe-N-0lwN7IIcNDq9Z-VBGM7h6JMwe_XEsIq9i5_R6mnOjPGjaytAjlUk
+Message-ID: <CAMj1kXERL=8Y51RUJSqgLWVMs4PJa9aQK0puvKaCpg6eRu0t8g@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] x86/boot: Implement early memory acceptance for SEV-SNP
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-
-* Ard Biesheuvel <ardb@kernel.org> wrote:
-
-> On Mon, 7 Apr 2025 at 19:44, Ingo Molnar <mingo@kernel.org> wrote:
+On Mon, 7 Apr 2025 at 20:05, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 4/7/25 04:25, Kirill A. Shutemov wrote:
+> > On Fri, Apr 04, 2025 at 08:07:03AM -0700, Dionna Amalie Glaze wrote:
+> >> If the GHCB is available, we should always prefer it.
 > >
+> > I believe we should consider the cost of code duplication in this
+> > situation.
 > >
-> > * Ard Biesheuvel <ardb+git@google.com> wrote:
+> > If the non-early version is only used in the kexec path, it will not be
+> > tested as frequently and could be more easily broken. I think it would be
+> > acceptable for kexec to be slightly slower if it results in more
+> > maintainable code.
 > >
-> > > From: Ard Biesheuvel <ardb@kernel.org>
-> > >
-> > > The startup code that constructs the kernel virtual mapping runs from
-> > > the 1:1 mapping of memory itself, and therefore, cannot use absolute
-> > > symbol references. Move this code into a separate source file under
-> > > arch/x86/boot/startup/ where all such code will be kept from now on.
-> > >
-> > > Since all code here is constructed in a manner that ensures that it
-> > > tolerates running from the 1:1 mapping of memory, any uses of the
-> > > RIP_REL_REF() macro can be dropped, along with __head annotations for
-> > > placing this code in a dedicated startup section.
-> >
-> > So would it be possible to do this in ~3 steps: first the mechanic
-> > movement of code, with very few changes (if the result builds & boots),
-> > then drop the RIP_REL_REF() uses and __head annotations in two separate
-> > patches?
-> >
-> > Bisectability, ease of review, etc.
-> >
-> > (The tiny bird gets the worm, but I might have butchered that proverb.)
-> >
-> 
-> Yes.
-> 
-> And actually, the Clang boot regression that was reported indicates 
-> that this statement it not 100% true to begin with. While it is no 
-> longer necessary to use RIP_REL_REF() for accesses to global 
-> variables, it may still be needed when explicitly taking the address 
-> of a global variable and storing it in a stack allocated struct, 
-> e.g.,
-> 
-> void __init startup_64_setup_gdt_idt(void)
-> {
->         void *handler = NULL;
-> 
->         struct desc_ptr startup_gdt_descr = {
->                 .address = (__force unsigned long)gdt_page.gdt,
->                 .size    = GDT_SIZE - 1,
->         };
-> 
-> In this case, even -fPIC may produce an absolute reference to
-> gdt_page.gdt, but from .rodata not from .text, and this is equally
-> broken at early boot.
+>
+> Is accept_memory() in the decompressor or efistub only used in the kexec
+> path?
+>
 
-OK.
+The EFI stub does not call accept_memory(), only the decompressor
+does. The only use case for explicit memory acceptance in the EFI stub
+is process_unaccepted_memory(), which accepts the misaligned chunk of
+memory that cannot be described at 2M granularity by the accepted
+memory table.
 
-> Once all this code has been moved into place, I'll propose the
-> validation (similar to arm64 and EFI stub) which just greps the output
-> of readelf -r and checks for occurrences of R_X86_64_64; that way, we
-> will detect early and precisely whether the codegen is ok.
-
-Yeah, that sounds good!
-
-> Please let me know which of these patches you are intending to keep 
-> in tip/x86/boot, and I will respin on top of that.
-
-I'd like to merge all of them as long as they don't intentionally regress.
-All of this seemed like a step forward, and having them in one place
-will enable a new type of debugging check - which is a win too in my book.
-
-So no fundamental worries from me, just the request to have more 
-careful iterations.
-
-Thanks,
-
-	Ingo
+Remember that the EFI stub no longer calls into the legacy
+decompressor at all - it decompresses the kernel while executing the
+EFI boot services and branches straight to it.
 
