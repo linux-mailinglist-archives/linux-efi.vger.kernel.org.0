@@ -1,99 +1,123 @@
-Return-Path: <linux-efi+bounces-3242-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3243-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B81A81393
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Apr 2025 19:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C94C3A8145F
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Apr 2025 20:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B42C4A1C09
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Apr 2025 17:26:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1D0A4C14CF
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Apr 2025 18:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68729237718;
-	Tue,  8 Apr 2025 17:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70A822D7B4;
+	Tue,  8 Apr 2025 18:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="j/ai8+S0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Piv55oZL"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CCC1D61A2;
-	Tue,  8 Apr 2025 17:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3293C22D784;
+	Tue,  8 Apr 2025 18:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744133209; cv=none; b=A6cICv/frG4mdTDbizbbBGYP7E8KWfmiq/WzZnueYMD3h0x7Zuyrq81KGTQmSWdjP5vrXFbzq9ttxd/ULspSWtiNAbWehKPVm8MjZ7jCMdvjxLaH6p2MfNYp2J65B5lq1NDDY6u0R6NeN5+Rqhx6/zxKIJXrSlrSFKYaEFipfY4=
+	t=1744136209; cv=none; b=qUut6fsPGOMoTep7FgXzEKsEXvx6baPhHwFAN84GCIZtb7V2wwBOzJV2FQ/HBOxnBFnZDoK+Y4zaip+pOu9qDiEai/ulH7/NQ1hb5yfqVq3FpXxcUu47n8gfzloIY9PzbyFK10PhZ020nu4gKyYuCml5ueIE3aFju5DgW0h5ZwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744133209; c=relaxed/simple;
-	bh=GX8WBRwTFC1RFjBVa5IRL/pHVndd3v3IwtcIP2uE7VM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B4xIIx+6eSOVXfvuYUmfihvnB2Ixe69R5wTqIACV9q43IfsgOAaOe03Wwph1luHFYmryO4UkoE2hquzHeSIyTOJk0IZWjkGUNRpsdX2G8bGbuQEIXPBGhrUILAE4bC76EXgcuD9XmrYYiit4jZcJS+j6Yibm4d5wHRQpwdAiPXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=j/ai8+S0; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1744133206;
-	bh=GX8WBRwTFC1RFjBVa5IRL/pHVndd3v3IwtcIP2uE7VM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=j/ai8+S0lLcIjK6ybN/IkWyjzC5oFm6RSFDsHNBJH5XD5PqFaek+D3Q8KUqlu2cQR
-	 Cl/5gDunPKlzYBGDOp6Oox22ozVc8kaXD/D2N4/KBySCqCIMdVXg8d3eggKR7ZZYdx
-	 QHT+OEE5Qr/hpQvNw2qGbEFNvU1Qv0/Adg5mNwdQ=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 2BB301C02CF;
-	Tue, 08 Apr 2025 13:26:46 -0400 (EDT)
-Message-ID: <8514f2beca0e3fdb4994b5e0943dd8fccf70baf6.camel@HansenPartnership.com>
-Subject: Re: [PATCH 0/6] power: wire-up filesystem freeze/thaw with
- suspend/resume
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
- jack@suse.cz, rafael@kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, hch@infradead.org,
-  david@fromorbit.com, djwong@kernel.org, pavel@kernel.org,
- peterz@infradead.org,  mingo@redhat.com, will@kernel.org,
- boqun.feng@gmail.com
-Date: Tue, 08 Apr 2025 13:26:45 -0400
-In-Reply-To: <Z_Va-ilQPuysfdhS@bombadil.infradead.org>
-References: <20250331-work-freeze-v1-0-6dfbe8253b9f@kernel.org>
-	 <20250401-work-freeze-v1-0-d000611d4ab0@kernel.org>
-	 <ddee7c1ce2d1ff1a8ced6e9b6ac707250f70e68b.camel@HansenPartnership.com>
-	 <20250402-radstand-neufahrzeuge-198b40c2d073@brauner>
-	 <2d698820ebd2e82abe8551425d82e9c387aefd66.camel@HansenPartnership.com>
-	 <Z_VYZAgHNGEqF7ZB@bombadil.infradead.org>
-	 <Z_Va-ilQPuysfdhS@bombadil.infradead.org>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1744136209; c=relaxed/simple;
+	bh=GVBUGj5lwlgDtnpbMzm7AEU7QmUuIZeQl9ia/W0jObQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NzbFLArCOizodB8wptIUGW2G21l8Yht+KVXke6IbkkwG205lAteyckgrkWjCgD1TLPLkSFBTVPVCTbxOzKENicMRzC1slgogVDa4D8h4gf2kVKvpK9E5NDFdsQqHOzFWLRQgulBpwOBy50/WrEiOR7KrVOcaH+hfQ9jkg/2883c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Piv55oZL; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54af20849adso5762227e87.1;
+        Tue, 08 Apr 2025 11:16:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744136206; x=1744741006; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cpi1lL06DMBKX7u3P6QnOCCZJvFffjMjWuVsvjpjjuk=;
+        b=Piv55oZLg97rFt9mMss8NHWJicFwMuj/sA6O78NG2N8Cl+cBABbPMaqC6HEJqauNHs
+         omnyb2aNs3otTi+A2DT//M31VH/P8DxMEjT1sJ9uyj5rkVTQpm9uM5nSdStFacNUIpT/
+         o4BxFdIlRo59XTa24kwTn6lpV885eG1EjfBvsnGjbOlfM1McUK0ICb0vFH/kTisPW9O5
+         nMgY1/XnbDo7n29mJHChfuYJRBzeFMRFSpWSJ96K9r/1Q2Crh0XBtBm0hANayQgVtfKi
+         GwPdAYXSnFVwF7NZeSlCRT5d4MvAZQswOiqhUpz5ZHLrcupEdhSEqQtwcxzK2tSTNIw2
+         MhIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744136206; x=1744741006;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cpi1lL06DMBKX7u3P6QnOCCZJvFffjMjWuVsvjpjjuk=;
+        b=QM9B1N2viTne6uhFMWdoZ4E0y6oaR88O2jr2Wu8SKqrPW0SqiWNJ2lkMCsnEbm3xrR
+         83281WJaa4RHVlWCXQYmUFSBRrKPLJwoZs4i57G7cYlJ7BRhdRz3QFJb0ejdIoRS6PKX
+         5F5/hHPFVg3I8KpWJSZPNMX75EtukDsY/q/Dth01SU236Xe8uXN0VNA33mwCQi8N/J1p
+         NCnWH0bamSkZK1X5FDLJwz2L2rAAhlqV4ARSCtiX+tqBNxeVYSIF1ero2/Tc8zd0pgXx
+         XftiYtxgSj5Ny2owGetfrcTa6WPK0dgqKftOpXI7mAcpQwBOTxo0VZL3fMklz/PZDk+d
+         16RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWB6lbuphtA/T8iPvKbze+3cKyb6j506vTjbfVJ2WPHAD43gB8GGRuQ48Iz/ENMZ6gTeHrz6vLlaLF8+Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy66eL5QKzxZ3XnZCIf6i8diBXLsG9+6a5baWKJwP/5cCyIC8iL
+	PmfTqvHzVh35U/Q7bv4cEv/Di4E897Jx4JnKhtxLOjJZ3I+6lVZhGyIKiEPpeyRpxJwRvQc1QxB
+	kc0JBuhMCPFijh7dvP/WtZdY7XQ==
+X-Gm-Gg: ASbGnctDzm/hj4pMH66NDxLDtiI/y4UPoOfTu3TRbLFNI8oy79aq8FLGcEnEqnjWoYj
+	L2WyxdWpwD6BCWHL+ukQ4MOoJrHdVLBaTMONX4CBKqiTgNsOpJhpQuTCTBkbXyXnRIJykI3nGah
+	mJeibB8u5J33qYQg3Ek+MVKrRnbxaqXMiPiBCNhPpH
+X-Google-Smtp-Source: AGHT+IG8EgpkREr52a3nFSH8verF//aFoA/rAOhBA+3f8s3RF4sM0OuOt+dW733YHCkn44l+gvCwj8bgtDd3a0Pf2cY=
+X-Received: by 2002:a05:6512:3ba2:b0:54b:117f:686e with SMTP id
+ 2adb3069b0e04-54c4373178emr5830e87.27.1744136205955; Tue, 08 Apr 2025
+ 11:16:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250408085254.836788-9-ardb+git@google.com>
+In-Reply-To: <20250408085254.836788-9-ardb+git@google.com>
+From: Brian Gerst <brgerst@gmail.com>
+Date: Tue, 8 Apr 2025 14:16:33 -0400
+X-Gm-Features: ATxdqUEMrbI5BDwK_MC2ArLzFA7fiMI5V7jE2Ot7amcKuprTIJn6ipW8Wb3nrjY
+Message-ID: <CAMzpN2hrmNhiT8Ppb_fSGW2XtCDY1aiR=2x6Fcv2gzD87r-Akg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] x86: Refactor and consolidate startup code
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-efi@vger.kernel.org, x86@kernel.org, mingo@kernel.org, 
+	linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2025-04-08 at 10:20 -0700, Luis Chamberlain wrote:
-> And in case its useful, to test this on a VM you'll need on libvirt:
+On Tue, Apr 8, 2025 at 5:01=E2=80=AFAM Ard Biesheuvel <ardb+git@google.com>=
+ wrote:
+>
+> From: Ard Biesheuvel <ardb@kernel.org>
+>
+> Reorganize C code that is used during early boot, either in the
+> decompressor/EFI stub or the kernel proper, but before the kernel
+> virtual mapping is up.
+>
+> v3:
+> - keep rip_rel_ptr() around in PIC code - sadly, it is still needed in
+>   some cases
+> - remove RIP_REL_REF() uses in separate patches
+> - keep __head annotations for now, they will all be removed later
+> - disable objtool validation for library objects (i.e., pieces that are
+>   not linked into vmlinux)
+>
+> I will follow up with a series that gets rid of .head.text altogether,
+> as it will no longer be needed at all once the startup code is checked
+> for absolute relocations.
+>
+> The SEV startup code needs to be moved first, though, and this is a bit
+> more complicated, so I will decouple that effort from this series, also
+> because there is a known issue that needs to be fixed first related to
+> memory acceptance from the EFI stub.
 
-Just so we're clear, I'm only doing hibernate, not suspend tests.  I
-figure they should be a bit harsher, but you never know.  The reason is
-I set up my test rig for efivarfs, which only has a testable problem on
-hibernate.
+Is there anything to verify that the compiler doesn't do something
+unexpected with PIC code generation like create GOT references?
 
-Regards,
 
-James
-
+Brian Gerst
 
