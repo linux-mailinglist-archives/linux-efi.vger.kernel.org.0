@@ -1,123 +1,93 @@
-Return-Path: <linux-efi+bounces-3250-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3251-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B054AA820D1
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Apr 2025 11:15:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3168AA82165
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Apr 2025 11:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7328A1DB5
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Apr 2025 09:15:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0551BC063C
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Apr 2025 09:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8037221D3D1;
-	Wed,  9 Apr 2025 09:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F48525D8EA;
+	Wed,  9 Apr 2025 09:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+JWoiGn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZ/6lBxU"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476902B9CD;
-	Wed,  9 Apr 2025 09:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E6C25D52E;
+	Wed,  9 Apr 2025 09:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744190147; cv=none; b=tEbTe0wBRZsTVOySwZICVh9k/JZyBTqKqKN60zVcjfzsYSEcrulKnSoqeWE/0VSXaSdnuFwklXNyef/4iGGgIdz7IEIDVLR7QjrSaVW0U/skM6v4gDOs9zEDKHYQsE4V5yQUJhsnQX1fRqTs+o6QaMwHOC+duw+XC3KB0gD3PDc=
+	t=1744192438; cv=none; b=SX53YaXlTSoHSbGL1ksKZV4Y6nmV6MZlskHDIHaZsYvoSOFQeTh9X+SDNrKdkB/cCfsPfXzyGOtNSnj08vKaKyn9Kcc46lkhBpJDpyApHpss4kXc3i6m8u5vUE/PZOH6r7lYbFe1eJ83dBQIqvPKVmMAnuE82nZBuMt8PHOIrME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744190147; c=relaxed/simple;
-	bh=Ty1pwqrmShrkkSXMYJB/5FbS4/B1OSXP3/4mT9aAsdM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ka6/6ViYIYGJL4nprcB029WYYBqdlDIh7+3A6uXlIZaxOKNs0tD/EjKru/lPL9x9ITiG1eIwZ+GLoF6NRR0lZPmuzDvLA7ARRPjxzlqV0vP+uH6Me0gsdjmCmPJ0RYT+xc1SojNVUMqnDy0VLNRAt+4Up+mQ9j4uOsetXE5Dr60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+JWoiGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3ACBC4CEEE;
-	Wed,  9 Apr 2025 09:15:46 +0000 (UTC)
+	s=arc-20240116; t=1744192438; c=relaxed/simple;
+	bh=icwaBQvh/HJIJ6hX6T22ITYkWekWbrmc/qHIVRHQwds=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O0W35WqxO3R2dxv9c9pz5G/rVhprtJx+qxgtAh9LS75ENPH0OfOK/4pfj3FLUfXoQZtz5Wi09ZJE4T5CTJoqxfGIrrNXUeGmiXOS7omF9v5dKoP+B8GBdROfDx5wpnUzo/VUKZc4y70cQKSLvzy3g/2ShN8edvtXupnqxiKA//A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZ/6lBxU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B61DC4CEEF;
+	Wed,  9 Apr 2025 09:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744190146;
-	bh=Ty1pwqrmShrkkSXMYJB/5FbS4/B1OSXP3/4mT9aAsdM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=U+JWoiGnB3Ltj1oq2Lf12BbJStduvwmmIbUpPwE46zLzraulDbpUgoHkBVVxSd8dR
-	 xOjYR3O0gjN793iX6J5SWUKGfn+DlCd+uaXBa+XFVfRJqxVnHQLRo7nKYLq9iVeXzp
-	 A/XArWDVpftzIr3pQVPG/eHPWRm3RpI0SJr9XSe0gl9SKO/KANIGVe8EcU5X7aFWTa
-	 RGiQ2+2WTb/xFNL+o/t7/fYw5Du7FdwDxlEPGS/tMcK8pzaxCTKqVFYH8LIx3xs4J/
-	 ErqqLr1eYv8y+gb3UwC3FHhHjttrF/dppMtlQcx4TZpLLNii5sUvwGx1x4OAmCwuw6
-	 uOEeyj0DSftjA==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-549b159c84cso4589821e87.3;
-        Wed, 09 Apr 2025 02:15:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUgSzhF7Y3/gyKzFLL0DIAPu946Tfhx9pgySOUcWKcp6r9meUdZ8Vp7zd25RZWW/toXZmzRv5QMTbaN@vger.kernel.org, AJvYcCVCUlaSgUmr2jrTmLM+kEATKVQ/WbsNRiAuR85WbGmmQbBtk7mQYnJevWfqXBAMbN5Kc8MWY28yp3jjGsLjvWxh@vger.kernel.org, AJvYcCVLuk0NjYvcXlSNV/aOHWYRF3tXKOcCA2K8FfCWt4d0rlbaTJaTOuMHLCIStvd1XUp8kVpvoY8tcj5IG5l9@vger.kernel.org, AJvYcCVyzk5eztTdtqq6WdCgwGERRM1zD6Ka4JowOP8UR1oNx2MHnWRDqri2xoN9N8M2R6jfYFq1qVD1r+oVI5k=@vger.kernel.org, AJvYcCW7GIpvuMbbX7bmeLkv8aheWSGNVviCFWOunLp1RXDF19I2yyWp6rR2WWYwxR++Dqk5/sjYlg2gKlG6@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgYdVILBznhKsRZwTE0CVRjC2r9439bosqfwgJ6UiU78jr6/KY
-	/1t5TX95wzDcKQJpdtaW2VMvizyS5GggiSCFGJY/1AFMoJFs2uQRETKopT1F/GGxvgiCTGmC6j+
-	jb1PeeuCERB0ingq8YeaS6Ug4fHo=
-X-Google-Smtp-Source: AGHT+IGr6pJEooPeND2WPKwmKzqEYbai9tqpsiAki3uL4C9w+bT2D4fnGON4jq0ew7tRiFB4rDjlDOhGc1mfiwwy2OM=
-X-Received: by 2002:a05:6512:3981:b0:545:8a1:5379 with SMTP id
- 2adb3069b0e04-54c44561c19mr593775e87.43.1744190145154; Wed, 09 Apr 2025
- 02:15:45 -0700 (PDT)
+	s=k20201202; t=1744192437;
+	bh=icwaBQvh/HJIJ6hX6T22ITYkWekWbrmc/qHIVRHQwds=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DZ/6lBxUzo13gwEpKsh1bD6PUEQhrPkZxXHAUMoM8SfUDt7rGc9DFH5XaISA8Arx8
+	 tDG3Lt+0E1Axe11thVlO5MFz8ly4BnkDisPufGiKacd64nSjtd5rrytlAWLSZ6m4LJ
+	 y1gHtF763P89JER+0aU5O/JJpVSxoHdzzaEI0tGxBtkXbXwPWo53QabVXkmX7wC1I7
+	 hQaOYxWBYHttb69FzZIcvEKrv7bPofehbYfLakcU02oV493JsRMifEIlpOKuIfq7yH
+	 6s0LETMca+C5PsZQJ1kbapx4E+HUAUip2MBtN4P2N8RTPcXr0S+6zgCjzGOfTRAHNv
+	 i7nQ97tvnKCRA==
+Date: Wed, 9 Apr 2025 11:53:52 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org,
+	x86@kernel.org, linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Kevin Loughlin <kevinloughlin@google.com>
+Subject: Re: [PATCH v3 1/7] x86/boot/startup: Disable objtool validation for
+ library code
+Message-ID: <Z_ZDsIDaKxgbpHJZ@gmail.com>
+References: <20250408085254.836788-9-ardb+git@google.com>
+ <20250408085254.836788-10-ardb+git@google.com>
+ <f4ac5bf3-d380-45c3-a48c-2969cd49b32c@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250328230814.2210230-1-ross.philipson@oracle.com>
- <20250328230814.2210230-20-ross.philipson@oracle.com> <B41D3199-8054-4B2C-94D6-508D1DE4C8B3@zytor.com>
- <886145d3-a9f2-41f3-a754-253decdb1b4f@oracle.com> <Z_WkaJhel-BYxHeW@char.us.oracle.com>
-In-Reply-To: <Z_WkaJhel-BYxHeW@char.us.oracle.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 9 Apr 2025 11:15:34 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEAZS+839zmpW3WfwvTRMZmRbPYGpEoY=Xj9qFch9J7BA@mail.gmail.com>
-X-Gm-Features: ATxdqUF80H-sehwytd1k_ZBdeFEl5wo_O_6zq2xvDwvr3fvlWsrlNSPU8VOuvPk
-Message-ID: <CAMj1kXEAZS+839zmpW3WfwvTRMZmRbPYGpEoY=Xj9qFch9J7BA@mail.gmail.com>
-Subject: Re: [PATCH v13 19/19] x86/efi: EFI stub DRTM launch support for
- Secure Launch
-To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc: ross.philipson@oracle.com, hpa@zytor.com, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-efi@vger.kernel.org, iommu@lists.linux.dev, 
-	dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, mjg59@srcf.ucam.org, 
-	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, jarkko@kernel.org, 
-	jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net, 
-	ebiederm@xmission.com, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com, 
-	trenchboot-devel@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f4ac5bf3-d380-45c3-a48c-2969cd49b32c@intel.com>
 
-On Wed, 9 Apr 2025 at 00:35, Konrad Rzeszutek Wilk
-<konrad.wilk@oracle.com> wrote:
->
-> ..snip..
-> > > > @@ -925,6 +1014,11 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
-> > > >           goto fail;
-> > > >   }
-> > > >
-> > > > +#if (IS_ENABLED(CONFIG_SECURE_LAUNCH))
-> > > > + /* If a Secure Launch is in progress, this never returns */
-> > > > + efi_secure_launch(boot_params);
-> > > > +#endif
-> > > > +
-> > > >   /*
-> > > >    * Call the SEV init code while still running with the firmware's
-> > > >    * GDT/IDT, so #VC exceptions will be handled by EFI.
-> > >
-> > > efi_set_u64_form()?
-> > >
-> > > What the heck is that? If it actually involves two u32 packed into a 64 field, why not simply do two stores?
-> > >
-> >
-> > Well the story is this. The EFI maintainers asked me to use the
-> > efi_set_u64_split() type functions (this one splits a u64 into 2 u32). I
-> > went to look and there was no function that did the opposite action so I
-> > added it. The original function was called efi_set_u64_split() so
-> > efi_set_u64_form() was what I came up with. I can name it anything that is
-> > desired.
->
-> Hey Peter,
->
-> Is there anything in particular that needs to be done to this patch?
->
 
-If anyone feels strongly enough about this, we can fix it in a
-follow-up patch. The code works as expected, so no need to derail this
-series even further.
+* Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com> wrote:
+
+> 
+> On 4/8/2025 2:22 PM, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> > 
+> > The library code built under arch/x86/boot/startup is not intended to be
+> > linked into vmlinux but only into the decompressor and/or the EFI stub.
+> > 
+> > This means objtool validation is not needed here, and may result in
+> > false positive errors for things like missing retpolines.
+> > 
+> > So disable it for all objects added to lib-y
+> > 
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> 
+> Solves https://lore.kernel.org/intel-gfx/CAMj1kXEfBMczOmA2+dMMubuD-qE59GTAiV2E_9m8KNG4-rgP6Q@mail.gmail.com/T/#mbf2913e778475b70617390d4a5d0244295b9cb8c
+> 
+> Tested-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+
+Thank you for the testing!
+
+	Ingo
 
