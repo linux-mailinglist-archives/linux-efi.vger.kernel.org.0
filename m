@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-3265-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3266-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53A9A84520
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 15:42:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F56A84545
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 15:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE0B37A73E7
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 13:41:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE1F8A3B8C
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 13:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4A928CF58;
-	Thu, 10 Apr 2025 13:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AEF28CF6A;
+	Thu, 10 Apr 2025 13:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bHEGPwDo"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lsNO/Plv"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E19A28C5C9
-	for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 13:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F131E28CF56
+	for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 13:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744292514; cv=none; b=ICzGs+KySi5cbRdfO2NiHGGOhUxVPXzhSxFBQkdKpnvhPIZbxf/FdM6VNcjdgS+jvOsaoc+te9KvfMug6h8ynYA9Mz1jJWE0qrqJZLqulP/efHoygpJWYeRnE3oQ0d88S24lIWfaROLVIFkKXT6o81HtdFD5W+1gXCiq8ZYdRns=
+	t=1744292515; cv=none; b=u4fkC6hw0qAw+87VGIo2slPLmWTCISaPVzyDxqm9VN2AE46QJdpLuNRyWOEI1UfwGd+FJ7abOO0yEhURd0bPZontayEPujIQlGvhSXcqerO15HZnrp2y+E6/xQmISWiRt/yUFV+2Z9+k9A/aDs+ex+YYKrugFYcuW+ho8pJv2fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744292514; c=relaxed/simple;
-	bh=rGZMX0G8lRLt0dY4UTfyPAeFNjieLVMC1P9MjIC1z4k=;
+	s=arc-20240116; t=1744292515; c=relaxed/simple;
+	bh=nMTMqzq37ZDdZSy/ASJb7GM4lqZTMOHxEOCfZ5XR4c8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QKTPkfS+VRZkvwzyvWW/lMqK8E/JRLq8F4/dDOMRCclEqAmzxwfxUJG2s5rKji2MpOor0kq9OBF/m/1APTwk1Uv4OV7Or539co+2zaEOkGUwXG5cLMMYi5yTjmrEw//5bTJ4qSBnH0eDl068EJrhKjnoSyZuOBBD1S5P99BXn08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bHEGPwDo; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=AAlkcqAyK46nazJYRrYpKNHpYptkehnjq2vvpmqfEOcFs075FbDUFwOgxKj24aheNhgKvQ0eIwctVoJ06jBgLj7t4XXhPPkFoLIrlnE9vfExy8onodrYiMWYUk6UxXboDVjie39QjA7Yn8kLj82qceJY7b35aD7YyV4mJ/wcC6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lsNO/Plv; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-391315098b2so353669f8f.2
-        for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 06:41:51 -0700 (PDT)
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-39d917b1455so285262f8f.3
+        for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 06:41:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744292510; x=1744897310; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1744292512; x=1744897312; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ut3DF7cdGnYGcsB+1y8GBrdozOKwjcN3MDn2MzZHkLM=;
-        b=bHEGPwDoo3kYs7xiBXTKO01dFpfFevD/s6ceH2tldTcQV/ICyoHnnMvQPMWGNTM4Vt
-         /u0Hc8femlmQO12vFdMNEtNu7S9giSQn8EQL0t8eetKAtSDlhb4NVu27/gpYlspwXxUH
-         GDusrHSDY5ICE1YbaNwN9feVATQLlrkxCwVjdKkukEXC2iQ7jVwO/2/6r7e6z637pX8b
-         jldWi2ybsKGYZl47UNHOZOlpAQqOgyvUf7lIsoyVnKJik/isBGg3wu6cOuyjN15HFJIJ
-         50OLMjYfIQAd8TGEpfQQd3/LISi4vvp2+tG1svOlqUhxMEkwK7pA0whsD4QA4Ycgmm5t
-         cSYQ==
+        bh=Bu1M3/PvdkhGWlHIRkQzAzcvhk8sTE/2aa4WDt4cxm0=;
+        b=lsNO/Plv7GrYSyZsgRRIoR0xzAlUQGfCsPUP3cYTd+Mv7PS5GPTSDTYQqJDz3XoZ4K
+         IRMUDdRO0JlpwiYnonf7c3jmqfABNexQv41K6GqWcxVw9kiI2IMz3uhOCMh1SlQqGtjM
+         n+gpy4nAWXLkxJuY6c6a8LUB/S75wacUQSMZF3bkNXJhemggj9nzYnPeuDefJpiPT38V
+         mhYndEv5uBQKy+s2UVBilZ8bUv/ZIp77zaNgg1retkENSM2IhRKGF3QMeVFHRhHv+TeA
+         PcMOlo5k6Vrkxum/+PCDC0Eza6O2q4DEt7j41qtW8EL07m8ZZw8vHj3P6PpiYaKdpBO2
+         5xWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744292510; x=1744897310;
+        d=1e100.net; s=20230601; t=1744292512; x=1744897312;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ut3DF7cdGnYGcsB+1y8GBrdozOKwjcN3MDn2MzZHkLM=;
-        b=WyX/qqlSUwTScdG+6RnbiSHyaKs62IGa0s6exwOT3M1giyAaxvMtoqhlvxQieXbOe2
-         TcuR4o4n4m/oPPxcx+Qym9L28dc31nDrBz0PGhdhsdouYEnI909iMDoCrKYzsROajm6L
-         awW4yPwZ2JIeOjjKy6r25QToVRmQTnhJfuER0J7/LPalfX9VPHUUng/2Ax/m4RdWlUJ6
-         GrDxpmDpYr/KratdTFBia7FC49gSghWcp0+hf1at/jFm7uZTjckCLk1OArQIh4qT21lt
-         jhQlM1C3mdTqDla5aJ1+ZP/5iaPtJNM6FEHsYDRzy5Fmccj3ws/AGcQsUgvkbdwI36hV
-         AVug==
-X-Gm-Message-State: AOJu0YzGvLpf6nQqDn3liypZh94pyPM62P4rGJxwQ8GYZ9TyW0pcaSFS
-	ED5mgaEJeO5RWb9+dxsN6A/55bt9rsLeemJ5AoovyTYn4HmlQvoB3o2Fw7h9iz704oo0qnn/KRw
-	m0GY36r+MIUHHcHOTRPbTn3YNyLFVHeOfLdTE+FKHSsptisNBQcPgk1m/CK/0rBI1Xaw5jmjp2u
-	mKa2TVwcpLgzqBS9iUwYrDVLAiww==
-X-Google-Smtp-Source: AGHT+IE4m6fPKqx/35XmbrFlcOeYZO9KrixDd7VjHDR0y2s4p9wZTI76FsNpYTfEVOGWOh1JL4I+B4WW
-X-Received: from wmbgx3.prod.google.com ([2002:a05:600c:8583:b0:43d:48c5:64a2])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:248a:b0:39d:724f:a8cd
- with SMTP id ffacd0b85a97d-39d8f4993d5mr2529023f8f.35.1744292510373; Thu, 10
- Apr 2025 06:41:50 -0700 (PDT)
-Date: Thu, 10 Apr 2025 15:41:23 +0200
+        bh=Bu1M3/PvdkhGWlHIRkQzAzcvhk8sTE/2aa4WDt4cxm0=;
+        b=ABgZ+7jZqhCwy1ZhfYhvYdShPahWroz8DhHByMumgslcSMLy8N4qhhKXjOsDnY+qQ/
+         hD3i9JlOWWqrVkh3Ag78bkIcyNcuJ6SvTsr1gKIEnWnkfIQzfsPY6WWBAqgvJsYdekck
+         TQFT606o2L4DINXettTHr2j6vFkSwJVq11B79q3YLsHBD/OH9GLQ/X6lYRQWHK6ZYiKi
+         isXiGa5e0DAR9kqHkQ/Zzu4szRSOU4Fd2113U+HgDn5YliUSrFJK5gYbEVm4KhIatZ7Y
+         I0KelxV8PqteAdNCEJmT3WN50RpTrUpvBY8DfWwe4WIxFks4gtwRESpWOmFev54qvu8a
+         p5Dg==
+X-Gm-Message-State: AOJu0YxpVpZ0aXlvDJgsgmDhytI//IzfaowRySnsAindC6xw9jPo7C4E
+	L/ksTTxAwhsou/HetIQDlA9QZ2Y/FozKpCt71Kd1VC5DjN5JJ2k7SyT7pT+OsZlnz/SA9NFBuO+
+	a+kxGL7NSuCSjj506K9fttwrmKz4LcasJMWTSnV1CgbN2J8rgT+oW6+U+zWgZB4E15X1wUFJGdW
+	7HHbVBRk6JW6sJWq62ha+7IxJVSw==
+X-Google-Smtp-Source: AGHT+IHjGJ8my3L+/VrQ6z6E/5WTYGRGconWFEeiWV78b8cMZMlPoKQBR0w9iIS6PTwJ1hNbOmGkrZ05
+X-Received: from wmbet13.prod.google.com ([2002:a05:600c:818d:b0:43c:f5b8:aad0])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:4404:b0:39c:13fd:ea9c
+ with SMTP id ffacd0b85a97d-39d8f4e4741mr1694110f8f.47.1744292512486; Thu, 10
+ Apr 2025 06:41:52 -0700 (PDT)
+Date: Thu, 10 Apr 2025 15:41:24 +0200
 In-Reply-To: <20250410134117.3713574-13-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -74,14 +74,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250410134117.3713574-13-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3139; i=ardb@kernel.org;
- h=from:subject; bh=1OMnBnM3B5uy1EYv4XyX2QqLee71wb5xFGUqQq+IsUU=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIf37qTbnjFluV2qrldV1vde/X/1KYO3nsp1yTdMyjm3QP
- vPWOYeho5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEzkywJGhuvBnsdjV3w5vvnH
- OivuuDnN8bn3XLa+VD8vqSyx96O2vDYjw8SF97e8VRB3Xb4tx/qV6ub1+gv8m8TuH7RhjJv6xeU oAysA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2567; i=ardb@kernel.org;
+ h=from:subject; bh=HHqxACxmdTzUBkBumD23I1ULhjlW30p2Zg7pYMcwt7Y=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIf37qQ4N1s3Fv0T1v264wxLJtfCEcbDHtdKL+/Z+T4uxz
+ HE/eX5mRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjImWiGv1KL07/qn5N4NVdG
+ nkHr9JTMLcfOxu+Kc9m0wHNDmYbfhT0M/+s28xXacfhuDJmutG/pkwcnT9ou+qW/8OAEs9v31u3 5UcQPAA==
 X-Mailer: git-send-email 2.49.0.504.g3bcea36a83-goog
-Message-ID: <20250410134117.3713574-18-ardb+git@google.com>
-Subject: [PATCH v4 05/11] x86/boot: Move early SME init code into startup/
+Message-ID: <20250410134117.3713574-19-ardb+git@google.com>
+Subject: [PATCH v4 06/11] x86/boot: Drop RIP_REL_REF() uses from SME startup code
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: x86@kernel.org, mingo@kernel.org, linux-kernel@vger.kernel.org, 
@@ -91,90 +91,81 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Move the SME initialization code, which runs from the 1:1 mapping of
-memory as it operates on the kernel virtual mapping, into the new
-sub-directory arch/x86/boot/startup/ where all startup code will reside
-that needs to tolerate executing from the 1:1 mapping.
+RIP_REL_REF() has no effect on code residing in arch/x86/boot/startup,
+as it is built with -fPIC. So remove any occurrences from the SME
+startup code.
+
+Note the SME is the only caller of cc_set_mask() that requires this, so
+drop it from there as well.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/startup/Makefile                             | 1 +
- arch/x86/{mm/mem_encrypt_identity.c => boot/startup/sme.c} | 2 --
- arch/x86/mm/Makefile                                       | 6 ------
- 3 files changed, 1 insertion(+), 8 deletions(-)
+ arch/x86/boot/startup/sme.c        | 11 +++++------
+ arch/x86/include/asm/coco.h        |  2 +-
+ arch/x86/include/asm/mem_encrypt.h |  2 +-
+ 3 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/boot/startup/Makefile b/arch/x86/boot/startup/Makefile
-index 10319aee666b..ccdfc42a4d59 100644
---- a/arch/x86/boot/startup/Makefile
-+++ b/arch/x86/boot/startup/Makefile
-@@ -16,6 +16,7 @@ UBSAN_SANITIZE	:= n
- KCOV_INSTRUMENT	:= n
- 
- obj-$(CONFIG_X86_64)		+= gdt_idt.o map_kernel.o
-+obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= sme.o
- 
- lib-$(CONFIG_X86_64)		+= la57toggle.o
- lib-$(CONFIG_EFI_MIXED)		+= efi-mixed.o
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/boot/startup/sme.c
-similarity index 99%
-rename from arch/x86/mm/mem_encrypt_identity.c
-rename to arch/x86/boot/startup/sme.c
-index e7fb3779b35f..23d10cda5b58 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
+diff --git a/arch/x86/boot/startup/sme.c b/arch/x86/boot/startup/sme.c
+index 23d10cda5b58..5738b31c8e60 100644
+--- a/arch/x86/boot/startup/sme.c
 +++ b/arch/x86/boot/startup/sme.c
-@@ -45,8 +45,6 @@
- #include <asm/coco.h>
- #include <asm/sev.h>
+@@ -297,8 +297,7 @@ void __head sme_encrypt_kernel(struct boot_params *bp)
+ 	 * instrumentation or checking boot_cpu_data in the cc_platform_has()
+ 	 * function.
+ 	 */
+-	if (!sme_get_me_mask() ||
+-	    RIP_REL_REF(sev_status) & MSR_AMD64_SEV_ENABLED)
++	if (!sme_get_me_mask() || sev_status & MSR_AMD64_SEV_ENABLED)
+ 		return;
  
--#include "mm_internal.h"
--
- #define PGD_FLAGS		_KERNPG_TABLE_NOENC
- #define P4D_FLAGS		_KERNPG_TABLE_NOENC
- #define PUD_FLAGS		_KERNPG_TABLE_NOENC
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index 32035d5be5a0..3faa60f13a61 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -3,12 +3,10 @@
- KCOV_INSTRUMENT_tlb.o			:= n
- KCOV_INSTRUMENT_mem_encrypt.o		:= n
- KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
--KCOV_INSTRUMENT_mem_encrypt_identity.o	:= n
- KCOV_INSTRUMENT_pgprot.o		:= n
+ 	/*
+@@ -524,7 +523,7 @@ void __head sme_enable(struct boot_params *bp)
+ 	me_mask = 1UL << (ebx & 0x3f);
  
- KASAN_SANITIZE_mem_encrypt.o		:= n
- KASAN_SANITIZE_mem_encrypt_amd.o	:= n
--KASAN_SANITIZE_mem_encrypt_identity.o	:= n
- KASAN_SANITIZE_pgprot.o		:= n
+ 	/* Check the SEV MSR whether SEV or SME is enabled */
+-	RIP_REL_REF(sev_status) = msr = __rdmsr(MSR_AMD64_SEV);
++	sev_status = msr = __rdmsr(MSR_AMD64_SEV);
+ 	feature_mask = (msr & MSR_AMD64_SEV_ENABLED) ? AMD_SEV_BIT : AMD_SME_BIT;
  
- # Disable KCSAN entirely, because otherwise we get warnings that some functions
-@@ -16,12 +14,10 @@ KASAN_SANITIZE_pgprot.o		:= n
- KCSAN_SANITIZE := n
- # Avoid recursion by not calling KMSAN hooks for CEA code.
- KMSAN_SANITIZE_cpu_entry_area.o := n
--KMSAN_SANITIZE_mem_encrypt_identity.o := n
+ 	/*
+@@ -560,8 +559,8 @@ void __head sme_enable(struct boot_params *bp)
+ 			return;
+ 	}
  
- ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_mem_encrypt.o		= -pg
- CFLAGS_REMOVE_mem_encrypt_amd.o		= -pg
--CFLAGS_REMOVE_mem_encrypt_identity.o	= -pg
- CFLAGS_REMOVE_pgprot.o			= -pg
- endif
+-	RIP_REL_REF(sme_me_mask) = me_mask;
+-	RIP_REL_REF(physical_mask) &= ~me_mask;
+-	RIP_REL_REF(cc_vendor) = CC_VENDOR_AMD;
++	sme_me_mask	= me_mask;
++	physical_mask	&= ~me_mask;
++	cc_vendor	= CC_VENDOR_AMD;
+ 	cc_set_mask(me_mask);
+ }
+diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
+index e7225452963f..e1dbf8df1b69 100644
+--- a/arch/x86/include/asm/coco.h
++++ b/arch/x86/include/asm/coco.h
+@@ -22,7 +22,7 @@ static inline u64 cc_get_mask(void)
  
-@@ -32,7 +28,6 @@ obj-y				+= pat/
+ static inline void cc_set_mask(u64 mask)
+ {
+-	RIP_REL_REF(cc_mask) = mask;
++	cc_mask = mask;
+ }
  
- # Make sure __phys_addr has no stackprotector
- CFLAGS_physaddr.o		:= -fno-stack-protector
--CFLAGS_mem_encrypt_identity.o	:= -fno-stack-protector
+ u64 cc_mkenc(u64 val);
+diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
+index 1530ee301dfe..ea6494628cb0 100644
+--- a/arch/x86/include/asm/mem_encrypt.h
++++ b/arch/x86/include/asm/mem_encrypt.h
+@@ -61,7 +61,7 @@ void __init sev_es_init_vc_handling(void);
  
- CFLAGS_fault.o := -I $(src)/../include/asm/trace
+ static inline u64 sme_get_me_mask(void)
+ {
+-	return RIP_REL_REF(sme_me_mask);
++	return sme_me_mask;
+ }
  
-@@ -63,5 +58,4 @@ obj-$(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION)	+= pti.o
- obj-$(CONFIG_X86_MEM_ENCRYPT)	+= mem_encrypt.o
- obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
- 
--obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_identity.o
- obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_boot.o
+ #define __bss_decrypted __section(".bss..decrypted")
 -- 
 2.49.0.504.g3bcea36a83-goog
 
