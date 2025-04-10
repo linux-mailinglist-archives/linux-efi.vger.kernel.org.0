@@ -1,199 +1,132 @@
-Return-Path: <linux-efi+bounces-3257-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3258-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F44AA83A71
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 09:13:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E59A844E0
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 15:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4828E17A08D
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 07:12:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B2D23B2CD2
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 13:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF85204F81;
-	Thu, 10 Apr 2025 07:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FD52853FA;
+	Thu, 10 Apr 2025 13:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cf+35uYr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWiuy6XX"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C32204F7A
-	for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 07:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE0C42AA3;
+	Thu, 10 Apr 2025 13:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744269122; cv=none; b=jSINHC45QlOHfBEaCaGRd5awdfMWCNGD8AH3RwhT+4xZCRGW5/Q15LbxOUN7fV+c8EMbY0NO1oB2+cI55Q2uvfHJtn5p9nPE5fHpUjjFlnkUOH5MkCWI1zXCPNxG/p+BlIxQTI2zuCfF3kLxZDHofCmbUx4WbzHIRak6nih2pvs=
+	t=1744291699; cv=none; b=K/tfb1mKGuzXRkl9ALixePfDAH6XSIAiN4TWX725pZuEhSOrHHrw0uZcFznVgZFwTIaCPlR9nBwSCWt8CX66Q/cTkq5uasZCu+1V2jNIzeVW7M+PSXUOiDmVTD/B2/F4BV1GDHMrH6QjIovwbAsfUDDJV60floKDc2MkQHdinfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744269122; c=relaxed/simple;
-	bh=5EwRmCmkdC6fC0JJ36jH3f1wzH3CqRDXzUIpO9LbjBo=;
+	s=arc-20240116; t=1744291699; c=relaxed/simple;
+	bh=25WXp4v8nKiw/QuMnvlfgXLqcjF1eNEhl3pKk7QdpQM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z0/MnVPH/cOZhQkwkG09/eljetGHSeqT5aUCmHMHt0NWYfzfHWjvcDjNCvESwbZDpSlFENZNFG4yoPUbjMkWDymBriIW8az6buhRsJG4ILeID5pYGKBPKGU47cVJmXHPxkgRWUxsYJVvBBgVqqF0mS5j80Et+04MvagMG528otE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cf+35uYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4133DC4CEEC
-	for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 07:12:02 +0000 (UTC)
+	 To:Cc:Content-Type; b=MuA+QuUgh/NTu9bQ80kCVH5R3yPthehWoTwCz+9rMFa5EOgFaVAKxOat2Osnzubu+WCRO4dzwW0k1N/7iBzLM2a88xyHUsTdqd7JkLIWesk0L+6yv3wsxXZ+GbCVHTrRDxqzXIJ++VhQg7+C6u+1y6ug1JnIMcaMWjUPDFh0pMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWiuy6XX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A003BC4AF09;
+	Thu, 10 Apr 2025 13:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744269122;
-	bh=5EwRmCmkdC6fC0JJ36jH3f1wzH3CqRDXzUIpO9LbjBo=;
+	s=k20201202; t=1744291698;
+	bh=25WXp4v8nKiw/QuMnvlfgXLqcjF1eNEhl3pKk7QdpQM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Cf+35uYr1JryCbhSF1Fshki2rVQ/sCVT41r/PdEtDG4yPK8oYnkU5PA9907L4iCd4
-	 HaevGlijtYQ4bFtzyf2dzrXVdaVkgwL8QK58oacMbxJW6WhvxCbMfzmkOmCFmu6ufi
-	 AQThgkqXtOqFX38DAqhPCnYkWzzx3ryCI1xfBE01pcIyBn4lHm2woYvTVpQZ+WK/K2
-	 8KwGx2XszmOCR9qIt5zYuU/smFSCClP4iGik0FUAJSzo7tYqw8v6nJ68XbnZ8ZREFL
-	 G78NlvKvgocKCyFobEU9eFqNXhakI2DyPyDngfVG5+d4i4Mv62g5jqesLGtQOYLd25
-	 hrzynmMy1hZYg==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30613802a59so4827521fa.0
-        for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 00:12:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWDoxm2CQ4FEyPMUWNMnududNcbs/rd8+Y4vZ4bJRmtW+NqYqjr3XSzTuElpgemGWjDvH7vwz9x0W4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiLFcTS+vAkRunj63d40zIOdraLbVSBAnxvNHMzXQ0XFM7ENSQ
-	utY/zuio+sZ3eds16yFlqcUrKgwIAdYAk2mV+mQZfvdAycwNjoHsx4VHlKfcP+bf6RoGIyD99gN
-	DXqFLrh9/1oWtwEZO+xdnzByqupg=
-X-Google-Smtp-Source: AGHT+IHvwkNG0l09awBUJjGY050Cg1jKCJcCeY5oYWgzzV86SzILJ2+0aAQtz08k99UXL+ip1dTTAvLZQjpujMYowFk=
-X-Received: by 2002:a05:651c:1601:b0:30d:e104:9ad2 with SMTP id
- 38308e7fff4ca-3103ed525cdmr3669721fa.39.1744269120528; Thu, 10 Apr 2025
- 00:12:00 -0700 (PDT)
+	b=MWiuy6XXpiI9GK9W38RQoneWdJOq7+9Xzyc5UkBDbpuFb9IJkbttdRkullwEAUtwh
+	 p/uRaNvPcYhyjG6vMCAxZ8Ajf4FSEEz/cy3yc8cVkE76bkrSWQN1Lgv5vnSJc+oKCk
+	 WH89fbcAU1RYXJ2G/z7FsSQAO1FSNM5A0x0OkVbcQ3+CP+975tgkJF8wRF2DVYIfsO
+	 mOH3qUXYx++IUv33KsGZ0NlgQLk/JDMWP9sOvZnwv7MGefvLnNP765qbUpfHmNOEvb
+	 b98HmuhX/82ErOsdLBt9wiapcond4Wv2OFrY6wv2ZSsOIebAJUHaG5JI2BAc3WBDSB
+	 EKphKRGy2lF7g==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-549963b5551so1046665e87.2;
+        Thu, 10 Apr 2025 06:28:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXS1eTVmoEKy19/WlKh7OedrlJXVw7slaLKFdPW+5Q0ImBA7LBrnosqTGlwSEleiM47wwiSHeQ6rznneayG@vger.kernel.org, AJvYcCXi2emXbo1CEl4JYyrLlKd1Usn2pLuFnlCvzP9ExICwhCnKzhZGB2r6FMPAYaZwVHu5IUPfbwliLPY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywop2ejQniXNQYFZBZuTMaATdlKJmNDaO6yxn0b0HjC7PzCnJZj
+	mUolrNrM1knumc9jMs2mBX/s5QHrSFzy5BmVAIfMkspxJa6AA4Jg3l7EV8a2ruGajIUvPTcvRfK
+	hQ6MjhmUyhiVWDZCUeUMsqevNt3w=
+X-Google-Smtp-Source: AGHT+IGzjVf5L+3C6B0/XJl+1QrtE9NgY/ESWbLWVaM9p1Yk6xhAdpF757Vf6tvHljn/2Oic3MslWiP2yjhaTb6LPgs=
+X-Received: by 2002:a05:6512:6ce:b0:53e:39e6:a1c1 with SMTP id
+ 2adb3069b0e04-54cb687c283mr987936e87.43.1744291697004; Thu, 10 Apr 2025
+ 06:28:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANCZdfpOs6cTSacxzF013AUwOW78oUf5kY11nbTYMrT7W2oP2g@mail.gmail.com>
-In-Reply-To: <CANCZdfpOs6cTSacxzF013AUwOW78oUf5kY11nbTYMrT7W2oP2g@mail.gmail.com>
+References: <20250404082921.2767593-5-ardb+git@google.com> <20250404082921.2767593-8-ardb+git@google.com>
+ <l6izksy3qtvo6t6l3v44xhuzmrnl2ijv7fx5ypvaz7kjxvpwhh@4zwlvxyfrp43>
+ <CAMj1kXGwnTkb1bUDaRpkh3ES8thcUVQE7+qgfZQw+RORtvtv-g@mail.gmail.com>
+ <CAAH4kHbxMDGQy3v9ef1ZdqK0TNzpm==BJgx1KiUpRP-CRKDx4w@mail.gmail.com>
+ <ldrma6tce2bwhenu5kobjzvk7cz445ubfmpcynwadqudgvzuh3@aibigcdzui6m>
+ <9f689ba2-add6-cca2-e7b3-fa0393fe2b98@amd.com> <CAMj1kXERL=8Y51RUJSqgLWVMs4PJa9aQK0puvKaCpg6eRu0t8g@mail.gmail.com>
+ <a53b3a3f-9fa1-4939-7885-1c06fe31af23@amd.com>
+In-Reply-To: <a53b3a3f-9fa1-4939-7885-1c06fe31af23@amd.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 10 Apr 2025 09:11:49 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGcJuf+s5JcKf-a25jwNeWGn+sHhkai+HRYHTnA2z3D2A@mail.gmail.com>
-X-Gm-Features: ATxdqUHqEOmXtu0sJjOcgeAtHfCdWN0mI9Ibq75vpwe7gdra81_mmad33rFkVbM
-Message-ID: <CAMj1kXGcJuf+s5JcKf-a25jwNeWGn+sHhkai+HRYHTnA2z3D2A@mail.gmail.com>
-Subject: Re: Why isn't the EFI memory map published in /sys/firmware/efi?
-To: Warner Losh <imp@bsdimp.com>
-Cc: Christian Brauner <brauner@kernel.org>, linux-efi@vger.kernel.org
+Date: Thu, 10 Apr 2025 15:28:05 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEUAaqyySAbpdPsnNsgi=4sHV4DWDOyqMPJBptk_HiF0w@mail.gmail.com>
+X-Gm-Features: ATxdqUF13IuFEVHeJfqMAidwW---qt2JZhGLS0LE_1PuNrsOj9-gmAv66Dn_HlM
+Message-ID: <CAMj1kXEUAaqyySAbpdPsnNsgi=4sHV4DWDOyqMPJBptk_HiF0w@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] x86/boot: Implement early memory acceptance for SEV-SNP
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
+	Kevin Loughlin <kevinloughlin@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Hello Warner,
-
-On Wed, 9 Apr 2025 at 19:29, Warner Losh <imp@bsdimp.com> wrote:
+On Tue, 8 Apr 2025 at 17:53, Tom Lendacky <thomas.lendacky@amd.com> wrote:
 >
-...
+> On 4/7/25 14:59, Ard Biesheuvel wrote:
+> > On Mon, 7 Apr 2025 at 20:05, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+> >>
+> >> On 4/7/25 04:25, Kirill A. Shutemov wrote:
+> >>> On Fri, Apr 04, 2025 at 08:07:03AM -0700, Dionna Amalie Glaze wrote:
+> >>>> If the GHCB is available, we should always prefer it.
+> >>>
+> >>> I believe we should consider the cost of code duplication in this
+> >>> situation.
+> >>>
+> >>> If the non-early version is only used in the kexec path, it will not be
+> >>> tested as frequently and could be more easily broken. I think it would be
+> >>> acceptable for kexec to be slightly slower if it results in more
+> >>> maintainable code.
+> >>>
+> >>
+> >> Is accept_memory() in the decompressor or efistub only used in the kexec
+> >> path?
+> >>
+> >
+> > The EFI stub does not call accept_memory(), only the decompressor
+> > does. The only use case for explicit memory acceptance in the EFI stub
 >
-> The first one is the EFI system table. On aarch64 I can get it from the DTB
-> in /sys/firmware/fdt, but it's unpublished that I can find on x86_64. I get it
-> from boot_params that I read from the kernel with /proc/kcore there. Is there
-> some reason this isn't published in /sys/firmware/efi/systab or similar? A
-> number of other, auxiliary tables are published, but not this one that
-> I could see.
->
-
-In general, if something does not exist today, it is because nobody
-needed it and so nobody bothered adding it.
-
-If you need this, please propose a patch and we can discuss on the mailing list.
-
-> The second one is the memory map for EFI. A subset of it is exported
-> /sys/firmware/efi/runtime-map, but it is only the runtime services mappings,
-> not the entire table. FreeBSD populates its memory maps from the EFI Memory
-> Map that's obtained just before exit boot services is called. So my next
-> question is why the full map isn't also published?
-
-The full map is not published because it is a snapshot of how memory
-was being used at boot time. So at kexec time, it is generally out of
-data and so the kernel needs to provide an up-to-date memory map
-anyway.
-
-However, the EFI_MEMORY_RUNTIME regions should in principle be ok,
-because they shouldn't change. However, the x86 kernel does some
-disgusting things with the memory map and uses the EFI_MEMORY_RUNTIME
-flag for its own purposes.
-
-Note: the runtime-map is only published by x86.
-
-So TL;DR - the original memory map is of limited use, and on x86, not
-even the runtime regions can be trusted.
-
-? Most of the same data is
-> available from /proc/iomem, so there's not a data visibility issue that I can
-> see. BTW, /proc/iomem isn't suitable because it's a processed version of the
-> efi memory map that loses information. I can use it for the loader to find a
-> spot to put the kernel, but can't use it as the memory map for the FreeBSD
-> kernel reliably. The FreeBSD EFI boot loader puts this data into a metadata
-> region that's passed to the FreeBSD kernel for it to consume, and I need
-> to retain that functionality.
+> Since EFI stub never uses accept_memory() I looked at moving enablement
+> of SEV to be before the setup of the accepted memory bitmap, as SEV
+> enablement doesn't need any e820 info. But that didn't work because the
+> real issue is early_setup_ghcb() calls set_page_decrypted() which calls
+> set_clr_page_flags(). The latter function is not meant to work with EFI
+> page tables, so there is an incompatibility.
 >
 
-Sifting through the contents of RAM is not the solution here.
+I would prefer to go into the other direction, and not enable SEV at
+all in the EFI stub. The core kernel will happily enable SEV anyway,
+right?
 
-> So, since I can't get the EFI memmap data directly, I have to use indirec
-> means. For aarch64, I can find the PAs and metadata for the memory map
-> form FDT.
-
-This is an internal ABI that may be removed at any point.
-
-> Ditto the EFI system table.
-
-Same
-
-> I pass my trampoline code the PA and
-> length for the memory map and the metadata area so it can copy the
-> needed data for the new kernel.
+> If we had a way to check for whether we are coming through the EFI stub
+> vs the decompressor, then snp_accept_memory() could decide to skip
+> early_setup_ghcb() when called from the EFI stub and call either
+> __snp_accept_memory() from the decompressor or __page_state_change()
+> from the EFI stub (the latter having to be updated to return a value).
 >
-> For x86_64, I open /proc/kcore and read out the boot_params structure.
-> I can get the PAs and metadata from it. I do a similar trick in the trampoline
-> to copy the data. This works, but feels very 90s BSD netstat to me (where
-> all network stats were read directly from kernel variables and had issues
-> too long to get into here). This is less than idea as well because I have to
-> rely on the Linux Boot Param structure and it only exists on x86.
->
-> On permissively configured systems, I could use /dev/mem or /dev/kmem
-> to read the actual map so I wouldn't have to do it in the trampoline and
-> could use the EFI memory map to find where to store the kernel rather
-> than the /proc/iomem map that I use (it's a subset of the EFI memory map
-> data, but not enough of one to reconstruct it). But those options aren't
-> available for some of the environments I have to boot in.
+> I think there are other areas that might need investigating because I
+> noticed that efi_warn() is successful before efi_exit_boot_services()
+> but blows up immediately after (possibly in the EFI #VC handler having
+> to do with addressing the string?).
 >
 
-None of these are acceptable solutions.
-
-> FYI, the Linux kernel gets around this, at least on x86, by cheating a little.
-> It uses the bzImage kexec handler to copy data from the current boot_params
-> into the new kernel's boot_params and passes that to the new kernel. It
-> does this because, I think (I've not traced this out 100%, so be kind on any
-> corrections), kexec_file is the typical path and the kexec handler can find
-> the bzImage header in the file. My trampoline doesn't have that header, and
-> attempts to add it have been unsuccessful, so the path to the new kernel
-> goes through relocate_kernel in arch/x86/kernel/relocate_kernel_64.S which
-> clears all the registers and doesn't pass in the boot_params (which is why
-> I read it from /proc/kcore).
->
-
-In true x86 fashion, the kexec code is a jumble of many different boot
-paths, and you shouldn't expect that anything remotely as messy will
-ever be supported on other architectures.
-
-> So why isn't there a /sys/firmware/efi/map that I can just read?
-
-Because nobody bothered to add it.
-
-> Why isn't
-> there a /sys/firmware/efi/systab that I can get the system table address
-> from?
-
-Same
-
-> Code for these wouldn't be hard and I could submit that code to
-> make publishing the data more controlled and regulated. However, I
-> thought it would be prudent to discuss the reason for the omissions
-> first to see what the thinking there is.
->
-> Thanks for your time and for whatever help and insight you can give me here.
->
-
-For the record, it would be much better to not rely as heavily on
-kexec internals as you seem to be doing, and instead, implement a
-minimal EFI boot services layer for kexec that should be able to boot
-any EFI compatible operating system. The boot services part could run
-while the kernel is still up, and only the pivot into the new
-environment (after ExitBootServices()) would execute 'in the dark'.
-
-I have been meaning to spend time on this myself, but I haven't gotten
-around to it. I did implement minimal the EFI boot services layer but
-no time to plug it into kexec.
+efi_warn() blows up because the console is gone after
+ExitBootServices(). That is not SEV related.
 
