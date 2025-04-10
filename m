@@ -1,69 +1,69 @@
-Return-Path: <linux-efi+bounces-3259-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3260-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0385A844D5
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 15:32:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E62CA84532
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 15:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 896C3189346E
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 13:29:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 370784A08F6
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Apr 2025 13:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD871372;
-	Thu, 10 Apr 2025 13:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4F11F930;
+	Thu, 10 Apr 2025 13:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eQhHKe6s"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QHGCg7hN"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B17F1EB5F4
-	for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 13:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20466156677
+	for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 13:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744291738; cv=none; b=ovYIss57BwNEBt/WAJK7eULp2GDtfwOqO/EZvZfGipaf1EXdYrwpLUIkHMNfuT/9HCMVIPI36s66weU8QDLy5pUofl/YBqMMCdAlJ6iZD/eW7LAYMTa5rj37kc5X052hEaQgbvue/8DAkpGn6R//se8jq4XgiZHkuoP8FVz4MR4=
+	t=1744292503; cv=none; b=HKJkADRuMaBdSzNPv045HPgrsSsvyZaVESVznYPeQtp1URo+cuR732PS26VxjebRwIYM/5vjQWGbH0nsOjVVNZIVQx2/pTiY6Z4HbRe8lMSBWBk+QnkfMi6S/vIZpcolksQc8FhAHm5m846BHaSzb+GamTbwK8kiW0d6fBE01pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744291738; c=relaxed/simple;
-	bh=C8c/5h00VNf73qWbummLMf0CGChlKbIF8uEpD6iaxoY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jG77S0r6s0XhMrXg7J4l00vC+ZLMqayN2sw5USlIMvylbLuOqL8SlcprajZMQRnDgNoBNDGYYzJqj7hKalVp9KwDaVgQaZPv1pXRcw/X8Dj2z2LSauxrm1jeLU5xVcgOOcz7V87n1Hcq0ltTQLp18muNo20wkLsdyb3TujYW56M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eQhHKe6s; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1744292503; c=relaxed/simple;
+	bh=wiuhW5evU/Rc29bp6zkAQCWkITejo77ob/z9Dk+FeN0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KhNgTaTvMrk+xjCSHmzNSuYk0XNBNgueyqP7oiHvUW4ebPpmENlrfIvxhvxLu+DbC9gSZmpoWviuQVI2TMl+h7CWUcuLh8qs1utmd9X73Plcf2o6EFHMDih5/7m8HIqoiA9QcPLr1yXOBonlJPacgIJExqaPHNEyJDcvArhxGWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QHGCg7hN; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf446681cso6385945e9.1
-        for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 06:28:56 -0700 (PDT)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d0830c3f7so7026225e9.2
+        for <linux-efi@vger.kernel.org>; Thu, 10 Apr 2025 06:41:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744291735; x=1744896535; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1744292500; x=1744897300; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=SS5Sb1QiEJlBf4gnyxvUbwQU6CF/Mt8Qf5/ZSXRB/sE=;
-        b=eQhHKe6sX33UvLf1AEB6B1MbCZ38ZWed9nnmwQj9AN+h6RHq6EHZaAayNhAJRmL9YJ
-         VJo8z66aqkiLswVklypMlcEWMAeqo9UubTkFcmPeRN60IlVwCGZyYj59DuQQuHlPhI1N
-         DNdc7C4QrC/cEokZi9y73fh0Xd2+uhgouKlg+LftPaGWJEjsX7bJHTJ/CvIuTwU6o6Zq
-         bsy5h21iQqSK8x4Xcs1q9+rvv5n8vuDALbuc1ejkIhkdbDA8pOxTbnXwA7KthLMxLVkB
-         6DXCheO07Pghx5B6TZ1XpHVuoyv2Thco2bIMdjDjyIlyarT4drfMTLdOWWCW6rbmRT81
-         /xig==
+        bh=F5BBjKPIekYrEeVKo50JLFBsOnCg/0jyb52yewb+mRo=;
+        b=QHGCg7hNsq2glfe1EvHXCKVz0re+rJ65OeMZ1hvKzOcGvqkwndoQHh1FYWZM2tQ3Vz
+         1eFebQ9MNdHgGFdToREpKtsCFG8X9EQdNHdBBuv4xBQGX9dISp6h/5IE9SW9bRvkGGi3
+         5HYOQ5DfhaKuhxY5sAa4gB2dPvDTdE75ZH5F+DcjcWYNajI1b2qBDNX2Ei7OM9OBjtiJ
+         LqqV8dKomKoijz8AfeEzADaUqxeDpTJB3W1oS60CPUKxe7DsQ9Cn90L1OEMSgXe6lA8z
+         ks8tN6hf5mBc2SrfFntrT83mVSDFwJVKsVY/BR5IRBiTF2qqLS5DWIrSxdvuBilI/liS
+         hG5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744291735; x=1744896535;
+        d=1e100.net; s=20230601; t=1744292500; x=1744897300;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SS5Sb1QiEJlBf4gnyxvUbwQU6CF/Mt8Qf5/ZSXRB/sE=;
-        b=XZrnpISlZ5fspW6wtF7WnzMb1cgNilg2/m4nA2Uas15fup98OyS5RLMTpuhJxHwUdJ
-         bu34LwOYcFJ84d+qqJxLbXaMCHoU0bxVJ/wbxTu7gKo8biU4fAy8g/ziMBuHD7X9gE3S
-         MI1LXj6sCj2CmAcA5zBlvLNAv05iP3JJXWJeEklFv/ARv0hv/Q9puXA1ZVs/OPSX1IBG
-         JeNxVpa9eV5ORYFQLb5m4rTxCmPjQH9o2ETlKGAHDLDAfagOScdv2MFbi6pkuOqioJqO
-         l8j4kbpLcG7fAECFeVrxbW75Yl7oP97Bub/bcg8cxWx88tofy+ag3FK1/1tZvp4wcc3U
-         V65A==
-X-Gm-Message-State: AOJu0Yw3QCirngD1NatQNlEWO+zIki92oBfo9JzIZDta55kZxiV3QwHH
-	W3NSDM6NYMmKLBlHwY9nCfuqbRKWQQYHXU3CDYPYR0SbOXi9JaLf88oW6nSSinDI3qpIKQnQOBB
-	EVmLL0/O0rdngOyxejpRTJ4eED2YHuGpcykFD2ejH+T1pt9Fo/aqg5FFNAH6tCV7LNloSArfJNR
-	f5OXIG4su9GRzEnv64F6Pe9cnRbQ==
-X-Google-Smtp-Source: AGHT+IEqA9UEaF4ovqknxeoCna5e+h2A9LJb/CATGs/nfpQpZnxXMAv/pjBpPSrEELNjCWQnGZi85feW
-X-Received: from wmbz25.prod.google.com ([2002:a05:600c:c099:b0:43c:f6b3:fa10])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1911:b0:43d:82c:2b11
- with SMTP id 5b1f17b1804b1-43f2ff9b203mr17956385e9.23.1744291735014; Thu, 10
- Apr 2025 06:28:55 -0700 (PDT)
-Date: Thu, 10 Apr 2025 15:28:51 +0200
+        bh=F5BBjKPIekYrEeVKo50JLFBsOnCg/0jyb52yewb+mRo=;
+        b=kAcaD4GudM45FMV06jLqtLmFZgpjbhsHKVNyY7MzQFai2jblRGtdozWwBMtJLRBp6L
+         PIxNRDZKqNQvxNstmFL/ROtCWZoUg0trdlA04MkeleK+VHp78OWp3O8ztKcOqX4Qnfw2
+         Mssngyr8xsqAKV2MQAMcaY8vMNa3MeULZUKi+qK5/HU/lzUEkrYlAQKNfd+egN+xjqXj
+         WCf2XKOmB5xiNYYfWi2Yr5Sf1LRZ3+O89sB1/CxhSPMEgnPNx7RD7jQ85Pr79NlQUaxG
+         J9xfeIhsWHlF/sstAbAnI5s/4W9YJyQ2t9JKyGBRwX4N2GQX0vHyxptfWqgEchkAZzVX
+         AYgQ==
+X-Gm-Message-State: AOJu0YwIaLznbveUFT4jsNI1/q6hJSBr2kOK8fsYljy1bkjLApAfglaM
+	ByadqQlVEM7wNdO57g9kFGfnz800JtT46NuXL1zfJcjRAToAtPoeau43nykezfve2xjbjhmuns5
+	nARk6g9Y8jMsLwBjJhCeAn/iwD2kkHRryt+juF3o6XbtQsShtpJxf1doTT+lZAAvUT617ZAxGn9
+	f/gWtg/rLY48Sj7ii+auk4IPzDcA==
+X-Google-Smtp-Source: AGHT+IHd+8MEBe16pE0XLxqL66PgJ7fdjUFAB3h4S7JE13Ct2X++z/lHUScP89jUOURI0VwTBl7NaPAX
+X-Received: from wmbay35.prod.google.com ([2002:a05:600c:1e23:b0:43d:412e:82ce])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1d27:b0:43c:ec97:75db
+ with SMTP id 5b1f17b1804b1-43f2fee0322mr17874155e9.11.1744292500447; Thu, 10
+ Apr 2025 06:41:40 -0700 (PDT)
+Date: Thu, 10 Apr 2025 15:41:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -71,171 +71,91 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4666; i=ardb@kernel.org;
- h=from:subject; bh=Th5F1nSY0iulqmnlKz0W9Dv7fXivwlI/yQUmNM3/K/g=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIf378ck7fnsfvpf9XbU66UeIPdcnLRaVDLfdqd5eaY0XZ
- vAtb+jvKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABO5+4rhn4GGqOqihbOiGHuM
- fSYsNQ1wP/1RdHHpyzB7lpeWbKm9uxj+2R5pLz6qb1mXVOViJ7kos3vPttj9jwr+bW84/4r9Ras jLwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3415; i=ardb@kernel.org;
+ h=from:subject; bh=0sC8JgPvEW8/YSxATGrJydJbVmEf1dh2DbwZblMNlDI=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIf37qbrnNXUVT/gmbLN6qpyQ7xX/tOH5AyUboycVVc+85
+ XZJfNHpKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABPpS2X4X5Kk/81XWmJafqNZ
+ p1Gzc5f7wxWXBB6wh7eUMZb869eLZGSY6ZJzbMmE2+Is+zt6H0u0FX+UvKOYuZFp/pPExdOYjnn yAAA=
 X-Mailer: git-send-email 2.49.0.504.g3bcea36a83-goog
-Message-ID: <20250410132850.3708703-2-ardb+git@google.com>
-Subject: [PATCH v3] x86/boot/sev: Avoid shared GHCB page for early memory acceptance
+Message-ID: <20250410134117.3713574-13-ardb+git@google.com>
+Subject: [PATCH v4 00/11] x86: Refactor and consolidate startup code
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: x86@kernel.org, mingo@kernel.org, linux-kernel@vger.kernel.org, 
 	Ard Biesheuvel <ardb@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
 	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Communicating with the hypervisor using the shared GHCB page requires
-clearing the C bit in the mapping of that page. When executing in the
-context of the EFI boot services, the page tables are owned by the
-firmware, and this manipulation is not possible.
+!! NOTE: patches #7 - #10 depend on [0] !!
 
-So switch to a different API for accepting memory in SEV-SNP guests, one
-which is actually supported at the point during boot where the EFI stub
-may need to accept memory, but the SEV-SNP init code has not executed
-yet.
+Reorganize C code that is used during early boot, either in the
+decompressor/EFI stub or the kernel proper, but before the kernel
+virtual mapping is up.
 
-For simplicity, also switch the memory acceptance carried out by the
-decompressor when not booting via EFI - this only involves the
-allocation for the decompressed kernel, and is generally only called
-after kexec, as normal boot will jump straight into the kernel from the
-EFI stub.
+v4:
+- drop patches that were queued up
+- fix address space error in patch #1
+- add patches for SEV-SNP boot code - these cannot be applied yet, but
+  are included for completeness
 
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>,
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
+v3:
+- keep rip_rel_ptr() around in PIC code - sadly, it is still needed in
+  some cases
+- remove RIP_REL_REF() uses in separate patches
+- keep __head annotations for now, they will all be removed later
+- disable objtool validation for library objects (i.e., pieces that are
+  not linked into vmlinux)
+
+I will follow up with a series that gets rid of .head.text altogether,
+as it will no longer be needed at all once the startup code is checked
+for absolute relocations.
+
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
 Cc: Kevin Loughlin <kevinloughlin@google.com>
-Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
-Changes since v2 [0]:
-- avoid two separate acceptance APIs; instead, use MSR based page-by-page
-  acceptance for the decompressor as well
 
-[0] https://lore.kernel.org/all/20250404082921.2767593-8-ardb+git@google.com/T/#m38389f607accd0cfa83c41c3bd0d410514b023c6
+[0] https://lore.kernel.org/all/20250410132850.3708703-2-ardb+git@google.com/T/#u
 
- arch/x86/boot/compressed/sev.c | 67 +++++---------------
- 1 file changed, 15 insertions(+), 52 deletions(-)
+Ard Biesheuvel (11):
+  x86/asm: Make rip_rel_ptr() usable from fPIC code
+  x86/boot: Move the early GDT/IDT setup code into startup/
+  x86/boot: Move early kernel mapping code into startup/
+  x86/boot: Drop RIP_REL_REF() uses from early mapping code
+  x86/boot: Move early SME init code into startup/
+  x86/boot: Drop RIP_REL_REF() uses from SME startup code
+  x86/sev: Prepare for splitting off early SEV code
+  x86/sev: Split off startup code from core code
+  x86/boot: Move SEV startup code into startup/
+  x86/boot: Drop RIP_REL_REF() uses from early SEV code
+  x86/asm: Retire RIP_REL_REF()
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index bb55934c1cee..89ba168f4f0f 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -164,10 +164,7 @@ bool sev_snp_enabled(void)
- 
- static void __page_state_change(unsigned long paddr, enum psc_op op)
- {
--	u64 val;
--
--	if (!sev_snp_enabled())
--		return;
-+	u64 val, msr;
- 
- 	/*
- 	 * If private -> shared then invalidate the page before requesting the
-@@ -176,6 +173,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
- 	if (op == SNP_PAGE_STATE_SHARED)
- 		pvalidate_4k_page(paddr, paddr, false);
- 
-+	/* Save the current GHCB MSR value */
-+	msr = sev_es_rd_ghcb_msr();
-+
- 	/* Issue VMGEXIT to change the page state in RMP table. */
- 	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
- 	VMGEXIT();
-@@ -185,6 +185,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
- 	if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
- 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
- 
-+	/* Restore the GHCB MSR value */
-+	sev_es_wr_ghcb_msr(msr);
-+
- 	/*
- 	 * Now that page state is changed in the RMP table, validate it so that it is
- 	 * consistent with the RMP entry.
-@@ -195,11 +198,17 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
- 
- void snp_set_page_private(unsigned long paddr)
- {
-+	if (!sev_snp_enabled())
-+		return;
-+
- 	__page_state_change(paddr, SNP_PAGE_STATE_PRIVATE);
- }
- 
- void snp_set_page_shared(unsigned long paddr)
- {
-+	if (!sev_snp_enabled())
-+		return;
-+
- 	__page_state_change(paddr, SNP_PAGE_STATE_SHARED);
- }
- 
-@@ -223,56 +232,10 @@ static bool early_setup_ghcb(void)
- 	return true;
- }
- 
--static phys_addr_t __snp_accept_memory(struct snp_psc_desc *desc,
--				       phys_addr_t pa, phys_addr_t pa_end)
--{
--	struct psc_hdr *hdr;
--	struct psc_entry *e;
--	unsigned int i;
--
--	hdr = &desc->hdr;
--	memset(hdr, 0, sizeof(*hdr));
--
--	e = desc->entries;
--
--	i = 0;
--	while (pa < pa_end && i < VMGEXIT_PSC_MAX_ENTRY) {
--		hdr->end_entry = i;
--
--		e->gfn = pa >> PAGE_SHIFT;
--		e->operation = SNP_PAGE_STATE_PRIVATE;
--		if (IS_ALIGNED(pa, PMD_SIZE) && (pa_end - pa) >= PMD_SIZE) {
--			e->pagesize = RMP_PG_SIZE_2M;
--			pa += PMD_SIZE;
--		} else {
--			e->pagesize = RMP_PG_SIZE_4K;
--			pa += PAGE_SIZE;
--		}
--
--		e++;
--		i++;
--	}
--
--	if (vmgexit_psc(boot_ghcb, desc))
--		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
--
--	pvalidate_pages(desc);
--
--	return pa;
--}
--
- void snp_accept_memory(phys_addr_t start, phys_addr_t end)
- {
--	struct snp_psc_desc desc = {};
--	unsigned int i;
--	phys_addr_t pa;
--
--	if (!boot_ghcb && !early_setup_ghcb())
--		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
--
--	pa = start;
--	while (pa < end)
--		pa = __snp_accept_memory(&desc, pa, end);
-+	for (phys_addr_t pa = start; pa < end; pa += PAGE_SIZE)
-+		__page_state_change(pa, SNP_PAGE_STATE_PRIVATE);
- }
- 
- void sev_es_shutdown_ghcb(void)
+ arch/x86/boot/compressed/Makefile                          |    2 +-
+ arch/x86/boot/compressed/sev.c                             |   17 +-
+ arch/x86/boot/startup/Makefile                             |   16 +
+ arch/x86/boot/startup/gdt_idt.c                            |   84 +
+ arch/x86/boot/startup/map_kernel.c                         |  225 +++
+ arch/x86/{coco/sev/shared.c => boot/startup/sev-shared.c}  |  375 +----
+ arch/x86/boot/startup/sev-startup.c                        | 1395 ++++++++++++++++
+ arch/x86/{mm/mem_encrypt_identity.c => boot/startup/sme.c} |   19 +-
+ arch/x86/coco/sev/Makefile                                 |   19 -
+ arch/x86/coco/sev/core.c                                   | 1726 ++++----------------
+ arch/x86/include/asm/asm.h                                 |    5 -
+ arch/x86/include/asm/coco.h                                |    2 +-
+ arch/x86/include/asm/mem_encrypt.h                         |    2 +-
+ arch/x86/include/asm/sev-internal.h                        |  112 ++
+ arch/x86/include/asm/sev.h                                 |   37 +
+ arch/x86/kernel/head64.c                                   |  285 +---
+ arch/x86/mm/Makefile                                       |    6 -
+ 17 files changed, 2208 insertions(+), 2119 deletions(-)
+ create mode 100644 arch/x86/boot/startup/gdt_idt.c
+ create mode 100644 arch/x86/boot/startup/map_kernel.c
+ rename arch/x86/{coco/sev/shared.c => boot/startup/sev-shared.c} (78%)
+ create mode 100644 arch/x86/boot/startup/sev-startup.c
+ rename arch/x86/{mm/mem_encrypt_identity.c => boot/startup/sme.c} (97%)
+ create mode 100644 arch/x86/include/asm/sev-internal.h
+
 -- 
 2.49.0.504.g3bcea36a83-goog
 
