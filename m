@@ -1,319 +1,241 @@
-Return-Path: <linux-efi+bounces-3308-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3309-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A3AA86DC2
-	for <lists+linux-efi@lfdr.de>; Sat, 12 Apr 2025 16:34:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D1AA86E1B
+	for <lists+linux-efi@lfdr.de>; Sat, 12 Apr 2025 18:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2324440BE
-	for <lists+linux-efi@lfdr.de>; Sat, 12 Apr 2025 14:34:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0C3719E305E
+	for <lists+linux-efi@lfdr.de>; Sat, 12 Apr 2025 16:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA831F03E0;
-	Sat, 12 Apr 2025 14:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C991FA85A;
+	Sat, 12 Apr 2025 16:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GjgSnZ9o";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LFK6GeIZ"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fFQskXlq";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="ACTLyFSv"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5929F1EE7D3;
-	Sat, 12 Apr 2025 14:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744468429; cv=none; b=atkhV0ZvYQPVzDhRQHv5RVNfuWGC21tmPxokzgS3VcA8mi/bJpbS+SecVyGFvMT6wCMgs7yWm5wsX/8r1isCgfLf7lIPEgXpFCnJxzkZqj0OpO2VpkuNs4PuR+0JrbJdhJSm4CmYGEJlzADY/zpAMee0HNvsPiuE/vPZFX/Kro8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744468429; c=relaxed/simple;
-	bh=D8H6qQTfQJxE/3XdZ2MVjcHocwNVG98rmXjnnwFRmzc=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=OxMkxWJZ54k5rhWl0gSdTqV9R/SpirOsIS77B4GCEh6WA6usHy5Mj2X0S9AucnEHCRx8HEhn21Tqsqq5bLXw7LZd+ajw6QVtHiTGJ7pED3oy02l7BHYZZCAx6K1qzpeis3QA0r/6V7cudPamo1pkkvx/bu0VyLihKH9rQwKUwpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GjgSnZ9o; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LFK6GeIZ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 12 Apr 2025 14:33:39 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744468420;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V2itsVul/BKjQ21rj6JGyKU7b4KsVX33+4IkgRUp6VE=;
-	b=GjgSnZ9ocNUiUURZPl1jgMFbdV/C+Wd5ji6iq4d3mAYrhYCiMyk9uL9ssbDjb34S6TAH1F
-	4RDSa3EurgMn2hlR+/LPO3PniIz0LIPs1HpzKbGMyr4wB0kFUZ00aDTD8WtDwc2pWPa314
-	8lWEGQ4PYLLUhu+60wqBv7qFSoc5tNIOmK8IrHh921nCddtrpY2AK0WAyUE2E6kXHctaBB
-	gQDUpWTzPCEqGJYpfe4hseVw9IA5hFezc1WOfER3EASifmCCg46tUZI96DLV2OMcqK7C78
-	QUtRxAvR8Tcnr8EbM/JVB+mTUcY1VGINLPONNIXihM7Ydx+MXfcIHX1azHpQKg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744468420;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V2itsVul/BKjQ21rj6JGyKU7b4KsVX33+4IkgRUp6VE=;
-	b=LFK6GeIZjwPABGdx2PGz33gSY/fZw1HxUzp08eLp9i4dpn61ZHoffmzwBql1TmcCco2q6z
-	pfrL1y5boIvFKmBg==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/asm: Make rip_rel_ptr() usable from fPIC code
-Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>,
- Kevin Loughlin <kevinloughlin@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, linux-efi@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250410134117.3713574-14-ardb+git@google.com>
-References: <20250410134117.3713574-14-ardb+git@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059E81EA7F8;
+	Sat, 12 Apr 2025 16:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744474818; cv=fail; b=jl1lgATX8Gm5HOQ6ddll/PQrAp8YCs+Ag77e9H9vgvJKZy92VFbtBNKBqhUcLHOj82ygpggkiCszDBRLUimiDWj/vfWnZm9AxTLS0S/EQJaIj2G1Kq1Vcgl/dBDIo/V0OE4qQX/Ziahkp8rKevkWZQrh3dfoghGgX8MrYTahQXc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744474818; c=relaxed/simple;
+	bh=Zmf8S2KXfPgpXiAdCZuYovxkVC17ovKtSDv2rzax3wU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GVhgjk68uuJXbvUpG3Kr+EouKLKN3HAa+ainSqX1o5z88+bYuSJaksjZAJi/2z5Lb+H7OyV4ALUwh5/bMjHMttfD4xPSXLI0z5g1gHptjJQ5HKu3be++2nrgF0x4n0VxocR471sC1vlhVwipJ1F/8Gxh4A7wyr01Yy8/K7gv1v8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fFQskXlq; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=ACTLyFSv; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53CG00ka027742;
+	Sat, 12 Apr 2025 16:19:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=lvrazQAY23pQf8ke2oZQz+JLJBvaSD26dIyelrv5vAY=; b=
+	fFQskXlqfxuoNZj6oQoZscaWTkpWzXnX9TQkTnF3m+EZs8emQoo1fk1dcZrBFJvi
+	UrPYTL7ra4x6AjL4PzzUSY4KJd2ekZluXg/1wc4yZVo3J+gSh71sXtEwHZFCHnHz
+	N4WGp7zONhkhV9/0MtuAJzu/AZxMopqFTrBtSaewtq7giADEp8r7c/Z2E4FD4yDS
+	CTH9y44H88W5DGYGZf4wVq/TszncehUSWXVD3CPPs0jRsb5lQhxwPU5nukwpXAub
+	Lvoc2kGFiqL0l7udpWov7DL0PykDb0kd4xuCst5P2vzAdiZ0fIZra/ZSfYqiTQxu
+	ijTAmqVUhnY629B35FRRsA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45yu8wg0bw-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 12 Apr 2025 16:19:23 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53CCNEbB025320;
+	Sat, 12 Apr 2025 16:07:58 GMT
+Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azlp17010023.outbound.protection.outlook.com [40.93.12.23])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 45yemcpq49-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 12 Apr 2025 16:07:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PZowncegFSCZuzBV0Io92wuBmY00QLrfOPwIsYcwG4oNdnaeGO6p4HUwPgaI189rlunyoqUM1zKBgS3Jec5dApCvMZMYMALw/tN8iPZh9XeoWfqUUXeFPNokTpmPz6gIFy4YjFhcUh4sbsXX5jPmmD0IzTvztlAXy1hdacYsDiHOKjZT7YzaNeH8rQNUTD+WowrsHeFSXcGil2iQgPsrcfLj0RYOYkCG7LOOdjtRA4oQB3obCuCGX4nPWGBUfSs+UaiI8ejSTbSYjuZ5akXXFLuJqUKPjVVHK0aKKa6pXR9S3LVehxm49L80TSCPwIpY30hRSRUcsbfuwsGX7FKHUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lvrazQAY23pQf8ke2oZQz+JLJBvaSD26dIyelrv5vAY=;
+ b=t/3nzxkmDYmauQe/qY28EB+hMaxsi+Uqz31kk/ctz1gUNizp8tjeH+GqdZCBzdJBtIUTfAYiu/iazY0Mr+R7uMCN1VqS7Jwew2boECy7+OwkW3+5GAzVcAC6eht4MI2ObN0cnPEKV68CU0i1FgOYzF9iLW1ASq1hcXilPwNIV2iA4mYHBwEwuPPDkMNNkWxlECKJmLJ9O4Uw/BmP4SFj0eyrhzeF1XKolTMjfR9sCmyW4LzTX+kL9TCSwaaV3RA5v+phmUDCVTDARy9RRuam9uaMQ6HZQVwZPYxqaLzWXL/eTAeBOrB/kGsW1w6He/0Ejg/fIfd3vxjhC0Vgl8dBbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lvrazQAY23pQf8ke2oZQz+JLJBvaSD26dIyelrv5vAY=;
+ b=ACTLyFSvXejKvaJ5PFBy3otsEA/vBr4p/wrAIYYrx8Tq1NYtUv38dkNRNk/Oz0whD8TmhmR6nebhhZD7T7D7qKTQM0lBY+Rzjw+7Evy+7IIeoXVUVEvZR5su7g54CrAus11DVzG+K0qFRO71G/xU72x63+Fi48iEMt/LI2iCgMg=
+Received: from DS7PR10MB5328.namprd10.prod.outlook.com (2603:10b6:5:3a6::12)
+ by SJ2PR10MB6962.namprd10.prod.outlook.com (2603:10b6:a03:4d1::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.37; Sat, 12 Apr
+ 2025 16:07:55 +0000
+Received: from DS7PR10MB5328.namprd10.prod.outlook.com
+ ([fe80::ea13:c6c1:9956:b29c]) by DS7PR10MB5328.namprd10.prod.outlook.com
+ ([fe80::ea13:c6c1:9956:b29c%6]) with mapi id 15.20.8632.030; Sat, 12 Apr 2025
+ 16:07:54 +0000
+Message-ID: <dbcc870f-123b-4505-831c-bc779bec231d@oracle.com>
+Date: Sat, 12 Apr 2025 21:37:41 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 01/19] Documentation/x86: Secure Launch kernel
+ documentation
+To: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
+        x86@kernel.org, linux-integrity@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-crypto@vger.kernel.org,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
+        iommu@lists.linux.dev
+Cc: dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
+        ardb@kernel.org, mjg59@srcf.ucam.org,
+        James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de,
+        jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
+        nivedita@alum.mit.edu, herbert@gondor.apana.org.au,
+        davem@davemloft.net, corbet@lwn.net, ebiederm@xmission.com,
+        dwmw2@infradead.org, baolu.lu@linux.intel.com,
+        kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
+        trenchboot-devel@googlegroups.com
+References: <20250410204149.2576104-1-ross.philipson@oracle.com>
+ <20250410204149.2576104-2-ross.philipson@oracle.com>
+Content-Language: en-US
+From: ALOK TIWARI <alok.a.tiwari@oracle.com>
+In-Reply-To: <20250410204149.2576104-2-ross.philipson@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MAXP287CA0012.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a00:49::22) To DS7PR10MB5328.namprd10.prod.outlook.com
+ (2603:10b6:5:3a6::12)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174446841928.31282.6253523068552611395.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR10MB5328:EE_|SJ2PR10MB6962:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4cb56e38-bb09-413a-3cd0-08dd79dc2eb1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?azRXNnArTEY3SzF2Wll5S2hwQWkzbUQwVnQ4WDFNcnBnQ3g5SU82RVpDMXBR?=
+ =?utf-8?B?WER6OFpWOGx3YnBLNGVDajI2aWNnSlh6TXAzbGQ1dEEweFpoR2lqdldiY1BO?=
+ =?utf-8?B?UDBTYVVMRkNqWENZYnFpeTNzc2dpc2JzY0EvWHFaSUJMWTBHaWlPclhEL3Mx?=
+ =?utf-8?B?eUNoeXZUakd1VU5yYmc2QnhsT0NhVUFZVHUvU0pYakFlQTN2SHJGVUk3Ulhu?=
+ =?utf-8?B?NmpCcHpHOTduWUtGQnhaU1pvS002NGhtQzVSbURxWktTNThsVWlJWTh6a08x?=
+ =?utf-8?B?dk1SWTRyakRvc2lOam50czdOZzQ3U2JzVWpidG01eHJJVHVNZEs2dTNOMHkz?=
+ =?utf-8?B?c1ZnRFI5TUR5Q0hhcVdJYkVjaTRYQUs1Q3VLbDJLL1JRbzB1SzNqRTE1dHB3?=
+ =?utf-8?B?VkFMcmllaUxzQ2NwVDVMQ3hER1FTdURCdnoyY3QvTzhZeTlJTTVvcnZwMnBj?=
+ =?utf-8?B?U1BxNmhmbnFTOStKZW5NVG9QVnVDS1IzaHdFQmNVckp1bjlDczhRUTBCL1FG?=
+ =?utf-8?B?QS9uQm9tK2FydXJBanZmaDY4eEovOG9LNzdhSDVhTWFoYW40cUFyT1BhU1dD?=
+ =?utf-8?B?a2txR3hnb2xwY3FVNDNPZ0c5dlN2RklTV3pWenVmZjlZbFJhclIwdkt5RjRt?=
+ =?utf-8?B?ZmZScEdFZ3JaRWFXbmd4dXBLYXZiL1pYdnk5aG1KZnJQVXc4aVdncjdGdmQv?=
+ =?utf-8?B?c2MwMkxuR1pFRWllQ2FzdTJxenVDbldJem1BRG5JOXQxNiszQXYyb1JTcDZw?=
+ =?utf-8?B?eHVZZmdVeGVqTStha083U1dVT08zWFN1clNETG9tNjNqZ1RJS1UzU0tOazBh?=
+ =?utf-8?B?d3hoYy9yOHhjL1MxcTEra3Rtd0dEQkE0VDRidldjQ2QwMW1Oc3pBZWF4cjFo?=
+ =?utf-8?B?LzFQUkp4bnBWRXk1d2tVamdQd3hOSWFzYnoxdDhTWDVsd0ZGVVR4Ty9wTTBt?=
+ =?utf-8?B?RVhybVVXQjBFdEc5Sm5KaDBzZjhsSGZ0aVMyNkJHR3d6L3lYZHg4UzR3bmFH?=
+ =?utf-8?B?bmlaRkFkVzBWM1ZaVzljbE1XQ09MUzNoT1JscmN0VldTdy9tcTZoTmtic1BJ?=
+ =?utf-8?B?ak9qbnVSTTRvak1wTk1pWEw0NFZQVmhFWVVvQ2tFMHVFQXZmcEprRlFUdFJ6?=
+ =?utf-8?B?MWt6MVpJZjVYbWliR2gxRHo1SU93NXlqUllqMGp0NGQwQks5blE3ZjcraXdk?=
+ =?utf-8?B?Y0phdWpuMk5vUTM1dE4xdFFWbUg2b084Q1k0TExOVWtoMDBlR2dyWjArVTN3?=
+ =?utf-8?B?RVJvWW45YnVYb1lBQmFUeFRxVk55NWppUlhLZUMyYW0rdlNZQUIveVhrQUxk?=
+ =?utf-8?B?U3MxUEEzR3ZQMURZVHVGQUgzNUZYSURJbjVlT3Bobmh6TWpyUDNtUDg5RkZJ?=
+ =?utf-8?B?aVpMYzJ4VVZoSGV1Ulh5WVB6S3lMc2hrdkJFRjIrUEozd25QRStCUVR3UGZl?=
+ =?utf-8?B?MlROUEw5MmdIUGpmZXdZTzVadVV2b2VkV3Mxa1k2Wkl5cUVqUDVoVC9zci9l?=
+ =?utf-8?B?NUVqK2dLeWVPYU1VMXp5UktUYXU1Y1h5aXdFZW50eUwxZlE4OHZTZWMrR2ZZ?=
+ =?utf-8?B?OXQvclAvcEVjLzIrZ01qZ3kyL0hxb003cDBZTWc3RkZwZjJJWm5RcDFKTmNy?=
+ =?utf-8?B?T3lNbGRYS2pydE15dEkwRkhCbUdqcytoTzZTQWw0YWUrOENLajQyV1JQWlFm?=
+ =?utf-8?B?amI5WUhkeTlNd05vclZLYjJKR0RPYVhzckRSR1I2TnZadUV0N1dwTFZBZ0N6?=
+ =?utf-8?B?WFZUTXQybzRkTWhhNjk3OEJPTHVDRzNsTE95V2J1Ym5saEJqMHk5a1UzWUtL?=
+ =?utf-8?B?a0JSajIrUnRpS1JSRTR5QTVTcGlkV0t6bkgyelFMdm1iQVB5TFhYMmhXNjNX?=
+ =?utf-8?B?WW1SOC8xYkZaNm1qMHR2ZG5HeTRhRzAwVU8rYzc5WVhwNklTVFFaQUpyQTB2?=
+ =?utf-8?Q?4oeSxK3RVMc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR10MB5328.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TkRuNk1oN0Q4bzVVVVpUR3ZLTUxLaG5Va0hnWkQ4WFpBZlZZdENuNDVDbDY2?=
+ =?utf-8?B?MS9JOUcvekNYK1ZORVZsSzNGaUtqSE5WN0dubE1ldm4vMzZTTzA3SlVVSTk2?=
+ =?utf-8?B?Y2crMGx4VmhLcm9rZUw2RzJ0VS9ERlVUL0VyOVAvZFZhTDhLR2xIRjBUejFv?=
+ =?utf-8?B?ZjdaMkhCVTdVODJ0MkQyY0xjSFdRbnhFWGZrdkd2YzRXYTZlc0Nra0pEdjlM?=
+ =?utf-8?B?cUdnNzE3OXprRldLMy82TVNadDFmZzZ2L3VuVDhnL25wTzdkNlZseVA0dnhK?=
+ =?utf-8?B?Z2QwYmI0TWVRd0pabVJqYWpzUVlqeXIvcjN1NlZCLzZQdUxsQ1hUeUExTDk0?=
+ =?utf-8?B?cjg3YlhvR2xKZERCVkJQT0tMNHBCbWtSTGo3SU1DTDJPaFlKSk53bXhtc1l5?=
+ =?utf-8?B?UHA5cUdJa3kxWm9vRm5KUVJSWEV4cjNudjlxaWY1TCtlRkdKWDRFbDBhSG56?=
+ =?utf-8?B?Nm83R21STzdsM2FBR2pMaXQ2c3g5NWxKTTNpUjVmVkxTaTF6eEZYR0RXMFBl?=
+ =?utf-8?B?VkRoRjVici8xYkMzVzV1c3BMT2pyMWtyNGZ1eXY5RmFGYzJ4YmUrMmlsOEcr?=
+ =?utf-8?B?Sm5qVlV4OTlzQ0xickV6aWs5ZmMyaWRDbXZjZ1A1MGdsTUxqMDFtS01zbEt5?=
+ =?utf-8?B?a21RaDdwMDNvTjlVc01IVkdUYmFkanU0eEhtb2JON3dveHkvbGxrOFM3WUVr?=
+ =?utf-8?B?cEQ4Uk80MkZTbkJhMm1JeHlKODdTVFc1ZXA4OEp0MTBQL3VwSEEwQjNsWG0y?=
+ =?utf-8?B?QjRzWEhPMEQySFZUZVl2dk44U01UMk5IUEJJbGwzU3Y2M2lNYzFTWUhLMEUw?=
+ =?utf-8?B?R0VjRDBiZHJFRlp1Mmw4S3ZIQmYwazZxS21xdUk4akdZNWtEZTZiVzdvRWJS?=
+ =?utf-8?B?S0d5TVBIZTlYd1JVNCtvL2EzRDNXY0pLSkFZTHJMQWIzSkI2VjRTOUpkVG1p?=
+ =?utf-8?B?ZFJjTWZ4dU9BRm91bFBuc3pHT0E0VzhTemNnbkg0R2QrNGxvV0hrZXMwajFI?=
+ =?utf-8?B?S1cvYkpQNEJrdzlvdXcrUkYvMDdjaVBwNXNhVXdiR015b2VPU2pwbmI0Q3Uy?=
+ =?utf-8?B?enFuR3YvZFBFdFZyby9rbkxiU2RZQ0k0ZnljUldNcExDekJNVW5wYUdJZ1Zt?=
+ =?utf-8?B?eFVFSVhxQ0tOVStMQmRsTkdvMWRmcStDL2RLeXp0aXlNSXRKOXVTTU5xYUJx?=
+ =?utf-8?B?VUJ6SXlPSWg1cmNTTWc2YVJnN0J4WHVkWFd4NU1QTDdHUmxHMG1FcXlxRWwy?=
+ =?utf-8?B?dW5nVTBxTElXTjlPQWZLcE5SR3RPbDJ5SmlJcHYyVGlUVWRNd2JCWlV1ZGJG?=
+ =?utf-8?B?Unh5cUdoWWkvU2JBcERQQW1PeFQyY3dlOU1TdnhrYjhDUEJVcVpKcytadVdW?=
+ =?utf-8?B?aC92NmZSOHNxYk1lQldWdm1EaGJoUEllcEtteGZQSEVuNVAwaVpLcmtCOG4x?=
+ =?utf-8?B?TnkvNnFtdGpVL0hQMjI4cHdPd0M5a0Jpb3IzTTNIUVFKM0tGZXJpdThUR2JS?=
+ =?utf-8?B?ZTJHUzVsRFJjdU1adi9qNFA3UE9tWHppdmszeEVJWGJRVzlWcFhjK1l2V3ow?=
+ =?utf-8?B?Qkp3RGM2d0dhbGlXQXJBRUJRQkkzNnVxdGJENEtUQWhxZnVRc0hqREVMRXpp?=
+ =?utf-8?B?SkU3K2Q4TzhmTmRtZWM5am5tMTB6aVZyVW9PbUNXdDB5bS8vaHBZOGg5QmNE?=
+ =?utf-8?B?R0Fnalo2SEVpS28zWVdDdzROaGFsSXZPVjk0ZjVrUTE3UHBjd2tiTnFhTlIw?=
+ =?utf-8?B?RlJrNDRCSkp6QkpCMlVNVFEzQlJyWDRJN2cwVTVDd1pLVFZSNTQ3MjhrVXpo?=
+ =?utf-8?B?NnhPU2Y2RmV6TDhGUXJ1SVVkazJNRFdMMnFzTmh2dGdDNzdBTkk2TmdvL2Ru?=
+ =?utf-8?B?WjFKeHo3bUwvUElnaVN3LzZXaUVORnRSRS9IeVIwY3NMMXZkbEpHQ2p1cEd5?=
+ =?utf-8?B?bUtsTGpTcE5GQi96ZDNobFR0b2FHSlk4UGJQV3hoUHZvV3N4d3Y5YVNodDIx?=
+ =?utf-8?B?eGxtNzhlNXh3WDU1WUFCUGd0cGtFbm9FWDZ1U0RpRENKZmF6eEszaDNQWENn?=
+ =?utf-8?B?dlBwSTNLeld1S0xSREVsMmpmdzdUMzZaeVVYRWJ1NTBiRGs1Q0FucktIZ1JX?=
+ =?utf-8?B?NTcvYzVqK2luMHNvV0ZvRFJqOVJEei92dkVNS2QxQjVrQXRtaXppaGI0U3R6?=
+ =?utf-8?B?U3c9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	WMEhQHIixOPdIEkI96MY8LyNW/vDPi1IFVJv9MxvWLzCIr9N5sOpEyl9zhnJn41rILFriMTTW44vyAmWuLu9B7bV0gXyZXnmnDYidNk2bbRC0qNxMdovqpTCPbyhiZzccnw0NFmQWTVgSZkJJIb8mDoqGwIxi1txJpTfipMMHCdlkjgO0smigQ+STirIdB09f5mf0QiYeWTn5ba69aPIfmq0O3F3Is+9ojNVZbg2hD6C7m6wWEJydvGId8pP2RIFIV4uhc3uEAF6cR5E/524KfCwEJBN1pX5YKJPUkQTbwHaNZbjyaYHjCgDtEfVYGoWoP6RgDnm8GCCxx9IPUI9onHZOc/zjenZSF6bkPWmyLFuprPZRwKIjKSjY6ii+GCOQTZ3SNfhBwH1ZP4wiXYjzefNrqVi+FlBMS+LTiQWaX9mP1+dikdn7SG1G73Y29Ivx9Pw0yolzX9PCjfcMkdEzdja59lDEBgUN8ONV8OTig83EuM+UvL9LK1ECUy1zqTBo2IQ0d3LTrEu/y7Z0xeARywvqL3DXJ3cOCwBVNsN//KiLq8zT+v9/sqwF5WiuoHXfaxqSX6kVLfdc31gnAKp4NEnjOQNQ3v8NJ7HLS1HXHs=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cb56e38-bb09-413a-3cd0-08dd79dc2eb1
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR10MB5328.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2025 16:07:54.7904
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5GJEDpEd4QguK/9eRJEcXGrQh9fKcVuDu0ixEag46gznwVPUaf1KzNF5r2xQ1PKMrH+8jkx1HicBecWyW5sSUVBz6Geeg+l69NNK4DMiLVE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB6962
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-12_07,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ mlxlogscore=999 suspectscore=0 mlxscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
+ definitions=main-2504120122
+X-Proofpoint-GUID: OmVo-qQWeDb5cBcR-54RxC_HFmtvOLZ2
+X-Proofpoint-ORIG-GUID: OmVo-qQWeDb5cBcR-54RxC_HFmtvOLZ2
 
-The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     bcceba3c72c0cf06dfbae77f5aec70fb6187e8df
-Gitweb:        https://git.kernel.org/tip/bcceba3c72c0cf06dfbae77f5aec70fb6187e8df
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Thu, 10 Apr 2025 15:41:19 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 12 Apr 2025 11:13:04 +02:00
 
-x86/asm: Make rip_rel_ptr() usable from fPIC code
+On 11-04-2025 02:11, Ross Philipson wrote:
+> +.. note::
+> +    Intel TXT pre-dates the TCG Dynamic Launch specification. In the Intel TXT
+> +    documentation, Dynamic Root of Trust for Measurement was abbreviated as DRTM.
+> +    When Dynamic Launch was codified in the TCG specification, it was given
+> +    the acronym D-RTM. There is a similar situation with Static Root of Trust for
+> +    Measuremnt. In TCG documentation it will be given the acronym S-RTM but it is not
 
-RIP_REL_REF() is used in non-PIC C code that is called very early,
-before the kernel virtual mapping is up, which is the mapping that the
-linker expects. It is currently used in two different ways:
+typo Measuremnt -> Measurement
 
- - to refer to the value of a global variable, including as an lvalue in
-   assignments;
+> +    uncommon to see it as SRTM. For the purposes of the launch integrity documents,
+> +    DRTM and SRTM will be the preferred acronym.
 
- - to take the address of a global variable via the mapping that the code
-   currently executes at.
-
-The former case is only needed in non-PIC code, as PIC code will never
-use absolute symbol references when the address of the symbol is not
-being used. But taking the address of a variable in PIC code may still
-require extra care, as a stack allocated struct assignment may be
-emitted as a memcpy() from a statically allocated copy in .rodata.
-
-For instance, this
-
-  void startup_64_setup_gdt_idt(void)
-  {
-        struct desc_ptr startup_gdt_descr = {
-                .address = (__force unsigned long)gdt_page.gdt,
-                .size    = GDT_SIZE - 1,
-        };
-
-may result in an absolute symbol reference in PIC code, even though the
-struct is allocated on the stack and populated at runtime.
-
-To address this case, make rip_rel_ptr() accessible in PIC code, and
-update any existing uses where the address of a global variable is
-taken using RIP_REL_REF.
-
-Once all code of this nature has been moved into arch/x86/boot/startup
-and built with -fPIC, RIP_REL_REF() can be retired, and only
-rip_rel_ptr() will remain.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kevin Loughlin <kevinloughlin@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-efi@vger.kernel.org
-Link: https://lore.kernel.org/r/20250410134117.3713574-14-ardb+git@google.com
----
- arch/x86/coco/sev/core.c           |  2 +-
- arch/x86/coco/sev/shared.c         |  4 ++--
- arch/x86/include/asm/asm.h         |  2 +-
- arch/x86/kernel/head64.c           | 24 ++++++++++++------------
- arch/x86/mm/mem_encrypt_identity.c |  6 +++---
- 5 files changed, 19 insertions(+), 19 deletions(-)
-
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index b0c1a7a..832f7a7 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -2400,7 +2400,7 @@ static __head void svsm_setup(struct cc_blob_sev_info *cc_info)
- 	 * kernel was loaded (physbase), so the get the CA address using
- 	 * RIP-relative addressing.
- 	 */
--	pa = (u64)&RIP_REL_REF(boot_svsm_ca_page);
-+	pa = (u64)rip_rel_ptr(&boot_svsm_ca_page);
- 
- 	/*
- 	 * Switch over to the boot SVSM CA while the current CA is still
-diff --git a/arch/x86/coco/sev/shared.c b/arch/x86/coco/sev/shared.c
-index 2e4122f..04982d3 100644
---- a/arch/x86/coco/sev/shared.c
-+++ b/arch/x86/coco/sev/shared.c
-@@ -475,7 +475,7 @@ static int sev_cpuid_hv(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid
-  */
- static const struct snp_cpuid_table *snp_cpuid_get_table(void)
- {
--	return &RIP_REL_REF(cpuid_table_copy);
-+	return rip_rel_ptr(&cpuid_table_copy);
- }
- 
- /*
-@@ -1681,7 +1681,7 @@ static bool __head svsm_setup_ca(const struct cc_blob_sev_info *cc_info)
- 	 * routine is running identity mapped when called, both by the decompressor
- 	 * code and the early kernel code.
- 	 */
--	if (!rmpadjust((unsigned long)&RIP_REL_REF(boot_ghcb_page), RMP_PG_SIZE_4K, 1))
-+	if (!rmpadjust((unsigned long)rip_rel_ptr(&boot_ghcb_page), RMP_PG_SIZE_4K, 1))
- 		return false;
- 
- 	/*
-diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
-index cc28815..a9f0779 100644
---- a/arch/x86/include/asm/asm.h
-+++ b/arch/x86/include/asm/asm.h
-@@ -114,13 +114,13 @@
- #endif
- 
- #ifndef __ASSEMBLER__
--#ifndef __pic__
- static __always_inline __pure void *rip_rel_ptr(void *p)
- {
- 	asm("leaq %c1(%%rip), %0" : "=r"(p) : "i"(p));
- 
- 	return p;
- }
-+#ifndef __pic__
- #define RIP_REL_REF(var)	(*(typeof(&(var)))rip_rel_ptr(&(var)))
- #else
- #define RIP_REL_REF(var)	(var)
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index fa9b633..954d093 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -106,8 +106,8 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp,
- 	 * attribute.
- 	 */
- 	if (sme_get_me_mask()) {
--		paddr = (unsigned long)&RIP_REL_REF(__start_bss_decrypted);
--		paddr_end = (unsigned long)&RIP_REL_REF(__end_bss_decrypted);
-+		paddr = (unsigned long)rip_rel_ptr(__start_bss_decrypted);
-+		paddr_end = (unsigned long)rip_rel_ptr(__end_bss_decrypted);
- 
- 		for (; paddr < paddr_end; paddr += PMD_SIZE) {
- 			/*
-@@ -144,8 +144,8 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp,
- unsigned long __head __startup_64(unsigned long p2v_offset,
- 				  struct boot_params *bp)
- {
--	pmd_t (*early_pgts)[PTRS_PER_PMD] = RIP_REL_REF(early_dynamic_pgts);
--	unsigned long physaddr = (unsigned long)&RIP_REL_REF(_text);
-+	pmd_t (*early_pgts)[PTRS_PER_PMD] = rip_rel_ptr(early_dynamic_pgts);
-+	unsigned long physaddr = (unsigned long)rip_rel_ptr(_text);
- 	unsigned long va_text, va_end;
- 	unsigned long pgtable_flags;
- 	unsigned long load_delta;
-@@ -174,18 +174,18 @@ unsigned long __head __startup_64(unsigned long p2v_offset,
- 		for (;;);
- 
- 	va_text = physaddr - p2v_offset;
--	va_end  = (unsigned long)&RIP_REL_REF(_end) - p2v_offset;
-+	va_end  = (unsigned long)rip_rel_ptr(_end) - p2v_offset;
- 
- 	/* Include the SME encryption mask in the fixup value */
- 	load_delta += sme_get_me_mask();
- 
- 	/* Fixup the physical addresses in the page table */
- 
--	pgd = &RIP_REL_REF(early_top_pgt)->pgd;
-+	pgd = rip_rel_ptr(early_top_pgt);
- 	pgd[pgd_index(__START_KERNEL_map)] += load_delta;
- 
- 	if (IS_ENABLED(CONFIG_X86_5LEVEL) && la57) {
--		p4d = (p4dval_t *)&RIP_REL_REF(level4_kernel_pgt);
-+		p4d = (p4dval_t *)rip_rel_ptr(level4_kernel_pgt);
- 		p4d[MAX_PTRS_PER_P4D - 1] += load_delta;
- 
- 		pgd[pgd_index(__START_KERNEL_map)] = (pgdval_t)p4d | _PAGE_TABLE;
-@@ -258,7 +258,7 @@ unsigned long __head __startup_64(unsigned long p2v_offset,
- 	 * error, causing the BIOS to halt the system.
- 	 */
- 
--	pmd = &RIP_REL_REF(level2_kernel_pgt)->pmd;
-+	pmd = rip_rel_ptr(level2_kernel_pgt);
- 
- 	/* invalidate pages before the kernel image */
- 	for (i = 0; i < pmd_index(va_text); i++)
-@@ -531,7 +531,7 @@ static gate_desc bringup_idt_table[NUM_EXCEPTION_VECTORS] __page_aligned_data;
- static void __head startup_64_load_idt(void *vc_handler)
- {
- 	struct desc_ptr desc = {
--		.address = (unsigned long)&RIP_REL_REF(bringup_idt_table),
-+		.address = (unsigned long)rip_rel_ptr(bringup_idt_table),
- 		.size    = sizeof(bringup_idt_table) - 1,
- 	};
- 	struct idt_data data;
-@@ -565,11 +565,11 @@ void early_setup_idt(void)
-  */
- void __head startup_64_setup_gdt_idt(void)
- {
--	struct desc_struct *gdt = (void *)(__force unsigned long)gdt_page.gdt;
-+	struct gdt_page *gp = rip_rel_ptr((void *)(__force unsigned long)&gdt_page);
- 	void *handler = NULL;
- 
- 	struct desc_ptr startup_gdt_descr = {
--		.address = (unsigned long)&RIP_REL_REF(*gdt),
-+		.address = (unsigned long)gp->gdt,
- 		.size    = GDT_SIZE - 1,
- 	};
- 
-@@ -582,7 +582,7 @@ void __head startup_64_setup_gdt_idt(void)
- 		     "movl %%eax, %%es\n" : : "a"(__KERNEL_DS) : "memory");
- 
- 	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
--		handler = &RIP_REL_REF(vc_no_ghcb);
-+		handler = rip_rel_ptr(vc_no_ghcb);
- 
- 	startup_64_load_idt(handler);
- }
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index 5eecdd9..e7fb377 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -318,8 +318,8 @@ void __head sme_encrypt_kernel(struct boot_params *bp)
- 	 *     memory from being cached.
- 	 */
- 
--	kernel_start = (unsigned long)RIP_REL_REF(_text);
--	kernel_end = ALIGN((unsigned long)RIP_REL_REF(_end), PMD_SIZE);
-+	kernel_start = (unsigned long)rip_rel_ptr(_text);
-+	kernel_end = ALIGN((unsigned long)rip_rel_ptr(_end), PMD_SIZE);
- 	kernel_len = kernel_end - kernel_start;
- 
- 	initrd_start = 0;
-@@ -345,7 +345,7 @@ void __head sme_encrypt_kernel(struct boot_params *bp)
- 	 *   pagetable structures for the encryption of the kernel
- 	 *   pagetable structures for workarea (in case not currently mapped)
- 	 */
--	execute_start = workarea_start = (unsigned long)RIP_REL_REF(sme_workarea);
-+	execute_start = workarea_start = (unsigned long)rip_rel_ptr(sme_workarea);
- 	execute_end = execute_start + (PAGE_SIZE * 2) + PMD_SIZE;
- 	execute_len = execute_end - execute_start;
- 
+Thanks,
+Alok
 
