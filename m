@@ -1,55 +1,55 @@
-Return-Path: <linux-efi+bounces-3326-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3322-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06194A87F5E
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Apr 2025 13:41:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29486A87F4B
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Apr 2025 13:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F13AF1897E23
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Apr 2025 11:41:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA3C33B7921
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Apr 2025 11:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA05C2BEC26;
-	Mon, 14 Apr 2025 11:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B98429C33A;
+	Mon, 14 Apr 2025 11:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QoQL3hqs"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="n5G/BKsd"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD92929CB4B;
-	Mon, 14 Apr 2025 11:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A445D293B4D;
+	Mon, 14 Apr 2025 11:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744630782; cv=none; b=np5ohpbDhzMsGX9MKmILSR8aFUKG/s8eNgtqQBAK3kCwOa0BMkkDZECGZM574uRy4nHU0i3dFYA4ENDy+ZtOuFnP21At1CndvMg3X4w/zd46ujnSCYuZUHVL1bZdostSADUwtLTW1VacsPYRtL4obhxEkqdUL42e+eidN6kjsNA=
+	t=1744630780; cv=none; b=eCWM5mYiKgBrMbsEDPpsQclrwl56hjOOJRwIjIYQzrbMyljLaXoGW6hxkSrIQSsmD1u2UybcoSLrncLmk4yGRmDF2JNDaXGX83O2We4kIELDCe6DxXLNZAwYXS1tYmEwZxsjd2twgec38xNdvp8ZV0fOFb25mSqpz1R7sp4lURU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744630782; c=relaxed/simple;
-	bh=pcCiP5FTA+Lm/bobq6YiOZWGbXIV/H7h3fpmxDOHmBo=;
+	s=arc-20240116; t=1744630780; c=relaxed/simple;
+	bh=p/Y84bBNhhNyI/fMooDzHs4hcoxAN/Gk2IldqfwkQH8=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=RdBBkNEaOXZdLDktwWSmI/FF9nOIg6yG9tCl3vonJvghiExM/vlNo/O8RTlLR5yA7ruOsALNCIHixLjECuWEzhvsR44tB2Q2mjbVjsyqWxCr7ZvpcRRq8C71C86Gj6yn4SC48pAv+Qaj5pCN95DDHJoSlUOw/Vi7bA9JR2xhjDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QoQL3hqs; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type; b=tJSctaguiLOg+tqYTfG+Dwm5ZnGEVK0sHI0tBnRxahHco0DZBcseeIRdMUG7VQ27gcmp60NwkhUUrP7uWKSr4WzPcrH9Va2N/T5ow4fn1J3Eq8WNUEu7NjU6V1anEW9eFngHR7APkinXvEw84FuG96fEx+b3L2wSH7zRH5Jt11U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=n5G/BKsd; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=Af6nUOSfZkjof68kUCgJ+wjJzCjJKMFbRfwFCJ9l/cg=; b=QoQL3hqsSj3gkdRkvHLFh78e+A
-	mTih0+/n7JGn+dj+avJt7OZK3u6HQ34OY22w+lS50anSC2L2luJXadQoK2XSBJhLqFCV21ZT48o4w
-	dUC7tC5XYhn6rRcrUzzDCmDbXpo+JXkWkMMAm3r5sIAluoH3MVwBEDOgmj7qn21MJYHtN0YksIxb+
-	jRpaSUHvauq6e5xJOTwfv2x4z0PftPJbCcoqRCS3jOse/PTyBrGQ22mwqb61yg8mH+7kUxv4el1yS
-	mSOYs9srmYOdRm8usvxY0nYwgZ99SrvCGwgClDY5SMB+7wnhtjiRukIPkmKJelHhFRItvYsdJdnjX
-	ZhDjvdAA==;
+	bh=giIf0y3F3Tm6yHGVfgBN4P6bvuQNR4i30PNgCAncNzs=; b=n5G/BKsdfWJ9WLNUxR/0EOZLse
+	mqFKJGkT8oRE8p98iK99m5eCN3hBmjWy5Aj49NqMoXx4Qs8jT+gWeIdSIhxkHqUZCbE/+OEvAHOkc
+	SQliEqqKrPVeO8XoQFHdFqp7bp+vcxVWCiWrQWAVghFB9NwKz67/T2bFdwCK+zgX5fYEj+FJSse2Y
+	NRnYbjP03jiT3LVnLQ6Q6MymyGreLpSyh7oTlrJIbZmgIo9Ce5m5mtuN68GQnoWeazyhAi9JzNpK5
+	zrBhcgkNo4imSv/0TQw+pNWUW5L33KmTb8eh8UpYujRMsulM+t9TJeIsI2tzYHPHEmG0W8iKLpM2d
+	zjr1/w8g==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u4I9u-000000084Gs-0ohz;
+	id 1u4I9u-000000084Gr-0oXW;
 	Mon, 14 Apr 2025 11:39:26 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id 2A55D30082A; Mon, 14 Apr 2025 13:39:26 +0200 (CEST)
-Message-ID: <20250414113754.062619856@infradead.org>
+	id 2DD5D300B40; Mon, 14 Apr 2025 13:39:26 +0200 (CEST)
+Message-ID: <20250414113754.172767741@infradead.org>
 User-Agent: quilt/0.66
-Date: Mon, 14 Apr 2025 13:11:42 +0200
+Date: Mon, 14 Apr 2025 13:11:43 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: x86@kernel.org
 Cc: kys@microsoft.com,
@@ -76,7 +76,7 @@ Cc: kys@microsoft.com,
  linux-efi@vger.kernel.org,
  samitolvanen@google.com,
  ojeda@kernel.org
-Subject: [PATCH 2/6] x86/kvm/emulate: Implement test_cc() in C
+Subject: [PATCH 3/6] x86/kvm/emulate: Avoid RET for fastops
 References: <20250414111140.586315004@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -86,116 +86,124 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-Current test_cc() uses the fastop infrastructure to test flags using
-SETcc instructions. However, int3_emulate_jcc() already fully
-implements the flags->CC mapping, use that.
+Since there is only a single fastop() function, convert the FASTOP
+stuff from CALL_NOSPEC+RET to JMP_NOSPEC+JMP, avoiding the return
+thunks and all that jazz.
 
-Removes a pile of gnarly asm.
+Specifically FASTOPs rely on the return thunk to preserve EFLAGS,
+which not all of them can trivially do (call depth tracing suffers
+here).
+
+Objtool strenuously complains about things, therefore fix up the
+various problems:
+
+ - indirect call without a .rodata, fails to determine JUMP_TABLE,
+   add an annotation for this.
+ - fastop functions fall through, create an exception for this case
+ - unreachable instruction after fastop_return, save/restore
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/include/asm/text-patching.h |   20 +++++++++++++-------
- arch/x86/kvm/emulate.c               |   34 ++--------------------------------
- 2 files changed, 15 insertions(+), 39 deletions(-)
+ arch/x86/kvm/emulate.c              |   20 +++++++++++++++-----
+ include/linux/objtool_types.h       |    1 +
+ tools/include/linux/objtool_types.h |    1 +
+ tools/objtool/check.c               |   11 ++++++++++-
+ 4 files changed, 27 insertions(+), 6 deletions(-)
 
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -177,9 +177,9 @@ void int3_emulate_ret(struct pt_regs *re
- }
- 
- static __always_inline
--void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigned long disp)
-+bool __emulate_cc(unsigned long flags, u8 cc)
- {
--	static const unsigned long jcc_mask[6] = {
-+	static const unsigned long cc_mask[6] = {
- 		[0] = X86_EFLAGS_OF,
- 		[1] = X86_EFLAGS_CF,
- 		[2] = X86_EFLAGS_ZF,
-@@ -192,15 +192,21 @@ void int3_emulate_jcc(struct pt_regs *re
- 	bool match;
- 
- 	if (cc < 0xc) {
--		match = regs->flags & jcc_mask[cc >> 1];
-+		match = flags & cc_mask[cc >> 1];
- 	} else {
--		match = ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
--			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
-+		match = ((flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
-+			((flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
- 		if (cc >= 0xe)
--			match = match || (regs->flags & X86_EFLAGS_ZF);
-+			match = match || (flags & X86_EFLAGS_ZF);
- 	}
- 
--	if ((match && !invert) || (!match && invert))
-+	return (match && !invert) || (!match && invert);
-+}
-+
-+static __always_inline
-+void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigned long disp)
-+{
-+	if (__emulate_cc(regs->flags, cc))
- 		ip += disp;
- 
- 	int3_emulate_jmp(regs, ip);
 --- a/arch/x86/kvm/emulate.c
 +++ b/arch/x86/kvm/emulate.c
-@@ -26,6 +26,7 @@
- #include <asm/debugreg.h>
- #include <asm/nospec-branch.h>
- #include <asm/ibt.h>
-+#include <asm/text-patching.h>
+@@ -285,8 +285,8 @@ static void invalidate_registers(struct
+  * different operand sizes can be reached by calculation, rather than a jump
+  * table (which would be bigger than the code).
+  *
+- * The 16 byte alignment, considering 5 bytes for the RET thunk, 3 for ENDBR
+- * and 1 for the straight line speculation INT3, leaves 7 bytes for the
++ * The 16 byte alignment, considering 5 bytes for the JMP, 4 for ENDBR
++ * and 1 for the straight line speculation INT3, leaves 6 bytes for the
+  * body of the function.  Currently none is larger than 4.
+  */
+ static int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop);
+@@ -304,7 +304,7 @@ static int fastop(struct x86_emulate_ctx
+ 	__FOP_FUNC(#name)
  
- #include "x86.h"
- #include "tss.h"
-@@ -416,31 +417,6 @@ static int fastop(struct x86_emulate_ctx
- 	ON64(FOP3E(op##q, rax, rdx, cl)) \
- 	FOP_END
+ #define __FOP_RET(name) \
+-	"11: " ASM_RET \
++	"11: jmp fastop_return; int3 \n\t" \
+ 	".size " name ", .-" name "\n\t"
  
--/* Special case for SETcc - 1 instruction per cc */
--#define FOP_SETCC(op) \
--	FOP_FUNC(op) \
--	#op " %al \n\t" \
--	FOP_RET(op)
--
--FOP_START(setcc)
--FOP_SETCC(seto)
--FOP_SETCC(setno)
--FOP_SETCC(setc)
--FOP_SETCC(setnc)
--FOP_SETCC(setz)
--FOP_SETCC(setnz)
--FOP_SETCC(setbe)
--FOP_SETCC(setnbe)
--FOP_SETCC(sets)
--FOP_SETCC(setns)
--FOP_SETCC(setp)
--FOP_SETCC(setnp)
--FOP_SETCC(setl)
--FOP_SETCC(setnl)
--FOP_SETCC(setle)
--FOP_SETCC(setnle)
--FOP_END;
--
- FOP_START(salc)
- FOP_FUNC(salc)
- "pushf; sbb %al, %al; popf \n\t"
-@@ -1068,13 +1044,7 @@ static int em_bsr_c(struct x86_emulate_c
- 
- static __always_inline u8 test_cc(unsigned int condition, unsigned long flags)
- {
--	u8 rc;
--	void (*fop)(void) = (void *)em_setcc + FASTOP_SIZE * (condition & 0xf);
--
--	flags = (flags & EFLAGS_MASK) | X86_EFLAGS_IF;
--	asm("push %[flags]; popf; " CALL_NOSPEC
--	    : "=a"(rc), ASM_CALL_CONSTRAINT : [thunk_target]"r"(fop), [flags]"r"(flags));
--	return rc;
-+	return __emulate_cc(flags, condition & 0xf);
+ #define FOP_RET(name) \
+@@ -5044,14 +5044,24 @@ static void fetch_possible_mmx_operand(s
+ 		kvm_read_mmx_reg(op->addr.mm, &op->mm_val);
  }
  
- static void fetch_register_operand(struct operand *op)
+-static int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop)
++/*
++ * All the FASTOP magic above relies on there being *one* instance of this
++ * so it can JMP back, avoiding RET and it's various thunks.
++ */
++static noinline int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop)
+ {
+ 	ulong flags = (ctxt->eflags & EFLAGS_MASK) | X86_EFLAGS_IF;
+ 
+ 	if (!(ctxt->d & ByteOp))
+ 		fop += __ffs(ctxt->dst.bytes) * FASTOP_SIZE;
+ 
+-	asm("push %[flags]; popf; " CALL_NOSPEC " ; pushf; pop %[flags]\n"
++	asm("push %[flags]; popf \n\t"
++	    UNWIND_HINT(UNWIND_HINT_TYPE_SAVE, 0, 0, 0)
++	    ASM_ANNOTATE(ANNOTYPE_JUMP_TABLE)
++	    JMP_NOSPEC
++	    "fastop_return: \n\t"
++	    UNWIND_HINT(UNWIND_HINT_TYPE_RESTORE, 0, 0, 0)
++	    "pushf; pop %[flags]\n"
+ 	    : "+a"(ctxt->dst.val), "+d"(ctxt->src.val), [flags]"+D"(flags),
+ 	      [thunk_target]"+S"(fop), ASM_CALL_CONSTRAINT
+ 	    : "c"(ctxt->src2.val));
+--- a/include/linux/objtool_types.h
++++ b/include/linux/objtool_types.h
+@@ -65,5 +65,6 @@ struct unwind_hint {
+ #define ANNOTYPE_IGNORE_ALTS		6
+ #define ANNOTYPE_INTRA_FUNCTION_CALL	7
+ #define ANNOTYPE_REACHABLE		8
++#define ANNOTYPE_JUMP_TABLE		9
+ 
+ #endif /* _LINUX_OBJTOOL_TYPES_H */
+--- a/tools/include/linux/objtool_types.h
++++ b/tools/include/linux/objtool_types.h
+@@ -65,5 +65,6 @@ struct unwind_hint {
+ #define ANNOTYPE_IGNORE_ALTS		6
+ #define ANNOTYPE_INTRA_FUNCTION_CALL	7
+ #define ANNOTYPE_REACHABLE		8
++#define ANNOTYPE_JUMP_TABLE		9
+ 
+ #endif /* _LINUX_OBJTOOL_TYPES_H */
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2428,6 +2428,14 @@ static int __annotate_late(struct objtoo
+ 		insn->dead_end = false;
+ 		break;
+ 
++	/*
++	 * Must be after add_jump_table(); for it doesn't set a sane
++	 * _jump_table value.
++	 */
++	case ANNOTYPE_JUMP_TABLE:
++		insn->_jump_table = (void *)1;
++		break;
++
+ 	default:
+ 		ERROR_INSN(insn, "Unknown annotation type: %d", type);
+ 		return -1;
+@@ -3559,7 +3567,8 @@ static int validate_branch(struct objtoo
+ 		if (func && insn_func(insn) && func != insn_func(insn)->pfunc) {
+ 			/* Ignore KCFI type preambles, which always fall through */
+ 			if (!strncmp(func->name, "__cfi_", 6) ||
+-			    !strncmp(func->name, "__pfx_", 6))
++			    !strncmp(func->name, "__pfx_", 6) ||
++			    !strcmp(insn_func(insn)->name, "fastop"))
+ 				return 0;
+ 
+ 			if (file->ignore_unreachables)
 
 
 
