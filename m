@@ -1,84 +1,87 @@
-Return-Path: <linux-efi+bounces-3403-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3404-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F025FA96566
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Apr 2025 12:08:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2566A96567
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Apr 2025 12:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E41773AF278
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Apr 2025 10:07:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA77617B942
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Apr 2025 10:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DD220DD7D;
-	Tue, 22 Apr 2025 10:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7606620E703;
+	Tue, 22 Apr 2025 10:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QdLxnP2X"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gnv98v5g"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB001202C58
-	for <linux-efi@vger.kernel.org>; Tue, 22 Apr 2025 10:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB84220D4F6
+	for <linux-efi@vger.kernel.org>; Tue, 22 Apr 2025 10:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745316468; cv=none; b=ONP3lUjPnCE32YZQq5OTSoePN60JMVQxrCB9H/j5gT1IehkX1oc6ihSVufU1V7uEv4Oy+kAPtlu31fHx0Hbvm4611bmJxs3h4NgjHD/G+RBvutzkMwqCaZ5x1M+gR9wUDFeaAcwXcpL+fUEooWxVLX1T7w+4ESys14qmuUOdS8c=
+	t=1745316469; cv=none; b=Rbq8/5tf7leAB67d7G4KTiXF8D0I5jxK9thYtx4CZHMO7mIt3GE4xNWZ6xkaDWY1Y/jnoZwstfkC+/3ZhI7BntsKbVf7g0jMAFY7niqDXLpEnyRViYITtwXee8/GiOPovfHQ1VMJ9N0ULJz8+0FNYshJi80nMXS4LyT/BKvBUH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745316468; c=relaxed/simple;
-	bh=1fR0dH0RintstbFqdmCL2UAT0LsEVGuHzSa6RyPdsaw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kQmVgVfB+JqjDabwDbP6T+8xQy5ywjO7Z2HQoMnOe+UoNJvjbhYlncpVrfKvWwWPoW0q36LumHfB9AN6mw0swEuHsx/xdzShAe6P06eZgysVjyUiIc5cw+LJQWC4QRZSNURvdulBKHXTBx8RAVCwvKKMR3IB41sGY0PGNws2N10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QdLxnP2X; arc=none smtp.client-ip=209.85.221.74
+	s=arc-20240116; t=1745316469; c=relaxed/simple;
+	bh=Cm8NWA5BP3mKS9HwnzkrkrTJStSA8teiiKrtym1me88=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dq74akVjgl44sFPl3ZQl6cOzhwSyxQeF6lJTxPvNL4RZbbkmj6a9Z8+FD/1Cya+TzYS66FXrYZtLhFr8Nw8+2nCwhyHKjvjLtYB/nbO/5isJJUi3JGJ1iP/xz76oWoli1nP6ljGT+j7oAHLbr29o0finSlATTSKYEG3zfkVebRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gnv98v5g; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a064c45effso157855f8f.3
-        for <linux-efi@vger.kernel.org>; Tue, 22 Apr 2025 03:07:45 -0700 (PDT)
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-44059976a1fso18695415e9.1
+        for <linux-efi@vger.kernel.org>; Tue, 22 Apr 2025 03:07:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745316464; x=1745921264; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QDftWqKzBlMt8XCi/V/Dahfsag84zMOHOMka9GDde+A=;
-        b=QdLxnP2XUueIscvv9E79caySR/LwTN6e/6i+86LKzHZSh7PUMhFZlSQYNyiIg3glGK
-         DoMkFNOBQCW5SiAhPHVUHwZAzU8+jxhopQUXOOUw5AYuYwp4ar0QQr68A7GiT3o4VlGx
-         TlEBdm2w96LV3V5+HN8i2/GTVwUVR4D9d/gxCTFqYC63wVD1LUMeddLoQqSAyph8AraF
-         tD1wFxh38W8CgPsAanzco9tKWgzwvGPsC/kW+lyFcsgbUoOzGwCFA9upod7idiY7KAvO
-         gDyYW8lIGsxYuVID9q7PjfKQHPv3ND7kxMCeUNMHhHD0msPr54aFpC5lB8hJ2EZ7yWLL
-         EPUQ==
+        d=google.com; s=20230601; t=1745316466; x=1745921266; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xt0ht6liAgPY3lQrG7FkkuME9QDJdGbeFpIuIVjivfE=;
+        b=gnv98v5g+ee2IpRCfC+VIpVf1Wg+rOgXD4tOX9hubh77xBTulbIwbhSuFGnnwViKRo
+         BQmHbxKyWoGez6D975U1p651TZPs5FB7qSdJP4qqFTKEUygl04s8zNpVsBNxtpHogzoE
+         VL2H7L9loKHnA7aT090faDSFK7hFbj6j6STqVAaTwFI5pF6mC084IlD92o8w5P58vGow
+         nNcC34+W8W6+gR8secqXWQ9/ZjdoytMCkBZY/zNQ7k9rmXR7bVzmzIvSKVpizA426/94
+         nYGFmOihlHUEalJAEA7fWd/fGeqveurn3kp3sRjZMEvJLEgIMRhFRBtv4uSFOPCqqQQM
+         MDGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745316464; x=1745921264;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QDftWqKzBlMt8XCi/V/Dahfsag84zMOHOMka9GDde+A=;
-        b=QAECp75GOGRVshuBvGpsdVihjuF/GVeaz6RdJO2EjGcVgz4sNTVk8mQDslwoP99Mki
-         jmJiDiMQLUvJ2Ouw0Xur5NcfLa1QDld634BEX1qVZ2/MKjgW2GroAgLcsG8gH8BWSdoa
-         ys/b+RHCDtyBR28AfP6RSqPZUVfCWQL6HGDO2lRtuj5rW2labzy5FFsmGEIaLTc0HvrJ
-         etJc7CA7oeErNqB2hCS72YViW08jjasa1Y2Xs5pJjW5NttxExrUqByGHge+CFpqPAgBJ
-         7dgEc18R17O52Xc/px5G7pTo6B5JovTnYRyTXPjMUbVmCueiWYXoeTmjxAnJDzFZlixI
-         Nn+A==
-X-Gm-Message-State: AOJu0YzPzSuyxeaIUNdUwnwmtWKV4iQMbiEYkTIrmMiuu+CbjJTMjH5M
-	WsY7vj+mcnJRYo6LpnCEotWwHoXwPBxvwPCpHewSphWZf1SQG7cJ86i4yW8qTcx1kMQeNo3K1mG
-	voz+pPL8J6cXCS7D8WByvdLp1nwq/sp5Kgj99OU9KS8vRv4io7JHNzWOner+3UynRB4VgbFC+jT
-	CaBSeepdz8SmH20JQvBWZXNXvkCw==
-X-Google-Smtp-Source: AGHT+IGebj0qNJk2EemHV9syWL6Bji6qtR5p43PHcYDuuG3MkT7auWDh6gJqd2jdVjcHGKOREjTkWg5Y
-X-Received: from wruo4.prod.google.com ([2002:a5d:6704:0:b0:39d:7be5:b8fa])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:1862:b0:39e:f9e8:d07d
- with SMTP id ffacd0b85a97d-39efba3fe8fmr11328319f8f.20.1745316464089; Tue, 22
- Apr 2025 03:07:44 -0700 (PDT)
-Date: Tue, 22 Apr 2025 12:07:29 +0200
+        d=1e100.net; s=20230601; t=1745316466; x=1745921266;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xt0ht6liAgPY3lQrG7FkkuME9QDJdGbeFpIuIVjivfE=;
+        b=chn/CErJ9xJM8kBqu/h/M+FTtq8HXDlIisCHGzH7QAHDUnsJFSfuZaULAPlAh5zQKB
+         Xd3CKfQeRKHE+7SqDa3mfI1IyvkfYVP5UpOZUULnZ4VDzdsnnSyCKID2h1TdnvHGLgDZ
+         0uXpFw/7Za4nNGJBqORooZIgI4izuGrEBgyAw1sYMNOgrLJ2/4SeppHP90/xGq5Qr/7+
+         i2zBPf+kgw1BWw0QXotg6sSsuU3K+oTecbOdvTJAOgU6ZDb+NEKlkXw93fwRhtuaJRAg
+         TJuHRRD6e9SN8AimFq0rrmbBkIxAW3U+QG2LzPl/YU4COyVjAlJiztfIPiqAPrZWZNiR
+         rUpw==
+X-Gm-Message-State: AOJu0YxbmJLnVb1n6Xs3xcGxt9tnOndpB3QM5Q8aYTRYm516U0IYuIDP
+	FUZi863xpkDWMtGQJTU9wxrSqn5nyYYnhI9vC+k8BFcNPLfIWqPHZ0DpJltgs16eLvIyQKweHqn
+	mouH561U/PMjd1QO2fmi3dc+tJhB1gwe3dr8fSYq0VNPzUroHa6ji+WZx/u0E2LQNHdM/v5zgtr
+	uwg6bW5Cahwj8JNq5hXSsO9mrd7w==
+X-Google-Smtp-Source: AGHT+IFa177tG0VYSvpzMK9rSDaRQOZxLvX6M1Bp/PdZtKRH9VOk+HdFbm4GTEF/y+LLNhansKj0GIP+
+X-Received: from wmbef18.prod.google.com ([2002:a05:600c:6612:b0:43d:b71:a576])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:a00e:b0:43c:f050:fee8
+ with SMTP id 5b1f17b1804b1-4406abffbdbmr123746275e9.20.1745316466140; Tue, 22
+ Apr 2025 03:07:46 -0700 (PDT)
+Date: Tue, 22 Apr 2025 12:07:30 +0200
+In-Reply-To: <20250422100728.208479-7-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20250422100728.208479-7-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1549; i=ardb@kernel.org;
- h=from:subject; bh=W86JfsY6FfgryqNMQ3l2xd2Agk3plBhuN6POLUQIVIQ=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIYM9K/FBmeoNxvceFRs1z3zqn/JQMtgjSsXfXLN4yjWjz
- gPXZJw7SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwEQKcxj+yof0MS4592zexD1b
- J+bvnbOnt4rzo+f1FVu0XzI+lUszEGdk2Gw54bbIwm9MnyLXzDjx6pTKzZ7KOiaNzc8DDN9FHfj 8mBEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1291; i=ardb@kernel.org;
+ h=from:subject; bh=EBYOXtesZbsjk0rQlr19cXSRJkHWcOkYu0UuVsNKW58=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIYM9K/V8wE3lQtbPO61Cvi1r5+RStNpdpaTQx/r2+ceWf
+ bPkJ8/tKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABMRn8HIsL3uyz/HXbkmDyZn
+ t+QGTSk8smBP7cMJW85uU7trUPOkRoXhr4zyvZ4/T5dISoZ87Fmbd8cx5+WMU1sETEqWhBf6Ljr MzQAA
 X-Mailer: git-send-email 2.49.0.805.g082f7c87e0-goog
-Message-ID: <20250422100728.208479-7-ardb+git@google.com>
-Subject: [PATCH v3 0/5] efi: Don't initalize SEV-SNP from the EFI stub
+Message-ID: <20250422100728.208479-8-ardb+git@google.com>
+Subject: [PATCH v3 1/5] x86/boot: Drop unused sev_enable() fallback
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, mingo@kernel.org, 
@@ -89,42 +92,37 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Changes since v2: [1]
-- rebase onto tip/x86/boot
-- add patch to remove unused static inline fallback implementation of
-  sev_enable()
+The misc.h header is not included by the EFI stub, which is the only C
+caller of sev_enable(). This means the fallback for cases where
+CONFIG_AMD_MEM_ENCRYPT is not set is never used, so it can be dropped.
 
-Changes since v1: [0]
-- address shortcomings pointed out by Tom, related to missing checks and
-  to discovery of the CC blob table from the EFI stub
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/x86/boot/compressed/misc.h | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-[0] https://lore.kernel.org/all/20250414130417.1486395-2-ardb+git@google.com/T/#u
-[1] https://lore.kernel.org/all/20250416165743.4080995-6-ardb+git@google.com/T/#u
-
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Kevin Loughlin <kevinloughlin@google.com>
-
-Ard Biesheuvel (5):
-  x86/boot: Drop unused sev_enable() fallback
-  x86/efistub: Obtain SEV CC blob address from the stub
-  x86/boot: Drop redundant RMPADJUST in SEV SVSM presence check
-  x86/sev: Unify SEV-SNP hypervisor feature check
-  x86/efistub: Don't bother enabling SEV in the EFI stub
-
- arch/x86/boot/compressed/misc.h         | 11 -------
- arch/x86/boot/compressed/sev.c          | 33 +-------------------
- arch/x86/boot/startup/sev-shared.c      | 33 +++++++++++++++-----
- arch/x86/boot/startup/sme.c             |  2 ++
- arch/x86/coco/sev/core.c                | 11 -------
- arch/x86/include/asm/sev-internal.h     |  3 +-
- arch/x86/include/asm/sev.h              |  4 +--
- drivers/firmware/efi/libstub/x86-stub.c | 27 +++++++++-------
- 8 files changed, 48 insertions(+), 76 deletions(-)
-
-
-base-commit: ff4c0560ab020d34baf0aa6434f66333d25ae524
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index dd8d1a85f671..1e950bc5b085 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -144,17 +144,6 @@ void snp_set_page_private(unsigned long paddr);
+ void snp_set_page_shared(unsigned long paddr);
+ void sev_prep_identity_maps(unsigned long top_level_pgt);
+ #else
+-static inline void sev_enable(struct boot_params *bp)
+-{
+-	/*
+-	 * bp->cc_blob_address should only be set by boot/compressed kernel.
+-	 * Initialize it to 0 unconditionally (thus here in this stub too) to
+-	 * ensure that uninitialized values from buggy bootloaders aren't
+-	 * propagated.
+-	 */
+-	if (bp)
+-		bp->cc_blob_address = 0;
+-}
+ static inline void snp_check_features(void) { }
+ static inline void sev_es_shutdown_ghcb(void) { }
+ static inline bool sev_es_check_ghcb_fault(unsigned long address)
 -- 
 2.49.0.805.g082f7c87e0-goog
 
