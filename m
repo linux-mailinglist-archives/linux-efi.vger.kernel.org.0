@@ -1,137 +1,119 @@
-Return-Path: <linux-efi+bounces-3421-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3422-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDB0A97829
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Apr 2025 23:05:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935E9A97834
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Apr 2025 23:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7173D1892EDD
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Apr 2025 21:05:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C26A6174DCE
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Apr 2025 21:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1329F2D3222;
-	Tue, 22 Apr 2025 21:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8745F2D92EC;
+	Tue, 22 Apr 2025 21:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X4vEE4GW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4tHydMW"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D5D223DE0
-	for <linux-efi@vger.kernel.org>; Tue, 22 Apr 2025 21:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D30C44C63;
+	Tue, 22 Apr 2025 21:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745355922; cv=none; b=sN6SWb77T3CeOCielEFeqhPA5e517tyDqULs26Fssr3vXCIERwHL0ZoP9MuBYCCM/c7AJrg/6z0jMKUG+qIuGtA/eLfQo8gBDRB21gwDXqp0SjQv1b6HcxryOpAXfAjcIBPBBTnYtGmEHbgXpi8QTatZ9mllSdpk8c7FGTWnXu8=
+	t=1745356173; cv=none; b=K2iYUgnJtrvLCRELcIFzFQTcy3saZvXPtOZqpYnozU7XawK3Tl0+JMICkUM00/q2KJ7TOqWBZq4yYJEp0pVOOvcaniopTYOW43wk+oGrgybGDqj2wX/sGDjOda0r8l3UIiT9uPXWdDBBeqBii/d0g/F8DlmIMQwN42jvvk2kw+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745355922; c=relaxed/simple;
-	bh=v+uRwsLHOmfzDIF0pS527DuRyohTPzs55tPRSQDz0WU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=A9r8pzySuVeNSz36UCdbS4QyLF8wc0397FoRMs8jI6XOt0O/A4KhMOc1Gh+84A/TKfuL6jBYg7He9fZSZGyTOd5sTNiU8eYBkKrwKqw88W3e5088n4m6hGO9N7xocs/aZ/pPd3misbl2GgY7Kwa95Fnw0EfsZOxoAmxXsLJmx7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X4vEE4GW; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d0830c3f7so42245225e9.2
-        for <linux-efi@vger.kernel.org>; Tue, 22 Apr 2025 14:05:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745355918; x=1745960718; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=n3xzr97fcLCVm/TFf8Ltlpp7pDJFo4k3zJ++YTMvpc4=;
-        b=X4vEE4GWloTFkz7UCl4A9lUXJLfHm5wVzrpWk5CUxwIwIqaXX+BgmKVavc62PuCvbc
-         5a7+tAIWkjjQ3vTxwuJCygl9vTDCMFxey0o5wqVlQD0tbV3uDJhgFmfecdB62oRWFODE
-         erxpMw1/SmQ12KtzjxxfWZGOx2IjiHKGJJSQTZxj01bEG9oLNtKw9luF4ZsTog0efPxh
-         Qw3mH5lkuKpIBB7/MZh1yEPG4LTrKA0eX8cxbYV1r2sdpYKvY3CUL225wW3N1/o3QNGv
-         cbwBG1tDyG4QAP21L70aMUagQwDGO9NL+CgOUudcyETAq+XK5Chuq+Dti7aF9hm8w3K0
-         kRPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745355918; x=1745960718;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n3xzr97fcLCVm/TFf8Ltlpp7pDJFo4k3zJ++YTMvpc4=;
-        b=eh1mrUl7Fe8qC8LeAAiHVF3E90z8Dl0LDC0kiQpsnRPl6ShAqhp6Fse4wKzV3aeDgW
-         Kx9hxBwi+sh9tdUBmqHpQ61KTrFO+0nI8jEsV1XKqQnNLgarTigE7KEnTrN/qORMzsMh
-         zCN/c0/BQ/woR7tTKxmYG4l458+f/OgXJuHl/ZGKXRm4pVSsCbs+zxUSSySEiyJa9ehE
-         XlXbe9uUGd7HsMLRXFZ+CaHh1Pnzn1+b6oo7L44mRrQDnrUXnuaTR6UmRSKfiO11VYHO
-         5FoMjYRnWlIQx6z7+fDccPCeqvtMcEKmEXFj6FxwESo6KxCdzyTR5Y/8LzY/4+KWq2D7
-         aekg==
-X-Gm-Message-State: AOJu0YxMd5dMosK6MJs5U4a8Duk+2Kv9EnuvaPYPN892nktzLtSgl5YJ
-	UHLFhiJAktPi8J4MNL9SNzJzRmn0XhOzK1AA2w++YtpytxOi1eyXvYwSpvxj+bcVvQGUNw==
-X-Google-Smtp-Source: AGHT+IEbPr6RfYyB6bDIsqR5ctTWIiR1x5gwGJliOycccBzchng1hfEmpr+1CfRO1M1GeUqnfz2YJHoU
-X-Received: from wmbfo18.prod.google.com ([2002:a05:600c:6912:b0:43c:ebbe:4bce])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3107:b0:43c:f64c:447f
- with SMTP id 5b1f17b1804b1-4406ac163bemr114862075e9.29.1745355918724; Tue, 22
- Apr 2025 14:05:18 -0700 (PDT)
-Date: Tue, 22 Apr 2025 23:05:11 +0200
+	s=arc-20240116; t=1745356173; c=relaxed/simple;
+	bh=cUfr38oNyf5FiuP5Az5z+qfc1012SRvrP45HcXUZq2Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MswKBaTVSSlaimmGEkBvNmi5Ft1Fx1OE2qQ49ubQqILmIOI8HTXzyV2PYS3mamzBjKba+7OVbhRZyoe4boFTQwRla/soqpL5XhWtmnf8OWLVENIBiUM4qpuG1okO0apsuG71NiwCxVO0UjrGnrOs1wpjWclLKh//K+jnAWzsxzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4tHydMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD78C4CEEF;
+	Tue, 22 Apr 2025 21:09:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745356172;
+	bh=cUfr38oNyf5FiuP5Az5z+qfc1012SRvrP45HcXUZq2Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=h4tHydMWGBzkNsJAaDxUwnmADNZnbFK11jaeXREqAvyQwjy5HkQClcOptSmCi1xC2
+	 dhg4NHIJvUAW6m+RvjYCBd4Xmb+9NRf2v3LAaxTFa8m+msxLRVFywasG/LuV2Fjp0W
+	 m18XWQIIUz3eUTX6IMnEwYrZ+P/ilQ1jABrbOkxRpwUxM/35FVSpnc+cYeP6FaMQz+
+	 mOUjJAmBFVsyQRrFo4uy2OS/KPiuiMIWez445xG1dOqi7wpmAgGv/9E7ACKrEVs7O7
+	 4VVjxzEl2AgDi1NvmRZiwYiVVAEjMKUUmuCyvFmuOuez13qXOKNuvxOZ8DFE3fSiUN
+	 0znUL8t/lowUQ==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3106217268dso48820981fa.1;
+        Tue, 22 Apr 2025 14:09:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU7kvCzTEvmjkAxSGRgWgrbU1+bHXDID6mc3I4Mnw7T+utBKbIYqi/AUbF8sBYCMPVTOdewgFhm5lI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfMVyi2EN7HgxnvQZz0GJ3rvApVEwoBcKnNeX0ewBGrvVBryf5
+	QnfeyTb0htmqFWfLsIBvCyk+M9SFqvC6F6lWgjYNc+zdOUFCvLX3U5+IsLm87ssbx97XhxNGDB9
+	O8Vak9VeAOAyn+M1YW8+n/8piOGg=
+X-Google-Smtp-Source: AGHT+IGECkHZEwYZpAAjD4PP33tzMkJ06C42kDwzhLn2NXoc33aFewNDYieYlyzoMcJuLlB120BJRxkcs7O4aEvoT6c=
+X-Received: by 2002:a2e:b894:0:b0:30b:cc6a:ffd9 with SMTP id
+ 38308e7fff4ca-310903bc156mr50938111fa.0.1745356171224; Tue, 22 Apr 2025
+ 14:09:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1715; i=ardb@kernel.org;
- h=from:subject; bh=v7Nzmlu0nL1IVS/E9VJILt/bwvWjc5W8Q425XyUylHY=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIYODpV1+x41zPoJv/pRK3okt3bQp0KTygdupeqE//7Ieh
- r+ekryxo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExkawXD/5Tyl1P0Jrm9S704
- 6fvXo9G8Ra/MExcae8r/7qg+OC+IIYDhv8eXaMnf1ySzektn2jDJX/mTVDGpcv6hp3KO/oei/db u4wYA
-X-Mailer: git-send-email 2.49.0.805.g082f7c87e0-goog
-Message-ID: <20250422210510.600354-2-ardb+git@google.com>
-Subject: [PATCH] x86/boot: Disable jump tables in PIC code
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-efi@vger.kernel.org, mingo@kernel.org, x86@kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>
+MIME-Version: 1.0
+References: <20250418141253.2601348-8-ardb+git@google.com> <aAf0K4sMd8brAQ_z@gmail.com>
+In-Reply-To: <aAf0K4sMd8brAQ_z@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 22 Apr 2025 23:09:19 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEALOpMggoxx6wVTdpTR14krSSrxFKoOKWAfh15x9z4CQ@mail.gmail.com>
+X-Gm-Features: ATxdqUGfzivbHQib5siDP-hsmWvJwZX6k_R82PIwEbcyI7ATkxw5MA0M5mdVD2o
+Message-ID: <CAMj1kXEALOpMggoxx6wVTdpTR14krSSrxFKoOKWAfh15x9z4CQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/6] x86: Refactor and consolidate startup code
+To: Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Tue, 22 Apr 2025 at 21:55, Ingo Molnar <mingo@kernel.org> wrote:
+>
+>
+> * Ard Biesheuvel <ardb+git@google.com> wrote:
+>
+> >  10 files changed, 1757 insertions(+), 1724 deletions(-)
+>
+> So I think this is a new build warning/failure (config attached),
+> from objtool:
+>
+>   arch/x86/boot/startup/sev-startup.o: warning: objtool: vc_check_opcode_bytes+0x53: can't find switch jump table
+>
+> Note that it's a randconfig.
+>
+> No such warning triggers on:
+>
+>   a1b582a3ff61 Merge branch 'x86/urgent' into x86/boot, to merge dependent commit and upstream fixes
+>
+> which is the base of the commits:
+>
+>   ff4c0560ab02 x86/asm: Retire RIP_REL_REF()
+>   681e2901330c x86/boot: Drop RIP_REL_REF() uses from early SEV code
+>   a3cbbb4717e1 x86/boot: Move SEV startup code into startup/
+>   234cf67fc3bd x86/sev: Split off startup code from core code
+>   b66fcee1574e x86/sev: Move noinstr NMI handling code into separate source file
+>   092071e0f63c vmlinux.lds: Include .data.rel[.local] into .data section
+>   a1b582a3ff61 Merge branch 'x86/urgent' into x86/boot, to merge dependent commit and upstream fixes
+>
+> Unsurprisingly:
+>
+>   starship:~/tip> git bisect bad
+>
+>   a3cbbb4717e120f9e53fa7685909b310f7e99bf5 is the first bad commit
+>   commit a3cbbb4717e120f9e53fa7685909b310f7e99bf5 (HEAD)
+>   Author: Ard Biesheuvel <ardb@kernel.org>
+>   Date:   Fri Apr 18 16:12:58 2025 +0200
+>
+>     x86/boot: Move SEV startup code into startup/
+>
 
-objtool already struggles to identify jump tables correctly in non-PIC
-code, where the idiom is something like
+Yeah, my bad - I forgot to disable jump tables, which objtool doesn't
+handle well to begin with, but this is much more difficult for jump
+tables emitted under -fPIC
 
-  jmpq  *table(,%idx,8)
-
-and the table is a list of absolute addresses of jump targets.
-
-When using -fPIC, both the table reference as well as the jump targets
-are emitted in a RIP-relative manner, resulting in something like
-
-  leaq    table(%rip), %tbl
-  movslq  (%tbl,%idx,4), %offset
-  addq    %offset, %tbl
-  jmpq    *%tbl
-
-and the table is a list of offsets of the jump targets relative to the
-start of the entire table.
-
-Considering that this sequence of instructions can be interleaved with
-other instructions that have nothing to do with the jump table in
-question, it is extremely difficult to infer the control flow by
-deriving the jump targets from the indirect jump, the location of the
-table and the relative offsets it contains.
-
-So let's not bother and disable jump tables for code built with -fPIC
-under arch/x86/boot/startup.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/boot/startup/Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/boot/startup/Makefile b/arch/x86/boot/startup/Makefile
-index e5f77e65c083..4062582144f6 100644
---- a/arch/x86/boot/startup/Makefile
-+++ b/arch/x86/boot/startup/Makefile
-@@ -5,6 +5,7 @@ KBUILD_CFLAGS		+= -D__DISABLE_EXPORTS -mcmodel=small -fPIC \
- 			   -Os -DDISABLE_BRANCH_PROFILING \
- 			   $(DISABLE_STACKLEAK_PLUGIN) \
- 			   -fno-stack-protector -D__NO_FORTIFY \
-+			   -fno-jump-tables \
- 			   -include $(srctree)/include/linux/hidden.h
- 
- # disable ftrace hooks and LTO
-
-base-commit: ff4c0560ab020d34baf0aa6434f66333d25ae524
--- 
-2.49.0.805.g082f7c87e0-goog
-
+I've sent a patch to disable them.
 
