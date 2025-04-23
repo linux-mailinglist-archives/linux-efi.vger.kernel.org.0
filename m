@@ -1,143 +1,128 @@
-Return-Path: <linux-efi+bounces-3426-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3427-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23884A98181
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 09:48:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526E8A984DA
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 11:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 933427A6496
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 07:47:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF802162389
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 09:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D460D266B71;
-	Wed, 23 Apr 2025 07:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02C2264A97;
+	Wed, 23 Apr 2025 09:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qXld7wyZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tQWH0pm4"
+	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="mACXAwmz"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF851F4171;
-	Wed, 23 Apr 2025 07:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B84A2641F8;
+	Wed, 23 Apr 2025 09:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745394485; cv=none; b=FveWindI8s++jYAB0esx8F4vAg0gu6z8wcXv8iHfmzptQA32Ko2O+nfLNMsW84sYeronyk9uM7xUdsTHp1x9i9iyaP1YR+QZba52sYv/VZLAzLh21f/V/ylMbCf4GqrodSWALbXKGq46l0ii1dBSC5MmOMTKzOFb/RWNPTcxeiA=
+	t=1745399134; cv=none; b=FFNIB+qYlaTr/2TjAw6/YmBmfR2GZPwtXVtJ50lehlgXy9aGHx94ohhtOhMqtWNgd/l+QHIA9wIivbRda4T03EcWtVeJ9mnlUu5UfSabBivuzsQZo01raCuSGg2sld2q4q36zdSkXTxTn4zHtKKfipAUCJiEygdp3QNpmlrdBaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745394485; c=relaxed/simple;
-	bh=ZCq9kT5F1hlUKckchQHoUy3rpJpJ6Erjv1VBOGMNspU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=obax4Jj2/VAtQcJZweUpJ+KnnX9mBgTnL+Q1V2rZjFEb3NRQ53A0CUlqcHpntFHCcIUNl9BLvnfcZpMTAtuzZw3Vgzd1bxbbX1N2uw7bOPzOmTvaZ2ptOjjmbq/JDSaycCsEkcE0C/isGAvjaIupKRZRzAt/PRCOjmDr5oNVj3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qXld7wyZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tQWH0pm4; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 23 Apr 2025 07:48:01 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1745394482;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EhtksW+UkwY1zWbbWhaQ5zWYA23x0Jq2UsBmThTPVX8=;
-	b=qXld7wyZsv28HIyrjqQCTQznKRiR4+qR+XWyT0fTRi69n00VxgwJ3frhkpHEbMzvvOa59z
-	fWsPKya0sU2EBzzOhcVP6END6oJ4ncNwu+qm8ceiGJ0QK8YxrC+OcT6Pv1byg/d363ctE0
-	ox4K9gW1TRORM0pREmOhWTLY2dpqKKQc2rrh92hzdtRj1xMMyjk1fVsthqfc+/w7H8oQaN
-	rJ8ROgXLXxMt98PGmxYggFeXQ7eq15dg4ZMLXE7mkYqcXXXzsTii7flAOenY9bTRPmR4QN
-	wpPIUy3mOLJLkiLz3vdWkrTyjXjuwjJEXakuOL7Eb79eK8GcgLxQkzgANLQKsQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1745394482;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EhtksW+UkwY1zWbbWhaQ5zWYA23x0Jq2UsBmThTPVX8=;
-	b=tQWH0pm4n1pLquYm5w/zCe2cOGjcyAA/inr9rO5bZid/UojYnEEtz9r9fvUk1dEH42Dihx
-	M8E869xhi5wR4vCQ==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot: Disable jump tables in PIC code
-Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- linux-efi@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250422210510.600354-2-ardb+git@google.com>
-References: <20250422210510.600354-2-ardb+git@google.com>
+	s=arc-20240116; t=1745399134; c=relaxed/simple;
+	bh=5LRmniywZxMxDlI5Oxe49VfAgh8CxFPg1n4DHapt+9k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mmjsEVGMh6Dvewu0hPnF7RewXbl67ZJ4MRyvF0KLlGXegnkK/tZSjQ8IlM3+BpKzrmOGzg0yRMPpZtbtKWKVA5DvHwmE5qGO3YROIabGIGn2FIYEa+SpeYdoeqovNhibkQkEMfbvQg3knlH5w2p4NvT5wRmYlwFe4ciBKTh73xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=mACXAwmz; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1745399133; x=1776935133;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FXlYnAZ24E+gP3h3vZ2maJPRoNj+Qo4OgFh+v0oTL4I=;
+  b=mACXAwmzEBH62QT+7z1HtAKbTm4ra2yq33Mo0i9kqETCCSafu2IOjg3a
+   qgXUN6WJfxXD6XpVdN3UkoxM9ybCQvUyhXFzOG8J11nyuHRp50wQO+S7y
+   uC98lIpmZIcd4X9F3lY+qTA88lsKJNdsY90HtNVreQyvUP04QDZtTZuPx
+   c=;
+X-IronPort-AV: E=Sophos;i="6.15,233,1739836800"; 
+   d="scan'208";a="818324122"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 09:05:27 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [10.0.43.254:2286]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.11.178:2525] with esmtp (Farcaster)
+ id e508e646-c623-42bd-acdb-51aeea751e1c; Wed, 23 Apr 2025 09:05:26 +0000 (UTC)
+X-Farcaster-Flow-ID: e508e646-c623-42bd-acdb-51aeea751e1c
+Received: from EX19D029EUC001.ant.amazon.com (10.252.61.252) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 23 Apr 2025 09:05:25 +0000
+Received: from dev-dsk-bsz-1b-e2c65f5d.eu-west-1.amazon.com (10.13.227.240) by
+ EX19D029EUC001.ant.amazon.com (10.252.61.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 23 Apr 2025 09:05:23 +0000
+From: Bartosz Szczepanek <bsz@amazon.de>
+To: Ard Biesheuvel <ardb@kernel.org>
+CC: <nh-open-source@amazon.com>, Bartosz Szczepanek <bsz@amazon.de>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] efi: Improve logging around memmap init
+Date: Wed, 23 Apr 2025 09:05:16 +0000
+Message-ID: <20250423090517.47049-1-bsz@amazon.de>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174539448176.31282.2929835259793717594.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
+ EX19D029EUC001.ant.amazon.com (10.252.61.252)
 
-The following commit has been merged into the x86/boot branch of tip:
+Be more informative if memremap fails, and print out physical address
+together with size. This change intends to make investigations of such
+early failures slightly easier.
 
-Commit-ID:     121c335b36e02d6aefb72501186e060474fdf33c
-Gitweb:        https://git.kernel.org/tip/121c335b36e02d6aefb72501186e060474fdf33c
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Tue, 22 Apr 2025 23:05:11 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 23 Apr 2025 09:30:57 +02:00
-
-x86/boot: Disable jump tables in PIC code
-
-objtool already struggles to identify jump tables correctly in non-PIC
-code, where the idiom is something like
-
-  jmpq  *table(,%idx,8)
-
-and the table is a list of absolute addresses of jump targets.
-
-When using -fPIC, both the table reference as well as the jump targets
-are emitted in a RIP-relative manner, resulting in something like
-
-  leaq    table(%rip), %tbl
-  movslq  (%tbl,%idx,4), %offset
-  addq    %offset, %tbl
-  jmpq    *%tbl
-
-and the table is a list of offsets of the jump targets relative to the
-start of the entire table.
-
-Considering that this sequence of instructions can be interleaved with
-other instructions that have nothing to do with the jump table in
-question, it is extremely difficult to infer the control flow by
-deriving the jump targets from the indirect jump, the location of the
-table and the relative offsets it contains.
-
-So let's not bother and disable jump tables for code built with -fPIC
-under arch/x86/boot/startup.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-efi@vger.kernel.org
-Link: https://lore.kernel.org/r/20250422210510.600354-2-ardb+git@google.com
+Signed-off-by: Bartosz Szczepanek <bsz@amazon.de>
 ---
- arch/x86/boot/startup/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/efi/memmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/startup/Makefile b/arch/x86/boot/startup/Makefile
-index 21d911b..b514f7e 100644
---- a/arch/x86/boot/startup/Makefile
-+++ b/arch/x86/boot/startup/Makefile
-@@ -5,6 +5,7 @@ KBUILD_CFLAGS		+= -D__DISABLE_EXPORTS -mcmodel=small -fPIC \
- 			   -Os -DDISABLE_BRANCH_PROFILING \
- 			   $(DISABLE_STACKLEAK_PLUGIN) \
- 			   -fno-stack-protector -D__NO_FORTIFY \
-+			   -fno-jump-tables \
- 			   -include $(srctree)/include/linux/hidden.h
+diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+index 34109fd86c55..f1c04d7cfd71 100644
+--- a/drivers/firmware/efi/memmap.c
++++ b/drivers/firmware/efi/memmap.c
+@@ -31,31 +31,32 @@
+  * Returns: zero on success, a negative error code on failure.
+  */
+ int __init __efi_memmap_init(struct efi_memory_map_data *data)
+ {
+ 	struct efi_memory_map map;
+ 	phys_addr_t phys_map;
  
- # disable ftrace hooks and LTO
+ 	phys_map = data->phys_map;
+ 
+ 	if (data->flags & EFI_MEMMAP_LATE)
+ 		map.map = memremap(phys_map, data->size, MEMREMAP_WB);
+ 	else
+ 		map.map = early_memremap(phys_map, data->size);
+ 
+ 	if (!map.map) {
+-		pr_err("Could not map the memory map!\n");
++		pr_err("Could not map the memory map! phys_map=%pa, size=0x%lx\n",
++			&phys_map, data->size);
+ 		return -ENOMEM;
+ 	}
+ 
+ 	map.phys_map = data->phys_map;
+ 	map.nr_map = data->size / data->desc_size;
+ 	map.map_end = map.map + data->size;
+ 
+ 	map.desc_version = data->desc_version;
+ 	map.desc_size = data->desc_size;
+ 	map.flags = data->flags;
+ 
+ 	set_bit(EFI_MEMMAP, &efi.flags);
+ 
+ 	efi.memmap = map;
+ 
+-- 
+2.47.1
+
 
