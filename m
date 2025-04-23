@@ -1,43 +1,43 @@
-Return-Path: <linux-efi+bounces-3432-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3434-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E27EA9910E
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 17:26:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A61A9929A
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 17:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA51A1BA149B
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 15:20:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B74C67AD19D
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 15:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0696A293B53;
-	Wed, 23 Apr 2025 15:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602D92949FC;
+	Wed, 23 Apr 2025 15:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0fx1tax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNn5b2zR"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C1C2641EA;
-	Wed, 23 Apr 2025 15:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F26C284692;
+	Wed, 23 Apr 2025 15:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421183; cv=none; b=uxOFyus61boX7kL/cMcMH7CPtjL258R23jFwqSyUyFAF6vBzp5WQdcEsocPaieDHJ8ELdVlJ56vht8nxJRUOYu08VjjscR1pW7H6o1+qY4llk++UDyAv3//frDXamWpeR9idqi4J8H5koO+0ipecIj4TxJDZCftneDWG5CxIs38=
+	t=1745422407; cv=none; b=J6Rp1gK7uCXm7+tzhhHcC0z34ISHMgHQXUXbWp95FZ3JCUEMLvLOBxOKDPdetO3ohUxTEa72eR6NXCR8v3ZPpe57TGEjP0ugp7u8Lwk6az9oDZ9zO1otLB8qVxaQfN1K2H9yjrQ1KNjhoUC9oqfwrDcgAhtF+m0EAxZ8IapMmbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421183; c=relaxed/simple;
-	bh=HC0MYwYV0YFtr87RBblIqOtWJoq6NR83UHidBGoSxNE=;
+	s=arc-20240116; t=1745422407; c=relaxed/simple;
+	bh=3qK+e7XRzOuOELogCqGqcT31l9mp+GR5fCKHDKkpa6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBye78CYg25O1MKh1+WQdctnW7/AYNZsbHrYb33MkaqQvC5gRUuIpcrghuwFg5t4d0cIw2+5iOm1d7c2lZQ2apP0BMTzk6D+QgWrZxnt0sfKIk/CifUuatJTngHbVv2OD1Q8QPol2U8fcM2Sa5BTsCYB6DCc0g25Dlt95G7wOv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0fx1tax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6404EC4CEE2;
-	Wed, 23 Apr 2025 15:13:03 +0000 (UTC)
+	 MIME-Version; b=HMpsa0iau8gTXpzZj/T/ly+YIaztb08CNmoUXyscyzY33KKRcPG2dYoOF8XDkMk8kUSkZ2QUZv0K5CIrgA1ukUdnzrT1q4JvdhQLNRah5tvdf3VkQQeccndB1QAyJ66D+FheInjstfRKj0tJoeILGw2GuGMvaquwnyABWa+P2Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNn5b2zR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F873C4CEE2;
+	Wed, 23 Apr 2025 15:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421183;
-	bh=HC0MYwYV0YFtr87RBblIqOtWJoq6NR83UHidBGoSxNE=;
+	s=korg; t=1745422407;
+	bh=3qK+e7XRzOuOELogCqGqcT31l9mp+GR5fCKHDKkpa6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0fx1taxnFnWc0DU6yP8xK2APQKCKL6mqskGcsVw0L4suV/5joY339rV6BNh4moWR
-	 J114qRgeZZZ/9n4UKnfxD7VGgingUEFKPyRpVq1odgd1KxeX8rrUQzNkdggrK+NOol
-	 V/Gv0T/aOvyBDHoqaTY6gom0lC9/ZJHFCVabsXAk=
+	b=pNn5b2zRnOYXYA6jPmakQ8tb5HIcLHegzWcryF0ERshq5HEkrbIFrR4eyddeDNICi
+	 8h/idmUmWegOII8TGH8YmoGAHACbndbToOQP2VBu+5FP3VpAK6TIGCXHaaqpQkxl46
+	 cV54oE3SSwP/v7Iq7pnNfWJ0xwQFiePCJJ2dWLzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 6.14 159/241] x86/boot/sev: Avoid shared GHCB page for early memory acceptance
-Date: Wed, 23 Apr 2025 16:43:43 +0200
-Message-ID: <20250423142627.037630527@linuxfoundation.org>
+Subject: [PATCH 6.6 338/393] x86/boot/sev: Avoid shared GHCB page for early memory acceptance
+Date: Wed, 23 Apr 2025 16:43:54 +0200
+Message-ID: <20250423142657.294437350@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -133,7 +133,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		error("Cannot accept memory: unknown platform\n");
 --- a/arch/x86/boot/compressed/sev.c
 +++ b/arch/x86/boot/compressed/sev.c
-@@ -164,10 +164,7 @@ bool sev_snp_enabled(void)
+@@ -135,10 +135,7 @@ bool sev_snp_enabled(void)
  
  static void __page_state_change(unsigned long paddr, enum psc_op op)
  {
@@ -145,9 +145,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	/*
  	 * If private -> shared then invalidate the page before requesting the
-@@ -176,6 +173,9 @@ static void __page_state_change(unsigned
- 	if (op == SNP_PAGE_STATE_SHARED)
- 		pvalidate_4k_page(paddr, paddr, false);
+@@ -147,6 +144,9 @@ static void __page_state_change(unsigned
+ 	if (op == SNP_PAGE_STATE_SHARED && pvalidate(paddr, RMP_PG_SIZE_4K, 0))
+ 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
  
 +	/* Save the current GHCB MSR value */
 +	msr = sev_es_rd_ghcb_msr();
@@ -155,7 +155,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	/* Issue VMGEXIT to change the page state in RMP table. */
  	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
  	VMGEXIT();
-@@ -185,6 +185,9 @@ static void __page_state_change(unsigned
+@@ -156,6 +156,9 @@ static void __page_state_change(unsigned
  	if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
  		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
  
@@ -165,7 +165,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	/*
  	 * Now that page state is changed in the RMP table, validate it so that it is
  	 * consistent with the RMP entry.
-@@ -195,11 +198,17 @@ static void __page_state_change(unsigned
+@@ -166,11 +169,17 @@ static void __page_state_change(unsigned
  
  void snp_set_page_private(unsigned long paddr)
  {
@@ -183,7 +183,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	__page_state_change(paddr, SNP_PAGE_STATE_SHARED);
  }
  
-@@ -223,56 +232,10 @@ static bool early_setup_ghcb(void)
+@@ -194,56 +203,10 @@ static bool early_setup_ghcb(void)
  	return true;
  }
  
