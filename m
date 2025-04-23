@@ -1,43 +1,43 @@
-Return-Path: <linux-efi+bounces-3430-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3432-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67D2A98F3C
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 17:06:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E27EA9910E
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 17:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46CA617DB2B
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 15:02:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA51A1BA149B
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Apr 2025 15:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9204C284B4E;
-	Wed, 23 Apr 2025 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0696A293B53;
+	Wed, 23 Apr 2025 15:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ela+yqU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0fx1tax"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEB5284B3C;
-	Wed, 23 Apr 2025 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C1C2641EA;
+	Wed, 23 Apr 2025 15:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420503; cv=none; b=G+qb5C4q1UPSysIfh5zcmFRwHfD3fYxSLIB1hLyoJ2SJhRn9Nd4OiPwOAacn1tkFH1SNxVTn15IEipIm/QhU2T2Zb8BJc6+2KbnrdA8KaoIyRxTjz7bePDikCqFyl5vSuAvU0FpN5PJ61464qqQUXZeHAi30Q4NJIFdg/YV3kPQ=
+	t=1745421183; cv=none; b=uxOFyus61boX7kL/cMcMH7CPtjL258R23jFwqSyUyFAF6vBzp5WQdcEsocPaieDHJ8ELdVlJ56vht8nxJRUOYu08VjjscR1pW7H6o1+qY4llk++UDyAv3//frDXamWpeR9idqi4J8H5koO+0ipecIj4TxJDZCftneDWG5CxIs38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420503; c=relaxed/simple;
-	bh=ikUX+5dRI43jhLdlpNz85QaCliiix733dv2T3vzs7vM=;
+	s=arc-20240116; t=1745421183; c=relaxed/simple;
+	bh=HC0MYwYV0YFtr87RBblIqOtWJoq6NR83UHidBGoSxNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fk7Na4768jRxaWmTdcg//hkOwWnjLt/waCYzoZFzI58lhwLyHsTp6S9QkPPcylM0jXWta4TwHD0poFjNUga+dj8vqtc6YF2OnJ6e786VtM+crBLoHHjXCW0M1xDH5ZpMdM8QKyGD1FrYAyEjbP8vcGWIq0HLO6EerPd4Jzr+n3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ela+yqU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E201DC4CEE3;
-	Wed, 23 Apr 2025 15:01:42 +0000 (UTC)
+	 MIME-Version; b=KBye78CYg25O1MKh1+WQdctnW7/AYNZsbHrYb33MkaqQvC5gRUuIpcrghuwFg5t4d0cIw2+5iOm1d7c2lZQ2apP0BMTzk6D+QgWrZxnt0sfKIk/CifUuatJTngHbVv2OD1Q8QPol2U8fcM2Sa5BTsCYB6DCc0g25Dlt95G7wOv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0fx1tax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6404EC4CEE2;
+	Wed, 23 Apr 2025 15:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420503;
-	bh=ikUX+5dRI43jhLdlpNz85QaCliiix733dv2T3vzs7vM=;
+	s=korg; t=1745421183;
+	bh=HC0MYwYV0YFtr87RBblIqOtWJoq6NR83UHidBGoSxNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ela+yqU2tJjGQO+UjDVBmAJ7HCHlsFjTJQyoZ0ncD1z+2edwZExxCdq5c2oaIjS8A
-	 WLoNMPIA56uvCTAYiYJ12YASeanA3Z1KiDcrFgBlXBELZuESKw6L9FgqX81mQ/jR0R
-	 olmn8fdZVSoAn/L2CJHZY2269L3zCIioR1F54p9Q=
+	b=I0fx1taxnFnWc0DU6yP8xK2APQKCKL6mqskGcsVw0L4suV/5joY339rV6BNh4moWR
+	 J114qRgeZZZ/9n4UKnfxD7VGgingUEFKPyRpVq1odgd1KxeX8rrUQzNkdggrK+NOol
+	 V/Gv0T/aOvyBDHoqaTY6gom0lC9/ZJHFCVabsXAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 6.12 137/223] x86/boot/sev: Avoid shared GHCB page for early memory acceptance
-Date: Wed, 23 Apr 2025 16:43:29 +0200
-Message-ID: <20250423142622.670717163@linuxfoundation.org>
+Subject: [PATCH 6.14 159/241] x86/boot/sev: Avoid shared GHCB page for early memory acceptance
+Date: Wed, 23 Apr 2025 16:43:43 +0200
+Message-ID: <20250423142627.037630527@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
