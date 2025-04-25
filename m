@@ -1,53 +1,53 @@
-Return-Path: <linux-efi+bounces-3463-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3464-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C6CA9CAD5
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 15:50:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8311A9CB05
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 16:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2EE11BA5515
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 13:51:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59B877B5154
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 14:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA0121A459;
-	Fri, 25 Apr 2025 13:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D16256C64;
+	Fri, 25 Apr 2025 14:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mN0LkFd0"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cdLCh9im"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D7961FF2;
-	Fri, 25 Apr 2025 13:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B7D71747;
+	Fri, 25 Apr 2025 14:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745589047; cv=none; b=n/TPEjsb4hicRZ/qi1qtwsqpGaMP8YF6Gns7wEbUFWR9RRI6HzliYK6/ONuikr6K/s2727g5VdRgDz2Dhv+kFZekJiwtPxFYNW3F318/naC8/X9LqvsXVt25gee+lI3+HwTIdpGvwJvgyGn48o3Kw4jmsEaL8ZTX1SbFfxqQPf8=
+	t=1745589849; cv=none; b=XEA0nft/NhvJe5VBO9RfY9IYRzPsVAcfCsE68J2dt2pdraEbTFzOnQjgkEDlA9rwUyFQwMlQo75YHKncTWo23zWnCwjpS1hlFnmSaP9KdUaolkWsJFNtzmligbgPAz86PTyhMMWWcMejU8BY33TtyZVpNDwfsBCjno3Qa0fYHeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745589047; c=relaxed/simple;
-	bh=WxQ5Ou/fI09he56FhDFzuvM5OvovP9p41Kpo80ZlRI4=;
+	s=arc-20240116; t=1745589849; c=relaxed/simple;
+	bh=SFupk4v6QJ6TlAyt+7q2iFUfESVzQt4Wl/LCynUO2To=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YdOSypDgMJNC1x2yymFIx4XHrx6Rk8opYLTyV0+6wCagYkS82U7iOLV5VUUZiQK7x64KYAvkiyMfMYh/euiPOTBPu75lWKxbMdJRHSHpv20gHOIJch5BkRK85J2MgMee1a9Nz4LRorPNEKYuTCQ9aqw258qaNWMsYWsDYBZzN0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mN0LkFd0; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:Content-Disposition:In-Reply-To; b=KUeSrOgG1eOvtuj8DiRn9L8d9JJxWvMG/nUr10emHIVdN4VDYzcZvYxdw4Dwgc3yRNFqRC7HU431hZR3I7lVhnkeZ2dadVhaq6HZZyM4bLnPAEJJBIQ5uxMzc8Bm48u0b8bpSPOvWy7pVLXJU2szozLvyScegyQbitRmG7gxJAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cdLCh9im; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hgYA6FEh3vjzB5qqCTmatdfoxf97Onxqc6wILtW6+qs=; b=mN0LkFd0GR/+ivo3qlMWXNGLgi
-	h9IJb5yyG9G4IoK0Lcj/MhbXl2a516EmM+1/AO/mUId6aN08ZsT9ue6rF4TUb/pPLf22G09xAwg4h
-	Y1yhoxu36dqnKz6Ywv4uPYzbio8Lh14wg9f/yIT41WKIhsWCl5OGHFJFO1isF1WrPlDoOnFKW9q+s
-	tcgVr0e5+ZIBsx7GflmOcxfNjuPxDJaCZf22eamqXu9K0kINXUbXOUidX6jb/NEhvL9Y7t/zuYqMg
-	z4BGNK3sgxIjlm3vI/4LLu+TwfABBUSfEY43J/GHzfqlDg2kmoOZm5vH2jon1Di/5Qz5S8VpeY0I4
-	weqzQKvQ==;
+	bh=6GJUp83AnQU0MiirmcllULgGL0i2UtZufh6Ag9k8WPQ=; b=cdLCh9imvdPDJn9XZSscVYkaOh
+	wuLPxe9kSpgU+AwLB3ch8ed3Y4ttOyfmGV2Quf27dKavUqnkZO7IjGeZMHbxImCcjIUNev3buCChm
+	/o/QWG+M9l1oTfkrTQvXyHq+0lRT+vofp5q92mqHLvS3st0JvaRUyLRziwX8SoFT4iDsbm5ULuZjR
+	QV86LOtz7zRFoEdBpMR0459Z5V6IEDEfabipL6tncIwUgN5V1vmiHUlZaUDXqPbIRWiadblUhXm8z
+	H92GbaRMH1yJZRW5ircTv9Ja2MxhyiJsykVcogeFzm8XdlqMBV9ACHbfa/FXlWKhVjtFi4M4gGqxN
+	Jn+L1Zkw==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u8JRf-0000000EcS2-2PpK;
-	Fri, 25 Apr 2025 13:50:23 +0000
+	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
+	id 1u8Jem-0000000C3la-0QqR;
+	Fri, 25 Apr 2025 14:03:56 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id EE817300583; Fri, 25 Apr 2025 15:50:22 +0200 (CEST)
-Date: Fri, 25 Apr 2025 15:50:22 +0200
+	id A91333003C4; Fri, 25 Apr 2025 16:03:55 +0200 (CEST)
+Date: Fri, 25 Apr 2025 16:03:55 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Michael Kelley <mhklinux@outlook.com>
 Cc: "x86@kernel.org" <x86@kernel.org>,
@@ -73,11 +73,11 @@ Cc: "x86@kernel.org" <x86@kernel.org>,
 	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
 	"samitolvanen@google.com" <samitolvanen@google.com>,
 	"ojeda@kernel.org" <ojeda@kernel.org>
-Subject: Re: [PATCH 4/6] x86,hyperv: Clean up hv_do_hypercall()
-Message-ID: <20250425135022.GB35881@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH 5/6] x86_64,hyperv: Use direct call to hypercall-page
+Message-ID: <20250425140355.GC35881@noisy.programming.kicks-ass.net>
 References: <20250414111140.586315004@infradead.org>
- <20250414113754.285564821@infradead.org>
- <SN6PR02MB41576A943191D154521C23C8D4B82@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <20250414113754.435282530@infradead.org>
+ <SN6PR02MB41575B92CD3027FE0FBFB9F3D4B82@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -86,83 +86,130 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SN6PR02MB41576A943191D154521C23C8D4B82@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To: <SN6PR02MB41575B92CD3027FE0FBFB9F3D4B82@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-On Mon, Apr 21, 2025 at 06:27:57PM +0000, Michael Kelley wrote:
-> From: Peter Zijlstra <peterz@infradead.org> Sent: Monday, April 14, 2025 4:12 AM
+On Mon, Apr 21, 2025 at 06:28:42PM +0000, Michael Kelley wrote:
+
+> >  #ifdef CONFIG_X86_64
+> > +static u64 __hv_hyperfail(u64 control, u64 param1, u64 param2)
+> > +{
+> > +	return U64_MAX;
+> > +}
+> > +
+> > +DEFINE_STATIC_CALL(__hv_hypercall, __hv_hyperfail);
+> > +
+> >  u64 hv_pg_hypercall(u64 control, u64 param1, u64 param2)
+> >  {
+> >  	u64 hv_status;
 > > 
-> > What used to be a simple few instructions has turned into a giant mess
-> > (for x86_64). Not only does it use static_branch wrong, it mixes it
-> > with dynamic branches for no apparent reason.
+> > +	asm volatile ("call " STATIC_CALL_TRAMP_STR(__hv_hypercall)
+> >  		      : "=a" (hv_status), ASM_CALL_CONSTRAINT,
+> >  		        "+c" (control), "+d" (param1)
+> > +		      : "r" (__r8)
+> >  		      : "cc", "memory", "r9", "r10", "r11");
 > > 
-> > Notably it uses static_branch through an out-of-line function call,
-> > which completely defeats the purpose, since instead of a simple
-> > JMP/NOP site, you get a CALL+RET+TEST+Jcc sequence in return, which is
-> > absolutely idiotic.
+> >  	return hv_status;
+> >  }
+> > +
+> > +typedef u64 (*hv_hypercall_f)(u64 control, u64 param1, u64 param2);
+> > +
+> > +static inline void hv_set_hypercall_pg(void *ptr)
+> > +{
+> > +	hv_hypercall_pg = ptr;
+> > +
+> > +	if (!ptr)
+> > +		ptr = &__hv_hyperfail;
+> > +	static_call_update(__hv_hypercall, (hv_hypercall_f)ptr);
+> > +}
+
+^ kept for reference, as I try and explain how static_call() works
+below.
+
+> > -skip_hypercall_pg_init:
+> > -	/*
+> > -	 * Some versions of Hyper-V that provide IBT in guest VMs have a bug
+> > -	 * in that there's no ENDBR64 instruction at the entry to the
+> > -	 * hypercall page. Because hypercalls are invoked via an indirect call
+> > -	 * to the hypercall page, all hypercall attempts fail when IBT is
+> > -	 * enabled, and Linux panics. For such buggy versions, disable IBT.
+> > -	 *
+> > -	 * Fixed versions of Hyper-V always provide ENDBR64 on the hypercall
+> > -	 * page, so if future Linux kernel versions enable IBT for 32-bit
+> > -	 * builds, additional hypercall page hackery will be required here
+> > -	 * to provide an ENDBR32.
+> > -	 */
+> > -#ifdef CONFIG_X86_KERNEL_IBT
+> > -	if (cpu_feature_enabled(X86_FEATURE_IBT) &&
+> > -	    *(u32 *)hv_hypercall_pg != gen_endbr()) {
+> > -		setup_clear_cpu_cap(X86_FEATURE_IBT);
+> > -		pr_warn("Disabling IBT because of Hyper-V bug\n");
+> > -	}
+> > -#endif
+> 
+> With this patch set, it's nice to see IBT working in a Hyper-V guest!
+> I had previously tested IBT with some hackery to the hypercall page
+> to add the missing ENDBR64, and didn't see any problems. Same
+> after these changes -- no complaints from IBT.
+
+No indirect calls left, no IBT complaints ;-)
+
+> > +	hv_set_hypercall_pg(hv_hypercall_pg);
 > > 
-> > Add to that a dynamic test of hyperv_paravisor_present, something
-> > which is set once and never changed.
-> > 
-> > Replace all this idiocy with a single direct function call to the
-> > right hypercall variant.
+> > +skip_hypercall_pg_init:
+> >  	/*
+> >  	 * hyperv_init() is called before LAPIC is initialized: see
+> >  	 * apic_intr_mode_init() -> x86_platform.apic_post_init() and
+> > @@ -658,7 +658,7 @@ void hyperv_cleanup(void)
+> >  	 * let hypercall operations fail safely rather than
+> >  	 * panic the kernel for using invalid hypercall page
+> >  	 */
+> > -	hv_hypercall_pg = NULL;
+> > +	hv_set_hypercall_pg(NULL);
 > 
-> This did indeed need cleaning after all the CoCo VM and paravisor
-> stuff got added. Thanks for doing it.
+> This causes a hang getting into the kdump kernel after a panic.
+> hyperv_cleanup() is called after native_machine_crash_shutdown()
+> has done crash_smp_send_stop() on all the other CPUs. I don't know
+> the details of how static_call_update() works, 
+
+Right, so let me try and explain this :-)
+
+So we get the compiler to emit direct calls (CALL/JMP) to symbols
+prefixed with "__SCT__", in this case from asm, but more usually by
+means of the static_call() macro mess.
+
+Meanwhile DEFINE_STATIC_CALL() ensures such a symbol actually exists.
+This symbol is a little trampoline that redirects to the actual
+target function given to DEFINE_STATIC_CALL() -- __hv_hyperfail() in the
+above case.
+
+Then objtool runs through the resulting object file and stores the
+location of every call to these __STC__ prefixed symbols in a custom
+section.
+
+This enables static_call init (boot time) to go through the section and
+rewrite all the trampoline calls to direct calls to the target.
+Subsequent static_call_update() calls will again rewrite the direct call
+to point elsewhere.
+
+So very much how static_branch() does a NOP/JMP rewrite to toggle
+branches, static_call() rewrites (direct) call targets.
+
+> but it's easy to imagine that
+> it wouldn't work when the kernel is in such a state.
 > 
-> From looking at the code changes, I believe the 32-bit hypercall paths
-> are unchanged, as they weren't affected the CoCo VM and paravisor
-> additions. Perhaps explicitly state that intent in the commit message.
-> 
-> I've tested this patch set against linux-next-20250411 on normal Hyper-V
-> guests. Basic smoke tests pass, along with taking a panic, and
-> suspend/resume for guest hibernation. But getting into kdump after a
-> panic does not work. See comments in Patch 5 for the likely reason why.
-> 
-> I've also tested SNP and TDX VMs with a paravisor, and basic smoke
-> tests pass. But I'm testing in the Azure cloud, and I don't have access to an
-> environment where I can test without a paravisor. So my testing doesn't
-> cover the SNP and TDX specific static call paths. Maybe someone at
-> Microsoft can test that configuration.
+> The original code setting hv_hypercall_pg to NULL is just tidiness.
+> Other CPUs are stopped and can't be making hypercalls, and this CPU
+> shouldn't be making hypercalls either, so setting it to NULL more
+> cleanly catches some erroneous hypercall (vs. accessing the hypercall
+> page after Hyper-V has been told to reset it).
 
-Excellent, thanks!
+So if you look at (retained above) hv_set_hypercall_pg(), when given
+NULL, the call target is set to __hv_hyperfail(), which does an
+unconditional U64_MAX return.
 
+Combined with the fact that the thing *should* not be doing hypercalls
+anymore at this point, something is iffy.
 
-> > +#ifdef CONFIG_X86_64
-> > +u64 hv_pg_hypercall(u64 control, u64 param1, u64 param2)
-> 
-> Could this get a different name so we don't have the confusion of
-> hv_hypercall_pg vs hv_pg_hypercall?  Some possibilities:
-> 
-> hv_std_hypercall
-> hv_basic_hypercall
-> hv_core_hypercall
-> hv_normal_hypercall
-> hv_simple_hypercall
-
-Sure, I'll throw a dice an pick one ;-)
-
-
-> > @@ -483,14 +484,16 @@ static void __init ms_hyperv_init_platfo
-> >  			ms_hyperv.shared_gpa_boundary =
-> >  				BIT_ULL(ms_hyperv.shared_gpa_boundary_bits);
-> > 
-> > -		hyperv_paravisor_present = !!ms_hyperv.paravisor_present;
-> > -
-> >  		pr_info("Hyper-V: Isolation Config: Group A 0x%x, Group B 0x%x\n",
-> >  			ms_hyperv.isolation_config_a, ms_hyperv.isolation_config_b);
-> > 
-> > 
-> >  		if (hv_get_isolation_type() == HV_ISOLATION_TYPE_SNP) {
-> >  			static_branch_enable(&isolation_type_snp);
-> > +#if defined(CONFIG_AMD_MEM_ENCRYPT) && defined(CONFIG_HYPERV)
-> > +			if (!ms_hyperv.paravisor_present)
-> > +				static_call_update(hv_hypercall, hv_snp_hypercall);
-> > +#endif
-> 
-> This #ifdef (and one below for TDX) are really ugly. They could be avoided by adding
-> stubs for hv_snp_hypercall() and hv_tdx_hypercall(), and making the hv_hypercall static
-> call exist even when !CONFIG_HYPERV (and for 32-bit builds). Or is there a reason to
-> not do that?
-
-I'll try and make it so.
+I can easily remove it, but it *should* be equivalent to before, where
+it dynamicall checked for hv_hypercall_pg being NULL.
 
