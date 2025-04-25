@@ -1,193 +1,306 @@
-Return-Path: <linux-efi+bounces-3465-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3466-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F4EA9CB36
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 16:13:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B05AA9CBBB
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 16:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E49C44E2DF9
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 14:13:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 937589A3477
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 14:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22F7253941;
-	Fri, 25 Apr 2025 14:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5990D22A1C5;
+	Fri, 25 Apr 2025 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MYCmwDSK"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="XKfoJzDF"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04olkn2028.outbound.protection.outlook.com [40.92.46.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70A17081F;
-	Fri, 25 Apr 2025 14:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745590377; cv=none; b=AeCyd27QFyDJ/QfxOlqeuOQAHLpzWn8UD1TbLbegGCnJuK1UQXnNv5jtjeCwaiOeu/Np++yHXJkzIdJ8bGmpiDHmbJMYHK21Jmnb8b0iOmn2DQPFveQofPYHB1PoaXWjsx2iP6P7U/QAqieyWmy7AVzsBoBIr5s3BnowosoGs9M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745590377; c=relaxed/simple;
-	bh=kQZa9H88IRjq2r7TjcONEZD3Enz3AN+e7iK0VXsD/q8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nqmNnA3YRo7/JncLYko5/Is5jfSxHLMgKlHpfO8NJNJjE93b6KYp4oHAJjLjI5SxAA8OdPn88xF47ebDVlexBAnQn0BQ2esftieQ4Hhw1qGapB74TRvlvO5HU7LLcK8BFKEwU4IwU3Xz/+Bk51Ge/DBRSgAmuYfyrkS+wpjC6J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MYCmwDSK; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745590376; x=1777126376;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=kQZa9H88IRjq2r7TjcONEZD3Enz3AN+e7iK0VXsD/q8=;
-  b=MYCmwDSKkjNOrW00fDwUU+MlJg/UxLG9MaIBDP2JJkS+NuWMXKoB7btJ
-   dNHioxnEcngSZuGAEhr0PXd5gTIf+9KlJRMFLU2bO0CkyEdsFnDh0dH0R
-   PGhdcA6lUUcCIPtaEtgzgIPCPNveYE/SAbEo3/v0UrL9FSy+bJaERcRCe
-   GMs2QSGKTsjRchDaKcxbdtIs3OMXdUTeZGs2wGbgnCfo4siFrTq3d4qJL
-   z9A3qVpD451QIVBl54OdUuWXQlyYy/z+KdYDd9B4I2EIZi0oCPmJPt+Xa
-   45PtvWTL3Sp6hltL4etUOcSXTFyPK1DT8uirOVpADgeUGILxUFl5AX6pr
-   g==;
-X-CSE-ConnectionGUID: Kl0Rp0n4S/e9yJhzzc/Wpw==
-X-CSE-MsgGUID: Rpx1AYbPQXuoFi4nBhIu4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="72628023"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="72628023"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 07:12:55 -0700
-X-CSE-ConnectionGUID: gze8PSdqR4uxfgHgShwE1A==
-X-CSE-MsgGUID: b9P0pObJRQ+SXKkVkYvCRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="133421364"
-Received: from uaeoff-desk2.amr.corp.intel.com (HELO [10.124.222.49]) ([10.124.222.49])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 07:12:53 -0700
-Message-ID: <9b18e8e3-f3e2-48d4-839a-56e1d8f62657@intel.com>
-Date: Fri, 25 Apr 2025 07:12:51 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2212153C7;
+	Fri, 25 Apr 2025 14:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.46.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745591541; cv=fail; b=Lp9c/nkYs87Wl5E0XmvNjeq8/JUptJCSJsx5OvM/y/MRqDNwcQeas6/5Dq0uSagL9IEghh/BPnYUGgAl5cUqMzrhQDy4XeVhBZlHhygJ+iYulB3qTJT+22ri9tBXnoA/6Bxui1c33GQtJvQc2h89H3risSAEsmiTJTRprPiCNn8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745591541; c=relaxed/simple;
+	bh=DWUmMNagc+OYGUAsyfSdRK5HmZrwTYxxQyugtr6Go7E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=k/92wQv7rlcd9nUwDFCMQok3N7P5qpb7WIYF4i6ZTds+Y9H8m2w3NQiu/r8gG3Ff+xxhMS/F4o6V+s41YrlyznNzI8htgALWM8Mug5/bM/Bqw0+Lj/soTj8tw5wJgYmn50xmDe+7oqRsV9bV+IVXk4kH+Zm0XeZVQrvHuGehF4M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=XKfoJzDF; arc=fail smtp.client-ip=40.92.46.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=shZIyUEGFZ8BgubINhUXtqA5Vp6hEskNuPt9d3Sx9S9+3N+qLD35jHICcEXXEcE3MWqNthpuJx7lOwOcvxZcCNIJ9FkDbMreCFVA+tsCGFkW2T8AfiOCMrItCxlofdUHa7+3ttVooaMHpMMJQExEHxJN8I0MO6323HTN6uWVzNb1AkFkMUoy5LGKdW0/Vo/SwydZEOA3QWCqCcEriP3VRiJTkv80nf1PLbLmD1UPgpnSo6tE8n80zdutAxiBYYoiQ0X2019BBXMdsuEGFRA9NBBRqXOhoBtTtVMujiZeHKvE80rKBi1kiw9uG8ZY/T9IWnsgoQU6dVeaWD6ZGTJAKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aqt8HRWS4H7TEb8O0tgMMKUJPss+NbpQ57GstBEYsqc=;
+ b=aPL8EeDkiFd40E8tAl0OQn299CYSo6qvv761smy56UU7Ith9FPQG/w1QcIWV4TgRsZ2tRyy6gDL2jShoiCGwjKzdsKRE3CUvjPVmKFexi+Id+Y6G0OfarexzDIAFWz5ehVTpjrKLdB9jKnHODtSNIgR9m6nstF6JmuSvcItCn9sT+iMjphWI9+VSgyiNoxb1cFniNlFx+TrEsJ9iztu6P2PGWalDbpSAk26tB9EpdGQ0OSOZEYPy3ZFBpS1lrKwLqhf94U1OwnoV6mPULHYOb+BM2uAs//qbkCvzeLNnYEg0qRp1407m5wXiA0SxDDuz1wMAgwOsTfCCxY8crF/2AA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aqt8HRWS4H7TEb8O0tgMMKUJPss+NbpQ57GstBEYsqc=;
+ b=XKfoJzDFiRGZxwQkQ9GQdH8CN439btgc9vhvOwn9OIsC9jl2cgotmgpbHNQgoCUGaec8Z/cnppEm6i+Un6BuKG+MfHr2/Wt2tYSRpDp1otephPyGCraA8D66ewMuKJ5O1xV2436TKkjcQmaWq4NowJWrIA7ara7TzvTY44V6/qMoxLQGZIvBKeKRIRZh25FEAopkS1RJ+9Z0KJnJhG+VflQeJZ4lJOWGacuDUGQ36m17sm8+HWIyDZL/YT7TW2YG93H6rGa2QxpKl3TZvnN6+lh1Vn1JqlBo67CcDsTqpDJhGV8pHm8GZzaIZKg5MVyrvl3PRHIn6EsSlChOqLgk+g==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by BL3PR02MB8963.namprd02.prod.outlook.com (2603:10b6:208:3b7::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.11; Fri, 25 Apr
+ 2025 14:32:14 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8699.008; Fri, 25 Apr 2025
+ 14:32:14 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Peter Zijlstra <peterz@infradead.org>
+CC: "x86@kernel.org" <x86@kernel.org>, "kys@microsoft.com"
+	<kys@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>, "decui@microsoft.com"
+	<decui@microsoft.com>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
+	"pawan.kumar.gupta@linux.intel.com" <pawan.kumar.gupta@linux.intel.com>,
+	"seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "ardb@kernel.org" <ardb@kernel.org>, "kees@kernel.org"
+	<kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-efi@vger.kernel.org"
+	<linux-efi@vger.kernel.org>, "samitolvanen@google.com"
+	<samitolvanen@google.com>, "ojeda@kernel.org" <ojeda@kernel.org>
+Subject: RE: [PATCH 5/6] x86_64,hyperv: Use direct call to hypercall-page
+Thread-Topic: [PATCH 5/6] x86_64,hyperv: Use direct call to hypercall-page
+Thread-Index: AQHbrTIaLjXb7HTpjEywClCcZeg3ibOudLWAgAYGqoCAAAXRAA==
+Date: Fri, 25 Apr 2025 14:32:14 +0000
+Message-ID:
+ <SN6PR02MB41577A6B0E5898B68E2CD3C9D4842@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20250414111140.586315004@infradead.org>
+ <20250414113754.435282530@infradead.org>
+ <SN6PR02MB41575B92CD3027FE0FBFB9F3D4B82@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <20250425140355.GC35881@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250425140355.GC35881@noisy.programming.kicks-ass.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|BL3PR02MB8963:EE_
+x-ms-office365-filtering-correlation-id: 1a549cd8-acab-4a6a-2c8c-08dd8405f937
+x-ms-exchange-slblob-mailprops:
+ 70qbaZjg4mvbis83qL2U5WvEmRMBS6OgZP+L6c37Gg2KJ+VlU8+H5YNB5nzqUYJP/OAcdtncyxTHOK8iaJjfc9rtZhp3BLOUeS+lr2J9i1XXW2UZDYBl1Fzd6MDwtBHEux8hQIVXy+g8HMQan1twrlWYrPC5+13cML14CL1QT/kmIuFXO51oeVAbe/e0Mt8Aw4McYYx0/WLgJ5W6e7nHVoCLNNh9QVmsIhjTeQDI9lmTnYxNCmP5BswyadHkrAED8hVK39EqGqQGHN67XlcUwbr0Ene1Ens1+uYkjdLvA9UxtKgHOx55CeZ0wPpE6rV3xMk5rZzG++mwJFVkaQ7AYU0EwtGwzC/wm3wCsQRF0SSEHY8k2OAcxeinvqjO/cPeDNRtejXshWyVHlfpTE2yBc7XQcyvUZAHhPC1/U26QsZa38qy6C4p173qwxrkhHzcMBqFr2eoGOpI26GdehzF5xpGdn3fWVeT37oLdfp6wC/h6ULe1aoYd/iNQUHRpQ3twKKnLHlKmf4LXvJm5yEeX5C1zs0z++7J73w0fxo/a4CirFRQ++0zrpUsAxv809e613hLtuT+mkKV601ZcKLaWLGvSL4OTYulaHQmBtSwzYSavDHBBbBO4njfeWWWhMga8/mNV5Zw1qWlSmRbcZ0vG1QMlIXUP1FC8yInHEfAAsKdcfub+mlVGAiJv98C0U2/eq6frziY6NDHF/nOoYbfu//3ZhnVnjwAodXP9nsBB0wve8EmJEcOjg==
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|15080799006|8062599003|8060799006|461199028|19110799003|102099032|3412199025|440099028|41001999003;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?0eMESxCWnzD7y7KXjjWV/Kq6lbZ8trIEAV2jSjoGNYcS275hIKtAR1wQjVlM?=
+ =?us-ascii?Q?HbgP9SD0NHEOMv6+IDM13WZvmzG13G2ezJC42cqIWsyjeGVwM5oxIfAHCxt6?=
+ =?us-ascii?Q?/SHHeV32LOrDp/10S5kehunsQtdj6qgd7slHJjeUgLmG/HaA5z32mha3/KAA?=
+ =?us-ascii?Q?cyG58TL10IQVAgC8xXEJcLqTq/RNMFWJD4Q8uwKRkTH/kdks2K3+pHMqVRpN?=
+ =?us-ascii?Q?z33XOuT/htpyDsOYWD2mBrwiXZtuSKUzNtZxSylbavkc79VYJzPOZxsgAZbA?=
+ =?us-ascii?Q?j4NZWznCKMuv/RVzIE8Lj31p62U9AbR/WYeW+nVjREP/P+Wzbm2b1zU1AHfW?=
+ =?us-ascii?Q?Sk465EXppDdHswGzFSrMv9+Sw7Ndy6H91yBtjGeAjs2fqfjOUC6Ty5oJbpQU?=
+ =?us-ascii?Q?nf8t+8T8/i996TmFHRuPqT6xt04vIyCokyxAevw7sc4RmroQgRNd24BoVdoa?=
+ =?us-ascii?Q?FyshdN5mnmr047WQJMQWjXbkAYk04pRRZuPRm96RaOzvkI/zbUEakBuHyyHw?=
+ =?us-ascii?Q?//l4JpVag1c0Z5n5dZKfVKUUBqarvZchyFpU2e0zb216iw1qGyCys69abvwd?=
+ =?us-ascii?Q?v4tmMYiXj/l9gxsUpuJEeoqLDCsKRVJSbe566EUg3HpD3xkohKrQc8pBhgTB?=
+ =?us-ascii?Q?3JcICE8u1csxozOraAwV55pEUE7XBR0bUPSuWCONNPlBJNTU99fXRvseq0h9?=
+ =?us-ascii?Q?1HHpiY9F7csN5XM6onm/tfE+rIo07Gvpi41Z7zQXHJ3kv22XzWkAGmUT//BL?=
+ =?us-ascii?Q?Vxlpua+8YsTqvFiIKz5jzvBA2QqMcsc5b6sXJkJxjmSYBhlrB3P7BOyIk1Cm?=
+ =?us-ascii?Q?f8fTkhMUf+tWimOJSSv7BboI5JTg4sJHoX6tkinWe0b/af3D1Yi2T0xKjKzT?=
+ =?us-ascii?Q?+cQUjAvxbNSAd8hEM2AWnSIZOvfysmw8rM3qyy9QFtW2dOjK3n+IORug4Mx0?=
+ =?us-ascii?Q?+usFk2XTDDpkfc2ItPqiSjLirBo1jqaEEQWGxnwPKNGDSa0P2pvhuus3f+zZ?=
+ =?us-ascii?Q?xbWsClqEw4r/1FKZ4ugu12BNuLP+K0bBicoGvRok1V0UhRfuiQNRd+hsnsNR?=
+ =?us-ascii?Q?Y/MFP1mzZi9pBTC49uRhDl2B6RWZQXbjhmWrIGbDQJrCAfsdNTDsUazCjQBD?=
+ =?us-ascii?Q?3699bzBq/1Rx?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?q0Yp7GeWMhZGXTPRbEIHl1F7eKsZg0+6tW6iF7GGueNY+Y76OexcQpCjULzs?=
+ =?us-ascii?Q?j1tU6QrczEbRV6aVorwUZNbiu0LlBO9hYimnaUdqVLBq+Zvex7d6c75eCtNL?=
+ =?us-ascii?Q?EdiWncWolz2JMhDeppD9n65xadXu1jseye1nvvDw+EvbpPaU28szcDl4QrL0?=
+ =?us-ascii?Q?rBJ773HrYFD+zb1KaBEc9uU3huU20sdR1LWNMDHRc5GDF4G9ofYW53iWQ8qN?=
+ =?us-ascii?Q?0knVFgwJuybv5wztfkVO2yYvk19P34H1r8k70SV6txY5bXIGTCkLZv/hHq89?=
+ =?us-ascii?Q?xuLxYi9UT4hAfuneSyvt0ZHqZ4Z3g5RBdOnp8iYWMB7Hcfym+6r6R/bJyfIX?=
+ =?us-ascii?Q?jQYBmPTEi72a3LOmJGqVyH9zFZRdertUB/CwFCFhv5o+SQil31RutF+ZIpw9?=
+ =?us-ascii?Q?pjuBHEmCB/XNBiXCHzQJ8bg7rvpPzo8tlp/Kbm+b8sKnmqOrKltA1bnLIXQT?=
+ =?us-ascii?Q?jTWRnMl+nlBznA/yhDqqYCAgTwPdiYfcU6/eObxV32L4tR5JXelMbCuDrleh?=
+ =?us-ascii?Q?83Svw/OYMk1Unc6dMCl+Gjk0fMwShsWXPFtRtXb0ImzIIkFOSUNznh6ri7vy?=
+ =?us-ascii?Q?eWleAxWkx3T5bN3BXhAiFHLZechOd6fTa86Nyp8F6GZ5TAEK0AZplS6aMpRW?=
+ =?us-ascii?Q?IU1XA4929To7Ce5yEhQnKxgfFNDDMtunrjVEdKp1D71//kbzv0/UXriwayLG?=
+ =?us-ascii?Q?7yX/0tlJ4sv5JJvp0aCTYCSCRSd/q0J4o4kk1ICIfqBNFn2XQS9DwnY+ieV0?=
+ =?us-ascii?Q?SZ32+oja2T7R6qzSDd90/8oeCdO48LkR3wRszrbV5DGQx3LVYrsEdl0qeBii?=
+ =?us-ascii?Q?O5n2AXJKTC3ddNwuBKFQk1/3SVWhHdP0TkQ1R0WpfN3pcZ0KXxz8J2WjtOje?=
+ =?us-ascii?Q?Z1rva5Ea6CW7F3IGFO0fJuDOaEifJ5xxa/dZYCLkD1OIUE+Tj/kHhLc+0qrd?=
+ =?us-ascii?Q?9JljDMwUo38dQ+ebRW9FcB3DcczI441C4EyXTBox34jxxtthgydgvGW/UAyK?=
+ =?us-ascii?Q?ol4F1eaL72NxQuFHCQoXLGKOB17ymuqtT4XQR+YFVOeJSgYOqXrlIBd5e+8W?=
+ =?us-ascii?Q?vCv9KimfDb4cIEpmCYytKJnKsbtmRXh2lg8v+/JtSXddvsEhCnk7lCM/Ud3L?=
+ =?us-ascii?Q?tHcL3OwJT14nE15dewHroI+oDJmv61aUnYC/oOFpTYS1lNCqd5V4VSwIC9CL?=
+ =?us-ascii?Q?I79Kh1bbzh4yrh60TuHh3q/x2ZwRjpfP+vSRXKluzacTa2qxOJxWEUXfiPo?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 00/19] x86: Trenchboot secure dynamic launch Linux
- kernel support
-To: Rich Persaud <persaur@gmail.com>
-Cc: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
- linux-efi@vger.kernel.org, iommu@lists.linux.dev,
- dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, ardb@kernel.org,
- mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
- peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
- nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net,
- corbet@lwn.net, ebiederm@xmission.com, dwmw2@infradead.org,
- baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
- andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com,
- Sergii Dmytruk <sergii.dmytruk@3mdeb.com>, openxt@googlegroups.com,
- "Mowka, Mateusz" <mateusz.mowka@intel.com>, Ning Sun <ning.sun@intel.com>,
- tboot-devel@lists.sourceforge.net
-References: <18F9BD47-282D-4225-AB6B-FDA4AD52D7AE@gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <18F9BD47-282D-4225-AB6B-FDA4AD52D7AE@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a549cd8-acab-4a6a-2c8c-08dd8405f937
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Apr 2025 14:32:14.7115
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR02MB8963
 
-On 4/25/25 03:12, Rich Persaud wrote:
-> ﻿On Apr 24, 2025, at 2:45 PM, Dave Hansen <dave.hansen@intel.com> 
-> wrote:
->> ﻿On 4/21/25 09:26, Ross Philipson wrote:
->>> This patchset provides detailed documentation of DRTM, the 
->>> approach used for adding the capbility, and relevant API/ABI 
->>> documentation. In addition to the documentation the patch set 
->>> introduces Intel TXT support as the first platform for Linux 
->>> Secure Launch.
->> 
->> So, I know some of the story here thanks to Andy Cooper. But the 
->> elephant in the room is:
->> 
->>> INTEL(R) TRUSTED EXECUTION TECHNOLOGY (TXT) M:      Ning Sun 
->>> <ning.sun@intel.com> L:      tboot-devel@lists.sourceforge.net 
->>> S:      Supported W:      http://tboot.sourceforge.net T: hg 
->>> http://tboot.hg.sourceforge.net:8000/hgroot/tboot/tboot F: 
->>> Documentation/arch/x86/intel_txt.rst F:      arch/x86/ kernel/ 
->>> tboot.c F:      include/linux/tboot.h
->> 
->> Linux already supports TXT. Why do we need TrenchBoot?
-> 
-> One reason is to generalize DRTM support to other platforms.
+From: Peter Zijlstra <peterz@infradead.org> Sent: Friday, April 25, 2025 7:=
+04 AM
+>=20
+> On Mon, Apr 21, 2025 at 06:28:42PM +0000, Michael Kelley wrote:
+>=20
+> > >  #ifdef CONFIG_X86_64
+> > > +static u64 __hv_hyperfail(u64 control, u64 param1, u64 param2)
+> > > +{
+> > > +	return U64_MAX;
+> > > +}
+> > > +
+> > > +DEFINE_STATIC_CALL(__hv_hypercall, __hv_hyperfail);
+> > > +
+> > >  u64 hv_pg_hypercall(u64 control, u64 param1, u64 param2)
+> > >  {
+> > >  	u64 hv_status;
+> > >
+> > > +	asm volatile ("call " STATIC_CALL_TRAMP_STR(__hv_hypercall)
+> > >  		      : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
+> > >  		        "+c" (control), "+d" (param1)
+> > > +		      : "r" (__r8)
+> > >  		      : "cc", "memory", "r9", "r10", "r11");
+> > >
+> > >  	return hv_status;
+> > >  }
+> > > +
+> > > +typedef u64 (*hv_hypercall_f)(u64 control, u64 param1, u64 param2);
+> > > +
+> > > +static inline void hv_set_hypercall_pg(void *ptr)
+> > > +{
+> > > +	hv_hypercall_pg =3D ptr;
+> > > +
+> > > +	if (!ptr)
+> > > +		ptr =3D &__hv_hyperfail;
+> > > +	static_call_update(__hv_hypercall, (hv_hypercall_f)ptr);
+> > > +}
+>=20
+> ^ kept for reference, as I try and explain how static_call() works
+> below.
+>=20
+> > > -skip_hypercall_pg_init:
+> > > -	/*
+> > > -	 * Some versions of Hyper-V that provide IBT in guest VMs have a bu=
+g
+> > > -	 * in that there's no ENDBR64 instruction at the entry to the
+> > > -	 * hypercall page. Because hypercalls are invoked via an indirect c=
+all
+> > > -	 * to the hypercall page, all hypercall attempts fail when IBT is
+> > > -	 * enabled, and Linux panics. For such buggy versions, disable IBT.
+> > > -	 *
+> > > -	 * Fixed versions of Hyper-V always provide ENDBR64 on the hypercal=
+l
+> > > -	 * page, so if future Linux kernel versions enable IBT for 32-bit
+> > > -	 * builds, additional hypercall page hackery will be required here
+> > > -	 * to provide an ENDBR32.
+> > > -	 */
+> > > -#ifdef CONFIG_X86_KERNEL_IBT
+> > > -	if (cpu_feature_enabled(X86_FEATURE_IBT) &&
+> > > -	    *(u32 *)hv_hypercall_pg !=3D gen_endbr()) {
+> > > -		setup_clear_cpu_cap(X86_FEATURE_IBT);
+> > > -		pr_warn("Disabling IBT because of Hyper-V bug\n");
+> > > -	}
+> > > -#endif
+> >
+> > With this patch set, it's nice to see IBT working in a Hyper-V guest!
+> > I had previously tested IBT with some hackery to the hypercall page
+> > to add the missing ENDBR64, and didn't see any problems. Same
+> > after these changes -- no complaints from IBT.
+>=20
+> No indirect calls left, no IBT complaints ;-)
+>=20
+> > > +	hv_set_hypercall_pg(hv_hypercall_pg);
+> > >
+> > > +skip_hypercall_pg_init:
+> > >  	/*
+> > >  	 * hyperv_init() is called before LAPIC is initialized: see
+> > >  	 * apic_intr_mode_init() -> x86_platform.apic_post_init() and
+> > > @@ -658,7 +658,7 @@ void hyperv_cleanup(void)
+> > >  	 * let hypercall operations fail safely rather than
+> > >  	 * panic the kernel for using invalid hypercall page
+> > >  	 */
+> > > -	hv_hypercall_pg =3D NULL;
+> > > +	hv_set_hypercall_pg(NULL);
+> >
+> > This causes a hang getting into the kdump kernel after a panic.
+> > hyperv_cleanup() is called after native_machine_crash_shutdown()
+> > has done crash_smp_send_stop() on all the other CPUs. I don't know
+> > the details of how static_call_update() works,
+>=20
+> Right, so let me try and explain this :-)
+>=20
+> So we get the compiler to emit direct calls (CALL/JMP) to symbols
+> prefixed with "__SCT__", in this case from asm, but more usually by
+> means of the static_call() macro mess.
+>=20
+> Meanwhile DEFINE_STATIC_CALL() ensures such a symbol actually exists.
+> This symbol is a little trampoline that redirects to the actual
+> target function given to DEFINE_STATIC_CALL() -- __hv_hyperfail() in the
+> above case.
+>=20
+> Then objtool runs through the resulting object file and stores the
+> location of every call to these __STC__ prefixed symbols in a custom
+> section.
+>=20
+> This enables static_call init (boot time) to go through the section and
+> rewrite all the trampoline calls to direct calls to the target.
+> Subsequent static_call_update() calls will again rewrite the direct call
+> to point elsewhere.
+>=20
+> So very much how static_branch() does a NOP/JMP rewrite to toggle
+> branches, static_call() rewrites (direct) call targets.
+>=20
+> > but it's easy to imagine that
+> > it wouldn't work when the kernel is in such a state.
+> >
+> > The original code setting hv_hypercall_pg to NULL is just tidiness.
+> > Other CPUs are stopped and can't be making hypercalls, and this CPU
+> > shouldn't be making hypercalls either, so setting it to NULL more
+> > cleanly catches some erroneous hypercall (vs. accessing the hypercall
+> > page after Hyper-V has been told to reset it).
+>=20
+> So if you look at (retained above) hv_set_hypercall_pg(), when given
+> NULL, the call target is set to __hv_hyperfail(), which does an
+> unconditional U64_MAX return.
+>=20
+> Combined with the fact that the thing *should* not be doing hypercalls
+> anymore at this point, something is iffy.
+>=20
+> I can easily remove it, but it *should* be equivalent to before, where
+> it dynamicall checked for hv_hypercall_pg being NULL.
 
-OK, but why do this in Linux as opposed to tboot? Right now, much of the
-TXT magic is done outside of the kernel. Why do it *IN* the kernel?
+I agree that setting the call target to __hv_hyperfail() should be good.
+But my theory is that static_call_update() is hanging when trying to
+do the rewrite, because of the state of the other CPUs. I don't think
+control is ever returning from static_call_update() when invoked
+through hyperv_cleanup(). Wouldn't static_call_update() need to park
+the other CPUs temporarily and/or flush instruction caches to make
+everything consistent?
 
->> Also, honestly, what do you think we should do with the Linux 
->> tboot code? Is everyone going to be moving over to Trenchboot>
-> OpenXT will migrate development of measured launch from tboot to 
-> TrenchBoot Secure Launch, after upstream Linux and Xen have support 
-> for both Intel and AMD DRTM. Previously-deployed Intel devices using
-> tboot, derived from OpenXT, will need support until users upgrade
-> their hardware.
+But that's just my theory. I'll run a few more experiments to confirm
+if control ever returns from static_call_update() in this case.
 
-Say we axed tboot support from 6.16, but merged Trenchboot. A user on
-old hardware upgrades their kernel. What happens to them?
-
->> so that Linux support for TXT/tboot can just go away?
-You didn't _really_ answer the question.
-
-Summarizing, I think you're saying that TXT/tboot Linux support can just
-go away, but it will be help if its maintainers help its users transition.
-
-Does anybody disagree with that?
-
-> In that perfect world, Intel ACM and tboot developers would review
-> the TrenchBoot Linux series
-
-So, I was looking on the cc list and I didn't see them on there.
-Shouldn't they be cc'd if you want them to review the series? A little
-poking at lore makes me think that they were *NEVER* cc'd.
-
-Is that right, or is my lore-foo weak?
-
+Michael
 
