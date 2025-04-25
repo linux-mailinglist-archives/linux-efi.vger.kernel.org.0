@@ -1,206 +1,168 @@
-Return-Path: <linux-efi+bounces-3462-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3463-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6F8A9C4F0
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 12:14:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C6CA9CAD5
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 15:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910B01B833BB
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 10:14:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2EE11BA5515
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Apr 2025 13:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0702523D2A7;
-	Fri, 25 Apr 2025 10:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA0121A459;
+	Fri, 25 Apr 2025 13:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nXpIaVTc"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mN0LkFd0"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC1123236D;
-	Fri, 25 Apr 2025 10:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D7961FF2;
+	Fri, 25 Apr 2025 13:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745575983; cv=none; b=htFQHbQ5aThto2HlMLaTDVnyFC096Unl3TjS7GvnfC3IUcEHjNy4diPKRmQ/LGZuh3d9m4ej36ODWAw0wjded8RawJCpXAERod3xFsyOnPMd/A/oc0pVLFGT+kAFSHIFqqn3LrPfpZZJhXWiO/F0A/xnUBTae17+VaYVnDICcQc=
+	t=1745589047; cv=none; b=n/TPEjsb4hicRZ/qi1qtwsqpGaMP8YF6Gns7wEbUFWR9RRI6HzliYK6/ONuikr6K/s2727g5VdRgDz2Dhv+kFZekJiwtPxFYNW3F318/naC8/X9LqvsXVt25gee+lI3+HwTIdpGvwJvgyGn48o3Kw4jmsEaL8ZTX1SbFfxqQPf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745575983; c=relaxed/simple;
-	bh=Oho9zISwXumIwyreGzhuOMH64zT4cJky5KKcy9RQz80=;
-	h=Content-Type:From:Mime-Version:Subject:Message-Id:Date:Cc:To; b=ohE+OVj6kqQMULrnm3e2d/aGbkd3t1kOtfYlVoKGUZhQKcCVh6olcCz+lozfAu0L9OdmIN0q7JNAFGbrkvF9DfSpkK0i/WH5yrbUmf6cukI7RTirY751bB60gNbhCpGwiSb2OFipBwnx5+cIqxAqBuWT82B4pDm/wDhj6wDLEj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nXpIaVTc; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5259327a937so843339e0c.0;
-        Fri, 25 Apr 2025 03:13:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745575980; x=1746180780; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version:from
-         :content-transfer-encoding:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NxUaPsRL3DayWO3frv2ULqEXQAoXMSOznD4LncXDA04=;
-        b=nXpIaVTcHQg+xejDXFraR+p5ixEdobw/MxyybnrFVAOKhqCHqrRuqUlU4ed329FoMK
-         +hRAuPOBToW2almIVxJYryAtY/lG4+QiiMJ5WnI102+7hxYtrXM2p2FSErZGKn31jXTN
-         Vmti4obgp8qCZ+15/5SNnAreP69I0yTKxZ8lOyiXNjKhDdXS50YbhtDuFMEGWmu3HSJ3
-         EG+Vs0QvQPF32tCaLucp/hyIV7W8tWtTme0tmAO+DHkTGm9yn1s20+srvrUtA6rr9z4F
-         wwJ+QWRZ6Kfl8K68WpP6aSU3Khr4v6+mudBi7MGlcD8C1PqslS3qT7koQuXIdUhYrNAU
-         Zh/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745575980; x=1746180780;
-        h=to:cc:date:message-id:subject:mime-version:from
-         :content-transfer-encoding:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NxUaPsRL3DayWO3frv2ULqEXQAoXMSOznD4LncXDA04=;
-        b=lL7oCEWy+i98pG7Ix5NEV4+iDdtST2N+LoEtJULkBeHTcFC77frcIARUvq4JHG8Fhj
-         0rIolRJu6HR6f5fPhiQvW4FZmyo9PF+AIfb2Eihfvzz+yZuCW9w8iYA+59WrOhCF+95H
-         5OMPIwoBa2Sm5rMsgTVqzPNundda1lhx/aRciuNwuh4yGmPCaVjkLx7mYgkGtX2he22X
-         Pw3ixqUs9tz0xyCPFEWrk2pQObkJMUp6czlGeywIu3uAOp/K2bfRs83JcrL2L0buoiZ9
-         4WVAi+xdR3+z8Vh0wbEfbYAWpP5wAtBRlul8GEm20wUvFrzBanv3qAYG0N+4dE9qqUfy
-         QnDA==
-X-Forwarded-Encrypted: i=1; AJvYcCUhnWlBpAlZ5OslfyDRapDpsrijc7/sr+zWwXRf/q20o6tUbFss0LQcMP4BFPbWz25wAc9WdTsphERX@vger.kernel.org, AJvYcCVAwbChTAYJBRcx3EMCbwuYqzDM4U4wPsLS3UItX5mEF44qfp5IoYXfwUwIRoY29hVxwaCToTarjkLcCcfPD106@vger.kernel.org, AJvYcCWXCpgy2qwOo2kvg3NiO0Mi6OdprPxfSNlh/W0qAMceJc7koYZEl+2OY3FjdYgNOLG256hslQBhk7EWnxkS@vger.kernel.org, AJvYcCWtbipKP92Gt5ZGIT2MRy4yh6BAD9OjaclANgm4PQW0j1pChioNp0fJ3lM1MAeSBUyQUcaIoZxHd5iv@vger.kernel.org, AJvYcCX9DNjKz3WKt7iQZaGb4sZRLjocSqj0J9c2dWXMvI01tIf+9NXnteWL635j3Pggz83x+/ZzpU/fs7RaaV4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIIxXgNV5NFsvERszZyDQ+9+g1oSed4p8CUckitMnrZPNoYZpA
-	Fey9SJ+X/TosK97t3eA0eqjVu3yrenjjwwrN/yZUrNKmzo6BQUd9a4XNczKo
-X-Gm-Gg: ASbGnctpd7dfrrvFLo+WoKxiQb/uoIW9A0SYBm2XWmXgylNgYYiF2LAbIRtmWKM3BNi
-	nKzWLUWH0oHDQRn8DexbYZmHwH90Y6SDzMeM2RmaC7IBWZsVTtGhp8BKGlf/v33sAbiT3tkfEv+
-	OEkhfPLSUqCiJyEAJiBL0h69Xm2Aw7DZps2vwi8rAhDJIQsXjZPXZVgnPGufxCrUpCPCdChWuun
-	Ld9E1UdS6WZgWaX+CxCSAjSNsGfHUN/N0+CtRHvsnlBFk7qAukCkp2o908A7WmuksjCC6WHtthD
-	qIuL3a+tqDFOk+7/3YILk0aObT/iBmnOs0EF/wSIn3KEkZgUCArQf5rvV0RPsZpY5yuYRNb6/el
-	XXCPfLw9RAe6Y4oWs
-X-Google-Smtp-Source: AGHT+IGiA/Yn603iCEcUZTepPAJSDOP4M4TDfO1zGDg1GjK6jBe0wK+uDj0rtvLjSeP4gVl0jlYXxQ==
-X-Received: by 2002:a05:6122:da5:b0:50d:a31c:678c with SMTP id 71dfb90a1353d-52a89d3e399mr831693e0c.2.1745575980041;
-        Fri, 25 Apr 2025 03:13:00 -0700 (PDT)
-Received: from smtpclient.apple (216-131-82-239.nyc.as62651.net. [216.131.82.239])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52a79f21b86sm605458e0c.9.2025.04.25.03.12.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Apr 2025 03:12:59 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Rich Persaud <persaur@gmail.com>
+	s=arc-20240116; t=1745589047; c=relaxed/simple;
+	bh=WxQ5Ou/fI09he56FhDFzuvM5OvovP9p41Kpo80ZlRI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YdOSypDgMJNC1x2yymFIx4XHrx6Rk8opYLTyV0+6wCagYkS82U7iOLV5VUUZiQK7x64KYAvkiyMfMYh/euiPOTBPu75lWKxbMdJRHSHpv20gHOIJch5BkRK85J2MgMee1a9Nz4LRorPNEKYuTCQ9aqw258qaNWMsYWsDYBZzN0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mN0LkFd0; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=hgYA6FEh3vjzB5qqCTmatdfoxf97Onxqc6wILtW6+qs=; b=mN0LkFd0GR/+ivo3qlMWXNGLgi
+	h9IJb5yyG9G4IoK0Lcj/MhbXl2a516EmM+1/AO/mUId6aN08ZsT9ue6rF4TUb/pPLf22G09xAwg4h
+	Y1yhoxu36dqnKz6Ywv4uPYzbio8Lh14wg9f/yIT41WKIhsWCl5OGHFJFO1isF1WrPlDoOnFKW9q+s
+	tcgVr0e5+ZIBsx7GflmOcxfNjuPxDJaCZf22eamqXu9K0kINXUbXOUidX6jb/NEhvL9Y7t/zuYqMg
+	z4BGNK3sgxIjlm3vI/4LLu+TwfABBUSfEY43J/GHzfqlDg2kmoOZm5vH2jon1Di/5Qz5S8VpeY0I4
+	weqzQKvQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u8JRf-0000000EcS2-2PpK;
+	Fri, 25 Apr 2025 13:50:23 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id EE817300583; Fri, 25 Apr 2025 15:50:22 +0200 (CEST)
+Date: Fri, 25 Apr 2025 15:50:22 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "x86@kernel.org" <x86@kernel.org>,
+	"kys@microsoft.com" <kys@microsoft.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"jpoimboe@kernel.org" <jpoimboe@kernel.org>,
+	"pawan.kumar.gupta@linux.intel.com" <pawan.kumar.gupta@linux.intel.com>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"kees@kernel.org" <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+	"samitolvanen@google.com" <samitolvanen@google.com>,
+	"ojeda@kernel.org" <ojeda@kernel.org>
+Subject: Re: [PATCH 4/6] x86,hyperv: Clean up hv_do_hypercall()
+Message-ID: <20250425135022.GB35881@noisy.programming.kicks-ass.net>
+References: <20250414111140.586315004@infradead.org>
+ <20250414113754.285564821@infradead.org>
+ <SN6PR02MB41576A943191D154521C23C8D4B82@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v14 00/19] x86: Trenchboot secure dynamic launch Linux kernel support
-Message-Id: <18F9BD47-282D-4225-AB6B-FDA4AD52D7AE@gmail.com>
-Date: Fri, 25 Apr 2025 06:12:46 -0400
-Cc: Ross Philipson <ross.philipson@oracle.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org,
- linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
- linux-efi@vger.kernel.org, iommu@lists.linux.dev,
- dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, ardb@kernel.org,
- mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
- peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
- nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net,
- corbet@lwn.net, ebiederm@xmission.com, dwmw2@infradead.org,
- baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
- andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com,
- Sergii Dmytruk <sergii.dmytruk@3mdeb.com>, openxt@googlegroups.com
-To: Dave Hansen <dave.hansen@intel.com>
-X-Mailer: iPad Mail (22E252)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR02MB41576A943191D154521C23C8D4B82@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-=EF=BB=BFOn Apr 24, 2025, at 2:45=E2=80=AFPM, Dave Hansen <dave.hansen@intel=
-.com> wrote:
-> =EF=BB=BFOn 4/21/25 09:26, Ross Philipson wrote:
->> This patchset provides detailed documentation of DRTM, the approach used f=
-or
->> adding the capbility, and relevant API/ABI documentation. In addition to t=
-he
->> documentation the patch set introduces Intel TXT support as the first pla=
-tform
->> for Linux Secure Launch.
->=20
-> So, I know some of the story here thanks to Andy Cooper. But the
-> elephant in the room is:
->=20
->> INTEL(R) TRUSTED EXECUTION TECHNOLOGY (TXT)
->> M:      Ning Sun <ning.sun@intel.com>
->> L:      tboot-devel@lists.sourceforge.net
->> S:      Supported
->> W:      http://tboot.sourceforge.net
->> T:      hg http://tboot.hg.sourceforge.net:8000/hgroot/tboot/tboot
->> F:      Documentation/arch/x86/intel_txt.rst
->> F:      arch/x86/kernel/tboot.c
->> F:      include/linux/tboot.h
->=20
-> Linux already supports TXT. Why do we need TrenchBoot?
+On Mon, Apr 21, 2025 at 06:27:57PM +0000, Michael Kelley wrote:
+> From: Peter Zijlstra <peterz@infradead.org> Sent: Monday, April 14, 2025 4:12 AM
+> > 
+> > What used to be a simple few instructions has turned into a giant mess
+> > (for x86_64). Not only does it use static_branch wrong, it mixes it
+> > with dynamic branches for no apparent reason.
+> > 
+> > Notably it uses static_branch through an out-of-line function call,
+> > which completely defeats the purpose, since instead of a simple
+> > JMP/NOP site, you get a CALL+RET+TEST+Jcc sequence in return, which is
+> > absolutely idiotic.
+> > 
+> > Add to that a dynamic test of hyperv_paravisor_present, something
+> > which is set once and never changed.
+> > 
+> > Replace all this idiocy with a single direct function call to the
+> > right hypercall variant.
+> 
+> This did indeed need cleaning after all the CoCo VM and paravisor
+> stuff got added. Thanks for doing it.
+> 
+> From looking at the code changes, I believe the 32-bit hypercall paths
+> are unchanged, as they weren't affected the CoCo VM and paravisor
+> additions. Perhaps explicitly state that intent in the commit message.
+> 
+> I've tested this patch set against linux-next-20250411 on normal Hyper-V
+> guests. Basic smoke tests pass, along with taking a panic, and
+> suspend/resume for guest hibernation. But getting into kdump after a
+> panic does not work. See comments in Patch 5 for the likely reason why.
+> 
+> I've also tested SNP and TDX VMs with a paravisor, and basic smoke
+> tests pass. But I'm testing in the Azure cloud, and I don't have access to an
+> environment where I can test without a paravisor. So my testing doesn't
+> cover the SNP and TDX specific static call paths. Maybe someone at
+> Microsoft can test that configuration.
 
-One reason is to generalize DRTM support to other platforms.
-
-RFC: Trenchboot Secure Launch DRTM for AMD SKINIT=20
-https://lore.kernel.org/lkml/cover.1734008878.git.sergii.dmytruk@3mdeb.com/
-
-OpenXT.org measured launch usage of tboot originated in 2012, when I was the=
- program manager for XenClient joint development [1][2] by Intel and Citrix.=
- TrenchBoot was proposed in 2018 at Platform Security Summit and evolved [3]=
- based on LKML and conference feedback. The tboot community was introduced [=
-4] to TrenchBoot in 2022.
+Excellent, thanks!
 
 
-> I think I know the answer, but it also needs to be a part of the
-> documentation, changelogs and cover letter.
->=20
-> Also, honestly, what do you think we should do with the Linux tboot
-> code? Is everyone going to be moving over to Trenchboot
+> > +#ifdef CONFIG_X86_64
+> > +u64 hv_pg_hypercall(u64 control, u64 param1, u64 param2)
+> 
+> Could this get a different name so we don't have the confusion of
+> hv_hypercall_pg vs hv_pg_hypercall?  Some possibilities:
+> 
+> hv_std_hypercall
+> hv_basic_hypercall
+> hv_core_hypercall
+> hv_normal_hypercall
+> hv_simple_hypercall
 
-OpenXT will migrate development of measured launch from tboot to TrenchBoot S=
-ecure Launch, after upstream Linux and Xen have support for both Intel and A=
-MD DRTM. Previously-deployed Intel devices using tboot, derived from OpenXT,=
- will need support until users upgrade their hardware. Qubes is integrating [=
-5] TrenchBoot into AEM (Anti Evil Maid). Since Oracle has spent several year=
-s working on this TrenchBoot series, they might use it, hopefully they can c=
-omment.=20
-
-
-> so that Linux support for TXT/tboot can just go away?
-
-[opinion]
-Which one will prevail? That may have less to do with tboot-trenchboot diffe=
-rences and more to do with AMD-Intel product marketing and OEM segmentation o=
-f DRTM features, some certified by Microsoft as "Secured Core" clients with S=
-MM attestation (Intel PPAM and AMD SMM Supervisor).
-
-Intel requires client vPro devices for TXT, but has slowly expanded the list=
- of eligible SKUs via "vPro Essentials" segmentation. AMD SKINIT is present o=
-n most processors, but DRTM currently requires a dTPM instead of the "mobile=
-" fTPM implementation in AMD PSP firmware, with dTPMs mostly present in AMD O=
-EM "PRO" or Embedded SKUs.
-
-If AMD included the full TPM 2.0 reference code in their PSP fTPM,  or if MS=
- Pluton implemented a full TPM 2.0 that was compatible with DRTM, then the n=
-umber of AMD DRTM-capable devices would be much higher than the number of In=
-tel vPro or AMD PRO devices, expanding the market for DRTM-capable software l=
-ike Linux (trenchboot) Secure Launch and Windows SystemGuard. That would inc=
-rease client adoption of trenchboot, as the only option for Linux DRTM on AM=
-D.
-
-On servers, both AMD and Intel hardware support DRTM with dTPM and other roo=
-ts of trust, but there are other launch considerations, including BMCs, SPDM=
- device attestation & vendor hypervisors.
-[/opinion]
-
-In a perfect world, Intel-signed ACM (used in TXT DRTM) binary blobs would b=
-e accompanied by public read-only source code, with reproducible builds that=
- generate those ACM blobs. In that perfect world, Intel ACM and tboot develo=
-pers would review the TrenchBoot Linux series, recommend improvements and gu=
-ide customers on migration from tboot to upstream-supported Linux DRTM. Neit=
-her has yet happened. Both would be welcome.
-
-Rich
+Sure, I'll throw a dice an pick one ;-)
 
 
-[1] https://www.intel.com/content/dam/www/public/us/en/documents/success-sto=
-ries/3rd-gen-core-vpro-citrix-vendor-spotlight.pdf
+> > @@ -483,14 +484,16 @@ static void __init ms_hyperv_init_platfo
+> >  			ms_hyperv.shared_gpa_boundary =
+> >  				BIT_ULL(ms_hyperv.shared_gpa_boundary_bits);
+> > 
+> > -		hyperv_paravisor_present = !!ms_hyperv.paravisor_present;
+> > -
+> >  		pr_info("Hyper-V: Isolation Config: Group A 0x%x, Group B 0x%x\n",
+> >  			ms_hyperv.isolation_config_a, ms_hyperv.isolation_config_b);
+> > 
+> > 
+> >  		if (hv_get_isolation_type() == HV_ISOLATION_TYPE_SNP) {
+> >  			static_branch_enable(&isolation_type_snp);
+> > +#if defined(CONFIG_AMD_MEM_ENCRYPT) && defined(CONFIG_HYPERV)
+> > +			if (!ms_hyperv.paravisor_present)
+> > +				static_call_update(hv_hypercall, hv_snp_hypercall);
+> > +#endif
+> 
+> This #ifdef (and one below for TDX) are really ugly. They could be avoided by adding
+> stubs for hv_snp_hypercall() and hv_tdx_hypercall(), and making the hv_hypercall static
+> call exist even when !CONFIG_HYPERV (and for 32-bit builds). Or is there a reason to
+> not do that?
 
-[2] http://media12.connectedsocialmedia.com/intel/11/9510/Air_Force_Research=
-_Laboratory_Security_Collaboration_Government.pdf
-
-[3] https://trenchboot.org/events/
-
-[4] https://sourceforge.net/p/tboot/mailman/message/37631560/
-
-[5] https://blog.3mdeb.com/2023/2023-01-31-trenchboot-aem-for-qubesos/
-
+I'll try and make it so.
 
