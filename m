@@ -1,335 +1,353 @@
-Return-Path: <linux-efi+bounces-3470-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3471-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC72A9DEE5
-	for <lists+linux-efi@lfdr.de>; Sun, 27 Apr 2025 05:59:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1BBA9EE6D
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Apr 2025 12:54:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D30065A00BB
-	for <lists+linux-efi@lfdr.de>; Sun, 27 Apr 2025 03:58:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 513F17AB423
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Apr 2025 10:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1A71FDA92;
-	Sun, 27 Apr 2025 03:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE58262FF8;
+	Mon, 28 Apr 2025 10:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="biQAIitS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YLCyO42O"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azolkn19010012.outbound.protection.outlook.com [52.103.10.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE0D79E1;
-	Sun, 27 Apr 2025 03:58:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.10.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745726339; cv=fail; b=M4l14yr4oa09xCTBPHwlClqf478MeiU0tdnlhCLwv4AD5GgGTCdXXPNwXfjXUMFPEM98z9lrlr/BRy69xKaNNp3iQwEWR+KKNcKc4GzLrHrho/6BMph6yWXhbaCKRGzoYX7VPDw3pLxvz+DvlQWBYe1AahxbHNzIw2I4yk1K7Io=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745726339; c=relaxed/simple;
-	bh=ZcNHnO24Ls4N8/7WKcIR2gnv2goCpjoWhc9p9X1GWnI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RE4sJymRVypuoo4fkRdpFv8+8JoB1zHaN1X/mIJm2fHuZ3s6uKcVYz30fIZaLTety+J+MQumNNqd2u4mG3Io8cuM+HRi6R2W0vlbb4f3Hv9hJa8x3LdM8qiWNZiBSmQ4kamIodciPYCuGAikVsBGOln8dEoowfvlcqfXFE74NsE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=biQAIitS; arc=fail smtp.client-ip=52.103.10.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dAcETD6r7hp/hHbJuAUpC6YgF3ZkYmgP5/g4eIZ42g7kCUhfXOgvOw3JukwKSx1qmcFEReHzB5j61lY0qUA/gV0ZuEWr7XwBpZX6Ggk9/5oCBkQ755RvpRSdXKtanAp0oMvxPn5m0N5/VgV90FPhv0x7dsDf2J6lC4Yh1cGtthGT6J+ZjYtubSF0EDsTRojKgeK3TGW3MAZcOm7Q31lLL3TTG6PnaGY3l9U0NdWVj7sQCx2zVTFwE+PkfWFzG/FyqyagEm2/G5HwhO67dUg0NY/D2Bm2Q6RoAZUfHvvwYvvOlA1OXrpHH+63sBiZH6Sc48pbYa7CNkPdiCJgh5GcsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+aDJUGQEcVjvfSeHApRe74F+3m0E7Z5ZN6H7P0GhtNI=;
- b=uiiiTMI5WnyIZ/551dYSLRZdmq045NOUtzXr0P4+66jheS83LqgJlHsqoDPtc073i8wZ/mPbe7qd/t2RgcahrtRlddkhjbsR5mpXiLdZ40kyxwmAC7bkjFyP6qOm7LxubBluAqmUnRvjkQU16Ow/94+FehvHhA7WaFv9ZOMhwZdBCL7oF2cs/XC8GVSHJ5/bWj3GvXKFtlj2kbmyA+SXfFZJZ+kxyvTCt9sDByKnRd2lSgtn/uvokse63d+AH7bUTaLOL0ihVgUDSJPNASLmjqbtIGdaQCSzR+PawJ4yQUbBATKWZpaCmV3GYdXbIHYu+Mp1uU0kzW7oEaXMzeP3+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+aDJUGQEcVjvfSeHApRe74F+3m0E7Z5ZN6H7P0GhtNI=;
- b=biQAIitS/yAcjgGP8/8mkcbzp2TJHPiiPAXma7ROAenrKlNYUlJ5r/4RLqlO9Anc7PJwimp6SOSb3iqwQWnNG/HC72UfsPw/CvsMYkfuy71nSK742Fi7MJHNiIYXoWsa9N6+RrtN3j9RYBWHGi0rxlqpSlBHoUndLs8AmvSJhaBFNwCZxXexPf2Rg9gaFTQa+fjrKL5qr0CeDtfC7xwAFWTS9vQIlszWjsresvTs/N8ycv4Cucr6CnDivY5mQOqx0YKHsb+L76yS8jkhFxlmCeENCnnR2WoVYmbZIwYNUNsof5ILJ1VQOen2EuuD/kOzb6hRuvVaafkgHS00haaH6A==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by SA0PR02MB7145.namprd02.prod.outlook.com (2603:10b6:806:e2::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.10; Sun, 27 Apr
- 2025 03:58:54 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8699.008; Sun, 27 Apr 2025
- 03:58:54 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Michael Kelley <mhklinux@outlook.com>, Peter Zijlstra
-	<peterz@infradead.org>
-CC: "x86@kernel.org" <x86@kernel.org>, "kys@microsoft.com"
-	<kys@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>, "decui@microsoft.com"
-	<decui@microsoft.com>, "tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
-	"pawan.kumar.gupta@linux.intel.com" <pawan.kumar.gupta@linux.intel.com>,
-	"seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "ardb@kernel.org" <ardb@kernel.org>, "kees@kernel.org"
-	<kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-efi@vger.kernel.org"
-	<linux-efi@vger.kernel.org>, "samitolvanen@google.com"
-	<samitolvanen@google.com>, "ojeda@kernel.org" <ojeda@kernel.org>
-Subject: RE: [PATCH 5/6] x86_64,hyperv: Use direct call to hypercall-page
-Thread-Topic: [PATCH 5/6] x86_64,hyperv: Use direct call to hypercall-page
-Thread-Index: AQHbrTIaLjXb7HTpjEywClCcZeg3ibOudLWAgAYGqoCAAAXRAIACceLQ
-Date: Sun, 27 Apr 2025 03:58:54 +0000
-Message-ID:
- <SN6PR02MB4157194E753702D204C20D09D4862@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20250414111140.586315004@infradead.org>
- <20250414113754.435282530@infradead.org>
- <SN6PR02MB41575B92CD3027FE0FBFB9F3D4B82@SN6PR02MB4157.namprd02.prod.outlook.com>
- <20250425140355.GC35881@noisy.programming.kicks-ass.net>
- <SN6PR02MB41577A6B0E5898B68E2CD3C9D4842@SN6PR02MB4157.namprd02.prod.outlook.com>
-In-Reply-To:
- <SN6PR02MB41577A6B0E5898B68E2CD3C9D4842@SN6PR02MB4157.namprd02.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|SA0PR02MB7145:EE_
-x-ms-office365-filtering-correlation-id: 2ac82002-0f8c-44dc-434a-08dd853fd410
-x-ms-exchange-slblob-mailprops:
- EgT5Wr3QDKyfA/kqhNtxhLoDzMvzACCoWPJDUsdTyeWzXukxEvV3mTUPttxp31gSXvJVEm3wb4a3WH3k/x9vDDr2e48mlNkzVxpAC8oyyp3kFPJfNMZWOGYJ1FQ7kkcRGSs94dpq+igIgfw08FhYXJ0jI9rxb3rGHnLqSnNqtQhUqk35BRFYJmdzY8374XMkzzdwt8LlZ/d3WtvWADtTtMQyb5NzdBaeItzoMb7Gdoqa4CEfZv2uTZWROLnyr0ExPM3WfGv8l7661Z42bKeZNfNTMX6SDYtwdlX0NwYuuzrUp80f2tfy01nKvbwTDHlfJLvskk+X/eUd8eb6LwTSbSoGTViY4Bn1wn4qy8mej3sSXpdjubViV02KggMlFeBnKoyXX1TGjYlkkhgoTrrWbby0ngNXtNfN8Cbyun234Mk2Q1/olMZkOurpZ7ikMzZkuEHB+56xxCosbs+IHdGIqDBmzWN0S4wPj7EbyXceSiD7OSaxpVFLtL8ltrYLNkS14ZrtVWgWmEqWZ4Dj6Wkz2YjKk0gVEYkMpJpV2TQy1aabXkid2LpbiU/G+l+NOYUUokLsewtKbG8XFRaif0EuaNWLPaFJ0UFiqZYMIIUo/kikZTJacVPALmgJQtEbUecSJdc3kvc8VaV4tG17XmNciE46uuJneaQEiuix3WGjLqPZJB+sixjsrsUomIYi3Wc2MY1NAGFJKEsdH3hSS1zz7klqAFI6p466hHOEClk/UCY=
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8060799006|15080799006|8062599003|19110799003|461199028|440099028|3412199025|41001999003|102099032|1710799026;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?uO5Rhcx+AQVfqqkdWVbaHvJCYJicVS8reQEwUewGRCK09rQpMTbxBf4CDfVq?=
- =?us-ascii?Q?HcdqMAWkEUs5eNJJAfoJVJdHnPVMXdLE9Vuhq6b3WdKV6n9/tGTiy6ltOO7V?=
- =?us-ascii?Q?VkPfkj3LuaGo63mjkyTu5EGYLR7SpzgKGwka4pY3L7CL16TrKbVMy1PbcWMg?=
- =?us-ascii?Q?A2hDFh26TG3c3eOs+4E+PMFBz2qAW65mJ8i6fk9K8QNuUDuZskgr9gkZTfUP?=
- =?us-ascii?Q?SeXMuPys9VjlU/dAT4Yi+PaUHRkzXC/yJzWvyUPs2kahme7tHeXnEeSRb3CX?=
- =?us-ascii?Q?IYCcZiqR6g6qPQrzHAs4JmHnfq+JGsDxtlMur+WyP5Rq2cvpkraglEd2FqZF?=
- =?us-ascii?Q?CQW5/BJw13da1jgD7SnWeAylgbnK/bEpCmLmPTkyoy9DXqdvGVpBM69TlETL?=
- =?us-ascii?Q?IDIqJDAylYpWYcavoEgb956IOF/9R3TKyvxEP5H7Krak/DBcru4sFe6pe4l4?=
- =?us-ascii?Q?3TTnNwhB6y/83ctkvKSVl69wqXnKuTVWoRoaxIzrsv7wt8vqKfzYO68gr9Fc?=
- =?us-ascii?Q?dwp32Z3kW2taGqfVxJkEea6m8Lc+IaSBMtsCyoyyQMXv2mdK3ZsDo+ZSczxK?=
- =?us-ascii?Q?Oh1GpLn5fgzeqb2vZv5KjDxpQhYSFbLR4QQI/p+bpRHpULJY89if76KvQrMj?=
- =?us-ascii?Q?a3YHSIstP7neRR4vYhp8uktOE/1NdkhRb8q6S78vmrwpM2p8jfkqnUy+5GoI?=
- =?us-ascii?Q?PjD6V0WZu+C61UlRLl9qbmu0uAwcWy/PUQE/MuNqaIUBVZLA4tm2YLaCgePQ?=
- =?us-ascii?Q?r2K0xK1xYkMzxj30CsF1t6sTpHn6fIPevqWhhx/cYrDkhwL+Gun+LaTeGqVn?=
- =?us-ascii?Q?jhlcH8pYlpi6XC0YuDybtF6lOpqChTzFBI6aysMxV9GTa4+GCMwfVCCu8t8L?=
- =?us-ascii?Q?HaXEH+f0al/6nPkM+hwe1QJ7lP7jp9Wl5vhKablXI0FYNHKBPl9GOYx04pAW?=
- =?us-ascii?Q?v32hA5kr85PiUamhKNT38XhCHNXrYjHlNN9WNp7fBXV4m/zb69ldZh2v46y2?=
- =?us-ascii?Q?HFsfXGUwU+TsUb0l7d1mwK/ac6n7EiHRXLqHUWt0q98/SXwxl1gpC39/gyRi?=
- =?us-ascii?Q?6+FURl139FwgCKcavTs0WOogU1P401/AYb13rK1ZXYb6QI/+mjpAA6vjsHqg?=
- =?us-ascii?Q?xxzm7/lG2nEL/7zgMjjGrfQ1beomQOBGvg=3D=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?0wrgpkJhwKpReTxPaDU2ojjqDcKZiJUHJRxs2seKmkCqLv2jKZR8bPHghWYq?=
- =?us-ascii?Q?Hh8kP96BZ5orCiO5aVubX/BJ7Q29l90B5LepNlrVXfyLykhroLqYxj0cc6fg?=
- =?us-ascii?Q?SAcp8K34RHYd0CpYizvuK/yyMWdJHd+bMwhLZaehtcMBaI0hNAbL7DDYLUAm?=
- =?us-ascii?Q?+ouyV0BPemPoNx3ICXae1B5Eys+AH6/DlfX6OMXebp0tWne7uI3WC84whLfd?=
- =?us-ascii?Q?1EGLwkFtnyknCqo68nh9eNfPXx6z05icJcAZSF1TQrz46bY2FKg+kJ4mfu7F?=
- =?us-ascii?Q?zNjQxHbgcUB6GWt3zFp+Aa/9y/df9ANKgERuypMaXxLcvZPLpnu9GlRWNMwN?=
- =?us-ascii?Q?pIYs04TtFnDl8cWYqvSzg35n0GTcO628n0cYa3yZhbkFdIYtsKUk9YSfsqY+?=
- =?us-ascii?Q?4OiUSIri08XPIrqVEMC2l/Ts0d/6Sa6EYrWOjEy5OBCAd2BdNcgyerBxZ8F/?=
- =?us-ascii?Q?brEcQoCeC3d7Q0u9MhbP+HGZFdDMg7uDFR9OSyV4a2HItsvno4XwxmoP2Udd?=
- =?us-ascii?Q?De3mBuBlON4TMXsKs99dyfclYzZtM+8CHCsuuXgMkDswZXhBT+4EyapJrgSO?=
- =?us-ascii?Q?kSnV3HoCoNRv0VlAn0Wps8flgbnWf6jrvoyehGek4LSIc6xiFMOkTcy9dqt4?=
- =?us-ascii?Q?MbGoO5yfWoj2u3K9TamGHxL5PdHj/kfl1lQU2ntPe+2MfrWEC94pogi3eGtP?=
- =?us-ascii?Q?rDv9LKCx/9JMI8YFpSPMZbRXkf7vXoaxwQLgKzEtr6zk+wm0wsWU13J+R4TB?=
- =?us-ascii?Q?/LJOth/WQUP8aKzftEkDBMXeSNVlHMN+H2OF9VoIWAWr+tr/viluiSk5c/j/?=
- =?us-ascii?Q?0gXz8RfMNbsVqZAOzt2hTUykMHZAZlxB5191RCCsrkBaD5K07nrKT3Xx1Z1+?=
- =?us-ascii?Q?FyxspqzXDGaG9zeI9OEWwlAUG4YwhtazBRr0zjNz17i4NgjnYRNRTE9LpFG5?=
- =?us-ascii?Q?UPN32Y1F1+vWTIOtvZlJlvI9xU7/JiPbep8CkRczI9FvY3TC1f8V+uwqG4Fl?=
- =?us-ascii?Q?F1gYA/zciNRwPWQrftFjfx3PgUAZM4CIF/7JFZ26Wn4xyt67Gi0ipBxjzmLv?=
- =?us-ascii?Q?oYqfz3C+2A1FVwWcufVp+DbV2XtmU+732w/LE+wVYjHGjIqa1NT2t8FcWo7L?=
- =?us-ascii?Q?KpPmFeDNEwXfv8I5xfPUVR86qxbEMcabyTv1BoyARIVfKP54poRxfbLt79Tj?=
- =?us-ascii?Q?iweaV9WajqF7LZYBekCEyWcWUkvzgyfqBpQH1cTXW1Tu4UhDzHjPUKhkOr4?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F6826280C
+	for <linux-efi@vger.kernel.org>; Mon, 28 Apr 2025 10:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745837679; cv=none; b=NIuEKBeRThaolm9nmAVh9qmGUA3sDDWCtfCdBid2ShJ84TBuROV38SK1FSE88mK2gXyEGeHKO8xvLqA1dhEWV6GhZgKFqrVtmXATlxhtNGivXpwUiDC2FxWYWrQx8ZiUbkTacqjReu+Vh75uRzc+/NJKyj0jFfpWSjSHChCg1nQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745837679; c=relaxed/simple;
+	bh=Ecq6K4BNTHLRWyjIObZfoy2w/9GkEyRpkKtINHJ2CFM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ucw1QQTUnw2d4hRyrgbeT4wY1dHzcPiRIdcxbfkZSu0PNEX14Gj2t1U1l5/2Zki33TVRVn2IGpdptTASo2s+I0pnbhels0SrfGgp2btBg9akIm6NJLaZObhMIossvwYUU8YbjP2dy7X2s4aOW01V9Fd6I31YCtDF/fzvtO0xz+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YLCyO42O; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745837675;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7IEU2LSwAWutexi29Aw4e1+MJAP+WX/OVNnsZGRxNDw=;
+	b=YLCyO42O+QmUNS/Nk6hei+HiVJRAVSBxQd5lVkypLDgqDf1JZwsf7MYy4RUBXkYKXt6Ia1
+	Eq0zjcmnq8kXAsbJGAWy7RsMpJI0nyOoXTqaWVshvVkCHFqTtDpS0TRTkm9XBhgG0lzsff
+	tf4F6ndiaCafutthWjwS5wg+kDVfMrk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-191-JXJDcbS6MwSxBBS865g2gQ-1; Mon, 28 Apr 2025 06:54:31 -0400
+X-MC-Unique: JXJDcbS6MwSxBBS865g2gQ-1
+X-Mimecast-MFC-AGG-ID: JXJDcbS6MwSxBBS865g2gQ_1745837670
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43cf172ffe1so23959145e9.3
+        for <linux-efi@vger.kernel.org>; Mon, 28 Apr 2025 03:54:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745837670; x=1746442470;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7IEU2LSwAWutexi29Aw4e1+MJAP+WX/OVNnsZGRxNDw=;
+        b=SRE8oif5US0cw5dQblJ4voJoT5mZXfl8YG3vgHcrMJFR3W1Omow5w6LOfYClMLNZT1
+         Tz/ILW26Wh+zr37UL13+URr8f6p8NfNCDhsDB+0unC24ICI0YYlT+E/sCYiQaj9wkgs6
+         A7h50IwPBlquJRWByuX0br1ZDqvpBvU6sAAD69daZ2RC+XrK+CZYl6+RRLhCPUyzp3Xh
+         8Av5xAQWYCRS+13Tb2i4i9kOXKsGuG5Pbnm22MejgOpI/wUdqSED6P8JXOBcVMLwvzk8
+         uKFckJFHnzoqW36vKI3lN31DtLCudIrOb0VWRGNjUu16PkAle0opBaup9W5PIHScX3Uk
+         ++ig==
+X-Forwarded-Encrypted: i=1; AJvYcCVFFXG3vaZoEtEdbqTiqJ0bdZrKwxK6RUPYULZZBmKyQQflTVP80rvNXTSCt9zFTD9nCdTrknhAGVA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzhoznrc+qmAC/TUNMnEXzRAekLJjCCROjVXj6IjoUjMMJ/mpX7
+	R8XCJEb2A0edyLpySsfgK6zklep48bJWrSD6JpIb9bOhLpTSB7DtebJNGzReFQKl6AcdUsyvNBS
+	6daBVGqe/SU/91V8Z1xAVofbJWd8Kk/wEzq1fsYtLoxx1FQ1mmhzoMw4Kqg==
+X-Gm-Gg: ASbGncteryTLMTPk4lV0VTP9SkU8Zak6zFOMz35DoQnOLVXSu9ITQsNlGmn7HnKnVIr
+	hXtFEDrgS4dhwCr2JWJZ2HphYITaRqozixpTxOshhFnaY5mfGFrXdf9t7M/iB2UJEDrJ2frX3VB
+	Iarb9Ntiqb20Vk9CnmcJRoENgmnfENac6EzwsJlqrpGOSiyqtpP7YjsDTJcdm4I58v4c9jMezK1
+	4Pspqyhn2oVtCIDmc6AlMcxrzv1wHBDf3U8Zv2lE9TVjIWKI6ban5i4I0ASAZCbSyUnABMsS1BM
+	8VS/a0k=
+X-Received: by 2002:a05:600c:4e51:b0:43c:ec28:d31b with SMTP id 5b1f17b1804b1-440ab79f582mr90565295e9.10.1745837670326;
+        Mon, 28 Apr 2025 03:54:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWN38u2JhWDwqPy6JXuY84JTovfHFRGLcF3m5SfbosWG675z9E1F2DXDYB5118UF5AWfcjaA==
+X-Received: by 2002:a05:600c:4e51:b0:43c:ec28:d31b with SMTP id 5b1f17b1804b1-440ab79f582mr90565035e9.10.1745837669916;
+        Mon, 28 Apr 2025 03:54:29 -0700 (PDT)
+Received: from fedora (g3.ign.cz. [91.219.240.17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073e46454sm10839008f8f.78.2025.04.28.03.54.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Apr 2025 03:54:29 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: x86@kernel.org, linux-efi@vger.kernel.org, Thomas Gleixner
+ <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Peter
+ Jones <pjones@redhat.com>, Daniel Berrange <berrange@redhat.com>, Emanuele
+ Giuseppe Esposito <eesposit@redhat.com>, Gerd Hoffmann
+ <kraxel@redhat.com>, Greg KH <gregkh@linuxfoundation.org>, Luca Boccassi
+ <bluca@debian.org>, Peter Zijlstra <peterz@infradead.org>, Matthew Garrett
+ <mjg59@srcf.ucam.org>, James Bottomley
+ <James.Bottomley@hansenpartnership.com>, Eric Snowberg
+ <eric.snowberg@oracle.com>, Paolo Bonzini <pbonzini@redhat.com>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] efi/libstub: zboot specific mechanism for embedding
+ SBAT section
+In-Reply-To: <CAMj1kXHqmOiNX_DH+8uSsTROzR+hgvZ5DyE=3wVE7-dQ+2BW=Q@mail.gmail.com>
+References: <20250424080950.289864-1-vkuznets@redhat.com>
+ <20250424080950.289864-2-vkuznets@redhat.com>
+ <CAMj1kXHqmOiNX_DH+8uSsTROzR+hgvZ5DyE=3wVE7-dQ+2BW=Q@mail.gmail.com>
+Date: Mon, 28 Apr 2025 12:54:27 +0200
+Message-ID: <87o6wga74s.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ac82002-0f8c-44dc-434a-08dd853fd410
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Apr 2025 03:58:54.3212
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR02MB7145
+Content-Type: text/plain
 
-From: Michael Kelley <mhklinux@outlook.com> Sent: Friday, April 25, 2025 7:=
-32 AM
->=20
-> From: Peter Zijlstra <peterz@infradead.org> Sent: Friday, April 25, 2025 =
-7:04 AM
-> >
-> > On Mon, Apr 21, 2025 at 06:28:42PM +0000, Michael Kelley wrote:
-> >
-> > > >  #ifdef CONFIG_X86_64
-> > > > +static u64 __hv_hyperfail(u64 control, u64 param1, u64 param2)
-> > > > +{
-> > > > +	return U64_MAX;
-> > > > +}
-> > > > +
-> > > > +DEFINE_STATIC_CALL(__hv_hypercall, __hv_hyperfail);
-> > > > +
-> > > >  u64 hv_pg_hypercall(u64 control, u64 param1, u64 param2)
-> > > >  {
-> > > >  	u64 hv_status;
-> > > >
-> > > > +	asm volatile ("call " STATIC_CALL_TRAMP_STR(__hv_hypercall)
-> > > >  		      : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> > > >  		        "+c" (control), "+d" (param1)
-> > > > +		      : "r" (__r8)
-> > > >  		      : "cc", "memory", "r9", "r10", "r11");
-> > > >
-> > > >  	return hv_status;
-> > > >  }
-> > > > +
-> > > > +typedef u64 (*hv_hypercall_f)(u64 control, u64 param1, u64 param2)=
-;
-> > > > +
-> > > > +static inline void hv_set_hypercall_pg(void *ptr)
-> > > > +{
-> > > > +	hv_hypercall_pg =3D ptr;
-> > > > +
-> > > > +	if (!ptr)
-> > > > +		ptr =3D &__hv_hyperfail;
-> > > > +	static_call_update(__hv_hypercall, (hv_hypercall_f)ptr);
-> > > > +}
-> >
-> > ^ kept for reference, as I try and explain how static_call() works
-> > below.
-> >
-> > > > -skip_hypercall_pg_init:
-> > > > -	/*
-> > > > -	 * Some versions of Hyper-V that provide IBT in guest VMs have a =
-bug
-> > > > -	 * in that there's no ENDBR64 instruction at the entry to the
-> > > > -	 * hypercall page. Because hypercalls are invoked via an indirect=
- call
-> > > > -	 * to the hypercall page, all hypercall attempts fail when IBT is
-> > > > -	 * enabled, and Linux panics. For such buggy versions, disable IB=
-T.
-> > > > -	 *
-> > > > -	 * Fixed versions of Hyper-V always provide ENDBR64 on the hyperc=
-all
-> > > > -	 * page, so if future Linux kernel versions enable IBT for 32-bit
-> > > > -	 * builds, additional hypercall page hackery will be required her=
-e
-> > > > -	 * to provide an ENDBR32.
-> > > > -	 */
-> > > > -#ifdef CONFIG_X86_KERNEL_IBT
-> > > > -	if (cpu_feature_enabled(X86_FEATURE_IBT) &&
-> > > > -	    *(u32 *)hv_hypercall_pg !=3D gen_endbr()) {
-> > > > -		setup_clear_cpu_cap(X86_FEATURE_IBT);
-> > > > -		pr_warn("Disabling IBT because of Hyper-V bug\n");
-> > > > -	}
-> > > > -#endif
-> > >
-> > > With this patch set, it's nice to see IBT working in a Hyper-V guest!
-> > > I had previously tested IBT with some hackery to the hypercall page
-> > > to add the missing ENDBR64, and didn't see any problems. Same
-> > > after these changes -- no complaints from IBT.
-> >
-> > No indirect calls left, no IBT complaints ;-)
-> >
-> > > > +	hv_set_hypercall_pg(hv_hypercall_pg);
-> > > >
-> > > > +skip_hypercall_pg_init:
-> > > >  	/*
-> > > >  	 * hyperv_init() is called before LAPIC is initialized: see
-> > > >  	 * apic_intr_mode_init() -> x86_platform.apic_post_init() and
-> > > > @@ -658,7 +658,7 @@ void hyperv_cleanup(void)
-> > > >  	 * let hypercall operations fail safely rather than
-> > > >  	 * panic the kernel for using invalid hypercall page
-> > > >  	 */
-> > > > -	hv_hypercall_pg =3D NULL;
-> > > > +	hv_set_hypercall_pg(NULL);
-> > >
-> > > This causes a hang getting into the kdump kernel after a panic.
-> > > hyperv_cleanup() is called after native_machine_crash_shutdown()
-> > > has done crash_smp_send_stop() on all the other CPUs. I don't know
-> > > the details of how static_call_update() works,
-> >
-> > Right, so let me try and explain this :-)
-> >
-> > So we get the compiler to emit direct calls (CALL/JMP) to symbols
-> > prefixed with "__SCT__", in this case from asm, but more usually by
-> > means of the static_call() macro mess.
-> >
-> > Meanwhile DEFINE_STATIC_CALL() ensures such a symbol actually exists.
-> > This symbol is a little trampoline that redirects to the actual
-> > target function given to DEFINE_STATIC_CALL() -- __hv_hyperfail() in th=
-e
-> > above case.
-> >
-> > Then objtool runs through the resulting object file and stores the
-> > location of every call to these __STC__ prefixed symbols in a custom
-> > section.
-> >
-> > This enables static_call init (boot time) to go through the section and
-> > rewrite all the trampoline calls to direct calls to the target.
-> > Subsequent static_call_update() calls will again rewrite the direct cal=
-l
-> > to point elsewhere.
-> >
-> > So very much how static_branch() does a NOP/JMP rewrite to toggle
-> > branches, static_call() rewrites (direct) call targets.
-> >
-> > > but it's easy to imagine that
-> > > it wouldn't work when the kernel is in such a state.
-> > >
-> > > The original code setting hv_hypercall_pg to NULL is just tidiness.
-> > > Other CPUs are stopped and can't be making hypercalls, and this CPU
-> > > shouldn't be making hypercalls either, so setting it to NULL more
-> > > cleanly catches some erroneous hypercall (vs. accessing the hypercall
-> > > page after Hyper-V has been told to reset it).
-> >
-> > So if you look at (retained above) hv_set_hypercall_pg(), when given
-> > NULL, the call target is set to __hv_hyperfail(), which does an
-> > unconditional U64_MAX return.
-> >
-> > Combined with the fact that the thing *should* not be doing hypercalls
-> > anymore at this point, something is iffy.
-> >
-> > I can easily remove it, but it *should* be equivalent to before, where
-> > it dynamicall checked for hv_hypercall_pg being NULL.
->=20
-> I agree that setting the call target to __hv_hyperfail() should be good.
-> But my theory is that static_call_update() is hanging when trying to
-> do the rewrite, because of the state of the other CPUs. I don't think
-> control is ever returning from static_call_update() when invoked
-> through hyperv_cleanup(). Wouldn't static_call_update() need to park
-> the other CPUs temporarily and/or flush instruction caches to make
-> everything consistent?
->=20
-> But that's just my theory. I'll run a few more experiments to confirm
-> if control ever returns from static_call_update() in this case.
->=20
+Ard Biesheuvel <ardb@kernel.org> writes:
 
-Indeed, control never returns from static_call_update(). Prior to
-hyperv_cleanup() running, crash_smp_send_stop() has been called to
-stop all the other CPUs, and it does not update cpu_online_mask to
-reflect the other CPUs being stopped.
+> Hi Vitaly,
+>
 
-static_call_update() runs this call sequence:
+Ard, thanks for the review!
 
-arch_static_call_transform()
-__static_call_transform()
-smp_text_poke_single()
-smp_text_poke_batch_finish()
-smp_text_poke_sync_each_cpu()
+> On Thu, 24 Apr 2025 at 10:10, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
+>>
+>> SBAT is a mechanism which improves SecureBoot revocations of UEFI binaries
+>> by introducing a generation-based technique. Compromised or vulnerable UEFI
+>> binaries can be prevented from booting by bumping the minimal required
+>> generation for the specific component in the bootloader. More information
+>> on the SBAT can be obtained here:
+>>
+>> https://github.com/rhboot/shim/blob/main/SBAT.md
+>>
+>> Upstream Linux kernel does not currently participate in any way in SBAT as
+>> there's no existing policy in how SBAT generation number should be
+>> defined. Keep the status quo and provide a mechanism for distro vendors and
+>> anyone else who signs their kernel for SecureBoot to include their own SBAT
+>> data. This leaves the decision on the policy to the vendor. Basically, each
+>> distro implementing SecureBoot today, will have an option to inject their
+>> own SBAT data during kernel build and before it gets signed by their
+>> SecureBoot CA. Different distro do not need to agree on the common SBAT
+>> component names or generation numbers as each distro ships its own 'shim'
+>> with their own 'vendor_cert'/'vendor_db'
+>>
+>> Implement support for embedding SBAT data for architectures using
+>> zboot (arm64, loongarch, riscv). Build '.sbat' section along with libstub
+>> so it can be reused by x86 implementation later.
+>>
+>> Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+>> ---
+>>  drivers/firmware/efi/Kconfig                | 25 +++++++++++++++++++++
+>>  drivers/firmware/efi/libstub/Makefile       |  7 ++++++
+>>  drivers/firmware/efi/libstub/Makefile.zboot |  3 ++-
+>>  drivers/firmware/efi/libstub/sbat.S         |  7 ++++++
+>>  drivers/firmware/efi/libstub/zboot-header.S | 14 ++++++++++++
+>>  drivers/firmware/efi/libstub/zboot.lds      | 17 ++++++++++++++
+>>  6 files changed, 72 insertions(+), 1 deletion(-)
+>>  create mode 100644 drivers/firmware/efi/libstub/sbat.S
+>>
+>> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+>> index 5fe61b9ab5f9..2edb0167ba49 100644
+>> --- a/drivers/firmware/efi/Kconfig
+>> +++ b/drivers/firmware/efi/Kconfig
+>> @@ -281,6 +281,31 @@ config EFI_EMBEDDED_FIRMWARE
+>>         bool
+>>         select CRYPTO_LIB_SHA256
+>>
+>> +config EFI_SBAT
+>> +       bool "Embed SBAT section in the kernel"
+>> +       depends on EFI_ZBOOT
+>> +       help
+>> +         SBAT section provides a way to improve SecureBoot revocations of UEFI
+>> +         binaries by introducing a generation-based mechanism. With SBAT, older
+>> +         UEFI binaries can be prevented from booting by bumping the minimal
+>> +         required generation for the specific component in the bootloader.
+>> +
+>> +         Note: SBAT information is distribution specific, i.e. the owner of the
+>> +         signing SecureBoot certificate must define the SBAT policy. Linux
+>> +         kernel upstream does not define SBAT components and their generations.
+>> +
+>> +         See https://github.com/rhboot/shim/blob/main/SBAT.md for the additional
+>> +         details.
+>> +
+>> +         If unsure, say N.
+>> +
+>> +config EFI_SBAT_FILE
+>> +       string "Embedded SBAT section file path"
+>> +       depends on EFI_SBAT
+>> +       help
+>> +         Specify a file with SBAT data which is going to be embedded as '.sbat'
+>> +         section into the kernel.
+>> +
+>
+> Can we simplify this? CONFIG_EFI_SBAT makes no sense if
+> CONFIG_EFI_SBAT_FILE is left empty. If you really need both symbols,
+> set EFI_SBAT automatically based on whether EFI_SBAT_FILE is
+> non-empty.
 
-smp_text_poke_sync_each_cpu() sends an IPI to each CPU in
-cpu_online_mask, and of course the other CPUs never respond, so
-it waits forever.
+Sure, but FWIW, I modelled this after MODULE_SIG/MODULE_SIG_KEY and
+BOOT_CONFIG_EMBED/BOOT_CONFIG_EMBED_FILE where the selection is also
+2-step -- do you think EFI_SBAT/EFI_SBAT_FILE case is different?
 
-Michael
+>
+>>  endmenu
+>>
+>>  config UEFI_CPER
+>> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+>> index d23a1b9fed75..5113cbdadf9a 100644
+>> --- a/drivers/firmware/efi/libstub/Makefile
+>> +++ b/drivers/firmware/efi/libstub/Makefile
+>> @@ -105,6 +105,13 @@ lib-$(CONFIG_UNACCEPTED_MEMORY) += unaccepted_memory.o bitmap.o find.o
+>>  extra-y                                := $(lib-y)
+>>  lib-y                          := $(patsubst %.o,%.stub.o,$(lib-y))
+>>
+>> +extra-$(CONFIG_EFI_SBAT)       += sbat.o
+>> +$(obj)/sbat.o: $(obj)/sbat.bin
+>> +targets += sbat.bin
+>> +filechk_sbat.bin = cat $(or $(real-prereqs), /dev/null)
+>> +$(obj)/sbat.bin: $(CONFIG_EFI_SBAT_FILE) FORCE
+>> +       $(call filechk,sbat.bin)
+>> +
+>
+> Please get rid of all of this, and move the .incbin into
+> zboot-header.S
+
+The main prupose of this logic is to track possible sbat data
+changes. E.g. if the file with SBAT data has changed, then we need to
+rebuild the kernel binary. If we just use a raw 'incbin' somewhere and
+don't add a specific Makefile dependency, then the logic will be lost.
+
+I think I can drop the dedicated 'sbat.S' and use zboot-header.S but I'd
+like to keep at least the 'filechk' part: we compare what's in
+EFI_SBAT_FILE with 'sbat.bin' copy and, if things have changed, rebuild.
+
+>
+>
+>>  # Even when -mbranch-protection=none is set, Clang will generate a
+>>  # .note.gnu.property for code-less object files (like lib/ctype.c),
+>>  # so work around this by explicitly removing the unwanted section.
+>> diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
+>> index 48842b5c106b..3d2d0b326f7c 100644
+>> --- a/drivers/firmware/efi/libstub/Makefile.zboot
+>> +++ b/drivers/firmware/efi/libstub/Makefile.zboot
+>> @@ -44,7 +44,8 @@ AFLAGS_zboot-header.o += -DMACHINE_TYPE=IMAGE_FILE_MACHINE_$(EFI_ZBOOT_MACH_TYPE
+>>  $(obj)/zboot-header.o: $(srctree)/drivers/firmware/efi/libstub/zboot-header.S FORCE
+>>         $(call if_changed_rule,as_o_S)
+>>
+>> -ZBOOT_DEPS := $(obj)/zboot-header.o $(objtree)/drivers/firmware/efi/libstub/lib.a
+>> +ZBOOT_DEPS := $(obj)/zboot-header.o $(objtree)/drivers/firmware/efi/libstub/lib.a \
+>> +          $(if $(CONFIG_EFI_SBAT),$(objtree)/drivers/firmware/efi/libstub/sbat.o)
+>>
+>
+> Drop this too
+>
+>>  LDFLAGS_vmlinuz.efi.elf := -T $(srctree)/drivers/firmware/efi/libstub/zboot.lds
+>>  $(obj)/vmlinuz.efi.elf: $(obj)/vmlinuz.o $(ZBOOT_DEPS) FORCE
+>> diff --git a/drivers/firmware/efi/libstub/sbat.S b/drivers/firmware/efi/libstub/sbat.S
+>> new file mode 100644
+>> index 000000000000..4e99a1bac794
+>> --- /dev/null
+>> +++ b/drivers/firmware/efi/libstub/sbat.S
+>> @@ -0,0 +1,7 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * Embed SBAT data in the kernel.
+>> + */
+>> +       .pushsection ".sbat","a",@progbits
+>> +       .incbin "drivers/firmware/efi/libstub/sbat.bin"
+>> +       .popsection
+>> diff --git a/drivers/firmware/efi/libstub/zboot-header.S b/drivers/firmware/efi/libstub/zboot-header.S
+>> index fb676ded47fa..f2df24504fc5 100644
+>> --- a/drivers/firmware/efi/libstub/zboot-header.S
+>> +++ b/drivers/firmware/efi/libstub/zboot-header.S
+>> @@ -135,6 +135,20 @@ __efistub_efi_zboot_header:
+>>                         IMAGE_SCN_MEM_READ | \
+>>                         IMAGE_SCN_MEM_WRITE
+>>
+>> +#ifdef CONFIG_EFI_SBAT
+>> +       .ascii          ".sbat\0\0\0"
+>> +       .long           __sbat_size
+>> +       .long           _edata - .Ldoshdr
+>> +       .long           __sbat_size
+>> +       .long           _edata - .Ldoshdr
+>> +
+>> +       .long           0, 0
+>> +       .short          0, 0
+>> +       .long           IMAGE_SCN_CNT_INITIALIZED_DATA | \
+>> +                       IMAGE_SCN_MEM_READ | \
+>> +                       IMAGE_SCN_MEM_DISCARDABLE
+>
+> You can put the pushsection/popsection right here.
+>
+
+Ok (but see my comment about Makefile magic above.
+
+
+>> +#endif
+>> +
+>>         .set            .Lsection_count, (. - .Lsection_table) / 40
+>>
+>>  #ifdef PE_DLL_CHAR_EX
+>> diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
+>> index 9ecc57ff5b45..2cd5015c70ce 100644
+>> --- a/drivers/firmware/efi/libstub/zboot.lds
+>> +++ b/drivers/firmware/efi/libstub/zboot.lds
+>> @@ -31,10 +31,24 @@ SECTIONS
+>>
+>>         .data : ALIGN(4096) {
+>>                 *(.data* .init.data*)
+>> +#ifndef CONFIG_EFI_SBAT
+>>                 _edata = ALIGN(512);
+>> +#else
+>> +               /* Avoid gap between '.data' and '.sbat' */
+>> +               _edata = ALIGN(4096);
+>> +#endif
+>
+> Just use 4096 in all cases.
+>
+
+Ok.
+
+>>                 . = _edata;
+>>         }
+>>
+>> +#ifdef CONFIG_EFI_SBAT
+>> +        .sbat : ALIGN(4096) {
+>> +               _sbat = . ;
+>> +               *(.sbat)
+>> +               _esbat = ALIGN(512);
+>> +               . = _esbat;
+>> +       }
+>> +#endif
+>> +
+>>         .bss : {
+>>                 *(.bss* .init.bss*)
+>>                 _end = ALIGN(512);
+>> @@ -52,3 +66,6 @@ PROVIDE(__efistub__gzdata_size =
+>>
+>>  PROVIDE(__data_rawsize = ABSOLUTE(_edata - _etext));
+>>  PROVIDE(__data_size = ABSOLUTE(_end - _etext));
+>> +#ifdef CONFIG_EFI_SBAT
+>> +PROVIDE(__sbat_size = ABSOLUTE(_esbat - _sbat));
+>> +#endif
+>
+> This can be unconditional - it is only evaluated when a reference to it exists.
+>
+
+Yes, it compiles well, I put #ifdef here mostly for documentational
+purposes. Will drop.
+
+>> --
+>> 2.49.0
+>>
+>
+
+-- 
+Vitaly
+
 
