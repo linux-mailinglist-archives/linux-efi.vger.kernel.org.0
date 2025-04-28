@@ -1,72 +1,72 @@
-Return-Path: <linux-efi+bounces-3474-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3475-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A21A9F3E2
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Apr 2025 16:55:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4D8A9F434
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Apr 2025 17:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCBAE3B61B1
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Apr 2025 14:55:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B32E44619B1
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Apr 2025 15:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9918C26FDAC;
-	Mon, 28 Apr 2025 14:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1291026D4FC;
+	Mon, 28 Apr 2025 15:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAap7sky"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mo5Tc46w"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD9E26FDA6;
-	Mon, 28 Apr 2025 14:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0D226A1AF;
+	Mon, 28 Apr 2025 15:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745852112; cv=none; b=hH+PK+vSgNAV7Q+MWXLOeWwi+2VXX6kljc7CgwEf+qe++ywKTrwAKlf9aVFAYlgCGTpHv4aftRBXCW1SM3jXtDum4j3meoRw1+hMNDh9yPGPVz/lKwyewQ3WuNs5kUCWNNFTlGgztSARXcSxEEO45BzOKFivn+TidXGEKPu64Jw=
+	t=1745853385; cv=none; b=aon3mAl2/IORqPk9JUhjTncmNYEJiJ3W7gbDN1c1TQnvbgpHvJJgo6pRusGzKEarKEyziBlehfHNs0m/U1c4/RXhkt04z4Jrrb8WqtqkwMo37EkzSifts21iK+8rsxwmqAyNCMq43cvmAGni3wq9kCZGPgVzd1WpYpvddj28t6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745852112; c=relaxed/simple;
-	bh=9Jq7uWikQpL0uRpCQ1qFYLXIjMg8lm3oJ+erYCU9968=;
+	s=arc-20240116; t=1745853385; c=relaxed/simple;
+	bh=fkZcg4Wkqkc+9VzWMv4uHceYiUz18/bJxftEEFimOr8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oS5MwtHpK+YY7YpMPP5OCURbJX/QucneY3aHkQO5tv5uP9EZy7qbZWKB11uTRilICElCXCXy+thAleAGJTHXZhvqZmSFTKN0Y3LHCkNTTTYdoA0qAvTfJu64jAVHabkJOIFDl1s3l9RtYMg19mdHiKR4yPi6VH8Gf5/lb7Upswg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAap7sky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA22FC4CEF4;
-	Mon, 28 Apr 2025 14:55:11 +0000 (UTC)
+	 To:Cc:Content-Type; b=PwPAX4vlcKKsZG6Fc0QvIj0wqy+oJjyelStThl7q7pp7rxI5ugDs30lew92EDzdK6OSlEIdw8TAEijlmbh+TbEzq95gsgg5JfMXmhXGdjkqCsqKc5slCpGqWtVNjPUZGreA0YQzAtLwEznnfqeeTuFPNou7lkPnC/ptmgWUKOAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mo5Tc46w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F50C4CEEE;
+	Mon, 28 Apr 2025 15:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745852111;
-	bh=9Jq7uWikQpL0uRpCQ1qFYLXIjMg8lm3oJ+erYCU9968=;
+	s=k20201202; t=1745853384;
+	bh=fkZcg4Wkqkc+9VzWMv4uHceYiUz18/bJxftEEFimOr8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jAap7skyAlGFiLpb57TXN+/kIeoRpTftjYS3enOzBlGUOyAt1bmzrv7dFty08GEuz
-	 98CPuc5dQJbNLjwOU89n73GBxAaWj8v3aBG5+0uRaFKtgDe/be3+CxCdRmBGc/IIgR
-	 ZjnZKAYzh2f3AfLzo5jW+VZ2+ShjKHeIcDfUx17J8RGvXoQIA+9TbHjTfrPrB33m3r
-	 eeUPfduU9Ge+HPKmoqwuTd/g29AK48pr0KkTGZ16h+fO8UV6XGD/CQogPBrhElgNcm
-	 hPIKbZqDzvuz5MQnhZMhClVxOrtQ3T66P/aOuU2zZAoJbM1Rpq6ZpQ7dk2nGN3ud8q
-	 0Vo6s+n04Fqig==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-54b0d638e86so5750850e87.1;
-        Mon, 28 Apr 2025 07:55:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU9SKn5Dcy9y0o3wKmGuO47rwyG9etNvRwCQm0RhXt50jv4FZ5ATztTlaFlPgJd7bU1QCfvZwBSZdHSgIE6@vger.kernel.org, AJvYcCVgFfu21W/XBZPD+A8tNva29ZbKZU7RRsBG0w2q3GOGVLBBQkcrvzl+K6ue/DizP1r7BaEsF6HcZBk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyuFbEfQJBkg3TVInK6sCrwFkw8g98UJnIxYZP9N0LPDAmgwoL
-	BwxwBUlAe7vmslTKdFKyTIGUvDEKD92wZpjPT1m4WrTeeSCIOfhmmUhTQ5eeFaVigyUCY9JH8nG
-	uQK+y7sFYjzhtuXHgub2fCMTQR9w=
-X-Google-Smtp-Source: AGHT+IE7E128Zkj3xoJnEZVs+V1aV5QAmc6QTNjYjWzAyc+K0lgjhcOYXIXGCrzLG1sgZUsRpuGu3jJ/McaAmNF+/3U=
-X-Received: by 2002:a05:6512:130c:b0:549:8cc8:efed with SMTP id
- 2adb3069b0e04-54e900113cemr2442912e87.48.1745852110119; Mon, 28 Apr 2025
- 07:55:10 -0700 (PDT)
+	b=mo5Tc46wW/za8v/Lv55sM1x/J+/NtKXmaq6CSnXSw/gbmkhHkAbRv7d65lzfyePoT
+	 qeDfm0u2+4HYtI2czU8a2apJ+YgNNzi1newfndnBCFWxbfN+2rWR02NHzaHj/KTv76
+	 CUhXpc2utnIQTwfzXiBRtKoQ0hnVld86tWj0E1sF2YkZwfOe/PprTugE9anYNfp8vN
+	 KW+vEQ0Iwdjz4NqaANWDzqp7rQwMI8aLYrvHU1atbWd5O+xLqjutFWqFHpMqGLAKyA
+	 je/rBJGGndb21+diVTAL5i3tW5KeNjatFpQ1ggz+5QO0N7zd6loKpjhvonJJq9KbaM
+	 my5S+kg/yIxtg==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54e7967cf67so5213440e87.0;
+        Mon, 28 Apr 2025 08:16:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUiQsEjKaWv3Um5ShoOUh+Lf3uwPaD+ecLUrisWqrIovYb/OJlVZB//8Jg26/b3NGFrZgcQv65F6mXZIeZZ@vger.kernel.org, AJvYcCWYpzoyxrrATQNbMU3N4RrpYj4/7WNPgnNCu1pFfCR1/d4+CYvL42db+Okq3t1yveeyLyesHv0grtM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+beTCY9lkLik51NJusw22DC64CFQBRxIvC4d0aupCWaPiojaw
+	q1jZWSiPrQVkf++8h2bHT1qZmqKSqQZjCdoyV+VQ964sbb+bTGod+QBPY9oMsRGOXv89PIDNT0a
+	0f0vD8V9ujMPLKct2gwsyNzvi80k=
+X-Google-Smtp-Source: AGHT+IEWDLFwiagcp4lT9DXCrJ61WxVz9C+o7TVDD2U3wDJfCR07I5LYa26NoSnDHD2AN0k0/AQc+0u6RvpqQ41CUAM=
+X-Received: by 2002:a19:3841:0:b0:54e:9c8d:bdc3 with SMTP id
+ 2adb3069b0e04-54e9c8dc020mr299017e87.49.1745853382644; Mon, 28 Apr 2025
+ 08:16:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250424080950.289864-1-vkuznets@redhat.com> <20250424080950.289864-2-vkuznets@redhat.com>
- <CAMj1kXHqmOiNX_DH+8uSsTROzR+hgvZ5DyE=3wVE7-dQ+2BW=Q@mail.gmail.com> <87o6wga74s.fsf@redhat.com>
-In-Reply-To: <87o6wga74s.fsf@redhat.com>
+References: <20250424080950.289864-1-vkuznets@redhat.com> <20250424080950.289864-3-vkuznets@redhat.com>
+ <CAMj1kXFMmhROmaDZ0gsw+ozG5iSkMvSXb15qexToUSAFyBn5hQ@mail.gmail.com> <87ldrka6w6.fsf@redhat.com>
+In-Reply-To: <87ldrka6w6.fsf@redhat.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 28 Apr 2025 16:54:59 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEFXCjHXrAS2Xe_3xVvkkV6QYsuxcOmLEk-A2KNHUJ7ZA@mail.gmail.com>
-X-Gm-Features: ATxdqUFymFSwi64yQhO8AHjWP8hjRlF2jJwWQ1HlRXbUcVyIkRCEXSZB9saruI0
-Message-ID: <CAMj1kXEFXCjHXrAS2Xe_3xVvkkV6QYsuxcOmLEk-A2KNHUJ7ZA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] efi/libstub: zboot specific mechanism for embedding
- SBAT section
+Date: Mon, 28 Apr 2025 17:16:10 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE0WcenLEB+60=+oc+aKfbqZkwYZf-TrOyDY=ShXQ2pYw@mail.gmail.com>
+X-Gm-Features: ATxdqUGE3Ny_H_HoWht4i8zmh5BM3VhhWJ0XtYTcEme2sEbRbvRZLlgvoP_p6pY
+Message-ID: <CAMj1kXE0WcenLEB+60=+oc+aKfbqZkwYZf-TrOyDY=ShXQ2pYw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] x86/efi: Implement support for embedding SBAT data
+ for x86
 To: Vitaly Kuznetsov <vkuznets@redhat.com>
 Cc: x86@kernel.org, linux-efi@vger.kernel.org, 
 	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -82,138 +82,142 @@ Cc: x86@kernel.org, linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 28 Apr 2025 at 12:54, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
+On Mon, 28 Apr 2025 at 12:59, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
 >
 > Ard Biesheuvel <ardb@kernel.org> writes:
 >
-> > Hi Vitaly,
-> >
->
-> Ard, thanks for the review!
->
 > > On Thu, 24 Apr 2025 at 10:10, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
 > >>
-> >> SBAT is a mechanism which improves SecureBoot revocations of UEFI binaries
-> >> by introducing a generation-based technique. Compromised or vulnerable UEFI
-> >> binaries can be prevented from booting by bumping the minimal required
-> >> generation for the specific component in the bootloader. More information
-> >> on the SBAT can be obtained here:
+> >> Similar to zboot architectures, implement support for embedding SBAT data
+> >> for x86. Put '.sbat' section to the very end of the binary.
 > >>
-> >> https://github.com/rhboot/shim/blob/main/SBAT.md
-> >>
-> >> Upstream Linux kernel does not currently participate in any way in SBAT as
-> >> there's no existing policy in how SBAT generation number should be
-> >> defined. Keep the status quo and provide a mechanism for distro vendors and
-> >> anyone else who signs their kernel for SecureBoot to include their own SBAT
-> >> data. This leaves the decision on the policy to the vendor. Basically, each
-> >> distro implementing SecureBoot today, will have an option to inject their
-> >> own SBAT data during kernel build and before it gets signed by their
-> >> SecureBoot CA. Different distro do not need to agree on the common SBAT
-> >> component names or generation numbers as each distro ships its own 'shim'
-> >> with their own 'vendor_cert'/'vendor_db'
-> >>
-> >> Implement support for embedding SBAT data for architectures using
-> >> zboot (arm64, loongarch, riscv). Build '.sbat' section along with libstub
-> >> so it can be reused by x86 implementation later.
+> >> Note, the obsolete CRC-32 checksum (see commit 9c54baab4401 ("x86/boot:
+> >> Drop CRC-32 checksum and the build tool that generates it")) is gone and
+> >> while it would've been possible to reserve the last 4 bytes in '.sbat'
+> >> section too (like it's done today in '.data'), it seems to be a pointless
+> >> exercise: SBAT makes zero sense without a signature on the EFI binary so
+> >> '.sbat' won't be at the very end of the file anyway. Any tool which uses
+> >> the last 4 bytes of the file as a checksum is broken with signed EFI
+> >> binaries already.
 > >>
 > >> Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 > >> ---
-> >>  drivers/firmware/efi/Kconfig                | 25 +++++++++++++++++++++
-> >>  drivers/firmware/efi/libstub/Makefile       |  7 ++++++
-> >>  drivers/firmware/efi/libstub/Makefile.zboot |  3 ++-
-> >>  drivers/firmware/efi/libstub/sbat.S         |  7 ++++++
-> >>  drivers/firmware/efi/libstub/zboot-header.S | 14 ++++++++++++
-> >>  drivers/firmware/efi/libstub/zboot.lds      | 17 ++++++++++++++
-> >>  6 files changed, 72 insertions(+), 1 deletion(-)
-> >>  create mode 100644 drivers/firmware/efi/libstub/sbat.S
+> >>  arch/x86/boot/Makefile                 |  2 +-
+> >>  arch/x86/boot/compressed/Makefile      |  2 ++
+> >>  arch/x86/boot/compressed/vmlinux.lds.S | 13 +++++++++++++
+> >>  arch/x86/boot/header.S                 | 13 +++++++++++++
+> >>  drivers/firmware/efi/Kconfig           |  2 +-
+> >>  5 files changed, 30 insertions(+), 2 deletions(-)
 > >>
-> >> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> >> index 5fe61b9ab5f9..2edb0167ba49 100644
-> >> --- a/drivers/firmware/efi/Kconfig
-> >> +++ b/drivers/firmware/efi/Kconfig
-> >> @@ -281,6 +281,31 @@ config EFI_EMBEDDED_FIRMWARE
-> >>         bool
-> >>         select CRYPTO_LIB_SHA256
+> >> diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
+> >> index 81f55da81967..5f7b52f0e7f5 100644
+> >> --- a/arch/x86/boot/Makefile
+> >> +++ b/arch/x86/boot/Makefile
+> >> @@ -71,7 +71,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
 > >>
-> >> +config EFI_SBAT
-> >> +       bool "Embed SBAT section in the kernel"
-> >> +       depends on EFI_ZBOOT
-> >> +       help
-> >> +         SBAT section provides a way to improve SecureBoot revocations of UEFI
-> >> +         binaries by introducing a generation-based mechanism. With SBAT, older
-> >> +         UEFI binaries can be prevented from booting by bumping the minimal
-> >> +         required generation for the specific component in the bootloader.
-> >> +
-> >> +         Note: SBAT information is distribution specific, i.e. the owner of the
-> >> +         signing SecureBoot certificate must define the SBAT policy. Linux
-> >> +         kernel upstream does not define SBAT components and their generations.
-> >> +
-> >> +         See https://github.com/rhboot/shim/blob/main/SBAT.md for the additional
-> >> +         details.
-> >> +
-> >> +         If unsure, say N.
-> >> +
-> >> +config EFI_SBAT_FILE
-> >> +       string "Embedded SBAT section file path"
-> >> +       depends on EFI_SBAT
-> >> +       help
-> >> +         Specify a file with SBAT data which is going to be embedded as '.sbat'
-> >> +         section into the kernel.
+> >>  SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
+> >>
+> >> -sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._stub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_e\?data\|z_.*\)$$/\#define ZO_\2 0x\1/p'
+> >> +sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._stub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_e\?data\|_e\?sbat\|z_.*\)$$/\#define ZO_\2 0x\1/p'
+> >>
+> >>  quiet_cmd_zoffset = ZOFFSET $@
+> >>        cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
+> >> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> >> index fdbce022db55..b9b80eccdc02 100644
+> >> --- a/arch/x86/boot/compressed/Makefile
+> >> +++ b/arch/x86/boot/compressed/Makefile
+> >> @@ -107,6 +107,8 @@ vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
+> >>  vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+> >>  vmlinux-libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+> >>
+> >> +vmlinux-objs-$(CONFIG_EFI_SBAT) += $(objtree)/drivers/firmware/efi/libstub/sbat.o
 > >> +
 > >
-> > Can we simplify this? CONFIG_EFI_SBAT makes no sense if
-> > CONFIG_EFI_SBAT_FILE is left empty. If you really need both symbols,
-> > set EFI_SBAT automatically based on whether EFI_SBAT_FILE is
-> > non-empty.
->
-> Sure, but FWIW, I modelled this after MODULE_SIG/MODULE_SIG_KEY and
-> BOOT_CONFIG_EMBED/BOOT_CONFIG_EMBED_FILE where the selection is also
-> 2-step -- do you think EFI_SBAT/EFI_SBAT_FILE case is different?
->
-
-Regardless of the other cases,it at the very least should be a
-config-time error for EFI_SBAT to be y when EFI_SBAT_FILE is empty. We
-shouldn't have to deal with CONFIG_ options being in an inconsistent
-state, that's Kconfig's job.
-
+> > Please drop this, and put the .incbin directly into header.S
 > >
-> >>  endmenu
+>
+> Sure, but as I also commented on zboot patch, we need a logic to track
+> possible sbat data changes and rebuild when needed. 'sbat.o' was
+> convenient because we can have this tracking logic in one place (zboot)
+> and make will do the rest. If we are to drop 'sbat.o', we will need the
+> tracking logic both in zboot and x86.
+>
+
+Same question: why isn't if sufficient to add
+
+ifneq ($(CONFIG_EFI_SBAT_FILE),)
+$(obj)/header.o: $(CONFIG_EFI_SBAT_FILE)
+endif
+
+to arch/x86/boot/Makefile?
+
+
+> >>  $(obj)/vmlinux: $(vmlinux-objs-y) $(vmlinux-libs-y) FORCE
+> >>         $(call if_changed,ld)
 > >>
-> >>  config UEFI_CPER
-> >> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> >> index d23a1b9fed75..5113cbdadf9a 100644
-> >> --- a/drivers/firmware/efi/libstub/Makefile
-> >> +++ b/drivers/firmware/efi/libstub/Makefile
-> >> @@ -105,6 +105,13 @@ lib-$(CONFIG_UNACCEPTED_MEMORY) += unaccepted_memory.o bitmap.o find.o
-> >>  extra-y                                := $(lib-y)
-> >>  lib-y                          := $(patsubst %.o,%.stub.o,$(lib-y))
+> >> diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
+> >> index 3b2bc61c9408..d0a27905de90 100644
+> >> --- a/arch/x86/boot/compressed/vmlinux.lds.S
+> >> +++ b/arch/x86/boot/compressed/vmlinux.lds.S
+> >> @@ -49,9 +49,22 @@ SECTIONS
+> >>                 *(.data.*)
 > >>
-> >> +extra-$(CONFIG_EFI_SBAT)       += sbat.o
-> >> +$(obj)/sbat.o: $(obj)/sbat.bin
-> >> +targets += sbat.bin
-> >> +filechk_sbat.bin = cat $(or $(real-prereqs), /dev/null)
-> >> +$(obj)/sbat.bin: $(CONFIG_EFI_SBAT_FILE) FORCE
-> >> +       $(call filechk,sbat.bin)
+> >>                 /* Add 4 bytes of extra space for the obsolete CRC-32 checksum */
+> >> +#ifndef CONFIG_EFI_SBAT
+> >>                 . = ALIGN(. + 4, 0x200);
+> >> +#else
+> >> +               /* Avoid gap between '.data' and '.sbat' */
+> >> +               . = ALIGN(. + 4, 0x1000);
+> >> +#endif
+> >>                 _edata = . ;
+> >>         }
+> >> +#ifdef CONFIG_EFI_SBAT
+> >> +       .sbat : ALIGN(0x1000) {
+> >> +               _sbat = . ;
+> >> +               *(.sbat)
+> >> +               _esbat = ALIGN(0x200);
+> >> +               . = _esbat;
+> >> +       }
+> >> +#endif
+> >>         . = ALIGN(L1_CACHE_BYTES);
+> >>         .bss : {
+> >>                 _bss = . ;
+> >
+> > This looks a bit odd - see below
+> >
+> >> diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+> >> index b5c79f43359b..ab851490ef74 100644
+> >> --- a/arch/x86/boot/header.S
+> >> +++ b/arch/x86/boot/header.S
+> >> @@ -207,6 +207,19 @@ pecompat_fstart:
+> >>                 IMAGE_SCN_MEM_READ              | \
+> >>                 IMAGE_SCN_MEM_WRITE             # Characteristics
+> >>
+> >> +#ifdef CONFIG_EFI_SBAT
+> >> +       .ascii ".sbat\0\0\0"
+> >> +       .long   ZO__esbat - ZO__sbat            # VirtualSize
+> >> +       .long   setup_size + ZO__sbat           # VirtualAddress
+> >> +       .long   ZO__esbat - ZO__sbat            # SizeOfRawData
+> >> +       .long   setup_size + ZO__sbat           # PointerToRawData
+> >> +
+> >> +       .long   0, 0, 0
+> >> +       .long   IMAGE_SCN_CNT_INITIALIZED_DATA  | \
+> >> +               IMAGE_SCN_MEM_READ              | \
+> >> +               IMAGE_SCN_MEM_DISCARDABLE       # Characteristics
+> >> +#endif
 > >> +
 > >
-> > Please get rid of all of this, and move the .incbin into
-> > zboot-header.S
+> > This puts the .sbat section at the very end of the file. However, the
+> > virtual size of .data is 'ZO__end - ZO__data' not 'ZO__edata -
+> > ZO__data', and so the .sbat section will overlap with .bss in the
+> > memory view of the image.
 >
-> The main prupose of this logic is to track possible sbat data
-> changes. E.g. if the file with SBAT data has changed, then we need to
-> rebuild the kernel binary. If we just use a raw 'incbin' somewhere and
-> don't add a specific Makefile dependency, then the logic will be lost.
->
-
-So why isn't it sufficient to make zboot-header.o depend on
-$(CONFIG_EFI_SBAT_FILE)?
-
-> I think I can drop the dedicated 'sbat.S' and use zboot-header.S but I'd
-> like to keep at least the 'filechk' part: we compare what's in
-> EFI_SBAT_FILE with 'sbat.bin' copy and, if things have changed, rebuild.
+> Missed that, will fix, thanks! A stupid question though: does this
+> matter in practice for SBAT? I don't think anyone needs SBAT data after
+> kernel starts booting so we can consider it 'discarded'. BSS data can
+> then do whatever it wants.
 >
 
-The filechk is just a copy, and the /dev/null hack should be removed
-too. So please find another way to track the dependency, and drop all
-of this.
+It violates the PE/COFF spec, and some PE loaders and signing tools
+are very pedantic about the layout.
 
