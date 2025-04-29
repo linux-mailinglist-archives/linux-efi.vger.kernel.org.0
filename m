@@ -1,86 +1,134 @@
-Return-Path: <linux-efi+bounces-3490-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3491-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1846AAA116D
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Apr 2025 18:20:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD610AA14AD
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Apr 2025 19:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5502A1A85D88
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Apr 2025 16:20:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74F924C44A2
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Apr 2025 17:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD83242D73;
-	Tue, 29 Apr 2025 16:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4AF21ADC7;
+	Tue, 29 Apr 2025 17:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="O7En+CmC"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bXu2MwBv"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F008BEE;
-	Tue, 29 Apr 2025 16:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B192F24EABF
+	for <linux-efi@vger.kernel.org>; Tue, 29 Apr 2025 17:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745943595; cv=none; b=Sg6BYZZX8HzDZeOrZ0KwES9jAYnm9VVBXF4tgSU2YQTO+OnIDXva2b3EwkK3dyXqiFOGaziuL6duoMCQEdDqAA6BCVl9k4JEwW4G8i3dX/X7iFutzT3ymSLcQJ8GWZ0yfBFTVbvbF5X24kzw1ouZnUIc5Ht4KsBnoF+T1dR7iPs=
+	t=1745946971; cv=none; b=heJFrF5qLOdJYsXTxG+65hoBlSwvvXfbLQkGn/Lu+IRwsZ/DxwibDiUNeMdseUhuo0Zix8y7iG2RybFmlS1UmuFo9mbdqB+2w5ADhUcl0wiLScGGP7Vt3ZCeTgw1aYV8sG5G3P3dIlFXt0CAVgT+ri7cBf/gQEjmAeUyb/N++oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745943595; c=relaxed/simple;
-	bh=mEnsdqsn08I1GggVR6Aa/UWsmPOPO7CSGUPOdViS8uo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uEbUNXatmGRefqd26RYC/4ssl6QdvdSR7PrZM6POf1m32fXiupEQBOOaI649qUvqKJe0EUurxbyVCO7nVFuakL+167rK/ec9aH205GVtWGpcBeqrLvbjmVToz9arNQ1HfE41/EEWfWMA3moklFrNSDapkp81BqiaNkjSDbim7i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=O7En+CmC; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=mEnsdqsn08I1GggVR6Aa/UWsmPOPO7CSGUPOdViS8uo=; b=O7En+CmCZiOn1t8NSY8VLHLo7m
-	OEmZd9uy4G7Rcgmen9k9cCjpFCxsACI5T90HPOzkf+gF1HgdEe7bkuMEB3Auw8Ongc3aUdr3H0wYg
-	4BO5m/PjR3ELxCObp/15qs2D2xLpmColKf9Fg7BLNip+D20olZ+2IO0Xa2NKwg/CTa3FO3TV30G3I
-	JJNXVR21LHB6WjHySwbx3CrgPAafBAQqvqQu3Jdn4cLP+3ZcAihOEyEonxPQlTwTXRCS6/rh3zOAq
-	qgZV2GYCJwfRvlmvyv7+BJIvzbt53CYa53pd3rKO+YYgGpUti6VdFheDBTW9uZq/Z8xJZfTQf+EkZ
-	0srHn+xw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u9nf1-000000016JE-2BgQ;
-	Tue, 29 Apr 2025 16:18:21 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 3886430057C; Tue, 29 Apr 2025 18:18:11 +0200 (CEST)
-Date: Tue, 29 Apr 2025 18:18:11 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: x86@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
-	wei.liu@kernel.org, decui@microsoft.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	hpa@zytor.com, pawan.kumar.gupta@linux.intel.com, seanjc@google.com,
-	pbonzini@redhat.com, ardb@kernel.org, kees@kernel.org,
-	Arnd Bergmann <arnd@arndb.de>, gregkh@linuxfoundation.org,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-efi@vger.kernel.org,
-	samitolvanen@google.com, ojeda@kernel.org
-Subject: Re: [PATCH 6/6] objtool: Validate kCFI calls
-Message-ID: <20250429161811.GC4439@noisy.programming.kicks-ass.net>
-References: <20250414111140.586315004@infradead.org>
- <20250414113754.540779611@infradead.org>
- <jsbau7iaqetgf6sa7pooebbbhkhnnidi24f2g7nieozeu63qes@flunkdj5eykb>
+	s=arc-20240116; t=1745946971; c=relaxed/simple;
+	bh=7RreN82ADxQheU4kFlw/w2oqpyMciZ+CVjUxQ6PBPwM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TVep+NfO50q6sRWgaLIdpCVAyR9hRtl3xSChhriL77VL+PPGmsc/JpIX+fba3tO6oiWnV7NNO4/7Psl0osvJSxiK0asWwvVcDX+Uao3brv0nhs+iv97mTNEno87M6r6mEcqh59qZ3LRynV5qjbaQc/RC+R3P6Mly/OSID7Lb2BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bXu2MwBv; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7369b559169so3965740b3a.1
+        for <linux-efi@vger.kernel.org>; Tue, 29 Apr 2025 10:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745946969; x=1746551769; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rgg+yk6TbZkrf50JyHWvmpVTzHV3/+x6Tw/18oxSDfg=;
+        b=bXu2MwBvNAlO8nBWeuN1zsR8XdKxHPAS6C4JsEKAfRG8mQZsVRB2ZvJQNFngWHiPwq
+         8f86r3A/fz04l1GZ+hapVDWQEmt6OYRqjI93ZWfmBo5mZafkTTyguzbMUMh6FEwSUVDA
+         eqRZ/N+ZaBpljcdcw7+D0/pOvoBI9lSdmbOj1unt6azWF6zHVGyihAOOs0ZMQyeMS3VU
+         aa9udOfB9etW1XjNq8Pfd2oGUIXW9T2gAfRL8iZ6Ork//pkjxlpWhPKyxOlJ8QHyrW//
+         jHLuWYLJ3GreKCV6b+WDvPT+KjUaGOvDWeMorKwUnl8XYpjSJCIJL6nLQbJ+loEn5Eqk
+         5qtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745946969; x=1746551769;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rgg+yk6TbZkrf50JyHWvmpVTzHV3/+x6Tw/18oxSDfg=;
+        b=vVOmFqT1R0igAMW5VdUeKUXNur3WzEI2gC2ew0rhkhGBeHEu3ICnn9/sATATtAHMKw
+         b5YoI1fVlTFVJ5NNzGC75Mm7OJDmKOXgDuRHO6MXmwX5YBEUrIi0foc6V++EqP0VpEPU
+         NFADDTFFNA6nZyez7gIguORjkSaeyufSGNTnE1Ap3UnN9qJBlKnZM9ROuX58zqgMJhbI
+         7WRugWKU8OufsuuZmAKFK+Sp6kdrdJA7pW3kCjClbIA3M2tvJpdPfJF9GfpQ5b8zfk8q
+         eihcCp/oqiGZz0c9j/oQcBuCIs8ubmaM5HSmINo/kWA/MgUFISZpM/2dQ2M7b1EQqJKA
+         OnIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWb7RV+453z5FoliBCw2qdbwIZse1UicHN50k5lFw4Gl6hfIXZolJnzWobEYqgmx3SgMqyPgifMYEI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxr/elk/2bpuCt3cJvFartLQuGTxfOO3z/JK6e0Q4etkVMZzGoV
+	V7aT/jS5pdQp0BTOWZDsrlejBr6GK/xwC8Zui8/mGcgwecZzjzKYaSqAPzAbQXqMTpGGKjWClGs
+	jGg==
+X-Google-Smtp-Source: AGHT+IHnBsjJ2lHlGsUa7wfkhDlYoD1/JVsa8FRjr2Yl8wXuoJ1y4aqVn3VINpRePPFLsbZG8fx/ncC1Rgo=
+X-Received: from pfbkq14.prod.google.com ([2002:a05:6a00:4b0e:b0:73e:1925:b94b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1814:b0:736:5f75:4a44
+ with SMTP id d2e1a72fcca58-74038abcf18mr88925b3a.22.1745946969011; Tue, 29
+ Apr 2025 10:16:09 -0700 (PDT)
+Date: Tue, 29 Apr 2025 10:16:07 -0700
+In-Reply-To: <20250429144631.GI4198@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <jsbau7iaqetgf6sa7pooebbbhkhnnidi24f2g7nieozeu63qes@flunkdj5eykb>
+Mime-Version: 1.0
+References: <20250414113754.172767741@infradead.org> <7vfbchsyhlsvdl4hszdtmapdghw32nrj2qd652f3pjzg3yb6vn@po3bsa54b6ta>
+ <20250415074421.GI5600@noisy.programming.kicks-ass.net> <zgsycf7arbsadpphod643qljqqsk5rbmidrhhrnm2j7qie4gu2@g7pzud43yj4q>
+ <20250416083859.GH4031@noisy.programming.kicks-ass.net> <20250426100134.GB4198@noisy.programming.kicks-ass.net>
+ <aA-3OwNum9gzHLH1@google.com> <20250429100919.GH4198@noisy.programming.kicks-ass.net>
+ <aBDcr49ez9B8u9qa@google.com> <20250429144631.GI4198@noisy.programming.kicks-ass.net>
+Message-ID: <aBEJVzesMum9-Rem@google.com>
+Subject: Re: [PATCH 3/6] x86/kvm/emulate: Avoid RET for fastops
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org, kys@microsoft.com, 
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, pawan.kumar.gupta@linux.intel.com, 
+	pbonzini@redhat.com, ardb@kernel.org, kees@kernel.org, 
+	Arnd Bergmann <arnd@arndb.de>, gregkh@linuxfoundation.org, linux-hyperv@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
+	samitolvanen@google.com, ojeda@kernel.org, shuah@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Apr 14, 2025 at 04:43:26PM -0700, Josh Poimboeuf wrote:
-> Can we call this ANNOTATE_NOCFI_SAFE or something?
+On Tue, Apr 29, 2025, Peter Zijlstra wrote:
+> On Tue, Apr 29, 2025 at 07:05:35AM -0700, Sean Christopherson wrote:
+> > On Tue, Apr 29, 2025, Peter Zijlstra wrote:
+> > > On Mon, Apr 28, 2025 at 10:13:31AM -0700, Sean Christopherson wrote:
+> > > > On Sat, Apr 26, 2025, Peter Zijlstra wrote:
+> > > > > On Wed, Apr 16, 2025 at 10:38:59AM +0200, Peter Zijlstra wrote:
+> > > > > 
+> > > > > > Yeah, I finally got there. I'll go cook up something else.
+> > > > > 
+> > > > > Sean, Paolo, can I once again ask how best to test this fastop crud?
+> > > > 
+> > > > Apply the below, build KVM selftests, 
+> > > 
+> > > Patch applied, my own hackery applied, host kernel built and booted,
+> > > foce_emulation_prefix set, but now I'm stuck at this seemingly simple
+> > > step..
+> > > 
+> > > $ cd tools/testing/selftests/kvm/
+> > > $ make
+> > > ... metric ton of fail ...
+> > > 
+> > > Clearly I'm doing something wrong :/
+> > 
+> > Did you install headers in the top level directory?  I.e. make headers_install.
+> 
+> No, of course not :-) I don't use the top directory to build anything,
+> ever.
+> 
+> All my builds are into build directories, using make O=foo. This allows
+> me to do parallel builds for multiple architectures etc. Also, much
+> easier to wipe a complete build directory than it is to clean out the
+> top level dir.
 
-I'm hesitant to do so, because some of these sites really are not safe.
-EFI and VMX interrupt crud really are a security issue.
+FWIW, you can do the same with KVM selftests (and presumably others?), although
+the syntax is kinda weird (no idea why lib.mk uses OUTPUT instead of O).
 
-EFI really is unfixable but not less brokene, because the EFI code is
-out of our control, the VMX thing might be fixable, not sure I
-understand KVM well enough.
+E.g. to build KVM selftests in $HOME/build/selftests/x86
+
+  make O=$HOME/build/selftests/x86 headers_install
+  make OUTPUT=$HOME/build/selftests/x86
 
