@@ -1,134 +1,95 @@
-Return-Path: <linux-efi+bounces-3491-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3492-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD610AA14AD
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Apr 2025 19:19:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834A2AA1C25
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Apr 2025 22:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74F924C44A2
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Apr 2025 17:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E31F346807C
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Apr 2025 20:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4AF21ADC7;
-	Tue, 29 Apr 2025 17:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09771221719;
+	Tue, 29 Apr 2025 20:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bXu2MwBv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7MDiaRg"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B192F24EABF
-	for <linux-efi@vger.kernel.org>; Tue, 29 Apr 2025 17:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D951A20C488
+	for <linux-efi@vger.kernel.org>; Tue, 29 Apr 2025 20:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946971; cv=none; b=heJFrF5qLOdJYsXTxG+65hoBlSwvvXfbLQkGn/Lu+IRwsZ/DxwibDiUNeMdseUhuo0Zix8y7iG2RybFmlS1UmuFo9mbdqB+2w5ADhUcl0wiLScGGP7Vt3ZCeTgw1aYV8sG5G3P3dIlFXt0CAVgT+ri7cBf/gQEjmAeUyb/N++oU=
+	t=1745958479; cv=none; b=FCXMM3q3dghzeuJ0fp5ChjoncmyLuIYp68n/+Izzufs8BzQ0V76cpkOU4DqMw0ls7n4YqwhNh6ywup6/Q6G8FzE1QnvBFt0MvlsTbuzsYhYMQF72hZ5JY5N5JUPkUu20/rvAJKebcQDS5on6iwz1DnpcYMp5q9NEUVczI99G3g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946971; c=relaxed/simple;
-	bh=7RreN82ADxQheU4kFlw/w2oqpyMciZ+CVjUxQ6PBPwM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TVep+NfO50q6sRWgaLIdpCVAyR9hRtl3xSChhriL77VL+PPGmsc/JpIX+fba3tO6oiWnV7NNO4/7Psl0osvJSxiK0asWwvVcDX+Uao3brv0nhs+iv97mTNEno87M6r6mEcqh59qZ3LRynV5qjbaQc/RC+R3P6Mly/OSID7Lb2BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bXu2MwBv; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7369b559169so3965740b3a.1
-        for <linux-efi@vger.kernel.org>; Tue, 29 Apr 2025 10:16:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745946969; x=1746551769; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rgg+yk6TbZkrf50JyHWvmpVTzHV3/+x6Tw/18oxSDfg=;
-        b=bXu2MwBvNAlO8nBWeuN1zsR8XdKxHPAS6C4JsEKAfRG8mQZsVRB2ZvJQNFngWHiPwq
-         8f86r3A/fz04l1GZ+hapVDWQEmt6OYRqjI93ZWfmBo5mZafkTTyguzbMUMh6FEwSUVDA
-         eqRZ/N+ZaBpljcdcw7+D0/pOvoBI9lSdmbOj1unt6azWF6zHVGyihAOOs0ZMQyeMS3VU
-         aa9udOfB9etW1XjNq8Pfd2oGUIXW9T2gAfRL8iZ6Ork//pkjxlpWhPKyxOlJ8QHyrW//
-         jHLuWYLJ3GreKCV6b+WDvPT+KjUaGOvDWeMorKwUnl8XYpjSJCIJL6nLQbJ+loEn5Eqk
-         5qtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745946969; x=1746551769;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rgg+yk6TbZkrf50JyHWvmpVTzHV3/+x6Tw/18oxSDfg=;
-        b=vVOmFqT1R0igAMW5VdUeKUXNur3WzEI2gC2ew0rhkhGBeHEu3ICnn9/sATATtAHMKw
-         b5YoI1fVlTFVJ5NNzGC75Mm7OJDmKOXgDuRHO6MXmwX5YBEUrIi0foc6V++EqP0VpEPU
-         NFADDTFFNA6nZyez7gIguORjkSaeyufSGNTnE1Ap3UnN9qJBlKnZM9ROuX58zqgMJhbI
-         7WRugWKU8OufsuuZmAKFK+Sp6kdrdJA7pW3kCjClbIA3M2tvJpdPfJF9GfpQ5b8zfk8q
-         eihcCp/oqiGZz0c9j/oQcBuCIs8ubmaM5HSmINo/kWA/MgUFISZpM/2dQ2M7b1EQqJKA
-         OnIw==
-X-Forwarded-Encrypted: i=1; AJvYcCWb7RV+453z5FoliBCw2qdbwIZse1UicHN50k5lFw4Gl6hfIXZolJnzWobEYqgmx3SgMqyPgifMYEI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxr/elk/2bpuCt3cJvFartLQuGTxfOO3z/JK6e0Q4etkVMZzGoV
-	V7aT/jS5pdQp0BTOWZDsrlejBr6GK/xwC8Zui8/mGcgwecZzjzKYaSqAPzAbQXqMTpGGKjWClGs
-	jGg==
-X-Google-Smtp-Source: AGHT+IHnBsjJ2lHlGsUa7wfkhDlYoD1/JVsa8FRjr2Yl8wXuoJ1y4aqVn3VINpRePPFLsbZG8fx/ncC1Rgo=
-X-Received: from pfbkq14.prod.google.com ([2002:a05:6a00:4b0e:b0:73e:1925:b94b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1814:b0:736:5f75:4a44
- with SMTP id d2e1a72fcca58-74038abcf18mr88925b3a.22.1745946969011; Tue, 29
- Apr 2025 10:16:09 -0700 (PDT)
-Date: Tue, 29 Apr 2025 10:16:07 -0700
-In-Reply-To: <20250429144631.GI4198@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1745958479; c=relaxed/simple;
+	bh=9J1ANQqn1yr9mnX6xHnNtgfw3Q2ObOUMWnL3aippGSQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WAKTobg5u47P/jfO+qjUNrf9wHq/dBMusr2TJrs5st97KhbIPhWG5K1m5Qo8h9Fuz2HG6Xt5Kvz1B/LDIQRopNgnk0m/8hma6x+7diyhTcGqZPyIl4mMAfQnPU61ImhjNzLNoXwJtZMI/aeIwE9bgs29z8HFhNmFphzJ2D6E/IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7MDiaRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9751CC4CEE3;
+	Tue, 29 Apr 2025 20:27:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745958479;
+	bh=9J1ANQqn1yr9mnX6xHnNtgfw3Q2ObOUMWnL3aippGSQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=P7MDiaRgybpohQjp4GjO4Z39TgzTvlzoBdx2vATKvlSSjzuV0h2hykX+DoYsLGQD0
+	 ic66/LYBCgWDZt8ffk3Y8nMDxP5g6foKaA6BvrE4xwUurCS5QT9LmyVc6ry/RJWOi/
+	 Cgz5SGH8175/2Zq1NIHRaLl9e1qhuBnO6kFISMz7AxxKS4+t8wNFqJnTgZdyv+3NAm
+	 E1y4b8x5P85gmoxoRGCMK5bl7meF0G3RBsuVoA3U207BOOYKDPzZvbKPNCiHsOs3/c
+	 z5SD1cQQUZHxnxpX+oEd6CmUHpCwiYGs0j8YxmDUFV67ieB0wL9AjUam3TiVARRvaw
+	 6V9jwVhglm7VQ==
+From: Will Deacon <will@kernel.org>
+To: linux-arm-kernel@lists.infradead.org,
+	Ard Biesheuvel <ardb+git@google.com>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	linux-efi@vger.kernel.org,
+	mark.rutland@arm.com,
+	broonie@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH] arm64/fpsimd: Avoid unnecessary per-CPU buffers for EFI runtime calls
+Date: Tue, 29 Apr 2025 21:27:42 +0100
+Message-Id: <174592883277.423204.10036906731229945415.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20250318132421.3155799-2-ardb+git@google.com>
+References: <20250318132421.3155799-2-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250414113754.172767741@infradead.org> <7vfbchsyhlsvdl4hszdtmapdghw32nrj2qd652f3pjzg3yb6vn@po3bsa54b6ta>
- <20250415074421.GI5600@noisy.programming.kicks-ass.net> <zgsycf7arbsadpphod643qljqqsk5rbmidrhhrnm2j7qie4gu2@g7pzud43yj4q>
- <20250416083859.GH4031@noisy.programming.kicks-ass.net> <20250426100134.GB4198@noisy.programming.kicks-ass.net>
- <aA-3OwNum9gzHLH1@google.com> <20250429100919.GH4198@noisy.programming.kicks-ass.net>
- <aBDcr49ez9B8u9qa@google.com> <20250429144631.GI4198@noisy.programming.kicks-ass.net>
-Message-ID: <aBEJVzesMum9-Rem@google.com>
-Subject: Re: [PATCH 3/6] x86/kvm/emulate: Avoid RET for fastops
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org, kys@microsoft.com, 
-	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, pawan.kumar.gupta@linux.intel.com, 
-	pbonzini@redhat.com, ardb@kernel.org, kees@kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, gregkh@linuxfoundation.org, linux-hyperv@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
-	samitolvanen@google.com, ojeda@kernel.org, shuah@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 29, 2025, Peter Zijlstra wrote:
-> On Tue, Apr 29, 2025 at 07:05:35AM -0700, Sean Christopherson wrote:
-> > On Tue, Apr 29, 2025, Peter Zijlstra wrote:
-> > > On Mon, Apr 28, 2025 at 10:13:31AM -0700, Sean Christopherson wrote:
-> > > > On Sat, Apr 26, 2025, Peter Zijlstra wrote:
-> > > > > On Wed, Apr 16, 2025 at 10:38:59AM +0200, Peter Zijlstra wrote:
-> > > > > 
-> > > > > > Yeah, I finally got there. I'll go cook up something else.
-> > > > > 
-> > > > > Sean, Paolo, can I once again ask how best to test this fastop crud?
-> > > > 
-> > > > Apply the below, build KVM selftests, 
-> > > 
-> > > Patch applied, my own hackery applied, host kernel built and booted,
-> > > foce_emulation_prefix set, but now I'm stuck at this seemingly simple
-> > > step..
-> > > 
-> > > $ cd tools/testing/selftests/kvm/
-> > > $ make
-> > > ... metric ton of fail ...
-> > > 
-> > > Clearly I'm doing something wrong :/
-> > 
-> > Did you install headers in the top level directory?  I.e. make headers_install.
+On Tue, 18 Mar 2025 14:24:22 +0100, Ard Biesheuvel wrote:
+> The EFI specification has some elaborate rules about which runtime
+> services may be called while another runtime service call is already in
+> progress. In Linux, however, for simplicity, all EFI runtime service
+> invocations are serialized via the efi_runtime_lock semaphore.
 > 
-> No, of course not :-) I don't use the top directory to build anything,
-> ever.
+> This implies that calls to the helper pair arch_efi_call_virt_setup()
+> and arch_efi_call_virt_teardown() are serialized too, and are guaranteed
+> not to nest.  Furthermore, the arm64 arch code has its own spinlock to
+> serialize use of the EFI runtime stack, of which only a single instance
+> exists.
 > 
-> All my builds are into build directories, using make O=foo. This allows
-> me to do parallel builds for multiple architectures etc. Also, much
-> easier to wipe a complete build directory than it is to clean out the
-> top level dir.
+> [...]
 
-FWIW, you can do the same with KVM selftests (and presumably others?), although
-the syntax is kinda weird (no idea why lib.mk uses OUTPUT instead of O).
+Applied to arm64 (for-next/efi), thanks!
 
-E.g. to build KVM selftests in $HOME/build/selftests/x86
+[1/1] arm64/fpsimd: Avoid unnecessary per-CPU buffers for EFI runtime calls
+      https://git.kernel.org/arm64/c/e04796c8b598
 
-  make O=$HOME/build/selftests/x86 headers_install
-  make OUTPUT=$HOME/build/selftests/x86
+Cheers,
+-- 
+Will
+
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
