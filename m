@@ -1,55 +1,55 @@
-Return-Path: <linux-efi+bounces-3505-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3506-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC32CAA49E3
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Apr 2025 13:28:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5839AA49EB
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Apr 2025 13:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01BEC4E3A9B
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Apr 2025 11:28:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4E81C02441
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Apr 2025 11:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A5825B662;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9FE25B68D;
 	Wed, 30 Apr 2025 11:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JdAj9E/O"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mFZuaM5r"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E51231848;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F0225333E;
 	Wed, 30 Apr 2025 11:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746012411; cv=none; b=eFCUM87s0ctuVZhdV8aouHDSceZ9xXkZXZnEc78iBvCPccoe8+gfkJRt0+YoHp1Tjx3mYo/9n8dLDq8UwpVY2rtACp+jkNHUSr3nrYS8NNgVpZeYXnH3i9XK3/LEVlSD3gJJ/NP+0F/I1+LC/CSghqDaKugcoI2hUTiINToG9FE=
+	t=1746012411; cv=none; b=mfVuhVwXaD6UrwHvfWhLcKFwMNiQ6t0AfTUI18ITX50urWUUsJG8SybyekAu3wXYYwkhEs9cGwe1xnutViml6zsnzvhLy3VSG+8EIRFtRATAcy2Vfh+GNQf7pn/TKpEy5gW7dcaRb8ApfxxUqaGvPrz2nVsrsHJemaBYAaSRyCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746012411; c=relaxed/simple;
-	bh=eRpt3IJXVe8NDJUYqDudEQFeYF/5Z60nW7F8AopGLSY=;
+	bh=PWxeJw7JX/cCrAKNbgSe7RGslQYLclCWSz18auxBU0c=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=PgkP67A89SBvBKcUlje85OxtTaru9gzPXrizea/F0VEOadhxtU8d+9dM+CPV4vH2IbiiHIDuVUpATjuSzCO99ID8aE7HGB0LWkFciQUsY6p56Z8VqeyHTZGoOjZ2t7XTL4pw0ZXOsc4xcL3YUWjNekGa5NKzt+soH+8YOocJFWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JdAj9E/O; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type; b=RD6IObziCEQFMxlrbK+oFN2tjO1mOfTgPX9X3Py4RxrCyHswSugZH3GtIw3UPj3jJFCGd4q/piitGFPi+XBi77jmf8el/xeOcnO1WqtDeqUE3+KtUi6B4ARbHRBifq1nZmvyegFv/bdczDHqCb6+U1h7uRgddLYdCkbpbgXerv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mFZuaM5r; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
+	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=SY3cT5EHeTQj82upQDn6RhIKWrY4Z9Jf5tOAOyEzNnc=; b=JdAj9E/OoW0Y4j36FFEwKZksY/
-	zY2Ar4nlrHSwnufeafB8+FcQ/DyXXhrIl1bkxS7HxhnjEEtPFSs90kV+XvGUNIgd/Z6m3YWmEGdFG
-	+7qDomtRfDKvEfCA14Ycjl5SZhw7GQNEH76TNx+UmUHhv6IA5tw3kgNHNR1iDiI/YOAYsdmEBsqWb
-	Gok4J9fLeRvsz2MefzfMafG+z+73nRvZqQa4IV0jKp3GfIjWZo4x5SvTfYKQIbxLS2Yl74p5YVe4D
-	cNm7p2usZBAKkJ4oTbOZDiAKHFN5eBH+mggom01HK26hePqP6lgm6/dvloSagAxBYAhZ63ODEHM5x
-	lMSIaNew==;
+	bh=DrCeATcJD9NVn1UQf4+qjGtuQpGFm0cVOCX9YPFGKbs=; b=mFZuaM5r/wYFRqIx2Ge1lfSvg0
+	e2vDTxyucqxXlGodFKoqkwn7jZlg97tKQasYEDx18rg+CxpiiMCCS+TwQj16rk1bQYrTPO6YNHwRe
+	J+giptLSshsx89+3to12i6aloYCjj5ogHEg9QaJhibtRuWrV7zpldk/HeliExNvLzGCUeZAuix2P4
+	sgyRKpDn4L3JSpqA70BeBs6F4HpzKphFzDt1KEmOyQRQI9Er/zshh4AeJVF72CB/sng+nEdpeDrTY
+	4mQn4npZwdsunUhOf7GHtMK3EJGzG0nDH2CFqDF/SCwqWcYIHutPGA0FenGc3EohvXZnYOfusLca2
+	2M5KaaxA==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uA5aG-0000000C6Zt-12Kf;
+	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
+	id 1uA5aG-0000000Dm7o-144D;
 	Wed, 30 Apr 2025 11:26:36 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id CE9F030078C; Wed, 30 Apr 2025 13:26:35 +0200 (CEST)
-Message-ID: <20250430112349.208590367@infradead.org>
+	id D259F300F1D; Wed, 30 Apr 2025 13:26:35 +0200 (CEST)
+Message-ID: <20250430112349.315832833@infradead.org>
 User-Agent: quilt/0.66
-Date: Wed, 30 Apr 2025 13:07:36 +0200
+Date: Wed, 30 Apr 2025 13:07:37 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: x86@kernel.org
 Cc: kys@microsoft.com,
@@ -75,7 +75,7 @@ Cc: kys@microsoft.com,
  linux-efi@vger.kernel.org,
  samitolvanen@google.com,
  ojeda@kernel.org
-Subject: [PATCH v2 02/13] x86/kvm/emulate: Introduce COP1
+Subject: [PATCH v2 03/13] x86/kvm/emulate: Introduce COP2
 References: <20250430110734.392235199@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -85,150 +85,222 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-Replace fastops with C-ops. There are a bunch of problems with the
-current fastop infrastructure, most all related to their special
-calling convention, which bypasses the normal C-ABI.
-
-There are two immediate problems with this at present:
-
- - it relies on RET preserving EFLAGS; whereas C-ABI does not.
-
- - it circumvents compiler based control-flow-integrity checking
-   because its all asm magic.
-
-The first is a problem for some mitigations where the
-x86_indirect_return_thunk needs to include non-trivial work that
-clobbers EFLAGS (eg. the Skylake call depth tracking thing).
-
-The second is a problem because it presents a 'naked' indirect call on
-kCFI builds, making it a prime target for control flow hijacking.
-
-Additionally, given that a large chunk of virtual machine performance
-relies on absolutely avoiding vmexit these days, this emulation stuff
-just isn't that critical for performance anymore.
-
-As such, replace the fastop calls with a normal C function using the
-'execute' member.
+Replace the FASTOP2 instructions.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/kvm/emulate.c |   69 ++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 57 insertions(+), 12 deletions(-)
+ arch/x86/kvm/emulate.c |   87 +++++++++++++++++++++++++++----------------------
+ 1 file changed, 48 insertions(+), 39 deletions(-)
 
 --- a/arch/x86/kvm/emulate.c
 +++ b/arch/x86/kvm/emulate.c
-@@ -267,11 +267,56 @@ static void invalidate_registers(struct
- 		     X86_EFLAGS_PF|X86_EFLAGS_CF)
+@@ -300,7 +300,7 @@ static int em_##op(struct x86_emulate_ct
+ 			_ASM_EXTABLE_TYPE_REG(10b, 11f, EX_TYPE_ZERO_REG, %%esi))
  
- #ifdef CONFIG_X86_64
--#define ON64(x) x
-+#define ON64(x...) x
- #else
- #define ON64(x)
- #endif
+ #define COP_ASM2(op, dst, src) \
+-		COP_ASM(#op " %" #src ", %" #dst " \n\t")
++		COP_ASM(#op " %%" #src ", %%" #dst " \n\t")
  
-+#define COP_START(op) \
-+static int em_##op(struct x86_emulate_ctxt *ctxt) \
-+{ \
-+	unsigned long flags = (ctxt->eflags & EFLAGS_MASK) | X86_EFLAGS_IF; \
-+	int bytes = 1, ok = 1; \
-+	if (!(ctxt->d & ByteOp)) \
-+		bytes = ctxt->dst.bytes; \
-+	switch (bytes) {
-+
-+#define COP_ASM(str) \
-+		asm("push %[flags]; popf \n\t" \
-+		    "10: " str \
-+		    "pushf; pop %[flags] \n\t" \
-+		    "11: \n\t" \
-+		    : "+a" (ctxt->dst.val), \
-+		      "+d" (ctxt->src.val), \
-+		      [flags] "+D" (flags), \
-+		      "+S" (ok) \
-+		    : "c" (ctxt->src2.val))
-+
-+#define COP_ASM1(op, dst) \
-+		COP_ASM(#op " %%" #dst " \n\t")
-+
-+#define COP_ASM1_EX(op, dst) \
-+		COP_ASM(#op " %%" #dst " \n\t" \
-+			_ASM_EXTABLE_TYPE_REG(10b, 11f, EX_TYPE_ZERO_REG, %%esi))
-+
-+#define COP_ASM2(op, dst, src) \
-+		COP_ASM(#op " %" #src ", %" #dst " \n\t")
-+
-+#define COP_END \
-+	} \
-+	ctxt->eflags = (ctxt->eflags & ~EFLAGS_MASK) | (flags & EFLAGS_MASK); \
-+	return !ok ? emulate_de(ctxt) : X86EMUL_CONTINUE; \
-+}
-+
-+/* 1-operand, using "a" (dst) */
-+#define COP1(op) \
+ #define COP_END \
+ 	} \
+@@ -317,6 +317,15 @@ static int em_##op(struct x86_emulate_ct
+ 	ON64(case 8: COP_ASM1(op##q, rax); break;) \
+ 	COP_END
+ 
++/* 2-operand, using "a" (dst), "d" (src) */
++#define COP2(op) \
 +	COP_START(op) \
-+	case 1: COP_ASM1(op##b, al); break; \
-+	case 2: COP_ASM1(op##w, ax); break; \
-+	case 4: COP_ASM1(op##l, eax); break; \
-+	ON64(case 8: COP_ASM1(op##q, rax); break;) \
++	case 1: COP_ASM2(op##b, al, dl); break; \
++	case 2: COP_ASM2(op##w, ax, dx); break; \
++	case 4: COP_ASM2(op##l, eax, edx); break; \
++	ON64(case 8: COP_ASM2(op##q, rax, rdx); break;) \
 +	COP_END
 +
  /*
   * fastop functions have a special calling convention:
   *
-@@ -1002,10 +1047,10 @@ FASTOP3WCL(shrd);
+@@ -1027,15 +1036,16 @@ static int read_descriptor(struct x86_em
+ 	return rc;
+ }
  
- FASTOP2W(imul);
+-FASTOP2(add);
+-FASTOP2(or);
+-FASTOP2(adc);
+-FASTOP2(sbb);
+-FASTOP2(and);
+-FASTOP2(sub);
+-FASTOP2(xor);
+-FASTOP2(cmp);
+-FASTOP2(test);
++COP2(add);
++COP2(or);
++COP2(adc);
++COP2(sbb);
++COP2(and);
++COP2(sub);
++COP2(xor);
++COP2(cmp);
++COP2(test);
++COP2(xadd);
  
--FASTOP1(not);
--FASTOP1(neg);
--FASTOP1(inc);
--FASTOP1(dec);
-+COP1(not);
-+COP1(neg);
-+COP1(inc);
-+COP1(dec);
+ FASTOP1SRC2(mul, mul_ex);
+ FASTOP1SRC2(imul, imul_ex);
+@@ -1067,7 +1077,6 @@ FASTOP2W(bts);
+ FASTOP2W(btr);
+ FASTOP2W(btc);
  
- FASTOP2CL(rol);
- FASTOP2CL(ror);
-@@ -4021,8 +4066,8 @@ static const struct opcode group2[] = {
+-FASTOP2(xadd);
+ 
+ FASTOP2R(cmp, cmp_r);
+ 
+@@ -2304,7 +2313,7 @@ static int em_cmpxchg(struct x86_emulate
+ 	ctxt->dst.val = reg_read(ctxt, VCPU_REGS_RAX);
+ 	ctxt->src.orig_val = ctxt->src.val;
+ 	ctxt->src.val = ctxt->dst.orig_val;
+-	fastop(ctxt, em_cmp);
++	em_cmp(ctxt);
+ 
+ 	if (ctxt->eflags & X86_EFLAGS_ZF) {
+ 		/* Success: write back to memory; no update of EAX */
+@@ -3069,7 +3078,7 @@ static int em_das(struct x86_emulate_ctx
+ 	ctxt->src.type = OP_IMM;
+ 	ctxt->src.val = 0;
+ 	ctxt->src.bytes = 1;
+-	fastop(ctxt, em_or);
++	em_or(ctxt);
+ 	ctxt->eflags &= ~(X86_EFLAGS_AF | X86_EFLAGS_CF);
+ 	if (cf)
+ 		ctxt->eflags |= X86_EFLAGS_CF;
+@@ -3095,7 +3104,7 @@ static int em_aam(struct x86_emulate_ctx
+ 	ctxt->src.type = OP_IMM;
+ 	ctxt->src.val = 0;
+ 	ctxt->src.bytes = 1;
+-	fastop(ctxt, em_or);
++	em_or(ctxt);
+ 
+ 	return X86EMUL_CONTINUE;
+ }
+@@ -3113,7 +3122,7 @@ static int em_aad(struct x86_emulate_ctx
+ 	ctxt->src.type = OP_IMM;
+ 	ctxt->src.val = 0;
+ 	ctxt->src.bytes = 1;
+-	fastop(ctxt, em_or);
++	em_or(ctxt);
+ 
+ 	return X86EMUL_CONTINUE;
+ }
+@@ -3998,9 +4007,9 @@ static int check_perm_out(struct x86_emu
+ #define I2bvIP(_f, _e, _i, _p) \
+ 	IIP((_f) | ByteOp, _e, _i, _p), IIP(_f, _e, _i, _p)
+ 
+-#define F6ALU(_f, _e) F2bv((_f) | DstMem | SrcReg | ModRM, _e),		\
+-		F2bv(((_f) | DstReg | SrcMem | ModRM) & ~Lock, _e),	\
+-		F2bv(((_f) & ~Lock) | DstAcc | SrcImm, _e)
++#define I6ALU(_f, _e) I2bv((_f) | DstMem | SrcReg | ModRM, _e),		\
++		I2bv(((_f) | DstReg | SrcMem | ModRM) & ~Lock, _e),	\
++		I2bv(((_f) & ~Lock) | DstAcc | SrcImm, _e)
+ 
+ static const struct opcode group7_rm0[] = {
+ 	N,
+@@ -4038,14 +4047,14 @@ static const struct opcode group7_rm7[]
+ };
+ 
+ static const struct opcode group1[] = {
+-	F(Lock, em_add),
+-	F(Lock | PageTable, em_or),
+-	F(Lock, em_adc),
+-	F(Lock, em_sbb),
+-	F(Lock | PageTable, em_and),
+-	F(Lock, em_sub),
+-	F(Lock, em_xor),
+-	F(NoWrite, em_cmp),
++	I(Lock, em_add),
++	I(Lock | PageTable, em_or),
++	I(Lock, em_adc),
++	I(Lock, em_sbb),
++	I(Lock | PageTable, em_and),
++	I(Lock, em_sub),
++	I(Lock, em_xor),
++	I(NoWrite, em_cmp),
+ };
+ 
+ static const struct opcode group1A[] = {
+@@ -4064,8 +4073,8 @@ static const struct opcode group2[] = {
+ };
+ 
  static const struct opcode group3[] = {
- 	F(DstMem | SrcImm | NoWrite, em_test),
- 	F(DstMem | SrcImm | NoWrite, em_test),
--	F(DstMem | SrcNone | Lock, em_not),
--	F(DstMem | SrcNone | Lock, em_neg),
-+	I(DstMem | SrcNone | Lock, em_not),
-+	I(DstMem | SrcNone | Lock, em_neg),
+-	F(DstMem | SrcImm | NoWrite, em_test),
+-	F(DstMem | SrcImm | NoWrite, em_test),
++	I(DstMem | SrcImm | NoWrite, em_test),
++	I(DstMem | SrcImm | NoWrite, em_test),
+ 	I(DstMem | SrcNone | Lock, em_not),
+ 	I(DstMem | SrcNone | Lock, em_neg),
  	F(DstXacc | Src2Mem, em_mul_ex),
- 	F(DstXacc | Src2Mem, em_imul_ex),
- 	F(DstXacc | Src2Mem, em_div_ex),
-@@ -4030,14 +4075,14 @@ static const struct opcode group3[] = {
- };
+@@ -4258,29 +4267,29 @@ static const struct instr_dual instr_dua
  
- static const struct opcode group4[] = {
--	F(ByteOp | DstMem | SrcNone | Lock, em_inc),
--	F(ByteOp | DstMem | SrcNone | Lock, em_dec),
-+	I(ByteOp | DstMem | SrcNone | Lock, em_inc),
-+	I(ByteOp | DstMem | SrcNone | Lock, em_dec),
- 	N, N, N, N, N, N,
- };
- 
- static const struct opcode group5[] = {
--	F(DstMem | SrcNone | Lock,		em_inc),
--	F(DstMem | SrcNone | Lock,		em_dec),
-+	I(DstMem | SrcNone | Lock,		em_inc),
-+	I(DstMem | SrcNone | Lock,		em_dec),
- 	I(SrcMem | NearBranch | IsBranch,       em_call_near_abs),
- 	I(SrcMemFAddr | ImplicitOps | IsBranch, em_call_far),
- 	I(SrcMem | NearBranch | IsBranch,       em_jmp_abs),
-@@ -4237,7 +4282,7 @@ static const struct opcode opcode_table[
+ static const struct opcode opcode_table[256] = {
+ 	/* 0x00 - 0x07 */
+-	F6ALU(Lock, em_add),
++	I6ALU(Lock, em_add),
+ 	I(ImplicitOps | Stack | No64 | Src2ES, em_push_sreg),
+ 	I(ImplicitOps | Stack | No64 | Src2ES, em_pop_sreg),
+ 	/* 0x08 - 0x0F */
+-	F6ALU(Lock | PageTable, em_or),
++	I6ALU(Lock | PageTable, em_or),
+ 	I(ImplicitOps | Stack | No64 | Src2CS, em_push_sreg),
+ 	N,
+ 	/* 0x10 - 0x17 */
+-	F6ALU(Lock, em_adc),
++	I6ALU(Lock, em_adc),
+ 	I(ImplicitOps | Stack | No64 | Src2SS, em_push_sreg),
+ 	I(ImplicitOps | Stack | No64 | Src2SS, em_pop_sreg),
+ 	/* 0x18 - 0x1F */
+-	F6ALU(Lock, em_sbb),
++	I6ALU(Lock, em_sbb),
+ 	I(ImplicitOps | Stack | No64 | Src2DS, em_push_sreg),
+ 	I(ImplicitOps | Stack | No64 | Src2DS, em_pop_sreg),
+ 	/* 0x20 - 0x27 */
+-	F6ALU(Lock | PageTable, em_and), N, N,
++	I6ALU(Lock | PageTable, em_and), N, N,
+ 	/* 0x28 - 0x2F */
+-	F6ALU(Lock, em_sub), N, I(ByteOp | DstAcc | No64, em_das),
++	I6ALU(Lock, em_sub), N, I(ByteOp | DstAcc | No64, em_das),
+ 	/* 0x30 - 0x37 */
+-	F6ALU(Lock, em_xor), N, N,
++	I6ALU(Lock, em_xor), N, N,
  	/* 0x38 - 0x3F */
- 	F6ALU(NoWrite, em_cmp), N, N,
+-	F6ALU(NoWrite, em_cmp), N, N,
++	I6ALU(NoWrite, em_cmp), N, N,
  	/* 0x40 - 0x4F */
--	X8(F(DstReg, em_inc)), X8(F(DstReg, em_dec)),
-+	X8(I(DstReg, em_inc)), X8(I(DstReg, em_dec)),
+ 	X8(I(DstReg, em_inc)), X8(I(DstReg, em_dec)),
  	/* 0x50 - 0x57 */
- 	X8(I(SrcReg | Stack, em_push)),
- 	/* 0x58 - 0x5F */
+@@ -4306,7 +4315,7 @@ static const struct opcode opcode_table[
+ 	G(DstMem | SrcImm, group1),
+ 	G(ByteOp | DstMem | SrcImm | No64, group1),
+ 	G(DstMem | SrcImmByte, group1),
+-	F2bv(DstMem | SrcReg | ModRM | NoWrite, em_test),
++	I2bv(DstMem | SrcReg | ModRM | NoWrite, em_test),
+ 	I2bv(DstMem | SrcReg | ModRM | Lock | PageTable, em_xchg),
+ 	/* 0x88 - 0x8F */
+ 	I2bv(DstMem | SrcReg | ModRM | Mov | PageTable, em_mov),
+@@ -4329,7 +4338,7 @@ static const struct opcode opcode_table[
+ 	I2bv(SrcSI | DstDI | Mov | String | TwoMemOp, em_mov),
+ 	F2bv(SrcSI | DstDI | String | NoWrite | TwoMemOp, em_cmp_r),
+ 	/* 0xA8 - 0xAF */
+-	F2bv(DstAcc | SrcImm | NoWrite, em_test),
++	I2bv(DstAcc | SrcImm | NoWrite, em_test),
+ 	I2bv(SrcAcc | DstDI | Mov | String, em_mov),
+ 	I2bv(SrcSI | DstAcc | Mov | String, em_mov),
+ 	F2bv(SrcAcc | DstDI | String | NoWrite, em_cmp_r),
+@@ -4467,7 +4476,7 @@ static const struct opcode twobyte_table
+ 	I(DstReg | SrcMem | ModRM, em_bsr_c),
+ 	D(DstReg | SrcMem8 | ModRM | Mov), D(DstReg | SrcMem16 | ModRM | Mov),
+ 	/* 0xC0 - 0xC7 */
+-	F2bv(DstMem | SrcReg | ModRM | SrcWrite | Lock, em_xadd),
++	I2bv(DstMem | SrcReg | ModRM | SrcWrite | Lock, em_xadd),
+ 	N, ID(0, &instr_dual_0f_c3),
+ 	N, N, N, GD(0, &group9),
+ 	/* 0xC8 - 0xCF */
 
 
 
