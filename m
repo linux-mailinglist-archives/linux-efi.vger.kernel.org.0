@@ -1,314 +1,236 @@
-Return-Path: <linux-efi+bounces-3522-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3523-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1635AA629A
-	for <lists+linux-efi@lfdr.de>; Thu,  1 May 2025 20:05:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9A9AA62CE
+	for <lists+linux-efi@lfdr.de>; Thu,  1 May 2025 20:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6B9A7A6779
-	for <lists+linux-efi@lfdr.de>; Thu,  1 May 2025 18:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75C889A64FE
+	for <lists+linux-efi@lfdr.de>; Thu,  1 May 2025 18:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0280F21B9C2;
-	Thu,  1 May 2025 18:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146A5223316;
+	Thu,  1 May 2025 18:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="oQWHvmzj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k+yQ/pA9"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2061.outbound.protection.outlook.com [40.107.220.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3577B2DC799;
-	Thu,  1 May 2025 18:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746122735; cv=fail; b=sxg18sqchSuaUZWiI/UZhph15+u5r1eoNfuEHOG0borEdCAOqZR8ShupjNTR0vf8dUGlWqDAMhbm8sAQ8nPdXdetayW79j2K1RY3Wj8sQXyBUrqHjkCcgRoMLymCB9q8Y0dbxSCaGrndz48IUbgnjac9F5/Gmn5TsYp+sOr6wmg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746122735; c=relaxed/simple;
-	bh=ksIu7dfIImW8gdDuMaWRWKwbZmxeI10JwldRWGKFS0g=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RB1aFcIXbvONyxvqeqzTIr3iCrDhYPK8Q46hQ4G5HiInEdEA18mQoXGy87maV/A/eP+e6qlCFnoFX/MQlLj953TVopRu0nm5mqpCOhNqJ2SvWGojXiNi/gElDIvHU9Of53FL5Zum5fsSpxKjpJ/IxYvN+sGJHFR+DlbJFsZhJLM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=oQWHvmzj; arc=fail smtp.client-ip=40.107.220.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e/yP1A6LmlWnoEGqW7LJWpg0HHCLQyjuwtTQXYIbGD2GaNZD38W3pA4D9z/c2kwJpUxwWwf0mNSa3qudgUSY8igzB2db1WUe7i4mZYPJkvBWacL2nXynFy0nZR2boB+dCC+J6MuGFMcjpRQBa+QfvtN05U2dFJAGiTygN1FJe9rrpc0O9MyQZIFsgn7qELuw3t3hf0kGkVDE7dYlMaoBLfGueMCXYi+ZRPeUHxJJXZy4vsjX02ttdAMeUtz4LKWyjmns9FvCphYnyx9fuq+B2YV8vkT2a3rArTRG/x7alAZ5tcHwV2F3+8ZULxi8AAQK/SdtdhBPEdAQk4B4xenhiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yymLSFBSejjz7SbbqJ/Yfp+e0DrWMFyrEykQPyR4Wr4=;
- b=gW+UnOXnST2rnZdUlEyZZyuFA4Z7dh6LfvK8Bb4u/HIKnWNkPuEADvK2edtTS2DhK/MDjPVaizR6n1vD5Vgh6VsiC+xLF3Z3qTGHsKd0+/FffnMmWSdDWX4CHa++AZFynV26HgMpyL3Ygh7Rp0vnXDApm73XzlJzdZ7GfoBE28umGKN3/npsZla3BZoaDeA7k2MPCErRKEADZTgsyVpRSn6JG6RwbO9w1DbH65Sq9z5voE+5xDE7swq2lWp5luCAvyd0lF0gW3s9Vh/OQglNg9F/GW6gHiwHc1wiXyA/b6R1Kjw/fdAsGiTMh3hnXyTPnsPBCKTaY08BSBAt/eVswA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yymLSFBSejjz7SbbqJ/Yfp+e0DrWMFyrEykQPyR4Wr4=;
- b=oQWHvmzjW5X1EKzSHw5yp+vBIC+5gs5Bm9NbTDnns/sNrFXO32Yg/uje1tL2tRmTn0WtBN5I/ZxNoBfaOGMkYQlkiROaTZiarzmN+qZ7Bbh6FGAegzchiFWUR3R2FqosSu2xSA0SUTdjLIFNnqdJWrpgD4o2F4uxNRFD5Tgnb6g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by CH2PR12MB4150.namprd12.prod.outlook.com (2603:10b6:610:a6::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Thu, 1 May
- 2025 18:05:32 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8699.022; Thu, 1 May 2025
- 18:05:31 +0000
-Message-ID: <0ad5e887-e0f3-6c75-4049-fd728267d9c0@amd.com>
-Date: Thu, 1 May 2025 13:05:26 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] x86/boot/sev: Support memory acceptance in the EFI stub
- under SVSM
-Content-Language: en-US
-To: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
- Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Ingo Molnar <mingo@kernel.org>, Dionna Amalie Glaze
- <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>,
- stable@vger.kernel.org
-References: <20250428174322.2780170-2-ardb+git@google.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20250428174322.2780170-2-ardb+git@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR13CA0103.namprd13.prod.outlook.com
- (2603:10b6:806:24::18) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3E721C198
+	for <linux-efi@vger.kernel.org>; Thu,  1 May 2025 18:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746124222; cv=none; b=MaA7ziiSVcTP1sug7G3RWOK48XFbWHdHkwku6nolysszi/0FmkYGoS9rPFPoopnRaQ2czdyZ/L8sF8JaOUM37R4kXDzR1kRAP6LGtq/IpIgLHnGMF+r2Goe74jADLhv6tbJWLhbjIQSS6Gr6P3Rc19+B0pibzWuWq8m3y9CDE6s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746124222; c=relaxed/simple;
+	bh=Y4tGBMBLGc/YKCq/GVPyHhKavhO0yq27W/ghOX4mpvg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=F7RaHvuQCVcN+h6QvZiRU+7oFyXtiSjWYnOHNgr/jskZbv1CupyBf7gNSNrbdExcK+z0wcqn5029vTpgbqXRhb6ZO26rCyCdBVz6dbgh39CUVNQK4EfRE07s6NTuA/6iNxbwpz9ml8m+9Kic+hMOCrY2b5H08D+kfgJe87ixpo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k+yQ/pA9; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736cb72efd5so1156957b3a.3
+        for <linux-efi@vger.kernel.org>; Thu, 01 May 2025 11:30:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746124219; x=1746729019; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qb2qgdFL1uGhH3LnsFjHt03Akcbc42TOdjKut1BadxU=;
+        b=k+yQ/pA9DoUR668FfbsxZTszZj/lmIG5WDw5R2RkQqUG5afv6Tgllfl5LkUSB13x70
+         tGin2B/Aa6Y0mY0nVwLUYF5If8q9i3lMXPTeteMV3XbLEtBdw00fiQwDY60nhN2os5ff
+         yOKY2v9J4Za1QenEAUZdh5eVOR9RIPQWbyxBNblUOaP8T2XtGlUsIF8zEP+SNPldS1j8
+         GzDwoRCtQJdYxouF8TVtJ9HuLsr8slrGy8SixfgTR9uizwfNp+zloCE7ZXoH8ne7mdkl
+         Jov1wphLgOZ4LAulWljkvl44FNqFKeQ8i7kqc4fnIyOQxday9hQnUXNgONFWeFgfpini
+         U8gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746124219; x=1746729019;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qb2qgdFL1uGhH3LnsFjHt03Akcbc42TOdjKut1BadxU=;
+        b=UP1wdN0AxFifZsy06XrHIY9TfIEqukZu6JzntRVmm0mTFGyZ2Y/MYIrpyfBTEooq3Y
+         8YSzN3eaBRtkfJMWvRpTwb5bAGQB6iqvDS5BVOhIvB2dOikjuCayJ9evhp8oqG4vpWdV
+         45D2vOE9J9mkuWnR9njK5WH9uGvZcszOjji5mBiQYKSOpYb1jjmYERH5fIqB7hUijGwx
+         Ss7MmcyV7+uURn8ZwYTJUztW/1NMPhvTq230yF1/Tw8rfJ9OE2VblUHV2TFKYAkF6Ipd
+         UcsDt3yqsjOsw6mOhf+ysYg3yhYEE5ws8wpSPZkYex+ycyjFgZfKXgAFtR2kjFptto9b
+         pHMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwGbZpTkA0XCQRDxq6CH9SJQnZO/aJqA2ocjrJHjTIEULWfQSp9U/ANt1TY6MNPRogcdEtxLb1TIA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRCad3zz22cOIrOeRv4BbV5ixS90faQWyZ65NRhir/4AFSccyU
+	l6TivxTsNFBjDXUOuYrCDAU8ByrNzcfRbdCpMNhCSiRY5TvUykerggXs0TLrWklF2n5dM6Snong
+	NgA==
+X-Google-Smtp-Source: AGHT+IE+acSB6pP/XFrGYreSGEpMxcpIN4zf03F9AG6mxlsdNLC5ZdXiyh+Le4rdLnsVm76Q4eWXdPS7fMA=
+X-Received: from pfbdu11.prod.google.com ([2002:a05:6a00:2b4b:b0:730:90b2:dab])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4fd1:b0:736:32d2:aa82
+ with SMTP id d2e1a72fcca58-7404927067fmr4682617b3a.23.1746124219442; Thu, 01
+ May 2025 11:30:19 -0700 (PDT)
+Date: Thu, 1 May 2025 11:30:18 -0700
+In-Reply-To: <20250501153844.GD4356@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CH2PR12MB4150:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0fa46485-51e2-476c-3095-08dd88dac338
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?N3JCWVRFcC9iZEtLa2Vsb3BnZG9ZSWVpUHFvU1MraEt0NFJ0R2xob2Fwb0Nq?=
- =?utf-8?B?QUVIdjg0UDc5ZEN3ZzNFKzlMbjBvcHRnWS80WVZEWjc5eUtFbnJkU2h5aDlr?=
- =?utf-8?B?Q3FrcWViSWRCVTVuUnd3Tm16VWJieURGbTNyOUd5dHRYYmRVRmdPWVFqM3ps?=
- =?utf-8?B?TG90K1U4RWVwT1ExSVpyN2dnMU13NUJsL05XVTZCc0ZPc1NnMFg4cUdUV09x?=
- =?utf-8?B?RTdvRjROZHpKOGxkcDZUVzBEUCtQdGh6SGtMKzFCbWNWOXZFSmovaVl3Zlls?=
- =?utf-8?B?Mnl6ZWtIa2ZvN1BNd2RyZEpKNXZUckF5aTQ5M2x6V092bHYybWFFY0RCQ01F?=
- =?utf-8?B?SE9mMGgvaGV4Uk9mMmRPMUVRakMyNEpobGxacHFLbnlrYUY3QitESzhlTGZS?=
- =?utf-8?B?R1h5THVRU0RwQ1M2UDJGK0xDU0FvbmNFU2pvNnU3S2MzcEl5cmx6MnlqVENv?=
- =?utf-8?B?RXc4UWQ4cTQ1WUc3UVVDa1dObWVnVi9Ic1JVOHZrT0RFMUVpUExHRitnVkJW?=
- =?utf-8?B?b0RyMkJZMThjNUl0d1N0ajA0ZGdUeTJyVVdrVUo4WFFSZEczSVJnZTRDVFZE?=
- =?utf-8?B?TlNZWStHM3g3dmFESHJ1VHVMakZGMWhNOHdvbmV2RTBFU0J1aG1sZGxacldS?=
- =?utf-8?B?MS9FODN5RCtzM1E1dGdzU3VlYm1hSWVNZ0VNdHo2dWhhZDZZZG1QTi9WTU1W?=
- =?utf-8?B?NlM4ek41ajZUTitvRUE3Sk1KRHd2bFNkUEoyT3hQcFk4aW5XZHdGZGk1OVNZ?=
- =?utf-8?B?MDJMOXk0R2FGaE1ra1hpQXFvMHRQS0FFaE91VVY2bGtWcm96eVcrTnQ0UU5B?=
- =?utf-8?B?eExLRzZBNFZZOC92Q2tFU05TWW1rSG1EUk5kWmtIZEl6Ri9CTUFHcnNXZDhN?=
- =?utf-8?B?blNKbjZ1bHdEVmdaQTNrR0oyUW9RRnNZUDI2RlkyUGxTZEZaLzlKbUxDK292?=
- =?utf-8?B?NVBvTURCak42QUp2RmVnSExVUkhLY0o4R1B3Q1pRZVppdDhzUE02TmVIU1dD?=
- =?utf-8?B?aTVDRmZrc3c5cFVqalV6cmp3TWVOWHdmNDJRYldpbmcxSjBiTXdUcE9SaHZ5?=
- =?utf-8?B?b0FhY1RKQk0veW5XTkxwcTNINlJhU3pML2IzbExnNUZxODRNd2FUZlJYdE1w?=
- =?utf-8?B?cW1JOUVTWUIvUVkxT0RMQVAvbzdkYTZiV3hKMTNtYUtYNHNrK3E4Q1FxWFVs?=
- =?utf-8?B?c1hnelBjV0t5eGE0Z3RHb1o5VWNuTk9JUVNpZFNDQWwxVUQ0ZHVSeWNxUmhX?=
- =?utf-8?B?Z3F4aHFCWG9UdVpVU2xiMm5CY0JWN1d2REtkTGl4MERuVlY1dDMzQ2h2Ni9E?=
- =?utf-8?B?Zmo2eFBIVlErSnNucW1WS1MyYTh4UnR1YVBLMktYSklDTXQ0T1FCOTRabkVN?=
- =?utf-8?B?TEV3QUhlQjNxTGdRV0xLVlJydUdQN2RvelIvM3FjWmF0TWJGUStQSkpwaEZ1?=
- =?utf-8?B?dXpIVUlkTVZSazlnam4vaWt3NEtTeWV1NEtYWTBrU2JIbjdWQkQydUdlNUlD?=
- =?utf-8?B?RlFZZWc2RFR5YnpBdm01OXB0eWk1OVZCTUxkbWFvcXhrTHZCMzNZejkvRWVQ?=
- =?utf-8?B?cGlQQzN3aGREZ09QRTczR3hOa3hDTndJRm02b3h2aEdPSDlDazg4SjlBRXJ3?=
- =?utf-8?B?RlozNmY4LzFKRWtyekUyWitYUkNsYzJXNXRRZVh0bDRaNE1CUlVLdVZ2Y1Vl?=
- =?utf-8?B?bmpGNE85eHJpSUMvdEdSbGNiVnJEZzRlQi9NdnhMYjVuaUFCYUhwQ1Q0WXNZ?=
- =?utf-8?B?NHZKaVdNQ1pTNFVSN3RvN2dwNjhkMC93RzBuR0RlZy9oSk5ZTlhLRHU4dEhU?=
- =?utf-8?B?VzdKYVdSbzdrdUpWVXE4dmk4bFBWVzJ6VGhwU0NnMTl0RmczdHYvNCt4ZkZG?=
- =?utf-8?B?T1VIcUtnYTV4cHVlcVRiNU1McGwzUVUyOUozdXEwNGpRK3dSa29hMkNiS1Zm?=
- =?utf-8?Q?1n9IjsWCnFo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cDIwUWxXaDBKL1dUaDhRSGVYNjBkL0ZmOE53MWRURnZzMHRZTzBTRHZaQm8z?=
- =?utf-8?B?N0s4N0FJT1M1eGZLNHB1VzNuMTJ0V05yV3F3a3M5ZEY0ZXBWb0s1Vy91aTBN?=
- =?utf-8?B?TUtjVnh4SDMzb2h4YXpKMDFIRXpOb0NlcSsramNCQzhjRmkxc3BaRDZYS0dw?=
- =?utf-8?B?Wm9meXZaelp2aTdhclVqL3VzQ0Y0ZDlBamhkeHJnUWo4UW9NWlZ6bDhtT0FY?=
- =?utf-8?B?OEFnTWpaVTBTK1JWdlU0SVNWVTJyV1RUYWFSRXdmWU42N1hZU1A2Y3lnOC96?=
- =?utf-8?B?aVlVNS9naU5sMUdlcGt3UUpEZnhoRDB1M1lPdHA5TGI1RHd1T3ZPaFNUdWwx?=
- =?utf-8?B?MDkzemcvelNDQ1hWbzJFVjJpVVBVSU9sZlYzTE1LWU1tREhwWkNwUUErdnps?=
- =?utf-8?B?S3d4VC95RlpjUllyV09EVjJQS2QxbkxlMDJSNEhCaVNQRGZQUGFTVDZvK2N0?=
- =?utf-8?B?TlNQbkIxK3Q2WnhUOFZvdXJqZUhtdlhDZno5aFRqOGhsMndscHpWQS8zQXVV?=
- =?utf-8?B?Yy9UWi9tZU4zcUc2OXRpbTR0SzR6NWNyWnUyZU1XbTBkT3ZmN0lVa0ZLV2hu?=
- =?utf-8?B?dTJDeWhqUk5UVlJoUTZXZmV6UXZhZnhidzlsZlNzTXVpeUtUVzVGSUp2Y2ZZ?=
- =?utf-8?B?RWt6SG5pV3Y2NmlXR0xNMUlMTDdrSWpjczBiQXlNWWxaaWZBS1pTa0dMd2Rx?=
- =?utf-8?B?MHc3T2phVHZBeHJ6cjJWVVhFM0RHVDQ4ZXpDUG9HVlBNcy9JcDcxanp3cHBI?=
- =?utf-8?B?ZVFHSlIwQWZNUTlLYjQyeUl3aVQ2dlF3YzJIY1h5RW5ZTEJjYWkwWDV0UDZs?=
- =?utf-8?B?ZVlmSTFVT2dNQmlHd3FteUVNbk5uZWhIZzcyMlRxSDF5bzloeEEwa1B6TUs0?=
- =?utf-8?B?ZnNWZHZwbVhDYVZnWHdrcjlRVWV1aDdUQnVrbGRwVTdsM2djR3U1SSs1MDM5?=
- =?utf-8?B?NjUzVFlkVVIyWkhhOEpBUFBHRVQ5WDFwQjBCb1dYR3J3SjdHSEJaVFA0cEVN?=
- =?utf-8?B?eGhsTXYvSmlObEM5RWExcjZDQUNmcGFUVk03dGxSazk0cFg5d1dYa1BZZ3Z1?=
- =?utf-8?B?YkVsdEhrbkRiZ1JxVG93TExrSGd2Qk0wYkJwRUpkRlZpL3N1WndtSEQvbE4x?=
- =?utf-8?B?RWIvelFuNzNJZ2svbUhNMVA3OG54WDdpV051eVh1WTJuTjBlOVAyMnJnMERC?=
- =?utf-8?B?TGFYNS80RU5sMm9jQUF2WkpwZXdqU3Q4aXlwbWp4T0xNYU9XY2tMSFRoMFRC?=
- =?utf-8?B?NXBjQnRyZThud0p2OTUwUEkvZklKd1hITDd1U24rNTRvKzB1NkxyZzNFVTRk?=
- =?utf-8?B?a2ZQc2RVbU9NL2NRMjZPZHRVeEJoRFZZVVc1N0Q1RVlvaWc1TDdBM28vQi9p?=
- =?utf-8?B?dEZ6QjloT3FTc3c2UEJ6S3g0cGlXUXZtVDlIZFhONGI2S2dFdk9zLytjKy9E?=
- =?utf-8?B?czZoUDdHYVR2U20yTXpteVk5ZVI4Q3YwNlEvS1BWMm8vc1hQckpycHVma3Vl?=
- =?utf-8?B?eWVDem9aMFR3UXoyN21kVDNZMVhPSS9mam52NG1paFc1Vi9ZVjlsWjNQZGZp?=
- =?utf-8?B?VWIxQXN3dlBMRVhSTUljWk93R3p0U0ZuSmJleUJWcXA4SHdtbW43dXpxMHZo?=
- =?utf-8?B?SzU5M3lscnlDdkxMUDJ4ajAxWkI3VlhtTHJIZEFaRDZ4aUUvTWZHL2hRN0hS?=
- =?utf-8?B?Mk5lUTFFeWVtUVZPaGI4Q2N3a1pZZlREQ0h3MFdkUHlrWXVpdzZsTm02enZv?=
- =?utf-8?B?c0JXL2NlZ0g4Q0p3VW9wUHRJYWpoMXVxenRqNzhYMzBwNVZRd20xbC9OY1ZQ?=
- =?utf-8?B?bDBCay9rYXBFTjlWUDA0cW9SNnFJUnc3ZGo3OU1ZMGZXZkt5WGZBT2VTRnFB?=
- =?utf-8?B?TVZWWmFHNlZ2YzN3REFCZ2pSbWFjSVA3a2hKYjlsWHR4WGdlQUIrUHdHemh3?=
- =?utf-8?B?KzNmMk0rSmlaWTAyaFRweHJJNWx3R0VsZ2J5Y1dDMGdSczRvRGFzN08wL0M2?=
- =?utf-8?B?Mm5kbHcxbmJFQytFcVFpU2U4TVpsOGF4azBpS2t0c2xod3FYdFBiWUNvMWls?=
- =?utf-8?B?aWl3aUpUcHNpQUl5SG5XTW5BcHhBOUZnQkdrZzczRTZjL2w1U016VjJabStM?=
- =?utf-8?Q?2iCFXJI5s5ZZVmcG48rytn+gh?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0fa46485-51e2-476c-3095-08dd88dac338
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2025 18:05:31.7760
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3Umz+k9/0PMK9E2tP/6Jz60keXpOE3unLBH+VjEuIwSkrE1WJ3hADEqGf+ocac2cgKIi6VRC4AjDwsNgejVLoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4150
+Mime-Version: 1.0
+References: <20250430110734.392235199@infradead.org> <8B86A3AE-A296-438C-A7A7-F844C66D0198@zytor.com>
+ <20250430190600.GQ4439@noisy.programming.kicks-ass.net> <20250501103038.GB4356@noisy.programming.kicks-ass.net>
+ <20250501153844.GD4356@noisy.programming.kicks-ass.net>
+Message-ID: <aBO9uoLnxCSD0UwT@google.com>
+Subject: Re: [PATCH v2 00/13] objtool: Detect and warn about indirect calls in
+ __nocfi functions
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kys@microsoft.com, 
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, pbonzini@redhat.com, ardb@kernel.org, 
+	kees@kernel.org, Arnd Bergmann <arnd@arndb.de>, gregkh@linuxfoundation.org, 
+	jpoimboe@kernel.org, linux-hyperv@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
+	samitolvanen@google.com, ojeda@kernel.org, xin@zytor.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 4/28/25 12:43, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+On Thu, May 01, 2025, Peter Zijlstra wrote:
+> On Thu, May 01, 2025 at 12:30:38PM +0200, Peter Zijlstra wrote:
+> > On Wed, Apr 30, 2025 at 09:06:00PM +0200, Peter Zijlstra wrote:
+> > > On Wed, Apr 30, 2025 at 07:24:15AM -0700, H. Peter Anvin wrote:
+> > > 
+> > > > >KVM has another; the VMX interrupt injection stuff calls the IDT handler
+> > > > >directly.  Is there an alternative? Can we keep a table of Linux functions
+> > > > >slighly higher up the call stack (asm_\cfunc ?) and add CFI to those?
+> > > 
+> > > > We do have a table of handlers higher up in the stack in the form of
+> > > > the dispatch tables for FRED. They don't in general even need the
+> > > > assembly entry stubs, either.
+> > > 
+> > > Oh, right. I'll go have a look at those.
+> > 
+> > Right, so perhaps the easiest way around this is to setup the FRED entry
+> > tables unconditionally, have VMX mandate CONFIG_FRED and then have it
+> > always use the FRED entry points.
+> > 
+> > Let me see how ugly that gets.
 > 
-> Commit
-> 
->   d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
-> 
-> provided a fix for SEV-SNP memory acceptance from the EFI stub when
-> running at VMPL #0. However, that fix was insufficient for SVSM SEV-SNP
-> guests running at VMPL >0, as those rely on a SVSM calling area, which
-> is a shared buffer whose address is programmed into a SEV-SNP MSR, and
-> the SEV init code that sets up this calling area executes much later
-> during the boot.
-> 
-> Given that booting via the EFI stub at VMPL >0 implies that the firmware
-> has configured this calling area already, reuse it for performing memory
-> acceptance in the EFI stub.
+> Something like so... except this is broken. Its reporting spurious
+> interrupts on vector 0x00, so something is buggered passing that vector
+> along.
 
-This looks to be working for SNP guest boot and kexec. SNP guest boot with
-an SVSM is also working, but kexec isn't. But the kexec failure of an SVSM
-SNP guest is unrelated to this patch, I'll send a fix for that separately.
+Uh, aren't you making this way more complex than it needs to be?  IIUC, KVM never
+uses the FRED hardware entry points, i.e. the FRED entry tables don't need to be
+in place because they'll never be used.  The only bits of code KVM needs is the
+__fred_entry_from_kvm() glue.
 
-Thanks,
-Tom
+Lightly tested, but this combo works for IRQs and NMIs on non-FRED hardware.
 
-> 
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-> Cc: Kevin Loughlin <kevinloughlin@google.com>
-> Cc: <stable@vger.kernel.org>
-> Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
-> Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
-> Tom,
-> 
-> Please confirm that this works as you intended.
-> 
-> Thanks,
-> 
->  arch/x86/boot/compressed/mem.c |  5 +--
->  arch/x86/boot/compressed/sev.c | 40 ++++++++++++++++++++
->  arch/x86/boot/compressed/sev.h |  2 +
->  3 files changed, 43 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-> index f676156d9f3d..0e9f84ab4bdc 100644
-> --- a/arch/x86/boot/compressed/mem.c
-> +++ b/arch/x86/boot/compressed/mem.c
-> @@ -34,14 +34,11 @@ static bool early_is_tdx_guest(void)
->  
->  void arch_accept_memory(phys_addr_t start, phys_addr_t end)
->  {
-> -	static bool sevsnp;
-> -
->  	/* Platform-specific memory-acceptance call goes here */
->  	if (early_is_tdx_guest()) {
->  		if (!tdx_accept_memory(start, end))
->  			panic("TDX: Failed to accept memory\n");
-> -	} else if (sevsnp || (sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED)) {
-> -		sevsnp = true;
-> +	} else if (early_is_sevsnp_guest()) {
->  		snp_accept_memory(start, end);
->  	} else {
->  		error("Cannot accept memory: unknown platform\n");
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> index 89ba168f4f0f..0003e4416efd 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -645,3 +645,43 @@ void sev_prep_identity_maps(unsigned long top_level_pgt)
->  
->  	sev_verify_cbit(top_level_pgt);
->  }
-> +
-> +bool early_is_sevsnp_guest(void)
-> +{
-> +	static bool sevsnp;
-> +
-> +	if (sevsnp)
-> +		return true;
-> +
-> +	if (!(sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED))
-> +		return false;
-> +
-> +	sevsnp = true;
-> +
-> +	if (!snp_vmpl) {
-> +		unsigned int eax, ebx, ecx, edx;
-> +
-> +		/*
-> +		 * CPUID Fn8000_001F_EAX[28] - SVSM support
-> +		 */
-> +		eax = 0x8000001f;
-> +		ecx = 0;
-> +		native_cpuid(&eax, &ebx, &ecx, &edx);
-> +		if (eax & BIT(28)) {
-> +			struct msr m;
-> +
-> +			/* Obtain the address of the calling area to use */
-> +			boot_rdmsr(MSR_SVSM_CAA, &m);
-> +			boot_svsm_caa = (void *)m.q;
-> +			boot_svsm_caa_pa = m.q;
-> +
-> +			/*
-> +			 * The real VMPL level cannot be discovered, but the
-> +			 * memory acceptance routines make no use of that so
-> +			 * any non-zero value suffices here.
-> +			 */
-> +			snp_vmpl = U8_MAX;
-> +		}
-> +	}
-> +	return true;
-> +}
-> diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
-> index 4e463f33186d..d3900384b8ab 100644
-> --- a/arch/x86/boot/compressed/sev.h
-> +++ b/arch/x86/boot/compressed/sev.h
-> @@ -13,12 +13,14 @@
->  bool sev_snp_enabled(void);
->  void snp_accept_memory(phys_addr_t start, phys_addr_t end);
->  u64 sev_get_status(void);
-> +bool early_is_sevsnp_guest(void);
->  
->  #else
->  
->  static inline bool sev_snp_enabled(void) { return false; }
->  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
->  static inline u64 sev_get_status(void) { return 0; }
-> +static inline bool early_is_sevsnp_guest(void) { return false; }
->  
->  #endif
->  
-> 
-> base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
+--
+From 664468143109ab7c525c0babeba62195fa4c657e Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Thu, 1 May 2025 11:20:29 -0700
+Subject: [PATCH 1/2] x86/fred: Play nice with invoking
+ asm_fred_entry_from_kvm() on non-FRED hardware
+
+Modify asm_fred_entry_from_kvm() to allow it to be invoked by KVM even
+when FRED isn't fully enabled, e.g. when running with CONFIG_X86_FRED=y
+on non-FRED hardware.  This will allow forcing KVM to always use the FRED
+entry points for 64-bit kernels, which in turn will eliminate a rather
+gross non-CFI indirect call that KVM uses to trampoline IRQs by doing IDT
+lookups.
+
+When FRED isn't enabled, simply skip ERETS and restore RBP and RSP from
+the stack frame prior to doing a "regular" RET back to KVM (in quotes
+because of all the RET mitigation horrors).
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/entry/entry_64_fred.S | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
+index 29c5c32c16c3..7aff2f0a285f 100644
+--- a/arch/x86/entry/entry_64_fred.S
++++ b/arch/x86/entry/entry_64_fred.S
+@@ -116,7 +116,8 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
+ 	movq %rsp, %rdi				/* %rdi -> pt_regs */
+ 	call __fred_entry_from_kvm		/* Call the C entry point */
+ 	POP_REGS
+-	ERETS
++
++	ALTERNATIVE "", __stringify(ERETS), X86_FEATURE_FRED
+ 1:
+ 	/*
+ 	 * Objtool doesn't understand what ERETS does, this hint tells it that
+@@ -124,7 +125,7 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
+ 	 * isn't strictly needed, but it's the simplest form.
+ 	 */
+ 	UNWIND_HINT_RESTORE
+-	pop %rbp
++	leave
+ 	RET
+ 
+ SYM_FUNC_END(asm_fred_entry_from_kvm)
+
+base-commit: 45eb29140e68ffe8e93a5471006858a018480a45
+-- 
+2.49.0.906.g1f30a19c02-goog
+
+From c50fb5a8a46058bbcfdcac0a100c2aa0f7f68f1c Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Thu, 1 May 2025 11:10:39 -0700
+Subject: [PATCH 2/2] x86/fred: KVM: VMX: Always use FRED for IRQ+NMI when
+ CONFIG_X86_FRED=y
+
+Now that FRED provides C-code entry points for handling IRQ and NMI exits,
+use the FRED infrastructure for forwarding all such events even if FRED
+isn't supported in hardware.  Avoiding the non-FRED assembly trampolines
+into the IDT handlers for IRQs eliminates the associated non-CFI indirect
+call (KVM performs a CALL by doing a lookup on the IDT using the IRQ
+vector).
+
+Force FRED for 64-bit kernels if KVM_INTEL is enabled, as the benefits of
+eliminating the IRQ trampoline usage far outwieghts the code overhead for
+FRED.
+
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/Kconfig   | 1 +
+ arch/x86/kvm/vmx/vmx.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index 2eeffcec5382..712a2ff28ce4 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -95,6 +95,7 @@ config KVM_SW_PROTECTED_VM
+ config KVM_INTEL
+ 	tristate "KVM for Intel (and compatible) processors support"
+ 	depends on KVM && IA32_FEAT_CTL
++	select X86_FRED if X86_64
+ 	select KVM_GENERIC_PRIVATE_MEM if INTEL_TDX_HOST
+ 	select KVM_GENERIC_MEMORY_ATTRIBUTES if INTEL_TDX_HOST
+ 	help
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index ef2d7208dd20..2ea89985107d 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6995,7 +6995,7 @@ static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu,
+ 		return;
+ 
+ 	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
+-	if (cpu_feature_enabled(X86_FEATURE_FRED))
++	if (IS_ENABLED(CONFIG_X86_FRED))
+ 		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+ 	else
+ 		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + vector));
+@@ -7268,7 +7268,7 @@ noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu)
+ 		return;
+ 
+ 	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
+-	if (cpu_feature_enabled(X86_FEATURE_FRED))
++	if (IS_ENABLED(CONFIG_X86_FRED))
+ 		fred_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
+ 	else
+ 		vmx_do_nmi_irqoff();
+-- 
+2.49.0.906.g1f30a19c02-goog
 
