@@ -1,59 +1,59 @@
-Return-Path: <linux-efi+bounces-3516-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3517-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02058AA59B5
-	for <lists+linux-efi@lfdr.de>; Thu,  1 May 2025 04:36:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17588AA59B8
+	for <lists+linux-efi@lfdr.de>; Thu,  1 May 2025 04:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D0407ACC49
-	for <lists+linux-efi@lfdr.de>; Thu,  1 May 2025 02:35:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C856D3B4135
+	for <lists+linux-efi@lfdr.de>; Thu,  1 May 2025 02:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9201EDA02;
-	Thu,  1 May 2025 02:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310B81EEA5A;
+	Thu,  1 May 2025 02:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="e18jDyPp"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="N+51PcA7"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11olkn2104.outbound.protection.outlook.com [40.92.19.104])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11olkn2077.outbound.protection.outlook.com [40.92.18.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8E0182B7;
-	Thu,  1 May 2025 02:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.19.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D5B182B7;
+	Thu,  1 May 2025 02:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.18.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746066968; cv=fail; b=mvIt/ibzj8e2uqwaMLEVHAJiLfj0qKAe9Nj2dB9pzCtF2DAXY3OIv8G1pYE4e/aXr31GRGI07QFrPIZTtD4aBT3Onk4nsndDeddGafJFpYOBZknZTKOVl0nWQKNhdU6WpKz2EPXb7x8sgGE1jyAgSXfTY3wccYRO4kRGqGjDtW4=
+	t=1746066992; cv=fail; b=oP285dI6YfHfQHO086kvstBpwLiyRHXXEbpFZpi5ii24U55q73+HZrkgK/3Df/hY+oCI7jm9xjmtRPnB0O/oo6FSIOwyWZQMMopjmf/KDwNGIo4MQ2i49ycrmUJgJjqQJJ4GB0SjCwJlN3lcXb2c6SqR5tp1Syjq+VqJci9HafE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746066968; c=relaxed/simple;
-	bh=FPn+GIcUZNPgnaW7VUId+m0fP8aCfMucU3otKcdXc+g=;
+	s=arc-20240116; t=1746066992; c=relaxed/simple;
+	bh=Y8SOh+ZgYDhXYT1cskhGkDXiP12qcl8DgwdxWRHWrxw=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aWZpWjomH7ZYuc7qfA+7tibO6kQQFSgNwYfQ4+NE+wKCXPZyRx2YDC10vXN8NQE46il4gl7+xnUwv4O/tUf5BLdwwaFoqOwLDYwqSxjmAlJwSkSubNzxhFuEN732OnJNomdbXa2u3kd+53oCTk3F1dj8Y/luIN+QoJCkDsAtyQU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=e18jDyPp; arc=fail smtp.client-ip=40.92.19.104
+	 Content-Type:MIME-Version; b=VMjoBt8ouZUt1b7XailJbzPfXaXlup7lD55qj9/uWfp8iD6HL97UsIHUdDsJAV24dxAuJUqczboAHv8PAz1OaWe4afnIHdXNRC5kNrWCGU/4GBR44y9fJ8VIOAk79NVpjwBZZOE2iXYRq3me6SlQD06R0KLhj3h0qXTLpU2pW7I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=N+51PcA7; arc=fail smtp.client-ip=40.92.18.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gEtiMkzNvqSguCbmPLOT7rq8ygtANnufrmTdP+/FmxPuEGsKWWHJnLe4IwL0Am86ISn+ulYdaJ1n5ZpUxdt2Y+OYfhjTU7Oaor9+nw0Sqf4CDa3u5Tbw0OkbjWhpj7+t25nz3I6c3+iP/zJQCh71AzkBzd0XsiH/YycSwvmqww4g4xdpsXZe2LIifSRv/SkeM6ymvTVZoXP0Z657jWvT5Pv6ZhaGSPXLGZAkZQ3CHpDwHFNXyZvVpsHaDCrcWfeD7GVIghXnMRh7CrL6yMg/oPHIzEcQwfwl+H2tSBQ3n/XkO8c1I7Mf42qEM/f73HgG/QEjasQFxoTkXwOUfJe8/Q==
+ b=uq1G9+r7/w5eKI3PjocAih8p4+OYnv0Ur6tZ1HXLsEBsRxw7H2mJs6UzwzV5sXE+uuZMX4qnk6Wejcoe7w36aBpeHY09+e8m9WD1VElIGNhieu670mJCQQiLPr201MUDn08fQJNq8DhtuHgdsuO+te0WsKQL+w3EcOlVHHrp2b7s+ajHA40cRpatwlcXt3faP3T/iE2Q0uDZ4Wa2nqtIjBx7laKTRhtVSjQEr3+ok1nszWvQEG9ua5GNMPcD4wFJJsZihJQ5Hm9oylreGds5jeNg28twgKy1zDDLalpqVIs995DM2qp67Uqofk7k2tJ9fm9F4J6cb/WvZKbUsQhNbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HOQxgja8pLc8uD4WLV/2Q5gnjfnoJZrwTKZdgQkYvGo=;
- b=T0lstZkNmHpo8TEktnmYuyW9bljvwnWarhJrsuB0uBVePkjNynE940O/SJ9I9WLY+G77yur8uMTAG/Snd4SN8Q2Kud6zC+JN0qzjDh8vdlPYjbQsGF11QbsNk2ykwrjVblK3UydZdgRvYKLZm0s0S+jZQw8oQcv07ruswJdZ/ngLHeKFZiFrt4m7CvCMMC09rDSISdI+De6znZZqc3GuJem6BFLtwgyV7im3GvYP3j4zeKJX9vfBnqiEACSOvb11l0Kj4pUTeCZSu3yUALBQCQoWSuPqDQbp6yi4PRV/um+wwLKS9RllTsSavGLYwv10G+FqSwo7o7Hn5M7bPowDng==
+ bh=Y8SOh+ZgYDhXYT1cskhGkDXiP12qcl8DgwdxWRHWrxw=;
+ b=nuuvJ7NWpxAxzxjZq6IUSX6KYjFDdeLrNL8b3xvI3vaj+ipFP+OD0YBTIe2CjbinMG0dD5Mt6n3GQnPCXy9QhDAKRy9IH7R9YPTVak/oX+z+2gHCDeh5ogfPVzOPQTkuEhdxSO0jzpTIYXF9mbXENg5vOd3QFPSjECmraJYXx/N5VlqO0ZvdAb3JKYl69k29w5Nv9BgjclM5T3IP6S1AZrDhXoKHC2wlflRaxdSJX/ElpIafkR4dfIMpTq1XnD5JG4Q/my+QMd9E/2SF27Ccr1Rkor8UGc5Pp3TOfQ+xMqnDDmL+MBMJM67ttpDgnitnFc+/+l4FbseATP0dK/No/w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HOQxgja8pLc8uD4WLV/2Q5gnjfnoJZrwTKZdgQkYvGo=;
- b=e18jDyPpsvXj5C3kMIWvd5x5wO3+66TswzgGO0ULy7v3enDp5ZeWD2YMmDRVLIyIrtsw3W9dhyjUXtDkjM4YBht9WRVnSIx2z8bLEIknly4NHAu840aYznOpTozMiZmdjQ0rK/nT4sliLmDC3ajktRDSmC2A3qLSPCKz5ak5l/coAKtHqGsFhk/Uj993+Q6UDcJHViZIaW81QFDOHr0fYsl5+UmM4vlqWTDcHgRPAmFS2vUIz0bo9hRsiqp7pCOY7DQHDpOCSTDp8CHgvyy0tTGI9lasv8TA1QeuGrh3p9CNj4Z6IKsNHNSsJzHEh0D14f9//WoS+p2lnOaf+uurJA==
+ bh=Y8SOh+ZgYDhXYT1cskhGkDXiP12qcl8DgwdxWRHWrxw=;
+ b=N+51PcA7Sj9PiEu0ae7tMjVzlzBxp/PP4SMSdndnmK3Vyjngt5q0ovEUt7ehe45XiKtPx1NyYypUjzZyRwGewcihN6k9NStOAG9gnpLewe0g3vQfRVeg6SQhpNqOlD9CEFM+kEFplkPF3yBH7AjfZg+SJbEIue0NZqXMZQUT7DRvYOqIKG+Izb4uWdNB8UyIWcfsnmdgzZL4yzCZx2wx0dSfQUvbMGTovM13UbvlTk8PMLlxHh+HGFfF+Y+KF6fUNLrNWGbAgiVJTM/furcBhbh1vvjykYTPkT+xdUk601jFWoikZZaTYN/WCG03W9w8lLm1oQL1RLfOerwqP9pN7g==
 Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
  by PH0PR02MB7350.namprd02.prod.outlook.com (2603:10b6:510:1a::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Thu, 1 May
- 2025 02:36:00 +0000
+ 2025 02:36:26 +0000
 Received: from SN6PR02MB4157.namprd02.prod.outlook.com
  ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
  ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8699.008; Thu, 1 May 2025
- 02:36:00 +0000
+ 02:36:26 +0000
 From: Michael Kelley <mhklinux@outlook.com>
 To: Peter Zijlstra <peterz@infradead.org>, "x86@kernel.org" <x86@kernel.org>
 CC: "kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com"
@@ -71,73 +71,86 @@ CC: "kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com"
 	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
 	"samitolvanen@google.com" <samitolvanen@google.com>, "ojeda@kernel.org"
 	<ojeda@kernel.org>
-Subject: RE: [PATCH v2 11/13] x86,hyperv: Clean up hv_do_hypercall()
-Thread-Topic: [PATCH v2 11/13] x86,hyperv: Clean up hv_do_hypercall()
-Thread-Index: AQHbucNhtk1R9xG02ECXQhZM+VxrDbO9BT6A
-Date: Thu, 1 May 2025 02:36:00 +0000
+Subject: RE: [PATCH v2 12/13] x86_64,hyperv: Use direct call to hypercall-page
+Thread-Topic: [PATCH v2 12/13] x86_64,hyperv: Use direct call to
+ hypercall-page
+Thread-Index: AQHbucN9umotaZatx0OeVn5Dg618mrO9B6fQ
+Date: Thu, 1 May 2025 02:36:26 +0000
 Message-ID:
- <SN6PR02MB4157ACEFEFE3E856CB93BC1AD4822@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <SN6PR02MB41577ED2C4E29F25B82548D7D4822@SN6PR02MB4157.namprd02.prod.outlook.com>
 References: <20250430110734.392235199@infradead.org>
- <20250430112350.225006522@infradead.org>
-In-Reply-To: <20250430112350.225006522@infradead.org>
+ <20250430112350.335273952@infradead.org>
+In-Reply-To: <20250430112350.335273952@infradead.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|PH0PR02MB7350:EE_
-x-ms-office365-filtering-correlation-id: ab161025-9d52-4b7a-0fbe-08dd8858e90a
+x-ms-office365-filtering-correlation-id: 249bd7fb-330b-496c-2e34-08dd8858f88e
 x-ms-exchange-slblob-mailprops:
- AZnQBsB9XmpI8tRyoOXaSUmOkLVCBKastdec7Sl/8qoecdZ5K/B6vYUpgVrcp6pUtqWBuGLZ2frpDQH01zcvTGXbKCMcKCObmGTI3Ay9jdo9TQHyiT/RtNjior1d2qtIycZpuMrMKUVutnatvbA0gAX2nUNC+AmRStzNbLbVaHJ4mqdHpuNCTiDh1SmD89HDQ6jsP7FyH48RzAma6dmNGMqton665q9pGAF+iWVRbpxCyhr/7Fgz1YoUzpEBX11xjM4t03PeHGrhJgKoeplEwCLEYFg7pvJjXsaEMmIx4jSz/OwZA6X2NT3I4rg0bmAUMqcGYhvmxLP0+PQUKrVaksgsEtFLKaHy3OoD7MnP4T6xqCI06flsUOfueMiaCsfgb3VZCzvJVtFEF2AZenNiXb/ebaYLJbAXbrbcvDfpl1R9n2ZfHKzKia4IRTtlvdeyxuG+Cjs7riHLvo9mKufPBQtsSjf2XbjMvgeADX2SHCCbVLUos9jvSHEQYeY7/DgeambN9rYix3Ere/4TBVRNIfDHhXxFCGoXP+p+av2uzF40kXJh7AYUagYhVVBOiSocdQVcLUfsf2k8SifTKffw8+1c1C8aMp3RzAzzjPPZ/FOnF7PCPOnJS8ts+LHzGvIxIJNcE+qXnfWarFjsQDo/HaoRuj5UIrvC09y3kdO4gDkUWezGIf0szuJf3KGDxpW5l/VuKlGEIQ3LTtPMU87JswWGAj/VOz7gPc6RqCXyanbU9rVD8+6XsC9ZVh2SOnOfT6DMOPdYSG8=
+ EgT5Wr3QDKyfA/kqhNtxhLoDzMvzACConmAriXbH6QNV6wCiQSOYIwCm8diSDijArey8jy07vniP73ZjsrFm9MmRQi+7txRvSVQMIrlkyuBj9TQtoyxLrYmB9G7Np0lcFX838rZtBhdRiuVa2qrItvydBYAag+rICakIAD3R1PH5vA09omer23OqnY06PEol5MzsnXAPzFO5AyTkuatdJBpZa00qbNLtqw3pNTdJgOuzmIBRtmK21OddoVfkHipuVFTr4L+mp2HMssL9kBtp40I/mlZcSbLZHFsc/wNyMWBZTRjFC+Y1WXCMptlSDX8u/VKz/JarKfszlmG/47h/0l/Qt1P7LxRtKk4rRwzWs21V5gTBCxdvdgSSmP6FHpACMSTFDssY+DaMHsAUBSGjO5ZZ7Bq5Zwh9cuXvLhzR83X+ZQxhaesqlf0F7WPTnTQTPzN0S3iT3cJ1SRV75FqQykw7+yopi+UIV1G/jddwz4/HqFn5QHbIqrpFgZ6g2Fp24U5P/MmpVgHcaVa7x+Txap869Kitaqbr6I0xMUzo+ahtjWIv76tR9Fa1z3wnpk7vqe3MqRyEhPWIEXF0AnqD+Fou9YzgYDYWqv/JJt4TslH7Mciwd7vFmPQ1/08VHxE74/xzBppSPqUviG4UbK9wRecOYVGGHnr857b9hkKPn94Q7Rav5ryHmjaqdEWTzfRoEct6rY8qN9kOr4abIXDl5s436p5bm2KvdluW7uQOrI8=
 x-microsoft-antispam:
- BCL:0;ARA:14566002|8062599003|461199028|19110799003|8060799006|15080799006|3412199025|440099028|41001999003|102099032|56899033;
+ BCL:0;ARA:14566002|8062599003|461199028|19110799003|8060799006|15080799006|3412199025|440099028|41001999003|102099032;
 x-microsoft-antispam-message-info:
- =?us-ascii?Q?dyZtzvRF4y+YYJ7FvOCR+bCy6esL+bgf+fHohk1UCsVCbhVChq6hmr1D2CW8?=
- =?us-ascii?Q?tJxaeDBid7figiJErsGRMn5wWynPCyDpuSi9VV9D+lCB9oKXBDvE/32/gn9f?=
- =?us-ascii?Q?O0jFmxx5sa+YYc2THTdYct+0HESrLyAAPNVI/KPGs06UaGIkbJ8EsmUfVM0s?=
- =?us-ascii?Q?WuqX5cKB9nOBDiOBfv2lsppCdLU1JxUUosgGr8gcLQ0pnX0AXgCdwl+dRWXX?=
- =?us-ascii?Q?wmwNUIHmDc2pht4NzkQyEn8KVLX5BNfakSfHZn8nOM1YqYvV1ya8LlTL1A3K?=
- =?us-ascii?Q?SYhvpSX9d7UsvA/uqhhKr1bpRUwlAgkbx2/PS+8y+MGp2GN803Ff/HOoRVyk?=
- =?us-ascii?Q?KEOKLamz8nxJZB9AMP4GoNYsomZZiLYKAX7cw1ysG+G+0pdCCASVfJa5zFxg?=
- =?us-ascii?Q?wDsKj2Hy6KuPsUhFKmRz53B+j3of6y6u4Vkji6BG0zVhqIvYkWVDOMiCh0ix?=
- =?us-ascii?Q?Xt7ArGzmtWgSOk1nHWEFd9i10gVbaEmre6u3gNh2JhChMoGyoiWEUJPgtBbX?=
- =?us-ascii?Q?yyHyZzECjtGvE4rbF57vIzh6pw3m5Khstgep69GkW38r2uwWBdSkFwZKa03K?=
- =?us-ascii?Q?gkiZ9tclPaxO1qs9k9eE3Ukem+0vF38/ZxESe3tu9xZ0s3dgZV3H1XPrz9LD?=
- =?us-ascii?Q?tJ3/yKEzk8pE/kZsnMolUAimuqPAl4O1nVahx/BQfwm/h+aqyQvA2bUn7cqf?=
- =?us-ascii?Q?3P3jJXL7HaYPhFjI520nhLjmPGVGBl4br9ISHV4LykLt0yZrj3xokjudIFEH?=
- =?us-ascii?Q?eDRuZIIz6cNzu6FRfckZBQmYawUdaBcvVTQPVbz+ZoR3QaBC4zbWCNagVI/F?=
- =?us-ascii?Q?xHffsL/KYyYb4bNibiFN7MzGtK41+MnCVwSdMNHV+KnemjWtaFu+wwMILSb0?=
- =?us-ascii?Q?OEOceQrRsqG1x9TWwQ16Ud7qSun/bgNLhhP9irOiATRevYWkZ8asPM8uk532?=
- =?us-ascii?Q?aRTm5THnpkkDl9305NN/EkhIEpYqrE88JOvn7AeJ2cHVxCro7Y1cjAgUUlMm?=
- =?us-ascii?Q?j8Fy07ye8/kQDghZAf++jkYokn7NaFlfFnOYhu5TaVaLjyKrIxbW2Qpjpkg7?=
- =?us-ascii?Q?IxDk3Po+Y/caOOzhEtKGhzdzeiZSJeLvc/CdoFpbMgR07wTrQEY8uTajPWTa?=
- =?us-ascii?Q?MkES4xC8B9Cn?=
+ =?utf-8?B?RXFVZnJxamRGOWxJRDF1azBQUG9CQmZVZGRRZzJCNzNXa1RwSHNQZGg0S05r?=
+ =?utf-8?B?ZW1INjF5cC9UekdVd2x6QjdZd1BoVzVwaTZxY3lYOEVHWTFOOXFiSWJkVU1a?=
+ =?utf-8?B?UXM4NjU4ODNDVHJYQ2VCRXNlL2NYUWg0Wm5NTVZQUkovb04yWE1hRGMwM0Qw?=
+ =?utf-8?B?S1lScDNhelJ4WlVqWENNbTNhMmF3WVNXd3d4OTc3bm12d1orREJQMHJwS3FJ?=
+ =?utf-8?B?Q0JmOVRSUUhxNDdiOU1wNXNYeXpQVTVPQ1NSdFo5RGFVMkFjZ3dLZHpTQlRx?=
+ =?utf-8?B?RUpyWXpHeFlHZ0V4RkVOa2RmNnhXd2N3Z0RLV2dUZStQZnNSeEtNZFRiay9C?=
+ =?utf-8?B?N1lPRlV5Q3diWVlSc0huVWU4bWtPUkNnUXQxYkV4aGNJSHduSUpmTFlFeW5O?=
+ =?utf-8?B?blhvbW9nUUdwSzIyenJBcFJmYzBybWV5Z0RyMlB4Um9FNjJobXZLRk9xODhz?=
+ =?utf-8?B?Q0YwbXgyTm1SSmRrRk85dXY3dHgrNDU5UUVObVJwNGpNaWpmbTB1TjFwZUpv?=
+ =?utf-8?B?OWNLQnpMaDE2cWdKVWs1MTdxOThUeDhyeHNJbDVSL3RPU3l5a1czMytNakkr?=
+ =?utf-8?B?KytlMFlrVzdlUEdjcTV2TFRIa1lCOHQwS2Y2TTFHSmhXN2xaSUVjRW5FbXpR?=
+ =?utf-8?B?TUFPdm9xaFlYTnZ3eE01bFZvc1RRa2M5aitEb0phUGJNUHNWK2R6SHB4N28x?=
+ =?utf-8?B?ODZlS2taQVU2ajlsL3JtdHhJSnJVOWsrVjNUd1ZMdWlFVUsvaU5mODhZYmZ5?=
+ =?utf-8?B?WCtSeGVSVXE5bVFHZkwwOXlQMWlpQUdJNGlndVdvdE15M0FFUzdtaU5ZVzRI?=
+ =?utf-8?B?ZUlhMjJtMFY5SWIyd3FpVU15ZG4zQW9PdjRmUjlwanpaVGVHa1V0N3dkWWtF?=
+ =?utf-8?B?OTBudXA2N2ZFNmZhMkZBVlp6QUlNeHd3N3VaUWxKQlEvUWRkQmd2WWdrTmVs?=
+ =?utf-8?B?ZUhqMlFMZmZjeTI1WWNEN2h6VnFWUDRsek5UVnVFaVhRK3BjVmdVMDZ3Vlk2?=
+ =?utf-8?B?QTdvbVAzRHpIK25aTmVRemcvSDk4Y3Bkai9aZWFNUk5tOUhnSXJQNnAwZ0M3?=
+ =?utf-8?B?T3ZJY0lUbDRrLzNoaE1HYklWYzRNY3FwZjRCWEJBRnFGWjFyNW8vaTN0ejU2?=
+ =?utf-8?B?c3J1cUVxbEc3dGwyVXZROXM1OXdWNXRITkY0bmUxN1craUNJSDZyM0VlZ0hG?=
+ =?utf-8?B?aGU2bjIwSnFBY1VodkJJWG9CVEUvL1ZjV2sxMEViRHdkSHlvbXgvT1VmQ3hP?=
+ =?utf-8?B?SGZvTDBFTHc5bUNvdVZXMmQzQWhtdFZhT1hhWVRkclpNeWxDMExBcXFjRTZ2?=
+ =?utf-8?B?RTR4a0YrMjVuN1VaellkVjVIWmw4M3pkTTJNS0REZE43dHQ5a2Ntdk9DUnRy?=
+ =?utf-8?B?YXd0ZytMOGQ0SEpRZi9yTGJTdldmMkNzZGxTdjY3b2grOGxDblBxbnhBWXZv?=
+ =?utf-8?B?SHI5VGlydDVlZitZWlo5amVISGRwL0QzWjBKWUtmbjNRMzVYZno2dy9Dc1o3?=
+ =?utf-8?Q?aF3p/o=3D?=
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?YZKVEXZmD2KcNR9Vixqjk6W5bG35vtvleZejGvt/LmP+D+0Mw0Wbt7F8wN67?=
- =?us-ascii?Q?Lau2/viq9bAXHFOAfh+J0zBSN+qn75Mk1EzrS8tup/G4A7Cs1xBWBon6ObMj?=
- =?us-ascii?Q?srW6lWPK3WJ6cdWNS2ScbMI82/4VFEXq0bqPhwv3r3OpTayVP93dUNYn8ECI?=
- =?us-ascii?Q?V9jGgir1Wms3qU1dN+YjPMKBV9ZtImJZ1kY5VYQxm1WBDiCiBEpGKAk4X0yL?=
- =?us-ascii?Q?sZWKR5K9Cfbee29szuTbPgmDOUSQZzNUj+ji56/dWq+QIYXV+6oQMxSyNkOa?=
- =?us-ascii?Q?f/K51XwW3TsvZLyStykUan3edfKFD/2RZmKtUJmHYqA7rTXWNV1VxLCi0jbH?=
- =?us-ascii?Q?eTRZiYAU25E0Gm0tmP1sF7T7g8sCH8eB4HM28sCADwuXfMCIUv0rw7g/wQh1?=
- =?us-ascii?Q?hHsFKBEy+GrRV/rBbqWPGPzq7HY/8RxwG/lYzBOv4VbuGEgS3LFQLR09wWPZ?=
- =?us-ascii?Q?/6hCg49+a+oFEJ3cLNRZKzok+6IhGy/UcHz2qj3agqbixgS+ZGOmf7cd5Nq4?=
- =?us-ascii?Q?VIk15veCjnZVzeetlV74B62wsd9YA00OYVuy9oxe/p45JRFvhZiMtzeyBeVo?=
- =?us-ascii?Q?srUL6pFz/IB7n2tXX4YJNuS3U+O/sZeINaUB5k1fxn3PaPzG4ahvlyD5v32k?=
- =?us-ascii?Q?2O5TITZytZS60YR+xm1DHlwmyqts7RLGeuPye1O/P6sLMD8tUbm4+EmTtKSV?=
- =?us-ascii?Q?r/oALlym3bRMRD0OZC8NnUW0IJnXG3C2JmQeUSwXp5RFHae3m0GDW0/pf8Qb?=
- =?us-ascii?Q?QaVKgAkbXcND0CvBsl5g4qBxtKNtHXstj+CaX1SzbIttQtpIGVuF4XpcuD7/?=
- =?us-ascii?Q?0W6TNupzaNc9jGK4pzLoX2rU+9EkY7YWEI52zsQWJLUv8flPaqYSmvMJCMu5?=
- =?us-ascii?Q?yWL4BM1C68v/eZkUhEFi+M48eEIWkuxhX6Ay6sgyLk6AI4iaiwx/5a92jkel?=
- =?us-ascii?Q?igpDcGV59PlaPI7KK5Mk51t97y/hoHP/QlZKn6TjrYeWrLHB8+jA3BkRpojr?=
- =?us-ascii?Q?eZGOSHbpzhET+5OwpA7GAV/CnRsCzxuUp5YDwDIU0p2jzHA2lw1+ETZxFvY6?=
- =?us-ascii?Q?ibBEFZel3FjFFdf5gwiOOstwY1LARMdB39LspQ+60phRPRHA+ZcZBYDFkwHw?=
- =?us-ascii?Q?AR6ZLPkrdrx9SZcyNWvmbHTX/bemQWrwBoSuXBNEjFqHHPw9qjObZmYw2/87?=
- =?us-ascii?Q?emo8STnoGKPWhVmBMlJVBPPIhtOqoD18xxK3NCfTgE894XaLavhC3tLrB6M?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ =?utf-8?B?WVFWZVF4eURPcW1DWjJVTnkxSEQ2MFk2MXk4L2RYam9pbDhXbVFEV2krbmsz?=
+ =?utf-8?B?MlN2aGRSZ3huY0U0OUtDblpBR1BON0k3NDFYajdWclQyTkJOdmhvVXV4T044?=
+ =?utf-8?B?Mm04eDE5V1hha0Yzd3NoZkRzSGxyVWY0eDJmUC9sQUxOektuZ3lBTG9GWHJ0?=
+ =?utf-8?B?dU90blJiV0cyVVIwL3lnZkVKck5FQmRqR09LQ2loQkh0QWxMZ09YNzlPTkVi?=
+ =?utf-8?B?cklKdytaN2RMWStGUGUzOTlpdi92RFVvNldYODQ4V093ODRLY1FjaytVQlVJ?=
+ =?utf-8?B?Zm9RL3hyWUlGRVhCb2J0Y3RRbnNnSGFvZDFBcU42MUxKeWJPZzZXOVJ3enJ5?=
+ =?utf-8?B?VEcxSGRKRzJia2VySVpCSTdIMXRhTXNpMkNubjVnQlVLQzVBSENoZlNPcDVw?=
+ =?utf-8?B?MVMxUWNEVVUrUkdCQXNpOHRyZ0NTOXo2WkdDRVVlRUpVTjEySlV4WFlrRDVN?=
+ =?utf-8?B?cjRwWVJ2TnpFZGEraU5pbldMWnQ1YWt0a2pRR2hIQ2lLcVNBYm95TWVLa2Yx?=
+ =?utf-8?B?eUpyWnNPTDFZUkFaSG4rUlJkYXBhSGJwQmlqc3VmaUdiQnpkb2FVV1NBckNM?=
+ =?utf-8?B?NWo0aTlFTUpvVkNneTRROUtnamFSV0JSaThaak5PTE56L3dVSEd6LzhLN2ZP?=
+ =?utf-8?B?cm1vYzd1dkE4b00zNUNEbGdnVndYQlNnT1lkUzdwME5tM0QyL05mK0F1dnRD?=
+ =?utf-8?B?bGNENmpOR1hCWGZtWXBLeUk4TFZoNGtZN2ZUTEQxY2RNQUczMDNjamplR2xs?=
+ =?utf-8?B?d2krVk5tcXpWQjdHRmJCcHJZRHdoK1FMQzlSb1RpU3FDNHFtdFVWK1RCdisw?=
+ =?utf-8?B?emhoZmNPT0pxczlScVNBN245MTdWKzl6YXEwMm5IQTU5bmM3dGFiVWN0L0Zt?=
+ =?utf-8?B?dXIwVSsreXNSTnk3OXV2TEZuRDdIQzZnVzZmTXU1YUN6L2JBbW1vaUZxM05X?=
+ =?utf-8?B?bFpIbGZhZm8xZEVLbVZ0TS9jUGhSZGs2Um5XTTNnQXBpZERteWljelFRb0x1?=
+ =?utf-8?B?SlVFQ1dvQ2d6Vm1UdDFZR3NyVDFoTUJ3Qm15elVTNTZMS3ZSTFZoeGpKZEtk?=
+ =?utf-8?B?UlM1S01aMXZseUJLZHJhU2I0bnhvOTZDY3JQaEtHblRVQlROV2k0ZStoRlBo?=
+ =?utf-8?B?NklLbXZrK1dpaytiU0xWOGw3d0lVZWd0YXhkQVR2TWRRVzlIL09nV01xQmFh?=
+ =?utf-8?B?VFU0SzhDcE5OajJvMDZ6emhSbHdGRk9XRVFmR2JONWFtcENscjM3ZUdOWUc1?=
+ =?utf-8?B?c1YrQ3JkY0FROEhqNnJwMmJBM0xvNUswTHR5U0xwaEEycFI1QkQxVGk5ejU5?=
+ =?utf-8?B?aWkydys2b2R1a2ZNZE1tQSs1aFR5Y1RkZjluZ0dGZkRyS0ZJQmRuUFVXbTU0?=
+ =?utf-8?B?NWlNODdLMGREbTdkMmhQTXJ6cWtCeitYckYvMk1zeFoycGs4cHJKTjlOSDVF?=
+ =?utf-8?B?dVg5K1IwYzJIaXVpQi8ycHJpbkJRcy9ia1BWek1Rb1hmVTlaRFRtRFB4a3ov?=
+ =?utf-8?B?eVlha1puYzVmYWZybVlEaFg1ZzJFdmtlbmZoL3FHZXl5NTE1eGpBVkN1cXQ2?=
+ =?utf-8?B?YkV6YStuYkhwTzFNNk9yNTZOTTdaeHdZclByRnhIN25leS84VURkUWFPQUFr?=
+ =?utf-8?Q?PsTPaVFPuJ9fXHyOWBjSzAbIaeOTlX+/Dw1Wc1zl2geA=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -148,398 +161,95 @@ X-OriginatorOrg: outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab161025-9d52-4b7a-0fbe-08dd8858e90a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 May 2025 02:36:00.4404
+X-MS-Exchange-CrossTenant-Network-Message-Id: 249bd7fb-330b-496c-2e34-08dd8858f88e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 May 2025 02:36:26.4647
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB7350
 
-From: Peter Zijlstra <peterz@infradead.org> Sent: Wednesday, April 30, 2025=
- 4:08 AM
->=20
-> What used to be a simple few instructions has turned into a giant mess
-> (for x86_64). Not only does it use static_branch wrong, it mixes it
-> with dynamic branches for no apparent reason.
->=20
-> Notably it uses static_branch through an out-of-line function call,
-> which completely defeats the purpose, since instead of a simple
-> JMP/NOP site, you get a CALL+RET+TEST+Jcc sequence in return, which is
-> absolutely idiotic.
->=20
-> Add to that a dynamic test of hyperv_paravisor_present, something
-> which is set once and never changed.
->=20
-> Replace all this idiocy with a single direct function call to the
-> right hypercall variant.
->=20
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
-I've done these tests on Hyper-V VMs with this patch series. My focus
-is the Hyper-V changes in Patches 11 and 12, not the other changes.
-
-* Normal VM boot and basic smoke test
-* TDX and SEV-SNP VMs boot and basic smoke test. These VMs have
-   a paravisor
-* Normal VM taking a panic and running the kdump kernel
-* Normal VM suspending for hibernation, then resuming from
-   hibernation
-* Verified that IBT is enabled in a normal VM. It's not offered in a TDX
-   VM on Hyper-V when a paravisor is used. I don't know about the case
-   without a paravisor.
-* Building a 64-bit kernel with and without CONFIG_AMD_MEM_ENCRYPT
-   and CONFIG_INTEL_TDX_GUEST.
-* Building a 32-bit kernel (but I did not try to run it)
-
-TDX and SEV-SNP VMs without a paravisor are not tested, so updating
-the static call, and the new direct call path, has not been tested for
-TDX and SNP hypercalls. I don't have a hardware environment where I
-can test without a paravisor.
-
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-
-> ---
->  arch/x86/hyperv/hv_init.c       |   20 +++++
->  arch/x86/hyperv/ivm.c           |   15 ++++
->  arch/x86/include/asm/mshyperv.h |  137 +++++++++++----------------------=
--------
->  arch/x86/kernel/cpu/mshyperv.c  |   19 +++--
->  4 files changed, 89 insertions(+), 102 deletions(-)
->=20
-> --- a/arch/x86/hyperv/hv_init.c
-> +++ b/arch/x86/hyperv/hv_init.c
-> @@ -35,7 +35,27 @@
->  #include <linux/highmem.h>
->=20
->  void *hv_hypercall_pg;
-> +
-> +#ifdef CONFIG_X86_64
-> +u64 hv_std_hypercall(u64 control, u64 param1, u64 param2)
-> +{
-> +	u64 hv_status;
-> +
-> +	if (!hv_hypercall_pg)
-> +		return U64_MAX;
-> +
-> +	register u64 __r8 asm("r8") =3D param2;
-> +	asm volatile (CALL_NOSPEC
-> +		      : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> +		        "+c" (control), "+d" (param1), "+r" (__r8)
-> +		      : THUNK_TARGET(hv_hypercall_pg)
-> +		      : "cc", "memory", "r9", "r10", "r11");
-> +
-> +	return hv_status;
-> +}
-> +#else
->  EXPORT_SYMBOL_GPL(hv_hypercall_pg);
-> +#endif
->=20
->  union hv_ghcb * __percpu *hv_ghcb_pg;
->=20
-> --- a/arch/x86/hyperv/ivm.c
-> +++ b/arch/x86/hyperv/ivm.c
-> @@ -376,9 +376,23 @@ int hv_snp_boot_ap(u32 cpu, unsigned lon
->  	return ret;
->  }
->=20
-> +u64 hv_snp_hypercall(u64 control, u64 param1, u64 param2)
-> +{
-> +	u64 hv_status;
-> +
-> +	register u64 __r8 asm("r8") =3D param2;
-> +	asm volatile("vmmcall"
-> +		     : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> +		       "+c" (control), "+d" (param1), "+r" (__r8)
-> +		     : : "cc", "memory", "r9", "r10", "r11");
-> +
-> +	return hv_status;
-> +}
-> +
->  #else
->  static inline void hv_ghcb_msr_write(u64 msr, u64 value) {}
->  static inline void hv_ghcb_msr_read(u64 msr, u64 *value) {}
-> +u64 hv_snp_hypercall(u64 control, u64 param1, u64 param2) { return U64_M=
-AX; }
->  #endif /* CONFIG_AMD_MEM_ENCRYPT */
->=20
->  #ifdef CONFIG_INTEL_TDX_GUEST
-> @@ -428,6 +442,7 @@ u64 hv_tdx_hypercall(u64 control, u64 pa
->  #else
->  static inline void hv_tdx_msr_write(u64 msr, u64 value) {}
->  static inline void hv_tdx_msr_read(u64 msr, u64 *value) {}
-> +u64 hv_tdx_hypercall(u64 control, u64 param1, u64 param2) { return U64_M=
-AX; }
->  #endif /* CONFIG_INTEL_TDX_GUEST */
->=20
->  #if defined(CONFIG_AMD_MEM_ENCRYPT) || defined(CONFIG_INTEL_TDX_GUEST)
-> --- a/arch/x86/include/asm/mshyperv.h
-> +++ b/arch/x86/include/asm/mshyperv.h
-> @@ -6,6 +6,7 @@
->  #include <linux/nmi.h>
->  #include <linux/msi.h>
->  #include <linux/io.h>
-> +#include <linux/static_call.h>
->  #include <asm/nospec-branch.h>
->  #include <asm/paravirt.h>
->  #include <hyperv/hvhdk.h>
-> @@ -38,16 +39,21 @@ static inline unsigned char hv_get_nmi_r
->  	return 0;
->  }
->=20
-> -#if IS_ENABLED(CONFIG_HYPERV)
-> -extern bool hyperv_paravisor_present;
-> +extern u64 hv_tdx_hypercall(u64 control, u64 param1, u64 param2);
-> +extern u64 hv_snp_hypercall(u64 control, u64 param1, u64 param2);
-> +extern u64 hv_std_hypercall(u64 control, u64 param1, u64 param2);
->=20
-> +#if IS_ENABLED(CONFIG_HYPERV)
->  extern void *hv_hypercall_pg;
->=20
->  extern union hv_ghcb * __percpu *hv_ghcb_pg;
->=20
->  bool hv_isolation_type_snp(void);
->  bool hv_isolation_type_tdx(void);
-> -u64 hv_tdx_hypercall(u64 control, u64 param1, u64 param2);
-> +
-> +#ifdef CONFIG_X86_64
-> +DECLARE_STATIC_CALL(hv_hypercall, hv_std_hypercall);
-> +#endif
->=20
->  /*
->   * DEFAULT INIT GPAT and SEGMENT LIMIT value in struct VMSA
-> @@ -64,37 +70,15 @@ static inline u64 hv_do_hypercall(u64 co
->  {
->  	u64 input_address =3D input ? virt_to_phys(input) : 0;
->  	u64 output_address =3D output ? virt_to_phys(output) : 0;
-> -	u64 hv_status;
->=20
->  #ifdef CONFIG_X86_64
-> -	if (hv_isolation_type_tdx() && !hyperv_paravisor_present)
-> -		return hv_tdx_hypercall(control, input_address, output_address);
-> -
-> -	if (hv_isolation_type_snp() && !hyperv_paravisor_present) {
-> -		__asm__ __volatile__("mov %[output_address], %%r8\n"
-> -				     "vmmcall"
-> -				     : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> -				       "+c" (control), "+d" (input_address)
-> -				     : [output_address] "r" (output_address)
-> -				     : "cc", "memory", "r8", "r9", "r10", "r11");
-> -		return hv_status;
-> -	}
-> -
-> -	if (!hv_hypercall_pg)
-> -		return U64_MAX;
-> -
-> -	__asm__ __volatile__("mov %[output_address], %%r8\n"
-> -			     CALL_NOSPEC
-> -			     : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> -			       "+c" (control), "+d" (input_address)
-> -			     : [output_address] "r" (output_address),
-> -			       THUNK_TARGET(hv_hypercall_pg)
-> -			     : "cc", "memory", "r8", "r9", "r10", "r11");
-> +	return static_call_mod(hv_hypercall)(control, input_address, output_add=
-ress);
->  #else
->  	u32 input_address_hi =3D upper_32_bits(input_address);
->  	u32 input_address_lo =3D lower_32_bits(input_address);
->  	u32 output_address_hi =3D upper_32_bits(output_address);
->  	u32 output_address_lo =3D lower_32_bits(output_address);
-> +	u64 hv_status;
->=20
->  	if (!hv_hypercall_pg)
->  		return U64_MAX;
-> @@ -107,8 +91,8 @@ static inline u64 hv_do_hypercall(u64 co
->  			       "D"(output_address_hi), "S"(output_address_lo),
->  			       THUNK_TARGET(hv_hypercall_pg)
->  			     : "cc", "memory");
-> -#endif /* !x86_64 */
->  	return hv_status;
-> +#endif /* !x86_64 */
->  }
->=20
->  /* Hypercall to the L0 hypervisor */
-> @@ -120,41 +104,23 @@ static inline u64 hv_do_nested_hypercall
->  /* Fast hypercall with 8 bytes of input and no output */
->  static inline u64 _hv_do_fast_hypercall8(u64 control, u64 input1)
->  {
-> -	u64 hv_status;
-> -
->  #ifdef CONFIG_X86_64
-> -	if (hv_isolation_type_tdx() && !hyperv_paravisor_present)
-> -		return hv_tdx_hypercall(control, input1, 0);
-> -
-> -	if (hv_isolation_type_snp() && !hyperv_paravisor_present) {
-> -		__asm__ __volatile__(
-> -				"vmmcall"
-> -				: "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> -				"+c" (control), "+d" (input1)
-> -				:: "cc", "r8", "r9", "r10", "r11");
-> -	} else {
-> -		__asm__ __volatile__(CALL_NOSPEC
-> -				     : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> -				       "+c" (control), "+d" (input1)
-> -				     : THUNK_TARGET(hv_hypercall_pg)
-> -				     : "cc", "r8", "r9", "r10", "r11");
-> -	}
-> +	return static_call_mod(hv_hypercall)(control, input1, 0);
->  #else
-> -	{
-> -		u32 input1_hi =3D upper_32_bits(input1);
-> -		u32 input1_lo =3D lower_32_bits(input1);
-> -
-> -		__asm__ __volatile__ (CALL_NOSPEC
-> -				      : "=3DA"(hv_status),
-> -					"+c"(input1_lo),
-> -					ASM_CALL_CONSTRAINT
-> -				      :	"A" (control),
-> -					"b" (input1_hi),
-> -					THUNK_TARGET(hv_hypercall_pg)
-> -				      : "cc", "edi", "esi");
-> -	}
-> -#endif
-> +	u32 input1_hi =3D upper_32_bits(input1);
-> +	u32 input1_lo =3D lower_32_bits(input1);
-> +	u64 hv_status;
-> +
-> +	__asm__ __volatile__ (CALL_NOSPEC
-> +			      : "=3DA"(hv_status),
-> +			      "+c"(input1_lo),
-> +			      ASM_CALL_CONSTRAINT
-> +			      :	"A" (control),
-> +			      "b" (input1_hi),
-> +			      THUNK_TARGET(hv_hypercall_pg)
-> +			      : "cc", "edi", "esi");
->  	return hv_status;
-> +#endif
->  }
->=20
->  static inline u64 hv_do_fast_hypercall8(u16 code, u64 input1)
-> @@ -174,45 +140,24 @@ static inline u64 hv_do_fast_nested_hype
->  /* Fast hypercall with 16 bytes of input */
->  static inline u64 _hv_do_fast_hypercall16(u64 control, u64 input1, u64 i=
-nput2)
->  {
-> -	u64 hv_status;
-> -
->  #ifdef CONFIG_X86_64
-> -	if (hv_isolation_type_tdx() && !hyperv_paravisor_present)
-> -		return hv_tdx_hypercall(control, input1, input2);
-> -
-> -	if (hv_isolation_type_snp() && !hyperv_paravisor_present) {
-> -		__asm__ __volatile__("mov %[input2], %%r8\n"
-> -				     "vmmcall"
-> -				     : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> -				       "+c" (control), "+d" (input1)
-> -				     : [input2] "r" (input2)
-> -				     : "cc", "r8", "r9", "r10", "r11");
-> -	} else {
-> -		__asm__ __volatile__("mov %[input2], %%r8\n"
-> -				     CALL_NOSPEC
-> -				     : "=3Da" (hv_status), ASM_CALL_CONSTRAINT,
-> -				       "+c" (control), "+d" (input1)
-> -				     : [input2] "r" (input2),
-> -				       THUNK_TARGET(hv_hypercall_pg)
-> -				     : "cc", "r8", "r9", "r10", "r11");
-> -	}
-> +	return static_call_mod(hv_hypercall)(control, input1, input2);
->  #else
-> -	{
-> -		u32 input1_hi =3D upper_32_bits(input1);
-> -		u32 input1_lo =3D lower_32_bits(input1);
-> -		u32 input2_hi =3D upper_32_bits(input2);
-> -		u32 input2_lo =3D lower_32_bits(input2);
-> -
-> -		__asm__ __volatile__ (CALL_NOSPEC
-> -				      : "=3DA"(hv_status),
-> -					"+c"(input1_lo), ASM_CALL_CONSTRAINT
-> -				      :	"A" (control), "b" (input1_hi),
-> -					"D"(input2_hi), "S"(input2_lo),
-> -					THUNK_TARGET(hv_hypercall_pg)
-> -				      : "cc");
-> -	}
-> -#endif
-> +	u32 input1_hi =3D upper_32_bits(input1);
-> +	u32 input1_lo =3D lower_32_bits(input1);
-> +	u32 input2_hi =3D upper_32_bits(input2);
-> +	u32 input2_lo =3D lower_32_bits(input2);
-> +	u64 hv_status;
-> +
-> +	__asm__ __volatile__ (CALL_NOSPEC
-> +			      : "=3DA"(hv_status),
-> +			      "+c"(input1_lo), ASM_CALL_CONSTRAINT
-> +			      :	"A" (control), "b" (input1_hi),
-> +			      "D"(input2_hi), "S"(input2_lo),
-> +			      THUNK_TARGET(hv_hypercall_pg)
-> +			      : "cc");
->  	return hv_status;
-> +#endif
->  }
->=20
->  static inline u64 hv_do_fast_hypercall16(u16 code, u64 input1, u64 input=
-2)
-> --- a/arch/x86/kernel/cpu/mshyperv.c
-> +++ b/arch/x86/kernel/cpu/mshyperv.c
-> @@ -37,10 +37,6 @@
->  bool hv_nested;
->  struct ms_hyperv_info ms_hyperv;
->=20
-> -/* Used in modules via hv_do_hypercall(): see arch/x86/include/asm/mshyp=
-erv.h */
-> -bool hyperv_paravisor_present __ro_after_init;
-> -EXPORT_SYMBOL_GPL(hyperv_paravisor_present);
-> -
->  #if IS_ENABLED(CONFIG_HYPERV)
->  static inline unsigned int hv_get_nested_msr(unsigned int reg)
->  {
-> @@ -287,8 +283,18 @@ static void __init x86_setup_ops_for_tsc
->  	old_restore_sched_clock_state =3D x86_platform.restore_sched_clock_stat=
-e;
->  	x86_platform.restore_sched_clock_state =3D hv_restore_sched_clock_state=
-;
->  }
-> +
-> +#ifdef CONFIG_X86_64
-> +DEFINE_STATIC_CALL(hv_hypercall, hv_std_hypercall);
-> +EXPORT_STATIC_CALL_TRAMP_GPL(hv_hypercall);
-> +#define hypercall_update(hc) static_call_update(hv_hypercall, hc)
-> +#endif
->  #endif /* CONFIG_HYPERV */
->=20
-> +#ifndef hypercall_update
-> +#define hypercall_update(hc) (void)hc
-> +#endif
-> +
->  static uint32_t  __init ms_hyperv_platform(void)
->  {
->  	u32 eax;
-> @@ -483,14 +489,14 @@ static void __init ms_hyperv_init_platfo
->  			ms_hyperv.shared_gpa_boundary =3D
->  				BIT_ULL(ms_hyperv.shared_gpa_boundary_bits);
->=20
-> -		hyperv_paravisor_present =3D !!ms_hyperv.paravisor_present;
-> -
->  		pr_info("Hyper-V: Isolation Config: Group A 0x%x, Group B 0x%x\n",
->  			ms_hyperv.isolation_config_a, ms_hyperv.isolation_config_b);
->=20
->=20
->  		if (hv_get_isolation_type() =3D=3D HV_ISOLATION_TYPE_SNP) {
->  			static_branch_enable(&isolation_type_snp);
-> +			if (!ms_hyperv.paravisor_present)
-> +				hypercall_update(hv_snp_hypercall);
->  		} else if (hv_get_isolation_type() =3D=3D HV_ISOLATION_TYPE_TDX) {
->  			static_branch_enable(&isolation_type_tdx);
->=20
-> @@ -498,6 +504,7 @@ static void __init ms_hyperv_init_platfo
->  			ms_hyperv.hints &=3D ~HV_X64_APIC_ACCESS_RECOMMENDED;
->=20
->  			if (!ms_hyperv.paravisor_present) {
-> +				hypercall_update(hv_tdx_hypercall);
->  				/*
->  				 * Mark the Hyper-V TSC page feature as disabled
->  				 * in a TDX VM without paravisor so that the
->=20
->=20
-
+RnJvbTogUGV0ZXIgWmlqbHN0cmEgPHBldGVyekBpbmZyYWRlYWQub3JnPiBTZW50OiBXZWRuZXNk
+YXksIEFwcmlsIDMwLCAyMDI1IDQ6MDggQU0NCj4gDQo+IEluc3RlYWQgb2YgdXNpbmcgYW4gaW5k
+aXJlY3QgY2FsbCB0byB0aGUgaHlwZXJjYWxsIHBhZ2UsIHVzZSBhIGRpcmVjdA0KPiBjYWxsIGlu
+c3RlYWQuIFRoaXMgYXZvaWRzIGFsbCBDRkkgcHJvYmxlbXMsIGluY2x1ZGluZyB0aGUgb25lIHdo
+ZXJlDQo+IHRoZSBoeXBlcmNhbGwgcGFnZSBkb2Vzbid0IGhhdmUgSUJUIG9uLg0KPiANCj4gU2ln
+bmVkLW9mZi1ieTogUGV0ZXIgWmlqbHN0cmEgKEludGVsKSA8cGV0ZXJ6QGluZnJhZGVhZC5vcmc+
+DQo+IC0tLQ0KPiAgYXJjaC94ODYvaHlwZXJ2L2h2X2luaXQuYyB8ICAgNjAgKysrKysrKysrKysr
+KysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDMw
+IGluc2VydGlvbnMoKyksIDMwIGRlbGV0aW9ucygtKQ0KPiANCj4gLS0tIGEvYXJjaC94ODYvaHlw
+ZXJ2L2h2X2luaXQuYw0KPiArKysgYi9hcmNoL3g4Ni9oeXBlcnYvaHZfaW5pdC5jDQo+IEBAIC0z
+NywyMyArMzcsNDEgQEANCj4gIHZvaWQgKmh2X2h5cGVyY2FsbF9wZzsNCj4gDQo+ICAjaWZkZWYg
+Q09ORklHX1g4Nl82NA0KPiArc3RhdGljIHU2NCBfX2h2X2h5cGVyZmFpbCh1NjQgY29udHJvbCwg
+dTY0IHBhcmFtMSwgdTY0IHBhcmFtMikNCj4gK3sNCj4gKwlyZXR1cm4gVTY0X01BWDsNCj4gK30N
+Cj4gKw0KPiArREVGSU5FX1NUQVRJQ19DQUxMKF9faHZfaHlwZXJjYWxsLCBfX2h2X2h5cGVyZmFp
+bCk7DQo+ICsNCj4gIHU2NCBodl9zdGRfaHlwZXJjYWxsKHU2NCBjb250cm9sLCB1NjQgcGFyYW0x
+LCB1NjQgcGFyYW0yKQ0KPiAgew0KPiAgCXU2NCBodl9zdGF0dXM7DQo+IA0KPiAtCWlmICghaHZf
+aHlwZXJjYWxsX3BnKQ0KPiAtCQlyZXR1cm4gVTY0X01BWDsNCj4gLQ0KPiAgCXJlZ2lzdGVyIHU2
+NCBfX3I4IGFzbSgicjgiKSA9IHBhcmFtMjsNCj4gLQlhc20gdm9sYXRpbGUgKENBTExfTk9TUEVD
+DQo+ICsJYXNtIHZvbGF0aWxlICgiY2FsbCAiIFNUQVRJQ19DQUxMX1RSQU1QX1NUUihfX2h2X2h5
+cGVyY2FsbCkNCj4gIAkJICAgICAgOiAiPWEiIChodl9zdGF0dXMpLCBBU01fQ0FMTF9DT05TVFJB
+SU5ULA0KPiAgCQkgICAgICAgICIrYyIgKGNvbnRyb2wpLCAiK2QiIChwYXJhbTEpLCAiK3IiIChf
+X3I4KQ0KPiAtCQkgICAgICA6IFRIVU5LX1RBUkdFVChodl9oeXBlcmNhbGxfcGcpDQo+IC0JCSAg
+ICAgIDogImNjIiwgIm1lbW9yeSIsICJyOSIsICJyMTAiLCAicjExIik7DQo+ICsJCSAgICAgIDog
+OiAiY2MiLCAibWVtb3J5IiwgInI5IiwgInIxMCIsICJyMTEiKTsNCj4gDQo+ICAJcmV0dXJuIGh2
+X3N0YXR1czsNCj4gIH0NCj4gKw0KPiArdHlwZWRlZiB1NjQgKCpodl9oeXBlcmNhbGxfZikodTY0
+IGNvbnRyb2wsIHU2NCBwYXJhbTEsIHU2NCBwYXJhbTIpOw0KPiArDQo+ICtzdGF0aWMgaW5saW5l
+IHZvaWQgaHZfc2V0X2h5cGVyY2FsbF9wZyh2b2lkICpwdHIpDQo+ICt7DQo+ICsJaHZfaHlwZXJj
+YWxsX3BnID0gcHRyOw0KPiArDQo+ICsJaWYgKCFwdHIpDQo+ICsJCXB0ciA9ICZfX2h2X2h5cGVy
+ZmFpbDsNCj4gKwlzdGF0aWNfY2FsbF91cGRhdGUoX19odl9oeXBlcmNhbGwsIChodl9oeXBlcmNh
+bGxfZilwdHIpOw0KPiArfQ0KPiAgI2Vsc2UNCj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBodl9zZXRf
+aHlwZXJjYWxsX3BnKHZvaWQgKnB0cikNCj4gK3sNCj4gKwlodl9oeXBlcmNhbGxfcGcgPSBwdHI7
+DQo+ICt9DQo+ICBFWFBPUlRfU1lNQk9MX0dQTChodl9oeXBlcmNhbGxfcGcpOw0KPiAgI2VuZGlm
+DQo+IA0KPiBAQCAtMzQ4LDcgKzM2Niw3IEBAIHN0YXRpYyBpbnQgaHZfc3VzcGVuZCh2b2lkKQ0K
+PiAgCSAqIHBvaW50ZXIgaXMgcmVzdG9yZWQgb24gcmVzdW1lLg0KPiAgCSAqLw0KPiAgCWh2X2h5
+cGVyY2FsbF9wZ19zYXZlZCA9IGh2X2h5cGVyY2FsbF9wZzsNCj4gLQlodl9oeXBlcmNhbGxfcGcg
+PSBOVUxMOw0KPiArCWh2X3NldF9oeXBlcmNhbGxfcGcoTlVMTCk7DQo+IA0KPiAgCS8qIERpc2Fi
+bGUgdGhlIGh5cGVyY2FsbCBwYWdlIGluIHRoZSBoeXBlcnZpc29yICovDQo+ICAJcmRtc3JsKEhW
+X1g2NF9NU1JfSFlQRVJDQUxMLCBoeXBlcmNhbGxfbXNyLmFzX3VpbnQ2NCk7DQo+IEBAIC0zNzQs
+NyArMzkyLDcgQEAgc3RhdGljIHZvaWQgaHZfcmVzdW1lKHZvaWQpDQo+ICAJCXZtYWxsb2NfdG9f
+cGZuKGh2X2h5cGVyY2FsbF9wZ19zYXZlZCk7DQo+ICAJd3Jtc3JsKEhWX1g2NF9NU1JfSFlQRVJD
+QUxMLCBoeXBlcmNhbGxfbXNyLmFzX3VpbnQ2NCk7DQo+IA0KPiAtCWh2X2h5cGVyY2FsbF9wZyA9
+IGh2X2h5cGVyY2FsbF9wZ19zYXZlZDsNCj4gKwlodl9zZXRfaHlwZXJjYWxsX3BnKGh2X2h5cGVy
+Y2FsbF9wZ19zYXZlZCk7DQo+ICAJaHZfaHlwZXJjYWxsX3BnX3NhdmVkID0gTlVMTDsNCj4gDQo+
+ICAJLyoNCj4gQEAgLTUyOCw4ICs1NDYsOCBAQCB2b2lkIF9faW5pdCBoeXBlcnZfaW5pdCh2b2lk
+KQ0KPiAgCWlmIChodl9pc29sYXRpb25fdHlwZV90ZHgoKSAmJiAhbXNfaHlwZXJ2LnBhcmF2aXNv
+cl9wcmVzZW50KQ0KPiAgCQlnb3RvIHNraXBfaHlwZXJjYWxsX3BnX2luaXQ7DQo+IA0KPiAtCWh2
+X2h5cGVyY2FsbF9wZyA9IF9fdm1hbGxvY19ub2RlX3JhbmdlKFBBR0VfU0laRSwgMSwgVk1BTExP
+Q19TVEFSVCwNCj4gLQkJCVZNQUxMT0NfRU5ELCBHRlBfS0VSTkVMLCBQQUdFX0tFUk5FTF9ST1gs
+DQo+ICsJaHZfaHlwZXJjYWxsX3BnID0gX192bWFsbG9jX25vZGVfcmFuZ2UoUEFHRV9TSVpFLCAx
+LCBNT0RVTEVTX1ZBRERSLA0KPiArCQkJTU9EVUxFU19FTkQsIEdGUF9LRVJORUwsIFBBR0VfS0VS
+TkVMX1JPWCwNCg0KQ3VyaW9zaXR5IHF1ZXN0aW9uICh3aGljaCBJIGZvcmdvdCBhc2sgYWJvdXQg
+aW4gdjEpOiAgSXMgdGhpcyBjaGFuZ2Ugc28gdGhhdCB0aGUNCmh5cGVyY2FsbCBwYWdlIGtlcm5l
+bCBhZGRyZXNzIGlzICJjbG9zZSBlbm91Z2giIGZvciB0aGUgZGlyZWN0IGNhbGwgdG8gd29yayBm
+cm9tDQpidWlsdC1pbiBjb2RlIGFuZCBmcm9tIG1vZHVsZSBjb2RlPyAgT3IgaXMgdGhlcmUgc29t
+ZSBvdGhlciByZWFzb24/DQoNCj4gIAkJCVZNX0ZMVVNIX1JFU0VUX1BFUk1TLCBOVU1BX05PX05P
+REUsDQo+ICAJCQlfX2J1aWx0aW5fcmV0dXJuX2FkZHJlc3MoMCkpOw0KPiAgCWlmIChodl9oeXBl
+cmNhbGxfcGcgPT0gTlVMTCkNCj4gQEAgLTU2NywyNyArNTg1LDkgQEAgdm9pZCBfX2luaXQgaHlw
+ZXJ2X2luaXQodm9pZCkNCj4gIAkJd3Jtc3JsKEhWX1g2NF9NU1JfSFlQRVJDQUxMLCBoeXBlcmNh
+bGxfbXNyLmFzX3VpbnQ2NCk7DQo+ICAJfQ0KPiANCj4gLXNraXBfaHlwZXJjYWxsX3BnX2luaXQ6
+DQo+IC0JLyoNCj4gLQkgKiBTb21lIHZlcnNpb25zIG9mIEh5cGVyLVYgdGhhdCBwcm92aWRlIElC
+VCBpbiBndWVzdCBWTXMgaGF2ZSBhIGJ1Zw0KPiAtCSAqIGluIHRoYXQgdGhlcmUncyBubyBFTkRC
+UjY0IGluc3RydWN0aW9uIGF0IHRoZSBlbnRyeSB0byB0aGUNCj4gLQkgKiBoeXBlcmNhbGwgcGFn
+ZS4gQmVjYXVzZSBoeXBlcmNhbGxzIGFyZSBpbnZva2VkIHZpYSBhbiBpbmRpcmVjdCBjYWxsDQo+
+IC0JICogdG8gdGhlIGh5cGVyY2FsbCBwYWdlLCBhbGwgaHlwZXJjYWxsIGF0dGVtcHRzIGZhaWwg
+d2hlbiBJQlQgaXMNCj4gLQkgKiBlbmFibGVkLCBhbmQgTGludXggcGFuaWNzLiBGb3Igc3VjaCBi
+dWdneSB2ZXJzaW9ucywgZGlzYWJsZSBJQlQuDQo+IC0JICoNCj4gLQkgKiBGaXhlZCB2ZXJzaW9u
+cyBvZiBIeXBlci1WIGFsd2F5cyBwcm92aWRlIEVOREJSNjQgb24gdGhlIGh5cGVyY2FsbA0KPiAt
+CSAqIHBhZ2UsIHNvIGlmIGZ1dHVyZSBMaW51eCBrZXJuZWwgdmVyc2lvbnMgZW5hYmxlIElCVCBm
+b3IgMzItYml0DQo+IC0JICogYnVpbGRzLCBhZGRpdGlvbmFsIGh5cGVyY2FsbCBwYWdlIGhhY2tl
+cnkgd2lsbCBiZSByZXF1aXJlZCBoZXJlDQo+IC0JICogdG8gcHJvdmlkZSBhbiBFTkRCUjMyLg0K
+PiAtCSAqLw0KPiAtI2lmZGVmIENPTkZJR19YODZfS0VSTkVMX0lCVA0KPiAtCWlmIChjcHVfZmVh
+dHVyZV9lbmFibGVkKFg4Nl9GRUFUVVJFX0lCVCkgJiYNCj4gLQkgICAgKih1MzIgKilodl9oeXBl
+cmNhbGxfcGcgIT0gZ2VuX2VuZGJyKCkpIHsNCj4gLQkJc2V0dXBfY2xlYXJfY3B1X2NhcChYODZf
+RkVBVFVSRV9JQlQpOw0KPiAtCQlwcl93YXJuKCJEaXNhYmxpbmcgSUJUIGJlY2F1c2Ugb2YgSHlw
+ZXItViBidWdcbiIpOw0KPiAtCX0NCj4gLSNlbmRpZg0KDQpOaXQ6IFdpdGggdGhpcyBJQlQgY29k
+ZSByZW1vdmVkLCB0aGUgI2luY2x1ZGUgPGFzbS9pYnQuaD4gYXQgdGhlIHRvcA0Kb2YgdGhpcyBz
+b3VyY2UgY29kZSBmaWxlIHNob3VsZCBiZSByZW1vdmVkLg0KDQo+ICsJaHZfc2V0X2h5cGVyY2Fs
+bF9wZyhodl9oeXBlcmNhbGxfcGcpOw0KPiANCj4gK3NraXBfaHlwZXJjYWxsX3BnX2luaXQ6DQo+
+ICAJLyoNCj4gIAkgKiBoeXBlcnZfaW5pdCgpIGlzIGNhbGxlZCBiZWZvcmUgTEFQSUMgaXMgaW5p
+dGlhbGl6ZWQ6IHNlZQ0KPiAgCSAqIGFwaWNfaW50cl9tb2RlX2luaXQoKSAtPiB4ODZfcGxhdGZv
+cm0uYXBpY19wb3N0X2luaXQoKSBhbmQNCj4gDQo+IA0KDQpUaGUgbml0IG5vdHdpdGhzdGFuZGlu
+ZywNCg0KUmV2aWV3ZWQtYnk6IE1pY2hhZWwgS2VsbGV5IDxtaGtsaW51eEBvdXRsb29rLmNvbT4N
+Cg==
 
