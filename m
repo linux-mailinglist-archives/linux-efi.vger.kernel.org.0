@@ -1,191 +1,127 @@
-Return-Path: <linux-efi+bounces-3533-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3534-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149CBAA72C5
-	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 15:02:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D392AAA730C
+	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 15:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8CB01B63C19
-	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 13:01:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31DF198621E
+	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 13:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39297404E;
-	Fri,  2 May 2025 13:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9590D255E4E;
+	Fri,  2 May 2025 13:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/8cW97i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUhxmlE7"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DE842049;
-	Fri,  2 May 2025 13:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6848225524D;
+	Fri,  2 May 2025 13:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746190899; cv=none; b=ue5kzNaS0CHImdfBBciP29T2GbpGKkN6Oaupbp13lARupnX8isKxCwyH7p5POWTppNTLOvBaS1d7U0W5GzmFv7HMgYFnlPB5oG6vxj9N/dT5AXRHUx0jOaVSh1T9DhvnTIfxp4DrDuFrDf2+vT8fsO7i2+B/YRzwPIym1b8PTUM=
+	t=1746191496; cv=none; b=mCSxum4vTksIGJh7RNYpnhDS4Fm/lVOk6MrUCpceU8QBDEDWj2wgiN0TAuXeQCylP24l79D4EQ5hmyLFe0rPPeWjjLCIPdCS02tyJShZ9PdkDqZAjJ+tnH5rQsFn22Rru5cm+HI3kurpxnJpKInGxTukTizFPtmTRP67IyaMFgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746190899; c=relaxed/simple;
-	bh=dMQRuuNDPo6UB5iEmIqTKZGQgECmuzmTPgEY/2ndJx4=;
+	s=arc-20240116; t=1746191496; c=relaxed/simple;
+	bh=LK0m5S09uQwymDotmRqGkjff/YzKrTkEZb8rKc78Zl0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NdMftpRPw1wjTorkdo8Gytx+EsVEcuiHhQtOMzVeIzipTtw36Bm1GfR/FnGDII2CkJABU0FiIwfT6UZ8wsgzjMG6Mtsqsjqbbs7uxSnOkSAHC+2+UCRWgcKYLwZErbcJbZdSeqsobhD9yH8f3E4TO9biucjWlvwsiSJXX3IAEYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/8cW97i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741B3C4CEEB;
-	Fri,  2 May 2025 13:01:39 +0000 (UTC)
+	 To:Cc:Content-Type; b=FX0drIoeAlJ/saEVfADgl3gCu+DaZKz0CTvmBNshT+BwOPQ4EJuGevaVrNo6Sl2h/xyh8lBn++e4aGtC5LEv5Ari1BwYAgoysTbEFQsLrEj5kAzhynsgUqIBR7ZE3q1zzeaHlNXAaWmm9hObUc/iRh88wpIcNJUj32eA9haIIg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUhxmlE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D669BC4CEF8;
+	Fri,  2 May 2025 13:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746190899;
-	bh=dMQRuuNDPo6UB5iEmIqTKZGQgECmuzmTPgEY/2ndJx4=;
+	s=k20201202; t=1746191494;
+	bh=LK0m5S09uQwymDotmRqGkjff/YzKrTkEZb8rKc78Zl0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=g/8cW97ifPJ5oIRMGfXy5zxvylC1XHkhb/p1gWvPVy2iXR7mJNCGMKQyjsWG/FMfC
-	 bG04ILg6eNnBgb4Zqe9lKHHV4DDios+SlJtWffQymUyjckv6NPhWj6aiN9ReSyTbQ2
-	 zGm69Y2HC3wR6nA5umAHD05gTjZk3B7ZwWbOE0e19ToC8NC5kOaNgxoxkbPNhb2Iif
-	 HA0HsBqkhi8pA+pn6buNpDHvjdr6lSok2jEFyQzdpvKLfarEUikDwxjt6GCszZyM9t
-	 sQkawU1Il76QBZcmL/N3D3gC6ViqliiAn57cHWbU/G6D9ZcNpUDcIFOjWfrFoxfOMx
-	 SXUrBkqrj5O1w==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30db1bd3bddso17947211fa.3;
-        Fri, 02 May 2025 06:01:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXAmWXOmDEiammz6LDSxYXUs2EZbMaal+nQNJr1Aj+r6ARwQDjZu490RtK9WD0c/qtjzfluCYBWkhXFNt10@vger.kernel.org, AJvYcCXnt8QBUCTBLkZ8Ouj11br1a1SciY0GBvWPp6A6PmKBTUezk/k1VBrgUrBp0p8CiDNZVMH9tKjYvnE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5WxIvBJk+E+jAjCVwyq9bZP+CfYs9uzYuqWWnIW0z7BkkKQsx
-	7whjfmjgCyauGAuYqMZA5lcwvn+y6PHMQHTC4Hh5oZS8WiZCCvMXDj5bYF17Thw1/eiFa/JBxnM
-	MhDxmng+17WpADihfCY9FhdhpXuo=
-X-Google-Smtp-Source: AGHT+IFP2K1rVw27ZyLOosH08KKIQzCBLDHk9BWOU30jtDuPDDbzP6LOh48YChtZ0T4xHjqDNJTeyg60xD8QdUr+fuA=
-X-Received: by 2002:a05:651c:50a:b0:30c:50ff:1a4e with SMTP id
- 38308e7fff4ca-320c44e5ef9mr6919641fa.18.1746190897850; Fri, 02 May 2025
- 06:01:37 -0700 (PDT)
+	b=jUhxmlE7p5g3OiQZe9EksPASqITZJGH4jIbjwfsKL9nuFRn2kL2uAM9NCURs8a1f/
+	 SUNH5GaSmXAzuK4iXDuB+JRgRoNGCkCokwb+rMAwhC8cEkKTKITnYZVKSDztDB5J2p
+	 7DqXFBb5lscZWAyV1PW46TNQ5BCEL4U1HzWfwWzxBtXBcCPrPfwcjMFldnXX7oAcJO
+	 /bd/7qZdVmbPPsPvutLDGuADRnSBGEbhOzuXcJ0ZXPfUlwbrgZr3wMiO2jO59ozzvC
+	 IlhoQOSFZyG4gYVPfYdNP+hjx5CpDYZaCL8mKUeS6L5WqICjfwnw0o4AIR1tK6GHmB
+	 /it+jwvCSmvpw==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54d65cb6e8aso2712265e87.1;
+        Fri, 02 May 2025 06:11:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUYP0X9Sm6nKf3nfoD3R34UD2er/PNLFuxPoQRqWkNbEakw5Fpa21FO1nDl/ejBq92PJeHHXup0qyU=@vger.kernel.org, AJvYcCWo45LK4oO4adK0kD8wIUN9Fyvu1QzeVNJbyLaJqtZzWKX/J8NZnDx4ylUFaMB85tWqGOFxhsg+xxW2UbZ4@vger.kernel.org, AJvYcCXtZUDSS669j8BU/kjtpmkX01mtHvBKbMSY6QLUXvQ7KnzWh2ojMWy2WnU8W872vGG0TmgxENAQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUR1LZl1DEbyjf5dE33iCgd+q2V55hEAlMxeaCRxGxvWSARYqY
+	ALzRreW9MrpXW7F/dnsIgYLXMV6y7cLgyTSrvOZQLEL4gLDyc9YsA0g/v/Slj+LhiuEQaeVhuXM
+	g5NmG1vaErewQ/29FVHNMWQKPZec=
+X-Google-Smtp-Source: AGHT+IEdEEn4W75TgYFwhDu2BtCWaI+eVQnfNjJ68WUtHAcceaTNv5VfX2OxYTlSQ9shxVvG495+ttDBaOpQ0AnuP1A=
+X-Received: by 2002:a05:6512:234f:b0:549:66d8:a1f3 with SMTP id
+ 2adb3069b0e04-54eac2332camr731440e87.40.1746191493168; Fri, 02 May 2025
+ 06:11:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250424080950.289864-1-vkuznets@redhat.com> <20250424080950.289864-3-vkuznets@redhat.com>
- <CAMj1kXFMmhROmaDZ0gsw+ozG5iSkMvSXb15qexToUSAFyBn5hQ@mail.gmail.com>
- <87ldrka6w6.fsf@redhat.com> <CAMj1kXE0WcenLEB+60=+oc+aKfbqZkwYZf-TrOyDY=ShXQ2pYw@mail.gmail.com>
- <87a57v9pt4.fsf@redhat.com>
-In-Reply-To: <87a57v9pt4.fsf@redhat.com>
+References: <20250428174322.2780170-2-ardb+git@google.com> <0ad5e887-e0f3-6c75-4049-fd728267d9c0@amd.com>
+In-Reply-To: <0ad5e887-e0f3-6c75-4049-fd728267d9c0@amd.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 2 May 2025 15:01:26 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFkFCOqU2jvG_o97DzrhpXKyUd=WxPhHFA-_0ddPSvs0g@mail.gmail.com>
-X-Gm-Features: ATxdqUGjrWPLVf8RNWg3y0yNbuxamdltX9gNRtUdxjVBvn7ezePbPeljUcggMvc
-Message-ID: <CAMj1kXFkFCOqU2jvG_o97DzrhpXKyUd=WxPhHFA-_0ddPSvs0g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] x86/efi: Implement support for embedding SBAT data
- for x86
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: x86@kernel.org, linux-efi@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Peter Jones <pjones@redhat.com>, Daniel Berrange <berrange@redhat.com>, 
-	Emanuele Giuseppe Esposito <eesposit@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Greg KH <gregkh@linuxfoundation.org>, Luca Boccassi <bluca@debian.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
+Date: Fri, 2 May 2025 15:11:21 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE7=u9xNcUHiyFVPbOpwPvntFjdLfTzD0LeD_7it2MEQg@mail.gmail.com>
+X-Gm-Features: ATxdqUHCnZY8z4Ary2AT3uxsxUGdTmlnVzUmAj4WTaZo_j0E0mElkzIG8dLedpk
+Message-ID: <CAMj1kXE7=u9xNcUHiyFVPbOpwPvntFjdLfTzD0LeD_7it2MEQg@mail.gmail.com>
+Subject: Re: [PATCH] x86/boot/sev: Support memory acceptance in the EFI stub
+ under SVSM
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
+	Ingo Molnar <mingo@kernel.org>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 2 May 2025 at 14:10, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
+On Thu, 1 May 2025 at 20:05, Tom Lendacky <thomas.lendacky@amd.com> wrote:
 >
-> Ard Biesheuvel <ardb@kernel.org> writes:
->
-> > On Mon, 28 Apr 2025 at 12:59, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
-> >>
-> >> Ard Biesheuvel <ardb@kernel.org> writes:
-> >>
-> >> > On Thu, 24 Apr 2025 at 10:10, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
->
-> ...
->
-> >> >>  $(obj)/vmlinux: $(vmlinux-objs-y) $(vmlinux-libs-y) FORCE
-> >> >>         $(call if_changed,ld)
-> >> >>
-> >> >> diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-> >> >> index 3b2bc61c9408..d0a27905de90 100644
-> >> >> --- a/arch/x86/boot/compressed/vmlinux.lds.S
-> >> >> +++ b/arch/x86/boot/compressed/vmlinux.lds.S
-> >> >> @@ -49,9 +49,22 @@ SECTIONS
-> >> >>                 *(.data.*)
-> >> >>
-> >> >>                 /* Add 4 bytes of extra space for the obsolete CRC-32 checksum */
-> >> >> +#ifndef CONFIG_EFI_SBAT
-> >> >>                 . = ALIGN(. + 4, 0x200);
-> >> >> +#else
-> >> >> +               /* Avoid gap between '.data' and '.sbat' */
-> >> >> +               . = ALIGN(. + 4, 0x1000);
-> >> >> +#endif
-> >> >>                 _edata = . ;
-> >> >>         }
-> >> >> +#ifdef CONFIG_EFI_SBAT
-> >> >> +       .sbat : ALIGN(0x1000) {
-> >> >> +               _sbat = . ;
-> >> >> +               *(.sbat)
-> >> >> +               _esbat = ALIGN(0x200);
-> >> >> +               . = _esbat;
-> >> >> +       }
-> >> >> +#endif
-> >> >>         . = ALIGN(L1_CACHE_BYTES);
-> >> >>         .bss : {
-> >> >>                 _bss = . ;
-> >> >
-> >> > This looks a bit odd - see below
-> >> >
-> >> >> diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-> >> >> index b5c79f43359b..ab851490ef74 100644
-> >> >> --- a/arch/x86/boot/header.S
-> >> >> +++ b/arch/x86/boot/header.S
-> >> >> @@ -207,6 +207,19 @@ pecompat_fstart:
-> >> >>                 IMAGE_SCN_MEM_READ              | \
-> >> >>                 IMAGE_SCN_MEM_WRITE             # Characteristics
-> >> >>
-> >> >> +#ifdef CONFIG_EFI_SBAT
-> >> >> +       .ascii ".sbat\0\0\0"
-> >> >> +       .long   ZO__esbat - ZO__sbat            # VirtualSize
-> >> >> +       .long   setup_size + ZO__sbat           # VirtualAddress
-> >> >> +       .long   ZO__esbat - ZO__sbat            # SizeOfRawData
-> >> >> +       .long   setup_size + ZO__sbat           # PointerToRawData
-> >> >> +
-> >> >> +       .long   0, 0, 0
-> >> >> +       .long   IMAGE_SCN_CNT_INITIALIZED_DATA  | \
-> >> >> +               IMAGE_SCN_MEM_READ              | \
-> >> >> +               IMAGE_SCN_MEM_DISCARDABLE       # Characteristics
-> >> >> +#endif
-> >> >> +
-> >> >
-> >> > This puts the .sbat section at the very end of the file. However, the
-> >> > virtual size of .data is 'ZO__end - ZO__data' not 'ZO__edata -
-> >> > ZO__data', and so the .sbat section will overlap with .bss in the
-> >> > memory view of the image.
-> >>
-> >> Missed that, will fix, thanks! A stupid question though: does this
-> >> matter in practice for SBAT? I don't think anyone needs SBAT data after
-> >> kernel starts booting so we can consider it 'discarded'. BSS data can
-> >> then do whatever it wants.
-> >>
+> On 4/28/25 12:43, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
 > >
-> > It violates the PE/COFF spec, and some PE loaders and signing tools
-> > are very pedantic about the layout.
+> > Commit
+> >
+> >   d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
+> >
+> > provided a fix for SEV-SNP memory acceptance from the EFI stub when
+> > running at VMPL #0. However, that fix was insufficient for SVSM SEV-SNP
+> > guests running at VMPL >0, as those rely on a SVSM calling area, which
+> > is a shared buffer whose address is programmed into a SEV-SNP MSR, and
+> > the SEV init code that sets up this calling area executes much later
+> > during the boot.
+> >
+> > Given that booting via the EFI stub at VMPL >0 implies that the firmware
+> > has configured this calling area already, reuse it for performing memory
+> > acceptance in the EFI stub.
 >
-> Turns out it the problem is slightly harder to address then I initially
-> thought.
-
-Yeah I was afraid this was going to be tricky.
-
-...
-
-> The problem is similar for zboot.
-
-How so?
-
-> I have two ideas:
-> 1) Get back to the idea of putting '.sbat' between '.text' and '.data'
-> (was in my RFC).
->
-
-This is what zboot does, no?
-
-> 2) Introduce a separate '.bss' section to the PE binary, basically:
+> This looks to be working for SNP guest boot and kexec. SNP guest boot with
+> an SVSM is also working, but kexec isn't. But the kexec failure of an SVSM
+> SNP guest is unrelated to this patch, I'll send a fix for that separately.
 >
 
-I'd like .sbat to be as unintrusive as we can make it, so this is my
-least preferred option.
+Thanks for confirming.
+
+Ingo, Boris, can we get this queued as a fix, please, and merge it
+back into x86/boot as was done before?
+
+
+> Thanks,
+> Tom
+>
+> >
+> > Cc: Borislav Petkov <bp@alien8.de>
+> > Cc: Ingo Molnar <mingo@kernel.org>
+> > Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
+> > Cc: Kevin Loughlin <kevinloughlin@google.com>
+> > Cc: <stable@vger.kernel.org>
+> > Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
+> > Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> > Tom,
+> >
+> > Please confirm that this works as you intended.
+> >
+> > Thanks,
+> >
 
