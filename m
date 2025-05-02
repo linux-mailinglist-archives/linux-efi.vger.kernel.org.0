@@ -1,215 +1,153 @@
-Return-Path: <linux-efi+bounces-3542-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3543-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10904AA79EB
-	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 21:02:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10836AA7A5E
+	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 21:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BB67188F295
-	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 19:02:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 773104C7840
+	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 19:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3E91F4C87;
-	Fri,  2 May 2025 19:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075C51F30DD;
+	Fri,  2 May 2025 19:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jB1YOX/W"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="hXlnQTzu"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133631EFFB9;
-	Fri,  2 May 2025 19:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A251F2BAD;
+	Fri,  2 May 2025 19:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746212493; cv=none; b=GiPxur3aLVJ/cYld5z+k6uYPeYXpeN+PKUZy1OnHqMgzwHp8IoSdv0kTmy2tuREWFWGhOdOK1EQyn0HfVUk6FP4VOWob3hWf+Py3s6dPSitkUwCXC7RU+AlGOHi6OfUUwT9wx0TjOiQR7g/T2YM79X+/ifWCu/mLq399TKa1JO8=
+	t=1746215070; cv=none; b=rEVsmKRRRCQBQHU8Z9j2my0/cSZfcdfmxXDEvIxso0ujbzaMW8iRD6tKWCkcw+2sv1jYswVEqcru8lDYpbBmTatboVnQTrwvGT5hAOen0KvsjTMXR/f/MDa/Lho1qA8PrGlLF+POh7P5kxe5wDXqKzOnspfK3wrQKXVKdU1qzWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746212493; c=relaxed/simple;
-	bh=OArrhviC9XaQ7OlcTfKqQMGsnz4armduOY/WBMGcbsA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OyK38LUdMSeADJotum82NgzCMrBGwTMw/Hpp2DN7U0Lbce6fJqRp0JJD/eRhaCUjn/xqulfWZsC9TrDfb/D8K1sxvPJ7N+gcI5vg5dB8rc361AjOH/vg5SS1jq5R6/xq4hDu0tvYmueZaJKXHSqDZNVCAS4nc6zmRklUS4vJ94k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jB1YOX/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA19C4CEED;
-	Fri,  2 May 2025 19:01:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746212492;
-	bh=OArrhviC9XaQ7OlcTfKqQMGsnz4armduOY/WBMGcbsA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jB1YOX/WblarlM1ru+chkUcRI7n9ViNaZEATHHCcZU9HKHkXtQaiFa1ADnnNSHEfn
-	 pxV/EexqPW/iO2BUs8r2oHGwy/9Wh+oNp1A5atSmV+xAncgPjqT8RJGnFSSHtmQkzE
-	 UPmqFqbQ6KKii/W31CNxWg7FeU4snGvlYrWtTP21uUUHLpcqwPtQxofl5x4yxEQWCa
-	 HwLSZcaV963TrPrvt3cOAxbzFvO38HxPRoaEke92VS2avjAcALnb+UJqHMA74Tz/D8
-	 JUZIkKnmwrX/2Jemco5btqwU2P3ADx4coHH+136JT/FvbSfjWd+ts9cd4ecXPSUgg3
-	 HONZP1ma8mZfQ==
-From: Kees Cook <kees@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Kees Cook <kees@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kbuild@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-hardening@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH RFC 4/4] stackleak: Support Clang stack depth tracking
-Date: Fri,  2 May 2025 12:01:27 -0700
-Message-Id: <20250502190129.246328-4-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250502185834.work.560-kees@kernel.org>
-References: <20250502185834.work.560-kees@kernel.org>
+	s=arc-20240116; t=1746215070; c=relaxed/simple;
+	bh=n+L5wdWKfMSnWgjpxdKD9mYdVp2ikqZ5Yl7stiWg6xg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=B+HZFWySXfWWe/SNufWuTFI4yGlbqcP0Ej7eN53shWf6ArYMKybUAO540HZsk+rNtYAKcG23TYhp/QbM0LwcTO60KRT3VAW+0kAs2H/KbaRtdt3fyD2BU+7jjVbsd9ArwNQxoJuSNUPGr/QwPhr48Pyd8cTG6O1sTrZNOS1OxA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=hXlnQTzu; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 542JhQjh2150495
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 2 May 2025 12:43:27 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 542JhQjh2150495
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1746215008;
+	bh=ZqLXxzNJv0IHqSG9SsLfGERgXXTrSiEhUW5FOYYelTg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=hXlnQTzulXtKiJv1Lq04GAWzGF/0q4TfVKQJTch09TMCik6jf/8YdVqA77Ps8sd25
+	 QX5VLVzqgNsl8Q7tJ/7P4VMTaU4KPlYk/zktKDIoM1I9Fyau9p1HZQZcY2pbEW/q+I
+	 Hrxb+YOhhwHl49hLEBYFb9Y+caY17+IRSFyp2ZARE6p8jGafT8Gm2CCQb367j+1uaK
+	 o2hyqIBGWTUzPdeWKhV0Hy8YOmYk5Zqio4UbkvzM/zuTwf7JNTt3fwtQcqarSo1jrX
+	 +pBune/c9bJzdacTU00rRG5QZkwPze2HEkF2Vy037KbBFp54+9MCfbfhNp6N9c87Qu
+	 Qq3ksCCBwRmaA==
+Date: Fri, 02 May 2025 12:43:23 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Xin Li <xin@zytor.com>, Sean Christopherson <seanjc@google.com>,
+        Peter Zijlstra <peterz@infradead.org>
+CC: x86@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+        wei.liu@kernel.org, decui@microsoft.com, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        pbonzini@redhat.com, ardb@kernel.org, kees@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, gregkh@linuxfoundation.org,
+        jpoimboe@kernel.org, linux-hyperv@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, samitolvanen@google.com, ojeda@kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_00/13=5D_objtool=3A_Detect_and_wa?=
+ =?US-ASCII?Q?rn_about_indirect_calls_in_=5F=5Fnocfi_functions?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <9b112e40-d281-422c-b862-3c073b3c7239@zytor.com>
+References: <20250430110734.392235199@infradead.org> <8B86A3AE-A296-438C-A7A7-F844C66D0198@zytor.com> <20250430190600.GQ4439@noisy.programming.kicks-ass.net> <20250501103038.GB4356@noisy.programming.kicks-ass.net> <20250501153844.GD4356@noisy.programming.kicks-ass.net> <aBO9uoLnxCSD0UwT@google.com> <9b112e40-d281-422c-b862-3c073b3c7239@zytor.com>
+Message-ID: <80783990-FEF8-4F40-810E-5B89D9801E84@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4716; i=kees@kernel.org; h=from:subject; bh=OArrhviC9XaQ7OlcTfKqQMGsnz4armduOY/WBMGcbsA=; b=owGbwMvMwCVmps19z/KJym7G02pJDBmiYm0eHYd/KD+/YrfhHLPdHAslHi9Fd//IiqqD/4I25 j38J1nZUcrCIMbFICumyBJk5x7n4vG2Pdx9riLMHFYmkCEMXJwCMBGBJYwMGxO93eMPrlt+5Jzt Oot7p+4nLPDlKnhnYFtxdhXvk+VS/Ax/Bd/vvaSguOh3WEFqRfyd1+x1/pxfFHj2REh++SY+fVI 9DwA=
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Wire up stackleak to Clang's proposed[1] stack depth tracking callback
-option. While __noinstr already contained __no_sanitize_coverage, it was
-still needed for __init and __head section markings. This is needed to
-make sure the callback is not executed in unsupported contexts.
+On May 1, 2025 10:48:42 PM PDT, Xin Li <xin@zytor=2Ecom> wrote:
+>On 5/1/2025 11:30 AM, Sean Christopherson wrote:
+>>  From c50fb5a8a46058bbcfdcac0a100c2aa0f7f68f1c Mon Sep 17 00:00:00 2001
+>> From: Sean Christopherson<seanjc@google=2Ecom>
+>> Date: Thu, 1 May 2025 11:10:39 -0700
+>> Subject: [PATCH 2/2] x86/fred: KVM: VMX: Always use FRED for IRQ+NMI wh=
+en
+>>   CONFIG_X86_FRED=3Dy
+>>=20
+>> Now that FRED provides C-code entry points for handling IRQ and NMI exi=
+ts,
+>> use the FRED infrastructure for forwarding all such events even if FRED
+>> isn't supported in hardware=2E  Avoiding the non-FRED assembly trampoli=
+nes
+>> into the IDT handlers for IRQs eliminates the associated non-CFI indire=
+ct
+>> call (KVM performs a CALL by doing a lookup on the IDT using the IRQ
+>> vector)=2E
+>>=20
+>> Force FRED for 64-bit kernels if KVM_INTEL is enabled, as the benefits =
+of
+>> eliminating the IRQ trampoline usage far outwieghts the code overhead f=
+or
+>> FRED=2E
+>>=20
+>> Suggested-by: Peter Zijlstra<peterz@infradead=2Eorg>
+>> Signed-off-by: Sean Christopherson<seanjc@google=2Ecom>
+>> ---
+>>   arch/x86/kvm/Kconfig   | 1 +
+>>   arch/x86/kvm/vmx/vmx=2Ec | 4 ++--
+>>   2 files changed, 3 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+>> index 2eeffcec5382=2E=2E712a2ff28ce4 100644
+>> --- a/arch/x86/kvm/Kconfig
+>> +++ b/arch/x86/kvm/Kconfig
+>> @@ -95,6 +95,7 @@ config KVM_SW_PROTECTED_VM
+>>   config KVM_INTEL
+>>   	tristate "KVM for Intel (and compatible) processors support"
+>>   	depends on KVM && IA32_FEAT_CTL
+>> +	select X86_FRED if X86_64
+>
+>I LOVE this change, but not sure if everyone is happy with it=2E
+>
+>>   	select KVM_GENERIC_PRIVATE_MEM if INTEL_TDX_HOST
+>>   	select KVM_GENERIC_MEMORY_ATTRIBUTES if INTEL_TDX_HOST
+>>   	help
+>> diff --git a/arch/x86/kvm/vmx/vmx=2Ec b/arch/x86/kvm/vmx/vmx=2Ec
+>> index ef2d7208dd20=2E=2E2ea89985107d 100644
+>> --- a/arch/x86/kvm/vmx/vmx=2Ec
+>> +++ b/arch/x86/kvm/vmx/vmx=2Ec
+>> @@ -6995,7 +6995,7 @@ static void handle_external_interrupt_irqoff(stru=
+ct kvm_vcpu *vcpu,
+>>   		return;
+>>     	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
+>> -	if (cpu_feature_enabled(X86_FEATURE_FRED))
+>> +	if (IS_ENABLED(CONFIG_X86_FRED))
+>
+>"if (IS_ENABLED(CONFIG_X86_64))"?
+>
+>>   		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+>>   	else
+>>   		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + ve=
+ctor));
+>> @@ -7268,7 +7268,7 @@ noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu=
+)
+>>   		return;
+>>     	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
+>> -	if (cpu_feature_enabled(X86_FEATURE_FRED))
+>> +	if (IS_ENABLED(CONFIG_X86_FRED))
+>
+>Ditto=2E
 
-Link: https://github.com/llvm/llvm-project/pull/138323 [1]
-Signed-off-by: Kees Cook <kees@kernel.org>
----
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <x86@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas.schier@linux.dev>
-Cc: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Paul Moore <paul@paul-moore.com>
-Cc: James Morris <jmorris@namei.org>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>
-Cc: Kai Huang <kai.huang@intel.com>
-Cc: Hou Wenlong <houwenlong.hwl@antgroup.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: <linux-kbuild@vger.kernel.org>
-Cc: <kasan-dev@googlegroups.com>
-Cc: <linux-hardening@vger.kernel.org>
-Cc: <linux-security-module@vger.kernel.org>
----
- arch/x86/include/asm/init.h |  2 +-
- include/linux/init.h        |  4 +++-
- scripts/Makefile.ubsan      | 12 ++++++++++++
- security/Kconfig.hardening  |  5 ++++-
- 4 files changed, 20 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
-index 8b1b1abcef15..6bfdaeddbae8 100644
---- a/arch/x86/include/asm/init.h
-+++ b/arch/x86/include/asm/init.h
-@@ -5,7 +5,7 @@
- #if defined(CONFIG_CC_IS_CLANG) && CONFIG_CLANG_VERSION < 170000
- #define __head	__section(".head.text") __no_sanitize_undefined __no_stack_protector
- #else
--#define __head	__section(".head.text") __no_sanitize_undefined
-+#define __head	__section(".head.text") __no_sanitize_undefined __no_sanitize_coverage
- #endif
- 
- struct x86_mapping_info {
-diff --git a/include/linux/init.h b/include/linux/init.h
-index ee1309473bc6..c65a050d52a7 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -49,7 +49,9 @@
- 
- /* These are for everybody (although not all archs will actually
-    discard it in modules) */
--#define __init		__section(".init.text") __cold  __latent_entropy __noinitretpoline
-+#define __init		__section(".init.text") __cold __latent_entropy	\
-+						__noinitretpoline	\
-+						__no_sanitize_coverage
- #define __initdata	__section(".init.data")
- #define __initconst	__section(".init.rodata")
- #define __exitdata	__section(".exit.data")
-diff --git a/scripts/Makefile.ubsan b/scripts/Makefile.ubsan
-index 9e35198edbf0..cfb3ecde07dd 100644
---- a/scripts/Makefile.ubsan
-+++ b/scripts/Makefile.ubsan
-@@ -22,3 +22,15 @@ ubsan-integer-wrap-cflags-$(CONFIG_UBSAN_INTEGER_WRAP)     +=	\
- 	-fsanitize=implicit-unsigned-integer-truncation		\
- 	-fsanitize-ignorelist=$(srctree)/scripts/integer-wrap-ignore.scl
- export CFLAGS_UBSAN_INTEGER_WRAP := $(ubsan-integer-wrap-cflags-y)
-+
-+ifdef CONFIG_CC_IS_CLANG
-+stackleak-cflags-$(CONFIG_STACKLEAK)	+=	\
-+	-fsanitize-coverage=stack-depth		\
-+	-fsanitize-coverage-stack-depth-callback-min=$(CONFIG_STACKLEAK_TRACK_MIN_SIZE)
-+export STACKLEAK_CFLAGS := $(stackleak-cflags-y)
-+ifdef CONFIG_STACKLEAK
-+    DISABLE_STACKLEAK		:= -fno-sanitize-coverage=stack-depth
-+endif
-+export DISABLE_STACKLEAK
-+KBUILD_CFLAGS += $(STACKLEAK_CFLAGS)
-+endif
-diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
-index edcc489a6805..e86b61e44b33 100644
---- a/security/Kconfig.hardening
-+++ b/security/Kconfig.hardening
-@@ -158,10 +158,13 @@ config GCC_PLUGIN_STRUCTLEAK_VERBOSE
- 	  initialized. Since not all existing initializers are detected
- 	  by the plugin, this can produce false positive warnings.
- 
-+config CC_HAS_SANCOV_STACK_DEPTH_CALLBACK
-+	def_bool $(cc-option,-fsanitize-coverage-stack-depth-callback-min=1)
-+
- config STACKLEAK
- 	bool "Poison kernel stack before returning from syscalls"
- 	depends on HAVE_ARCH_STACKLEAK
--	depends on GCC_PLUGINS
-+	depends on GCC_PLUGINS || CC_HAS_SANCOV_STACK_DEPTH_CALLBACK
- 	help
- 	  This option makes the kernel erase the kernel stack before
- 	  returning from system calls. This has the effect of leaving
--- 
-2.34.1
-
+I don't think anyone will have a problem with compiling it in=2E=2E=2E it =
+is such a small amount of code=2E
 
