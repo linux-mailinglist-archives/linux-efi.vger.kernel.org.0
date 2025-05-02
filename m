@@ -1,142 +1,102 @@
-Return-Path: <linux-efi+bounces-3529-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3530-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB0BAA6A9B
-	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 08:13:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A224AA6CB1
+	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 10:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B6007A4836
-	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 06:12:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4193F9A5E8A
+	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 08:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DC719D093;
-	Fri,  2 May 2025 06:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A9D22B8B8;
+	Fri,  2 May 2025 08:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="SzpDLkNg"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DIzoxIz0"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AEF4C6C;
-	Fri,  2 May 2025 06:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F1C22ACD1;
+	Fri,  2 May 2025 08:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746166410; cv=none; b=b1Uoe8FGT0lYScS0XX1hwDa9ju2ajQog9Ffd9tGiW5UIO9ViUfm7N3YyZwvXCzIwFKHHu8vJNSPYexGmZ2j/VLcFPkG36472SbILHXKqDU8/Y5MOK4Yxr/NTH04y/L1YPHsFQK+WhgY6mp860lOVdi3fUWTcVtN7DPz1qqpehT8=
+	t=1746175326; cv=none; b=HL0VEFYErLGLknlwmMRlZwm0xUAUFzijwrDsJ3F9/knT8zCrA7GOdPiQDbIGpGe7Jj+QSQy+cR8Cbi30mzwZHlXyOYEDu+3oKNMLRtPevSGkVX+vNHQl6ibInadvEdbSe3hRarrnvVLPXleada3vommvdgDz8MoeaE7dF/+rZ40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746166410; c=relaxed/simple;
-	bh=iuRPynWNspiLCrv5o0TZawp9NxxaaX3vf1nNZ7+ykM0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GSRFIc6poIZ37UkbqtxkWk4Vw/fuL8pmSfMJc7vZTBipbVyb3NHkzLWaxZqMHHV1GzqTGTO9olrvXQScqegoneHDuRsWPA1f2Baj8JUWxMwP9KMMiHbWUHpAKnQ1HWn6IMUrx4hgUuIL5JN27PPeSFNl/v8xtN7zRzqXidfR5lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=SzpDLkNg; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5426CqxU1789768
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 1 May 2025 23:12:53 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5426CqxU1789768
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1746166375;
-	bh=+Zv9cQk+z9fAinewPJ/ZzGEn0L1B+MFr/2S7teyfsbU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SzpDLkNgz/zeY6FwID+iYLUU+9gU7MCiwyCKWuiv4/Lnp/AtsoF6l+Y871ImKJ3iG
-	 VyedzKMuFs3O6d3GNJzCnDkSXilsB+MLwfv3bBH+Cx08hdlo0cdG7WPWlzHlRG/nsp
-	 Ensgq/BrNJpCPn7BKj6zCZPO4bBNTxlbmNuKZWMMN6zPa8zZj5T15HuYBo8xfADlf7
-	 UhkAdoJwCsyiZ1DF9FHEMSvFzoJNiw6FQg0vipftdBqI8DFH0cRFfvJZMb2fzNXLUG
-	 XXEVmpm6/TjWmx/WMO4vqlWz6i48E03bzwHOy6plc4T8aEwYlZhAYjmBL3c2ir62L/
-	 zB45qRNOb61Sg==
-Message-ID: <eac239fe-a420-4bc7-a792-207df9f847d3@zytor.com>
-Date: Thu, 1 May 2025 23:12:52 -0700
-Precedence: bulk
-X-Mailing-List: linux-efi@vger.kernel.org
-List-Id: <linux-efi.vger.kernel.org>
-List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/13] objtool: Detect and warn about indirect calls in
- __nocfi functions
-To: Sean Christopherson <seanjc@google.com>, "H. Peter Anvin" <hpa@zytor.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, x86@kernel.org, kys@microsoft.com,
-        haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, pbonzini@redhat.com, ardb@kernel.org,
-        kees@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        gregkh@linuxfoundation.org, jpoimboe@kernel.org,
-        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-efi@vger.kernel.org,
-        samitolvanen@google.com, ojeda@kernel.org
+	s=arc-20240116; t=1746175326; c=relaxed/simple;
+	bh=JAkxRcMnCLTEaaF2Sx3Fm9Sem8/O4saWART4WZ6A1pU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lqzjmhb+CWUQxbLnzdWie/Lgk2+bEiJmi6tV94ye3Q2SPSuVknh3LThz4uKCKqaOrS8TFbY0SwXcFgUhm3W3EeMzkBZ3jIvaNYCeShXzRzkUlw7mFkFQvLUyhDVFZaB+vZi9GpYuIG44GgdbddW9NoyGEAUj3eBEhOvdHqYGbr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DIzoxIz0; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=j6cbPjR+T0yzG1mLDzVIumfGnchJ8jrJp8SEOFZnJ0c=; b=DIzoxIz0Ehp+HLggJApwwus3VG
+	7rYxbEyl0G5WKBNyh2ko6DrCZQ4m22+3PRjS5LpsFKXwZDC93qkLiI5/pSl9Vwju11TlWH28Wji0O
+	3xCqPFuF+TFs4nOK3tU9tnjCQx/575+qsVxK2leGPxXJnNDK+3KuUcuZZQPq6oT9u2sCGOBRdPbY7
+	lgl87qfSpNsoydPh2dRBaLEXE9dxXJT7yg0k+6KT9OiUJh3mj4O9SGoAW4StpZ0fDtNqZZiWi7J3Y
+	4HFfdhDqgekQjYw9G7bjWSo5vt8rruRV3y3h/A1/v1SRKMYxHXrUxd0gu5dsATZQcjts0dGwLI/yl
+	ZoIv90BA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uAlwb-0000000At0F-2Hrl;
+	Fri, 02 May 2025 08:40:35 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id BF3193001D4; Fri,  2 May 2025 10:40:07 +0200 (CEST)
+Date: Fri, 2 May 2025 10:40:07 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kys@microsoft.com,
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, pbonzini@redhat.com, ardb@kernel.org,
+	kees@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	gregkh@linuxfoundation.org, jpoimboe@kernel.org,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+	samitolvanen@google.com, ojeda@kernel.org, xin@zytor.com
+Subject: Re: [PATCH v2 00/13] objtool: Detect and warn about indirect calls
+ in __nocfi functions
+Message-ID: <20250502084007.GS4198@noisy.programming.kicks-ass.net>
 References: <20250430110734.392235199@infradead.org>
  <8B86A3AE-A296-438C-A7A7-F844C66D0198@zytor.com>
  <20250430190600.GQ4439@noisy.programming.kicks-ass.net>
  <20250501103038.GB4356@noisy.programming.kicks-ass.net>
  <20250501153844.GD4356@noisy.programming.kicks-ass.net>
  <aBO9uoLnxCSD0UwT@google.com>
- <EB1786D7-C7FE-4517-A207-C5F63AC0F911@zytor.com>
- <aBPEr3DF4w9sbUdc@google.com>
-Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <aBPEr3DF4w9sbUdc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Precedence: bulk
+X-Mailing-List: linux-efi@vger.kernel.org
+List-Id: <linux-efi.vger.kernel.org>
+List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aBO9uoLnxCSD0UwT@google.com>
 
-On 5/1/2025 11:59 AM, Sean Christopherson wrote:
->> Ok maybe I'm being dense, but what is left other than simply calling
->> __fred_entry_from_kvm() as a normal C function?
->>
->> I'm on the go so there might be something in the code I'm missing, but on the
->> surface...?
-> I'm sure it's doable, though I'd be more than a little nervous about diverging
-> from what FRED=y does, e.g. in case code somewhere expects the stack to look
-> exactly like a real FRED event.
+On Thu, May 01, 2025 at 11:30:18AM -0700, Sean Christopherson wrote:
 
-__fred_entry_from_kvm() accepts a pt_regs structure pointer, with event
-type and vector in FRED stack frame.  They are set up in the assembly.
+> Uh, aren't you making this way more complex than it needs to be? 
 
-> And since we'd still need the assembly to support FRED=y, I don't see any point
-> in adding more code when it's trivially easy to have asm_fred_entry_from_kvm()
-> skip ERETS.
+Possibly :-)
 
-Yeah, your change seems minimized to me.
+> IIUC, KVM never
+> uses the FRED hardware entry points, i.e. the FRED entry tables don't need to be
+> in place because they'll never be used.  The only bits of code KVM needs is the
+> __fred_entry_from_kvm() glue.
 
+But __fred_entry_from_kvm() calls into fred_extint(), which then
+directly uses the fred sysvec_table[] for dispatch. How would we not
+have to set up that table?
 
+> Lightly tested, but this combo works for IRQs and NMIs on non-FRED hardware.
 
+So the FRED NMI code is significantly different from the IDT NMI code
+and I really didn't want to go mixing those.
 
-
+If we get a nested NMI I don't think it'll behave well.
 
