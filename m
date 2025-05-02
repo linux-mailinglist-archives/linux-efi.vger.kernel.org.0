@@ -1,54 +1,54 @@
-Return-Path: <linux-efi+bounces-3527-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3528-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AE1AA6A50
-	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 07:47:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FD2AA6A59
+	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 07:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67AC4466B34
-	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 05:47:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 840F11BA3777
+	for <lists+linux-efi@lfdr.de>; Fri,  2 May 2025 05:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12A31A5B87;
-	Fri,  2 May 2025 05:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221331A5B87;
+	Fri,  2 May 2025 05:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="R4OZ87Vt"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="QNHgla/6"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B1EBA3F;
-	Fri,  2 May 2025 05:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508CDBA3F;
+	Fri,  2 May 2025 05:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746164858; cv=none; b=dq6+nKnO1k/ON5frBE0WZ+2ob9d6nUxFB2OayTzWBEuUXUuxT5F9SjZW06RPDKz15eUzg8p18bi2NFOxP4fu6IhWJYXMfs7ybDldQuTtWjBnuV8oxNbhnsm87EZZY3ToTjOwM8A5bk7SrWfL1qk/v+FMGRWY3p4f1TrCZaOGwE8=
+	t=1746164959; cv=none; b=sNh7tRf05/t0YssUX2d1zNp7dL7u6mlT2O0Kt58GyzZtBu7Py70Jyz9/AXtuBnlvUorvxnyxSomnTPAXOxM/k7F4nwrvTg7cFb/Nma46vHg7I/BHYXBMaXHQ6/rmdl7s+zGe4fu846UBXCGC88eYT0pGBB1dVgYs7CdpaSO1yAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746164858; c=relaxed/simple;
-	bh=CRlm8DglgsjDBM3aRfMpTQ7akikLGNAa4uzuEFyxihU=;
+	s=arc-20240116; t=1746164959; c=relaxed/simple;
+	bh=xHuDiwaHi25BWrOdJavtW7Xs+O7UjhjxqydntQpALqY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WhreWaRz97+Utjfse6yzwNrIqv72g9T1M3gvU15ZDibMGGjrTa28SULnO3r/n/7m2M8YmBtbrWAC+KFZ22b3Xz88mu/bsIaniVy9vFYfJdupLSn60xRURoKidTcQ5StnkmFmkngzntHcuy1avT83y1QLIqd1G4RlKWI2Vz/w0ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=R4OZ87Vt; arc=none smtp.client-ip=198.137.202.136
+	 In-Reply-To:Content-Type; b=aPcf9CVhF9UmDFI0mp4MZYQ0Dso0CDGKm2NQ4y+QcwYBX6AaiJL0MZrCaAc6kEHonB1oOwaz3M90ju1qoPwmNQ+//unNkvAwZ/nU/1noSz6SAHiHhLoKksOcPj5Ai4/jjOD4Mi9+VHdEcMCcx/oLAvWQ2NDcUbUE8eaOu7JT0qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=QNHgla/6; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from [192.168.7.202] ([71.202.166.45])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5425kkje1780668
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5425mgEN1781141
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 1 May 2025 22:46:47 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5425kkje1780668
+	Thu, 1 May 2025 22:48:43 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5425mgEN1781141
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1746164809;
-	bh=MGfso3qvTctMT+qsQxGakZO6pbzlMRbsUmiKDI86FZ0=;
+	s=2025042001; t=1746164924;
+	bh=UPrgXeeHDSbppfXKlFI7+ZZbVFJc1sBHvqfJ3YIqx60=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R4OZ87Vtppt5v9J2EdCzFLGVKWqP9EyshJYqWkW/qTgZnPrKpAhmgz8UT6Lojiu5l
-	 3QxrJYjGaM6aeq1eXQl6//Q5LykfWO5JlHATefd0jJ3v3VKCPJg+MIR68f3r6FpFxK
-	 8EIKOQe66SNOYTTakLEaSq1FAWyDFKx+7iRJKmpNvkKCckyVnN9JkgFVdRZaBePpUX
-	 G3GLZWcf3mlcEh3Jo/PBnU7abFTYXnU6q9bRCny3G16L20vDzM7u5tQ2mA/xjHPwXP
-	 t6yVIaio1jQGUu4AErWBVEVJjIujrXCOMnr4hHudfxLoqaUxld7T63lIdgwLtHTD7s
-	 IKsiUxtRR1dXQ==
-Message-ID: <5e9bfa4b-4440-4d7b-895c-03a3358d4ae6@zytor.com>
-Date: Thu, 1 May 2025 22:46:45 -0700
+	b=QNHgla/6mBMJgp4DmEzvjI9pcvfVN1AMs4cpGZJq2JBUfGbHcB9acot2g/bgQGktc
+	 18qpb94Jy2r+RT5E9zUkpFLLsrV3Z3/i70nJ+Dh+WTpdCsZ+bEy40c+lxFidRpCSKD
+	 RcNA8Yg9dvgJ978NzgkgtdYqjKvXlHNKEHrVnYOa67p79PEEX6vGALYMxlIAEfKghW
+	 DM/OlDNVra5aggOOi76AhTcuZIvUMePIFwDClF/1v0o7EYk0G9wmAHQxo6AnUG/EYb
+	 N2BN2I0wrrK0Y3lw9W0AkaAWkLlIQJsN4PZ7YC6a5LaCim78ZaBem0nJZCSNIaQFsC
+	 CJOJPI+IHLuOQ==
+Message-ID: <9b112e40-d281-422c-b862-3c073b3c7239@zytor.com>
+Date: Thu, 1 May 2025 22:48:42 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -115,80 +115,68 @@ In-Reply-To: <aBO9uoLnxCSD0UwT@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
->> Something like so... except this is broken. Its reporting spurious
->> interrupts on vector 0x00, so something is buggered passing that vector
->> along.
-
-I'm a bit late to the party :)
-
-Peter kind of got what I had in the FRED patch set v8 or earlier:
-
-https://lore.kernel.org/lkml/20230410081438.1750-34-xin3.li@intel.com/
-
-
-> Uh, aren't you making this way more complex than it needs to be?  IIUC, KVM never
-> uses the FRED hardware entry points, i.e. the FRED entry tables don't need to be
-> in place because they'll never be used.  The only bits of code KVM needs is the
-> __fred_entry_from_kvm() glue.
-
-+1
-
+On 5/1/2025 11:30 AM, Sean Christopherson wrote:
+>  From c50fb5a8a46058bbcfdcac0a100c2aa0f7f68f1c Mon Sep 17 00:00:00 2001
+> From: Sean Christopherson<seanjc@google.com>
+> Date: Thu, 1 May 2025 11:10:39 -0700
+> Subject: [PATCH 2/2] x86/fred: KVM: VMX: Always use FRED for IRQ+NMI when
+>   CONFIG_X86_FRED=y
 > 
-> Lightly tested, but this combo works for IRQs and NMIs on non-FRED hardware.
+> Now that FRED provides C-code entry points for handling IRQ and NMI exits,
+> use the FRED infrastructure for forwarding all such events even if FRED
+> isn't supported in hardware.  Avoiding the non-FRED assembly trampolines
+> into the IDT handlers for IRQs eliminates the associated non-CFI indirect
+> call (KVM performs a CALL by doing a lookup on the IDT using the IRQ
+> vector).
 > 
-> --
->  From 664468143109ab7c525c0babeba62195fa4c657e Mon Sep 17 00:00:00 2001
-> From: Sean Christopherson <seanjc@google.com>
-> Date: Thu, 1 May 2025 11:20:29 -0700
-> Subject: [PATCH 1/2] x86/fred: Play nice with invoking
->   asm_fred_entry_from_kvm() on non-FRED hardware
+> Force FRED for 64-bit kernels if KVM_INTEL is enabled, as the benefits of
+> eliminating the IRQ trampoline usage far outwieghts the code overhead for
+> FRED.
 > 
-> Modify asm_fred_entry_from_kvm() to allow it to be invoked by KVM even
-> when FRED isn't fully enabled, e.g. when running with CONFIG_X86_FRED=y
-> on non-FRED hardware.  This will allow forcing KVM to always use the FRED
-> entry points for 64-bit kernels, which in turn will eliminate a rather
-> gross non-CFI indirect call that KVM uses to trampoline IRQs by doing IDT
-> lookups.
-> 
-> When FRED isn't enabled, simply skip ERETS and restore RBP and RSP from
-> the stack frame prior to doing a "regular" RET back to KVM (in quotes
-> because of all the RET mitigation horrors).
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Suggested-by: Peter Zijlstra<peterz@infradead.org>
+> Signed-off-by: Sean Christopherson<seanjc@google.com>
 > ---
->   arch/x86/entry/entry_64_fred.S | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   arch/x86/kvm/Kconfig   | 1 +
+>   arch/x86/kvm/vmx/vmx.c | 4 ++--
+>   2 files changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
-> index 29c5c32c16c3..7aff2f0a285f 100644
-> --- a/arch/x86/entry/entry_64_fred.S
-> +++ b/arch/x86/entry/entry_64_fred.S
-> @@ -116,7 +116,8 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
->   	movq %rsp, %rdi				/* %rdi -> pt_regs */
->   	call __fred_entry_from_kvm		/* Call the C entry point */
->   	POP_REGS
-> -	ERETS
-> +
-> +	ALTERNATIVE "", __stringify(ERETS), X86_FEATURE_FRED
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index 2eeffcec5382..712a2ff28ce4 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -95,6 +95,7 @@ config KVM_SW_PROTECTED_VM
+>   config KVM_INTEL
+>   	tristate "KVM for Intel (and compatible) processors support"
+>   	depends on KVM && IA32_FEAT_CTL
+> +	select X86_FRED if X86_64
 
-Neat!
+I LOVE this change, but not sure if everyone is happy with it.
 
-I ever had a plan to do this with "sub $0x8,%rsp; iret;" for non-FRED
-case.  But obviously doing nothing here is the best.
+>   	select KVM_GENERIC_PRIVATE_MEM if INTEL_TDX_HOST
+>   	select KVM_GENERIC_MEMORY_ATTRIBUTES if INTEL_TDX_HOST
+>   	help
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index ef2d7208dd20..2ea89985107d 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -6995,7 +6995,7 @@ static void handle_external_interrupt_irqoff(struct kvm_vcpu *vcpu,
+>   		return;
+>   
+>   	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
+> -	if (cpu_feature_enabled(X86_FEATURE_FRED))
+> +	if (IS_ENABLED(CONFIG_X86_FRED))
 
->   1:
->   	/*
->   	 * Objtool doesn't understand what ERETS does, this hint tells it that
-> @@ -124,7 +125,7 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
->   	 * isn't strictly needed, but it's the simplest form.
->   	 */
->   	UNWIND_HINT_RESTORE
-> -	pop %rbp
-> +	leave
+"if (IS_ENABLED(CONFIG_X86_64))"?
 
-This is a smart change.
+>   		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+>   	else
+>   		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + vector));
+> @@ -7268,7 +7268,7 @@ noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu)
+>   		return;
+>   
+>   	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
+> -	if (cpu_feature_enabled(X86_FEATURE_FRED))
+> +	if (IS_ENABLED(CONFIG_X86_FRED))
 
-When !X86_FEATURE_FRED, the FRED stack frame set up for ERETS is
-implicitly skipped by leave.  Maybe add a comment to explain LEAVE works
-for both cases?
+Ditto.
 
