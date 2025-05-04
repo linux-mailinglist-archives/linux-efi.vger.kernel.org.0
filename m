@@ -1,68 +1,68 @@
-Return-Path: <linux-efi+bounces-3572-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3573-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94AEAA85CA
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 11:58:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952B5AA85C7
+	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 11:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D2843BCB96
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 09:57:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EC44189A8D5
+	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 09:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767AF1F3B93;
-	Sun,  4 May 2025 09:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0951A9B5B;
+	Sun,  4 May 2025 09:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fkR05YwZ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q4Pt2ZI0"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07711EF388
-	for <linux-efi@vger.kernel.org>; Sun,  4 May 2025 09:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46421F3BAA
+	for <linux-efi@vger.kernel.org>; Sun,  4 May 2025 09:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746352431; cv=none; b=JWD4hLMfVnn9aj0kfglWg4cU6NjsLzHEsiISY3FbBUo4v9ROCabqq6YCjw8sn8VGI7/T4FOanbiGRZEVqWizrsQ/jwtcu9iuGr0JgjXPMQQpnBeQlL/+6G1ExhQGsYtlDf74ZizNpKH1a8/Sev6ppCpbFf/7I5vFdKW5xdmaQCk=
+	t=1746352433; cv=none; b=MX272QIBo3k3gv3ULE6zCYgL7Pl1n7BmiSyGPFDff0hU8Wa3Jj9ID0wfX7REasibOpR4u3teNQpXNcKI1aPQq8ttGsspW8BV+YLcD/DMkFH3W+ySZVWwWvZwLwz6SlIe/ISqZ6nqcJGaCxVZ+bGd8Q+XW5iwnhgtpP+KBbgHAGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746352431; c=relaxed/simple;
-	bh=kR6rswlwwIYujb+EJ0yOVEFScg9Jru2OEjE3Kvh/Q84=;
+	s=arc-20240116; t=1746352433; c=relaxed/simple;
+	bh=wuHAfmatSUs0eQGLjdRIUylP9w5pVwSp6jih2u1d2Nc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sPGw6VWw4m8aCHb3fTCCsTkvrwbQDlI7rUEeHX0uaqKqo+U6e62lGia5Wt3u8sE0IYBMElt3nBWBFTjTHoSh4Vetkg0eG3P386nu6tvXIEeR5+ShZbQxav8FY66oZFXGaJiWM2VuI5yYL+QAuiWblU0j/APKGeX9hBOi+L3bJtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fkR05YwZ; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=boyN8sKZcksAdS3vYbAssoWg1OGaobXNCyvoPArX5NibHjH2j8pRztJfcwyJhyjzYtuT0sR6DvX5IME1tBd+1lJejTRaAXhRPa8SyrUAhnHbYmoOmIWg2ekmP/EOrRX3vKy8hfHeQ+i0fZYA5KEslda/GtseJTk+oboKF00jRNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q4Pt2ZI0; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf446681cso19721405e9.1
-        for <linux-efi@vger.kernel.org>; Sun, 04 May 2025 02:53:49 -0700 (PDT)
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf3168b87so14046685e9.2
+        for <linux-efi@vger.kernel.org>; Sun, 04 May 2025 02:53:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746352428; x=1746957228; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746352430; x=1746957230; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hLjo2Urmr03naf19fIolYJZFVTpPiE8779NTKQlY+0c=;
-        b=fkR05YwZ/J2BzRZj4WKzzWGD/iwRFofk1cIXjY+lNaRYqL6UEpObAs/ws85ReQZVA9
-         RKBn2hpRofCOg5kWFQTedJ71w6FtDKvQbI2nSq2gGBWzft91PH/A9NxzQlyjOB5AThsw
-         By1ZuefjgZcT/uarMcj3k6uRbT1KOUb/KPX43JuuL8wYOsMRHF2TFMYsSofooLOLOImf
-         TX1ycZm9je7gzxIOg1jzQW9cmm/DhA1DvI6LaA+HfzH0R6RW9FtdcGzkuq4T4l9FtD+x
-         d5SgNpe2fIvR3Zrp53kGVH0pH3SsGsWGvCVeRbDdFKzQCaZiFv8S+GvZbKXsIRFgLLjD
-         uJhg==
+        bh=BngAQLfFrYEWXhjcTmuThO4xgzttYUC9luJvEjHMWdQ=;
+        b=q4Pt2ZI0VWKKVj3cSxoegX4K7yR1vgrwHtcGEnIEOZ3W24aa/rrGjZXyDBYJjeQZnz
+         XjHDGoT7n+yR398RT5ib/aKuEWglOcqE2U0eYqOi7pjLbOERGrPD1b8nVt5/pb6T4e42
+         fGrttmcy9OVDVXJmkGFLeVdnq50Fr78IHUyM7REfEyzN7MNrfzCQLCbXZUv6HJvXpQhP
+         XDqKtoelu4GqqryQqwPq9ES70zfIz6Vkuxo58BbNGv/qa+rdeP6psNrOw5jAhgl7Lt4J
+         CrGXsy59vO+AVxoqpi2ZzJ7dKcNNPnXh3htn9KCfSmAGr2YpXWSkypilVfmIyKwrZb+7
+         ZDog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746352428; x=1746957228;
+        d=1e100.net; s=20230601; t=1746352430; x=1746957230;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hLjo2Urmr03naf19fIolYJZFVTpPiE8779NTKQlY+0c=;
-        b=b942vtbdPiLYdg4ItarQkoGNcQPQ/rsUyK/YKs9f9B2SvqO1waPQSSU2K1fgijjLPQ
-         zY6vcjZhLigTYMkettLO3yU1W9xrej9FVyGJwfG1ovVP3GGSaZI4WPHIhWQh0LrZ95Ls
-         KAmFOzrAiGIi5geqVYY9bH4m/6rwvFE7p8llxmbzs31RnwRyfTIou9HscE1WjeS+3chj
-         cpFDHi+DK7KM17IqCI4ka2Hc0BBAOnBGR5f6/lZ9XCHbELAnlAPwobNBrXh7i8FkqT7y
-         g6xsMwLira8Y2GC4mg8QPDqZeHvxdz8lXiAYVV41hc0jJiwUVOVoRm4b4BmeT/469i1k
-         65AQ==
-X-Gm-Message-State: AOJu0Yzj275xYJzQfq2o40/a8ehoeCTFmOJQWrE+NTEuBiW87TcliE4i
-	SLp60ZjqhzJ2KYcBH80iQlkb6MezyiTlsFvdJOa7GH1UE5y9jm09XzQCzdrZmLjwbY5FOw==
-X-Google-Smtp-Source: AGHT+IH90gqSPJxs8k9nVTdFHRkCC/+sHj+b3LeroAd+gdqmLY7ywJfO2ETmybdwDECaqma2vA+qbFP+
-X-Received: from wmoo8-n2.prod.google.com ([2002:a05:600d:108:20b0:441:c147:991e])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3e05:b0:43e:bdf7:7975
- with SMTP id 5b1f17b1804b1-441c49486cbmr22764355e9.32.1746352428071; Sun, 04
- May 2025 02:53:48 -0700 (PDT)
-Date: Sun,  4 May 2025 11:52:51 +0200
+        bh=BngAQLfFrYEWXhjcTmuThO4xgzttYUC9luJvEjHMWdQ=;
+        b=CEzX+jjrhaIWvxxWfkYOvqPqlBp0yppKiFHW9rUjydUY2Df+5NuKP8/hv5PVDQmOLE
+         vYKZZaiZWKdiprk7MCqV3l6pBzN5oMX8wpg378z7lv00gs0VSzf/ZJfV/OIgW/rkHoG/
+         xBXspaE5BdreIE/AmFMoo0CWT4XEzW0QmjdVWkYpSJyTJENky5dMz9rVO4LSXbsF4ZUp
+         eH4/QoRVy2whIDVo+xDRKVeEzbPnU3iqMBsUVRsoms8WlHZNThEAYpt46xQzvJcYCIEO
+         OegpWa7OZLzktJkzz8P0UUe6CoFoCL6gGc+RyFwwGVsB146MzywI3998+wpucEwsF+ng
+         y83w==
+X-Gm-Message-State: AOJu0YwR6Cq4IKTz/jbeipet9gb3unjw+VVs3ZqUcvVsrl1yaKtXmvWV
+	V5h3CrrqVDxjIqTNUj7EyFlcNuEcuUTaMVoFreHKSdRg1NE+G85RufAXUGSQ+DMBWVoNew==
+X-Google-Smtp-Source: AGHT+IHMOiV5Mdn5v77/gifWvnDjJAZiAxp/513QM5JcQVs+myLHjDeNQH95LNNEsbP9E0pI95c69lwy
+X-Received: from wmbbi15.prod.google.com ([2002:a05:600c:3d8f:b0:43b:bf16:d6be])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:5246:b0:43c:ec4c:25b4
+ with SMTP id 5b1f17b1804b1-441bbec23e8mr88386825e9.10.1746352430181; Sun, 04
+ May 2025 02:53:50 -0700 (PDT)
+Date: Sun,  4 May 2025 11:52:52 +0200
 In-Reply-To: <20250504095230.2932860-25-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -72,15 +72,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250504095230.2932860-25-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1669; i=ardb@kernel.org;
- h=from:subject; bh=4KgoJzYmdouJK1RzBO038uMdZjYS6ocYk6yPrPHnQMw=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUPc4tfjUuFv7w+wzBWI0676+dkxPddmnZ5R7o+0AyKP/
- da/2zq5o5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEzk9Q2G/xUdPIviW/av19Cz
- urCmLastaxvf2kv31AOfM1UlpFmpmzMy7HknzW7xI2HzRfk7izkz7Tdw7rX+cv/6MVbJExlHk++ EMgAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1438; i=ardb@kernel.org;
+ h=from:subject; bh=SfyGJVp/cmZ3yoM/3fyJKQWjWHpwNBvXWOMO7V8FZ4I=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUPc4vfX/MYf5f1zwwzKZ2wNCdpqLG86K/P1QdbQNdfVj
+ j6zefy3o5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEyk3JXhv3/GviO9DDaO89Yc
+ za93yHo0S/d7aVCOr1rJasXgqWKrpzIyPJh+5g3Tl11p3FZGRQkctopygW+aDr0Uf3ok7kSB66E qNgA=
 X-Mailer: git-send-email 2.49.0.906.g1f30a19c02-goog
-Message-ID: <20250504095230.2932860-46-ardb+git@google.com>
-Subject: [RFT PATCH v2 21/23] x86/boot: Disallow absolute symbol references in
- startup code
+Message-ID: <20250504095230.2932860-47-ardb+git@google.com>
+Subject: [RFT PATCH v2 22/23] x86/boot: Revert "Reject absolute references in .head.text"
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
@@ -91,44 +90,46 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Check that the objects built under arch/x86/boot/startup do not contain
-any absolute symbol reference. Given that the code is built with -fPIC,
-such references can only be emitted using R_X86_64_64 relocations, so
-checking that those are absent is sufficient.
+This reverts commit faf0ed487415f76fe4acf7980ce360901f5e1698.
 
-Note that debug sections and __patchable_funtion_entries section may
-contain such relocations nonetheless, but these are unnecessary in the
-startup code, so they can be dropped first.
+The startup code is checked directly for the absence of absolute symbol
+references, so checking the .head.text section in the relocs tool is no
+longer needed.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/startup/Makefile | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/x86/tools/relocs.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/arch/x86/boot/startup/Makefile b/arch/x86/boot/startup/Makefile
-index c7e690091f81..7b83c8f597ef 100644
---- a/arch/x86/boot/startup/Makefile
-+++ b/arch/x86/boot/startup/Makefile
-@@ -35,9 +35,17 @@ $(patsubst %.o,$(obj)/%.o,$(lib-y)): OBJECT_FILES_NON_STANDARD := y
- # code, or code that has explicitly been made accessible to it via a symbol
- # alias.
- #
--$(obj)/%.pi.o: OBJCOPYFLAGS := --prefix-symbols=__pi_
-+$(obj)/%.pi.o: OBJCOPYFLAGS := --prefix-symbols=__pi_ --strip-debug \
-+			       --remove-section=.rela__patchable_function_entries
- $(obj)/%.pi.o: $(obj)/%.o FORCE
--	$(call if_changed,objcopy)
-+	$(call if_changed,piobjcopy)
+diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
+index 5778bc498415..e5a2b9a912d1 100644
+--- a/arch/x86/tools/relocs.c
++++ b/arch/x86/tools/relocs.c
+@@ -740,10 +740,10 @@ static void walk_relocs(int (*process)(struct section *sec, Elf_Rel *rel,
+ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
+ 		      const char *symname)
+ {
+-	int headtext = !strcmp(sec_name(sec->shdr.sh_info), ".head.text");
+ 	unsigned r_type = ELF64_R_TYPE(rel->r_info);
+ 	ElfW(Addr) offset = rel->r_offset;
+ 	int shn_abs = (sym->st_shndx == SHN_ABS) && !is_reloc(S_REL, symname);
 +
-+quiet_cmd_piobjcopy = $(quiet_cmd_objcopy)
-+      cmd_piobjcopy = $(cmd_objcopy);				\
-+        if $(READELF) -r $(@) | grep R_X86_64_64; then		\
-+                echo "$@: R_X86_64_64 references not allowed in startup code" >&2; \
-+                /bin/false;					\
-+        fi
+ 	if (sym->st_shndx == SHN_UNDEF)
+ 		return 0;
  
- extra-y		:= $(obj-y)
- obj-y		:= $(patsubst %.o,%.pi.o,$(obj-y))
+@@ -783,12 +783,6 @@ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
+ 			break;
+ 		}
+ 
+-		if (headtext) {
+-			die("Absolute reference to symbol '%s' not permitted in .head.text\n",
+-			    symname);
+-			break;
+-		}
+-
+ 		/*
+ 		 * Relocation offsets for 64 bit kernels are output
+ 		 * as 32 bits and sign extended back to 64 bits when
 -- 
 2.49.0.906.g1f30a19c02-goog
 
