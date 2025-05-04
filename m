@@ -1,195 +1,116 @@
-Return-Path: <linux-efi+bounces-3575-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3576-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073DFAA8698
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 15:51:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3779CAA869F
+	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 16:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF1417A86A7
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 13:49:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A623B95D5
+	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 14:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DC71A2389;
-	Sun,  4 May 2025 13:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FA419992D;
+	Sun,  4 May 2025 14:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWM6Sp2s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OL24r3MB"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B6A10E9;
-	Sun,  4 May 2025 13:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE475165F16;
+	Sun,  4 May 2025 14:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746366663; cv=none; b=q64Eca1JNZ50Aj6tspFymaNwcKqkbFhiQaplbLblLLrl6cmcYoIcZkMXShsRJB3ldLb0afrmT421XRGg7UVTZiwFLd3oAkVkFLZCb8yflZCzXbjHclT5TwjBo7R5GGJd7HlombtzJX30G8orPHKU/ORfOE9uQsEF3UG/CpJSWFc=
+	t=1746367489; cv=none; b=cxCROKL7eDdKZXyhjHEc2EcwEg9SAUdQtW53YPrCtm1YLZnk9aYnABOuiAtU0YQKrUsbDZ9QbLt4G8hLh/tRjs8OJYxvKwLKgUAuf+EMw59FhLHBzRoEtUqARI2kkcK7iI1HNEMR/ZAf0IeFYPNSUpKBH5RZzCvpimCCCuiyV0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746366663; c=relaxed/simple;
-	bh=Am8R653w6DFmXINiQmvUHC3B7/bLaoTrUH1Ub6/uprQ=;
+	s=arc-20240116; t=1746367489; c=relaxed/simple;
+	bh=U7HkALJVFd5qrJotArGztzaJIf1V/yKVdcADU6klXv4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=acnjS60K6fhdG6sT2nOs3B2r0wEcs6vTQ5LW/Vd11PsHVYYu35qk+eyamUtAlYjL8y5ohMmj/K5LbtgBOOW6PPiHEwtAAmSmZURSjcgIVniTtbh6pdxlJOwVtGTAILYI/v4JJlX/VyWUxZ7gXNsMVgCGi7+YGLkAzGIrTCdKxes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWM6Sp2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71FCC4CEE7;
-	Sun,  4 May 2025 13:51:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DuLtzQ6isfAeMffFsYbfUPe5NybI2gnjWOA9VUVTs2D9Yx+MsKw/SgxexzGVsadpGP/NRC9ucz1rGxvRKpMnZYqx1t9h5kHkAZfnhVxiAefdm4ba/TbdaIYNCf0Iwl6OMjwUiMbgyQHRgzT4JRu0CwGsXmWNcOke4QB3SVSeo3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OL24r3MB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA118C4CEE7;
+	Sun,  4 May 2025 14:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746366662;
-	bh=Am8R653w6DFmXINiQmvUHC3B7/bLaoTrUH1Ub6/uprQ=;
+	s=k20201202; t=1746367488;
+	bh=U7HkALJVFd5qrJotArGztzaJIf1V/yKVdcADU6klXv4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZWM6Sp2sKubNQ44E5wVp1LjLSAtKt/eE5xUiz01P+OeI5DBNku8Bf/a3TmuZqjxm4
-	 4CK4hanLqM7ISKRo1/rE6RdCULE0VcADfzjz7XLxE0++NKJ/yZ/ND54DzGlWsFZurE
-	 LFItX+2yj/vt/33GH9z/USA+S4jP17gxMoXOMmaExmwJiScZYw1lRqXazTaXJLzsDj
-	 at//zfctQb0qXOakjRoByKwD3CwAMOpc8JCxEENqmD327nLl7hjqJXDQsQ4ISaiVr+
-	 brADojzqBck/vCUyIhS1/SHwpV2VnmzWjycdOdcEKnUTAg0VPQIdEhWzytgXFTSucW
-	 2rG/3chJh2x9Q==
-Date: Sun, 4 May 2025 15:50:57 +0200
+	b=OL24r3MBtK1NbR7wdjvXgBJn8ihtQEnrPZqPN6PREX/rDSwF99mbd5qTFgm3wt58V
+	 j4lin6ZYoeBkwHLfwalssM6/MViSPpclPpU4rvTYmXJiWY04xMe9qyqQowAIC9Z95r
+	 uBTRSip+j0DgZfCBhiZN9fOJN4uDB2VgJp4k2V4kAlIzjpZ7M8hoQr+jribDtlYq67
+	 y+NZftCGoqSqzsqRw39XvROUmxT3CR/NWvZna12AKoNbCdLL2RlUZC1rLk9iy5mHDb
+	 PpmAQo6Ag/I8Rwu/ARhJxjEDLzjXGYDvm5KO5yutZzcMxT/uyQxMC1gdkkE7+Gwckc
+	 qx4It9jtbgCTA==
+Date: Sun, 4 May 2025 16:04:43 +0200
 From: Ingo Molnar <mingo@kernel.org>
 To: Ard Biesheuvel <ardb+git@google.com>
 Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
 	Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
 	Dionna Amalie Glaze <dionnaglaze@google.com>,
 	Kevin Loughlin <kevinloughlin@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [RFT PATCH v2 03/23] x86/boot: Drop global variables keeping
- track of LA57 state
-Message-ID: <aBdwwR52hI37bW9a@gmail.com>
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [RFT PATCH v2 00/23] x86: strict separation of startup code
+Message-ID: <aBdz-4hJu0zp40mC@gmail.com>
 References: <20250504095230.2932860-25-ardb+git@google.com>
- <20250504095230.2932860-28-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250504095230.2932860-28-ardb+git@google.com>
+In-Reply-To: <20250504095230.2932860-25-ardb+git@google.com>
 
 
 * Ard Biesheuvel <ardb+git@google.com> wrote:
 
-> From: Ard Biesheuvel <ardb@kernel.org>
-> 
-> On x86_64, the core kernel is entered in long mode, which implies that
-> paging is enabled. This means that the CR4.LA57 control bit is
-> guaranteed to be in sync with the number of paging levels used by the
-> kernel, and there is no need to store this in a variable.
-> 
-> There is also no need to use variables for storing the calculations of
-> pgdir_shift and ptrs_per_p4d, as they are easily determined on the fly.
-> 
-> This removes the need for two different sources of truth (i.e., early
-> and late) for determining whether 5-level paging is in use: CR4.LA57
-> always reflects the actual state, and never changes from the point of
-> view of the 64-bit core kernel. It also removes the need for exposing
-> the associated variables to the startup code. The only potential concern
-> is the cost of CR4 accesses, which can be mitigated using alternatives
-> patching based on feature detection.
-> 
-> Note that even the decompressor does not manipulate any page tables
-> before updating CR4.LA57, so it can also avoid the associated global
-> variables entirely. However, as it does not implement alternatives
-> patching, the associated ELF sections need to be discarded.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/x86/boot/compressed/misc.h         |  4 --
->  arch/x86/boot/compressed/pgtable_64.c   | 12 ------
->  arch/x86/boot/compressed/vmlinux.lds.S  |  1 +
->  arch/x86/boot/startup/map_kernel.c      | 12 +-----
->  arch/x86/boot/startup/sme.c             |  9 ----
->  arch/x86/include/asm/pgtable_64_types.h | 43 ++++++++++----------
->  arch/x86/kernel/cpu/common.c            |  2 -
->  arch/x86/kernel/head64.c                | 11 -----
->  arch/x86/mm/kasan_init_64.c             |  3 --
->  9 files changed, 24 insertions(+), 73 deletions(-)
+> Ard Biesheuvel (23):
+>   x86/boot: Move early_setup_gdt() back into head64.c
+>   x86/boot: Disregard __supported_pte_mask in __startup_64()
+>   x86/boot: Drop global variables keeping track of LA57 state
+>   x86/sev: Make sev_snp_enabled() a static function
+>   x86/sev: Move instruction decoder into separate source file
+>   x86/sev: Disentangle #VC handling code from startup code
+>   x86/sev: Separate MSR and GHCB based snp_cpuid() via a callback
+>   x86/sev: Fall back to early page state change code only during boot
+>   x86/sev: Move GHCB page based HV communication out of startup code
+>   x86/sev: Use boot SVSM CA for all startup and init code
+>   x86/boot: Drop redundant RMPADJUST in SEV SVSM presence check
+>   x86/sev: Unify SEV-SNP hypervisor feature check
+>   x86/linkage: Add SYM_PIC_ALIAS() macro helper to emit symbol aliases
+>   x86/boot: Add a bunch of PIC aliases
+>   x86/boot: Provide __pti_set_user_pgtbl() to startup code
+>   x86/sev: Provide PIC aliases for SEV related data objects
+>   x86/sev: Move __sev_[get|put]_ghcb() into separate noinstr object
+>   x86/sev: Export startup routines for ordinary use
+>   x86/boot: Created a confined code area for startup code
+>   x86/boot: Move startup code out of __head section
+>   x86/boot: Disallow absolute symbol references in startup code
+>   x86/boot: Revert "Reject absolute references in .head.text"
+>   x86/boot: Get rid of the .head.text section
 
-So this patch breaks the build & creates header dependency hell on 
-x86-64 allnoconfig:
+>  42 files changed, 2367 insertions(+), 2325 deletions(-)
 
- starship:~/tip> m kernel/pid.o 
-   DESCEND objtool
-   CC      arch/x86/kernel/asm-offsets.s
-   INSTALL libsubcmd_headers
- In file included from ./arch/x86/include/asm/pgtable_64_types.h:5,
-                 from ./arch/x86/include/asm/pgtable_types.h:283,
-                 from ./arch/x86/include/asm/processor.h:21,
-                 from ./arch/x86/include/asm/cpufeature.h:5,
-                 from ./arch/x86/include/asm/thread_info.h:59,
-                 from ./include/linux/thread_info.h:60,
-                 from ./include/linux/spinlock.h:60,
-                 from ./include/linux/swait.h:7,
-                 from ./include/linux/completion.h:12,
-                 from ./include/linux/crypto.h:15,
-                 from arch/x86/kernel/asm-offsets.c:9:
- ./arch/x86/include/asm/sparsemem.h:29:34: warning: "pgtable_l5_enabled" is not defined, evaluates to 0 [-Wundef]
-    29 | # define MAX_PHYSMEM_BITS       (pgtable_l5_enabled() ? 52 : 46)
-       |                                  ^~~~~~~~~~~~~~~~~~
- ./include/linux/page-flags-layout.h:31:26: note: in expansion of macro ‘MAX_PHYSMEM_BITS’
-    31 | #define SECTIONS_SHIFT  (MAX_PHYSMEM_BITS - SECTION_SIZE_BITS)
+So to move this forward I applied the following 7 patches to 
+tip:x86/boot:
 
-Plus I'm not sure I'm happy about this kind of complexity getting 
-embedded deep within low level MM primitives:
+	x86/boot: Move early_setup_gdt() back into head64.c
+	x86/boot: Disregard __supported_pte_mask in __startup_64()
+	x86/sev: Make sev_snp_enabled() a static function
+	x86/sev: Move instruction decoder into separate source file
+	x86/linkage: Add SYM_PIC_ALIAS() macro helper to emit symbol aliases
+	x86/boot: Add a bunch of PIC aliases
+	x86/boot: Provide __pti_set_user_pgtbl() to startup code
 
-  static __always_inline __pure bool pgtable_l5_enabled(void)
-  {
-	unsigned long r;
-	bool ret;
+Which are I believe independent of SEV testing.
 
-	if (!IS_ENABLED(CONFIG_X86_5LEVEL))
-		return false;
+I also merged in pending upstream fixes, including:
 
-	asm(ALTERNATIVE_TERNARY(
-		 "movq %%cr4, %[reg] \n\t btl %[la57], %k[reg]" CC_SET(c),
-		 %P[feat], "stc", "clc")
-		 : [reg] "=&r" (r), CC_OUT(c) (ret)
-		 : [feat] "i"  (X86_FEATURE_LA57),
-		   [la57] "i"  (X86_CR4_LA57_BIT)
-		 : "cc");
+   8ed12ab1319b ("x86/boot/sev: Support memory acceptance in the EFI stub under SVSM")
 
-	return ret;
-  }
-
-it's basically everywhere:
-
-	arch/x86/include/asm/page_64_types.h:#define __VIRTUAL_MASK_SHIFT	(pgtable_l5_enabled() ? 56 : 47)
-	arch/x86/include/asm/paravirt.h:	if (pgtable_l5_enabled())						\
-	arch/x86/include/asm/paravirt.h:	if (pgtable_l5_enabled())					\
-	arch/x86/include/asm/pgalloc.h:	if (!pgtable_l5_enabled())
-	arch/x86/include/asm/pgalloc.h:	if (!pgtable_l5_enabled())
-	arch/x86/include/asm/pgalloc.h:	if (pgtable_l5_enabled())
-	arch/x86/include/asm/pgtable.h:#define pgd_clear(pgd)			(pgtable_l5_enabled() ? native_pgd_clear(pgd) : 0)
-	arch/x86/include/asm/pgtable.h:	if (!pgtable_l5_enabled())
-	arch/x86/include/asm/pgtable.h:	if (!pgtable_l5_enabled())
-	arch/x86/include/asm/pgtable.h:	if (!pgtable_l5_enabled())
-	arch/x86/include/asm/pgtable.h:	if (!pgtable_l5_enabled())
-	arch/x86/include/asm/pgtable_32_types.h:#define pgtable_l5_enabled() 0
-	arch/x86/include/asm/pgtable_64.h:	return !pgtable_l5_enabled();
-	arch/x86/include/asm/pgtable_64.h:	if (pgtable_l5_enabled() ||
-	arch/x86/include/asm/pgtable_64_types.h:static __always_inline __pure bool pgtable_l5_enabled(void)
-	arch/x86/include/asm/pgtable_64_types.h:#define PGDIR_SHIFT	(pgtable_l5_enabled() ? 48 : 39)
-	arch/x86/include/asm/pgtable_64_types.h:#define PTRS_PER_P4D		(pgtable_l5_enabled() ? 512 : 1)
-	arch/x86/include/asm/pgtable_64_types.h:# define VMALLOC_SIZE_TB	(pgtable_l5_enabled() ? VMALLOC_SIZE_TB_L5 : VMALLOC_SIZE_TB_L4)
-	arch/x86/include/asm/sparsemem.h:# define MAX_PHYSMEM_BITS	(pgtable_l5_enabled() ? 52 : 46)
-
-Inlined approximately a gazillion times. (449 times on x86 defconfig. 
-Yes, I just counted it.)
-
-And it's not even worth it, as it generates horrendous code:
-
-   154:   0f 20 e0                mov    %cr4,%rax
-   157:   0f ba e0 0c             bt     $0xc,%eax
-
-... while CR4 access might be faster these days, it's certainly not as 
-fast as simple percpu access. Plus it clobbers a register (RAX in the 
-example above), which is unnecessary for a flag test.
-
-Cannot pgtable_l5_enabled() be a single, simple percpu flag or so?
-
-And yes, this creates another layer for these values - but thus 
-decouples low level MM from detection & implementation complexities, 
-which is a plus ...
+Which should make tip:x86/boot a good base for your series going 
+forward?
 
 Thanks,
 
