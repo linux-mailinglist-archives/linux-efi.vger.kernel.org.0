@@ -1,216 +1,158 @@
-Return-Path: <linux-efi+bounces-3547-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3548-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B488AA8468
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 08:58:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE46AA8488
+	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 09:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB2D8179FBF
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 06:58:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1449C1897F78
+	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 07:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD0D183CB0;
-	Sun,  4 May 2025 06:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9578494;
+	Sun,  4 May 2025 07:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pLSq9mD2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zK3u6gBv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grCc3sB2"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB14130A7D;
-	Sun,  4 May 2025 06:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DEC28F4;
+	Sun,  4 May 2025 07:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746341883; cv=none; b=AVGZVVQzQvP4gk7x/gmg+7lH07qPqcVcVDonO+M1S3ajoVRQOTse9U7YjzEmVevIanT4AL6lPe788viMlDfGtVflXMnmugWpC288gp9DQ5HSkIO8eww93TV/fsQk0nkbIB21s7dS850jukoLN/2HMX2b1/eunVUp2+R4Si3JfN0=
+	t=1746343987; cv=none; b=FAoMO94Lfv7OUnylEBbVa94veMCgklOcFkjuoRoKYyS3xJ0FeD6boYgDGt5bGpdn//usevJ4asZOfLN/CX3O1PhV75l8zajBpP8/DjjB0A9CAnipYHU76SGQuzEFWjDBRjGHQDeZgu2/xeCcuYycfcx3/jLEEjlM06CYHKrcuAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746341883; c=relaxed/simple;
-	bh=hnu4Nc3S6VKLMCxUIJhllk0RF2PfPOO1fXOC6zmH3wo=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IJCoHO5pmSGWHNgw7IbF68GksPbpJLPfxnH8svlAZWi5RDXAUM/NfGppezhQ6TQ6AXt1Nhxfb3Mz22q+nyxHg36osPbOC1qqycaEwLXasZqEfgnqyb+2UgX2o3wWXPODYgl+epUKiULngiuc72e63dPK/Ls2p+V6/rLxG6xY0/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pLSq9mD2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zK3u6gBv; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 04 May 2025 06:57:47 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746341873;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qV9q6fKEQc/wdLQCvNRakX9Kvw3ZigCKFVWwmbfRUJ0=;
-	b=pLSq9mD21uX4/ihTsuYpYcvYioHfO9JYedSbdFiIQ17DFNsaZezZQGqvNvke+DPV7+Sy8t
-	c9I1EH4d3xft8jhMhzzt8+ztrFJIguzLzy/xtjD/lwMkkgbtHhzvf+IHwVSHVvNrWwoEgb
-	eFyLBmTWT5uGupr98ntMNcNGxXERsNsu0kKh77UwTSmigmSEhm9BrWrGfEtKVH9BPh6IH5
-	1jybwRUHuWA3K1w8i/2jnz5vB+bQaVIEWXo4iuKHczh4qf4gZ526P4hkaw9kFEa0tyjhOS
-	h5W+Q76YK8YlDg1eQaJ2ESWssWWEA0Ci1V0HLKOLyPgHSYn4REEJy4NgUwaeOA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746341873;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qV9q6fKEQc/wdLQCvNRakX9Kvw3ZigCKFVWwmbfRUJ0=;
-	b=zK3u6gBv6c6L/7fdkBW+tUtVEnM729ecCJELCe8HcoDZGuQgIgdN54ZgW1eCdZ8Hpk+Tgc
-	IS2FQ4beX6x06xDw==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/boot/sev: Support memory acceptance in the EFI
- stub under SVSM
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
- Ingo Molnar <mingo@kernel.org>,  <stable@vger.kernel.org>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- Kevin Loughlin <kevinloughlin@google.com>, linux-efi@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250428174322.2780170-2-ardb+git@google.com>
-References: <20250428174322.2780170-2-ardb+git@google.com>
+	s=arc-20240116; t=1746343987; c=relaxed/simple;
+	bh=gdrZ9xZiSUdvqtaCcWoVCHNWwWD7lz2mYEbitFGulZs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K7+VC0aNqgzXhHaalH0j9vY6+022vjQ0f3U/RxD5S17iFwMkvNd+yTHEs9crWGiB+jfM9yvQbbKb9xTTY3D4H8OrECH69InIhx7E1+Ll/6JM/4P5p6mlx7rZgBjxCZnurM3viAeYUplnH1Ep94lcFygnaFyd6CT8smHobdu3r9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grCc3sB2; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3105ef2a071so34554131fa.1;
+        Sun, 04 May 2025 00:33:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746343984; x=1746948784; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eYiayAZSUyOm+8KV8iySpwRx7cWI85tBux/RcLlm+hY=;
+        b=grCc3sB2Pqc3RUiRF5H0uk8qHHkWAt7PYI1zZdhSI6ce+V0PPaSs1CZG3b2S4xz3g+
+         XQVVEuOTv2nlVvSIqgRDLwuCuKmzGpY5AhDc4XLrMC6My7ZXt6GqhajtVv08K1CmBxM4
+         kvIj/cmUAEK/LRZEqrucR6NLmdwLEANmLYBp0MmYe9c0VAMxXpRdreqcNDmFLIqZDvEx
+         Qumm2ophd6L0VzTF0SA5JDRPw0GvGYsX7Up5HWknSMMngQnNpDDbiYt8V6b2FkNr94r+
+         cOawWgbc5v+gzOqYNwAMxkzai8QlJtoCda6mjE/n8T5X0zs2zTYrwiQud+jGxsm0SKvO
+         HM4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746343984; x=1746948784;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eYiayAZSUyOm+8KV8iySpwRx7cWI85tBux/RcLlm+hY=;
+        b=qyR2XCBQoh6TEwOU2Pk8p0Qd+MzZzF88SfK7mQgILHqhhAagd3mV5Ey0v7vAS6DdsS
+         pyCtYevcF4V8Lbc0Fpbd3Bu+vDQkGPTdoxa5tZMoK+2R+Yz98eowfUs4vq2edfas5oqR
+         pexdDiQG8dFNSZ6AbkMuILjnYjREwQig11F5dwboIbOyccVd66ZTdm34vS84Kw9CY78n
+         tf8JunP2tyZXgTS/8AAJVVnOUicXRJr4CjyNeTcyEHEiakUOUZA5PdH0y9E8Vc1XAQiL
+         Evvs/7uwmTdH22wOAhQ+3kYcRmbtAW83IO9Z14cz6iQ6MulE3npfQ8k4dXV2PdKNmfPq
+         uX+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUXTb1ybn28g0Z9SXSWErqTztjAjXeDHRyzLJ6JMdDZOrdMA1m3Wfh4dVHY00lt1kCzlfa9iT0TySSvJzrj@vger.kernel.org, AJvYcCV5AYLmAkX1WB7uYerLcu+43XF37MX+mdzRN02fKQi7BUjSG2k+/Zv6r2xGKIdkWKhPs3a5mtiX95E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9kGkp6H4YSxDiuUx/5LR+xyYKx92xIH3/+IkxjkNoqL8xWLcI
+	0k4Mepv7yxIX4TBOcU6Mh8x0vnZbZIJnQ3GdZ7L1xFuDBmcdZXI37Eb4UyFwKwARWEt3mX9+xay
+	z+bVGHvSREjRC9E7MojaOkhygOGs=
+X-Gm-Gg: ASbGncs3BeVGa7h3bhmcRKnK9vlthE+v7t1rbcNWDRSXCBpRdl1NDWiU4BQwvGFtmi5
+	bdaH8kj9+bLac/mzJoI0c7cpe42ZbrOpQXJ4Br3IOAbGmCSnpvTylBq3Ir9ENNTe3w/TVLouU6Z
+	+3r3lor082M/klRihP55Q6rA==
+X-Google-Smtp-Source: AGHT+IFoSqJnnXGmXvA0S9Lpu8fzifjVDHFLr+eAGZAqz2XZdFs9ClMvGoiTXrkOW+xXZqlAqa6L+NW2Mp0wbc1Y3M8=
+X-Received: by 2002:a05:651c:1601:b0:30c:3099:13d0 with SMTP id
+ 38308e7fff4ca-32348f5f9f8mr9314401fa.21.1746343983560; Sun, 04 May 2025
+ 00:33:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174634186772.22196.3588344121951287997.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20250418141253.2601348-8-ardb+git@google.com> <20250418141253.2601348-14-ardb+git@google.com>
+ <f465a1b3-c28b-7bfe-7c18-e3fad41842aa@gmail.com> <CAMj1kXH=nXgymC8XGO0cxRXJS=N2GY1fCvegSBG4_+mS2-cc4Q@mail.gmail.com>
+In-Reply-To: <CAMj1kXH=nXgymC8XGO0cxRXJS=N2GY1fCvegSBG4_+mS2-cc4Q@mail.gmail.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Sun, 4 May 2025 09:33:04 +0200
+X-Gm-Features: ATxdqUH9bkMSwuk8Z5NEpFtrAaMVMTJZTjZNc92XY0TDxWXQrYOLxywe0urF7o0
+Message-ID: <CAFULd4b3uHB+tvTXroDP-MLgpBHtGxMZgxCp3FVpN7bx=Ov+7w@mail.gmail.com>
+Subject: Re: [PATCH v5 6/6] x86/asm: Retire RIP_REL_REF()
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, x86@kernel.org, mingo@kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Fri, Apr 18, 2025 at 5:58=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
+>
+> On Fri, 18 Apr 2025 at 17:51, Uros Bizjak <ubizjak@gmail.com> wrote:
+> >
+> >
+> >
+> > On 18. 04. 25 16:13, Ard Biesheuvel wrote:
+> > > From: Ard Biesheuvel <ardb@kernel.org>
+> > >
+> > > Now that all users have been moved into startup/ where PIC codegen is
+> > > used, RIP_REL_REF() is no longer needed. Remove it.
+> > >
+> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > ---
+> > >   arch/x86/include/asm/asm.h | 5 -----
+> > >   1 file changed, 5 deletions(-)
+> > >
+> > > diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
+> > > index a9f07799e337..eef0771512de 100644
+> > > --- a/arch/x86/include/asm/asm.h
+> > > +++ b/arch/x86/include/asm/asm.h
+> > > @@ -120,11 +120,6 @@ static __always_inline __pure void *rip_rel_ptr(=
+void *p)
+> > >
+> > >       return p;
+> > >   }
+> > > -#ifndef __pic__
+> > > -#define RIP_REL_REF(var)     (*(typeof(&(var)))rip_rel_ptr(&(var)))
+> > > -#else
+> > > -#define RIP_REL_REF(var)     (var)
+> > > -#endif
+> > >   #endif
+> >
+> > You can also remove rip_rel_ptr() with the whole "#ifndef __ASSEMBLER__=
+"
+> > part.
+> >
+>
+> No, rip_rel_ptr() needs to be kept, unfortunately.
 
-Commit-ID:     8ed12ab1319b2d8e4a529504777aacacf71371e4
-Gitweb:        https://git.kernel.org/tip/8ed12ab1319b2d8e4a529504777aacacf71371e4
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 28 Apr 2025 19:43:22 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 04 May 2025 08:20:27 +02:00
+Indeed, I scanned the source before your patch, where rip_rel_ptr()
+was used exclusively via RIP_REL_REF.
 
-x86/boot/sev: Support memory acceptance in the EFI stub under SVSM
+On a related note,
 
-Commit:
+asm("leaq %c1(%%rip), %0" : "=3Dr"(p) : "i"(p));
 
-  d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
+the above asm can use %a1 generic operand modifier instead of
+"%c1(%%rip)" [1], similar to d689863c1a60b9 [2], which also explains
+the modifier:
 
-provided a fix for SEV-SNP memory acceptance from the EFI stub when
-running at VMPL #0. However, that fix was insufficient for SVSM SEV-SNP
-guests running at VMPL >0, as those rely on a SVSM calling area, which
-is a shared buffer whose address is programmed into a SEV-SNP MSR, and
-the SEV init code that sets up this calling area executes much later
-during the boot.
+--q--
+The "a" asm operand modifier substitutes a memory reference, with the
+actual operand treated as address. For x86_64, when a symbol is
+provided, the "a" modifier emits "sym(%rip)" instead of "sym",
+enabling shorter %rip-relative addressing.
+--/q--
 
-Given that booting via the EFI stub at VMPL >0 implies that the firmware
-has configured this calling area already, reuse it for performing memory
-acceptance in the EFI stub.
+[1] https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#Generic-Operand-Mo=
+difiers
+[2] https://web.git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/=
+arch/x86/include/asm?id=3Dd689863c1a60b9936b47a34fa5c3330de374f4fc
 
-Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Kevin Loughlin <kevinloughlin@google.com>
-Cc: linux-efi@vger.kernel.org
-Link: https://lore.kernel.org/r/20250428174322.2780170-2-ardb+git@google.com
----
- arch/x86/boot/compressed/mem.c |  5 +----
- arch/x86/boot/compressed/sev.c | 40 +++++++++++++++++++++++++++++++++-
- arch/x86/boot/compressed/sev.h |  2 ++-
- 3 files changed, 43 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-index f676156..0e9f84a 100644
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -34,14 +34,11 @@ static bool early_is_tdx_guest(void)
- 
- void arch_accept_memory(phys_addr_t start, phys_addr_t end)
- {
--	static bool sevsnp;
--
- 	/* Platform-specific memory-acceptance call goes here */
- 	if (early_is_tdx_guest()) {
- 		if (!tdx_accept_memory(start, end))
- 			panic("TDX: Failed to accept memory\n");
--	} else if (sevsnp || (sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED)) {
--		sevsnp = true;
-+	} else if (early_is_sevsnp_guest()) {
- 		snp_accept_memory(start, end);
- 	} else {
- 		error("Cannot accept memory: unknown platform\n");
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 89ba168..0003e44 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -645,3 +645,43 @@ void sev_prep_identity_maps(unsigned long top_level_pgt)
- 
- 	sev_verify_cbit(top_level_pgt);
- }
-+
-+bool early_is_sevsnp_guest(void)
-+{
-+	static bool sevsnp;
-+
-+	if (sevsnp)
-+		return true;
-+
-+	if (!(sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED))
-+		return false;
-+
-+	sevsnp = true;
-+
-+	if (!snp_vmpl) {
-+		unsigned int eax, ebx, ecx, edx;
-+
-+		/*
-+		 * CPUID Fn8000_001F_EAX[28] - SVSM support
-+		 */
-+		eax = 0x8000001f;
-+		ecx = 0;
-+		native_cpuid(&eax, &ebx, &ecx, &edx);
-+		if (eax & BIT(28)) {
-+			struct msr m;
-+
-+			/* Obtain the address of the calling area to use */
-+			boot_rdmsr(MSR_SVSM_CAA, &m);
-+			boot_svsm_caa = (void *)m.q;
-+			boot_svsm_caa_pa = m.q;
-+
-+			/*
-+			 * The real VMPL level cannot be discovered, but the
-+			 * memory acceptance routines make no use of that so
-+			 * any non-zero value suffices here.
-+			 */
-+			snp_vmpl = U8_MAX;
-+		}
-+	}
-+	return true;
-+}
-diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
-index 4e463f3..d390038 100644
---- a/arch/x86/boot/compressed/sev.h
-+++ b/arch/x86/boot/compressed/sev.h
-@@ -13,12 +13,14 @@
- bool sev_snp_enabled(void);
- void snp_accept_memory(phys_addr_t start, phys_addr_t end);
- u64 sev_get_status(void);
-+bool early_is_sevsnp_guest(void);
- 
- #else
- 
- static inline bool sev_snp_enabled(void) { return false; }
- static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
- static inline u64 sev_get_status(void) { return 0; }
-+static inline bool early_is_sevsnp_guest(void) { return false; }
- 
- #endif
- 
+Uros.
 
