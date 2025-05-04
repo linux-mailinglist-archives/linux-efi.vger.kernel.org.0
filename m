@@ -1,158 +1,109 @@
-Return-Path: <linux-efi+bounces-3548-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3549-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE46AA8488
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 09:33:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950B4AA848D
+	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 09:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1449C1897F78
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 07:33:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E56E1899560
+	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 07:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9578494;
-	Sun,  4 May 2025 07:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1D633E4;
+	Sun,  4 May 2025 07:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grCc3sB2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MqvLml9G"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DEC28F4;
-	Sun,  4 May 2025 07:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B501382;
+	Sun,  4 May 2025 07:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746343987; cv=none; b=FAoMO94Lfv7OUnylEBbVa94veMCgklOcFkjuoRoKYyS3xJ0FeD6boYgDGt5bGpdn//usevJ4asZOfLN/CX3O1PhV75l8zajBpP8/DjjB0A9CAnipYHU76SGQuzEFWjDBRjGHQDeZgu2/xeCcuYycfcx3/jLEEjlM06CYHKrcuAQ=
+	t=1746344320; cv=none; b=fuWE9z73g7gKwZCUOynP/1vEMsIuoA8sx5VAgD/P0C5tcvHbaUn1ZK/bLDvcZGPqivwzu3CDrlv24szFFWmaHepekfyv+0mJ6YrXaETdolderj40ABJM2F+2EzdURkVoOqqnKxtggZ2nCABlQ6IgtO723tSSwnF0TuNxV6bkzHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746343987; c=relaxed/simple;
-	bh=gdrZ9xZiSUdvqtaCcWoVCHNWwWD7lz2mYEbitFGulZs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K7+VC0aNqgzXhHaalH0j9vY6+022vjQ0f3U/RxD5S17iFwMkvNd+yTHEs9crWGiB+jfM9yvQbbKb9xTTY3D4H8OrECH69InIhx7E1+Ll/6JM/4P5p6mlx7rZgBjxCZnurM3viAeYUplnH1Ep94lcFygnaFyd6CT8smHobdu3r9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grCc3sB2; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3105ef2a071so34554131fa.1;
-        Sun, 04 May 2025 00:33:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746343984; x=1746948784; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eYiayAZSUyOm+8KV8iySpwRx7cWI85tBux/RcLlm+hY=;
-        b=grCc3sB2Pqc3RUiRF5H0uk8qHHkWAt7PYI1zZdhSI6ce+V0PPaSs1CZG3b2S4xz3g+
-         XQVVEuOTv2nlVvSIqgRDLwuCuKmzGpY5AhDc4XLrMC6My7ZXt6GqhajtVv08K1CmBxM4
-         kvIj/cmUAEK/LRZEqrucR6NLmdwLEANmLYBp0MmYe9c0VAMxXpRdreqcNDmFLIqZDvEx
-         Qumm2ophd6L0VzTF0SA5JDRPw0GvGYsX7Up5HWknSMMngQnNpDDbiYt8V6b2FkNr94r+
-         cOawWgbc5v+gzOqYNwAMxkzai8QlJtoCda6mjE/n8T5X0zs2zTYrwiQud+jGxsm0SKvO
-         HM4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746343984; x=1746948784;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eYiayAZSUyOm+8KV8iySpwRx7cWI85tBux/RcLlm+hY=;
-        b=qyR2XCBQoh6TEwOU2Pk8p0Qd+MzZzF88SfK7mQgILHqhhAagd3mV5Ey0v7vAS6DdsS
-         pyCtYevcF4V8Lbc0Fpbd3Bu+vDQkGPTdoxa5tZMoK+2R+Yz98eowfUs4vq2edfas5oqR
-         pexdDiQG8dFNSZ6AbkMuILjnYjREwQig11F5dwboIbOyccVd66ZTdm34vS84Kw9CY78n
-         tf8JunP2tyZXgTS/8AAJVVnOUicXRJr4CjyNeTcyEHEiakUOUZA5PdH0y9E8Vc1XAQiL
-         Evvs/7uwmTdH22wOAhQ+3kYcRmbtAW83IO9Z14cz6iQ6MulE3npfQ8k4dXV2PdKNmfPq
-         uX+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUXTb1ybn28g0Z9SXSWErqTztjAjXeDHRyzLJ6JMdDZOrdMA1m3Wfh4dVHY00lt1kCzlfa9iT0TySSvJzrj@vger.kernel.org, AJvYcCV5AYLmAkX1WB7uYerLcu+43XF37MX+mdzRN02fKQi7BUjSG2k+/Zv6r2xGKIdkWKhPs3a5mtiX95E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9kGkp6H4YSxDiuUx/5LR+xyYKx92xIH3/+IkxjkNoqL8xWLcI
-	0k4Mepv7yxIX4TBOcU6Mh8x0vnZbZIJnQ3GdZ7L1xFuDBmcdZXI37Eb4UyFwKwARWEt3mX9+xay
-	z+bVGHvSREjRC9E7MojaOkhygOGs=
-X-Gm-Gg: ASbGncs3BeVGa7h3bhmcRKnK9vlthE+v7t1rbcNWDRSXCBpRdl1NDWiU4BQwvGFtmi5
-	bdaH8kj9+bLac/mzJoI0c7cpe42ZbrOpQXJ4Br3IOAbGmCSnpvTylBq3Ir9ENNTe3w/TVLouU6Z
-	+3r3lor082M/klRihP55Q6rA==
-X-Google-Smtp-Source: AGHT+IFoSqJnnXGmXvA0S9Lpu8fzifjVDHFLr+eAGZAqz2XZdFs9ClMvGoiTXrkOW+xXZqlAqa6L+NW2Mp0wbc1Y3M8=
-X-Received: by 2002:a05:651c:1601:b0:30c:3099:13d0 with SMTP id
- 38308e7fff4ca-32348f5f9f8mr9314401fa.21.1746343983560; Sun, 04 May 2025
- 00:33:03 -0700 (PDT)
+	s=arc-20240116; t=1746344320; c=relaxed/simple;
+	bh=Pb8UY72ziA2OKScLOhdBxtD6WvfLEX6DP0wbLPqS/pU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A26ftPVTOfHAkM2nfMUVEEahdOdi8OYycW2eKDho1/FV+J2VChPVsWxb5aJEHTkYwu5V/TmQ9vUOdP5dn9OZKF90ER381HrIkwioYDhFmrGePHo38RfLwvtxvCEcX80FSRs7dmMZrsZVL44CoQoQHPXpOQp+n40OLt4pQahEqc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MqvLml9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731D9C4CEE7;
+	Sun,  4 May 2025 07:38:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746344319;
+	bh=Pb8UY72ziA2OKScLOhdBxtD6WvfLEX6DP0wbLPqS/pU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MqvLml9GZAj0iEOLlt961lk9APUHXNa03H9+TGTzWjLN42h7Q+9iNKYsEROup85t1
+	 3kdP2ylTbFC8F5vtdNeDvidBtCejuD8DXiayRhlHck3Yi+4+K/DLhCgeZ5KzIG6YS/
+	 oPjUHUYVyDWtTIUqmQg5Auc2i0UINMyOHpxgZxk08wIoRLLz8ULXHp7pq+RhEm0fw/
+	 MAPejGKxabfq/aThqlikiGRLB31PDdKyRDoghzTGi/gt+n+8lE1GH0E1cWVLFpTaZP
+	 9GVftFULCE+3Hx4p0crq118a5JZfCihYJFMRys8jIcu3Il0pSwtsNBQVhY8fwwtFnF
+	 K9o2gntXQsVQQ==
+Date: Sun, 4 May 2025 09:38:35 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	Borislav Petkov <bp@alien8.de>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Kevin Loughlin <kevinloughlin@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/boot/sev: Support memory acceptance in the EFI stub
+ under SVSM
+Message-ID: <aBcZe1amYvqslhvA@gmail.com>
+References: <20250428174322.2780170-2-ardb+git@google.com>
+ <0ad5e887-e0f3-6c75-4049-fd728267d9c0@amd.com>
+ <CAMj1kXE7=u9xNcUHiyFVPbOpwPvntFjdLfTzD0LeD_7it2MEQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250418141253.2601348-8-ardb+git@google.com> <20250418141253.2601348-14-ardb+git@google.com>
- <f465a1b3-c28b-7bfe-7c18-e3fad41842aa@gmail.com> <CAMj1kXH=nXgymC8XGO0cxRXJS=N2GY1fCvegSBG4_+mS2-cc4Q@mail.gmail.com>
-In-Reply-To: <CAMj1kXH=nXgymC8XGO0cxRXJS=N2GY1fCvegSBG4_+mS2-cc4Q@mail.gmail.com>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Sun, 4 May 2025 09:33:04 +0200
-X-Gm-Features: ATxdqUH9bkMSwuk8Z5NEpFtrAaMVMTJZTjZNc92XY0TDxWXQrYOLxywe0urF7o0
-Message-ID: <CAFULd4b3uHB+tvTXroDP-MLgpBHtGxMZgxCp3FVpN7bx=Ov+7w@mail.gmail.com>
-Subject: Re: [PATCH v5 6/6] x86/asm: Retire RIP_REL_REF()
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, x86@kernel.org, mingo@kernel.org, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXE7=u9xNcUHiyFVPbOpwPvntFjdLfTzD0LeD_7it2MEQg@mail.gmail.com>
 
-On Fri, Apr 18, 2025 at 5:58=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
-ote:
->
-> On Fri, 18 Apr 2025 at 17:51, Uros Bizjak <ubizjak@gmail.com> wrote:
+
+* Ard Biesheuvel <ardb@kernel.org> wrote:
+
+> On Thu, 1 May 2025 at 20:05, Tom Lendacky <thomas.lendacky@amd.com> wrote:
 > >
-> >
-> >
-> > On 18. 04. 25 16:13, Ard Biesheuvel wrote:
+> > On 4/28/25 12:43, Ard Biesheuvel wrote:
 > > > From: Ard Biesheuvel <ardb@kernel.org>
 > > >
-> > > Now that all users have been moved into startup/ where PIC codegen is
-> > > used, RIP_REL_REF() is no longer needed. Remove it.
+> > > Commit
 > > >
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > ---
-> > >   arch/x86/include/asm/asm.h | 5 -----
-> > >   1 file changed, 5 deletions(-)
+> > >   d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
 > > >
-> > > diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
-> > > index a9f07799e337..eef0771512de 100644
-> > > --- a/arch/x86/include/asm/asm.h
-> > > +++ b/arch/x86/include/asm/asm.h
-> > > @@ -120,11 +120,6 @@ static __always_inline __pure void *rip_rel_ptr(=
-void *p)
+> > > provided a fix for SEV-SNP memory acceptance from the EFI stub when
+> > > running at VMPL #0. However, that fix was insufficient for SVSM SEV-SNP
+> > > guests running at VMPL >0, as those rely on a SVSM calling area, which
+> > > is a shared buffer whose address is programmed into a SEV-SNP MSR, and
+> > > the SEV init code that sets up this calling area executes much later
+> > > during the boot.
 > > >
-> > >       return p;
-> > >   }
-> > > -#ifndef __pic__
-> > > -#define RIP_REL_REF(var)     (*(typeof(&(var)))rip_rel_ptr(&(var)))
-> > > -#else
-> > > -#define RIP_REL_REF(var)     (var)
-> > > -#endif
-> > >   #endif
+> > > Given that booting via the EFI stub at VMPL >0 implies that the firmware
+> > > has configured this calling area already, reuse it for performing memory
+> > > acceptance in the EFI stub.
 > >
-> > You can also remove rip_rel_ptr() with the whole "#ifndef __ASSEMBLER__=
-"
-> > part.
+> > This looks to be working for SNP guest boot and kexec. SNP guest boot with
+> > an SVSM is also working, but kexec isn't. But the kexec failure of an SVSM
+> > SNP guest is unrelated to this patch, I'll send a fix for that separately.
 > >
->
-> No, rip_rel_ptr() needs to be kept, unfortunately.
+> 
+> Thanks for confirming.
+> 
+> Ingo, Boris, can we get this queued as a fix, please, and merge it
+> back into x86/boot as was done before?
 
-Indeed, I scanned the source before your patch, where rip_rel_ptr()
-was used exclusively via RIP_REL_REF.
+Just to clarify, memory acceptance trough the EFI stub from VMPL >0 
+SEV-SNP guests was broken last summer via fcd042e86422, and it hasn't 
+worked since then?
 
-On a related note,
+Thanks,
 
-asm("leaq %c1(%%rip), %0" : "=3Dr"(p) : "i"(p));
-
-the above asm can use %a1 generic operand modifier instead of
-"%c1(%%rip)" [1], similar to d689863c1a60b9 [2], which also explains
-the modifier:
-
---q--
-The "a" asm operand modifier substitutes a memory reference, with the
-actual operand treated as address. For x86_64, when a symbol is
-provided, the "a" modifier emits "sym(%rip)" instead of "sym",
-enabling shorter %rip-relative addressing.
---/q--
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#Generic-Operand-Mo=
-difiers
-[2] https://web.git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/=
-arch/x86/include/asm?id=3Dd689863c1a60b9936b47a34fa5c3330de374f4fc
-
-Uros.
+	Ingo
 
