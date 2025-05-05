@@ -1,164 +1,167 @@
-Return-Path: <linux-efi+bounces-3606-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3607-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4694CAA9E19
-	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 23:26:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE74AA9E1B
+	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 23:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27A597A3972
-	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 21:25:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81711189BB24
+	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 21:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9ED278E53;
-	Mon,  5 May 2025 21:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753432701BA;
+	Mon,  5 May 2025 21:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1hLaSqx"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Zg6B/WN4"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B3B27817C;
-	Mon,  5 May 2025 21:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C694C1C1F12
+	for <linux-efi@vger.kernel.org>; Mon,  5 May 2025 21:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746480302; cv=none; b=PernyxZitD9YmLdAHfOim05mPfklhjcvQHp11UAeUpRP87dS5QRYO9YorN6fQk+ISYzqLGfU+HgD4Xb4Fo7rUoU8nYFb7bTexaAjvKfAzh+Jmzw+LQs4LZAm/hdFO7RMqslqq1uyguDGB/iKWkJgnqZCI2KBh02bUyIcqS1KM5M=
+	t=1746480420; cv=none; b=tVqJ6Fmg2ZmVvdDQJnGkWySe35TVZ885W9WsGGGSs901cVm8Vxsx6FdBMDlFMG0IaAJgPm2KAoJfiYZXxIxx+ktQyDkwVBLx06g5O/dG5lcTnqkuwUecFm9vKEKmkkTm2rXnrzd6NL4UkPUr9diCv/ONG8mwxZPfMAD8eYGx/9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746480302; c=relaxed/simple;
-	bh=CPQHE12mgPtO62oLo32KO4asPur4JqmQCbNn/Z+Hd3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xve1mptzLXP4pza5+YYktNBPQqt3JoQkVa74C7oEOZDfNSb/hTeJE05symVT5xKsdzmjFKZLSWthVacdE+He+L4ttamKUOlH6Eh+LIQzlP1Ii7ZzWHNQNcuRR3RWDhPsqZQWj+PEukq9flh6xCWDURtss+lYYHpiKMeCFB+NH50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1hLaSqx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDB6C4CEE4;
-	Mon,  5 May 2025 21:24:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746480301;
-	bh=CPQHE12mgPtO62oLo32KO4asPur4JqmQCbNn/Z+Hd3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O1hLaSqx8gq/26/IPhYeRtHUseRrDmJPdrpZQW1CgFo9Glwg8QaYOTxtl/AE7uhbZ
-	 KiBRH8wB1XBspG5yd7CTkHHbiorcStnLPucV1+HxWgNZdWY5tOMdniuLg+20Fl8Nlz
-	 feaeW1X8sbvFv2HCWjqJUjQQru/dPF5qpvYq0WaUwxtqEQg9uHV/PStMDqdT+CfIt/
-	 Kr3JBHCrpoWURrZrMykJYMgSme5xGTw8nLh2ekySPV+nz55NCkv7wS1w3lovW3jdYm
-	 oSW17XjB2IMWVKj1USwECt+0j843rpPzfVzpJyLHdIbYqnBS1g6oB0VpdxXcyEa/LE
-	 EpiGpP334i3xA==
-Date: Mon, 5 May 2025 23:24:56 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [RFT PATCH v2 03/23] x86/boot: Drop global variables keeping
- track of LA57 state
-Message-ID: <aBksqEEAq5t9UEmf@gmail.com>
-References: <20250504095230.2932860-25-ardb+git@google.com>
- <20250504095230.2932860-28-ardb+git@google.com>
- <aBdwwR52hI37bW9a@gmail.com>
- <CAHk-=wiaEzS_7CBVTz3RYnDt5zJus_GsPtfSjojkqiiMU-vSHQ@mail.gmail.com>
- <aBkogDfWB14qkY4g@gmail.com>
+	s=arc-20240116; t=1746480420; c=relaxed/simple;
+	bh=8tIV1iyrJQBLcayr0q2mWHnEzttQRdpT4PvsD60taOI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iWj4fDAHhFlOAw+15GeABcXUWpHewd95KPTeHVoRv+hdhM3dP8y1n0SDzu4Y9YuvoXPjLLZyS95OC8uMVxgt8cL2XvRU/lT9ldzySBjzZVsShDoHqFtKKxdVEnl/ZtBDDbwDTNb+Nr9a1R0AJ0HoPEuVfLl/bLdaP8/okfFjhe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Zg6B/WN4; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ad1b94382b8so324090666b.0
+        for <linux-efi@vger.kernel.org>; Mon, 05 May 2025 14:26:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1746480416; x=1747085216; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qXgSUq4mwPPXkiPTyjzaOpkSyMaUC7J+gL7QQfgAQ34=;
+        b=Zg6B/WN4vykSfusH3GUZwUay+pTZFEFhoKc9kFxN7015ROufcU7Cqyv7TIxcyaFGdV
+         oBsVWUdSnPCSvgzKVTwkHs0OnBgpdwOhyiQI064lJXckCh0kkNXQKnm9SruIjzu00RtQ
+         t6ubVnsZkum/yAGKIoIewjKgkh3mpFKJ1R3ys=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746480416; x=1747085216;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qXgSUq4mwPPXkiPTyjzaOpkSyMaUC7J+gL7QQfgAQ34=;
+        b=k9pcRApKbolfH9rmkrFxaS8qd1/UH1XA+aMt2DSJBr37LT15rdYwMpboLLy4lPA6uM
+         4buROzfHRTdSSwpINT6KJd2iljXUAHLARZ9DsJuVssNieKyBnlAmSzYoBeCA2ZcTXhg8
+         Xr3gPhhy/F1E+k/7qQLf/o4r3/yo+C3RaUN6O5/Zujx5ki9zYTnH5SumR+Mq/Iz56EYU
+         qykhxvwUV2gbNcOY6OHuch6/Cmm5IZVZaovpW6kYcBYtj7+xmARLilOAYlECGzh8oBay
+         3GLX+8KZ6YQscScMUHYVHDvXKB2nvR17ZEdSyPbVbCXW6asfoldihJ0qUWHjyeQ1FpXu
+         MacA==
+X-Forwarded-Encrypted: i=1; AJvYcCVh8dRpYv4vD5kyMpF4fHqLO4UxbuJzcRJC+4ZFG9iq4wZQ61XROxmb+zxPRlV2H1BTtDBFRlsjaQA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkIRorzjyWr/b/DukvAKgEenne9D8VWK6TnRwb7FBTT7nt2rys
+	BL+QwFam6xErLiXzB2L7oSj2y//qrO/jofz2iQC8NwkIxy76od5OOV3n+NlQFOAWBOuxJy51Yrc
+	kl48=
+X-Gm-Gg: ASbGncspJHEcnCci4OAVhleBntbfPSWZ4DS1m/W7eyoE70/gW4wd4si1N+UEUl/ggyl
+	H+bGRsQ9l26ymDto9UMikcvEkTd96eYB6U3psQosOQhQZU5rrs4bDvmVxdOsA3U0c+l+tggWeqX
+	HD7AHSsw1mbsYqUcMi0ddsLsWNLytkhgEh4FCoBaitJEdg2klx80dpS2LJ67fUUZ2qL3uFixTOt
+	tbMygSzzm+nhW64lQSiKrY24A+2hfUdrOaVvcO8eXxLKoclYm5er6v1YvRKNaMVzE2/BifKZwNE
+	x2gKRN9NzWJH5QmPr/egsvF7Bv8BloCjopD8Sm9ZNeZjyDolOhLciyOM6V+YtXOAjAd8w6AJB6A
+	qeE+EvReL+WD//50=
+X-Google-Smtp-Source: AGHT+IEfYzYNHskkjMopZDkiD6vt30AL7CljW6eMrkWgYUBJuc1mMqLG2Auf4XrY9mLpdN+g6feDIw==
+X-Received: by 2002:a17:907:c08b:b0:ac7:18c9:2975 with SMTP id a640c23a62f3a-ad1d467afd3mr52418066b.48.1746480415816;
+        Mon, 05 May 2025 14:26:55 -0700 (PDT)
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com. [209.85.208.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad189540ea1sm552578166b.184.2025.05.05.14.26.53
+        for <linux-efi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 14:26:54 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5f7ec0e4978so4183992a12.1
+        for <linux-efi@vger.kernel.org>; Mon, 05 May 2025 14:26:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV9D2RWj/8u15fQRHh0CdkMy3EBqYYrve7DabI4Zsyv95jABMSpQena7eDGEULhwJ9fGfOtvXlSdNA=@vger.kernel.org
+X-Received: by 2002:a05:6402:2755:b0:5fb:3ad3:cfb with SMTP id
+ 4fb4d7f45d1cf-5fb70d52653mr415902a12.31.1746480412818; Mon, 05 May 2025
+ 14:26:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250504095230.2932860-25-ardb+git@google.com>
+ <20250504095230.2932860-28-ardb+git@google.com> <aBdwwR52hI37bW9a@gmail.com>
+ <CAHk-=wiaEzS_7CBVTz3RYnDt5zJus_GsPtfSjojkqiiMU-vSHQ@mail.gmail.com> <aBkogDfWB14qkY4g@gmail.com>
 In-Reply-To: <aBkogDfWB14qkY4g@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 5 May 2025 14:26:36 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjVfjzxBeR9ypA6Y5dRbyKpZvQO8nsAPcFRAABW8QVzTw@mail.gmail.com>
+X-Gm-Features: ATxdqUHwQ7H4IdtWIpmw2YUesU-ykS1suBpDPxucG6m-nzzuBAUCBQodQRLW3FA
+Message-ID: <CAHk-=wjVfjzxBeR9ypA6Y5dRbyKpZvQO8nsAPcFRAABW8QVzTw@mail.gmail.com>
+Subject: Re: [RFT PATCH v2 03/23] x86/boot: Drop global variables keeping
+ track of LA57 state
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 
-
-* Ingo Molnar <mingo@kernel.org> wrote:
-
-> Anyway, with these limitations in mind, we can see that the top 5 
-> usecases cover about 80% of all uses:
-> 
+On Mon, 5 May 2025 at 14:07, Ingo Molnar <mingo@kernel.org> wrote:
+>
 >  - MAX_PHYSMEM_BITS: (inlined 179 times)
-> 
->        arch/x86/include/asm/sparsemem.h:# define MAX_PHYSMEM_BITS	(pgtable_l5_enabled() ? 52 : 46)
-> 
->    This could be implemented via a precomputed, constant percpu value 
->    (per_cpu__x86_MAX_PHYSMEM_BITS) of 52 vs. 46, eliminating not just 
->    the CR4 access, but also a branch, at the cost of a percpu memory 
+>
+>        arch/x86/include/asm/sparsemem.h:# define MAX_PHYSMEM_BITS       (pgtable_l5_enabled() ? 52 : 46)
+>
+>    This could be implemented via a precomputed, constant percpu value
+>    (per_cpu__x86_MAX_PHYSMEM_BITS) of 52 vs. 46, eliminating not just
+>    the CR4 access, but also a branch, at the cost of a percpu memory
 >    access. (Which should still be a win on all microarchitectures IMO.)
-> 
->    Alternatively, since this value is a semi-constant of 52 vs. 46, we 
->    could also, I suspect, ALTERNATIVES-patch MAX_PHYSMEM_BITS in as an 
->    immediate constant value? Any reason this shouldn't work:
-> 
->      static inline unsigned int __MAX_PHYSMEM_BITS(void)
->      {
-> 		unsigned int bits;
-> 
-> 		asm_inline (ALTERNATIVE("movl $46, %0", "movl $52, %0", X86_FEATURE_LA57) :"=g" (bits));
-> 
-> 		return bits;
->      }
->      #define MAX_PHYSMEM_BITS __MAX_PHYSMEM_BITS()
-> 
->    ... or something like that? This would result in the best code 
->    generation IMO, by far. (It would even make use of the 
->    zero-extension property of a 32-bit MOVL, further compressing the 
->    opcode to only 5 bytes or so.)
-> 
->    We'd even create a secondary helper macro for this, something like:
-> 
-> 	#define ALTERNATIVES_CONST_U32(__val1, __val2, __feature)	\
-> 	({								\
-> 		u32 __val;						\
-> 									\
-> 		asm_inline (ALTERNATIVE("movl $" #__val1 ", %0", "movl $" __val2 ", %0", __feature) :"=g" (__val)); \
-> 									\
-> 		__val;							\
-> 	})
-> 
-> 	...
-> 
-> 	#define MAX_PHYSMEM_BITS ALTERNATIVE_CONST_U32(46, 52, X86_FEATURE_LA57)
-> 
->    (Or so. Totally untested.)
 
-BTW., I keep comparing it to the CR4 access, which is a bit unfair, 
-since that's only one out of the 3 variants of ALTERNATIVE_TERNARY():
+This is literally why I did the "runtime-const" stuff. Exactly for
+simple constants that you don't want to load from percpu memory
+because it's just annoying.
 
-static __always_inline __pure bool pgtable_l5_enabled(void)
-{
-        unsigned long r;
-        bool ret;
+Now, we only have 64-bit constant values which is very wasteful, and
+we could just do a signed byte constant if we cared.
 
-        if (!IS_ENABLED(CONFIG_X86_5LEVEL))
-                return false;
+(We also have a "shift  32-bit value right by a constant amount",
+which actually does use a signed byte, but it's masked by 0x1f because
+that's how 32-bit shifts work).
 
-        asm(ALTERNATIVE_TERNARY(
-                 "movq %%cr4, %[reg] \n\t btl %[la57], %k[reg]" CC_SET(c),
-                 %P[feat], "stc", "clc")
-                 : [reg] "=&r" (r), CC_OUT(c) (ret)
-                 : [feat] "i"  (X86_FEATURE_LA57),
-                   [la57] "i"  (X86_CR4_LA57_BIT)
-                 : "cc");
+I doubt we care - I doubt any of this MAX_PHYSMEM_BITS use is actually
+performance-critical.
 
-        return ret;
-}
+The runtime-const stuff would be trivial to use here if we really want to.
 
-The STC and CLC variants will probably be the more common outcomes on 
-modern CPUs.
+>  - PGDIR_SHIFT: (inlined 156 times)
 
-But I still think the ALTERNATIVE_CONST_U32() approach I outline above 
-generates superior code for the binary-values cases, which covers 3 out 
-of the top 5 uses of pgtable_l5_enabled().
+Several of those are actually of the form
 
-For non-constant branching uses of pgtable_l5_enabled() I suspect the 
-STC/CLC approach above is pretty good, although the 'cc' constraint 
-will clobber all flags I suspect, while ALTERNATIVE_CONST_U32() 
-doesn't? Ie. with ALTERNATIVE_CONST_U32() we just load the resulting 
-constant into a register, with no additional branches and with flags 
-undisturbed.
+   #define PGDIR_SIZE      (1UL << PGDIR_SHIFT)
 
-Also, is STC/CLC always just as fast as the testing of an immediate (or 
-a static branch), on CPUs we care about?
+so you artificially see PGDIR_SHIFT as the important part, even though
+it's often a different constant entirely that just gets generated
+using it.
 
-Thanks,
+>  - p4d_offset(): (inlined 60 times)
+>    Here pgtable_l5_enabled() is used as a binary flag.
 
-	Ingo
+static branch would probably work best, and as Ard says, just using
+cpu_feature_enabled() would just fix it..
+
+>  - pgd_none(): (inlined 49 times)
+>    Binary flag use as well, although the compiler might eliminate the
+>    branch here and replace it with 'AND !native_pgd_val(pgd)'
+
+This could easily be done as runtime-const.
+
+But again, I doubt it's all that performance-critical.
+
+>  - PTRS_PER_P4D: (inlined 46 times)
+>    This too could be implemented via a precomputed constant percpu
+>    value (per_cpu__x86_PTRS_PER_P4D), eliminating a branch,
+>    or via an ALTERNATIVE() immediate constant.
+
+Again, we do have that, although the 64-bit constant is a bit wasteful.
+
+The reason runtime-const does a 64-bit constant is that the actual
+performance-critical cases were for big constants (TASK_SIZE) and for
+pointers (hash table pointers).
+
+           Linus
 
