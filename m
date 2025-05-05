@@ -1,3695 +1,950 @@
-Return-Path: <linux-efi+bounces-3590-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3591-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950ECAA8BAB
-	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 07:31:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B22AA91FF
+	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 13:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF0BD1890BD0
-	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 05:31:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8043E17618B
+	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 11:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41351A0B08;
-	Mon,  5 May 2025 05:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3D7201116;
+	Mon,  5 May 2025 11:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ll3pErj3";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OB5M20wx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ld4mcERI"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F83D1684AC;
-	Mon,  5 May 2025 05:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62717E0E4;
+	Mon,  5 May 2025 11:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746423094; cv=none; b=bufLXVs0BwW9Sklcd3tN0cHP2+46MBtxCP9wCrjovmwNdQ94QCvKNbRIvRVFbFG597sWFph2weIzWEzK3sa5bvBoqSopfowA+uRrbvbLN+89jnyi9cRGbepz7wDWPw4GUgou1QUeddNYyGvpijoP4+8mCjQOqUYKeuCPSUQC3Pc=
+	t=1746444360; cv=none; b=bF5Grj8EKWQA1azrN8vUeFlzzIWiS2CtDfYYOu10bm/kkjXyVJcl32npi/O5nL9gLaleIJmPVM31Xdl4NVxLzbtk5YCQmfMndNO6SXyjI2qc7kCa2jltm9/Zfn39OkxuXLR544dlrAHJHWcmyinM5rvdqNeWulCyPT5yeIgVtYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746423094; c=relaxed/simple;
-	bh=sZ98NXMABLGzwZ+Pz/6pR8Uy8qMbZRUNBhsn654tdK8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=b1y7upHwwIl+9K95CbVy+5dKcVjw53dba6O2AEq8hedPHeIHwp0c9lcGhM/729mDR0O+EhdJAXw2gVx/CkVj7yYZ7R2C0YWkhT6CayNg1yzIwfocJPjooJHFvVTvDDJ1IAASapPiFX7Yw1TDEyOskhDNARYK1JuPah7c0Nco7SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ll3pErj3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OB5M20wx; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 05 May 2025 05:31:15 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746423087;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fTAWxORLdjH7DEQZc+bcQMk0rq5l6yKVK1rOMTzbpHM=;
-	b=Ll3pErj3LPVzsuOfx2h7FAqD5CylUp7CzXOMjTFI+e1L34h63iMBE3j1jnmNlfq7HteOed
-	XqkBxXk9mx3Xw9dVk/t/+DbVRzfStztTikXLjpvD5I4Ghs2WUu/ne2RiEof0eIY7UThFOE
-	AdFeJ2xd/Y4g692zOpCdbiKzBxKq03gytDuVzE0lU78gJagfNyfZn+LofOv5L7x5dl6Jxw
-	LBAQmkk1P2hUVG56e0M14ts8g3XFaiaZdh86iPU+Zzha350nzUObUoZt3P9IeMX7pyD0VA
-	+tCDCWydJcWjpW0iAtOEWS33ZIDGixOK09WsyzJMCgfPt+ASb8I7p9hJVailyA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746423087;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fTAWxORLdjH7DEQZc+bcQMk0rq5l6yKVK1rOMTzbpHM=;
-	b=OB5M20wxZSf4J/2JuXvNUxxA418lj5gLVi6OmXPf2HbayG/ohO6tq6UBTBUNzO5VJkDqYU
-	AfEhk1hCAQ4hKVDA==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/boot] x86/sev: Disentangle #VC handling code from startup code
-Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, David Woodhouse <dwmw@amazon.co.uk>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>,
- Kevin Loughlin <kevinloughlin@google.com>, Len Brown <len.brown@intel.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, linux-efi@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250504095230.2932860-31-ardb+git@google.com>
-References: <20250504095230.2932860-31-ardb+git@google.com>
+	s=arc-20240116; t=1746444360; c=relaxed/simple;
+	bh=+VpDObejx/PYTl8EPeyF4RnJ/Elk84mg7Zt0j7cAiIU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SocliIJsq/0aJ9c8B3iUeUyRtj5PPd6RR5uk0+zl8JVBDbToBBhVNfNmWUx5QadV7sxQnbB3ZFAEr6vJXZbzIZB3OOEgZaE3S8SWCOLCRz12gOXlCNgPZTwEUdOXYNyiOiPaD+8mcpmNvpt0GMVHRBDrMm92FI7fIjkAYIzY4A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ld4mcERI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2375AC4CEE4;
+	Mon,  5 May 2025 11:25:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746444359;
+	bh=+VpDObejx/PYTl8EPeyF4RnJ/Elk84mg7Zt0j7cAiIU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ld4mcERItJKti4l04BW1cJANe2ITaINb+QaDCuzwxefIdhPLgMdhuTyhFZ2yDA1+6
+	 vQ1QE1eWTFZfhgIiBmqCa0DPogLyKRz1zJ9+MXwsFPS+D0cBerMsURu0pOpUusC9We
+	 xGKlZT3ykIfKBvU0FBMmCYkNJ4gZqlLBaDSLH/YXNHnSYe9EhFngPHJ0V9kELgiKTr
+	 b3Wi1+wTjxcy3b9kBoKou3mWMfDm8XIV9HlN1BepWc/+pfwzRig351JtCmEi/Zv1Kf
+	 9ZRq0aEbk7evQtnnCKwV5WZFCTKQIvhICChDF4vZZ/BPEkqiWUkvk3ibP7iSbBj3oe
+	 6XVgqZkJaQkmg==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-54af20849bbso4913802e87.0;
+        Mon, 05 May 2025 04:25:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVyZ3dNE5wnIX/S9hD9duaBLZ16qj4mswaXLVFRCzVkjAg4JFAO+yDT9OA5UGpj/kVDDd4mBTd/tumO/5gd@vger.kernel.org, AJvYcCXTCHOL7mnFH7S6hdQbdQDZYRJppFyUTtRTMLUzV2Lu1OV7NAa/AyqaGmKFXrYnM1LzF5g/psEPbE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZk6cxvg6wFrKUH1q7lNvjn+Sz9vsebM9FBpqVyrrxU90twBJd
+	Dy6hn+aVhLhZ7/rWb7dXAOQHAlvTbpNmVlt4tYBDvjf4UnBMLsjnkJfmQpG3VlPGUC9iTvJ9tJt
+	Gl6m+k8nwwmtXpHsB2e8uXYWSRMQ=
+X-Google-Smtp-Source: AGHT+IGlj4/fJZbvCoodWPT2z9wdIdNHDt2Era4cx+VR1U9J7CaIJ/l5HuJhBgr9cRrQFAKSc4vI3qYaN2uh4Zs15Vw=
+X-Received: by 2002:a05:6512:3b9f:b0:549:903a:1bf with SMTP id
+ 2adb3069b0e04-54fa4f96b5bmr1584309e87.48.1746444357302; Mon, 05 May 2025
+ 04:25:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174642307814.22196.7469514245717727866.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20250504182244.30446-1-pali@kernel.org>
+In-Reply-To: <20250504182244.30446-1-pali@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 5 May 2025 13:25:45 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE5DQ-tBFa+xLR10+joGADRB6BJ70EvDfJzfWJr1o3Q2A@mail.gmail.com>
+X-Gm-Features: ATxdqUGfDZqgG70gTaSSyMTKdYHbhaU_gmMgsRnF5eENCpWSDW6bW-tLc4xWRdo
+Message-ID: <CAMj1kXE5DQ-tBFa+xLR10+joGADRB6BJ70EvDfJzfWJr1o3Q2A@mail.gmail.com>
+Subject: Re: [PATCH] include: pe.h: Fix PE definitions
+To: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Cc: David Howells <dhowells@redhat.com>, linux-efi@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/boot branch of tip:
+Hello Pali,
 
-Commit-ID:     ed4d95d033e359f9445e85bf5a768a5859a5830b
-Gitweb:        https://git.kernel.org/tip/ed4d95d033e359f9445e85bf5a768a5859a5830b
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Sun, 04 May 2025 11:52:36 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 05 May 2025 07:07:29 +02:00
+On Sun, 4 May 2025 at 20:23, Pali Roh=C3=A1r <pali@kernel.org> wrote:
+>
+> * Rename constants to their standard PE names:
+>   - MZ_MAGIC -> IMAGE_DOS_SIGNATURE
+>   - PE_MAGIC -> IMAGE_NT_SIGNATURE
+>   - PE_OPT_MAGIC_PE32_ROM -> IMAGE_ROM_OPTIONAL_HDR_MAGIC
+>   - PE_OPT_MAGIC_PE32 -> IMAGE_NT_OPTIONAL_HDR32_MAGIC
+>   - PE_OPT_MAGIC_PE32PLUS -> IMAGE_NT_OPTIONAL_HDR64_MAGIC
+>   - IMAGE_DLL_CHARACTERISTICS_NX_COMPAT -> IMAGE_DLLCHARACTERISTICS_NX_CO=
+MPAT
+>
 
-x86/sev: Disentangle #VC handling code from startup code
+Where are these 'standard PE names' defined?
 
-Most of the SEV support code used to reside in a single C source file
-that was included in two places: the core kernel, and the decompressor.
+> * Import constants and their description from readpe and file projects
+>   which contains current up-to-date information:
+>   - IMAGE_FILE_MACHINE_*
+>   - IMAGE_FILE_*
+>   - IMAGE_SUBSYSTEM_*
+>   - IMAGE_DLLCHARACTERISTICS_*
+>   - IMAGE_DLLCHARACTERISTICS_EX_*
+>   - IMAGE_DEBUG_TYPE_*
+>
+> * Add missing IMAGE_SCN_* constants and update their incorrect descriptio=
+n
+>
+> * Fix incorrect value of IMAGE_SCN_MEM_PURGEABLE constant
+>
+> * Add description for win32_version and loader_flags PE fields
+>
 
-The code that is actually shared with the decompressor was moved into a
-separate, shared source file under startup/, on the basis that the
-decompressor also executes from the early 1:1 mapping of memory.
+Given that the Linux kernel only uses PE executables in the context of
+EFI boot, might it be better to source our definitions from the
+Tianocore project instead? The 'file' and 'readpe' projects don't seem
+authoritative to me when it comes to the PE/COFF format. (And these
+symbolic names do not exist in the PE/COFF specification)
 
-However, while the elaborate #VC handling and instruction decoding that
-it involves is also performed by the decompressor, it does not actually
-occur in the core kernel at early boot, and therefore, does not need to
-be part of the confined early startup code.
 
-So split off the #VC handling code and move it back into arch/x86/coco
-where it came from, into another C source file that is included from
-both the decompressor and the core kernel.
 
-Code movement only - no functional change intended.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kevin Loughlin <kevinloughlin@google.com>
-Cc: Len Brown <len.brown@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-efi@vger.kernel.org
-Link: https://lore.kernel.org/r/20250504095230.2932860-31-ardb+git@google.com
----
- arch/x86/boot/compressed/misc.h          |    1 +-
- arch/x86/boot/compressed/sev-handle-vc.c |   83 ++-
- arch/x86/boot/compressed/sev.c           |   96 +--
- arch/x86/boot/compressed/sev.h           |   19 +-
- arch/x86/boot/startup/sev-shared.c       |  519 +----------
- arch/x86/boot/startup/sev-startup.c      | 1022 +--------------------
- arch/x86/coco/sev/Makefile               |    2 +-
- arch/x86/coco/sev/vc-handle.c            | 1061 +++++++++++++++++++++-
- arch/x86/coco/sev/vc-shared.c            |  504 ++++++++++-
- arch/x86/include/asm/sev-internal.h      |    8 +-
- arch/x86/include/asm/sev.h               |   22 +-
- 11 files changed, 1694 insertions(+), 1643 deletions(-)
- create mode 100644 arch/x86/coco/sev/vc-handle.c
- create mode 100644 arch/x86/coco/sev/vc-shared.c
-
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 04de48c..db10486 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -150,6 +150,7 @@ void sev_prep_identity_maps(unsigned long top_level_pgt);
- enum es_result vc_decode_insn(struct es_em_ctxt *ctxt);
- bool insn_has_rep_prefix(struct insn *insn);
- void sev_insn_decode_init(void);
-+bool early_setup_ghcb(void);
- #else
- static inline void sev_enable(struct boot_params *bp)
- {
-diff --git a/arch/x86/boot/compressed/sev-handle-vc.c b/arch/x86/boot/compressed/sev-handle-vc.c
-index b1aa073..89dd02d 100644
---- a/arch/x86/boot/compressed/sev-handle-vc.c
-+++ b/arch/x86/boot/compressed/sev-handle-vc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include "misc.h"
-+#include "sev.h"
- 
- #include <linux/kernel.h>
- #include <linux/string.h>
-@@ -8,6 +9,9 @@
- #include <asm/pgtable_types.h>
- #include <asm/ptrace.h>
- #include <asm/sev.h>
-+#include <asm/trapnr.h>
-+#include <asm/trap_pf.h>
-+#include <asm/fpu/xcr.h>
- 
- #define __BOOT_COMPRESSED
- 
-@@ -49,3 +53,82 @@ enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
- }
- 
- extern void sev_insn_decode_init(void) __alias(inat_init_tables);
-+
-+/*
-+ * Only a dummy for insn_get_seg_base() - Early boot-code is 64bit only and
-+ * doesn't use segments.
-+ */
-+static unsigned long insn_get_seg_base(struct pt_regs *regs, int seg_reg_idx)
-+{
-+	return 0UL;
-+}
-+
-+static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
-+				   void *dst, char *buf, size_t size)
-+{
-+	memcpy(dst, buf, size);
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
-+				  void *src, char *buf, size_t size)
-+{
-+	memcpy(buf, src, size);
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t size)
-+{
-+	return ES_OK;
-+}
-+
-+static bool fault_in_kernel_space(unsigned long address)
-+{
-+	return false;
-+}
-+
-+#define sev_printk(fmt, ...)
-+
-+#include "../../coco/sev/vc-shared.c"
-+
-+void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
-+{
-+	struct es_em_ctxt ctxt;
-+	enum es_result result;
-+
-+	if (!boot_ghcb && !early_setup_ghcb())
-+		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
-+
-+	vc_ghcb_invalidate(boot_ghcb);
-+	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
-+	if (result != ES_OK)
-+		goto finish;
-+
-+	result = vc_check_opcode_bytes(&ctxt, exit_code);
-+	if (result != ES_OK)
-+		goto finish;
-+
-+	switch (exit_code) {
-+	case SVM_EXIT_RDTSC:
-+	case SVM_EXIT_RDTSCP:
-+		result = vc_handle_rdtsc(boot_ghcb, &ctxt, exit_code);
-+		break;
-+	case SVM_EXIT_IOIO:
-+		result = vc_handle_ioio(boot_ghcb, &ctxt);
-+		break;
-+	case SVM_EXIT_CPUID:
-+		result = vc_handle_cpuid(boot_ghcb, &ctxt);
-+		break;
-+	default:
-+		result = ES_UNSUPPORTED;
-+		break;
-+	}
-+
-+finish:
-+	if (result == ES_OK)
-+		vc_finish_insn(&ctxt);
-+	else if (result != ES_RETRY)
-+		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
-+}
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 6fe7e85..612b443 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -24,63 +24,11 @@
- #include <asm/cpuid.h>
- 
- #include "error.h"
--#include "../msr.h"
-+#include "sev.h"
- 
- static struct ghcb boot_ghcb_page __aligned(PAGE_SIZE);
- struct ghcb *boot_ghcb;
- 
--/*
-- * Only a dummy for insn_get_seg_base() - Early boot-code is 64bit only and
-- * doesn't use segments.
-- */
--static unsigned long insn_get_seg_base(struct pt_regs *regs, int seg_reg_idx)
--{
--	return 0UL;
--}
--
--static inline u64 sev_es_rd_ghcb_msr(void)
--{
--	struct msr m;
--
--	boot_rdmsr(MSR_AMD64_SEV_ES_GHCB, &m);
--
--	return m.q;
--}
--
--static inline void sev_es_wr_ghcb_msr(u64 val)
--{
--	struct msr m;
--
--	m.q = val;
--	boot_wrmsr(MSR_AMD64_SEV_ES_GHCB, &m);
--}
--
--static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
--				   void *dst, char *buf, size_t size)
--{
--	memcpy(dst, buf, size);
--
--	return ES_OK;
--}
--
--static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
--				  void *src, char *buf, size_t size)
--{
--	memcpy(buf, src, size);
--
--	return ES_OK;
--}
--
--static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t size)
--{
--	return ES_OK;
--}
--
--static bool fault_in_kernel_space(unsigned long address)
--{
--	return false;
--}
--
- #undef __init
- #define __init
- 
-@@ -182,7 +130,7 @@ void snp_set_page_shared(unsigned long paddr)
- 	__page_state_change(paddr, SNP_PAGE_STATE_SHARED);
- }
- 
--static bool early_setup_ghcb(void)
-+bool early_setup_ghcb(void)
- {
- 	if (set_page_decrypted((unsigned long)&boot_ghcb_page))
- 		return false;
-@@ -266,46 +214,6 @@ bool sev_es_check_ghcb_fault(unsigned long address)
- 	return ((address & PAGE_MASK) == (unsigned long)&boot_ghcb_page);
- }
- 
--void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
--{
--	struct es_em_ctxt ctxt;
--	enum es_result result;
--
--	if (!boot_ghcb && !early_setup_ghcb())
--		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
--
--	vc_ghcb_invalidate(boot_ghcb);
--	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
--	if (result != ES_OK)
--		goto finish;
--
--	result = vc_check_opcode_bytes(&ctxt, exit_code);
--	if (result != ES_OK)
--		goto finish;
--
--	switch (exit_code) {
--	case SVM_EXIT_RDTSC:
--	case SVM_EXIT_RDTSCP:
--		result = vc_handle_rdtsc(boot_ghcb, &ctxt, exit_code);
--		break;
--	case SVM_EXIT_IOIO:
--		result = vc_handle_ioio(boot_ghcb, &ctxt);
--		break;
--	case SVM_EXIT_CPUID:
--		result = vc_handle_cpuid(boot_ghcb, &ctxt);
--		break;
--	default:
--		result = ES_UNSUPPORTED;
--		break;
--	}
--
--finish:
--	if (result == ES_OK)
--		vc_finish_insn(&ctxt);
--	else if (result != ES_RETRY)
--		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
--}
--
- /*
-  * SNP_FEATURES_IMPL_REQ is the mask of SNP features that will need
-  * guest side implementation for proper functioning of the guest. If any
-diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
-index e87af54..92f79c2 100644
---- a/arch/x86/boot/compressed/sev.h
-+++ b/arch/x86/boot/compressed/sev.h
-@@ -10,10 +10,29 @@
- 
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 
-+#include "../msr.h"
-+
- void snp_accept_memory(phys_addr_t start, phys_addr_t end);
- u64 sev_get_status(void);
- bool early_is_sevsnp_guest(void);
- 
-+static inline u64 sev_es_rd_ghcb_msr(void)
-+{
-+	struct msr m;
-+
-+	boot_rdmsr(MSR_AMD64_SEV_ES_GHCB, &m);
-+
-+	return m.q;
-+}
-+
-+static inline void sev_es_wr_ghcb_msr(u64 val)
-+{
-+	struct msr m;
-+
-+	m.q = val;
-+	boot_wrmsr(MSR_AMD64_SEV_ES_GHCB, &m);
-+}
-+
- #else
- 
- static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
-diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/startup/sev-shared.c
-index 173f3d1..7a706db 100644
---- a/arch/x86/boot/startup/sev-shared.c
-+++ b/arch/x86/boot/startup/sev-shared.c
-@@ -14,13 +14,9 @@
- #ifndef __BOOT_COMPRESSED
- #define error(v)			pr_err(v)
- #define has_cpuflag(f)			boot_cpu_has(f)
--#define sev_printk(fmt, ...)		printk(fmt, ##__VA_ARGS__)
--#define sev_printk_rtl(fmt, ...)	printk_ratelimited(fmt, ##__VA_ARGS__)
- #else
- #undef WARN
- #define WARN(condition, format...) (!!(condition))
--#define sev_printk(fmt, ...)
--#define sev_printk_rtl(fmt, ...)
- #undef vc_forward_exception
- #define vc_forward_exception(c)		panic("SNP: Hypervisor requested exception\n")
- #endif
-@@ -36,16 +32,6 @@
- struct svsm_ca *boot_svsm_caa __ro_after_init;
- u64 boot_svsm_caa_pa __ro_after_init;
- 
--/* I/O parameters for CPUID-related helpers */
--struct cpuid_leaf {
--	u32 fn;
--	u32 subfn;
--	u32 eax;
--	u32 ebx;
--	u32 ecx;
--	u32 edx;
--};
--
- /*
-  * Since feature negotiation related variables are set early in the boot
-  * process they must reside in the .data section so as not to be zeroed
-@@ -151,33 +137,6 @@ bool sev_es_negotiate_protocol(void)
- 	return true;
- }
- 
--static bool vc_decoding_needed(unsigned long exit_code)
--{
--	/* Exceptions don't require to decode the instruction */
--	return !(exit_code >= SVM_EXIT_EXCP_BASE &&
--		 exit_code <= SVM_EXIT_LAST_EXCP);
--}
--
--static enum es_result vc_init_em_ctxt(struct es_em_ctxt *ctxt,
--				      struct pt_regs *regs,
--				      unsigned long exit_code)
--{
--	enum es_result ret = ES_OK;
--
--	memset(ctxt, 0, sizeof(*ctxt));
--	ctxt->regs = regs;
--
--	if (vc_decoding_needed(exit_code))
--		ret = vc_decode_insn(ctxt);
--
--	return ret;
--}
--
--static void vc_finish_insn(struct es_em_ctxt *ctxt)
--{
--	ctxt->regs->ip += ctxt->insn.length;
--}
--
- static enum es_result verify_exception_info(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- {
- 	u32 ret;
-@@ -627,7 +586,7 @@ snp_cpuid_postprocess(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
-  * Returns -EOPNOTSUPP if feature not enabled. Any other non-zero return value
-  * should be treated as fatal by caller.
-  */
--static int __head
-+int __head
- snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
- {
- 	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
-@@ -737,391 +696,6 @@ fail:
- 	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
- }
- 
--static enum es_result vc_insn_string_check(struct es_em_ctxt *ctxt,
--					   unsigned long address,
--					   bool write)
--{
--	if (user_mode(ctxt->regs) && fault_in_kernel_space(address)) {
--		ctxt->fi.vector     = X86_TRAP_PF;
--		ctxt->fi.error_code = X86_PF_USER;
--		ctxt->fi.cr2        = address;
--		if (write)
--			ctxt->fi.error_code |= X86_PF_WRITE;
--
--		return ES_EXCEPTION;
--	}
--
--	return ES_OK;
--}
--
--static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
--					  void *src, char *buf,
--					  unsigned int data_size,
--					  unsigned int count,
--					  bool backwards)
--{
--	int i, b = backwards ? -1 : 1;
--	unsigned long address = (unsigned long)src;
--	enum es_result ret;
--
--	ret = vc_insn_string_check(ctxt, address, false);
--	if (ret != ES_OK)
--		return ret;
--
--	for (i = 0; i < count; i++) {
--		void *s = src + (i * data_size * b);
--		char *d = buf + (i * data_size);
--
--		ret = vc_read_mem(ctxt, s, d, data_size);
--		if (ret != ES_OK)
--			break;
--	}
--
--	return ret;
--}
--
--static enum es_result vc_insn_string_write(struct es_em_ctxt *ctxt,
--					   void *dst, char *buf,
--					   unsigned int data_size,
--					   unsigned int count,
--					   bool backwards)
--{
--	int i, s = backwards ? -1 : 1;
--	unsigned long address = (unsigned long)dst;
--	enum es_result ret;
--
--	ret = vc_insn_string_check(ctxt, address, true);
--	if (ret != ES_OK)
--		return ret;
--
--	for (i = 0; i < count; i++) {
--		void *d = dst + (i * data_size * s);
--		char *b = buf + (i * data_size);
--
--		ret = vc_write_mem(ctxt, d, b, data_size);
--		if (ret != ES_OK)
--			break;
--	}
--
--	return ret;
--}
--
--#define IOIO_TYPE_STR  BIT(2)
--#define IOIO_TYPE_IN   1
--#define IOIO_TYPE_INS  (IOIO_TYPE_IN | IOIO_TYPE_STR)
--#define IOIO_TYPE_OUT  0
--#define IOIO_TYPE_OUTS (IOIO_TYPE_OUT | IOIO_TYPE_STR)
--
--#define IOIO_REP       BIT(3)
--
--#define IOIO_ADDR_64   BIT(9)
--#define IOIO_ADDR_32   BIT(8)
--#define IOIO_ADDR_16   BIT(7)
--
--#define IOIO_DATA_32   BIT(6)
--#define IOIO_DATA_16   BIT(5)
--#define IOIO_DATA_8    BIT(4)
--
--#define IOIO_SEG_ES    (0 << 10)
--#define IOIO_SEG_DS    (3 << 10)
--
--static enum es_result vc_ioio_exitinfo(struct es_em_ctxt *ctxt, u64 *exitinfo)
--{
--	struct insn *insn = &ctxt->insn;
--	size_t size;
--	u64 port;
--
--	*exitinfo = 0;
--
--	switch (insn->opcode.bytes[0]) {
--	/* INS opcodes */
--	case 0x6c:
--	case 0x6d:
--		*exitinfo |= IOIO_TYPE_INS;
--		*exitinfo |= IOIO_SEG_ES;
--		port	   = ctxt->regs->dx & 0xffff;
--		break;
--
--	/* OUTS opcodes */
--	case 0x6e:
--	case 0x6f:
--		*exitinfo |= IOIO_TYPE_OUTS;
--		*exitinfo |= IOIO_SEG_DS;
--		port	   = ctxt->regs->dx & 0xffff;
--		break;
--
--	/* IN immediate opcodes */
--	case 0xe4:
--	case 0xe5:
--		*exitinfo |= IOIO_TYPE_IN;
--		port	   = (u8)insn->immediate.value & 0xffff;
--		break;
--
--	/* OUT immediate opcodes */
--	case 0xe6:
--	case 0xe7:
--		*exitinfo |= IOIO_TYPE_OUT;
--		port	   = (u8)insn->immediate.value & 0xffff;
--		break;
--
--	/* IN register opcodes */
--	case 0xec:
--	case 0xed:
--		*exitinfo |= IOIO_TYPE_IN;
--		port	   = ctxt->regs->dx & 0xffff;
--		break;
--
--	/* OUT register opcodes */
--	case 0xee:
--	case 0xef:
--		*exitinfo |= IOIO_TYPE_OUT;
--		port	   = ctxt->regs->dx & 0xffff;
--		break;
--
--	default:
--		return ES_DECODE_FAILED;
--	}
--
--	*exitinfo |= port << 16;
--
--	switch (insn->opcode.bytes[0]) {
--	case 0x6c:
--	case 0x6e:
--	case 0xe4:
--	case 0xe6:
--	case 0xec:
--	case 0xee:
--		/* Single byte opcodes */
--		*exitinfo |= IOIO_DATA_8;
--		size       = 1;
--		break;
--	default:
--		/* Length determined by instruction parsing */
--		*exitinfo |= (insn->opnd_bytes == 2) ? IOIO_DATA_16
--						     : IOIO_DATA_32;
--		size       = (insn->opnd_bytes == 2) ? 2 : 4;
--	}
--
--	switch (insn->addr_bytes) {
--	case 2:
--		*exitinfo |= IOIO_ADDR_16;
--		break;
--	case 4:
--		*exitinfo |= IOIO_ADDR_32;
--		break;
--	case 8:
--		*exitinfo |= IOIO_ADDR_64;
--		break;
--	}
--
--	if (insn_has_rep_prefix(insn))
--		*exitinfo |= IOIO_REP;
--
--	return vc_ioio_check(ctxt, (u16)port, size);
--}
--
--static enum es_result vc_handle_ioio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
--{
--	struct pt_regs *regs = ctxt->regs;
--	u64 exit_info_1, exit_info_2;
--	enum es_result ret;
--
--	ret = vc_ioio_exitinfo(ctxt, &exit_info_1);
--	if (ret != ES_OK)
--		return ret;
--
--	if (exit_info_1 & IOIO_TYPE_STR) {
--
--		/* (REP) INS/OUTS */
--
--		bool df = ((regs->flags & X86_EFLAGS_DF) == X86_EFLAGS_DF);
--		unsigned int io_bytes, exit_bytes;
--		unsigned int ghcb_count, op_count;
--		unsigned long es_base;
--		u64 sw_scratch;
--
--		/*
--		 * For the string variants with rep prefix the amount of in/out
--		 * operations per #VC exception is limited so that the kernel
--		 * has a chance to take interrupts and re-schedule while the
--		 * instruction is emulated.
--		 */
--		io_bytes   = (exit_info_1 >> 4) & 0x7;
--		ghcb_count = sizeof(ghcb->shared_buffer) / io_bytes;
--
--		op_count    = (exit_info_1 & IOIO_REP) ? regs->cx : 1;
--		exit_info_2 = min(op_count, ghcb_count);
--		exit_bytes  = exit_info_2 * io_bytes;
--
--		es_base = insn_get_seg_base(ctxt->regs, INAT_SEG_REG_ES);
--
--		/* Read bytes of OUTS into the shared buffer */
--		if (!(exit_info_1 & IOIO_TYPE_IN)) {
--			ret = vc_insn_string_read(ctxt,
--					       (void *)(es_base + regs->si),
--					       ghcb->shared_buffer, io_bytes,
--					       exit_info_2, df);
--			if (ret)
--				return ret;
--		}
--
--		/*
--		 * Issue an VMGEXIT to the HV to consume the bytes from the
--		 * shared buffer or to have it write them into the shared buffer
--		 * depending on the instruction: OUTS or INS.
--		 */
--		sw_scratch = __pa(ghcb) + offsetof(struct ghcb, shared_buffer);
--		ghcb_set_sw_scratch(ghcb, sw_scratch);
--		ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_IOIO,
--					  exit_info_1, exit_info_2);
--		if (ret != ES_OK)
--			return ret;
--
--		/* Read bytes from shared buffer into the guest's destination. */
--		if (exit_info_1 & IOIO_TYPE_IN) {
--			ret = vc_insn_string_write(ctxt,
--						   (void *)(es_base + regs->di),
--						   ghcb->shared_buffer, io_bytes,
--						   exit_info_2, df);
--			if (ret)
--				return ret;
--
--			if (df)
--				regs->di -= exit_bytes;
--			else
--				regs->di += exit_bytes;
--		} else {
--			if (df)
--				regs->si -= exit_bytes;
--			else
--				regs->si += exit_bytes;
--		}
--
--		if (exit_info_1 & IOIO_REP)
--			regs->cx -= exit_info_2;
--
--		ret = regs->cx ? ES_RETRY : ES_OK;
--
--	} else {
--
--		/* IN/OUT into/from rAX */
--
--		int bits = (exit_info_1 & 0x70) >> 1;
--		u64 rax = 0;
--
--		if (!(exit_info_1 & IOIO_TYPE_IN))
--			rax = lower_bits(regs->ax, bits);
--
--		ghcb_set_rax(ghcb, rax);
--
--		ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_IOIO, exit_info_1, 0);
--		if (ret != ES_OK)
--			return ret;
--
--		if (exit_info_1 & IOIO_TYPE_IN) {
--			if (!ghcb_rax_is_valid(ghcb))
--				return ES_VMM_ERROR;
--			regs->ax = lower_bits(ghcb->save.rax, bits);
--		}
--	}
--
--	return ret;
--}
--
--static int vc_handle_cpuid_snp(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
--{
--	struct pt_regs *regs = ctxt->regs;
--	struct cpuid_leaf leaf;
--	int ret;
--
--	leaf.fn = regs->ax;
--	leaf.subfn = regs->cx;
--	ret = snp_cpuid(ghcb, ctxt, &leaf);
--	if (!ret) {
--		regs->ax = leaf.eax;
--		regs->bx = leaf.ebx;
--		regs->cx = leaf.ecx;
--		regs->dx = leaf.edx;
--	}
--
--	return ret;
--}
--
--static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
--				      struct es_em_ctxt *ctxt)
--{
--	struct pt_regs *regs = ctxt->regs;
--	u32 cr4 = native_read_cr4();
--	enum es_result ret;
--	int snp_cpuid_ret;
--
--	snp_cpuid_ret = vc_handle_cpuid_snp(ghcb, ctxt);
--	if (!snp_cpuid_ret)
--		return ES_OK;
--	if (snp_cpuid_ret != -EOPNOTSUPP)
--		return ES_VMM_ERROR;
--
--	ghcb_set_rax(ghcb, regs->ax);
--	ghcb_set_rcx(ghcb, regs->cx);
--
--	if (cr4 & X86_CR4_OSXSAVE)
--		/* Safe to read xcr0 */
--		ghcb_set_xcr0(ghcb, xgetbv(XCR_XFEATURE_ENABLED_MASK));
--	else
--		/* xgetbv will cause #GP - use reset value for xcr0 */
--		ghcb_set_xcr0(ghcb, 1);
--
--	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_CPUID, 0, 0);
--	if (ret != ES_OK)
--		return ret;
--
--	if (!(ghcb_rax_is_valid(ghcb) &&
--	      ghcb_rbx_is_valid(ghcb) &&
--	      ghcb_rcx_is_valid(ghcb) &&
--	      ghcb_rdx_is_valid(ghcb)))
--		return ES_VMM_ERROR;
--
--	regs->ax = ghcb->save.rax;
--	regs->bx = ghcb->save.rbx;
--	regs->cx = ghcb->save.rcx;
--	regs->dx = ghcb->save.rdx;
--
--	return ES_OK;
--}
--
--static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
--				      struct es_em_ctxt *ctxt,
--				      unsigned long exit_code)
--{
--	bool rdtscp = (exit_code == SVM_EXIT_RDTSCP);
--	enum es_result ret;
--
--	/*
--	 * The hypervisor should not be intercepting RDTSC/RDTSCP when Secure
--	 * TSC is enabled. A #VC exception will be generated if the RDTSC/RDTSCP
--	 * instructions are being intercepted. If this should occur and Secure
--	 * TSC is enabled, guest execution should be terminated as the guest
--	 * cannot rely on the TSC value provided by the hypervisor.
--	 */
--	if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
--		return ES_VMM_ERROR;
--
--	ret = sev_es_ghcb_hv_call(ghcb, ctxt, exit_code, 0, 0);
--	if (ret != ES_OK)
--		return ret;
--
--	if (!(ghcb_rax_is_valid(ghcb) && ghcb_rdx_is_valid(ghcb) &&
--	     (!rdtscp || ghcb_rcx_is_valid(ghcb))))
--		return ES_VMM_ERROR;
--
--	ctxt->regs->ax = ghcb->save.rax;
--	ctxt->regs->dx = ghcb->save.rdx;
--	if (rdtscp)
--		ctxt->regs->cx = ghcb->save.rcx;
--
--	return ES_OK;
--}
--
- struct cc_setup_data {
- 	struct setup_data header;
- 	u32 cc_blob_address;
-@@ -1238,97 +812,6 @@ static void __head pvalidate_4k_page(unsigned long vaddr, unsigned long paddr,
- 	}
- }
- 
--static enum es_result vc_check_opcode_bytes(struct es_em_ctxt *ctxt,
--					    unsigned long exit_code)
--{
--	unsigned int opcode = (unsigned int)ctxt->insn.opcode.value;
--	u8 modrm = ctxt->insn.modrm.value;
--
--	switch (exit_code) {
--
--	case SVM_EXIT_IOIO:
--	case SVM_EXIT_NPF:
--		/* handled separately */
--		return ES_OK;
--
--	case SVM_EXIT_CPUID:
--		if (opcode == 0xa20f)
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_INVD:
--		if (opcode == 0x080f)
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_MONITOR:
--		/* MONITOR and MONITORX instructions generate the same error code */
--		if (opcode == 0x010f && (modrm == 0xc8 || modrm == 0xfa))
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_MWAIT:
--		/* MWAIT and MWAITX instructions generate the same error code */
--		if (opcode == 0x010f && (modrm == 0xc9 || modrm == 0xfb))
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_MSR:
--		/* RDMSR */
--		if (opcode == 0x320f ||
--		/* WRMSR */
--		    opcode == 0x300f)
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_RDPMC:
--		if (opcode == 0x330f)
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_RDTSC:
--		if (opcode == 0x310f)
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_RDTSCP:
--		if (opcode == 0x010f && modrm == 0xf9)
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_READ_DR7:
--		if (opcode == 0x210f &&
--		    X86_MODRM_REG(ctxt->insn.modrm.value) == 7)
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_VMMCALL:
--		if (opcode == 0x010f && modrm == 0xd9)
--			return ES_OK;
--
--		break;
--
--	case SVM_EXIT_WRITE_DR7:
--		if (opcode == 0x230f &&
--		    X86_MODRM_REG(ctxt->insn.modrm.value) == 7)
--			return ES_OK;
--		break;
--
--	case SVM_EXIT_WBINVD:
--		if (opcode == 0x90f)
--			return ES_OK;
--		break;
--
--	default:
--		break;
--	}
--
--	sev_printk(KERN_ERR "Wrong/unhandled opcode bytes: 0x%x, exit_code: 0x%lx, rIP: 0x%lx\n",
--		   opcode, exit_code, ctxt->regs->ip);
--
--	return ES_UNSUPPORTED;
--}
--
- /*
-  * Maintain the GPA of the SVSM Calling Area (CA) in order to utilize the SVSM
-  * services needed when not running in VMPL0.
-diff --git a/arch/x86/boot/startup/sev-startup.c b/arch/x86/boot/startup/sev-startup.c
-index f901ce9..435853a 100644
---- a/arch/x86/boot/startup/sev-startup.c
-+++ b/arch/x86/boot/startup/sev-startup.c
-@@ -9,7 +9,6 @@
- 
- #define pr_fmt(fmt)	"SEV: " fmt
- 
--#include <linux/sched/debug.h>	/* For show_regs() */
- #include <linux/percpu-defs.h>
- #include <linux/cc_platform.h>
- #include <linux/printk.h>
-@@ -112,315 +111,6 @@ noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
- 	return ghcb;
- }
- 
--static int vc_fetch_insn_kernel(struct es_em_ctxt *ctxt,
--				unsigned char *buffer)
--{
--	return copy_from_kernel_nofault(buffer, (unsigned char *)ctxt->regs->ip, MAX_INSN_SIZE);
--}
--
--static enum es_result __vc_decode_user_insn(struct es_em_ctxt *ctxt)
--{
--	char buffer[MAX_INSN_SIZE];
--	int insn_bytes;
--
--	insn_bytes = insn_fetch_from_user_inatomic(ctxt->regs, buffer);
--	if (insn_bytes == 0) {
--		/* Nothing could be copied */
--		ctxt->fi.vector     = X86_TRAP_PF;
--		ctxt->fi.error_code = X86_PF_INSTR | X86_PF_USER;
--		ctxt->fi.cr2        = ctxt->regs->ip;
--		return ES_EXCEPTION;
--	} else if (insn_bytes == -EINVAL) {
--		/* Effective RIP could not be calculated */
--		ctxt->fi.vector     = X86_TRAP_GP;
--		ctxt->fi.error_code = 0;
--		ctxt->fi.cr2        = 0;
--		return ES_EXCEPTION;
--	}
--
--	if (!insn_decode_from_regs(&ctxt->insn, ctxt->regs, buffer, insn_bytes))
--		return ES_DECODE_FAILED;
--
--	if (ctxt->insn.immediate.got)
--		return ES_OK;
--	else
--		return ES_DECODE_FAILED;
--}
--
--static enum es_result __vc_decode_kern_insn(struct es_em_ctxt *ctxt)
--{
--	char buffer[MAX_INSN_SIZE];
--	int res, ret;
--
--	res = vc_fetch_insn_kernel(ctxt, buffer);
--	if (res) {
--		ctxt->fi.vector     = X86_TRAP_PF;
--		ctxt->fi.error_code = X86_PF_INSTR;
--		ctxt->fi.cr2        = ctxt->regs->ip;
--		return ES_EXCEPTION;
--	}
--
--	ret = insn_decode(&ctxt->insn, buffer, MAX_INSN_SIZE, INSN_MODE_64);
--	if (ret < 0)
--		return ES_DECODE_FAILED;
--	else
--		return ES_OK;
--}
--
--static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
--{
--	if (user_mode(ctxt->regs))
--		return __vc_decode_user_insn(ctxt);
--	else
--		return __vc_decode_kern_insn(ctxt);
--}
--
--static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
--				   char *dst, char *buf, size_t size)
--{
--	unsigned long error_code = X86_PF_PROT | X86_PF_WRITE;
--
--	/*
--	 * This function uses __put_user() independent of whether kernel or user
--	 * memory is accessed. This works fine because __put_user() does no
--	 * sanity checks of the pointer being accessed. All that it does is
--	 * to report when the access failed.
--	 *
--	 * Also, this function runs in atomic context, so __put_user() is not
--	 * allowed to sleep. The page-fault handler detects that it is running
--	 * in atomic context and will not try to take mmap_sem and handle the
--	 * fault, so additional pagefault_enable()/disable() calls are not
--	 * needed.
--	 *
--	 * The access can't be done via copy_to_user() here because
--	 * vc_write_mem() must not use string instructions to access unsafe
--	 * memory. The reason is that MOVS is emulated by the #VC handler by
--	 * splitting the move up into a read and a write and taking a nested #VC
--	 * exception on whatever of them is the MMIO access. Using string
--	 * instructions here would cause infinite nesting.
--	 */
--	switch (size) {
--	case 1: {
--		u8 d1;
--		u8 __user *target = (u8 __user *)dst;
--
--		memcpy(&d1, buf, 1);
--		if (__put_user(d1, target))
--			goto fault;
--		break;
--	}
--	case 2: {
--		u16 d2;
--		u16 __user *target = (u16 __user *)dst;
--
--		memcpy(&d2, buf, 2);
--		if (__put_user(d2, target))
--			goto fault;
--		break;
--	}
--	case 4: {
--		u32 d4;
--		u32 __user *target = (u32 __user *)dst;
--
--		memcpy(&d4, buf, 4);
--		if (__put_user(d4, target))
--			goto fault;
--		break;
--	}
--	case 8: {
--		u64 d8;
--		u64 __user *target = (u64 __user *)dst;
--
--		memcpy(&d8, buf, 8);
--		if (__put_user(d8, target))
--			goto fault;
--		break;
--	}
--	default:
--		WARN_ONCE(1, "%s: Invalid size: %zu\n", __func__, size);
--		return ES_UNSUPPORTED;
--	}
--
--	return ES_OK;
--
--fault:
--	if (user_mode(ctxt->regs))
--		error_code |= X86_PF_USER;
--
--	ctxt->fi.vector = X86_TRAP_PF;
--	ctxt->fi.error_code = error_code;
--	ctxt->fi.cr2 = (unsigned long)dst;
--
--	return ES_EXCEPTION;
--}
--
--static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
--				  char *src, char *buf, size_t size)
--{
--	unsigned long error_code = X86_PF_PROT;
--
--	/*
--	 * This function uses __get_user() independent of whether kernel or user
--	 * memory is accessed. This works fine because __get_user() does no
--	 * sanity checks of the pointer being accessed. All that it does is
--	 * to report when the access failed.
--	 *
--	 * Also, this function runs in atomic context, so __get_user() is not
--	 * allowed to sleep. The page-fault handler detects that it is running
--	 * in atomic context and will not try to take mmap_sem and handle the
--	 * fault, so additional pagefault_enable()/disable() calls are not
--	 * needed.
--	 *
--	 * The access can't be done via copy_from_user() here because
--	 * vc_read_mem() must not use string instructions to access unsafe
--	 * memory. The reason is that MOVS is emulated by the #VC handler by
--	 * splitting the move up into a read and a write and taking a nested #VC
--	 * exception on whatever of them is the MMIO access. Using string
--	 * instructions here would cause infinite nesting.
--	 */
--	switch (size) {
--	case 1: {
--		u8 d1;
--		u8 __user *s = (u8 __user *)src;
--
--		if (__get_user(d1, s))
--			goto fault;
--		memcpy(buf, &d1, 1);
--		break;
--	}
--	case 2: {
--		u16 d2;
--		u16 __user *s = (u16 __user *)src;
--
--		if (__get_user(d2, s))
--			goto fault;
--		memcpy(buf, &d2, 2);
--		break;
--	}
--	case 4: {
--		u32 d4;
--		u32 __user *s = (u32 __user *)src;
--
--		if (__get_user(d4, s))
--			goto fault;
--		memcpy(buf, &d4, 4);
--		break;
--	}
--	case 8: {
--		u64 d8;
--		u64 __user *s = (u64 __user *)src;
--		if (__get_user(d8, s))
--			goto fault;
--		memcpy(buf, &d8, 8);
--		break;
--	}
--	default:
--		WARN_ONCE(1, "%s: Invalid size: %zu\n", __func__, size);
--		return ES_UNSUPPORTED;
--	}
--
--	return ES_OK;
--
--fault:
--	if (user_mode(ctxt->regs))
--		error_code |= X86_PF_USER;
--
--	ctxt->fi.vector = X86_TRAP_PF;
--	ctxt->fi.error_code = error_code;
--	ctxt->fi.cr2 = (unsigned long)src;
--
--	return ES_EXCEPTION;
--}
--
--static enum es_result vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
--					   unsigned long vaddr, phys_addr_t *paddr)
--{
--	unsigned long va = (unsigned long)vaddr;
--	unsigned int level;
--	phys_addr_t pa;
--	pgd_t *pgd;
--	pte_t *pte;
--
--	pgd = __va(read_cr3_pa());
--	pgd = &pgd[pgd_index(va)];
--	pte = lookup_address_in_pgd(pgd, va, &level);
--	if (!pte) {
--		ctxt->fi.vector     = X86_TRAP_PF;
--		ctxt->fi.cr2        = vaddr;
--		ctxt->fi.error_code = 0;
--
--		if (user_mode(ctxt->regs))
--			ctxt->fi.error_code |= X86_PF_USER;
--
--		return ES_EXCEPTION;
--	}
--
--	if (WARN_ON_ONCE(pte_val(*pte) & _PAGE_ENC))
--		/* Emulated MMIO to/from encrypted memory not supported */
--		return ES_UNSUPPORTED;
--
--	pa = (phys_addr_t)pte_pfn(*pte) << PAGE_SHIFT;
--	pa |= va & ~page_level_mask(level);
--
--	*paddr = pa;
--
--	return ES_OK;
--}
--
--static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t size)
--{
--	BUG_ON(size > 4);
--
--	if (user_mode(ctxt->regs)) {
--		struct thread_struct *t = &current->thread;
--		struct io_bitmap *iobm = t->io_bitmap;
--		size_t idx;
--
--		if (!iobm)
--			goto fault;
--
--		for (idx = port; idx < port + size; ++idx) {
--			if (test_bit(idx, iobm->bitmap))
--				goto fault;
--		}
--	}
--
--	return ES_OK;
--
--fault:
--	ctxt->fi.vector = X86_TRAP_GP;
--	ctxt->fi.error_code = 0;
--
--	return ES_EXCEPTION;
--}
--
--static __always_inline void vc_forward_exception(struct es_em_ctxt *ctxt)
--{
--	long error_code = ctxt->fi.error_code;
--	int trapnr = ctxt->fi.vector;
--
--	ctxt->regs->orig_ax = ctxt->fi.error_code;
--
--	switch (trapnr) {
--	case X86_TRAP_GP:
--		exc_general_protection(ctxt->regs, error_code);
--		break;
--	case X86_TRAP_UD:
--		exc_invalid_op(ctxt->regs);
--		break;
--	case X86_TRAP_PF:
--		write_cr2(ctxt->fi.cr2);
--		exc_page_fault(ctxt->regs, error_code);
--		break;
--	case X86_TRAP_AC:
--		exc_alignment_check(ctxt->regs, error_code);
--		break;
--	default:
--		pr_emerg("Unsupported exception in #VC instruction emulation - can't continue\n");
--		BUG();
--	}
--}
--
- /* Include code shared with pre-decompression boot stage */
- #include "sev-shared.c"
- 
-@@ -563,718 +253,6 @@ void __head early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr
- 	early_set_pages_state(vaddr, paddr, npages, SNP_PAGE_STATE_SHARED);
- }
- 
--/* Writes to the SVSM CAA MSR are ignored */
--static enum es_result __vc_handle_msr_caa(struct pt_regs *regs, bool write)
--{
--	if (write)
--		return ES_OK;
--
--	regs->ax = lower_32_bits(this_cpu_read(svsm_caa_pa));
--	regs->dx = upper_32_bits(this_cpu_read(svsm_caa_pa));
--
--	return ES_OK;
--}
--
--/*
-- * TSC related accesses should not exit to the hypervisor when a guest is
-- * executing with Secure TSC enabled, so special handling is required for
-- * accesses of MSR_IA32_TSC and MSR_AMD64_GUEST_TSC_FREQ.
-- */
--static enum es_result __vc_handle_secure_tsc_msrs(struct pt_regs *regs, bool write)
--{
--	u64 tsc;
--
--	/*
--	 * GUEST_TSC_FREQ should not be intercepted when Secure TSC is enabled.
--	 * Terminate the SNP guest when the interception is enabled.
--	 */
--	if (regs->cx == MSR_AMD64_GUEST_TSC_FREQ)
--		return ES_VMM_ERROR;
--
--	/*
--	 * Writes: Writing to MSR_IA32_TSC can cause subsequent reads of the TSC
--	 *         to return undefined values, so ignore all writes.
--	 *
--	 * Reads: Reads of MSR_IA32_TSC should return the current TSC value, use
--	 *        the value returned by rdtsc_ordered().
--	 */
--	if (write) {
--		WARN_ONCE(1, "TSC MSR writes are verboten!\n");
--		return ES_OK;
--	}
--
--	tsc = rdtsc_ordered();
--	regs->ax = lower_32_bits(tsc);
--	regs->dx = upper_32_bits(tsc);
--
--	return ES_OK;
--}
--
--static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
--{
--	struct pt_regs *regs = ctxt->regs;
--	enum es_result ret;
--	bool write;
--
--	/* Is it a WRMSR? */
--	write = ctxt->insn.opcode.bytes[1] == 0x30;
--
--	switch (regs->cx) {
--	case MSR_SVSM_CAA:
--		return __vc_handle_msr_caa(regs, write);
--	case MSR_IA32_TSC:
--	case MSR_AMD64_GUEST_TSC_FREQ:
--		if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
--			return __vc_handle_secure_tsc_msrs(regs, write);
--		break;
--	default:
--		break;
--	}
--
--	ghcb_set_rcx(ghcb, regs->cx);
--	if (write) {
--		ghcb_set_rax(ghcb, regs->ax);
--		ghcb_set_rdx(ghcb, regs->dx);
--	}
--
--	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_MSR, write, 0);
--
--	if ((ret == ES_OK) && !write) {
--		regs->ax = ghcb->save.rax;
--		regs->dx = ghcb->save.rdx;
--	}
--
--	return ret;
--}
--
--static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
--{
--	int trapnr = ctxt->fi.vector;
--
--	if (trapnr == X86_TRAP_PF)
--		native_write_cr2(ctxt->fi.cr2);
--
--	ctxt->regs->orig_ax = ctxt->fi.error_code;
--	do_early_exception(ctxt->regs, trapnr);
--}
--
--static long *vc_insn_get_rm(struct es_em_ctxt *ctxt)
--{
--	long *reg_array;
--	int offset;
--
--	reg_array = (long *)ctxt->regs;
--	offset    = insn_get_modrm_rm_off(&ctxt->insn, ctxt->regs);
--
--	if (offset < 0)
--		return NULL;
--
--	offset /= sizeof(long);
--
--	return reg_array + offset;
--}
--static enum es_result vc_do_mmio(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
--				 unsigned int bytes, bool read)
--{
--	u64 exit_code, exit_info_1, exit_info_2;
--	unsigned long ghcb_pa = __pa(ghcb);
--	enum es_result res;
--	phys_addr_t paddr;
--	void __user *ref;
--
--	ref = insn_get_addr_ref(&ctxt->insn, ctxt->regs);
--	if (ref == (void __user *)-1L)
--		return ES_UNSUPPORTED;
--
--	exit_code = read ? SVM_VMGEXIT_MMIO_READ : SVM_VMGEXIT_MMIO_WRITE;
--
--	res = vc_slow_virt_to_phys(ghcb, ctxt, (unsigned long)ref, &paddr);
--	if (res != ES_OK) {
--		if (res == ES_EXCEPTION && !read)
--			ctxt->fi.error_code |= X86_PF_WRITE;
--
--		return res;
--	}
--
--	exit_info_1 = paddr;
--	/* Can never be greater than 8 */
--	exit_info_2 = bytes;
--
--	ghcb_set_sw_scratch(ghcb, ghcb_pa + offsetof(struct ghcb, shared_buffer));
--
--	return sev_es_ghcb_hv_call(ghcb, ctxt, exit_code, exit_info_1, exit_info_2);
--}
--
--/*
-- * The MOVS instruction has two memory operands, which raises the
-- * problem that it is not known whether the access to the source or the
-- * destination caused the #VC exception (and hence whether an MMIO read
-- * or write operation needs to be emulated).
-- *
-- * Instead of playing games with walking page-tables and trying to guess
-- * whether the source or destination is an MMIO range, split the move
-- * into two operations, a read and a write with only one memory operand.
-- * This will cause a nested #VC exception on the MMIO address which can
-- * then be handled.
-- *
-- * This implementation has the benefit that it also supports MOVS where
-- * source _and_ destination are MMIO regions.
-- *
-- * It will slow MOVS on MMIO down a lot, but in SEV-ES guests it is a
-- * rare operation. If it turns out to be a performance problem the split
-- * operations can be moved to memcpy_fromio() and memcpy_toio().
-- */
--static enum es_result vc_handle_mmio_movs(struct es_em_ctxt *ctxt,
--					  unsigned int bytes)
--{
--	unsigned long ds_base, es_base;
--	unsigned char *src, *dst;
--	unsigned char buffer[8];
--	enum es_result ret;
--	bool rep;
--	int off;
--
--	ds_base = insn_get_seg_base(ctxt->regs, INAT_SEG_REG_DS);
--	es_base = insn_get_seg_base(ctxt->regs, INAT_SEG_REG_ES);
--
--	if (ds_base == -1L || es_base == -1L) {
--		ctxt->fi.vector = X86_TRAP_GP;
--		ctxt->fi.error_code = 0;
--		return ES_EXCEPTION;
--	}
--
--	src = ds_base + (unsigned char *)ctxt->regs->si;
--	dst = es_base + (unsigned char *)ctxt->regs->di;
--
--	ret = vc_read_mem(ctxt, src, buffer, bytes);
--	if (ret != ES_OK)
--		return ret;
--
--	ret = vc_write_mem(ctxt, dst, buffer, bytes);
--	if (ret != ES_OK)
--		return ret;
--
--	if (ctxt->regs->flags & X86_EFLAGS_DF)
--		off = -bytes;
--	else
--		off =  bytes;
--
--	ctxt->regs->si += off;
--	ctxt->regs->di += off;
--
--	rep = insn_has_rep_prefix(&ctxt->insn);
--	if (rep)
--		ctxt->regs->cx -= 1;
--
--	if (!rep || ctxt->regs->cx == 0)
--		return ES_OK;
--	else
--		return ES_RETRY;
--}
--
--static enum es_result vc_handle_mmio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
--{
--	struct insn *insn = &ctxt->insn;
--	enum insn_mmio_type mmio;
--	unsigned int bytes = 0;
--	enum es_result ret;
--	u8 sign_byte;
--	long *reg_data;
--
--	mmio = insn_decode_mmio(insn, &bytes);
--	if (mmio == INSN_MMIO_DECODE_FAILED)
--		return ES_DECODE_FAILED;
--
--	if (mmio != INSN_MMIO_WRITE_IMM && mmio != INSN_MMIO_MOVS) {
--		reg_data = insn_get_modrm_reg_ptr(insn, ctxt->regs);
--		if (!reg_data)
--			return ES_DECODE_FAILED;
--	}
--
--	if (user_mode(ctxt->regs))
--		return ES_UNSUPPORTED;
--
--	switch (mmio) {
--	case INSN_MMIO_WRITE:
--		memcpy(ghcb->shared_buffer, reg_data, bytes);
--		ret = vc_do_mmio(ghcb, ctxt, bytes, false);
--		break;
--	case INSN_MMIO_WRITE_IMM:
--		memcpy(ghcb->shared_buffer, insn->immediate1.bytes, bytes);
--		ret = vc_do_mmio(ghcb, ctxt, bytes, false);
--		break;
--	case INSN_MMIO_READ:
--		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
--		if (ret)
--			break;
--
--		/* Zero-extend for 32-bit operation */
--		if (bytes == 4)
--			*reg_data = 0;
--
--		memcpy(reg_data, ghcb->shared_buffer, bytes);
--		break;
--	case INSN_MMIO_READ_ZERO_EXTEND:
--		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
--		if (ret)
--			break;
--
--		/* Zero extend based on operand size */
--		memset(reg_data, 0, insn->opnd_bytes);
--		memcpy(reg_data, ghcb->shared_buffer, bytes);
--		break;
--	case INSN_MMIO_READ_SIGN_EXTEND:
--		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
--		if (ret)
--			break;
--
--		if (bytes == 1) {
--			u8 *val = (u8 *)ghcb->shared_buffer;
--
--			sign_byte = (*val & 0x80) ? 0xff : 0x00;
--		} else {
--			u16 *val = (u16 *)ghcb->shared_buffer;
--
--			sign_byte = (*val & 0x8000) ? 0xff : 0x00;
--		}
--
--		/* Sign extend based on operand size */
--		memset(reg_data, sign_byte, insn->opnd_bytes);
--		memcpy(reg_data, ghcb->shared_buffer, bytes);
--		break;
--	case INSN_MMIO_MOVS:
--		ret = vc_handle_mmio_movs(ctxt, bytes);
--		break;
--	default:
--		ret = ES_UNSUPPORTED;
--		break;
--	}
--
--	return ret;
--}
--
--static enum es_result vc_handle_dr7_write(struct ghcb *ghcb,
--					  struct es_em_ctxt *ctxt)
--{
--	struct sev_es_runtime_data *data = this_cpu_read(runtime_data);
--	long val, *reg = vc_insn_get_rm(ctxt);
--	enum es_result ret;
--
--	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
--		return ES_VMM_ERROR;
--
--	if (!reg)
--		return ES_DECODE_FAILED;
--
--	val = *reg;
--
--	/* Upper 32 bits must be written as zeroes */
--	if (val >> 32) {
--		ctxt->fi.vector = X86_TRAP_GP;
--		ctxt->fi.error_code = 0;
--		return ES_EXCEPTION;
--	}
--
--	/* Clear out other reserved bits and set bit 10 */
--	val = (val & 0xffff23ffL) | BIT(10);
--
--	/* Early non-zero writes to DR7 are not supported */
--	if (!data && (val & ~DR7_RESET_VALUE))
--		return ES_UNSUPPORTED;
--
--	/* Using a value of 0 for ExitInfo1 means RAX holds the value */
--	ghcb_set_rax(ghcb, val);
--	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_WRITE_DR7, 0, 0);
--	if (ret != ES_OK)
--		return ret;
--
--	if (data)
--		data->dr7 = val;
--
--	return ES_OK;
--}
--
--static enum es_result vc_handle_dr7_read(struct ghcb *ghcb,
--					 struct es_em_ctxt *ctxt)
--{
--	struct sev_es_runtime_data *data = this_cpu_read(runtime_data);
--	long *reg = vc_insn_get_rm(ctxt);
--
--	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
--		return ES_VMM_ERROR;
--
--	if (!reg)
--		return ES_DECODE_FAILED;
--
--	if (data)
--		*reg = data->dr7;
--	else
--		*reg = DR7_RESET_VALUE;
--
--	return ES_OK;
--}
--
--static enum es_result vc_handle_wbinvd(struct ghcb *ghcb,
--				       struct es_em_ctxt *ctxt)
--{
--	return sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_WBINVD, 0, 0);
--}
--
--static enum es_result vc_handle_rdpmc(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
--{
--	enum es_result ret;
--
--	ghcb_set_rcx(ghcb, ctxt->regs->cx);
--
--	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_RDPMC, 0, 0);
--	if (ret != ES_OK)
--		return ret;
--
--	if (!(ghcb_rax_is_valid(ghcb) && ghcb_rdx_is_valid(ghcb)))
--		return ES_VMM_ERROR;
--
--	ctxt->regs->ax = ghcb->save.rax;
--	ctxt->regs->dx = ghcb->save.rdx;
--
--	return ES_OK;
--}
--
--static enum es_result vc_handle_monitor(struct ghcb *ghcb,
--					struct es_em_ctxt *ctxt)
--{
--	/*
--	 * Treat it as a NOP and do not leak a physical address to the
--	 * hypervisor.
--	 */
--	return ES_OK;
--}
--
--static enum es_result vc_handle_mwait(struct ghcb *ghcb,
--				      struct es_em_ctxt *ctxt)
--{
--	/* Treat the same as MONITOR/MONITORX */
--	return ES_OK;
--}
--
--static enum es_result vc_handle_vmmcall(struct ghcb *ghcb,
--					struct es_em_ctxt *ctxt)
--{
--	enum es_result ret;
--
--	ghcb_set_rax(ghcb, ctxt->regs->ax);
--	ghcb_set_cpl(ghcb, user_mode(ctxt->regs) ? 3 : 0);
--
--	if (x86_platform.hyper.sev_es_hcall_prepare)
--		x86_platform.hyper.sev_es_hcall_prepare(ghcb, ctxt->regs);
--
--	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_VMMCALL, 0, 0);
--	if (ret != ES_OK)
--		return ret;
--
--	if (!ghcb_rax_is_valid(ghcb))
--		return ES_VMM_ERROR;
--
--	ctxt->regs->ax = ghcb->save.rax;
--
--	/*
--	 * Call sev_es_hcall_finish() after regs->ax is already set.
--	 * This allows the hypervisor handler to overwrite it again if
--	 * necessary.
--	 */
--	if (x86_platform.hyper.sev_es_hcall_finish &&
--	    !x86_platform.hyper.sev_es_hcall_finish(ghcb, ctxt->regs))
--		return ES_VMM_ERROR;
--
--	return ES_OK;
--}
--
--static enum es_result vc_handle_trap_ac(struct ghcb *ghcb,
--					struct es_em_ctxt *ctxt)
--{
--	/*
--	 * Calling ecx_alignment_check() directly does not work, because it
--	 * enables IRQs and the GHCB is active. Forward the exception and call
--	 * it later from vc_forward_exception().
--	 */
--	ctxt->fi.vector = X86_TRAP_AC;
--	ctxt->fi.error_code = 0;
--	return ES_EXCEPTION;
--}
--
--static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
--					 struct ghcb *ghcb,
--					 unsigned long exit_code)
--{
--	enum es_result result = vc_check_opcode_bytes(ctxt, exit_code);
--
--	if (result != ES_OK)
--		return result;
--
--	switch (exit_code) {
--	case SVM_EXIT_READ_DR7:
--		result = vc_handle_dr7_read(ghcb, ctxt);
--		break;
--	case SVM_EXIT_WRITE_DR7:
--		result = vc_handle_dr7_write(ghcb, ctxt);
--		break;
--	case SVM_EXIT_EXCP_BASE + X86_TRAP_AC:
--		result = vc_handle_trap_ac(ghcb, ctxt);
--		break;
--	case SVM_EXIT_RDTSC:
--	case SVM_EXIT_RDTSCP:
--		result = vc_handle_rdtsc(ghcb, ctxt, exit_code);
--		break;
--	case SVM_EXIT_RDPMC:
--		result = vc_handle_rdpmc(ghcb, ctxt);
--		break;
--	case SVM_EXIT_INVD:
--		pr_err_ratelimited("#VC exception for INVD??? Seriously???\n");
--		result = ES_UNSUPPORTED;
--		break;
--	case SVM_EXIT_CPUID:
--		result = vc_handle_cpuid(ghcb, ctxt);
--		break;
--	case SVM_EXIT_IOIO:
--		result = vc_handle_ioio(ghcb, ctxt);
--		break;
--	case SVM_EXIT_MSR:
--		result = vc_handle_msr(ghcb, ctxt);
--		break;
--	case SVM_EXIT_VMMCALL:
--		result = vc_handle_vmmcall(ghcb, ctxt);
--		break;
--	case SVM_EXIT_WBINVD:
--		result = vc_handle_wbinvd(ghcb, ctxt);
--		break;
--	case SVM_EXIT_MONITOR:
--		result = vc_handle_monitor(ghcb, ctxt);
--		break;
--	case SVM_EXIT_MWAIT:
--		result = vc_handle_mwait(ghcb, ctxt);
--		break;
--	case SVM_EXIT_NPF:
--		result = vc_handle_mmio(ghcb, ctxt);
--		break;
--	default:
--		/*
--		 * Unexpected #VC exception
--		 */
--		result = ES_UNSUPPORTED;
--	}
--
--	return result;
--}
--
--static __always_inline bool is_vc2_stack(unsigned long sp)
--{
--	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
--}
--
--static __always_inline bool vc_from_invalid_context(struct pt_regs *regs)
--{
--	unsigned long sp, prev_sp;
--
--	sp      = (unsigned long)regs;
--	prev_sp = regs->sp;
--
--	/*
--	 * If the code was already executing on the VC2 stack when the #VC
--	 * happened, let it proceed to the normal handling routine. This way the
--	 * code executing on the VC2 stack can cause #VC exceptions to get handled.
--	 */
--	return is_vc2_stack(sp) && !is_vc2_stack(prev_sp);
--}
--
--static bool vc_raw_handle_exception(struct pt_regs *regs, unsigned long error_code)
--{
--	struct ghcb_state state;
--	struct es_em_ctxt ctxt;
--	enum es_result result;
--	struct ghcb *ghcb;
--	bool ret = true;
--
--	ghcb = __sev_get_ghcb(&state);
--
--	vc_ghcb_invalidate(ghcb);
--	result = vc_init_em_ctxt(&ctxt, regs, error_code);
--
--	if (result == ES_OK)
--		result = vc_handle_exitcode(&ctxt, ghcb, error_code);
--
--	__sev_put_ghcb(&state);
--
--	/* Done - now check the result */
--	switch (result) {
--	case ES_OK:
--		vc_finish_insn(&ctxt);
--		break;
--	case ES_UNSUPPORTED:
--		pr_err_ratelimited("Unsupported exit-code 0x%02lx in #VC exception (IP: 0x%lx)\n",
--				   error_code, regs->ip);
--		ret = false;
--		break;
--	case ES_VMM_ERROR:
--		pr_err_ratelimited("Failure in communication with VMM (exit-code 0x%02lx IP: 0x%lx)\n",
--				   error_code, regs->ip);
--		ret = false;
--		break;
--	case ES_DECODE_FAILED:
--		pr_err_ratelimited("Failed to decode instruction (exit-code 0x%02lx IP: 0x%lx)\n",
--				   error_code, regs->ip);
--		ret = false;
--		break;
--	case ES_EXCEPTION:
--		vc_forward_exception(&ctxt);
--		break;
--	case ES_RETRY:
--		/* Nothing to do */
--		break;
--	default:
--		pr_emerg("Unknown result in %s():%d\n", __func__, result);
--		/*
--		 * Emulating the instruction which caused the #VC exception
--		 * failed - can't continue so print debug information
--		 */
--		BUG();
--	}
--
--	return ret;
--}
--
--static __always_inline bool vc_is_db(unsigned long error_code)
--{
--	return error_code == SVM_EXIT_EXCP_BASE + X86_TRAP_DB;
--}
--
--/*
-- * Runtime #VC exception handler when raised from kernel mode. Runs in NMI mode
-- * and will panic when an error happens.
-- */
--DEFINE_IDTENTRY_VC_KERNEL(exc_vmm_communication)
--{
--	irqentry_state_t irq_state;
--
--	/*
--	 * With the current implementation it is always possible to switch to a
--	 * safe stack because #VC exceptions only happen at known places, like
--	 * intercepted instructions or accesses to MMIO areas/IO ports. They can
--	 * also happen with code instrumentation when the hypervisor intercepts
--	 * #DB, but the critical paths are forbidden to be instrumented, so #DB
--	 * exceptions currently also only happen in safe places.
--	 *
--	 * But keep this here in case the noinstr annotations are violated due
--	 * to bug elsewhere.
--	 */
--	if (unlikely(vc_from_invalid_context(regs))) {
--		instrumentation_begin();
--		panic("Can't handle #VC exception from unsupported context\n");
--		instrumentation_end();
--	}
--
--	/*
--	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
--	 */
--	if (vc_is_db(error_code)) {
--		exc_debug(regs);
--		return;
--	}
--
--	irq_state = irqentry_nmi_enter(regs);
--
--	instrumentation_begin();
--
--	if (!vc_raw_handle_exception(regs, error_code)) {
--		/* Show some debug info */
--		show_regs(regs);
--
--		/* Ask hypervisor to sev_es_terminate */
--		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
--
--		/* If that fails and we get here - just panic */
--		panic("Returned from Terminate-Request to Hypervisor\n");
--	}
--
--	instrumentation_end();
--	irqentry_nmi_exit(regs, irq_state);
--}
--
--/*
-- * Runtime #VC exception handler when raised from user mode. Runs in IRQ mode
-- * and will kill the current task with SIGBUS when an error happens.
-- */
--DEFINE_IDTENTRY_VC_USER(exc_vmm_communication)
--{
--	/*
--	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
--	 */
--	if (vc_is_db(error_code)) {
--		noist_exc_debug(regs);
--		return;
--	}
--
--	irqentry_enter_from_user_mode(regs);
--	instrumentation_begin();
--
--	if (!vc_raw_handle_exception(regs, error_code)) {
--		/*
--		 * Do not kill the machine if user-space triggered the
--		 * exception. Send SIGBUS instead and let user-space deal with
--		 * it.
--		 */
--		force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)0);
--	}
--
--	instrumentation_end();
--	irqentry_exit_to_user_mode(regs);
--}
--
--bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
--{
--	unsigned long exit_code = regs->orig_ax;
--	struct es_em_ctxt ctxt;
--	enum es_result result;
--
--	vc_ghcb_invalidate(boot_ghcb);
--
--	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
--	if (result == ES_OK)
--		result = vc_handle_exitcode(&ctxt, boot_ghcb, exit_code);
--
--	/* Done - now check the result */
--	switch (result) {
--	case ES_OK:
--		vc_finish_insn(&ctxt);
--		break;
--	case ES_UNSUPPORTED:
--		early_printk("PANIC: Unsupported exit-code 0x%02lx in early #VC exception (IP: 0x%lx)\n",
--				exit_code, regs->ip);
--		goto fail;
--	case ES_VMM_ERROR:
--		early_printk("PANIC: Failure in communication with VMM (exit-code 0x%02lx IP: 0x%lx)\n",
--				exit_code, regs->ip);
--		goto fail;
--	case ES_DECODE_FAILED:
--		early_printk("PANIC: Failed to decode instruction (exit-code 0x%02lx IP: 0x%lx)\n",
--				exit_code, regs->ip);
--		goto fail;
--	case ES_EXCEPTION:
--		vc_early_forward_exception(&ctxt);
--		break;
--	case ES_RETRY:
--		/* Nothing to do */
--		break;
--	default:
--		BUG();
--	}
--
--	return true;
--
--fail:
--	show_regs(regs);
--
--	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
--}
--
- /*
-  * Initial set up of SNP relies on information provided by the
-  * Confidential Computing blob, which can be passed to the kernel
-diff --git a/arch/x86/coco/sev/Makefile b/arch/x86/coco/sev/Makefile
-index 2919dcf..db3255b 100644
---- a/arch/x86/coco/sev/Makefile
-+++ b/arch/x86/coco/sev/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-y += core.o sev-nmi.o
-+obj-y += core.o sev-nmi.o vc-handle.o
- 
- # Clang 14 and older may fail to respect __no_sanitize_undefined when inlining
- UBSAN_SANITIZE_sev-nmi.o	:= n
-diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-new file mode 100644
-index 0000000..b4895c6
---- /dev/null
-+++ b/arch/x86/coco/sev/vc-handle.c
-@@ -0,0 +1,1061 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * AMD Memory Encryption Support
-+ *
-+ * Copyright (C) 2019 SUSE
-+ *
-+ * Author: Joerg Roedel <jroedel@suse.de>
-+ */
-+
-+#define pr_fmt(fmt)	"SEV: " fmt
-+
-+#include <linux/sched/debug.h>	/* For show_regs() */
-+#include <linux/cc_platform.h>
-+#include <linux/printk.h>
-+#include <linux/mm_types.h>
-+#include <linux/kernel.h>
-+#include <linux/mm.h>
-+#include <linux/io.h>
-+#include <linux/psp-sev.h>
-+#include <uapi/linux/sev-guest.h>
-+
-+#include <asm/init.h>
-+#include <asm/stacktrace.h>
-+#include <asm/sev.h>
-+#include <asm/sev-internal.h>
-+#include <asm/insn-eval.h>
-+#include <asm/fpu/xcr.h>
-+#include <asm/processor.h>
-+#include <asm/setup.h>
-+#include <asm/traps.h>
-+#include <asm/svm.h>
-+#include <asm/smp.h>
-+#include <asm/cpu.h>
-+#include <asm/apic.h>
-+#include <asm/cpuid.h>
-+
-+static enum es_result vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
-+					   unsigned long vaddr, phys_addr_t *paddr)
-+{
-+	unsigned long va = (unsigned long)vaddr;
-+	unsigned int level;
-+	phys_addr_t pa;
-+	pgd_t *pgd;
-+	pte_t *pte;
-+
-+	pgd = __va(read_cr3_pa());
-+	pgd = &pgd[pgd_index(va)];
-+	pte = lookup_address_in_pgd(pgd, va, &level);
-+	if (!pte) {
-+		ctxt->fi.vector     = X86_TRAP_PF;
-+		ctxt->fi.cr2        = vaddr;
-+		ctxt->fi.error_code = 0;
-+
-+		if (user_mode(ctxt->regs))
-+			ctxt->fi.error_code |= X86_PF_USER;
-+
-+		return ES_EXCEPTION;
-+	}
-+
-+	if (WARN_ON_ONCE(pte_val(*pte) & _PAGE_ENC))
-+		/* Emulated MMIO to/from encrypted memory not supported */
-+		return ES_UNSUPPORTED;
-+
-+	pa = (phys_addr_t)pte_pfn(*pte) << PAGE_SHIFT;
-+	pa |= va & ~page_level_mask(level);
-+
-+	*paddr = pa;
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t size)
-+{
-+	BUG_ON(size > 4);
-+
-+	if (user_mode(ctxt->regs)) {
-+		struct thread_struct *t = &current->thread;
-+		struct io_bitmap *iobm = t->io_bitmap;
-+		size_t idx;
-+
-+		if (!iobm)
-+			goto fault;
-+
-+		for (idx = port; idx < port + size; ++idx) {
-+			if (test_bit(idx, iobm->bitmap))
-+				goto fault;
-+		}
-+	}
-+
-+	return ES_OK;
-+
-+fault:
-+	ctxt->fi.vector = X86_TRAP_GP;
-+	ctxt->fi.error_code = 0;
-+
-+	return ES_EXCEPTION;
-+}
-+
-+void vc_forward_exception(struct es_em_ctxt *ctxt)
-+{
-+	long error_code = ctxt->fi.error_code;
-+	int trapnr = ctxt->fi.vector;
-+
-+	ctxt->regs->orig_ax = ctxt->fi.error_code;
-+
-+	switch (trapnr) {
-+	case X86_TRAP_GP:
-+		exc_general_protection(ctxt->regs, error_code);
-+		break;
-+	case X86_TRAP_UD:
-+		exc_invalid_op(ctxt->regs);
-+		break;
-+	case X86_TRAP_PF:
-+		write_cr2(ctxt->fi.cr2);
-+		exc_page_fault(ctxt->regs, error_code);
-+		break;
-+	case X86_TRAP_AC:
-+		exc_alignment_check(ctxt->regs, error_code);
-+		break;
-+	default:
-+		pr_emerg("Unsupported exception in #VC instruction emulation - can't continue\n");
-+		BUG();
-+	}
-+}
-+
-+static int vc_fetch_insn_kernel(struct es_em_ctxt *ctxt,
-+				unsigned char *buffer)
-+{
-+	return copy_from_kernel_nofault(buffer, (unsigned char *)ctxt->regs->ip, MAX_INSN_SIZE);
-+}
-+
-+static enum es_result __vc_decode_user_insn(struct es_em_ctxt *ctxt)
-+{
-+	char buffer[MAX_INSN_SIZE];
-+	int insn_bytes;
-+
-+	insn_bytes = insn_fetch_from_user_inatomic(ctxt->regs, buffer);
-+	if (insn_bytes == 0) {
-+		/* Nothing could be copied */
-+		ctxt->fi.vector     = X86_TRAP_PF;
-+		ctxt->fi.error_code = X86_PF_INSTR | X86_PF_USER;
-+		ctxt->fi.cr2        = ctxt->regs->ip;
-+		return ES_EXCEPTION;
-+	} else if (insn_bytes == -EINVAL) {
-+		/* Effective RIP could not be calculated */
-+		ctxt->fi.vector     = X86_TRAP_GP;
-+		ctxt->fi.error_code = 0;
-+		ctxt->fi.cr2        = 0;
-+		return ES_EXCEPTION;
-+	}
-+
-+	if (!insn_decode_from_regs(&ctxt->insn, ctxt->regs, buffer, insn_bytes))
-+		return ES_DECODE_FAILED;
-+
-+	if (ctxt->insn.immediate.got)
-+		return ES_OK;
-+	else
-+		return ES_DECODE_FAILED;
-+}
-+
-+static enum es_result __vc_decode_kern_insn(struct es_em_ctxt *ctxt)
-+{
-+	char buffer[MAX_INSN_SIZE];
-+	int res, ret;
-+
-+	res = vc_fetch_insn_kernel(ctxt, buffer);
-+	if (res) {
-+		ctxt->fi.vector     = X86_TRAP_PF;
-+		ctxt->fi.error_code = X86_PF_INSTR;
-+		ctxt->fi.cr2        = ctxt->regs->ip;
-+		return ES_EXCEPTION;
-+	}
-+
-+	ret = insn_decode(&ctxt->insn, buffer, MAX_INSN_SIZE, INSN_MODE_64);
-+	if (ret < 0)
-+		return ES_DECODE_FAILED;
-+	else
-+		return ES_OK;
-+}
-+
-+static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
-+{
-+	if (user_mode(ctxt->regs))
-+		return __vc_decode_user_insn(ctxt);
-+	else
-+		return __vc_decode_kern_insn(ctxt);
-+}
-+
-+static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
-+				   char *dst, char *buf, size_t size)
-+{
-+	unsigned long error_code = X86_PF_PROT | X86_PF_WRITE;
-+
-+	/*
-+	 * This function uses __put_user() independent of whether kernel or user
-+	 * memory is accessed. This works fine because __put_user() does no
-+	 * sanity checks of the pointer being accessed. All that it does is
-+	 * to report when the access failed.
-+	 *
-+	 * Also, this function runs in atomic context, so __put_user() is not
-+	 * allowed to sleep. The page-fault handler detects that it is running
-+	 * in atomic context and will not try to take mmap_sem and handle the
-+	 * fault, so additional pagefault_enable()/disable() calls are not
-+	 * needed.
-+	 *
-+	 * The access can't be done via copy_to_user() here because
-+	 * vc_write_mem() must not use string instructions to access unsafe
-+	 * memory. The reason is that MOVS is emulated by the #VC handler by
-+	 * splitting the move up into a read and a write and taking a nested #VC
-+	 * exception on whatever of them is the MMIO access. Using string
-+	 * instructions here would cause infinite nesting.
-+	 */
-+	switch (size) {
-+	case 1: {
-+		u8 d1;
-+		u8 __user *target = (u8 __user *)dst;
-+
-+		memcpy(&d1, buf, 1);
-+		if (__put_user(d1, target))
-+			goto fault;
-+		break;
-+	}
-+	case 2: {
-+		u16 d2;
-+		u16 __user *target = (u16 __user *)dst;
-+
-+		memcpy(&d2, buf, 2);
-+		if (__put_user(d2, target))
-+			goto fault;
-+		break;
-+	}
-+	case 4: {
-+		u32 d4;
-+		u32 __user *target = (u32 __user *)dst;
-+
-+		memcpy(&d4, buf, 4);
-+		if (__put_user(d4, target))
-+			goto fault;
-+		break;
-+	}
-+	case 8: {
-+		u64 d8;
-+		u64 __user *target = (u64 __user *)dst;
-+
-+		memcpy(&d8, buf, 8);
-+		if (__put_user(d8, target))
-+			goto fault;
-+		break;
-+	}
-+	default:
-+		WARN_ONCE(1, "%s: Invalid size: %zu\n", __func__, size);
-+		return ES_UNSUPPORTED;
-+	}
-+
-+	return ES_OK;
-+
-+fault:
-+	if (user_mode(ctxt->regs))
-+		error_code |= X86_PF_USER;
-+
-+	ctxt->fi.vector = X86_TRAP_PF;
-+	ctxt->fi.error_code = error_code;
-+	ctxt->fi.cr2 = (unsigned long)dst;
-+
-+	return ES_EXCEPTION;
-+}
-+
-+static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
-+				  char *src, char *buf, size_t size)
-+{
-+	unsigned long error_code = X86_PF_PROT;
-+
-+	/*
-+	 * This function uses __get_user() independent of whether kernel or user
-+	 * memory is accessed. This works fine because __get_user() does no
-+	 * sanity checks of the pointer being accessed. All that it does is
-+	 * to report when the access failed.
-+	 *
-+	 * Also, this function runs in atomic context, so __get_user() is not
-+	 * allowed to sleep. The page-fault handler detects that it is running
-+	 * in atomic context and will not try to take mmap_sem and handle the
-+	 * fault, so additional pagefault_enable()/disable() calls are not
-+	 * needed.
-+	 *
-+	 * The access can't be done via copy_from_user() here because
-+	 * vc_read_mem() must not use string instructions to access unsafe
-+	 * memory. The reason is that MOVS is emulated by the #VC handler by
-+	 * splitting the move up into a read and a write and taking a nested #VC
-+	 * exception on whatever of them is the MMIO access. Using string
-+	 * instructions here would cause infinite nesting.
-+	 */
-+	switch (size) {
-+	case 1: {
-+		u8 d1;
-+		u8 __user *s = (u8 __user *)src;
-+
-+		if (__get_user(d1, s))
-+			goto fault;
-+		memcpy(buf, &d1, 1);
-+		break;
-+	}
-+	case 2: {
-+		u16 d2;
-+		u16 __user *s = (u16 __user *)src;
-+
-+		if (__get_user(d2, s))
-+			goto fault;
-+		memcpy(buf, &d2, 2);
-+		break;
-+	}
-+	case 4: {
-+		u32 d4;
-+		u32 __user *s = (u32 __user *)src;
-+
-+		if (__get_user(d4, s))
-+			goto fault;
-+		memcpy(buf, &d4, 4);
-+		break;
-+	}
-+	case 8: {
-+		u64 d8;
-+		u64 __user *s = (u64 __user *)src;
-+		if (__get_user(d8, s))
-+			goto fault;
-+		memcpy(buf, &d8, 8);
-+		break;
-+	}
-+	default:
-+		WARN_ONCE(1, "%s: Invalid size: %zu\n", __func__, size);
-+		return ES_UNSUPPORTED;
-+	}
-+
-+	return ES_OK;
-+
-+fault:
-+	if (user_mode(ctxt->regs))
-+		error_code |= X86_PF_USER;
-+
-+	ctxt->fi.vector = X86_TRAP_PF;
-+	ctxt->fi.error_code = error_code;
-+	ctxt->fi.cr2 = (unsigned long)src;
-+
-+	return ES_EXCEPTION;
-+}
-+
-+#define sev_printk(fmt, ...)		printk(fmt, ##__VA_ARGS__)
-+
-+#include "vc-shared.c"
-+
-+/* Writes to the SVSM CAA MSR are ignored */
-+static enum es_result __vc_handle_msr_caa(struct pt_regs *regs, bool write)
-+{
-+	if (write)
-+		return ES_OK;
-+
-+	regs->ax = lower_32_bits(this_cpu_read(svsm_caa_pa));
-+	regs->dx = upper_32_bits(this_cpu_read(svsm_caa_pa));
-+
-+	return ES_OK;
-+}
-+
-+/*
-+ * TSC related accesses should not exit to the hypervisor when a guest is
-+ * executing with Secure TSC enabled, so special handling is required for
-+ * accesses of MSR_IA32_TSC and MSR_AMD64_GUEST_TSC_FREQ.
-+ */
-+static enum es_result __vc_handle_secure_tsc_msrs(struct pt_regs *regs, bool write)
-+{
-+	u64 tsc;
-+
-+	/*
-+	 * GUEST_TSC_FREQ should not be intercepted when Secure TSC is enabled.
-+	 * Terminate the SNP guest when the interception is enabled.
-+	 */
-+	if (regs->cx == MSR_AMD64_GUEST_TSC_FREQ)
-+		return ES_VMM_ERROR;
-+
-+	/*
-+	 * Writes: Writing to MSR_IA32_TSC can cause subsequent reads of the TSC
-+	 *         to return undefined values, so ignore all writes.
-+	 *
-+	 * Reads: Reads of MSR_IA32_TSC should return the current TSC value, use
-+	 *        the value returned by rdtsc_ordered().
-+	 */
-+	if (write) {
-+		WARN_ONCE(1, "TSC MSR writes are verboten!\n");
-+		return ES_OK;
-+	}
-+
-+	tsc = rdtsc_ordered();
-+	regs->ax = lower_32_bits(tsc);
-+	regs->dx = upper_32_bits(tsc);
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
-+{
-+	struct pt_regs *regs = ctxt->regs;
-+	enum es_result ret;
-+	bool write;
-+
-+	/* Is it a WRMSR? */
-+	write = ctxt->insn.opcode.bytes[1] == 0x30;
-+
-+	switch (regs->cx) {
-+	case MSR_SVSM_CAA:
-+		return __vc_handle_msr_caa(regs, write);
-+	case MSR_IA32_TSC:
-+	case MSR_AMD64_GUEST_TSC_FREQ:
-+		if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
-+			return __vc_handle_secure_tsc_msrs(regs, write);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	ghcb_set_rcx(ghcb, regs->cx);
-+	if (write) {
-+		ghcb_set_rax(ghcb, regs->ax);
-+		ghcb_set_rdx(ghcb, regs->dx);
-+	}
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_MSR, write, 0);
-+
-+	if ((ret == ES_OK) && !write) {
-+		regs->ax = ghcb->save.rax;
-+		regs->dx = ghcb->save.rdx;
-+	}
-+
-+	return ret;
-+}
-+
-+static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
-+{
-+	int trapnr = ctxt->fi.vector;
-+
-+	if (trapnr == X86_TRAP_PF)
-+		native_write_cr2(ctxt->fi.cr2);
-+
-+	ctxt->regs->orig_ax = ctxt->fi.error_code;
-+	do_early_exception(ctxt->regs, trapnr);
-+}
-+
-+static long *vc_insn_get_rm(struct es_em_ctxt *ctxt)
-+{
-+	long *reg_array;
-+	int offset;
-+
-+	reg_array = (long *)ctxt->regs;
-+	offset    = insn_get_modrm_rm_off(&ctxt->insn, ctxt->regs);
-+
-+	if (offset < 0)
-+		return NULL;
-+
-+	offset /= sizeof(long);
-+
-+	return reg_array + offset;
-+}
-+static enum es_result vc_do_mmio(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
-+				 unsigned int bytes, bool read)
-+{
-+	u64 exit_code, exit_info_1, exit_info_2;
-+	unsigned long ghcb_pa = __pa(ghcb);
-+	enum es_result res;
-+	phys_addr_t paddr;
-+	void __user *ref;
-+
-+	ref = insn_get_addr_ref(&ctxt->insn, ctxt->regs);
-+	if (ref == (void __user *)-1L)
-+		return ES_UNSUPPORTED;
-+
-+	exit_code = read ? SVM_VMGEXIT_MMIO_READ : SVM_VMGEXIT_MMIO_WRITE;
-+
-+	res = vc_slow_virt_to_phys(ghcb, ctxt, (unsigned long)ref, &paddr);
-+	if (res != ES_OK) {
-+		if (res == ES_EXCEPTION && !read)
-+			ctxt->fi.error_code |= X86_PF_WRITE;
-+
-+		return res;
-+	}
-+
-+	exit_info_1 = paddr;
-+	/* Can never be greater than 8 */
-+	exit_info_2 = bytes;
-+
-+	ghcb_set_sw_scratch(ghcb, ghcb_pa + offsetof(struct ghcb, shared_buffer));
-+
-+	return sev_es_ghcb_hv_call(ghcb, ctxt, exit_code, exit_info_1, exit_info_2);
-+}
-+
-+/*
-+ * The MOVS instruction has two memory operands, which raises the
-+ * problem that it is not known whether the access to the source or the
-+ * destination caused the #VC exception (and hence whether an MMIO read
-+ * or write operation needs to be emulated).
-+ *
-+ * Instead of playing games with walking page-tables and trying to guess
-+ * whether the source or destination is an MMIO range, split the move
-+ * into two operations, a read and a write with only one memory operand.
-+ * This will cause a nested #VC exception on the MMIO address which can
-+ * then be handled.
-+ *
-+ * This implementation has the benefit that it also supports MOVS where
-+ * source _and_ destination are MMIO regions.
-+ *
-+ * It will slow MOVS on MMIO down a lot, but in SEV-ES guests it is a
-+ * rare operation. If it turns out to be a performance problem the split
-+ * operations can be moved to memcpy_fromio() and memcpy_toio().
-+ */
-+static enum es_result vc_handle_mmio_movs(struct es_em_ctxt *ctxt,
-+					  unsigned int bytes)
-+{
-+	unsigned long ds_base, es_base;
-+	unsigned char *src, *dst;
-+	unsigned char buffer[8];
-+	enum es_result ret;
-+	bool rep;
-+	int off;
-+
-+	ds_base = insn_get_seg_base(ctxt->regs, INAT_SEG_REG_DS);
-+	es_base = insn_get_seg_base(ctxt->regs, INAT_SEG_REG_ES);
-+
-+	if (ds_base == -1L || es_base == -1L) {
-+		ctxt->fi.vector = X86_TRAP_GP;
-+		ctxt->fi.error_code = 0;
-+		return ES_EXCEPTION;
-+	}
-+
-+	src = ds_base + (unsigned char *)ctxt->regs->si;
-+	dst = es_base + (unsigned char *)ctxt->regs->di;
-+
-+	ret = vc_read_mem(ctxt, src, buffer, bytes);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	ret = vc_write_mem(ctxt, dst, buffer, bytes);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (ctxt->regs->flags & X86_EFLAGS_DF)
-+		off = -bytes;
-+	else
-+		off =  bytes;
-+
-+	ctxt->regs->si += off;
-+	ctxt->regs->di += off;
-+
-+	rep = insn_has_rep_prefix(&ctxt->insn);
-+	if (rep)
-+		ctxt->regs->cx -= 1;
-+
-+	if (!rep || ctxt->regs->cx == 0)
-+		return ES_OK;
-+	else
-+		return ES_RETRY;
-+}
-+
-+static enum es_result vc_handle_mmio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
-+{
-+	struct insn *insn = &ctxt->insn;
-+	enum insn_mmio_type mmio;
-+	unsigned int bytes = 0;
-+	enum es_result ret;
-+	u8 sign_byte;
-+	long *reg_data;
-+
-+	mmio = insn_decode_mmio(insn, &bytes);
-+	if (mmio == INSN_MMIO_DECODE_FAILED)
-+		return ES_DECODE_FAILED;
-+
-+	if (mmio != INSN_MMIO_WRITE_IMM && mmio != INSN_MMIO_MOVS) {
-+		reg_data = insn_get_modrm_reg_ptr(insn, ctxt->regs);
-+		if (!reg_data)
-+			return ES_DECODE_FAILED;
-+	}
-+
-+	if (user_mode(ctxt->regs))
-+		return ES_UNSUPPORTED;
-+
-+	switch (mmio) {
-+	case INSN_MMIO_WRITE:
-+		memcpy(ghcb->shared_buffer, reg_data, bytes);
-+		ret = vc_do_mmio(ghcb, ctxt, bytes, false);
-+		break;
-+	case INSN_MMIO_WRITE_IMM:
-+		memcpy(ghcb->shared_buffer, insn->immediate1.bytes, bytes);
-+		ret = vc_do_mmio(ghcb, ctxt, bytes, false);
-+		break;
-+	case INSN_MMIO_READ:
-+		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
-+		if (ret)
-+			break;
-+
-+		/* Zero-extend for 32-bit operation */
-+		if (bytes == 4)
-+			*reg_data = 0;
-+
-+		memcpy(reg_data, ghcb->shared_buffer, bytes);
-+		break;
-+	case INSN_MMIO_READ_ZERO_EXTEND:
-+		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
-+		if (ret)
-+			break;
-+
-+		/* Zero extend based on operand size */
-+		memset(reg_data, 0, insn->opnd_bytes);
-+		memcpy(reg_data, ghcb->shared_buffer, bytes);
-+		break;
-+	case INSN_MMIO_READ_SIGN_EXTEND:
-+		ret = vc_do_mmio(ghcb, ctxt, bytes, true);
-+		if (ret)
-+			break;
-+
-+		if (bytes == 1) {
-+			u8 *val = (u8 *)ghcb->shared_buffer;
-+
-+			sign_byte = (*val & 0x80) ? 0xff : 0x00;
-+		} else {
-+			u16 *val = (u16 *)ghcb->shared_buffer;
-+
-+			sign_byte = (*val & 0x8000) ? 0xff : 0x00;
-+		}
-+
-+		/* Sign extend based on operand size */
-+		memset(reg_data, sign_byte, insn->opnd_bytes);
-+		memcpy(reg_data, ghcb->shared_buffer, bytes);
-+		break;
-+	case INSN_MMIO_MOVS:
-+		ret = vc_handle_mmio_movs(ctxt, bytes);
-+		break;
-+	default:
-+		ret = ES_UNSUPPORTED;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static enum es_result vc_handle_dr7_write(struct ghcb *ghcb,
-+					  struct es_em_ctxt *ctxt)
-+{
-+	struct sev_es_runtime_data *data = this_cpu_read(runtime_data);
-+	long val, *reg = vc_insn_get_rm(ctxt);
-+	enum es_result ret;
-+
-+	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
-+		return ES_VMM_ERROR;
-+
-+	if (!reg)
-+		return ES_DECODE_FAILED;
-+
-+	val = *reg;
-+
-+	/* Upper 32 bits must be written as zeroes */
-+	if (val >> 32) {
-+		ctxt->fi.vector = X86_TRAP_GP;
-+		ctxt->fi.error_code = 0;
-+		return ES_EXCEPTION;
-+	}
-+
-+	/* Clear out other reserved bits and set bit 10 */
-+	val = (val & 0xffff23ffL) | BIT(10);
-+
-+	/* Early non-zero writes to DR7 are not supported */
-+	if (!data && (val & ~DR7_RESET_VALUE))
-+		return ES_UNSUPPORTED;
-+
-+	/* Using a value of 0 for ExitInfo1 means RAX holds the value */
-+	ghcb_set_rax(ghcb, val);
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_WRITE_DR7, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (data)
-+		data->dr7 = val;
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_handle_dr7_read(struct ghcb *ghcb,
-+					 struct es_em_ctxt *ctxt)
-+{
-+	struct sev_es_runtime_data *data = this_cpu_read(runtime_data);
-+	long *reg = vc_insn_get_rm(ctxt);
-+
-+	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
-+		return ES_VMM_ERROR;
-+
-+	if (!reg)
-+		return ES_DECODE_FAILED;
-+
-+	if (data)
-+		*reg = data->dr7;
-+	else
-+		*reg = DR7_RESET_VALUE;
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_handle_wbinvd(struct ghcb *ghcb,
-+				       struct es_em_ctxt *ctxt)
-+{
-+	return sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_WBINVD, 0, 0);
-+}
-+
-+static enum es_result vc_handle_rdpmc(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
-+{
-+	enum es_result ret;
-+
-+	ghcb_set_rcx(ghcb, ctxt->regs->cx);
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_RDPMC, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (!(ghcb_rax_is_valid(ghcb) && ghcb_rdx_is_valid(ghcb)))
-+		return ES_VMM_ERROR;
-+
-+	ctxt->regs->ax = ghcb->save.rax;
-+	ctxt->regs->dx = ghcb->save.rdx;
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_handle_monitor(struct ghcb *ghcb,
-+					struct es_em_ctxt *ctxt)
-+{
-+	/*
-+	 * Treat it as a NOP and do not leak a physical address to the
-+	 * hypervisor.
-+	 */
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_handle_mwait(struct ghcb *ghcb,
-+				      struct es_em_ctxt *ctxt)
-+{
-+	/* Treat the same as MONITOR/MONITORX */
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_handle_vmmcall(struct ghcb *ghcb,
-+					struct es_em_ctxt *ctxt)
-+{
-+	enum es_result ret;
-+
-+	ghcb_set_rax(ghcb, ctxt->regs->ax);
-+	ghcb_set_cpl(ghcb, user_mode(ctxt->regs) ? 3 : 0);
-+
-+	if (x86_platform.hyper.sev_es_hcall_prepare)
-+		x86_platform.hyper.sev_es_hcall_prepare(ghcb, ctxt->regs);
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_VMMCALL, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (!ghcb_rax_is_valid(ghcb))
-+		return ES_VMM_ERROR;
-+
-+	ctxt->regs->ax = ghcb->save.rax;
-+
-+	/*
-+	 * Call sev_es_hcall_finish() after regs->ax is already set.
-+	 * This allows the hypervisor handler to overwrite it again if
-+	 * necessary.
-+	 */
-+	if (x86_platform.hyper.sev_es_hcall_finish &&
-+	    !x86_platform.hyper.sev_es_hcall_finish(ghcb, ctxt->regs))
-+		return ES_VMM_ERROR;
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_handle_trap_ac(struct ghcb *ghcb,
-+					struct es_em_ctxt *ctxt)
-+{
-+	/*
-+	 * Calling ecx_alignment_check() directly does not work, because it
-+	 * enables IRQs and the GHCB is active. Forward the exception and call
-+	 * it later from vc_forward_exception().
-+	 */
-+	ctxt->fi.vector = X86_TRAP_AC;
-+	ctxt->fi.error_code = 0;
-+	return ES_EXCEPTION;
-+}
-+
-+static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
-+					 struct ghcb *ghcb,
-+					 unsigned long exit_code)
-+{
-+	enum es_result result = vc_check_opcode_bytes(ctxt, exit_code);
-+
-+	if (result != ES_OK)
-+		return result;
-+
-+	switch (exit_code) {
-+	case SVM_EXIT_READ_DR7:
-+		result = vc_handle_dr7_read(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_WRITE_DR7:
-+		result = vc_handle_dr7_write(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_EXCP_BASE + X86_TRAP_AC:
-+		result = vc_handle_trap_ac(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_RDTSC:
-+	case SVM_EXIT_RDTSCP:
-+		result = vc_handle_rdtsc(ghcb, ctxt, exit_code);
-+		break;
-+	case SVM_EXIT_RDPMC:
-+		result = vc_handle_rdpmc(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_INVD:
-+		pr_err_ratelimited("#VC exception for INVD??? Seriously???\n");
-+		result = ES_UNSUPPORTED;
-+		break;
-+	case SVM_EXIT_CPUID:
-+		result = vc_handle_cpuid(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_IOIO:
-+		result = vc_handle_ioio(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_MSR:
-+		result = vc_handle_msr(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_VMMCALL:
-+		result = vc_handle_vmmcall(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_WBINVD:
-+		result = vc_handle_wbinvd(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_MONITOR:
-+		result = vc_handle_monitor(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_MWAIT:
-+		result = vc_handle_mwait(ghcb, ctxt);
-+		break;
-+	case SVM_EXIT_NPF:
-+		result = vc_handle_mmio(ghcb, ctxt);
-+		break;
-+	default:
-+		/*
-+		 * Unexpected #VC exception
-+		 */
-+		result = ES_UNSUPPORTED;
-+	}
-+
-+	return result;
-+}
-+
-+static __always_inline bool is_vc2_stack(unsigned long sp)
-+{
-+	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
-+}
-+
-+static __always_inline bool vc_from_invalid_context(struct pt_regs *regs)
-+{
-+	unsigned long sp, prev_sp;
-+
-+	sp      = (unsigned long)regs;
-+	prev_sp = regs->sp;
-+
-+	/*
-+	 * If the code was already executing on the VC2 stack when the #VC
-+	 * happened, let it proceed to the normal handling routine. This way the
-+	 * code executing on the VC2 stack can cause #VC exceptions to get handled.
-+	 */
-+	return is_vc2_stack(sp) && !is_vc2_stack(prev_sp);
-+}
-+
-+static bool vc_raw_handle_exception(struct pt_regs *regs, unsigned long error_code)
-+{
-+	struct ghcb_state state;
-+	struct es_em_ctxt ctxt;
-+	enum es_result result;
-+	struct ghcb *ghcb;
-+	bool ret = true;
-+
-+	ghcb = __sev_get_ghcb(&state);
-+
-+	vc_ghcb_invalidate(ghcb);
-+	result = vc_init_em_ctxt(&ctxt, regs, error_code);
-+
-+	if (result == ES_OK)
-+		result = vc_handle_exitcode(&ctxt, ghcb, error_code);
-+
-+	__sev_put_ghcb(&state);
-+
-+	/* Done - now check the result */
-+	switch (result) {
-+	case ES_OK:
-+		vc_finish_insn(&ctxt);
-+		break;
-+	case ES_UNSUPPORTED:
-+		pr_err_ratelimited("Unsupported exit-code 0x%02lx in #VC exception (IP: 0x%lx)\n",
-+				   error_code, regs->ip);
-+		ret = false;
-+		break;
-+	case ES_VMM_ERROR:
-+		pr_err_ratelimited("Failure in communication with VMM (exit-code 0x%02lx IP: 0x%lx)\n",
-+				   error_code, regs->ip);
-+		ret = false;
-+		break;
-+	case ES_DECODE_FAILED:
-+		pr_err_ratelimited("Failed to decode instruction (exit-code 0x%02lx IP: 0x%lx)\n",
-+				   error_code, regs->ip);
-+		ret = false;
-+		break;
-+	case ES_EXCEPTION:
-+		vc_forward_exception(&ctxt);
-+		break;
-+	case ES_RETRY:
-+		/* Nothing to do */
-+		break;
-+	default:
-+		pr_emerg("Unknown result in %s():%d\n", __func__, result);
-+		/*
-+		 * Emulating the instruction which caused the #VC exception
-+		 * failed - can't continue so print debug information
-+		 */
-+		BUG();
-+	}
-+
-+	return ret;
-+}
-+
-+static __always_inline bool vc_is_db(unsigned long error_code)
-+{
-+	return error_code == SVM_EXIT_EXCP_BASE + X86_TRAP_DB;
-+}
-+
-+/*
-+ * Runtime #VC exception handler when raised from kernel mode. Runs in NMI mode
-+ * and will panic when an error happens.
-+ */
-+DEFINE_IDTENTRY_VC_KERNEL(exc_vmm_communication)
-+{
-+	irqentry_state_t irq_state;
-+
-+	/*
-+	 * With the current implementation it is always possible to switch to a
-+	 * safe stack because #VC exceptions only happen at known places, like
-+	 * intercepted instructions or accesses to MMIO areas/IO ports. They can
-+	 * also happen with code instrumentation when the hypervisor intercepts
-+	 * #DB, but the critical paths are forbidden to be instrumented, so #DB
-+	 * exceptions currently also only happen in safe places.
-+	 *
-+	 * But keep this here in case the noinstr annotations are violated due
-+	 * to bug elsewhere.
-+	 */
-+	if (unlikely(vc_from_invalid_context(regs))) {
-+		instrumentation_begin();
-+		panic("Can't handle #VC exception from unsupported context\n");
-+		instrumentation_end();
-+	}
-+
-+	/*
-+	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
-+	 */
-+	if (vc_is_db(error_code)) {
-+		exc_debug(regs);
-+		return;
-+	}
-+
-+	irq_state = irqentry_nmi_enter(regs);
-+
-+	instrumentation_begin();
-+
-+	if (!vc_raw_handle_exception(regs, error_code)) {
-+		/* Show some debug info */
-+		show_regs(regs);
-+
-+		/* Ask hypervisor to sev_es_terminate */
-+		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
-+
-+		/* If that fails and we get here - just panic */
-+		panic("Returned from Terminate-Request to Hypervisor\n");
-+	}
-+
-+	instrumentation_end();
-+	irqentry_nmi_exit(regs, irq_state);
-+}
-+
-+/*
-+ * Runtime #VC exception handler when raised from user mode. Runs in IRQ mode
-+ * and will kill the current task with SIGBUS when an error happens.
-+ */
-+DEFINE_IDTENTRY_VC_USER(exc_vmm_communication)
-+{
-+	/*
-+	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
-+	 */
-+	if (vc_is_db(error_code)) {
-+		noist_exc_debug(regs);
-+		return;
-+	}
-+
-+	irqentry_enter_from_user_mode(regs);
-+	instrumentation_begin();
-+
-+	if (!vc_raw_handle_exception(regs, error_code)) {
-+		/*
-+		 * Do not kill the machine if user-space triggered the
-+		 * exception. Send SIGBUS instead and let user-space deal with
-+		 * it.
-+		 */
-+		force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)0);
-+	}
-+
-+	instrumentation_end();
-+	irqentry_exit_to_user_mode(regs);
-+}
-+
-+bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
-+{
-+	unsigned long exit_code = regs->orig_ax;
-+	struct es_em_ctxt ctxt;
-+	enum es_result result;
-+
-+	vc_ghcb_invalidate(boot_ghcb);
-+
-+	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
-+	if (result == ES_OK)
-+		result = vc_handle_exitcode(&ctxt, boot_ghcb, exit_code);
-+
-+	/* Done - now check the result */
-+	switch (result) {
-+	case ES_OK:
-+		vc_finish_insn(&ctxt);
-+		break;
-+	case ES_UNSUPPORTED:
-+		early_printk("PANIC: Unsupported exit-code 0x%02lx in early #VC exception (IP: 0x%lx)\n",
-+				exit_code, regs->ip);
-+		goto fail;
-+	case ES_VMM_ERROR:
-+		early_printk("PANIC: Failure in communication with VMM (exit-code 0x%02lx IP: 0x%lx)\n",
-+				exit_code, regs->ip);
-+		goto fail;
-+	case ES_DECODE_FAILED:
-+		early_printk("PANIC: Failed to decode instruction (exit-code 0x%02lx IP: 0x%lx)\n",
-+				exit_code, regs->ip);
-+		goto fail;
-+	case ES_EXCEPTION:
-+		vc_early_forward_exception(&ctxt);
-+		break;
-+	case ES_RETRY:
-+		/* Nothing to do */
-+		break;
-+	default:
-+		BUG();
-+	}
-+
-+	return true;
-+
-+fail:
-+	show_regs(regs);
-+
-+	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
-+}
-+
-diff --git a/arch/x86/coco/sev/vc-shared.c b/arch/x86/coco/sev/vc-shared.c
-new file mode 100644
-index 0000000..2c0ab0f
---- /dev/null
-+++ b/arch/x86/coco/sev/vc-shared.c
-@@ -0,0 +1,504 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+static enum es_result vc_check_opcode_bytes(struct es_em_ctxt *ctxt,
-+					    unsigned long exit_code)
-+{
-+	unsigned int opcode = (unsigned int)ctxt->insn.opcode.value;
-+	u8 modrm = ctxt->insn.modrm.value;
-+
-+	switch (exit_code) {
-+
-+	case SVM_EXIT_IOIO:
-+	case SVM_EXIT_NPF:
-+		/* handled separately */
-+		return ES_OK;
-+
-+	case SVM_EXIT_CPUID:
-+		if (opcode == 0xa20f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_INVD:
-+		if (opcode == 0x080f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_MONITOR:
-+		/* MONITOR and MONITORX instructions generate the same error code */
-+		if (opcode == 0x010f && (modrm == 0xc8 || modrm == 0xfa))
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_MWAIT:
-+		/* MWAIT and MWAITX instructions generate the same error code */
-+		if (opcode == 0x010f && (modrm == 0xc9 || modrm == 0xfb))
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_MSR:
-+		/* RDMSR */
-+		if (opcode == 0x320f ||
-+		/* WRMSR */
-+		    opcode == 0x300f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_RDPMC:
-+		if (opcode == 0x330f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_RDTSC:
-+		if (opcode == 0x310f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_RDTSCP:
-+		if (opcode == 0x010f && modrm == 0xf9)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_READ_DR7:
-+		if (opcode == 0x210f &&
-+		    X86_MODRM_REG(ctxt->insn.modrm.value) == 7)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_VMMCALL:
-+		if (opcode == 0x010f && modrm == 0xd9)
-+			return ES_OK;
-+
-+		break;
-+
-+	case SVM_EXIT_WRITE_DR7:
-+		if (opcode == 0x230f &&
-+		    X86_MODRM_REG(ctxt->insn.modrm.value) == 7)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_WBINVD:
-+		if (opcode == 0x90f)
-+			return ES_OK;
-+		break;
-+
-+	default:
-+		break;
-+	}
-+
-+	sev_printk(KERN_ERR "Wrong/unhandled opcode bytes: 0x%x, exit_code: 0x%lx, rIP: 0x%lx\n",
-+		   opcode, exit_code, ctxt->regs->ip);
-+
-+	return ES_UNSUPPORTED;
-+}
-+
-+static bool vc_decoding_needed(unsigned long exit_code)
-+{
-+	/* Exceptions don't require to decode the instruction */
-+	return !(exit_code >= SVM_EXIT_EXCP_BASE &&
-+		 exit_code <= SVM_EXIT_LAST_EXCP);
-+}
-+
-+static enum es_result vc_init_em_ctxt(struct es_em_ctxt *ctxt,
-+				      struct pt_regs *regs,
-+				      unsigned long exit_code)
-+{
-+	enum es_result ret = ES_OK;
-+
-+	memset(ctxt, 0, sizeof(*ctxt));
-+	ctxt->regs = regs;
-+
-+	if (vc_decoding_needed(exit_code))
-+		ret = vc_decode_insn(ctxt);
-+
-+	return ret;
-+}
-+
-+static void vc_finish_insn(struct es_em_ctxt *ctxt)
-+{
-+	ctxt->regs->ip += ctxt->insn.length;
-+}
-+
-+static enum es_result vc_insn_string_check(struct es_em_ctxt *ctxt,
-+					   unsigned long address,
-+					   bool write)
-+{
-+	if (user_mode(ctxt->regs) && fault_in_kernel_space(address)) {
-+		ctxt->fi.vector     = X86_TRAP_PF;
-+		ctxt->fi.error_code = X86_PF_USER;
-+		ctxt->fi.cr2        = address;
-+		if (write)
-+			ctxt->fi.error_code |= X86_PF_WRITE;
-+
-+		return ES_EXCEPTION;
-+	}
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
-+					  void *src, char *buf,
-+					  unsigned int data_size,
-+					  unsigned int count,
-+					  bool backwards)
-+{
-+	int i, b = backwards ? -1 : 1;
-+	unsigned long address = (unsigned long)src;
-+	enum es_result ret;
-+
-+	ret = vc_insn_string_check(ctxt, address, false);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	for (i = 0; i < count; i++) {
-+		void *s = src + (i * data_size * b);
-+		char *d = buf + (i * data_size);
-+
-+		ret = vc_read_mem(ctxt, s, d, data_size);
-+		if (ret != ES_OK)
-+			break;
-+	}
-+
-+	return ret;
-+}
-+
-+static enum es_result vc_insn_string_write(struct es_em_ctxt *ctxt,
-+					   void *dst, char *buf,
-+					   unsigned int data_size,
-+					   unsigned int count,
-+					   bool backwards)
-+{
-+	int i, s = backwards ? -1 : 1;
-+	unsigned long address = (unsigned long)dst;
-+	enum es_result ret;
-+
-+	ret = vc_insn_string_check(ctxt, address, true);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	for (i = 0; i < count; i++) {
-+		void *d = dst + (i * data_size * s);
-+		char *b = buf + (i * data_size);
-+
-+		ret = vc_write_mem(ctxt, d, b, data_size);
-+		if (ret != ES_OK)
-+			break;
-+	}
-+
-+	return ret;
-+}
-+
-+#define IOIO_TYPE_STR  BIT(2)
-+#define IOIO_TYPE_IN   1
-+#define IOIO_TYPE_INS  (IOIO_TYPE_IN | IOIO_TYPE_STR)
-+#define IOIO_TYPE_OUT  0
-+#define IOIO_TYPE_OUTS (IOIO_TYPE_OUT | IOIO_TYPE_STR)
-+
-+#define IOIO_REP       BIT(3)
-+
-+#define IOIO_ADDR_64   BIT(9)
-+#define IOIO_ADDR_32   BIT(8)
-+#define IOIO_ADDR_16   BIT(7)
-+
-+#define IOIO_DATA_32   BIT(6)
-+#define IOIO_DATA_16   BIT(5)
-+#define IOIO_DATA_8    BIT(4)
-+
-+#define IOIO_SEG_ES    (0 << 10)
-+#define IOIO_SEG_DS    (3 << 10)
-+
-+static enum es_result vc_ioio_exitinfo(struct es_em_ctxt *ctxt, u64 *exitinfo)
-+{
-+	struct insn *insn = &ctxt->insn;
-+	size_t size;
-+	u64 port;
-+
-+	*exitinfo = 0;
-+
-+	switch (insn->opcode.bytes[0]) {
-+	/* INS opcodes */
-+	case 0x6c:
-+	case 0x6d:
-+		*exitinfo |= IOIO_TYPE_INS;
-+		*exitinfo |= IOIO_SEG_ES;
-+		port	   = ctxt->regs->dx & 0xffff;
-+		break;
-+
-+	/* OUTS opcodes */
-+	case 0x6e:
-+	case 0x6f:
-+		*exitinfo |= IOIO_TYPE_OUTS;
-+		*exitinfo |= IOIO_SEG_DS;
-+		port	   = ctxt->regs->dx & 0xffff;
-+		break;
-+
-+	/* IN immediate opcodes */
-+	case 0xe4:
-+	case 0xe5:
-+		*exitinfo |= IOIO_TYPE_IN;
-+		port	   = (u8)insn->immediate.value & 0xffff;
-+		break;
-+
-+	/* OUT immediate opcodes */
-+	case 0xe6:
-+	case 0xe7:
-+		*exitinfo |= IOIO_TYPE_OUT;
-+		port	   = (u8)insn->immediate.value & 0xffff;
-+		break;
-+
-+	/* IN register opcodes */
-+	case 0xec:
-+	case 0xed:
-+		*exitinfo |= IOIO_TYPE_IN;
-+		port	   = ctxt->regs->dx & 0xffff;
-+		break;
-+
-+	/* OUT register opcodes */
-+	case 0xee:
-+	case 0xef:
-+		*exitinfo |= IOIO_TYPE_OUT;
-+		port	   = ctxt->regs->dx & 0xffff;
-+		break;
-+
-+	default:
-+		return ES_DECODE_FAILED;
-+	}
-+
-+	*exitinfo |= port << 16;
-+
-+	switch (insn->opcode.bytes[0]) {
-+	case 0x6c:
-+	case 0x6e:
-+	case 0xe4:
-+	case 0xe6:
-+	case 0xec:
-+	case 0xee:
-+		/* Single byte opcodes */
-+		*exitinfo |= IOIO_DATA_8;
-+		size       = 1;
-+		break;
-+	default:
-+		/* Length determined by instruction parsing */
-+		*exitinfo |= (insn->opnd_bytes == 2) ? IOIO_DATA_16
-+						     : IOIO_DATA_32;
-+		size       = (insn->opnd_bytes == 2) ? 2 : 4;
-+	}
-+
-+	switch (insn->addr_bytes) {
-+	case 2:
-+		*exitinfo |= IOIO_ADDR_16;
-+		break;
-+	case 4:
-+		*exitinfo |= IOIO_ADDR_32;
-+		break;
-+	case 8:
-+		*exitinfo |= IOIO_ADDR_64;
-+		break;
-+	}
-+
-+	if (insn_has_rep_prefix(insn))
-+		*exitinfo |= IOIO_REP;
-+
-+	return vc_ioio_check(ctxt, (u16)port, size);
-+}
-+
-+static enum es_result vc_handle_ioio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
-+{
-+	struct pt_regs *regs = ctxt->regs;
-+	u64 exit_info_1, exit_info_2;
-+	enum es_result ret;
-+
-+	ret = vc_ioio_exitinfo(ctxt, &exit_info_1);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (exit_info_1 & IOIO_TYPE_STR) {
-+
-+		/* (REP) INS/OUTS */
-+
-+		bool df = ((regs->flags & X86_EFLAGS_DF) == X86_EFLAGS_DF);
-+		unsigned int io_bytes, exit_bytes;
-+		unsigned int ghcb_count, op_count;
-+		unsigned long es_base;
-+		u64 sw_scratch;
-+
-+		/*
-+		 * For the string variants with rep prefix the amount of in/out
-+		 * operations per #VC exception is limited so that the kernel
-+		 * has a chance to take interrupts and re-schedule while the
-+		 * instruction is emulated.
-+		 */
-+		io_bytes   = (exit_info_1 >> 4) & 0x7;
-+		ghcb_count = sizeof(ghcb->shared_buffer) / io_bytes;
-+
-+		op_count    = (exit_info_1 & IOIO_REP) ? regs->cx : 1;
-+		exit_info_2 = min(op_count, ghcb_count);
-+		exit_bytes  = exit_info_2 * io_bytes;
-+
-+		es_base = insn_get_seg_base(ctxt->regs, INAT_SEG_REG_ES);
-+
-+		/* Read bytes of OUTS into the shared buffer */
-+		if (!(exit_info_1 & IOIO_TYPE_IN)) {
-+			ret = vc_insn_string_read(ctxt,
-+					       (void *)(es_base + regs->si),
-+					       ghcb->shared_buffer, io_bytes,
-+					       exit_info_2, df);
-+			if (ret)
-+				return ret;
-+		}
-+
-+		/*
-+		 * Issue an VMGEXIT to the HV to consume the bytes from the
-+		 * shared buffer or to have it write them into the shared buffer
-+		 * depending on the instruction: OUTS or INS.
-+		 */
-+		sw_scratch = __pa(ghcb) + offsetof(struct ghcb, shared_buffer);
-+		ghcb_set_sw_scratch(ghcb, sw_scratch);
-+		ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_IOIO,
-+					  exit_info_1, exit_info_2);
-+		if (ret != ES_OK)
-+			return ret;
-+
-+		/* Read bytes from shared buffer into the guest's destination. */
-+		if (exit_info_1 & IOIO_TYPE_IN) {
-+			ret = vc_insn_string_write(ctxt,
-+						   (void *)(es_base + regs->di),
-+						   ghcb->shared_buffer, io_bytes,
-+						   exit_info_2, df);
-+			if (ret)
-+				return ret;
-+
-+			if (df)
-+				regs->di -= exit_bytes;
-+			else
-+				regs->di += exit_bytes;
-+		} else {
-+			if (df)
-+				regs->si -= exit_bytes;
-+			else
-+				regs->si += exit_bytes;
-+		}
-+
-+		if (exit_info_1 & IOIO_REP)
-+			regs->cx -= exit_info_2;
-+
-+		ret = regs->cx ? ES_RETRY : ES_OK;
-+
-+	} else {
-+
-+		/* IN/OUT into/from rAX */
-+
-+		int bits = (exit_info_1 & 0x70) >> 1;
-+		u64 rax = 0;
-+
-+		if (!(exit_info_1 & IOIO_TYPE_IN))
-+			rax = lower_bits(regs->ax, bits);
-+
-+		ghcb_set_rax(ghcb, rax);
-+
-+		ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_IOIO, exit_info_1, 0);
-+		if (ret != ES_OK)
-+			return ret;
-+
-+		if (exit_info_1 & IOIO_TYPE_IN) {
-+			if (!ghcb_rax_is_valid(ghcb))
-+				return ES_VMM_ERROR;
-+			regs->ax = lower_bits(ghcb->save.rax, bits);
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+static int vc_handle_cpuid_snp(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
-+{
-+	struct pt_regs *regs = ctxt->regs;
-+	struct cpuid_leaf leaf;
-+	int ret;
-+
-+	leaf.fn = regs->ax;
-+	leaf.subfn = regs->cx;
-+	ret = snp_cpuid(ghcb, ctxt, &leaf);
-+	if (!ret) {
-+		regs->ax = leaf.eax;
-+		regs->bx = leaf.ebx;
-+		regs->cx = leaf.ecx;
-+		regs->dx = leaf.edx;
-+	}
-+
-+	return ret;
-+}
-+
-+static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
-+				      struct es_em_ctxt *ctxt)
-+{
-+	struct pt_regs *regs = ctxt->regs;
-+	u32 cr4 = native_read_cr4();
-+	enum es_result ret;
-+	int snp_cpuid_ret;
-+
-+	snp_cpuid_ret = vc_handle_cpuid_snp(ghcb, ctxt);
-+	if (!snp_cpuid_ret)
-+		return ES_OK;
-+	if (snp_cpuid_ret != -EOPNOTSUPP)
-+		return ES_VMM_ERROR;
-+
-+	ghcb_set_rax(ghcb, regs->ax);
-+	ghcb_set_rcx(ghcb, regs->cx);
-+
-+	if (cr4 & X86_CR4_OSXSAVE)
-+		/* Safe to read xcr0 */
-+		ghcb_set_xcr0(ghcb, xgetbv(XCR_XFEATURE_ENABLED_MASK));
-+	else
-+		/* xgetbv will cause #GP - use reset value for xcr0 */
-+		ghcb_set_xcr0(ghcb, 1);
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_CPUID, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (!(ghcb_rax_is_valid(ghcb) &&
-+	      ghcb_rbx_is_valid(ghcb) &&
-+	      ghcb_rcx_is_valid(ghcb) &&
-+	      ghcb_rdx_is_valid(ghcb)))
-+		return ES_VMM_ERROR;
-+
-+	regs->ax = ghcb->save.rax;
-+	regs->bx = ghcb->save.rbx;
-+	regs->cx = ghcb->save.rcx;
-+	regs->dx = ghcb->save.rdx;
-+
-+	return ES_OK;
-+}
-+
-+static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
-+				      struct es_em_ctxt *ctxt,
-+				      unsigned long exit_code)
-+{
-+	bool rdtscp = (exit_code == SVM_EXIT_RDTSCP);
-+	enum es_result ret;
-+
-+	/*
-+	 * The hypervisor should not be intercepting RDTSC/RDTSCP when Secure
-+	 * TSC is enabled. A #VC exception will be generated if the RDTSC/RDTSCP
-+	 * instructions are being intercepted. If this should occur and Secure
-+	 * TSC is enabled, guest execution should be terminated as the guest
-+	 * cannot rely on the TSC value provided by the hypervisor.
-+	 */
-+	if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
-+		return ES_VMM_ERROR;
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, exit_code, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (!(ghcb_rax_is_valid(ghcb) && ghcb_rdx_is_valid(ghcb) &&
-+	     (!rdtscp || ghcb_rcx_is_valid(ghcb))))
-+		return ES_VMM_ERROR;
-+
-+	ctxt->regs->ax = ghcb->save.rax;
-+	ctxt->regs->dx = ghcb->save.rdx;
-+	if (rdtscp)
-+		ctxt->regs->cx = ghcb->save.rcx;
-+
-+	return ES_OK;
-+}
-diff --git a/arch/x86/include/asm/sev-internal.h b/arch/x86/include/asm/sev-internal.h
-index a78f972..b723208 100644
---- a/arch/x86/include/asm/sev-internal.h
-+++ b/arch/x86/include/asm/sev-internal.h
-@@ -3,7 +3,6 @@
- #define DR7_RESET_VALUE        0x400
- 
- extern struct ghcb boot_ghcb_page;
--extern struct ghcb *boot_ghcb;
- extern u64 sev_hv_features;
- extern u64 sev_secrets_pa;
- 
-@@ -59,8 +58,6 @@ DECLARE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
- void early_set_pages_state(unsigned long vaddr, unsigned long paddr,
- 			   unsigned long npages, enum psc_op op);
- 
--void __noreturn sev_es_terminate(unsigned int set, unsigned int reason);
--
- DECLARE_PER_CPU(struct svsm_ca *, svsm_caa);
- DECLARE_PER_CPU(u64, svsm_caa_pa);
- 
-@@ -100,11 +97,6 @@ static __always_inline void sev_es_wr_ghcb_msr(u64 val)
- 	native_wrmsr(MSR_AMD64_SEV_ES_GHCB, low, high);
- }
- 
--enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
--				   struct es_em_ctxt *ctxt,
--				   u64 exit_code, u64 exit_info_1,
--				   u64 exit_info_2);
--
- void snp_register_ghcb_early(unsigned long paddr);
- bool sev_es_negotiate_protocol(void);
- bool sev_es_check_cpu_features(void);
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index a8661df..6158893 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -521,6 +521,28 @@ static __always_inline void vc_ghcb_invalidate(struct ghcb *ghcb)
- 	__builtin_memset(ghcb->save.valid_bitmap, 0, sizeof(ghcb->save.valid_bitmap));
- }
- 
-+void vc_forward_exception(struct es_em_ctxt *ctxt);
-+
-+/* I/O parameters for CPUID-related helpers */
-+struct cpuid_leaf {
-+	u32 fn;
-+	u32 subfn;
-+	u32 eax;
-+	u32 ebx;
-+	u32 ecx;
-+	u32 edx;
-+};
-+
-+int snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf);
-+
-+void __noreturn sev_es_terminate(unsigned int set, unsigned int reason);
-+enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
-+				   struct es_em_ctxt *ctxt,
-+				   u64 exit_code, u64 exit_info_1,
-+				   u64 exit_info_2);
-+
-+extern struct ghcb *boot_ghcb;
-+
- #else	/* !CONFIG_AMD_MEM_ENCRYPT */
- 
- #define snp_vmpl 0
+> Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
+> ---
+>  arch/arm/boot/compressed/efi-header.S       |   6 +-
+>  arch/arm64/kernel/efi-header.S              |   6 +-
+>  arch/loongarch/kernel/efi-header.S          |   4 +-
+>  arch/loongarch/kernel/head.S                |   2 +-
+>  arch/riscv/kernel/efi-header.S              |   8 +-
+>  arch/x86/boot/header.S                      |  10 +-
+>  crypto/asymmetric_keys/verify_pefile.c      |   8 +-
+>  drivers/firmware/efi/libstub/zboot-header.S |  10 +-
+>  include/linux/pe.h                          | 279 ++++++++++++--------
+>  9 files changed, 201 insertions(+), 132 deletions(-)
+>
+> diff --git a/arch/arm/boot/compressed/efi-header.S b/arch/arm/boot/compre=
+ssed/efi-header.S
+> index 230030c13085..ad1a5807291e 100644
+> --- a/arch/arm/boot/compressed/efi-header.S
+> +++ b/arch/arm/boot/compressed/efi-header.S
+> @@ -20,7 +20,7 @@
+>                 @ is accepted as an EFI binary. Booting via the UEFI stub
+>                 @ will not execute those instructions, but the ARM/Linux
+>                 @ boot protocol does, so we need some NOPs here.
+> -               .inst   MZ_MAGIC | (0xe225 << 16)       @ eor r5, r5, 0x4=
+d000
+> +               .inst   IMAGE_DOS_SIGNATURE | (0xe225 << 16)    @ eor r5,=
+ r5, 0x4d000
+>                 eor     r5, r5, 0x4d000                 @ undo previous i=
+nsn
+>  #else
+>                 __nop
+> @@ -43,7 +43,7 @@
+>                 .long   pe_header - start               @ Offset to the P=
+E header.
+>
+>  pe_header:
+> -               .long   PE_MAGIC
+> +               .long   IMAGE_NT_SIGNATURE
+>
+>  coff_header:
+>                 .short  IMAGE_FILE_MACHINE_THUMB        @ Machine
+> @@ -60,7 +60,7 @@ coff_header:
+>  #define __pecoff_code_size (__pecoff_data_start - __efi_start)
+>
+>  optional_header:
+> -               .short  PE_OPT_MAGIC_PE32               @ PE32 format
+> +               .short  IMAGE_NT_OPTIONAL_HDR32_MAGIC   @ PE32 format
+>                 .byte   0x02                            @ MajorLinkerVers=
+ion
+>                 .byte   0x14                            @ MinorLinkerVers=
+ion
+>                 .long   __pecoff_code_size              @ SizeOfCode
+> diff --git a/arch/arm64/kernel/efi-header.S b/arch/arm64/kernel/efi-heade=
+r.S
+> index 11d7f7de202d..329e8df9215f 100644
+> --- a/arch/arm64/kernel/efi-header.S
+> +++ b/arch/arm64/kernel/efi-header.S
+> @@ -28,7 +28,7 @@
+>         .macro  __EFI_PE_HEADER
+>  #ifdef CONFIG_EFI
+>         .set    .Lpe_header_offset, . - .L_head
+> -       .long   PE_MAGIC
+> +       .long   IMAGE_NT_SIGNATURE
+>         .short  IMAGE_FILE_MACHINE_ARM64                // Machine
+>         .short  .Lsection_count                         // NumberOfSectio=
+ns
+>         .long   0                                       // TimeDateStamp
+> @@ -40,7 +40,7 @@
+>                 IMAGE_FILE_LINE_NUMS_STRIPPED           // Characteristic=
+s
+>
+>  .Loptional_header:
+> -       .short  PE_OPT_MAGIC_PE32PLUS                   // PE32+ format
+> +       .short  IMAGE_NT_OPTIONAL_HDR64_MAGIC           // PE32+ format
+>         .byte   0x02                                    // MajorLinkerVer=
+sion
+>         .byte   0x14                                    // MinorLinkerVer=
+sion
+>         .long   __initdata_begin - .Lefi_header_end     // SizeOfCode
+> @@ -66,7 +66,7 @@
+>         .long   .Lefi_header_end - .L_head              // SizeOfHeaders
+>         .long   0                                       // CheckSum
+>         .short  IMAGE_SUBSYSTEM_EFI_APPLICATION         // Subsystem
+> -       .short  IMAGE_DLL_CHARACTERISTICS_NX_COMPAT     // DllCharacteris=
+tics
+> +       .short  IMAGE_DLLCHARACTERISTICS_NX_COMPAT      // DllCharacteris=
+tics
+>         .quad   0                                       // SizeOfStackRes=
+erve
+>         .quad   0                                       // SizeOfStackCom=
+mit
+>         .quad   0                                       // SizeOfHeapRese=
+rve
+> diff --git a/arch/loongarch/kernel/efi-header.S b/arch/loongarch/kernel/e=
+fi-header.S
+> index 5f23b85d78ca..ba0bdbf86aa8 100644
+> --- a/arch/loongarch/kernel/efi-header.S
+> +++ b/arch/loongarch/kernel/efi-header.S
+> @@ -7,7 +7,7 @@
+>  #include <linux/sizes.h>
+>
+>         .macro  __EFI_PE_HEADER
+> -       .long   PE_MAGIC
+> +       .long   IMAGE_NT_SIGNATURE
+>  .Lcoff_header:
+>         .short  IMAGE_FILE_MACHINE_LOONGARCH64          /* Machine */
+>         .short  .Lsection_count                         /* NumberOfSectio=
+ns */
+> @@ -20,7 +20,7 @@
+>                 IMAGE_FILE_LINE_NUMS_STRIPPED           /* Characteristic=
+s */
+>
+>  .Loptional_header:
+> -       .short  PE_OPT_MAGIC_PE32PLUS                   /* PE32+ format *=
+/
+> +       .short  IMAGE_NT_OPTIONAL_HDR64_MAGIC           /* PE32+ format *=
+/
+>         .byte   0x02                                    /* MajorLinkerVer=
+sion */
+>         .byte   0x14                                    /* MinorLinkerVer=
+sion */
+>         .long   __inittext_end - .Lefi_header_end       /* SizeOfCode */
+> diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
+> index 506a99a5bbc7..e3865e92a917 100644
+> --- a/arch/loongarch/kernel/head.S
+> +++ b/arch/loongarch/kernel/head.S
+> @@ -20,7 +20,7 @@
+>         __HEAD
+>
+>  _head:
+> -       .word   MZ_MAGIC                /* "MZ", MS-DOS header */
+> +       .word   IMAGE_DOS_SIGNATURE     /* "MZ", MS-DOS header */
+>         .org    0x8
+>         .dword  _kernel_entry           /* Kernel entry point (physical a=
+ddress) */
+>         .dword  _kernel_asize           /* Kernel image effective size */
+> diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-heade=
+r.S
+> index c5f17c2710b5..2efc3aaf4a8c 100644
+> --- a/arch/riscv/kernel/efi-header.S
+> +++ b/arch/riscv/kernel/efi-header.S
+> @@ -9,7 +9,7 @@
+>  #include <asm/set_memory.h>
+>
+>         .macro  __EFI_PE_HEADER
+> -       .long   PE_MAGIC
+> +       .long   IMAGE_NT_SIGNATURE
+>  coff_header:
+>  #ifdef CONFIG_64BIT
+>         .short  IMAGE_FILE_MACHINE_RISCV64              // Machine
+> @@ -27,9 +27,9 @@ coff_header:
+>
+>  optional_header:
+>  #ifdef CONFIG_64BIT
+> -       .short  PE_OPT_MAGIC_PE32PLUS                   // PE32+ format
+> +       .short  IMAGE_NT_OPTIONAL_HDR64_MAGIC           // PE32+ format
+>  #else
+> -       .short  PE_OPT_MAGIC_PE32                       // PE32 format
+> +       .short  IMAGE_NT_OPTIONAL_HDR32_MAGIC           // PE32 format
+>  #endif
+>         .byte   0x02                                    // MajorLinkerVer=
+sion
+>         .byte   0x14                                    // MinorLinkerVer=
+sion
+> @@ -64,7 +64,7 @@ extra_header_fields:
+>         .long   efi_header_end - _start                 // SizeOfHeaders
+>         .long   0                                       // CheckSum
+>         .short  IMAGE_SUBSYSTEM_EFI_APPLICATION         // Subsystem
+> -       .short  IMAGE_DLL_CHARACTERISTICS_NX_COMPAT     // DllCharacteris=
+tics
+> +       .short  IMAGE_DLLCHARACTERISTICS_NX_COMPAT      // DllCharacteris=
+tics
+>         .quad   0                                       // SizeOfStackRes=
+erve
+>         .quad   0                                       // SizeOfStackCom=
+mit
+>         .quad   0                                       // SizeOfHeapRese=
+rve
+> diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+> index b5c79f43359b..535ae4d6866c 100644
+> --- a/arch/x86/boot/header.S
+> +++ b/arch/x86/boot/header.S
+> @@ -43,7 +43,7 @@ SYSSEG                =3D 0x1000                /* hist=
+orical load address >> 4 */
+>         .section ".bstext", "ax"
+>  #ifdef CONFIG_EFI_STUB
+>         # "MZ", MS-DOS header
+> -       .word   MZ_MAGIC
+> +       .word   IMAGE_DOS_SIGNATURE
+>         .org    0x38
+>         #
+>         # Offset to the PE header.
+> @@ -51,16 +51,16 @@ SYSSEG              =3D 0x1000                /* hist=
+orical load address >> 4 */
+>         .long   LINUX_PE_MAGIC
+>         .long   pe_header
+>  pe_header:
+> -       .long   PE_MAGIC
+> +       .long   IMAGE_NT_SIGNATURE
+>
+>  coff_header:
+>  #ifdef CONFIG_X86_32
+>         .set    image_file_add_flags, IMAGE_FILE_32BIT_MACHINE
+> -       .set    pe_opt_magic, PE_OPT_MAGIC_PE32
+> +       .set    pe_opt_magic, IMAGE_NT_OPTIONAL_HDR32_MAGIC
+>         .word   IMAGE_FILE_MACHINE_I386
+>  #else
+>         .set    image_file_add_flags, 0
+> -       .set    pe_opt_magic, PE_OPT_MAGIC_PE32PLUS
+> +       .set    pe_opt_magic, IMAGE_NT_OPTIONAL_HDR64_MAGIC
+>         .word   IMAGE_FILE_MACHINE_AMD64
+>  #endif
+>         .word   section_count                   # nr_sections
+> @@ -111,7 +111,7 @@ extra_header_fields:
+>         .long   salign                          # SizeOfHeaders
+>         .long   0                               # CheckSum
+>         .word   IMAGE_SUBSYSTEM_EFI_APPLICATION # Subsystem (EFI applicat=
+ion)
+> -       .word   IMAGE_DLL_CHARACTERISTICS_NX_COMPAT     # DllCharacterist=
+ics
+> +       .word   IMAGE_DLLCHARACTERISTICS_NX_COMPAT      # DllCharacterist=
+ics
+>  #ifdef CONFIG_X86_32
+>         .long   0                               # SizeOfStackReserve
+>         .long   0                               # SizeOfStackCommit
+> diff --git a/crypto/asymmetric_keys/verify_pefile.c b/crypto/asymmetric_k=
+eys/verify_pefile.c
+> index 2863984b6700..1f3b227ba7f2 100644
+> --- a/crypto/asymmetric_keys/verify_pefile.c
+> +++ b/crypto/asymmetric_keys/verify_pefile.c
+> @@ -40,13 +40,13 @@ static int pefile_parse_binary(const void *pebuf, uns=
+igned int pelen,
+>         } while (0)
+>
+>         chkaddr(0, 0, sizeof(*mz));
+> -       if (mz->magic !=3D MZ_MAGIC)
+> +       if (mz->magic !=3D IMAGE_DOS_SIGNATURE)
+>                 return -ELIBBAD;
+>         cursor =3D sizeof(*mz);
+>
+>         chkaddr(cursor, mz->peaddr, sizeof(*pe));
+>         pe =3D pebuf + mz->peaddr;
+> -       if (pe->magic !=3D PE_MAGIC)
+> +       if (pe->magic !=3D IMAGE_NT_SIGNATURE)
+>                 return -ELIBBAD;
+>         cursor =3D mz->peaddr + sizeof(*pe);
+>
+> @@ -55,7 +55,7 @@ static int pefile_parse_binary(const void *pebuf, unsig=
+ned int pelen,
+>         pe64 =3D pebuf + cursor;
+>
+>         switch (pe32->magic) {
+> -       case PE_OPT_MAGIC_PE32:
+> +       case IMAGE_NT_OPTIONAL_HDR32_MAGIC:
+>                 chkaddr(0, cursor, sizeof(*pe32));
+>                 ctx->image_checksum_offset =3D
+>                         (unsigned long)&pe32->csum - (unsigned long)pebuf=
+;
+> @@ -64,7 +64,7 @@ static int pefile_parse_binary(const void *pebuf, unsig=
+ned int pelen,
+>                 ctx->n_data_dirents =3D pe32->data_dirs;
+>                 break;
+>
+> -       case PE_OPT_MAGIC_PE32PLUS:
+> +       case IMAGE_NT_OPTIONAL_HDR64_MAGIC:
+>                 chkaddr(0, cursor, sizeof(*pe64));
+>                 ctx->image_checksum_offset =3D
+>                         (unsigned long)&pe64->csum - (unsigned long)pebuf=
+;
+> diff --git a/drivers/firmware/efi/libstub/zboot-header.S b/drivers/firmwa=
+re/efi/libstub/zboot-header.S
+> index fb676ded47fa..57a52ba0c0b7 100644
+> --- a/drivers/firmware/efi/libstub/zboot-header.S
+> +++ b/drivers/firmware/efi/libstub/zboot-header.S
+> @@ -4,17 +4,17 @@
+>
+>  #ifdef CONFIG_64BIT
+>         .set            .Lextra_characteristics, 0x0
+> -       .set            .Lpe_opt_magic, PE_OPT_MAGIC_PE32PLUS
+> +       .set            .Lpe_opt_magic, IMAGE_NT_OPTIONAL_HDR64_MAGIC
+>  #else
+>         .set            .Lextra_characteristics, IMAGE_FILE_32BIT_MACHINE
+> -       .set            .Lpe_opt_magic, PE_OPT_MAGIC_PE32
+> +       .set            .Lpe_opt_magic, IMAGE_NT_OPTIONAL_HDR32_MAGIC
+>  #endif
+>
+>         .section        ".head", "a"
+>         .globl          __efistub_efi_zboot_header
+>  __efistub_efi_zboot_header:
+>  .Ldoshdr:
+> -       .long           MZ_MAGIC
+> +       .long           IMAGE_DOS_SIGNATURE
+>         .ascii          "zimg"                                  // image =
+type
+>         .long           __efistub__gzdata_start - .Ldoshdr      // payloa=
+d offset
+>         .long           __efistub__gzdata_size - ZBOOT_SIZE_LEN // payloa=
+d size
+> @@ -25,7 +25,7 @@ __efistub_efi_zboot_header:
+>         .long           .Lpehdr - .Ldoshdr                      // PE hea=
+der offset
+>
+>  .Lpehdr:
+> -       .long           PE_MAGIC
+> +       .long           IMAGE_NT_SIGNATURE
+>         .short          MACHINE_TYPE
+>         .short          .Lsection_count
+>         .long           0
+> @@ -63,7 +63,7 @@ __efistub_efi_zboot_header:
+>         .long           .Lefi_header_end - .Ldoshdr
+>         .long           0
+>         .short          IMAGE_SUBSYSTEM_EFI_APPLICATION
+> -       .short          IMAGE_DLL_CHARACTERISTICS_NX_COMPAT
+> +       .short          IMAGE_DLLCHARACTERISTICS_NX_COMPAT
+>  #ifdef CONFIG_64BIT
+>         .quad           0, 0, 0, 0
+>  #else
+> diff --git a/include/linux/pe.h b/include/linux/pe.h
+> index fdf9c95709ba..cd2b7275385f 100644
+> --- a/include/linux/pe.h
+> +++ b/include/linux/pe.h
+> @@ -39,113 +39,160 @@
+>   */
+>  #define LINUX_PE_MAGIC 0x818223cd
+>
+> -#define MZ_MAGIC       0x5a4d  /* "MZ" */
+> +#define IMAGE_DOS_SIGNATURE    0x5a4d /* "MZ" */
+>
+> -#define PE_MAGIC               0x00004550      /* "PE\0\0" */
+> -#define PE_OPT_MAGIC_PE32      0x010b
+> -#define PE_OPT_MAGIC_PE32_ROM  0x0107
+> -#define PE_OPT_MAGIC_PE32PLUS  0x020b
+> +#define IMAGE_NT_SIGNATURE     0x00004550 /* "PE\0\0" */
+> +
+> +#define IMAGE_ROM_OPTIONAL_HDR_MAGIC   0x0107 /* ROM image (for R3000/R4=
+000/R10000/ALPHA), without MZ and PE\0\0 sign */
+> +#define IMAGE_NT_OPTIONAL_HDR32_MAGIC  0x010b /* PE32 executable image *=
+/
+> +#define IMAGE_NT_OPTIONAL_HDR64_MAGIC  0x020b /* PE32+ executable image =
+*/
+>
+>  /* machine type */
+> -#define        IMAGE_FILE_MACHINE_UNKNOWN      0x0000
+> -#define        IMAGE_FILE_MACHINE_AM33         0x01d3
+> -#define        IMAGE_FILE_MACHINE_AMD64        0x8664
+> -#define        IMAGE_FILE_MACHINE_ARM          0x01c0
+> -#define        IMAGE_FILE_MACHINE_ARMV7        0x01c4
+> -#define        IMAGE_FILE_MACHINE_ARM64        0xaa64
+> -#define        IMAGE_FILE_MACHINE_EBC          0x0ebc
+> -#define        IMAGE_FILE_MACHINE_I386         0x014c
+> -#define        IMAGE_FILE_MACHINE_IA64         0x0200
+> -#define        IMAGE_FILE_MACHINE_M32R         0x9041
+> -#define        IMAGE_FILE_MACHINE_MIPS16       0x0266
+> -#define        IMAGE_FILE_MACHINE_MIPSFPU      0x0366
+> -#define        IMAGE_FILE_MACHINE_MIPSFPU16    0x0466
+> -#define        IMAGE_FILE_MACHINE_POWERPC      0x01f0
+> -#define        IMAGE_FILE_MACHINE_POWERPCFP    0x01f1
+> -#define        IMAGE_FILE_MACHINE_R4000        0x0166
+> -#define        IMAGE_FILE_MACHINE_RISCV32      0x5032
+> -#define        IMAGE_FILE_MACHINE_RISCV64      0x5064
+> -#define        IMAGE_FILE_MACHINE_RISCV128     0x5128
+> -#define        IMAGE_FILE_MACHINE_SH3          0x01a2
+> -#define        IMAGE_FILE_MACHINE_SH3DSP       0x01a3
+> -#define        IMAGE_FILE_MACHINE_SH3E         0x01a4
+> -#define        IMAGE_FILE_MACHINE_SH4          0x01a6
+> -#define        IMAGE_FILE_MACHINE_SH5          0x01a8
+> -#define        IMAGE_FILE_MACHINE_THUMB        0x01c2
+> -#define        IMAGE_FILE_MACHINE_WCEMIPSV2    0x0169
+> -#define        IMAGE_FILE_MACHINE_LOONGARCH32  0x6232
+> -#define        IMAGE_FILE_MACHINE_LOONGARCH64  0x6264
+> +#define        IMAGE_FILE_MACHINE_UNKNOWN      0x0000 /* Unknown archite=
+cture */
+> +#define        IMAGE_FILE_MACHINE_TARGET_HOST  0x0001 /* Interacts with =
+the host and not a WOW64 guest (not for file image) */
+> +#define        IMAGE_FILE_MACHINE_ALPHA_OLD    0x0183 /* DEC Alpha AXP 3=
+2-bit (old images) */
+> +#define        IMAGE_FILE_MACHINE_ALPHA        0x0184 /* DEC Alpha AXP 3=
+2-bit */
+> +#define        IMAGE_FILE_MACHINE_ALPHA64      0x0284 /* DEC Alpha AXP 6=
+4-bit (with 8kB page size) */
+> +#define        IMAGE_FILE_MACHINE_AXP64        IMAGE_FILE_MACHINE_ALPHA6=
+4
+> +#define        IMAGE_FILE_MACHINE_AM33         0x01d3 /* Matsushita AM33=
+, now Panasonic MN103 */
+> +#define        IMAGE_FILE_MACHINE_AMD64        0x8664 /* AMD64 (x64) */
+> +#define        IMAGE_FILE_MACHINE_ARM          0x01c0 /* ARM Little-Endi=
+an (ARMv4) */
+> +#define        IMAGE_FILE_MACHINE_THUMB        0x01c2 /* ARM Thumb Littl=
+e-Endian (ARMv4T) */
+> +#define        IMAGE_FILE_MACHINE_ARMNT        0x01c4 /* ARM Thumb-2 Lit=
+tle-Endian (ARMv7) */
+> +#define        IMAGE_FILE_MACHINE_ARMV7        IMAGE_FILE_MACHINE_ARMNT
+> +#define        IMAGE_FILE_MACHINE_ARM64        0xaa64 /* ARM64 Little-En=
+dian (Classic ABI) */
+> +#define        IMAGE_FILE_MACHINE_ARM64EC      0xa641 /* ARM64 Little-En=
+dian (Emulation Compatible ABI for AMD64) */
+> +#define        IMAGE_FILE_MACHINE_ARM64X       0xa64e /* ARM64 Little-En=
+dian (fat binary with both Classic ABI and EC ABI code) */
+> +#define        IMAGE_FILE_MACHINE_CEE          0xc0ee /* COM+ Execution =
+Engine (CLR pure MSIL object files) */
+> +#define        IMAGE_FILE_MACHINE_CEF          0x0cef /* Windows CE 3.0 =
+Common Executable Format (CEF bytecode) */
+> +#define        IMAGE_FILE_MACHINE_CHPE_X86     0x3a64 /* ARM64 Little-En=
+dian (Compiled Hybrid PE ABI for I386) */
+> +#define        IMAGE_FILE_MACHINE_HYBRID_X86   IMAGE_FILE_MACHINE_CHPE_X=
+86
+> +#define        IMAGE_FILE_MACHINE_EBC          0x0ebc /* EFI/UEFI Byte C=
+ode */
+> +#define        IMAGE_FILE_MACHINE_I386         0x014c /* Intel 386 (x86)=
+ */
+> +#define        IMAGE_FILE_MACHINE_I860         0x014d /* Intel 860 (N10)=
+ */
+> +#define        IMAGE_FILE_MACHINE_IA64         0x0200 /* Intel IA-64 (wi=
+th 8kB page size) */
+> +#define        IMAGE_FILE_MACHINE_LOONGARCH32  0x6232 /* LoongArch 32-bi=
+t processor family */
+> +#define        IMAGE_FILE_MACHINE_LOONGARCH64  0x6264 /* LoongArch 64-bi=
+t processor family */
+> +#define        IMAGE_FILE_MACHINE_M32R         0x9041 /* Mitsubishi M32R=
+ 32-bit Little-Endian */
+> +#define        IMAGE_FILE_MACHINE_M68K         0x0268 /* Motorola 68000 =
+series */
+> +#define        IMAGE_FILE_MACHINE_MIPS16       0x0266 /* MIPS III with M=
+IPS16 ASE Little-Endian */
+> +#define        IMAGE_FILE_MACHINE_MIPSFPU      0x0366 /* MIPS III with F=
+PU Little-Endian */
+> +#define        IMAGE_FILE_MACHINE_MIPSFPU16    0x0466 /* MIPS III with M=
+IPS16 ASE and FPU Little-Endian */
+> +#define        IMAGE_FILE_MACHINE_MPPC_601     0x0601 /* PowerPC 32-bit =
+Big-Endian */
+> +#define        IMAGE_FILE_MACHINE_OMNI         0xace1 /* Microsoft OMNI =
+VM (omniprox.dll) */
+> +#define        IMAGE_FILE_MACHINE_PARISC       0x0290 /* HP PA-RISC */
+> +#define        IMAGE_FILE_MACHINE_POWERPC      0x01f0 /* PowerPC 32-bit =
+Little-Endian */
+> +#define        IMAGE_FILE_MACHINE_POWERPCFP    0x01f1 /* PowerPC 32-bit =
+with FPU Little-Endian */
+> +#define        IMAGE_FILE_MACHINE_POWERPCBE    0x01f2 /* PowerPC 64-bit =
+Big-Endian */
+> +#define        IMAGE_FILE_MACHINE_R3000        0x0162 /* MIPS I Little-E=
+ndian */
+> +#define        IMAGE_FILE_MACHINE_R3000_BE     0x0160 /* MIPS I Big-Endi=
+an */
+> +#define        IMAGE_FILE_MACHINE_R4000        0x0166 /* MIPS III Little=
+-Endian (with 1kB or 4kB page size) */
+> +#define        IMAGE_FILE_MACHINE_R10000       0x0168 /* MIPS IV Little-=
+Endian */
+> +#define        IMAGE_FILE_MACHINE_RISCV32      0x5032 /* RISC-V 32-bit a=
+ddress space */
+> +#define        IMAGE_FILE_MACHINE_RISCV64      0x5064 /* RISC-V 64-bit a=
+ddress space */
+> +#define        IMAGE_FILE_MACHINE_RISCV128     0x5128 /* RISC-V 128-bit =
+address space */
+> +#define        IMAGE_FILE_MACHINE_SH3          0x01a2 /* Hitachi SH-3 32=
+-bit Little-Endian (with 1kB page size) */
+> +#define        IMAGE_FILE_MACHINE_SH3DSP       0x01a3 /* Hitachi SH-3 DS=
+P 32-bit (with 1kB page size) */
+> +#define        IMAGE_FILE_MACHINE_SH3E         0x01a4 /* Hitachi SH-3E L=
+ittle-Endian (with 1kB page size) */
+> +#define        IMAGE_FILE_MACHINE_SH4          0x01a6 /* Hitachi SH-4 32=
+-bit Little-Endian (with 1kB page size) */
+> +#define        IMAGE_FILE_MACHINE_SH5          0x01a8 /* Hitachi SH-5 64=
+-bit */
+> +#define        IMAGE_FILE_MACHINE_TAHOE        0x07cc /* Intel EM machin=
+e */
+> +#define        IMAGE_FILE_MACHINE_TRICORE      0x0520 /* Infineon AUDO 3=
+2-bit */
+> +#define        IMAGE_FILE_MACHINE_WCEMIPSV2    0x0169 /* MIPS Windows CE=
+ v2 Little-Endian */
+>
+>  /* flags */
+> -#define IMAGE_FILE_RELOCS_STRIPPED           0x0001
+> -#define IMAGE_FILE_EXECUTABLE_IMAGE          0x0002
+> -#define IMAGE_FILE_LINE_NUMS_STRIPPED        0x0004
+> -#define IMAGE_FILE_LOCAL_SYMS_STRIPPED       0x0008
+> -#define IMAGE_FILE_AGGRESSIVE_WS_TRIM        0x0010
+> -#define IMAGE_FILE_LARGE_ADDRESS_AWARE       0x0020
+> -#define IMAGE_FILE_16BIT_MACHINE             0x0040
+> -#define IMAGE_FILE_BYTES_REVERSED_LO         0x0080
+> -#define IMAGE_FILE_32BIT_MACHINE             0x0100
+> -#define IMAGE_FILE_DEBUG_STRIPPED            0x0200
+> -#define IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP   0x0400
+> -#define IMAGE_FILE_NET_RUN_FROM_SWAP         0x0800
+> -#define IMAGE_FILE_SYSTEM                    0x1000
+> -#define IMAGE_FILE_DLL                       0x2000
+> -#define IMAGE_FILE_UP_SYSTEM_ONLY            0x4000
+> -#define IMAGE_FILE_BYTES_REVERSED_HI         0x8000
+> -
+> -#define IMAGE_FILE_OPT_ROM_MAGIC       0x107
+> -#define IMAGE_FILE_OPT_PE32_MAGIC      0x10b
+> -#define IMAGE_FILE_OPT_PE32_PLUS_MAGIC 0x20b
+> -
+> -#define IMAGE_SUBSYSTEM_UNKNOWN                         0
+> -#define IMAGE_SUBSYSTEM_NATIVE                  1
+> -#define IMAGE_SUBSYSTEM_WINDOWS_GUI             2
+> -#define IMAGE_SUBSYSTEM_WINDOWS_CUI             3
+> -#define IMAGE_SUBSYSTEM_POSIX_CUI               7
+> -#define IMAGE_SUBSYSTEM_WINDOWS_CE_GUI          9
+> -#define IMAGE_SUBSYSTEM_EFI_APPLICATION                10
+> -#define IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER        11
+> -#define IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER     12
+> -#define IMAGE_SUBSYSTEM_EFI_ROM_IMAGE          13
+> -#define IMAGE_SUBSYSTEM_XBOX                   14
+> -
+> -#define IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE          0x0040
+> -#define IMAGE_DLL_CHARACTERISTICS_FORCE_INTEGRITY       0x0080
+> -#define IMAGE_DLL_CHARACTERISTICS_NX_COMPAT             0x0100
+> -#define IMAGE_DLLCHARACTERISTICS_NO_ISOLATION           0x0200
+> -#define IMAGE_DLLCHARACTERISTICS_NO_SEH                 0x0400
+> -#define IMAGE_DLLCHARACTERISTICS_NO_BIND                0x0800
+> -#define IMAGE_DLLCHARACTERISTICS_WDM_DRIVER             0x2000
+> -#define IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE  0x8000
+> -
+> -#define IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT         0x0001
+> -#define IMAGE_DLLCHARACTERISTICS_EX_FORWARD_CFI_COMPAT 0x0040
+> -
+> -/* they actually defined 0x00000000 as well, but I think we'll skip that=
+ one. */
+> -#define IMAGE_SCN_RESERVED_0   0x00000001
+> -#define IMAGE_SCN_RESERVED_1   0x00000002
+> -#define IMAGE_SCN_RESERVED_2   0x00000004
+> -#define IMAGE_SCN_TYPE_NO_PAD  0x00000008 /* don't pad - obsolete */
+> -#define IMAGE_SCN_RESERVED_3   0x00000010
+> +#define IMAGE_FILE_RELOCS_STRIPPED             0x0001 /* Relocation info=
+ stripped from file */
+> +#define IMAGE_FILE_EXECUTABLE_IMAGE            0x0002 /* File is executa=
+ble (i.e. no unresolved external references) */
+> +#define IMAGE_FILE_LINE_NUMS_STRIPPED          0x0004 /* Line nunbers st=
+ripped from file */
+> +#define IMAGE_FILE_LOCAL_SYMS_STRIPPED         0x0008 /* Local symbols s=
+tripped from file */
+> +#define IMAGE_FILE_AGGRESSIVE_WS_TRIM          0x0010 /* Aggressively tr=
+im working set */
+> +#define IMAGE_FILE_LARGE_ADDRESS_AWARE         0x0020 /* App can handle =
+>2gb addresses (image can be loaded at address above 2GB) */
+> +#define IMAGE_FILE_16BIT_MACHINE               0x0040 /* 16 bit word mac=
+hine */
+> +#define IMAGE_FILE_BYTES_REVERSED_LO           0x0080 /* Bytes of machin=
+e word are reversed (should be set together with IMAGE_FILE_BYTES_REVERSED_=
+HI) */
+> +#define IMAGE_FILE_32BIT_MACHINE               0x0100 /* 32 bit word mac=
+hine */
+> +#define IMAGE_FILE_DEBUG_STRIPPED              0x0200 /* Debugging info =
+stripped from file in .DBG file */
+> +#define IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP     0x0400 /* If Image is on =
+removable media, copy and run from the swap file */
+> +#define IMAGE_FILE_NET_RUN_FROM_SWAP           0x0800 /* If Image is on =
+Net, copy and run from the swap file */
+> +#define IMAGE_FILE_SYSTEM                      0x1000 /* System kernel-m=
+ode file (can't be loaded in user-mode) */
+> +#define IMAGE_FILE_DLL                         0x2000 /* File is a DLL *=
+/
+> +#define IMAGE_FILE_UP_SYSTEM_ONLY              0x4000 /* File should onl=
+y be run on a UP (uniprocessor) machine */
+> +#define IMAGE_FILE_BYTES_REVERSED_HI           0x8000 /* Bytes of machin=
+e word are reversed (should be set together with IMAGE_FILE_BYTES_REVERSED_=
+LO) */
+> +
+> +/* subsys */
+> +#define IMAGE_SUBSYSTEM_UNKNOWN                                 0 /* Unk=
+nown subsystem */
+> +#define IMAGE_SUBSYSTEM_NATIVE                          1 /* No subsyste=
+m required (NT device drivers and NT native system processes) */
+> +#define IMAGE_SUBSYSTEM_WINDOWS_GUI                     2 /* Windows gra=
+phical user interface (GUI) subsystem */
+> +#define IMAGE_SUBSYSTEM_WINDOWS_CUI                     3 /* Windows cha=
+racter-mode user interface (CUI) subsystem */
+> +#define IMAGE_SUBSYSTEM_WINDOWS_OLD_CE_GUI              4 /* Old Windows=
+ CE subsystem */
+> +#define IMAGE_SUBSYSTEM_OS2_CUI                                 5 /* OS/=
+2 CUI subsystem */
+> +#define IMAGE_SUBSYSTEM_RESERVED_6                      6
+> +#define IMAGE_SUBSYSTEM_POSIX_CUI                       7 /* POSIX CUI s=
+ubsystem */
+> +#define IMAGE_SUBSYSTEM_MMOSA                           8 /* MMOSA/Nativ=
+e Win32E */
+> +#define IMAGE_SUBSYSTEM_WINDOWS_CE_GUI                  9 /* Windows CE =
+subsystem */
+> +#define IMAGE_SUBSYSTEM_EFI_APPLICATION                        10 /* Ext=
+ensible Firmware Interface (EFI) application */
+> +#define IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER                11 /* EFI=
+ driver with boot services */
+> +#define IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER             12 /* EFI driver =
+with run-time services */
+> +#define IMAGE_SUBSYSTEM_EFI_ROM_IMAGE                  13 /* EFI ROM ima=
+ge */
+> +#define IMAGE_SUBSYSTEM_XBOX                           14 /* Xbox system=
+ */
+> +#define IMAGE_SUBSYSTEM_RESERVED_15                    15
+> +#define IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION       16 /* Windows Boo=
+t application */
+> +#define IMAGE_SUBSYSTEM_XBOX_CODE_CATALOG              17 /* Xbox Code C=
+atalog */
+> +
+> +/* dll_flags */
+> +#define IMAGE_LIBRARY_PROCESS_INIT                     0x0001 /* DLL ini=
+tialization function called just after process initialization */
+> +#define IMAGE_LIBRARY_PROCESS_TERM                     0x0002 /* DLL ini=
+tialization function called just before process termination */
+> +#define IMAGE_LIBRARY_THREAD_INIT                      0x0004 /* DLL ini=
+tialization function called just after thread initialization */
+> +#define IMAGE_LIBRARY_THREAD_TERM                      0x0008 /* DLL ini=
+tialization function called just before thread initialization */
+> +#define IMAGE_DLLCHARACTERISTICS_RESERVED_4            0x0010
+> +#define IMAGE_DLLCHARACTERISTICS_HIGH_ENTROPY_VA       0x0020 /* ASLR wi=
+th 64 bit address space (image can be loaded at address above 4GB) */
+> +#define IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE          0x0040 /* The DLL=
+ can be relocated at load time */
+> +#define IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY       0x0080 /* Code in=
+tegrity checks are forced */
+> +#define IMAGE_DLLCHARACTERISTICS_NX_COMPAT             0x0100 /* Image i=
+s compatible with data execution prevention */
+> +#define IMAGE_DLLCHARACTERISTICS_NO_ISOLATION          0x0200 /* Image i=
+s isolation aware, but should not be isolated (prevents loading of manifest=
+ file) */
+> +#define IMAGE_DLLCHARACTERISTICS_NO_SEH                        0x0400 /*=
+ Image does not use SEH, no SE handler may reside in this image */
+> +#define IMAGE_DLLCHARACTERISTICS_NO_BIND               0x0800 /* Do not =
+bind the image */
+> +#define IMAGE_DLLCHARACTERISTICS_X86_THUNK             0x1000 /* Image i=
+s a Wx86 Thunk DLL (for non-x86/risc DLL files) */
+> +#define IMAGE_DLLCHARACTERISTICS_APPCONTAINER          0x1000 /* Image s=
+hould execute in an AppContainer (for EXE Metro Apps in Windows 8) */
+> +#define IMAGE_DLLCHARACTERISTICS_WDM_DRIVER            0x2000 /* A WDM d=
+river */
+> +#define IMAGE_DLLCHARACTERISTICS_GUARD_CF              0x4000 /* Image s=
+upports Control Flow Guard */
+> +#define IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE 0x8000 /* The ima=
+ge is terminal server (Remote Desktop Services) aware */
+> +
+> +/* IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS flags */
+> +#define IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT                          =
+       0x0001 /* Image is Control-flow Enforcement Technology Shadow Stack =
+compatible */
+> +#define IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT_STRICT_MODE              =
+       0x0002 /* CET is enforced in strict mode */
+> +#define IMAGE_DLLCHARACTERISTICS_EX_CET_SET_CONTEXT_IP_VALIDATION_RELAXE=
+D_MODE 0x0004 /* Relaxed mode for Context IP Validation under CET is allowe=
+d */
+> +#define IMAGE_DLLCHARACTERISTICS_EX_CET_DYNAMIC_APIS_ALLOW_IN_PROC      =
+       0x0008 /* Use of dynamic APIs is restricted to processes only */
+> +#define IMAGE_DLLCHARACTERISTICS_EX_CET_RESERVED_1                      =
+       0x0010
+> +#define IMAGE_DLLCHARACTERISTICS_EX_CET_RESERVED_2                      =
+       0x0020
+> +#define IMAGE_DLLCHARACTERISTICS_EX_FORWARD_CFI_COMPAT                  =
+       0x0040 /* All branch targets in all image code sections are annotate=
+d with forward-edge control flow integrity guard instructions */
+> +#define IMAGE_DLLCHARACTERISTICS_EX_HOTPATCH_COMPATIBLE                 =
+               0x0080 /* Image can be modified while in use, hotpatch-compa=
+tible */
+> +
+> +/* section_header flags */
+> +#define IMAGE_SCN_SCALE_INDEX  0x00000001 /* address of tls index is sca=
+led =3D multiplied by 4 (for .tls section on MIPS only) */
+> +#define IMAGE_SCN_TYPE_NO_LOAD 0x00000002 /* reserved */
+> +#define IMAGE_SCN_TYPE_GROUPED 0x00000004 /* obsolete (used for 16-bit o=
+ffset code) */
+> +#define IMAGE_SCN_TYPE_NO_PAD  0x00000008 /* .o only - don't pad - obsol=
+ete (same as IMAGE_SCN_ALIGN_1BYTES) */
+> +#define IMAGE_SCN_TYPE_COPY    0x00000010 /* reserved */
+>  #define IMAGE_SCN_CNT_CODE     0x00000020 /* .text */
+>  #define IMAGE_SCN_CNT_INITIALIZED_DATA 0x00000040 /* .data */
+>  #define IMAGE_SCN_CNT_UNINITIALIZED_DATA 0x00000080 /* .bss */
+> -#define IMAGE_SCN_LNK_OTHER    0x00000100 /* reserved */
+> -#define IMAGE_SCN_LNK_INFO     0x00000200 /* .drectve comments */
+> -#define IMAGE_SCN_RESERVED_4   0x00000400
+> +#define IMAGE_SCN_LNK_OTHER    0x00000100 /* .o only - other type than c=
+ode, data or info */
+> +#define IMAGE_SCN_LNK_INFO     0x00000200 /* .o only - .drectve comments=
+ */
+> +#define IMAGE_SCN_LNK_OVERLAY  0x00000400 /* section contains overlay */
+>  #define IMAGE_SCN_LNK_REMOVE   0x00000800 /* .o only - scn to be rm'd*/
+>  #define IMAGE_SCN_LNK_COMDAT   0x00001000 /* .o only - COMDAT data */
+> -#define IMAGE_SCN_RESERVED_5   0x00002000 /* spec omits this */
+> -#define IMAGE_SCN_RESERVED_6   0x00004000 /* spec omits this */
+> -#define IMAGE_SCN_GPREL                0x00008000 /* global pointer refe=
+renced data */
+> -/* spec lists 0x20000 twice, I suspect they meant 0x10000 for one of the=
+m */
+> -#define IMAGE_SCN_MEM_PURGEABLE        0x00010000 /* reserved for "futur=
+e" use */
+> -#define IMAGE_SCN_16BIT                0x00020000 /* reserved for "futur=
+e" use */
+> -#define IMAGE_SCN_LOCKED       0x00040000 /* reserved for "future" use *=
+/
+> -#define IMAGE_SCN_PRELOAD      0x00080000 /* reserved for "future" use *=
+/
+> +#define IMAGE_SCN_RESERVED_13  0x00002000 /* spec omits this */
+> +#define IMAGE_SCN_MEM_PROTECTED        0x00004000 /* section is memory p=
+rotected (for M68K) */
+> +#define IMAGE_SCN_NO_DEFER_SPEC_EXC 0x00004000 /* reset speculative exce=
+ptions handling bits in the TLB entries (for non-M68K) */
+> +#define IMAGE_SCN_MEM_FARDATA  0x00008000 /* section uses FAR_EXTERNAL r=
+elocations (for M68K) */
+> +#define IMAGE_SCN_GPREL                0x00008000 /* global pointer refe=
+renced data (for non-M68K) */
+> +#define IMAGE_SCN_MEM_SYSHEAP  0x00010000 /* use system heap (for M68K) =
+*/
+> +#define IMAGE_SCN_MEM_PURGEABLE        0x00020000 /* section can be rele=
+ased from RAM (for M68K) */
+> +#define IMAGE_SCN_MEM_16BIT    0x00020000 /* section is 16-bit (for non-=
+M68K where it makes sense: I386, THUMB, MIPS16, MIPSFPU16, ...) */
+> +#define IMAGE_SCN_MEM_LOCKED   0x00040000 /* prevent the section from be=
+ing moved (for M68K and .o I386) */
+> +#define IMAGE_SCN_MEM_PRELOAD  0x00080000 /* section is preload to RAM (=
+for M68K and .o I386) */
+>  /* and here they just stuck a 1-byte integer in the middle of a bitfield=
+ */
+> -#define IMAGE_SCN_ALIGN_1BYTES 0x00100000 /* it does what it says on the=
+ box */
+> +#define IMAGE_SCN_ALIGN_1BYTES 0x00100000 /* .o only - it does what it s=
+ays on the box */
+>  #define IMAGE_SCN_ALIGN_2BYTES 0x00200000
+>  #define IMAGE_SCN_ALIGN_4BYTES 0x00300000
+>  #define IMAGE_SCN_ALIGN_8BYTES 0x00400000
+> @@ -159,7 +206,9 @@
+>  #define IMAGE_SCN_ALIGN_2048BYTES 0x00c00000
+>  #define IMAGE_SCN_ALIGN_4096BYTES 0x00d00000
+>  #define IMAGE_SCN_ALIGN_8192BYTES 0x00e00000
+> -#define IMAGE_SCN_LNK_NRELOC_OVFL 0x01000000 /* extended relocations */
+> +#define IMAGE_SCN_ALIGN_RESERVED 0x00f00000
+> +#define IMAGE_SCN_ALIGN_MASK   0x00f00000
+> +#define IMAGE_SCN_LNK_NRELOC_OVFL 0x01000000 /* .o only - extended reloc=
+ations */
+>  #define IMAGE_SCN_MEM_DISCARDABLE 0x02000000 /* scn can be discarded */
+>  #define IMAGE_SCN_MEM_NOT_CACHED 0x04000000 /* cannot be cached */
+>  #define IMAGE_SCN_MEM_NOT_PAGED        0x08000000 /* not pageable */
+> @@ -168,8 +217,28 @@
+>  #define IMAGE_SCN_MEM_READ     0x40000000 /* readable */
+>  #define IMAGE_SCN_MEM_WRITE    0x80000000 /* writeable */
+>
+> -#define IMAGE_DEBUG_TYPE_CODEVIEW      2
+> -#define IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS 20
+> +#define IMAGE_DEBUG_TYPE_UNKNOWN                0 /* Unknown value, igno=
+red by all tools */
+> +#define IMAGE_DEBUG_TYPE_COFF                   1 /* COFF debugging info=
+rmation */
+> +#define IMAGE_DEBUG_TYPE_CODEVIEW               2 /* CodeView debugging =
+information or Visual C++ Program Database debugging information */
+> +#define IMAGE_DEBUG_TYPE_FPO                    3 /* Frame pointer omiss=
+ion (FPO) information */
+> +#define IMAGE_DEBUG_TYPE_MISC                   4 /* Location of DBG fil=
+e with CodeView debugging information */
+> +#define IMAGE_DEBUG_TYPE_EXCEPTION              5 /* Exception informati=
+on, copy of .pdata section */
+> +#define IMAGE_DEBUG_TYPE_FIXUP                  6 /* Fixup information *=
+/
+> +#define IMAGE_DEBUG_TYPE_OMAP_TO_SRC            7 /* The mapping from an=
+ RVA in image to an RVA in source image */
+> +#define IMAGE_DEBUG_TYPE_OMAP_FROM_SRC          8 /* The mapping from an=
+ RVA in source image to an RVA in image */
+> +#define IMAGE_DEBUG_TYPE_BORLAND                9 /* Borland debugging i=
+nformation */
+> +#define IMAGE_DEBUG_TYPE_RESERVED10            10 /* Coldpath / Hotpatch=
+ debug information */
+> +#define IMAGE_DEBUG_TYPE_CLSID                 11 /* CLSID */
+> +#define IMAGE_DEBUG_TYPE_VC_FEATURE            12 /* Visual C++ counts /=
+ statistics */
+> +#define IMAGE_DEBUG_TYPE_POGO                  13 /* COFF group informat=
+ion, data for profile-guided optimization */
+> +#define IMAGE_DEBUG_TYPE_ILTCG                 14 /* Incremental link-ti=
+me code generation */
+> +#define IMAGE_DEBUG_TYPE_MPX                   15 /* Intel Memory Protec=
+tion Extensions */
+> +#define IMAGE_DEBUG_TYPE_REPRO                 16 /* PE determinism or r=
+eproducibility */
+> +#define IMAGE_DEBUG_TYPE_EMBEDDED_PORTABLE_PDB 17 /* Embedded Portable P=
+DB debugging information */
+> +#define IMAGE_DEBUG_TYPE_SPGO                  18 /* Sample profile-guid=
+ed optimization */
+> +#define IMAGE_DEBUG_TYPE_PDBCHECKSUM           19 /* PDB Checksum */
+> +#define IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS 20 /* Extended DLL charac=
+teristics bits */
+> +#define IMAGE_DEBUG_TYPE_PERFMAP               21 /* Location of associa=
+ted Ready To Run PerfMap file */
+>
+>  #ifndef __ASSEMBLY__
+>
+> @@ -235,7 +304,7 @@ struct pe32_opt_hdr {
+>         uint16_t image_minor;   /* minor image version */
+>         uint16_t subsys_major;  /* major subsystem version */
+>         uint16_t subsys_minor;  /* minor subsystem version */
+> -       uint32_t win32_version; /* reserved, must be 0 */
+> +       uint32_t win32_version; /* win32 version reported at runtime */
+>         uint32_t image_size;    /* image size */
+>         uint32_t header_size;   /* header size rounded up to
+>                                    file_align */
+> @@ -246,7 +315,7 @@ struct pe32_opt_hdr {
+>         uint32_t stack_size;    /* amt of stack required */
+>         uint32_t heap_size_req; /* amt of heap requested */
+>         uint32_t heap_size;     /* amt of heap required */
+> -       uint32_t loader_flags;  /* reserved, must be 0 */
+> +       uint32_t loader_flags;  /* loader flags */
+>         uint32_t data_dirs;     /* number of data dir entries */
+>  };
+>
+> @@ -269,7 +338,7 @@ struct pe32plus_opt_hdr {
+>         uint16_t image_minor;   /* minor image version */
+>         uint16_t subsys_major;  /* major subsystem version */
+>         uint16_t subsys_minor;  /* minor subsystem version */
+> -       uint32_t win32_version; /* reserved, must be 0 */
+> +       uint32_t win32_version; /* win32 version reported at runtime */
+>         uint32_t image_size;    /* image size */
+>         uint32_t header_size;   /* header size rounded up to
+>                                    file_align */
+> @@ -280,7 +349,7 @@ struct pe32plus_opt_hdr {
+>         uint64_t stack_size;    /* amt of stack required */
+>         uint64_t heap_size_req; /* amt of heap requested */
+>         uint64_t heap_size;     /* amt of heap required */
+> -       uint32_t loader_flags;  /* reserved, must be 0 */
+> +       uint32_t loader_flags;  /* loader flags */
+>         uint32_t data_dirs;     /* number of data dir entries */
+>  };
+>
+> @@ -301,10 +370,10 @@ struct data_directory {
+>         struct data_dirent global_ptr;          /* global pointer reg. Si=
+ze=3D0 */
+>         struct data_dirent tls;                 /* .tls */
+>         struct data_dirent load_config;         /* load configuration str=
+ucture */
+> -       struct data_dirent bound_imports;       /* no idea */
+> +       struct data_dirent bound_imports;       /* bound import table */
+>         struct data_dirent import_addrs;        /* import address table *=
+/
+>         struct data_dirent delay_imports;       /* delay-load import tabl=
+e */
+> -       struct data_dirent clr_runtime_hdr;     /* .cor (object only) */
+> +       struct data_dirent clr_runtime_hdr;     /* .cor (clr/.net executa=
+bles) */
+>         struct data_dirent reserved;
+>  };
+>
+> --
+> 2.20.1
+>
 
