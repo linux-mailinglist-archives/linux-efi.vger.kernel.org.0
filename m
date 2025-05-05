@@ -1,131 +1,119 @@
-Return-Path: <linux-efi+bounces-3588-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3589-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2A5AA8925
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 21:33:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4F2AA8B87
+	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 07:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 125453B576A
-	for <lists+linux-efi@lfdr.de>; Sun,  4 May 2025 19:33:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E7001892712
+	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 05:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95831ACEBB;
-	Sun,  4 May 2025 19:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C2314A0BC;
+	Mon,  5 May 2025 05:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bd6Gart1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exmGiryL"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E6A137E;
-	Sun,  4 May 2025 19:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310AC139E;
+	Mon,  5 May 2025 05:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746387197; cv=none; b=O11zqRwylIQDGmWpWzm8TcXy+9mJ95qz6svgPvkJagb8+WSRnxIWNwReBKhgTuZdwV9xXSec60rRiZDR50Dw6/rIRfMyzTsKFmSMTbxUlaLA73utlRyRLnpF3twpgtbb61VMDvLMwrGAE8+bw8uSLhkdEznfSM5NZVgrALr8vGY=
+	t=1746421700; cv=none; b=X+A1M5h98/ApxVFKispHsCQp4r7z0wvo2XPbiWIWpHy4Cmo7PeYemtlfdOowLemh95gqPvelFKtANnu0x8n/HAgX2PFXKFf0Ye87zCN9M+8oL+9eSGozxRiJz3hpHJblzT+KsQIYZZ2KR3yEjiNKyPghGLsXLiQ5y+gsPAkOirU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746387197; c=relaxed/simple;
-	bh=fexXmQdyZ/vERD6uYvIyME5r2X/mErKmLfdIPSUz+1g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KmS3lY6vjgxODOQtpMFa7iwEXUQpii3zeTSNslDrh7x6DsFv0XV3+0nJU+V0k3Wz75haNi+/QJrqm12J4EKRLCNfB4ySsrqEt5n1PjhjhZpqF5XRpHzhY0IRdduvMc2ZG9f7SxZMCMG85IDYy8Sn5TEnkSXmNghy4Wm0LISRW9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bd6Gart1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4B7C4CEEE;
-	Sun,  4 May 2025 19:33:16 +0000 (UTC)
+	s=arc-20240116; t=1746421700; c=relaxed/simple;
+	bh=BfERElOtc/victv+YVhmT09PRXBQfeRmJhOGq28EXYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FWkyS5G5cqUWT1qj9BgIwlc5hXwkiVkFhAB3rcsntVRgcvZeIlOVd0irvoiUsw+ir1H/9c34Bs1ReZx0QQyxpLIZULUiHE95iokrbATCKVQgDcDjqg534/UJKxEuHb+mkXpJx6ErALDl6UBL3y3pjGuXYGIIz21Oc6M92GOFefo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exmGiryL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C021C4CEE4;
+	Mon,  5 May 2025 05:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746387196;
-	bh=fexXmQdyZ/vERD6uYvIyME5r2X/mErKmLfdIPSUz+1g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bd6Gart1CPYXw32krELquNIVxKj1ZtBddevozvMAIbHzwqgQbwiG4KddVFTxZ/3VO
-	 1LSZj34QgiyqMiGw997sv/sW9ZQPOutq3Pe2Fj7oUOooVndDgbYqBifdUAA8Zwb61Z
-	 tDU0UgJmycqBD/JHpZMLuxlOUQQJIF6GGtqfe/6zKZB1osoo0bAGhgpB/XBCcdHciv
-	 /ZkmjrrZ3lYNiTFke6CvlVObjhBv2F0JaZdd2tF0VaLrKu+eV7e0gka3cAJ8uwji33
-	 7iPXRUh/Os0pdxmFXmxljtbYvDDasvCNIHPjVU5yUAPJn4t+kwAwFr65I+AJZmmTkx
-	 n0xVs6ToAWMYg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30bfc79ad97so51657111fa.1;
-        Sun, 04 May 2025 12:33:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVE9dGekyCJSbmOiTYjZDVyNeTvIht7pt8n01eZA8LvRSi/9OWEfdpJOOohV6hypmxCGYyPZBBu+jtWftjW@vger.kernel.org, AJvYcCXK7nP4e7JP2EqYbnnf7ntaHIjrjLj0teTDWPI38SnUOUtRACnDsgFU+qDVKErFHHVavPMjD+QMutA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9iNi6ZVjhP0DzO7sRtCYhQjHQb8vJRvzBObL+4CxuoAy70s6W
-	M3+qDYXguSZhc336l2A6Bok5brkOct6DCZ+i+xl9vzwdhT/iN9tZEuKzk+uPI20yBsYY9oInlua
-	Qi7xPbJsGgOOjmJJhVLFPIfRFpGc=
-X-Google-Smtp-Source: AGHT+IGgPuLEUK0k5cwIqTU8+7eH4UpoibqwCEnky19l8SpePrBzs7N2qW1u2F2OjqyKDOLjWddj2/PVqYVtGRzkAfs=
-X-Received: by 2002:a05:6512:3055:b0:54d:6b7f:affa with SMTP id
- 2adb3069b0e04-54ea7a44536mr3844838e87.1.1746387194491; Sun, 04 May 2025
- 12:33:14 -0700 (PDT)
+	s=k20201202; t=1746421698;
+	bh=BfERElOtc/victv+YVhmT09PRXBQfeRmJhOGq28EXYs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=exmGiryLJY7+m/IER+kywI4fauBXrFx+LHgG7QMeGQ3VYHU9dGMrjR3L0sMbaXxrs
+	 mQ69H30mFZxcyuTS8WTnxPBGf67VlCBFvis7zaKyTL65JLGg2TPna8qXrLhK7XHA3O
+	 Dhv3I5uQ/MNFf1gy8M+cyuo02CFrgoq1Yrq0sGbXy1duDWPdiuaI4X3tKK2d2q6O7k
+	 tcPTb6zh9GEBLw/u2b5ioId4AaGjPuuGuLYSBc/BmaQ9cK1ew3z65b9lIbf+w0GA7R
+	 YzsAGj/TMVw+NehwyeH0t3NncC8PVJbwPomsgYbCKyauuVRCVGknApySR+ua/L7v6I
+	 l6FwehStrMJFg==
+Date: Mon, 5 May 2025 07:08:13 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, x86@kernel.org,
+	Borislav Petkov <bp@alien8.de>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [RFT PATCH v2 00/23] x86: strict separation of startup code
+Message-ID: <aBhHvRajKQ7BkmeK@gmail.com>
+References: <20250504095230.2932860-25-ardb+git@google.com>
+ <aBdz-4hJu0zp40mC@gmail.com>
+ <CAMj1kXE7Ctbsu+z2WST9s22NFvPVXoymPfidjJSXgdfvtWZVxg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250504095230.2932860-25-ardb+git@google.com>
- <20250504095230.2932860-28-ardb+git@google.com> <aBdwwR52hI37bW9a@gmail.com> <CAHk-=wiaEzS_7CBVTz3RYnDt5zJus_GsPtfSjojkqiiMU-vSHQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wiaEzS_7CBVTz3RYnDt5zJus_GsPtfSjojkqiiMU-vSHQ@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 4 May 2025 21:33:03 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFF0mwtLFDwGh7rafodCMX_0gfbtOwPceFVHrJT+uoH0g@mail.gmail.com>
-X-Gm-Features: ATxdqUFVsshUCM6tTejWsbDNOCJYzYwU7PsEtfiBdZjzxIs_w9JJGNlaM3GjWN0
-Message-ID: <CAMj1kXFF0mwtLFDwGh7rafodCMX_0gfbtOwPceFVHrJT+uoH0g@mail.gmail.com>
-Subject: Re: [RFT PATCH v2 03/23] x86/boot: Drop global variables keeping
- track of LA57 state
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Ingo Molnar <mingo@kernel.org>, Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
-	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXE7Ctbsu+z2WST9s22NFvPVXoymPfidjJSXgdfvtWZVxg@mail.gmail.com>
 
-On Sun, 4 May 2025 at 16:58, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Sun, 4 May 2025 at 06:51, Ingo Molnar <mingo@kernel.org> wrote:
+
+* Ard Biesheuvel <ardb@kernel.org> wrote:
+
+> On Sun, 4 May 2025 at 16:04, Ingo Molnar <mingo@kernel.org> wrote:
 > >
-> > Cannot pgtable_l5_enabled() be a single, simple percpu flag or so?
->
-> Isn't this logically something that should just be a static key? For
-> some reason I thought we did that already, but looking around, that
-> was only in the critical user access routines (and got replaced by the
-> 'runtime-const' stuff)
->
+> >
+> ...
+> >
+> > So to move this forward I applied the following 7 patches to
+> > tip:x86/boot:
+> >
+> >         x86/boot: Move early_setup_gdt() back into head64.c
+> >         x86/boot: Disregard __supported_pte_mask in __startup_64()
+> >         x86/sev: Make sev_snp_enabled() a static function
+> >         x86/sev: Move instruction decoder into separate source file
+> >         x86/linkage: Add SYM_PIC_ALIAS() macro helper to emit symbol aliases
+> >         x86/boot: Add a bunch of PIC aliases
+> >         x86/boot: Provide __pti_set_user_pgtbl() to startup code
+> >
+> > Which are I believe independent of SEV testing.
+> >
+> 
+> Excellent.
+> 
+> > I also merged in pending upstream fixes, including:
+> >
+> >    8ed12ab1319b ("x86/boot/sev: Support memory acceptance in the EFI stub under SVSM")
+> >
+> > Which should make tip:x86/boot a good base for your series going
+> > forward?
+> >
+> 
+> Yes, that helps a lot, thanks.
+> 
+> Please also consider the patch
+> 
+>   x86/sev: Disentangle #VC handling code from startup code
+>   11 files changed, 1694 insertions(+), 1643 deletions(-)
+> 
+> It just moves code around, but it is rather large and is likely to
+> cause merge conflicts if it lives out of tree for too long. The +/-
+> delta is mostly down to the fact that a new file vc-handle.c is added
+> which duplicates most of the #includes of the file that it was split
+> off from.
 
-The ordinary, late version of pgtable_l5_enabled() is #define'd to
-cpu_feature_enabled(), which is runtime patched in a slightly more
-efficient manner than the alternative I'm proposing here. It is
-conceptually the same as a static key, i.e., the asm goto() gets
-patched into a JMP or a NOP.
+Sure, applied, will push it out after testing. I almost applied it 
+yesterday, for these exact reasons.
 
-Whether or not using runtime constants are worth the hassle for
-pgdir_shift and ptrs_per_p4d is a different question, I'll keep them
-as ordinary globals for now, and drop the conditional expressions.
+Thanks,
 
-> But I guess that what Ard wants to get rid of is the variable itself,
-> and for early boot using static keys sounds like a bad idea.
->
-
-I wanted to get rid of the variable, and then noticed the nasty
-'#define USE_EARLY_PGTABLE_L5' thing, so I attempted to fix that as
-well. (Having to keep track of which code may be called early, late or
-both is how I ended up in this swamp to begin with.)
-
-> Honestly, looking at this, I think we should fix the *users* of
-> pgtable_l5_enabled().
->
-> Because I think there are two distinct classes:
->
->  - the stuff in <asm/pgtable.h> is exposed as the generic page table
-> accessor macros to "real" code, and should probably use a static key
-> (ie things like pgd_clear() / pgd_none() and friends)
->
->  - but in code like __kernel_physical_mapping_init() feels to me like
-> using the value in %cr4 actually makes sense
->
-> but that looks like a much bigger and fundamental patch than Ard's.
->
-
-I think we should just rely on cpu_feature_enabled(), which can in
-fact be called early as long as the capability gets set. So instead of
-setting __pgtable_l5_enabled, we should just call
-'set_cpu_cap(&boot_cpu_data, X86_FEATURE_LA57)' so that even early
-callers can use the ordinary pgtable_l5_enabled(), and we can drop the
-early flavor. (The decompressor will need its own version but it can
-just inspect CR4.LA57 directly)
+	Ingo
 
