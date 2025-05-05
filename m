@@ -1,194 +1,147 @@
-Return-Path: <linux-efi+bounces-3609-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3610-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95AD9AAA58E
-	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 01:52:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED02AAAEB9
+	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 05:02:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E62A85A0CA7
-	for <lists+linux-efi@lfdr.de>; Mon,  5 May 2025 23:48:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1A303AD26E
+	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 02:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7343118C6;
-	Mon,  5 May 2025 22:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXUM1PS5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2152874E4;
+	Mon,  5 May 2025 23:03:43 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E994A3118C0;
-	Mon,  5 May 2025 22:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE2135D7B0;
+	Mon,  5 May 2025 22:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484216; cv=none; b=r5ERj4SXH0svutTItE665B3YM+8gmmjej4ISTurGG6tePyvbIFvT15CjUf0kxg+ibjgYUkG+v4LJy25Lr4H04Kv7f1DxqzvtfM3NeMYREXPr7DMmS4Mw2l3BOBVHpQ8HsPlzGTMUxH1SrdNU9NHhJPtVkk0Wihmlg43ifkVpFNs=
+	t=1746485907; cv=none; b=NqXndjlF7UXtxwhv5z97T9mG8vtn7fe0UZWKJ2/siY2KfX2elLmjlwiUmF8ldmBJrqIdPV6or73MKZtBsvKdvv0g/ILbbiwvQApe/ohty1SpxZ1X2lHa5+gJoyONuW2GGfov5ldHJ+oYS61pQ4hmnizFB3wA3Msjbw8eMYVzN9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484216; c=relaxed/simple;
-	bh=9qXvlUsAJLM2JuLUNLn+K6XTiEko4XoIWC3CCLaHQR8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nMlcbzy3LDpx4toZxFul2Sy/wOCJJI2NyzE4+ARisQ11LQU6KpjSOgp6yz0ul56Bzk/vVHcnVZZgxXuot0oAFfgEXw+fgenPFcBir252LMMKCKOoaAgu6uCs53yCPgYyh0xdITnBwHXVvOMwDrhJZN3VUDF8OkdbcTRpd5BEVFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXUM1PS5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E0DC4AF09;
-	Mon,  5 May 2025 22:30:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484215;
-	bh=9qXvlUsAJLM2JuLUNLn+K6XTiEko4XoIWC3CCLaHQR8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=aXUM1PS5HF9bG+EaAn2zvWZVWUBV2lf34iAan7GYQuTBFiqWTuB3VO+FbKCMwAFE0
-	 P6q5KdfwEWfe4LJ5e0xzmKW3JEFSQnv7dl6zyURuBMA+HE7fQ9TuO9irLnM9Za5aIo
-	 /HXPKFfzU1IXFEokU8SdCTiLVzrIq9Huv7tNP50Oqtc9BBrwOVfNbJ4FLaUuM26suw
-	 qile430YgK30Z7/hys0FHdq69cUlE6iDPmcRqn6CyiPrFZo2iDiqLfySQCe43e+AkC
-	 4l3eqOF9TLkSufod1REeVVDC9DLH+unvXFCQhrwKQc1c3/hP774jmnVv7zALvuLDQJ
-	 U6+y45joO9QIQ==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54ea69e9352so5907195e87.2;
-        Mon, 05 May 2025 15:30:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVBZO0M6Mhn7eq6gWEWJPo02jbzS7HJHOWIhT8AjUNAn9svWQ/4TUJExFtdsl82lqJQzfaG+5FQsYBo5SL7@vger.kernel.org, AJvYcCXFRMh+7rcYVx/PDuqG/07i2QUbZgt4/NezdRy8DazYmB0B9GpuUedH2EqwJ3JRvLs99VreU7VQuag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNE9zxGv0IF62yy5OuFSo8tQsmDC9xOf77GYwgYjXMwx/q4WPr
-	EBVoB1Nh4v/41LKc3/HyLZWVYXy+ehXHWLbtkTmyi0OOAcr8dQ5p83ix87MWg0/D3wk6gq5tjQb
-	4NuxilIK5vqKlcfx5Fh6rAKOiGpM=
-X-Google-Smtp-Source: AGHT+IHmUbL2/ov6H1GmIFr2hOfzScbIZJsVItptWBu8Dn7Q7ZYyumZH90rkmXsU/NbpevsPt590MOW4vMNYn/3zbm8=
-X-Received: by 2002:a05:6512:4024:b0:545:2b68:936e with SMTP id
- 2adb3069b0e04-54fb4a13ee1mr199593e87.25.1746484214124; Mon, 05 May 2025
- 15:30:14 -0700 (PDT)
+	s=arc-20240116; t=1746485907; c=relaxed/simple;
+	bh=0iA7SnkO+rHs3cH5clhDyFXZGFleV4DrWF4XKWa+sJE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uf8qPEEDBUnaZ553HgnSeD5UqVrieQTt3M/dYADeJC30THNN4W6Efhcj34Fk4JGNNoyNsEkUdeZGXENHGrbGjSG3GQe75Ih070Oub1BKk2f8yTEy7nVeMxefOTtvNl15qJsacBp1sgsyv8ZmUsUV5j7Y7p6H2ITyq+P7dgFVe8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-301a8b7398cso562090a91.1;
+        Mon, 05 May 2025 15:58:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746485904; x=1747090704;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E69HBkxQBdEYOvZVGJya06bZ/qelSSQFUZVNp/6hv4Q=;
+        b=lJvzSgtyPnoHiFxUpFmzKiz6URvRZCx33ChApMBAWF5Uz4p1OO6I1sMp03p/ZBPdC5
+         CV2FEGQWEd3E4Adp4bPi2kC2N5bhT/wnoMehzaRNZcemP6lGxUBuNuXGJUsAxryDBtmu
+         Rms+Vn2Z+aN6yYDDw+b7VyapearqB8sxGQpkE2RPvuA2JyH4OsgM4nr9WpzmT+rs2iSx
+         Zj2MoGS+0klurQsSW1GHPX5MzQPmgMQvrU8gPG3aBJGyaf2JBo37mzzWLUbLtjbByi2k
+         NS/qM1NE4n8xIh/SzcACPHBeGSnkHfCG4ORTyK73nAAK5cWAVE35+cQO+tMZDx1WUB+x
+         1fYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUy6vXRy3kTbASz93AciySyXYKbLdiB0fKenkW1NjoReB3gmSsA0+oM+nnU8TcJtItGnmBSCEGDFvw=@vger.kernel.org, AJvYcCW3l945nYAP1uoPIEObMwQN5vNaEhUmPxu8fCwGkR7reNSzGJB2C/UR7WjrSTxyWvtuYi48bmNDyL04c0xb@vger.kernel.org, AJvYcCXoIxNff7atlPMw04bMfZJInDljxL1XIH3+HKisiGdAV/xwd5MKP6qrLp+WFnQnk3xxKz5yCEDWQmDZIcDz3A==@vger.kernel.org, AJvYcCXrFlfSJZJopr1GzL9abx1UcVQzAmxI+CxHiaRy9dLHMrTRcmUiisFnyBELekhLrln7Gg2OJ5Yfo+4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2Kn69NkgJleSsMj82SLxJRVlEphWtb+4NVeyh1/s+RKJP4GE4
+	IffK3d/+i5+KK9+DvlZTzQSPLfTgkXw/vCtMxJLkG/cXFlwkKdRV
+X-Gm-Gg: ASbGnctmvgOoU12WsfDLDTmS0ysJgv7vV8tlt6/iPrlv89zx67kJ6L6yuwy8UA3XZwd
+	tESQWLnaLzdJQ3W7IaOVVlX7dCwskH4YyihJHfOgPAXWXMVYH7ADSikJdROMI8ytUnFKj78Ob7w
+	F6Cneypm7r9SJBI7peWvFfvgIkXQ+RhzdgwSdiGmmYP3uGakvu7kI1Wz1dvum0L1m9Lcyr9DOKQ
+	ljVFJPmJAtLWdugEkb90rC3kldSorJ/sVj913oybvLSmd8GjRTSyuIyVnQep3efrD9PyD2Gq2Jf
+	oHWZVc00o6lD/qJ8kxHYowJxSSnwxdMxwVUKvkxtr8l/W36k/e+I
+X-Google-Smtp-Source: AGHT+IHJTeyvyyCYbIt/rYD4AuU2+QD3JmkKZhwPhbVCwB3WHS4NZFqPQbdjDVG7wdbKMVf90do5qQ==
+X-Received: by 2002:a17:902:d4c4:b0:224:e0e:e08b with SMTP id d9443c01a7336-22e1022be16mr89698425ad.0.1746485903779;
+        Mon, 05 May 2025 15:58:23 -0700 (PDT)
+Received: from [192.168.50.136] ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30a347488b0sm12359854a91.16.2025.05.05.15.58.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 15:58:23 -0700 (PDT)
+Message-ID: <81a917f3-fb41-4958-8d76-7cdfa7b60a7c@kzalloc.com>
+Date: Tue, 6 May 2025 07:58:18 +0900
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250504095230.2932860-25-ardb+git@google.com>
- <20250504095230.2932860-28-ardb+git@google.com> <aBdwwR52hI37bW9a@gmail.com>
- <CAHk-=wiaEzS_7CBVTz3RYnDt5zJus_GsPtfSjojkqiiMU-vSHQ@mail.gmail.com>
- <aBkogDfWB14qkY4g@gmail.com> <aBksqEEAq5t9UEmf@gmail.com>
-In-Reply-To: <aBksqEEAq5t9UEmf@gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 6 May 2025 00:30:02 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG4s8szNfyxksvOkyyCgpqH6Bm_eZ+4jvvLgQ78199Zeg@mail.gmail.com>
-X-Gm-Features: ATxdqUFUodl0U9Cixemlu_wxaalpIlA0ppHs15tfYEWj9VqVVaEEGnYo3HJaN9g
-Message-ID: <CAMj1kXG4s8szNfyxksvOkyyCgpqH6Bm_eZ+4jvvLgQ78199Zeg@mail.gmail.com>
-Subject: Re: [RFT PATCH v2 03/23] x86/boot: Drop global variables keeping
- track of LA57 state
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org, 
-	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs: Prevent panic from NULL dereference in
+ alloc_fs_context() during do_exit()
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <len.brown@intel.com>, byungchul@sk.com,
+ max.byungchul.park@gmail.com, linux-fsdevel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-efi@vger.kernel.org
+References: <20250505203801.83699-2-ysk@kzalloc.com>
+ <20250505223615.GK2023217@ZenIV>
+Content-Language: en-US
+From: Yunseong Kim <ysk@kzalloc.com>
+Organization: kzalloc
+In-Reply-To: <20250505223615.GK2023217@ZenIV>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 5 May 2025 at 23:25, Ingo Molnar <mingo@kernel.org> wrote:
->
->
-> * Ingo Molnar <mingo@kernel.org> wrote:
->
-> > Anyway, with these limitations in mind, we can see that the top 5
-> > usecases cover about 80% of all uses:
-> >
-> >  - MAX_PHYSMEM_BITS: (inlined 179 times)
-> >
-> >        arch/x86/include/asm/sparsemem.h:# define MAX_PHYSMEM_BITS     (pgtable_l5_enabled() ? 52 : 46)
-> >
-> >    This could be implemented via a precomputed, constant percpu value
-> >    (per_cpu__x86_MAX_PHYSMEM_BITS) of 52 vs. 46, eliminating not just
-> >    the CR4 access, but also a branch, at the cost of a percpu memory
-> >    access. (Which should still be a win on all microarchitectures IMO.)
-> >
-> >    Alternatively, since this value is a semi-constant of 52 vs. 46, we
-> >    could also, I suspect, ALTERNATIVES-patch MAX_PHYSMEM_BITS in as an
-> >    immediate constant value? Any reason this shouldn't work:
-> >
-> >      static inline unsigned int __MAX_PHYSMEM_BITS(void)
-> >      {
-> >               unsigned int bits;
-> >
-> >               asm_inline (ALTERNATIVE("movl $46, %0", "movl $52, %0", X86_FEATURE_LA57) :"=g" (bits));
-> >
-> >               return bits;
-> >      }
-> >      #define MAX_PHYSMEM_BITS __MAX_PHYSMEM_BITS()
-> >
-> >    ... or something like that? This would result in the best code
-> >    generation IMO, by far. (It would even make use of the
-> >    zero-extension property of a 32-bit MOVL, further compressing the
-> >    opcode to only 5 bytes or so.)
-> >
-> >    We'd even create a secondary helper macro for this, something like:
-> >
-> >       #define ALTERNATIVES_CONST_U32(__val1, __val2, __feature)       \
-> >       ({                                                              \
-> >               u32 __val;                                              \
-> >                                                                       \
-> >               asm_inline (ALTERNATIVE("movl $" #__val1 ", %0", "movl $" __val2 ", %0", __feature) :"=g" (__val)); \
-> >                                                                       \
-> >               __val;                                                  \
-> >       })
-> >
-> >       ...
-> >
-> >       #define MAX_PHYSMEM_BITS ALTERNATIVE_CONST_U32(46, 52, X86_FEATURE_LA57)
-> >
-> >    (Or so. Totally untested.)
->
-> BTW., I keep comparing it to the CR4 access, which is a bit unfair,
-> since that's only one out of the 3 variants of ALTERNATIVE_TERNARY():
->
-> static __always_inline __pure bool pgtable_l5_enabled(void)
-> {
->         unsigned long r;
->         bool ret;
->
->         if (!IS_ENABLED(CONFIG_X86_5LEVEL))
->                 return false;
->
->         asm(ALTERNATIVE_TERNARY(
->                  "movq %%cr4, %[reg] \n\t btl %[la57], %k[reg]" CC_SET(c),
->                  %P[feat], "stc", "clc")
->                  : [reg] "=&r" (r), CC_OUT(c) (ret)
->                  : [feat] "i"  (X86_FEATURE_LA57),
->                    [la57] "i"  (X86_CR4_LA57_BIT)
->                  : "cc");
->
->         return ret;
-> }
->
-> The STC and CLC variants will probably be the more common outcomes on
-> modern CPUs.
->
+Hi Alexander,
 
-The CR4 access is only used before alternatives patching; after that,
-either the STC or the CLC is patched in.
+Thanks for the feedback!
 
-> But I still think the ALTERNATIVE_CONST_U32() approach I outline above
-> generates superior code for the binary-values cases, which covers 3 out
-> of the top 5 uses of pgtable_l5_enabled().
->
-> For non-constant branching uses of pgtable_l5_enabled() I suspect the
-> STC/CLC approach above is pretty good, although the 'cc' constraint
-> will clobber all flags I suspect, while ALTERNATIVE_CONST_U32()
-> doesn't? Ie. with ALTERNATIVE_CONST_U32() we just load the resulting
-> constant into a register, with no additional branches and with flags
-> undisturbed.
->
-> Also, is STC/CLC always just as fast as the testing of an immediate (or
-> a static branch), on CPUs we care about?
->
+On 5/6/25 7:36 오전, Al Viro wrote:
+> On Tue, May 06, 2025 at 05:38:02AM +0900, Yunseong Kim wrote:
+>> The function alloc_fs_context() assumes that current->nsproxy and its
+>> net_ns field are valid. However, this assumption can be violated in
+>> cases such as task teardown during do_exit(), where current->nsproxy can
+>> be NULL or already cleared.
+>>
+>> This issue was triggered during stress-ng's kernel-coverage.sh testing,
+>> Since alloc_fs_context() can be invoked in various contexts — including
+>> from asynchronous or teardown paths like do_exit() — it's difficult to
+>> guarantee that its input arguments are always valid.
+>>
+>> A follow-up patch will improve the granularity of this fix by moving the
+>> check closer to the actual mount trigger(e.g., in efivarfs_pm_notify()).
+> 
+> UGH.
+> 
+>> diff --git a/fs/fs_context.c b/fs/fs_context.c
+>> index 582d33e81117..529de43b8b5e 100644
+>> --- a/fs/fs_context.c
+>> +++ b/fs/fs_context.c
+>> @@ -282,6 +282,9 @@ static struct fs_context *alloc_fs_context(struct file_system_type *fs_type,
+>>  	struct fs_context *fc;
+>>  	int ret = -ENOMEM;
+>>  
+>> +	if (!current->nsproxy || !current->nsproxy->net_ns)
+>> +		return ERR_PTR(-EINVAL);
+>> +
+>>  	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL_ACCOUNT);
+>>  	if (!fc)
+>>  		return ERR_PTR(-ENOMEM);
+> 
+> That might paper over the oops, but I very much doubt that this will be
+> a correct fix...  Note that in efivarfs_pm_notify() we have other
+> fun issues when run from such context - have task_work_add() fail in
+> fput() and if delayed_fput() runs right afterwards and
+>         efivar_init(efivarfs_check_missing, sfi->sb, false);
+> in there might end up with UAF...
 
-The reasoning behind using the C flag rather than asm goto is
-precisely the fact that in many cases, pgtable_l5_enabled() is not
-used for control flow but for picking between constants, and this
-approach permits the compiler [in theory] to resolve it without a
-branch. But I didn't inspect the resulting codegen, and just patching
-in a MOV immediate is obviously more efficient than that.
+I see your point — simply returning early in alloc_fs_context() may just
+paper over a deeper issue, and I agree that this might not be the right
+long-term fix. I wasn’t aware of the potential UAF scenario involving
+efivarfs_pm_notify() and delayed_fput().
 
-I could just use asm goto here, and implement something similar to
-cpu_feature_enabled(), but in a way that removes the need for
-USE_EARLY_PGTABLE_L5. Then, we could get rid of the
-__pgtable_l5_enabled variable in a separate patch, and base it on a
-test of CR4.LA57 in the early init path.
+I’ll take a closer look at the call paths involved here, especially
+around efivarfs_pm_notify(), fput(), and delayed_fput() interactions
+during do_exit().
 
-Then, any optimizations related to constants defined in terms of
-(pgtable_l5_enabled() ? foo : bar) could be layered on top of that.
-Having runtime constants is the obvious choice, although I'm skeptical
-whether it's worth the hassle. I also haven't yet looked into what it
-would entail to share these runtime constants with the startup code.
+Also, I’ll loop in the EFI mailing list so we can discuss this
+further from the efivarfs side as well.
+
+Thanks again,
+Yunseong
 
