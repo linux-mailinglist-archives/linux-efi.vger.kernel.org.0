@@ -1,133 +1,156 @@
-Return-Path: <linux-efi+bounces-3615-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3616-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42F5AAC13C
-	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 12:23:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BF0AAC55C
+	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 15:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBC8A1C26742
-	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 10:23:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 110114615D9
+	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 13:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130A52750F8;
-	Tue,  6 May 2025 10:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467BF281365;
+	Tue,  6 May 2025 13:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="t9laNfpO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VhWTbcbI"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="Wld+X18X"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B102750F1;
-	Tue,  6 May 2025 10:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA51F28134A
+	for <linux-efi@vger.kernel.org>; Tue,  6 May 2025 13:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746526996; cv=none; b=QvCVrFEbBlw+o2HWYDesh+gVLyv0YcGGNip07IPMRFT9u/+HZAuCAhJxZDLDm6eH/6qY2xrSYfiwXFDX0nG3ltNL7FsBessac3QKa89e8tCEBMQxJ7dszlc446tNpOuE5JyS8hw1Q5QlFuv69dwKf2T9Sr5PN87QathrTPbIkdc=
+	t=1746537080; cv=none; b=Lymfxtu5uky2KswHahcNdr+4dyxhOhzbhd7KIg5YJiAuq1xEvtulZpY34rvIrA9/PtI7ny6c8nzYwoJGo9qbKFt4K+1M6GNPVMjFelPJrcvnamwSwIc+TKL4o8mmBetSvGMlu/gh6zhWM3LslT+iTJC1QZRAoN+5ab7BwFf/3CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746526996; c=relaxed/simple;
-	bh=ufPIm0bQWPXgT/ISvj3F6tBKU4TGGEsrDy5DRKmXyTU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=smqgbOhHPIUAc2x2swy8qzaXWlV9NuVYEPj4gljJD/0wegk519r84fkWyjKx2THrx2x4ePX4d9PrItzab6++AtcY11Jyndzo1ohTfF18Nb5DzxQ4S2NE5IiZFWChJphTzwQk23nZIcxqHK0HbgShEVTDS2XOz1HvcGjrc9eiC5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=t9laNfpO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VhWTbcbI; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfout.stl.internal (Postfix) with ESMTP id 47CC411401C1;
-	Tue,  6 May 2025 06:23:12 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Tue, 06 May 2025 06:23:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1746526992; x=
-	1746613392; bh=98gmRsvCbFVOGYxJYzCbqyQEH25wrcIQxT9aYd2p6fA=; b=t
-	9laNfpO3jUO3G7s379ic8qjoW7DaeY3AEH3IqlZJFOOMZZB9hAr4U59R+ktIWee5
-	TRvqLJO3ve4YNBkF8x58qX9PVm2Uj0ZnqCTxDuxBtnNHoswI23xdVnkuqKaMci76
-	Zj301rMwUrGGVBS/aT83JOBW9MwQqvzenEnkmMD16zU8+cQ81hgbftiEpMVCXNLb
-	DrjAvZsauWEw6KB97kDvnmUAhD/WKAKUjR4cH6rg6SZj4qCfDuEXR5mnpYEcYKVz
-	bhBfJdLL36x1FNhzuDPaH9gk5ajfJO7zX0wNcbIjAMg0yDHFjcn0nnTMBjrsChDV
-	Gx2qgI2HM7lyuF4ZEF5GQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1746526992; x=1746613392; bh=98gmRsvCbFVOGYxJYzCbqyQEH25wrcIQxT9
-	aYd2p6fA=; b=VhWTbcbIuxrLFcre+giObUABkIvfGIjxXofa+O5PQgz6NxpDPIQ
-	cBl/8OMdy8oOLJWzc/M7qVtRa/FdaoqC4ox4sRU1ZRqUYsn8bNMObKL05Ty126hz
-	wMPH2Hm24dgOIskG/CS2ApUzLUA7iwlzI1OFBE8kVKfWDZ6s8eP2lZKs3M7C6VHE
-	syqqlQsJoiNogZCyMVA0enGwMXu2+B6BfEz1YMMHy2a4CDu4fr9LfOxh+XrKXIeL
-	tANUrTgR6uUlwk+P6mI9h+iz+rxzM1DC/M3UV0yr1WpO4YKtL/S52ZGxPnn8zLNk
-	rO9pmzATy6fznVOAiXgP739mjPxd7UtNYlA==
-X-ME-Sender: <xms:D-MZaIxLuyyxQAik9_P6LB2gChIUUTAs4ps6EQswt6T_2f8gkHZtHw>
-    <xme:D-MZaMQOpaa4mS_EGWFHy0CZFjaMrAeDb3WLA2uKm6Xi8fWKYVmcR-W1Z7zfC_l1h
-    fiT7h4S3YZC4IpGmms>
-X-ME-Received: <xmr:D-MZaKW5m8sKV_LcTTgWacudeo_2yc8FdBgDzoBVL_2U_ntfqgAAGgXkPB3D-hZldgoQNA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeefjeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddt
-    vdenucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilh
-    hlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeffvdevueetudfh
-    hfffveelhfetfeevveekleevjeduudevvdduvdelteduvefhkeenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghm
-    ohhvrdhnrghmvgdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegrkhhpmheslhhinhhu
-    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
-    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqthhiphdq
-    tghomhhmihhtshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhngh
-    hosehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhr
-    tghpthhtohepugifmhifsegrmhgriihonhdrtghordhukhdprhgtphhtthhopeguihhonh
-    hnrghglhgriigvsehgohhoghhlvgdrtghomhdprhgtphhtthhopehhphgrseiihihtohhr
-    rdgtohhm
-X-ME-Proxy: <xmx:D-MZaGi1Fxk_2fMQcnlUue1HCzOgrVFrlAVHmJixn2u3JJp4bzBqPA>
-    <xmx:D-MZaKBxN6SNYscqSVwneba8oPWAUeEbXvgpCDdj_dq94_gFKa0_Lg>
-    <xmx:D-MZaHK9F7x62YKyBDdB5YV3qd9k7yYi4an-5JTiBUa1OdbD66Oq7w>
-    <xmx:D-MZaBCnBV78nem-VuaiIQjOvCSwJgVYmE2kNYWQBfjHjEr7VHYUqw>
-    <xmx:EOMZaDRLjMEeRfiC5JxnVCRs6Xu3GUqYtFa5aVcwevsJ8lvcAyJCgaRT>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 May 2025 06:23:05 -0400 (EDT)
-Date: Tue, 6 May 2025 13:23:01 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	David Woodhouse <dwmw@amazon.co.uk>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>, 
-	Kevin Loughlin <kevinloughlin@google.com>, Len Brown <len.brown@intel.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, linux-efi@vger.kernel.org, x86@kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: 4067196a5227 ("mm/page_alloc: fix deadlock on cpu_hotplug_lock
- in __accept_page()") (was: Re: [tip: x86/boot] x86/boot: Provide
- __pti_set_user_pgtbl() to startup code)
-Message-ID: <6xlb5o4fqzn6o3jojwvav7aln5uyiraox573zntxspjkwfbkzi@yx53iy4h7gw2>
-References: <20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local>
+	s=arc-20240116; t=1746537080; c=relaxed/simple;
+	bh=32sZ7zs+7V0u9CG5C8+o85/JGenmObMMHpGaRyPNu8c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SZbYeELg3bLHyLRvqxtgCdAxQR39YVh7VaAdtQFnDXjEoRehfXRXabO+bpfsC5dKTOiOAUqZ2vYMH+23mEcJwXamaeTojzStYnLoq5NaOL36UjbDPJ6u8UaY7Tpumgtd6rt7ijoEB7QUH9lEj2w9IMRNpjDRD2C2g2/eNaJc+DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=Wld+X18X; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 246CD41080
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1746537078; bh=1oPLAFxOds3QyWMzEctu4ArSA4p7FPYqtdXGzF6UWuk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Wld+X18XqTBa+rOSDbHGYKuGMf0Cli2cKdgagcSjtd1Dsw1g6/qMX/5PFzyobuPKV
+	 XmJQQ72NBipUenlPncbC1wW0x5l9FsG+94/Qes4yO08sfrHR2QPqsfHLkL7fFuhV4G
+	 56tg96KVa/0keLr8OIcQOO/eYAdtjI44pXNNnh8NcLyeVxVUIU/piM4BimF3hwcdc4
+	 XEPn5T+qMaWu0DE00ukBKJWm4ybXK0qHOwiUoy/q1NasfQejjCGgW/EMV3ZJoWoSt3
+	 gKu4+P1N0MI5TZxqYF/QaHdcGAH7q/yAaknkb1AB5/Xl7ZWhIrQ8AYcfen/KOR6x+Y
+	 Ez2us5DCo3mug==
+Received: from localhost (mdns.lwn.net [45.79.72.68])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 246CD41080;
+	Tue,  6 May 2025 13:11:16 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Hugo Osvaldo Barrera <hugo@whynothugo.nl>, linux-efi@vger.kernel.org
+Cc: Hugo Osvaldo Barrera <hugo@whynothugo.nl>, Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: x86/Documentation: explain LINUX_EFI_INITRD_MEDIA_GUID
+In-Reply-To: <20250428131206.8656-2-hugo@whynothugo.nl>
+References: <20250428131206.8656-2-hugo@whynothugo.nl>
+Date: Tue, 06 May 2025 07:11:13 -0600
+Message-ID: <87ecx1x4su.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local>
+Content-Type: text/plain
 
-On Tue, May 06, 2025 at 11:24:45AM +0200, Borislav Petkov wrote:
-> Fun stuff.
+Hugo Osvaldo Barrera <hugo@whynothugo.nl> writes:
 
-Ughh.. Thanks for digging into this.
+> Since the Handover Protocol was deprecated, the recommended approach is
+> to provide an initrd using a UEFI boot service with the
+> LINUX_EFI_INITRD_MEDIA_GUID device path. Documentation for the new
+> approach has been no more than an admonition with a link to an existing
+> implementation.
+>
+> Provide a short explanation of this functionality, to ease future
+> implementations without having to reverse engineer existing ones.
+>
+> Signed-off-by: Hugo Osvaldo Barrera <hugo@whynothugo.nl>
+> ---
+>  Documentation/admin-guide/efi-stub.rst |  5 ++++
+>  Documentation/arch/x86/boot.rst        | 36 +++++++++++++++++++-------
+>  2 files changed, 32 insertions(+), 9 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/efi-stub.rst b/Documentation/admin-guide/efi-stub.rst
+> index 090f3a185e18..3af702259f1d 100644
+> --- a/Documentation/admin-guide/efi-stub.rst
+> +++ b/Documentation/admin-guide/efi-stub.rst
+> @@ -1,3 +1,5 @@
+> +.. _efi-boot-stub:
 
-The code around static_branch_inc/dec() getting way to complex for the
-benefit that is only visible on microbenchmark.
+This label is unneeded...
 
-Let's just remove it all.
+>  =================
+>  The EFI Boot Stub
+>  =================
+> @@ -79,6 +81,9 @@ because the image we're executing is interpreted by the EFI shell,
+>  which understands relative paths, whereas the rest of the command line
+>  is passed to bzImage.efi.
+>  
+> +.. hint::
+> +   It is also possible to provide an initrd using UEFI boot services. See
+> +   :ref:`pe-coff-entry-point` for details.
+>  
+>  The "dtb=" option
+>  -----------------
+> diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
+> index 77e6163288db..2fecf89910ec 100644
+> --- a/Documentation/arch/x86/boot.rst
+> +++ b/Documentation/arch/x86/boot.rst
+> @@ -1431,12 +1431,30 @@ The boot loader *must* fill out the following fields in bp::
+>  All other fields should be zero.
+>  
+>  .. note::
+> -     The EFI Handover Protocol is deprecated in favour of the ordinary PE/COFF
+> -     entry point, combined with the LINUX_EFI_INITRD_MEDIA_GUID based initrd
+> -     loading protocol (refer to [0] for an example of the bootloader side of
+> -     this), which removes the need for any knowledge on the part of the EFI
+> -     bootloader regarding the internal representation of boot_params or any
+> -     requirements/limitations regarding the placement of the command line
+> -     and ramdisk in memory, or the placement of the kernel image itself.
+> -
+> -[0] https://github.com/u-boot/u-boot/commit/ec80b4735a593961fe701cc3a5d717d4739b0fd0
+> +   The EFI Handover Protocol is deprecated in favour of the ordinary PE/COFF
+> +   entry point described below.
+> +
+> +.. _pe-coff-entry-point:
+> +
+> +PE/COFF entry point
+> +===================
+> +
+> +When compiled with ``CONFIG_EFI_STUB=y``, the kernel can be executed as a
+> +regular PE/COFF binary. See :ref:`efi-boot-stub` for implementation details.
 
-I will prepare patches later today.
+...just say "see Documentation/admin-guide/efi-stub.rst here.
+> +
+> +The stub loader can request the initrd via a UEFI protocol. For this to work,
+> +the firmware or bootloader needs to register a handle which implements the
+> +``EFI_LOAD_FILE2`` protocol with the ``LINUX_EFI_INITRD_MEDIA_GUID`` device
+> +path. In this case, a kernel booting via the EFI stub will use the ``LoadFile``
+> +function on the registered handle to obtain a reference to the initrd.
+> +
+> +This approach removes the need for any knowledge on the part of the EFI
+> +bootloader regarding the internal representation of boot_params or any
+> +requirements/limitations regarding the placement of the command line and
+> +ramdisk in memory, or the placement of the kernel image itself.
+> +
+> +For sample implementations, refer to `the original u-boot implementation`_ or
+> +`the implementation in candyboot`_.
+> +
+> +.. _the original u-boot implementation: https://github.com/u-boot/u-boot/commit/ec80b4735a593961fe701cc3a5d717d4739b0fd0
+> +.. _the implementation in candyboot: https://git.sr.ht/~whynothugo/candyboot/tree/4097b2538d7f1cf85f03922bf42409490b666202/item/src/main.rs#L225
+> -- 
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thanks,
+
+jon
 
