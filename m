@@ -1,143 +1,97 @@
-Return-Path: <linux-efi+bounces-3617-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3618-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCEB8AAC678
-	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 15:36:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1A8AACB07
+	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 18:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C673716D070
-	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 13:34:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90DFC980DB2
+	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 16:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF29280032;
-	Tue,  6 May 2025 13:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EF926FA5F;
+	Tue,  6 May 2025 16:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="n7yeE+TB"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="o4H/tiub"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2A4280A22;
-	Tue,  6 May 2025 13:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C552472AE;
+	Tue,  6 May 2025 16:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746538368; cv=none; b=uMG6Wz4SsXvlmS2gLMsapXVch+liqSfk+8XCFvkMmIa15zg3PthkwXDpAKTiOnECgs6RER+BMSQ/l4eAyO2gOGj3OgLNPO1zSCc+9H57PVMFBY7OYvB/7kR5rRK5wIptVSpBtcxr+Y7p6G25NbHYPOm4azAkfJm4AGo3CLnvXkw=
+	t=1746549107; cv=none; b=qsn2mK0Yrer1bw2JJKboHX9XRNavuYLYgC+c29fnjrxFXX0dk6iW4Dts5moBbq2Qo9PMNCnkwdZHl0MobtUuYfwrt0RGyasqW1wzBb/jSFoOt3Q0KbFaPdLUf8sHyQ6qETAo1kraHjl6DFLx3KnL6uIBYyi2VwPayZLTdY1cxEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746538368; c=relaxed/simple;
-	bh=kSvXr+b2Hy2f2NJD4lZL4d9PEdA5TH8rETVkdgx3URI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PBOLwVFWP50frwjvZVHE12G8TFc7vq2/RwInSSz4IgFqTUZ/863EK6LtueZrifghdY21l9PyU2gs0iv9PkvIHuLvkM3Ae2zWC5bCeuyNczD0WNBX8GoIQ3Q0ZSRCyKqtiw6pVNI9iYDwsk4esSmNlxjqZmjSYwEYcRO5IueBeFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=n7yeE+TB; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6cpI98hWfgFel/wjRnW+Dxp5TlwemkuKmbKCnMNw4jc=; b=n7yeE+TBrHIHKZGaVFCAVfDdd8
-	9yrCGjO0R1hS6oa3Owmd6CNGJXpS+KKssrLwI8chILGFybjyYgLR3+ibpbybCmTC3F5dhTMqu5RK/
-	LJRAiTsakNKkYNCTcht19eNNtRUst4+MUBY60lN/cPsf3AEpTCgRQxPpBM1OWUDD5rW+VJg62GqNw
-	X5E2fqslkkasXgjPpctQx//H+7WbEeAacaB2Wq4REG4EWuEWxfyAVR0ReiBYTwP2MKohSXt+M7ihj
-	nN1lL6geKsPbyDPTxVg4jhQKCgWYlUuagGEZIw3hC4CREIhjT0a/kPWMJuFJ9S1rjeX5+rE5xlAVQ
-	8eADS2cQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1uCIPS-0000000FeCx-3nP7;
-	Tue, 06 May 2025 13:32:35 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 4E72C300348; Tue,  6 May 2025 15:32:34 +0200 (CEST)
-Date: Tue, 6 May 2025 15:32:34 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kys@microsoft.com,
-	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, pbonzini@redhat.com, ardb@kernel.org,
-	kees@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	gregkh@linuxfoundation.org, linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, samitolvanen@google.com,
-	ojeda@kernel.org, xin@zytor.com
-Subject: Re: [PATCH v2 00/13] objtool: Detect and warn about indirect calls
- in __nocfi functions
-Message-ID: <20250506133234.GH4356@noisy.programming.kicks-ass.net>
-References: <8B86A3AE-A296-438C-A7A7-F844C66D0198@zytor.com>
- <20250430190600.GQ4439@noisy.programming.kicks-ass.net>
- <20250501103038.GB4356@noisy.programming.kicks-ass.net>
- <20250501153844.GD4356@noisy.programming.kicks-ass.net>
- <aBO9uoLnxCSD0UwT@google.com>
- <20250502084007.GS4198@noisy.programming.kicks-ass.net>
- <aBUiwLV4ZY2HdRbz@google.com>
- <20250503095023.GE4198@noisy.programming.kicks-ass.net>
- <p6mkebfvhxvtqyz6mtohm2ko3nqe2zdawkgbfi6h2rfv2gxbuz@ktixvjaj44en>
- <20250506073100.GG4198@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1746549107; c=relaxed/simple;
+	bh=UYD3grwpS5uPohpdxt9dxakZq+YTUq9nRPZydmvnE44=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nRi7vqhzwy2u3UVQ3+s8g4KKOUeAIXWjqCXmEaEw6z8EcPxx84wxDxS4nXWdXWt9u0EgSopgQCOpSeP71pb4//p66ZLvFj9DvMGZ3j83phJmVulTlx92Jj2ryQnTu0AoFo4qh9vwy6BAQrreinYZYH7DcxAXH/rKgf/K9Tt24jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=o4H/tiub; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=IJPjh
+	/OuwLg/GQ59dE8XcmVS3DsJx6kJihk2+0gyrTA=; b=o4H/tiubGtsRPJnTdtLH3
+	YeujoUTTzCFmCdzJfzTG4dJEW++Gsz86pFsO1BTVX6YQZo65C3bhQ7YKCA9YEO5o
+	wLZHTc69125d+e6BJYN1HRUMrLkfGeM8fS0G8CMN6QlOYGVU6itW/I1wrJg9aICv
+	3dJFzk44SYvgA4VOaesmEg=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDn94JdORpomSVsEw--.1255S2;
+	Wed, 07 May 2025 00:31:26 +0800 (CST)
+From: Hans Zhang <18255117159@163.com>
+To: ardb@kernel.org
+Cc: linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	hans.zhang@cixtech.com,
+	Hans Zhang <18255117159@163.com>
+Subject: [PATCH] efi/libstub: Describe missing 'out' parameter in efi_load_initrd
+Date: Wed,  7 May 2025 00:31:11 +0800
+Message-Id: <20250506163111.272149-1-18255117159@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250506073100.GG4198@noisy.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDn94JdORpomSVsEw--.1255S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ArWUuFykXFyUWF4xtw48Xrb_yoW8Gry5pa
+	9FgrW3CFnrJa1rAa18Ja1S93W3JasxG3yjgas7JF1Fy3Wjya4v9rWagF1UuFs7Cr1Ut3WS
+	qF15tr17Wa48Zr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRwNV-UUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/1tbiOgtFo2gaMTHk5wAAsm
 
-On Tue, May 06, 2025 at 09:31:00AM +0200, Peter Zijlstra wrote:
-> On Sat, May 03, 2025 at 11:28:37AM -0700, Josh Poimboeuf wrote:
-> > On Sat, May 03, 2025 at 11:50:23AM +0200, Peter Zijlstra wrote:
-> > > > +++ b/arch/x86/entry/entry_64_fred.S
-> > > > @@ -116,7 +116,8 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
-> > > >  	movq %rsp, %rdi				/* %rdi -> pt_regs */
-> > > >  	call __fred_entry_from_kvm		/* Call the C entry point */
-> > > >  	POP_REGS
-> > > > -	ERETS
-> > > > +
-> > > > +	ALTERNATIVE "", __stringify(ERETS), X86_FEATURE_FRED
-> > > >  1:
-> > > >  	/*
-> > > >  	 * Objtool doesn't understand what ERETS does, this hint tells it that
-> > > > @@ -124,7 +125,7 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
-> > > >  	 * isn't strictly needed, but it's the simplest form.
-> > > >  	 */
-> > > >  	UNWIND_HINT_RESTORE
-> > > > -	pop %rbp
-> > > > +	leave
-> > > >  	RET
-> > > 
-> > > So this, while clever, might be a problem with ORC unwinding. Because
-> > > now the stack is different depending on the alternative, and we can't
-> > > deal with that.
-> > > 
-> > > Anyway, I'll go have a poke on Monday (or Tuesday if Monday turns out to
-> > > be a bank holiday :-).
-> > 
-> > Can we just adjust the stack in the alternative?
-> > 
-> > 	ALTERNATIVE "add $64 %rsp", __stringify(ERETS), X86_FEATURE_FRED
-> 
-> Yes, that should work. 
+The function efi_load_initrd() had a documentation warning due to
+the missing description for the 'out' parameter. Add the parameter
+description to the kernel-doc comment to resolve the warning and
+improve API documentation.
 
-Nope, it needs to be "mov %rbp, %rsp". Because that is the actual rsp
-value after ERETS-to-self.
+Fixes the following compiler warning:
+drivers/firmware/efi/libstub/efi-stub-helper.c:611: warning: Function parameter or struct member 'out' not described in 'efi_load_initrd'
 
-> But I wanted to have a poke at objtool, so it
-> will properly complain about the mistake first.
+Fixes: f4dc7fffa987 ("efi: libstub: unify initrd loading between architectures")
+Signed-off-by: Hans Zhang <18255117159@163.com>
+---
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-So a metric ton of fail here :/
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index fd6dc790c5a8..7aa2f9ad2935 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -601,6 +601,7 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
+  * @image:	EFI loaded image protocol
+  * @soft_limit:	preferred address for loading the initrd
+  * @hard_limit:	upper limit address for loading the initrd
++ * @out:	pointer to store the address of the initrd table
+  *
+  * Return:	status code
+  */
 
-The biggest problem is the UNWIND_HINT_RESTORE right after the
-alternative. This ensures that objtool thinks all paths through the
-alternative end up with the same stack. And hence won't actually
-complain.
-
-Second being of course, that in order to get IRET and co correct, we'd
-need far more of an emulator.
-
-Also, it actually chokes on this variant, and I've not yet figured out
-why. Whatever state should be created by that mov, the restore hint
-should wipe it all. But still the ORC generation bails with unknown base
-reg -1.
-
+base-commit: 01f95500a162fca88cefab9ed64ceded5afabc12
+-- 
+2.25.1
 
 
