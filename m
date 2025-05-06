@@ -1,199 +1,120 @@
-Return-Path: <linux-efi+bounces-3611-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3612-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64204AABC0C
-	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 09:54:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9A0AABC07
+	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 09:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 999FF3BA4DA
-	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 07:31:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8AE1C42CC4
+	for <lists+linux-efi@lfdr.de>; Tue,  6 May 2025 07:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4296521C9E9;
-	Tue,  6 May 2025 07:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8783A2367D6;
+	Tue,  6 May 2025 07:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="coWChuO2"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZAQ3QZ5j"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A966219E8D;
-	Tue,  6 May 2025 07:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71EB2343B6;
+	Tue,  6 May 2025 07:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746515917; cv=none; b=pUUKstAy25E4vBYprPngs2ldfP3NRvTLvMB6ydYsrBTAmWa88KDXlKUudD0UIK4C4wOFTmhenGiA1kcuIZb1KXAMUCduRCHb2LeDVIP1RWNfazAMbWNJGMUj6YKyDiNNm8KeD7VVs2DPVLTSSv65GxgEifV0fe9Aes9RZW5Wf4w=
+	t=1746516685; cv=none; b=hsMwDzSdVho2Ti3aM/xfcPJB7lHkEwpv/B/vwkGw+JbrMbz06C+yNtYhG+yUMVWkBPM4h/TcLtFl7hQN+nmFEpOHVBE+gyQ1QiQAwA9PQMAXR7d/IhwtazByyNrhvHESegMJXo6fmTaysUyYzxa9jFJorxqFg/bH6fgEG8+y+Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746515917; c=relaxed/simple;
-	bh=1PE99U/R7TS3pt3sEs9r6yQti61KTlXYD3U3+poe8AA=;
+	s=arc-20240116; t=1746516685; c=relaxed/simple;
+	bh=3MFMFKTpvoycC4ErDW1aAMLFvTj2p3AIoaoGRL7FFac=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=onYWI+8ruu+6ziJMXtN09S9clCUz1Fsht+7MLQzVS1O75jOFsH2GODELW15mYgJG5O5jt3yu+IV3LGQL8rhy48jQLlfKx7GvNZj5NUpwOF0l84YRMQhw28lhanO68B3YvqA0zFU0CzD/zl7YY8YQ6ZRC8ddgEF7REM3v2doLECI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=coWChuO2; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6BE4040E01CF;
-	Tue,  6 May 2025 07:18:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id GCY1QjrdjYrQ; Tue,  6 May 2025 07:18:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1746515905; bh=K9vkaZ5i0U/8Omazl2DdhwAagpt1gTzRHC2/tNAWSEo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=coWChuO2HlAKwcwxDEAx3cZ8RWifgp1IoqrIGRsVtzjufcsU6nXF2bNmAsWn1Do5H
-	 RPSP8c8Do8U2foVpWyizwGUV9VwpRYLrRB/eZRRZpjcWxa0ZVJx33SKh28mXf46qWY
-	 vyao0RtNlESapVADT3xR7o2jpXgONe01jgIhx9pV0wcPT2sWu9nrqqo2yfGyR6tHg0
-	 SM6mNiKoTXhLwZetwfWC7qSEa508kfpXg0pwfxuYTN6oK9WKFE0GkR2X4e98VDXOKi
-	 1HhQjqSpf/csFcTh3lIVD7KE2K8tO5fy67d9TTCKG/ZyaBjybdqm3Wef/Gmuhoeg38
-	 CSjrCkFJ1j2YfaBT1anEp0uW3UsYHmPsHFuqj+EPoGgw2h3akBdmXRh2xM6XTvTFs5
-	 /Z3C1F/krMz6qxQBsbiAlaPYOpSwTBeHEgUUk7sNrlDmquYn6KfUUnbmTkhvoLzOfX
-	 +yNVhzW+Am47Jvaqm8mb5nwLJcn/d1sKQ89+pZKgIQwOduX9c1h22CU/HHsKWYbI/a
-	 b4vEqpvORAcp9L0VwPLvS3Lp5Z9NE76whw7JqASd7/a25bjiWNJUN6+1PqYgNvYvX9
-	 Sq3x+lUBN/RPzWfHY5M+1hAqHh5X3oP/4IePvBytGZ7HzbMGxCx+It2KCuWiS4vXj0
-	 zvl33W1we6Y8Km+gVheGVj5A=
-Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2B5BD40E01FA;
-	Tue,  6 May 2025 07:18:08 +0000 (UTC)
-Date: Tue, 6 May 2025 09:18:00 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ard Biesheuvel <ardb@kernel.org>,
-	"Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Len Brown <len.brown@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, linux-efi@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [tip: x86/boot] x86/boot: Provide __pti_set_user_pgtbl() to
- startup code
-Message-ID: <20250506071800.GAaBm3qIhtDEg9AzlJ@fat_crate.local>
-References: <20250504095230.2932860-40-ardb+git@google.com>
- <174636840512.22196.14007684119604658714.tip-bot2@tip-bot2>
- <20250505160346.GJaBjhYp09sLZ5AyyJ@fat_crate.local>
- <CAMj1kXGY6GTmm1PCVwyaCieVDDLWF_wEfRGbGooCnVf+o-Pupw@mail.gmail.com>
- <20250505164759.GKaBjrv5SI4MX_NiX-@fat_crate.local>
+	 Content-Type:Content-Disposition:In-Reply-To; b=pUOoTTaGzJOYDECGqrzkBkHRA6TqnIkt4KD94qwVG0xVXnusg7mXV2zHUg6SRGrz/1ZyOzbWwNaZYz8+WRLGx6nQHYJHhmlzVM628DwDuu9n30Gzg7l8Z3avdsWm25aE7L9lMhiYtWfhIuEW5ltFIqFskRzAMYGUf+jUsDYRzcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZAQ3QZ5j; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Z8bIiaqqf7hK7/LPXDmXMUql27tUrzUQtZi3jDCElZo=; b=ZAQ3QZ5jU3LWyd0UL7/q0AH62B
+	yZaJIXX/DgwzpsI8b9NwdokYhsZ8Ly8OQpjk+a/s1HQbmkvEvLsK2vOVvOXTKFqyra3a+4lvCv1CY
+	ehYo1Nl6V78j9hLsYMGyg1WFyCWpNQUDPX1u/jHCoESzT588Lar1tofhIGs2njEtcDUHtmxuJS0q8
+	avVa8DOFPXMfYV3Wfx+4Um2bKtS5IjQhKCKLjEHVhYi45Dn92s2+1uUzEe+LBbW7OIvZuK7URhUxL
+	WnKFYk0UP/blwhHeFDjvVJpGqk7gWf3/OYs3z1GU6kVHYRoTjMHujhauxCgFm0zks36lx7FNZbAp/
+	eyl1yWmw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uCClb-00000003B9S-0Jnk;
+	Tue, 06 May 2025 07:31:03 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C2717300321; Tue,  6 May 2025 09:31:00 +0200 (CEST)
+Date: Tue, 6 May 2025 09:31:00 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kys@microsoft.com,
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, pbonzini@redhat.com, ardb@kernel.org,
+	kees@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	gregkh@linuxfoundation.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, samitolvanen@google.com,
+	ojeda@kernel.org, xin@zytor.com
+Subject: Re: [PATCH v2 00/13] objtool: Detect and warn about indirect calls
+ in __nocfi functions
+Message-ID: <20250506073100.GG4198@noisy.programming.kicks-ass.net>
+References: <20250430110734.392235199@infradead.org>
+ <8B86A3AE-A296-438C-A7A7-F844C66D0198@zytor.com>
+ <20250430190600.GQ4439@noisy.programming.kicks-ass.net>
+ <20250501103038.GB4356@noisy.programming.kicks-ass.net>
+ <20250501153844.GD4356@noisy.programming.kicks-ass.net>
+ <aBO9uoLnxCSD0UwT@google.com>
+ <20250502084007.GS4198@noisy.programming.kicks-ass.net>
+ <aBUiwLV4ZY2HdRbz@google.com>
+ <20250503095023.GE4198@noisy.programming.kicks-ass.net>
+ <p6mkebfvhxvtqyz6mtohm2ko3nqe2zdawkgbfi6h2rfv2gxbuz@ktixvjaj44en>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250505164759.GKaBjrv5SI4MX_NiX-@fat_crate.local>
+In-Reply-To: <p6mkebfvhxvtqyz6mtohm2ko3nqe2zdawkgbfi6h2rfv2gxbuz@ktixvjaj44en>
 
-+ Kirill.
-
-This looks like this unaccepted_cleanup_work() thing being unsynchronized...
-
-On Mon, May 05, 2025 at 06:47:59PM +0200, Borislav Petkov wrote:
-> On Mon, May 05, 2025 at 06:19:49PM +0200, Ard Biesheuvel wrote:
-> > This patch by itself does nothing. The symbol is __weak for the time
-> > being, and given that this code does not have its __pi_ prefixes yet,
-> > this function will be superseded by the existing one. (If you remove
-> > the __weak you will get a linker error)
+On Sat, May 03, 2025 at 11:28:37AM -0700, Josh Poimboeuf wrote:
+> On Sat, May 03, 2025 at 11:50:23AM +0200, Peter Zijlstra wrote:
+> > > +++ b/arch/x86/entry/entry_64_fred.S
+> > > @@ -116,7 +116,8 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
+> > >  	movq %rsp, %rdi				/* %rdi -> pt_regs */
+> > >  	call __fred_entry_from_kvm		/* Call the C entry point */
+> > >  	POP_REGS
+> > > -	ERETS
+> > > +
+> > > +	ALTERNATIVE "", __stringify(ERETS), X86_FEATURE_FRED
+> > >  1:
+> > >  	/*
+> > >  	 * Objtool doesn't understand what ERETS does, this hint tells it that
+> > > @@ -124,7 +125,7 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
+> > >  	 * isn't strictly needed, but it's the simplest form.
+> > >  	 */
+> > >  	UNWIND_HINT_RESTORE
+> > > -	pop %rbp
+> > > +	leave
+> > >  	RET
 > > 
-> > Are you sure this patch is causing the issue?
+> > So this, while clever, might be a problem with ORC unwinding. Because
+> > now the stack is different depending on the alternative, and we can't
+> > deal with that.
+> > 
+> > Anyway, I'll go have a poke on Monday (or Tuesday if Monday turns out to
+> > be a bank holiday :-).
 > 
-> My by-foot bisection of x86/boot is below.
+> Can we just adjust the stack in the alternative?
 > 
-> I don't know if this patch uncovers something or maybe changes placement...
-> 
-> Tom also pointed to
-> 
-> 4067196a5227 ("mm/page_alloc: fix deadlock on cpu_hotplug_lock in __accept_page()")
-> 
-> as potentially related.
-> 
-> And now I went and tried to reproduce the warning and it fired ontop of:
-> 
-> 419cbaf6a56a ("x86/boot: Add a bunch of PIC aliases")
-> 
-> which is the previous patch.
-> 
-> Ufff, this is one of those which don't reproduce reliably because it was fine
-> on that commit in the previous run. Nasty.
-> 
-> Lemme go dig more.
-> 
-> ---
-> 
-> ed4d95d033e3 (HEAD, refs/remotes/tip/x86/boot) x86/sev: Disentangle #VC handling code from startup code
-> 
-> <--- NOT
-> 
-> [    1.227968] smp: Brought up 1 node, 32 CPUs
-> [    1.231576] smpboot: Total of 32 processors activated (191999.61 BogoMIPS)
-> [    1.247644] ------------[ cut here ]------------
-> [    1.248697] WARNING: CPU: 17 PID: 104 at kernel/jump_label.c:276 __static_key_slow_dec_cpuslocked+0x2a/0x80
-> [    1.251592] Modules linked in:
-> [    1.252370] CPU: 17 UID: 0 PID: 104 Comm: kworker/17:0 Not tainted 6.15.0-rc4+ #2 PREEMPT(voluntary) 
-> [    1.253173] node 0 deferred pages initialised in 12ms
-> [    1.254539] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
-> [    1.257490] Workqueue: events unaccepted_cleanup_work
-> [    1.258698] RIP: 0010:__static_key_slow_dec_cpuslocked+0x2a/0x80
-> [    1.259574] Code: 0f 1f 44 00 00 53 48 89 fb e8 82 66 e5 ff 8b 03 85 c0 78 16 74 54 83 f8 01 74 11 8d 50 ff f0 0f b1 13 75 ec 5b e9 66 bf 8c 00 <0f> 0b 48 c7 c7 00 44 54 82 e8 a8 5f 8c 00 8b 03 83 f8 ff 74 33 85
-> [    1.266446] Memory: 7574396K/8381588K available (13737K kernel code, 2487K rwdata, 6056K rodata, 3916K init, 3592K bss, 791248K reserved, 0K cma-reserved)
-> [    1.263574] RSP: 0018:ffffc9000048fe40 EFLAGS: 00010286
-> [    1.267573] RAX: 00000000ffffffff RBX: ffffffff82f10d00 RCX: 0000000000000000
-> [    1.269388] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffffffff82f10d00
-> [    1.275578] RBP: ffff88827b7d4d98 R08: 8080808080808080 R09: ffff888100b59100
-> [    1.277441] R10: ffff888100050cc0 R11: fefefefefefefeff R12: ffff88827326e300
-> [    1.279574] R13: ffff888100bc1940 R14: ffff8881000e2405 R15: ffff8881000e2400
-> [    1.281460] FS:  0000000000000000(0000) GS:ffff8882f0400000(0000) knlGS:0000000000000000
-> [    1.281460] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    1.281460] CR2: 0000000000000000 CR3: 0008000002c22000 CR4: 00000000003506f0
-> [    1.287576] Call Trace:
-> [    1.288381]  <TASK>
-> [    1.289015]  static_key_slow_dec+0x1f/0x40
-> [    1.289980]  process_one_work+0x171/0x330
-> [    1.290988]  worker_thread+0x247/0x390
-> [    1.291576]  ? __pfx_worker_thread+0x10/0x10
-> [    1.292773]  kthread+0x107/0x240
-> [    1.293536]  ? __pfx_kthread+0x10/0x10
-> [    1.295573]  ret_from_fork+0x30/0x50
-> [    1.295575]  ? __pfx_kthread+0x10/0x10
-> [    1.296580]  ret_from_fork_asm+0x1a/0x30
-> [    1.297507]  </TASK>
-> [    1.298085] ---[ end trace 0000000000000000 ]---
-> 
-> 5297886f0cc4 x86/boot: Provide __pti_set_user_pgtbl() to startup code
-> 
-> <--- OK
-> 
-> 419cbaf6a56a x86/boot: Add a bunch of PIC aliases
-> f932adcc8650 x86/linkage: Add SYM_PIC_ALIAS() macro helper to emit symbol aliases
-> 
-> <--- OK
-> 
-> ae862964cbc5 x86/sev: Move instruction decoder into separate source file
-> fae89bbfdd9d x86/sev: Make sev_snp_enabled() a static function
-> b3464a36f7f2 x86/boot: Disregard __supported_pte_mask in __startup_64()
-> bd4a58beaaf1 x86/boot: Move early_setup_gdt() back into head64.c
-> 
-> <--- OK
-> 
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
+> 	ALTERNATIVE "add $64 %rsp", __stringify(ERETS), X86_FEATURE_FRED
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Yes, that should work. But I wanted to have a poke at objtool, so it
+will properly complain about the mistake first.
 
