@@ -1,49 +1,49 @@
-Return-Path: <linux-efi+bounces-3636-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3639-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58FDAAE980
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 20:45:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8597FAAEC3F
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 21:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03E3F3AF425
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 18:45:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FC5D3BE554
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 19:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF96120E6EB;
-	Wed,  7 May 2025 18:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9D828E58C;
+	Wed,  7 May 2025 19:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ex6DbSwQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adEj+Biz"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90011FC1D;
-	Wed,  7 May 2025 18:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBE421CC45;
+	Wed,  7 May 2025 19:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643524; cv=none; b=Pn1rIV6tpVWFAQ5qVDSfuTNRDVAvrGa1HRRvnOGcL5ejtv0tgT4zbzcD+IXJRJLu4fy4T9QruQuFPa9wabqkCPa4sZ5SX1NoJr22yjxBuRt1o5PUuQjDrgt6u55lcX5hBO2CaTeEq+/aptCSkZsZCDedcCToyBF8+cVBDL6miK8=
+	t=1746646621; cv=none; b=bqWjTynZMzumvVhLjyE1zTvvj+9uH60p9ydf+sLZKwMufwHpHfney2eklMjIeKW6r6LuLPtco5I6vXgqOfMKwEtGH3gqA6q9zL5xYq7MI/Z/zj0VY+oLO3OeREUZfGFIJ0/EaA0dmoDJRcK8+FJXrX1K1M1a4kpr1tJOVti3uv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643524; c=relaxed/simple;
-	bh=b0Z2CtCQbrS6Cm6Atyr106vvviX+heraGGwK75dEIUM=;
+	s=arc-20240116; t=1746646621; c=relaxed/simple;
+	bh=lrmfyWvnM3QwZX0jYJbUO8H9wEWYYrgJ7OaSlLyzEgc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JZqsT4/wOjHLGqq0gkEK6BPt1B1JXJ83ZvP2fiWNCO+Ka7SEjGpNG+zxn0wV1ev3fLt3W4Ue/YXbOglcXDTGOe9gUFvY42wJRCap7Ow/Adib9uruu48FzgDGiJkbp/mwjypxTdTM81afD76nTwS9NIQLuuHa0xMHiZj5totcRKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ex6DbSwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43067C4CEE9;
-	Wed,  7 May 2025 18:45:18 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=osIWWmvriGyCwX8SkF8zPAmgUJcIDSZBnczE2Vw/Ibzir0VG0DGdW2rhudJ/pLHx2bmGuK0Na8fPMm7A/Je45MbaAtRXuwItA9w+FBvN/1W3BS7GXanHV2XlYNKnY6lM+oHb4PRIEw4SmEaUn+W+sVP0DkoRKzVgtEIA0mafM3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adEj+Biz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E255C4CEE2;
+	Wed,  7 May 2025 19:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746643524;
-	bh=b0Z2CtCQbrS6Cm6Atyr106vvviX+heraGGwK75dEIUM=;
+	s=k20201202; t=1746646620;
+	bh=lrmfyWvnM3QwZX0jYJbUO8H9wEWYYrgJ7OaSlLyzEgc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ex6DbSwQi9n8oIBLyX47q8kuQwKQbQ0Wjt1QL7/sSP/5oCsmMIfNneg/7H3Id1bj3
-	 vidrjBlo4LT6qTNjkmtOikzCkhVz4lUpuJ78RGUVGcoGUVVZ7p+4/Nt5ZLaKnmsSWv
-	 hjwEQwfjKvHsOz+Hz9LUKfJeViO4JflKm2JGHJBzXU+uIlwbaXKY83Ftu00T48m2kv
-	 Q9nbjHbKCkZTw3jZk0y+3VmNqyO5hYcLVGvQ+0fSyn7xPXQlzSZf0jfPu2NPQGSVKZ
-	 ztGxmYuYjI87tVS60h+jrkYyEEv9MdbA4nB2SInPGC2i0ga2/j5ZIiGid1h9z3yDWn
-	 XbfNs0/Ux3oXg==
-Date: Wed, 7 May 2025 20:45:15 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Kees Cook <kees@kernel.org>
+	b=adEj+BizyWGNYyIo5IgqAqEZv/fYXZwSE6hbDf5r3NKhwW3FLQgI40vKpeqr1qBIi
+	 IZDndlHbUJsmMjZPIhKjr1vMIOoZKzeRi75y8DBhxxBZDfHtMl5G87s1YS59Qu+Ug4
+	 M7Bd8RMx150oxVdRPqbjZT3zqbIrQnLuMvM6qTrxZk/EfDbL67wtKqXgIbFWPEDM89
+	 DcDfZ5Z0nwBba+lNW31VpiwbKaAyT0t8v2xXiOirP3Vp0Jk/WTHKbdpIiWsfFgeiMy
+	 0JoJj15rZjQPlqTneT7LfTJA1TcyUyBRShtC50Ov3mP3saiJ7e6dD1qYk/yJOU4tuu
+	 7pjj9Ujhx261Q==
+Date: Wed, 7 May 2025 12:36:57 -0700
+From: Kees Cook <kees@kernel.org>
+To: Ingo Molnar <mingo@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -66,9 +66,10 @@ Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
 	llvm@lists.linux.dev
 Subject: Re: [PATCH 3/8] stackleak: Rename CONFIG_GCC_PLUGIN_STACKLEAK to
  CONFIG_STACKLEAK
-Message-ID: <aBuqO9BVlIV3oA2M@gmail.com>
+Message-ID: <202505071236.AC25A6CC2@keescook>
 References: <20250507180852.work.231-kees@kernel.org>
  <20250507181615.1947159-3-kees@kernel.org>
+ <aBuqO9BVlIV3oA2M@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -77,22 +78,30 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507181615.1947159-3-kees@kernel.org>
+In-Reply-To: <aBuqO9BVlIV3oA2M@gmail.com>
 
+On Wed, May 07, 2025 at 08:45:15PM +0200, Ingo Molnar wrote:
+> 
+> * Kees Cook <kees@kernel.org> wrote:
+> 
+> > -	  The STACKLEAK gcc plugin instruments the kernel code for tracking
+> > +	  The STACKLEAK options instruments the kernel code for tracking
+> 
+> speling.
 
-* Kees Cook <kees@kernel.org> wrote:
+Thanks!
 
-> -	  The STACKLEAK gcc plugin instruments the kernel code for tracking
-> +	  The STACKLEAK options instruments the kernel code for tracking
+> Also, any chance to fix this terrible name? Should be something like 
+> KSTACKZERO or KSTACKCLEAR, to tell people that it doesn't leak the 
+> stack but prevents leaks on the stack by clearing it, and that it's 
+> about the kernel stack, not any other stack.
 
-speling.
+Yeah, better to name it for what it does rather than want to protects
+against. The internal naming for what it does is "stack erase", so
+perhaps KSTACK_ERASE ?
 
-Also, any chance to fix this terrible name? Should be something like 
-KSTACKZERO or KSTACKCLEAR, to tell people that it doesn't leak the 
-stack but prevents leaks on the stack by clearing it, and that it's 
-about the kernel stack, not any other stack.
+-Kees
 
-Thanks,
-
-	Ingo
+-- 
+Kees Cook
 
