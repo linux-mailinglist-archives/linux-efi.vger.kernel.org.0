@@ -1,43 +1,43 @@
-Return-Path: <linux-efi+bounces-3637-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3638-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF539AAE9FD
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 20:50:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B4AFAAEAF4
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 21:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C72D1C425B9
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 18:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F71F9C1A52
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 19:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C119C2144CC;
-	Wed,  7 May 2025 18:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C181E22E9;
+	Wed,  7 May 2025 19:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyS9OgUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAQoIHkh"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957F21DDC23;
-	Wed,  7 May 2025 18:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A814023DE;
+	Wed,  7 May 2025 19:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643816; cv=none; b=cnrjkpgjo6+zVZwsSC+Am0BRVOYS/iTVmjwIKgkIHC47XOajlgdudO9diomUuD0ip1Unm94Kf/BxyoH+Ny8t2zlUSh+6InibwzhUHVVioJImP7kJZiedO2Kg6tu7i/RkjWQ0L8lBSIljixadBtIRC6XiV87Jd/poNOldEg/n/vA=
+	t=1746644496; cv=none; b=oXfDf7Q4bQ7oKAttVK539KlJsMrdXzWtsjuL8aSkmLRarn3lAxscykCBExZfIjTzyLsI6ac150lRTPaad3Sq2bvvAEsN+nk4XaG5deO2uUAXFAWC9ZlIRvix3Uzl3Tz75zJE5TO4BYS338thaW+QqDCi8JoOd6kPdQRPHx0XNdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643816; c=relaxed/simple;
-	bh=pklMne+Uvlo8TLVLRkTsvsAXsgCA1OJT4SO4xcnvaNg=;
+	s=arc-20240116; t=1746644496; c=relaxed/simple;
+	bh=qApTuw0KaFOfFwOLfYdhFSLL855BdDb7yLbFcvMi3gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bz4S7uf2HChMK4KaTo0lCaI9AXjdQ62HMIxN8ryC+rVZHYSFaKSPg0Cr9Y/gBGSeAxiZCzr6aDci/jWYSOjcvK5m3VcdXTcUIQ/TKR/yVLX4anAzNoKXEDiW9ITJhdPUM61aKDyfh1BVB3NzIQl99dc+K2Mt/PpLp+5Jz+PB0Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyS9OgUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78C8C4CEE2;
-	Wed,  7 May 2025 18:50:15 +0000 (UTC)
+	 MIME-Version; b=ffyU7q5Nr+z+SqeJU+vSEGq1X5VQJK4gz5+h6yyVYHfy6YnD1HZLFszxnpSgQaOkNLE3sn0cmmYusgDlhN+e+RB/S5RPT3pQnczuAeno8NSsSZldcndKkqDm3xQBJ5bBitgaH+gZ7wQ8ACUpJbLVYKZeofdw+tdyl8jD1VjAzAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAQoIHkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721C4C4CEE2;
+	Wed,  7 May 2025 19:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643816;
-	bh=pklMne+Uvlo8TLVLRkTsvsAXsgCA1OJT4SO4xcnvaNg=;
+	s=korg; t=1746644493;
+	bh=qApTuw0KaFOfFwOLfYdhFSLL855BdDb7yLbFcvMi3gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyS9OgUqOslsYJIBB1om4McDnEjsjtTIrC1v7pbqHCbo/MW8470qF1+D65xvvfNmJ
-	 4RwIsvR+T0voe5fq91SfF+He4eyas/2NbHBZ2sS1B5GkiigPg14mhXOkFZo3VZ2yks
-	 I/YXWGnebwGb29TXO6EUvH34lN14nRKrvxEbvZuI=
+	b=LAQoIHkh1sosgXs8USEYa+ulD20T3WMFps1FZHycFREQz2GcUAm8hGaOyO9KtCwjO
+	 0X28Z1r7quS3N1g+yzUxngA7xSpy4oewViG0SvpQjeqWse4OTISiuxrymRcXPtZB07
+	 zv1sr+M3I/rEq8DmpJTcTDGDYCbULWmhTooKX0gE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dionna Amalie Glaze <dionnaglaze@google.com>,
 	Kevin Loughlin <kevinloughlin@google.com>,
 	linux-efi@vger.kernel.org
-Subject: [PATCH 6.14 027/183] x86/boot/sev: Support memory acceptance in the EFI stub under SVSM
-Date: Wed,  7 May 2025 20:37:52 +0200
-Message-ID: <20250507183825.784953448@linuxfoundation.org>
+Subject: [PATCH 6.12 031/164] x86/boot/sev: Support memory acceptance in the EFI stub under SVSM
+Date: Wed,  7 May 2025 20:38:36 +0200
+Message-ID: <20250507183822.137222559@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -126,7 +126,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		error("Cannot accept memory: unknown platform\n");
 --- a/arch/x86/boot/compressed/sev.c
 +++ b/arch/x86/boot/compressed/sev.c
-@@ -645,3 +645,43 @@ void sev_prep_identity_maps(unsigned lon
+@@ -644,3 +644,43 @@ void sev_prep_identity_maps(unsigned lon
  
  	sev_verify_cbit(top_level_pgt);
  }
