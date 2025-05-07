@@ -1,66 +1,66 @@
-Return-Path: <linux-efi+bounces-3621-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3622-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344E1AADBE7
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 11:53:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57467AADBFF
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 11:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A7913AE889
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 09:53:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CEFC4E04CE
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 09:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E38E2B9AA;
-	Wed,  7 May 2025 09:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0860211299;
+	Wed,  7 May 2025 09:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="P8lrYmlr"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GmmzQ1Ka"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FB814012;
-	Wed,  7 May 2025 09:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D24421171D;
+	Wed,  7 May 2025 09:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746611599; cv=none; b=bUXjcuPiuN42e0UqXuc94/ln1oZSJ8v8+gVTC3hqgly7ZG6/0QXXzzDfSfzRYZr4pj4aO0A04pIBKiqa0WFUqKak0Z2ict/th7fK4/XH3NeAWtw0RnTPwp0R8M92yqROERfLlExVI2aFLp9NhjuyjwdYo5fmAVdoeSmw5zHc3OQ=
+	t=1746611899; cv=none; b=JwYGytw/QpQRNhpBNTFe3vuGLdodtxCvsHgDfvfWaRty6QrfquxKBtcmSagO1jsEh0R0n/Ln1TiDLhNVL1GWpQwUQpehX25D69rRiuAEknDj4Q+gmbOcDl7vW6J3lV8pYeoShsQYsISwoY2Vl82g+BQI4+Nf7Fj3JM6GXKW4doA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746611599; c=relaxed/simple;
-	bh=VMA240LXAqTRDwypwBNfnbflCC0zonMAjdntMPWW6oE=;
+	s=arc-20240116; t=1746611899; c=relaxed/simple;
+	bh=vuEFNCY+tWWCETEmTOXpsR3v2z6yRVWaOyJU5sL0l2U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IqP9B+LgmixNgbb3xReqKWy5buCy4w4/x1XPTdFmvWJvZ0kC+O9XShd90IhcRwtqkzvyjWcqhq3aIias60MSigq2/XLTmz9y7YlkWWXaWtXf8G7WJ3KmWSAB1x9DCfyRBuTn9YbqQyyG0LkI8Kl4ayv3DQEX6gPJ/iO4bGQZc2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=P8lrYmlr; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=kZiw33wiqaFgxi4q8bw/yJ+jX1oJoYZb5vWt9aPULUNesnaKEbEUgwFw2GSO40HWH1dTqWCCjAsiOvcOf48Lv+pG+O7XG9AqnC48OEWxpYU+4nq6SwdMJ9KJcnFEX4PqR1uYqPRGgVLdomn0Mq/laBOhrEUtoD/bQ+rt8GlOgh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=GmmzQ1Ka; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3472D40E0239;
-	Wed,  7 May 2025 09:53:15 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 26D6940E01FA;
+	Wed,  7 May 2025 09:58:16 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id dk6229JfEtq3; Wed,  7 May 2025 09:53:12 +0000 (UTC)
+	with ESMTP id 1D33ZZGcJmh5; Wed,  7 May 2025 09:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1746611591; bh=Bhta1RNdemymUmw27Mlu0fCUuqi68ov8V02X4y4BXUo=;
+	t=1746611891; bh=GVf4RoAqYoi1vRwmugZ9f4u/hX2lI0oCWwhhT5Q/hPY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P8lrYmlrWwxwm8uorVjxBCyJZV4QAfY/teN+GFbNZNV5Inp8DEeLu0ZQB+pkPTQhB
-	 Ogtg19YVKcjPkFkzvRY5EDDIYAQXaSzoBWM1uC7UzBAVpMdyW29Cu7Ygs4rWQ9MepK
-	 bo2kLaHDA55p4IAdXUcCSC3QxW0AEW3ZME4fjUh8Ds34eqvTifWRrna4+vCdreXCCu
-	 nN6hIOJLQdGfn5OQfYPIk55XRuRndkuMUoj2jQtOhJIlPwJnyrCOv3h/ftjf2xTt3H
-	 qZeUSNnFlYhTgaKwNfPBvMo3SYCcyjcMncYGKuI2x0NfeytWEHg1e73DnObfyfMbgY
-	 v0V6/A5wqJ2P7V8xCTL3fA7RSrFTHLae9GsMGejFKB3n70YJodx7G9zITv55ybpkak
-	 m6Un5X2Y6wrOhaiz+qFD64eEwAsXJOk3/0CUAdVHfJXHjcedi1hJoo50bsEreQT3tg
-	 diEhi5wNOwK7hMgH9PNeXiu2p8YUhD3dHJRLQV3xT7rIY5OF7aCaAJBlviMlbBjJ+X
-	 v1WQwgp/42Q3xPvzUwgaxuVNNt02GqgOi/Neb+Wmg1H3jSguSBBM3KZRWMS7tuGjan
-	 irTqTeKa0IxtvRjaZL4CnEI//vXMKKT/Mu5EZn7OuF4FpNsj/S1lQQI0MmguqfWC2h
-	 aoMotoHeFyvMwNgWm8PSyI2c=
+	b=GmmzQ1Kactg7nmX/rGEWozSHQq9U74UACCllTaDCunPjIY2+WkGVqvi+hvsyN9uM7
+	 CL1cGHLDrGWyF4QrxxsfFhy8DHI1X19K/POwJHyTwJlOYP5VtU8HY8Q3uB2KTAuyjg
+	 /1kR3AlCBJisihVeWL+qPNaAY4nMoXbgH7jL3rTu5DbRMlubruP18bUIsmRiS6TPh/
+	 3a4AfuCbR9u4sApH2jNKiaWt9iz8noVpn3XVlH+2H/ootUeW1QTOIafW60YcK2rxHa
+	 1xtP0AeQ9wXKXkFZLLDR29WSLgaPO+euMJHZmW3yyZHoCknZYqZQjR2FV51LWTL9JC
+	 gJhtuj33zWi3jnV07QyBVoZl6GVKgob9+crqwFXQnqibJJ5cojgTP5x4DB46ZjQaKt
+	 ZXlbxI605cybPpwyaWLVyQB8urPXeCW47PNw7BXmzpoTTrddQnJH/aE3sNbY1Z7e2c
+	 VsdWtPuCj+wEdzbdYtybWuPlutuLzyqoUxD0uYStKRyd9sCPbFxxoBfMvsz2SbEhVC
+	 YhBa18YeSdtqkvtqHd66Afm+jel8HZcK+5HML3MzAuH+0ObSRPZp1WJdk+B/SrJwFr
+	 BIGYOIvobGVs+KFJM4on8TFPoYrgJCUhfUmVicBiV8n3gnTo2A+pbbITYTg8AegeEf
+	 rXOlb2snquQRP1DX5ieBLvpA=
 Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 74B7140E01ED;
-	Wed,  7 May 2025 09:53:02 +0000 (UTC)
-Date: Wed, 7 May 2025 11:52:55 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8386040E0222;
+	Wed,  7 May 2025 09:58:02 +0000 (UTC)
+Date: Wed, 7 May 2025 11:58:01 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Ard Biesheuvel <ardb+git@google.com>
 Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
@@ -68,9 +68,11 @@ Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
 	Dionna Amalie Glaze <dionnaglaze@google.com>,
 	Kevin Loughlin <kevinloughlin@google.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [RFT PATCH v2 00/23] x86: strict separation of startup code
-Message-ID: <20250507095255.GMaBstd1-nsMixe3Kn@fat_crate.local>
+Subject: Re: [RFT PATCH v2 05/23] x86/sev: Move instruction decoder into
+ separate source file
+Message-ID: <20250507095801.GNaBsuqd7m15z0kHji@fat_crate.local>
 References: <20250504095230.2932860-25-ardb+git@google.com>
+ <20250504095230.2932860-30-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -79,47 +81,23 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250504095230.2932860-25-ardb+git@google.com>
+In-Reply-To: <20250504095230.2932860-30-ardb+git@google.com>
 
-On Sun, May 04, 2025 at 11:52:30AM +0200, Ard Biesheuvel wrote:
->  arch/x86/boot/compressed/Makefile              |    6 +-
->  arch/x86/boot/compressed/misc.h                |   12 +-
->  arch/x86/boot/compressed/pgtable_64.c          |   12 -
->  arch/x86/boot/compressed/sev-handle-vc.c       |  134 +++
->  arch/x86/boot/compressed/sev.c                 |  210 +---
->  arch/x86/boot/compressed/sev.h                 |   21 +-
->  arch/x86/boot/compressed/vmlinux.lds.S         |    1 +
->  arch/x86/boot/startup/Makefile                 |   21 +
->  arch/x86/boot/startup/exports.h                |   14 +
->  arch/x86/boot/startup/gdt_idt.c                |   17 +-
->  arch/x86/boot/startup/map_kernel.c             |   18 +-
->  arch/x86/boot/startup/sev-shared.c             |  804 +-------------
->  arch/x86/boot/startup/sev-startup.c            | 1169 +-------------------
->  arch/x86/boot/startup/sme.c                    |   45 +-
->  arch/x86/coco/core.c                           |    2 +
->  arch/x86/coco/sev/Makefile                     |    6 +-
->  arch/x86/coco/sev/core.c                       |  189 +++-
->  arch/x86/coco/sev/{sev-nmi.c => sev-noinstr.c} |   74 ++
+On Sun, May 04, 2025 at 11:52:35AM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> As a first step towards disentangling the SEV #VC handling code -which
+> is shared between the decompressor and the core kernel- from the SEV
+> startup code, move the decompressor's copy of the instruction decoder
+> into a separate source file.
 
-Can we drop the "sev-" prefix to filenames which are already in sev/
-filepaths?
+Why?
 
->  arch/x86/coco/sev/vc-handle.c                  | 1060 ++++++++++++++++++
->  arch/x86/coco/sev/vc-shared.c                  |  614 ++++++++++
->  arch/x86/include/asm/init.h                    |    6 -
->  arch/x86/include/asm/linkage.h                 |   10 +
->  arch/x86/include/asm/pgtable_64_types.h        |   43 +-
->  arch/x86/include/asm/setup.h                   |    2 +
->  arch/x86/include/asm/sev-internal.h            |   30 +-
->  arch/x86/include/asm/sev.h                     |   78 ++
+I'm still unclear why that happens.
 
-Pfff, sev-internal and sev.
-
-I guess I'll know how the new structure would look like once I go through this
-but there are so many sev* files now.
-
-Can we tone that down pls, through aggregation, moving up into headers and so
-on?
+I'd like to read some blurb in those commit messages which explains the big
+picture: the insn decoder bits are going to be in the bla mapping because...
+, and because... and this is wonderful because ...
 
 Thx.
 
