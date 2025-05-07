@@ -1,298 +1,116 @@
-Return-Path: <linux-efi+bounces-3623-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3624-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71944AADD1F
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 13:18:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA69EAADDB4
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 13:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C7B91BA10DC
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 11:19:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEAA53A542E
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 11:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66CB21A436;
-	Wed,  7 May 2025 11:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89509242913;
+	Wed,  7 May 2025 11:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="EohNEwa2";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="KrazE4Qj";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="27D23kXM";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9e80TSQm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSO14H+I"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35F721772A
-	for <linux-efi@vger.kernel.org>; Wed,  7 May 2025 11:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61481233145;
+	Wed,  7 May 2025 11:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746616722; cv=none; b=KVD9uyreGaqs/FpTOrbr2YjxEL3rLwQue3MgK/q8I6uH1/gJ2rwSl3pbTg4J5mN8Nt+Demxz1hk4qBBpNYaEFk7WnwpIccLv1u2LmpTAX3H1sL1rXv21cqh6mt4SsCe9SpDeeyTPopCAyKPouRYEsTwRFOFoDFuk57jWqVw/M9M=
+	t=1746618572; cv=none; b=uVP272xiNuqPtfLbj6LV8I+LRS8zHEWCRANl7sQTPP1T00VjqAZrx5dx+cXXHC80i1U7BWZnPNNLQsV/gvh/NuNaLPX4OnkYzkftxUBHuA6e4mtZA04YdgkYQbb0brGF3PyP1goiu7KPtr+GL9Gcn3HWEEAEui/deIBeE+iT/qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746616722; c=relaxed/simple;
-	bh=++IIt5AXAnXvfPvElINfcP5GZ/KLYdtQPJbOnyI3Qhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y0OJ3OBOmLd7dBqDBk0mI0krsyX9CsdhgPUj6GQ8utzXWlnd9iJjEz+3BN9vPtDTJPUqGgBlbliXKQKcanVITSKTPp7y8xMneu7KR/kMNL+WaskJmdu34rPB1mDCki62EW1a5t6Wg6c4rvbTyGV9a8q2Q4ceZyGWYGJH/tQJjTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=EohNEwa2; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=KrazE4Qj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=27D23kXM; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9e80TSQm; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E4AF91F394;
-	Wed,  7 May 2025 11:18:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746616719; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ykR9RpzV7dXMsLmTY/LMhxYmcP2gKBaAJzGs2X1h3vU=;
-	b=EohNEwa2UOJzK7B2CPzCxfXNPvEADHG1MDU25cPfHL6JPC/yx/w1BV8lahlgnTaHOpBgho
-	Ryqx2Upe+meSO4+wBOey+upJfTMvDIHqKMmcdEejbdK7a6rF/JNMBJEWTeNqz05QZobcJ3
-	LgV0kzadUmXqkrNGz1y4QYVY9s+YZLQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746616719;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ykR9RpzV7dXMsLmTY/LMhxYmcP2gKBaAJzGs2X1h3vU=;
-	b=KrazE4QjQ6BXgqdV21ehkMI+yB45D7QB8uxx7ld4I9qGi4IRx8STHTor3ZEwPUOEhYs0v5
-	UdOO0U+fvUSehzDg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746616718; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ykR9RpzV7dXMsLmTY/LMhxYmcP2gKBaAJzGs2X1h3vU=;
-	b=27D23kXMJv4CUQnS/Y8MKo0iFrebmw3PU3Jk1FgJmCy7lW8uHjA5T9V4EFl4eB40ODU1Z0
-	NqAUrBiE1lZPw71UUprglynSyandszXnF2a17IXsZtA/Cz6f9mV46rKNw9fUikSLi2lpLp
-	HN1zkI5S9AfCrplCSasm+Ik0gP6kJu8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746616718;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ykR9RpzV7dXMsLmTY/LMhxYmcP2gKBaAJzGs2X1h3vU=;
-	b=9e80TSQmTpNqDI1tx8DkoO3M8ymwY0CAQyP9E2ADTKaRUrWGpSx1chxSg9Z7DjhfpCf5DR
-	BC5Sdbd39fH3DwAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D2BAA13882;
-	Wed,  7 May 2025 11:18:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4fVuM45BG2jMHAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 07 May 2025 11:18:38 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 9314DA09BE; Wed,  7 May 2025 13:18:34 +0200 (CEST)
-Date: Wed, 7 May 2025 13:18:34 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, mcgrof@kernel.org, hch@infradead.org, david@fromorbit.com, 
-	rafael@kernel.org, djwong@kernel.org, pavel@kernel.org, peterz@infradead.org, 
-	mingo@redhat.com, will@kernel.org, boqun.feng@gmail.com
-Subject: Re: [PATCH] fs: allow nesting with FREEZE_EXCL
-Message-ID: <m2bvkh2v56akvvomku4w6n4lbw3zkc2awlutijndb7cc3tuirz@o64zcabrekch>
-References: <ilwyxf34ixfkhbylev6d76tz5ufzg2sdxxhy6i3tr4ko5dbefr@57yuviqrftzr>
- <20250404-work-freeze-v1-1-31f9a26f7bc9@kernel.org>
+	s=arc-20240116; t=1746618572; c=relaxed/simple;
+	bh=Q4o0fFmfThH09sb0d8R9/UT4Ki/dcycKtlq2v1Yg8cs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sF0DPkvNgSMLkdONW/rSmW8BESHSFOOv4bZSZm89Cd32kyT/6T3zVhmu6JANp/LBo17JAMJpFAA9EV8Ua0F2IdtRRjQe+7Z1fIn7lWigAzAtInilEsmNBTeGi1SQIJDy6Jbfl9apg9JwA+IxMmx1Apow22QlcF3c+tQ0mbKSYu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSO14H+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4A7C4CEE7;
+	Wed,  7 May 2025 11:49:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746618571;
+	bh=Q4o0fFmfThH09sb0d8R9/UT4Ki/dcycKtlq2v1Yg8cs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DSO14H+IpsNgJc1JF6TVkBOno/ZTvSaGvXOtI8F7caSC1Su6hQJIESypVzBcmOpZT
+	 1h3wbKEF/FtbWkPY/pBUD/suEXaAQmE72Se+Y+OGqvSN9vJy/qUEuwA8oas+ha9u5K
+	 cnTXFlZ9pfKlBGccaSf8Narri4djKLI2y7sZcuwzmyTVdTmU3sAF1vniOrWoW2Kt3r
+	 b1GcaY9aTB3CKFnGxpb9FbW/dLJZnPcmJL8YlcgBImuUKro1fWXST8nQ+/4sJ3PJZ2
+	 7kBRzXWAUuGagevFJVQVQPTCTvKFrlmxoLdk4pmI3pNxcY9E5CaGXHXnqujqpWkhNJ
+	 Nkqko6CufPaKA==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-30bf5d7d107so54994301fa.2;
+        Wed, 07 May 2025 04:49:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWkjwUsYwf+lFVi5kvz+pOqg/atqRzUve/Mv+pP7FnG4KTRmd13508MV15PVtQt8SB41asDR6vWXtwRaxEm@vger.kernel.org, AJvYcCWzP3l+IC6J9PzgZO/FiT/G9WKzzMfBy+bjlNr3XYb32rVGTbJmZd9YUERLgMkeK6EEj7O3RVpSIu0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLQ9ET5+as/63W20ggXXs4JRYa+koNkm5iX0Hp1mpRwxWz8Vnm
+	dxLbTnltru8ubDHCuI9rhKrw1MBLZ15lrapEDVGcIVX5YFlgvEeYUvq61GxeuOXvIn/Q8PFvR6e
+	kc5WxWhsIV84pYwG5NET6hZsutt0=
+X-Google-Smtp-Source: AGHT+IGyuczRVoIfKOuvSe4gWmNKzJpVRRL6/4X0pW0V0I6ErEGy9VFfhIR3MsuIm3dmJf3Yo1p5j6Gkk/7fcY8NYxg=
+X-Received: by 2002:a2e:b891:0:b0:30c:f60:6c6 with SMTP id 38308e7fff4ca-326ad15318fmr10546881fa.6.1746618570255;
+ Wed, 07 May 2025 04:49:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250404-work-freeze-v1-1-31f9a26f7bc9@kernel.org>
-X-Spam-Flag: NO
-X-Spam-Score: -1.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,kernel.org,hansenpartnership.com,infradead.org,fromorbit.com,redhat.com,gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+References: <20250504095230.2932860-25-ardb+git@google.com>
+ <20250504095230.2932860-30-ardb+git@google.com> <20250507095801.GNaBsuqd7m15z0kHji@fat_crate.local>
+In-Reply-To: <20250507095801.GNaBsuqd7m15z0kHji@fat_crate.local>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 7 May 2025 13:49:19 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEpO3bip+Zyi9x4WN_=qy+oBQ+PpJRw-Je=roQcRt3KsA@mail.gmail.com>
+X-Gm-Features: ATxdqUH9fH7i7x1fH01oa-ejsPddPFo25J-cW4bGdzm04ZYbdzUayU21u3lgbvA
+Message-ID: <CAMj1kXEpO3bip+Zyi9x4WN_=qy+oBQ+PpJRw-Je=roQcRt3KsA@mail.gmail.com>
+Subject: Re: [RFT PATCH v2 05/23] x86/sev: Move instruction decoder into
+ separate source file
+To: Borislav Petkov <bp@alien8.de>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@kernel.org>, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri 04-04-25 12:24:09, Christian Brauner wrote:
-> If hibernation races with filesystem freezing (e.g. DM reconfiguration),
-> then hibernation need not freeze a filesystem because it's already
-> frozen but userspace may thaw the filesystem before hibernation actually
-> happens.
-> 
-> If the race happens the other way around, DM reconfiguration may
-> unexpectedly fail with EBUSY.
-> 
-> So allow FREEZE_EXCL to nest with other holders. An exclusive freezer
-> cannot be undone by any of the other concurrent freezers.
-> 
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
+On Wed, 7 May 2025 at 11:58, Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Sun, May 04, 2025 at 11:52:35AM +0200, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> >
+> > As a first step towards disentangling the SEV #VC handling code -which
+> > is shared between the decompressor and the core kernel- from the SEV
+> > startup code, move the decompressor's copy of the instruction decoder
+> > into a separate source file.
+>
+> Why?
+>
+> I'm still unclear why that happens.
+>
+> I'd like to read some blurb in those commit messages which explains the big
+> picture: the insn decoder bits are going to be in the bla mapping because...
+> , and because... and this is wonderful because ...
+>
 
-This has fallen through the cracks in my inbox but the patch now looks good
-to me. Maybe we should fold it into "fs: add owner of freeze/thaw" to not
-have strange intermediate state in the series?
+Sure, I can add some more prose. I'll add something along the lines of
 
-								Honza
+"Some of the SEV code that is shared between the decompressor and the
+kernel proper runs very early in the latter, and therefore needs to be
+built in a special way. This does not apply to all of that shared
+code, though - some is used both by the decompressor, and by the
+kernel proper but at a much later stage. That code can be built as
+ordinary, position dependent code with instrumentations enabled etc
+etc.
 
-> ---
->  fs/super.c         | 71 ++++++++++++++++++++++++++++++++++++++++++------------
->  include/linux/fs.h |  2 +-
->  2 files changed, 56 insertions(+), 17 deletions(-)
-> 
-> diff --git a/fs/super.c b/fs/super.c
-> index b4bdbc509dba..e2fee655fbed 100644
-> --- a/fs/super.c
-> +++ b/fs/super.c
-> @@ -1979,26 +1979,34 @@ static inline int freeze_dec(struct super_block *sb, enum freeze_holder who)
->  	return sb->s_writers.freeze_kcount + sb->s_writers.freeze_ucount;
->  }
->  
-> -static inline bool may_freeze(struct super_block *sb, enum freeze_holder who)
-> +static inline bool may_freeze(struct super_block *sb, enum freeze_holder who,
-> +			      const void *freeze_owner)
->  {
-> +	lockdep_assert_held(&sb->s_umount);
-> +
->  	WARN_ON_ONCE((who & ~FREEZE_FLAGS));
->  	WARN_ON_ONCE(hweight32(who & FREEZE_HOLDERS) > 1);
->  
->  	if (who & FREEZE_EXCL) {
->  		if (WARN_ON_ONCE(!(who & FREEZE_HOLDER_KERNEL)))
->  			return false;
-> -
-> -		if (who & ~(FREEZE_EXCL | FREEZE_HOLDER_KERNEL))
-> +		if (WARN_ON_ONCE(who & ~(FREEZE_EXCL | FREEZE_HOLDER_KERNEL)))
->  			return false;
-> -
-> -		return (sb->s_writers.freeze_kcount +
-> -			sb->s_writers.freeze_ucount) == 0;
-> +		if (WARN_ON_ONCE(!freeze_owner))
-> +			return false;
-> +		/* This freeze already has a specific owner. */
-> +		if (sb->s_writers.freeze_owner)
-> +			return false;
-> +		/*
-> +		 * This is already frozen multiple times so we're just
-> +		 * going to take a reference count and mark it as
-> +		 * belonging to use.
-> +		 */
-> +		if (sb->s_writers.freeze_kcount + sb->s_writers.freeze_ucount)
-> +			sb->s_writers.freeze_owner = freeze_owner;
-> +		return true;
->  	}
->  
-> -	/* This filesystem is already exclusively frozen. */
-> -	if (sb->s_writers.freeze_owner)
-> -		return false;
-> -
->  	if (who & FREEZE_HOLDER_KERNEL)
->  		return (who & FREEZE_MAY_NEST) ||
->  		       sb->s_writers.freeze_kcount == 0;
-> @@ -2011,20 +2019,51 @@ static inline bool may_freeze(struct super_block *sb, enum freeze_holder who)
->  static inline bool may_unfreeze(struct super_block *sb, enum freeze_holder who,
->  				const void *freeze_owner)
->  {
-> +	lockdep_assert_held(&sb->s_umount);
-> +
->  	WARN_ON_ONCE((who & ~FREEZE_FLAGS));
->  	WARN_ON_ONCE(hweight32(who & FREEZE_HOLDERS) > 1);
->  
->  	if (who & FREEZE_EXCL) {
-> -		if (WARN_ON_ONCE(sb->s_writers.freeze_owner == NULL))
-> -			return false;
->  		if (WARN_ON_ONCE(!(who & FREEZE_HOLDER_KERNEL)))
->  			return false;
-> -		if (who & ~(FREEZE_EXCL | FREEZE_HOLDER_KERNEL))
-> +		if (WARN_ON_ONCE(who & ~(FREEZE_EXCL | FREEZE_HOLDER_KERNEL)))
-> +			return false;
-> +		if (WARN_ON_ONCE(!freeze_owner))
-> +			return false;
-> +		if (WARN_ON_ONCE(sb->s_writers.freeze_kcount == 0))
->  			return false;
-> -		return sb->s_writers.freeze_owner == freeze_owner;
-> +		/* This isn't exclusively frozen. */
-> +		if (!sb->s_writers.freeze_owner)
-> +			return false;
-> +		/* This isn't exclusively frozen by us. */
-> +		if (sb->s_writers.freeze_owner != freeze_owner)
-> +			return false;
-> +		/*
-> +		 * This is still frozen multiple times so we're just
-> +		 * going to drop our reference count and undo our
-> +		 * exclusive freeze.
-> +		 */
-> +		if ((sb->s_writers.freeze_kcount + sb->s_writers.freeze_ucount) > 1)
-> +			sb->s_writers.freeze_owner = NULL;
-> +		return true;
-> +	}
-> +
-> +	if (who & FREEZE_HOLDER_KERNEL) {
-> +		/*
-> +		 * Someone's trying to steal the reference belonging to
-> +		 * @sb->s_writers.freeze_owner.
-> +		 */
-> +		if (sb->s_writers.freeze_kcount == 1 &&
-> +		    sb->s_writers.freeze_owner)
-> +			return false;
-> +		return sb->s_writers.freeze_kcount > 0;
->  	}
->  
-> -	return sb->s_writers.freeze_owner == NULL;
-> +	if (who & FREEZE_HOLDER_USERSPACE)
-> +		return sb->s_writers.freeze_ucount > 0;
-> +
-> +	return false;
->  }
->  
->  /**
-> @@ -2095,7 +2134,7 @@ int freeze_super(struct super_block *sb, enum freeze_holder who, const void *fre
->  
->  retry:
->  	if (sb->s_writers.frozen == SB_FREEZE_COMPLETE) {
-> -		if (may_freeze(sb, who))
-> +		if (may_freeze(sb, who, freeze_owner))
->  			ret = !!WARN_ON_ONCE(freeze_inc(sb, who) == 1);
->  		else
->  			ret = -EBUSY;
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 1edcba3cd68e..7a3f821d2723 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -2270,7 +2270,7 @@ extern loff_t vfs_dedupe_file_range_one(struct file *src_file, loff_t src_pos,
->   * @FREEZE_HOLDER_KERNEL: kernel wants to freeze or thaw filesystem
->   * @FREEZE_HOLDER_USERSPACE: userspace wants to freeze or thaw filesystem
->   * @FREEZE_MAY_NEST: whether nesting freeze and thaw requests is allowed
-> - * @FREEZE_EXCL: whether actual freezing must be done by the caller
-> + * @FREEZE_EXCL: a freeze that can only be undone by the owner
->   *
->   * Indicate who the owner of the freeze or thaw request is and whether
->   * the freeze needs to be exclusive or can nest.
-> 
-> ---
-> base-commit: a83fe97e0d53f7d2b0fc62fd9a322a963cb30306
-> change-id: 20250404-work-freeze-5eacb515f044
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+The #VC handling machinery and the associated instruction decoder are
+conceptually separate from the SEV initialization code, and are never
+used on the early startup path in the core kernel. So start separating
+it from the SEV startup code, by moving the decompressor's copy of the
+instruction decoder to a separate source file. In a subsequent patch,
+the shared #VC handling code will be moved into a separate shared
+source file, which will be included here too and no longer into sev.c.
+That way, it no longer gets included into the early SEV startup code,
+and can be built in the ordinary way."
+
+Does that help?
 
