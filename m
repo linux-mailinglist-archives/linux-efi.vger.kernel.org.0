@@ -1,137 +1,164 @@
-Return-Path: <linux-efi+bounces-3625-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3629-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B81AAADE7A
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 14:09:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85961AAE8A3
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 20:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B76644E1014
-	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 12:09:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87C573B3B23
+	for <lists+linux-efi@lfdr.de>; Wed,  7 May 2025 18:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C320526A08E;
-	Wed,  7 May 2025 12:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5352B28E577;
+	Wed,  7 May 2025 18:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LcisaLPH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BC9uw5GO"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D11725DCFE;
-	Wed,  7 May 2025 12:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D923028A73E;
+	Wed,  7 May 2025 18:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746619550; cv=none; b=fhH/HaNjb8rXO9VAGMNrUu36wgu394H96LDNmK0M26dswiNox+Pmuf2f8Qq/UXYgc5f5dnlLIJNjwEcnBsuITqn389zhSej9XxNJVUzhQaDu7UD6Gz9ediZgd7kit83SWPXnbBYN3YlYR0IQjo1+CwjlCOjcFUUeFhERuSonlbU=
+	t=1746641779; cv=none; b=car8t7m+XZBAXV5cxY88HuLlRl7sYwzL6rqyh2/Hx7HklMqeVDfiSO0hipKzaChYoeVEEkcWVHQx1qE1yjl9hoLFz0siu42QhLqtei29U3I/GWImzVc428GwMv8NkLAZZB1v0xqI5g0YBSqx/K5/2Ndw9VpMhI2Z4WjU304dK4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746619550; c=relaxed/simple;
-	bh=usuz4EDiyG7MhMNFI7ICmDMZJlt1l2XENHcwErgJEuY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cg0Qm2vbLvofwWrsmKumERAKYouWbroO6bn2AgqPYwjoO1GQf+Aiu+Dmlmq8jQotWwI+OTt2bX+LCR03ZMvoktPl+Y0pMcxNidL9ZrzgliL2e2sKg3dbImbgmGr3giKy/sXqua7jh3wdtU8S3PY65aBL61czzqOjYXIft9Nc1jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LcisaLPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1956FC4CEE7;
-	Wed,  7 May 2025 12:05:50 +0000 (UTC)
+	s=arc-20240116; t=1746641779; c=relaxed/simple;
+	bh=QgH8ehGN6f9HfgN0XYJ8BWQbTspcTZep+O49/EkwCxs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CSgsgjXD/gCppBsiaSccjNo8gbjykVLWqJSj3UAmn+8MmTYHYHgQWKEHkvUp2EDF5ky96QaeOBKP4TJwtxRwhUzmXhd+bvcBi6hUrQJ9X0JrfBVjTdoR9qrgJGUEwVbAw4pY+TQeV2SLjeycv7mQu9iFpK/Z3KVbXOYrOrejFvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BC9uw5GO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E0CC4CEE2;
+	Wed,  7 May 2025 18:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746619550;
-	bh=usuz4EDiyG7MhMNFI7ICmDMZJlt1l2XENHcwErgJEuY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=LcisaLPH4Im7jUArmUG3ZoAwwzo0MQXHvIGP7fO+dd50W5G/PUFksjyBzpKmUeZIp
-	 JQmF9gEkD7MmOAxhg9GytNn9TL3kiWkl4Rq7pFvYn/51+IOY/T+GSVr8/4Z8VXB/Eh
-	 qwpo9e/tlqUCohkRZt5qqxVcLuP8DOL+RFfiuwvsHGe6FwN8XGkB0Ki27MsMgVMzms
-	 7hgdkqbm3k1lqBBhCEkDlWdMPj/UTv50syjhaAB2X7yVcAxaw3zHI//xM2jfrin94Z
-	 x9nfKzejsaHvKl5jkCb3A8p1khfPmtY3xbaLdqgmrEiIBZ7PphxoDeMYYUHFlzrYMZ
-	 mqCY/xeSA6uyw==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30de488cf81so69936871fa.1;
-        Wed, 07 May 2025 05:05:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCURAmeUEioo9Mn3WbIhbhChupcVlSt84jEItBfQb7zCntE6G9PDWlHvgQK5CK35ygTPAHjj7CbZeTR0od8R@vger.kernel.org, AJvYcCVoUOFEdvDhkq+CrO7nM4oJa3Eb1qEePMNo8jK5K6ApH3Jo/+XwLCpcVx7dnswoOcZbVhUXFYZChuI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypKWnud2vceA3j7gLY5NX5QgBTwOa00xdtrH3o11KGmW0ou0HM
-	3PQZUyzGh3DjGRVH9b0uAsqjGcILfEmipxEMfdFGkAYFpxZXGsztQrVkK9OZBbXVn6WKenS01zN
-	KtYUbC4eYcMs5mSu74SnwyZArdgY=
-X-Google-Smtp-Source: AGHT+IFT1qaInBN+T1KP7RThez/pR56nL3ca6QQyi31dhQBjUwD5FKYIbDOU0DKQ5Td+NmfDHIas0V3DKO0+3/oDgHE=
-X-Received: by 2002:a2e:a585:0:b0:30d:e104:d64b with SMTP id
- 38308e7fff4ca-326ad33bdffmr10329931fa.39.1746619548488; Wed, 07 May 2025
- 05:05:48 -0700 (PDT)
+	s=k20201202; t=1746641778;
+	bh=QgH8ehGN6f9HfgN0XYJ8BWQbTspcTZep+O49/EkwCxs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BC9uw5GOIJnXPxMtqpDWHCEfkXPbmNn7t0cWCLNpKPKsnoNLHlqk8aNbz4Zy/aXN7
+	 bm+yhIFILcF1DCIXTScc5wN4Bk9G1/powraLUOdozefqT0Aausk0IPrpMPkpcQLr96
+	 37BspEHKByXTwR7NeetcRg6l9tkyN9gP27E9WclP7nohaoVdigqhZDgXq0zeIH2BDz
+	 uIdzHXnQN7UUpektS5ORSN90IrYCE5Da63eBTQPSEThKcQzGbd2uRwxOK4p2++NjeH
+	 ws8d5259AqgMR4a6JEPiJ0K0pt3gYlX1gilwkZXWc9DOv5QbQakn5fwSa2+p+DuKDt
+	 NFZx5jNCzUKYA==
+From: Kees Cook <kees@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH 0/8] stackleak: Support Clang stack depth tracking
+Date: Wed,  7 May 2025 11:16:06 -0700
+Message-Id: <20250507180852.work.231-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250504095230.2932860-25-ardb+git@google.com> <20250507095255.GMaBstd1-nsMixe3Kn@fat_crate.local>
-In-Reply-To: <20250507095255.GMaBstd1-nsMixe3Kn@fat_crate.local>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 7 May 2025 14:05:37 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGJk1JsehK3jtbR7yOKFV4UvySYbq10x8td1gM9ryHeBw@mail.gmail.com>
-X-Gm-Features: ATxdqUF-lXLC4RRpyuo_Q2IGeDqX3qyiStlTF4uqiY_d8Y7asq_2_RzRWKMrY6U
-Message-ID: <CAMj1kXGJk1JsehK3jtbR7yOKFV4UvySYbq10x8td1gM9ryHeBw@mail.gmail.com>
-Subject: Re: [RFT PATCH v2 00/23] x86: strict separation of startup code
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@kernel.org>, 
-	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3469; i=kees@kernel.org; h=from:subject:message-id; bh=QgH8ehGN6f9HfgN0XYJ8BWQbTspcTZep+O49/EkwCxs=; b=owGbwMvMwCVmps19z/KJym7G02pJDBnSi7OXB/nf2/RYVPv/qsRZa9yqy1d3KRS0fd0+3e/0Z mOmo6+/dpSyMIhxMciKKbIE2bnHuXi8bQ93n6sIM4eVCWQIAxenAExkaTfD/4gpl7Tzdxoot/B1 XkiZEXAzf8mNdas/f/b9e06jz0Os9y/DP5NK7e6JV6Unzc9+dL7NyOhP2UaDL/szeOxaV8Zseb3 iAisA
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 
-On Wed, 7 May 2025 at 11:53, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Sun, May 04, 2025 at 11:52:30AM +0200, Ard Biesheuvel wrote:
-> >  arch/x86/boot/compressed/Makefile              |    6 +-
-> >  arch/x86/boot/compressed/misc.h                |   12 +-
-> >  arch/x86/boot/compressed/pgtable_64.c          |   12 -
-> >  arch/x86/boot/compressed/sev-handle-vc.c       |  134 +++
-> >  arch/x86/boot/compressed/sev.c                 |  210 +---
-> >  arch/x86/boot/compressed/sev.h                 |   21 +-
-> >  arch/x86/boot/compressed/vmlinux.lds.S         |    1 +
-> >  arch/x86/boot/startup/Makefile                 |   21 +
-> >  arch/x86/boot/startup/exports.h                |   14 +
-> >  arch/x86/boot/startup/gdt_idt.c                |   17 +-
-> >  arch/x86/boot/startup/map_kernel.c             |   18 +-
-> >  arch/x86/boot/startup/sev-shared.c             |  804 +-------------
-> >  arch/x86/boot/startup/sev-startup.c            | 1169 +-------------------
-> >  arch/x86/boot/startup/sme.c                    |   45 +-
-> >  arch/x86/coco/core.c                           |    2 +
-> >  arch/x86/coco/sev/Makefile                     |    6 +-
-> >  arch/x86/coco/sev/core.c                       |  189 +++-
-> >  arch/x86/coco/sev/{sev-nmi.c => sev-noinstr.c} |   74 ++
->
-> Can we drop the "sev-" prefix to filenames which are already in sev/
-> filepaths?
->
+Hi,
 
-Sure.
+As part of looking at what GCC plugins could be replaced with Clang
+implementations, this series uses the recently landed stack depth tracking
+callback in Clang[1] to implement the stackleak feature. Since the Clang
+feature is now landed, I'm moving this out of RFC to a v1.
 
-> >  arch/x86/coco/sev/vc-handle.c                  | 1060 ++++++++++++++++++
-> >  arch/x86/coco/sev/vc-shared.c                  |  614 ++++++++++
-> >  arch/x86/include/asm/init.h                    |    6 -
-> >  arch/x86/include/asm/linkage.h                 |   10 +
-> >  arch/x86/include/asm/pgtable_64_types.h        |   43 +-
-> >  arch/x86/include/asm/setup.h                   |    2 +
-> >  arch/x86/include/asm/sev-internal.h            |   30 +-
-> >  arch/x86/include/asm/sev.h                     |   78 ++
->
-> Pfff, sev-internal and sev.
->
-> I guess I'll know how the new structure would look like once I go through this
-> but there are so many sev* files now.
->
-> Can we tone that down pls, through aggregation, moving up into headers and so
-> on?
->
+Since this touches a lot of arch-specific Makefiles, I tried to trim
+the CC list down to just mailing lists in those cases, otherwise the CC
+was giant.
 
-I think the main issue with this code is that everything was in a
-single source file, with no structure or layering whatsoever.
+Thanks!
 
-So I'd actually argue for splitting this up even more rather than
-bundling it all together, although the sev vs sev-internal distinction
-is a bit dubious - it would be better to split this across functional
-lines.
+-Kees
 
-I added sev-internal.h so that that single mother-of-all-source-files
-could be hacked up without exposing implementation details to external
-users that were hidden before. I.e., the high-level APIs that other
-callers need to use should be in sev.h, and the implementation of that
-API should be carved up meaningfully. For example, perhaps the #VC
-handling stuff (which now lives in a separate source file) could be
-exposed via sev-vc.h, and only included in places where that
-particular functionality is being used.
+[1] https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-stack-depth
+
+ v1:
+  - Finalize Clang URLs for landed feature
+  - Perform CFLAGS enabling more sanely, as done for randstruct
+  - Split __no_sanitize_coverage into separate patch
+  - Update hardening.config and MAINTAINERS
+  - Fix bug found with nvme tree
+ RFC: https://lore.kernel.org/lkml/20250502185834.work.560-kees@kernel.org/
+
+Kees Cook (8):
+  nvme-pci: Make nvme_pci_npages_prp() __always_inline
+  init.h: Disable sanitizer coverage for __init and __head
+  stackleak: Rename CONFIG_GCC_PLUGIN_STACKLEAK to CONFIG_STACKLEAK
+  stackleak: Rename stackleak_track_stack to __sanitizer_cov_stack_depth
+  stackleak: Split STACKLEAK_CFLAGS from GCC_PLUGINS_CFLAGS
+  stackleak: Support Clang stack depth tracking
+  configs/hardening: Enable CONFIG_STACKLEAK
+  configs/hardening: Enable CONFIG_INIT_ON_FREE_DEFAULT_ON
+
+ security/Kconfig.hardening                  | 25 ++++++----
+ Makefile                                    |  1 +
+ arch/arm/boot/compressed/Makefile           |  2 +-
+ arch/arm/vdso/Makefile                      |  2 +-
+ arch/arm64/kernel/pi/Makefile               |  2 +-
+ arch/arm64/kernel/vdso/Makefile             |  3 +-
+ arch/arm64/kvm/hyp/nvhe/Makefile            |  2 +-
+ arch/riscv/kernel/pi/Makefile               |  2 +-
+ arch/riscv/purgatory/Makefile               |  2 +-
+ arch/sparc/vdso/Makefile                    |  3 +-
+ arch/x86/entry/vdso/Makefile                |  3 +-
+ arch/x86/purgatory/Makefile                 |  2 +-
+ drivers/firmware/efi/libstub/Makefile       |  6 +--
+ kernel/Makefile                             |  4 +-
+ lib/Makefile                                |  2 +-
+ scripts/Makefile.gcc-plugins                | 16 +------
+ scripts/Makefile.stackleak                  | 21 +++++++++
+ scripts/gcc-plugins/stackleak_plugin.c      | 52 ++++++++++-----------
+ Documentation/admin-guide/sysctl/kernel.rst |  2 +-
+ Documentation/security/self-protection.rst  |  2 +-
+ arch/x86/entry/calling.h                    |  4 +-
+ arch/x86/include/asm/init.h                 |  2 +-
+ include/linux/init.h                        |  4 +-
+ include/linux/sched.h                       |  4 +-
+ include/linux/stackleak.h                   |  6 +--
+ arch/arm/kernel/entry-common.S              |  2 +-
+ arch/arm64/kernel/entry.S                   |  2 +-
+ arch/riscv/kernel/entry.S                   |  2 +-
+ arch/s390/kernel/entry.S                    |  2 +-
+ drivers/misc/lkdtm/stackleak.c              |  8 ++--
+ drivers/nvme/host/pci.c                     |  2 +-
+ kernel/stackleak.c                          |  4 +-
+ tools/objtool/check.c                       |  2 +-
+ tools/testing/selftests/lkdtm/config        |  2 +-
+ MAINTAINERS                                 |  6 ++-
+ kernel/configs/hardening.config             |  6 +++
+ 36 files changed, 122 insertions(+), 90 deletions(-)
+ create mode 100644 scripts/Makefile.stackleak
+
+-- 
+2.34.1
+
 
