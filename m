@@ -1,109 +1,87 @@
-Return-Path: <linux-efi+bounces-3650-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3651-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5ECDAB0EE3
-	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 11:25:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0573BAB10E4
+	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 12:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED91C1888E4D
-	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 09:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AD20A06977
+	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 10:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5191021CA16;
-	Fri,  9 May 2025 09:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2593C28E59D;
+	Fri,  9 May 2025 10:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlFBitMb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9voHfwX"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293C4223DD8;
-	Fri,  9 May 2025 09:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAFA28E57C;
+	Fri,  9 May 2025 10:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746782672; cv=none; b=Dt1bDb4jUWk/yTU7LP9rOVzFgip35YTWvEj2Cltv+E+VN/DGLyibi7IBIhNM6SjU2JrE/+t2eFMSLZFLxxZDnf8D2B3MivVPDwPBGXIEZ4h8xZjhwbfxWm33PGJZTPTqDxaQD0jXDUAPPz/fdCb7II4YNAsowVw2Vskcr02FXYw=
+	t=1746787116; cv=none; b=l/BcmHe65ULQCTz83L8R8n/Mv7eOPZUPF4iG2WIjZNsEf7TvxZOoFnwBCgm2zsc6KTujZizwNn3fjLHytvN7jGLaAK+7PQFCuzOxuD+0rgtlRF8Ie4NlQgN9IbPrPE5F2eB9vrC34jUuiZSQryj+4NqIaPVMw4tPWc3mxUO/Gck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746782672; c=relaxed/simple;
-	bh=4DvKzVNoKVKyOtUHOXV9XYF3JlWsVbXzdNd8rdXpgSI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DUp1ROAT10pSAgYgfEgTtmEigHh86wgddv1/LTp/D5G/9EHNoQ6VFDSZbnP0hG87kgVTXBWOL4zML7qJJ5QiW+RXm1uOqw1xitKrLMx8aFnwHHpSFJfL3gugqdaUexxJeUbX/KOe86KNp0YTRvNYXej6eW0hZ/EvKvQUfPJuFRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlFBitMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9844AC4CEE4;
-	Fri,  9 May 2025 09:24:31 +0000 (UTC)
+	s=arc-20240116; t=1746787116; c=relaxed/simple;
+	bh=sBAbm4SuIn80Cm4grT8hVNMovldKiFgkvskTMNgDNrw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rXvuF4J/oUU6tGXxF3nmzcW0UNGTqwiwMg+Fo/JNvMBzX432bjYDbGEruB5y4NHX1TqP6sogzK2067cwKsGwNDZfHCkxt1OQjXs+M8fYsMu1V+T7KsRs8XgxjIcoiP6kgFGK19uIqTiRnB8WmJlzIuiZ3CT5qroOoDdP39DKB4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9voHfwX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAADC4CEE4;
+	Fri,  9 May 2025 10:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746782671;
-	bh=4DvKzVNoKVKyOtUHOXV9XYF3JlWsVbXzdNd8rdXpgSI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mlFBitMbw7RD/UeXl/ow9UyEoPhKxfNr7E+Qcz8GHrWwLo5V9pQQ0Rca+O3tKhp49
-	 kzfLkRd2tQY9ozWrEB9ObXu0ohxyvjGHjOx1F2iL5GTJXRMFEjMYZWJf4PN5GrF7Ku
-	 qLHacg0BTv+iKk3TbL7roTIomv+B5PoNpDwk2GspsjAuZkLaBTsSGFwGFSZM+dqlsW
-	 0Vdjo+1CCYC/MLAd0s/ms38JkIiR1pJsT7VHYXDBSiGqPHC0uNxT5hLf8kncS7+Iaf
-	 qz9NffudZi05hl802GTnurpno/cOTwqLOYdlySwlwLvuQunLW8GztxfSupDqI+4ly+
-	 5lQQ1MGHDybww==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54e7967cf67so2335551e87.0;
-        Fri, 09 May 2025 02:24:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVoAmPJ+RJrsRp1RLRRGfH4nVIcef8Rdf0oWuUSlpoNX13U70L0bvI30joSkfyV9WPF2qNxdD//rI1S+2A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyea8p51z6L2mi1okwSfNUjCENk0q1LCxn71dicKdU0VN1IX9eK
-	k3wjL64Ad/IHK5vzjVbHeOPbW+NFU/FpClLVyDrIk2TiPikJRpdqQ5Ffe7hxFfL6RQhAcSC+xKi
-	vN45ZEBuCKtXWkABMC0Dv8kBa0og=
-X-Google-Smtp-Source: AGHT+IH2xIVVqeXRqhoquiqWL+LJMXwlUYezxMp6DE9GB8BV2ZmzzRlgaZPndbpR5na3Zx2UGfhDDhVBfiz0QBWNEnw=
-X-Received: by 2002:a05:6512:450a:b0:54f:bf5c:d4a9 with SMTP id
- 2adb3069b0e04-54fc67e4756mr692930e87.37.1746782669990; Fri, 09 May 2025
- 02:24:29 -0700 (PDT)
+	s=k20201202; t=1746787115;
+	bh=sBAbm4SuIn80Cm4grT8hVNMovldKiFgkvskTMNgDNrw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t9voHfwXIYBm9ZoVTNUKI4aXHk8tHvdyYI7H7DhWWk8DHI46p6dlhgF/RepjGNUcA
+	 y9CLB+QL3xJhroEHfmo4PZtgm6v034kFYf6dgGj2iF0iWl+qzXAR/H3PurU+qAf5gJ
+	 AbZeX9Ct9RENXJGlEd/Gcq5qcwEiHf5KXBV032PYoFeT0vBTSewXiuTZfnGCSzzCPV
+	 v1ZdPBTerq51/w6f+IWETxcXpPDTlkxrdC/cg5DnQiomxEy/s7wwVFkdrrulJgFCpt
+	 6m6ATTlsszvFJKfs7qYHoDmhLflphfOwy5et17ZrBYYeFIjF31Qz2q1uWWTY6A07UJ
+	 rbb6/we/YLjRA==
+Date: Fri, 9 May 2025 12:38:29 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, mcgrof@kernel.org, hch@infradead.org, david@fromorbit.com, 
+	rafael@kernel.org, djwong@kernel.org, pavel@kernel.org, peterz@infradead.org, 
+	mingo@redhat.com, will@kernel.org, boqun.feng@gmail.com
+Subject: Re: [PATCH] fs: allow nesting with FREEZE_EXCL
+Message-ID: <20250509-unzucht-gestundet-8633defb4c9e@brauner>
+References: <ilwyxf34ixfkhbylev6d76tz5ufzg2sdxxhy6i3tr4ko5dbefr@57yuviqrftzr>
+ <20250404-work-freeze-v1-1-31f9a26f7bc9@kernel.org>
+ <m2bvkh2v56akvvomku4w6n4lbw3zkc2awlutijndb7cc3tuirz@o64zcabrekch>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250506163111.272149-1-18255117159@163.com>
-In-Reply-To: <20250506163111.272149-1-18255117159@163.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 9 May 2025 11:24:19 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGFJd=zsq6OD0M9b_RKyQAcT0kAhX-L3Bx4QaruHVCarQ@mail.gmail.com>
-X-Gm-Features: ATxdqUEWrPqqYM9j9CvKqKUJYMdRd2ILzeDmI7kLWVwfUwDHBm5kwSjy7p2E_As
-Message-ID: <CAMj1kXGFJd=zsq6OD0M9b_RKyQAcT0kAhX-L3Bx4QaruHVCarQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: Describe missing 'out' parameter in efi_load_initrd
-To: Hans Zhang <18255117159@163.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	hans.zhang@cixtech.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <m2bvkh2v56akvvomku4w6n4lbw3zkc2awlutijndb7cc3tuirz@o64zcabrekch>
 
-On Tue, 6 May 2025 at 18:31, Hans Zhang <18255117159@163.com> wrote:
->
-> The function efi_load_initrd() had a documentation warning due to
-> the missing description for the 'out' parameter. Add the parameter
-> description to the kernel-doc comment to resolve the warning and
-> improve API documentation.
->
-> Fixes the following compiler warning:
-> drivers/firmware/efi/libstub/efi-stub-helper.c:611: warning: Function parameter or struct member 'out' not described in 'efi_load_initrd'
->
-> Fixes: f4dc7fffa987 ("efi: libstub: unify initrd loading between architectures")
-> Signed-off-by: Hans Zhang <18255117159@163.com>
+On Wed, May 07, 2025 at 01:18:34PM +0200, Jan Kara wrote:
+> On Fri 04-04-25 12:24:09, Christian Brauner wrote:
+> > If hibernation races with filesystem freezing (e.g. DM reconfiguration),
+> > then hibernation need not freeze a filesystem because it's already
+> > frozen but userspace may thaw the filesystem before hibernation actually
+> > happens.
+> > 
+> > If the race happens the other way around, DM reconfiguration may
+> > unexpectedly fail with EBUSY.
+> > 
+> > So allow FREEZE_EXCL to nest with other holders. An exclusive freezer
+> > cannot be undone by any of the other concurrent freezers.
+> > 
+> > Signed-off-by: Christian Brauner <brauner@kernel.org>
+> 
+> This has fallen through the cracks in my inbox but the patch now looks good
+> to me. Maybe we should fold it into "fs: add owner of freeze/thaw" to not
+> have strange intermediate state in the series?
 
-Queued in efi/next - thanks.
-
-> ---
->  drivers/firmware/efi/libstub/efi-stub-helper.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index fd6dc790c5a8..7aa2f9ad2935 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -601,6 +601,7 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
->   * @image:     EFI loaded image protocol
->   * @soft_limit:        preferred address for loading the initrd
->   * @hard_limit:        upper limit address for loading the initrd
-> + * @out:       pointer to store the address of the initrd table
->   *
->   * Return:     status code
->   */
->
-> base-commit: 01f95500a162fca88cefab9ed64ceded5afabc12
-> --
-> 2.25.1
->
+Done.
 
