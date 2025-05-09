@@ -1,192 +1,167 @@
-Return-Path: <linux-efi+bounces-3644-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3645-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7D3AAF9CC
-	for <lists+linux-efi@lfdr.de>; Thu,  8 May 2025 14:25:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE594AB0802
+	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 04:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54FDA3B474B
-	for <lists+linux-efi@lfdr.de>; Thu,  8 May 2025 12:25:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C3C11B6790D
+	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 02:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DF6225403;
-	Thu,  8 May 2025 12:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE30F221DA8;
+	Fri,  9 May 2025 02:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ONaTa7mk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTkXVan5"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C76E136A
-	for <linux-efi@vger.kernel.org>; Thu,  8 May 2025 12:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D8910F2;
+	Fri,  9 May 2025 02:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746707129; cv=none; b=WTW5/nBNsYNQxvApp+TjNuJwMoJbWbgui60D1Ta1KgGqX9OmVDNSU2Ku5zk96RZXWnEY6kUfDZWivI/g4Sxx8QyrEtnw+0SmBE89ag2qleUIdtJ3hbvbFr6Tvg2ft40lbU/uJGhCMphuxUNTBUh6/MFAH7IbxFQyf2cBQuv/gVk=
+	t=1746758483; cv=none; b=H96aF/c7NXbw+Mghd7JMLcGRwDlrs0uTQAPyI80aJfI4vrHvtKNNOYQw1r4/iYnxGUQ20/xG7iaV7DuGueobQoJuBt/Ol267bKI7d9CgKLDAQpv5AbAm96ABoJXAv0NqSmm0/Y0jIHFXrbnfJP7efW+y3mfjaohRBi503k5TPVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746707129; c=relaxed/simple;
-	bh=GSPlMkE9xl1CKG6+aR4Lnpqmp6kkUaBOsXBjm7FdCs8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HJvmq3fiJdbeY+9m8tKpSaxFvUYV+RtmVJ/v/zeUBenUnAXaqzZBxzfoF7LPSbRlRXRn3cUfwSAPTOw+InTxLGHB5lkfgRup3gXjmV1EA6Ud76R3DOOPCvV97fNE9jcgs10vQ6Ks9vQfO/TpqTQRRYbjTl/uaGYOeSOP2kck9tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ONaTa7mk; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-549967c72bcso999799e87.3
-        for <linux-efi@vger.kernel.org>; Thu, 08 May 2025 05:25:27 -0700 (PDT)
+	s=arc-20240116; t=1746758483; c=relaxed/simple;
+	bh=QCt7W9cQubdkOh1wzz0DSW4wGR4LXBXeyzwonSK7vwE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ezYaXuXAklgdmRcZ2EsS9oJu4jMP5MWrhqhMszDdakVBgXjbg1SkW2gh2HoH/44yOe0rBF2ebtpJfs5sy3+iyz+3WQR3NJ3S7f0aEjVbZtZTdmOE6ZIbh8I/ebINIca/r6QVA1j8+3VSG9GSeq2pHaahhVcCUOVLxxCvBxFXuew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTkXVan5; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-22e70a9c6bdso26585925ad.3;
+        Thu, 08 May 2025 19:41:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746707126; x=1747311926; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SGXUIdTFQac7mJFRH+e+84EpMzV6neC01o/VEUKascg=;
-        b=ONaTa7mkd9jVBDhTxOiNjDB9oo7ZjFFzBT97onAVuG9S+UwGeCqO4hXZK/nqbJUC5t
-         2yJo4mux/6GIOUCviWK0mKOKdELAH4WroXckzdLgoeA5rmJ9Vq3E7TZrudMSm4/XLMSU
-         We0MQ/50Ns1jLNJ1iFHhLDLCobMR3pRT7CER365RgfcCCqK8pTxwLAVzHwOrcAfmrnQ3
-         p55KROtV+WfTFr2ua2Su1IXybLXufIrUacbo2ZwHgI97BYK6FDd2/vSDIXqjm9ApLE/e
-         zGp0bwKQ9lPRKEKvymtb7m/acWfQ8mZ/3YlUcbNuGnYsvDhvWBDj/BS03V+9LKduDxhs
-         jkNA==
+        d=gmail.com; s=20230601; t=1746758481; x=1747363281; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mFS6mbwVeD+XxwjTe2L6G5xAyvfPHlOmCcGIREdnkRY=;
+        b=LTkXVan5wASFMkgedm1oq4CSqd2veMO7GHLjvMumV3fjiJDrEnSccdhssbSHwJ0Psf
+         PPr63wh4BkWOeMRettjLGiWQB5WzXJDbVBYEnVSZqiBN7xmbVbBENY3i5tVUGik+IvhG
+         U89PD5E+vwna9Cn/DD5UOaUVvxzerUQSK8YBRA6B5ws6KSPFpb2NXrxg+58uvlSArVWh
+         s1f3xvTsgGLAW2Vaf3Kp0HY8DzUmJj4z2+lFMxuqDBqbFg23KY9XoyD93/a2tuQOIm3O
+         YHxACf7gXDux6yAYmypNYCV5ywPb03xkBRfLqybj7KMK11w8zBakM88/1UC7G58neQyI
+         zaoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746707126; x=1747311926;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SGXUIdTFQac7mJFRH+e+84EpMzV6neC01o/VEUKascg=;
-        b=Sqn2D8k0rzFgvKa+Ox0hJsiFcJHosXckdYfD3KOiCvtckon6C/9VtlGTc79YCzF3fb
-         byUeGO/JyFaUWknMgYor3cdUZP9bwTBoUKNQF1ycs/mX3wr8A3idCgkQth2PLUeNb/1i
-         LCsL95ERyaxKtQloA5im3CxaLXHNCxDxL8q6Jw5F4IrSlpv+uXTddi6nEwKtgFHL72th
-         tqzrwyo4WrHP9YpJh5s+eADBODQqFcHVKmpEXqLX5bbw5tIselBLJxhpNrOpfNV9A79y
-         zx8EVMUvDcChTR1Fu7fJzdBSOBjJ2g7ON99C0hTQHP+GvctwPKf8XJHLqFp6arab34Z4
-         EkMg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPh0o92COWnTyMf0T1sxwvzPuWZoXH4yg3UbEgpZFjLlKzficMIwhcH0hjSxIreqGkdGYP30vQS30=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd8ix7EeTLlcoX8zIYDFLiCaoNuQxM8NUH88jCalIP4Lpm2T/h
-	cEzUzmVHhWIN1rgZSOnQlJI64v9/VZVX7ZivR98Y2CgEpsblSb3UbWxBO+8rqe8pgBCEpUY3Qbz
-	5Helx8sI/CvA04gmpFk+9mm4/7g82LhmQ1MUc
-X-Gm-Gg: ASbGnctBbmDUQyGRjqsHJezKWIH7U2DIASDJK1VMK06pM9+IpKEMEN+rL8OCmQYprGu
-	voOi6Fp6vwP5abvDUHGWK20DHBguVIEgDD72KZP/hWRMMZqMM2Kh2bN6LBS7iRKraCS5XaI2dvF
-	KA3chg05IM2kjjjFqqMGmtDfeUoubmBTPQgs8+y+nMv88grIaTZKSB
-X-Google-Smtp-Source: AGHT+IHELJP6PjDmjgnoQ+DcewZezMvkPDTBk3DlAEgOIW2HtUu14uSoRBVrm2tBSd/cEMjU36ADUjG1Ap9y8UFRrr8=
-X-Received: by 2002:a05:651c:b11:b0:30b:f006:3f5 with SMTP id
- 38308e7fff4ca-326b87dacdfmr7793251fa.15.1746707125568; Thu, 08 May 2025
- 05:25:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746758481; x=1747363281;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mFS6mbwVeD+XxwjTe2L6G5xAyvfPHlOmCcGIREdnkRY=;
+        b=VBVkxGDZ1kgYPH7hGEgZQKYqE2GRz8Zflcutn6p8r3efX53IhjNnwjQia3N9AFPZVn
+         HH5cFxbZMlYScm27XOcDxXrGB0pqQ06BE5FfGMSOjm01z69b1ZXGUxNv5MAjm9Mrc0L2
+         NInbIAAlIz/MS/RNviAE+IcyXWyB30/QdMO7D7hadNNKkGX6GUadK0Mf4FN2Sg3jNnNQ
+         WoJ2ehTlSKqxqUnQ4nf+GIBE57a9MnYCLJ8fGdgNOzz2dZ0pwKPI/3TVo5u4BvatJzRH
+         uEO2cIaCNi1IhkUg5JPbzvsHpUjkxHMgj9dpioqzPqCJm2YpIULOuJGH8hUfNK0CiFRi
+         VI4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUb9I7hDAqokECR26aOQvB2sub+rTIxU6AAmHh13kd7aLsR1HJtvP3/kcF0HZ2gUxDOW84Yvxa8TipcOqJivIujR1ofdYJR@vger.kernel.org, AJvYcCWHTt3BX6lYtQjKTWTxvGwA3qgirZX126vhoBpkrCX0lJtTj+6+3vqMezVPSVgON1VjiU09WlEh+oZrke90@vger.kernel.org, AJvYcCWkR4/dy5z/u/TdKcoW7XVJYQnFRWeAh2EJPVTSK/2zmRoZAwBjmfO2ZlrBFyw0L+YicVewqkNVZyM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzxIHtT1AShRlGIPFn68xLK2yI4BJhixiGEn4n3fgpaGstaMO2
+	D7rAoQrLcBmxdxV7L6EgkpR0tEmQrdJ0yNMEdK3ECjoZgmlCoe99
+X-Gm-Gg: ASbGncurgEMXlwTmHge01bHmMbgjf72HhWEoMQ2TPGqIiePAYKYl4KIWMB3ErwXFvn+
+	rps0ig7TtQOTlw6hK/sbbmWryieFsgt7bskyJM6UH0hVq1BluX0kmWWvcFUSG1SK9N4QFsLeYOV
+	94QBJoqA0SQ/Dv7B12VqLkV5LPTJFolvT3x9DoGj/iwpfnYkShvnwfU46YkfXCWpwUODGRLmUZP
+	cgeQZSaJLn7hNPWOwRVoN+jl0bN3sQIlw6+9mEdcvDHY3PwKhMt2Kni2Vqzlbx2D/wjXxyc+l5z
+	gBoEtGH3zUHAN9sEnE4esSDvg9SN1Trke/Jn693INXbTg3bf3Fa/84Lr0czqekGmJVAzIZXSb2t
+	vdl9E7Ix6/64TCxo=
+X-Google-Smtp-Source: AGHT+IGyYqp1wunfFzEOreidx8NjAbn3wqVn2CCrv5Sg8a4MZvMn88hnCC6hGU4WQ+NrUM+4SB//iQ==
+X-Received: by 2002:a17:902:f682:b0:224:a79:5fe9 with SMTP id d9443c01a7336-22fc8b59bd0mr22926965ad.30.1746758481075;
+        Thu, 08 May 2025 19:41:21 -0700 (PDT)
+Received: from localhost.localdomain ([14.116.239.36])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc7544fc1sm7111905ad.46.2025.05.08.19.41.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 May 2025 19:41:20 -0700 (PDT)
+From: Jinliang Zheng <alexjlzheng@gmail.com>
+X-Google-Original-From: Jinliang Zheng <alexjlzheng@tencent.com>
+To: paul@paul-moore.com
+Cc: alexjlzheng@gmail.com,
+	alexjlzheng@tencent.com,
+	chrisw@osdl.org,
+	greg@kroah.com,
+	jmorris@namei.org,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	serge@hallyn.com,
+	viro@zeniv.linux.org.uk,
+	wufan@linux.microsoft.com,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH v3] securityfs: fix missing of d_delete() in securityfs_remove()
+Date: Fri,  9 May 2025 10:41:12 +0800
+Message-Id: <20250509024112.362527-1-alexjlzheng@tencent.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <CAHC9VhScmdZLz7W=FN+mfWjf5LB7jbTJm5g-iy35hvvMgbKRfQ@mail.gmail.com>
+References: <CAHC9VhScmdZLz7W=FN+mfWjf5LB7jbTJm5g-iy35hvvMgbKRfQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250507180852.work.231-kees@kernel.org> <20250507181615.1947159-2-kees@kernel.org>
- <CANpmjNPcYPvnQzMT3p+Vc2=EiEbR1WnykUEjuYc0bH2HOFi6HQ@mail.gmail.com>
-In-Reply-To: <CANpmjNPcYPvnQzMT3p+Vc2=EiEbR1WnykUEjuYc0bH2HOFi6HQ@mail.gmail.com>
-From: Dmitry Vyukov <dvyukov@google.com>
-Date: Thu, 8 May 2025 14:25:13 +0200
-X-Gm-Features: ATxdqUEOMWVMkXbvXQaHqruZq4t8-pmXFLrRyvMg5ohXOpGrzDC1z300bwlcEE0
-Message-ID: <CACT4Y+betRmieWEHBdEf=gOLhWiNVRH5CSDeN6ykBtoP1GrzLA@mail.gmail.com>
-Subject: Re: [PATCH 2/8] init.h: Disable sanitizer coverage for __init and __head
-To: Marco Elver <elver@google.com>
-Cc: Kees Cook <kees@kernel.org>, Alexander Potapenko <glider@google.com>, 
-	Aleksandr Nogikh <nogikh@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Hou Wenlong <houwenlong.hwl@antgroup.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	kasan-dev@googlegroups.com, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	Christoph Hellwig <hch@lst.de>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	sparclinux@vger.kernel.org, llvm@lists.linux.dev, 
-	syzkaller <syzkaller@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 8 May 2025 at 14:23, Marco Elver <elver@google.com> wrote:
->
-> +Cc KCOV maintainers
->
-> On Wed, 7 May 2025 at 20:16, Kees Cook <kees@kernel.org> wrote:
+On Thu, 8 May 2025 18:55:30 -0700, Fan Wu <wufan@kernel.org> wrote:
+> On Thu, May 8, 2025 at 7:11 AM <alexjlzheng@gmail.com> wrote:
 > >
-> > While __noinstr already contained __no_sanitize_coverage, it needs to
-> > be added to __init and __head section markings to support the Clang
-> > implementation of CONFIG_STACKLEAK. This is to make sure the stack depth
-> > tracking callback is not executed in unsupported contexts.
+> > From: Jinliang Zheng <alexjlzheng@tencent.com>
 > >
-> > The other sanitizer coverage options (trace-pc and trace-cmp) aren't
-> > needed in __head nor __init either ("We are interested in code coverage
-> > as a function of a syscall inputs"[1]), so this appears safe to disable
-> > for them as well.
->
-> @ Dmitry, Aleksandr - Will this produce some unwanted side-effects for
-> syzbot? I also think it's safe, but just double checking.
-
-I do not see any problems with this.
-
-> > Link: https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/kcov.c?h=v6.14#n179 [1]
-> > Signed-off-by: Kees Cook <kees@kernel.org>
->
-> Acked-by: Marco Elver <elver@google.com>
->
+> > Consider the following execution flow:
+> >
+> >   Thread 0: securityfs_create_dir("A")
+> >   Thread 1: cd /sys/kernel/security/A           <- we hold 'A'
+> >   Thread 0: securityfs_remove(dentry)           <- 'A' don't go away
+> >   Thread 0: securityfs_create_dir("A")          <- Failed: File exists!
+> >
+> > Although the LSM module will not be dynamically added or deleted after
+> > the kernel is started, it may dynamically add or delete pseudo files
+> > for status export or function configuration in userspace according to
+> > different status, which we are not prohibited from doing so.
+> >
+> > In addition, securityfs_recursive_remove() avoids this problem by calling
+> > __d_drop() directly. As a non-recursive version, it is somewhat strange
+> > that securityfs_remove() does not clean up the deleted dentry.
+> >
+> > Fix this by adding d_delete() in securityfs_remove().
+> >
+> > Fixes: b67dbf9d4c198 ("[PATCH] add securityfs for all LSMs to use")
+> > Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
 > > ---
-> > Cc: Marco Elver <elver@google.com>
-> > Cc: Andrey Konovalov <andreyknvl@gmail.com>
-> > Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: Ingo Molnar <mingo@redhat.com>
-> > Cc: Borislav Petkov <bp@alien8.de>
-> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> > Cc: <x86@kernel.org>
-> > Cc: "H. Peter Anvin" <hpa@zytor.com>
-> > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> > Cc: Hou Wenlong <houwenlong.hwl@antgroup.com>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: Masahiro Yamada <masahiroy@kernel.org>
-> > Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-> > Cc: Luis Chamberlain <mcgrof@kernel.org>
-> > Cc: Sami Tolvanen <samitolvanen@google.com>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
-> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > Cc: <kasan-dev@googlegroups.com>
+> > changelog:
+> > v3: Modify the commit message to avoid readers mistakenly thinking that the LSM is being dynamically loaded
+> > v2: https://lore.kernel.org/all/20250507111204.2585739-1-alexjlzheng@tencent.com/
+> > v1: https://lore.kernel.org/all/20250425092548.6828-1-alexjlzheng@tencent.com/
 > > ---
-> >  arch/x86/include/asm/init.h | 2 +-
-> >  include/linux/init.h        | 4 +++-
-> >  2 files changed, 4 insertions(+), 2 deletions(-)
+> >  security/inode.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > >
-> > diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
-> > index 8b1b1abcef15..6bfdaeddbae8 100644
-> > --- a/arch/x86/include/asm/init.h
-> > +++ b/arch/x86/include/asm/init.h
-> > @@ -5,7 +5,7 @@
-> >  #if defined(CONFIG_CC_IS_CLANG) && CONFIG_CLANG_VERSION < 170000
-> >  #define __head __section(".head.text") __no_sanitize_undefined __no_stack_protector
-> >  #else
-> > -#define __head __section(".head.text") __no_sanitize_undefined
-> > +#define __head __section(".head.text") __no_sanitize_undefined __no_sanitize_coverage
-> >  #endif
-> >
-> >  struct x86_mapping_info {
-> > diff --git a/include/linux/init.h b/include/linux/init.h
-> > index ee1309473bc6..c65a050d52a7 100644
-> > --- a/include/linux/init.h
-> > +++ b/include/linux/init.h
-> > @@ -49,7 +49,9 @@
-> >
-> >  /* These are for everybody (although not all archs will actually
-> >     discard it in modules) */
-> > -#define __init         __section(".init.text") __cold  __latent_entropy __noinitretpoline
-> > +#define __init         __section(".init.text") __cold __latent_entropy \
-> > +                                               __noinitretpoline       \
-> > +                                               __no_sanitize_coverage
-> >  #define __initdata     __section(".init.data")
-> >  #define __initconst    __section(".init.rodata")
-> >  #define __exitdata     __section(".exit.data")
+> > diff --git a/security/inode.c b/security/inode.c
+> > index da3ab44c8e57..d99baf26350a 100644
+> > --- a/security/inode.c
+> > +++ b/security/inode.c
+> > @@ -306,6 +306,7 @@ void securityfs_remove(struct dentry *dentry)
+> >                         simple_rmdir(dir, dentry);
+> >                 else
+> >                         simple_unlink(dir, dentry);
+> > +               d_delete(dentry);
+> >                 dput(dentry);
+> >         }
+> >         inode_unlock(dir);
 > > --
-> > 2.34.1
+> > 2.49.0
 > >
+> >
+> 
+> Since this could impact efi_secret_unlink(), I would suggest adding linux-efi.
+
+Thank you for your reply. :)
+
+Did you mean cc to linux-efi?
+
+thanks,
+Jinliang Zheng.
+
+> 
+> -Fan
 
