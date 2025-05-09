@@ -1,167 +1,128 @@
-Return-Path: <linux-efi+bounces-3646-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3647-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF83AB080D
-	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 04:45:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C5CAB0E3E
+	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 11:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BE244E31CB
-	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 02:45:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709713B47B4
+	for <lists+linux-efi@lfdr.de>; Fri,  9 May 2025 09:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEA221CFFD;
-	Fri,  9 May 2025 02:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79061274FCA;
+	Fri,  9 May 2025 09:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QfTjq4zK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIi+869B"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5413133EC;
-	Fri,  9 May 2025 02:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D857274666;
+	Fri,  9 May 2025 09:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746758749; cv=none; b=iXv0vfMymAt4DPpSXgcPUX7LBpHezrKGfEf0rOkFi6KUp/nTpG5t3lsyWtMgeg60x3DDNph8+7TsIjJXHNsrgthk+5syolI2bvqCq9OX7jacQxF0SPwZBU95/9JHafMD01/brFkAPUzpmKHuTFALXmWywupW+uWdmNK+863KLJc=
+	t=1746781683; cv=none; b=SPcQvoS3TPxOOHk/v7mqySo3LV5kii2HJBt7Y52rTnTKa8brUw5PHh9sbQLCQu5fGYYY0gHC/bRMCeWaT+mSx0ZiwG+yowcDlLlGtx1gPe3cdB/Xz5821q32kkzOjYpZOFiQ5rhHoJ3jG/Fhi769mi4s/Xc93A0E4xuOZE3SAAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746758749; c=relaxed/simple;
-	bh=QCt7W9cQubdkOh1wzz0DSW4wGR4LXBXeyzwonSK7vwE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BT/kGKZi7mNYGcQcKJtnacYV9Pc6zpZsjFQkvOJxmRMH/uY1rYnohqlAxHeQGbiizMHZ26wnHuoIKEV1NdXRKRwkYR8+2RDqkVOGbkrSXT1EaCNXHFh5OkmXJz7Xje0eTLLXBdWkz6IKyS/G+7elCkBYqwKuEOuruDUsIG/NGGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QfTjq4zK; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-74019695377so1298437b3a.3;
-        Thu, 08 May 2025 19:45:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746758748; x=1747363548; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mFS6mbwVeD+XxwjTe2L6G5xAyvfPHlOmCcGIREdnkRY=;
-        b=QfTjq4zKyBqeIIyvd/EaUuKlcSjsbB7mji2XCZYzX84nL2Vx5YDZzWz/K8MU7Uf5WJ
-         xKEXJWZzIgGSxkbnWfUJ8d/2eN5ijONlYPududbp76hMZUTugMW7Zs6L+odgjkqnRdCk
-         BGcH6cPJYQCnAl8v+a8cuMAttr55tPw8av1p3rxca4EWVriI0leec2UzxTRZxKoLsFU1
-         KUgm77cM/m6pyfXNfIs0g2j9srRbB5fL5F4z/3vyLhduR/lIGTITcGbJ4s8PTuJuX6bt
-         sPyhziOEcIs6i5obNOuWrTsqZZTEodmtDevb1A7AqMOfbDmR69WSwT9GW+dL28SoAGqm
-         /Vgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746758748; x=1747363548;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mFS6mbwVeD+XxwjTe2L6G5xAyvfPHlOmCcGIREdnkRY=;
-        b=bv1K7LQw5maonWyJNWSZNys0kKa2kinTtQ3/hAOxF4DlcGHS6Hfxq7jIjDTh1Jmx31
-         7mkEc3KzfPC3hx5fZvEhJAaJAtMxuZS3C19w0FrB8ruMtmBdSBg0oE9YxlDOpuJuJ2Kc
-         suGL0WHu57UPfOVSW2v6KznNjq0qmSKlfPVY3WbgbmRlSBg8CKPcVF2wgn6VHtVgU65b
-         vu4OTPlG/uQFc6qMSbtirYjw28hUBaxnn05qx9OqVgYq6hGFkCqJBitB4j3SS4YwQRsq
-         1UgvHIwCUrydXoJ74FLWBJeiXAFaLK13BHKbIWl/ltEwsAru2UMOd4Y8T7+RU5Eg2dzo
-         BeBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIPmi4wxBcQtJTf7EwEQOXEDdLkWtoTHTmZOXqlORulXIoCDhhg09PGJ49xvYH+EmngA7Q0Zyb7BxJgARp@vger.kernel.org, AJvYcCVWg3NL9zA7mvHeiHp+JXEbJigcxE5+UJ1OiR/mjhZp0lMnPfD9IMYvCnAbqQfvKazhrQBH+s5oMTV9ZO8HvG+Ysdn8x+cj@vger.kernel.org, AJvYcCVxNbK7PqPjrym+0wzSTfbdH/t5ISStVKhTrHpRov5bPKJ2nmwUo6bw/U9h3uxJBH8Keu4Ikk89yE4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyLtoX3TCPNjOJvwj+uUbAk3BuY/vmEn+G3A96n0YVKRj2ED1U
-	RRj+4y3rVXiUoDVhmxheeLz1JGGcD3fkA418geb0KvSuCJDAfOtQ
-X-Gm-Gg: ASbGncs8AA8AAyV42F8ZIozCjp7ms41yRHUr9D/J7rp824IQmKcCrbFFpHgTrwfv6vm
-	Hcr6xfx2zcZFP7qC4gjw3TyjE8jjuaEX+798mvk5uSTXWBxE2JmJ73viHN7NIFEp1jmomwJ5fGg
-	6ZIBW5S8Ocoq5OAQji3EAh06z5AltV0XA7xwaUFe/DucRhTCpaiqAlIKgUZKEREge8YPbMIpdgp
-	fPpVqeDnq8PdOWdfMPIZTfrNjSq9lCFV4M+vvtqAM/RR86lytOq1Cz5A1CSJd2OdlgesgG2okP3
-	Xw9P492gIdvB26jTZMmsSGQi4RlGqnwpRtcd+6ooHR/PA8Cyht1kkYoa5h+MC7aAoZ9JQsFSqPz
-	Ou0E=
-X-Google-Smtp-Source: AGHT+IEUVrYysCgJR3AWSOW4YGeY4h7f7UFx3jN2Vg1lkgbAWVswe0YqJKwqbpPKq8gyz9rTI69HwQ==
-X-Received: by 2002:a05:6a20:438f:b0:1f5:619a:8f75 with SMTP id adf61e73a8af0-215ababd87amr2530322637.2.1746758747592;
-        Thu, 08 May 2025 19:45:47 -0700 (PDT)
-Received: from localhost.localdomain ([14.22.11.165])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74237a0d007sm786835b3a.96.2025.05.08.19.45.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 May 2025 19:45:47 -0700 (PDT)
-From: Jinliang Zheng <alexjlzheng@gmail.com>
-X-Google-Original-From: Jinliang Zheng <alexjlzheng@tencent.com>
-To: wufan@kernel.org
-Cc: alexjlzheng@gmail.com,
-	alexjlzheng@tencent.com,
-	chrisw@osdl.org,
-	greg@kroah.com,
-	jmorris@namei.org,
-	linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	paul@paul-moore.com,
-	serge@hallyn.com,
-	viro@zeniv.linux.org.uk,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v3] securityfs: fix missing of d_delete() in securityfs_remove()
-Date: Fri,  9 May 2025 10:45:39 +0800
-Message-Id: <20250509024539.364945-1-alexjlzheng@tencent.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <CAKtyLkGK3JH7amgskrjMyUz1KZeVtAO_4bA_8iuBYvykgHRsRQ@mail.gmail.com>
-References: <CAKtyLkGK3JH7amgskrjMyUz1KZeVtAO_4bA_8iuBYvykgHRsRQ@mail.gmail.com>
+	s=arc-20240116; t=1746781683; c=relaxed/simple;
+	bh=+wXFTif+M/3rumavm/aTs/fXnfqu/iaBWzcA9lk9kMQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sm7v3uzsAlIh34E47wH84//Fvus2YyEDXmZm1yTvSJIxbMPwLFa8YlbbeGyNlLIt7AqXYdulJJyIP1juUrpu59f9mPBrWNIzLzZ6lNCXDKLWGKJlCi++MU4qNlVkMG3q4uu7yxro4bdMCAAtN2UHoFpLYTwQvYbfDZn/BOGx5Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIi+869B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8221C4CEE4;
+	Fri,  9 May 2025 09:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746781682;
+	bh=+wXFTif+M/3rumavm/aTs/fXnfqu/iaBWzcA9lk9kMQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TIi+869BEyHKMHe+40QI01VLvCkcKUxYe9vgstztL1gh9umrdW6gQ5MW3Dg7ekw9L
+	 CrMfr3Sqf+25lzIx1AleQw7fwwAzr4hQZC9oVJGyogNdZMzVOPSkdZYXiW9OYzHxX1
+	 cobya6v9C3uEugcQuPKhKNcA848+eTtptLOfSbeb1NVGl6w7VbVykTEER+1XYumqEr
+	 Z2Hih7VY/9C+9N/YGIf+6NgOM6OmMBjt830faSnHPKt+N37yNRuSIUyNPFmoc8YTF0
+	 R49H2A+5Hi4dfVlEZYrqhL/6XsCfPBUUoMdoOXPRjRQUom1OisuV24lTbSwBTB0s0m
+	 IUnX8k1zzFvew==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30bfe0d2b6dso16224731fa.3;
+        Fri, 09 May 2025 02:08:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWJ57L95K6qzr5LQVzBIqLw5b51ouWFBl2DlcY7Qy0UWNWC0lo/qpnk7CAIFcrdSA2JRFU8r4YmtqY=@vger.kernel.org, AJvYcCXAq6X0gacn4NMLxtUYkYxZA67j3NL6PQ8yu0zbHqkOYeTNA7vGJFAyU7BxTSRP9nqaKng1t2yBDpUf0SMx@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFYVqOeeTaCPMZSJbvNoL5c5vCQjq0/AAD5/4TJrPO5ZSS4cX+
+	EUcJMbuRuNVe44aWy4yJMFL8iMVTZekmKZV8pJAJCzTXsLySEiIa+2VPf0Qq3o+OJDmRyC21own
+	//EV3LaC8BwhkOL+qcF1+n7HhCXQ=
+X-Google-Smtp-Source: AGHT+IHUfaJ4VzDPx8olPMyT7izaFqWlidBpN37tZ8on4zprI+sHJLyAeO8nQWb0t/vuvDNv2R2gyZ54f/DOzYjsL70=
+X-Received: by 2002:a2e:bc86:0:b0:30a:4484:3ee1 with SMTP id
+ 38308e7fff4ca-326c45b2d9dmr11647651fa.23.1746781681101; Fri, 09 May 2025
+ 02:08:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250423090517.47049-1-bsz@amazon.de>
+In-Reply-To: <20250423090517.47049-1-bsz@amazon.de>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 9 May 2025 11:07:50 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFtaf8c5cYSFL1nYgFkK1UGtfKyMU66_z_zHT_T8=7VXA@mail.gmail.com>
+X-Gm-Features: ATxdqUEFns9iLM_azO5IApx679VOJKysccNbudGKnLBlD3PpVcxy4HsSZHzRGFI
+Message-ID: <CAMj1kXFtaf8c5cYSFL1nYgFkK1UGtfKyMU66_z_zHT_T8=7VXA@mail.gmail.com>
+Subject: Re: [PATCH] efi: Improve logging around memmap init
+To: Bartosz Szczepanek <bsz@amazon.de>
+Cc: nh-open-source@amazon.com, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 8 May 2025 18:55:30 -0700, Fan Wu <wufan@kernel.org> wrote:
-> On Thu, May 8, 2025 at 7:11 AM <alexjlzheng@gmail.com> wrote:
-> >
-> > From: Jinliang Zheng <alexjlzheng@tencent.com>
-> >
-> > Consider the following execution flow:
-> >
-> >   Thread 0: securityfs_create_dir("A")
-> >   Thread 1: cd /sys/kernel/security/A           <- we hold 'A'
-> >   Thread 0: securityfs_remove(dentry)           <- 'A' don't go away
-> >   Thread 0: securityfs_create_dir("A")          <- Failed: File exists!
-> >
-> > Although the LSM module will not be dynamically added or deleted after
-> > the kernel is started, it may dynamically add or delete pseudo files
-> > for status export or function configuration in userspace according to
-> > different status, which we are not prohibited from doing so.
-> >
-> > In addition, securityfs_recursive_remove() avoids this problem by calling
-> > __d_drop() directly. As a non-recursive version, it is somewhat strange
-> > that securityfs_remove() does not clean up the deleted dentry.
-> >
-> > Fix this by adding d_delete() in securityfs_remove().
-> >
-> > Fixes: b67dbf9d4c198 ("[PATCH] add securityfs for all LSMs to use")
-> > Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-> > ---
-> > changelog:
-> > v3: Modify the commit message to avoid readers mistakenly thinking that the LSM is being dynamically loaded
-> > v2: https://lore.kernel.org/all/20250507111204.2585739-1-alexjlzheng@tencent.com/
-> > v1: https://lore.kernel.org/all/20250425092548.6828-1-alexjlzheng@tencent.com/
-> > ---
-> >  security/inode.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/security/inode.c b/security/inode.c
-> > index da3ab44c8e57..d99baf26350a 100644
-> > --- a/security/inode.c
-> > +++ b/security/inode.c
-> > @@ -306,6 +306,7 @@ void securityfs_remove(struct dentry *dentry)
-> >                         simple_rmdir(dir, dentry);
-> >                 else
-> >                         simple_unlink(dir, dentry);
-> > +               d_delete(dentry);
-> >                 dput(dentry);
-> >         }
-> >         inode_unlock(dir);
-> > --
-> > 2.49.0
-> >
-> >
-> 
-> Since this could impact efi_secret_unlink(), I would suggest adding linux-efi.
+On Wed, 23 Apr 2025 at 11:05, Bartosz Szczepanek <bsz@amazon.de> wrote:
+>
+> Be more informative if memremap fails, and print out physical address
+> together with size. This change intends to make investigations of such
+> early failures slightly easier.
+>
+> Signed-off-by: Bartosz Szczepanek <bsz@amazon.de>
+> ---
+>  drivers/firmware/efi/memmap.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
 
-Thank you for your reply. :)
+Queued in efi/next - thanks.
 
-Did you mean cc to linux-efi?
-
-thanks,
-Jinliang Zheng.
-
-> 
-> -Fan
+> diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+> index 34109fd86c55..f1c04d7cfd71 100644
+> --- a/drivers/firmware/efi/memmap.c
+> +++ b/drivers/firmware/efi/memmap.c
+> @@ -31,31 +31,32 @@
+>   * Returns: zero on success, a negative error code on failure.
+>   */
+>  int __init __efi_memmap_init(struct efi_memory_map_data *data)
+>  {
+>         struct efi_memory_map map;
+>         phys_addr_t phys_map;
+>
+>         phys_map = data->phys_map;
+>
+>         if (data->flags & EFI_MEMMAP_LATE)
+>                 map.map = memremap(phys_map, data->size, MEMREMAP_WB);
+>         else
+>                 map.map = early_memremap(phys_map, data->size);
+>
+>         if (!map.map) {
+> -               pr_err("Could not map the memory map!\n");
+> +               pr_err("Could not map the memory map! phys_map=%pa, size=0x%lx\n",
+> +                       &phys_map, data->size);
+>                 return -ENOMEM;
+>         }
+>
+>         map.phys_map = data->phys_map;
+>         map.nr_map = data->size / data->desc_size;
+>         map.map_end = map.map + data->size;
+>
+>         map.desc_version = data->desc_version;
+>         map.desc_size = data->desc_size;
+>         map.flags = data->flags;
+>
+>         set_bit(EFI_MEMMAP, &efi.flags);
+>
+>         efi.memmap = map;
+>
+> --
+> 2.47.1
+>
 
