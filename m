@@ -1,68 +1,68 @@
-Return-Path: <linux-efi+bounces-3665-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3666-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81549AB4498
-	for <lists+linux-efi@lfdr.de>; Mon, 12 May 2025 21:13:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D03AB449C
+	for <lists+linux-efi@lfdr.de>; Mon, 12 May 2025 21:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C94F38C2E5C
-	for <lists+linux-efi@lfdr.de>; Mon, 12 May 2025 19:13:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BF42188E204
+	for <lists+linux-efi@lfdr.de>; Mon, 12 May 2025 19:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAFD299A9D;
-	Mon, 12 May 2025 19:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6D5299AAF;
+	Mon, 12 May 2025 19:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H2ruq6+u"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PRsqtBFr"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67113299A82
-	for <linux-efi@vger.kernel.org>; Mon, 12 May 2025 19:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6276A299A9C
+	for <linux-efi@vger.kernel.org>; Mon, 12 May 2025 19:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747077116; cv=none; b=szN7PNwfi0CiCvhw9NaYsKGRtClTdSqkzOAEmN/OotDRZjY/yGy5iVYDBUaVpxpCopH2fitlCqytMjRqi8hfOr0F2kUsud4EGlxgMrGgHHAXKepsMMldsCkUpiVxQFazUU1qbuKISY1SzTqM0cxhkSvu2531JWTrkv90XYf5Ffo=
+	t=1747077118; cv=none; b=s/taVS17ukhDQmG4Nnc525WWofUzAMMMOindGugj1sn0bdpmkJXS9zyRSSdtfb1uNYo4byUXDfpL4JSRWDdaxiOHS5hElBjvN3cmKMJJiC6VF3chPy68SXJJZp/zJ51KwNst81KE8kjHBn4JDq0uD53QT9AwkbqbAB8uCAao7dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747077116; c=relaxed/simple;
-	bh=7K2L+GKfDJZEmOoWCjZzAUSDROLuN9vFgPOoHrZk8MI=;
+	s=arc-20240116; t=1747077118; c=relaxed/simple;
+	bh=aDKXddBmfA7RTqjn2IVQf1JJqM5fseVSyiUbPLA7/2U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tpxMXbbyuztwfyPYH4dLN/0meNaMmLh1xBT8+8T5ig+0hiFhDx3FGqC2fgzVwE2vY9nZ6Gt+K3YKkB5WjKitcrWMj+XsCUSwKrkIdC+e6piJRXwvs6OIfDSxfJm6Ct62EFiTgrVkfAbw0qtI7O1bcFKeKsJpf/w7hv85X7nUuuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H2ruq6+u; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=Gjy6tz3zgjaftnwPIW4G2L0Ic1nsIiu2qAY3945TPZrLk0gGz+vVgBJIQexgg6bKKyT2zYevHgxfoUR7kaF3WadQ04l4vi4UaHstSWscvbnGfpZP3w1FQOslgViYN3LPcUYPOVN6e6lkhQ0f2YLO/QkqHexpcYuc1w156Mvxmas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PRsqtBFr; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-44059976a1fso16009225e9.1
-        for <linux-efi@vger.kernel.org>; Mon, 12 May 2025 12:11:54 -0700 (PDT)
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-441c122fa56so19034895e9.2
+        for <linux-efi@vger.kernel.org>; Mon, 12 May 2025 12:11:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747077113; x=1747681913; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1747077115; x=1747681915; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3XKokAspLOvkjts4pWwEpgnj480mrGaJGARvds1P8gU=;
-        b=H2ruq6+ur9GO1EneyBzUiLVVvZt+fyW+tq4ytWW0WZAnY8WYNXKgG/QjnL4itgy95Q
-         KR24Vv0VJfjTJ4y+4qfi5Gn1onLI5gnWv/DpbrAiwXg+J27lTFysnecU6DRa8flSHQEF
-         iCCyNS6Va8FdOWGY0u++WcC73bPyJ3gnA7Im3VxMUaB32x4YA7KrNyvReoUcewfqiHN0
-         q/eU1Nb0bMnH12g1qmoXpPEdZaeZ+mgL6L6CYHE/HSdvPRImRaVtsNjJ30/5VSmMx6nm
-         Dtecd0gYNLHWdR3AvZwT2ywKz9zhBgT1sg9BuMgadMDBVdWNR4OohGUlgu5lXcuxm8N6
-         zjzw==
+        bh=IkqYSPwglKGsOQATio9iDSPAoMiQZFICU2YOedJQt4I=;
+        b=PRsqtBFr8bJruAHNjFNqofk3z33T7WwZh2f1xG+mBpHnLw+DfBgKxc6NIVMI+1aH1e
+         jtJYCcfAgepFhoJQb9ebz8qV4pCvFnYH9tvlKhG/o5vd4Amrl/3cmdmjMsIoAnZN3xGe
+         1+F11CfWNYWRPFHmm35kL8H+5ADNrkYZjZsDn782LQYhpyM7jqk9YjUUBWZ77e7gzpGj
+         vsSlGfhUEvqLXgs6O7z+2MMBh7iFkYvImrsrS0HdfaWF3Agt4nsipGux2ydAQzSOvWpM
+         sBrqzZKQtBn4Me9H/E9qriScdG0tj+tYig1sWfBAkMAoQJC/E7R9NlhkEzIsfFHzPhpq
+         oCjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747077113; x=1747681913;
+        d=1e100.net; s=20230601; t=1747077115; x=1747681915;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3XKokAspLOvkjts4pWwEpgnj480mrGaJGARvds1P8gU=;
-        b=w1xtLqhjuhc1SJZWxuaszQ5B86rpQcBJrV1Pnws2R8Xwv2xA8pDcXDObOaCkvUe4pz
-         +1IJ7ZOHO299ZXVOUt+fbCErJ5bn0fYKG7aSgRXQHkjQy6Pz7Ju8la0RvH6e/dYUPeNo
-         u+caRr9aRCjrw/csjIH8REJI9VXeo/gNaE9l48L7jwUkadiMEiFZjtUSeIIMJzwt4ZYU
-         RvCNrEPc0MXNxekghGTkWyLbBRF6qlDESNli8pr8Nub03wqhhm0IlkdPScQBzcNeVgry
-         +sGnnJAhdLWdggMz1VI/HTUN3lx1qhC7prNCHjt3OtXYLIfxUb1WGqOA+E/U5fcjfFDR
-         RiCw==
-X-Gm-Message-State: AOJu0YzFRr5H4f+Q+pIsExkrURufEozTe+2wq2l8N9YPHjDtknnM3KGU
-	buJd/Py0qyylndmWRMxyqNGOse7haqA7RECHmarI1t/wJxqdmJiw540GRcNjrg1X9cWMJw==
-X-Google-Smtp-Source: AGHT+IFCBAwZKHnIc2xjqftOjJZwQmyTYMlu5P3aWusXhTyeYtY2YRoTyZ+awOa8ofAOsfGILXoGhK9q
-X-Received: from wmqb6.prod.google.com ([2002:a05:600c:4e06:b0:442:cd17:732c])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c12:b0:43c:f616:f08
- with SMTP id 5b1f17b1804b1-442d6d3decbmr125763715e9.8.1747077113088; Mon, 12
- May 2025 12:11:53 -0700 (PDT)
-Date: Mon, 12 May 2025 21:08:45 +0200
+        bh=IkqYSPwglKGsOQATio9iDSPAoMiQZFICU2YOedJQt4I=;
+        b=gFKe5pEkZ1vaVpW4beEqIqRCF7nFVx5fCTNgMPYrdRpdxSQOGAf8cGYMwSzY2zMYaC
+         g8EokRHxIYMnRSjJaxPnzywEEzQ6pGTIHDgbaRoPvJw/r1+sQEGC9EF6+sg0JuADGWjU
+         bjkyw3hF2jh8l8TBwE3S08/OF1rqEx2Dp+JM9Wl4pym8GYghZpxIx3jZh/oHHjMxuFwe
+         yGFQYZP8Yy4hErKNzr2qFkUll4CRGVpuJVU/1uNCaN8PXyv3MG3RA0/r4Lrnd4FmkXZ8
+         8cQAUGeQIvAmQzqX5BdUj8XAoO/QYAvbFW4Y3bhxAg3dNEA9aCBLYVaOyiQ3ng9kFPC+
+         xUnw==
+X-Gm-Message-State: AOJu0YzMcXfYqjsh8BNA/5b0ygdtS0a16OLz8JtsqYd8Lk1cgiMi7T4E
+	Sbk/1rfmzZebCnbMEZnf9VX2qeRoOOYARhBMNPByJVnL59vYemtxcOjaRy6r/N/5/BEyNg==
+X-Google-Smtp-Source: AGHT+IEaaHhwrXfd/Wzouxv8CS+dY6uNWRlhAgaStz1xy0fKpo+oVpgJ/U/jRB1OuOMvYFuzaKBDVsRR
+X-Received: from wmbej13.prod.google.com ([2002:a05:600c:3e8d:b0:43d:1f28:b8bf])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:348e:b0:43d:79:ae1b
+ with SMTP id 5b1f17b1804b1-442d6d3db06mr128986795e9.14.1747077115165; Mon, 12
+ May 2025 12:11:55 -0700 (PDT)
+Date: Mon, 12 May 2025 21:08:46 +0200
 In-Reply-To: <20250512190834.332684-23-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -72,15 +72,15 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250512190834.332684-23-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5484; i=ardb@kernel.org;
- h=from:subject; bh=bVbymWKNm9wWjinbz/J23+LuQcjm/YhHZrH0j/hDw2w=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUPJ3Z0zI1ElwedOVEPJR+c3x17um37Q6kvA+0c57C84P
- 8TJzl3fUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACbCksDI8Cuq0nhSuXncrXUi
- y/52Lcl9J7UoxqJu5fUiB8fcFZ+uSTMyvPj53PGLiZ6uwrwvvC9S958q7Kt92b9//4PqCLkZZWd VGQE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2030; i=ardb@kernel.org;
+ h=from:subject; bh=qYeNzewJfU+/ilrF/EECZk7hASJcT/OB77Eaj+puqno=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUPJ3bO89LCQuM93j1JZ379X39WqK134fljETN2vQvegX
+ 5js5HUdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCJLjzP8D867JiCx7F79VzXN
+ rZ9embRJJ8SVX9j3SmGO5XflsL5GIUaGDi4/g8i6fRu7X99UnneS623eoQs9k59tT/o467Ti7ax IbgA=
 X-Mailer: git-send-email 2.49.0.1045.g170613ef41-goog
-Message-ID: <20250512190834.332684-33-ardb+git@google.com>
-Subject: [RFT PATCH v3 10/21] x86/sev: Use boot SVSM CA for all startup and
- init code
+Message-ID: <20250512190834.332684-34-ardb+git@google.com>
+Subject: [RFT PATCH v3 11/21] x86/boot: Drop redundant RMPADJUST in SEV SVSM
+ presence check
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
@@ -91,177 +91,55 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-To avoid having to reason about whether or not to use the per-CPU SVSM
-calling area when running startup and init code on the boot CPU, reuse
-the boot SVSM calling area as the per-CPU area for CPU #0.
+snp_vmpl will be assigned a non-zero value when executing at a VMPL
+other than 0, and this is inferred from a call to RMPADJUST, which only
+works when running at VMPL0.
 
-This removes the need to make the per-CPU variables and associated state
-in sev_cfg accessible to the startup code once confined.
+This means that testing snp_vmpl is sufficient, and there is no need to
+perform the same check again.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/sev.c      | 13 ------
- arch/x86/boot/startup/sev-startup.c |  7 +--
- arch/x86/coco/sev/core.c            | 47 +++++++++-----------
- arch/x86/include/asm/sev-internal.h | 16 -------
- 4 files changed, 24 insertions(+), 59 deletions(-)
+ arch/x86/boot/compressed/sev.c | 20 +++-----------------
+ 1 file changed, 3 insertions(+), 17 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 04bc39d065ff..fc0119bdc878 100644
+index fc0119bdc878..68fc3d179bbe 100644
 --- a/arch/x86/boot/compressed/sev.c
 +++ b/arch/x86/boot/compressed/sev.c
-@@ -37,19 +37,6 @@ struct ghcb *boot_ghcb;
- 
- #define __BOOT_COMPRESSED
- 
--extern u64 boot_svsm_caa_pa;
--
--struct svsm_ca *svsm_get_caa(void)
--{
--	/* The decompressor is mapped 1:1 so VA == PA */
--	return (struct svsm_ca *)boot_svsm_caa_pa;
--}
--
--u64 svsm_get_caa_pa(void)
--{
--	return boot_svsm_caa_pa;
--}
--
- u8 snp_vmpl;
- 
- /* Include code for early handlers */
-diff --git a/arch/x86/boot/startup/sev-startup.c b/arch/x86/boot/startup/sev-startup.c
-index 7a3ad17d06f6..2e946dab036c 100644
---- a/arch/x86/boot/startup/sev-startup.c
-+++ b/arch/x86/boot/startup/sev-startup.c
-@@ -50,9 +50,6 @@ u64 sev_secrets_pa __ro_after_init;
- /* For early boot SVSM communication */
- struct svsm_ca boot_svsm_ca_page __aligned(PAGE_SIZE);
- 
--DEFINE_PER_CPU(struct svsm_ca *, svsm_caa);
--DEFINE_PER_CPU(u64, svsm_caa_pa);
--
- /*
-  * Nothing shall interrupt this code path while holding the per-CPU
-  * GHCB. The backup GHCB is only for NMIs interrupting this path.
-@@ -167,7 +164,7 @@ void __head early_snp_set_memory_private(unsigned long vaddr, unsigned long padd
- 	  * table.
- 	  */
- 	early_set_pages_state(vaddr, paddr, npages, SNP_PAGE_STATE_PRIVATE,
--			      svsm_get_caa(), svsm_get_caa_pa());
-+			      rip_rel_ptr(&boot_svsm_ca_page), boot_svsm_caa_pa);
- }
- 
- void __head early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
-@@ -184,7 +181,7 @@ void __head early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr
- 
- 	 /* Ask hypervisor to mark the memory pages shared in the RMP table. */
- 	early_set_pages_state(vaddr, paddr, npages, SNP_PAGE_STATE_SHARED,
--			      svsm_get_caa(), svsm_get_caa_pa());
-+			      rip_rel_ptr(&boot_svsm_ca_page), boot_svsm_caa_pa);
- }
- 
- /*
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 39bbbea09c24..fa7fdd11a45b 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -45,6 +45,25 @@
- #include <asm/cpuid.h>
- #include <asm/cmdline.h>
- 
-+DEFINE_PER_CPU(struct svsm_ca *, svsm_caa);
-+DEFINE_PER_CPU(u64, svsm_caa_pa);
-+
-+static inline struct svsm_ca *svsm_get_caa(void)
-+{
-+	if (sev_cfg.use_cas)
-+		return this_cpu_read(svsm_caa);
-+	else
-+		return rip_rel_ptr(&boot_svsm_ca_page);
-+}
-+
-+static inline u64 svsm_get_caa_pa(void)
-+{
-+	if (sev_cfg.use_cas)
-+		return this_cpu_read(svsm_caa_pa);
-+	else
-+		return boot_svsm_caa_pa;
-+}
-+
- /* AP INIT values as documented in the APM2  section "Processor Initialization State" */
- #define AP_INIT_CS_LIMIT		0xffff
- #define AP_INIT_DS_LIMIT		0xffff
-@@ -1207,7 +1226,8 @@ static void __init alloc_runtime_data(int cpu)
- 		struct svsm_ca *caa;
- 
- 		/* Allocate the SVSM CA page if an SVSM is present */
--		caa = memblock_alloc_or_panic(sizeof(*caa), PAGE_SIZE);
-+		caa = cpu ? memblock_alloc_or_panic(sizeof(*caa), PAGE_SIZE)
-+			  : &boot_svsm_ca_page;
- 
- 		per_cpu(svsm_caa, cpu) = caa;
- 		per_cpu(svsm_caa_pa, cpu) = __pa(caa);
-@@ -1261,32 +1281,9 @@ void __init sev_es_init_vc_handling(void)
- 		init_ghcb(cpu);
- 	}
- 
--	/* If running under an SVSM, switch to the per-cpu CA */
--	if (snp_vmpl) {
--		struct svsm_call call = {};
--		unsigned long flags;
+@@ -403,30 +403,16 @@ void sev_enable(struct boot_params *bp)
+ 	 */
+ 	if (sev_status & MSR_AMD64_SEV_SNP_ENABLED) {
+ 		u64 hv_features;
 -		int ret;
--
--		local_irq_save(flags);
+ 
+ 		hv_features = get_hv_features();
+ 		if (!(hv_features & GHCB_HV_FT_SNP))
+ 			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+ 
+ 		/*
+-		 * Enforce running at VMPL0 or with an SVSM.
+-		 *
+-		 * Use RMPADJUST (see the rmpadjust() function for a description of
+-		 * what the instruction does) to update the VMPL1 permissions of a
+-		 * page. If the guest is running at VMPL0, this will succeed. If the
+-		 * guest is running at any other VMPL, this will fail. Linux SNP guests
+-		 * only ever run at a single VMPL level so permission mask changes of a
+-		 * lesser-privileged VMPL are a don't-care.
++		 * Running at VMPL0 is required unless an SVSM is present and
++		 * the hypervisor supports the required SVSM GHCB events.
+ 		 */
+-		ret = rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, 1);
 -
 -		/*
--		 * SVSM_CORE_REMAP_CA call:
--		 *   RAX = 0 (Protocol=0, CallID=0)
--		 *   RCX = New CA GPA
+-		 * Running at VMPL0 is not required if an SVSM is present and the hypervisor
+-		 * supports the required SVSM GHCB events.
 -		 */
--		call.caa = svsm_get_caa();
--		call.rax = SVSM_CORE_CALL(SVSM_CORE_REMAP_CA);
--		call.rcx = this_cpu_read(svsm_caa_pa);
--		ret = svsm_perform_call_protocol(&call);
--		if (ret)
--			panic("Can't remap the SVSM CA, ret=%d, rax_out=0x%llx\n",
--			      ret, call.rax_out);
--
-+	if (snp_vmpl)
- 		sev_cfg.use_cas = true;
- 
--		local_irq_restore(flags);
--	}
--
- 	sev_es_setup_play_dead();
- 
- 	/* Secondary CPUs use the runtime #VC handler */
-diff --git a/arch/x86/include/asm/sev-internal.h b/arch/x86/include/asm/sev-internal.h
-index 08e2cfdef512..3690994275dd 100644
---- a/arch/x86/include/asm/sev-internal.h
-+++ b/arch/x86/include/asm/sev-internal.h
-@@ -63,22 +63,6 @@ DECLARE_PER_CPU(u64, svsm_caa_pa);
- 
- extern u64 boot_svsm_caa_pa;
- 
--static __always_inline struct svsm_ca *svsm_get_caa(void)
--{
--	if (sev_cfg.use_cas)
--		return this_cpu_read(svsm_caa);
--	else
--		return rip_rel_ptr(&boot_svsm_ca_page);
--}
--
--static __always_inline u64 svsm_get_caa_pa(void)
--{
--	if (sev_cfg.use_cas)
--		return this_cpu_read(svsm_caa_pa);
--	else
--		return boot_svsm_caa_pa;
--}
--
- enum es_result verify_exception_info(struct ghcb *ghcb, struct es_em_ctxt *ctxt);
- void vc_forward_exception(struct es_em_ctxt *ctxt);
+-		if (ret &&
+-		    !(snp_vmpl && (hv_features & GHCB_HV_FT_SNP_MULTI_VMPL)))
++		if (snp_vmpl > 0 && !(hv_features & GHCB_HV_FT_SNP_MULTI_VMPL))
+ 			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
+ 	}
  
 -- 
 2.49.0.1045.g170613ef41-goog
