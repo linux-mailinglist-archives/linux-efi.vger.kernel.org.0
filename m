@@ -1,68 +1,68 @@
-Return-Path: <linux-efi+bounces-3660-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3661-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED050AB448E
-	for <lists+linux-efi@lfdr.de>; Mon, 12 May 2025 21:12:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F09AB448F
+	for <lists+linux-efi@lfdr.de>; Mon, 12 May 2025 21:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E3F116EB06
-	for <lists+linux-efi@lfdr.de>; Mon, 12 May 2025 19:12:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5D48465583
+	for <lists+linux-efi@lfdr.de>; Mon, 12 May 2025 19:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22952298CC9;
-	Mon, 12 May 2025 19:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A7A298CD2;
+	Mon, 12 May 2025 19:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a7ilOvTL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3+8XNM5f"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78986298CAB
-	for <linux-efi@vger.kernel.org>; Mon, 12 May 2025 19:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86F5298277
+	for <linux-efi@vger.kernel.org>; Mon, 12 May 2025 19:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747077107; cv=none; b=RRFnKqBSdJs/ixz80/iaCnGL8VhZO8KL77N/gzu02nF/gwhux34UbXmzDoXz8JkDvnERydHu9Vo56zCy6f3WknW6cWco/bQdi4ZRzMkyNVCPrQQYb9vCu6pe9GUBkE35XYTFI6uS4ilYIlcIHx1MbaqIvA334bye5FeoQsPjnag=
+	t=1747077108; cv=none; b=FGqxZbq4MZSiWv7vr1y/JytE3FkQl+WFVzhVkp+fP3FWgsfanWHEuAs4jPs7Cb7o7yLW/Up5w8zePLNj1CXb2uo7UxaPeMjwB26+edJXeOwJSG1vLq1xi5CmyqJNm0IotkNVUn0Wr4c22gFZZj95Fu85BEAUNfllMtNlboOdlmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747077107; c=relaxed/simple;
-	bh=EsOakeC/Phz2KSj3ueqUKzDoUxs7glVALXUQVB7i3bM=;
+	s=arc-20240116; t=1747077108; c=relaxed/simple;
+	bh=RRnMIw5g/jrAb0W13Erg+CyjBnpxxydYbxaGL2P/YX4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YCDsDeXkmnDqaAPcdLCAT2qEzZPWtP7FfYMVn9ASnJIIvt0RUdUtyrRrPIkqabGWuELiIe2peHcEzxzY6ayw157oPT9YaKBlv9zouTgHdtdBwqZifGqpYGhTphAnlXHi5lCTHcebX4B4ehlirt2tzZdw6tYm5fURbPQnLaj8Lnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a7ilOvTL; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=YwoM2FBWCv8lNuh2fjW+jbm1Ft7zPloIVYynCDdopWrgFJdZ0I/Qxnksy8KCVb3ewi6AJ/XXjBSQjXn+VUtBKSCZi/LXtHO4DF4ovdMCMh+5FyH271kYuCJddwvZi1QdnzXP85YCo9NsgGD8mQotP5SLNxjmGRDqKUdFN8aCFec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3+8XNM5f; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf5196c25so23815995e9.0
-        for <linux-efi@vger.kernel.org>; Mon, 12 May 2025 12:11:44 -0700 (PDT)
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf44b66f7so27259115e9.1
+        for <linux-efi@vger.kernel.org>; Mon, 12 May 2025 12:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747077103; x=1747681903; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1747077105; x=1747681905; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/r+WMXBO/gfDlqsyugcImJrsAq/d8Zz4Wr6G5LEn+9E=;
-        b=a7ilOvTLhgq1D0pUUXX4FDj+JrH3n+erzKFL0RrESWo29YnROTDfc668JZcbeM6gsx
-         zI1EPLr/fpChtgyw0kUbnO8/mrhYQ9Ssg14QEs6rw7dHggtU1gA8ZwZvoFTQe640Yvcs
-         8Vrj8yuk5a8B3tomNQ7yfgQqlPsChhjzG5DHW6VBW4NlF3/91u2QjU5H3hoAJ1OYFXwO
-         3WP1uuOiU7ZZF1RSgXoEF8e4cTCOn0bLtHkzie6gcyP3NQaLezH85c38dWlHsJa2XvcF
-         4iLgMLWQrZEbmO57jQe17PJWSDz9+wACIt2Yc3TBC73IV4CVv3SfWndDwAQk6HR1Co8O
-         ZwAg==
+        bh=71xIGwXHz9m/rl1b5tE1mHXI8wzc1cOO1kDEHCl0Ovk=;
+        b=3+8XNM5fO0HVrV6nUuPA3EILKQqkWJiq4sgzCSreX1zAp26zdB2jCj9I8ggGMB7paO
+         UYk3riMN1meluBLIMy/ay12+AVZxfzAHkauT7ZBO3iPdORPVl7L81BZVuVr+iA8feg1r
+         jVQGv3/U2zxilnKSheyxLJ8JCg788PM1/LpMjm3hnTCzYrH9CCRxHFuMsCXWII9Ah85u
+         yMUK9bshQTHKpQFD4h3A5jOqZserBztVhopLjXiR1ehNpluVlcmUasqYBNWAxoYaDX8F
+         CAwMBrahYOw6k59App4JS2z8iJXJ3TVd4e8YDlbuxksLuSTDXErNrkF7hCam/5jlv1Hz
+         2xEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747077103; x=1747681903;
+        d=1e100.net; s=20230601; t=1747077105; x=1747681905;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/r+WMXBO/gfDlqsyugcImJrsAq/d8Zz4Wr6G5LEn+9E=;
-        b=KLYFD2svh3uQzm7kBhkznZMqj8dSKmHHJc/hl96Y95bVBUcfxeTBxGG6KKmP81fSDc
-         SA8mHiln777q20cw2h/68+rJNSOg5DNDRLEBpRGnMEWssohe73YdocM9eTGPqzjLraXM
-         N0x0PhM9gS8TvkFN1MMMcbJsXGG/lOvYJJptaKEbzZYp3FYMkIZnzal4TD3CsKHBdH/v
-         ILF3XQf86jQAK2ZBlv7YoGavwcPQawvvn6p16KhjzgN9E45/dwDU8fLzYB9wjaQP24Yb
-         E/C4qjkj2AgUOIsHkBxw3bTMMJyK5SuboLZuQiKb/QZl1RS1FVHhgASbmxC/zdXx8ZZW
-         xpDw==
-X-Gm-Message-State: AOJu0YxMXhSIfy7KBHo4tqPdVUWI30+83P+fz553Z3RG4zzhkskO/a1u
-	p4Zzr+YJxm5a57TSkk8nPzbnIljme+DR6sg5fEdTP97oaKn/pCuG6M0WFgBFvGCQeLh1dw==
-X-Google-Smtp-Source: AGHT+IHWFoadMMw6DJrqhZ8yK4ycBZLMVndhAccvxLZMZpJp7mm9Gy7aW2fCl2/ASDbCWfa0yBkM3ymx
-X-Received: from wmbhj14.prod.google.com ([2002:a05:600c:528e:b0:43b:d6ca:6dd3])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4e90:b0:43c:f050:fed3
- with SMTP id 5b1f17b1804b1-442d6d3e35amr95287015e9.11.1747077102857; Mon, 12
- May 2025 12:11:42 -0700 (PDT)
-Date: Mon, 12 May 2025 21:08:40 +0200
+        bh=71xIGwXHz9m/rl1b5tE1mHXI8wzc1cOO1kDEHCl0Ovk=;
+        b=tgSZJFE7FfwITeVOnHxxN6xB0Iecebs/p27cLNbY7yHK0M2/VNoZNxb+a+apjH1aPT
+         zTXlQ1M1pXry/LlvF+ywHuHmrmclN1eUlYj12CIfdHHcaexdZWn4ZqA2iYk/aqwQEVT7
+         +IYG7DBMYykbqU8e7+16GHpToB0QmY1KLWENybdag6AuaNaXLG7Sm+p5hdk2ONQwQdl/
+         RkaSij0O1slMbJiUlCRIRWi+7jpipfUDmgHUmXXY+2fB3k6X27sxD5KmI7i5WprQCesT
+         wRwTIAL6TmZdh3FDZe7bEuAaZRaw7hKQmJ/GjnffuUKaoviixTs80q0YQVBxu92L0lrC
+         JvBw==
+X-Gm-Message-State: AOJu0YwK6z9hUnoijLM1MEg1EbHyzh0mEWM2LHQ65tGaVobnYLdyFsB4
+	5lSIQuin6z8jQr4sXVY5FPHCKQdh1waEV3jBlFvJDc9IgeYXogATDgWIHcUEPWO5UYToYw==
+X-Google-Smtp-Source: AGHT+IFFqCt+fsBqPngsdQyiVskwd9ConFlbUeF25rdan8MOxzENvfrbYyiCj4mVU1L3lcsff9F8yZql
+X-Received: from wrbcc8.prod.google.com ([2002:a5d:5c08:0:b0:39a:be1a:5df9])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2dc4:b0:39c:dfa:c3de
+ with SMTP id ffacd0b85a97d-3a1f64a383dmr11163957f8f.47.1747077104992; Mon, 12
+ May 2025 12:11:44 -0700 (PDT)
+Date: Mon, 12 May 2025 21:08:41 +0200
 In-Reply-To: <20250512190834.332684-23-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -72,15 +72,15 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250512190834.332684-23-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20707; i=ardb@kernel.org;
- h=from:subject; bh=xJuAohr1Yjdxojosm4HIflLT3rqnlRRJHuN1gXHuuDw=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUPJ3e7T4c3Oef5X3ZfbVF+asCHcq+Pnuv6kdTyLkgM2R
- 3n1uC3uKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNZFcPIsFzXc87z4yxP6jdE
- CxyYLmq0e4rj6Yu9KyeZpvxaGqN8ZAPDP7UT3g090ya4SQQ8jP3t7tP1Zc7JVo0DtefL+Fa1flY 6yAcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6919; i=ardb@kernel.org;
+ h=from:subject; bh=bBn+bWoiPv9ap4MhobATz6OEPk63e0DgR5JHkfb8XMQ=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUPJ3WHqFU2915K2656WWP98v+/q7/p5s3rlMyyLov8rS
+ QZc42PuKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABP518/IcP/zIeVrPTfDVUI3
+ XHM/tvDCk4N35K+uv2b8U+Cxw6vAFS8YGd4u3205lU+KR0X7a5TeoZN3hbY5JizO6f+6bFdzNdu jUCYA
 X-Mailer: git-send-email 2.49.0.1045.g170613ef41-goog
-Message-ID: <20250512190834.332684-28-ardb+git@google.com>
-Subject: [RFT PATCH v3 05/21] x86/sev: Move GHCB page based HV communication
- out of startup code
+Message-ID: <20250512190834.332684-29-ardb+git@google.com>
+Subject: [RFT PATCH v3 06/21] x86/sev: Avoid global variable to store virtual
+ address of SVSM area
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
@@ -91,695 +91,190 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Both the decompressor and the core kernel implement an early #VC
-handler, which only deals with CPUID instructions, and full featured
-one, which can handle any #VC exception.
+The boottime SVSM calling area is used both by the startup code running
+from a 1:1 mapping, and potentially later on running from the ordinary
+kernel mapping.
 
-The former communicates with the hypervisor using the MSR based
-protocol, whereas the latter uses a shared GHCB page, which is
-configured a bit later during the boot, when the kernel runs from its
-ordinary virtual mapping, rather than the 1:1 mapping that the startup
-code uses.
+This SVSM calling area is statically allocated, and so its physical
+address doesn't change. However, its virtual address depends on the
+calling context (1:1 mapping or kernel virtual mapping), and even though
+the variable that holds the virtual address of this calling area gets
+updated from 1:1 address to kernel address during the boot, it is hard
+to reason about why this is guaranteed to be safe.
 
-Accessing this shared GHCB page from the core kernel's startup code is
-problematic, because it involves converting the GHCB address provided by
-the caller to a physical address. In the startup code, virtual to
-physical address translations are problematic, given that the virtual
-address might be a 1:1 mapped address, and such translations should
-therefore be avoided.
-
-This means that exposing startup code dealing with the GHCB to callers
-that execute from the ordinary kernel virtual mapping should be avoided
-too. So move all GHCB page based communication out of the startup code,
-now that all communication occurring before the kernel virtual mapping
-is up relies on the MSR protocol only.
+So instead, take the RIP-relative address of the boottime SVSM calling
+area whenever its virtual address is required, and only use a global
+variable for the physical address.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/sev-handle-vc.c |   3 +
- arch/x86/boot/startup/sev-shared.c       | 190 +-------------------
- arch/x86/boot/startup/sev-startup.c      |  42 -----
- arch/x86/coco/sev/core.c                 |  76 ++++++++
- arch/x86/coco/sev/vc-handle.c            |   2 +
- arch/x86/coco/sev/vc-shared.c            |  94 ++++++++++
- arch/x86/include/asm/sev-internal.h      |   7 +-
- arch/x86/include/asm/sev.h               |  59 +++++-
- 8 files changed, 236 insertions(+), 237 deletions(-)
+ arch/x86/boot/compressed/sev.c      | 5 ++---
+ arch/x86/boot/startup/sev-shared.c  | 6 ------
+ arch/x86/boot/startup/sev-startup.c | 4 ++--
+ arch/x86/coco/sev/core.c            | 9 ---------
+ arch/x86/include/asm/sev-internal.h | 3 +--
+ arch/x86/include/asm/sev.h          | 2 --
+ arch/x86/mm/mem_encrypt_amd.c       | 6 ------
+ 7 files changed, 5 insertions(+), 30 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/sev-handle-vc.c b/arch/x86/boot/compressed/sev-handle-vc.c
-index 89dd02de2a0f..7530ad8b768b 100644
---- a/arch/x86/boot/compressed/sev-handle-vc.c
-+++ b/arch/x86/boot/compressed/sev-handle-vc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include "misc.h"
-+#include "error.h"
- #include "sev.h"
- 
- #include <linux/kernel.h>
-@@ -14,6 +15,8 @@
- #include <asm/fpu/xcr.h>
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 2141936daba7..70c3f4fc4349 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -37,12 +37,12 @@ struct ghcb *boot_ghcb;
  
  #define __BOOT_COMPRESSED
-+#undef __init
-+#define __init
  
- /* Basic instruction decoding support needed */
- #include "../../lib/inat.c"
+-extern struct svsm_ca *boot_svsm_caa;
+ extern u64 boot_svsm_caa_pa;
+ 
+ struct svsm_ca *svsm_get_caa(void)
+ {
+-	return boot_svsm_caa;
++	/* The decompressor is mapped 1:1 so VA == PA */
++	return (struct svsm_ca *)boot_svsm_caa_pa;
+ }
+ 
+ u64 svsm_get_caa_pa(void)
+@@ -530,7 +530,6 @@ bool early_is_sevsnp_guest(void)
+ 
+ 			/* Obtain the address of the calling area to use */
+ 			boot_rdmsr(MSR_SVSM_CAA, &m);
+-			boot_svsm_caa = (void *)m.q;
+ 			boot_svsm_caa_pa = m.q;
+ 
+ 			/*
 diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/startup/sev-shared.c
-index 9c8dd6bfe833..7884884c0898 100644
+index 7884884c0898..9e0573aa29c1 100644
 --- a/arch/x86/boot/startup/sev-shared.c
 +++ b/arch/x86/boot/startup/sev-shared.c
-@@ -13,12 +13,9 @@
- 
- #ifndef __BOOT_COMPRESSED
- #define error(v)			pr_err(v)
--#define has_cpuflag(f)			boot_cpu_has(f)
- #else
- #undef WARN
- #define WARN(condition, format...) (!!(condition))
--#undef vc_forward_exception
--#define vc_forward_exception(c)		panic("SNP: Hypervisor requested exception\n")
- #endif
+@@ -26,7 +26,6 @@
+  *   early boot, both with identity mapped virtual addresses and proper kernel
+  *   virtual addresses.
+  */
+-struct svsm_ca *boot_svsm_caa __ro_after_init;
+ u64 boot_svsm_caa_pa __ro_after_init;
  
  /*
-@@ -39,7 +36,7 @@ u64 boot_svsm_caa_pa __ro_after_init;
-  *
-  * GHCB protocol version negotiated with the hypervisor.
-  */
--static u16 ghcb_version __ro_after_init;
-+u16 ghcb_version __ro_after_init;
+@@ -648,11 +647,6 @@ static bool __head svsm_setup_ca(const struct cc_blob_sev_info *cc_info,
+ 	if (caa & (PAGE_SIZE - 1))
+ 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SVSM_CAA);
  
- /* Copy of the SNP firmware's CPUID page. */
- static struct snp_cpuid_table cpuid_table_copy __ro_after_init;
-@@ -54,16 +51,6 @@ static u32 cpuid_std_range_max __ro_after_init;
- static u32 cpuid_hyp_range_max __ro_after_init;
- static u32 cpuid_ext_range_max __ro_after_init;
- 
--bool __init sev_es_check_cpu_features(void)
--{
--	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
--		error("RDRAND instruction not supported - no trusted source of randomness available\n");
--		return false;
--	}
--
--	return true;
--}
--
- void __head __noreturn
- sev_es_terminate(unsigned int set, unsigned int reason)
- {
-@@ -100,123 +87,7 @@ u64 get_hv_features(void)
- 	return GHCB_MSR_HV_FT_RESP_VAL(val);
- }
- 
--void snp_register_ghcb_early(unsigned long paddr)
--{
--	unsigned long pfn = paddr >> PAGE_SHIFT;
--	u64 val;
--
--	sev_es_wr_ghcb_msr(GHCB_MSR_REG_GPA_REQ_VAL(pfn));
--	VMGEXIT();
--
--	val = sev_es_rd_ghcb_msr();
--
--	/* If the response GPA is not ours then abort the guest */
--	if ((GHCB_RESP_CODE(val) != GHCB_MSR_REG_GPA_RESP) ||
--	    (GHCB_MSR_REG_GPA_RESP_VAL(val) != pfn))
--		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_REGISTER);
--}
--
--bool sev_es_negotiate_protocol(void)
--{
--	u64 val;
--
--	/* Do the GHCB protocol version negotiation */
--	sev_es_wr_ghcb_msr(GHCB_MSR_SEV_INFO_REQ);
--	VMGEXIT();
--	val = sev_es_rd_ghcb_msr();
--
--	if (GHCB_MSR_INFO(val) != GHCB_MSR_SEV_INFO_RESP)
--		return false;
--
--	if (GHCB_MSR_PROTO_MAX(val) < GHCB_PROTOCOL_MIN ||
--	    GHCB_MSR_PROTO_MIN(val) > GHCB_PROTOCOL_MAX)
--		return false;
--
--	ghcb_version = min_t(size_t, GHCB_MSR_PROTO_MAX(val), GHCB_PROTOCOL_MAX);
--
--	return true;
--}
--
--static enum es_result verify_exception_info(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
--{
--	u32 ret;
--
--	ret = ghcb->save.sw_exit_info_1 & GENMASK_ULL(31, 0);
--	if (!ret)
--		return ES_OK;
--
--	if (ret == 1) {
--		u64 info = ghcb->save.sw_exit_info_2;
--		unsigned long v = info & SVM_EVTINJ_VEC_MASK;
--
--		/* Check if exception information from hypervisor is sane. */
--		if ((info & SVM_EVTINJ_VALID) &&
--		    ((v == X86_TRAP_GP) || (v == X86_TRAP_UD)) &&
--		    ((info & SVM_EVTINJ_TYPE_MASK) == SVM_EVTINJ_TYPE_EXEPT)) {
--			ctxt->fi.vector = v;
--
--			if (info & SVM_EVTINJ_VALID_ERR)
--				ctxt->fi.error_code = info >> 32;
--
--			return ES_EXCEPTION;
--		}
--	}
--
--	return ES_VMM_ERROR;
--}
--
--static inline int svsm_process_result_codes(struct svsm_call *call)
--{
--	switch (call->rax_out) {
--	case SVSM_SUCCESS:
--		return 0;
--	case SVSM_ERR_INCOMPLETE:
--	case SVSM_ERR_BUSY:
--		return -EAGAIN;
--	default:
--		return -EINVAL;
--	}
--}
--
--/*
-- * Issue a VMGEXIT to call the SVSM:
-- *   - Load the SVSM register state (RAX, RCX, RDX, R8 and R9)
-- *   - Set the CA call pending field to 1
-- *   - Issue VMGEXIT
-- *   - Save the SVSM return register state (RAX, RCX, RDX, R8 and R9)
-- *   - Perform atomic exchange of the CA call pending field
-- *
-- *   - See the "Secure VM Service Module for SEV-SNP Guests" specification for
-- *     details on the calling convention.
-- *     - The calling convention loosely follows the Microsoft X64 calling
-- *       convention by putting arguments in RCX, RDX, R8 and R9.
-- *     - RAX specifies the SVSM protocol/callid as input and the return code
-- *       as output.
-- */
--static __always_inline void svsm_issue_call(struct svsm_call *call, u8 *pending)
--{
--	register unsigned long rax asm("rax") = call->rax;
--	register unsigned long rcx asm("rcx") = call->rcx;
--	register unsigned long rdx asm("rdx") = call->rdx;
--	register unsigned long r8  asm("r8")  = call->r8;
--	register unsigned long r9  asm("r9")  = call->r9;
--
--	call->caa->call_pending = 1;
--
--	asm volatile("rep; vmmcall\n\t"
--		     : "+r" (rax), "+r" (rcx), "+r" (rdx), "+r" (r8), "+r" (r9)
--		     : : "memory");
--
--	*pending = xchg(&call->caa->call_pending, *pending);
--
--	call->rax_out = rax;
--	call->rcx_out = rcx;
--	call->rdx_out = rdx;
--	call->r8_out  = r8;
--	call->r9_out  = r9;
--}
--
--static int svsm_perform_msr_protocol(struct svsm_call *call)
-+int svsm_perform_msr_protocol(struct svsm_call *call)
- {
- 	u8 pending = 0;
- 	u64 val, resp;
-@@ -247,63 +118,6 @@ static int svsm_perform_msr_protocol(struct svsm_call *call)
- 	return svsm_process_result_codes(call);
- }
- 
--static int svsm_perform_ghcb_protocol(struct ghcb *ghcb, struct svsm_call *call)
--{
--	struct es_em_ctxt ctxt;
--	u8 pending = 0;
--
--	vc_ghcb_invalidate(ghcb);
--
 -	/*
--	 * Fill in protocol and format specifiers. This can be called very early
--	 * in the boot, so use rip-relative references as needed.
+-	 * The CA is identity mapped when this routine is called, both by the
+-	 * decompressor code and the early kernel code.
 -	 */
--	ghcb->protocol_version = ghcb_version;
--	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
--
--	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_SNP_RUN_VMPL);
--	ghcb_set_sw_exit_info_1(ghcb, 0);
--	ghcb_set_sw_exit_info_2(ghcb, 0);
--
--	sev_es_wr_ghcb_msr(__pa(ghcb));
--
--	svsm_issue_call(call, &pending);
--
--	if (pending)
--		return -EINVAL;
--
--	switch (verify_exception_info(ghcb, &ctxt)) {
--	case ES_OK:
--		break;
--	case ES_EXCEPTION:
--		vc_forward_exception(&ctxt);
--		fallthrough;
--	default:
--		return -EINVAL;
--	}
--
--	return svsm_process_result_codes(call);
--}
--
--enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
--				   struct es_em_ctxt *ctxt,
--				   u64 exit_code, u64 exit_info_1,
--				   u64 exit_info_2)
--{
--	/* Fill in protocol and format specifiers */
--	ghcb->protocol_version = ghcb_version;
--	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
--
--	ghcb_set_sw_exit_code(ghcb, exit_code);
--	ghcb_set_sw_exit_info_1(ghcb, exit_info_1);
--	ghcb_set_sw_exit_info_2(ghcb, exit_info_2);
--
--	sev_es_wr_ghcb_msr(__pa(ghcb));
--	VMGEXIT();
--
--	return verify_exception_info(ghcb, ctxt);
--}
--
- static int __sev_cpuid_hv(u32 fn, int reg_idx, u32 *reg)
- {
- 	u64 val;
+-	boot_svsm_caa = (struct svsm_ca *)caa;
+ 	boot_svsm_caa_pa = caa;
+ 
+ 	/* Advertise the SVSM presence via CPUID. */
 diff --git a/arch/x86/boot/startup/sev-startup.c b/arch/x86/boot/startup/sev-startup.c
-index 1f928e8264bb..0000885dc24c 100644
+index 0000885dc24c..24e7082e1a50 100644
 --- a/arch/x86/boot/startup/sev-startup.c
 +++ b/arch/x86/boot/startup/sev-startup.c
-@@ -41,15 +41,6 @@
- #include <asm/cpuid.h>
- #include <asm/cmdline.h>
+@@ -252,6 +252,7 @@ static __head struct cc_blob_sev_info *find_cc_blob(struct boot_params *bp)
  
--/* For early boot hypervisor communication in SEV-ES enabled guests */
--struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
--
--/*
-- * Needs to be in the .data section because we need it NULL before bss is
-- * cleared
-- */
--struct ghcb *boot_ghcb __section(".data");
--
- /* Bitmap of SEV features supported by the hypervisor */
- u64 sev_hv_features __ro_after_init;
+ static __head void svsm_setup(struct cc_blob_sev_info *cc_info)
+ {
++	struct snp_secrets_page *secrets = (void *)cc_info->secrets_phys;
+ 	struct svsm_call call = {};
+ 	int ret;
+ 	u64 pa;
+@@ -280,7 +281,7 @@ static __head void svsm_setup(struct cc_blob_sev_info *cc_info)
+ 	 *   RAX = 0 (Protocol=0, CallID=0)
+ 	 *   RCX = New CA GPA
+ 	 */
+-	call.caa = svsm_get_caa();
++	call.caa = (struct svsm_ca *)secrets->svsm_caa;
+ 	call.rax = SVSM_CORE_CALL(SVSM_CORE_REMAP_CA);
+ 	call.rcx = pa;
+ 	do {
+@@ -289,7 +290,6 @@ static __head void svsm_setup(struct cc_blob_sev_info *cc_info)
+ 	if (ret)
+ 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SVSM_CA_REMAP_FAIL);
  
-@@ -139,39 +130,6 @@ noinstr void __sev_put_ghcb(struct ghcb_state *state)
- 	}
+-	boot_svsm_caa = (struct svsm_ca *)pa;
+ 	boot_svsm_caa_pa = pa;
  }
  
--int svsm_perform_call_protocol(struct svsm_call *call)
--{
--	struct ghcb_state state;
--	unsigned long flags;
--	struct ghcb *ghcb;
--	int ret;
--
--	/*
--	 * This can be called very early in the boot, use native functions in
--	 * order to avoid paravirt issues.
--	 */
--	flags = native_local_irq_save();
--
--	if (sev_cfg.ghcbs_initialized)
--		ghcb = __sev_get_ghcb(&state);
--	else if (boot_ghcb)
--		ghcb = boot_ghcb;
--	else
--		ghcb = NULL;
--
--	do {
--		ret = ghcb ? svsm_perform_ghcb_protocol(ghcb, call)
--			   : svsm_perform_msr_protocol(call);
--	} while (ret == -EAGAIN);
--
--	if (sev_cfg.ghcbs_initialized)
--		__sev_put_ghcb(&state);
--
--	native_local_irq_restore(flags);
--
--	return ret;
--}
--
- void __head
- early_set_pages_state(unsigned long vaddr, unsigned long paddr,
- 		      unsigned long npages, enum psc_op op)
 diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index ac400525de73..310d867be4dc 100644
+index 310d867be4dc..0e0ddf4c92aa 100644
 --- a/arch/x86/coco/sev/core.c
 +++ b/arch/x86/coco/sev/core.c
-@@ -100,6 +100,15 @@ DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
- u8 snp_vmpl __ro_after_init;
- EXPORT_SYMBOL_GPL(snp_vmpl);
- 
-+/* For early boot hypervisor communication in SEV-ES enabled guests */
-+static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
-+
-+/*
-+ * Needs to be in the .data section because we need it NULL before bss is
-+ * cleared
-+ */
-+struct ghcb *boot_ghcb __section(".data");
-+
- static u64 __init get_snp_jump_table_addr(void)
- {
- 	struct snp_secrets_page *secrets;
-@@ -153,6 +162,73 @@ static u64 __init get_jump_table_addr(void)
- 	return ret;
+@@ -1496,15 +1496,6 @@ void sev_show_status(void)
+ 	pr_cont("\n");
  }
  
-+static int svsm_perform_ghcb_protocol(struct ghcb *ghcb, struct svsm_call *call)
-+{
-+	struct es_em_ctxt ctxt;
-+	u8 pending = 0;
-+
-+	vc_ghcb_invalidate(ghcb);
-+
-+	/*
-+	 * Fill in protocol and format specifiers. This can be called very early
-+	 * in the boot, so use rip-relative references as needed.
-+	 */
-+	ghcb->protocol_version = ghcb_version;
-+	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
-+
-+	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_SNP_RUN_VMPL);
-+	ghcb_set_sw_exit_info_1(ghcb, 0);
-+	ghcb_set_sw_exit_info_2(ghcb, 0);
-+
-+	sev_es_wr_ghcb_msr(__pa(ghcb));
-+
-+	svsm_issue_call(call, &pending);
-+
-+	if (pending)
-+		return -EINVAL;
-+
-+	switch (verify_exception_info(ghcb, &ctxt)) {
-+	case ES_OK:
-+		break;
-+	case ES_EXCEPTION:
-+		vc_forward_exception(&ctxt);
-+		fallthrough;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return svsm_process_result_codes(call);
-+}
-+
-+static int svsm_perform_call_protocol(struct svsm_call *call)
-+{
-+	struct ghcb_state state;
-+	unsigned long flags;
-+	struct ghcb *ghcb;
-+	int ret;
-+
-+	flags = native_local_irq_save();
-+
-+	if (sev_cfg.ghcbs_initialized)
-+		ghcb = __sev_get_ghcb(&state);
-+	else if (boot_ghcb)
-+		ghcb = boot_ghcb;
-+	else
-+		ghcb = NULL;
-+
-+	do {
-+		ret = ghcb ? svsm_perform_ghcb_protocol(ghcb, call)
-+			   : svsm_perform_msr_protocol(call);
-+	} while (ret == -EAGAIN);
-+
-+	if (sev_cfg.ghcbs_initialized)
-+		__sev_put_ghcb(&state);
-+
-+	native_local_irq_restore(flags);
-+
-+	return ret;
-+}
-+
- static inline void __pval_terminate(u64 pfn, bool action, unsigned int page_size,
- 				    int ret, u64 svsm_ret)
- {
-diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-index b4895c648024..3cadaa46b9d7 100644
---- a/arch/x86/coco/sev/vc-handle.c
-+++ b/arch/x86/coco/sev/vc-handle.c
-@@ -344,6 +344,8 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
- }
- 
- #define sev_printk(fmt, ...)		printk(fmt, ##__VA_ARGS__)
-+#define error(v)
-+#define has_cpuflag(f)			boot_cpu_has(f)
- 
- #include "vc-shared.c"
- 
-diff --git a/arch/x86/coco/sev/vc-shared.c b/arch/x86/coco/sev/vc-shared.c
-index b4688f69102e..9b01c9ad81be 100644
---- a/arch/x86/coco/sev/vc-shared.c
-+++ b/arch/x86/coco/sev/vc-shared.c
-@@ -409,6 +409,53 @@ static enum es_result vc_handle_ioio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- 	return ret;
- }
- 
-+enum es_result verify_exception_info(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
-+{
-+	u32 ret;
-+
-+	ret = ghcb->save.sw_exit_info_1 & GENMASK_ULL(31, 0);
-+	if (!ret)
-+		return ES_OK;
-+
-+	if (ret == 1) {
-+		u64 info = ghcb->save.sw_exit_info_2;
-+		unsigned long v = info & SVM_EVTINJ_VEC_MASK;
-+
-+		/* Check if exception information from hypervisor is sane. */
-+		if ((info & SVM_EVTINJ_VALID) &&
-+		    ((v == X86_TRAP_GP) || (v == X86_TRAP_UD)) &&
-+		    ((info & SVM_EVTINJ_TYPE_MASK) == SVM_EVTINJ_TYPE_EXEPT)) {
-+			ctxt->fi.vector = v;
-+
-+			if (info & SVM_EVTINJ_VALID_ERR)
-+				ctxt->fi.error_code = info >> 32;
-+
-+			return ES_EXCEPTION;
-+		}
-+	}
-+
-+	return ES_VMM_ERROR;
-+}
-+
-+enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
-+				   struct es_em_ctxt *ctxt,
-+				   u64 exit_code, u64 exit_info_1,
-+				   u64 exit_info_2)
-+{
-+	/* Fill in protocol and format specifiers */
-+	ghcb->protocol_version = ghcb_version;
-+	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
-+
-+	ghcb_set_sw_exit_code(ghcb, exit_code);
-+	ghcb_set_sw_exit_info_1(ghcb, exit_info_1);
-+	ghcb_set_sw_exit_info_2(ghcb, exit_info_2);
-+
-+	sev_es_wr_ghcb_msr(__pa(ghcb));
-+	VMGEXIT();
-+
-+	return verify_exception_info(ghcb, ctxt);
-+}
-+
- static int __sev_cpuid_hv_ghcb(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
- {
- 	u32 cr4 = native_read_cr4();
-@@ -549,3 +596,50 @@ static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
- 
- 	return ES_OK;
- }
-+
-+void snp_register_ghcb_early(unsigned long paddr)
-+{
-+	unsigned long pfn = paddr >> PAGE_SHIFT;
-+	u64 val;
-+
-+	sev_es_wr_ghcb_msr(GHCB_MSR_REG_GPA_REQ_VAL(pfn));
-+	VMGEXIT();
-+
-+	val = sev_es_rd_ghcb_msr();
-+
-+	/* If the response GPA is not ours then abort the guest */
-+	if ((GHCB_RESP_CODE(val) != GHCB_MSR_REG_GPA_RESP) ||
-+	    (GHCB_MSR_REG_GPA_RESP_VAL(val) != pfn))
-+		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_REGISTER);
-+}
-+
-+bool __init sev_es_check_cpu_features(void)
-+{
-+	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
-+		error("RDRAND instruction not supported - no trusted source of randomness available\n");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+bool sev_es_negotiate_protocol(void)
-+{
-+	u64 val;
-+
-+	/* Do the GHCB protocol version negotiation */
-+	sev_es_wr_ghcb_msr(GHCB_MSR_SEV_INFO_REQ);
-+	VMGEXIT();
-+	val = sev_es_rd_ghcb_msr();
-+
-+	if (GHCB_MSR_INFO(val) != GHCB_MSR_SEV_INFO_RESP)
-+		return false;
-+
-+	if (GHCB_MSR_PROTO_MAX(val) < GHCB_PROTOCOL_MIN ||
-+	    GHCB_MSR_PROTO_MIN(val) > GHCB_PROTOCOL_MAX)
-+		return false;
-+
-+	ghcb_version = min_t(size_t, GHCB_MSR_PROTO_MAX(val), GHCB_PROTOCOL_MAX);
-+
-+	return true;
-+}
+-void __init snp_update_svsm_ca(void)
+-{
+-	if (!snp_vmpl)
+-		return;
+-
+-	/* Update the CAA to a proper kernel address */
+-	boot_svsm_caa = &boot_svsm_ca_page;
+-}
+-
+ #ifdef CONFIG_SYSFS
+ static ssize_t vmpl_show(struct kobject *kobj,
+ 			 struct kobj_attribute *attr, char *buf)
 diff --git a/arch/x86/include/asm/sev-internal.h b/arch/x86/include/asm/sev-internal.h
-index b7232081f8f7..4269d9dbefdf 100644
+index 4269d9dbefdf..e3b203c280aa 100644
 --- a/arch/x86/include/asm/sev-internal.h
 +++ b/arch/x86/include/asm/sev-internal.h
-@@ -2,7 +2,6 @@
+@@ -60,7 +60,6 @@ void early_set_pages_state(unsigned long vaddr, unsigned long paddr,
+ DECLARE_PER_CPU(struct svsm_ca *, svsm_caa);
+ DECLARE_PER_CPU(u64, svsm_caa_pa);
  
- #define DR7_RESET_VALUE        0x400
+-extern struct svsm_ca *boot_svsm_caa;
+ extern u64 boot_svsm_caa_pa;
  
--extern struct ghcb boot_ghcb_page;
- extern u64 sev_hv_features;
- extern u64 sev_secrets_pa;
- 
-@@ -80,7 +79,8 @@ static __always_inline u64 svsm_get_caa_pa(void)
- 		return boot_svsm_caa_pa;
+ static __always_inline struct svsm_ca *svsm_get_caa(void)
+@@ -68,7 +67,7 @@ static __always_inline struct svsm_ca *svsm_get_caa(void)
+ 	if (sev_cfg.use_cas)
+ 		return this_cpu_read(svsm_caa);
+ 	else
+-		return boot_svsm_caa;
++		return rip_rel_ptr(&boot_svsm_ca_page);
  }
  
--int svsm_perform_call_protocol(struct svsm_call *call);
-+enum es_result verify_exception_info(struct ghcb *ghcb, struct es_em_ctxt *ctxt);
-+void vc_forward_exception(struct es_em_ctxt *ctxt);
- 
- static inline u64 sev_es_rd_ghcb_msr(void)
- {
-@@ -97,9 +97,6 @@ static __always_inline void sev_es_wr_ghcb_msr(u64 val)
- 	native_wrmsr(MSR_AMD64_SEV_ES_GHCB, low, high);
- }
- 
--void snp_register_ghcb_early(unsigned long paddr);
--bool sev_es_negotiate_protocol(void);
--bool sev_es_check_cpu_features(void);
- u64 get_hv_features(void);
- 
- const struct snp_cpuid_table *snp_cpuid_get_table(void);
+ static __always_inline u64 svsm_get_caa_pa(void)
 diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index f50a606be4f1..07081bb85331 100644
+index 07081bb85331..ae2502253bd3 100644
 --- a/arch/x86/include/asm/sev.h
 +++ b/arch/x86/include/asm/sev.h
-@@ -485,6 +485,7 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
- struct snp_guest_request_ioctl;
+@@ -501,7 +501,6 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end);
+ u64 snp_get_unsupported_features(u64 status);
+ u64 sev_get_status(void);
+ void sev_show_status(void);
+-void snp_update_svsm_ca(void);
+ int prepare_pte_enc(struct pte_enc_desc *d);
+ void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot);
+ void snp_kexec_finish(void);
+@@ -629,7 +628,6 @@ static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
+ static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
+ static inline u64 sev_get_status(void) { return 0; }
+ static inline void sev_show_status(void) { }
+-static inline void snp_update_svsm_ca(void) { }
+ static inline int prepare_pte_enc(struct pte_enc_desc *d) { return 0; }
+ static inline void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot) { }
+ static inline void snp_kexec_finish(void) { }
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index faf3a13fb6ba..2f8c32173972 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -536,12 +536,6 @@ void __init sme_early_init(void)
+ 		x86_init.resources.dmi_setup = snp_dmi_setup;
+ 	}
  
- void setup_ghcb(void);
-+void snp_register_ghcb_early(unsigned long paddr);
- void early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
- 				  unsigned long npages);
- void early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
-@@ -521,8 +522,6 @@ static __always_inline void vc_ghcb_invalidate(struct ghcb *ghcb)
- 	__builtin_memset(ghcb->save.valid_bitmap, 0, sizeof(ghcb->save.valid_bitmap));
- }
- 
--void vc_forward_exception(struct es_em_ctxt *ctxt);
+-	/*
+-	 * Switch the SVSM CA mapping (if active) from identity mapped to
+-	 * kernel mapped.
+-	 */
+-	snp_update_svsm_ca();
 -
- /* I/O parameters for CPUID-related helpers */
- struct cpuid_leaf {
- 	u32 fn;
-@@ -533,15 +532,71 @@ struct cpuid_leaf {
- 	u32 edx;
- };
- 
-+int svsm_perform_msr_protocol(struct svsm_call *call);
- int snp_cpuid(void (*cpuid_hv)(void *ctx, struct cpuid_leaf *),
- 	      void *ctx, struct cpuid_leaf *leaf);
- 
-+/*
-+ * Issue a VMGEXIT to call the SVSM:
-+ *   - Load the SVSM register state (RAX, RCX, RDX, R8 and R9)
-+ *   - Set the CA call pending field to 1
-+ *   - Issue VMGEXIT
-+ *   - Save the SVSM return register state (RAX, RCX, RDX, R8 and R9)
-+ *   - Perform atomic exchange of the CA call pending field
-+ *
-+ *   - See the "Secure VM Service Module for SEV-SNP Guests" specification for
-+ *     details on the calling convention.
-+ *     - The calling convention loosely follows the Microsoft X64 calling
-+ *       convention by putting arguments in RCX, RDX, R8 and R9.
-+ *     - RAX specifies the SVSM protocol/callid as input and the return code
-+ *       as output.
-+ */
-+static __always_inline void svsm_issue_call(struct svsm_call *call, u8 *pending)
-+{
-+	register unsigned long rax asm("rax") = call->rax;
-+	register unsigned long rcx asm("rcx") = call->rcx;
-+	register unsigned long rdx asm("rdx") = call->rdx;
-+	register unsigned long r8  asm("r8")  = call->r8;
-+	register unsigned long r9  asm("r9")  = call->r9;
-+
-+	call->caa->call_pending = 1;
-+
-+	asm volatile("rep; vmmcall\n\t"
-+		     : "+r" (rax), "+r" (rcx), "+r" (rdx), "+r" (r8), "+r" (r9)
-+		     : : "memory");
-+
-+	*pending = xchg(&call->caa->call_pending, *pending);
-+
-+	call->rax_out = rax;
-+	call->rcx_out = rcx;
-+	call->rdx_out = rdx;
-+	call->r8_out  = r8;
-+	call->r9_out  = r9;
-+}
-+
-+static inline int svsm_process_result_codes(struct svsm_call *call)
-+{
-+	switch (call->rax_out) {
-+	case SVSM_SUCCESS:
-+		return 0;
-+	case SVSM_ERR_INCOMPLETE:
-+	case SVSM_ERR_BUSY:
-+		return -EAGAIN;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- void __noreturn sev_es_terminate(unsigned int set, unsigned int reason);
- enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
- 				   struct es_em_ctxt *ctxt,
- 				   u64 exit_code, u64 exit_info_1,
- 				   u64 exit_info_2);
- 
-+bool sev_es_negotiate_protocol(void);
-+bool sev_es_check_cpu_features(void);
-+
-+extern u16 ghcb_version;
- extern struct ghcb *boot_ghcb;
- 
- #else	/* !CONFIG_AMD_MEM_ENCRYPT */
+ 	if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
+ 		setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+ }
 -- 
 2.49.0.1045.g170613ef41-goog
 
