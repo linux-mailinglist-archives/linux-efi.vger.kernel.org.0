@@ -1,243 +1,285 @@
-Return-Path: <linux-efi+bounces-3685-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3686-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E402AB556A
-	for <lists+linux-efi@lfdr.de>; Tue, 13 May 2025 14:59:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C364EAB5695
+	for <lists+linux-efi@lfdr.de>; Tue, 13 May 2025 15:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81F9C3AD84A
-	for <lists+linux-efi@lfdr.de>; Tue, 13 May 2025 12:58:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2B6B863A4A
+	for <lists+linux-efi@lfdr.de>; Tue, 13 May 2025 13:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A2728DB63;
-	Tue, 13 May 2025 12:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559122BD020;
+	Tue, 13 May 2025 13:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ppspl06h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OPyVBXrz"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0006428DB72
-	for <linux-efi@vger.kernel.org>; Tue, 13 May 2025 12:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7602BD01D
+	for <linux-efi@vger.kernel.org>; Tue, 13 May 2025 13:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747141123; cv=none; b=A1+aFGS9aZ7PFVfDu5/4Pe3G1s8Yi3++KUaroJioCG2E6awJy2LGmvzuHUpmRCTi7tuJrbq1uF9t84j+s1waP1uVTEtNJNBBzwGdsP5adTCNkhf8HOvh7ALKE6acEiZIBDwlkr7YGyd0mi6oDpnORB2qwn6GcZRaKUTDKGnSUl4=
+	t=1747144555; cv=none; b=D2XdEXSqQNCuuJojnfJqGIwV93kuQRu1UAc993F4d2/WGCVw6V4cAgz2JoE4mFxWP4zES//HV0HUSo7KiaFfscuiFSttjiyWOlLwGjxuIj9jsY9077z7biPy9Aj1s+OLu5dG8UGXSFbEFHxC/1vK3W5Xyayjo3v6gTl3oQn96cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747141123; c=relaxed/simple;
-	bh=Z78gwge9olO8D9fde+G5BAbP0ce4AiDRvCPRPGQjFNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UzmDS4FHy6wd7DwTy9q2zAHCVJk3zMjWKwxPvw2xo+x1Bg+cgA42sE9t03zcnaSG9Ucd6P8Zk4aleqhWEmFcjhOQ1qTXJgmJamSZRDJMd1VGra4XQcItKEKpDVjBbUrnHUpoFzPqL1dHR4xlwK2Y/KiLO7DrC1DgOpbOwliefKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ppspl06h; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747141121;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8bhI625R2lq98x6byIS+a4+3fiYeduBC/yC/mt8T8JY=;
-	b=Ppspl06hxrCGf6kJbdlqBu1r+rN0TPMoboilIkMiZMJjerCFOdI+WqO/3CPKPr1ifGxNbK
-	3qcmPEilU8kkFR42AeqZ11ZOYmNMXTH5TTONqMBzpoMBSb1BmRD2mgbIKWLa6kNdydcEFq
-	nhEhX3RA8RHF7AZKVolnLugo1vdSB+A=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-MN5QBmPYNfWlYczWyI3rMw-1; Tue,
- 13 May 2025 08:58:37 -0400
-X-MC-Unique: MN5QBmPYNfWlYczWyI3rMw-1
-X-Mimecast-MFC-AGG-ID: MN5QBmPYNfWlYczWyI3rMw_1747141114
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E9CA180087B;
-	Tue, 13 May 2025 12:58:33 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.45.225.16])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 51AB430001A1;
-	Tue, 13 May 2025 12:58:26 +0000 (UTC)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: x86@kernel.org,
-	linux-efi@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Peter Jones <pjones@redhat.com>,
-	Daniel Berrange <berrange@redhat.com>,
-	Emanuele Giuseppe Esposito <eesposit@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Luca Boccassi <bluca@debian.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Matthew Garrett <mjg59@srcf.ucam.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] x86/efi: Implement support for embedding SBAT data for x86
-Date: Tue, 13 May 2025 14:58:08 +0200
-Message-ID: <20250513125808.75510-3-vkuznets@redhat.com>
-In-Reply-To: <20250513125808.75510-1-vkuznets@redhat.com>
-References: <20250513125808.75510-1-vkuznets@redhat.com>
+	s=arc-20240116; t=1747144555; c=relaxed/simple;
+	bh=qbGVvmAOrG31RsDKWBfJYqw5WZHQKFePTXbTIdTXzpA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 Cc:Content-Type; b=X7ufpeVHogq8YHcniXdR7SrS+TIw+zACADTGtslQbLTGpXwFkBfMpIEoiZBP/DwVFgbRYeW8Yl+VFHXt1fZ8GN4WdNtpmUm5t8p27SEy7MwJ0NQrPm7OIuq0zEdEhsqKiLM+BnewpAfCn1JOYLADu+x69/3/lZ5z6LxyvgJP6kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OPyVBXrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBA7C4CEEF
+	for <linux-efi@vger.kernel.org>; Tue, 13 May 2025 13:55:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747144554;
+	bh=qbGVvmAOrG31RsDKWBfJYqw5WZHQKFePTXbTIdTXzpA=;
+	h=References:In-Reply-To:From:Date:Subject:Cc:From;
+	b=OPyVBXrzXO2J5NyLjsMgmPoX/Vx6NeE4YoUlKAkwOLopqAjnAeSQ1omHR8a5aoEeG
+	 fAEtP4wRK0XJl6/dXCbWn1IOB8CIWpOgzcY+m0xAueknaGHxxSgG7Wd+ed0KR+rK1l
+	 YDpW8zfZqu+P8E/eUxaDcrUYMCqEe6rXo74J+pZd2BpBsCeWBIOIrO4a777tjaNNwc
+	 suC5CUJSWQEwwLSgAwyAY1Qmyr/2BLCqKIt3YVKJi6inrcUJzHI+b3463t2vh4+961
+	 LLquP7hUu02S/cBTZNvDm+49vt9ZGL9H8JfaUsY3DmYoaTz/fY7TuQvtdTKOSpUXMF
+	 oEmY/IbBH3TkQ==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54afb5fcebaso7318027e87.3
+        for <linux-efi@vger.kernel.org>; Tue, 13 May 2025 06:55:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWZSFpRZA0JI/t8HsP/DmtCZGEgZjrOFryePTR92IkL41L4+JPqg3npJXL1+k/5pEK+loJvjS2uur8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlbnXM3xhjPGxIHF4InsNte6lE1COA2uUxZOyvNR9aZNCZMvqX
+	t0XzdGk8gh4girktdL84Vgrw/Pb3JtPcKRv7frnVDyZ0jrjzzHuqfXKhfkQL4S76hXlPZhnZa5K
+	yPfIaSPLKcS0rq5Iv6k1v2oZa9/A=
+X-Received: by 2002:a05:6512:4201:b0:54b:f33:cc16 with SMTP id
+ 2adb3069b0e04-54fc67bf61dmt5886704e87.16.1747144552936; Tue, 13 May 2025
+ 06:55:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <20250512190834.332684-23-ardb+git@google.com> <20250512190834.332684-32-ardb+git@google.com>
+In-Reply-To: <20250512190834.332684-32-ardb+git@google.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 13 May 2025 14:55:40 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXH5C6FzMyrki_23TTk_Yma5NJdHTo-nv4DmZoz_qaGbVQ@mail.gmail.com>
+X-Gm-Features: AX0GCFs1vbDQW8KIkO0cVrFcma02njrKTq6Yx0SnXaMWrHpq2jbGsv6uxRm2K1k
+Message-ID: <CAMj1kXH5C6FzMyrki_23TTk_Yma5NJdHTo-nv4DmZoz_qaGbVQ@mail.gmail.com>
+Subject: Re: [RFT PATCH v3 09/21] x86/sev: Pass SVSM calling area down to
+ early page state change API
+Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org, 
+	Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Similar to zboot architectures, implement support for embedding SBAT data
-for x86. Put '.sbat' section in between '.data' and '.text' as the former
-also covers '.bss' and '.pgtable' and thus must be the last one in the
-file.
+On Mon, 12 May 2025 at 20:11, Ard Biesheuvel <ardb+git@google.com> wrote:
+>
+> From: Ard Biesheuvel <ardb@kernel.org>
+>
+> The early page state change API is mostly only used very early, when
+> only the boot time SVSM calling area is in use. However, this API is
+> also called by the kexec finishing code, which runs very late, and
+> potentially from a different CPU (which uses a different calling area).
+>
+> To avoid pulling the per-CPU SVSM calling area pointers and related SEV
+> state into the startup code, refactor the page state change API so the
+> SVSM calling area virtual and physical addresses can be provided by the
+> caller.
+>
+> No functional change intended.
+>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
----
- arch/x86/boot/Makefile                 |  2 +-
- arch/x86/boot/compressed/Makefile      |  5 +++++
- arch/x86/boot/compressed/sbat.S        |  7 ++++++
- arch/x86/boot/compressed/vmlinux.lds.S |  8 +++++++
- arch/x86/boot/header.S                 | 31 ++++++++++++++++++--------
- drivers/firmware/efi/Kconfig           |  2 +-
- 6 files changed, 44 insertions(+), 11 deletions(-)
- create mode 100644 arch/x86/boot/compressed/sbat.S
+This patch is broken - I'll send a followup fix asap.
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index 81f55da81967..5f7b52f0e7f5 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -71,7 +71,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
- 
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
- 
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._stub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_e\?data\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._stub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_e\?data\|_e\?sbat\|z_.*\)$$/\#define ZO_\2 0x\1/p'
- 
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index fdbce022db55..1441435869cc 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -106,6 +106,11 @@ vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
- 
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
- vmlinux-libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
-+vmlinux-objs-$(CONFIG_EFI_SBAT) += $(obj)/sbat.o
-+
-+ifdef CONFIG_EFI_SBAT
-+$(obj)/sbat.o: $(CONFIG_EFI_SBAT_FILE)
-+endif
- 
- $(obj)/vmlinux: $(vmlinux-objs-y) $(vmlinux-libs-y) FORCE
- 	$(call if_changed,ld)
-diff --git a/arch/x86/boot/compressed/sbat.S b/arch/x86/boot/compressed/sbat.S
-new file mode 100644
-index 000000000000..838f70a997dd
---- /dev/null
-+++ b/arch/x86/boot/compressed/sbat.S
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Embed SBAT data in the kernel.
-+ */
-+	.pushsection ".sbat", "a", @progbits
-+	.incbin CONFIG_EFI_SBAT_FILE
-+	.popsection
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index 3b2bc61c9408..587ce3e7c504 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -43,6 +43,14 @@ SECTIONS
- 		*(.rodata.*)
- 		_erodata = . ;
- 	}
-+#ifdef CONFIG_EFI_SBAT
-+	.sbat : ALIGN(0x1000) {
-+		_sbat = . ;
-+		*(.sbat)
-+		_esbat = ALIGN(0x1000);
-+		. = _esbat;
-+	}
-+#endif
- 	.data :	ALIGN(0x1000) {
- 		_data = . ;
- 		*(.data)
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index b5c79f43359b..a1568a33561a 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -179,15 +179,11 @@ pecompat_fstart:
- #else
- 	.set	pecompat_fstart, setup_size
- #endif
--	.ascii	".text"
--	.byte	0
--	.byte	0
--	.byte	0
--	.long	ZO__data
--	.long	setup_size
--	.long	ZO__data			# Size of initialized data
--						# on disk
--	.long	setup_size
-+	.ascii	".text\0\0\0"
-+	.long	textsize            		# VirtualSize
-+	.long	setup_size			# VirtualAddress
-+	.long	textsize			# SizeOfRawData
-+	.long	setup_size			# PointerToRawData
- 	.long	0				# PointerToRelocations
- 	.long	0				# PointerToLineNumbers
- 	.word	0				# NumberOfRelocations
-@@ -196,6 +192,23 @@ pecompat_fstart:
- 		IMAGE_SCN_MEM_READ		| \
- 		IMAGE_SCN_MEM_EXECUTE		# Characteristics
- 
-+#ifdef CONFIG_EFI_SBAT
-+	.ascii	".sbat\0\0\0"
-+	.long	ZO__esbat - ZO__sbat            # VirtualSize
-+	.long	setup_size + ZO__sbat           # VirtualAddress
-+	.long	ZO__esbat - ZO__sbat            # SizeOfRawData
-+	.long	setup_size + ZO__sbat           # PointerToRawData
-+
-+	.long	0, 0, 0
-+	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
-+		IMAGE_SCN_MEM_READ		| \
-+		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
-+
-+	.set	textsize, ZO__sbat
-+#else
-+	.set	textsize, ZO__data
-+#endif
-+
- 	.ascii	".data\0\0\0"
- 	.long	ZO__end - ZO__data		# VirtualSize
- 	.long	setup_size + ZO__data		# VirtualAddress
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index db8c5c03d3a2..16baa038d412 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -286,7 +286,7 @@ config EFI_SBAT
- 
- config EFI_SBAT_FILE
- 	string "Embedded SBAT section file path"
--	depends on EFI_ZBOOT
-+	depends on EFI_ZBOOT || (EFI_STUB && X86)
- 	help
- 	  SBAT section provides a way to improve SecureBoot revocations of UEFI
- 	  binaries by introducing a generation-based mechanism. With SBAT, older
--- 
-2.49.0
 
+
+> ---
+>  arch/x86/boot/compressed/sev.c      | 12 +++++++++---
+>  arch/x86/boot/startup/sev-shared.c  | 18 ++++++++++--------
+>  arch/x86/boot/startup/sev-startup.c | 11 +++++++----
+>  arch/x86/coco/sev/core.c            |  3 ++-
+>  arch/x86/include/asm/sev-internal.h |  3 ++-
+>  5 files changed, 30 insertions(+), 17 deletions(-)
+>
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index 7a01eef9ae01..04bc39d065ff 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -68,7 +68,9 @@ void snp_set_page_private(unsigned long paddr)
+>                 return;
+>
+>         msr = sev_es_rd_ghcb_msr();
+> -       __page_state_change(paddr, SNP_PAGE_STATE_PRIVATE);
+> +       __page_state_change(paddr, SNP_PAGE_STATE_PRIVATE,
+> +                           (struct svsm_ca *)boot_svsm_caa_pa,
+> +                           boot_svsm_caa_pa);
+>         sev_es_wr_ghcb_msr(msr);
+>  }
+>
+> @@ -80,7 +82,9 @@ void snp_set_page_shared(unsigned long paddr)
+>                 return;
+>
+>         msr = sev_es_rd_ghcb_msr();
+> -       __page_state_change(paddr, SNP_PAGE_STATE_SHARED);
+> +       __page_state_change(paddr, SNP_PAGE_STATE_SHARED,
+> +                           (struct svsm_ca *)boot_svsm_caa_pa,
+> +                           boot_svsm_caa_pa);
+>         sev_es_wr_ghcb_msr(msr);
+>  }
+>
+> @@ -109,7 +113,9 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>         u64 msr = sev_es_rd_ghcb_msr();
+>
+>         for (phys_addr_t pa = start; pa < end; pa += PAGE_SIZE)
+> -               __page_state_change(pa, SNP_PAGE_STATE_PRIVATE);
+> +               __page_state_change(pa, SNP_PAGE_STATE_PRIVATE,
+> +                                   (struct svsm_ca *)boot_svsm_caa_pa,
+> +                                   boot_svsm_caa_pa);
+>         sev_es_wr_ghcb_msr(msr);
+>  }
+>
+> diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/startup/sev-shared.c
+> index dae770327b50..70ad9a0aa023 100644
+> --- a/arch/x86/boot/startup/sev-shared.c
+> +++ b/arch/x86/boot/startup/sev-shared.c
+> @@ -538,7 +538,8 @@ static void __head setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
+>         }
+>  }
+>
+> -static void __head svsm_pval_4k_page(unsigned long paddr, bool validate)
+> +static void __head svsm_pval_4k_page(unsigned long paddr, bool validate,
+> +                                    struct svsm_ca *caa, u64 caa_pa)
+>  {
+>         struct svsm_pvalidate_call *pc;
+>         struct svsm_call call = {};
+> @@ -552,10 +553,10 @@ static void __head svsm_pval_4k_page(unsigned long paddr, bool validate)
+>          */
+>         flags = native_local_irq_save();
+>
+> -       call.caa = svsm_get_caa();
+> +       call.caa = caa;
+>
+>         pc = (struct svsm_pvalidate_call *)call.caa->svsm_buffer;
+> -       pc_pa = svsm_get_caa_pa() + offsetof(struct svsm_ca, svsm_buffer);
+> +       pc_pa = caa_pa + offsetof(struct svsm_ca, svsm_buffer);
+>
+>         pc->num_entries = 1;
+>         pc->cur_index   = 0;
+> @@ -578,12 +579,12 @@ static void __head svsm_pval_4k_page(unsigned long paddr, bool validate)
+>  }
+>
+>  static void __head pvalidate_4k_page(unsigned long vaddr, unsigned long paddr,
+> -                                    bool validate)
+> +                                    bool validate, struct svsm_ca *caa, u64 caa_pa)
+>  {
+>         int ret;
+>
+>         if (snp_vmpl) {
+> -               svsm_pval_4k_page(paddr, validate);
+> +               svsm_pval_4k_page(paddr, validate, caa, caa_pa);
+>         } else {
+>                 ret = pvalidate(vaddr, RMP_PG_SIZE_4K, validate);
+>                 if (ret)
+> @@ -591,7 +592,8 @@ static void __head pvalidate_4k_page(unsigned long vaddr, unsigned long paddr,
+>         }
+>  }
+>
+> -static void __head __page_state_change(unsigned long paddr, enum psc_op op)
+> +static void __head __page_state_change(unsigned long paddr, enum psc_op op,
+> +                                      struct svsm_ca *caa, u64 caa_pa)
+>  {
+>         u64 val;
+>
+> @@ -600,7 +602,7 @@ static void __head __page_state_change(unsigned long paddr, enum psc_op op)
+>          * state change in the RMP table.
+>          */
+>         if (op == SNP_PAGE_STATE_SHARED)
+> -               pvalidate_4k_page(paddr, paddr, false);
+> +               pvalidate_4k_page(paddr, paddr, false, caa, caa_pa);
+>
+>         /* Issue VMGEXIT to change the page state in RMP table. */
+>         sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+> @@ -616,7 +618,7 @@ static void __head __page_state_change(unsigned long paddr, enum psc_op op)
+>          * consistent with the RMP entry.
+>          */
+>         if (op == SNP_PAGE_STATE_PRIVATE)
+> -               pvalidate_4k_page(paddr, paddr, true);
+> +               pvalidate_4k_page(paddr, paddr, true, caa, caa_pa);
+>  }
+>
+>  /*
+> diff --git a/arch/x86/boot/startup/sev-startup.c b/arch/x86/boot/startup/sev-startup.c
+> index 28bf68753580..7a3ad17d06f6 100644
+> --- a/arch/x86/boot/startup/sev-startup.c
+> +++ b/arch/x86/boot/startup/sev-startup.c
+> @@ -132,7 +132,8 @@ noinstr void __sev_put_ghcb(struct ghcb_state *state)
+>
+>  void __head
+>  early_set_pages_state(unsigned long vaddr, unsigned long paddr,
+> -                     unsigned long npages, enum psc_op op)
+> +                     unsigned long npages, enum psc_op op,
+> +                     struct svsm_ca *caa, u64 caa_pa)
+>  {
+>         unsigned long paddr_end;
+>
+> @@ -142,7 +143,7 @@ early_set_pages_state(unsigned long vaddr, unsigned long paddr,
+>         paddr_end = paddr + (npages << PAGE_SHIFT);
+>
+>         while (paddr < paddr_end) {
+> -               __page_state_change(paddr, op);
+> +               __page_state_change(paddr, op, caa, caa_pa);
+>
+>                 vaddr += PAGE_SIZE;
+>                 paddr += PAGE_SIZE;
+> @@ -165,7 +166,8 @@ void __head early_snp_set_memory_private(unsigned long vaddr, unsigned long padd
+>           * Ask the hypervisor to mark the memory pages as private in the RMP
+>           * table.
+>           */
+> -       early_set_pages_state(vaddr, paddr, npages, SNP_PAGE_STATE_PRIVATE);
+> +       early_set_pages_state(vaddr, paddr, npages, SNP_PAGE_STATE_PRIVATE,
+> +                             svsm_get_caa(), svsm_get_caa_pa());
+>  }
+>
+>  void __head early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
+> @@ -181,7 +183,8 @@ void __head early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr
+>                 return;
+>
+>          /* Ask hypervisor to mark the memory pages shared in the RMP table. */
+> -       early_set_pages_state(vaddr, paddr, npages, SNP_PAGE_STATE_SHARED);
+> +       early_set_pages_state(vaddr, paddr, npages, SNP_PAGE_STATE_SHARED,
+> +                             svsm_get_caa(), svsm_get_caa_pa());
+>  }
+>
+>  /*
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index 0e0ddf4c92aa..39bbbea09c24 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -584,7 +584,8 @@ static void set_pages_state(unsigned long vaddr, unsigned long npages, int op)
+>
+>         /* Use the MSR protocol when a GHCB is not available. */
+>         if (!boot_ghcb)
+> -               return early_set_pages_state(vaddr, __pa(vaddr), npages, op);
+> +               return early_set_pages_state(vaddr, __pa(vaddr), npages, op,
+> +                                            svsm_get_caa(), svsm_get_caa_pa());
+>
+>         vaddr = vaddr & PAGE_MASK;
+>         vaddr_end = vaddr + (npages << PAGE_SHIFT);
+> diff --git a/arch/x86/include/asm/sev-internal.h b/arch/x86/include/asm/sev-internal.h
+> index e3b203c280aa..08e2cfdef512 100644
+> --- a/arch/x86/include/asm/sev-internal.h
+> +++ b/arch/x86/include/asm/sev-internal.h
+> @@ -55,7 +55,8 @@ DECLARE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
+>  DECLARE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
+>
+>  void early_set_pages_state(unsigned long vaddr, unsigned long paddr,
+> -                          unsigned long npages, enum psc_op op);
+> +                          unsigned long npages, enum psc_op op,
+> +                          struct svsm_ca *ca, u64 caa_pa);
+>
+>  DECLARE_PER_CPU(struct svsm_ca *, svsm_caa);
+>  DECLARE_PER_CPU(u64, svsm_caa_pa);
+> --
+> 2.49.0.1045.g170613ef41-goog
+>
 
