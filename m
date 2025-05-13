@@ -1,184 +1,159 @@
-Return-Path: <linux-efi+bounces-3681-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3682-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125ACAB53B7
-	for <lists+linux-efi@lfdr.de>; Tue, 13 May 2025 13:22:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4247AAB549E
+	for <lists+linux-efi@lfdr.de>; Tue, 13 May 2025 14:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E23819E2EBB
-	for <lists+linux-efi@lfdr.de>; Tue, 13 May 2025 11:22:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89B8F862C6B
+	for <lists+linux-efi@lfdr.de>; Tue, 13 May 2025 12:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC36A28D840;
-	Tue, 13 May 2025 11:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A312725525C;
+	Tue, 13 May 2025 12:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBo53dpn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DOdlKIVO"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12E128D841;
-	Tue, 13 May 2025 11:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDB9242D6F
+	for <linux-efi@vger.kernel.org>; Tue, 13 May 2025 12:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747135341; cv=none; b=ehcgzklrdRLTVxoXYDRMMx5W262KjtBbnHP4depgJKLInFCPnx/YJ0w0t/PXwC8+GS3DuIPpwKSCdWSkH4rqejHU/kQ1hhGe60IjYVlrbIN76MAwORpEW9kJIHgtzRJx7DSdfy0ZxaRDj3Ly54hjCmMJjGw9qfitynOsuRCgXzM=
+	t=1747138975; cv=none; b=ej3HctUQ3tEoRfUKajSJonH/eRqouePInaDBCQXc6C7LTn48KVjn1O+I+5BR6jWW4j82eeqoXmTLJ9sKvNXSv6/h8L3+ZgyuAdPVv3efLnt0PlHCh6RUQiwLmP03M+0sOppeCbI4nFQC/Qv2GzDiFk/z7A6gSIiryqza3Rqrv0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747135341; c=relaxed/simple;
-	bh=YvBZA2ODgPMq4RkBEfvD4jmjANv1xA+U3XIuUuBhbZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b7RnsM+jANfGzixs2kTFJxReOW1r5zagGRGlXk/8znbltNLMles5p9a9MvG1S/zYRHosWLUbYo1Aa1j1W9kuPoL3wmYmMkSskCzvz/yS7pRODdPcYhJh2C7FZQsanKJphXY5hooE4/Qd4nxTJIruwLqPS8QaFw0i/9+z68/yn+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBo53dpn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95ECC4CEE4;
-	Tue, 13 May 2025 11:22:18 +0000 (UTC)
+	s=arc-20240116; t=1747138975; c=relaxed/simple;
+	bh=I1d0Lk9PVDZaeUnkDxHuqQe6CS/d5SpEWlZBdtBnEtA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZC0k23tqL1AzRSEwZCkBtFkTQoh2u4rjvfcpu0E8a64fDCWO41SDzxsPSwMyLZZakt+lbjwmo2nRJUr1rzj3wuh/iKSy2k0blvawDON88oD3ZYgfXfnzNn0IB44X9z/WQqF8S+/VStDQRv4/gcUL3youjIrUEsLvl6wgW35HO3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DOdlKIVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF6AC4CEF2
+	for <linux-efi@vger.kernel.org>; Tue, 13 May 2025 12:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747135341;
-	bh=YvBZA2ODgPMq4RkBEfvD4jmjANv1xA+U3XIuUuBhbZA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lBo53dpnGwWp40QAtiKDe0dWhYGg0nJ5eVk0YUhUOWmu2pvwYyCElBIwbQUkTjqXt
-	 bAJdEyWEnN6k1OlzFwihodK40pm7msjUp38aFDMf4cmj6uj0aHsKvD5A+ek4x0Y4hf
-	 Rc/w75xaKjGpfCKCJutJwog6T1AA+09WPpsNfLlYwAWj5C6IZ5zAUD32wgw5GopbHZ
-	 sS7OSvVixhn3W7/lnTw0NcIwsoYyaL/UQSmuyCa+9vJ+t+M2j/3u6tflx6B8+Dggvw
-	 k1GC2FwZ2HXJPFcSTumZ4cKBDY+FsHxqO2lBVQIQ64r0PMM3r7ymbygOVDcwTgRHoQ
-	 E3idDtZ91srRw==
-Date: Tue, 13 May 2025 13:22:16 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [RFT PATCH v3 00/21] x86: strict separation of startup code
-Message-ID: <aCMraFZ2yJQNyHf3@gmail.com>
-References: <20250512190834.332684-23-ardb+git@google.com>
- <20250512191705.GHaCJJMcpPTS4ioLpm@fat_crate.local>
- <aCMYrgd9DDQl7G1W@gmail.com>
- <20250513101250.GAaCMbIpk6kdVMizng@fat_crate.local>
+	s=k20201202; t=1747138974;
+	bh=I1d0Lk9PVDZaeUnkDxHuqQe6CS/d5SpEWlZBdtBnEtA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DOdlKIVOR62QGoHbOVHVha5C5tcbiSravnwbKbucf4YVNok186ccD0Zlo7xfvE4OZ
+	 oBzzv6kgsQsnnpOwTh3S3En96Xpjxm8WciKvjL26lH0LPrDu7bKba7HZPGfc/0rh6G
+	 auEqUtos3bJSfOyPymQYz3nqRT9aloaIl0D9PhV6HkKSl1sXIFCdtxGBIoviTAS4z0
+	 F0k8sJTTI3CyOu/0uQKThyvN5GgY6y7Bj4z95uK85a9uxYGef3OwFrQEZDiB4kllXq
+	 IxZc0T+S5s4EzqtBpDN2zSxCxMPJuGGGXQUvi1O/mS+DOQ1v5csuYx/g6+tSAFqMQq
+	 8Go5gRGKQcD3A==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-54b1095625dso6619525e87.0
+        for <linux-efi@vger.kernel.org>; Tue, 13 May 2025 05:22:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV+txTRoMejrQVSxZJObIoKdqA9in/mGrfweOL8v3AN3kIDFCJKwmkzOCu7oqXWUfhCTUoZ8Hil2dE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKFvsXgeo//oBsRWz29BQmds3uzMsvBu1mFukQz1ke3PwRNBzT
+	YCUfSyjrPRd7B9tJW/4YqAfXHL4frvDo0jZwlKoMVzufyb4v/SleR1zWx/q5qcakMqo4Dj06iQ3
+	LC5/hHYZoEUI0+bNmsW1FlhMso80=
+X-Google-Smtp-Source: AGHT+IG9SnIZgc8uSZIBaEIfEi+Td/GMCxCQxgqDtVQZ3Q1Ww5NiWThDJsY7RxifX3lhyfORi0v8bnTPS5d7OebUXxg=
+X-Received: by 2002:a05:6512:4505:b0:54e:86f3:5e52 with SMTP id
+ 2adb3069b0e04-54fc67caf15mr4480822e87.33.1747138973245; Tue, 13 May 2025
+ 05:22:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250513101250.GAaCMbIpk6kdVMizng@fat_crate.local>
+References: <20250505154523.231233-1-vkuznets@redhat.com> <20250505154523.231233-3-vkuznets@redhat.com>
+ <CAMj1kXE5iVsKSEcEPqJs4bZpB03FYR9OcstDVUKNax=2y8nsAg@mail.gmail.com> <8734d9oosf.fsf@redhat.com>
+In-Reply-To: <8734d9oosf.fsf@redhat.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 13 May 2025 13:22:41 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFpO+qya2Nngrj-eUPXQo4WMd2ZRn5EqD-46J85hLMSeg@mail.gmail.com>
+X-Gm-Features: AX0GCFsjCuUcp41DBALvKL6-fgOvsTNBH_UUVLlzrg5OL_OAURlAHC7SHW68J8k
+Message-ID: <CAMj1kXFpO+qya2Nngrj-eUPXQo4WMd2ZRn5EqD-46J85hLMSeg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] x86/efi: Implement support for embedding SBAT data
+ for x86
+To: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	linux-efi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Peter Jones <pjones@redhat.com>, Daniel Berrange <berrange@redhat.com>, 
+	Emanuele Giuseppe Esposito <eesposit@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Luca Boccassi <bluca@debian.org>, Matthew Garrett <mjg59@srcf.ucam.org>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-
-* Borislav Petkov <bp@alien8.de> wrote:
-
-> On Tue, May 13, 2025 at 12:02:22PM +0200, Ingo Molnar wrote:
-> > I don't intend to rush it,
-> 
-> Thanks.
-> 
-> > That request for testing was ignored AFAICS. It's May 13 and still 
-> > crickets.
-> 
-> Not ignored - Tom and I are testing but we're busy as hell too.
-
-Yeah, so the problem is that SEV* is hardware that basically no active 
-tester outside of the vendor (AMD) owns and is testing against 
-development trees AFAICS.
-
-> > We also had SEV-SNP boot bugs pending since August 2024, that 
-> > nobody but (eventually) AMD triggered.
-> 
-> Where?
-
-I did a quick Git search, and here are a few examples:
-
-For example, this commit from last summer:
-
-  6c3211796326 ("x86/sev: Add SNP-specific unaccepted memory support")
-
-... was only fixed recently:
-
-  d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
-
-Or this commit from June 2024:
-
-  34ff65901735 ("x86/sev: Use kernel provided SVSM Calling Areas")
-
-... was only fixed a few days ago:
-
-  f7387eff4bad ("x86/sev: Fix operator precedence in GHCB_MSR_VMPL_REQ_LEVEL macro")
-
-Or this commit from June 2024:
-
-  fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
-
-... was fixed a few weeks ago:
-
-  8ed12ab1319b ("x86/boot/sev: Support memory acceptance in the EFI stub under SVSM")
-
-Ie. bugfix latencies here were 10+ months.
-
-Note that two of those fixes were from Ard who is working on further 
-robustifying the startup code - a much needed change.
-
-Ie. when Ard is asking for SEV-SNP testing for WIP series, which he did 
-10+ days ago, you should not ignore it ... or if you do ignore his 
-request for testing, you should not complain about the changes being 
-merged eventually, once they pass review & testing on non-SEV 
-platforms.
-
-> > Ie. very few people outside of the vendor are testing SEV-SNP 
-> > AFAICS, and even vendor testing is sporadic ...
-> 
-> Not true - SEV* testing happens on a daily basis.
-
-If you didn't have time to personally test Ard's -v2 series since May 
-2, that's OK: I can merge these proposed changes in an RFT branch so 
-that it gets tested in the daily testing flow. [see further below for 
-the Git link]
-
-In other words: please no "gatekeeping". Please don't force Ard into a 
-catch-22 situation where he cannot test the patches on SEV-SNP, but you 
-are blocking these x86 startup code changes on the grounds that they 
-weren't tested on SEV-SNP ...
-
-> > Please ask AMD internally to get SEV-SNP tested more reliably. 
-> > Testing this -v3 series would be a good start. Hint, hint. ;-)
-> 
-> We test everything that goes into linux-next. We haven't started 
-> testing unreviewed patchsets yet because we don't do that - that 
-> stuff is moving.
+On Mon, 12 May 2025 at 16:02, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
 >
-> So if you want to merge something, just ping me or Tom and we'll test 
-> it.
+> Ard Biesheuvel <ardb@kernel.org> writes:
+>
+> > On Mon, 5 May 2025 at 17:46, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
+> >>
+...
+> >> +       .ascii  ".text\0\0\0"
+> >> +#ifdef CONFIG_EFI_SBAT
+> >> +       .long   ZO__sbat                        # VirtualSize
+> >> +       .long   setup_size                      # VirtualAddress
+> >> +       .long   ZO__sbat                        # SizeOfRawData
+> >> +#else
+> >> +       .long   ZO__data                        # VirtualSize
+> >> +       .long   setup_size                      # VirtualAddress
+> >> +       .long   ZO__data                        # SizeOfRawData
+> >> +#endif
+> >> +       .long   setup_size                      # PointerToRawData
+> >
+> > Would it work if we do the following here
+> >
+> > #ifdef CONFIG_EFI_SBAT
+> >   .set .Ltextsize, ZO__sbat
+> > #else
+> >   .set .Ltextsize, ZO__data
+> > #endif
+> >
+> > and keep a single section definition for .text
+> >
+> >   .ascii  ".text\0\0\0"
+> >   .long   .Ltextsize                  # VirtualSize
+> >   .long   setup_size                  # VirtualAddress
+> >   .long   .Ltextsize                  # SizeOfRawData
+> >   .long   setup_size                  # PointerToRawData
+> >
+>
+> As we already have '#ifdef CONFIG_EFI_SBAT' below I'd suggest we set
+> textsize there, basically:
+>
+> @@ -199,16 +194,20 @@ pecompat_fstart:
+>                 IMAGE_SCN_MEM_EXECUTE           # Characteristics
+>
+>  #ifdef CONFIG_EFI_SBAT
+> -       .ascii ".sbat\0\0\0"
+> -       .long   ZO__esbat - ZO__sbat            # VirtualSize
+> -       .long   setup_size + ZO__sbat           # VirtualAddress
+> -       .long   ZO__esbat - ZO__sbat            # SizeOfRawData
+> -       .long   setup_size + ZO__sbat           # PointerToRawData
+> +       .ascii  ".sbat\0\0\0"
+> +       .long   ZO__esbat - ZO__sbat            # VirtualSize
+> +       .long   setup_size + ZO__sbat           # VirtualAddress
+> +       .long   ZO__esbat - ZO__sbat            # SizeOfRawData
+> +       .long   setup_size + ZO__sbat           # PointerToRawData
+>
+>         .long   0, 0, 0
+>         .long   IMAGE_SCN_CNT_INITIALIZED_DATA  | \
+>                 IMAGE_SCN_MEM_READ              | \
+>                 IMAGE_SCN_MEM_DISCARDABLE       # Characteristics
+> +
+> +       .set textsize, ZO__sbat
+> +#else
+> +       .set textsize, ZO__data
+>  #endif
+>
+>         .ascii  ".data\0\0\0"
+>
+> and nobody seems to care that we use it first and define/set it later.
+>
 
-Here's Ard's request from May 2:
+Yeah that looks fine.
 
-    https://lore.kernel.org/r/20250504095230.2932860-25-ardb+git@google.com
+> BTW, does '.L' prefix you suggest has a meaning here? I see we don't use
+> it for e.g. 'pecompat_fstart', 'section_count'.
+>
 
-    "Again, I will need to lean on Tom to determine whether this breaks 
-     SEV-SNP guest boot. As I mentioned before, I am still waiting for 
-     SEV-SNP capable hardware to be delivered."
-
-This request for testing was ignored AFAICS.
-
-> But you have to give us ample time to do so - you can't merge 
-> something which Ard sent *on the same day*.
-
-Sure: -v2 was sent more than 10 days ago, and the testing request was 
-ignored AFAICS. Do 10 days count as 'ample time'?
-
-Anyway, to make it even lower-overhead to test these changes, I've put 
-the -v3 series into the WIP.x86/boot tree:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mingo/tip.git WIP.x86/boot
-
-Only lightly tested. Just a "boots/doesn't boot" kind of quick feedback 
-would be much appreciated.
-
-Note that naturally this tree is still subject to rebasing, as review 
-feedback is incorporated.
-
-Thanks!
-
-	Ingo
+The .L prefix prevents the symbols from ending up in the ELF file -
+you can drop it if you like, it doesn't really matter one way or the
+other.
 
