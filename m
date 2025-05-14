@@ -1,169 +1,114 @@
-Return-Path: <linux-efi+bounces-3707-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3708-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4142AB7322
-	for <lists+linux-efi@lfdr.de>; Wed, 14 May 2025 19:45:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CD9AB74CC
+	for <lists+linux-efi@lfdr.de>; Wed, 14 May 2025 20:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D24551BA4F2B
-	for <lists+linux-efi@lfdr.de>; Wed, 14 May 2025 17:45:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EA004C5CFE
+	for <lists+linux-efi@lfdr.de>; Wed, 14 May 2025 18:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3353B28850D;
-	Wed, 14 May 2025 17:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C55289811;
+	Wed, 14 May 2025 18:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R4qN7BRR"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="KEq4lG6l"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621282882CE
-	for <linux-efi@vger.kernel.org>; Wed, 14 May 2025 17:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038F21F4CB7;
+	Wed, 14 May 2025 18:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747244652; cv=none; b=VEG5oD2UQj9S0MlJWI/Jm5XhRVdsEeZtbCl2DvOis8RjvfC77lWmxiGdU6NG70wRvungGIu3700cjsnsCV/FrJUnsRuLt9KWfg1VxZWN+IWa8jCUSkhYW3HAxADQJP2A/0Sb5QnOvQfx1yXNUQAn8xY4+9Jg4dEB54N0W+GHrZY=
+	t=1747248815; cv=none; b=E27VCWcgNoAgdZ2dk3xysN8ZE3Z4JxpWSKqbLAs/i+USisN/ghTcQ7KmbifyKvexJtXA0gKGXZYPSmM6Qvc6sZkYlgqU1VTsgGXuTbdbn5stND4JEsGYLr7zYlVYas5y4xvTg+8WOoZrGRJo7ZtWWXWMsp+dzDevUB0e1h2WomA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747244652; c=relaxed/simple;
-	bh=mgDdIliBTbo4FHq86K7xhTUvkNSSj/cvEBekZIhmtfI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=r3YvChPDxZ3fik3rQpZBk/30SzUii0A8YD2zF6J1E1wwaTs0ztSBfu6loKgkAHlN+Krxi4wy05l82DlHayCmQHZiGyWbjS503y/L8E3RstOnlVOLtsayS4G+PRF0npIqv+XpETVaWm9b0igqEPaJn/Ovp/Fa5pvAhiHbVs7pauE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R4qN7BRR; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a0b5c28f05so17331f8f.2
-        for <linux-efi@vger.kernel.org>; Wed, 14 May 2025 10:44:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747244649; x=1747849449; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9m/dA5u8PP12xTyLEA47VdMolfQQBYIbnFJL4eUuTIo=;
-        b=R4qN7BRRQgaHkyshZKF8AKwLbTplteOlS2AQSM3EJXNCg9Hzlea+lK7KX0TGtWXX35
-         GWHlBaDZcfJAGPjsMiNkzxRM0B+rz09iHYMb9jLEf6cEWwShFzy+7JaFNbRLCm0Y73LD
-         8lwV48bDeWkwoXecj/oWnU0Z6wW3I30B04QUfE91xggQ2YcgQeAgW1QVsAYixzKYNjIS
-         78h+A9xlmDpOvQidoPO1a1iTNvfUBDGhGAQX4irs2fQPdVLDkyx/+kp6chzLY7SEOKt0
-         139x/I6veudsSpcNEUhrh0fcD1JnuSFBQODoGh+BK2zKUV7XuO6MmZXMr2SXvJO+t9Wc
-         ekXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747244649; x=1747849449;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9m/dA5u8PP12xTyLEA47VdMolfQQBYIbnFJL4eUuTIo=;
-        b=mcQ75fXw5mrF5vku5Ja7eB6eOnZS3vssp66q24mgSjBUEfMXvobqHRCf83V2x8Vyrr
-         2eZ815c74GolkMppaVqHDqh4jhAEaFhudWV56rJ2OQYjcLs1ipFPvYx+PS9lERiub1+q
-         EUQHCHWrNvSr8xc8UUWny6NnxcDUt9PXSQIN00XN5JlZkWGuU934kYc/2UDzwyGnY4Zc
-         mMsVzz5hsDAv3YKd8SdV9EbeJAU4oafstZnzffzzAb2DF8x3OBOk0zD29msrRgg+U/lf
-         bXsf854eKnsCKyVVgoLYQ6g56rIuZ6CIfZNlac1U/f6DS9HAxHlecZyfgwvQqVwAwCW8
-         immA==
-X-Gm-Message-State: AOJu0YzM0UATjWNvWUSeFQ+ewKB9Y6+Mexp4DfigY66Vx2iFKEAQ/p92
-	lD3gL5gWIAmcrZPuRmoVSvfL7t6l5uQl8caYXj9BdvAN/PFJNcRi1MNt+TA0ESp1pIen1TW8tNC
-	iIKGPrRKzURc00K/LNCTtoR+B+7plHI47Eyha43PFd/muJswuPtE7PuTjh+6KLNSu6d+ADBfqZ0
-	+uVG3Gx0EDjDsntzHQWiJsW1BI0g==
-X-Google-Smtp-Source: AGHT+IH3phkZ7ohlhjgxOaGGl2tv6LZdappybOOhIxd+mP8S8HpGAaQTtF38WgvqXaHzyraEHHalvwjR
-X-Received: from wmbbe14.prod.google.com ([2002:a05:600c:1e8e:b0:43b:bf16:d6be])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:40e0:b0:3a0:b807:73f5
- with SMTP id ffacd0b85a97d-3a34994b80bmr3189200f8f.41.1747244649004; Wed, 14
- May 2025 10:44:09 -0700 (PDT)
-Date: Wed, 14 May 2025 19:43:47 +0200
-In-Reply-To: <20250514174339.1834871-9-ardb+git@google.com>
+	s=arc-20240116; t=1747248815; c=relaxed/simple;
+	bh=YSTjlKLYnT97FPs44P2jpPLaU/lb/Bpao4PKukaWgLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DNHxOb5yYnMcyr0ONyQWxkYkI1NI0MXZYOZRgK6/I/t7FsA4S1TyST1fxZ+qLyFexv768gUEgXZblb5W910i2NsIgRDJxXWUG9lr/Hs8EqlsBMKb0qeE1Pe79F6B7Q/uEKgQbI5L19sFUch7vozNlAj9sBfWjHznS/VIpqD2t1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=KEq4lG6l; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C44FC40E01ED;
+	Wed, 14 May 2025 18:53:30 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 81vlMqCq15_R; Wed, 14 May 2025 18:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1747248806; bh=0vOGV0XILyspb43g1V9dqHl1wEdSi7Jd2w2s+KezepE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KEq4lG6lhO260DYBtkqrYSrmiOzw3jD5ZJdJH9KTTxHaGq03netrVBk2YRlvBYU6a
+	 9tkFi2RIM8KZHjmofzrBrxfiSl0NVtUq0raip+3xvjBS6tPyZEN6CY/KaASpV6XzxV
+	 KXfMSX/JH8Z5SmD5jcILXBz0aSLUwRLj6cfahloYVHfo02fYZp0NeQpjX60hXzCpGV
+	 tTXCIKcC2Ikdxa35Succ9EEzq/Bdme48FWNZ33DApCgmKwkKI00N2zJKFvVa2AnOgD
+	 6PhVebNH0FgBPj62ljtl6Npu9mpV1sMneFD2cofUtNAgi1YYXsons7uPg9O//3aoMx
+	 KrJ13LhTWB7u8LgqaSxER82Wx0xI9qv1B6KEFm1gVqb5/JLtXgq/b3sp7THnIE4PQ0
+	 aN6wW+hE2T0oOriofo0Paue8bXyNe59OkjqLovpuSgyE3ZxXpKCkdXt5h4Nbv0yAbU
+	 bHd2Qtdq5kvIjxxRrqoRKt43HU8mNjI+aYblRxZZHdpPpnURMh3acWnrCd1qvWHH29
+	 zd1nrdPnD4sbBcbyyAuoFfB+ARagNc99cnuwSFvgi6+0yRdqrnsspdJsPOJXjaq/Nb
+	 IA2w+SPrUFUqz+e4WrDRBkQUSXWkBd3bgpugow/jQhPcs0dd/G2J5DsiARB5GJDGul
+	 Am9MCXnV3UDcl87K75jKlV3A=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5BBDE40E01CF;
+	Wed, 14 May 2025 18:53:17 +0000 (UTC)
+Date: Wed, 14 May 2025 20:53:16 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, x86@kernel.org,
+	Ingo Molnar <mingo@kernel.org>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [RFT PATCH v3 00/21] x86: strict separation of startup code
+Message-ID: <20250514185316.GJaCTmnPdcK9goOFWc@fat_crate.local>
+References: <20250512190834.332684-23-ardb+git@google.com>
+ <20250514172130.GAaCTRGoRL3nYieIE7@fat_crate.local>
+ <CAMj1kXHnt25JoTLdsPWB2C0xqzs+21PBGC_NXNhmsHdL0yLFnQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250514174339.1834871-9-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2681; i=ardb@kernel.org;
- h=from:subject; bh=JjGNi4y/M2NE/6+1Wwj3Vc6eI4ogOEIDwoxo0yxqFF0=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUPlWniyzKukuNYtPWVi83+nOgoYcF7St7l2WeCP/LLzO
- Wr7m9d1lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgImk3mVkmHnt2ZKM6yE3I3Vv
- Ljbq2pLfmct77FIyQ2u3x8PJ5/XM/zAybGfwWlep2fBor0PGypszriS6OCo+zZojGrXHwTmjxqC NHQA=
-X-Mailer: git-send-email 2.49.0.1101.gccaa498523-goog
-Message-ID: <20250514174339.1834871-16-ardb+git@google.com>
-Subject: [RFC PATCH 7/7] arm64/efi: Call EFI runtime services without
- disabling preemption
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHnt25JoTLdsPWB2C0xqzs+21PBGC_NXNhmsHdL0yLFnQ@mail.gmail.com>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Wed, May 14, 2025 at 06:37:14PM +0100, Ard Biesheuvel wrote:
+> The rule is really that you can no longer randomly call other code
+> without being forced to consider carefully what else gets pulled in,
+> and whether or not that code is guaranteed to behave correctly when
+> being called via the 1:1 mapping.
 
-The only remaining reason why EFI runtime services are invoked with
-preemption disabled is the fact that the mm is swapped out behind the
-back of the context switching code.
+I like "consider carefully". Right now, the decompressor is a mess and
+untangling it is a losing game.
 
-The kernel no longer disables preemption in kernel_neon_begin().
-Furthermore, the EFI spec is being clarified to explicitly state that
-only baseline FP/SIMD is permitted in EFI runtime service
-implementations, and so the existing kernel mode NEON context switching
-code is sufficient to preserve and restore the execution context of an
-in-progress EFI runtime service call.
+> Basically, the first order of business when calling the kernel via the
+> 1:1 mapping is to create the kernel virtual mapping in the page
+> tables. It is just really unfortunate that SEV-SNP requires so much
+> prep work before we can even map the kernel.
+> 
+> I don't anticipate that this code will grow a lot after I'm done with it.
 
-Most EFI calls are made from the efi_rts_wq, which is serviced by a
-kthread. As kthreads never return to user space, they usually don't have
-an mm, and so we can use the existing infrastructure to swap in the
-efi_mm while the EFI call is in progress. This is visible to the
-scheduler, which will therefore reactivate the selected mm when
-switching out the kthread and back in again.
+Right, ok.
 
-Given that the EFI spec explicitly permits runtime services to be called
-with interrupts enabled, firmware code is already required to tolerate
-interruptions. So rather than disable preemption, disable only migration
-so that EFI runtime services are less likely to cause scheduling delays.
+Lemme keep looking.
 
-Note, though, that the firmware executes at the same privilege level as
-the kernel, and is therefore able to disable interrupts altogether.
+Thx.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/kernel/efi.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index 5d188c6c44d7..1c86a891f6d7 100644
---- a/arch/arm64/kernel/efi.c
-+++ b/arch/arm64/kernel/efi.c
-@@ -10,6 +10,7 @@
- #include <linux/efi.h>
- #include <linux/init.h>
- #include <linux/kmemleak.h>
-+#include <linux/kthread.h>
- #include <linux/screen_info.h>
- #include <linux/vmalloc.h>
- 
-@@ -176,7 +177,12 @@ bool arch_efi_call_virt_setup(void)
- 	if (WARN_ON(down_trylock(&efi_rt_lock)))
- 		return false;
- 
--	efi_virtmap_load();
-+	if (preemptible() && (current->flags & PF_KTHREAD)) {
-+		migrate_disable();
-+		kthread_use_mm(&efi_mm);
-+	} else {
-+		efi_virtmap_load();
-+	}
- 	uaccess_ttbr0_enable();
- 	post_ttbr_update_workaround();
- 	__efi_fpsimd_begin();
-@@ -186,7 +192,12 @@ bool arch_efi_call_virt_setup(void)
- void arch_efi_call_virt_teardown(void)
- {
- 	__efi_fpsimd_end();
--	efi_virtmap_unload();
-+	if (preemptible() && (current->flags & PF_KTHREAD)) {
-+		kthread_unuse_mm(&efi_mm);
-+		migrate_enable();
-+	} else {
-+		efi_virtmap_unload();
-+	}
- 	uaccess_ttbr0_disable();
- 	up(&efi_rt_lock);
- }
 -- 
-2.49.0.1101.gccaa498523-goog
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
