@@ -1,106 +1,103 @@
-Return-Path: <linux-efi+bounces-3698-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3699-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E404AB72A1
-	for <lists+linux-efi@lfdr.de>; Wed, 14 May 2025 19:22:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FA4AB72EC
+	for <lists+linux-efi@lfdr.de>; Wed, 14 May 2025 19:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AC7F3AFF07
-	for <lists+linux-efi@lfdr.de>; Wed, 14 May 2025 17:21:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F41D7A7896
+	for <lists+linux-efi@lfdr.de>; Wed, 14 May 2025 17:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFEF27F72C;
-	Wed, 14 May 2025 17:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B089280A5A;
+	Wed, 14 May 2025 17:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="B+60nnov"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="desxf9ue"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D75227A442;
-	Wed, 14 May 2025 17:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D521628033D;
+	Wed, 14 May 2025 17:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747243321; cv=none; b=FVqpSyMHf2nEcgI/Oj3d+rYVNj1xhdLveZyHMZ7NkIFVYhhAbn8EXVAqIDRA0L+9PDxl/nO/iDhKReICQYSfjL2VakVYb6DvoGIHM7CtwS2gPt6KA4Llvgk7y1c1aafe+d7iY14o7JuidmrPzEoOumOwUL7wXkmuvq5gEcB3c4k=
+	t=1747244247; cv=none; b=ji6V3xTjAXgjv/D+wgyphXvXRyPDwCH24UQsVGDxNr5Izc01073FSvCLySORRVof7iHDK9PO/UBxRrdFygTzcYKdWFsSgn6tGkkuNcAKHg4ZLtonr+z9oxXJINdTWOdr5Bw4V0LLNcsmliovBDbn7ZgiOQPGCeud/hWxvu2yGN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747243321; c=relaxed/simple;
-	bh=8Y9W9EkHp0OgfQElHMfELzV6tfQK0+t1W9DfZ3iYUMQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fNTqHr37YA+utaUbhfXxeiAtSa17f6+RHPAax4OUOgRFe5p3UMa8kbz5JVsGI3RQQdznBVzf1z5xErakQTqv7+L1biWKoB4A0Sh4Yk+f+RSzsOg9fx8T2Caok+XY3cQKI22QZwIfHjgA7tPedve11yiNKpm5593T1WuWsM271rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=B+60nnov; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3DA0F40E0239;
-	Wed, 14 May 2025 17:21:50 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id jZNuwh63kGqM; Wed, 14 May 2025 17:21:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1747243306; bh=wYhpoOFARMdfnUYYy0x+ezUoiYCtxlRLDwSjosU3JwI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B+60nnovfgJQkcpIoxYA2aBG6C4C/NzhlKUq/kc56fNhonAnqpuOiPP1g2aikOoVV
-	 jqJUX8UZJ2sCTnidzJNprvwbUgRHA0HnnQStfAe5JRgWYOZ19DWMj4DKaO6Bt6Njbv
-	 ECoxQ+NckU3vpKUtAtk1qjOXsT4L3EuBoWbaHEMQJLLIZiTidRS/aC8Yz9c31n/vMI
-	 ToUK4fZ29HIyYBy6wpcELPf8iUa7ltOYbEgO9NERvSXjQb0j3J8PNetVACQJFhY5Gh
-	 fh/csdjJ2+yZ60G/tzxrahCddG5EWYUYbarRmm8AeS0qtfw0SpCAdhzkXfph/72Lpi
-	 woJ90JgVOdDywXJom5+kNkSKZG6n+BXW9TQ1UNPSKx/hAJHadwZXGP5sea3hiEs0Bj
-	 Hj+Vpwe46EfrE8jlAnLd75K5fiSgdisMVAP8DgJ94wT7EpJJvHC2I9RPXBHETM0BKD
-	 KgoxJSj1OWurhdjorXq9Mvu0rE8I55qRBXUKe0PKaBQzCc7Fp9hwrc0Vv+Hq1iP/2B
-	 OBSXG3GLaGkDeoixerScmNhofIGdLWbraIjHkkl/mneC7aHVRYbNS8iFheh4QQckdv
-	 bixLH9qOCCpKfLpikgaY1YjwHcowswJWppqy5Fjuztqhem9seM6Gh3w6SQ6hr8hN8H
-	 76xDZBSd5o3wFdnCmhcD5N1Y=
-Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C613940E0163;
-	Wed, 14 May 2025 17:21:36 +0000 (UTC)
-Date: Wed, 14 May 2025 19:21:30 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [RFT PATCH v3 00/21] x86: strict separation of startup code
-Message-ID: <20250514172130.GAaCTRGoRL3nYieIE7@fat_crate.local>
-References: <20250512190834.332684-23-ardb+git@google.com>
+	s=arc-20240116; t=1747244247; c=relaxed/simple;
+	bh=2vsnY1VIonumgi7rO1JZgVFYJRfcy5sO6agtjfM5oFc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bmV6AeFmYlODk0bN3Y+JdqKFOWJ9dfuzXK+89t8RM/AkWfr+9JgmBAdx6XxWH1DCdBieYmSPPOwqFigZx4N6rMNmllRpL8Q/lKL2osm8Oqc/aF2A1AKopxvjA0Gr4v9zFa2LASvsh/DtOeV3d+1wfj/Fp6cLlKig0Az2id9za2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=desxf9ue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93C2C4CEE3;
+	Wed, 14 May 2025 17:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747244247;
+	bh=2vsnY1VIonumgi7rO1JZgVFYJRfcy5sO6agtjfM5oFc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=desxf9uekgSlhyUjWpzXll2MPFWGdd+3cAWgoxOWpdgvutYqADQ+Kystb7ATgh2+v
+	 HAN6Z2d/skka94+Io7gVrsILep4qiGUZG51EsMbhmDWDW7+PaZoArWGIwaKr6V9zTG
+	 OlTD6eoJvPqeicrb3UqQI9IQrLa4reDo2bYTotHv92iS/LfjqfESfw9XNUNldL2r3O
+	 zMArd3PODe6/El+00UJ41pfCN5/64iw2E0BDUFf407KhdpPZvOv8FCuYrK1rcVepz9
+	 2t58ASoLLJ1TTAGmmowkLZ5XzAOYmTCa4eUJVdZ6m6aMiWFoTh5jQu7rXsdUlkO/Zj
+	 Qn85oAZZ+cDyA==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54d98aa5981so11036835e87.0;
+        Wed, 14 May 2025 10:37:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU4nP5YM3pzO6RPBHRgh6iuVfatOQYgFWqMtohiqbHdrOux1TCebAfxUR0Pwj3zoHsrXuCfJA34uUd/zZil@vger.kernel.org, AJvYcCXaTXrt0ALyo6ucSiLjkwoqhOe+heL2mdlazRM97tHOTfGWb2flKJK+7JHEtzZ0j7SqzZNIu+rlIs8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4SXfNkY+t/y5I4sBE+l2y2SdgFWI1k6jJyy703bsAUBGX10Az
+	9Z5Yu5Lgq+pH6P+Om79J/UZ9q9jtzyOWHFxvY7gffFBtzHLsM4+lWtfr9cI4tUofWKVeMv1fL7z
+	+dLc1mFP5PSD4XnatpT5H6+/BaEA=
+X-Google-Smtp-Source: AGHT+IHKoe00cgjRW9m1AuAz62C/8GjQSojbSBolbP7oj/UrgqO18zSvoXSsNIcxh3XZJZFle6naODcfwx9oeJq5LCo=
+X-Received: by 2002:a05:651c:542:b0:30b:d35c:4754 with SMTP id
+ 38308e7fff4ca-327ed0de340mr19837261fa.10.1747244246027; Wed, 14 May 2025
+ 10:37:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250512190834.332684-23-ardb+git@google.com>
+References: <20250512190834.332684-23-ardb+git@google.com> <20250514172130.GAaCTRGoRL3nYieIE7@fat_crate.local>
+In-Reply-To: <20250514172130.GAaCTRGoRL3nYieIE7@fat_crate.local>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 14 May 2025 18:37:14 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHnt25JoTLdsPWB2C0xqzs+21PBGC_NXNhmsHdL0yLFnQ@mail.gmail.com>
+X-Gm-Features: AX0GCFv36qQ9k2nC5FIIbTFKOBoCn1YPzkXLzNY615sC8xlLW4svjwTBcGkTv7s
+Message-ID: <CAMj1kXHnt25JoTLdsPWB2C0xqzs+21PBGC_NXNhmsHdL0yLFnQ@mail.gmail.com>
+Subject: Re: [RFT PATCH v3 00/21] x86: strict separation of startup code
+To: Borislav Petkov <bp@alien8.de>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@kernel.org>, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, May 12, 2025 at 09:08:35PM +0200, Ard Biesheuvel wrote:
-> This is somewhat intrusive, as there are many data objects that are
-> referenced both by startup code and by ordinary code, and an alias needs
-> to be emitted for each of those. If startup code references anything
-> that has not been made available to it explicitly, a build time link
-> error will occur.
+On Wed, 14 May 2025 at 18:21, Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Mon, May 12, 2025 at 09:08:35PM +0200, Ard Biesheuvel wrote:
+> > This is somewhat intrusive, as there are many data objects that are
+> > referenced both by startup code and by ordinary code, and an alias needs
+> > to be emitted for each of those. If startup code references anything
+> > that has not been made available to it explicitly, a build time link
+> > error will occur.
+>
+> Makes me wonder: what will be our rule for what should be made available to
+> startup code, what should be moved to startup code etc....
+>
 
-Makes me wonder: what will be our rule for what should be made available to
-startup code, what should be moved to startup code etc....
+The rule is really that you can no longer randomly call other code
+without being forced to consider carefully what else gets pulled in,
+and whether or not that code is guaranteed to behave correctly when
+being called via the 1:1 mapping.
 
-I guess as less as possible but past experience teaches us differently.
-I guess applying the usual skeptical approach should be sane enough...
+> I guess as less as possible but past experience teaches us differently.
+> I guess applying the usual skeptical approach should be sane enough...
+>
 
-We'll see.
+Basically, the first order of business when calling the kernel via the
+1:1 mapping is to create the kernel virtual mapping in the page
+tables. It is just really unfortunate that SEV-SNP requires so much
+prep work before we can even map the kernel.
 
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+I don't anticipate that this code will grow a lot after I'm done with it.
 
