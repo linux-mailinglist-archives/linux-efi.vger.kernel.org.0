@@ -1,65 +1,66 @@
-Return-Path: <linux-efi+bounces-3743-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3744-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE167AB9F6D
-	for <lists+linux-efi@lfdr.de>; Fri, 16 May 2025 17:10:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC65AB9F8F
+	for <lists+linux-efi@lfdr.de>; Fri, 16 May 2025 17:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB00C1736E4
-	for <lists+linux-efi@lfdr.de>; Fri, 16 May 2025 15:05:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2F9E18896E3
+	for <lists+linux-efi@lfdr.de>; Fri, 16 May 2025 15:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937571A0BE1;
-	Fri, 16 May 2025 15:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33311186E2D;
+	Fri, 16 May 2025 15:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WfeQPXMq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aMBisQGl"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3506156237;
-	Fri, 16 May 2025 15:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C085A32;
+	Fri, 16 May 2025 15:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747407818; cv=none; b=Hj55QVlxOstxyJuZG/z11cRPQb5jnJVcDJcXkuILP3Ck+y9LmSAvGJT60Qbcem0e0EA7fjbGlOoyHIiTAanyuR5bGVpSIeeRqsy30R38jGJxSgY+p4IK+UdnidisrDxp+wG+rZLB8g/20ETgckfEol7XIElPpF1lKBU/S7y6vcA=
+	t=1747408112; cv=none; b=FgWFhpEsamwMUrTlrpf+k2gX93c1OIlxfRzOWCU6CXEK+9rkIMpIQDqZCw790cqZwBLQf0uPboGl9RQvT7/5QzFuUN5ZA1bagJdNdOdrd1d2zBKU8id4movAJGcgOHBpbgxMUKwZ2cTmqSfP4AI7XTq2nbPFdypR7GLrt2OMwuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747407818; c=relaxed/simple;
-	bh=+k+h54BG7vlt9MyanqjQ8njTSIU6zQPKkDKvLPLw060=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GYMxvV8fMfZe+2K2XX79Dl7D6olQ/+raA4TDknMlokfYImCtJFxy7geNoLNboAbBZFdwX2InRd2wD+oT8WMGB6xWWE1wv4APA1S0TiS7mwPMgH++caFSeMkNb66SNY7G1XdWIwoqx+t2o/ioYKTLt3wDWvT46HGq8xHZGgp2MRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WfeQPXMq; arc=none smtp.client-ip=198.175.65.12
+	s=arc-20240116; t=1747408112; c=relaxed/simple;
+	bh=S1rTemPleZoxFgD2rnwNc3cuHHFApdCRGDenc4n5ltg=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=CZC6qO5CAgvEGEerFpTk157oZEChSq9AZax5SjzB7vGy9tLof4vWavG/padihv/1YRr0jLRqeTc5OuEMaiVubz+Z3AvC0h+SZIVSntk/a1wWTiPGQxgSCvEcTpqTyLOBhLrUPQlzE16sjjvwrX6j9F7FXSXuKOQkjFXqYZO6fk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aMBisQGl; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747407817; x=1778943817;
+  t=1747408111; x=1778944111;
   h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+k+h54BG7vlt9MyanqjQ8njTSIU6zQPKkDKvLPLw060=;
-  b=WfeQPXMqE2pph0ae0jJKguTT/Qw8Qc8rJUStANixE0G3Le7k3l2nsGOO
-   yKzGdBkk6+NTOCaMdBkzP72AhhQ5FS1OZ9zBI3C0iA5dfYdosyqVnJLPd
-   EL3lE80FyaFX5vqdTOtZ5obcie3kOdphvChGOsmL8ut1UZTqJPB9jAjX8
-   AiAd2nxlp+1wGYyNOkav+Hqs4WJEt7PsTBYXl7A9FpPQx1xued22MZBIc
-   BefiqgfI6d7KsxoiM8LNhLT1IFAdE1BzDadutocKCEYqqV6PLAWxbpCTy
-   nfIUiUc0y4ChQEdQFnMYR2796kijV2L/+Le+Vw3n/TTkIoRrB2z6HdkT4
-   A==;
-X-CSE-ConnectionGUID: Amw758cOReWfg8gaDZYI/w==
-X-CSE-MsgGUID: y3vBYuyxQnu7i6Jc3UUAeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="60772864"
+   from:in-reply-to;
+  bh=S1rTemPleZoxFgD2rnwNc3cuHHFApdCRGDenc4n5ltg=;
+  b=aMBisQGl0ex3XzzovVdTYKQHTkAdl0f6Tcs1Nt0gjc6OjE71pb0Cmsua
+   Mk72YQrYzVzUtozdo9gUSdf17XQvCKItf3KaOA9JtyVQC4RgrtYJqXsJc
+   BklmuwgbwInGIMX9yNFRNDlhFwEk5rBiOam7kR4qkGbFi2zIN8Z+Gus+y
+   aNbOxvr9bB0vMZnoucDXoQXycsRg7phTWtbA/QBitZgebzfPbKY/HRTAJ
+   nNJgOVrYQWmrlCy24C1geehVKWxa2/LwZBWnrknJz4AMGpJnqQhst7LG0
+   TB09ATH4nGNzqrNS4TSRUHE0MwobniQVhry69ps5WRVwA0qwmJfFGVvu9
+   Q==;
+X-CSE-ConnectionGUID: mplF9e7MQP60AIdsA2ZW/Q==
+X-CSE-MsgGUID: wpC6yiW/TDuU4OflxxWX6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="59613708"
 X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; 
-   d="scan'208";a="60772864"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 08:03:36 -0700
-X-CSE-ConnectionGUID: FLXcQrn/R0a5GdcpW8TH3g==
-X-CSE-MsgGUID: n33Uu1uBR7WbaknNbC4T4w==
+   d="scan'208";a="59613708"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 08:08:30 -0700
+X-CSE-ConnectionGUID: ArPasoMzSvyin085H2g8Yw==
+X-CSE-MsgGUID: pYmG387RQTGarcuW6yiTbQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; 
-   d="scan'208";a="169758412"
+   d="scan'208";a="139203982"
 Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.109.57]) ([10.125.109.57])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 08:03:35 -0700
-Message-ID: <a0ca765c-a506-4c1f-a38c-24a8074988df@intel.com>
-Date: Fri, 16 May 2025 08:03:31 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 08:08:28 -0700
+Content-Type: multipart/mixed; boundary="------------qrIpUdE0q96cUsCGDhanNjXJ"
+Message-ID: <6228b588-790a-4bbd-87e6-1bd69f3703c9@intel.com>
+Date: Fri, 16 May 2025 08:08:25 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -69,9 +70,9 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCHv3 2/4] x86/64/mm: Make SPARSEMEM_VMEMMAP the only memory
  model
-To: Ingo Molnar <mingo@kernel.org>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+To: Ingo Molnar <mingo@kernel.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
  Jonathan Corbet <corbet@lwn.net>, Andy Lutomirski <luto@kernel.org>,
@@ -85,9 +86,8 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  linux-efi@vger.kernel.org, linux-mm@kvack.org
 References: <20250516123306.3812286-1-kirill.shutemov@linux.intel.com>
  <20250516123306.3812286-3-kirill.shutemov@linux.intel.com>
- <30570ca0-8da4-4ebc-84d6-0a4badfb7154@intel.com>
- <rqkfqkkli57fbd5zkj3bwko44kmqqwnfdm766snm26y2so52ss@6it24qxv356q>
- <aCdGzpXSVx15gz90@gmail.com>
+ <30570ca0-8da4-4ebc-84d6-0a4badfb7154@intel.com> <aCdBXxPNO4NtZ_Wl@gmail.com>
+ <f93a6e4d-4970-4352-97ff-643d67662c32@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -133,21 +133,36 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aCdGzpXSVx15gz90@gmail.com>
+In-Reply-To: <f93a6e4d-4970-4352-97ff-643d67662c32@intel.com>
+
+This is a multi-part message in MIME format.
+--------------qrIpUdE0q96cUsCGDhanNjXJ
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/16/25 07:08, Ingo Molnar wrote:
->> And is there any value to support !SPARSEMEM_VMEMMAP?
-> Not really IMHO:
-> 
->   .config.opensuse.default:    CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
->   .config.ubuntu.localinstall: CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
->   .config.fedora.generic:      CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
->   .config.rhel.generic:        CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
+On 5/16/25 07:59, Dave Hansen wrote:
+> The only option would be to make them static when using non-vmemmap
+> sparsemem. But that's new-ish, and probably won't get any testing.
 
-I look at the distro configs all the time as well.
+Something like this. But I don't particularly like it.
+--------------qrIpUdE0q96cUsCGDhanNjXJ
+Content-Type: text/x-patch; charset=UTF-8; name="static-sparsemem-0.patch"
+Content-Disposition: attachment; filename="static-sparsemem-0.patch"
+Content-Transfer-Encoding: base64
 
-But let's also not forget that none of these have lockdep turned on, and
-we don't want to toss out lockdep support on x86, for example. ;)
+CgotLS0KCiBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3NwYXJzZW1lbS5oIHwgICAgNCArKysr
+CiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspCgpkaWZmIC1wdU4gYXJjaC94ODYv
+aW5jbHVkZS9hc20vc3BhcnNlbWVtLmh+c3RhdGljLXNwYXJzZW1lbS0wIGFyY2gveDg2L2lu
+Y2x1ZGUvYXNtL3NwYXJzZW1lbS5oCi0tLSBhL2FyY2gveDg2L2luY2x1ZGUvYXNtL3NwYXJz
+ZW1lbS5ofnN0YXRpYy1zcGFyc2VtZW0tMAkyMDI1LTA1LTE2IDA4OjA1OjE5LjAwNjE1MDEz
+OSAtMDcwMAorKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9zcGFyc2VtZW0uaAkyMDI1LTA1
+LTE2IDA4OjA3OjE0LjUxNzE4OTAyNCAtMDcwMApAQCAtMjYsNyArMjYsMTEgQEAKICMgZW5k
+aWYKICNlbHNlIC8qIENPTkZJR19YODZfMzIgKi8KICMgZGVmaW5lIFNFQ1RJT05fU0laRV9C
+SVRTCTI3IC8qIG1hdHQgLSAxMjggaXMgY29udmVuaWVudCByaWdodCBub3cgKi8KKyNpZmRl
+ZiBDT05GSUdfU1BBUlNFTUVNX1ZNRU1NQVAKICMgZGVmaW5lIE1BWF9QSFlTTUVNX0JJVFMJ
+KHBndGFibGVfbDVfZW5hYmxlZCgpID8gNTIgOiA0NikKKyMgZWxzZQorIyBkZWZpbmUgTUFY
+X1BIWVNNRU1fQklUUwk0NgorIyBlbmRpZgogI2VuZGlmCiAKICNlbmRpZiAvKiBDT05GSUdf
+U1BBUlNFTUVNICovCl8K
+
+--------------qrIpUdE0q96cUsCGDhanNjXJ--
 
