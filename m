@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-3741-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3742-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7D5AB9F62
-	for <lists+linux-efi@lfdr.de>; Fri, 16 May 2025 17:09:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58022AB9F6A
+	for <lists+linux-efi@lfdr.de>; Fri, 16 May 2025 17:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93421189CE06
-	for <lists+linux-efi@lfdr.de>; Fri, 16 May 2025 15:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4C71A2657C
+	for <lists+linux-efi@lfdr.de>; Fri, 16 May 2025 15:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C011D54FE;
-	Fri, 16 May 2025 14:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CF21B4138;
+	Fri, 16 May 2025 15:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jUswFVjX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NvCwRmhV"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1031D5174;
-	Fri, 16 May 2025 14:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20921A83E4;
+	Fri, 16 May 2025 15:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747407589; cv=none; b=bcTI3g/LthiAX503zGPC8xARmJZBtKddLb7eNTGqRzqC8I+4+2KbOA6mOalwK98dHS9H6ZifoJF4EaGarrrcfFx+0yQISGs8zyhPTk42laV1bc2zbjdAEN7nqaULCB+t3m5l/UTU0gVqdV/YzwF7hKBAiAU2CioXEVI/hn2FClk=
+	t=1747407685; cv=none; b=t08Zyqs0H+OK2OvcFI5p5UkJoLY4K4bMlJi0ho0BwwuXjW3CzQMf9mw6D9F/wpF241OxY9jX54dSLYtdzYj9gB7XuuApShslBHxBq0nhj88+ALFbngpwbhjhNMQvsaOnHXw+KupWmeX1bq3+EjEVNbBox+cjdMEpO9cCmSdJb+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747407589; c=relaxed/simple;
-	bh=1C+RNLt5H3pToyEXGXk+cN4HV7aNjrNeFZFgJqUtguc=;
+	s=arc-20240116; t=1747407685; c=relaxed/simple;
+	bh=el1AIzpc6/0kVpVX8K6rbT2Z+8TSoW3ru3jCdQGe0NA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AkhDoi1YDq3JkWPlXZXJgeJDV6837Lf54S7K4x+ZTXv9xVrJarHKT05SbvLpTtne4bXAQrvmpKlX4s5hNAFzu0VOfhbTHIue/4I5tAm8YPWTtQRydYTiS7BnbKBa9aBF9fICFLFJ+daWZMn6uxxfvI/ZZV9EAlTmTa04/htgA6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jUswFVjX; arc=none smtp.client-ip=192.198.163.14
+	 In-Reply-To:Content-Type; b=hjtNetWADLTmKeo8A/sDZ3z2ZfdBxb1u5z1Ug4nc1uWBwVGV01lirXdMdfzUlcT98wOayzhAGDWSrC5RxfgoQyqBcUCQw/BrEwBeJHPdA4FO4xBf+bsd8jrvhLwZtR8xcJbVnnsiYKvWILbdWa5SZISXdwn2RG2+p6FX/GZdLkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NvCwRmhV; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747407588; x=1778943588;
+  t=1747407684; x=1778943684;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=1C+RNLt5H3pToyEXGXk+cN4HV7aNjrNeFZFgJqUtguc=;
-  b=jUswFVjXHCRjJ+a468hleU+IwvYhEkDIvU6m09QsvcTmc997tA3ZLho/
-   8SVfYXiGMQegX1KmmzPYgHLhfYqzyCjbaQ3foBQkZ+DBcLlzXYpRWKef6
-   pFELtLai4ytKqu4pblmWK1UT5UO5xOFgGxF0wSy5yPJ+PT4MUb7oyrjaY
-   It1RhL+Ez7M5FCMAC2YtVhsKH1YqOemQXqqnA1H/py+dMZ902eZ3sIDOw
-   NW3VSu/83dbzZR5Ax3FXs++ubtCgS2r0iq+lNrGhOG/hNw4c0UairMyZW
-   QDwsQLJpwChKTOSAOQ5GUGCqBCP8Z9MzWVmqm2bqRMWJtx9G/ocOAwKIu
-   Q==;
-X-CSE-ConnectionGUID: 5M9DEKr5QLSSEH1tGw5yeQ==
-X-CSE-MsgGUID: O5+EP7JBR92o/yrA6PWZwg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49488541"
+  bh=el1AIzpc6/0kVpVX8K6rbT2Z+8TSoW3ru3jCdQGe0NA=;
+  b=NvCwRmhVW3HkfkN+utZOs9BB71C5NhcG19EavRKfFYfG3oO+XcrFbJq+
+   K7rtMX9tSy8NZQDViE2GXqDyWnQGdJgDMvAS8Plq6w13V04554gDk2Mey
+   4Cp33STC5PranUsRgfVZtbieGVJWheDOvFsnzumZdS8W3r1vPGF2022pw
+   iHoaCq+PPdx9Ph8RM+kP4YPTwZsgH8/llZ8ZZlcEUOo3wE5wyE40xgV21
+   g54+75vjjgAPDROPMCkjaaynsbJat8bc5x0Okd28zYCKB6yvxf+1oG/4b
+   j7lBPcT8tEYbh6kBi4N9s1/aiR/WqTYN1WoPyjNsi6FgwfHVZ7SZhqA+q
+   A==;
+X-CSE-ConnectionGUID: dupDBbFOSGyuSO7iCvOIXw==
+X-CSE-MsgGUID: yMguUqmrR3y1jStkZbUhrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49488796"
 X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; 
-   d="scan'208";a="49488541"
+   d="scan'208";a="49488796"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 07:59:47 -0700
-X-CSE-ConnectionGUID: /ILTtDYeQZGTHUYmdqMBug==
-X-CSE-MsgGUID: ewkyJbk1Qk6ba7uPen1vIw==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 08:01:23 -0700
+X-CSE-ConnectionGUID: GpwGuFigRzuUDPhSvXL6nA==
+X-CSE-MsgGUID: MuHZwX33RJ6Zz5RAClxOZw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; 
-   d="scan'208";a="143954722"
+   d="scan'208";a="143955625"
 Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.109.57]) ([10.125.109.57])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 07:59:46 -0700
-Message-ID: <f93a6e4d-4970-4352-97ff-643d67662c32@intel.com>
-Date: Fri, 16 May 2025 07:59:42 -0700
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 08:01:22 -0700
+Message-ID: <c44756a5-f65e-4100-9520-a27e77b62c22@intel.com>
+Date: Fri, 16 May 2025 08:01:19 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -69,9 +69,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCHv3 2/4] x86/64/mm: Make SPARSEMEM_VMEMMAP the only memory
  model
-To: Ingo Molnar <mingo@kernel.org>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
  Jonathan Corbet <corbet@lwn.net>, Andy Lutomirski <luto@kernel.org>,
@@ -85,7 +84,8 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  linux-efi@vger.kernel.org, linux-mm@kvack.org
 References: <20250516123306.3812286-1-kirill.shutemov@linux.intel.com>
  <20250516123306.3812286-3-kirill.shutemov@linux.intel.com>
- <30570ca0-8da4-4ebc-84d6-0a4badfb7154@intel.com> <aCdBXxPNO4NtZ_Wl@gmail.com>
+ <30570ca0-8da4-4ebc-84d6-0a4badfb7154@intel.com>
+ <rqkfqkkli57fbd5zkj3bwko44kmqqwnfdm766snm26y2so52ss@6it24qxv356q>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -131,26 +131,18 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aCdBXxPNO4NtZ_Wl@gmail.com>
+In-Reply-To: <rqkfqkkli57fbd5zkj3bwko44kmqqwnfdm766snm26y2so52ss@6it24qxv356q>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/16/25 06:45, Ingo Molnar wrote:
-> Isn't it the other way around? MAX_PHYS{MEM,ADDR}_BITS are now *always* 
-> dynamic, their value depending on whether LA57 is available and used.
+On 5/16/25 07:01, Kirill A. Shutemov wrote:
+>> If you remove the dynamic MAX_PHYS{MEM,ADDR}_BITS, you should also
+>> remove the dependency on SPARSEMEM_VMEMMAP. No?
+> I guess. But how?
+> 
+> And is there any value to support !SPARSEMEM_VMEMMAP?
 
-MAX_PHYS{MEM,ADDR}_BITS were always intended to be the compile-time
-maximums on the architecture. They're static on every architecture
-except x86 and some arm64 configs (who probably copied x86).
-
-That's why having them be dynamic broke non-vmemmap sparsemem.
-
-But we also seems to have defined MAXMEM to derive from MAX_PHYSMEM_BITS
-and MAXMEM cascades into a bunch of other stuff, including KASAN. So we
-can't just make them static again, I guess.
-
-The only option would be to make them static when using non-vmemmap
-sparsemem. But that's new-ish, and probably won't get any testing.
-
-I guess there's not much we can do about it.
+Not really, other than making sure x86 supports a really wide variety of
+arch-independent options. I've used it a time or two to go looking for
+bugs but I'm not sure if those originated on x86 or other architectures.
 
