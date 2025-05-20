@@ -1,129 +1,107 @@
-Return-Path: <linux-efi+bounces-3754-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3755-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8ADFABB08F
-	for <lists+linux-efi@lfdr.de>; Sun, 18 May 2025 16:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A505ABD3D0
+	for <lists+linux-efi@lfdr.de>; Tue, 20 May 2025 11:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61A06176B53
-	for <lists+linux-efi@lfdr.de>; Sun, 18 May 2025 14:42:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F5654A6B7F
+	for <lists+linux-efi@lfdr.de>; Tue, 20 May 2025 09:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB4D21CFFF;
-	Sun, 18 May 2025 14:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65C8264F9D;
+	Tue, 20 May 2025 09:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1bdDZCh"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gkOgh9h5"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA0321CC70;
-	Sun, 18 May 2025 14:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8F221B184;
+	Tue, 20 May 2025 09:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747579358; cv=none; b=YNkmUv2vfep/IE43ZVDQNCElQW/Nv5No4BvdSQq3psdxCWb9PuISBZb0zIH63EDcfYLiYOU5IHsJuSN45NnvTAi3AoxmPJUCZq2ceuaB8PKQkvIc3hCBFTF9Bqcevj0bcuSVhjKD6mHD8JOturnXylHgcQPd5/e/15eNrdAiogg=
+	t=1747734276; cv=none; b=IVlE9M4fJEo5qpPlvjkNQiHeV/Imvbpdm442In7tMLHvasyoBDIKl3l0yVdYdr04+wo6fjfgp/0LeirfcHxWrhinVAdeThllqvdpLZO5Og1mc8Bhgr1oOZTWJHp10FYFNzpCCc8tyXwzSRfxkVszbuT1g70XqDgjWiQhquo+YNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747579358; c=relaxed/simple;
-	bh=rAUybgx3w08Pk16V3V7ElWMaPW68BeTRsRpRxxQzxeE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S1PO2xylGll94R/nHkgM/fczSfgeBTBNCUPWXd+AIM14ale7NIk1t3FbzhOR1IIuzM8dLLnZMamAhvP7JUocLFXGIPlls+RUyTAAMERX6iyUlcN9E8zgDzkjackaLw8PImIFER/bM7X4RuREbty72vgdZiNPxLtMUry3Nq68AXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1bdDZCh; arc=none smtp.client-ip=209.85.208.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-600210e4219so4856566a12.0;
-        Sun, 18 May 2025 07:42:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747579355; x=1748184155; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rAUybgx3w08Pk16V3V7ElWMaPW68BeTRsRpRxxQzxeE=;
-        b=G1bdDZChhUwF2sG9iVs+z/F/5uX1r5kqzCa7/RAF39YNgFr5Ju19V4F5od73pYxw9b
-         BY02mHbrtNRrItX4s7d5HHt21X5GO7w0dGd0oFV4JsXRWqoKnfOXFT2n4+OIZ3/5gbCG
-         9Iiw4s5LFnnzd/grzoN3S1fVp1g22VkE6PYr8iQMx1cYb1ILwS+4Rq1cSUQfD8OLWmak
-         4Ofuow556uEVs6Q4e1+N73AXzIGpy0XL/vmEYJXHIh2bj/e5IhIrooh/eK8c4UgkTXvp
-         3tny1iEy17VP7QnRNC02oyWoTXvpGWgImMKilKUr1dUJ2wWw5uPNpOcPFw940WBbdEkM
-         9osg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747579355; x=1748184155;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rAUybgx3w08Pk16V3V7ElWMaPW68BeTRsRpRxxQzxeE=;
-        b=nin/U/PbR07oLePzhN5mU1XPjJzfQirSLbesBbenRDJW8Yuytunp/9qv+ZISA+m2Ew
-         ouL2eibE6WEZYRdczmsGk27KCbT4dj5Ssk6l23ATji+jZsWnaPXZMu1JUHSUhzhx1BJk
-         x3B6Jkesw9KjG1JLXDYzWoJD/A70EUzNAPEFmauQhNy94o1KBwUH/rE3+VLGqzv19oXP
-         wduSum7t1M0Drn6UKaPqTPksCi5VhUyUi69tI3uClmcVevmxhcrC9HcPqyzqInZIdU6f
-         tgouh7XnL/WtKFY8+G4oOEgfaRXkRr1aSVow+ZsZuj7PRGzXZ2jGmNe5OO3pO1ArqzXe
-         zlbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUh2XN1qysNgyScsPKSIauxItG+OjnwyUF6MxxkJJQArbtl5liifIBrhB1Z8SZI3rqcoBEMXyGisciMemYOWRYD@vger.kernel.org, AJvYcCUvxjxEtd8Ee7FW3gBVRIomRPyyRb1PPLIWD0YsHO3zUCace1c7VmBD7ttWP/+dG9I5Uv9L048kpDYs@vger.kernel.org, AJvYcCWlKabIPOI1wx0FzIypnjsbACZh61xYgoJ0dIaH8BOfRE7d3srJYYnZdAk75FEO45eiYyy4GzUo0DdK4RQ=@vger.kernel.org, AJvYcCWvb5nL4+qmLv/R1MX0s1Iu780VInluxfwoFhRCB73KDmZ2uT7M8b39soNgYgzVFe71atoX8Dd7t7MD@vger.kernel.org, AJvYcCXo6NiD6uHdxET/tatyKdf2JNLfyv4FGvG2YDNByGQeI7pJeC5Fzt4DjOfmziZWndt9t1Yt/THi/owtdYEZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyloTETXRsazmoivtTNjujBtDMpUd8mAcgNnnqaglx7Je3E9OAv
-	9NkWBPOj/k7uPJZ+ZFxpK2ubJ9csWwgE5JkZmjbToO86vyO9d93Po2vd+KwVEInsnNuUANZhNLL
-	xB6ToQTn8bXJF8h+wR+UCm/ZK8sucRCE=
-X-Gm-Gg: ASbGncsERKVSxQ7BRt1dL5UuEoye3hAsbwQCqzfuJK37N2XywRz6nAyJ3yXt+x3fopY
-	uCS9Jwda/RA+hMqNTBFfRRW8MZOlvpk7AUctjf+fTsltsN1E5y1mYAh86zvYi3fbPd5I1BlwmLY
-	WwjXhLa2+++fVdn02RiPR27gmAWMphhQ==
-X-Google-Smtp-Source: AGHT+IHB++m0GR0lO5TfW8cZq+R6bSxHcLUjm6jGofGJAl2FV1P4JdhTYEzSIBs2qV2FvWjm0WoY9STztiddXe/xN+k=
-X-Received: by 2002:a17:907:7d8d:b0:ad5:4998:9f1a with SMTP id
- a640c23a62f3a-ad549a7e5e8mr600457266b.5.1747579354599; Sun, 18 May 2025
- 07:42:34 -0700 (PDT)
+	s=arc-20240116; t=1747734276; c=relaxed/simple;
+	bh=bO+DvT6apIqfDNIy0+opP0c3rLtArKrovaS/OjzcRDc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G9RMDB1lEF3wksqTWJNcJ0Fr4kKEoz/EGXOgPk0r91KDoTZz7tQVdo4BnOiVpkpeZDViP3iw/ay6lboOTahW0ferAHajVJwlL8JKlM0mmaXd09Gc/QBiQV2+wKSQZzr8S/Ib0mfSszqJM3rMBnM/a/ZbWrvdNqVe9hVgpHcM2I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=gkOgh9h5; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6689140E0192;
+	Tue, 20 May 2025 09:44:24 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id QJVdflCbhkG3; Tue, 20 May 2025 09:44:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1747734260; bh=8XuSEfqTyKP4ftgDT3Tfzv5euFw1r4LAz8Ep7yXFTsE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gkOgh9h5LoBoj8C9a9jrO/WjCGmk7baPrtjkbhLD9RzEsl1u0G+iCNF6LmxaGp5lG
+	 V3714mdsHmkwF+J8a0G1DLyPNGpYnjUWiTxr0dJR82L5RSrnKSckWmWq9ayfFX2uMJ
+	 ZlZ+are26PzhsttjXQDzSnKf3l3r/HYjjllyKNXy3QTXmEvoA8cTS2ygQnV0Wh+imy
+	 eauixXrWVAhR16Jzbx+o9i7Q9pfGiIxUeJvfIl+VdcLTQAfGHnyUyVGFPjUk80XsYE
+	 JuG7SdoEasq9KmiNZw2DBHueGNg+y8Cp5pS/voik81L/lPlWgJZtF6hWWTDI1qC3aJ
+	 ZXvbRH7eTM6ADVuFn33CYifrF3qMyDerz3YBRIRtcA0h6MsD7TI36rG73yVmrJ9FYo
+	 QzCWzU5BgPX72QkhvkiGW2KLcV6ow8y61R0/Y0r3blHjXEk1vZcU4g477jZmfabwh6
+	 H6hW/Fmimx2s9LLjZ/Jlk+svSZASnYOH/ZjxC2BHinCSOGS/HnetePqkLdUcMlS41S
+	 qyI+wPeBOnr3qzqNOeSj0lUPPRz8seggQCYcmj0jG4HZ1Dqbm1kTERi4j/DaVQ6JRE
+	 /KOgKEH0VggKSNj23245cnDwnlYRSYnYOfXTNK0mu7Hk+l/YltXZE2wvhFwFvkau1V
+	 6CtFNoSas6La1NunPDk2MuxM=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5990940E0238;
+	Tue, 20 May 2025 09:44:11 +0000 (UTC)
+Date: Tue, 20 May 2025 11:44:05 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [RFT PATCH v3 04/21] x86/sev: Run RMPADJUST on SVSM calling area
+ page to test VMPL
+Message-ID: <20250520094405.GJaCxO5ZsGR3vFqH_V@fat_crate.local>
+References: <20250512190834.332684-23-ardb+git@google.com>
+ <20250512190834.332684-27-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <18F9BD47-282D-4225-AB6B-FDA4AD52D7AE@gmail.com>
- <9b18e8e3-f3e2-48d4-839a-56e1d8f62657@intel.com> <03d0db6b-628e-4a5e-8e71-852233b83f60@apertussolutions.com>
- <fbb23ee0-c0b4-4b0e-8861-940f8ceaf161@intel.com>
-In-Reply-To: <fbb23ee0-c0b4-4b0e-8861-940f8ceaf161@intel.com>
-From: Mike <mikewallacesmith90@gmail.com>
-Date: Sun, 18 May 2025 09:42:23 -0500
-X-Gm-Features: AX0GCFuU42_TMoi_HKtSGmNW7XrkC1FL6iyDZjOSvOw7NwM1rf6CdCYLar4WcGI
-Message-ID: <CAAyYeYjp0v2PYt1owTdOpQD8_NjakquyXbUr5M1a_OWLEKHQ0A@mail.gmail.com>
-Subject: Re: [PATCH v14 00/19] x86: Trenchboot secure dynamic launch Linux
- kernel support
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Daniel P. Smith" <dpsmith@apertussolutions.com>, Rich Persaud <persaur@gmail.com>, 
-	Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-efi@vger.kernel.org, iommu@lists.linux.dev, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, 
-	ardb@kernel.org, mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com, 
-	peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net, 
-	nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net, 
-	corbet@lwn.net, ebiederm@xmission.com, dwmw2@infradead.org, 
-	baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com, 
-	andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com, 
-	Sergii Dmytruk <sergii.dmytruk@3mdeb.com>, openxt@googlegroups.com, 
-	"Mowka, Mateusz" <mateusz.mowka@intel.com>, Ning Sun <ning.sun@intel.com>, 
-	tboot-devel@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250512190834.332684-27-ardb+git@google.com>
 
-On Mon, Apr 28, 2025 at 7:57=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 4/28/25 17:04, Daniel P. Smith wrote:
-> >> OK, but why do this in Linux as opposed to tboot? Right now, much of t=
-he
-> >> TXT magic is done outside of the kernel. Why do it *IN* the kernel?
-> >
-> > There was a patch set submitted to tboot to add AMD support. It was
-> > rejected as tboot is solely focused on Intel TXT implementation.
-> >
-> > This meant I either had to go the route of yet another standalone loade=
-r
-> > kernel or do it in the kernel. Doing it as an external loader would hav=
-e
-> > required a new set of touchpoints, like the one you are highlighting. A=
-t
-> > which point, I am sure I would have gotten the question of why I didn't
-> > do it in the kernel.
+On Mon, May 12, 2025 at 09:08:39PM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> Determining the VMPL at which the kernel runs involves performing a
+> RMPADJUST operation on an arbitary page of memory, and observing whether
 
-Will this cause any patent infringement issues in Linux [1]?
+Time to turn on that spellchecker... :-)
 
-1. https://patents.google.com/patent/US9075995B2
+RMPADJUST operation on an arbitary page of memory, and observing whether
+Unknown word [arbitary] in commit message.
+Suggestions: ['arbitrary', 'obituary', 'arbiter', 'arbitrate', 'arbiters', 'Arbitron', 'arbitrage', 'artery', "arbiter's", 'orbiter']
+
+arbitary, but results in the need to provide a PIC alias for it. So use
+Unknown word [arbitary] in commit message.
+Suggestions: ['arbitrary', 'obituary', 'arbiter', 'arbitrate', 'arbiters', 'Arbitron', 'arbitrage', 'artery', "arbiter's", 'orbiter']
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
