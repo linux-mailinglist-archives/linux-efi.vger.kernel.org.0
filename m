@@ -1,136 +1,222 @@
-Return-Path: <linux-efi+bounces-3763-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3764-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A873ABF8F9
-	for <lists+linux-efi@lfdr.de>; Wed, 21 May 2025 17:13:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4929ABFC44
+	for <lists+linux-efi@lfdr.de>; Wed, 21 May 2025 19:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7247B3B859F
-	for <lists+linux-efi@lfdr.de>; Wed, 21 May 2025 15:10:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 896507A7895
+	for <lists+linux-efi@lfdr.de>; Wed, 21 May 2025 17:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA43E1DEFFC;
-	Wed, 21 May 2025 15:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1B928982F;
+	Wed, 21 May 2025 17:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ku8szkqe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAiz5sXK"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF9A1DDA1E;
-	Wed, 21 May 2025 15:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B560289824;
+	Wed, 21 May 2025 17:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747840269; cv=none; b=d45+S7V3RmzXnp9tXONG4RmecXWq2nWixe9/CuNdJukI4cGPQVHuphc1YlN0BYzM61j5KFPrDhNLhq5nBV8JS7W0r92cFIuzjtYWN6LkP+HnuIfTpb7lZk7M+dntNyKcNDMaujjPz6BKg0V2bHKUJNhXZBTJuducci02tBSocx0=
+	t=1747848528; cv=none; b=fsvQ+7arIli5+lliw1voKeIKh7LvU/fIkDiWFbNxmJbVE4LOVtAQGK9vIzXhqmHqdaaOJ6lMVDKdwqxr6UP2tiUjlYRKLSu4U46YNK5rDjkTN3TAnlfkVP04OIX+py7JSqInsDqvz4KJsMG0KY2MuhApzNqpjzBBc7ttN3ekR+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747840269; c=relaxed/simple;
-	bh=rf5KKNagSS+Ep78t789CZRexOArLM/q6lgtQp5b75n8=;
+	s=arc-20240116; t=1747848528; c=relaxed/simple;
+	bh=HK/f2OC27kw7E2aDKCk4nq2rlgz3dZYbc65P0dIeI8g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t5en+YipkHckcqk3xtAKnvl3r854BOlpKK2U4jUqkZGDGkCYG7PjCuKOHEJk30MvXDfjcjKfyuvdhH/WXAJ22XpySmcieqf22qCyg9MMkpdQZguz2cBK1gcQtnpV4i17xgyMgX/p69l09edIvjYur7/MTqmi7xNpklmK/aDwizk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ku8szkqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78CFC4CEE7;
-	Wed, 21 May 2025 15:11:08 +0000 (UTC)
+	 To:Cc:Content-Type; b=B0uGs4oaPvXKBvFFihdeWCrT2EgMfapiJCxhISjNQVd88dY/AyeanugOXBx97BVHTZzsk/+qJ3r6LqAVWCPMT3akVv0QCOofp7UsbGAuYqudSzhqPxdz+Qs2IHvKZT3n5wl8rRTwYSQCVJ23OaoJpv7hskvaqvA+DAMP1OS2d7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAiz5sXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3218C4CEED;
+	Wed, 21 May 2025 17:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747840268;
-	bh=rf5KKNagSS+Ep78t789CZRexOArLM/q6lgtQp5b75n8=;
+	s=k20201202; t=1747848527;
+	bh=HK/f2OC27kw7E2aDKCk4nq2rlgz3dZYbc65P0dIeI8g=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ku8szkqeevtcmqtgK8C7iUkUT2PLVpLbJDjrQSBJtMJOWfcPTbmsq3vw9OcF8m9ud
-	 akenuznlQiTA2GiFFl6ZssTTyhVLTUnEI699nguS2UEWYos54qLw0OOG4U23ddJ1BJ
-	 RjmN+qg5lECLGa6NlbNczkjewGlgRH3tqzsCBKhCKbNG38n5idSMMM66WZevayqPEC
-	 s/sesF9RGMtbcbReg7g8XrzYoDEiLAgjxAiaSL4yS7oVAXP6Lb5t/6mmo9FP9HVdiB
-	 iQKcxzBsA2gYMryg4aF7Ni7NSlugyw8fLo4iScWYf8iy9ZVFJatiH+WJa02bRkvJ3P
-	 /Kbkv6cBSew0g==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3106217268dso64913981fa.1;
-        Wed, 21 May 2025 08:11:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU1zLvqU0pYAKZGs2m0NpZ36ZHRzjHrDbRszsN7Wn1V4DO4sY0uPhH1urGtdRipIcuJjLG1liSv6aWJQ7OZ@vger.kernel.org, AJvYcCXj2ZRiNzxZx32rN0L6+Mq3JjOc3SdwZI955D1uUiyged0LgPnF+pjRNy4uuGSaiILFwJfaikIJFes=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyY3pPKNPZwSXsLq01lsxfjJ7S/0wxr0qnbyHGWe0oeKX0Wunl
-	7npwAsHdqa2tGp4aPWoPeqYaVv5qwrxHWyTiqxg+oqRTZQIuAZs+Cdug6gmgXzuToL2WKD9RXOq
-	iZVI6i3z/K4iFTJQfE2k7YVvAulPSEAw=
-X-Google-Smtp-Source: AGHT+IFiy+7d7pnSNTPHNyLmYyFaX/UwWfUH2Dg7JMmaFpvDfxmoq162Boqbk2tRJOirGvAFcXb1V/KMGMSCBoKzZ/Y=
-X-Received: by 2002:a2e:a01b:0:b0:329:3b72:4f2f with SMTP id
- 38308e7fff4ca-3293b7250e7mr5166281fa.39.1747840267297; Wed, 21 May 2025
- 08:11:07 -0700 (PDT)
+	b=NAiz5sXKNgZ+c0/iaEixDGFzVzruxX16Qc+eAi4IvjNCcp7qOQFYB4aH8AUxjy2UA
+	 XE2gR0hG307xua48iHqYps6FT4DmrMAUPMYqvQb6e8QlZ4wS3SmrQlEwFjURyxtncg
+	 H0/sm2zccIoh1qkUXXO0XgpgNeW67ZtKf2t+V87czNZ1PTpL4+8AZZHQ3dxjCe/jUX
+	 y/N0yL0xUAXNrSBNLZjor6d284iKVof+HfghtSagl7NIC9/XTQV7paBl/DALLrBfKA
+	 gHzuZI1ehMUevP/u0ZjK/JGIaRH6ymFHw/SLHpZMe7ftn4rSfRJPuDEzixL5X2TC1m
+	 AAjk67Ub9s3Rw==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-54b09cb06b0so8354808e87.1;
+        Wed, 21 May 2025 10:28:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUAg+5duOt9wRM6+bJLinTbn7OnLba1ODZY0yoYlKgoUCYtXphOlACfRf/2QdHPCJhTQx7qncEv7GkzZtM6@vger.kernel.org, AJvYcCVwqzaEtzylXF43O6gi2gvZqqMqPQhFNTzSh6MMAHWm1gF5TguqSy3jbRn3jgT4feWGpY4HSkULeiw=@vger.kernel.org, AJvYcCXPvEVGZxoR3poGo1T5okptscEkhfx5r7YW0kLl9OMf0Hs1PUXX8iPZ4B3SmjxKaBrKylsfqtd5bEeMYcCf/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/rfMk2jbJgwZlMMwohzO4UqvCIiABEv7Nqx/Iu04BC/QY/Kur
+	ci7JyHPHx8QJsxg/WXg6uiOnKa7fI495ujsTjb1VXWYyqZQiu8fQbdi49gnEshjSlB3Lt5BMVik
+	S2QU6ij1mU/qRq3A8+wPZgi1HiAGNDJE=
+X-Google-Smtp-Source: AGHT+IED7hvEqvRCCLir6jjUlL9xucAtYBb9f1l0NIqbApbevbcHb1vS7VmHxi6m3+G9Dil82JpRAU6w7+u6lw79G9c=
+X-Received: by 2002:ac2:4e07:0:b0:54f:c6b0:4c71 with SMTP id
+ 2adb3069b0e04-550e71983e4mr7313533e87.10.1747848526113; Wed, 21 May 2025
+ 10:28:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250504182244.30446-1-pali@kernel.org> <CAMj1kXE5DQ-tBFa+xLR10+joGADRB6BJ70EvDfJzfWJr1o3Q2A@mail.gmail.com>
- <20250505173259.b34f6hvn6t73q3df@pali> <CAMj1kXGE0fSRvR4=+qAWu54ehzJfdC9GSzHODr4pMTEbBwOhuA@mail.gmail.com>
- <bc8307c5-cf59-4a9a-95e1-c49ac19efb43@uncooperative.org>
-In-Reply-To: <bc8307c5-cf59-4a9a-95e1-c49ac19efb43@uncooperative.org>
+References: <6820e1f6.050a0220.f2294.003c.GAE@google.com>
+In-Reply-To: <6820e1f6.050a0220.f2294.003c.GAE@google.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 21 May 2025 17:10:55 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG9zkGGEQRXv41ro2mwZBcSvO=UJXfN5Aemu4CmBHkVxA@mail.gmail.com>
-X-Gm-Features: AX0GCFsRUgtvKt_e6ugHF7ETscSfYXODoL32KmMa3Zd9Lbt1HLnxFoRw2ICBiHg
-Message-ID: <CAMj1kXG9zkGGEQRXv41ro2mwZBcSvO=UJXfN5Aemu4CmBHkVxA@mail.gmail.com>
-Subject: Re: [PATCH] include: pe.h: Fix PE definitions
-To: Peter Jones <pjones@redhat.com>
-Cc: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
-	David Howells <dhowells@redhat.com>, linux-efi@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Wed, 21 May 2025 19:28:34 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEg88Q5GCV+YW13UT4eDEzMpnKW8ReJNDjLqX7xeXaw=w@mail.gmail.com>
+X-Gm-Features: AX0GCFsyajLOL0aLII2QTgKTT2Po4pG1OJqA5lR8WKR5gk16iSvrfBCxXYID3RQ
+Message-ID: <CAMj1kXEg88Q5GCV+YW13UT4eDEzMpnKW8ReJNDjLqX7xeXaw=w@mail.gmail.com>
+Subject: Re: [syzbot] [fs?] [efi?] BUG: unable to handle kernel paging request
+ in alloc_fs_context
+To: syzbot <syzbot+52cd651546d11d2af06b@syzkaller.appspotmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>
+Cc: jk@ozlabs.org, linux-efi@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, 21 May 2025 at 16:11, Peter Jones <pjones@redhat.com> wrote:
->
-> On Wed, May 21, 2025 at 03:45:13PM +0200, Ard Biesheuvel wrote:
-> > (cc Peter)
-> >
-> > On Mon, 5 May 2025 at 19:33, Pali Roh=C3=A1r <pali@kernel.org> wrote:
-> > >
-> > > Hello Ard!
-> > >
-> > > On Monday 05 May 2025 13:25:45 Ard Biesheuvel wrote:
-> > > > Hello Pali,
-> > > >
-> > > > On Sun, 4 May 2025 at 20:23, Pali Roh=C3=A1r <pali@kernel.org> wrot=
-e:
-> > > > >
-> > > > > * Rename constants to their standard PE names:
-> > > > >   - MZ_MAGIC -> IMAGE_DOS_SIGNATURE
-> > > > >   - PE_MAGIC -> IMAGE_NT_SIGNATURE
-> > > > >   - PE_OPT_MAGIC_PE32_ROM -> IMAGE_ROM_OPTIONAL_HDR_MAGIC
-> > > > >   - PE_OPT_MAGIC_PE32 -> IMAGE_NT_OPTIONAL_HDR32_MAGIC
-> > > > >   - PE_OPT_MAGIC_PE32PLUS -> IMAGE_NT_OPTIONAL_HDR64_MAGIC
-> > > > >   - IMAGE_DLL_CHARACTERISTICS_NX_COMPAT -> IMAGE_DLLCHARACTERISTI=
-CS_NX_COMPAT
-> > > > >
-> > > >
-> > > > Where are these 'standard PE names' defined?
-> > >
-> > > Basically in any project which is doing something with PE, at least i=
-n
-> > > projects which I saw or used it. Those names are mostly coming from
-> > > Windows SDKs/WDKs as the Microsoft is inventor of them and are de-fac=
-to
-> > > standard names -- or at least people are following existing naming
-> > > convention for a good reasons. If you are are not familiar with
-> > > MS/Windows world, you can find them also in projects like binutils,
-> > > llvm/clang, wine or mingw-w64, which are hopefully well-known project
-> > > references.
-> > >
-> > > Some of IMAGE_DLLCHARACTERISTICS_* names (including the NX_COMPAT) ar=
-e
-> > > defined also in the PE MS spec (win32/debug/pe-format). I hope that t=
-his
-> > > spec can be taken as a reference, even that it does not document
-> > > everything related to PE, and contains mistakes.
-> >
-> > I don't feel strongly either way with any of this - I don't think
-> > there's anything to fix here, but I'm not attached to the names so I
-> > don't mind changing them either.
-> >
-> > Peter: any thoughts?
->
-> I'm broadly for making the names look more like what the spec uses
-> whenever we can when it doesn't introduce naming collisions with other
-> stuff.  But like you, it makes very little difference to me.
->
+(cc James, Al, Christian)
 
-Thanks for the insight.
+Please see the splat below.
 
-I've queued it up now - thanks.
+The NULL dereference is due to get_cred() in alloc_fs_context()
+attempting to increment current->cred->usage while current->cred ==
+NULL, and this is a result of the fact that PM notifier call chain is
+called while the task is exiting.
+
+IIRC, the intent was for commit
+
+  11092db5b573 efivarfs: fix NULL dereference on resume
+
+to be replaced at some point with something more robust; might that
+address this issue as well?
+
+Thanks,
+Ard.
+
+
+
+
+On Sun, 11 May 2025 at 19:44, syzbot
+<syzbot+52cd651546d11d2af06b@syzkaller.appspotmail.com> wrote:
+>
+> Hello,
+>
+> syzbot found the following issue on:
+>
+> HEAD commit:    c32f8dc5aaf9 Merge branch 'for-next/core' into for-kernelci
+> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1762d670580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=ea4635ffd6ad5b4a
+> dashboard link: https://syzkaller.appspot.com/bug?extid=52cd651546d11d2af06b
+> compiler:       Debian clang version 20.1.2 (++20250402124445+58df0ef89dd6-1~exp1~20250402004600.97), Debian LLD 20.1.2
+> userspace arch: arm64
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=165c0cd4580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16f49cf4580000
+>
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/b921498959d4/disk-c32f8dc5.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/04e6ad946c4b/vmlinux-c32f8dc5.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/d4f0d8db50ee/Image-c32f8dc5.gz.xz
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+52cd651546d11d2af06b@syzkaller.appspotmail.com
+>
+> efivarfs: resyncing variable state
+> Unable to handle kernel paging request at virtual address dfff800000000005
+> KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
+> Mem abort info:
+>   ESR = 0x0000000096000005
+>   EC = 0x25: DABT (current EL), IL = 32 bits
+>   SET = 0, FnV = 0
+>   EA = 0, S1PTW = 0
+>   FSC = 0x05: level 1 translation fault
+> Data abort info:
+>   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+>   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+>   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [dfff800000000005] address between user and kernel address ranges
+> Internal error: Oops: 0000000096000005 [#1]  SMP
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 6487 Comm: syz-executor120 Not tainted 6.15.0-rc5-syzkaller-gc32f8dc5aaf9 #0 PREEMPT
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+> pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : alloc_fs_context+0x1b4/0x76c fs/fs_context.c:294
+> lr : __lse_atomic64_add arch/arm64/include/asm/atomic_lse.h:134 [inline]
+> lr : arch_atomic64_add arch/arm64/include/asm/atomic.h:67 [inline]
+> lr : raw_atomic64_add include/linux/atomic/atomic-arch-fallback.h:2672 [inline]
+> lr : raw_atomic_long_add include/linux/atomic/atomic-long.h:121 [inline]
+> lr : atomic_long_add include/linux/atomic/atomic-instrumented.h:3261 [inline]
+> lr : get_cred_many include/linux/cred.h:203 [inline]
+> lr : get_cred include/linux/cred.h:218 [inline]
+> lr : alloc_fs_context+0x150/0x76c fs/fs_context.c:293
+> sp : ffff8000a31b7760
+> x29: ffff8000a31b7790 x28: dfff800000000000 x27: ffff0000c8ef88d8
+> x26: 0000000000000028 x25: ffff0000c7e6f4c8 x24: ffff80008fb953e0
+> x23: 0000000000000000 x22: ffff0000c7e6f498 x21: ffff0000c8ef8000
+> x20: 0000000000000000 x19: ffff0000c7e6f400 x18: 00000000ffffffff
+> x17: ffff800092f27000 x16: ffff80008adb31c0 x15: 0000000000000001
+> x14: 1fffe0001a05b0e0 x13: 0000000000000000 x12: 0000000000000000
+> x11: ffff60001a05b0e1 x10: 0000000000ff0100 x9 : 0000000000000000
+> x8 : 0000000000000005 x7 : ffff80008022b2b8 x6 : ffff80008022b4b4
+> x5 : ffff0000dabc9c90 x4 : ffff8000a31b7520 x3 : ffff800080dfa950
+> x2 : 0000000000000001 x1 : 0000000000000008 x0 : 0000000000000001
+> Call trace:
+>  alloc_fs_context+0x1b4/0x76c fs/fs_context.c:294 (P)
+>  fs_context_for_mount+0x34/0x44 fs/fs_context.c:332
+>  vfs_kern_mount+0x38/0x178 fs/namespace.c:1313
+>  efivarfs_pm_notify+0x1c4/0x4b4 fs/efivarfs/super.c:529
+>  notifier_call_chain+0x1b8/0x4e4 kernel/notifier.c:85
+>  blocking_notifier_call_chain+0x70/0xa0 kernel/notifier.c:380
+>  pm_notifier_call_chain+0x2c/0x3c kernel/power/main.c:109
+>  snapshot_release+0x104/0x1c4 kernel/power/user.c:125
+>  __fput+0x340/0x75c fs/file_table.c:465
+>  ____fput+0x20/0x58 fs/file_table.c:493
+>  task_work_run+0x1dc/0x260 kernel/task_work.c:227
+>  exit_task_work include/linux/task_work.h:40 [inline]
+>  do_exit+0x4e8/0x1998 kernel/exit.c:953
+>  do_group_exit+0x194/0x22c kernel/exit.c:1102
+>  __do_sys_exit_group kernel/exit.c:1113 [inline]
+>  __se_sys_exit_group kernel/exit.c:1111 [inline]
+>  pid_child_should_wake+0x0/0x1dc kernel/exit.c:1111
+>  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>  invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+>  el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+>  do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+>  el0_svc+0x58/0x17c arch/arm64/kernel/entry-common.c:767
+>  el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:786
+>  el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+> Code: 97f8a879 f9400368 9100a11a d343ff48 (387c6908)
+> ---[ end trace 0000000000000000 ]---
+> ----------------
+> Code disassembly (best guess):
+>    0:   97f8a879        bl      0xffffffffffe2a1e4
+>    4:   f9400368        ldr     x8, [x27]
+>    8:   9100a11a        add     x26, x8, #0x28
+>    c:   d343ff48        lsr     x8, x26, #3
+> * 10:   387c6908        ldrb    w8, [x8, x28] <-- trapping instruction
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+>
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+>
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+>
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+>
+> If you want to undo deduplication, reply with:
+> #syz undup
 
