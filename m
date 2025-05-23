@@ -1,190 +1,205 @@
-Return-Path: <linux-efi+bounces-3768-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3773-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69669AC1064
-	for <lists+linux-efi@lfdr.de>; Thu, 22 May 2025 17:54:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 657D9AC1B2A
+	for <lists+linux-efi@lfdr.de>; Fri, 23 May 2025 06:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DEE23B0141
-	for <lists+linux-efi@lfdr.de>; Thu, 22 May 2025 15:54:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37FAA42264
+	for <lists+linux-efi@lfdr.de>; Fri, 23 May 2025 04:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E521029A324;
-	Thu, 22 May 2025 15:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBA6226CF6;
+	Fri, 23 May 2025 04:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UFqVWQKU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KqTkaNur"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C61299942
-	for <linux-efi@vger.kernel.org>; Thu, 22 May 2025 15:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F072722331C;
+	Fri, 23 May 2025 04:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747929243; cv=none; b=A6KMZn+7fGiKeWKNVvwSd2Uc2RcSxbDn4Je2Mf1ecoU4TjF7FvZ7nlrLHvj9Z3E1HUl9Nc6BTVLxRdpOonScqOBLE9j0MPlCRS+y9QdwylUI32T12CdoKE+Yz/gYOSnBDw+SGfiXZyMUxjP8pTk6ePOV9B/yd7PLyWzt1MFPBKk=
+	t=1747975179; cv=none; b=AKHBp7/3Hk7I3GVacuEKp9P6G1X3OH15iciL8EZTyX0/XDLsgxq3TvDohhUTNnDb8IW0M/x0lk1J+AjV09LJDFUKJ1T+LAPVJ5OyywErqF3iu5MqSHvEuxijxGRZhgCM7pF6K01/+syQCC9znBioXsL6gZEc+iM4m/kaahnEyaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747929243; c=relaxed/simple;
-	bh=qniysPKGO7O/bAYXFjaOOwqsCTxU6JTAFdF1NDGI6HI=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=GIPlsYuVgl+hQ537QqpheWyLHDSmNEoGVn10ApdBcqaR77YbXVqVoSdL2Qu/BVK0V0xsKP9L7s1eohhOU49vp1ly85myraG7R0WNtCqG5fCl8S0zTXBURJFdZVWDQJi929n/O0QUIxPAstvBPLBH9puP2soWtgF0oGWTOl8rpUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UFqVWQKU; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747929241; x=1779465241;
-  h=date:from:to:cc:subject:message-id;
-  bh=qniysPKGO7O/bAYXFjaOOwqsCTxU6JTAFdF1NDGI6HI=;
-  b=UFqVWQKUjgzQi9d39IxPiyfWXNi2ji0z4KtNesdPc/RsdlIiAA1kCIoz
-   0e8B1dZo9Gb8jjFtAsFu6jjAqNubPga/h5y/lhS03Xwov6II8T2gM0K0c
-   2YNPImY/wETGW7EQteII7FWH42099Hq4dqwghRvcz9yRIlrqCpr/4qBtk
-   XXfCtKcolwmVhRmivv3b/F73Px/haZRf17oFYc5O2cXeWXqXtxTn9I35q
-   E1v+kqwu71IGLdp7bwYl/7c0hG3IwmYBhnQbOWGPXaVKwgnBDz6oZeUQw
-   fYTqq3+ZvE8p1Wcjk03fcJhRSHdan/0WfpvFfxGs8uf7nkfUkAYRgvgCE
-   w==;
-X-CSE-ConnectionGUID: vuCTXezeQWuHyzEqdfWYfw==
-X-CSE-MsgGUID: IhSZtG2TROibA+oj/mlMIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="49862487"
-X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; 
-   d="scan'208";a="49862487"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 08:54:01 -0700
-X-CSE-ConnectionGUID: niglKeNXR1S4Wq1dNFpOEA==
-X-CSE-MsgGUID: V4BmykprSWKBkuLczsZftA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; 
-   d="scan'208";a="141596205"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 22 May 2025 08:54:00 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uI8F4-000PTc-0X;
-	Thu, 22 May 2025 15:53:58 +0000
-Date: Thu, 22 May 2025 23:53:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS
- 46550e2b878d60923c72f0526a7aac02e8eda3d5
-Message-ID: <202505222320.AW4lPVYs-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1747975179; c=relaxed/simple;
+	bh=XVwkrc3glEUjTIVHxhgADYvS6InRhqZwcVUoNmb8gLs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=U5pJTOStoqqY6gTLrXUWuAWRQiSiy/+7Rron68ZxI5sl+cLAF5KnZ1o9mEXmc5cszsJJPe9f6CxAlfPBYKaqpTjuUtjdIpjBA3jZnWLNMTxBe6+Ek/pcdljRWa/mX+T721LTtZncXyp7IQcQxvgvAu3mKO+XjhrPkfUdE1i1+S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KqTkaNur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D66C4AF09;
+	Fri, 23 May 2025 04:39:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747975178;
+	bh=XVwkrc3glEUjTIVHxhgADYvS6InRhqZwcVUoNmb8gLs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KqTkaNurs9FhJf2xVT2AAgHgZfsZLI22JZrnjsUUd3dLV4GIqcY/egNqMcrSdZ7KY
+	 Qoe1xFjyvbHFLLwX8ltHL+UpEgH2pwDrHXGVG+gI/ZXCJ/PiG9bEf2d8W+XPMqCPxS
+	 t7/QNPmTyrPco7X6qhPfaX8HwI7V5XMmTaddqEdLhPnbgxtzwoZVUVrHAupH5HXUWC
+	 uJs8xAoP8DhUEFmLxMG2167yDtwxbVR5eXKMzN/8qSh6Y2P0fAEW0W27jJaqa0EEmQ
+	 aqWuakzIBlY2iT7g7eX7sCheOJj+u51pIrSHjL9O7SZk51OYxQaixUP2zLbVkjOfiA
+	 pVI4tIZzEwhLA==
+From: Kees Cook <kees@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v2 00/14] stackleak: Support Clang stack depth tracking
+Date: Thu, 22 May 2025 21:39:10 -0700
+Message-Id: <20250523043251.it.550-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5806; i=kees@kernel.org; h=from:subject:message-id; bh=XVwkrc3glEUjTIVHxhgADYvS6InRhqZwcVUoNmb8gLs=; b=owGbwMvMwCVmps19z/KJym7G02pJDBn6v7/zd349lB4js43v/P8PVhOrZ671qt7bkPjchC/4n VqhgOyjjlIWBjEuBlkxRZYgO/c4F4+37eHucxVh5rAygQxh4OIUgIm8qWdkeLn+6AuHlaaR0h8X HD0uxWndd9xPfAPD46tHXz3TfCnRVcDwTy94qstMZtfd7Myfr9qe83KzmFlVcIJ9CYvupkfljK9 kmQE=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 46550e2b878d60923c72f0526a7aac02e8eda3d5  include: pe.h: Fix PE definitions
+ v2:
+  - rename stackleak to kstack_erase (mingo)
+  - address __init vs inline with KCOV changes
+ v1:  https://lore.kernel.org/lkml/20250507180852.work.231-kees@kernel.org/
+ RFC: https://lore.kernel.org/lkml/20250502185834.work.560-kees@kernel.org/
 
-elapsed time: 1455m
+Hi,
 
-configs tested: 97
-configs skipped: 1
+As part of looking at what GCC plugins could be replaced with Clang
+implementations, this series uses the recently landed stack depth tracking
+callback in Clang[1] to implement the stackleak feature. Since the Clang
+feature is now landed, I'm moving this out of RFC to a v1.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Since this touches a lot of arch-specific Makefiles, I tried to trim
+the CC list down to just mailing lists in those cases, otherwise the CC
+was giant.
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-14.2.0
-arc                               allnoconfig    gcc-14.2.0
-arc                              allyesconfig    gcc-14.2.0
-arc                   randconfig-001-20250522    gcc-15.1.0
-arc                   randconfig-002-20250522    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                   randconfig-001-20250522    clang-21
-arm                   randconfig-002-20250522    clang-21
-arm                   randconfig-003-20250522    clang-18
-arm                   randconfig-004-20250522    gcc-7.5.0
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20250522    clang-21
-arm64                 randconfig-002-20250522    gcc-7.5.0
-arm64                 randconfig-003-20250522    clang-21
-arm64                 randconfig-004-20250522    gcc-5.5.0
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20250522    gcc-15.1.0
-csky                  randconfig-002-20250522    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250522    clang-17
-hexagon               randconfig-002-20250522    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250522    clang-20
-i386        buildonly-randconfig-002-20250522    gcc-12
-i386        buildonly-randconfig-003-20250522    gcc-12
-i386        buildonly-randconfig-004-20250522    gcc-12
-i386        buildonly-randconfig-005-20250522    gcc-12
-i386        buildonly-randconfig-006-20250522    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20250522    gcc-15.1.0
-loongarch             randconfig-002-20250522    gcc-15.1.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250522    gcc-9.3.0
-nios2                 randconfig-002-20250522    gcc-9.3.0
-openrisc                          allnoconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                randconfig-001-20250522    gcc-6.5.0
-parisc                randconfig-002-20250522    gcc-12.4.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc               randconfig-001-20250522    gcc-9.3.0
-powerpc               randconfig-002-20250522    clang-21
-powerpc               randconfig-003-20250522    gcc-7.5.0
-powerpc64             randconfig-001-20250522    clang-21
-powerpc64             randconfig-002-20250522    gcc-10.5.0
-powerpc64             randconfig-003-20250522    gcc-7.5.0
-riscv                             allnoconfig    gcc-14.2.0
-riscv                 randconfig-001-20250522    gcc-9.3.0
-riscv                 randconfig-002-20250522    clang-18
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20250522    clang-19
-s390                  randconfig-002-20250522    clang-18
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                    randconfig-001-20250522    gcc-13.3.0
-sh                    randconfig-002-20250522    gcc-13.3.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250522    gcc-14.2.0
-sparc                 randconfig-002-20250522    gcc-6.5.0
-sparc64               randconfig-001-20250522    gcc-14.2.0
-sparc64               randconfig-002-20250522    gcc-12.4.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250522    gcc-12
-um                    randconfig-002-20250522    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250522    clang-20
-x86_64      buildonly-randconfig-002-20250522    gcc-12
-x86_64      buildonly-randconfig-003-20250522    gcc-12
-x86_64      buildonly-randconfig-004-20250522    gcc-12
-x86_64      buildonly-randconfig-005-20250522    gcc-12
-x86_64      buildonly-randconfig-006-20250522    gcc-12
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250522    gcc-14.2.0
-xtensa                randconfig-002-20250522    gcc-10.5.0
+Thanks!
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-Kees
+
+[1] https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-stack-depth
+
+Kees Cook (14):
+  stackleak: Rename STACKLEAK to KSTACK_ERASE
+  stackleak: Rename stackleak_track_stack to __sanitizer_cov_stack_depth
+  stackleak: Split KSTACK_ERASE_CFLAGS from GCC_PLUGINS_CFLAGS
+  x86: Handle KCOV __init vs inline mismatches
+  arm: Handle KCOV __init vs inline mismatches
+  arm64: Handle KCOV __init vs inline mismatches
+  s390: Handle KCOV __init vs inline mismatches
+  powerpc: Handle KCOV __init vs inline mismatches
+  mips: Handle KCOV __init vs inline mismatches
+  loongarch: Handle KCOV __init vs inline mismatches
+  init.h: Disable sanitizer coverage for __init and __head
+  kstack_erase: Support Clang stack depth tracking
+  configs/hardening: Enable CONFIG_KSTACK_ERASE
+  configs/hardening: Enable CONFIG_INIT_ON_FREE_DEFAULT_ON
+
+ arch/Kconfig                                  |  4 +-
+ arch/arm/Kconfig                              |  2 +-
+ arch/arm64/Kconfig                            |  2 +-
+ arch/riscv/Kconfig                            |  2 +-
+ arch/s390/Kconfig                             |  2 +-
+ arch/x86/Kconfig                              |  2 +-
+ security/Kconfig.hardening                    | 45 +++++++++-------
+ Makefile                                      |  1 +
+ arch/arm/boot/compressed/Makefile             |  2 +-
+ arch/arm/vdso/Makefile                        |  2 +-
+ arch/arm64/kernel/pi/Makefile                 |  2 +-
+ arch/arm64/kernel/vdso/Makefile               |  3 +-
+ arch/arm64/kvm/hyp/nvhe/Makefile              |  2 +-
+ arch/riscv/kernel/pi/Makefile                 |  2 +-
+ arch/riscv/purgatory/Makefile                 |  2 +-
+ arch/sparc/vdso/Makefile                      |  3 +-
+ arch/x86/entry/vdso/Makefile                  |  3 +-
+ arch/x86/purgatory/Makefile                   |  2 +-
+ drivers/firmware/efi/libstub/Makefile         |  8 +--
+ drivers/misc/lkdtm/Makefile                   |  2 +-
+ kernel/Makefile                               | 10 ++--
+ lib/Makefile                                  |  2 +-
+ scripts/Makefile.gcc-plugins                  | 16 +-----
+ scripts/Makefile.kstack_erase                 | 21 ++++++++
+ scripts/gcc-plugins/stackleak_plugin.c        | 52 +++++++++----------
+ Documentation/admin-guide/sysctl/kernel.rst   |  4 +-
+ Documentation/arch/x86/x86_64/mm.rst          |  2 +-
+ Documentation/security/self-protection.rst    |  2 +-
+ .../zh_CN/security/self-protection.rst        |  2 +-
+ arch/arm64/include/asm/acpi.h                 |  2 +-
+ arch/loongarch/include/asm/smp.h              |  2 +-
+ arch/mips/include/asm/time.h                  |  2 +-
+ arch/s390/hypfs/hypfs.h                       |  2 +-
+ arch/s390/hypfs/hypfs_diag.h                  |  2 +-
+ arch/x86/entry/calling.h                      |  4 +-
+ arch/x86/include/asm/acpi.h                   |  4 +-
+ arch/x86/include/asm/init.h                   |  2 +-
+ arch/x86/include/asm/realmode.h               |  2 +-
+ include/linux/acpi.h                          |  4 +-
+ include/linux/bootconfig.h                    |  2 +-
+ include/linux/efi.h                           |  2 +-
+ include/linux/init.h                          |  4 +-
+ include/linux/{stackleak.h => kstack_erase.h} | 20 +++----
+ include/linux/memblock.h                      |  2 +-
+ include/linux/mfd/dbx500-prcmu.h              |  2 +-
+ include/linux/sched.h                         |  4 +-
+ arch/arm/kernel/entry-common.S                |  2 +-
+ arch/arm64/kernel/entry.S                     |  2 +-
+ arch/riscv/kernel/entry.S                     |  2 +-
+ arch/s390/kernel/entry.S                      |  2 +-
+ arch/arm/mm/cache-feroceon-l2.c               |  2 +-
+ arch/arm/mm/cache-tauros2.c                   |  2 +-
+ arch/loongarch/kernel/time.c                  |  2 +-
+ arch/loongarch/mm/ioremap.c                   |  4 +-
+ arch/powerpc/mm/book3s64/hash_utils.c         |  2 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  2 +-
+ arch/s390/mm/init.c                           |  2 +-
+ arch/x86/kernel/kvm.c                         |  2 +-
+ drivers/clocksource/timer-orion.c             |  2 +-
+ .../lkdtm/{stackleak.c => kstack_erase.c}     | 26 +++++-----
+ drivers/platform/x86/thinkpad_acpi.c          |  4 +-
+ drivers/soc/ti/pm33xx.c                       |  2 +-
+ fs/proc/base.c                                |  6 +--
+ kernel/fork.c                                 |  2 +-
+ kernel/{stackleak.c => kstack_erase.c}        | 22 ++++----
+ tools/objtool/check.c                         |  4 +-
+ tools/testing/selftests/lkdtm/config          |  2 +-
+ MAINTAINERS                                   |  6 ++-
+ kernel/configs/hardening.config               |  6 +++
+ 69 files changed, 203 insertions(+), 171 deletions(-)
+ create mode 100644 scripts/Makefile.kstack_erase
+ rename include/linux/{stackleak.h => kstack_erase.h} (81%)
+ rename drivers/misc/lkdtm/{stackleak.c => kstack_erase.c} (89%)
+ rename kernel/{stackleak.c => kstack_erase.c} (87%)
+
+-- 
+2.34.1
+
 
