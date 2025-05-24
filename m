@@ -1,126 +1,262 @@
-Return-Path: <linux-efi+bounces-3789-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3790-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F071AC2AD7
-	for <lists+linux-efi@lfdr.de>; Fri, 23 May 2025 22:28:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13173AC2F52
+	for <lists+linux-efi@lfdr.de>; Sat, 24 May 2025 13:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CD1FA43C18
-	for <lists+linux-efi@lfdr.de>; Fri, 23 May 2025 20:28:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088D03B4144
+	for <lists+linux-efi@lfdr.de>; Sat, 24 May 2025 11:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB88E1F4CB2;
-	Fri, 23 May 2025 20:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CD11E1E06;
+	Sat, 24 May 2025 11:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cKCTWrMO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdr46dTK"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A863322338;
-	Fri, 23 May 2025 20:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3374572623;
+	Sat, 24 May 2025 11:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748032111; cv=none; b=AOiBAxjD9S25c3buvtfvmu7V1LGvFlRAM3AvKQxinzzaghJT+7HC94QlZ/XRaHQ7duJkvf5AEi3vr8LxIKCFkys8eCoJoPehRJk3pLmo19icXYX2awjXDgfM+KOaYNHmsBsOjuZY+XXI9dnoV0mWZ2l/YSsQXTbpMyTakjvruBY=
+	t=1748085559; cv=none; b=do5q64Xhz7FQBfqwfbZAsxL9dcvxkEi6MHiEjFYdqaw0ME3JZREVKbfdZepKDca8pFKCZyij+Ujt8MfeQzhy4esDp6Xq5lZGobvjPgyZWEa/h9eIzBl2jdMpTGD7j/MH46pZ/X6lIuL+JXe+WsB25IPaQCiNAebdN36L+7xi22A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748032111; c=relaxed/simple;
-	bh=mCqS/Kijb63hfjRogkIoo1V9a7plAKd5pBatsPb3zS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=An9HTiL0bNA4gZqLd+hPMKDmuQkClv/6HoDX/TW6yoIu93r7VBSmHU8JWSzodBS3PE3gKUEpwXL0PmalcCLkilnaB96565HqOj5NsdzJz7GaH6cgg3kOFJTcT4JN0kzMwubt81K3UrULP76ecMvLg3zrKuUeQk2ZPGYU/yzXA34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cKCTWrMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E60C4CEEF;
-	Fri, 23 May 2025 20:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748032111;
-	bh=mCqS/Kijb63hfjRogkIoo1V9a7plAKd5pBatsPb3zS4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cKCTWrMOz8QGFkwtap37uEMcxPQVostPEoFPh+liJpGoIZm7yUbph01VSxYIZ9Mnu
-	 Xp2SFx8fCFcAMCn/ELInspiWG36xJF3J7d0jPlVxo6aeh9oNz5+dzf8Kq3g/Xe/so1
-	 mYCrUnXAuBAVZPsZr7ruImlYVc+gipnIRXGuB54FA2ds4IMAQQ3eh1QLM/4b0qJj2M
-	 gTr/IjcVsa0wubmGcNRixgHZajZrPNsHowCdWXY/LC03W+Pu6hAChB6eWCEPXnK99u
-	 2vaA5rFoq3M2ELAJVxf64ufJ8UJLD7jY5t0UU+6I6+n7SgWhzCzujvRIpD5lc47LG4
-	 +IQz87qYLaslQ==
-Date: Fri, 23 May 2025 13:28:28 -0700
-From: Kees Cook <kees@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	Michal Wilczynski <michal.wilczynski@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Roger Pau Monne <roger.pau@citrix.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Usama Arif <usama.arif@bytedance.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
-	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
-	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-mm@kvack.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+	s=arc-20240116; t=1748085559; c=relaxed/simple;
+	bh=ZeM+da8JfZ8lnROmjH/nTyqDodwA3mKLYrHfnIhGZ/A=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=Q4YcaqGR9AsAwxBwdBVoukCH5mRYPUwenYLG8c0JxOHsrJlZ0xNxaJAaMvTyB6GUW6U6Te7DZ+Hghi0pGC29GOB4Nd2DsQg+9GcRayO/6G/awFgaBzOHE2DIUZCKWQQnHwpM5KIC6UpHf9MfCd5e/Yzlu8VjDxr63m/c8xfH0xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdr46dTK; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7398d65476eso522929b3a.1;
+        Sat, 24 May 2025 04:19:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748085556; x=1748690356; darn=vger.kernel.org;
+        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rScpXVbASUqjAgnv8asCUXuGu69m7xK2h2FjiRqoUxs=;
+        b=gdr46dTKVWlw860DLDTO1i756MGbSuyzxbNPkHA/2h8xnd7JKuXaWItWmYeZWbV5US
+         s9unF/sjNDzC04R5svLT9o/wHXZp8rmmW0VzrBQooXqMd6WeoRwBFaFWBP8aqiuAV4aO
+         RXc1zCrMwF/rBheb2Iwsj0gObtgcusLi5yPsT6fwPnIKGIiuOnYD2GVx/SI/nDvefLz/
+         P4cppyTF7nuIDaRMzWREufuWdQrwirh++hYEDkwpaYJ90u9m8ZKRxaqRYQ8c1usjhveU
+         PKLROFJUpb5a18SKD7LfFqf7Uyiu+oytmZeH65bvZe371TTahuxKZmfTFME4niVnqy5e
+         PO1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748085556; x=1748690356;
+        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rScpXVbASUqjAgnv8asCUXuGu69m7xK2h2FjiRqoUxs=;
+        b=gg6RCfEZhv66eSk76Tn9KNvwPeAKpjE0pGXfw2jEqMhhOZthSDQ20bSQ1OQGmOr9Lx
+         PevUXG6dvuZTBopJ7hQH7zl6eT28nvJgjddxqtjKyHLle3aQrrodD8R43OFOgQS33npB
+         MHY2Q9ZaYRW/04C6zvX/SJ+scJKsuDR/XDVHmlL/ajgcYcTyv33/k9SPCAAXQPn1Cly1
+         FoDnjc9Gkg1MaRSWERn/I9Wwhb7aimWdqg6gVq55EwhheHBaMRzop1nU+7XtESx93Bic
+         KI4uSSmi+b5AQX7pE9MT0HUtFAiP7nVCRTKymTAGVt+72bZI2RF9FbGC1P5XyQXvi5UX
+         W6jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4S251QJksDeezNZ4QS0fQyMErKyH6Ou4WdVGl+ykREKHF21DHoXnhVqaDADgnQOXw26Ny1TJ6Y5k=@vger.kernel.org, AJvYcCURLShftmeP/rqSH1AC7Ry5qqVPN3xeogahYBkA/fhnA2SJDodYMnZmC6rTi/y2TLs6B8WtQwdUr89ZPdJkV6nF@vger.kernel.org, AJvYcCVRoP49L7pRR+RSHeMRwTF9rc2yE2CAt2+maTVDFHiWLL0E/nHUsL4dRF36qFyxcU9cSsKG8ojjiPt76A==@vger.kernel.org, AJvYcCVuX4/GG1Cb1E7aB5/SeDacK4KG2MPO0THJ1o0GrpyLllIwLsBL1j4TwW/TIRfccNahH0vdcr1Bda7vz1KVLJepLV0wN1lt@vger.kernel.org, AJvYcCW3JbQ0ua019PFi62EcZrSAaEUZ4KMieoAd41jTWaHtIvui9/CcfWr+p0b89+kh0dNJjYsNzHVR98XI9oi3@vger.kernel.org, AJvYcCWL5jk+RE0J+vv+44ofFXnTuedMrZdOchLguChFYxFAeSfMOFBuWN7jnxP44xQVqST25sKkuCmzScaRpcS/@vger.kernel.org, AJvYcCWW8MGXdw6Vym3TxzJFmNZN4DFssUYpXo4sGvgN3it2QbZ+1TjemgwVIFxN03bPA141z+6lPBDzm5l8EvSKCZ94@vger.kernel.org, AJvYcCXC0zF6ImNVIY9amNrNogiu5HlHiYIf/BHSReyst52nhoxjwvVzmOh12jwPTpE+qrfxzEq77nFEs8139Q==@vger.kernel.org, AJvYcCXdJSmb5F1X2ycyYLW1CkgIIOkD11wm7boNXqt4bAjtAhY2ItoifkWF0m1B7/MryFoKa2l0K30aGL99@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvGHP6xoVsY17CuTjP4lJNnzByERifjxZd8q+zDYbzmJ7setRT
+	jhFzOBMUqPg5wXJTlJ5arTmmK/uozAv/pE8h5b7sMYIcbuUzzoeg4m3z
+X-Gm-Gg: ASbGncv1TI5PFUHOw1ShfVWGEeQinHXEWEFG0JM2D+rfMxC79y8g3wr/6nBDzFGxXKt
+	7aCy0aSTRcW5T4Wyy+JzjOR82zlQlQrqMcEUnlzcsC/7BKn9SwGLxtjiExS4J83AVWq2RoaqZqT
+	Mm7kbmcC/geBowUYb3ZYMLWUQMQfr55E5tllaCOaCcaDYjRG39F8/ay5wsvj2iGWRuriXH6p1zY
+	+eef52OStW2/0QIyb2UTmotELeV2liVOmGc3vdCnKeAAaSo5W4nkFWbIq5Y5rqvuc92TR/nHQZz
+	nurnAubngyoL0uC5KfvOqzBrJUvLm2/XcZX8zGVndjqWc2lnA1mjqlo=
+X-Google-Smtp-Source: AGHT+IHzgyF4RMk4/VcB/ult2huesDrd3BktU05/6T5tjhGyNb1hL3EGlpy4BVyGxnMoNfwEQoYJDQ==
+X-Received: by 2002:a05:6a00:1903:b0:73e:2367:c914 with SMTP id d2e1a72fcca58-745fe068d61mr3795551b3a.7.1748085556260;
+        Sat, 24 May 2025 04:19:16 -0700 (PDT)
+Received: from dw-tp ([49.205.218.89])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a96dfacesm14024380b3a.5.2025.05.24.04.19.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 May 2025 04:19:15 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: Kees Cook <kees@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linuxppc-dev@lists.ozlabs.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, 
 	llvm@lists.linux.dev
-Subject: Re: [PATCH v2 04/14] x86: Handle KCOV __init vs inline mismatches
-Message-ID: <202505231327.3FA45E4B@keescook>
-References: <20250523043251.it.550-kees@kernel.org>
- <20250523043935.2009972-4-kees@kernel.org>
- <aDCHl0RBMgNzGu6j@google.com>
+Subject: Re: [PATCH v2 08/14] powerpc: Handle KCOV __init vs inline mismatches
+In-Reply-To: <20250523043935.2009972-8-kees@kernel.org>
+Date: Sat, 24 May 2025 16:13:02 +0530
+Message-ID: <87jz662ssp.fsf@gmail.com>
+References: <20250523043251.it.550-kees@kernel.org> <20250523043935.2009972-8-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aDCHl0RBMgNzGu6j@google.com>
+Content-Type: text/plain
 
-On Fri, May 23, 2025 at 07:35:03AM -0700, Sean Christopherson wrote:
-> On Thu, May 22, 2025, Kees Cook wrote:
-> > diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-> > index 921c1c783bc1..72f13d643fca 100644
-> > --- a/arch/x86/kernel/kvm.c
-> > +++ b/arch/x86/kernel/kvm.c
-> > @@ -420,7 +420,7 @@ static u64 kvm_steal_clock(int cpu)
-> >  	return steal;
-> >  }
-> >  
-> > -static inline void __set_percpu_decrypted(void *ptr, unsigned long size)
-> > +static __always_inline void __set_percpu_decrypted(void *ptr, unsigned long size)
-> 
-> I'd rather drop the "inline" and explicitly mark this "__init".  There's value
-> in documenting and enforcing that memory is marked decrypted/shared only during
-> boot.
+Kees Cook <kees@kernel.org> writes:
 
-Sure! I will swap this around. Thanks!
+> When KCOV is enabled all functions get instrumented, unless
+> the __no_sanitize_coverage attribute is used. To prepare for
+> __no_sanitize_coverage being applied to __init functions, we have to
+> handle differences in how GCC's inline optimizations get resolved. For
+> s390 this requires forcing a couple functions to be inline with
+> __always_inline.
+>
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Naveen N Rao <naveen@kernel.org>
+> Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+> Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: <linuxppc-dev@lists.ozlabs.org>
+> ---
+>  arch/powerpc/mm/book3s64/hash_utils.c    | 2 +-
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 5158aefe4873..93f1e1eb5ea6 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -409,7 +409,7 @@ static DEFINE_RAW_SPINLOCK(linear_map_kf_hash_lock);
+>  
+>  static phys_addr_t kfence_pool;
+>  
+> -static inline void hash_kfence_alloc_pool(void)
+> +static __always_inline void hash_kfence_alloc_pool(void)
+>  {
+>  	if (!kfence_early_init_enabled())
+>  		goto err;
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index 9f764bc42b8c..3238e9ed46b5 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -363,7 +363,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+>  }
+>  
+>  #ifdef CONFIG_KFENCE
+> -static inline phys_addr_t alloc_kfence_pool(void)
+> +static __always_inline phys_addr_t alloc_kfence_pool(void)
+>  {
+>  	phys_addr_t kfence_pool;
+>  
 
--Kees
+I remember seeing a warning msg around .init.text section. Let me dig
+that...
 
+... Here it is: https://lore.kernel.org/oe-kbuild-all/202504190552.mnFGs5sj-lkp@intel.com/
+
+I am not sure why it only complains for hash_debug_pagealloc_alloc_slots().
+I believe there should me more functions to mark with __init here.
+Anyways, here is the patch of what I had in mind.. I am not a compiler expert,
+so please let me know your thoughts on this.
+
+-ritesh
+
+
+From 59d64dc0014ccb4ae13ed08ab596738628ee23b1 Mon Sep 17 00:00:00 2001
+Message-Id: <59d64dc0014ccb4ae13ed08ab596738628ee23b1.1748084756.git.ritesh.list@gmail.com>
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Date: Sat, 24 May 2025 16:14:08 +0530
+Subject: [RFC] powerpc/mm/book3s64: Move few kfence & debug_pagealloc
+ related calls to __init section
+
+Move few kfence and debug_pagealloc related functions in hash_utils.c
+and radix_pgtable.c to __init sections since these are only invoked once
+by an __init function during system initialization.
+
+i.e.
+- hash_debug_pagealloc_alloc_slots()
+- hash_kfence_alloc_pool()
+- hash_kfence_map_pool()
+  The above 3 functions only gets called by __init htab_initialize().
+
+- alloc_kfence_pool()
+- map_kfence_pool()
+  The above 2 functions only gets called by __init radix_init_pgtable()
+
+This should also help fix warning msgs like:
+
+>> WARNING: modpost: vmlinux: section mismatch in reference:
+hash_debug_pagealloc_alloc_slots+0xb0 (section: .text) ->
+memblock_alloc_try_nid (section: .init.text)
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202504190552.mnFGs5sj-lkp@intel.com/
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+---
+ arch/powerpc/mm/book3s64/hash_utils.c    | 6 +++---
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 5158aefe4873..4693c464fc5a 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -343,7 +343,7 @@ static inline bool hash_supports_debug_pagealloc(void)
+ static u8 *linear_map_hash_slots;
+ static unsigned long linear_map_hash_count;
+ static DEFINE_RAW_SPINLOCK(linear_map_hash_lock);
+-static void hash_debug_pagealloc_alloc_slots(void)
++static __init void hash_debug_pagealloc_alloc_slots(void)
+ {
+ 	if (!hash_supports_debug_pagealloc())
+ 		return;
+@@ -409,7 +409,7 @@ static DEFINE_RAW_SPINLOCK(linear_map_kf_hash_lock);
+ 
+ static phys_addr_t kfence_pool;
+ 
+-static inline void hash_kfence_alloc_pool(void)
++static __init void hash_kfence_alloc_pool(void)
+ {
+ 	if (!kfence_early_init_enabled())
+ 		goto err;
+@@ -445,7 +445,7 @@ static inline void hash_kfence_alloc_pool(void)
+ 	disable_kfence();
+ }
+ 
+-static inline void hash_kfence_map_pool(void)
++static __init void hash_kfence_map_pool(void)
+ {
+ 	unsigned long kfence_pool_start, kfence_pool_end;
+ 	unsigned long prot = pgprot_val(PAGE_KERNEL);
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 311e2112d782..ed226ee1569a 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -363,7 +363,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+ }
+ 
+ #ifdef CONFIG_KFENCE
+-static inline phys_addr_t alloc_kfence_pool(void)
++static __init phys_addr_t alloc_kfence_pool(void)
+ {
+ 	phys_addr_t kfence_pool;
+ 
+@@ -393,7 +393,7 @@ static inline phys_addr_t alloc_kfence_pool(void)
+ 	return 0;
+ }
+ 
+-static inline void map_kfence_pool(phys_addr_t kfence_pool)
++static __init void map_kfence_pool(phys_addr_t kfence_pool)
+ {
+ 	if (!kfence_pool)
+ 		return;
 -- 
-Kees Cook
+2.39.5
+
 
