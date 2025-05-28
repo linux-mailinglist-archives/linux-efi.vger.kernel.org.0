@@ -1,53 +1,53 @@
-Return-Path: <linux-efi+bounces-3796-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3797-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2079AC6344
-	for <lists+linux-efi@lfdr.de>; Wed, 28 May 2025 09:45:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BB5AC6E0C
+	for <lists+linux-efi@lfdr.de>; Wed, 28 May 2025 18:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8186116E499
-	for <lists+linux-efi@lfdr.de>; Wed, 28 May 2025 07:45:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7820F9E8514
+	for <lists+linux-efi@lfdr.de>; Wed, 28 May 2025 16:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EC12459D9;
-	Wed, 28 May 2025 07:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB7B28C851;
+	Wed, 28 May 2025 16:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LsgC/GyR"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nZGM34tr"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5B719B3EC;
-	Wed, 28 May 2025 07:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C51286D60;
+	Wed, 28 May 2025 16:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748418313; cv=none; b=h5JdJEiZl9TdDR7s+Zy9TJiF3Bbtndlay09kwKYmG6Gk+P2I5Ci4u9h1xZIVqTBqDA5tgYOmD8hvlz+tp/zxpfcFFq/hRMn2QPz4ZJ2J0octJdJi0YQZBSOlpj612uqrODuJ2qCiMBxyH1fgfXr/BTgLSHDuhMLQU9XXDvhtl3E=
+	t=1748449844; cv=none; b=LsgQdJekijiCr90AFvEbr9NDQ1StNBJNrDi0eFmOpBH9kivFqlJh0EA8L1BNJ6MqeLsFytjzRZ1E2obfnZSAcOaM/0ALdGsoh8mHxzD4PGgr6386ZbuNXsl629QZNOPFPyPxrQZbZABVokrrWnRdR2CHoS2tm54EuOg9EAdzj1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748418313; c=relaxed/simple;
-	bh=iafivI8V/MTAg4QPelROK6ZjF73rLhrtzNbr40jE06Q=;
+	s=arc-20240116; t=1748449844; c=relaxed/simple;
+	bh=1tbP8NGTysAyLnBcbOao/6nlF/KpXN5Kj8jDrC4wW3A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m9Sv/yLhJbCvFuxCARs75HcJ4smRtmmtmSSDqiYIp3ApoF5qsox0IDZDwk14D17eZRBeqAW3ujNHmCPq8rYR8XYjvS4Atrh856Apesj66lmqpxyhqKYxbXiLhQmq1dBWYXgaBUflryVQjJgeIJ0Z77gOxKqsRYi+kDkpVHnfack=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LsgC/GyR; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:Content-Disposition:In-Reply-To; b=qWM5IpEsSHhMidOiyoADE3hHr5qsPRpQybk3SZ2BiLYRqDId5D+k3XZAE4MskP5UiMmGNGr+dSDaoRmLrwM0XNV86b7+Y6FM/2tfzPguZ/AOrzRiQN927gOn3prYxBoy/+M0DWcBo61jeRiXCVVTXtVDZH+Dyrjsr9kFmzl5t6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=nZGM34tr; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=iafivI8V/MTAg4QPelROK6ZjF73rLhrtzNbr40jE06Q=; b=LsgC/GyR5rTERHl0o7UzTubCfZ
-	AJh7GZltqv7gxIf2314J6nKbqBoaTeQhbu6/bPN7yAzvTtCaqAH3Uq5SxT7OUamehRbcZCXpn7KBM
-	D2NwnVgTmQSEqrPC02BXOilRVb4cUMw5qz12MS4FDMZcOEVU85lACRniDOt4uzVFCsooqqwSmwAw4
-	dhxUoNrSvFoEvCsD5A+TCba/7u5qCsm7wBu2SCJio0AMODUc2ftmiQ5pA4uvrD1drrKLnfZzdVkP8
-	S47F5d+REC77oIN8pLOiENDsJVYxGk4In1LZXRTlkYbYFLDsSJoE+0qFMilT1q6u6/VthQckhRsIq
-	TiUi/m3A==;
+	bh=XzNgzVM/OEVZ+RLegAjSkzoDiYYza0R+KlXhx6KrfY0=; b=nZGM34trj98iolZ9YbYPglJvKZ
+	4nZ9cTwYUfobD6NOHivUypANtFU9MxRBrSLM0LdG5uwyZ85mwrRiRlnH4OxhV0FJJiht7zaIbXnCa
+	in9W607mjqkAk624BNTDeyhksLwRhWDhb67uy2HGeGnuPQyVvu2Ari/Sky/qMjj9hByF+wcUBSrM+
+	BPhZek0J/ZHcxePqihuOjLLUCchVF/faSJLTDK/TPxFUHkKOoGPtT5SAYFwdGsUo48Qq0d0VhJe48
+	nqe3GjEriP/s6WMJd2mDWse0zL10MXPmLLQpFJgWKRfqi71SmTRQ58xih4NE1IGeX0jtdcQ9Bcw9Q
+	nQ9LTFqA==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKBT6-0000000DMJR-0nhG;
-	Wed, 28 May 2025 07:44:56 +0000
+	id 1uKJfo-0000000Dqjg-1t2e;
+	Wed, 28 May 2025 16:30:36 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 60707300472; Wed, 28 May 2025 09:44:52 +0200 (CEST)
-Date: Wed, 28 May 2025 09:44:52 +0200
+	id F160A3005AF; Wed, 28 May 2025 18:30:35 +0200 (CEST)
+Date: Wed, 28 May 2025 18:30:35 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Josh Poimboeuf <jpoimboe@kernel.org>
 Cc: Sean Christopherson <seanjc@google.com>,
@@ -62,9 +62,8 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	ojeda@kernel.org, xin@zytor.com
 Subject: Re: [PATCH v2 00/13] objtool: Detect and warn about indirect calls
  in __nocfi functions
-Message-ID: <20250528074452.GU39944@noisy.programming.kicks-ass.net>
-References: <20250501103038.GB4356@noisy.programming.kicks-ass.net>
- <20250501153844.GD4356@noisy.programming.kicks-ass.net>
+Message-ID: <20250528163035.GH31726@noisy.programming.kicks-ass.net>
+References: <20250501153844.GD4356@noisy.programming.kicks-ass.net>
  <aBO9uoLnxCSD0UwT@google.com>
  <20250502084007.GS4198@noisy.programming.kicks-ass.net>
  <aBUiwLV4ZY2HdRbz@google.com>
@@ -73,6 +72,7 @@ References: <20250501103038.GB4356@noisy.programming.kicks-ass.net>
  <20250506073100.GG4198@noisy.programming.kicks-ass.net>
  <20250506133234.GH4356@noisy.programming.kicks-ass.net>
  <vukrlmb4kbpcol6rtest3tsw4y6obopbrwi5hcb5iwzogsopgt@sokysuzxvehi>
+ <20250528074452.GU39944@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -81,16 +81,45 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <vukrlmb4kbpcol6rtest3tsw4y6obopbrwi5hcb5iwzogsopgt@sokysuzxvehi>
+In-Reply-To: <20250528074452.GU39944@noisy.programming.kicks-ass.net>
 
-On Tue, May 06, 2025 at 12:18:49PM -0700, Josh Poimboeuf wrote:
+On Wed, May 28, 2025 at 09:44:52AM +0200, Peter Zijlstra wrote:
+> On Tue, May 06, 2025 at 12:18:49PM -0700, Josh Poimboeuf wrote:
+> 
+> > Weird, I'm not seeing that.
+> 
+> I Ate'nt Crazeh...
+> 
+> https://lore.kernel.org/all/202505280410.2qfTQCRt-lkp@intel.com/T/#u
+> 
+> I'll go poke at it, see if today is the day I can figure out WTF
+> happens.
 
-> Weird, I'm not seeing that.
+It manages to trip the CFI_UNDEFINED case in op->dest.reg == cfa->base
+in update_cfi_state().
 
-I Ate'nt Crazeh...
+I figured it ought to tickle the regular 'mov %rbp, %rsp' case above
+there, but it doesn't, for some reason it has cfa.base == SP at this
+point.
 
-https://lore.kernel.org/all/202505280410.2qfTQCRt-lkp@intel.com/T/#u
+This happens... /me looks in scrollback ... at POP_REGS 'pop
+%rbp'. ARGH!!
 
-I'll go poke at it, see if today is the day I can figure out WTF
-happens.
+
+So the sequence of fail is:
+
+	push %rbp
+	mov %rsp, %rbp	# cfa.base = BP
+
+	SAVE
+	...
+	push %rbp
+	...
+	pop %rbp	# cfa.base = SP
+	...
+	mov %rbp, %rsp  # UNDEF
+	nop		# FAIL
+	RESTORE
+
+Note that the MOV+NOP is the 4 bytes ERETS needs.
 
