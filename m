@@ -1,101 +1,167 @@
-Return-Path: <linux-efi+bounces-3804-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3805-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4436BAC9409
-	for <lists+linux-efi@lfdr.de>; Fri, 30 May 2025 18:55:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28765AC95AF
+	for <lists+linux-efi@lfdr.de>; Fri, 30 May 2025 20:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F85D1C07DC0
-	for <lists+linux-efi@lfdr.de>; Fri, 30 May 2025 16:55:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0A5F7B11BA
+	for <lists+linux-efi@lfdr.de>; Fri, 30 May 2025 18:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18281D5154;
-	Fri, 30 May 2025 16:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881D721CA04;
+	Fri, 30 May 2025 18:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OXW30ueo"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="38EWY7B7"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47337080C;
-	Fri, 30 May 2025 16:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5C41D6AA
+	for <linux-efi@vger.kernel.org>; Fri, 30 May 2025 18:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748624131; cv=none; b=bfDXPF2ygIP6xmLD0QkEltphrO3k9eYUvi8PA087MpukMJ8SB8xBArCzwCbQ1MgnN7ilXWPAoTDc1OrdfNjYXPL9HFDaWBTobicfrT8Bky2Gfuo7RndxfVHkYtILaNJk6ZgcOA16+YWkpTpWaLat2p1if98FXubzBA7GAd70BhI=
+	t=1748630112; cv=none; b=Khk35yWwdnLuQpx5TbOpZKWz7l0/Zo1/hWobD3eTo4yXxLiH2MOkzD2PZznFeP4Q+WoEoHA/WZf2vzhdYHYX9YQnMxhPvUEgU9FYAjQLO10MjfSLJdhYpih9Atk2XYt3BqzHmV9BKW1fSX7vHXAWLVW2DmnZIJKTpKvt6jXrM1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748624131; c=relaxed/simple;
-	bh=Y/ZNDhbZPxI5Q5vNyohghTIT08W7HC5P+HaToWQcWnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KUZoabc+SLnDprFvu99/Ur/nyaApwyMzAnFtQDAkSPebD8yQMc/jY05Bh+CQEN0oxtSyAAa61PoRMBIFGoKwozlNHYlX/szN4RpRcERcpw6FNqoSXMg4zk/Wd5ml3svkJUQSCZncinXLi0YC2aajkAbUi5+uUFALjC4e2+NeofA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OXW30ueo; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 335E540E0184;
-	Fri, 30 May 2025 16:55:26 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id wsJhCYL0F5jm; Fri, 30 May 2025 16:55:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1748624122; bh=UCnscb2i8GAhr3D1Oc4ttNw0LBD6aNo9sqHqBYCJ8KU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OXW30ueoiS9Iufb5/GF5ghVFPwi+ZsJRctr5KVrHYU+4Eu4STzsRNWHb23bDb9bRY
-	 +HGLsvde6DPDjUGmlnyEYfyJOJ5/r1f1DiXYWiJu/yQ4MBprnJbAdMnmaWv5g2OvOq
-	 63nBqnuallzvsEIzeWkfxDUDPBD2/KaNQQqjMmxXhvnJWdyKT0ELyfA242yJkrJoQN
-	 6VLT9zK+KxAhwBj/J6xNnYAm1zr4HgxaVZmmTLmR4ADcFYcjAIIum63d7z2TC4qLzK
-	 kQGj/OEId9G3rpO5cIzT/GekCyVsVK81Ft9PGt881yND2uhicN+iyM5CLytgMlapxL
-	 /fd4TdDsatNNl0h4O/XNzKTvMcFylNULEVQCTxwogu/IlKyeo7NaGYadpMe19WiVRZ
-	 zhe+Gx3j8KgCJtQ05sBrPriKeGssxkHblQscUCL9o7eT8VIIrq4LRADOd3UUkK7IIB
-	 TF6X3sOihGYgPFKcfzpfwgWA5yTsY5p0pgNN55tf2U/YPqhl6oS/pZf3GsYU5IqL1K
-	 vSwT0bfMHiZ8bgt2wIxylkFSa1Pn4saT1bgFxAlP5YILMhHIQ/v/exvu4299C8zelw
-	 N55bEk9N8lx4b9/JY7eKujGzqyXo8Ckqz1Y4ykGsLZAK2KTcvzGivbLE61svN3OUh9
-	 fUv/Fz8lbiyh+D09rPeaydZI=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8D71240E015E;
-	Fri, 30 May 2025 16:55:13 +0000 (UTC)
-Date: Fri, 30 May 2025 18:55:07 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org, x86@kernel.org,
-	Ingo Molnar <mingo@kernel.org>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [RFT PATCH v3 12/21] x86/sev: Unify SEV-SNP hypervisor feature
- check
-Message-ID: <20250530165507.GBaDni69NqgOi4mFNn@fat_crate.local>
-References: <20250512190834.332684-23-ardb+git@google.com>
- <20250512190834.332684-35-ardb+git@google.com>
- <20250530111645.GAaDmTneZG7KOX0ApR@fat_crate.local>
- <CAMj1kXEzbBTYr2vF3g_z49muSTHwRY1QUm2iOFsaLNYuijqHDg@mail.gmail.com>
- <20250530160809.GBaDnX6auAVJu9PFLr@fat_crate.local>
- <CAMj1kXEeJMV5AX9NjLYEwukvpKrDQCvzRyEivj43P7TRH3qFVg@mail.gmail.com>
+	s=arc-20240116; t=1748630112; c=relaxed/simple;
+	bh=i4kypj9hiNUEfQ2WQSybM+qTRBYzMWRHxidmZOF4ESU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Q3RdBxUJ9RP+cRmHBGxgOfEO8CIjOjkKccY7qSx1GJKtR9hIx2EAUaSMrYuaYC3k2GVk/CE+KD6i2yeszQbF7H08CWKf+YAm1B6gv747y22gBgDPJwggQqLogEsJDYp6cEieyucB7qpsofdGunK9p3hYg4bXwS9Z1iP8ZjlgWKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=38EWY7B7; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4ea7e46dfso939388f8f.3
+        for <linux-efi@vger.kernel.org>; Fri, 30 May 2025 11:35:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748630108; x=1749234908; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NQ1jWA7unC5Q+gMw1FhcdnAgONLYpu12xjYbUZvnb6I=;
+        b=38EWY7B7J2/iEo+iJg+QtO+aDkbjW6ZCfdQNCF8Ln/KeOZtP7UYFXsuuARPYbCsMiA
+         uD2ZW0WvGFTPsJ0mAzqxXda3cj3OmP+xj/S/r2waiWkscs5aXTGU0E0TSslL5IIAeQYy
+         +wdbyzb6TbVbySxEpLvivs3gCi8fAvCCCGsGxNO3OgrVEO2GPxvYl1biPJHnRZV/iCwG
+         5ma3iv3iCvXqMMYsM5Hn4D6f+PX/VgYZpkFzRAUsQ1DI3KCiPDTADbsO5wWJFGfEf63K
+         41kydujMBiKTmDUa/Ub1C4t2BrA7WCA3LWeRbnMjZaciLSwacoKaeHinttGO1yVNWNOV
+         TSsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748630108; x=1749234908;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NQ1jWA7unC5Q+gMw1FhcdnAgONLYpu12xjYbUZvnb6I=;
+        b=MAf+sc+w41eSn+9W6dbRfkwKX+qGlxMNmzuRFN3DfS34Urkq080jAHpQt3bl/MfKI3
+         l/AdXonocKOKJsKKBm7BRGq9jNzTLRXH8rD6sVZjKZH1SyrduDxC/kaL6Lotf+B2KJDn
+         k+6ygZ4Myvr0OnuV++uVZB2kg44NiWZIRStub0qGeLL6Fyfnttx6l047uUiMsp3QNZLl
+         rpjeiIdw3YpzTuPS4rmh3y5cxDwbTAd5SRGDn3dnD4Biz3J+4s/5EKGpyRS0jsR+Lq/4
+         NjSc7J84LlKJtc8UbZruPuLBbG19cvND/VlGDGzidFzhOYxfPq/ljtrrspTNRZpajfh6
+         JA9A==
+X-Gm-Message-State: AOJu0YwhvuFcjDdK2T/yPav7QFfyUiqclmG629EoIiwDAXlb6vXwO1XZ
+	wqmK/9+gO2QnxM6UJT12Yg5DGZM04/0XIqOjegzdMz6m0RvUZJxyfU1x0xe3XQWp60y1ypQFAg=
+	=
+X-Google-Smtp-Source: AGHT+IHo8Kqw+JseTSXYsBlzSEjF4e1B9OSUon70rlUABse7IuY+I6flFtLllIYy7CqAFxqlzguGDnTH
+X-Received: from wmbfo18.prod.google.com ([2002:a05:600c:6912:b0:43c:ebbe:4bce])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:40c7:b0:3a4:ead4:5ea4
+ with SMTP id ffacd0b85a97d-3a4f89ab616mr2981911f8f.24.1748630107993; Fri, 30
+ May 2025 11:35:07 -0700 (PDT)
+Date: Fri, 30 May 2025 20:34:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXEeJMV5AX9NjLYEwukvpKrDQCvzRyEivj43P7TRH3qFVg@mail.gmail.com>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3160; i=ardb@kernel.org;
+ h=from:subject; bh=+LUHreD44F4tBGRS91Ul/Kl+2pFwpsvMF5+86mvJb7A=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIcPylxd37arnMjW5NRzP+zn1Wl/36jCkR72p6LF7M6967
+ 4otyus7SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwESkfzEyTA2ykekv7Weqs1fd
+ xC6zQvKDT1J8W+9Ds0Nz9dj+rn7fwvCL2XSjBJ/q3d1fXdkYrK45iG5Svb7skoMsd9Vf9n3FHJI 8AA==
+X-Mailer: git-send-email 2.49.0.1238.gf8c92423fb-goog
+Message-ID: <20250530183449.3558067-2-ardb+git@google.com>
+Subject: [GIT PULL] EFI updates for v6.16
+From: Ard Biesheuvel <ardb+git@google.com>
+To: torvalds@linux-foundation.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, May 30, 2025 at 06:12:43PM +0200, Ard Biesheuvel wrote:
-> Because the assignment is moved out of the startup code later.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Yeah, we will have to check ghcb version though.
+Hi Linus,
 
--- 
-Regards/Gruss,
-    Boris.
+Not a lot going on in the EFI tree this cycle. The only thing that stands out
+is the new support for SBAT metadata, which was a bit contentious when it was
+first proposed, because in the initial incarnation, it would have required us
+to maintain a revocation index, and bump it each time a vulnerability affecting
+UEFI secure boot got fixed. This was shot down for obvious reasons.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+This time, only the changes needed to emit the SBAT section into the PE/COFF
+image are being carried upstream, and it is up to the distros to decide what to
+put in there when creating and signing the build. This PR only has the EFI
+zboot bits (which the distros will be using for arm64); the x86 bzImage changes
+should be arriving next cycle, presumably via the -tip tree.
+
+Please pull.
+
+The following changes since commit 0af2f6be1b4281385b618cb86ad946eded089ac8:
+
+  Linux 6.15-rc1 (2025-04-06 13:11:33 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v6.16
+
+for you to fetch changes up to 46550e2b878d60923c72f0526a7aac02e8eda3d5:
+
+  include: pe.h: Fix PE definitions (2025-05-21 16:46:37 +0200)
+
+----------------------------------------------------------------
+EFI updates for v6.16
+
+- Add support for emitting a .sbat section into the EFI zboot image, so
+  that downstreams can easily include revocation metadata in the signed
+  EFI images
+
+- Align PE symbolic constant names with other projects
+
+- Bug fix for the efi_test module
+
+- Log the physical address and size of the EFI memory map when failing
+  to map it
+
+- A kerneldoc fix for the EFI stub code
+
+----------------------------------------------------------------
+Ard Biesheuvel (1):
+      Merge branch 'efi-sbat' into efi/next
+
+Bartosz Szczepanek (1):
+      efi: Improve logging around memmap init
+
+Hans Zhang (1):
+      efi/libstub: Describe missing 'out' parameter in efi_load_initrd
+
+Ivan Hu (1):
+      efi/efi_test: Fix missing pending status update in getwakeuptime
+
+Pali Rohar (1):
+      include: pe.h: Fix PE definitions
+
+Vitaly Kuznetsov (1):
+      efi: zboot specific mechanism for embedding SBAT section
+
+ arch/arm/boot/compressed/efi-header.S          |   6 +-
+ arch/arm64/kernel/efi-header.S                 |   6 +-
+ arch/loongarch/kernel/efi-header.S             |   4 +-
+ arch/loongarch/kernel/head.S                   |   2 +-
+ arch/riscv/kernel/efi-header.S                 |   8 +-
+ arch/x86/boot/header.S                         |  10 +-
+ crypto/asymmetric_keys/verify_pefile.c         |   8 +-
+ drivers/firmware/efi/Kconfig                   |  24 +++
+ drivers/firmware/efi/libstub/Makefile.zboot    |   4 +
+ drivers/firmware/efi/libstub/efi-stub-helper.c |   1 +
+ drivers/firmware/efi/libstub/zboot-header.S    |  32 ++-
+ drivers/firmware/efi/libstub/zboot.lds         |  11 +
+ drivers/firmware/efi/memmap.c                  |   3 +-
+ drivers/firmware/efi/test/efi_test.c           |   4 +
+ include/linux/pe.h                             | 279 +++++++++++++++----------
+ 15 files changed, 267 insertions(+), 135 deletions(-)
 
