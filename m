@@ -1,105 +1,102 @@
-Return-Path: <linux-efi+bounces-3810-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3811-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDF6ACBAF8
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Jun 2025 20:13:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC665ACBFA8
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Jun 2025 07:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D495C1896086
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Jun 2025 18:13:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91D853A2E5C
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Jun 2025 05:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB72227E97;
-	Mon,  2 Jun 2025 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7871EF38E;
+	Tue,  3 Jun 2025 05:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/mwN56V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YO4zKErd"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966ED221DB3;
-	Mon,  2 Jun 2025 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB7512CD88;
+	Tue,  3 Jun 2025 05:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748888005; cv=none; b=DTomG3oH5EC31HdNpLSSp9xATFqX3vn0ocOCnHXPdRYMx115l3d/rOYBYFyqJqgsglVJKQdFEzIoL4gZSiZ/xhMd4R6/ORTxpkmF20EDDCK+O+2VqwdGDP1ypMO1zTcGX7JvYAJEMTzGVRd9XgIURhLGCMUr8NgZ43mu0Xe8Hy4=
+	t=1748929422; cv=none; b=QpSMdP7hq1JCY8xMF1Fvyl1M1dgG3tXo9n8KfWRKSIFGua8NJ857lWyj4WI3occP4uRiwOLYG9yWF6WBPHpcACZdzKKxa7TCw0SGwWuZpqo8+YEnpGCURsUdPEDWKe8cBFk+y91TlBepFacXEp3nMMrY8iByFAIUn/68SvIxAG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748888005; c=relaxed/simple;
-	bh=KNUq+XENitwkiKPVRLf55IWTEjyXC5YCoKCwRyMRwbE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yme0+F5qEsG8Wn4MXczA/YYb2/SKVngPqOKyFctkzPbZaUBGYcE/h8GuqXQEvYr/c4sp0gZBRC4bQYljtHgREWiwUnXRVkx+0p8fyF9qMVICHz7tYjOinaZKhV5bGER7Zxe2r0mpYzL6KUq5Wo90YXeQS5grkIjbOTsHvO7fjyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/mwN56V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C71BC4CEEE;
-	Mon,  2 Jun 2025 18:13:25 +0000 (UTC)
+	s=arc-20240116; t=1748929422; c=relaxed/simple;
+	bh=dBDuxX25tTZhWyablUxEmDxuDN0NyCprcLe7uD1BThU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FSLq+wtUFWK+ePKAYRuZiqPXIaePLCP3wgAVqkwKGu8FtoQvvfgtUjxS6aCVUS+8ZTHRqeZ73zI0uUWQqQWg1wWqwlrPZOJORE6Yq3+SFYi0/4tyuP5co7QfR5rlbPhTF7xjw+AzhBoz8Oyowehi2e4GgNDM5tZTTgANBmeJ4Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YO4zKErd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189A8C4CEED;
+	Tue,  3 Jun 2025 05:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748888005;
-	bh=KNUq+XENitwkiKPVRLf55IWTEjyXC5YCoKCwRyMRwbE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=e/mwN56Vvgyw56epzkQL0WnN70mxuZqqKXhmcCJxlRNCmH+ydNulzf2iDvFVVPlze
-	 034JEdOWt7Q7+eZCagfJmv2gs34pVeJeNy1PaWn/zDu9DA6oNm+A80YEA/OHX+CBEA
-	 q5Haw+NV0e9Urk4/kfhLd6v3bU8YxNRcSj6mQyW0gDFGSq9RwVF1YZbtXQp/zqS+om
-	 6mOAuiyygmJS8NClOAIH/ubBgO7Aji8uNQ+rCp0KteH5RWOn9PJyEqa1pKOAMZMyIm
-	 OVAxCPlKf6GduyBHsC7jaydoBqgqD8dEdsGMfdZsejgRUsm/+82wuZlU5wSAbxqkm8
-	 Y+VM8NBwU1pDg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5533a86a134so4170198e87.3;
-        Mon, 02 Jun 2025 11:13:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX8BuGNuvztrLgLwo/V4qblk4y6DepC1u8zmwBNCPqRyS/yLQhYcwHQDrfgGIQTQzWDrkMDqLW5nHA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhXbZ72F+vTCuFiJZmBlGiFhL44wMV/82fP3YsCgMlYRazypLv
-	EiQLtIwAk2zyf/Bkdg7LZ/dLI/BVl/+0rbnffoi6U3mFRCNVYOpbOEBkBHWvC+ayuuGTGvXRJ8b
-	78/yV1r4JWF8wz0mSZerwFSk2FmN2NHY=
-X-Google-Smtp-Source: AGHT+IHi7iBGUqXzV+MY1M9GP5UG+TmmLh2F0LQuVAiJvmsFgj335SmtJTIHS3sSnFnUuXw+OJmOU4Q8vHjucdFME+M=
-X-Received: by 2002:a05:6512:33d2:b0:553:2480:2309 with SMTP id
- 2adb3069b0e04-5533d13e770mr4464635e87.3.1748888003523; Mon, 02 Jun 2025
- 11:13:23 -0700 (PDT)
+	s=k20201202; t=1748929422;
+	bh=dBDuxX25tTZhWyablUxEmDxuDN0NyCprcLe7uD1BThU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YO4zKErdl73wwdFKnOZK/idz3ZOuGTHPttM5VKjOj3KQ8vgQg95j8jBTGe46kpL0u
+	 +Mto1GvtaW12jj/7WJC4ar56TEhfIiWIMc0N1jpKjbnpadFGTL8EtsWBVAHPOlNJvl
+	 H9wNcrmge6B2LRZJHeVTL+bWqmapAOV/IGv5+4PDKpIJcwC9XLeFXKTTLIYYfWw12O
+	 kH/kPLwqwJMmtP799tTxXK1fyuqUtK+n1aFY6z7puZNccp73x0ftgEPN/5NMlu8Q14
+	 iUEN/Thg6kE6RVb4kCd0acF/QCZl6FiDxgSwoBm5OaGZwWJ3A3cK4CXVd7uyxbxGFj
+	 xnA+WM2Cjoweg==
+Date: Mon, 2 Jun 2025 22:43:33 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kys@microsoft.com, haiyangz@microsoft.com, 
+	wei.liu@kernel.org, decui@microsoft.com, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, pbonzini@redhat.com, 
+	ardb@kernel.org, kees@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	gregkh@linuxfoundation.org, linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-efi@vger.kernel.org, samitolvanen@google.com, 
+	ojeda@kernel.org, xin@zytor.com
+Subject: Re: [PATCH v2 00/13] objtool: Detect and warn about indirect calls
+ in __nocfi functions
+Message-ID: <fp5amaygv37wxr6bglagljr325rsagllbabb62ow44kl3mznb6@gzk6nuukjgwv>
+References: <aBUiwLV4ZY2HdRbz@google.com>
+ <20250503095023.GE4198@noisy.programming.kicks-ass.net>
+ <p6mkebfvhxvtqyz6mtohm2ko3nqe2zdawkgbfi6h2rfv2gxbuz@ktixvjaj44en>
+ <20250506073100.GG4198@noisy.programming.kicks-ass.net>
+ <20250506133234.GH4356@noisy.programming.kicks-ass.net>
+ <vukrlmb4kbpcol6rtest3tsw4y6obopbrwi5hcb5iwzogsopgt@sokysuzxvehi>
+ <20250528074452.GU39944@noisy.programming.kicks-ass.net>
+ <20250528163035.GH31726@noisy.programming.kicks-ass.net>
+ <20250528163557.GI31726@noisy.programming.kicks-ass.net>
+ <20250529093017.GJ31726@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602181143.528789-1-masahiroy@kernel.org>
-In-Reply-To: <20250602181143.528789-1-masahiroy@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 2 Jun 2025 20:13:12 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHEkHMPMJwsMc8WAmsMhJn3ynHqJku=jeKQOT0T_aNqNA@mail.gmail.com>
-X-Gm-Features: AX0GCFuxHNzuPMmHD59NGR6naNpMTrB-gY8V6VYsoJ5iz52_YKFm5Xibs-JJa9I
-Message-ID: <CAMj1kXHEkHMPMJwsMc8WAmsMhJn3ynHqJku=jeKQOT0T_aNqNA@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: use 'targets' instead of extra-y in Makefile
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250529093017.GJ31726@noisy.programming.kicks-ass.net>
 
-On Mon, 2 Jun 2025 at 20:11, Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> These objects are built as prerequisites of %.stub.o files.
-> There is no need to use extra-y, which is planned for deprecation.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+On Thu, May 29, 2025 at 11:30:17AM +0200, Peter Zijlstra wrote:
+> > > So the sequence of fail is:
+> > > 
+> > > 	push %rbp
+> > > 	mov %rsp, %rbp	# cfa.base = BP
+> > > 
+> > > 	SAVE
+> 
+> 	sub    $0x40,%rsp
+> 	and    $0xffffffffffffffc0,%rsp
+> 
+> This hits the 'older GCC, drap with frame pointer' case in OP_SRC_AND.
+> Which means we then hard rely on the frame pointer to get things right.
+> 
+> However, per all the PUSH/POP_REGS nonsense, BP can get clobbered.
+> Specifically the code between the CALL and POP %rbp below are up in the
+> air. I don't think it can currently unwind properly there.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+RBP is callee saved, so there's no need to pop it or any of the other
+callee-saved regs.  If they were to change, that would break C ABI
+pretty badly.  Maybe add a skip_callee=1 arg to POP_REGS?
 
-I misunderstood what extra-y was for - note that
-arch/arm64/kernel/pi/Makefile has the same issue.
-
-> ---
->
->  drivers/firmware/efi/libstub/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> index d23a1b9fed75..5ce9f2098b99 100644
-> --- a/drivers/firmware/efi/libstub/Makefile
-> +++ b/drivers/firmware/efi/libstub/Makefile
-> @@ -102,7 +102,7 @@ lib-$(CONFIG_EFI_ZBOOT)             += zboot.o $(zboot-obj-y)
->
->  lib-$(CONFIG_UNACCEPTED_MEMORY) += unaccepted_memory.o bitmap.o find.o
->
-> -extra-y                                := $(lib-y)
-> +targets                                := $(lib-y)
->  lib-y                          := $(patsubst %.o,%.stub.o,$(lib-y))
->
->  # Even when -mbranch-protection=none is set, Clang will generate a
-> --
-> 2.43.0
->
+-- 
+Josh
 
