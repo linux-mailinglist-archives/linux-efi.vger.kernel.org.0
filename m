@@ -1,111 +1,127 @@
-Return-Path: <linux-efi+bounces-3818-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3819-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C139CAD0302
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Jun 2025 15:21:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F20AD055E
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Jun 2025 17:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51810189D45F
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Jun 2025 13:21:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57D56161C46
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Jun 2025 15:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DAA288518;
-	Fri,  6 Jun 2025 13:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087D013DBA0;
+	Fri,  6 Jun 2025 15:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qq10DXT2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hdlWIzRV"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7479B20330;
-	Fri,  6 Jun 2025 13:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18970EEB5
+	for <linux-efi@vger.kernel.org>; Fri,  6 Jun 2025 15:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749216062; cv=none; b=V09gYCegjAecAepjZhIgLl9IA/C2TYXNsNsIK1W5Aeq1QV2+gLrGHSncGS77YILZOE74gilfXmljcjTF9ZTyrG19LTDgnhGFrjv0Xmkf6KTdYONzOjmYS5p0L30UwvMn6Jk1fXbSHxclSW/KLvSlQAfmkCAJJVtV6/BSxN2cHYs=
+	t=1749224480; cv=none; b=Dc3yIopsXEHBdjreADNWZz5EPQOSDdu1tTQUNg/oJhyYJwCsglkR3NOxx9Q0vraLf8vhtmCuA4gJ1rU09FqujsqXxTx9e7SnUJ8ZF4Khc34mNzS8+kSbQkXiiUaPZ2JQPLzwF9ibMwnEfIl+YWGbQZy8LRs0XEnQSmjeD7GHmuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749216062; c=relaxed/simple;
-	bh=d5xSSZzjIO6YCeawzr4MdDA5aSt61eXqUJbb64Fk4Pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M8ATWoagFE9dvp+Y6g7S+LmFowIV/JUS+qnokcWdI2D65TTJwq8vlly6rL+CFBo6kOXWKxcPlr4tMFbBTRC8zq/Zbdb5H7/KFsbvvMdKGM7sQwHlLDZyhENe8xSY+NW+MZ3pmiGFMc2XAlQx/Kc6zF3uVeiy3qmhE0XxXyiFFYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qq10DXT2; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=O9FE0uB61EEETNdTWzbNvrnPXytymt6dcwtvq6U/pJk=; b=qq10DXT2GTNSGudV/qtRDEQlfe
-	DhgZVYdDQH26c5BDbUntvNfTk0AMNNN5xGgDlZ9dH/Sx41XiJ1ieT7AYvnTTve4AU4oCBuQF9jyQd
-	q6XWBPwWxAk6Jp0Sp6PI4mM9ZPC+CieoW5igq/3W0LNZBKy6BUG+A95PNvHMSWHffELK0a978C+J/
-	nqtO1ZljIE6SBA8cZM81e+RZb8uENAekGG0Zys36cQxaH9UsaeADuo8flKbNPT55UcykrS1gQsE6q
-	gW+DpATLTNQ1/O3TuETXsIcemTUsKG2hwD0iDrQb0M1yBKIYVRgEX2rAJrMafi4dLeQ5fxbzmu+aG
-	UMnuo7UA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uNX04-00000001HLz-0rSj;
-	Fri, 06 Jun 2025 13:20:48 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 20C8E3005AF; Fri,  6 Jun 2025 15:20:47 +0200 (CEST)
-Date: Fri, 6 Jun 2025 15:20:47 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-	x86@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
-	wei.liu@kernel.org, decui@microsoft.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	pbonzini@redhat.com, ardb@kernel.org, kees@kernel.org,
-	Arnd Bergmann <arnd@arndb.de>, gregkh@linuxfoundation.org,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-efi@vger.kernel.org,
-	samitolvanen@google.com, ojeda@kernel.org, xin@zytor.com
-Subject: Re: [PATCH v2 00/13] objtool: Detect and warn about indirect calls
- in __nocfi functions
-Message-ID: <20250606132047.GA39944@noisy.programming.kicks-ass.net>
-References: <vukrlmb4kbpcol6rtest3tsw4y6obopbrwi5hcb5iwzogsopgt@sokysuzxvehi>
- <20250528074452.GU39944@noisy.programming.kicks-ass.net>
- <20250528163035.GH31726@noisy.programming.kicks-ass.net>
- <20250528163557.GI31726@noisy.programming.kicks-ass.net>
- <20250529093017.GJ31726@noisy.programming.kicks-ass.net>
- <fp5amaygv37wxr6bglagljr325rsagllbabb62ow44kl3mznb6@gzk6nuukjgwv>
- <eegs5wq4eoqpu5yqlzug7icptiwzusracrp3nlmjkxwfywzvez@jngbkb3xqj6o>
- <4z4fhaqesjlevwiugiqpnxdths5qkkj7vd4q3wgdosu4p24ppl@nb6c2gybuwe5>
- <20250606104945.GY39944@noisy.programming.kicks-ass.net>
- <aELptV62mbTC3YA9@google.com>
+	s=arc-20240116; t=1749224480; c=relaxed/simple;
+	bh=/7iBzU3r1GPozEcYGhCVGVjgk634/K7NdYqe7dm2+gw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JytCZWA7srS1WAT8cEjiYYDTWaSC+Z0FBEPF4dLxryv5zjlWmOl4Isum0lwzbdh2y7wSACupkRWnM1GwQUgKLGO+npnJtZ92s7s5MvUa7IK64IIPJ7zi8X5WexuoTC4h43MBr/AeiimpXolenHYu6oRNBFyYjJdT3pvfr17jm3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hdlWIzRV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749224478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NZqzUrzNJKUWHGvlIX3S4FYdgn3FdTRfiGRa2Z5gBww=;
+	b=hdlWIzRVHnWBUQknUfEfl4n/edYFhkBM1aAuUqQNZdbratE8+qLYXOzy92TGLa0DFNLsjR
+	pRb78jCfITxlLXO94B9JeOpGZ8Uow35m59BQLzQgFSGxxvA+nxtNK/dMQpqCKLA340kO42
+	Cs6twoFw02rr9xlV6pTocpJ4a42NfxM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-510-iF9Zgw1FOGG9JcWAhdL19w-1; Fri,
+ 06 Jun 2025 11:41:17 -0400
+X-MC-Unique: iF9Zgw1FOGG9JcWAhdL19w-1
+X-Mimecast-MFC-AGG-ID: iF9Zgw1FOGG9JcWAhdL19w_1749224476
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0191519560A6;
+	Fri,  6 Jun 2025 15:41:16 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.225.251])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E08811956050;
+	Fri,  6 Jun 2025 15:41:13 +0000 (UTC)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Luiz Capitulino <luizcap@redhat.com>,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] efi: Drop preprocessor directives from zboot.lds
+Date: Fri,  6 Jun 2025 17:41:12 +0200
+Message-ID: <20250606154112.311565-1-vkuznets@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aELptV62mbTC3YA9@google.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Fri, Jun 06, 2025 at 06:15:19AM -0700, Sean Christopherson wrote:
-> On Fri, Jun 06, 2025, Peter Zijlstra wrote:
-> > On Thu, Jun 05, 2025 at 10:19:41AM -0700, Josh Poimboeuf wrote:
-> > > diff --git a/arch/x86/entry/entry_64_fred.S b/arch/x86/entry/entry_64_fred.S
-> > > index 29c5c32c16c3..5d1eef193b79 100644
-> > > --- a/arch/x86/entry/entry_64_fred.S
-> > > +++ b/arch/x86/entry/entry_64_fred.S
-> > > @@ -112,11 +112,12 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
-> > >  	push %rax				/* Return RIP */
-> > >  	push $0					/* Error code, 0 for IRQ/NMI */
-> > >  
-> > > -	PUSH_AND_CLEAR_REGS clear_bp=0 unwind_hint=0
-> > > +	PUSH_AND_CLEAR_REGS clear_callee=0 unwind_hint=0
-> > >  	movq %rsp, %rdi				/* %rdi -> pt_regs */
-> > >  	call __fred_entry_from_kvm		/* Call the C entry point */
-> > > -	POP_REGS
-> > > -	ERETS
-> > > +	addq $C_PTREGS_SIZE, %rsp
-> > > +
-> > > +	ALTERNATIVE "mov %rbp, %rsp", __stringify(ERETS), X86_FEATURE_FRED
-> > 
-> > So... I was wondering.. do we actually ever need the ERETS?
-> 
-> Yes, to unblock NMIs, because NMIs are blocked on VM-Exit due to NMI.
+Older versions of `ld` don't seem to support preprocessor directives in
+linker scripts, e.g. on RHEL9's ld-2.35.2-63.el9 the build fails with:
 
-Ah, bah, indeed! Shame.
+ ld:./drivers/firmware/efi/libstub/zboot.lds:32: ignoring invalid character `#' in expression
+ ld:./drivers/firmware/efi/libstub/zboot.lds:33: syntax error
+
+We don't seem to need these '#ifdef', no empty .sbat section is created
+when CONFIG_EFI_SBAT_FILE="":
+
+ # objdump -h arch/arm64/boot/vmlinuz.efi
+
+ arch/arm64/boot/vmlinuz.efi:     file format pei-aarch64-little
+
+ Sections:
+ Idx Name          Size      VMA               LMA               File off  Algn
+   0 .text         00b94000  0000000000001000  0000000000001000  00001000  2**2
+                   CONTENTS, ALLOC, LOAD, READONLY, CODE
+   1 .data         00000200  0000000000b95000  0000000000b95000  00b95000  2**2
+                   CONTENTS, ALLOC, LOAD, DATA
+
+Fixes: 0f9a1739dd0e ("efi: zboot specific mechanism for embedding SBAT section")
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+---
+Note: not-yet-merged x86 version of 0f9a1739dd0e does not seem to be affected
+as vmlinux.lds script is a pre-processed version of vmlinux.lds.S.
+---
+ drivers/firmware/efi/libstub/zboot.lds | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
+index c3a166675450..4b8d5cd3dfa2 100644
+--- a/drivers/firmware/efi/libstub/zboot.lds
++++ b/drivers/firmware/efi/libstub/zboot.lds
+@@ -29,14 +29,12 @@ SECTIONS
+ 		. = _etext;
+ 	}
+ 
+-#ifdef CONFIG_EFI_SBAT
+         .sbat : ALIGN(4096) {
+ 		_sbat = .;
+ 		*(.sbat)
+ 		_esbat = ALIGN(4096);
+ 		. = _esbat;
+ 	}
+-#endif
+ 
+ 	.data : ALIGN(4096) {
+ 		_data = .;
+-- 
+2.49.0
+
 
