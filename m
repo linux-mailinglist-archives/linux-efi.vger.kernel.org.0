@@ -1,314 +1,287 @@
-Return-Path: <linux-efi+bounces-3823-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3824-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94FEAD0B8D
-	for <lists+linux-efi@lfdr.de>; Sat,  7 Jun 2025 09:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5699AD11A8
+	for <lists+linux-efi@lfdr.de>; Sun,  8 Jun 2025 11:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26C763B167D
-	for <lists+linux-efi@lfdr.de>; Sat,  7 Jun 2025 07:11:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7573AB7BB
+	for <lists+linux-efi@lfdr.de>; Sun,  8 Jun 2025 09:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04FF1E1E04;
-	Sat,  7 Jun 2025 07:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67FA1F4727;
+	Sun,  8 Jun 2025 09:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iILYCz05"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JqekV+4T"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B941CF7AF
-	for <linux-efi@vger.kernel.org>; Sat,  7 Jun 2025 07:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B011F37D3;
+	Sun,  8 Jun 2025 09:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749280283; cv=none; b=c5Rn3x4L53vIugswIzmAxw0P47Nl7PykWo07DeN9liC1ubNuDwaHZ5Sjb2Izf9NlBWCRg4ljaMHooHErV6Sr9MTdh4TPXv324+fXsZG0oN87BIYavgOhkdti0S/BMxxHb55/kqoQi5n2TovsuT1pYdx1ZKpwmmvnPvDrde3JBrw=
+	t=1749373563; cv=none; b=B8Tx45d5TiYXXyrxnQsGGlm8B/wNBbvA9X7PKB105niVb5HvMhdkKWBQvQB539bmFKnuQD362FPzYw5gAhOIJOU557SuCjjvpJxGd95QHeHVTHhk9nxsduQAIioayf1cux3s12TkQDbgirw2k0GTBE3XKi+mD64YT4sIHLdxlQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749280283; c=relaxed/simple;
-	bh=p03KWlZ3VdY5EOE87pSv3vNQWyGcVN4BDxb06KPTc8o=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=YsPOaWHwluVyHgWdloNmPE0OdfqLbp73Bj2um46wZk4A39KVol8xGytT7/p7ViyNafRFboph6KIHEBRSoL3ztsuZVKqgvM7XRsvevX6ZJjcrXn3iduoPRIDBJPqG4jSQeieWBo6AFf30oUUZ6rEQgl4sM26SrgokYn0ZREVuELI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iILYCz05; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749280281; x=1780816281;
-  h=date:from:to:cc:subject:message-id;
-  bh=p03KWlZ3VdY5EOE87pSv3vNQWyGcVN4BDxb06KPTc8o=;
-  b=iILYCz05Sgw8kYVAqvXfnrLSPxMrpBHLrwyihrtUEpkbIf5cHzXklWS3
-   6iIiMcwrd924EBh/v68ZJaj4K00I18SALXLMbB+gppiHNAjjGkpKAtIty
-   l9SPEP36pC78rg0PTqAlySn2VUmFaLZmgS/K6PYGmgU2nSlxXn+yDyTyY
-   2HFNq1ePrtr/a7+4se/uSS5fkzRGIDSnZyGBxqsP4Ouv9+e8QWov67mK7
-   Uqo2VitYAujvDr7j3VfQXwYqsProjs4gCK9WFZaF8RmFYX7xj58xLE7Th
-   cANPRegLkKkV1INZAcel0pI2cXEDdw+nIkcRn0+UrcTKsTnpydJtqAx0R
-   g==;
-X-CSE-ConnectionGUID: fpUsnKBoSyKgdTCZstILpg==
-X-CSE-MsgGUID: 2OdPUTJfQ3W9SUhTofvWvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11456"; a="51334136"
-X-IronPort-AV: E=Sophos;i="6.16,217,1744095600"; 
-   d="scan'208";a="51334136"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2025 00:11:20 -0700
-X-CSE-ConnectionGUID: k8+7Q7LNRdKGRnhXNOSITg==
-X-CSE-MsgGUID: 5niabr6ISDKa4+Zq4nfjjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,217,1744095600"; 
-   d="scan'208";a="151028466"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 07 Jun 2025 00:11:19 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uNni0-0005WT-1S;
-	Sat, 07 Jun 2025 07:11:16 +0000
-Date: Sat, 07 Jun 2025 15:10:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 76f6cf6676f4e2d83acdb7d93bba71340a95f5bb
-Message-ID: <202506071519.UFs9aGXZ-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1749373563; c=relaxed/simple;
+	bh=tcMBRg7oCjJM3aBNpfa4NJDlrrMeVJInimamhc0PQjQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YcEAwJya/faIcqI7NGOuLhV7UdK2W0E50QDdhfVKgkwZiieyChi4d97dvHXgbiOO9WWMn21nt45KwelpAMJHKooa9mWeIhd7m4WlG+S0SeFiQ91Yh74oY6gJrpoRitsahLSydFg9nuW1sGzEUgowibtu9Xxvbfw1viXKYoG1wkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JqekV+4T; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-450ce3a2dd5so29948115e9.3;
+        Sun, 08 Jun 2025 02:06:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749373560; x=1749978360; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V8zG1PbHmuLFJOMJTmtn9Ynye1/oiJIIxmzHDeu+J4o=;
+        b=JqekV+4TbEyOS33jdpmOKv+mLpD20dtnUlPKXxYRL15Jxkaen+46hK0VL9kyjpQXZc
+         ukxwnnO+ecJOxowhdNJIc3dKBrkmhBoABkSJe1/1fbcNPttbw2NlVUwCGB0/j8+h9vC9
+         k8yIaF0jkvtHex+ey7EgAFJ4aWkp5IPcWUCeeShMDRs0cm0Gl27Qof3B6EQIdPmVmk5s
+         HEW5DqGx5pLhXPgNarqXr5ZSh+t2UGgmUhHdXGbbMlnqaT0l1F56o9yrr+wTC2s8+qz8
+         fGCUzV0hcPrCXRanPhopPCwL76wVNqADnVx02KhnbTvYyURpe9G2tcx6l37zfYn+Kv/A
+         +xXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749373560; x=1749978360;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V8zG1PbHmuLFJOMJTmtn9Ynye1/oiJIIxmzHDeu+J4o=;
+        b=vWLw5vTqCXl+ePaF8F/nQs5KgLgAubgQDH/N0cDqRa+H0saOTjEm+chmNRVadB5Vm7
+         zOXBbqtczRYq2OR2MQ5kbhO2XjI9gdjT6nuRvBtEFhVBmqUcc5YXSKXGigIX9RoxtFfV
+         B1QINfq/tmrkWW36n/D68vAMErf/hG8abiaGWwChlk2T5FqQG+SJsTVP51ht973BOJ82
+         9REBGJ5t9xw/G6KNYfLcRc+YEwOVkdmxWvs2m0m+jbLigchSUGrfmCDR+rdUxPblG2ba
+         l8iWPfP8HlVURuQYoFaFL5jfNTmoZ59pjiJsEHihztObmPGms+WWL7uwvdiLr9HoHoJw
+         cK3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVrpNG191zsKdadSFpzzg9YepbsbV6jM3tuy7/DRrHGkpavN+AkgHdYZ4w2yN0iug9s8rAZv+hE2kE=@vger.kernel.org, AJvYcCXMssJBeSJIiE6R3KKA7LaJ2vtmWjWVAWHz/uwnph7+KlBLEo924Zwz4tee7k0/YkgxllALXRGO2i2Cit5J@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIOnHtZAnFnPQdKmPCda3hku4MdrvIUwV8LYCMbHe3HdsC7xlS
+	BwTuWfuQNQrhY8+w3paK65Qhc5QEBWuGqbgM20Cume2WOQPWLx7Y93ox
+X-Gm-Gg: ASbGncskC9v5qvnwPVIlwc9WsgaswvHD1tT9Lnci29qCPZJRtqchjijgGBS1rpEZaE1
+	/jBuHCnlqE1lEX/HapZ9Ip3cjLfOfQnjYiBCblNo324RR5+EQhb7g0GRSPX4kb/rSaNBY13TaDt
+	elAB3YTVtteKhKl+143s9UC0CkrRglY2BPhsNj2MDnadstcNJDVEwcVSbegE4p3OvdxIBm9flNG
+	+Xz+I/GEitl2d7ymf54i0f+ryobMUGcGLzzXmr3XYI2znWIyVGUllLlKAtjK7j4X63sDzSAgk4/
+	1uBLx83qBpX7xsHWRPcFr8Puj9Gr4yicgcfYi/Gqj104b/ZH8PJ44Z+NdEXP6BCGCIs9WYJ0jtm
+	/2g==
+X-Google-Smtp-Source: AGHT+IF4O6kYg/XR3Kv3d786/5hTXBm0imOZokDheIdLXFKsrSG7u1VGf0WOnURx0EImBH2Wm4evgA==
+X-Received: by 2002:a05:600c:3849:b0:442:e147:bea7 with SMTP id 5b1f17b1804b1-452013fb12bmr90374155e9.29.1749373559615;
+        Sun, 08 Jun 2025 02:05:59 -0700 (PDT)
+Received: from localhost.localdomain ([41.79.198.22])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45309106019sm25815745e9.6.2025.06.08.02.05.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Jun 2025 02:05:59 -0700 (PDT)
+From: Khalid Ali <khaliidcaliy@gmail.com>
+X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
+To: ardb@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com
+Cc: hpa@zytor.com,
+	x86@kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Khalid Ali <khaliidcaliy@gmail.com>
+Subject: [PATCH] x86/efi: error handling on efi memory map
+Date: Sun,  8 Jun 2025 08:59:28 +0000
+Message-ID: <20250608090356.1115-1-khaliidcaliy@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 76f6cf6676f4e2d83acdb7d93bba71340a95f5bb  efi: Drop preprocessor directives from zboot.lds
+From: Khalid Ali <khaliidcaliy@gmail.com>
 
-elapsed time: 867m
+Memory mapping could fail and we need account it and handle it
+gracefully or at least do some actions about it.
 
-configs tested: 221
-configs skipped: 10
+Currently this patch from the surface look incomplete, and the reason for
+that is i didn't know what to do with mapping failures, and how to react
+with.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The point is this patch addresses it assuming the worse case scenario all
+or some mappings failed. Also i found FIXME that is
+saying missing error handling and i think this is the best way we can
+fix it. The functions i modified there prototype are important however there usage propably was
+once or twice so they have low risk.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    clang-19
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                        nsim_700_defconfig    gcc-15.1.0
-arc                   randconfig-001-20250607    clang-21
-arc                   randconfig-001-20250607    gcc-15.1.0
-arc                   randconfig-002-20250607    clang-21
-arc                   randconfig-002-20250607    gcc-15.1.0
-arc                    vdk_hs38_smp_defconfig    gcc-15.1.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                               allnoconfig    gcc-15.1.0
-arm                              allyesconfig    gcc-15.1.0
-arm                       imx_v4_v5_defconfig    gcc-15.1.0
-arm                   randconfig-001-20250607    clang-21
-arm                   randconfig-002-20250607    clang-21
-arm                   randconfig-002-20250607    gcc-13.3.0
-arm                   randconfig-003-20250607    clang-21
-arm                   randconfig-003-20250607    gcc-15.1.0
-arm                   randconfig-004-20250607    clang-21
-arm                   randconfig-004-20250607    gcc-14.3.0
-arm                       versatile_defconfig    gcc-15.1.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250607    clang-21
-arm64                 randconfig-002-20250607    clang-21
-arm64                 randconfig-003-20250607    clang-21
-arm64                 randconfig-004-20250607    clang-21
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20250607    clang-21
-csky                  randconfig-001-20250607    gcc-12.4.0
-csky                  randconfig-002-20250607    clang-21
-csky                  randconfig-002-20250607    gcc-9.3.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    clang-19
-hexagon                           allnoconfig    clang-21
-hexagon                           allnoconfig    gcc-15.1.0
-hexagon                          allyesconfig    clang-19
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250607    clang-21
-hexagon               randconfig-002-20250607    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250607    clang-20
-i386        buildonly-randconfig-001-20250607    gcc-12
-i386        buildonly-randconfig-002-20250607    gcc-12
-i386        buildonly-randconfig-003-20250607    gcc-12
-i386        buildonly-randconfig-004-20250607    gcc-12
-i386        buildonly-randconfig-005-20250607    clang-20
-i386        buildonly-randconfig-005-20250607    gcc-12
-i386        buildonly-randconfig-006-20250607    clang-20
-i386        buildonly-randconfig-006-20250607    gcc-12
-i386                                defconfig    clang-20
-i386                  randconfig-001-20250607    gcc-12
-i386                  randconfig-002-20250607    gcc-12
-i386                  randconfig-003-20250607    gcc-12
-i386                  randconfig-004-20250607    gcc-12
-i386                  randconfig-005-20250607    gcc-12
-i386                  randconfig-006-20250607    gcc-12
-i386                  randconfig-007-20250607    gcc-12
-i386                  randconfig-011-20250607    gcc-12
-i386                  randconfig-012-20250607    gcc-12
-i386                  randconfig-013-20250607    gcc-12
-i386                  randconfig-014-20250607    gcc-12
-i386                  randconfig-015-20250607    gcc-12
-i386                  randconfig-016-20250607    gcc-12
-i386                  randconfig-017-20250607    gcc-12
-loongarch                        allmodconfig    gcc-15.1.0
-loongarch                         allnoconfig    gcc-15.1.0
-loongarch             randconfig-001-20250607    clang-21
-loongarch             randconfig-001-20250607    gcc-13.3.0
-loongarch             randconfig-002-20250607    clang-21
-loongarch             randconfig-002-20250607    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                           jazz_defconfig    gcc-15.1.0
-mips                           mtx1_defconfig    clang-19
-mips                         rt305x_defconfig    clang-21
-mips                           xway_defconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-15.1.0
-nios2                 randconfig-001-20250607    clang-21
-nios2                 randconfig-001-20250607    gcc-10.5.0
-nios2                 randconfig-002-20250607    clang-21
-nios2                 randconfig-002-20250607    gcc-8.5.0
-openrisc                          allnoconfig    clang-21
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-12
-openrisc                            defconfig    gcc-15.1.0
-openrisc                       virt_defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    clang-21
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-12
-parisc                              defconfig    gcc-15.1.0
-parisc                generic-32bit_defconfig    gcc-15.1.0
-parisc                randconfig-001-20250607    clang-21
-parisc                randconfig-001-20250607    gcc-12.4.0
-parisc                randconfig-002-20250607    clang-21
-parisc                randconfig-002-20250607    gcc-12.4.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    clang-21
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-21
-powerpc                       eiger_defconfig    clang-21
-powerpc                   lite5200b_defconfig    clang-21
-powerpc               randconfig-001-20250607    clang-21
-powerpc               randconfig-001-20250607    gcc-10.5.0
-powerpc               randconfig-002-20250607    clang-21
-powerpc               randconfig-003-20250607    clang-21
-powerpc                     tqm5200_defconfig    clang-19
-powerpc                      tqm8xx_defconfig    clang-19
-powerpc64             randconfig-001-20250607    clang-19
-powerpc64             randconfig-001-20250607    clang-21
-powerpc64             randconfig-002-20250607    clang-21
-powerpc64             randconfig-003-20250607    clang-21
-powerpc64             randconfig-003-20250607    gcc-8.5.0
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-21
-riscv                               defconfig    gcc-12
-riscv                 randconfig-001-20250607    clang-21
-riscv                 randconfig-001-20250607    gcc-12
-riscv                 randconfig-002-20250607    clang-16
-riscv                 randconfig-002-20250607    gcc-12
-s390                             allmodconfig    gcc-15.1.0
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-21
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20250607    clang-16
-s390                  randconfig-001-20250607    gcc-12
-s390                  randconfig-002-20250607    gcc-12
-s390                  randconfig-002-20250607    gcc-14.3.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                        apsh4ad0a_defconfig    gcc-15.1.0
-sh                                  defconfig    gcc-12
-sh                                  defconfig    gcc-15.1.0
-sh                        dreamcast_defconfig    gcc-15.1.0
-sh                         ecovec24_defconfig    gcc-15.1.0
-sh                             espt_defconfig    gcc-15.1.0
-sh                            hp6xx_defconfig    gcc-15.1.0
-sh                          r7785rp_defconfig    clang-19
-sh                    randconfig-001-20250607    gcc-12
-sh                    randconfig-001-20250607    gcc-14.3.0
-sh                    randconfig-002-20250607    gcc-12
-sh                    randconfig-002-20250607    gcc-9.3.0
-sh                          rsk7264_defconfig    clang-19
-sparc                            alldefconfig    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                 randconfig-001-20250607    gcc-10.3.0
-sparc                 randconfig-001-20250607    gcc-12
-sparc                 randconfig-002-20250607    gcc-12
-sparc                 randconfig-002-20250607    gcc-12.4.0
-sparc                       sparc64_defconfig    gcc-15.1.0
-sparc64                             defconfig    gcc-12
-sparc64                             defconfig    gcc-15.1.0
-sparc64               randconfig-001-20250607    gcc-12
-sparc64               randconfig-001-20250607    gcc-9.3.0
-sparc64               randconfig-002-20250607    gcc-12
-sparc64               randconfig-002-20250607    gcc-13.3.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    clang-19
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-21
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250607    clang-21
-um                    randconfig-001-20250607    gcc-12
-um                    randconfig-002-20250607    gcc-12
-um                           x86_64_defconfig    clang-21
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250607    clang-20
-x86_64      buildonly-randconfig-002-20250607    clang-20
-x86_64      buildonly-randconfig-003-20250607    clang-20
-x86_64      buildonly-randconfig-004-20250607    clang-20
-x86_64      buildonly-randconfig-004-20250607    gcc-12
-x86_64      buildonly-randconfig-005-20250607    clang-20
-x86_64      buildonly-randconfig-005-20250607    gcc-12
-x86_64      buildonly-randconfig-006-20250607    clang-20
-x86_64      buildonly-randconfig-006-20250607    gcc-12
-x86_64                              defconfig    gcc-11
-x86_64                                  kexec    clang-20
-x86_64                randconfig-071-20250607    clang-20
-x86_64                randconfig-072-20250607    clang-20
-x86_64                randconfig-073-20250607    clang-20
-x86_64                randconfig-074-20250607    clang-20
-x86_64                randconfig-075-20250607    clang-20
-x86_64                randconfig-076-20250607    clang-20
-x86_64                randconfig-077-20250607    clang-20
-x86_64                randconfig-078-20250607    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-12
-x86_64                         rhel-9.4-kunit    gcc-12
-x86_64                           rhel-9.4-ltp    gcc-12
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250607    gcc-10.5.0
-xtensa                randconfig-001-20250607    gcc-12
-xtensa                randconfig-002-20250607    gcc-12
-xtensa                randconfig-002-20250607    gcc-8.5.0
+Signed-off-by: Khalid Ali <khaliidcaliy@gmail.com>
+---
+ arch/x86/include/asm/efi.h     |  4 ++--
+ arch/x86/platform/efi/efi.c    | 10 ++++++----
+ arch/x86/platform/efi/efi_32.c |  7 +++++--
+ arch/x86/platform/efi/efi_64.c | 34 ++++++++++++++++++++++------------
+ 4 files changed, 35 insertions(+), 20 deletions(-)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index f227a70ac91f..bc73c07e5d7c 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -127,8 +127,8 @@ extern bool efi_disable_ibt_for_runtime;
+ 
+ extern int __init efi_memblock_x86_reserve_range(void);
+ extern void __init efi_print_memmap(void);
+-extern void __init efi_map_region(efi_memory_desc_t *md);
+-extern void __init efi_map_region_fixed(efi_memory_desc_t *md);
++extern int __init efi_map_region(efi_memory_desc_t *md);
++extern int __init efi_map_region_fixed(efi_memory_desc_t *md);
+ extern void efi_sync_low_kernel_mappings(void);
+ extern int __init efi_alloc_page_tables(void);
+ extern int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages);
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 463b784499a8..0a614039e4bb 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -690,7 +690,8 @@ static void * __init efi_map_regions(int *count, int *pg_shift)
+ 		if (!should_map_region(md))
+ 			continue;
+ 
+-		efi_map_region(md);
++		if (efi_map_region(md))
++			return NULL;
+ 
+ 		if (left < desc_size) {
+ 			new_memmap = realloc_pages(new_memmap, *pg_shift);
+@@ -736,9 +737,10 @@ static void __init kexec_enter_virtual_mode(void)
+ 	* Map efi regions which were passed via setup_data. The virt_addr is a
+ 	* fixed addr which was used in first kernel of a kexec boot.
+ 	*/
+-	for_each_efi_memory_desc(md)
+-		efi_map_region_fixed(md); /* FIXME: add error handling */
+-
++	for_each_efi_memory_desc(md) {
++		if (efi_map_region_fixed(md))
++			return;
++	}
+ 	/*
+ 	 * Unregister the early EFI memmap from efi_init() and install
+ 	 * the new EFI memory map.
+diff --git a/arch/x86/platform/efi/efi_32.c b/arch/x86/platform/efi/efi_32.c
+index b2cc7b4552a1..5ca63a72b1f1 100644
+--- a/arch/x86/platform/efi/efi_32.c
++++ b/arch/x86/platform/efi/efi_32.c
+@@ -33,7 +33,7 @@
+ #include <asm/tlbflush.h>
+ #include <asm/efi.h>
+ 
+-void __init efi_map_region(efi_memory_desc_t *md)
++int __init efi_map_region(efi_memory_desc_t *md)
+ {
+ 	u64 start_pfn, end_pfn, end;
+ 	unsigned long size;
+@@ -54,8 +54,11 @@ void __init efi_map_region(efi_memory_desc_t *md)
+ 	}
+ 
+ 	md->virt_addr = (unsigned long)va;
+-	if (!va)
++	if (!va) {
+ 		pr_err("ioremap of 0x%llX failed!\n", md->phys_addr);
++		return -EINVAL;
++	}
++	return 0;
+ }
+ 
+ /*
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index e7e8f77f77f8..b75a9557685c 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -268,12 +268,12 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+ 	return 0;
+ }
+ 
+-static void __init __map_region(efi_memory_desc_t *md, u64 va)
++static int __init __map_region(efi_memory_desc_t *md, u64 va)
+ {
+ 	unsigned long flags = _PAGE_RW;
+ 	unsigned long pfn;
+ 	pgd_t *pgd = efi_mm.pgd;
+-
++	int retval;
+ 	/*
+ 	 * EFI_RUNTIME_SERVICES_CODE regions typically cover PE/COFF
+ 	 * executable images in memory that consist of both R-X and
+@@ -298,22 +298,25 @@ static void __init __map_region(efi_memory_desc_t *md, u64 va)
+ 		flags |= _PAGE_ENC;
+ 
+ 	pfn = md->phys_addr >> PAGE_SHIFT;
+-	if (kernel_map_pages_in_pgd(pgd, pfn, va, md->num_pages, flags))
++	retval = kernel_map_pages_in_pgd(pgd, pfn, va, md->num_pages, flags);	
++	if (retval)
+ 		pr_warn("Error mapping PA 0x%llx -> VA 0x%llx!\n",
+ 			   md->phys_addr, va);
++	return retval;
+ }
+ 
+-void __init efi_map_region(efi_memory_desc_t *md)
++int __init efi_map_region(efi_memory_desc_t *md)
+ {
+ 	unsigned long size = md->num_pages << PAGE_SHIFT;
+ 	u64 pa = md->phys_addr;
++	int retval = 0;
+ 
+ 	/*
+ 	 * Make sure the 1:1 mappings are present as a catch-all for b0rked
+ 	 * firmware which doesn't update all internal pointers after switching
+ 	 * to virtual mode and would otherwise crap on us.
+ 	 */
+-	__map_region(md, md->phys_addr);
++	retval = __map_region(md, md->phys_addr);
+ 
+ 	/*
+ 	 * Enforce the 1:1 mapping as the default virtual address when
+@@ -322,7 +325,7 @@ void __init efi_map_region(efi_memory_desc_t *md)
+ 	 */
+ 	if (efi_is_mixed()) {
+ 		md->virt_addr = md->phys_addr;
+-		return;
++		return retval;
+ 	}
+ 
+ 	efi_va -= size;
+@@ -343,12 +346,13 @@ void __init efi_map_region(efi_memory_desc_t *md)
+ 
+ 	if (efi_va < EFI_VA_END) {
+ 		pr_warn(FW_WARN "VA address range overflow!\n");
+-		return;
++		return retval;
+ 	}
+ 
+ 	/* Do the VA map */
+-	__map_region(md, efi_va);
++	retval = __map_region(md, efi_va);
+ 	md->virt_addr = efi_va;
++	return retval;
+ }
+ 
+ /*
+@@ -356,10 +360,16 @@ void __init efi_map_region(efi_memory_desc_t *md)
+  * md->virt_addr is the original virtual address which had been mapped in kexec
+  * 1st kernel.
+  */
+-void __init efi_map_region_fixed(efi_memory_desc_t *md)
+-{
+-	__map_region(md, md->phys_addr);
+-	__map_region(md, md->virt_addr);
++int __init efi_map_region_fixed(efi_memory_desc_t *md)
++{
++	int retval;
++	retval = __map_region(md, md->phys_addr);
++	if (retval)
++		return retval;
++	retval = __map_region(md, md->virt_addr);
++	if (retval)
++		return retval;
++	return 0;
+ }
+ 
+ void __init parse_efi_setup(u64 phys_addr, u32 data_len)
+-- 
+2.49.0
+
 
