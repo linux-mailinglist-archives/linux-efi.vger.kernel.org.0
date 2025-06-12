@@ -1,297 +1,198 @@
-Return-Path: <linux-efi+bounces-3826-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3827-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1868CAD1386
-	for <lists+linux-efi@lfdr.de>; Sun,  8 Jun 2025 19:13:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487C5AD6560
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Jun 2025 03:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968DE168A46
-	for <lists+linux-efi@lfdr.de>; Sun,  8 Jun 2025 17:13:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64FF43AD222
+	for <lists+linux-efi@lfdr.de>; Thu, 12 Jun 2025 01:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4371C18FDA5;
-	Sun,  8 Jun 2025 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B3A13A3F2;
+	Thu, 12 Jun 2025 01:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dZvNgGfF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I3vkun84"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539991547D2;
-	Sun,  8 Jun 2025 17:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D852D2A1C9
+	for <linux-efi@vger.kernel.org>; Thu, 12 Jun 2025 01:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749402804; cv=none; b=uDloQ5iHUvbHkseBduuAjdTenO1WOErod1BS/13O/CE3tGx3vSlleVvfUO8ekMW50TE4WsYWcuVkyigvmWF7QS38EJ5u3EdakoyBthI3iFmsaozR8a7Vkm0sfUVfab0EgYixx6KUdJfbpudaABrpEi/tGep7dIgB/wQex6r5q3s=
+	t=1749693538; cv=none; b=bfIa2ArWlUihALkXLkBx2q9slEzUmvogsPux/E7C/JDSPljH3QrwVr7Yw5rWGr8cPLUtvNsMwuUYbrf8HyPkisrrK30LvMwk+yl8I3lEU3CC3ubRvVMD7Ck80pijtNlVXfdYvfBMkTrtKN40MyRm2BKwqqQeau999AD1DWayQP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749402804; c=relaxed/simple;
-	bh=m+EoCFMxjYw9Ar69UF6bMBSGvTD8Er/Yt1M9FwegE6A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Awr9sB/C1C+DR6+ZiHesf7mkF9cXF8D9cTkpxY2heJTohLKAEZNWeTl5qTY55kM6IhFcNAEsUC3MCr9SZaOgJzfT+eLYsnOpVudtakW6aB1nggckT1MgZL1iPlwywNtEcHPWSR65PDePB1JxnEqINdwzFygcjGwlGHkD/wQ/RKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dZvNgGfF; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ade33027bcfso226706066b.1;
-        Sun, 08 Jun 2025 10:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749402800; x=1750007600; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QjbfX1fbIV8T50DrEqaU+DfCTlIuWvkjOJ7fSp2QxDo=;
-        b=dZvNgGfFhnijCgVyIBRm2Ei8bf4LqszDd+LKalv8fHbiLzzobkhPYblGzWoplwNxDb
-         ZGZ0UjmlE4TNRGVpVbTXYWiCwQyepUZfGxzgRY6SQlwiQ+ppk9Km2ACslkMrn9Ayvq75
-         YdqiyjAWz316YoBoSERbEjD4txFj5GtxwJn0xg3RziF6eoQdtLL/hpTp37Tk/yEkUia8
-         jtU7xKOfwyajgtcJDyZozcK6nMBLIx6cNBo2+DIJjCq0KnO9SD07Sug23cNOHuOTYe5W
-         NF0O9YC0kbSx4hyL6MFDaVsOPn3tHPfUwMI4L5DFHP2uGqGX+KF4mJoOp1B1xOSPVobl
-         RQqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749402800; x=1750007600;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QjbfX1fbIV8T50DrEqaU+DfCTlIuWvkjOJ7fSp2QxDo=;
-        b=fq+JmKfyK7vtinB5Y3KhpTfQ4LPwNRnH8m61m2Pl/pONHrXVsaCERJHEbY3bpw3uYQ
-         wRWKy7GNLWlDSCtXKU7CEdcamYR574579kUqoHhNKB8xcJnbsf8PGuf7btFLv9xaeVOS
-         lfB41FefOodiKzdA2mtvzI6I3EOTRdc7KBXz4apaymQoHYEg8fvmR1ib1o453NwWFQ7A
-         /gINqc7ME3aiI1Nb0vxyKQLHQEqpyukFQ2Rf1sfgjf3JNMjmdp8DplSHqD62w1ehqmjA
-         D1cf8mySnKMz83mVrPXNqtiy2x34oD9Z9dpoxraiDLLRlNfphLpELZNY0Ds2K7cl13ra
-         muKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUwxpeWMFqYmwO0N/t9guy0eJURaxANitbyYVxpK5uYwf1PE3Tor1gVeHCA+m0RB2n2jlktOaixOHs=@vger.kernel.org, AJvYcCVKAUFZ1ffybeo6MHoEleE15i2tOxg+m+vz1q4HZeZoZNuEp510vEtn8EiOKNc4qKBUv7qycIz4BKc3/s3s@vger.kernel.org
-X-Gm-Message-State: AOJu0YykFLcaLBtslJx4Au/PC53/NRzN3zmXh0EJITBllB6vfWUM8R5L
-	es/lEVxvZ7flS/xwSVHUQGoSjaNvu+p3bPnvf3hHUGHyAlc+2vvlXgeB
-X-Gm-Gg: ASbGncuQ0K+cmpnTy19qlMBRQJbBlq7isrS9hAtDufbOtqTgSkBZwNmQt0NSWQZ1ovY
-	s2Qkc/6UBYBiTF8Z5EwT58IAf4tmdcVpRi0UDrvjVu8Jy0+HSG8xrBA3BSiNdy58nylLg8K2eBd
-	xhEJsx0clR2tc/RV5WWlS/JS6w70/iqswHwPOnLdc9K9zKpqHy7NEiynE2eP6IWoiVYq4F3FDr7
-	iPswT9rbKW5M4YNG6Tsf/KXRFvHB0kRvUBB0NUyb8+HgVF6L8hGQpCIA/UlgLbUmQxWEKBpArnI
-	SpLXep1GWj5nhN+pB2UxhYld9Uz3baZQH6BqS0G0XCCnz+rT2ILV9+CTeDq0b8w1+g==
-X-Google-Smtp-Source: AGHT+IG3xR5v5kUXLn4fsu7ZdkOmphG+QVMf1ufEPwxLiBQ+KtVduIT43cDZ0VN7vD0Z3Uv0KQaNqg==
-X-Received: by 2002:a17:906:4fca:b0:ad8:9a3b:b274 with SMTP id a640c23a62f3a-ade1aaff72bmr983386466b.52.1749402799299;
-        Sun, 08 Jun 2025 10:13:19 -0700 (PDT)
-Received: from localhost.localdomain ([41.79.198.22])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1dc76feesm433253566b.147.2025.06.08.10.13.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Jun 2025 10:13:19 -0700 (PDT)
-From: Khalid Ali <khaliidcaliy@gmail.com>
-X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
-To: ardb@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com
-Cc: hpa@zytor.com,
-	x86@kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Khalid Ali <khaliidcaliy@gmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH v2] x86/efi: error handling on efi memory map
-Date: Sun,  8 Jun 2025 17:11:25 +0000
-Message-ID: <20250608171220.4528-1-khaliidcaliy@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1749693538; c=relaxed/simple;
+	bh=i5GZ/XAkeFyuDhmUGT/iXZDS9OwxyWAfbbtRD3UjXro=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=NABBihgaHQIIWWz+e0hSlEl6G96cVyUTwNajwphlRWJCm8U/sv+WjUKm33NyZSUONbIvb25p6vo9Az0BTfllR2sHgJg00D2Xv+sCVu47aZoo6ostWpLUQjIjaoMaWMc1ae50VbRz3Z7KdTRHDqqTiOZL2JvcH1XKuv5rf3ZG6dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I3vkun84; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749693537; x=1781229537;
+  h=date:from:to:cc:subject:message-id;
+  bh=i5GZ/XAkeFyuDhmUGT/iXZDS9OwxyWAfbbtRD3UjXro=;
+  b=I3vkun84ZCXPjRfOcUJg54x3cfWxqJKfKec4SluDhEJxZm7B900r8X+z
+   j05fD29B0hvi8Z+Yj00H0oi0TCacn80ZyCOZilI76CXKUXJxv+TpAq1Do
+   pBIWLUBkAu9bf73KY4FtY9mQgvDg9ZOyHVL/nXmmN5++XJtpvTMZv+kjT
+   jqn2V36V6LIlQke5vhuhuxPFgcDelHSNsX+x4FYxruVqshxXEC71gkVr3
+   N0nLmA9yq9p54JlffEszd+a0ei/t9RgmmupifLDZtoAyiuinGOnK7WV7e
+   IC4g4kP4Pi9/nCc+KElSGPyQRD0a49sGQB1ROebUB/HkevLygGKT+JViw
+   w==;
+X-CSE-ConnectionGUID: eGtuTewcTvmdRu5SZEoLIA==
+X-CSE-MsgGUID: v+D5ds//T9GkG0hjb5Esog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="54485373"
+X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; 
+   d="scan'208";a="54485373"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 18:58:56 -0700
+X-CSE-ConnectionGUID: 5PJlKQbZRue6pyIc9ckIzw==
+X-CSE-MsgGUID: scKijcPWT4KCeKWkEPhMvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; 
+   d="scan'208";a="147858761"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 11 Jun 2025 18:58:55 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uPXDR-000Azq-0J;
+	Thu, 12 Jun 2025 01:58:53 +0000
+Date: Thu, 12 Jun 2025 09:58:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ c33453d08a56a45c2e72f9f56043610b8f7449c7
+Message-ID: <202506120911.lhhk3jLo-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Khalid Ali <khaliidcaliy@gmail.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: c33453d08a56a45c2e72f9f56043610b8f7449c7  efi: Drop preprocessor directives from zboot.lds
 
-Memory mapping could fail and we need account it and handle it
-gracefully or at least do some actions about it.
+elapsed time: 1460m
 
-Currently this patch from the surface look incomplete, and the reason for
-that is i didn't know what to do with mapping failures, and how to react
-with.
+configs tested: 105
+configs skipped: 19
 
-The point is this patch addresses it assuming the worse case scenario all
-or some mappings failed. Also i found FIXME that is
-saying missing error handling and i think this is the best way we can
-fix it. The functions i modified there prototype are important however there usage propably was
-once or twice so they have low risk.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: Khalid Ali <khaliidcaliy@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
----
- arch/x86/include/asm/efi.h     |  4 ++--
- arch/x86/platform/efi/efi.c    | 10 ++++++----
- arch/x86/platform/efi/efi_32.c |  9 ++++++---
- arch/x86/platform/efi/efi_64.c | 34 ++++++++++++++++++++++------------
- 4 files changed, 36 insertions(+), 21 deletions(-)
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                      axs103_smp_defconfig    gcc-15.1.0
+arc                   randconfig-001-20250611    gcc-12.4.0
+arc                   randconfig-002-20250611    gcc-8.5.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-15.1.0
+arm                         assabet_defconfig    clang-18
+arm                         bcm2835_defconfig    clang-21
+arm                         lpc18xx_defconfig    clang-21
+arm                   randconfig-001-20250611    gcc-11.5.0
+arm                   randconfig-002-20250611    clang-21
+arm                   randconfig-003-20250611    gcc-13.3.0
+arm                   randconfig-004-20250611    gcc-13.3.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250611    gcc-8.5.0
+arm64                 randconfig-002-20250611    gcc-9.5.0
+arm64                 randconfig-003-20250611    gcc-13.3.0
+arm64                 randconfig-004-20250611    gcc-8.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250611    gcc-15.1.0
+csky                  randconfig-002-20250611    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250611    clang-21
+hexagon               randconfig-002-20250611    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250611    gcc-12
+i386        buildonly-randconfig-002-20250611    gcc-12
+i386        buildonly-randconfig-003-20250611    clang-20
+i386        buildonly-randconfig-004-20250611    gcc-12
+i386        buildonly-randconfig-005-20250611    gcc-11
+i386        buildonly-randconfig-006-20250611    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-15.1.0
+loongarch                         allnoconfig    gcc-15.1.0
+loongarch             randconfig-001-20250611    gcc-15.1.0
+loongarch             randconfig-002-20250611    gcc-15.1.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                        m5307c3_defconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250611    gcc-8.5.0
+nios2                 randconfig-002-20250611    gcc-9.3.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250611    gcc-11.5.0
+parisc                randconfig-002-20250611    gcc-8.5.0
+parisc64                         alldefconfig    gcc-15.1.0
+powerpc                    adder875_defconfig    gcc-15.1.0
+powerpc                     akebono_defconfig    clang-21
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                 mpc8313_rdb_defconfig    gcc-15.1.0
+powerpc                  mpc885_ads_defconfig    clang-21
+powerpc               randconfig-001-20250611    gcc-8.5.0
+powerpc               randconfig-002-20250611    gcc-13.3.0
+powerpc               randconfig-003-20250611    clang-21
+powerpc64             randconfig-001-20250611    clang-21
+powerpc64             randconfig-002-20250611    clang-21
+riscv                             allnoconfig    gcc-15.1.0
+riscv                               defconfig    clang-21
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-15.1.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                          lboxre2_defconfig    gcc-15.1.0
+sh                      rts7751r2d1_defconfig    gcc-15.1.0
+sh                   sh7770_generic_defconfig    gcc-15.1.0
+sh                            titan_defconfig    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250611    gcc-12
+x86_64      buildonly-randconfig-002-20250611    clang-20
+x86_64      buildonly-randconfig-003-20250611    clang-20
+x86_64      buildonly-randconfig-004-20250611    gcc-12
+x86_64      buildonly-randconfig-005-20250611    gcc-12
+x86_64      buildonly-randconfig-006-20250611    clang-20
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-18
+xtensa                            allnoconfig    gcc-15.1.0
 
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index f227a70ac91f..bc73c07e5d7c 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -127,8 +127,8 @@ extern bool efi_disable_ibt_for_runtime;
- 
- extern int __init efi_memblock_x86_reserve_range(void);
- extern void __init efi_print_memmap(void);
--extern void __init efi_map_region(efi_memory_desc_t *md);
--extern void __init efi_map_region_fixed(efi_memory_desc_t *md);
-+extern int __init efi_map_region(efi_memory_desc_t *md);
-+extern int __init efi_map_region_fixed(efi_memory_desc_t *md);
- extern void efi_sync_low_kernel_mappings(void);
- extern int __init efi_alloc_page_tables(void);
- extern int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages);
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 463b784499a8..0a614039e4bb 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -690,7 +690,8 @@ static void * __init efi_map_regions(int *count, int *pg_shift)
- 		if (!should_map_region(md))
- 			continue;
- 
--		efi_map_region(md);
-+		if (efi_map_region(md))
-+			return NULL;
- 
- 		if (left < desc_size) {
- 			new_memmap = realloc_pages(new_memmap, *pg_shift);
-@@ -736,9 +737,10 @@ static void __init kexec_enter_virtual_mode(void)
- 	* Map efi regions which were passed via setup_data. The virt_addr is a
- 	* fixed addr which was used in first kernel of a kexec boot.
- 	*/
--	for_each_efi_memory_desc(md)
--		efi_map_region_fixed(md); /* FIXME: add error handling */
--
-+	for_each_efi_memory_desc(md) {
-+		if (efi_map_region_fixed(md))
-+			return;
-+	}
- 	/*
- 	 * Unregister the early EFI memmap from efi_init() and install
- 	 * the new EFI memory map.
-diff --git a/arch/x86/platform/efi/efi_32.c b/arch/x86/platform/efi/efi_32.c
-index b2cc7b4552a1..ed827dacd493 100644
---- a/arch/x86/platform/efi/efi_32.c
-+++ b/arch/x86/platform/efi/efi_32.c
-@@ -33,7 +33,7 @@
- #include <asm/tlbflush.h>
- #include <asm/efi.h>
- 
--void __init efi_map_region(efi_memory_desc_t *md)
-+int __init efi_map_region(efi_memory_desc_t *md)
- {
- 	u64 start_pfn, end_pfn, end;
- 	unsigned long size;
-@@ -54,8 +54,11 @@ void __init efi_map_region(efi_memory_desc_t *md)
- 	}
- 
- 	md->virt_addr = (unsigned long)va;
--	if (!va)
-+	if (!va) {
- 		pr_err("ioremap of 0x%llX failed!\n", md->phys_addr);
-+		return -EINVAL;
-+	}
-+	return 0;
- }
- 
- /*
-@@ -84,7 +87,7 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 	return 0;
- }
- 
--void __init efi_map_region_fixed(efi_memory_desc_t *md) {}
-+int __init efi_map_region_fixed(efi_memory_desc_t *md) {}
- void __init parse_efi_setup(u64 phys_addr, u32 data_len) {}
- 
- efi_status_t efi_call_svam(efi_runtime_services_t * const *,
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index e7e8f77f77f8..b75a9557685c 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -268,12 +268,12 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 	return 0;
- }
- 
--static void __init __map_region(efi_memory_desc_t *md, u64 va)
-+static int __init __map_region(efi_memory_desc_t *md, u64 va)
- {
- 	unsigned long flags = _PAGE_RW;
- 	unsigned long pfn;
- 	pgd_t *pgd = efi_mm.pgd;
--
-+	int retval;
- 	/*
- 	 * EFI_RUNTIME_SERVICES_CODE regions typically cover PE/COFF
- 	 * executable images in memory that consist of both R-X and
-@@ -298,22 +298,25 @@ static void __init __map_region(efi_memory_desc_t *md, u64 va)
- 		flags |= _PAGE_ENC;
- 
- 	pfn = md->phys_addr >> PAGE_SHIFT;
--	if (kernel_map_pages_in_pgd(pgd, pfn, va, md->num_pages, flags))
-+	retval = kernel_map_pages_in_pgd(pgd, pfn, va, md->num_pages, flags);	
-+	if (retval)
- 		pr_warn("Error mapping PA 0x%llx -> VA 0x%llx!\n",
- 			   md->phys_addr, va);
-+	return retval;
- }
- 
--void __init efi_map_region(efi_memory_desc_t *md)
-+int __init efi_map_region(efi_memory_desc_t *md)
- {
- 	unsigned long size = md->num_pages << PAGE_SHIFT;
- 	u64 pa = md->phys_addr;
-+	int retval = 0;
- 
- 	/*
- 	 * Make sure the 1:1 mappings are present as a catch-all for b0rked
- 	 * firmware which doesn't update all internal pointers after switching
- 	 * to virtual mode and would otherwise crap on us.
- 	 */
--	__map_region(md, md->phys_addr);
-+	retval = __map_region(md, md->phys_addr);
- 
- 	/*
- 	 * Enforce the 1:1 mapping as the default virtual address when
-@@ -322,7 +325,7 @@ void __init efi_map_region(efi_memory_desc_t *md)
- 	 */
- 	if (efi_is_mixed()) {
- 		md->virt_addr = md->phys_addr;
--		return;
-+		return retval;
- 	}
- 
- 	efi_va -= size;
-@@ -343,12 +346,13 @@ void __init efi_map_region(efi_memory_desc_t *md)
- 
- 	if (efi_va < EFI_VA_END) {
- 		pr_warn(FW_WARN "VA address range overflow!\n");
--		return;
-+		return retval;
- 	}
- 
- 	/* Do the VA map */
--	__map_region(md, efi_va);
-+	retval = __map_region(md, efi_va);
- 	md->virt_addr = efi_va;
-+	return retval;
- }
- 
- /*
-@@ -356,10 +360,16 @@ void __init efi_map_region(efi_memory_desc_t *md)
-  * md->virt_addr is the original virtual address which had been mapped in kexec
-  * 1st kernel.
-  */
--void __init efi_map_region_fixed(efi_memory_desc_t *md)
--{
--	__map_region(md, md->phys_addr);
--	__map_region(md, md->virt_addr);
-+int __init efi_map_region_fixed(efi_memory_desc_t *md)
-+{
-+	int retval;
-+	retval = __map_region(md, md->phys_addr);
-+	if (retval)
-+		return retval;
-+	retval = __map_region(md, md->virt_addr);
-+	if (retval)
-+		return retval;
-+	return 0;
- }
- 
- void __init parse_efi_setup(u64 phys_addr, u32 data_len)
--- 
-2.49.0
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
