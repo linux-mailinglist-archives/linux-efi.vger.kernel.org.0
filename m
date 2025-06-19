@@ -1,157 +1,127 @@
-Return-Path: <linux-efi+bounces-3833-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3834-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071A5ADF09B
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Jun 2025 17:03:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C312AE008F
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Jun 2025 10:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F54B7A5483
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Jun 2025 15:01:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D4E3B52BB
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Jun 2025 08:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E102EE986;
-	Wed, 18 Jun 2025 15:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2008326561D;
+	Thu, 19 Jun 2025 08:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AX0v04N0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p2FgroRg"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871EF2EE601;
-	Wed, 18 Jun 2025 15:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75382580FB;
+	Thu, 19 Jun 2025 08:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750258969; cv=none; b=oxXRAztfslMQSKfL9dVVJqt7lEiDw8GjbSpijPNQ+6uFY0QRpwyLcT/XFk/+5HsbLeTmC6kl50/pB0qh+NTO3fP4IgfdUibrCgynBx7W3pF20iZ0Wtedcyt/0+2pLfn+q93tO9KGGpZg7OUQszqYWaxo4tlo7N1VvvHpCaxVRXA=
+	t=1750323328; cv=none; b=rMiXixkd52jf0WjtiH0PGgedRh1G3m5ilIEJi4kZm0+YH4UkvKmznG69+CHP3He0HOG+svyfyclk6uYNIMZhAW+0VKjSfZBLg+6URNq7T4IDVqVzbUFIhEkIK4SBN2Taj/lHaGI8YaThWniiMVE2UBAQwDUzoAGNMfwDel1j6xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750258969; c=relaxed/simple;
-	bh=t81ifGfWFp44BJ2Ft+uUvvxNKGSU9iLNCt2qyWfuIV4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YVb1PZ5i5CbX63lx1r20M5oytrK3dQBk7S37BYyIdfdpzknX6zbPXbtqMUY7DPcx2fVMrCx6a8o20EyxF9NrOwpCD4bVbyaDsthOibHDuakyxMFgBqZsv2MlQAcPD9utHM+MG2IfCwP3lXbVMbhSCk2RhCWcMF7sBAC8vJhmhas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AX0v04N0; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750258968; x=1781794968;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=t81ifGfWFp44BJ2Ft+uUvvxNKGSU9iLNCt2qyWfuIV4=;
-  b=AX0v04N0TO0lrHMwyAznWbBApBG4nBS9M7lgTzt8Dkf/S1Ih1M8WCj9g
-   I09XVnsc8NWKis2KuSFcdwRZkmCCudZKRxTKjoA330b2XLgupx8em7TWh
-   N9Y7LfeSZtxjG+3ETwSZxT0FpcFFtInidN0r6dGAB2upmNxZiNJi6YenQ
-   6FHmNSbEp6oPbBzNDGSnJ2Ugz5ym/iFbfwxPuNUobpDdffVMXche91MIJ
-   DwCE+hKIgHSldGNz6SbXBC2mHGxmRJthnieP0TtRajF1TvVV3K+9x71q/
-   +U2BTmNaRb8bnoG1KCGdtteqm2FGq87h2ExNbO8XP+gfsYy10lHDf+95Z
-   Q==;
-X-CSE-ConnectionGUID: YY+UIrTJR16CJdBgo7aAgw==
-X-CSE-MsgGUID: lzT2X7CSSQqqyi2216ri5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="63907941"
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="63907941"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 08:02:47 -0700
-X-CSE-ConnectionGUID: rf8OPVHpRl2MllV8+9OTVQ==
-X-CSE-MsgGUID: ALgAo8fnQvi1hlteH6Yi/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="180720676"
-Received: from agladkov-desk.ger.corp.intel.com (HELO [10.125.108.97]) ([10.125.108.97])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 08:02:42 -0700
-Message-ID: <9c08c890-d8a1-4d9c-942d-d19c540216bc@intel.com>
-Date: Wed, 18 Jun 2025 08:02:42 -0700
+	s=arc-20240116; t=1750323328; c=relaxed/simple;
+	bh=eQADuGSiL41NAxGl9NK+UhkSlVn0yTQBhyaUTND5Uzc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jxrIHLlHwSCL1MSXs+zZ+V6xp2wSUNgOo6rC8sEVFU2vvtfD8wGzidr61eEwNRwEIamLqZet9ug/8YsCqa47t/+oaKRdoAvPukrwJoQ8Kpskk80KnB/EY4VpjoASPGzVRuc9bYtFFGevVM54JyPOW3Gg3UJY1UoM28gEp1wmT1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p2FgroRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F51C4CEF3;
+	Thu, 19 Jun 2025 08:55:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750323327;
+	bh=eQADuGSiL41NAxGl9NK+UhkSlVn0yTQBhyaUTND5Uzc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=p2FgroRg8XpbJ/VSjtfLXHjJJRjKYpLj2XcaUHKG2xLQ7wfM+Z5n3rCjl6c8Zto5M
+	 RSqSwjDobL8Uw3UNbEgelKH8UpaKTaToYX2CC3EHc2vsE2pdmJDyKlBWw+TMDnneAR
+	 zMJQDoEg8twbtA3I11UyCenEImVZ9sO7oElSKq/lIdyVHdbSV7Rl1uy4I9OtVCIJ1L
+	 xY4b7NmVNhx3/G6psbDY7j5hAeSUhrVg2Gh8rwAs7zI7pjkVGSiXnOiYqIeGf09brb
+	 UZTFESwD6c+51mkUr6sZ7eCO2jWacLftMDJ3IO+VCTUTYL9SrpXOCd2q9ivlu3Pq39
+	 P3TSZ4nA1tZBA==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-60789b450ceso962775a12.2;
+        Thu, 19 Jun 2025 01:55:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU/GY9u/H6VmWYLvDF+tqQ6wvs4cQ80fpYCXLxpaeI3/hKLjPWaslAawPzcZv8FhbhaTHXqy2CVGxgUmg==@vger.kernel.org, AJvYcCUC7SLy1By2jbdrPLjrpds1xYDCeo4uSWgeDuKoCGrFN88IBz0opkL7rgdyTjdu6qVaje0nxVN2pqqP@vger.kernel.org, AJvYcCUa7Efc35Q8WkGsD2U4bCGoecJW/ptZTk39ref5CTSfW++U6zvqcFPlHuJpjvbY/a8eD4oWh3rp/qY7y+OEJxeBctA/Dt2d@vger.kernel.org, AJvYcCVjDX2VwfRuG5SxxnGpf5KC7Th8S4ZkJMhGPKBQqTAOByeqmHLWZvVAEFKQt4ygXHiI8aQ9jG5oWXcrmmuH@vger.kernel.org, AJvYcCW+tx0F01bmFzPlRq1s//0vymuMtR05zWZopJxI/dVAq8QgCfpLxVIDL2fCwcAEz/s21z9kDMM7AodgJA==@vger.kernel.org, AJvYcCWqAx+nfZcjxDIAjro9EdY9VtDv9Vo9k8YxKWYkMQGhLnpFFTQM5aVyNYHvqOxsl0bAya0Smo4HJuA=@vger.kernel.org, AJvYcCX73FZOQpOzdf9Hp5i4AYdcM99rSDTfOkO87rkzetCbweNzxNf3eKMm79ycetHQF9cuKgIQfepr0NTAfQ==@vger.kernel.org, AJvYcCXUjuJgbxjol0jB6YrOeiJbQ/EtotBa3LL1C4QzpqdW1wi+ArpGdxkeNLrBTJtcSjV3blfY5lmHKm8B2CXdAu/j@vger.kernel.org, AJvYcCXwvFMpnHmADqS7bqjBEL0UKfL5f5WhEOrViDiJQ3UB6JKdkqVAiubUnHinNAnpqgbcGOJnQIuV5wnoimDC@vger.kernel.org, AJvYcCXx
+ 5NT+KRx0hNKE7eB4CPymUiA8EmK/2CrHXe+kQF+v5B+RVODIZVFTK73fUmYhLST2j6NM06Sg4s3i46U7DP/Q@vger.kernel.org
+X-Gm-Message-State: AOJu0YxntaGQ75cR2XT/KtiUEmUR6viMHpLHP+8ZBQ7dY8DNbCcsqVrI
+	CYr2glOimARwgCo6YYRC0tbgQ26zh/a93zRRAX4O4WnRQgWhdNq0pGl7dr3JC8orL2Cqe4djh5e
+	IdJf2tXvt2ESnC34dgslpqJ2En4YygkA=
+X-Google-Smtp-Source: AGHT+IFe63NPmdC9P72cDlyX2WP9si/cWhn+2uqDCCs1dQMO/+ouBJs4HCM0Kl1RCgdHuztVjrD3QGSEtvvPoh/cEAU=
+X-Received: by 2002:a05:6402:50d2:b0:607:6057:9006 with SMTP id
+ 4fb4d7f45d1cf-608d08f7a70mr18716524a12.8.1750323325929; Thu, 19 Jun 2025
+ 01:55:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 01/19] Documentation/x86: Secure Launch kernel
- documentation
-To: "Mowka, Mateusz" <mateusz.mowka@linux.intel.com>,
- Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
- linux-efi@vger.kernel.org, iommu@lists.linux.dev
-Cc: dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, ardb@kernel.org,
- mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
- peterhuewe@gmx.de, jarkko@kernel.org, jgg@ziepe.ca, luto@amacapital.net,
- nivedita@alum.mit.edu, herbert@gondor.apana.org.au, davem@davemloft.net,
- corbet@lwn.net, ebiederm@xmission.com, dwmw2@infradead.org,
- baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
- andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
-References: <20250421162712.77452-1-ross.philipson@oracle.com>
- <20250421162712.77452-2-ross.philipson@oracle.com>
- <8540352d-a7e3-4697-bc8f-2345e674548c@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <8540352d-a7e3-4697-bc8f-2345e674548c@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250523043251.it.550-kees@kernel.org> <20250523043935.2009972-9-kees@kernel.org>
+In-Reply-To: <20250523043935.2009972-9-kees@kernel.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 19 Jun 2025 16:55:15 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4rFt3J6hD-eiNN5nihNR0cwMxPJQpq8LQWkx4km428og@mail.gmail.com>
+X-Gm-Features: AX0GCFtBM3K8OeK1JL3sld-cpEWi3kLQAET9w-cyksCMv2tJ5SCZdduevj4T0cU
+Message-ID: <CAAhV-H4rFt3J6hD-eiNN5nihNR0cwMxPJQpq8LQWkx4km428og@mail.gmail.com>
+Subject: Re: [PATCH v2 09/14] mips: Handle KCOV __init vs inline mismatches
+To: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/18/25 01:33, Mowka, Mateusz wrote:
-> On 21-Apr-25 6:26 PM, Ross Philipson wrote:
->> From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
->>
->> Introduce background, overview and configuration/ABI information
->> for the Secure Launch kernel feature.
->>
->> Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
->> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
->> Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> 
-> Acked-by: Mateusz Mowka <mateusz.mowka@linux.intel.com>
+Hi, Kees,
 
-Could you tell us a little more about what this ack means?
+On Fri, May 23, 2025 at 12:41=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
+>
+> When KCOV is enabled all functions get instrumented, unless
+> the __no_sanitize_coverage attribute is used. To prepare for
+> __no_sanitize_coverage being applied to __init functions, we have to
+> handle differences in how GCC's inline optimizations get resolved. For
+> mips this requires forcing a function to be inline with __always_inline.
+>
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: <linux-mips@vger.kernel.org>
+> ---
+>  arch/mips/include/asm/time.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
+> index e855a3611d92..044cff0e0764 100644
+> --- a/arch/mips/include/asm/time.h
+> +++ b/arch/mips/include/asm/time.h
+> @@ -55,7 +55,7 @@ static inline int mips_clockevent_init(void)
+>   */
+>  extern int init_r4k_clocksource(void);
+>
+> -static inline int init_mips_clocksource(void)
+> +static __always_inline int init_mips_clocksource(void)
+Similar to x86 and arm, I prefer to mark it as __init rather than
+__always_inline.
 
-There is zero context here, and from what I can tell these two acks
-without context are your first messages on a lore-indexed public mailing
-list.
+Huacai
 
-I have no idea what's going on here.
+>  {
+>  #ifdef CONFIG_CSRC_R4K
+>         return init_r4k_clocksource();
+> --
+> 2.34.1
+>
+>
 
