@@ -1,34 +1,34 @@
-Return-Path: <linux-efi+bounces-3857-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3859-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4705AE1CDF
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39036AE1CDE
 	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 15:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EA9C1C2186D
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 13:56:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CC203BF724
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 13:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06FE2BD030;
-	Fri, 20 Jun 2025 13:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370FE2BD591;
+	Fri, 20 Jun 2025 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OxSYJdL2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aP70DChs"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE9929C355;
-	Fri, 20 Jun 2025 13:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6940A29DB79;
+	Fri, 20 Jun 2025 13:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750427634; cv=none; b=by43QezNyehFcuWbUW1paQhgzoQJcFT1AXkUS9nY/MofTQlXSGEYWGB47uEaBnUgqRxdLTQLWguk6PbKwX+daQ//ivzSdiYPJ9ahPdfgV35jWz8WBRQn9NDY1LZL+Ns7oDYipJWduADqmpYS/KOZd0vchTnS2dhk/ZrAo3bqRg4=
+	t=1750427635; cv=none; b=ZNdacZa9cjF+8kkbZBt6ONbjCBarcJcPxqGWIrG/JxFBOnJ/gzGz7DiQLb1srPgc2iupDalZGM3LJB3Fz0J339rYrqFOossMfDc/cWDMF29msmNh+tJ/cs1XEtKSimqFnPwRyJ7Vkye4ZPIiY+ikaXSe4bFKCWEXmXbumPaXsyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750427634; c=relaxed/simple;
-	bh=I7i22QprD2S6ZvpY/RhEAEk5UwJ5gH0iWa60cJAUZjY=;
+	s=arc-20240116; t=1750427635; c=relaxed/simple;
+	bh=y/CedaaKlFdbrxkql8ztvuaZ9CW/pvTqK0EU0vlRN80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFgnL9lL22IqBakiorD1JqoqYkQLE1ydt+cCDEHbUZz+kLO2LfFPaZ7cuRle1FcYv+y1qPZWBBFLl3tEcFCU5gGURNVHUZArZ8hEicKcwAjZWGJ6tgwzfmLmEMXIckPO2iq8VOBgpZP+HMXIcXVswvE3evwpi3y6P3J9N/P4i+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OxSYJdL2; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=MHkGEFp9h5JKvqlDNP9pkrPDR2NogjDrJmElKXrUDtB78V8O7bIhwjuHek+7JNUJzyHwWJng2qOxph16MABnhsvQdXfq0AAC0auTFLAxQaHfFrtV29cnyXb5a8Odk9Z3rdzNeBYkv9JvSbHkWTqxIoQvBUqHQlrMz0720Uqz5zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aP70DChs; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,30 +36,30 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1750427633; x=1781963633;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=I7i22QprD2S6ZvpY/RhEAEk5UwJ5gH0iWa60cJAUZjY=;
-  b=OxSYJdL2jQh2+2NIPlris3TcpbzB0u7/UB7CCrsarHJZC2f0Tnek1TgV
-   bXH3fCo55q3/bhAxhOJ5bMW8uFXPqW8H409Ixhc7vnJ5eGor5VhrdcaY5
-   FW3knX5oL2tCgg4MTfL/TJlUpEGC/AQVLxSW/V79kEJJBn3nR4t4l4O+G
-   mGLwoFQ0jkAeJHltcIbxNnexKHucVKdIaHwl7u9fpOtjaLLS6kA6t8RFu
-   5KUshTU9b8k0WhwdYOgYw9yWpfIUC20HXuhOvHUBvLskQWnh3KHPOXwIv
-   rZHpJHA+qtoeCA3BLNjrByvx9F1dEDMDwqVISMvnaO156IqwKhCUI+uKC
-   w==;
-X-CSE-ConnectionGUID: Q/QHHfLzTUqPuSZTJohP8w==
-X-CSE-MsgGUID: 4xH/UVI8TBS/kLGiowFEgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="51919407"
+  bh=y/CedaaKlFdbrxkql8ztvuaZ9CW/pvTqK0EU0vlRN80=;
+  b=aP70DChseWzeO3JOair9unG9XIH4WFwupv+a3qNwYJv0ieuL8sQb2RgV
+   RLfmTxKf6GSH+VkIfaVDRnu6jJMLmkz3gH/k3l2npie4dZFl6nAre03ST
+   snnkQ9djI/BMRwgDal9zXcqTnDnC/FJvMoKX1Tk6B0UO7lcazPuFBJPO/
+   vbF2ryEESAirgdEUGmL2Zuo0I5Db2UUAhacdrwxWnv2rZyprGPqdkurnX
+   onKO4j6++TfqTFc+lkEVksFFLRUGY000B0uOZe4ziAakbggIlmrKP+SPW
+   fhKW9MFx1u49AO6ZPiKPiEmraM3kpIoE4tariJldmLV6fIfuQBG5tz3hb
+   Q==;
+X-CSE-ConnectionGUID: t1ruuPZLQtytOc0m6+DtyA==
+X-CSE-MsgGUID: XiikWXU3T3WZXZXW7lSlKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="51919436"
 X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
-   d="scan'208";a="51919407"
+   d="scan'208";a="51919436"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
   by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 06:53:52 -0700
-X-CSE-ConnectionGUID: IAg8+FfHRNy5reypztF2eg==
-X-CSE-MsgGUID: zpMboRTARBqsEL98AB0TsQ==
+X-CSE-ConnectionGUID: dVzB+ju+T0SgPREksYDMcg==
+X-CSE-MsgGUID: EXKdu1V+RAiqUbBS+1zHgg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
-   d="scan'208";a="155292156"
+   d="scan'208";a="155292158"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa003.jf.intel.com with ESMTP; 20 Jun 2025 06:53:37 -0700
+  by orviesa003.jf.intel.com with ESMTP; 20 Jun 2025 06:53:39 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 09CC974E; Fri, 20 Jun 2025 16:53:29 +0300 (EEST)
+	id 181AC7DA; Fri, 20 Jun 2025 16:53:29 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv6 12/16] x86/traps: Communicate a LASS violation in #GP message
-Date: Fri, 20 Jun 2025 16:53:20 +0300
-Message-ID: <20250620135325.3300848-13-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 13/16] x86/traps: Handle LASS thrown #SS
+Date: Fri, 20 Jun 2025 16:53:21 +0300
+Message-ID: <20250620135325.3300848-14-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
 References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
@@ -129,68 +129,68 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-Provide a more helpful message on #GP when a kernel side LASS violation
-is detected.
-
-A NULL pointer dereference is reported if a LASS violation occurs due to
-accessing the first page frame.
+LASS throws a #GP for any violations except for stack register accesses,
+in which case it throws a #SS instead. Handle this similarly to how other
+LASS violations are handled.
 
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kernel/traps.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ arch/x86/kernel/traps.c | 34 ++++++++++++++++++++++++++++------
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 333c45df80fc..0f558d3369a3 100644
+index 0f558d3369a3..bd8f7e72b238 100644
 --- a/arch/x86/kernel/traps.c
 +++ b/arch/x86/kernel/traps.c
-@@ -636,7 +636,16 @@ DEFINE_IDTENTRY(exc_bounds)
- enum kernel_gp_hint {
- 	GP_NO_HINT,
- 	GP_NON_CANONICAL,
--	GP_CANONICAL
-+	GP_CANONICAL,
-+	GP_LASS_VIOLATION,
-+	GP_NULL_POINTER,
-+};
+@@ -418,12 +418,6 @@ DEFINE_IDTENTRY_ERRORCODE(exc_segment_not_present)
+ 		      SIGBUS, 0, NULL);
+ }
+ 
+-DEFINE_IDTENTRY_ERRORCODE(exc_stack_segment)
+-{
+-	do_error_trap(regs, error_code, "stack segment", X86_TRAP_SS, SIGBUS,
+-		      0, NULL);
+-}
+-
+ DEFINE_IDTENTRY_ERRORCODE(exc_alignment_check)
+ {
+ 	char *str = "alignment check";
+@@ -866,6 +860,34 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
+ 	cond_local_irq_disable(regs);
+ }
+ 
++DEFINE_IDTENTRY_ERRORCODE(exc_stack_segment)
++{
++	if (cpu_feature_enabled(X86_FEATURE_LASS)) {
++		enum kernel_gp_hint hint = GP_NO_HINT;
++		unsigned long gp_addr;
 +
-+static const char *kernel_gp_hint_help[] = {
-+	[GP_NON_CANONICAL]	= "probably for non-canonical address",
-+	[GP_CANONICAL]		= "maybe for address",
-+	[GP_LASS_VIOLATION]	= "LASS prevented access to address",
-+	[GP_NULL_POINTER]	= "kernel NULL pointer dereference",
- };
- 
- /*
-@@ -672,6 +681,12 @@ static enum kernel_gp_hint get_kernel_gp_address(struct pt_regs *regs,
- 	if (*addr < ~__VIRTUAL_MASK &&
- 	    *addr + insn.opnd_bytes - 1 > __VIRTUAL_MASK)
- 		return GP_NON_CANONICAL;
-+	else if (*addr < ~__VIRTUAL_MASK &&
-+		 cpu_feature_enabled(X86_FEATURE_LASS)) {
-+		if (*addr < PAGE_SIZE)
-+			return GP_NULL_POINTER;
-+		return GP_LASS_VIOLATION;
++		if (user_mode(regs)) {
++			gp_user_force_sig_segv(regs, X86_TRAP_GP, error_code, GPFSTR);
++			return;
++		}
++
++		hint = get_kernel_gp_address(regs, &gp_addr);
++		if (hint != GP_NO_HINT) {
++			printk(GPFSTR ", %s 0x%lx", kernel_gp_hint_help[hint],
++			       gp_addr);
++		}
++
++		if (hint != GP_NON_CANONICAL)
++			gp_addr = 0;
++
++		die_addr(GPFSTR, regs, error_code, gp_addr);
++		return;
 +	}
- #endif
- 
- 	return GP_CANONICAL;
-@@ -833,11 +848,10 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
- 	else
- 		hint = get_kernel_gp_address(regs, &gp_addr);
- 
--	if (hint != GP_NO_HINT)
-+	if (hint != GP_NO_HINT) {
- 		snprintf(desc, sizeof(desc), GPFSTR ", %s 0x%lx",
--			 (hint == GP_NON_CANONICAL) ? "probably for non-canonical address"
--						    : "maybe for address",
--			 gp_addr);
-+			 kernel_gp_hint_help[hint], gp_addr);
-+	}
- 
- 	/*
- 	 * KASAN is interested only in the non-canonical case, clear it
++
++	do_error_trap(regs, error_code, "stack segment", X86_TRAP_SS, SIGBUS,
++		0, NULL);
++}
++
+ static bool do_int3(struct pt_regs *regs)
+ {
+ 	int res;
 -- 
 2.47.2
 
