@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-3864-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3865-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B69AE1EA7
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 17:31:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D746AE1EC6
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 17:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5BF416D16A
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 15:29:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E99D4A736D
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 15:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2673D2BFC76;
-	Fri, 20 Jun 2025 15:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA44A2D5434;
+	Fri, 20 Jun 2025 15:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eAiLmuLm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nqyiARFa"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6053E2882A4;
-	Fri, 20 Jun 2025 15:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F90E2980A7;
+	Fri, 20 Jun 2025 15:33:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750433120; cv=none; b=sby7izw4OPL0VR/6J9dTYjP/x+S+syTflzQ3IaWjxyeazmHEBYyqZzwOQUUGHMD9DO1w7YAzEW3nNqJYT4apWUwzde4HME9WJDe6LAgk7iMXGSApsetEFdRpHnO4w6Dv3DAG48P1IbVLL+W3q77+8aMCQ2K53yrVifzFkCDEkIw=
+	t=1750433641; cv=none; b=lsBI8ckK4TtML5aUGXoV/HkM0KUDGKJkISgAWaWh2o1BKBdcASpnGJH7XG6B41YqrCT/H8DeZjJjgIo1vSEriK2L4MvajtiO1au/QS7JxUwardu4Ni/YPmQ/XoUkxyECE1swMAG9ZFGdtt0Hs0LPIpKXVaHT74sow/8u0oklOvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750433120; c=relaxed/simple;
-	bh=hSYkOFgMMBQX4Ksmmx0g6I81gxGhn8HGOME4Sv7lvPU=;
+	s=arc-20240116; t=1750433641; c=relaxed/simple;
+	bh=Bo5R8XrrGgmfF8KfOIvrit9oecdow83nPJ5PYV6L3ik=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ayahg58V3+hQHAtgj+85pesw7Y5Jlk97iq6CZKbPdXt99fqTDKgANWj7ocIuDTySovcvW5YKRWUZFZiRao3Ny4xNKywsNPrAFRZrZ4Hmw/QoFoAdOgnwNxJ8bwLmqVUyiLK9d7J6tL54sVHXrCQ1AzMXmWdwMQuZpR9qJPNMn7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eAiLmuLm; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:Content-Type; b=pWqh2gg1omp22nuXgKV2SPCJ5oJ7tT7dZQOCeZzsZ+ZETni81VbLwxS4++vToC/WW1ZP04E5d/XlZNIjJCXh8Rd8WEjfWb9gjNymupQYnB5KTb+zN4+rblgbfZZC47fcvdCYToUIJEfFzkCnthRZ0T69JAqqzY05yqsd7YiAPfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nqyiARFa; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750433118; x=1781969118;
+  t=1750433640; x=1781969640;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=hSYkOFgMMBQX4Ksmmx0g6I81gxGhn8HGOME4Sv7lvPU=;
-  b=eAiLmuLmsL+Tft2fS0yvMd6CooiJ/06WsvvWwzEV5Sau/1xMs0bB5IM8
-   SDWHPXgx/79CLPwPe7IsIA01fFVwqathpapp5W0jExLC79OqlH67W06iT
-   TOy4DW4WcYVclYewEVwWHOwswkwev43IeP/88fqSm+XadqdfbUE78Tlse
-   6ud1B8DQYkhE4GzMfj2t34giT32BHPOwgt7B1P/Y1QP0SpNZ/OTl/ff05
-   6+/1/k7DmobqQkJsEzGzXAdr9+HGCyH/EAwxoI9nebZdlBnCIo6flu1X7
-   ITdcNCv5Hnrg330Xfk5WMl1U2Sl8jhCOIahBOrDN8qTQCXHnsb3CXDDVW
-   Q==;
-X-CSE-ConnectionGUID: NwC6LJUARCKLvEIRquRR6A==
-X-CSE-MsgGUID: sJvPfDQGS0CVQEGFwno+Fg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="64055181"
+  bh=Bo5R8XrrGgmfF8KfOIvrit9oecdow83nPJ5PYV6L3ik=;
+  b=nqyiARFaLyNBnoxEe1eIpwae2LK7tnEIT3cRsEPEbmEXZ2w/P+GIIfdr
+   piscVXQtEcaCAg1J9OJ+l47yoH7oXyo6zQwjk9sxC/BWeElT58pZMdNgK
+   sOZub8SGYpta7zI1mT/3iLLpgO+hoNG90cSJUty/uXRrV+y5NHsDT7VJs
+   3VyGnHn0ysVQkaM8rlE6IvrJrvDsn5yGYIkZJxWlIJf8xLHU/zDEmZoz+
+   ZVUXmQbiIBmmv0rYb7ftaLvS1uQ/u1gOlJU8R+cwrV8JVoMOaCKIeuKOg
+   Sbwe6gZ4pcUw0rtqOeSFK593OppWVTZ8EmkiCrc7t0jK+rTrIWQ7N46Fa
+   w==;
+X-CSE-ConnectionGUID: Pqd/usR8QhCPTAuEHOq0Lg==
+X-CSE-MsgGUID: wA1TWYFUQjCZa06/0azYBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="55335346"
 X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
-   d="scan'208";a="64055181"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 08:25:16 -0700
-X-CSE-ConnectionGUID: nCojvNkKTvOdudpFMiiquw==
-X-CSE-MsgGUID: ih/+UFHfRFSaKnL/SirKHQ==
+   d="scan'208";a="55335346"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 08:33:59 -0700
+X-CSE-ConnectionGUID: VxEFVi4JQL6me5azSpTp3Q==
+X-CSE-MsgGUID: cRL62tvsRneZWDk6CFi8xg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
-   d="scan'208";a="155232607"
+   d="scan'208";a="151155458"
 Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.108.136]) ([10.125.108.136])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 08:25:14 -0700
-Message-ID: <acce1e90-5742-4d44-8d7f-6aade7e490a1@intel.com>
-Date: Fri, 20 Jun 2025 08:25:13 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 08:33:58 -0700
+Message-ID: <15335559-bbb2-4da1-bbb9-878edf05437c@intel.com>
+Date: Fri, 20 Jun 2025 08:33:57 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -67,7 +67,8 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 01/16] x86/cpu: Enumerate the LASS feature bits
+Subject: Re: [PATCHv6 03/16] x86/alternatives: Disable LASS when patching
+ kernel alternatives
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -100,10 +101,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>,
  Geert Uytterhoeven <geert+renesas@glider.be>,
  Namhyung Kim <namhyung@kernel.org>,
  Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org,
- Yian Chen <yian.chen@intel.com>
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org
 References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
- <20250620135325.3300848-2-kirill.shutemov@linux.intel.com>
+ <20250620135325.3300848-4-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -149,28 +149,36 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250620135325.3300848-2-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20250620135325.3300848-4-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/20/25 06:53, Kirill A. Shutemov wrote:
-> +static __always_inline void lass_clac(void)
-> +{
-> +	alternative("", "clac", X86_FEATURE_LASS);
-> +}
-> +
-> +static __always_inline void lass_stac(void)
-> +{
-> +	alternative("", "stac", X86_FEATURE_LASS);
-> +}
+> +/*
+> + * poking_init() initializes the text poking address from the lower half of the
+> + * address space. Relax LASS enforcement when accessing the poking address.
+> + */
 
-There are differing opinions on how to introduce code. Do you do it up
-front and then use it later in the series? Or do you only introduce
-infrastructure when you use it?
+This does not read quite right. I think there's some unnecessary
+confusiuon about initializing the address versus the contents. But
+either way, how about:
 
-Doing what you have here (introduce first, use later) is fine. But it
-does incur an increased burden of explaining things.
+/*
+ * Text poking creates and uses a mapping in the lower half of the
+ * address space. Relax LASS enforcement when accessing the poking
+ * address.
+ */
 
-These two functions in particular mean that you have to at least allude
-to how these get used later in the series.
+>  static void text_poke_memset(void *dst, const void *src, size_t len)
+>  {
+>  	int c = *(const int *)src;
+>  
+> -	memset(dst, c, len);
+> +	lass_stac();
+> +	__inline_memset(dst, c, len);
+> +	lass_clac();
+>  }
+
+Yeah, this patch small enough that lass_{stac,clac}() are definitely
+misplaced in this series. Just move them into this patch.
 
