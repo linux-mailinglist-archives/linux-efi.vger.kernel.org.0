@@ -1,66 +1,66 @@
-Return-Path: <linux-efi+bounces-3878-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3879-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE2FAE212D
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 19:42:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F1FAE217F
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 19:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E750B7A885A
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 17:41:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 973F01687C0
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 17:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE60D2E3B14;
-	Fri, 20 Jun 2025 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228D52253FF;
+	Fri, 20 Jun 2025 17:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lAyEZ8Je"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mJAxo6ok"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8251EB5F8;
-	Fri, 20 Jun 2025 17:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA4B1FAC34;
+	Fri, 20 Jun 2025 17:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750441335; cv=none; b=YVfKsT9Y0ZHCdlD3udpZsw6agoMBG+vLA91PW336d7owpXK4U7O0Z9ryZtp3zecMZYEOlcHcD4VutNub4UoapexBAm9jG/V1Z7Wh72tHk0oK7f5JPqD5pCtFY4ILkXKmMsTI82cBO0NwpThlitHlatwMHzMlQF/YfBMTekN43TM=
+	t=1750441840; cv=none; b=m06KDhQrPS16FDOv4YftBCwt1LDiTa7/fDMsdayz0K9oaQD+c8oBbxZkZ9RZ8MiW5bEWPaWi3eKRW+nJR3CKFhDmec0xUCrcEbbauqoL5KO9zL8wCFmD3tJa9IdmWw3cIuCxKKarxgaF9m0prlyu1MYAVRYkkwIMRc3PFfNmBus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750441335; c=relaxed/simple;
-	bh=+d8rWtAZJO4o7jYg3VVESTCyMRK/oKsbIChLqwzbf0k=;
+	s=arc-20240116; t=1750441840; c=relaxed/simple;
+	bh=GKe85BRj+aBlgJq8ZSqdTGlkuD86znOrDCE8X6u/nxw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i205fpFMgF3/EBZ2p4ZujxJ/rP880dgzp9Kg0lofYdWGWHPn7hmSYJhbXd3ynBmXboP+YgpKPetjJZq0Sa8k3cscRAkRlxBxzlWHUMgCPrn6+uIBTu6uRihKXptzRKfODdXBpvV6UQM1pvntUHeDuyPLJmR8RZxrXhGhiUx7uxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lAyEZ8Je; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=RtTdN7C2etU+5S3D4FnRI13UFSA5s+waCqWMqX71DSNA8LZMpLOkiKHxXVoyLekXbtxlvu4OXIygM97RFWCttyb9WD8q0Xkayo/1jKPq6+dpWQN7nWeDAL3OJQdoYRp4QgASq8FKlTnoS/lWjaXPF3LCj7VbyfTlBN31/8nDCr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mJAxo6ok; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750441334; x=1781977334;
+  t=1750441838; x=1781977838;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=+d8rWtAZJO4o7jYg3VVESTCyMRK/oKsbIChLqwzbf0k=;
-  b=lAyEZ8JeIWaxE/7CIH0xhLVGxj87APxxhZHoTc82l5QlIHs+EZ5A9qKf
-   Jn5UezPw5xkScEy40xjJaAL0WITqXnplEdna+Y9B4IRFQYCpN0XAGGuzq
-   uqoqWzHMHPHwDGMhD25/5ElF4dtWWLwuyaJ7Wn2TzWc3TZzJPyTSn8NUW
-   gJsglbJpQ9mx+eElPgXBY++mXKsR6azW+VpF4CCn6Qw6FYl52JX+ZuqOT
-   MRl8/dN+Klbn0CPn54vepZYjTKBuN2a6mWJMVQcaNxAYE8gomyP8fPk5p
-   KZva+ZvwTDCpODAAoC30c0yvneXHIWaqZFf/2n3Kdl1GsnSOh/0LQQ+kS
-   g==;
-X-CSE-ConnectionGUID: hRsgTmLiR1y9jNeBY9lgsw==
-X-CSE-MsgGUID: cUbm9elmSqyZy5xjS2gYzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="63396414"
+  bh=GKe85BRj+aBlgJq8ZSqdTGlkuD86znOrDCE8X6u/nxw=;
+  b=mJAxo6ok73j2R3Xgv5B5eSuOSsYLy8LhzoHaLmAjzSoEK09cFEPcjIDh
+   2cErTsaAz2QLGga9nJPoOe/oeon8U+E1Hyyg6YFO9Uzmc2kmwuxtIhElP
+   bIj5Vt9GXj0SHoDCSpff0V6KMxi3z35MR1ERNBxBi11yHokR6uHPA3pp4
+   BaTSe65lH/AGhQyA/C6ExYUbCo2rCb2iOUT6BR2UYl3UAZcpUeZWb2nl/
+   8A/ek30NC0o6cGLi9RNdwyOZp3BupidJPzc0jSYSelYj1Baqs6TRuC8Si
+   QW1B59xn7BsKcn9tLT3VpD225BuH7oOEKOMGOgyp5sKbMeoXvJwh6cn/M
+   Q==;
+X-CSE-ConnectionGUID: oZ68axr0TMWzWhWDGIjKpQ==
+X-CSE-MsgGUID: CGc0quVtSCuPUH/LZ/O/IA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="63762790"
 X-IronPort-AV: E=Sophos;i="6.16,252,1744095600"; 
-   d="scan'208";a="63396414"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 10:42:13 -0700
-X-CSE-ConnectionGUID: Jz2GhDOiQICSKlR67fCgag==
-X-CSE-MsgGUID: K38Nbuk0TT+ExDsKqRqDHQ==
+   d="scan'208";a="63762790"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 10:50:37 -0700
+X-CSE-ConnectionGUID: XGr9QXHgQXqGBNEM48eESQ==
+X-CSE-MsgGUID: RFygdJJKTECI+x0NaxvJzg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,252,1744095600"; 
-   d="scan'208";a="151514115"
+   d="scan'208";a="151187360"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 20 Jun 2025 10:42:02 -0700
+  by orviesa007.jf.intel.com with ESMTP; 20 Jun 2025 10:50:23 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 4B1EE109; Fri, 20 Jun 2025 20:42:00 +0300 (EEST)
-Date: Fri, 20 Jun 2025 20:42:00 +0300
+	id 17AAC109; Fri, 20 Jun 2025 20:50:21 +0300 (EEST)
+Date: Fri, 20 Jun 2025 20:50:21 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Dave Hansen <dave.hansen@intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>, 
@@ -87,12 +87,12 @@ Cc: Andy Lutomirski <luto@kernel.org>,
 	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
 	linux-mm@kvack.org
-Subject: Re: [PATCHv6 04/16] x86/efi: Move runtime service initialization to
- arch/x86
-Message-ID: <aqkhzspx6bh7u6gkxkgp7ih3onk27rot7ojwvwvsk6c7zv4ror@ilbd7wt56jxi>
+Subject: Re: [PATCHv6 06/16] efi: Disable LASS around
+ set_virtual_address_map() EFI call
+Message-ID: <cwbzde3qvcvwfz2bgatxfkb2v6wbdvlvoulzvtlqe5mhxr5577@ghpqtyaupkeq>
 References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
- <20250620135325.3300848-5-kirill.shutemov@linux.intel.com>
- <ba766193-e344-4def-84fd-f366872a2ee0@intel.com>
+ <20250620135325.3300848-7-kirill.shutemov@linux.intel.com>
+ <5bb6275b-5046-4bda-8c92-434e59cac08f@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -101,25 +101,57 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ba766193-e344-4def-84fd-f366872a2ee0@intel.com>
+In-Reply-To: <5bb6275b-5046-4bda-8c92-434e59cac08f@intel.com>
 
-On Fri, Jun 20, 2025 at 08:35:14AM -0700, Dave Hansen wrote:
+On Fri, Jun 20, 2025 at 08:55:29AM -0700, Dave Hansen wrote:
 > On 6/20/25 06:53, Kirill A. Shutemov wrote:
-> > From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-> > 
-> > The EFI call in start_kernel() is guarded by #ifdef CONFIG_X86. Move
-> > the thing to the arch_cpu_finalize_init() path on x86 and get rid of
-> > the #ifdef in start_kernel().
+> > diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> > index 463b784499a8..94c335229697 100644
+> > --- a/arch/x86/platform/efi/efi.c
+> > +++ b/arch/x86/platform/efi/efi.c
+> > @@ -825,11 +825,24 @@ static void __init __efi_enter_virtual_mode(void)
+> >  
+> >  	efi_sync_low_kernel_mappings();
+> >  
+> > +	/*
+> > +	 * set_virtual_address_map is the only service located at lower
+> > +	 * addresses, so we have to temporarily disable LASS around it.
+> > +	 * Note that clearing EFLAGS.AC is not enough for this, the whole
+> > +	 * LASS needs to be disabled.
+> > +	 */
+> > +	if (cpu_feature_enabled(X86_FEATURE_LASS))
+> > +		cr4_clear_bits(X86_CR4_LASS);
 > 
-> What does this have to do with LASS?
+> Could we do it like this instead?
+> 
+> 	unsigned long lass = cr4_read_shadow() & X86_FEATURE_LASS;
+> 	...
+> 	cr4_clear_bits(lass);
+> 
+> >  	status = efi_set_virtual_address_map(efi.memmap.desc_size * count,
+> >  					     efi.memmap.desc_size,
+> >  					     efi.memmap.desc_version,
+> >  					     (efi_memory_desc_t *)pa,
+> >  					     efi_systab_phys);
+> > +
+> > +	if (cpu_feature_enabled(X86_FEATURE_LASS))
+> > +		cr4_set_bits(X86_CR4_LASS);
+> 
+> and:
+> 
+> 	cr4_set_bits(lass);
+> 
+> >  	if (status != EFI_SUCCESS) {
+> >  		pr_err("Unable to switch EFI into virtual mode (status=%lx)!\n",
+> >  		       status);
+> 
+> That way, neither the presence of X86_FEATURE_LASS nor the ordering of
+> setting up X86_CR4_LASS matters.
+> 
+> Let's say the CPU supports X86_FEATURE_LASS and this code gets called
+> before the kernel is ready for LASS. It would break as written above.
 
-It is required to move CR pinning below it and allow to disable CR4.LASS
-temporarily during EFI initialization.
-
-> Is there any reason not to just pull this in to tip now as a cleanup? It
-> looks good regardless of what it does to LASS.
-
-I am totally fine with applying it right away.
+Okay, will rework this.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
