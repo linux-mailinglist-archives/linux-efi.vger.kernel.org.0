@@ -1,122 +1,166 @@
-Return-Path: <linux-efi+bounces-3839-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3840-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088EDAE1369
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 07:52:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0C7AE15BF
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 10:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99C9E1885ED9
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 05:52:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 921547A934E
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 08:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5268121A45D;
-	Fri, 20 Jun 2025 05:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B2D202F6D;
+	Fri, 20 Jun 2025 08:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qG+bWHOa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T8GyoOUe"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9B31AE877
-	for <linux-efi@vger.kernel.org>; Fri, 20 Jun 2025 05:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03810235058
+	for <linux-efi@vger.kernel.org>; Fri, 20 Jun 2025 08:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750398728; cv=none; b=V2U4p7+XfQDJTvF46MgOCyts+BBWX9ao4NAxxcq1Aje5WHOObqGvDFsP/r9GL9FNndZ/GujbPCxjonnxEU2vlHzqDA4EifaJpHEJFVFN3lS1wqQAs4yG/K5hNhwL2n/av/FEtE39cEDlpe6/yeOOikitw9Q7fvtGiL6kjDpvI+I=
+	t=1750407596; cv=none; b=QZHh4WPCNput5dGetQ5JNxMC9U/N42Py2BKXzy+b9oLVFdA2l7uLhsjoTVxQj4G4R8lR2RviCotSkFt2WifYDi9RCEV6ccqKGgtnAxAywe0OTwDZKcwo7VnS0p0c2V6zP9nB0QHj7M808dEDhFu2FXuG9lvVFsCqttpfHwq1MAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750398728; c=relaxed/simple;
-	bh=FXlVtnMrcHlnFCbsDpFUh2+ZhpAWhbKP7UC/rwps2Mc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h7kUN98eafh0HQeHifPpgW02shVbzie87FEScLr57rF2MB16wwtqoIsyUTm6c+zN6Ba/JBGgqnlWk6uxYh74l6cjBh6PlvaAiNY4J/0SqqsoPxfPuiNMZi/iGabhvpzcnD82zINFYSpp3YMMvjSPTvvcW2Apddx4Uj3panRlWg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qG+bWHOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E5DC4CEED
-	for <linux-efi@vger.kernel.org>; Fri, 20 Jun 2025 05:52:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750398727;
-	bh=FXlVtnMrcHlnFCbsDpFUh2+ZhpAWhbKP7UC/rwps2Mc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qG+bWHOaJ8a92zc6hrDN/Si8kcOSmWInhO1Yw2gXJag1dYQBYDGVX4peBIuKQjy3v
-	 tCSdAAxmn8S0eHLBK8CyoR5o2WCjLNsGWKp29k2A9Bge7f9S19jtkUZy14Fm0lbLUs
-	 R+Aurr+Xh6r+Exfqzz/hLzp9oYujlvLMaLNLdbfUA9S+IE78rSEwoqwW9iC7R1wnOm
-	 dEyu3twFiTjjTeZ5GR12qUs9mJy24tvnHS6SGcMJPMhoZ/bk59RSmOnLpL7kaTKkbd
-	 nwnz3qIhTLFZNhPklS4mXxIrgDcBg7Cx5oH+Bc0Vic9vgbj+AtQkX0obucuYeVcbzH
-	 FQJcVL8wvGQQA==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-553be4d2fbfso1403699e87.0
-        for <linux-efi@vger.kernel.org>; Thu, 19 Jun 2025 22:52:07 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyEEQnZWjJm9C+IpLi+NaQPjOrEfNfyepmeYaYLqNCOE8dbjkgB
-	scwB2mis88Gg5Hks1GSKE3/EQnMLHHVHqFCG5TP3YbqUdPjnXXC2vyrn6hR6z72XG5MfsiuvdEv
-	1PwE+MdjKfexroVB4mwSlMFuHn+YOGd4=
-X-Google-Smtp-Source: AGHT+IEfY8Yw4nC1uB/IWjfg/wKmXYIY9Q8rdIKCoGDSL3IaS0dK19KQcJkwfEfKalgJO3/PoPBve+nyIrTfUxTTlAo=
-X-Received: by 2002:a05:6512:3a82:b0:553:adf7:e740 with SMTP id
- 2adb3069b0e04-553e3befa3bmr431374e87.28.1750398726088; Thu, 19 Jun 2025
- 22:52:06 -0700 (PDT)
+	s=arc-20240116; t=1750407596; c=relaxed/simple;
+	bh=EZJgeG7o7S5LSoNijejXr1VzyhgQ9cnzYr7vFQVsCQM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=INTMErb5mYt8LI+0ryPaYCEplAtAIZeIB/oYZOnwM0QIFB0VC9H4nXNzbdv6/mASIsg7W5eZC60Meo9U3aecLiuZ5/l+cu40B1LqfvLQ158wCmfdYH4AfCN1BG81QjhF0IkqkxRXJ1eFR4fKaGqT3M95KrGcfrqI7M+FyPimFl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T8GyoOUe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750407593;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I42ahxY637ah5hv17ijVkw5D/XryJ8P8/wdbbtL7i+U=;
+	b=T8GyoOUeGnLBSycwz2L6W5+X4FSNks2h/BG1zdgZHEjB6iRbY8w2Qv9EN/tIwGQ3Y0ReG+
+	OvRxZ59SFYd/iVmGu+PtXP0MuurM60N3airuuhGbpR8sCTJDbEs3yimVdF99Zps25JcCw/
+	YfXXOMiqFvCDYCLaeBuX7OwtnKZIkDo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-egN-QUIOOrSp75InDRMCMA-1; Fri, 20 Jun 2025 04:19:52 -0400
+X-MC-Unique: egN-QUIOOrSp75InDRMCMA-1
+X-Mimecast-MFC-AGG-ID: egN-QUIOOrSp75InDRMCMA_1750407591
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4f3796779so788093f8f.1
+        for <linux-efi@vger.kernel.org>; Fri, 20 Jun 2025 01:19:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750407591; x=1751012391;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I42ahxY637ah5hv17ijVkw5D/XryJ8P8/wdbbtL7i+U=;
+        b=UC5g0oKBfpyl9jPO0r4IbkepK+KFek2ocaLn05RuThou8y7bi55GCz05kA79TrOK7Y
+         UUcaYkBMK68zq3XNM0A7v9I804fYP823vvByc/TQX3riOExkVyvfdwCTKn9Abk+v0NVQ
+         vAsDTkSkh/z0CSokeJv/bkiQSJJ05EIEwYQyKDeGinVrmb3P2Jh0xdGsXCi5R4xDiGoh
+         VvL+Ai4Y7iiK7sQRAZVfuJoeEJCNoNtqY/u4VgGeEtMrgZkgCYsiQ+OqusIzUzr25oRx
+         cd/BFLWhIKcZE5rXOaAvRwpJ8Dl6xa6FEMCoMh8U2J9ykv/wxlLZsG5kTZDYdJGmTKDr
+         OwEQ==
+X-Gm-Message-State: AOJu0YzTuDxx5fEdMMihmYRepvl+jE+awfqd03ckJRcDQ40y7t9xU1J/
+	2RxUrHqNvCIWwjVGyeNiFWg5MbzSYoL0fUAMplZCcijaFgLGENWjOUDJm44esLJZGPcd3NZeo4D
+	YbtdEKZq9AjgBywgSHjH8pNWqsPpc58KkR+oyZl4r6tCUc2ioaKyZbuCsclr1ng==
+X-Gm-Gg: ASbGnctjyVwwJyAPhwTo+47/HEIBMmK77+SNYKjqL6uVpC7HNLTnAl8CqXKWMBI1wxH
+	h7nqa0s6zNHrApPus/EQhP1n9j+wpKRI2vo5Te30+wi6VkARb9LPSs1W4dynH/vNoqJqnaKyL37
+	kboZBPYtwO9OA4POsVi5tobWPf2sWTfghjvxQQq7hLHhDn7TKzC//Yr/G4qjGYiLTiTqDZstw7H
+	EZJmhOgWwTS84fmViWPeV5qrmnHkWtGkG8A2yEU5z2eeEKwB6ugOVv7Z5+SO6dpmTLr9wPMO42S
+	0eLaCO4o+1teiFlitPE=
+X-Received: by 2002:a05:6000:4284:b0:3a5:783f:5289 with SMTP id ffacd0b85a97d-3a6d1310426mr1399039f8f.49.1750407591008;
+        Fri, 20 Jun 2025 01:19:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHjbyKfwYax+z1je2KpEdB0he3Tm2a0YUIzDj7QxBg0hghd6uGZaDXXPhvxDh2eI7i4eZRSMA==
+X-Received: by 2002:a05:6000:4284:b0:3a5:783f:5289 with SMTP id ffacd0b85a97d-3a6d1310426mr1399019f8f.49.1750407590629;
+        Fri, 20 Jun 2025 01:19:50 -0700 (PDT)
+Received: from fedora ([2a00:11b1:10e1:28a7:c525:9906:d20b:f587])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d117c663sm1408561f8f.64.2025.06.20.01.19.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 01:19:50 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org, Peter Jones <pjones@redhat.com>, Gerd
+ Hoffmann <kraxel@redhat.com>, Heinrich Schuchardt
+ <heinrich.schuchardt@gmx.de>
+Subject: Re: [PATCH] efi: Fix .data section size calculations when .sbat is
+ present
+In-Reply-To: <CAMj1kXFq+oVwuHhkCxYG5mhpeS1fStRURSg5i6+wLo-rxi=Phg@mail.gmail.com>
+References: <20250618122008.264294-1-vkuznets@redhat.com>
+ <CAMj1kXEB7TSF2hUFqwxzdxca6YuCTbQ9fZv1KBf917=FVCvTgA@mail.gmail.com>
+ <CAMj1kXFq+oVwuHhkCxYG5mhpeS1fStRURSg5i6+wLo-rxi=Phg@mail.gmail.com>
+Date: Fri, 20 Jun 2025 10:19:48 +0200
+Message-ID: <874iwaq0yj.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250618122008.264294-1-vkuznets@redhat.com> <CAMj1kXEB7TSF2hUFqwxzdxca6YuCTbQ9fZv1KBf917=FVCvTgA@mail.gmail.com>
-In-Reply-To: <CAMj1kXEB7TSF2hUFqwxzdxca6YuCTbQ9fZv1KBf917=FVCvTgA@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 20 Jun 2025 07:51:54 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFq+oVwuHhkCxYG5mhpeS1fStRURSg5i6+wLo-rxi=Phg@mail.gmail.com>
-X-Gm-Features: AX0GCFuafpT0C6YR9niipWf_fiT-osrs2vF5fF_7JVI8OXEcYblGc8pVbUqRszU
-Message-ID: <CAMj1kXFq+oVwuHhkCxYG5mhpeS1fStRURSg5i6+wLo-rxi=Phg@mail.gmail.com>
-Subject: Re: [PATCH] efi: Fix .data section size calculations when .sbat is present
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: linux-efi@vger.kernel.org, Peter Jones <pjones@redhat.com>, 
-	Gerd Hoffmann <kraxel@redhat.com>, Heinrich Schuchardt <heinrich.schuchardt@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-On Thu, 19 Jun 2025 at 17:29, Ard Biesheuvel <ardb@kernel.org> wrote:
+Ard Biesheuvel <ardb@kernel.org> writes:
+
+> On Thu, 19 Jun 2025 at 17:29, Ard Biesheuvel <ardb@kernel.org> wrote:
+>>
+>> On Wed, 18 Jun 2025 at 14:20, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
+>> >
+>> > Commit 0f9a1739dd0e ("efi: zboot specific mechanism for embedding SBAT
+>> > section") neglected to adjust the sizes of the .data section when
+>> > CONFIG_EFI_SBAT_FILE is set. As the result, the produced PE binary is
+>> > incorrect and some tools complain about it. E.g. 'sbsign' reports:
+>> >
+>> >  # sbsign --key my.key --cert my.crt arch/arm64/boot/vmlinuz.efi
+>> >  warning: file-aligned section .data extends beyond end of file
+>> >  warning: checksum areas are greater than image size. Invalid section table?
+>> >
+>> > Note, '__data_size' was also used in the PE optional header. The field is
+>> > supposed to reflect "The size of the initialized data section, or the sum
+>> > of all such sections if there are multiple data sections.". While OVMF
+>> > based firmware doesn't seem to care much about what's there, it sounds like
+>> > including .sbat in the calculation is more correct.
+>> >
+>> > Fixes: 0f9a1739dd0e ("efi: zboot specific mechanism for embedding SBAT section")
+>> > Reported-by: Heinrich Schuchardt <heinrich.schuchardt@gmx.de>
+>> > Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+>> > ---
+>> >  drivers/firmware/efi/libstub/zboot-header.S | 2 +-
+>> >  drivers/firmware/efi/libstub/zboot.lds      | 6 ++++--
+>> >  2 files changed, 5 insertions(+), 3 deletions(-)
+>> >
+>>
+>> Thanks for the fix.
+>>
+>> > diff --git a/drivers/firmware/efi/libstub/zboot-header.S b/drivers/firmware/efi/libstub/zboot-header.S
+>> > index b6431edd0fc9..65df5f52e138 100644
+>> > --- a/drivers/firmware/efi/libstub/zboot-header.S
+>> > +++ b/drivers/firmware/efi/libstub/zboot-header.S
+>> > @@ -41,7 +41,7 @@ __efistub_efi_zboot_header:
+>> >         .short          .Lpe_opt_magic
+>> >         .byte           0, 0
+>> >         .long           _etext - .Lefi_header_end
+>> > -       .long           __data_size
+>> > +       .long           __all_data_size
+>>
+>> Frankly, I'm not sure if this is even worth the hassle.
+>>
+>> There is also a 'size of uninitialized data' field, but given that the
+>> .data section has both initialized data and uninitialized data, and
+>> the fact that no loaders appear to care about these fields, let's just
+>> not bother.
+>>
 >
-> On Wed, 18 Jun 2025 at 14:20, Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
-> >
-> > Commit 0f9a1739dd0e ("efi: zboot specific mechanism for embedding SBAT
-> > section") neglected to adjust the sizes of the .data section when
-> > CONFIG_EFI_SBAT_FILE is set. As the result, the produced PE binary is
-> > incorrect and some tools complain about it. E.g. 'sbsign' reports:
-> >
-> >  # sbsign --key my.key --cert my.crt arch/arm64/boot/vmlinuz.efi
-> >  warning: file-aligned section .data extends beyond end of file
-> >  warning: checksum areas are greater than image size. Invalid section table?
-> >
-> > Note, '__data_size' was also used in the PE optional header. The field is
-> > supposed to reflect "The size of the initialized data section, or the sum
-> > of all such sections if there are multiple data sections.". While OVMF
-> > based firmware doesn't seem to care much about what's there, it sounds like
-> > including .sbat in the calculation is more correct.
-> >
-> > Fixes: 0f9a1739dd0e ("efi: zboot specific mechanism for embedding SBAT section")
-> > Reported-by: Heinrich Schuchardt <heinrich.schuchardt@gmx.de>
-> > Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-> > ---
-> >  drivers/firmware/efi/libstub/zboot-header.S | 2 +-
-> >  drivers/firmware/efi/libstub/zboot.lds      | 6 ++++--
-> >  2 files changed, 5 insertions(+), 3 deletions(-)
-> >
->
-> Thanks for the fix.
->
-> > diff --git a/drivers/firmware/efi/libstub/zboot-header.S b/drivers/firmware/efi/libstub/zboot-header.S
-> > index b6431edd0fc9..65df5f52e138 100644
-> > --- a/drivers/firmware/efi/libstub/zboot-header.S
-> > +++ b/drivers/firmware/efi/libstub/zboot-header.S
-> > @@ -41,7 +41,7 @@ __efistub_efi_zboot_header:
-> >         .short          .Lpe_opt_magic
-> >         .byte           0, 0
-> >         .long           _etext - .Lefi_header_end
-> > -       .long           __data_size
-> > +       .long           __all_data_size
->
-> Frankly, I'm not sure if this is even worth the hassle.
->
-> There is also a 'size of uninitialized data' field, but given that the
-> .data section has both initialized data and uninitialized data, and
-> the fact that no loaders appear to care about these fields, let's just
-> not bother.
+> ... or add .sbat to SizeOfCode instead. (the preceding field)
 >
 
-... or add .sbat to SizeOfCode instead. (the preceding field)
+I was wondering how to make it consistent with yet-unmerged x86
+patch. In v3:
+https://lore.kernel.org/linux-efi/20250603091951.57775-1-vkuznets@redhat.com/
+.sbat was accounted as SizeOfCode but the section is
+"IMAGE_SCN_CNT_INITIALIZED_DATA", not "IMAGE_SCN_CNT_CODE" so I sent v4
+yesterday:
+https://lore.kernel.org/linux-efi/20250619151759.355893-1-vkuznets@redhat.com/
+which made .sbat accounted in SizeOfInitializedData.
+
+-- 
+Vitaly
+
 
