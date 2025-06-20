@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-3877-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3878-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1461BAE2104
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 19:34:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE2FAE212D
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 19:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ACC34A735F
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 17:33:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E750B7A885A
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 17:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8032E6135;
-	Fri, 20 Jun 2025 17:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE60D2E3B14;
+	Fri, 20 Jun 2025 17:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IHtXkU6y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lAyEZ8Je"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070432D3A6E;
-	Fri, 20 Jun 2025 17:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8251EB5F8;
+	Fri, 20 Jun 2025 17:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750440830; cv=none; b=eZHZePKkz9OLdZkEZZR2qELQAKjoqb7NB55TomJT3845O05u1umtsxo9hZgfT5lvLEGg2yjNAfpbEect19YCmut2hoBA69BRF3GklekfGFWRhoue57TuVKnU6ERdtqE0qmaqN0utZgSzpfI2zPM9MpAUBeupfKBmyi1Wps2QkyA=
+	t=1750441335; cv=none; b=YVfKsT9Y0ZHCdlD3udpZsw6agoMBG+vLA91PW336d7owpXK4U7O0Z9ryZtp3zecMZYEOlcHcD4VutNub4UoapexBAm9jG/V1Z7Wh72tHk0oK7f5JPqD5pCtFY4ILkXKmMsTI82cBO0NwpThlitHlatwMHzMlQF/YfBMTekN43TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750440830; c=relaxed/simple;
-	bh=C0KIP4y2EaLB9MdRBxwuIaS4kc8jFZZqZaGNo2xtJ/k=;
+	s=arc-20240116; t=1750441335; c=relaxed/simple;
+	bh=+d8rWtAZJO4o7jYg3VVESTCyMRK/oKsbIChLqwzbf0k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QG4zEPzURAP/h+vFtyjDN3LBqWKRaQ8V5QndQiWFvNYqlP/s65I873oT+dwlSLuoFit9GoKq8kTpj3bWOj6sKejYyXMKas5SRjApdCbYhV2fqrfslzaoRZbx+whV71IRTzp15BnDE6PykzPmhzPbW/AXsx1WxuuwNi5B3V1Szgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IHtXkU6y; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=i205fpFMgF3/EBZ2p4ZujxJ/rP880dgzp9Kg0lofYdWGWHPn7hmSYJhbXd3ynBmXboP+YgpKPetjJZq0Sa8k3cscRAkRlxBxzlWHUMgCPrn6+uIBTu6uRihKXptzRKfODdXBpvV6UQM1pvntUHeDuyPLJmR8RZxrXhGhiUx7uxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lAyEZ8Je; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750440829; x=1781976829;
+  t=1750441334; x=1781977334;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=C0KIP4y2EaLB9MdRBxwuIaS4kc8jFZZqZaGNo2xtJ/k=;
-  b=IHtXkU6yXnvCpzaChjzLh2kAmz9kL82Fn85J2lMzo1SOcIkQVuMsF026
-   ZHz86Fo9zG9y7ozBxtOblEQj4I93jkpSEFByErbsT55ul4h5razzyUMSl
-   nvwOQtqbnMrHIEF62FirtFo4kza1mSKMbwQmJVmvnA7DLWwgcFtRG8JPL
-   3XnRXdrSuRw95nUv56PAE+YeOOjTpFB2i1COGvysMwsIK0j+lOsA06Eh/
-   glSPl2qKOJrDKB4xS5joDeGnsTm7cGmZpcAIZOcG/GOmwhrrE7eyvI2xB
-   lIcwjyWEmTcUw2CGx/dgSsAjO5/V9b8KXhfnuhl8BGm9TQ8V687LXaszm
-   A==;
-X-CSE-ConnectionGUID: VsHAKXjeSGa9yYIQreGd2Q==
-X-CSE-MsgGUID: 2Go1r15nQTma9Nuq+5ssDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="51943391"
+  bh=+d8rWtAZJO4o7jYg3VVESTCyMRK/oKsbIChLqwzbf0k=;
+  b=lAyEZ8JeIWaxE/7CIH0xhLVGxj87APxxhZHoTc82l5QlIHs+EZ5A9qKf
+   Jn5UezPw5xkScEy40xjJaAL0WITqXnplEdna+Y9B4IRFQYCpN0XAGGuzq
+   uqoqWzHMHPHwDGMhD25/5ElF4dtWWLwuyaJ7Wn2TzWc3TZzJPyTSn8NUW
+   gJsglbJpQ9mx+eElPgXBY++mXKsR6azW+VpF4CCn6Qw6FYl52JX+ZuqOT
+   MRl8/dN+Klbn0CPn54vepZYjTKBuN2a6mWJMVQcaNxAYE8gomyP8fPk5p
+   KZva+ZvwTDCpODAAoC30c0yvneXHIWaqZFf/2n3Kdl1GsnSOh/0LQQ+kS
+   g==;
+X-CSE-ConnectionGUID: hRsgTmLiR1y9jNeBY9lgsw==
+X-CSE-MsgGUID: cUbm9elmSqyZy5xjS2gYzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="63396414"
 X-IronPort-AV: E=Sophos;i="6.16,252,1744095600"; 
-   d="scan'208";a="51943391"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 10:33:48 -0700
-X-CSE-ConnectionGUID: 5ylaNGQKRJKduxA7PJ9a/g==
-X-CSE-MsgGUID: VgHyEtvcR26bzU3URzErIg==
+   d="scan'208";a="63396414"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 10:42:13 -0700
+X-CSE-ConnectionGUID: Jz2GhDOiQICSKlR67fCgag==
+X-CSE-MsgGUID: K38Nbuk0TT+ExDsKqRqDHQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,252,1744095600"; 
-   d="scan'208";a="155272453"
+   d="scan'208";a="151514115"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa005.fm.intel.com with ESMTP; 20 Jun 2025 10:33:37 -0700
+  by orviesa008.jf.intel.com with ESMTP; 20 Jun 2025 10:42:02 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 3A5B1109; Fri, 20 Jun 2025 20:33:36 +0300 (EEST)
-Date: Fri, 20 Jun 2025 20:33:36 +0300
+	id 4B1EE109; Fri, 20 Jun 2025 20:42:00 +0300 (EEST)
+Date: Fri, 20 Jun 2025 20:42:00 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, 
 	"Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
@@ -86,12 +86,13 @@ Cc: Andy Lutomirski <luto@kernel.org>,
 	Huang Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
 	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-mm@kvack.org, Yian Chen <yian.chen@intel.com>
-Subject: Re: [PATCHv6 01/16] x86/cpu: Enumerate the LASS feature bits
-Message-ID: <6y2iqv6c2idn7yebaec7tyhzl5zcsrwqq4lcsokumlqeophzaf@ljnmxorblgcj>
+	linux-mm@kvack.org
+Subject: Re: [PATCHv6 04/16] x86/efi: Move runtime service initialization to
+ arch/x86
+Message-ID: <aqkhzspx6bh7u6gkxkgp7ih3onk27rot7ojwvwvsk6c7zv4ror@ilbd7wt56jxi>
 References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
- <20250620135325.3300848-2-kirill.shutemov@linux.intel.com>
- <20250620163504.GCaFWNuI-8QFqAM0yI@fat_crate.local>
+ <20250620135325.3300848-5-kirill.shutemov@linux.intel.com>
+ <ba766193-e344-4def-84fd-f366872a2ee0@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -100,26 +101,25 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250620163504.GCaFWNuI-8QFqAM0yI@fat_crate.local>
+In-Reply-To: <ba766193-e344-4def-84fd-f366872a2ee0@intel.com>
 
-On Fri, Jun 20, 2025 at 06:35:04PM +0200, Borislav Petkov wrote:
-> On Fri, Jun 20, 2025 at 04:53:09PM +0300, Kirill A. Shutemov wrote:
-> > diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-> > index ee176236c2be..4473a6f7800b 100644
-> > --- a/arch/x86/include/asm/cpufeatures.h
-> > +++ b/arch/x86/include/asm/cpufeatures.h
-> > @@ -313,6 +313,7 @@
-> >  #define X86_FEATURE_SM4			(12*32+ 2) /* SM4 instructions */
-> >  #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* "avx_vnni" AVX VNNI instructions */
-> >  #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* "avx512_bf16" AVX512 BFLOAT16 instructions */
-> > +#define X86_FEATURE_LASS		(12*32+ 6) /* "lass" Linear Address Space Separation */
+On Fri, Jun 20, 2025 at 08:35:14AM -0700, Dave Hansen wrote:
+> On 6/20/25 06:53, Kirill A. Shutemov wrote:
+> > From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> > 
+> > The EFI call in start_kernel() is guarded by #ifdef CONFIG_X86. Move
+> > the thing to the arch_cpu_finalize_init() path on x86 and get rid of
+> > the #ifdef in start_kernel().
 > 
-> This needs to be in /proc/cpuinfo because...?
+> What does this have to do with LASS?
 
-What is current policy around it ?
+It is required to move CR pinning below it and allow to disable CR4.LASS
+temporarily during EFI initialization.
 
-I think it is useful to advertise security features in cpuinfo. LASS fits
-next to SMAP/SMEP/UMIP.
+> Is there any reason not to just pull this in to tip now as a cleanup? It
+> looks good regardless of what it does to LASS.
+
+I am totally fine with applying it right away.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
