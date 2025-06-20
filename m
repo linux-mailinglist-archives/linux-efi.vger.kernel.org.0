@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-3845-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3849-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08479AE1CB1
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 15:53:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95366AE1CB9
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 15:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5979D3BB1F9
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 13:53:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 858AC7A4C3A
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jun 2025 13:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E5C28DEFA;
-	Fri, 20 Jun 2025 13:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D324294A0D;
+	Fri, 20 Jun 2025 13:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ma6T2s/i"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hSse4H3Z"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DC528DEE2;
-	Fri, 20 Jun 2025 13:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C7728E610;
+	Fri, 20 Jun 2025 13:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750427624; cv=none; b=iSsglfokh8g2KmzOQVvBtWuHQRrrQTfnFIvv1EwbPU3SBoxMKwOKPt+5MKhE+yvQ6bM2rAUAN5nTG0MgkEhQyHVeSmTgprcDt1oXNRO3R8OI2ZgvSo4cKp8Jr8WFYk4nDUY1QtSBw3WxaBBHZGS1vOTYBB32kPSzGDzCYdUjgt4=
+	t=1750427627; cv=none; b=uIg5+mVBmcG1rXMFEaGEajqYiLeQbr6BEwiruHeceUXZpx/h1H2+kQrWoTPGcPP2pogAT0rnZzKSFi0EEfv+gKND164k/ebnNSYpBCCrqWdWZXxWPJM3LHLIFOjfVVitv4nqvHH66QYNcE3c6tGFrsqP1PQao37v9t2FU4Yf9fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750427624; c=relaxed/simple;
-	bh=h40PihXpB9iHOwNDiJJbUFtLgaN/sYMLV1i+eEZYFIo=;
+	s=arc-20240116; t=1750427627; c=relaxed/simple;
+	bh=QTbN9NXSoblvysDv8AoUns4aJP3a3HG8dD3wrltp4po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiIiksG77A+a+fdd1ANyGB1Swzat3Ckzx2zAi/d8U8xYNfJIzTHcxoiGSU18EZHowwQthyd7VirkeORb4Kd+OIDlOodplPuh+0JWsQcWUHu5VZWEr2Emh2yJ+crExcNwJ0bjuyJWZnrvAbfZmlQ8EjTsPgKc9YFpzBDV7QO5iJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ma6T2s/i; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=L8edtJ2GcJj/tErGCeSEqAG+RK0sMUQguHeeKh93V6eNNTRYxmjcg7TOgKuZZxmbGOtTK5FYKRlac1ilV/tgZf93r7wClA+meDNJI/RE6Mxw+JqWYKm31RCO82eNzy09lh6MCBDqDnC89/JexqxXnQ2nVs2Uq5qKhIEnRLs1snY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hSse4H3Z; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750427623; x=1781963623;
+  t=1750427626; x=1781963626;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=h40PihXpB9iHOwNDiJJbUFtLgaN/sYMLV1i+eEZYFIo=;
-  b=ma6T2s/i7SAHriKhPHluT134caMbX7mgQL/yyAYkejzPOd15UezI7v9Z
-   bepSRs30gHWkWR9V3CDws3KbHCev4M2CcFYpF13QUAMbNrRXDnnNn3622
-   JF6MKkZFSlZz+UUgH037nAws5hISDE4wKqLPeWprhhhYz7lEPPdJpPQAA
-   w6kf+jXLTxxm6KI2PDukWRaV7FjZ1wzOsPI5Z68YGMvNz5vBgmBggPO/S
-   +VcWp2JkLa1cb/Q5fstlr47TXZtktr7X4GUZG3QR98vhGEEWYzudcxfmp
-   MO4oK/Lr4w59jY0e+abK5a+Kiq0IkWvMJSUgHkrPQ8SMG2jh8ABnJFtlM
-   g==;
-X-CSE-ConnectionGUID: ovwq3ew3T6S5sd31dfC4Ag==
-X-CSE-MsgGUID: notcJf6rRv+lDL75VpN8SA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="55326036"
+  bh=QTbN9NXSoblvysDv8AoUns4aJP3a3HG8dD3wrltp4po=;
+  b=hSse4H3Z580o9+vATJ3Nxs7Qwjucxq+2mGhd3Y6aaFj22AYSTZ5gSqgi
+   c2fwvfr2Uy72tPgj3QPE4p+1vePqW9o3RsKiJzNiobv6BR++To2BtW5nV
+   iQ1EK80zod3Yw3Ue7EyN9ttY++j+geWFCq03B4yWLXBI4UkwVwnmU/uYj
+   qciiYFGixGwb9r4vGLrg3iI2z8fdf4X9up9Ju4WkR77i8keNad9Fbjn2r
+   w/ODCD6/+CrQFv/VFdtEp6oRRbkGtYfn2EJeDiIJWncwRIffWX8vLIRyF
+   6fXL7+RXlQDVS/Ex/fhPGztm5ZAT+0hyMMpDSuILJoxKbG+2hhnrlnjb1
+   w==;
+X-CSE-ConnectionGUID: 7NfkzfLWQwWoDr70TvIEAA==
+X-CSE-MsgGUID: RTcaXiK2RXiIxVp2KQM1EA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="64047049"
 X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
-   d="scan'208";a="55326036"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 06:53:42 -0700
-X-CSE-ConnectionGUID: x0qZTSbeT1yoykLIkNVsYg==
-X-CSE-MsgGUID: Q6PjjxAGR2uAPZDdxXUW/w==
+   d="scan'208";a="64047049"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 06:53:43 -0700
+X-CSE-ConnectionGUID: n+0MzPtZQjqxYuXzQHPI7Q==
+X-CSE-MsgGUID: BKM2Z4zZTT2q7PYD+E+s4Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
-   d="scan'208";a="151227068"
+   d="scan'208";a="150411998"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 20 Jun 2025 06:53:31 -0700
+  by orviesa006.jf.intel.com with ESMTP; 20 Jun 2025 06:53:32 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 6B31F1F8; Fri, 20 Jun 2025 16:53:28 +0300 (EEST)
+	id 7E65820A; Fri, 20 Jun 2025 16:53:28 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv6 03/16] x86/alternatives: Disable LASS when patching kernel alternatives
-Date: Fri, 20 Jun 2025 16:53:11 +0300
-Message-ID: <20250620135325.3300848-4-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 04/16] x86/efi: Move runtime service initialization to arch/x86
+Date: Fri, 20 Jun 2025 16:53:12 +0300
+Message-ID: <20250620135325.3300848-5-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
 References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
@@ -127,62 +127,72 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sohil Mehta <sohil.mehta@intel.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-For patching, the kernel initializes a temporary mm area in the lower
-half of the address range. See commit 4fc19708b165 ("x86/alternatives:
-Initialize temporary mm for patching").
+The EFI call in start_kernel() is guarded by #ifdef CONFIG_X86. Move
+the thing to the arch_cpu_finalize_init() path on x86 and get rid of
+the #ifdef in start_kernel().
 
-Disable LASS enforcement during patching using the stac()/clac()
-instructions to avoid triggering a #GP fault.
+No functional change intended.
 
-The objtool warns due to a call to a non-allowed function that exists
-outside of the stac/clac guard, or references to any function with a
-dynamic function pointer inside the guard. See the Objtool warnings
-section #9 in the document tools/objtool/Documentation/objtool.txt.
-
-Considering that patching is usually small, replace the memcpy and
-memset functions in the text poking functions with their inline versions
-respectively.
-
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Suggested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kernel/alternative.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/common.c | 7 +++++++
+ init/main.c                  | 5 -----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 9ae80fa904a2..0b9f41ed6af7 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -2447,16 +2447,24 @@ void __init_or_module text_poke_early(void *addr, const void *opcode,
- __ro_after_init struct mm_struct *text_poke_mm;
- __ro_after_init unsigned long text_poke_mm_addr;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 8feb8fd2957a..4f430be285de 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -26,6 +26,7 @@
+ #include <linux/pgtable.h>
+ #include <linux/stackprotector.h>
+ #include <linux/utsname.h>
++#include <linux/efi.h>
  
-+/*
-+ * poking_init() initializes the text poking address from the lower half of the
-+ * address space. Relax LASS enforcement when accessing the poking address.
-+ */
- static void text_poke_memcpy(void *dst, const void *src, size_t len)
- {
--	memcpy(dst, src, len);
-+	lass_stac();
-+	__inline_memcpy(dst, src, len);
-+	lass_clac();
- }
+ #include <asm/alternative.h>
+ #include <asm/cmdline.h>
+@@ -2529,6 +2530,12 @@ void __init arch_cpu_finalize_init(void)
+ 	fpu__init_system();
+ 	fpu__init_cpu();
  
- static void text_poke_memset(void *dst, const void *src, size_t len)
- {
- 	int c = *(const int *)src;
++	/*
++	 * This needs to follow the FPU initializtion, since EFI depends on it.
++	 */
++	if (efi_enabled(EFI_RUNTIME_SERVICES))
++		efi_enter_virtual_mode();
++
+ 	/*
+ 	 * Ensure that access to the per CPU representation has the initial
+ 	 * boot CPU configuration.
+diff --git a/init/main.c b/init/main.c
+index 225a58279acd..f9f401b6fdfb 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -53,7 +53,6 @@
+ #include <linux/cpuset.h>
+ #include <linux/memcontrol.h>
+ #include <linux/cgroup.h>
+-#include <linux/efi.h>
+ #include <linux/tick.h>
+ #include <linux/sched/isolation.h>
+ #include <linux/interrupt.h>
+@@ -1068,10 +1067,6 @@ void start_kernel(void)
  
--	memset(dst, c, len);
-+	lass_stac();
-+	__inline_memset(dst, c, len);
-+	lass_clac();
- }
- 
- typedef void text_poke_f(void *dst, const void *src, size_t len);
+ 	pid_idr_init();
+ 	anon_vma_init();
+-#ifdef CONFIG_X86
+-	if (efi_enabled(EFI_RUNTIME_SERVICES))
+-		efi_enter_virtual_mode();
+-#endif
+ 	thread_stack_cache_init();
+ 	cred_init();
+ 	fork_init();
 -- 
 2.47.2
 
