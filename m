@@ -1,133 +1,128 @@
-Return-Path: <linux-efi+bounces-3910-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3911-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C60AE407C
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 14:36:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C06FAE40B5
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 14:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F251A18844E9
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 12:34:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FB9A7A5294
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 12:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A242E24678F;
-	Mon, 23 Jun 2025 12:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B5B2417F2;
+	Mon, 23 Jun 2025 12:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gCy1Brtd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nd5WcWaG"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1342242927;
-	Mon, 23 Jun 2025 12:33:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B583C24293F;
+	Mon, 23 Jun 2025 12:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750682001; cv=none; b=ULE6hEkfcqppABm+4epE49gSmlyk24KB5dvF0SRZ+vGk5uwCZwAwS7u+2HgUOVlG2wHAjX+FVmGfzBmxnoUyN0F2BWMN1Aqoe13eWiS8EA0Dbbdg3S2yAovxX7Ggmv3a+HZYkxwBVKogjwXfuef6q++KPsoDoVmOHM+/h9C5h/w=
+	t=1750682511; cv=none; b=NDXxyt2gaXSZezrLEbgf4EHeZywlieV7oD/uWuDbJPODgXgPP6gB2uLRKrYAHMOJFxLWAIqk/Zbf68xOORrSlT77HAKc5pT/vR+QtOl1Tb4VUxQ9ux1+hmAqYVkwAuWnJcWbmPc5QeZbB+bajz7UCd6zITsLBeRAQ99X1bR+d2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750682001; c=relaxed/simple;
-	bh=1DPd1rG0FiAZN/l3XVHAIpg9e7oYvTgCp4KsTGp3seY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WnaYS+OKBGLvr1I69w8aSAJQpnre2OtzC1cjz/ywFJ//vCmcSZIIFgtFxWV4AWmY++aA/ki4bJIUfnw41XHdpFc0bC64ddryUgNEHzLjnDFj1TGJY/MnaxAZ6+D64JtQk+4KR7FUI9vpZgz5cj1PIy02SdgPHYeikgysyvbqJ3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gCy1Brtd; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32b910593edso31649511fa.1;
-        Mon, 23 Jun 2025 05:33:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750681998; x=1751286798; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W+IuXF9DlMlGH+Aiu+nfFVoQv16+hkfTLv/4sosn5sM=;
-        b=gCy1BrtdANqufabnNcofKf7Upwc+MZwGaH4Gy6Ue/cuTcuPcFmbMfje75l3ceq6M3Q
-         HQGj3pCLaUqcc//K6GA14Fc2XSBSqeUFCLNgaVMolA5Z7Ck7jZaBi1+W7VF/BrUSvLUQ
-         hiSeyQ0ijoj2BiTTH6rq6iQx2gBO56ylVIo2OS6rtgUW9fRvZ7CJt61yPaz6rHuc5zAC
-         uuDn+eXb3nwsZcUD2lkxoUjoUVnOiuVdRXYZeJPmgPxRzRU58lSnx4Vf7Rit3sEFI8v/
-         GaXHKLnoSsEEY0iLcjWefTYSBFJpU2nLGXIc3ebs9Ll2j70k+cd2jradn4904K32m9SY
-         Ffxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750681998; x=1751286798;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W+IuXF9DlMlGH+Aiu+nfFVoQv16+hkfTLv/4sosn5sM=;
-        b=bYX+I4rGFrENb4ePWHVzJYGJcHB0jr/CeWsjjzb6wcKyol3WyS+wPzG/XAy/Uo0+aS
-         5WDag9hYoFOGBvH6fMd1NjesG0LYP0Qgb08AwybTek0yGSDvNoTxOfFIgBnEC977e0hI
-         IRXgusyLY3m/SzkfXlCf3ZjmT793THRyWHhrxvCi2uetV7Bz/46COJd4CKnVKOscbAic
-         zHlVajjPfzkXjb7ed7hTyZtXL5mHaXRLsgZ4znptRJjFyv++Wx5yGUvx9YYUAkMDhncg
-         bxTl+Ce0XrEijUpcYA2qkg5sMVAl1oHb2NO9Qq3GMXE69CiUXTP+rwITfJW+JLJIjh0i
-         Y0Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCU25qC4dbmxDqrrT1qudGnI7KAPn/36Dnbkrq7YhACG5fs1z2dL16JePeJALb1OYXCyWyxqLYMMHK2Y7Myz@vger.kernel.org, AJvYcCUVnaylTXZnYNieayC0KQfyhoE0/1L4UwWLDtQ8FuXYKHFfhc19HgkquKDJqrFFlrbm5lMy96Kw7bQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIV8vWgJiH3EL3UiqgfwChCjiw+LIu9Wv15h91XxOhNaV8BtvA
-	KwIfL6UsKZXatyDfchEzs02T4v7KQnIxOjWd3OGq+6Lr8q52mDEwexeH/I0XU6Onlix8EybtGeT
-	Y4h74LdNMqRSj41dna4uUiBo/N9k4d0l2
-X-Gm-Gg: ASbGnctWZMVRY1s9xoPN4a0KWgUcri6YsDguW43JJzftrviXPJcYD7glFFjwm0WvfCB
-	yqGdF9eaHhJjo3ErPb0ImQ6GdYyg572/Tfoi3gkNu6Ovw4F/g4IA8p1tf46clsoa22hixQt03BK
-	KI4Wh43lqUfi/1UZiACoqngQZ+5MH2Atbbe3hS/6expkFkmkld/hnBpz/3xg==
-X-Google-Smtp-Source: AGHT+IHbs/NqSnxFpIyynnriPXXe9sNxDaDSvw4MGJ1GuCNbeLiHRsPivmYWpuvMLVUKajdSiZkR1th4FuUfmOqTrZE=
-X-Received: by 2002:a05:6512:b05:b0:553:3532:5b30 with SMTP id
- 2adb3069b0e04-553e3be86ccmr3217582e87.27.1750681997445; Mon, 23 Jun 2025
- 05:33:17 -0700 (PDT)
+	s=arc-20240116; t=1750682511; c=relaxed/simple;
+	bh=K3UZr1v5ln6fJSE0bzWb9sF553xHwQWW1kwtTJIV7Kk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qvBDUZ32JnW1cRZoYL7c7LzyTq1IwTlR6DY+7kHZmiK3hT95DygghEX/sfYI1nMk/HfpXXlhIyzfMhFe+p0oUTPZsev3VbQOxCXlVVEjUKb3ioJytbYOJsoS/aM4+6nwDSxZ7Eyyeerc1joeHVNrftE0qbHK9BSWBd2Upe0eTEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nd5WcWaG; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750682509; x=1782218509;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=K3UZr1v5ln6fJSE0bzWb9sF553xHwQWW1kwtTJIV7Kk=;
+  b=nd5WcWaGaltpjrJkvLFr90dUeCS8jsIEKbqW+K8Ym4oai1CnxwDfL3u7
+   cia7HynY5GWaUYar0ln/7bLCpdffCuN3ogibOJviCC7HmgYbxwJgOc/ui
+   VbmTeGTZyOqceFPF+3IfGr3+m9Q+DKNHzf/EkX+7H1sWlWtsFFzwcpO/0
+   WxT+Aggpy+PDuio/+Z/LAtcPfELnR9OuCPYAomm60FSkrbrHBGvNcgJTr
+   ikReCDDnubedqXOrHysg8AbmEwOV1Z3Sc6qv3khhNmqoYeURg3Gmxf0OJ
+   TffetA5G/fAogNkwWT3N0sKPLIsUCQic/5wcGRPLb/UHaJmCMRoeinNc2
+   Q==;
+X-CSE-ConnectionGUID: ZqISHIsXQcSjKElzjUm67Q==
+X-CSE-MsgGUID: HjeGr1okTrO5oNRJs6c0XA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="53026755"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="53026755"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 05:41:48 -0700
+X-CSE-ConnectionGUID: 10Ymcep+Q3up0gnu1kePHQ==
+X-CSE-MsgGUID: I55PCHToQRCNtiihmEgd6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="151738727"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa006.fm.intel.com with ESMTP; 23 Jun 2025 05:41:32 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id D7895126; Mon, 23 Jun 2025 15:41:30 +0300 (EEST)
+Date: Mon, 23 Jun 2025 15:41:30 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, acme@redhat.com, 
+	aik@amd.com, akpm@linux-foundation.org, alexander.shishkin@linux.intel.com, 
+	ardb@kernel.org, ast@kernel.org, bp@alien8.de, brijesh.singh@amd.com, 
+	changbin.du@huawei.com, christophe.leroy@csgroup.eu, corbet@lwn.net, 
+	daniel.sneddon@linux.intel.com, dave.hansen@linux.intel.com, ebiggers@google.com, 
+	geert+renesas@glider.be, houtao1@huawei.com, hpa@zytor.com, jgg@ziepe.ca, jgross@suse.com, 
+	jpoimboe@kernel.org, kai.huang@intel.com, kees@kernel.org, leitao@debian.org, 
+	linux-doc@vger.kernel.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux@rasmusvillemoes.dk, luto@kernel.org, mcgrof@kernel.org, 
+	mhiramat@kernel.org, michael.roth@amd.com, mingo@kernel.org, mingo@redhat.com, 
+	namhyung@kernel.org, paulmck@kernel.org, pawan.kumar.gupta@linux.intel.com, 
+	peterz@infradead.org, rick.p.edgecombe@intel.com, rppt@kernel.org, 
+	sandipan.das@amd.com, shijie@os.amperecomputing.com, sohil.mehta@intel.com, 
+	tglx@linutronix.de, tj@kernel.org, tony.luck@intel.com, vegard.nossum@oracle.com, 
+	x86@kernel.org, xin3.li@intel.com, xiongwei.song@windriver.com, 
+	ytcoode@gmail.com
+Subject: Re: [PATCHv6 07/16] x86/vsyscall: Reorganize the #PF emulation code
+Message-ID: <kthmv63jrvrr3shhzhhcib7qrjp7sjkah65kogbfphfr6wg6cb@z5zydz6ov7pv>
+References: <9d351d80-66fe-486f-bdb3-370859dc47cc@intel.com>
+ <262c0fd2-ac66-4ce7-903f-4062f1fe1d6e@citrix.com>
+ <b6f8a90d-4309-45c5-84cd-32e281d076fb@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250623081458.1243-1-khaliidcaliy@gmail.com>
-In-Reply-To: <20250623081458.1243-1-khaliidcaliy@gmail.com>
-From: Brian Gerst <brgerst@gmail.com>
-Date: Mon, 23 Jun 2025 08:33:05 -0400
-X-Gm-Features: AX0GCFuAWptiRw2maE0BWmiixwuVE1WmhRCAOu-kPZL92eirSB8J4cZ_QQmrR7U
-Message-ID: <CAMzpN2jBOW3PVJQLvua=knQNu_1mZ6RZYi8JvNenFd5t30UC1Q@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] x86/boot: Supply boot_param in rdi instead of rsi
- from startup_64()
-To: Khalid Ali <khaliidcaliy@gmail.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, ubizjak@gmail.com, x86@kernel.org, hpa@zytor.com, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b6f8a90d-4309-45c5-84cd-32e281d076fb@intel.com>
 
-On Mon, Jun 23, 2025 at 4:16=E2=80=AFAM Khalid Ali <khaliidcaliy@gmail.com>=
- wrote:
->
-> From: Khalid Ali <khaliidcaliy@gmail.com>
->
-> The current kernel entry point takes one argument which is boot_param
-> from RSI. The only argument entry point recieves is pointer to
-> boot_param.
->
-> In order to comply with the ABI calling convension the entry point must
-> recieve the boot_param from RDI instead of RSI. There were no specific
-> use case used for RDI, so the kernel can safely recieve argument from
-> that register to better comply with ABI.
->
-> This patch makes the kernel to recieve boot_param which is the only
-> argument it recieves, from RDI instead of RSI. All changes needed for
-> stability and clarity have being changed.
->
-> Changelog:
->  * Kernel uncompressed entry point expects boot_param from RDI instead
->    of RSI.
->  * The decompressor has being adjusted to supply argument from RDI
->    instead RSI.
->  * libstub has being adjusted to supply argument from RDI instead of RSI.
->
-> After throughly tested there were no regression and UDs has being
-> observed. Looking forward for feedback.
->
->  arch/x86/boot/compressed/head_64.S      | 2 +-
->  arch/x86/kernel/head_64.S               | 4 ++--
->  drivers/firmware/efi/libstub/x86-stub.c | 4 ++--
->  3 files changed, 5 insertions(+), 5 deletions(-)
+On Fri, Jun 20, 2025 at 04:21:38PM -0700, Dave Hansen wrote:
+> On 6/20/25 16:08, Andrew Cooper wrote:
+> >> But, the resulting code is wonky. It needs to do something more like this:
+> >>
+> >> 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+> >> 		return false;
+> >>
+> >> 	if (error_code & X86_PF_INSTR))
+> >> 		return __emulate_vsyscall(regs, address);
+> > To do this, LASS needs a proper interlink against NX || SMEP.
+> > 
+> > If neither NX nor SMEP are active, the CPU does not report X86_PF_INSTR,
+> > meaning that fetches are reported as plain reads.
+> Interesting point.
+> 
+> I think the easiest way to do this is just make a cpuid_deps[] entry for
+> LASS and NX. If there's a CPU where LASS is available but where NX isn't
+> available, we have much bigger problems on our hands.
 
-This was never intended to conform to the C ABI, why is it necessary
-to change it?
+I am not sure what I suppose to do here.
 
-Also, you cannot break this up into three patches.  Every patch must
-be fully functional so that git bisect will work.
+Sohil pointed out that with LASS we get #GP on vsyscall, not #PF and PFEC
+is not relevant for LASS.
 
+So, IIUC, that's dependency of vsyscall PF on NX. Do we want to disable
+vsyscall on boot if NX is not available?
 
-Brian Gerst
+BTW, why do we even support !NX on X86_64? Is there such HW?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
