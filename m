@@ -1,190 +1,147 @@
-Return-Path: <linux-efi+bounces-3916-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3917-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65AE6AE490D
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 17:45:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C72AE4AC9
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 18:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B52517A71E4
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 15:44:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82EC0174756
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 16:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CF728E579;
-	Mon, 23 Jun 2025 15:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1FC28CF6D;
+	Mon, 23 Jun 2025 16:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="rSe9u0vO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhIi8qbv"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4EE264A97
-	for <linux-efi@vger.kernel.org>; Mon, 23 Jun 2025 15:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151D52D29B1;
+	Mon, 23 Jun 2025 16:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750693506; cv=none; b=AXEf11yEDPq/Yu0d0YI9Nru9yVUHJ0PWB6OF6OB76EZZonMCDYC1CCUyQKHj2/xTtv5uUWH980KtJBWBjzDfrwV/iaidY/oF+lvVP7aCnnx2KuqNIH1YzFcQgpXadg+AiuCL7e6L2htDz26Fs/nymtAMdxHzxdUkRJlIl7FCZog=
+	t=1750695545; cv=none; b=gEfZq0WOsJdfeWqP6E7W+KAnEXA1+ffNDIY92BT/HK2q9b7Mb6i7/v+uVu9zqCPQxoe0HBUV8yz9vg4jdbIy1dvZQQyTziHMNc6UHFGUjlgAThdrI9mJBkW37SBkxrk7+JuKzKUuxxHDIVknxsiE9f7G/N7Mlj9W32HP0J7ywt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750693506; c=relaxed/simple;
-	bh=5PNEmnbjciG2Xuw+gQQ+guOQSMZOjAoOCyw8eUAileQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AtZq0s1XwNgR6MZcak1B/LmOU9U/qkHZs/q9zqG54WZFYsI0knM+2IjSQxloKLSiFSpmowZMwFrmcVSk/70e62ozzJl8mzEXxjhYTYAS7A3NM0ah9hbiiQlfIJywrvYEYw5EzKxUpgHVNfZe3gFWmxP2tkth63fUK1YO6rNI25w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=rSe9u0vO; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a6d1369d4eso1664087f8f.2
-        for <linux-efi@vger.kernel.org>; Mon, 23 Jun 2025 08:45:04 -0700 (PDT)
+	s=arc-20240116; t=1750695545; c=relaxed/simple;
+	bh=bJeI13UOBy2+tAGnslx3UMPJTEgbJ0XaXFZ2738ja9g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=A3VzNeXAjRLPYR28ykrqJA76Yg1mylwMw+gXfDaLct8tT6aBBncJHdF8q0zy0VLkewVxTO3Va8gUKFcdPmoFZV5aVfc9V8SzjYMcLYJEkC2C4S8od1Owz/ugWR1eBNpvs8IAVxNfvgFqSE8qeyG1dybW9bYVYX8dbX98dRf1FBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhIi8qbv; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-441ab63a415so46433535e9.3;
+        Mon, 23 Jun 2025 09:19:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1750693503; x=1751298303; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=uL0O45hMlPAbdxle62Dl9Ya0NwjEYAAouOVoiEETw7E=;
-        b=rSe9u0vOUsEzsjbCAkbK7yiaG5+6MtZCUo9e4M9o0RXMU1+Bmqcy0ozQtPBGyF5EtL
-         Qpaajke8WY3twhwYLqLj4GijH1Jkh+EC9pMTbo9cZZ7EBwytAv15NNZ4eTBrNXGCe+ZR
-         mmpBl6rJuw9AWEZfIrSzN3RzUbnERanryuKss=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750693503; x=1751298303;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1750695542; x=1751300342; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uL0O45hMlPAbdxle62Dl9Ya0NwjEYAAouOVoiEETw7E=;
-        b=mPoamQwZn3SLe9mC4TMWNhbGReH+uOSOdEyfdO5Bo7GlQ61ldrt6F43v4nC954LEix
-         qc9mWcedZCuZ5xPJweQJka/i99/J3rGQzIasqukwfw5cd9+7G/K8LX5L8DENGh6pJFuo
-         BnFLLNvZBtLbrO9KWh+UHM2VlVneWRFlw7oz+urkZygtrSLmhxuZIsK3Urh4YLebJv5X
-         BP0m7HOXwHqmEr2V8rs4lj2SsVqjhHdfbdRsw0Ejhpxi+ZIgq2Nxm1gtia3LNwZidtB4
-         wGOryK5BgwMXU0gfZx+FTAvemiC4Rk0LRnbqwpkDLzKvb9P95w+u62VHO/sOD8CV7A1Y
-         YNlA==
-X-Forwarded-Encrypted: i=1; AJvYcCWj7psSvGG5DAEfZjk2DBkzEjCP9MmCQqpBqpPAbFIqR0alYBb0ChIZwRESM/I5rXTCJZnN/zATMzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyxlPmeUWYd1XGWq07e5YFbmBibyeKx0Z6z+U8TwmHyN+f1B4S
-	qCKqQHgqa+vqpWZx72Kvsuw90ZK4dhqPrMli0j8z5+Ve+vjvKM/7z/fJxdrAnQERJSw=
-X-Gm-Gg: ASbGncuYCONe7rloWmDIBBMRULkNEO0mVmbvY1XVON0vXLCMpdcBNQgawPilpFSky4D
-	T0dq9k3iV/RiddsiY2jpatPi2Bxpj99O1IAiSke4iLjwFX+cNy39LQug3U3MpRNJflL4vj8Lnnp
-	ysJyTYx665kOp1mMtN2Zmmn5qkQpWAL3Tf1vIZXy/qb7goCly77GEzjtSYeyUP5raXs+f7tauXF
-	RSPrlw13jzXjpEW/Rf0RAhi952BuOVeJ4SgQRAVXa6h9RyljPbIGkW6YpiUFzT/0fpXZvNvZ7Za
-	w3cqVMy9FvvolgtJyJqcA4ttcIuUL5gRtGndE36x2VySxzd+VaTKFX4G2V8Frg76QibzENypqWR
-	VJPKNDNaG4/ln0xgIOprp+9Ag5EA=
-X-Google-Smtp-Source: AGHT+IGJ+QVsjcPbF0c+9y4h5WCZmLSbsgH/DWi6LPZOcySwQ1t7xKBejzOH5X1Y8ebzu0LTpXrofA==
-X-Received: by 2002:a05:6000:178a:b0:3a5:2cca:6054 with SMTP id ffacd0b85a97d-3a6d1193e06mr11205314f8f.4.1750693502940;
-        Mon, 23 Jun 2025 08:45:02 -0700 (PDT)
-Received: from [192.168.1.183] (host-92-26-98-202.as13285.net. [92.26.98.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d0f1815dsm9554055f8f.28.2025.06.23.08.45.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 08:45:02 -0700 (PDT)
-Message-ID: <ddbb18e8-fc32-4a41-b23d-4b707890200d@citrix.com>
-Date: Mon, 23 Jun 2025 16:45:00 +0100
+        bh=+tpOC8J9R9fSt7hQyUzw01Amv/SyWf6vMX3xdtAovfw=;
+        b=OhIi8qbvRlt7og2gfT1ORU+GTIsR8Jig2tiHmsXlp+6UD8CbDhQkAORML6gnek038M
+         EYmaqHr31bmoCo09Uwb+plPJOwp+RL7q+WSbmswNoSn3fz0i7AVhx62ohPyRsdfF0btU
+         r6n/kjtBTkqtWKMvTdvJ0Bv/aPFWVDfuROTjN8f9BXlhRrCQz0hs3Qf+MDTroVnkDs+h
+         WMaQcKRTnE7efiuBDMm6wpGGFEapqJhYlfQYih5tKxb2egeCo/tQxdTIofGaIyHN/7wj
+         XLooahR74GpELPnCvl52g7WoFz9MwL6VPCmkKS5WGT0qjuZS14JKVJSJKxNRs7K93sgV
+         6xzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750695542; x=1751300342;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+tpOC8J9R9fSt7hQyUzw01Amv/SyWf6vMX3xdtAovfw=;
+        b=m4C/AzUvMsbKEhb6ewbPU+hA/PlRBY8KGvl09L1vEpTE6m6Bn5SpOUV/vc7R5GQ+K+
+         dncOhAoctxLDvIPxZAonOHz5Bj4mD/uXlhSaow4sRo9nld8C0PsV91c6ZXUhT49vR0c7
+         a4wy1ukPUhj+dOY0YSHtOYr/rBh3mj9F1rgit0uDk84Reb17WKEYBa8TN111ZaPbEl44
+         aAIzp+LhN24f0BogCDKASbBQzGrCemW35EWa8jMhUIQPLd3BKjGSb3RqMSR4ucYfDPpo
+         EYeq8DT6Ylz191aqKGb+feiYqoZ2eNclnpHMhmOxBz8kiAzRMauSTGOZdvfVtBpd3UJ6
+         xu2A==
+X-Forwarded-Encrypted: i=1; AJvYcCVyZjvOaPIcahlX2o1dJ+QsNIe4KRUO7oYRz2ui+SYfEkogb/19hILQ6QkcjTloq9nt/6oHOYHf36k=@vger.kernel.org, AJvYcCW2yUmfzOfD6z0x0deEoq/ylR0AT3sEzOf45e0B40AzpcYc+kDizjm3geTXRHxtK1rQ0sDmh4XoJIoy6pV5@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSdVvfV/UwmaQYMsu7io9CmWFzwpUl+QXO8mtJiFIQkTwvDs9C
+	koaMVrzI1NMgXVW5ij6r/Op+/WbnhUSpJusvGKOtvheeYATvHY0o7b/r
+X-Gm-Gg: ASbGncshAhOUTaKnK9qRF1oUKPjhp9WU4r+GBNnV7HdcBjKUNntpb8mNeCcjxtrWtVQ
+	ek4UOJOGQYsTpyja2x9SZYhbTqbEioh2riL3iAD1H+K8C4FJ9svVIYnTbp087edgt2NYDXLZwe3
+	62gwTMB3Ab6ohfk/qrTYaOCfIwjiy2CUVG94jD2+1Em6U0LM/JTtmIL5ujrvlyRszLGpirY4gvq
+	yybTucKgZwIWJ4CE8lcENwaxJaRQqzGSUc1R04nCTVuvU2HSpqsvx9ODwZAO/1C3lZ1agXY0kRe
+	P8yLLj/u+0IZTeVEF6LtiITaClaN+dlPJ0/GlsrJ07EbsXb8M2gubxo/+eEhd8s/3VpLHDcfa5a
+	m
+X-Google-Smtp-Source: AGHT+IHW1KS6DZgszV8TRKavm2+rGnxthAJy2Y+zJYOtYLaIKnoNeYWITRi9v5gVHXPt24t3FM2Q2w==
+X-Received: by 2002:a05:600c:4684:b0:453:d3d:d9fd with SMTP id 5b1f17b1804b1-453654cb7cdmr136417035e9.12.1750695541894;
+        Mon, 23 Jun 2025 09:19:01 -0700 (PDT)
+Received: from localhost.localdomain ([41.79.198.24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646d7fe5sm113817985e9.16.2025.06.23.09.19.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jun 2025 09:19:01 -0700 (PDT)
+From: Khalid Ali <khaliidcaliy@gmail.com>
+X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
+To: hpa@zytor.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	ubizjak@gmail.com
+Cc: x86@kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re:[PATCH v1 1/3] Recieve boot_param from RDI Instead of RSI
+Date: Mon, 23 Jun 2025 16:16:56 +0000
+Message-ID: <20250623161741.623-1-khaliidcaliy@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <2D63735B-FA76-428E-8F68-8EBCAEA0985E@zytor.com>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 07/16] x86/vsyscall: Reorganize the #PF emulation code
-To: Dave Hansen <dave.hansen@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: acme@redhat.com, aik@amd.com, akpm@linux-foundation.org,
- alexander.shishkin@linux.intel.com, ardb@kernel.org, ast@kernel.org,
- bp@alien8.de, brijesh.singh@amd.com, changbin.du@huawei.com,
- christophe.leroy@csgroup.eu, corbet@lwn.net, daniel.sneddon@linux.intel.com,
- dave.hansen@linux.intel.com, ebiggers@google.com, geert+renesas@glider.be,
- houtao1@huawei.com, hpa@zytor.com, jgg@ziepe.ca, jgross@suse.com,
- jpoimboe@kernel.org, kai.huang@intel.com, kees@kernel.org,
- leitao@debian.org, linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux@rasmusvillemoes.dk,
- luto@kernel.org, mcgrof@kernel.org, mhiramat@kernel.org,
- michael.roth@amd.com, mingo@kernel.org, mingo@redhat.com,
- namhyung@kernel.org, paulmck@kernel.org, pawan.kumar.gupta@linux.intel.com,
- peterz@infradead.org, rick.p.edgecombe@intel.com, rppt@kernel.org,
- sandipan.das@amd.com, shijie@os.amperecomputing.com, sohil.mehta@intel.com,
- tglx@linutronix.de, tj@kernel.org, tony.luck@intel.com,
- vegard.nossum@oracle.com, x86@kernel.org, xin3.li@intel.com,
- xiongwei.song@windriver.com, ytcoode@gmail.com
-References: <9d351d80-66fe-486f-bdb3-370859dc47cc@intel.com>
- <262c0fd2-ac66-4ce7-903f-4062f1fe1d6e@citrix.com>
- <b6f8a90d-4309-45c5-84cd-32e281d076fb@intel.com>
- <kthmv63jrvrr3shhzhhcib7qrjp7sjkah65kogbfphfr6wg6cb@z5zydz6ov7pv>
- <bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 23/06/2025 4:32 pm, Dave Hansen wrote:
-> On 6/23/25 05:41, Kirill A. Shutemov wrote:
->> So, IIUC, that's dependency of vsyscall PF on NX. Do we want to disable
->> vsyscall on boot if NX is not available?
-> Well, vsyscall=none can break old userspace, so forcing it on old
-> hardware doesn't seem like a great idea.
->
-> But, either way, this doesn't really appear to be a LASS issue. This code:
->
->>         if (!(error_code & X86_PF_INSTR)) {
->>                 /* Failed vsyscall read */
->>                 if (vsyscall_mode == EMULATE)
->>                         return false;
-> Is really asking the question:
->
-> 	Is this #PF from an instruction fetch in the vsyscall page?
->
-> That _should_ be able to be done by comparing CR2 and regs->rip. In
-> fact, that's done just below anyway:
->
-> 	WARN_ON_ONCE(address != regs->ip);
->
-> So I think we can fix this up with something like the attached patch
-> which just drives the if() from regs->rip and make the warning NX-only.
+> On June 23, 2025 1:15:23 AM PDT, Khalid Ali <khaliidcaliy@gmail.com> wrote:
+> >From: Khalid Ali <khaliidcaliy@gmail.com>
+> >
+> >Adjust the kernel entry point to recieve arguments from RDI instead of
+> >RSI.
+> >
+> >Signed-off-by: Khalid Ali <khaliidcaliy@gmail.com>
+> >---
+> > arch/x86/kernel/head_64.S | 4 ++--
+> > 1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> >diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+> >index dfb5390e5c9a..d24fea15b6a6 100644
+> >--- a/arch/x86/kernel/head_64.S
+> >+++ b/arch/x86/kernel/head_64.S
+> >@@ -43,7 +43,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+> >        * for us.  These identity mapped page tables map all of the
+> >        * kernel pages and possibly all of memory.
+> >        *
+> >-       * %RSI holds the physical address of the boot_params structure
+> >+       * %RDI holds the physical address of the boot_params structure
+> >        * provided by the bootloader. Preserve it in %R15 so C function calls
+> >        * will not clobber it.
+> >        *
+> >@@ -56,7 +56,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+> >        * compiled to run at we first fixup the physical addresses in our page
+> >        * tables and then reload them.
+> >        */
+> >-      mov     %rsi, %r15
+> >+      mov     %rdi, %r15
+> >
+> >       /* Set up the stack for verify_cpu() */
+> >       leaq    __top_init_kernel_stack(%rip), %rsp
 
-Yeah, that looks good.  Furthermore, it means that the LASS #GP path
-(patch 9) will be consistent with this path.  (i.e. both doing a
-regs->rip check.)
+> This is an ABI.
+>
+> Nacked-by: H. Peter Anvin <hpa@zytor.com>
 
-Patch Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com> if that
-counts for anything.
+Peter, thanks for the response but if i ask you:
+What is specific reason that this patch is wrong?
+Why used RSI instead of RDI at the first place?
 
-~Andrew
+I broke my patch reference and it became stand alone each one, however this is one of three series. 
+This makes the entry more ABI complaint, if there is no specific reason of objection.
+
+Thanks
 
