@@ -1,109 +1,206 @@
-Return-Path: <linux-efi+bounces-3914-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3915-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDC1AE4870
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 17:26:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FE9AE48CD
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 17:37:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 469153A5B23
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 15:24:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1CA6441144
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 15:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00CE275B18;
-	Mon, 23 Jun 2025 15:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA622777EC;
+	Mon, 23 Jun 2025 15:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="KA9g1Hl5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LP7KxHAC"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30C3770E2;
-	Mon, 23 Jun 2025 15:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F0D2609E4;
+	Mon, 23 Jun 2025 15:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750692287; cv=none; b=FwmzbIBjEm5oPrN7yicyoNkd80XZCj5kBU1WLOlLp1vLEo7wryF0U6QeUHBcX967gulVbwSVQ5d6elskPtgFsapQ2qZJcq3K/ec0dWVXu4y29CqgeoW85F9SfMz6CFYoessGee8jF04dSBlZQAJRSdsylM4GcJl85X9vgXu8Uq4=
+	t=1750692779; cv=none; b=IIPRbnEzxax6fOyrT5C7w3WVc1aVEaLsARYcMdtEArWuot2IRnTWCs4NXguH3ef/MSbxCYQ9kd6bRhbbBD12nfTadGRl19FOxrlAJE/ZmCT5Xeu+aBi2kA24Cn0JJTJ82xPdO4Ra1vOa8Mb2iH17iB8t/dJ3OyVnBytNpSxZP+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750692287; c=relaxed/simple;
-	bh=wlTiKIjvWwqf6t18hxDB41x4laHO4+OvmqsPz5wPksw=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=vDrcWsY19BGOM5D2k7FMqmJxWU3tnkTrt1NukI1nDYyBpbeaXZR4VIGsQMKcb0WNfk8dLQJvf9x98u2baDwBdbh8AcW4dGDdteZgQLfItOwaR6AD4J+9ZMmnOAOOlFiCmRkedEyErflqafxISP0UHasiFDe0hSnxo5ejIz/uywU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=KA9g1Hl5; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55NFOFxO981170
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 23 Jun 2025 08:24:15 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55NFOFxO981170
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1750692256;
-	bh=A1jMMXa/nw7lqBnFyr8Ce3LJwcClP6AKSk/3M0i9qfA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=KA9g1Hl56Dr7ze7uSMBmDaEo4af0rw/UOjgUFavm0WLWHKVlTPzThFkEG/sWIlhcR
-	 pdhvtbSRmnh7IUFVzzN6zGV7OS+5b6DDk9O3p+v5ciw8J6q6NmFsaDHnhK9OfQFKQ5
-	 1jOQwG5rSIVwXkntRYi3ccTte4j0Tr3RUQc/lVvIf0LdvqZRkEeWXGs5kAt46Wfr/g
-	 +QW8HSARe3/32K5n9pjFMJ5NHpOUTxhdJ1W+1sya9VRSuKd9J/7DuK++VfwV449fpy
-	 HEU0pqlrNjAFPoza97J3a8vrCZJoC6dj50hBORuCtmES8flPgwcRbXj16JLnhiuo/q
-	 +BAhyw7oMGj5Q==
-Date: Mon, 23 Jun 2025 08:24:16 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Khalid Ali <khaliidcaliy@gmail.com>, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, ubizjak@gmail.com
-CC: x86@kernel.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] Recieve boot_param from RDI Instead of RSI
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250623081550.1262-1-khaliidcaliy@gmail.com>
-References: <20250623081550.1262-1-khaliidcaliy@gmail.com>
-Message-ID: <2D63735B-FA76-428E-8F68-8EBCAEA0985E@zytor.com>
+	s=arc-20240116; t=1750692779; c=relaxed/simple;
+	bh=PT3M4AOgi1OUY/m19yZDe+t1mwb9qhz6OLFhPtNLEW4=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=kqjDtVo12TaivfKFD0/nLlgnmZ7OTSiubRx0LdQZAxZ+FbMGtZjtOJCOJJ/2BlVZOjE3Z0aDf22L2eE235vHH7ceUXGudvYxAYf1ZDSGQDBZ0bvgpKjHkFRhiz65S+u9weDS13fZe5Q8M1gSfypwN4H4KOMUke5MjNJgjv+pQWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LP7KxHAC; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750692778; x=1782228778;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to;
+  bh=PT3M4AOgi1OUY/m19yZDe+t1mwb9qhz6OLFhPtNLEW4=;
+  b=LP7KxHACmNqXUT8fCSrh6/B1M2RXhO4O9uVKj/ds1ag/JynNw+FZZ40Q
+   HIQFLwGVSygqiSSKSa8D9JWEZSAdi31QTwpWMPaomjrqRYzb/w2qu6sOk
+   W4QcOqUPob7oKfPmKPV/BoPnL6yTmESwx8QDhIj9VIz6agZVRsHqzeBa/
+   AzXYpkVhdCw/5sATmRoCs10X9U98xdB5sQ646mBma/V1F0xP0MNvBSjuz
+   GaE48BN7YoIHD/9W+GmKE2SiCkRxopwk8dHGKATOq7GgQfLlYhmsYPMbO
+   iKplUvgnwnJgUqI1rfFFvnNT03b/DF+JxPOIIVLVJlwBDJKOzy7sdHBf/
+   A==;
+X-CSE-ConnectionGUID: SGvIeijnTbiSxkx8B4L0+Q==
+X-CSE-MsgGUID: 4aLEKPplTQyoNJGRkRW52Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="63600365"
+X-IronPort-AV: E=Sophos;i="6.16,259,1744095600"; 
+   d="scan'208";a="63600365"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 08:32:57 -0700
+X-CSE-ConnectionGUID: aKkphUs/TcKlNIVVR7DHsw==
+X-CSE-MsgGUID: xuYev3GQTVCWCNxvgvVRFQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,259,1744095600"; 
+   d="scan'208";a="152145883"
+Received: from tjmaciei-mobl5.ger.corp.intel.com (HELO [10.125.108.165]) ([10.125.108.165])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 08:32:54 -0700
+Content-Type: multipart/mixed; boundary="------------GHRek0mmnbllhgkrO1Mnn6jW"
+Message-ID: <bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com>
+Date: Mon, 23 Jun 2025 08:32:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv6 07/16] x86/vsyscall: Reorganize the #PF emulation code
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, acme@redhat.com, aik@amd.com,
+ akpm@linux-foundation.org, alexander.shishkin@linux.intel.com,
+ ardb@kernel.org, ast@kernel.org, bp@alien8.de, brijesh.singh@amd.com,
+ changbin.du@huawei.com, christophe.leroy@csgroup.eu, corbet@lwn.net,
+ daniel.sneddon@linux.intel.com, dave.hansen@linux.intel.com,
+ ebiggers@google.com, geert+renesas@glider.be, houtao1@huawei.com,
+ hpa@zytor.com, jgg@ziepe.ca, jgross@suse.com, jpoimboe@kernel.org,
+ kai.huang@intel.com, kees@kernel.org, leitao@debian.org,
+ linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux@rasmusvillemoes.dk,
+ luto@kernel.org, mcgrof@kernel.org, mhiramat@kernel.org,
+ michael.roth@amd.com, mingo@kernel.org, mingo@redhat.com,
+ namhyung@kernel.org, paulmck@kernel.org, pawan.kumar.gupta@linux.intel.com,
+ peterz@infradead.org, rick.p.edgecombe@intel.com, rppt@kernel.org,
+ sandipan.das@amd.com, shijie@os.amperecomputing.com, sohil.mehta@intel.com,
+ tglx@linutronix.de, tj@kernel.org, tony.luck@intel.com,
+ vegard.nossum@oracle.com, x86@kernel.org, xin3.li@intel.com,
+ xiongwei.song@windriver.com, ytcoode@gmail.com
+References: <9d351d80-66fe-486f-bdb3-370859dc47cc@intel.com>
+ <262c0fd2-ac66-4ce7-903f-4062f1fe1d6e@citrix.com>
+ <b6f8a90d-4309-45c5-84cd-32e281d076fb@intel.com>
+ <kthmv63jrvrr3shhzhhcib7qrjp7sjkah65kogbfphfr6wg6cb@z5zydz6ov7pv>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <kthmv63jrvrr3shhzhhcib7qrjp7sjkah65kogbfphfr6wg6cb@z5zydz6ov7pv>
 
-On June 23, 2025 1:15:23 AM PDT, Khalid Ali <khaliidcaliy@gmail=2Ecom> wrot=
-e:
->From: Khalid Ali <khaliidcaliy@gmail=2Ecom>
->
->Adjust the kernel entry point to recieve arguments from RDI instead of
->RSI=2E
->
->Signed-off-by: Khalid Ali <khaliidcaliy@gmail=2Ecom>
->---
-> arch/x86/kernel/head_64=2ES | 4 ++--
-> 1 file changed, 2 insertions(+), 2 deletions(-)
->
->diff --git a/arch/x86/kernel/head_64=2ES b/arch/x86/kernel/head_64=2ES
->index dfb5390e5c9a=2E=2Ed24fea15b6a6 100644
->--- a/arch/x86/kernel/head_64=2ES
->+++ b/arch/x86/kernel/head_64=2ES
->@@ -43,7 +43,7 @@ SYM_CODE_START_NOALIGN(startup_64)
-> 	 * for us=2E  These identity mapped page tables map all of the
-> 	 * kernel pages and possibly all of memory=2E
-> 	 *
->-	 * %RSI holds the physical address of the boot_params structure
->+	 * %RDI holds the physical address of the boot_params structure
-> 	 * provided by the bootloader=2E Preserve it in %R15 so C function call=
-s
-> 	 * will not clobber it=2E
-> 	 *
->@@ -56,7 +56,7 @@ SYM_CODE_START_NOALIGN(startup_64)
-> 	 * compiled to run at we first fixup the physical addresses in our page
-> 	 * tables and then reload them=2E
-> 	 */
->-	mov	%rsi, %r15
->+	mov	%rdi, %r15
->=20
-> 	/* Set up the stack for verify_cpu() */
-> 	leaq	__top_init_kernel_stack(%rip), %rsp
+This is a multi-part message in MIME format.
+--------------GHRek0mmnbllhgkrO1Mnn6jW
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This is an ABI=2E
+On 6/23/25 05:41, Kirill A. Shutemov wrote:
+> So, IIUC, that's dependency of vsyscall PF on NX. Do we want to disable
+> vsyscall on boot if NX is not available?
 
-Nacked-by: H=2E Peter Anvin <hpa@zytor=2Ecom>
+Well, vsyscall=none can break old userspace, so forcing it on old
+hardware doesn't seem like a great idea.
+
+But, either way, this doesn't really appear to be a LASS issue. This code:
+
+>         if (!(error_code & X86_PF_INSTR)) {
+>                 /* Failed vsyscall read */
+>                 if (vsyscall_mode == EMULATE)
+>                         return false;
+
+Is really asking the question:
+
+	Is this #PF from an instruction fetch in the vsyscall page?
+
+That _should_ be able to be done by comparing CR2 and regs->rip. In
+fact, that's done just below anyway:
+
+	WARN_ON_ONCE(address != regs->ip);
+
+So I think we can fix this up with something like the attached patch
+which just drives the if() from regs->rip and make the warning NX-only.
+
+But this code has been like this a long time and I'm 99% sure the x86
+selftests poke at all these cases. I'm curious what they do on those old
+P4's (or a 64-bit VM with NX turned off), but it's not super important
+either way.
+--------------GHRek0mmnbllhgkrO1Mnn6jW
+Content-Type: text/x-patch; charset=UTF-8; name="vsyscall-nx.patch"
+Content-Disposition: attachment; filename="vsyscall-nx.patch"
+Content-Transfer-Encoding: base64
+
+ZGlmZiAtLWdpdCBhL2FyY2gveDg2L2VudHJ5L3ZzeXNjYWxsL3ZzeXNjYWxsXzY0LmMgYi9h
+cmNoL3g4Ni9lbnRyeS92c3lzY2FsbC92c3lzY2FsbF82NC5jCmluZGV4IGM5MTAzYTZmYTA2
+ZS4uMGIwZTAyODM5OTRmIDEwMDY0NAotLS0gYS9hcmNoL3g4Ni9lbnRyeS92c3lzY2FsbC92
+c3lzY2FsbF82NC5jCisrKyBiL2FyY2gveDg2L2VudHJ5L3ZzeXNjYWxsL3ZzeXNjYWxsXzY0
+LmMKQEAgLTEyNCw3ICsxMjQsOCBAQCBib29sIGVtdWxhdGVfdnN5c2NhbGwodW5zaWduZWQg
+bG9uZyBlcnJvcl9jb2RlLAogCWlmICgoZXJyb3JfY29kZSAmIChYODZfUEZfV1JJVEUgfCBY
+ODZfUEZfVVNFUikpICE9IFg4Nl9QRl9VU0VSKQogCQlyZXR1cm4gZmFsc2U7CiAKLQlpZiAo
+IShlcnJvcl9jb2RlICYgWDg2X1BGX0lOU1RSKSkgeworCS8qIEF2b2lkIGVtdWxhdGlvbiB1
+bmxlc3MgdXNlcnNwYWNlIHdhcyBleGVjdXRpbmcgZnJvbSB2c3lzY2FsbCBwYWdlOiAqLwor
+CWlmIChhZGRyZXNzICE9IHJlZ3MtPmlwKSB7CiAJCS8qIEZhaWxlZCB2c3lzY2FsbCByZWFk
+ICovCiAJCWlmICh2c3lzY2FsbF9tb2RlID09IEVNVUxBVEUpCiAJCQlyZXR1cm4gZmFsc2U7
+CkBAIC0xMzYsMTMgKzEzNywxNiBAQCBib29sIGVtdWxhdGVfdnN5c2NhbGwodW5zaWduZWQg
+bG9uZyBlcnJvcl9jb2RlLAogCQlyZXR1cm4gZmFsc2U7CiAJfQogCisKKwkvKiBYODZfUEZf
+SU5TVFIgaXMgb25seSBzZXQgd2hlbiBOWCBpcyBzdXBwb3J0ZWQ6ICovCisJaWYgKGNwdV9m
+ZWF0dXJlX2VuYWJsZWQoWDg2X0ZFQVRVUkVfTlgpKQorCQlXQVJOX09OX09OQ0UoIShlcnJv
+cl9jb2RlICYgWDg2X1BGX0lOU1RSKSk7CisKIAkvKgogCSAqIE5vIHBvaW50IGluIGNoZWNr
+aW5nIENTIC0tIHRoZSBvbmx5IHdheSB0byBnZXQgaGVyZSBpcyBhIHVzZXIgbW9kZQogCSAq
+IHRyYXAgdG8gYSBoaWdoIGFkZHJlc3MsIHdoaWNoIG1lYW5zIHRoYXQgd2UncmUgaW4gNjQt
+Yml0IHVzZXIgY29kZS4KIAkgKi8KIAotCVdBUk5fT05fT05DRShhZGRyZXNzICE9IHJlZ3Mt
+PmlwKTsKLQogCWlmICh2c3lzY2FsbF9tb2RlID09IE5PTkUpIHsKIAkJd2Fybl9iYWRfdnN5
+c2NhbGwoS0VSTl9JTkZPLCByZWdzLAogCQkJCSAgInZzeXNjYWxsIGF0dGVtcHRlZCB3aXRo
+IHZzeXNjYWxsPW5vbmUiKTsK
+
+--------------GHRek0mmnbllhgkrO1Mnn6jW--
 
