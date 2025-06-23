@@ -1,113 +1,198 @@
-Return-Path: <linux-efi+bounces-3919-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3920-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4014EAE4AFB
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 18:31:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F8BAE4B5A
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 18:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4500C1651CD
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 16:30:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E2F81882E09
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 16:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C292C26D4F7;
-	Mon, 23 Jun 2025 16:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AF1299959;
+	Mon, 23 Jun 2025 16:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mrk9geb2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kephd5QN"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E505266EE7;
-	Mon, 23 Jun 2025 16:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485F529A308;
+	Mon, 23 Jun 2025 16:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750696227; cv=none; b=H/j4Z6rQGcaLZmVUmoEze/U46YPNb+yaqf3GE+umeurvi41dy6XvIOYwklzCw8LAKuDCZkL6Tr2xLM8ibVrmL6Iez4UMk7ovsbEzs5iBJkLcjKWD4laVdx40eSGdBdEFwmC1XNUoPcjakJX70fGd1+jajfV+qVU92uqdNiPcW9I=
+	t=1750696959; cv=none; b=F356pcY9iId0ATQoLbdKEPRY0dVMZQ3o56/0+90WUC4/w1xaI1bwt9hGO4QUFWsxMCop2ToTrjaRR5PrCzU05l7Lu3uNHoxVfZag/L3svKMxKv1FnaXhDEvhIKCS5nIbOUEaLrcmmxwO5zMGtJJIHqALriwpdTE67AduQRM6ecQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750696227; c=relaxed/simple;
-	bh=7ECXGsFUva9QNGfgrOK7NVROKgyu9NjU4V8G0ctTWa0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uI4wpkcPPHdoxvQIL2BrqRc6txoPk4nd31+pOJVFfLv99VC2GSF05p8RNnqGE1n90rq83+9JkgXonk1MhEoQrLRbuCBvXyx8C+1WLp550VmmCfX2Tii934H7dWvCD74dNncdCd3V1Pw3HkxIQcLjboKo/K8YCFkPqLdCMb7WfVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mrk9geb2; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a5123c1533so2224775f8f.2;
-        Mon, 23 Jun 2025 09:30:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750696221; x=1751301021; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/0pqYb3tUeSBl/lIRawvuaSAg/yO32TdfmjQOsmwU1A=;
-        b=Mrk9geb26I492jESlDKfvsncZneNekxMJs/PzaHa+KS+OX6WB2Q+Az8NuEyzxr7Uke
-         CLFzOGScWz60AATUFN/Z3dFUmHE/a5040uDo2X2w2FCYXLTs3oq2boFec4Go54ZkGh10
-         MIRK0x6u0+p1AlR7pN5VXjdcIENjnj8H7vkEz3ygTRiJtW/RU6v1Idwc5+zc/noTjc1Z
-         AG7pT6SmlKL/YK7uP+Tbe4rQEZiYbuqQ0qIaCDADyJZ8UVrpia2Oraz0b6xq038iQs+X
-         xa4r59pRolo0xeG+Fge3+pUtI6TzaAzbRUZdSCEJT4eew94GIqkOJwPfk6//5c1rHSY9
-         UL1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750696221; x=1751301021;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/0pqYb3tUeSBl/lIRawvuaSAg/yO32TdfmjQOsmwU1A=;
-        b=DZQlz6TfQdryRQUEF+71JwZI5iEI8LOI2psEEHowwvMtqR9etF0WkQlgnCoHLY7rsp
-         /d/838zybQiCUWUDNOzJTGbmHmovMDvArSHravU3bHyl+yuqQ7V/1BX4cAp/eTpEgVUF
-         p7Xi2XvjlWadLVo6uPQDk3g60P0yDKCWBpY9y9UJmm5/aE7t4Vy8n/OrGDEhzEGSJbNi
-         K5Tp6zRfiVt7tjD5/kK/i75rg61hZlTk54qtHyK3GItLdyuAoMlKQToR30aCYvytZTAg
-         OUw6JC+yNdD9lexheHv9od6Tj9EG9FohVcv3KFmVAsJhd3nvMwlA8kozuTnBMCG/GgeH
-         9ttQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3LydlZ7Dl5nprVPrBNevA5E9soFeyNatVeiyD+NJbLpvSGiDdVDImO8C6mnOUtX6bLSi3+07scjY=@vger.kernel.org, AJvYcCUTAlY1N/JJeqWiFz8d8Yd3ap/jPLe897i4iVbqwEtnnFG7iE16MpqRJUlHjygdNk76Kp6j39UmMk4ge9Ul@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjJFKSnry90RQ2s0y7a5iZ1KbuZ7nSL/3ftdb7pJDcXGrPqkqH
-	b9dHcxt3dGOATAA8wKTVPARA54FLKXGfM0z3h3qjtWa1XW2VhjV2+w6j
-X-Gm-Gg: ASbGncviM/vyvFoCxQkS+0LRdKRMxnjiJgRcu+ggx/GN6CGrAFym/J0M2NEMY+4vzPl
-	TwSaai4B30BlseV08zTfNFnYHcYX9oVW0JsRao+MjFDz0QNn5s4o+9Sp367K9LfUyGyydGn5TdD
-	N/YEdw+WN5Fg7vaMvcozf3oy6WXXp6KbjhinCClizg2JCsi88UgTKKFPOoizvBZMwJHPP7vY8YU
-	Hz58ytWUpZdOB9Gq18VRgRnoEPfgV76XJPUPlyK5CDeWrGBu7zcJIFc8hTet25veAV/eFg57sNX
-	SeDPQxKcT3SVnncVTEBDB00QBJu6Thjm0vROA4pPswPYtazCj8LZa9fG8AyphgNJiTAVGxEaDzO
-	u
-X-Google-Smtp-Source: AGHT+IH3+aFym5Y1PuEfzW1Qu45WJVQwDF74ldMdWRBk4mcrR7j5xDv/KzXcBPxdWgZvfinY+6Vyzw==
-X-Received: by 2002:a05:6000:25f2:b0:3a4:f024:6717 with SMTP id ffacd0b85a97d-3a6d12e652bmr10478510f8f.53.1750696221241;
-        Mon, 23 Jun 2025 09:30:21 -0700 (PDT)
-Received: from localhost.localdomain ([41.79.198.24])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45364708297sm116967885e9.35.2025.06.23.09.30.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 09:30:20 -0700 (PDT)
-From: Khalid Ali <khaliidcaliy@gmail.com>
-X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
-To: brgerst@gmail.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	ubizjak@gmail.com
-Cc: x86@kernel.org,
-	hpa@zytor.com,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/3] x86/boot: Supply boot_param in rdi instead of rsi from startup_64()
-Date: Mon, 23 Jun 2025 16:29:34 +0000
-Message-ID: <20250623162935.681-1-khaliidcaliy@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <CAMzpN2jBOW3PVJQLvua=knQNu_1mZ6RZYi8JvNenFd5t30UC1Q@mail.gmail.com>
-References: 
+	s=arc-20240116; t=1750696959; c=relaxed/simple;
+	bh=7PCPpTV0y/NGn/GCwR088rcKYN5qhi35it4rqyTNwmk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V01qySxhXTQr5h+cEKfE6gqupNmhG8IP0Rn889my1zeEXVvKh9h5V1l/Xqk7T2XddektGMhOCbOwFesopXpRLAne3IVULBXGZthyDkwNXU9PHLzYYr/pZ5Ef/RrqNhSt0ZktxgVEGcrcbf3XZs2v/M4H/Xa2q2Q6YyTUQwhdM+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kephd5QN; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750696957; x=1782232957;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=7PCPpTV0y/NGn/GCwR088rcKYN5qhi35it4rqyTNwmk=;
+  b=Kephd5QN5y/4aCSyuew7mM0/PC4a+j4/ny/+lgeNO5IQrHzyTK9XJHXZ
+   JjmCs+OqbdjHUF0bwY5pRLd67VwVZZUhT6QMZhgSYEGmaKDKvuQUS2gPO
+   IxSG0XxKnAdLUjBIOELpurczYDqsWier1whJ+fmuWZilx2RadSj3/NdGE
+   VtmMwaFAivSYw6yQtdEZTKCWGeAw+C8KSj5cZlLi51NHfGBlT+x6ThdEq
+   jvv2iPlHoMX6kzWIl21ZTYdpyuCjvzmOJtEsV/zsx0TgDObii8+SUtYL+
+   m7tVeP3IRjA7qG0kj/mDa1jVJCRnAkGle2VkxJSzeG2SfpRGCc2Ilep6X
+   g==;
+X-CSE-ConnectionGUID: tQTMdpc8TgmSzKlpCbGuxQ==
+X-CSE-MsgGUID: 88YC6uO9SuOyLP+0P/qqZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="52987554"
+X-IronPort-AV: E=Sophos;i="6.16,259,1744095600"; 
+   d="scan'208";a="52987554"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 09:42:36 -0700
+X-CSE-ConnectionGUID: wP8ReU9mTgeiKtlhP7Ezjg==
+X-CSE-MsgGUID: 7sDrrq8VQyugcQX4yfbZog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,259,1744095600"; 
+   d="scan'208";a="151823015"
+Received: from tjmaciei-mobl5.ger.corp.intel.com (HELO [10.125.108.165]) ([10.125.108.165])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 09:42:35 -0700
+Message-ID: <8f0913d7-9e77-41e0-91e2-17ca2454b296@intel.com>
+Date: Mon, 23 Jun 2025 09:42:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv6 01/16] x86/cpu: Enumerate the LASS feature bits
+To: "Luck, Tony" <tony.luck@intel.com>, "Mehta, Sohil"
+ <sohil.mehta@intel.com>, "Kirill A. Shutemov"
+ <kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+ "Huang, Kai" <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
+ Breno Leitao <leitao@debian.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>,
+ Juergen Gross <jgross@suse.com>, Vegard Nossum <vegard.nossum@oracle.com>,
+ Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>,
+ Changbin Du <changbin.du@huawei.com>,
+ Huang Shijie <shijie@os.amperecomputing.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Namhyung Kim <namhyung@kernel.org>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Yian Chen <yian.chen@intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "x86@kernel.org" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Xiongwei Song <xiongwei.song@windriver.com>,
+ "Li, Xin3" <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Alexey Kardashevskiy <aik@amd.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>
+References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
+ <20250620135325.3300848-2-kirill.shutemov@linux.intel.com>
+ <248e272c-79ec-4c11-a3a8-dff1de2147c0@intel.com>
+ <adaf2d81-75b5-4f02-99ea-03ea0f1a5a96@intel.com>
+ <SJ1PR11MB6083AE2EF85FB5D2FE39D4F0FC79A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <SJ1PR11MB6083AE2EF85FB5D2FE39D4F0FC79A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> This was never intended to conform to the C ABI, why is it necessary
-> to change it?
+On 6/23/25 09:25, Luck, Tony wrote:
+>>> functions. But, the difference in usage between both of them seems very
+>>> subtle. Could this be easily misused?
+>>
+>> Logically there are two completely different things:
+>>
+>>       1. Touching userspace
+>>       2. Touching the lower half of the address space
+>>
+>> If it's only userspace in the lower half of the address space, then
+>> there's no controversy. But the problem obviously occurs when you want
+>> to touch kernel mappings in the lower half of the address space.
+> 
+> Why does the kernel create the mappings to poke kernel text
+> for ALTERNATIVE patching in the lower half of the address space?
+> 
+> Instead of special "we really to want to access the lower addresses"
+> code, wouldn't it be easier to map the "poke" virtual addresses in normal
+> kernel upper-half space?
 
-Technically speaking, you are right, however that doesn't mean we can put something where
-ever we like. We came from C code which is bootloader and we end up to C code, so we should 
-comply the ABI here too.
+The upper half of the address space is shared kernel space, right? Every
+PGD has identical contents in the upper half. So if we create a mapping
+there,everybody get access to it. Every mm can access it. Every
+*process* can access it. It still has kernel permissions of course, but
+it's still a place that everybody can get at.
 
-> Also, you cannot break this up into three patches.  Every patch must
-> be fully functional so that git bisect will work.
+The lower half is *ONLY* accessible to the local mm. In this case, only
+the text poking mm. It's a natural, safe, place to create a mapping that
+you want to be private and not be exploited.
 
-Thanks for the tip. I will do next time.
+So, doing it in the upper half is risky.
+
+If we *wanted*, we could have a non-shared PGD entry in the top half of
+the address space. But we'd need to reserve its address space and all
+that jazz. I'm not sure it's any better than just disabling LASS
+enforcement for a moment.
 
