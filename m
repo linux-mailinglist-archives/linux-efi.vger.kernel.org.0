@@ -1,133 +1,158 @@
-Return-Path: <linux-efi+bounces-3907-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3908-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DE6AE3839
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 10:18:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2388BAE3C21
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 12:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BCA03A514D
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 08:18:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A724516B9D5
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 10:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2E31A8F60;
-	Mon, 23 Jun 2025 08:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971C523958A;
+	Mon, 23 Jun 2025 10:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDfO1x/A"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HbQHWs/l"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4FF211F;
-	Mon, 23 Jun 2025 08:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84380239E8A;
+	Mon, 23 Jun 2025 10:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750666732; cv=none; b=Y7BDjN8GBf9sZhVgOk5KtM5LflRxhp6hG+otYyPLk2ENVWM+1sDHKdXmx8hioWTyQgDzs/RW3Jf7RyQqCPl8b26oDdfFDrG+zJqC5qIvapbULNKIu18cjlZPJgoGniSKmYl451xoz0HjTyKVkkZbQ5mEQfN4pFoNG9gpmU9gipg=
+	t=1750674139; cv=none; b=h7GjhgEas2p/Hi+U1a44coAeMcrYeZcCZieT+Zs2caEcx8q9bYO2G2oOpKeAVE/Ptsr14wgFHLi4VYjKQAPyH2ZGsD3x+Hucw61hd2HugYqJR+6PGNpIG5hZPHgOCiVOq0uKP+e669HDaWnpcctjfYQWp8DzbLdgklnUAtNy21Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750666732; c=relaxed/simple;
-	bh=lCK854TgRqv39ZVQ7Izhf1FWljjyyVyW8qjFDJ2regY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qbjOG/OwE4x7hE3rIYUI3c15lTIQN5atPUFB/Su+wf6SKfDh7eUrWcZwj3+m4Cs+IaDcWO2NKcUnYFEnq8cDJvwowVyKy5AQut8uksVFK6M6yh6K7eWH/FDXi/WTmtT9NsONeWQZiHA06TH3GwVXhXEbBrGda45c7tXgId/oris=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDfO1x/A; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ad8a8da2376so609596066b.3;
-        Mon, 23 Jun 2025 01:18:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750666729; x=1751271529; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gwx8N1prAjZlb2ymIsmsbUe/fl2ghoNiNQjIjRYyjWA=;
-        b=RDfO1x/AEljEzhgDjHWFG9lPS2VhewfdT+Y69CQ+blJqxCKO9Sfg1xD5mDeutY1uzJ
-         asu1EpriX3x4PRt+AQOyE4OAPl4CEn/Lmf2/BNT6AEwlB4CqR5XpU6nLAr25bvd0Yfsl
-         ZA+vxFh/2xlLj/YeWAQLsWIxnzClrAbHLQbTs8qsshLik7YTk1i8e3/1K/vl3imp6SpA
-         1uk24m9NtgOVVLbBQ5Y2hWcdUmtliurkr+YXl1QVTc6rN5ptDWZjGMII9k8S1H3pCYJ8
-         nZTjnfNMSTK642QEkXv4nnqz/YaE0Xod+n04t+mkzPO5yCYfxyWpjzwpUtqPllh/2Asj
-         yVBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750666729; x=1751271529;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Gwx8N1prAjZlb2ymIsmsbUe/fl2ghoNiNQjIjRYyjWA=;
-        b=s+5bLJ5pphjNeN4kVehMlkMtysopwhMS4AUn4rxe9MVjUOCwtPI5BDVHD0OF8Luh2F
-         t2BoNFOYfML/N0tAtQJvD/A2QhDSUUxhDSWcNOFraYSA/bz2gKNjE3VTz2PCUcty1WBl
-         2lSvJe2IthXTgc3dwp7EKpNVodqWs3aSt8vyF7y951PSNSx9Re5HhDXsDheIzl/6ozq6
-         E2DJdiEGG76diNjKQOF646I2q7NJ6X1X3vRqETX11AOiS7Rt4w3ON3iYJSBRyaHsav2p
-         OlbeZXMJ0zpEymXS0NDtPUNb2h3atSvsZ6rMtn5/XlOfW/sWvOmZtqHBuqbP1dKvnvvl
-         g2dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUb8xAQrCiA3Scu7ItspCPnNfu4jP1r5PpdnulQd9DCSUCyV/NhzLbdk7r7wMtQQ7zD/sGQjqEQfEQ=@vger.kernel.org, AJvYcCVX61tr6qJ4853OVHE4GA329hWT0mLNUbpfPySV7kMXl4FeNJSDXVnqbs6S9diXfngq1MpA5G5KHZXuxFYd@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9DBqtlFYtAPTmylAi8hsNMVNTVZPgp+1rOHA2QrDdr86pxr1s
-	w9XID5CxcP00A/Azb2yrb/mJy+PccO43kjvKSP4hgT8xeYnPRcs3UIYo
-X-Gm-Gg: ASbGncuA86QxuU9O1LmJniJNOZrQxYlG2hQhPyR9FlEoIuzALmQcUb33vCS3LhO5iNb
-	w/snRD1Q9I1TBTs7gszTBDm8jK1CJPbAKVXWNgU5wp0MR4BhZT9iw6lnK5DqAy6aHhm84TZAfm1
-	SyIN/wzJEqERvFLNH4WCVKyUzZ2WtbUGEtcy6bRSwn2x2BeumZwQG276XC85iasCiuPlGD2t7DI
-	mJFKF+YzA/k395LihyqFrAZ1dA1UAeK/Xeip6uUlTP+khHNyuCJ1JdIb0kquIHRW2rSa1cmRqdE
-	Vd92RfkioqFPHfpklCQhcVyiu3oPJDxl3mGu08t9zOlwLBfyOZX4uIxTZ4+pDDSkQP54qLBSPzx
-	0
-X-Google-Smtp-Source: AGHT+IGnko2iUfz77f98BBimqLt0TFCYQBHgyYvKFbjRTMvtzWLPW4CMLACqj3r7KnSwqczuloUYVw==
-X-Received: by 2002:a17:907:3f8b:b0:ad8:a515:767f with SMTP id a640c23a62f3a-ae057ca667amr995584766b.51.1750666728427;
-        Mon, 23 Jun 2025 01:18:48 -0700 (PDT)
-Received: from localhost.localdomain ([41.79.198.24])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae053e7f2cesm680467166b.10.2025.06.23.01.18.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 01:18:48 -0700 (PDT)
-From: Khalid Ali <khaliidcaliy@gmail.com>
-X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
-To: tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	ubizjak@gmail.com
-Cc: x86@kernel.org,
-	hpa@zytor.com,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Khalid Ali <khaliidcaliy@gmail.com>
-Subject: [PATCH v1 1/3] x86/boot: Recieve boot_param from RDI Instead of RSI
-Date: Mon, 23 Jun 2025 08:17:50 +0000
-Message-ID: <20250623081803.1340-1-khaliidcaliy@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1750674139; c=relaxed/simple;
+	bh=buTQECq2VCKD1ICDi23k4UJqMyJjcgNtn8vEOvOp9lc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aHkltSuOZ4uPNMOZYpeRb+TRzmY8ONmb9XF4Z+dFp7izlXx0ztNGRWOOVYPbLFAGgzmZtYykN7QYnikgXn9vsIWL8R7J/ZodD5zkrCm4uKTzfek5aiuE89z9bCSKVVEvuxYAdjNOOA1UHBo56YBNq0/cJriVLjJ6Nf22fwVMTFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HbQHWs/l; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6633040E019C;
+	Mon, 23 Jun 2025 10:22:13 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id X3JkVTcSfEkT; Mon, 23 Jun 2025 10:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1750674123; bh=bit8kbTV4D3YTiOYptKHmiW7XfvgF+MCkFLAQajwdzk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HbQHWs/ls8gZcfaGZhZv31VGHo7gwnSdUS6tcGx5ju6fZNZNY7nrxFpxNwZjLu2Oh
+	 XS7v/Ipqm7R5Gt4bJzO3gvfy9+TK/sEn4+UhrNhM2kODyyMDVofQNtyFmoAmi4pUvu
+	 7Bof7QehSI7Qhhp6CaQIgBS2XBwOGZTRQHy9D3jF2xfNhlFkQphtrKTYysOrLuQlcd
+	 5DZW3HGSwtZej+UmB3Q7HkqF9IHfDm5nYLDrrCzgOrASUWqXO4WHmmFy2xLrJ3Y4LB
+	 +J9SiPoSMBzFfPPuo/wXAZzC1UYbclUgVJJV0P+iFAo0GOH9d0cw3TvPC97R/QbMe+
+	 kfoFG7keh2xnoyupNaPcs/pZm2+ZEEFNlcrVOP07MwYrwdVqsTN++R93nArt0KvMOY
+	 ydmbpOUhFb7ypo+ObodoI3r5FfJABlmwGtjNbrPsgjLll9uf+hsXla0XB1hZesRsII
+	 0eAaH/vcQNEBsfbaHJk/dOvuGpSfecQHK5l+IqHnYT4NReLwCFb8yC7BhdFDlja4sv
+	 s4a0Hdz4FbszW8nVDNGvy3o+s+gonkxnzBWmVYIyqizfNXpKKqigDzu+ChQ2Na2PP+
+	 ToXCf8yvBgwWs7vd0+P4AcRe9tvgUAkqSUj/RpcQUgLU50z0XqT5EuTjBVWrshIEVU
+	 ciO9IULS86WrYB8ItxO4v1dc=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D19B440E01A0;
+	Mon, 23 Jun 2025 10:21:10 +0000 (UTC)
+Date: Mon, 23 Jun 2025 12:21:05 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Xiongwei Song <xiongwei.song@windriver.com>,
+	Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Tony Luck <tony.luck@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sohil Mehta <sohil.mehta@intel.com>, Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Breno Leitao <leitao@debian.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>,
+	Juergen Gross <jgross@suse.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>,
+	Huang Shijie <shijie@os.amperecomputing.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-mm@kvack.org,
+	Yian Chen <yian.chen@intel.com>
+Subject: Re: [PATCHv6 01/16] x86/cpu: Enumerate the LASS feature bits
+Message-ID: <20250623102105.GCaFkqkatFSbyl1YeN@fat_crate.local>
+References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
+ <20250620135325.3300848-2-kirill.shutemov@linux.intel.com>
+ <20250620163504.GCaFWNuI-8QFqAM0yI@fat_crate.local>
+ <6y2iqv6c2idn7yebaec7tyhzl5zcsrwqq4lcsokumlqeophzaf@ljnmxorblgcj>
+ <20250620182943.GDaFWolxhwogB2tTxb@fat_crate.local>
+ <tmd5llufitosphzhiik2tlemjuwyi7xkcjlhbqhibrgjjhsqcj@b3xtgub42p45>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <tmd5llufitosphzhiik2tlemjuwyi7xkcjlhbqhibrgjjhsqcj@b3xtgub42p45>
 
-From: Khalid Ali <khaliidcaliy@gmail.com>
+On Mon, Jun 23, 2025 at 11:17:02AM +0300, Kirill A. Shutemov wrote:
+> What about this:
+> 
+> LASS provides protection against a class of speculative attacks, such as
+> SLAM[1]. Add the "lass" flag to /proc/cpuinfo to indicate that the feature
+> is supported by hardware and enabled by the kernel. This allows userspace
+> to determine if the setup is secure against such attacks.
 
-Adjust the kernel entry point to recieve arguments from RDI instead of
-RSI.
+Yeah, thanks.
 
-Signed-off-by: Khalid Ali <khaliidcaliy@gmail.com>
----
- arch/x86/kernel/head_64.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I'm still not fully on board with userspace determining whether they're
+mitigated or not but that's a general problem with our mitigations.
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index dfb5390e5c9a..d24fea15b6a6 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -43,7 +43,7 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	 * for us.  These identity mapped page tables map all of the
- 	 * kernel pages and possibly all of memory.
- 	 *
--	 * %RSI holds the physical address of the boot_params structure
-+	 * %RDI holds the physical address of the boot_params structure
- 	 * provided by the bootloader. Preserve it in %R15 so C function calls
- 	 * will not clobber it.
- 	 *
-@@ -56,7 +56,7 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	 * compiled to run at we first fixup the physical addresses in our page
- 	 * tables and then reload them.
- 	 */
--	mov	%rsi, %r15
-+	mov	%rdi, %r15
- 
- 	/* Set up the stack for verify_cpu() */
- 	leaq	__top_init_kernel_stack(%rip), %rsp
+Also, I haven't looked at the patchset yet but I think it should be also
+adding code to bugs.c to make all those vulns which it addresses, report that
+they're mitigated by LASS now in
+
+grep -r . /sys/devices/system/cpu/vulnerabilities/
+
+output.
+
+Which makes your cpuinfo flag not really needed as we already have a special
+method for the mitigations reporting.
+
+But ok, it has gotten kernel enablement so stating so in cpuinfo is ok.
+
+Thx.
+
 -- 
-2.49.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
