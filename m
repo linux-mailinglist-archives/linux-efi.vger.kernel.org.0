@@ -1,125 +1,144 @@
-Return-Path: <linux-efi+bounces-3906-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3905-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E57AE3833
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 10:17:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2CCAE382F
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 10:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0320E188D017
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 08:18:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 308D43A7AD9
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jun 2025 08:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F281F4161;
-	Mon, 23 Jun 2025 08:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DDE1F1306;
+	Mon, 23 Jun 2025 08:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XhWhxhLx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ks/h/Npi"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0D21D6DA9;
-	Mon, 23 Jun 2025 08:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2660A4409;
+	Mon, 23 Jun 2025 08:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750666664; cv=none; b=dQ104kMBdhwxuiE6hOqfG1lKV0Kf4JQU+USZbh0cMU3uHSAZzwbw4vkN/yCzIc+bk88mPW3jWLnJKdetPWlDD+X2MfMLvJk805a2QCR6sNIJxvXthyFgU4hi4biaPMuM1kEsUefuwQqCUBu7djXrdChRTUWktcmRHrGHZr3Ovhc=
+	t=1750666640; cv=none; b=Q7yZ04clbAgOXvRp0tPYv+wiKlygoWY/xdab4JhkYkM43yf1TnNF/s7yeTtWFRC7KX4zBoF/HzPlGPqb3TDwDdm6b+2/n3aVJHvG2uyYOiQ09lFTc3OGjYRjOEHPN3eC0a45BMKey14mfDp8/SrEu6TAGCyRwFFPYKe5QRnZeHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750666664; c=relaxed/simple;
-	bh=xABlpFKCI7tvbKgSAmn4BEyY09ekpiP8IizGsmnqo1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tJqCO4iM3fHr9x7R15zyLKCCfK+W+BoVEw48rW73ZWRyS7MX2zNWsnBAMdHJAWkudb2ir6zO2zWRajsOztsf48uNQzSDGOCj8btnYBkay47nxbsxkGJQ3CUl92LyIZ77Locl4LxLtBZFNGRyxpUF7oggLyZg1qTAZqSDOtiq2hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XhWhxhLx; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-609c6afade7so9068137a12.1;
-        Mon, 23 Jun 2025 01:17:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750666661; x=1751271461; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q0ldZjivV1lpUZD2fqgWNSEgeUozCBiIx7NicXZLPzM=;
-        b=XhWhxhLxab+7722d7MeHkcAjXYxvjY16oBS5WBoSJLfhf1iXvflhATc5PXpfb9niUl
-         H9k7uANVNaqAy3JRB8aLyyz1pBjhkvjLEaTcccsRDsASGnoZadCE7UUu1fsVsNBeNH1J
-         xRSyXdZyQ0tzsIZyIDx096F++x64zJS+RCoKlMMjzNF7VHwrW8ONdGmbebdoyITRwEM7
-         j+mToQIdg3MVwi8OJxnso2qrGItoyDg8k/rbdISNHYZ4W+MZciYKVovg371EFaxyUqCm
-         x+0i4CE2NFCT6Y88HVYipmhFw0CSM2BTW2PB1cP/OGkskHxyafhfJPRwm9lptx8phFp5
-         UMQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750666661; x=1751271461;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q0ldZjivV1lpUZD2fqgWNSEgeUozCBiIx7NicXZLPzM=;
-        b=giqJElPHuXGX/VCJZKrPDyA9XlZfaIJg/L7/HmieSmTpqIX5vh0mBY/rRWGl6EflPd
-         bVQwgNImsBgOYS4w29NERvlLtpb1Y8smcYop7Aacq6Wpj2IyrlU4qtXmvDmHQzfNKqE1
-         +wy2gY9W6S/S+Qs0wIWbRYxsHMQJjT80tyAc4KHlx4lGKDAEo+IXrVj5erDFbDSIR/Qy
-         CxAurKrTvsj924cRQK5+v5KED0KNyTmWWYm+8KDFy8k8lyHLshbCSY4u91XZ2ktfpjF2
-         bknr+z88xirQVsw1lkF5fyg45FOZr1hsZMQ0lt8ggsWGZmNbhNe02z4M7KpxBxKln7WU
-         mByg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOR6TUebhj8cWTgVdZ3Vv9QUOsL92qEixRGBBWIHQ7TjuCL09AWMRq/xAgmSl3M362lga71ADkWaRYNqaD@vger.kernel.org, AJvYcCWSBSveamSlXkqn2Tpi4dtq5P8ucEAci3xuAHBIhFHFJ3gHhfVEmQNg1EVFAk38QGM13tsM6i7zWYU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXd1a34Cvrefihe9iORm6vX9LS4ZVrdCldiac4zxnVKmsoriA+
-	561+8v6BSPLw31cJvDCKaEwc9QhwICqRq03M/S5rAjoZMyMaVCt90J9X
-X-Gm-Gg: ASbGncslH8GNKTT4i0MKTxFTTb8r2rNMKruxtGLLsq9sTZiA0HXWw/hVWciMQP+a7pV
-	KvOrZl3efMsaRDbO3P9zXRXI/y/A6tab4C1rGrKG/U1uFn/0uhSdkK6qpxeqaz+ZEsXFBCCbzak
-	Ki5r9bVtx6U7QDL/avSINgCKHXW/tqjiPlepRExu6JaEJUJb1vao6UDt1MnxUlSk4Jx2akpvHn+
-	8vq6JfKiT79/DWGBMyvukT2f2fRngkOyaGj3p1OwArIOxgTlnE8ZMUK8ts/2o0/C0C+gKFh9EaO
-	zFZqoIvUnhfpm2lQEDOvMM7m/TUy6HW1RClCSxj/2I+gkXcNdTW6WX+UR8sGqJ17kDpexciSe+Z
-	v
-X-Google-Smtp-Source: AGHT+IGygq4BgBIH/An5jrlMX4bO2TbpXKrBaZx0SApj+U+km9rMpRWoZwUu6E6qBZXhz9adheWngQ==
-X-Received: by 2002:a17:907:1c95:b0:ade:44da:d2cf with SMTP id a640c23a62f3a-ae05afc1bacmr1232128866b.18.1750666661183;
-        Mon, 23 Jun 2025 01:17:41 -0700 (PDT)
-Received: from localhost.localdomain ([41.79.198.24])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0540833fasm674982766b.103.2025.06.23.01.17.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 01:17:40 -0700 (PDT)
-From: Khalid Ali <khaliidcaliy@gmail.com>
-X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
-To: tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	ubizjak@gmail.com
-Cc: x86@kernel.org,
-	hpa@zytor.com,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Khalid Ali <khaliidcaliy@gmail.com>
-Subject: [PATCH v1 3/3] efi/efistub: Make libstub to supply boot_param from RDI
-Date: Mon, 23 Jun 2025 08:16:39 +0000
-Message-ID: <20250623081656.1303-1-khaliidcaliy@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1750666640; c=relaxed/simple;
+	bh=3C1C5syECeHn+sxB4B/MNopaQHu7zY8lfXLdxTcq1ks=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UJU/9abDXQQn1R0Rjnq9Cj/bRUrHGqAMyEiYVogGmSWjtskmEQxjPsFBZIub/G6Jl9PFU8xFddFc8MT/orZKPTkDK8ktvC3nYErte+8kYoOqg75Otiby1YHEa4pmQ1gkclO3rYX6unmvq0IqnVXE/+EXQTMsf/ApZv73fd85pbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ks/h/Npi; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750666638; x=1782202638;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3C1C5syECeHn+sxB4B/MNopaQHu7zY8lfXLdxTcq1ks=;
+  b=Ks/h/Npi2/5zOyXe6eTCe6EUpzGoRxtKfN+vqWCUL+/elCbPRP+hCYtx
+   6pv+AhcL+m+OTWk2hvP9kWRe+DByHMSjSPg1mVOi018xVQaIO5jZGqBEO
+   P7tiEPCWFyE50eFX+KRMboE1HeOQaVieX0N9UTiVrpiPkyepvDZkDgjT2
+   QWDXQ5Ic5HM0RIbEthNPd78//YrBhpwVd149tzBgU+lCxdYZvb3zrC8g0
+   HPT+khGIJYkZP4yM9+nF9m91D68eHkoozsZgleP3+Q8RcUqIOP8GsHt35
+   odbb71qZaincMdLNixl5F+42duQVaNzV4uLnvO273vyrwt42JLIXNR4IJ
+   Q==;
+X-CSE-ConnectionGUID: CbKVdD19ToiYt3SSMLnweg==
+X-CSE-MsgGUID: 3lhFvzK+T+6tqpRXOp5Emw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52732704"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="52732704"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 01:17:17 -0700
+X-CSE-ConnectionGUID: 8g6RJxTKTPCtjzq50ZA/yw==
+X-CSE-MsgGUID: vpuqvzhrQi6SNRUSArfXVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="156074558"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa004.jf.intel.com with ESMTP; 23 Jun 2025 01:17:04 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 6F573108; Mon, 23 Jun 2025 11:17:02 +0300 (EEST)
+Date: Mon, 23 Jun 2025 11:17:02 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>, 
+	"Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>, 
+	Alexey Kardashevskiy <aik@amd.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>, 
+	Ingo Molnar <mingo@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Sandipan Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>, 
+	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, 
+	Huang Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-mm@kvack.org, Yian Chen <yian.chen@intel.com>
+Subject: Re: [PATCHv6 01/16] x86/cpu: Enumerate the LASS feature bits
+Message-ID: <tmd5llufitosphzhiik2tlemjuwyi7xkcjlhbqhibrgjjhsqcj@b3xtgub42p45>
+References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
+ <20250620135325.3300848-2-kirill.shutemov@linux.intel.com>
+ <20250620163504.GCaFWNuI-8QFqAM0yI@fat_crate.local>
+ <6y2iqv6c2idn7yebaec7tyhzl5zcsrwqq4lcsokumlqeophzaf@ljnmxorblgcj>
+ <20250620182943.GDaFWolxhwogB2tTxb@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250620182943.GDaFWolxhwogB2tTxb@fat_crate.local>
 
-From: Khalid Ali <khaliidcaliy@gmail.com>
+On Fri, Jun 20, 2025 at 08:29:43PM +0200, Borislav Petkov wrote:
+> On Fri, Jun 20, 2025 at 08:33:36PM +0300, Kirill A. Shutemov wrote:
+> > What is current policy around it ?
+> 
+> Documentation/arch/x86/cpuinfo.rst
+> 
+> > I think it is useful to advertise security features in cpuinfo.
+> 
+> Because who's going to consume them?
+> 
+> Don't get me wrong - I am trying to see whether the whole use case for this is
+> well thought out. Because it becomes an ABI.
+> 
+> But if no one is going to use it, why bother?
+> 
+> Arguably, for this thing the argument would be - as it is put in that file
+> above:
+> 
+> "So, the current use of /proc/cpuinfo is to show features which the
+> kernel has *enabled* and *supports*."
+> 
+> as it has been enabled by machinery.
+> 
+> So that's ok. I'm just making sure we're on the same page and you're not
+> aiming at something completely different with this.
 
-This adjusts the libstub to supply argument from RDI instead of RSI.
+What about this:
 
-Signed-off-by: Khalid Ali <khaliidcaliy@gmail.com>
----
- drivers/firmware/efi/libstub/x86-stub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+LASS provides protection against a class of speculative attacks, such as
+SLAM[1]. Add the "lass" flag to /proc/cpuinfo to indicate that the feature
+is supported by hardware and enabled by the kernel. This allows userspace
+to determine if the setup is secure against such attacks.
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 09ed1c122106..9da9b6295b1d 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -794,8 +794,8 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry,
- static void __noreturn enter_kernel(unsigned long kernel_addr,
- 				    struct boot_params *boot_params)
- {
--	/* enter decompressed kernel with boot_params pointer in RSI/ESI */
--	asm("jmp *%0"::"r"(kernel_addr), "S"(boot_params));
-+	/* enter decompressed kernel with boot_params pointer in RDI/EDI */
-+	asm("jmp *%0"::"r"(kernel_addr), "D"(boot_params));
- 
- 	unreachable();
- }
+[1] https://download.vusec.net/papers/slam_sp24.pdf
+
 -- 
-2.49.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
