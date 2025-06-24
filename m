@@ -1,133 +1,188 @@
-Return-Path: <linux-efi+bounces-3950-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3951-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E597AE63AF
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 13:37:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F976AE6506
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 14:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5960F7AD60E
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 11:36:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AFD24A49CB
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 12:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809DF28467D;
-	Tue, 24 Jun 2025 11:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F75291C2B;
+	Tue, 24 Jun 2025 12:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hpzFJi7d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eu9htEvB"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC0F280CC8;
-	Tue, 24 Jun 2025 11:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD9F289E1B;
+	Tue, 24 Jun 2025 12:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750765057; cv=none; b=V6kl55lao8zZTGtYau3yju/BWZpzy09Hhk+U0Dan11gk37IjyIPlWpZqfZsitSWXG8OxliqHP9pR4pjx1o1XyRvNLN5XLLXYF2nYpT+ZDy8K+are8oSSqqtv5Dp7Ix2j6uk/ePc4Eudk8M+ZY8zxNmgKf6td24OefEs6YVMLVrM=
+	t=1750768286; cv=none; b=CF91aJM9eoAtj7S5DwK8poP9aWiO2G0Jm2Eo1n2OGwAZKgtCaggTejQ5IVRhQRQVrC0CI/bRs/uPlwM45xhdre195LNxAyHYJ1r4zuZcSpPrT8H++5Xg6B0eaNVpt2yFUbz9JJwwM3XLSgtEuo215tDsMwKoYHqKSpRzYGhR990=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750765057; c=relaxed/simple;
-	bh=1zp6mhXvmMH8trlbOZRktJXmdXnam+2EnOgo74XACPI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FwrW7f6gN1ohXj/bFNL9fgEoSsvepY8ntrdWlvnJH6W/jh8uWoSH7nU1kz9GrPmrCSd83S98Lyqu6ZUNSRmzz8mRwS4Ie8Gq23ic9wJPMBNI5x9jQafV8KyXpzyqe8yuXfuYB7kc/gH6rCUH80Zo/PYWLKsYaWwL6YC3WWOZo30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hpzFJi7d; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750765056; x=1782301056;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1zp6mhXvmMH8trlbOZRktJXmdXnam+2EnOgo74XACPI=;
-  b=hpzFJi7dCpnBfKkbNFt0OJW/O3V81Ud/NtMbZRPqg/huS9KxDTqNYMm/
-   t8uyfMi2nhVYxi8kZtV/2nWgsI0gLxkCX6ZNTYnRgL2uFTQPTChxv3I69
-   rqn4iOWkrvOLo6BivplTEaO5C+1DvhlicXOBvhiejGcR7x2Z1GgrewcVy
-   PwbDkudyaTb2R0ePKDdgJD6vtjt8CdsfVC4neZcdTEwPhfSe5YppXlq88
-   nuVGzpEpG3zEZ5895A6wzyhG/bjWICgw1CmaZ9pLBysQYrLLItqDO/Mrc
-   b7bOR7Md/i12PlarKqTUI0yNzkBd++PTY6DvbFku4Q90iEogy1hK7WLON
-   A==;
-X-CSE-ConnectionGUID: l05Dgq+fSs+S/i68jyQTug==
-X-CSE-MsgGUID: rEKdUBuISDmAyKjGMf+Gqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="63693221"
-X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; 
-   d="scan'208";a="63693221"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 04:37:34 -0700
-X-CSE-ConnectionGUID: E4+6VBWNT/KVds9ubA8IBg==
-X-CSE-MsgGUID: Xdm3O+jyTXuRhe76Z3qzAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; 
-   d="scan'208";a="152399988"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 24 Jun 2025 04:37:22 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 48839224; Tue, 24 Jun 2025 14:37:21 +0300 (EEST)
-Date: Tue, 24 Jun 2025 14:37:21 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>, acme@redhat.com, 
-	aik@amd.com, akpm@linux-foundation.org, alexander.shishkin@linux.intel.com, 
-	ardb@kernel.org, ast@kernel.org, bp@alien8.de, brijesh.singh@amd.com, 
-	changbin.du@huawei.com, christophe.leroy@csgroup.eu, corbet@lwn.net, 
-	daniel.sneddon@linux.intel.com, dave.hansen@linux.intel.com, ebiggers@google.com, 
-	geert+renesas@glider.be, houtao1@huawei.com, hpa@zytor.com, jgg@ziepe.ca, jgross@suse.com, 
-	jpoimboe@kernel.org, kai.huang@intel.com, kees@kernel.org, leitao@debian.org, 
-	linux-doc@vger.kernel.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux@rasmusvillemoes.dk, luto@kernel.org, mcgrof@kernel.org, 
-	mhiramat@kernel.org, michael.roth@amd.com, mingo@kernel.org, mingo@redhat.com, 
-	namhyung@kernel.org, paulmck@kernel.org, pawan.kumar.gupta@linux.intel.com, 
-	peterz@infradead.org, rick.p.edgecombe@intel.com, rppt@kernel.org, 
-	sandipan.das@amd.com, shijie@os.amperecomputing.com, sohil.mehta@intel.com, 
-	tglx@linutronix.de, tj@kernel.org, tony.luck@intel.com, vegard.nossum@oracle.com, 
-	x86@kernel.org, xin3.li@intel.com, xiongwei.song@windriver.com, 
-	ytcoode@gmail.com
-Subject: Re: [PATCHv6 07/16] x86/vsyscall: Reorganize the #PF emulation code
-Message-ID: <hhbqjpkpdi5oe77lfosjpgyvvhvxgwolb45ll5rmwbzsdt27h5@hgv57r543ryl>
-References: <9d351d80-66fe-486f-bdb3-370859dc47cc@intel.com>
- <262c0fd2-ac66-4ce7-903f-4062f1fe1d6e@citrix.com>
- <b6f8a90d-4309-45c5-84cd-32e281d076fb@intel.com>
- <kthmv63jrvrr3shhzhhcib7qrjp7sjkah65kogbfphfr6wg6cb@z5zydz6ov7pv>
- <bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com>
+	s=arc-20240116; t=1750768286; c=relaxed/simple;
+	bh=A1vlO/L1VKH8WOeSv/ouj3ncracjwzpEiurRYiS/ALg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EHpbbJp1/bWy7Kw08U3o1KmEOGioMOByrf7E1WLg1Mnk327tQ2rRBfuuW2Qn7vTzcdO2oFn7NUucwjZdiAtkbsGKy3JgE0OO8lS5l7wLL6zbirQaV3HUYtHxH+MooueTQBBst0HzFOIxujZiYMqvOz8s5zsZXTXx+3e6vEBCCNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eu9htEvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B39C4CEF3;
+	Tue, 24 Jun 2025 12:31:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750768286;
+	bh=A1vlO/L1VKH8WOeSv/ouj3ncracjwzpEiurRYiS/ALg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eu9htEvBiVbL44j/hDA/XL5IHMVRkTjREoK+yoJofVs3i2H7zYeWM4nuOEa8lvA1q
+	 draOJBWRmasaODlA4846qtfnrHoWcfrlpN7SdkOAt9CRDuKgz+Jijdfb0hME3v4zjT
+	 vySbdesGJCidQHCf0M229vamBtjKXpnwatmAh49jUKp+nVNq+/QlhEUFGI/3hC6dpM
+	 MBpiZpEieyvMUEHttV5HVCNFcwOz97BYbHpUnESxPT0XUV2ac4VY/kC4HNi3iT2U1C
+	 nndDqpkUc6Rj2nldXF12iLWnmS6e5StbWpsEaS9jarXC/+el4cuLLpnkbs9yytEYsC
+	 jjsFUJ19nZmUg==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-607ec30df2bso769442a12.1;
+        Tue, 24 Jun 2025 05:31:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUIcBidubsUjr6GvP7f8421F8eC99nNi6qungSKTQM8pINmHk0ZFQw9RZuYj1FBx0HXJrFF3WY3Rotkx7e7@vger.kernel.org, AJvYcCUQZWnOTjCK2ItJvAeXFGpEn1wxgj+j7S3FaXb6FQWYwU4dhdbpvxOzHlLl1i2fpKNkBz0CHKkYXuM=@vger.kernel.org, AJvYcCVSnuJEYLz/GTL/Zt2wX6i8PbgDhcFQMKVvxqYQ9uKexcFTe4i2J5X9OE+QgjnqUXcCZ4Kr6BRLz/+w@vger.kernel.org, AJvYcCWfiTkex+f0MQn2Z3APHWJVp4HQPyHwHt4AGxv8/eCTD/Wh1tFfHarKKtWaIToUdgxBNH2xPZeVU+3DSQ==@vger.kernel.org, AJvYcCWioFj6dnpN+JivFYoas3pOlccQAJKDOtuz5crs2yTlM1t+seJTOz1ZTStM7uqQuJe3SwUJfStDO/trpVnwdOVG@vger.kernel.org, AJvYcCWjTrlomDwlBvZDpD+VWRgwmHhauJOez08kLDWR4/qlguDkO5nrNIV/nfXepGNh0ToK7Hez1v1ORB4YQQ==@vger.kernel.org, AJvYcCWkytK29gf2ZbYEOocH8bXuAPQ/UqBhE3WfKgyHkJCw6Bx1pmxGYIRJmSGiOfFXKWjatwVCMqjN1iruvkoSA2qz@vger.kernel.org, AJvYcCWwjMBDeub9j3awBbNGpJtyGIYzMVCfPwbN2Qb/7+cx5Pr16kamrB+C4ldq33XDCUihDqLrQVsWyCfqWvHQ@vger.kernel.org, AJvYcCXeEP3m9siA10DxTLOpTz8vc5wuJKop878SjR+iKM+WruZTu8Go8JcteBM33w5C6Oj8RMYc8u0iVfd4p07d+JQLfF/WEmsR@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpG8YkBHYF8id6pnhc+2Rp05WERXknvveD5uYetID7V6bxhC+N
+	Ua0WPE2J9qre0HTAgZiSjYgdnmdP8M5x1lTQ9Vh5Rd6razi/cuq/AcCKQfndyTcPCVm7Il4K96q
+	gutnGDt0/tyS+RYnSVUVTaKVcGSIANGE=
+X-Google-Smtp-Source: AGHT+IG78TOJtNBgPo6KUbppTtQyUVPXosqjkC+mjKzFM6GuMzZpIE/4mn6DMDsxVG8gc/mo29CZZDSg4K3moyGLako=
+X-Received: by 2002:a50:9e07:0:b0:607:5987:5ba1 with SMTP id
+ 4fb4d7f45d1cf-60a1d1676eamr10402408a12.20.1750768284578; Tue, 24 Jun 2025
+ 05:31:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com>
+References: <20250523043251.it.550-kees@kernel.org> <20250523043935.2009972-10-kees@kernel.org>
+ <CAAhV-H4WxAwXTYVFOnphgHN80-_6jt77YZ_rw-sOBoBjjiN-yQ@mail.gmail.com>
+In-Reply-To: <CAAhV-H4WxAwXTYVFOnphgHN80-_6jt77YZ_rw-sOBoBjjiN-yQ@mail.gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 24 Jun 2025 20:31:12 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5oHPG+etNawAmVwyDtg80iKUrAM_m3Vj57bBO0scHqvQ@mail.gmail.com>
+X-Gm-Features: AX0GCFsgXJm0uAqj4ZcBCmgCp5XFBS8cfA5fjKZVFWrLP2ySZYpAIUKeGDxIJgs
+Message-ID: <CAAhV-H5oHPG+etNawAmVwyDtg80iKUrAM_m3Vj57bBO0scHqvQ@mail.gmail.com>
+Subject: Re: [PATCH v2 10/14] loongarch: Handle KCOV __init vs inline mismatches
+To: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Gleixner <tglx@linutronix.de>, Tianyang Zhang <zhangtianyang@loongson.cn>, 
+	Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, loongarch@lists.linux.dev, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 23, 2025 at 08:32:53AM -0700, Dave Hansen wrote:
-> On 6/23/25 05:41, Kirill A. Shutemov wrote:
-> > So, IIUC, that's dependency of vsyscall PF on NX. Do we want to disable
-> > vsyscall on boot if NX is not available?
-> 
-> Well, vsyscall=none can break old userspace, so forcing it on old
-> hardware doesn't seem like a great idea.
-> 
-> But, either way, this doesn't really appear to be a LASS issue. This code:
-> 
-> >         if (!(error_code & X86_PF_INSTR)) {
-> >                 /* Failed vsyscall read */
-> >                 if (vsyscall_mode == EMULATE)
-> >                         return false;
-> 
-> Is really asking the question:
-> 
-> 	Is this #PF from an instruction fetch in the vsyscall page?
-> 
-> That _should_ be able to be done by comparing CR2 and regs->rip. In
-> fact, that's done just below anyway:
-> 
-> 	WARN_ON_ONCE(address != regs->ip);
-> 
-> So I think we can fix this up with something like the attached patch
-> which just drives the if() from regs->rip and make the warning NX-only.
+Hi, Kees,
 
-Looks good to me.
+On Thu, Jun 19, 2025 at 4:55=E2=80=AFPM Huacai Chen <chenhuacai@kernel.org>=
+ wrote:
+>
+> Hi, Kees,
+>
+> On Fri, May 23, 2025 at 12:39=E2=80=AFPM Kees Cook <kees@kernel.org> wrot=
+e:
+> >
+> > When KCOV is enabled all functions get instrumented, unless
+> > the __no_sanitize_coverage attribute is used. To prepare for
+> > __no_sanitize_coverage being applied to __init functions, we have to
+> > handle differences in how GCC's inline optimizations get resolved. For
+> > loongarch this exposed several places where __init annotations were
+> > missing but ended up being "accidentally correct". Fix these cases and
+> > force one function to be inline with __always_inline.
+> >
+> > Signed-off-by: Kees Cook <kees@kernel.org>
+> > ---
+> > Cc: Huacai Chen <chenhuacai@kernel.org>
+> > Cc: WANG Xuerui <kernel@xen0n.name>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Cc: Tianyang Zhang <zhangtianyang@loongson.cn>
+> > Cc: Bibo Mao <maobibo@loongson.cn>
+> > Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> > Cc: <loongarch@lists.linux.dev>
+> > ---
+> >  arch/loongarch/include/asm/smp.h | 2 +-
+> >  arch/loongarch/kernel/time.c     | 2 +-
+> >  arch/loongarch/mm/ioremap.c      | 4 ++--
+> >  3 files changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/arch/loongarch/include/asm/smp.h b/arch/loongarch/include/=
+asm/smp.h
+> > index ad0bd234a0f1..88e19d8a11f4 100644
+> > --- a/arch/loongarch/include/asm/smp.h
+> > +++ b/arch/loongarch/include/asm/smp.h
+> > @@ -39,7 +39,7 @@ int loongson_cpu_disable(void);
+> >  void loongson_cpu_die(unsigned int cpu);
+> >  #endif
+> >
+> > -static inline void plat_smp_setup(void)
+> > +static __always_inline void plat_smp_setup(void)
+> Similar to x86 and arm, I prefer to mark it as __init rather than
+> __always_inline.
+If you have no objections, I will apply this patch with the above modificat=
+ion.
 
-Do you want me to include it into this patchset or will you apply it
-separately?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Huacai
+
+>
+> Huacai
+>
+> >  {
+> >         loongson_smp_setup();
+> >  }
+> > diff --git a/arch/loongarch/kernel/time.c b/arch/loongarch/kernel/time.=
+c
+> > index bc75a3a69fc8..367906b10f81 100644
+> > --- a/arch/loongarch/kernel/time.c
+> > +++ b/arch/loongarch/kernel/time.c
+> > @@ -102,7 +102,7 @@ static int constant_timer_next_event(unsigned long =
+delta, struct clock_event_dev
+> >         return 0;
+> >  }
+> >
+> > -static unsigned long __init get_loops_per_jiffy(void)
+> > +static unsigned long get_loops_per_jiffy(void)
+> >  {
+> >         unsigned long lpj =3D (unsigned long)const_clock_freq;
+> >
+> > diff --git a/arch/loongarch/mm/ioremap.c b/arch/loongarch/mm/ioremap.c
+> > index 70ca73019811..df949a3d0f34 100644
+> > --- a/arch/loongarch/mm/ioremap.c
+> > +++ b/arch/loongarch/mm/ioremap.c
+> > @@ -16,12 +16,12 @@ void __init early_iounmap(void __iomem *addr, unsig=
+ned long size)
+> >
+> >  }
+> >
+> > -void *early_memremap_ro(resource_size_t phys_addr, unsigned long size)
+> > +void * __init early_memremap_ro(resource_size_t phys_addr, unsigned lo=
+ng size)
+> >  {
+> >         return early_memremap(phys_addr, size);
+> >  }
+> >
+> > -void *early_memremap_prot(resource_size_t phys_addr, unsigned long siz=
+e,
+> > +void * __init early_memremap_prot(resource_size_t phys_addr, unsigned =
+long size,
+> >                     unsigned long prot_val)
+> >  {
+> >         return early_memremap(phys_addr, size);
+> > --
+> > 2.34.1
+> >
 
