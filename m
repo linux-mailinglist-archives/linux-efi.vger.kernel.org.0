@@ -1,188 +1,147 @@
-Return-Path: <linux-efi+bounces-3951-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3952-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F976AE6506
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 14:32:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A78AE659B
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 14:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AFD24A49CB
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 12:32:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E397C192619F
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 12:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F75291C2B;
-	Tue, 24 Jun 2025 12:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BE1293C6C;
+	Tue, 24 Jun 2025 12:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eu9htEvB"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lJIz/amU"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD9F289E1B;
-	Tue, 24 Jun 2025 12:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B768298CD0
+	for <linux-efi@vger.kernel.org>; Tue, 24 Jun 2025 12:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750768286; cv=none; b=CF91aJM9eoAtj7S5DwK8poP9aWiO2G0Jm2Eo1n2OGwAZKgtCaggTejQ5IVRhQRQVrC0CI/bRs/uPlwM45xhdre195LNxAyHYJ1r4zuZcSpPrT8H++5Xg6B0eaNVpt2yFUbz9JJwwM3XLSgtEuo215tDsMwKoYHqKSpRzYGhR990=
+	t=1750769619; cv=none; b=s0sNDAdL+INkRm6ssGnsAaI4hokTte6+8YMfSGA+C/lrOepkc/5TnndDrC98+Y6MYiakHBVsFSKB52WXiK4UGNHbxWQrYuHwKNHOsXsAIUB2WOe2dylTVQv3SYGNLpo+OIEx753HzuvqGfX3jclm/WImVCTBUXf9tnDMv7TFW+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750768286; c=relaxed/simple;
-	bh=A1vlO/L1VKH8WOeSv/ouj3ncracjwzpEiurRYiS/ALg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EHpbbJp1/bWy7Kw08U3o1KmEOGioMOByrf7E1WLg1Mnk327tQ2rRBfuuW2Qn7vTzcdO2oFn7NUucwjZdiAtkbsGKy3JgE0OO8lS5l7wLL6zbirQaV3HUYtHxH+MooueTQBBst0HzFOIxujZiYMqvOz8s5zsZXTXx+3e6vEBCCNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eu9htEvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B39C4CEF3;
-	Tue, 24 Jun 2025 12:31:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750768286;
-	bh=A1vlO/L1VKH8WOeSv/ouj3ncracjwzpEiurRYiS/ALg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eu9htEvBiVbL44j/hDA/XL5IHMVRkTjREoK+yoJofVs3i2H7zYeWM4nuOEa8lvA1q
-	 draOJBWRmasaODlA4846qtfnrHoWcfrlpN7SdkOAt9CRDuKgz+Jijdfb0hME3v4zjT
-	 vySbdesGJCidQHCf0M229vamBtjKXpnwatmAh49jUKp+nVNq+/QlhEUFGI/3hC6dpM
-	 MBpiZpEieyvMUEHttV5HVCNFcwOz97BYbHpUnESxPT0XUV2ac4VY/kC4HNi3iT2U1C
-	 nndDqpkUc6Rj2nldXF12iLWnmS6e5StbWpsEaS9jarXC/+el4cuLLpnkbs9yytEYsC
-	 jjsFUJ19nZmUg==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-607ec30df2bso769442a12.1;
-        Tue, 24 Jun 2025 05:31:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUIcBidubsUjr6GvP7f8421F8eC99nNi6qungSKTQM8pINmHk0ZFQw9RZuYj1FBx0HXJrFF3WY3Rotkx7e7@vger.kernel.org, AJvYcCUQZWnOTjCK2ItJvAeXFGpEn1wxgj+j7S3FaXb6FQWYwU4dhdbpvxOzHlLl1i2fpKNkBz0CHKkYXuM=@vger.kernel.org, AJvYcCVSnuJEYLz/GTL/Zt2wX6i8PbgDhcFQMKVvxqYQ9uKexcFTe4i2J5X9OE+QgjnqUXcCZ4Kr6BRLz/+w@vger.kernel.org, AJvYcCWfiTkex+f0MQn2Z3APHWJVp4HQPyHwHt4AGxv8/eCTD/Wh1tFfHarKKtWaIToUdgxBNH2xPZeVU+3DSQ==@vger.kernel.org, AJvYcCWioFj6dnpN+JivFYoas3pOlccQAJKDOtuz5crs2yTlM1t+seJTOz1ZTStM7uqQuJe3SwUJfStDO/trpVnwdOVG@vger.kernel.org, AJvYcCWjTrlomDwlBvZDpD+VWRgwmHhauJOez08kLDWR4/qlguDkO5nrNIV/nfXepGNh0ToK7Hez1v1ORB4YQQ==@vger.kernel.org, AJvYcCWkytK29gf2ZbYEOocH8bXuAPQ/UqBhE3WfKgyHkJCw6Bx1pmxGYIRJmSGiOfFXKWjatwVCMqjN1iruvkoSA2qz@vger.kernel.org, AJvYcCWwjMBDeub9j3awBbNGpJtyGIYzMVCfPwbN2Qb/7+cx5Pr16kamrB+C4ldq33XDCUihDqLrQVsWyCfqWvHQ@vger.kernel.org, AJvYcCXeEP3m9siA10DxTLOpTz8vc5wuJKop878SjR+iKM+WruZTu8Go8JcteBM33w5C6Oj8RMYc8u0iVfd4p07d+JQLfF/WEmsR@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpG8YkBHYF8id6pnhc+2Rp05WERXknvveD5uYetID7V6bxhC+N
-	Ua0WPE2J9qre0HTAgZiSjYgdnmdP8M5x1lTQ9Vh5Rd6razi/cuq/AcCKQfndyTcPCVm7Il4K96q
-	gutnGDt0/tyS+RYnSVUVTaKVcGSIANGE=
-X-Google-Smtp-Source: AGHT+IG78TOJtNBgPo6KUbppTtQyUVPXosqjkC+mjKzFM6GuMzZpIE/4mn6DMDsxVG8gc/mo29CZZDSg4K3moyGLako=
-X-Received: by 2002:a50:9e07:0:b0:607:5987:5ba1 with SMTP id
- 4fb4d7f45d1cf-60a1d1676eamr10402408a12.20.1750768284578; Tue, 24 Jun 2025
- 05:31:24 -0700 (PDT)
+	s=arc-20240116; t=1750769619; c=relaxed/simple;
+	bh=goi+JYdc8hX2nZ6r6/E6w6bG2TAS+Qvi9wp+yVs7mTU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mB/Lf798nW4lTipMXCUdBgD/tKry2BoTlr2nD2XJipfbSCFip3yTj4LZUAtUMPEmGFYjv1V6Ei0YnSUT+ukp81bhfHU22vriuTmay57918Xk+QHOMtx00uJIuHd+TUPEKh9Ujzr99w1ZNUGHCaNa2CyW54ewVUG3rELCmTnfiyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lJIz/amU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55O8e25L014571
+	for <linux-efi@vger.kernel.org>; Tue, 24 Jun 2025 12:53:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Y/+Oz0dkYo1zBsxJyrMPTZE3tsWtgvUVNjRDnaW0KIE=; b=lJIz/amUFjS0TrRZ
+	u3wiXr/pgY3UIxwtl7dqdkpeJJXL7mhZDFER4ufNRcQJBBsTZX0VXPOw13oxpK+D
+	nxv0D0mz9QRPK0i7yAiQyJQY6vqgahLn7VyMRqkXcLOxfg9bh72aTkO1Z5QTSfhY
+	eoaR1djt54VUPH2DruITojk5OhBOzlM+bckYLZQedGeDjOMzwQfcoFsZmauXin6D
+	jFikalM7TdlD0Wyj8SeuV/YAaxCyK5FeUd+BwgCR5Ej1WRtxmokhvmA+Q/Lgn+hI
+	FuS8CRscW+FOJutcWi8d2E8YtDMf987zzwf90oMAVBh+0vHrKArlCUCDhSt3+cNO
+	saTQPw==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f2rpvbdc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-efi@vger.kernel.org>; Tue, 24 Jun 2025 12:53:36 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4a6f59d5ac6so12441551cf.0
+        for <linux-efi@vger.kernel.org>; Tue, 24 Jun 2025 05:53:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750769615; x=1751374415;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y/+Oz0dkYo1zBsxJyrMPTZE3tsWtgvUVNjRDnaW0KIE=;
+        b=WhNLhK98DaiozEYEwhHGZD8c9id0Q3QIyUeqr0FcmNj4CVobaQN2DIgE+YQDH80Tnl
+         j2+rdJUnsYGWLHo+HRObpQq6rgy52CP604NoCnVbgu0F1LE3sI2TgtNb8Ho8oSapcr1z
+         h9tN+mVJ7EtX8VkJ335tVg1DXbaUwhFrXZq3aL6vI1RS0NV3qmlLtLTb41LEGHk5VU7x
+         RhZQGPE51KoFh8KsZY0Owgj9Yg78x/ddAquRXuZejz89sCeSar3B8zh08n8OF9MkVEH8
+         ZRuvDtRMAQv73QhAVD5KbzDXvmLeeiw09TQvjZTKVTmX/S375kP45azPIW4HQZ11RDqH
+         gjvg==
+X-Forwarded-Encrypted: i=1; AJvYcCU7gYrNNdZUbIdngoJq6MbtLQTKf2xKnCtDZAVe3SbtK1gqfW54HbnbUehyc2Z6nNzfN41+V3QKO7A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNsmhAqZ83aQSRmIZYIl2nfOMmCLCTmhf/E7VP+2FACiCmV7sx
+	gMwYSZqh3NahyiSSkGP25MTLWI251Ez27CtkiQtYlwTSIi5jBhmCil/MMUhAM15Eq4rR/o73St1
+	VFPfHSA94dz46eTOY1uWkBv5TEen91E/tKMCIvTrR2Op8mcV28T0TGFFOW++hclg=
+X-Gm-Gg: ASbGncsOm8sWZbsPWMpLiWdRFdHHJ+i0J/JcozdpYCvastY4VX4igA4ZaK61rsuqzfb
+	LEHq8gPtwefFIEIx5WLOwK27/GzFNzFch3n2babnSBwqQ3z2r43paeItmIVgsCBl9Y+M2+rzl+8
+	1N1RQfnjDEAshaeIgHgcaWNY1sEuqxzgt1wJ4m7A5pBAEoPvndcDXCxgTiT2E+1Q8tyL996dfM6
+	bnqomWTZxEmvlcX/NRFfVGqrkZW1Gh0H4ZpDue3miTAc7uoQWEbq/LIZiRhxn1yRZ4j8ZbmvncK
+	0Srj84ghowL5EYZeDFEbwK7Ye6XUleKURu5n8AAo7mL2lpIbvYnBC2BCe+AfWh4L2jNStVzMAJ6
+	jEys=
+X-Received: by 2002:a05:622a:6182:b0:4a6:fbd6:a191 with SMTP id d75a77b69052e-4a77a1ae861mr87818201cf.1.1750769615257;
+        Tue, 24 Jun 2025 05:53:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHgsD3QcWc6S0AZNrpNBd+uIEeZjeiiG6NGMmKXQHsPOX3VXCP45konCfmawthc2DRqsam1pw==
+X-Received: by 2002:a05:622a:6182:b0:4a6:fbd6:a191 with SMTP id d75a77b69052e-4a77a1ae861mr87817891cf.1.1750769614739;
+        Tue, 24 Jun 2025 05:53:34 -0700 (PDT)
+Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0a67a80a5sm151041266b.26.2025.06.24.05.53.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Jun 2025 05:53:34 -0700 (PDT)
+Message-ID: <a9c012e4-40ab-49f4-a0b0-b4ebc4272153@oss.qualcomm.com>
+Date: Tue, 24 Jun 2025 14:53:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250523043251.it.550-kees@kernel.org> <20250523043935.2009972-10-kees@kernel.org>
- <CAAhV-H4WxAwXTYVFOnphgHN80-_6jt77YZ_rw-sOBoBjjiN-yQ@mail.gmail.com>
-In-Reply-To: <CAAhV-H4WxAwXTYVFOnphgHN80-_6jt77YZ_rw-sOBoBjjiN-yQ@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 24 Jun 2025 20:31:12 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5oHPG+etNawAmVwyDtg80iKUrAM_m3Vj57bBO0scHqvQ@mail.gmail.com>
-X-Gm-Features: AX0GCFsgXJm0uAqj4ZcBCmgCp5XFBS8cfA5fjKZVFWrLP2ySZYpAIUKeGDxIJgs
-Message-ID: <CAAhV-H5oHPG+etNawAmVwyDtg80iKUrAM_m3Vj57bBO0scHqvQ@mail.gmail.com>
-Subject: Re: [PATCH v2 10/14] loongarch: Handle KCOV __init vs inline mismatches
-To: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Gleixner <tglx@linutronix.de>, Tianyang Zhang <zhangtianyang@loongson.cn>, 
-	Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, loongarch@lists.linux.dev, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/8] firmware: qcom: scm: allow specifying quirks for
+ QSEECOM implementations
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>
+Cc: Johan Hovold <johan@kernel.org>, Steev Klimaszewski <steev@kali.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-efi@vger.kernel.org
+References: <20250624-more-qseecom-v3-0-95205cd88cc2@oss.qualcomm.com>
+ <20250624-more-qseecom-v3-2-95205cd88cc2@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250624-more-qseecom-v3-2-95205cd88cc2@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=NdDm13D4 c=1 sm=1 tr=0 ts=685a9fd0 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=Xl6Gf3kKTQkptmOWZCMA:9
+ a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI0MDEwOCBTYWx0ZWRfX9K9wZeAdGdBy
+ s08RM7L4/u7SIkKWo9e6X4HyifSn8BosXhg/o0aaZWuJiW0/N4RNgwZaiFklc17ZQRK1Fm3qiXF
+ bP28AsXPTXnK8dINLO23AkOE5lGPkNlmtZRRXdxCwMv/5zOH31Gus3mX8PTMDZbfHffqWR30W2O
+ RRcAn24H08FvOBnG764CTXsNuEDj/aDdxbH5wOs9rxWjUtn5/lURWRrTRNjvVdO/D+m0CHaRyl6
+ lG3+isVPd9Z/otgB6Og3ikK9IMtS+d6LIdCDFcjqLLB7k4F86p7L3SdxoVlZ6k0KSFDTU5I2jJg
+ jrK/NycJeT5RKhdYotVzAK0lJXcZG8fCq5CI4SJrOsUxCc4wOr1fn6jqONke1lXreLU6QOES9OY
+ sCyoyzT2RBBfLhJyNeXvCxtubH9dYdnsi1jVEj585Eu0Gm/2uLh0AR67nZgobm9+bdnukjIP
+X-Proofpoint-ORIG-GUID: 292ypFzjd3gtqdJGeKj9QyQ3Rn--pIQW
+X-Proofpoint-GUID: 292ypFzjd3gtqdJGeKj9QyQ3Rn--pIQW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-24_05,2025-06-23_07,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ phishscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=755 adultscore=0
+ clxscore=1011 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506240108
 
-Hi, Kees,
+On 6/24/25 4:13 AM, Dmitry Baryshkov wrote:
+> Some of QSEECOM implementations might need additional quirks (e.g. some
+> of the platforms don't (yet) support read-write UEFI variables access).
+> Pass the quirks to the QSEECOM driver and down to individual app
+> drivers.
+> 
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> ---
 
-On Thu, Jun 19, 2025 at 4:55=E2=80=AFPM Huacai Chen <chenhuacai@kernel.org>=
- wrote:
->
-> Hi, Kees,
->
-> On Fri, May 23, 2025 at 12:39=E2=80=AFPM Kees Cook <kees@kernel.org> wrot=
-e:
-> >
-> > When KCOV is enabled all functions get instrumented, unless
-> > the __no_sanitize_coverage attribute is used. To prepare for
-> > __no_sanitize_coverage being applied to __init functions, we have to
-> > handle differences in how GCC's inline optimizations get resolved. For
-> > loongarch this exposed several places where __init annotations were
-> > missing but ended up being "accidentally correct". Fix these cases and
-> > force one function to be inline with __always_inline.
-> >
-> > Signed-off-by: Kees Cook <kees@kernel.org>
-> > ---
-> > Cc: Huacai Chen <chenhuacai@kernel.org>
-> > Cc: WANG Xuerui <kernel@xen0n.name>
-> > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: Tianyang Zhang <zhangtianyang@loongson.cn>
-> > Cc: Bibo Mao <maobibo@loongson.cn>
-> > Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> > Cc: <loongarch@lists.linux.dev>
-> > ---
-> >  arch/loongarch/include/asm/smp.h | 2 +-
-> >  arch/loongarch/kernel/time.c     | 2 +-
-> >  arch/loongarch/mm/ioremap.c      | 4 ++--
-> >  3 files changed, 4 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/arch/loongarch/include/asm/smp.h b/arch/loongarch/include/=
-asm/smp.h
-> > index ad0bd234a0f1..88e19d8a11f4 100644
-> > --- a/arch/loongarch/include/asm/smp.h
-> > +++ b/arch/loongarch/include/asm/smp.h
-> > @@ -39,7 +39,7 @@ int loongson_cpu_disable(void);
-> >  void loongson_cpu_die(unsigned int cpu);
-> >  #endif
-> >
-> > -static inline void plat_smp_setup(void)
-> > +static __always_inline void plat_smp_setup(void)
-> Similar to x86 and arm, I prefer to mark it as __init rather than
-> __always_inline.
-If you have no objections, I will apply this patch with the above modificat=
-ion.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-
-Huacai
-
->
-> Huacai
->
-> >  {
-> >         loongson_smp_setup();
-> >  }
-> > diff --git a/arch/loongarch/kernel/time.c b/arch/loongarch/kernel/time.=
-c
-> > index bc75a3a69fc8..367906b10f81 100644
-> > --- a/arch/loongarch/kernel/time.c
-> > +++ b/arch/loongarch/kernel/time.c
-> > @@ -102,7 +102,7 @@ static int constant_timer_next_event(unsigned long =
-delta, struct clock_event_dev
-> >         return 0;
-> >  }
-> >
-> > -static unsigned long __init get_loops_per_jiffy(void)
-> > +static unsigned long get_loops_per_jiffy(void)
-> >  {
-> >         unsigned long lpj =3D (unsigned long)const_clock_freq;
-> >
-> > diff --git a/arch/loongarch/mm/ioremap.c b/arch/loongarch/mm/ioremap.c
-> > index 70ca73019811..df949a3d0f34 100644
-> > --- a/arch/loongarch/mm/ioremap.c
-> > +++ b/arch/loongarch/mm/ioremap.c
-> > @@ -16,12 +16,12 @@ void __init early_iounmap(void __iomem *addr, unsig=
-ned long size)
-> >
-> >  }
-> >
-> > -void *early_memremap_ro(resource_size_t phys_addr, unsigned long size)
-> > +void * __init early_memremap_ro(resource_size_t phys_addr, unsigned lo=
-ng size)
-> >  {
-> >         return early_memremap(phys_addr, size);
-> >  }
-> >
-> > -void *early_memremap_prot(resource_size_t phys_addr, unsigned long siz=
-e,
-> > +void * __init early_memremap_prot(resource_size_t phys_addr, unsigned =
-long size,
-> >                     unsigned long prot_val)
-> >  {
-> >         return early_memremap(phys_addr, size);
-> > --
-> > 2.34.1
-> >
+Konrad
 
