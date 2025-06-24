@@ -1,54 +1,54 @@
-Return-Path: <linux-efi+bounces-3943-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3944-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27072AE5BAF
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 06:58:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0881AE5BC8
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 07:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FFC617F0D5
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 04:58:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E851844327A
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 05:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194D922157E;
-	Tue, 24 Jun 2025 04:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E1822D4DE;
+	Tue, 24 Jun 2025 05:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="DufJ0HSn"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="f6kUcw3d"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED254170826;
-	Tue, 24 Jun 2025 04:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EAE2253E9;
+	Tue, 24 Jun 2025 05:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750741120; cv=none; b=fY3z2DgmB7RAn+zLF7kSoEWKeLyEfTlEXFpA9re3nWJn3fz3oYSxBOh5pO5DjzT6tgidB+7HdAStXTnnnASmh+AurL5MlQRnwDvpvYcerolhu+7JEUqs434UNunGaU4FlUlsW30DVgOGyaPo+zpIzKN9E/A0uzsxJQhQZlQ/oLM=
+	t=1750741938; cv=none; b=QfoSk5K72JsPq9eajE5mX4xIiUAimvSh5h1RJIvsEyoZ9SRFKZxmU2TqNpTlXnaakQBAfSCo5xNT+bjuoNp+QKiNlx7ftGcgczZjacrlFzubPoksGdwxXNMbMSFOP+iN1H+jCVwNPBsa9pyT/XqkHG15O9pwbgE/14IqwY2RA7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750741120; c=relaxed/simple;
-	bh=uiYEwAB9cJ4a1HFd9UcbqZI4ko1OZt9aIPA1GF5UrKQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s0S88r2RwhOrGBB2XpiOpQjD0e8Miwy0FNVriOSR6LbNpSGGtyuY7B4/V2vN/jA04bO0MvmeE8haLhSMI4Mj7KT829xLrHOAxTzQ/PhTCD6FtAOR/ipPyQzV24FXagtfvd3R/6tj/FumL23Y5q+BG+1/dGzlRoenJa8dcdOEcQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=DufJ0HSn; arc=none smtp.client-ip=198.137.202.136
+	s=arc-20240116; t=1750741938; c=relaxed/simple;
+	bh=R9jolyBeToWMbGoUct/gN1lHCvix5RrQdEKK1lIPCbU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=XdnGDUC0UhgLCggSLYhmYbR5eLIXWcG/MDYcJ5rhfQh6my28pavNCVZiy3tGM/W0Uz0qsRAIc7DCOVXNCdIgpRihw6HwpvL+LITtTa6D9vvrJmB91q9l6selmnO4g+0vqAEZ7a5xYym36ju36vifWjtYbHAo8nWgZDblIytQrj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=f6kUcw3d; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from [192.168.7.202] ([71.202.166.45])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55O4vDcL1209887
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55O5B9EQ1214832
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 23 Jun 2025 21:57:14 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55O4vDcL1209887
+	Mon, 23 Jun 2025 22:11:09 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55O5B9EQ1214832
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1750741040;
-	bh=RQWFXZn55IDLcAzi/4t23/ePhe2+5/YuMa6ZBUgri8g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DufJ0HSnnI/VmqZ9MtVQWe12S9oxvVJkv/WoG4RbVmP8dSoehrd5lfFT1fYUd/RgQ
-	 39P7j45TDDng6pr8TinxXfX+WZpb98WCxHCB4fNqtfuPyQBTtzadPny2HxoS+5fKDx
-	 +oPMwA/EIZboEvIlP1Uk3KvchHRgcTUlLu/euDhHaFgC7J49UjcjQfLUDHQskGgpAe
-	 25k7w9xCFOBiQ/D9J58DgZs8R1GUS746ktKBPhto6UYlL7THkOee6wfk5cNVyUD90h
-	 6Gq22UY1TpDqmwI1A4rzzRTULs/EaKzIMdxhNx3x9i92C96EBn5pPBFyG5tYlvnhh3
-	 +oBUeU3Dc8lFw==
-Message-ID: <5529aa92-191d-4120-a005-28fe5c209a4f@zytor.com>
-Date: Mon, 23 Jun 2025 21:57:13 -0700
+	s=2025062101; t=1750741873;
+	bh=hyBq9kZTajfYMQM3o1zuSl07WmRWLe3Uj8KJJs7+GtI=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=f6kUcw3dSL+EV9uGfmbKUBMJgwgWc6UN73DVS6weHEHIb0jsrrDw9NrtKF6AFJvCw
+	 JnoJ3nFKC04S9WVqdfOZtnvgnrHnj14GFYF7w3m7WUNICB3MYX+oquhZgnLJZ84smm
+	 uotpg9ZpzzrGlwPnbcPZRZZsqcKrc2gC+kExlQx4EzuSZ0almAaMM05OIMxosP3nBz
+	 bDQXKCgLUVij5bsKji1WRwegftu0ZhWSan+nwMKg3Xadf77LkyLX/T9LKI0PxQu7x3
+	 PU6Fag4XBwD82PGoElGA4yGDKbYYsksS5xgVj6A1pF7+czgVchdaAw89AzXNm2/85C
+	 vSVZpF1aVJwqw==
+Message-ID: <f3dbf693-8c88-4736-9ec9-83bedc097c2b@zytor.com>
+Date: Mon, 23 Jun 2025 22:11:08 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -57,6 +57,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCHv6 01/16] x86/cpu: Enumerate the LASS feature bits
+From: Xin Li <xin@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
@@ -96,7 +97,7 @@ Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
         Namhyung Kim <namhyung@kernel.org>,
         Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-mm@kvack.org, Yian Chen <yian.chen@intel.com>
+        linux-mm@kvack.org
 References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
  <20250620135325.3300848-2-kirill.shutemov@linux.intel.com>
  <d3055288-c640-4df3-978e-abb97b1610e7@zytor.com>
@@ -106,8 +107,8 @@ References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
  <f04936b7-e1e1-4a63-a907-33315af0dd8f@zytor.com>
  <73796800-819b-4433-b0ef-db852336d7a4@zytor.com>
  <0A71C898-B587-4292-AB05-6CA46BBD6F88@zytor.com>
+ <5529aa92-191d-4120-a005-28fe5c209a4f@zytor.com>
 Content-Language: en-US
-From: Xin Li <xin@zytor.com>
 Autocrypt: addr=xin@zytor.com; keydata=
  xsDNBGUPz1cBDACS/9yOJGojBFPxFt0OfTWuMl0uSgpwk37uRrFPTTLw4BaxhlFL0bjs6q+0
  2OfG34R+a0ZCuj5c9vggUMoOLdDyA7yPVAJU0OX6lqpg6z/kyQg3t4jvajG6aCgwSDx5Kzg5
@@ -142,54 +143,68 @@ Autocrypt: addr=xin@zytor.com; keydata=
  PYbAkjBbm+tuJ/Sm+5Yp5T/BnKz21FoCS8uvTiziHj2H7Cuekn6F8EYhegONm+RVg3vikOpn
  gao85i4HwQTK9/D1wgJIQkdwWXVMZ6q/OALaBp82vQ2U9sjTyFXgDjglgh00VRAHP7u1Rcu4
  l75w1xInsg==
-In-Reply-To: <0A71C898-B587-4292-AB05-6CA46BBD6F88@zytor.com>
+In-Reply-To: <5529aa92-191d-4120-a005-28fe5c209a4f@zytor.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 6/23/2025 7:04 PM, H. Peter Anvin wrote:
-> On June 23, 2025 10:40:59 AM PDT, Xin Li <xin@zytor.com> wrote:
->> On 6/20/2025 5:50 PM, H. Peter Anvin wrote:
->>> On 2025-06-20 17:45, H. Peter Anvin wrote:
+On 6/23/2025 9:57 PM, Xin Li wrote:
+> On 6/23/2025 7:04 PM, H. Peter Anvin wrote:
+>> On June 23, 2025 10:40:59 AM PDT, Xin Li <xin@zytor.com> wrote:
+>>> On 6/20/2025 5:50 PM, H. Peter Anvin wrote:
+>>>> On 2025-06-20 17:45, H. Peter Anvin wrote:
+>>>>>>
+>>>>>> But I simply hate adding a disabled feature that depends on !X86_64;
+>>>>>> x86_64 has a broad scope, and new CPU features are often 
+>>>>>> intentionally
+>>>>>> not enabled for 32-bit.
+>>>>>>
+>>>>>> (X86_DISABLED_FEATURE_PCID is the only one before LASS)
 >>>>>
->>>>> But I simply hate adding a disabled feature that depends on !X86_64;
->>>>> x86_64 has a broad scope, and new CPU features are often intentionally
->>>>> not enabled for 32-bit.
+>>>>> More importantly, it is wrong.
 >>>>>
->>>>> (X86_DISABLED_FEATURE_PCID is the only one before LASS)
+>>>>> The 32-bit build can depend on this feature not existing, therefore 
+>>>>> it SHOULD be listed as a disabled feature.
+>>>>>
 >>>>
->>>> More importantly, it is wrong.
->>>>
->>>> The 32-bit build can depend on this feature not existing, therefore it SHOULD be listed as a disabled feature.
->>>>
+>>>> Ok, that was word salad. What I meant was that the original patch is 
+>>>> correct, and we SHOULD have this as a disabled feature.
 >>>
->>> Ok, that was word salad. What I meant was that the original patch is correct, and we SHOULD have this as a disabled feature.
+>>> Agreed!
+>>>
+>>>> The reason is that it reduces the need to explicitly test for 32/64 
+>>>> bits for features that don't exist on 32 bits. When they are flagged 
+>>>> as disabled, they get filtered out *at compile time*.
+>>>
+>>> It's better to make it depend on X86_32 directly rather than !X86_64:
+>>>
+>>> config X86_DISABLED_FEATURE_LASS
+>>>     def_bool y
+>>>     depends on X86_32
+>>>
+>>>
+>>> But the disabled feature list due to lack of 32-bit enabling will keep
+>>> growing until we remove 32-bit kernel code.
+>>>
+>>> Wondering should we bother enforcing cpuid_deps[] on 32-bit?
+>>>
+>>> IOW, turn off the feature when its dependency isn’t satisfied on 32b-it;
+>>> don’t just throw a warning and hope for the best.
+>>>
+>>> Thanks!
+>>>     Xin
+>>>
 >>
->> Agreed!
+>> We should have the dependencies enforced; in fact, preferably we would 
+>> enforce them at build time as well.
 >>
->>> The reason is that it reduces the need to explicitly test for 32/64 bits for features that don't exist on 32 bits. When they are flagged as disabled, they get filtered out *at compile time*.
->>
->> It's better to make it depend on X86_32 directly rather than !X86_64:
->>
->> config X86_DISABLED_FEATURE_LASS
->> 	def_bool y
->> 	depends on X86_32
->>
->>
->> But the disabled feature list due to lack of 32-bit enabling will keep
->> growing until we remove 32-bit kernel code.
->>
->> Wondering should we bother enforcing cpuid_deps[] on 32-bit?
->>
->> IOW, turn off the feature when its dependency isn’t satisfied on 32b-it;
->> don’t just throw a warning and hope for the best.
->>
->> Thanks!
->>     Xin
 >>
 > 
-> We should have the dependencies enforced; in fact, preferably we would enforce them at build time as well.
-> 
+> Yeah, sounds something we can do later :)
 > 
 
-Yeah, sounds something we can do later :)
+We could introduce a new Kconfig file at
+
+     arch/x86/Kconfig.cpufeatures.disabled_on_32bit
+
+to track all features disabled due to lack of 32-bit support.
 
