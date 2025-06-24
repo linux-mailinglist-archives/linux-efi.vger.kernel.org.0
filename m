@@ -1,149 +1,155 @@
-Return-Path: <linux-efi+bounces-3953-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3954-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CF6AE65A8
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 14:56:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1023EAE65AA
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 14:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07ACC1887005
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 12:54:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC23D3A4B0D
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jun 2025 12:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A16E29A301;
-	Tue, 24 Jun 2025 12:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="o4tnesdl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA9E28D8CA;
+	Tue, 24 Jun 2025 12:56:11 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736CE293C6C
-	for <linux-efi@vger.kernel.org>; Tue, 24 Jun 2025 12:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85EA28A411;
+	Tue, 24 Jun 2025 12:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750769640; cv=none; b=pPLcA9UbcfNfCqlk7G3Ry4M+vWfOOw7Zwy+Wqcv4mussrcDmwQSGUJxPITgLvgAjKQWAePnBOJ4/p2dp8jMp3/xVv0mUQOYXD6aAsFtzqx3r4N9EnNAsrxsvw+lhQt9mxZJJSV5sLxMdEqw2HwOv94rrV3Fm6XLP9djxSLzmo/o=
+	t=1750769771; cv=none; b=Zaa6V7lBBnrTN8cqI+yLC4hQuzwV9I4N3jY2r/ImuUshqGU7O7w1L8hm78eTeYxqTqmfqy0zhilzdvr+vOfjCvbIt7qHApWy22qbtNbhZU7sMBUDsGREi/7sU669xiCqakk4KuvlNDaFRMJXjCfJ+Pe+8kVrJun41vddKUcCpw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750769640; c=relaxed/simple;
-	bh=tNIhnvuJL34DWyW0/9wKkWvSs2dn5yOqIFqGyBcGiyg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jH+yWO0oid4o14UUfgAvBky5wUdzbT4PmY7NL/JHv+BUUr5MWZpdgpvdwylEejZ8/VzkJ+ajYPce/fd6g+znpSm4ShQdBOWud2cyA8Sxhp1RjCzg2ZHWBaU01FdUw72OGqSRQK3s6cbF/gpHR9uPapG3pbJPM62tZQ08q5OVLoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=o4tnesdl; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55O71vMq020990
-	for <linux-efi@vger.kernel.org>; Tue, 24 Jun 2025 12:53:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	aeRBeFnF4lcno5Yc+pip1PsV/E+s7JmR6bAmZl2QfIw=; b=o4tnesdlmoD3y7mR
-	b6XNGNjqo0V7b/+TfJAN+ogKd3ncfjFkTcV15lfI3p9oIMlYcQIUK86QLPJ+TJT4
-	8Q1UpadV094/L0EcG+k2MxAR+dmqUN1bfngUhDMHwMluNioGvcgDWnHeOPkObIBO
-	TaKiTdtyp4gCQNnA+Vd3jtLnrixgtxaUlN+reItPQHSKLk0OIpWrvEylFNnHeQFN
-	icUGN6iRk6xrQ30gHkx5FmiT/eQuZfx5NQS+5u4HVaapNtqaO0ILpQLEtFioDsES
-	VkDZ2FbUJgPRkUAh65jOHiUCkNycO2vcvRiBvLMYp1uN9Q8fXAlOnzHz+7Hazp38
-	SobelQ==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f4b3v1bk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-efi@vger.kernel.org>; Tue, 24 Jun 2025 12:53:56 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7d3ea727700so83521385a.3
-        for <linux-efi@vger.kernel.org>; Tue, 24 Jun 2025 05:53:56 -0700 (PDT)
+	s=arc-20240116; t=1750769771; c=relaxed/simple;
+	bh=cuqvs4eld47kMpQxlX4a66Aj/+sUNQEviegQV4TglH0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pcPVUryzkg5SO6M2rkWgXGk9jizgcZNoD5BQYyisbNhfzgDFxGr+liI9QMfDx0o3nRomlMoHGji4Bd6SXb8mu8zAfliO9f39+Ulu1TS3BUyq9Kx+7m5SHsYUrlX5ibp8ZiEBUPKTEcLLp0VTJxoUTSJ8VkNCqiWmgOePa68BRNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6077dea37easo10058385a12.3;
+        Tue, 24 Jun 2025 05:56:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750769635; x=1751374435;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aeRBeFnF4lcno5Yc+pip1PsV/E+s7JmR6bAmZl2QfIw=;
-        b=DfQQXygOm3PaHTy25elU6bKS68qEAIikZmr/R5esMVsLarZNnRTMIcLoS5e42+LXIc
-         ABOYyI7gdHzVvaxi2kESToTtZiO9eAE2I/2XWB4iVUF0I1ctZy3TVf/bxYIeBGAN/yhX
-         6FO+/7wGV40KtW0kTkq7yi85ip2MVGdUTnqzHl1WPrIRIQSmZfBMy5C+eAKK17aVwrAJ
-         MQdpCYUwCtrei0d9fHW0ZxNWbkRvizDbx+cWPGhj3z9RV9PX6jxyHtVj7kMkxqtsoN9A
-         cR8MkVdegL2NVVotVM+hahbPwVI7tQPl2bPMCzjQXCVALTYXufzjhoDxWgWsziKNjAg6
-         U39Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWyU1PxYv/F/T8BDetEBjHu74rZVKXCbNgRTl07zR2FtBfJ6RoyIKcW73L846pD7FbrmiwX39/+0UU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU8HZBxecbSZFwlEhVDCkVPVv1OIB9wgyqxXIHCoUVWWryx60o
-	gGxxtrk/BU4ru2AUZGi6qn9afaRJi06YDqVD9Hw5gefs5O4FCty5R/EFKRDkOzM452rcU7sU241
-	3T61P6qQCf3wDMqMFMZFE2OIuHKUa9LIkCo1r35YLkjBPiMMGiS/VvPDNOiqGxBw=
-X-Gm-Gg: ASbGncvs5OPFzvw03zMYfKngaugMxq+p6KScb6FeUPI87PTNgHPYuI///PsBdDxT4rv
-	awNXiwKcGbeRZ3T6yxQPBZYGXPLcHs5Y7jNWO63zDjTpxPAU2XpGlklcnuGpAW029MA86TehbWo
-	Wu1HTTa06gvhY4MZvS23wZoACxHC2KmRsfjPEj6uV5H3Prj0kQZjmY6FA4v8zUn5JSMLMDyXvy3
-	DjCmUKRhPg8s49gaxJHRQUn2eetMof0bcle6HLMfg7U67Q2L8wziKlmk7tkVs3goygK72hL/4Im
-	1LcD4nrOgdoLBiwcn5waUi1oDtB/A+3dDZN7mWR8lkAwAU0waYRcgRPLCRE6a7pz/msGZrdIQkx
-	cwYY=
-X-Received: by 2002:a05:620a:26aa:b0:7c0:b43c:b36c with SMTP id af79cd13be357-7d3f98e252fmr757962685a.6.1750769635202;
-        Tue, 24 Jun 2025 05:53:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHm26Atmzo8lMPkhFJw/P2Xp8LDJYbWX062GO4T8ZPwBCNOZSuvof419wfPyXwFJWWZBsaOMQ==
-X-Received: by 2002:a05:620a:26aa:b0:7c0:b43c:b36c with SMTP id af79cd13be357-7d3f98e252fmr757961685a.6.1750769634731;
-        Tue, 24 Jun 2025 05:53:54 -0700 (PDT)
-Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c2f4975a1sm1007741a12.68.2025.06.24.05.53.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jun 2025 05:53:54 -0700 (PDT)
-Message-ID: <9012d2f2-b9b0-4fca-a047-5b5adb921ccb@oss.qualcomm.com>
-Date: Tue, 24 Jun 2025 14:53:51 +0200
+        d=1e100.net; s=20230601; t=1750769768; x=1751374568;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wd5pQO4TMLiiStgKcNv1qG91igXzuOqB+CW/7l3oonI=;
+        b=Ch9MZruaJ3dAxp4itG0UoyWr3bvraXXh9+zfMNq0nmZ3EqTadHQSzqHJKV1N/id/v1
+         dH/GN6JwzwzQUSmHGd2coZzlb3wqa5/G0RMLdbGdoKOyYBz77/oK1cuMdf7mc0gXkQGX
+         J28Hii028WXSWbIrXF901qSNiac3fV1HjjAKKTWbL9FAYkyi70E6AVhfzt2pwpzZKFOy
+         IHMT/tTkaN0zXFqrhrBgwtBPnkiGP7pwuCVYek8Ethf0NnyPXD3cP2IW79/cW7lLtGbD
+         h/CIUlKZk+1E9xPkIaQTYeaw5f0LPqusMzzGTIwZqVD1wtuDabBaXNL4IDR4/eZ29MLU
+         upoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlZCayaBch+dsPk5tArnz0XrsGfEXaJbchc1QBRnQ9FGMIMEP01JaIpDrofyiroQtAFllE2mFkYAo=@vger.kernel.org, AJvYcCWtMyMHY1e7YIT8cFxaf3XPuUi5fetb14nNYkF5GDXULvOroQKHKD8ks5CXPkfAWU0Wf30dh96kJQejm2vQ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw518+o/nox7Tg1YyE3G8roKPdcevOmGuAdKYuXvQit7VJTsnlD
+	z4gUrJ0BvyjbGq9e1d6yEpAcBbdt3q6OLL0aw6yMnfmC5O3L8ikcoxQ/
+X-Gm-Gg: ASbGncs5fRoxPek4Y6zEBX/XuKBGwVoeGFteIgUYypRpuoHqXMVprFgV5yFfBICBnWt
+	WonvVHpPLEzLIq1HfJ5vaG0kL0v9YhzhtUBAbOSfszTlinuiwzUsQwAgCOreCVzdS+tPHAy134M
+	un3T3Kq3UtuiO1wRTP2lJDNnx9BDe0+omCsEn0oSk6bUciK2+Vp+hVkOclvp9ioyKm+QupppHML
+	I0lulpRCcxjx0tCfP6DF+PwkLaq8nl6RdZiTwscJA8JmY7H1J4YcriYGLD2aKUTFrRKaQBd2Rl0
+	jBx9UvWvXbBudrX+AXphU8mgOVF4YcE/C9aK3bXTb55twIVuHcXt
+X-Google-Smtp-Source: AGHT+IFQFiDas2wGVOeEugta8Qce/28uCIIlkNQljybIhHbXyMiUBS5KHiP7ubJnsUoLTyQUFBS21w==
+X-Received: by 2002:a17:907:1c95:b0:adb:449c:7621 with SMTP id a640c23a62f3a-ae057c0f672mr1747686066b.29.1750769767663;
+        Tue, 24 Jun 2025 05:56:07 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:3::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae053ee4e32sm887089266b.57.2025.06.24.05.56.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 05:56:07 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Date: Tue, 24 Jun 2025 05:55:53 -0700
+Subject: [PATCH] arm64: efi: Fix KASAN false positive for EFI runtime stack
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/8] firmware: qcom: uefisecapp: add support for R/O
- UEFI vars
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>
-Cc: Johan Hovold <johan@kernel.org>, Steev Klimaszewski <steev@kali.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-efi@vger.kernel.org
-References: <20250624-more-qseecom-v3-0-95205cd88cc2@oss.qualcomm.com>
- <20250624-more-qseecom-v3-3-95205cd88cc2@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250624-more-qseecom-v3-3-95205cd88cc2@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI0MDEwOCBTYWx0ZWRfX0imkqEDbEjGg
- bh/AJOnnhTaNeFW+fxeP4eaUt0IIRTAHXc4WiKMz44wUOmWbUhFVqaFz7QzEHW37w4D2my07vq7
- eQ+yz+CyTO9X36yoFEp3pGQEqW35X1efBbDTf68Xiz1Q9AmjCrEDNe1Q7Ue30Ch/U8JYEvw8tK6
- 0ObmhCxu2MHgOr1oXplUpMKx3Q1DY6IxE///u/gdLbpVJ8onw+j6dXYwBzBiiiz70ZgnvxRNJ98
- eDzqG/NO3czk/uPjeHO6KYL1jcPxbQouSScNCwUxEsCzZtv0BY4TfcL4uEDp0i1nmEPtS8riMFn
- 4FR9srY6GBTtniFAZ12jejr1Pw9n8/bokhzW5KFO4h5lozJMy8XIBId1AAf1tYFn+Hv2aloj6h/
- glwkI8gVszpVvxFGq6PRYOoKK/46UeV+qmCPjarnBOWdV+jzkYbl/P3FwrlfQfjNYA7hxR6f
-X-Proofpoint-ORIG-GUID: KfN60HxiMSud2JjleSETiwujd4JbKkOC
-X-Proofpoint-GUID: KfN60HxiMSud2JjleSETiwujd4JbKkOC
-X-Authority-Analysis: v=2.4 cv=A8BsP7WG c=1 sm=1 tr=0 ts=685a9fe4 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=aztlNrSj1wai7b1BO2MA:9
- a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-24_05,2025-06-23_07,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxlogscore=937 malwarescore=0 spamscore=0 bulkscore=0
- phishscore=0 adultscore=0 impostorscore=0 suspectscore=0 mlxscore=0
- clxscore=1015 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506240108
+Message-Id: <20250624-arm_kasan-v1-1-21e80eab3d70@debian.org>
+X-B4-Tracking: v=1; b=H4sIAFigWmgC/x3MUQqAIBAFwKss7ztBV+rDq0SE1VZLZKEQQXT3o
+ DnAPCiSVQoCPchyadEjIZCrCOMa0yJGJwQCW65tw97EvPdbLDEZP7jJsZWR7YyKcGaZ9f6vtnv
+ fD9I++rpbAAAA
+X-Change-ID: 20250623-arm_kasan-3b1d120ec20f
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>
+Cc: usamaarif642@gmail.com, Ard Biesheuvel <ardb@kernel.org>, 
+ rmikey@meta.com, andreyknvl@gmail.com, kasan-dev@googlegroups.com, 
+ linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1774; i=leitao@debian.org;
+ h=from:subject:message-id; bh=cuqvs4eld47kMpQxlX4a66Aj/+sUNQEviegQV4TglH0=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoWqBmoaEGY0Co/p8xMQtpfpmgTuCHGkMlV+q1t
+ BKsgyWtbl+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaFqgZgAKCRA1o5Of/Hh3
+ bdsaEACmyscWIr3t0MIMFNGraHzVh9hvWTV6na3q1m1afnri47yEjl/+kME4vBNnvroir2ynG0o
+ Y43r5iaBwxaB+URpN5iCHcqktnhCX+w9qeN5okvTo5geVnjQrgFpSugkrStqVd3XUXJZWecP1H5
+ sVhm16coRcXJSbz6rOjRtVwqNzBpxQ/fYZgOl9II7k+0zFaozXqkQ29462BozXBcp5R/eFu4Qo8
+ qNQUC8tsSoqRnpM6vDagP2r5evpSs0bLwTVOjGCBE4zKepqG/4j9RHr2McXgcvb5VNVZI1OlG1j
+ BFLL1ktHmWDk6ZrupaSsyzAh3OX/5cdUV8T5aBmfwm5/sJyjEwfgIfXVX9M7Hp+O7rylnmmlxg7
+ CcSVzlO17MxtNxxMnSEVLNl41jg6F8fLfeAp6CG0g/N3B0bkzhvdGY6MfuxTSluItEWXtvngiNC
+ 1VFdvFY5DmwguLAjouudsLTWjc2wOqPcbykPU1VKnXsWnBcJHk4YkyPKhSD2Qc7ekZw6R/vwzVR
+ 7PGD67q7uND0Cw0I2De5hyNwzlVZwGoDqpdcOF4B9aUF6K3isQGWvvCub/2UXA4WmErmJAeb8Z/
+ XikwCGchi6d+NARnAxUtFoPQU+7bhUk2tkfoZFui0qvjOKWPmW4D+lOYzBANctlEbPhz6Y4iAl9
+ 1cEzMc/LXEis8Sg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On 6/24/25 4:13 AM, Dmitry Baryshkov wrote:
-> For some platforms (e.g. Lenovo Yoga C630) we don't yet know a way to
-> update variables in the permanent storage. However being able to read
-> the vars is still useful as it allows us to get e.g. RTC offset.
-> 
-> Add a quirk for QSEECOM specifying that UEFI variables for this platform
-> should be registered in read-only mode.
-> 
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> ---
+KASAN reports invalid accesses during arch_stack_walk() for EFI runtime
+services due to vmalloc tagging[1]. The EFI runtime stack must be allocated
+with KASAN tags reset to avoid false positives.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+This patch uses arch_alloc_vmap_stack() instead of __vmalloc_node() for
+EFI stack allocation, which internally calls kasan_reset_tag()
 
-Konrad
+The changes ensure EFI runtime stacks are properly sanitized for KASAN
+while maintaining functional consistency.
+
+Link: https://lore.kernel.org/all/aFVVEgD0236LdrL6@gmail.com/ [1]
+Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
+Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ arch/arm64/kernel/efi.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+index 3857fd7ee8d46..d2af881a48290 100644
+--- a/arch/arm64/kernel/efi.c
++++ b/arch/arm64/kernel/efi.c
+@@ -15,6 +15,7 @@
+ 
+ #include <asm/efi.h>
+ #include <asm/stacktrace.h>
++#include <asm/vmap_stack.h>
+ 
+ static bool region_is_misaligned(const efi_memory_desc_t *md)
+ {
+@@ -214,9 +215,11 @@ static int __init arm64_efi_rt_init(void)
+ 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
+ 		return 0;
+ 
+-	p = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN, GFP_KERNEL,
+-			   NUMA_NO_NODE, &&l);
+-l:	if (!p) {
++	if (!IS_ENABLED(CONFIG_VMAP_STACK))
++		return -ENOMEM;
++
++	p = arch_alloc_vmap_stack(THREAD_SIZE, NUMA_NO_NODE);
++	if (!p) {
+ 		pr_warn("Failed to allocate EFI runtime stack\n");
+ 		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
+ 		return -ENOMEM;
+
+---
+base-commit: a3e9ee4ad433efad9c172d5fcf63ff39b61c902f
+change-id: 20250623-arm_kasan-3b1d120ec20f
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
