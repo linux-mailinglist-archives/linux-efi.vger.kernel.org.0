@@ -1,200 +1,113 @@
-Return-Path: <linux-efi+bounces-3969-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3970-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087FBAE740F
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 03:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05194AE821E
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 13:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B09617F2B4
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 01:09:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CAAD4A405F
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 11:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D5C13DBA0;
-	Wed, 25 Jun 2025 01:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9728625D539;
+	Wed, 25 Jun 2025 11:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="si3Mv9bY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MBZy8yaj"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2472AD58;
-	Wed, 25 Jun 2025 01:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9721494C3
+	for <linux-efi@vger.kernel.org>; Wed, 25 Jun 2025 11:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750813757; cv=none; b=YfbjfnCbhUHL5kQrj8xgS5x0DIyWhhVbGI2r48aDF1QWXvRfaBJLE0qhdJIHzpY1Ica2isWjyiCNOUxbTdtAAdFoXfyg8LqaCiQdSc/pwwiJQ2W/L19BiKYTUQYfqH3hOo0TL2nci6Wwv+KMH2xdNSelMezmrMaAo7jMYJNd1Gc=
+	t=1750852391; cv=none; b=RwqfNGO4slpPkMDE2DapDQLjpsmIMJV0q2f58cW3sX/nvWqjBscazLR2s7aKtBVvsodRCZ5IG67UI2g3Hes2jrP7k4OFZf28JXBlyqMBZ/bMoVu5MibSRHp1NZhZdYDc/l3oeUX/EeWikhbdEN0Hi8Z94ZW7OXJznhbzrwd7JKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750813757; c=relaxed/simple;
-	bh=ar+M7uOS6NGMBXnGsSfhmdY2/NIrFzzFwB2vQ2UdzzU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=Lqkw544z7nEnHYzbIOoMDtLajewAAV6RVrA7tDGQIOxWtcHK+kuLIn2j5w49sDUwlY2fCCaAkXRrufDWM5+1fUlgrmkCoJAkav6C/qgM142QAEVwLSQ9P9He8RAMJBXXqkUtLot5U/m+ZfFjCq/TFqEb325RvAZrTecsNXhdw7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=si3Mv9bY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5E3C4CEE3;
-	Wed, 25 Jun 2025 01:09:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750813756;
-	bh=ar+M7uOS6NGMBXnGsSfhmdY2/NIrFzzFwB2vQ2UdzzU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=si3Mv9bYY/8kBwTkVAcQqZoJK6oPCfQbERzoeHQNnnjouaaju9cDPj5M/XH+LGCGf
-	 sutZ2TLPTDRMtEiUcTLAfcucjlB1tBOK027s1ZYe+qpQm8YtBXVVCggwf2H8yIixe+
-	 IDVtaRLnE7OYk8omFmO1wVvMArdpG+qU6ghcCXqwDH3eSeR/zt8PJr47crwpodU4K/
-	 +SdYth5GpIqN7Rkz05vHh/vtCMrcnD2wmTD+63kR8qXgeUEYggdfeNmyLdKPgxxZY0
-	 Z7hF7LuReE6Xw0PlrdhJ4M022p1QhH6fci9WuRh8Uql2D6xK1hPUmyC7uoJ+Q8UvXd
-	 gbu4rtou3gcJw==
-Date: Tue, 24 Jun 2025 18:09:18 -0700
-From: Kees Cook <kees@kernel.org>
-To: Huacai Chen <chenhuacai@kernel.org>
-CC: Arnd Bergmann <arnd@arndb.de>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Gleixner <tglx@linutronix.de>,
- Tianyang Zhang <zhangtianyang@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, loongarch@lists.linux.dev,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nicolas.schier@linux.dev>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org, kasan-dev@googlegroups.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, llvm@lists.linux.dev
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_10/14=5D_loongarch=3A_Han?=
- =?US-ASCII?Q?dle_KCOV_=5F=5Finit_vs_inline_mismatches?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAAhV-H5oHPG+etNawAmVwyDtg80iKUrAM_m3Vj57bBO0scHqvQ@mail.gmail.com>
-References: <20250523043251.it.550-kees@kernel.org> <20250523043935.2009972-10-kees@kernel.org> <CAAhV-H4WxAwXTYVFOnphgHN80-_6jt77YZ_rw-sOBoBjjiN-yQ@mail.gmail.com> <CAAhV-H5oHPG+etNawAmVwyDtg80iKUrAM_m3Vj57bBO0scHqvQ@mail.gmail.com>
-Message-ID: <B5A11282-CB0E-46E0-A5D7-EF4D8BFC23B4@kernel.org>
+	s=arc-20240116; t=1750852391; c=relaxed/simple;
+	bh=wHC06+XDQXM2g63t+meeqhE3uQJP0n7nF2pLYZwxmUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HKWQUvnEENZ4NAIDJYFm4orkjRC1rz9JBzZtVqCkeBNXvVklROHdEXRTfOa4eQvJJaadyySoP9fpCct+PaievogalxRRrMktxVLnb4ObBq0O7qL9RX9R8FGzAvV8Gd8cELVsEqGNLwe/5zA+LafrLtLbsxraK1WGhT7yrAioGAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MBZy8yaj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750852387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t4Xv+4iFOSQyhQxAlU+cPqAXaAkqD/p8+Wz48p9hJkc=;
+	b=MBZy8yaj6XYsJwotG0qJF7CbAPd/e1XLSmQf0oMy5upRSCxx5CXSYeT6+fcR+KYRULaz1s
+	eEyHNrfqYATVlhD1mI5Zgmpz7fevaSi52OBOImvcB0acWFms/ijpCMZJCVRXTp9UbwhGQT
+	oHyRK5XeROlzsuH6vnGogxSaPwTLluw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-LiX6dINzM5GzkvZKRixnUg-1; Wed,
+ 25 Jun 2025 07:53:04 -0400
+X-MC-Unique: LiX6dINzM5GzkvZKRixnUg-1
+X-Mimecast-MFC-AGG-ID: LiX6dINzM5GzkvZKRixnUg_1750852382
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 610CC195608C;
+	Wed, 25 Jun 2025 11:53:02 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.244])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47272180035C;
+	Wed, 25 Jun 2025 11:53:01 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id AF16D18000A3; Wed, 25 Jun 2025 13:52:58 +0200 (CEST)
+Date: Wed, 25 Jun 2025 13:52:58 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, 
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>, 
+	"open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] x86/sev: let sev_es_efi_map_ghcbs map the caa
+ pages too
+Message-ID: <rite3te5udzekwbbujmga5kyyjjm5gfphhqoxlhtsncgckq6rm@7m7owl5jgubz>
+References: <20250602105050.1535272-1-kraxel@redhat.com>
+ <20250602105050.1535272-3-kraxel@redhat.com>
+ <20250624130158.GIaFqhxjE8-lQqq7mt@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624130158.GIaFqhxjE8-lQqq7mt@fat_crate.local>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
+>  	for_each_possible_cpu(cpu) {
+>  		data = per_cpu(runtime_data, cpu);
+> @@ -1066,6 +1069,14 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
+>  
+>  		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags))
+>  			return 1;
+> +
+> +		address = per_cpu(svsm_caa_pa, cpu);
+> +		if (!address)
+> +			return 1;
+> +
+> +		pfn = address >> PAGE_SHIFT;
+> +		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags_enc))
+> +			return 1;
+>  	}
 
+The kernel allocates the caa page(s) only when running under svsm, see
+alloc_runtime_data(), so this is not correct.  I think we either have to
+return to the original behavior of only doing something in case address
+is not NULL, or wrap the caa code block into a 'if (snp_vmpl) { ... }',
+following what alloc_runtime_data() is doing.
 
-On June 24, 2025 5:31:12 AM PDT, Huacai Chen <chenhuacai@kernel=2Eorg> wro=
-te:
->Hi, Kees,
->
->On Thu, Jun 19, 2025 at 4:55=E2=80=AFPM Huacai Chen <chenhuacai@kernel=2E=
-org> wrote:
->>
->> Hi, Kees,
->>
->> On Fri, May 23, 2025 at 12:39=E2=80=AFPM Kees Cook <kees@kernel=2Eorg> =
-wrote:
->> >
->> > When KCOV is enabled all functions get instrumented, unless
->> > the __no_sanitize_coverage attribute is used=2E To prepare for
->> > __no_sanitize_coverage being applied to __init functions, we have to
->> > handle differences in how GCC's inline optimizations get resolved=2E =
-For
->> > loongarch this exposed several places where __init annotations were
->> > missing but ended up being "accidentally correct"=2E Fix these cases =
-and
->> > force one function to be inline with __always_inline=2E
->> >
->> > Signed-off-by: Kees Cook <kees@kernel=2Eorg>
->> > ---
->> > Cc: Huacai Chen <chenhuacai@kernel=2Eorg>
->> > Cc: WANG Xuerui <kernel@xen0n=2Ename>
->> > Cc: Thomas Gleixner <tglx@linutronix=2Ede>
->> > Cc: Tianyang Zhang <zhangtianyang@loongson=2Ecn>
->> > Cc: Bibo Mao <maobibo@loongson=2Ecn>
->> > Cc: Jiaxun Yang <jiaxun=2Eyang@flygoat=2Ecom>
->> > Cc: <loongarch@lists=2Elinux=2Edev>
->> > ---
->> >  arch/loongarch/include/asm/smp=2Eh | 2 +-
->> >  arch/loongarch/kernel/time=2Ec     | 2 +-
->> >  arch/loongarch/mm/ioremap=2Ec      | 4 ++--
->> >  3 files changed, 4 insertions(+), 4 deletions(-)
->> >
->> > diff --git a/arch/loongarch/include/asm/smp=2Eh b/arch/loongarch/incl=
-ude/asm/smp=2Eh
->> > index ad0bd234a0f1=2E=2E88e19d8a11f4 100644
->> > --- a/arch/loongarch/include/asm/smp=2Eh
->> > +++ b/arch/loongarch/include/asm/smp=2Eh
->> > @@ -39,7 +39,7 @@ int loongson_cpu_disable(void);
->> >  void loongson_cpu_die(unsigned int cpu);
->> >  #endif
->> >
->> > -static inline void plat_smp_setup(void)
->> > +static __always_inline void plat_smp_setup(void)
->> Similar to x86 and arm, I prefer to mark it as __init rather than
->> __always_inline=2E
->If you have no objections, I will apply this patch with the above modific=
-ation=2E
+take care,
+  Gerd
 
-That's fine by me; thank you! I didn't have a chance yet to verify that it=
- actually fixes the mismatches I saw, but if it looks good to you, yes plea=
-se=2E :)
-
--Kees
-
->
->
->Huacai
->
->>
->> Huacai
->>
->> >  {
->> >         loongson_smp_setup();
->> >  }
->> > diff --git a/arch/loongarch/kernel/time=2Ec b/arch/loongarch/kernel/t=
-ime=2Ec
->> > index bc75a3a69fc8=2E=2E367906b10f81 100644
->> > --- a/arch/loongarch/kernel/time=2Ec
->> > +++ b/arch/loongarch/kernel/time=2Ec
->> > @@ -102,7 +102,7 @@ static int constant_timer_next_event(unsigned lon=
-g delta, struct clock_event_dev
->> >         return 0;
->> >  }
->> >
->> > -static unsigned long __init get_loops_per_jiffy(void)
->> > +static unsigned long get_loops_per_jiffy(void)
->> >  {
->> >         unsigned long lpj =3D (unsigned long)const_clock_freq;
->> >
->> > diff --git a/arch/loongarch/mm/ioremap=2Ec b/arch/loongarch/mm/iorema=
-p=2Ec
->> > index 70ca73019811=2E=2Edf949a3d0f34 100644
->> > --- a/arch/loongarch/mm/ioremap=2Ec
->> > +++ b/arch/loongarch/mm/ioremap=2Ec
->> > @@ -16,12 +16,12 @@ void __init early_iounmap(void __iomem *addr, uns=
-igned long size)
->> >
->> >  }
->> >
->> > -void *early_memremap_ro(resource_size_t phys_addr, unsigned long siz=
-e)
->> > +void * __init early_memremap_ro(resource_size_t phys_addr, unsigned =
-long size)
->> >  {
->> >         return early_memremap(phys_addr, size);
->> >  }
->> >
->> > -void *early_memremap_prot(resource_size_t phys_addr, unsigned long s=
-ize,
->> > +void * __init early_memremap_prot(resource_size_t phys_addr, unsigne=
-d long size,
->> >                     unsigned long prot_val)
->> >  {
->> >         return early_memremap(phys_addr, size);
->> > --
->> > 2=2E34=2E1
->> >
-
---=20
-Kees Cook
 
