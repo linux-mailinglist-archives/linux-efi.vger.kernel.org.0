@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-3972-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3976-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E67AE832B
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 14:51:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968C5AE8334
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 14:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 041121892134
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 12:52:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF86917A505
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 12:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFE12609FB;
-	Wed, 25 Jun 2025 12:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DEC263F30;
+	Wed, 25 Jun 2025 12:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ml0vmaU5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WscCoV8y"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D6E2609E4;
-	Wed, 25 Jun 2025 12:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F45262FDB;
+	Wed, 25 Jun 2025 12:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750855887; cv=none; b=AkXhxPC1dTqfBS/T6FO4rkpmcAj29YDr8ac0jrACSPzSntP7GliQ75O2MtWHjxHg3HXIfEoANp5av7li8vkmzUb3FfP6B0AD4/wBpQu8Ugt/pX9ES1LelVdFRezkzkc4UiSZ0S5OgGpM25D15/4CyWDM4NYBQNLSDJqBs75W7zc=
+	t=1750855889; cv=none; b=XQbplz6OjB9sj/KrfGvIGHPmiBCET9FtZ1BLe1q9JJr9LpkwP2NPQ7t3M+PxQsZysOXQ+LAV4c7QGFDUysrP8cs53kKfLSJeNw4sq33shk5cCl+3cy67IDQdxhU5lMe5R4w01COWi6JAYjusPmEPHI4wbn1NtCJz+varrqMatXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750855887; c=relaxed/simple;
-	bh=gSrgyF7nkaMy9jgn9VB3Vel47cqINKRy4i1jm+eFhC4=;
+	s=arc-20240116; t=1750855889; c=relaxed/simple;
+	bh=1q6/ECc49ZMw6ZJhZhOn96PRYQi7zMMajTxiCNRfBKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McOK46IKF+Sfc8pwjlmc3zl/Ta4Su/HEA4QFon2H3mFScStwqFbpLgOjKeZ92QB2QZIu2YWVth9OahcTPl0FC5xnzNummZP9Gun2h6j4JOOcVokhX+aQpthmxe2ZIe+Nu4ZGeLMFsza1RHNPwWeXZaPngRYrh9bRJSUCmQCLySc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ml0vmaU5; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=oWMXYrgJ1HxGqPVPRQVmiVF29Bi8ry83gkntmbAiW5Ef6J2fDDlZLmsuqQF3bLFk7Gl+Q6GDrxNrAP/a0x0nLWuo9emKVjnZPIyqauSI2xFatXwjLRa0QTpUpjKLOwG4p3YMcfMlHIQiOoLAeWFWVTwjsGV0EJqtnFgXQArNwAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WscCoV8y; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750855885; x=1782391885;
+  t=1750855887; x=1782391887;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=gSrgyF7nkaMy9jgn9VB3Vel47cqINKRy4i1jm+eFhC4=;
-  b=Ml0vmaU5IZEAgS6fxoSeZBMN8zyzAZCNhV1xft2ysOddqe+R6IUj+2Yp
-   CVAVs++xPxqMBv+yEGGtAetGNW14HRBcbjEh6Cu3ktHh5FXvHm7a3b/o2
-   BntImFKrMR3+hUtkwlz0zgm+5AVMBmVk8M6C124arDgsiCiaHRDxdF8Ig
-   bkjRUbR31z2wBXK0ZvjYMUq6rNTe8lxc4YgZZHHLYQw4sbNwmq2p+PGEu
-   saeguRVnii/t9zwhrWbnjjgghRyGpNPpinPh/dUS+EryUJZLb2i5x3/Dt
-   ipuV3S+3pZv1kkC8K2JzCxwSGkhlQUeaOzBPgJKv55VsbAvqxS00FtZ7/
-   g==;
-X-CSE-ConnectionGUID: jQVPtH0RT0O2Mpf4k3YKTA==
-X-CSE-MsgGUID: v81Lh9nuRRe1t0o3D9xqBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="53189452"
+  bh=1q6/ECc49ZMw6ZJhZhOn96PRYQi7zMMajTxiCNRfBKg=;
+  b=WscCoV8yPwfOTGXLUp9Bi3TikjexTFJjcdQGqktkJ3HTdTZ9WwGJdZgX
+   o8e7PL0KhTJ+GvYdFORKkSX9zMsb2r4Hvc3N/TQ5lD2OOezePfR0fwjOf
+   RNg0+t9qL63QfPmyzT+oEDh/WJV0bjnCRWkYt0ePnZO7SJO6AOAKS+RBZ
+   rAvJoA+zBvPp8kQlQ6hh3c1iYSdI0whciJaR5LTvMs5r2jcbZYC8lPfRe
+   bpVVNeTCbARK+vuMjqREqtLlvHC1Z5cK+p0gN/MacQAbh/zUDaA2soj0d
+   ZIouC/7/nc2VQpRkHftlwb4zlCWg89bEKqgoMcLG6eKJ7ghpMBdXKDixz
+   Q==;
+X-CSE-ConnectionGUID: bU5KWPKmR4mRAFdK/Q0RLg==
+X-CSE-MsgGUID: hy6svplUSNCgIJm7w2XVkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="53189499"
 X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="53189452"
+   d="scan'208";a="53189499"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 05:51:24 -0700
-X-CSE-ConnectionGUID: nHpb/gW4TziBMGpfqvgHYg==
-X-CSE-MsgGUID: JoVvoqxOQjKiSdbdHOpAow==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 05:51:26 -0700
+X-CSE-ConnectionGUID: yazXotynQdmxFGtyq6wR+Q==
+X-CSE-MsgGUID: QNwNu1pdSYWYab4XqA2Gqg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="151830926"
+   d="scan'208";a="151830935"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa007.fm.intel.com with ESMTP; 25 Jun 2025 05:51:13 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 25 Jun 2025 05:51:15 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 65B4627C; Wed, 25 Jun 2025 15:51:12 +0300 (EEST)
+	id 794752BA; Wed, 25 Jun 2025 15:51:12 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
-Date: Wed, 25 Jun 2025 15:50:54 +0300
-Message-ID: <20250625125112.3943745-3-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv7 02/16] x86/asm: Introduce inline memcpy and memset
+Date: Wed, 25 Jun 2025 15:50:55 +0300
+Message-ID: <20250625125112.3943745-4-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250625125112.3943745-1-kirill.shutemov@linux.intel.com>
 References: <20250625125112.3943745-1-kirill.shutemov@linux.intel.com>
@@ -127,61 +127,177 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
-page fault, but the CPU does not report X86_PF_INSTR if neither
-X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
+Extract memcpy and memset functions from copy_user_generic() and
+__clear_user().
 
-X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
-early P4 processors that did not support this feature.
+They can be used as inline memcpy and memset instead of the GCC builtins
+whenever necessary. LASS requires them to handle text_poke.
 
-Instead of explicitly checking for X86_PF_INSTR, compare the fault
-address to RIP.
-
-On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
-to fault address but X86_PF_INSTR is absent.
-
-Originally-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
+Originally-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/all/20241029184840.GJ14555@noisy.programming.kicks-ass.net/
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/string.h     | 46 +++++++++++++++++++++++++++++++
+ arch/x86/include/asm/uaccess_64.h | 38 +++++++------------------
+ arch/x86/lib/clear_page_64.S      | 10 +++++--
+ 3 files changed, 64 insertions(+), 30 deletions(-)
 
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index c9103a6fa06e..0b0e0283994f 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -124,7 +124,8 @@ bool emulate_vsyscall(unsigned long error_code,
- 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
- 		return false;
- 
--	if (!(error_code & X86_PF_INSTR)) {
-+	/* Avoid emulation unless userspace was executing from vsyscall page: */
-+	if (address != regs->ip) {
- 		/* Failed vsyscall read */
- 		if (vsyscall_mode == EMULATE)
- 			return false;
-@@ -136,13 +137,16 @@ bool emulate_vsyscall(unsigned long error_code,
- 		return false;
- 	}
- 
+diff --git a/arch/x86/include/asm/string.h b/arch/x86/include/asm/string.h
+index c3c2c1914d65..5cd0f18a431f 100644
+--- a/arch/x86/include/asm/string.h
++++ b/arch/x86/include/asm/string.h
+@@ -1,6 +1,52 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_STRING_H
++#define _ASM_X86_STRING_H
 +
-+	/* X86_PF_INSTR is only set when NX is supported: */
-+	if (cpu_feature_enabled(X86_FEATURE_NX))
-+		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++#include <asm/asm.h>
++#include <asm/alternative.h>
++#include <asm/cpufeatures.h>
 +
- 	/*
- 	 * No point in checking CS -- the only way to get here is a user mode
- 	 * trap to a high address, which means that we're in 64-bit user code.
- 	 */
+ #ifdef CONFIG_X86_32
+ # include <asm/string_32.h>
+ #else
+ # include <asm/string_64.h>
+ #endif
++
++#ifdef CONFIG_X86_64
++#define ALT_64(orig, alt, feat) ALTERNATIVE(orig, alt, feat)
++#else
++#define ALT_64(orig, alt, feat) orig "\n"
++#endif
++
++static __always_inline void *__inline_memcpy(void *to, const void *from, size_t len)
++{
++	void *ret = to;
++
++	asm volatile("1:\n\t"
++		     ALT_64("rep movsb",
++			    "call rep_movs_alternative", ALT_NOT(X86_FEATURE_FSRM))
++		     "2:\n\t"
++		     _ASM_EXTABLE_UA(1b, 2b)
++		     :"+c" (len), "+D" (to), "+S" (from), ASM_CALL_CONSTRAINT
++		     : : "memory", _ASM_AX);
++
++	return ret + len;
++}
++
++static __always_inline void *__inline_memset(void *addr, int v, size_t len)
++{
++	void *ret = addr;
++
++	asm volatile("1:\n\t"
++		     ALT_64("rep stosb",
++			    "call rep_stos_alternative", ALT_NOT(X86_FEATURE_FSRM))
++		     "2:\n\t"
++		     _ASM_EXTABLE_UA(1b, 2b)
++		     : "+c" (len), "+D" (addr), ASM_CALL_CONSTRAINT
++		     : "a" ((uint8_t)v)
++		     : "memory", _ASM_SI);
++
++	return ret + len;
++}
++
++#endif /* _ASM_X86_STRING_H */
+diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
+index c8a5ae35c871..eb531e13e659 100644
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -13,6 +13,7 @@
+ #include <asm/page.h>
+ #include <asm/percpu.h>
+ #include <asm/runtime-const.h>
++#include <asm/string.h>
  
--	WARN_ON_ONCE(address != regs->ip);
+ /*
+  * Virtual variable: there's no actual backing store for this,
+@@ -118,21 +119,12 @@ rep_movs_alternative(void *to, const void *from, unsigned len);
+ static __always_inline __must_check unsigned long
+ copy_user_generic(void *to, const void *from, unsigned long len)
+ {
++	void *ret;
++
+ 	stac();
+-	/*
+-	 * If CPU has FSRM feature, use 'rep movs'.
+-	 * Otherwise, use rep_movs_alternative.
+-	 */
+-	asm volatile(
+-		"1:\n\t"
+-		ALTERNATIVE("rep movsb",
+-			    "call rep_movs_alternative", ALT_NOT(X86_FEATURE_FSRM))
+-		"2:\n"
+-		_ASM_EXTABLE_UA(1b, 2b)
+-		:"+c" (len), "+D" (to), "+S" (from), ASM_CALL_CONSTRAINT
+-		: : "memory", "rax");
++	ret = __inline_memcpy(to, from, len);
+ 	clac();
+-	return len;
++	return ret - to;
+ }
+ 
+ static __always_inline __must_check unsigned long
+@@ -178,25 +170,15 @@ rep_stos_alternative(void __user *addr, unsigned long len);
+ 
+ static __always_inline __must_check unsigned long __clear_user(void __user *addr, unsigned long size)
+ {
++	void *ptr = (__force void *)addr;
++	void *ret;
++
+ 	might_fault();
+ 	stac();
 -
- 	if (vsyscall_mode == NONE) {
- 		warn_bad_vsyscall(KERN_INFO, regs,
- 				  "vsyscall attempted with vsyscall=none");
+-	/*
+-	 * No memory constraint because it doesn't change any memory gcc
+-	 * knows about.
+-	 */
+-	asm volatile(
+-		"1:\n\t"
+-		ALTERNATIVE("rep stosb",
+-			    "call rep_stos_alternative", ALT_NOT(X86_FEATURE_FSRS))
+-		"2:\n"
+-	       _ASM_EXTABLE_UA(1b, 2b)
+-	       : "+c" (size), "+D" (addr), ASM_CALL_CONSTRAINT
+-	       : "a" (0));
+-
++	ret = __inline_memset(ptr, 0, size);
+ 	clac();
+ 
+-	return size;
++	return ret - ptr;
+ }
+ 
+ static __always_inline unsigned long clear_user(void __user *to, unsigned long n)
+diff --git a/arch/x86/lib/clear_page_64.S b/arch/x86/lib/clear_page_64.S
+index a508e4a8c66a..ca94828def62 100644
+--- a/arch/x86/lib/clear_page_64.S
++++ b/arch/x86/lib/clear_page_64.S
+@@ -55,17 +55,23 @@ SYM_FUNC_END(clear_page_erms)
+ EXPORT_SYMBOL_GPL(clear_page_erms)
+ 
+ /*
+- * Default clear user-space.
++ * Default memset.
+  * Input:
+  * rdi destination
++ * rsi scratch
+  * rcx count
+- * rax is zero
++ * al is value
+  *
+  * Output:
+  * rcx: uncleared bytes or 0 if successful.
+  */
+ SYM_FUNC_START(rep_stos_alternative)
+ 	ANNOTATE_NOENDBR
++
++	movzbq %al, %rsi
++	movabs $0x0101010101010101, %rax
++	mulq %rsi
++
+ 	cmpq $64,%rcx
+ 	jae .Lunrolled
+ 
 -- 
 2.47.2
 
