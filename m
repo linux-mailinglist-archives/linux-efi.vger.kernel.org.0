@@ -1,96 +1,81 @@
-Return-Path: <linux-efi+bounces-3990-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3992-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C4AAE8369
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 14:57:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF0FAE8486
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 15:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0193616EB25
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 12:57:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49AFD6A2A59
+	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 13:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97202627F5;
-	Wed, 25 Jun 2025 12:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1393264A77;
+	Wed, 25 Jun 2025 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EiYFioox"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fHw51sj3"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FBF26158D;
-	Wed, 25 Jun 2025 12:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573FC265288
+	for <linux-efi@vger.kernel.org>; Wed, 25 Jun 2025 13:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750856148; cv=none; b=fpPxRb1rkw8LEMkDlMYwXfkeGdInon+x/e2t3bGaLL2HaPa2o+AOcnQf8guWTX+qW8HmsOK9BNJWN49SIY4Cro+ZiTKAjCb0EkLtirGxVsB5fNBgy0pn+mAVY0WwD1wRwXYeC/5veos0MfHpQZdG7pHx3sySh8ew1+e5aCOgpaE=
+	t=1750857718; cv=none; b=ow6yiHZOa7GdXf8rNP3cYpEp39C/o9ubrcjc/FfPqlp44YSKzvgGo3Yf1dMS+gKsiq5t16psTWnCAf+PSm57sup3f1GG7ff2SnoDU2LJ6ZcXEPSt0O5uvyCzB+3t/fYWSkioXK8QzBvVn8e9Zb15Gg2DQILotLrdz7aMTPPRl1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750856148; c=relaxed/simple;
-	bh=JXLoTAc7ALhyjeGRQiJU1KcXwfT2CND0hfmI1qetiYE=;
+	s=arc-20240116; t=1750857718; c=relaxed/simple;
+	bh=1Q/pAr4sY9lLv5EGc/bvaQUMj8H/x06Su0+uEZZPQXY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N/xDDPaXKUCpZHtoFWOOTC69Q9yykM9qVMJJ9ZS2MxqZemt+WmmJihaHYh6hofr0DCciNQmdkFWTbN0Hz3v5x/11uq8UjzvkQLaw9fvwqEC2CCyktIrhYLSon9FXMCaWpP8xW4E1BLRFDGBFp788QG1VLR7BN1ElsoXQ141x98A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EiYFioox; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750856147; x=1782392147;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JXLoTAc7ALhyjeGRQiJU1KcXwfT2CND0hfmI1qetiYE=;
-  b=EiYFiooxWZGeIy55qCQV5QVqdjnK7pYIECFV75kU3asp1ZVbLchsXjdC
-   dnHIRimyDQN3O/bRqqJiCsE+8/NNxjJUMABsDHwyVJ83+dqVjcJHZUEZ/
-   0pTVAG61o/dhjcZpMQvk1tUP/ME2Jofs7jjiYn0y00wN5KVO9+j9c6fdd
-   xVSaoXKGfQjyXZ9XndEiBN5Z8DIVP9UvMQKwt1dJrKUSOjrbCl2Ovrvm9
-   8xldtyD0yA5abEAGQ6hkv+32c5cM14ySZ7dyknIEGjsYRdlyhSaW85pH5
-   RkE0bq+2qdMnoACnMG4NxTC8L4fJyiT87Bnxmw1aB0RJjNKTN6iLwFUDV
-   Q==;
-X-CSE-ConnectionGUID: ZFurLcwGQoiTa8B4AArYkQ==
-X-CSE-MsgGUID: sLo93ohzT4y8U4r1vaDpuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="55752963"
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="55752963"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 05:55:46 -0700
-X-CSE-ConnectionGUID: 18evZZsoR4Kd5vv5zfMgmw==
-X-CSE-MsgGUID: i2Sdz5NYT8qFlryDPXfl1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="157708959"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa004.fm.intel.com with ESMTP; 25 Jun 2025 05:55:35 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id B7C9A207; Wed, 25 Jun 2025 15:55:33 +0300 (EEST)
-Date: Wed, 25 Jun 2025 15:55:33 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>, 
-	"Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>, 
-	Ingo Molnar <mingo@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Sandipan Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, 
-	Huang Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH] x86/vsyscall: Do not require X86_PF_INSTR to emulate
- vsyscall
-Message-ID: <tlls63g3pslsdnegrahl7ayha6um6skpve5k2gotcqrnw4mub4@fkas3h7nd4gc>
-References: <20250625125112.3943745-1-kirill.shutemov@linux.intel.com>
- <20250625125112.3943745-3-kirill.shutemov@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ghqffCPKp/GxWt2jG1NOP3V6MkCnr2V6YQEhszdUOm56/epR0YL+kvR4vAM096N9htpvlzonHGkt97dBy/W52nhGEMMBkbZ2RhzfpAyegzFyiVq2s8Heb7en6tnTfp1rR4NGY3Mn+lFr7jeGTZj7yyRY0+TCYPdeD4mwqWITujM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fHw51sj3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750857716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EMRp8rT+/1qIGfANxZLNkeUT+Jcn0lDcU42QUGT4t1Y=;
+	b=fHw51sj3GQiCxeIv03uKSNYvfUTVkwOrPCap/g079EoHgtRRC2E6yZDe+bBLiQh+vET9HE
+	JoZ2VBGNzEScgiZMZoI3eeP51obN7zrKafUbHIy4pSyXoIExczk7Zo3ByPG/KrnGTfPd7V
+	h0NEIcGrMKS4xRP3UdL8rf/RtzIQZuU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-ZgeIcD_lMIa2bepv8Yrm9w-1; Wed,
+ 25 Jun 2025 09:21:53 -0400
+X-MC-Unique: ZgeIcD_lMIa2bepv8Yrm9w-1
+X-Mimecast-MFC-AGG-ID: ZgeIcD_lMIa2bepv8Yrm9w_1750857711
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 173111956089;
+	Wed, 25 Jun 2025 13:21:51 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.244])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 677F119560A3;
+	Wed, 25 Jun 2025 13:21:49 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id 395C118000A3; Wed, 25 Jun 2025 15:21:47 +0200 (CEST)
+Date: Wed, 25 Jun 2025 15:21:47 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, 
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>, 
+	"open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] x86/sev: let sev_es_efi_map_ghcbs map the caa
+ pages too
+Message-ID: <4kk67edghl7wvqzuyubgr45mhols37yqsorbxxvkypm3xwnuvc@2oek5mladprs>
+References: <20250602105050.1535272-1-kraxel@redhat.com>
+ <20250602105050.1535272-3-kraxel@redhat.com>
+ <20250624130158.GIaFqhxjE8-lQqq7mt@fat_crate.local>
+ <rite3te5udzekwbbujmga5kyyjjm5gfphhqoxlhtsncgckq6rm@7m7owl5jgubz>
+ <20250625124016.GCaFvuMA9oApInTVyI@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -99,11 +84,22 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250625125112.3943745-3-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20250625124016.GCaFvuMA9oApInTVyI@fat_crate.local>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Please ignore this patch. It was sent by mistake. The same patch included
-in the patchset in the right spot.
+On Wed, Jun 25, 2025 at 02:40:16PM +0200, Borislav Petkov wrote:
+> On Wed, Jun 25, 2025 at 01:52:58PM +0200, Gerd Hoffmann wrote:
+> > The kernel allocates the caa page(s) only when running under svsm, see
+> > alloc_runtime_data(), so this is not correct.  I think we either have to
+> > return to the original behavior of only doing something in case address
+> > is not NULL
+> 
+> Yes, we're doing something only when the address is not NULL.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+This is inside a loop, so returning in case the caa address is NULL will
+skip ghcb setup for all but the first CPU.
+
+take care,
+  Gerd
+
 
