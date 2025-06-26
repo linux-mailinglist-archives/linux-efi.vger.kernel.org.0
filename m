@@ -1,66 +1,66 @@
-Return-Path: <linux-efi+bounces-4019-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4020-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2E0AEA258
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 17:21:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9768AEA288
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 17:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25C583ADE2A
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 15:19:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F137F189427D
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 15:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFAF2E718D;
-	Thu, 26 Jun 2025 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9815A2E718D;
+	Thu, 26 Jun 2025 15:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hf8qa8VF"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="BKoLX4+/"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6842EB5A4;
-	Thu, 26 Jun 2025 15:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89B52EBDD9;
+	Thu, 26 Jun 2025 15:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750951187; cv=none; b=Bd6QMANLklSEigt4U9QaP9mHLFw1ZGlovF63l67lGDhrthKglRj5kv/QpfR/J7X3kPqmrj0glPAQf3WxGXBeCD4R/6Fpw/GrPZxCJ/WuMZmW5m9LHFsO5V5QjzQORFU9gr//Jaapq929SFgqeqTKodV7U+gv667Q69+k0bYuq84=
+	t=1750951398; cv=none; b=fLdPk4PKv9ZRRhJL+5qHr00DjfZy+/1lSCC9CmMSYzwHfF7NRLiaYecPNEQERQXJm81fLLkh42EyVaOuMVA8bRUHhZsqU4VlBRULxOUZlqvz1sPUhXJ1JNf64b9DP3qvU6J1uVtQ0a3tvyxdQm91ePOB4uVyE2Tp7jTjzmQte80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750951187; c=relaxed/simple;
-	bh=o51B7iNjd+U5WK/gVXXyYCMg+WKgROXXkbE4f+qmvug=;
+	s=arc-20240116; t=1750951398; c=relaxed/simple;
+	bh=1meFbmguIrrQcXTuIPMPgEl7aNZYw1TFw2buecn9sg8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MKdgO//VFoW+kuVdeJnKJ7Wn81EM6YSfGQ8vq8FeKXONNBeEwzSLq//TBYB9S0r4oI/eEBW85aOMOTlCaKR/h9QazZfQ7TASVnB+F8QDaczLErL6rMCxwO90e1y8r2NtqWI6XltV35ZifkovGGuKRdNPXK4yKb/xYfrHykAGpy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hf8qa8VF; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=KssYi0NTKpS8NKs9lndWhW9ol+KwHCtbjKshwAqxk5ZKJm4RSEsE38oCTbCcQM0+18bD8u+HDCaU5UIjmZRltP3tRZCv7s8NEzMnHcD59UJYKTbG1cdaOGURKRo58K+k1tb3nGcxBUkslRihLdXlJDw9EjMHNlIM+D+QI8Hqjyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=BKoLX4+/; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 462C940E0198;
-	Thu, 26 Jun 2025 15:19:41 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E637840E00CE;
+	Thu, 26 Jun 2025 15:23:12 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id PqW44RiQH6Jz; Thu, 26 Jun 2025 15:19:36 +0000 (UTC)
+	with ESMTP id 3T_HP8Mpcpq7; Thu, 26 Jun 2025 15:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1750951175; bh=aEy0xE6/1EEIexhyZkFY9aUxJdMhziDSaDkTlnv5w6g=;
+	t=1750951386; bh=A7hao13YYOHGpLHDV+xaJPrzcOSgKVbDGnSsEtxU0hA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hf8qa8VF8orYwOKOUtgJkEYmsjkfQbalTSkc7wTAYA2jJ/CzAYCPQlNROgWOEUfMw
-	 VoeBHB5cEOMQDXEeKlqlakJFcsF8PK+GVoXJ0V7783kMDwKpbmq16/OFswms2stkHY
-	 UpWy6FuRtYdBacDNGp3lNp+ddT5PqRkYVrX4nbhXbQ3gOvG1hoKC5tlw2mFZfhtvsH
-	 NzZIW58fmTp/A0AmCkZnv66tlzfUNR+bhj7hErzYxRbs/IIOt8aDey6Klcr+AaEC8t
-	 qAGQ40bce3WW/qTrPFphAV1ohLkxc13JTAT5pGZrj3E+TNdmn5PbgmNw79tv/qcTO8
-	 miE8es+ZbHY1nsfYEFJHgk9v24neXCjLlg0ceLMxWIUnrBgeYRdnTSUM0/oW92tArv
-	 kSJvVYarRjwBM6zS8jooty0pw0N845TGyAB0F0l8J/Yq0Vo0hox3/dE8WiH2JQ80JT
-	 fmARjkYr+ofaimfaXPYo2VPZ4haf+Gg9y08Y45QhyJnHH9085m/BN2a1KzNAgkbjY+
-	 80SGmS9MENlf+p0WZ4MNdEicxFGxV88gidcNae0lvaCoPtfVDC5GiAMURROJEmkfsW
-	 p7K3WRFb8W1qGEZOoM8CusnNriv0PQWtyqixF67QK4Pi0AyZdp7VxZvR0spEk05bVC
-	 O2Vl1I4mvMThn66Ll3gWP0a8=
+	b=BKoLX4+/fxMkEUVDSfj5OUUjdINqhyteEYa5Os8ve0ZB3p8J+l7hJ1Ws/zoLLJkiN
+	 rYA/ARGVja21Kkv37IzLbx4h60cQaOUwbtJZyjMHSl87kyPhbvwKd03qQSFD4tois7
+	 oqy4bRxbP3qpXNkFhC+ZepnFDZid0d2U9LS0DCiG2MvYqzq+i3ybzQ89WYNMd/sm7E
+	 7Y5rJYgCm5rqLufKCfaNThotZWNbAzII+HZc1FeAUL/Ifc71h4kaTEYG8tKHeJMQ4o
+	 Lce4z9I6lFNAquQWddl3pcX0nwc1L8oRUrs9L88LdaENKemne/ZCUY+6g43KBVWIE3
+	 6XyIDj3ur19YNByGBUx4JjtLODwjdYybJZaNYNsbGCltX5yN5CEM8lgLnQx2svvkUx
+	 cxCrxFY18jAXDX2UFUelN5gtWiH5+Rds8tR5boM1eaLIhx9aY82oF4ftwnq7Fc5eAQ
+	 hlDlxwe7fMmuNOmSxU/Pt8ZV+poTMbeZGldBPB7NVenlXGSj5VyfqZ9+66V1gKwyfL
+	 pKJKim6Cdu4x+47daJTsWMGhx19pqyfyDBpjVZCgOt1ULwde/7Czi+bnYR5AFrlrEy
+	 PMxTIvt3zN/xrn8Uyp4r6CL/65ELuZWaHoq3pVb0967dC4Q2bINRoeZ1xCiffyzp2E
+	 SxKNnDTGBGD5mkT9i9hpKQSw=
 Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2E57C40E0169;
-	Thu, 26 Jun 2025 15:18:43 +0000 (UTC)
-Date: Thu, 26 Jun 2025 17:18:37 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 95EA440E015E;
+	Thu, 26 Jun 2025 15:22:14 +0000 (UTC)
+Date: Thu, 26 Jun 2025 17:22:13 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
@@ -102,18 +102,11 @@ Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-mm@kvack.org,
-	Yian Chen <yian.chen@intel.com>
-Subject: Re: [PATCHv6 01/16] x86/cpu: Enumerate the LASS feature bits
-Message-ID: <20250626151837.GFaF1kzfLtesXLqaAQ@fat_crate.local>
-References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com>
- <20250620135325.3300848-2-kirill.shutemov@linux.intel.com>
- <20250620163504.GCaFWNuI-8QFqAM0yI@fat_crate.local>
- <6y2iqv6c2idn7yebaec7tyhzl5zcsrwqq4lcsokumlqeophzaf@ljnmxorblgcj>
- <20250620182943.GDaFWolxhwogB2tTxb@fat_crate.local>
- <tmd5llufitosphzhiik2tlemjuwyi7xkcjlhbqhibrgjjhsqcj@b3xtgub42p45>
- <20250623102105.GCaFkqkatFSbyl1YeN@fat_crate.local>
- <ztkgdk72p2z3q6z4hslfg4gj6pejirh7cnssxhd7u72mo4enn4@viqrwrycderf>
+	linux-efi@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCHv7 01/16] x86/cpu: Enumerate the LASS feature bits
+Message-ID: <20250626152213.GCaF1lpfzIcrKsOwRr@fat_crate.local>
+References: <20250625125112.3943745-1-kirill.shutemov@linux.intel.com>
+ <20250625125112.3943745-2-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -122,33 +115,65 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ztkgdk72p2z3q6z4hslfg4gj6pejirh7cnssxhd7u72mo4enn4@viqrwrycderf>
+In-Reply-To: <20250625125112.3943745-2-kirill.shutemov@linux.intel.com>
 
-On Mon, Jun 23, 2025 at 04:42:41PM +0300, Kirill A. Shutemov wrote:
-> Due to SLAM, we decided to postpone LAM enabling, until LASS is landed.
+On Wed, Jun 25, 2025 at 03:50:53PM +0300, Kirill A. Shutemov wrote:
+> From: Sohil Mehta <sohil.mehta@intel.com>
 > 
-> I am not sure if we want to add static
-> /sys/devices/system/cpu/vulnerabilities/slam with "Mitigation: LASS".
+> Linear Address Space Separation (LASS) is a security feature that
+> intends to prevent malicious virtual address space accesses across
+> user/kernel mode.
 > 
-> There might be other yet-to-be-discovered speculative attacks that LASS
-> mitigates. Security features have to visible to userspace independently of
-> known vulnerabilities.
+> Such mode based access protection already exists today with paging and
+> features such as SMEP and SMAP. However, to enforce these protections,
+> the processor must traverse the paging structures in memory.  Malicious
+> software can use timing information resulting from this traversal to
+> determine details about the paging structures, and these details may
+> also be used to determine the layout of the kernel memory.
+> 
+> The LASS mechanism provides the same mode-based protections as paging
+> but without traversing the paging structures. Because the protections
+> enforced by LASS are applied before paging, software will not be able to
+> derive paging-based timing information from the various caching
+> structures such as the TLBs, mid-level caches, page walker, data caches,
+> etc.
+> 
+> LASS enforcement relies on the typical kernel implementation to divide
+> the 64-bit virtual address space into two halves:
+>   Addr[63]=0 -> User address space
+>   Addr[63]=1 -> Kernel address space
+> 
+> Any data access or code execution across address spaces typically
+> results in a #GP fault.
+> 
+> The LASS enforcement for kernel data access is dependent on CR4.SMAP
+> being set. The enforcement can be disabled by toggling the RFLAGS.AC bit
+> similar to SMAP.
+> 
+> Define the CPU feature bits to enumerate this feature and include
+> feature dependencies to reflect the same.
+> 
+> LASS provides protection against a class of speculative attacks, such as
+> SLAM[1]. Add the "lass" flag to /proc/cpuinfo to indicate that the feature
+> is supported by hardware and enabled by the kernel. This allows userspace
+> to determine if the setup is secure against such attacks.
+> 
+> [1] https://download.vusec.net/papers/slam_sp24.pdf
+> 
+> Co-developed-by: Yian Chen <yian.chen@intel.com>
+> Signed-off-by: Yian Chen <yian.chen@intel.com>
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+> Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>  arch/x86/Kconfig.cpufeatures                | 4 ++++
+>  arch/x86/include/asm/cpufeatures.h          | 1 +
+>  arch/x86/include/uapi/asm/processor-flags.h | 2 ++
+>  arch/x86/kernel/cpu/cpuid-deps.c            | 1 +
+>  tools/arch/x86/include/asm/cpufeatures.h    | 1 +
+>  5 files changed, 9 insertions(+)
 
-... and the fact that a vuln is being mitigated by stating that in
-/sys/devices/system/cpu/vulnerabilities/ needs to happen too.
-
-I'm not talking about LAM enablement - I'm talking about adding a
-
-SPECTRE_V1_MITIGATION_LASS
-
-and setting that when X86_FEATURE_LASS is set so that luserspace gets told
-that
-
-"Spectre V1 : Mitigation: LASS"
-
-or so.
-
-Makes more sense?
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
 
 -- 
 Regards/Gruss,
