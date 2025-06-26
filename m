@@ -1,180 +1,191 @@
-Return-Path: <linux-efi+bounces-3995-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-3996-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5DAAE8D09
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 20:52:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4801BAE970B
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 09:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE2514A1409
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Jun 2025 18:52:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CDA4189B4CD
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 07:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5DE2D6609;
-	Wed, 25 Jun 2025 18:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B006B25BF08;
+	Thu, 26 Jun 2025 07:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="T4uM1rib"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eftFURWc"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338901CAA7B;
-	Wed, 25 Jun 2025 18:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCE0258CD4
+	for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 07:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750877562; cv=none; b=Ow3LrPGL7PDsiKLeECCw7P7XLD+I6O/bzUU1FxxlGXA7RcostDhTv5/ax/onVH9f2YQNxl9G80nDZHrNQaDL/CE9y5WVe26spRUyHHjklmbyLYRbg1gXdmiXvhQnicspTP5wJQwevss5quvGxQCA0hpB0C+6joHfgt8nifyq77A=
+	t=1750923771; cv=none; b=EwiTAn2vDlDZm4kCYI6DVd0ko3dHnLTGUrntDCJTSLknXzEwGjwInxOSTybjppP/LEDB3OwTmA3Hd7AVV0AkUmSSBFwKpCGjvIMDN6zwWDbjP97O4IMTx+azSrv4kT946HjZ9y+qadYscLBH/0/xbGrAyvpgjXUgO8eRDZNghtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750877562; c=relaxed/simple;
-	bh=2nvC8O6b/AQv/t5IaxRmHCt0KR1zV8JbPK258zgApyo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=NAzPBP+qWSqZ9aV+SznAfBA8HtgKmYqjOCgfoSzToKZmLJQ72ihdkX991xzxRdC5TcPn0wSYY10el53SyIdv7uYLRNdaTZJ/bE3IFGTb0WBl8Xbp1RshVbyXO3GbtLUPlRoaHB/8GqeYzq6Xq4cgi8sEgHsQuylozQCXitA907E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=T4uM1rib; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55PIpReE1893008
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 25 Jun 2025 11:51:28 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55PIpReE1893008
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1750877492;
-	bh=N2YGqiZBGlO6E2pCvNxokF1iVnO9tprfKl6nqK15f7Q=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=T4uM1ribSNJKs3WHN1pHdyHhSope6PhIW4wyzfSNMx2tpP1w2IBhSFlFMiaHsho/m
-	 7Wz/UJGtehR+fUj4tSpmUubhuu+k47y9Yz+imDe03hW32zObTCMViWML+TQybmWkF4
-	 7sTE5spXJx1bKzdDxKLjkBVvZOfzIgax3hg98CCfNFroUV56fnJQ12QTDpfipSYmq6
-	 XBrmJ4G1G1naZF09+cdJDMJI+ZWRR01dL64c4gcEy6p5RulFiQJJGe92XnAUpZ4mSB
-	 QsTa1c5PNASclR2hntJQ2dT9nJ+AT7KZa2JgOVoicw0rP7V3jfWNyw0yWfmnhmGHGA
-	 KEAYnAkOGVr0Q==
-Date: Wed, 25 Jun 2025 11:51:28 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Sohil Mehta <sohil.mehta@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-CC: Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
-        Breno Leitao <leitao@debian.org>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>,
-        Juergen Gross <jgross@suse.com>,
-        Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>,
-        Eric Biggers <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>,
-        Huang Shijie <shijie@os.amperecomputing.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-mm@kvack.org, Yian Chen <yian.chen@intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Xiongwei Song <xiongwei.song@windriver.com>,
-        Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>,
-        Alexey Kardashevskiy <aik@amd.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Subject: Re: [PATCHv6 01/16] x86/cpu: Enumerate the LASS feature bits
-User-Agent: K-9 Mail for Android
-In-Reply-To: <248e272c-79ec-4c11-a3a8-dff1de2147c0@intel.com>
-References: <20250620135325.3300848-1-kirill.shutemov@linux.intel.com> <20250620135325.3300848-2-kirill.shutemov@linux.intel.com> <248e272c-79ec-4c11-a3a8-dff1de2147c0@intel.com>
-Message-ID: <91ACE1D6-851A-413E-9F1F-F015A36FE49C@zytor.com>
+	s=arc-20240116; t=1750923771; c=relaxed/simple;
+	bh=kv1G2G1Q1D5L6sNRM8O6i51VY7EtI9cPIYUVVqiKsW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HtGYwuS6bnfJiOsf45f1s+auNljj78pP5rHhu9I5mEW9KkKsFUUXnY3HOE6U97RmtGvcVSTf0rvmn02AL2cvTYpLHPrc/yPfoAd5ef5Agz7l7lqBWPx6INBTQK0t8/5ROk76hhG0ylDHa/6FJURXvMfcvTmh5QkN5yVKMYjXD3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eftFURWc; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750923768;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QwnKz8zmUQDVm3WzVjAGuZIx7GrvOMZN5XjwDff4iqc=;
+	b=eftFURWcguLk0e0ubxR2aWAj1jltv0oZQhUGTAod2iJnP+CWWfISWVWJYzapp2iOMGiQ7U
+	0JfGlmVyuQ11WiYjNSl9nbxq4YGos3oQDzF+esBsPVR1Qh6foxLoVXu7rdG7P03UxHEXd/
+	jQfAr/vK559qiPO9aOOiN11fSdyHL3w=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-E2JTF7imP3Sw47GOpzTzXg-1; Thu,
+ 26 Jun 2025 03:42:44 -0400
+X-MC-Unique: E2JTF7imP3Sw47GOpzTzXg-1
+X-Mimecast-MFC-AGG-ID: E2JTF7imP3Sw47GOpzTzXg_1750923762
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A3F6D18011F9;
+	Thu, 26 Jun 2025 07:42:42 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.244])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC8BE1956087;
+	Thu, 26 Jun 2025 07:42:41 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id A5868180038F; Thu, 26 Jun 2025 09:42:36 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	linux-efi@vger.kernel.org (open list:EXTENSIBLE FIRMWARE INTERFACE (EFI))
+Subject: [PATCH v3 2/2] x86/sev: Let sev_es_efi_map_ghcbs() map the caa pages too
+Date: Thu, 26 Jun 2025 09:42:35 +0200
+Message-ID: <20250626074236.307848-3-kraxel@redhat.com>
+In-Reply-To: <20250626074236.307848-1-kraxel@redhat.com>
+References: <20250626074236.307848-1-kraxel@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On June 20, 2025 11:14:56 AM PDT, Sohil Mehta <sohil=2Emehta@intel=2Ecom> w=
-rote:
->On 6/20/2025 6:53 AM, Kirill A=2E Shutemov wrote:
->> =20
->> +/*
->> + * The CLAC/STAC instructions toggle enforcement of X86_FEATURE_SMAP=
-=2E
->> + *
->> + * X86_FEATURE_LASS requires flipping the AC flag when accessing the l=
-ower half
->> + * of the virtual address space, regardless of the _PAGE_BIT_USER bit =
-in the
->> + * page tables=2E lass_clac/stac() should be used for these cases=2E
->> + *
->
->Is this supposed to be "regardless" or only when the _PAGE_BIT_USER bit
->it set? The way the sentence is worded it would seem that the kernel
->could always use lass_clac()/stac() since the value in _PAGE_BIT_USER
->doesn't matter=2E
->
->Please correct me if I am wrong, but here is my understanding:
->
->X86_FEATURE_SMAP and X86_FEATURE_LASS both complain when the kernel
->tries to access the lower half of the virtual addresses=2E
->
->SMAP flags an issue if _PAGE_BIT_USER is not set=2E LASS would #GP in bot=
-h
->cases with or without the _PAGE_BIT_USER being set=2E
->
->However, in terms of usage, we want to use LASS specific stac()/clac()
->only when _PAGE_BIT_USER is set=2E Since this won't be flagged by SMAP=2E
->
->@Dave Hansen, you had suggested separating out the SMAP/LASS AC toggle
->functions=2E But, the difference in usage between both of them seems very
->subtle=2E Could this be easily misused?
->
->For example, there is no failure that would happen if someone
->incorrectly uses the SMAP specific clac()/stac() calls instead of the
->LASS ones=2E
->
->> + * Note: a barrier is implicit in alternative()=2E
->> + */
->> +
->>  static __always_inline void clac(void)
->>  {
->> -	/* Note: a barrier is implicit in alternative() */
->>  	alternative("", "clac", X86_FEATURE_SMAP);
->>  }
->> =20
->>  static __always_inline void stac(void)
->>  {
->> -	/* Note: a barrier is implicit in alternative() */
->>  	alternative("", "stac", X86_FEATURE_SMAP);
->>  }
->> =20
->> +static __always_inline void lass_clac(void)
->> +{
->> +	alternative("", "clac", X86_FEATURE_LASS);
->> +}
->> +
->> +static __always_inline void lass_stac(void)
->> +{
->> +	alternative("", "stac", X86_FEATURE_LASS);
->> +}
->> +
+OVMF EFI firmware needs access to the CAA page to do SVSM protocol calls. For
+example, when the SVSM implements an EFI variable store, such calls will be
+necessary.
 
-"Regardless" is correct=2E LASS only considers which hemisphere the virtua=
-l address is located in, because it is explicitly designed to prevent walki=
-ng the page tables in the "wrong" hemisphere and therefore speculative acce=
-sses that happen to form pointers into user space addresses will not cause =
-TLB or cache fills that might be possible to probe=2E
+So add that to sev_es_efi_map_ghcbs() and also rename the function to reflect
+the additional job it is doing now.
 
-The obvious exception is when the kernel is intentionally performing acces=
-ses on behalf of user space, which is exactly what SMAP tells the hardware =
-already=2E
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ arch/x86/include/asm/sev.h     |  4 ++--
+ arch/x86/coco/sev/core.c       | 20 ++++++++++++++++++--
+ arch/x86/platform/efi/efi_64.c |  4 ++--
+ 3 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 58e028d42e41..6e0ef192f23b 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -445,7 +445,7 @@ static __always_inline void sev_es_nmi_complete(void)
+ 	    cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+ 		__sev_es_nmi_complete();
+ }
+-extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
++extern int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd);
+ extern void sev_enable(struct boot_params *bp);
+ 
+ /*
+@@ -556,7 +556,7 @@ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
+ static inline void sev_es_nmi_complete(void) { }
+-static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
++static inline int sev_es_efi_map_ghcbs_caas(pgd_t *pgd) { return 0; }
+ static inline void sev_enable(struct boot_params *bp) { }
+ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
+ static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index b6db4e0b936b..b52318d806b6 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1045,11 +1045,13 @@ int __init sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
+  * This is needed by the OVMF UEFI firmware which will use whatever it finds in
+  * the GHCB MSR as its GHCB to talk to the hypervisor. So make sure the per-cpu
+  * runtime GHCBs used by the kernel are also mapped in the EFI page-table.
++ *
++ * When running under SVSM the CCA page is needed too, so map it as well.
+  */
+-int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
++int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd)
+ {
+ 	struct sev_es_runtime_data *data;
+-	unsigned long address, pflags;
++	unsigned long address, pflags, pflags_enc;
+ 	int cpu;
+ 	u64 pfn;
+ 
+@@ -1057,6 +1059,7 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
+ 		return 0;
+ 
+ 	pflags = _PAGE_NX | _PAGE_RW;
++	pflags_enc = cc_mkenc(pflags);
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		data = per_cpu(runtime_data, cpu);
+@@ -1068,6 +1071,19 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
+ 			return 1;
+ 	}
+ 
++	if (!snp_vmpl)
++		return 0;
++
++	for_each_possible_cpu(cpu) {
++		address = per_cpu(svsm_caa_pa, cpu);
++		if (!address)
++			return 1;
++
++		pfn = address >> PAGE_SHIFT;
++		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags_enc))
++			return 1;
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index e7e8f77f77f8..97e8032db45d 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -216,8 +216,8 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+ 	 * When SEV-ES is active, the GHCB as set by the kernel will be used
+ 	 * by firmware. Create a 1:1 unencrypted mapping for each GHCB.
+ 	 */
+-	if (sev_es_efi_map_ghcbs(pgd)) {
+-		pr_err("Failed to create 1:1 mapping for the GHCBs!\n");
++	if (sev_es_efi_map_ghcbs_caas(pgd)) {
++		pr_err("Failed to create 1:1 mapping for the GHCBs and CAAs!\n");
+ 		return 1;
+ 	}
+ 
+-- 
+2.50.0
+
 
