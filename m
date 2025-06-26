@@ -1,43 +1,43 @@
-Return-Path: <linux-efi+bounces-4026-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4025-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5D1AEA964
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Jun 2025 00:13:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDF8AEA961
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Jun 2025 00:13:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F0F417752F
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 22:13:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7A1464401B
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 22:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405BE26157E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B792609F5;
 	Thu, 26 Jun 2025 22:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Jy7+xLaS"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="oCRkkHgQ"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C832B2609CC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A8C23B634;
 	Thu, 26 Jun 2025 22:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750975982; cv=none; b=Y9Wj/cCz/Ogo5aUwto/pKskVci5mIcvts8XggxkPYPsjGyzxZsBKj8M/IOQ4WbpT/jfSRtRZlKQo1AylQ+dEGy15t64XhnAe9ZM4XgLO2/Wlhcu3yfKATOv9Wo9LF4b4ZwFOfT/O3ypZ9lpp4SUz6NlPDY/QrUYqP8+UtxZb25w=
+	t=1750975982; cv=none; b=QZ4OrqXblkxFv2oh2KGAJI1EuHzSIW4OfPHNmDDooLtNfENwCUcyyU2AGNOdjLUyzhJAe/zXbIxOY5P1szoKY+ZE13s1VnlTrkZmp5lJ1G5Hm05Fz5Hc1udVKsstcb4P+OCjH6S2e006+yNDG1970dnDhNecSG7Yoqcq34rJ5BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750975982; c=relaxed/simple;
-	bh=SrkNd0XPfMFt6NKeyZsG845R5t7Zg/brpnKvdgY8350=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=fLSVbVYekT9+t1uDHEydM4IXIjj0rFWOSfkQCeV6zJPhzEmm2qVFZ3grTMuPj11xQ6mGB1NvgpeIg6G/GN6RPgUdDQMrArCBBAGbxwNy//HCgT4hUY4TNJfg/y3lbu5NI/FnlXtcbA/b7Q2f8i0590xD9tA/Mt2qluiptg1X++E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Jy7+xLaS; arc=none smtp.client-ip=13.77.154.182
+	bh=fyRBtgsoCHCOCtc2qoRnJHcUHh5c+cq4eDblHwxfPOs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=lJRL1TrtSBZ4XVZfNVxEGXie0E8HDN0Yl1+1BB/2FXUMGuKoMHeV+WNypavDYXx0VnclQgVzRCs73nyXyTpPGdqmloYXosg8NFFHBKmhW5z3+xsvRAtMwCGiP/Mi+9yt3YeN2M+PT1bR/hvUO5lvqkWp7Woyw2hyuNiCp6BL944=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=oCRkkHgQ; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: by linux.microsoft.com (Postfix, from userid 1216)
-	id 728E621176C3; Thu, 26 Jun 2025 15:12:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 728E621176C3
+	id 7F8EF21176F8; Thu, 26 Jun 2025 15:12:54 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7F8EF21176F8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1750975974;
-	bh=CTILoh0uB4sk9KuAG9w2F8VChY2gSFYEW7vcy4BQ3Cs=;
+	bh=gBB0C/nJUwH10ifIhkG/m/bBdR8TqoQ9jnE1BRZnpyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jy7+xLaS4y81LfjG3tNuE68j5L56HZGz1/YFOGTKbQKA9C+iFovGbFsxO7NHU9V2J
-	 r4oY+5dE2r8C3A1/LbYaw+jEOAzv4KqeB7MzsQxTPsWwB6GpJirdTwsppoMErxd+m8
-	 8n07FVt3YaM02Kpb5Zf0OE3y0ZJkfkIGFHwfs+ao=
+	b=oCRkkHgQO2+hARBAoKKKuUWLeeke/zQTjfE/+5VjSYx9A3Q2+zAL+z0EqX/Y9S1Zl
+	 AmQXsk1zh3PnI+qLr9707xAnOE2U5hSI6rpNMiCeFMs9wA8U8gS5J1E7RthySDxxxq
+	 PMauYw1pJljt8/Eg9LhtJYbNf+HT8Z8XiF4VP6sU=
 From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 To: linux-kernel@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>,
@@ -50,9 +50,9 @@ Cc: Ard Biesheuvel <ardb@kernel.org>,
 	linux-efi@vger.kernel.org,
 	linux-security-module@vger.kernel.org,
 	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Subject: [PATCH 1/2] security: introduce security_lock_kernel_down()
-Date: Thu, 26 Jun 2025 15:10:38 -0700
-Message-Id: <1750975839-32463-2-git-send-email-hamzamahfooz@linux.microsoft.com>
+Subject: [PATCH 2/2] efi: introduce EFI_KERNEL_LOCK_DOWN_IN_SECURE_BOOT
+Date: Thu, 26 Jun 2025 15:10:39 -0700
+Message-Id: <1750975839-32463-3-git-send-email-hamzamahfooz@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1750975839-32463-1-git-send-email-hamzamahfooz@linux.microsoft.com>
 References: <1750975839-32463-1-git-send-email-hamzamahfooz@linux.microsoft.com>
@@ -62,93 +62,57 @@ List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 
-Define and export security_lock_kernel_down(), so that we can lock down
-the kernel from other parts of the kernel.
+Add a kernel configuration option to lock down the kernel, to restrict
+userspace's ability to modify the running kernel when Secure Boot is
+enabled.
 
 Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 ---
- include/linux/lsm_hook_defs.h |  1 +
- include/linux/security.h      |  8 ++++++++
- security/lockdown/lockdown.c  |  1 +
- security/security.c           | 15 +++++++++++++++
- 4 files changed, 25 insertions(+)
+ drivers/firmware/efi/Kconfig | 10 ++++++++++
+ drivers/firmware/efi/efi.c   |  9 +++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index bf3bbac4e02a..08ffd103c863 100644
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -442,6 +442,7 @@ LSM_HOOK(int, 0, bpf_token_cmd, const struct bpf_token *token, enum bpf_cmd cmd)
- LSM_HOOK(int, 0, bpf_token_capable, const struct bpf_token *token, int cap)
- #endif /* CONFIG_BPF_SYSCALL */
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 5fe61b9ab5f9..4e827354e919 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -248,6 +248,16 @@ config EFI_DISABLE_RUNTIME
  
-+LSM_HOOK(int, 0, lock_down, const char *where, enum lockdown_reason level)
- LSM_HOOK(int, 0, locked_down, enum lockdown_reason what)
+ 	  This default can be overridden by using the efi=runtime option.
  
- #ifdef CONFIG_PERF_EVENTS
-diff --git a/include/linux/security.h b/include/linux/security.h
-index cc9b54d95d22..373f8dd2a265 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -573,6 +573,7 @@ void security_inode_invalidate_secctx(struct inode *inode);
- int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
- int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
- int security_inode_getsecctx(struct inode *inode, struct lsm_context *cp);
-+int security_lock_kernel_down(const char *where, enum lockdown_reason level);
- int security_locked_down(enum lockdown_reason what);
- int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
- 		      void *val, size_t val_len, u64 id, u64 flags);
-@@ -1576,6 +1577,13 @@ static inline int security_inode_getsecctx(struct inode *inode,
- {
- 	return -EOPNOTSUPP;
- }
++config EFI_KERNEL_LOCK_DOWN_IN_SECURE_BOOT
++	bool "Lock down the kernel in EFI Secure Boot mode"
++	default n
++	depends on EFI
++	depends on SECURITY_LOCKDOWN_LSM
++	select SECURITY_LOCKDOWN_LSM_EARLY
++	help
++	  Enabling this option results in kernel lockdown being
++	  set in integrity mode if EFI Secure Boot is enabled.
 +
-+static inline int security_lock_kernel_down(const char *where,
-+					    enum lockdown_reason level)
-+{
-+    return -EOPNOTSUPP;
-+}
+ config EFI_COCO_SECRET
+ 	bool "EFI Confidential Computing Secret Area Support"
+ 	help
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 7309394b8fc9..b7a5fc79b065 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -427,6 +427,15 @@ static int __init efisubsys_init(void)
+ 		}
+ 	}
+ 
++#ifdef CONFIG_EFI_KERNEL_LOCK_DOWN_IN_SECURE_BOOT
++	if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
++		if (efi_get_secureboot_mode(efi.get_variable) ==
++		    efi_secureboot_mode_enabled)
++			security_lock_kernel_down("EFI Secure Boot",
++						  LOCKDOWN_INTEGRITY_MAX);
++	}
++#endif
 +
- static inline int security_locked_down(enum lockdown_reason what)
- {
- 	return 0;
-diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-index cf83afa1d879..3839a62c2c17 100644
---- a/security/lockdown/lockdown.c
-+++ b/security/lockdown/lockdown.c
-@@ -73,6 +73,7 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
- }
+ 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_TIME_SERVICES))
+ 		platform_device_register_simple("rtc-efi", 0, NULL, 0);
  
- static struct security_hook_list lockdown_hooks[] __ro_after_init = {
-+	LSM_HOOK_INIT(lock_down, lock_kernel_down),
- 	LSM_HOOK_INIT(locked_down, lockdown_is_locked_down),
- };
- 
-diff --git a/security/security.c b/security/security.c
-index fb57e8fddd91..51fbe8124388 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -5789,6 +5789,21 @@ void security_bpf_token_free(struct bpf_token *token)
- }
- #endif /* CONFIG_BPF_SYSCALL */
- 
-+/**
-+ * security_lock_kernel_down() - Lock down the kernel
-+ * @where: the location from where the lock down is being initiated
-+ * @level: requested lock down level
-+ *
-+ * Attempt to lock down the kernel at the requested level.
-+ *
-+ * Return: Returns 0 on success, error on failure.
-+ */
-+int security_lock_kernel_down(const char *where, enum lockdown_reason level)
-+{
-+	return call_int_hook(lock_down, where, level);
-+}
-+EXPORT_SYMBOL(security_lock_kernel_down);
-+
- /**
-  * security_locked_down() - Check if a kernel feature is allowed
-  * @what: requested kernel feature
 -- 
 2.49.0
 
