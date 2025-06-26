@@ -1,166 +1,188 @@
-Return-Path: <linux-efi+bounces-4008-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4009-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D64AE9C3C
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 13:10:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C30AAE9CBA
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 13:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0A81887B26
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 11:11:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A216A7A74E5
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 11:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF813274FF4;
-	Thu, 26 Jun 2025 11:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBB227703E;
+	Thu, 26 Jun 2025 11:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cGjtip2j"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LMumdGxY"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5718C259C9C
-	for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 11:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A865276051
+	for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 11:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750936245; cv=none; b=JhmVnVTtxDB7B+/6ItNAwl0hqQR2ATdwacqnZuat+asOg/yXEvFp5aUJUji9pUoymt8c4vcg3LW2CrVkaGW/4q7YUSbjOENTHWaFrFn4vM9id72mxZsXAfbc3VZhExJv9xRcyzZpRe0RH/TVDX0L/MDvE/JNNe3oIGYN76KOOes=
+	t=1750938033; cv=none; b=PPdhXHa7MVd/oNWe1wn0qxV3veWQAmI+Px3hqJTTVtmQPrTWkPylkCwmOoOzbj3E+d45TexFkKiTJlIaqkVFbF4uebhIJbq68IOxHKx4ZaEjxM81TrnxRYKKH8S77+iv/p7aR3AzMUmwxMnVxmcEK1bQBL58meyQcDpdsMwDoAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750936245; c=relaxed/simple;
-	bh=+Nh7arEhb4mdiIAA47zJAjhf1JoxtTqPoXIZGzCdPRo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UtHwJ/51+5n4snCUJ9PRf3aERJ4mwaPfZj4oujJZzx6juLUBJDz74fw5mx5gYWRKV1bYs3rPvLABduY8r6uAI0+K/ZHkX4pIi7tPXVlCZXCJYQXBOuUPYFWDCXaRO7q5gkoLVYjpWfAGkIPFPdORJ1y8P7rPqPu2fgr0+QjF0OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cGjtip2j; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55Q9sXP1015336
-	for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 11:10:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=cYqt5KyHbC7L0Vd38ScC2cJZ
-	2gNgSimq/dQgr20ruzc=; b=cGjtip2j6+BIXEt74Q7TzPgDNrkfy5s8AZt5O+x4
-	XFVjrtqgX4tg8caenZ9UvSKQ9q5rvIEPXEJsebV4dNGllfttOXMEwgM9xBaq2q1C
-	Ce+VIv3+o1XziKum5pq9pnyIA7xIAc2G5SBic0KPxXXuQ118IfIdQau3quJTreC5
-	AxB/4dZKwK7tlMsZM7jZFASu2Gt2vJdIL3v5nC6SN36Uj6KMICjhYlZOi+WfVjKB
-	2MLER2Nf4nWCCwJ/mo4zUSMT52oJwHx+5RfNtrORP1C0U+fIH7xfedWxiuB6eKZu
-	yglROC0YOp9sdnFqVXCaEzxjgcgjig7cBaqblsUV/vTzbQ==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47g88fcucv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 11:10:43 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7d0aa9cdecdso66381785a.3
-        for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 04:10:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750936242; x=1751541042;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cYqt5KyHbC7L0Vd38ScC2cJZ2gNgSimq/dQgr20ruzc=;
-        b=RxAhIMkrmx+EFKE7qHcIOexXN/WDApBOXlZapAcA6Jnj/GNxTN8aNjrIzmjQrz4H+S
-         lkbjqtCmlwvrZ9DNKFHHvlYCMBYaiVP9X85jUUdaMhM7ZjW5glx8lSZEBgEZnZbWq6fl
-         kE4XufP/R3Ee5knoYadHHzut9jim5NOyG7G9x1oJxEELfgIydVTSrcnZpFURJfs9+idu
-         na/P0HB6MrdJ7SCMxNu9dDYc6e0IcM5X0Z5Cn9v3MxfzFC3gUe4TjF3iax78X9Tw+Vai
-         9WDRdmcaYd9UfE/IX5FSlU1gxFJupgf2GGVnDv6Rg7++Zxbx9LZ2BoYzSfWXzo1fNZRM
-         Jrkw==
-X-Forwarded-Encrypted: i=1; AJvYcCUseKILwf2hIlN/5n0+NofuZX9UHMI09WqwLc3vka61q0COo8SdH7E6/c7C0FVKfJxhqoUSzhpIOQI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlrejLOJGcAotv0Z+kcDCTzViJVWBKDAcrgkkMUTAdrXSNGk4g
-	FE9UNX7y5EyokJv31jqgRdiJ+valEe6cqz85eZU85nzPxR+6YhSpux31hQKrduQoQ9JCI9wa7qA
-	ZzfIUhRzB8BEs7t1+Lo4smcCKSUmASJ48TtHxFc9vvxcatWXLBJ9h/lF9WbbT7Ho=
-X-Gm-Gg: ASbGncuYTNg6WCVkj7oTGkD7OVtfubFKdqgE6ydLqzbmbzs5YAhLG3aPjrpNhwLU1QF
-	GVqxHI6Dfz29UHbsSpdp6MFnP2FrPyFlYhkEIr8vZGMLguzJNKjmmGYI6ZJYkrUTU1X+nb3tjlx
-	RjSbVe3YTqIeHl+QOYjXRanHIk9tCm75g5U7cXJW9A9GsdoJ7sO0IZNmZ1sa55/1cOjNkSYyy2i
-	7MdPX5oJqrKnU5nxd4AmFjcQ+i5E3Ou2Gc6rfA+1aa1kmYdhhQruYbQW7hJIi7EutBZJvCKpa3r
-	pkp22puKKBUnPmX2k5a4iExsLt3IsK6tE3QTLdMPkv56hrPVy2ohtgnF7JRJAkIoeCUa1Kgrpfp
-	SmuElSN6njJ+Ax0eFq49AFBWhPVDER02nVXw=
-X-Received: by 2002:a05:620a:7083:b0:7d3:ba53:d88c with SMTP id af79cd13be357-7d42978f2c2mr996162485a.30.1750936242246;
-        Thu, 26 Jun 2025 04:10:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjtAiIEi52PqDdVHz1fI8lluW9aTCSB2ftm6y/pWoW4VAWz4SzJ2hSwGJSK/pOX00PIVi2pQ==
-X-Received: by 2002:a05:620a:7083:b0:7d3:ba53:d88c with SMTP id af79cd13be357-7d42978f2c2mr996157985a.30.1750936241770;
-        Thu, 26 Jun 2025 04:10:41 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553e414beb2sm2535941e87.53.2025.06.26.04.10.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jun 2025 04:10:40 -0700 (PDT)
-Date: Thu, 26 Jun 2025 14:10:39 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Johan Hovold <johan@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Steev Klimaszewski <steev@kali.org>, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-efi@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v4 8/8] arm64: dts: qcom: sdm850-lenovo-yoga-c630: fix
- RTC offset info
-Message-ID: <xddgggbyt7dyy6a75dup7dgt6fxy27sopkv6febckstcpamv72@sfbul63yeex5>
-References: <20250625-more-qseecom-v4-0-aacca9306cee@oss.qualcomm.com>
- <20250625-more-qseecom-v4-8-aacca9306cee@oss.qualcomm.com>
- <aF0eEWK8d-l1Mxma@hovoldconsulting.com>
+	s=arc-20240116; t=1750938033; c=relaxed/simple;
+	bh=gF7Dll6taOeDsbH4ksRfAoJl5VhEo+av+s5fHVt7tJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mq62zmeOUieR45YmqmsKCZ9nwnGg4mR6YZ12rR3wyslq0IQWaO4bGAoE/KHxFeRkCEnAyrRd6ADj9TUGprZyJz1ZVj+Zz1K3Q+jvrpG2IRshKbNc1pf2BirAq7WdxSAKcaJQ63U0ggw2Nk5DKLEB8sydNzh+2a3zCFXmoxO/b40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LMumdGxY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750938030;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JNkDX/QAcHMyJfzVyRcdpNBLgVVHagtHqZ1jRyb0YuQ=;
+	b=LMumdGxYGrN+6MNwMbeG1MI/85TP5yOmJQG2siUPA/F4zVuc+sJ2pyWIlLJCsoKkmYw25B
+	/uOKVJ3LZRxGVSqW6YwQszSttcCIkqFT9ZGv57ubr2/aks3HGBX1U+DVq0BVGucv5oIwDt
+	NTIOwhHUJwWBuYT5Br73/tXZ2KiWgGA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-AWXqvFvjNfGXPPfo_GJD0w-1; Thu,
+ 26 Jun 2025 07:40:24 -0400
+X-MC-Unique: AWXqvFvjNfGXPPfo_GJD0w-1
+X-Mimecast-MFC-AGG-ID: AWXqvFvjNfGXPPfo_GJD0w_1750938022
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83F6E1800268;
+	Thu, 26 Jun 2025 11:40:22 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.44.32.244])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A5FD19560B3;
+	Thu, 26 Jun 2025 11:40:21 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id A4C77180090C; Thu, 26 Jun 2025 13:40:15 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	linux-efi@vger.kernel.org (open list:EXTENSIBLE FIRMWARE INTERFACE (EFI))
+Subject: [PATCH v4 3/3] x86/sev: Let sev_es_efi_map_ghcbs() map the caa pages too
+Date: Thu, 26 Jun 2025 13:40:13 +0200
+Message-ID: <20250626114014.373748-4-kraxel@redhat.com>
+In-Reply-To: <20250626114014.373748-1-kraxel@redhat.com>
+References: <20250626114014.373748-1-kraxel@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aF0eEWK8d-l1Mxma@hovoldconsulting.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI2MDA5MyBTYWx0ZWRfXzuEWpDcXwfXZ
- WHidivLIG0WmG9L1Ok673ex9o4uWU3YB6NOg8zNLY7BznVnXs/tSJ07Sg/XcVFXoezITayjPyG7
- 9ak/DQwAAzOaBuFO3XbSxU86KVrtngu7cYDYZ41stNU5L0GWRIqgdbfrbLLuz8j3S68RRAYYtKK
- 3BCuELbY9GXSovOEnDlVzwhZEgiJX2c19ZLQp2wNEIByKvYKFBf5mABjPXH6+kFgsJjsLXVN7vm
- bEaawPlWkRjxGObTMJEiWdZUi8TvZmPFh1mGRZjTjC75B7uMoQC7bida58osU0lItGdCNwh3bDO
- mtbe2/W80q6a9EsYJooWwS6Xtr9xtgj9xxYhzHNSsuoSbEZhmSZ/ey+9fSu6lXC4676pMwGND8I
- 6/5DtgNbN/Q2kwNeKAr26PIXfzd/H5u9HEeozudfp7pOVb5AkcspprwRCY1QTL+sQw8wmxWA
-X-Proofpoint-ORIG-GUID: g6UTuixwzeQ-vzsiXBcouEv5SEhdvJn0
-X-Proofpoint-GUID: g6UTuixwzeQ-vzsiXBcouEv5SEhdvJn0
-X-Authority-Analysis: v=2.4 cv=LNNmQIW9 c=1 sm=1 tr=0 ts=685d2ab3 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6IFa9wvqVegA:10 a=rtKsz54fpWh7oidnevsA:9 a=CjuIK1q_8ugA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-26_05,2025-06-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0 mlxlogscore=963
- impostorscore=0 mlxscore=0 clxscore=1015 adultscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506260093
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Jun 26, 2025 at 12:16:49PM +0200, Johan Hovold wrote:
-> On Wed, Jun 25, 2025 at 01:53:27AM +0300, Dmitry Baryshkov wrote:
-> > Lenovo Yoga C630 as most of the other WoA devices stores RTC offset in
-> > the UEFI variable. Add corresponding property to the RTC device in order
-> > to make RTC driver wait for UEFI variables to become available and then
-> > read offset value from the corresponding variable.
-> 
-> This is not a fix so please drop that word from Subject.
+OVMF EFI firmware needs access to the CAA page to do SVSM protocol calls. For
+example, when the SVSM implements an EFI variable store, such calls will be
+necessary.
 
-ack
+So add that to sev_es_efi_map_ghcbs() and also rename the function to reflect
+the additional job it is doing now.
 
-> 
-> I'd also expect you to mention that the RTC would be heavily crippled on
-> this machine as the efi variables cannot be updated.
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ arch/x86/include/asm/sev.h     |  4 ++--
+ arch/x86/coco/sev/core.c       | 17 +++++++++++++++--
+ arch/x86/platform/efi/efi_64.c |  4 ++--
+ 3 files changed, 19 insertions(+), 6 deletions(-)
 
-ack
-
-> 
-> Is there even a UEFI setup setting for this so that users that have
-> blown away Windows can ever set the time (which may become totally off
-> due to drift)?
-
-There is a UEFI setup UI.
-
-> I'm still not convinced that this is something we want, especially since
-> you could have a fully functional RTC by providing an SDAM offset
-> instead like we do on the sc8280xp CRD.
-
-No, I don't want to go that way.
-
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 58e028d42e41..6e0ef192f23b 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -445,7 +445,7 @@ static __always_inline void sev_es_nmi_complete(void)
+ 	    cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+ 		__sev_es_nmi_complete();
+ }
+-extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
++extern int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd);
+ extern void sev_enable(struct boot_params *bp);
+ 
+ /*
+@@ -556,7 +556,7 @@ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
+ static inline void sev_es_nmi_complete(void) { }
+-static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
++static inline int sev_es_efi_map_ghcbs_caas(pgd_t *pgd) { return 0; }
+ static inline void sev_enable(struct boot_params *bp) { }
+ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
+ static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 3de8c3d2b55d..26b96e19f5e1 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1045,11 +1045,13 @@ int __init sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
+  * This is needed by the OVMF UEFI firmware which will use whatever it finds in
+  * the GHCB MSR as its GHCB to talk to the hypervisor. So make sure the per-cpu
+  * runtime GHCBs used by the kernel are also mapped in the EFI page-table.
++ *
++ * When running under SVSM the CCA page is needed too, so map it as well.
+  */
+-int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
++int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd)
+ {
+ 	struct sev_es_runtime_data *data;
+-	unsigned long address, pflags;
++	unsigned long address, pflags, pflags_enc;
+ 	int retval;
+ 	int cpu;
+ 	u64 pfn;
+@@ -1058,6 +1060,7 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
+ 		return 0;
+ 
+ 	pflags = _PAGE_NX | _PAGE_RW;
++	pflags_enc = cc_mkenc(pflags);
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		data = per_cpu(runtime_data, cpu);
+@@ -1068,6 +1071,16 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
+ 		retval = kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags);
+ 		if (retval != 0)
+ 			return retval;
++
++		if (snp_vmpl) {
++			address = per_cpu(svsm_caa_pa, cpu);
++			if (!address)
++				return 1;
++
++			pfn = address >> PAGE_SHIFT;
++			if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags_enc))
++				return 1;
++		}
+ 	}
+ 
+ 	return 0;
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index e7e8f77f77f8..97e8032db45d 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -216,8 +216,8 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+ 	 * When SEV-ES is active, the GHCB as set by the kernel will be used
+ 	 * by firmware. Create a 1:1 unencrypted mapping for each GHCB.
+ 	 */
+-	if (sev_es_efi_map_ghcbs(pgd)) {
+-		pr_err("Failed to create 1:1 mapping for the GHCBs!\n");
++	if (sev_es_efi_map_ghcbs_caas(pgd)) {
++		pr_err("Failed to create 1:1 mapping for the GHCBs and CAAs!\n");
+ 		return 1;
+ 	}
+ 
 -- 
-With best wishes
-Dmitry
+2.50.0
+
 
