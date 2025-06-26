@@ -1,54 +1,54 @@
-Return-Path: <linux-efi+bounces-4023-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4024-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4711CAEA4CE
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 19:59:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2300EAEA4D7
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 20:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D748D188E895
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 17:59:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59523173B3E
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 18:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9584F1BD01D;
-	Thu, 26 Jun 2025 17:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA7B1F2BB8;
+	Thu, 26 Jun 2025 18:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="AOTYz6Mf"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="XiizrTWD"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF32513A86C;
-	Thu, 26 Jun 2025 17:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A32C13AA2F;
+	Thu, 26 Jun 2025 18:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750960743; cv=none; b=CO9GYnFEaW9kyn1OU542NOoyZ7yv4ixBuzT5t0xvWXJA+IsBTykPw5o+ow/OhPDUwFobHSzlQlNJWo9snxedu8UK4UkHSRY/4IojtoEoAxgZymYEhklIblmeeQ03JU7WhbEA+U65FD3L4+i30Gq5HEl39vLVAfJREullWLLjyRA=
+	t=1750960900; cv=none; b=R9htN7AC9kgcJVVLG/shbpuv77/kxiJyqpmyTmcQfTUPwHHmT8E2udqVJgv7DYhuB+viPF3eQa+gtxaoeEQn3xRXsJUE+xQ28+QMVVfNjq6OOCYG6JDg73mwaSLyTBDWnBMx4IPNmeFqDvvFdDrfAoV3UqINERoB/A4kkHdyCB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750960743; c=relaxed/simple;
-	bh=fCZz9Gt4SX1+H+Ie5jTqf8LW9SqmaBzQSsdnhByCvlM=;
+	s=arc-20240116; t=1750960900; c=relaxed/simple;
+	bh=Q0SPWURKXx7gOP1rrTmcfjwMLHQDVLmTDZ6OttgXmcQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GYX3UYNhrMN+IHo2tIUTHqtGRqLEoszvQP4UfYTNRWIG9HRGn/RxDh4Zk+2ZfndHa5/la8DUQkOD0OCodbLBSAYMtvXZ1vesMnC6rXMPKUOdoBlcbYUyBGFttGciY7YZNOV+7ixLQ7VEoD1py5IFiIpptxxiR0EzCIdNc/bMblo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=AOTYz6Mf; arc=none smtp.client-ip=198.137.202.136
+	 In-Reply-To:Content-Type; b=dhW2YTxiwPe6LAKkpuXX7BZUg4dzdNiq9slSrGMWiD3B3m0ZZynx63RAarL0/DRez89NVGw1K/IANWjAHDHStin+Mobdb0XxEhe3OUNRBEEOv3wKKQHXK4ug1TMfr0WdSUK2oJMxA8HDAG5VkeHQJZUDVdXNfKgOPH+acGBKG/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=XiizrTWD; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from [192.168.7.202] ([71.202.166.45])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55QHvmvU2307866
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55QI0OAg2308531
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 26 Jun 2025 10:57:49 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55QHvmvU2307866
+	Thu, 26 Jun 2025 11:00:25 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55QI0OAg2308531
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1750960675;
-	bh=BMeNFTdjV+yNnMcij/TqO/5U2NmxhXLfNUC6LvsGyIw=;
+	s=2025062101; t=1750960828;
+	bh=xIN9TxfX2EeOHS5mr8WN+HlwktJEOt8XnXSFhuBm71s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AOTYz6MfWghBzEoibmGfI7laRAlY7menpK8b7jO9lWYFXBby2etwb289pFF7tim7h
-	 3LqeGLIL9v49XFI5vok9c5IgkoDwAFSouUThYZwimemKnrGLlC5OeISJV7kJUHwpR3
-	 nX52rDXhaBlpxT7lCF283gGvA2cSJxr0cjnBmV6Ozo+iLCYkWH6Bj6iHGHmowvk6WN
-	 yVCipOn7tepFsUc9/2v0Qr7EC8Wa9sQzOavAUqXMCKvi0APWm4y6LeimQPUOYC+bE/
-	 x2NdCGle2s14Uyfmxn8sjvyYYRIGO3oVryMa/oP0nF9q0fHHDOLqNmGwN3NNw7OuNR
-	 Wo5k6NyEjVuHA==
-Message-ID: <c704ea9a-8c73-46c2-80d1-f7b93a221908@zytor.com>
-Date: Thu, 26 Jun 2025 10:57:47 -0700
+	b=XiizrTWDBdMse7CSwHFWmuB1C6NNxvXY0PZR7r6jhkHu8JXgygNJBigUDDxTYWBKP
+	 MRRs4iHKgZRYmDLYf06KaJOoPXdRrKM8EFzKQjdDX8FVkyhvmnZPub/uLQDVOHLGwC
+	 fusmjTHIpxPgul2+mBnJ2wCmNlNiXlBmd6TnxA6s499MuboVgOeaJgL+x6jrC0uoaO
+	 Q+nnjd/7q0WJi4iXbH7kbI1pHhLiuANkDsLJfUzxeT3oeaPYPQoE5Zp6JgpCEQrDj5
+	 SbhiIX7brAelU8bIlZA7XvyOIg4NhUSOotYVCZjWjRyQSxWi17B5X6PfHk7ZTrq102
+	 /mImN9XFucKzA==
+Message-ID: <af700e33-5c73-40aa-96a3-91cd8bf64871@zytor.com>
+Date: Thu, 26 Jun 2025 11:00:24 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv7 13/16] x86/traps: Handle LASS thrown #SS
+Subject: Re: [PATCHv7 01/16] x86/cpu: Enumerate the LASS feature bits
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -98,7 +98,7 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         linux-mm@kvack.org
 References: <20250625125112.3943745-1-kirill.shutemov@linux.intel.com>
- <20250625125112.3943745-15-kirill.shutemov@linux.intel.com>
+ <20250625125112.3943745-2-kirill.shutemov@linux.intel.com>
 Content-Language: en-US
 From: Xin Li <xin@zytor.com>
 Autocrypt: addr=xin@zytor.com; keydata=
@@ -135,101 +135,130 @@ Autocrypt: addr=xin@zytor.com; keydata=
  PYbAkjBbm+tuJ/Sm+5Yp5T/BnKz21FoCS8uvTiziHj2H7Cuekn6F8EYhegONm+RVg3vikOpn
  gao85i4HwQTK9/D1wgJIQkdwWXVMZ6q/OALaBp82vQ2U9sjTyFXgDjglgh00VRAHP7u1Rcu4
  l75w1xInsg==
-In-Reply-To: <20250625125112.3943745-15-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20250625125112.3943745-2-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/25/2025 5:51 AM, Kirill A. Shutemov wrote:
-> LASS throws a #GP for any violations except for stack register accesses,
-> in which case it throws a #SS instead. Handle this similarly to how other
-> LASS violations are handled.
+On 6/25/2025 5:50 AM, Kirill A. Shutemov wrote:
+> From: Sohil Mehta <sohil.mehta@intel.com>
 > 
-> In case of FRED, before handling #SS as LASS violation, kernel has to
-> check if there's a fixup for the exception. It can address #SS due to
-> invalid user context on ERETU[1]. See 5105e7687ad3 ("x86/fred: Fixup
-
-Forgot to put the link to [1]?  Maybe just remove "[1]"?
-
-> fault on ERETU by jumping to fred_entrypoint_user") for more details.
+> Linear Address Space Separation (LASS) is a security feature that
+> intends to prevent malicious virtual address space accesses across
+> user/kernel mode.
 > 
-> Co-developed-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> Such mode based access protection already exists today with paging and
+> features such as SMEP and SMAP. However, to enforce these protections,
+> the processor must traverse the paging structures in memory.  Malicious
+> software can use timing information resulting from this traversal to
+> determine details about the paging structures, and these details may
+> also be used to determine the layout of the kernel memory.
+> 
+> The LASS mechanism provides the same mode-based protections as paging
+> but without traversing the paging structures. Because the protections
+> enforced by LASS are applied before paging, software will not be able to
+> derive paging-based timing information from the various caching
+> structures such as the TLBs, mid-level caches, page walker, data caches,
+> etc.
+> 
+> LASS enforcement relies on the typical kernel implementation to divide
+> the 64-bit virtual address space into two halves:
+>    Addr[63]=0 -> User address space
+>    Addr[63]=1 -> Kernel address space
+> 
+> Any data access or code execution across address spaces typically
+> results in a #GP fault.
+> 
+> The LASS enforcement for kernel data access is dependent on CR4.SMAP
+> being set. The enforcement can be disabled by toggling the RFLAGS.AC bit
+> similar to SMAP.
+> 
+> Define the CPU feature bits to enumerate this feature and include
+> feature dependencies to reflect the same.
+> 
+> LASS provides protection against a class of speculative attacks, such as
+> SLAM[1]. Add the "lass" flag to /proc/cpuinfo to indicate that the feature
+> is supported by hardware and enabled by the kernel. This allows userspace
+> to determine if the setup is secure against such attacks.
+> 
+> [1] https://download.vusec.net/papers/slam_sp24.pdf
+> 
+> Co-developed-by: Yian Chen <yian.chen@intel.com>
+> Signed-off-by: Yian Chen <yian.chen@intel.com>
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 > Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > ---
->   arch/x86/kernel/traps.c | 39 +++++++++++++++++++++++++++++++++------
->   1 file changed, 33 insertions(+), 6 deletions(-)
+>   arch/x86/Kconfig.cpufeatures                | 4 ++++
+>   arch/x86/include/asm/cpufeatures.h          | 1 +
+>   arch/x86/include/uapi/asm/processor-flags.h | 2 ++
+>   arch/x86/kernel/cpu/cpuid-deps.c            | 1 +
+>   tools/arch/x86/include/asm/cpufeatures.h    | 1 +
+>   5 files changed, 9 insertions(+)
 > 
-> diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-> index e2ad760b17ea..f1f92e1ba524 100644
-> --- a/arch/x86/kernel/traps.c
-> +++ b/arch/x86/kernel/traps.c
-> @@ -418,12 +418,6 @@ DEFINE_IDTENTRY_ERRORCODE(exc_segment_not_present)
->   		      SIGBUS, 0, NULL);
->   }
+> diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
+> index 250c10627ab3..733d5aff2456 100644
+> --- a/arch/x86/Kconfig.cpufeatures
+> +++ b/arch/x86/Kconfig.cpufeatures
+> @@ -124,6 +124,10 @@ config X86_DISABLED_FEATURE_PCID
+>   	def_bool y
+>   	depends on !X86_64
 >   
-> -DEFINE_IDTENTRY_ERRORCODE(exc_stack_segment)
-> -{
-> -	do_error_trap(regs, error_code, "stack segment", X86_TRAP_SS, SIGBUS,
-> -		      0, NULL);
-> -}
-> -
->   DEFINE_IDTENTRY_ERRORCODE(exc_alignment_check)
->   {
->   	char *str = "alignment check";
-> @@ -866,6 +860,39 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
->   	cond_local_irq_disable(regs);
->   }
+> +config X86_DISABLED_FEATURE_LASS
+> +	def_bool y
+> +	depends on X86_32
+> +
+>   config X86_DISABLED_FEATURE_PKU
+>   	def_bool y
+>   	depends on !X86_INTEL_MEMORY_PROTECTION_KEYS
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index b78af55aa22e..8eef1ad7aca2 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -313,6 +313,7 @@
+>   #define X86_FEATURE_SM4			(12*32+ 2) /* SM4 instructions */
+>   #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* "avx_vnni" AVX VNNI instructions */
+>   #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* "avx512_bf16" AVX512 BFLOAT16 instructions */
+> +#define X86_FEATURE_LASS		(12*32+ 6) /* "lass" Linear Address Space Separation */
+>   #define X86_FEATURE_CMPCCXADD           (12*32+ 7) /* CMPccXADD instructions */
+>   #define X86_FEATURE_ARCH_PERFMON_EXT	(12*32+ 8) /* Intel Architectural PerfMon Extension */
+>   #define X86_FEATURE_FZRM		(12*32+10) /* Fast zero-length REP MOVSB */
+> diff --git a/arch/x86/include/uapi/asm/processor-flags.h b/arch/x86/include/uapi/asm/processor-flags.h
+> index f1a4adc78272..81d0c8bf1137 100644
+> --- a/arch/x86/include/uapi/asm/processor-flags.h
+> +++ b/arch/x86/include/uapi/asm/processor-flags.h
+> @@ -136,6 +136,8 @@
+>   #define X86_CR4_PKE		_BITUL(X86_CR4_PKE_BIT)
+>   #define X86_CR4_CET_BIT		23 /* enable Control-flow Enforcement Technology */
+>   #define X86_CR4_CET		_BITUL(X86_CR4_CET_BIT)
+> +#define X86_CR4_LASS_BIT	27 /* enable Linear Address Space Separation support */
+> +#define X86_CR4_LASS		_BITUL(X86_CR4_LASS_BIT)
+>   #define X86_CR4_LAM_SUP_BIT	28 /* LAM for supervisor pointers */
+>   #define X86_CR4_LAM_SUP		_BITUL(X86_CR4_LAM_SUP_BIT)
 >   
-> +#define SSFSTR "stack segment fault"
-> +
-> +DEFINE_IDTENTRY_ERRORCODE(exc_stack_segment)
-> +{
-> +	if (user_mode(regs))
-> +		goto error_trap;
-> +
-> +	if (cpu_feature_enabled(X86_FEATURE_FRED) &&
-> +	    fixup_exception(regs, X86_TRAP_SS, error_code, 0))
-> +		return;
-> +
-
-Thanks for making the change for FRED.
-
-> +	if (cpu_feature_enabled(X86_FEATURE_LASS)) {
-> +		enum kernel_gp_hint hint;
-> +		unsigned long gp_addr;
-> +
-> +		hint = get_kernel_gp_address(regs, &gp_addr);
-> +		if (hint != GP_NO_HINT) {
-> +			printk(SSFSTR ", %s 0x%lx", kernel_gp_hint_help[hint],
-> +			       gp_addr);
-> +		}
-> +
-> +		if (hint != GP_NON_CANONICAL)
-> +			gp_addr = 0;
-
-Nit: GP/gp don't seem fit here, maybe we need a more generic name?
-
-Sorry I don't have a recommendation.
-
-> +
-> +		die_addr(SSFSTR, regs, error_code, gp_addr);
-> +		return;
-> +	}
-> +
-> +error_trap:
-> +	do_error_trap(regs, error_code, "stack segment", X86_TRAP_SS, SIGBUS,
-> +		0, NULL);
-
-The indentation has changed; I believe the original formatting is
-preferable.
-
-> +}
-> +
->   static bool do_int3(struct pt_regs *regs)
->   {
->   	int res;
-
-Just minor comments, so
+> diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+> index 46efcbd6afa4..98d0cdd82574 100644
+> --- a/arch/x86/kernel/cpu/cpuid-deps.c
+> +++ b/arch/x86/kernel/cpu/cpuid-deps.c
+> @@ -89,6 +89,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+>   	{ X86_FEATURE_SHSTK,			X86_FEATURE_XSAVES    },
+>   	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
+>   	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
+> +	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
+>   	{}
+>   };
+>   
+> diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
+> index ee176236c2be..4473a6f7800b 100644
+> --- a/tools/arch/x86/include/asm/cpufeatures.h
+> +++ b/tools/arch/x86/include/asm/cpufeatures.h
+> @@ -313,6 +313,7 @@
+>   #define X86_FEATURE_SM4			(12*32+ 2) /* SM4 instructions */
+>   #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* "avx_vnni" AVX VNNI instructions */
+>   #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* "avx512_bf16" AVX512 BFLOAT16 instructions */
+> +#define X86_FEATURE_LASS		(12*32+ 6) /* "lass" Linear Address Space Separation */
+>   #define X86_FEATURE_CMPCCXADD           (12*32+ 7) /* CMPccXADD instructions */
+>   #define X86_FEATURE_ARCH_PERFMON_EXT	(12*32+ 8) /* Intel Architectural PerfMon Extension */
+>   #define X86_FEATURE_FZRM		(12*32+10) /* Fast zero-length REP MOVSB */
 
 Reviewed-by: Xin Li (Intel) <xin@zytor.com>
 
