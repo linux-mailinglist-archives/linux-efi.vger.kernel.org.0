@@ -1,174 +1,124 @@
-Return-Path: <linux-efi+bounces-4013-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4014-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693A1AE9DE1
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 14:54:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 665B0AE9DF7
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 14:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91944A50C0
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 12:54:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1157F3B5787
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Jun 2025 12:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B713B2E1C51;
-	Thu, 26 Jun 2025 12:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2252E1C50;
+	Thu, 26 Jun 2025 12:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bZ9KGKBE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3yxb+Cs"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FC21B4F0A
-	for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 12:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7392DFF0D;
+	Thu, 26 Jun 2025 12:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750942474; cv=none; b=b/Dc71OAQc7OJDERdB30KS3ixV5BDOHKeiWo0G6Aa+x7Qi8Fsp9S1qWVtraTpnD1zOFXQ2hNPA3/2khQee0HeOpWmU7iVMOxevqNwQANXRrtGDXDEEOKZwNAxPN2LZGhO9o5KJ6NSOTo1pUvUMzcl5jeZEvAD40pQ73qW1xQTA4=
+	t=1750942733; cv=none; b=T98Vcy329cZHks5ouqtAvowE/6F7h6nReQEladQ0PdLHMtQUykklKokPzqJZid5vbtqByB521FV7J5K58h/GxYt1lbhvRTvvCk5Uqs6C1NEp/dOg4hvcITYixvUEhKnQ01mXDnuIV/ZEF7tA7uZRCf9cSYkdb9FvGlHFVW7xn20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750942474; c=relaxed/simple;
-	bh=asdumluxlys5mpuCyqM+5LtmRLFjUYo4X/pjky7in7A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fCurHUuJf1CDjZkpVw2BBAvD7FjrGrzjK4+LCUgVyX6CJSBtyn77qFwgqlsLNsAF6m4OvaCkPQPM9Aaz8B4f7K0oG0bkeSACldOrEjxHnyTk37mKagvB4DAeDgPYWm+Z6ZYIzy6NTFLBFGAKO8C14IDkLnlBK1sfoeRp2IpsMcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bZ9KGKBE; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55Q9pg3T000431
-	for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 12:54:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=3x6shSd/yrF34vsnt1iiXfA6
-	5GCU1AJJcNwTtSBnT2Q=; b=bZ9KGKBEnFFtGiR31CkiHufZWZC58eaxbW20N4DF
-	B9YElwL7IPI63Q7O9LelBe1Uit11W+diCIaE2aMzdaMe2z77KxVdevvDbhty/aPd
-	Ft84E0co7UN1TAD69k13W7MvWF+5ZMUfhEsX03rorFY32TaYGbu+nG3qnmkohMWm
-	HrqdfJix/VIPHbl85zdJK6d+zSv6vrViOSYBOaKgFr1R6QgRjlF+eK/Beh8DouKc
-	R6ShdJb802EcI3rFkdzB9wdWor7rfNi4jFK+HPDWtDrO+ZbH9PExQ7RQyoKgCshn
-	rPBrBEvqDmfTf190r14j7Ldgu755rGfff3ppSsvXrSR15w==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f2rq3jh9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 12:54:25 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-313d6d671ffso996222a91.2
-        for <linux-efi@vger.kernel.org>; Thu, 26 Jun 2025 05:54:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750942464; x=1751547264;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3x6shSd/yrF34vsnt1iiXfA65GCU1AJJcNwTtSBnT2Q=;
-        b=xMfUGYlWP2gI591gYObdU7nVofT3f+ol7d0rbNgroLJjSUZW0XCBEoR1V2kkWAAAfV
-         148fKZRG83h/DLP+ucFs/nOIWtfEz85tinMAIom3fHOquluhDyJiWrZfMDOEtGJSqSbu
-         cBg68Rovhn6WK2oDciEyPNRssf4GfhKj/lqMIrNjZ+PLwWGqvZdaYtAj7AMCho+f2Vrz
-         QiAn54mDtWjE/ZdTzLZzEbvpTYI+gv2SuldEOyC9PF8Xz9ueCHqZKY3To3oxBHitKa/k
-         jB5ma8Onu1U7rrp7hLIhI6qdLXC+q8U2Lqq6Cs43y1eF8LJuGeFHgpnlAaPfBMiaNOol
-         NvKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWiznJhnRh+2grv78xrZjGMZn4Wb8N+BTBYZtImSnt0Fh8Wh2zlIKnbIh0PbaIVwTBQ2D1vNhUz0RA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKPQPfJdv7+p6pH1qBX9MG2dM8kO0Ob5N+wh5lZqQOIqPlo00Q
-	PeTXBPXImZZwYq3/6T/5CXnrgT7cHpopc+J1rz+4osfv6mHevWgyn9Cw/y1OmSLhjEwjMhQ8uJy
-	Q1RzdJnFPH0HpB8ohO/WWEDnFGTuzvt4hYu2zJoogTddgIX5orWbqFmyOUq9qCMepEZRndDDwLV
-	HyeOSY/uFP9Fc4HReO7BsLHGNvqC1p7HT+2W8wng==
-X-Gm-Gg: ASbGncuIr8+OQymzjAC14AXdjhoE+DgQ9DxV4z4Vs7L5ORClygB2dMvaFw4M1u5v4Xs
-	JPhoJzrMW1SnLCPvDDn3+I3zK+lfbpZ896/LLBWNOuwp5GOxNjrvla7g+vLE9AsmloIXd/YDrRQ
-	OJv46HmcbbKbZeAoWvkw==
-X-Received: by 2002:a17:90b:4c4e:b0:30e:5c7f:5d26 with SMTP id 98e67ed59e1d1-31615961004mr5428795a91.24.1750942464339;
-        Thu, 26 Jun 2025 05:54:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuAIj1aEqYNeOoxb9nP2pAN+XuVJjT0xlC2v4akSLt4zynbmjMB91F5msiUFqnswgOqwnZpMRyUbkvjb89yQU=
-X-Received: by 2002:a17:90b:4c4e:b0:30e:5c7f:5d26 with SMTP id
- 98e67ed59e1d1-31615961004mr5428759a91.24.1750942463905; Thu, 26 Jun 2025
- 05:54:23 -0700 (PDT)
+	s=arc-20240116; t=1750942733; c=relaxed/simple;
+	bh=gIcKzGmixtfuDAqr28LKW77me+FkhQYqRYpW4sob8MY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s6n40c4U/oeX3si8KngKZdZQHJ7j9URl2SXmh5XM6VqwwIP9NPNdbN4QANGMpZHjZspR0o8rpx6NtxieuUTd1eqUalsQ7PolhT1Ikn14zoLAFHnvLpeVWnRWpxH8zVlM9GXp2jQuXBwFK2vaGJjQw7pRYPjbTtRWUjElPzI4B1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3yxb+Cs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD6CC4CEEB;
+	Thu, 26 Jun 2025 12:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750942733;
+	bh=gIcKzGmixtfuDAqr28LKW77me+FkhQYqRYpW4sob8MY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f3yxb+CspUY3rHCqPrnM1Zjq+hc/pNGKpABNh8Inc4a/hmAdYL3UB+eR4KhfJYJi9
+	 SpkOaVZQDf7UEoQU3NTywHCdnKQIXT3N6llYUOsKBO7rHoxuiBGji4hLfI4aFvokkJ
+	 Rz8qhhx3vD/R+09HLo0a6wxrEl0Pvs7egSYmbFqBGkxOEzXjTrS5T3teYYrGIB874a
+	 PjFDvWaEGx4+dL5QSl+aUpFQ1jzxmbVr9VCu3tzxjBXQGChu7OGPU6clBR9ci0Olo0
+	 dE3c+z5g3JBnLxtrS74gn6g3jdObkK1WXYRsVhyq2BCYLYzYoObxWi5OTSTi16q6PL
+	 gPyHxiua6av9g==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uUmBo-000000002MI-2T8s;
+	Thu, 26 Jun 2025 14:58:53 +0200
+Date: Thu, 26 Jun 2025 14:58:52 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Steev Klimaszewski <steev@kali.org>, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v4 6/8] firmware: qcom: scm: add modparam to control
+ QSEECOM enablement
+Message-ID: <aF1EDMsw1KQTlteX@hovoldconsulting.com>
+References: <20250625-more-qseecom-v4-0-aacca9306cee@oss.qualcomm.com>
+ <20250625-more-qseecom-v4-6-aacca9306cee@oss.qualcomm.com>
+ <aF0cyOpkjUI4R3bv@hovoldconsulting.com>
+ <gqoba4uu62sh4qxapqkhlufxnliatevnsqcxvijvb74tposf2b@iyonh347aext>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250625-more-qseecom-v4-0-aacca9306cee@oss.qualcomm.com>
- <20250625-more-qseecom-v4-1-aacca9306cee@oss.qualcomm.com>
- <aF0bLtnABcGTi0wM@hovoldconsulting.com> <zw5u5c2itmpxq34d22y5wmtr32d4zsmjj5clf77ryeqs5jgd4v@t3wjfyj43yra>
- <aF1CX2uWZ_KaMDVR@hovoldconsulting.com>
-In-Reply-To: <aF1CX2uWZ_KaMDVR@hovoldconsulting.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Date: Thu, 26 Jun 2025 15:54:11 +0300
-X-Gm-Features: Ac12FXxVTG1v8Nw68lgTtYQ3zkEFEeO_qii9xMXVu692vfF36NTvJZSjEsoMVSY
-Message-ID: <CAO9ioeWwyxSgG9DNYpW-Z_SU_Scv+4sSBs8UeZnxFz+tOaESEQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/8] efi: efivars: don't crash in efivar_set_variable{,_locked}
- in r/o case
-To: Johan Hovold <johan@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Steev Klimaszewski <steev@kali.org>, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Authority-Analysis: v=2.4 cv=NdDm13D4 c=1 sm=1 tr=0 ts=685d4301 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
- a=VwQbUJbxAAAA:8 a=9OOZl2ZXbS4rxasUFm0A:9 a=QEXdDO2ut3YA:10
- a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI2MDEwOCBTYWx0ZWRfX4exZCReturQ6
- ckqFOSNLpsIG+3FTLIw1QEYEY86RvM0R/Mh3pF1NZaswiqtWe5UCMOB8bjmaymFVSWdW+HOrXr5
- tXCCDngHPfqsePqwHSHwuHntKswjPRlNsRxNRas7Bx8Jrd2aBOGiZM38DxnOfdbrCTEKhHIX14H
- wVfXYEfVXC5JxBIGbflfEDVEWPX/mLMBXKaKPxkv+a6z8PfmNVvles12apBipMDl06AgaBSBdqZ
- cP7aXSznF4IiDK5IpSB55nOvW4i9yCFCSe0YSnZuAIVulcpW9nQTQ6CyJsZY+1sbWprhjQRwAwI
- Cgrb3crcFQ5Z/jdVXTtgIf4LHkmjRhdkVu0OlmRY0ZN3S9UnzJ+PWnWs48rWpxAuA3W5FCxEKs+
- dzAu5+PNDIv/r0VUqzZrDNe1/XtDLzM/A02hp/8N+OXU+ZeNBThuJD9cgR20mIPNj6f/2Ym5
-X-Proofpoint-ORIG-GUID: s1Ye67rOhQ3q2Ien-8ZmXn9qweOFeVLF
-X-Proofpoint-GUID: s1Ye67rOhQ3q2Ien-8ZmXn9qweOFeVLF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-26_05,2025-06-26_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999 adultscore=0
- clxscore=1015 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506260108
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <gqoba4uu62sh4qxapqkhlufxnliatevnsqcxvijvb74tposf2b@iyonh347aext>
 
-On Thu, 26 Jun 2025 at 15:51, Johan Hovold <johan@kernel.org> wrote:
->
-> On Thu, Jun 26, 2025 at 02:03:44PM +0300, Dmitry Baryshkov wrote:
-> > On Thu, Jun 26, 2025 at 12:04:30PM +0200, Johan Hovold wrote:
-> > > On Wed, Jun 25, 2025 at 01:53:20AM +0300, Dmitry Baryshkov wrote:
-> > > > If efivar implementation doesn't provide write support, then calling
-> > > > efivar_set_variable() (e.g. when PM8xxx RTC driver tries to update the
-> > > > RTC offset) will crash the system. Prevent that by checking that
-> > > > set_variable callback is actually provided and fail with an
-> > > > EFI_WRITE_PROTECTED if it is not.
-> > > >
-> > > > Fixes: 472831d4c4b2 ("efi: vars: Add thin wrapper around EFI get/set variable interface")
-> > >
-> > > I don't think a fixes tag is warranted here as it currently appears to
-> > > be expected that the callers check if setvar is supported before calling
-> > > this helper (e.g. by calling efivar_supports_writes() as efivarfs does).
-> >
-> > It is not documented as such. So, I think, we'd better not crash the
-> > callers.
->
-> You need to look at the backstory to determine that before jumping to
-> conclusions (e.g. start by looking at f88814cc2578 ("efi/efivars: Expose
-> RT service availability via efivars abstraction")).
+On Thu, Jun 26, 2025 at 02:08:23PM +0300, Dmitry Baryshkov wrote:
+> On Thu, Jun 26, 2025 at 12:11:20PM +0200, Johan Hovold wrote:
+> > On Wed, Jun 25, 2025 at 01:53:25AM +0300, Dmitry Baryshkov wrote:
+> > > From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > > 
+> > > In preparation to enabling QSEECOM for the platforms rather than
+> > > individual machines provide a mechanism for the user to override default
+> > > selection. Allow users to use qcom_scm.qseecom modparam.
+> > > 
+> > > Setting it to 'force' will enable QSEECOM even if it disabled or not
+> > > handled by the allowlist.
+> > > 
+> > > Setting it to 'off' will forcibly disable the QSEECOM interface,
+> > > allowing incompatible machines to function.
+> > > 
+> > > Setting it to 'roefivars' will enable the QSEECOM interface, making UEFI
+> > > variables read-only.
+> > > 
+> > > All other values mean 'auto', trusting the allowlist in the module.
+> > 
+> > I don't see the need for this. The kernel should just provide sensible
+> > defaults.
+> 
+> It does provide _defaults_. However with the next commit we mass-enable
+> QSEECOM for SoC families, which includes untested WoA devices. If the
+> user observes a misbehaviour of the UEFI vars or any other
+> QSEECOM-related driver on those platforms, it is much easier to let
+> users test and workaround UEFI misbehaviour.
 
-_documented_. I'll update documentation for efivar_set_variable() in
-the next iteration and add a check to the RTC driver. However I still
-think that this patch is valid.
+You basically know by now which machines supports qseecom and which do
+not, right (e.g. UFS storage means non-persistent EFI vars)?
 
->
-> > > So should perhaps be fixed in the RTC driver if we agree that supporting
-> > > read-only offsets is indeed something we want.
-> > >
-> > > Are there any other current user that may possibly benefit from
-> > > something like this?
-> >
-> > efi-pstore comes to my mind.
->
-> No, that driver is also disabled when efivar_supports_writes() returns
-> false.
+And it's a pretty bad user experience to have people trying to write
+efivariables when setting up a machine and then spend hours trying to
+debug why they don't persist after a reboot.
 
-Good.
+I don't think that's fair to users.
 
+Let whoever brings up a new machine figure this out. It's just one
+entry, no scaling issues, and we get accurate information (unless
+Qualcomm, who sits on the documentation, is willing to provide it
+upfront).
 
--- 
-With best wishes
-Dmitry
+Johan
 
