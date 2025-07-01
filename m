@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-4059-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4060-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C334BAEF420
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Jul 2025 12:00:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8CDAEF42D
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Jul 2025 12:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D81D54A1C59
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Jul 2025 10:00:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA9E51C00483
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Jul 2025 10:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FFE2727FD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FEF272813;
 	Tue,  1 Jul 2025 09:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EkC1feT4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nZ+aRhVf"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAE3270EDD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1F926CE12;
 	Tue,  1 Jul 2025 09:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751363950; cv=none; b=KBRewqQntubOpjUmZJkfBhWvwAQ2I+oyJCjOiMK1C13KFSMIw+beYZrNAWFy5U9EtaZMRAANVg+eesimdP0WkbHbACSBDS45SSLkYFlqPM1Y6eP18hs96dA16/oAHq8Dt6FZl0gNPWdKtRhNkpxuXHyI+y8a+ljjJwA82LYayZo=
+	t=1751363951; cv=none; b=iskjNZ6/Ei5h0hREkZ14vrDQ0DMD2sMCHi81uMFnvVqk8+6JgYaC0GxEUyZA1UzgfJsP6O4EK3J9iN76gm4vMXeYlNDyGAZEljeCJtyQSYSohdJEnsL1NXU7ztvthoFbJtsZI7t/7N4uG57x6ZrK5UbrM/vXqQXFAxkcm23pjks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751363950; c=relaxed/simple;
-	bh=AhbyuBrFy6ZhBp5R/WtWxW6rQmI0xvLZeZC7IlrtM/I=;
+	s=arc-20240116; t=1751363951; c=relaxed/simple;
+	bh=GkZc9oX0bGyfhB00ib+Vypspe5Y0XCe0GUwAqpAwtwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtqOPg10hnD2gZPGlJyFN9TK5JCWN0sb5OU/PztCidmQkkyLhlCYuMRXsRrvRVdhB2Sm5ydP52ZC78m6am8++BmxpIs13dlFLBFdIIo7gJXRee5057CCDcfg87hdbg12P5cSfhf+rJa3oB1MottEbDa+fnz9M6LBhx6bGMbOR70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EkC1feT4; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=mKldqxCfxszmrwOFmtfW5Dd+J6BtVBgdMycfSdnvRqYQeaaw+mq5vNiyf29B9prZKoLYXd9b6lHNZUoBMWtAzjh8UhNXD3emsgZHMi5KsjHfuWExolEV7SeF5Drr0pmyj7VBFdsMW96lIlCQVgUjN51S/QUE0snBoIEYv66KWI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nZ+aRhVf; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751363949; x=1782899949;
+  t=1751363950; x=1782899950;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AhbyuBrFy6ZhBp5R/WtWxW6rQmI0xvLZeZC7IlrtM/I=;
-  b=EkC1feT4AkhF5YosOWSce4Av6pPb5Trfvuf2dM+WSdZB8bOKqmLVTRlw
-   LQHs94kVpCCSU2xFSJTAo/z9tlhk6XapKdPaaaVz6B3Jh16ZzvZjGz7hd
-   1hnE31AU9SKN/JB26h65kf/BZ6u2VAoZk9u8tZU1wiM7LrU50pJAJtqZz
-   dieOrumOre436clOJQNAoMTTEXGxRdCkivrDdJDvgR8TDvUY6qS8SgnGK
-   Lpv1F5mg6Pj7E2+EthbhHOPR8OoD8/9T2O67rw9MjttC3DAWOfyeoem/+
-   zeCLjYLJadRgCucM2VPMaG3nXoYM2rJfvIJgn/b7ZslAV+w7xBOG66A7I
-   A==;
-X-CSE-ConnectionGUID: wmXC1aP3Tzq/c0mvGg2+bw==
-X-CSE-MsgGUID: C2zAzkQTTCCqkYt3za7gKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="57428054"
+  bh=GkZc9oX0bGyfhB00ib+Vypspe5Y0XCe0GUwAqpAwtwU=;
+  b=nZ+aRhVfP+bkQjhVhfbzqjeJx9dLAUW5macl9Bp0cQVkQls6E0KHmZkB
+   vpnTdqc9pB0l3H7wiYpnhvGQxIfYiLqPx1BfkahaaniIa5KVCQzz9z17s
+   Kjt9MFvr4iEgpVNSWdO4DNSflCl8DJd1UR9rs22rESbAnAXntPeGrY78a
+   O7/JvFFdwhpPo0XhMTr6M6E1EKcP9b1HWtXt6SDhLr7pviF9OBJ0RzBe4
+   iMQp5tzdr9nyStgMGdjZxApL9H+ig+T0zOrqjwX/YPTmek0B08ov996nq
+   6VPOm7bEvxIwW6gNxxI3dSYF+YynIazyU49z1Nmcty4pgfGPyS2YHiK3a
+   g==;
+X-CSE-ConnectionGUID: U9Rlzg8vT+yQc8hO2hyvVg==
+X-CSE-MsgGUID: V41VM3cQQ0uV1FaLpAh2fA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="57428077"
 X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
-   d="scan'208";a="57428054"
+   d="scan'208";a="57428077"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 02:59:08 -0700
-X-CSE-ConnectionGUID: TW34rlASSy+SrR+yVajNOg==
-X-CSE-MsgGUID: c/1eMKOIT7iCrLMo4ccEFw==
+X-CSE-ConnectionGUID: cgfsiWB6Smqc33N8baKJsg==
+X-CSE-MsgGUID: GsXzxampTQuf3+ieGEQ5Fg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
-   d="scan'208";a="190896413"
+   d="scan'208";a="190896417"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orviesa001.jf.intel.com with ESMTP; 01 Jul 2025 02:58:57 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 812A256D; Tue, 01 Jul 2025 12:58:50 +0300 (EEST)
+	id 8DF45608; Tue, 01 Jul 2025 12:58:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv8 07/17] x86/vsyscall: Reorganize the #PF emulation code
-Date: Tue,  1 Jul 2025 12:58:36 +0300
-Message-ID: <20250701095849.2360685-8-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 08/17] x86/traps: Consolidate user fixups in exc_general_protection()
+Date: Tue,  1 Jul 2025 12:58:37 +0300
+Message-ID: <20250701095849.2360685-9-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
 References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
@@ -129,131 +129,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Sohil Mehta <sohil.mehta@intel.com>
 
-Separate out the actual vsyscall emulation from the page fault specific
-handling in preparation for the upcoming #GP fault emulation.
+Move the UMIP exception fixup along with the other user mode fixups,
+that is, under the common "if (user_mode(regs))" condition where the
+rest of the fixups reside.
 
 No functional change intended.
 
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c | 52 ++++++++++++++-------------
- arch/x86/include/asm/vsyscall.h       |  8 ++---
- arch/x86/mm/fault.c                   |  2 +-
- 3 files changed, 33 insertions(+), 29 deletions(-)
+ arch/x86/kernel/traps.c | 8 +++-----
+ arch/x86/kernel/umip.c  | 3 +++
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index 0b0e0283994f..25f94ac5fd35 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -112,36 +112,13 @@ static bool write_ok_or_segv(unsigned long ptr, size_t size)
- 	}
- }
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index c5c897a86418..10856e0ac46c 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -800,11 +800,6 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
  
--bool emulate_vsyscall(unsigned long error_code,
--		      struct pt_regs *regs, unsigned long address)
-+static bool __emulate_vsyscall(struct pt_regs *regs, unsigned long address)
- {
- 	unsigned long caller;
- 	int vsyscall_nr, syscall_nr, tmp;
- 	long ret;
- 	unsigned long orig_dx;
+ 	cond_local_irq_enable(regs);
  
--	/* Write faults or kernel-privilege faults never get fixed up. */
--	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
--		return false;
--
--	/* Avoid emulation unless userspace was executing from vsyscall page: */
--	if (address != regs->ip) {
--		/* Failed vsyscall read */
--		if (vsyscall_mode == EMULATE)
--			return false;
--
--		/*
--		 * User code tried and failed to read the vsyscall page.
--		 */
--		warn_bad_vsyscall(KERN_INFO, regs, "vsyscall read attempt denied -- look up the vsyscall kernel parameter if you need a workaround");
--		return false;
+-	if (static_cpu_has(X86_FEATURE_UMIP)) {
+-		if (user_mode(regs) && fixup_umip_exception(regs))
+-			goto exit;
 -	}
 -
--
--	/* X86_PF_INSTR is only set when NX is supported: */
--	if (cpu_feature_enabled(X86_FEATURE_NX))
--		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
--
- 	/*
- 	 * No point in checking CS -- the only way to get here is a user mode
- 	 * trap to a high address, which means that we're in 64-bit user code.
-@@ -274,6 +251,33 @@ bool emulate_vsyscall(unsigned long error_code,
- 	return true;
- }
+ 	if (v8086_mode(regs)) {
+ 		local_irq_enable();
+ 		handle_vm86_fault((struct kernel_vm86_regs *) regs, error_code);
+@@ -819,6 +814,9 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
+ 		if (fixup_vdso_exception(regs, X86_TRAP_GP, error_code, 0))
+ 			goto exit;
  
-+bool emulate_vsyscall_pf(unsigned long error_code, struct pt_regs *regs,
-+			 unsigned long address)
-+{
-+	/* Write faults or kernel-privilege faults never get fixed up. */
-+	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
-+		return false;
++		if (fixup_umip_exception(regs))
++			goto exit;
 +
-+	if (address == regs->ip) {
-+		/* X86_PF_INSTR is only set when NX is supported: */
-+		if (cpu_feature_enabled(X86_FEATURE_NX))
-+			WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
-+
-+		return __emulate_vsyscall(regs, address);
-+	}
-+
-+	/* Failed vsyscall read */
-+	if (vsyscall_mode == EMULATE)
-+		return false;
-+
-+	/*
-+	 * User code tried and failed to read the vsyscall page.
-+	 */
-+	warn_bad_vsyscall(KERN_INFO, regs,
-+			  "vsyscall read attempt denied -- look up the vsyscall kernel parameter if you need a workaround");
-+	return false;
-+}
-+
- /*
-  * A pseudo VMA to allow ptrace access for the vsyscall page.  This only
-  * covers the 64bit vsyscall page now. 32bit has a real VMA now and does
-diff --git a/arch/x86/include/asm/vsyscall.h b/arch/x86/include/asm/vsyscall.h
-index 472f0263dbc6..214977f4fa11 100644
---- a/arch/x86/include/asm/vsyscall.h
-+++ b/arch/x86/include/asm/vsyscall.h
-@@ -14,12 +14,12 @@ extern void set_vsyscall_pgtable_user_bits(pgd_t *root);
-  * Called on instruction fetch fault in vsyscall page.
-  * Returns true if handled.
-  */
--extern bool emulate_vsyscall(unsigned long error_code,
--			     struct pt_regs *regs, unsigned long address);
-+extern bool emulate_vsyscall_pf(unsigned long error_code,
-+				struct pt_regs *regs, unsigned long address);
- #else
- static inline void map_vsyscall(void) {}
--static inline bool emulate_vsyscall(unsigned long error_code,
--				    struct pt_regs *regs, unsigned long address)
-+static inline bool emulate_vsyscall_pf(unsigned long error_code,
-+				       struct pt_regs *regs, unsigned long address)
- {
- 	return false;
- }
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 998bd807fc7b..fbcc2da75fd6 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1316,7 +1316,7 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	 * to consider the PF_PK bit.
- 	 */
- 	if (is_vsyscall_vaddr(address)) {
--		if (emulate_vsyscall(error_code, regs, address))
-+		if (emulate_vsyscall_pf(error_code, regs, address))
- 			return;
+ 		gp_user_force_sig_segv(regs, X86_TRAP_GP, error_code, desc);
+ 		goto exit;
  	}
- #endif
+diff --git a/arch/x86/kernel/umip.c b/arch/x86/kernel/umip.c
+index 5a4b21389b1d..80f2ad26363c 100644
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -343,6 +343,9 @@ bool fixup_umip_exception(struct pt_regs *regs)
+ 	void __user *uaddr;
+ 	struct insn insn;
+ 
++	if (!cpu_feature_enabled(X86_FEATURE_UMIP))
++		return false;
++
+ 	if (!regs)
+ 		return false;
+ 
 -- 
 2.47.2
 
