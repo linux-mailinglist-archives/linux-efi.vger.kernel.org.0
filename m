@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-4057-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4056-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4909CAEF424
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Jul 2025 12:00:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AABEFAEF412
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Jul 2025 11:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABD711BC6A81
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Jul 2025 10:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2E8917A66E
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Jul 2025 09:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2929E270ED4;
-	Tue,  1 Jul 2025 09:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1D8270548;
+	Tue,  1 Jul 2025 09:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T47dJNTG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WhJDZRRT"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6616726FDAC;
-	Tue,  1 Jul 2025 09:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889BA26FA59;
+	Tue,  1 Jul 2025 09:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751363949; cv=none; b=Qd4oJIvPKvDJcCMwhlcNVDM9QNc6I8+KArewxCkA3nUmL1YtsXuk6ewkB/EJxdF202OYu6wm/Aal2moXgkRF3JDzopHxKtUjb59pyYnF0tyjptAIwgfYGXheHu5hOZZ3ZR/6jQwk//iRuDVulLz03jTeE9W5k/42loPh3OJ13AY=
+	t=1751363948; cv=none; b=a863aFmyy5bG+s6joJqfmJ4PewOf+OPHV3YHmROY8zzLxNRJ7hjqQZJzmRhV79IFGb5/FFBZt+Ypms9uNe8L+HlHp8cd3E5Fj/vA/4pqgQSDuZBVz27YILW93Cvhvn/venlg4paxpnkL7CT+g+wU7djY2gtoG5SxZgdB6QAXn9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751363949; c=relaxed/simple;
-	bh=G+eP9Bw73xI4j+67SYkgeX9LiSQjfbtHwX1bukiOpM0=;
+	s=arc-20240116; t=1751363948; c=relaxed/simple;
+	bh=TQ5RCfOQ/5tuZqESL8hi2WCyzYpg/ALQ/w3Eenbo4Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sq+oxj/4DdFVEE2LXgsD/x+58rNLJoAehcKsJSVn/Ax06sIhFOYklhRTVn9eHPkoN1P53P0W5vr0zFiW9Il407/tL9dLulW1aCTxoBROXCp6KfRWNCuVtyvtcyF32jC23BZ/VXGcUYdVUo0v0RwmWQESdctd1VLwSqS059S2MTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T47dJNTG; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=BUJuMGn7HEeBj8ecycG2FtSCBAtAdGCSbZsIaCHg5d2q3gAgozF+tMukD9ahYkgh+kjxG07hAGBSs/0tgbVa8zT1eFrcPIvW7F6/BWh2ECRLH4ld/15ndHG9X7xMDqYwKXuc0mVThaVYuY1hS98pN0DbWOwJ4Ug+dR9d1pF5SgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WhJDZRRT; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751363948; x=1782899948;
+  t=1751363947; x=1782899947;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=G+eP9Bw73xI4j+67SYkgeX9LiSQjfbtHwX1bukiOpM0=;
-  b=T47dJNTGqyLtldhrhszu5ZTemlhhgi4EA0pymKiOS4XTSv1396RTdwj8
-   VH5ZR84ez+parwzeKwCPe7N0hdHdhy4z6eZ2btCAgwdloL2XlJnfR49Mp
-   5J6St1h0atQydOocS+5uSYOjsKdTlKt/zXeBLTpQuB1+q152r7K1ZhENa
-   VOaoVdVRc83ggqwT2VfTMnHUdZQ1aKd3Jb2Gio8FgcWo1JC2UoFCt0z+6
-   aUBg0Ihugn2c0H2ovLSHpmsFvZY5DvCJp24p0eiQ3MsExAL2Y++5z8Kxx
-   4wcdSdIS8yxkZC6RNu6WOCTNK0mHurPsCuYy7NaNZE5Zj4MwbiFV+8NSp
-   Q==;
-X-CSE-ConnectionGUID: UmqLEIhvTDCKmtt0e6mUuQ==
-X-CSE-MsgGUID: 57h9T2ckSJuMIGzs5Esuqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="57428029"
+  bh=TQ5RCfOQ/5tuZqESL8hi2WCyzYpg/ALQ/w3Eenbo4Ow=;
+  b=WhJDZRRTqqAbzW/GY3lIx0eFqekyRkc7f/JOlzhxuEKS/pBWqqUY2MUM
+   V0pwiJNxmgTd1bXYjVvzhJo2K3xLZAspm0TikqfEfUpFuuuk0WeT4eYfH
+   P5qsGjN8svtRHitVcStkccIH/MZDg7aAA3CqKya6Aa2FT0PixbAWfJuj7
+   q4Qcop9rbpsJvf2THrXALhC8FigX/5eNLtCGaz5Dir7E05Ju631gttaRY
+   5k1VYUvq6ftM6rdPiZPm6wn58ZQ6gyeShJZL94hS3HGULfLdSw+2b6Hkl
+   iD65z8WvuCDjxWb4+8XFoKqVUEKm5rLmMtrhICaLV3CHyiGG2c4VRHMSM
+   A==;
+X-CSE-ConnectionGUID: So6E2Nw/TnyAQQ+27VsnEA==
+X-CSE-MsgGUID: HeZ5O2Q4StasPOcy0F+trA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="71048649"
 X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
-   d="scan'208";a="57428029"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 02:59:07 -0700
-X-CSE-ConnectionGUID: qbhrAEsuT3OS1w2+RDuY5g==
-X-CSE-MsgGUID: WBcnX9YsScuHLqGF0AKp1g==
+   d="scan'208";a="71048649"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 02:59:07 -0700
+X-CSE-ConnectionGUID: ulSrwC4NR46aDPQOLhrZ5Q==
+X-CSE-MsgGUID: kv43OEAgSp+0GwwuAzuZkw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
-   d="scan'208";a="190896404"
+   d="scan'208";a="177390811"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 01 Jul 2025 02:58:55 -0700
+  by fmviesa002.fm.intel.com with ESMTP; 01 Jul 2025 02:58:55 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 67888417; Tue, 01 Jul 2025 12:58:50 +0300 (EEST)
+	id 744944B1; Tue, 01 Jul 2025 12:58:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv8 05/17] efi: Disable LASS around set_virtual_address_map() EFI call
-Date: Tue,  1 Jul 2025 12:58:34 +0300
-Message-ID: <20250701095849.2360685-6-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 06/17] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
+Date: Tue,  1 Jul 2025 12:58:35 +0300
+Message-ID: <20250701095849.2360685-7-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
 References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
@@ -127,59 +127,61 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
+page fault, but the CPU does not report X86_PF_INSTR if neither
+X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
 
-Of all the EFI runtime services, set_virtual_address_map() is the only
-one that is called at its lower mapping, which LASS prohibits regardless
-of EFLAGS.AC setting. The only way to allow this to happen is to disable
-LASS in the CR4 register.
+X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
+early P4 processors that did not support this feature.
 
-Disable LASS around this low address EFI call.
+Instead of explicitly checking for X86_PF_INSTR, compare the fault
+address against RIP.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
+to fault address but X86_PF_INSTR is absent.
+
+Originally-by: Dave Hansen <dave.hansen@intel.com>
+Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
 ---
- arch/x86/platform/efi/efi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 463b784499a8..5b23c0daedef 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -787,6 +787,7 @@ static void __init __efi_enter_virtual_mode(void)
- 	int count = 0, pg_shift = 0;
- 	void *new_memmap = NULL;
- 	efi_status_t status;
-+	unsigned long lass;
- 	unsigned long pa;
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index c9103a6fa06e..0b0e0283994f 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -124,7 +124,8 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+ 		return false;
  
- 	if (efi_alloc_page_tables()) {
-@@ -825,11 +826,25 @@ static void __init __efi_enter_virtual_mode(void)
+-	if (!(error_code & X86_PF_INSTR)) {
++	/* Avoid emulation unless userspace was executing from vsyscall page: */
++	if (address != regs->ip) {
+ 		/* Failed vsyscall read */
+ 		if (vsyscall_mode == EMULATE)
+ 			return false;
+@@ -136,13 +137,16 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		return false;
+ 	}
  
- 	efi_sync_low_kernel_mappings();
++
++	/* X86_PF_INSTR is only set when NX is supported: */
++	if (cpu_feature_enabled(X86_FEATURE_NX))
++		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++
+ 	/*
+ 	 * No point in checking CS -- the only way to get here is a user mode
+ 	 * trap to a high address, which means that we're in 64-bit user code.
+ 	 */
  
-+	/*
-+	 * set_virtual_address_map() is the only service located at lower
-+	 * addresses, so LASS has to be disabled around it.
-+	 *
-+	 * Note that flipping RFLAGS.AC is not sufficient for this, as it only
-+	 * permits data accesses and not instruction fetch. The entire LASS
-+	 * needs to be disabled.
-+	 */
-+	lass = cr4_read_shadow() & X86_CR4_LASS;
-+	cr4_clear_bits(lass);
-+
- 	status = efi_set_virtual_address_map(efi.memmap.desc_size * count,
- 					     efi.memmap.desc_size,
- 					     efi.memmap.desc_version,
- 					     (efi_memory_desc_t *)pa,
- 					     efi_systab_phys);
-+
-+	cr4_set_bits(lass);
-+
- 	if (status != EFI_SUCCESS) {
- 		pr_err("Unable to switch EFI into virtual mode (status=%lx)!\n",
- 		       status);
+-	WARN_ON_ONCE(address != regs->ip);
+-
+ 	if (vsyscall_mode == NONE) {
+ 		warn_bad_vsyscall(KERN_INFO, regs,
+ 				  "vsyscall attempted with vsyscall=none");
 -- 
 2.47.2
 
