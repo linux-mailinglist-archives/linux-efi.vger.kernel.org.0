@@ -1,208 +1,188 @@
-Return-Path: <linux-efi+bounces-4081-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4082-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB8DAF0848
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Jul 2025 04:07:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FE9AF1082
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Jul 2025 11:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92262423575
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Jul 2025 02:06:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81E53188DDF4
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Jul 2025 09:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE56D154457;
-	Wed,  2 Jul 2025 02:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFEE1DC9BB;
+	Wed,  2 Jul 2025 09:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="HVk+Nym7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fyhjKVqI"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F242828691;
-	Wed,  2 Jul 2025 02:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC97823B63E;
+	Wed,  2 Jul 2025 09:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751422039; cv=none; b=k29ohuOReGzVK7YZ7C04vWLyN0JnKLXUvAjxgkIdh7YbeKPvmgGZ3iQGPp/C2ixUuazYAGNGt1Ge6aLbMv43OeO533AQ9wEg50xsIPDzwZIqZVnplYG6GNXoq6xJf+jWwlUUMVY93/TBtV6M5ZjqnMnYI2aPQua0tbO/OT36xlY=
+	t=1751449661; cv=none; b=S70gQQbNRuroIa7qJwv6ixM/u5t7ZwF54zUdGD+jaT2XoRb/Xv3Dnq2/Ps/1IBYefOlLIZk+4bCCyFtfxHvHzkWZhatvwSOHIL3YDTvPTweO91Br38NxAuHV5bksZf+U9J4vu8emtMz/F8SJPCdPT13Geo/D8Qg59jyh95PTuJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751422039; c=relaxed/simple;
-	bh=wLuB1vDABKGs2UUxR5mXNwSYEIXjQUHN8kkms91vN1c=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=Wa4pYFiMUHvh44BcfNh2lqRN/c9FlOuYR8xNqK6shfOE0iRi1oynwrtoa+PGG8AOL3iRRRduQWLIkeWaafHuTqfMcQTiEHrlSS6kAmaQvmpdRF56J2sUR8HwlwZifnfdyuXYmKy6LjHTxzpcQ8wT/IhtjZ6MDEylGzaFmhRLS6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=HVk+Nym7; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 562269O4460250
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 1 Jul 2025 19:06:09 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 562269O4460250
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1751421972;
-	bh=i69d9Gb3Xi/Rw/rkK5nIxcEDPVZQe+0UUT5XjAKGRLM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=HVk+Nym7wO5i6CFYox0su0fxzPEjdm2+dpWmWYO8YnKdFvs55NgQV2uQvMsku8PPU
-	 7xiGu46d7uG8YNQ1lk0MNWXKTwJUDPHgBDChr+tO5nsw0Oe55figZiz2ePOsL7yiE6
-	 UP3KGSpLSbhQVcTgJfSPeRCZX3G1QM07A7ta1CkwwZps9AUqdl+h0Wj6KX9TXF7SLC
-	 /F6AdsIJPkqgNOtBeAPmLFciX6ezcifFVFG0DpoEjNzbyV59yIH4iA6U53YAV4AtI+
-	 eCb3DiTQs9mi/rpSsPWcdtOMWwYN/aJoxTR+oMK8+ahZhyl6aLWZzTa6zcqGc1ozWn
-	 A3RYyCaMG94Jg==
-Date: Tue, 01 Jul 2025 19:06:10 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Sohil Mehta <sohil.mehta@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Xiongwei Song <xiongwei.song@windriver.com>,
-        Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>,
-        Alexey Kardashevskiy <aik@amd.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-CC: Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
-        Breno Leitao <leitao@debian.org>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>,
-        Juergen Gross <jgross@suse.com>,
-        Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>,
-        Eric Biggers <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>,
-        Huang Shijie <shijie@os.amperecomputing.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCHv8 14/17] x86/traps: Handle LASS thrown #SS
-User-Agent: K-9 Mail for Android
-In-Reply-To: <95dc18fd-73b0-4019-92d2-c0e6aaf22c96@intel.com>
-References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com> <20250701095849.2360685-15-kirill.shutemov@linux.intel.com> <95dc18fd-73b0-4019-92d2-c0e6aaf22c96@intel.com>
-Message-ID: <4DE45AFD-C1E0-4FB8-BE01-44A72C5C6E1E@zytor.com>
+	s=arc-20240116; t=1751449661; c=relaxed/simple;
+	bh=QquxLZIFBNYCLtfN2WN90KA9i4NdGTFGsp2moSfYXE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iPPNVc4hjkx4ZU9eL3RaehdIUsx+OeHEQxWcu+YOAhMSxlQy5+ijrZBGO5WC1qMxhTfE13mwlSU4UE0qohMrOVXqOei3IuC/Kb5T9Ds6zx2S42KPSH4WU4vJkasijH0ANC8Xa5SbRIMs4dFwM06j2kG3WxWxASxGN3bYZw0g0XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fyhjKVqI; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751449660; x=1782985660;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QquxLZIFBNYCLtfN2WN90KA9i4NdGTFGsp2moSfYXE4=;
+  b=fyhjKVqIUkxJb1JKT2G3z8DrvoAhm64ajH18/4AL9eTwL4sKR3L+zEKd
+   WoFJzqiZoqsYj38FYd6ATJhl9wx/7FLhganpuoIRJlY/WMG7w3PwszVJ+
+   RiPR798CF8rF+OMhUYRiQxTxTaDxOdxiea7AXahS0cnzjM4XYTjPdA2YJ
+   2IP7EnC/O8XcZ/C+Xvhq+j1/b88dxgCRLZU8RSQrJPSYr5UbEaQCeSuMq
+   HvghIS88wu+qdatejZ4yU9L7LBkEMDVGccJssUVtKrvBpf41yjvxHCK4n
+   RP9nrxGvm1gjtav27jhE7dioWsRgoFik+H+uU3nzCEilEWI2M9iu4K026
+   Q==;
+X-CSE-ConnectionGUID: n+fzfk3QQ1CDo6Vjuen9HQ==
+X-CSE-MsgGUID: nlaHByvfR5W1VGMsWkXO0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="52968088"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="52968088"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 02:47:38 -0700
+X-CSE-ConnectionGUID: LkxK1xTYTBadfjlqZ0+zdg==
+X-CSE-MsgGUID: kgMQFbTfRx2+ltJURfIKBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="154180676"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa007.jf.intel.com with ESMTP; 02 Jul 2025 02:47:26 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 427B11E0; Wed, 02 Jul 2025 12:47:24 +0300 (EEST)
+Date: Wed, 2 Jul 2025 12:47:24 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>, 
+	"Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>, 
+	Alexey Kardashevskiy <aik@amd.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Daniel Sneddon <daniel.sneddon@linux.intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>, 
+	Breno Leitao <leitao@debian.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>, 
+	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, 
+	Huang Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCHv8 04/17] x86/cpu: Defer CR pinning setup until after EFI
+ initialization
+Message-ID: <5s25fkpxv6p3ai2iagtgyqhpt3c4cv54q6lgeeebizsseediyy@wl4epcc7i35a>
+References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
+ <20250701095849.2360685-5-kirill.shutemov@linux.intel.com>
+ <080df169-0f47-40ea-b7b3-4d1a35bee151@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <080df169-0f47-40ea-b7b3-4d1a35bee151@intel.com>
 
-On July 1, 2025 6:35:40 PM PDT, Sohil Mehta <sohil=2Emehta@intel=2Ecom> wro=
-te:
->On 7/1/2025 2:58 AM, Kirill A=2E Shutemov wrote:
->> LASS throws a #GP for any violations except for stack register accesses=
-,
->> in which case it throws a #SS instead=2E Handle this similarly to how o=
-ther
->> LASS violations are handled=2E
->>=20
->
->Maybe I've misunderstood something:
->
->Is the underlying assumption here that #SS were previously only
->generated by userspace, but now they can also be generated by the
->kernel? And we want the kernel generated #SS to behave the same as the #G=
-P?
->
->> In case of FRED, before handling #SS as LASS violation, kernel has to
->> check if there's a fixup for the exception=2E It can address #SS due to
->> invalid user context on ERETU=2E See 5105e7687ad3 ("x86/fred: Fixup
->> fault on ERETU by jumping to fred_entrypoint_user") for more details=2E
->>=20
->> Co-developed-by: Alexander Shishkin <alexander=2Eshishkin@linux=2Eintel=
-=2Ecom>
->> Signed-off-by: Alexander Shishkin <alexander=2Eshishkin@linux=2Eintel=
-=2Ecom>
->> Signed-off-by: Kirill A=2E Shutemov <kirill=2Eshutemov@linux=2Eintel=2E=
-com>
->> ---
->>  arch/x86/kernel/traps=2Ec | 39 +++++++++++++++++++++++++++++++++------
->>  1 file changed, 33 insertions(+), 6 deletions(-)
->>=20
->> diff --git a/arch/x86/kernel/traps=2Ec b/arch/x86/kernel/traps=2Ec
->> index ceb091f17a5b=2E=2Ef9ca5b911141 100644
->> --- a/arch/x86/kernel/traps=2Ec
->> +++ b/arch/x86/kernel/traps=2Ec
->> @@ -418,12 +418,6 @@ DEFINE_IDTENTRY_ERRORCODE(exc_segment_not_present)
->>  		      SIGBUS, 0, NULL);
->>  }
->> =20
->> -DEFINE_IDTENTRY_ERRORCODE(exc_stack_segment)
->> -{
->> -	do_error_trap(regs, error_code, "stack segment", X86_TRAP_SS, SIGBUS,
->> -		      0, NULL);
->> -}
->> -
->>  DEFINE_IDTENTRY_ERRORCODE(exc_alignment_check)
->>  {
->>  	char *str =3D "alignment check";
->> @@ -866,6 +860,39 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
->>  	cond_local_irq_disable(regs);
->>  }
->> =20
->> +#define SSFSTR "stack segment fault"
->> +
->> +DEFINE_IDTENTRY_ERRORCODE(exc_stack_segment)
->> +{
->> +	if (user_mode(regs))
->> +		goto error_trap;
->> +
->> +	if (cpu_feature_enabled(X86_FEATURE_FRED) &&
->> +	    fixup_exception(regs, X86_TRAP_SS, error_code, 0))
->> +		return;
->> +
->> +	if (cpu_feature_enabled(X86_FEATURE_LASS)) {
->> +		enum kernel_exc_hint hint;
->> +		unsigned long exc_addr;
->> +
->> +		hint =3D get_kernel_exc_address(regs, &exc_addr);
->> +		if (hint !=3D EXC_NO_HINT) {
->
->The brackets are not needed for singular statements=2E Also the max line
->length is longer now=2E You can fit this all in a single line=2E
->
->> +			printk(SSFSTR ", %s 0x%lx", kernel_exc_hint_help[hint],
->> +			       exc_addr);
->> +		}
->> +
->
->> +		if (hint !=3D EXC_NON_CANONICAL)
->> +			exc_addr =3D 0;
->> +
->> +		die_addr(SSFSTR, regs, error_code, exc_addr);
->
->The variable names in die_addr() should be generalized as well=2E They
->seem to assume the caller to be a #GP handler=2E
->
->> +		return;
->> +	}
->> +
->> +error_trap:
->> +	do_error_trap(regs, error_code, "stack segment", X86_TRAP_SS, SIGBUS,
->> +		      0, NULL);
->> +}
->> +
->>  static bool do_int3(struct pt_regs *regs)
->>  {
->>  	int res;
->
+On Tue, Jul 01, 2025 at 12:03:01PM -0700, Sohil Mehta wrote:
+> On 7/1/2025 2:58 AM, Kirill A. Shutemov wrote:
+> > From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> > 
+> > In order to map the EFI runtime services, set_virtual_address_map()
+> > needs to be called, which resides in the lower half of the address
+> > space. This means that LASS needs to be temporarily disabled around
+> > this call. This can only be done before the CR pinning is set up.
+> > 
+> > Move CR pinning setup behind the EFI initialization.
+> > 
+> > Wrapping efi_enter_virtual_mode() into lass_disable/enable_enforcement()
+> 
+> I believe this should be lass_stac()/clac() since we reverted to the
+> original naming.
 
-Note: for a FRED system, ERETU can generate #SS for a non-canonical user s=
-pace RSP even in the absence of LASS, so if that is not currently handled t=
-hat is an active bug=2E
+Doh. Will fix.
+
+> > is not enough because AC flag gates data accesses, but not instruction
+> > fetch. Clearing the CR4 bit is required.
+> > 
+> > Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> > Suggested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  arch/x86/kernel/cpu/common.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+> > index 4f430be285de..9918121e0adc 100644
+> > --- a/arch/x86/kernel/cpu/common.c
+> > +++ b/arch/x86/kernel/cpu/common.c
+> > @@ -2081,7 +2081,6 @@ static __init void identify_boot_cpu(void)
+> >  	enable_sep_cpu();
+> >  #endif
+> >  	cpu_detect_tlb(&boot_cpu_data);
+> > -	setup_cr_pinning();
+> >  
+> >  	tsx_init();
+> >  	tdx_init();
+> > @@ -2532,10 +2531,14 @@ void __init arch_cpu_finalize_init(void)
+> >  
+> >  	/*
+> >  	 * This needs to follow the FPU initializtion, since EFI depends on it.
+> > +	 *
+> > +	 * EFI twiddles CR4.LASS. Do it before CR pinning.
+> >  	 */
+> >  	if (efi_enabled(EFI_RUNTIME_SERVICES))
+> >  		efi_enter_virtual_mode();
+> >  
+> > +	setup_cr_pinning();
+> > +
+> 
+> Instead of EFI toggling CR4.LASS, why not defer the first LASS
+> activation itself?
+> 
+> i.e.
+> 
+> 	if (efi_enabled(EFI_RUNTIME_SERVICES))
+> 		efi_enter_virtual_mode();
+> 
+> 	setup_lass();
+> 
+> 	setup_cr_pinning();
+> 
+> 
+> This way, we can avoid the following patch (#5) altogether.
+
+That's definitely an option.
+
+The benefit of current approach is that the enforcement is enabled
+earlier and cover more boot code, providing marginal protection
+improvement.
+
+I also like that related security features (SMEP/SMAP/UMIP/LASS) are
+enabled in the same place.
+
+In the end it is a judgement call.
+
+Maintainers, any preference?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
