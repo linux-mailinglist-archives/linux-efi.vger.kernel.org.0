@@ -1,84 +1,83 @@
-Return-Path: <linux-efi+bounces-4106-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4107-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF72AF7E32
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Jul 2025 18:52:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5C6AF7E53
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Jul 2025 19:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3661F1BC58A8
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Jul 2025 16:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCB1D1C400A7
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Jul 2025 17:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0C720102C;
-	Thu,  3 Jul 2025 16:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FF62550D7;
+	Thu,  3 Jul 2025 17:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RjUAe6RA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JODN/mBG"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFCC33DF;
-	Thu,  3 Jul 2025 16:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2B6255F59;
+	Thu,  3 Jul 2025 17:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751561547; cv=none; b=f2GQ0jt2qqcTgGIxGXrt0geriXn897yH4knn3jDBIIspW21eUij07dASjXYRz4L3y67JoWZdN66d8KOpprre4sOu24z3fFECks+dm9nY1JtsTPkGOXLF1n1FfALy0CbshzmGUWOrSA+laBIu3G1WuPyZme/HbRBlvfrTncmkBZU=
+	t=1751562141; cv=none; b=h+D3i+PaB710YYbkCQNhGDZth9+QS1Jqo2NoiNcbAjT/uYRkYHXXMm2VCaSKw1eH+swCUX6z6yuhMnF4PoFeE7bc/UJFnP3fh1xGjchWH1K1ap45wBHFmuSSTLRegYmqyCwYPuIErZpI9StDJ7Lg8TgcG44MAQe59WZbIvjlDww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751561547; c=relaxed/simple;
-	bh=xwBMBkFLX4i0vBFJ5CXmoivb9NgZ0GfHuzL8WvJiKvs=;
+	s=arc-20240116; t=1751562141; c=relaxed/simple;
+	bh=hW8gRXE5rn8Ruy5t7sRdtYCyNtZ6p1F+fSUWDln33qU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jyIDtnO2sbRKTqpxylkq5XISGkyOb75ZtUKimlMmbBt4jiDf6iRglLlp4+h94AHs478E7RjVv/EGUgNBDbmwWiE5Wbhugd0AB4sUxhEs5dZ+deTOtm5HfBUR2PQvAhL4tqa+fIlH+WkegyUlYeABWWIRYUkhoLAENfvBMybC3Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RjUAe6RA; arc=none smtp.client-ip=209.85.221.53
+	 MIME-Version:Content-Type; b=EeXGX9nXF84+GaplNleUtKqnnUwaXxBPNQi4YwQYmtjbkWXrRnM6TE5aiYTdMAmy1/xzswnOuvdiN7tiSa3EU8OFdsTZhgJiH2O3Tb9ASYFDH2YR+3zE7oKXqpmx+sHZk97sYJezuZMzCMgix7fHZ9PAXYlqEH6BuJ22cnh0mRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JODN/mBG; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a6f2c6715fso16250f8f.1;
-        Thu, 03 Jul 2025 09:52:25 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a6d1369d4eso8930f8f.2;
+        Thu, 03 Jul 2025 10:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751561544; x=1752166344; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751562138; x=1752166938; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dw94v4+dm+2EAGEsktndj6wIkAF7S3MInrEzqbxbZ14=;
-        b=RjUAe6RAsRYe8aqOxlvkL1kRrHpYAUjXL0jEn9UxblCrCuyXAfMf/YDtx+NPfwzINV
-         4B6X2Y31MjzH0WJlfrbEGTb4LL0uJl6ylwzh9wMnaWZ7flfdr1FTj/MBlu4EmRKsotkU
-         oIajDo9Vt4tUK4H5nelXoxXjQ+LqO7GmidGM1IeUiMwuPkycl9bYW3mxAcaiuYOusNyR
-         JdGzmbAYOqpmoMyqlsA5oxxWQWwDWCNBC1Rv9Ibe51BSiEe/vWPTxBVI9L7BmoiKrJon
-         Kce2nyymf4WvuYn7kHtIfPng1vh1DVCpSW0joJcFgmKRr3sN/Adm25YKU321BcdQZ+j1
-         8afw==
+        bh=pqSUbsPjahwSUAB6AZ/GxcwqbVye734kyCehbMAYMyw=;
+        b=JODN/mBGGI2dPCPEc83bg2nsPpGnAlVvs2c6XZM60w1wW9fT9VttsmD+OuGBtnRiwg
+         LaId9ZqGaJDUdteDXfzy7rwWivmtocqnRUaFXgXFuXKGF5ejdxkor3zm95CkkBE55Pj3
+         VNc6SL9wayEn+cdF7hcgZ5Gh0TWYKfxHaZTUBSzfDc27YyGBzhWcihnGxOCiHD7laukB
+         vxqV9S+kOXbAhGCYxEhK/7C1iBavPduF7VvaUwugzowR1wn3du/mvzB7B/DudhY7CJUf
+         gpVP7b2IK3YGJNnKYu1jzDNeRwd6ttFobdtVxpD7nhwJH+heTpAg5QKyXP0hnn4qG/Q7
+         nPcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751561544; x=1752166344;
+        d=1e100.net; s=20230601; t=1751562138; x=1752166938;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dw94v4+dm+2EAGEsktndj6wIkAF7S3MInrEzqbxbZ14=;
-        b=IC8JdxqJLdNBY2jOfXtU88mLHRyrkkyX934M80W9TDIItkRAVLZ2pAAwLgMZCyop0N
-         s13rqH+Kycz6z7NKxOaoCK3OJInxRGXNe/DR3nZ4B5gpZzg6rxup47UrFPS6Nnm0DuMH
-         ytngwbVu6XwjAE7w7/mLmBfWR4crwkJrFM27JAPB9lD27Hk/Dthh6gXRRDqIjlSBspd9
-         l8OGznhXmEd5eovJZ4PdYt0FbeOKnFk3xVUDbjceRDiot7DrbLHf4af7mwBlP2A0UvPq
-         Ri/tFOTWg0028R2C6rRf4/KA6J0cNULNqWbHjE5tOclD6FQ/Ez/EtFEfbHsV1QaXwd/f
-         iK4A==
-X-Forwarded-Encrypted: i=1; AJvYcCUwbCCFb0VhzOoCw77aBBp6kkGT240H2KTUxV7kc/EfnJwFGeQJDgzM7AiT8k5Viq1Zyro+al8EVOBBvCiW@vger.kernel.org, AJvYcCVDfshpi2FQ4Fc+dw/Fb1JMrho6dilCNwDNIKjTvbzfaF/fXilw9UwP/QKDAW1nOG6gzil9frzWgzxB@vger.kernel.org, AJvYcCWaQHOTRvXtXmH2kmHbkPQvU8G+3bXEOPb5iHC5qn1FeJkXJo+PKO2ViLQGB/AJtBxpUXVjF5gXarM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvNvXroi6Toaog9osvKjGkpuRUMR10jhGTXoBQ6tujAb0IK81J
-	8f8V+1UuE8jXMAdOs0YuwMJwWhmR+3ATo4EXiVJoiTrmNIQ5gzOMMgBh
-X-Gm-Gg: ASbGnctFXKq53nRrpYm8LJr23sX8e0LzpRt6jDEbcyJ7MVhDPTj6I4fZPHMMbPpw+Fw
-	Wa7BbTQ4sXO7xvMuREJBEnEXqGB4d2+v5OIPUsGzKypia7PCnjOsmUUYeeLrCmrsNCSa8+3u0lD
-	EfIjhgn24uLJUhHCz1wX9AZHw4Yz8YCeW2ckz+dZy24mBkfzB5Rt8HzdFWpHVhDNeiPuF7mhCx+
-	DqzT3BvonBX3w+Skf7Ps06ZBvdtkPTBfn8aQ7Y1+R2QtHGFnkYETrBVkLdlN2ig5OIiWJ6RIHMb
-	e4U7NbHUcUcZSjPzHF85PA+lqXbTUP1HdiVa77W/dYMRAaDOhXEpplNrdQrnxQuCrffFeI54BRS
-	Mu262VhLV1i4WZfe2Bg==
-X-Google-Smtp-Source: AGHT+IEwxwpPMNgiW5OZzNxrC0UFXM2KJ10ptvxCCiTuN7vhdgd4/rcD6AlW0fW1gF7+O5XydxM1/A==
-X-Received: by 2002:a05:6000:2f85:b0:3a6:d5fd:4687 with SMTP id ffacd0b85a97d-3b1fe6b72c6mr7061097f8f.18.1751561543434;
-        Thu, 03 Jul 2025 09:52:23 -0700 (PDT)
+        bh=pqSUbsPjahwSUAB6AZ/GxcwqbVye734kyCehbMAYMyw=;
+        b=nKQbA8RgXxcG7/pu8KbP7a2E1d9mtEXDkwQVB7MnZQ52YZGwIrycGETgzznE+9pTOs
+         Me+xgWVQDvpUArnvbO0IgW6/LgVyzYjNC885ZLrG/gZ6uX5HPmMEI9OwMnwGrtzpHxXv
+         6zGhXAGgMIdTOuhWp5gajlEUsB7I7eLzLKRffL+gX8XnppvTtsjW8TehyJoXITCEydiV
+         bHtpBsUjmqjyfWoFKuzBCVV26B2NSgCpusyfL6Aw5EV1PMen6CSLRREhJjxwwFxH99fd
+         mIvlEBG6GgdoAa3kZDCUeIwCD7ONFghdj2A/ItEX2kb6nIlsmGintr4+ehHSyDApg7gx
+         o8dw==
+X-Forwarded-Encrypted: i=1; AJvYcCUD+/6qsMcZSqTLjqkuD/vm4f/d98PkFirEcFhiFmOSyxgPZlOPZNubKF3Ps3l5oQiWFog373cnxPo=@vger.kernel.org, AJvYcCUW/PiBSuLTMR9Tlmpk45Wme8Lom/QaZRQA64d/e8qBKQzvT3xMzZRSAVHo8Elnq297FrTaU3NkwJoQMZGp@vger.kernel.org, AJvYcCWizKCKU/LPSocxgXCkNgWTEMAOjsqE27MNy/OMAOqlLlmUGUqkykdQ30LwznFDZ1tmhI0z9PeYj+4s@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTia20WJqRk65m4Q3nmOhhojtmyfpQEQuyWmlUGnVuAueO9YID
+	/KnyHnqWd3XZc0zSrVC6i641PNdLLsWcTb8Xiy8YZ4TM/IiW1bUYm8Q/
+X-Gm-Gg: ASbGncu7h/I1mCvmcISP9rAak9aZhzxZrC+ZF0IVqBszo9jcCOzLd6SFOnUoPkMYbaM
+	yYDgegBsvTzYH+d92sFCJXX0Rj++Cqcdl/nlf/2YZnVFnD2L8xncq8+CmXvPNZhgV1Azi3PWjFJ
+	nOzR2O/ekLynZoFQzWd46gHJvYhezE4vgGNG3Av/x1XQxvLI8EaYI5hCozquRA4g8mUuhWrZbB6
+	SahXn8pFcSs5aUFiGCcnt3EkgcuffMgx4c8rqFi8+S/tFKkopJiDhbtIMKe9i6mbkFgmFdc0IBO
+	RUA55riqqXNejKkUqL+aqjRJOOcrEgGiw8DVc6elEzQqTgUHS3bQJSzeLnhYdQiVx0X646lV9Ym
+	EAO5VjEAAtCNgAvpmxw==
+X-Google-Smtp-Source: AGHT+IHaQgjZrXhRgzZx++9Yi/fzdCBPXdZfk6poOyduS7JH7jm8D3wKUoXwoBb3dw9YTRiJNjYZkA==
+X-Received: by 2002:a05:6000:4b11:b0:3a3:7ba5:9618 with SMTP id ffacd0b85a97d-3b32e70d7d7mr3507915f8f.29.1751562137307;
+        Thu, 03 Jul 2025 10:02:17 -0700 (PDT)
 Received: from pumpkin (host-92-21-58-28.as13285.net. [92.21.58.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47030cdf5sm254497f8f.1.2025.07.03.09.52.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b4708d0ed9sm279010f8f.38.2025.07.03.10.02.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Jul 2025 09:52:23 -0700 (PDT)
-Date: Thu, 3 Jul 2025 17:52:20 +0100
+        Thu, 03 Jul 2025 10:02:16 -0700 (PDT)
+Date: Thu, 3 Jul 2025 18:02:13 +0100
 From: David Laight <david.laight.linux@gmail.com>
-To: Vegard Nossum <vegard.nossum@oracle.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
  <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
  <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel
  <ardb@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf
@@ -93,26 +92,26 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andy Lutomirski
  Sandipan Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, Rick
  Edgecombe <rick.p.edgecombe@intel.com>, Alexei Starovoitov
  <ast@kernel.org>, Hou Tao <houtao1@huawei.com>, Juergen Gross
- <jgross@suse.com>, Kees Cook <kees@kernel.org>, Eric Biggers
- <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu
- (Google)" <mhiramat@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du
- <changbin.du@huawei.com>, Huang Shijie <shijie@os.amperecomputing.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Namhyung Kim
- <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-mm@kvack.org
+ <jgross@suse.com>, Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook
+ <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, Huang
+ Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Namhyung Kim <namhyung@kernel.org>, Arnaldo
+ Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [PATCHv8 02/17] x86/asm: Introduce inline memcpy and memset
-Message-ID: <20250703175220.1cb05c1b@pumpkin>
-In-Reply-To: <78aab15e-5bc2-47cc-ac1c-5a348bff0e17@oracle.com>
+Message-ID: <20250703180213.28c0e92e@pumpkin>
+In-Reply-To: <uoysignw2pmdls5v57z4cty76hhz7fv7ikcih2qgeltbgnem4f@jt2r24bqvzau>
 References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
 	<20250701095849.2360685-3-kirill.shutemov@linux.intel.com>
 	<20250703094417.165e5893@pumpkin>
 	<uvvh6qfpan6f56fdvuch67nss2h5nqxbmocztf6v2lfbvnihbg@vtzbr6anzqnl>
 	<20250703131552.32adf6b8@pumpkin>
-	<78aab15e-5bc2-47cc-ac1c-5a348bff0e17@oracle.com>
+	<uoysignw2pmdls5v57z4cty76hhz7fv7ikcih2qgeltbgnem4f@jt2r24bqvzau>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -123,62 +122,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 3 Jul 2025 15:33:16 +0200
-Vegard Nossum <vegard.nossum@oracle.com> wrote:
+On Thu, 3 Jul 2025 17:10:34 +0300
+"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
 
-> On 03/07/2025 14:15, David Laight wrote:
+> On Thu, Jul 03, 2025 at 01:15:52PM +0100, David Laight wrote:
 > > On Thu, 3 Jul 2025 13:39:57 +0300
-> > "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:  
-> >> On Thu, Jul 03, 2025 at 09:44:17AM +0100, David Laight wrote:  
-> >>> On Tue,  1 Jul 2025 12:58:31 +0300
-> >>> "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:  
-> >>>> diff --git a/arch/x86/lib/clear_page_64.S b/arch/x86/lib/clear_page_64.S
-> >>>> index a508e4a8c66a..47b613690f84 100644
-> >>>> --- a/arch/x86/lib/clear_page_64.S
-> >>>> +++ b/arch/x86/lib/clear_page_64.S
-> >>>> @@ -55,17 +55,26 @@ SYM_FUNC_END(clear_page_erms)
-> >>>>   EXPORT_SYMBOL_GPL(clear_page_erms)
-> >>>>   
-> >>>>   /*
-> >>>> - * Default clear user-space.
-> >>>> + * Default memset.
-> >>>>    * Input:
-> >>>>    * rdi destination
-> >>>> + * rsi scratch
-> >>>>    * rcx count
-> >>>> - * rax is zero
-> >>>> + * al is value
-> >>>>    *
-> >>>>    * Output:
-> >>>>    * rcx: uncleared bytes or 0 if successful.
-> >>>> + * rdx: clobbered
-> >>>>    */
-> >>>>   SYM_FUNC_START(rep_stos_alternative)
-> >>>>   	ANNOTATE_NOENDBR
-> >>>> +
-> >>>> +	movzbq %al, %rsi
-> >>>> +	movabs $0x0101010101010101, %rax
-> >>>> +
-> >>>> +	/* RDX:RAX = RAX * RSI */
-> >>>> +	mulq %rsi  
-> >>>
-> >>> NAK - you can't do that here.
-> >>> Neither %rsi nor %rdx can be trashed.
-> >>> The function has a very explicit calling convention.  
+> > "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
+> >   
+> > > On Thu, Jul 03, 2025 at 09:44:17AM +0100, David Laight wrote:  
+> > > > On Tue,  1 Jul 2025 12:58:31 +0300
+> > > > "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
+> > > >     
+> > > > > Extract memcpy and memset functions from copy_user_generic() and
+> > > > > __clear_user().
+> > > > > 
+> > > > > They can be used as inline memcpy and memset instead of the GCC builtins
+> > > > > whenever necessary. LASS requires them to handle text_poke.    
+> > > > 
+> > > > Except they contain the fault handlers so aren't generic calls.    
+> > > 
+> > > That's true. I will add a comment to clarify it.  
+> > 
+> > They need renaming.  
 > 
-> That's why we have the clobbers... see below
+> __inline_memcpy/memset_safe()?
+
+'safe' against what :-)
+They can't be used for user accesses without access_ok() and clac.
+The get/put_user variants without access_ok() have _unsafe() suffix.
+
 > 
-> >> What calling convention? We change the only caller to confirm to this.  
+> > ...  
+> > > > > diff --git a/arch/x86/lib/clear_page_64.S b/arch/x86/lib/clear_page_64.S
+> > > > > index a508e4a8c66a..47b613690f84 100644
+> > > > > --- a/arch/x86/lib/clear_page_64.S
+> > > > > +++ b/arch/x86/lib/clear_page_64.S
+> > > > > @@ -55,17 +55,26 @@ SYM_FUNC_END(clear_page_erms)
+> > > > >  EXPORT_SYMBOL_GPL(clear_page_erms)
+> > > > >  
+> > > > >  /*
+> > > > > - * Default clear user-space.
+> > > > > + * Default memset.
+> > > > >   * Input:
+> > > > >   * rdi destination
+> > > > > + * rsi scratch
+> > > > >   * rcx count
+> > > > > - * rax is zero
+> > > > > + * al is value
+> > > > >   *
+> > > > >   * Output:
+> > > > >   * rcx: uncleared bytes or 0 if successful.
+> > > > > + * rdx: clobbered
+> > > > >   */
+> > > > >  SYM_FUNC_START(rep_stos_alternative)
+> > > > >  	ANNOTATE_NOENDBR
+> > > > > +
+> > > > > +	movzbq %al, %rsi
+> > > > > +	movabs $0x0101010101010101, %rax
+> > > > > +
+> > > > > +	/* RDX:RAX = RAX * RSI */
+> > > > > +	mulq %rsi    
+> > > > 
+> > > > NAK - you can't do that here.
+> > > > Neither %rsi nor %rdx can be trashed.
+> > > > The function has a very explicit calling convention.    
+> > > 
+> > > What calling convention? We change the only caller to confirm to this.  
 > > 
 > > The one that is implicit in:
 > >   
-> >>>> +	asm volatile("1:\n\t"
-> >>>> +		     ALT_64("rep stosb",
-> >>>> +			    "call rep_stos_alternative", ALT_NOT(X86_FEATURE_FSRM))
-> >>>> +		     "2:\n\t"
-> >>>> +		     _ASM_EXTABLE_UA(1b, 2b)
-> >>>> +		     : "+c" (len), "+D" (addr), ASM_CALL_CONSTRAINT
-> >>>> +		     : "a" ((uint8_t)v)  
+> > > > > +	asm volatile("1:\n\t"
+> > > > > +		     ALT_64("rep stosb",
+> > > > > +			    "call rep_stos_alternative", ALT_NOT(X86_FEATURE_FSRM))
+> > > > > +		     "2:\n\t"
+> > > > > +		     _ASM_EXTABLE_UA(1b, 2b)
+> > > > > +		     : "+c" (len), "+D" (addr), ASM_CALL_CONSTRAINT
+> > > > > +		     : "a" ((uint8_t)v)  
 > > 
 > > The called function is only allowed to change the registers that
 > > 'rep stosb' uses - except it can access (but not change)
@@ -190,40 +209,105 @@ Vegard Nossum <vegard.nossum@oracle.com> wrote:
 > > This is very specific and is done so that the compiler can use
 > > all the registers.  
 > 
-> I feel like you trimmed off the clobbers from the asm() in the context
-> above. For reference, it is:
+> Okay, I see what you are saying.
 > 
-> +		     : "memory", _ASM_SI, _ASM_DX);
-
-I'm sure they weren't there...
-
-Enough clobbers will 'un-break' it - but that isn't the point.
-Linux will reject the patch if he reads it.
-The whole point about the function is that it is as direct a replacement
-for 'rep stos/movsb' as possible.  
-
+> > > > It is also almost certainly a waste of time.
+> > > > Pretty much all the calls will be for a constant 0x00.
+> > > > Rename it all memzero() ...    
+> > > 
+> > > text_poke_memset() is not limited to zeroing.  
+> > 
+> > But you don't want the overhead of extending the constant
+> > on all the calls - never mind reserving %rdx to do it.
+> > Maybe define a function that requires the caller to have
+> > done the 'dirty work' - so any code that wants memzero()
+> > just passes zero.
+> > Or do the multiply in the C code where it will get optimised
+> > away for constant zero.
+> > You do get the multiply for the 'rep stosb' case - but that
+> > is always going to be true unless you complicate things further.    
 > 
-> I'm not saying this can't be optimized, but that doesn't seem to be your
-> complaint -- you say "the called function is only allowed to change
-> ...", but this is not true when we have the clobbers, right?
+> The patch below seems to do the trick: compiler optimizes out the
+> multiplication for v == 0.
+> 
+> It would be nice to avoid it for X86_FEATURE_FSRM, but we cannot use
+> cpu_feature_enabled() here as <asm/cpufeature.h> depends on
+> <asm/string.h>.
+> 
+> I cannot say I like the result.
+> 
+> Any suggestions?
+> 
+> diff --git a/arch/x86/include/asm/string.h b/arch/x86/include/asm/string.h
+> index becb9ee3bc8a..c7644a6f426b 100644
+> --- a/arch/x86/include/asm/string.h
+> +++ b/arch/x86/include/asm/string.h
+> @@ -35,16 +35,27 @@ static __always_inline void *__inline_memcpy(void *to, const void *from, size_t
+>  
+>  static __always_inline void *__inline_memset(void *addr, int v, size_t len)
+>  {
+> +	unsigned long val = v;
+>  	void *ret = addr;
+>  
+> +	if (IS_ENABLED(CONFIG_X86_64)) {
+> +		/*
+> +		 * Fill all bytes by value in byte 0.
+> +		 *
+> +		 * To be used in rep_stos_alternative()i
+> +		 */
+> +		val &= 0xff;
+> +		val *= 0x0101010101010101;
+> +	}
 
-You can't change %rax either - not without a clobber.
-
-Oh, and even with your version you only clobbers for %rax and %rdx.
-There is no need to use both %rsi and %rdx.
-
-The performance is a different problem.
-And the extra clobbers are likely to matter.
-x86 really doesn't have many registers.
+That won't compile for 32bit, and it needs the same thing done.
+	val *= (unsigned long)0x0101010101010101ull;
+should work.
+I don't think you need the 'val &= 0xff', just rely on the caller
+passing a valid value - nothing will break badly if it doesn't.
 
 	David
 
-> 
-> This is exactly what I fixed with my v7 fixlet to this patch:
-> 
-> https://lore.kernel.org/all/1b96b0ca-5c14-4271-86c1-c305bf052b16@oracle.com/
-> 
-> 
-> Vegard
+> +
+>  	asm volatile("1:\n\t"
+>  		     ALT_64("rep stosb",
+>  			    "call rep_stos_alternative", ALT_NOT(X86_FEATURE_FSRM))
+>  		     "2:\n\t"
+>  		     _ASM_EXTABLE_UA(1b, 2b)
+>  		     : "+c" (len), "+D" (addr), ASM_CALL_CONSTRAINT
+> -		     : "a" (v)
+> -		     : "memory", _ASM_SI, _ASM_DX);
+> +		     : "a" (val)
+> +		     : "memory");
+>  
+>  	return ret + len;
+>  }
+> diff --git a/arch/x86/lib/clear_page_64.S b/arch/x86/lib/clear_page_64.S
+> index 47b613690f84..3ef7d796deb3 100644
+> --- a/arch/x86/lib/clear_page_64.S
+> +++ b/arch/x86/lib/clear_page_64.S
+> @@ -58,23 +58,15 @@ EXPORT_SYMBOL_GPL(clear_page_erms)
+>   * Default memset.
+>   * Input:
+>   * rdi destination
+> - * rsi scratch
+>   * rcx count
+>   * al is value
+>   *
+>   * Output:
+>   * rcx: uncleared bytes or 0 if successful.
+> - * rdx: clobbered
+>   */
+>  SYM_FUNC_START(rep_stos_alternative)
+>  	ANNOTATE_NOENDBR
+>  
+> -	movzbq %al, %rsi
+> -	movabs $0x0101010101010101, %rax
+> -
+> -	/* RDX:RAX = RAX * RSI */
+> -	mulq %rsi
+> -
+>  	cmpq $64,%rcx
+>  	jae .Lunrolled
+>  
 
 
