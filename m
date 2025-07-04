@@ -1,150 +1,116 @@
-Return-Path: <linux-efi+bounces-4111-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4112-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4B0AF86C6
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 06:30:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 791D1AF89B3
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 09:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 562D91C80C2C
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 04:30:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0000588326
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 07:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42531F4615;
-	Fri,  4 Jul 2025 04:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="KlM2w2to"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F6D283128;
+	Fri,  4 Jul 2025 07:40:35 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171371EA7E1;
-	Fri,  4 Jul 2025 04:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83D1281366;
+	Fri,  4 Jul 2025 07:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751603131; cv=none; b=U02srrvMdCTdFqI/YMhf30kEeByK7rv6jFeKijB8D73AKltFEEdTVN51vo3zJ7fMXugBZXWdKB5mygjs/L0Y1Q5ihc0SoTazy4ckEfiCUR2CuhweBidbYKazFVlk13eBYce8jxFyRfQl9SNF6b3B34gRQk9I2Xx8N9h8GawkL1g=
+	t=1751614835; cv=none; b=uxUOViY+DM0BMeCatpnJAiNzvLNTogtymUlgfRIV8zWDQWMRMj2G59H0fFZliSIKq1ZY8LscomS6DmX7/JK9Z46x9rRCWtnAoYaJwHkP8WuIFsf3t9jsZUxTlPGO38GfNrk4IKMuX12wR1+3fffdIArt3iIhR6sBYYXjY16lt/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751603131; c=relaxed/simple;
-	bh=EYF/FkRzsl2YKOd+AwTZVqEQu4PSvWsyAspo89mRl8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jm+qjHZDt33XEgy1TTbY5LsW8kFoDokmKUlmjepxdn4zGZJhgQENiKZohZt+SDL4+5ogYjXCROWmRL0y7zq7kyBXLFy3soCEGaVeMaJqBjXL6JOZpz16oVo+m5Gf8psuWjQptzBi01QzuW4JnNxF9KVkx5rNz9KFzER/3y5i+KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=KlM2w2to; arc=none smtp.client-ip=117.135.210.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=7e61fe3FoGKrVaATjtgyqXSK4fwuYFW0FX0uxu2ZGXE=;
-	b=KlM2w2to7zpxdYaDkjPcPd5oq/6e+mCNJf1xEpPc458uDKuHlfwU8C7pFBSGRH
-	RgCM9OeUgoGv4kvucvBPtd1mjhqkcL0lQTRXnjTkslWuzLc2SvX1U7TXgSXDyZNO
-	fSlbB3+Gx1BBOirUxO+n+TZMzxot+M25GO+34h809D7P8=
-Received: from [172.19.20.199] (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3F+RCQmdo4caXAw--.25499S2;
-	Fri, 04 Jul 2025 10:53:55 +0800 (CST)
-Message-ID: <2ab4ebba-1f97-4686-9186-5bcaa3549f54@126.com>
-Date: Fri, 4 Jul 2025 10:53:54 +0800
+	s=arc-20240116; t=1751614835; c=relaxed/simple;
+	bh=EhK+9hAf8j3eh4CjyTaHOFdygunU/xE6sAbakQJe0fY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jHWSw91Rx/ryKX9OLGkxRwswkhDy4wMxDBZBcfx10Qu3SM7o3UriLneZ9kOmE8CwSJlCoTJc91kKQGfy3YB0gmgENsW4AdpKfPDfdc81ufEXus/dv+FPU91RuLRapZ3ixWgmxfDavGVPzjWHtMfK6whG7pBDN6WKYiOS+Sz8lSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bYQWF3k8PztS35;
+	Fri,  4 Jul 2025 15:39:21 +0800 (CST)
+Received: from kwepemg100016.china.huawei.com (unknown [7.202.181.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id F298D140258;
+	Fri,  4 Jul 2025 15:40:28 +0800 (CST)
+Received: from huawei.com (10.67.174.33) by kwepemg100016.china.huawei.com
+ (7.202.181.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 4 Jul
+ 2025 15:40:28 +0800
+From: GONG Ruiqi <gongruiqi1@huawei.com>
+To: Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu
+	<roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>, Ard Biesheuvel <ardb@kernel.org>
+CC: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore
+	<paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E . Hallyn"
+	<serge@hallyn.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H . Peter Anvin"
+	<hpa@zytor.com>, <linux-kernel@vger.kernel.org>,
+	<linux-integrity@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+	<linux-efi@vger.kernel.org>, <keyrings@vger.kernel.org>, Lu Jialin
+	<lujialin4@huawei.com>, <gongruiqi1@huawei.com>
+Subject: [PATCH v4 0/2] integrity: Extract secure boot enquiry function out of IMA
+Date: Fri, 4 Jul 2025 15:51:12 +0800
+Message-ID: <20250704075114.3709609-1-gongruiqi1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] efi/tpm: Fix the issue where the CC platforms event log
- header can't be correctly identified
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: ardb@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
- ilias.apalodimas@linaro.org, jgg@ziepe.ca, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, liuzixing@hygon.cn
-References: <1751510317-12152-1-git-send-email-yangge1116@126.com>
- <aGczaEkhPuOqhRUv@kernel.org>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <aGczaEkhPuOqhRUv@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3F+RCQmdo4caXAw--.25499S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxArWDtw4rAw13tFWrJr48Xrb_yoW5Zr48pF
-	s7GFnayrn8Jry29rySq3Wvkw1DAw4Fk39rJFykK3W0yr98Wr92qa1I93W5K3WfXrsrJayY
-	qa4Utr1UAa4UuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbHUDUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWAOAG2hnPz1UPwAAsm
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemg100016.china.huawei.com (7.202.181.57)
 
+v4:
+- Rename secureboot.c to efi_secureboot.c, as Mimi suggested.
+v3:
+- Redesign the implementation. Keep the name of arch_ima_get_secureboot
+  to escape from the morass consisted of multiple arch and configs.
+- Rephrase the commit message.
+v2:
+- Fix compile errors for CONFIG_IMA_ARCH_POLICY=n on s390 & powerpc
 
+---
 
-在 2025/7/4 9:50, Jarkko Sakkinen 写道:
-> On Thu, Jul 03, 2025 at 10:38:37AM +0800, yangge1116@126.com wrote:
->> From: Ge Yang <yangge1116@126.com>
->>
->> Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
->> for CC platforms") reuses TPM2 support code for the CC platforms, when
->> launching a TDX virtual machine with coco measurement enabled, the
->> following error log is generated:
->>
->> [Firmware Bug]: Failed to parse event in TPM Final Events Log
->>
->> Call Trace:
->> efi_config_parse_tables()
->>    efi_tpm_eventlog_init()
->>      tpm2_calc_event_log_size()
->>        __calc_tpm2_event_size()
->>
->> The pcr_idx value in the Intel TDX log header is 1, causing the
->> function __calc_tpm2_event_size() to fail to recognize the log header,
->> ultimately leading to the "Failed to parse event in TPM Final Events
->> Log" error.
->>
->> According to UEFI Spec 2.10 Section 38.4.1: For Tdx, TPM PCR 0 maps to
->> MRTD, so the log header uses TPM PCR 1. To successfully parse the TDX
->> event log header, the check for a pcr_idx value of 0 has been removed
->> here, and it appears that this will not affect other functionalities.
-> 
-> I'm not familiar with the original change but with a quick check it did
-> not change __calc_tpm2_event_size(). Your change is changing semantics
-> to two types of callers:
-> 
-> 1. Those that caused the bug.
-> 2. Those that nothing to do with this bug.
-> 
-> I'm not seeing anything explaining that your change is guaranteed not to
-> have any consequences to "innocent" callers, which have no relation to
-> the bug.
-> 
+Hi,
 
-Thank you for your response.
+We encountered a boot failure issue in an in-house testing, where the
+kernel refused to load its modules since it couldn't verify their
+signature. The root cause turned out to be the early return of
+load_uefi_certs(), where arch_ima_get_secureboot() returned false
+unconditionally due to CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT=n, even
+though the secure boot was enabled.
 
-According to Section 10.2.1, Table 6 (TCG_PCClientPCREvent Structure) in 
-the TCG PC Client Platform Firmware Profile Specification, determining 
-whether an event is an event log header does not require checking the 
-pcrIndex field. The identification can be made based on other fields 
-alone. Therefore, removing the pcrIndex check here is considered safe
-for "innocent" callers.
+This patch set attempts to remove this implicit dependency by shifting
+the functionality of efi secure boot enquiry from IMA to the integrity
+subsystem, so that both certificate loading and IMA can make use of it
+independently.
 
-Reference Link: 
-https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
->>
->> Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-domain-extension
->> Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
->> Signed-off-by: Ge Yang <yangge1116@126.com>
->> Cc: stable@vger.kernel.org
->> ---
->>   include/linux/tpm_eventlog.h | 3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
->> index 891368e..05c0ae5 100644
->> --- a/include/linux/tpm_eventlog.h
->> +++ b/include/linux/tpm_eventlog.h
->> @@ -202,8 +202,7 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
->>   	event_type = event->event_type;
->>   
->>   	/* Verify that it's the log header */
->> -	if (event_header->pcr_idx != 0 ||
->> -	    event_header->event_type != NO_ACTION ||
->> +	if (event_header->event_type != NO_ACTION ||
->>   	    memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
->>   		size = 0;
->>   		goto out;
->> -- 
->> 2.7.4
->>
-> 
-> BR, Jarkko
+The code has been compile-tested on x86/arm64/powerpc/s390, with as much
+as config combinations I can think of.
+
+-Ruiqi
+
+GONG Ruiqi (2):
+  x86/efi: Rename IMA-related function and macro of boot mode
+  integrity: Extract secure boot enquiry function out of IMA
+
+ arch/x86/include/asm/efi.h                    |  4 +-
+ arch/x86/platform/efi/efi.c                   |  2 +-
+ include/linux/integrity.h                     |  1 +
+ security/integrity/Makefile                   |  1 +
+ security/integrity/efi_secureboot.c           | 46 +++++++++++++++++++
+ security/integrity/ima/ima_efi.c              | 42 +----------------
+ security/integrity/platform_certs/load_uefi.c |  3 +-
+ 7 files changed, 54 insertions(+), 45 deletions(-)
+ create mode 100644 security/integrity/efi_secureboot.c
+
+-- 
+2.25.1
 
 
