@@ -1,99 +1,77 @@
-Return-Path: <linux-efi+bounces-4118-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4119-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BA0AF926E
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 14:23:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C3DAF92D3
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 14:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9154F1CA6EA0
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 12:24:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37E823ADD76
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 12:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F712D63FB;
-	Fri,  4 Jul 2025 12:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VwQWxOaO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AF038FA3;
+	Fri,  4 Jul 2025 12:36:46 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A5B298CA4;
-	Fri,  4 Jul 2025 12:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C35B246798;
+	Fri,  4 Jul 2025 12:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751631818; cv=none; b=kh4cqUjuzNEMmvORV4ZsQBACoeLqI6VsIwGw01yZaDfbLEJBv3GaxWtKJa6fZKDk8JK9sagrvSMZ4tGoR0D6VjvHzZCepnTB5rxhm7q4cnHAebGCwJ6M1JJdlG+IM7QloVHUub0fTgF5UJUA6roZdsgeCAn874JkgE9Q40R7ogM=
+	t=1751632606; cv=none; b=R+rAhN4Hn/WZYhnbXMvtPvIC6z+YxY58Lk8vCBmX00+UT2Dks5GAhr7Fo7HtyXMDtA3VyR0ch+ebJMG8kJbObdf/dwvKhUmqgot7dUTP5M8Awk8TW8Wnri34+riwV11IMmgZaRLYwWxABWTPf3PFo14Y3EembSIUqjgqwgmleCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751631818; c=relaxed/simple;
-	bh=oweq7sEis8OSPxaym3zvDjZpLebm0v2LQsMDtWM7+Zs=;
+	s=arc-20240116; t=1751632606; c=relaxed/simple;
+	bh=KH3pnrVrQndUZYHEOWZYE12+XPrFlJ0oajDEPDLogkQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ojnZRJeWw1NqgLgZOdhrDd4aGPpGMAwm8Pqw0VXEN3+E6Oj1Zxt28xpUDbtopNkP7yZtkJrnWtQlaca4R3lcaoIKYHCJJNGlVvFxAAEXZrW+O/50R/ZZ2VGouzdJxrrRppYbQWftvjmDllYAKqpAO6CCQCkmf3b7RkjgK3TFCxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VwQWxOaO; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751631818; x=1783167818;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oweq7sEis8OSPxaym3zvDjZpLebm0v2LQsMDtWM7+Zs=;
-  b=VwQWxOaOdNyUqxeIBZ6kSdVOEggSJg4A7YI06FR4qh1yCBagoWY4RF9n
-   f8KynJSF/DB6mrsKP9NRE3H4brHfzN6CFoHuD91mPEDfnzEfo6k+tUULc
-   6JogCdZhIPdy/uZrbwbV8qh8eyW5dfddxa8whHsnHLtQSqVgx+pQMj/lC
-   7dtnwet+wx15LclipUEwGdMU0pTCod1CRS4GxpfxRbEhPESFLqhrABLQt
-   0p+Xg5SeZRTku4VhI6RBgVS256bdBeQxC8AANO2yZG0QnrzLmwUXfe+Rp
-   59PdfQe+9qXnHFPRIP+tMOLd+frADYR6/W7LemfQKrjxtUF8oqvQnI28B
-   w==;
-X-CSE-ConnectionGUID: kN5vIsK4StGPnljbxusiDw==
-X-CSE-MsgGUID: oeOBsxWEQZK3kWd2IPUGuw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="54085571"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
-   d="scan'208";a="54085571"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 05:23:36 -0700
-X-CSE-ConnectionGUID: h0pPry01S5+0sgbByQeXGQ==
-X-CSE-MsgGUID: zHTjG05tTGup2BFBFLyhMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
-   d="scan'208";a="155395215"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 04 Jul 2025 05:23:24 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 4B75815D; Fri, 04 Jul 2025 15:23:23 +0300 (EEST)
-Date: Fri, 4 Jul 2025 15:23:23 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>, 
-	"Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>, 
-	Ingo Molnar <mingo@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Sandipan Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, 
-	Huang Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCHv8 04/17] x86/cpu: Defer CR pinning setup until after EFI
- initialization
-Message-ID: <ysoozflaqr3rnb2kjqca5ifeuc7clutiaypqraqs7r4sdumxmi@uc2bp7l5th75>
-References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
- <20250701095849.2360685-5-kirill.shutemov@linux.intel.com>
- <841a200e-bcf0-4488-acbd-c00396a9ccd2@intel.com>
- <2n2knq4wkzyfr35udpxawgnc4ykk7s77yavu3crnzf77wjaj4c@njyscphln4gl>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nJO717Zn2yvhkrX3yaGa+YtzXnOzDMinLaCcGQeAme/vceH/CpL0tkUv2sr8zjQO7OQXQSEJIg17sKzKMED4zzBBx+VZGx6T/3lkyP5589EXk15eyEgKUN+jmpZKU8tsTBX5q8MO1QB532BZUijaI/eWWwIaMg9A8aNPo5KmSzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-60c79bedc19so1489436a12.3;
+        Fri, 04 Jul 2025 05:36:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751632603; x=1752237403;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YW8Mdm8VBfi1qlOCL6Pf2QZ+6mI2RYO5Q+XtAXUgQJ4=;
+        b=sZEAHW+8RtZBeg0iCOJzgr4XJuMx2EIUtKmeT3M/4N1zK0wMJUJIFNjttT39Me6LvG
+         K87ELKKcAW6YDxnIB88VGuix8Y80nRL4pCrVbjXA9NeuY6z83wGjXOL6OjPWkvsv0F7A
+         d6eJHMvzd0hmNrJQtFbawo/gLGx1//80zoWGI0f/GOH/3va20r58SlTjAv1x3jWFZaXN
+         d7IUy996J1086eq3EdvIOMqvyF3Vprb3gf6JJkIJHqZyr7Aeod82laTDfTJmCLftK+YW
+         rYBxo6UdK0kbPFTktfkevXal8q4tvuEdrid637SNR3584g185xOYj9hOCHM77/YQwYd/
+         GNwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+3eihK7aGEtBfBnSEHmNEBSYoR5YfHE6cykTfMoOmaj30X32hSlE0jGGtOEF0fnMwQDsQ3vvd3CQ3AVBI@vger.kernel.org, AJvYcCXlit4kVcJEsG3OBMTKuyn7WnxG5rh/XVh/nZDVA31ddbYwpJpxwymyJZHmoCuMRA8gUX96M5Pj2AU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzypqCwk6NFgVt9p88luDPF0tBfabfXAiRyEmnTCWtPZcNtx8ii
+	0pX2aP230nxhh3iQk/uEs5jzHzbSW+W2BIevVNlOzc7OykahWOdfzf8C
+X-Gm-Gg: ASbGncsGuZA6i4GNFAmXCmLgyboD/38S/GOjlSdcHYOy9inT04ussWcZNKwYykLF2I4
+	+F5jDSqEUH4in1yjcLgRsqcZMXtf48RLdJqUYWmYQu4Qd9E0F4zet2xiLiK4zqnXW7OidbHW4sj
+	wQYtl6RD6gG1JGuS64jpk1tPlFYCAYM481LFUgqAbZxU2XdWs3mEKB+RdXbUWd+x1Wo5eVFh+2p
+	DsEZV4NC/Mt1El5U0WpHIUCTuj7qGyISLuoRLRFA4QS4P5XRe4bjY+qn/MbKgljNzihCp70GW7R
+	HRY4mcdII8dbIVJQwhUluKoQza+Wm8mwPn66a/sxjqMevyo/AtHszrZNH30=
+X-Google-Smtp-Source: AGHT+IHU3ATpNL/cr0I7xRhbdLV8cgkTlj0aQw3gWc/YSeGekUiyN9FhxtUD4X0JFLW+UcEhQI6LSA==
+X-Received: by 2002:a05:6402:2103:b0:5ff:ef06:1c52 with SMTP id 4fb4d7f45d1cf-60fd2f84f16mr2179344a12.3.1751632602449;
+        Fri, 04 Jul 2025 05:36:42 -0700 (PDT)
+Received: from gmail.com ([2620:10d:c092:400::5:c915])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60fc81a70e4sm1285566a12.0.2025.07.04.05.36.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jul 2025 05:36:42 -0700 (PDT)
+Date: Fri, 4 Jul 2025 13:36:40 +0100
+From: Breno Leitao <leitao@debian.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, usamaarif642@gmail.com,
+	rmikey@meta.com, andreyknvl@gmail.com, kasan-dev@googlegroups.com,
+	linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] arm64: efi: Fix KASAN false positive for EFI runtime
+ stack
+Message-ID: <aGfK2N6po39zyVIp@gmail.com>
+References: <20250624-arm_kasan-v1-1-21e80eab3d70@debian.org>
+ <aGaxZHLnDQc_kSur@arm.com>
+ <CAMj1kXFadibWLnhFv3cOk-7Ah2MmPz8RqDuQjGr-3gmq+hEnMg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -102,27 +80,79 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2n2knq4wkzyfr35udpxawgnc4ykk7s77yavu3crnzf77wjaj4c@njyscphln4gl>
+In-Reply-To: <CAMj1kXFadibWLnhFv3cOk-7Ah2MmPz8RqDuQjGr-3gmq+hEnMg@mail.gmail.com>
 
-On Wed, Jul 02, 2025 at 01:05:23PM +0300, Kirill A. Shutemov wrote:
-> On Tue, Jul 01, 2025 at 04:10:19PM -0700, Dave Hansen wrote:
-> > On 7/1/25 02:58, Kirill A. Shutemov wrote:
-> > > Move CR pinning setup behind the EFI initialization.
-> > 
-> > I kinda grumble about these one-off solutions. Could we just do this
-> > once and for all and defer CR pinning as long as possible? For instance,
-> > could we do it in a late_initcall()?
-> > 
-> > Do we need pinning before userspace comes up?
+Hello Ard,
+
+On Fri, Jul 04, 2025 at 10:26:37AM +0200, Ard Biesheuvel wrote:
+> On Thu, 3 Jul 2025 at 18:35, Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > On Tue, Jun 24, 2025 at 05:55:53AM -0700, Breno Leitao wrote:
+...
+> > >  arch/arm64/kernel/efi.c | 9 ++++++---
+...
+> > >  static bool region_is_misaligned(const efi_memory_desc_t *md)
+> > >  {
+> > > @@ -214,9 +215,11 @@ static int __init arm64_efi_rt_init(void)
+> > >       if (!efi_enabled(EFI_RUNTIME_SERVICES))
+> > >               return 0;
+> > >
+> > > -     p = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN, GFP_KERNEL,
+> > > -                        NUMA_NO_NODE, &&l);
+> > > -l:   if (!p) {
+> > > +     if (!IS_ENABLED(CONFIG_VMAP_STACK))
+> > > +             return -ENOMEM;
+> >
+> > Mark Rutland pointed out in a private chat that this should probably
+> > clear the EFI_RUNTIME_SERVICES flag as well.
+> >
 > 
-> Hm. I operated from an assumption that we want to pin control registers as
-> early as possible to get most benefit from it.
+> If VMAP_STACK is a hard requirement, should we make CONFIG_EFI depend
+> on it for arm64?
+
+What about if we make CONFIG_EFI select VMAP_STACK? I think it is more
+straight forward from a configuration perspective.
+
+I thought about the following. What do you think?
+
+	arm64: EFI selects VMAP_STACK
+
+	Modify the ARM64 Kconfig to make the CONFIG_EFI configuration option
+	automatically select CONFIG_VMAP_STACK.
+
+	The motivation is that arm64_efi_rt_init() will fail at runtime if
+	CONFIG_VMAP_STACK is not set, so the patch ensures that enabling EFI
+	will always enable VMAP_STACK as well, and avoid having EFI disabled in
+	case the user didn't set VMAP_STACK.
+
+	Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+	Signed-off-by: Breno Leitao <leitao@debian.org>
+
+	diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+	index 55fc331af3371..cc2585143f511 100644
+	--- a/arch/arm64/Kconfig
+	+++ b/arch/arm64/Kconfig
+	@@ -2437,6 +2437,7 @@ config EFI
+		select EFI_RUNTIME_WRAPPERS
+		select EFI_STUB
+		select EFI_GENERIC_STUB
+	+	select VMAP_STACK
+		imply IMA_SECURE_AND_OR_TRUSTED_BOOT
+		default y
+		help
+
+> > (but let's see if Ard has a different opinion on the approach)
+
+> I think this is fine - the stack just needs to be disjoint from the
+> ordinary kernel mode task stack so that buggy firmware is less likely
+> to corrupt it, and so that we can recover from an unexpected
+> synchronous exception more reliably.
 > 
-> I guess we can defer it until later. But I am not sure late_initcall() is
-> the right place. Do we want random driver to twiddle control registers?
+> In that sense, the old and the new code are equivalent, so no
+> objections from me.
 
-I will do it in core_initcall().
+Thanks. I will send an update with the update that Catalin and Mark
+suggested.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thanks!
+--breno
 
