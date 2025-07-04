@@ -1,163 +1,143 @@
-Return-Path: <linux-efi+bounces-4120-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4121-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C57AF9309
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 14:47:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068F9AF9447
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 15:33:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF97C5A2217
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 12:47:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 956ED18849F9
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Jul 2025 13:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E43928A3F7;
-	Fri,  4 Jul 2025 12:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DC92FCE00;
+	Fri,  4 Jul 2025 13:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pHxzUfPa"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAC62D8DB1;
-	Fri,  4 Jul 2025 12:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAFC302CD3;
+	Fri,  4 Jul 2025 13:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751633243; cv=none; b=PSmdEO3Mo7klrGbZGeYzho02xLt3oTPSuhZv7y0kJpYm1Wd8GkonD9uVtvdcMMWslU8qgu8MxGQ3r470NBuzwUm/17QliXC8wLH3x0VxLi0cufbcTntt/v+d0vsq0e0lIyYBsowxwaT4aAIY27Z8GbK1T703bQUUTJQnakwmSjA=
+	t=1751636021; cv=none; b=OMUR0geVAQz7M1eBi+VpRX+WO5Pd7i33y/LFoB6rxIYg6NzXrm1/gv4dSKMefS0m81a/tKNIDzVT6mZ+MG1yzZdgoBKItxkWsOPg6qc4wifpPx6pD9baLzPN5FophB5SgD54jWKlT0e1hXFBUaebkrAVz97lHuy2x74jYkicOmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751633243; c=relaxed/simple;
-	bh=nHYuH6tChVt5qIWjfOe/wW/MwpJhNrg5zTlmP7KwkUg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jOotGhMTx4IPaxm3aUdkR1bQ5ItkVuOjsbT8x65oXoqfvfmHrHE+T8ZCLOpxX3Z0XVlfyFURp1aICg9f6bYjhHS49QL7aEb6M6jejMvSTcbUUsUy18jsWbSg518Rp3QcXTmlnLoDiyOv9FjvrNFw6LFizhPV+obyALI0yD848Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-60c79bedc19so1506967a12.3;
-        Fri, 04 Jul 2025 05:47:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751633239; x=1752238039;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TmBJIHqOp4ler4vBmcjf5ac2fSEeELNLUvkG6S/lhig=;
-        b=Vg8B5vlax94Wu7xgk9momQP2SexcNCrihQ9eVcFm3pQf2mSJhhv5uSV2mg0qqnP6Xu
-         /Xq2hdCKiw5bGk6vE/uIWt1GR6ZNkzkP1rkym3imgCNRfJVDAzyh4wnEvjjZyErZtfDF
-         Jo69LN7cZJD+S5E5rtApxJALi5eZc+thq7mdv9NkRIK3+R8w8CNpORCANnHtiYbyjrPI
-         3LFihQz8C6d6DgujuJfB74cjQL1cskE7PcHjzWeiubYGHe63NiHj2eJOPYHMtbzTjYas
-         AqmUJUrCxYiYzY+lXyzqU2eKvWZUhGGKsEL+iWSovCpRrdYmnCzXWYhE1ES85GZfrcTM
-         0nUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEK+yd40+1qf0fnxNDzqrsOtIr2MUtdJXfU3/lg6FYbzLPau319Z//CNFlyjvM+KJPGiGcknUDJ45kV6tk@vger.kernel.org, AJvYcCW661rovPNYF245zXPRq7iq5ytJ1TnTG6bih+w80X+esMgkfQx2NSraHZcXbZ/VaGZvqWGilam7bFQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywh7jk4tg3IPzkoGoi8ydWVL+mEJaYz1cOhuXlsUlBQ2JV1Kg2Q
-	iU+1ZzcdyScEsCcJ0FGqHFLoBPLzhB71GpYHN3Iyb+gkgJObgf7rQmXl
-X-Gm-Gg: ASbGncus07JrmRWWTlYUkOnypkv103k7qJfuwzLp46G35Jf5KQIn1HLUb1xdX7bma3R
-	W//Ef+504ixOrDZ7zXdNTMF/LACrmX9feJ3uTgsZ6/v0fNMMQbG6/WCCT7fL+Prb5AUI22kOJrD
-	Ck3kwVG/hAf8lycDnzaIKBb0Y2zQQv3Yc4RmxbtV5Lay0KQSEuda5DAm1FxPNc5Sy/Er/1MdzaH
-	RlWkaawI1+a33guiSbaGKnGb9jYGbZZFfRcaNyDbMFLn8XH2K/+QuE1/jNoNlGZWDvBcAwuCnmo
-	GwYyqBTf4DVLCu1o/IicytHK1AXQluClxcesu7X2hmWlYPq6Sr4xzQ==
-X-Google-Smtp-Source: AGHT+IGY5NR0TFPMOMBYaRv+wFU/0enDu6wTkrwt9iQwPL63rdfAnrB6Pk0nVOpnxHAZOBwFtJRTog==
-X-Received: by 2002:a05:6402:354a:b0:60c:421f:1357 with SMTP id 4fb4d7f45d1cf-60fd30d0fb5mr2017145a12.13.1751633239231;
-        Fri, 04 Jul 2025 05:47:19 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:73::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60fca695d66sm1295796a12.17.2025.07.04.05.47.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jul 2025 05:47:18 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 04 Jul 2025 05:47:07 -0700
-Subject: [PATCH v2] arm64: efi: Fix KASAN false positive for EFI runtime
+	s=arc-20240116; t=1751636021; c=relaxed/simple;
+	bh=EtiXfEKSjZZE/8/wPMmve0WLVrmAKdqLK+/3mXSBmUc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MUJ7xBO1sK1H9/ZF65UvkrGeQtayfQ3cLUYZ7axQhErT0dDE/B+pUKTUK/6DEoF5N92hMiTsvqsOxc8MsOn6wb2gkdKcr0/v4fpyzBaFK5PW1nAaEH+Adpo7ftp+fMJM9/ziuyVPWBoBVNLbj6TRLtIucTeKglt3XM2cERoQ+uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pHxzUfPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6DFC4CEEE;
+	Fri,  4 Jul 2025 13:33:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751636020;
+	bh=EtiXfEKSjZZE/8/wPMmve0WLVrmAKdqLK+/3mXSBmUc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pHxzUfPal/RIBhfUkLePrBxqx6oTeqJAlzbFVduGtQPwX0rR881ITBr83pybvvjnU
+	 daKVy+8l94zMIxS/aqhtXwWsFdT9Lu1VTLuvj9OHv+1dQshXSMXoziwkMcS5NF3ON1
+	 28LXVHfPjiHl/RBJ988hayW0rqn2m0qd3N76sDyKk8LU97y5HhfG5C/lyhM5Pzwpiq
+	 oUHatjtdPk+iqIMs8kQ0uAJB16D1DIOUU9wZmLmnNHuNOZTEIeeuSlqR1rkbMSM6zI
+	 pOhAHPE4xb4vpzXEmc3L1o4t6I8ZihShlcjHDY8s3fnBTewDkQ/XNREvk1XvVR1HE3
+	 cJYhisXGPgDfQ==
+Date: Fri, 4 Jul 2025 14:33:35 +0100
+From: Will Deacon <will@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, usamaarif642@gmail.com,
+	rmikey@meta.com, andreyknvl@gmail.com, kasan-dev@googlegroups.com,
+	linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] arm64: efi: Fix KASAN false positive for EFI runtime
  stack
+Message-ID: <aGfYL8eXjTA9puQr@willie-the-truck>
+References: <20250624-arm_kasan-v1-1-21e80eab3d70@debian.org>
+ <aGaxZHLnDQc_kSur@arm.com>
+ <CAMj1kXFadibWLnhFv3cOk-7Ah2MmPz8RqDuQjGr-3gmq+hEnMg@mail.gmail.com>
+ <aGfK2N6po39zyVIp@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250704-arm_kasan-v2-1-32ebb4fd7607@debian.org>
-X-B4-Tracking: v=1; b=H4sIAErNZ2gC/03MSwrDIBAA0KvIrLXopD9c9R4lFI2TZCjVoEVag
- ncvDRS6fYu3QqHMVMCKFTJVLpwiWIFSwDC7OJHiAFYAajzoI3bK5cft7oqLqvMmGNQ0oB5BClg
- yjfzarmsvBcxcnim/t7qar/6W/d9SjTIKDZ01Od+Fk74E8uziLuUJ+tbaB8eBScmjAAAA
-X-Change-ID: 20250623-arm_kasan-3b1d120ec20f
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>
-Cc: usamaarif642@gmail.com, Ard Biesheuvel <ardb@kernel.org>, 
- rmikey@meta.com, andreyknvl@gmail.com, kasan-dev@googlegroups.com, 
- linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, leo.yan@arm.com, kernel-team@meta.com, 
- mark.rutland@arm.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2078; i=leitao@debian.org;
- h=from:subject:message-id; bh=nHYuH6tChVt5qIWjfOe/wW/MwpJhNrg5zTlmP7KwkUg=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoZ81VFvHF7PJ6tVUQPcHhUtDROIBPyQcmYm6JZ
- GUZHPerTDKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaGfNVQAKCRA1o5Of/Hh3
- bYrbD/98qZZ8aLRXNLcokbh0chd6hghgMJY2Hz9GIVuk8KR71cJ09i9ySDkQqp2H1C61uWz+Eq2
- bD8FgXQTheK9Q29T5Xk6sMWGeE//NWZbj7vIjNyMWRdZODE5U4we0rvzLte8OD+4jLhICAozmIk
- OYkDIvz5tk6E99tkHyNwJ8od3UBRXBgsjuKvLhuuQZNlhtw7qvAjMHo5mKkPMUpuLZ1KBbWbIFx
- b7/bp0LBn05ZwX+ditk6pADUXYhWii2nxsoYqrQV8+q8vCcUgtvPBLBjSAaOcO3TVS6n7KOO2w8
- YKQG1BoHsdugXN6mPUhnCzcb2mVZD5ropVSH0s7p1kHVOiKGCiCQ0+hgJ4S8j5Cs0S1HvXn8bSk
- 03j2TgoZUyPUFw9LNqOp0KLsk+Xxu4tCzYqa0EX00Fk7CvLhEVY4ulc+RClJ+c9drHUaJjXTWfn
- 3itAPTWWQjVyo47oYEC+gPqWVk2f4xIqMNEdT8JWvCXrzzscqFAwylFhkH5kSEsDWIZ+1jsbg/a
- OlgL99AjUboOO1kCS9TJ6jOh4DWANwUmk7xjxDL0j1EIMlWhd4ecEbz3Q0QV2c80eVpDkcPqFUb
- uV23K5ppxBdzKmtBkcCjHyOzFYDGFjcDHnj9nSYODDAJelUnnDLSFK5RxoGzOhEdY/IxWrfysdJ
- fDr37mZQNUeJAUg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGfK2N6po39zyVIp@gmail.com>
 
-KASAN reports invalid accesses during arch_stack_walk() for EFI runtime
-services due to vmalloc tagging[1]. The EFI runtime stack must be allocated
-with KASAN tags reset to avoid false positives.
+On Fri, Jul 04, 2025 at 01:36:40PM +0100, Breno Leitao wrote:
+> On Fri, Jul 04, 2025 at 10:26:37AM +0200, Ard Biesheuvel wrote:
+> > On Thu, 3 Jul 2025 at 18:35, Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > > On Tue, Jun 24, 2025 at 05:55:53AM -0700, Breno Leitao wrote:
+> ...
+> > > >  arch/arm64/kernel/efi.c | 9 ++++++---
+> ...
+> > > >  static bool region_is_misaligned(const efi_memory_desc_t *md)
+> > > >  {
+> > > > @@ -214,9 +215,11 @@ static int __init arm64_efi_rt_init(void)
+> > > >       if (!efi_enabled(EFI_RUNTIME_SERVICES))
+> > > >               return 0;
+> > > >
+> > > > -     p = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN, GFP_KERNEL,
+> > > > -                        NUMA_NO_NODE, &&l);
+> > > > -l:   if (!p) {
+> > > > +     if (!IS_ENABLED(CONFIG_VMAP_STACK))
+> > > > +             return -ENOMEM;
+> > >
+> > > Mark Rutland pointed out in a private chat that this should probably
+> > > clear the EFI_RUNTIME_SERVICES flag as well.
+> > >
+> > 
+> > If VMAP_STACK is a hard requirement, should we make CONFIG_EFI depend
+> > on it for arm64?
+> 
+> What about if we make CONFIG_EFI select VMAP_STACK? I think it is more
+> straight forward from a configuration perspective.
+> 
+> I thought about the following. What do you think?
+> 
+> 	arm64: EFI selects VMAP_STACK
+> 
+> 	Modify the ARM64 Kconfig to make the CONFIG_EFI configuration option
+> 	automatically select CONFIG_VMAP_STACK.
+> 
+> 	The motivation is that arm64_efi_rt_init() will fail at runtime if
+> 	CONFIG_VMAP_STACK is not set, so the patch ensures that enabling EFI
+> 	will always enable VMAP_STACK as well, and avoid having EFI disabled in
+> 	case the user didn't set VMAP_STACK.
+> 
+> 	Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> 	Signed-off-by: Breno Leitao <leitao@debian.org>
+> 
+> 	diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> 	index 55fc331af3371..cc2585143f511 100644
+> 	--- a/arch/arm64/Kconfig
+> 	+++ b/arch/arm64/Kconfig
+> 	@@ -2437,6 +2437,7 @@ config EFI
+> 		select EFI_RUNTIME_WRAPPERS
+> 		select EFI_STUB
+> 		select EFI_GENERIC_STUB
+> 	+	select VMAP_STACK
+> 		imply IMA_SECURE_AND_OR_TRUSTED_BOOT
+> 		default y
+> 		help
 
-This patch uses arch_alloc_vmap_stack() instead of __vmalloc_node() for
-EFI stack allocation, which internally calls kasan_reset_tag()
+I would actually like to select VMAP_STACK unconditionally for arm64.
+Historically, we were held back waiting for all the various KASAN modes
+to support vmalloc properly, but I _think_ that's fixed now...
 
-The changes ensure EFI runtime stacks are properly sanitized for KASAN
-while maintaining functional consistency.
+The VMAP_STACK dependency is:
 
-Link: https://lore.kernel.org/all/aFVVEgD0236LdrL6@gmail.com/ [1]
-Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-Changes in v2:
-- Clear the EFI_RUNTIME_SERVICES in efi.flags before returning (Mark/Catalin)
-- Link to v1: https://lore.kernel.org/r/20250624-arm_kasan-v1-1-21e80eab3d70@debian.org
----
- arch/arm64/kernel/efi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+	depends on !KASAN || KASAN_HW_TAGS || KASAN_VMALLOC
 
-diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index 3857fd7ee8d46..62230d6dd919c 100644
---- a/arch/arm64/kernel/efi.c
-+++ b/arch/arm64/kernel/efi.c
-@@ -15,6 +15,7 @@
- 
- #include <asm/efi.h>
- #include <asm/stacktrace.h>
-+#include <asm/vmap_stack.h>
- 
- static bool region_is_misaligned(const efi_memory_desc_t *md)
- {
-@@ -214,9 +215,13 @@ static int __init arm64_efi_rt_init(void)
- 	if (!efi_enabled(EFI_RUNTIME_SERVICES))
- 		return 0;
- 
--	p = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN, GFP_KERNEL,
--			   NUMA_NO_NODE, &&l);
--l:	if (!p) {
-+	if (!IS_ENABLED(CONFIG_VMAP_STACK)) {
-+		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
-+		return -ENOMEM;
-+	}
-+
-+	p = arch_alloc_vmap_stack(THREAD_SIZE, NUMA_NO_NODE);
-+	if (!p) {
- 		pr_warn("Failed to allocate EFI runtime stack\n");
- 		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
- 		return -ENOMEM;
+and in arm64 we have:
 
----
-base-commit: 6b9fd8857b9fc4dd62e7cd300327f0e48dd76642
-change-id: 20250623-arm_kasan-3b1d120ec20f
+	select KASAN_VMALLOC if KASAN
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+so it should be fine to select it afaict.
 
+Any reason not to do that?
+
+Will
 
