@@ -1,128 +1,134 @@
-Return-Path: <linux-efi+bounces-4140-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4141-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79EBAFA613
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 17:09:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B04DAFA6A4
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 19:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D15E3B888A
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 15:08:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 964D1178C08
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 17:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932A0286413;
-	Sun,  6 Jul 2025 15:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026781714B7;
+	Sun,  6 Jul 2025 17:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="VSkWNu26"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4iqBf+D"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47531C84BD;
-	Sun,  6 Jul 2025 15:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4945D3C2F;
+	Sun,  6 Jul 2025 17:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751814538; cv=none; b=ApYh3ayuyn1MEiHLnNQekhXM2jXlYfCIePBad4Gss4wgwHsif3Owq/oQTsfVaDug+/TN+sERIPAx2V5yxD40+gZAS0ymKljY3Jc9cmOs2ciT1xBZ7KKiPJq1npkxdtU6DdYKPJPgwJVUfNpf6NYuj9IcM+Wa/tCf9zQxGcFA8Kw=
+	t=1751821253; cv=none; b=Sht1lCA3J27s495PQ36pv6rUM2APGDkdjcBgpzbDhnkmnI0Y27vYIbdAbKImfObYAS4hz86IfEXMcOH/wrVGeFh+bJ4r08MVjeONqSpugSArgwQ8FnfAsOZVwGMrVFYL60dHfqXJ68zfAEKuIUJKMRr1bkua+rnFQjuH0lZlEjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751814538; c=relaxed/simple;
-	bh=ASDmyGnzfJljOZphyrCvLQ55mfID83fRQnnYfpooIkI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=DKa3di7KI0372MAVtnP/0BrvlIr0HT9VEklOEb/R9K0A4P8sD2stWXM/nxJ1YmhT/NYrY3wG3oB9fscQbeLPRO7y1Fkp3m6NCvXVitdGqJHSHm0YpNaV05BMpEGbUdUb63z0JVDuSeHQOvhiBaAddxqGXN11t7gcLv85fvcKah4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=VSkWNu26; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 566F7DpZ2515561
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sun, 6 Jul 2025 08:07:13 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 566F7DpZ2515561
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1751814439;
-	bh=G79563uv22etjcsM52VSq8s7aFTNio1gT1rhuuWWu1o=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=VSkWNu2698xR5vmX6rnz5SP/yzVha3qsNlh6tb0QZ4tOdJmh9a0W7R9kBMAGW5ed/
-	 BPpHtjKKWPaKAUo+zPDMtFfCph3ymVESLGzAPtI1EzcsL9d1Uw6/b/HvDfApQqLgqS
-	 5NYfjDREuTyT9HQH8FvzNvowTLqlIyQde7tqLHbKCLSeBkUnzlgA/BrOivFXGNCNhn
-	 MJKIlg7LTIQHkDmGNakFtprGe4zsLhcY7p+UVNnHHuhxJX6wQkvctzZrlagGGftm41
-	 I/4ckbbNY6SfaAUjP796XY0NfgLfL+4FajRDyovrVhNllNE84n1q+nYSH7X1qbe82B
-	 zCLZ9snwXETAQ==
-Date: Sun, 06 Jul 2025 08:07:11 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: David Laight <david.laight.linux@gmail.com>
-CC: Sohil Mehta <sohil.mehta@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Xiongwei Song <xiongwei.song@windriver.com>,
-        Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>,
-        Alexey Kardashevskiy <aik@amd.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>,
-        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
-        Breno Leitao <leitao@debian.org>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>,
-        Juergen Gross <jgross@suse.com>,
-        Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>,
-        Eric Biggers <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>,
-        Huang Shijie <shijie@os.amperecomputing.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCHv8 14/17] x86/traps: Handle LASS thrown #SS
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250706102213.4ab365d7@pumpkin>
-References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com> <20250701095849.2360685-15-kirill.shutemov@linux.intel.com> <95dc18fd-73b0-4019-92d2-c0e6aaf22c96@intel.com> <4DE45AFD-C1E0-4FB8-BE01-44A72C5C6E1E@zytor.com> <20250706102213.4ab365d7@pumpkin>
-Message-ID: <29992EA3-8BEE-4B31-A38F-F3E65FA9609D@zytor.com>
+	s=arc-20240116; t=1751821253; c=relaxed/simple;
+	bh=FuTGRgSAWVVOTPTM4iY3nLVMHbEOiMxhp6w/u1qIitA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fbFjqY4kgo9nPpqPn6/kKDzGcC5If4j2Y/l5pJStD/WJMD5zWA1hE7SifHh+D1esx3RsXzU7nhYRBtfdO08uTcf8y+88luQ3NYoLbRZCsHA+oMKh971ood3cmUoLnB8MEIXwkMJhOWEBdSVcJ6oHp4xCHFELoEL3NRjW5j9zd8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4iqBf+D; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-451d3f72391so23938275e9.3;
+        Sun, 06 Jul 2025 10:00:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751821250; x=1752426050; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oqPmHRXTvUmmlCHl2ubMMo6baAfA2qIsMqJbDb231OA=;
+        b=a4iqBf+DDnApjpbSahHDxiSNAF6H+xnViMV2b+Rwc2ll+zewJLwwhQPDaTLbSHn0zG
+         XBSaVchSIqAwrSOH7rp7aQd28CqcrOrVCukFZsOx6qGHKX1BH2ycAGvlCjIEjjUYGhl6
+         7os3pwdyN2Xg+lLA1lfaFbO32ySMqbeyC82Z3Hxvwpz+ZfIPc6Sn5HoWEc1KmNeeYD9d
+         uZAgyGZNTpK4nCVF9wLpJCLp9IqQmSeblbt0vo1EQqA9gBy5ORzzZOojAFmu/jEGutc0
+         FIuu8RY54OBYl73AyZyrTC5n1klmECvoYKZQoBfSILGqpdmpfVvbXnCK5TX2t+QforCb
+         j/hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751821250; x=1752426050;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oqPmHRXTvUmmlCHl2ubMMo6baAfA2qIsMqJbDb231OA=;
+        b=vBSQULtvcjBpw/mnIfYMPJuhcRnw2nbwK3+KtlUkeTjMlHTE1oe1mIHwpoXGmRJKRP
+         +5A488MqwqgjWJ7A9F7M3xWCAJ7a9SciYmPkGc5bAOqfB7CAW2rKJ84EzrZoVFUWNP2w
+         VDb5C4MoMOOoNEGyV6MhPH5rBmcgfZQX2KkNmN44jPwVOx+J8J35iA/EW+YsaWeJt0lt
+         QARxSHfwAcZAsa2nvQm/LLaFwIjQ3DLKn+/LpLtv7oKOtfH07S8pU3KBjNnUYTfUth0U
+         zvoYMA+A5oXZDrw3Mqcns46lqP90nPMWThgm4/79jAa24JPNFPQur0tmiIAJSMDeRF7J
+         VWZg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAaKPVPrG+RwPd3yRUa7YigvrPzbIXPd0/t7ozndPyYpNSj5w4if36LF1kNQBJNbL4MaQPbdJ+YCw=@vger.kernel.org, AJvYcCWdu0Ndst1DBU1aPLQ6TFqnPir+NWdN+Ex4yc7IopLSEaJxbKbTZVZeyCse0XnrxjVcdDviTqGrBTbDpgse@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6Ht/t118sWTkrLOXu31PCMOQPGA8mOgD9pupH5lO+mXG1SoL+
+	UslOk7UihWXOLsmK5Bg2n4w3im/2k73dnpGXV4ISmPZ52aml1BXskBBf
+X-Gm-Gg: ASbGnctoIzhJpdh8JWMJIuUU+1HDxm0tCL/z8xGfYcW0lKmbS65KqY1KUqo96IFfRTm
+	n8l9UYLJ1Wj0X63b+ez1x0j3+AO8ERzJxpHn1Rz0Wk7wbptcVPlnq/PQQz5UtxL/Nf4JpDf0ZUE
+	qNI91jzlzvDOaWPur3d7fGL+IRDrxopEG5w03di4BOom98KWtNCLrGYo8fBRpJPGmWYBMi0PU1V
+	Eh1E/e3PLo7joHWt7Miz7cxLsF9hbxW4q1ylWhjeB5HVgAHidcBn5UmnP569qmP7qcuDoWPU7ru
+	6QydsMUpNGZCQMOTDnq/hDPwuyPavrgkEqONu7ufPNkRPHrpBOPtvGkhpLJEprmWqiHu/bbZesy
+	T
+X-Google-Smtp-Source: AGHT+IFYnNXzW8pZtpPwme80Li3YAU/twWpziA5QZ1BVLVPRP1HBYFVFDGHr7cRBiYWFM1wUal6TnA==
+X-Received: by 2002:a05:6000:2502:b0:3a4:f744:e00e with SMTP id ffacd0b85a97d-3b4964f4e0dmr6671679f8f.4.1751821249997;
+        Sun, 06 Jul 2025 10:00:49 -0700 (PDT)
+Received: from localhost.localdomain ([41.79.198.24])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47225a720sm7958695f8f.77.2025.07.06.10.00.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Jul 2025 10:00:49 -0700 (PDT)
+From: Khalid Ali <khaliidcaliy@gmail.com>
+X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
+To: ardb@kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu
+Cc: alex@ghiti.fr,
+	jonathan@marek.ca,
+	chenhuacai@kernel.org,
+	jiaxun.yang@flygoat.com,
+	viro@zeniv.linux.org.uk,
+	gourry@gourry.net,
+	ilias.apalodimas@linaro.org,
+	lukas@wunner.de,
+	gargaditya08@live.com,
+	kees@kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Khalid Ali <khaliidcaliy@gmail.com>
+Subject: [PATCH v3 1/2] efi/libstub: Print error message if efi_allocate_bootparams() fails
+Date: Sun,  6 Jul 2025 16:58:28 +0000
+Message-ID: <20250706165850.1090-1-khaliidcaliy@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On July 6, 2025 2:22:13 AM PDT, David Laight <david=2Elaight=2Elinux@gmail=
-=2Ecom> wrote:
->On Tue, 01 Jul 2025 19:06:10 -0700
->"H=2E Peter Anvin" <hpa@zytor=2Ecom> wrote:
->=2E=2E=2E
->> Note: for a FRED system, ERETU can generate #SS for a non-canonical use=
-r space
->> RSP even in the absence of LASS, so if that is not currently handled th=
-at is an active bug=2E
->
->Is that a fault in kernel space, or a fault in user space=2E=20
->
->Some of the traps for 'iret' happen after the transition to user space,
->so the kernel doesn't have to handle them as special cases=2E
->(I simplified (and fixed) one version of that code=2E)
->
->	David
->
+From: Khalid Ali <khaliidcaliy@gmail.com>
 
-It's a fault in user space=2E I had a brain fart and managed to forget tha=
-t RSP is technically a GPR and as such is not limited to the VA width of th=
-e machine=2E
+Print error message in case efi_allocate_bootparams() fails before exit.
+
+Change the direct call of efi_exit() to "goto fail". This allows the
+general error message in fail label to get printed.
+
+Signed-off-by: Khalid Ali <khaliidcaliy@gmail.com>
+---
+ drivers/firmware/efi/libstub/x86-stub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index cafc90d4caaf..13d8eba06e4b 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -824,7 +824,7 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 	if (!IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL) || !boot_params) {
+ 		status = efi_allocate_bootparams(handle, &boot_params);
+ 		if (status != EFI_SUCCESS)
+-			efi_exit(handle, status);
++			goto fail;
+ 	}
+ 
+ 	hdr = &boot_params->hdr;
+-- 
+2.49.0
+
 
