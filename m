@@ -1,105 +1,172 @@
-Return-Path: <linux-efi+bounces-4138-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4139-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D00AFA45A
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 12:10:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91871AFA561
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 15:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B036C3ACAF4
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 10:09:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF55D3B1650
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 13:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9631FCFF8;
-	Sun,  6 Jul 2025 10:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8854625C71B;
+	Sun,  6 Jul 2025 13:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S+HgeWJy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MiYTUYoF"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1251F5847;
-	Sun,  6 Jul 2025 10:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB07025C6F5;
+	Sun,  6 Jul 2025 13:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751796603; cv=none; b=V94SETD4TmJoHfqBx3vABTpxSQ3lPtqzWaCIKCNiUZ44X5w0ryra7imlVbmGxMbzI5ipsQO25TqEpedrhhwb0C5Yf9QY+sAn1DpFGGEBoIAnKTAbTEpgIIAdA1kBcGnodu02rqp2VJpCRISQ4NFACZ/wgM9jxCLrLU1mykZUMkY=
+	t=1751808295; cv=none; b=Bl37zzfMnExnf7awEzx15q6L7y4XbqoX6P2m163RJlqzfNS6zq8I58HSLtHy3jQq3veajG+UHHxuluqbBCK0hF0pXCWLD66tT1AwyQi9D1AwS7/tSY4JxXT42Sg7zAp28ZT5SaJEAdSOGEG6L6IZ8a5hBbmGJYJBILBDVBTIX7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751796603; c=relaxed/simple;
-	bh=jV5hk2L/22TCKsTCyR4AWVhsz/bZszE20n4bChKlIP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAfwwXfrPwFyrL2MzP9/6w/FhbRYWX6XcQ2tqAVKwzlRzMA50V9DukrfM0mqUJYpFfc6RkbaoigQPblhgiXo4+5xKBkaZ2Uge91oCdi5fsKcXciFmyfPMBIUdSdR9NkqMWZz7OEAIBo5lO3ly4yAHgzDkmANow8bavA6bxku4/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S+HgeWJy; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-450cfb79177so11744655e9.0;
-        Sun, 06 Jul 2025 03:10:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751796600; x=1752401400; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jV5hk2L/22TCKsTCyR4AWVhsz/bZszE20n4bChKlIP8=;
-        b=S+HgeWJy1e75+KWEjW6SRfRYAIDcC4fNmVTfd0O3W5dZR33UWdser3JgPgOq97Tneq
-         /c3EfaVryD9l6/NeoI0EMhCG0g1tBobIo7oYaNtw2bEFwTeJAzlyKW0q6qrTnVgpdI1b
-         dhM2UYvEWT2DlmQMumCdWJ3GDzRriTxTopeDP7xiGPtS0QAaGXtJgiqLURxkfhXq/GJa
-         2wvSzSd8cdM3m25FxhH+xsnONmwiAykwYaUiv8SMl5g6dEIf0mp/7MLbWmcmF+pixzSR
-         8wNDOmnvl2VjZIfmyHod8YdFDXyyXjtVSf5tTQxel72KlE4gItKjYZzDYnbmF49M2RXQ
-         Hceg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751796600; x=1752401400;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jV5hk2L/22TCKsTCyR4AWVhsz/bZszE20n4bChKlIP8=;
-        b=sQoHNAFsNUTklITKm1uImpTfyX0ifOOHTZ37E1PFaFsvTwl04d7OPSbEP/YLTop5/B
-         0/00b7bNSWitI06ka/sMGY0A01PI5otxJuESx0fWKs3U33ejaXJ0c1KFpPgA/kbqgUf1
-         JhkdvybNYX5RUI+hFXgAGjhUAPZ67+/XoEEUbg5QE5pfPQ8ltvzq0BVPZzfN/TqN3svC
-         VTc0rbiqeEDN+hcGGrPJaM8zPIRfDcJ+x3LXfizjVbnKDxbL62llvYM4SDI3AuO0NsAn
-         QuWhoUVXFAFzFVtcjx/1eLr1rslvTs/M6hxapEqpjlSUopKaCOdK0Ufl7ZxtkLzWEoZL
-         v47w==
-X-Forwarded-Encrypted: i=1; AJvYcCUsmGy1oeOeEjsndHhu8jB189pQZr81AFjagk+rmyJNAwvtRxKGCZCaMBPKzKjNTW6lvMD2iZ5AWSc=@vger.kernel.org, AJvYcCXYRQKoFFtN/7/5zEIMWNiHuGcGVl8wR8H8TwDiflluoKg4F6kkS3kgjgFkqVR94Uv+6vQpTA3nqGxQftQF@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgYPV7N4/10buWFvsGnyoin5vzGn3zW40/PT9EX4BOiD4CqB0I
-	Q+yEql913Ricr44yxjyH/C534+iaE3D/K4LGjzoFaqYEoWap3FI+2YET
-X-Gm-Gg: ASbGnctSUVjs/ZTCby/G6cGpKifPG1iUjftxE4oOfgesKT/Juy5a4+Gn5aS6Bl050yI
-	Sm2L1LO8aTIl1sz5YeRQTGS8ghUfZfqyXrfWp+RQtiK0koqkJkWDEIZLGTfheNKazSp05Ou23nI
-	m0nVlZTt9RrLux8vp+Lefuu8URRl+o0HBS3RCLSu7dfuPMBgd/WAXp8d6h65S1xgwYwLCFVaY8k
-	RBjmE3RvljuLHrBdHATetQ3Ucb4XPDviP0i+y4i2HKE1tcPT+qlU6Cf1qtN9pCtBgN7x0BQQ7Me
-	tSQwIIzO0gDlqRat5ueCqdbXh2+lmEifqS5RSQuHOv/LeKbTUfCXG5f7WTAhgIx22I0R51Lr4O/
-	+FQ==
-X-Google-Smtp-Source: AGHT+IFboTpFzUmPBMceP5BQaZY52z0uD8klP61U5hlGg3Max/z1jvvjdVEPb6BxDr0QhRSMuQVpDw==
-X-Received: by 2002:a05:600c:4f16:b0:450:d367:c385 with SMTP id 5b1f17b1804b1-454c576aacfmr1072985e9.16.1751796600196;
-        Sun, 06 Jul 2025 03:10:00 -0700 (PDT)
-Received: from localhost.localdomain ([41.79.198.24])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a9be0bacsm105336185e9.32.2025.07.06.03.09.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Jul 2025 03:09:59 -0700 (PDT)
-From: Khalid Ali <khaliidcaliy@gmail.com>
-X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
-To: ardb@kernel.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
+	s=arc-20240116; t=1751808295; c=relaxed/simple;
+	bh=MDngCFoCTSnVbqNfTg5aaI5DnhuGTd8SytOekmkV6Cs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H+aONAlWHkIVLo/fsr0yrDmkFqnNWAKoSI6woCN0Wr0d8E4PdRPqVPM+R8vvmlOPDsobrq+8pf7+OCA0sKKIl5ybXDvW8SkTnqHd8oLsnN05H8P2AKWy9j9rFiwMhj8vs5uHhSCGwTtYinHIETIYctk+f4xxcEVgLCpdThXQbzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MiYTUYoF; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751808294; x=1783344294;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MDngCFoCTSnVbqNfTg5aaI5DnhuGTd8SytOekmkV6Cs=;
+  b=MiYTUYoFtsRJnY893yxZ5gq5jcVyN7LI9RzZawdadf6lyq1HFU0gwd4I
+   JOq6DXA30eRTqP9kLuvEfldpM+QuxJIsC1RcHOoZQDwjxt0IC8UBMKWka
+   pFkJFtyAPV6Uql5d/e8eqw7nOUYw0B5+5hPsaoUGyxvD4a7SgDjot9bLb
+   hcZ+/F4YpYevg5hEtsFczQfFcGWVtc4KsCweawLxAr5AVBp5619XkSVaO
+   UjyufwjmRWzQJoeO11Hoc2CgaNQ7P5/+8L21uaxoe9oy7UzVQ1n31waPn
+   Tt87FN678HlbTvxobTL/szmMGkYB5lw2zYmmmsjf2l0EMlRdgO9m2FIF3
+   A==;
+X-CSE-ConnectionGUID: sgus7cX0QO2jz0mKN2RisQ==
+X-CSE-MsgGUID: cUB0wNlyRumkw6Jpqkv8cA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="54140955"
+X-IronPort-AV: E=Sophos;i="6.16,291,1744095600"; 
+   d="scan'208";a="54140955"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2025 06:24:53 -0700
+X-CSE-ConnectionGUID: Xw4K0rOhRh680MdnnNbYPg==
+X-CSE-MsgGUID: YxEJnjw6QFq1Ro5vTH9LLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,292,1744095600"; 
+   d="scan'208";a="154738214"
+Received: from lkp-server01.sh.intel.com (HELO 0b2900756c14) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 06 Jul 2025 06:24:49 -0700
+Received: from kbuild by 0b2900756c14 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uYPMN-00054J-1F;
+	Sun, 06 Jul 2025 13:24:47 +0000
+Date: Sun, 6 Jul 2025 21:24:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Khalid Ali <khaliidcaliy@gmail.com>, ardb@kernel.org,
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
 	alex@ghiti.fr
-Cc: gargaditya08@live.com,
-	jonathan@marek.ca,
-	kees@kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	lukas@wunner.de,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] efi/libstub: Print uefi status code on error messages
-Date: Sun,  6 Jul 2025 10:08:44 +0000
-Message-ID: <20250706100900.1481-1-khaliidcaliy@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250706094354.1282-1-khaliidcaliy@gmail.com>
-References: 
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	gargaditya08@live.com, jonathan@marek.ca, kees@kernel.org,
+	linux-efi@vger.kernel.org, linux-riscv@lists.infradead.org,
+	lukas@wunner.de, linux-kernel@vger.kernel.org,
+	Khalid Ali <khaliidcaliy@gmail.com>
+Subject: Re: [PATCH v2 2/2] efi/libstub: Print uefi status code on error
+ messages
+Message-ID: <202507062122.z20qLlyi-lkp@intel.com>
+References: <20250706100147.1447-1-khaliidcaliy@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250706100147.1447-1-khaliidcaliy@gmail.com>
 
-Sorry, i accidentally sent this twice and broke the email thread.
+Hi Khalid,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on efi/next]
+[also build test WARNING on linus/master v6.16-rc4 next-20250704]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Khalid-Ali/efi-libstub-Print-uefi-status-code-on-error-messages/20250706-180349
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+patch link:    https://lore.kernel.org/r/20250706100147.1447-1-khaliidcaliy%40gmail.com
+patch subject: [PATCH v2 2/2] efi/libstub: Print uefi status code on error messages
+config: loongarch-randconfig-001-20250706 (https://download.01.org/0day-ci/archive/20250706/202507062122.z20qLlyi-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250706/202507062122.z20qLlyi-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507062122.z20qLlyi-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/firmware/efi/libstub/efi-stub.c:117:70: warning: variable 'status' is uninitialized when used here [-Wuninitialized]
+     117 |                 efi_err("getting command line via LOADED_IMAGE_PROTOCOL: 0x%lx\n", status);
+         |                                                                                    ^~~~~~
+   drivers/firmware/efi/libstub/efistub.h:75:39: note: expanded from macro 'efi_err'
+      75 |         efi_printk(KERN_ERR "ERROR: " fmt, ##__VA_ARGS__)
+         |                                              ^~~~~~~~~~~
+   drivers/firmware/efi/libstub/efi-stub.c:108:21: note: initialize the variable 'status' to silence this warning
+     108 |         efi_status_t status;
+         |                            ^
+         |                             = 0
+   1 warning generated.
+
+
+vim +/status +117 drivers/firmware/efi/libstub/efi-stub.c
+
+   104	
+   105	efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+   106	{
+   107		char *cmdline __free(efi_pool) = NULL;
+   108		efi_status_t status;
+   109	
+   110		/*
+   111		 * Get the command line from EFI, using the LOADED_IMAGE
+   112		 * protocol. We are going to copy the command line into the
+   113		 * device tree, so this can be allocated anywhere.
+   114		 */
+   115		cmdline = efi_convert_cmdline(image);
+   116		if (!cmdline) {
+ > 117			efi_err("getting command line via LOADED_IMAGE_PROTOCOL: 0x%lx\n", status);
+   118			return EFI_OUT_OF_RESOURCES;
+   119		}
+   120	
+   121		if (!IS_ENABLED(CONFIG_CMDLINE_FORCE)) {
+   122			status = efi_parse_options(cmdline);
+   123			if (status != EFI_SUCCESS) {
+   124				efi_err("Failed to parse EFI load options: 0x%lx\n", status);
+   125				return status;
+   126			}
+   127		}
+   128	
+   129		if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
+   130		    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
+   131		    cmdline[0] == 0) {
+   132			status = efi_parse_options(CONFIG_CMDLINE);
+   133			if (status != EFI_SUCCESS) {
+   134				efi_err("Failed to parse built-in command line: 0x%lx\n", status);
+   135				return status;
+   136			}
+   137		}
+   138	
+   139		*cmdline_ptr = no_free_ptr(cmdline);
+   140		return EFI_SUCCESS;
+   141	}
+   142	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
