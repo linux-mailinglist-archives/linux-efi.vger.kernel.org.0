@@ -1,96 +1,96 @@
-Return-Path: <linux-efi+bounces-4131-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4132-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B03AFA3F1
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 11:15:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBD3AFA3FB
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 11:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8AA1896D4A
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 09:15:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4B0A7A9868
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Jul 2025 09:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC4A1F4706;
-	Sun,  6 Jul 2025 09:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6855A1EA7C4;
+	Sun,  6 Jul 2025 09:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PyJMtP5J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dyIFBnFQ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250661FF7BC;
-	Sun,  6 Jul 2025 09:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66401E9919;
+	Sun,  6 Jul 2025 09:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751793247; cv=none; b=lPUcHd7RaIlQtiZ1Xh1T4edF1r4cXLgCeSeQf6rLH2K35OagxUg2as83X0jpofCKFeEJuBUQ7tQB1HwfLLGJ6GRuhJcTnzsR5W/CX3BjTiU7NgADfjjVNeup7tOAzxY/GCQnXVfqfdiiPEeChspMh92zY0JG3aLCFpVz6CLEU0I=
+	t=1751793740; cv=none; b=lzGj9DILl33YEkwEOS9M68M+bYSGoP8hRf6fEpoHPMQ0dVz7Q/lCfhIEbBc24aLiLmfZyv+WNFaibmfIGm0HQGY6uHmRTfcrxmwgvJOtdxuv1FCzvD6SC9PDOPC9Vqn0eU4tJN621b+YCR1Li7pwrmr1RcoGBcB+D2q6novdPOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751793247; c=relaxed/simple;
-	bh=Lmw0fPu+AVGOqr6cYQJpWJ0LkeLPvRD+9pIdzZknj3M=;
+	s=arc-20240116; t=1751793740; c=relaxed/simple;
+	bh=R8WY5LnC71QUM9WkLu00Q23TO+cZs7clzgEGxmiFpd8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i5Iq/HkhtflQhQK9LvpKmsPGXTAx6fvX0Si1+5qm3yRk8o6oqgkSyDFA1xUcDR+Z+BbTJOMoHQKyuShNXykJbrunrb1tPprhOFX8mTYYgetxvlHdmOVPNLOtimjadOWSyjA5FSL2KbxIzdGnVzY389wOaBFMoEkZaZZKJYPtMpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PyJMtP5J; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version:Content-Type; b=lJcweqzm8S4bmQ0L0QRrTYZI5HPi1SX8gn8T2toPA+EBuIZV0wfIvfiCPtAt5Lw1uHdaDNh30ek05oN4zK6finBlmwco5hhM5nGIZLxOZnz58ximj08qqIa1HN94sX3ORQKsxTcRCeNqrfEAqeM26ihJUyUPz1rfc4zTAQguAhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dyIFBnFQ; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-451d6ade159so17727525e9.1;
-        Sun, 06 Jul 2025 02:14:04 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-450cfb79177so11631345e9.0;
+        Sun, 06 Jul 2025 02:22:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751793243; x=1752398043; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751793737; x=1752398537; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q8hlSgBV1+bYygrl+ZccylfC3/K7ixgrATl9jQwn0YA=;
-        b=PyJMtP5JWR5WpJQRsubaLdd5BRbo5C9UfacfdUgx6DY0Mz0krO2llVIeYUZWYDBXNK
-         OFH2o4dA9X9Uc08T/LhWTqWVqV8a1WX86Gucup80+sWEJ8XDXnOrXbd2HARhnIzizfCr
-         6fc46BNwy5EfViAipcKawQ5nNRias9OFsIjwe4MM5yVMG5d+jyQGjXG/ptgLvIfeJQzx
-         Qd1bJPXjmBTZQZuCr60i8m3KXFh/yWwo8713Kxr51fRbtz21Rtzm4PSaVkRHI+WXLqrn
-         VQUnloUD9OtRloBN2WHIN0C5pkgslpKdL3M1y6kvUMFZRk2HwlW0nf1H/5scOMTkB6Nb
-         OTHw==
+        bh=b3am1YwKRHmoKxmbDLF2S7QLxv9dWwL5mPkPdSFFbqg=;
+        b=dyIFBnFQSkJIPARulEKiMOqSF+hHYBeL6aVayEskLh6jhjGKPBJfXJQDfEljwJPf3n
+         B5eSdW8iu3DVMJwMRddWEiwZCzZ30iIWITANYdDSKvYl0Id/UtP57OaAyba7DaMoGCKC
+         mVTfd0v4qeiH2i+rbz/9TORDznAHxuJ1yhnf5GoPf/xxSaPyv6Dd5FyJMlNDlsRY5N3S
+         bp+Cz8mH/eBavYOvYp1/y3TavpahDXkapcfrXR4tcwB8o46bYckw73iDQ3BfTBMxZ+hB
+         SdeNthe7DKKcdQOAz7RkN8aG21ZXnDg3AJwcv/TsWCBQTyX9M+XmAK3Rcg1NLyiNLhs3
+         WgsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751793243; x=1752398043;
+        d=1e100.net; s=20230601; t=1751793737; x=1752398537;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=q8hlSgBV1+bYygrl+ZccylfC3/K7ixgrATl9jQwn0YA=;
-        b=L9LbaWbg2q708OA3cKplhKduNa2t8da7DEx6BOaOTt+4JfZl2xTGDWqARfp7Ew+q4k
-         crNzarg7WTD/y5AzlSCOAtbbOszep5MKcbPrWrPf6iPmBNFeQdEdihs8z4ai+9dIuZSF
-         YTkwMIlZFJFhUPPWm3A6qKxr4ebkQyFcon44alQFM1e9zf+q0q54Fncpy+sa52xe7y9K
-         B73zJpYyhOSp8BBuSPbsxyNFmuqkMLxrn2hFhGDTYZckJGQzhhVKTnDPHPsOPrZDPH/Q
-         zejNwgBkC8M5yXuATXDZL4ss88sLYeephMdn+Z6tYF1VKEjs/SZURqpdxZi1nnvlXfuT
-         7J6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWFKSazqhA5mpw6p5ZQMKfRn/2KUT6+Bit5R00yr6yHRKIHNwYN2YbZE4SXzHpap48XfCXhzVF4Glf+@vger.kernel.org, AJvYcCWeXtzcxb/bQRtaqDlNvAKb+tolo9pNSeK6ZNnGj+GLvB6HR1JL9qx5ep2L/yZJuGaIbfHUOLk25bhLkTI9@vger.kernel.org, AJvYcCXDI9cDlCXMQBAFggFCdrflnUm47BelExGYb9yUs6Ubu4Lfo556tLtuYujQozb9WZDUQoOjRhmeAao=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfetLqIzCpONTyAKpcjJAQNbLIXgEIjAktX7kSSdGOk1dkWa40
-	NA4kxL5nkWFkyB9misBp3huQtdZURfsHiLfJQ2UsBKRYbTJ65tobTY2X
-X-Gm-Gg: ASbGncvyX61d3X974RVBibBW1oZ/kJlEubabKb3jxIuDL/CGX/9DuzU7CwLwM7Z9Who
-	9BnaJdu+yXlM2gWFbag83zrCRgBAigTw2HZRF+8lXf2intXe0wzR3bUERoTqrnhjQ0HLVaLMhRt
-	81AWLiHrUnDN0L2XePiZ6iBDaysa+PCaEs+4i+RDwHvo75DtfHWddOezLBUb5nwHqiwLE9CcSbG
-	sjL37q+9kjXLdp/QbeB5TgiRnK6DzehJsv4nVBSAeEZ9uNZQObB07nDbDAjIMRetpJ6YAOTuWMH
-	GbmcldIQjckhZ50q6njSILsAUfzOIKsACAgVisSRJhd5CG9kEmpZkHxvUF25+ypCgvzJzd4eTTn
-	jH9pdpxMS7B/reD8E7g==
-X-Google-Smtp-Source: AGHT+IE/TXS+sz7Mby0dfZERmdqKJhVpm0cyrlWbJ+f/VwJHOVGQVE9NJpn97WFCi+JJaWJyaqs25w==
-X-Received: by 2002:a05:600c:4f45:b0:43d:abd:ad1c with SMTP id 5b1f17b1804b1-454b4e6849dmr63131615e9.6.1751793243088;
-        Sun, 06 Jul 2025 02:14:03 -0700 (PDT)
+        bh=b3am1YwKRHmoKxmbDLF2S7QLxv9dWwL5mPkPdSFFbqg=;
+        b=tNLpObkegEF602dmb9c+JAvyN0g2r8Ks2wR9vf+4VDXhua0gCYfYvppB8YdfP79yzx
+         Hs3mSecFkqVS69zCw4AxnjU1QZQp0Dwi5HLhEWYfl6ayU8DSUCJvUX1SkN6QQdRjan5F
+         HTbIXUsWBcxWoXlrbdpJuKah1aetCn8GNpBrYIokeaUoJYkfbr8Lyf0WocBE8EX/QZI8
+         safINvkHynnGPy5VsGADS5TZKkPhy1SMglCVNXhlwZ2+6Hv7h4RLPJO1RtjoEx+fbDGB
+         +lGjK4nCXxswYYn7XzOyWmOVlRQ11WZfaTQlSkgervqCZtsqTFEmIamm/P/uev4UrC76
+         uHzg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpkgha8joefDBb4uzbOpjauEjXjtmvMQK/32uLwefoXOo37HqtwvdeH6EUa3vKANJNOKqQtc12QhqX@vger.kernel.org, AJvYcCVuLbE2czg2AOWG91lOpvNUsD/X2+3EX4oWJIvFt0ajBmoDPE5I+c+W0A3WJgAWJZH0H+F+oUduO2RqlZWH@vger.kernel.org, AJvYcCWKUz4ggOqGR7HNIur4kly8T6uRIexvqpCSQyuLT+lGqb8fZvINJaxEObKLxjZSpxmyY0h6ADkDzN0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9XHgmA9T7UlYJc+Iihee5uVVUwv684dmnknyiXdxjUoOli6qx
+	u1ctVwo7QjpoHyKO/CfvzxFXORF3r3GVdakkJH9UvVIBD+E0GmJweDdz
+X-Gm-Gg: ASbGncsyL80MWoH08Rh1bRfE5uS09c+1tPZCQ3sjoNhVaQ0iFKWt7ceAdvZoEfpGL/G
+	etNzRn4XY1hqJWZo8GfPG17cwcJtBlCxAdwLOHLAYPowin6arWSoUk4RMo5xgRL2lItXiGa//2y
+	G10eobip/Z9Q1GvFDfP398krJ0J08n1TKQxzdTSc2itm5Dah4NMNvp8qb+wkZqNqLK01cw9aziq
+	/wDrSia4FJ6VRGethmLL5WoXVBztvTnAcq3XUekkhqYaEQkpp+JI4BWe+PmR+uTvx3Uon2N19m0
+	+gZUe9Yol3ucAKjIQbBYz2Sh5hOKn/pOGEPZPEFfgeajKVCpxxpVJ16SJbP7SLKWwsfodPuNPEI
+	mXV1HQsGVEuAPqcxcdE+wAnYP5euq
+X-Google-Smtp-Source: AGHT+IEVwZsmFeJW6bRGYTrQU07475HhM5KVyiCb1XYh0+njq/Er/htdLi/iXsSzv2IQX8CWTP5tvA==
+X-Received: by 2002:a05:600c:6096:b0:445:49e:796b with SMTP id 5b1f17b1804b1-454c0a8a0a8mr23528185e9.17.1751793736774;
+        Sun, 06 Jul 2025 02:22:16 -0700 (PDT)
 Received: from pumpkin (host-92-21-58-28.as13285.net. [92.21.58.28])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454b1695577sm76992715e9.27.2025.07.06.02.14.01
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454b168664bsm78214565e9.20.2025.07.06.02.22.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Jul 2025 02:14:02 -0700 (PDT)
-Date: Sun, 6 Jul 2025 10:13:42 +0100
+        Sun, 06 Jul 2025 02:22:16 -0700 (PDT)
+Date: Sun, 6 Jul 2025 10:22:13 +0100
 From: David Laight <david.laight.linux@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Sohil Mehta <sohil.mehta@intel.com>, "Kirill A. Shutemov"
+ <kirill.shutemov@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel
  <ardb@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf
  <jpoimboe@kernel.org>, Xiongwei Song <xiongwei.song@windriver.com>, Xin Li
  <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh
  <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, Tony Luck
  <tony.luck@intel.com>, Alexey Kardashevskiy <aik@amd.com>, Alexander
  Shishkin <alexander.shishkin@linux.intel.com>, Jonathan Corbet
- <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>, Ingo Molnar
- <mingo@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Daniel
- Sneddon <daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>,
- Sandipan Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, Rick
+ <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>, Pawan Gupta
+ <pawan.kumar.gupta@linux.intel.com>, Daniel Sneddon
+ <daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>, Sandipan
+ Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, Rick
  Edgecombe <rick.p.edgecombe@intel.com>, Alexei Starovoitov
  <ast@kernel.org>, Hou Tao <houtao1@huawei.com>, Juergen Gross
  <jgross@suse.com>, Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook
@@ -104,12 +104,13 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andy Lutomirski
  <geert+renesas@glider.be>, Namhyung Kim <namhyung@kernel.org>, Arnaldo
  Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCHv8 02/17] x86/asm: Introduce inline memcpy and memset
-Message-ID: <20250706101342.069b5068@pumpkin>
-In-Reply-To: <49f7c370-1e28-494b-96a9-f45e06ed4631@intel.com>
+Subject: Re: [PATCHv8 14/17] x86/traps: Handle LASS thrown #SS
+Message-ID: <20250706102213.4ab365d7@pumpkin>
+In-Reply-To: <4DE45AFD-C1E0-4FB8-BE01-44A72C5C6E1E@zytor.com>
 References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
-	<20250701095849.2360685-3-kirill.shutemov@linux.intel.com>
-	<49f7c370-1e28-494b-96a9-f45e06ed4631@intel.com>
+	<20250701095849.2360685-15-kirill.shutemov@linux.intel.com>
+	<95dc18fd-73b0-4019-92d2-c0e6aaf22c96@intel.com>
+	<4DE45AFD-C1E0-4FB8-BE01-44A72C5C6E1E@zytor.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -120,45 +121,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 3 Jul 2025 10:13:44 -0700
-Dave Hansen <dave.hansen@intel.com> wrote:
+On Tue, 01 Jul 2025 19:06:10 -0700
+"H. Peter Anvin" <hpa@zytor.com> wrote:
+...
+> Note: for a FRED system, ERETU can generate #SS for a non-canonical user space
+> RSP even in the absence of LASS, so if that is not currently handled that is an active bug.
 
-> On 7/1/25 02:58, Kirill A. Shutemov wrote:
-> > Extract memcpy and memset functions from copy_user_generic() and
-> > __clear_user().
-> > 
-> > They can be used as inline memcpy and memset instead of the GCC builtins
-> > whenever necessary. LASS requires them to handle text_poke.  
-> 
-> Why are we messing with the normal user copy functions? Code reuse is
-> great, but as you're discovering, the user copy code is highly
-> specialized and not that easy to reuse for other things.
-> 
-> Don't we just need a dirt simple chunk of code that does (logically):
-> 
-> 	stac();
-> 	asm("rep stosq...");
-> 	clac();
-> 
-> Performance doesn't matter for text poking, right? It could be stosq or
-> anything else that you can inline. It could be a for() loop for all I
-> care as long as the compiler doesn't transform it into some out-of-line
-> memset. Right?
-> 
+Is that a fault in kernel space, or a fault in user space. 
 
-It doesn't even really matter if there is an out-of-line memset.
-All you need to do is 'teach' objtool it isn't a problem.
-
-Is this for the boot-time asm-alternatives?
-In that case I wonder why a 'low' address is being used?
-With LASS enabled using a low address on a life kernel would make it
-harder for another cpu to leverage the writable code page, but
-that isn't a requirement of LASS.
-
-If it is being used for later instruction patching you need the
-very careful instruction sequences and cpu synchronisation.
-In that case I suspect you need to add conditional stac/clac
-to the existing patching code (and teach objtool it is all ok).
+Some of the traps for 'iret' happen after the transition to user space,
+so the kernel doesn't have to handle them as special cases.
+(I simplified (and fixed) one version of that code.)
 
 	David
+
 
