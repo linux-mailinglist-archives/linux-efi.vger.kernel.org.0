@@ -1,34 +1,34 @@
-Return-Path: <linux-efi+bounces-4152-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4153-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6D4AFAE0D
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:05:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE13AFAE0A
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 695231AA1768
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:05:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD583B62D7
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BA328CF6C;
-	Mon,  7 Jul 2025 08:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4350628D8DB;
+	Mon,  7 Jul 2025 08:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZbE/1mdw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SpBZRRlR"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E3728A415;
-	Mon,  7 Jul 2025 08:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C1928A417;
+	Mon,  7 Jul 2025 08:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751875418; cv=none; b=MtfnpZMgNO0OzNhHOFGYAMTwWSjezPF0Bl9Ovv5gXL0Lsy2JcPuOs8ZY9D0gBox12J/snq6tGEa2FesaSLtGF9BHqQTF7S5Im3j7K7uk7lV4ybfaEkYozN/gJHfIcnLh26s+bYhNtUZePfUrlTOqg7kuzwvtkfR5BoMoE29OO2Q=
+	t=1751875419; cv=none; b=aFtxLkunbH+fYvB80geqBXlcWb4eEMAs44Td9v9M/cZAyyMMZFQO3mRn8GRJm4dKupNwAcKWF7y87h7vd2EmElPDJ3rZgHH6w+pD/V0MQzyha20KoGwtinPxDn+NafbVxkdcdgYuQtBPhS5RM4hDTM+n9komtlNL3Nvm0kZGomQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751875418; c=relaxed/simple;
-	bh=TQ5RCfOQ/5tuZqESL8hi2WCyzYpg/ALQ/w3Eenbo4Ow=;
+	s=arc-20240116; t=1751875419; c=relaxed/simple;
+	bh=AhbyuBrFy6ZhBp5R/WtWxW6rQmI0xvLZeZC7IlrtM/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WppiLaacuUiQ7do+LAFDNFf/wvTWlkx8nw0O23kvKCFHf7J+o7/JjQbb6WR6XA7UhRe5rHumo6CAAoK8feCmLZ4ePSidPOIBHKGj7Mws1Kood0kT09aWGpJeieMRiI8u4gWZTeZ1JomGAVxINIng+v790y9Wim40dDSammUgziU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZbE/1mdw; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=Vkidca7wAU4iHXkYldxuMNa8bTHlk502ptlLOjV10PCtc0ORdkDN2Q2koyfj0c8G4g9s1GXmWx0Pah8lVQrxY1s3KedqocsqsP+gWDw6pezd6xEVeY+Jlo5QiMxB3/3R6PUOPD4UJ5lJ2oHk5b3Higl08LFoW8b6X9vicKGzL/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SpBZRRlR; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,30 +36,30 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1751875417; x=1783411417;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TQ5RCfOQ/5tuZqESL8hi2WCyzYpg/ALQ/w3Eenbo4Ow=;
-  b=ZbE/1mdwoGp2LLyeWuKyA2Q5b/ifBnCveThzVC1bR9bW5vbEw8+4Zuvj
-   ShibzyOeC1hBo1wAeG2cyDUDQSoVJ3PdSA0b+x5hVQFhyXXaUMrXcoLIQ
-   WiFGOtjX5vK+rugqBTobB04DrEVwUTIfCQdaG/4pqFly8FEkQiyWnl7jB
-   UQwLYNud2ikhGrN3wQKv0hbyNfutjbyageTbohLN1zbKQSSVibckhvQI2
-   7o3PHAzO7v+R1iTs3//e8D65rspJixzFkAgXTgd1eOUTIcBugsrwlzSif
-   w9yYdBooFHQn3zr0zuQcVxU9rfN0WSCKmvhHeiSAhyrEYDWJO51iTuhLJ
-   A==;
-X-CSE-ConnectionGUID: xMuOhLJNSbKbwrNYt1wPcw==
-X-CSE-MsgGUID: FwD1DF2VToqslLxoleexdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65151840"
+  bh=AhbyuBrFy6ZhBp5R/WtWxW6rQmI0xvLZeZC7IlrtM/I=;
+  b=SpBZRRlRKkFtnh2Z/MUkMKpLRFThnbgZ4nO9tJcVOh9SrclJTaE5QIIF
+   OV5HnX8lmzPoad9kl+Ui8SNFmMdBUldBhw/LX06uRuhqEYtcnD6Bw4O2r
+   eTXcQAbf0H5lZ79Yt0DJbIItCnSLzVyKmg/SiAPg5F3y/vgBR9p9H2SXe
+   OBdMgtDNi41XccjRxuxV6WmCW4UN93kE4eVsC0YmPA6vRxu1DzvQ/YUOA
+   hzsBrybinb1bX72QUez70aAaywbEvvTOHu6NXi9tjzLCHSiulJVjmxetG
+   kiHnCcz0mB2X7zdUvuQph9ug+jv7h3o/EnnSpoPvY4/l5y7W+Y1hSj/ad
+   Q==;
+X-CSE-ConnectionGUID: lNPtDLFQSemTZNfh7P8VUA==
+X-CSE-MsgGUID: zmft1Wr9QRyze0D0B9yuug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65151863"
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="65151840"
+   d="scan'208";a="65151863"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:03:35 -0700
-X-CSE-ConnectionGUID: 8f9o8uP7SKO9SEAW6KuirQ==
-X-CSE-MsgGUID: xrArNHKXTgiu/mLv9rI62g==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:03:36 -0700
+X-CSE-ConnectionGUID: KoJPoinaS1+BrBckUJbdFA==
+X-CSE-MsgGUID: CDau93p8QGu7rq2DpjpqUw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="154573882"
+   d="scan'208";a="154573886"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa010.jf.intel.com with ESMTP; 07 Jul 2025 01:03:23 -0700
+  by orviesa010.jf.intel.com with ESMTP; 07 Jul 2025 01:03:24 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E39A7493; Mon, 07 Jul 2025 11:03:17 +0300 (EEST)
+	id F15AA4B1; Mon, 07 Jul 2025 11:03:17 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv9 06/16] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
-Date: Mon,  7 Jul 2025 11:03:06 +0300
-Message-ID: <20250707080317.3791624-7-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 07/16] x86/vsyscall: Reorganize the #PF emulation code
+Date: Mon,  7 Jul 2025 11:03:07 +0300
+Message-ID: <20250707080317.3791624-8-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
 References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
@@ -127,61 +127,133 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
-page fault, but the CPU does not report X86_PF_INSTR if neither
-X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
+From: Sohil Mehta <sohil.mehta@intel.com>
 
-X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
-early P4 processors that did not support this feature.
+Separate out the actual vsyscall emulation from the page fault specific
+handling in preparation for the upcoming #GP fault emulation.
 
-Instead of explicitly checking for X86_PF_INSTR, compare the fault
-address against RIP.
+No functional change intended.
 
-On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
-to fault address but X86_PF_INSTR is absent.
-
-Originally-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 52 ++++++++++++++-------------
+ arch/x86/include/asm/vsyscall.h       |  8 ++---
+ arch/x86/mm/fault.c                   |  2 +-
+ 3 files changed, 33 insertions(+), 29 deletions(-)
 
 diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index c9103a6fa06e..0b0e0283994f 100644
+index 0b0e0283994f..25f94ac5fd35 100644
 --- a/arch/x86/entry/vsyscall/vsyscall_64.c
 +++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -124,7 +124,8 @@ bool emulate_vsyscall(unsigned long error_code,
- 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
- 		return false;
- 
--	if (!(error_code & X86_PF_INSTR)) {
-+	/* Avoid emulation unless userspace was executing from vsyscall page: */
-+	if (address != regs->ip) {
- 		/* Failed vsyscall read */
- 		if (vsyscall_mode == EMULATE)
- 			return false;
-@@ -136,13 +137,16 @@ bool emulate_vsyscall(unsigned long error_code,
- 		return false;
+@@ -112,36 +112,13 @@ static bool write_ok_or_segv(unsigned long ptr, size_t size)
  	}
+ }
  
-+
-+	/* X86_PF_INSTR is only set when NX is supported: */
-+	if (cpu_feature_enabled(X86_FEATURE_NX))
-+		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
-+
+-bool emulate_vsyscall(unsigned long error_code,
+-		      struct pt_regs *regs, unsigned long address)
++static bool __emulate_vsyscall(struct pt_regs *regs, unsigned long address)
+ {
+ 	unsigned long caller;
+ 	int vsyscall_nr, syscall_nr, tmp;
+ 	long ret;
+ 	unsigned long orig_dx;
+ 
+-	/* Write faults or kernel-privilege faults never get fixed up. */
+-	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+-		return false;
+-
+-	/* Avoid emulation unless userspace was executing from vsyscall page: */
+-	if (address != regs->ip) {
+-		/* Failed vsyscall read */
+-		if (vsyscall_mode == EMULATE)
+-			return false;
+-
+-		/*
+-		 * User code tried and failed to read the vsyscall page.
+-		 */
+-		warn_bad_vsyscall(KERN_INFO, regs, "vsyscall read attempt denied -- look up the vsyscall kernel parameter if you need a workaround");
+-		return false;
+-	}
+-
+-
+-	/* X86_PF_INSTR is only set when NX is supported: */
+-	if (cpu_feature_enabled(X86_FEATURE_NX))
+-		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
+-
  	/*
  	 * No point in checking CS -- the only way to get here is a user mode
  	 * trap to a high address, which means that we're in 64-bit user code.
- 	 */
+@@ -274,6 +251,33 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	return true;
+ }
  
--	WARN_ON_ONCE(address != regs->ip);
--
- 	if (vsyscall_mode == NONE) {
- 		warn_bad_vsyscall(KERN_INFO, regs,
- 				  "vsyscall attempted with vsyscall=none");
++bool emulate_vsyscall_pf(unsigned long error_code, struct pt_regs *regs,
++			 unsigned long address)
++{
++	/* Write faults or kernel-privilege faults never get fixed up. */
++	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
++		return false;
++
++	if (address == regs->ip) {
++		/* X86_PF_INSTR is only set when NX is supported: */
++		if (cpu_feature_enabled(X86_FEATURE_NX))
++			WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++
++		return __emulate_vsyscall(regs, address);
++	}
++
++	/* Failed vsyscall read */
++	if (vsyscall_mode == EMULATE)
++		return false;
++
++	/*
++	 * User code tried and failed to read the vsyscall page.
++	 */
++	warn_bad_vsyscall(KERN_INFO, regs,
++			  "vsyscall read attempt denied -- look up the vsyscall kernel parameter if you need a workaround");
++	return false;
++}
++
+ /*
+  * A pseudo VMA to allow ptrace access for the vsyscall page.  This only
+  * covers the 64bit vsyscall page now. 32bit has a real VMA now and does
+diff --git a/arch/x86/include/asm/vsyscall.h b/arch/x86/include/asm/vsyscall.h
+index 472f0263dbc6..214977f4fa11 100644
+--- a/arch/x86/include/asm/vsyscall.h
++++ b/arch/x86/include/asm/vsyscall.h
+@@ -14,12 +14,12 @@ extern void set_vsyscall_pgtable_user_bits(pgd_t *root);
+  * Called on instruction fetch fault in vsyscall page.
+  * Returns true if handled.
+  */
+-extern bool emulate_vsyscall(unsigned long error_code,
+-			     struct pt_regs *regs, unsigned long address);
++extern bool emulate_vsyscall_pf(unsigned long error_code,
++				struct pt_regs *regs, unsigned long address);
+ #else
+ static inline void map_vsyscall(void) {}
+-static inline bool emulate_vsyscall(unsigned long error_code,
+-				    struct pt_regs *regs, unsigned long address)
++static inline bool emulate_vsyscall_pf(unsigned long error_code,
++				       struct pt_regs *regs, unsigned long address)
+ {
+ 	return false;
+ }
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 998bd807fc7b..fbcc2da75fd6 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1316,7 +1316,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * to consider the PF_PK bit.
+ 	 */
+ 	if (is_vsyscall_vaddr(address)) {
+-		if (emulate_vsyscall(error_code, regs, address))
++		if (emulate_vsyscall_pf(error_code, regs, address))
+ 			return;
+ 	}
+ #endif
 -- 
 2.47.2
 
