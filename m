@@ -1,118 +1,164 @@
-Return-Path: <linux-efi+bounces-4175-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4176-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A680AFB9D8
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 19:26:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A03AFBD97
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 23:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41BE3424D0F
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 17:25:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 311803B3048
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 21:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2F0293C48;
-	Mon,  7 Jul 2025 17:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3D9287261;
+	Mon,  7 Jul 2025 21:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X/jmxJYw"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF81422127A;
-	Mon,  7 Jul 2025 17:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7A5202997
+	for <linux-efi@vger.kernel.org>; Mon,  7 Jul 2025 21:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751909164; cv=none; b=Pw6t/1wXNSRawxon+sxlZHL9b/y+1w3M+v/I7LkTIy4q01XYSBOiJj2lfv2Raoph2kEbkZJ2dgqxTaBa2ZI0TvIzSfwteNzNppsEwYDhkx65hLAqlEW35fJs3BWJUA5x7ujL+YdslM8DfqBaS9n63lulTi/HuLY0Ru9CoLXdc+8=
+	t=1751924216; cv=none; b=KmH1bL+cPq5amgHilhwxD8sQdCBq83XKejYLfdoEacpP9a5MOxhrI0ra35QaxrQ9b44E40mATG4XHfyDGM3cVCEVfohABrzAsX+N514N79BwAe9geaXKNqf7ZTWUH6Qb8RcIZ7LBj7dXWhUc2ZfaJJVs/SjtRhw+G1xbg5pk600=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751909164; c=relaxed/simple;
-	bh=uTGGSkDiwNf2+d48FdgJ5vLX6nsin8g7naCfFupDseE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G67hDd81VSkMIIzGtOYNXBA9SsX73V5UlKKgsLWSEfCLtTne8qlVQ9ISO5Vewvg5HBZZZ/OfwR5WdruItMNJRXqsuS8ozX6pS3GtPeDQAKAz8k2KTI4qBRb3qfx5xDvwiXknLC3+G/2F7PRlun1tYcP5Vo/PFI/NGXNjqiW3Yo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8A7C168F;
-	Mon,  7 Jul 2025 10:25:49 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 652A03F66E;
-	Mon,  7 Jul 2025 10:26:00 -0700 (PDT)
-Date: Mon, 7 Jul 2025 18:25:57 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org, leo.yan@arm.com, kernel-team@meta.com
-Subject: Re: [PATCH 0/8] arm64: set VMAP_STACK by default
-Message-ID: <aGwDJXTGAdV_VqY2@J2N7QTR9R3>
-References: <20250707-arm64_vmap-v1-0-8de98ca0f91c@debian.org>
+	s=arc-20240116; t=1751924216; c=relaxed/simple;
+	bh=qraLfGOkWN7QLQxcHgl8x+wEAGndG0VVZVx2qnLdX1w=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=epNe/DyTb8jsQ2EQibQdUzFU6rr6j3YLHqIhgjR1WS6zFuDOtR17a12uPpwFqj/BPmxNh0En24ZTDH+tXOKetO9tDTbqwEmYXmOOUV/25rE9Y7LLRlycUfAM3qj+e5FH3C4npmTwx16aP1p5jVi5AnSWIbW1CyjuswjuhujSJnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X/jmxJYw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751924212;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LFmfSbRPK9NnltZIO87T7HNPKAPVfH87hDFIBdCROR8=;
+	b=X/jmxJYwTMtEFeSTJBskl6niY1KFSyuqPZD1yJbaiUnjeWc8jJGCpZn9QzCzWrJh1fP2gU
+	TwS38a9SMKQon6HLx2fR58D8m5W1/Ck5tadNnFMLg2OKzJFqOv4I0mULIRrry5u/aUB5Ej
+	7k5Z8DXDf68VL4Of+1sTMOgreetjTyE=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-593-pETd-etbNQe1VkQ56qEN1A-1; Mon, 07 Jul 2025 17:36:51 -0400
+X-MC-Unique: pETd-etbNQe1VkQ56qEN1A-1
+X-Mimecast-MFC-AGG-ID: pETd-etbNQe1VkQ56qEN1A_1751924210
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7d399070cecso622671885a.3
+        for <linux-efi@vger.kernel.org>; Mon, 07 Jul 2025 14:36:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751924210; x=1752529010;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LFmfSbRPK9NnltZIO87T7HNPKAPVfH87hDFIBdCROR8=;
+        b=YCq+t5PfGQ3741J25yv4krs1mthpiy1qe71eWdQCR2lmlfXi65/hcjbzgMFlHksEHz
+         n0js3brXbxCzs6/hY5Ei8ducuJFkNLrihnCaoPN4Lu7kJhPfkUg90z5DMiyzYWeE9on0
+         mP7Bo+iUBBwOxfh6RAqlCDJubyncCkEV9rNxmPjMrZ89xLFhs8osaKxGZWFpADhdwbVm
+         AeQ407hEbpepcNXVO1NuBL0t9EJh8Hs1AOjIOWtKBRE9DS2u3ei/Ubhdx5bTfZw+53t3
+         B+gtdGCgpYwrQr/Zj3S9WOlhHk5PX+X27ykVtBPCecJM5ii//YO2CqeO/AAhdQEzo8LQ
+         69lA==
+X-Gm-Message-State: AOJu0YwKR0HLna2d9t5kDGEuCmYz0oOiY5R6Kmnl68hV1M8m+/Mhre8j
+	rTBIgjz0/i07XpotMe8Cu8GqaTs2TzRqorz0RpV7w/kyKUDcbMi1UNQLbwdNyTYUvpWLRrskuCF
+	OYtXoRZGlGuDjOv06nSSUJoKbRihayOakM5+EUAVAOrCzbYlweikkwhUJ8XQpAw==
+X-Gm-Gg: ASbGncv2EpmAmFXGd+h8IKVs5+2amepfIQElrKw9WusuWWI5a1cPFIzJHiVFuiYQ2nm
+	AG3RIfhZntQMVNcChgmVJS/dlxcSp9fVX87jgx92Wu59njMV26Hn9gJcAWQqHkfpHa4Nh2YMEfZ
+	Lh/U3oEQoVEgOAvLU0P7MM+5s0R5678KjXH5lUGLnEMftLyL4vzn2kZYWuI6S7jURvJeSkQHEr9
+	UD1Y/Awko3XnEbHBX0oWG6R0kmIZcNDH0AjrKT3IC2mZ7ijWQczhEopmwnC9o/fbudlg+j4I+/8
+	qGA4xwH4+/xHVoZpDxXvA7bM
+X-Received: by 2002:a05:620a:24d0:b0:7d4:675d:1d52 with SMTP id af79cd13be357-7d5df0f54b8mr1834267185a.17.1751924209908;
+        Mon, 07 Jul 2025 14:36:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxGgfuw0SDe0K+wEH9J/GTIAFerpN+WwGi4PpPRqIgfqPxFB63z3MUMBzdnj16vPyG0nPprw==
+X-Received: by 2002:a05:620a:24d0:b0:7d4:675d:1d52 with SMTP id af79cd13be357-7d5df0f54b8mr1834264185a.17.1751924209444;
+        Mon, 07 Jul 2025 14:36:49 -0700 (PDT)
+Received: from [192.168.2.110] ([69.156.206.24])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d5dbe8f861sm672455785a.86.2025.07.07.14.36.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Jul 2025 14:36:49 -0700 (PDT)
+Message-ID: <e1644469-77ca-4770-bc79-5243a46b8a9e@redhat.com>
+Date: Mon, 7 Jul 2025 17:36:38 -0400
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250707-arm64_vmap-v1-0-8de98ca0f91c@debian.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] efi: Drop preprocessor directives from zboot.lds
+From: Luiz Capitulino <luizcap@redhat.com>
+To: Vitaly Kuznetsov <vkuznets@redhat.com>, Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250606154112.311565-1-vkuznets@redhat.com>
+ <256ad7fc-c6d4-470d-a434-7b5556c3b8f6@redhat.com>
+Content-Language: en-US, en-CA
+In-Reply-To: <256ad7fc-c6d4-470d-a434-7b5556c3b8f6@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 07, 2025 at 09:01:00AM -0700, Breno Leitao wrote:
-> Hi all,
+On 2025-06-06 11:55, Luiz Capitulino wrote:
+> On 2025-06-06 11:41, Vitaly Kuznetsov wrote:
+>> Older versions of `ld` don't seem to support preprocessor directives in
+>> linker scripts, e.g. on RHEL9's ld-2.35.2-63.el9 the build fails with:
+>>
+>>   ld:./drivers/firmware/efi/libstub/zboot.lds:32: ignoring invalid character `#' in expression
+>>   ld:./drivers/firmware/efi/libstub/zboot.lds:33: syntax error
+>>
+>> We don't seem to need these '#ifdef', no empty .sbat section is created
+>> when CONFIG_EFI_SBAT_FILE="":
+>>
+>>   # objdump -h arch/arm64/boot/vmlinuz.efi
+>>
+>>   arch/arm64/boot/vmlinuz.efi:     file format pei-aarch64-little
+>>
+>>   Sections:
+>>   Idx Name          Size      VMA               LMA               File off  Algn
+>>     0 .text         00b94000  0000000000001000  0000000000001000  00001000  2**2
+>>                     CONTENTS, ALLOC, LOAD, READONLY, CODE
+>>     1 .data         00000200  0000000000b95000  0000000000b95000  00b95000  2**2
+>>                     CONTENTS, ALLOC, LOAD, DATA
+>>
+>> Fixes: 0f9a1739dd0e ("efi: zboot specific mechanism for embedding SBAT section")
+>> Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 > 
-> This patchset select VMAP_STACK on arm64 by default, and cleans up the
-> code by removing all associated CONFIG_VMAP_STACK conditionals.
+> Thanks for fixing Vitaly:
 > 
-> This is a suggestion from Will Deacon from another discussion[1].
+> Tested-by: Luiz Capitulino <luizcap@redhat.com>
 > 
-> With VMAP_STACK now always enabled on arm64, the code can be
-> significantly simplified, reducing complexity and potential for
-> misconfiguration.
-> 
-> Overview of Changes
-> 
->     * Remove all #ifdef CONFIG_VMAP_STACK and related runtime checks
->       throughout the architecture codebase.
->     * Replace runtime checks with build-time assertions where
->       appropriate.
-> 
-> Link: https://lore.kernel.org/all/aGfYL8eXjTA9puQr@willie-the-truck/ [1]
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> (this is for the build test, not SBAT testing).
 
-Nice!
+Vitaly, Ard,
 
-Aside from a minor comment on the first patch, this all looks good to
-me. For the series:
+Are we planning to include this fix for 6.16? I'm afraid we'll introduce a
+regression if we don't include it.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-
-Mark.
-
-> ---
-> Breno Leitao (8):
->       arm64: Enable VMAP_STACK support
->       arm64: efi: Remove CONFIG_VMAP_STACK check
->       arm64: Remove CONFIG_VMAP_STACK conditionals from THREAD_SHIFT and THREAD_ALIGN
->       arm64: remove CONFIG_VMAP_STACK conditionals from irq stack setup
->       arm64: remove CONFIG_VMAP_STACK conditionals from traps overflow stack
->       arm64: remove CONFIG_VMAP_STACK checks from stacktrace overflow logic
->       arm64: remove CONFIG_VMAP_STACK checks from SDEI stack handling
->       arm64: remove CONFIG_VMAP_STACK checks from entry code
 > 
->  arch/arm64/Kconfig                  |  1 +
->  arch/arm64/include/asm/memory.h     |  6 +-----
->  arch/arm64/include/asm/stacktrace.h |  6 +-----
->  arch/arm64/kernel/efi.c             |  5 -----
->  arch/arm64/kernel/entry-common.c    |  2 --
->  arch/arm64/kernel/entry.S           |  6 ------
->  arch/arm64/kernel/irq.c             | 13 -------------
->  arch/arm64/kernel/sdei.c            |  8 ++------
->  arch/arm64/kernel/stacktrace.c      |  4 +---
->  arch/arm64/kernel/traps.c           |  3 ---
->  10 files changed, 6 insertions(+), 48 deletions(-)
-> ---
-> base-commit: 9dd1757493416310a5e71146a08bc228869f8dae
-> change-id: 20250707-arm64_vmap-fa70ba3c9cfb
+>> ---
+>> Note: not-yet-merged x86 version of 0f9a1739dd0e does not seem to be affected
+>> as vmlinux.lds script is a pre-processed version of vmlinux.lds.S.
+>> ---
+>>   drivers/firmware/efi/libstub/zboot.lds | 2 --
+>>   1 file changed, 2 deletions(-)
+>>
+>> diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
+>> index c3a166675450..4b8d5cd3dfa2 100644
+>> --- a/drivers/firmware/efi/libstub/zboot.lds
+>> +++ b/drivers/firmware/efi/libstub/zboot.lds
+>> @@ -29,14 +29,12 @@ SECTIONS
+>>           . = _etext;
+>>       }
+>> -#ifdef CONFIG_EFI_SBAT
+>>           .sbat : ALIGN(4096) {
+>>           _sbat = .;
+>>           *(.sbat)
+>>           _esbat = ALIGN(4096);
+>>           . = _esbat;
+>>       }
+>> -#endif
+>>       .data : ALIGN(4096) {
+>>           _data = .;
 > 
-> Best regards,
-> -- 
-> Breno Leitao <leitao@debian.org>
-> 
+
 
