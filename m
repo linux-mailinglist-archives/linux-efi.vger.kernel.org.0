@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-4162-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4158-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F394EAFAE23
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:07:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9598AFAE22
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0294D7AFBBC
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:05:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4AE1AA2256
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4C42951D5;
-	Mon,  7 Jul 2025 08:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4AB292B5C;
+	Mon,  7 Jul 2025 08:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mUaC3QJ+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HXryNsmH"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC85293C75;
-	Mon,  7 Jul 2025 08:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5F5290DAC;
+	Mon,  7 Jul 2025 08:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751875428; cv=none; b=gwXtkQXfONaNLBr+ZIcrHg5zFT69EpzsVEFGvta2Nt7B3d3n4qIknZqmPCKnEYhJsCG7StqPXSQuxYfdJYsRzyhvHCrxF5V8VI/iFM+JlAX6c9ggz2oSFqv5LVrO8m1dc3316mbe3s62/pLu6qBzwwu3XnB047lsnRfAt85hHf0=
+	t=1751875424; cv=none; b=UECtdJK83R5c6BYfxvfE5uO3rCjFmhxbgqNlQwwmRorXs+nNlHd7V3slcsjjcJ0gsV/5rsWQcRzGpfEW5trbysDiMg5Be31x4OOSGAa+4I+TaalwHMPt7hmpor1pqOsk5tMlj8QS6MHtENjVnw2cr4e8zcQ75j1GyCpSh4MWekg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751875428; c=relaxed/simple;
-	bh=NHjNJyeyoaHBgyvq1fO7NjPZypX9iUv0DN8fJhLnDZg=;
+	s=arc-20240116; t=1751875424; c=relaxed/simple;
+	bh=9zPszbQZQjES0k+d8nALovvZoQtbhWaMKlfuK3ZvgbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0z7sa2bAP8+KJe7tQ12h9asGFKZCLOxqtwAw4IuklsPJqveQ4DzAWFxWEJllBDDp857z8gRr7EAHJEwxGMH5+dr11W1t3Ga/bGd4lLBV4M7R7nkwzx3W99/vEX2MtBMpKCE2gaA8fp1HygHMqY5kTgEo2KxBt7EAPuXp8q4EMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mUaC3QJ+; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=XofgkgZQ0NNs+ZtBkMSH95LLNDqg2TLzS8uZdaZcALXIisLhJuAcKcgrPMLNRRboyWUwF0V1b5hBjjsXlFV+xtcSnxPPFR4YxHwy8ziDcmWum69Or2ex9135SYc0YTts0yU1K0cSHRYm9a5aKIZVUbKd7JWDfFEUwzuki5yLRIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HXryNsmH; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751875427; x=1783411427;
+  t=1751875423; x=1783411423;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NHjNJyeyoaHBgyvq1fO7NjPZypX9iUv0DN8fJhLnDZg=;
-  b=mUaC3QJ+4MgGQldZdsEirfwPEuqPdr5UEGG6sx112kUoPVZjr0wUnNnT
-   83xyF4XtrLiTxCEImyw3w4wIdXCmj1RGMX/TjID2oZb1r2Jgc2y4ilTNa
-   QSjqg8mAVJBk+lZ+PXP6TJekzqr59Mg8BC7CMZASOvMM7+PdzvWJWI1W6
-   mO8jF7c3qBjMIWK8vqAMJh2tmgrIW76NuG3Wfd/3CmcSDd+14A/CNgQwF
-   JDLcmRKBGcQ7AJv2DznR5sgAaLzw6wfalwpdwstv9Dg0VE5mSCcWhCeXF
-   A6sVDv8OLbTaSsfoQYGvAEx+9Wpz/rI4+VQ5yixbFoAgRnYzpASE0+OYd
-   w==;
-X-CSE-ConnectionGUID: NCq42qcLSOOPjPSO3aovQA==
-X-CSE-MsgGUID: eWddtOK7RDWKkS9NBjXJfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65151974"
+  bh=9zPszbQZQjES0k+d8nALovvZoQtbhWaMKlfuK3ZvgbI=;
+  b=HXryNsmHMREvhV+LkrBHsfXq+FbD185FEBonJ1UOvdGsBxqpEomXYtGo
+   7ux8qwgNGNJiRhvRIqCkJ4tkO9dymOiMd12q6hN6maClbvfSrmAzclo9G
+   97TqUm9N9r3GGsCK14OlGbRI2vRfAyKJUD5x//2W+jtTzOFk4wiBgFWwS
+   bgwt8eqEVyXTX2zLZfLTXgfoAEGQOAwtTbTpOq5lcgHfAxcXYF7QBCl/I
+   aoB19D9MH8xXlS4ZoZ85c6g1Lr9c1/7jFJMA6SKZGn03f1vjaipk3Iweq
+   CvAATcI2cLmjULOtAwJqajdaXsslPq5SDHvHGsL7rpQNhNbEmH0pPI/Y5
+   Q==;
+X-CSE-ConnectionGUID: /nwpYCtqT6Gh0Yr3H0ffMw==
+X-CSE-MsgGUID: wy5rUS3YQH66xcUDyXGCoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="57891149"
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="65151974"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:03:42 -0700
-X-CSE-ConnectionGUID: QbZyERTwQveB+rAHFYbJYQ==
-X-CSE-MsgGUID: 4cfO9IaSQTuu9vH6M/pBbA==
+   d="scan'208";a="57891149"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:03:42 -0700
+X-CSE-ConnectionGUID: o7N4f0s0Rp+nVzY0KP0MFQ==
+X-CSE-MsgGUID: MHWoadKIQDayJn45LK1r9w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="154573904"
+   d="scan'208";a="186171987"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa010.jf.intel.com with ESMTP; 07 Jul 2025 01:03:29 -0700
+  by orviesa002.jf.intel.com with ESMTP; 07 Jul 2025 01:03:31 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 55183A84; Mon, 07 Jul 2025 11:03:18 +0300 (EEST)
+	id 5F857AA7; Mon, 07 Jul 2025 11:03:18 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv9 14/16] x86/cpu: Enable LASS during CPU initialization
-Date: Mon,  7 Jul 2025 11:03:14 +0300
-Message-ID: <20250707080317.3791624-15-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 15/16] x86/cpu: Make LAM depend on LASS
+Date: Mon,  7 Jul 2025 11:03:15 +0300
+Message-ID: <20250707080317.3791624-16-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
 References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
@@ -127,51 +127,33 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sohil Mehta <sohil.mehta@intel.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-Being a security feature, enable LASS by default if the platform
-supports it.
+To prevent exploits for Spectre based on LAM as demonstrated by the
+whitepaper [1], make LAM depend on LASS, which avoids this type of
+vulnerability.
 
-While at it, get rid of the comment above the SMAP/SMEP/UMIP/LASS setup
-instead of updating it to mention LASS as well, as the whole sequence is
-quite self-explanatory.
+[1] https://download.vusec.net/papers/slam_sp24.pdf
 
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- arch/x86/kernel/cpu/common.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/cpuid-deps.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index f10f9f618805..382b687ce7e2 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -401,6 +401,12 @@ static __always_inline void setup_umip(struct cpuinfo_x86 *c)
- 	cr4_clear_bits(X86_CR4_UMIP);
- }
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index 98d0cdd82574..11bb9ed40140 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -90,6 +90,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
+ 	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
+ 	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
++	{ X86_FEATURE_LAM,			X86_FEATURE_LASS      },
+ 	{}
+ };
  
-+static __always_inline void setup_lass(struct cpuinfo_x86 *c)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_LASS))
-+		cr4_set_bits(X86_CR4_LASS);
-+}
-+
- /* These bits should not change their value after CPU init is finished. */
- static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
- 					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED |
-@@ -1978,10 +1984,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 	/* Disable the PN if appropriate */
- 	squash_the_stupid_serial_number(c);
- 
--	/* Set up SMEP/SMAP/UMIP */
- 	setup_smep(c);
- 	setup_smap(c);
- 	setup_umip(c);
-+	setup_lass(c);
- 
- 	/* Enable FSGSBASE instructions if available. */
- 	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
 -- 
 2.47.2
 
