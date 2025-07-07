@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-4158-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4159-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9598AFAE22
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:06:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BE0AFAE1A
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4AE1AA2256
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:06:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0F984218D4
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4AB292B5C;
-	Mon,  7 Jul 2025 08:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E36293C65;
+	Mon,  7 Jul 2025 08:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HXryNsmH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9JeVgnF"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5F5290DAC;
-	Mon,  7 Jul 2025 08:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9419C29346F;
+	Mon,  7 Jul 2025 08:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751875424; cv=none; b=UECtdJK83R5c6BYfxvfE5uO3rCjFmhxbgqNlQwwmRorXs+nNlHd7V3slcsjjcJ0gsV/5rsWQcRzGpfEW5trbysDiMg5Be31x4OOSGAa+4I+TaalwHMPt7hmpor1pqOsk5tMlj8QS6MHtENjVnw2cr4e8zcQ75j1GyCpSh4MWekg=
+	t=1751875426; cv=none; b=Gz1aCjM2RKRqistEYyhDi+JQeZ3sD5DY8su/p7ZiZhwMAS6/8Dsm6t5NMgNhgbAHdAFqrI81gbh/XtblDMV+N/fyYMPrybdq2/BK7HY4VnyFpSO0AiemwNKUgT04P2ULVvyzumhI6ODmBM3lbkY8KzLfx3hFKlV4sV4FdpHfNDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751875424; c=relaxed/simple;
-	bh=9zPszbQZQjES0k+d8nALovvZoQtbhWaMKlfuK3ZvgbI=;
+	s=arc-20240116; t=1751875426; c=relaxed/simple;
+	bh=zmJ0SsTgrIsGwH/KhdgcrCgX4qTp57IuWr6AQEqkrvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XofgkgZQ0NNs+ZtBkMSH95LLNDqg2TLzS8uZdaZcALXIisLhJuAcKcgrPMLNRRboyWUwF0V1b5hBjjsXlFV+xtcSnxPPFR4YxHwy8ziDcmWum69Or2ex9135SYc0YTts0yU1K0cSHRYm9a5aKIZVUbKd7JWDfFEUwzuki5yLRIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HXryNsmH; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=gXRcjzLAdMpLnUaCJ+2b2oB+/qPxXCvQRmCQWqjUUQYQAK4GG8Ua8SgnztAUwse/IRVIEYqfWe25/1d4tpofQuW8SSWbB1GD2m2w6xcW6Z5w3kEsnb82u7hRsS+KIyaL6azRDz+SpMEqFBuW6+abMQkZhffcc+IuBgCx6xXbSMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9JeVgnF; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751875423; x=1783411423;
+  t=1751875425; x=1783411425;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9zPszbQZQjES0k+d8nALovvZoQtbhWaMKlfuK3ZvgbI=;
-  b=HXryNsmHMREvhV+LkrBHsfXq+FbD185FEBonJ1UOvdGsBxqpEomXYtGo
-   7ux8qwgNGNJiRhvRIqCkJ4tkO9dymOiMd12q6hN6maClbvfSrmAzclo9G
-   97TqUm9N9r3GGsCK14OlGbRI2vRfAyKJUD5x//2W+jtTzOFk4wiBgFWwS
-   bgwt8eqEVyXTX2zLZfLTXgfoAEGQOAwtTbTpOq5lcgHfAxcXYF7QBCl/I
-   aoB19D9MH8xXlS4ZoZ85c6g1Lr9c1/7jFJMA6SKZGn03f1vjaipk3Iweq
-   CvAATcI2cLmjULOtAwJqajdaXsslPq5SDHvHGsL7rpQNhNbEmH0pPI/Y5
+  bh=zmJ0SsTgrIsGwH/KhdgcrCgX4qTp57IuWr6AQEqkrvM=;
+  b=R9JeVgnF33ux6dCFjWbHNtmVyF+ePU3No+J2GfIHLYxO8DOE2uf6GMM2
+   w7iYzPtzbAXRcQ36ZAj0Dg2saiEYod8rBgL6U25s7kg4jAnnxyVNIKtM/
+   kB+V/8ZK/BldukDsYoqjMOOVr/hYykz1o+YsinBfNcV3rNJcvyM1Ib+Th
+   pjjpI2DRSxaiV1KvPx2FpczOT/hx1cgy0nWL3qZc4IXhknmx81z0uYE5w
+   QEUBtJfKxmmrwep8TL9VJidAW1awA2NuOEv9+2hSPmbdkz9ClFwEb1H3R
+   TtOeSpyrx9gzX8yD4DcfCwRvD/deBRceH8otFx9cOjxk+BpVZNWPkLzC7
    Q==;
-X-CSE-ConnectionGUID: /nwpYCtqT6Gh0Yr3H0ffMw==
-X-CSE-MsgGUID: wy5rUS3YQH66xcUDyXGCoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="57891149"
+X-CSE-ConnectionGUID: jGf0D+X+Tn6S3Lda1D+/Hw==
+X-CSE-MsgGUID: OuNsnhRdTna6X2RmOVyZ6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="57891170"
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="57891149"
+   d="scan'208";a="57891170"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:03:42 -0700
-X-CSE-ConnectionGUID: o7N4f0s0Rp+nVzY0KP0MFQ==
-X-CSE-MsgGUID: MHWoadKIQDayJn45LK1r9w==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:03:43 -0700
+X-CSE-ConnectionGUID: 2AH2cPTGSACdcl2bkvyuZQ==
+X-CSE-MsgGUID: rhjMIjipQl++rGKx2/3w4w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="186171987"
+   d="scan'208";a="186171990"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orviesa002.jf.intel.com with ESMTP; 07 Jul 2025 01:03:31 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 5F857AA7; Mon, 07 Jul 2025 11:03:18 +0300 (EEST)
+	id 6D8F4BC2; Mon, 07 Jul 2025 11:03:18 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv9 15/16] x86/cpu: Make LAM depend on LASS
-Date: Mon,  7 Jul 2025 11:03:15 +0300
-Message-ID: <20250707080317.3791624-16-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 16/16] x86: Re-enable Linear Address Masking
+Date: Mon,  7 Jul 2025 11:03:16 +0300
+Message-ID: <20250707080317.3791624-17-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
 References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
@@ -127,33 +127,54 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+This reverts commit 3267cb6d3a174ff83d6287dcd5b0047bbd912452.
 
-To prevent exploits for Spectre based on LAM as demonstrated by the
-whitepaper [1], make LAM depend on LASS, which avoids this type of
-vulnerability.
+LASS mitigates the Spectre based on LAM (SLAM) [1] and the previous
+commit made LAM depend on LASS, so we no longer need to disable LAM at
+compile time, so revert the commit that disables LAM.
+
+Adjust USER_PTR_MAX if LAM enabled, allowing tag bits to be set for
+userspace pointers. The value for the constant is defined in a way to
+avoid overflow compiler warning on 32-bit config.
 
 [1] https://download.vusec.net/papers/slam_sp24.pdf
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 ---
- arch/x86/kernel/cpu/cpuid-deps.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/Kconfig             | 1 -
+ arch/x86/kernel/cpu/common.c | 5 +----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
-index 98d0cdd82574..11bb9ed40140 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -90,6 +90,7 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
- 	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
- 	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
-+	{ X86_FEATURE_LAM,			X86_FEATURE_LASS      },
- 	{}
- };
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 71019b3b54ea..2b48e916b754 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2181,7 +2181,6 @@ config RANDOMIZE_MEMORY_PHYSICAL_PADDING
+ config ADDRESS_MASKING
+ 	bool "Linear Address Masking support"
+ 	depends on X86_64
+-	depends on COMPILE_TEST || !CPU_MITIGATIONS # wait for LASS
+ 	help
+ 	  Linear Address Masking (LAM) modifies the checking that is applied
+ 	  to 64-bit linear addresses, allowing software to use of the
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 382b687ce7e2..7ae757498a6f 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2553,11 +2553,8 @@ void __init arch_cpu_finalize_init(void)
+ 	if (IS_ENABLED(CONFIG_X86_64)) {
+ 		unsigned long USER_PTR_MAX = TASK_SIZE_MAX;
  
+-		/*
+-		 * Enable this when LAM is gated on LASS support
+ 		if (cpu_feature_enabled(X86_FEATURE_LAM))
+-			USER_PTR_MAX = (1ul << 63) - PAGE_SIZE;
+-		 */
++			USER_PTR_MAX = (-1UL >> 1) & PAGE_MASK;
+ 		runtime_const_init(ptr, USER_PTR_MAX);
+ 
+ 		/*
 -- 
 2.47.2
 
