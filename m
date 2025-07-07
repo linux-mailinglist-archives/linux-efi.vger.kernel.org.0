@@ -1,64 +1,65 @@
-Return-Path: <linux-efi+bounces-4148-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4147-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3D6AFADFC
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2CCAFADFA
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6CB61AA07EE
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EF831AA0A52
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3367728AAE0;
-	Mon,  7 Jul 2025 08:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE2028A715;
+	Mon,  7 Jul 2025 08:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EcLu1TFf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oHPbF/rT"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454C828A1F3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283FC28A1E5;
 	Mon,  7 Jul 2025 08:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751875415; cv=none; b=i2QeHGsluZqsgcEmpMzyv0WoSYcNq+tGunzVnjQ0S5i+9oo7ebXWK5Pu2rS/3EI372w9C/JbbLsyca3781vpK9v+S2MEc81uonCyA3m7v9/S67IGLPz1nHcYU7nA9TrOma0S5H+9tXIHaShT2GuclQFVrHswRhhkMGDVT7LKuSo=
+	t=1751875414; cv=none; b=GYMInowPh/2YQOS1ftJGe0GQ512vmeFrvKuBANVN0pq42Zc0roeI0orBGvBlxfz0W/Xhd16cuuip2hQHiQE8NQrV3SQZUoZ9vJ60zF59/u887UFSsNXoE28HJm4wok+UZhEPs4+1iCy617rerEO0xsqbL/0zgDEuOlnyH3R8CVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751875415; c=relaxed/simple;
-	bh=iaPw+Tqx+OWZrXasa3eHzUopEjL0ah7C11LnYNUl9mc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pkBBlRp24X3YxHlPkPjh8hXvd4yXAnlhn+KXRL3Q+0VG8nCO7ghgdndp5vrS+Z35cL+N95QwzMZNe9wfnkLMspxid6CcohVg4vUInyd/fPSHO6XEAkeDchPNZEBNF/dxfdl4LdNxocA4ze/yzQxkmjrgaDJWkJGSZMzdGz3EsTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EcLu1TFf; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1751875414; c=relaxed/simple;
+	bh=+sLhOPcFptW2woVp03R+FsF4pqvxAwrxx4TJdCebibo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FzmbcSbPdH13eX2GclUJBJx7wuVHup+1R1gvwux2pNdqPXMd3DBVb9hHVmdmcOc5qD8J+BpRdHrZUOpU+RX2izsBZiYUfUNEpBHBdytSqlHEdazO1Iki+Px61j2tPBGrtP1C7cWoHFzy3b9KpBCoHV/ZyRp+lVltf9fRXQEixAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oHPbF/rT; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1751875413; x=1783411413;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iaPw+Tqx+OWZrXasa3eHzUopEjL0ah7C11LnYNUl9mc=;
-  b=EcLu1TFfwvX4ZGLwGt4mcuBXA3QUA2ymmQKcEUZoiYNoXCVXv7l96/1h
-   uz///IlE6zNNMP+02KSw7fScgcQuDavInNTpustO7XIUD8IGB2dCiMZEv
-   iU2LL3xVQNUxXQB/VeeituW07WEuO4KqTUQcEjdcj5fJU8hjBwv40mlzK
-   QIAr1Q9vWompUdBFqMj7uhQmquxORB5Y1gTPzWcHBIqEqlFt9sYC2SltP
-   8rlsd/K7pgrkwOJQB5JvawcH7spo6/ArPIGIWMM5/HauUCC1b2e4RIjOO
-   bR/0doqteVoniNPBLLCwGG1mC7evr+snXh+X5TXqJ4qQf0ih3kLZBOdo3
-   w==;
-X-CSE-ConnectionGUID: dPy8TzhyTrSMPbaCpGlySA==
-X-CSE-MsgGUID: 1XdV5ZQ3SUGO2SgC6EdxEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="53807211"
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+sLhOPcFptW2woVp03R+FsF4pqvxAwrxx4TJdCebibo=;
+  b=oHPbF/rTqMvDYR+Zsj1BPcpqRagO7QKglQ272HJiq1s9v/+oEgeHFlth
+   hqJs9wiY0QDlomidab0FKNIXbyefI5Ll4Rz/vCmcxHE4Y767gR0EJCMij
+   SOcrF9SwFiSe400QerDBtSYWAL7QadsZp/LHQaUsSZ0C/hIBc7wQo8VFZ
+   39gXLmFezLpiD5Uyx6sUAeuR7I5aQoK1BWaBneUjO1XyREQeMN18zSc+9
+   TCHtvpLVElX0fRrOGIoBg7KZhpKTPRwG/tvWc5ptcCjB8W7UsBJVYOvrr
+   TaA7SPKT/4PsF6Ksg0LAcUfckKGvEyysiUC+qMWydvae6IjneM1XnAa14
+   Q==;
+X-CSE-ConnectionGUID: sVyaZc6yQPyz2wlT/cYEgA==
+X-CSE-MsgGUID: W5xDcNk7RXugPEroigQ7hQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="53807189"
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="53807211"
+   d="scan'208";a="53807189"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:03:31 -0700
-X-CSE-ConnectionGUID: A02+mYJJRoeBobgfJfd7tA==
-X-CSE-MsgGUID: Io4iw1G6RGq5nAu3GRQz9g==
+X-CSE-ConnectionGUID: CKZM73tORg+jMc/8ZlU7xg==
+X-CSE-MsgGUID: eZ5S2a+ZQ/yYIhLBvbSggQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="160804325"
+   d="scan'208";a="160804323"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orviesa005.jf.intel.com with ESMTP; 07 Jul 2025 01:03:19 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 80FD1182; Mon, 07 Jul 2025 11:03:17 +0300 (EEST)
+	id 9223615D; Mon, 07 Jul 2025 11:03:17 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -110,188 +111,143 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCHv9 00/16] x86: Enable Linear Address Space Separation support
-Date: Mon,  7 Jul 2025 11:03:00 +0300
-Message-ID: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
+	linux-mm@kvack.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 01/16] x86/cpu: Enumerate the LASS feature bits
+Date: Mon,  7 Jul 2025 11:03:01 +0300
+Message-ID: <20250707080317.3791624-2-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
+References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Linear Address Space Separation (LASS) is a security feature that intends to
-prevent malicious virtual address space accesses across user/kernel mode.
+From: Sohil Mehta <sohil.mehta@intel.com>
 
-Such mode based access protection already exists today with paging and features
-such as SMEP and SMAP. However, to enforce these protections, the processor
-must traverse the paging structures in memory.  Malicious software can use
-timing information resulting from this traversal to determine details about the
-paging structures, and these details may also be used to determine the layout
-of the kernel memory.
+Linear Address Space Separation (LASS) is a security feature that
+intends to prevent malicious virtual address space accesses across
+user/kernel mode.
 
-The LASS mechanism provides the same mode-based protections as paging but
-without traversing the paging structures. Because the protections enforced by
-LASS are applied before paging, software will not be able to derive
-paging-based timing information from the various caching structures such as the
-TLBs, mid-level caches, page walker, data caches, etc. LASS can avoid probing
-using double page faults, TLB flush and reload, and SW prefetch instructions.
-See [2], [3] and [4] for some research on the related attack vectors.
+Such mode based access protection already exists today with paging and
+features such as SMEP and SMAP. However, to enforce these protections,
+the processor must traverse the paging structures in memory.  Malicious
+software can use timing information resulting from this traversal to
+determine details about the paging structures, and these details may
+also be used to determine the layout of the kernel memory.
 
-Had it been available, LASS alone would have mitigated Meltdown. (Hindsight is
-20/20 :)
+The LASS mechanism provides the same mode-based protections as paging
+but without traversing the paging structures. Because the protections
+enforced by LASS are applied before paging, software will not be able to
+derive paging-based timing information from the various caching
+structures such as the TLBs, mid-level caches, page walker, data caches,
+etc.
 
-In addition, LASS prevents an attack vector described in a Spectre LAM (SLAM)
-whitepaper [7].
-
-LASS enforcement relies on the typical kernel implementation to divide the
-64-bit virtual address space into two halves:
+LASS enforcement relies on the typical kernel implementation to divide
+the 64-bit virtual address space into two halves:
   Addr[63]=0 -> User address space
   Addr[63]=1 -> Kernel address space
-Any data access or code execution across address spaces typically results in a
-#GP fault.
 
-Kernel accesses usually only happen to the kernel address space. However, there
-are valid reasons for kernel to access memory in the user half. For these cases
-(such as text poking and EFI runtime accesses), the kernel can temporarily
-suspend the enforcement of LASS by toggling SMAP (Supervisor Mode Access
-Prevention) using the stac()/clac() instructions and in one instance a downright
-disabling LASS for an EFI runtime call.
+Any data access or code execution across address spaces typically
+results in a #GP fault.
 
-User space cannot access any kernel address while LASS is enabled.
-Unfortunately, legacy vsyscall functions are located in the address range
-0xffffffffff600000 - 0xffffffffff601000 and emulated in kernel.  To avoid
-breaking user applications when LASS is enabled, extend the vsyscall emulation
-in execute (XONLY) mode to the #GP fault handler.
+The LASS enforcement for kernel data access is dependent on CR4.SMAP
+being set. The enforcement can be disabled by toggling the RFLAGS.AC bit
+similar to SMAP.
 
-In contrast, the vsyscall EMULATE mode is deprecated and not expected to be
-used by anyone.  Supporting EMULATE mode with LASS would need complex
-instruction decoding in the #GP fault handler and is probably not worth the
-hassle. Disable LASS in this rare case when someone absolutely needs and
-enables vsyscall=emulate via the command line.
+Define the CPU feature bits to enumerate this feature and include
+feature dependencies to reflect the same.
 
-Changed from v8[12]:
-- Drop __inline_memcpy()/memset(). Directly use asm() for text poke;
-- Rework ##SS handler;
-- Restructure get_kernel_gp_address();
-- Update commit messages and comments;
+LASS provides protection against a class of speculative attacks, such as
+SLAM[1]. Add the "lass" flag to /proc/cpuinfo to indicate that the feature
+is supported by hardware and enabled by the kernel. This allows userspace
+to determine if the setup is secure against such attacks.
 
-Changes from v7[11]:
-- Fix __inline_memset();
-- Rename lass_disable/enable_enforcement() back to to lass_clac/stac()
-- Generalize #GP address decode and hint code. Rename stuff to be
-  non-GP-centric;
-- Reorder patches;
-- Update commit messages and comments;
+[1] https://download.vusec.net/papers/slam_sp24.pdf
 
-Changes from v6[10]:
-- Rework #SS handler to work properly on FRED;
-- Do not require X86_PF_INSTR to emulate vsyscall;
-- Move lass_clac()/stac() definition to the patch where they are used;
-- Rename lass_clac/stac() to lass_disable/enable_enforcement();
-- Fix several build issues around inline memcpy and memset;
-- Fix sparse warning;
-- Adjust comments and commit messages;
-- Drop "x86/efi: Move runtime service initialization to arch/x86" patch
-  as it got applied;
+Co-developed-by: Yian Chen <yian.chen@intel.com>
+Signed-off-by: Yian Chen <yian.chen@intel.com>
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Xin Li (Intel) <xin@zytor.com>
+---
+ arch/x86/Kconfig.cpufeatures                | 4 ++++
+ arch/x86/include/asm/cpufeatures.h          | 1 +
+ arch/x86/include/uapi/asm/processor-flags.h | 2 ++
+ arch/x86/kernel/cpu/cpuid-deps.c            | 1 +
+ tools/arch/x86/include/asm/cpufeatures.h    | 1 +
+ 5 files changed, 9 insertions(+)
 
-Changes from v5[9]:
-- Report LASS violation as NULL pointer dereference if the address is in the
-  first page frame;
-- Provide helpful error message on #SS due to LASS violation;
-- Fold patch for vsyscall=emulate documentation into patch
-  that disables LASS with vsyscall=emulate;
-- Rewrite __inline_memeset() and __inline_memcpy();
-- Adjust comments and commit messages;
-
-Changes from v4[8]:
-- Added PeterZ's Originally-by and SoB to 2/16
-- Added lass_clac()/lass_stac() to differentiate from SMAP necessitated
-  clac()/stac() and to be NOPs on CPUs that don't support LASS
-- Moved LASS enabling patch to the end to avoid rendering machines
-  unbootable between until the patch that disables LASS around EFI
-  initialization
-- Reverted Pawan's LAM disabling commit
-
-Changes from v3[6]:
-- Made LAM dependent on LASS
-- Moved EFI runtime initialization to x86 side of things
-- Suspended LASS validation around EFI set_virtual_address_map call
-- Added a message for the case of kernel side LASS violation
-- Moved inline memset/memcpy versions to the common string.h
-
-Changes from v2[5]:
-- Added myself to the SoB chain
-
-Changes from v1[1]:
-- Emulate vsyscall violations in execute mode in the #GP fault handler
-- Use inline memcpy and memset while patching alternatives
-- Remove CONFIG_X86_LASS
-- Make LASS depend on SMAP
-- Dropped the minimal KVM enabling patch
-
-
-[1] https://lore.kernel.org/lkml/20230110055204.3227669-1-yian.chen@intel.com/
-[2] “Practical Timing Side Channel Attacks against Kernel Space ASLR”,
-https://www.ieee-security.org/TC/SP2013/papers/4977a191.pdf
-[3] “Prefetch Side-Channel Attacks: Bypassing SMAP and Kernel ASLR”, http://doi.acm.org/10.1145/2976749.2978356
-[4] “Harmful prefetch on Intel”, https://ioactive.com/harmful-prefetch-on-intel/ (H/T Anders)
-[5] https://lore.kernel.org/all/20230530114247.21821-1-alexander.shishkin@linux.intel.com/
-[6] https://lore.kernel.org/all/20230609183632.48706-1-alexander.shishkin@linux.intel.com/
-[7] https://download.vusec.net/papers/slam_sp24.pdf
-[8] https://lore.kernel.org/all/20240710160655.3402786-1-alexander.shishkin@linux.intel.com/
-[9] https://lore.kernel.org/all/20241028160917.1380714-1-alexander.shishkin@linux.intel.com
-[10] https://lore.kernel.org/all/20250620135325.3300848-1-kirill.shutemov@linux.intel.com/
-[11] https://lore.kernel.org/all/20250625125112.3943745-1-kirill.shutemov@linux.intel.com/
-[12] https://lore.kernel.org/all/20250701095849.2360685-1-kirill.shutemov@linux.intel.com/
-
-Alexander Shishkin (4):
-  x86/cpu: Defer CR pinning setup until core initcall
-  efi: Disable LASS around set_virtual_address_map() EFI call
-  x86/traps: Communicate a LASS violation in #GP message
-  x86/cpu: Make LAM depend on LASS
-
-Kirill A. Shutemov (4):
-  x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
-  x86/traps: Generalize #GP address decode and hint code
-  x86/traps: Handle LASS thrown #SS
-  x86: Re-enable Linear Address Masking
-
-Sohil Mehta (7):
-  x86/cpu: Enumerate the LASS feature bits
-  x86/alternatives: Disable LASS when patching kernel alternatives
-  x86/vsyscall: Reorganize the #PF emulation code
-  x86/traps: Consolidate user fixups in exc_general_protection()
-  x86/vsyscall: Add vsyscall emulation for #GP
-  x86/vsyscall: Disable LASS if vsyscall mode is set to EMULATE
-  x86/cpu: Enable LASS during CPU initialization
-
-Yian Chen (1):
-  x86/cpu: Set LASS CR4 bit as pinning sensitive
-
- .../admin-guide/kernel-parameters.txt         |   4 +-
- arch/x86/Kconfig                              |   1 -
- arch/x86/Kconfig.cpufeatures                  |   4 +
- arch/x86/entry/vsyscall/vsyscall_64.c         |  69 +++++++---
- arch/x86/include/asm/cpufeatures.h            |   1 +
- arch/x86/include/asm/smap.h                   |  33 ++++-
- arch/x86/include/asm/vsyscall.h               |  14 +-
- arch/x86/include/uapi/asm/processor-flags.h   |   2 +
- arch/x86/kernel/alternative.c                 |  28 +++-
- arch/x86/kernel/cpu/common.c                  |  22 ++--
- arch/x86/kernel/cpu/cpuid-deps.c              |   2 +
- arch/x86/kernel/dumpstack.c                   |   6 +-
- arch/x86/kernel/traps.c                       | 122 ++++++++++++------
- arch/x86/kernel/umip.c                        |   3 +
- arch/x86/mm/fault.c                           |   2 +-
- arch/x86/platform/efi/efi.c                   |  15 +++
- tools/arch/x86/include/asm/cpufeatures.h      |   1 +
- 17 files changed, 249 insertions(+), 80 deletions(-)
-
+diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
+index 250c10627ab3..733d5aff2456 100644
+--- a/arch/x86/Kconfig.cpufeatures
++++ b/arch/x86/Kconfig.cpufeatures
+@@ -124,6 +124,10 @@ config X86_DISABLED_FEATURE_PCID
+ 	def_bool y
+ 	depends on !X86_64
+ 
++config X86_DISABLED_FEATURE_LASS
++	def_bool y
++	depends on X86_32
++
+ config X86_DISABLED_FEATURE_PKU
+ 	def_bool y
+ 	depends on !X86_INTEL_MEMORY_PROTECTION_KEYS
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index b78af55aa22e..8eef1ad7aca2 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -313,6 +313,7 @@
+ #define X86_FEATURE_SM4			(12*32+ 2) /* SM4 instructions */
+ #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* "avx_vnni" AVX VNNI instructions */
+ #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* "avx512_bf16" AVX512 BFLOAT16 instructions */
++#define X86_FEATURE_LASS		(12*32+ 6) /* "lass" Linear Address Space Separation */
+ #define X86_FEATURE_CMPCCXADD           (12*32+ 7) /* CMPccXADD instructions */
+ #define X86_FEATURE_ARCH_PERFMON_EXT	(12*32+ 8) /* Intel Architectural PerfMon Extension */
+ #define X86_FEATURE_FZRM		(12*32+10) /* Fast zero-length REP MOVSB */
+diff --git a/arch/x86/include/uapi/asm/processor-flags.h b/arch/x86/include/uapi/asm/processor-flags.h
+index f1a4adc78272..81d0c8bf1137 100644
+--- a/arch/x86/include/uapi/asm/processor-flags.h
++++ b/arch/x86/include/uapi/asm/processor-flags.h
+@@ -136,6 +136,8 @@
+ #define X86_CR4_PKE		_BITUL(X86_CR4_PKE_BIT)
+ #define X86_CR4_CET_BIT		23 /* enable Control-flow Enforcement Technology */
+ #define X86_CR4_CET		_BITUL(X86_CR4_CET_BIT)
++#define X86_CR4_LASS_BIT	27 /* enable Linear Address Space Separation support */
++#define X86_CR4_LASS		_BITUL(X86_CR4_LASS_BIT)
+ #define X86_CR4_LAM_SUP_BIT	28 /* LAM for supervisor pointers */
+ #define X86_CR4_LAM_SUP		_BITUL(X86_CR4_LAM_SUP_BIT)
+ 
+diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
+index 46efcbd6afa4..98d0cdd82574 100644
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -89,6 +89,7 @@ static const struct cpuid_dep cpuid_deps[] = {
+ 	{ X86_FEATURE_SHSTK,			X86_FEATURE_XSAVES    },
+ 	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
+ 	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
++	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
+ 	{}
+ };
+ 
+diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
+index ee176236c2be..4473a6f7800b 100644
+--- a/tools/arch/x86/include/asm/cpufeatures.h
++++ b/tools/arch/x86/include/asm/cpufeatures.h
+@@ -313,6 +313,7 @@
+ #define X86_FEATURE_SM4			(12*32+ 2) /* SM4 instructions */
+ #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* "avx_vnni" AVX VNNI instructions */
+ #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* "avx512_bf16" AVX512 BFLOAT16 instructions */
++#define X86_FEATURE_LASS		(12*32+ 6) /* "lass" Linear Address Space Separation */
+ #define X86_FEATURE_CMPCCXADD           (12*32+ 7) /* CMPccXADD instructions */
+ #define X86_FEATURE_ARCH_PERFMON_EXT	(12*32+ 8) /* Intel Architectural PerfMon Extension */
+ #define X86_FEATURE_FZRM		(12*32+10) /* Fast zero-length REP MOVSB */
 -- 
 2.47.2
 
