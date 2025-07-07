@@ -1,257 +1,161 @@
-Return-Path: <linux-efi+bounces-4144-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4145-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEC9AFAA3C
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 05:31:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE319AFADEE
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2780B3B8BB9
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 03:30:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DCF47A977F
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234EF25A334;
-	Mon,  7 Jul 2025 03:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5A3275867;
+	Mon,  7 Jul 2025 08:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="iO2AS+Bt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h2dBAFzd"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B8B12B94;
-	Mon,  7 Jul 2025 03:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC35800;
+	Mon,  7 Jul 2025 08:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751859047; cv=none; b=df5aZIkn52NIvwG1bJ3eu1eGsNFEpJZInhA/yaQt6kqO4mXOh450BNBXlb30wmlCraBqevZ4X+lh0zD+9LVwqzcMEvZhmuhl/q/XTfVjbp+WcgZAyiFVl5337y0Yg1SoZXkTPHTdQDHsIWFU5i8BFaSZ5IJG7TldsflBAG0vUDo=
+	t=1751875343; cv=none; b=i0wQH9UPaZm5R/v9SHkqfcrQ9sfg7knojD8aejwm9qaTf3pQ5RmhwM7OYxlUiN0gcsdd/+mhC2XtrCamg07SfS2UvTWL6eJ08xcI5patqUUfGTKrtcqRkZuxzSAZGXd2agLi1R/IWye5N92WS2WpCN5jD8tbMYUy4R1RgtYmUi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751859047; c=relaxed/simple;
-	bh=kxBDgCOSz0tq1MaLRMuxn7XrqsVVSATXO/ynrjrJbd0=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=dbN/bd3RaaebwIbS8un1mtquzB9sI7mz2OHSvEJetWC9kAa9oWfA+ioKt0j/RD6W/mgWLcTzM5FyA22rZ+mHJK7hCer2BpS1BUTMBuZma2FNjV2t1+edssbQlyvQePHNIHlKo6EPfMrB9K6MnVap8e1G7FnNKeV1isPVJu9cFaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=iO2AS+Bt; arc=none smtp.client-ip=220.197.31.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=HP8tZujBjcSHGre
-	MG32sL06BiLfrv9CiKF8NSKgD8CQ=; b=iO2AS+Bt7g1bJfHsadCJ/avBYWhlivM
-	hGDlFCw4gJZjPqnyyWWxzbnXbPeR1Fb4HaeMAUw8+XRjaWGvzvIzb7whz7S7AQnA
-	i/ePZUoox4I+ZaUytryt2THzbQRet/GLEjglDFLc7B6UnGqQwBw6i9u5ZTU6956x
-	1DjdcyXLrzeQ=
-Received: from hg-OptiPlex-7040.hygon.cn (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDnr9uoO2tor4cpBA--.25530S2;
-	Mon, 07 Jul 2025 11:14:49 +0800 (CST)
-From: yangge1116@126.com
-To: ardb@kernel.org
-Cc: jarkko@kernel.org,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	ilias.apalodimas@linaro.org,
-	jgg@ziepe.ca,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	liuzixing@hygon.cn,
-	Ge Yang <yangge1116@126.com>
-Subject: [PATCH V3] efi/tpm: Fix the issue where the CC platforms event log header can't be correctly identified
-Date: Mon,  7 Jul 2025 11:14:47 +0800
-Message-Id: <1751858087-10366-1-git-send-email-yangge1116@126.com>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID:_____wDnr9uoO2tor4cpBA--.25530S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtryxtrW3CF4DXrW3Xr13Jwb_yoW3JF4DpF
-	48Jr9Yyr45ta1Igw1fAw1UCwsxXw4ktrZrGFyDK34jyrnxWFyIgFWUGFy5GF93trs7J3Z0
-	qa4Utr17Ca4UuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRoKZXUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhGDG2hrOMlJZwAAsv
+	s=arc-20240116; t=1751875343; c=relaxed/simple;
+	bh=N7TeHc8uA+dRWRGg8sis7a69LSQxgrglsAuwm+wt4Co=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mXsNl2PuIEtl0yywpBQ9uKrqcbT7xo6B5zCd0z3XXDvtCvFbLkNQTFE6jhPRvARuFVap9lAPGBOvNFRgzPyobLbgmuKhAPp4oWXVMU1e41F8UpevN/QPbVh5BUiTD3YTn943tYbTvNBYDrqTy7N+OmSnLnmF3QLsXqw4QTVX8bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h2dBAFzd; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751875342; x=1783411342;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=N7TeHc8uA+dRWRGg8sis7a69LSQxgrglsAuwm+wt4Co=;
+  b=h2dBAFzdP+kHxLVQp+unNgq7+D3QAN2iM9LHf4IuSV9qNAwotP3ngKfN
+   dnVBw+OO4LYD1KmREHARwnV9w1MozMXeOuxARev/OfUS6zKc5CF7wUMvP
+   QNdN6Nw4yfSO+/t/7Ol3jl/MP6vh6LjG/uAErdIpMfx4ytyFXvc5tDZxN
+   6Dnh+2V6h9qLXM8bhTi7v98XdBysIaX+gfNV5/+i+IVt1HQZJrHOnba9I
+   +6e1HURkeT5IqiFVrobqq1XvAvJJiN/okFhvt6YpQZn8ucfgJOH1F/PlI
+   N+mFc6DqvWticLjhkds+9tJ6LxXWxtJvZoAX0SXwVlJYRsg9FeYakTYFJ
+   w==;
+X-CSE-ConnectionGUID: K0UdxFVbQhmxICk1YI54yQ==
+X-CSE-MsgGUID: zcbVEhLyScmp8ulTSWSS4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65541986"
+X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
+   d="scan'208";a="65541986"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:02:20 -0700
+X-CSE-ConnectionGUID: VSf3HB/2Qi+d4IAoxJBfJg==
+X-CSE-MsgGUID: rAXXNYSFSwmLSxUNL/u5dQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
+   d="scan'208";a="154565268"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa006.jf.intel.com with ESMTP; 07 Jul 2025 01:02:08 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 5DB11182; Mon, 07 Jul 2025 11:02:06 +0300 (EEST)
+Date: Mon, 7 Jul 2025 11:02:06 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>, 
+	"Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>, 
+	Alexey Kardashevskiy <aik@amd.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>, 
+	Ingo Molnar <mingo@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Sandipan Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>, 
+	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, 
+	Huang Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCHv8 02/17] x86/asm: Introduce inline memcpy and memset
+Message-ID: <eq5h4a5dvlkncthg3lic3go22op2docbhdaolpfwrq2ieai3qo@j3b26mmhf52q>
+References: <20250701095849.2360685-1-kirill.shutemov@linux.intel.com>
+ <20250701095849.2360685-3-kirill.shutemov@linux.intel.com>
+ <49f7c370-1e28-494b-96a9-f45e06ed4631@intel.com>
+ <20250706101342.069b5068@pumpkin>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250706101342.069b5068@pumpkin>
 
-From: Ge Yang <yangge1116@126.com>
+On Sun, Jul 06, 2025 at 10:13:42AM +0100, David Laight wrote:
+> On Thu, 3 Jul 2025 10:13:44 -0700
+> Dave Hansen <dave.hansen@intel.com> wrote:
+> 
+> > On 7/1/25 02:58, Kirill A. Shutemov wrote:
+> > > Extract memcpy and memset functions from copy_user_generic() and
+> > > __clear_user().
+> > > 
+> > > They can be used as inline memcpy and memset instead of the GCC builtins
+> > > whenever necessary. LASS requires them to handle text_poke.  
+> > 
+> > Why are we messing with the normal user copy functions? Code reuse is
+> > great, but as you're discovering, the user copy code is highly
+> > specialized and not that easy to reuse for other things.
+> > 
+> > Don't we just need a dirt simple chunk of code that does (logically):
+> > 
+> > 	stac();
+> > 	asm("rep stosq...");
+> > 	clac();
+> > 
+> > Performance doesn't matter for text poking, right? It could be stosq or
+> > anything else that you can inline. It could be a for() loop for all I
+> > care as long as the compiler doesn't transform it into some out-of-line
+> > memset. Right?
+> > 
+> 
+> It doesn't even really matter if there is an out-of-line memset.
+> All you need to do is 'teach' objtool it isn't a problem.
 
-Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
-for CC platforms") reuses TPM2 support code for the CC platforms, when
-launching a TDX virtual machine with coco measurement enabled, the
-following error log is generated:
+PeterZ was not fan of the idead;
 
-[Firmware Bug]: Failed to parse event in TPM Final Events Log
+https://lore.kernel.org/all/20241029113611.GS14555@noisy.programming.kicks-ass.net/
 
-Call Trace:
-efi_config_parse_tables()
-  efi_tpm_eventlog_init()
-    tpm2_calc_event_log_size()
-      __calc_tpm2_event_size()
+> Is this for the boot-time asm-alternatives?
 
-The pcr_idx value in the Intel TDX log header is 1, causing the function
-__calc_tpm2_event_size() to fail to recognize the log header, ultimately
-leading to the "Failed to parse event in TPM Final Events Log" error.
+Not only boot-time. static_branches are switchable at runtime.
 
-According to UEFI Specification 2.10, Section 38.4.1: For TDX, TPM PCR
-0 maps to MRTD, so the log header uses TPM PCR 1 instead. To successfully
-parse the TDX event log header, the check for a pcr_idx value of 0
-must be skipped.
+> In that case I wonder why a 'low' address is being used?
+> With LASS enabled using a low address on a life kernel would make it
+> harder for another cpu to leverage the writable code page, but
+> that isn't a requirement of LASS.
 
-According to Table 6 in Section 10.2.1 of the TCG PC Client
-Specification, the index field does not require the PCR index to be
-fixed at zero. Therefore, skipping the check for a pcr_idx value of
-0 for CC platforms is safe.
+Because kernel side of address space is shared across all CPU and we don't
+want kernel code to be writable to all CPUs
 
-Link: https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-domain-extension
-Link: https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
-Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
-Signed-off-by: Ge Yang <yangge1116@126.com>
-Cc: stable@vger.kernel.org
----
+> If it is being used for later instruction patching you need the
+> very careful instruction sequences and cpu synchronisation.
+> In that case I suspect you need to add conditional stac/clac
+> to the existing patching code (and teach objtool it is all ok).
 
-V3:
-- fix build error
+STAC/CLAC is conditional in text poke on LASS presence on the machine.
 
-V2:
-- limit the fix for CC only suggested by Jarkko and Sathyanarayanan
-
- drivers/char/tpm/eventlog/tpm2.c   |  4 +++-
- drivers/firmware/efi/libstub/tpm.c | 13 +++++++++----
- drivers/firmware/efi/tpm.c         |  4 +++-
- include/linux/tpm_eventlog.h       | 14 +++++++++++---
- 4 files changed, 26 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/char/tpm/eventlog/tpm2.c b/drivers/char/tpm/eventlog/tpm2.c
-index 37a0580..30ef47c 100644
---- a/drivers/char/tpm/eventlog/tpm2.c
-+++ b/drivers/char/tpm/eventlog/tpm2.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/tpm_eventlog.h>
-+#include <linux/cc_platform.h>
- 
- #include "../tpm.h"
- #include "common.h"
-@@ -36,7 +37,8 @@
- static size_t calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
- 				   struct tcg_pcr_event *event_header)
- {
--	return __calc_tpm2_event_size(event, event_header, false);
-+	return __calc_tpm2_event_size(event, event_header, false,
-+			cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
- }
- 
- static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
-diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
-index a5c6c4f..9728060 100644
---- a/drivers/firmware/efi/libstub/tpm.c
-+++ b/drivers/firmware/efi/libstub/tpm.c
-@@ -50,7 +50,8 @@ void efi_enable_reset_attack_mitigation(void)
- static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_location,
- 				       efi_physical_addr_t log_last_entry,
- 				       efi_bool_t truncated,
--				       struct efi_tcg2_final_events_table *final_events_table)
-+				       struct efi_tcg2_final_events_table *final_events_table,
-+				       bool is_cc_event)
- {
- 	efi_guid_t linux_eventlog_guid = LINUX_EFI_TPM_EVENT_LOG_GUID;
- 	efi_status_t status;
-@@ -87,7 +88,8 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
- 			last_entry_size =
- 				__calc_tpm2_event_size((void *)last_entry_addr,
- 						    (void *)(long)log_location,
--						    false);
-+						    false,
-+						    is_cc_event);
- 		} else {
- 			last_entry_size = sizeof(struct tcpa_event) +
- 			   ((struct tcpa_event *) last_entry_addr)->event_size;
-@@ -123,7 +125,8 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
- 			header = data + offset + final_events_size;
- 			event_size = __calc_tpm2_event_size(header,
- 						   (void *)(long)log_location,
--						   false);
-+						   false,
-+						   is_cc_event);
- 			/* If calc fails this is a malformed log */
- 			if (!event_size)
- 				break;
-@@ -157,6 +160,7 @@ void efi_retrieve_eventlog(void)
- 	efi_tcg2_protocol_t *tpm2 = NULL;
- 	efi_bool_t truncated;
- 	efi_status_t status;
-+	bool is_cc_event = false;
- 
- 	status = efi_bs_call(locate_protocol, &tpm2_guid, NULL, (void **)&tpm2);
- 	if (status == EFI_SUCCESS) {
-@@ -186,11 +190,12 @@ void efi_retrieve_eventlog(void)
- 
- 		final_events_table =
- 			get_efi_config_table(EFI_CC_FINAL_EVENTS_TABLE_GUID);
-+		is_cc_event = true;
- 	}
- 
- 	if (status != EFI_SUCCESS || !log_location)
- 		return;
- 
- 	efi_retrieve_tcg2_eventlog(version, log_location, log_last_entry,
--				   truncated, final_events_table);
-+				   truncated, final_events_table, is_cc_event);
- }
-diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index cdd4310..ca8535d 100644
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/memblock.h>
- #include <linux/tpm_eventlog.h>
-+#include <linux/cc_platform.h>
- 
- int efi_tpm_final_log_size;
- EXPORT_SYMBOL(efi_tpm_final_log_size);
-@@ -23,7 +24,8 @@ static int __init tpm2_calc_event_log_size(void *data, int count, void *size_inf
- 
- 	while (count > 0) {
- 		header = data + size;
--		event_size = __calc_tpm2_event_size(header, size_info, true);
-+		event_size = __calc_tpm2_event_size(header, size_info, true,
-+				     cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT));
- 		if (event_size == 0)
- 			return -1;
- 		size += event_size;
-diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-index 891368e..b3380c9 100644
---- a/include/linux/tpm_eventlog.h
-+++ b/include/linux/tpm_eventlog.h
-@@ -143,6 +143,7 @@ struct tcg_algorithm_info {
-  * @event:        Pointer to the event whose size should be calculated
-  * @event_header: Pointer to the initial event containing the digest lengths
-  * @do_mapping:   Whether or not the event needs to be mapped
-+ * @is_cc_event:  Whether or not the event is from a CC platform
-  *
-  * The TPM2 event log format can contain multiple digests corresponding to
-  * separate PCR banks, and also contains a variable length of the data that
-@@ -159,7 +160,8 @@ struct tcg_algorithm_info {
- 
- static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
- 					 struct tcg_pcr_event *event_header,
--					 bool do_mapping)
-+					 bool do_mapping,
-+					 bool is_cc_event)
- {
- 	struct tcg_efi_specid_event_head *efispecid;
- 	struct tcg_event_field *event_field;
-@@ -201,8 +203,14 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
- 	count = event->count;
- 	event_type = event->event_type;
- 
--	/* Verify that it's the log header */
--	if (event_header->pcr_idx != 0 ||
-+	/*
-+	 * Verify that it's the log header. According to the TCG PC Client
-+	 * Specification, when identifying a log header, the check for a
-+	 * pcr_idx value of 0 is not required. For CC platforms, skipping
-+	 * this check during log header is necessary; otherwise, the CC
-+	 * platform's log header may fail to be recognized.
-+	 */
-+	if ((!is_cc_event && event_header->pcr_idx != 0) ||
- 	    event_header->event_type != NO_ACTION ||
- 	    memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
- 		size = 0;
 -- 
-2.7.4
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
