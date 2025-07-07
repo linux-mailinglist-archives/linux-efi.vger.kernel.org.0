@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-4157-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4161-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F81AAFAE18
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:06:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A36AFAE28
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 10:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45DAC17FDDE
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:06:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 693D21AA203A
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Jul 2025 08:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA523291C0D;
-	Mon,  7 Jul 2025 08:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC6C2949F3;
+	Mon,  7 Jul 2025 08:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UBaYF03F"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FMXK1WFj"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDFE290BC8;
-	Mon,  7 Jul 2025 08:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C06E293C4E;
+	Mon,  7 Jul 2025 08:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751875423; cv=none; b=fzJewD5mah+aL0WTJ3F8+pl/Igp0jbtpMtCF0KKnMq6MrdSm2cc/9avVYsOBKYHEqKTf2YopLBE+65dmAQ296LQ6rq2V+WXrdyCO4tawKqez/qYKUhBNyHdCW2nu8MACjOrdbZT6KqA+xBiKqSp37Lo/+bsIBfzN5BPO+HvJqcg=
+	t=1751875427; cv=none; b=fvFNJQZm9UG8mH1H26PopoZAe9TiwptL1JygcMf/2JA0RjC9Zw0H0MYFnLBbGrHgCwcOG08kyvY7QJfm/SUtqErJa8OluXw/WlhVM2vYMxjQuTRqlNmNejNdeV6pEH5K9mPQEGVH49wlC9QCvFNfVUASrFsNdYdvCG6w3sr4l2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751875423; c=relaxed/simple;
-	bh=gRYbIS7Dgh1noZwFu/j8FTMijwGvmqKuvAcfA8tsGH0=;
+	s=arc-20240116; t=1751875427; c=relaxed/simple;
+	bh=m+2FhdUaetES/9CojuoZFSartEN5xSLt9c4CTcF72II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9v5YgFdhF5T9jvzzk16cEBpDluIO8Mz024Kp0Pf+VckG5Tg8AgxwIyME3iAKvz+cIAW22fU3Ry1ZL8901Ma/+J/2JZNgabmI4wLziqKXJFaBaLCqPpW8gPZ4NWYf/wG5iRRKOz+rmUblOLdEEBQQ9QNey3c2K/Ea4ojzNrLf3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UBaYF03F; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=cXcGD1ltQVczZWWFjV6Ea/Dbr8sz+9+AJt+N//cGz8Esns8q6r32HpGN4uvX+Hj/StxkV115XW1aj/gPA1GzUkFPACup2thzUB6RBzMuk+YvsJfl+rDaFCWSp5KndEYKvRVYbAgX+HAMr4HDJH6zwur5Qh5EitiucMLmuZls8yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FMXK1WFj; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751875422; x=1783411422;
+  t=1751875426; x=1783411426;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=gRYbIS7Dgh1noZwFu/j8FTMijwGvmqKuvAcfA8tsGH0=;
-  b=UBaYF03F0NjysC9skS3mKBS6yaJd3ckwmJjiiczgKhE3wgx3s3LJgLb+
-   fJ5qIFNcuUB8QHawGNQ5K95bld692yvTrcEV7sHpk/ud+zWv1jXLnTlyq
-   HR3B+3o53lxEuyf+p1QKRyxXiYv75eaFULPB/6IrxamJwrwG3hKeafjjj
-   20gUzwEZX8BlxgZIAB827OF4YsLBVyAiBJtoY6+0FLBrgKMfBvquHbVJz
-   oOEbazX7I7a5N5QncoZe0nPYk6V2WpH5YQfTXsObIALX+TkG6w/mNxgvU
-   xfF7XeBNhpfmG1IxrVKXB40xqsHYVEjnl+zX0wKoK4G3mtEKiU/P3Ot4b
-   A==;
-X-CSE-ConnectionGUID: jPQlUIbARMCorxELFIJkRA==
-X-CSE-MsgGUID: 9s1d+18mTFmgF2fKbfWfKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65151926"
+  bh=m+2FhdUaetES/9CojuoZFSartEN5xSLt9c4CTcF72II=;
+  b=FMXK1WFjmTJpzSE9lVI6Non7XZp65BBc7U9wp5QQNBWoNVSFiH1udX2h
+   NQ95Ut/F5dznUQUOqWwxM8Xlv0wJwL8UHbeQp++qU1e5iTItsJqZCp29g
+   +W1rHWBE3WquN62NmEwm35uhFoSvcb5sVEIoTiQVBoafkVHuYsDlvRWM2
+   v7PEor+wimAM5VaJuJtLCL5ob20fPl38/HD2W0udlG0OICkmhMdd7HRZ5
+   NpkJLsOGbV4fBF9S5A98N7+FLbFO8Te4BeRh/XNWgrJiyo1FHjBrmSAQQ
+   k5uNNsE4siE7++m0JjZrBwOkosEtRAC8AsLuXTEGN53UFFaKVmSaKXbIP
+   Q==;
+X-CSE-ConnectionGUID: KQrwkobySrGg8jL2Nr6auw==
+X-CSE-MsgGUID: LyzwfI+hTZOCr+zLb745eQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65151948"
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="65151926"
+   d="scan'208";a="65151948"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:03:40 -0700
-X-CSE-ConnectionGUID: amRPvkuCSDWD/XznO18OUw==
-X-CSE-MsgGUID: TTwuPwcbSx6N7+L7HeOoXw==
+X-CSE-ConnectionGUID: wQbsEHE6SuWCV2Nk2ryjDg==
+X-CSE-MsgGUID: /W4eV94GTXa7sKygn/q5aQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="154573894"
+   d="scan'208";a="154573896"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa010.jf.intel.com with ESMTP; 07 Jul 2025 01:03:26 -0700
+  by orviesa010.jf.intel.com with ESMTP; 07 Jul 2025 01:03:27 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 22C2C8E9; Mon, 07 Jul 2025 11:03:18 +0300 (EEST)
+	id 2BFB4928; Mon, 07 Jul 2025 11:03:18 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Andy Lutomirski <luto@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -113,9 +113,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-efi@vger.kernel.org,
 	linux-mm@kvack.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv9 10/16] x86/vsyscall: Disable LASS if vsyscall mode is set to EMULATE
-Date: Mon,  7 Jul 2025 11:03:10 +0300
-Message-ID: <20250707080317.3791624-11-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 11/16] x86/traps: Communicate a LASS violation in #GP message
+Date: Mon,  7 Jul 2025 11:03:11 +0300
+Message-ID: <20250707080317.3791624-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
 References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
@@ -127,66 +127,88 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sohil Mehta <sohil.mehta@intel.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-The EMULATE mode of vsyscall maps the vsyscall page into user address
-space which can be read directly by the user application. This mode has
-been deprecated recently and can only be enabled from a special command
-line parameter vsyscall=emulate. See commit bf00745e7791 ("x86/vsyscall:
-Remove CONFIG_LEGACY_VSYSCALL_EMULATE")
+Provide a more helpful message on #GP when a kernel side LASS violation
+is detected.
 
-Fixing the LASS violations during the EMULATE mode would need complex
-instruction decoding since the resulting #GP fault does not include any
-useful error information and the vsyscall address is not readily
-available in the RIP.
+A NULL pointer dereference is reported if a LASS violation occurs due to
+accessing the first page frame.
 
-At this point, no one is expected to be using the insecure and
-deprecated EMULATE mode. The rare usages that need support probably
-don't care much about security anyway. Disable LASS when EMULATE mode is
-requested during command line parsing to avoid breaking user software.
-LASS will be supported if vsyscall mode is set to XONLY or NONE.
-
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 4 +++-
- arch/x86/entry/vsyscall/vsyscall_64.c           | 7 +++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/kernel/traps.c | 41 +++++++++++++++++++++++++++++------------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index f1f2c0874da9..796c987372df 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7926,7 +7926,9 @@
- 
- 			emulate     Vsyscalls turn into traps and are emulated
- 			            reasonably safely.  The vsyscall page is
--				    readable.
-+				    readable.  This disables the Linear
-+				    Address Space Separation (LASS) security
-+				    feature and makes the system less secure.
- 
- 			xonly       [default] Vsyscalls turn into traps and are
- 			            emulated reasonably safely.  The vsyscall
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index be77385b311e..d37df40bfb26 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -63,6 +63,13 @@ static int __init vsyscall_setup(char *str)
- 		else
- 			return -EINVAL;
- 
-+		if (cpu_feature_enabled(X86_FEATURE_LASS) &&
-+		    vsyscall_mode == EMULATE) {
-+			cr4_clear_bits(X86_CR4_LASS);
-+			setup_clear_cpu_cap(X86_FEATURE_LASS);
-+			pr_warn_once("x86/cpu: Disabling LASS support due to vsyscall=emulate\n");
-+		}
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 59bfbdf0a1a0..4a4194e1d119 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -636,7 +636,16 @@ DEFINE_IDTENTRY(exc_bounds)
+ enum kernel_gp_hint {
+ 	GP_NO_HINT,
+ 	GP_NON_CANONICAL,
+-	GP_CANONICAL
++	GP_CANONICAL,
++	GP_LASS_VIOLATION,
++	GP_NULL_POINTER,
++};
 +
- 		return 0;
- 	}
++static const char * const kernel_gp_hint_help[] = {
++	[GP_NON_CANONICAL]	= "probably for non-canonical address",
++	[GP_CANONICAL]		= "maybe for address",
++	[GP_LASS_VIOLATION]	= "LASS prevented access to address",
++	[GP_NULL_POINTER]	= "kernel NULL pointer dereference",
+ };
  
+ /*
+@@ -664,14 +673,23 @@ static enum kernel_gp_hint get_kernel_gp_address(struct pt_regs *regs,
+ 		return GP_NO_HINT;
+ 
+ #ifdef CONFIG_X86_64
+-	/*
+-	 * Check that:
+-	 *  - the operand is not in the kernel half
+-	 *  - the last byte of the operand is not in the user canonical half
+-	 */
+-	if (*addr < ~__VIRTUAL_MASK &&
+-	    *addr + insn.opnd_bytes - 1 > __VIRTUAL_MASK)
++	/* Operand is in the kernel half */
++	if (*addr >= ~__VIRTUAL_MASK)
++		return GP_CANONICAL;
++
++	/* The last byte of the operand is not in the user canonical half */
++	if (*addr + insn.opnd_bytes - 1 > __VIRTUAL_MASK)
+ 		return GP_NON_CANONICAL;
++
++	/*
++	 * If LASS is enabled, NULL pointer dereference generates
++	 * #GP instead of #PF.
++	 */
++	if (*addr < PAGE_SIZE)
++		return GP_NULL_POINTER;
++
++	if (cpu_feature_enabled(X86_FEATURE_LASS))
++		return GP_LASS_VIOLATION;
+ #endif
+ 
+ 	return GP_CANONICAL;
+@@ -833,11 +851,10 @@ DEFINE_IDTENTRY_ERRORCODE(exc_general_protection)
+ 	else
+ 		hint = get_kernel_gp_address(regs, &gp_addr);
+ 
+-	if (hint != GP_NO_HINT)
++	if (hint != GP_NO_HINT) {
+ 		snprintf(desc, sizeof(desc), GPFSTR ", %s 0x%lx",
+-			 (hint == GP_NON_CANONICAL) ? "probably for non-canonical address"
+-						    : "maybe for address",
+-			 gp_addr);
++			 kernel_gp_hint_help[hint], gp_addr);
++	}
+ 
+ 	/*
+ 	 * KASAN is interested only in the non-canonical case, clear it
 -- 
 2.47.2
 
