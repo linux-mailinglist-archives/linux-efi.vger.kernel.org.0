@@ -1,119 +1,324 @@
-Return-Path: <linux-efi+bounces-4187-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4188-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9715AFC739
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Jul 2025 11:40:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AFFAFC901
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Jul 2025 12:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54A21BC3572
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Jul 2025 09:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBBF7163226
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Jul 2025 10:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B0826658F;
-	Tue,  8 Jul 2025 09:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057182D23A6;
+	Tue,  8 Jul 2025 10:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MGkefPFo"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DDE263899;
-	Tue,  8 Jul 2025 09:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F122126A1A4
+	for <linux-efi@vger.kernel.org>; Tue,  8 Jul 2025 10:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751967603; cv=none; b=n8ryW0Uwh0Hz5fX6MOIMhESFxtWSEfCI+X5QgOpxc0cbGKsXAyt1zv5EfKU6+J9RVWhNqWB56+A8ySjBz0LrZLNhUPydoDCYDvnBC2MRL/A5RFgqf9fh6S+IvAzfqy/c7l7ztFenHFkuQTw90niWfiKGIKBtv2gy9D2cQ+BaNsY=
+	t=1751972168; cv=none; b=uVR2UJ+Y86TwtnZO55rKhExtUpKi5IUAo3XpLqmHZbhi20w6IU2Hn8QabY5YSa0k7LLU7HvDVKZBD+HKTIAW6h/nVBCYWk9dfn1CMuTVLAAbqR7wqckVuQZ7ZageyV/3Xh9NO10LxkfyD6wx0kinoFWBoTyUCr8GJ3hzF2+QZjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751967603; c=relaxed/simple;
-	bh=/juqDHVkSFYcxrJeW4anGnUPTRAjelc4Xxu89KkV+6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bWqy0sW7/XCegv25dvhDOWM1ZGlMf72MKXBiKGr5cxdoNhac5Ag6z8K/mewW8IxzWfverkApKHYSQXIh2hwjek/x4/hXjWSxO9M7aCV4wx619OUxk6MocmPb7rFbuYf2+kJf+hdy3rEaHHbqWsPX2lSzJ3QohnvJPDf9KSPyorc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6088d856c6eso8052381a12.0;
-        Tue, 08 Jul 2025 02:40:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751967600; x=1752572400;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zDGRwzwOvCrWWFQfPfpra9qYK3fJVDbD/wSIIQxXnMM=;
-        b=jbKUGsMNN8fnLoFaNadN1v3IHHlvLV7qSP3Gh0F2p55jG+DpDNPK7SnXyC4UnSIoK+
-         Ga8pNl4/kc/+hwpgVZdmB7c4FmeYTzuCjrvJov0pl2d7cAHC/iJqfv9VRPKny2Vi0/Q0
-         f0f8Ce7/UXxgAcxpevJniTE74fydYvgAKAziMtiSLiOXFu4Ph8/hxJJeSvynk+j+Pz3J
-         elSMiRNPZmtnq0r1jEhezK0AmY5+UqltwohZaSw+mRJMt4TcdyV9duEkYK8R+DQDKQR+
-         /Lq61bIBRjWB3N3KavLbt2+bleeIyy4MUlh7uJNiWzGIqpDl8toaKPSCPzJl2SKtdgMT
-         SgxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUm2hisHZPt1T8lcD5f3gNIJFdzDcAAAhFz/Go3/SQ3x8wvCvtV9TM1PqLZIZt9P0d4NV6/OpeWjVQ=@vger.kernel.org, AJvYcCXgL1ceJ2h9D5IAsKLpQAIMqaQHwCM2Q/pNKiyIXqsVysY2SB2+3EzotBfl/rItAK55jJPJeZwFaWllHGS/@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAcwrgkDXc4NVrQasjOLXrCXgkl5qxg39W4m/oPq9yGZxBGTGu
-	QS0K6fzoq/UGdpbezqDDn1etH/ouY6EcO3zW+x6Uw3GJ7HIZGIVXvZrA
-X-Gm-Gg: ASbGncu048cUUkvhKFNODpw2hzQ03Dw6cgdvrIOapFM54Khah8wgjgF+xiqppxb7C1J
-	/0O6qSLWcsB2OOXmHtVAZj6SMrFWVgEltuMILi8u/xWx+QU8LehYWOtdSaTtDYpHbgiDDOsD35X
-	6qgi7IGdyUlyZ1o+ep4lXpm5tJuB+95rNhZZ/NmvqzweRpybpI79wG9L59vUHRgV/z5kS5X4Xwf
-	BMlnb/JvvAtA2ytfx3JeSnL6hSjASovK+gLZRGWnDR5DyT9uW47KwuvS9bNglYawgDq19fJPElq
-	LzPjEgVLbKBjv9kTM900nqHcDsokUlLh1vDq6NdKF/VKH5hQcI3f
-X-Google-Smtp-Source: AGHT+IEKuh5P5XxfGU6tISC7d/SWRHDTdhtCdRwTY574SCwgIN9VltFkhI6/5VSmmx/mAhn8r/NsaQ==
-X-Received: by 2002:a17:907:97d0:b0:ae3:7022:b210 with SMTP id a640c23a62f3a-ae6b0b1ec6amr238872866b.12.1751967599680;
-        Tue, 08 Jul 2025 02:39:59 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:9::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f66e6f30sm864599066b.33.2025.07.08.02.39.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jul 2025 02:39:58 -0700 (PDT)
-Date: Tue, 8 Jul 2025 02:39:56 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org, leo.yan@arm.com, kernel-team@meta.com
-Subject: Re: [PATCH 1/8] arm64: Enable VMAP_STACK support
-Message-ID: <aGznbObwbaZlnD17@gmail.com>
-References: <20250707-arm64_vmap-v1-0-8de98ca0f91c@debian.org>
- <20250707-arm64_vmap-v1-1-8de98ca0f91c@debian.org>
- <aGwCfRkYqcYBvxZK@J2N7QTR9R3>
+	s=arc-20240116; t=1751972168; c=relaxed/simple;
+	bh=GcH5y9I+vwLgEQFHzGMrRHmf1LUNk+VNdMsUyN/XRd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hj9/BYaxM7uMVYUNtbWxKXPZ7Iz/dgWaDTcUuBKj7MvrCVNjqFsQOm9ToHTLfBGDRR+ACz5pDZpOtj2TS1uZ69dKAH0xDsVEBAcl00foj/3soTxRGn4CQAg6T/m4XjbiYhXmdiYtZNVFrdhmntlVpaXtmqKT2vtJhoHYBpUbOiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MGkefPFo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751972165;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bHrF+We+xHosy6K4Q3pHkoPGMQwoIqcnCH+g8ghgZSQ=;
+	b=MGkefPFoF6cJBcQqTl/7UJukMANzDQ/373SJs9sLdEZnP0GJ6DZM9plKotsApAykaB7Bb9
+	NiMrd8dkuwdI4a4zsTrsCJIAuzmncRetuRA49Iby1dvpD3v3Gd2qV4wXXHH7Cf4wynlEo0
+	XEzYkN10uf5bafIBbzWQ69dgjY8sXJU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-349-4K51PU0BPSGE5dvP52eUYw-1; Tue,
+ 08 Jul 2025 06:56:04 -0400
+X-MC-Unique: 4K51PU0BPSGE5dvP52eUYw-1
+X-Mimecast-MFC-AGG-ID: 4K51PU0BPSGE5dvP52eUYw_1751972163
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 61ECB195F170;
+	Tue,  8 Jul 2025 10:56:03 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.224.100])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 58F5C18002B6;
+	Tue,  8 Jul 2025 10:56:02 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id AF59918000B2; Tue, 08 Jul 2025 12:55:59 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: linux-efi@vger.kernel.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] efi: add ovmf debug log driver
+Date: Tue,  8 Jul 2025 12:55:56 +0200
+Message-ID: <20250708105559.603425-1-kraxel@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aGwCfRkYqcYBvxZK@J2N7QTR9R3>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hello Mark,
+Recent OVMF versions (edk2-stable202508 + newer) can write their debug
+log to a memory buffer.  This driver exposes the log content via sysfs
+(/sys/firmware/efi/ovmf_debug_log).
 
-On Mon, Jul 07, 2025 at 06:23:09PM +0100, Mark Rutland wrote:
-> On Mon, Jul 07, 2025 at 09:01:01AM -0700, Breno Leitao wrote:
-> > Enable virtually mapped kernel stacks for ARM64. This provides better
-> > stack overflow detection and improved security by mapping kernel stacks
-> > in vmalloc space rather than using direct mapping.
-> > 
-> > VMAP_STACK helps catch stack overflows early by placing guard pages
-> > around kernel stacks, and also provides better isolation between
-> > kernel stacks and other kernel data structures.
-> > 
-> > All dependencies are satisfied for arm64: HAVE_ARCH_VMAP_STACK is
-> > already selected above, and KASAN_VMALLOC is selected when KASAN is
-> > enabled, meeting the KASAN dependency requirements.
-> 
-> I reckon it might be better to say something like:
-> 
-> | arm64: Mandate VMAP_STACK
-> |
-> | On arm64, VMAP_STACK has been enabled by default for a while now, and
-> | the only reason to disable it was a historical lack of support for
-> | KASAN_VMALLOC. Today there's no good reason to disable VMAP_STACK.
-> |
-> | Mandate VMAP_STACK, which will allow code to be simplified in
-> | subsequent patches.
-> 
-> ... to make it clear that we're not changing the default, and we are
-> removing the ability to deselect VMAP_STACK.
-> 
-> Either way, the patch itself looks good to me.
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ include/linux/efi.h             |   2 +
+ drivers/firmware/efi/efi.c      |  11 +++
+ drivers/firmware/efi/ovmf-log.c | 136 ++++++++++++++++++++++++++++++++
+ drivers/firmware/efi/Kconfig    |   9 +++
+ drivers/firmware/efi/Makefile   |   1 +
+ 5 files changed, 159 insertions(+)
+ create mode 100644 drivers/firmware/efi/ovmf-log.c
 
-Thanks for the suggestion. I will update and respin.
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 7d63d1d75f22..55479cd8438b 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -439,6 +439,7 @@ void efi_native_runtime_setup(void);
+ 
+ /* OVMF protocol GUIDs */
+ #define OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID	EFI_GUID(0xc5a010fe, 0x38a7, 0x4531,  0x8a, 0x4a, 0x05, 0x00, 0xd2, 0xfd, 0x16, 0x49)
++#define OVMF_MEMORY_LOG_TABLE_GUID			EFI_GUID(0x95305139, 0xb20f, 0x4723, 0x84, 0x25, 0x62, 0x7c, 0x88, 0x8f, 0xf1, 0x21)
+ 
+ typedef struct {
+ 	efi_guid_t guid;
+@@ -642,6 +643,7 @@ extern struct efi {
+ 	unsigned long			esrt;			/* ESRT table */
+ 	unsigned long			tpm_log;		/* TPM2 Event Log table */
+ 	unsigned long			tpm_final_log;		/* TPM2 Final Events Log table */
++	unsigned long                   ovmf_debug_log;
+ 	unsigned long			mokvar_table;		/* MOK variable config table */
+ 	unsigned long			coco_secret;		/* Confidential computing secret table */
+ 	unsigned long			unaccepted;		/* Unaccepted memory table */
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index e57bff702b5f..629a42e50b57 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -45,6 +45,9 @@ struct efi __read_mostly efi = {
+ 	.esrt			= EFI_INVALID_TABLE_ADDR,
+ 	.tpm_log		= EFI_INVALID_TABLE_ADDR,
+ 	.tpm_final_log		= EFI_INVALID_TABLE_ADDR,
++#ifdef CONFIG_OVMF_DEBUG_LOG
++	.ovmf_debug_log         = EFI_INVALID_TABLE_ADDR,
++#endif
+ #ifdef CONFIG_LOAD_UEFI_KEYS
+ 	.mokvar_table		= EFI_INVALID_TABLE_ADDR,
+ #endif
+@@ -473,6 +476,11 @@ static int __init efisubsys_init(void)
+ 		platform_device_register_simple("efi_secret", 0, NULL, 0);
+ #endif
+ 
++#ifdef CONFIG_OVMF_DEBUG_LOG
++	if (efi.ovmf_debug_log != EFI_INVALID_TABLE_ADDR)
++		platform_device_register_simple("ovmf_log", 0, NULL, 0);
++#endif
++
+ 	return 0;
+ 
+ err_remove_group:
+@@ -617,6 +625,9 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ 	{LINUX_EFI_MEMRESERVE_TABLE_GUID,	&mem_reserve,		"MEMRESERVE"	},
+ 	{LINUX_EFI_INITRD_MEDIA_GUID,		&initrd,		"INITRD"	},
+ 	{EFI_RT_PROPERTIES_TABLE_GUID,		&rt_prop,		"RTPROP"	},
++#ifdef CONFIG_OVMF_DEBUG_LOG
++	{OVMF_MEMORY_LOG_TABLE_GUID,		&efi.ovmf_debug_log,	"OVMF-LOG"	},
++#endif
+ #ifdef CONFIG_EFI_RCI2_TABLE
+ 	{DELLEMC_EFI_RCI2_TABLE_GUID,		&rci2_table_phys			},
+ #endif
+diff --git a/drivers/firmware/efi/ovmf-log.c b/drivers/firmware/efi/ovmf-log.c
+new file mode 100644
+index 000000000000..4af52adb57cc
+--- /dev/null
++++ b/drivers/firmware/efi/ovmf-log.c
+@@ -0,0 +1,136 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/efi.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/kernel.h>
++#include <linux/kobject.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/sysfs.h>
++
++#define MEM_DEBUG_LOG_MAGIC1  0x3167646d666d766f  // "ovmfmdg1"
++#define MEM_DEBUG_LOG_MAGIC2  0x3267646d666d766f  // "ovmfmdg2"
++
++struct mem_debug_log_header {
++	u64    magic1;
++	u64    magic2;
++	u64    hdr_size;
++	u64    log_size;
++	u64    lock; // edk2 spinlock
++	u64    head_off;
++	u64    tail_off;
++	u64    truncated;
++	u8     fw_version[128];
++};
++
++static struct mem_debug_log_header *hdr;
++static u8 *logbuf;
++static u64 logbufsize;
++
++static ssize_t ovmf_log_read(struct file *filp, struct kobject *kobj,
++			     const struct bin_attribute *attr, char *buf,
++			     loff_t offset, size_t count)
++{
++	u64 start, end;
++
++	start = hdr->head_off + offset;
++	if (hdr->head_off > hdr->tail_off && start >= hdr->log_size)
++		start -= hdr->log_size;
++
++	end = start + count;
++	if (start > hdr->tail_off) {
++		if (end > hdr->log_size)
++			end = hdr->log_size;
++	} else {
++		if (end > hdr->tail_off)
++			end = hdr->tail_off;
++	}
++
++	if (start > logbufsize || end > logbufsize)
++		return 0;
++	if (start >= end)
++		return 0;
++
++	memcpy(buf, logbuf + start, end - start);
++	return end - start;
++}
++
++static struct bin_attribute ovmf_log_bin_attr = {
++	.attr = {
++		.name = "ovmf_debug_log",
++		.mode = 0444,
++	},
++	.read = ovmf_log_read,
++};
++
++static int ovmf_log_probe(struct platform_device *dev)
++{
++	u64 size;
++	int ret = -EINVAL;
++
++	if (efi.ovmf_debug_log == EFI_INVALID_TABLE_ADDR) {
++		dev_err(&dev->dev, "OVMF debug log: not available\n");
++		return -EINVAL;
++	}
++
++	/* map + verify header */
++	hdr = memremap(efi.ovmf_debug_log, sizeof(*hdr), MEMREMAP_WB);
++	if (!hdr) {
++		dev_err(&dev->dev, "OVMF debug log: header map failed\n");
++		return -EINVAL;
++	}
++
++	if (hdr->magic1 != MEM_DEBUG_LOG_MAGIC1 ||
++	    hdr->magic2 != MEM_DEBUG_LOG_MAGIC2) {
++		dev_err(&dev->dev, "OVMF debug log: magic mismatch\n");
++		goto err_unmap;
++	}
++
++	size = hdr->hdr_size + hdr->log_size;
++	dev_info(&dev->dev, "firmware version: \"%s\"\n", hdr->fw_version);
++	dev_info(&dev->dev, "log buffer size: %lldk\n", size / 1024);
++
++	/* map complete log buffer */
++	iounmap(hdr);
++	hdr = memremap(efi.ovmf_debug_log, size, MEMREMAP_WB);
++	if (!hdr) {
++		dev_err(&dev->dev, "OVMF debug log: buffer map failed\n");
++		return -EINVAL;
++	}
++	logbuf = (void*)hdr + hdr->hdr_size;
++	logbufsize = hdr->log_size;
++
++	ovmf_log_bin_attr.size = size;
++	ret = sysfs_create_bin_file(efi_kobj, &ovmf_log_bin_attr);
++	if (ret != 0) {
++		dev_err(&dev->dev, "OVMF debug log: sysfs register failed\n");
++		goto err_unmap;
++	}
++
++	return 0;
++
++err_unmap:
++	iounmap(hdr);
++	return ret;
++}
++
++static void ovmf_log_remove(struct platform_device *dev)
++{
++	iounmap(hdr);
++}
++
++static struct platform_driver ovmf_log_driver = {
++	.probe = ovmf_log_probe,
++	.remove = ovmf_log_remove,
++	.driver = {
++		.name = "ovmf_log",
++	},
++};
++
++module_platform_driver(ovmf_log_driver);
++
++MODULE_DESCRIPTION("OVMF debug log");
++MODULE_AUTHOR("Gerd Hoffmann <kraxel@redhat.com>");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS("platform:ovmf_log");
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index db8c5c03d3a2..4563d0df170f 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -263,6 +263,15 @@ config EFI_COCO_SECRET
+ 	  virt/coco/efi_secret module to access the secrets, which in turn
+ 	  allows userspace programs to access the injected secrets.
+ 
++config OVMF_DEBUG_LOG
++	tristate "Expose OVMF firmware debug log via sysfs"
++	depends on EFI
++	default y
++	help
++	  Recent OVMF versions (edk2-stable202508 + newer) can write
++	  their debug log to a memory buffer.  This driver exposes the
++	  log content via sysfs (/sys/firmware/efi/ovmf_debug_log).
++
+ config UNACCEPTED_MEMORY
+ 	bool
+ 	depends on EFI_STUB
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index a2d0009560d0..4770c7c4e3c7 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -29,6 +29,7 @@ obj-$(CONFIG_APPLE_PROPERTIES)		+= apple-properties.o
+ obj-$(CONFIG_EFI_RCI2_TABLE)		+= rci2-table.o
+ obj-$(CONFIG_EFI_EMBEDDED_FIRMWARE)	+= embedded-firmware.o
+ obj-$(CONFIG_LOAD_UEFI_KEYS)		+= mokvar-table.o
++obj-$(CONFIG_OVMF_DEBUG_LOG)		+= ovmf-log.o
+ 
+ obj-$(CONFIG_SYSFB)			+= sysfb_efi.o
+ 
+-- 
+2.50.0
 
-Thanks for the review,
---breno
 
