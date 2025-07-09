@@ -1,69 +1,69 @@
-Return-Path: <linux-efi+bounces-4208-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4209-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE85AAFE207
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 10:11:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8ADAFE208
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 10:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C868168B93
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 08:11:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1248D1C27096
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 08:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6C523C50B;
-	Wed,  9 Jul 2025 08:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE47271456;
+	Wed,  9 Jul 2025 08:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bLAC5IlE"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DQgyu3LC"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2C823B62C
-	for <linux-efi@vger.kernel.org>; Wed,  9 Jul 2025 08:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82A926B76B
+	for <linux-efi@vger.kernel.org>; Wed,  9 Jul 2025 08:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752048671; cv=none; b=cLdgytB3kdAflwG0GD0paN7bgCc83MczNGctTOrMyg01fr7eNKALANuQqS4iSmePuMXJRb040p9hznwiWma1MmTPdgjM8LIZ4vusK3L94DR+Wm2pxyRCWgtjVuAQsnxXbTaxxGb6oDC5G85SCNOvzcYyMXpvIXlYO2HraVrKmyM=
+	t=1752048673; cv=none; b=RNrTXAVPfxcGgBVbba7/rfisDbBzEx0a0LKlcb9qPNs1eg9ZFyrYQyEiSoZnr/L6l7g32yMaAhl1L6zv2RlFU6GgQKYgi0byI4Am0YPJyWQo6CzyoECUxrO5+3JIYNQ2uX1tFYUsX0vZ8dEU42vNrevOMDF/O2Wt8TNnvRwSY+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752048671; c=relaxed/simple;
-	bh=FlsTo1Na0gqk7JnqppoQ3g3pClSByxD+GJ2YmQqbeYY=;
+	s=arc-20240116; t=1752048673; c=relaxed/simple;
+	bh=qWa4KWyIEFQ8Dd6SQscBjxL/fkGwoddf/ZnfnynGWHw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QtQFP6r1gNvTXXRXuUdsOhGakUnlRLPHraF3bo4hZFWADdTQwVEYdh9OlU62PEa7ltp4/dT2XpuESw8oveoUVuxi04WXunRMVr1AZBOnXpusGVxeJeECSzqPJHg9DAYHI4vUDAYxjpWimxjbF8i+TQO5TZLm88QEKt+AB+7APx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bLAC5IlE; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=MPCSfMFcdotbSoYL2r0mQHgJz9F6rPr+MrgbJCmdtJI36rDmewpIj957v+dbzEI45o04NU7NhiEMc/fZdMhQgwYnAqHFaNHMBbNqbNsnAxgz08+R8/uSzniKviBnoxAchVEm1a57DMZrpqbyOK7bZnxLdxrd+3FT7uzqkNFYGow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DQgyu3LC; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4eee2398bso2298961f8f.1
-        for <linux-efi@vger.kernel.org>; Wed, 09 Jul 2025 01:11:09 -0700 (PDT)
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a6d90929d6so2247686f8f.2
+        for <linux-efi@vger.kernel.org>; Wed, 09 Jul 2025 01:11:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752048668; x=1752653468; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752048670; x=1752653470; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=irDKxIOWN/GYN8fC55Fb2miL4MwwqCl9Ulz8cQYfbDQ=;
-        b=bLAC5IlELHKog+SXBybIT/vrIozHAjQj7X6TApxXKKIWIwR5ZN3iCMFC2mJEwQp6Q6
-         Cyk+ajW+5H/aurSPIRWQxqHFmtcqTTOynymmSEkGwXitlYT6AXOV+dILT+TEaMrY/8fj
-         KfOyycNJAfU51ocEmXeSkxpuf5Z/fQ25vPxcVjgWsNE48KRXHWP2uyD0bDevDR/Fnypl
-         QaFaMB8E2pjki+HLxD3+SeDWYW9NpdEOLrcYXkPZYaQRvPlltJUB9C2KJwinCNJ3WIt5
-         r3JEY2ewkc9/1CA6wGdifoSHLk6BAqH72dUJvS7KPHvqHv6e4YE49K6ymS9/ERWvoFKm
-         U0aw==
+        bh=rrVXr0txl0maG0fRT3Fq2/7vfV6O88A9LJ2P2lv7/Ic=;
+        b=DQgyu3LCHuoNkmo6itt2PiNklNpKkwy0fV9tPYnKaj2KsyICpZAkSr2vSsZlMQOwJv
+         i8Jq/59B5H0dIhcR30Wl+GbM8zeZ/wlvstX3pKhzSdjmNJ7O+Ef8ROBzm8sF1f3XmyCD
+         AKiw8z/imuw87T6iZT4Fwg0dR2nEwosWbr07pQEquJuHhm/qbLyJ6PgULEAgGuxVL8ga
+         3nrlIOert/Ctgef9ymeAiABSt8DPiBR347hHfTLQaKpYt+C0gI29UPqYKNREGZe4mRGl
+         7VJRIzApIghFJfsdOI2lmabEjLL7ytwrKUGVtuIUkaGqeQ3YJmmEM9f2q8WyWN8CNKM/
+         OEMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752048668; x=1752653468;
+        d=1e100.net; s=20230601; t=1752048670; x=1752653470;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=irDKxIOWN/GYN8fC55Fb2miL4MwwqCl9Ulz8cQYfbDQ=;
-        b=PMBZbPiB2Q/4b7+eb+5hluG8u75ujVZYRnmn26kueEeAAOve7pcZx1S8ipi4vZ0wnD
-         p/Dx9GZ/mOAJrMj/S2XEscJDxsnqLoTi+JLR66wUjYbW7NxKr1ZbyqaHMyjQZknczLPt
-         vh4fzPKcyivmxgNDnMMEshxkDbHh1QRqJswqDfnb1cPbIz/UV1q4XkcbEIkHWAfXRXqy
-         z8WudG/7bCU9+x9VuWKBQDA22Mog75/qXsrOxZfQ+dnNOZUL5rK1cAtADsKo13MKoTME
-         Y0k1YNG/QCfFl+K8N1VCc/ep+zupNQgtc49ZI7bz9gZ/OZx9Ol8M0k9GTWHPY9dj3OrL
-         Yg5A==
-X-Gm-Message-State: AOJu0YxdzK4SlW9WJt4DbM/zqD40ksr8qOsetyVXJUExFbLRSc/ypAUH
-	sQRgaex4RfCYRu5a0o+Z8rwit8oyqBjeNlMDK0FsYCqo9GTFSjPnJfdZWYPdISL9fUxKRhnGew=
+        bh=rrVXr0txl0maG0fRT3Fq2/7vfV6O88A9LJ2P2lv7/Ic=;
+        b=iKvAqqOYsJLUg0kiEJ9b+ZHPFnfr2jPDbODqZ8sz739rVrThdNqsPf6iElx3izxWHt
+         Vim6itWE2reM04rDRp0ZTQuhTiJvYikY9QLwusmlRmwwClqM0abyz64pkt4FkqsFF9Kk
+         4UvWFhN19e75GfoJCXkaHbDLwHVXAdglryXurL1RDc44UN4aG6qklWrv3gV2QAnOOIi9
+         /GQC7Up3bxBtvXhdy0zXxaeTPrh/cFWaCyY5J/dgZ5mL5rJXK+Y+ekSX5XFr8bvO4PZ3
+         yv2C/SqXcWULNmBKvU3mvgbAmggDXtGQlsBSiFFXaJdoh50UW+xxWClJhFeBda4k5b6B
+         ddXg==
+X-Gm-Message-State: AOJu0YycacrHgDAwgPW0jLVisS6b1CIywPIXJ6uCi55Gq43CNgUElLsP
+	rIhvetUnsIhOy2BC6tlVgy+kHRZhBKnTpGBY7LamRbjoO1wJoSyzaWnFTIXiSOgG2OcFC3hwbQ=
 	=
-X-Google-Smtp-Source: AGHT+IE1AbDthtPc79Q4E0+CvLr8kELSkSM5FvPu0zAUmfA29qg7a1zdyotu1oFbfwjeOF/rM/GFqFy7
-X-Received: from wrbm15.prod.google.com ([2002:adf:a3cf:0:b0:3a5:75f:1fb7])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:220d:b0:3a4:ed10:c14
- with SMTP id ffacd0b85a97d-3b5e44e94damr1081339f8f.14.1752048668183; Wed, 09
- Jul 2025 01:11:08 -0700 (PDT)
-Date: Wed,  9 Jul 2025 10:08:44 +0200
+X-Google-Smtp-Source: AGHT+IH8Vmqvxj4egjbDTGPQVIFa8wVBPKNO2w2bGXB5J/wC2urVwU0sKZ0Miv3o7Jkqbm3a+sCakUAy
+X-Received: from wmpz13.prod.google.com ([2002:a05:600c:a0d:b0:43c:f8ae:4d6c])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:3110:b0:3b4:990a:a0d6
+ with SMTP id ffacd0b85a97d-3b5e45198b6mr923965f8f.19.1752048670249; Wed, 09
+ Jul 2025 01:11:10 -0700 (PDT)
+Date: Wed,  9 Jul 2025 10:08:45 +0200
 In-Reply-To: <20250709080840.2233208-26-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -73,15 +73,15 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250709080840.2233208-26-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2348; i=ardb@kernel.org;
- h=from:subject; bh=hoadtf7g9eDjkIht+Y1Um5UwMCQL5oJbisXGKydMrJs=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JISNPefZbmfcRZ8Q1E5bYqb9oSIwxqfC2qXjpLuV6wXzfg
- d0WHyo7SlkYxLgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwERO/mf47yT97PChmISm9GOG
- cbz1uWbPH85PTU2ZYGjpe3H3d6arFxn+x64wLXoeoOy3KmFlSb7rxbitbtFNf9feuSBZ3lm/xLW QDQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2832; i=ardb@kernel.org;
+ h=from:subject; bh=LUTnKMwKZ8JYr3trlfqDO6e1tedre1n2Ghy/++0ESaI=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JISNPeUG/y3u2hSwiu89dm15oqxO453fdvAk5X66qdKmsi
+ jh4svN4RykLgxgXg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZiIfD4jw96LmvOTo/UCz/GY
+ /JIx0ZZ1nTF/M5PbwavnZ1hd/1RxQ4SRYdp+kSZJic+6vr9UOifVFDL0eLpcm+f2hOmjXu8cps8 beAE=
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250709080840.2233208-29-ardb+git@google.com>
-Subject: [PATCH v4 03/24] x86/sev: Use MSR protocol only for early SVSM
- PVALIDATE call
+Message-ID: <20250709080840.2233208-30-ardb+git@google.com>
+Subject: [PATCH v4 04/24] x86/sev: Run RMPADJUST on SVSM calling area page to
+ test VMPL
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
@@ -93,76 +93,71 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-The early page state change API performs an SVSM call to PVALIDATE each
-page when running under a SVSM, and this involves either a GHCB page
-based call or a call based on the MSR protocol.
+Determining the VMPL at which the kernel runs involves performing a
+RMPADJUST operation on an arbitrary page of memory, and observing whether
+it succeeds.
 
-The GHCB page based variant involves VA to PA translation of the GHCB
-address, and this is best avoided in the startup code, where virtual
-addresses are ambiguous (1:1 or kernel virtual).
-
-As this is the last remaining occurrence of svsm_perform_call_protocol()
-in the startup code, switch to the MSR protocol exclusively in this
-particular case, so that the GHCB based plumbing can be moved out of the
-startup code entirely in a subsequent patch.
+The use of boot_ghcb_page in the core kernel in this case is completely
+arbitrary, but results in the need to provide a PIC alias for it. So use
+boot_svsm_ca_page instead, which already needs this alias for other
+reasons.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/sev.c     | 20 --------------------
- arch/x86/boot/startup/sev-shared.c |  4 +++-
- 2 files changed, 3 insertions(+), 21 deletions(-)
+ arch/x86/boot/compressed/sev.c      | 2 +-
+ arch/x86/boot/startup/sev-shared.c  | 5 +++--
+ arch/x86/boot/startup/sev-startup.c | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index fd1b67dfea22..b71c1ab6a282 100644
+index b71c1ab6a282..3628e9bddc6a 100644
 --- a/arch/x86/boot/compressed/sev.c
 +++ b/arch/x86/boot/compressed/sev.c
-@@ -50,31 +50,11 @@ u64 svsm_get_caa_pa(void)
- 	return boot_svsm_caa_pa;
- }
+@@ -327,7 +327,7 @@ static bool early_snp_init(struct boot_params *bp)
+ 	 * running at VMPL0. The CA will be used to communicate with the
+ 	 * SVSM and request its services.
+ 	 */
+-	svsm_setup_ca(cc_info);
++	svsm_setup_ca(cc_info, rip_rel_ptr(&boot_ghcb_page));
  
--int svsm_perform_call_protocol(struct svsm_call *call);
--
- u8 snp_vmpl;
- 
- /* Include code for early handlers */
- #include "../../boot/startup/sev-shared.c"
- 
--int svsm_perform_call_protocol(struct svsm_call *call)
--{
--	struct ghcb *ghcb;
--	int ret;
--
--	if (boot_ghcb)
--		ghcb = boot_ghcb;
--	else
--		ghcb = NULL;
--
--	do {
--		ret = ghcb ? svsm_perform_ghcb_protocol(ghcb, call)
--			   : svsm_perform_msr_protocol(call);
--	} while (ret == -EAGAIN);
--
--	return ret;
--}
--
- static bool sev_snp_enabled(void)
- {
- 	return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
+ 	/*
+ 	 * Pass run-time kernel a pointer to CC info via boot_params so EFI
 diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/startup/sev-shared.c
-index 992abfa50508..1bb4b522dfaa 100644
+index 1bb4b522dfaa..db89a55623f8 100644
 --- a/arch/x86/boot/startup/sev-shared.c
 +++ b/arch/x86/boot/startup/sev-shared.c
-@@ -753,7 +753,9 @@ static void __head svsm_pval_4k_page(unsigned long paddr, bool validate)
- 	call.rax = SVSM_CORE_CALL(SVSM_CORE_PVALIDATE);
- 	call.rcx = pc_pa;
+@@ -780,7 +780,8 @@ static void __head pvalidate_4k_page(unsigned long vaddr, unsigned long paddr,
+  * Maintain the GPA of the SVSM Calling Area (CA) in order to utilize the SVSM
+  * services needed when not running in VMPL0.
+  */
+-static bool __head svsm_setup_ca(const struct cc_blob_sev_info *cc_info)
++static bool __head svsm_setup_ca(const struct cc_blob_sev_info *cc_info,
++				 void *page)
+ {
+ 	struct snp_secrets_page *secrets_page;
+ 	struct snp_cpuid_table *cpuid_table;
+@@ -803,7 +804,7 @@ static bool __head svsm_setup_ca(const struct cc_blob_sev_info *cc_info)
+ 	 * routine is running identity mapped when called, both by the decompressor
+ 	 * code and the early kernel code.
+ 	 */
+-	if (!rmpadjust((unsigned long)rip_rel_ptr(&boot_ghcb_page), RMP_PG_SIZE_4K, 1))
++	if (!rmpadjust((unsigned long)page, RMP_PG_SIZE_4K, 1))
+ 		return false;
  
--	ret = svsm_perform_call_protocol(&call);
-+	do {
-+		ret = svsm_perform_msr_protocol(&call);
-+	} while (ret == -EAGAIN);
- 	if (ret)
- 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
+ 	/*
+diff --git a/arch/x86/boot/startup/sev-startup.c b/arch/x86/boot/startup/sev-startup.c
+index 08b8c24fb469..0994986be908 100644
+--- a/arch/x86/boot/startup/sev-startup.c
++++ b/arch/x86/boot/startup/sev-startup.c
+@@ -303,7 +303,7 @@ static __head void svsm_setup(struct cc_blob_sev_info *cc_info)
+ 	 * running at VMPL0. The CA will be used to communicate with the
+ 	 * SVSM to perform the SVSM services.
+ 	 */
+-	if (!svsm_setup_ca(cc_info))
++	if (!svsm_setup_ca(cc_info, rip_rel_ptr(&boot_svsm_ca_page)))
+ 		return;
  
+ 	/*
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
