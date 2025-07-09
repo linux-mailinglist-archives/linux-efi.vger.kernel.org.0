@@ -1,330 +1,242 @@
-Return-Path: <linux-efi+bounces-4204-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4205-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22155AFDFD7
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 08:15:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44414AFE201
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 10:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 227BE3B155F
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 06:15:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C2471C22686
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 08:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA7A78C91;
-	Wed,  9 Jul 2025 06:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9D5233159;
+	Wed,  9 Jul 2025 08:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GOOHuVrO"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ubaaK5/6"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D6878F36
-	for <linux-efi@vger.kernel.org>; Wed,  9 Jul 2025 06:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450AC227B9F
+	for <linux-efi@vger.kernel.org>; Wed,  9 Jul 2025 08:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752041753; cv=none; b=rMooijp9zEnezJNvtRIzh3qRMGr3JUEznfcEY83hhw3aY81zOK63aAgfDs+wZhAWwiv4JA5S1NG0D5sUry7JFcdUdK8CUWUOvl3xIK+LBD+JamWxTi1aonwDsqdL5IdnqCqQvDBO/FLBVBMiBmiwbLXcdhGUbmBb/hHNTbiFUYY=
+	t=1752048665; cv=none; b=G4VXomwmTA3JAABs/L38Wh4J6vFPbWVBfrVOZPiYUpRge+ZgF6WyJAb7V4cAYjfM2UJE1/wfnSGDp5offhY88lOUKd15lZ1MSSq2ecIvUiw3gjN8C1Yqqyi96demE8FOye5FlBfD2ntVkbawy7NeLxC/4hN8gKv9rdUAgxQBGiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752041753; c=relaxed/simple;
-	bh=gElSSpkZezROn73pOZez7VPFzMUXu4vAmf4sRezcsEM=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=rEg3JLch+H+D/vVWikrAR+L2jALHFFC3MUIis+yK7cyIyXViS+FI0c8yLiYag7CASB5kgwv2CRihpQ5osE2mAzEMcYYxNXVIyutnNuM7DpHs3Z0Otnx0iKWq990nHfKYkrCqnrJBne/vzY/7g7wCJnhkFnbM92I5F3iAXiACwlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GOOHuVrO; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752041752; x=1783577752;
-  h=date:from:to:cc:subject:message-id;
-  bh=gElSSpkZezROn73pOZez7VPFzMUXu4vAmf4sRezcsEM=;
-  b=GOOHuVrOCVdB6oimNuzIWHQapXhlOupKjVwtkkUjv3zb2I2CTSWsfi+S
-   j5jOBPlDcg4z9Ah2beXuBi5nQEJirmDVOXFgK9BypBO/d/sanSPBVd6fx
-   vDVBIUA32Y1SWFYyo589leIjBkD5x0W35crpu9xcdAeiz+THG/QbN0byq
-   QLB7pyVd9iLymoB0n28hvb9sTpofnoEq4K05Sq0nDMjZg7L57gXI+4oGu
-   b1sz1sNgadnucVEpFOd+I2FMnjGwbOOPHRHH9H/7sz/ALk0HTMa40xPgB
-   njnamazLrY6uj3l9LqAncUcX1G8TpBe+Yti2Yg8PePZwnhZVPYFIrnu6/
-   Q==;
-X-CSE-ConnectionGUID: RJIBkd/5QhGGV9s5M6OTfg==
-X-CSE-MsgGUID: BgIuHw8qTqm7Z519i1jqsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="58094807"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="58094807"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 23:15:51 -0700
-X-CSE-ConnectionGUID: QmszSFNnS5aNq8pa4kMX0w==
-X-CSE-MsgGUID: qQuoLX0gQH2LiTNleUokNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="155097532"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 08 Jul 2025 23:15:49 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uZO5r-0003Ax-0i;
-	Wed, 09 Jul 2025 06:15:47 +0000
-Date: Wed, 09 Jul 2025 14:14:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD REGRESSION
- 42c68c6e354f71498f9e3e31aa5b0f9243bc1618
-Message-ID: <202507091433.0etlSgRy-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1752048665; c=relaxed/simple;
+	bh=KjSASj9ZfsWXtJmCUSDj9rwnKu/A9EPjjLfueAKfOY0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sZxQe8YFHNV9bymyXGdE4xWSiOjjRjmsXhh2QjP8mVoHqfkvN45s/mxecQy4NWiHv9SyJrxrOmuE7GQlp5PuMV499BV81NT+/ClLbkg2yQjLSx3iies0l0sQqGmm2X8ExhbLdAcJb3vrxhJMli4AlYbHPSGBrNmQMukw4sRnWcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ubaaK5/6; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-453691d0a1dso29914295e9.0
+        for <linux-efi@vger.kernel.org>; Wed, 09 Jul 2025 01:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752048661; x=1752653461; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=31/PvKLzqd7EI92cHr+X5IlPuKryr+LZx/u+muhVhNY=;
+        b=ubaaK5/6f6A6wDKy51sbeEM7YUIDBz+FC2uBFzKtUxbrvAffPxxqWbLbYKARuHEsg5
+         +IuyKl0zPUK3OIYifZOczMIj6mR+qTrmhHt/9rP1lw5lXTDzhcXmfWRCb1bKgmhb96wk
+         HrqPzs7BvwDZWJS0yTGDjp7ZW0RMs6VBDCBk8ZYX7Y/JBQ0jnCP2qVURirBla/9BeiZs
+         txUtEKDLFjfvjvj9DmF1pR6wG3JGQECvDN9lzYBwk6Ro82+du/uW+CxCFUwtN8xGqDv1
+         0VmhdmJ6xVIwPIjoBEMib0FSen01vd9XB3fn4mCrQ/9BSc92wZkWOd+uPjre1BWvpUY6
+         MdtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752048661; x=1752653461;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=31/PvKLzqd7EI92cHr+X5IlPuKryr+LZx/u+muhVhNY=;
+        b=OYwSmqcShCl3AtNDI0Pq3xOnmGo1U+G1GiOFEpypl2s6H/UPqBTwUARL2q8VPAfzWA
+         o76R5h0CXml3ucVraeOARMpLfioAkQARhfSf8NSM1npSWFrXFf++0OfoIfCxfqqNbSxp
+         S1C7rRKmJkpInKhu4Obaj6RhqjVhO5sINZfxvkIv8fq8wGZh6YPCMp/C1ieF41aWHu9z
+         WDyoF+ZP0/Uo0xM6NFqUIaAM0auVe6rUIUZknMx1ZJctYOKG6mGnoZ1KW5nuWIna+ZZG
+         u2KAkXssJ1cm8FhUmytfqVi9YWZGKWbJ4o8x7Iujdyp8UI7FA9hEqIEwu22yDjYjqjyP
+         ZxHQ==
+X-Gm-Message-State: AOJu0Yy2P1sEO2oMsNiFefJTOSwrZyYoNwKuFgOSTxM/aO9O18Y6Xjwc
+	E7H7NdYraLi5mu6zcy4Ue21SLdTQwn6WxocprU5WCvOy02KnzHl6r0UDopoIqa2dYU+2mALafQ=
+	=
+X-Google-Smtp-Source: AGHT+IFOu9EZpx8fcWBTeCvJmziWlJOrJsIZYAsl7X+HgcT1/Gdp/PSGEzgE2jt7KJwE9ZMibr423BVi
+X-Received: from wrad5.prod.google.com ([2002:adf:a405:0:b0:3a5:8a59:e17c])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2008:b0:3b3:9c94:eff8
+ with SMTP id ffacd0b85a97d-3b5e4537eb0mr1050338f8f.27.1752048661644; Wed, 09
+ Jul 2025 01:11:01 -0700 (PDT)
+Date: Wed,  9 Jul 2025 10:08:41 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7401; i=ardb@kernel.org;
+ h=from:subject; bh=VuwLfYbTlAuktsTY5TEVVfMqiy6yq5GIka73gzMx1ko=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JISNPuaf+8LnH+dfmVpayvu27vVl6df3xtorfdxLrDJol/
+ bV29V/tKGVhEONikBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABP585Dhn8a3+ZmK073//FBn
+ T1/SIpN++6kbt7Dnw+cLd1gwGN3Xuc7IcHzP3o+aXfv0dWS3b6y8nnXpy8SH4kGKnYX28grTVim 1MAMA
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Message-ID: <20250709080840.2233208-26-ardb+git@google.com>
+Subject: [PATCH v4 00/24] x86: strict separation of startup code
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 42c68c6e354f71498f9e3e31aa5b0f9243bc1618  efi: add ovmf debug log driver
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Error/Warning (recently discovered and may have been fixed):
+!!! Boot tested on non-SEV guest ONLY !!!!
 
-    https://lore.kernel.org/oe-kbuild-all/202507091432.rbbrjGoU-lkp@intel.com
+This RFT series implements a strict separation between startup code and
+ordinary code, where startup code is built in a way that tolerates being
+invoked from the initial 1:1 mapping of memory.
 
-    ERROR: modpost: "efi_kobj" [drivers/firmware/efi/ovmf-debug-log.ko] undefined!
+The existing approach of emitting this code into .head.text and checking
+for absolute relocations in that section is not 100% safe, and produces
+diagnostics that are sometimes difficult to interpret. [0]
 
-Error/Warning ids grouped by kconfigs:
+Instead, rely on symbol prefixes, similar to how this is implemented for
+the EFI stub and for the startup code in the arm64 port. This ensures
+that startup code can only call other startup code, unless a special
+symbol alias is emitted that exposes a non-startup routine to the
+startup code.
 
-recent_errors
-`-- loongarch-allmodconfig
-    `-- ERROR:efi_kobj-drivers-firmware-efi-ovmf-debug-log.ko-undefined
+This is somewhat intrusive, as there are many data objects that are
+referenced both by startup code and by ordinary code, and an alias needs
+to be emitted for each of those. If startup code references anything
+that has not been made available to it explicitly, a build time link
+error will occur.
 
-elapsed time: 1027m
+This ultimately allows the .head.text section to be dropped entirely, as
+it no longer has a special significance. Instead, code that only
+executes at boot is emitted into .init.text as it should.
 
-configs tested: 228
-configs skipped: 4
+The majority of changes is around early SEV code. The main issue is that
+its use of GHCB pages and SVSM calling areas in code that may run from
+both the 1:1 mapping and the kernel virtual mapping is problematic as it
+relies on __pa() to perform VA to PA translations, which are ambiguous
+in this context. Also, __pa() pulls in non-trivial instrumented code
+when CONFIG_DEBUG_VIRTUAL=y and so it is better to avoid VA to PA
+translations altogether in the startup code.
 
-tested configs:
-alpha                             allnoconfig    clang-21
-alpha                            allyesconfig    clang-19
-alpha                            allyesconfig    gcc-15.1.0
-arc                              allmodconfig    clang-19
-arc                               allnoconfig    clang-21
-arc                              allyesconfig    clang-19
-arc                   randconfig-001-20250708    gcc-13.4.0
-arc                   randconfig-001-20250709    gcc-10.5.0
-arc                   randconfig-002-20250708    gcc-8.5.0
-arc                   randconfig-002-20250709    gcc-10.5.0
-arc                        vdk_hs38_defconfig    gcc-15.1.0
-arm                              allmodconfig    clang-19
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    clang-19
-arm                           imxrt_defconfig    gcc-15.1.0
-arm                          ixp4xx_defconfig    gcc-15.1.0
-arm                   randconfig-001-20250708    clang-21
-arm                   randconfig-001-20250709    gcc-10.5.0
-arm                   randconfig-002-20250708    clang-17
-arm                   randconfig-002-20250709    gcc-10.5.0
-arm                   randconfig-003-20250708    gcc-10.5.0
-arm                   randconfig-003-20250709    gcc-10.5.0
-arm                   randconfig-004-20250708    clang-21
-arm                   randconfig-004-20250709    gcc-10.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    clang-21
-arm64                 randconfig-001-20250708    gcc-9.5.0
-arm64                 randconfig-001-20250709    gcc-10.5.0
-arm64                 randconfig-002-20250708    clang-19
-arm64                 randconfig-002-20250709    gcc-10.5.0
-arm64                 randconfig-003-20250708    clang-21
-arm64                 randconfig-003-20250709    gcc-10.5.0
-arm64                 randconfig-004-20250708    gcc-8.5.0
-arm64                 randconfig-004-20250709    gcc-10.5.0
-csky                              allnoconfig    clang-21
-csky                  randconfig-001-20250708    gcc-13.4.0
-csky                  randconfig-001-20250709    gcc-14.2.0
-csky                  randconfig-002-20250708    gcc-15.1.0
-csky                  randconfig-002-20250709    gcc-14.2.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    clang-19
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-19
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250708    clang-21
-hexagon               randconfig-001-20250709    gcc-14.2.0
-hexagon               randconfig-002-20250708    clang-21
-hexagon               randconfig-002-20250709    gcc-14.2.0
-i386                             allmodconfig    clang-20
-i386                              allnoconfig    clang-20
-i386                             allyesconfig    clang-20
-i386        buildonly-randconfig-001-20250708    clang-20
-i386        buildonly-randconfig-001-20250709    clang-20
-i386        buildonly-randconfig-002-20250708    clang-20
-i386        buildonly-randconfig-002-20250709    clang-20
-i386        buildonly-randconfig-003-20250708    clang-20
-i386        buildonly-randconfig-003-20250709    clang-20
-i386        buildonly-randconfig-004-20250708    gcc-12
-i386        buildonly-randconfig-004-20250709    clang-20
-i386        buildonly-randconfig-005-20250708    clang-20
-i386        buildonly-randconfig-005-20250709    clang-20
-i386        buildonly-randconfig-006-20250708    clang-20
-i386        buildonly-randconfig-006-20250709    clang-20
-i386                                defconfig    clang-20
-i386                  randconfig-001-20250709    clang-20
-i386                  randconfig-002-20250709    clang-20
-i386                  randconfig-003-20250709    clang-20
-i386                  randconfig-004-20250709    clang-20
-i386                  randconfig-005-20250709    clang-20
-i386                  randconfig-006-20250709    clang-20
-i386                  randconfig-007-20250709    clang-20
-i386                  randconfig-011-20250709    clang-20
-i386                  randconfig-012-20250709    clang-20
-i386                  randconfig-013-20250709    clang-20
-i386                  randconfig-014-20250709    clang-20
-i386                  randconfig-015-20250709    clang-20
-i386                  randconfig-016-20250709    clang-20
-i386                  randconfig-017-20250709    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-21
-loongarch             randconfig-001-20250708    clang-21
-loongarch             randconfig-001-20250709    gcc-14.2.0
-loongarch             randconfig-002-20250708    clang-21
-loongarch             randconfig-002-20250709    gcc-14.2.0
-m68k                             allmodconfig    clang-19
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    clang-19
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    clang-19
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    clang-19
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                         10m50_defconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-15.1.0
-nios2                               defconfig    gcc-15.1.0
-nios2                 randconfig-001-20250708    gcc-8.5.0
-nios2                 randconfig-001-20250709    gcc-14.2.0
-nios2                 randconfig-002-20250708    gcc-8.5.0
-nios2                 randconfig-002-20250709    gcc-14.2.0
-openrisc                          allnoconfig    clang-21
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    clang-21
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250708    gcc-9.3.0
-parisc                randconfig-001-20250709    gcc-14.2.0
-parisc                randconfig-002-20250708    gcc-14.3.0
-parisc                randconfig-002-20250709    gcc-14.2.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    clang-21
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    gcc-15.1.0
-powerpc               randconfig-001-20250708    gcc-8.5.0
-powerpc               randconfig-001-20250709    gcc-14.2.0
-powerpc               randconfig-002-20250708    clang-19
-powerpc               randconfig-002-20250709    gcc-14.2.0
-powerpc               randconfig-003-20250708    clang-21
-powerpc               randconfig-003-20250709    gcc-14.2.0
-powerpc64             randconfig-001-20250708    clang-21
-powerpc64             randconfig-001-20250709    gcc-14.2.0
-powerpc64             randconfig-002-20250708    clang-21
-powerpc64             randconfig-002-20250709    gcc-14.2.0
-powerpc64             randconfig-003-20250708    clang-21
-powerpc64             randconfig-003-20250709    gcc-14.2.0
-riscv                            allmodconfig    gcc-15.1.0
-riscv                             allnoconfig    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    gcc-15.1.0
-riscv                               defconfig    gcc-12
-riscv                 randconfig-001-20250708    clang-16
-riscv                 randconfig-001-20250709    gcc-12
-riscv                 randconfig-002-20250708    gcc-11.5.0
-riscv                 randconfig-002-20250709    gcc-12
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    gcc-15.1.0
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20250708    gcc-14.3.0
-s390                  randconfig-001-20250709    gcc-12
-s390                  randconfig-002-20250708    gcc-9.3.0
-s390                  randconfig-002-20250709    gcc-12
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-12
-sh                         ecovec24_defconfig    gcc-15.1.0
-sh                 kfr2r09-romimage_defconfig    gcc-15.1.0
-sh                    randconfig-001-20250708    gcc-11.5.0
-sh                    randconfig-001-20250709    gcc-12
-sh                    randconfig-002-20250708    gcc-15.1.0
-sh                    randconfig-002-20250709    gcc-12
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250708    gcc-13.4.0
-sparc                 randconfig-001-20250709    gcc-12
-sparc                 randconfig-002-20250708    gcc-13.4.0
-sparc                 randconfig-002-20250709    gcc-12
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20250708    clang-21
-sparc64               randconfig-001-20250709    gcc-12
-sparc64               randconfig-002-20250708    gcc-15.1.0
-sparc64               randconfig-002-20250709    gcc-12
-um                               alldefconfig    gcc-15.1.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    clang-19
-um                               allyesconfig    gcc-12
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250708    clang-21
-um                    randconfig-001-20250709    gcc-12
-um                    randconfig-002-20250708    clang-17
-um                    randconfig-002-20250709    gcc-12
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250708    gcc-12
-x86_64      buildonly-randconfig-001-20250709    clang-20
-x86_64      buildonly-randconfig-002-20250708    gcc-12
-x86_64      buildonly-randconfig-002-20250709    clang-20
-x86_64      buildonly-randconfig-003-20250708    clang-20
-x86_64      buildonly-randconfig-003-20250709    clang-20
-x86_64      buildonly-randconfig-004-20250708    gcc-12
-x86_64      buildonly-randconfig-004-20250709    clang-20
-x86_64      buildonly-randconfig-005-20250708    clang-20
-x86_64      buildonly-randconfig-005-20250709    clang-20
-x86_64      buildonly-randconfig-006-20250708    clang-20
-x86_64      buildonly-randconfig-006-20250709    clang-20
-x86_64                              defconfig    clang-20
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20250709    clang-20
-x86_64                randconfig-002-20250709    clang-20
-x86_64                randconfig-003-20250709    clang-20
-x86_64                randconfig-004-20250709    clang-20
-x86_64                randconfig-005-20250709    clang-20
-x86_64                randconfig-006-20250709    clang-20
-x86_64                randconfig-007-20250709    clang-20
-x86_64                randconfig-008-20250709    clang-20
-x86_64                randconfig-071-20250709    gcc-12
-x86_64                randconfig-072-20250709    gcc-12
-x86_64                randconfig-073-20250709    gcc-12
-x86_64                randconfig-074-20250709    gcc-12
-x86_64                randconfig-075-20250709    gcc-12
-x86_64                randconfig-076-20250709    gcc-12
-x86_64                randconfig-077-20250709    gcc-12
-x86_64                randconfig-078-20250709    gcc-12
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-12
-x86_64                         rhel-9.4-kunit    gcc-12
-x86_64                           rhel-9.4-ltp    gcc-12
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250708    gcc-8.5.0
-xtensa                randconfig-001-20250709    gcc-12
-xtensa                randconfig-002-20250708    gcc-9.3.0
-xtensa                randconfig-002-20250709    gcc-12
+Changes since RFT/v3:
+- Rebase onto tip/master
+- Incorporate Borislav's feedback on v3
+- Switch to objtool to check for absolute references in startup code
+- Remap inittext R-X when running on EFI implementations that require
+  strict R-X/RW- separation
+- Include a kbuild fix to incorporate arch/x86/boot/startup/ in the
+  right manner
+- For now, omit the LA57 changes that remove the problematic early
+  5-level paging checks. We can revisit this once there is agreement on
+  the approach. 
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Changes since RFT/v2:
+- Rebase onto tip/x86/boot and drop the patches from the previous
+  revision that have been applied in the meantime.
+- Omit the pgtable_l5_enabled() changes for now, and just expose PIC
+  aliases for the variables in question - this can be sorted later.
+- Don't use the boot SVSM calling area in snp_kexec_finish(), but pass
+  down the correct per-CPU one to the early page state API.
+- Rename arch/x86/coco/sev/sev-noinstr.o to arch/x86/coco/sev/noinstr.o
+- Further reduce the amount of SEV code that needs to be constructed in
+  a special way.
+
+Change since RFC/v1:
+- Include a major disentanglement/refactor of the SEV-SNP startup code,
+  so that only code that really needs to run from the 1:1 mapping is
+  included in the startup/ code
+
+- Incorporate some early notes from Ingo
+
+Build tested defconfig and allmodconfig
+
+!!! Boot tested on non-SEV guest ONLY !!!!
+
+Again, I will need to lean on Tom to determine whether this breaks
+SEV-SNP guest boot. As I mentioned before, I am still waiting for
+SEV-SNP capable hardware to be delivered.
+
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
+Cc: Kevin Loughlin <kevinloughlin@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+
+[0] https://lore.kernel.org/all/CAHk-=wj7k9nvJn6cpa3-5Ciwn2RGyE605BMkjWE4MqnvC9E92A@mail.gmail.com/
+
+Ard Biesheuvel (24):
+  x86/sev: Separate MSR and GHCB based snp_cpuid() via a callback
+  x86/sev: Use MSR protocol for remapping SVSM calling area
+  x86/sev: Use MSR protocol only for early SVSM PVALIDATE call
+  x86/sev: Run RMPADJUST on SVSM calling area page to test VMPL
+  x86/sev: Move GHCB page based HV communication out of startup code
+  x86/sev: Avoid global variable to store virtual address of SVSM area
+  x86/sev: Move MSR save/restore out of early page state change helper
+  x86/sev: Share implementation of MSR-based page state change
+  x86/sev: Pass SVSM calling area down to early page state change API
+  x86/sev: Use boot SVSM CA for all startup and init code
+  x86/boot: Drop redundant RMPADJUST in SEV SVSM presence check
+  x86/sev: Unify SEV-SNP hypervisor feature check
+  x86/boot: Provide PIC aliases for 5-level paging related constants
+  x86/sev: Provide PIC aliases for SEV related data objects
+  x86/sev: Move __sev_[get|put]_ghcb() into separate noinstr object
+  x86/sev: Export startup routines for later use
+  objtool: Add action to check for absence of absolute relocations
+  x86/boot: Check startup code for absence of absolute relocations
+  x86/boot: Revert "Reject absolute references in .head.text"
+  x86/kbuild: Incorporate boot/startup/ via Kbuild makefile
+  x86/boot: Create a confined code area for startup code
+  efistub/x86: Remap inittext read-execute when needed
+  x86/boot: Move startup code out of __head section
+  x86/boot: Get rid of the .head.text section
+
+ arch/x86/Kbuild                            |   2 +
+ arch/x86/Makefile                          |   1 -
+ arch/x86/boot/compressed/Makefile          |   2 +-
+ arch/x86/boot/compressed/misc.c            |   2 +
+ arch/x86/boot/compressed/sev-handle-vc.c   |   3 +
+ arch/x86/boot/compressed/sev.c             | 132 ++-------
+ arch/x86/boot/startup/Makefile             |  22 ++
+ arch/x86/boot/startup/exports.h            |  14 +
+ arch/x86/boot/startup/gdt_idt.c            |   4 +-
+ arch/x86/boot/startup/map_kernel.c         |   4 +-
+ arch/x86/boot/startup/sev-shared.c         | 313 ++++++--------------
+ arch/x86/boot/startup/sev-startup.c        | 190 ++----------
+ arch/x86/boot/startup/sme.c                |  29 +-
+ arch/x86/coco/sev/Makefile                 |   6 +-
+ arch/x86/coco/sev/core.c                   | 180 ++++++++---
+ arch/x86/coco/sev/{sev-nmi.c => noinstr.c} |  74 +++++
+ arch/x86/coco/sev/vc-handle.c              |   2 +
+ arch/x86/coco/sev/vc-shared.c              | 143 ++++++++-
+ arch/x86/include/asm/boot.h                |   2 +
+ arch/x86/include/asm/init.h                |   6 -
+ arch/x86/include/asm/setup.h               |   1 +
+ arch/x86/include/asm/sev-internal.h        |  29 +-
+ arch/x86/include/asm/sev.h                 |  19 +-
+ arch/x86/kernel/head64.c                   |   5 +-
+ arch/x86/kernel/head_32.S                  |   2 +-
+ arch/x86/kernel/head_64.S                  |  10 +-
+ arch/x86/kernel/vmlinux.lds.S              |   9 +-
+ arch/x86/mm/mem_encrypt_amd.c              |   6 -
+ arch/x86/mm/mem_encrypt_boot.S             |   6 +-
+ arch/x86/platform/pvh/head.S               |   2 +-
+ arch/x86/tools/relocs.c                    |   8 +-
+ drivers/firmware/efi/libstub/x86-stub.c    |   4 +-
+ tools/objtool/builtin-check.c              |   2 +
+ tools/objtool/check.c                      |  39 ++-
+ tools/objtool/include/objtool/builtin.h    |   1 +
+ 35 files changed, 632 insertions(+), 642 deletions(-)
+ create mode 100644 arch/x86/boot/startup/exports.h
+ rename arch/x86/coco/sev/{sev-nmi.c => noinstr.c} (61%)
+
+-- 
+2.50.0.727.gbf7dc18ff4-goog
+
 
