@@ -1,200 +1,289 @@
-Return-Path: <linux-efi+bounces-4256-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4257-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B734AFEEC1
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 18:14:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F02DAFEF3D
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 18:55:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47F2F560681
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:14:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DB76188DDA8
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6221D2E612B;
-	Wed,  9 Jul 2025 16:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E261221FAE;
+	Wed,  9 Jul 2025 16:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JKzN20Rq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gYODEiH6"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2045.outbound.protection.outlook.com [40.107.212.45])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1148F40;
-	Wed,  9 Jul 2025 16:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752077643; cv=fail; b=Th0ZSNGm7bKbxzMmWZoFuOdcDwPn/AzwrkGA72F0X5TYBTxrkslTXbFaCGQL3JWGOwMCjGepIQdHIzw2UGszb3xy/XieryuvFEXy68fZv91ClIYHhZMl7701v3dBreS9WXanHkI3P9mmG5y2jy3o/4zeAh/O5M3xdQoeGwGheW8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752077643; c=relaxed/simple;
-	bh=m8qzZceCDpsqgJdupZOrMfDu5EsKAvUIh/y9kZ4jnuU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=OmPae6Bz0GU1DaeH/dlAv3rCflrqmG4cl8rkedbk4Kz4EjqShpdTwRG3hxb8TPi7ItY+qLfeHrnz7yj5FPFD3/4JpUEPgyCcOKpC0B2IGl4xXa4dGIHK+zJPGqaF0XToKKFuDD4OeUSMQ/dqVJMCij7Db0PRpUaISUshnaKbnvo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JKzN20Rq; arc=fail smtp.client-ip=40.107.212.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sxtnJbeDFrDHb931yG/Hv+TsSiQgm4vlbivMYiDt0mpYjdRZAafAgVAc+DU8HYmPeZJ2HT0604noIAzht0rwOOXUzJeLTNPZHAbPjcyw72EDBApVbAS1WFpvx8TnLr6yv9PaVwQyTea3eORjCiVjONOtYRc8sdXurismKQb8uXukajEKCoXo/JpHqKxzXMK+6MlMqSz9tllln4d3xsSHvIcO8TkuIY5m+K9RdKx2Cek+EvlI4mWibsFM2iwfGRkC91ElilDln3Zl6AfL4+Ciw/Nbj+azQwTHAgt0/t/E/vjMf+gzm2wxPK+PszVHiIJ5tKjex7lYW3GKRVQ/MxhKxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xuTAVHuyh3Fbbb9ubeado/2N95hCRAcCDjHeN0R1J5M=;
- b=SiyArpUSziatRNRpCDn7hmstKnwAWqbda075mE4DjQ92AWYV8NuQTB76Q6yS403RBzldD++b251rGuMRQ5Toq2SKjFYuwR3BxuEjzN/0GXlzuJoff9sV4jvLydbHnWb4OlnXhchbcOz7cOVdDx65Y3pUA1HlFTJP2UWEsVaFzmn3IlMUp56W+Ez5QFzMwTDtKCm3lybQoZNs4dEsctMn/pg6NEqFH9cpqkrN5mnrd89iGVYxP7vT3fKUqQ4dVGFvhGPoCnqf7LPWwAbFVIDsxhXgMyNiCGLROMaeTfV6UnGTiEgL/tMBcVLCFKO4aGgCT8UX+A+C7ZFITw/5A0NQvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xuTAVHuyh3Fbbb9ubeado/2N95hCRAcCDjHeN0R1J5M=;
- b=JKzN20RqrEeADz8PhGnKwEPuTtbtXc8ae0WxZs7vdw9lUcP10opFBnf/Yi+M3ruNdt/y3Kq5P3nA8rxteuIkIlG2yVhryI1hbw9RSTXhnprTiaxf3oLRTeZxo+ltxNZVDTIPlZqn6TMYkZZ/Bz7gT5yETwvT60r+MMK7Ed5j8iI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by CH3PR12MB7570.namprd12.prod.outlook.com (2603:10b6:610:149::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Wed, 9 Jul
- 2025 16:13:58 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8901.023; Wed, 9 Jul 2025
- 16:13:58 +0000
-Message-ID: <4b50e347-fedc-d94a-9670-a5003220db57@amd.com>
-Date: Wed, 9 Jul 2025 11:13:55 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 04/24] x86/sev: Run RMPADJUST on SVSM calling area page
- to test VMPL
-Content-Language: en-US
-To: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org
-Cc: linux-efi@vger.kernel.org, x86@kernel.org,
- Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Ingo Molnar <mingo@kernel.org>, Dionna Amalie Glaze
- <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-References: <20250709080840.2233208-26-ardb+git@google.com>
- <20250709080840.2233208-30-ardb+git@google.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20250709080840.2233208-30-ardb+git@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR04CA0011.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::18) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF86214813;
+	Wed,  9 Jul 2025 16:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752080090; cv=none; b=tq3VKjJKHJGbNXRHqRs3YBMpv+CsFlMjtaJL5UX1W5evOHGvVeX6yqOFuOe9BCF1iWfHI5JR77uQHEpn79V2S/2z/h6LwML/hlplKbZPoEPB3Mk9LSrQEvVA9rZZFQZGeszfzsQcc0DyUogrqeJ48zAA+Ymf5PnyBLkox+v5zQE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752080090; c=relaxed/simple;
+	bh=97R8r9026OTpHmRMs3mcRD8TZjTzsY16HJQDyChnBsQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cijIX54RCDhwVRfy5ahTCdL0rD+Rhcf0Xlz+NZqyaFuDOo95UTGUhMekrAEHdRsmSplGb2fLkIT0M0YG9+WxFqrc8FzM0SQNWcvJ8+Bmr+cviYWzrUSBwzLz60BBDHdj34EzmO7LIJb6BjkNIdmpK8SF9U74C73HHle49iA7/h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gYODEiH6; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752080088; x=1783616088;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=97R8r9026OTpHmRMs3mcRD8TZjTzsY16HJQDyChnBsQ=;
+  b=gYODEiH6+L74BX8qBkP8xKKou6gZziplEStzjchaIa+xxieyxGhL5IVH
+   qEIBM4C/NIaC8P8aSmI+BxXUh5KEVk6KtrcGd6EE8YOS8tgZ5XxGSWcKf
+   sSFqvE5KH6jKhKHzvlWDsy4odcaQTqUwmVO1ZWSu1lcgCZSECamKzqHuw
+   VF7Rb+d05V4qBxIRpBPvHSdD/3nuQovhcqEBYBjC/QbbgJaYMKMnOi6+6
+   VPSAb6qsE4fxoC7aKDYkLECepr0g7RxdBCcU2rgv6ZHr5Ngama2aEB5pI
+   mmw5ffuhAC035KrBM451SDR3hBXsVs+lpcDWGzy9mfGwKywO8B8OeACG6
+   A==;
+X-CSE-ConnectionGUID: IIVV2AnHSV69xSQCCMAgRg==
+X-CSE-MsgGUID: slXhI8hPQS+kdtzj3G6tug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54480910"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="54480910"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 09:54:46 -0700
+X-CSE-ConnectionGUID: n2x1HyD+RR+vnGa7MyMZIg==
+X-CSE-MsgGUID: MMUNuuqvSzSWvs6zURxmiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="161485165"
+Received: from puneetse-mobl.amr.corp.intel.com (HELO [10.125.110.190]) ([10.125.110.190])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 09:54:45 -0700
+Message-ID: <7d93b343-b275-4edb-ae26-4578ae53652f@intel.com>
+Date: Wed, 9 Jul 2025 09:58:23 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CH3PR12MB7570:EE_
-X-MS-Office365-Filtering-Correlation-Id: f69b5ee1-eb47-4ce5-9d52-08ddbf039c14
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dzBOWGtYbTBad29ocmpyY2l3c0Vhbjgrbm00SWN4dzVFYVIzQkZ3cjE3eUpX?=
- =?utf-8?B?UnlVNGVDNUdlSWYyNzhnMUFiRGc5bWxDeUx0UnFCVEdEdVZoZUlwcE5zRDlw?=
- =?utf-8?B?TTljdzZsT1Q3NDR2b2FOYUJLTThRdUZxcTQwa3JWTHU1Z0lDVGpRLy90SmV6?=
- =?utf-8?B?TUNBb2tFd2x0WDRuSGx5UGZGcHpKN3NQbUc1ZEpuSlNDbXdoYittT1hScnRD?=
- =?utf-8?B?dFE2cTllNWpWQ0pyZFVwR2Rac2dpV3JYSmpTR3BuSG1leFBnTUlwRTNRM2dJ?=
- =?utf-8?B?TzRqSVc2LzRnY0RiNmxtbXpIcEYzcjcyb3ZXcVN3YVQ2c090ZWJSZVRUQjBY?=
- =?utf-8?B?MngvUTdoamsvM3BzR3FNVE5RVGxmMS9xM3hQOHlMSmJLUUpUYzhZcDUrMEZv?=
- =?utf-8?B?U1YzNmg0SkNVa0VtUGw1UXVjVEcyTzNGMWVhSkFJaFhIcFdKSXBibVZDY3lB?=
- =?utf-8?B?TXA4VHhZNldjUFFqRlBkbWo5ZEk3b21IYmdwTEh3TWFWbjE1em9qSVpPUGxr?=
- =?utf-8?B?OWoySDdaWUVYODBraU5vNHRhSlJZQkNWNnVrQldyWWNmQnF5TGh6UHp3L2NV?=
- =?utf-8?B?WGZENkF3SjgwR0RBek5KcnRaNXZlRkZaaUV0bDVCSk8vMDVqalU1QjNodWNO?=
- =?utf-8?B?aDdpWGlvaGZNZFNjaWh5MWNDNU9vMzhkejUxZ0NZYjQ3RnhoLzVhb0hIcWNI?=
- =?utf-8?B?NnhyK0ViNGlYbTUyd1NsS2lyS0YvWVJBbEZWb1VRNWhjQS9WczJGczhPYnFh?=
- =?utf-8?B?RStOWFByS1kwZFhQeEh5djhCWVAxekNBRGtoakgxRUZlVTVRZS9McE5XeTJF?=
- =?utf-8?B?REhYdGNLUUdvNUpoTWhoajhqTjFmclgzL3oxemlGVU92eGNlaVJrb1cxMVJw?=
- =?utf-8?B?THNrZ3p1ZkQ0QjVNSnh4NVFSOXVvald6K0RZVEc1eURpNllHRk1rV1JZbGpW?=
- =?utf-8?B?ZWNickhCcURnVGJQbmlNMG0zNUNweGNpVHQwcEY1MjljZzJLcmFwbXdlNFRB?=
- =?utf-8?B?R3MrRVZPRkJjVjdkcDZJWGlobnd3RUNqcVFSZDlZNGFGUHREWi9SVXNBZHR5?=
- =?utf-8?B?enB1SExSY1NtUllnRU54ZWoyenRHa3JpWGpFcmVVdHIvL0ZpVHh1Q2gvTWdK?=
- =?utf-8?B?b2RiN0lwN08rT2gySmhEOFl0b2h4YXAxbElDb1RzeHE1YjVvMW91bnc5MFVa?=
- =?utf-8?B?YzM2dzI2RUx0WGtQdU1qTDIwRGVzL29vUFdTMWJLNWlXbXBTMTkxOTJ4QkNX?=
- =?utf-8?B?dnBDUC9FZDE4bVROdG13YWRiWCtYR1M2MFAvRjlNZ3I4bFB5K0hzK2RZaVlN?=
- =?utf-8?B?NEhjdnZTaUFndUhaOFE1cVZhSVJWTllhSWdGZ3VZOHVLa2lqenZLN0djbkhM?=
- =?utf-8?B?ZmFxbjdieDI1MUgzWnM1WFNzRHkrUlc0TDRkVnE5bnFBNHp1UFp6NmdMcjIz?=
- =?utf-8?B?SXA5UTZPOUZYMEhKS3MzK1BYQWJmaFhXdDlLRW5NclM3NENBNWVKUlJnQVJO?=
- =?utf-8?B?dDk3WjAwV2htcjNpUityZHhPZldKTUdVOUg3elJvTHJ4K2o5V1FWU2VVSTFs?=
- =?utf-8?B?YTVLNnpiNnFCbGZzSVJuNHNMR1QzSjRueWdGaldnc3BVeVJmYmVxK015ckZn?=
- =?utf-8?B?c09Wc0wyUFlZZGx0RVJzU1VBTGJoQVJyVk5TZE4wZk1HdCtvL24zTTdRYzEx?=
- =?utf-8?B?RkQzTDZxMCtxL0pmQVFlcVNuanRGY29EYUI2c1B4SHVaQWV0MWJyaldqcTdk?=
- =?utf-8?B?K01VQTU5dXBKblZhRDNxS2xBL012MWROT2ttN003UDBkbjMzdXNCVFdLQVR1?=
- =?utf-8?B?QytyeHhKcFVUeTVGN1ZCZ1hsaHczajNCUWxadkhTSmdUU1hqMFB6K1h5VVVW?=
- =?utf-8?B?d2FHZDkreFh2TDVjeGp0MXJLRS9ZR1l0NkkrZkpXQUlzTWc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZG9tMjEvYlFFWkM2NHVCbjdwUnI0M3hROC94ekQwVllRZHVpWmxQN3M4TzNx?=
- =?utf-8?B?Z09WaVVLZHh1WktXV0pNcUVaeUlrZ2xyUTB3aThDdFovdnhmN2N5WjM3Z0lo?=
- =?utf-8?B?ckROOU1wRnVkMW8vQkpBQ3J2UytrNUtBMmdvT2E1TUhiUElQWlcvdk5NWXht?=
- =?utf-8?B?WEdUSFMxNW4xRkNaaFQ3dVZwYjlPVVk2VG9DMkZQU0lQNGhTOGlJR2tWWkRQ?=
- =?utf-8?B?S1RURm11N3VXYlcvZTZ5RGdtTVk5SDhoYmphaGFTNkJvRS9maWlhaXp1TzN1?=
- =?utf-8?B?V0lBb3d5dzFYOFJzblpGWjRmNEZmNXdYVGZlM0lZUVZVTUs3bElzcUhHeVRy?=
- =?utf-8?B?OUE5bFAwZWhoUUoxWGhpa2hLY1phVEZBL0FaVURJTHVCWDRpeDhZWXBDc0d6?=
- =?utf-8?B?aDZlUmkrRVE4em1hUk9rQndadzJBbldPQktLQzFieHFSTTRLNm5OWjZYd1FQ?=
- =?utf-8?B?UzlIQzBudzNNcU5JTEMvQ2ltQlkxYjJJTmVyaDlHVUJnc1hrcWF5MnF0Tk1i?=
- =?utf-8?B?ZUdubFh1RGlLSXVRYWYreXFOVEE0SUc3L1V5b3d3YnZQZFZNSXV2RG1vSDh1?=
- =?utf-8?B?ZFI3WG15Vkl6cThGLzE4S0VQQjRacVFvdm5qM250alNpQWV5YWREYUNkcmwv?=
- =?utf-8?B?enBZUU9pbFZheThaa29hOTg5NjQvaDI0TWdJV08rWk1LNG5mU2JoVEJYNFdE?=
- =?utf-8?B?OTVpZTdKQUpuSGtWZzEzVjA5QWYwSG9acUVBSGdXRDVJVjc5S2tYL1BJUUls?=
- =?utf-8?B?U2JDSjVaTHpPRTlaR25zN0RaOXAzTnRXQklzOU5POStWc2pWdXdhWFd1U3Na?=
- =?utf-8?B?d1hxc3VXbmxPM0dBSXJnQWlCZUpzNitYTjR0NVFSWDBzbDR5Y3FQdGNxWGlV?=
- =?utf-8?B?MWh0WlVHc3hqSURYdWcxY21Fc2RSRzBrZGRFRG01cVVsYlIvZGk0RWpTOXd2?=
- =?utf-8?B?Qy81WjByTUZydWNpQUNvVlFHRTJJeEREZFNDR0diZERTRFhXMlNZWmJrcjRX?=
- =?utf-8?B?QlZJOFJIY3RXM0ZKZzJqVmpweFVVU29iWWFpUGZQbkk5Y3dVOGExZXFzTjFv?=
- =?utf-8?B?d2xSMUxFdVdVRmxzUkVJQ05KMVdMOFBQTzRnRjdZSi9veWd3bkIySlV2UDIx?=
- =?utf-8?B?MXoyZ2Q0bmxFcWFyU2VqSHBwaUR4VUdRclJ4enBjWldyaGhKT29BS3Nac2NB?=
- =?utf-8?B?MXE0ZEpxUVFYZ0ZTblZ4ME94L0RYZENEVmxIckpBK1pxaXg3ZmNkTCtuRUYv?=
- =?utf-8?B?K2s1UGlDTlM0T3ZWcVVkb1hEUFlDY01kRFNPeTVFUXVQL0FhVlkyNVdmc3JN?=
- =?utf-8?B?UUZKK3hxODQ3NFN6TkR2d1lWSVk0Z1U5NlZ2a25tRVg1YTlYWTQyeXpxcWZD?=
- =?utf-8?B?UmtWNDNMemFlQ3p5NFI5c0ptaWQxQ2ZHeUVoZWlCWkhlMEh4Qkd2cnFZRWhm?=
- =?utf-8?B?OGhGUCt2UWRQSzRuOHM1T1JDN2xtdlNzbkFtWkRtSW9vTjFEUU1ST0t3clJm?=
- =?utf-8?B?Q3hRU1VvNHk0YVlkM3FITEVsd1ZnbDhiMkcxYWlqdVBSVTh4QWpqSW51bnc4?=
- =?utf-8?B?T3M0MWVsbEw2Z1djZEU4ZS90SnRFZWNwVEhscE13SEs1b1NJaUZkOE9sYS9P?=
- =?utf-8?B?bHZoNGs4VHZHazZzYnhnOVN4UG1wTHNpUzZxaHEvVVlFL1lKMEdyZTQrRVhS?=
- =?utf-8?B?S3Rac093cExmY0phT2RhZEV3YzVsUi82UTZjNTFHWEJIcTNCZDNhYlJMUFpG?=
- =?utf-8?B?bHQrZkRQcDJDclh4bE43QlYxSTNSbk9Db1ppSGg1T1ZmL1N6WnlXTnN0RjJU?=
- =?utf-8?B?L25ZeW5jbVlreERmdzI3ekNRL29GM08rdlpzM3R4Z0NTQlpMalI5L3FrQnFU?=
- =?utf-8?B?M0tSSkd4cXJhMTl2K2FjUmNmb0dOckVjY0lzaldsdkUyR2NBSDJpejR1d01p?=
- =?utf-8?B?Ym1VMHE0cFdBQWVRa3RBMnlGeDdaSzJLNVJ4SEQ0L053UkpOS0hGUXI2UDZy?=
- =?utf-8?B?cDJNclIyOUU5ekVrVHlSK0svdG5sYkVEQWVhQ2lZSmZ5Qk5uVUxTN0VOSDVY?=
- =?utf-8?B?S09hTGFVMFIvMVFCckFuMjAxRG04eEtLRXZOQkNzWTNiYW1IOUFEV2lJZERh?=
- =?utf-8?Q?vYqyuFTHHblYBW6GVv6JV3i4v?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f69b5ee1-eb47-4ce5-9d52-08ddbf039c14
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 16:13:58.2403
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KgGp3rCCcF0Hyt73otl5WprJLC7ju/Po1BoofP0d4XK8ngV5JrUnPdCY/vYfj4qwaOJ+UXh68/yTMKnmy1eRmQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7570
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv9 02/16] x86/alternatives: Disable LASS when patching
+ kernel alternatives
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
+ Ard Biesheuvel <ardb@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Josh Poimboeuf <jpoimboe@kernel.org>,
+ Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Tony Luck <tony.luck@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>,
+ Ingo Molnar <mingo@kernel.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>,
+ Breno Leitao <leitao@debian.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Alexei Starovoitov <ast@kernel.org>,
+ Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>,
+ Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>,
+ Eric Biggers <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Yuntao Wang <ytcoode@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>,
+ Changbin Du <changbin.du@huawei.com>,
+ Huang Shijie <shijie@os.amperecomputing.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Namhyung Kim <namhyung@kernel.org>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org
+References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
+ <20250707080317.3791624-3-kirill.shutemov@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250707080317.3791624-3-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 7/9/25 03:08, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+On 7/7/25 01:03, Kirill A. Shutemov wrote:
+> From: Sohil Mehta <sohil.mehta@intel.com>
 > 
-> Determining the VMPL at which the kernel runs involves performing a
-> RMPADJUST operation on an arbitrary page of memory, and observing whether
-> it succeeds.
+> For patching, the kernel initializes a temporary mm area in the lower
+> half of the address range. See commit 4fc19708b165 ("x86/alternatives:
+> Initialize temporary mm for patching").
 > 
-> The use of boot_ghcb_page in the core kernel in this case is completely
-> arbitrary, but results in the need to provide a PIC alias for it. So use
-> boot_svsm_ca_page instead, which already needs this alias for other
-> reasons.
+> Disable LASS enforcement during patching to avoid triggering a #GP
+> fault.
 > 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-
+> The objtool warns due to a call to a non-allowed function that exists
+> outside of the stac/clac guard, or references to any function with a
+> dynamic function pointer inside the guard. See the Objtool warnings
+> section #9 in the document tools/objtool/Documentation/objtool.txt.
+> 
+> Considering that patching is usually small, replace the memcpy() and
+> memset() functions in the text poking functions with their open coded
+> versions.
+> 
+> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+> Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > ---
->  arch/x86/boot/compressed/sev.c      | 2 +-
->  arch/x86/boot/startup/sev-shared.c  | 5 +++--
->  arch/x86/boot/startup/sev-startup.c | 2 +-
->  3 files changed, 5 insertions(+), 4 deletions(-)
+>  arch/x86/include/asm/smap.h   | 33 +++++++++++++++++++++++++++++++--
+>  arch/x86/kernel/alternative.c | 28 ++++++++++++++++++++++++++--
+>  2 files changed, 57 insertions(+), 4 deletions(-)
 > 
+> diff --git a/arch/x86/include/asm/smap.h b/arch/x86/include/asm/smap.h
+> index 4f84d421d1cf..d0cc24348641 100644
+> --- a/arch/x86/include/asm/smap.h
+> +++ b/arch/x86/include/asm/smap.h
+> @@ -23,18 +23,47 @@
+>  
+>  #else /* __ASSEMBLER__ */
+>  
+> +/*
+> + * The CLAC/STAC instructions toggle the enforcement of X86_FEATURE_SMAP and
+> + * X86_FEATURE_LASS.
+> + *
+> + * SMAP enforcement is based on the _PAGE_BIT_USER bit in the page tables: the
+> + * kernel is not allowed to touch pages with the bit set unless the AC bit is
+> + * set.
+> + *
+> + * LASS enforcement is based on bit 63 of the virtual address. The kernel is
+> + * not allowed to touch memory in the lower half of the virtual address space
+> + * unless the AC bit is set.
+> + *
+> + * Use stac()/clac() when accessing userspace (_PAGE_USER) mappings,
+> + * regardless of location.
+> + *
+> + * Use lass_stac()/lass_clac() when accessing kernel mappings (!_PAGE_USER)
+> + * in the lower half of the address space.
+> + *
+> + * Note: a barrier is implicit in alternative().
+> + */
+> +
+>  static __always_inline void clac(void)
+>  {
+> -	/* Note: a barrier is implicit in alternative() */
+>  	alternative("", "clac", X86_FEATURE_SMAP);
+>  }
+>  
+>  static __always_inline void stac(void)
+>  {
+> -	/* Note: a barrier is implicit in alternative() */
+>  	alternative("", "stac", X86_FEATURE_SMAP);
+>  }
+>  
+> +static __always_inline void lass_clac(void)
+> +{
+> +	alternative("", "clac", X86_FEATURE_LASS);
+> +}
+> +
+> +static __always_inline void lass_stac(void)
+> +{
+> +	alternative("", "stac", X86_FEATURE_LASS);
+> +}
+
+Could we please move the comments about lass_*() closer to the LASS
+functions?
+
+>  static __always_inline unsigned long smap_save(void)
+>  {
+>  	unsigned long flags;
+> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+> index ea1d984166cd..992ece0e879a 100644
+> --- a/arch/x86/kernel/alternative.c
+> +++ b/arch/x86/kernel/alternative.c
+> @@ -2447,16 +2447,40 @@ void __init_or_module text_poke_early(void *addr, const void *opcode,
+>  __ro_after_init struct mm_struct *text_poke_mm;
+>  __ro_after_init unsigned long text_poke_mm_addr;
+>  
+> +/*
+> + * Text poking creates and uses a mapping in the lower half of the
+> + * address space. Relax LASS enforcement when accessing the poking
+> + * address.
+> + */
+> +
+>  static void text_poke_memcpy(void *dst, const void *src, size_t len)
+>  {
+> -	memcpy(dst, src, len);
+> +	lass_stac();
+> +
+> +	/*
+> +	 * Objtool is picky about what occurs within the STAC/CLAC region
+> +	 * because this code runs with protection disabled. Objtool typically
+> +	 * does not permit function calls in this area.
+> +	 *
+> +	 * Avoid using memcpy() here. Instead, open code it.
+> +	 */
+> +	asm volatile("rep movsb"
+> +		     : "+D" (dst), "+S" (src), "+c" (len) : : "memory");
+> +
+> +	lass_clac();
+>  }
+
+This didn't turn out great. At the _very_ least, we could have a:
+
+	inline_memcpy_i_really_mean_it()
+
+with the rep mov. Or even a #define if we were super paranoid the
+compiler is out to get us.
+
+But _actually_ open-coding inline assembly is far too ugly to live.
+
+We can also be a bit more compact about the comments:
+
+	/*
+	 * objtool enforces a strict policy of "no function calls within
+	 * AC=1 regions". Adhere to the policy by doing a memcpy() that
+	 * will never result in a function call.
+	 */
+
 
