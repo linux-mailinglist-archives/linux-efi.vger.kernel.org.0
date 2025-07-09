@@ -1,153 +1,219 @@
-Return-Path: <linux-efi+bounces-4236-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4237-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C77DAFE491
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 11:52:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3E4AFE568
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 12:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6445D188A7E5
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 09:52:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F28C51C478FD
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 10:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6582877C4;
-	Wed,  9 Jul 2025 09:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55328288CAA;
+	Wed,  9 Jul 2025 10:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H3usV7+0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MJYVKtPz"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F44023CE;
-	Wed,  9 Jul 2025 09:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2423C01
+	for <linux-efi@vger.kernel.org>; Wed,  9 Jul 2025 10:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752054723; cv=none; b=AHY0hF9ZXw4Z1HVfFi3bJe1HyFmAMmVKXN6SbCQMrn1MFYAe30f4XXPuSE1wLdOXMbkgYxDEz3NXk/nnYmVjEXWbvdXQ1fjh/aVQFbuk2KsOHBfY0opNwnTae3/+BLa6Qt9j/fINtD6jHh0TGYZZnTDDhyOT8Ns/cG32PG5tPkU=
+	t=1752055888; cv=none; b=nq20qwZjHV+ykgoJupz+pgXcdBJ2/2TTo3R/HsP4nMpbfHC4p9cqnjWT2NQo9CO+wYXhzA2RQim1BFZ9GA5dsk+q6SkpoFeSSQVPKJnRTxm7S+Nv+kotEbYxJ0vey9Y4YSh1UnJ2TtIg5aislNgRg5RuPM172lj+smXfekpWIDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752054723; c=relaxed/simple;
-	bh=VBcLNsfeXZegl7COkVWcleDsuUcTK+n6RSJLnd/zTo8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DIE5d8++SvqxFAxotulzET0V+cDtTVcjhcRD7ZF4TELvFEUi2ksuMylW9uWJwu8jxq4f5eMPuc3hxjznoJBoZtAp3IGQqBUFaT7hEw28D0WyR/jvBjDxKOxy0Y1jWYZAo3hzbmSYDejuDeFIhL8HVNrAzkrMFXfoqxZpjSu26ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H3usV7+0; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752054721; x=1783590721;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VBcLNsfeXZegl7COkVWcleDsuUcTK+n6RSJLnd/zTo8=;
-  b=H3usV7+0kyS64ieFckWiVYGF7Cs/conVj3vaGKi0uGzUSvdE3WG6/hJh
-   Blgs+uD4B05Diic+rtPRJ6VVe8cjjQcpIi/Er0RcoU8W0TM9wqFzXSSmn
-   /MctuIN+PHPKkmdkd7cNR3ys6YfIuZEiHietjQXlgTTPytvMMDOpzOKXr
-   GwyVedqaCbPJh4lDH5Bzq51wOIvcV0TDxHapC/BRDpv50t25GVjQBPjRW
-   IfU9eM/IeGC7zy1sJQPO1h4qmGinzJLmbH0Vc1NLzW4PQbAaMDk7oDxdj
-   bhpJsM4yAHR+f2d68hv4HmAvRologA4jhWuPSOiEJ0NrUbPY/IEfs1Mz1
-   A==;
-X-CSE-ConnectionGUID: phrD3qKvRlWTsLBXQJ7apg==
-X-CSE-MsgGUID: 5yMJfAOjS0Sb+Nvf0/7pTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="76856416"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="76856416"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 02:52:00 -0700
-X-CSE-ConnectionGUID: 3utUuKnLRke5/wsgphZJPA==
-X-CSE-MsgGUID: lU1aHZW8SnK6zQVMF9uggw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="156061509"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 09 Jul 2025 02:51:50 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 75AB71B7; Wed, 09 Jul 2025 12:51:48 +0300 (EEST)
-Date: Wed, 9 Jul 2025 12:51:48 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Sohil Mehta <sohil.mehta@intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>, 
-	"Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Tony Luck <tony.luck@intel.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Daniel Sneddon <daniel.sneddon@linux.intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Sandipan Das <sandipan.das@amd.com>, 
-	Breno Leitao <leitao@debian.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>, Juergen Gross <jgross@suse.com>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, 
-	Huang Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Namhyung Kim <namhyung@kernel.org>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCHv9 11/16] x86/traps: Communicate a LASS violation in #GP
- message
-Message-ID: <iauggare2iigoy5t4n73p2adtyk4htv4w7zp4lpgwgwxpamaud@zoi2cxzxywpf>
-References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
- <20250707080317.3791624-12-kirill.shutemov@linux.intel.com>
- <a14155b7-65ff-4686-b6ba-a6900549864c@intel.com>
- <xy2ocwstdf44diw5p5hisjwvx467fyhm7bljz5xg72cmnhdfok@7pe3vmht6vcq>
- <CAMuHMdXpW0re633tW9MsN-+A521Xytoicd-T0L7r7PAwJ-B0+Q@mail.gmail.com>
+	s=arc-20240116; t=1752055888; c=relaxed/simple;
+	bh=mOPkOrukG2Y239oOCufTagRLKNb8LP2t1L+ciZ22zGc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OapywwifxUJZd34U21s8INIxLR8TE2eEWgVIBmY1L6EmtCMjRgvF9pgu9NuxCTarSL450xDZwwTZuM7miRs8sSRNeq7FX/LrlYOrfM6ZbcrLGXxjbpLSErWkFAcQm+FjDmll2skPL0NF2QOetbq4PVvnIo/SURikjoKRiEzZPzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MJYVKtPz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752055885;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=F0LwotVAg6dvlb2u4HLohnwHaSnFFiXlXs6Bup/zLbc=;
+	b=MJYVKtPzDbp07eNezikFFNiFEPoR7T6OAhXDHy4o2dj/FDcg4sMESAHWJqfz+AgxVNG6tX
+	7Rhh0RtfqfPJj5ZfU5RJBWqQAJLOupoUg5hP9AV9WgrLOf6xL7q6NT4/9bphVIvcD6Betx
+	DA8K/cdMJ2+3Cn+BvDf+Nrz5Et983p0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-_TuCxKyFOXOplWYcqt9etg-1; Wed,
+ 09 Jul 2025 06:11:23 -0400
+X-MC-Unique: _TuCxKyFOXOplWYcqt9etg-1
+X-Mimecast-MFC-AGG-ID: _TuCxKyFOXOplWYcqt9etg_1752055883
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DB3A8193F05B;
+	Wed,  9 Jul 2025 10:11:22 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.224.100])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19B373000198;
+	Wed,  9 Jul 2025 10:11:22 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id 7504218000B2; Wed, 09 Jul 2025 12:11:19 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: linux-efi@vger.kernel.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] efi: remove modular option for ovmf-debug-log
+Date: Wed,  9 Jul 2025 12:11:18 +0200
+Message-ID: <20250709101119.927808-1-kraxel@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXpW0re633tW9MsN-+A521Xytoicd-T0L7r7PAwJ-B0+Q@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Wed, Jul 09, 2025 at 11:36:27AM +0200, Geert Uytterhoeven wrote:
-> Hi Kirill,
-> 
-> On Wed, 9 Jul 2025 at 11:31, Kirill A. Shutemov
-> <kirill.shutemov@linux.intel.com> wrote:
-> > On Tue, Jul 08, 2025 at 07:40:35PM -0700, Sohil Mehta wrote:
-> > > > @@ -664,14 +673,23 @@ static enum kernel_gp_hint get_kernel_gp_address(struct pt_regs *regs,
-> > > >             return GP_NO_HINT;
-> > > >
-> > > >  #ifdef CONFIG_X86_64
-> > >
-> > > Might as well get rid of the #ifdef in C code, if possible.
-> > >
-> > > if (!IS_ENABLED(CONFIG_X86_64)
-> > >       return GP_CANONICAL;
-> > >
-> > > or combine it with the next check.
-> >
-> > I tried this before. It triggers compiler error on 32-bit:
-> >
-> > arch/x86/kernel/traps.c:673:16: error: shift count >= width of type [-Werror,-Wshift-count-overflow]
-> >   673 |         if (*addr >= ~__VIRTUAL_MASK)
-> >       |                       ^~~~~~~~~~~~~~
-> >
-> > __VIRTUAL_MASK is not usable on 32-bit configs.
-> 
-> arch/x86/include/asm/page_32_types.h:#define __VIRTUAL_MASK_SHIFT       32
-> arch/x86/include/asm/page_32_types.h:#define __VIRTUAL_MASK_SHIFT       32
-> arch/x86/include/asm/page_64_types.h:#define __VIRTUAL_MASK_SHIFT
->  (pgtable_l5_enabled() ? 56 : 47)
-> arch/x86/include/asm/page_types.h:#define __VIRTUAL_MASK
->  ((1UL << __VIRTUAL_MASK_SHIFT) - 1)
-> 
-> Given __VIRTUAL_MASK_SHIFT is 32 on 32-bit platforms, perhaps
-> __VIRTUAL_MASK should just be changed to shift 1ULL instead?
-> Or better, use GENMASK(__VIRTUAL_MASK_SHIFT - 1, 0), so the
-> resulting type is still unsigned long.
+Flip the driver from tristate to bool, so it can not be built modular
+any more.  Also drop the platform device boilerplate, simply call the
+probe function directly instead.
 
-Making __VIRTUAL_MASK unsigned long long is no-go. Virtual address are
-unsigned long. I guess GENMASK() would work.
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507091432.rbbrjGoU-lkp@intel.com/
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ include/linux/efi.h                   |  2 ++
+ drivers/firmware/efi/efi.c            |  2 +-
+ drivers/firmware/efi/ovmf-debug-log.c | 43 ++++++---------------------
+ drivers/firmware/efi/Kconfig          |  2 +-
+ 4 files changed, 13 insertions(+), 36 deletions(-)
 
-I think re-defining __VIRTUAL_MASK is out-of-scope for the patchset. Feel
-free to prepare a separate patch to do it.
-
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index a71830608422..f6da5c226fda 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1346,6 +1346,8 @@ bool efi_config_table_is_usable(const efi_guid_t *guid, unsigned long table)
+ 
+ umode_t efi_attr_is_visible(struct kobject *kobj, struct attribute *attr, int n);
+ 
++int ovmf_log_probe(unsigned long ovmf_debug_log_table);
++
+ /*
+  * efivar ops event type
+  */
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 3161f918ce53..1ce428e2ac8a 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -476,7 +476,7 @@ static int __init efisubsys_init(void)
+ 
+ 	if (IS_ENABLED(CONFIG_OVMF_DEBUG_LOG) &&
+ 	    efi.ovmf_debug_log != EFI_INVALID_TABLE_ADDR)
+-		platform_device_register_simple("ovmf_debug_log", 0, NULL, 0);
++		ovmf_log_probe(efi.ovmf_debug_log);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/firmware/efi/ovmf-debug-log.c b/drivers/firmware/efi/ovmf-debug-log.c
+index d4fec178fa9f..b292f35109b6 100644
+--- a/drivers/firmware/efi/ovmf-debug-log.c
++++ b/drivers/firmware/efi/ovmf-debug-log.c
+@@ -64,38 +64,33 @@ static struct bin_attribute ovmf_log_bin_attr = {
+ 	.read = ovmf_log_read,
+ };
+ 
+-static int ovmf_log_probe(struct platform_device *dev)
++__init int ovmf_log_probe(unsigned long ovmf_debug_log_table)
+ {
+ 	u64 size;
+ 	int ret = -EINVAL;
+ 
+-	if (efi.ovmf_debug_log == EFI_INVALID_TABLE_ADDR) {
+-		dev_err(&dev->dev, "OVMF debug log: not available\n");
+-		return -EINVAL;
+-	}
+-
+ 	/* map + verify header */
+-	hdr = memremap(efi.ovmf_debug_log, sizeof(*hdr), MEMREMAP_WB);
++	hdr = memremap(ovmf_debug_log_table, sizeof(*hdr), MEMREMAP_WB);
+ 	if (!hdr) {
+-		dev_err(&dev->dev, "OVMF debug log: header map failed\n");
++		printk(KERN_ERR "OVMF debug log: header map failed\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (hdr->magic1 != OVMF_DEBUG_LOG_MAGIC1 ||
+ 	    hdr->magic2 != OVMF_DEBUG_LOG_MAGIC2) {
+-		dev_err(&dev->dev, "OVMF debug log: magic mismatch\n");
++		printk(KERN_ERR "OVMF debug log: magic mismatch\n");
+ 		goto err_unmap;
+ 	}
+ 
+ 	size = hdr->hdr_size + hdr->log_size;
+-	dev_info(&dev->dev, "firmware version: \"%s\"\n", hdr->fw_version);
+-	dev_info(&dev->dev, "log buffer size: %lluk\n", size / 1024);
++	printk(KERN_INFO "OVMF debug log: firmware version: \"%s\"\n", hdr->fw_version);
++	printk(KERN_INFO "OVMF debug log: buffer size: %lluk\n", size / 1024);
+ 
+ 	/* map complete log buffer */
+ 	memunmap(hdr);
+-	hdr = memremap(efi.ovmf_debug_log, size, MEMREMAP_WB);
++	hdr = memremap(ovmf_debug_log_table, size, MEMREMAP_WB);
+ 	if (!hdr) {
+-		dev_err(&dev->dev, "OVMF debug log: buffer map failed\n");
++		printk(KERN_ERR "OVMF debug log: buffer map failed\n");
+ 		return -EINVAL;
+ 	}
+ 	logbuf = (void *)hdr + hdr->hdr_size;
+@@ -104,7 +99,7 @@ static int ovmf_log_probe(struct platform_device *dev)
+ 	ovmf_log_bin_attr.size = size;
+ 	ret = sysfs_create_bin_file(efi_kobj, &ovmf_log_bin_attr);
+ 	if (ret != 0) {
+-		dev_err(&dev->dev, "OVMF debug log: sysfs register failed\n");
++		printk(KERN_ERR "OVMF debug log: sysfs register failed\n");
+ 		goto err_unmap;
+ 	}
+ 
+@@ -114,23 +109,3 @@ static int ovmf_log_probe(struct platform_device *dev)
+ 	memunmap(hdr);
+ 	return ret;
+ }
+-
+-static void ovmf_log_remove(struct platform_device *dev)
+-{
+-	memunmap(hdr);
+-}
+-
+-static struct platform_driver ovmf_log_driver = {
+-	.probe = ovmf_log_probe,
+-	.remove = ovmf_log_remove,
+-	.driver = {
+-		.name = "ovmf_debug_log",
+-	},
+-};
+-
+-module_platform_driver(ovmf_log_driver);
+-
+-MODULE_DESCRIPTION("OVMF debug log");
+-MODULE_AUTHOR("Gerd Hoffmann <kraxel@redhat.com>");
+-MODULE_LICENSE("GPL");
+-MODULE_ALIAS("platform:ovmf_debug_log");
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index ac0a03ec3452..eb1bff6968a5 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -264,7 +264,7 @@ config EFI_COCO_SECRET
+ 	  allows userspace programs to access the injected secrets.
+ 
+ config OVMF_DEBUG_LOG
+-	tristate "Expose OVMF firmware debug log via sysfs"
++	bool "Expose OVMF firmware debug log via sysfs"
+ 	depends on EFI
+ 	help
+ 	  Recent OVMF versions (edk2-stable202508 + newer) can write
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.50.0
+
 
