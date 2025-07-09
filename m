@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-4257-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4258-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F02DAFEF3D
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 18:55:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C8FAFEF44
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 18:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DB76188DDA8
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:55:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783623A5F2C
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E261221FAE;
-	Wed,  9 Jul 2025 16:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F210921423C;
+	Wed,  9 Jul 2025 16:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gYODEiH6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gjPfnjAT"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF86214813;
-	Wed,  9 Jul 2025 16:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7291D204C0C;
+	Wed,  9 Jul 2025 16:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752080090; cv=none; b=tq3VKjJKHJGbNXRHqRs3YBMpv+CsFlMjtaJL5UX1W5evOHGvVeX6yqOFuOe9BCF1iWfHI5JR77uQHEpn79V2S/2z/h6LwML/hlplKbZPoEPB3Mk9LSrQEvVA9rZZFQZGeszfzsQcc0DyUogrqeJ48zAA+Ymf5PnyBLkox+v5zQE=
+	t=1752080200; cv=none; b=rAWB0pt0C1y6k/7KrChUWlln8OyTJhwyjKuQ7hzgGWglUBt/k+n0LfrhwPN36BoLLCyKb96nKFFrK6wswgjIs6g3POMnU5uoSwf9J/Ck35NB3m3SQa1di3FzbUiqtOV2ILAR3MpUYVebJHbl0pjKVOoF/N+zhmTJzk/3XK+IdJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752080090; c=relaxed/simple;
-	bh=97R8r9026OTpHmRMs3mcRD8TZjTzsY16HJQDyChnBsQ=;
+	s=arc-20240116; t=1752080200; c=relaxed/simple;
+	bh=/DUdKK8+d6c8HTFV5/NHhbc7PTN0fPnwoX8s8UnNKwo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cijIX54RCDhwVRfy5ahTCdL0rD+Rhcf0Xlz+NZqyaFuDOo95UTGUhMekrAEHdRsmSplGb2fLkIT0M0YG9+WxFqrc8FzM0SQNWcvJ8+Bmr+cviYWzrUSBwzLz60BBDHdj34EzmO7LIJb6BjkNIdmpK8SF9U74C73HHle49iA7/h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gYODEiH6; arc=none smtp.client-ip=198.175.65.16
+	 In-Reply-To:Content-Type; b=TZgw8NZ9kHJUWOK3VnFKgWlRJHFLdVjRaf3SdTha37Pj00/0rJWpA4oBe6KVmDiO0Y3SaQrpT1i1vchd28qoOyZkRJPIJ5u5L7PgK98lT7U0IhZNro2+pWtKz5MMYG/Ykst7+K4DmlXc27IFB5mtv2+tpe+qp3d7KqQ4gG21tV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gjPfnjAT; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752080088; x=1783616088;
+  t=1752080199; x=1783616199;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=97R8r9026OTpHmRMs3mcRD8TZjTzsY16HJQDyChnBsQ=;
-  b=gYODEiH6+L74BX8qBkP8xKKou6gZziplEStzjchaIa+xxieyxGhL5IVH
-   qEIBM4C/NIaC8P8aSmI+BxXUh5KEVk6KtrcGd6EE8YOS8tgZ5XxGSWcKf
-   sSFqvE5KH6jKhKHzvlWDsy4odcaQTqUwmVO1ZWSu1lcgCZSECamKzqHuw
-   VF7Rb+d05V4qBxIRpBPvHSdD/3nuQovhcqEBYBjC/QbbgJaYMKMnOi6+6
-   VPSAb6qsE4fxoC7aKDYkLECepr0g7RxdBCcU2rgv6ZHr5Ngama2aEB5pI
-   mmw5ffuhAC035KrBM451SDR3hBXsVs+lpcDWGzy9mfGwKywO8B8OeACG6
+  bh=/DUdKK8+d6c8HTFV5/NHhbc7PTN0fPnwoX8s8UnNKwo=;
+  b=gjPfnjATfu0FBnPTqwNGhaom9d0st5tPTmbBCHcXejJ5U/NrRNgI/Zr7
+   mty0CRKM7cEZnv0WAYsQdV2I+MoDHmvUf+6Z7CeDVruhMQ7cB65S2QQiQ
+   8Vh3JpF+pI1//TmJmm9dGKmG6bdDSUufvTYRgL9wJTE51RIZ293W8cyj7
+   QVdoSHyUPgDlWm2Vf9MwpAa4/ZMi6T5EitRTP+lzT7XHC9TCOmr2DLzxo
+   7zrLmwlujZ7cth4VL6B1M2P9IRck9UZxO2/texFlU34WCiAjbo9hj+ujK
+   WW1HiF5wdtf9xpgMTTtwNI9NKjyJk9aWnElb+sUWfong095AFjAr/8DFm
    A==;
-X-CSE-ConnectionGUID: IIVV2AnHSV69xSQCCMAgRg==
-X-CSE-MsgGUID: slXhI8hPQS+kdtzj3G6tug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54480910"
+X-CSE-ConnectionGUID: SXSE5aLxRVm0V1ftuny2IQ==
+X-CSE-MsgGUID: em6/hN1USDePdrx5Q0nUcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54481080"
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="54480910"
+   d="scan'208";a="54481080"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 09:54:46 -0700
-X-CSE-ConnectionGUID: n2x1HyD+RR+vnGa7MyMZIg==
-X-CSE-MsgGUID: MMUNuuqvSzSWvs6zURxmiA==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 09:56:39 -0700
+X-CSE-ConnectionGUID: 1lI6A9ftR+yq9Y6vgi4laQ==
+X-CSE-MsgGUID: BLxPmPvARtufgCHzjffeYA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="161485165"
+   d="scan'208";a="161485847"
 Received: from puneetse-mobl.amr.corp.intel.com (HELO [10.125.110.190]) ([10.125.110.190])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 09:54:45 -0700
-Message-ID: <7d93b343-b275-4edb-ae26-4578ae53652f@intel.com>
-Date: Wed, 9 Jul 2025 09:58:23 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 09:56:38 -0700
+Message-ID: <6075af69-299f-43d2-a3c8-353a2a3b7ee7@intel.com>
+Date: Wed, 9 Jul 2025 10:00:16 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv9 02/16] x86/alternatives: Disable LASS when patching
- kernel alternatives
+Subject: Re: [PATCHv9 04/16] x86/cpu: Defer CR pinning setup until core
+ initcall
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -103,7 +103,7 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>,
  Arnaldo Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org
 References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
- <20250707080317.3791624-3-kirill.shutemov@linux.intel.com>
+ <20250707080317.3791624-5-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -149,141 +149,18 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250707080317.3791624-3-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20250707080317.3791624-5-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 7/7/25 01:03, Kirill A. Shutemov wrote:
-> From: Sohil Mehta <sohil.mehta@intel.com>
-> 
-> For patching, the kernel initializes a temporary mm area in the lower
-> half of the address range. See commit 4fc19708b165 ("x86/alternatives:
-> Initialize temporary mm for patching").
-> 
-> Disable LASS enforcement during patching to avoid triggering a #GP
-> fault.
-> 
-> The objtool warns due to a call to a non-allowed function that exists
-> outside of the stac/clac guard, or references to any function with a
-> dynamic function pointer inside the guard. See the Objtool warnings
-> section #9 in the document tools/objtool/Documentation/objtool.txt.
-> 
-> Considering that patching is usually small, replace the memcpy() and
-> memset() functions in the text poking functions with their open coded
-> versions.
-> 
-> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-> Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->  arch/x86/include/asm/smap.h   | 33 +++++++++++++++++++++++++++++++--
->  arch/x86/kernel/alternative.c | 28 ++++++++++++++++++++++++++--
->  2 files changed, 57 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/smap.h b/arch/x86/include/asm/smap.h
-> index 4f84d421d1cf..d0cc24348641 100644
-> --- a/arch/x86/include/asm/smap.h
-> +++ b/arch/x86/include/asm/smap.h
-> @@ -23,18 +23,47 @@
->  
->  #else /* __ASSEMBLER__ */
->  
-> +/*
-> + * The CLAC/STAC instructions toggle the enforcement of X86_FEATURE_SMAP and
-> + * X86_FEATURE_LASS.
-> + *
-> + * SMAP enforcement is based on the _PAGE_BIT_USER bit in the page tables: the
-> + * kernel is not allowed to touch pages with the bit set unless the AC bit is
-> + * set.
-> + *
-> + * LASS enforcement is based on bit 63 of the virtual address. The kernel is
-> + * not allowed to touch memory in the lower half of the virtual address space
-> + * unless the AC bit is set.
-> + *
-> + * Use stac()/clac() when accessing userspace (_PAGE_USER) mappings,
-> + * regardless of location.
-> + *
-> + * Use lass_stac()/lass_clac() when accessing kernel mappings (!_PAGE_USER)
-> + * in the lower half of the address space.
-> + *
-> + * Note: a barrier is implicit in alternative().
-> + */
-> +
->  static __always_inline void clac(void)
->  {
-> -	/* Note: a barrier is implicit in alternative() */
->  	alternative("", "clac", X86_FEATURE_SMAP);
->  }
->  
->  static __always_inline void stac(void)
->  {
-> -	/* Note: a barrier is implicit in alternative() */
->  	alternative("", "stac", X86_FEATURE_SMAP);
->  }
->  
-> +static __always_inline void lass_clac(void)
-> +{
-> +	alternative("", "clac", X86_FEATURE_LASS);
-> +}
-> +
-> +static __always_inline void lass_stac(void)
-> +{
-> +	alternative("", "stac", X86_FEATURE_LASS);
-> +}
+> Instead of moving setup_cr_pinning() below efi_enter_virtual_mode() in
+> arch_cpu_finalize_init(), defer it until core initcall.
 
-Could we please move the comments about lass_*() closer to the LASS
-functions?
+What are the side effects of this move? Are there other benefits? What
+are the risks?
 
->  static __always_inline unsigned long smap_save(void)
->  {
->  	unsigned long flags;
-> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> index ea1d984166cd..992ece0e879a 100644
-> --- a/arch/x86/kernel/alternative.c
-> +++ b/arch/x86/kernel/alternative.c
-> @@ -2447,16 +2447,40 @@ void __init_or_module text_poke_early(void *addr, const void *opcode,
->  __ro_after_init struct mm_struct *text_poke_mm;
->  __ro_after_init unsigned long text_poke_mm_addr;
->  
-> +/*
-> + * Text poking creates and uses a mapping in the lower half of the
-> + * address space. Relax LASS enforcement when accessing the poking
-> + * address.
-> + */
-> +
->  static void text_poke_memcpy(void *dst, const void *src, size_t len)
->  {
-> -	memcpy(dst, src, len);
-> +	lass_stac();
-> +
-> +	/*
-> +	 * Objtool is picky about what occurs within the STAC/CLAC region
-> +	 * because this code runs with protection disabled. Objtool typically
-> +	 * does not permit function calls in this area.
-> +	 *
-> +	 * Avoid using memcpy() here. Instead, open code it.
-> +	 */
-> +	asm volatile("rep movsb"
-> +		     : "+D" (dst), "+S" (src), "+c" (len) : : "memory");
-> +
-> +	lass_clac();
->  }
-
-This didn't turn out great. At the _very_ least, we could have a:
-
-	inline_memcpy_i_really_mean_it()
-
-with the rep mov. Or even a #define if we were super paranoid the
-compiler is out to get us.
-
-But _actually_ open-coding inline assembly is far too ugly to live.
-
-We can also be a bit more compact about the comments:
-
-	/*
-	 * objtool enforces a strict policy of "no function calls within
-	 * AC=1 regions". Adhere to the policy by doing a memcpy() that
-	 * will never result in a function call.
-	 */
-
+BTW, ideally, you'd get an ack from one of the folks who put the CR
+pinning in the kernel in the first place to make sure this isn't
+breaking the mechanism in any important ways.
 
