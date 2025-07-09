@@ -1,161 +1,112 @@
-Return-Path: <linux-efi+bounces-4248-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4249-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2616EAFEB50
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:10:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A438AFEBC1
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1624A546C46
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 14:04:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E2C518812D7
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 14:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165802E041F;
-	Wed,  9 Jul 2025 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DB719F40B;
+	Wed,  9 Jul 2025 14:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pGgkqWQH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DzSYRn9E"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2085.outbound.protection.outlook.com [40.107.223.85])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75584272E7C;
-	Wed,  9 Jul 2025 14:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752069692; cv=fail; b=rGNKkFTLddP/FyzB/wnVmhZcSMWGoiOzKQkBJgUA01HjP6UsOMLbpDsEATPvqWSGAVnZ00Ji5qi3uZecgcLfdPufBi72kLnHbN+baMmb2vtqs1FxJ7yhv9ZiCFzkgIN46NcWW6blFmA7zbuJN01JE7mkMCYW56XuqaybEZajBz8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752069692; c=relaxed/simple;
-	bh=HWvWrk5LvvuJsUChA4fWZsrKMFulhYKVFOGDhGlrcR0=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oIxmTaTMo1KMKV4HS4M8IPIuG+2ByuYiS6gXvdoRWU/8iVmwQGQZ6Yy19r6DtbxwguvFv77D3UklcS+DrdiWC3jQRTGEgw6VcVbPET56qv157fHHxCrba6HmwBDLcgck4yxNJYwmhyDlqNzNEhuhGEESns/y7D5chS+AmuCsqLM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pGgkqWQH; arc=fail smtp.client-ip=40.107.223.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yyfcqogUTzd5mwyEaAaWUG6qLTOpR+jaqrUaKOlqymDfage0rNhIjf2a99Z2HFO6Nck1k8o84Y0uIPKqBYTdXYpJj0jZ+sBrMpprlEp3UfG97vA7fEB6M8zOkepn8lPfhzoXcuzOH/PJOYpBCqeONgOiI9k2iffkawM2DOGACD0I/UnlgdtwCAEpYjSwHxob0phS5QmrVb648uty1Xj6WDRVIUCoShKM21X03XC3c/k9HLwQomnMoPLuEgM4VwbaQlEt/Y+rCksom+XymbghWTYTysliXM9xm0sQinoL0XDg4vTtsgaS6Nu6UWG/rNDvJ/2cqskiIlPYhC3aHPpoSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HWvWrk5LvvuJsUChA4fWZsrKMFulhYKVFOGDhGlrcR0=;
- b=vDFEqwu8r1hIf+t/O+lUflehx3iTPKpB/yz7JBNdAqyMzHkjp01lGwcFH0Pd8mudkCVzYKnAZzCPuAT2uWhBiB4xEDUnrud8rfjnHufNv7Zkf4sYXKpnxp+G+GYbXisEXcsO2NrsSxwEtIvuyf4EawMHv7LhBKldyYYb84OSucr/DDJXId6af15SIvG0xvyeW57uqAZNwnLP193Q2CMwwSLX242riBAV7usHLHxBPHf7Qy1tCYqCFHHMxK5tLFD5j6/RLYcZiHednAkiJmOJTOR6r4LJbnV8YGVfiwLLUGA1NdiBF5RvXfkvqfdYpiV4a+LmuxCdQ5Dp3AhPWejcHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=infradead.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HWvWrk5LvvuJsUChA4fWZsrKMFulhYKVFOGDhGlrcR0=;
- b=pGgkqWQHG2xaRygJi0ev2ry6IC0nGfgn/NcHEADIn2M2GoLJ/BGmRXCyuggcp1jCC9z38s56YjKtGopME52HYsEbzhh4Rlc3F/czeGvA1V96IETXOKA1s7uk/0pHHhm1c/jcLdthTj8rglyR6exO5MydS+dsCt54ngiuuzGDbj8=
-Received: from BN9PR03CA0065.namprd03.prod.outlook.com (2603:10b6:408:fc::10)
- by SA5PPF80B25317E.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d2) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Wed, 9 Jul
- 2025 14:01:25 +0000
-Received: from BN1PEPF0000468B.namprd05.prod.outlook.com
- (2603:10b6:408:fc:cafe::d9) by BN9PR03CA0065.outlook.office365.com
- (2603:10b6:408:fc::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.21 via Frontend Transport; Wed,
- 9 Jul 2025 14:01:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF0000468B.mail.protection.outlook.com (10.167.243.136) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8922.22 via Frontend Transport; Wed, 9 Jul 2025 14:01:25 +0000
-Received: from BLR-L1-NDADHANI (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 9 Jul
- 2025 09:01:21 -0500
-From: Nikunj A Dadhania <nikunj@amd.com>
-To: Ard Biesheuvel <ardb+git@google.com>, <linux-kernel@vger.kernel.org>
-CC: <linux-efi@vger.kernel.org>, <x86@kernel.org>, Ard Biesheuvel
-	<ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, Ingo Molnar
-	<mingo@kernel.org>, Dionna Amalie Glaze <dionnaglaze@google.com>, "Kevin
- Loughlin" <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v4 00/24] x86: strict separation of startup code
-In-Reply-To: <20250709080840.2233208-26-ardb+git@google.com>
-References: <20250709080840.2233208-26-ardb+git@google.com>
-Date: Wed, 9 Jul 2025 14:01:17 +0000
-Message-ID: <85v7o1v4ya.fsf@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BD32DE216
+	for <linux-efi@vger.kernel.org>; Wed,  9 Jul 2025 14:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752070680; cv=none; b=SkUy1pxJ6DHxAtkedIICeaLSC9JnvXqbVBKIttqtoNaWc598/8JJkO6+aO17QX1g8UHb2zbrDklcPGYNM8NyalQqvyI//zzCZZJCTV4rkzCpH7aXr+d0t1YN/HWy9ZxJL/2BT2pYRoLzVC72O9kczPy4+LSKeO1PdCtFMH4YTs0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752070680; c=relaxed/simple;
+	bh=EHbBHE13kC79LDmdc23gmqBQNvLgY4u0iCZVgT2r5Bk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CT7Cw4/UDQ0tI9sDF4zhQCfTvThGAabRP//VzdM9VAGtRtzGhZbJUOE7ALmTqjEORStSXV+/uGCqZVphDor9GdSKbUnXJlGxKd0gujzp+ZzmVHvkg3O6HrcXgrqEVZ9kMocJo8dSE1kmktAdb8FqyFHedVlBmDJbPdsqMpBCFZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DzSYRn9E; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752070678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VHO9YyMYmJWGNN4TK+hwZojviX0X+UcJREW3wMl0Z/I=;
+	b=DzSYRn9EilWmZbuLQyVaIRh9t36uad0fJMoenY6KZ92/w4H3uE9MWSeeeLh7Jctg/PZQVQ
+	bw2kp2DjCQRcHZsHfD4rm5UXLLD5f1oCxAUrv1CdMiYNnir/M1cO4tiZJR6eS6hpeBXO1Z
+	P+9R1MIC8W/yvX+IfaOwIfV/fDwPNYY=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-534JlDTEP6aNjVL1Sa69TQ-1; Wed,
+ 09 Jul 2025 10:17:54 -0400
+X-MC-Unique: 534JlDTEP6aNjVL1Sa69TQ-1
+X-Mimecast-MFC-AGG-ID: 534JlDTEP6aNjVL1Sa69TQ_1752070673
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B6DF319560AD;
+	Wed,  9 Jul 2025 14:17:53 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.224.100])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 61C8930001B1;
+	Wed,  9 Jul 2025 14:17:53 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id DDE6418000B2; Wed, 09 Jul 2025 16:17:50 +0200 (CEST)
+Date: Wed, 9 Jul 2025 16:17:50 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] efi: add ovmf debug log driver
+Message-ID: <2mn65slwkwmjpeilma2isw7zgabdmda4rhpqjiutwdwqno2wrh@zghymlce2fiy>
+References: <20250708125624.734132-1-kraxel@redhat.com>
+ <6edfa099-ab0c-41f6-89ea-0fd67666dd05@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468B:EE_|SA5PPF80B25317E:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84b60e94-5414-4418-fb2f-08ddbef117d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JtrYLvyIVgCFZUiBjOLa2A+IKmNfpG6/4cUgelmJpTsrXtUIjoq0fF88vUAV?=
- =?us-ascii?Q?ux8TU/mi7A1EMQnYKP2NEGTd1MfwU0TtiWEYvXlj4XOJpWjQHJFfJ/XRbojU?=
- =?us-ascii?Q?A1+yt/4dwsx9pqbex9OpGVCKxoiiemlHxpmAxWDYucB+fqbW42XUlZr6kgjE?=
- =?us-ascii?Q?SZjERmqgxTXTHEZZvzTsQBeU/sGu37uM0R6/GSMGmvO9RhrFxCvMXyhhE3EQ?=
- =?us-ascii?Q?HsxaevK2VM4SJLD0uh20zq4/GSVw841yjQfrXJxjf22ErRpcneV0x82M34s4?=
- =?us-ascii?Q?dmsAJ0gtcsLP3na+Z7GkSA4Azo3VIL4npWcPEfKZFkUl47glFGtLGHpG9YFL?=
- =?us-ascii?Q?wHuwQaViCb9qBs8tdCTMD0sxXr9T6mVkCoAvxDeIuVQ2/EsO1HIzJC1jgT+3?=
- =?us-ascii?Q?RuvXNo9juHXay3Ps/eDwTbSXXcvloLFZJDqu8M4iL4OswYWMSqYHNhifrS/Y?=
- =?us-ascii?Q?CZkPDNbF0Y0dXOfsTNl87BWoXptaM7Ym06vRgoFQcz4yxfHKtH+sK2pbqzC9?=
- =?us-ascii?Q?f8epSjkycnRkI5udOYGR0AfgDMw7FzahOjtfaOR5glmK5GUGgxk1OnYAgdNA?=
- =?us-ascii?Q?lhhEnNI0NWrQcRQiA8GNwkZALIAvdIt1rdto6QiqxvnH34dKfGORULbAwiPC?=
- =?us-ascii?Q?MLy83lQTCMQLjv4THxJi1gw/80RvFQIqL87CWor9U+InFoZd6Mrk4jr5w/aF?=
- =?us-ascii?Q?kblMdXJsoToGJShA1uk5VpTWKlewRbNcZasslbaJDT3meZfarHjIZF7burQk?=
- =?us-ascii?Q?UQFSOZt2h3TueGhPz1O0pRfwNACrRqh22U2HA1i2qyC3EUL1LRQbEzkgYDnV?=
- =?us-ascii?Q?A9QqkeYDdCH7NTcJtHkPLXGcu7BR0nl7Ygfu1dBZKPGJrv5cYMf9ZkuJQVy3?=
- =?us-ascii?Q?VM0tDDPLiRjePWIYBoglttSBotv/RIQlSoR+WDcht6zN4ej3BCDREc5wZvAj?=
- =?us-ascii?Q?+J7OS8hK3FYOz2+82R6RzbY/xJYHinQAFSqMSLZOBufMeefs9gJKLQtHK78Z?=
- =?us-ascii?Q?BoLrXWhs877+4lOFFebVDzRvkApyJ+RX7AZoWfU1A589DGJMBmql/VeB9g2L?=
- =?us-ascii?Q?e5heJYqjZ4oU6e4OqmtDZQOncSEuNG67L5POniw0+kT3jxRCi90PVgGSYTFe?=
- =?us-ascii?Q?PoAOJnGdVV3RV0IGGCdeU6qpjUzv1kHHBe6QtynvXQD4eTbpBAKshikUUEyi?=
- =?us-ascii?Q?8rbFshkxYLnx4IDgqQ8v7uv1tUbuJmrOnCPazPzqKhZEU0bpigz/AuiAkacQ?=
- =?us-ascii?Q?zYNkgo/EGq3ACEFvJq815ST8cYFZlYsxi8kOJ+JB6Sn6ISGSofIgppmrXuiK?=
- =?us-ascii?Q?GjvHR8FOWs5RY6jDZg3sWUcbBJBGbqkr/rGnLLWnTVKXEoegNz5SwlOINvJa?=
- =?us-ascii?Q?Z4xfRG8CWkn/OzR3TVzeBYg2SgVA1mHahxNYPoJq6kRGBHJuK5ROeagp1chf?=
- =?us-ascii?Q?rqUuVmgu/Hcrn33RKjKhVxZaXhqyY1FsRv7pH9EXBP0GgLsT7x1EOcaql6Rl?=
- =?us-ascii?Q?U32EWzey/GJ4Qbv4sX6afQSpuBL9SgH7QlXQ?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 14:01:25.2032
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84b60e94-5414-4418-fb2f-08ddbef117d1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000468B.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF80B25317E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6edfa099-ab0c-41f6-89ea-0fd67666dd05@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Ard Biesheuvel <ardb+git@google.com> writes:
+On Wed, Jul 09, 2025 at 03:58:58PM +0200, Krzysztof Kozlowski wrote:
+> On 08/07/2025 14:56, Gerd Hoffmann wrote:
+> > +MODULE_DESCRIPTION("OVMF debug log");
+> > +MODULE_AUTHOR("Gerd Hoffmann <kraxel@redhat.com>");
+> > +MODULE_LICENSE("GPL");
+> > +MODULE_ALIAS("platform:ovmf_debug_log");
+> > diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> > index db8c5c03d3a2..ac0a03ec3452 100644
+> > --- a/drivers/firmware/efi/Kconfig
+> > +++ b/drivers/firmware/efi/Kconfig
+> > @@ -263,6 +263,14 @@ config EFI_COCO_SECRET
+> >  	  virt/coco/efi_secret module to access the secrets, which in turn
+> >  	  allows userspace programs to access the injected secrets.
+> >  
+> > +config OVMF_DEBUG_LOG
+> > +	tristate "Expose OVMF firmware debug log via sysfs"
+> > +	depends on EFI
+> > +	help
+> > +	  Recent OVMF versions (edk2-stable202508 + newer) can write
+> > +	  their debug log to a memory buffer.  This driver exposes the
+> > +	  log content via sysfs (/sys/firmware/efi/ovmf_debug_log).
+> 
+> Where did you document new ABI?
 
-> From: Ard Biesheuvel <ardb@kernel.org>
->
-> Build tested defconfig and allmodconfig
->
-> !!! Boot tested on non-SEV guest ONLY !!!!
->
-> Again, I will need to lean on Tom to determine whether this breaks
-> SEV-SNP guest boot. As I mentioned before, I am still waiting for
-> SEV-SNP capable hardware to be delivered.
+The log buffer header struct is documented in the header file for the
+edk2 code:
+https://github.com/tianocore/edk2/blob/master/OvmfPkg/Include/Library/MemDebugLogLib.h
 
-This series breaks SEV-SNP guest boot, bisect points to patch 12/24
-"x86/sev: Unify SEV-SNP hypervisor feature check". If I revert this
-patch SEV-SNP guest boot fine. I will continue debugging it further.
+take care,
+  Gerd
 
-Regards,
-Nikunj
 
