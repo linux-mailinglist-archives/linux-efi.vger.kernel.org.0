@@ -1,48 +1,48 @@
-Return-Path: <linux-efi+bounces-4252-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4253-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BDDCAFEC5E
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:44:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26EBAFEC60
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BF72584707
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 14:42:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFCBF1C44010
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 14:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BD12E6137;
-	Wed,  9 Jul 2025 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A582E5B2E;
+	Wed,  9 Jul 2025 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVz7dgS/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUX+twZ4"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E9C1DFCE;
-	Wed,  9 Jul 2025 14:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D532E3B1E;
+	Wed,  9 Jul 2025 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752071994; cv=none; b=uf+ZZ3BnH7mpFKYJT9grW7fBdG08q3pAR/ON27TdezzDcaYdIeD+FgpTbOPfmeDUjQdVjzTZqjIf/J4RLNHfLrMNy6pI3FzqpwHP6VjyGYFFPYRuYwk/aymhnGf0VI+va6NclaK7mub9HjZ70vELRL4PTJBfxhlERSIB2kEsse8=
+	t=1752072038; cv=none; b=TwLOmUa2b2xQM2RhlegjQTKYmCh7YIgnsjsALveJsqoyZW0OkgLX6Gm0PgOXEg/PS9cg2A7G+T0fsWCswwI+QyZ82d3QVoeZtlqoqZyHL51FN8b5+qtazhM534Pt4oM8CL8viUHzuRx+MSIDe8pBRCr7Di4ARglgrMd9pFjRZ/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752071994; c=relaxed/simple;
-	bh=l54NsMtGhXxYp8oNZatWnK+eHuDMVoDSH6p0tUsecMg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VCh3vbkm7SrTb8QTsXDfnx0+grLb8tv8Ci2sZJ1k5bM13jCV1opql6GpIJLzowgMVXzkHa/DD+AoHJfD6VDq+3MdCHyfZ5TUdXEdnWIi4XHTKraTnac8Za6A+ffo7VjA3f9VHR0vVepdaYXKvw8R6OaGdYnLO23tQrhfqGIyR+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVz7dgS/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CCEC4CEF1;
-	Wed,  9 Jul 2025 14:39:52 +0000 (UTC)
+	s=arc-20240116; t=1752072038; c=relaxed/simple;
+	bh=4gltpAo6G2z6Uhvda05MhKbl9p35Vf6wHr1KiUVlyP4=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=THUcBBUGJuEv6RqZsKw8jWy4GRZL4cO5qCSNm31QWW+l94NSxwYaH9hPuiG5SLRDNIiqrPgSmYQfbuOIQiLRrLkTUV3cqwMoHEMuvvtnCSV1CUVhNpIura72RVks9S0X3sNwUkbCY4khmouA0jXkIlNyN3fyAqt08Sf2fzh1MgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUX+twZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E68C4CEEF;
+	Wed,  9 Jul 2025 14:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752071993;
-	bh=l54NsMtGhXxYp8oNZatWnK+eHuDMVoDSH6p0tUsecMg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QVz7dgS/RGY5kzgDrulXPsE8IfCA2EUYdik/oFLipbxtSfFdqdaEo8lHOP0971E/L
-	 hkA4UU/gAbgdhNmplCQ1qXcsXmnleMVGIBQAJSEV9IHFfa4yo25lFdQCb1SqL3m58w
-	 Sximjdged91fuHAb6sqR6cQAePtO8gyyP0F+KgU9VINYXOlxSC4tc2S3HuybDmncYH
-	 3ohbc5FRx5bhdNs1rsNEb4FbsOvjeexTBrh8+hC96UhAhbI2ZlwIC9+UTAEFKz8AKW
-	 cq1dgXKGCXLBFV1H1vsAXmp2yU0V4J/JhCT32HRrhkn1fCDTaWGsY1Xd6hbGeeyBQ6
-	 Dz3tUJguyuumw==
-Message-ID: <5800c426-95fd-4a81-b979-c0bc2bc293dd@kernel.org>
-Date: Wed, 9 Jul 2025 16:39:49 +0200
+	s=k20201202; t=1752072038;
+	bh=4gltpAo6G2z6Uhvda05MhKbl9p35Vf6wHr1KiUVlyP4=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=ZUX+twZ4+jBAoRIbfBQCT00xQ5+ZsirmbzJun1ukTD3QAdiA6hDRfv6zD4durLKoP
+	 lvG0zq/8mCTPsYPkQY839i2JSeyzaYTJlpNiKcDF4YKmpnm6eXf/Mx3qCxGI4APTAh
+	 fhNKrq0HWZRMqZTUOGevD2ZEcc56hjNiHQ4H+4WdXBjaQv3OuhT/HqEyh2S04NZM6k
+	 P3mNWKvufwKJBKWlL2VlL41ZCMz35GxdR4qIvEuXxfZDffhzck9ww0zBQqu6B+gziJ
+	 RpEa1cTsFcW4zKN8guGq84wsRlfHfApPHxJ/GB6u/EQmwHYi6I3nu7/mUkVFgI92rK
+	 CpMyt6CIqOiqg==
+Message-ID: <73a18fe6-daef-4035-abb2-67db2c5619e2@kernel.org>
+Date: Wed, 9 Jul 2025 16:40:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -51,6 +51,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] efi: add ovmf debug log driver
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Gerd Hoffmann <kraxel@redhat.com>
 Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
  open list <linux-kernel@vger.kernel.org>
@@ -59,7 +60,7 @@ References: <20250708125624.734132-1-kraxel@redhat.com>
  <2mn65slwkwmjpeilma2isw7zgabdmda4rhpqjiutwdwqno2wrh@zghymlce2fiy>
  <8621135e-445a-42dd-89e0-bf8fc3e2b6b7@kernel.org>
  <4cix3k4h32wozt3nxic5un7jyzfjrmqmzbzmtr3ivw5b2bz363@mw6bke7w4oaq>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <5800c426-95fd-4a81-b979-c0bc2bc293dd@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -104,48 +105,51 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <4cix3k4h32wozt3nxic5un7jyzfjrmqmzbzmtr3ivw5b2bz363@mw6bke7w4oaq>
+In-Reply-To: <5800c426-95fd-4a81-b979-c0bc2bc293dd@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/07/2025 16:31, Gerd Hoffmann wrote:
-> On Wed, Jul 09, 2025 at 04:20:49PM +0200, Krzysztof Kozlowski wrote:
->> On 09/07/2025 16:17, Gerd Hoffmann wrote:
->>> On Wed, Jul 09, 2025 at 03:58:58PM +0200, Krzysztof Kozlowski wrote:
->>>> On 08/07/2025 14:56, Gerd Hoffmann wrote:
->>>>> +MODULE_DESCRIPTION("OVMF debug log");
->>>>> +MODULE_AUTHOR("Gerd Hoffmann <kraxel@redhat.com>");
->>>>> +MODULE_LICENSE("GPL");
->>>>> +MODULE_ALIAS("platform:ovmf_debug_log");
->>>>> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
->>>>> index db8c5c03d3a2..ac0a03ec3452 100644
->>>>> --- a/drivers/firmware/efi/Kconfig
->>>>> +++ b/drivers/firmware/efi/Kconfig
->>>>> @@ -263,6 +263,14 @@ config EFI_COCO_SECRET
->>>>>  	  virt/coco/efi_secret module to access the secrets, which in turn
->>>>>  	  allows userspace programs to access the injected secrets.
->>>>>  
->>>>> +config OVMF_DEBUG_LOG
->>>>> +	tristate "Expose OVMF firmware debug log via sysfs"
->>>>> +	depends on EFI
->>>>> +	help
->>>>> +	  Recent OVMF versions (edk2-stable202508 + newer) can write
->>>>> +	  their debug log to a memory buffer.  This driver exposes the
->>>>> +	  log content via sysfs (/sys/firmware/efi/ovmf_debug_log).
+On 09/07/2025 16:39, Krzysztof Kozlowski wrote:
+> On 09/07/2025 16:31, Gerd Hoffmann wrote:
+>> On Wed, Jul 09, 2025 at 04:20:49PM +0200, Krzysztof Kozlowski wrote:
+>>> On 09/07/2025 16:17, Gerd Hoffmann wrote:
+>>>> On Wed, Jul 09, 2025 at 03:58:58PM +0200, Krzysztof Kozlowski wrote:
+>>>>> On 08/07/2025 14:56, Gerd Hoffmann wrote:
+>>>>>> +MODULE_DESCRIPTION("OVMF debug log");
+>>>>>> +MODULE_AUTHOR("Gerd Hoffmann <kraxel@redhat.com>");
+>>>>>> +MODULE_LICENSE("GPL");
+>>>>>> +MODULE_ALIAS("platform:ovmf_debug_log");
+>>>>>> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+>>>>>> index db8c5c03d3a2..ac0a03ec3452 100644
+>>>>>> --- a/drivers/firmware/efi/Kconfig
+>>>>>> +++ b/drivers/firmware/efi/Kconfig
+>>>>>> @@ -263,6 +263,14 @@ config EFI_COCO_SECRET
+>>>>>>  	  virt/coco/efi_secret module to access the secrets, which in turn
+>>>>>>  	  allows userspace programs to access the injected secrets.
+>>>>>>  
+>>>>>> +config OVMF_DEBUG_LOG
+>>>>>> +	tristate "Expose OVMF firmware debug log via sysfs"
+>>>>>> +	depends on EFI
+>>>>>> +	help
+>>>>>> +	  Recent OVMF versions (edk2-stable202508 + newer) can write
+>>>>>> +	  their debug log to a memory buffer.  This driver exposes the
+>>>>>> +	  log content via sysfs (/sys/firmware/efi/ovmf_debug_log).
+>>>>>
+>>>>> Where did you document new ABI?
 >>>>
->>>> Where did you document new ABI?
+>>>> The log buffer header struct is documented in the header file for the
+>>>> edk2 code:
+>>>> https://github.com/tianocore/edk2/blob/master/OvmfPkg/Include/Library/MemDebugLogLib.h
 >>>
->>> The log buffer header struct is documented in the header file for the
->>> edk2 code:
->>> https://github.com/tianocore/edk2/blob/master/OvmfPkg/Include/Library/MemDebugLogLib.h
+>>> You added a new sysfs interface. I meant documentation for this.
 >>
->> You added a new sysfs interface. I meant documentation for this.
+>> The sysfs file contains the log and you can simply use
+>> 'cat /sys/firmware/efi/ovmf_debug_log' to read it.
 > 
-> The sysfs file contains the log and you can simply use
-> 'cat /sys/firmware/efi/ovmf_debug_log' to read it.
-
-Don't explain how it works to me. I did not ask how it works. I asked
-where is the new ABI documented?
+> Don't explain how it works to me. I did not ask how it works. I asked
+> where is the new ABI documented?
+... and if answer is nowhere, then that's the problem. You need to
+document new ABI - see docs in kernel sources.
 
 Best regards,
 Krzysztof
