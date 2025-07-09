@@ -1,48 +1,48 @@
-Return-Path: <linux-efi+bounces-4246-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4247-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193FDAFEB3A
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:08:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A5AAFEB59
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 16:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 348ED1887B18
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 14:03:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5495C53C9
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 14:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B082C2E7F39;
-	Wed,  9 Jul 2025 13:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1132E9EBB;
+	Wed,  9 Jul 2025 13:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGeuLLNd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQBXTkG/"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885B42E8DFA;
-	Wed,  9 Jul 2025 13:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BCB2E9EB3;
+	Wed,  9 Jul 2025 13:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752069541; cv=none; b=XVwbxn5Sh5eVIEnD4NQRhWgABA5ewt6sAPiJPHr0BZ+8uW8G+jU5s/2B1RpP0mAQqodRW0h6Bq7UxaU6kDIxquInm8m97ck5K8wEOE493m43m7G25Et5vYdcYYEJfDPhU5kvfMU+a3OvAD9tG+LZOnAwraav05Jc9KzU04VbXKo=
+	t=1752069594; cv=none; b=Hwa/cQBv0qV89IsQe8vvpGijCgi5S6zW3cjki+C/MmQVdXzJUG1Q18fTWGc2Ag1+RlWyNbmV9BgDurXn3drP6hdZEClzq4zLNLcM/rYgbmw+MbBUhQPX68ipc4m2G43N7j0nMoW4+0EahcwGIZBDWYwSSMBSZtQ6sOiXXmVph54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752069541; c=relaxed/simple;
-	bh=CP99zLbeg128/0kKEbhA1RxKCuvVJ0YogugJgz8IY8A=;
+	s=arc-20240116; t=1752069594; c=relaxed/simple;
+	bh=Erl57mOb0kxqnr2sSmE9JhyZZwqRc4TQufilDF+qT7g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DSi3ZycKwMZI/NA8H3ODb9S4SWxqZz+7eTw8QTpmYgMhktXLQQ73AcXuBYRoDkzJ1kj8HIxVNvXX/pOqOisrnYq0H42OSh9Or1m3BEWdMVftMqn2N7DP8yaNcjxzd50UvRNzrIsLvoBoJaIHZg4UI6YBH1oaDzYg1fT4tKCl1LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGeuLLNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BA0C4CEF1;
-	Wed,  9 Jul 2025 13:58:59 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=dVT4mat3jVUR5Dfk9azuE2CvGrOvCcoV8QH7mQZdHVyebHXi4HEDClI8Q2ys2N6APsbRZagwm8oeOqNTpiCbOamD3BJh4WksYTYNgvUYXRCdYRGM6gDGcKkCvffl4j9IgYe+u0em9ycETaQ2qJRhiWEy1owI/xrauQgoLHBoyc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQBXTkG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB48C4CEF1;
+	Wed,  9 Jul 2025 13:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752069541;
-	bh=CP99zLbeg128/0kKEbhA1RxKCuvVJ0YogugJgz8IY8A=;
+	s=k20201202; t=1752069594;
+	bh=Erl57mOb0kxqnr2sSmE9JhyZZwqRc4TQufilDF+qT7g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YGeuLLNd+dxhfOfCOM67XNhESDwn9UmT053V/tWnqNHUAuhNsFBUErPoGLQ/fndyP
-	 f6r4raY2GV9BiAOD99CGKK04D5R9bnp1W9Hfsng8kg/ZnMcp6uoT7ml2txVPXqqc+1
-	 LWn+tNOOhA0PVM1DeWKTt8ZSomGtRl8mo3aWvL+sJEDD0knWtT+rqa3wpjZ+f7T6X0
-	 YGpPf2Xnrgmqjxj0FuRD/RrePnxWNR9pZRM/4YWEB1SBIvNfqFYgmcz0mStvJBSbAl
-	 CkmGJIriiuAGtiU1E57YGZNq5m324Rdi/eVVPH1qfwFLuGpF/Cd++vTBKrGfhsvKMJ
-	 IIL1T4qaOscrg==
-Message-ID: <6edfa099-ab0c-41f6-89ea-0fd67666dd05@kernel.org>
-Date: Wed, 9 Jul 2025 15:58:58 +0200
+	b=YQBXTkG/y16NnpbS8TcslnX9zf+nm02zKDz0kS1U+Ttt9o73O0iiiDb6GX4aRflcx
+	 wsxt2P+jGBM1EKLjdJnQdgPcHEb/7ghEYdyuJFZVtfKgnSsCf5PYF68569vW5VqerK
+	 Jodm5emt1ltKA0VJVILQUEmzqG96P/ZEKwkyb2rcw6j3hFFEH+EpUhUE3T/k3QbAEY
+	 y9LHXChHzArLHoeWL++RMqHkokDP6okvJN46eAyfRf+QZo4EySBM1+xx2yVn7yVjIB
+	 zH+iYrL7rwPzAnAAiKPXv3NwJ+VHf5rGg46Sv616Eg1Rpofp/2t8OtvSetkT5fQ8CZ
+	 yhTNUBRVrgqKw==
+Message-ID: <c2cec176-007b-4944-b72e-ce27290c98e0@kernel.org>
+Date: Wed, 9 Jul 2025 15:59:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -51,9 +51,10 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] efi: add ovmf debug log driver
-To: Gerd Hoffmann <kraxel@redhat.com>, linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, open list <linux-kernel@vger.kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>
+Cc: linux-efi@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
 References: <20250708125624.734132-1-kraxel@redhat.com>
+ <CAMj1kXHd6__0Hcu1UyK+1obsK3bNsQh=1uBVWoaNsX1iTLx6CA@mail.gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -99,32 +100,31 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250708125624.734132-1-kraxel@redhat.com>
+In-Reply-To: <CAMj1kXHd6__0Hcu1UyK+1obsK3bNsQh=1uBVWoaNsX1iTLx6CA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 08/07/2025 14:56, Gerd Hoffmann wrote:
-> +MODULE_DESCRIPTION("OVMF debug log");
-> +MODULE_AUTHOR("Gerd Hoffmann <kraxel@redhat.com>");
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:ovmf_debug_log");
-> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> index db8c5c03d3a2..ac0a03ec3452 100644
-> --- a/drivers/firmware/efi/Kconfig
-> +++ b/drivers/firmware/efi/Kconfig
-> @@ -263,6 +263,14 @@ config EFI_COCO_SECRET
->  	  virt/coco/efi_secret module to access the secrets, which in turn
->  	  allows userspace programs to access the injected secrets.
->  
-> +config OVMF_DEBUG_LOG
-> +	tristate "Expose OVMF firmware debug log via sysfs"
-> +	depends on EFI
-> +	help
-> +	  Recent OVMF versions (edk2-stable202508 + newer) can write
-> +	  their debug log to a memory buffer.  This driver exposes the
-> +	  log content via sysfs (/sys/firmware/efi/ovmf_debug_log).
+On 08/07/2025 15:06, Ard Biesheuvel wrote:
+> On Tue, 8 Jul 2025 at 22:56, Gerd Hoffmann <kraxel@redhat.com> wrote:
+>>
+>> Recent OVMF versions (edk2-stable202508 + newer) can write their debug
+>> log to a memory buffer.  This driver exposes the log content via sysfs
+>> (/sys/firmware/efi/ovmf_debug_log).
+>>
+>> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+>> ---
+>>  include/linux/efi.h                   |   2 +
+>>  drivers/firmware/efi/efi.c            |   8 ++
+>>  drivers/firmware/efi/ovmf-debug-log.c | 136 ++++++++++++++++++++++++++
+>>  drivers/firmware/efi/Kconfig          |   8 ++
+>>  drivers/firmware/efi/Makefile         |   1 +
+>>  5 files changed, 155 insertions(+)
+>>  create mode 100644 drivers/firmware/efi/ovmf-debug-log.c
+>>
+> 
+> Thanks, I've queued this up now.
 
-Where did you document new ABI?
+Giving people 10 minutes for review?
 
 Best regards,
 Krzysztof
