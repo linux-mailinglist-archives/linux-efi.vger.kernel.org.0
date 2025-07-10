@@ -1,169 +1,153 @@
-Return-Path: <linux-efi+bounces-4270-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4271-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263ECAFFAED
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 09:32:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 434CFAFFB0B
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 09:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 710F94A15FE
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 07:32:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18C2F1C431D6
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 07:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD6323E25B;
-	Thu, 10 Jul 2025 07:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB95289344;
+	Thu, 10 Jul 2025 07:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnPUXsw7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bs0vwaX+"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92361227EB9;
-	Thu, 10 Jul 2025 07:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DC623E34D;
+	Thu, 10 Jul 2025 07:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752132763; cv=none; b=eMyqyM9c/UxBFfe7qmqZ//dzwZr5mdyAmqFkwOKgtXm8+V5ioYnt8FMfyYrpU+A5oNL7zUTvjLMfoXXsQfYJcUrR+7nPOzp5Gwm8PbTfHmFjrkTwFhOn7IB4uHQLkZtqyIKqeDZsqiRQXjz1ULl9bzqNDiexv2sTPZdZ1CNDMlY=
+	t=1752133008; cv=none; b=h9osqbRUnYl46Y6HRLqSKAsEjNzx7c8BxI5xb2+9P62JuKCaOMbSIPMu+YKNc6E491N3tUPGwJtERyGXZvadbElbgdespEL0ziy3zIh6nWU1OlNI0NhG+eIEwJqRTfJW4kegEOk3cC6qBSvBhRhmP6yxp1Um3BkmGY09fJ++E5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752132763; c=relaxed/simple;
-	bh=ESvz/aMQ45s+6/z/6QsQGCVI/B73/273Qyl466OeL1U=;
+	s=arc-20240116; t=1752133008; c=relaxed/simple;
+	bh=RF1x5/owSgmOCJxvymPU0CBUm8h4dhDswHjybXlbWDA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sOXHNeltXjipRJQfl6apDi6aocrC8cH2FmEvA+cR7arXEtbqi2K8jX8KahbhO8EToEo3xCPJwro+jJhL6izVXHMVp5cIglxFuRU5vdbNn1Zv0lgExOGrouCPbSx0bG9nn2GknSsY+Mfs8A8YvssR9qu9cTCUpDkjj4imGhmKmgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnPUXsw7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CF5C4CEF5;
-	Thu, 10 Jul 2025 07:32:43 +0000 (UTC)
+	 To:Cc:Content-Type; b=HA7+KIsejh67n0ntXdoW2oq11HOBMwCEvbuS/rafmXITWiKG9FbvIkC39WqqCDV1+TsP1kbKEIwqvDnQ/mKJtlJViD+lamuYGcIb6HFrspVJK3hKvdrMA1fitcwrnS/VDbV8Xsu15+tekcz+RSGPkrNBlO8wyBHGjLCLwOmf0i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bs0vwaX+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084F0C4CEE3;
+	Thu, 10 Jul 2025 07:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752132763;
-	bh=ESvz/aMQ45s+6/z/6QsQGCVI/B73/273Qyl466OeL1U=;
+	s=k20201202; t=1752133008;
+	bh=RF1x5/owSgmOCJxvymPU0CBUm8h4dhDswHjybXlbWDA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GnPUXsw7OJQlyWo6uBqnUBdiNaLRn8lWrqFsE7r86UzusxTd3mRXl2poex8UUxJ3e
-	 R4dq1hp1aEeMDta4GqahpX6ycaGiT02CKjQECgOZOgEAanDUXpuM95rYL5kCgXUkx0
-	 XWB7CS3vnFLmUNR47RDjFJkRmo3/6uUHwQO7SmVZ08TPHECiDISUv1icdQpf3420OZ
-	 ZSCehca3ebFKSMMI5YDH5ivV1HzfxWAUIp8t5Gb85WOTiANqVV+0xIpO/Q9vc91nCK
-	 /HGsx1AwoI9rL+R4ArEj78OnBaFrHLgPqf+4UM9Qbu9iwf/5OlFgWfxR4msvFE+D2E
-	 Dii0CISHIyWSw==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-553c31542b1so620156e87.2;
-        Thu, 10 Jul 2025 00:32:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVBm+xczxuhobLQiX+YCegwbC/3WjtZCIfE1g/saVKew3ZtLT7IK5tfg9azT84TI2M37D1lFQljihjprLea@vger.kernel.org, AJvYcCXe3Afc4oOgBBGR7tUwoQhym0rVsdQA+wx0fA8c6I7YxjKTNLiVkY2+9uXoqFDfEmOoEQxa31Tmlj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwJARkW8aeGMoGRnRlb8gR2AtgfUAB32WDjabwsNQeyerN5zeO
-	kB8ISUiwqjgVRBXwUhJCO82ZaE6vJnma3vF8irCuH86vS/szzlTi8gN78Z6IWJLH+INnZBYPwGZ
-	tlJfSbyT2/mwIODiLFPbedei09QJdc1k=
-X-Google-Smtp-Source: AGHT+IEtVwAV9djQfFwoA1IBeLCVCay0CkhTeGJoYyUKB09pexaqDJ1lrfGjS0A4D8sMH88d3zURnxyLFVnl3sWz7E4=
-X-Received: by 2002:ac2:4e13:0:b0:553:3407:eee0 with SMTP id
- 2adb3069b0e04-5592e2ecd7fmr605344e87.4.1752132761717; Thu, 10 Jul 2025
- 00:32:41 -0700 (PDT)
+	b=Bs0vwaX+BCBCyPXraB14F7mBIiDBh4mhGBPhp59qOHj9EdPJMbgyTsogipHgtMO1k
+	 W3XUiXIjiAdOvlWg0dWhu8n22jF6Sw9GQaAywCSwPzCRIrIdJqRee0fM5frpTQ1jUu
+	 pgDKI4GPDTVpkbSCDb0TKhElrBqAYheu32vdO82N/PhNIpoFsy3//v7D7/JRuT7WJ2
+	 E8C5XACCtY17hdKOf1xF9pGzIaHBOrOd3cTKrNKsq8fe7sqGFq36ClaQQi0ie4Kuh+
+	 j5m/xTPoUplMnT/HZ43yKdrXlhoWevGKUy/jjipo8PAgb5HB/Ke9vx5Px85zm4dtVD
+	 BN2x1T8L5i54A==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54d98aa5981so891146e87.0;
+        Thu, 10 Jul 2025 00:36:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWhHaZLpCrxlbVbi5cb3IxBaLEf9MSh08qEhf3/sdfcG5Y8ZBFXff/NJMwVPi7pIBOSYdN1FBCSEu0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoD61jw0ki3IW3oPsm0HxfRyEbzA7Lc770Jv85NN+ghFSQb7Mp
+	eUv5s0b75UL+tB9nNoygJA5+uUjynL2zMkUkT2Kgj7m+kcy4VEb9QjliOJMVji/YBD9tK4ehqWY
+	bHWqfSnvjkV/5RdjPdblpozhzruvTbcw=
+X-Google-Smtp-Source: AGHT+IFLHwy2Bade+36c8nH9tNsAsCkF1R5BLwLqjIUip2XsheHUIQoV5nrl9b+gl/URo/SZsR6MilnqWKnMpZI3fK8=
+X-Received: by 2002:a05:6512:3b96:b0:553:cdd7:368b with SMTP id
+ 2adb3069b0e04-55935b34e0dmr597330e87.43.1752133006444; Thu, 10 Jul 2025
+ 00:36:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709103541.7268-1-feng.tang@linux.alibaba.com>
- <CAMj1kXEvxPjFsqoMzZnb2zxSf9uyLVzuzKEeKD4fLEux3NbUhw@mail.gmail.com>
- <aG5Lod-McOlBmt7_@U-2FWC9VHC-2323.local> <CAMj1kXEkzXsjm0dPhzxB+KdtzqADd4NmafKmw2rKw7mAPBrgdA@mail.gmail.com>
- <aG9qmV-wzFr7I-Tb@U-2FWC9VHC-2323.local>
-In-Reply-To: <aG9qmV-wzFr7I-Tb@U-2FWC9VHC-2323.local>
+References: <20250709080840.2233208-26-ardb+git@google.com>
+ <20250709080840.2233208-38-ardb+git@google.com> <85qzyovfov.fsf@amd.com>
+ <CAMj1kXF73myE9sKos5j9ErZi14ExDQBDZvp8PEhG3K4PELQrSw@mail.gmail.com> <85o6tsv8m2.fsf@amd.com>
+In-Reply-To: <85o6tsv8m2.fsf@amd.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 10 Jul 2025 17:32:30 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXG+0hjhNziKMnhKY-uX4V=OBFuS1mUCdZs7VW2DjAsjyg@mail.gmail.com>
-X-Gm-Features: Ac12FXzcrwS81h_2LOgE93cGgRkIBJTXEvdRPyKl1GdAjQZ-aeSlCrcwBahhZOg
-Message-ID: <CAMj1kXG+0hjhNziKMnhKY-uX4V=OBFuS1mUCdZs7VW2DjAsjyg@mail.gmail.com>
-Subject: Re: [PATCH] efi: remove the rtc-wakeup capability from default value
-To: Feng Tang <feng.tang@linux.alibaba.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Thu, 10 Jul 2025 17:36:33 +1000
+X-Gmail-Original-Message-ID: <CAMj1kXHZhFQ0DQWGDXtX4+-RWUFgyfL1qJh4hCONdi29NeBzhQ@mail.gmail.com>
+X-Gm-Features: Ac12FXzf2WEwzpKobjG_NxajN4OUqTnYX4Std_aOl_mIrO7S0mFHoDU-B9CUQXI
+Message-ID: <CAMj1kXHZhFQ0DQWGDXtX4+-RWUFgyfL1qJh4hCONdi29NeBzhQ@mail.gmail.com>
+Subject: Re: [PATCH v4 12/24] x86/sev: Unify SEV-SNP hypervisor feature check
+To: Nikunj A Dadhania <nikunj@amd.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-efi <linux-efi@vger.kernel.org>, 
+	X86 ML <x86@kernel.org>, Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>, 
+	Kevin Loughlin <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 10 Jul 2025 at 17:24, Feng Tang <feng.tang@linux.alibaba.com> wrote:
+(please keep the CCs)
+
+On Thu, 10 Jul 2025 at 16:54, Nikunj A Dadhania <nikunj@amd.com> wrote:
 >
-> Add Alexandre Belloni for his view on rtc-efi driver
+> Ard Biesheuvel <ardb@kernel.org> writes:
 >
-> On Thu, Jul 10, 2025 at 09:33:19AM +1000, Ard Biesheuvel wrote:
-> > On Wed, 9 Jul 2025 at 21:00, Feng Tang <feng.tang@linux.alibaba.com> wrote:
-> > >
-> > > On Wed, Jul 09, 2025 at 08:42:24PM +1000, Ard Biesheuvel wrote:
-> > > > On Wed, 9 Jul 2025 at 20:35, Feng Tang <feng.tang@linux.alibaba.com> wrote:
-> > > > >
-> > > > > The kernel selftest of rtc reported a error on an ARM server:
-> > > > >
-> > > > >         RUN           rtc.alarm_alm_set ...
-> > > > >         rtctest.c:262:alarm_alm_set:Alarm time now set to 17:31:36.
-> > > > >         rtctest.c:267:alarm_alm_set:Expected -1 (-1) != rc (-1)
-> > > > >         alarm_alm_set: Test terminated by assertion
-> > > > >                  FAIL  rtc.alarm_alm_set
-> > > > >         not ok 5 rtc.alarm_alm_set
-> > > > >
-> > > > > The root cause is, the unerlying EFI firmware doesn't support wakeup
-> > > > > service (get/set alarm), while it doesn't have the efi 'RT_PROP'
-> > > > > table either. The current code logic will claim efi supports these
-> > > > > runtime service capability by default, and let following 'RT_PROP'
-> > > > > table parsing to correct it, if that table exists.
-> > > > >
-> > > > > This issue was reproduced on ARM server from another verndor, and not
-> > > > > reproudce on one x86 server (Icelake). All these 3 platforms don't have
-> > > > > 'RT_PROP' tables, so they are all claimed to support alarm service,
-> > > > > but x86 server uses real CMOS RTC device instead rtc-efi device, and
-> > > > > passes the test.
-> > > > >
-> > > > > So remove the wakeup/alarm capability from default value, and setup
-> > > > > the capability bits according to the 'RT_PROP' table parsing.
-> > > > >
-> > > >
-> > > > What does this achieve? The test result is accurate, as the platform
-> > > > violates the spec by not implementing the RTC wakeup services, and not
-> > > > setting the RT_PROP table bits accordingly.
-> > > >
-> > > > What do we gain by pretending that the platform is not broken, and
-> > > > lying about it?
-> > >
-> > > I don't have much experience with EFI, so I might be totally wrong. I
-> > > don't think not providing the RT_PROP table is 'broken', that's why I
-> > > tried to borrow platforms from different vendors to do the check, which
-> > > all have no this table.
-> > >
-> > > For platform which have no 'RT_PROP' tables (seems to be not a rare case),
-> > > claiming them support all efi runtime service may be kind of risky.
-> > >
+> > On Thu, 10 Jul 2025 at 14:21, Nikunj A Dadhania <nikunj@amd.com> wrote:
+> >>
+> >> Ard Biesheuvel <ardb+git@google.com> writes:
+> >>
+> >> > From: Ard Biesheuvel <ardb@kernel.org>
+> >>
+> >> ...
+> >>
+> >> > So move the HV feature check into a helper function and call that
+> >> > instead. For the core kernel, move the check to an earlier boot stage,
+> >> > right after the point where it is established that the guest is
+> >> > executing in SEV-SNP mode.
+> >>
+> >> This change is causing the SNP guest to fail ...
+> >>
+> >> >
+> >> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> >> > ---
+> >>
+> >> >  arch/x86/boot/startup/sme.c         |  2 ++
+> >> >  arch/x86/coco/sev/core.c            | 11 -------
+> >>
+> >> > diff --git a/arch/x86/boot/startup/sme.c b/arch/x86/boot/startup/sme.c
+> >> > index 70ea1748c0a7..529090e20d2a 100644
+> >> > --- a/arch/x86/boot/startup/sme.c
+> >> > +++ b/arch/x86/boot/startup/sme.c
+> >> > @@ -533,6 +533,8 @@ void __head sme_enable(struct boot_params *bp)
+> >> >       if (snp_en ^ !!(msr & MSR_AMD64_SEV_SNP_ENABLED))
+> >> >               snp_abort();
+> >> >
+> >> > +     sev_hv_features = snp_check _hv_features();
+> >> > +
+> >>
+> >> ...
+> >> snp_check_hv_features()
+> >>  -> get_hv_features() fails as ghcb_version is not yet initalized
+> >>
+> >> ghcb_version is initialized as part of sev_es_negotiate_protocol(),
+> >> atleast this function needs to be called before get_hv_features() is
+> >> called.
+> >>
 > >
-> > It is the other way around. The UEFI spec mandates that all runtime
-> > services are implemented, unless a RT_PROP table is provided.
+> > Thanks for the diagnosis.
+> >
+> > I added back the ghcb_version check,
 >
-> Thanks for the explaination! Yes, it's fair to claim the uefi implementation
-> on the 2 ARM servers 'broken' :)
+> Not sure if I understand, this check is there since:
 >
-> I talked with some firmware developers. They said the rtc-alarm service could
-> be implemented, while the difficult part is how to notify OS. I submitted a
-> request for a correct RT_PROP table.
+> cbd3d4f7c4e5 x86/sev: Check SEV-SNP features support
 >
-> Meanwhile, given there are quite some platforms (All ARM server I can access)
-> don't have the table and not support rtc wakeup service, I'm thinking of adding
-> some runtime check for the service in rtc-efi driver, something like:
+> > even though it is redundant,
+> > given that SNP support implies ghcb version >= 2
+> >
+> > Would the below change be sufficient too?
 >
-> ---
-> diff --git a/drivers/rtc/rtc-efi.c b/drivers/rtc/rtc-efi.c
-> index fa8bf82df948..7ae948aebd11 100644
-> --- a/drivers/rtc/rtc-efi.c
-> +++ b/drivers/rtc/rtc-efi.c
-> @@ -259,6 +259,7 @@ static int __init efi_rtc_probe(struct platform_device *dev)
->         struct rtc_device *rtc;
->         efi_time_t eft;
->         efi_time_cap_t cap;
-> +       efi_bool_t enabled, pending;
+> KVM_SEV_INIT2 allows the user space to provide ghcb_version, setting
+> ghcb_version=1 in QEMU;
 >
->         /* First check if the RTC is usable */
->         if (efi.get_time(&eft, &cap) != EFI_SUCCESS)
-> @@ -272,7 +273,8 @@ static int __init efi_rtc_probe(struct platform_device *dev)
+> with my changes: SNP guest does not boot, as the ghcb_version < 2
+> with the below change: SNP guest boots, which is not correct
 >
->         rtc->ops = &efi_rtc_ops;
->         clear_bit(RTC_FEATURE_UPDATE_INTERRUPT, rtc->features);
-> -       if (efi_rt_services_supported(EFI_RT_SUPPORTED_WAKEUP_SERVICES))
-> +       if (efi_rt_services_supported(EFI_RT_SUPPORTED_WAKEUP_SERVICES) &&
-> +               efi.get_wakeup_time(&enabled, &pending, &eft) == EFI_SUCCESS)
->                 set_bit(RTC_FEATURE_ALARM_WAKEUP_ONLY, rtc->features);
->         else
->                 clear_bit(RTC_FEATURE_ALARM, rtc->features);
->
-> This works on one ARM server I can test kernel with. Any suggestions?
+> This needs to be fixed in KVM as well to not allow creating SNP guest if
+> ghcb_version < 2.
 >
 
-I think this is fine - please send it as a proper patch with commit log etc.
+OK, thanks for clariyfing this - it means that checking the GHCB
+version remains necessary, even though it is only done for SNP guests,
+where GHCB version >=2 is mandated.
+
+I'll take this into account in the next revision.
 
