@@ -1,121 +1,159 @@
-Return-Path: <linux-efi+bounces-4264-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4265-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B96AFF568
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 01:33:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0403BAFF688
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 03:57:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E2FF5A8313
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Jul 2025 23:33:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52B125A5EAE
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 01:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4454D25C833;
-	Wed,  9 Jul 2025 23:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FF527EC73;
+	Thu, 10 Jul 2025 01:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9965+75"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s36gQ67r"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB902459FE;
-	Wed,  9 Jul 2025 23:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C5A846C;
+	Thu, 10 Jul 2025 01:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752104018; cv=none; b=h75W9+nL7fdEl31DU9uHEM4rbe/0WKSmrnwM5fr51gbQOccuXZ38XRaeCrju+/oLk61KezVRA3vcMQPZylOGfcW44oDWpLHOHRYpYYMsYxvNsWw7h5dLE+36TRQtCu/yTxWiXn1Ed4kgBudrJysxtdoScKOGkxZAv+5+wsYZFYE=
+	t=1752112622; cv=none; b=TIeD5c50jmuF0uKXJ+D63N4yxfI//3XthxMTfEb+oMEqPR5pdOKTf7EONnMPIXLBh3uywfypaWPiDpDZbW9YO9DnSgU+re4gNwirWirDP5nR3xa2f4vtkxh7rfH3uUoNp2GTJ6pf6F5sDjMtDHADk1DTRe81eiuSZXQhVHemxlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752104018; c=relaxed/simple;
-	bh=KN3ryJg70miFlqFy4in/+8Iwbx0iP26bdXxXVbvfJiA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cgcF70kYUx918Ul4oWwXyahRxv5Pk8uIrYjeWk7UMSQXS748lZViihXji2ZoUDS7osgQbE0U2AQEvGynfd8thN7E4jestEOSEYt2cSEUvF07A5sfGYW8f/UXy+UExU8ucAOAij8Ult2Mw7dDlxogGfBCs+rXDnxPO6EKYyrrJ8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9965+75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C6CC4CEF5;
-	Wed,  9 Jul 2025 23:33:35 +0000 (UTC)
+	s=arc-20240116; t=1752112622; c=relaxed/simple;
+	bh=V5+0JeybGuGj3hNbNrffhOaKN4FNKIUQicNKhhV6M9M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=omIPSsBs5r7iLg7+sjAVJY9UtCGN9PHUC5gc9uws4aUuGSXXfoAJLKaBa0+DZBMjISWhj0ClhBa3rQ44AlTN0nVkGfO1mDLqwg84gQUwhgcGc70ICfVkH4V0nJYGRKLvvUzm5DX8zGe9+bIYfwvt1qNDMRnY+Hq6beGvjC/DtSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s36gQ67r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5A6C4CEEF;
+	Thu, 10 Jul 2025 01:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752104015;
-	bh=KN3ryJg70miFlqFy4in/+8Iwbx0iP26bdXxXVbvfJiA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=m9965+75QTQOSB8vZmrlz0cbC//HVhXjXIlOCV2/k3QNLLKe7fTCl3Y6SR9Ir42A2
-	 cZI5xIztK4ejolTd0zN3ftwV6bU7LwlIzUb0qvzemQCFQkKcOXsjPMoxnZpk3b9bfA
-	 gOW2uFqNVzjPcvp5x4GEhNmnOia8LSn0Ii0PjXVe+U55ztdn0DSW0jGHD791QqJS24
-	 dVMOXrednkT4HOIfMl/kn99biebe88o6qkJJeytnUGmJgQtLXVXOsKaomuhZusMGv6
-	 uFjIW876en03Zh3KzBnkgGm6DfkQt3DrF5aF6L84n3FX9/xKNyD83lVN+VNFM4JB10
-	 pTPR11rAQ/lRA==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-558fa0b2c99so266820e87.2;
-        Wed, 09 Jul 2025 16:33:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVMGCpwodMEvSvM5Y0JJ8aypQmYmATRoaLlI1L7NxkHh+yplOJlwnK/1yeZxXftgym6P1G15830+f1KDpM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQYqPkUgAg4QNubYP3LUJ1UCP6U81/Jzy07eGDmyWiILv2g1vA
-	FwBrnsaQqhcEhRD3vLLah9gPcuCQmUrHve63IVeRea2UWsWbl7Enxww6xX/JtoU02K34WjTy1rI
-	3tzyWGMoGyNoJGIpo8cPetrwcDOKOoh4=
-X-Google-Smtp-Source: AGHT+IGHJkzs08j74d/j571QvtjzCViOCskOj13okKejdpeyF1bSvgeJBx7+yiT0JyYy7J7Rs2KQLYjnijAh2Kd0S2A=
-X-Received: by 2002:a05:6512:ba1:b0:553:ab9a:c94 with SMTP id
- 2adb3069b0e04-558fa877660mr1419512e87.6.1752104013886; Wed, 09 Jul 2025
- 16:33:33 -0700 (PDT)
+	s=k20201202; t=1752112621;
+	bh=V5+0JeybGuGj3hNbNrffhOaKN4FNKIUQicNKhhV6M9M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s36gQ67r+HzmWOakvqjLN2Bi+cxAqgCf9b1jm8CeVANKXagOyi4qRCxno997vOt7I
+	 npTW9Sqm4fAIHoISBPWcX7vjQIgal5suR6GEB+4EiYf2hwAgwibu53TlZdekzLZBEQ
+	 9ABBQhGaRUZwnPIix2Qtgh30B7PYqrpPimSO1KfrR0HfIEongwbMYk/1onz4hpDV26
+	 GuIsiO8b8UJiiZ9KWrmQ80LhTJRWiOT9thCwXfahXz+KypMzoUnp19aAp8cABbtMDx
+	 gSq60cIssEQ+9AYdxjTLFvnKp8xU42OaucaV/Fz2aUcFFHry0HoCkWdrBfNWJs8YVU
+	 kLmHPK8kS1RBw==
+Date: Wed, 9 Jul 2025 18:57:00 -0700
+From: Kees Cook <kees@kernel.org>
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	x86@kernel.org, kasan-dev@googlegroups.com,
+	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2 08/14] powerpc: Handle KCOV __init vs inline mismatches
+Message-ID: <202507091856.C6510D809A@keescook>
+References: <20250523043251.it.550-kees@kernel.org>
+ <20250523043935.2009972-8-kees@kernel.org>
+ <87jz662ssp.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709103541.7268-1-feng.tang@linux.alibaba.com>
- <CAMj1kXEvxPjFsqoMzZnb2zxSf9uyLVzuzKEeKD4fLEux3NbUhw@mail.gmail.com> <aG5Lod-McOlBmt7_@U-2FWC9VHC-2323.local>
-In-Reply-To: <aG5Lod-McOlBmt7_@U-2FWC9VHC-2323.local>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 10 Jul 2025 09:33:19 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXEkzXsjm0dPhzxB+KdtzqADd4NmafKmw2rKw7mAPBrgdA@mail.gmail.com>
-X-Gm-Features: Ac12FXxBeMvD2NKHHndGU-JJq4Rqs2AwOFrTJ8lHL8syscDtxlFOmBHaX_PcbyI
-Message-ID: <CAMj1kXEkzXsjm0dPhzxB+KdtzqADd4NmafKmw2rKw7mAPBrgdA@mail.gmail.com>
-Subject: Re: [PATCH] efi: remove the rtc-wakeup capability from default value
-To: Feng Tang <feng.tang@linux.alibaba.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87jz662ssp.fsf@gmail.com>
 
-On Wed, 9 Jul 2025 at 21:00, Feng Tang <feng.tang@linux.alibaba.com> wrote:
->
-> On Wed, Jul 09, 2025 at 08:42:24PM +1000, Ard Biesheuvel wrote:
-> > On Wed, 9 Jul 2025 at 20:35, Feng Tang <feng.tang@linux.alibaba.com> wrote:
-> > >
-> > > The kernel selftest of rtc reported a error on an ARM server:
-> > >
-> > >         RUN           rtc.alarm_alm_set ...
-> > >         rtctest.c:262:alarm_alm_set:Alarm time now set to 17:31:36.
-> > >         rtctest.c:267:alarm_alm_set:Expected -1 (-1) != rc (-1)
-> > >         alarm_alm_set: Test terminated by assertion
-> > >                  FAIL  rtc.alarm_alm_set
-> > >         not ok 5 rtc.alarm_alm_set
-> > >
-> > > The root cause is, the unerlying EFI firmware doesn't support wakeup
-> > > service (get/set alarm), while it doesn't have the efi 'RT_PROP'
-> > > table either. The current code logic will claim efi supports these
-> > > runtime service capability by default, and let following 'RT_PROP'
-> > > table parsing to correct it, if that table exists.
-> > >
-> > > This issue was reproduced on ARM server from another verndor, and not
-> > > reproudce on one x86 server (Icelake). All these 3 platforms don't have
-> > > 'RT_PROP' tables, so they are all claimed to support alarm service,
-> > > but x86 server uses real CMOS RTC device instead rtc-efi device, and
-> > > passes the test.
-> > >
-> > > So remove the wakeup/alarm capability from default value, and setup
-> > > the capability bits according to the 'RT_PROP' table parsing.
-> > >
+On Sat, May 24, 2025 at 04:13:02PM +0530, Ritesh Harjani wrote:
+> Kees Cook <kees@kernel.org> writes:
+> 
+> > When KCOV is enabled all functions get instrumented, unless
+> > the __no_sanitize_coverage attribute is used. To prepare for
+> > __no_sanitize_coverage being applied to __init functions, we have to
+> > handle differences in how GCC's inline optimizations get resolved. For
+> > s390 this requires forcing a couple functions to be inline with
+> > __always_inline.
 > >
-> > What does this achieve? The test result is accurate, as the platform
-> > violates the spec by not implementing the RTC wakeup services, and not
-> > setting the RT_PROP table bits accordingly.
+> > Signed-off-by: Kees Cook <kees@kernel.org>
+> > ---
+> > Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Nicholas Piggin <npiggin@gmail.com>
+> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > Cc: Naveen N Rao <naveen@kernel.org>
+> > Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+> > Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: <linuxppc-dev@lists.ozlabs.org>
+> > ---
+> >  arch/powerpc/mm/book3s64/hash_utils.c    | 2 +-
+> >  arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
 > >
-> > What do we gain by pretending that the platform is not broken, and
-> > lying about it?
->
-> I don't have much experience with EFI, so I might be totally wrong. I
-> don't think not providing the RT_PROP table is 'broken', that's why I
-> tried to borrow platforms from different vendors to do the check, which
-> all have no this table.
->
-> For platform which have no 'RT_PROP' tables (seems to be not a rare case),
-> claiming them support all efi runtime service may be kind of risky.
->
+> > diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> > index 5158aefe4873..93f1e1eb5ea6 100644
+> > --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> > +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> > @@ -409,7 +409,7 @@ static DEFINE_RAW_SPINLOCK(linear_map_kf_hash_lock);
+> >  
+> >  static phys_addr_t kfence_pool;
+> >  
+> > -static inline void hash_kfence_alloc_pool(void)
+> > +static __always_inline void hash_kfence_alloc_pool(void)
+> >  {
+> >  	if (!kfence_early_init_enabled())
+> >  		goto err;
+> > diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> > index 9f764bc42b8c..3238e9ed46b5 100644
+> > --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> > +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> > @@ -363,7 +363,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+> >  }
+> >  
+> >  #ifdef CONFIG_KFENCE
+> > -static inline phys_addr_t alloc_kfence_pool(void)
+> > +static __always_inline phys_addr_t alloc_kfence_pool(void)
+> >  {
+> >  	phys_addr_t kfence_pool;
+> >  
+> 
+> I remember seeing a warning msg around .init.text section. Let me dig
+> that...
+> 
+> ... Here it is: https://lore.kernel.org/oe-kbuild-all/202504190552.mnFGs5sj-lkp@intel.com/
+> 
+> I am not sure why it only complains for hash_debug_pagealloc_alloc_slots().
+> I believe there should me more functions to mark with __init here.
+> Anyways, here is the patch of what I had in mind.. I am not a compiler expert,
+> so please let me know your thoughts on this.
 
-It is the other way around. The UEFI spec mandates that all runtime
-services are implemented, unless a RT_PROP table is provided.
+Yeah, this looks good. I'll snag your patch and drop mine. :)
+
+-Kees
+
+-- 
+Kees Cook
 
