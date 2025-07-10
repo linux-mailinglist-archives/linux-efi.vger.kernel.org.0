@@ -1,154 +1,191 @@
-Return-Path: <linux-efi+bounces-4274-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4275-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3F0AFFE56
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 11:40:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A12CB000D4
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 13:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 199031C47EC5
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 09:40:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6E454238E
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Jul 2025 11:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8880D2D3ED5;
-	Thu, 10 Jul 2025 09:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACAE24DCEB;
+	Thu, 10 Jul 2025 11:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4POTkIp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FSAKdlvk"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0A728D82F;
-	Thu, 10 Jul 2025 09:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FCC248F70
+	for <linux-efi@vger.kernel.org>; Thu, 10 Jul 2025 11:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752140410; cv=none; b=SQD8wPjdfCu6WMJW+4A7GTC+lLssu7GcQ0WIQEoA6qGaG1fGNoe/6vgvbXIIPRiWsiicEpkM2N/TeaV36jo8MnQmMqTnHGB7QawO7apUcDpsvBMjcC3ZlMtdfxDSl0KgPtiu1pCrdB7RKPcEb86GjDUThiGTHM3uihqRm4sPMV0=
+	t=1752148385; cv=none; b=AwUVhkaAA7edkLfPcylCAStjjP2XrPAFDA0xhui4NQhTfxYSOK+8uFC6sDjTjOimQplGfNCUKd7qcOxXIvyNSdoDt+rqap/t3m4JFMgR0IHmCXGK2zgjkmyBDEl/VW2hjPlXvsZrVMCytqhfqgBF71xq2GJWITL9M/xSpHB4HFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752140410; c=relaxed/simple;
-	bh=x+A+4ftMt9Yq8X3LVyeioVSBjpZxfMyX5lyRPLKUhi8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AP5B924k8pVRAZPT1Sigv2VE1qfDhTw77c1OEGWVGmaW6je6NJQ5Gbgyp3O1r+rQ+3o5UHdiUcaxs/EkEuhl8zVmgn0eMoqQgg4HLQhYNlOP6p5eRdfHGvuN5Af+tb//BkBw0Vs09VCnCmYLhx4vZc+3Ufk8gEWxM1N5ESU7OyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4POTkIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D50C4CEE3;
-	Thu, 10 Jul 2025 09:40:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752140410;
-	bh=x+A+4ftMt9Yq8X3LVyeioVSBjpZxfMyX5lyRPLKUhi8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L4POTkIpYO7M/uIVs2tfsDFKlBk6sV49cdEcWqTYA2YO5XVtTLLEMKbFqUWRJwOBm
-	 Rn+GygnEloY8OsOuTn5T/RoB8FCvfiexHcHvjErCX4g1eRPKlgYybQyCj9BXlvjABl
-	 IXs88RfBoD2e9sN3nJ+XUetLdfnI6nHf86zDcGYKWSLKSuKTstHCuAXjjD6SnH8O/E
-	 ab1ld2U4/RlFvKtYkostKf9eluRdjbd4XVG3BVEtDW+hUyxMAyKNt7uaXfj9+dZwz6
-	 SI6rg0mdeD0BeogTZqZ2H8nLAekV/NH/OBhTvtO6eHnmzdZgDviE1xRp/Rv6IJKCc5
-	 ZEFzzXpewyXzA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1uZnl3-000000007bx-0tkl;
-	Thu, 10 Jul 2025 11:40:01 +0200
-Date: Thu, 10 Jul 2025 11:40:01 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Steev Klimaszewski <steev@kali.org>, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v4 6/8] firmware: qcom: scm: add modparam to control
- QSEECOM enablement
-Message-ID: <aG-KcWsztfTUHE0Y@hovoldconsulting.com>
-References: <20250625-more-qseecom-v4-0-aacca9306cee@oss.qualcomm.com>
- <20250625-more-qseecom-v4-6-aacca9306cee@oss.qualcomm.com>
- <aF0cyOpkjUI4R3bv@hovoldconsulting.com>
- <gqoba4uu62sh4qxapqkhlufxnliatevnsqcxvijvb74tposf2b@iyonh347aext>
- <aF1EDMsw1KQTlteX@hovoldconsulting.com>
- <cjinqyqn7qgvdoltoywxa2lq6bjyfrotmon3iv24tqt3bpdlpe@3xb2k42ffegj>
- <aF6Srse7BhDJkQiH@hovoldconsulting.com>
- <7jjxjkk6qwym2mt6xp7t2t4wckyrvwaj2ydubkimnx2oybitab@u4nhj5mib64l>
- <aGKGHvDzlKrBDrjN@hovoldconsulting.com>
- <af553qttxd6tqkypokqkgki3dceatsbqfw5botjrcesvg22nyr@zogoseo3j7hc>
+	s=arc-20240116; t=1752148385; c=relaxed/simple;
+	bh=VbKdLOuspRLhmo17ZQL34isWBNye4t9e+k62/W2Wrys=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=D6o+Iqy29X0rQc1+0YloMdcRkuAuMcr7HAJ8TCug8yIZ+KZUVbCrccnBxHNqFmr/03GSrKS9NPgNrFLfy5A3LUafBZrvZIBJP6FA1dCJBSMegYr26cTde+R7vbHVUJn55dGSz0+6zK5LCmEQBNKp7BjxOL+zB3AKiqHDVDsMKHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FSAKdlvk; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752148383; x=1783684383;
+  h=date:from:to:cc:subject:message-id;
+  bh=VbKdLOuspRLhmo17ZQL34isWBNye4t9e+k62/W2Wrys=;
+  b=FSAKdlvkb6D7ObQQVjoFtyBwSIBiKlnjzDDixlexzjJgHpJFPEyKqNuZ
+   n790VdgpcHS3LeVlY/FRK77hvwNDgvlUkvyvb7GJ9pQAJr1yFPqynyc/j
+   GOlYo9ElI8+yqov/fmT4prcQ+xkkovB5AGlB1XTgJD9r0GAqW6STKTvWA
+   SDrrCLvNw8nGX3Fmwe+4X6KhcbJ8DvEEmFy6uFoMjfoGJwYRAi0xzV0Kb
+   ZYsi86nviEWqvJl7B2kQK2FWm1TALeM2i34soJ80g902av/TBxJOJVa84
+   21/LzZMudmMb5MAP+jvod2kIsbGUyMXJiSeeli9h4ft4tKP3xucEXP7S9
+   w==;
+X-CSE-ConnectionGUID: xQzJVei3Sz68HjTHh2sayQ==
+X-CSE-MsgGUID: mVTvG0/jQLCoSpqu2XRsAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="53646859"
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
+   d="scan'208";a="53646859"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 04:53:01 -0700
+X-CSE-ConnectionGUID: tdIGAewtSxyGIWmbwR399w==
+X-CSE-MsgGUID: muIvrKTIQLG3upjB7kO7eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
+   d="scan'208";a="156784157"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 10 Jul 2025 04:53:00 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uZpph-0004zf-31;
+	Thu, 10 Jul 2025 11:52:57 +0000
+Date: Thu, 10 Jul 2025 19:52:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS
+ f393a761763c542761abcf978252d431269366d6
+Message-ID: <202507101910.OmMwuhIb-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af553qttxd6tqkypokqkgki3dceatsbqfw5botjrcesvg22nyr@zogoseo3j7hc>
 
-On Tue, Jul 01, 2025 at 02:10:49PM +0300, Dmitry Baryshkov wrote:
-> On Mon, Jun 30, 2025 at 02:42:06PM +0200, Johan Hovold wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: f393a761763c542761abcf978252d431269366d6  efi: add ovmf debug log driver
 
-> > Here it's just Qualcomm doing something funny that affects their own
-> > platforms. We should be able to figure this out without forcing users or
-> > distros to pass command line parameters.
-> 
-> This is not intended for the normal working course, but for the initial
-> bringup / nailing out issues after the bringup (e.g. after firmware
-> upgrade).
+elapsed time: 1448m
 
-And for that you do not need a module parameter either.
+configs tested: 98
+configs skipped: 3
 
-> > Do we know if there are any sc8280xp or x1e machines that boot off UFS?
-> > 
-> > If not (even with the exception of the CRDs) then it should be fine to
-> > just whitelist the SoCs without any command line parameters.
-> 
-> I'm not aware of such platforms.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Then go for it.
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                   randconfig-001-20250709    gcc-8.5.0
+arc                   randconfig-002-20250709    gcc-11.5.0
+arm                               allnoconfig    clang-21
+arm                   randconfig-001-20250709    gcc-12.4.0
+arm                   randconfig-002-20250709    gcc-10.5.0
+arm                   randconfig-003-20250709    clang-21
+arm                   randconfig-004-20250709    clang-21
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250709    clang-21
+arm64                 randconfig-002-20250709    gcc-15.1.0
+arm64                 randconfig-003-20250709    clang-21
+arm64                 randconfig-004-20250709    gcc-10.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250709    gcc-15.1.0
+csky                  randconfig-002-20250709    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250709    clang-19
+hexagon               randconfig-002-20250709    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386        buildonly-randconfig-001-20250709    gcc-12
+i386        buildonly-randconfig-002-20250709    clang-20
+i386        buildonly-randconfig-003-20250709    clang-20
+i386        buildonly-randconfig-004-20250709    clang-20
+i386        buildonly-randconfig-005-20250709    gcc-12
+i386        buildonly-randconfig-006-20250709    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-21
+loongarch             randconfig-001-20250709    gcc-15.1.0
+loongarch             randconfig-002-20250709    gcc-12.4.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+nios2                 randconfig-001-20250709    gcc-14.2.0
+nios2                 randconfig-002-20250709    gcc-14.2.0
+openrisc                          allnoconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250709    gcc-15.1.0
+parisc                randconfig-002-20250709    gcc-14.3.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc               randconfig-001-20250709    gcc-8.5.0
+powerpc               randconfig-002-20250709    clang-21
+powerpc               randconfig-003-20250709    clang-21
+powerpc64             randconfig-001-20250709    gcc-10.5.0
+powerpc64             randconfig-002-20250709    gcc-10.5.0
+powerpc64             randconfig-003-20250709    clang-21
+riscv                             allnoconfig    gcc-15.1.0
+riscv                 randconfig-001-20250709    gcc-10.5.0
+riscv                 randconfig-002-20250709    clang-21
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-15.1.0
+s390                  randconfig-001-20250709    clang-17
+s390                  randconfig-002-20250709    clang-21
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                    randconfig-001-20250709    gcc-10.5.0
+sh                    randconfig-002-20250709    gcc-14.3.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250709    gcc-15.1.0
+sparc                 randconfig-002-20250709    gcc-10.3.0
+sparc64               randconfig-001-20250709    clang-21
+sparc64               randconfig-002-20250709    clang-21
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250709    clang-17
+um                    randconfig-002-20250709    gcc-12
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250709    gcc-12
+x86_64      buildonly-randconfig-002-20250709    clang-20
+x86_64      buildonly-randconfig-003-20250709    gcc-12
+x86_64      buildonly-randconfig-004-20250709    gcc-12
+x86_64      buildonly-randconfig-005-20250709    clang-20
+x86_64      buildonly-randconfig-006-20250709    gcc-12
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250709    gcc-8.5.0
+xtensa                randconfig-002-20250709    gcc-11.5.0
 
-> > Adding to a blacklist is bound to be overlooked, while adding to a
-> > whitelist is not.
-> 
-> You can't overlook it since it is required as a part of almost any
-> distro setup - point UEFI boot sequence to your new bootloader entry.
-
-The distros don't do bring ups of these machines themselves.
-
-> > I'd rather see you get to the bottom of the UFS boot issue and whether
-> > there is some way to determine this programmatically.
-> 
-> I don't see a good way to do that - UFS might be probed very late, it
-> might be unused for the boot at all, etc.
-
-How about asking the Qualcomm firmware team?
-
-Again, there's no rush here. Whitelisting is perfectly fine until then.
-
-> > If everything that's currently upstream boots from NVMe that may not
-> > necessarily mean it works for devices using UFS.
-> 
-> And? I don't care that much about theoretical devices here.
-
-It's not theoretical. We know that the UEFI vars on the CRDs are not
-persistent when booting off UFS. Not to mention your Yoga.
-
-> > > > But if this series now enables broken EFI variable support on every
-> > > > other device then I don't think that's ok (even if you provide a command
-> > > > line parameter that each user now have to pass).
-> > > > 
-> > > > Then I'd rather see a proposal for how to determine which machines
-> > > > support this or not, information which was not available when this
-> > > > interface was reverse engineered and where a conservative whitelist
-> > > > approach made perfect sense.
-> > > 
-> > > WIP
-> > 
-> > Good. We can manage with adding new entries for a while still while you
-> > guys at Qualcomm work this out.
-> 
-> You (we) guys at Linaro could have figured that out too ;-)
-
-Linaro relies on Qualcomm to provide details on things like this. As you
-know.
-
-Johan
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
