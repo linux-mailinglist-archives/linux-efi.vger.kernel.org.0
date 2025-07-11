@@ -1,47 +1,47 @@
-Return-Path: <linux-efi+bounces-4286-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4287-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485ADB01E62
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Jul 2025 15:53:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF825B01E1B
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Jul 2025 15:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5021B617FF
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Jul 2025 13:40:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54CFD168106
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Jul 2025 13:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A58F2D7819;
-	Fri, 11 Jul 2025 13:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C5D2D46C4;
+	Fri, 11 Jul 2025 13:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQ2E+87a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q9+YTxJ0"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DCE2D77FA;
-	Fri, 11 Jul 2025 13:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5854A24;
+	Fri, 11 Jul 2025 13:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752241324; cv=none; b=atBUs/deZbt3orNdQZxkoLLCbkFCKX/0IVrAIp8TbVPxXYwZ+h6UM8qxg3Kozd857Wigs74qgjKJNd1uvJu8d4owmbRb0mya4HFl8YpXYtwMq/vKmcI1fA3QVNjmEur2fOMFvsjcHTrEvagbSral6DUl+icyPzvd81WixNFSMhU=
+	t=1752241504; cv=none; b=sipPDbuC2KXbTdJ3CAe4ocezKmHw26CiSmII91z6xhPjeErgdtcaVSooIPDfQLNsitFiwvpt/YwuzeiQD5VrILNP/3Z1H30RqaEsMarkwRDSWiv5UGwdTgEBwzIqTyiJv8FpGeuEu1GddL4kRQQYA+88J4yqSoqQa3LjysYJLEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752241324; c=relaxed/simple;
-	bh=E+qQLRz6mPRPePZKtFgMgdhHMnIyYUYFPTP+kWQvHIE=;
+	s=arc-20240116; t=1752241504; c=relaxed/simple;
+	bh=f3rQynSOZUFNU+NuqbfPpRtj0evYLsR/NIIH6sWBbgs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oMM+H90xyypLcLq4h5C2kAHCi/hWymdWc7AUMNRId7ext5/hcK2y6FqdVRJVRtIeloZNVpF0U1TOY4yNjq4kIvbGMg9n3L0l2fhIhZ0SAxGw+eVscA1lXoBHkgZzhNtyHyV4i5ZyLtpGBWIwW/wMf8GV18HXdkkzELnwSUpKSRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQ2E+87a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41F2C4CEED;
-	Fri, 11 Jul 2025 13:42:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ArGJ3ZoRr7u3qwxN8xSkPFbVp/D5mpe7t5bzPLYCHjr1HpttRLEX71QRy1cjI7ZHhXRLUHsZQc1cefhRS2zPvQEygT/I7/PfH4DOjjeZq+zUj9gXWwIvBsUAoB6f/koDK82rHqviYbHwRe60GYfwuD5cQAcWQIahs5UMoTqKWLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q9+YTxJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DBAC4CEED;
+	Fri, 11 Jul 2025 13:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752241323;
-	bh=E+qQLRz6mPRPePZKtFgMgdhHMnIyYUYFPTP+kWQvHIE=;
+	s=k20201202; t=1752241503;
+	bh=f3rQynSOZUFNU+NuqbfPpRtj0evYLsR/NIIH6sWBbgs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AQ2E+87aPmB2oO90D/mF50PyoPZCyzBHz4b5Y6PM2H+D1vplka2tb4RDipc9wFan8
-	 vwNaJFJgXLt71CKtOsluLFBFPk4k6GDMtIepI+vZ6xouxcoDvD2EExIsRXQU4t0+QH
-	 9LhtosxM6qmzWcb314/+AS9ZsLw2XoQaOS/X3K/5+qm67+uGm44WhPe6A0qTJfPPOc
-	 7JsVNcPIqNfaiAPSPu4lNhCgQN0oGEFLV/xKNhU/Xkw0Fcr4kxt68pgAG0x53jB/NM
-	 nQLxWnzjAvuIY5U7xkNxhgmIlJi6Myglh3Bl42w+Eh92hbZJyE+gVSNI2NyJ0QsHkC
-	 c76o+WrRHzU1Q==
-Date: Fri, 11 Jul 2025 14:41:58 +0100
+	b=q9+YTxJ0nh8uwNC6GfWTky0LFWXlJ7YGo4Qj+iur4hP29L9AX1sFUobfUynxxNJr9
+	 4NP4lpWB8lic8on6GHkoXvkjbIXnu55ompKxO/dekRVwARa6RTZLu5GA+BKSAXe6KP
+	 a6v2BUfIZIa6A/k4Fdd0iGUSnyCyUe981csB8LtGzpO0mxtRjd90F/F88v2NWFPjJD
+	 99Pbc0jWgsjZMg3lASe+do4/pEv8HibrfkCSCuEqW+HcimS1o0xSAgBGE91jqW7Gcy
+	 CjCoWltugp/Ts0NksjqKWIOHPN7KF1035HYdnvA0B1QBWn51p4g7/BXwZWmv1HUfog
+	 HaipDb0yXeWDg==
+Date: Fri, 11 Jul 2025 14:44:58 +0100
 From: Will Deacon <will@kernel.org>
 To: Ard Biesheuvel <ardb+git@google.com>
 Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -50,11 +50,9 @@ Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Mark Rutland <mark.rutland@arm.com>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [RFC PATCH 6/7] arm64/efi: Move uaccess en/disable out of
- efi_set_pgd()
-Message-ID: <aHEUpiXt-pW7DBAN@willie-the-truck>
+Subject: Re: [RFC PATCH 0/7] arm64: Make EFI calls preemptible
+Message-ID: <aHEVWjyr7fxA3v93@willie-the-truck>
 References: <20250514174339.1834871-9-ardb+git@google.com>
- <20250514174339.1834871-15-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -63,66 +61,56 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250514174339.1834871-15-ardb+git@google.com>
+In-Reply-To: <20250514174339.1834871-9-ardb+git@google.com>
 
-On Wed, May 14, 2025 at 07:43:46PM +0200, Ard Biesheuvel wrote:
+Hey Ard,
+
+On Wed, May 14, 2025 at 07:43:40PM +0200, Ard Biesheuvel wrote:
 > From: Ard Biesheuvel <ardb@kernel.org>
 > 
-> efi_set_pgd() will no longer be called when invoking EFI runtime
-> services via the efi_rts_wq work queue, but the uaccess en/disable are
-> still needed when using PAN emulation using TTBR0 switching. So move
-> these into the callers.
+> The arm64 port permits the use of the baseline FP/SIMD register file in
+> kernel mode, and no longer requires preemption to be disabled. Now that
+> the EFI spec is being clarified to state that EFI runtime services may
+> only use baseline FP/SIMD, the fact that EFI may code may use FP/SIMD
+> registers (while executing at the same privilege level as the kernel) is
+> no longer a reason to disable preemption when invoking them.
 > 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/arm64/include/asm/efi.h | 3 ---
->  arch/arm64/kernel/efi.c      | 3 +++
->  2 files changed, 3 insertions(+), 3 deletions(-)
+> This means that the only remaining reason for disabling preemption is
+> the fact that the active mm is swapped out and replaced with efi_mm in a
+> way that is hidden from the scheduler, and so scheduling is not
+> supported currently. However, given that virtually all (*) EFI runtime
+> calls are made from the efi_rts_wq workqueue, the efi_mm can simply be
+> loaded into the workqueue worker kthread while the call is in progress,
+> and this does not require preemption to be disabled.
 > 
-> diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-> index decf87777f57..abe9176a3a23 100644
-> --- a/arch/arm64/include/asm/efi.h
-> +++ b/arch/arm64/include/asm/efi.h
-> @@ -132,15 +132,12 @@ static inline void efi_set_pgd(struct mm_struct *mm)
->  			 * exception when invoking the EFI run-time services.
->  			 */
->  			update_saved_ttbr0(current, mm);
-> -			uaccess_ttbr0_enable();
-> -			post_ttbr_update_workaround();
->  		} else {
->  			/*
->  			 * Defer the switch to the current thread's TTBR0_EL1
->  			 * until uaccess_enable(). Restore the current
->  			 * thread's saved ttbr0 corresponding to its active_mm
->  			 */
-> -			uaccess_ttbr0_disable();
->  			update_saved_ttbr0(current, current->active_mm);
->  		}
->  	}
-> diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-> index d01ae156bb63..5d188c6c44d7 100644
-> --- a/arch/arm64/kernel/efi.c
-> +++ b/arch/arm64/kernel/efi.c
-> @@ -177,6 +177,8 @@ bool arch_efi_call_virt_setup(void)
->  		return false;
->  
->  	efi_virtmap_load();
-> +	uaccess_ttbr0_enable();
-> +	post_ttbr_update_workaround();
->  	__efi_fpsimd_begin();
->  	return true;
->  }
-> @@ -185,6 +187,7 @@ void arch_efi_call_virt_teardown(void)
->  {
->  	__efi_fpsimd_end();
->  	efi_virtmap_unload();
-> +	uaccess_ttbr0_disable();
+> Note that this is only a partial solution in terms of RT guarantees,
+> given that the runtime services execute at the same privilege level as
+> the kernel, and can therefore disable interrupts (and therefore
+> preemption) directly. But it should prevent scheduling latency spikes
+> for EFI calls that simply take a long time to run to completion.
+> 
+> (*) only efi_reset_system() and EFI pstore invoke EFI runtime services
+>     without going through the workqueue, and the latter only when saving
+>     a kernel oops log to the EFI varstore
+> 
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> 
+> Ard Biesheuvel (7):
+>   efi: Add missing static initializer for efi_mm::cpus_allowed_lock
+>   efi/runtime: Return success/failure from arch_efi_call_virt_setup()
+>   efi/runtime: Deal with arch_efi_call_virt_setup() returning failure
+>   arm64/fpsimd: Don't warn when EFI execution context is preemptible
+>   arm64/efi: Use a semaphore to protect the EFI stack and FP/SIMD state
+>   arm64/efi: Move uaccess en/disable out of efi_set_pgd()
+>   arm64/efi: Call EFI runtime services without disabling preemption
 
-Moving this after updating the saved TTBR0 isn't great for SWPAN, as it
-means that if we take an exception (e.g. an IRQ) before calling
-uaccess_ttbr0_disable() then I think we'll end up running with the user
-page-table installed briefly in TTBR0 which SWPAN is supposed to prevent
-outside of genuine uaccess sections.
+I quite like the idea of this from the arm64 side (modulo a small comment
+I've left on one of the later patches), however it would be great to hear
+from one of the -rt folk to confirm that this actually solves a problem
+for them.
 
 Will
 
