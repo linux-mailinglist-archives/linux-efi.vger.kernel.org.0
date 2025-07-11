@@ -1,101 +1,130 @@
-Return-Path: <linux-efi+bounces-4283-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4284-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94629B01405
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Jul 2025 09:05:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85F6B016F9
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Jul 2025 10:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C27797B17EA
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Jul 2025 07:03:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CEC1582DC2
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Jul 2025 08:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F101E7C18;
-	Fri, 11 Jul 2025 07:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0DE2080C8;
+	Fri, 11 Jul 2025 08:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jx3bW+Pp"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MRndLyM9"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1341E521F
-	for <linux-efi@vger.kernel.org>; Fri, 11 Jul 2025 07:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183A61F239B;
+	Fri, 11 Jul 2025 08:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752217467; cv=none; b=nGEIw0IsRfX7O1ycW6/ZdLAqw71Tg0cwjXPvNuFFYfbwoZqK0SoJbJ0uqlaOXiOi6/t4Fn+g3EkWMzIcaJ5JD+N/VvSJxfhDDSUwEOjF78+ii9Ps5jREL2486mOs0Jn4MtkS7DsROnSyKypd1ccaOR+UljuBE5fsaO6QJFnECaY=
+	t=1752224173; cv=none; b=KzKz2LQkSNoYZjkEWl24Q/gv9EVNVAY7Hw1IEomRm8+C7E3GGdOXvL4cXd/YxKMC3WulqSF+aWeNcs+pwR1xO/mqyjhPxselUNN5L4LjVhXz6IGyfKMxJYQ7UmLYHoIk9I/rp/R52ia1Kr1HPuWBeICaf/ZFrhPcsl69EwITLWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752217467; c=relaxed/simple;
-	bh=qY+9hOJvt3smSdifJr60WwKCGN7aBvnCE1D6D2NWtug=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HZIPtjUTF02ifovpCexSZ3qelwXH+jsdZByABdtpvPaOePDWS6FykZtu/P0jhqZ5w320W9eY9s/e92na0kpCMtughR5WmrB8h3lGtPvPWVAG+LYSY8YmFz2HtNgAG90h7+O3Zd+AsAO3KMRAPJIYrYbn8ZPxCa/m5oAaaMcn7dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jx3bW+Pp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752217465;
+	s=arc-20240116; t=1752224173; c=relaxed/simple;
+	bh=nGZxBPgcyvIXg3cWoL9n7n609A6VK6iikw5GRM1A1mw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TC3PnAK7Xb6CuKkSYinc7qLV7MtFGix1RC2oOqDQ+2/H1QzyzFyRJuCi7j7VYWsOxiXmFCwnx83FVd4Ah86j2qhik8JZvr1SJl9sBCqgswaLLRGtOtQMo+PFP0rWG6MgnT1BLcaOkUWDqSZbeOOJPKeR2JVmxUh1jV+DjZJ9wY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MRndLyM9; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7DD9A205B6;
+	Fri, 11 Jul 2025 08:56:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1752224169;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=9Mb5TKDQZ34m4zy+JEIT+Wrxi+rmT6FW7pNHMJM2OTM=;
-	b=Jx3bW+PpevIWkdRaFrb3rWd6upBShXRdMY5cqctFSVaqNrloSkAyVl2czbdZaqP5krvyCw
-	5ePfBAdXahRy17w5OfeRsjL0bTfKaPn5dL4/T5vyIoo1qTFrUH1ORX6LA6Y9TK2j6JmQI2
-	pcPHCUWsLAL9KfMWkg4kVOiAp6kdakc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-581-KmRaUBegOLessUeWWwUSwA-1; Fri,
- 11 Jul 2025 03:04:21 -0400
-X-MC-Unique: KmRaUBegOLessUeWWwUSwA-1
-X-Mimecast-MFC-AGG-ID: KmRaUBegOLessUeWWwUSwA_1752217460
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 785481956094;
-	Fri, 11 Jul 2025 07:04:20 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.214])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E08C019560A3;
-	Fri, 11 Jul 2025 07:04:19 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id AC55818009DD; Fri, 11 Jul 2025 07:44:46 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: linux-efi@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] efi: add API doc entry for ovmf_debug_log
-Date: Fri, 11 Jul 2025 07:44:46 +0200
-Message-ID: <20250711054446.1537700-1-kraxel@redhat.com>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h3s4Z6xT0P2MBx5071F2O5vZS5sxJmlJEOi3WGKuQ1M=;
+	b=MRndLyM9KDDN2xOekjN5Fucibl4QMHrF4zp83Cu96ZGwegXXOXl/bo3+oJYx4Fc46ThJbC
+	hUO0lgFZIuVQQ4os4qgc1HM3cixgBOz0htA0AcA4JjQmPddlb+k4Tcq2m8h13S9Zx/tyS0
+	MLGAh7xyQHMIdDbEH62Yvu4o1ygX+ILqMUjxZc+I2vMZ34//vhkqrh8bGggWAQ5Kpith7L
+	d6mp2Nop54xeakqep10lQCq4H4QeVkA+pUGgaDPlAiewI2EBPl3FahtieCnn5ASotCvy0k
+	H3yAY61SHaAGEw0VHjxe0kgMxkIHKvqTgQtziaHaIUiV7KwV9c6Z3t94W+ddkg==
+Date: Fri, 11 Jul 2025 10:56:08 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Feng Tang <feng.tang@linux.alibaba.com>, linux-rtc@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rtc: efi: Add runtime check for the wakeup service
+ capability
+Message-ID: <20250711085608f4146d99@mail.local>
+References: <20250710084151.55003-1-feng.tang@linux.alibaba.com>
+ <CAMj1kXHDFq3FZj4134CTcQZnke4t1=u6iRNNsQBvuhb3F6KurQ@mail.gmail.com>
+ <CAMj1kXGiixvwsSmOz65F=OXQuHovO4DMAsJaPZ2sL3PBbMHh8A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGiixvwsSmOz65F=OXQuHovO4DMAsJaPZ2sL3PBbMHh8A@mail.gmail.com>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegvdeklecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehlvgigrghnughrvgcuuegvlhhlohhnihcuoegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeijeefhfffkeejueehveeuveejvdelveejteduffehuedtffdufeejudffuedvtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemvgdtfhgvmeegfhdvfhemvdelvgegmeehudejtgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemvgdtfhgvmeegfhdvfhemvdelvgegmeehudejtgdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohephedprhgtphhtthhopegrrhgusgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfhgvnhhgrdhtrghngheslhhinhhugidrrghlihgsrggsrgdrtghomhdpr
+ hgtphhtthhopehlihhnuhigqdhrthgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- Documentation/ABI/testing/sysfs-firmware-efi | 7 +++++++
- 1 file changed, 7 insertions(+)
+On 11/07/2025 11:26:18+1000, Ard Biesheuvel wrote:
+> On Fri, 11 Jul 2025 at 11:06, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > On Thu, 10 Jul 2025 at 18:41, Feng Tang <feng.tang@linux.alibaba.com> wrote:
+> > >
+> > > The kernel selftest of rtc reported a error on an ARM server which
+> > > use rtc-efi device:
+> > >
+> > >         RUN           rtc.alarm_alm_set ...
+> > >         rtctest.c:262:alarm_alm_set:Alarm time now set to 17:31:36.
+> > >         rtctest.c:267:alarm_alm_set:Expected -1 (-1) != rc (-1)
+> > >         alarm_alm_set: Test terminated by assertion
+> > >                  FAIL  rtc.alarm_alm_set
+> > >         not ok 5 rtc.alarm_alm_set
+> > >
+> > > The root cause is, the underlying EFI firmware doesn't support wakeup
+> > > service (get/set alarm), while it doesn't have the EFI RT_PROP table
+> > > either. As Ard Biesheuvel clarified [1], this breaks the UEFI spec,
+> > > which requires EFI firmware to provide a 'RT_PROP' table if it doesn't
+> > > support all runtime services (Section 4.6.2, UEFI spec 2.10).
+> > >
+> > > This issue was also reproduced on ARM server from another vendor, which
+> > > doesn't have RT_PROP table either. This means, in real world, there are
+> > > quite some platforms having this issue, that it doesn't support wakeup
+> > > service while not providing a correct RT_PROP table, which makes it
+> > > wrongly claimed to support it.
+> > >
+> > > Add a runtime check for the wakeup service to detect and correct this
+> > > kind of cases.
+> > >
+> > > [1]. https://lore.kernel.org/lkml/CAMj1kXEkzXsjm0dPhzxB+KdtzqADd4NmafKmw2rKw7mAPBrgdA@mail.gmail.com/
+> > >
+> > > Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+> > > ---
+> > >  drivers/rtc/rtc-efi.c | 4 +++-
+> > >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > >
+> >
+> > Thanks, I've queued this up now.
+> >
+> 
+> Actually, we might just remove the EFI get/set wakeup time
+> functionality altogether, as it seems rather pointless to me to begin
+> with.
+> 
+> I'll send out an RFC shortly.
 
-diff --git a/Documentation/ABI/testing/sysfs-firmware-efi b/Documentation/ABI/testing/sysfs-firmware-efi
-index 5e4d0b27cdfe..927e362d4974 100644
---- a/Documentation/ABI/testing/sysfs-firmware-efi
-+++ b/Documentation/ABI/testing/sysfs-firmware-efi
-@@ -36,3 +36,10 @@ Description:	Displays the content of the Runtime Configuration Interface
- 		Table version 2 on Dell EMC PowerEdge systems in binary format
- Users:		It is used by Dell EMC OpenManage Server Administrator tool to
- 		populate BIOS setup page.
-+
-+What:		/sys/firmware/efi/ovmf_debug_log
-+Date:		July 2025
-+Contact:	Gerd Hoffmann <kraxel@redhat.com>, linux-efi@vger.kernel.org
-+Description:	Displays the content of the OVMF debug log buffer.  The file is
-+		only present in case the firmware supports logging to a memory
-+		buffer.
+I guess this is going to also solve the issue reported by loongson
+https://lore.kernel.org/linux-rtc/20250613061747.4117470-1-wangming01@loongson.cn/
+
+However, please let me take care of patches in my subsystem...
+
+
 -- 
-2.50.1
-
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
