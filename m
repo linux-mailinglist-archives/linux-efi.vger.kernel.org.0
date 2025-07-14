@@ -1,132 +1,155 @@
-Return-Path: <linux-efi+bounces-4335-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4336-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CEA1B03D40
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 13:21:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5877B03FFB
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 15:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A9E18989D3
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 11:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22627189716A
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 13:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166B624503E;
-	Mon, 14 Jul 2025 11:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9675924EAAB;
+	Mon, 14 Jul 2025 13:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QfBzDSmt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eJ6meA0k"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A3F17C77;
-	Mon, 14 Jul 2025 11:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C381142065;
+	Mon, 14 Jul 2025 13:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752492093; cv=none; b=BZi8lfNrd8QaW6tQxOcjbZBslPp1OhVmRBIHhsX1yxtLyl0OBdhekucQ3WvoNgQiCkbc2ymq7oEGGYRtcESx0LWvuTkdrZlFfmNZ7nbBKiQetvxtRFXP3SwjifH+6kuL8Bbx+A69WhGjttJzeYsL4rIAmqhJwSli9cL59ZHS5Z8=
+	t=1752499703; cv=none; b=R4UcE9kMKJvnLQ4KXGFCnnys74GXgAJQZ3YRBnmD2abgC5+80aUN/tURDu1y2fmL+ADbitz+HmL74aDcbFkHg8UmeDO3ZnentqXwY9TjmbMURgcveXdjR3kv+s77uirS8vBuOZu6b7q+lkbqNSbh9TYy2zAD8brNjTT3BldF3h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752492093; c=relaxed/simple;
-	bh=TOW+gFPlve+Nr1eDLYifYIvuCr4WJ+KivxoNQXF1ybY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nb6opkOi0pbRqU47WvYjZZRSIs42ELKfHEMTmXkLEy7n03NMgg9BPpjrlyp4ALTckplql1E4X2Z993cs9AcBo1NQmEWGQxoJZ8QLupVHKBup+BIqzysFPcqjHCxTkgtqxElFYKAowlFl74AW/0bRxVjNhKjjoDpfAbdqwVxHDPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QfBzDSmt; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nAOSIUD6SRjN7WsA6hV7/sOUii32nWcRc+thJO3sYPU=; b=QfBzDSmtSSKgEDhJsRUiAc7HM6
-	jTBPLeZmo7ov+rC8/ptBWMOTHvn5ktkGmNwW6iDXbqaSGCymcRByOOAlJxBOCcq9Y8tKehUCn5TFF
-	MMnAufJdSgvhvp2apLi9XXeozlDK4m9obwLrlHuklH7j7BrvlDqEx8sUETJmfLnX9hN0lZw2OsklW
-	JkvQYGQfDoaNux70S5G+iS+SCMe8+5UjA3Mp7yKYZydnqEGGlxI5sdmCtm7rBN5Lmmb6Fm6ryX+YO
-	rr/Od4f3j42In1nXlTMEZ8jB6A2fBZ1VsCUBPH56yM59QCiKk524Wv47AW8N1vYbimsgBANhT32Ei
-	mfSrIx9Q==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ubHFL-00000009kzW-0g3P;
-	Mon, 14 Jul 2025 11:21:23 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 3D121300186; Mon, 14 Jul 2025 13:21:22 +0200 (CEST)
-Date: Mon, 14 Jul 2025 13:21:22 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: x86@kernel.org
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
-	seanjc@google.com, pbonzini@redhat.com, ardb@kernel.org,
-	kees@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	gregkh@linuxfoundation.org, jpoimboe@kernel.org,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-efi@vger.kernel.org,
-	samitolvanen@google.com, ojeda@kernel.org
-Subject: Re: [PATCH v3 16/16] objtool: Validate kCFI calls
-Message-ID: <20250714112122.GL1613633@noisy.programming.kicks-ass.net>
-References: <20250714102011.758008629@infradead.org>
- <20250714103441.496787279@infradead.org>
- <20250714104919.GR905792@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1752499703; c=relaxed/simple;
+	bh=hTGIreXw8EF1eVT7un+ZiXPn8NihCxvEx0CPsOQIAf0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PMd6k38llDAYBjYyRKcw1vOxyY3dLzRcRewv+vCHn9WQIrtMGfqIbu1rGVH1TX9dEW0ln3P8dyjWjJGp8aGTuDJ35j8dfXiW+lvDjzg6/XslJaX+ucuM6H4xhWFzkOIM0Fro1gQkTtip0r51SCIkKAaB/mwDHhFQIu7vLADt97E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eJ6meA0k; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752499700; x=1784035700;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hTGIreXw8EF1eVT7un+ZiXPn8NihCxvEx0CPsOQIAf0=;
+  b=eJ6meA0kjhL4d/6Fo8e/2SxfdZovRqX3jxucX4oSZiA/BMfs3IlNngXR
+   DMIC8Hbd8Y9XtsukQopSTrPT30qBoTTbl/JPcPSwjx1c7vZhy9JpH+Rg6
+   8SVtXWOqj7DHy+YLe8Vf2URUlQWffvvO0bvO7Od4pi/R5kDvjsH70wpiF
+   dmfMCGmSVcgqTJKlhA0gtdMWA9G6rLTX/YJqBHxEmXfFV/0AjK8cL8Zik
+   Vo7qoEjfUyvaBUOOZtSZFoTxjkSVXlT6CzAEN+qu4qAU5qF/ABaBYI4/J
+   J2a1pLVpwUVkLtGlVLHCsE953c4e9o+XBEI1E2zADvMuXNrtN1fk9eV1t
+   A==;
+X-CSE-ConnectionGUID: QjK5aEWTSs+uG5Np6KFQ2g==
+X-CSE-MsgGUID: AinhMhl9TYOnUU2qxDSmtQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58458067"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; 
+   d="scan'208";a="58458067"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 06:28:17 -0700
+X-CSE-ConnectionGUID: oIep/sphQa6tcp3Etdu9AQ==
+X-CSE-MsgGUID: OU+RdU2qQk6H5dvDPMeRUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; 
+   d="scan'208";a="156350428"
+Received: from linux.intel.com ([10.54.29.200])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 06:28:15 -0700
+Received: from [10.124.223.75] (unknown [10.124.223.75])
+	by linux.intel.com (Postfix) with ESMTP id 5ADC120B571C;
+	Mon, 14 Jul 2025 06:28:14 -0700 (PDT)
+Message-ID: <89b6b1ba-4f55-4e54-a49d-7dcaddfd503f@linux.intel.com>
+Date: Mon, 14 Jul 2025 06:28:14 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250714104919.GR905792@noisy.programming.kicks-ass.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V6] efi/tpm: Fix the issue where the CC platforms event
+ log header can't be correctly identified
+To: yangge1116@126.com, ardb@kernel.org
+Cc: jarkko@kernel.org, James.Bottomley@HansenPartnership.com,
+ ilias.apalodimas@linaro.org, jgg@ziepe.ca, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, liuzixing@hygon.cn
+References: <1752290685-22164-1-git-send-email-yangge1116@126.com>
+Content-Language: en-US
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <1752290685-22164-1-git-send-email-yangge1116@126.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 14, 2025 at 12:49:19PM +0200, Peter Zijlstra wrote:
-> On Mon, Jul 14, 2025 at 12:20:27PM +0200, Peter Zijlstra wrote:
-> 
-> > --- a/arch/x86/platform/efi/efi_stub_64.S
-> > +++ b/arch/x86/platform/efi/efi_stub_64.S
-> > @@ -11,6 +11,10 @@
-> >  #include <asm/nospec-branch.h>
-> >  
-> >  SYM_FUNC_START(__efi_call)
-> > +	/*
-> > +	 * The EFI code doesn't have any CFI, annotate away the CFI violation.
-> > +	 */
-> > +	ANNOTATE_NOCFI_SYM
-> >  	pushq %rbp
-> >  	movq %rsp, %rbp
-> >  	and $~0xf, %rsp
-> 
-> FWIW, we should probably do something like this as well.
-> 
+
+On 7/11/25 8:24 PM, yangge1116@126.com wrote:
+> From: Ge Yang <yangge1116@126.com>
+>
+> Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
+> for CC platforms") reuses TPM2 support code for the CC platforms, when
+> launching a TDX virtual machine with coco measurement enabled, the
+> following error log is generated:
+>
+> [Firmware Bug]: Failed to parse event in TPM Final Events Log
+>
+> Call Trace:
+> efi_config_parse_tables()
+>    efi_tpm_eventlog_init()
+>      tpm2_calc_event_log_size()
+>        __calc_tpm2_event_size()
+>
+> The pcr_idx value in the Intel TDX log header is 1, causing the function
+> __calc_tpm2_event_size() to fail to recognize the log header, ultimately
+> leading to the "Failed to parse event in TPM Final Events Log" error.
+>
+> Intel misread the spec and wrongly sets pcrIndex to 1 in the header and
+> since they did this, we fear others might, so we're relaxing the header
+> check. There's no danger of this causing problems because we check for
+> the TCG_SPECID_SIG signature as the next thing.
+>
+> Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
+> Signed-off-by: Ge Yang <yangge1116@126.com>
+> Cc: stable@vger.kernel.org
 > ---
-> 
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -562,6 +562,13 @@ __noendbr u64 ibt_save(bool disable)
->  {
->  	u64 msr = 0;
->  
-> +	/*
-> +	 * Firmware code will not provide the same level of
-> +	 * control-flow-integriry. Taint the kernel to let the user know.
-> +	 */
-> +	if (disable || (IS_ENABLED(CONFIG_CFI_CLANG) && cfi_mode != CFI_OFF))
-> +		add_taint(TAINT_CFI, LOCKDEP_STILL_OK);
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>
+> V6:
+> - improve commit message suggested by James
+>
+> V5:
+> - remove the pcr_index check without adding any replacement checks suggested by James and Sathyanarayanan
+>
+> V4:
+> - remove cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT) suggested by Ard
+>
+> V3:
+> - fix build error
+>
+> V2:
+> - limit the fix for CC only suggested by Jarkko and Sathyanarayanan
+>
+>   include/linux/tpm_eventlog.h | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
+> index 891368e..05c0ae5 100644
+> --- a/include/linux/tpm_eventlog.h
+> +++ b/include/linux/tpm_eventlog.h
+> @@ -202,8 +202,7 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
+>   	event_type = event->event_type;
+>   
+>   	/* Verify that it's the log header */
+> -	if (event_header->pcr_idx != 0 ||
+> -	    event_header->event_type != NO_ACTION ||
+> +	if (event_header->event_type != NO_ACTION ||
+>   	    memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
+>   		size = 0;
+>   		goto out;
 
-Or perhaps:
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
-	WARN_TAINT_ONCE(disable || IS_ENABLED(CONFIG_CFI_CLANG) && cfi_mode != CFI_OFF),
-			TAINT_CFI, "Firmware has weaker CFI");
-
-> +
->  	if (cpu_feature_enabled(X86_FEATURE_IBT)) {
->  		rdmsrq(MSR_IA32_S_CET, msr);
->  		if (disable)
-> --- a/include/linux/panic.h
-> +++ b/include/linux/panic.h
-> @@ -73,7 +73,8 @@ static inline void set_arch_panic_timeou
->  #define TAINT_RANDSTRUCT		17
->  #define TAINT_TEST			18
->  #define TAINT_FWCTL			19
-> -#define TAINT_FLAGS_COUNT		20
-> +#define TAINT_CFI			20
-> +#define TAINT_FLAGS_COUNT		21
->  #define TAINT_FLAGS_MAX			((1UL << TAINT_FLAGS_COUNT) - 1)
->  
->  struct taint_flag {
 
