@@ -1,146 +1,144 @@
-Return-Path: <linux-efi+bounces-4304-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4305-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD789B035AF
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 07:26:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2FBB0368F
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 08:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 214873A6FBB
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 05:26:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31FB33B4BAE
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 06:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D661FE444;
-	Mon, 14 Jul 2025 05:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84225217F35;
+	Mon, 14 Jul 2025 06:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JyTYApNw"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eNtZT1UZ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76BC1DF963;
-	Mon, 14 Jul 2025 05:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5D721882B
+	for <linux-efi@vger.kernel.org>; Mon, 14 Jul 2025 06:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752470797; cv=none; b=jvFlLVOnpD9JzjWRvemm3ZBVACEvIwRnqm54LOoDAAIRDovdkMIRvsWwaAZQHqjryjcmtqtpjRFsrbmouz4nmXdS9URpOnTy0Op0x+ohdqnh1xhfdVie6Br4d66fy3Q5fz/xrZR9zyEQKnfZEIkAvsjcM73JVyAvaOrSxOuZK5E=
+	t=1752473458; cv=none; b=C6VkTBotmBvx/gqt2FX4xBvJJdqoFSVExALJ9V7wnhhSKvEB9jdTNQzFHLgswS47VuA/Yj5+tKL2TT1Y1J3QPpBvyvV3IG5N7WC1WeeCj3XpdbKO8O9Xt6CcwUY+lf4R8wtm/cPAdpEgZjZhJqp21BNd9u67wDEffCpcXYuYbbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752470797; c=relaxed/simple;
-	bh=+YD2xPUzuD70jmjIVVAHxEBS+CGZKObCvB8tH4bcPPc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H43/F1c0DP+P81ysd0zfYDV9IMXqzJGoclQwBgmacS5/JL4UAzecoNozpqmKBu/8YFEj5brAbjOwMGf+LeVwWWlFIfrrJwwXqRAqSKJcRXBQj3esgU5sNjidQ7LpbYtE1IxxYPHNIHTYJ8bvKOM2dw8rvB7vcaeyGiG6v+mNecQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JyTYApNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1CAC4CEF6;
-	Mon, 14 Jul 2025 05:26:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752470797;
-	bh=+YD2xPUzuD70jmjIVVAHxEBS+CGZKObCvB8tH4bcPPc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JyTYApNw4vW0uT/9iTe09qMoF4mjZ0A/ksxlVlh3PymGPyfowmYE0IXFPUJXNDWdd
-	 rB+goce/o4UU/KiRBGXSCi3jn+WWqE84IGFKjkqFYXQu5m89xPRq+icOX3y6sZem52
-	 395EXKFoqUUhUyYTWJ5ifxruAvaXaaQ6hkO58wjqqiGg+6hfV0lpPASGi4F1rT7HWL
-	 NsdbBeSw1he8FkvJ8OzzYSHrr/sBbjlbB0HwSRVaEIPh8S3PgjEbBAFXTgTzhVn8mR
-	 JISXihKiYRqAhMoVNhxiQ35b8TeAZyAk0BFMLmM5IXuX7Ozqe9Et2lbwP+SXQEriie
-	 0I66W58wNv2WQ==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-553dceb342fso3493668e87.0;
-        Sun, 13 Jul 2025 22:26:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUmM1nbUHFZwTijvcP4DMbvsf+fLwBFk1RcI4y5CtDh1OPmBUbGghNfJaw0TvCw0gKM6WyyDxds/9E=@vger.kernel.org, AJvYcCW7IlzJq4wCwiVaey6+zadIbqD7mq6YlocKCtvWWxOeJhNCBz1MagJct7Kr31guAWxDxRBtJ/m6S1WrnhxP@vger.kernel.org, AJvYcCXrRyHDiWLZBj4RUhlZKI1lAbPrezTpC6HiTN5ACwqfysKqjNdMV1e8Ii/o5sHmW6n6faTSadeV@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvIzsIzJEfkV1BPv3jGLWMtWowTQGu219C3n+0iIfhoY4Gp2mm
-	3FVU/PMw1nDEcTt0PN0iwSvDb5qssDcybM/MXsKyY0MoOyoLVGv3oe4GblSCds1cF+AXTMUPjaI
-	oEgeSsylC73hEf3MkalSyAQUisdEd+3c=
-X-Google-Smtp-Source: AGHT+IFWJcY5F4n7NTOkaJxHA3LUZv9nxFS6nHZJN3f0q7VyVFRR8RV1ztE5fC1mOEiedbqtI95Nj+UC2n4FSz5rbc4=
-X-Received: by 2002:a05:6512:3b10:b0:553:5148:5b69 with SMTP id
- 2adb3069b0e04-55a04608eadmr3201545e87.36.1752470796044; Sun, 13 Jul 2025
- 22:26:36 -0700 (PDT)
+	s=arc-20240116; t=1752473458; c=relaxed/simple;
+	bh=r3qINUs4GQGQK0KeSYb9XwtihHPTH4GAfxB3icQZeXg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=e06h/CbCERxDHz7LjWMYzTnIdpkkEgSux1l8CKNfwXveiMcxb09rBN9NHuby5G/YCgzDSl266f1PrGaxaORkekQDY7ZsC19maRqys8OzdQnz0vqdkHc1Nis+1I7HKy3s7Qiu0ZyHHMXhH1XeRofU48zozbL9GrkFEbjeZ9jcT5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eNtZT1UZ; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-60995aa5417so3138272a12.1
+        for <linux-efi@vger.kernel.org>; Sun, 13 Jul 2025 23:10:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752473455; x=1753078255; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=G9Tn70FKTpBDzek73ufnJv469R3NOa6ous5bCCu5m1U=;
+        b=eNtZT1UZ0eiZxwKJ8uZzWGaSrR0nesz10REqhmGhVD5wNc+S8L1ekleKDIjcrnQBHA
+         EY30DbjQVoxVN/CjBXSTksDPZTR6ii1UU1IuvTARMPhjOBGH+VhABB1jN7aDGpDE9X+c
+         L8oz8yY7hmo0fZDNTcgJm5IhDEzR89BlNGzSJp9gau3MxWhQsMcTbAqTacHmwEyzN1X1
+         2FhXL02y+9thkEAxMi5egp29Vpvdp83R1A5DNsX+8/MgwoNVBtR2GH+Yj53AyNMzw0Ur
+         tllDgmjl9EusdA9/Hgd1nINcruUR78y4O2LzV9d7cgmJC6nzjWYv1tNrgV6EYOf5+WXt
+         eUMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752473455; x=1753078255;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=G9Tn70FKTpBDzek73ufnJv469R3NOa6ous5bCCu5m1U=;
+        b=WuX6ZYGb1eQc9hkbrUT0jCgLbMe4XGnZki6LcwLrtlsS8A3bPJscN8o3tmqKbfGDd7
+         KLTvwAEL2TrcWebEY27U6zPd7QGJYhO5UmzqxwGga6/aYs72jJFnshD2vDF30mKKVgbI
+         QDQTgTqDza+PIx7DKlZoganFvcCqiHqCYF3MlH9uJ1vJwwtfKaac+Bv6TSNGXtDzl1Kv
+         /0Rixlk+kUGefKnOM3J0GoAohzNIhljP3IJ04dtiTqpuJepejv/yT9Tj8WUkMhuDqICj
+         k6ycV8rM0SKla/LEw5InRsGeWcopdPbhDuGvL8mICW8+2bdnQE+tUf50WSJV0Z3ewYbc
+         zaUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVG2hYgFUWzB0HubqyIwyuK1ztvwmkzzOaN8CuDGR+HOFyv7rXV5wCVyyUja2lCXUtjX+j2YDCG3Jc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLdMIRjByDCAQoxDLCrrL/BalzILWUf38epeQ8ywUaxwlSlFNo
+	iuAWrVKhmed4KBIo0ypPTr5ek8c0IKxkRwqybvg17FhDh67rYi+peHrjE3tWOzfprLBNpBrR7g=
+	=
+X-Google-Smtp-Source: AGHT+IHnMYU1tdLUgCWCMkDHtV2ofJo8Kj1jhtO5SeCzNxOoPrZb9dQJqddWyqsdiNjGgTivJJ6PBrvn
+X-Received: from edbec48.prod.google.com ([2002:a05:6402:d70:b0:612:b2a:492f])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:2551:b0:60c:6c85:48dd
+ with SMTP id 4fb4d7f45d1cf-611e84d5ce0mr9692143a12.23.1752473454949; Sun, 13
+ Jul 2025 23:10:54 -0700 (PDT)
+Date: Mon, 14 Jul 2025 08:08:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <1752290685-22164-1-git-send-email-yangge1116@126.com>
-In-Reply-To: <1752290685-22164-1-git-send-email-yangge1116@126.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 14 Jul 2025 15:26:24 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXFxFoB3942U1SQBhGwMMh8GMy558CY3UspncK1DsEtWPg@mail.gmail.com>
-X-Gm-Features: Ac12FXwXeCsLDvmmkZYe3eRWj_LtxomV3Gh2WhrcAFXoWNEv9gmvrc0aRCDisy0
-Message-ID: <CAMj1kXFxFoB3942U1SQBhGwMMh8GMy558CY3UspncK1DsEtWPg@mail.gmail.com>
-Subject: Re: [PATCH V6] efi/tpm: Fix the issue where the CC platforms event
- log header can't be correctly identified
-To: yangge1116@126.com
-Cc: jarkko@kernel.org, James.Bottomley@hansenpartnership.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, ilias.apalodimas@linaro.org, 
-	jgg@ziepe.ca, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, liuzixing@hygon.cn
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2042; i=ardb@kernel.org;
+ h=from:subject; bh=lBZw99MDLRGQYnmUAEaW8S2w5GuCP7F3IekTWgHFi6g=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIaNk3vvT+9Y9uuM3TXFJnJtsxIyzqcz/eR/PsPqzeEKNP
+ R/foYsSHaUsDGJcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiJ5gZGS5KK9wuT5s0Q+Ja
+ CftM/4wbF554nvlzf3ftBpG1fNZ/k0QY/nDa+K/0XKev99bz53mu6oadcpenx9Ud4TpWE21YcXy aJQ8A
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Message-ID: <20250714060843.4029171-5-ardb+git@google.com>
+Subject: [RFC PATCH 0/3] Remove unused EFI runtime APIs
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>, 
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Sunil V L <sunilvl@ventanamicro.com>, 
+	Bibo Mao <maobibo@loongson.cn>, linux-rtc@vger.kernel.org, linux-efi@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, x86@kernel.org, 
+	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 12 Jul 2025 at 13:41, <yangge1116@126.com> wrote:
->
-> From: Ge Yang <yangge1116@126.com>
->
-> Since commit d228814b1913 ("efi/libstub: Add get_event_log() support
-> for CC platforms") reuses TPM2 support code for the CC platforms, when
-> launching a TDX virtual machine with coco measurement enabled, the
-> following error log is generated:
->
-> [Firmware Bug]: Failed to parse event in TPM Final Events Log
->
-> Call Trace:
-> efi_config_parse_tables()
->   efi_tpm_eventlog_init()
->     tpm2_calc_event_log_size()
->       __calc_tpm2_event_size()
->
-> The pcr_idx value in the Intel TDX log header is 1, causing the function
-> __calc_tpm2_event_size() to fail to recognize the log header, ultimately
-> leading to the "Failed to parse event in TPM Final Events Log" error.
->
-> Intel misread the spec and wrongly sets pcrIndex to 1 in the header and
-> since they did this, we fear others might, so we're relaxing the header
-> check. There's no danger of this causing problems because we check for
-> the TCG_SPECID_SIG signature as the next thing.
->
-> Fixes: d228814b1913 ("efi/libstub: Add get_event_log() support for CC platforms")
-> Signed-off-by: Ge Yang <yangge1116@126.com>
-> Cc: stable@vger.kernel.org
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Using EFI runtime services to program the RTC to wake up the system is
+supported in theory, but rarely works in practice. Fortunately, this
+functionality is rarely [if ever] used to begin with so we can just drop
+it. (Note that the EFI rtc driver is not used by x86, which programs the
+CMOS rtc directly)
 
+The same applies to GetNextHighMonoCount(), which, if implemented,
+usually relies on SetVariable() under the hood *, which is often not
+supported at runtime by non-x86 platforms. But it has no known users
+either so let's drop support for it as well.
 
-> ---
->
-> V6:
-> - improve commit message suggested by James
->
-> V5:
-> - remove the pcr_index check without adding any replacement checks suggested by James and Sathyanarayanan
->
-> V4:
-> - remove cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT) suggested by Ard
->
-> V3:
-> - fix build error
->
-> V2:
-> - limit the fix for CC only suggested by Jarkko and Sathyanarayanan
->
->  include/linux/tpm_eventlog.h | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/include/linux/tpm_eventlog.h b/include/linux/tpm_eventlog.h
-> index 891368e..05c0ae5 100644
-> --- a/include/linux/tpm_eventlog.h
-> +++ b/include/linux/tpm_eventlog.h
-> @@ -202,8 +202,7 @@ static __always_inline u32 __calc_tpm2_event_size(struct tcg_pcr_event2_head *ev
->         event_type = event->event_type;
->
->         /* Verify that it's the log header */
-> -       if (event_header->pcr_idx != 0 ||
-> -           event_header->event_type != NO_ACTION ||
-> +       if (event_header->event_type != NO_ACTION ||
->             memcmp(event_header->digest, zero_digest, sizeof(zero_digest))) {
->                 size = 0;
->                 goto out;
-> --
-> 2.7.4
->
+This means we need to drop the slightly pointless tests for it too.
+
+* EDK2 based EFI implementations usually have a MTC variable carrying
+  the monotonic counter variable, which is therefore not truly
+  monotonic, given that SetVariable() will happily overwrite it. 
+
+Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Feng Tang <feng.tang@linux.alibaba.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com> 
+Cc: Sunil V L <sunilvl@ventanamicro.com>
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: linux-rtc@vger.kernel.org
+Cc: linux-efi@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org
+Cc: x86@kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: loongarch@lists.linux.dev
+
+Ard Biesheuvel (3):
+  efi-rtc: Remove wakeup functionality
+  efi/test: Don't bother pseudo-testing unused EFI services
+  efi: Remove support for pointless, unused EFI services
+
+ arch/x86/platform/efi/efi_64.c          |  22 ----
+ drivers/firmware/efi/runtime-wrappers.c |  68 ------------
+ drivers/firmware/efi/test/efi_test.c    | 108 +-------------------
+ drivers/rtc/rtc-efi.c                   |  76 +-------------
+ drivers/xen/efi.c                       |  56 ----------
+ include/linux/efi.h                     |   6 --
+ 6 files changed, 4 insertions(+), 332 deletions(-)
+
+-- 
+2.50.0.727.gbf7dc18ff4-goog
+
 
