@@ -1,105 +1,154 @@
-Return-Path: <linux-efi+bounces-4302-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4303-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5552B03470
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 04:22:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA3FB0348C
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 04:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34BF53B9DF5
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 02:22:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 004837A2FA7
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Jul 2025 02:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAC51A5BA3;
-	Mon, 14 Jul 2025 02:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ad3CmMEJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1D51B041A;
+	Mon, 14 Jul 2025 02:38:18 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F739184;
-	Mon, 14 Jul 2025 02:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B14156C40;
+	Mon, 14 Jul 2025 02:38:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752459761; cv=none; b=KyCrIj4oLU4PfoP2bMRh1v5mlV95V9HcCmnLKwZ+QJQlm1dQ6czrf/1MAguG/KjTh4MdTx3dNdr9JmNEvWSi1w6j+An9mmbq4yNSf3XrfPHooQC28Yz7ov3O6fD1Gxn/XZjMWl911bpogax7o3/MheeW2Kgwzvwx47ktCuvROEg=
+	t=1752460698; cv=none; b=QFSPyPt5SILFpAHzdCkF94IJob2YbNeEZ3Wgt3WUK/gTzfOaVh6gQQeH0Kuife8/9+79hAYrHxcZ7xarQWO+e9bLVOmVlK2x+ecLQjDiK3j6f98vWtLC5Op0TQ7u9nnHCqwpqh/xPPtfu1yH3AIZYMrj/xsvyhq9Np2+BV0hO5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752459761; c=relaxed/simple;
-	bh=zix9ri6vfTswvmpA/jCkVghWpzfujrWr8l27YzRLFZA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sb8LRx6c1dnPhJaRaIWRAqP39kXJTc1Wyx/xmfA5MCL1kWF8VXFifqCbq+saMe+ReO9G1tGOdppF+j64RP1DjRQuP4kJ3C98cykPsXoaZjOYYpdn2BuGIRQ9vQKRSzpS26MxxiDjjD6m2jLy035k1/Y8LcOuIZLIZIrENolNGsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ad3CmMEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8780BC4CEF7;
-	Mon, 14 Jul 2025 02:22:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752459760;
-	bh=zix9ri6vfTswvmpA/jCkVghWpzfujrWr8l27YzRLFZA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ad3CmMEJUjZx6ln8A23SIatIJIl1k/kQBv2jle24TqsxgCeBdgRySqXj8Wh5v0nTJ
-	 LV5OCH4ZEVJwDTZbo9+zIWB/vZ91jZc7rlvZWAS/UMkRwKOw+WFvquVRZ1nU+wBqfw
-	 cYef3l4rPlQUbXWR7D85fLJKl81oRbpl/zExX3VI3wPXJJ29L1UxBFhY5muNwlNuBr
-	 tKQpQcKhp/I2KFKymubbSAr4RJ545hPeAxokSDhkF3NueRh6DL3cQHKEI3328R0bva
-	 YJ8s7Mtp552Zr9jDLaU+gKmhxjX0OaAPEtRUc6vde0aiHbYufjpSViBBldKrQxVSKW
-	 NsEe6LaD0npzQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32b561a861fso32970151fa.0;
-        Sun, 13 Jul 2025 19:22:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWbJ1nhJHfeQz0Lha1HeXgo0Ak4Rd8NrU1T+D9kZsvHncU8lKgo+jGiXryBEbj4FjoPLqk6Q76o8Q3Ie8rS@vger.kernel.org, AJvYcCXhTzYgYOnyxDe6g796IQhM3vFbCTEY55BP7jMh1KknQMg+slRnyQocZ+HyOasfpepSd54UbVcBXpw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwazjZHn61hpEAxNXkCh8iBwNc6D0eQmv42U627zBAZrW7Q9L8g
-	3D1MZ7tw4YBiHyoV+vaJQ9P4Sf3PPTiSoboB1WoTn/x/RdZd4joLq67XC8ITFpReuKHzOgqiFbv
-	CO5cCbDuLLtOXpWwWTgFUHJvBIxqRpAI=
-X-Google-Smtp-Source: AGHT+IEn91j/73d1i/bAP+/uNV+DKkD1Gnv2YyhYH9rtQ+TBzQd5HefPzO//qx9sbRsJzcxnV0AbP0KnOImK77KCkdg=
-X-Received: by 2002:a2e:b88e:0:b0:32b:2fba:8b90 with SMTP id
- 38308e7fff4ca-3306ce94ad2mr7854221fa.14.1752459758912; Sun, 13 Jul 2025
- 19:22:38 -0700 (PDT)
+	s=arc-20240116; t=1752460698; c=relaxed/simple;
+	bh=tBDQ6T9SB15vLOX23t6RWLMsn+1lBLsQh50/3NqT1rM=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=pojXMwpNcgxFRkfR70XD1bub19HPZFAXTSz68tV5dFt8McE7jVIqSYvE4J+PvT0V8Rndbe0riFAJkS0chMbN/4GwuEJGfLk8DkvQ6ASdzJ2hK67eRSVVvyoF3tzw/1dTof+hdoiRJBmcjTfJxtWKcgwDenDqB1qVho7OzSsJM8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8CxqmqKbXRo2usoAQ--.44718S3;
+	Mon, 14 Jul 2025 10:38:02 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJAxE+SDbXRoXzwWAA--.55950S3;
+	Mon, 14 Jul 2025 10:37:57 +0800 (CST)
+Subject: Re: [PATCH] rtc: efi: Add runtime check for the wakeup service
+ capability
+To: Ard Biesheuvel <ardb@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Feng Tang <feng.tang@linux.alibaba.com>, linux-rtc@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250710084151.55003-1-feng.tang@linux.alibaba.com>
+ <CAMj1kXHDFq3FZj4134CTcQZnke4t1=u6iRNNsQBvuhb3F6KurQ@mail.gmail.com>
+ <CAMj1kXGiixvwsSmOz65F=OXQuHovO4DMAsJaPZ2sL3PBbMHh8A@mail.gmail.com>
+ <20250711085608f4146d99@mail.local>
+ <CAMj1kXEL90VvygoSk8EtQJO0cjybwpt10uHM+ufJg84LvR+Ouw@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <af1c5ec4-9e4d-a2d9-e70b-1f182e6b5790@loongson.cn>
+Date: Mon, 14 Jul 2025 10:36:19 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250711054446.1537700-1-kraxel@redhat.com>
-In-Reply-To: <20250711054446.1537700-1-kraxel@redhat.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 14 Jul 2025 12:22:26 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXEsERVQgm2PF4npmeKg_tM2-ivFXwFObQzddxMaU5HMyg@mail.gmail.com>
-X-Gm-Features: Ac12FXyY6r9URRzQ90qQCOY-4pySoh-E8L_P9Pr_ZLgTl0X5ko6UYOxRdt7PlVg
-Message-ID: <CAMj1kXEsERVQgm2PF4npmeKg_tM2-ivFXwFObQzddxMaU5HMyg@mail.gmail.com>
-Subject: Re: [PATCH] efi: add API doc entry for ovmf_debug_log
-To: Gerd Hoffmann <kraxel@redhat.com>, Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>
-Cc: linux-efi@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAMj1kXEL90VvygoSk8EtQJO0cjybwpt10uHM+ufJg84LvR+Ouw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxE+SDbXRoXzwWAA--.55950S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxurWrJFyxJryxAry8ArWDAwc_yoW5XrWfpF
+	WUCFWqqr15KFy8Ars2qw1Y9r1aqry3tFy8Xw1DAa4UWrn0vr1jkr40kr4Y9a9FgryrC3WY
+	9Fy2qF9I93WDAagCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jepB-UUUUU=
 
-(cc Jon and linux-doc)
-
-On Fri, 11 Jul 2025 at 17:04, Gerd Hoffmann <kraxel@redhat.com> wrote:
->
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-
-Thanks. I'll queue this up in the EFI tree unless Jon prefers to take it.
 
 
-> ---
->  Documentation/ABI/testing/sysfs-firmware-efi | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/Documentation/ABI/testing/sysfs-firmware-efi b/Documentation/ABI/testing/sysfs-firmware-efi
-> index 5e4d0b27cdfe..927e362d4974 100644
-> --- a/Documentation/ABI/testing/sysfs-firmware-efi
-> +++ b/Documentation/ABI/testing/sysfs-firmware-efi
-> @@ -36,3 +36,10 @@ Description: Displays the content of the Runtime Configuration Interface
->                 Table version 2 on Dell EMC PowerEdge systems in binary format
->  Users:         It is used by Dell EMC OpenManage Server Administrator tool to
->                 populate BIOS setup page.
-> +
-> +What:          /sys/firmware/efi/ovmf_debug_log
-> +Date:          July 2025
-> +Contact:       Gerd Hoffmann <kraxel@redhat.com>, linux-efi@vger.kernel.org
-> +Description:   Displays the content of the OVMF debug log buffer.  The file is
-> +               only present in case the firmware supports logging to a memory
-> +               buffer.
-> --
-> 2.50.1
->
+On 2025/7/14 上午10:08, Ard Biesheuvel wrote:
+> On Fri, 11 Jul 2025 at 18:56, Alexandre Belloni
+> <alexandre.belloni@bootlin.com> wrote:
+>>
+>> On 11/07/2025 11:26:18+1000, Ard Biesheuvel wrote:
+>>> On Fri, 11 Jul 2025 at 11:06, Ard Biesheuvel <ardb@kernel.org> wrote:
+>>>>
+>>>> On Thu, 10 Jul 2025 at 18:41, Feng Tang <feng.tang@linux.alibaba.com> wrote:
+>>>>>
+>>>>> The kernel selftest of rtc reported a error on an ARM server which
+>>>>> use rtc-efi device:
+>>>>>
+>>>>>          RUN           rtc.alarm_alm_set ...
+>>>>>          rtctest.c:262:alarm_alm_set:Alarm time now set to 17:31:36.
+>>>>>          rtctest.c:267:alarm_alm_set:Expected -1 (-1) != rc (-1)
+>>>>>          alarm_alm_set: Test terminated by assertion
+>>>>>                   FAIL  rtc.alarm_alm_set
+>>>>>          not ok 5 rtc.alarm_alm_set
+>>>>>
+>>>>> The root cause is, the underlying EFI firmware doesn't support wakeup
+>>>>> service (get/set alarm), while it doesn't have the EFI RT_PROP table
+>>>>> either. As Ard Biesheuvel clarified [1], this breaks the UEFI spec,
+>>>>> which requires EFI firmware to provide a 'RT_PROP' table if it doesn't
+>>>>> support all runtime services (Section 4.6.2, UEFI spec 2.10).
+>>>>>
+>>>>> This issue was also reproduced on ARM server from another vendor, which
+>>>>> doesn't have RT_PROP table either. This means, in real world, there are
+>>>>> quite some platforms having this issue, that it doesn't support wakeup
+>>>>> service while not providing a correct RT_PROP table, which makes it
+>>>>> wrongly claimed to support it.
+>>>>>
+>>>>> Add a runtime check for the wakeup service to detect and correct this
+>>>>> kind of cases.
+>>>>>
+>>>>> [1]. https://lore.kernel.org/lkml/CAMj1kXEkzXsjm0dPhzxB+KdtzqADd4NmafKmw2rKw7mAPBrgdA@mail.gmail.com/
+>>>>>
+>>>>> Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+>>>>> ---
+>>>>>   drivers/rtc/rtc-efi.c | 4 +++-
+>>>>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>>>>
+>>>>
+>>>> Thanks, I've queued this up now.
+>>>>
+>>>
+>>> Actually, we might just remove the EFI get/set wakeup time
+>>> functionality altogether, as it seems rather pointless to me to begin
+>>> with.
+>>>
+>>> I'll send out an RFC shortly.
+>>
+>> I guess this is going to also solve the issue reported by loongson
+>> https://lore.kernel.org/linux-rtc/20250613061747.4117470-1-wangming01@loongson.cn/
+>>
+>> However, please let me take care of patches in my subsystem...
+>>
+> 
+> Apologies - I've dropped it now.
+> 
+> But please don't queue this, I'll send out my RFC shortly.
+> 
+This is similar problem on Loongarch VM when running ltp testcase rtc02, 
+I do not know whether the root cause is the same, the runtime service is 
+hard to debug.
+
+Hope for RFC version :)
+
+Regards
+Bibo Mao
+
 
