@@ -1,95 +1,131 @@
-Return-Path: <linux-efi+bounces-4339-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4340-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68AD7B04D1C
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Jul 2025 02:47:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC26B04D7D
+	for <lists+linux-efi@lfdr.de>; Tue, 15 Jul 2025 03:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD2174A2BD0
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Jul 2025 00:47:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D71384E0A46
+	for <lists+linux-efi@lfdr.de>; Tue, 15 Jul 2025 01:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE25D155CBD;
-	Tue, 15 Jul 2025 00:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAA7288C11;
+	Tue, 15 Jul 2025 01:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nobd/7Rv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gO+w+Xka"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48542E401;
-	Tue, 15 Jul 2025 00:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724C22882B7;
+	Tue, 15 Jul 2025 01:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752540417; cv=none; b=DPehmbhjd0+FoLNT+Cb0awPzdkD/bAmBWEb3e1z1ffvNUX3w+lC04s3ioHyVsdaAxk0D/jG+MQTuqoCmKP9/70ecIdws18ej1+imMV9iypTkpKlVcdRb3xkqF9bTzy/MC9b+ySDNyt2c+gBZvnt3nCfvecqwTO+S75u7TtSEhyg=
+	t=1752543353; cv=none; b=hCTZrqydSbDUtmx4/GhzVlMXmxcmNP4h3hS9t3ivHjEX2SM7wqbhwLYWgC97lG1j6MT/thsqMYgrmuPLlREksdCFecMVm9HPxjV4a0Hxivu6UAeR8OAmD3Yx64ZA8RyNPTp9iG49FeKUBB22nUL0YfTHTxMVKUgXFNp06+xwNLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752540417; c=relaxed/simple;
-	bh=QUWyRua1PVsgjZHyzHVszCN6h+pSG9rSXu9z+2oNTDM=;
+	s=arc-20240116; t=1752543353; c=relaxed/simple;
+	bh=6jmGd/PPfAlW3DmpDOjl7UBuTiSmfxF9WlN8BgGKdeI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uWajyGiHAwBNJXLspckB0XzOOZ/xeAQkl4MeK0sLXDhkFJJeIbg7PhJSDS5Cb9vida3IPvFRD5KdvNJmtm2vdLVxytNlmuvyrdnQTPXolhSL46e6VWiZJ2DXsx+NnG5mtwQDHEufJZ6zt9ukrxWvOwjODHnL1MKewl/iLPx10y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nobd/7Rv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E467C4AF09;
-	Tue, 15 Jul 2025 00:46:57 +0000 (UTC)
+	 To:Cc:Content-Type; b=lWkDbICFxxLvPKIZ/wNqjResyFGSSSaBzamdz4msQvIfuguENfEz5b/+dAPMod8GMykNo9oxzhbp/Tnn+LftHmFea5j42nVuA1NdJzTo46N4VA7ERzIW7It3a0EMh0Y7o3vhuA4ODiX+eUjDA991+DlHce4sEmdhnuFZIcr2TSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gO+w+Xka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BD7C4CEF4;
+	Tue, 15 Jul 2025 01:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752540417;
-	bh=QUWyRua1PVsgjZHyzHVszCN6h+pSG9rSXu9z+2oNTDM=;
+	s=k20201202; t=1752543352;
+	bh=6jmGd/PPfAlW3DmpDOjl7UBuTiSmfxF9WlN8BgGKdeI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nobd/7RvPlaubgwTLjxG9HViOA5c65b3VYG8GgvTKY6MZkg4VsOJea+uJZ/f6tkkb
-	 up6mTZXz/04SZpsFzSwhAg+L4QW0OzQfMcX5GJIPJS8LGC83ECscqfSgofd1OZ9REL
-	 Mg6cz6xXHzBAl//zfVD8dEteRG9YdtWMCX4nuVeOBKhrVhOqg+J2qoB7rsK6NAv0/7
-	 +NS6nW+8d4I55lyh4yFgDpCPxbdichtqkKk+MpaqT22N0FETlH6jC8391DnSoabRGT
-	 16NTp05ayoCqz9epx/zfmyNhrGg436yCwdp/VPpskT6ClhfEdyuewZmwFMO0+COsX7
-	 /9VIsgYVU/JoA==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32b7f41d3e6so60381971fa.1;
-        Mon, 14 Jul 2025 17:46:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUIy/+Q6HvvXMIx9NWuQrMQ1iJFHiTXp6i8fpu8Pfsmp8uLguK2m7in5kJzir/TWVmPnf54NLNfmNc+gddb@vger.kernel.org, AJvYcCWPUL8ca8i6c1ueIM3NUJGezjXQ6fJq0hO13YCZYS6HjdHZ3Hf8Dh4P6wbeiieaMTere9I8r4N5zek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygBzHRfAJWAiInyxtZtU+B4eptj8xGAIO3A6abgVnEYVspWZme
-	HDOnS4XvBek1+txAxy9Ii0RGUPzLP+HNX6TTN4Qw5B7iFr5uRfi9lWGs3RB34TojuEPEUIEkk2X
-	166S4d1E1k5oKmrFYdrjrkDZNVULFXlo=
-X-Google-Smtp-Source: AGHT+IEK8xvGJsiLgjph1djYADb6nimHmTBNnLJKglHEK/iwDCjgQNndxfE14N2T8V7Sllti6VjlMLrU2PBcyU3/K50=
-X-Received: by 2002:a05:651c:4002:b0:32b:3c11:518b with SMTP id
- 38308e7fff4ca-330811a2361mr2611401fa.9.1752540415579; Mon, 14 Jul 2025
- 17:46:55 -0700 (PDT)
+	b=gO+w+Xka6sMjBdNot6x4UY34v7azU7KTZTOJqeKk+cP/Fh1KKEm3PRPL7n54/P/Is
+	 RZbdCT1dfS711gYwTMC/fi+YS1n+HEWs/iHBfxQ5bi/8IqOhK3CfxPi9fwKOMeAN0M
+	 d8NoDWbLe0K22y2WH5wiYazJLE8usF2G6ooKmtm47QBdO08/ml8YLDx4gFwqc2aSxn
+	 RO+7YkKZWMjAfx1411OUsb8ksUeIAezmlcSh9t4uXZ7UhW0vGsTtlCtrBcpKo6dJar
+	 KfrcLfTTPVVtQu+wDL7mEhy/+e68YcG97mWozxRWQ+0Jsctsh0480taiS+72wr23Gm
+	 lkZvNlDlRxqHg==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5561c20e2d5so6080345e87.0;
+        Mon, 14 Jul 2025 18:35:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWHbCWSLIMkV9mOkL6ydKbb9fl6qPatthXmw6Wg4lct2hfOzkEye3RfhfcrTNeEtNp06dd4o7jHsYaIUvc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8kwr0l+2LiV5gwWpJUrG8tOoBB1z/v1TsG4gJFKqVNYs6TleJ
+	ijf4+SjpQFVM1Eemnpt/fngewFvZTBPGcje2kQ+iSjQdGWf91EyvqJepE9a3Ahqdw5o3/omMuzG
+	6t0CLpsTLbrj8Sogacx21TlIoIfiuEdE=
+X-Google-Smtp-Source: AGHT+IFdqkhtmnZjBWYaeN4z4pCq9RwhZ/HVK2IuCMVtsMechDB2xiILXmuaivF6/LuTlmv3Jp8ihhUt2g7n3BrjO/E=
+X-Received: by 2002:a05:6512:3406:b0:553:2e37:6945 with SMTP id
+ 2adb3069b0e04-55a0463b94dmr4158497e87.32.1752543351242; Mon, 14 Jul 2025
+ 18:35:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250514174339.1834871-9-ardb+git@google.com> <20250514174339.1834871-16-ardb+git@google.com>
- <20250711134833.GI905792@noisy.programming.kicks-ass.net> <CAMj1kXGEHWMhMgY8ZMiRxKPTeD+oZBReozKwA4udJsrp-j_P_A@mail.gmail.com>
- <20250714105520.GS905792@noisy.programming.kicks-ass.net>
-In-Reply-To: <20250714105520.GS905792@noisy.programming.kicks-ass.net>
+References: <20250708-efi-default-loglevel-v1-1-12b80db5af16@gmail.com> <CALHNRZ9T0dHzbXBUdBa4hE-Ao8ebeLLPRX+1ThkuLT+Rp8_Jeg@mail.gmail.com>
+In-Reply-To: <CALHNRZ9T0dHzbXBUdBa4hE-Ao8ebeLLPRX+1ThkuLT+Rp8_Jeg@mail.gmail.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 15 Jul 2025 10:46:43 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXEw=RSnf_Af=+AKWmuxJ+0dL_4CFSX7TyKo+SSKpxc6Bw@mail.gmail.com>
-X-Gm-Features: Ac12FXwhxWd487QWnvJuNFtNxvH8YdIgyz_tVB6S9DDi7Xvs3l2_QCE4SmvUJoY
-Message-ID: <CAMj1kXEw=RSnf_Af=+AKWmuxJ+0dL_4CFSX7TyKo+SSKpxc6Bw@mail.gmail.com>
-Subject: Re: [RFC PATCH 7/7] arm64/efi: Call EFI runtime services without
- disabling preemption
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Tue, 15 Jul 2025 11:35:38 +1000
+X-Gmail-Original-Message-ID: <CAMj1kXEwyaHUkO5aO-sL3YAN=qRoSTuotHMRpBDLX9BhERnN=g@mail.gmail.com>
+X-Gm-Features: Ac12FXyFKkyZGDDl6j9P4r-6ZGO6bwa2mt8ieySjXxtWL5aGhhywShZF1W5IUlk
+Message-ID: <CAMj1kXEwyaHUkO5aO-sL3YAN=qRoSTuotHMRpBDLX9BhERnN=g@mail.gmail.com>
+Subject: Re: [PATCH] efistub: Lower default log level
+To: Aaron Kling <webgeek1234@gmail.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 14 Jul 2025 at 20:55, Peter Zijlstra <peterz@infradead.org> wrote:
+On Tue, 8 Jul 2025 at 17:31, Aaron Kling <webgeek1234@gmail.com> wrote:
 >
-> On Mon, Jul 14, 2025 at 12:20:30PM +1000, Ard Biesheuvel wrote:
-> > On Fri, 11 Jul 2025 at 23:48, Peter Zijlstra <peterz@infradead.org> wrote:
-...
-> > > Is the migrate_disable() strictly required, or just paranoia?
-> > >
+> On Tue, Jul 8, 2025 at 2:30=E2=80=AFAM Aaron Kling via B4 Relay
+> <devnull+webgeek1234.gmail.com@kernel.org> wrote:
 > >
-> > Runtime services might be polling the secure firmware for an async
-> > completion when they are interrupted, and so I don't think it is
-> > generally safe to assume that an interrupted EFI runtime service can
-> > be resumed on another CPU.
+> > From: Aaron Kling <webgeek1234@gmail.com>
+> >
+> > Some uefi implementations will write the efistub logs to the display
+> > over a splash image. This is not desirable for debug and info logs, so
+> > lower the default efi log level to exclude them.
+> >
+> > Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> > Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+> > ---
+> >  drivers/firmware/efi/libstub/printk.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/firmware/efi/libstub/printk.c b/drivers/firmware/e=
+fi/libstub/printk.c
+> > index 3a67a2cea7bdf1aa215d48dbf9ece4ceec6e4c28..bc599212c05dd746a9c54ab=
+bbe61a4bf70f1a8c4 100644
+> > --- a/drivers/firmware/efi/libstub/printk.c
+> > +++ b/drivers/firmware/efi/libstub/printk.c
+> > @@ -5,13 +5,13 @@
+> >  #include <linux/ctype.h>
+> >  #include <linux/efi.h>
+> >  #include <linux/kernel.h>
+> > -#include <linux/printk.h> /* For CONSOLE_LOGLEVEL_* */
+> > +#include <linux/kern_levels.h>
+> >  #include <asm/efi.h>
+> >  #include <asm/setup.h>
+> >
+> >  #include "efistub.h"
+> >
+> > -int efi_loglevel =3D CONSOLE_LOGLEVEL_DEFAULT;
+> > +int efi_loglevel =3D LOGLEVEL_NOTICE;
+> >
+> >  /**
+> >   * efi_char16_puts() - Write a UCS-2 encoded string to the console
+> >
+> > ---
+> > base-commit: d7b8f8e20813f0179d8ef519541a3527e7661d3a
+> > change-id: 20250708-efi-default-loglevel-4da5a36cac87
+> >
+> > Best regards,
+> > --
+> > Aaron Kling <webgeek1234@gmail.com>
 >
-> Can we please get a comment with that migrate_disable() explaining this?
+> This patch was originally suggested a few months ago [0], but as far
+> as I can tell was never queued for merge. Since I'm also hitting a
+> case where this is relevant, I'm sending this in to bring attention
+> back to it.
 >
 
-Sure
+I've queued this up now - thanks.
+
+> [0] https://lore.kernel.org/all/CAMj1kXFKSrVx4SO_T8sHU=3D4hie8pjk8CUWQDV8=
+oh+bz=3DxMn4rw@mail.gmail.com/
 
