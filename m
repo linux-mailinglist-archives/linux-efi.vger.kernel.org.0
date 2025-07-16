@@ -1,62 +1,60 @@
-Return-Path: <linux-efi+bounces-4393-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4394-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F2CB07F22
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 22:49:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 861F2B07F42
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 23:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 126817B66C6
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 20:47:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D803B175A41
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 21:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0AB1F7580;
-	Wed, 16 Jul 2025 20:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B179A27A123;
+	Wed, 16 Jul 2025 21:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFjyzLWE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwbbm/Sa"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69621DB95E;
-	Wed, 16 Jul 2025 20:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6E918C008;
+	Wed, 16 Jul 2025 21:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752698934; cv=none; b=rZ6ehpuSsxmLtJCt8+Hc5FenH66q1XGscC5+v++RC4xfuwJ0VvzOl3n03r2OsGfNm42chcoXRBdHitQgOSFeMuBlKtHR9yJPhZpjYpCp4//ep/w3YbJjHhCsafo5EM9nnDFNRwoYh4Z68UwzRBOz2Ni86yW1WN94Q94HehJYZTw=
+	t=1752699842; cv=none; b=Ex6zY27c4hVMzw2dOmlg1DI+c5V/91A/uyuTaIKMnCUgSa14WURqVBlY2swTGIuLNAUjUpVS7qXXm0Lab2+d+0ygtPuXuhb2h7KqYdSrFKplvojZQlJN3+Jyfjo0NL/00G1VOg3l5xA9wXs8YppsmX1/MOq0942b+P8pZhnH990=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752698934; c=relaxed/simple;
-	bh=Z3CkHZCoZKf5lAaRl/IZ0Dqzf6S69eGU3vBiicfzetA=;
+	s=arc-20240116; t=1752699842; c=relaxed/simple;
+	bh=LULn+aJ4tvMj1FIRYSApYIQDI5tI4xKUAYzS622ljVQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IUAMHq9jtfjzviCkn8vsVkXNSYNWgylnHwBkS3kiVbUkJEnpakXJeUAh01G9RUNOFOnIDsCa6MiCv5y7eKJe0nWSW3oWyIQzLHeUNOdQW9fzyc80lWmrV0jcVnVtf3vtfDQ1u+5cztzIRsnApEHCPqXFX817uTMXRyyMW0V0SpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFjyzLWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9DFC4CEF1;
-	Wed, 16 Jul 2025 20:48:51 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=EEC7a5ORA1gHZtzlMDzk/fTMblX58kumEGOTu+LXL3Gy1iAZ+RO4XAzyxQ5f+uFhO4WLXTPlXNkV+N91oeR/6L2+tsVk4+ixlc8zPKN/VTeq/580hDI8kICBeoGoZr3XiExSGCglJJ8aR1WIkvpe0BkMsKdJirbGxuAHt4FIiZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fwbbm/Sa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F64DC4CEE7;
+	Wed, 16 Jul 2025 21:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752698932;
-	bh=Z3CkHZCoZKf5lAaRl/IZ0Dqzf6S69eGU3vBiicfzetA=;
+	s=k20201202; t=1752699842;
+	bh=LULn+aJ4tvMj1FIRYSApYIQDI5tI4xKUAYzS622ljVQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dFjyzLWEWM8tLNJ2OvtqlOz8IXuNgNfl7vnOD2ypt/WOkNbAXvz+v/UZ0rN7QtGE+
-	 R5sNO1/yvWhxZyuhQWdCBM/Z/863oegfx6P7AdeI1LXs5Q5X7u6tW/oNb9Sa+mhpWg
-	 8fTERzEHmJvbzq+TQTqAZTcK8lYvu1oZZashkjqGr8lKn/jv4VTgpgXZF6G3LF5Vat
-	 wG58ZZKZ/OvQMYoUdaVky+9711oSWabsls/17faxkM+5psMmmfHoFzSdmM4nA5Vah/
-	 K8P+i+YLKPJ22sP5LPKbgP7D/zW92zlGS+kWXHLS7uMJ2s9/z0fun39l6eb8SvfVqh
-	 snuEv2mevMA1Q==
-Date: Wed, 16 Jul 2025 13:48:49 -0700
+	b=fwbbm/SaHFhjqO7vzBSTvDd1n5eSQIEalWBUD3QVSrsMe5U3yEbJwPfbOrzBiujo3
+	 yn8j8CoqvZTV0vYw9DPth+6Uvjfizkyer+6ANRDSm4QEcHIgRpHOG1SmeVSq/rh9sf
+	 rbHXlAB53zixOTvh22F96gjqukRIJwaR1LDGS7uAW+i9zE6DUZ9KYv/EB5ziOkjkgH
+	 JSVP2b3a35qZlaj9Zf4fuxzJttpXB3Bh9FVGnTJPdvYzkSGupjkicx71++mF8uI492
+	 uzNfiFkptKMuVsZoGuiaGet5ryYckiOyyN5dZ34+lTOp3M3BLQLg4fuKYobfCkQ8gl
+	 keMi0++urxh5w==
+Date: Wed, 16 Jul 2025 14:03:58 -0700
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org, 
-	Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>, 
-	Kevin Loughlin <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>
-Subject: Re: [PATCH v5 15/22] objtool: Add action to check for absence of
- absolute relocations
-Message-ID: <dvi4y6u7m2bo6jtesrerxu4sn5nbaw7xjkbnshjgvotvhsp6wa@i3hgg3nu46kj>
-References: <20250716031814.2096113-24-ardb+git@google.com>
- <20250716031814.2096113-39-ardb+git@google.com>
- <20250716095446.GV905792@noisy.programming.kicks-ass.net>
- <CAMj1kXHNvPdgG+OKX6UB70oTzzbvovfvDhSH73vAj-q7G03c5Q@mail.gmail.com>
- <20250716113243.GU1613200@noisy.programming.kicks-ass.net>
+Cc: x86@kernel.org, kys@microsoft.com, haiyangz@microsoft.com, 
+	wei.liu@kernel.org, decui@microsoft.com, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, seanjc@google.com, 
+	pbonzini@redhat.com, ardb@kernel.org, kees@kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	gregkh@linuxfoundation.org, linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-efi@vger.kernel.org, samitolvanen@google.com, 
+	ojeda@kernel.org
+Subject: Re: [PATCH v3 16/16] objtool: Validate kCFI calls
+Message-ID: <llyr3xzwbywv45ckdpzdco6g5ek3yu2lqqkxupgxaflrhsm42w@7of74nnyjhqt>
+References: <20250714102011.758008629@infradead.org>
+ <20250714103441.496787279@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -65,39 +63,26 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250716113243.GU1613200@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250714103441.496787279@infradead.org>
 
-On Wed, Jul 16, 2025 at 01:32:43PM +0200, Peter Zijlstra wrote:
-> On Wed, Jul 16, 2025 at 08:26:55PM +1000, Ard Biesheuvel wrote:
+On Mon, Jul 14, 2025 at 12:20:27PM +0200, Peter Zijlstra wrote:
+> Validate that all indirect calls adhere to kCFI rules. Notably doing
+> nocfi indirect call to a cfi function is broken.
 > 
-> > For robustness, we should actually check for all absolute relocations
-> > here, including R_X86_64_32S, which is not abstracted into a R_ABSxx
-> > type for objtool.
-> > 
-> > So perhaps this needs an arch hook where x86_64 can implement it as
-> > 
-> > bool arch_is_abs_reloc(reloc)
-> > {
-> >    switch (reloc_type(reloc)) {
-> >    case R_X86_64_32:
-> >    case R_X86_64_32S:
-> >    case R_X86_64_64:
-> >       return true;
-> >    }
-> >    return false;
-> > }
-> > 
-> > and the default just compares against R_ABS32 / R_ABS64 depending on
-> > the word size?
+> Apparently some Rust 'core' code violates this and explodes when ran
+> with FineIBT.
 > 
-> Yes, an arch hook like that makes sense. Perhaps make the signature:
+> All the ANNOTATE_NOCFI_SYM sites are prime targets for attackers.
 > 
-> bool arch_is_abs_reloc(struct elf *, struct reloc *);
+>  - runtime EFI is especially henous because it also needs to disable
+>    IBT. Basically calling unknown code without CFI protection at
+>    runtime is a massice security issue.
 > 
-> Because the word size comes from elf_addr_size().
+>  - Kexec image handover; if you can exploit this, you get to keep it :-)
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-We already have an arch_pc_relative_reloc(), please try to keep the
-naming consistent.
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
 
 -- 
 Josh
