@@ -1,117 +1,155 @@
-Return-Path: <linux-efi+bounces-4387-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4388-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6315DB0781D
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 16:31:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 029B7B079BB
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 17:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FCBE7B4DC3
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 14:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84F6A4395F
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 15:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3B325BEE5;
-	Wed, 16 Jul 2025 14:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91EA2F530E;
+	Wed, 16 Jul 2025 15:23:27 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58792594BD;
-	Wed, 16 Jul 2025 14:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECA62F50A2;
+	Wed, 16 Jul 2025 15:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752676225; cv=none; b=Y6b9Y1Tiv5n2c3db+tfgpF8Yxx7jC13WUOK5m7fFf2eEJzGvG4pedb/jh6ov1/xGQbyMAKc+0eBk/VJEscn9Q11irwBrEhh7haqJIX3sXy/TemgO4hB9mjbBwVw/7Ze8WnJUKIrfrYxvL+/Nqq0ctpdxwFOjOjTHd9kXF/fI+GU=
+	t=1752679407; cv=none; b=o56TXg1pJsmwL6rtm0s2mo1QnOFKhx/fOglvKuJqD3RaXMU7/pULdckbwIGzgN1Og1yFoqdXVkXH+lwhn6FTRp0jcHGOW2fzY6g2LnF5qij/mMiW0YsdXqKm597fT6KA6vJhH0Hc6az40ooE2BxF96JZ0iZ78l4n6YsrWaW4QJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752676225; c=relaxed/simple;
-	bh=8oM9MQ66mfTzATcDVH9XtAJsNQRIzw+rxOctjC97cyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uDsT88gvneu8XmRmULTL7AaK919K6v9TQEFaDqZqStEUBNtUNxu6fh5JabNih1Mr9jdm+XilDmVJs5Ail0hlTZnfjqzoW3c2GMI1QLu1NZyA/F6KfUXLCctjOszdHykG7jAUdotTJAZJSc679aa7ACfovQgiqkMxVuIQWcFaoo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1752679407; c=relaxed/simple;
+	bh=6d/z/JM0vRopTks4Dy05BIgYYynaCP/0UpCIvbjGVro=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s6JrbEPFHh783ZYcQhtbnh0EhGWdS7PDHyylAhzaWBaWxMU2fWYy7L4RUcMICHT1ISfitULdXtksg8UseWN/lX7s2W4up+VhyqGY2eH8SaGfI9ORnI43UYZQEvRt7BdOB5yhqAPUJpd9HJ5CcxbbqsCaU86g6yaqv2ehGmFXlMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ae0b2ead33cso162591666b.0;
-        Wed, 16 Jul 2025 07:30:23 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ae3703c2a8bso1249959666b.0;
+        Wed, 16 Jul 2025 08:23:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752676222; x=1753281022;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pNwVjl6m3wKgc/VnHpKTaKyRntyURP7PDtl2ZAtqmEg=;
-        b=T++1qXIVZ8SQ9mfCAKCzYOCPRo8iYoau0tcwULQSimZUKbZhQGRcXFJbF8icFYwhMk
-         /cykQkpbmm9YwbEPJzn8vmKc3sLeVmocCd/kUE4xmDidFg9VeKoaiUVJe7uz2k1YkXLi
-         FPz/bSN0v60U5Q/wRME+wLDVY4+7GB7d1x+X/byrX445uRf8A120Z5ypfZCKY4ljvVBL
-         dYFxT2BHBLHTPN5uB3e3NIy6xII43xec8p2m2N3wba88JTvwm8bGFwBeGIcllZeZw5SG
-         Es5P0vYvtFrmU6f+lCn8UkFal7np8Z/OPPQcaD7MT7cz+pATyC9EHr/9CFs3Aw840toL
-         SjXw==
-X-Forwarded-Encrypted: i=1; AJvYcCWrNI6GPxVAATBRk2Iww2mV1l7dpIvg/dyY2WaT0r7K6yk56rgBmFxIE7r8DMKhATkINHY5G4zhLiY=@vger.kernel.org, AJvYcCX6JhfEFTFOqdVXYvUyMZdrtEmrAvoDEZcREfHLkmDv3xSRHrVzbZgtvzXlEm5cS+CXDtJOqK+8FDTMGSDF@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8aFjm95zX2Qh/INt++TjrJWq04X0KGxXOwNqmvYbbyYj12S7R
-	uFq1dywbIBGjnGvbLX0d9ligiHppBTbNSW6gYzpdFQfLSNyNEv/x3It4
-X-Gm-Gg: ASbGncuCAGZe8MhQ9WzlLO0O0L01PlutOS3qslCH+hEaTWpV+mAYhR7LbpQ+ne8XDXm
-	mmcOtapOfDBgc4IgAUjO3IystDwc842Kwjl92IixpUjtPqAmXlYCVHti1lr1MBXuJKARTowsD7f
-	A/UgL9AlfrzqFRNjR3+T0uzj0D0xt3C4GTA8yK8QDHUYZJ36v3FzSafhx/Oqus0OVl787uJzXAs
-	/69u6t0CNZoQ0WRXkbIQUTEDntJVvGHFmISUplWdbbGgzkPjXlsnyYOy1YknSy7wE4hvDMKjS6q
-	n4wCH5CSJZaaesSjcZx9qQpzTRSOGgbQjWou+i8+M8PbVbbLSJchURQwb/jQyQYq70lmec25IXZ
-	JJkPw7gaoSAKijw==
-X-Google-Smtp-Source: AGHT+IFJa0gqqYlHrTx18e5eprFlql9LapqX5HX9Q5HeZNX+xnHp/a4vEMVPx5GPqECb6siCtRN/zw==
-X-Received: by 2002:a17:907:d2c1:b0:ad8:942b:1d53 with SMTP id a640c23a62f3a-ae9b5dc65b5mr712411766b.27.1752676221747;
-        Wed, 16 Jul 2025 07:30:21 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:71::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7e910c7sm1220250266b.15.2025.07.16.07.30.20
+        d=1e100.net; s=20230601; t=1752679404; x=1753284204;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jdr7eFxAVBCcDOsPNpaxeLOEWWpZL0xyOYM5/939UUE=;
+        b=GOpTJZmNysEZC99yPwGmyvNpP+V1RlxNkToNMPz1KjmnkVM1utGpO8hJtaUNZ+G15x
+         jSPl0f8nXCf/3x4DTGP2MYLXg0yUuNVWHTkN4jPdGrP+t8klFFhGzV/DQZVGG5oSjbYF
+         X1tplO/6ls5hNPkK3v7hNg33hf51uaLBosNGRGS5qslul3iNrJ5hGD9cBqbjPSvXoALR
+         w44oszLvTsHL8XRioloPmdrgoA4XFUH3pMPXNQt3e/X5yg9/qC9C3GsbLt5kghgOsd84
+         KfaXhHwvktWSsQNDKxgKRhKDTgxPG/fwnqWS696GKVXuIMo1hRZe8iUDwul5zwSlfjwi
+         GCsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVjzrJcmCtB/Q9nbAL8fOzWu/AF5l+7RDbzMTGJ3dY99SHVo4qQ8vAcxIgxkA9KLq9+N2dNqouDgD5Urdw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiKAbekSJ95nRFyS6ezNqrn1CXBvKnDbE7zyJzfLtgTacG1j3v
+	HK0AJPpRQKrUL2RqQBXxrQx7dTGT6PNldA5a9jA6LlhbsDfwBJFgbJZt
+X-Gm-Gg: ASbGncs2xuelw6K8bhwEsbhX1Z8MUwG8r2mpuUQ+MOrKHoFyDmkkLKiPLJrj1kFgpo9
+	gykpb8kbtCBICA9SeMdFt5+MDQUP5ZN2aBzCN0LcxyZjBY6dCJOmOscBW4P7C9Oek5P9EqPrMxv
+	cgl5/l5c9dZsR9/VXClFUeryLJls1UD0BYNXsT4PkI8zVozZ9YwxdYl5yVRlAblFgae8Xs14LvX
+	0SXCIwep3xXJUdJ3JtgCuDPCrbMgGaiTWBPGFrzRfuZCwvdptHvVyDqzUNCjbmrkH7kSZx/rCYU
+	H4lnGokWx1yIGurPi1bicZOnLQU6WIfNX04jg/neov8/m3m24uy9CuKqnoK6Ro63FGL+tKEo8aH
+	QDwedpJUzSpuLCw==
+X-Google-Smtp-Source: AGHT+IFZbL+/2sJddqrKb4phOIKXDl53PiA5uPHHd6EEAnxpw1PQuA6/wv3Q0nabeydTFVJko60AWw==
+X-Received: by 2002:a17:907:3ccc:b0:ad8:9257:5717 with SMTP id a640c23a62f3a-ae9c9997303mr358177766b.13.1752679404040;
+        Wed, 16 Jul 2025 08:23:24 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:72::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7ee471asm1226983166b.54.2025.07.16.08.23.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 07:30:21 -0700 (PDT)
-Date: Wed, 16 Jul 2025 07:30:19 -0700
+        Wed, 16 Jul 2025 08:23:23 -0700 (PDT)
 From: Breno Leitao <leitao@debian.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] efivarfs: Suppress false-positive kmemleak warning for
- sfi
-Message-ID: <pxsmb5nsar65occgepuoetame3ia6mudmw54cx7ah7bu57utkh@b6jeupqvprjz>
-References: <20250715-kmemleak_efi-v1-1-c07e68c76ae8@debian.org>
- <CAMj1kXHJpRioZD7aUJnkMLWkiTmQ_Nr6MNcSYR0adeLdjf5BrA@mail.gmail.com>
- <rvlw467lzx5yx3sl56u3xcc2hhhn3vj2fu7msg3e5o4giwtkcb@oomdafhhnqcv>
- <a3d063f4b0ccaad7595938ea0dca016872882f0d.camel@HansenPartnership.com>
- <7fe68ef138e43a5cf83c8b5d2dd3fc8101a8a225.camel@HansenPartnership.com>
- <qdw7skjlcw6dvnewpfrtxc27pm7sroan5eyn53exndehp3blav@z25oqkoo3ohw>
- <ec0a66f40bc826bd016f338568e01908b86be35a.camel@HansenPartnership.com>
+Date: Wed, 16 Jul 2025 08:23:12 -0700
+Subject: [PATCH v2] efivarfs: Fix memory leak of efivarfs_fs_info in
+ fs_context error paths
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ec0a66f40bc826bd016f338568e01908b86be35a.camel@HansenPartnership.com>
+Message-Id: <20250716-kmemleak_efi-v2-1-871878b767f5@debian.org>
+X-B4-Tracking: v=1; b=H4sIAN/Dd2gC/1XMSwqDMBQF0K2ENzYlsf5w1H0UKdFc9WE1JSmhR
+ bL3UqGDTs/g7BTgGYFasZNH5MBuo1bkmaBhNtsEyZZaQbnKS1XrQi4r1jvMcsPIsocdUTTmrAp
+ LmaCHx8ivo7t2maCZw9P597FH/dVfVP5HUUstB1Wjaoa6MmguFj2b7eT8RF1K6QPaT5yaqQAAA
+ A==
+X-Change-ID: 20250714-kmemleak_efi-bedfe48a304d
+To: Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, 
+ Matthew Garrett <mgarrett@aurora.tech>, Jiao Zhou <jiaozhou@google.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel-team@meta.com, 
+ James Bottomley <James.Bottomley@HansenPartnership.com>, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1830; i=leitao@debian.org;
+ h=from:subject:message-id; bh=6d/z/JM0vRopTks4Dy05BIgYYynaCP/0UpCIvbjGVro=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBod8Pq4jj/t+MfByIcYcekmZBjU65+EWlMz7s8l
+ /cfs0fG6pWJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaHfD6gAKCRA1o5Of/Hh3
+ bQDKD/9jTqRDa48z4FMb5skPOyKO7xMKaCMpXiYWVb4TXICyv/I7iAGJjIDGHljGNoy1fOrwxJ0
+ WkU1o6W5I0v7GHtmMKIG3maiZY5vyc091TYknfVTmRY0w4d2PjjSLFKsC59chh0nr8tKzZLQMMM
+ NLr9w8iNriHiWiCJ4nQYBGOhi2Ho7rR1EPRl1Ra2/Yw28hlIcOkSu7kyKSS/WhOyPueks1JUNej
+ kvakmgn8wrP02X1SM7bCZ9h+mW1eu6zNzrU/qhj8+GlajPOha27lbMDkG8Hpn0e96FmQ7SR8O92
+ 5IUTlo6qeSo+/r6nP8zBloYjD/VM0OLrypLYUQoSfr+jC4J/Wt2YTX0G21Rgn51iMkTE5V01hIA
+ 8eWEf2qVCTQa+qn3KM1IW2ji/Z278ITh2bYApTTLp2C/39t1d6lR4b9oiH6Ta+YUP3HW2rCVTTP
+ Ch2SxYwDJvRyzxRMcZZrgJ4rtxigir/bGUapDkBVNLoELwBnHNPlughi/63cc7S1DM1xlz+pHeu
+ JQ1+ktYX5iTsnRTC77MFb1b/Mo7a4kGev0WeohEhUI0hIiz6FYKH138WlT6jCiRlFB++ls2wT1r
+ CiZ41UdxjxWT7bPLGhiryLmtIr0Drdw/QE/FJljEsG+YdcokeuohsutHPvw1gMpmkgEk+NlNeM5
+ PHSsiOWQbGr3qQA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On Wed, Jul 16, 2025 at 09:26:03AM -0400, James Bottomley wrote:
-> On Wed, 2025-07-16 at 06:16 -0700, Breno Leitao wrote:
+When processing mount options, efivarfs allocates efivarfs_fs_info (sfi)
+early in fs_context initialization. However, sfi is associated with the
+superblock and typically freed when the superblock is destroyed. If the
+fs_context is released (final put) before fill_super is calledâ€”such as
+on error paths or during reconfigurationâ€”the sfi structure would leak,
+as ownership never transfers to the superblock.
 
-> > diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-> > index c900d98bf4945..07a3b9293396b 100644
-> > --- a/fs/efivarfs/super.c
-> > +++ b/fs/efivarfs/super.c
-> > @@ -390,10 +390,22 @@ static int efivarfs_reconfigure(struct
-> > fs_context *fc)
-> >  	return 0;
-> >  }
-> >  
-> > +static void efivarfs_free(struct fs_context *fc)
-> > +{
-> > +	struct efivarfs_fs_info *sfi;
-> > +
-> > +	sfi = fc->s_fs_info;
-> > +	if (!sfi)
-> > +		return;
-> 
-> Here, you'll excite the coccinelle checkers looking for if(x) free(x)
-> because free() already also has a test for NULL.
+Implement the .free callback in efivarfs_context_ops to ensure any
+allocated sfi is properly freed if the fs_context is torn down before
+fill_super, preventing this memory leak.
 
-Good point.
+Suggested-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+Fixes: 5329aa5101f73c ("efivarfs: Add uid/gid mount options")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v2:
+- instead of silenting the warning, just fix the problem.
+- Link to v1: https://lore.kernel.org/r/20250715-kmemleak_efi-v1-1-c07e68c76ae8@debian.org
+---
+ fs/efivarfs/super.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> Other than that elision, it looks fine to me.
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index c900d98bf4945..284d6dbba2ece 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -390,10 +390,16 @@ static int efivarfs_reconfigure(struct fs_context *fc)
+ 	return 0;
+ }
+ 
++static void efivarfs_free(struct fs_context *fc)
++{
++	kfree(fc->s_fs_info);
++}
++
+ static const struct fs_context_operations efivarfs_context_ops = {
+ 	.get_tree	= efivarfs_get_tree,
+ 	.parse_param	= efivarfs_parse_param,
+ 	.reconfigure	= efivarfs_reconfigure,
++	.free		= efivarfs_free,
+ };
+ 
+ static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
 
-Thanks. I will send a v2.
---breno
+---
+base-commit: 8c2e52ebbe885c7eeaabd3b7ddcdc1246fc400d2
+change-id: 20250714-kmemleak_efi-bedfe48a304d
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
