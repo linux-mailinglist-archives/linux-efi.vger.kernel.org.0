@@ -1,89 +1,92 @@
-Return-Path: <linux-efi+bounces-4396-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4397-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D38B07F9C
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 23:29:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC53B08030
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Jul 2025 00:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E33B617689C
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 21:29:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 924507AD23F
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 22:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCB229B772;
-	Wed, 16 Jul 2025 21:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD1C1F1311;
+	Wed, 16 Jul 2025 22:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Xv3we7Yu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESIrOP+e"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C225A296141;
-	Wed, 16 Jul 2025 21:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46238EACE;
+	Wed, 16 Jul 2025 22:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752701367; cv=none; b=ghq0jVYcv7i0wHK1R8GyBmda36RIeSjcFxcR6kVAZfuB89u3oc2pRFwc9CKyUw+Lm/9aLpy9AQ/BDoexmvykaTKuOZAih2/+ljF+BurpkPWlRBomcEZ6hehROWMFdc3zAKksL0Uj4cp3vgAt/NMQM8JHXUW23HpdI68F6UQx8AU=
+	t=1752703337; cv=none; b=SsURCfZqG8u56jhys6NvZ5tpg8vooqnx/goOeqlmW4ffUj1Icsxg/EcFewdU+az1okQ+3zhiSEl0F1txr2adoJgpSXEhx8LDCkAu95jtGHzITmHf+RJmmu/mw0hH2rKgMIQsPYV45f4lgZKrU7/uFzQ5Pi3T7HbGFYKkw4QwJ/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752701367; c=relaxed/simple;
-	bh=c236qv4fi2S1BQktSI+b1jq0ameaanhtvAO7pdQAco8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rtFiCLka5wppw/e8SOHoEAtgmjjNsHkZcLdJnJBxjGGOsK9yIEWsUHuDAxNObhilfXGv8MaZYk8db7dP+A4IlsRGeNzJBlqjjpgV7dgWIKsRjmU/n/00838imvsNhkv3Dv9LK6iO6p+24iHBp8mDnZAHTjM8tHht+OJzctTbQuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Xv3we7Yu; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1216)
-	id 6CF71211580C; Wed, 16 Jul 2025 14:29:25 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6CF71211580C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1752701365;
-	bh=RKMf9p6mMMkwdxaPqp/9o52yYa90tQ4MT8vHSN4XKqE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xv3we7Yu04gJW7e793PKMmN2O6k8jbfZJGq1B0M9haILknTHBAWjxZYo+NXhezHCT
-	 wJRqurr8rn6gUePsfo5ytND/Fjyumb09+KPqM1Z+MfMjEvbUVmC1x4xlXX8FE5ET1a
-	 p0BqCuhqfVhz8SMmR7rKsWrQmu0B1yDPXPWjp9Uo=
-Date: Wed, 16 Jul 2025 14:29:25 -0700
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-To: linux-kernel@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Kees Cook <kees@kernel.org>, linux-efi@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH 0/2] Secure Boot lock down
-Message-ID: <20250716212925.GA14322@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1750975839-32463-1-git-send-email-hamzamahfooz@linux.microsoft.com>
+	s=arc-20240116; t=1752703337; c=relaxed/simple;
+	bh=mcVWT+BzXhQn/dp+TWgBpdf7WK3iuCc1tmd6gdMqBlk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z5NPXfFysmHerBi3yEzxBNttL8ydOn/OvRBHfb2HEGO1KmTUzX5pUI0jx9EIAXfb8JK3XUR6fs7Wrg2Q34gIhEfyM7QfqmjZOOqrgg2UWvhmMB0PkDXv3sZwUqMAnlk2D9AeLfbWUl3cPhf7Rg1ynEQGiBLIOs8vxYXhwVzQ4qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESIrOP+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE63CC4AF0B;
+	Wed, 16 Jul 2025 22:02:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752703335;
+	bh=mcVWT+BzXhQn/dp+TWgBpdf7WK3iuCc1tmd6gdMqBlk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ESIrOP+euHFrjAc7fERCYG+BW6cBBfHVgr4ArMMVjvuPxiURSlrCmGI1CmwDz+WJ9
+	 Y7S72+WP3+xzALr515H/gYmA0MKSx/SdRs+m3B0YX5i1t/lD88Jz9erKovyUlmImOT
+	 uzecayZJtbzG5KMue0kpUhwQ+275EsheG9ZsHcQ3uLcSl9kyWhMqhEzqrrHvaxHlBK
+	 Zl8Ot7CrDmSoyNN9kVitD+YIOQxE9WDO+swejBY8Ev7SvtSJh/s8RJlZ8Xm9NX7uL1
+	 d0fqPgDbX7M5rLW7NFFPUgkPUgitXkxyGAT3bKXj4lsnNXzGgONhGpUDVRAe4D8Yof
+	 p9wgjBDgB6Rvw==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32f144d0db8so2051641fa.0;
+        Wed, 16 Jul 2025 15:02:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXCqBImKEuu/vMdFM6Me94JpilDrQUjXS7IRv0GUKYXNGwAmzk+1blqfJjJVOuL0gAuSm9SOH0whmU=@vger.kernel.org, AJvYcCXclpQ3BxIB4HJ4eiQkyl0pPYb15pc8EyUJ9Khlrzus8y2KMwJ/WAi9NuCVuadmPmgmD+RBpc2KfjbWJGZ1@vger.kernel.org
+X-Gm-Message-State: AOJu0YwY0Q4iHbU0qtfvC7fz4m9DdrKEW2xX/HFZkTJlTOW5HSYodZys
+	0fQJItXKxugjAlbcJzb32tyMTuIADqsBjqewsOQBbV1zwZQog42ebcVjAL+vVXY6YYa3tfDoTPj
+	K+rSm+RgdM8HKxXLe7/kzAHQiPT2Dcck=
+X-Google-Smtp-Source: AGHT+IFHCUS5lMZAkbS1BMowzuEkqGqX+RkP+At1u9zWV8/h4iBr5WfJQ7aN8cbhVM0+SKwsmribuVrPlB4dY34wLgI=
+X-Received: by 2002:a05:651c:2096:b0:32b:968d:1fe4 with SMTP id
+ 38308e7fff4ca-33098bca422mr1474771fa.14.1752703334125; Wed, 16 Jul 2025
+ 15:02:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1750975839-32463-1-git-send-email-hamzamahfooz@linux.microsoft.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+References: <20250716031814.2096113-24-ardb+git@google.com> <6b5e2a11-b157-1288-f99b-cd8c7b8180d0@amd.com>
+In-Reply-To: <6b5e2a11-b157-1288-f99b-cd8c7b8180d0@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 17 Jul 2025 08:02:01 +1000
+X-Gmail-Original-Message-ID: <CAMj1kXFQngQodoj=Nrb_kRwHUUqqtARqt+UrMRuOgG+vffG4jA@mail.gmail.com>
+X-Gm-Features: Ac12FXwzOyQA2yF-j4mKCDcg3hcugPZmmBqAeHK5bxRIexyrY1TzlI6yeiWhSFE
+Message-ID: <CAMj1kXFQngQodoj=Nrb_kRwHUUqqtARqt+UrMRuOgG+vffG4jA@mail.gmail.com>
+Subject: Re: [PATCH v5 00/22] x86: strict separation of startup code
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
+	Ingo Molnar <mingo@kernel.org>, Kevin Loughlin <kevinloughlin@google.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nikunj A Dadhania <nikunj@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Ping?
+On Thu, 17 Jul 2025 at 00:27, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 7/15/25 22:18, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+>
+> Hi Ard,
+>
+> I tried to apply this to tip/master but ran into conflicts. What commit
+> is the series based on?
+>
 
-On Thu, Jun 26, 2025 at 03:10:37PM -0700, Hamza Mahfooz wrote:
-> All major distros have had carried a version of this patch-set
-> out of tree for sometime now, but with a bunch of magic (typically
-> sprinkled in setup_arch()). Though we can avoid those architecture
-> specific quirks if we call efi_get_secureboot_mode() from
-> efisubsys_init() and that allows us to have a generic solution.
-> 
-> Hamza Mahfooz (2):
->   security: introduce security_lock_kernel_down()
->   efi: introduce EFI_KERNEL_LOCK_DOWN_IN_SECURE_BOOT
-> 
->  drivers/firmware/efi/Kconfig  | 10 ++++++++++
->  drivers/firmware/efi/efi.c    |  9 +++++++++
->  include/linux/lsm_hook_defs.h |  1 +
->  include/linux/security.h      |  8 ++++++++
->  security/lockdown/lockdown.c  |  1 +
->  security/security.c           | 15 +++++++++++++++
->  6 files changed, 44 insertions(+)
-> 
-> -- 
-> 2.49.0
+Apologies, it is based on the same commit as v4:
+
+f339770f60d9c3312133cfe6a349476848d9b128
+
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=x86-startup-confine-v5
 
