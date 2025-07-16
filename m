@@ -1,61 +1,62 @@
-Return-Path: <linux-efi+bounces-4382-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4383-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBD5B075AB
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 14:31:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7871B0769D
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 15:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE73D7AC491
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 12:29:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ADCD1893F9F
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Jul 2025 13:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2A04C9D;
-	Wed, 16 Jul 2025 12:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8D52F5312;
+	Wed, 16 Jul 2025 13:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Asz3eX6E"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="kFSRJ1k+"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C152E36EE;
-	Wed, 16 Jul 2025 12:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EE12F1FEA;
+	Wed, 16 Jul 2025 13:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752669068; cv=none; b=SRRMuDQUwQMPGWuMg0Bx11EnyjDdqNSr/b8iahy5VVsk8QdrNXMJ/TjWr6yyVlc0jx8zLuQd+GXtiTtnmbh0ThEQV9yCNs3NtFoNQ0u5mBk4juwjBuBK1GVb2e+e+zaxg1SYjSsRZv1lOB4oq2BX8l60bUesIlufbpiMpG7OBj0=
+	t=1752671344; cv=none; b=FXUnIBloYMiA1t2pSEA1CG++uX0rHpbphywhT0LY+RJrYaVeBDrPh1M65HNo1QiqRlzqRcB76LqiwprOyBYWb5kERt6cYDsJTyOkw/jkvRxlsamfLk8+5NGF8L5gqwRlf3zRRoX/hQda0QroPfmsjv8T3An983WXUdXsufn9n78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752669068; c=relaxed/simple;
-	bh=dLUPkR2qxPchUEitTfh6T0h2IdrvfnIG3tKQAQ2HC90=;
+	s=arc-20240116; t=1752671344; c=relaxed/simple;
+	bh=eb7m6C/RIEE36A5uhbRC9B8wdtPkfLOnRCs7JfwrvqA=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lS4yPx0aVINjfZ98FfrSwVoZ6uDiv1EdF5nzkKyFmJMj6jx5VurIKeisHNOPYi2IZrYrLH9xRyO0U372HnPu6SjFCVpQT9/wvKyrekjo26WKOCM81SVnyNibJ7w3wXSH9US99o+Rdip436ZbFBESRJLp0n4ij5BswEjyFM0cN6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Asz3eX6E; arc=none smtp.client-ip=198.37.111.173
+	 Content-Type:MIME-Version; b=Wsz2qbLjc0Zvl4VAdA3iLK3xTNBB07KlFUtIUTeIbOgrDEPkx58dDKsUn97ld3TfP6pafwG7mLWZbfs2YSSs/hasuwgS5KRd6BPY9v/vuUCQy5OZFAkGH/tmRATDeF4AuHdexlnoX4aUqHX3I+gJlCeSFaV7/egh/PBxZf+xy3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=kFSRJ1k+; arc=none smtp.client-ip=198.37.111.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1752669065;
-	bh=dLUPkR2qxPchUEitTfh6T0h2IdrvfnIG3tKQAQ2HC90=;
+	d=hansenpartnership.com; s=20151216; t=1752671341;
+	bh=eb7m6C/RIEE36A5uhbRC9B8wdtPkfLOnRCs7JfwrvqA=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=Asz3eX6EU8n438VwLJF8KMUnb4bf5u2H3LWYop3xNql1fbFOv7lOzhfkXFTCCAmj5
-	 eMTLUN/1JaqP2YJyvAvSrG0YgP0bVMqhyxAYHvBE4vSaGd0liVR02AsBC0IBScMrHi
-	 jokOmRs5IcLfcK3Ba7Mm8WUZ4Jof692xRI5wJMQk=
+	b=kFSRJ1k+EZhViQ81y2ebdPALUAaJj2IA0IXK4Jn0rSd9TrxHnutaTN8dWYapVLRVx
+	 fW+Fqb1VjBiUHXvc4lJGcKslJY+XZg/G++QB1Y/Ikal84ssug2w5dP5tLuwIIseEwx
+	 UH8/7xMoU1Wis1VTpwX+kCYKBO/+lpudiYNTkwc4=
 Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 137CB1C025D;
-	Wed, 16 Jul 2025 08:31:05 -0400 (EDT)
-Message-ID: <a3d063f4b0ccaad7595938ea0dca016872882f0d.camel@HansenPartnership.com>
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 601531C0172;
+	Wed, 16 Jul 2025 09:09:01 -0400 (EDT)
+Message-ID: <7fe68ef138e43a5cf83c8b5d2dd3fc8101a8a225.camel@HansenPartnership.com>
 Subject: Re: [PATCH] efivarfs: Suppress false-positive kmemleak warning for
  sfi
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
 To: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>
 Cc: Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Date: Wed, 16 Jul 2025 08:31:04 -0400
-In-Reply-To: <rvlw467lzx5yx3sl56u3xcc2hhhn3vj2fu7msg3e5o4giwtkcb@oomdafhhnqcv>
+Date: Wed, 16 Jul 2025 09:09:00 -0400
+In-Reply-To: <a3d063f4b0ccaad7595938ea0dca016872882f0d.camel@HansenPartnership.com>
 References: <20250715-kmemleak_efi-v1-1-c07e68c76ae8@debian.org>
 	 <CAMj1kXHJpRioZD7aUJnkMLWkiTmQ_Nr6MNcSYR0adeLdjf5BrA@mail.gmail.com>
 	 <rvlw467lzx5yx3sl56u3xcc2hhhn3vj2fu7msg3e5o4giwtkcb@oomdafhhnqcv>
+	 <a3d063f4b0ccaad7595938ea0dca016872882f0d.camel@HansenPartnership.com>
 Autocrypt: addr=James.Bottomley@HansenPartnership.com;
  prefer-encrypt=mutual;
  keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
@@ -76,48 +77,43 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2025-07-16 at 04:45 -0700, Breno Leitao wrote:
-> On Wed, Jul 16, 2025 at 10:41:24AM +1000, Ard Biesheuvel wrote:
-> > On Tue, 15 Jul 2025 at 19:31, Breno Leitao <leitao@debian.org>
-> > wrote:
-> > >=20
-> > > When kmemleak is enabled, it incorrectly reports the sfi
-> > > structure allocated during efivarfs_init_fs_context() as leaked:
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0 unreferenced object 0xffff888146250b80 (size 64):
-> > > =C2=A0=C2=A0=C2=A0 __kmalloc_cache_noprof
-> > > =C2=A0=C2=A0=C2=A0 efivarfs_init_fs_context
-> > > =C2=A0=C2=A0=C2=A0 ...
-> > >=20
-> > > On module unload, this object is freed in efivarfs_kill_sb(),
-> > > confirming no actual leak. Also, kfree(sfi) is called at
-> > > efivarfs_kill_sb(). I am not able to explain why kmemleak
-> > > detected it as a leak. To silence this false-positive, mark the
-> > > sfi allocation as ignored by kmemleak right after allocation.
-> > >=20
-> > > This ensures clearer leak diagnostics for this allocation path.
-> > >=20
-> >=20
-> > Can you provide a reproducer? x86 defconfig with kmemleak enabled
-> > does not show this behavior.
->=20
-> I see this problem all the time when mounting efivars. This is the
-> config I am using: https://pastebin.com/i21Yv0jt
+On Wed, 2025-07-16 at 08:31 -0400, James Bottomley wrote:
+[...]
+> If the theory is correct, the leak is genuine and we need to
+> implement .free in efivarfs_context_ops to fix it.
 
-Actually, there is a way this could be happening: to process the
-options, we have to allocate sfi early when the fs_context is
-initialized, but it is actually a property of the superblock and is
-freed when the superblock is killed.  If we got a situation where
-something did a final put of the fs context before we get to fill_super
-(which is where the handover happens) we would leak sfi's.  This would
-have to be on an error leg I presume (or possibly a reconfigure looking
-at the code).
-
-If the theory is correct, the leak is genuine and we need to implement
-.free in efivarfs_context_ops to fix it.
+Rather than trying to trace this, which will be hard, it might be
+easier just to try the fix below (not even compile tested) and see if
+it works.  Note there's no danger of a double free because when fc-
+>s_fs_info is copied to sb->s_fs_info, the field is nulled in fc.
 
 Regards,
 
 James
+
+---
+
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index c900d98bf494..90a619d027fd 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -390,10 +390,16 @@ static int efivarfs_reconfigure(struct fs_context *fc=
+)
+ 	return 0;
+ }
+=20
++static void efivarfs_fs_context_free(struct fs_context *fc)
++{
++	kfree(fc->s_fs_info);
++}
++
+ static const struct fs_context_operations efivarfs_context_ops =3D {
+ 	.get_tree	=3D efivarfs_get_tree,
+ 	.parse_param	=3D efivarfs_parse_param,
+ 	.reconfigure	=3D efivarfs_reconfigure,
++	.free		=3D efivarfs_fs_context_free,
+ };
+=20
+ static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
 
 
