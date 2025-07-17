@@ -1,402 +1,129 @@
-Return-Path: <linux-efi+bounces-4398-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4399-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EC9B081A7
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Jul 2025 02:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00429B093D5
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Jul 2025 20:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E03457A3391
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Jul 2025 00:48:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B1347B0143
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Jul 2025 18:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F279381BA;
-	Thu, 17 Jul 2025 00:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A5A2FE38F;
+	Thu, 17 Jul 2025 18:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQYt3Cjo"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="N21Wm9PT"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4C21799F;
-	Thu, 17 Jul 2025 00:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6890298CCD
+	for <linux-efi@vger.kernel.org>; Thu, 17 Jul 2025 18:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752713366; cv=none; b=mP7J4aGHzS0Qq0L3YJnnbiqab3+dJKiz0X4H4LozK2Gur88GN1uvgqknYTi9+SEC5ZjpSvidJx7kZnL4IGNBitecMfJHJRWPzGc2gwZB0YrXg5VZboMG6cNFivby0888FI1y8ak55RvgDJQ5hw/oSeA9hfRlsFXK5Ik50iARfYo=
+	t=1752776539; cv=none; b=cP/S5f71d59j3dl6bZUsj3jNRc+gALURuC8xXSWF4molfbugSqYMXG6VDe+vnrKOZ6XqNdLAqaaOlBUeFsoY/Ka6BsdoRD4y9h5V1weDn7hLW09uyRuGJRrB57612hwLyXK+Dk/AqPsctw1bl+KHbSEatwZINXO3CnkMMUVvUPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752713366; c=relaxed/simple;
-	bh=1zat0F1s/18Hl6/2ocHtQ1upOvrSzchh54HCKQD1zsg=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=JcC4TTyR58qqkoqQqTEZlEZEbWCaNM5h5A1/emwzhnAqorjlhxpXiI7xiRL1vpWkJLCGABsvXyTOMRc/MQX9HEKdbPDX2ykTdg6Uh7USS6zHj3Lg7CLPFxJVaj8KfQbsmbf+hsQddPPEVWAT+rS+JujfcmzsmfDU+So7+kEBkNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQYt3Cjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8056EC4CEE7;
-	Thu, 17 Jul 2025 00:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752713365;
-	bh=1zat0F1s/18Hl6/2ocHtQ1upOvrSzchh54HCKQD1zsg=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=YQYt3CjoWNF2bDAB44JG5w2JJflDqqQz74m572lHFomyUTVpDmTlrUeL+MWRaX1H8
-	 GsaRykzAiCXYLodeAK/Y9DOy4kQg6jRYq0zLZVjsuKv9PFCCaDBnuFL9RaLloL2pT4
-	 rqKLHFRH8p8OKLb1L1gbdpnfAWFpD6noelYK0i6/ciViVXEVwFERdj5finzMDpIwJ7
-	 BzfM/RuuVYps9E717LmpZZbg4zWklYG7LS7JA5n2PVj9deMQe73gUDZMESo5FURONO
-	 bbr97v7aVRzUe9NIgXrZPpALddz4opx7GVFOYQVI40wKvAJ4pyH20sQKair4vMk5/Z
-	 g9CigBDtFZzdQ==
-Date: Wed, 16 Jul 2025 17:49:22 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Ard Biesheuvel <ardb+git@google.com>
-cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    Ard Biesheuvel <ardb@kernel.org>, 
-    Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
-    Feng Tang <feng.tang@linux.alibaba.com>, 
-    Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-    Juergen Gross <jgross@suse.com>, 
-    Stefano Stabellini <sstabellini@kernel.org>, 
-    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-    Sunil V L <sunilvl@ventanamicro.com>, Bibo Mao <maobibo@loongson.cn>, 
-    linux-rtc@vger.kernel.org, linux-efi@vger.kernel.org, 
-    xen-devel@lists.xenproject.org, x86@kernel.org, 
-    linux-riscv@lists.infradead.org, loongarch@lists.linux.dev
-Subject: Re: [RFC PATCH 3/3] efi: Remove support for pointless, unused EFI
- services
-In-Reply-To: <20250714060843.4029171-8-ardb+git@google.com>
-Message-ID: <alpine.DEB.2.22.394.2507161749090.15546@ubuntu-linux-20-04-desktop>
-References: <20250714060843.4029171-5-ardb+git@google.com> <20250714060843.4029171-8-ardb+git@google.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+	s=arc-20240116; t=1752776539; c=relaxed/simple;
+	bh=G3jL+wG+8NOo0C9q/J7PTimEdtDkh4rD9YQDFto56U4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Nzchj/Y3wftj/ILCTc7lupa6CVl6vxbo8mn9wpyZh+7a/j+Yx9X4RJ0odgBmwPIKm9enuqS0X4HfQBW5/7b+vaxgN5gws49THutsMrtCSMfF35bjoRq/rUrgeOYLDW/dleWHIUxi8wP0QKRfwEWuBZoqWNsrsHVXZKO9Nk0KYVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=N21Wm9PT; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e740a09eb00so1165721276.0
+        for <linux-efi@vger.kernel.org>; Thu, 17 Jul 2025 11:22:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1752776536; x=1753381336; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dj/cZu4K955u3WxbJO5Yyn51Gj07gNitENbpCqXBrlg=;
+        b=N21Wm9PT616dOulvzkGsVasCVbVeqicWkekZa2o7Jwi6tNsB9ScbQOk2uCWrJ4BSgQ
+         byQZpN5CcZQqZCfF6dv1uY3Y10LswZOOjDIh7iNF585cz8MaPb+VK4T1ZxOpP5MeBpdF
+         gE8tnyZnY+O1DwXMOndAnND4Sam1fGlvwXn9rMcnKlOuJocT7ZCh9vFGp7nirLEIMhLx
+         iHSpY8YCtdmbAOVhEznjsbwFgHt3ukCVD1+uCud1upaeTJhzmYtfasW7Foewh5npChNE
+         mUiIpQEOfvtHtLkXVJ/bLu0e4cgf382HGv00YzcVAm7HMwyOG8NZRa3Oi/lH1JQby+0S
+         y7aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752776536; x=1753381336;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dj/cZu4K955u3WxbJO5Yyn51Gj07gNitENbpCqXBrlg=;
+        b=XDLR/+zLquySyS6KTkFYBn1fmRmOG8t3LpFm4NkzruYFAloKLm3Bx0Hg6dZ6VwzzNo
+         qlUQNNnhSlmcUqltDWLS2ZDkDv1IMqSm3zPMfPlyYZY/gmnyhC3m4ik76tHXnFKPv1Z5
+         1FTYAOGG3szCzCePW1heyuL3NVjwXJ0Cuj+cQjpLsCiWsZr5D8mYQqYlkYRBqGHIMuvR
+         eRSyP0300Y1yCSdcUtKFXG08qoozw1wOc6Pg4ne7pkILHbCPRBc3LZJUx5wHD0md4xpB
+         cmf57AhJpYjwSzTt/ufhqHSCwyWoUaSUPc2PnIhVTNUM5ac5aQamfygcu8JqsOu9lI6E
+         nKIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmfVVaNkSaw47WKY8g60PZ4fYVfnj7E7nInRTBIibEb3l7JJi3hh7J2qaitKHgGxK8v5eQ6gtvMhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywm4AT1ng7VWWH9875tTg0TdPYBp3lKFo+NPT7HsABJ3CUNsH5n
+	GegkpHFjXqTir6/CBrrACc8sFFFnvSIzOYnPI7NPCnZnqm5KvjseZ5nQlKyD09nLZkIsG/b2YA9
+	yWAnBkN3BH1iUc9gIQwqw3/vuw4bMBLiFecGZxhGd
+X-Gm-Gg: ASbGncuGVwMoNH6sVJfo4Cu8B79k5bMQecONvAK968AOXM205E2NHQKCbtOm49x5aRC
+	Z7BXOa8GGzUdiIzbxgjOuVUO+jlsZ9utUyBRyWWf3wJqYpLySTf4bCjZZRamNGy23qXMsnGimON
+	8JQ2Ad0xKa3dDh35cWrCKES3QyAeYOiNAYe0MPsYBEbr5Ss6uQd+7GNnChSUP5rL2IPw99o4mJ8
+	DvHfxXE54wy1GrPSA==
+X-Google-Smtp-Source: AGHT+IFl6UDPpr/oWWaFnlHMWZyVT1LMOLcL/IIjAuyhHi/01vC0aMu35s2078tcgwodJEbgmu0BPGrHYuDoxJtxfp0=
+X-Received: by 2002:a05:6902:248d:b0:e82:1f55:effd with SMTP id
+ 3f1490d57ef6-e8bc269ebadmr9165657276.5.1752776535732; Thu, 17 Jul 2025
+ 11:22:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <1750975839-32463-1-git-send-email-hamzamahfooz@linux.microsoft.com>
+ <20250716212925.GA14322@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To: <20250716212925.GA14322@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 17 Jul 2025 14:22:04 -0400
+X-Gm-Features: Ac12FXxe4T_hN6jEbI53FNZzZFqap9jNRjhELwIEMsW3hFfT4g6e4hyRn79zWz0
+Message-ID: <CAHC9VhS3qY=+DVYqzkgbHLETUo4KgQ17qr_BC3pn9TeG+cr8Mg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Secure Boot lock down
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, 
+	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>, Xiu Jianfeng <xiujianfeng@huawei.com>
+Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Yue Haibing <yuehaibing@huawei.com>, Tanya Agarwal <tanyaagarwal25699@gmail.com>, 
+	Kees Cook <kees@kernel.org>, linux-efi@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 14 Jul 2025, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
-> 
-> The get/set wakeup time EFI runtime services are often broken, and
-> rarely if ever used in practice. But the GetNextHighMonoCount() EFI
-> runtime services really takes the cake for most pointless API in the
-> history of computing.
-> 
-> So let's stop exposing them in Linux, hopefully removing the urge some
-> folks seem to feel to test these APIs, and send emails around when they
-> don't work.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+On Wed, Jul 16, 2025 at 5:29=E2=80=AFPM Hamza Mahfooz
+<hamzamahfooz@linux.microsoft.com> wrote:
+>
+> Ping?
 
-For drivers/xen/efi.c:
+Adding the new Lockdown maintainers to the To/CC line for review in
+case they missed it earlier.  For reference, the patchset can be found
+at the lore link below:
 
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+https://lore.kernel.org/linux-security-module/1750975839-32463-1-git-send-e=
+mail-hamzamahfooz@linux.microsoft.com/
 
+> On Thu, Jun 26, 2025 at 03:10:37PM -0700, Hamza Mahfooz wrote:
+> > All major distros have had carried a version of this patch-set
+> > out of tree for sometime now, but with a bunch of magic (typically
+> > sprinkled in setup_arch()). Though we can avoid those architecture
+> > specific quirks if we call efi_get_secureboot_mode() from
+> > efisubsys_init() and that allows us to have a generic solution.
+> >
+> > Hamza Mahfooz (2):
+> >   security: introduce security_lock_kernel_down()
+> >   efi: introduce EFI_KERNEL_LOCK_DOWN_IN_SECURE_BOOT
+> >
+> >  drivers/firmware/efi/Kconfig  | 10 ++++++++++
+> >  drivers/firmware/efi/efi.c    |  9 +++++++++
+> >  include/linux/lsm_hook_defs.h |  1 +
+> >  include/linux/security.h      |  8 ++++++++
+> >  security/lockdown/lockdown.c  |  1 +
+> >  security/security.c           | 15 +++++++++++++++
+> >  6 files changed, 44 insertions(+)
 
-> ---
->  arch/x86/platform/efi/efi_64.c          | 22 -------
->  drivers/firmware/efi/runtime-wrappers.c | 68 --------------------
->  drivers/xen/efi.c                       | 56 ----------------
->  include/linux/efi.h                     |  6 --
->  4 files changed, 152 deletions(-)
-> 
-> diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-> index e7e8f77f77f8..0207937ab39d 100644
-> --- a/arch/x86/platform/efi/efi_64.c
-> +++ b/arch/x86/platform/efi/efi_64.c
-> @@ -540,19 +540,6 @@ static efi_status_t efi_thunk_set_time(efi_time_t *tm)
->  	return EFI_UNSUPPORTED;
->  }
->  
-> -static efi_status_t
-> -efi_thunk_get_wakeup_time(efi_bool_t *enabled, efi_bool_t *pending,
-> -			  efi_time_t *tm)
-> -{
-> -	return EFI_UNSUPPORTED;
-> -}
-> -
-> -static efi_status_t
-> -efi_thunk_set_wakeup_time(efi_bool_t enabled, efi_time_t *tm)
-> -{
-> -	return EFI_UNSUPPORTED;
-> -}
-> -
->  static unsigned long efi_name_size(efi_char16_t *name)
->  {
->  	return ucs2_strsize(name, EFI_VAR_NAME_LEN) + 1;
-> @@ -681,12 +668,6 @@ efi_thunk_get_next_variable(unsigned long *name_size,
->  	return status;
->  }
->  
-> -static efi_status_t
-> -efi_thunk_get_next_high_mono_count(u32 *count)
-> -{
-> -	return EFI_UNSUPPORTED;
-> -}
-> -
->  static void
->  efi_thunk_reset_system(int reset_type, efi_status_t status,
->  		       unsigned long data_size, efi_char16_t *data)
-> @@ -788,13 +769,10 @@ void __init efi_thunk_runtime_setup(void)
->  
->  	efi.get_time = efi_thunk_get_time;
->  	efi.set_time = efi_thunk_set_time;
-> -	efi.get_wakeup_time = efi_thunk_get_wakeup_time;
-> -	efi.set_wakeup_time = efi_thunk_set_wakeup_time;
->  	efi.get_variable = efi_thunk_get_variable;
->  	efi.get_next_variable = efi_thunk_get_next_variable;
->  	efi.set_variable = efi_thunk_set_variable;
->  	efi.set_variable_nonblocking = efi_thunk_set_variable_nonblocking;
-> -	efi.get_next_high_mono_count = efi_thunk_get_next_high_mono_count;
->  	efi.reset_system = efi_thunk_reset_system;
->  	efi.query_variable_info = efi_thunk_query_variable_info;
->  	efi.query_variable_info_nonblocking = efi_thunk_query_variable_info_nonblocking;
-> diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
-> index 708b777857d3..2b66efb5ffef 100644
-> --- a/drivers/firmware/efi/runtime-wrappers.c
-> +++ b/drivers/firmware/efi/runtime-wrappers.c
-> @@ -52,17 +52,6 @@ union efi_rts_args {
->  		efi_time_t	*time;
->  	} SET_TIME;
->  
-> -	struct {
-> -		efi_bool_t	*enabled;
-> -		efi_bool_t	*pending;
-> -		efi_time_t	*time;
-> -	} GET_WAKEUP_TIME;
-> -
-> -	struct {
-> -		efi_bool_t	enable;
-> -		efi_time_t	*time;
-> -	} SET_WAKEUP_TIME;
-> -
->  	struct {
->  		efi_char16_t	*name;
->  		efi_guid_t	*vendor;
-> @@ -92,10 +81,6 @@ union efi_rts_args {
->  		u64		*max_variable_size;
->  	} QUERY_VARIABLE_INFO;
->  
-> -	struct {
-> -		u32		*high_count;
-> -	} GET_NEXT_HIGH_MONO_COUNT;
-> -
->  	struct {
->  		efi_capsule_header_t **capsules;
->  		unsigned long	count;
-> @@ -232,17 +217,6 @@ static void __nocfi efi_call_rts(struct work_struct *work)
->  		status = efi_call_virt(set_time,
->  				       args->SET_TIME.time);
->  		break;
-> -	case EFI_GET_WAKEUP_TIME:
-> -		status = efi_call_virt(get_wakeup_time,
-> -				       args->GET_WAKEUP_TIME.enabled,
-> -				       args->GET_WAKEUP_TIME.pending,
-> -				       args->GET_WAKEUP_TIME.time);
-> -		break;
-> -	case EFI_SET_WAKEUP_TIME:
-> -		status = efi_call_virt(set_wakeup_time,
-> -				       args->SET_WAKEUP_TIME.enable,
-> -				       args->SET_WAKEUP_TIME.time);
-> -		break;
->  	case EFI_GET_VARIABLE:
->  		status = efi_call_virt(get_variable,
->  				       args->GET_VARIABLE.name,
-> @@ -272,10 +246,6 @@ static void __nocfi efi_call_rts(struct work_struct *work)
->  				       args->QUERY_VARIABLE_INFO.remaining_space,
->  				       args->QUERY_VARIABLE_INFO.max_variable_size);
->  		break;
-> -	case EFI_GET_NEXT_HIGH_MONO_COUNT:
-> -		status = efi_call_virt(get_next_high_mono_count,
-> -				       args->GET_NEXT_HIGH_MONO_COUNT.high_count);
-> -		break;
->  	case EFI_UPDATE_CAPSULE:
->  		status = efi_call_virt(update_capsule,
->  				       args->UPDATE_CAPSULE.capsules,
-> @@ -366,30 +336,6 @@ static efi_status_t virt_efi_set_time(efi_time_t *tm)
->  	return status;
->  }
->  
-> -static efi_status_t virt_efi_get_wakeup_time(efi_bool_t *enabled,
-> -					     efi_bool_t *pending,
-> -					     efi_time_t *tm)
-> -{
-> -	efi_status_t status;
-> -
-> -	if (down_interruptible(&efi_runtime_lock))
-> -		return EFI_ABORTED;
-> -	status = efi_queue_work(GET_WAKEUP_TIME, enabled, pending, tm);
-> -	up(&efi_runtime_lock);
-> -	return status;
-> -}
-> -
-> -static efi_status_t virt_efi_set_wakeup_time(efi_bool_t enabled, efi_time_t *tm)
-> -{
-> -	efi_status_t status;
-> -
-> -	if (down_interruptible(&efi_runtime_lock))
-> -		return EFI_ABORTED;
-> -	status = efi_queue_work(SET_WAKEUP_TIME, enabled, tm);
-> -	up(&efi_runtime_lock);
-> -	return status;
-> -}
-> -
->  static efi_status_t virt_efi_get_variable(efi_char16_t *name,
->  					  efi_guid_t *vendor,
->  					  u32 *attr,
-> @@ -488,17 +434,6 @@ virt_efi_query_variable_info_nb(u32 attr, u64 *storage_space,
->  	return status;
->  }
->  
-> -static efi_status_t virt_efi_get_next_high_mono_count(u32 *count)
-> -{
-> -	efi_status_t status;
-> -
-> -	if (down_interruptible(&efi_runtime_lock))
-> -		return EFI_ABORTED;
-> -	status = efi_queue_work(GET_NEXT_HIGH_MONO_COUNT, count);
-> -	up(&efi_runtime_lock);
-> -	return status;
-> -}
-> -
->  static void __nocfi
->  virt_efi_reset_system(int reset_type, efi_status_t status,
->  		      unsigned long data_size, efi_char16_t *data)
-> @@ -556,13 +491,10 @@ void __init efi_native_runtime_setup(void)
->  {
->  	efi.get_time			    = virt_efi_get_time;
->  	efi.set_time			    = virt_efi_set_time;
-> -	efi.get_wakeup_time		    = virt_efi_get_wakeup_time;
-> -	efi.set_wakeup_time		    = virt_efi_set_wakeup_time;
->  	efi.get_variable		    = virt_efi_get_variable;
->  	efi.get_next_variable		    = virt_efi_get_next_variable;
->  	efi.set_variable		    = virt_efi_set_variable;
->  	efi.set_variable_nonblocking	    = virt_efi_set_variable_nb;
-> -	efi.get_next_high_mono_count	    = virt_efi_get_next_high_mono_count;
->  	efi.reset_system 		    = virt_efi_reset_system;
->  	efi.query_variable_info		    = virt_efi_query_variable_info;
->  	efi.query_variable_info_nonblocking = virt_efi_query_variable_info_nb;
-> diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
-> index fb321cd6415a..baccf2d90af0 100644
-> --- a/drivers/xen/efi.c
-> +++ b/drivers/xen/efi.c
-> @@ -76,47 +76,6 @@ static efi_status_t xen_efi_set_time(efi_time_t *tm)
->  	return efi_data(op).status;
->  }
->  
-> -static efi_status_t xen_efi_get_wakeup_time(efi_bool_t *enabled,
-> -					    efi_bool_t *pending,
-> -					    efi_time_t *tm)
-> -{
-> -	struct xen_platform_op op = INIT_EFI_OP(get_wakeup_time);
-> -
-> -	if (HYPERVISOR_platform_op(&op) < 0)
-> -		return EFI_UNSUPPORTED;
-> -
-> -	if (tm) {
-> -		BUILD_BUG_ON(sizeof(*tm) != sizeof(efi_data(op).u.get_wakeup_time));
-> -		memcpy(tm, &efi_data(op).u.get_wakeup_time, sizeof(*tm));
-> -	}
-> -
-> -	if (enabled)
-> -		*enabled = !!(efi_data(op).misc & XEN_EFI_GET_WAKEUP_TIME_ENABLED);
-> -
-> -	if (pending)
-> -		*pending = !!(efi_data(op).misc & XEN_EFI_GET_WAKEUP_TIME_PENDING);
-> -
-> -	return efi_data(op).status;
-> -}
-> -
-> -static efi_status_t xen_efi_set_wakeup_time(efi_bool_t enabled, efi_time_t *tm)
-> -{
-> -	struct xen_platform_op op = INIT_EFI_OP(set_wakeup_time);
-> -
-> -	BUILD_BUG_ON(sizeof(*tm) != sizeof(efi_data(op).u.set_wakeup_time));
-> -	if (enabled)
-> -		efi_data(op).misc = XEN_EFI_SET_WAKEUP_TIME_ENABLE;
-> -	if (tm)
-> -		memcpy(&efi_data(op).u.set_wakeup_time, tm, sizeof(*tm));
-> -	else
-> -		efi_data(op).misc |= XEN_EFI_SET_WAKEUP_TIME_ENABLE_ONLY;
-> -
-> -	if (HYPERVISOR_platform_op(&op) < 0)
-> -		return EFI_UNSUPPORTED;
-> -
-> -	return efi_data(op).status;
-> -}
-> -
->  static efi_status_t xen_efi_get_variable(efi_char16_t *name, efi_guid_t *vendor,
->  					 u32 *attr, unsigned long *data_size,
->  					 void *data)
-> @@ -204,18 +163,6 @@ static efi_status_t xen_efi_query_variable_info(u32 attr, u64 *storage_space,
->  	return efi_data(op).status;
->  }
->  
-> -static efi_status_t xen_efi_get_next_high_mono_count(u32 *count)
-> -{
-> -	struct xen_platform_op op = INIT_EFI_OP(get_next_high_monotonic_count);
-> -
-> -	if (HYPERVISOR_platform_op(&op) < 0)
-> -		return EFI_UNSUPPORTED;
-> -
-> -	*count = efi_data(op).misc;
-> -
-> -	return efi_data(op).status;
-> -}
-> -
->  static efi_status_t xen_efi_update_capsule(efi_capsule_header_t **capsules,
->  				unsigned long count, unsigned long sg_list)
->  {
-> @@ -280,8 +227,6 @@ void __init xen_efi_runtime_setup(void)
->  {
->  	efi.get_time			= xen_efi_get_time;
->  	efi.set_time			= xen_efi_set_time;
-> -	efi.get_wakeup_time		= xen_efi_get_wakeup_time;
-> -	efi.set_wakeup_time		= xen_efi_set_wakeup_time;
->  	efi.get_variable		= xen_efi_get_variable;
->  	efi.get_next_variable		= xen_efi_get_next_variable;
->  	efi.set_variable		= xen_efi_set_variable;
-> @@ -290,7 +235,6 @@ void __init xen_efi_runtime_setup(void)
->  	efi.query_variable_info_nonblocking = xen_efi_query_variable_info;
->  	efi.update_capsule		= xen_efi_update_capsule;
->  	efi.query_capsule_caps		= xen_efi_query_capsule_caps;
-> -	efi.get_next_high_mono_count	= xen_efi_get_next_high_mono_count;
->  	efi.reset_system		= xen_efi_reset_system;
->  }
->  
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 50db7df0efab..516afdc8a49d 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -650,8 +650,6 @@ extern struct efi {
->  
->  	efi_get_time_t			*get_time;
->  	efi_set_time_t			*set_time;
-> -	efi_get_wakeup_time_t		*get_wakeup_time;
-> -	efi_set_wakeup_time_t		*set_wakeup_time;
->  	efi_get_variable_t		*get_variable;
->  	efi_get_next_variable_t		*get_next_variable;
->  	efi_set_variable_t		*set_variable;
-> @@ -660,7 +658,6 @@ extern struct efi {
->  	efi_query_variable_info_t	*query_variable_info_nonblocking;
->  	efi_update_capsule_t		*update_capsule;
->  	efi_query_capsule_caps_t	*query_capsule_caps;
-> -	efi_get_next_high_mono_count_t	*get_next_high_mono_count;
->  	efi_reset_system_t		*reset_system;
->  
->  	struct efi_memory_map		memmap;
-> @@ -1235,13 +1232,10 @@ enum efi_rts_ids {
->  	EFI_NONE,
->  	EFI_GET_TIME,
->  	EFI_SET_TIME,
-> -	EFI_GET_WAKEUP_TIME,
-> -	EFI_SET_WAKEUP_TIME,
->  	EFI_GET_VARIABLE,
->  	EFI_GET_NEXT_VARIABLE,
->  	EFI_SET_VARIABLE,
->  	EFI_QUERY_VARIABLE_INFO,
-> -	EFI_GET_NEXT_HIGH_MONO_COUNT,
->  	EFI_RESET_SYSTEM,
->  	EFI_UPDATE_CAPSULE,
->  	EFI_QUERY_CAPSULE_CAPS,
-> -- 
-> 2.50.0.727.gbf7dc18ff4-goog
-> 
+--=20
+paul-moore.com
 
