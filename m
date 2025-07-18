@@ -1,119 +1,136 @@
-Return-Path: <linux-efi+bounces-4410-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4414-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269FAB09784
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 01:26:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E698B09E22
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 10:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04E7A4A76E5
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Jul 2025 23:26:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC8D43A47EE
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 08:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CD826E6E3;
-	Thu, 17 Jul 2025 23:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E53F29346F;
+	Fri, 18 Jul 2025 08:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TDQPJoue"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmH8kuFD"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4FF262FFF;
-	Thu, 17 Jul 2025 23:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D450EEDE;
+	Fri, 18 Jul 2025 08:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752794721; cv=none; b=UM1oaHxt+lyXIxtkUqw2rLm+2YrrjkeGSPyWU4+JHxKSSn+NTuX+qbWDkygzTidXgKih7YrmEzqXqeH0t26tvnMCvIzJJxwbMPVbtFU781MGptJJV+dSGNs26xWtoVlTfyQ7oIOkZpSUy5HoxTrefjYDv6SZr8Dgj+Ar5k/n+90=
+	t=1752827814; cv=none; b=eyntYJaOy4gIbuISg5O630Y3+5gvaeJoIPU5cSsM1zFktkufsRKTpjqpx2pgpt+IPwN7XBU8WWtLt0tmjLElX0aObU4eKT+vhvg5ZmeV+wp+xWFYOduL2bGAPGrdT5VPR/k8Tp5GEKT31wuC57UESjfPK1YoN/M9qoGuEDP9WlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752794721; c=relaxed/simple;
-	bh=qfrc6vYarbMRQKv1a7xZvSfoxfkNIKlLJL8wJGuWS5I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DC7zM2wkAME8tBtzUxE4DKbcl5Wt/itdtLMY0Hz6lg2GVQ5ao6jQlrRAKGGXvdeT3iyuPFBKgWPixL9z57mxDPFmId4QrOudHc0a43xy5fJq3yJrb/kB7Okj/6W+GQ9gryOmHfi54EWliGLOCgsb1lBB8Ul/yqRaS09EziZ2+9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TDQPJoue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75F1C2BCC6;
-	Thu, 17 Jul 2025 23:25:20 +0000 (UTC)
+	s=arc-20240116; t=1752827814; c=relaxed/simple;
+	bh=HL/2nr+vhFKcEcF58riyFRNQttwiCB/9fGbm+q71Dgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S+ghDL96vtdztCGorIA7DWIOOdf3DXo+Wqg5kLolqXr6ayiQzjOmRia/r8q4X1I14CjPThK4ekcYbFzW8537oqCW9rsqJ8wtvZcqT91ucl1IZaajfkMJtQqhTCr7hJw42ia2cDlSM1WIbLcEyX3ka6/I+xVulGxVk8ujaDDQRhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmH8kuFD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E585C4CEEB;
+	Fri, 18 Jul 2025 08:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752794720;
-	bh=qfrc6vYarbMRQKv1a7xZvSfoxfkNIKlLJL8wJGuWS5I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDQPJoue8FZRuS/LJrGq2GchrAASLibnSmGeRRoSUGpvH3awBC+7kUb1yyaVYH89y
-	 ULfO45CeKqJRVGvpXRA0BcyHOvq/18F0odTwMODSsaKPhyZ6a5RObjGBHyzV8F/o67
-	 bRdab3eThDwtbXMkLCf7OvDiOrTOIwe/+HGDzhnD0XxLPtqyR6jgFUfqETsGM1mdv+
-	 bnFaNOMq8O4teU/HwNwUrtNBKmLU5MLmrmRF+Dfv34p8l9jQ3mz2PYnKIToPImVNxa
-	 KM1ucd9mD0unIDTP+r5FbWZidX3EtXT5OQTFbfBDNgNkXEVraPMIWLffBOUAzwljDl
-	 L3ZGqkwchCdPg==
-From: Kees Cook <kees@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Kees Cook <kees@kernel.org>,
+	s=k20201202; t=1752827813;
+	bh=HL/2nr+vhFKcEcF58riyFRNQttwiCB/9fGbm+q71Dgg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GmH8kuFDP69wLkOjDvdpYL8g4oErm+tCxzSYFjNficaE3yVU2VDi2CVybyh3k2vzL
+	 ktrs4o3SmHh9+Ti01m0+zENfWaUVs3rPEOFccIDJ8JzUuMBm7vzDhfYqgJjGzyUfX2
+	 tzprzSBZDHn6R6ZCy1S+ooHnVTZn0aRQWwJVACdL/lb02WuONW5CmJoAQ+l6IEgvXV
+	 YUoaFOXIVofvTGsxJhTxgxblsj38dHI42GL2cErPbWSgZ0WyDVaDQIEbTqk0zRmB/4
+	 6UGfFtVoeLA7gIVsJdymOjI/f87nJMUh+D/2j397DUryS3KRRsJ57CDJHeSOO9dNdu
+	 VnRo0rjVmoxGg==
+Date: Fri, 18 Jul 2025 11:36:32 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Roger Pau Monne <roger.pau@citrix.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Usama Arif <usama.arif@bytedance.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
+	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, Ingo Molnar <mingo@kernel.org>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	Ingo Molnar <mingo@kernel.org>,
 	Christoph Hellwig <hch@lst.de>,
 	Andrey Konovalov <andreyknvl@gmail.com>,
 	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Nicolas Schier <nicolas.schier@linux.dev>,
 	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
 	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
 	linux-security-module@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	sparclinux@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH v3 13/13] configs/hardening: Enable CONFIG_INIT_ON_FREE_DEFAULT_ON
-Date: Thu, 17 Jul 2025 16:25:18 -0700
-Message-Id: <20250717232519.2984886-13-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250717231756.make.423-kees@kernel.org>
+Subject: Re: [PATCH v3 04/13] x86: Handle KCOV __init vs inline mismatches
+Message-ID: <aHoHkDvvp4AHIzU1@kernel.org>
 References: <20250717231756.make.423-kees@kernel.org>
+ <20250717232519.2984886-4-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=961; i=kees@kernel.org; h=from:subject; bh=qfrc6vYarbMRQKv1a7xZvSfoxfkNIKlLJL8wJGuWS5I=; b=owGbwMvMwCVmps19z/KJym7G02pJDBmVbbGrLRYky9XJyFyITXiqam157PKKj7mdDyYc/Xw7s uRv7WSGjlIWBjEuBlkxRZYgO/c4F4+37eHucxVh5rAygQxh4OIUgIkc62Vk+Hwt/L3Rbm1tn84l unrT0jgulm5lD+LgcnL+WfbLeJOREcN/7/17erb+Zmw+2dikfKTxS9XuurzmRR6/80+FfF6/xlG FFQA=
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250717232519.2984886-4-kees@kernel.org>
 
-To reduce stale data lifetimes, enable CONFIG_INIT_ON_FREE_DEFAULT_ON as
-well. This matches the addition of CONFIG_STACKLEAK=y, which is doing
-similar for stack memory.
+Hi Kees,
 
-Signed-off-by: Kees Cook <kees@kernel.org>
----
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: <linux-hardening@vger.kernel.org>
----
- kernel/configs/hardening.config | 3 +++
- 1 file changed, 3 insertions(+)
+On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
+> When KCOV is enabled all functions get instrumented, unless the
+> __no_sanitize_coverage attribute is used. To prepare for
+> __no_sanitize_coverage being applied to __init functions, we have to
+> handle differences in how GCC's inline optimizations get resolved. For
+> x86 this means forcing several functions to be inline with
+> __always_inline.
+> 
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
-diff --git a/kernel/configs/hardening.config b/kernel/configs/hardening.config
-index d24c2772d04d..64caaf997fc0 100644
---- a/kernel/configs/hardening.config
-+++ b/kernel/configs/hardening.config
-@@ -60,6 +60,9 @@ CONFIG_LIST_HARDENED=y
- # Initialize all heap variables to zero on allocation.
- CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y
- 
-+# Initialize all heap variables to zero on free to reduce stale data lifetime.
-+CONFIG_INIT_ON_FREE_DEFAULT_ON=y
-+
- # Initialize all stack variables to zero on function entry.
- CONFIG_INIT_STACK_ALL_ZERO=y
- 
+...
+
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index bb19a2534224..b96746376e17 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
+>  					  NUMA_NO_NODE);
+>  }
+>  
+> -static inline void *memblock_alloc_from(phys_addr_t size,
+> +static __always_inline void *memblock_alloc_from(phys_addr_t size,
+>  						phys_addr_t align,
+>  						phys_addr_t min_addr)
+
+I'm curious why from all memblock_alloc* wrappers this is the only one that
+needs to be __always_inline?
+
 -- 
-2.34.1
-
+Sincerely yours,
+Mike.
 
