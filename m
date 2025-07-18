@@ -1,123 +1,147 @@
-Return-Path: <linux-efi+bounces-4415-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4416-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4164B09F08
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 11:18:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B74E6B0A003
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 11:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58DB61C4802A
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 09:18:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5BD91889ACB
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 09:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56E329826D;
-	Fri, 18 Jul 2025 09:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B542343BE;
+	Fri, 18 Jul 2025 09:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="upUCLIdr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oFFkhi1G"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A111E5B78;
-	Fri, 18 Jul 2025 09:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095B71EEA55;
+	Fri, 18 Jul 2025 09:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752830296; cv=none; b=ueIBKhxETet13/O0JaXx4rHoN6bhxSBHQeuE1fVw2qkgikiwlL7Zp3UQHUdjnHzgSaGDaXmWDBQ+N9p9EAEnDKE4/ikJS/sekO3Iybw2GnNJjnch8DEE5fvCCuId1nbxhv8mIja29JFJ4s1q+NkBDHLxjrLEeG2IZ72W+3AdZ3Y=
+	t=1752831973; cv=none; b=lCcoQXFTqW8RucZ7PrDj6LAc5MNLkvbndlYdw6vCWd5M0Ea7zuIYYBe9T07SkeP4l0Bp+ZaHCFOflLR/RgK/lhxYsAM7LLrYLOKqSGhLSLgFKE9YrD/4bUQ4v0v1WCHx0gRyIfjLEobT52gXR5Ee72EeMO8hgKK7UlvqkYc4z88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752830296; c=relaxed/simple;
-	bh=iN0MjV8lG6vlPY6QKWEDWqXP3y58juMGr+peNv9I/+Y=;
+	s=arc-20240116; t=1752831973; c=relaxed/simple;
+	bh=c3p//fUsKlqfogdnHdyGXSn34gD82Yvqx6k3I1w6ZAY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AYWM+8wuerHdH4uclnn1P1V5B4lZzQfsfVzWPL2PAAUp0bevycDJ0BfbUxPdhLOH2vsQY9xeX3tR5m4Fu9z+H+Lv+GF9K3uWkRaULer50Q9VxA97mpxISj78zZsqA1VxBaZJlx+hY5d9f9Z/2Lgbw+1REBz49VboqjwgiFtneMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=upUCLIdr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191D5C4CEF0;
-	Fri, 18 Jul 2025 09:18:16 +0000 (UTC)
+	 To:Cc:Content-Type; b=dsCe2bBVYnPq+VpFngZYdCF0rcPDdlk63HC+rZsod5EjpgELmBX35/yQvPL56lVHbF/t1WTbmEArIqYNdOSF7v7/YYx4YSOWcs3FFOGk4+UpoSr9crEQmT2y4MYnP+Ppg4Cao90YqtAyy+FrUvuCmj5HK7U32s6Szpi8IcQI4Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oFFkhi1G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7822BC4CEEB;
+	Fri, 18 Jul 2025 09:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752830296;
-	bh=iN0MjV8lG6vlPY6QKWEDWqXP3y58juMGr+peNv9I/+Y=;
+	s=k20201202; t=1752831972;
+	bh=c3p//fUsKlqfogdnHdyGXSn34gD82Yvqx6k3I1w6ZAY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=upUCLIdrbbvEbKjUsZgTdUEGyRbXXPVKgUMJXI8oVEu7IuCo+NlAr8pZ3hP/3OpCS
-	 z+m8WoLkMvYdx42mseDFgent82TIUAOPaXDuO0MHrSBPWaortApspXcggf+7lhNmY8
-	 tOaGg0j7eaXiZqMy8OhhL3BAvuI4qqptGCOW5qdmQyljlx4c3DuNukqLAdC4airAsq
-	 nJKi0Be3SrrR2xHh9RGmjhMqPl6sRDW75QEF/7Lu21+PwIinNh5ZPzzmyUHWJMe6cp
-	 dzghcLYsnfaa3tVtbk0VeArOxbSMW6EX7TzfWbBD0ifZlVbF7q2+xGG6ugEJd7zFXx
-	 5DD1NmgbOVSgg==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-60c4521ae2cso3330368a12.0;
-        Fri, 18 Jul 2025 02:18:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV0AKoUIuonJeWHXWR2Cf7jQZCRjErGiIBNVCjuW0tpqJD3VWWQANTownXAYV244/9x+GvGSnXz7RM=@vger.kernel.org, AJvYcCV1TzUiHaDkQFdVridp0GhxD2QtBGx6xg0Lr3SAHadBj8NveE8r0J+4KYw8N9NpbhNp0K9s8iPNyi/xFTtJ@vger.kernel.org, AJvYcCV2RECSTJAxpYbYkY1rF1Lmt4kB3iosuDgXE19K1ASc8SE6fNRcv92tm/AHUzPKsA8+5FB65qL3NxnsoeKoZUx8@vger.kernel.org, AJvYcCV2fhkW998v5WZH4nLwEFwnzJO9W7r645GdDIgGB3cHzpXmDvZBGe03Upj0r4vlUbk44Oh0fDx97PlMAQ==@vger.kernel.org, AJvYcCVHdEZ8u7svwgKUodrkLtM/yJIIvU6xWOJc2TZJBZxyOX9PxZcyAJ0FmM5nCiAGOa7F1nRqPsmDjedv@vger.kernel.org, AJvYcCW4IDaSJazeWSwFFgACWN7b69epSroBWv2UjtCV4FoSmmVDdLNrz0ZML2pgVp0fPyOFulXTEhsYGbk7yA==@vger.kernel.org, AJvYcCX54pACOS+AT+fpvWNPmgl03ntroAgVDVSeFEZLJCxJoA7bevDnRDhIiCiI4qh+bhZoOHbq223hNnGkOq8KPjz3@vger.kernel.org, AJvYcCXI1xdPeZEbwcZTymERqI5WYVZVnRug5O0uQP3+54Ly+XPRoFapANuj6cb7nMIR75kkF9JyOiLz3rlpclN5@vger.kernel.org, AJvYcCXWHCcRsafKEhSZun1fPA+F8bDs0z7gysLDMQj5i4bfYF4K6fFmjSEG068g/vYSBMUDDLQC77HKfITkIj956HRV8Rob5ZLW@vger.kernel.org, AJvY
- cCXqNg6XyAk9/D4vsEBX1q7rzepaXITLUvpATBsxMYuqEQPgjantjzmPcNjOZr6xYNATsfGYAM5TpRD2rQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKJwdOXXj+QpoI1AL07zJBq6cn8RioZhFakuWRHcCYSS299SHg
-	B6dE6nWhyVZBwFGCBr4SkKevZyzO9uT19Cf5S5TC1wdpfbrwO03biextpt0qsRIGo2Dz+QevQ2k
-	y2LtfM2znofuQa60xHNXrOK5iQYEJz44=
-X-Google-Smtp-Source: AGHT+IH+CR6kK9khsoUi4kQxVa0vWTn3qqM4Z4G6WAw+0g0YyuRvDHP3ooIXGfMWBaXJUiPtMEtFUptkHeWtXN/zID4=
-X-Received: by 2002:a05:6402:26d5:b0:60c:6a48:8047 with SMTP id
- 4fb4d7f45d1cf-612d456bb15mr803449a12.11.1752830294637; Fri, 18 Jul 2025
- 02:18:14 -0700 (PDT)
+	b=oFFkhi1GaDDDE1msb7Qiw6R5J0HWJoXjyypfYq2z6nQ4tnhlGLttHVg0gthXX4+63
+	 PumYY6xck/hwhP6/FxtMbHxtYgE0CGyx4J2emr17+MOHhEOoFwRaVD2wenLcbF7t4v
+	 PGHPwV/9vbuYx67yGDe3JUzmM/kQRccdnmBb72m6oEtUHVyK1Q69qESYIG9TIosvhq
+	 isb1c0Dbco3hqdcp1Z39i7vKdmpFBRK4kU5z48EuPhYayAxRmvuJ3b7ejfLC6/H/de
+	 u89bfdwcZ/uFv39Qy0Or56UcCDilOEpylfF2sJXYaNImy6ia/+K954Qi4BUztIDs/s
+	 N9Cor5IdK0/AA==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32f2947ab0cso16359181fa.2;
+        Fri, 18 Jul 2025 02:46:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVrfVLC6hckxalCRHuOqfJEi1LCDPlSpfWfP58cyqnoobkl0f4p4cL9RhKyxavQ7nVrfQyafu71K7c=@vger.kernel.org, AJvYcCXLes5BS2aEn6JLN7x2JUhoKPI9RlmdexMY3j+Y+d0u3gr1X3vSlDOxBqdlIyL7yiy6FQhWxfoOWwK5+w6U@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ1Y767/1ToZ8kY/JXQMCWIg9IFZniFpbESiZHz3LvfW3Gtjen
+	k8RLVMYsz9/nSfcSpDVfX73zm/51n98X4lR3jUbmkM8Gb7ejkIGgXSNerC0nxvAQBdMsNPmqOgv
+	bFiVmD1l9kZTt9/QF4tOQpRqRKazRgEA=
+X-Google-Smtp-Source: AGHT+IHgwq+m+zfNPnTHIn6j3OU4UA7xPPWZYmjO40RVMI2F9lkEM70rP9oYjRzOBp1erLyVMniw3WIOxcZucTGDRdo=
+X-Received: by 2002:a05:651c:3047:b0:32a:8aac:e450 with SMTP id
+ 38308e7fff4ca-3308f628ce0mr27119311fa.33.1752831970870; Fri, 18 Jul 2025
+ 02:46:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250717231756.make.423-kees@kernel.org> <20250717232519.2984886-9-kees@kernel.org>
-In-Reply-To: <20250717232519.2984886-9-kees@kernel.org>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 18 Jul 2025 17:18:03 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4RyZQTak5AgYj6TaXHyEefgw+wmXs9Gi8jUJWrUV5HQw@mail.gmail.com>
-X-Gm-Features: Ac12FXyrA9A9-rpLV3MB79YH2kXhj6f2Fk9F6HAlk-0emUPTHthuyPP3lR9zQXg
-Message-ID: <CAAhV-H4RyZQTak5AgYj6TaXHyEefgw+wmXs9Gi8jUJWrUV5HQw@mail.gmail.com>
-Subject: Re: [PATCH v3 09/13] mips: Handle KCOV __init vs inline mismatch
-To: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org, 
-	llvm@lists.linux.dev
+References: <20250716031814.2096113-24-ardb+git@google.com>
+ <20250716031814.2096113-26-ardb+git@google.com> <d750dec4-f68f-0f3d-69cd-53749044ecba@amd.com>
+In-Reply-To: <d750dec4-f68f-0f3d-69cd-53749044ecba@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 18 Jul 2025 19:45:56 +1000
+X-Gmail-Original-Message-ID: <CAMj1kXEeinL-2yZTVqDAz3iStpOTVrbb98Xk2p=P6V+TZ9wH9g@mail.gmail.com>
+X-Gm-Features: Ac12FXysw3iFS7G_7776pUJX2vNVb7jN-fe-nDGnPGRC5P6t63Vi-8Fmq69SvdY
+Message-ID: <CAMj1kXEeinL-2yZTVqDAz3iStpOTVrbb98Xk2p=P6V+TZ9wH9g@mail.gmail.com>
+Subject: Re: [PATCH v5 02/22] x86/sev: Use MSR protocol for remapping SVSM
+ calling area
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
+	Ingo Molnar <mingo@kernel.org>, Kevin Loughlin <kevinloughlin@google.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nikunj A Dadhania <nikunj@amd.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+On Thu, 17 Jul 2025 at 03:03, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 7/15/25 22:18, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> >
+> > As the preceding code comment already indicates, remapping the SVSM
+> > calling area occurs long before the GHCB page is configured, and so
+> > calling svsm_perform_call_protocol() is guaranteed to result in a call
+> > to svsm_perform_msr_protocol().
+> >
+> > So just call the latter directly. This allows most of the GHCB based API
+> > infrastructure to be moved out of the startup code in a subsequent
+> > patch.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+> > Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > ---
+> >  arch/x86/boot/startup/sev-shared.c  | 11 +++++++++++
+> >  arch/x86/boot/startup/sev-startup.c |  5 ++---
+> >  2 files changed, 13 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/startup/sev-shared.c
+> > index c401d0391537..60ab09b3149d 100644
+> > --- a/arch/x86/boot/startup/sev-shared.c
+> > +++ b/arch/x86/boot/startup/sev-shared.c
+> > @@ -723,6 +723,17 @@ static void __head setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
+> >       }
+> >  }
+> >
+> > +static int __head svsm_call_msr_protocol(struct svsm_call *call)
+> > +{
+> > +     int ret;
+> > +
+> > +     do {
+> > +             ret = svsm_perform_msr_protocol(call);
+> > +     } while (ret == -EAGAIN);
+> > +
+> > +     return ret;
+> > +}
+> > +
+> >  static void __head svsm_pval_4k_page(unsigned long paddr, bool validate)
+> >  {
+> >       struct svsm_pvalidate_call *pc;
+> > diff --git a/arch/x86/boot/startup/sev-startup.c b/arch/x86/boot/startup/sev-startup.c
+> > index 0b7e3b950183..c30e0eed0131 100644
+> > --- a/arch/x86/boot/startup/sev-startup.c
+> > +++ b/arch/x86/boot/startup/sev-startup.c
+> > @@ -295,7 +295,6 @@ static __head struct cc_blob_sev_info *find_cc_blob(struct boot_params *bp)
+> >  static __head void svsm_setup(struct cc_blob_sev_info *cc_info)
+> >  {
+> >       struct svsm_call call = {};
+> > -     int ret;
+> >       u64 pa;
+> >
+> >       /*
+> > @@ -325,8 +324,8 @@ static __head void svsm_setup(struct cc_blob_sev_info *cc_info)
+> >       call.caa = svsm_get_caa();
+> >       call.rax = SVSM_CORE_CALL(SVSM_CORE_REMAP_CA);
+> >       call.rcx = pa;
+> > -     ret = svsm_perform_call_protocol(&call);
+> > -     if (ret)
+> > +
+> > +     if (svsm_perform_msr_protocol(&call))
+>
+> This should be svsm_call_msr_protocol().
+>
 
-On Fri, Jul 18, 2025 at 7:26=E2=80=AFAM Kees Cook <kees@kernel.org> wrote:
->
-> When KCOV is enabled all functions get instrumented, unless
-> the __no_sanitize_coverage attribute is used. To prepare for
-> __no_sanitize_coverage being applied to __init functions, we
-> have to handle differences in how GCC's inline optimizations get
-> resolved. For mips this requires adding the __init annotation on
-> init_mips_clocksource().
->
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: <linux-mips@vger.kernel.org>
-> ---
->  arch/mips/include/asm/time.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
-> index e855a3611d92..5e7193b759f3 100644
-> --- a/arch/mips/include/asm/time.h
-> +++ b/arch/mips/include/asm/time.h
-> @@ -55,7 +55,7 @@ static inline int mips_clockevent_init(void)
->   */
->  extern int init_r4k_clocksource(void);
->
-> -static inline int init_mips_clocksource(void)
-> +static inline __init int init_mips_clocksource(void)
->  {
->  #ifdef CONFIG_CSRC_R4K
->         return init_r4k_clocksource();
-> --
-> 2.34.1
->
->
+OK will fix
 
