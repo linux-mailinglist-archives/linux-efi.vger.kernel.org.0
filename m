@@ -1,193 +1,166 @@
-Return-Path: <linux-efi+bounces-4420-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4421-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C69B0A4B9
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 15:04:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 933DDB0AC4E
+	for <lists+linux-efi@lfdr.de>; Sat, 19 Jul 2025 00:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7BCE5A334C
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 13:04:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AF91894295
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Jul 2025 22:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695A02DBF66;
-	Fri, 18 Jul 2025 13:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D2B2253A0;
+	Fri, 18 Jul 2025 22:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dSHIa+Mr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmiVcikE"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147282C08BB;
-	Fri, 18 Jul 2025 13:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28838224AF7;
+	Fri, 18 Jul 2025 22:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752843850; cv=none; b=otpCtaWkDSXuwpQGtfETqHzzMCHn7vpo30KQF9Um8eYWyqrj1hYJaMv5H8cfq306GrkZZ65aBgQG4PNLQt/27GTruAu0TacM87LNAjRW0JNP2AK8DoJ8cNqopGVUYLIBJ+3F4jOW7SoSh62ijBDHaZcBrptQpiEGxuwUDzLORYk=
+	t=1752879089; cv=none; b=S3MILflS8Cf19q+M1ugUM9nr3hCErwhnmRs4Qeh2HM2Uy7IPGii8uqPCudEWjUEtX34LZYs8qH0Je5AYBSPGWhdV7Dv74trvZCru2ggaDKIwSKz1pXODf+sM16Hfs8Im8guWp4c7ereH5PUKWbcy3d1LTGyZZCKapX9NeBORdq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752843850; c=relaxed/simple;
-	bh=e9JV0Z0iQk3JJlBwUijpHfs6OkBiHHnta1gSH+W9zOQ=;
+	s=arc-20240116; t=1752879089; c=relaxed/simple;
+	bh=9wq1gPYvCplHPaY4Wm5XgoLMe+aODde2O7VcmHcmk98=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q4cNNy1iQbLnNATt4KxTKtj9IG2Zhl9rd7ci+oBA/SHW2T5SW4fUF4xQ8oImpC2R/jJY/aSudbc54c9gc/yZdvp/csqTaOBlRpxYLsJaHvtvBjWKZzexpC9hYBaOhIbZb/0NYFzgdmhdifAWo/C+Rcvk2rkl+0gR8vdX5/+Akbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dSHIa+Mr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E41C4CEEB;
-	Fri, 18 Jul 2025 13:04:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=uPLgdyUatVim0CECah6F4FPsKF/Ls5gb4V26IYBlQ1t173MdwVyCoWuoCPsOvoYdTionaiaKpw/1zEypEwH8hQ3ac8ZeL+s+ZrJ3IowNbuL9fEz1xfQN0oSbLJgtdU8JIsb0nKL4BcNLpdplupJAQ+SQ37o8H60Ag8plhzcuNkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmiVcikE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58ABC4CEEB;
+	Fri, 18 Jul 2025 22:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752843849;
-	bh=e9JV0Z0iQk3JJlBwUijpHfs6OkBiHHnta1gSH+W9zOQ=;
+	s=k20201202; t=1752879088;
+	bh=9wq1gPYvCplHPaY4Wm5XgoLMe+aODde2O7VcmHcmk98=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dSHIa+MrlwXDsebHQMAOBrcdcgNNRuFu1OTjumS8fxdFBEiWA23QLsWePa1HP1jXa
-	 DP7rD2arOXkIYe04ayLXrk6t48TKPhah+qrfUQk4ky4F4LbYRccQTgZL/kXp3nQJYB
-	 nrJLucASNeNNY+00+8mINN6UNjKqm5BId8c4coJWxb2glH/Jf36YSDoPuBM+WSroOr
-	 n4i8t1jm9SduQegLb6spa4A1/MFx1Gu+g8rrZJhbtALp3VA5PnisWIVkS3OfF1re3r
-	 AMqmvtywhenvyRLdeSc0OM7qWEwqaMFUvF5JgNdpEgu+srMur2jwIhNPEyXJW5TR2q
-	 5vV09+6vxMu3A==
-Date: Fri, 18 Jul 2025 14:04:00 +0100
-From: Lee Jones <lee@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Nishanth Menon <nm@ti.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Allison Randal <allison@lohutok.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Ingo Molnar <mingo@kernel.org>,
+	b=VmiVcikElcqZk72BFs7/zWioNVg/RlBsEZTqUIs6HsScTtVwOS6j7B3ua7R/5a+8f
+	 B/Xx/QRZM/EQh/lO2RicrfWNUj4TspYI7v5C1esxaGnMy5qNgSFrlaLuHCW1KuRQE/
+	 vwjy0/1yadEDESYc6Jup2r2d1g6hRKk98N3uI9FiR3pIjtw/6N8d9/1A9DF/kI7Ptp
+	 /KtF2y8xo3+DKYzmZGh9ileKlyQIK4tsMmB+vc1VQguKTRnI0Md6sJRL9kCLGWssqH
+	 x60/sDs7wvwXbxMyYV4GlknlF8akcqkSZPz9pRU1nNtV+O7XtlJK1/hNvPy3K6SwqK
+	 vqLjSPHvQBQpQ==
+Date: Fri, 18 Jul 2025 15:51:28 -0700
+From: Kees Cook <kees@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>, Will Deacon <will@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Roger Pau Monne <roger.pau@citrix.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Usama Arif <usama.arif@bytedance.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
+	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, Ingo Molnar <mingo@kernel.org>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Christoph Hellwig <hch@lst.de>,
 	Andrey Konovalov <andreyknvl@gmail.com>,
 	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Nicolas Schier <nicolas.schier@linux.dev>,
 	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
 	Bill Wendling <morbo@google.com>,
 	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
-	x86@kernel.org, kasan-dev@googlegroups.com,
-	linux-doc@vger.kernel.org, kvmarm@lists.linux.dev,
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
 	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: Re: [PATCH v3 05/13] arm: Handle KCOV __init vs inline mismatches
-Message-ID: <20250718130400.GB11056@google.com>
+Subject: Re: [PATCH v3 04/13] x86: Handle KCOV __init vs inline mismatches
+Message-ID: <202507181541.B8CFAC7E@keescook>
 References: <20250717231756.make.423-kees@kernel.org>
- <20250717232519.2984886-5-kees@kernel.org>
+ <20250717232519.2984886-4-kees@kernel.org>
+ <aHoHkDvvp4AHIzU1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250717232519.2984886-5-kees@kernel.org>
+In-Reply-To: <aHoHkDvvp4AHIzU1@kernel.org>
 
-On Thu, 17 Jul 2025, Kees Cook wrote:
-
-> When KCOV is enabled all functions get instrumented, unless
-> the __no_sanitize_coverage attribute is used. To prepare for
-> __no_sanitize_coverage being applied to __init functions, we have to
-> handle differences in how GCC's inline optimizations get resolved. For
-> arm this exposed several places where __init annotations were missing
-> but ended up being "accidentally correct". Fix these cases and force
-> several functions to be inline with __always_inline.
+On Fri, Jul 18, 2025 at 11:36:32AM +0300, Mike Rapoport wrote:
+> Hi Kees,
 > 
-> Acked-by: Nishanth Menon <nm@ti.com>
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Nishanth Menon <nm@ti.com>
-> Cc: Santosh Shilimkar <ssantosh@kernel.org>
-> Cc: Lee Jones <lee@kernel.org>
-> Cc: Allison Randal <allison@lohutok.net>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: <linux-arm-kernel@lists.infradead.org>
-> ---
->  include/linux/mfd/dbx500-prcmu.h  | 2 +-
-
-Acked-by: Lee Jones <lee@kernel.org>
-
->  arch/arm/mm/cache-feroceon-l2.c   | 2 +-
->  arch/arm/mm/cache-tauros2.c       | 2 +-
->  drivers/clocksource/timer-orion.c | 2 +-
->  drivers/soc/ti/pm33xx.c           | 2 +-
->  5 files changed, 5 insertions(+), 5 deletions(-)
+> On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
+> > When KCOV is enabled all functions get instrumented, unless the
+> > __no_sanitize_coverage attribute is used. To prepare for
+> > __no_sanitize_coverage being applied to __init functions, we have to
+> > handle differences in how GCC's inline optimizations get resolved. For
+> > x86 this means forcing several functions to be inline with
+> > __always_inline.
+> > 
+> > Signed-off-by: Kees Cook <kees@kernel.org>
 > 
-> diff --git a/include/linux/mfd/dbx500-prcmu.h b/include/linux/mfd/dbx500-prcmu.h
-> index 98567623c9df..828362b7860c 100644
-> --- a/include/linux/mfd/dbx500-prcmu.h
-> +++ b/include/linux/mfd/dbx500-prcmu.h
-> @@ -213,7 +213,7 @@ struct prcmu_fw_version {
->  
->  #if defined(CONFIG_UX500_SOC_DB8500)
->  
-> -static inline void prcmu_early_init(void)
-> +static inline void __init prcmu_early_init(void)
->  {
->  	db8500_prcmu_early_init();
->  }
-> diff --git a/arch/arm/mm/cache-feroceon-l2.c b/arch/arm/mm/cache-feroceon-l2.c
-> index 25dbd84a1aaf..2bfefb252ffd 100644
-> --- a/arch/arm/mm/cache-feroceon-l2.c
-> +++ b/arch/arm/mm/cache-feroceon-l2.c
-> @@ -295,7 +295,7 @@ static inline u32 read_extra_features(void)
->  	return u;
->  }
->  
-> -static inline void write_extra_features(u32 u)
-> +static inline void __init write_extra_features(u32 u)
->  {
->  	__asm__("mcr p15, 1, %0, c15, c1, 0" : : "r" (u));
->  }
-> diff --git a/arch/arm/mm/cache-tauros2.c b/arch/arm/mm/cache-tauros2.c
-> index b1e1aba602f7..bfe166ccace0 100644
-> --- a/arch/arm/mm/cache-tauros2.c
-> +++ b/arch/arm/mm/cache-tauros2.c
-> @@ -177,7 +177,7 @@ static inline void __init write_actlr(u32 actlr)
->  	__asm__("mcr p15, 0, %0, c1, c0, 1\n" : : "r" (actlr));
->  }
->  
-> -static void enable_extra_feature(unsigned int features)
-> +static void __init enable_extra_feature(unsigned int features)
->  {
->  	u32 u;
->  
-> diff --git a/drivers/clocksource/timer-orion.c b/drivers/clocksource/timer-orion.c
-> index 49e86cb70a7a..61f1e27fc41e 100644
-> --- a/drivers/clocksource/timer-orion.c
-> +++ b/drivers/clocksource/timer-orion.c
-> @@ -43,7 +43,7 @@ static struct delay_timer orion_delay_timer = {
->  	.read_current_timer = orion_read_timer,
->  };
->  
-> -static void orion_delay_timer_init(unsigned long rate)
-> +static void __init orion_delay_timer_init(unsigned long rate)
->  {
->  	orion_delay_timer.freq = rate;
->  	register_current_timer_delay(&orion_delay_timer);
-> diff --git a/drivers/soc/ti/pm33xx.c b/drivers/soc/ti/pm33xx.c
-> index dfdff186c805..dc52a2197d24 100644
-> --- a/drivers/soc/ti/pm33xx.c
-> +++ b/drivers/soc/ti/pm33xx.c
-> @@ -145,7 +145,7 @@ static int am33xx_do_sram_idle(u32 wfi_flags)
->  	return pm_ops->cpu_suspend(am33xx_do_wfi_sram, wfi_flags);
->  }
->  
-> -static int __init am43xx_map_gic(void)
-> +static int am43xx_map_gic(void)
->  {
->  	gic_dist_base = ioremap(AM43XX_GIC_DIST_BASE, SZ_4K);
->  
-> -- 
-> 2.34.1
+> ...
 > 
+> > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> > index bb19a2534224..b96746376e17 100644
+> > --- a/include/linux/memblock.h
+> > +++ b/include/linux/memblock.h
+> > @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
+> >  					  NUMA_NO_NODE);
+> >  }
+> >  
+> > -static inline void *memblock_alloc_from(phys_addr_t size,
+> > +static __always_inline void *memblock_alloc_from(phys_addr_t size,
+> >  						phys_addr_t align,
+> >  						phys_addr_t min_addr)
+> 
+> I'm curious why from all memblock_alloc* wrappers this is the only one that
+> needs to be __always_inline?
+
+Thread-merge[1], adding Will Deacon, who was kind of asking the same
+question.
+
+Based on what I can tell, GCC has kind of fragile inlining logic, in the
+sense that it can change whether or not it inlines something based on
+optimizations. It looks like the kcov instrumentation being added (or in
+this case, removed) from a function changes the optimization results,
+and some functions marked "inline" are _not_ inlined. In that case, we end up
+with __init code calling a function not marked __init, and we get the
+build warnings I'm trying to eliminate.
+
+So, to Will's comment, yes, the problem is somewhat fragile (though
+using either __always_inline or __init will deterministically solve it).
+We've tripped over this before with GCC and the solution has usually
+been to just use __always_inline and move on.
+
+For memblock_alloc*, it appears to be that the heuristic GCC uses
+resulted in only memblock_alloc_from() being a problem in this case. I
+can certainly mark them all as __always_inline if that is preferred.
+
+Some maintainers have wanted things marked __init, some have wanted
+__always_inline. I opted for __always_inline since that was basically
+the intent of marking a function "inline" in the first place. I am happy
+to do whatever. :)
+
+-Kees
+
+[1] https://lore.kernel.org/lkml/aHouXI5-tyQw78Ht@willie-the-truck/
 
 -- 
-Lee Jones [李琼斯]
+Kees Cook
 
