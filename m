@@ -1,153 +1,124 @@
-Return-Path: <linux-efi+bounces-4426-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4427-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F26B0B3B1
-	for <lists+linux-efi@lfdr.de>; Sun, 20 Jul 2025 08:10:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB082B0B7EC
+	for <lists+linux-efi@lfdr.de>; Sun, 20 Jul 2025 21:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D29017D839
-	for <lists+linux-efi@lfdr.de>; Sun, 20 Jul 2025 06:10:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 984231892379
+	for <lists+linux-efi@lfdr.de>; Sun, 20 Jul 2025 19:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C761B0414;
-	Sun, 20 Jul 2025 06:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8781D07BA;
+	Sun, 20 Jul 2025 19:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcocEkaA"
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b="Bh3bXIo2"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-o95.zoho.com (sender4-pp-o95.zoho.com [136.143.188.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AC9182B4;
-	Sun, 20 Jul 2025 06:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752991820; cv=none; b=hBg14WIWsHUwYzEBvDy6ZfacHxXSkegdexfZYQLuL/U8dHbCaqSj+1JMtHhTs4iTMAU3fRhjvZcOtl9jYhRPRRHWVcutH/t6JlXtPagErXpq4heNZKF5XsbbQ4Lv0rCBcOxrFXBG4gCMF0FLUyWKQ4+iGrVNrDn5bH7Y1IfnCSQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752991820; c=relaxed/simple;
-	bh=ombXy5J9mN5+Ko6iFhW8NndKJFf3Fpi4o6CQRaezi3g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c9eCXqwwDh9roo9isXlqCDWW9w1gibgSa9w8uQrPosnaH/t2ssC/UAwLyPBFIiokTXLlgVfK9eBwl2GxuQi5MJOlL8pqrITNFuImlqFWNOKoed6ves6KfG0Gf4UksAUZzJ5VGtD93NBZ6wf/vbC5psPpmSAp7Yuka/nNbEdWAhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HcocEkaA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D626EC19421;
-	Sun, 20 Jul 2025 06:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752991819;
-	bh=ombXy5J9mN5+Ko6iFhW8NndKJFf3Fpi4o6CQRaezi3g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HcocEkaAHqoiHoBCIs5ZO1zgy5A6mlv32UCcJW8LJrNOH9xTJsjCjR+0l+k+rDugt
-	 FfJRK0wuMhP1+l40qQ4Zsqb2kNgofBEYfXVrDcz5S49YWRrNZuwLyidR4kwpzmO+j+
-	 2Ti22ok5s651Cl0DKENNJulslvkPPeDYInLV6/E1rLq+3JS2kHByx10FDPlWtaaYoO
-	 zbBEeae5MrdFJ4uyBR+eocuvKJFVtcaQkoastPWeZ1nTyt+lAAqN/K7z9f9MgU77QF
-	 ns3N6LeIPgbEVfylgBuIAeVsTpY9WQPioWqB+bD85jLB/SdJceatFgmEgi7I3n/vBJ
-	 jDFV6fT3ykiRg==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-55622414cf4so2928807e87.3;
-        Sat, 19 Jul 2025 23:10:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUKELGM/ashHPFgoKCL9nctb4y0d4y+qbD4P53Q+1tSd7LRfn9MV78LpsXGidu3HrJeLdmsoOJOhWGw@vger.kernel.org, AJvYcCUMiohBnJmrFxFxFe9PYL17Q7ShcYP2VeZeeYLZsnH9E+hr5lOvu21HFVubc80PBWY2fWPy3R4NjfkOvjzpLBVI@vger.kernel.org, AJvYcCUlNBIJSfM8sgAbeaxc85+pdeBUcZyk8iMSNYW6U1rSffrvBjVByJXOft6TzypgTUWIgQZ3Cfjf7CjVvA==@vger.kernel.org, AJvYcCV2NXQwjeR4DYr6Ind0bCxoOzQTh9XOa9N++vn6rP6EcHI2j4nUprBFHpNnU3enXwfg/maKhfx/X/9cx0gy6UOO@vger.kernel.org, AJvYcCVGne03iuMAcCztfyBqjN3EINlYyOHUIRcdhlM5muxd3DJQJkdAkyWmqKKoNh0NPZs0Hc/M7VIksDVqVXjjHnW+8sZz@vger.kernel.org, AJvYcCVnw3A0foCIkyfH2UIPAS6ZgSqrtA5SkB/FKqtvWeKjyObQOxciuHpphgUoKjxe52YuHCiF5up8AFaq1Q==@vger.kernel.org, AJvYcCVr/3B8F1Vjvnjzldjpwg/hnAzOlh/NVZdAxDi4X7FELWh82PyulBQrI8ssQHDSUKmhNrTqVDnzCxQANaTQ@vger.kernel.org, AJvYcCW4D6JFTgCvOiopuKLxIpG0vcqq0RHn4BRSLOdmBA3EOU//G9v6cVg9ZitGdwohFExrCnI=@vger.kernel.org, AJvYcCWqraamdjbvXObGalFIXiBcb62yFGO4wxDPUyxoaIJvOyVBm1Kr/4M/APrySHKNOj9yU6SeWFzSxXD+@vger.kernel.org, AJvYcCWsMvJ6sfvfskTZ
- rJxe33y1RORyQLmqEZfnkbylM9FU7OrC1Nu8TWxq6GnYCwY1AKgc3g/WBjdEFtuZBtZVtQH26ZLN1ZyG@vger.kernel.org, AJvYcCX8hi+duU26oTYVSKJIRMloRGdwGZrS3Hpd74gmpVo3BEqB/YlzqOu9Fu6OCRv+WBmdP9nbdAt6QHvFwpvSVDvVnZkUYQ==@vger.kernel.org, AJvYcCXXnwZn7kkbncLKby6XxH86oz9GvSxSTLUmMVXlaRlzm1jVRyZD+fpg46VZW2rRjKCuCvvHIeWpug1rRA==@vger.kernel.org, AJvYcCXjk8tNlYGrU1DrrV3YTxAh2tHKeSaod8NnL9nuf+efZM0hB/Xr3BUcCBF4BFmfzc3CKesjqurhYNcY+iOm@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGSOgQY3WWLFbolB0FzpUU+BEwg/oGmgLXO6Jkb5qFFhTxfUMF
-	7SAW79ISsthUVrkoDDIH1v94w97nlSEVld5QUKbTlUHj7p2s6FkuWr6VfsisnuyIrtGmAouy6gR
-	UpAbV+UN5yvInMfSnHYh1eS0M9F1vjTY=
-X-Google-Smtp-Source: AGHT+IGzW7z8MZyh/6NVryj0xIRWvZtmGLwUiyHXGC4Qk/FYdRSLZqwcI4BFS0lrRzeksvOsF0eTUUFywEq3kCkPty0=
-X-Received: by 2002:a05:6512:2301:b0:553:5176:48a with SMTP id
- 2adb3069b0e04-55a31843110mr2007807e87.21.1752991817889; Sat, 19 Jul 2025
- 23:10:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0641BD035;
+	Sun, 20 Jul 2025 19:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753039453; cv=pass; b=RdHa8Aa4QiQjnjDoAnzGjUWsGyUDFvMHWt8+5+zJo12S/U/oZjhWeYHbzbSXFNNWZsTiqbA2R/sNtBB9Vpo5wngCLMZyLSc/yNVtJvOdxJnQdCu3iz5cWwVgrn2seJZY4OgqZQLkA7C9EjFU6EFSbemKqRdM/RfXphkFKT1Kpls=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753039453; c=relaxed/simple;
+	bh=CZGdbasRhJL67LATDHinA/RimvDg9Yh/y9BCU62exf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tTzelKtPGWDJl6kViSJVwuusZLRHG3ibDbnQp+5+aJ9P97LKazY1XcNTelgPALkBBMIL3KV889Y/yAxoLRU51vD1/2Hd9nPREeSFwK/nbcBvMlwGKzAr83ECy0/dnf0dJleBqrsIX8KgMVsvULg5x2r85bIgv75uoekI/9rtUfw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b=Bh3bXIo2; arc=pass smtp.client-ip=136.143.188.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1753039427; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LRsNXqT2DGwqohe0V3n1Y5vnsbcPuxmL33DXmTm56IvT8IeUo9WLCKwOjdmUNMNrvyQ/EmyXzJzSC12J76YV44bb615E1lhcYpXGc9OsP628ekeFuE2yTggF1eBAhDq1mkU5aZw6tZAFVJVzy/Onmot+BY8MIOf5PbNWnooGlps=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753039427; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=CZGdbasRhJL67LATDHinA/RimvDg9Yh/y9BCU62exf4=; 
+	b=A+9rJcw18enEU/pd2rsIzZE3I3cwpXklSU46/TecBtXyLNA6YVuxtO+U1+CYQoUScwlZztJNGH7qeu+nQM2cVKYOnYEmUuhzotabBMRr6BMw7Hf/akydV/oVYjlql4Lx0/+sW1pvNU75KmlJ14ZVQtMsiIj/hHnQqPwUJvMLdMI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=safinaskar@zohomail.com;
+	dmarc=pass header.from=<safinaskar@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753039427;
+	s=zm2022; d=zohomail.com; i=safinaskar@zohomail.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
+	bh=CZGdbasRhJL67LATDHinA/RimvDg9Yh/y9BCU62exf4=;
+	b=Bh3bXIo21jsDoTcdSOPo7xHRNjAd+unVPYmZutBzN2osHtuDOzu6Q4lY4sFB9xzI
+	FgS0ffhFppzXqyuCo9D7U+5YBJYyUXgTpduRlIXPw95e+LIO7HD17DUzbtF7U8+vrfO
+	CowUU1/+tPsgzToOFgo7N2E9qxPoT/d2/gJaJlSY=
+Received: by mx.zohomail.com with SMTPS id 17530394239991010.919391982878;
+	Sun, 20 Jul 2025 12:23:43 -0700 (PDT)
+From: Askar Safin <safinaskar@zohomail.com>
+To: brauner@kernel.org
+Cc: James.Bottomley@hansenpartnership.com,
+	ardb@kernel.org,
+	boqun.feng@gmail.com,
+	david@fromorbit.com,
+	djwong@kernel.org,
+	hch@infradead.org,
+	jack@suse.cz,
+	linux-efi@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mcgrof@kernel.org,
+	mingo@redhat.com,
+	pavel@kernel.org,
+	peterz@infradead.org,
+	rafael@kernel.org,
+	will@kernel.org
+Subject: Re: [PATCH v2 0/4] power: wire-up filesystem freeze/thaw with suspend/resume
+Date: Sun, 20 Jul 2025 22:23:36 +0300
+Message-ID: <20250720192336.4778-1-safinaskar@zohomail.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250402-work-freeze-v2-0-6719a97b52ac@kernel.org>
+References: <20250402-work-freeze-v2-0-6719a97b52ac@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250717231756.make.423-kees@kernel.org> <20250717232519.2984886-4-kees@kernel.org>
- <aHoHkDvvp4AHIzU1@kernel.org> <202507181541.B8CFAC7E@keescook>
-In-Reply-To: <202507181541.B8CFAC7E@keescook>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 20 Jul 2025 16:10:01 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXGAwjChyFvjQcTbL8dFXkFWnn9n47bkN7FP=+EsLNsJdg@mail.gmail.com>
-X-Gm-Features: Ac12FXxx6bD_QGQsGFgOANxpcIEdVmgITnXc8yZmdE0EdDE9cBbQCb787bRnEwA
-Message-ID: <CAMj1kXGAwjChyFvjQcTbL8dFXkFWnn9n47bkN7FP=+EsLNsJdg@mail.gmail.com>
-Subject: Re: [PATCH v3 04/13] x86: Handle KCOV __init vs inline mismatches
-To: Kees Cook <kees@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
-	Hans de Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Michal Wilczynski <michal.wilczynski@intel.com>, 
-	Juergen Gross <jgross@suse.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Roger Pau Monne <roger.pau@citrix.com>, 
-	David Woodhouse <dwmw@amazon.co.uk>, Usama Arif <usama.arif@bytedance.com>, 
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>, 
-	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net, 
-	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-mm@kvack.org, Ingo Molnar <mingo@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	sparclinux@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Feedback-ID: rr080112270d6f3bb5e67c5eccbba77053000079a79adbb197c855785062672b8dce23e5fd72ce979343ebb6:zu08011227851b2ce9d96276e118686f9c000059dcc54766978b253b11fb66b5116824aa7c1fe7b6313b3400:rf0801122c92f547bda1f7f44d931768570000e490db12c233cac804c865502819ef4bf2bdd31e4e53901ce02f4363fa04:ZohoMail
+X-ZohoMailClient: External
 
-On Sat, 19 Jul 2025 at 08:51, Kees Cook <kees@kernel.org> wrote:
->
-> On Fri, Jul 18, 2025 at 11:36:32AM +0300, Mike Rapoport wrote:
-> > Hi Kees,
-> >
-> > On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
-> > > When KCOV is enabled all functions get instrumented, unless the
-> > > __no_sanitize_coverage attribute is used. To prepare for
-> > > __no_sanitize_coverage being applied to __init functions, we have to
-> > > handle differences in how GCC's inline optimizations get resolved. For
-> > > x86 this means forcing several functions to be inline with
-> > > __always_inline.
-> > >
-> > > Signed-off-by: Kees Cook <kees@kernel.org>
-> >
-> > ...
-> >
-> > > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> > > index bb19a2534224..b96746376e17 100644
-> > > --- a/include/linux/memblock.h
-> > > +++ b/include/linux/memblock.h
-> > > @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
-> > >                                       NUMA_NO_NODE);
-> > >  }
-> > >
-> > > -static inline void *memblock_alloc_from(phys_addr_t size,
-> > > +static __always_inline void *memblock_alloc_from(phys_addr_t size,
-> > >                                             phys_addr_t align,
-> > >                                             phys_addr_t min_addr)
-> >
-> > I'm curious why from all memblock_alloc* wrappers this is the only one that
-> > needs to be __always_inline?
->
-> Thread-merge[1], adding Will Deacon, who was kind of asking the same
-> question.
->
-> Based on what I can tell, GCC has kind of fragile inlining logic, in the
-> sense that it can change whether or not it inlines something based on
-> optimizations. It looks like the kcov instrumentation being added (or in
-> this case, removed) from a function changes the optimization results,
-> and some functions marked "inline" are _not_ inlined. In that case, we end up
-> with __init code calling a function not marked __init, and we get the
-> build warnings I'm trying to eliminate.
->
-> So, to Will's comment, yes, the problem is somewhat fragile (though
-> using either __always_inline or __init will deterministically solve it).
-> We've tripped over this before with GCC and the solution has usually
-> been to just use __always_inline and move on.
->
+Hi, Christian Brauner, Jan Kara and other contributors of this patchset.
 
-Given that 'inline' is already a macro in the kernel, could we just
-add __attribute__((__always_inline__)) to it when KCOV is enabled?
+I did experiments on my laptop, and these experiments show that this patchset does not solve various longstanding problems related to suspend and filesystems. (Even if I enable /sys/power/freeze_filesystems )
+
+Now let me describe problems I had in the past (and still have!) and then experiments I did and their results.
+
+So, I had these 3 problems:
+
+- Suspend doesn't work if fstrim in progress (note that I use btrfs as root file system)
+
+- Suspend doesn't work if scrub in progress
+
+- Suspend doesn't work if we try to read from fuse-sshfs filesystem while network is down
+
+Let me describe third problem in more detail. To reproduce you need to do this:
+
+- Mount remote filesystem using sshfs (it is based on ssh and fuse)
+
+- Disable internet
+
+- Run command "ls" in that sshfs filesystem (this command will, of course, hang, because network is down)
+
+- Then suspend
+
+Suspend will not work.
+
+Does your patchset supposed to fix these problems?
+
+Okay, so just now I was able to reproduce all 3 problems on latest mainline ( f4a40a4282f467ec99745c6ba62cb84346e42139 ), which (as well as I understand) has this patchset applied.
+
+I reproduced them with /sys/power/freeze_filesystems set to both 0 and 1 (thus I did 3 * 2 = 6 experiments).
+
+I'm available for further testing.
+
+--
+Askar Safin
 
