@@ -1,105 +1,98 @@
-Return-Path: <linux-efi+bounces-4429-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4430-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23138B0C3D7
-	for <lists+linux-efi@lfdr.de>; Mon, 21 Jul 2025 14:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48EDEB0C45C
+	for <lists+linux-efi@lfdr.de>; Mon, 21 Jul 2025 14:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC1D1AA3997
-	for <lists+linux-efi@lfdr.de>; Mon, 21 Jul 2025 12:10:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3CB3189BE73
+	for <lists+linux-efi@lfdr.de>; Mon, 21 Jul 2025 12:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39CE2D372B;
-	Mon, 21 Jul 2025 12:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552CB2D29BA;
+	Mon, 21 Jul 2025 12:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="W1yUgeSd";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="bib1vZhj";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="W1yUgeSd";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="bib1vZhj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8evXuR+"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B972BEFEC
-	for <linux-efi@vger.kernel.org>; Mon, 21 Jul 2025 12:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E424502F;
+	Mon, 21 Jul 2025 12:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753099785; cv=none; b=aOYtp4uDNY7V410gIKZHZGeeLxirlEnAxsntcgJZ4jWswHll7bgmbiOEuadZ4K4GhekFLrP0TRpwrm/Yte4Hq4wwlf/qDOxOnJZPzZFOrH8zlMzRkanAjyzp+ZLC/d05mwnhfaZJbK33aRib8myg47T72y6jRAGBUCN/ydQaPBA=
+	t=1753102089; cv=none; b=E8jZoPuVMg3Fp8eB1JExRdlxpUXTxuyaHxIVIDqfiW1CnTqRG7QkKUnTN7AwmtWQTfvIh3DHlGy0G/ojCya/Yc2/lTCjfQgahjwWT41RMTZNNiR5xC9xuOpyFcKRS4dnHEf72GjmTsfDQcK6QtLQCxnW1/FEfqH3Ns72O2GwfWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753099785; c=relaxed/simple;
-	bh=xOVNRilUUnpPzmkPg/DOGhbbJBWpV/SMFomibvawHaU=;
+	s=arc-20240116; t=1753102089; c=relaxed/simple;
+	bh=fhUrUAac/iSii6E8bCY5/2OzAP/25KtTiniEKeJQXGA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XlIWodmrVDV1q2EVJhKFssOx2Hjpj5l0Tkl2F5YKUdRcVK3UibJTiIJUtqWu8X/MqauwZRR28kSlxBhqAotiBo5+L1YV8qNhY48jLQ2MncadC6JhIxbORLAZr+liE7xaT1QQYb38e8A/Gl+BTYIArbpwHYs4RUBpFP/VoVdOAFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=W1yUgeSd; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=bib1vZhj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=W1yUgeSd; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=bib1vZhj; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7CD141F791;
-	Mon, 21 Jul 2025 12:09:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753099782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=osODL1DXWanSL9NsdOi9EyKq6ii23SBPLkpGfiV+CAw=;
-	b=W1yUgeSdPlLi65cJNL8g9kv3HgykSyNzKWtWuXXdWtYZu9pqHwoRmhka378b7ONuUwEmzK
-	nr2VKXTLivmf4BU1o3jwy9ITdEY/rF0xXS2eWQvuhHnu0NIIX6BKq+pfsyZg9hmYNJkod2
-	jJUCZV3qP5JYaYobsSK8V37ycWaFCBs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753099782;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=osODL1DXWanSL9NsdOi9EyKq6ii23SBPLkpGfiV+CAw=;
-	b=bib1vZhjKq0bLBlEJ17nHtI4DoakS2BhOpePnxgQfag5jiviOVXaUsJoZz7CIk2cbEaUmb
-	P6jGJR2cTTfxIZCQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753099782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=osODL1DXWanSL9NsdOi9EyKq6ii23SBPLkpGfiV+CAw=;
-	b=W1yUgeSdPlLi65cJNL8g9kv3HgykSyNzKWtWuXXdWtYZu9pqHwoRmhka378b7ONuUwEmzK
-	nr2VKXTLivmf4BU1o3jwy9ITdEY/rF0xXS2eWQvuhHnu0NIIX6BKq+pfsyZg9hmYNJkod2
-	jJUCZV3qP5JYaYobsSK8V37ycWaFCBs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753099782;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=osODL1DXWanSL9NsdOi9EyKq6ii23SBPLkpGfiV+CAw=;
-	b=bib1vZhjKq0bLBlEJ17nHtI4DoakS2BhOpePnxgQfag5jiviOVXaUsJoZz7CIk2cbEaUmb
-	P6jGJR2cTTfxIZCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6813913A88;
-	Mon, 21 Jul 2025 12:09:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uTdhGQYufmhlOgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 21 Jul 2025 12:09:42 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 14A73A0884; Mon, 21 Jul 2025 14:09:42 +0200 (CEST)
-Date: Mon, 21 Jul 2025 14:09:42 +0200
-From: Jan Kara <jack@suse.cz>
-To: Askar Safin <safinaskar@zohomail.com>
-Cc: brauner@kernel.org, James.Bottomley@hansenpartnership.com, 
-	ardb@kernel.org, boqun.feng@gmail.com, david@fromorbit.com, djwong@kernel.org, 
-	hch@infradead.org, jack@suse.cz, linux-efi@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, mcgrof@kernel.org, 
-	mingo@redhat.com, pavel@kernel.org, peterz@infradead.org, rafael@kernel.org, 
-	will@kernel.org
-Subject: Re: [PATCH v2 0/4] power: wire-up filesystem freeze/thaw with
- suspend/resume
-Message-ID: <tm57gt2zkazpyjg3qkcxab7h7df2kyayirjbhbqqw3eknwq37h@vpti4li6xufe>
-References: <20250402-work-freeze-v2-0-6719a97b52ac@kernel.org>
- <20250720192336.4778-1-safinaskar@zohomail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PdSKdNjtBboMgd832HDbP+uXPaRLqk5gH43+jq8vlM1Hc4dWSbJ50xkdj0WNZbdnrejhlZFh0alyVYXwTE1HxqaXdlipy/qcX255Zo/Sd8XhRxZIm5OMID6J0an5xZ63VZTx10Wb++nILTSxyC0qtE01UAmwtUiiRLoJ/+c1UNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8evXuR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2550C4CEED;
+	Mon, 21 Jul 2025 12:47:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753102088;
+	bh=fhUrUAac/iSii6E8bCY5/2OzAP/25KtTiniEKeJQXGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R8evXuR+wAan3GKqOPc31OKb0HXwT1fcr9RAvjn3iXq9AafrC9dr+uhqKKHXhydc/
+	 ommMgMhlPSa10h8tXea70KugAvoZCogNM+Xt21kS9UmsttjWDnOELNHjux+Ju59MNY
+	 /URVoorMncYyCzvX9VeofQFk7WldoN/Ri5qk6rB1XFXfi+hA14lKHW1R2sRPlxfo/E
+	 LGLDW2D8KsMU/Gla3tq/bXrtgsgK9NPEPhMAYMtEgjB4rEKVqgNW9ZLANwHmFPzbv2
+	 KyzNMpjT5XzFw+NFZx3vex8f/0R9leYdi3PuQeMO27/gBBOFaJYqsNHIsKj7h+b3pJ
+	 6c41KggZR4CKg==
+Date: Mon, 21 Jul 2025 13:47:55 +0100
+From: Will Deacon <will@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Roger Pau Monne <roger.pau@citrix.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Usama Arif <usama.arif@bytedance.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
+	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, Ingo Molnar <mingo@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v3 04/13] x86: Handle KCOV __init vs inline mismatches
+Message-ID: <aH42--h-ARsvX5Wk@willie-the-truck>
+References: <20250717231756.make.423-kees@kernel.org>
+ <20250717232519.2984886-4-kees@kernel.org>
+ <aHoHkDvvp4AHIzU1@kernel.org>
+ <202507181541.B8CFAC7E@keescook>
+ <CAMj1kXGAwjChyFvjQcTbL8dFXkFWnn9n47bkN7FP=+EsLNsJdg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -108,79 +101,66 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250720192336.4778-1-safinaskar@zohomail.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_RCPT(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,hansenpartnership.com,gmail.com,fromorbit.com,infradead.org,suse.cz,vger.kernel.org,redhat.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -2.30
+In-Reply-To: <CAMj1kXGAwjChyFvjQcTbL8dFXkFWnn9n47bkN7FP=+EsLNsJdg@mail.gmail.com>
 
-Hi!
+On Sun, Jul 20, 2025 at 04:10:01PM +1000, Ard Biesheuvel wrote:
+> On Sat, 19 Jul 2025 at 08:51, Kees Cook <kees@kernel.org> wrote:
+> > On Fri, Jul 18, 2025 at 11:36:32AM +0300, Mike Rapoport wrote:
+> > > On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
+> > > > When KCOV is enabled all functions get instrumented, unless the
+> > > > __no_sanitize_coverage attribute is used. To prepare for
+> > > > __no_sanitize_coverage being applied to __init functions, we have to
+> > > > handle differences in how GCC's inline optimizations get resolved. For
+> > > > x86 this means forcing several functions to be inline with
+> > > > __always_inline.
+> > > >
+> > > > Signed-off-by: Kees Cook <kees@kernel.org>
+> > >
+> > > ...
+> > >
+> > > > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> > > > index bb19a2534224..b96746376e17 100644
+> > > > --- a/include/linux/memblock.h
+> > > > +++ b/include/linux/memblock.h
+> > > > @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
+> > > >                                       NUMA_NO_NODE);
+> > > >  }
+> > > >
+> > > > -static inline void *memblock_alloc_from(phys_addr_t size,
+> > > > +static __always_inline void *memblock_alloc_from(phys_addr_t size,
+> > > >                                             phys_addr_t align,
+> > > >                                             phys_addr_t min_addr)
+> > >
+> > > I'm curious why from all memblock_alloc* wrappers this is the only one that
+> > > needs to be __always_inline?
+> >
+> > Thread-merge[1], adding Will Deacon, who was kind of asking the same
+> > question.
+> >
+> > Based on what I can tell, GCC has kind of fragile inlining logic, in the
+> > sense that it can change whether or not it inlines something based on
+> > optimizations. It looks like the kcov instrumentation being added (or in
+> > this case, removed) from a function changes the optimization results,
+> > and some functions marked "inline" are _not_ inlined. In that case, we end up
+> > with __init code calling a function not marked __init, and we get the
+> > build warnings I'm trying to eliminate.
 
-On Sun 20-07-25 22:23:36, Askar Safin wrote:
-> I did experiments on my laptop, and these experiments show that this
-> patchset does not solve various longstanding problems related to suspend
-> and filesystems. (Even if I enable /sys/power/freeze_filesystems )
+Got it, thanks for the explanation!
+
+> > So, to Will's comment, yes, the problem is somewhat fragile (though
+> > using either __always_inline or __init will deterministically solve it).
+> > We've tripped over this before with GCC and the solution has usually
+> > been to just use __always_inline and move on.
+> >
 > 
-> Now let me describe problems I had in the past (and still have!) and then
-> experiments I did and their results.
-> 
-> So, I had these 3 problems:
-> 
-> - Suspend doesn't work if fstrim in progress (note that I use btrfs as
-> root file system)
+> Given that 'inline' is already a macro in the kernel, could we just
+> add __attribute__((__always_inline__)) to it when KCOV is enabled?
 
-Right, this is expected because the FITRIM ioctl (syscall as any other)
-likely takes too long and so the suspend code looses its patience. There's
-nothing VFS can do about this. You can talk to btrfs developers to
-periodically check for pending signal / freezing event like e.g. ext4 does
-in ext4_trim_interrupted() to avoid suspend failures when FITRIM is
-running.
+That sounds like a more robust approach and, by the sounds of it, we
+could predicate it on GCC too. That would also provide a neat place for
+a comment describing the problem.
 
-> - Suspend doesn't work if scrub in progress
+Kees, would that work for you?
 
-Similar situation as with FITRIM. This is fully in control of the
-filesystem and unless the filesystem adds checks and early abort paths, VFS
-cannot do anything.
-
-> - Suspend doesn't work if we try to read from fuse-sshfs filesystem while
-> network is down
-
-On the surface the problem is the same as the above two but the details
-here are subtly different. Here I expect (although I'm not 100% sure) the
-blocked process is inside the FUSE filesystem waiting for the FUSE daemon
-to reply (a /proc/<pid>/stack of the blocked process would be useful here).
-In theory, FUSE filesystem should be able to make the wait for reply in
-TASK_FREEZABLE state which would fix your issue. In any case this is very
-likely work for FUSE developers.
-
-So I'm sorry but the patch set you speak about isn't supposed to fix any of
-the above issues you hit.
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Will
 
