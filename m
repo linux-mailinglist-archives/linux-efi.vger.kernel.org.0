@@ -1,69 +1,69 @@
-Return-Path: <linux-efi+bounces-4451-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4449-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B728B0D35A
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Jul 2025 09:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C01B0D34A
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Jul 2025 09:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51DE53A3760
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Jul 2025 07:33:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F05E93B4492
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Jul 2025 07:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28002E0908;
-	Tue, 22 Jul 2025 07:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A3A2DC356;
+	Tue, 22 Jul 2025 07:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sAJacNzu"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xDQ4irDe"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB362DFA5C
-	for <linux-efi@vger.kernel.org>; Tue, 22 Jul 2025 07:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533242DECA3
+	for <linux-efi@vger.kernel.org>; Tue, 22 Jul 2025 07:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753169408; cv=none; b=dJynFjb3j/7RXODFBUVSpL4RHJSF2Ye3JrDwH2EEk0xgRREJNf9HjUDB5ikOShofvppBTFRcceCLLbo+ejzo4BwdP6MEO1jW5iXFIRyyU6N/KFXFn+uikji5/lNagAhbfrHgEqodnvp/FhfO/OPlG0vfP/SSt4KPKoHCd61KSjg=
+	t=1753169407; cv=none; b=gwSVAliDRvZqCFh0oBcfy0uPtpcSdwaCQ41VYZPkf7uey8OdkWbp6I/K5kfJtmGX+Z0YJIzDSJ3gzSKwsVIs3ntHbtuFjBn+RiCtn/3rnCEUIv6kcSLyI3g92t/flLjydSsnTi89qaugGDfx7zAAbKfG9n5ie+9vG8pn+rBVzaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753169408; c=relaxed/simple;
-	bh=m+AA9YnrLD0iUVWnbGpAkFXJWtq3QSsvd+u3h67S7DA=;
+	s=arc-20240116; t=1753169407; c=relaxed/simple;
+	bh=AziSCYrqEKp3iXhsTCzhbJczPEzyYFFzm0EbdakEq+k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=h2BcIjMPzbroCSB+nfQDamnm5z0/hj26sjQJ8q1eQ2iVD+0lNLXYI0WhJw9AL9J2+kl4y2sOB0B2MwoKNF+lExAnsOeXtKZlYcdqC9Ci33srMO8J05nHKc5Zv+TYMX0Vlf4pe4IcIdJ2/dprdcT4PazvFOOjJNhL5B9vB/IVibw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sAJacNzu; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=jlUu09rN9ZH6R1fc4PWGWNiYeIITG5peHUC/1DvYe2jcyL9BM+J0iHjByySkp+v3oL795KFocEAh0azvn6jWu7+Yf3F+Gh58EDCS1RuILhcM5qkAZglhsgprvntFfCDUHHmpNyq7NbpI5anaPAptnKmARuu+IMxETNWQDySsMsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xDQ4irDe; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6083f613f0eso5437995a12.1
-        for <linux-efi@vger.kernel.org>; Tue, 22 Jul 2025 00:30:06 -0700 (PDT)
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b604541741so3876767f8f.3
+        for <linux-efi@vger.kernel.org>; Tue, 22 Jul 2025 00:30:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753169405; x=1753774205; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1753169404; x=1753774204; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=joWJVM2i9LyAMlJmIbS+61T1iNRyCZpWQH9FF0KYFxg=;
-        b=sAJacNzuCWHCk+nmhbHQsDmjW60540vhAz/yTFm/FEbR5RuFLPdGArevtj75BuDTE4
-         WyWvKYibR7BsBvhf9h4IrHg6H1qdwQ5SI/K2byGfmjKmz/6Zlq/x3e/Q2Wykpt3vZB2N
-         DMSA2wu+K3y2zUQaP9hpzKuCebL0dsdvLoM4YIi0AYULzeTOaw0ZIUwD+3w08t+Q5xto
-         mtSSdYTjjiY1WWRrhiH2md9vOmL9CxhuAKc2vlMGsAkLklL1TLAvUXoth40WKckVPR9H
-         wgJjMoc6qsFVFkJ+OmBXfiYYtihAVJUAyG4IVdk9DkYYEKBQ4bc8rVcWzh/3VJyMO7NV
-         lxQA==
+        bh=mW4f9PE0jE0e9wTTI8oFMDAAeEX2PGjVbeFJW21fiSw=;
+        b=xDQ4irDe6gaGiGIN1JIk73aO1qf4wT7LOnQUJm1cYtW0wqSe7akPvGjM16onzDcS9T
+         3owml4wx2yIJzREx6KcDQ22wHcgKuF6cMJLx3P/F8bmGMFFbaBNz9zmGCNszwcb6nh0H
+         fCC4dIghKtT9BgoXBCOw8ZGrYn9/miJsD+jVWVDUnLF1en3lv0WiTHsKELGJYGrFmY8u
+         LzFFK/t8fd/gUPq9uHze5VRMXpkF76bK6grhiCx6pnWqlZCmydx2NzDQ6WUjyWDlWkgV
+         SWvm8xhStLaF1sFG3KHJ+TP6awkY+ERidMB2MmOeYqc+dE7k/YZe3cdveX2l7Eck8QUH
+         4UrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753169405; x=1753774205;
+        d=1e100.net; s=20230601; t=1753169404; x=1753774204;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=joWJVM2i9LyAMlJmIbS+61T1iNRyCZpWQH9FF0KYFxg=;
-        b=KCCP17eUMYtf0ui1AdZdX7sREm17D3L1rpHmxJgx7OHyEyQd+9lWfEHN825dIXXSGt
-         R/wzRixqUnJtbLtdLc78dM+qTB/RW2WD/2R/TKMLJaVoy9h3yB4lWSceNfVWLV6+w/ak
-         A7loTd0zenR1s+7sSyU4ZIYEts8qzwpWkdykf4rmVovfppoSW0LkBwhGi1gfN1kmRk78
-         D8aMyeqknA4BJZf1s9xv4zRS8nyzdxq2gvD3LK3rue4sW4j0a0q3GFJtZhtDw433+vQ+
-         3TQ9NsmG9jrv1bP87TX+iawABQFaV4zS7vtNOUCEUEgZCNC+CYud/kHFXrqxbd87YI2q
-         XrXw==
-X-Gm-Message-State: AOJu0YyGV/o6zPDB1/kw+fOSjzRjF2E4w3cQbK5vn4SZ+PAZs7vAr6op
-	+zoB+jTZLCjeGQxA1L4Hp0GJ7sKoVeGAIDB8z2ZCAZtlRfC4PPC9SLd0RrP0ijxsHBQk17Vfxw=
+        bh=mW4f9PE0jE0e9wTTI8oFMDAAeEX2PGjVbeFJW21fiSw=;
+        b=sQbJhEOeuxdN6pMkJUwgnVEp7myRz0D8XNyq5rt3dUvT0DYpS3mGGRhwZ+oQnH0trB
+         Q2QVdiYLHzk2WpvS6dKvwVcXXszpes8xXUtojzfsZTGZkCtYQHWv53n+3MMEDdnNqjgo
+         U09PL+Asony40C+rNz5KsW3AZNp/KrITs44OjvJ25KPiOSDfMlYxeBwNfI06ZhlgAADF
+         0OFrB4GqcpXsLHbbiF3mcU5ucTsuB6vzi7KjVC/cROiOpbwTEDKi1kov8rLkWGcTp05N
+         0vJCrwUmZXZwFsTc7vKtQAU2HisbStrkOu9O6f29H5Ny9nk7b1NvbJGcXU/rhFgkLQjr
+         nybA==
+X-Gm-Message-State: AOJu0Yw4W43LcOwPpfFijajbKcY5T1o/q5mX2L321oVutQaVe3STVgAh
+	27fHAP7Etx22Cp4Lbqbgse7XIW2M/e4vssaof6f9Se7OGZ215Ml2fGmkT8ptXOPAZyCVWUvvgw=
 	=
-X-Google-Smtp-Source: AGHT+IHBFkra3DT9d/Jz54hyx9X9Sbb5UtTq/QCThPQD9dIL+tW4Ej2jMl0lcTj1D0bBSsI+igZS8dIu
-X-Received: from edbdh15.prod.google.com ([2002:a05:6402:1d2f:b0:612:bb19:6d36])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:4407:b0:611:fdb4:1dc1
- with SMTP id 4fb4d7f45d1cf-612a4d17913mr19148358a12.7.1753169402910; Tue, 22
- Jul 2025 00:30:02 -0700 (PDT)
-Date: Tue, 22 Jul 2025 09:27:22 +0200
+X-Google-Smtp-Source: AGHT+IEqIkZaOA4ogOixIf+RDEwpmHqpgza/utnNCA+SqSYOa7J9XOgt60L+JaEZqIQWwlBBUCl7IbnY
+X-Received: from wmbeq12.prod.google.com ([2002:a05:600c:848c:b0:456:2437:14d6])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:adf:e19d:0:b0:3a6:f2d7:e22b
+ with SMTP id ffacd0b85a97d-3b60e4d2a3bmr14390472f8f.18.1753169403918; Tue, 22
+ Jul 2025 00:30:03 -0700 (PDT)
+Date: Tue, 22 Jul 2025 09:27:23 +0200
 In-Reply-To: <20250722072708.2079165-24-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -73,15 +73,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250722072708.2079165-24-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6028; i=ardb@kernel.org;
- h=from:subject; bh=VRS61oLaIqj8kKv/u+4je9bg+LB91FkrmM3QiYMrk/A=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIaPetndtuc28T9VbDA/9LDLdalZ0R/Dkasl9252F79rJP
- NnbnGvbUcrCIMbFICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACZyqIiR4YPexKszT2+5EL2G
- ecOrwD7jA3nrV4UcXswZx/Xk/ymtc/4M/+NVIl47nDwjVHtDyG93fGB/wD2BFsM3rTO89J4LPpy 4ihUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1696; i=ardb@kernel.org;
+ h=from:subject; bh=kOQMYaSiu+ZXQWR7MbRw268I2y+/O3YrdyRKP8LesAE=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIaPedpKM88n9Sbzbf+1YeWOdnNHSbVutr83/+Jjr9Feb8
+ 59Mpy5m7ChlYRDjYpAVU2QRmP333c7TE6VqnWfJwsxhZQIZwsDFKQATabrH8E+VpXzK6RRBrWyV
+ R6k5uQELpfobyuznpr93imm7u+rhQVVGhvVucifUTC8oiDx+eULzbbNri2CBK/ODmzEpSgxZvFf r2AA=
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250722072708.2079165-37-ardb+git@google.com>
-Subject: [PATCH v6 13/22] x86/sev: Move __sev_[get|put]_ghcb() into separate
- noinstr object
+Message-ID: <20250722072708.2079165-38-ardb+git@google.com>
+Subject: [PATCH v6 14/22] x86/sev: Export startup routines for later use
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
@@ -93,211 +92,45 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Rename sev-nmi.c to noinstr.c, and move the get/put GHCB routines
-into it too, which are also annotated as 'noinstr' and suffer from the
-same problem as the NMI code, i.e., that GCC may ignore the
-__no_sanitize_address__ function attribute implied by 'noinstr' and
-insert KASAN instrumentation anyway.
+Create aliases that expose routines that are part of the startup code to
+other code in the core kernel, so that they can be called later as well.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/startup/sev-startup.c        | 74 --------------------
- arch/x86/coco/sev/Makefile                 |  8 +--
- arch/x86/coco/sev/{sev-nmi.c => noinstr.c} | 74 ++++++++++++++++++++
- 3 files changed, 78 insertions(+), 78 deletions(-)
+ arch/x86/boot/startup/exports.h | 14 ++++++++++++++
+ arch/x86/kernel/vmlinux.lds.S   |  2 ++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/arch/x86/boot/startup/sev-startup.c b/arch/x86/boot/startup/sev-startup.c
-index 76d40e381d41..2f7d21660cdf 100644
---- a/arch/x86/boot/startup/sev-startup.c
-+++ b/arch/x86/boot/startup/sev-startup.c
-@@ -41,83 +41,9 @@
- #include <asm/cpuid/api.h>
- #include <asm/cmdline.h>
- 
--/*
-- * Nothing shall interrupt this code path while holding the per-CPU
-- * GHCB. The backup GHCB is only for NMIs interrupting this path.
-- *
-- * Callers must disable local interrupts around it.
-- */
--noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
--{
--	struct sev_es_runtime_data *data;
--	struct ghcb *ghcb;
--
--	WARN_ON(!irqs_disabled());
--
--	data = this_cpu_read(runtime_data);
--	ghcb = &data->ghcb_page;
--
--	if (unlikely(data->ghcb_active)) {
--		/* GHCB is already in use - save its contents */
--
--		if (unlikely(data->backup_ghcb_active)) {
--			/*
--			 * Backup-GHCB is also already in use. There is no way
--			 * to continue here so just kill the machine. To make
--			 * panic() work, mark GHCBs inactive so that messages
--			 * can be printed out.
--			 */
--			data->ghcb_active        = false;
--			data->backup_ghcb_active = false;
--
--			instrumentation_begin();
--			panic("Unable to handle #VC exception! GHCB and Backup GHCB are already in use");
--			instrumentation_end();
--		}
--
--		/* Mark backup_ghcb active before writing to it */
--		data->backup_ghcb_active = true;
--
--		state->ghcb = &data->backup_ghcb;
--
--		/* Backup GHCB content */
--		*state->ghcb = *ghcb;
--	} else {
--		state->ghcb = NULL;
--		data->ghcb_active = true;
--	}
--
--	return ghcb;
--}
--
- /* Include code shared with pre-decompression boot stage */
- #include "sev-shared.c"
- 
--noinstr void __sev_put_ghcb(struct ghcb_state *state)
--{
--	struct sev_es_runtime_data *data;
--	struct ghcb *ghcb;
--
--	WARN_ON(!irqs_disabled());
--
--	data = this_cpu_read(runtime_data);
--	ghcb = &data->ghcb_page;
--
--	if (state->ghcb) {
--		/* Restore GHCB from Backup */
--		*ghcb = *state->ghcb;
--		data->backup_ghcb_active = false;
--		state->ghcb = NULL;
--	} else {
--		/*
--		 * Invalidate the GHCB so a VMGEXIT instruction issued
--		 * from userspace won't appear to be valid.
--		 */
--		vc_ghcb_invalidate(ghcb);
--		data->ghcb_active = false;
--	}
--}
--
- void __head
- early_set_pages_state(unsigned long vaddr, unsigned long paddr,
- 		      unsigned long npages, enum psc_op op,
-diff --git a/arch/x86/coco/sev/Makefile b/arch/x86/coco/sev/Makefile
-index 342d79f0ab6a..3b8ae214a6a6 100644
---- a/arch/x86/coco/sev/Makefile
-+++ b/arch/x86/coco/sev/Makefile
-@@ -1,10 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-y += core.o sev-nmi.o vc-handle.o
-+obj-y += core.o noinstr.o vc-handle.o
- 
- # Clang 14 and older may fail to respect __no_sanitize_undefined when inlining
--UBSAN_SANITIZE_sev-nmi.o	:= n
-+UBSAN_SANITIZE_noinstr.o	:= n
- 
- # GCC may fail to respect __no_sanitize_address or __no_kcsan when inlining
--KASAN_SANITIZE_sev-nmi.o	:= n
--KCSAN_SANITIZE_sev-nmi.o	:= n
-+KASAN_SANITIZE_noinstr.o	:= n
-+KCSAN_SANITIZE_noinstr.o	:= n
-diff --git a/arch/x86/coco/sev/sev-nmi.c b/arch/x86/coco/sev/noinstr.c
-similarity index 61%
-rename from arch/x86/coco/sev/sev-nmi.c
-rename to arch/x86/coco/sev/noinstr.c
-index d8dfaddfb367..b527eafb6312 100644
---- a/arch/x86/coco/sev/sev-nmi.c
-+++ b/arch/x86/coco/sev/noinstr.c
-@@ -106,3 +106,77 @@ void noinstr __sev_es_nmi_complete(void)
- 
- 	__sev_put_ghcb(&state);
- }
+diff --git a/arch/x86/boot/startup/exports.h b/arch/x86/boot/startup/exports.h
+new file mode 100644
+index 000000000000..01d2363dc445
+--- /dev/null
++++ b/arch/x86/boot/startup/exports.h
+@@ -0,0 +1,14 @@
 +
 +/*
-+ * Nothing shall interrupt this code path while holding the per-CPU
-+ * GHCB. The backup GHCB is only for NMIs interrupting this path.
-+ *
-+ * Callers must disable local interrupts around it.
++ * The symbols below are functions that are implemented by the startup code,
++ * but called at runtime by the SEV code residing in the core kernel.
 + */
-+noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
-+{
-+	struct sev_es_runtime_data *data;
-+	struct ghcb *ghcb;
++PROVIDE(early_set_pages_state		= __pi_early_set_pages_state);
++PROVIDE(early_snp_set_memory_private	= __pi_early_snp_set_memory_private);
++PROVIDE(early_snp_set_memory_shared	= __pi_early_snp_set_memory_shared);
++PROVIDE(get_hv_features			= __pi_get_hv_features);
++PROVIDE(sev_es_terminate		= __pi_sev_es_terminate);
++PROVIDE(snp_cpuid			= __pi_snp_cpuid);
++PROVIDE(snp_cpuid_get_table		= __pi_snp_cpuid_get_table);
++PROVIDE(svsm_issue_call			= __pi_svsm_issue_call);
++PROVIDE(svsm_process_result_codes	= __pi_svsm_process_result_codes);
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 4fa0be732af1..5d5e3a95e1f9 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -535,3 +535,5 @@ xen_elfnote_entry_value =
+ xen_elfnote_phys32_entry_value =
+ 	ABSOLUTE(xen_elfnote_phys32_entry) + ABSOLUTE(pvh_start_xen - LOAD_OFFSET);
+ #endif
 +
-+	WARN_ON(!irqs_disabled());
-+
-+	data = this_cpu_read(runtime_data);
-+	ghcb = &data->ghcb_page;
-+
-+	if (unlikely(data->ghcb_active)) {
-+		/* GHCB is already in use - save its contents */
-+
-+		if (unlikely(data->backup_ghcb_active)) {
-+			/*
-+			 * Backup-GHCB is also already in use. There is no way
-+			 * to continue here so just kill the machine. To make
-+			 * panic() work, mark GHCBs inactive so that messages
-+			 * can be printed out.
-+			 */
-+			data->ghcb_active        = false;
-+			data->backup_ghcb_active = false;
-+
-+			instrumentation_begin();
-+			panic("Unable to handle #VC exception! GHCB and Backup GHCB are already in use");
-+			instrumentation_end();
-+		}
-+
-+		/* Mark backup_ghcb active before writing to it */
-+		data->backup_ghcb_active = true;
-+
-+		state->ghcb = &data->backup_ghcb;
-+
-+		/* Backup GHCB content */
-+		*state->ghcb = *ghcb;
-+	} else {
-+		state->ghcb = NULL;
-+		data->ghcb_active = true;
-+	}
-+
-+	return ghcb;
-+}
-+
-+noinstr void __sev_put_ghcb(struct ghcb_state *state)
-+{
-+	struct sev_es_runtime_data *data;
-+	struct ghcb *ghcb;
-+
-+	WARN_ON(!irqs_disabled());
-+
-+	data = this_cpu_read(runtime_data);
-+	ghcb = &data->ghcb_page;
-+
-+	if (state->ghcb) {
-+		/* Restore GHCB from Backup */
-+		*ghcb = *state->ghcb;
-+		data->backup_ghcb_active = false;
-+		state->ghcb = NULL;
-+	} else {
-+		/*
-+		 * Invalidate the GHCB so a VMGEXIT instruction issued
-+		 * from userspace won't appear to be valid.
-+		 */
-+		vc_ghcb_invalidate(ghcb);
-+		data->ghcb_active = false;
-+	}
-+}
++#include "../boot/startup/exports.h"
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
