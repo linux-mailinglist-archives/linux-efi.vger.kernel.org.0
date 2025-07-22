@@ -1,181 +1,249 @@
-Return-Path: <linux-efi+bounces-4435-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4436-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66C0B0D23C
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Jul 2025 08:57:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22470B0D31C
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Jul 2025 09:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF9FC3AF34C
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Jul 2025 06:56:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D05C3BB8CB
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Jul 2025 07:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3CF2C1597;
-	Tue, 22 Jul 2025 06:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5368C2C08DD;
+	Tue, 22 Jul 2025 07:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CpfcgUnu"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ur3jzcBt"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B986288531;
-	Tue, 22 Jul 2025 06:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4098F23FC52
+	for <linux-efi@vger.kernel.org>; Tue, 22 Jul 2025 07:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753167361; cv=none; b=eiblMF0NaWZeKcDKG3HuFak0dGEIvvCBC+0Bt8yAM4gxP7GBhsxU8UJliQnKT0CqE+1yl2XZOTfwsqe+gVU8o81Y9pojwDCMkGpX3WlaM7nDhVToa7uyQHBh+mTrINmoprr7O5aavvbnJCd46PpYC/6n2R5i72IW+RLL2xXLRhA=
+	t=1753169393; cv=none; b=sF4O82h/7fGgczFpSmnpAZ+WgbjoVo+3STRY0/LPlTvIosTNquXjTmXHHsaGM/1bmhl21JCCMO3xoyTc3hAlz+7/sUeEnlHFs5wHDDBVqfHa/slrDzLpcU2cqFTaPxopqHTqvawmEaHe962TtPL4jfW8Hn7cFEgpx4IM5ol/f5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753167361; c=relaxed/simple;
-	bh=DqE2r+jnLUTL7QjlcN7tboq45VqA22jH4eIVD8o4Gmo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QAJgP20a1duVeppOqeal2e+DlUQ49vNLLuIzhW2wJ9VfGd9Q9ReBA3bS2yIttHRwmIO+oXx5OM3w8k/iMi3VkJ/trhvV8btukQ4rk1T3l5v8yBDll3Vqy3dEgR00YTrNKG/tdXfZhM0zyOjt8wiHo6H9Od/YA+MuTwcte1dhiFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpfcgUnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB071C19421;
-	Tue, 22 Jul 2025 06:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753167360;
-	bh=DqE2r+jnLUTL7QjlcN7tboq45VqA22jH4eIVD8o4Gmo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CpfcgUnuDL0Vl921O+6i/yShR++00pNLOKABN64TGoQv08s4JWDaq5R787TzRwPYd
-	 SOxP3mvcTg3o5UodLqlybzcfO2KW0UIPKod6tyjXn4Q6f0Jg20Bo4EcbVyst6PFIeD
-	 9wwLag5HZhkuEkGdG4rGL0/xDa1dd1XF4wE0tl/b+CrzT64kGYr4RZg1sRlNLV6OW9
-	 D1EcUuEM2t8ys5AutC5biwDJeSbkbVn8adA+/943wMPAxGJivryo7aGbp+SI8Q2V02
-	 kg6rNPNzOZNNl41J5VZzJI8EAO2Ut8rnz8gAHCFuXdd0jodm+XgB+V+DD74LOgNTj5
-	 FmJF7Vu5xhdxg==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32b7f41d3e6so48641711fa.1;
-        Mon, 21 Jul 2025 23:56:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUX5wKbZm2IOtUum/OGqvpO4z6HuCoB1LDU2yLwkY/f5Plsi8y4zE7js47QLNR0MkFLXMM=@vger.kernel.org, AJvYcCVDFvz1UDnN4bfMZaZgoSiBU61uNCyrxz+1ErMzitvXnzAlZWI9i5+nvxqxh5s7fy2Laa8PrZJbca+7@vger.kernel.org, AJvYcCVXWLC8kFscT4NpsDZZFxDbZ1pu5IWgbTG27fSBGPQgOFAhz6tYiTgQZGgiFozgYMae+vl17pTXVFmX2O5WaB9jXRhz/g==@vger.kernel.org, AJvYcCVfWZPG7npEyTbMf5CuHA0vK3Bh81fIGfE5oziQZ9WMjmNkuKAYdW+D81lLZlHoZy6rErgEY+L/QCHc@vger.kernel.org, AJvYcCVj6WVTPqRmsxR9US0Joe4xnrPVkYsbsYT++zuIpmTRkEHX9xvIqIZ7MyFjVPnW3CqfuvbKMr5vEoLa6A==@vger.kernel.org, AJvYcCWIhHeca4enoslA8mdW5sv2IpglC0O/kcNO1B+dftXygCOgwvIKyfDo3YJI5TkOiCO80vNC+35WXCRown6gjbS4SyGc@vger.kernel.org, AJvYcCWKpdWnXbrCDuydrQBZwMHAUbEn6sGmeLTp+AYxZyVQ+HylMHErW7RpIkJHS8eog07E4je8+5aK+LCcalpzfDgM@vger.kernel.org, AJvYcCWWRMDezKzELWTei7j8lwehVzYU2wXXzGpbEo9LsULQJqvW/sAJPS8rUcyMNoX/SLuhruyJ0kaXOfp1Q1wH@vger.kernel.org, AJvYcCWaFIstkBLEsbsyiPCjVFAr09vbqxYy8dhM+o9xHEbwxdiirKcP4bmleBRy7fZerOWHI+VknG0EVklZ07EU@vger.kernel.org, AJvYcCWwTRRT
- 6vJOEDwauzGDPFuIsF6zvAqUmVu976G21HrW9NMF8co5qYnVLJeRX66VOCgFq0Bw717UdQRQGTUdWBC64c/Try4J@vger.kernel.org, AJvYcCWyes6iceGphS7jGv/ls1AtiWGzyXRtfigL4fqxx/xrf/Sw+WaanLwDyp+k2kIwaF7mtt845IqkLVHm8g==@vger.kernel.org, AJvYcCX8rIOD/qSM4PM4IVveozDj2YjXy0m4kU8jyFdGCHpBY4yFfq0NewdYaQIULZezfmeXafsp/IRUX1DL1wmGhiVp@vger.kernel.org, AJvYcCXcRc3v6VqLNOTSPnRuq5qB7YOR3ONHs/zUFF1SQ6LHMLYPwCyGFQ+xAzBHWMT73HhYpC4LGQp8KHP/Vg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3Cy5HykqPvtQ5L4xKmkwIDzkKvL6nHs1mHEJ4eifUwYsfa/DJ
-	C+/llk2ypanRlVGw/69/D1y6SVgb4NgL6jYrUBzsTgVraZGV964/HhlSXLoWc2zuCuVkXbH2viD
-	CPk7MY3bCa8axRF4IL3qKDHpWaHWCJ3s=
-X-Google-Smtp-Source: AGHT+IHafl72rt/goLHslFsPSeMLrUwjaR0SoHeFAxURGVfbf4gcV3AlCo9M3FCJzrvPSuMBFqrA7K/+xkn2H/6KxwI=
-X-Received: by 2002:a05:651c:b11:b0:32b:952f:3e0 with SMTP id
- 38308e7fff4ca-330d25506d3mr8241951fa.7.1753167358762; Mon, 21 Jul 2025
- 23:55:58 -0700 (PDT)
+	s=arc-20240116; t=1753169393; c=relaxed/simple;
+	bh=FINodexBHvkZshOtpnTt8GEZrxrxOo9Yvv+EhIE+/gM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=i3hceveew/BImZ+phRgEy+OGqNnnwApBauvyFLyFRmMgLTJ+jTplh8JopMCW5YInAHUjlWVoPuEhuxv2fQetGsytKodjXxJ16TIAuqQHzNeJTn8IVZjiKFRDFveunD05p8vm28fYGgkcu7g4AjyyJoWtqBX3xu1uMFa3LtmM0V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ur3jzcBt; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3af3c860ed7so2033933f8f.1
+        for <linux-efi@vger.kernel.org>; Tue, 22 Jul 2025 00:29:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753169389; x=1753774189; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Vr/hEWsfOUPI5y3DFpYj5AsIj2tX7sGdT9gfjozAGQ4=;
+        b=ur3jzcBtJZ+dPnSoxEBKh/FaVNStBDlwO9uC/D5wR5irhnqTaVKjkBlvmJ/TsMB/kl
+         wPJmu1zTGLtjH7Itrp37Xra+Cpmh8cR8bfDJBIfIR3NOGcJ/mrbShU/Ng4gaigkjiWnI
+         PQCm2PAoq35pZqnRDCy2wqRlEpJjw/1Gn1svsHInNz5kaBiliV5pBLImGrk1tDZUUlGJ
+         s/RfSEsc7McJM72v6WV5MO+nZPqQ3H+Iln7kZ5nt4BfvpF7mipB4rG1DQdgImqGxWXqe
+         mdZxOkA/lngzNerr3lpZpG3PYpCvV5TiHWTNVHVwxrqwQD7xReCFq8Cvn+7JBz3ZNTS3
+         xJiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753169389; x=1753774189;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Vr/hEWsfOUPI5y3DFpYj5AsIj2tX7sGdT9gfjozAGQ4=;
+        b=imeuq5Wemauq2J3UN24lhzry10h+BFtphtylV6L1OoEZhuRtUW2x/bTBQP2zXw1I5j
+         oRteugjKVzOrAyvcm4U012wR0QxF3kYVwf4UTxmgFqTn8ERB5nhaLzMhNJr7Hhpdy6D4
+         lNgjZrvsZqWPEnhR7bqApDvXekpyiji0ghx0z/j13lK0BGj+jRAb70rduDWtMFJnQbHl
+         yEeCmCAw9j3TWRcNXmBCNbEVurosoofX7XvRwD9GmxfiTkX5xMN6s4xzKWuBWiuAcU7+
+         MBwX5F4ljszqjI8XrCVvj9XC6Wn1euFlFnTHzaxmVk31hRHctKvGiyOxa4VwDLdS589q
+         7zNQ==
+X-Gm-Message-State: AOJu0YyYKYthSBqFJ98Kqw4+anEMGdvMJm7Pra3R5kR7ywAvnz3R8Mwg
+	4pNw1PfpDeHpwFpKdPA+vkgmGMm1+PFpmvMz8YCR+yC5Mbc5J+VFeJRFmR5eNWrzI+eo8o0WKw=
+	=
+X-Google-Smtp-Source: AGHT+IE08ZdjgH4qRY0l4Uu3uK4AGfCUGUW8H8qAa/OECpkb0GBtWMBzn3l8Tqpzvk9k++FLlr5Kq/D9
+X-Received: from wmbdr7.prod.google.com ([2002:a05:600c:6087:b0:455:fdc1:e6])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2dc1:b0:3a4:f786:4fa1
+ with SMTP id ffacd0b85a97d-3b60e4d1e7fmr18292447f8f.2.1753169389698; Tue, 22
+ Jul 2025 00:29:49 -0700 (PDT)
+Date: Tue, 22 Jul 2025 09:27:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250717231756.make.423-kees@kernel.org> <20250717232519.2984886-4-kees@kernel.org>
- <aHoHkDvvp4AHIzU1@kernel.org> <202507181541.B8CFAC7E@keescook>
- <CAMj1kXGAwjChyFvjQcTbL8dFXkFWnn9n47bkN7FP=+EsLNsJdg@mail.gmail.com>
- <aH42--h-ARsvX5Wk@willie-the-truck> <202507211311.8DAC4C7@keescook> <202507211349.D93679FB25@keescook>
-In-Reply-To: <202507211349.D93679FB25@keescook>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 22 Jul 2025 16:55:47 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXGoy7D+_hKyQrT_uXdjuFMYGUEMDYdRf6mx69PLeuBQQg@mail.gmail.com>
-X-Gm-Features: Ac12FXxN7NYW1J5gsbL-uJ8eWKShqoH6QBvGfux9lCX9EcW_ZhNmDxq92IzpXG0
-Message-ID: <CAMj1kXGoy7D+_hKyQrT_uXdjuFMYGUEMDYdRf6mx69PLeuBQQg@mail.gmail.com>
-Subject: Re: [PATCH v3 04/13] x86: Handle KCOV __init vs inline mismatches
-To: Kees Cook <kees@kernel.org>
-Cc: Will Deacon <will@kernel.org>, Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
-	Hans de Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Michal Wilczynski <michal.wilczynski@intel.com>, 
-	Juergen Gross <jgross@suse.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Roger Pau Monne <roger.pau@citrix.com>, 
-	David Woodhouse <dwmw@amazon.co.uk>, Usama Arif <usama.arif@bytedance.com>, 
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>, 
-	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net, 
-	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-mm@kvack.org, Ingo Molnar <mingo@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	sparclinux@vger.kernel.org, llvm@lists.linux.dev
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7767; i=ardb@kernel.org;
+ h=from:subject; bh=w7ifELRFeTN+34kNkATi8E5SmMjq3w2AYau/T1UaPQY=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIaPe1p9L+9e2RdZLWM5ZlM0+2/prZaJrCQ/LxJqbM+WDO
+ BwSP+/oKGVhEONikBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNpecLwz2xb6V/+6ovnWUXv
+ npzFL+fOonBqY2pQ466tTL9LpxlLVzAytBoavClymbu4/F6uZqLG1NceN7vjhDYftGCo6mYribJ nBgA=
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Message-ID: <20250722072708.2079165-24-ardb+git@google.com>
+Subject: [PATCH v6 00/22] x86: strict separation of startup code
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>, 
+	Kevin Loughlin <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nikunj A Dadhania <nikunj@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 22 Jul 2025 at 06:49, Kees Cook <kees@kernel.org> wrote:
->
-> On Mon, Jul 21, 2025 at 01:14:36PM -0700, Kees Cook wrote:
-> > On Mon, Jul 21, 2025 at 01:47:55PM +0100, Will Deacon wrote:
-> > > On Sun, Jul 20, 2025 at 04:10:01PM +1000, Ard Biesheuvel wrote:
-> > > > On Sat, 19 Jul 2025 at 08:51, Kees Cook <kees@kernel.org> wrote:
-> > > > > On Fri, Jul 18, 2025 at 11:36:32AM +0300, Mike Rapoport wrote:
-> > > > > > On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
-> > > > > > > When KCOV is enabled all functions get instrumented, unless the
-> > > > > > > __no_sanitize_coverage attribute is used. To prepare for
-> > > > > > > __no_sanitize_coverage being applied to __init functions, we have to
-> > > > > > > handle differences in how GCC's inline optimizations get resolved. For
-> > > > > > > x86 this means forcing several functions to be inline with
-> > > > > > > __always_inline.
-> > > > > > >
-> > > > > > > Signed-off-by: Kees Cook <kees@kernel.org>
-> > > > > >
-> > > > > > ...
-> > > > > >
-> > > > > > > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> > > > > > > index bb19a2534224..b96746376e17 100644
-> > > > > > > --- a/include/linux/memblock.h
-> > > > > > > +++ b/include/linux/memblock.h
-> > > > > > > @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
-> > > > > > >                                       NUMA_NO_NODE);
-> > > > > > >  }
-> > > > > > >
-> > > > > > > -static inline void *memblock_alloc_from(phys_addr_t size,
-> > > > > > > +static __always_inline void *memblock_alloc_from(phys_addr_t size,
-> > > > > > >                                             phys_addr_t align,
-> > > > > > >                                             phys_addr_t min_addr)
-> > > > > >
-> > > > > > I'm curious why from all memblock_alloc* wrappers this is the only one that
-> > > > > > needs to be __always_inline?
-> > > > >
-> > > > > Thread-merge[1], adding Will Deacon, who was kind of asking the same
-> > > > > question.
-> > > > >
-> > > > > Based on what I can tell, GCC has kind of fragile inlining logic, in the
-> > > > > sense that it can change whether or not it inlines something based on
-> > > > > optimizations. It looks like the kcov instrumentation being added (or in
-> > > > > this case, removed) from a function changes the optimization results,
-> > > > > and some functions marked "inline" are _not_ inlined. In that case, we end up
-> > > > > with __init code calling a function not marked __init, and we get the
-> > > > > build warnings I'm trying to eliminate.
-> > >
-> > > Got it, thanks for the explanation!
-> > >
-> > > > > So, to Will's comment, yes, the problem is somewhat fragile (though
-> > > > > using either __always_inline or __init will deterministically solve it).
-> > > > > We've tripped over this before with GCC and the solution has usually
-> > > > > been to just use __always_inline and move on.
-> > > > >
-> > > >
-> > > > Given that 'inline' is already a macro in the kernel, could we just
-> > > > add __attribute__((__always_inline__)) to it when KCOV is enabled?
-> > >
-> > > That sounds like a more robust approach and, by the sounds of it, we
-> > > could predicate it on GCC too. That would also provide a neat place for
-> > > a comment describing the problem.
-> > >
-> > > Kees, would that work for you?
-> >
-> > That seems like an extremely large hammer for this problem, IMO. It
-> > feels like it could cause new strange corner cases. I'd much prefer the
-> > small fixes I've currently got since it keeps it focused. KCOV is
-> > already enabled for "allmodconfig", so any new instances would be found
-> > very quickly, etc. (And GCC's fragility in this regard has already been
-> > exposed to these cases -- it's just that I changed one of the
-> > combinations of __init vs inline vs instrumentation.
-> >
-> > I could give it a try, if you really prefer the big hammer approach...
->
-> I gave it a try -- it fails spectacularly. ;) Let's stick to my small
-> fixes instead?
->
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Fair enough :-)
+This series implements a strict separation between startup code and
+ordinary code, where startup code is built in a way that tolerates being
+invoked from the initial 1:1 mapping of memory.
+
+The existing approach of emitting this code into .head.text and checking
+for absolute relocations in that section is not 100% safe, and produces
+diagnostics that are sometimes difficult to interpret. [0]
+
+Instead, rely on symbol prefixes, similar to how this is implemented for
+the EFI stub and for the startup code in the arm64 port. This ensures
+that startup code can only call other startup code, unless a special
+symbol alias is emitted that exposes a non-startup routine to the
+startup code.
+
+This is somewhat intrusive, as there are many data objects that are
+referenced both by startup code and by ordinary code, and an alias needs
+to be emitted for each of those. If startup code references anything
+that has not been made available to it explicitly, a build time link
+error will occur.
+
+This ultimately allows the .head.text section to be dropped entirely, as
+it no longer has a special significance. Instead, code that only
+executes at boot is emitted into .init.text as it should.
+
+The majority of changes is around early SEV code. The main issue is that
+its use of GHCB pages and SVSM calling areas in code that may run from
+both the 1:1 mapping and the kernel virtual mapping is problematic as it
+relies on __pa() to perform VA to PA translations, which are ambiguous
+in this context. Also, __pa() pulls in non-trivial instrumented code
+when CONFIG_DEBUG_VIRTUAL=y and so it is better to avoid VA to PA
+translations altogether in the startup code.
+
+Changes since v5:
+- Some cosmetic touchups to patch #1
+- Fix error spotted by Tom in patch #2
+- Rejig objtool 'noabs' feature using an arch hook to check for
+  relocations that should be considered absolute, which includes all of
+  R_X86_64_32, R_X86_64_32S and R_X86_64_64 on x86_64
+
+Changes since v4:
+- Incorporate feedback from Tom, and add a couple of RBs
+- Drop patch that moved the MSR save/restore out of the early page state
+  change helper - this is less efficient but likely negligible in
+  practice
+- Drop patch that unified the SEV-SNP hypervisor feature check, which
+  was identified by Nikunj as the one breaking SEV-SNP boot.
+
+Changes since RFT/v3:
+- Rebase onto tip/master
+- Incorporate Borislav's feedback on v3
+- Switch to objtool to check for absolute references in startup code
+- Remap inittext R-X when running on EFI implementations that require
+  strict R-X/RW- separation
+- Include a kbuild fix to incorporate arch/x86/boot/startup/ in the
+  right manner
+- For now, omit the LA57 changes that remove the problematic early
+  5-level paging checks. We can revisit this once there is agreement on
+  the approach. 
+
+Changes since RFT/v2:
+- Rebase onto tip/x86/boot and drop the patches from the previous
+  revision that have been applied in the meantime.
+- Omit the pgtable_l5_enabled() changes for now, and just expose PIC
+  aliases for the variables in question - this can be sorted later.
+- Don't use the boot SVSM calling area in snp_kexec_finish(), but pass
+  down the correct per-CPU one to the early page state API.
+- Rename arch/x86/coco/sev/sev-noinstr.o to arch/x86/coco/sev/noinstr.o
+- Further reduce the amount of SEV code that needs to be constructed in
+  a special way.
+
+Change since RFC/v1:
+- Include a major disentanglement/refactor of the SEV-SNP startup code,
+  so that only code that really needs to run from the 1:1 mapping is
+  included in the startup/ code
+
+- Incorporate some early notes from Ingo
+
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Kevin Loughlin <kevinloughlin@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Nikunj A Dadhania <nikunj@amd.com>
+
+[0] https://lore.kernel.org/all/CAHk-=wj7k9nvJn6cpa3-5Ciwn2RGyE605BMkjWE4MqnvC9E92A@mail.gmail.com/
+
+Ard Biesheuvel (22):
+  x86/sev: Separate MSR and GHCB based snp_cpuid() via a callback
+  x86/sev: Use MSR protocol for remapping SVSM calling area
+  x86/sev: Use MSR protocol only for early SVSM PVALIDATE call
+  x86/sev: Run RMPADJUST on SVSM calling area page to test VMPL
+  x86/sev: Move GHCB page based HV communication out of startup code
+  x86/sev: Avoid global variable to store virtual address of SVSM area
+  x86/sev: Share implementation of MSR-based page state change
+  x86/sev: Pass SVSM calling area down to early page state change API
+  x86/sev: Use boot SVSM CA for all startup and init code
+  x86/boot: Drop redundant RMPADJUST in SEV SVSM presence check
+  x86/boot: Provide PIC aliases for 5-level paging related constants
+  x86/sev: Provide PIC aliases for SEV related data objects
+  x86/sev: Move __sev_[get|put]_ghcb() into separate noinstr object
+  x86/sev: Export startup routines for later use
+  objtool: Add action to check for absence of absolute relocations
+  x86/boot: Check startup code for absence of absolute relocations
+  x86/boot: Revert "Reject absolute references in .head.text"
+  x86/kbuild: Incorporate boot/startup/ via Kbuild makefile
+  x86/boot: Create a confined code area for startup code
+  efistub/x86: Remap inittext read-execute when needed
+  x86/boot: Move startup code out of __head section
+  x86/boot: Get rid of the .head.text section
+
+ arch/x86/Kbuild                            |   2 +
+ arch/x86/Makefile                          |   1 -
+ arch/x86/boot/compressed/Makefile          |   2 +-
+ arch/x86/boot/compressed/misc.c            |   2 +
+ arch/x86/boot/compressed/sev-handle-vc.c   |   3 +
+ arch/x86/boot/compressed/sev.c             | 108 +------
+ arch/x86/boot/startup/Makefile             |  22 ++
+ arch/x86/boot/startup/exports.h            |  14 +
+ arch/x86/boot/startup/gdt_idt.c            |   4 +-
+ arch/x86/boot/startup/map_kernel.c         |   4 +-
+ arch/x86/boot/startup/sev-shared.c         | 318 ++++++--------------
+ arch/x86/boot/startup/sev-startup.c        | 196 ++----------
+ arch/x86/boot/startup/sme.c                |  27 +-
+ arch/x86/coco/sev/Makefile                 |   8 +-
+ arch/x86/coco/sev/core.c                   | 169 ++++++++---
+ arch/x86/coco/sev/{sev-nmi.c => noinstr.c} |  74 +++++
+ arch/x86/coco/sev/vc-handle.c              |   2 +
+ arch/x86/coco/sev/vc-shared.c              | 143 ++++++++-
+ arch/x86/include/asm/boot.h                |   2 +
+ arch/x86/include/asm/init.h                |   6 -
+ arch/x86/include/asm/setup.h               |   1 +
+ arch/x86/include/asm/sev-internal.h        |  27 +-
+ arch/x86/include/asm/sev.h                 |  17 +-
+ arch/x86/kernel/head64.c                   |   5 +-
+ arch/x86/kernel/head_32.S                  |   2 +-
+ arch/x86/kernel/head_64.S                  |  10 +-
+ arch/x86/kernel/vmlinux.lds.S              |   9 +-
+ arch/x86/mm/mem_encrypt_amd.c              |   6 -
+ arch/x86/mm/mem_encrypt_boot.S             |   6 +-
+ arch/x86/platform/pvh/head.S               |   2 +-
+ arch/x86/tools/relocs.c                    |   8 +-
+ drivers/firmware/efi/libstub/x86-stub.c    |   4 +-
+ tools/objtool/arch/x86/decode.c            |  12 +
+ tools/objtool/builtin-check.c              |   2 +
+ tools/objtool/check.c                      |  47 ++-
+ tools/objtool/include/objtool/arch.h       |   1 +
+ tools/objtool/include/objtool/builtin.h    |   1 +
+ 37 files changed, 643 insertions(+), 624 deletions(-)
+ create mode 100644 arch/x86/boot/startup/exports.h
+ rename arch/x86/coco/sev/{sev-nmi.c => noinstr.c} (61%)
+
+
+base-commit: 34481698fd9c3c21425ab744e9e15dc2ce3b1b85
+-- 
+2.50.0.727.gbf7dc18ff4-goog
+
 
