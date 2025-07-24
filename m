@@ -1,202 +1,168 @@
-Return-Path: <linux-efi+bounces-4469-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4471-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC65B10024
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Jul 2025 07:50:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00956B10AD0
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Jul 2025 15:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF14E1764FB
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Jul 2025 05:50:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02A29AC3ADA
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Jul 2025 12:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD67220F51;
-	Thu, 24 Jul 2025 05:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A44E2D46DF;
+	Thu, 24 Jul 2025 12:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QgWgAc1Z"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="eA0TL8wd"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pf-012.whm.fr-par.scw.cloud (pf-012.whm.fr-par.scw.cloud [51.159.173.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D87215055;
-	Thu, 24 Jul 2025 05:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220C42D4B6E;
+	Thu, 24 Jul 2025 12:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.173.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753336231; cv=none; b=t8+UZP2ynZgHRTZ0lvoc9ko3LFfNAD9lpg1anf/FBirbWqzCUhSc0i9IW7od9g+sBTFnUFbdQDSC17km9xAvm6GEIAhUmF6ZjiGTmRUPPpqajDmB1yQGBg7KR/7DoSFxAEJXsi3WQDfniQ1NsO6uop4/9v1VAjCJDoUI8xbC9nA=
+	t=1753361993; cv=none; b=oGERiacL12q6jnw8EG/2bzfODr/LQ0eUym17oqWUxORMiA11SLBw7hLiyYqAWENEjZ5wfFQaLSBNjDe9Lt08zEowPqtWyCBNVILSwsdyMf7Gi1udY6b0UEYaHQ6YJ+cviDEvD5/q/aFsqBYGuIZ/HiHkt9FhXaUhwPSTDJL2j8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753336231; c=relaxed/simple;
-	bh=p+7YUBTmffdnZ8pKAPuZ2rzC3Zvp9P0MFRgY7Xz1ydU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Bfc9RDBQpv63MScwymEV0PIEpL7yQDcIM+6INBWu8ZZnUwR3J6mimoZT22zXSG0HaS/OSMt21hrgsZtxR3HD3+N+eEw9+CtIehgqf/8km/hyeIJzZc1td3J+mkYySKGQZ3/Phlx7UYoMafpcCTa/nN+as88SK5hBBkm7DWyhwQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QgWgAc1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8E6C2BCB2;
-	Thu, 24 Jul 2025 05:50:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753336230;
-	bh=p+7YUBTmffdnZ8pKAPuZ2rzC3Zvp9P0MFRgY7Xz1ydU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgWgAc1Z4h7uumRs3FFTKmk6zT6WYc3ZB83iSXiAZCG3NFITyJRewAAhvM7SCdTB4
-	 RxT11O3im9HodJy3iQHDCIux7eUlVSNQW6vtNOpk+XKga6Y6fSj/9wwhDqjvs9xFUF
-	 rCGWpttB1snOwFhFvWshiFbzZcXiHhUf9pIp6AbINpGCNdRMNio67jDVRMKJBh7BuE
-	 fdkdGJldi6mApzEQpFIUP62H0n6GbSbzIk9V1TPCmz4OwMw6YkG/4j38bPS4hFhKJ2
-	 k2xWrnI6HQnV9XChu9iVDC9Tei62bf2nNEwWaweCdPI6/DaXZd3bddGMJWg3LAw2pQ
-	 U8NDMsvEgKExw==
-From: Kees Cook <kees@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Kees Cook <kees@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-kbuild@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-hardening@vger.kernel.org,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Gavin Shan <gshan@redhat.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	James Morse <james.morse@arm.com>,
-	Oza Pawandeep <quic_poza@quicinc.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michal Wilczynski <michal.wilczynski@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Roger Pau Monne <roger.pau@citrix.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Usama Arif <usama.arif@bytedance.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Andy Lutomirski <luto@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Bibo Mao <maobibo@loongson.cn>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	kvm@vger.kernel.org,
-	ibm-acpi-devel@lists.sourceforge.net,
-	platform-driver-x86@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kexec@lists.infradead.org,
-	linux-security-module@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v4 4/4] kstack_erase: Support Clang stack depth tracking
-Date: Wed, 23 Jul 2025 22:50:28 -0700
-Message-Id: <20250724055029.3623499-4-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250724054419.it.405-kees@kernel.org>
-References: <20250724054419.it.405-kees@kernel.org>
+	s=arc-20240116; t=1753361993; c=relaxed/simple;
+	bh=NesxOpaVLIXe2tLn2aFWrHA3FbsXQq8dtDyRFQH8OUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k26/Zo6jdq45I2LfP4es9sn3rmnwXCQGbtMYxTb0+PtaSLu0Vw38hgsWne75mj3DV3n0UutxmB5kAo2AOkiz/6JCmxfP938R6/2vOH2r73hcy0BHDQT5FvIazT6W77tSR4bFEOJsAqaTRf83qQH8T4ENiqXqjbtlpYrKnyzsx4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=eA0TL8wd; arc=none smtp.client-ip=51.159.173.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=NqWnKvywWYv7stEIvhc7qFZWUlwqo5/NVMaYKbrw5bo=; b=eA0TL8wddzqRfMF0QLIq04iIUi
+	oEVh8KnTYMoyhTCLFcQlip8DDG/tDWVp35+NoCny9oaUKcpxmCxjVoMZWpOmHsdYelUCT7sLScUoa
+	zp1SjZwxAhRNnCOx93wJFkWI3mhNjelXrIJ9ODXqhD0KpgGg2rjNY5lXSuJVvO5YM3GLVePjZaPJ6
+	oHoigANY3OjNXHoXrmV5yf/jdLI3neesocca82PZ3pu9ijHhE+NFOAOJ2lXc1OFun9146XYltc1Bp
+	+dCF1NUWGhhrQq6eEcXeBBy2KsJzA/LhvvbsbaTbzTwEsq16t2CyIPv6V0eUrXiJjH50E4MKnZaWI
+	YDiVzdBg==;
+Received: from laubervilliers-658-1-215-187.w90-63.abo.wanadoo.fr ([90.63.246.187]:29701 helo=archlinux)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <nicolas.bouchinet@oss.cyber.gouv.fr>)
+	id 1uevY0-0000000Cioq-0vwt;
+	Thu, 24 Jul 2025 14:59:42 +0200
+Date: Thu, 24 Jul 2025 14:59:39 +0200
+From: Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>
+To: Paul Moore <paul@paul-moore.com>
+Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, 
+	Xiu Jianfeng <xiujianfeng@huawei.com>, linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Yue Haibing <yuehaibing@huawei.com>, Tanya Agarwal <tanyaagarwal25699@gmail.com>, 
+	Kees Cook <kees@kernel.org>, linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 0/2] Secure Boot lock down
+Message-ID: <xfabe3wvdsfkch3yhxmswhootf5vj6suyow5s3ffumcnjkojjz@e7ojgu3s7ion>
+References: <1750975839-32463-1-git-send-email-hamzamahfooz@linux.microsoft.com>
+ <20250716212925.GA14322@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <CAHC9VhS3qY=+DVYqzkgbHLETUo4KgQ17qr_BC3pn9TeG+cr8Mg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2299; i=kees@kernel.org; h=from:subject; bh=p+7YUBTmffdnZ8pKAPuZ2rzC3Zvp9P0MFRgY7Xz1ydU=; b=owGbwMvMwCVmps19z/KJym7G02pJDBmNJ5fsPnPUwKQyTLv6YDRX59942Z9pVg4x/Z3tr6sPL i8Lmbqoo5SFQYyLQVZMkSXIzj3OxeNte7j7XEWYOaxMIEMYuDgFYCLbGRj+55xsNLv8fgpvz+zJ 97Q2v1jyfM6aXx5r3h0o/XvrBVfaBhWG/34taus75nNe6jl2+9BH9ihD5yM7dLl817dcaviWpVx +gAsA
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHC9VhS3qY=+DVYqzkgbHLETUo4KgQ17qr_BC3pn9TeG+cr8Mg@mail.gmail.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: nicolas.bouchinet@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: nicolas.bouchinet@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Wire up CONFIG_KSTACK_ERASE to Clang 21's new stack depth tracking
-callback[1] option.
+Hi Hamza, thanks for your patch.
 
-Link: https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-stack-depth [1]
-Signed-off-by: Kees Cook <kees@kernel.org>
+Thanks, Paul, for the forward. 
+
+Sorry for the delay, we took a bit of time to do some lore archaeology
+and discuss it with Xiu. 
+
+As you might know, this has already been through debates in 2017 [1]. At
+that time, the decision was not to merge this behavior. 
+
+Distros have indeed carried downstream patches reflecting this behavior
+for a long time and have been affected by vulnerabilities like
+CVE-2025-1272 [2], which is caused by the magic sprinkled in
+setup_arch(). 
+
+While your implementation looks cleaner to me. One of the points in
+previous debates was to have a Lockdown side Kconfig knob to enable or
+not this behavior. It would gate the registration of the Lockdown LSM to
+the security_lock_kernel_down() hook. 
+
+However, what bothers me is that with this patch, if UEFI Secure Boot is
+activated and a user wants to disable Lockdown, they need to go through
+disabling Secure Boot. I'm really not fond of that. A user shouldn't
+have to be forced to disable security firmware settings because of a
+kernel feature. 
+
+We thus might want to add a way to disable Lockdown through kernel
+cmdline. However, letting a user disable Lockdown through kernel cmdline
+would allow easy Lockdown bypasses, especially since the kernel cmdline
+as well as the initramfs are not integrity protected on most distros. A
+root user would be able to tamper with kernel cmdline and change its
+behavior across reboot. 
+
+IMHO, if someone wants to enable Lockdown, the easy and correct way is
+to set the kernel cmdline and integrity protect it using an UKI for
+example. If the chain of trust is respected, no Lockdown bypasses should
+be possible. 
+
+I'm still open to hearing new arguments about this patch. 
+
+[1]: https://lore.kernel.org/all/29447.1509035858@warthog.procyon.org.uk/
+[2]: https://access.redhat.com/security/cve/cve-2025-1272
+
+Best regards,
+
+Nicolas
+
 ---
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nicolas.schier@linux.dev>
-Cc: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: <linux-kbuild@vger.kernel.org>
-Cc: <kasan-dev@googlegroups.com>
-Cc: <linux-hardening@vger.kernel.org>
----
- security/Kconfig.hardening    | 5 ++++-
- scripts/Makefile.kstack_erase | 6 ++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
-index f7aa2024ab25..b9a5bc3430aa 100644
---- a/security/Kconfig.hardening
-+++ b/security/Kconfig.hardening
-@@ -82,10 +82,13 @@ choice
- 
- endchoice
- 
-+config CC_HAS_SANCOV_STACK_DEPTH_CALLBACK
-+	def_bool $(cc-option,-fsanitize-coverage-stack-depth-callback-min=1)
-+
- config KSTACK_ERASE
- 	bool "Poison kernel stack before returning from syscalls"
- 	depends on HAVE_ARCH_KSTACK_ERASE
--	depends on GCC_PLUGINS
-+	depends on GCC_PLUGINS || CC_HAS_SANCOV_STACK_DEPTH_CALLBACK
- 	help
- 	  This option makes the kernel erase the kernel stack before
- 	  returning from system calls. This has the effect of leaving
-diff --git a/scripts/Makefile.kstack_erase b/scripts/Makefile.kstack_erase
-index 5223d3a35817..c7bc2379e113 100644
---- a/scripts/Makefile.kstack_erase
-+++ b/scripts/Makefile.kstack_erase
-@@ -8,6 +8,12 @@ kstack-erase-cflags-$(CONFIG_GCC_PLUGIN_STACKLEAK_VERBOSE) += -fplugin-arg-stack
- DISABLE_KSTACK_ERASE := -fplugin-arg-stackleak_plugin-disable
- endif
- 
-+ifdef CONFIG_CC_IS_CLANG
-+kstack-erase-cflags-y += -fsanitize-coverage=stack-depth
-+kstack-erase-cflags-y += -fsanitize-coverage-stack-depth-callback-min=$(CONFIG_KSTACK_ERASE_TRACK_MIN_SIZE)
-+DISABLE_KSTACK_ERASE  := -fno-sanitize-coverage=stack-depth
-+endif
-+
- KSTACK_ERASE_CFLAGS   := $(kstack-erase-cflags-y)
- 
- export STACKLEAK_CFLAGS DISABLE_KSTACK_ERASE
--- 
-2.34.1
-
+On Thu, Jul 17, 2025 at 02:22:04PM -0400, Paul Moore wrote:
+> On Wed, Jul 16, 2025 at 5:29 PM Hamza Mahfooz
+> <hamzamahfooz@linux.microsoft.com> wrote:
+> >
+> > Ping?
+> 
+> Adding the new Lockdown maintainers to the To/CC line for review in
+> case they missed it earlier.  For reference, the patchset can be found
+> at the lore link below:
+> 
+> https://lore.kernel.org/linux-security-module/1750975839-32463-1-git-send-email-hamzamahfooz@linux.microsoft.com/
+> 
+> > On Thu, Jun 26, 2025 at 03:10:37PM -0700, Hamza Mahfooz wrote:
+> > > All major distros have had carried a version of this patch-set
+> > > out of tree for sometime now, but with a bunch of magic (typically
+> > > sprinkled in setup_arch()). Though we can avoid those architecture
+> > > specific quirks if we call efi_get_secureboot_mode() from
+> > > efisubsys_init() and that allows us to have a generic solution.
+> > >
+> > > Hamza Mahfooz (2):
+> > >   security: introduce security_lock_kernel_down()
+> > >   efi: introduce EFI_KERNEL_LOCK_DOWN_IN_SECURE_BOOT
+> > >
+> > >  drivers/firmware/efi/Kconfig  | 10 ++++++++++
+> > >  drivers/firmware/efi/efi.c    |  9 +++++++++
+> > >  include/linux/lsm_hook_defs.h |  1 +
+> > >  include/linux/security.h      |  8 ++++++++
+> > >  security/lockdown/lockdown.c  |  1 +
+> > >  security/security.c           | 15 +++++++++++++++
+> > >  6 files changed, 44 insertions(+)
+> 
+> -- 
+> paul-moore.com
 
