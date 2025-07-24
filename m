@@ -1,99 +1,148 @@
-Return-Path: <linux-efi+bounces-4473-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4474-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C18B10D4F
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Jul 2025 16:22:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31ACEB10DFD
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Jul 2025 16:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A171563D66
-	for <lists+linux-efi@lfdr.de>; Thu, 24 Jul 2025 14:17:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 544E717D976
+	for <lists+linux-efi@lfdr.de>; Thu, 24 Jul 2025 14:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF5D2E2EF7;
-	Thu, 24 Jul 2025 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86615257423;
+	Thu, 24 Jul 2025 14:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdJAINky"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jacnJxvV"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B304C81;
-	Thu, 24 Jul 2025 14:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844AE1C5F23;
+	Thu, 24 Jul 2025 14:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753366426; cv=none; b=Srm48FOb/J3A04n5LwZdvJAqG3RtAwQpHXRP9v3VvRLNKBBjQYOJNn27982oy5Bgh++8LI2OrnAVTET99ra35WIpLEC8KtK7msayr5Ftjnty0/SpB5xhn6FCdXdwNvWRKiMJTf9A+I6KQOTP9VGwELO5I+jrpXuQz0/mSFQ5GD8=
+	t=1753368551; cv=none; b=lT7qnnuDeMX3znnLbhS6Gq+1uC2Fg1C66Hci4Kv7K+eOLSJayHCZ+wkkeOdeQi9eUzoqnf02QxLREf+vYHsj+JEeMz4wS5T94hRqnbgvxE/EyJHRYlBDeqicir8HyAr8mjoDUOgtGllZZuPoY4k255/OpXebheKZ+6lQyA+qJ3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753366426; c=relaxed/simple;
-	bh=/qxJTTEzh01jlFnrh3Ccjd7LLr6vEXxwGyZG4BhP97g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bV4yt97wmTqoSRbyOPR4MtLdR2HuLrlndYHP8lSWq+Au7K+RZLp1o+OBr/BzGnwLrhYKbBz4XHpg3XhGDi6hrbnshuQjExeDUWVxDu+tGkzboOyaor+RclDGImeQrvIBBAEGSbwoEStOUo2Ud/WUMKof31vIniR2xEp+UVDzhpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdJAINky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF99C4CEEF;
-	Thu, 24 Jul 2025 14:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753366426;
-	bh=/qxJTTEzh01jlFnrh3Ccjd7LLr6vEXxwGyZG4BhP97g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tdJAINkymtj2thSAy4DIKcO9znbtYUAxdqmuA3eZ06MqVqP+Tmb/aJjntKAV5PQZ2
-	 EFPhmd+7kxybeKkNguIPyVRTtlB6+zODI1Tf7euYKFDpHjquDFAYr9biL+MUrbQGaN
-	 Ek4Zfw8B9uN/Uh/2yNMfzn+0t5XEWr7HlZGc1RYI7TKy8Bd3hhsxvx+kvMorucA5IT
-	 k3Jn4d3nuBKa1sL1YGJO/tazCsGUvT1L4+Hp82vJFNI6ZTbHkFo6GFs+EONBkvbEwQ
-	 Gmm5JuixdjXR18jXx61RYWtmoOQwfWgI1ZX6iYi6hJx8dvOfCYxzGEQjiIyIVDb66J
-	 2WUBYj0Ejvj8Q==
-Date: Thu, 24 Jul 2025 14:13:41 +0000
-From: sergeh@kernel.org
-To: Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>
-Cc: Paul Moore <paul@paul-moore.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Xiu Jianfeng <xiujianfeng@huawei.com>, linux-kernel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Kees Cook <kees@kernel.org>, linux-efi@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH 0/2] Secure Boot lock down
-Message-ID: <aII_lcRmLr5n70ix@lei>
-References: <1750975839-32463-1-git-send-email-hamzamahfooz@linux.microsoft.com>
- <20250716212925.GA14322@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <CAHC9VhS3qY=+DVYqzkgbHLETUo4KgQ17qr_BC3pn9TeG+cr8Mg@mail.gmail.com>
- <xfabe3wvdsfkch3yhxmswhootf5vj6suyow5s3ffumcnjkojjz@e7ojgu3s7ion>
+	s=arc-20240116; t=1753368551; c=relaxed/simple;
+	bh=+1jGV/EWgej+IBnO2zK32E3tSlPZmUCnL27o7aDh9co=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qdlw7KXw0D4yBa9sbBbPehlsIjyUJSjIkm+kk1D8c52Zxd+ZPa8bBVQaGp9p8T/9p8AtNnpy5BwGKAbVSojDMaIE7iUSu5/zuTwYWqt/+30omRrWA3DZS2lRFDe6uz8yVjAjorh9Obs0IqUHok/gG+l16RkWvvOgu8tk30oQk54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jacnJxvV; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753368550; x=1784904550;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+1jGV/EWgej+IBnO2zK32E3tSlPZmUCnL27o7aDh9co=;
+  b=jacnJxvVUarlMWqrvbOSty/8VIe+oPzSD7WP4LmfkTztw1lh8K6zrvHz
+   pdLdBKjux/aJmW7zxeD4jykroUsoltS4eE5Puuj1YprXBDy5Ei2XRCgEO
+   maRdERjeB2St0xC9db5IJGXyGtX1SMn1RnIgNGC3aVpnEGMr9q7rwmL/1
+   XdVfkUaywrKbHVQBGkYatHrf1hX1Vsor4QgPIXydp3+lXvEu9cjXyT7bE
+   UDEqlmrBmaJTGfUyXhpTFjmM2M+V4pMnW3UfteOz7LAiJhlO48Os7LZt8
+   i/huvwIznLp5x4xa5b81aUJQqiOb4sj6lB6dl3QcclXPN2dECNreoVh3i
+   w==;
+X-CSE-ConnectionGUID: RsD4tHKFRqKMS8IkWLIisw==
+X-CSE-MsgGUID: 4zuQ0QB/TB+sgPAvyBEYCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="67041233"
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
+   d="scan'208";a="67041233"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 07:49:09 -0700
+X-CSE-ConnectionGUID: BaonTbe/TGijFh1Y1d/24A==
+X-CSE-MsgGUID: hGhbahudS2+OmHAEEh8s5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
+   d="scan'208";a="159845710"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO fdefranc-mobl3.localnet) ([10.245.246.151])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 07:49:03 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ Marc Herbert <marc.herbert@linux.intel.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Yazen Ghannam <yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>,
+ Dave Jiang <dave.jiang@intel.com>, tony.luck@intel.com,
+ Gregory Price <gourry@gourry.net>
+Subject: Re: "invalid agent type: 1" in acpi/ghes,
+ cper: Recognize and cache CXL Protocol errors
+Date: Thu, 24 Jul 2025 16:49:00 +0200
+Message-ID: <2937432.AOxP5AVGnv@fdefranc-mobl3>
+In-Reply-To: <8e67a97c-530d-4a1c-ab72-3992a6c5db83@linux.intel.com>
+References:
+ <20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com>
+ <074f5f77-7bef-4857-97fe-b68ee9b0afaf@linux.intel.com>
+ <8e67a97c-530d-4a1c-ab72-3992a6c5db83@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <xfabe3wvdsfkch3yhxmswhootf5vj6suyow5s3ffumcnjkojjz@e7ojgu3s7ion>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Jul 24, 2025 at 02:59:39PM +0200, Nicolas Bouchinet wrote:
-> Hi Hamza, thanks for your patch.
-> 
-> Thanks, Paul, for the forward. 
-> 
-> Sorry for the delay, we took a bit of time to do some lore archaeology
-> and discuss it with Xiu. 
-> 
-> As you might know, this has already been through debates in 2017 [1]. At
-> that time, the decision was not to merge this behavior. 
-> 
-> Distros have indeed carried downstream patches reflecting this behavior
-> for a long time and have been affected by vulnerabilities like
-> CVE-2025-1272 [2], which is caused by the magic sprinkled in
-> setup_arch(). 
-> 
-> While your implementation looks cleaner to me. One of the points in
-> previous debates was to have a Lockdown side Kconfig knob to enable or
-> not this behavior. It would gate the registration of the Lockdown LSM to
-> the security_lock_kernel_down() hook. 
+Hi Marc, Smita,
 
-Well, but there is a default-n kconfig.  What do you mean by "Lockdown
-side Kconfig knob"?  I'm sure I'm missing something, but not sure
-what...
+On Wednesday, July 23, 2025 9:13:34=E2=80=AFAM Central European Summer Time=
+ Marc Herbert wrote:
+>=20
+> On 2025-07-22 12:24, Marc Herbert wrote:
+> > Hi Smita,
+> >=20
+> >   The code below triggers the error "invalid agent type: 1" in Intel
+> > validation (internal issue 15018133056)
+>=20
+> The same test case also triggers the other, warning message "CXL CPER no
+> device serial number".
+>=20
+> I heard that "device" serial numbers are only for... devices and that
+> even then it's not always mandatory. So maybe that other message should
+> be downgraded from warning to the "info" level?
+>=20
+> Marc
+>
 
-thanks,
--serge
+[skip]
+=20
+> >> +
+> >> +	if (prot_err->err_len !=3D sizeof(struct cxl_ras_capability_regs)) {
+> >> +		pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
+> >> +				   prot_err->err_len);
+> >> +		return;
+> >> +	}
+> >> +
+> >> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
+> >> +		pr_warn(FW_WARN "CXL CPER no device serial number\n");
+> >> +
+
+Maybe this test should be written on the line of the following snippet take=
+n=20
+out from "ACPI: extlog: Trace CPER CXL Protocol Error Section".[1]
+
++
++	if ((prot_err->agent_type =3D=3D RCD || prot_err->agent_type =3D=3D DEVIC=
+E ||
++	     prot_err->agent_type =3D=3D LD || prot_err->agent_type =3D=3D FMLD) =
+&&
++	    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
++		pr_warn_ratelimited(FW_WARN
++				    "CXL CPER no device serial number\n");
++
+
+Thanks,
+
+=46abio
+
+[1] https://lore.kernel.org/linux-cxl/20250623145453.1046660-4-fabio.m.de.f=
+rancesco@linux.intel.com/
+
+
+
 
