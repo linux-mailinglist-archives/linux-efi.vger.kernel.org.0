@@ -1,139 +1,179 @@
-Return-Path: <linux-efi+bounces-4493-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4494-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCBEB147B1
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Jul 2025 07:42:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5419AB149CA
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Jul 2025 10:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 884673ACF52
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Jul 2025 05:41:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A99D4E5E7D
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Jul 2025 08:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E0823535A;
-	Tue, 29 Jul 2025 05:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5A4275AE4;
+	Tue, 29 Jul 2025 08:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M6kfYEMm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+W04S5x"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6322386250;
-	Tue, 29 Jul 2025 05:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6ED263F40;
+	Tue, 29 Jul 2025 08:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753767726; cv=none; b=Jw3OR37insU9v520WQNYY9IGEqBZ4uDGaepuZtqFFnTNrq7y/BQKJMrykuUfTVhJZWDwwOsxgXM9OdoTB5fds4ZEiqiaXMYy6Wxc1DkRrCFkJeV5hCMn87m9p5jdRdf7qiMduhSlOwEaINXirx7ud5iY/dCqVr1GA6jzmDDYtGo=
+	t=1753776672; cv=none; b=UhPDVSQ7LnohOrK7B1YzRbX5pZM4I29itNGr+Dfh801NimR6u5eSJ3kUexrERuU4yLy3z44aqp/Z3yeBBXgmCbKBEUks52mIg/eDxjCEEN1bdk25PYaiBgaJTtMGg5rOe9MtvRYpNo0DrQ9u9qNvaZAcLAuJStScAXuO+ZEosBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753767726; c=relaxed/simple;
-	bh=zW+H0+MpviuGnEP+uGGy+bWOqykVTj+bOH8fIF6/mRc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pi/xuoLYk+jvhosx+LP2rEzgTZGMeMYADW0Jk00vJmBOt9QDbGxEiqsDERFCJroFbQH4GKvwC8W+rNS1JoidfafYpLevok/HbvZMaXXeYxGAJbD/cw6CMwFKh4gRc/Xw56Ure6a1d3G8HZrqaFBlTcjXijJjIIEFdPQkUcPQPTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M6kfYEMm; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753767724; x=1785303724;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zW+H0+MpviuGnEP+uGGy+bWOqykVTj+bOH8fIF6/mRc=;
-  b=M6kfYEMmQK2r+Y+cYn/QpOkEO0OXuI5NZBZRsvvZHdLHIQmJSitlVUMG
-   jBYzq2YXGMWTD5J9Vu7ewQxeGV2Z6wHzIyJhJBWfwVrxY/bTK/dDxgVEj
-   8OJQT+VgFDYKk8tbbuTAoPs23qErdNnvx+nuhZX9F8qNOnl2chKGCHKoH
-   XPayPSnqcD4IakNJsr/cjmf8AhMYmwqURsbllIbFR9FN3XKvFf6jui/H1
-   dGsundTelmfyjkwXWiyfCnOIBhJ2kC8RLIK4gyIsi71Quwf3WnTPQB1WF
-   Hrks5nl/bk6zTrMqjB7u5icLO8FF7tdk+s8rx/I2XfThW/XHE1P/KPmg1
-   Q==;
-X-CSE-ConnectionGUID: xLG2MfE6S+Ws92wckTW9QQ==
-X-CSE-MsgGUID: A78qoROPSQmQlDmG2Zcl/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="59829002"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
-   d="scan'208";a="59829002"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 22:42:03 -0700
-X-CSE-ConnectionGUID: 0WTSdhJRQRqeVvlEQdiLjQ==
-X-CSE-MsgGUID: wbhnLJhNSBmvcP/WZSLqcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
-   d="scan'208";a="163384314"
-Received: from kmlindbe-mobl.amr.corp.intel.com (HELO [10.125.192.163]) ([10.125.192.163])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 22:42:03 -0700
-Message-ID: <ef9c9418-2def-484a-89fb-b0235391ad83@linux.intel.com>
-Date: Mon, 28 Jul 2025 22:41:54 -0700
+	s=arc-20240116; t=1753776672; c=relaxed/simple;
+	bh=cWVIex8ZD7iLHUiFYdl7hALOOKwBmGPA9Eu9Lq5/ve4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pmiqh4vKeniJcfgXOXAwYoVO6GQcySw2yVNYTwjbe7Yaku8/g6TpDOXBbJRXdZ4g8H05+UbTsNoHXdgT8TQwCaC4nrviajMHyrdPLGrkfLV2HCXAWtbr3E155nvKeYRtqXyC3ytO4pOUYvX7Wd/0Q/2rgE/BuuOHGuotRDLZHCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+W04S5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46400C4CEEF;
+	Tue, 29 Jul 2025 08:10:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753776671;
+	bh=cWVIex8ZD7iLHUiFYdl7hALOOKwBmGPA9Eu9Lq5/ve4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F+W04S5xBBcVSjTJ0lwCukWF0CUJoPlRJ5apOHIjcIp4Ir2h0WEtBfOZPNq9j6UIw
+	 6fZP5IdfM5f5vLEjByzE5d1D4q0ntoXIKt1ZlaptYaMMJ/RbpgOJ4vi8j7m1REK/WE
+	 cJzV6oM57CeEOUeuFXbdpRKe9ommavUNv3horhLZRAO6muGJhtumt9y36tBBk8z1p0
+	 RcW8XEWXTvj+vpzKEBs29ORzEbWanrDmwe68O6LcUhBYBhNbsg7nJAYdHkL7mym1rZ
+	 WuxIc0wxhAbBVU5BUD51GFHFqvaCN7R5JBhhYX7ZtWmQVYAe4Cx4MWw9LPH9S4UYr+
+	 4hpI//0VngcyA==
+Date: Tue, 29 Jul 2025 09:10:55 +0100
+From: Will Deacon <will@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Gavin Shan <gshan@redhat.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	James Morse <james.morse@arm.com>,
+	Oza Pawandeep <quic_poza@quicinc.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Roger Pau Monne <roger.pau@citrix.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Usama Arif <usama.arif@bytedance.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>, Baoquan He <bhe@redhat.com>,
+	Alexander Graf <graf@amazon.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jan Beulich <jbeulich@suse.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Bibo Mao <maobibo@loongson.cn>, linux-kernel@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org,
+	ibm-acpi-devel@lists.sourceforge.net,
+	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, kasan-dev@googlegroups.com,
+	linux-kbuild@vger.kernel.org, linux-hardening@vger.kernel.org,
+	kexec@lists.infradead.org, linux-security-module@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v4 1/4] arm64: Handle KCOV __init vs inline mismatches
+Message-ID: <aIiCD5V1MaI3ORqA@willie-the-truck>
+References: <20250724054419.it.405-kees@kernel.org>
+ <20250724055029.3623499-1-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: "invalid agent type: 1" in acpi/ghes, cper: Recognize and cache
- CXL Protocol errors
-To: "Koralahalli Channabasappa, Smita"
- <Smita.KoralahalliChannabasappa@amd.com>, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Yazen Ghannam <yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>,
- Dave Jiang <dave.jiang@intel.com>, tony.luck@intel.com,
- Gregory Price <gourry@gourry.net>
-References: <20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com>
- <20250123084421.127697-5-Smita.KoralahalliChannabasappa@amd.com>
- <074f5f77-7bef-4857-97fe-b68ee9b0afaf@linux.intel.com>
- <dfc6cedd-c125-4201-a98b-cbaa84a4f370@amd.com>
-Content-Language: en-GB
-From: Marc Herbert <marc.herbert@linux.intel.com>
-In-Reply-To: <dfc6cedd-c125-4201-a98b-cbaa84a4f370@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250724055029.3623499-1-kees@kernel.org>
 
-On 2025-07-28 09:25, Koralahalli Channabasappa, Smita wrote:
-
-> On 7/22/2025 12:24 PM, Marc Herbert wrote:
-
->>    The code below triggers the error "invalid agent type: 1" in Intel
->> validation (internal issue 15018133056)
->>
->> It's not clear to anyone we asked why you did not include RCH_DP in
->> the `switch (prot_err->agent_type)` in cxl_cper_post_prot_err() below.
->>
->> I can see how RCH_DP is special in cxl_cper_PRINT_prot_err() and I can
->> even understand (despite my near-zero CPER knowledge) some of the
->> special cases there. But in cxl_cper_post_prot_err() here, it's not
->> clear why RCH_DP would be rejected. Could this be an oversight? If not,
->> a comment with a short explanation would not hurt.
->>
+On Wed, Jul 23, 2025 at 10:50:25PM -0700, Kees Cook wrote:
+> GCC appears to have kind of fragile inlining heuristics, in the
+> sense that it can change whether or not it inlines something based on
+> optimizations. It looks like the kcov instrumentation being added (or in
+> this case, removed) from a function changes the optimization results,
+> and some functions marked "inline" are _not_ inlined. In that case,
+> we end up with __init code calling a function not marked __init, and we
+> get the build warnings I'm trying to eliminate in the coming patch that
+> adds __no_sanitize_coverage to __init functions:
 > 
-> You're right. RCH_DP was excluded because it doesn’t report a valid
-> SBDF in the CPER record. Instead, it provides only the RCRB base
-> address.
+> WARNING: modpost: vmlinux: section mismatch in reference: acpi_get_enable_method+0x1c (section: .text.unlikely) -> acpi_psci_present (section: .init.text)
 > 
-> I haven't thoroughly investigated whether SBDF can be reliably derived
-> from the RCRB base. There might be a platform-specific mechanism for
-> that, but at the time, it seemed non-trivial to implement. Introducing
-> additional infrastructure solely to support RCH_DP felt like it was
-> adding more complexity.
+> This problem is somewhat fragile (though using either __always_inline
+> or __init will deterministically solve it), but we've tripped over
+> this before with GCC and the solution has usually been to just use
+> __always_inline and move on.
 > 
-> I agree that a brief comment explaining this rationale would help. I'm
-> okay if you plan to include a fixup for this along with the one for
-> the device serial number.
+> For arm64 this requires forcing one ACPI function to be inlined with
+> __always_inline.
+> 
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Gavin Shan <gshan@redhat.com>
+> Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+> Cc: James Morse <james.morse@arm.com>
+> Cc: Oza Pawandeep <quic_poza@quicinc.com>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: <linux-arm-kernel@lists.infradead.org>
+> ---
+>  arch/arm64/include/asm/acpi.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+> index a407f9cd549e..c07a58b96329 100644
+> --- a/arch/arm64/include/asm/acpi.h
+> +++ b/arch/arm64/include/asm/acpi.h
+> @@ -150,7 +150,7 @@ acpi_set_mailbox_entry(int cpu, struct acpi_madt_generic_interrupt *processor)
+>  {}
+>  #endif
+>  
+> -static inline const char *acpi_get_enable_method(int cpu)
+> +static __always_inline const char *acpi_get_enable_method(int cpu)
+>  {
+>  	if (acpi_psci_present())
+>  		return "psci";
 
-If I understood you correctly, I think a different error message
-would be much better than a comment. Like this?
+Thanks for improving the commit message:
 
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -730,6 +730,9 @@ static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
- 		memcpy(&wd.ras_cap, cap_start, sizeof(wd.ras_cap));
- 		wd.severity = cper_severity_to_aer(severity);
- 		break;
-+	case RCH_DP:
-+		pr_err_ratelimited("CXL CPER agent type unsupported: RCH_DP\n");
-+		return;
- 	default:
- 		pr_err_ratelimited("CXL CPER invalid agent type: %d\n",
- 				   prot_err->agent_type);
+Acked-by: Will Deacon <will@kernel.org>
+
+Will
 
