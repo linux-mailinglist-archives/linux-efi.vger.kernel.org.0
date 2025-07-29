@@ -1,163 +1,139 @@
-Return-Path: <linux-efi+bounces-4492-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4493-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90931B14289
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Jul 2025 21:38:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CCBEB147B1
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Jul 2025 07:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D37973B5955
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Jul 2025 19:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 884673ACF52
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Jul 2025 05:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637D7277C96;
-	Mon, 28 Jul 2025 19:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E0823535A;
+	Tue, 29 Jul 2025 05:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hPnMILnS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M6kfYEMm"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A414F1EDA2C;
-	Mon, 28 Jul 2025 19:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6322386250;
+	Tue, 29 Jul 2025 05:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753731505; cv=none; b=jLeMV3pp6b3gCj2cKZmn8npsT3ABK+JdDzDCAFEbUjjQqfSEVtvIPdYW5/2n0VB12RhY009oXWij3U9rjNkhq/5GdzohSdCjC1LpWs50Ss4wp0IT54nqEnV7xgo/yP2DqUkhkqfi7hieIP45OuNwWOBwhMF1kpWQRLx1gWLtpoQ=
+	t=1753767726; cv=none; b=Jw3OR37insU9v520WQNYY9IGEqBZ4uDGaepuZtqFFnTNrq7y/BQKJMrykuUfTVhJZWDwwOsxgXM9OdoTB5fds4ZEiqiaXMYy6Wxc1DkRrCFkJeV5hCMn87m9p5jdRdf7qiMduhSlOwEaINXirx7ud5iY/dCqVr1GA6jzmDDYtGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753731505; c=relaxed/simple;
-	bh=J6Nh+S/Pjb7B94BZul1UJ4/0NkrLc0b/l2wkBvsftmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ix1TfjY3hCjGYrGZptN8YSEkfMjtriQY0f04Ui1O2XfLzQXaBiife2GCXnrHFzGnp9s6fwbb3FgR9vmuoeurhRvdvulcUy785pu22alXaKOsw0nLuZq1XzeC0ET648hGxW+P5bnAODDRcCk4/kvfavKjPwfB3P5/yXB2ARK/oKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hPnMILnS; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a528243636so2927769f8f.3;
-        Mon, 28 Jul 2025 12:38:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753731502; x=1754336302; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F1B2C+lY8Ra0bLA0xRJ+Vif1wI60/oMtTqHhEqWZBaQ=;
-        b=hPnMILnSXm6vkclx0HmR9F1Yz47Ef2v/ceeREH2yftnogHlU4J549J9VeK1fKB+712
-         iyXimIw8Ac9+aZDowYIUDRTQO0yRB9OOKUcw/3XOfF76Q0mGO7gkL6eU1Ha3X69skifX
-         vSpxyyTXc+4RXTn+JHi1HCfVceG3Bhno4WB8Eldzhivt7VC1W+t668iI4BGs4/RHgDJ+
-         RB1K7JmBjJZVLDDN1OTXWpZ60XhbK5oOgPbKMhfTFVjStyi4Vd4+mNamTOHcXKb5oUOo
-         GN35IauOt5Q2U47CUbklOpxsLbNS74YcBbZnXIQs1HczYE3pNozCupNRKfkba3lLbgZV
-         RXvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753731502; x=1754336302;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F1B2C+lY8Ra0bLA0xRJ+Vif1wI60/oMtTqHhEqWZBaQ=;
-        b=Z5ZGhFfHxsI15R/9cnHc8GIV0LtPhDSbkbzWmwfjPhy6QaHtww4a8n+JlSMZb37KfH
-         tVpi6aFfUqYDMqYV/QBFB5QF6zYUicMQw/1g6PGiJAxUjOPnYl5tTPeyi0TwZdRCNP7s
-         Xq/qz7u7J80y8K4T6KJemZiJeO1mXPDHMjKSIFW8fpjfe6X9hXhOm+2r/Hih/u7IcTOJ
-         DjiwoGesVyIy2qP3T/+bBODadkZg1UicXdtYnCma4qg0e9qpwaQEBcTeBZVxevqwKYdA
-         mzsu73XnaqZIwZN/MM9HpLOZj1IFDQHZ78fxhGqSx+kg53Qd7hzhjF9parMPbc2ULYSJ
-         +mjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK6B5IySeVfZqotrV9Tr2QmnQDFHGH4IO6CD01qsvpAOynB0y8azDf3Y8zSmicDgsBdDKdX33VhfctsJ56@vger.kernel.org, AJvYcCWIE3/1WegNu+x9ddKsgZ0LsjLzmsZQjizmoDpzoo9QnAq7aH9E0qEVih353A+ByT0Ss9Eu+YOnB6I=@vger.kernel.org, AJvYcCXQTpft2+95LQe+ZEkyBjrkkcqAlh/rdhQWcLpmsMpJwduN2oF7RXe8bOH4yoLAikzFjWZWVEGpiKq1@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYThVgbdKHXiSaMGtZ4KuBTttDsupjS7L/jYcTqTV2gPSgYWIN
-	ylXbclFIOqR8LBz/Hr/CNCqp4CObJSQhxa3qC0Es44gY4cXtjSopsk2i
-X-Gm-Gg: ASbGncsEzjBO+GWWyhMXtUf6utnIlGIXXRzHvVu6SmekLPaYBiJcFdJf8sn++8dOJS0
-	FepFzKQjRdFGNcNmL/YTc30Ev9dQsnP6hvSSLs3xf1T4FFmQdG+ba/5teoAnSPYKCZaqgI79cnz
-	jF1hAHJKw0x9QS1rxd1wXKeJFG+13MBRubor98tcpp5knSo5s+sz4tiQj79Jw8IHVX6DkTQkmv9
-	vtZXoMzlPn2dUwJ2UDxJw1JCFEwvNj2ZC6IvudfNzCtqQOa+B4ksLlqkDVeuKtbR86/WsnKSZ45
-	Liqj1quME9yB8HlrW3Jnncstq6nqq+JjctTqQAMwPQu6BYGJdM/+zBqv2rYRNE9tdAbl4wH4YkL
-	GdJsRmU4JKucJBP1JsDfMzV9J+XSvpgRCxvV4nmxUNA7KAS6dINHSUC1/biD+
-X-Google-Smtp-Source: AGHT+IHvIOBr6JyAvhaG41eHAIA1V3mtOhIAa1HkfuIyT7tnwt3aoMI/rHcc0qmMJHOGXfw3hW6a5w==
-X-Received: by 2002:a5d:5d86:0:b0:3b7:8fc4:2f4c with SMTP id ffacd0b85a97d-3b78fc430e0mr118658f8f.1.1753731501747;
-        Mon, 28 Jul 2025 12:38:21 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b77db8a944sm8455273f8f.52.2025.07.28.12.38.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 12:38:21 -0700 (PDT)
-Date: Mon, 28 Jul 2025 20:38:09 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, Peter Zijlstra
- <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, "Paul E.
- McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Xiongwei Song <xiongwei.song@windriver.com>, Xin Li <xin3.li@intel.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>, Brijesh Singh
- <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, Tony Luck
- <tony.luck@intel.com>, Alexey Kardashevskiy <aik@amd.com>, Alexander
- Shishkin <alexander.shishkin@linux.intel.com>, Jonathan Corbet
- <corbet@lwn.net>, Sohil Mehta <sohil.mehta@intel.com>, Ingo Molnar
- <mingo@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Daniel
- Sneddon <daniel.sneddon@linux.intel.com>, Kai Huang <kai.huang@intel.com>,
- Sandipan Das <sandipan.das@amd.com>, Breno Leitao <leitao@debian.org>, Rick
- Edgecombe <rick.p.edgecombe@intel.com>, Alexei Starovoitov
- <ast@kernel.org>, Hou Tao <houtao1@huawei.com>, Juergen Gross
- <jgross@suse.com>, Vegard Nossum <vegard.nossum@oracle.com>, Kees Cook
- <kees@kernel.org>, Eric Biggers <ebiggers@google.com>, Jason Gunthorpe
- <jgg@ziepe.ca>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Yuntao Wang <ytcoode@gmail.com>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>, Huang
- Shijie <shijie@os.amperecomputing.com>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Namhyung Kim <namhyung@kernel.org>, Arnaldo
- Carvalho de Melo <acme@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCHv9 02/16] x86/alternatives: Disable LASS when patching
- kernel alternatives
-Message-ID: <20250728203809.7bebf01c@pumpkin>
-In-Reply-To: <98BE7799-DA6C-4267-9E03-E6F68263D250@zytor.com>
-References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
-	<20250707080317.3791624-3-kirill.shutemov@linux.intel.com>
-	<20250728201137.113d0f45@pumpkin>
-	<98BE7799-DA6C-4267-9E03-E6F68263D250@zytor.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1753767726; c=relaxed/simple;
+	bh=zW+H0+MpviuGnEP+uGGy+bWOqykVTj+bOH8fIF6/mRc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pi/xuoLYk+jvhosx+LP2rEzgTZGMeMYADW0Jk00vJmBOt9QDbGxEiqsDERFCJroFbQH4GKvwC8W+rNS1JoidfafYpLevok/HbvZMaXXeYxGAJbD/cw6CMwFKh4gRc/Xw56Ure6a1d3G8HZrqaFBlTcjXijJjIIEFdPQkUcPQPTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M6kfYEMm; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753767724; x=1785303724;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zW+H0+MpviuGnEP+uGGy+bWOqykVTj+bOH8fIF6/mRc=;
+  b=M6kfYEMmQK2r+Y+cYn/QpOkEO0OXuI5NZBZRsvvZHdLHIQmJSitlVUMG
+   jBYzq2YXGMWTD5J9Vu7ewQxeGV2Z6wHzIyJhJBWfwVrxY/bTK/dDxgVEj
+   8OJQT+VgFDYKk8tbbuTAoPs23qErdNnvx+nuhZX9F8qNOnl2chKGCHKoH
+   XPayPSnqcD4IakNJsr/cjmf8AhMYmwqURsbllIbFR9FN3XKvFf6jui/H1
+   dGsundTelmfyjkwXWiyfCnOIBhJ2kC8RLIK4gyIsi71Quwf3WnTPQB1WF
+   Hrks5nl/bk6zTrMqjB7u5icLO8FF7tdk+s8rx/I2XfThW/XHE1P/KPmg1
+   Q==;
+X-CSE-ConnectionGUID: xLG2MfE6S+Ws92wckTW9QQ==
+X-CSE-MsgGUID: A78qoROPSQmQlDmG2Zcl/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="59829002"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
+   d="scan'208";a="59829002"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 22:42:03 -0700
+X-CSE-ConnectionGUID: 0WTSdhJRQRqeVvlEQdiLjQ==
+X-CSE-MsgGUID: wbhnLJhNSBmvcP/WZSLqcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
+   d="scan'208";a="163384314"
+Received: from kmlindbe-mobl.amr.corp.intel.com (HELO [10.125.192.163]) ([10.125.192.163])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 22:42:03 -0700
+Message-ID: <ef9c9418-2def-484a-89fb-b0235391ad83@linux.intel.com>
+Date: Mon, 28 Jul 2025 22:41:54 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: "invalid agent type: 1" in acpi/ghes, cper: Recognize and cache
+ CXL Protocol errors
+To: "Koralahalli Channabasappa, Smita"
+ <Smita.KoralahalliChannabasappa@amd.com>, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Yazen Ghannam <yazen.ghannam@amd.com>, Terry Bowman <terry.bowman@amd.com>,
+ Dave Jiang <dave.jiang@intel.com>, tony.luck@intel.com,
+ Gregory Price <gourry@gourry.net>
+References: <20250123084421.127697-1-Smita.KoralahalliChannabasappa@amd.com>
+ <20250123084421.127697-5-Smita.KoralahalliChannabasappa@amd.com>
+ <074f5f77-7bef-4857-97fe-b68ee9b0afaf@linux.intel.com>
+ <dfc6cedd-c125-4201-a98b-cbaa84a4f370@amd.com>
+Content-Language: en-GB
+From: Marc Herbert <marc.herbert@linux.intel.com>
+In-Reply-To: <dfc6cedd-c125-4201-a98b-cbaa84a4f370@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 28 Jul 2025 12:28:33 -0700
-"H. Peter Anvin" <hpa@zytor.com> wrote:
+On 2025-07-28 09:25, Koralahalli Channabasappa, Smita wrote:
 
-> On July 28, 2025 12:11:37 PM PDT, David Laight <david.laight.linux@gmail.com> wrote:
-> >On Mon,  7 Jul 2025 11:03:02 +0300
-> >"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
-> >  
-> >> From: Sohil Mehta <sohil.mehta@intel.com>
-> >> 
-> >> For patching, the kernel initializes a temporary mm area in the lower
-> >> half of the address range. See commit 4fc19708b165 ("x86/alternatives:
-> >> Initialize temporary mm for patching").
-> >> 
-> >> Disable LASS enforcement during patching to avoid triggering a #GP
-> >> fault.
-> >> 
-> >> The objtool warns due to a call to a non-allowed function that exists
-> >> outside of the stac/clac guard, or references to any function with a
-> >> dynamic function pointer inside the guard. See the Objtool warnings
-> >> section #9 in the document tools/objtool/Documentation/objtool.txt.
-> >> 
-> >> Considering that patching is usually small, replace the memcpy() and
-> >> memset() functions in the text poking functions with their open coded
-> >> versions.  
-> >...
-> >
-> >Or just write a byte copy loop in C with (eg) barrier() inside it
-> >to stop gcc converting it to memcpy().
-> >
-> >	David  
+> On 7/22/2025 12:24 PM, Marc Herbert wrote:
+
+>>    The code below triggers the error "invalid agent type: 1" in Intel
+>> validation (internal issue 15018133056)
+>>
+>> It's not clear to anyone we asked why you did not include RCH_DP in
+>> the `switch (prot_err->agent_type)` in cxl_cper_post_prot_err() below.
+>>
+>> I can see how RCH_DP is special in cxl_cper_PRINT_prot_err() and I can
+>> even understand (despite my near-zero CPER knowledge) some of the
+>> special cases there. But in cxl_cper_post_prot_err() here, it's not
+>> clear why RCH_DP would be rejected. Could this be an oversight? If not,
+>> a comment with a short explanation would not hurt.
+>>
 > 
-> Great. It's rep movsb without any of the performance.
+> You're right. RCH_DP was excluded because it doesn’t report a valid
+> SBDF in the CPER record. Instead, it provides only the RCRB base
+> address.
+> 
+> I haven't thoroughly investigated whether SBDF can be reliably derived
+> from the RCRB base. There might be a platform-specific mechanism for
+> that, but at the time, it seemed non-trivial to implement. Introducing
+> additional infrastructure solely to support RCH_DP felt like it was
+> adding more complexity.
+> 
+> I agree that a brief comment explaining this rationale would help. I'm
+> okay if you plan to include a fixup for this along with the one for
+> the device serial number.
 
-And without the massive setup overhead that dominates short copies.
-Given the rest of the code I'm sure a byte copy loop won't make
-any difference to the overall performance.
+If I understood you correctly, I think a different error message
+would be much better than a comment. Like this?
 
-	David
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -730,6 +730,9 @@ static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+ 		memcpy(&wd.ras_cap, cap_start, sizeof(wd.ras_cap));
+ 		wd.severity = cper_severity_to_aer(severity);
+ 		break;
++	case RCH_DP:
++		pr_err_ratelimited("CXL CPER agent type unsupported: RCH_DP\n");
++		return;
+ 	default:
+ 		pr_err_ratelimited("CXL CPER invalid agent type: %d\n",
+ 				   prot_err->agent_type);
 
