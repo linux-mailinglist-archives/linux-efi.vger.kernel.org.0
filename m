@@ -1,99 +1,68 @@
-Return-Path: <linux-efi+bounces-4505-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4506-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5852B18FAF
-	for <lists+linux-efi@lfdr.de>; Sat,  2 Aug 2025 20:51:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB46B1915C
+	for <lists+linux-efi@lfdr.de>; Sun,  3 Aug 2025 03:05:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F1C3B8793
-	for <lists+linux-efi@lfdr.de>; Sat,  2 Aug 2025 18:51:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E79A17B035
+	for <lists+linux-efi@lfdr.de>; Sun,  3 Aug 2025 01:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21571C862F;
-	Sat,  2 Aug 2025 18:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562AB17BA1;
+	Sun,  3 Aug 2025 01:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oyi1tKQE"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ibJLf44S"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDF415853B;
-	Sat,  2 Aug 2025 18:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C092C190;
+	Sun,  3 Aug 2025 01:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754160689; cv=none; b=WhjTs18lmN05cfBpEXqIMdJv3R1bkfNo9WnwxYbntNPn7Uc4wfTbykZ34SJ2HQifOok0vXJ4FuE5pD2HlbNf/ww6c0DGaqDmoiYn8zPm4h/Jt8IXhvwRMe8DIF+4m+gpqlE55ibKWuNjqmbCUC9i/tQnhSAffI6VdGHn01hl0b0=
+	t=1754183102; cv=none; b=jnKXxm0COUS9L9rxzeYvPg4jSG6LSGz0rpg++WOlpM8QUbuhpnk9TnZk+pDK6ekl7d9gwiMUsYP5pwXlhu13pZBD2SfAoMHIDAf5VEpW6Yp7wywmbFbPJ7n1wvO7lWSGwmMWNf449H2bPL1lhyktuV+9/ISOzsM0mJIKNoPdBBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754160689; c=relaxed/simple;
-	bh=RiGNiHqduvbyMJazTqCXPOWEO6VyqZFkOlYS73wNtV8=;
+	s=arc-20240116; t=1754183102; c=relaxed/simple;
+	bh=P7fbkK2lQmJQF2LSFdn1FL/Uiv2amrUFSemfc1Sl0YA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XxANFU1HyGv79ps74ebKGarfnGxGG2NkRebmv7usFRV+4yMIyzn8M0ELq0B+RiezD9YBkymWfxD6z0bFwaSnAx7AIGJmK58LiFhp50q3cdRSuLr6hPCFav5MAv2r3Zuxb1IVJaQ9Nou/CfbaLJzZY5f4x6v3GGvK19SmISPlGus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oyi1tKQE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF55C4CEEF;
-	Sat,  2 Aug 2025 18:51:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754160689;
-	bh=RiGNiHqduvbyMJazTqCXPOWEO6VyqZFkOlYS73wNtV8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Oyi1tKQEVLy7nKAugvnwDQJY873SOMOmCWXgj1+OMxC1ktxOj29Txp12eod6mIKhJ
-	 hGjvqBszSSmM8HSOSCBRxpptYW8hquo6CbEHFq4KKfZBP9WCsPbIqhNYVD1i1W1HWM
-	 uf5zMixtyBlO+bB8qDrrzvZpbD5R9P9Wckkqoazai3TI3/tgwfhBW1nSriXqvEA2C6
-	 W0XR0PTQzwQN/VZN2SFu+W3qHihc1UqIy4z+KKy+F7lDLY4qx/MB4QeYVaVFgT1rlc
-	 bxRM/LYyUg5su5Uq1E7EToDT93T1PrS90jkf/jksSASUybVE3fXimvpCLXXNcPkMiP
-	 bUJmMtQ48VNaA==
-Date: Sat, 2 Aug 2025 11:51:28 -0700
-From: Kees Cook <kees@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Sohil Mehta <sohil.mehta@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Sandipan Das <sandipan.das@amd.com>,
-	Breno Leitao <leitao@debian.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>, Hou Tao <houtao1@huawei.com>,
-	Juergen Gross <jgross@suse.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Eric Biggers <ebiggers@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Tejun Heo <tj@kernel.org>, Changbin Du <changbin.du@huawei.com>,
-	Huang Shijie <shijie@os.amperecomputing.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-mm@kvack.org,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=q94IEskEtytZhdYiOqF30D3pXYrHFGXzNLigdr8uthwAqbofngBOKBb1cmUfeVQeJPJCX6d9SoyDyBWkcWvaRTY/ZgnpPMzFV65Rr6VFqtWKZPNiM0XItCuJDiK6TWjXkEfTPr78QIGheuugXjE2RLp5cdtaE/VOY2igtUBKTTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ibJLf44S; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 395D841DE2;
+	Sun,  3 Aug 2025 01:04:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1754183092;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IG2HpXzsqu+NkhilqnbEM95yf9B6n+TV1enjTn2IGB8=;
+	b=ibJLf44Stz+KQ8z1BIhUrXB8Hx8q3mDVJsoazKdnF5cGuJvjReExXK4mcEOGy+KCLeZn/+
+	kiZ6ksHecS6yzjenen9Bap4+NogZvlkX8LS/fcaTLx2nCLDMs16sjfVWHO2BVoee+7W6h1
+	UEJQo/hhQZmslKN2uXNBIo6f/iV7i4i2ULavQeZYg9xJlgn+4UWyifl1oqRN5FdvDOipjo
+	Anoil5WSqw3fdSJJkxGIZeUHKgePK471C7AqiXKnuTl4IJNxiRavQiZ+ZSEcB4GlH//Ny4
+	WFnmiHTOQORQeOxW5S5sx2Fjc6aV8soQemag6oeQvhlj/yfB9gN8N5R45YYCkg==
+Date: Sun, 3 Aug 2025 03:04:49 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	Ard Biesheuvel <ardb@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Xiongwei Song <xiongwei.song@windriver.com>,
-	Xin Li <xin3.li@intel.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Tony Luck <tony.luck@intel.com>, Alexey Kardashevskiy <aik@amd.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	X86-kernel <x86@kernel.org>
-Subject: Re: [PATCHv9 04/16] x86/cpu: Defer CR pinning setup until core
- initcall
-Message-ID: <202508021149.B4BFF8D1@keescook>
-References: <20250707080317.3791624-1-kirill.shutemov@linux.intel.com>
- <20250707080317.3791624-5-kirill.shutemov@linux.intel.com>
- <6075af69-299f-43d2-a3c8-353a2a3b7ee7@intel.com>
- <98a7a91b-3b46-4407-82a7-5f80443b7e00@intel.com>
- <6e768f25-3a1c-48b9-bc53-56877a556a83@intel.com>
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Bibo Mao <maobibo@loongson.cn>, linux-rtc@vger.kernel.org,
+	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org,
+	x86@kernel.org, linux-riscv@lists.infradead.org,
+	loongarch@lists.linux.dev
+Subject: Re: [RFC PATCH 1/3] efi-rtc: Remove wakeup functionality
+Message-ID: <20250803010449df1f5cfb@mail.local>
+References: <20250714060843.4029171-5-ardb+git@google.com>
+ <20250714060843.4029171-6-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -102,40 +71,158 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6e768f25-3a1c-48b9-bc53-56877a556a83@intel.com>
+In-Reply-To: <20250714060843.4029171-6-ardb+git@google.com>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddutdektdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeetlhgvgigrnhgurhgvuceuvghllhhonhhiuceorghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeeiudeuteehhfekgeejveefhfeiudejuefhgfeljefgjeegkeeujeeugfehgefgnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemvgdtrgemvdgumeeifeejtdemjeekvgdtmegttdgvkeemvdektdeimeekrggtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgdtrgemvdgumeeifeejtdemjeekvgdtmegttdgvkeemvdektdeimeekrggtiedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudejpdhrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehli
+ hhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegrrhgusgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgvihhnrhhitghhrdhstghhuhgthhgrrhguthestggrnhhonhhitggrlhdrtghomhdprhgtphhtthhopehfvghnghdrthgrnhhgsehlihhnuhigrdgrlhhisggrsggrrdgtohhmpdhrtghpthhtohepjhhgrhhoshhssehsuhhsvgdrtghomhdprhgtphhtthhopehsshhtrggsvghllhhinhhisehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-On Thu, Jul 31, 2025 at 05:01:37PM -0700, Dave Hansen wrote:
-> On 7/31/25 16:45, Sohil Mehta wrote:
-> > On 7/9/2025 10:00 AM, Dave Hansen wrote:
-> >> On 7/7/25 01:03, Kirill A. Shutemov wrote:
-> >>> Instead of moving setup_cr_pinning() below efi_enter_virtual_mode() in
-> >>> arch_cpu_finalize_init(), defer it until core initcall.
-> >> What are the side effects of this move? Are there other benefits? What
-> >> are the risks?
-> >>
-> > Picking this up from Kirill.. Reevaluating this, core_initcall() seems
-> > too late for setup_cr_pinning().
-> > 
-> > We need to have CR pinning completed, and the associated static key
-> > enabled before AP bring up. start_secondary()->cr4_init() depends on the
-> > cr_pinning static key to initialize CR4 for APs.
-> 
-> Sure, if you leave cr4_init() completely as-is.
-> 
-> 'cr4_pinned_bits' should be set by the boot CPU. Secondary CPUs should
-> also read 'cr4_pinned_bits' when setting up their own cr4's,
-> unconditionally, independent of 'cr_pinning'.
-> 
-> The thing I think we should change is the pinning _enforcement_. The
-> easiest way to do that is to remove the static_branch_likely() in
-> cr4_init() and then delay flipping the static branch until just before
-> userspace starts.
+Hello,
 
-Yeah, this is fine from my perspective. The goal with the pinning was
-about keeping things safe in the face of an attack from userspace that
-managed to get at MSR values and keeping them from being trivially
-changed.
+Apart from the topic that should be "rtc: efi:...", I'm ready to apply
+this patch.
+
+On 14/07/2025 08:08:45+0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> The EFI rtc driver is used by non-x86 architectures only, and exposes
+> the get/set wakeup time functionality provided by the underlying
+> platform. This is usually broken on most platforms, and not widely used
+> to begin with [if at all], so let's just remove it.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/rtc/rtc-efi.c | 76 +-------------------
+>  1 file changed, 2 insertions(+), 74 deletions(-)
+> 
+> diff --git a/drivers/rtc/rtc-efi.c b/drivers/rtc/rtc-efi.c
+> index fa8bf82df948..b4f44999ef0f 100644
+> --- a/drivers/rtc/rtc-efi.c
+> +++ b/drivers/rtc/rtc-efi.c
+> @@ -112,48 +112,6 @@ convert_from_efi_time(efi_time_t *eft, struct rtc_time *wtime)
+>  	return true;
+>  }
+>  
+> -static int efi_read_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
+> -{
+> -	efi_time_t eft;
+> -	efi_status_t status;
+> -
+> -	/*
+> -	 * As of EFI v1.10, this call always returns an unsupported status
+> -	 */
+> -	status = efi.get_wakeup_time((efi_bool_t *)&wkalrm->enabled,
+> -				     (efi_bool_t *)&wkalrm->pending, &eft);
+> -
+> -	if (status != EFI_SUCCESS)
+> -		return -EINVAL;
+> -
+> -	if (!convert_from_efi_time(&eft, &wkalrm->time))
+> -		return -EIO;
+> -
+> -	return rtc_valid_tm(&wkalrm->time);
+> -}
+> -
+> -static int efi_set_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
+> -{
+> -	efi_time_t eft;
+> -	efi_status_t status;
+> -
+> -	convert_to_efi_time(&wkalrm->time, &eft);
+> -
+> -	/*
+> -	 * XXX Fixme:
+> -	 * As of EFI 0.92 with the firmware I have on my
+> -	 * machine this call does not seem to work quite
+> -	 * right
+> -	 *
+> -	 * As of v1.10, this call always returns an unsupported status
+> -	 */
+> -	status = efi.set_wakeup_time((efi_bool_t)wkalrm->enabled, &eft);
+> -
+> -	dev_warn(dev, "write status is %d\n", (int)status);
+> -
+> -	return status == EFI_SUCCESS ? 0 : -EINVAL;
+> -}
+> -
+>  static int efi_read_time(struct device *dev, struct rtc_time *tm)
+>  {
+>  	efi_status_t status;
+> @@ -188,17 +146,13 @@ static int efi_set_time(struct device *dev, struct rtc_time *tm)
+>  
+>  static int efi_procfs(struct device *dev, struct seq_file *seq)
+>  {
+> -	efi_time_t        eft, alm;
+> +	efi_time_t        eft;
+>  	efi_time_cap_t    cap;
+> -	efi_bool_t        enabled, pending;
+> -	struct rtc_device *rtc = dev_get_drvdata(dev);
+>  
+>  	memset(&eft, 0, sizeof(eft));
+> -	memset(&alm, 0, sizeof(alm));
+>  	memset(&cap, 0, sizeof(cap));
+>  
+>  	efi.get_time(&eft, &cap);
+> -	efi.get_wakeup_time(&enabled, &pending, &alm);
+>  
+>  	seq_printf(seq,
+>  		   "Time\t\t: %u:%u:%u.%09u\n"
+> @@ -214,26 +168,6 @@ static int efi_procfs(struct device *dev, struct seq_file *seq)
+>  		/* XXX fixme: convert to string? */
+>  		seq_printf(seq, "Timezone\t: %u\n", eft.timezone);
+>  
+> -	if (test_bit(RTC_FEATURE_ALARM, rtc->features)) {
+> -		seq_printf(seq,
+> -			   "Alarm Time\t: %u:%u:%u.%09u\n"
+> -			   "Alarm Date\t: %u-%u-%u\n"
+> -			   "Alarm Daylight\t: %u\n"
+> -			   "Enabled\t\t: %s\n"
+> -			   "Pending\t\t: %s\n",
+> -			   alm.hour, alm.minute, alm.second, alm.nanosecond,
+> -			   alm.year, alm.month, alm.day,
+> -			   alm.daylight,
+> -			   enabled == 1 ? "yes" : "no",
+> -			   pending == 1 ? "yes" : "no");
+> -
+> -		if (alm.timezone == EFI_UNSPECIFIED_TIMEZONE)
+> -			seq_puts(seq, "Timezone\t: unspecified\n");
+> -		else
+> -			/* XXX fixme: convert to string? */
+> -			seq_printf(seq, "Timezone\t: %u\n", alm.timezone);
+> -	}
+> -
+>  	/*
+>  	 * now prints the capabilities
+>  	 */
+> @@ -249,8 +183,6 @@ static int efi_procfs(struct device *dev, struct seq_file *seq)
+>  static const struct rtc_class_ops efi_rtc_ops = {
+>  	.read_time	= efi_read_time,
+>  	.set_time	= efi_set_time,
+> -	.read_alarm	= efi_read_alarm,
+> -	.set_alarm	= efi_set_alarm,
+>  	.proc		= efi_procfs,
+>  };
+>  
+> @@ -271,11 +203,7 @@ static int __init efi_rtc_probe(struct platform_device *dev)
+>  	platform_set_drvdata(dev, rtc);
+>  
+>  	rtc->ops = &efi_rtc_ops;
+> -	clear_bit(RTC_FEATURE_UPDATE_INTERRUPT, rtc->features);
+> -	if (efi_rt_services_supported(EFI_RT_SUPPORTED_WAKEUP_SERVICES))
+> -		set_bit(RTC_FEATURE_ALARM_WAKEUP_ONLY, rtc->features);
+> -	else
+> -		clear_bit(RTC_FEATURE_ALARM, rtc->features);
+> +	clear_bit(RTC_FEATURE_ALARM, rtc->features);
+>  
+>  	device_init_wakeup(&dev->dev, true);
+>  
+> -- 
+> 2.50.0.727.gbf7dc18ff4-goog
+> 
 
 -- 
-Kees Cook
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
