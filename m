@@ -1,234 +1,137 @@
-Return-Path: <linux-efi+bounces-4528-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4529-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB36B1F728
-	for <lists+linux-efi@lfdr.de>; Sun, 10 Aug 2025 01:03:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136B4B1FC11
+	for <lists+linux-efi@lfdr.de>; Sun, 10 Aug 2025 22:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84FEE3A2DC5
-	for <lists+linux-efi@lfdr.de>; Sat,  9 Aug 2025 23:03:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2190B1897ADB
+	for <lists+linux-efi@lfdr.de>; Sun, 10 Aug 2025 20:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E82A24679F;
-	Sat,  9 Aug 2025 23:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D749C1D63E6;
+	Sun, 10 Aug 2025 20:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3ho4kiw"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fXvNsaDk"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED77186294;
-	Sat,  9 Aug 2025 23:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575B1219E8;
+	Sun, 10 Aug 2025 20:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754780583; cv=none; b=FiMXCF8M/+CyASZkDUG+G0XnemQPtAbUQofbLkCVi9wLuQFszSA1IqfLvCKUje/FGdxPFRlVoWGqAsLJfis1O/p3gRYsj2APEtMbug1NxnEngRtAlZ4m2QHNWLqKhvpNJw6hjb9LbXuQify6+nU6AOEPDLhR2zzq2iMzY/S0nMs=
+	t=1754858774; cv=none; b=TyEAeUj1TMXCatMW1rZzTXIfDpd+lhRZY+u0qrfJOrYzKWBcEevxoSOFUijzqgJohSB7DKnpIGNA0F+W2YyIkQsglz80beCmiP73wcSa2/sCWsE99fcbQwPsutc3Nwop583xtCUe7UGGPT+6ZtMA5GENNOOZNLA0XqJlI4kToME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754780583; c=relaxed/simple;
-	bh=st/eweHiwV92mUXCvAGpIiPGkvX3rErOBfHnwy2GSps=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u1AOEGdLVJCZ5OQoH4VGADtZqqhhkOwMlhPRAcrpTF38jSL3QUqxqlJWgmyAuFpx5iwxK+5A4NSLSBDtiJPMiKzsVzPTpswpIXBfvmAeHRFGtEwZ213WxtNHLH5WosMwWpLt4seUfGoEtwBuONusEn8HrEkGRNnHS7ljI4746M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3ho4kiw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7401C4CEF7;
-	Sat,  9 Aug 2025 23:03:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754780582;
-	bh=st/eweHiwV92mUXCvAGpIiPGkvX3rErOBfHnwy2GSps=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=J3ho4kiwrH7rHSL79nbnLEr8Fi7+3PMWKaPF++iz6+hi+MdR9KEEzcVlLj8ka0pf8
-	 8ghHe6EwgDyqH/6MV9E7RSlM3Xis2bC0eXh7XcwncUYg4cyhRzZRzt4ng/01hji6ic
-	 z65whu1Kmp7Ovfvwvh5erXF+18ebGI5bDc9aCuD93E8d9YhJshoNIwWGXbxU9QDWKF
-	 T6zvn7zjM3jiH2oit4GZPg9RFmtdfjbbGuqabHV6PdIu87V7pgvTwqzOXruVNSYlSb
-	 mHqfQnZ7Pc/teaw4LYKyETrSoV1BFexfdIKEwp7BhRQebwXFhy3xHesvJQdBdZXBTD
-	 JafFkKw/Bf4iQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32e14ce168eso37200951fa.1;
-        Sat, 09 Aug 2025 16:03:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX5KeVL2w6VzdSiCBiLb0GBmu7Tgkwv2k1MZUMqnN2ixtBX4NbZajlDkF10sqh80e5+iaTEp/TLdxxoVT/Z@vger.kernel.org, AJvYcCXHvgNcIaDr5pKniLlw+Uwekrsizm6Go42VcA7K9vyEVTdl+5p1rbzHh4Fdx+PztHkKsFn+BjZBIA4=@vger.kernel.org, AJvYcCXuvTJk37s7WICGylZS3ReB4be66lT7Hy0Zo2z7uUzRLnNDfTfvaofD9wtuXYWYsEBGMHUaw0M9/suX@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWKrgpsSjHRu9EpsEpyX7F9E6OzE9MoAsM7Ty45zt8sWUcXOSt
-	zpMHZSnKz5aqeDxAk05u3QDHdHYN2lxhNwM6+ea42Pxrj/kslIMgwf2brAs9LeU6vpgux61FsRL
-	+Q6vDOqaorhF72wfUu1TiZKY3p33cJdM=
-X-Google-Smtp-Source: AGHT+IHacj93S4TAyJS2Y33dq5fDEf3fw3H8pVieqGYKOrts0lqIXyoZID+Z9tXd8YeI87NlNCl9WjBC2eK/6u6auvE=
-X-Received: by 2002:a05:651c:3799:b0:32a:7270:5c29 with SMTP id
- 38308e7fff4ca-333a213e262mr13218821fa.2.1754780581250; Sat, 09 Aug 2025
- 16:03:01 -0700 (PDT)
+	s=arc-20240116; t=1754858774; c=relaxed/simple;
+	bh=X6u2f9fO9neZj9s6w+y5uN4zh9MdsPoxai4OlaDcAbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N3AndUTeMw9WBzeg0r7m/W3Kdchqds35UlGHOsagk7+o55qWAsJWcfNcT+hxT5R6ne6At0Os9hqwD/Wng2K6imtvP6p4YaUsT+qW0Qb70p5RDCtfpRxGuHohqgp43sbrgTPSWGYaZspOLWBrsKThivlJKbcItlBPvBc1jBxImnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=fXvNsaDk; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A77FA40E0232;
+	Sun, 10 Aug 2025 20:37:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id z5318P-2Ttr6; Sun, 10 Aug 2025 20:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1754858222; bh=jPuah6eZJsKx0Tn4u3wz+pvNuujj0ltLpFFE0DRYR+g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fXvNsaDkf/mITzivh/QNweou4KTleJgtzJ/0LAOU+UOTVC7hGdo2p5SReEH1DGoTj
+	 IYl0oWH+EVK5sSrk56H0xO2kq/EkyOdfSP/ezNF1mMJuwDmaF6I2ujWejIP6vuoeJI
+	 3Pp+WseZxIgPYLLJgvKjcq87m5owWsxYFnq/oP03v3ie8jzqGLZxyKqS2FJiC9dwYO
+	 umIK6ww0vJBUXiqd0up7ihR8cLoRY5wYi0yVlC4LjpZ2KwxOy9OizEyGWZMc0NIhPY
+	 EqpGMr258Yccf98tvi+xBz4DZNVCj/nOYE797XtQUzeDe2bV9jctxNB8A78RtN7Cu7
+	 Vt2ePa29wN6SwwcjveObo5FqCRHQY5hUkFiW0V+pCAYPq5QB03l1b5RywJHmgPq3HD
+	 LU0WX3hoZuIoGDz7CvL4keD6zMEbzsxXY/Hh5jWX6Zn3Z9ScXKdOfPUvncBKTIv9VF
+	 ybtMo7vhcCZ2uFpGFX/P2fnc5GfaJ8fLC19Ny3HAmeaMBeoGoHjNl9MQoLifqKpUPl
+	 5GE6dArkl3QmxQ4Sig4DW19DErcYXxFqGZAYJsT5bxsigDhyF1/MpSVg1EUxH7slAA
+	 WVVeoe7t7+uzjGl5rLGHhtn0JRauaOWfdc+jW8AWLGDMEYHUh2AfxnZdcoq9OSGlfW
+	 TJbEJmjErDiFvNW+/q0ihQ3w=
+Received: from zn.tnic (pd953092e.dip0.t-ipconnect.de [217.83.9.46])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D8ECE40E0217;
+	Sun, 10 Aug 2025 20:36:50 +0000 (UTC)
+Date: Sun, 10 Aug 2025 22:36:43 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: [PATCH v6 08/22] x86/sev: Pass SVSM calling area down to early
+ page state change API
+Message-ID: <20250810203643.GLaJkC2wtmxtvrPbeT@fat_crate.local>
+References: <20250722072708.2079165-24-ardb+git@google.com>
+ <20250722072708.2079165-32-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250714060843.4029171-5-ardb+git@google.com> <20250714060843.4029171-6-ardb+git@google.com>
- <20250803010449df1f5cfb@mail.local>
-In-Reply-To: <20250803010449df1f5cfb@mail.local>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 10 Aug 2025 09:02:49 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXGQyLXwk9Bq24xhPPsB1nO9RcSkvh=0p8aNP=Q=Az8V7w@mail.gmail.com>
-X-Gm-Features: Ac12FXyxSfM9EC_oe23LQ4fW6u1l84sRZB4iGnVNSBFl1E9opWCoKNhC-oXMcUQ
-Message-ID: <CAMj1kXGQyLXwk9Bq24xhPPsB1nO9RcSkvh=0p8aNP=Q=Az8V7w@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] efi-rtc: Remove wakeup functionality
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, 
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
-	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Sunil V L <sunilvl@ventanamicro.com>, 
-	Bibo Mao <maobibo@loongson.cn>, linux-rtc@vger.kernel.org, linux-efi@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, x86@kernel.org, 
-	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250722072708.2079165-32-ardb+git@google.com>
 
-On Sun, 3 Aug 2025 at 11:05, Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
->
-> Hello,
->
-> Apart from the topic that should be "rtc: efi:...", I'm ready to apply
-> this patch.
->
+On Tue, Jul 22, 2025 at 09:27:17AM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> The early page state change API is mostly only used very early, when
+> only the boot time SVSM calling area is in use. However, this API is
+> also called by the kexec finishing code, which runs very late, and
+> potentially from a different CPU (which uses a different calling area).
+> 
+> To avoid pulling the per-CPU SVSM calling area pointers and related SEV
+> state into the startup code, refactor the page state change API so the
+> SVSM calling area virtual and physical addresses can be provided by the
+> caller.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/x86/boot/compressed/sev.c      | 12 +++++++++---
+>  arch/x86/boot/startup/sev-shared.c  | 17 +++++++++--------
+>  arch/x86/boot/startup/sev-startup.c | 11 +++++++----
+>  arch/x86/coco/sev/core.c            |  3 ++-
+>  arch/x86/include/asm/sev-internal.h |  3 ++-
+>  5 files changed, 29 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index f714235d3222..18b0ccf517eb 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -65,7 +65,9 @@ void snp_set_page_private(unsigned long paddr)
+>  	if (!sev_snp_enabled())
+>  		return;
+>  
+> -	__page_state_change(paddr, paddr, SNP_PAGE_STATE_PRIVATE);
+> +	__page_state_change(paddr, paddr, SNP_PAGE_STATE_PRIVATE,
+> +			    (struct svsm_ca *)boot_svsm_caa_pa,
+> +			    boot_svsm_caa_pa);
 
-Thanks, please go ahead.
+All those functions should probably get a
 
-> On 14/07/2025 08:08:45+0200, Ard Biesheuvel wrote:
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > The EFI rtc driver is used by non-x86 architectures only, and exposes
-> > the get/set wakeup time functionality provided by the underlying
-> > platform. This is usually broken on most platforms, and not widely used
-> > to begin with [if at all], so let's just remove it.
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  drivers/rtc/rtc-efi.c | 76 +-------------------
-> >  1 file changed, 2 insertions(+), 74 deletions(-)
-> >
-> > diff --git a/drivers/rtc/rtc-efi.c b/drivers/rtc/rtc-efi.c
-> > index fa8bf82df948..b4f44999ef0f 100644
-> > --- a/drivers/rtc/rtc-efi.c
-> > +++ b/drivers/rtc/rtc-efi.c
-> > @@ -112,48 +112,6 @@ convert_from_efi_time(efi_time_t *eft, struct rtc_time *wtime)
-> >       return true;
-> >  }
-> >
-> > -static int efi_read_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
-> > -{
-> > -     efi_time_t eft;
-> > -     efi_status_t status;
-> > -
-> > -     /*
-> > -      * As of EFI v1.10, this call always returns an unsupported status
-> > -      */
-> > -     status = efi.get_wakeup_time((efi_bool_t *)&wkalrm->enabled,
-> > -                                  (efi_bool_t *)&wkalrm->pending, &eft);
-> > -
-> > -     if (status != EFI_SUCCESS)
-> > -             return -EINVAL;
-> > -
-> > -     if (!convert_from_efi_time(&eft, &wkalrm->time))
-> > -             return -EIO;
-> > -
-> > -     return rtc_valid_tm(&wkalrm->time);
-> > -}
-> > -
-> > -static int efi_set_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
-> > -{
-> > -     efi_time_t eft;
-> > -     efi_status_t status;
-> > -
-> > -     convert_to_efi_time(&wkalrm->time, &eft);
-> > -
-> > -     /*
-> > -      * XXX Fixme:
-> > -      * As of EFI 0.92 with the firmware I have on my
-> > -      * machine this call does not seem to work quite
-> > -      * right
-> > -      *
-> > -      * As of v1.10, this call always returns an unsupported status
-> > -      */
-> > -     status = efi.set_wakeup_time((efi_bool_t)wkalrm->enabled, &eft);
-> > -
-> > -     dev_warn(dev, "write status is %d\n", (int)status);
-> > -
-> > -     return status == EFI_SUCCESS ? 0 : -EINVAL;
-> > -}
-> > -
-> >  static int efi_read_time(struct device *dev, struct rtc_time *tm)
-> >  {
-> >       efi_status_t status;
-> > @@ -188,17 +146,13 @@ static int efi_set_time(struct device *dev, struct rtc_time *tm)
-> >
-> >  static int efi_procfs(struct device *dev, struct seq_file *seq)
-> >  {
-> > -     efi_time_t        eft, alm;
-> > +     efi_time_t        eft;
-> >       efi_time_cap_t    cap;
-> > -     efi_bool_t        enabled, pending;
-> > -     struct rtc_device *rtc = dev_get_drvdata(dev);
-> >
-> >       memset(&eft, 0, sizeof(eft));
-> > -     memset(&alm, 0, sizeof(alm));
-> >       memset(&cap, 0, sizeof(cap));
-> >
-> >       efi.get_time(&eft, &cap);
-> > -     efi.get_wakeup_time(&enabled, &pending, &alm);
-> >
-> >       seq_printf(seq,
-> >                  "Time\t\t: %u:%u:%u.%09u\n"
-> > @@ -214,26 +168,6 @@ static int efi_procfs(struct device *dev, struct seq_file *seq)
-> >               /* XXX fixme: convert to string? */
-> >               seq_printf(seq, "Timezone\t: %u\n", eft.timezone);
-> >
-> > -     if (test_bit(RTC_FEATURE_ALARM, rtc->features)) {
-> > -             seq_printf(seq,
-> > -                        "Alarm Time\t: %u:%u:%u.%09u\n"
-> > -                        "Alarm Date\t: %u-%u-%u\n"
-> > -                        "Alarm Daylight\t: %u\n"
-> > -                        "Enabled\t\t: %s\n"
-> > -                        "Pending\t\t: %s\n",
-> > -                        alm.hour, alm.minute, alm.second, alm.nanosecond,
-> > -                        alm.year, alm.month, alm.day,
-> > -                        alm.daylight,
-> > -                        enabled == 1 ? "yes" : "no",
-> > -                        pending == 1 ? "yes" : "no");
-> > -
-> > -             if (alm.timezone == EFI_UNSPECIFIED_TIMEZONE)
-> > -                     seq_puts(seq, "Timezone\t: unspecified\n");
-> > -             else
-> > -                     /* XXX fixme: convert to string? */
-> > -                     seq_printf(seq, "Timezone\t: %u\n", alm.timezone);
-> > -     }
-> > -
-> >       /*
-> >        * now prints the capabilities
-> >        */
-> > @@ -249,8 +183,6 @@ static int efi_procfs(struct device *dev, struct seq_file *seq)
-> >  static const struct rtc_class_ops efi_rtc_ops = {
-> >       .read_time      = efi_read_time,
-> >       .set_time       = efi_set_time,
-> > -     .read_alarm     = efi_read_alarm,
-> > -     .set_alarm      = efi_set_alarm,
-> >       .proc           = efi_procfs,
-> >  };
-> >
-> > @@ -271,11 +203,7 @@ static int __init efi_rtc_probe(struct platform_device *dev)
-> >       platform_set_drvdata(dev, rtc);
-> >
-> >       rtc->ops = &efi_rtc_ops;
-> > -     clear_bit(RTC_FEATURE_UPDATE_INTERRUPT, rtc->features);
-> > -     if (efi_rt_services_supported(EFI_RT_SUPPORTED_WAKEUP_SERVICES))
-> > -             set_bit(RTC_FEATURE_ALARM_WAKEUP_ONLY, rtc->features);
-> > -     else
-> > -             clear_bit(RTC_FEATURE_ALARM, rtc->features);
-> > +     clear_bit(RTC_FEATURE_ALARM, rtc->features);
-> >
-> >       device_init_wakeup(&dev->dev, true);
-> >
-> > --
-> > 2.50.0.727.gbf7dc18ff4-goog
-> >
->
-> --
-> Alexandre Belloni, co-owner and COO, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
->
+struct psc_desc *d;
+
+where all those members are set to the current arguments so that we don't
+marshall so many arguments back'n'forth.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
