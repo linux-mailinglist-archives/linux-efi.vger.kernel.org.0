@@ -1,137 +1,125 @@
-Return-Path: <linux-efi+bounces-4529-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4530-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136B4B1FC11
-	for <lists+linux-efi@lfdr.de>; Sun, 10 Aug 2025 22:46:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC78B1FC29
+	for <lists+linux-efi@lfdr.de>; Sun, 10 Aug 2025 23:13:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2190B1897ADB
-	for <lists+linux-efi@lfdr.de>; Sun, 10 Aug 2025 20:46:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C27381776B5
+	for <lists+linux-efi@lfdr.de>; Sun, 10 Aug 2025 21:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D749C1D63E6;
-	Sun, 10 Aug 2025 20:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AC222CBD9;
+	Sun, 10 Aug 2025 21:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fXvNsaDk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HCOBV3tU"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575B1219E8;
-	Sun, 10 Aug 2025 20:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E0F22A4DA;
+	Sun, 10 Aug 2025 21:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754858774; cv=none; b=TyEAeUj1TMXCatMW1rZzTXIfDpd+lhRZY+u0qrfJOrYzKWBcEevxoSOFUijzqgJohSB7DKnpIGNA0F+W2YyIkQsglz80beCmiP73wcSa2/sCWsE99fcbQwPsutc3Nwop583xtCUe7UGGPT+6ZtMA5GENNOOZNLA0XqJlI4kToME=
+	t=1754860330; cv=none; b=uW36EKXhKW9z07HIja324++MX0a7yHazWhVColsBFwdTIbTJR/2yheTxB2yYUlV2HjT877jxU8aNTLUZM1O3cvkNKsQVdL5+RFqaiRn+yhsfgDSa2ZAlVQo+Q9+NzRrAkL31+Xyp6s3zO/nXoQwF/yWUeZOJ9ukhdh05iVyxoFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754858774; c=relaxed/simple;
-	bh=X6u2f9fO9neZj9s6w+y5uN4zh9MdsPoxai4OlaDcAbI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N3AndUTeMw9WBzeg0r7m/W3Kdchqds35UlGHOsagk7+o55qWAsJWcfNcT+hxT5R6ne6At0Os9hqwD/Wng2K6imtvP6p4YaUsT+qW0Qb70p5RDCtfpRxGuHohqgp43sbrgTPSWGYaZspOLWBrsKThivlJKbcItlBPvBc1jBxImnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=fXvNsaDk; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A77FA40E0232;
-	Sun, 10 Aug 2025 20:37:06 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id z5318P-2Ttr6; Sun, 10 Aug 2025 20:37:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1754858222; bh=jPuah6eZJsKx0Tn4u3wz+pvNuujj0ltLpFFE0DRYR+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fXvNsaDkf/mITzivh/QNweou4KTleJgtzJ/0LAOU+UOTVC7hGdo2p5SReEH1DGoTj
-	 IYl0oWH+EVK5sSrk56H0xO2kq/EkyOdfSP/ezNF1mMJuwDmaF6I2ujWejIP6vuoeJI
-	 3Pp+WseZxIgPYLLJgvKjcq87m5owWsxYFnq/oP03v3ie8jzqGLZxyKqS2FJiC9dwYO
-	 umIK6ww0vJBUXiqd0up7ihR8cLoRY5wYi0yVlC4LjpZ2KwxOy9OizEyGWZMc0NIhPY
-	 EqpGMr258Yccf98tvi+xBz4DZNVCj/nOYE797XtQUzeDe2bV9jctxNB8A78RtN7Cu7
-	 Vt2ePa29wN6SwwcjveObo5FqCRHQY5hUkFiW0V+pCAYPq5QB03l1b5RywJHmgPq3HD
-	 LU0WX3hoZuIoGDz7CvL4keD6zMEbzsxXY/Hh5jWX6Zn3Z9ScXKdOfPUvncBKTIv9VF
-	 ybtMo7vhcCZ2uFpGFX/P2fnc5GfaJ8fLC19Ny3HAmeaMBeoGoHjNl9MQoLifqKpUPl
-	 5GE6dArkl3QmxQ4Sig4DW19DErcYXxFqGZAYJsT5bxsigDhyF1/MpSVg1EUxH7slAA
-	 WVVeoe7t7+uzjGl5rLGHhtn0JRauaOWfdc+jW8AWLGDMEYHUh2AfxnZdcoq9OSGlfW
-	 TJbEJmjErDiFvNW+/q0ihQ3w=
-Received: from zn.tnic (pd953092e.dip0.t-ipconnect.de [217.83.9.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D8ECE40E0217;
-	Sun, 10 Aug 2025 20:36:50 +0000 (UTC)
-Date: Sun, 10 Aug 2025 22:36:43 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nikunj A Dadhania <nikunj@amd.com>
-Subject: Re: [PATCH v6 08/22] x86/sev: Pass SVSM calling area down to early
- page state change API
-Message-ID: <20250810203643.GLaJkC2wtmxtvrPbeT@fat_crate.local>
-References: <20250722072708.2079165-24-ardb+git@google.com>
- <20250722072708.2079165-32-ardb+git@google.com>
+	s=arc-20240116; t=1754860330; c=relaxed/simple;
+	bh=PTB+y1bea+X0pwle+Qsb0krCZI4wJwkr28qnyuTl7j4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hczlwUowThmGaIIQa6Vt6qpx34/PL/cHbhQOygSaAvDu48nmIPqFqH/fQ9n9EX+P9Lg6RTtBynxT4wDoLLugNrRYJiUm9pUQG0CpDHNA4z1vIkmv6ZXtNfhE22Ao9C/6kDeQV4y7/fk5j8LkrYpBexGx8B5TCG+0YwYWAl4HaLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HCOBV3tU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF676C4CEEB;
+	Sun, 10 Aug 2025 21:12:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754860329;
+	bh=PTB+y1bea+X0pwle+Qsb0krCZI4wJwkr28qnyuTl7j4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=HCOBV3tU+ctjdX3pY3Zg/0pvMsfqNnXGmHLBwd4NcMVjVEH7cvRnVceivTVzUTBgz
+	 iBywCPbd901UmslM78Hnuk/eTpHS6/f3sLyf9xPRghxH/2C+4EPHmKaK3TU1y8G/SD
+	 2LZGbg4pzBNtyw7wRgsvYlW0+yX8/zcykqfhKvNIWp878PjsojxBNWCh5PKt5A4KoZ
+	 LQ8F53gT97pNeIvGJtMveQduZsLP39bJ9M6pBSMzg1LErA9A75yivHXsm8MZHlMgbc
+	 tG9XSvaRQ5XBE9KczEQP5WOF5MlpsjN04vNY4GNEFA7Y6xVuMV9vlzvKe/2lUu0GBk
+	 cXiQT6eCpZTTg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD1539D0C2B;
+	Sun, 10 Aug 2025 21:12:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250722072708.2079165-32-ardb+git@google.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 00/13] stackleak: Support Clang stack depth tracking
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <175486034248.1221929.3658503475425874388.git-patchwork-notify@kernel.org>
+Date: Sun, 10 Aug 2025 21:12:22 +0000
+References: <20250717231756.make.423-kees@kernel.org>
+In-Reply-To: <20250717231756.make.423-kees@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: linux-riscv@lists.infradead.org, arnd@arndb.de, mingo@kernel.org,
+ gustavoars@kernel.org, hch@lst.de, andreyknvl@gmail.com,
+ ryabinin.a.a@gmail.com, ardb@kernel.org, masahiroy@kernel.org,
+ nathan@kernel.org, nicolas.schier@linux.dev, nick.desaulniers+lkml@gmail.com,
+ morbo@google.com, justinstitt@google.com, linux-kernel@vger.kernel.org,
+ x86@kernel.org, kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, llvm@lists.linux.dev
 
-On Tue, Jul 22, 2025 at 09:27:17AM +0200, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
-> 
-> The early page state change API is mostly only used very early, when
-> only the boot time SVSM calling area is in use. However, this API is
-> also called by the kexec finishing code, which runs very late, and
-> potentially from a different CPU (which uses a different calling area).
-> 
-> To avoid pulling the per-CPU SVSM calling area pointers and related SEV
-> state into the startup code, refactor the page state change API so the
-> SVSM calling area virtual and physical addresses can be provided by the
-> caller.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/x86/boot/compressed/sev.c      | 12 +++++++++---
->  arch/x86/boot/startup/sev-shared.c  | 17 +++++++++--------
->  arch/x86/boot/startup/sev-startup.c | 11 +++++++----
->  arch/x86/coco/sev/core.c            |  3 ++-
->  arch/x86/include/asm/sev-internal.h |  3 ++-
->  5 files changed, 29 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> index f714235d3222..18b0ccf517eb 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -65,7 +65,9 @@ void snp_set_page_private(unsigned long paddr)
->  	if (!sev_snp_enabled())
->  		return;
->  
-> -	__page_state_change(paddr, paddr, SNP_PAGE_STATE_PRIVATE);
-> +	__page_state_change(paddr, paddr, SNP_PAGE_STATE_PRIVATE,
-> +			    (struct svsm_ca *)boot_svsm_caa_pa,
-> +			    boot_svsm_caa_pa);
+Hello:
 
-All those functions should probably get a
+This series was applied to riscv/linux.git (fixes)
+by Kees Cook <kees@kernel.org>:
 
-struct psc_desc *d;
+On Thu, 17 Jul 2025 16:25:05 -0700 you wrote:
+> v3:
+>   - split up and drop __init vs inline patches that went via arch trees
+>   - apply feedback about preferring __init to __always_inline
+>   - incorporate Ritesh Harjani's patch for __init cleanups in powerpc
+>   - wider build testing on older compilers
+>  v2: https://lore.kernel.org/lkml/20250523043251.it.550-kees@kernel.org/
+>  v1: https://lore.kernel.org/lkml/20250507180852.work.231-kees@kernel.org/
+> 
+> [...]
 
-where all those members are set to the current arguments so that we don't
-marshall so many arguments back'n'forth.
+Here is the summary with links:
+  - [v3,01/13] stackleak: Rename STACKLEAK to KSTACK_ERASE
+    (no matching commit)
+  - [v3,02/13] stackleak: Rename stackleak_track_stack to __sanitizer_cov_stack_depth
+    (no matching commit)
+  - [v3,03/13] stackleak: Split KSTACK_ERASE_CFLAGS from GCC_PLUGINS_CFLAGS
+    (no matching commit)
+  - [v3,04/13] x86: Handle KCOV __init vs inline mismatches
+    (no matching commit)
+  - [v3,05/13] arm: Handle KCOV __init vs inline mismatches
+    (no matching commit)
+  - [v3,06/13] arm64: Handle KCOV __init vs inline mismatches
+    https://git.kernel.org/riscv/c/65c430906eff
+  - [v3,07/13] s390: Handle KCOV __init vs inline mismatches
+    https://git.kernel.org/riscv/c/c64d6be1a6f8
+  - [v3,08/13] powerpc/mm/book3s64: Move kfence and debug_pagealloc related calls to __init section
+    https://git.kernel.org/riscv/c/645d1b666498
+  - [v3,09/13] mips: Handle KCOV __init vs inline mismatch
+    https://git.kernel.org/riscv/c/d01daf9d95c9
+  - [v3,10/13] init.h: Disable sanitizer coverage for __init and __head
+    https://git.kernel.org/riscv/c/381a38ea53d2
+  - [v3,11/13] kstack_erase: Support Clang stack depth tracking
+    (no matching commit)
+  - [v3,12/13] configs/hardening: Enable CONFIG_KSTACK_ERASE
+    https://git.kernel.org/riscv/c/4c56d9f7e75e
+  - [v3,13/13] configs/hardening: Enable CONFIG_INIT_ON_FREE_DEFAULT_ON
+    https://git.kernel.org/riscv/c/437641a72d0a
 
+You are awesome, thank you!
 -- 
-Regards/Gruss,
-    Boris.
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
 
