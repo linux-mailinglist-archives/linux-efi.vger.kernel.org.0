@@ -1,220 +1,106 @@
-Return-Path: <linux-efi+bounces-4535-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4536-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1443DB20664
-	for <lists+linux-efi@lfdr.de>; Mon, 11 Aug 2025 12:54:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F986B20BAE
+	for <lists+linux-efi@lfdr.de>; Mon, 11 Aug 2025 16:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1559718952D9
-	for <lists+linux-efi@lfdr.de>; Mon, 11 Aug 2025 10:54:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 613283B2355
+	for <lists+linux-efi@lfdr.de>; Mon, 11 Aug 2025 14:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354711367;
-	Mon, 11 Aug 2025 10:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9119202969;
+	Mon, 11 Aug 2025 14:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PiK+5nvm"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F776275B0F;
-	Mon, 11 Aug 2025 10:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D093202C3E;
+	Mon, 11 Aug 2025 14:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754909569; cv=none; b=ryk5JsiEHCvvTryH1TZwNLVlg5J6jRNWO56wui5iB0H4b1EvNA3/xo9qRBWb24lf4Ym4ZqLRuPQnExjWofelgBlNtKWxwwyis75aWoD7RU2FgL7Vo5JX+QyiBNIBPGdF80Cu1pjNOw1iQNGgNw0aPaLidYKL6/VQcN9+FjOrTr0=
+	t=1754921887; cv=none; b=AedQszheuH6njLzirKRsLqklYFopnmQny8zou+M4WEOXJeMITxW5hZJhkgOMfnYwBRg80s9s0WvMFQdqvPrHJATBnxV2zek/T0u5bZ7ZA2jO8IPqAdoMsbysQVQJK0WuYd4iI9Ig5HwZqxoSR/bkj1dXclbI/wbAKz2MLlkXuu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754909569; c=relaxed/simple;
-	bh=Wd35ZKPMzIKq6KqNhzq7CNK0q0T3QY26+Wt3PhA5IiU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UYq24mfmWxtSO+rUjy5z+IC+kT6j9M2A4NrF01nENjqUkVJH7hmeFxkjNAxodzIIT2Zd6OtkG9mrduambf30XhT0QQXw+V52ubCLZ8lbrxY3OzzNFYBA0H48zMe2BkM9l+dek6ss0S8T0tfLbwEBc56jNyfUEq1a5y5gEBL8SRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c0rvG169Pz6L5XV;
-	Mon, 11 Aug 2025 18:47:54 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id CBD301402EF;
-	Mon, 11 Aug 2025 18:52:40 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 11 Aug
- 2025 12:52:40 +0200
-Date: Mon, 11 Aug 2025 11:52:38 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-CC: Daniel Ferguson <danielf@os.amperecomputing.com>, Ard Biesheuvel
-	<ardb@kernel.org>, Jonathan Corbet <corbet@lwn.net>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse
-	<james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, Borislav Petkov
-	<bp@alien8.de>, <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-efi@vger.kernel.org>,
-	<linux-edac@vger.kernel.org>, Jason Tian <jason@os.amperecomputing.com>,
-	Shengwei Luo <luoshengwei@huawei.com>, Shiju Jose <shiju.jose@huawei.com>
-Subject: Re: [PATCH v4 1/5] RAS: Report all ARM processor CPER information
- to userspace
-Message-ID: <20250811115238.0000272b@huawei.com>
-In-Reply-To: <20250809175519.74b08ea9@foz.lan>
-References: <20250805-mauro_v3-v6-16-rev2-v4-0-ea538759841c@os.amperecomputing.com>
-	<20250805-mauro_v3-v6-16-rev2-v4-1-ea538759841c@os.amperecomputing.com>
-	<20250808162209.000068f5@huawei.com>
-	<20250809175519.74b08ea9@foz.lan>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1754921887; c=relaxed/simple;
+	bh=FxIeR+XRO+LteQtbn4Y3Z8oxhVBMnjv6foxqAQrwRI0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ayzhpFjTlexK4ogmW8wpcBqDcHHP473oqs2aENSNjqTwQ4V7NggQdMivaA8gcGHieDQmvXTIy/x1utPjLq7lbQUx0yNoykV3Z7FEDWxZ8rKHMCS2H5B6glF4pzSQEP/rJuNFvQdIv8AGDz3fdfZX4IYeobqK8wPgs/SzxpTU718=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PiK+5nvm; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4AA1D40E01FD;
+	Mon, 11 Aug 2025 14:18:01 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id lacXSiAVNQhH; Mon, 11 Aug 2025 14:17:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1754921877; bh=qEuNmBwP/sHgYnIfLRgH3+RiF/31tgRFq4tjlmnbQ7g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PiK+5nvm7fPXFSGgXGg1YZ5Mdi/swYYeSb/HsRzYqE+3ATfme78wESSO5MN0f8KLI
+	 an9dC2s2es3RocXq2me5yVxW+Lxr5pLFQS99+WkdeZnB92dNU9yAWXwM2/iICN1pnj
+	 J4k6CthtwUWLSHPcBrcEqK5tvgqkSPG2KeakwCDEXdzKaS+P1JecGwvm/05SHlBTEd
+	 Z+Y8URn+IRI3Zez9LvTDVpn1CmLGsvuXvjupYRC965MyXHZDjtLT2hTDqNcEOlNK8J
+	 gGJMoq4FQe5Qf1gno3nqeQJ7ir4B2/LZBZFQ61pawSUPTiY/A1dqTolsaXjIAKAgQi
+	 hwvEic8QGX9NSuISaf5SM685gjGFaVR2kkGpXFfVUT9HJRh97f0ajxjxf3sxitY2m9
+	 384aI3BBTJUODSTWagv6L906RSaCAitKpzLa2Y6+KaLweZC555TcAQtkSUwt5vQsO/
+	 HCPNn4DXFlR6/5vT2e6QDCVourl7LtkbXgxg1ZvSLFFJ87V+rNliWr4CzZP/y0sBbw
+	 9pmx+uLnn067175W+pk0s3fJ00LxBoH6fVu4aeq2y1WTZIZS3IMwP/blwaIJ+9g5fE
+	 5TncsG9BwVSIwq+3fxi7Z10FsqpxEmzWLPeciLn16fn1mYQ4xgTlEUbOSkD9YsfhrP
+	 IDXr4s5JQ8hn7Z0kiuZEYSOI=
+Received: from zn.tnic (pd953092e.dip0.t-ipconnect.de [217.83.9.46])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4758340E0265;
+	Mon, 11 Aug 2025 14:17:46 +0000 (UTC)
+Date: Mon, 11 Aug 2025 16:17:40 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: [PATCH v6 00/22] x86: strict separation of startup code
+Message-ID: <20250811141740.GPaJn7hKNmLGV24WTZ@fat_crate.local>
+References: <20250722072708.2079165-24-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250722072708.2079165-24-ardb+git@google.com>
 
-On Sat, 9 Aug 2025 17:55:19 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Tue, Jul 22, 2025 at 09:27:09AM +0200, Ard Biesheuvel wrote:
+> Changes since v5:
+> - Some cosmetic touchups to patch #1
+> - Fix error spotted by Tom in patch #2
+> - Rejig objtool 'noabs' feature using an arch hook to check for
+>   relocations that should be considered absolute, which includes all of
+>   R_X86_64_32, R_X86_64_32S and R_X86_64_64 on x86_64
 
-> Em Fri, 8 Aug 2025 16:22:09 +0100
-> Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
-> 
-> > On Tue, 05 Aug 2025 11:35:38 -0700
-> > Daniel Ferguson <danielf@os.amperecomputing.com> wrote:
-> >   
-> > > From: Jason Tian <jason@os.amperecomputing.com>
-> > > 
-> > > The ARM processor CPER record was added in UEFI v2.6 and remained
-> > > unchanged up to v2.10.
-> > > 
-> > > Yet, the original arm_event trace code added by
-> > > 
-> > >   e9279e83ad1f ("trace, ras: add ARM processor error trace event")
-> > > 
-> > > is incomplete, as it only traces some fields of UAPI 2.6 table N.16, not
-> > > exporting any information from tables N.17 to N.29 of the record.
-> > > 
-> > > This is not enough for the user to be able to figure out what has
-> > > exactly happened or to take appropriate action.
-> > > 
-> > > According to the UEFI v2.9 specification chapter N2.4.4, the ARM
-> > > processor error section includes:
-> > > 
-> > > - several (ERR_INFO_NUM) ARM processor error information structures
-> > >   (Tables N.17 to N.20);
-> > > - several (CONTEXT_INFO_NUM) ARM processor context information
-> > >   structures (Tables N.21 to N.29);
-> > > - several vendor specific error information structures. The
-> > >   size is given by Section Length minus the size of the other
-> > >   fields.
-> > > 
-> > > In addition, it also exports two fields that are parsed by the GHES
-> > > driver when firmware reports it, e.g.:
-> > > 
-> > > - error severity
-> > > - CPU logical index
-> > > 
-> > > Report all of these information to userspace via a the ARM tracepoint so
-> > > that userspace can properly record the error and take decisions related
-> > > to CPU core isolation according to error severity and other info.
-> > > 
-> > > The updated ARM trace event now contains the following fields:
-> > > 
-> > > ======================================  =============================
-> > > UEFI field on table N.16                ARM Processor trace fields
-> > > ======================================  =============================
-> > > Validation                              handled when filling data for
-> > >                                         affinity MPIDR and running
-> > >                                         state.
-> > > ERR_INFO_NUM                            pei_len
-> > > CONTEXT_INFO_NUM                        ctx_len
-> > > Section Length                          indirectly reported by
-> > >                                         pei_len, ctx_len and oem_len
-> > > Error affinity level                    affinity
-> > > MPIDR_EL1                               mpidr
-> > > MIDR_EL1                                midr
-> > > Running State                           running_state
-> > > PSCI State                              psci_state
-> > > Processor Error Information Structure   pei_err - count at pei_len
-> > > Processor Context                       ctx_err- count at ctx_len
-> > > Vendor Specific Error Info              oem - count at oem_len
-> > > ======================================  =============================
-> > > 
-> > > It should be noted that decoding of tables N.17 to N.29, if needed, will
-> > > be handled in userspace. That gives more flexibility, as there won't be
-> > > any need to flood the kernel with micro-architecture specific error
-> > > decoding.
-> > > 
-> > > Also, decoding the other fields require a complex logic, and should be
-> > > done for each of the several values inside the record field.  So, let
-> > > userspace daemons like rasdaemon decode them, parsing such tables and
-> > > having vendor-specific micro-architecture-specific decoders.
-> > > 
-> > >   [mchehab: modified description, solved merge conflicts and fixed coding style]
-> > > 
-> > > Fixes: e9279e83ad1f ("trace, ras: add ARM processor error trace event")
-> > >     
-> > 
-> > Fixes tag is part of the main tag block so no blank line here.
-> > There are at least some scripts running on the kernel tree that trip
-> > up on this (and one that moans at the submitter ;)
-> > 
-> > I'd also add something to explain the SoB sequence for the curious.
-> >   
-> > > Co-developed-by: Jason Tian <jason@os.amperecomputing.com>    
-> > 
-> > Jason's the Author, so shouldn't have a Co-dev tag.
-> > There is some info on this in
-> > https://docs.kernel.org/process/submitting-patches.html  
-> 
-> My understanding is that all co-authors shall have co-developed-by
-> and SoB. Anyway, doesn't matter much in practice, I guess.
+Ok, seems to work here.
 
-Nope.  In the description the docs say "in addition to the author
-attribute in the From: tag"  There are also examples where there
-isn't a Co-dev for the From author including the subtle question of
-ordering if someone else posts that patch.
+You could send a final version with the minor issues addressed so that I can
+queue it and test it more.
 
-I have a vague recollection one of the scripts checking linux-next
-might moan about this. 
+Thx.
 
-> 
-> >   
-> > > Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
-> > > Co-developed-by: Shengwei Luo <luoshengwei@huawei.com>
-> > > Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
-> > > Co-developed-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-> > > Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com>    
-> > 
-> > As person submitting I'd normally expect your SoB last.
-> >   
-> > > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>    
-> > 
-> > I guess this is because Mauro posted an earlier version in which
-> > case this is arguably correct, but likely to confuse.
-> > For cases like this I add comments.  
-> 
-> If the patch is identical, and it is just a resubmission,
-> I would keep the original order.
-> 
-> Otherwise, if Daniel did some changes at the code (except for a
-> trivial rebase stuff), better to move his co-developed-by/SoB to
-> the end, eventually adding:
-> 
-> [Daniel: <did something>] before the custody chain block.
+-- 
+Regards/Gruss,
+    Boris.
 
-Docs are clear that sender of the patch must be last SoB.
-That's also checked by the some of the tag block check scripts
-I think.  There's an example of exactly this case in the in the
-submitting-patches.rst file (last one in the section that talks
-about Co-developed-by.
-
-For meaning I don't care that much, but keeping to the rigid
-rules in that doc makes it easier for scripts to check for the
-more important stuff like whether all necessary SoB are there.
-
-Jonathan
-
-> 
-> Thanks,
-> Mauro
-> 
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
