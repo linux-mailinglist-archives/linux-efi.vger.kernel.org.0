@@ -1,43 +1,43 @@
-Return-Path: <linux-efi+bounces-4557-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4558-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43186B26D1E
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Aug 2025 18:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88244B26D21
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Aug 2025 18:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89308603A6D
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Aug 2025 16:53:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68610603D50
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Aug 2025 16:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8503002B7;
-	Thu, 14 Aug 2025 16:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE447301004;
+	Thu, 14 Aug 2025 16:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="hY0ZR+8F"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="QdbPUgHX"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2136.outbound.protection.outlook.com [40.107.94.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0882E2FCBE7;
-	Thu, 14 Aug 2025 16:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3ED3002BC;
+	Thu, 14 Aug 2025 16:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.136
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755190397; cv=fail; b=ksdzDnJuVEEUjld5zLgVQeH9qnFQcu3TLE8jhj+QOZmpkzXkdg8MN9yAR0x8N9RTF2vWfWGsBX/K8SlsXeBcpBpjezSlclsVTfv5q4iEd+2F/+bXoy91RktX+geLe+H2UvK231u1qKhpKOkCYLxk/PDkN8uoNLMpCBfZc9E1gik=
+	t=1755190399; cv=fail; b=DlNUuzrnq91DqK8G98BSg/grOJrlrctiIxWP8QEFs883VQqtKQWqPlUauU0tkuhTdKWeoM9+8bnxIi1xPX0hbiEJjmZQooCZK2hCq3A/oausOKXQm54r1wb4C3/yUYsrBlvMA0GiXtajwbHdKYArTgcaIpkFzHL5hIKPV5XWD4w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755190397; c=relaxed/simple;
-	bh=W9uCxRmXFi4I4ZipftyIxfEBg9sBVDNykOu0JSV8rGE=;
+	s=arc-20240116; t=1755190399; c=relaxed/simple;
+	bh=VWmmZySvsC0NkQY8VVXYlfvIiROA6vS4HSNzWwgHstY=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=RRnzbe6cstb45N18H4Jt4GVIqDoLJD/51oHPS45cJ70S0VAkLn/N0qFLb8ebnehxhNIOx8igUh11yxBaprpZIi9dwYv8/OFhGUaNQOpXgykq43asxKTih2dFL+O8II/v7+h8DFLGKRhE4gT1AAYBbd38We6DxKf75cNSy/LY+CA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=hY0ZR+8F; arc=fail smtp.client-ip=40.107.94.136
+	 To:Cc:MIME-Version; b=HRnye2Kiy6z+QBtldwC2vSi9IiwyMDBrSgwVo9onV0QEplCXC7m+AeLaurW+FtiYufv9lae1J3KIJ2jovaG7cWskU+/6cDeZi+Dp4kmzmayQ4ZF/W1DI+7M7gDOG4pgrRDs/HzhfH4xOjYhvwOPFDAabE5D5BEZZ8H1QNl7gL04=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=QdbPUgHX; arc=fail smtp.client-ip=40.107.94.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DhMFIfIMXZfRvolJZdEGzitMcoloda7gXVZI/LlFhiBT/HMcWbTM1dZ0sE+i9B9ZTQeXeOgZ3l+L2eVmc96ZK5W1K83dOLjB2agfSaKh2jJVkkV8LuuDXPhYukiNILKS9ll3Hy18bzZykL5IF5EcrDu+issRSL/eof+1FijgUz5QEJS4uSFlyP7TPfYT7KoTzCO6xteAnU5bG7ec/kyEHUDNoaX5mhRdMwPl8tVc4temU7+89Bvyyo0JYhObV3OofTd6RCUgT0ucs5zW9VeQe6co9H2Hp8DcXBFtC/AhDMI8WxbbwZHcwHFVajW4/koyB8Bi/30ZziPTNA850IzfRg==
+ b=vnUQG1AvMIbVZIEt3HLDUoMnyv7dJKypwKK2io8B/YCu1Zbfoah3JVW6ANozj99+wN2EAUHDJha6AMOEfYDX3XBbdVJAA2lwVOPg0t9F0CwBmuN7jJquOzwbEkH159kj6qY1yfFoa6Ja9uggvnMdisG+ok8pHzW1VJgD+jNGplKw8wg0aGeBXikcu2AIvTqik78eLTuTwe1mh1ft2n0kxqi3YGWMX/2QQG/CWfwqlPWykWU/I+JbrrEDGBNf7ruC7V+VW0DT/BJoHerDpK2azgvNfRgH3VhVP/yNXHEfcaw356efWI0kRIthFeusa+Ujs0WoFovztTDh5MwCFlA48A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JDPdh5/KZZhUE9C8eI1j3GemRKaQ4CISdV05oe41s8o=;
- b=VekdtT8cASyiOWcGaWrKP4yxSkyrmwOGmJ0gYwYoKPAFMwv2AMD+5ckOGGM0e2H2/aE1fG/9C5Nf6Z6xj4hUMiMqYwxEQxmnBSbZKRHOGaD0nqsihUqm0uFuWSLCNhY7gYiryO6Xh/Xy8/n3h/+U3RcpnlNh6Gaob7WBeVS7NfQBovOKMLmMk8aj/+nvnNpQ6X1MX0DboZ8pynxw36ksXKZVIgofXp9RBUPfLdED0JuroJg9He+tazo/Y6z9w0wGMrCCDH+N3m+ynpgLaepLEtf0lOjhJR82sNKikC3YxCBNR0gg4lftzaz5tKe8C0FCKUEwVYUMHmpOMNpVwm5XQA==
+ bh=0ONZ6VMxeM/i9fNQr6Ks14ia8iihRqfgfE9CGNxrxYY=;
+ b=juhRIJ9rutkZ7kINAdJpIS3MGEBWK5G+uMebHkynpOp0aZKdkQ6+THsqzk/KPpkczsEFyidu0+jmiSDTNllqRpp/NG+MKex3H3blcS08UP7iOQLFdcsDfO7onu627wugFfiVx9TNf543Tqf0QBPc1IdBhQq4vCuXF3kVWFcG8TzJrCrjgWwCwghkNA0mCXJR9vZ7xr9SV30k5BA+6AmdLvs6QjDO48YCZO654jbi/VztMSI9iRhhQLjfM8NSrsk4Uj3nCnozRJLkte0rta+2ALn+gTx9r+zk+W8cTu5M8roAA0iqBWlak8ce93RmSuZNpXB6dzLfmRbCFTf9mKJWAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -45,25 +45,24 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JDPdh5/KZZhUE9C8eI1j3GemRKaQ4CISdV05oe41s8o=;
- b=hY0ZR+8Fk+B5Sr8MdKUA366rtFcfttxyHKyNcLcBx0PNWJIdlqbrNJ2VOz4pjeNwHss2ZkH1IOdAeDAK1ggigls4+nsrpvRFVAdczeF0DS7lifkEtaTSFdYiXUIqRRW1G8g0bVnoopjz8a0gDtOlmwpcXbSVruZkG0GvQ9efH2w=
+ bh=0ONZ6VMxeM/i9fNQr6Ks14ia8iihRqfgfE9CGNxrxYY=;
+ b=QdbPUgHXUPBojQppI/N2moFV0sG5L9e6wYTl7JIqE1mVwyd9Wo4XoqHijehY/GPKfNogbKwWFc9VUDOk3nKNfnNDcVbNWnI2Ow6Szxaf2IIes9QmnNUu41K1x3XOndOB4q1CPdqjTgQACIXVNHmtxgdDRZlK8n6u2HIyJuLv1UM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
 Received: from SA3PR01MB8473.prod.exchangelabs.com (2603:10b6:806:397::12) by
  BL3PR01MB6881.prod.exchangelabs.com (2603:10b6:208:354::19) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.18; Thu, 14 Aug 2025 16:53:13 +0000
+ 15.20.9031.18; Thu, 14 Aug 2025 16:53:15 +0000
 Received: from SA3PR01MB8473.prod.exchangelabs.com
  ([fe80::46d7:1d3a:dc9c:69c3]) by SA3PR01MB8473.prod.exchangelabs.com
  ([fe80::46d7:1d3a:dc9c:69c3%6]) with mapi id 15.20.9031.014; Thu, 14 Aug 2025
- 16:53:12 +0000
+ 16:53:15 +0000
 From: Daniel Ferguson <danielf@os.amperecomputing.com>
-Date: Thu, 14 Aug 2025 09:52:55 -0700
-Subject: [PATCH v6 4/5] efi/cper: align ARM CPER type with UEFI 2.9A/2.10
- specs
+Date: Thu, 14 Aug 2025 09:52:56 -0700
+Subject: [PATCH v6 5/5] docs: efi: add CPER functions to driver-api
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250814-mauro_v3-v6-16-rev2-v6-4-e5538d534aa0@os.amperecomputing.com>
+Message-Id: <20250814-mauro_v3-v6-16-rev2-v6-5-e5538d534aa0@os.amperecomputing.com>
 References: <20250814-mauro_v3-v6-16-rev2-v6-0-e5538d534aa0@os.amperecomputing.com>
 In-Reply-To: <20250814-mauro_v3-v6-16-rev2-v6-0-e5538d534aa0@os.amperecomputing.com>
 To: Ard Biesheuvel <ardb@kernel.org>
@@ -76,8 +75,8 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailer: b4 0.14.2
-X-ClientProxiedBy: CH2PR02CA0030.namprd02.prod.outlook.com
- (2603:10b6:610:4e::40) To SA3PR01MB8473.prod.exchangelabs.com
+X-ClientProxiedBy: CH0PR07CA0006.namprd07.prod.outlook.com
+ (2603:10b6:610:32::11) To SA3PR01MB8473.prod.exchangelabs.com
  (2603:10b6:806:397::12)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -87,317 +86,154 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SA3PR01MB8473:EE_|BL3PR01MB6881:EE_
-X-MS-Office365-Filtering-Correlation-Id: abcace19-59c4-4478-205d-08dddb530e57
+X-MS-Office365-Filtering-Correlation-Id: 69718704-0e44-4da5-88e2-08dddb531030
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|52116014|7416014|376014|366016|1800799024|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YVJBUkVRd0JndngzMitDTThUU0VybnJmekYzVWZLTWgrMURQUTFRRDZDeHJU?=
- =?utf-8?B?Y0cvQjlHRGQvTnE1U2QvNzJEZHVHdlBHM1VIWHc5ZEMrdGlvd1prMUEvV1U1?=
- =?utf-8?B?OVc0eEl4TnVaQktCQmFvbHhvQ2ZTa3pHMVA5SEFzWFMvdURLT0lyb1dSbjYz?=
- =?utf-8?B?L1UwOHFtK1B3d2pHQ3FHakh5TGxLZmMvZktpcCt3QXdhdXU2ZmI1RENKR3hW?=
- =?utf-8?B?ZDcrSHZmY0VTR1dJU2U5S01yY25SZ09uV3FnbHVwQUtkTFdlYkNIRFNBZEZH?=
- =?utf-8?B?Q2NkNkNXVkF1TklqckdCWXRPc1lOeis1bko3STZaMk5ac1RxRTFBejVZc0JR?=
- =?utf-8?B?d0ZnKzU4OWxuSkZFNS9kQU02dzNJcjhYT3N2UCtyeUdWcVl5Z0RuNUpxUVdR?=
- =?utf-8?B?MmN5Wnh3NGp0bDlYMUU0SzdBR1NGUmk0VHRBYmpycXhFcCtaYlU4c1lnT3Ix?=
- =?utf-8?B?QWZERWh5bGJKM2RsaS9HNFNxUWptbUh5TUNFZzAzRlBqbTdBSnNHRzVCZHBM?=
- =?utf-8?B?TkljcXpWcFJWcVFnSGFWRE1CdzlUVml0TXI2NDNLSmtGZDZqazlHdnVIdjY1?=
- =?utf-8?B?U2N6OFpDcnIxcWptVVFKbUJlQmd6akZ5RE9tcHNSdFlwSDMwa2NDSE9hb0p3?=
- =?utf-8?B?bVErMXRxbVorQTc4TUxUWHIvMkNlSUlpeW8xeWU1UTRoM1FoMm9JOGhkTmk2?=
- =?utf-8?B?MFZOdVQrd3VsdTB3eDBmSVR5Nm45UURIb1BIbFVjNnhLd09raVBSQ1Y2QklQ?=
- =?utf-8?B?YzVOWkZqazFPWG5PV2Z4ZStENW11c0ZXS2Zvb0JCYWJPN1BJVWp3RmxWTnl2?=
- =?utf-8?B?d1Y3clFxVUpsbzN6NWRpTkV4eThjY1lEMTZWb0VjZXNkaElEUlFHZEl4TjZT?=
- =?utf-8?B?cXNIK0NTbXdzUW5XN25GVEhRbWRYNTBERndjblR6cmk4ckM5RjVMeTRhSWdB?=
- =?utf-8?B?cFdsMW1xcTkrRnVFVitmVk1rNmxKdWdCWklpUXgxYXlONjFrZWVRYVo0M1Mx?=
- =?utf-8?B?NUY0dFRvbnJUakcxS2pqZGd4UEtzd0JKbGt5OWo1d0VpaUp4Q1pwMUpHcWlu?=
- =?utf-8?B?Z2JLUXlQNlZSS012R1JjNHl2WGtnQ0Z1aFgzRTRNVjFYMzdiejh6dWJpOFJt?=
- =?utf-8?B?b2J2TWNsVTBXdGFzZEZJL1JacGZibVhZdmNaRjRXK0FFeElqd05Wd2NqSWFG?=
- =?utf-8?B?a3VRNktLV05ZUk9MZWt6V1FVY3daNit6YW5HcHVDd1Jnb2xvYVVnRmQ4NFpS?=
- =?utf-8?B?cFNIQXIvSDJTU1NGSkc5dXAwM3lTZ2hiNGdoclc1WXFCZklVQ0xKNnlZdHVB?=
- =?utf-8?B?bE84QUFDMklpVVBIdklyeldETXBGd3RnRFVLSnJhbXo5WU5Qa25RS3FhcUtn?=
- =?utf-8?B?QkpKMWd5Tkc1dnNsbS84SXBUYmM4YVV5dmY0aFpVOVF3a2VSRk14V3hSUmJi?=
- =?utf-8?B?M2QyeEo1K1RRZ2FnL2FQUEJtS0tZUDkwKzU3K1BvWnRxVHQzR1M3NWkyUVN6?=
- =?utf-8?B?WkR6R3F0d2tVb1JmazFwMjhuYzhob0FlZWVlN2RLU0NyUjdPdk5iWmNNWk9I?=
- =?utf-8?B?RTFDZSs4WjVhMlowVS8xRlkwMVdaN2gyV3ozRjVpajF4aUc5ZFJZaHFFTWI1?=
- =?utf-8?B?SU5BVWw5RnNYUDBGSnlVVkZOb2xHYms2NDBFd3VpaGhIT2VSbXJQTGZodnk0?=
- =?utf-8?B?UGRKYjFzS0JzakhjY3ZUNFRGTDBzSEFKTXE2MEFPVFF0MEptVi9uWlZHQ2JF?=
- =?utf-8?B?enI3bEVmd1RPNllZS0Jsem00TkhTZk1VaXF6NDFpdG4wQ0FwL3JnaHAzWmRZ?=
- =?utf-8?B?WFlWM2F4RzBwQWhTamhBSlFXRjBJaStZeTZqUmZScDc2dUs0S1lmYXVWWVU1?=
- =?utf-8?B?cUJqbGRXMFNOeFBueWV4OXdMUFg3NkhFcWZ5Rmc2c3lLMkk4WWlEWC9kQmlw?=
- =?utf-8?Q?UVBuSwZHJDE=3D?=
+	=?utf-8?B?QUdRdjRnU0ZLbVlZQTBFbnEzaFR2RzBGdlVPNGNET3ozOUROKzl3dEVtODNu?=
+ =?utf-8?B?Q3gyVmxweGp3bFpsZzZNalBvMVdqeFRadHhaZW5xTmRNc0xQVUphakt5UDhW?=
+ =?utf-8?B?QVQ0WjE2VDkwRVNoZ0pEdDJubzhoMlBRcmZMZzVlUDBqY0ZVRFJOd21FL1Ev?=
+ =?utf-8?B?VHh4aDYvVGNPYUFmZXJ1Nk5xYlFWN1BoWnd1eDZoTExoellFb1BSZWNtRW0w?=
+ =?utf-8?B?TzBJOWx5Yi9Fd3NsMHdsNXJ3RGpsRGpzdElPQi9XVDFrYTFNdWxvUVdDcVdw?=
+ =?utf-8?B?Y3ZkNTVkQThYUzRuUC9SQUI4ZlFCOFF6TUpiZnpxS2VXVjZPUW9TZndhaHRm?=
+ =?utf-8?B?dW1oMi9RQWM3aDZIVlZDZmZNeW8zdWhDSU9PM0N5ckVPUGt4Sk5ycTRNUjRL?=
+ =?utf-8?B?N05EaHJIZThhcXl0WjBCd0Q0cUR0cmxKaWMvVy9sSzRwejFpcjFNUHQ3V08y?=
+ =?utf-8?B?QWY5TTNQTjNKYVFMNHkrUDlMSVN5Ykw1Tlo3SDgzb0ZtUDhpcnBBc0x3eC9T?=
+ =?utf-8?B?elhQL21vRkwyYTVqdXVDNlNURm5ZaTdOL1pnd1RUR29wc05PMUhJVGZzTmtX?=
+ =?utf-8?B?T3FpTlBNWVdpZHNjVnBuTTBqcnlYS3lDWnZqeENUa3JEamNETFo3TXEzQjB0?=
+ =?utf-8?B?MCtKL011OThuMEl1YSt2dHd5RXFsazhKd0dscEJRV1FQaWhiaHB3Y0swTWM0?=
+ =?utf-8?B?Uml6UE1lU2tVN1lNVHFCa3V0VFlwYzQ0STFUTnc2MHFjS09DSDlhY05iWFJM?=
+ =?utf-8?B?Y0RqazNKVHhPbE5GeDBVelNuVm1lOVMreEMyZ2F6bkR4cytjcHRhbVVHNGNk?=
+ =?utf-8?B?dXJLMVAvNUVlNTdMQi9HMXVwMVk2R0dtdmZNWjdnTHVLb1B0TXhseDVZbU5z?=
+ =?utf-8?B?YlI1NUNvaElmWVFSK1JQUDlnMVM2QzdJb2ZYZ0lxdG5PTDExMkNQWmZsQldQ?=
+ =?utf-8?B?TzVuc29JaDQwOHJHYXorbUhpeWlxU1JueE1YVzkxa3pUbUdXenF0VHk1b2hO?=
+ =?utf-8?B?dko3bThYRWtxZVB2TzFUUVZVNU5KTXBUZXg0NlFFVEp4QUlKQ0QxZkVqL0Ru?=
+ =?utf-8?B?MzJrMnRnZ0pETUN5UWxtNTZVOUdhTzJsbXc3a21PdC9IdUU2UUNTYnczL3Nl?=
+ =?utf-8?B?TmtHbWRGeFFCNER2OHlmT0M1cjdHbWZxS3p3Q0hTNnBtMFhGdkxKRW1lL1A1?=
+ =?utf-8?B?LzZXWTJhUThCbVFuaUVyZy9ESFNXaUpKNjdnaVg0N0syVnAxQXRxOVpEOW9T?=
+ =?utf-8?B?YzE1bXp4d1I3aTcrc3dtb2ROUEJYVzd5cXBMUTV5YW5ZQ1Qwc05FRGtqUzdU?=
+ =?utf-8?B?LzJIcUgrNTQ0ZjhMMDJsSHk5ZVUzWUtmdXoyb2N2SHhBL3ZKRFFoYlVwdmtk?=
+ =?utf-8?B?MGNmcjNVYmwyVWRPUWZBckV1S0hDZmhmT3p0SGlpWktTbTIzc3RIOXlCblhD?=
+ =?utf-8?B?Mm5JWEFJbXc2YW1zUGxSTmdUZkczWjE4NDdDT2lVZDlRZWVJRDVLTHowUEZp?=
+ =?utf-8?B?NzhEcWZzbHpuWDVzQ2tudVFxY2pvLzhyQW1WMnJtMmdJcjdXOWdEZGEyTW10?=
+ =?utf-8?B?clpmQ0Y3SUIvdy9LM1cvekg2Z3RNNzFrYmpkY1FXcTNMZm9QR3lya1ZTM1hP?=
+ =?utf-8?B?c0FXSmdCUU9MczgvZkVYcjFyWTZBdFFLTzRQRE5RbDIybldmSEl3S3pka2I5?=
+ =?utf-8?B?VXVDSkpwb1ZHNldnenNxWTAwMTQvRjcrUDQxUjROU1Nwb2lzM1Ztemx5OFNE?=
+ =?utf-8?B?RzJxRHJLOUE5aCs4VTdkdm1YTTRuSDlneVh6QlMzcjF5TzVuUFRGK1NwODBY?=
+ =?utf-8?B?eFRhV3pMbHd5c0dlazU1eXliY0VYbkFPWHAxUkdXS2syR0VFUmZHTHE2Q1lu?=
+ =?utf-8?B?ZjBvOUN4VmFxRWNGLy9RSEVhZU5zKzY0MFFqMDV3b3cyS0hJQlBoc0E2YmFt?=
+ =?utf-8?B?RURDMVNWWXJkQVdMQW9saGowWlA5RjIxTTBKZXE4bnozN1F4V0RhRlErNFhG?=
+ =?utf-8?B?WUFvMmV2SzFRPT0=?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR01MB8473.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Y0JwbU8ySHpzNW1HM0VwRXNKLzZvc2RhblQrdU1ra0diY29VQldBZzh0Mi9z?=
- =?utf-8?B?STVPdE9wWEVqZGcvdGo2R3pGWHhSeDZuYWpGam1EbXFJVnozYk9naG5qeWtM?=
- =?utf-8?B?cHBBYll0aFZsMGR3R2h6N2c4ZkFJV29PVXlSNFpMN1NoMCtqTVl2Y1pjdzhO?=
- =?utf-8?B?ZFZnNkNHUEFFMFovYVIrMTZpK3B6UTA2a3BoL1AvT0wvQ2lobTJ5a2RTeUVs?=
- =?utf-8?B?OG5GSUovcmp0SGx6bHhCazMvRDBzQ2tiYXdMbjM3R1hkV3JtQk5MQUhwVWRB?=
- =?utf-8?B?S1h5R1FkcTlBVHBlZDBsbEtLbzRNT3FQcTdFNWhTMFdDMzE4Sm1TMjJQMThG?=
- =?utf-8?B?VGp4Mnk0eGtDUy9HZ250WmtZcWNnNWdERm1TUlc3R2lTbDFQR2NJeUFIQUpt?=
- =?utf-8?B?bHNWaWU0OFZQbXRZcmZneldiSGJCcGR6dTExRUN6UmdkcWFpYWRkUVV0NmND?=
- =?utf-8?B?NUxGMkhUNGdiL2k4WWFRMzQrK2YzQXk1dUw4QlpjcjNBempLWTRJNVJPcENq?=
- =?utf-8?B?aGZjLzI1V1dDaVB1b2tVekJGQzFiNnNtMVR5VHJNOUNzWW02UXh1TFFlTm5N?=
- =?utf-8?B?S2NPYnJBTVhjQUM3UU1SNmdTRnNDL1ZyRjhUY1k4MkhZUjVtOXVJaHJVQzVi?=
- =?utf-8?B?V3VNZG9seHNyRllZK3BpUlE1L2RObWZBYkUrTUtBYU9iV29ncjF1aEZNaTdJ?=
- =?utf-8?B?SVBPZ3NtdmxqeDhiYVU4QnBJSGJpTFNaNVBoWU55c3BwRER4QWNwNkx1aGtk?=
- =?utf-8?B?ZE5WM3NCaFR1bmNPZHpXQWRwdTVBYUdsWmFNRkVuRUxkRDRrWnp4Z1l0dWhR?=
- =?utf-8?B?dXNGWnpuejhQd2FsVVQ2b3IzODNCQ2F2QzZBdWN5aVpTekY5RlpzZWhRV3ox?=
- =?utf-8?B?R3diYnJaV3lwWmtIblE3MHM5S2tVSVNFYTZxRUh2elllUktkSUhLdGcvbUFZ?=
- =?utf-8?B?ZkRQSWdrcmpVNVFTeFNXdmtlcUIzVmd1b2VJUEhzcUVVbFBqMXN3RUNhZDBw?=
- =?utf-8?B?TnBZWnBrVlMvYyt2c1Rpd0J5MWtWOTBRejdxb3VQdkMveDVXazlHU05BN1Ix?=
- =?utf-8?B?eDVQNitzRHJCUXc2bk5kUXZpS0RXdndQck42VXg3OXprYkJPRHlMQ25zNzNU?=
- =?utf-8?B?VXdyc0lxYUJhRU85c1Z0MW12d2NXOU45SUxVM2NSb1BtVWMzbUtIVldJZmpI?=
- =?utf-8?B?S3NYYVBCa1A0eit5OE5FYXkvbExZdTdPeStwcmNWdEJmL1VJeEpGNzNXZjNN?=
- =?utf-8?B?VTJaNUFHY3lIRk9WWldtazhHSEVEeGg2cFMzbklNY2lIT2dlUk94WEk4Y29t?=
- =?utf-8?B?R3RhemhRRUg2bm55YU5GVWJxeW56eWNNOXBPcVNJcW1DOHJJTkg3V1c4cUNI?=
- =?utf-8?B?VUFFRWFkZVVtNWRYVnVNN04vRWcvL3M2RjdLc3IxVEFwQjU3VUtTbXNpQ09J?=
- =?utf-8?B?VGhtVlhvcU03WStHN2ozaTNCZjZJcUZJVXpHdHF6dmJQL3FseUtmNFpya2Ni?=
- =?utf-8?B?TXVxYkkwZkZ5VzJlRjJlajB0eExnamwwSXRxeFIyQ2VsdTQwd1FWTjl2eHRy?=
- =?utf-8?B?bytlZi9sYTR6MWlLOHIrazQ4d0xNd0FJV0ZVeE02ZmVMUWNVNElZMnZCV3Z2?=
- =?utf-8?B?ZytNVXZJeXlKS3JKcnFQVUROUzFScWNUbVFRU3hibWY2Q2hzSUtzZldNYXI5?=
- =?utf-8?B?eHlzUlpQVC9ZUWhpeitkTE1TM2luWjUrRldIRzQ1SlVVemNYRS82OEVHUXJL?=
- =?utf-8?B?MmlHblVic3RSQUlMeDJyaUwvMGRWaVFXQm5vaFZrUUtjZTUzSU5CbG1UN25o?=
- =?utf-8?B?elZPb0hNTUtkK2Nyc09YUy8wVkFJKzYxazh1bkphYkp6U3FUcEJmbTFzakk5?=
- =?utf-8?B?VTdIUURwMGdyWE9wWUVrekxYamhnTlJ1TXhYdHdUOWpaeUZ6QVRtTitkMWQr?=
- =?utf-8?B?cTE3OHptOExkN3Z5UUxDdFZmMjdTN0pOV1l6L3BydnV3NG91ZGVpbTdSRkhs?=
- =?utf-8?B?Qzd3VWg2TlJBMWtUNEpsOWVPRVhmbkZFRUZuUHlBM2RjTFdXTm5iQzVOY3hI?=
- =?utf-8?B?YVdEdk5vQU1JVEdTb0FJbzJjcUJxQWFIb1V2RTRRUGE0bC9zYisrQUQ1eU93?=
- =?utf-8?B?RThhUnU2VGxZek9QcUpzNXJjYWhZLy85aWk4R0g1ZXpmSEtybjc3Um9PSWVI?=
- =?utf-8?Q?OV6s3ia7Ep4DpS+lDVB0lH8=3D?=
+	=?utf-8?B?cWdNVmhETTJHcy9iNnlmRUVNSW5sazRQcXhWOEF6UWg1UGZmaGY5NVZHT0tl?=
+ =?utf-8?B?MWRPY0lWZTdpVzdwbnl4Q29zUmg0M201Qnh4SUt1TFYzQ3NxUHdCR0VjaW9K?=
+ =?utf-8?B?MXpUaTdJT3RmWGdVdHpjYk0raW83ZXoxZTZSMFEyNTdOdUNPc0xkbHg2ZWw3?=
+ =?utf-8?B?RnRhSi9sbzJCS2haclVDMVo2R2lBNGZpb2tRNFNpclpnWWlVYS9qL0NFT1BJ?=
+ =?utf-8?B?bW9Vam43SjUyblpnTDBDbFpZaHMzanM0UVJTeW1zZk9jTFJET3VUWTc3eGE3?=
+ =?utf-8?B?cW9OaGd0dFRIMi8wdlB3V0Nyc2VqRDUrYVFGVVc2djFyVzFxRUNOV016L0Vz?=
+ =?utf-8?B?RHRuRXJya2pMZFNudktPOHJraXV2Z0dpUmFvU2t3T2FhTzMwcGQxN3RYNGdi?=
+ =?utf-8?B?cW9NRUQ3WHlTMVluZDBoQ001cFIranRIVDcrK1dwQnpWT2NrTkEwVmZGdDZE?=
+ =?utf-8?B?K2JXWm1PdzBkb3J3SDhadlBLUmh3b0krQUJxTnpoU1FGcGVPQmkrcTJ5bEdk?=
+ =?utf-8?B?ZCt6QkQ2eUVlekJPdjV5ZXJ4d2t2TnhPeE1ONXFRaC9zekplTHlqbVR0dEhq?=
+ =?utf-8?B?QVdnZEVXS1BWTm9Ec3hRdDBZc3JkU0R1czRmVVh2QUhjanJCRk8xRVlrZ0k5?=
+ =?utf-8?B?UlVlZm9EQWZDNitDVHJROUM2eWE2THNCc3VnbVMvUFo5YTlXeEFwV1pTY3Z1?=
+ =?utf-8?B?UEtXdERuVDUxWEFTa0JpdDcwLy9sU0NadUM2WjNkZUFCUmFmU0VaSHF6RVhL?=
+ =?utf-8?B?NUdqbmx4VithdE9vSEtROTYrNktHRnNQNnJsS1BLRDdmbzRWRnBQWGVjMk5C?=
+ =?utf-8?B?cmJYSzA3NUhKQUFKdnY1WUdnVVdBUlQ1Z2NpVlkwNVBNdHUydlovVzdMQ2tM?=
+ =?utf-8?B?NVlzWVBBOXFYeUJwQW9udERHb2lSS3RLRTdqQVlNcmpDcmNRL0IxSktFSk9h?=
+ =?utf-8?B?RlFpMVBWaHZsRENrbnlWSm42RW1EcmxtTmpYN0tOT2dJaGk0cGR1ZDJjWlpG?=
+ =?utf-8?B?SENmM0hvQUtWeDJBeVZUcy9pSGtqUjlsa0xNQlVtWjdwakhxM09NY0x6STJw?=
+ =?utf-8?B?WWpLYWpRWG5xaktPd2Fwb1lveGt1V3Vsb3ArZzJPRlJJN3JNbmRRTnh4c3hE?=
+ =?utf-8?B?UENwcUxUOFVDSk1wN2tiMWZodmVUTER5a1c3UVAxNlJqRlRqWlhSdG1KRSs2?=
+ =?utf-8?B?SmRDeEhGeTBIWkVSbWdIZ1MzelVsbmM3b2s0TDAyUi9EQmpsOFNTOU1uZ3BE?=
+ =?utf-8?B?UkRMejlrVS9DWUFhM3BqTG9zSnVocW85Mm10azNxRkJJWDVvbW9McEpFYnpu?=
+ =?utf-8?B?emVmQ3Q1UE1LMDRKL0JNS29vL0tIYlJHRUl3bFlGVjZCajF4TU1yZjNhbE51?=
+ =?utf-8?B?UDh0QVNISmI0d3BqSFY1YnFFcVFXcUp1TWZYbno1dnNzdk9kdllBZVpKcFB5?=
+ =?utf-8?B?TzFjZFZ0M3ZLSzQwL3p5UjE4MXhNYzQrZ01SSlQyS2UreFRIU0t0aTFBL21W?=
+ =?utf-8?B?dkZnNWRNUkZBcCt3TzZKQ0E5cUJlcnJYdGtHTHZFblc5NWtSWFNMZ2I0cEtn?=
+ =?utf-8?B?elg1cDM5ZWdXSHc4bytma2lKNDNUYW5Scm1DalpCRGlxOE90YVY5RHB6dm5C?=
+ =?utf-8?B?VFdUeDRVM2REeWQ1TFZZc3ByZFdUTTc5K2poSlVKUExmY3E2dWpsNW91V0NN?=
+ =?utf-8?B?VnBWOG1TeW5IK21iRWtMdVp0d2gxT2VPdHFqb0c1a2Vtc2pXanpRSUJJU2sy?=
+ =?utf-8?B?N2pocWJ4N1ozQ3Q1blpYR0lSZDVkcm4yYU1ncFVEcHQxU3g2cStpcmNacllu?=
+ =?utf-8?B?Rmk2SjRoUUFHTWMycWRYcHg3NUJNdnZpejIxenlsbVhhS1JGR3hZUXJvNVVL?=
+ =?utf-8?B?RitUTWRXOW1jRlkzbi9PZ0xZck1QSFRsZUlDemVmbk1hbXNRcEdyNUtnell4?=
+ =?utf-8?B?RmdhWXkyeGRrNmFpQ1B6ZS9aUDNTWGV1YWtCdDZ6TDdobDNxbFYweU44Yy9U?=
+ =?utf-8?B?RjN5a0FUR2MwaUpmQmx2cm9Ec0dSVy9xcjdLT3pJK3RMSXlMc1lKblh2WHR6?=
+ =?utf-8?B?ZFdLYVYwLzJuWHlkd1o3bDRoS1ZiTHRsYlorcjRlblpzTGxsc1EzSFp2OStj?=
+ =?utf-8?B?bDRrcVZyTUFRclVtODZZYnpJd1BGRWt5WG8rZzlENmlLUDhHMzFKZkpxWE0y?=
+ =?utf-8?Q?VRTR2A6TiAWBH3Ea5WJFp/w=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: abcace19-59c4-4478-205d-08dddb530e57
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69718704-0e44-4da5-88e2-08dddb531030
 X-MS-Exchange-CrossTenant-AuthSource: SA3PR01MB8473.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 16:53:12.7194
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 16:53:15.8294
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Fpy25IkkCpAGXtZzywApmp3TXMFcVxBXugR9kjefRRKkn6UZ3StWQBTjCY61M099UpnA6ukFVzzoqX+Z+tdQqH9hUqCtoOGJaxVBg+7Q1fRC8GAGaRpaU0ZZz7t+/UiT
+X-MS-Exchange-CrossTenant-UserPrincipalName: dY8ZLNlUjuOwY+IBbKaN2ey8oc/Tlg6LrM544lqKFs2A18tPuboKxEItqFPKM/fkkZan2a+uaY3sJlMAGuR0FdM04f2FN/2yQl8HWr6m5N4kc1i4hbEAuAqmED8gc5e4
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR01MB6881
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Up to UEFI spec 2.9, the type byte of CPER struct for ARM processor
-was defined simply as:
+There are two kernel-doc like descriptions at cper, which is used
+by other parts of cper and on ghes driver. They both have kernel-doc
+like descriptions.
 
-Type at byte offset 4:
+Change the tags for them to be actual kernel-doc tags and add them
+to the driver-api documentaion at the UEFI section.
 
-	- Cache error
-	- TLB Error
-	- Bus Error
-	- Micro-architectural Error
-	All other values are reserved
-
-Yet, there was no information about how this would be encoded.
-
-Spec 2.9A errata corrected it by defining:
-
-	- Bit 1 - Cache Error
-	- Bit 2 - TLB Error
-	- Bit 3 - Bus Error
-	- Bit 4 - Micro-architectural Error
-	All other values are reserved
-
-That actually aligns with the values already defined on older
-versions at N.2.4.1. Generic Processor Error Section.
-
-Spec 2.10 also preserve the same encoding as 2.9A.
-
-Adjust CPER and GHES handling code for both generic and ARM
-processors to properly handle UEFI 2.9A and 2.10 encoding.
-
-Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
- drivers/acpi/apei/ghes.c        | 16 ++++++++-----
- drivers/firmware/efi/cper-arm.c | 50 ++++++++++++++++++++---------------------
- include/linux/cper.h            | 10 ++++-----
- 3 files changed, 39 insertions(+), 37 deletions(-)
+ Documentation/driver-api/firmware/efi/index.rst | 11 ++++++++---
+ drivers/firmware/efi/cper.c                     |  2 +-
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 99e25553fc1320b2306efb751e12f2377c86878a..79a128cb04c351c1d01ee749904ee844963d0f10 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -22,6 +22,7 @@
- #include <linux/moduleparam.h>
- #include <linux/init.h>
- #include <linux/acpi.h>
-+#include <linux/bitfield.h>
- #include <linux/io.h>
- #include <linux/interrupt.h>
- #include <linux/timer.h>
-@@ -531,6 +532,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
- 	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	char error_type[120];
- 	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
-@@ -543,9 +545,8 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 	p = (char *)(err + 1);
- 	for (i = 0; i < err->err_info_num; i++) {
- 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
--		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-+		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
- 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
--		const char *error_type = "unknown error";
+diff --git a/Documentation/driver-api/firmware/efi/index.rst b/Documentation/driver-api/firmware/efi/index.rst
+index 4fe8abba9fc6bf8ed53443e48e79285730871c32..5a6b6229592c9a9d1eb223966c582e0969ee9514 100644
+--- a/Documentation/driver-api/firmware/efi/index.rst
++++ b/Documentation/driver-api/firmware/efi/index.rst
+@@ -1,11 +1,16 @@
+ .. SPDX-License-Identifier: GPL-2.0
  
- 		/*
- 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
-@@ -559,12 +560,15 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 			continue;
- 		}
+-============
+-UEFI Support
+-============
++====================================================
++Unified Extensible Firmware Interface (UEFI) Support
++====================================================
  
--		if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
--			error_type = cper_proc_error_type_strs[err_info->type];
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
+ UEFI stub library functions
+ ===========================
  
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
--				    "Unhandled processor error type: %s\n",
--				    error_type);
-+				    "Unhandled processor error type 0x%02x: %s%s\n",
-+				    err_info->type, error_type,
-+				    (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
- 		p += err_info->length;
- 	}
- 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index 6ff781e47147c05c784ca5aa57149d1435cb2467..76542a53e20275cf0f059e9ce409fd898de16d4d 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -93,15 +93,11 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	bool proc_context_corrupt, corrected, precise_pc, restartable_pc;
- 	bool time_out, access_mode;
- 
--	/* If the type is unknown, bail. */
--	if (type > CPER_ARM_MAX_TYPE)
--		return;
--
- 	/*
- 	 * Vendor type errors have error information values that are vendor
- 	 * specific.
- 	 */
--	if (type == CPER_ARM_VENDOR_ERROR)
-+	if (type & CPER_ARM_VENDOR_ERROR)
- 		return;
- 
- 	if (error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) {
-@@ -116,43 +112,38 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	if (error_info & CPER_ARM_ERR_VALID_OPERATION_TYPE) {
- 		op_type = ((error_info >> CPER_ARM_ERR_OPERATION_SHIFT)
- 			   & CPER_ARM_ERR_OPERATION_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_cache_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%scache error, operation type: %s\n", pfx,
- 				       arm_cache_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_TLB_ERROR:
-+		}
-+		if (type & CPER_ARM_TLB_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_tlb_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sTLB error, operation type: %s\n", pfx,
- 				       arm_tlb_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_BUS_ERROR:
-+		}
-+		if (type & CPER_ARM_BUS_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_bus_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sbus error, operation type: %s\n", pfx,
- 				       arm_bus_err_op_strs[op_type]);
- 			}
--			break;
- 		}
- 	}
- 
- 	if (error_info & CPER_ARM_ERR_VALID_LEVEL) {
- 		level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
- 			 & CPER_ARM_ERR_LEVEL_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR)
- 			printk("%scache level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_TLB_ERROR:
+ .. kernel-doc:: drivers/firmware/efi/libstub/mem.c
+    :internal:
 +
-+		if (type & CPER_ARM_TLB_ERROR)
- 			printk("%sTLB level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_BUS_ERROR:
++UEFI Common Platform Error Record (CPER) functions
++==================================================
 +
-+		if (type & CPER_ARM_BUS_ERROR)
- 			printk("%saffinity level at which the bus error occurred: %d\n",
- 			       pfx, level);
--			break;
--		}
- 	}
++.. kernel-doc:: drivers/firmware/efi/cper.c
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index 79ba688a64f8da7af2dad097b9331c72afc73864..0232bd040f61c9b4521ae50ec4b6a1b0bfa5cc19 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -70,7 +70,7 @@ const char *cper_severity_str(unsigned int severity)
+ }
+ EXPORT_SYMBOL_GPL(cper_severity_str);
  
- 	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
-@@ -241,6 +232,7 @@ void cper_print_proc_arm(const char *pfx,
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
- 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
-+	char error_type[120];
- 
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
- 
-@@ -289,9 +281,15 @@ void cper_print_proc_arm(const char *pfx,
- 				       newpfx);
- 		}
- 
--		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
--			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
--			cper_proc_error_type_strs[err_info->type] : "unknown");
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
-+
-+		printk("%serror_type: 0x%02x: %s%s\n", newpfx, err_info->type,
-+		       error_type,
-+		       (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
-+
- 		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
- 			printk("%serror_info: 0x%016llx\n", newpfx,
- 			       err_info->error_info);
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 58f40477c824e61c7f798978947bf1f441ce45ad..5b1236d8c65bb7d285a327c457115a18fc9d7953 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -297,11 +297,11 @@ enum {
- #define CPER_ARM_INFO_FLAGS_PROPAGATED		BIT(2)
- #define CPER_ARM_INFO_FLAGS_OVERFLOW		BIT(3)
- 
--#define CPER_ARM_CACHE_ERROR			0
--#define CPER_ARM_TLB_ERROR			1
--#define CPER_ARM_BUS_ERROR			2
--#define CPER_ARM_VENDOR_ERROR			3
--#define CPER_ARM_MAX_TYPE			CPER_ARM_VENDOR_ERROR
-+#define CPER_ARM_ERR_TYPE_MASK			GENMASK(4,1)
-+#define CPER_ARM_CACHE_ERROR			BIT(1)
-+#define CPER_ARM_TLB_ERROR			BIT(2)
-+#define CPER_ARM_BUS_ERROR			BIT(3)
-+#define CPER_ARM_VENDOR_ERROR			BIT(4)
- 
- #define CPER_ARM_ERR_VALID_TRANSACTION_TYPE	BIT(0)
- #define CPER_ARM_ERR_VALID_OPERATION_TYPE	BIT(1)
+-/*
++/**
+  * cper_print_bits - print strings for set bits
+  * @pfx: prefix for each line, including log level and prefix string
+  * @bits: bit mask
 
 -- 
 2.50.0
