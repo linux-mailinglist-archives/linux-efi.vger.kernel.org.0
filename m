@@ -1,88 +1,69 @@
-Return-Path: <linux-efi+bounces-4566-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4567-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A93EB29A31
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Aug 2025 08:54:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BAFB29F34
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Aug 2025 12:37:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E1D5E2615
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Aug 2025 06:52:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E0AB18A27E4
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Aug 2025 10:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85F4278173;
-	Mon, 18 Aug 2025 06:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E752258EF8;
+	Mon, 18 Aug 2025 10:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="DpxzcZZM"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WGzYcKZj"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE6927876A
-	for <linux-efi@vger.kernel.org>; Mon, 18 Aug 2025 06:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85DA2C2346;
+	Mon, 18 Aug 2025 10:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755499958; cv=none; b=YdqWwgMcna3jhOU0fYynyOdWkpjlJQhGffqN82fQPH7CSQIZjV0Rxoo4N1TH4W5KPX8jG0jttQlT2bP6UrfYZDNjAtg1NWX1k7LJjFM5CRZmMrTuHX8OKW36ahCriCuUB6wPtDIEJl8vgRkaF1Dkx68JIKAkJK6JM09kB/MC1Zo=
+	t=1755513444; cv=none; b=huMyitN2R/NnUTtuL9tX9Wypb0UH2qoz7wXwTtcUkCq5adDFYrDJ+nYcYhxKI0E2ycuULN2r/cxV3pJ4zEOCgk7/HNLtR8XNXK9E0puL7yU35pRgy5w/gKfz1jLyiq60nYbDySXbI9hhkXR2htvpNNw2O2rq+R1Ohjnyp8e+i2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755499958; c=relaxed/simple;
-	bh=IN7kYnIID3443ooQB8DzAtrGSGeD4IzBkmmObpX1OWo=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sj7HkytXRUg9/XF62HcY4X1MO5sLW6yQ/TnFoVkqbHUOo6MSjO1cXWhg4L4KRcOAoy+MAi5YtPknoMi4Qf4sFZbn/MVj+alsI0DO5Qqu6utGytncw3yVFYhUD7dY4/986+dly5xgyPFzt/hSSobnG+g+f3YyZZA9TNGJY6GGOkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=DpxzcZZM; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3b9e4148134so1806604f8f.2
-        for <linux-efi@vger.kernel.org>; Sun, 17 Aug 2025 23:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1755499954; x=1756104754; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:date:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AB2mYWsk8i1r7WgYGZCAEJP8BRkPAULzUmje1GZdi9E=;
-        b=DpxzcZZM5GDGlh6oMaqxRpyCINAXGHSyq1eThzLFUFJCIOFfV8RidX9L+IzxAGQAlV
-         wY3oU1jfsre0Ljg59skHeD/AeGoIqmMCoYzisqrX+Qlo//cIWbcEQ2XTa78FZzC0GGua
-         XxOx+DK2jd91NWPgK/ja/07Od1n3/6eVIxJ+42u4wu80OxY1xDoVFHgDVhl67rQmu84z
-         NEb+kmVOjSng0TKOuoP1G3e8t22eeDSpGBL6SuejVm8UE8nYbmaqnkJIcFQmASYdHy2z
-         A1x5tEklXY1lJ/mo2TCV1ngLQ6OOmjm5ROvq/QLS+Xu61uZlCu0uPFInLRKyCZrJALXM
-         W1oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755499954; x=1756104754;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AB2mYWsk8i1r7WgYGZCAEJP8BRkPAULzUmje1GZdi9E=;
-        b=MNFkBFmFh40dnMzHxTE12tJ8Ubu44bDzh8N/M2nvPFXPIAC3cMVi/db8Rko1i4bHFI
-         Gs2XIN9UBzf4IeNhMCWEX3SkOI/4rleOSqlUSyiDplNgITC4YoRikM8UQN4uJRFC8Ml5
-         NW7yRCt/2Ozmz+NrydcXcelKQ1uBC9M7Pr5GdetpFFfXR/0pfF46i4gT2m9PBuomup3z
-         NHvYXtHs9PX0uxkQob5wV2eeHpJtCIG8dng+GlySncF0SOHvuhO3E9ui1qhHdTRPWKHb
-         SvSHKeMacz7l3El4LUfr6KMeGBvjz3oE/X1Sgv+phU199oiwpkVNfT+49x1j/KhKgHod
-         qWzw==
-X-Forwarded-Encrypted: i=1; AJvYcCX6AeA2rI3ZXIPsYACtF1hYuAUJAioRL6yH28rbj5g9OalaT7QIU+fQNTnP/8E4gehFZV94j3/828Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGpJs+lqcHpmGIuHVLTcv3NUF1lSZ81eJpgiMsnGNmFBd5GK36
-	NnNUuZzJZuh7fVa3NXMYOaTy/2OOiT+Xw7wp9YN/4kj/vw51t7AAvbs5bPtLnt269jU=
-X-Gm-Gg: ASbGnctCFUkjEt5Q5XJ1HCDsLh5fzZVSzvSalX3XRnsM64Vm9EuyFDbq+RATAewLmCV
-	D4qW+j11RQl3zqW3ds7WVebCGd1hbrPXVimTS3oRC9escZHih6LQ/C6TKQqAkZNzUrY8P99gtAy
-	Yta+NMB1hm7Xd2GhH/6DXkydzGs5bFoFHANrRyA29JeOSC3jNXrW6+JD6zPZC3NFXSectH726Ct
-	fdVkbClU062VPeHWFvvefrTQY7vVPeF7e8hyFyez9ZubS4bIarDK25WR9yPXLqIegTQARVNEawK
-	92yI+bHvDpb9uPgP6VGOYz6dN/ykeL5zHYiN8lROnfPae2PObRXZno1SBIwgnSFI3LsKPyNYaHh
-	rk4TEO33StNO3pJb1JcZhqWM0MjjsdvMULguDfjZElwuv
-X-Google-Smtp-Source: AGHT+IEeFi+9SxT/8qFVtZnUAEDFzxELnBb+QJjoFAreV6LM14RP2SHQViOexOMNOrwtc7eKLNKieQ==
-X-Received: by 2002:a05:6000:2485:b0:3b7:8b2e:cc5a with SMTP id ffacd0b85a97d-3bb68cfa43bmr8155176f8f.40.1755499954559;
-        Sun, 17 Aug 2025 23:52:34 -0700 (PDT)
-Received: from r1chard (1-164-92-102.dynamic-ip.hinet.net. [1.164.92.102])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e45566f8csm6312933b3a.68.2025.08.17.23.52.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Aug 2025 23:52:34 -0700 (PDT)
-From: Richard Lyu <richard.lyu@suse.com>
-X-Google-Original-From: Richard Lyu <r1chard@r1chard>
-Date: Mon, 18 Aug 2025 14:52:29 +0800
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] efi: Explain OVMF acronym in OVMF_DEBUG_LOG help text
-Message-ID: <aKLNrRzxCOqXcWMq@r1chard>
-References: <ed9efeafd80e9827bcc028d20a5bb20653af68e7.1755006858.git.geert+renesas@glider.be>
- <udidf2skqwbhx6mg4tmsxuipqqgh4amwcxvbjdrqs5g5vla6xp@7wiyrojpjok4>
+	s=arc-20240116; t=1755513444; c=relaxed/simple;
+	bh=obRvKFjFF9Ph4yb683ydZkubdyABhWe8E+Nb4yeus5s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JJw7+G/Lx6kaTN1ArcDLWNebSrV6dABTAL9civ6Mva8nKSPsMIYaYH0+YfLqLWFLLtKV/7M2h2rxrUFP0UCUyLJpFD3lFSUlh/R5TKxWF6Pw9Ja4fyWLrp6AoRPcN/B/9w9KI5bN9IuXaL2R6gi5wI/JbK4lL2O5tA0PdvwlZL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WGzYcKZj; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=KxEF2mWH99v4+b1UrI9IK7DaLZgRBo7s4tDuR3rNvE0=; b=WGzYcKZjsItpYvqVp29yV+vgRp
+	y4Ct18bPaIkE+HS/bVCm2xb50P20W6c92pPHVUv8fAxu4m+m69fZgTHQ4GWekfIducpBwQFFlUmGz
+	bfMwYmSZ+7H4xRsfd4uxfbWyBRH3ZcY1OBCzjZoh8aQQ/Pov4YUVyhINrjH1mZpJ4lX+kmgzzMXig
+	4bRvwMNibvAXVosRpFLjtsvsAVJaJ0/Bgx1rz6n0EsRd0YOl/SBas2gF5X5eoY/nk8PJ2POafcD3Z
+	ItEjON1qKKCUOBtW5+oYjqXLQzoqmOQ7yDza71uEpgc7A6vfawFANH/yuP1IBQ+z86KTcHmVfJEBe
+	bg01KTiQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1unxEk-0000000HLsT-1dC2;
+	Mon, 18 Aug 2025 10:37:10 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E405530029B; Mon, 18 Aug 2025 12:37:09 +0200 (CEST)
+Date: Mon, 18 Aug 2025 12:37:09 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: x86@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+	wei.liu@kernel.org, decui@microsoft.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	hpa@zytor.com, pbonzini@redhat.com, ardb@kernel.org,
+	kees@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	gregkh@linuxfoundation.org, jpoimboe@kernel.org,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+	samitolvanen@google.com, ojeda@kernel.org
+Subject: Re: [PATCH v3 07/16] x86/kvm/emulate: Introduce EM_ASM_1SRC2
+Message-ID: <20250818103709.GE3289052@noisy.programming.kicks-ass.net>
+References: <20250714102011.758008629@infradead.org>
+ <20250714103440.394654786@infradead.org>
+ <aIF7ZhWZxlkcpm4y@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -91,26 +72,60 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <udidf2skqwbhx6mg4tmsxuipqqgh4amwcxvbjdrqs5g5vla6xp@7wiyrojpjok4>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+In-Reply-To: <aIF7ZhWZxlkcpm4y@google.com>
 
-On 2025/08/13 10:03, Gerd Hoffmann wrote:
-> On Tue, Aug 12, 2025 at 03:54:29PM +0200, Geert Uytterhoeven wrote:
-> > People not very intimate with EFI may not know the meaning of the OVMF
-> > acronym.  Write it in full, to help users with making good decisions
-> > when configuring their kernels.
+On Wed, Jul 23, 2025 at 05:16:38PM -0700, Sean Christopherson wrote:
+> For all of the KVM patches, please use
+> 
+>   KVM: x86:
+> 
+> "x86/kvm" is used for guest-side code, and while I hope no one will conflate this
+> with guest code, the consistency is helpful.
+
+Sure.
+
+> On Mon, Jul 14, 2025, Peter Zijlstra wrote:
+> > Replace the FASTOP1SRC2*() instructions.
 > > 
-> > Fixes: f393a761763c5427 ("efi: add ovmf debug log driver")
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > ---
+> >  arch/x86/kvm/emulate.c |   34 ++++++++++++++++++++++++++--------
+> >  1 file changed, 26 insertions(+), 8 deletions(-)
+> > 
+> > --- a/arch/x86/kvm/emulate.c
+> > +++ b/arch/x86/kvm/emulate.c
+> > @@ -317,6 +317,24 @@ static int em_##op(struct x86_emulate_ct
+> >  	ON64(case 8: __EM_ASM_1(op##q, rax); break;) \
+> >  	EM_ASM_END
+> >  
+> > +/* 1-operand, using "c" (src2) */
+> > +#define EM_ASM_1SRC2(op, name) \
+> > +	EM_ASM_START(name) \
+> > +	case 1: __EM_ASM_1(op##b, cl); break; \
+> > +	case 2: __EM_ASM_1(op##w, cx); break; \
+> > +	case 4: __EM_ASM_1(op##l, ecx); break; \
+> > +	ON64(case 8: __EM_ASM_1(op##q, rcx); break;) \
+> > +	EM_ASM_END
+> > +
+> > +/* 1-operand, using "c" (src2) with exception */
+> > +#define EM_ASM_1SRC2EX(op, name) \
+> > +	EM_ASM_START(name) \
+> > +	case 1: __EM_ASM_1_EX(op##b, cl); break; \
+> > +	case 2: __EM_ASM_1_EX(op##w, cx); break; \
+> > +	case 4: __EM_ASM_1_EX(op##l, ecx); break; \
+> > +	ON64(case 8: __EM_ASM_1(op##q, rcx); break;) \
 > 
-> > +	  Recent versions of the Open Virtual Machine Firmware
-> > +	  (edk2-stable202508 + newer) can write their debug log to a memory
-> > +	  buffer.  This driver exposes the log content via sysfs
-> > +	  (/sys/firmware/efi/ovmf_debug_log).
+> This needs to be __EM_ASM_1_EX().  Luckily, KVM-Unit-Tests actually has testcase
+> for divq (somewhere in the morass of testcases).  I also now have an extension to
+> the fastops selftest to explicitly test all four flavors of div-by-zero; I'll get
+> it posted tomorrow.
 > 
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> (also, don't also me how long it took me to spot the copy+paste typo; I was full
+>  on debugging the exception fixup code before I realized my local diff looked
+>  "odd", *sigh*)
 
-Reviewed-by: Richard Lyu <richard.lyu@suse.com>
+Urgh, sorry about that. Typically I use regex for these things, clearly
+I messed up here.
 
-
+Thanks and fixed!
 
