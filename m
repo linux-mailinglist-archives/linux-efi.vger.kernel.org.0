@@ -1,178 +1,142 @@
-Return-Path: <linux-efi+bounces-4575-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4576-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66714B2D488
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Aug 2025 09:11:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7ACB2D4E1
+	for <lists+linux-efi@lfdr.de>; Wed, 20 Aug 2025 09:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 690791C4034A
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Aug 2025 07:11:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2801D7A8BED
+	for <lists+linux-efi@lfdr.de>; Wed, 20 Aug 2025 07:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDBF2D24B3;
-	Wed, 20 Aug 2025 07:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBC32673AF;
+	Wed, 20 Aug 2025 07:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OaS57JIw"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BMGo+MPr"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063DB2D24AA
-	for <linux-efi@vger.kernel.org>; Wed, 20 Aug 2025 07:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14AA204F93
+	for <linux-efi@vger.kernel.org>; Wed, 20 Aug 2025 07:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755673860; cv=none; b=Jkgrk6ylYCU0l9StuCid5udJ+ipafJ00Z7RGTvce6RijTX2jrzjIEW5VULxdFwoHS9EtTsQf3xW3nbpDmo3KfaiU7qhiDzngmlIKBPLO6xprSaWE4Iqpl/pFjmq7Hz0AfGorDAS99rvindOeK3UcRc2Z2vTRCoQG4NQfPfQ2WjU=
+	t=1755675006; cv=none; b=SwXYQ/JujSZ8AaQzCp8dRzp35ZqxzWSlWG7hmX8Mh6iGyWwx8uLvYdBx88K4juL7gjUURMs865fmSZJJUMglkG8DaZUkLEr8Sjfv9wDLE/UOLM8vHSIAj0jyte3/JFb0ONE5onL41ngQt6B+JS+OU+H7HjpSDFnGKepti+Xyq/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755673860; c=relaxed/simple;
-	bh=prgVg9HiEJ4uV/6zMq1ntYT+mrJSc9pU9ueTTctA7Ww=;
+	s=arc-20240116; t=1755675006; c=relaxed/simple;
+	bh=miVAnFzERkwwZFz+AHOVaJzq5T44NAxiX9riBc1AC0c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=slt/13BJrZI1J/U0cFcgFpUwilpRyEKGD/m7ApXFl6emXQ1HjB+QLYWvO6m41sgHi3mPyHbHAPdbu6j1l66p08G8HvvQWPWe1s2+afYiWbvGmIupdb7bAUHvStePyFvwqSqsC3HormiDa7BP14Rqzt2buZHSb0BOb9LceQX5Y5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OaS57JIw; arc=none smtp.client-ip=209.85.219.181
+	 To:Cc:Content-Type; b=HSdTPJad4ejyyPesQECEZM3CzrIijM1swXKV2jgUnWvlnD3x3ZR0drlPyWkPhnzeIG1RUqlADN/DflprjtH+rEHiSd4H5fIBkigrxK9tEA8yZgKB7ILCsb7/m7F0u0hY8WgSyerUJmdvJDMrh4MUCIXuDsQCHrwmjSK/9mqy2Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BMGo+MPr; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e934c8f9751so3284587276.2
-        for <linux-efi@vger.kernel.org>; Wed, 20 Aug 2025 00:10:58 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-71d608e34b4so51287327b3.3
+        for <linux-efi@vger.kernel.org>; Wed, 20 Aug 2025 00:30:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755673858; x=1756278658; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1755675004; x=1756279804; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gN4MlxyW6r3qWYrx46kUgQuaQDW5GOfX7NwZdxQNvEM=;
-        b=OaS57JIwKq88vRMD28/b1MTPLMB36E3i0ZPo743hrcwj913yjTQiznGVg/aeC0NUHF
-         ZxV54JGSCAXPQV6ftj41whk76bVqFBW3c2+BvadPaS3zdfWsGNoH2zOLwHSaYFgH745N
-         WuRbSkYgaMwAJes1cKTsvWQz0HcmiPZ8/4aLluXiH0c6nf0HSx5R+aEU9WVzENuHNh2j
-         PGgANBNx5KSoRkDlVdgIo3yy+GeallXLMALa/QIqeXtx25c4bOKV2NKPUgOD0uVa0Xg/
-         UTCEyPMQvdKIUNOJ6VRb4Nme2TVX+KyZb05ggvcUaHb5JRHhQpsK6pp9uePyuTg84cd+
-         qTEQ==
+        bh=h6kxQIF9sv3cEZtvcUECytdXb2q7OpgBwJtmcOdc1rc=;
+        b=BMGo+MPryIlWfl4vd9+r9vWQ50R/zvSLDOE221XxA7oKY3J3odw84VkbFUfoZZmhas
+         uAgA8pcUrr6okzd+ErIb8uNM54g02UVETlH2znvGodWbG++AoHAd+oxh95XG8tfblneU
+         tJ4+dmReGfLDZd6Fp3rBVYeORUPzxrPFqTV0p/LpYuWY9sDRA6q9MK0wU58c1xPHIiKq
+         7xNEVaFsW0yLYbLcqACVyAGxA8dM78mOcopTBGNJBjwp3v5fbDsq4SnJxTn7rEs+7eb0
+         RJABJtG7VL0UtqoElkQ/OlyAPmh7kCXaDWxbL5LIAhTjUgugVLBocdW2KDv1PbzC0WBA
+         d0ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755673858; x=1756278658;
+        d=1e100.net; s=20230601; t=1755675004; x=1756279804;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gN4MlxyW6r3qWYrx46kUgQuaQDW5GOfX7NwZdxQNvEM=;
-        b=Rvm7qY7XC3TmwWKI1ZrUwmYUhS3CPBr3XvmxPlRiN4sCrj/bVROmExGRrurp5EB8kZ
-         5bXrGmvBdbNM1CVIJZL6zaUSiycB3lF/BtZ5/kFwMNwD/ehaM1jeC1Dgz2GiX4VGGtfI
-         UsQYRX997U7uBwtlUX9w+pohMtFldnIu3XvVDtl1qcAdG233p5cD9w+IZAj7m53kDaA1
-         C1eKgcTh33KPYkU/rq4+cUnvyVut2TyxiMM3LixCdrmJqLSn+un1r/ZvGQl0XN40MrmZ
-         Ftn+1SfXc9rNqQfvwNzKnbTPD4I2b+/rKCLxkN88U2xWLMwvpLA6VAEZcMNX2yR/D1qk
-         smcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU57d7KPVfz6VLlgZcRvDdr+g08YRH0hJ4e09b+7OgAswg/AKlKSe/qK1qxKXkzxf9ysB4vJpFkTvw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGT5m2nb2R7sitwxDrVyzLf0sbI+dSvXnby06GTTwU8b5CLufT
-	Ksm982kC8iPYhcmhnHl5T0suBGaVvYM/HUoXk8+tgeXZ4GTO1UlMTu1dWx2/1E9ZltHPae48Guf
-	9UxjApv8ojp01F5q6ArtodQjdNyMnJ/09LiKrKClvRw==
-X-Gm-Gg: ASbGncumdETRT4icO8uIRb0KOBXaUO45230yj7tmI+3LIVBUf0lVNRZu+tathB76rjp
-	W516pLDfr/kFKJ7DNtQrLHKITsCDqGdJbZJf5oGsJs7NTzTySo2t+Fym/HnhwcqdZW3nrFlM5xU
-	AOcV9vD7Msdgz5INRP2HJJXgo4v0dcq2ahS51rMqexly990mjbyOayFwadQqb2oYdXrZVvVPbV8
-	VUOj7ckNRg3aIWIfAhX27DoUfSZh3UxHM56/gpd
-X-Google-Smtp-Source: AGHT+IHT0m1so+m2DnVNQMxzC59omwxRiB0xv+lEru6KW8Qz0ZRm2ca6i/Xd/a4hCrOi+ZEgA4u3fe6sRq342P6YZ98=
-X-Received: by 2002:a05:6902:6316:b0:e93:3d4b:40d2 with SMTP id
- 3f1490d57ef6-e94f659be41mr2605537276.15.1755673857649; Wed, 20 Aug 2025
- 00:10:57 -0700 (PDT)
+        bh=h6kxQIF9sv3cEZtvcUECytdXb2q7OpgBwJtmcOdc1rc=;
+        b=E2oq5vb30lq2ndLXJP58cIoO1yx59sde235KJRdXIhXWH3H+zrdBqMvkqaBqnXDUzp
+         8JGIhfHzT3HtIo1Uu0ilcMu/ejJblFjkyBE6IZ3fPuLu3/AxI2XnAWHKMF+xwRNmEueT
+         T8zJeErX2milCo59omJNYSPXlygYIGirHD4lc9d3egn0adqOrfWTuFS1SVlhF8iyHjye
+         GHumsoCrY30vlAbPCMev4q4+/1Nk9ApDwVwGrvBbBxIuFQnPPp0cdYvfGHhLiwSJwZl4
+         x6y2PoUdvToi8fyrdPRQYrVk3jD5bY8H8VEOHOp09R8GxoWXp8KX+NcjAV7A2HZ6XMCu
+         Ga8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVG7B5EeFLAjCLEZZrXD/BdaUR5K60efotviFsxvLL2Nzc4JX9uvIQoCJku6rJtN/HRiSo0FKKVt6I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSjNnWyc3Sa4DJz4WOdocWP5HHDlNL4lvFxApc60ClGmnkt3Hp
+	Pf3pqcVun8DMIgs/E3P251W9+wKNUZSrEeyAtmwTjMHBJp3j7kxqfKl0r6GU/7UsPbK5Sk0CFwe
+	kQfT5+sAvd7DpCYYb8irs5RMAGVQx6YLbMkMvd8xrDg==
+X-Gm-Gg: ASbGncuooAVn8p9R6BErx5pyPUqaCQPLHDhNiVUwz8V44zrwf1d2QP5A1gJXYHlsfLv
+	JPxYk8CrKEHeIbtirB6a81VnbruKtHouYHSu8g1lyq6JrfOeVzGuuJIrtRGwQP0RbzNYkpbr4TR
+	YoeXVMKwemImU4iEPRUxxxSM9AGU5naE7htPBWwmrz8GN6KFGdwGB6/9lByH/d7015LQWxiQnsH
+	kty4dHY9mFB3/XqfE/qSW/daNRoITw+4aFFmEV5
+X-Google-Smtp-Source: AGHT+IG9EQgvr3LW1UMH+B6ZIIE8UDnZRW2WwEgRLGIaE/SHRVIozb73o0V3qxtSruuPAXCzCUgBGoWi9dYHfkMKZnE=
+X-Received: by 2002:a05:690c:7648:b0:71f:b944:100c with SMTP id
+ 00721157ae682-71fb9444a2cmr8056597b3.51.1755675003728; Wed, 20 Aug 2025
+ 00:30:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1755285161.git.jan.kiszka@siemens.com> <c53346c183ce0c3d02322726ef5808f468441a42.1755285161.git.jan.kiszka@siemens.com>
-In-Reply-To: <c53346c183ce0c3d02322726ef5808f468441a42.1755285161.git.jan.kiszka@siemens.com>
+References: <cover.1755285161.git.jan.kiszka@siemens.com> <37ba67b97d55c49a7c6a1597f104b30b31a4a395.1755285161.git.jan.kiszka@siemens.com>
+In-Reply-To: <37ba67b97d55c49a7c6a1597f104b30b31a4a395.1755285161.git.jan.kiszka@siemens.com>
 From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Wed, 20 Aug 2025 10:10:21 +0300
-X-Gm-Features: Ac12FXwAEwrbRnqKeCUup8XV1JWb-Q0hv7z2-rczEYxbT-5qBQyf2uoeL5WDaqY
-Message-ID: <CAC_iWjLMFGp3wg=59PruJQb7heds6CUcy8FMZ_cdT0b2vC5a3g@mail.gmail.com>
-Subject: Re: [PATCH 2/3] efi: stmm: Use EFI return code of setup_mm_hdr
+Date: Wed, 20 Aug 2025 10:29:27 +0300
+X-Gm-Features: Ac12FXyvMaUjXv-7szvIFu7mXexg6FAgS7_Dd_6hAbv2GdCyqKhvuRxJ9CL1STc
+Message-ID: <CAC_iWjL84EFiKh0ETb7LwYjMRgLAZA8hFKy-YDS4=YQ1LRwg9A@mail.gmail.com>
+Subject: Re: [PATCH 1/3] efi: stmm: Fix incorrect buffer allocation method
 To: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Masahisa Kojima <masahisa.kojima@linaro.org>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sumit Garg <sumit.garg@linaro.org>, Jens Wiklander <jens.wiklander@linaro.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jens Wiklander <jens.wiklander@linaro.org>, 
+	Masahisa Kojima <kojima.masahisa@socionext.com>, Sumit Garg <sumit.garg@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Jan
+(++cc Sumit and Kojima-san on their updated emails)
 
 On Fri, 15 Aug 2025 at 22:12, Jan Kiszka <jan.kiszka@siemens.com> wrote:
 >
 > From: Jan Kiszka <jan.kiszka@siemens.com>
 >
-> If a too large payload_size is passed to setup_mm_hdr, callers will
-> returned EFI_OUT_OF_RESOURCES rather than EFI_INVALID_PARAMETER that is
-> passed down via ret. No need to fold errors here.
-
-Apart from not folding the error here, the current code kind of
-violates the EFI spec.
-If you look at GetVariable, GetNextVariable, SetVariable, and
-QueryVariableInfo only SetVariable is supposed to return
-EFI_OUT_OF_RESOURCES, if there's no storage space left.
-
-Should we also change setup_mm_hdr() and return EFI_INVALID_PARAMETER
-always? It's still not ideal, but much closer to the spec.
-
-Cheers
-/Ilias
+> The communication buffer allocated by setup_mm_hdr is later on passed to
+> tee_shm_register_kernel_buf. The latter expects those buffers to be
+> contiguous pages, but setup_mm_hdr just uses kmalloc. That can cause
+> various corruptions or BUGs, specifically since 9aec2fb0fd5e, though it
+> was broken before as well.
 >
+> Fix this by using alloc_pages_exact instead of kmalloc.
+>
+> Fixes: c44b6be62e8d ("efi: Add tee-based EFI variable driver")
 > Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 > ---
->  drivers/firmware/efi/stmm/tee_stmm_efi.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+
+[...]
+
+>         const efi_guid_t mm_var_guid = EFI_MM_VARIABLE_GUID;
+>         struct efi_mm_communicate_header *mm_hdr;
+> @@ -173,9 +174,12 @@ static void *setup_mm_hdr(u8 **dptr, size_t payload_size, size_t func,
+>                 return NULL;
+>         }
 >
-> diff --git a/drivers/firmware/efi/stmm/tee_stmm_efi.c b/drivers/firmware/efi/stmm/tee_stmm_efi.c
-> index 706ba095a4ba..bf992b42be70 100644
-> --- a/drivers/firmware/efi/stmm/tee_stmm_efi.c
-> +++ b/drivers/firmware/efi/stmm/tee_stmm_efi.c
-> @@ -220,7 +220,7 @@ static efi_status_t get_max_payload(size_t *size)
->                                    SMM_VARIABLE_FUNCTION_GET_PAYLOAD_SIZE,
->                                    &ret);
->         if (!var_payload)
-> -               return EFI_OUT_OF_RESOURCES;
-> +               return ret;
->
->         ret = mm_communicate(comm_buf, payload_size);
->         if (ret != EFI_SUCCESS)
-> @@ -267,7 +267,7 @@ static efi_status_t get_property_int(u16 *name, size_t name_size,
->                 &comm_buf, &nr_pages, payload_size,
->                 SMM_VARIABLE_FUNCTION_VAR_CHECK_VARIABLE_PROPERTY_GET, &ret);
->         if (!smm_property)
-> -               return EFI_OUT_OF_RESOURCES;
-> +               return ret;
->
->         memcpy(&smm_property->guid, vendor, sizeof(smm_property->guid));
->         smm_property->name_size = name_size;
-> @@ -324,7 +324,7 @@ static efi_status_t tee_get_variable(u16 *name, efi_guid_t *vendor,
->         var_acc = setup_mm_hdr(&comm_buf, &nr_pages, payload_size,
->                                SMM_VARIABLE_FUNCTION_GET_VARIABLE, &ret);
->         if (!var_acc)
-> -               return EFI_OUT_OF_RESOURCES;
-> +               return ret;
->
->         /* Fill in contents */
->         memcpy(&var_acc->guid, vendor, sizeof(var_acc->guid));
-> @@ -391,7 +391,7 @@ static efi_status_t tee_get_next_variable(unsigned long *name_size,
->                                    SMM_VARIABLE_FUNCTION_GET_NEXT_VARIABLE_NAME,
->                                    &ret);
->         if (!var_getnext)
-> -               return EFI_OUT_OF_RESOURCES;
-> +               return ret;
->
->         /* Fill in contents */
->         memcpy(&var_getnext->guid, guid, sizeof(var_getnext->guid));
-> @@ -448,7 +448,7 @@ static efi_status_t tee_set_variable(efi_char16_t *name, efi_guid_t *vendor,
->         var_acc = setup_mm_hdr(&comm_buf, &nr_pages, payload_size,
->                                SMM_VARIABLE_FUNCTION_SET_VARIABLE, &ret);
->         if (!var_acc)
-> -               return EFI_OUT_OF_RESOURCES;
-> +               return ret;
->
->         /*
->          * The API has the ability to override RO flags. If no RO check was
-> @@ -505,7 +505,7 @@ static efi_status_t tee_query_variable_info(u32 attributes,
->                                 SMM_VARIABLE_FUNCTION_QUERY_VARIABLE_INFO,
->                                 &ret);
->         if (!mm_query_info)
-> -               return EFI_OUT_OF_RESOURCES;
-> +               return ret;
->
->         mm_query_info->attr = attributes;
->         ret = mm_communicate(comm_buf, payload_size);
-> --
-> 2.43.0
->
+> -       comm_buf = kzalloc(MM_COMMUNICATE_HEADER_SIZE +
+> -                                  MM_VARIABLE_COMMUNICATE_SIZE + payload_size,
+> -                          GFP_KERNEL);
+> +       *nr_pages = roundup(MM_COMMUNICATE_HEADER_SIZE +
+> +                           MM_VARIABLE_COMMUNICATE_SIZE + payload_size,
+> +                           PAGE_SIZE) / PAGE_SIZE;
+> +
+> +       comm_buf = alloc_pages_exact(*nr_pages * PAGE_SIZE,
+> +                                    GFP_KERNEL | __GFP_ZERO);
+
+Rename nr_pages to something else and skip division, multiplying.
+Unless there's a reason I am missing?
+Also doesn't alloc_pages_exact() already rounds things up?
+
+>         if (!comm_buf) {
+>                 *ret = EFI_OUT_OF_RESOURCES;
+>                 return NULL;
+> @@ -205,13 +209,14 @@ static efi_status_t get_max_payload(size_t *size)
+>         struct smm_variable_payload_size *var_payload = NULL;
+>         size_t payload_size;
+>         u8 *comm_buf = NULL;
+
+[...]
+
+Thanks
+/Ilias
 
