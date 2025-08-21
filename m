@@ -1,68 +1,68 @@
-Return-Path: <linux-efi+bounces-4587-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4588-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5C8B3019E
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Aug 2025 20:01:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC34EB3019F
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Aug 2025 20:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B6C2188EA3A
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Aug 2025 18:01:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F96EAC3D81
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Aug 2025 18:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E749B338F2C;
-	Thu, 21 Aug 2025 18:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061323431FC;
+	Thu, 21 Aug 2025 18:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="NDwkktZC"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="FMJDIcw4"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
+Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5529F1EB5C2;
-	Thu, 21 Aug 2025 18:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.35.192.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B95F342CBB;
+	Thu, 21 Aug 2025 18:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755799259; cv=none; b=f/6LEZwSHNljanfm32l7vgAengvJyOaE/RA2EZ64hDUR0wkLn9o8sha9ZVe8EJf9R0tLy66bhmy/68g0wtS55QhuXvZmMq18jIrx67kZjTOdPbpk6/kb3kXEDM4am4+J89KoXPzLV3h7fWoL+badOO0ivOw98uzSdTqRS6c9xdo=
+	t=1755799268; cv=none; b=TUa3vkpQBexzX3y97djrwniFqUSzuIv2rfV5Arzo8hvx3bFnZpOYl8Zuogqy0oQZh54iSsWomxrTuQhp3U09+739udWmOj39+KuYuRorPfaYsaK/njXLONAg87T5ctlL6QCIUljUqPYnd25D/LEmrSVxMDZAJTKiUfSLia9Ash4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755799259; c=relaxed/simple;
-	bh=FM6xF0Fuv/RbLNQHDBlDiErQ8/FNScrfjYnZZ6srz40=;
+	s=arc-20240116; t=1755799268; c=relaxed/simple;
+	bh=rEtxinEc1D9MarngEsf9lbcJy0xhF9k7LLDE09YZ6F4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RydMnuc0EUX8Kqq9kbQadVDIbYF8HpRbzvT4HHsUUovZExMwH6NH1qSGsmU0788lg69aVYlMewrcZP2v15rWWFBES83y2r1YultxnWq8j+TW5DIi0PXGevWj0znOT/bSwn53IUGhuwfp5K030bH8BVmzpFQvLpVHHu2FUvExDRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=NDwkktZC; arc=none smtp.client-ip=52.35.192.45
+	 MIME-Version:Content-Type; b=WTiuefm5opQcgaRvvXiqI5McU9HPDtVmAw4fyzEJZm9TB+A9amOAaG02IYC3E3enEPHo06/PRU3Wf1dZfapYZzH8Nwa44aT2AO58hgD2eDwsW/mCvMCDAXfhfX+CDXAfepBx6mKsGgRqPTbSAZHxjXtlroz42Ku7iK+oXU4tkA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=FMJDIcw4; arc=none smtp.client-ip=34.218.115.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1755799258; x=1787335258;
+  t=1755799267; x=1787335267;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kWqXjjUHM7c8KFNVFeI4qCz3BhL3hy0rWcMQ9gV1+Ag=;
-  b=NDwkktZCviwBeNN/MOYYM48EJj8MPx/YEUw3cH/fwyaivY2Qv9skoNcY
-   9MM5yKBCyHBz9MZt+FTSIPbrhoRQG+N1KkvOc1gZ9XVwbuYm8n7m95UDo
-   WiRlKRn0pRy6zwMWWVzjUxZSekQz1iuZ7JQiiBcKMfGoh8pOJ6Q/h3MWF
-   H+n0C31o0AGk1jIjAvJ7HxhxC0cjgUyoU4Ivz/kz67nF/iVQgNbQamr+R
-   EsOaztVUOFqiGFthjX/urtRZdQ9jn1QTVU08AsGzNmsSgeteq2m5AbInI
-   d7bGJ4/wI1cRj9Q3jAQapcQ02izGHEcohxURfzEagUqhAekCFH3Ir0nFy
+  bh=jAejoY8V8yKY210FgQYVrnGosOJpV+P2BaPXX7POKoM=;
+  b=FMJDIcw4Em/6twJf89D2wKv03UvdxEQv2hQqG9KnnsvrvNtGGODyEGXE
+   X1QodcdtTMDvxb/nwHTiCoKwjucyHdzIk/2MdVknTd2eb69OqeTH3+9ll
+   phCxpn45MGmvvioXRKQBXm2NAkwb68gT2UpUMEVAV+uxEuIiNQwdu9lv8
+   4xmh2xplKQ8mjBFWSVax3d8k8AiAB2VVgRdYiLGTiH2aE/GPNCumaC92Q
+   Za7KE3DAjEB4NxvzNLfpLbQIemxsEzmI8QdO4twav0OQzl+W2BQnMncHN
+   kuMovCiTuqtwDGRhFflgHAfiPb7nb/udlCjJnwk6J+S6uqyRo0BQh4Gr1
    A==;
-X-CSE-ConnectionGUID: HLKZcqGhSiCPiLwCU2nt1w==
-X-CSE-MsgGUID: /M1cOzOZQPSmCqzALH8bdQ==
+X-CSE-ConnectionGUID: YrrezCWoR5CjuQvlqk0NUg==
+X-CSE-MsgGUID: vpO2okg8Q9eLRPjnNyfjuA==
 X-IronPort-AV: E=Sophos;i="6.17,309,1747699200"; 
-   d="scan'208";a="1453129"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 17:59:48 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:64601]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.152:2525] with esmtp (Farcaster)
- id df03885c-7dc0-4034-8426-e40e01b7df25; Thu, 21 Aug 2025 17:59:48 +0000 (UTC)
-X-Farcaster-Flow-ID: df03885c-7dc0-4034-8426-e40e01b7df25
+   d="scan'208";a="1451197"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 17:59:57 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:61839]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.41.67:2525] with esmtp (Farcaster)
+ id 107f8fd8-d666-4959-a00a-c9bafbb3e9e6; Thu, 21 Aug 2025 17:59:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 107f8fd8-d666-4959-a00a-c9bafbb3e9e6
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
  EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Thu, 21 Aug 2025 17:59:48 +0000
+ Thu, 21 Aug 2025 17:59:56 +0000
 Received: from dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com
  (10.253.109.105) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17; Thu, 21 Aug 2025
- 17:59:46 +0000
+ 17:59:54 +0000
 From: Evangelos Petrongonas <epetron@amazon.de>
 To: Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>
 CC: Evangelos Petrongonas <epetron@amazon.de>, Alexander Graf
@@ -71,9 +71,9 @@ CC: Evangelos Petrongonas <epetron@amazon.de>, Alexander Graf
 	<kexec@lists.infradead.org>, <linux-mm@kvack.org>,
 	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<nh-open-source@amazon.com>
-Subject: [PATCH v3 1/2] kexec: introduce is_kho_boot()
-Date: Thu, 21 Aug 2025 17:58:59 +0000
-Message-ID: <7dc6674a76bf6e68cca0222ccff32427699cc02e.1755721529.git.epetron@amazon.de>
+Subject: [PATCH v3 2/2] efi: Support booting with kexec handover (KHO)
+Date: Thu, 21 Aug 2025 17:59:00 +0000
+Message-ID: <b34da9fd50c89644cd4204136cfa6f5533445c56.1755721529.git.epetron@amazon.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1755721529.git.epetron@amazon.de>
 References: <cover.1755721529.git.epetron@amazon.de>
@@ -88,80 +88,86 @@ X-ClientProxiedBy: EX19D043UWC004.ant.amazon.com (10.13.139.206) To
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-During early initialisation, after a kexec, other components, like EFI
-need to know if a KHO enabled kexec is performed. The `kho_is_enabled`
-function is not enough as in the early stages, it only reflects
-whether the cmdline has KHO enabled, not if an actual KHO FDT exists.
+When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
+early during device tree scanning. After kexec, the new kernel
+exclusively uses this region for memory allocations during boot up to
+the initialization of the page allocator
 
-Extend the KHO API with `is_kho_boot()` to provide a way for components
-to check if a KHO enabled kexec is performed.
+However, when booting with EFI, EFI's reserve_regions() uses
+memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
+rebuilding them from EFI data. This destroys KHO scratch regions and
+their flags, thus causing a kernel panic, as there are no scratch
+memory regions.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Instead of wholesale removal, iterate through memory regions and only
+remove non-KHO ones. This preserves KHO scratch regions, which are
+good known memory, while still allowing EFI to rebuild its memory map.
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
 ---
 Changes in v3:
-	- Condition Only on the existense of the KHO FDT and ignore the
-	cmdline `kho` parameter
+	- Improve the code comments, by stating that the scratch regions are
+	good known memory
 
- include/linux/kexec_handover.h |  6 ++++++
- kernel/kexec_handover.c        | 20 ++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+Changes in v2:
+	- Replace the for loop with for_each_mem_region
+	- Fix comment indentation
+	- Amend commit message to specify that scratch regions
+	are known good regions
 
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index 348844cffb13..559d13a3bc44 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -40,6 +40,7 @@ struct kho_serialization;
+ drivers/firmware/efi/efi-init.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+index a00e07b853f2..a65c2d5b9e7b 100644
+--- a/drivers/firmware/efi/efi-init.c
++++ b/drivers/firmware/efi/efi-init.c
+@@ -12,6 +12,7 @@
+ #include <linux/efi.h>
+ #include <linux/fwnode.h>
+ #include <linux/init.h>
++#include <linux/kexec_handover.h>
+ #include <linux/memblock.h>
+ #include <linux/mm_types.h>
+ #include <linux/of.h>
+@@ -164,12 +165,32 @@ static __init void reserve_regions(void)
+ 		pr_info("Processing EFI memory map:\n");
  
- #ifdef CONFIG_KEXEC_HANDOVER
- bool kho_is_enabled(void);
-+bool is_kho_boot(void);
- 
- int kho_preserve_folio(struct folio *folio);
- int kho_preserve_phys(phys_addr_t phys, size_t size);
-@@ -60,6 +61,11 @@ static inline bool kho_is_enabled(void)
- 	return false;
- }
- 
-+static inline bool is_kho_boot(void)
-+{
-+	return false;
-+}
+ 	/*
+-	 * Discard memblocks discovered so far: if there are any at this
+-	 * point, they originate from memory nodes in the DT, and UEFI
+-	 * uses its own memory map instead.
++	 * Discard memblocks discovered so far except for KHO scratch
++	 * regions. Most memblocks at this point originate from memory nodes
++	 * in the DT and UEFI uses its own memory map instead. However, if
++	 * KHO is enabled, scratch regions, which are good known memory
++	 * must be preserved.
+ 	 */
+ 	memblock_dump_all();
+-	memblock_remove(0, PHYS_ADDR_MAX);
 +
- static inline int kho_preserve_folio(struct folio *folio)
- {
- 	return -EOPNOTSUPP;
-diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index 69b953551677..52e80e0c2238 100644
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -925,6 +925,26 @@ static const void *kho_get_fdt(void)
- 	return kho_in.fdt_phys ? phys_to_virt(kho_in.fdt_phys) : NULL;
- }
- 
-+/**
-+ * is_kho_boot - check if current kernel was booted via KHO-enabled
-+ * kexec
-+ *
-+ * This function checks if the current kernel was loaded through a kexec
-+ * operation with KHO enabled, by verifying that a valid KHO FDT
-+ * was passed.
-+ *
-+ * Note: This function returns reliable results only after
-+ * kho_populate() has been called during early boot. Before that,
-+ * it may return false even if KHO data is present.
-+ *
-+ * Return: true if booted via KHO-enabled kexec, false otherwise
-+ */
-+bool is_kho_boot(void)
-+{
-+	return !!kho_get_fdt();
-+}
-+EXPORT_SYMBOL_GPL(is_kho_boot);
++	if (is_kho_boot()) {
++		struct memblock_region *r;
 +
- /**
-  * kho_retrieve_subtree - retrieve a preserved sub FDT by its name.
-  * @name: the name of the sub FDT passed to kho_add_subtree().
++		/* Remove all non-KHO regions */
++		for_each_mem_region(r) {
++			if (!memblock_is_kho_scratch(r)) {
++				memblock_remove(r->base, r->size);
++				r--;
++			}
++		}
++	} else {
++		/*
++		 * KHO is disabled. Discard memblocks discovered so far:
++		 * if there are any at this point, they originate from memory
++		 * nodes in the DT, and UEFI uses its own memory map instead.
++		 */
++		memblock_remove(0, PHYS_ADDR_MAX);
++	}
+ 
+ 	for_each_efi_memory_desc(md) {
+ 		paddr = md->phys_addr;
 -- 
 2.47.3
 
