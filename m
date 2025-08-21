@@ -1,139 +1,140 @@
-Return-Path: <linux-efi+bounces-4585-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4586-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E072FB2FA74
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Aug 2025 15:31:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 483E0B30197
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Aug 2025 20:00:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A08CE5821EF
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Aug 2025 13:27:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B27214E3268
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Aug 2025 18:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACF533437E;
-	Thu, 21 Aug 2025 13:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5D3343203;
+	Thu, 21 Aug 2025 18:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M4spp80R"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="lU75Lnbc"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C432233436C
-	for <linux-efi@vger.kernel.org>; Thu, 21 Aug 2025 13:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E09D341AA7;
+	Thu, 21 Aug 2025 18:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755782832; cv=none; b=dARKMKI31FwpzShTiyiyC+MFCp8+S8zfe6G4JWcs+RKIUYbL9rSgZ22lJUFhqkK6OuW4U4yuvKKbvVqLfYD5wZhjy5684kUICjWfDphdDqrkZ4gxWXnIsAPZhocCuIuDEec94c7nsLO87KAvr9a88fFuEtljb6SCqMTwVFPfie0=
+	t=1755799226; cv=none; b=UydGOaKwBUxNbayBrHK94osU63w9yUkEc6pKjzwsOWAeF+OR33I+LggVjmBjYsQ0ES0xjHXkDtgbxIRUOEbtS5LRllWwYte+E1OTBvgmeHU9Glx99X9BCdTxptnrZqLMrT4etLPaWshD+accFy8za9H/z1wd+puKzoLNgNRaDd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755782832; c=relaxed/simple;
-	bh=7wm2W8BdjxtMx0zQmKaAvq1NAERm3m272ZTgG+IyrPg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iYsYSebVSSn2I6B4wKgt+NvWl+aJtBv6dfRXBo/5mM+kgzlm+rJAGeY/vqgusoUmH3Zs+Rnegr7R/AGQitU8Hun+B2k22bdgLLsus/1TQzhFhsSd5EK89WmK2m3Y9xCT4mi/naFJa3q8ORP3u+b/VSOzXQpzJzCsxan2Ko/V0jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=M4spp80R; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e94ea56725aso1043045276.2
-        for <linux-efi@vger.kernel.org>; Thu, 21 Aug 2025 06:27:10 -0700 (PDT)
+	s=arc-20240116; t=1755799226; c=relaxed/simple;
+	bh=uKBuRqek+3J+kI9u8EgkNan2G1ZIvTlDcTJyVSHU+0o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b8LukTH4CAJEieja1CGIuPu9Ytyfu8zzjvd5UiCsKI87ZGzLM7U4VaWqcGSJHxD3Ff8IMnMerjMuZzhlGuCGoj6RWLEIym6tgmo0oHkN7HZCj9m4Uzq7Dj68mKyttGjnvx7C1ifLDaSDE9QZhwHAv6PT+B1ulyHtY/HurY/szr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=lU75Lnbc; arc=none smtp.client-ip=44.246.77.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755782830; x=1756387630; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7wm2W8BdjxtMx0zQmKaAvq1NAERm3m272ZTgG+IyrPg=;
-        b=M4spp80RizxkKWhudgP7/pg/zb7cRJHzvJfRdyWE3uvfpbCbdUKO22InPbELwWyyvJ
-         Z/+mS9+K1N54hwVHfPt784IGXP4icgznEobawSD0jwNxkRJP5X+8QONVqj+4kAPI+kBQ
-         iYLTmXgZovDfw1jvOMI2c0bv7wOi6gcluWZPGBBg5zDTswLGJXkszU5qbdeBYb1VCOG4
-         7CcqHwoYgizRsGZDPvJjxGhkKXjrNihHNd31ZL/vGyxl1yKXappHpPc/Sm6mcO6jLM2l
-         zs8DMa0wM9gufC5J1Jzp+YX4BNQtZA1bto0XmaltLVnLsP9J2dfEnS7X4Xgc6YvIy3uB
-         +yqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755782830; x=1756387630;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7wm2W8BdjxtMx0zQmKaAvq1NAERm3m272ZTgG+IyrPg=;
-        b=nDe39bPJJWEOfPzrDpU1U4TWa7oN5N0kcFqnCJLyoGFc0zPCqwnentuxvIuTRYUKj3
-         dscCT1G7WGEQ/X/MZNK7IM3i0dpMyR2sZWK+J0nTGZAYnttKhy/wLJh9ITKFRtaWk9qq
-         9awQ1kLdRiNyJp6yAOcKTwkP6fL7ktN2RToKcCFIWUoIvAcezvyFr3Mhg43CewXv8rEJ
-         Fj3JtUbn1SmV2ryA83mJ/JuYAmm0fIxo02UbKMEvz03aotfbmMOP/HC5Z+Tz/kFKTGf+
-         BYh1dwKOGwAcM8AEcxHs/d6KrTxKY1p2EUPvFNNNn1l7EjZ6CErKWlz7/IS2R5RTUv+X
-         CmDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWlesBect0/iXxAPcbsuoVe90UT2XN3XaStK3Io1WjdF/9HR5QkiimenFfRg+5ZXLIehWxe6rHv6zE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxs1eVPYOra9zzuB6i+qx007tVIXjCZv0fvmACzzhjv3IXdz5dg
-	WCy4v9FTozJhiiQ/Mm4w8Cp2gMhQqjqhfOgoNCXHc2YLJndpKQoOLSpRJXlnYW/M5PW1ghI3w0Z
-	HRCueK96JFTzS/PsbLEYhmxYjWEZ+Zm4l1LEaIysaKA==
-X-Gm-Gg: ASbGnctmYSsHrknOCV/gfFCedvZrrhVZB0aYMC8kMUI3jS3wDnbtzx/VD9XU3Dmbocm
-	k98Yp79/USWwfmMBg4Dn6J4lL1nF3i4aHLxrzYgNU5QQgAbfhyYFMTArcPecw7Man8/BRQQr4pS
-	SJUgAYQCG91EJauQZN7V+TDRAyI8cqetfokWczueng6Ds6TQCa78E4vSDH5JrrWHENh8DoR5vlr
-	UKL8C8xdbUfc5tesj8xU9lKhOmLhezmbsX6o00b
-X-Google-Smtp-Source: AGHT+IEj0h/LwZOxGTRuKo85/IJqDM49Kxictjq1uzS1PpYHjDIs+ZTlaJVAyyLzNrazr70KAnjmjUib9T5ZdeFnFMQ=
-X-Received: by 2002:a05:6902:5404:b0:e93:3ba9:9e45 with SMTP id
- 3f1490d57ef6-e9509a6de27mr2684091276.43.1755782829678; Thu, 21 Aug 2025
- 06:27:09 -0700 (PDT)
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1755799224; x=1787335224;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=S+gS8f64vE5JkLxSnB7ir6Lb0kF6iQE9gWFgqB32eCo=;
+  b=lU75Lnbcz2Bdw3+DkwZYvc/0Zk4y+zyYvLgi0+jpjWV9TzFyvHR/Ez6+
+   8thHu0h8jql8eWqKMZJbWwC2mrZKKezKK4hkJVl/aUu7/rUV6QS0Z007e
+   /9y8GECLz4VtZM88xtz9350Rw9sUalQaZVm/dcK0bosV3dj3MOGSql5HL
+   0fDlh8QUkNM3a2Zdzf9ZFlG3ljZEBv+5+eLx9I4LLYV4KxRMoBnihL1vm
+   uO0yeoE+Rj1de3t+IjFCicRpuLMC6wrceX+ZbWQgnksgL37MJTtg31P6t
+   wKH61gslRfJ58/oi+gZRQs6pdg1iFjfaGl0PBxvCVBHqS66xceM5R6j6D
+   g==;
+X-CSE-ConnectionGUID: K8Hohe32Qp+Vv4T80IzDyQ==
+X-CSE-MsgGUID: xyRxENLgS6O/spnd+SQBkw==
+X-IronPort-AV: E=Sophos;i="6.17,309,1747699200"; 
+   d="scan'208";a="1570660"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 17:59:14 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.7.35:34303]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.45.64:2525] with esmtp (Farcaster)
+ id ddd70eb3-6448-4aee-bf33-ff8d888990ad; Thu, 21 Aug 2025 17:59:14 +0000 (UTC)
+X-Farcaster-Flow-ID: ddd70eb3-6448-4aee-bf33-ff8d888990ad
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Thu, 21 Aug 2025 17:59:13 +0000
+Received: from dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com
+ (10.253.109.105) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17; Thu, 21 Aug 2025
+ 17:59:11 +0000
+From: Evangelos Petrongonas <epetron@amazon.de>
+To: Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>
+CC: Evangelos Petrongonas <epetron@amazon.de>, Alexander Graf
+	<graf@amazon.com>, Changyuan Lyu <changyuanl@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
+	<kexec@lists.infradead.org>, <linux-mm@kvack.org>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<nh-open-source@amazon.com>
+Subject: [PATCH v3 0/2] efi: Fix EFI boot with kexec handover (KHO)
+Date: Thu, 21 Aug 2025 17:58:58 +0000
+Message-ID: <cover.1755721529.git.epetron@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1755285161.git.jan.kiszka@siemens.com> <c53346c183ce0c3d02322726ef5808f468441a42.1755285161.git.jan.kiszka@siemens.com>
- <CAC_iWjLMFGp3wg=59PruJQb7heds6CUcy8FMZ_cdT0b2vC5a3g@mail.gmail.com>
- <50f7f2fc-2c6d-4ae1-bbce-e132b1d9c9fe@siemens.com> <3a9eb8eb-3420-4232-8259-3b33ed45dc66@siemens.com>
-In-Reply-To: <3a9eb8eb-3420-4232-8259-3b33ed45dc66@siemens.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Thu, 21 Aug 2025 16:26:33 +0300
-X-Gm-Features: Ac12FXws7T5AEBgk39TXNjCs8naGRTEnfry-l4q5CDOLsbQ6YRDbnIK3SKhYQik
-Message-ID: <CAC_iWjJ5bogQwhqGRVBB59=J6wcB0q5h5B-LkiTkZOmwN4z-2Q@mail.gmail.com>
-Subject: Re: [PATCH 2/3] efi: stmm: Use EFI return code of setup_mm_hdr
-To: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Masahisa Kojima <masahisa.kojima@linaro.org>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sumit Garg <sumit.garg@linaro.org>, Jens Wiklander <jens.wiklander@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+X-ClientProxiedBy: EX19D043UWC004.ant.amazon.com (10.13.139.206) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On Thu, 21 Aug 2025 at 16:00, Jan Kiszka <jan.kiszka@siemens.com> wrote:
->
-> On 20.08.25 16:59, Jan Kiszka wrote:
-> > On 20.08.25 09:10, Ilias Apalodimas wrote:
-> >> Hi Jan
-> >>
-> >> On Fri, 15 Aug 2025 at 22:12, Jan Kiszka <jan.kiszka@siemens.com> wrote:
-> >>>
-> >>> From: Jan Kiszka <jan.kiszka@siemens.com>
-> >>>
-> >>> If a too large payload_size is passed to setup_mm_hdr, callers will
-> >>> returned EFI_OUT_OF_RESOURCES rather than EFI_INVALID_PARAMETER that is
-> >>> passed down via ret. No need to fold errors here.
-> >>
-> >> Apart from not folding the error here, the current code kind of
-> >> violates the EFI spec.
-> >> If you look at GetVariable, GetNextVariable, SetVariable, and
-> >> QueryVariableInfo only SetVariable is supposed to return
-> >> EFI_OUT_OF_RESOURCES, if there's no storage space left.
-> >
-> > And with storage space is likely meant the persistent part of it. ENOMEM
-> > is something different.
-> >
-> >>
-> >> Should we also change setup_mm_hdr() and return EFI_INVALID_PARAMETER
-> >> always? It's still not ideal, but much closer to the spec.
-> >
-> > EFI_DEVICE_ERROR? The "hardware" is has a problem by not providing us
-> > enough RAM. Yeah, not optimal either. But invalid parameter is clearly
-> > described, and nothing fits.
-> >
->
-> If there are no concerns, I will switch to EFI_DEVICE_ERROR and even
-> drop the error "ret" argument in v2.
+This patch series fixes a kernel panic that occurs when booting with
+both EFI and KHO (Kexec HandOver) enabled.
 
-Yea, I don't think there's an ideal scenario and the EFI spec doesn't
-cover the case where some allocation failed, but please add this info
-on the commit message.
+The issue arises because EFI's `reserve_regions()` clears all memory
+regions with `memblock_remove(0, PHYS_ADDR_MAX)` before rebuilding them
+from EFI data. This destroys KHO scratch regions that were set up early
+during device tree scanning, causing a panic as the kernel has no valid
+memory regions for early allocations.
 
-Thanks
-/Ilias
->
-> Jan
->
-> --
-> Siemens AG, Foundational Technologies
-> Linux Expert Center
+The first patch introduces `is_kho_boot()` to allow early boot
+components to reliably detect if the kernel was booted via KHO-enabled
+kexec. The existing `kho_is_enabled()` only checks the command line and
+doesn't verify if an actual KHO FDT was passed.
+
+The second patch modifies EFI's `reserve_regions()` to selectively
+remove only non-KHO memory regions when KHO is active, preserving the
+critical scratch regions while still allowing EFI to rebuild its memory
+map.
+
+The patchset was developed/tested on arm64.
+
+Main Changes in v3 (smaller changes can be found in individual patches):
+    - Condition is_kho_boot only on the existence of a KHO FDT
+    - Add Reviewed-by/Acked-by
+
+Main Changes in v2:
+    - Introduce is_kho_boot()
+    - Replace manual loop with for_each_mem_region macro
+
+Evangelos Petrongonas (2):
+  kexec: introduce is_kho_boot()
+  efi: Support booting with kexec handover (KHO)
+
+ drivers/firmware/efi/efi-init.c | 29 +++++++++++++++++++++++++----
+ include/linux/kexec_handover.h  |  6 ++++++
+ kernel/kexec_handover.c         | 20 ++++++++++++++++++++
+ 3 files changed, 51 insertions(+), 4 deletions(-)
+
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
