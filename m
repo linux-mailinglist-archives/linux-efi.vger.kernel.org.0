@@ -1,137 +1,94 @@
-Return-Path: <linux-efi+bounces-4590-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4591-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B39B3128E
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Aug 2025 11:08:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17106B32B40
+	for <lists+linux-efi@lfdr.de>; Sat, 23 Aug 2025 19:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB1C3A00353
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Aug 2025 09:07:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 253E65A63E8
+	for <lists+linux-efi@lfdr.de>; Sat, 23 Aug 2025 17:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405AC2E612D;
-	Fri, 22 Aug 2025 09:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D142E7BDC;
+	Sat, 23 Aug 2025 17:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWX6GBCs"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b="DrpSLUG8"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177432D7DC3;
-	Fri, 22 Aug 2025 09:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E7D238C08
+	for <linux-efi@vger.kernel.org>; Sat, 23 Aug 2025 17:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755853675; cv=none; b=Y8BGw9oEYVMN4EXbCBkrXcrFlr76Mp7H+YbQ81PJltdvbmLql2Z6D3Ut1xpwdshZToDr0lKvbE3PaRHpnnDHKpKeGvDl6zvTY0YAmUblxRUWwoUfvchR1G5S/WkgizCsiN46WaeCD5pyb97WAkt93qKPsXGEeWUoVF0ifI/yPpA=
+	t=1755969747; cv=none; b=BRJgf7iqOmbUUOEjjNf1n1mAjsxEEqFIwO0DLh17yQEobNeV8qdruI4Vf2iY8mbgC0DEQW1PApmFwmRwpdDkKXpDBiNrEkHe3bWHXh1daTnYg/wAI1Q0u4gfEJtXD6jGw5FILvWoEOAb8k75N5wlViA0r2lAErvwrsdzvYNJCrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755853675; c=relaxed/simple;
-	bh=FxrjqFELS+dXUd5ll19YeqCrkQ1FgtMrYB3uOgPx40Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WzCnY2XOn+qrVRbt4l70HEw3oRec3KkqD/OQ4NrwwviEXIFmN/XDgyXkJen+yd/IBoX4NCNaPWm5UH+YXV6HqMLsmArk2sypAVaRty/E+CgpXHT4vEehW4BSEy0+au0/sBlTJiKVf/htXGS09HXYlcPM6d01dPgsVwKAAX3qbrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWX6GBCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE31BC4CEF1;
-	Fri, 22 Aug 2025 09:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755853674;
-	bh=FxrjqFELS+dXUd5ll19YeqCrkQ1FgtMrYB3uOgPx40Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aWX6GBCsVbCpVua+O/aUNMrm00R73ZixmA+onU8syn9mjRksDRiuTN834RIjjX+EM
-	 n2BHoZMhaN8uL48N6KPeqlLGcoVTs3iqUD0ePPPi/coLjQvPLgkFg8/5yjVLdMN/u0
-	 FPZEZ52cUVa5cOV1tWx45Jtye2+2bLSZ1V3QhTuOQDtFFsqZkCMt2+UH040a5gu3EI
-	 uamYnKj76naPun5ZmUXtL3Jrv/1Z22EEVk16NAaNlnHFMuEeEv+676LVLY0ha41Blt
-	 +jMvEjz/bvAkJwiv7y7+f3gfuziyCtJ43b6A1k42XtxPT3eLJRot4CE8lR+l1bKXeA
-	 XnzLjTcP5A3iA==
-Date: Fri, 22 Aug 2025 14:37:47 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+	s=arc-20240116; t=1755969747; c=relaxed/simple;
+	bh=dM46RXyH/aMl7u/7A0ttmcz0Kh8ii5Pd/XfE/P4bis8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=phiDFyT6xxWApD6fOnuBP5638NQrbCWnY7OtiPH59mJeLAK6dROUd+8MpVm6/kSS8mYwdG6fIexMBmLNCwx62xR1gLqoDAWtIZhoyPipdLXjy6Uq5/5R5YTwlTSk5G5fav+qQVqj8EM6iJjEQD5s4E5w/MxeNh9aBCmd1bt6nWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b=DrpSLUG8; arc=none smtp.client-ip=185.136.65.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 202508231722150dd4872b36e728b70d
+        for <linux-efi@vger.kernel.org>;
+        Sat, 23 Aug 2025 19:22:16 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=jan.kiszka@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=DOGrsBXBExLY0BU7dK5MY10gmBjXIGI3LqJjS4dcuZI=;
+ b=DrpSLUG8GtA3mZmzKbNU6Z5Z8cDDuCpgHkO9LRwkWEHHNoKWQf7Tr8DLnP1lcW3MdBWkns
+ cxpJDhjIeuXvbGn65EtpETUYkdsHj9KIcisCv+LmEDhUkZiCylW/osr18NC575Ei1If0S3Lt
+ dz+4hm57UFrpR/56OA+cO9R6WSSIP0B3DpxtF+bi+Y8roRiPBKHpWGyERIKIgsH7GbVwsAd4
+ hqaDQcVtu9+8xydyyhoC8r0XMM7cPRHy1TvvTOdu5hZNLMK4ihU3tdKqlChXQf/NLfairyq7
+ GpvLEj5cTmKcRyuUHUQFNAvyz+lyK6lpNAjF73x1iddapSEhdn+4JwFg==;
+From: Jan Kiszka <jan.kiszka@siemens.com>
+To: Ard Biesheuvel <ardb@kernel.org>,
+	Masahisa Kojima <kojima.masahisa@socionext.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@kernel.org>,
 	Jens Wiklander <jens.wiklander@linaro.org>,
-	Masahisa Kojima <kojima.masahisa@socionext.com>
-Subject: Re: [PATCH 1/3] efi: stmm: Fix incorrect buffer allocation method
-Message-ID: <aKgzY27lDreFXxis@sumit-X1>
-References: <cover.1755285161.git.jan.kiszka@siemens.com>
- <37ba67b97d55c49a7c6a1597f104b30b31a4a395.1755285161.git.jan.kiszka@siemens.com>
- <CAC_iWjL84EFiKh0ETb7LwYjMRgLAZA8hFKy-YDS4=YQ1LRwg9A@mail.gmail.com>
- <75db5f5e-9e0c-4c48-a3c8-034414276036@siemens.com>
- <aKboY9oBmHJJb2Pc@sumit-X1>
- <2acfbc7b-5222-425b-a1f7-83fc47148920@siemens.com>
+	Hua Qian Li <huaqian.li@siemens.com>
+Subject: [PATCH v2 0/4] efi: stmm: Fix for incorrect buffer allocation and cleanups
+Date: Sat, 23 Aug 2025 19:22:10 +0200
+Message-ID: <cover.1755969734.git.jan.kiszka@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2acfbc7b-5222-425b-a1f7-83fc47148920@siemens.com>
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-294854:519-21489:flowmailer
 
-On Thu, Aug 21, 2025 at 02:56:59PM +0200, Jan Kiszka wrote:
-> On 21.08.25 11:35, Sumit Garg wrote:
-> > Hi Jan,
-> > 
-> > On Wed, Aug 20, 2025 at 05:05:43PM +0200, Jan Kiszka wrote:
-> >> On 20.08.25 09:29, Ilias Apalodimas wrote:
-> >>> (++cc Sumit and Kojima-san on their updated emails)
-> >>>
-> >>> On Fri, 15 Aug 2025 at 22:12, Jan Kiszka <jan.kiszka@siemens.com> wrote:
-> >>>>
-> >>>> From: Jan Kiszka <jan.kiszka@siemens.com>
-> >>>>
-> >>>> The communication buffer allocated by setup_mm_hdr is later on passed to
-> >>>> tee_shm_register_kernel_buf. The latter expects those buffers to be
-> >>>> contiguous pages, but setup_mm_hdr just uses kmalloc. That can cause
-> >>>> various corruptions or BUGs, specifically since 9aec2fb0fd5e, though it
-> >>>> was broken before as well.
-> >>>>
-> >>>> Fix this by using alloc_pages_exact instead of kmalloc.
-> >>>>
-> >>>> Fixes: c44b6be62e8d ("efi: Add tee-based EFI variable driver")
-> >>>> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-> >>>> ---
-> >>>
-> >>> [...]
-> >>>
-> >>>>         const efi_guid_t mm_var_guid = EFI_MM_VARIABLE_GUID;
-> >>>>         struct efi_mm_communicate_header *mm_hdr;
-> >>>> @@ -173,9 +174,12 @@ static void *setup_mm_hdr(u8 **dptr, size_t payload_size, size_t func,
-> >>>>                 return NULL;
-> >>>>         }
-> >>>>
-> >>>> -       comm_buf = kzalloc(MM_COMMUNICATE_HEADER_SIZE +
-> >>>> -                                  MM_VARIABLE_COMMUNICATE_SIZE + payload_size,
-> >>>> -                          GFP_KERNEL);
-> >>>> +       *nr_pages = roundup(MM_COMMUNICATE_HEADER_SIZE +
-> >>>> +                           MM_VARIABLE_COMMUNICATE_SIZE + payload_size,
-> >>>> +                           PAGE_SIZE) / PAGE_SIZE;
-> >>>> +
-> >>>> +       comm_buf = alloc_pages_exact(*nr_pages * PAGE_SIZE,
-> >>>> +                                    GFP_KERNEL | __GFP_ZERO);
-> >>>
-> >>> Rename nr_pages to something else and skip division, multiplying.
-> >>> Unless there's a reason I am missing?
-> >>> Also doesn't alloc_pages_exact() already rounds things up?
-> >>
-> >> I was looking at tee_dyn_shm_alloc_helper and the dance it does to
-> >> calculate the pages from the size parameter.
-> > 
-> > The rework of tee_shm_register_kernel_buf() to directly accept kernel
-> > pages instead of buffer pointers is already due. If you are willing to
-> > fix existing TEE client drivers and the API then I will be happy to
-> > review them.
-> 
-> I'm currently testing the stmm quite a bit but I have no setup/use case
-> for the trusted_tee so far. Testing is eating most of the time,
-> specifically with these seriously complex firmware security stacks.
+Changes in v2:
+ - simplify page allocation approach
+ - switch to returning EFI_DEVICE_ERROR on ENOMEM
+ - drop efi return value argument from setup_mm_hdr
 
-For TEE based trusted keys, it is rather a bit straigtforward to run
-tests using OP-TEE Qemu build setup where you would only need to patch
-the kernel.
+One critical fix for the EFI StMM driver, one error return code
+adjustment and two smaller cleanups.
 
-Test command:
+Note that the suggestion to convert tee_shm_register_kernel_buf to take
+pages instead of buffer addresses is not forgotten, just in the backlog.
+I wanted to avoid that the critical fix has to wait for me finding time
+to refactor the API as well.
 
-$ make -j$(nproc) CHECK_TESTS="trusted-keys" check
+Jan
 
--Sumit
+Jan Kiszka (4):
+  efi: stmm: Fix incorrect buffer allocation method
+  efi: stmm: Do not return EFI_OUT_OF_RESOURCES on internal errors
+  efi: stmm: Drop unused EFI error from setup_mm_hdr arguments
+  efi: stmm: Drop unneeded null pointer check
+
+ drivers/firmware/efi/stmm/tee_stmm_efi.c | 61 +++++++++++-------------
+ 1 file changed, 27 insertions(+), 34 deletions(-)
+
+-- 
+2.43.0
+
 
