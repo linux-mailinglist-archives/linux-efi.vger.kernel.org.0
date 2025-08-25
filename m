@@ -1,88 +1,89 @@
-Return-Path: <linux-efi+bounces-4599-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4600-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0745B3388A
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Aug 2025 10:13:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9820B3388D
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Aug 2025 10:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AC0817D2C7
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Aug 2025 08:13:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5476E3A74AD
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Aug 2025 08:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8922F21D3C0;
-	Mon, 25 Aug 2025 08:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCC622A4DB;
+	Mon, 25 Aug 2025 08:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l8xQuAoZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="E+dJnLbk"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25A628F1
-	for <linux-efi@vger.kernel.org>; Mon, 25 Aug 2025 08:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689E8221555
+	for <linux-efi@vger.kernel.org>; Mon, 25 Aug 2025 08:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756109601; cv=none; b=lnqKaL0H/WCNAmEgsWMxRwL8ElE0LlF4l2736LQhTqdbs6ytzkeOo/aH5iT5ouMuH1vKkrr2P9Nzj94jJG9+lz1zLfiNZk7dNAJ8AucmRxN0n0FqXsoLNOtRbGUFKg0aTl6OIU/v0pJm8FfvQwjMXX8yeGTaOAbZGC+7VstX6v8=
+	t=1756109691; cv=none; b=GiyG8aPEu/xQJMvV1w6jhWZcGL78up7GyrQizdfyv5+BcCeV5ErGHVPMqaQD4iedg3VvTbB/eoTeFdo7VuwAP10OXA7PzpA/wkxjkFkgX674PQ6YpgksktfFYF7kR8WccOlLPtpPS8YUN6CN2o/zamMNUBhbUJ+K6Z8rr1TYwI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756109601; c=relaxed/simple;
-	bh=9As1XHTb5L/s8zV4wIlufdlScsqyXCW0K3L7vWYqUx8=;
+	s=arc-20240116; t=1756109691; c=relaxed/simple;
+	bh=N5DMMmJ5lVitZCWlLJnlB+ZjU9uShksE7d/gHrj7X5Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F1yfb/qn++gfiu1O1er8hZzvNLwWJhM4jd5qSQMpuq8fb1ikcRQuDeR53ee750U0gHrf9mznzakC2QaAp+dpgquP0PTA2tURbN3EBQRrwAARjLPV81rSR4YhKdjLfkXVEcP3z1JSMqQ00+lfJg1s0/tyo82jZ1FaIW/KfAPNIeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l8xQuAoZ; arc=none smtp.client-ip=209.85.219.181
+	 To:Cc:Content-Type; b=oczk3JKQOdEnqL3wJtdaUuuSpOB9+myz6bY/ANR97CtLUqkTpPngsCkKsJVNgtmothfUwWAxzf9gEnxyh11Z8WJPCSMk0qWQCS/Kip+EAsNskJtGhwqgcg3WV2AHf+5rVlAi7z8kIJquMwjpm0F0z2txvgr4LEUUDgIDQ90jXYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=E+dJnLbk; arc=none smtp.client-ip=209.85.219.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e951f2eddf0so2168694276.3
-        for <linux-efi@vger.kernel.org>; Mon, 25 Aug 2025 01:13:19 -0700 (PDT)
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e951bbc14c5so2611331276.1
+        for <linux-efi@vger.kernel.org>; Mon, 25 Aug 2025 01:14:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756109599; x=1756714399; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756109688; x=1756714488; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=kE9tDslr525GT8TE4UCW+F+vzeL9DZdGpkYioOEdI70=;
-        b=l8xQuAoZT8334kJSVZhhqg6n5OB8nCGPmGrnL3nqtqkR6qTHx0pVinHLI+xroSxP/h
-         7+OEJ5sVEyIr4ZwOzNB7LCfiy6yqWbayC9ysw2vKfqbIbdxjOy9uIHTTzoxWoYcN06L2
-         wgF8WmcIC8UrOAWWVP3bq3/mNwS9cvMUleEiMuqGonqeb+n0+N7/dK3CHySfRix86Kzs
-         Z5oqhOoEHptN5V+IUjOmeWkO/LkdBgGxh+0w8OZHOUA7KwECn6ooYy0y2+OJl1TwF29C
-         jWpHmOgveHZi9Jl3TGQrhHb9xmiEzBS8WGXaNBoZGx7LhMuuuYFLGfMkVW4Ez6ywp0R6
-         bOfg==
+        bh=DWcYU6uY9KTc1S160H4P3qDdzH2WP9qP0P5gGV0wL5c=;
+        b=E+dJnLbk4eBxqLmsQZvB4qWMK0qSW7Ce4X8/XMw5onlmSkF+YwoLjuBcq6C6BbWHBi
+         /Au8Pg6SbZoXreVBn37kQ5GRUQPmUy2/Q5LGbXKyQSIVr2JNLQUfSMcC1mW+0O2uSxVM
+         TvZKoZxZ15OiflZhuhXFaIJUD6nv9QXRcnOaDqWF7x4FHw584fLL7TcWIQRfBjGgDIo3
+         4Wx/ZISLGFQKZ8aEW0y5GgK9WOTPGmOnPFGsw1kzDAgJo+m7qhkPmO2GUgBns2QH7sna
+         asVYSuF53LIv2aP1uyDnwJHeXwlzMtDboNktkB+oonsRLC9bS8iypWtmvVQXJUnbftsY
+         kkjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756109599; x=1756714399;
+        d=1e100.net; s=20230601; t=1756109688; x=1756714488;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kE9tDslr525GT8TE4UCW+F+vzeL9DZdGpkYioOEdI70=;
-        b=mRG/paX83n7xbN/9RxusytA7Aa2Tbv9Rzd1DFeC2ga9QfX62o4w0SxquGaCVd7Se54
-         A/bDnHDLchUj7guMe3+rrH8mOlkPbtUDatQD54aLru/LyKbH9ghKwmuGT9vkkkUoPTet
-         rjKKc2qKGX/ArZnmO8ixOIag6KpDztjU4mGqp5OjPVDUWmotonMDEBD79ifgdCcbHasu
-         5R4cBzXk7F/1LV+61uiAiJel55nsNzm/9UkqaXi8CQyKUMex+ZgZh8N+Wu6zfNZesHl+
-         YKEoltEA8RPUJpvbIlaAGzZRDfr49B8Wn58nK1uap2mMnKIZe+7oJWNeKaH9ooEXmSNU
-         rOrA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXmLilhOBoKiVHq6lXgrZXNoUYQlv52PtjfGLQPh4KLr7AjF4m+c6zheoxcE1BxVgD6fdu/dbVqsw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyQHOBbSaS4sFuxzerdjYs7REQbmKH1x0JEFFKNx8umFvKW6GW
-	/mUCxwXyPeUmKbrbMazYMVu/RE4fm2KWvtSIivBL4z10hbyB32o9V54z96yDL4W79RHPpVFwwDu
-	JqDQ3npVXZXkHejmLYHTJvGtdreVHNbJQLLMfjFrpsg==
-X-Gm-Gg: ASbGncvtt4aoDggycKlOeL4RLzM3u6edEMnDAi1zZOG+KqJuYMVhFI/I5a4q4EeQ22a
-	sd8/se4OQC72p16Sk9KgtsECQ8cUnuBOqEUXKodvQGYl+kwGDqFk3q0ZB6VnhIXUAJ4mdjR3BNA
-	7U3HnbFemgWzk5jdn5i9WYrvWDPLvL3Pm83LpPcA6WEw3kH22nZR9oLcMR/a1Uz5LrMopaFyfJW
-	9M3bbmt/zZf+/onN1uOy4+WkQcBQwSIMZbI8NwtP6tqyUH/MiA/Rf0QrOghb+r2sMEw8bMZ4XIm
-	a/Ywh1epTOwcsHsWVbMKfyil40g7StOLdX8p7LPVcT60L1u0XYmn9aiD9FnoaixcXVJ9caeRev/
-	2WneOb1clQQp9yHmeQyU=
-X-Google-Smtp-Source: AGHT+IEGNWSUEvN/jf0M25ODwIrROeMZfVy293XX2mVeTcNGmAD1yuvXYEBrlXOIQ6thEQQq9wAvtRmuUDz4vuDxyNY=
-X-Received: by 2002:a05:6902:340e:b0:e96:c82a:4dd4 with SMTP id
- 3f1490d57ef6-e96c82a5286mr1608514276.52.1756109598685; Mon, 25 Aug 2025
- 01:13:18 -0700 (PDT)
+        bh=DWcYU6uY9KTc1S160H4P3qDdzH2WP9qP0P5gGV0wL5c=;
+        b=iOteCB2m0nwjNXMpYYUiaGLUbiRPsikAjKG1i3/nEVcNmXkrKvaFS/WoSHrLr02gh/
+         SVGGNuo3rUDo3UpUlu91ma1c/f1pSpD43HROa+AXbd3qA6xtsxPEoqg4QynKJZ2p+lwU
+         VQAm0oRCE7ibrf8rDxq2jdCNYu4cV2KE8YSDEEEJP2VR+Plwt2sdFdJOZ0fQQFeYmw/L
+         2Y+Myiy7VPCbBcCp996Xvic1o3TqP+67V3c1WeSjyzZDfFOh2Zive4lUAkrnDCPnlUq5
+         ybcqbDF4iJxp0+R5hkZIwb0A+ieiYrMMEFBXQPjfbBUKSAlCuWpsFCanoGkXT3aWY/i9
+         shVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSYjS+/e1qZhcJZQbvE+Sa8gQSXBA9dQXpvJVigHsw2W9kMQaeNCB4hmvdO7iHcqZgfo+5dqX35E8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwThrUs8hycbkgGmVhL9nNJa42aGYu3Sx7H/3MiKn+R32BIpTOP
+	AZH+AdTrHbQA9CiWD+/GmkYqsAXOLpqwG11jRDwA/8RgH49zSY/j7cE/+tnXaubhgPXVo6BWcQZ
+	6/cJwt7ofrYis9Oc4Fp2hiSVWluZSkQpZJ2+zfHaKIA==
+X-Gm-Gg: ASbGnctmATiq4V6fXqluGmmo79NdI3gJE8Jt+Yp2Ncp8EUnWxj9zWgi+YtcX8I0pUW4
+	9/yym2l+YXs71Ta+b1j5YBNnCWvSjjgZHvvTloO+bVEkpGOv1xJnX5rFzbwVsiNiubgG572wSXH
+	NNO+Rz20lZatKk5f6gQ6HhnTt7hv3W/hLtbMLQ80oUPARTdui/nXlZgmadFpjOljCQk2zB3/A9K
+	l0vjIkjhFK4aweCN+Au4l8EgarV2RMFA3zZ3GMXaYkBD+Je4c6dFFUbgYOTtRsRzLUaQ+dfBRbW
+	rxdQtvS+mY/2kXGVFSV8O0PA06cQYESwL0XN/JcIdPfcxNY4gBEeEPPlgQMpUoumRk7DwiviamR
+	h3475eyVk3UyfNPR9n6M=
+X-Google-Smtp-Source: AGHT+IFWVvOdiwbaW+PgOu91YQeRhbmYRJspNugm4twgh9eTZ4FBQF/Nt9r+Q5ljCpPo3ammbd5nMdZQIwqQDhKBO4U=
+X-Received: by 2002:a05:6902:1144:b0:e95:3788:4d1a with SMTP id
+ 3f1490d57ef6-e9537884fc3mr7991770276.12.1756109688344; Mon, 25 Aug 2025
+ 01:14:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1755969734.git.jan.kiszka@siemens.com> <c7ddb74b514c36ed4f612bc2125245c1f68c0a4d.1755969734.git.jan.kiszka@siemens.com>
-In-Reply-To: <c7ddb74b514c36ed4f612bc2125245c1f68c0a4d.1755969734.git.jan.kiszka@siemens.com>
+References: <cover.1755969734.git.jan.kiszka@siemens.com> <9c9a688c91140b3a62c753f14b8d1eb1c87c51d7.1755969734.git.jan.kiszka@siemens.com>
+In-Reply-To: <9c9a688c91140b3a62c753f14b8d1eb1c87c51d7.1755969734.git.jan.kiszka@siemens.com>
 From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Mon, 25 Aug 2025 11:12:42 +0300
-X-Gm-Features: Ac12FXxODqQo_cZ_zh8wOuDiRtnme5nRKJCVpcKOBUAcJqk49gmwpJXSRGl-WpM
-Message-ID: <CAC_iWj+C+HmC=8BN+ZvGt2QV1p=+8mP8rTjT1VsUUGoCioHHPQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] efi: stmm: Fix incorrect buffer allocation method
+Date: Mon, 25 Aug 2025 11:14:11 +0300
+X-Gm-Features: Ac12FXxsCgtaaA9_yOclBjOk4hFo95aZBfORuw5aXXfV_NwfyspRIBAYs3IxwPw
+Message-ID: <CAC_iWjL2HcHaz7CzvMTuHDH5TxoV+pVypLk+B0bWe7GJGvwP6A@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] efi: stmm: Do not return EFI_OUT_OF_RESOURCES on
+ internal errors
 To: Jan Kiszka <jan.kiszka@siemens.com>
 Cc: Ard Biesheuvel <ardb@kernel.org>, Masahisa Kojima <kojima.masahisa@socionext.com>, 
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -90,110 +91,82 @@ Cc: Ard Biesheuvel <ardb@kernel.org>, Masahisa Kojima <kojima.masahisa@socionext
 	Hua Qian Li <huaqian.li@siemens.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Thanks Jan
-
 On Sat, 23 Aug 2025 at 20:22, Jan Kiszka <jan.kiszka@siemens.com> wrote:
 >
 > From: Jan Kiszka <jan.kiszka@siemens.com>
 >
-> The communication buffer allocated by setup_mm_hdr is later on passed to
-> tee_shm_register_kernel_buf. The latter expects those buffers to be
-> contiguous pages, but setup_mm_hdr just uses kmalloc. That can cause
-> various corruptions or BUGs, specifically since 9aec2fb0fd5e, though it
-> was broken before as well.
+> When we are low on memory or when the internal API is violated, we
+> cannot return EFI_OUT_OF_RESOURCES. According to the UEFI standard, that
+> error code is either related to persistent storage used for the variable
+> or even not foreseen as possible error (GetVariable e.g.). Use the not
+> fully accurate but compliant error code EFI_DEVICE_ERROR in those cases.
+
+Yea it's not ideal, but we are still limited by the EFI spec
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 >
-> Fix this by using alloc_pages_exact instead of kmalloc.
->
-> Fixes: c44b6be62e8d ("efi: Add tee-based EFI variable driver")
 > Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-
-Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-
 > ---
->  drivers/firmware/efi/stmm/tee_stmm_efi.c | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
+>  drivers/firmware/efi/stmm/tee_stmm_efi.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 >
 > diff --git a/drivers/firmware/efi/stmm/tee_stmm_efi.c b/drivers/firmware/efi/stmm/tee_stmm_efi.c
-> index f741ca279052..e15d11ed165e 100644
+> index e15d11ed165e..8501056ade8a 100644
 > --- a/drivers/firmware/efi/stmm/tee_stmm_efi.c
 > +++ b/drivers/firmware/efi/stmm/tee_stmm_efi.c
-> @@ -143,6 +143,10 @@ static efi_status_t mm_communicate(u8 *comm_buf, size_t payload_size)
->         return var_hdr->ret_status;
->  }
+> @@ -218,7 +218,7 @@ static efi_status_t get_max_payload(size_t *size)
+>                                    SMM_VARIABLE_FUNCTION_GET_PAYLOAD_SIZE,
+>                                    &ret);
+>         if (!var_payload)
+> -               return EFI_OUT_OF_RESOURCES;
+> +               return EFI_DEVICE_ERROR;
 >
-> +#define COMM_BUF_SIZE(__payload_size)  (MM_COMMUNICATE_HEADER_SIZE + \
-> +                                        MM_VARIABLE_COMMUNICATE_SIZE + \
-> +                                        (__payload_size))
-> +
->  /**
->   * setup_mm_hdr() -    Allocate a buffer for StandAloneMM and initialize the
->   *                     header data.
-> @@ -173,9 +177,8 @@ static void *setup_mm_hdr(u8 **dptr, size_t payload_size, size_t func,
->                 return NULL;
->         }
->
-> -       comm_buf = kzalloc(MM_COMMUNICATE_HEADER_SIZE +
-> -                                  MM_VARIABLE_COMMUNICATE_SIZE + payload_size,
-> -                          GFP_KERNEL);
-> +       comm_buf = alloc_pages_exact(COMM_BUF_SIZE(payload_size),
-> +                                    GFP_KERNEL | __GFP_ZERO);
->         if (!comm_buf) {
->                 *ret = EFI_OUT_OF_RESOURCES;
->                 return NULL;
-> @@ -239,7 +242,7 @@ static efi_status_t get_max_payload(size_t *size)
->          */
->         *size -= 2;
->  out:
-> -       kfree(comm_buf);
-> +       free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
->         return ret;
->  }
->
-> @@ -282,7 +285,7 @@ static efi_status_t get_property_int(u16 *name, size_t name_size,
->         memcpy(var_property, &smm_property->property, sizeof(*var_property));
->
->  out:
-> -       kfree(comm_buf);
-> +       free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
->         return ret;
->  }
->
-> @@ -347,7 +350,7 @@ static efi_status_t tee_get_variable(u16 *name, efi_guid_t *vendor,
->         memcpy(data, (u8 *)var_acc->name + var_acc->name_size,
->                var_acc->data_size);
->  out:
-> -       kfree(comm_buf);
-> +       free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
->         return ret;
->  }
->
-> @@ -404,7 +407,7 @@ static efi_status_t tee_get_next_variable(unsigned long *name_size,
->         memcpy(name, var_getnext->name, var_getnext->name_size);
->
->  out:
-> -       kfree(comm_buf);
-> +       free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
->         return ret;
->  }
->
-> @@ -467,7 +470,7 @@ static efi_status_t tee_set_variable(efi_char16_t *name, efi_guid_t *vendor,
 >         ret = mm_communicate(comm_buf, payload_size);
->         dev_dbg(pvt_data.dev, "Set Variable %s %d %lx\n", __FILE__, __LINE__, ret);
->  out:
-> -       kfree(comm_buf);
-> +       free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
->         return ret;
->  }
+>         if (ret != EFI_SUCCESS)
+> @@ -264,7 +264,7 @@ static efi_status_t get_property_int(u16 *name, size_t name_size,
+>                 &comm_buf, payload_size,
+>                 SMM_VARIABLE_FUNCTION_VAR_CHECK_VARIABLE_PROPERTY_GET, &ret);
+>         if (!smm_property)
+> -               return EFI_OUT_OF_RESOURCES;
+> +               return EFI_DEVICE_ERROR;
 >
-> @@ -507,7 +510,7 @@ static efi_status_t tee_query_variable_info(u32 attributes,
->         *max_variable_size = mm_query_info->max_variable_size;
+>         memcpy(&smm_property->guid, vendor, sizeof(smm_property->guid));
+>         smm_property->name_size = name_size;
+> @@ -320,7 +320,7 @@ static efi_status_t tee_get_variable(u16 *name, efi_guid_t *vendor,
+>         var_acc = setup_mm_hdr(&comm_buf, payload_size,
+>                                SMM_VARIABLE_FUNCTION_GET_VARIABLE, &ret);
+>         if (!var_acc)
+> -               return EFI_OUT_OF_RESOURCES;
+> +               return EFI_DEVICE_ERROR;
 >
->  out:
-> -       kfree(comm_buf);
-> +       free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
->         return ret;
->  }
+>         /* Fill in contents */
+>         memcpy(&var_acc->guid, vendor, sizeof(var_acc->guid));
+> @@ -386,7 +386,7 @@ static efi_status_t tee_get_next_variable(unsigned long *name_size,
+>                                    SMM_VARIABLE_FUNCTION_GET_NEXT_VARIABLE_NAME,
+>                                    &ret);
+>         if (!var_getnext)
+> -               return EFI_OUT_OF_RESOURCES;
+> +               return EFI_DEVICE_ERROR;
 >
+>         /* Fill in contents */
+>         memcpy(&var_getnext->guid, guid, sizeof(var_getnext->guid));
+> @@ -442,7 +442,7 @@ static efi_status_t tee_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+>         var_acc = setup_mm_hdr(&comm_buf, payload_size,
+>                                SMM_VARIABLE_FUNCTION_SET_VARIABLE, &ret);
+>         if (!var_acc)
+> -               return EFI_OUT_OF_RESOURCES;
+> +               return EFI_DEVICE_ERROR;
+>
+>         /*
+>          * The API has the ability to override RO flags. If no RO check was
+> @@ -498,7 +498,7 @@ static efi_status_t tee_query_variable_info(u32 attributes,
+>                                 SMM_VARIABLE_FUNCTION_QUERY_VARIABLE_INFO,
+>                                 &ret);
+>         if (!mm_query_info)
+> -               return EFI_OUT_OF_RESOURCES;
+> +               return EFI_DEVICE_ERROR;
+>
+>         mm_query_info->attr = attributes;
+>         ret = mm_communicate(comm_buf, payload_size);
 > --
 > 2.43.0
 >
