@@ -1,48 +1,48 @@
-Return-Path: <linux-efi+bounces-4603-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4606-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CD9B346B7
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Aug 2025 18:07:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C1DB346BA
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Aug 2025 18:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0ACA3ACCC2
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Aug 2025 16:07:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29AB9189EB78
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Aug 2025 16:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACEA2FF65A;
-	Mon, 25 Aug 2025 16:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F60F3002AA;
+	Mon, 25 Aug 2025 16:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b="JKblPw0k"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b="JWCp6glR"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
+Received: from mta-65-228.siemens.flowmailer.net (mta-65-228.siemens.flowmailer.net [185.136.65.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490AD2FF653
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB51299924
 	for <linux-efi@vger.kernel.org>; Mon, 25 Aug 2025 16:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756138044; cv=none; b=HA/oWOnbUdHrT/5N6cM56N//uLshlShef4D6OwC8IhlzuIlcYYd0bcFGGxuSog1jENYHm3xuOpf7xV2199tO1cYRradExIBRmNzCSS1B1xv5SHdoQK8UeCKL8A6sidSbkYTUZTH/OgTmLmVMqje/EG8sSzRqT8/xWRTf+JfBsEs=
+	t=1756138045; cv=none; b=rzGsHgm8OuAgeoOMweEMoiw136lHAd1quKth8CZxl3eQq+0gRo+C2sSW7MTbr5MmIMuEv0fc7k6iS2J3AnAFadPaL8xAjW3iYzOPXkLVmwIqbVTOIpA18Xx1pNT4OsKhrfXiOj9w3U0EETf3ickHE0D0KkIUVlwGbG6wnm5JBwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756138044; c=relaxed/simple;
-	bh=BvL3+AKn9RI9wzn9NDZZT0oE2GQQJTfnS+GeXH6cCYk=;
+	s=arc-20240116; t=1756138045; c=relaxed/simple;
+	bh=c3eOEas3QEYLyByLql5S/xo1NiuX9l+/sKHrI1/zTkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+mWqk5kp5rGTNcJc1tZ5JQN51wMDj5XFIZwQd4UBElahb/jLTk2GkWOaOT0w240C8Nivojl3foQPXRes2eOyfXvNCaqICkAKpMGGyr2whL6GAYUPls66BWWqEzG/CpEJU0dDzFcS8azz2j5UBs/oLQaPIST7OVUPXKddzky5oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b=JKblPw0k; arc=none smtp.client-ip=185.136.64.227
+	 MIME-Version; b=B+9+jzxOo6MBo2se8LH+H6nKsLp71/Ceto1fv2y+QUTBk0pmkDCrnj52V4R7CTHep2SRld17wfDxqhM6mD/DLA9SWlYYQJ7fhNxWFD1xSzjUab2uGoHfSHCAB36MnRZ91dgfUZhvQzZAn4n0miq+jXgWJ2kx00Ahj7vBHunSgJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b=JWCp6glR; arc=none smtp.client-ip=185.136.65.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 2025082516071384161a7521515938d0
+Received: by mta-65-228.siemens.flowmailer.net with ESMTPSA id 20250825160713801d689c124c47c349
         for <linux-efi@vger.kernel.org>;
-        Mon, 25 Aug 2025 18:07:13 +0200
+        Mon, 25 Aug 2025 18:07:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
  d=siemens.com; i=jan.kiszka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=+AP3Z+rdRhCUENDNY6EklxuRkslINeOGiKO1+ttVuw4=;
- b=JKblPw0kOZd1IZ2/WdaX5bZlcAdERQryUeojeUmY2HLhrwEyN+jc89+7h7324V612lKQVs
- a6hcUTubi+YoR4HsTXhiLfPeyqCo9/gwRUgbubUY94le2JCSAyBYsNLfeV7tanAKUe+7yX1y
- Injc9qGwNZCB/aA60T5jtp4nRXztIE3GqvLEOH9pDA1IwmUa0bP9+Fl97BXwmhpEms/85DMR
- dQhNMu0LabKVA7iQ0vSlyvUdDEoD9+mKrYc4OSNt0LyYC8C9zs7JBRupPjvUAj8t8rXkV80b
- hz7ZaWmpGdl+rMNtBPw1Uy4pRCAJyaTaXM3yHtZE4HzdKvZ1ThhDDCzA==;
+ bh=AWxW7K0VvnMsb2MfEMdJGSifKobVT6/MtPRHpHEA05g=;
+ b=JWCp6glRetjXwFqKLiyy/8ehD1QElfZ5JlGgc9JqKJHnj6bNxDNYE+3j0YMMyjKbe6xAc/
+ ZJk1M1oaJDpDr9aw/sHPJRaxc0g9GnbYyxIW3NEJJotv7l0AuGLILRU+vmZk5oxoRIsJn9CK
+ Pec5+fKMcEsq3PMgCuFihI9K6ofQVzVLKeHu3yYSTsIzAT6KjQ7Uiigwd49uPkMwplwlbody
+ xA1Jo1XwrRAvvvWhrbrIj9Tg6OTbgzif29viJgiCvYbe/LhW1AbIMX0a+zmdz/W7FC7TPE3+
+ IJ62R/Bxv5w1tTRFWVKa5+r0yqUWNNETg87MxVztHiQGMRIxsWBOQdtg==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: Ard Biesheuvel <ardb@kernel.org>,
 	Masahisa Kojima <kojima.masahisa@socionext.com>,
@@ -52,9 +52,9 @@ Cc: linux-efi@vger.kernel.org,
 	Sumit Garg <sumit.garg@kernel.org>,
 	Jens Wiklander <jens.wiklander@linaro.org>,
 	Hua Qian Li <huaqian.li@siemens.com>
-Subject: [PATCH v3 1/4] efi: stmm: Fix incorrect buffer allocation method
-Date: Mon, 25 Aug 2025 18:07:10 +0200
-Message-ID: <2ebf3cffa057aff45c5d221bee4a3ffa2c50dc36.1756138033.git.jan.kiszka@siemens.com>
+Subject: [PATCH v3 2/4] efi: stmm: Do not return EFI_OUT_OF_RESOURCES on internal errors
+Date: Mon, 25 Aug 2025 18:07:11 +0200
+Message-ID: <0a5d3c3df6eff0011d20e364dd63d46a6ce11eaf.1756138033.git.jan.kiszka@siemens.com>
 In-Reply-To: <cover.1756138033.git.jan.kiszka@siemens.com>
 References: <cover.1756138033.git.jan.kiszka@siemens.com>
 Precedence: bulk
@@ -69,102 +69,76 @@ Feedback-ID: 519:519-294854:519-21489:flowmailer
 
 From: Jan Kiszka <jan.kiszka@siemens.com>
 
-The communication buffer allocated by setup_mm_hdr is later on passed to
-tee_shm_register_kernel_buf. The latter expects those buffers to be
-contiguous pages, but setup_mm_hdr just uses kmalloc. That can cause
-various corruptions or BUGs, specifically since 9aec2fb0fd5e, though it
-was broken before as well.
+When we are low on memory or when the internal API is violated, we
+cannot return EFI_OUT_OF_RESOURCES. According to the UEFI standard, that
+error code is either related to persistent storage used for the variable
+or even not foreseen as possible error (GetVariable e.g.). Use the not
+fully accurate but compliant error code EFI_DEVICE_ERROR in those cases.
 
-Fix this by using alloc_pages_exact instead of kmalloc.
-
-Fixes: c44b6be62e8d ("efi: Add tee-based EFI variable driver")
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 ---
- drivers/firmware/efi/stmm/tee_stmm_efi.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/firmware/efi/stmm/tee_stmm_efi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/firmware/efi/stmm/tee_stmm_efi.c b/drivers/firmware/efi/stmm/tee_stmm_efi.c
-index f741ca279052..e15d11ed165e 100644
+index e15d11ed165e..8501056ade8a 100644
 --- a/drivers/firmware/efi/stmm/tee_stmm_efi.c
 +++ b/drivers/firmware/efi/stmm/tee_stmm_efi.c
-@@ -143,6 +143,10 @@ static efi_status_t mm_communicate(u8 *comm_buf, size_t payload_size)
- 	return var_hdr->ret_status;
- }
+@@ -218,7 +218,7 @@ static efi_status_t get_max_payload(size_t *size)
+ 				   SMM_VARIABLE_FUNCTION_GET_PAYLOAD_SIZE,
+ 				   &ret);
+ 	if (!var_payload)
+-		return EFI_OUT_OF_RESOURCES;
++		return EFI_DEVICE_ERROR;
  
-+#define COMM_BUF_SIZE(__payload_size)	(MM_COMMUNICATE_HEADER_SIZE + \
-+					 MM_VARIABLE_COMMUNICATE_SIZE + \
-+					 (__payload_size))
-+
- /**
-  * setup_mm_hdr() -	Allocate a buffer for StandAloneMM and initialize the
-  *			header data.
-@@ -173,9 +177,8 @@ static void *setup_mm_hdr(u8 **dptr, size_t payload_size, size_t func,
- 		return NULL;
- 	}
- 
--	comm_buf = kzalloc(MM_COMMUNICATE_HEADER_SIZE +
--				   MM_VARIABLE_COMMUNICATE_SIZE + payload_size,
--			   GFP_KERNEL);
-+	comm_buf = alloc_pages_exact(COMM_BUF_SIZE(payload_size),
-+				     GFP_KERNEL | __GFP_ZERO);
- 	if (!comm_buf) {
- 		*ret = EFI_OUT_OF_RESOURCES;
- 		return NULL;
-@@ -239,7 +242,7 @@ static efi_status_t get_max_payload(size_t *size)
- 	 */
- 	*size -= 2;
- out:
--	kfree(comm_buf);
-+	free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
- 	return ret;
- }
- 
-@@ -282,7 +285,7 @@ static efi_status_t get_property_int(u16 *name, size_t name_size,
- 	memcpy(var_property, &smm_property->property, sizeof(*var_property));
- 
- out:
--	kfree(comm_buf);
-+	free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
- 	return ret;
- }
- 
-@@ -347,7 +350,7 @@ static efi_status_t tee_get_variable(u16 *name, efi_guid_t *vendor,
- 	memcpy(data, (u8 *)var_acc->name + var_acc->name_size,
- 	       var_acc->data_size);
- out:
--	kfree(comm_buf);
-+	free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
- 	return ret;
- }
- 
-@@ -404,7 +407,7 @@ static efi_status_t tee_get_next_variable(unsigned long *name_size,
- 	memcpy(name, var_getnext->name, var_getnext->name_size);
- 
- out:
--	kfree(comm_buf);
-+	free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
- 	return ret;
- }
- 
-@@ -467,7 +470,7 @@ static efi_status_t tee_set_variable(efi_char16_t *name, efi_guid_t *vendor,
  	ret = mm_communicate(comm_buf, payload_size);
- 	dev_dbg(pvt_data.dev, "Set Variable %s %d %lx\n", __FILE__, __LINE__, ret);
- out:
--	kfree(comm_buf);
-+	free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
- 	return ret;
- }
+ 	if (ret != EFI_SUCCESS)
+@@ -264,7 +264,7 @@ static efi_status_t get_property_int(u16 *name, size_t name_size,
+ 		&comm_buf, payload_size,
+ 		SMM_VARIABLE_FUNCTION_VAR_CHECK_VARIABLE_PROPERTY_GET, &ret);
+ 	if (!smm_property)
+-		return EFI_OUT_OF_RESOURCES;
++		return EFI_DEVICE_ERROR;
  
-@@ -507,7 +510,7 @@ static efi_status_t tee_query_variable_info(u32 attributes,
- 	*max_variable_size = mm_query_info->max_variable_size;
+ 	memcpy(&smm_property->guid, vendor, sizeof(smm_property->guid));
+ 	smm_property->name_size = name_size;
+@@ -320,7 +320,7 @@ static efi_status_t tee_get_variable(u16 *name, efi_guid_t *vendor,
+ 	var_acc = setup_mm_hdr(&comm_buf, payload_size,
+ 			       SMM_VARIABLE_FUNCTION_GET_VARIABLE, &ret);
+ 	if (!var_acc)
+-		return EFI_OUT_OF_RESOURCES;
++		return EFI_DEVICE_ERROR;
  
- out:
--	kfree(comm_buf);
-+	free_pages_exact(comm_buf, COMM_BUF_SIZE(payload_size));
- 	return ret;
- }
+ 	/* Fill in contents */
+ 	memcpy(&var_acc->guid, vendor, sizeof(var_acc->guid));
+@@ -386,7 +386,7 @@ static efi_status_t tee_get_next_variable(unsigned long *name_size,
+ 				   SMM_VARIABLE_FUNCTION_GET_NEXT_VARIABLE_NAME,
+ 				   &ret);
+ 	if (!var_getnext)
+-		return EFI_OUT_OF_RESOURCES;
++		return EFI_DEVICE_ERROR;
  
+ 	/* Fill in contents */
+ 	memcpy(&var_getnext->guid, guid, sizeof(var_getnext->guid));
+@@ -442,7 +442,7 @@ static efi_status_t tee_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+ 	var_acc = setup_mm_hdr(&comm_buf, payload_size,
+ 			       SMM_VARIABLE_FUNCTION_SET_VARIABLE, &ret);
+ 	if (!var_acc)
+-		return EFI_OUT_OF_RESOURCES;
++		return EFI_DEVICE_ERROR;
+ 
+ 	/*
+ 	 * The API has the ability to override RO flags. If no RO check was
+@@ -498,7 +498,7 @@ static efi_status_t tee_query_variable_info(u32 attributes,
+ 				SMM_VARIABLE_FUNCTION_QUERY_VARIABLE_INFO,
+ 				&ret);
+ 	if (!mm_query_info)
+-		return EFI_OUT_OF_RESOURCES;
++		return EFI_DEVICE_ERROR;
+ 
+ 	mm_query_info->attr = attributes;
+ 	ret = mm_communicate(comm_buf, payload_size);
 -- 
 2.43.0
 
