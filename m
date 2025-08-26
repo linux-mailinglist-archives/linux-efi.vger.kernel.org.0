@@ -1,111 +1,158 @@
-Return-Path: <linux-efi+bounces-4615-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4616-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482C9B36024
-	for <lists+linux-efi@lfdr.de>; Tue, 26 Aug 2025 14:57:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3965B36563
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Aug 2025 15:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AED591BA650C
-	for <lists+linux-efi@lfdr.de>; Tue, 26 Aug 2025 12:55:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B108565008
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Aug 2025 13:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6297D225795;
-	Tue, 26 Aug 2025 12:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31DA2D46A4;
+	Tue, 26 Aug 2025 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQ3InD8D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHZo3YFn"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2D6202F8E;
-	Tue, 26 Aug 2025 12:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C35F1E502;
+	Tue, 26 Aug 2025 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212860; cv=none; b=BDw4f2Tkw3lc2jHw7up5ZNiKkHCqhas8SvlS7yymEQIUqNO2YW9h1bnB1WurpZQmGDm5/KyGzWiwCwz1J9g2N8O4rWtI0q/dFYcHzO63u7IJTgZstlVEZiq7D65p6eRDw9F9pFoforNnQw27UFnuaTieMdxBth1e7VZFstiJ4RM=
+	t=1756215147; cv=none; b=SLQWl5JFJTRhiutwAzaW6d5OyHoIawOSzRAJGvD9RM2QH1q1Eck24rtTxSWlbzDW26nadEIcpT4DGQRDRjFKpaawfdoaHE1CpIx6wIilEZbF3aIfvQZFen7cc8uZoNCbe2jYsTtRfMHkpkgmyV/FyHdL1c6U296GDON+t6SJp18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212860; c=relaxed/simple;
-	bh=0Q51vRiKOQmozJ7U6guRwOuXBGUGd6mwPCGGWpzr/yA=;
+	s=arc-20240116; t=1756215147; c=relaxed/simple;
+	bh=F9UhdwMQ0hBjRCqK9crNZJh+gxC+eYHn+B/GPo3iBo8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s7zCAdHOsP7ZWy9QTkwv5DyRb4JSbJkIDpf6fyI5yBYsW6K1uWmlEa5jPzZAp159JC/AYCUErXctFQaMG/yZaD7pTuzceMEJ60iSM4CtL2ii3ORbZJUGRtt/gCuclWMm8eVjRBRLJkpHQzpTI1S2J0Kugh4/y4hk7dRTFDQP8fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qQ3InD8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DF8C116B1;
-	Tue, 26 Aug 2025 12:54:18 +0000 (UTC)
+	 To:Cc:Content-Type; b=cqwFJPQjhCMbiGsyu8FPGvbpcevdmCRMUZtJieuDX1q+AT6ayTSKcO/hf9jx9TVGzHNaNZudIuwl2jjPfnW8d86M8bj9pb1PJFbhl1Ez4kSlTDUhuF5lizS6UzuAVfycgE3Gd1mfLKSS7GCzAt0h93fHfR5CSd01BJmwQWS+s8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHZo3YFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE0FC4AF09;
+	Tue, 26 Aug 2025 13:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756212858;
-	bh=0Q51vRiKOQmozJ7U6guRwOuXBGUGd6mwPCGGWpzr/yA=;
+	s=k20201202; t=1756215147;
+	bh=F9UhdwMQ0hBjRCqK9crNZJh+gxC+eYHn+B/GPo3iBo8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qQ3InD8DPoYC5tkHnmrWE7nVUst5ruw7TyD4u2OHli9c49273pJhM7ZnGz6JMHpQf
-	 oVlUYJ2K3jWsJso2wbBf+3jc+KZUw1reORmJX076qoOt6/gMI3KNjKIMT20cM9qpzS
-	 u5s3ImBRKl1RnAgKhTQA7Q3HIRGW5jAq2LDoYIwnH3YMs/pD8dje4tr61mNVD/MyQ/
-	 Iah9ZyYE2uP/+xTnPHSCs+IddxogBIg3D8ZgTD2gacRtfygCAtx7rx83xp6HzImInE
-	 xZVCrHgULfWzBcPJJ5Gzf2wvg86riZy/Ro9QXU3kcpKJYR2Auqka0WRn33gaEiPaLF
-	 I9GqMfqE692Dg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55f48d62057so1896411e87.1;
-        Tue, 26 Aug 2025 05:54:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVtFQbN3cGaAldFFHjGfSkTGVPDpc7ob2MAUy7X8vvHbDm4TpkiUKqqM5wg/s08ad7oDK+magrfqAg=@vger.kernel.org, AJvYcCX6XDn8C0EJqmfyoANqss1fVxPy12qMPsfpkwfyb7/yzz6KKliwklk1eKrKFg+8/W/DKBmFW7WyxvY3BYFO@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5kkAvj/woqjFnODYqWxhZtVOaljgcanYDiZPT+MT15y1J3V4l
-	0yC6LtyRUMkIayXryMJkdhJpOm+yfn8RsK0rZxvFVnHAa+JehPjwF5hxPakKcJjUQOGy6N7+UHH
-	+MlTGBoPeRXNjd/gtF/iyZq/drXmBWco=
-X-Google-Smtp-Source: AGHT+IFWvbcBz0XAXBN1cZWESGc5SJUBfOqwBeXw8VGqjxg3jIzwcE+awVTOvorbXVpXT2x0GqDdsjbzxFRdoSMWu3Q=
-X-Received: by 2002:a05:6512:31ca:b0:55f:4ede:6518 with SMTP id
- 2adb3069b0e04-55f4ede6715mr663727e87.6.1756212857163; Tue, 26 Aug 2025
- 05:54:17 -0700 (PDT)
+	b=nHZo3YFnADCYJagxhaARX7GB5flz5qYP+VDc2x7XhbArKghjbSi5LZOLxQyJeM+8L
+	 He1MZW2ESHJTzltnW0EuKrXhC6S7bu0elqVazmVDGVsOcZuOpuF+Fo9cWSnXG4n+dD
+	 28kRruUlWzGRnrBH0c8I3p10AMjfRLEfziNrO8p1B53clisi9uVvxXQzASaLCFKkVp
+	 edgjBObImE7y2Cy8Jji7SVid8x/yUyL4qHFffPblE1VIzWCQHn3mIkCao9cpzBaVkV
+	 uQLVvbBiUSuQM6Xqlt1UjVW+JU1Flg3AuJlQjbWP+s+NMt1iSrQ6BakANSJFq6Yym6
+	 r2GZa/EBvtg4w==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3367f35d11aso14107711fa.0;
+        Tue, 26 Aug 2025 06:32:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV/1GkIq/WQTIty3f3Cbv9uqN+oblumDLEih4cnlz9HZDGg7/EXX3zj4s1mRuum8iskesino41dHgg=@vger.kernel.org, AJvYcCXSFqYeKyEfmROsH/evP0zEU0Svd0JPD+h0FtcqGqitIXPawvSyqpYyxy2RvkZ4ZGz8wr2mUd0RI4W0wnnF@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg277dNlWQqkiCL2Kl4ySGsWWbrWNASshauVIEadNzAv8tkO+c
+	xGfT4efsVEoypMF9W54vk3bRLXaYprCMhCROiibr6J8VwtC3V8i6py1z+xRa3UUyN9hI45mNJG7
+	Q8kOl9+3KXS+oQ5ecGkxDZ8hEHERPHiI=
+X-Google-Smtp-Source: AGHT+IH0JU0rh2F2/IGrODV0cITg40GykiWYazxaj+7uUdbok+BkQQ0z2AXH9CyxNwKoJ0DFz3gtVpCAyySkIf/fd7A=
+X-Received: by 2002:a05:6512:4488:b0:55f:486b:7e44 with SMTP id
+ 2adb3069b0e04-55f487ac7b1mr1496884e87.37.1756215145733; Tue, 26 Aug 2025
+ 06:32:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1756138033.git.jan.kiszka@siemens.com> <aK2Tx5yeQeMoLMKn@sumit-X1>
-In-Reply-To: <aK2Tx5yeQeMoLMKn@sumit-X1>
+References: <20250819090802.2258766-1-linan666@huaweicloud.com>
+In-Reply-To: <20250819090802.2258766-1-linan666@huaweicloud.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 26 Aug 2025 14:54:05 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH6VifL3Dqts95qs2U8yBqKMOTLMFYVF2nD1QVt4ACKcw@mail.gmail.com>
-X-Gm-Features: Ac12FXx3YRLiGmqmzzb7lP2_NeH2Jt8h8F4l9RpA34-6UmEf8kow39K5xMYq8hE
-Message-ID: <CAMj1kXH6VifL3Dqts95qs2U8yBqKMOTLMFYVF2nD1QVt4ACKcw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] efi: stmm: Fix for incorrect buffer allocation and cleanups
-To: Sumit Garg <sumit.garg@kernel.org>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>, Masahisa Kojima <kojima.masahisa@socionext.com>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jens Wiklander <jens.wiklander@linaro.org>, 
-	Hua Qian Li <huaqian.li@siemens.com>
+Date: Tue, 26 Aug 2025 15:32:14 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHvEOTHHshS9uoL4RSZgJZgd9OR9qzPHYJ5xW2Vgeefcg@mail.gmail.com>
+X-Gm-Features: Ac12FXzNlYX0397R9A-yMbFf875GVSnv6G1xxJnODLQnCjpaKIVrANlolXzJWvc
+Message-ID: <CAMj1kXHvEOTHHshS9uoL4RSZgJZgd9OR9qzPHYJ5xW2Vgeefcg@mail.gmail.com>
+Subject: Re: [PATCH v2] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
+To: linan666@huaweicloud.com
+Cc: jk@ozlabs.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	yangerkun@huawei.com, yi.zhang@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 26 Aug 2025 at 13:00, Sumit Garg <sumit.garg@kernel.org> wrote:
+On Tue, 19 Aug 2025 at 11:16, <linan666@huaweicloud.com> wrote:
 >
-> On Mon, Aug 25, 2025 at 06:07:09PM +0200, Jan Kiszka wrote:
-> > Changes in v3:
-> >  - improve description of patch 3
-> >
-> > Changes in v2:
-> >  - simplify page allocation approach
-> >  - switch to returning EFI_DEVICE_ERROR on ENOMEM
-> >  - drop efi return value argument from setup_mm_hdr
-> >
-> > One critical fix for the EFI StMM driver, one error return code
-> > adjustment and two smaller cleanups.
-> >
-> > Note that the suggestion to convert tee_shm_register_kernel_buf to take
-> > pages instead of buffer addresses is not forgotten, just in the backlog.
-> > I wanted to avoid that the critical fix has to wait for me finding time
-> > to refactor the API as well.
-> >
-> > Jan
-> >
-> > Jan Kiszka (4):
-> >   efi: stmm: Fix incorrect buffer allocation method
-> >   efi: stmm: Do not return EFI_OUT_OF_RESOURCES on internal errors
-> >   efi: stmm: Drop unused EFI error from setup_mm_hdr arguments
-> >   efi: stmm: Drop unneeded null pointer check
-> >
-> >  drivers/firmware/efi/stmm/tee_stmm_efi.c | 61 +++++++++++-------------
-> >  1 file changed, 27 insertions(+), 34 deletions(-)
+> From: Li Nan <linan122@huawei.com>
 >
-> LGTM, for the series:
+> Observed on kernel 6.6 (present on master as well):
 >
-> Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+>   BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
+>   Call trace:
+>    kasan_check_range+0xe8/0x190
+>    __asan_loadN+0x1c/0x28
+>    memcmp+0x98/0xd0
+>    efivarfs_d_compare+0x68/0xd8
+>    __d_lookup_rcu_op_compare+0x178/0x218
+>    __d_lookup_rcu+0x1f8/0x228
+>    d_alloc_parallel+0x150/0x648
+>    lookup_open.isra.0+0x5f0/0x8d0
+>    open_last_lookups+0x264/0x828
+>    path_openat+0x130/0x3f8
+>    do_filp_open+0x114/0x248
+>    do_sys_openat2+0x340/0x3c0
+>    __arm64_sys_openat+0x120/0x1a0
+>
+> If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
+> negative, leadings to oob. The issue can be triggered as below:
+>
+>   T1                    T2
+>   lookup_open
+>    ->lookup
+>     simple_lookup
+>      d_add
+>      // invalid dentry is added to hash list
+>
+>                         lookup_open
+>                          d_alloc_parallel
+>                           __d_lookup_rcu
+>                            __d_lookup_rcu_op_compare
+>                             hlist_bl_for_each_entry_rcu
+>                             // invalid dentry can be retrieved
+>                              ->d_compare
+>                               efivarfs_d_compare
+>
+> Fix it by checking len before cmp.
+>
+> Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
+> Signed-off-by: Li Nan <linan122@huawei.com>
+> Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
+> ---
+> v2: optimize commit message
 >
 
-Thanks all - I've queued these up now.
+Thanks for the fix, and for the elaborate description.
+
+IIUC, two parallel lookups using an invalid filename can reproduce this?
+
+>  fs/efivarfs/super.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> index 23ff4e873651..c30d758e303a 100644
+> --- a/fs/efivarfs/super.c
+> +++ b/fs/efivarfs/super.c
+> @@ -152,7 +152,7 @@ static int efivarfs_d_compare(const struct dentry *dentry,
+>  {
+>         int guid = len - EFI_VARIABLE_GUID_LEN;
+>
+
+Could we do a separate
+
+if (guid <= 0)
+  return 1;
+
+here, with a comment describing how that condition might become true?
+
+> -       if (name->len != len)
+> +       if (name->len != len || len <= EFI_VARIABLE_GUID_LEN)
+
+... and drop this change.
+
+>                 return 1;
+>
+>         /* Case-sensitive compare for the variable name */
+> --
+> 2.39.2
+>
+>
 
