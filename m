@@ -1,69 +1,69 @@
-Return-Path: <linux-efi+bounces-4635-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4636-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E91B399B4
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Aug 2025 12:26:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BD6B399A5
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Aug 2025 12:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C46E7BB6CC
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Aug 2025 10:22:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BAE8468074
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Aug 2025 10:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CC030DEC0;
-	Thu, 28 Aug 2025 10:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0462F30E0CC;
+	Thu, 28 Aug 2025 10:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xlzlPU67"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RWSujQ75"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6CD30BB80
-	for <linux-efi@vger.kernel.org>; Thu, 28 Aug 2025 10:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275F030DEA4
+	for <linux-efi@vger.kernel.org>; Thu, 28 Aug 2025 10:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756376569; cv=none; b=oQbX6pLnstTIDbV6vkBdjpugql5oA2mLfPgfCTzrSb892Qsj+bPbOwuVpVbEJmY1c5s+pyq5ndvB6aOCziWh8gdcbAIVUgL+gs5dmFGymfPAWNe9LdBZeFJKCMB1bTFo2AfWGxebeFQsmkUyPkaOZfn62vRBitwiInNZ0S4WyOc=
+	t=1756376570; cv=none; b=JRov5qpIf93AP/xjl6RgEZq2GXahGQsw/Xwqiy+kDthbXxsj2LsX/QhItQi7c9Mymg2HiKnwtSwA1j3F39QiF1wiqruJtY+ydY3VM92NGWYWrkMNyXCOSNzqAQimpApjpYnxy032ccVP/lUzDF76ItBL2ur1UNOu2Tnslq2/1+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756376569; c=relaxed/simple;
-	bh=OLU5QcbyyNINYElAKiJwayIsMLpwXtfz6ndB7XVk9/4=;
+	s=arc-20240116; t=1756376570; c=relaxed/simple;
+	bh=L5OPBMNERIorebPLCitdWWYXRB3zMTwpP66dKgU4iUk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PGEuh+TdW/dMxJl6rpV7XoVIDOhYfDYeRtorkkpAqObL9QzERGhA3j9s4Jvs2NtVaAWu+LGMlJEqoQI4fMPSKK4tux7sYKo9JcG32OTg/h2hv7xG92ph1j95zaWB8QoXzVYtXOexWfpANE8McEapu1nPKfKgm4+8yk/R+rsb7yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xlzlPU67; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=JCIHFihFEC3T6OVYukV1gpKXIKzBH03EtjSrp+9cn1MM05VfM7lRA26vD06DC+cvIHZgIVuk3GPnIL5Mz2Zsh5drwxCkno8EbDg5eAPtiyVLQP5ro0rYmYNweuGZm6BpgIkwUlcP+merilckihsX5cBCUm+9RI/CdTO/2IRXsPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RWSujQ75; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3cba0146f7aso376233f8f.3
-        for <linux-efi@vger.kernel.org>; Thu, 28 Aug 2025 03:22:47 -0700 (PDT)
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3ccd58af2bbso585229f8f.0
+        for <linux-efi@vger.kernel.org>; Thu, 28 Aug 2025 03:22:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756376566; x=1756981366; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1756376567; x=1756981367; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L4ke4XWWJRSjh2bYfLQGWCSa7ibZe++P2mcK281T5xw=;
-        b=xlzlPU67fI8N82Cz+EQ34XM1rZBi0PvBonNE7tH9iuRYdzN8+l/WsgWw51ZszLz/1R
-         90///DohZ2ejMFV2/Z7m4MHm921QVMkWA2rIJUigPRCL44qEgiLkH9KqxVrNMUn5uC+A
-         m+H4yYidaDvkGbX/20hlexAMhAzjOSSAHCHKxCgn2w8LqgYWvygqLW14+NBw0HeDly+w
-         kUPKm9sVXxefe2h4lgIdB7aNo7T4DldBVD2lu+Ax05RvqHhp+4QJRzcms7bQuwemd9DO
-         HDuANYxPowwvxmhJ4+JDcjm0dPE3XFurpAri+7xNsnDsjuXg/BihiZo8zif7klxto9rL
-         9SZA==
+        bh=XaJpL8jKywahQIGYh+IMsHL6Z6ULbMaLruj54BTvvjY=;
+        b=RWSujQ75q+NBFQ9d2bRhpu65w4xBvL6BlKi/S/jw38SlVnf+sbx8Bs5dneoP3O/6Vj
+         5rhzqvBF0fH3O9EJvld2D5QlpARb0D/858OJllhwwt1bQ+mPQ7W4T33G2LqAC1sVcY9u
+         /4TbriojqaUwquj0zkRVX1DDwVQDGnqaasJviEjNRgCU6/9DOKWrUD08JlhJyVjo/jLN
+         wiyDcgX0EzULC5KXU7ZQdCQ8BjaJS6odA1SCHp/c/KEV+yIX0Nh2Ea0kvxfLr9J+RS1O
+         m2551K/bxObt8+vcGHnrnsOaNgkVoZBZfR9CAtzUtrbtRVI3xT21zu9lHoEqShue18AN
+         XLNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756376566; x=1756981366;
+        d=1e100.net; s=20230601; t=1756376567; x=1756981367;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L4ke4XWWJRSjh2bYfLQGWCSa7ibZe++P2mcK281T5xw=;
-        b=QJ1KBq5Vnd48q+15tgumucBX5He0Gs1sROlBpeFvKnw7NLBxY9j3SaYs5ryX43M/Pr
-         FHAkgthm8zRzKGzw5VLourq4d68Mpnsraw1HK9j4HkTuyyLXHHY7nkQrzNKBmMMqQ5oU
-         MbTKt1SjGWtzauKHd0ZWGjXSZEbZ+Xscb18Wt5ByLcSUtMiX+Eo967lfTzA5SIdLZU+k
-         UQzxQDwcoBeZWsMuz/RaY82sIeZr1Vws0ihwxFTQA7NSOacijUScm0af4QfER/ROME8C
-         14uSI5PPO4Gv8wFYRWExViS9ToQt4wcUXj0dNP4FNc8wgq2Mx2JuKAU/BMMDRjoZgMf3
-         ENdg==
-X-Gm-Message-State: AOJu0YzYyHrXIBEbHTD7Xjy9Dc20AgYVezS02fUbzRw9WiyODV1DGEfl
-	IhoRPXuzU+kAKK9jl9QnXtYLZM/Mx7KG6RlozTVGu4DIgs7/3YZNfOmRJG9u8EzXy52bKQRWqA=
+        bh=XaJpL8jKywahQIGYh+IMsHL6Z6ULbMaLruj54BTvvjY=;
+        b=xFg2XBs7RGY/CDrUYklcUQr8QYCfT4jz6wUX0R3v+nGnLye58jLiw2lNAmJBvyP9zH
+         D6ip2ozGtAZP6/jbrf+hQ5nghl2nvm1H/KT1KiifnTDEmBaCNK5I9WUFhZdoCBZppsRn
+         kYUAzOAJX29Qtk0kn0xdSQi8Qo6eN164VH/tic3Yno4u1UbNLJdrUvEGGwwWMsTLDGmV
+         aipXi1cIC3tRc/iYJnxMfAcBP7r+ilK+IK5bVyMzgLMFPUb3E7MlgOc5O/twCPuJx+m2
+         KH4QS4YdPdrZnswowQ/unmEXqmgRMIMjO2iTS+U3MeHGqHSpc/mIDYftTxBaOJuVzIQ8
+         QtzA==
+X-Gm-Message-State: AOJu0YwYSCyePY+y13+tJC2foHuHTZwPdPywSjB3N8xOjuRm9jIGK+UG
+	Po36FSivDIkfHMNJeXDE/d5xTmrHceeAwOGIaAYUsjID5FKyJhC3Uqpljez4rwkpAp3/7vnFRw=
 	=
-X-Google-Smtp-Source: AGHT+IEErDdrpoDOnJGXWeVgfX/xMF9TWYEvvktoGqnlAr5ACLDelnBYJhmTLS01WM4ffzgxGgkvWsZG
-X-Received: from wrbee12.prod.google.com ([2002:a05:6000:210c:b0:3cd:3377:ba8f])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:200e:b0:3c8:5b40:deb0
- with SMTP id ffacd0b85a97d-3c85b40e862mr10214800f8f.7.1756376566328; Thu, 28
- Aug 2025 03:22:46 -0700 (PDT)
-Date: Thu, 28 Aug 2025 12:22:13 +0200
+X-Google-Smtp-Source: AGHT+IEhFhvZFfYqgoI+yglrrAcVCrV8WmuhsfzoUM7Gzcti1M88OdREtqQfEeL9jz0hSC/a+wtRFaO6
+X-Received: from wrbfi2.prod.google.com ([2002:a05:6000:4402:b0:3a5:7a8e:97ed])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:50c8:0:b0:3cb:fee1:de33
+ with SMTP id ffacd0b85a97d-3cbfee1dea7mr5302998f8f.7.1756376567632; Thu, 28
+ Aug 2025 03:22:47 -0700 (PDT)
+Date: Thu, 28 Aug 2025 12:22:14 +0200
 In-Reply-To: <20250828102202.1849035-24-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -73,15 +73,15 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250828102202.1849035-24-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2029; i=ardb@kernel.org;
- h=from:subject; bh=z5/KQ3GBPkmGwtg267k/7sBxf/zNQ61LbpifmGbtIgM=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIWOD7jWbjWw3ahvcdu4OVZ6xNo6fo8V+8t53uwxeL1y9w
- YXf60laRykLgxgXg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZgI30dGhst57stlgi0iHC/G
- PGK52nyyYJH/gg17uL66m4rcvzj1/gaGf6prb/1zE/wpHCzAV6+wOr510Qd/ecGzKzVMXUt2rZE V4QMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1051; i=ardb@kernel.org;
+ h=from:subject; bh=C7hRv/57XB72AG4RPN24KyXGqFt68aWMEWowtuf+WwU=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIWOD7o2eS1HPc8Q5dfKzTqQn3O8qsfLhsil4nXNuXsIqL
+ Qmj7awdpSwMYlwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCJShowMTwo/unWkb1e5+HOT
+ lSCnXfHCpxG20b6/p75RTdCQSTHfychwIihNPCbec++u/a8XZTpFPtC/ISixt9b78dRb6dWvvjm xAAA=
 X-Mailer: git-send-email 2.51.0.268.g9569e192d0-goog
-Message-ID: <20250828102202.1849035-34-ardb+git@google.com>
-Subject: [PATCH v7 10/22] x86/boot: Drop redundant RMPADJUST in SEV SVSM
- presence check
+Message-ID: <20250828102202.1849035-35-ardb+git@google.com>
+Subject: [PATCH v7 11/22] x86/boot: Provide PIC aliases for 5-level paging
+ related constants
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
@@ -93,56 +93,33 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-snp_vmpl will be assigned a non-zero value when executing at a VMPL
-other than 0, and this is inferred from a call to RMPADJUST, which only
-works when running at VMPL0.
-
-This means that testing snp_vmpl is sufficient, and there is no need to
-perform the same check again.
+Provide PIC aliases for the global variables related to 5-level paging,
+so that the startup code can access them in order to populate the kernel
+page tables.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/sev.c | 20 +++-----------------
- 1 file changed, 3 insertions(+), 17 deletions(-)
+ arch/x86/kernel/head64.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index de73da526577..d650a314143b 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -404,30 +404,16 @@ void sev_enable(struct boot_params *bp)
- 	 */
- 	if (sev_status & MSR_AMD64_SEV_SNP_ENABLED) {
- 		u64 hv_features;
--		int ret;
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 533fcf5636fc..1bc40d0785ee 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -52,10 +52,13 @@ SYM_PIC_ALIAS(next_early_pgt);
+ pmdval_t early_pmd_flags = __PAGE_KERNEL_LARGE & ~(_PAGE_GLOBAL | _PAGE_NX);
  
- 		hv_features = get_hv_features();
- 		if (!(hv_features & GHCB_HV_FT_SNP))
- 			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+ unsigned int __pgtable_l5_enabled __ro_after_init;
++SYM_PIC_ALIAS(__pgtable_l5_enabled);
+ unsigned int pgdir_shift __ro_after_init = 39;
+ EXPORT_SYMBOL(pgdir_shift);
++SYM_PIC_ALIAS(pgdir_shift);
+ unsigned int ptrs_per_p4d __ro_after_init = 1;
+ EXPORT_SYMBOL(ptrs_per_p4d);
++SYM_PIC_ALIAS(ptrs_per_p4d);
  
- 		/*
--		 * Enforce running at VMPL0 or with an SVSM.
--		 *
--		 * Use RMPADJUST (see the rmpadjust() function for a description of
--		 * what the instruction does) to update the VMPL1 permissions of a
--		 * page. If the guest is running at VMPL0, this will succeed. If the
--		 * guest is running at any other VMPL, this will fail. Linux SNP guests
--		 * only ever run at a single VMPL level so permission mask changes of a
--		 * lesser-privileged VMPL are a don't-care.
-+		 * Running at VMPL0 is required unless an SVSM is present and
-+		 * the hypervisor supports the required SVSM GHCB events.
- 		 */
--		ret = rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, 1);
--
--		/*
--		 * Running at VMPL0 is not required if an SVSM is present and the hypervisor
--		 * supports the required SVSM GHCB events.
--		 */
--		if (ret &&
--		    !(snp_vmpl && (hv_features & GHCB_HV_FT_SNP_MULTI_VMPL)))
-+		if (snp_vmpl > 0 && !(hv_features & GHCB_HV_FT_SNP_MULTI_VMPL))
- 			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
- 	}
- 
+ unsigned long page_offset_base __ro_after_init = __PAGE_OFFSET_BASE_L4;
+ EXPORT_SYMBOL(page_offset_base);
 -- 
 2.51.0.268.g9569e192d0-goog
 
