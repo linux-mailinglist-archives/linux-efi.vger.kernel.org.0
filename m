@@ -1,96 +1,165 @@
-Return-Path: <linux-efi+bounces-4654-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4655-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9AFB3C173
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Aug 2025 19:02:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A59CB3C242
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Aug 2025 20:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FEAF5A1B3E
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Aug 2025 17:02:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB1E97B7CC4
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Aug 2025 18:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541B3322A18;
-	Fri, 29 Aug 2025 17:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD243431F1;
+	Fri, 29 Aug 2025 18:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPXlDAgL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ooi7zA7T"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C96C340D81;
-	Fri, 29 Aug 2025 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338A521019E;
+	Fri, 29 Aug 2025 18:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756486959; cv=none; b=c9R5LxFqQ5RpeXIK6RTqlC4CtrbXXqUp66elu6pzMXA0V6vvFuMiZFKXXCjYWAQ2fLVhwss22+YBGC0KqBBsNESkor9LT93wz1pYfSbFy02BX+8+O21wD2TC5olGap3GcQidKN2WRmszUwkKUR3+dd6jl22Pry5GjpZHo7TxPWQ=
+	t=1756491020; cv=none; b=PW1RbyFm6pAlb8a+rD/IY1krM6TRHsBDRHPtN9L2g6fvl2XqOhE0K2ajXc66q4BwrBrW0zqqmwqw8GoxhTaqfD6YXbeF1pqAMS1jdN0Ayy4s5tcAo186lp5n6bcVptFkbsg7k0J3XhtZPAHrRYNIJdiVp8ZauRyAbpxvwUXX9YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756486959; c=relaxed/simple;
-	bh=1p0kyBj4JcvDgO3H94j/rgLos7EnI+2oZFiwLRJSRr4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q0BH1fB85GEIx6ObElY2IZD3cj8g7Qo8gRDdAixlm8T/EPqwcNY1YlKnCVLJvEHOqKFFQ6Dlbwgy5M5IL4PebgsJf/r1Q6tS5hI2Da2hMBVsCXJUHly1+u5vymijZ5b4/sW7zK3aTL3xdoDc9m71bFrkyuGCo81DCOCuZj0+m5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPXlDAgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC029C4AF09;
-	Fri, 29 Aug 2025 17:02:37 +0000 (UTC)
+	s=arc-20240116; t=1756491020; c=relaxed/simple;
+	bh=SXu3T17dYbp/ukZ8uJydGVdZ6zcCuFcjGzpDGMwa+Nc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HKD1whapY09keBQKdviaQHsUdOtbcq2/nWQqUIfA+MBiClFxxigbachQOj6jlJA9Y7y4TZJ1fO9zlV5VDRkw3rfSFRk9i8jfFppsHaktJMqikvI6HRUqUDcy4VMbFdbyi/BmdApYw/Ho51oJK/GxkkaCav/QL+HCp1DPTuowxVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ooi7zA7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C02C4CEF0;
+	Fri, 29 Aug 2025 18:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756486957;
-	bh=1p0kyBj4JcvDgO3H94j/rgLos7EnI+2oZFiwLRJSRr4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WPXlDAgLZuKhKXBccXf0fETefa9fHR2Q9K2K48IRQQKZhTQh6tbwUGzFCrazzTY/T
-	 gEDtHXpyPdTbx7ETsuddEvfQYoM/b0cXhEdpyKdL504Uxp30CUyckUXY3hoZzQ5eoJ
-	 4pnNxG5tOuI8ZCgMATrpktXe6n65pHLXSES+6MgLtDvE8iaoWEyIhATp1xQI4C7UjN
-	 oXj7dm8hI4f19YoGk6zq0ngsgEdUn17M95NAC9p3m4jW+1BmXD707iSvP2QxGuxlYM
-	 1f7YqwoYwU6p8/j2gSu6ZZV+w9JefRrxg/a0lngcEMYgjLBOf6H5j/bQ84YjIpzhHF
-	 /l6YI3Ckr0sUg==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55f69e15914so947138e87.2;
-        Fri, 29 Aug 2025 10:02:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWfR5DeZollP2El+1ukeOr+x/uln9twaVGcJY81QS8vT9sziprMSdOe31A8EAWHJk/lq/GSqxQU3i+FVdZn@vger.kernel.org, AJvYcCXbLqi8Mtou6ipINMUudTOVvFNhZgeHJSLyJg2hd+Yt6ORQrp3izNKyMwiH/9RHtonfqHG8WZDYpWI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySRUJ8sF6CPn5KLxp/PiWiO4WyGW3viIDlLdGZnDdGEV2Co9+p
-	gzq6b8UHVZQZVd+dvQsgsP/36qqk3r3NL/axQwMlxEeDClpSt+JvhP8nmZ9Dszg1aN2rqYaNla/
-	K+p0tLPo9aBIBlnWJ9wVT2v18n247O9c=
-X-Google-Smtp-Source: AGHT+IFPBLGObZSlikI7+GXVwR38Tqk26TdP63k6ql0p3bI9lgI2164z6vnySTq07b2t6V/PZgzsR2rahOMRt7xpUAo=
-X-Received: by 2002:a05:6512:651b:b0:55f:6a38:f6c8 with SMTP id
- 2adb3069b0e04-55f6a38fac4mr808550e87.4.1756486956142; Fri, 29 Aug 2025
- 10:02:36 -0700 (PDT)
+	s=k20201202; t=1756491018;
+	bh=SXu3T17dYbp/ukZ8uJydGVdZ6zcCuFcjGzpDGMwa+Nc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ooi7zA7T9NmpAVf2EhalPYoUyuzdraHp5C4oj/l4tumul2weopj5FJ1utOM+alOHE
+	 kKgusS+zU63i44OmypyAXKPtErTb3bB1GndFYFN2okuf9dT8hCaNdpoFVkJ5p8agh+
+	 KkkEsMX5T3gC8JIm2Ov+5zT8s4L7tpEw7w/6ThgCsQL1Xlg6GXrAAbC6OLHWNTeh0w
+	 FXzd4JTSiV52V1QufIh9KkzXjYT+hvbp3zSg4ylf/XGvXabRt4g7AwLZFCUhy7Zrgf
+	 S8hNoGjWZuOpsjDmYOt//9aCCpoZgyxV/RwMeINevxHuMv5KmXpH/JQL39xFf9C15W
+	 UspQvwHff7f7A==
+Date: Fri, 29 Aug 2025 11:10:07 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Jinghao Jia <jinghao7@illinois.edu>,
+	Wentao Zhang <wentaoz5@illinois.edu>,
+	Sasha Levin <sashal@kernel.org>
+Cc: Matt.Kelly2@boeing.com, akpm@linux-foundation.org,
+	andrew.j.oppelt@boeing.com, anton.ivanov@cambridgegreys.com,
+	ardb@kernel.org, arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+	chuck.wolber@boeing.com, dave.hansen@linux.intel.com,
+	dvyukov@google.com, hpa@zytor.com, johannes@sipsolutions.net,
+	jpoimboe@kernel.org, justinstitt@google.com, kees@kernel.org,
+	kent.overstreet@linux.dev, linux-arch@vger.kernel.org,
+	linux-efi@vger.kernel.org, Wentao Zhang <wentaoz5@illinois.edu>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	llvm@lists.linux.dev, luto@kernel.org, marinov@illinois.edu,
+	masahiroy@kernel.org, maskray@google.com,
+	mathieu.desnoyers@efficios.com, matthew.l.weber3@boeing.com,
+	mhiramat@kernel.org, mingo@redhat.com, morbo@google.com,
+	ndesaulniers@google.com, oberpar@linux.ibm.com, paulmck@kernel.org,
+	peterz@infradead.org, richard@nod.at, rostedt@goodmis.org,
+	samitolvanen@google.com, samuel.sarkisian@boeing.com,
+	steven.h.vanderleest@boeing.com, tglx@linutronix.de,
+	tingxur@illinois.edu, tyxu@illinois.edu, x86@kernel.org
+Subject: Re: [PATCH v2 0/4] Enable measuring the kernel's Source-based Code
+ Coverage and MC/DC with Clang
+Message-ID: <20250829181007.GA468030@ax162>
+References: <20241002045347.GE555609@thelio-3990X>
+ <20241002064252.41999-1-wentaoz5@illinois.edu>
+ <20241003232938.GA1663252@thelio-3990X>
+ <284fe8fa-c094-49b7-8e16-3318676d38e3@illinois.edu>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ed9efeafd80e9827bcc028d20a5bb20653af68e7.1755006858.git.geert+renesas@glider.be>
- <udidf2skqwbhx6mg4tmsxuipqqgh4amwcxvbjdrqs5g5vla6xp@7wiyrojpjok4> <aKLNrRzxCOqXcWMq@r1chard>
-In-Reply-To: <aKLNrRzxCOqXcWMq@r1chard>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 29 Aug 2025 19:02:24 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEc8KwtC5RZcbLCk4HA22iQrbaY77DbtrBDvzRLX7Hm+g@mail.gmail.com>
-X-Gm-Features: Ac12FXzbvkPW0HHwP0LS91vudCicS4bPD2a1MOf-aUfysNtGAFcOHj6P5Iofl00
-Message-ID: <CAMj1kXEc8KwtC5RZcbLCk4HA22iQrbaY77DbtrBDvzRLX7Hm+g@mail.gmail.com>
-Subject: Re: [PATCH] efi: Explain OVMF acronym in OVMF_DEBUG_LOG help text
-To: Richard Lyu <richard.lyu@suse.com>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>, Gerd Hoffmann <kraxel@redhat.com>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <284fe8fa-c094-49b7-8e16-3318676d38e3@illinois.edu>
 
-On Mon, 18 Aug 2025 at 08:52, Richard Lyu <richard.lyu@suse.com> wrote:
->
-> On 2025/08/13 10:03, Gerd Hoffmann wrote:
-> > On Tue, Aug 12, 2025 at 03:54:29PM +0200, Geert Uytterhoeven wrote:
-> > > People not very intimate with EFI may not know the meaning of the OVMF
-> > > acronym.  Write it in full, to help users with making good decisions
-> > > when configuring their kernels.
-> > >
-> > > Fixes: f393a761763c5427 ("efi: add ovmf debug log driver")
-> > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >
-> > > +     Recent versions of the Open Virtual Machine Firmware
-> > > +     (edk2-stable202508 + newer) can write their debug log to a memory
-> > > +     buffer.  This driver exposes the log content via sysfs
-> > > +     (/sys/firmware/efi/ovmf_debug_log).
-> >
-> > Acked-by: Gerd Hoffmann <kraxel@redhat.com>
->
-> Reviewed-by: Richard Lyu <richard.lyu@suse.com>
->
+Hi Jinghao and Wentao,
 
-Thanks, I've queued this up now.
+On Thu, Nov 21, 2024 at 11:05:14PM -0600, Jinghao Jia wrote:
+...
+> On 10/3/24 6:29 PM, Nathan Chancellor wrote:
+> > I seem to have narrowed down it to a few different configurations on top
+> > of x86_64_defconfig but I will include the full bad configuration as an
+> > attachment just in case anything else is relevant.
+...
+> > $ qemu-system-x86_64 \
+> >     -display none \
+> >     -nodefaults \
+> >     -M q35 \
+> >     -d unimp,guest_errors \
+> >     -append 'console=ttyS0 earlycon=uart8250,io,0x3f8' \
+> >     -kernel arch/x86/boot/bzImage
+> >     -initrd rootfs.cpio \
+> >     -cpu host \
+> >     -enable-kvm \
+> >     -m 8G \
+> >     -smp 8 \
+> >     -serial mon:stdio
+> > <hangs with no output>
+> 
+> This hang is caused by an early boot exception -- gdb shows the execution
+> reaches the halt loop in early_fixup_exception().  Dumping regs->ip associated
+> with this exception points us to the following instruction:
+> 
+> ffffffff89b58074:       48 ff 05 85 7f 4a 76    incq   0x764a7f85(%rip)        # 0 <fixed_percpu_data>
+> 
+> This is apparently an incorrect access to the per-cpu variable (the cpu offset
+> in %gs is needed) and triggers a null-ptr-deref. Without CONFIG_AMD_MEM_ENCRYPT
+> (one of the bad configs), it turns out the instruction is actually accessing
+> the llvm prof-counter of strscpy():
+> 
+> ffffffff89b85a04:       48 ff 05 6d 94 7d fa    incq   -0x5826b93(%rip)        # ffffffff8435ee78 <__profc__Z13sized_strscpyPcU25pass_dynamic_object_size1PKcU25pass_dynamic_object_size1m>
+> 
+> This symbol is left undefined in the bad vmlinux, which explains why the
+> faulting instruction is accessing address 0.  Tracing through the kernel
+> linking process shows that the symbol is still defined (as a weak symbol) in
+> vmlinux.a and vmlinux.o, but becomes undefined after the first round of linking
+> of the kernel image (.tmp_vmlinux1).
+> 
+> After playing with it a little bit, we found the creation of vmlinux.o to be
+> the problem. Specifically, if we use mold[1] instead of lld to create the
+> object and pass it to the later stages of kernel linking, the symbol will be
+> properly defined as a data symbol (and the kernel can boot).
+> 
+> It seems that the issue does not reproduce with LLVM-20. Nevertheless we have
+> reported[2] this to upstream llvm.
+> 
+> [1]: https://github.com/rui314/mold
+> [2]: https://github.com/llvm/llvm-project/issues/116575
+
+Sasha pinged me on IRC earlier this week about this series and this
+issue, noting that he was unable to reproduce it with a similar
+toolchain version and the instructions above. I was able to confirm that
+at 6.17-rc1 with this patch set applied (after fixing a couple of minor
+conflicts), I no longer see this boot issue but it is still reproducible
+on 6.12.
+
+In attempting to narrow my bisect window to find what patch fixes this
+issue, I noticed that this configuration actually fails to build with
+
+  Absolute reference to symbol '__llvm_prf_cnts' not permitted in .head.text
+
+in 6.15 and 6.14 as a result of Ard's commit faf0ed487415 ("x86/boot:
+Reject absolute references in .head.text"). Bisecting between 6.15 and
+6.16 reveals Ard's commit a3cbbb4717e1 ("x86/boot: Move SEV startup code
+into startup/") resolves the build error and that kernel boots, which
+seems to make sense to me given what code was involved here. It is
+possible that arch/x86/boot/startup will want 'LLVM_COV_PROFILE := n'
+since all other instrumentation is disabled.
+
+I built v6.17-rc1 + this series with a fuller distribution configuration
+and CONFIG_LLVM_COV_PROFILE_ALL=y. That kernel boots fine in QEMU but I
+have done no further evaluation.
+
+Cheers,
+Nathan
 
