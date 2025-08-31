@@ -1,121 +1,120 @@
-Return-Path: <linux-efi+bounces-4659-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4660-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD46B3D25A
-	for <lists+linux-efi@lfdr.de>; Sun, 31 Aug 2025 12:56:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4C5B3D272
+	for <lists+linux-efi@lfdr.de>; Sun, 31 Aug 2025 13:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5E53A48DD
-	for <lists+linux-efi@lfdr.de>; Sun, 31 Aug 2025 10:56:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEDB3179F09
+	for <lists+linux-efi@lfdr.de>; Sun, 31 Aug 2025 11:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD0A256C76;
-	Sun, 31 Aug 2025 10:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F2A1E1A05;
+	Sun, 31 Aug 2025 11:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1ObgOPO"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ZvefeHXr"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30E62459C9;
-	Sun, 31 Aug 2025 10:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373934C79;
+	Sun, 31 Aug 2025 11:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756637814; cv=none; b=C/y/RfgzEeIRV0S8rCfjjkk7gn8OqPRKs8e5SZcEQMzGwsyDFxl9CW8bTOrRiXTscNZq9FMOy8tkWUJBRGfmjXjzNC+PFsAAixy4orkQ/3P3QsB2vIEAhj+70gTYVxy055mtHjBG6MlTJ0AGqR40fG+WP9Xwb/q0l2ChGZJcEbo=
+	t=1756638946; cv=none; b=S9zieGya28Lm39Ob9lJArvsZiQc4MF309diCGJw+Aq6ZfYsvLkfbjTvSaRK+R2UvwXl85QYXGVtZO8aNmwSTMJ0/HafBeEYFPrutxrXH6FOkaluWR7CKCcBzyZn/iA/Rtd71yhIm6h2NPbBKOCoMwksQmr5Yaq77uUDIswDii6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756637814; c=relaxed/simple;
-	bh=QsXK6w3cPQvz/g6m4dpqnZsvsl09NwFAlgfqt6oXtbE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cXIUj2XwZLXo3ASf1fj2JDPQmNSCTtbmktYhAnVUGOBMog8U7sC3SM0v3Xi5Eu4iWj9oMbihEcLWZBH8YhvfEXMhsfeMn8fLHvgmyS9CgNb4Lz5O15w5EgHg9qkyvV6Sd3jHuP5/o/ws8PJaLD4i2ul7I1WqZ/FcI8cQ/d2y1Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1ObgOPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7967DC4AF09;
-	Sun, 31 Aug 2025 10:56:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756637814;
-	bh=QsXK6w3cPQvz/g6m4dpqnZsvsl09NwFAlgfqt6oXtbE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=o1ObgOPO0JApcclnU4wNt0nU684yYvMt27/M1RjT/o+gZMpzb15dGx6nVFyl6lnZA
-	 fqh7OpRFQP7xDL2CVrnpFKbchSvhLbFSvA8r/tWPZg9279rzW+AL7TYzo24S5FruMt
-	 WeS6dhdrwzpFBmhbIE0dFxviOFFIgmJKooQWESPHeI3SEfAPCS8iv2BjgA9h4Awy48
-	 lPP/cRfIwcvinZPpMnl+AwUhWYwZdv1DelJ1jtavquwm0J/yBc0pFAJPVHndKMIo5s
-	 mIZAO6Py7QzOQZqboQYr0FevNz/GyVJiyErVZ3ADu6a7uz7Or0txBaY2wRhVNziesO
-	 SOyUygIMJIf+w==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55f687fd3bdso2765783e87.1;
-        Sun, 31 Aug 2025 03:56:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUkRsME63jLnpJcmJKKKRMNRElvqvyf+oPt2UJ5iGiaZ4atmTUVS1TqSqqSUA8DWaNfHz6GtabM9MQ=@vger.kernel.org, AJvYcCWsL7+nhKMnH/paleYo68TeBog0N1cmyWhgScWkkqg9QkLF6K3hmPybntpIKlP4AGI1Rt00w2Z1KvkXyTTX@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjWJn/ejgzKz3tCh4CXLynS8fNOfHEsJlTWmaHEdUzuT3m2d2h
-	kXbcin2ilcbcA/ETCHV+Y1t/ftrJLDrWmDiiwibt8B4O+VdSlAQZOk143HLyJIYvtvLa+7GHvLe
-	u/LFVBXPTpxWpaomnDnhkLtQaUdCUyuo=
-X-Google-Smtp-Source: AGHT+IEgl9OC//RhxwrR+svllAr0NqVtk43HgtnmM6YUnUIjh6nqaiGuslruhjyDdtQ3kEfjxkOYTE5ugh9CMkjkSCU=
-X-Received: by 2002:ac2:5693:0:b0:55f:68d4:c72e with SMTP id
- 2adb3069b0e04-55f708b6b29mr1417768e87.18.1756637812817; Sun, 31 Aug 2025
- 03:56:52 -0700 (PDT)
+	s=arc-20240116; t=1756638946; c=relaxed/simple;
+	bh=5k7duF0ipNWH58QwXJqWAvQlF99m3HqZgPHkyGCxGAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k0UwRReJO8lCOMJ6pQQqTCZ86GHnecCyj8fRDRWwc6z9PKL7dIUsFFcHEG2PTaTr+7lOTYxMhSLiMGeTlZBbGw+1eSm9BO5uOwW+ibDgShHUbJeeSxtwWTPqhH+/uWP18/DaNVmCZyhQBFq59/bdfNZ9k3ySI6nEoydhuJLAIJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ZvefeHXr; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 04A3340E0192;
+	Sun, 31 Aug 2025 11:15:42 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 5TZlxoM4-iDv; Sun, 31 Aug 2025 11:15:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1756638938; bh=I3TfxcrABdz1PMPHtVDNi3kfyLlfci6abeAcftBPJ9E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZvefeHXrMdSXG4VAl582u3/MiR7zm4zD+RgKkLRdx7jGRMV9+N2WFZu1BMHv3nO8f
+	 JtfuXVhhvq8yk6opJgg/PhPCSd7Ww8UNPj8DO7hkXXmyyvLqpD5+iL1Iv78saLIFtN
+	 LnEz4xsl1SPLonMMQ1u5vB0iO+9rvASrJLb5XIAC0hWG9Szveit1WCaRytdkbdgdfM
+	 doYuoBihF/88scEpzSdR/fMMIQl618Ak1RECBj56BkvEcpIyjLp48qLslN73w3lyrw
+	 9ccAr6Tlek+rvQe0EuWhj97Cih/BivQtYHOuiAGBYCsfHg2fje87BODavfTJ+JCtTe
+	 KD4/nHsfnlK9HCjeRnCTfdQ2HESAAPNW2A8ix6C9aKOzVUSgplAwuyTGklIypAxfyK
+	 k6Sx4kFCxWXkGf1YqwHpIeW6Muq8dHDrz/Czwj6YVN0sspWKzzCo76/wUbmmejAfti
+	 vYlfTu9sX00oQVplrqlp5o4J/dzMXzmN+K1177IAatliuScocT/Ls4MA/dEQSxAuEy
+	 dwP8nisKoLJylIBUkdI4DKvbBefK4+7rD2yShpAiiv4HpqFOSSs0rp7ZNjl6sLUmFq
+	 hXPJbk6Re2Sg4a2GSlM5tCnoDqpBfmmTqE5KYbYhgJMjggr1+V5Afmloc7SBMa52tF
+	 klVAw/jJ2skXa2k//iojo2LA=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 8574C40E0174;
+	Sun, 31 Aug 2025 11:15:27 +0000 (UTC)
+Date: Sun, 31 Aug 2025 13:15:21 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, x86@kernel.org,
+	Ingo Molnar <mingo@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: [PATCH v7 05/22] x86/sev: Move GHCB page based HV communication
+ out of startup code
+Message-ID: <20250831111521.GAaLQuyYLUSN24_ZmT@fat_crate.local>
+References: <20250828102202.1849035-24-ardb+git@google.com>
+ <20250828102202.1849035-29-ardb+git@google.com>
+ <20250831104945.GAaLQoyYmr316kHrKs@fat_crate.local>
+ <CAMj1kXF-aD74+O_xf_f902wq2RdPpiXCEjJ9osbnEwAMoN_5Rw@mail.gmail.com>
+ <CAMj1kXEQghhi4qCdV6PrYK-mTYFu5yVcn3fEOSZsC6vR7TiMEg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828102202.1849035-24-ardb+git@google.com>
- <20250828102202.1849035-29-ardb+git@google.com> <20250831104945.GAaLQoyYmr316kHrKs@fat_crate.local>
- <CAMj1kXF-aD74+O_xf_f902wq2RdPpiXCEjJ9osbnEwAMoN_5Rw@mail.gmail.com>
-In-Reply-To: <CAMj1kXF-aD74+O_xf_f902wq2RdPpiXCEjJ9osbnEwAMoN_5Rw@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 31 Aug 2025 12:56:41 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEQghhi4qCdV6PrYK-mTYFu5yVcn3fEOSZsC6vR7TiMEg@mail.gmail.com>
-X-Gm-Features: Ac12FXwtKEcxNeIMVJCKUhJtrQGhh2zNGurWaS4cbDcQL5TZb-sHfFxQRLrGzGU
-Message-ID: <CAMj1kXEQghhi4qCdV6PrYK-mTYFu5yVcn3fEOSZsC6vR7TiMEg@mail.gmail.com>
-Subject: Re: [PATCH v7 05/22] x86/sev: Move GHCB page based HV communication
- out of startup code
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@kernel.org>, 
-	Kevin Loughlin <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Nikunj A Dadhania <nikunj@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEQghhi4qCdV6PrYK-mTYFu5yVcn3fEOSZsC6vR7TiMEg@mail.gmail.com>
 
-On Sun, 31 Aug 2025 at 12:52, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Sun, 31 Aug 2025 at 12:50, Borislav Petkov <bp@alien8.de> wrote:
-> >
-> > On Thu, Aug 28, 2025 at 12:22:08PM +0200, Ard Biesheuvel wrote:
-> > > diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/start=
-up/sev-shared.c
-> > > index 83c222a4f1fa..24cbeaf7ff4f 100644
-> > > --- a/arch/x86/boot/startup/sev-shared.c
-> > > +++ b/arch/x86/boot/startup/sev-shared.c
-> > > @@ -13,12 +13,9 @@
-> > >
-> > >  #ifndef __BOOT_COMPRESSED
-> > >  #define error(v)                     pr_err(v)
-> > > -#define has_cpuflag(f)                       boot_cpu_has(f)
-> >
-> > In file included from arch/x86/boot/startup/sev-startup.c:106:
-> > arch/x86/boot/startup/sev-shared.c: In function =E2=80=98pvalidate_4k_p=
-age=E2=80=99:
-> > arch/x86/boot/startup/sev-shared.c:661:26: error: implicit declaration =
-of function =E2=80=98has_cpuflag=E2=80=99 [-Wimplicit-function-declaration]
-> >   661 |         if (validate && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_=
-NO))
-> >       |                          ^~~~~~~~~~~
-> > make[3]: *** [scripts/Makefile.build:287: arch/x86/boot/startup/sev-sta=
-rtup.o] Error 1
-> > make[2]: *** [scripts/Makefile.build:556: arch/x86/boot/startup] Error =
-2
-> > make[2]: *** Waiting for unfinished jobs....
-> > make[1]: *** [/mnt/kernel/kernel/linux/Makefile:2011: .] Error 2
-> > make: *** [Makefile:248: __sub-make] Error 2
-> >
-> > We probably will have to use the CPUID MSR protocol thing here or so...
-> >
->
-> Huh I thought I had fixed that: we can just keep that has_cpuflag()
-> definition if there is a need for it.
+On Sun, Aug 31, 2025 at 12:56:41PM +0200, Ard Biesheuvel wrote:
+> OK it appears I've fixed it in the wrong place: the next patch adds
+> back the definition of has_cpuflag() so I squashed that hunk into the
+> wrong patch, it seems.
 
-OK it appears I've fixed it in the wrong place: the next patch adds
-back the definition of has_cpuflag() so I squashed that hunk into the
-wrong patch, it seems.
+The real question is - and I'm sceptical - whether the startup code runs too
+early for boot_cpu_has(). And how is the startup code going to call
+boot_cpu_has().
+
+/me builds .s
+
+Aha, so it gets converted into a boot_cpu_data access:
+
+# arch/x86/boot/startup/sev-shared.c:662:       if (validate && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_NO))
+        testb   %r13b, %r13b    # validate
+        je      .L46    #,
+# ./arch/x86/include/asm/bitops.h:206:          (addr[nr >> _BITOPS_LONG_SHIFT])) != 0;
+        movq    80+boot_cpu_data(%rip), %rax    # MEM[(const volatile long unsigned int *)&boot_cpu_data + 80B], _15
+# arch/x86/boot/startup/sev-shared.c:662:       if (validate && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_NO))
+
+But former question remains: AFAIK, you want to run the startup code waaay
+earlier, before we do identify_boot_cpu() which prepares boot_cpu_data, right?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
