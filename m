@@ -1,181 +1,193 @@
-Return-Path: <linux-efi+bounces-4662-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4663-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7E1B3D383
-	for <lists+linux-efi@lfdr.de>; Sun, 31 Aug 2025 15:11:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925CCB3E643
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Sep 2025 15:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58CB11656F3
-	for <lists+linux-efi@lfdr.de>; Sun, 31 Aug 2025 13:11:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4862E1A8577C
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Sep 2025 13:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB773253F3A;
-	Sun, 31 Aug 2025 13:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0996E33CE82;
+	Mon,  1 Sep 2025 13:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pF5Qlp0y"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ilHppsfD"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8385513C3CD;
-	Sun, 31 Aug 2025 13:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD7D33CE81;
+	Mon,  1 Sep 2025 13:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756645877; cv=none; b=QoPZHI7Ra0Rd/JMdlECReyo26dbADfWlHw+o6FoVTq4oAK0Bi6UinR2iuLdUva1KMwVLqIl3xzB8iR8OboYGsEYv4ZPI6c3cYnkZrRcTzR0I6nkayahLIXtNmt8PuBVwCp/M2p7AVczqB1x6iCk9I5qyjoOl69nKSVLVeJTibkE=
+	t=1756734927; cv=none; b=ElIzAztFjrqyLnaax4L2HclZbMqbrGsKB3CzZ5j0dB4nsrskGgS50cJQWpV8s+ynWUixUWEGKAPAo6UjAkhmjlIHREu4Y7u0g1QQNFQ7LrL1Odz4o1T+D2DL771fvhLfhKXk7uF0iUiaSrhKn3vmlKTiMLH2NKu/PvWVkg/hjuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756645877; c=relaxed/simple;
-	bh=KyNp6YyWobDLk1CURhcnhqzmpd1iXHtcZgiYjLdBy1U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LdoZc2heYlrdko+/GBFRFVBunBXLnp2b7e9hUrBtMw/zDMOjzU7SIrAcDUc2ibu+Wheqbv9d7K5D+pqul7Uqp2NF6hd/xLQmi9PLY1OzVMarTgCg/R2PEhpqpVfDJw9cas+Hislth5Cq33CfOeRe1kuG8mKUtU3uPtMu/RzrWwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pF5Qlp0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00575C4CEED;
-	Sun, 31 Aug 2025 13:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756645877;
-	bh=KyNp6YyWobDLk1CURhcnhqzmpd1iXHtcZgiYjLdBy1U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pF5Qlp0yPSr5eMhdJz06WdUTqhpsOzTivUEDPEtVR+ANjI5D9iI1xgLsnvtex+38t
-	 MWxME8FtIeYfEvBjqSPpHRineM37+YbRCTAJGn4Kym6pOg1Gq1jDlBOWn/4PQiYvoK
-	 gWelAspX/KkHZ7OGLFCaJaA8janfunm4J2UxBZG0vSR3NlLCjT214BpARueDigECw/
-	 2dtJc+7KhboGJQ+VsYipxJhHfg8Y7w1tFT9xJw8+PGYO7BJYgcJw7rCbSiCQulm+mD
-	 oMY+d4PNnkUf9E3EHWT8iHLMvxmaVPc180x7Wo1XSk8NMKKGDWXx86s+XxLRrlIgIi
-	 I/TmrXwyy7F3w==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f753ec672so849480e87.2;
-        Sun, 31 Aug 2025 06:11:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUR6v7t/FgN6cgvL/g0eTGy9e4T20Ieq1AoW3M+PUJClyqrjC0EgYMPWNRb4wSe3jtX2dCT0wdxyBs=@vger.kernel.org, AJvYcCUwaeNeq2wiSVpI4Oyl5suTV9F9NdwCCOu1fQqQcgyEwwusObbvzBgn7o2ZjDqiWI4/HZBke/IPxDRgnlqw@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhLheM4CdDMyY84uJ40dESz9QjoANJCEojgLIGipls6GP2Jy5h
-	Kn1T5MyjbN9/FzdTGghMiD+7ptq5Yiw//cSwbV9MwAqKMCzZxYUuZRgHCD5XC2VL9FBs4mGKLla
-	Dm1b57uWJ7DVnpd4ixuO339kTLif8dp0=
-X-Google-Smtp-Source: AGHT+IEV9OA6K7UeIiXXWN5F40GUs8m+IEFhne6Akm5mzPUKHUXXdAiNfAULslqwViThZEgQUfOsAXUkss1JGlWeGLo=
-X-Received: by 2002:a05:6512:3da0:b0:55f:701f:937 with SMTP id
- 2adb3069b0e04-55f7089c0ebmr1187119e87.12.1756645875358; Sun, 31 Aug 2025
- 06:11:15 -0700 (PDT)
+	s=arc-20240116; t=1756734927; c=relaxed/simple;
+	bh=EpZOwE4ansUe1tibfuHjQYSuDiy53AFMsDy9fb4cwCI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyCIjOJQZcdfGCIXwX+t3lwtzN6lcez6XAdOmHzsPNs2wE373cFjVAQYgh9RKeM0CndGzIdS20u5nh0lOi8MC8+t/tOkigczucegbwu2zKJoIYRQfV3uVsz0yY4jwCN3RP1zFMxp6idzKlf0ZVPWMQfvR6HMVb04dIz5aboqk3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ilHppsfD; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2AE4E40E01A2;
+	Mon,  1 Sep 2025 13:55:22 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Rra4kGcpECf6; Mon,  1 Sep 2025 13:55:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1756734917; bh=ZJkhduMDiVeUow+g3GYo2YpO94DgdHVPHY9D98WjWHI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ilHppsfDoQX8SkLg7CT7/8PZJ2HmbLM9epl845d4RTQFwRtO5ru8qu43nz7XQDXW0
+	 GxpuwLpw0P1KAsfqNwUHyc+odq9nkdpXz8BHR3sJKkhB5jEixY+pmkU6GDhcWa/Ohi
+	 AgRrbFy8ED8GkRJPuITybuhrSsFBRhI4MIiEjhr61R/E1/4mFjoiIa1EwKUq/oOCQ3
+	 b1INlwgI+xQRDOop13YZr0QtosJ0WylpEZh7uOJoUw7gRm0bREN4bNoYVsJUqJYpo1
+	 4pnbz9d8tkiTxzgHJ57MBBgr0fX6lZoj6BsCJkPRPIvbe/VzvWHRfEkgdY1Dz5DGF5
+	 s91BwsYqzZu8yELo4iw8+ucvetg8T1hKxrWWcgcsL6ghPzRuUSWYI3D9Xtbd0jXQaM
+	 8Fua/tJbUw0l6pM0gR3z2ZZ7Pyos/jhzmOrPI3xuYe3eCAZvvAiU0s1e/zwT3cT33/
+	 QFtWz6kWQUeN8sxDUM3ihpkk4n64fR/GzGkgDprLDTB6JUvH0EPDDF5KijXBr7xS+2
+	 XohPaGHl5vUYdH1ujqpFQxdG6OcQFJLEqWgR8BO7QI27oG9kxCaTSgyptwss77W2Tw
+	 Cvr7TxB0wwt1K4tk8t0AR/ZWNDwM+VQpjZ3tsZM9qbcPe4HepuwkVflOJXH3jsDwVi
+	 z8CeHpFLFiDFc8dr6WEoU/oo=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id AC33940E019E;
+	Mon,  1 Sep 2025 13:55:06 +0000 (UTC)
+Date: Mon, 1 Sep 2025 15:54:59 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, x86@kernel.org,
+	Ingo Molnar <mingo@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: [PATCH v7 05/22] x86/sev: Move GHCB page based HV communication
+ out of startup code
+Message-ID: <20250901135459.GAaLWlsx75fnPHveLl@fat_crate.local>
+References: <20250828102202.1849035-24-ardb+git@google.com>
+ <20250828102202.1849035-29-ardb+git@google.com>
+ <20250831104945.GAaLQoyYmr316kHrKs@fat_crate.local>
+ <CAMj1kXF-aD74+O_xf_f902wq2RdPpiXCEjJ9osbnEwAMoN_5Rw@mail.gmail.com>
+ <CAMj1kXEQghhi4qCdV6PrYK-mTYFu5yVcn3fEOSZsC6vR7TiMEg@mail.gmail.com>
+ <20250831111521.GAaLQuyYLUSN24_ZmT@fat_crate.local>
+ <CAMj1kXFHrkY9R8xjrB_PFqswc2yOHGpPfEBq5WZ0rH_vbo55Mw@mail.gmail.com>
+ <CAMj1kXHzK0pSjuRYcZ3E2PQzCx4PTAC-UDHirgFDPYEyLMtoeA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828102202.1849035-24-ardb+git@google.com>
- <20250828102202.1849035-29-ardb+git@google.com> <20250831104945.GAaLQoyYmr316kHrKs@fat_crate.local>
- <CAMj1kXF-aD74+O_xf_f902wq2RdPpiXCEjJ9osbnEwAMoN_5Rw@mail.gmail.com>
- <CAMj1kXEQghhi4qCdV6PrYK-mTYFu5yVcn3fEOSZsC6vR7TiMEg@mail.gmail.com>
- <20250831111521.GAaLQuyYLUSN24_ZmT@fat_crate.local> <CAMj1kXFHrkY9R8xjrB_PFqswc2yOHGpPfEBq5WZ0rH_vbo55Mw@mail.gmail.com>
-In-Reply-To: <CAMj1kXFHrkY9R8xjrB_PFqswc2yOHGpPfEBq5WZ0rH_vbo55Mw@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 31 Aug 2025 15:11:04 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHzK0pSjuRYcZ3E2PQzCx4PTAC-UDHirgFDPYEyLMtoeA@mail.gmail.com>
-X-Gm-Features: Ac12FXyxNP4FeYk1d8yGT8j5MesBI_-g2_wMjJpQyBSQqCAIO-Y3E1-MjOpvQNM
-Message-ID: <CAMj1kXHzK0pSjuRYcZ3E2PQzCx4PTAC-UDHirgFDPYEyLMtoeA@mail.gmail.com>
-Subject: Re: [PATCH v7 05/22] x86/sev: Move GHCB page based HV communication
- out of startup code
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@kernel.org>, 
-	Kevin Loughlin <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Nikunj A Dadhania <nikunj@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHzK0pSjuRYcZ3E2PQzCx4PTAC-UDHirgFDPYEyLMtoeA@mail.gmail.com>
 
-On Sun, 31 Aug 2025 at 14:30, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Sun, 31 Aug 2025 at 13:15, Borislav Petkov <bp@alien8.de> wrote:
-> >
-> > On Sun, Aug 31, 2025 at 12:56:41PM +0200, Ard Biesheuvel wrote:
-> > > OK it appears I've fixed it in the wrong place: the next patch adds
-> > > back the definition of has_cpuflag() so I squashed that hunk into the
-> > > wrong patch, it seems.
-> >
-> > The real question is - and I'm sceptical - whether the startup code runs too
-> > early for boot_cpu_has(). And how is the startup code going to call
-> > boot_cpu_has().
-> >
-> > /me builds .s
-> >
-> > Aha, so it gets converted into a boot_cpu_data access:
-> >
-> > # arch/x86/boot/startup/sev-shared.c:662:       if (validate && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_NO))
-> >         testb   %r13b, %r13b    # validate
-> >         je      .L46    #,
-> > # ./arch/x86/include/asm/bitops.h:206:          (addr[nr >> _BITOPS_LONG_SHIFT])) != 0;
-> >         movq    80+boot_cpu_data(%rip), %rax    # MEM[(const volatile long unsigned int *)&boot_cpu_data + 80B], _15
-> > # arch/x86/boot/startup/sev-shared.c:662:       if (validate && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_NO))
-> >
-> > But former question remains: AFAIK, you want to run the startup code waaay
-> > earlier, before we do identify_boot_cpu() which prepares boot_cpu_data, right?
-> >
->
-> I suppose that in this particular case, things work out fine because
-> calling sev_evict_cache() unnecessarily is harmless. But I agree that
-> in general, relying on CPU flags in code that may be called this early
-> is not great.
->
-> Perhaps this conditional should be moved into the caller instead
-> (early_set_pages_state()), and early callers from inside the startup
-> code should call sev_evict_cache() unconditionally?
+On Sun, Aug 31, 2025 at 03:11:04PM +0200, Ard Biesheuvel wrote:
+> Alternatively, we might consider the below:
 
-Alternatively, we might consider the below:
+This is the full diff ontop of this current patch - it removes the
+get_cpuflags() hunk too as it is not needed now. It builds fine and I'll test
+with it and if all looks good, merge it with your patch.
 
+Thx.
+
+---
 diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 235e557fd10c..bc59a421c7b4 100644
+index 3628e9bddc6a..5cacb68a2011 100644
 --- a/arch/x86/boot/compressed/sev.c
 +++ b/arch/x86/boot/compressed/sev.c
-@@ -342,6 +342,8 @@
-        if (!(eax & BIT(1)))
-                return -ENODEV;
-
+@@ -371,6 +371,8 @@ static int sev_check_cpu_support(void)
+ 	if (!(eax & BIT(1)))
+ 		return -ENODEV;
+ 
 +       sev_snp_needs_sfw = !(ebx & BIT(31));
 +
-        return ebx & 0x3f;
+ 	return ebx & 0x3f;
  }
-
-diff --git a/arch/x86/boot/startup/sev-shared.c
-b/arch/x86/boot/startup/sev-shared.c
-index 8d2476e1ad3b..08cc1568d8af 100644
+ 
+diff --git a/arch/x86/boot/cpuflags.c b/arch/x86/boot/cpuflags.c
+index 63e037e94e4c..916bac09b464 100644
+--- a/arch/x86/boot/cpuflags.c
++++ b/arch/x86/boot/cpuflags.c
+@@ -106,18 +106,5 @@ void get_cpuflags(void)
+ 			cpuid(0x80000001, &ignored, &ignored, &cpu.flags[6],
+ 			      &cpu.flags[1]);
+ 		}
+-
+-		if (max_amd_level >= 0x8000001f) {
+-			u32 ebx;
+-
+-			/*
+-			 * The X86_FEATURE_COHERENCY_SFW_NO feature bit is in
+-			 * the virtualization flags entry (word 8) and set by
+-			 * scattered.c, so the bit needs to be explicitly set.
+-			 */
+-			cpuid(0x8000001f, &ignored, &ebx, &ignored, &ignored);
+-			if (ebx & BIT(31))
+-				set_bit(X86_FEATURE_COHERENCY_SFW_NO, cpu.flags);
+-		}
+ 	}
+ }
+diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/startup/sev-shared.c
+index 24cbeaf7ff4f..a74678ef2a7a 100644
 --- a/arch/x86/boot/startup/sev-shared.c
 +++ b/arch/x86/boot/startup/sev-shared.c
-@@ -31,6 +31,8 @@
+@@ -51,6 +51,8 @@ static u32 cpuid_std_range_max __ro_after_init;
  static u32 cpuid_hyp_range_max __ro_after_init;
  static u32 cpuid_ext_range_max __ro_after_init;
-
+ 
 +bool sev_snp_needs_sfw;
 +
- void __noreturn
+ void __head __noreturn
  sev_es_terminate(unsigned int set, unsigned int reason)
  {
-@@ -639,7 +641,7 @@
-         * If validating memory (making it private) and affected by the
-         * cache-coherency vulnerability, perform the cache eviction mitigation.
-         */
--       if (validate && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_NO))
+@@ -658,7 +660,7 @@ static void __head pvalidate_4k_page(unsigned long vaddr, unsigned long paddr,
+ 	 * If validating memory (making it private) and affected by the
+ 	 * cache-coherency vulnerability, perform the cache eviction mitigation.
+ 	 */
+-	if (validate && !has_cpuflag(X86_FEATURE_COHERENCY_SFW_NO))
 +       if (validate && sev_snp_needs_sfw)
-                sev_evict_cache((void *)vaddr, 1);
+ 		sev_evict_cache((void *)vaddr, 1);
  }
-
+ 
 diff --git a/arch/x86/boot/startup/sme.c b/arch/x86/boot/startup/sme.c
-index 39e7e9d18974..2ddde901c8c5 100644
+index 70ea1748c0a7..1e94c7a140ad 100644
 --- a/arch/x86/boot/startup/sme.c
 +++ b/arch/x86/boot/startup/sme.c
-@@ -521,6 +521,7 @@
-                return;
-
-        me_mask = 1UL << (ebx & 0x3f);
+@@ -521,6 +521,7 @@ void __head sme_enable(struct boot_params *bp)
+ 		return;
+ 
+ 	me_mask = 1UL << (ebx & 0x3f);
 +       sev_snp_needs_sfw = !(ebx & BIT(31));
-
-        /* Check the SEV MSR whether SEV or SME is enabled */
-        sev_status = msr = native_rdmsrq(MSR_AMD64_SEV);
+ 
+ 	/* Check the SEV MSR whether SEV or SME is enabled */
+ 	sev_status = msr = native_rdmsrq(MSR_AMD64_SEV);
 diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index d3f0f17834fa..32178b8f9b87 100644
+index 096307dc8f39..be9d7cb87ad0 100644
 --- a/arch/x86/include/asm/sev.h
 +++ b/arch/x86/include/asm/sev.h
-@@ -570,6 +570,8 @@
+@@ -569,6 +569,7 @@ bool sev_es_check_cpu_features(void);
+ 
  extern u16 ghcb_version;
  extern struct ghcb *boot_ghcb;
-
 +extern bool sev_snp_needs_sfw;
-+
- struct psc_desc {
-        enum psc_op op;
-        struct svsm_ca *ca;
+ 
+ #else	/* !CONFIG_AMD_MEM_ENCRYPT */
+ 
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
