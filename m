@@ -1,100 +1,117 @@
-Return-Path: <linux-efi+bounces-4666-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4667-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED07AB3E70D
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Sep 2025 16:27:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB51B3FF89
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Sep 2025 14:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FC551A852B5
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Sep 2025 14:27:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D67CF7B6235
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Sep 2025 12:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8FD33A025;
-	Mon,  1 Sep 2025 14:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C821D2FE56B;
+	Tue,  2 Sep 2025 12:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NHeHYpPz"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GgOyPr/L"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806BD248F66;
-	Mon,  1 Sep 2025 14:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367F72FE07A;
+	Tue,  2 Sep 2025 12:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756736813; cv=none; b=MMPrdKkpwv9fzXQKSLB+4gFMyDBEapA31h2N55dUm+70UmBlhRGfIfcW3ivn8G4/kvmFaoWqGPORwNUgNW+5ogJz1sZ5DPHjZaX0HrgNmJsGrLvELetBONbQcpom9ZctHhc4rSE+Waq1g5spEY8P+jjEQBAPpPK1Nn2hS7APhrs=
+	t=1756814571; cv=none; b=bFnBY0B3U7119pIkeHB/11RByf0qCcBXX+WesMTcO7kTThEfNGX4bdgW2NruuaI3z41oKYZovuYiaYM4V9YwGLspximiNm6Z6ufws/XsQwJcXf/FLw+2zJYicBcrf/xiIKS8O+mKotwu79bNtez8LOHsf1syxiC8c2nGhZ2DPoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756736813; c=relaxed/simple;
-	bh=LXjC1NQJ6fIpfpom6jrKjc2aXq5sLmIuoV+slvDg/+I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bMz1Fy+qaF3qi66uT4Wq3GBk30s5eA0Jha3j23LsIQbLsJdJQB1tuDBkxcFmdx81w7UBgV4BFeSXi913kYV7iTffd4bDVONULFpB57PQFHVJhaenCKm7KCewLAdsudWztSzS6hnhNHQIuFtjKKG4xZavgZKMRThPCZ0hfd+8t2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NHeHYpPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EDEC4CEF5;
-	Mon,  1 Sep 2025 14:26:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756736813;
-	bh=LXjC1NQJ6fIpfpom6jrKjc2aXq5sLmIuoV+slvDg/+I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NHeHYpPzO94hfPPVHJCtXSkApwsTA1DzhhaskN7I4UHG+/Ko09dt1Gwm0e5Gyc9tu
-	 +jAeJvx/Rm79kJXuHjhZQz8bLcgLtMR/7XE0Rva80iYqJ70ucpJvee0fD16lX4NzTD
-	 1qJo2KUf5v72QIOPrUD+WzbSIOw66Fm0aP/skR8VvCiH5rBqUV0j2lCUTCrCH/w+cw
-	 mlDNmSr5eBCDYIWiPIjNuxSLVR8W9spS1InyzJndhiWpjOzfov/s7poBy8iqJH9t2+
-	 pdk4I9fqZQITUISsiDOnR2pipPyE9XHv6kF+2P58i18pO5MvQajtSUnZRP1xaua7/X
-	 AJPgoQ5TyC0kw==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55f78f32580so959359e87.3;
-        Mon, 01 Sep 2025 07:26:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXN+K7s3SlMmla2EXBZJ3INwPtuxGSUIZn4sR9stkFtUXHe3R1dHCf3XChhUJ5VqhxdDZ7Ht+yFSf4=@vger.kernel.org, AJvYcCXu1k9vgvtEsanHgeCK9/JsO3oAs63Aem2W3/4AmOvA65+/hwhTfvYXBKd/t9JLjGDO31Rah2m9558v3pJj@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuuV6zO6MIrxkRsIzc5NA/aQSFgDdRjtLkoWvwmImFXm1Qwokr
-	HTn0AUZfk3cWGbEzAWSoGIJzhYQyriosKKhIery0gIHnfrmdSBLWL4rUHr3xQnQAbxbfwJNE0s5
-	0gOXa8nD+AgdHkKQDXX+lYDHE9WtUmR0=
-X-Google-Smtp-Source: AGHT+IHGpTPGkjK6uGhIf8DLiHwqmQK1RZXPdIJk2HIB90PjPy2+9jpV8BnQ3WaX5u33p3mm1o3ls0RCGCzxZS4PeAc=
-X-Received: by 2002:a05:6512:3e15:b0:55f:6db5:748d with SMTP id
- 2adb3069b0e04-55f7089c530mr2585393e87.4.1756736811430; Mon, 01 Sep 2025
- 07:26:51 -0700 (PDT)
+	s=arc-20240116; t=1756814571; c=relaxed/simple;
+	bh=CwE8Iiw68/uzZT/mtmAwKoRWHB8F8/jfiVYaL+2zQP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ulwu12/lGJDfpdZMOz1RYwnSjpmkg0P+MULYjgZmj9oCWc44BRwIO6uuPz/d5lXZa6oMCG0oHyjDddwrapcibQF5vKMBmu8SgVNkpH3vPaD9dMcPWNFeGA9HYFCH0MlZtqKnxAzPZnwG9klT+iXOh4sCqXPC8+5T9vSZIRAoqck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=GgOyPr/L; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EF02A40E015D;
+	Tue,  2 Sep 2025 12:02:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id NvBnkxzadkuv; Tue,  2 Sep 2025 12:02:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1756814558; bh=OwxO8ZYN/0+6twEjoJqCZYdBQyL2rbwMVXMrhCi5yl4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GgOyPr/LaNeIM7fqQdue00qYiTpQ30zirpXn2vQmE9/jt78tN4WXipM104y0l9jJs
+	 b9hrM9Z0w/oMGcLz7D+Ji8KoEt/ZK6uoujYUUj0NEmGJFXWzrufPqQ6B2/+5QfAh1W
+	 zQMINzCSuzQdxwA3w1VXK0lU5NU2Sj/OWrvQ/CpHkFMhWL+ue0dYz5x06pET3lWi0C
+	 eNExE5cBJq2vBDkwEo7C/lJLkCSQtatMErX0nAH8CIMhQ5ev4aMpRQl++gAsfaHRP6
+	 DDePMCO+5b05BX82eyI7PUPMnZHvEqjukIQtSu8UWzx5Br6DoYnV+uQyRDPIeEKgNh
+	 sk4THCX8f2ZNvYupZMMd6XvEKnMZyKOCVYoortzh8393BpWjgnzztPS3eKR+YDCAEV
+	 0Omhuu9E3Df7er6IVgeaqStWb7SRVg61N69P6M4h6ExtIOLW0byhA9WcbZnX6s8qgi
+	 5tFa93oGSO4Jk4id04hN7s2yE3Rs15S67GQq2HXaexoReU//mJ9OoRs4wqVUYCbGHL
+	 WoHl6qihmkHbhkD8EbofdVEStxb27QuPLFKs/5S6PXUjD6DWNb/tNbSgAiIezd1/1A
+	 WdGFZGIAiS6KgKUVIwzN/grdZuNW/pnqGLH+gtktd5tCfEPAYCbap6eYIN/XtDPYZc
+	 ktgKxATR8k35dCPHKbex/gRQ=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 3355640E01B3;
+	Tue,  2 Sep 2025 12:02:27 +0000 (UTC)
+Date: Tue, 2 Sep 2025 14:02:21 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: [PATCH v7 10/22] x86/boot: Drop redundant RMPADJUST in SEV SVSM
+ presence check
+Message-ID: <20250902120221.GEaLbczaZ1RPY7dGKH@fat_crate.local>
+References: <20250828102202.1849035-24-ardb+git@google.com>
+ <20250828102202.1849035-34-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828102202.1849035-24-ardb+git@google.com>
- <20250828102202.1849035-29-ardb+git@google.com> <20250831104945.GAaLQoyYmr316kHrKs@fat_crate.local>
- <CAMj1kXF-aD74+O_xf_f902wq2RdPpiXCEjJ9osbnEwAMoN_5Rw@mail.gmail.com>
- <CAMj1kXEQghhi4qCdV6PrYK-mTYFu5yVcn3fEOSZsC6vR7TiMEg@mail.gmail.com>
- <20250831111521.GAaLQuyYLUSN24_ZmT@fat_crate.local> <CAMj1kXFHrkY9R8xjrB_PFqswc2yOHGpPfEBq5WZ0rH_vbo55Mw@mail.gmail.com>
- <CAMj1kXHzK0pSjuRYcZ3E2PQzCx4PTAC-UDHirgFDPYEyLMtoeA@mail.gmail.com>
- <20250901135459.GAaLWlsx75fnPHveLl@fat_crate.local> <CAMj1kXFRSJ1zT5XvBE2JT1jm2peOs9aymHeydOYk8AZRO=JDbQ@mail.gmail.com>
- <20250901142538.GEaLWs4i5CVcdIJvC-@fat_crate.local>
-In-Reply-To: <20250901142538.GEaLWs4i5CVcdIJvC-@fat_crate.local>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 1 Sep 2025 16:26:40 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHrsR+qGA5a8s1GWsramZ_QEdKWgG2ehb3+kE=5+vaicw@mail.gmail.com>
-X-Gm-Features: Ac12FXwXjjFIMDJQmTU6935iCS3FBewSxEwaX6AHE9rAHIujpLQr92kpO-ceJPc
-Message-ID: <CAMj1kXHrsR+qGA5a8s1GWsramZ_QEdKWgG2ehb3+kE=5+vaicw@mail.gmail.com>
-Subject: Re: [PATCH v7 05/22] x86/sev: Move GHCB page based HV communication
- out of startup code
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@kernel.org>, 
-	Kevin Loughlin <kevinloughlin@google.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Nikunj A Dadhania <nikunj@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250828102202.1849035-34-ardb+git@google.com>
 
-On Mon, 1 Sept 2025 at 16:26, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Mon, Sep 01, 2025 at 04:02:04PM +0200, Ard Biesheuvel wrote:
-> > Are you sure this can be removed? It is tested in other places too
-> > (arch/x86/coco/sev/core.c), and AIUI, it is a Linux defined CPU
-> > feature so it will never be set automatically.
->
-> It it set in scattered.c for the "late" code like sev/core.c:
->
-> arch/x86/kernel/cpu/scattered.c:51:     { X86_FEATURE_COHERENCY_SFW_NO,         CPUID_EBX, 31, 0x8000001f, 0 },
->
-> Tom added it to boot/cpuflags.c, in addition, for the early testing which
-> we're doing differently now.
->
+On Thu, Aug 28, 2025 at 12:22:13PM +0200, Ard Biesheuvel wrote:
+> -		/*
+> -		 * Running at VMPL0 is not required if an SVSM is present and the hypervisor
+> -		 * supports the required SVSM GHCB events.
+> -		 */
+> -		if (ret &&
+> -		    !(snp_vmpl && (hv_features & GHCB_HV_FT_SNP_MULTI_VMPL)))
+> +		if (snp_vmpl > 0 && !(hv_features & GHCB_HV_FT_SNP_MULTI_VMPL))
 
-Ah ok, yes that makes sense.
+Yeah, it is unsigned:
+
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 973ca206794a..808211b09424 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -415,7 +415,7 @@ void sev_enable(struct boot_params *bp)
+ 		 * Running at VMPL0 is required unless an SVSM is present and
+ 		 * the hypervisor supports the required SVSM GHCB events.
+ 		 */
+-		if (snp_vmpl > 0 && !(hv_features & GHCB_HV_FT_SNP_MULTI_VMPL))
++		if (snp_vmpl && !(hv_features & GHCB_HV_FT_SNP_MULTI_VMPL))
+ 			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
+ 	}
+ 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
