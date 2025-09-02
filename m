@@ -1,56 +1,56 @@
-Return-Path: <linux-efi+bounces-4669-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4670-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0589B4008B
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Sep 2025 14:30:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E23B405D5
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Sep 2025 15:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63996544344
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Sep 2025 12:24:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C9D8188DBA1
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Sep 2025 13:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9782E5B1F;
-	Tue,  2 Sep 2025 12:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC973126BA;
+	Tue,  2 Sep 2025 13:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYkyzCKE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPhObNZC"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474FF2E172B;
-	Tue,  2 Sep 2025 12:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB21311C35;
+	Tue,  2 Sep 2025 13:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756815885; cv=none; b=lvXfEv6O8H3PBF9eXjS4GR66RLkplU51xzVFisC66eFiqGLMo92VgoL8Dt2Wsbs+cZJm8r8CxQoH4nkxeWxiE1uS+FT8MEPaM7dhZfM7uyMIyPCA/bPUuA+LAOQp7V6c12BdmpLVN90D1ALPMp02kEgTE0D2vgLOhMROCkh2GBI=
+	t=1756821040; cv=none; b=QzKEawN3yElNDEQ10aE1WBskAHTjMKSqVvtcIVJ7TXBuphdRpYQaxdG7Ly6atcQBqbhTOs9Gvfnl9omRUkqcBEU71CAcaVdREKod+mOTMTqDjFp5NyFdyx1T/JSyn1Sv6c8AHAKvjI7oXnBUO+mDIRxEHJupgF9ONLJNwcDivRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756815885; c=relaxed/simple;
-	bh=rZv4I7rYDL6YjF6t2ZcCqK5+V44EkkaBs7e289lpm0o=;
+	s=arc-20240116; t=1756821040; c=relaxed/simple;
+	bh=A8mVZBRFvno3FHXgtIN/V3J6sKUCG3joDIQtFDVz+lo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rUnstVM/nWx/vz3eiuB1vvZzUjbdzQOL1bcEH+n/oWEEi0OutGQeOkAn0q5ejhGLlT7ES9ecrEBwrQJJPvDwYCOJCqKtKJ/7cd8EkILc+j6R+dFMHb2iTAMa5X6ZBLpeAcerV5mj4+iJroYeE1NdE0ZDoqenQd0ljrHu+L7jXNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYkyzCKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F21C4CEF9;
-	Tue,  2 Sep 2025 12:24:44 +0000 (UTC)
+	 To:Cc:Content-Type; b=IzqmlDEpTCq3znm4uG2HgYSd7vQugvSOb6baYs0DF2QfMM1MfFmUamnmFuyXchGVlfM8j/Cln77ACwB7YCAVGevUhsSIKQrznYH4FLpR2oAQ+0vvPbjdHtMrgodcoc/hFXeaxDIKRfSLfQyu4WuEKQuVkbPL4C+Pr2F0zEDb2oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPhObNZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D822DC4CEED;
+	Tue,  2 Sep 2025 13:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756815884;
-	bh=rZv4I7rYDL6YjF6t2ZcCqK5+V44EkkaBs7e289lpm0o=;
+	s=k20201202; t=1756821039;
+	bh=A8mVZBRFvno3FHXgtIN/V3J6sKUCG3joDIQtFDVz+lo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SYkyzCKErj0vHjkXMlivm/3pjIAMMf+bJu4IguGNc9PCrlNXI8EWc/+oCJ5qUC19V
-	 r5gewW5fabaBzLS4JARkUN97m5KRMXNvM8gQkHPcc7LsXdgqv/Oc1RnFD3zII+0hYb
-	 FpVEcItMxDS/Nb3ao2ABT50/NdzohlieNABT9jiT40hk5IuarmOV50mXNw2vPkKNBR
-	 jxI4Wbe3eMGHJ/NoRWDKDhKq3LDOCKw10m9KF5H/ee59ukpSh2ZwbrQGCoqYsP/cpB
-	 hu4GOzm4wWWk0geazmrikNlJAqUP8LM7VK+7Od9UzkGEtMHw1co10xvMI+GRATcAND
-	 GpRYhi8eL8isg==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55f7b6e4145so1896072e87.1;
-        Tue, 02 Sep 2025 05:24:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCURVDuIgyne1nw4qnV4aTWj9cuJ9/TH43p7lK7KekvnVZNp80nc6ZNxDi3T3TsxbxZjM20wIEsFEZ4=@vger.kernel.org, AJvYcCXo9JhkcS8StE1tmIHT/1ytBQJD9ybjQNpRiuDziDmEoF2clU/DIiPVFJeR3pGkRHJwNObDMc/lgLQESNvy@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqmRB5nTDk60lXiGrkAG4ITWCJ+CuBgZ1CLd4shz9Q/x09oAtM
-	Jls9Dz4vfWrneLY3X2Xpmrja5cKPEOcxknXU4tGOyotr1QZkNXmNV5fZKYq2rbDzelGJOCupkQv
-	L1aEC4P0RtKT7LDqEsyBFqgkw0F0flyw=
-X-Google-Smtp-Source: AGHT+IECiPX03/QZqNVE9rU0XP4OGNVxyVywxo2pznP31QhpZ58f7na947xSfCVTxS7TqssjQmTyHgB0ZmNH3EoiCZk=
-X-Received: by 2002:a05:6512:1095:b0:55f:6457:1931 with SMTP id
- 2adb3069b0e04-55f7089c6b9mr3850521e87.3.1756815883077; Tue, 02 Sep 2025
- 05:24:43 -0700 (PDT)
+	b=YPhObNZCJfGFYT8TF6zpgbeFoQDeoPRbRLtZJWF/kcAePJFWsD6o9GBOHYjEeoOTi
+	 i15ZeDAI1nWLcOz3HYEj0LM435QsRx639rs8ngKXWlOCfZmKJ2Z9lGk5dm+xvj00x3
+	 45QsK7L2C691MYJCCWNUJw+MNeXZBPznVia31lbY9OVrjrz/Y3QBb4byrIg4Xd6efe
+	 Jtp6KudyttyZDlCw8siTKx2W3/hTT4G0l/3vxXla82EANZLP79Zf+xapWgEd19qasZ
+	 S0DcMAZtiE3mBw+6BdPK1oZkgmQhGWww/UeHCB7b+bF+i/0mbxtaPADBiLyPrQJYfc
+	 XbBVu8KAZIT9w==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-55f76277413so2758459e87.3;
+        Tue, 02 Sep 2025 06:50:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVXe92mEeXDs3bgH7HJunYym4v7PkQDL9YdwYEXJ3wg1a2XDhQ1QJvd0jNpWaotdoD6egIp7ZT67xkVBvWR@vger.kernel.org, AJvYcCWtQ7ihjZER8ez9WdQWpiuU2Bl3M4+HkF5VPNnEHUV6aEpLDF3LV9px4M2qh2gJtaV3IqhDa10dumM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBxNw381HpRvLex0iu+apX5eBPUQ2fjSaEmwpkH2i3J3+6Osp+
+	0caNQLIT4GHaApOU47oDW6xxUdGfzRqEyJL7aHfPVfQAYAxbnyfw6LSPyJomlj8BSoVXTEm/8Sp
+	c2WgjhvUJAukIiuU1SbzapLhjTVusm+E=
+X-Google-Smtp-Source: AGHT+IFKckh0OMNl5m+D9oKZHC/g9OnggdkxBpQGgs0QajnaU9g2jKuhkYItbjSDUx+gqLZjS0O/PkbKLOEsLwRkpLQ=
+X-Received: by 2002:a05:6512:3b9e:b0:55f:486b:7e44 with SMTP id
+ 2adb3069b0e04-55f708ecf52mr3370838e87.37.1756821038259; Tue, 02 Sep 2025
+ 06:50:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -58,15 +58,15 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250828102202.1849035-24-ardb+git@google.com>
- <20250828102202.1849035-36-ardb+git@google.com> <20250902120648.GFaLbd2LyZYkQ4l8WV@fat_crate.local>
-In-Reply-To: <20250902120648.GFaLbd2LyZYkQ4l8WV@fat_crate.local>
+ <20250828102202.1849035-34-ardb+git@google.com> <20250902120221.GEaLbczaZ1RPY7dGKH@fat_crate.local>
+In-Reply-To: <20250902120221.GEaLbczaZ1RPY7dGKH@fat_crate.local>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 2 Sep 2025 14:24:31 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGiy4XU0nrPU9UL3C1KHDznim1gj=P-MabVu=D59k3Fww@mail.gmail.com>
-X-Gm-Features: Ac12FXxfKaD09GSFE_CDkKG9WW-EwtKXdsqZ9NQqW8brqgQpgDx6hB_TtdO8EuM
-Message-ID: <CAMj1kXGiy4XU0nrPU9UL3C1KHDznim1gj=P-MabVu=D59k3Fww@mail.gmail.com>
-Subject: Re: [PATCH v7 12/22] x86/sev: Provide PIC aliases for SEV related
- data objects
+Date: Tue, 2 Sep 2025 15:50:27 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH7tfQ_jWQczBnYrsyrELWDisw=tYmyJzcHYqTi57U-5A@mail.gmail.com>
+X-Gm-Features: Ac12FXwqQ4BK9iYdt1L-zim2tW3bhi8BbyVsmZsn7EgHO3CtfFZD0kSoov3uoqQ
+Message-ID: <CAMj1kXH7tfQ_jWQczBnYrsyrELWDisw=tYmyJzcHYqTi57U-5A@mail.gmail.com>
+Subject: Re: [PATCH v7 10/22] x86/boot: Drop redundant RMPADJUST in SEV SVSM
+ presence check
 To: Borislav Petkov <bp@alien8.de>
 Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
 	linux-efi@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@kernel.org>, 
@@ -75,35 +75,32 @@ Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
 	Nikunj A Dadhania <nikunj@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 2 Sept 2025 at 14:07, Borislav Petkov <bp@alien8.de> wrote:
+On Tue, 2 Sept 2025 at 14:02, Borislav Petkov <bp@alien8.de> wrote:
 >
-> On Thu, Aug 28, 2025 at 12:22:15PM +0200, Ard Biesheuvel wrote:
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Provide PIC aliases for data objects that are shared between the SEV
-> > startup code and the SEV code that executes later. This is needed so
-> > that the confined startup code is permitted to access them.
-> >
-> > This requires some of these variables to be moved into a source file
-> > that is not part of the startup code, as the PIC alias is already
-> > implied, and exporting variables in the opposite direction is not
-> > supported.
-> >
-> > Move ghcb_version as well, but don't provide a PIC alias as it is not
-> > actually needed.
+> On Thu, Aug 28, 2025 at 12:22:13PM +0200, Ard Biesheuvel wrote:
+> > -             /*
+> > -              * Running at VMPL0 is not required if an SVSM is present and the hypervisor
+> > -              * supports the required SVSM GHCB events.
+> > -              */
+> > -             if (ret &&
+> > -                 !(snp_vmpl && (hv_features & GHCB_HV_FT_SNP_MULTI_VMPL)))
+> > +             if (snp_vmpl > 0 && !(hv_features & GHCB_HV_FT_SNP_MULTI_VMPL))
 >
-> I see
+> Yeah, it is unsigned:
 >
-> SYM_PIC_ALIAS(ghcb_version);
->
-> below.
->
-> Stale commit message?
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index 973ca206794a..808211b09424 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -415,7 +415,7 @@ void sev_enable(struct boot_params *bp)
+>                  * Running at VMPL0 is required unless an SVSM is present and
+>                  * the hypervisor supports the required SVSM GHCB events.
+>                  */
+> -               if (snp_vmpl > 0 && !(hv_features & GHCB_HV_FT_SNP_MULTI_VMPL))
+> +               if (snp_vmpl && !(hv_features & GHCB_HV_FT_SNP_MULTI_VMPL))
+>                         sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
+>         }
 >
 
-Yes, as a result of
-
-https://lore.kernel.org/all/20250530165507.GBaDni69NqgOi4mFNn@fat_crate.local/
-
-it was exported but I failed to update the commit log accordingly.
+Why is that better?
 
