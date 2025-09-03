@@ -1,78 +1,78 @@
-Return-Path: <linux-efi+bounces-4677-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4678-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D489BB42947
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Sep 2025 21:00:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A85B42951
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Sep 2025 21:01:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0F1C1BC499F
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Sep 2025 19:00:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7752E683CC9
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Sep 2025 19:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE76136998D;
-	Wed,  3 Sep 2025 18:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9101D36C06D;
+	Wed,  3 Sep 2025 18:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mHGxQC1Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fQ91TEKf"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F61636997A;
-	Wed,  3 Sep 2025 18:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2981B369997;
+	Wed,  3 Sep 2025 18:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756925981; cv=none; b=u7pYaUZmcncigXJtMTwzZxQiY/KESpdpgdf9XpuuAsmAcNNrZIy0fL2IIEkQDHO79XtfA9iXpraDIeeGosqfJOLMXgK67BfxfH/nzz1Nijbxq4OUFbiLnwfyOmK1HYN3/z9HeRI2H1mOQSL8fGxR+g4VFa0vq6ArPySXM7V70xo=
+	t=1756925983; cv=none; b=JpMvmPGzVLmGW9C1hfx+66N1dKHvXbtxig5kcGTxqUp4qbArbckqFbkDW+oIrYzXUKmjNk7dOWDMe3/XakRsJbV4FAVO2mDPs+96vOEoHwqXkPq3WyqRN/2X/mj9YwxzNJJV9BikGnF26J/euTvCsJ2p29nJmb1HsmuObG8Yduo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756925981; c=relaxed/simple;
-	bh=tDJPTP0lhO5ivDTkZpNt7Rd4fQWnznv9kl6iZmQUTXw=;
+	s=arc-20240116; t=1756925983; c=relaxed/simple;
+	bh=hMxsFCbfS4FNJ5KpQPQ814MUfYn5DLMes7LkACjORbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rxv841Ru1z1D1+aipUUg3z5NhleYjAEWnSskKs94n0+NuOTSQocwlCPr95vPgNWIXqJ3ldmYE7USXx8HVwkRcSzlDvdP9yVgJxtBj7X4a7ObgHK8bV2GnynXXmk3Gbmn1bhwQpCvsT4jTsOn+XTUuwFDZF17EPxRZVrUvUB2gfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mHGxQC1Q; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=BV9bG+Cf062mEbqkUeHd9Pb/4yL2VJ/lzO/X1kr3MTcq1yZQW1w4r1HlLULuKgRY1XPhLB7Gv5F1i9uaXbLW8iKBUD0KZn4/y29LcgSeFCGdCyr9+MqYR0YULGWuqzsHNiACq11UmGyGgdd3/nCqYhEGyvc0Qb6+FZClSszC8JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fQ91TEKf; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-24b2de2e427so2176565ad.2;
-        Wed, 03 Sep 2025 11:59:40 -0700 (PDT)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-24b2de2e427so2176795ad.2;
+        Wed, 03 Sep 2025 11:59:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756925979; x=1757530779; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756925981; x=1757530781; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6wz/bZSqqVx6pRJeL2TZzvIUdrr6/vXiyt+C/9X3zJM=;
-        b=mHGxQC1QnchszG0tFQ5r0hrjrgRv47IbCMa5fXoT/kKzpGrhQ3Gtvnp2/p/zZPGE+/
-         Lgix8s6VD7vGmMVTj5up26I8wTJIseg7rSZ3GtA7v+ExRB9Qf77WdZjODT0ByefzRhC5
-         0/g8MbtXyoey/bhmFPAaK57xaW6MuteGLeUOVA21Jzsts64raiukZBqc3PIKgExqfFeI
-         smKCEDFT4MOhjUGsBJJvleB+S7l2ZqLaooORTwp1PZYmcD+12GUMMzSreD+e986JO6Mx
-         ALg7WvUegoPwUJFYezATXZp60iV+RrZ9dY/eLelFDgCgXaOoOw3fOUrrbTuOn3RUsJm2
-         AVgA==
+        bh=tE4h8lAMatl8zOgx47ZsHYZprqFSGIay3bVnFsp5zpE=;
+        b=fQ91TEKfREvSpboYaze1bALYi46Nf8iBiI9aMo9SPouVlVYMlKily/gFKAhiR+3qOh
+         VJmFqI6SJqY5t7yqPn1/sYFBdGT/gRSnXxuO1G/wsjr2KyLt5CIMAD9+0KRhxBk2/edX
+         k6LZzg1ELNL03EczVmc0OWP52kcIV9Fe8qiqED2qHiFTTGd4hryG5WjQLBubuUu1MWbM
+         fZmAwo6kOxWnfzlxhRJfiD/lYeIgV/QwHvrrzWKFoswA9UUQtvP5D3XPDa+nx1BTg3fF
+         d1zfMtcgEknsMQkyqrkc3tMNpKylFCO7P28VSpRVhK5/VWfMwv1X1b8inLxIlNTQdm7J
+         KBDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756925979; x=1757530779;
+        d=1e100.net; s=20230601; t=1756925981; x=1757530781;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6wz/bZSqqVx6pRJeL2TZzvIUdrr6/vXiyt+C/9X3zJM=;
-        b=cFtMEIIgL9Be1nSASiPMVLl6TlJJbsMokMJY/WTgzQ/xxOy01OBOOUN2kp8ksYGvk0
-         znOUvdkIIVoCR7rmX8r0VxQHg5IRSnwjy27yJc30T9Ddk8KLu2xcgNzel3fzq2+UkdMY
-         1g+tnJswqOtZzNeMRz7ucM7bwVWcBtfWSpfM9sKHZLxxgbTKu7Qj2nJBalOmRWCJyJ5b
-         IRppzBE5S/3lbyuSueMgQJgJ01zAg8IAkN3KU8R1qjhptajxB5Ct80O9NG747F2vDwS9
-         BtnfhmASfTbAC5ADygkFe8JHU3GZJuoeQwfyKsC2Mw9h1i1iibGqJCerI4tg7UQ08xlP
-         QeiA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEK+mXq0HhGSz9UFuA/LzlgAulY4ewG/XrrQVLSZgfAdC76GIkVH1dQVXeVuE+TRLeD64kBB37O0Kk@vger.kernel.org, AJvYcCXBssZrXc4woeUmZMhVd56V4uJCTSnhn2OTpbHkZJbmUcV0u6ZSqK7oTSL+OCaWiYo5qDcTDxMRH4lplg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7NSirHN4IKNG+buVYBLakVLt/1q9yGdWRBO08wmAUXiRgPNfG
-	8E1Faa+woDgqg54UlW+fcSn7AK0+xecXIUHEEX/vPf5gSQh0kpBGf/Bl
-X-Gm-Gg: ASbGncsMLWUgUhsE2WO5HBIEy97rc9bu/zEtg+C2KpuJamFAbJtoiR1r9g8kIvEK4Kw
-	X8LcTcGi2fx8f1mobvnAWI/zaq4Caob8fL0uCZclnpdisZgEyfI5mqQXudiQgRPoAAuzLV4Mwfy
-	UvcH2jM1iJ2GgKKABnfFZA7++KWaEllpd1MZKh5kIftajYyaR0BPmgvkfEw3T2X+MUCsKOEtzYN
-	SKN79kbeNx4y2iWARpN0wCOAZbyb0oxzvb58cKJLg/WKolmM7DL7nb7mgUZQyNsfvf5gxxuq/C/
-	BLxrPIifCFtXIPiGDboHUpmTkqM6SMeRSypHGneS6RpAesyXFOE9ZPhb9dVxTolcBLxeC+/Yf5p
-	c9fBfxQD39YPGn+quNydniCK+fXmpd15hJqUBxmHBMO/uxKqYSwwcWQ==
-X-Google-Smtp-Source: AGHT+IFLYxGq/uXWczWSmoJ4dYmB1R4jOWZAcKlvb1pf3KqvOH6hTCxx8eQlFrsP54M7TPt133nTbQ==
-X-Received: by 2002:a17:902:f789:b0:246:d383:3964 with SMTP id d9443c01a7336-249448ac3c8mr239306545ad.18.1756925979423;
-        Wed, 03 Sep 2025 11:59:39 -0700 (PDT)
+        bh=tE4h8lAMatl8zOgx47ZsHYZprqFSGIay3bVnFsp5zpE=;
+        b=frb2yk8YMtcmUdDi5Rdruq5XKYKOgbVpTpzPW6DvADtjSzWRCVuiZaK9vlDI0lYfbL
+         4ihyDoVoON8rhKnIOO3Je3Ml+zJ3iu8HE/E/E1CJwqAMprAXYSCdjqK7KPw9BiQ+G29b
+         TLnln1JwrM4O41/FRl8kpykBZDWXCpsyp9qSASX4bDT6hY4eTUiWu3QtB8lgRVwJaI5b
+         ET3IRwqpK+8ONd5cwFy0bsz6+aFhJ4Ejc1pVNsiHGKHOwjLOIeaEmRdbBlYAAM2XR0T9
+         53W6/QEgBTtFdZml7vTIuvqqungNcwRINmSN1Z9LRBa7Kb3QRe2gufc201dlLiwGKp6e
+         WpJg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+YaLxq7xSb2P6tzLhJhEu6Rl8q568FXhAVmVUu3x7XjEPyGh0X/bjyUMJELLbNzNFHA3VtjG6Hzmccg==@vger.kernel.org, AJvYcCWUd1NzWmtgw1AetwLN8RaPyeZbA9OSeupkCwNQevHjwDIaG/LTUl6pMGBdstxYYZ1zTI3EK57kBG6t@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2bMb0CzCn5EvOgedlHcmRD9w5TsgZ7zMKU3B37wbCd3rAW8Ko
+	1tubESGBq5J2VFZIOBC++QdUnIyc4aE/CJ764mvdgsxjOnzTzaFDIqvr
+X-Gm-Gg: ASbGncu+Rwo+iab4cuYtdPEyqCLcRSOP5ywLqAQAf6tRvda4zSKg67n4NN55rElvORN
+	L8FHB7LAvrOc+Om2+r8WtjT/BYlbrGHwtRgRzxA8+3waZsNtBI1Y2SNoNcFQTclnhM0Zz/3VlKg
+	mzB/lYdKx5U+ssGMCrYOE2W6N8jH3eJp3XYDOFwhwifv/JtwU61vkdbeYEJhOJ4a7Kx5Rj1ZRZ7
+	bxGjgHBmpLQ/p8sHFvge9rIM8ZWofospuWDaCvkompXGKRfTZdepjoxynLnj4G3Nzw/+4cmyaBS
+	Sk/k5g2mM2vqyVPyKioXSkZEHAtNOIDWsMlZW+Km7sHRTW/vpp5e3Lk49ZZVbzWbx7BjkbYXIvN
+	ZJ5oa+9GyqCq1C9XQvIpAiokk6w2iDB/kLKSSVoEwWfaKpgPB6w5/peYUSz2BrddH
+X-Google-Smtp-Source: AGHT+IFOzZVS9DP4L6Y226muKjeIB1JH5DNA05hxxzbj7ORa/S2amssbHzjMdMYqRSy3xMpxXA++JA==
+X-Received: by 2002:a17:902:cecc:b0:24a:aeb6:f1c8 with SMTP id d9443c01a7336-24aaeb6f63bmr166407785ad.43.1756925981346;
+        Wed, 03 Sep 2025 11:59:41 -0700 (PDT)
 Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-249065ab343sm169403475ad.126.2025.09.03.11.59.37
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-249065ab343sm169403475ad.126.2025.09.03.11.59.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 11:59:38 -0700 (PDT)
+        Wed, 03 Sep 2025 11:59:40 -0700 (PDT)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -84,12 +84,12 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org,
 	virtualization@lists.linux.dev,
 	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH v3 3/7] x86: Stop calling page_address() in free_pages()
-Date: Wed,  3 Sep 2025 11:59:17 -0700
-Message-ID: <20250903185921.1785167-4-vishal.moola@gmail.com>
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Subject: [PATCH v3 4/7] riscv: Stop calling page_address() in free_pages()
+Date: Wed,  3 Sep 2025 11:59:18 -0700
+Message-ID: <20250903185921.1785167-5-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250903185921.1785167-1-vishal.moola@gmail.com>
 References: <20250903185921.1785167-1-vishal.moola@gmail.com>
@@ -105,38 +105,32 @@ free_pages() should be used when we only have a virtual address. We
 should call __free_pages() directly on our page instead.
 
 Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/mm/init_64.c          | 2 +-
- arch/x86/platform/efi/memmap.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/mm/init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index b9426fce5f3e..0e4270e20fad 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1031,7 +1031,7 @@ static void __meminit free_pagetable(struct page *page, int order)
- 		free_reserved_pages(page, nr_pages);
- #endif
- 	} else {
--		free_pages((unsigned long)page_address(page), order);
-+		__free_pages(page, order);
- 	}
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 15683ae13fa5..1056c11d3251 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -1624,7 +1624,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
+ 	if (PageReserved(page))
+ 		free_reserved_page(page);
+ 	else
+-		free_pages((unsigned long)page_address(page), 0);
++		__free_pages(page, 0);
+ 	p4d_clear(p4d);
  }
  
-diff --git a/arch/x86/platform/efi/memmap.c b/arch/x86/platform/efi/memmap.c
-index 061b8ecc71a1..023697c88910 100644
---- a/arch/x86/platform/efi/memmap.c
-+++ b/arch/x86/platform/efi/memmap.c
-@@ -42,7 +42,7 @@ void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
- 		struct page *p = pfn_to_page(PHYS_PFN(phys));
- 		unsigned int order = get_order(size);
- 
--		free_pages((unsigned long) page_address(p), order);
-+		__free_pages(p, order);
+@@ -1646,7 +1646,7 @@ static void __meminit free_vmemmap_storage(struct page *page, size_t size,
+ 		return;
  	}
+ 
+-	free_pages((unsigned long)page_address(page), order);
++	__free_pages(page, order);
  }
  
+ static void __meminit remove_pte_mapping(pte_t *pte_base, unsigned long addr, unsigned long end,
 -- 
 2.51.0
 
