@@ -1,106 +1,124 @@
-Return-Path: <linux-efi+bounces-4685-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4684-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073D8B433B2
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 09:21:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9B9B43394
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 09:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8AB686FCC
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 07:21:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60D967A6871
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 07:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC4329B8CF;
-	Thu,  4 Sep 2025 07:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19BA299922;
+	Thu,  4 Sep 2025 07:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkpRQhtW"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25AA029ACE5;
-	Thu,  4 Sep 2025 07:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BB223D7D0;
+	Thu,  4 Sep 2025 07:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756970477; cv=none; b=Cx77HlUx7PccTIWq2NgL8HmTyxrVnDqs4OPHiqraSfiK0lKt5d3wCRz1kw4G9+DBBY5hw11B/BVXJQWSaO13Mxh5TbTSWA07aYOW3GTz4nZbG13/tO8LaiWa3CcWZx634/nkFkXhXDyjgTVpNljlLq4h56yq6uZFQB8zX7Jw910=
+	t=1756970375; cv=none; b=sZwDCgcGXUnAkugrCZLlgMx/biM8N9lstaMIAzZJ8PPmtQf8U9EKwD5NmOeQdTAqBzgWAsRi6ThZFSY0xMd1ixf0gQin19jEr15efVNt+QA787SxBqcgUhzZ1gg3vGl2pnn2ldVVw38CvBKZjFGWCJGrtz7sLZ/HEehaS+O7F2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756970477; c=relaxed/simple;
-	bh=64Idyk7KpaYg2cooNWe1O1ydAYcDe1fcDSernhyvyEM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e2OtZXiE+w3/qiQcrZkvJSTdj2RwfCIXkUQiRKo2BMiXAW+bteDA0q+vidNf0FT+sCBvVNVgjE2Bs+A5MmJPCvcf7bkimjVTqh53sZ8wbihaEID5nv5E1vKcSDC5spbIFucO7RwcUCW41HmXq3NWm919HSah5NA9M2kk/qN9wCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cHVwp4xsdz9sVh;
-	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id WEv7Y2YJZkgd; Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHVwp4BWrz9sVk;
-	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 784388B764;
-	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id JZAEJLwTYdG3; Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 23FBF8B763;
-	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
-Message-ID: <3b333f4e-9817-4a5b-bf0a-f8a9d33575e9@csgroup.eu>
-Date: Thu, 4 Sep 2025 09:10:01 +0200
+	s=arc-20240116; t=1756970375; c=relaxed/simple;
+	bh=72oYlNKXXmAjA5Q5e13+DWrwi/CpM80zljJXvzw63aw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T3BDHcaunE59z+Z31y3OUTRiYvcpsT0W3RFpwKSF+H0/+/iosjuVIqCp20TsB9oFzfDkrhVgf+TWmqjRgRzhTBqh8/WHGRSwX0sQlqxqdxu3yrGgAyE24q7FSvpPLyAl3JMTxXg8W0PXMYn6T5/9rOXwFR/LMoaJErJ8RNGBT6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkpRQhtW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633E4C4CEFA;
+	Thu,  4 Sep 2025 07:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756970375;
+	bh=72oYlNKXXmAjA5Q5e13+DWrwi/CpM80zljJXvzw63aw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RkpRQhtW+a9Y5lrqRKRhT35FXEw1JPCeIWAQrYQnCH0PzIhHfBAOhG2Y5tMpknarz
+	 Pl6vzMh5wTJkjfijbtkfNLawzbNfsDaIq0XFhQ03u1qXSHpsWOyAsewXLQkmGGDpF4
+	 g5AZtKvc/NMoBuOSrEYboremIyftnqUZnccdN63+lyYaqC2zXAg1ev7wfVJH2lBPPs
+	 JVWLymM+QXBvbXwT51vLAHuB98LJ3hPXoXOI0XidDfDFuhAkXtfKW2uJbzeDUKLK45
+	 gu3YhlMYSQbv5cDMx39swAF/M58+EsE1FTxDMYZouqSbCtxD0PLFI34ZU+9r65T2RB
+	 b7Av9NcRTOQvQ==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55ce508d4d6so615037e87.0;
+        Thu, 04 Sep 2025 00:19:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVYrD1EUn4okIdh9ojyq48KhMGhjaKeJ4HOdHn14wCgEXNVJCHgChPMSkP4mh/Jm7eR88ElK9kAmBE=@vger.kernel.org, AJvYcCXLxESFQFDg8TZUkM11ZvPvW9QkH9JjQDqxORazMkZdSBvgvbjqK2cLoLDIYTNCz91iOFjhTW9V4JSKj0Mk@vger.kernel.org
+X-Gm-Message-State: AOJu0YwB0Afkgp4sQG4fB8IV3EyEfxQiHGORgyu2UA5pZhVsLfpUWv5a
+	/VE11zR0aOrFE4OC0rC/xMdvJv7kqmbXvmia57UIfdfF3Gw1Q+H9FTCwhsoa0B9Fx72LO4XIU+r
+	G1O+aRO0eOf685VPS4hg92d/uWyChMFU=
+X-Google-Smtp-Source: AGHT+IEFvmAnCvfgO7PlnrG1BYUxZTjjsz6BPZ180OOcQw+OkZ+byNbMMbmHC7LJX6qhewccjpN/hH5j8/8g6mEFmZQ=
+X-Received: by 2002:a05:6512:239a:b0:560:8d97:8bb8 with SMTP id
+ 2adb3069b0e04-5608d978cd1mr1413481e87.32.1756970373660; Thu, 04 Sep 2025
+ 00:19:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/7] powerpc: Stop calling page_address() in
- free_pages()
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-References: <20250903185921.1785167-1-vishal.moola@gmail.com>
- <20250903185921.1785167-6-vishal.moola@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250903185921.1785167-6-vishal.moola@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <cover.1755721529.git.epetron@amazon.de> <b34da9fd50c89644cd4204136cfa6f5533445c56.1755721529.git.epetron@amazon.de>
+ <CAMj1kXFQwOHyQg2LtabMA3qxiBn_AVV_JNfki2WPSg8u_XbBcg@mail.gmail.com>
+In-Reply-To: <CAMj1kXFQwOHyQg2LtabMA3qxiBn_AVV_JNfki2WPSg8u_XbBcg@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 4 Sep 2025 09:19:21 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFzKzpoqczq7Rk-u+kKLFO057XEXMD+KM=iRMMsoUZbJA@mail.gmail.com>
+X-Gm-Features: Ac12FXzg-Gwf5w9Dkz74akKGMbsagt1QMuLWSxeot3bSIi-D7R24FEVq60rM11k
+Message-ID: <CAMj1kXFzKzpoqczq7Rk-u+kKLFO057XEXMD+KM=iRMMsoUZbJA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] efi: Support booting with kexec handover (KHO)
+To: Evangelos Petrongonas <epetron@amazon.de>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Changyuan Lyu <changyuanl@google.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
 
+On Sat, 23 Aug 2025 at 23:47, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> (cc Ilias)
+>
+> Note to akpm: please drop this series for now.
+>
+> On Fri, 22 Aug 2025 at 04:00, Evangelos Petrongonas <epetron@amazon.de> wrote:
+> >
+> > When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
+> > early during device tree scanning. After kexec, the new kernel
+> > exclusively uses this region for memory allocations during boot up to
+> > the initialization of the page allocator
+> >
+> > However, when booting with EFI, EFI's reserve_regions() uses
+> > memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
+> > rebuilding them from EFI data. This destroys KHO scratch regions and
+> > their flags, thus causing a kernel panic, as there are no scratch
+> > memory regions.
+> >
+> > Instead of wholesale removal, iterate through memory regions and only
+> > remove non-KHO ones. This preserves KHO scratch regions, which are
+> > good known memory, while still allowing EFI to rebuild its memory map.
+> >
+> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+> > ---
+> > Changes in v3:
+> >         - Improve the code comments, by stating that the scratch regions are
+> >         good known memory
+> >
+> > Changes in v2:
+> >         - Replace the for loop with for_each_mem_region
+> >         - Fix comment indentation
+> >         - Amend commit message to specify that scratch regions
+> >         are known good regions
+> >
+> >  drivers/firmware/efi/efi-init.c | 29 +++++++++++++++++++++++++----
+> >  1 file changed, 25 insertions(+), 4 deletions(-)
+> >
+>
+> I'd rather drop the memblock_remove() entirely if possible. Could we
+> get some insight into whether memblocks are generally already
+> populated at this point during the boot?
+>
+>
 
-
-Le 03/09/2025 à 20:59, Vishal Moola (Oracle) a écrit :
-> free_pages() should be used when we only have a virtual address. We
-> should call __free_pages() directly on our page instead.
-> 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-> ---
->   arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index be523e5fe9c5..73977dbabcf2 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -780,7 +780,7 @@ static void __meminit free_vmemmap_pages(struct page *page,
->   		while (nr_pages--)
->   			free_reserved_page(page++);
->   	} else
-> -		free_pages((unsigned long)page_address(page), order);
-> +		__free_pages(page, order);
->   }
->   
->   static void __meminit remove_pte_table(pte_t *pte_start, unsigned long addr,
-
+Ping?
 
