@@ -1,90 +1,106 @@
-Return-Path: <linux-efi+bounces-4683-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4685-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17F8B43261
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 08:29:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073D8B433B2
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 09:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82199567728
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 06:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8AB686FCC
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 07:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B629F265630;
-	Thu,  4 Sep 2025 06:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRTJ7WpU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC4329B8CF;
+	Thu,  4 Sep 2025 07:21:17 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4951DE4EF;
-	Thu,  4 Sep 2025 06:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25AA029ACE5;
+	Thu,  4 Sep 2025 07:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756967368; cv=none; b=VZhNcUXI3X50kibhT+um1rGgSRH5cFv23gTg1NBAXNTTeFCjc3xhgmhTmsK5W5uq1X/T9zxM/nGFaa7GqYfL5TxzF2reDpFfFXb7GwTsjB7FnRqPM1EBq3SBf8fILwZ83tulzsm3bciCDiYEOPBXVE8AUutR0PRs01zBil724uc=
+	t=1756970477; cv=none; b=Cx77HlUx7PccTIWq2NgL8HmTyxrVnDqs4OPHiqraSfiK0lKt5d3wCRz1kw4G9+DBBY5hw11B/BVXJQWSaO13Mxh5TbTSWA07aYOW3GTz4nZbG13/tO8LaiWa3CcWZx634/nkFkXhXDyjgTVpNljlLq4h56yq6uZFQB8zX7Jw910=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756967368; c=relaxed/simple;
-	bh=Cm1nfbweuODePUoeyta314ZQ44Xg43nKAoLw+2/YGaE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VBakO/9Iil6VBPV/RQJuTrg8p/dQRcbfenh1rkNarGbTniKTvH+8//bLe4yV9+YIXkXu7ywTVvO40BEBvh0ubgTI3FVSh2ko1VElbkwRj/7sOkn/hH1Fr9yrA6wQEekV43zVeB7dLnT7DGD0PNXKHivylDCyAsDQ+rW7pt2ZEl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRTJ7WpU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09686C4CEF7;
-	Thu,  4 Sep 2025 06:29:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756967368;
-	bh=Cm1nfbweuODePUoeyta314ZQ44Xg43nKAoLw+2/YGaE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pRTJ7WpUsJvxX2CDbCWqgQeZm66JxA1uUklJIt+wsDdt4c+3wRO5PrCk+0mW/zEqr
-	 xroW3LQXQelR4FDVYyQkQUNstlXsvtWlAjEjfCBsCQtPB+jCPjciHaq9jhepkX6l2G
-	 6oHSuA5npB8Kwxvt4a3fKz4cG5IHYJNZ5h1Md6lCSCAE0mqKEilQqZsVaekSapPTAG
-	 xrSgkc17ZPz4AScbw0a1G9uEgt648+fhnQmJz2r/Wdot7QPpgANEPMVTzK2Dd89ybW
-	 r3AmutXJ0gU91YS4a0L6Y4ZN9UP9/+Jh+imY6H81ebVzSsK4nHZFCMRSpy++jzeLv/
-	 YlwRXXSvEC54A==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f6507bd53so701110e87.3;
-        Wed, 03 Sep 2025 23:29:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVL0KsZzWAyKWsYgYbLwLT+QnVR9AWMauE/g5+DwPB+Zf7bf7WWdfgni8zg8phA2gxKOt7KR6iXt9773T6l@vger.kernel.org, AJvYcCWXSSEnk9xK47ryz6uwU3tRMDbJQ1xl5MFd0Adxq9tZ6g0L9T+JUY5lNsEBN0WD0AYnXbsWkwpGIvc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyar3lCGlwnyDqy3U51SkmI7ncS/1/iBEPEOgLEeu57UE+czqU2
-	mmSVTzXUghHAHudZp/3+H/2iU0wNVAN4z/ZibgeWDLBqOupEjeQFqqX3VGpIuaHAs40BmPvTSoo
-	XyzSWVi6NFrbcOwjjOLuj/n8yeoFuYkk=
-X-Google-Smtp-Source: AGHT+IEin5zziIBrILihnKQAmq+TjAaoGyz7Un9p07Y7iCns+HvzLeA8Na4wn5bK1bSXOroLCm8HGKhljNEv/UW6YrU=
-X-Received: by 2002:a05:6512:4608:b0:55f:61de:5359 with SMTP id
- 2adb3069b0e04-55f708bcd00mr4426469e87.24.1756967366381; Wed, 03 Sep 2025
- 23:29:26 -0700 (PDT)
+	s=arc-20240116; t=1756970477; c=relaxed/simple;
+	bh=64Idyk7KpaYg2cooNWe1O1ydAYcDe1fcDSernhyvyEM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e2OtZXiE+w3/qiQcrZkvJSTdj2RwfCIXkUQiRKo2BMiXAW+bteDA0q+vidNf0FT+sCBvVNVgjE2Bs+A5MmJPCvcf7bkimjVTqh53sZ8wbihaEID5nv5E1vKcSDC5spbIFucO7RwcUCW41HmXq3NWm919HSah5NA9M2kk/qN9wCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cHVwp4xsdz9sVh;
+	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id WEv7Y2YJZkgd; Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHVwp4BWrz9sVk;
+	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 784388B764;
+	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id JZAEJLwTYdG3; Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 23FBF8B763;
+	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+Message-ID: <3b333f4e-9817-4a5b-bf0a-f8a9d33575e9@csgroup.eu>
+Date: Thu, 4 Sep 2025 09:10:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828102202.1849035-24-ardb+git@google.com> <20250903162200.GIaLhrKOJeL6ThYHa1@fat_crate.local>
-In-Reply-To: <20250903162200.GIaLhrKOJeL6ThYHa1@fat_crate.local>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 4 Sep 2025 08:29:15 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG2VVtZsrVAi4DhFbS3ymqd3xZoY9VTuRgfHP=pXFQZow@mail.gmail.com>
-X-Gm-Features: Ac12FXxGrb-Lx6UrWJrEnCAaeWAMBlOgbHm3-QzwOp3zp3Ev44riq2ANPN5KGhU
-Message-ID: <CAMj1kXG2VVtZsrVAi4DhFbS3ymqd3xZoY9VTuRgfHP=pXFQZow@mail.gmail.com>
-Subject: Re: [PATCH v7 00/22] x86: strict separation of startup code
-To: Borislav Petkov <bp@alien8.de>
-Cc: Ard Biesheuvel <ardb+git@google.com>, Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>, 
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, x86@kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, Kevin Loughlin <kevinloughlin@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nikunj A Dadhania <nikunj@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/7] powerpc: Stop calling page_address() in
+ free_pages()
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+References: <20250903185921.1785167-1-vishal.moola@gmail.com>
+ <20250903185921.1785167-6-vishal.moola@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250903185921.1785167-6-vishal.moola@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 3 Sept 2025 at 18:22, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Thu, Aug 28, 2025 at 12:22:03PM +0200, Ard Biesheuvel wrote:
-> > Changes since v6:
-> > - Rebase onto latest tip/master which incorporates v6.17-rc1a
->
-> ...
->
-> So, due to the interactions with the Secure AVIC stuff, I've been doing some
-> patch tetris. Two patches: the first one goes ontop of x86/apic and the second
-> one goes ontop of this set.
->
 
-Looks straight-forward enough ...
+
+Le 03/09/2025 à 20:59, Vishal Moola (Oracle) a écrit :
+> free_pages() should be used when we only have a virtual address. We
+> should call __free_pages() directly on our page instead.
+> 
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+> ---
+>   arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index be523e5fe9c5..73977dbabcf2 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -780,7 +780,7 @@ static void __meminit free_vmemmap_pages(struct page *page,
+>   		while (nr_pages--)
+>   			free_reserved_page(page++);
+>   	} else
+> -		free_pages((unsigned long)page_address(page), order);
+> +		__free_pages(page, order);
+>   }
+>   
+>   static void __meminit remove_pte_table(pte_t *pte_start, unsigned long addr,
+
 
