@@ -1,153 +1,156 @@
-Return-Path: <linux-efi+bounces-4693-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4695-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2264B448AF
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 23:38:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027A6B45912
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Sep 2025 15:32:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 661D61CC1C8E
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Sep 2025 21:39:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FE267C1806
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Sep 2025 13:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8863D2C15A3;
-	Thu,  4 Sep 2025 21:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77FD352FF3;
+	Fri,  5 Sep 2025 13:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e9Abxpzu"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N6vDMzco"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3AC2C158A
-	for <linux-efi@vger.kernel.org>; Thu,  4 Sep 2025 21:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313E4350D79
+	for <linux-efi@vger.kernel.org>; Fri,  5 Sep 2025 13:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757021918; cv=none; b=LQsPASkkLJqbjIJuSgPR3SdCuwlhYyBtoEvlSu6WpTy4XIcSOZQPX2mJFg5jWr8dHxXGJX3FJfmwtFd7U4JYJ0LVl8EGBQoD7dYDMwXNR9mWZH99QoW6AF0SHLgzVOizvK8ER/KX/LQoNMEVZ30mB1OKV6CKLwvYavNvojBLeVg=
+	t=1757079050; cv=none; b=eS/bA9dvIAGgMGJ6r792OarhmFVQcRK5IMJvr7QCa3WHJpLLglc0JwxcKcPMRsEKfQvjKCOWTGKnR0cdgsqZbPr6LYV3QnEsS8QbLpHwBJzq5wfAEzlXxKH/xcUyo5gqSCeUZNNeE0F9vzN5724UKBQIf2vNkme/w7F26Ktj+og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757021918; c=relaxed/simple;
-	bh=+ZrUvtnLM9xSVjfFb/jug+Mxt/vh9q4WYgIFgX9cQDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lC4juAFxqlsEOCHiIAH9LbbICeB5D+2h3Aykrs+jByvNBVDPFGWIOlElIwRmVGyz1fjnCY92BqJ24YSB0GjQ8vDpBUXlJS73SD0IRjWFX756rgSjPRo/dSy3pxrI8rb7Di4K7b81dQGLMYvIR+4hsHk+FMbmoWKfaebBX6ZgkwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e9Abxpzu; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757021915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9rHD7plJVEZkv8PkFJEx5BeBVBt5QFBtzvV5bLJfU1s=;
-	b=e9AbxpzukcoKaOXSeXcp2w3w7k2MS+2IyhSpbfnhUREQ0UIZ7BCE9qj1yqrtxOdSrvzjTC
-	YPGkhDyA76fdqF+amJQ3SE2d/QTdtu/tmsliab5J2tRhxI89SVzLzsByv5Ijve04EkS0du
-	meZvvHlh2Zv+1cNBUPG2Y5DjPFA8Y5c=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-iksGrodcN5eiAvzyZNOL6g-1; Thu, 04 Sep 2025 17:38:34 -0400
-X-MC-Unique: iksGrodcN5eiAvzyZNOL6g-1
-X-Mimecast-MFC-AGG-ID: iksGrodcN5eiAvzyZNOL6g_1757021913
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b87609663so8517385e9.3
-        for <linux-efi@vger.kernel.org>; Thu, 04 Sep 2025 14:38:34 -0700 (PDT)
+	s=arc-20240116; t=1757079050; c=relaxed/simple;
+	bh=CACsa0TRT4zLg+xaffuStRVEVsT6GgVRc8Y4viIqiNg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RMgLoW+G17+90WSmAjoG4XzcR+MmapBnND4dQ0ufmJp0mXtxuKFrweY7s2QwSK7tktpBQfvuhqZcn676u7nfSP8shGrZnvlXS3U1TFQ0BFway4IwEigWPmfezL2GChbw5PxoFaxZulwOuHP4JZFANGR/tM9spp0P0jN1ZY2oSaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N6vDMzco; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45b80aecb97so17867775e9.3
+        for <linux-efi@vger.kernel.org>; Fri, 05 Sep 2025 06:30:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757079045; x=1757683845; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8ZHeDW24WP1XSFE+jvhzynpDGxt9MOiB64/YvwvtypQ=;
+        b=N6vDMzcoN8krk50XSTlbW9476K9TOs+Ld3cjlBhcRinPiAmOvc+KvYtoPhu81HTJsD
+         2E3zAkt9GFtxmDv+dZHpXD0aCPkX/qCs/ttFROMX5g/zbvikALQIgn7jTI3lZ+9CZe80
+         qqwVJnkysqu5jHD9dy5fMjZXr7MbXOwp8h2vfNUjdxsKhCB0qhfLlRCFmjPKr/WPpHWe
+         6vwfsMBZBvbR2NMbqpf9yXUC3V+FHBFKJAu0A3/mOacwkdLu+SIvs1wlmHIZoIHhor5P
+         bieTM5uiS2ANNBoPw9kMOfo3lGZV5jLaY1Zq55ORQvRIciFduCalllJK+1opNPrs+GYf
+         IhEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757021913; x=1757626713;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9rHD7plJVEZkv8PkFJEx5BeBVBt5QFBtzvV5bLJfU1s=;
-        b=dIkoaj/yRaHlfDQpM58SvKC2tJqyLBt5jxl/UzMFYdkB/Ve6kYPxsZjbgWZPp/k++4
-         aG0glhxkGQeSVu+Mktx8HAcuNfeX8d/+zmCruUTUgNEmNvn27RdFCqe8UZPMIefLSJap
-         0WbiE5N6rZpwX3Gd7xjvdbUniEwb6f3oqDGSYu2hLcEql7h48ftv2if92UjmTO7WB3qi
-         qgmCDnWS4YO3dim0RslcFd4FGytKLaNaueaTHwFWnWwU2uLs2ZlePbVC3UKxETuzQS/L
-         A/2msPQfh9TItlNddtOr80X2/3WSy4OAREYRYzq6wDvUSJ8FDLyXwNF9ZQPODHu32nvj
-         OemA==
-X-Forwarded-Encrypted: i=1; AJvYcCWLZCQnHfGJUnJbAH4pkcWZI3ZSvgO64XkecVWlh8TONlLBPl1UjJcqRdOsI9HKYDtFeNOM+GRqNdU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyx/5O7MGH+6a/ubLa+WlM0xUylRu3Vq1iB/aKBd2xlBVC98Q9c
-	g/5zkdOs2+//cTfxuWkKu2lcGFMDcw/akQiDt0bOdtneED7IlsK2UReXkbGwZoVU6ud8MXcCU8V
-	e7kkiJUTiehdk5bgIPfEf2F21y1uC6q2GlLrznkXVwLW+2ZHU10Phzmtb8u6HWA==
-X-Gm-Gg: ASbGnctS5Uz7qVXL/HH+/3PDXu4x/r4SYvkVRbNx2ygrCPeqGU7NkRzBg7sz5TBVWnD
-	oV639nDzNvk8xQMt6LIokNZQqRGyQW2KLZWHzq4HdiYnITep7lFJgO65Wafxjlrk5x5dqZ5BBBq
-	RCx48C4oIK+RRRZDMFSa/Kb+DhUGEofFg2kkrU8XDGYfKuhtmfshcA6fcUOaY/ZX7CzMiycMmUs
-	rhLTDEV5/dnymIpFU2u0/AvLTsB+8fuNZGIbdxZA3U1uiNM5B0hnAhQKzMneL0P4Pz9GDg+vWpz
-	oLYD0EJL5Yy8BwhEVmIAd/7gNTpFASNl8kZJbSj+i3Xwsutlap8lnyz1Y97RgNk5GA==
-X-Received: by 2002:a05:600c:1d10:b0:45b:891f:afcf with SMTP id 5b1f17b1804b1-45b891fb24dmr144597895e9.27.1757021913371;
-        Thu, 04 Sep 2025 14:38:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWbBDlkpyRRxeIt/+qH4VagktWDBCJazVbSXDHRMhx/diXSZUFSBaQ6M24PtRDNYL0yu7m/g==
-X-Received: by 2002:a05:600c:1d10:b0:45b:891f:afcf with SMTP id 5b1f17b1804b1-45b891fb24dmr144597725e9.27.1757021912965;
-        Thu, 04 Sep 2025 14:38:32 -0700 (PDT)
-Received: from redhat.com (93-51-222-138.ip268.fastwebnet.it. [93.51.222.138])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf3458a67fsm1872200f8f.62.2025.09.04.14.38.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 14:38:32 -0700 (PDT)
-Date: Thu, 4 Sep 2025 17:38:30 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 7/7] virtio_balloon: Stop calling page_address() in
- free_pages()
-Message-ID: <20250904173824-mutt-send-email-mst@kernel.org>
-References: <20250903185921.1785167-1-vishal.moola@gmail.com>
- <20250903185921.1785167-8-vishal.moola@gmail.com>
+        d=1e100.net; s=20230601; t=1757079045; x=1757683845;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8ZHeDW24WP1XSFE+jvhzynpDGxt9MOiB64/YvwvtypQ=;
+        b=CLoGvUvySGgtVkNX2NsWWwxVLdR0R8ImK6BrBMDY7BcWtJKtAfWCwfa7yrXuBu8DlY
+         9FI4wv6vfLQX7xF1vRnlGhh7aswQRfFZpHBWfivxrahDBV/uOFUIx6BRGcQxqRXiqYWM
+         VOkwVWfVxkkvVrPt3KoJ6D8bxTKVg2HBcxbRdKIdnySlEpTCyE+HpbAYw6cbe/1zbpa5
+         0o0o6gwxYVUjKMKlcBd5IV3ADazfHMqDVohv3CSsle/YhtYhBc4EMckpARzd+O4aXAh/
+         Fdwd4Raoax4yCa/kPmpUi5e46QuKUE8ildjiv/SIZ+dQfk0wZDwxi3neKXpxSbacaNGA
+         hytQ==
+X-Gm-Message-State: AOJu0YyiRN3mib9Nx9F05ARFyAN/8lyilrEb8rrgZg1wFWJdCz1/ceHU
+	K1B9s2WXjbT+2mK4J8uMNuJquJ6+FqrBYiUIZXkAUiHkdwZpzUx+8NgVyQKpm6XJ+pJPy9azxVu
+	xZcwF6fVBAawu6SkOLMW1ICqxiHLtIfafZFWH1PI9Qb+GUCkwi/mCtisM7gE4rMtGhvYsnAUrio
+	qZ1Ma0WuiiCzvjCaTnBU1AfEgr36Pm5A==
+X-Google-Smtp-Source: AGHT+IEcAay+d9Q2HsIqksVMZuwbG0fIEpd9hdFpt9bpO8YYAbsVZJ7hLJVUgxBdyn6pNK9245tvkFy+
+X-Received: from wmbez15.prod.google.com ([2002:a05:600c:83cf:b0:45d:d3ef:abb8])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4e91:b0:45d:5c71:76a9
+ with SMTP id 5b1f17b1804b1-45d5c71790bmr73776295e9.24.1757079045445; Fri, 05
+ Sep 2025 06:30:45 -0700 (PDT)
+Date: Fri,  5 Sep 2025 15:30:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903185921.1785167-8-vishal.moola@gmail.com>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3170; i=ardb@kernel.org;
+ h=from:subject; bh=JoTq1uEfGexvL5NaCkoOvfw2N83VC/SjYfCd8EObR0A=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIWPX0z+6Ky32OJn582/nqjMS+dvcaZvE9luse25HgcKnW
+ t6ujlsdpSwMYlwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCKyTxgZduyImn9pcsfZ5GDD
+ 2zHSRUlG/hr3lGN3W+tada9l8ZKOYGT4dVPw7USe2ceu/tOX33tk+ZNpQTX7b7zqPnNMpnvP53Y lbgA=
+X-Mailer: git-send-email 2.51.0.355.g5224444f11-goog
+Message-ID: <20250905133035.275517-9-ardb+git@google.com>
+Subject: [PATCH v2 0/7] arm64: Make EFI calls preemptible
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 03, 2025 at 11:59:21AM -0700, Vishal Moola (Oracle) wrote:
-> free_pages() should be used when we only have a virtual address. We
-> should call __free_pages() directly on our page instead.
-> 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+The arm64 port permits the use of the baseline FP/SIMD register file in
+kernel mode, and no longer requires preemption to be disabled. Now that
+the EFI spec is being clarified to state that EFI runtime services may
+only use baseline FP/SIMD, the fact that EFI may code may use FP/SIMD
+registers (while executing at the same privilege level as the kernel) is
+no longer a reason to disable preemption when invoking them.
 
-> ---
->  drivers/virtio/virtio_balloon.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index eae65136cdfb..7f3fd72678eb 100644
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -488,8 +488,7 @@ static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
->  		page = balloon_page_pop(&vb->free_page_list);
->  		if (!page)
->  			break;
-> -		free_pages((unsigned long)page_address(page),
-> -			   VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-> +		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
->  	}
->  	vb->num_free_page_blocks -= num_returned;
->  	spin_unlock_irq(&vb->free_page_list_lock);
-> @@ -719,8 +718,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
->  	if (vq->num_free > 1) {
->  		err = virtqueue_add_inbuf(vq, &sg, 1, p, GFP_KERNEL);
->  		if (unlikely(err)) {
-> -			free_pages((unsigned long)p,
-> -				   VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-> +			__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
->  			return err;
->  		}
->  		virtqueue_kick(vq);
-> @@ -733,7 +731,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
->  		 * The vq has no available entry to add this page block, so
->  		 * just free it.
->  		 */
-> -		free_pages((unsigned long)p, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-> +		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
->  	}
->  
->  	return 0;
-> -- 
-> 2.51.0
+This means that the only remaining reason for disabling preemption is
+the fact that the active mm is swapped out and replaced with efi_mm in a
+way that is hidden from the scheduler, and so scheduling is not
+supported currently. However, given that virtually all (*) EFI runtime
+calls are made from the efi_rts_wq workqueue, the efi_mm can simply be
+loaded into the workqueue worker kthread while the call is in progress,
+and this does not require preemption to be disabled.
+
+Note that this is only a partial solution in terms of RT guarantees,
+given that the runtime services execute at the same privilege level as
+the kernel, and can therefore disable interrupts (and therefore
+preemption) directly. But it should prevent scheduling latency spikes
+for EFI calls that simply take a long time to run to completion.
+
+Changes since v1/RFC:
+- Disable uaccess for SWPAN before updating the preserved TTBR0 value
+- Document why disabling migration is needed
+- Rebase onto v6.17-rc1
+
+(*) only efi_reset_system() and EFI pstore invoke EFI runtime services
+    without going through the workqueue, and the latter only when saving
+    a kernel oops log to the EFI varstore
+
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+
+Ard Biesheuvel (7):
+  efi: Add missing static initializer for efi_mm::cpus_allowed_lock
+  efi/runtime: Return success/failure from arch_efi_call_virt_setup()
+  efi/runtime: Deal with arch_efi_call_virt_setup() returning failure
+  arm64/fpsimd: Don't warn when EFI execution context is preemptible
+  arm64/efi: Use a semaphore to protect the EFI stack and FP/SIMD state
+  arm64/efi: Move uaccess en/disable out of efi_set_pgd()
+  arm64/efi: Call EFI runtime services without disabling preemption
+
+ arch/arm/include/asm/efi.h              |  2 +-
+ arch/arm64/include/asm/efi.h            | 15 ++----
+ arch/arm64/kernel/efi.c                 | 57 +++++++++++++++++---
+ arch/arm64/kernel/fpsimd.c              |  4 +-
+ arch/loongarch/include/asm/efi.h        |  2 +-
+ arch/riscv/include/asm/efi.h            |  2 +-
+ arch/x86/include/asm/efi.h              |  2 +-
+ arch/x86/platform/efi/efi_32.c          |  3 +-
+ arch/x86/platform/efi/efi_64.c          |  3 +-
+ arch/x86/platform/uv/bios_uv.c          |  3 +-
+ drivers/firmware/efi/efi.c              |  3 ++
+ drivers/firmware/efi/riscv-runtime.c    |  3 +-
+ drivers/firmware/efi/runtime-wrappers.c | 20 ++++---
+ include/linux/efi.h                     |  8 +--
+ 14 files changed, 89 insertions(+), 38 deletions(-)
+
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+-- 
+2.51.0.355.g5224444f11-goog
 
 
