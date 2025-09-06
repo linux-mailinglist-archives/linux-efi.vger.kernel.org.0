@@ -1,150 +1,119 @@
-Return-Path: <linux-efi+bounces-4705-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4706-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A09B461A2
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Sep 2025 20:02:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831C8B4695F
+	for <lists+linux-efi@lfdr.de>; Sat,  6 Sep 2025 07:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 107EBA6449A
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Sep 2025 18:02:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EB956651B
+	for <lists+linux-efi@lfdr.de>; Sat,  6 Sep 2025 05:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D9337C0E1;
-	Fri,  5 Sep 2025 18:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871281E379B;
+	Sat,  6 Sep 2025 05:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="loP7ejro"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MCbJ3j9K"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FAA37C0F7;
-	Fri,  5 Sep 2025 18:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD2110E0
+	for <linux-efi@vger.kernel.org>; Sat,  6 Sep 2025 05:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757095361; cv=none; b=Js070gH2gvh7Lk8kWvkW1LqBAbgoTcP/wRltEFzgm6QNZFKS2lL/Y4WYHjzcM9uuwz6a/RQr3l9aoPaHgw4zCpUGq5HaSP0ME5kbkDhoyQmIkzUYIVvlxCsWnL3rb6HWbo6dbUNszuoYMpCeyggyRqKsgJUyd1x405caoNO7U98=
+	t=1757138238; cv=none; b=bGhEkjQx7TGrLAKBazy9c8kOrchoau4zTh3lRktvErt5tl0cVTf2e9LNqlD95nFfJJVjLWIEeqMDeA3Q6rOscdBvzN4j+/MKyTXG2eq7BeXiOXN1Uy4DYnYbqQQsoPaMfm6aF4ChlpTeZDbFKLecJm5ljxE3zy0AGQDdmJu3OUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757095361; c=relaxed/simple;
-	bh=Qb+QuJSkObqX+fj1w4dRqT/e/kifWjnwMbO8oipHUNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V3LOt5YXVnXqxA4lDMt1BPReH5E+uNSHnojnfc3gPPF2Xbv2wy+O9FHuKqEk7DFH0woBA+kFzYc5eK0/c9C8+xSYZeHzPAhNAAv2NsBEsNXS1Naw6kS40U0ya8z9TXr/6PihyuiD57IBWuuxsj3Kix4uh2Z8i9XrDhrEMPDClZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=loP7ejro; arc=none smtp.client-ip=209.85.215.171
+	s=arc-20240116; t=1757138238; c=relaxed/simple;
+	bh=AJ439lk5DJbvFC67QeZcJ2OWyO/YqyIX6NJn8jaHJFY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=hZBZjUmVHjwysRrZKuX5uZYFTwTaksLFj5Jv7XVwz7+gPl83gFXnDS4fKFXm4L+MXqcJ8GWfMeWMwaRRxVeRUkq+RIJTL7I1hboHYieaPG4lkNWi2QdkQPnc/qJ/cXiaco4hdRbjirc/f6KRJpxdbPFboeFVTS2JpIRl7cDW/as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MCbJ3j9K; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b4c72885c8bso1945058a12.0;
-        Fri, 05 Sep 2025 11:02:40 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-72167166718so1337887b3.0
+        for <linux-efi@vger.kernel.org>; Fri, 05 Sep 2025 22:57:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757095360; x=1757700160; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vyvqbUDXebspKl35FIPJk0lFngkuMldmVpFc1O8R/zI=;
-        b=loP7ejro2ueaShJvpKXm7Kqz428oRmCHruexot5tWdCmqCjAXd/J3eC2oa/j31g7oe
-         Y2dDia/VdYEQI5d/rD5pPCB6jOAmErY/Fs0MILF0u5lQkShCgf+xD0p+dhWhPBff6p+c
-         nXWRDWJknQRO7JgOhMfrLYCu1gS1WoOs3aZXrEdeyrHbGzntuXQlPoIVIlGxVnEIZQU3
-         vlW62c/B76rG4YbbmvbO6LV8nPbz/mi5nJppHFMA8euOEWiylcq/FJua4nACqg7yahGc
-         duKn/GdBB22467PJfx++oFM/l97UdjBwc/vF7ZE9i5OHgjX7ru0R57cv5bavjENEdyTt
-         6KkQ==
+        d=gmail.com; s=20230601; t=1757138236; x=1757743036; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=p3Vp1xYANMPe+DXHXWQcbxlyrUqrSXdJB/v9W3yCLiQ=;
+        b=MCbJ3j9KmQtVfKcF7ivXftPMMV/bSl5b4BtKQ4voe5PduczNJwe4GakONCid1epHOF
+         d8Cs1+qPo2HNMkjj5yu5J7t71FQrONVhAI1NMEB5Qijrg/MVqsiO/QfxadiZLlvJX5Vq
+         067QN+N3PhiKvshYts3iIZmFYCMKakf72TkQcfxldM2mFGMtVpoUHBbKLFHNrNhlZEPA
+         G3Dc/kUUWKAvEIASAgygPc13aj/jVor4MKgKfoVGJIR5psey8U9PgcHjt24uppSgoz+O
+         hCfkwi0PkgqVF4RXTDWD+Q+mo0Ny/aP/srNHatgz3iMOmW7Unck5/G2iqCtJKNIT63Au
+         tM8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757095360; x=1757700160;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vyvqbUDXebspKl35FIPJk0lFngkuMldmVpFc1O8R/zI=;
-        b=XjGKs7a4G/DNpuVyXgCu4lmgkhoqmAkKrwOV2PO5pF8XbMfowvRsMqJ7qa4SEp/lTG
-         E7y/kL73DSvnF1/NGDu4YWfyXqZBibNgmF85F9sQantUe+SJ4k2p/bk6RHq2a5YdrVpN
-         LJpEo09Ad4XrcP1/bBjAcvmO90SLsFE9S2d0J1auaRoljxGud2W/F74UhZvIFPt0RtDM
-         HY8C9Blztj32aw2M+9jyQhQRKkD9oF8aYb6A/1j1lQvGszilxJdWxbtrJ986HEKcqahI
-         AeSPGjO/zARr5UeY0o+d8AHOWcXD8gc2EZjlv0WF4JYPf1A7NVOVUkqL3k/ncaUORk5W
-         2MkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgrxiS4HuDVuZt4MTrXbts4rm87GsFtA4Hha1PLSsqrMd74B1FZ0YTfRDWXMVvYQwCnCeYF0uiudGAFQ==@vger.kernel.org, AJvYcCVOYzEjPgNV1Cvug8bYOsY8i4iIihAJ6gylqPPzpi1ly2yt0PE5eo5xSXq0uxYT6LpTnYLu3kqhz3aQ@vger.kernel.org, AJvYcCX6PA8eETTxMvE3039wxezpdLjxzIX9aeJQDpa5TQo7VIeKs96sgPhWXP4dJvsezQsiaH21E5aE7W6XNWcj@vger.kernel.org
-X-Gm-Message-State: AOJu0YwClwg22I8uhweB89VTr6SqvD1W4BNye42MZ/FDa+OGfw7tJDbG
-	PylLh/4aofCGyFvz1IbKhqXkbXFr+OcKZb7yn9U1RMvCHaiDbWdCpWSJ
-X-Gm-Gg: ASbGncsu9wUIKF416vopkyguoQZDI5D2JAJGWFnyE2yAl7IgUoUTjrlhUDOl6rhKTr6
-	yqxTFwvUruKFm/feJBiJm03TLq9qVzLCH5AeIGS+qDvnry1e5RnNxZnDW1NsHvViEwkYWkXcpMS
-	PHEhZe2Xhvpl6NW7OKUlXiN+FoidDX5P87wKTKH6KuM08RNAunRA3OA+E4M8q9jlBH8Gx2ovPZd
-	NV2PPvOXrCMcI0hZhoBdIdhs2UVtFjH8A0L9I6B/OLA9etHBiG8qeoeosXROKyfCuVHHiOEIP9W
-	aCty6LxVW7n+qTK+ehGQ5RnrxiCKE6abowJJpYqWiNvc92wApIfbycwv6DdCVkHKQWbOElhbyjQ
-	scdLfmqvrDQ/uF9MDOM3WQ9d1uQlyNhKAUyZMuPvxExeE2YMiSmR+kwIb+T3RuMXUsf4/PqLVQR
-	A=
-X-Google-Smtp-Source: AGHT+IH4BIuCOkufR5zpdXWK9alIlYMnPti5eXH+01WmcFERf5EmF47R3LvTkLS7gssMCY0/Uh9xug==
-X-Received: by 2002:a17:90a:d64e:b0:32b:5c13:868d with SMTP id 98e67ed59e1d1-32b5c138af9mr13139268a91.1.1757095358574;
-        Fri, 05 Sep 2025 11:02:38 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32b95d31976sm5409595a91.22.2025.09.05.11.02.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 11:02:37 -0700 (PDT)
-Date: Fri, 5 Sep 2025 11:02:35 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v3 3/7] x86: Stop calling page_address() in free_pages()
-Message-ID: <aLslu1yKPNgoz1OU@fedora>
-References: <20250903185921.1785167-1-vishal.moola@gmail.com>
- <20250903185921.1785167-4-vishal.moola@gmail.com>
- <aLl9KneqOYTujcCh@kernel.org>
- <aLl98MQs-FlHo6bW@kernel.org>
+        d=1e100.net; s=20230601; t=1757138236; x=1757743036;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p3Vp1xYANMPe+DXHXWQcbxlyrUqrSXdJB/v9W3yCLiQ=;
+        b=heb3/v9sO4VIWfztUdigw9Gm47JdyPTiZkYN3CDvAcCxEz/69TsrO/Ufa6yFHuQDJ5
+         uPaYepMZKOWGEOhzkkl+MrH0xBhcY1lJp7aK/oqwe2vt4N3fxMMpE2SFozBSXtkKgkWs
+         S+dWg51ZYfNdOgttYgn1czRIKkcf/Git1wcD7SoELAR4uZo9eIZeqQ/oT9fJoCEQEriy
+         9hzHETMReuuA3onw1yJE6Cy8opXC2dBzuQZhnCneiXgUhpGutAOtlvpXznGb8RL3zxqB
+         MfEgaecSIfqMNfxS8agBhHvbILXE41DvHPM5B9OZjKIuCIocoi4Ta1lpORX7nALdP0ur
+         9zAA==
+X-Gm-Message-State: AOJu0YyzfNNRo3sMDBEjZhw9MKsrDIVNe6ieM9EJv2+YFsqLc3+vL9Mr
+	DTrTue1cxDhjF410zV3lfBOVmH1TWA25Lb/d8Ci00qpTcZdn+2LJMgX2nP5Y+iBzlFQL36aWuIB
+	Cl4omOy6KBNaAtl8/cW6MhR/WWq7ZJFqfgg==
+X-Gm-Gg: ASbGncsr+Djsul3DnBRp44D9qIjlSSzIgMaDVd/vULl9tAPR2ZplsaUH+UY0zduRh+n
+	Rf5SE/FPK61gE2Hw4Dm5euHnzDOFQkjECNveeuYnnq0mXpYDfs36KlOu/aAg+YxdfDc8xN1i6Cy
+	aor7jPF12uuVVP5hHFebM3ggDibWDieHd47olQUvoAm5mP6z7d3jv5O7hDyNRLOYBw/Uk31OJok
+	NEfclOMeRCmAGX+zUqLojXZe5rY5WMXotCeSJBsbc1IUqrBRA==
+X-Google-Smtp-Source: AGHT+IG/NgWjl1LvjfeVJs8T2kGkjHNRFYsAnPzgPrEr7MyuJnZXVETIwuvsu71Gk+aN1xK/q3NTLhvEtfxdFv+N6dw=
+X-Received: by 2002:a05:690c:4b0b:b0:71e:79d4:6325 with SMTP id
+ 00721157ae682-727f57445f7mr5925727b3.3.1757138235578; Fri, 05 Sep 2025
+ 22:57:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLl98MQs-FlHo6bW@kernel.org>
+From: Costin Manolache <costin@gmail.com>
+Date: Fri, 5 Sep 2025 22:57:03 -0700
+X-Gm-Features: Ac12FXzZOCswT3RlTIC790-ZSS5l7lVrQdgwvIMTBh1-j9dKDg8rv31sRdev-24
+Message-ID: <CAP8-FqnVn=dwOhbNHcmZjdM_htr9m-1FPtEoUBGA14EJSVbCgw@mail.gmail.com>
+Subject: Secure boot with the (not deprecated) EFI protocol
+To: linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 04, 2025 at 02:54:24PM +0300, Mike Rapoport wrote:
-> On Thu, Sep 04, 2025 at 02:51:14PM +0300, Mike Rapoport wrote:
-> > On Wed, Sep 03, 2025 at 11:59:17AM -0700, Vishal Moola (Oracle) wrote:
-> > > free_pages() should be used when we only have a virtual address. We
-> > > should call __free_pages() directly on our page instead.
-> > > 
-> > > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> > > Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > ---
-> > >  arch/x86/mm/init_64.c          | 2 +-
-> > >  arch/x86/platform/efi/memmap.c | 2 +-
-> > >  2 files changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> > > index b9426fce5f3e..0e4270e20fad 100644
-> > > --- a/arch/x86/mm/init_64.c
-> > > +++ b/arch/x86/mm/init_64.c
-> > > @@ -1031,7 +1031,7 @@ static void __meminit free_pagetable(struct page *page, int order)
-> > >  		free_reserved_pages(page, nr_pages);
-> > >  #endif
-> > >  	} else {
-> > > -		free_pages((unsigned long)page_address(page), order);
-> > > +		__free_pages(page, order);
-> > >  	}
-> > >  }
-> > >  
-> > > diff --git a/arch/x86/platform/efi/memmap.c b/arch/x86/platform/efi/memmap.c
-> > > index 061b8ecc71a1..023697c88910 100644
-> > > --- a/arch/x86/platform/efi/memmap.c
-> > > +++ b/arch/x86/platform/efi/memmap.c
-> > > @@ -42,7 +42,7 @@ void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
-> > >  		struct page *p = pfn_to_page(PHYS_PFN(phys));
-> > >  		unsigned int order = get_order(size);
-> > >  
-> > > -		free_pages((unsigned long) page_address(p), order);
-> > 
-> > Could be just free_pages((unsigned long)phys_to_virt(phys), order), then
-> > the page is not needed at all.
-> 
-> Or even __free_pages(phys_to_page(phys), order);
+Hi,
 
-Right. It actually looks like we could inline this whole block if we
-really wanted to...
+With UKI and the deprecated protocol - signing the combined
+(stub,kernel,cmdline,initrd) works as documented.
 
-__free_pages(phys_to_page(phys), get_order(size));
+I've been trying to use the new recommended protocol - i.e. LoadImage
+and StartImage, with kernel
+loading initrd from the kernel stub. The first problem is that initrd
+is not verified - that can be addressed in a
+UKI-like stub that loads initrd and checks the SHA against some  value
+added to an UKI section,
+before starting the kernel - seems to work fine even if initrd ends up
+getting loaded 2x. It would be
+nice if the kernel stub had a command option to check the initrd sha directly.
 
-Should I send a fixup (or v4) with this change?
+What I can't figure out is getting StartImage to work - it will fail
+if the kernel EFI is not signed (access_denied).
+It works if the kernel is signed - however a signed kernel can be
+extracted and used to boot with arbitrary command line
+and initrd, so anyone can get a root shell.
+
+So far the only option I found is to build a custom kernel with a
+cmdline built-in and not allowing
+cmdline modifications. It also needs the initrd built-in - and if both
+cmdline and initrd are included
+there is no need for a stub, which is nice - what is less nice is
+passing the dm-verity sha, or
+having to rebuild the kernel every time the rootfs changes and a new
+dm-verity needs to
+be configured. There are some workarounds for this - but at this point
+I'm wondering if
+I am missing something obvious ?
+
+The goal is to guarantee that only signed rootfs, initrd, cmdline and
+kernel can be loaded when secure boot is enabled, and can't be changed.
+
+Thanks
 
