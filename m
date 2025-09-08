@@ -1,119 +1,173 @@
-Return-Path: <linux-efi+bounces-4706-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4707-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831C8B4695F
-	for <lists+linux-efi@lfdr.de>; Sat,  6 Sep 2025 07:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D14DBB483CC
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Sep 2025 07:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EB956651B
-	for <lists+linux-efi@lfdr.de>; Sat,  6 Sep 2025 05:57:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F125176426
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Sep 2025 05:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871281E379B;
-	Sat,  6 Sep 2025 05:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9DB21D3F4;
+	Mon,  8 Sep 2025 05:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MCbJ3j9K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqEyEaRu"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD2110E0
-	for <linux-efi@vger.kernel.org>; Sat,  6 Sep 2025 05:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9332B45945;
+	Mon,  8 Sep 2025 05:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757138238; cv=none; b=bGhEkjQx7TGrLAKBazy9c8kOrchoau4zTh3lRktvErt5tl0cVTf2e9LNqlD95nFfJJVjLWIEeqMDeA3Q6rOscdBvzN4j+/MKyTXG2eq7BeXiOXN1Uy4DYnYbqQQsoPaMfm6aF4ChlpTeZDbFKLecJm5ljxE3zy0AGQDdmJu3OUw=
+	t=1757310654; cv=none; b=tkSyK1UjpqWj/36teJMnv534EBXttbZf8BIDVhHZ/aelhXfcGsO4PhhX9l1j4tTa6D1H6/1oPThts7KaRgk6oaz1Vbu18g37Yvbrfzf2SQ+9Tfjjy2vYPcuIxPJRZKrjQmGfvIwGOcTQ6756xUoCQnL8K/Y1tcqP1uz7iF0vR3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757138238; c=relaxed/simple;
-	bh=AJ439lk5DJbvFC67QeZcJ2OWyO/YqyIX6NJn8jaHJFY=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=hZBZjUmVHjwysRrZKuX5uZYFTwTaksLFj5Jv7XVwz7+gPl83gFXnDS4fKFXm4L+MXqcJ8GWfMeWMwaRRxVeRUkq+RIJTL7I1hboHYieaPG4lkNWi2QdkQPnc/qJ/cXiaco4hdRbjirc/f6KRJpxdbPFboeFVTS2JpIRl7cDW/as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MCbJ3j9K; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-72167166718so1337887b3.0
-        for <linux-efi@vger.kernel.org>; Fri, 05 Sep 2025 22:57:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757138236; x=1757743036; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=p3Vp1xYANMPe+DXHXWQcbxlyrUqrSXdJB/v9W3yCLiQ=;
-        b=MCbJ3j9KmQtVfKcF7ivXftPMMV/bSl5b4BtKQ4voe5PduczNJwe4GakONCid1epHOF
-         d8Cs1+qPo2HNMkjj5yu5J7t71FQrONVhAI1NMEB5Qijrg/MVqsiO/QfxadiZLlvJX5Vq
-         067QN+N3PhiKvshYts3iIZmFYCMKakf72TkQcfxldM2mFGMtVpoUHBbKLFHNrNhlZEPA
-         G3Dc/kUUWKAvEIASAgygPc13aj/jVor4MKgKfoVGJIR5psey8U9PgcHjt24uppSgoz+O
-         hCfkwi0PkgqVF4RXTDWD+Q+mo0Ny/aP/srNHatgz3iMOmW7Unck5/G2iqCtJKNIT63Au
-         tM8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757138236; x=1757743036;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p3Vp1xYANMPe+DXHXWQcbxlyrUqrSXdJB/v9W3yCLiQ=;
-        b=heb3/v9sO4VIWfztUdigw9Gm47JdyPTiZkYN3CDvAcCxEz/69TsrO/Ufa6yFHuQDJ5
-         uPaYepMZKOWGEOhzkkl+MrH0xBhcY1lJp7aK/oqwe2vt4N3fxMMpE2SFozBSXtkKgkWs
-         S+dWg51ZYfNdOgttYgn1czRIKkcf/Git1wcD7SoELAR4uZo9eIZeqQ/oT9fJoCEQEriy
-         9hzHETMReuuA3onw1yJE6Cy8opXC2dBzuQZhnCneiXgUhpGutAOtlvpXznGb8RL3zxqB
-         MfEgaecSIfqMNfxS8agBhHvbILXE41DvHPM5B9OZjKIuCIocoi4Ta1lpORX7nALdP0ur
-         9zAA==
-X-Gm-Message-State: AOJu0YyzfNNRo3sMDBEjZhw9MKsrDIVNe6ieM9EJv2+YFsqLc3+vL9Mr
-	DTrTue1cxDhjF410zV3lfBOVmH1TWA25Lb/d8Ci00qpTcZdn+2LJMgX2nP5Y+iBzlFQL36aWuIB
-	Cl4omOy6KBNaAtl8/cW6MhR/WWq7ZJFqfgg==
-X-Gm-Gg: ASbGncsr+Djsul3DnBRp44D9qIjlSSzIgMaDVd/vULl9tAPR2ZplsaUH+UY0zduRh+n
-	Rf5SE/FPK61gE2Hw4Dm5euHnzDOFQkjECNveeuYnnq0mXpYDfs36KlOu/aAg+YxdfDc8xN1i6Cy
-	aor7jPF12uuVVP5hHFebM3ggDibWDieHd47olQUvoAm5mP6z7d3jv5O7hDyNRLOYBw/Uk31OJok
-	NEfclOMeRCmAGX+zUqLojXZe5rY5WMXotCeSJBsbc1IUqrBRA==
-X-Google-Smtp-Source: AGHT+IG/NgWjl1LvjfeVJs8T2kGkjHNRFYsAnPzgPrEr7MyuJnZXVETIwuvsu71Gk+aN1xK/q3NTLhvEtfxdFv+N6dw=
-X-Received: by 2002:a05:690c:4b0b:b0:71e:79d4:6325 with SMTP id
- 00721157ae682-727f57445f7mr5925727b3.3.1757138235578; Fri, 05 Sep 2025
- 22:57:15 -0700 (PDT)
+	s=arc-20240116; t=1757310654; c=relaxed/simple;
+	bh=GINqdprG7It+egCrjMUFqxjobyN5ZaYR3gYB4TpViCY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lb4hY7iCj7L8VH1IBzY3hfIsxrB78ofKb327/Za5grcqwtFGGCldh1OObbTau6aKfUzumNIeZ8o8KyhHYmnk3Srgp9rkiq4O5qeOnmtWcRWaXnGilg6vArTX+kGU9pzJd6IRnxs37UY01HEb8lwX4rKuU+nGzU2MwTRKfRYMxag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqEyEaRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216CEC4CEFE;
+	Mon,  8 Sep 2025 05:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757310654;
+	bh=GINqdprG7It+egCrjMUFqxjobyN5ZaYR3gYB4TpViCY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eqEyEaRuhNunHE3meUU+OuoeHwAkGzIcX9usvYpVewBuHj2C3F7wHa8HZU9upo1Uz
+	 s1VkxCRZF56OvA8sxNngOPt5NZ6pnkOCEulUlriyWxUo1E4eL43H7rH7690cbD5eqZ
+	 HJaJya4gAhtb768C9GG8JjPPhvxMGBoAsAPWThKZM9HnQO4NKTYBxCL2MUulH9YBUU
+	 DeQjZUYww54kwZqauuvIoQ/6Zc2xB4ygjAntlYYqg5OmvgKAH3n2EGAI4N7ku6FiU8
+	 OpNacVHWw9Y6OuUu7HhWlzydOCTx8iWQVPVvmY5YSEPiPVQcOgH9sjep/xGJVpejzx
+	 UG+3z+4InK5qw==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f7c0fb972so4325112e87.3;
+        Sun, 07 Sep 2025 22:50:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWVa4/0NIPlxGoJLew/d3jjAqNWY2coBF5igvza0yPKIqT/DKRBWR6AyQpVC02YNGlga2vnKjzjjKw=@vger.kernel.org, AJvYcCX/QKZ1rjwb+g35Wpk3lHYGo4Khjc2GjUGRL5WED5M5n4WRt3t0FIgCx/8H2mNoOy1IRnzRi25CqnlKQdod@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo1xGPk3QE+n0/oAxwnG2JmtbjSktFUeNysHtBKonqhgx81btr
+	nIN4KmGnLDDrZgKiKkRTQ4IGDlNrgMVwJpvDky4MuTpsxApBcX71nCbDtVHhDSe3Top4OeYuAmW
+	LcLV4A0OaMmH0xKvBMuI+TKigryuVVPY=
+X-Google-Smtp-Source: AGHT+IHj3nVEJWnBkVlJaXrN5K6OwmGDBEDQK/Rmk6FQrn4LOuQl1f6hmY4bY5Osqcf46rysjnySFniHWM+nuYqAYng=
+X-Received: by 2002:ac2:4e0e:0:b0:55b:9796:5d5a with SMTP id
+ 2adb3069b0e04-562637cbf62mr1664560e87.26.1757310652405; Sun, 07 Sep 2025
+ 22:50:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Costin Manolache <costin@gmail.com>
-Date: Fri, 5 Sep 2025 22:57:03 -0700
-X-Gm-Features: Ac12FXzZOCswT3RlTIC790-ZSS5l7lVrQdgwvIMTBh1-j9dKDg8rv31sRdev-24
-Message-ID: <CAP8-FqnVn=dwOhbNHcmZjdM_htr9m-1FPtEoUBGA14EJSVbCgw@mail.gmail.com>
-Subject: Secure boot with the (not deprecated) EFI protocol
-To: linux-efi@vger.kernel.org
+References: <cover.1755721529.git.epetron@amazon.de> <b34da9fd50c89644cd4204136cfa6f5533445c56.1755721529.git.epetron@amazon.de>
+ <CAMj1kXFQwOHyQg2LtabMA3qxiBn_AVV_JNfki2WPSg8u_XbBcg@mail.gmail.com>
+ <CAMj1kXFzKzpoqczq7Rk-u+kKLFO057XEXMD+KM=iRMMsoUZbJA@mail.gmail.com>
+ <20250904093455.73184-1-epetron@amazon.de> <CAMj1kXHTJxBMFX6J-QwcPRojLGMQsTNOH5Bz9kHk7CFdt1JApw@mail.gmail.com>
+ <20250904125917.78112-1-epetron@amazon.de>
+In-Reply-To: <20250904125917.78112-1-epetron@amazon.de>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 8 Sep 2025 07:50:38 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGUOFN_W_8c3a6BnsXDy4xsF+9DUV3wcPr2s7-1K_xUUQ@mail.gmail.com>
+X-Gm-Features: Ac12FXy43MFxOfSIccwrzkLM_Cl2hPp8-URkzEi5uCzgUR5RgZV-_I5_vZSbyeQ
+Message-ID: <CAMj1kXGUOFN_W_8c3a6BnsXDy4xsF+9DUV3wcPr2s7-1K_xUUQ@mail.gmail.com>
+Subject: Re: Re: Re: [PATCH v3 2/2] efi: Support booting with kexec handover (KHO)
+To: Evangelos Petrongonas <epetron@amazon.de>
+Cc: akpm@linux-foundation.org, bhe@redhat.com, changyuanl@google.com, 
+	graf@amazon.com, ilias.apalodimas@linaro.org, kexec@lists.infradead.org, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	nh-open-source@amazon.com, rppt@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+On Thu, 4 Sept 2025 at 14:59, Evangelos Petrongonas <epetron@amazon.de> wrote:
+>
+> On Thu, 4 Sep 2025 11:39:02 +0200, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > On Thu, 4 Sept 2025 at 11:36, Evangelos Petrongonas <epetron@amazon.de> wrote:
+> > >
+> > > On Thu, 4 Sep 2025 09:19:21 +0200, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > > On Sat, 23 Aug 2025 at 23:47, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > > >
+> > > > > (cc Ilias)
+> > > > >
+> > > > > Note to akpm: please drop this series for now.
+> > > > >
+> > > > > On Fri, 22 Aug 2025 at 04:00, Evangelos Petrongonas <epetron@amazon.de> wrote:
+> > > > > >
+> > > > > > When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
+> > > > > > early during device tree scanning. After kexec, the new kernel
+> > > > > > exclusively uses this region for memory allocations during boot up to
+> > > > > > the initialization of the page allocator
+> > > > > >
+> > > > > > However, when booting with EFI, EFI's reserve_regions() uses
+> > > > > > memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
+> > > > > > rebuilding them from EFI data. This destroys KHO scratch regions and
+> > > > > > their flags, thus causing a kernel panic, as there are no scratch
+> > > > > > memory regions.
+> > > > > >
+> > > > > > Instead of wholesale removal, iterate through memory regions and only
+> > > > > > remove non-KHO ones. This preserves KHO scratch regions, which are
+> > > > > > good known memory, while still allowing EFI to rebuild its memory map.
+> > > > > >
+> > > > > > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > > > > > Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+> > > > > > ---
+> > > > > > Changes in v3:
+> > > > > >         - Improve the code comments, by stating that the scratch regions are
+> > > > > >         good known memory
+> > > > > >
+> > > > > > Changes in v2:
+> > > > > >         - Replace the for loop with for_each_mem_region
+> > > > > >         - Fix comment indentation
+> > > > > >         - Amend commit message to specify that scratch regions
+> > > > > >         are known good regions
+> > > > > >
+> > > > > >  drivers/firmware/efi/efi-init.c | 29 +++++++++++++++++++++++++----
+> > > > > >  1 file changed, 25 insertions(+), 4 deletions(-)
+> > > > > >
+> > > > >
+> > > > > I'd rather drop the memblock_remove() entirely if possible. Could we
+> > > > > get some insight into whether memblocks are generally already
+> > > > > populated at this point during the boot?
+> > > > >
+> > > > >
+> > > >
+> > > > Ping?
+> > >
+> > > Hey Ard I was AFK travelling. I am back now and will get to it.
+> > > PS: Keen to meet you later today in the KVM Forum.
+> > >
+> >
+> > Yes, let's catch up!
+> >
+> >
+>
+> I did some testing on qemu with memblock and EFI debug enabled
+>
+> (`memblock=debug efi=debug`) and no KHO.
+> We see that `memblock_dump_all()` in `reserve_regions()` outputs:
+> ```
+> [    0.000000] MEMBLOCK configuration:
+> [    0.000000]  memory size = 0x0000000200000000 reserved size = 0x000000000db5383e
+> [    0.000000]  memory.cnt  = 0x7
+> [    0.000000]  memory[0x0]     [0x0000000040000000-0x000000023c76ffff], 0x00000001fc770000 bytes on node 0 flags: 0x0
+> ...
+> [    0.000000]  reserved.cnt  = 0xf
+> [    0.000000]  reserved[0x0]   [0x00000000fe000000-0x00000000ffffffff], 0x0000000002000000 bytes flags: 0x20
+> ```
+>
+> Moreover checking the code, the boot flow  (at least on arm64)
+> populates memblocks from DT memory nodes via
+> `early_init_dt_add_memory_arch()` before `efi_init()` is called
+>
+> `setup_arch()` -> `setup_machine_fdt()` -> `early_init_dt_scan()` ->
+> `early_init_dt_scan_memory()` -> `early_init_dt_add_memory_arch()` ->
+> `memblock_add()`
+>
+> As a result, it seems that memblocks ARE populated when calling the
+> `reserve_regions()`. So looks like  we still need the
+> `memblock_remove()` (?)
+>
 
-With UKI and the deprecated protocol - signing the combined
-(stub,kernel,cmdline,initrd) works as documented.
+Indeed.
 
-I've been trying to use the new recommended protocol - i.e. LoadImage
-and StartImage, with kernel
-loading initrd from the kernel stub. The first problem is that initrd
-is not verified - that can be addressed in a
-UKI-like stub that loads initrd and checks the SHA against some  value
-added to an UKI section,
-before starting the kernel - seems to work fine even if initrd ends up
-getting loaded 2x. It would be
-nice if the kernel stub had a command option to check the initrd sha directly.
+For the series,
 
-What I can't figure out is getting StartImage to work - it will fail
-if the kernel EFI is not signed (access_denied).
-It works if the kernel is signed - however a signed kernel can be
-extracted and used to boot with arbitrary command line
-and initrd, so anyone can get a root shell.
-
-So far the only option I found is to build a custom kernel with a
-cmdline built-in and not allowing
-cmdline modifications. It also needs the initrd built-in - and if both
-cmdline and initrd are included
-there is no need for a stub, which is nice - what is less nice is
-passing the dm-verity sha, or
-having to rebuild the kernel every time the rootfs changes and a new
-dm-verity needs to
-be configured. There are some workarounds for this - but at this point
-I'm wondering if
-I am missing something obvious ?
-
-The goal is to guarantee that only signed rootfs, initrd, cmdline and
-kernel can be loaded when secure boot is enabled, and can't be changed.
-
-Thanks
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
