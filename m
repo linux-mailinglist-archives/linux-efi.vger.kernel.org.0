@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-4711-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4712-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3108CB4A486
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Sep 2025 10:07:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFAC2B4A487
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Sep 2025 10:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D398C3AD84F
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Sep 2025 08:07:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C5417FFE3
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Sep 2025 08:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC352244EA1;
-	Tue,  9 Sep 2025 08:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC36724886A;
+	Tue,  9 Sep 2025 08:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A8vNg4sL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NZjNfI8u"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050AA245020
-	for <linux-efi@vger.kernel.org>; Tue,  9 Sep 2025 08:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DF6246763
+	for <linux-efi@vger.kernel.org>; Tue,  9 Sep 2025 08:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757405210; cv=none; b=Y+BTQlaBgN27cFoCCEJbc6k1DS3JzALHmCPEWX5YpoFxH5BaprGGLmBkapvJiVWEuDSaReYhdPeFBmyxDiLZ9wyVmaLfuiBTc9Z3coafYzhCdNZUfzJnLNklpk3Ey9Q5XI4DZV5fuSbZC7fZMX/sn2CHPbnPeeNVx4Zs8TEqS2o=
+	t=1757405211; cv=none; b=cTMAETxOJpiASklwVvVP5+tSUyqvnaSMtWZcnvkAUMP7RCDNPjDk4UKWxftC1twubfgELauPWknKqVli+oaaTki2IOllAIgEozYoBNpou7R5lYLpf8UHP5MvFYsSmiTUGQaBEg8wkRXZ/Jdy4IChb+hET9rERWgdpbB26jbXhgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757405210; c=relaxed/simple;
-	bh=bxfkr1bwaVAXs5FaMEW8ZNuMu4e1wkIbDjqHc1Wwjv0=;
+	s=arc-20240116; t=1757405211; c=relaxed/simple;
+	bh=Radutzz8E8EuU7gMVj8q9wIgxzGfs33yWguzFJb9z88=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QaZrwtK0ALi/TzIK9Tjjq87lcA9+aWh+5G52P9UF8X5sutlx3vsA5b4Ai4a0ub8zWZ6dBsHDUr1wjI8gFpnTJs2iJ6R9yLilyic/PSVXSSKCtFNgV8OGvGSxsLKp0PpTfuKOFXYVepKTSuETUV7hRfBUzKnxZ/Jz2d3w8tXU4Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A8vNg4sL; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=spXvD4j3Qi7u/SdWzRv95mCwIrM+8bgy4e034XOC4H4tQnU0pXJgNbH3WUWqHsivzvum/S0pag4AmxiQVWYjzRRy47WF9yQuByg75gHPPcrQqHQEkNmD36OMeSW6Df0Ce92QRSKpb0XiZ/VRYJOPaY8ozRaQQYj04O1dqovEMrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NZjNfI8u; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45decfa5b26so3347355e9.3
-        for <linux-efi@vger.kernel.org>; Tue, 09 Sep 2025 01:06:48 -0700 (PDT)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45b96c2f4ccso31279025e9.0
+        for <linux-efi@vger.kernel.org>; Tue, 09 Sep 2025 01:06:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757405207; x=1758010007; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1757405208; x=1758010008; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yKR8SFZ5tUbZvXiuQCaIge44w6NbXb6+pFcC4LViGfc=;
-        b=A8vNg4sLs11FCE8jvgxRFdSLNc3MvQ1PYb4QMPlIJWmyLZ907nkQ6YCgX4BYIrVysc
-         C9/CTU3HDthSeBy6UUkUCgxKlBWxnOZgVVvqj7w7DNOySwBciuDp9ummBrus0ZYxZid+
-         4uxEp7BESIpPwSo8pupJOG4LnoRtcSFjJFyyuVBCRvw5PcgTvKbKFVJTwwyD5Ea01L5D
-         KRmXu7SMo6yG6FyJjuuzahBNA4yMv9e+aymb3s0NFv5GrThTE4k7T9eKJu+sDFC9HU78
-         t2Na3zqsfgxcmvUGjXc3e92uXSDRQmrowf70+gcyN8x+uMZ3t67s1uWGxYfytHc9qDo9
-         XiOA==
+        bh=gIYMwnegjvJO/DJAEuqEQ2WuvgmAGBZauOlQiaZuyVw=;
+        b=NZjNfI8u8t3CXiDNGBI3Z637BE4V7Um+4Lsv6h7wXKn2mBNom8iB/JIa/mr1BSe/el
+         VnoIQ4KZ3gw0HsFmc6QuYiZiPWfw6yQU92HRrY42bqD/fLHgXOxwxmEucj5/VQEts/gq
+         C7+u8SNjCCmNZ0ErGBVxDxsKMULkDLypXi+HYANVwQgB44dBsBV3rw2tNwVPbVcuX5bo
+         WGkRKzR4rgIvI4EE9dbo4hbCeZ9Uaj/JZ4hYSDiDZplO33ZhdsRPf80fyZ/UK+Rlya4d
+         wHnPJj1XhI4KHEIC4aLlHuOsynQGQpKSYlpz2eaUT6c2Rzld3s5AhWR8x7DZgpN0jheg
+         HTsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757405207; x=1758010007;
+        d=1e100.net; s=20230601; t=1757405208; x=1758010008;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yKR8SFZ5tUbZvXiuQCaIge44w6NbXb6+pFcC4LViGfc=;
-        b=ZMCqNd/VlWN+Wr6rTt60T4fdXDpMwTTgsQRYk8YKAXvNVdgAaYmV7iAQzugQnm9TX7
-         IBUQWGMsDdbzMvyOylNYz5+iUuZnkojmB4tBMa/cVH6jKfJIY8fKW6bHG6cMJ1O2apG2
-         sCBRJBFbfWVDaxW/AOmqtg8OmY+2KWzO8w7MfOgcVcIEK2lXDAy6D2YmrQy8MyhK/1qu
-         P9k5EOq921uixMjRonorphmvPF2boeC2ZM2S+QG8L+QYQYe7IcIJxTTZJZQAmbVSd5v5
-         8y+TePEDTradK30jIA7YYZG9BxOF/Q0tWXn1AvzFQ07uujPT41q6t0xCQpFO4LRDjwBz
-         X6kg==
-X-Gm-Message-State: AOJu0YzoPFaYRKsf4+JbHKuIOEZ5K2aHaild16X79UybTPZIv9qC3w5I
-	3zuVYSqz9g2DZeJRwEmLXWoJgQaeNburV6RS45DOUZZCqH4xvZnVq/NMKKyWW7zXQEmOFOyaiGo
-	8rZDBkZwGeFM++XqsY67wg23r2X7mS0LDB10njZ26s22Jiqwh1ojmvedL5jT3JCJKDUKo02x0ga
-	CDP5czcZLyQrK9epl6WVioevGEacMKAA==
-X-Google-Smtp-Source: AGHT+IG8pvazFoVc9FUnEXTt0W0SX40O2+ahnkSegmQainOj/4AlLriLRxQbk9LaYEnwMR7tdZ/ZDodS
-X-Received: from wmer2.prod.google.com ([2002:a05:600c:4342:b0:45d:d1f2:48ba])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:a05:b0:45d:d5c6:97b4
- with SMTP id 5b1f17b1804b1-45ded2fb475mr14469155e9.9.1757405207202; Tue, 09
- Sep 2025 01:06:47 -0700 (PDT)
-Date: Tue,  9 Sep 2025 10:06:34 +0200
+        bh=gIYMwnegjvJO/DJAEuqEQ2WuvgmAGBZauOlQiaZuyVw=;
+        b=N61HRviXulcSk0HzH9bepRjSInQGa+SjRh6EPi3oErXl3Et0/PetIqMkJd8svy0wIp
+         dmVS4/HlS/lGQLwZ3YXybq6mmIpwQ+caaVFjjG0KmSytqb2y7CbXV+btED9+K4QvF0DT
+         lfDUmCLkO+OuYYDp8LgnyAqvEyi865eDPPAlSbD5ZeIcwING1TOXJM3T4C3PNwwMvh5N
+         S+ULl4L6MnmyP3/OtUAWw07jval6hKYCgyqESnhWm2F8S/pR1MCT+Vp8e7RoKdLgzpdD
+         EVNY+vT/zKykpjSuaFcFoZUzTN9uxSG/MIJzF3mYNd55IIczmbi0TOzbvHGWp1P23Iux
+         YKdQ==
+X-Gm-Message-State: AOJu0YzesO4N4e9hvwQTovv43M4tyRWsU9RVqvXK2l+hO3+WF4wCfG8/
+	wufgoQVE7T51jG2Ak516GnXWDMrxuS3ghhZMTrwhKENwHNqInn17RoFRtYPeAaG6IblWm62uhFN
+	vjEAYHFFIVPGeuDq9Ina+LwT3addaEA1vS+CgtFZ2E2DixIx0ZIfOynHBzu4kCDeOKZR/F8X+Ef
+	F4ZblQ35B9KPGQtS+IEG/r0nFFJYojzA==
+X-Google-Smtp-Source: AGHT+IHJm6oIsPFaA/H7FFpzZiwRaWMizREym7EFTHfuKxm+JVkgAyIeXLgmXB9jLd3AId1sF48xuPXw
+X-Received: from wmsr2.prod.google.com ([2002:a05:600c:8b02:b0:45d:e074:65ac])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1d24:b0:45b:7185:9e5
+ with SMTP id 5b1f17b1804b1-45dea7a561dmr41447865e9.5.1757405208317; Tue, 09
+ Sep 2025 01:06:48 -0700 (PDT)
+Date: Tue,  9 Sep 2025 10:06:35 +0200
 In-Reply-To: <20250909080631.2867579-5-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -74,14 +74,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250909080631.2867579-5-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2156; i=ardb@kernel.org;
- h=from:subject; bh=0MPXvKn0M/hs2ODjQAAa+m+Dmix12uoqz11yvPlS3nI=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIWP/Ay7WRJ6dQQ42Js2iheG21ad5Bd6KLPLzy98fK2KxY
- YbzOqmOUhYGMS4GWTFFFoHZf9/tPD1RqtZ5lizMHFYmkCEMXJwCMJFnBxkZdjakHb90j/PDb2ap
- mzlrz72aF29ntnhzz2aOKQbx8YrFtxn+aX7fM0evrDru4a6j37yD/Qs9dh3NcL/vVXn468rdcv6 +fAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2383; i=ardb@kernel.org;
+ h=from:subject; bh=81pcKoS/mmPNH4toQqB1IJqgCUIxbpQJFeBBrqPQD3s=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIWP/A26JWxN26L9i5b073+nE2ttflc0jZgre/DaBpSh5a
+ t3/pzo+HaUsDGJcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiN/YxMjxiYipNmXLPlVXm
+ 7lfZ6wy8iy1ZtNce+LGeX37jvPcVjwIZGXY9fXB16V6LIN9LbCZF6zZUmqh+vWZ3J+NdjPTey0v n1jEBAA==
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250909080631.2867579-7-ardb+git@google.com>
-Subject: [PATCH v4 2/3] x86/efistub: Obtain SEV CC blob address from the stub
+Message-ID: <20250909080631.2867579-8-ardb+git@google.com>
+Subject: [PATCH v4 3/3] x86/efistub: Don't bother enabling SEV in the EFI stub
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
@@ -91,67 +91,59 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-The x86 EFI stub no longer boots the core kernel via the traditional
-decompressor but jumps straight to it, avoiding all the page fault
-handling and other complexity that is entirely unnecessary when booting
-via EFI, which guarantees that all system memory is mapped 1:1.
+One of the last things the EFI stub does before handing over to the core
+kernel when booting as a SEV guest is enabling SEV, even though this is
+mostly redundant: one of the first things the core kernel does is
+calling sme_enable(), after setting up the early GDT and IDT but before
+even setting up the kernel page tables. sme_enable() performs the same
+SEV-SNP initialization that the decompressor performs in sev_enable().
 
-The SEV startup code in the core kernel expects the address of the CC
-blob configuration table in boot_params, so store it there when booting
-from EFI with SEV-SNP enabled. This removes the need to call
-sev_enable() from the EFI stub.
+So let's just drop this call to sev_enable(), and rely on the core
+kernel to initiaize SEV correctly.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 21 +++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/sev.h              | 2 --
+ drivers/firmware/efi/libstub/x86-stub.c | 6 ------
+ 2 files changed, 8 deletions(-)
 
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index d7be1ff3f7e0..b017e1dab705 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -462,7 +462,6 @@ static __always_inline void sev_es_nmi_complete(void)
+ 		__sev_es_nmi_complete();
+ }
+ extern int __init sev_es_efi_map_ghcbs_cas(pgd_t *pgd);
+-extern void sev_enable(struct boot_params *bp);
+ 
+ /*
+  * RMPADJUST modifies the RMP permissions of a page of a lesser-
+@@ -588,7 +587,6 @@ static inline void sev_es_ist_exit(void) { }
+ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
+ static inline void sev_es_nmi_complete(void) { }
+ static inline int sev_es_efi_map_ghcbs_cas(pgd_t *pgd) { return 0; }
+-static inline void sev_enable(struct boot_params *bp) { }
+ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
+ static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
+ static inline void setup_ghcb(void) { }
 diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 0d05eac7c72b..c4ef645762ec 100644
+index c4ef645762ec..354bc3901193 100644
 --- a/drivers/firmware/efi/libstub/x86-stub.c
 +++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -681,17 +681,28 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
- 	return EFI_SUCCESS;
- }
- 
--static bool have_unsupported_snp_features(void)
-+static bool check_snp_features(struct boot_params *bp)
- {
-+	u64 status = sev_get_status();
- 	u64 unsupported;
- 
--	unsupported = snp_get_unsupported_features(sev_get_status());
-+	unsupported = snp_get_unsupported_features(status);
- 	if (unsupported) {
- 		efi_err("Unsupported SEV-SNP features detected: 0x%llx\n",
- 			unsupported);
--		return true;
-+		return false;
+@@ -938,12 +938,6 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 		goto fail;
  	}
--	return false;
-+
-+	if (status & MSR_AMD64_SEV_SNP_ENABLED) {
-+		void *tbl = get_efi_config_table(EFI_CC_BLOB_GUID);
-+
-+		if (!tbl) {
-+			efi_err("SEV-SNP is enabled but CC blob not found\n");
-+			return false;
-+		}
-+		bp->cc_blob_address = (u32)(unsigned long)tbl;
-+	}
-+	return true;
- }
  
- static void efi_get_seed(void *seed, int size)
-@@ -831,7 +842,7 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+-	/*
+-	 * Call the SEV init code while still running with the firmware's
+-	 * GDT/IDT, so #VC exceptions will be handled by EFI.
+-	 */
+-	sev_enable(boot_params);
+-
+ 	efi_5level_switch();
  
- 	hdr = &boot_params->hdr;
- 
--	if (have_unsupported_snp_features())
-+	if (!check_snp_features(boot_params))
- 		efi_exit(handle, EFI_UNSUPPORTED);
- 
- 	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES)) {
+ 	enter_kernel(kernel_entry, boot_params);
 -- 
 2.51.0.384.g4c02a37b29-goog
 
