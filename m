@@ -1,112 +1,188 @@
-Return-Path: <linux-efi+bounces-4717-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4718-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3E9B508E0
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Sep 2025 00:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55852B50A93
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Sep 2025 03:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10CAA3BB468
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Sep 2025 22:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A124E64B6
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Sep 2025 01:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599DA2222AB;
-	Tue,  9 Sep 2025 22:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34E3224AFA;
+	Wed, 10 Sep 2025 01:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CCdf1nNP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gHsU3iZm"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A49131D398;
-	Tue,  9 Sep 2025 22:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A771F473A;
+	Wed, 10 Sep 2025 01:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757457072; cv=none; b=kJdGdUFDuNAb6brKQiurTxWxdeXcUWSHfuJvWUfHGuchZBVq4xQbEUKsafceNRr/VSnS/zGD0cWFJiUFKdBbveJjIKv54h+aJrDhIVh1IB2r2C4IfWVSOU0bU7Xmcb4NbAUNnrL7KSJbLPsMRn9K32i5Mq8aqk2Ay0u7sbA7CVs=
+	t=1757469482; cv=none; b=Q9BxpZRkhGKkDnlcEePI0fl/E4iQY5r36nclPDC0H2Dhg9dz6uhll1v1tZtwH1IpzNPb9t8Rml1vL+Ud0FJynrSvQAxbc6E7zs4bb/J17sgEn1fdbsfanqD4EUs/jgnFt3L0XrusX8UgKhuGsM9EOAkItfciY3nj9ZuovkUHWsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757457072; c=relaxed/simple;
-	bh=Aq7rwhGw9BxmW8+v547+5vJ3prHg5vZthWMnGnkCICw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L2l5ZWfhi7RTIlsLMSNDLL49PFGn5cHUdzY+0apj196yWI/h3NuaDYCq/4fOqUm0Qwp2e61RN9Ouht2mjU3omExVu+tx8Rw69WGsD5Cyn8n1PdlKxaohhWw5iQyOOrmRId5/Hu0Ao/DpSIqHhYua06pKlW6Xu7wq021/+wcShuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CCdf1nNP; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 95C1B40E01B0;
-	Tue,  9 Sep 2025 22:21:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id UCc0RgvktYy9; Tue,  9 Sep 2025 22:21:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1757456473; bh=yY+SNAV5Bd45YJHqst6VM4vZn5WuUQNd3ZiyhsJWz/8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CCdf1nNPUDsoYVTb/C0Q6De/8CNc4EDxZvesMQtGCopupd1o3Iltj2/GyB8+QFvxI
-	 ohg42ooSX/W9a0vmbWQXp42bglUrlATFZzswRKZ6F4VlCfuKhWQT4DVE3E6BKA1HNL
-	 G2mNBNq+nKRFU1fBimeT7JjQhKAi7xXFYE/14/NuanB/GZlcg8XRxijHFXAjVYO8u0
-	 JUmHWHeg3UyhzN4fYCCLLPEt68hwBATZnEuKDmsez+/IgXX7tmQe193vHwATbx26zH
-	 pUZ0Laef0Imo0i0fpYjkna33SXtZXvuNAqGZGd7RfkaACdgO7u8SbM7Hg7VJqHcAJE
-	 Ee4QTLbQGtpzzVlaJ32l9sVjtnY/I7Z2mMMInbDz46TgF3skVagCGoi9zqznUucGZA
-	 S58lJC41Zi40Ocpaq6R/EzjsZU2um7ak1IZSE3rtu59ZzorQ0YeQCYH1Wce9EJWqPv
-	 2t8lxzGz6OjVhZyXsDecEgoRficfBfCP3i9yrZICPA9pkt0pXOLfAgFIFZhyPFZ5H4
-	 j8gA0ZzXqN5O7p6z1WSbCvTAfvW6nay3y9DO2Wj9gjTg8jsKYi9WbH3S7h74NNthPA
-	 r2aZPL+fYFwtRhySB6kcogW/YYt3EH/77j0f3Cc0kDXUxISD8l5C+IhR4xyyxBqxtg
-	 srQ0W3StIumpFvJcSrVaIZ+0=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 2BA5840E00DD;
-	Tue,  9 Sep 2025 22:21:00 +0000 (UTC)
-Date: Wed, 10 Sep 2025 00:20:45 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Ard Biesheuvel <ardb+git@google.com>,
-	Michael Roth <michael.roth@amd.com>,
-	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-	x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nikunj A Dadhania <nikunj@amd.com>
-Subject: Re: [PATCH v7 01/22] x86/sev: Separate MSR and GHCB based
- snp_cpuid() via a callback
-Message-ID: <20250909222045.GDaMCoPUqawgEenBsF@fat_crate.local>
-References: <20250828102202.1849035-24-ardb+git@google.com>
- <20250828102202.1849035-25-ardb+git@google.com>
- <20250828153317.GJaLB2vSvuR20WzgQV@fat_crate.local>
- <fbb24767-0e06-d1d6-36e0-1757d98aca66@amd.com>
+	s=arc-20240116; t=1757469482; c=relaxed/simple;
+	bh=DwwSWKWua2fP1JnFtxyFfbR/mFvTt5o9hP0QEXPJ7UY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dd9JG02gIlNlQBs1L30c32UvKzu+dNkszNDB8xKEbHWzo1xq2+CvFu9vfyomJ8tfPJLFKzIElCPpYF4H/dUpY5oAUEuptHcKDjp7bw20uEz5IaRaTjG4h1iWuHueA/2fz7IYK25qnqrvthP9ZiOgq+ggxaM2ZFC7Z8SIlkILWLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gHsU3iZm; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-772679eb358so5904457b3a.1;
+        Tue, 09 Sep 2025 18:58:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757469480; x=1758074280; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5GZjnq9AmQvvJ2VMhIbxJpK0z8GY39o/fsj+KeVvFsc=;
+        b=gHsU3iZmVhkqPH9Ov1ENuEaMrkNCZ8vuf/0yd0axHRva2og8/bKWoXd3cpqtfun5C3
+         DxvgfWA5bB6s1GCgxwH1kR9hKAgoj/LhdhQVSrJYfuNf6Jip5akWH9H1R6flV//WffQe
+         4chGWnzCNJvds+8eE/tIspT4wi/ocmZFd8NmazUQUTH2IRgHTk4s2RvcVgEQt4vDfQrr
+         jyMvlfpJdQtvxnKeVyTovXPb6onTgC46/mqny496j4+Mcdz4AeTnCv8eql9Cq6RRqr2T
+         3KmCiy9pWN/fyP3nnTOa0sG8Z95ZEm0UBSljYoMaPguC6mztczWO8iWkgtUFxLERb1Kt
+         Ds7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757469480; x=1758074280;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5GZjnq9AmQvvJ2VMhIbxJpK0z8GY39o/fsj+KeVvFsc=;
+        b=nUbeIhRt0I2ldfaAHsIMkmV2L4tYyy7JOkBsRX0GL9Tmdk1uLlbvJCAGg5YLD5O2PW
+         HyN0Zz0AMaoF+DxVqR6JBDTPMRo/Yu91DmNpjg/KRRh1FmtX+QWKRD3TyV4q+GMIRJyJ
+         MI+0MZV/ViGiCF9WRZVxoV8kv5PANzVcubDtbOb3rWCkJQ7LpFLM7WFWTn1lIzw4J/AU
+         n8O4qY+NeVzO2iamcVO1GMD+JAkVJbalbcLRjz8G6n/9ON4mSPM8o6rg5OUNtGfTpuGA
+         6LKDNWu1GfjDZlgL3KgerutOX/BitnPID4c9iLAba+pa37Bw8Movod6xcHDeMHB00Zs4
+         Olpw==
+X-Forwarded-Encrypted: i=1; AJvYcCWejTRFOx7HCC2Re1mnXI7eyevsrORbqqsU1SbhDiWG3FAeW9Bl/9qDOgkLq3zOsq0MXbT8OD2QYi8T@vger.kernel.org, AJvYcCWqZA1M14u0PJRPzjmhjMUePqQ/YvpZyjbXA+lxRZ/0RvUCIcgpit+wfDipsZjicO/1Xuov+h4fVKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWYybmOsERGP/thURvdOSwL5+R3uWqkLnjF3JzYVMPZyUu1uFF
+	meq96rRm2W1lY58VJFZjDyX9ZhcRpr+e0KUK+YgTdtAvRKxpOPP5fUSGYXSOqd1l
+X-Gm-Gg: ASbGncv+cjT5m40bNJfuEf7kxVIguKRegHkW6DgDpN7D2E+a+LilXYS03c0WGvB+VD6
+	1QAc5QEpz542MuhjFRjAhho5CpNJGDRYA2/rbDN+VQ+xsq/wBb0nfVNfHo8SFca8f5dFC27pjpm
+	oBuGoxLsCDFh3VYQJBryKMhFH0btr4uNIBZ7R6liZQGiGmKdpve9qgoQgPHx5000rRF1xW4IPMI
+	Qkjp2Rh1qm/e7IE0WirGzhkgJIObm5TWNDLrr7UoenUJkS+ORBzAQbJQMrt91nB4H+cqWKMjgtZ
+	PWFLXom0iVrv3Qihvff0JriLwy0uZTTQYL1jAZzgYzlSMYUZXBDUitrFCdIi2HLyn1Aa4vdr/ne
+	YJFctHz12f0Jc3NMqJBxv7aSonzgyQ68TYa0K1N5s7JlkVzs=
+X-Google-Smtp-Source: AGHT+IF9ZvsbQcYo1OI1i2Nra/8Uzua4Ps3+RVKqPqc+4dH6P2hNuY3FstQmH2W39cN4w5gWqaTbLw==
+X-Received: by 2002:a05:6a00:148d:b0:771:bfed:bd61 with SMTP id d2e1a72fcca58-7742dde5047mr19743321b3a.17.1757469480435;
+        Tue, 09 Sep 2025 18:58:00 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-774660e545bsm3452584b3a.19.2025.09.09.18.57.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 18:57:59 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 1E31841FA3A1; Wed, 10 Sep 2025 08:57:57 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux EFI <linux-efi@vger.kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Hugo Osvaldo Barrera <hugo@whynothugo.nl>
+Subject: [PATCH] x86/Documentation: explain LINUX_EFI_INITRD_MEDIA_GUID
+Date: Wed, 10 Sep 2025 08:57:39 +0700
+Message-ID: <20250910015738.14848-2-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <fbb24767-0e06-d1d6-36e0-1757d98aca66@amd.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4037; i=bagasdotme@gmail.com; h=from:subject; bh=EBUSWss9E9WENovDBzaOhhA52uBfbXMQiYxAZXQrvQc=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkHbk1Svfbda0dru3/3Tf2iM9+j57vPehbc4mobe+phq NyTyr1zO0pZGMS4GGTFFFkmJfI1nd5lJHKhfa0jzBxWJpAhDFycAjCR/g+MDO1JPBPe/Luy9+pq DY7/k6Ve7X9/nOmZo/i+yX+3zZkUu+4Qw//4oivrYgSuKK/VCvRom+P47Onsj9UhgT9exueFVOu Zt3IBAA==
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 09, 2025 at 04:44:07PM -0500, Tom Lendacky wrote:
-> It only uses the MSR protocol for particular CPUID values in
-> snp_cpuid_postprocess(). If the CPUID leaf isn't in the CPUID table,
-> then it will set the CPUID values to all 0 and then call the
-> post-processing routine which may or may not call the HV.
-> 
-> The second call to __sev_cpuid_hv_msr() only happens if there is no
-> CPUID table - which will be the case for SEV-ES. So you can't remove the
-> second call.
+From: Hugo Osvaldo Barrera <hugo@whynothugo.nl>
 
-This needs to be turned into a proper comment, at least, and stuck above it as
-the situation there is clear as mud. Especially after the dropping of the GHCB
-protocol call, which makes the confusion even more probable...
+Since the Handover Protocol was deprecated, the recommended approach is
+to provide an initrd using a UEFI boot service with the
+LINUX_EFI_INITRD_MEDIA_GUID device path. Documentation for the new
+approach has been no more than an admonition with a link to an existing
+implementation.
 
-I'll do it tomorrow if you don't beat me to it today. :)
+Provide a short explanation of this functionality, to ease future
+implementations without having to reverse engineer existing ones.
 
+Signed-off-by: Hugo Osvaldo Barrera <hugo@whynothugo.nl>
+Link: https://lore.kernel.org/r/20250428131206.8656-2-hugo@whynothugo.nl
+[Bagas: Don't use :ref: link to EFI stub documentation]
+Co-developed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+ Documentation/admin-guide/efi-stub.rst |  3 +++
+ Documentation/arch/x86/boot.rst        | 35 ++++++++++++++++++++------
+ 2 files changed, 30 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/admin-guide/efi-stub.rst b/Documentation/admin-guide/efi-stub.rst
+index 090f3a185e1897..2f0f040f6913a4 100644
+--- a/Documentation/admin-guide/efi-stub.rst
++++ b/Documentation/admin-guide/efi-stub.rst
+@@ -79,6 +79,9 @@ because the image we're executing is interpreted by the EFI shell,
+ which understands relative paths, whereas the rest of the command line
+ is passed to bzImage.efi.
+ 
++.. hint::
++   It is also possible to provide an initrd using UEFI boot services. See
++   :ref:`pe-coff-entry-point` for details.
+ 
+ The "dtb=" option
+ -----------------
+diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
+index 77e6163288db08..fadbe66517bdf2 100644
+--- a/Documentation/arch/x86/boot.rst
++++ b/Documentation/arch/x86/boot.rst
+@@ -1431,12 +1431,31 @@ The boot loader *must* fill out the following fields in bp::
+ All other fields should be zero.
+ 
+ .. note::
+-     The EFI Handover Protocol is deprecated in favour of the ordinary PE/COFF
+-     entry point, combined with the LINUX_EFI_INITRD_MEDIA_GUID based initrd
+-     loading protocol (refer to [0] for an example of the bootloader side of
+-     this), which removes the need for any knowledge on the part of the EFI
+-     bootloader regarding the internal representation of boot_params or any
+-     requirements/limitations regarding the placement of the command line
+-     and ramdisk in memory, or the placement of the kernel image itself.
++   The EFI Handover Protocol is deprecated in favour of the ordinary PE/COFF
++   entry point described below.
+ 
+-[0] https://github.com/u-boot/u-boot/commit/ec80b4735a593961fe701cc3a5d717d4739b0fd0
++.. _pe-coff-entry-point:
++
++PE/COFF entry point
++===================
++
++When compiled with ``CONFIG_EFI_STUB=y``, the kernel can be executed as a
++regular PE/COFF binary. See Documentation/admin-guide/efi-stub.rst for
++implementation details.
++
++The stub loader can request the initrd via a UEFI protocol. For this to work,
++the firmware or bootloader needs to register a handle which implements the
++``EFI_LOAD_FILE2`` protocol with the ``LINUX_EFI_INITRD_MEDIA_GUID`` device
++path. In this case, a kernel booting via the EFI stub will use the ``LoadFile``
++function on the registered handle to obtain a reference to the initrd.
++
++This approach removes the need for any knowledge on the part of the EFI
++bootloader regarding the internal representation of boot_params or any
++requirements/limitations regarding the placement of the command line and
++ramdisk in memory, or the placement of the kernel image itself.
++
++For sample implementations, refer to `the original u-boot implementation`_ or
++`the implementation in candyboot`_.
++
++.. _the original u-boot implementation: https://github.com/u-boot/u-boot/commit/ec80b4735a593961fe701cc3a5d717d4739b0fd0
++.. _the implementation in candyboot: https://git.sr.ht/~whynothugo/candyboot/tree/4097b2538d7f1cf85f03922bf42409490b666202/item/src/main.rs#L225
+
+base-commit: f44a29784f685804d9970cfb0d3439c9e30981d7
 -- 
-Regards/Gruss,
-    Boris.
+An old man doll... just what I always wanted! - Clara
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
