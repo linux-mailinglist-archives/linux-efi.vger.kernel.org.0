@@ -1,121 +1,239 @@
-Return-Path: <linux-efi+bounces-4729-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4730-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E89B52C8C
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Sep 2025 11:03:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D1CB5301A
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Sep 2025 13:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EE8816495C
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Sep 2025 09:03:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB9643B91BA
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Sep 2025 11:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6092E7BD2;
-	Thu, 11 Sep 2025 09:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF893128D4;
+	Thu, 11 Sep 2025 11:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="K5wbMNCS"
+	dkim=pass (2048-bit key) header.d=whynothugo.nl header.i=@whynothugo.nl header.b="aUwzyDUS";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HtNp15C6"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from ksmg01.maxima.ru (ksmg01.mt-integration.ru [81.200.124.38])
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26342DF71E;
-	Thu, 11 Sep 2025 09:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA05231076D;
+	Thu, 11 Sep 2025 11:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757581394; cv=none; b=S1beHMVbiEzfNq1H3VG5nQQU1aGBUdK+52g7oG1lSuYDQ90F/96K9HaWAjrY/6+pMxP84b4nmycekRqTjBkV4ySM0fTseNKCKmXcnHPGTA1anz+XMDGiwm2dcYFFYd+TUsaEf2bMvYnLPP2XfdqVNhBiioZwoYSPM97VTPuATh4=
+	t=1757589800; cv=none; b=ZOC276q0RJg8hB8mJnS0hzAmL8d3jVp/TfRMclQuiw1nwxtgWqqAgJE1/lyg9JyUba5sK1IxJISJgm7q3dcB/VAFS56vah7QpKMjhaIyheD0nDbqqFAtKlwrKz8r0+sVnxm8lKbxzIASCzepzxQffO5dpWAbOlShbcyKcJ7LXk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757581394; c=relaxed/simple;
-	bh=honVF5w84sXw1+R3SRU2KmpnQUYYfchCxoFIz+cJ2e8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eS6JJrzkWM8dae7sf7GzB1yEhlsTfdAU4CgF7sM2jfFOmgKwzqE2whyMaRwhJuA7s008ZNhZuytBvG7Z3Y+ZLY34jT4gt/SSUoAGAQrNh2f+Sf7ydEq8l1jrMqPpH55oSynWMjcZ2H2LgXMq9anx53QWFBpP5cTB5sP3q79C9s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=K5wbMNCS; arc=none smtp.client-ip=81.200.124.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
-Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
-	by ksmg01.maxima.ru (Postfix) with ESMTP id 3DDC5C0042;
-	Thu, 11 Sep 2025 12:03:01 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru 3DDC5C0042
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
-	s=sl; t=1757581381; bh=h+KJg+lwYvHMkq3CR418XShWacGciYLhVefqR7QfMks=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=K5wbMNCSIaKg/ToI8KnaIekd9qIr08+ImCK7GRRLxg0Od9jKRN3P9MWAle6zQxQXF
-	 KJFNEMNZKSA+oRrybeZmd9CCgppE36rW5QxrqhkX3jN5Pz/CHbCsweYeSr1daWTZqA
-	 /PCEySlf3ln90wLwrxOWmck356wfjquhruMDVvT9Grj49JychKKjF5irtryIZgCw8o
-	 5xFeUOwbz7z4P7IXaXNi3910APUWC0rGGDU9Ij4qMzoDEyH2FJD9M6rHmXOUzshDqu
-	 0RwmIEk7po+qR3DXVul5gLr1Qgm5NFfBF9PwR6QgEGaRabuQ3k7lv4INt5l4gkPVCG
-	 N+eLv/J+rL5Rw==
-Received: from ksmg01.maxima.ru (autodiscover.maxima.ru [81.200.124.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client did not present a certificate)
-	by ksmg01.maxima.ru (Postfix) with ESMTPS;
-	Thu, 11 Sep 2025 12:03:00 +0300 (MSK)
-Received: from db126-1-abramov-14-d-mosos.mti-lab.com (172.25.20.118) by
- mmail-p-exch01.mt.ru (81.200.124.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 11 Sep 2025 12:02:59 +0300
-From: Ivan Abramov <i.abramov@mt-integration.ru>
-To: Ard Biesheuvel <ardb@kernel.org>
-CC: Ivan Abramov <i.abramov@mt-integration.ru>, Ingo Molnar
-	<mingo@kernel.org>, <linux-efi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: [PATCH 1/1] efi: capsule-loader: Use proper type when allocating cap_info->phys
-Date: Thu, 11 Sep 2025 12:02:37 +0300
-Message-ID: <20250911090241.357151-1-i.abramov@mt-integration.ru>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1757589800; c=relaxed/simple;
+	bh=BhrTyR4yMbcsK5yfmOCBZj42BKA/FZ+kbUhnhlbCvo0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=cqvjiuVvN0/92/JrGVrf1qYBFM7PzrJ8ZDgzPsiXaN7+qfoIZ5yYgrTDp8kIDA+tYJg+/0Sgx0buauOSS7VAtZVXiv7ykLSKOyUiA+V2Fj27fh9XFS9p3DJfdptjfweYMUZ0Qv9ipP9bfdinKE9kYIp8uSQtEWliiGyMKClCGwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=whynothugo.nl; spf=pass smtp.mailfrom=whynothugo.nl; dkim=pass (2048-bit key) header.d=whynothugo.nl header.i=@whynothugo.nl header.b=aUwzyDUS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HtNp15C6; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=whynothugo.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=whynothugo.nl
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id ED3611400037;
+	Thu, 11 Sep 2025 07:23:16 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Thu, 11 Sep 2025 07:23:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=whynothugo.nl;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1757589796; x=1757676196; bh=phsMw9DpPdUU5v2F8lNwtFPs0tTryaYN
+	/3X1959+Xa8=; b=aUwzyDUS6Ni4t/QvgHl6LsBHmF3uI/J2bwfyWZz7hDPwalU1
+	En7wI3iL9JLskuGRKmGCqKjNN/OdK81vPFBKO0IJ/KemD+GVGwNovZ3OOxMU/sEt
+	ovW8IXtobZm7plBNei4gMlwR2se3NXojGVGB20ipf78KMQqPXvxBb2wDDEmkvjaf
+	/jw0BLSXPZzTdY+zdq06NPikxsQksPOjLKKZlPkpVqvMSFWlcs0UtGTpOvRT6JzP
+	65AdxFLBN49Nm4VgAzxaqVj2ankj04N9NfzF8/CHg7GtxD4fSWlgS/P5+9D1pqvY
+	LQRum97mztFPSwrM/sfnKGOdk64VUIQ+CVWIoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757589796; x=
+	1757676196; bh=phsMw9DpPdUU5v2F8lNwtFPs0tTryaYN/3X1959+Xa8=; b=H
+	tNp15C6ewceirNuY7Lt55W5yO0gsECn8eon3Aav341PO3Ayad9iJzLUedEVsWylC
+	n6ZlJU+i6w8g1PLoPRGDlT3Hnub9ko4xfllfieRkPktvhBqZ8ZYTSmCtJzFaOfSe
+	I8wjOX4XfpRWGU1k/h6GPhs9BUdSG9Wq5KpX/a8hhOzej7EJH81MY4zpcmLRo7QJ
+	pj3eEqeTD8MxsdEdloyYctr3yJJjh6YOLw5+N1gH+RAxItA1Qn3fVEN+k4OoHgL4
+	vezNaFot0718VFsUYltuATRn6Cd6UBFMi/dqxuGm8guwW8hfPjKikBGOlRpE+Ovt
+	YacpwppQk+iwffojfZpVA==
+X-ME-Sender: <xms:I7HCaDWY9wJYM3hQR4RWcDQNUipz8bn_7SgxhAhqzVTY_TF-dxoRUw>
+    <xme:I7HCaLmI_UR7JPJs2Cypq6Bq8AjyND1kUzfETAdN_O0PmkrrseLPQbPxlIupKUQn5
+    dgRQ7ETps8TJ7wvVw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddviedtgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdfjuhhgohcu
+    qfhsvhgrlhguohcuuegrrhhrvghrrgdfuceohhhughhoseifhhihnhhothhhuhhgohdrnh
+    hlqeenucggtffrrghtthgvrhhnpefhgfeivdekvefgjeeludffieefgffgvdeugffgteef
+    feefjeevhfefudduuddvffenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhgihhthh
+    husgdrtghomhdpshhrrdhhthdpmhgrihhnrdhrshenucevlhhushhtvghrufhiiigvpedt
+    necurfgrrhgrmhepmhgrihhlfhhrohhmpehhuhhgohesfihhhihnohhthhhughhordhnlh
+    dpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegs
+    phesrghlihgvnhekrdguvgdprhgtphhtthhopegsrghgrghsughothhmvgesghhmrghilh
+    drtghomhdprhgtphhtthhopegrrhgusgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    giekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonh
+    higidruggvpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgv
+    lhdrtghomhdprhgtphhtthhopegtohhrsggvtheslhifnhdrnhgvthdprhgtphhtthhope
+    hmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdguohgtsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:I7HCaDS15vkvBBDt2u3ukQI2EAMZVffKfcwGK1NX4cJUbRaZanVXlw>
+    <xmx:I7HCaO3p4WrzWAv7tZ6Wsn576pQ56gBCKOD3rLG7L3s3HoZ-1ahm6g>
+    <xmx:I7HCaNzTgbSWNFQfP0mQ2Mq6DfuIjVcKK5fr3he1sGkesFC73ckddw>
+    <xmx:I7HCaKy_XBAiduFtR37sRkWxZh9eGlikwkwJ8gIFwCzg2fZiyDIACg>
+    <xmx:JLHCaDv0HHdTHulTCdDOew615F8frATTJRvqzWfntn4UX41y3_PEGXsU>
+Feedback-ID: ib8c04050:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id C56691B4006D; Thu, 11 Sep 2025 07:23:15 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: Atl5U7xjKeAs
+Date: Thu, 11 Sep 2025 13:22:54 +0200
+From: "Hugo Osvaldo Barrera" <hugo@whynothugo.nl>
+To: "Ard Biesheuvel" <ardb@kernel.org>, "Bagas Sanjaya" <bagasdotme@gmail.com>
+Cc: "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+ "Linux Documentation" <linux-doc@vger.kernel.org>,
+ "Linux EFI" <linux-efi@vger.kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>
+Message-Id: <c30fb598-2878-4bdd-ab84-4f4d07d0db5d@app.fastmail.com>
+In-Reply-To: 
+ <CAMj1kXHCi1pr3XNzwe7b7EFBkPGjkppeNWNSvy4wU1VBHj9kfA@mail.gmail.com>
+References: <20250910015738.14848-2-bagasdotme@gmail.com>
+ <CAMj1kXHCi1pr3XNzwe7b7EFBkPGjkppeNWNSvy4wU1VBHj9kfA@mail.gmail.com>
+Subject: Re: [PATCH] x86/Documentation: explain LINUX_EFI_INITRD_MEDIA_GUID
 Content-Type: text/plain
-X-ClientProxiedBy: mmail-p-exch02.mt.ru (81.200.124.62) To
- mmail-p-exch01.mt.ru (81.200.124.61)
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
-X-KSMG-AntiSpam-Envelope-From: i.abramov@mt-integration.ru
-X-KSMG-AntiSpam-Info: LuaCore: 66 0.3.66 fc5dda3b6b70d34b3701db39319eece2aeb510fb, {rep_avail}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, mt-integration.ru:7.1.1;81.200.124.61:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;ksmg01.maxima.ru:7.1.1, FromAlignment: s, ApMailHostAddress: 81.200.124.61
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 196179 [Sep 11 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.11
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/09/11 07:23:00 #27808108
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 7
+Content-Transfer-Encoding: 7bit
 
-When allocating memory for cap_info->phys in __efi_capsule_setup_info(),
-sizeof(phys_addr_t *) is used instead of sizeof(phys_addr_t), which may
-differ in some cases.
-It's a similar issue to CVE-2024-27413.
 
-Thus, use the correct type.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+On Thu, 11 Sep 2025, at 08:46, Ard Biesheuvel wrote:
+> On Wed, 10 Sept 2025 at 03:58, Bagas Sanjaya <bagasdotme@gmail.com> wrote:
+>>
+>> From: Hugo Osvaldo Barrera <hugo@whynothugo.nl>
+>>
+>> Since the Handover Protocol was deprecated, the recommended approach is
+>> to provide an initrd using a UEFI boot service with the
+>> LINUX_EFI_INITRD_MEDIA_GUID device path. Documentation for the new
+>> approach has been no more than an admonition with a link to an existing
+>> implementation.
+>>
+>> Provide a short explanation of this functionality, to ease future
+>> implementations without having to reverse engineer existing ones.
+>>
+>> Signed-off-by: Hugo Osvaldo Barrera <hugo@whynothugo.nl>
+>> Link: https://lore.kernel.org/r/20250428131206.8656-2-hugo@whynothugo.nl
+>> [Bagas: Don't use :ref: link to EFI stub documentation]
+>> Co-developed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+>> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+>> ---
+>>  Documentation/admin-guide/efi-stub.rst |  3 +++
+>>  Documentation/arch/x86/boot.rst        | 35 ++++++++++++++++++++------
+>>  2 files changed, 30 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/Documentation/admin-guide/efi-stub.rst b/Documentation/admin-guide/efi-stub.rst
+>> index 090f3a185e1897..2f0f040f6913a4 100644
+>> --- a/Documentation/admin-guide/efi-stub.rst
+>> +++ b/Documentation/admin-guide/efi-stub.rst
+>> @@ -79,6 +79,9 @@ because the image we're executing is interpreted by the EFI shell,
+>>  which understands relative paths, whereas the rest of the command line
+>>  is passed to bzImage.efi.
+>>
+>> +.. hint::
+>> +   It is also possible to provide an initrd using UEFI boot services. See
+>> +   :ref:`pe-coff-entry-point` for details.
+>>
+>
+> Better say 'using a Linux-specific UEFI protocol at boot time'. The
+> boot services are a specific set of APIs none of which have anything
+> to do with initrd loading.
+>
+>>  The "dtb=" option
+>>  -----------------
+>> diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
+>> index 77e6163288db08..fadbe66517bdf2 100644
+>> --- a/Documentation/arch/x86/boot.rst
+>> +++ b/Documentation/arch/x86/boot.rst
+>> @@ -1431,12 +1431,31 @@ The boot loader *must* fill out the following fields in bp::
+>>  All other fields should be zero.
+>>
+>>  .. note::
+>> -     The EFI Handover Protocol is deprecated in favour of the ordinary PE/COFF
+>> -     entry point, combined with the LINUX_EFI_INITRD_MEDIA_GUID based initrd
+>> -     loading protocol (refer to [0] for an example of the bootloader side of
+>> -     this), which removes the need for any knowledge on the part of the EFI
+>> -     bootloader regarding the internal representation of boot_params or any
+>> -     requirements/limitations regarding the placement of the command line
+>> -     and ramdisk in memory, or the placement of the kernel image itself.
+>> +   The EFI Handover Protocol is deprecated in favour of the ordinary PE/COFF
+>> +   entry point described below.
+>>
+>> -[0] https://github.com/u-boot/u-boot/commit/ec80b4735a593961fe701cc3a5d717d4739b0fd0
+>> +.. _pe-coff-entry-point:
+>> +
+>> +PE/COFF entry point
+>> +===================
+>> +
+>> +When compiled with ``CONFIG_EFI_STUB=y``, the kernel can be executed as a
+>> +regular PE/COFF binary. See Documentation/admin-guide/efi-stub.rst for
+>> +implementation details.
+>> +
 
-Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
----
- drivers/firmware/efi/capsule-loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This should be a link rather than a path to the source file.
 
-diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
-index 0c17bdd388e1..bbddeb6a0955 100644
---- a/drivers/firmware/efi/capsule-loader.c
-+++ b/drivers/firmware/efi/capsule-loader.c
-@@ -67,7 +67,7 @@ int __efi_capsule_setup_info(struct capsule_info *cap_info)
- 	cap_info->pages = temp_page;
- 
- 	temp_page = krealloc(cap_info->phys,
--			     pages_needed * sizeof(phys_addr_t *),
-+			     pages_needed * sizeof(phys_addr_t),
- 			     GFP_KERNEL | __GFP_ZERO);
- 	if (!temp_page)
- 		return -ENOMEM;
+>> +The stub loader can request the initrd via a UEFI protocol. For this to work,
+>> +the firmware or bootloader needs to register a handle which implements the
+>
+> ... which carries implementations of the ``EFI_LOAD_FILE2`` protocol
+> and the device path protocol exposing the
+> ``LINUX_EFI_INITRD_MEDIA_GUID`` vendor media device path.
+>
+>> +``EFI_LOAD_FILE2`` protocol with the ``LINUX_EFI_INITRD_MEDIA_GUID`` device
+>> +path. In this case, a kernel booting via the EFI stub will use the ``LoadFile``
+>> +function on the registered handle to obtain a reference to the initrd.
+>> +
+
+Might be worth mentioning that this protocol is defined in the UEFI spec,
+section 13.2.
+
+>
+> ... will invoke LoadFile2::LoadFile() method on the registered
+> protocol to instruct the firmware to load the initrd into a memory
+> location chosen by the kernel/EFI stub.
+>
+>> +This approach removes the need for any knowledge on the part of the EFI
+>> +bootloader regarding the internal representation of boot_params or any
+>> +requirements/limitations regarding the placement of the command line and
+>> +ramdisk in memory, or the placement of the kernel image itself.
+>> +
+>> +For sample implementations, refer to `the original u-boot implementation`_ or
+>> +`the implementation in candyboot`_.
+>> +
+>> +.. _the original u-boot implementation: https://github.com/u-boot/u-boot/commit/ec80b4735a593961fe701cc3a5d717d4739b0fd0
+>> +.. _the implementation in candyboot: https://git.sr.ht/~whynothugo/candyboot/tree/4097b2538d7f1cf85f03922bf42409490b666202/item/src/main.rs#L225
+>>
+>
+> What is candyboot, and why are we adding this plug for it into the
+> Linux documentation?
+
+It's a UEFI stub loader which can load the Linux kernel and provide it with an
+initramfs using the above described protocol.
+
+The original version of this patch was based on my notes researching _how_
+to implement this stub loader. The implementation is quite minimal, so I think
+it serves as a useful reference example.
+
 -- 
-2.39.5
-
+Hugo
 
