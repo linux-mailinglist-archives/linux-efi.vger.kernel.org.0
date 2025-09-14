@@ -1,107 +1,98 @@
-Return-Path: <linux-efi+bounces-4821-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4822-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E78B56C11
-	for <lists+linux-efi@lfdr.de>; Sun, 14 Sep 2025 22:13:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCF9B56C59
+	for <lists+linux-efi@lfdr.de>; Sun, 14 Sep 2025 23:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 136261897EB4
-	for <lists+linux-efi@lfdr.de>; Sun, 14 Sep 2025 20:13:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B2117A9E6E
+	for <lists+linux-efi@lfdr.de>; Sun, 14 Sep 2025 21:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785B62E62AD;
-	Sun, 14 Sep 2025 20:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79957224AF7;
+	Sun, 14 Sep 2025 21:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2UPxRGMw"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="j+82wh8E"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92F8EEAB;
-	Sun, 14 Sep 2025 20:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC5D1A9B24;
+	Sun, 14 Sep 2025 21:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757880804; cv=none; b=MyB2Gwyu1BOl0hAoRbOp+7v4Qz6eKsfNO4fR69Z5DlP2Bm2/EpqHpaX3ADhgUCrt8Zt3bOYLuKolTii5c8EvseGYI6Lg65JHlTj/trkkBlr1xmqRYxxl6NO8/w5Lqjl+Gj0yPHZrakntpFwKMFx8fl9oXX9uW4TLrC1fOBDAyIw=
+	t=1757884613; cv=none; b=msZdq54QfftFZRQv+bUJkEWihUKmgrb+MT2+/ovjp+KN/jX9ApgfCQgUoAcLgvFUUhqWDfk3dkDs3GgJRbwL6xbywTyiUapaqN6zCpYkklGr1jGvHi7ZuBsd7dOqtyk1zhtsn7rOLZOCcZVe4RfqsebeGm2ZmB0cPSpsh0H8/7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757880804; c=relaxed/simple;
-	bh=S1O2mYg/nuSFWiepEfi3INn1/VxeJMAKyzsDV4vYqvg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=J+jptC/J4YKLwKI3aHT7snFfP84NJQk0HTR18Ww5e2AXCQg3c6guvNc9b3LB3SOubHVnQHwAP6wzn+xnhQlwtRG/xPpZ4PicPNMfgb41hm3EfwS3OTsNwBXv5FciZQTzyw1WObPXMCJhz+FNCsWkcCzc3PW2ZIGvVRKS+Izs6CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2UPxRGMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D19C4CEF0;
-	Sun, 14 Sep 2025 20:13:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757880803;
-	bh=S1O2mYg/nuSFWiepEfi3INn1/VxeJMAKyzsDV4vYqvg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=2UPxRGMw8I/maQZ+HN3ir+gn07zWGBMkkdWTdW2X4OKEgkpUDDbZLiyj3E0pJDtL3
-	 1+D42ZKa/D0blrtutGoeATk6sFzQAtpGrIpNKIWACFz+9+7ensOkK9v2abyA5QnetQ
-	 dB1gPfBNpyMhvJhlFN9WW4x1lQUIWNYqbIuD5q6A=
-Date: Sun, 14 Sep 2025 13:13:21 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, Al
- Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig
- <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, Thomas
- =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>, Julian
- Stecklina <julian.stecklina@cyberus-technology.de>, Gao Xiang
- <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, Eric
- Curtin <ecurtin@redhat.com>, Alexander Graf <graf@amazon.com>, Rob Landley
- <rob@landley.net>, Lennart Poettering <mzxreary@0pointer.de>,
- linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, x86@kernel.org, Ingo Molnar
- <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org,
- linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, "Theodore Y . Ts'o"
- <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek
- <monstr@monstr.eu>, devicetree@vger.kernel.org, Luis Chamberlain
- <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, Thorsten Blum
- <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>,
- patches@lists.linux.dev
-Subject: Re: [PATCH RESEND 21/62] init: remove all mentions of
- root=/dev/ram*
-Message-Id: <20250914131321.df00dfc835be48c10f4cce4b@linux-foundation.org>
-In-Reply-To: <a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
-References: <20250913003842.41944-1-safinaskar@gmail.com>
-	<20250913003842.41944-22-safinaskar@gmail.com>
-	<a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1757884613; c=relaxed/simple;
+	bh=IEMGqZNj+OZ+xb84qevmEGyeadlozAYKBVxKCEu+PJw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AzCmo6Xq4Bso8FjqIy00oFZQpJR/6mtp77XW40zd68gWK2B7t+XBKT+s/TYP+FS0b5b0ef6cT5+ZONlPajVH5g1tvrRSQsuOzmZt55ZGeBYKjZrizcFH+T/d44YbCwmjpFtB/L7LufAv61OM2V0Y8aDu9LYRCdLPDTg23yEW5QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=j+82wh8E; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 43D6F1A0DFC;
+	Sun, 14 Sep 2025 21:16:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 092936063F;
+	Sun, 14 Sep 2025 21:16:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 76865102F2A78;
+	Sun, 14 Sep 2025 23:16:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1757884606; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=PrFkxRI/rM5SQxoVJY6C6jishZsikS57oIN/hwunQlI=;
+	b=j+82wh8EW/26ftt8B3pTo1EF6a84LZS/ds3nQRpCwbhT3EnmTALAHRvlO8AaJPUcIhLHT/
+	gl6jy60jXJho+DItqUqAiO30JedIhLNi6Q8iHiliohdlf/U1fzqVAfru1ocswYYozJrZ6b
+	G8T1SuFDUk3FEl5M8tYxF5FckzXCm3SvxGXKysA2w/fNni0aqN7/YjLZ7Qrcx+e+82gmuN
+	TrF/Uq8mV4ZHEstaLbfM1ST8YeXhs0i1w7ilUCrIHelmL+RBtOtGJN4y4l7FAtcPFuJc7e
+	9AmDmRUv8YBvnRbWBiulqtUTQeRPGkyMscOZZNXSS0NMEANY+15EN7K4nD8YnA==
+Date: Sun, 14 Sep 2025 23:16:29 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-arm-kernel@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>,
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Bibo Mao <maobibo@loongson.cn>, linux-rtc@vger.kernel.org,
+	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org,
+	x86@kernel.org, linux-riscv@lists.infradead.org,
+	loongarch@lists.linux.dev
+Subject: Re: (subset) [RFC PATCH 1/3] efi-rtc: Remove wakeup functionality
+Message-ID: <175788449957.388732.6353062596898107602.b4-ty@bootlin.com>
+References: <20250714060843.4029171-5-ardb+git@google.com>
+ <20250714060843.4029171-6-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250714060843.4029171-6-ardb+git@google.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, 14 Sep 2025 12:06:24 +0200 Krzysztof Kozlowski <krzk@kernel.org> wrote:
-
-> >  Documentation/admin-guide/kernel-parameters.txt          | 3 +--
-> >  Documentation/arch/m68k/kernel-options.rst               | 9 ++-------
-> >  arch/arm/boot/dts/arm/integratorap.dts                   | 2 +-
-> >  arch/arm/boot/dts/arm/integratorcp.dts                   | 2 +-
-> >  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-cmm.dts     | 2 +-
-> >  .../boot/dts/aspeed/aspeed-bmc-facebook-galaxy100.dts    | 2 +-
-> >  .../arm/boot/dts/aspeed/aspeed-bmc-facebook-minipack.dts | 2 +-
-> >  .../arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge100.dts | 2 +-
-> >  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge40.dts | 2 +-
-> >  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yamp.dts    | 2 +-
-> >  .../boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi  | 2 +-
+On Mon, 14 Jul 2025 08:08:45 +0200, Ard Biesheuvel wrote:
+> The EFI rtc driver is used by non-x86 architectures only, and exposes
+> the get/set wakeup time functionality provided by the underlying
+> platform. This is usually broken on most platforms, and not widely used
+> to begin with [if at all], so let's just remove it.
 > 
-> No, don't do that. DTS is always separate.
+> 
 
-Why can't DTS changes be carried in a different tree?
+Applied, thanks!
+
+[1/3] efi-rtc: Remove wakeup functionality
+      https://git.kernel.org/abelloni/c/50562f9cd366
+
+Best regards,
+
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
