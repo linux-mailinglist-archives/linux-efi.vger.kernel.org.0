@@ -1,130 +1,143 @@
-Return-Path: <linux-efi+bounces-4848-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4849-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9ADBB5A191
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Sep 2025 21:39:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C50B81459
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Sep 2025 20:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89DE9166C82
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Sep 2025 19:39:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 659531C80BF4
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Sep 2025 18:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6982DF6F8;
-	Tue, 16 Sep 2025 19:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADFA3002C7;
+	Wed, 17 Sep 2025 18:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OPRJjjtX"
+	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="g1LtUuBN"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F95C2797A4
-	for <linux-efi@vger.kernel.org>; Tue, 16 Sep 2025 19:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7542FC02D
+	for <linux-efi@vger.kernel.org>; Wed, 17 Sep 2025 18:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758051542; cv=none; b=fseVSk8LOzBGP+kQtHFOryXEB95k2UlEeXbgvfzguk2DGQyZohmY3qd7qj8Fu+DEGChUa46rhEGbN+4e3Zg6BnHQNyzgu4dn/yq+FCFMj8qdIx2gPnxVXYJkjjKmXcPOAnIrKDuZk4IZxUdKOS7wdV8gxTa10v3a/HoK2l7I2wA=
+	t=1758132048; cv=none; b=nFQqM29+5Tz9fkLXKdVLWP89frHZDsq5vZF9j63hfHomybm7zsxagC2JMQ+yVbxOXXewgDc6WnccUufebB5MCgtXR9xOyaT8v/fNvC6nmZdttgUqfzeCkkoZELv1Cf7lqrxllI0WbMtybGP5isyq//jEPhJxUYe58dFEkGGxJoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758051542; c=relaxed/simple;
-	bh=Q4kVru8i8IIfSOoE84wSITyzfCl6oFTOK7yBiPxJkJY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=brLHeQz9Tdukf2z/FdfSI5LBz8tlUOPPKcOPj9bw5wZxnKO8p09vozK3c0adKMuYfk3eomBuZCA6+Z79R+79ZHqty7JK2zh/+9AKAWwiPyymLmlaVubybrhdTEhfnvCMo8P/5efDjcfuiFetcJYhKsIf+tyf0B+JkspqjR9Bbe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OPRJjjtX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758051539;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+7hKGgfCrcGGIhnxPu7A9Ry/ZimHce+9evBu/ut+yg4=;
-	b=OPRJjjtXPMJcNtzYzFQm6Z8aExhRi18JaUTq1oVSDKTp4G1CTaSNMQd0EfNfdt/G9MLKJY
-	azPQWBwBL6+CH8eRE/oC/bdXB8JlhMQtt51+AF3VlhGtbwjlTcWxoy1JDLwXVq2g1HAgci
-	LLl6w0GwQ9nYTTob3CCSGRTIq68sewU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-P4f2Hq3UPwCRNeYxT_NYNg-1; Tue,
- 16 Sep 2025 15:38:55 -0400
-X-MC-Unique: P4f2Hq3UPwCRNeYxT_NYNg-1
-X-Mimecast-MFC-AGG-ID: P4f2Hq3UPwCRNeYxT_NYNg_1758051534
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D3A1A19560AF;
-	Tue, 16 Sep 2025 19:38:54 +0000 (UTC)
-Received: from lszubowi.mht.redhat.com (unknown [10.17.16.237])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1B40C30001A4;
-	Tue, 16 Sep 2025 19:38:53 +0000 (UTC)
-From: Lenny Szubowicz <lszubowi@redhat.com>
-To: ardb@kernel.org
-Cc: linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] efi/x86: Memory protection on EfiGcdMemoryTypeMoreReliable
-Date: Tue, 16 Sep 2025 15:38:53 -0400
-Message-ID: <20250916193853.410189-1-lszubowi@redhat.com>
+	s=arc-20240116; t=1758132048; c=relaxed/simple;
+	bh=DLDcGQ3mu3T/MPVKq0NF9V2I5Jn6ILZwFaw9KVQfhOo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rbHaR1aCxlXRYIv5IeIA8GWTXmABF61UiJ16qD5JgLW6tY/Gcn+nFqQOl4ojVuRp+VHsFRYMJ5Y8V21eKnFmYssYi47NRnU3JeieC8QIxqPFw1bYHFDz9RtN7W7njoNCZPwURuNZPTUBMT+dX0MaET7iANbw18eouN/ErJj9mhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=g1LtUuBN; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-577232b26a6so101902e87.2
+        for <linux-efi@vger.kernel.org>; Wed, 17 Sep 2025 11:00:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1758132044; x=1758736844; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
+        b=g1LtUuBN2lj4qvyQzWAdLKTewMPpvB0BMgAm3EhYmOSEcT379TNMgVSmJk7DCmgjc/
+         T0eHokwlFMY3Yd+mXYCz+ekytPn0ndF69T0GJJIC1YMQr15FXnETUToESn8hAOjjN4TJ
+         wc+dE3joK8Hj6X0qrUlvmHpmCBRx7/hVESh3NV1/RSPbebawN77L/JxPYbAY8rno5NPR
+         h45BlMuQrVS79kOiLhszZHO32mHd/xwXNvhKNiRJJPEEOxGanxAq7D4RvCoxMPnsrP0o
+         gtEy+UX8pbw1CA/Tbhp0++SKDmI4SgqYBJ/2EKyXEOwvuyrgRQgYTYLI+VQny1h7rWhV
+         /NkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758132044; x=1758736844;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
+        b=Z7H0gOVffswLGfj+Qb0gCd8U94UBww4Peuly+c1A/M2qXw5kdviLZkUMlRkvTUuV8I
+         zHTVSO8Mo07EfI4u2BjPpPix36dBRGhpX7nZkhiLPbTMqmv0strYW91vt1eksT+XepWi
+         oRli/1Jb0iOChIoQm/ZLjwZA5jZvb+qbzu+DmYi/tSSdqdvtl6dP0gAJuoHwyyEkfwp4
+         ASq/q65mnplVEERaOG2zIJ3jznhZTuJUEludjnJFnjsutEty+LiV1jIJl6ubn5ytaIOu
+         wsSDhe0IvIisnjq8ntYFeO4DGjcB1BDczMfEshW03JNCDW0nZ59GW6N0DvkdgUpdb6D5
+         byDg==
+X-Forwarded-Encrypted: i=1; AJvYcCW03ymSwWVj7LWQiqOJZuaMoIx+ejjlk2jVoycRn5s3vr2MBsy93aJIBXVaFKiWJV28SkHOhLlPB9I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAeICiSGuHq5UtSoYNBHghfrB1Ixrw3/3RbwZR1jk1S+hNeILp
+	X9MGWD3OFaGfhabhkTiPZlk6epzSNWdobYOSfrZynoukoSJY3eLvPKGRtHkaFbLqq66g3ha0ytl
+	Gde+OoBcglCye7EAXwCHEVg9wYL4+b+IVuqUGD/mK
+X-Gm-Gg: ASbGncsH1RJDF1uozAUmfCUGlGIpaw8gNJNptZHewGlH89xL47DQJNfwArePS7OFi2f
+	Z9RonnSd+a/dHLoomMISS+0soL64b07lxAATJDGFZjU25y0AcnEHht+eicgyxb3pkfdVS8fyUoa
+	VzlKDgH3E/UsO44z+fvYprxMYPDPch15CqDcfwExlRcE+55M/HYRxDlm5gF1TnCmdHZStE8Tf2z
+	jb0Uw==
+X-Google-Smtp-Source: AGHT+IGI+xF2OSgRbI6+fabXiqu9Xwuf5bxWYwnja/rNGOUuSmNzhH42MNUAKuR34Ox7ov8nmiujA9clDhMS84oRbmU=
+X-Received: by 2002:ac2:4e09:0:b0:576:d217:3f2f with SMTP id
+ 2adb3069b0e04-57796b5e819mr1028160e87.3.1758132043747; Wed, 17 Sep 2025
+ 11:00:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <20250912223937.3735076-1-safinaskar@zohomail.com> <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
+In-Reply-To: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
+From: Andy Lutomirski <luto@amacapital.net>
+Date: Wed, 17 Sep 2025 11:00:32 -0700
+X-Gm-Features: AS18NWAGwakGZ9zjxjq7MnfN8O7ZgOJb6fmKIJ0JIML7P3j0NnlDZ27eNb5S7Es
+Message-ID: <CALCETrXHxOkHoS+0zhvc4cfpZqJ0wpfQUDnXW-A-qyQkqur-DQ@mail.gmail.com>
+Subject: Re: [PATCH 00/62] initrd: remove classic initrd support
+To: Rob Landley <rob@landley.net>
+Cc: Askar Safin <safinaskar@zohomail.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
+	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
+	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
+	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
+	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Check for needed memory protection changes on EFI DXE GCD memory space
-descriptors with type EfiGcdMemoryTypeMoreReliable in addition to
-EfiGcdMemoryTypeSystemMemory.
+On Mon, Sep 15, 2025 at 10:09=E2=80=AFAM Rob Landley <rob@landley.net> wrot=
+e:
 
-This fixes a fault on entry into the decompressed kernel from the
-EFI stub that occurs when the memory allocated for the decompressed
-kernel is more reliable memory, has NX/XP set, and the kernel needs
-to use the EFI DXE protocol to adjust memory protections.
+> While you're at it, could you fix static/builtin initramfs so PID 1 has
+> a valid stdin/stdout/stderr?
+>
+> A static initramfs won't create /dev/console if the embedded initramfs
+> image doesn't contain it, which a non-root build can't mknod, so the
+> kernel plumbing won't see it dev in the directory we point it at unless
+> we build with root access.
 
-The memory descriptors returned by the DXE protocol
-GetMemorySpaceDescriptor() service use a different GCD memory type
-to distinguish more reliable memory ranges from their conventional
-counterparts. This is in contrast to the EFI memory descriptors
-returned by the EFI GetMemoryMap() service which use the
-EFI_MEMORY_MORE_RELIABLE memory attributes flag to identify
-EFI_CONVENTIONAL_MEMORY type regions that have this additional
-property.
+I have no current insight as to whether there's a kernel issue here,
+but why are you trying to put actual device nodes in an actual
+filesystem as part of a build process?  It's extremely straightforward
+to emit devices nodes in cpio format, and IMO it's far *more*
+straightforward to do that than to make a whole directory, try to get
+all the modes right, and cpio it up.
 
-Signed-off-by: Lenny Szubowicz <lszubowi@redhat.com>
----
- drivers/firmware/efi/libstub/x86-stub.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+I wrote an absolutely trivial tool for this several years ago:
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index cafc90d4caaf..0f60a12401c2 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -300,7 +300,7 @@ efi_status_t efi_adjust_memory_range_protection(unsigned long start,
- 		return EFI_SUCCESS;
- 
- 	/*
--	 * Don't modify memory region attributes, they are
-+	 * Don't modify memory region attributes, if they are
- 	 * already suitable, to lower the possibility to
- 	 * encounter firmware bugs.
- 	 */
-@@ -315,11 +315,13 @@ efi_status_t efi_adjust_memory_range_protection(unsigned long start,
- 		next = desc.base_address + desc.length;
- 
- 		/*
--		 * Only system memory is suitable for trampoline/kernel image placement,
--		 * so only this type of memory needs its attributes to be modified.
-+		 * Only system memory and more reliable memory are suitable for
-+		 * trampoline/kernel image placement. So only those memory types
-+		 * may need to have attributes modified.
- 		 */
- 
--		if (desc.gcd_memory_type != EfiGcdMemoryTypeSystemMemory ||
-+		if ((desc.gcd_memory_type != EfiGcdMemoryTypeSystemMemory &&
-+		     desc.gcd_memory_type != EfiGcdMemoryTypeMoreReliable) ||
- 		    (desc.attributes & (EFI_MEMORY_RO | EFI_MEMORY_XP)) == 0)
- 			continue;
- 
--- 
-2.51.0
+https://github.com/amluto/virtme/blob/master/virtme/cpiowriter.py
 
+it would be barely more complicated to strip the trailer off an cpio
+file from some other source, add some device nodes, and stick the
+trailer back on.  But it's also really, really, really easy to emit an
+entire, functioning cpio-formatted initramfs from plain user code with
+no filesystem manipulation at all.  This also makes that portion of
+the build reproducible, which is worth quite a bit IMO.
+
+--Andy
 
