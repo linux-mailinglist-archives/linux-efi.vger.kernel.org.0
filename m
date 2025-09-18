@@ -1,110 +1,150 @@
-Return-Path: <linux-efi+bounces-4864-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4865-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138F3B84BED
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 15:10:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B024B85A26
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 17:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61CB188E7D1
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 13:10:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 599B9188DCE0
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 15:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED79305045;
-	Thu, 18 Sep 2025 13:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X00LWdf8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1E630EF86;
+	Thu, 18 Sep 2025 15:29:48 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50B2215077;
-	Thu, 18 Sep 2025 13:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4017C30DECA;
+	Thu, 18 Sep 2025 15:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758201032; cv=none; b=l01WZwZbTcVdg9qkQzSu6qnv7wauJNSukbeC9rUFlGEMYpw50b8m9y0VyOKhuUF2Ln238g+Ef5KYeB9TdIq1ElPuw93gg1hA4EX6+B6X62bK+nN3Fj8vR9ARH9vTTwotjyGnN+u+G9/Zdq1JdpHpWMl7u7WFBL6WnQ2nStmEzAg=
+	t=1758209388; cv=none; b=WYq6KGHeiw8+Fr6IUeDir0CP34mWhD+5qQVhSn06o8SHUGC5cG+xivNKwFjfhs6TJ+h3N0mVb8MeApCdITR+8AH3yUNZuIrLvWEQLyfCJhduGGXHg88ORagUopM8jN74TDYNkWqxFIn+JQ/u5LdVaF+UQbkKUh9wjxNOc4L/FJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758201032; c=relaxed/simple;
-	bh=nbHRt1g80Tq6KxsCivdMgQCmoalxk31z9fbyCiLlgTM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tOvqc5z2eKJE3a4WzfuhO0KjG5xcyZ18IQ7LeEJG2mFvz3xgW1MQACc0oEpQrgU0RmQ9jqeSHV5SZEEJbvXVLn3YW2U0/Vm33refaCraUgCe/gcpyBY/g1lIr+dAoXSRJ+YcDxWAXf7hh3KPUAC7hbwyg02UF8jTvQ7v99iAU4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X00LWdf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A43FC4CEFA;
-	Thu, 18 Sep 2025 13:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758201032;
-	bh=nbHRt1g80Tq6KxsCivdMgQCmoalxk31z9fbyCiLlgTM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X00LWdf8Vmbatq5ziWSDyuMeuA5uxvSt/PlYi+Y50NGUn8HoFAUTK2RATLGMCE41F
-	 su6J1rOyif6a6yifBnjgYrH44s0WOFkytv9JRh4Dvw/QgNVM52E9amG8PZrbyzIHb/
-	 fCucCCwgHyAoSME2x91uCwbAwwXpN/+zhWNhW+B3vzSje3mhimULse2E+3vNBdruR6
-	 AqVevakly8Es6a90E9YBhUxPnJddUZMoZ++STGFo4TM74QZxfuLvekGQf993vQRZTu
-	 PahVawQJfirvvmyQxk6qeaSHhVs25dwe7yLqjMYEPqiSSY8pHrsIgl3SVj90sTprf1
-	 1TwPTpo9gMVFg==
-Date: Thu, 18 Sep 2025 14:10:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1758209388; c=relaxed/simple;
+	bh=1E1TtPIzWv3UVjPPN5oafjjL60AY6+jP9kR4QCfSNnU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=PvGhCB0dzmwbkI77atdqyqReCeWamBfqjA3tAz4g9JGvz47TSOUXF7kFb9qaxjyBgfsCtN0RT5EFFcvG0igUUb2IpMn1llfTor0uONxBC09z8nci0HSl6jMjCSKZXjRNF8gbpefQC6MHYMrcxRAy3RyqLHO75Z3hJqUOfuKP3OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=fail smtp.mailfrom=freebox.fr; arc=none smtp.client-ip=212.27.42.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=freebox.fr
+Received: from daria.iliad.local (unknown [213.36.7.13])
+	by smtp2-g21.free.fr (Postfix) with ESMTP id 179252003FC;
+	Thu, 18 Sep 2025 17:28:31 +0200 (CEST)
+From: Nicolas Schichan <nschichan@freebox.fr>
+To: safinaskar@gmail.com
+Cc: akpm@linux-foundation.org,
+	andy.shevchenko@gmail.com,
+	axboe@kernel.dk,
+	brauner@kernel.org,
+	cyphar@cyphar.com,
+	devicetree@vger.kernel.org,
+	ecurtin@redhat.com,
+	email2tema@gmail.com,
+	graf@amazon.com,
+	gregkh@linuxfoundation.org,
+	hca@linux.ibm.com,
+	hch@lst.de,
+	hsiangkao@linux.alibaba.com,
+	initramfs@vger.kernel.org,
+	jack@suse.cz,
+	julian.stecklina@cyberus-technology.de,
+	kees@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH v3 5/8] arm64/fpsimd: Drop special handling for EFI
- runtime services
-Message-ID: <19b370e4-d6a8-4a60-bc14-4adb55616040@sirena.org.uk>
-References: <20250918103010.2973462-10-ardb+git@google.com>
- <20250918103010.2973462-15-ardb+git@google.com>
+	linux-block@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	mcgrof@kernel.org,
+	mingo@redhat.com,
+	monstr@monstr.eu,
+	mzxreary@0pointer.de,
+	patches@lists.linux.dev,
+	rob@landley.net,
+	sparclinux@vger.kernel.org,
+	thomas.weissschuh@linutronix.de,
+	thorsten.blum@linux.dev,
+	torvalds@linux-foundation.org,
+	tytso@mit.edu,
+	viro@zeniv.linux.org.uk,
+	x86@kernel.org,
+	nschichan@freebox.fr
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+Date: Thu, 18 Sep 2025 17:28:30 +0200
+Message-Id: <20250918152830.438554-1-nschichan@freebox.fr>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
+References: <20250913003842.41944-1-safinaskar@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n4RFNxpRHdoVFDfF"
-Content-Disposition: inline
-In-Reply-To: <20250918103010.2973462-15-ardb+git@google.com>
-X-Cookie: Victory uber allies!
+Content-Transfer-Encoding: 8bit
 
+Hello,
 
---n4RFNxpRHdoVFDfF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Intro
+> ====
+> This patchset removes classic initrd (initial RAM disk) support,
+> which was deprecated in 2020.
 
-On Thu, Sep 18, 2025 at 12:30:16PM +0200, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+This serie came a bit as a surprise, because even though the message
+notifying of the initrd deprecation was added in July 2020, the message
+was never displayed on our kernels.
 
-> Now that the use of kernel mode FP/SIMD is generally permitted when IRQs
-> are disabled, the only purpose served by the EFI-specific fallback code
-> in fpsimd.c is the case where an EFI call occurs from hardirq or NMI
-> context. No such cases are known to occur in practice, and it is
-> doubtful whether calling into the EFI firmware for any reason under such
-> conditions would be a good idea to begin with.
->=20
-> So disallow EFI runtime services in such cases. This means all the
-> fallback code can be dropped.
+When booting with root=/dev/ram0 in the kernel commandline,
+handle_initrd() where the deprecation message resides is never called,
+which is rather unfortunate (init/do_mounts_initrd.c):
 
-This is a really nice simplification, with the fixup rolled in:
+	if (rd_load_image("/initrd.image") && ROOT_DEV != Root_RAM0) {
+		init_unlink("/initrd.image");
+		handle_initrd(root_device_name); // shows the deprecation msg
+		return true;
+	}
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
+It is likely we are not the alone booting with that particular
+configuration, so other people are probably going to be surprised when
+initrd support is removed, because they never saw the deprecation
+message.
 
---n4RFNxpRHdoVFDfF
-Content-Type: application/pgp-signature; name="signature.asc"
+We do depend on initrd support a lot on our embedded platforms (more
+than a million devices with a yearlyish upgrade to the latest
+kernel). If it eventually becomes removed this is going to impact us.
 
------BEGIN PGP SIGNATURE-----
+We use an initrd squashfs4 image, because coming from a time where
+embedded flash devices were fragile, we avoid having the root
+filesystem directly mounted (even when read only) on the flash
+block/mtd device, and have the bootloader load the root filesystem as
+an initrd.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjMBMIACgkQJNaLcl1U
-h9CwNgf/S4B1uo0oH1Q6yqQdYUKVpBpZ3XI7rNN3zbj+UNnKfjH6Npmjv2dKzYLT
-CnFUIUbnHCo4/5jyDAI/6bcGWebEjTM8CpN5j1voWCe0aA8kaHWrqAvyrahXo2fC
-BROXTJofeNL/8zOFXNtoo6ziKHWlZofFjTzQftZYwWBUQGeUA7JWGVBqs8zUhzuc
-W9AjAWujXp5krX0fOut0NliQFk9sqRzGhaI2+zonHk+7MLZQAUc0Te4P94AmbXrf
-T3eHYO0/jfDRGHlmUuNGkRKbUac0IZiiDZPk2i9oUNFRcjDkLByTBnTiBa9i0pae
-Q6y6UxvCIZazRucK4+bMDjUbNtXC2A==
-=YIPb
------END PGP SIGNATURE-----
+We use a squashfs4 because we can mount it and keep it compressed. The
+kernel would decompress data on demand in the page cache, and evict it
+as needed.
 
---n4RFNxpRHdoVFDfF--
+Regards,
+
+-- 
+Nicolas Schichan
 
