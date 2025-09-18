@@ -1,143 +1,170 @@
-Return-Path: <linux-efi+bounces-4849-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4850-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C50B81459
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Sep 2025 20:00:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5DDB841BF
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 12:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 659531C80BF4
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Sep 2025 18:01:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05E4541762
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 10:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADFA3002C7;
-	Wed, 17 Sep 2025 18:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E892F90CE;
+	Thu, 18 Sep 2025 10:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="g1LtUuBN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ScZE1Ul+"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7542FC02D
-	for <linux-efi@vger.kernel.org>; Wed, 17 Sep 2025 18:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E852F83A2
+	for <linux-efi@vger.kernel.org>; Thu, 18 Sep 2025 10:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758132048; cv=none; b=nFQqM29+5Tz9fkLXKdVLWP89frHZDsq5vZF9j63hfHomybm7zsxagC2JMQ+yVbxOXXewgDc6WnccUufebB5MCgtXR9xOyaT8v/fNvC6nmZdttgUqfzeCkkoZELv1Cf7lqrxllI0WbMtybGP5isyq//jEPhJxUYe58dFEkGGxJoE=
+	t=1758191438; cv=none; b=QxX1Pf9HGQinqoawfVDaesgCUkA/jLC71VmgxxTcss4ijyV16BXX0JHtMoZtT3wp4B8JuGc8O3WEsTN/d+EOySq1BRRsR4XzGq8HSplpDj2xd/6GdkslNUZsdLjU75X2FJaqifKVd+0aGZbx2p9zRNQNPCh28+sqrbGKGxDOUT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758132048; c=relaxed/simple;
-	bh=DLDcGQ3mu3T/MPVKq0NF9V2I5Jn6ILZwFaw9KVQfhOo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rbHaR1aCxlXRYIv5IeIA8GWTXmABF61UiJ16qD5JgLW6tY/Gcn+nFqQOl4ojVuRp+VHsFRYMJ5Y8V21eKnFmYssYi47NRnU3JeieC8QIxqPFw1bYHFDz9RtN7W7njoNCZPwURuNZPTUBMT+dX0MaET7iANbw18eouN/ErJj9mhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=g1LtUuBN; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-577232b26a6so101902e87.2
-        for <linux-efi@vger.kernel.org>; Wed, 17 Sep 2025 11:00:45 -0700 (PDT)
+	s=arc-20240116; t=1758191438; c=relaxed/simple;
+	bh=gh+SqZIPfKchODHEEMzVSO+ljFxyxhrM3bb24+dQSjw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qLkt4PPTsOaE/RVSaUJ1PDT2ub9hugkBNC58IhAX93lu2ikJ2A2WfVh3qdHxgohJ2PO22n1pqu+mb9APV/dW6hJlUQEa7nayfl1+julEPEh0JNteUJrLGbY/eocuyqnuYGCDa7Ua/GXZj9Jvq0bDGDp9txjcj6oQ+QuZjlU5pQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ScZE1Ul+; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-627eaf68bbfso648602a12.1
+        for <linux-efi@vger.kernel.org>; Thu, 18 Sep 2025 03:30:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1758132044; x=1758736844; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
-        b=g1LtUuBN2lj4qvyQzWAdLKTewMPpvB0BMgAm3EhYmOSEcT379TNMgVSmJk7DCmgjc/
-         T0eHokwlFMY3Yd+mXYCz+ekytPn0ndF69T0GJJIC1YMQr15FXnETUToESn8hAOjjN4TJ
-         wc+dE3joK8Hj6X0qrUlvmHpmCBRx7/hVESh3NV1/RSPbebawN77L/JxPYbAY8rno5NPR
-         h45BlMuQrVS79kOiLhszZHO32mHd/xwXNvhKNiRJJPEEOxGanxAq7D4RvCoxMPnsrP0o
-         gtEy+UX8pbw1CA/Tbhp0++SKDmI4SgqYBJ/2EKyXEOwvuyrgRQgYTYLI+VQny1h7rWhV
-         /NkA==
+        d=google.com; s=20230601; t=1758191434; x=1758796234; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bkJPq8vMT8jfjXgOksIkMdTefdHPb/Z7GDoGNb5nNT0=;
+        b=ScZE1Ul+xZ8+fkMtlryL14OdAO0xkfofr85XtnkznQi427IW7X81GliW6ls1CDxRyr
+         Tty810ENBv6lsaldfV/kCpJz/XDvDBvMaKfTVl2I5YjMrSBH97X/8yWf9YSeXV90ZvF7
+         W/VOM1ohZ4F1JFyIr7dT6fIAxlqKXxHduiDg7PILdSkwkt3hh7UHIMvaFzlvIZsAsjeY
+         Zkl8Bi0t7ajrwnD8J/FuUMEDB3RdsEoVozI9nUjUaed7h+CunzoCnxLdnLQlpoTvgI7O
+         dl89ySceAICy1SF6E7sxkKCC4+eRzPeAu2BJeO7JdKCH2qoQI2MNkmeXEXpr6T+SJ6/c
+         +ZQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758132044; x=1758736844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
-        b=Z7H0gOVffswLGfj+Qb0gCd8U94UBww4Peuly+c1A/M2qXw5kdviLZkUMlRkvTUuV8I
-         zHTVSO8Mo07EfI4u2BjPpPix36dBRGhpX7nZkhiLPbTMqmv0strYW91vt1eksT+XepWi
-         oRli/1Jb0iOChIoQm/ZLjwZA5jZvb+qbzu+DmYi/tSSdqdvtl6dP0gAJuoHwyyEkfwp4
-         ASq/q65mnplVEERaOG2zIJ3jznhZTuJUEludjnJFnjsutEty+LiV1jIJl6ubn5ytaIOu
-         wsSDhe0IvIisnjq8ntYFeO4DGjcB1BDczMfEshW03JNCDW0nZ59GW6N0DvkdgUpdb6D5
-         byDg==
-X-Forwarded-Encrypted: i=1; AJvYcCW03ymSwWVj7LWQiqOJZuaMoIx+ejjlk2jVoycRn5s3vr2MBsy93aJIBXVaFKiWJV28SkHOhLlPB9I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAeICiSGuHq5UtSoYNBHghfrB1Ixrw3/3RbwZR1jk1S+hNeILp
-	X9MGWD3OFaGfhabhkTiPZlk6epzSNWdobYOSfrZynoukoSJY3eLvPKGRtHkaFbLqq66g3ha0ytl
-	Gde+OoBcglCye7EAXwCHEVg9wYL4+b+IVuqUGD/mK
-X-Gm-Gg: ASbGncsH1RJDF1uozAUmfCUGlGIpaw8gNJNptZHewGlH89xL47DQJNfwArePS7OFi2f
-	Z9RonnSd+a/dHLoomMISS+0soL64b07lxAATJDGFZjU25y0AcnEHht+eicgyxb3pkfdVS8fyUoa
-	VzlKDgH3E/UsO44z+fvYprxMYPDPch15CqDcfwExlRcE+55M/HYRxDlm5gF1TnCmdHZStE8Tf2z
-	jb0Uw==
-X-Google-Smtp-Source: AGHT+IGI+xF2OSgRbI6+fabXiqu9Xwuf5bxWYwnja/rNGOUuSmNzhH42MNUAKuR34Ox7ov8nmiujA9clDhMS84oRbmU=
-X-Received: by 2002:ac2:4e09:0:b0:576:d217:3f2f with SMTP id
- 2adb3069b0e04-57796b5e819mr1028160e87.3.1758132043747; Wed, 17 Sep 2025
- 11:00:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758191434; x=1758796234;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bkJPq8vMT8jfjXgOksIkMdTefdHPb/Z7GDoGNb5nNT0=;
+        b=YZwp89ZxPtNkbTLBO6B9HQW75rTwXPo3RqeC9U7N6p4O8GfexDNpZqI0pSh4ZbUQnE
+         T7edXe3on9blYlIsmrTfSk018HkRdFiQ3OfWaZgFM3u/fwkv8X3sdxdVvgw6R6rbuiOS
+         SupUfqMO5G7QPs8v1Ij2Wjdhh70MfHncFiDN8oxhZZO5HHF1JbjSPEeizT15aT01L6tE
+         u8P9JBWdiDN7atMi/1KOC/El/bFjQjAt/1I/oHTwzT8n2d5oCqSNMXTdkV66F124NWqZ
+         mOGaX+OfsvW/6yPI81nOAL8wk6hZGQU/0Ijel5vBPOBhLnhdqsovkw+FrFy8FT2fRe0d
+         2p+A==
+X-Gm-Message-State: AOJu0Yw4ldhOBkYIXqezpaaGrzncgXAqQN4YW2PxwbrZVSsTpbCkFv1H
+	cuYEL+BsCzoXOiILGODu4WMsFpbtxTAQG5giTv5j2/jV3MUaF5HWOHdLW/8AA/aIE8D9EG0vyO9
+	qcT+eXUxQ0uuMVh1r0bmAEDDKYrdVNN4AuZ58hqWCquqImK4ff9K1YM5WKspHRd0Ntiew6T/oQ3
+	V3k4NyKC5DUeFrYziDfTYJPaSLiheXGA==
+X-Google-Smtp-Source: AGHT+IH7GEHEQMPK5uR1AbK9qmrBXkbgHp6FO/i5/9MrPBxJXJII3NY2OOT9yPIy1QWcK3kcEWkWsKjc
+X-Received: from edf16.prod.google.com ([2002:a05:6402:21d0:b0:61a:94f3:bf7b])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:46cc:b0:62f:8274:d6bd
+ with SMTP id 4fb4d7f45d1cf-62f84213dafmr5553015a12.8.1758191434483; Thu, 18
+ Sep 2025 03:30:34 -0700 (PDT)
+Date: Thu, 18 Sep 2025 12:30:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250912223937.3735076-1-safinaskar@zohomail.com> <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
-In-Reply-To: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Wed, 17 Sep 2025 11:00:32 -0700
-X-Gm-Features: AS18NWAGwakGZ9zjxjq7MnfN8O7ZgOJb6fmKIJ0JIML7P3j0NnlDZ27eNb5S7Es
-Message-ID: <CALCETrXHxOkHoS+0zhvc4cfpZqJ0wpfQUDnXW-A-qyQkqur-DQ@mail.gmail.com>
-Subject: Re: [PATCH 00/62] initrd: remove classic initrd support
-To: Rob Landley <rob@landley.net>
-Cc: Askar Safin <safinaskar@zohomail.com>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
-	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
-	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
-	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3840; i=ardb@kernel.org;
+ h=from:subject; bh=g/6iYjL/DBpqLHEsAcR+wB8/PZx01DdNCswq0jym5uU=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeP0feP7mxklXj1nvFN8I3TVwrAPR0SLDTZenazq+aau9
+ 0H0rOOhHaUsDGJcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAi4fKMDO9eRs3N7ruxmFnw
+ s++1z9P1F2d87b5luzR7h/2OKPvizDUMf+WPbAyvDgqS1o+LYG6p7I9yeWTNptL6mt9LdPHxlXc 0OQA=
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+Message-ID: <20250918103010.2973462-10-ardb+git@google.com>
+Subject: [PATCH v3 0/8] arm64: Make EFI calls preemptible
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 15, 2025 at 10:09=E2=80=AFAM Rob Landley <rob@landley.net> wrot=
-e:
+From: Ard Biesheuvel <ardb@kernel.org>
 
-> While you're at it, could you fix static/builtin initramfs so PID 1 has
-> a valid stdin/stdout/stderr?
->
-> A static initramfs won't create /dev/console if the embedded initramfs
-> image doesn't contain it, which a non-root build can't mknod, so the
-> kernel plumbing won't see it dev in the directory we point it at unless
-> we build with root access.
+The arm64 port permits the use of the baseline FP/SIMD register file in
+kernel mode, and no longer requires preemption to be disabled. Now that
+the EFI spec is being clarified to state that EFI runtime services may
+only use baseline FP/SIMD, the fact that EFI may code may use FP/SIMD
+registers (while executing at the same privilege level as the kernel) is
+no longer a reason to disable preemption when invoking them.
 
-I have no current insight as to whether there's a kernel issue here,
-but why are you trying to put actual device nodes in an actual
-filesystem as part of a build process?  It's extremely straightforward
-to emit devices nodes in cpio format, and IMO it's far *more*
-straightforward to do that than to make a whole directory, try to get
-all the modes right, and cpio it up.
+This means that the only remaining reason for disabling preemption is
+the fact that the active mm is swapped out and replaced with efi_mm in a
+way that is hidden from the scheduler, and so scheduling is not
+supported currently. However, given that virtually all (*) EFI runtime
+calls are made from the efi_rts_wq workqueue, the efi_mm can simply be
+loaded into the workqueue worker kthread while the call is in progress,
+and this does not require preemption to be disabled.
 
-I wrote an absolutely trivial tool for this several years ago:
+Note that this is only a partial solution in terms of RT guarantees,
+given that the runtime services execute at the same privilege level as
+the kernel, and can therefore disable interrupts (and therefore
+preemption) directly. But it should prevent scheduling latency spikes
+for EFI calls that simply take a long time to run to completion.
 
-https://github.com/amluto/virtme/blob/master/virtme/cpiowriter.py
+Changes since v2:
+- Permit ordinary kernel mode FP/SIMD with IRQs disabled, so that the
+  special EFI case only deals with invocations in hardirq or NMI context
+- Disallow EFI runtime calls in hardirq or NMI context, so that the
+  special FP/SIMD handling for EFI can be dropped entirely
+- Use a mutex rather than a semaphore for the arm64 EFI runtime lock,
+  now that it is never trylock()ed in IRQ or NMI context.
 
-it would be barely more complicated to strip the trailer off an cpio
-file from some other source, add some device nodes, and stick the
-trailer back on.  But it's also really, really, really easy to emit an
-entire, functioning cpio-formatted initramfs from plain user code with
-no filesystem manipulation at all.  This also makes that portion of
-the build reproducible, which is worth quite a bit IMO.
+Changes since v1/RFC:
+- Disable uaccess for SWPAN before updating the preserved TTBR0 value
+- Document why disabling migration is needed
+- Rebase onto v6.17-rc1
 
---Andy
+(*) only efi_reset_system() and EFI pstore invoke EFI runtime services
+    without going through the workqueue, and the latter only when saving
+    a kernel oops log to the EFI varstore
+
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+
+Ard Biesheuvel (8):
+  efi: Add missing static initializer for efi_mm::cpus_allowed_lock
+  efi/runtime: Return success/failure from arch_efi_call_virt_setup()
+  efi/runtime: Deal with arch_efi_call_virt_setup() returning failure
+  arm64/fpsimd: Permit kernel mode NEON with IRQs off
+  arm64/fpsimd: Drop special handling for EFI runtime services
+  arm64/efi: Use a mutex to protect the EFI stack and FP/SIMD state
+  arm64/efi: Move uaccess en/disable out of efi_set_pgd()
+  arm64/efi: Call EFI runtime services without disabling preemption
+
+ arch/arm/include/asm/efi.h              |   2 +-
+ arch/arm64/include/asm/efi.h            |  15 +--
+ arch/arm64/include/asm/fpsimd.h         |   4 -
+ arch/arm64/include/asm/simd.h           |   2 +-
+ arch/arm64/kernel/efi.c                 |  65 ++++++++--
+ arch/arm64/kernel/fpsimd.c              | 137 ++------------------
+ arch/loongarch/include/asm/efi.h        |   2 +-
+ arch/riscv/include/asm/efi.h            |   2 +-
+ arch/x86/include/asm/efi.h              |   2 +-
+ arch/x86/platform/efi/efi_32.c          |   3 +-
+ arch/x86/platform/efi/efi_64.c          |   3 +-
+ arch/x86/platform/uv/bios_uv.c          |   3 +-
+ drivers/firmware/efi/efi.c              |   3 +
+ drivers/firmware/efi/riscv-runtime.c    |   3 +-
+ drivers/firmware/efi/runtime-wrappers.c |  20 ++-
+ include/linux/efi.h                     |   8 +-
+ 16 files changed, 104 insertions(+), 170 deletions(-)
+
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+-- 
+2.51.0.384.g4c02a37b29-goog
+
 
