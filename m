@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-4856-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4857-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C566B841E9
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 12:34:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22779B841F2
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 12:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D2DF720A20
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 10:33:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C04F5445D7
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Sep 2025 10:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C3B30499B;
-	Thu, 18 Sep 2025 10:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AA0305062;
+	Thu, 18 Sep 2025 10:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VcndOKmT"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XJ8Q/tMi"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA273303A24
-	for <linux-efi@vger.kernel.org>; Thu, 18 Sep 2025 10:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DD63043BF
+	for <linux-efi@vger.kernel.org>; Thu, 18 Sep 2025 10:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758191444; cv=none; b=Fd1PfOkMyIrw5dGDy19eZ/oDuOEct/wW6WjIxbo1CnI+fmOGWdGpawZh8TcbW7rKsHqW1uXvcqkF2u2t7ketBpRSTDzTxiyQ135j9ZvKyGsK+/CG1Sl6a5DEMllYxuTocIxW6FpPqZBOXahJZReRjUvw0DVSTD+GKNwhK/MRJVw=
+	t=1758191446; cv=none; b=MJODAyhhqSbd8qzb8sOkCayPVCK+WNMJzipNEHsmhwzUSoF8VZNa5TCxY3CdhduhE2rc7/vBBEmk8xW5SHYa8+GOn0BISX3NKXsu2kGwanUo5sENAghM9+fVAjiLGhaa6Ba6vSQMRULAm1uF0L+qWn9k6atOYPlAps4fULlAKmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758191444; c=relaxed/simple;
-	bh=o/hZvudtfRK4rr9zuVg3PqxrxE8wP3rPGUNeDSxyO5E=;
+	s=arc-20240116; t=1758191446; c=relaxed/simple;
+	bh=Wiezk90EeDViSxUviUNtzZTTt45XUjxOpMdjJkjt7Z4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Gf5YbwsXN2ApLMM5RCpEF8IsglAqzpL9YGHKug5punqbAjWrhnWbzqmF2LEN7K2ZGwxcEj0UoGwCGoF5BavZUmrVdYFo17sAcaIujs4PQV8NjFPbox8GvTY/yBqfk3JpuIFva8tQTuKZNGcmrmPdQhzkim7cuMNzYUDyOd3Pdcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VcndOKmT; arc=none smtp.client-ip=209.85.218.73
+	 To:Cc:Content-Type; b=PL2kxaZsqu6rG+98NpxbW0KNUcOYll1Rkhltf3EsH3IoThW8QvGQ8HQkG8jlJBVeUct8dCN/YphB8DSua66gtTypyQTqYE0DJ3TLPXvoMyjSKyOJycBTgOdLjyEUp+Kk9QbiI2b8Y6XMKdBUHzG+s7qlFdOuCbBBmJQdfHpV3sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XJ8Q/tMi; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b07c9056963so70940366b.2
-        for <linux-efi@vger.kernel.org>; Thu, 18 Sep 2025 03:30:42 -0700 (PDT)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45b98de0e34so7888325e9.0
+        for <linux-efi@vger.kernel.org>; Thu, 18 Sep 2025 03:30:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758191441; x=1758796241; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1758191442; x=1758796242; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MNHqAVLlhLv5W0htkEcz0OII/0HvpQvRWJKki7ay4x4=;
-        b=VcndOKmTVE2w4LxGmEVmEvb9ZcpHUiWi2vNoUenb5xuE1D7Cxgrjpo9hNr1NaJdOkD
-         AtVsKa/2OGZwD+7SUXQC4rNw4hcjWO7oXQBtUIdNHhtDK0mLllLFVrTt+rJWAeVaINqw
-         8TQWJL6LqSkobDwX/84eFyCVGYpYxpNaxJ4wGO22ASUbM5SBqSyFj9hw0KMtAmC4ZX5D
-         NeRbmLoCJpFkCFxb1d3xbeLcs9Ffiiu0i9P55Ww7SY9NyHI80zAaQftxzNnZoiInbamX
-         8IcuTwEv0NtJS/Wb3wE/D/GmmdvH03ak7VOQliY6mYSF9p5LBLV5vjsIxB6fISOIFlP1
-         e3zQ==
+        bh=DksqsAvPlifD5AcgvqzgUC2XrqtgGq1Wq0QfB7rSyJ4=;
+        b=XJ8Q/tMiEhlkN/DJEBgAZ2myIg+tTe7qKrfvcYeNXDyxdlTfygneoyw85ck6lAq9uR
+         ydy6ojoGz65v6uGdQVu+/dQSAYUMNeHcu0tpQMAeXX8r3zW/FZ6G0Q4tv8gPWwRH4xKY
+         +QFbEKHOJG3igKrxfZ4jer/Px/NxCs3U8yMbS0pwWf05FeLSbk7RVsrx0HXm+tM71YXx
+         vU5Um3n2jPqQA2/xMR8YYiMJCD51Pm2uidepPqSO7WFGRHsjYmIpuQcMaQGS7qPxcDYf
+         ibhGQDyil3cDFNswcYlDpkoJ5xAXkD/WzgUj6bmQd1aTbC0k7jp4rk50mOJQfyVVecRZ
+         322Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758191441; x=1758796241;
+        d=1e100.net; s=20230601; t=1758191442; x=1758796242;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MNHqAVLlhLv5W0htkEcz0OII/0HvpQvRWJKki7ay4x4=;
-        b=B12tQkamcQhAqVP0yttm28dASE33QEWxCFOJohLkeZ4iaKLHyQKvULJs+jVD2iRqgj
-         BdhwQmj949bz6mWqPDcLXD6xIioTJc3DyiK2ddgxvLCQZP2b/oChP/2fz+IPSPWAzC5b
-         4vTpsLsxRRtMcbeLItDCVfKMvwAIc3+svNQ3tt7mk15GxoiF8LcD1li5WBPTQTsfUWt6
-         sZNkIOFFq00PHKV2RPEO33e7e4AF1NTr3HxuSMcbUdNRYTfhhHbrnxtdjjMc4Thl5Gv3
-         r2EUqam5IMWENeTP1qqVqyGOScUl7a7ig2MTn5+o/LqIDGew/9gwyMZL7OyggwbLD3Mk
-         dQmA==
-X-Gm-Message-State: AOJu0YyuYYwaqELY3bFXBuxJe/3IHzd4qkeDm2Tu1X3m3MAsCisnr3DW
-	0hHvefRTAn372BNCMr9DRnQskJ3XZBt0lIMtFpIw8le0GfqAtS+FMi/AyxRXcbYZDtbmrsyyCfy
-	4FT0Rpf7Db8oQmws1UdqILpdTFrkr6yGo0XgwpqyXGq+z1IQxuu5pKGpj9dbMzgIlH7J+dUAYEj
-	rbFVmxjAhOWBLeJsLerzai/qvKdYGj1A==
-X-Google-Smtp-Source: AGHT+IFgHxWIDqP1JG9dsjSf5woDKGTvu3LMMfMFqln2zd5f55mk3oKmQw/5olbKzpy9I1HA/uIxbJPg
-X-Received: from edbio10.prod.google.com ([2002:a05:6402:218a:b0:62f:4a87:a86b])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:4788:b0:b0f:a22a:4c60
- with SMTP id a640c23a62f3a-b1bb17c8ca5mr633978966b.11.1758191441397; Thu, 18
- Sep 2025 03:30:41 -0700 (PDT)
-Date: Thu, 18 Sep 2025 12:30:17 +0200
+        bh=DksqsAvPlifD5AcgvqzgUC2XrqtgGq1Wq0QfB7rSyJ4=;
+        b=QECL2z3ZB2dvHqs3JTy+q0EELaOTpsP2GZnRLG9FkkzpYeLeRfeMePxYvqAZg44OJZ
+         1cSFVoWxodhjWEaU4hEX8sr+pw4KDIjnvF7GN5jJe1hnTIebVqt0ZoGgGnblqh9JGbYl
+         MEbO2kn+WOGvyERHG7KprT2/zV+6tpM57ab8K6WCNFMAsGUeAinmPIsuu90LM2Eod14O
+         QvbKvrxuF0FVXm0mh/rAiJMf+usxY8V/PPIWqqAhDsgfTt76bj6UrIZx9DvLXKVi3274
+         sdDNBpgQcHM72m+5i6WXoYmR+0yc/ajTxA0L/W1BZpj2UON7WltaxaomMb+QOLpa8O08
+         Ts7Q==
+X-Gm-Message-State: AOJu0YxSvE1GyHUjGw3X7nUjDzr1q1Omv3123gCU20Rr0eDDGfHaUcp4
+	dpusGyCT5fkbzkiMvS+NYCjdiBkcO9P21GZgHe9jRgG7KlAIx1+EGbR/rzQaUX+X+qPRrrDZ8Rj
+	r1RhyWuIWNRxxgASpV62t8G2OBJ471CAPKM8QfZXXYcJ6cyyJ5OiUAHwGSdCEiNOAC4BmQInMP7
+	/SQEen2aTAPhyq3glTm4ci9VGk6hFdMA==
+X-Google-Smtp-Source: AGHT+IFUmBh+5gegFiYMOlzv62Mjx0w8SlOm74pqvtSIgATSsKH7e5irJfmo4m3CeekRPpIfN+2PS0jf
+X-Received: from wrbdn3.prod.google.com ([2002:a05:6000:c03:b0:3e7:6748:fa54])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:5d86:0:b0:3ec:ce37:3a6d
+ with SMTP id ffacd0b85a97d-3ecdfa2ae03mr4664506f8f.47.1758191442249; Thu, 18
+ Sep 2025 03:30:42 -0700 (PDT)
+Date: Thu, 18 Sep 2025 12:30:18 +0200
 In-Reply-To: <20250918103010.2973462-10-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -74,15 +74,14 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250918103010.2973462-10-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1447; i=ardb@kernel.org;
- h=from:subject; bh=CzllZySlu7Zzk+9rgGtZjOjjeEN/aeVWkoZifxpGWQo=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeP0fZur/x7YPo49KfFPamHLRgWB3fKCD7LceAUfLt13j
- mFqzDSujhIWBjEuBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjARp3cMX8U+BHJpr9zO6v9t
- xoPLDTu/XVfqvcBlKTTHQzN893PmFob/pTUOLdXPImb8152s75qsuTMpV8O3NPLvZo3OTz2Tkw6 xAgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2694; i=ardb@kernel.org;
+ h=from:subject; bh=xrwXhuc4FPqL3CCntBsstjQDywcZZ1Gih2rwsqKYefE=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeP0fTvNvTP51tUVfbQO9um+s2tq1D8Lxal183K23BS8W
+ OS76NDVjlIWBjEuBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCR5XwM/4yCL/hXm09o4V71
+ pFPRwNjmMcvy2bvZFx2+zTFhrsFOwwuMDNdiUvbEfrd6uzYhzjug5+//uNlJCrzPww5vSfdiK1X VZgQA
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918103010.2973462-16-ardb+git@google.com>
-Subject: [PATCH v3 6/8] arm64/efi: Use a mutex to protect the EFI stack and
- FP/SIMD state
+Message-ID: <20250918103010.2973462-17-ardb+git@google.com>
+Subject: [PATCH v3 7/8] arm64/efi: Move uaccess en/disable out of efi_set_pgd()
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
@@ -93,53 +92,82 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Replace the spinlock in the arm64 glue code with a mutex, so that
-the CPU can preempted while running the EFI runtime service.
+efi_set_pgd() will no longer be called when invoking EFI runtime
+services via the efi_rts_wq work queue, but the uaccess en/disable are
+still needed when using PAN emulation using TTBR0 switching. So move
+these into the callers.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/kernel/efi.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/efi.h | 13 +++----------
+ arch/arm64/kernel/efi.c      | 18 ++++++++++++++++++
+ 2 files changed, 21 insertions(+), 10 deletions(-)
 
+diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+index decf87777f57..09650b2e15af 100644
+--- a/arch/arm64/include/asm/efi.h
++++ b/arch/arm64/include/asm/efi.h
+@@ -126,21 +126,14 @@ static inline void efi_set_pgd(struct mm_struct *mm)
+ 		if (mm != current->active_mm) {
+ 			/*
+ 			 * Update the current thread's saved ttbr0 since it is
+-			 * restored as part of a return from exception. Enable
+-			 * access to the valid TTBR0_EL1 and invoke the errata
+-			 * workaround directly since there is no return from
+-			 * exception when invoking the EFI run-time services.
++			 * restored as part of a return from exception.
+ 			 */
+ 			update_saved_ttbr0(current, mm);
+-			uaccess_ttbr0_enable();
+-			post_ttbr_update_workaround();
+ 		} else {
+ 			/*
+-			 * Defer the switch to the current thread's TTBR0_EL1
+-			 * until uaccess_enable(). Restore the current
+-			 * thread's saved ttbr0 corresponding to its active_mm
++			 * Restore the current thread's saved ttbr0
++			 * corresponding to its active_mm
+ 			 */
+-			uaccess_ttbr0_disable();
+ 			update_saved_ttbr0(current, current->active_mm);
+ 		}
+ 	}
 diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index 0d52414415f3..4372fafde8e9 100644
+index 4372fafde8e9..a60444dcec68 100644
 --- a/arch/arm64/kernel/efi.c
 +++ b/arch/arm64/kernel/efi.c
-@@ -166,15 +166,22 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
- 	return s;
- }
- 
--static DEFINE_RAW_SPINLOCK(efi_rt_lock);
-+static DEFINE_MUTEX(efi_rt_lock);
- 
- bool arch_efi_call_virt_setup(void)
- {
- 	if (!may_use_simd())
+@@ -182,6 +182,15 @@ bool arch_efi_call_virt_setup(void)
  		return false;
  
-+	/*
-+	 * This might be called from a non-sleepable context so try to take the
-+	 * lock but don't block on it. This should never fail in practice, as
-+	 * all EFI runtime calls are serialized under the efi_runtime_lock.
-+	 */
-+	if (WARN_ON(!mutex_trylock(&efi_rt_lock)))
-+		return false;
-+
  	efi_virtmap_load();
--	raw_spin_lock(&efi_rt_lock);
++
++	/*
++	 * Enable access to the valid TTBR0_EL1 and invoke the errata
++	 * workaround directly since there is no return from exception when
++	 * invoking the EFI run-time services.
++	 */
++	uaccess_ttbr0_enable();
++	post_ttbr_update_workaround();
++
  	kernel_neon_begin();
  	return true;
  }
-@@ -182,8 +189,8 @@ bool arch_efi_call_virt_setup(void)
+@@ -189,6 +198,15 @@ bool arch_efi_call_virt_setup(void)
  void arch_efi_call_virt_teardown(void)
  {
  	kernel_neon_end();
--	raw_spin_unlock(&efi_rt_lock);
++
++	/*
++	 * Defer the switch to the current thread's TTBR0_EL1 until
++	 * uaccess_enable(). Do so before efi_virtmap_unload() updates the
++	 * saved TTBR0 value, so the userland page tables are not activated
++	 * inadvertently over the back of an exception.
++	 */
++	uaccess_ttbr0_disable();
++
  	efi_virtmap_unload();
-+	mutex_unlock(&efi_rt_lock);
+ 	mutex_unlock(&efi_rt_lock);
  }
- 
- asmlinkage u64 *efi_rt_stack_top __ro_after_init;
 -- 
 2.51.0.384.g4c02a37b29-goog
 
