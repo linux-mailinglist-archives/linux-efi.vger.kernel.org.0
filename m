@@ -1,123 +1,147 @@
-Return-Path: <linux-efi+bounces-4878-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4879-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CF4B89BD8
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Sep 2025 15:55:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED004B8A43E
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Sep 2025 17:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF094E5B00
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Sep 2025 13:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D127B1C83414
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Sep 2025 15:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8290312801;
-	Fri, 19 Sep 2025 13:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E9C319604;
+	Fri, 19 Sep 2025 15:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1S2hu/s"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="xbo3W1UF"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7F73126CF;
-	Fri, 19 Sep 2025 13:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF0A3168ED
+	for <linux-efi@vger.kernel.org>; Fri, 19 Sep 2025 15:25:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758290105; cv=none; b=ZQIX61eOjwaWI6+9zh1HubzYH/7AsVt/CzjroJESdPfcTCLQcaPgUS68p5gt2qFVH4OJmzlnU1M5lW7rlRTR390LYtbWBdViqx8pUgdV8fusAY2DzfPrCOzMq+qe3xppQeu9DmA3xHEcYRLwJDSu4lCkyNvKiHbLlhVMhqymVtI=
+	t=1758295506; cv=none; b=iLmi2jyOFGCkCgiKL4lMM4eXiPY4MSWeUQ2TSEIvvaAXnmOY4CSdEJmnvZH/iNeGfyqM+M+AUkWa2L+48qOGFdSL+voj/9LVFT26/yuZxMzuhWu4K3lTF02ayzK3tkMJnt/R9BPy8Ny14ylYjxKvyZ2sTNdAxfkZswYgE1+n2sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758290105; c=relaxed/simple;
-	bh=XVzTh4eHn4N/ZmlR3lObvuzKNEutxl5poX823+fHFB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L3o11P7lN0XPOJgQRWhube9RVGoaKNYMTNayX6xgO5sSnOsNhKa9rM2UUEYCVVaDJZapzQKt1xnwEYwobEYVB36nyf3ZHc8WnMcp/+qI9F/epibCI2YK7pnDpK4U7W4sZFQMYBOsgd2Bw8HbwympFbIX+T0Q6XcyFWwN4r0kDvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1S2hu/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312CEC4CEF0;
-	Fri, 19 Sep 2025 13:55:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758290105;
-	bh=XVzTh4eHn4N/ZmlR3lObvuzKNEutxl5poX823+fHFB4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V1S2hu/sBbuYfL5WeMi1H2qeTqk+hHxic2QzEs4J8ouGVegrgWvMQ6at2y2WAhuBr
-	 fdRhBucjff9iC6fQMtxcVqsSWbu+0GGnRjVXCGngvqnUJug8xoNh5fYGix0z6jgAN/
-	 b/kkxsakBRspu0tTk7C5ZT6pFf7JXURtNW5R6hm7b2ELCDFELfj+0ucEZIIrjEQHL/
-	 XWXw3IZqoqBhzIagQkU7c+lOLImvXc1T06T90aDrKXNNFi9odXwV5x8x/ssygy2mwI
-	 dYiVfw/h7nfRlSMJnmHJJum4OvnQwNDKX5AOBTB6z6hTq70gEjRXMuSvVn0P6E2HiA
-	 Mp4mgt4mLZlPQ==
-Date: Fri, 19 Sep 2025 14:54:59 +0100
-From: Will Deacon <will@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 6/8] arm64/efi: Use a mutex to protect the EFI stack
- and FP/SIMD state
-Message-ID: <aM1gs9rhKbrB2Val@willie-the-truck>
-References: <20250918103010.2973462-10-ardb+git@google.com>
- <20250918103010.2973462-16-ardb+git@google.com>
- <aM0_96QvR-hlYMJJ@willie-the-truck>
- <CAMj1kXHDtTNMzih7OoTYU0vN4M3mOmFL3YOfaPUKReyJQA6uAQ@mail.gmail.com>
+	s=arc-20240116; t=1758295506; c=relaxed/simple;
+	bh=tIBWHHOOKfm2qL1G0oNEg1lQ/EY8RTTkm2B9w+25Bvk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TLjiJLJuoHOndvuLIs2yo8Sea5MU5iKRPsLLNu5XcDFdhZMoZ4/iSx44O/s/F9JHssQDbme8GKWu+FK5CA4c/24jL4XL9bU3Eb/elCPwAH0jCbyv1/HYFZRhV19Lf6tck8feXqYdISgI6K+3Jpns0QnRF+A3XPb53N/UgI4QBkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=xbo3W1UF; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f7ab2a84eso2641339e87.1
+        for <linux-efi@vger.kernel.org>; Fri, 19 Sep 2025 08:25:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1758295500; x=1758900300; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=EztjVQ+y07YMfegmHOd0VyK62XkODMWu0LdNE29WAS0=;
+        b=xbo3W1UFpKFkZ1p3cmir9bHExoubmn+zN65uKZIOYM/VNr4k3So7pYfDI6mX/D9Xs7
+         tKrFxrKGsa1OUV4/BaJm81tBW61J4ZGYYxqxZFHL+2WJXFRTEp/mhXDIaLf+cQRcgUXe
+         AYqPNZvLbxLN1AyYo7ig5n8eVxO+iPi1huE+4hW6lV7MZkf7YHIdjHXfXdto2VLmATJZ
+         knqRg3MYiebrHRGL5TV4krfrv3EaVDwqo3YKPYYlEuRSeFOsywbR4G16hcwfzRVUvkmK
+         +8rrea1TuR59LvTS19HlGLqGt+kLHJ+F5+322OVOV6/84SIcgYqHnsi5cc3ulWFd4ja5
+         pnpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758295500; x=1758900300;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EztjVQ+y07YMfegmHOd0VyK62XkODMWu0LdNE29WAS0=;
+        b=gm2bTodOrixlJq/2txoMiSrVUM3HwExMuFJ6dNqRE7uRtcpTv09rUnT++8/kAwej61
+         6/mC4ADr+XEf02qObV3670nSQGuSyJKPARW8JcZTuOiITGPuKvYWWZm4ArCN7+AAWoXO
+         O8o97u7BNeHJexnycFShhAgs+3IV71aKjkPs10Wc08kny80Yl6HN/ueyQyRHXAEduQf+
+         6VPK9WX+Hl/Kn3VqQ7n+loFdDCO2Q3xxaAoF1igWfH2c7Mp65Xu5FZAC21xUWJJvQ7fH
+         t8TSrxRVpNOl3LCWZ5rTwq3SRD1zUcG7IjxUbGDvi4Dv7k/Xrj/Qwo3uGfgsJHz+9mH9
+         DByA==
+X-Forwarded-Encrypted: i=1; AJvYcCXbiznLQPW13AbqSHjaKWoGv+F2MIaTBHiCQklIKMzOVS6oJuG+pQwmJ1B3lK6j5lYFfSYCe97qMUs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWNj7MX4ZJcAhinBFmUSEKU0zVWqgGhfNpf+OFJOFbGuKp8eYe
+	SPySUM1xnbaMq9d1mnnoJaW/FxP9asrof4ZYXR0JW7STaUwwTU80fFQYoL72sEdl21YwVmjBXdt
+	46xDimQDEWddT+791mCfwJHZhG1i7Zwxejq73Y4OK9g==
+X-Gm-Gg: ASbGncubn4n8UQyxPxGkmssAVfFt/SF0CPjOfwh9wa3E6VtBhJDi5WfzidfUS7Ay6kY
+	BQPBJsUFsSERO0mSoYRbFhbCmKQEBwZTF26Lx/EFjvwtH1o0KNp0U1OnrVFMqLNugJ6AUaCg1JQ
+	7T9jo/k+eBgL2/4kgoa4aXQK0koHdZ469nKt+gYvvzpnwyEZaJjEUcMA9zJY6sbkntLismYJcoy
+	As4HQK9WUDJSOc=
+X-Google-Smtp-Source: AGHT+IHin4gQus9SrkFEog2pTedfunr2Ers950l0f82oxrEtfjemfexmsAorW/Dsqdjvay/GpFMt6pfW/hwC+qBHF14=
+X-Received: by 2002:a05:6512:2c0b:b0:571:b70b:7dbf with SMTP id
+ 2adb3069b0e04-579e2507c81mr1455897e87.17.1758295499599; Fri, 19 Sep 2025
+ 08:24:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXHDtTNMzih7OoTYU0vN4M3mOmFL3YOfaPUKReyJQA6uAQ@mail.gmail.com>
+References: <20250918152830.438554-1-nschichan@freebox.fr> <20250918195806.6337-1-safinaskar@gmail.com>
+In-Reply-To: <20250918195806.6337-1-safinaskar@gmail.com>
+From: Nicolas Schichan <nschichan@freebox.fr>
+Date: Fri, 19 Sep 2025 17:24:48 +0200
+X-Gm-Features: AS18NWBwMqIXE_dMXDlT0ngUIReSbekPPTszWv5gIfg03bAEg3Id33JL3Yqjedw
+Message-ID: <CAHNNwZAzecVcJXZmycX063-=p-M5jVkfStfgYVKJruOFo7y9zg@mail.gmail.com>
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+To: Askar Safin <safinaskar@gmail.com>
+Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
+	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
+	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
+	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
+	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
+	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
+	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
+	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
+	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
+	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
+	x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 19, 2025 at 03:42:12PM +0200, Ard Biesheuvel wrote:
-> On Fri, 19 Sept 2025 at 13:35, Will Deacon <will@kernel.org> wrote:
-> >
-> > On Thu, Sep 18, 2025 at 12:30:17PM +0200, Ard Biesheuvel wrote:
-> > > From: Ard Biesheuvel <ardb@kernel.org>
-> > >
-> > > Replace the spinlock in the arm64 glue code with a mutex, so that
-> > > the CPU can preempted while running the EFI runtime service.
-> > >
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > ---
-> > >  arch/arm64/kernel/efi.c | 13 ++++++++++---
-> > >  1 file changed, 10 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-> > > index 0d52414415f3..4372fafde8e9 100644
-> > > --- a/arch/arm64/kernel/efi.c
-> > > +++ b/arch/arm64/kernel/efi.c
-> > > @@ -166,15 +166,22 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
-> > >       return s;
-> > >  }
-> > >
-> > > -static DEFINE_RAW_SPINLOCK(efi_rt_lock);
-> > > +static DEFINE_MUTEX(efi_rt_lock);
-> > >
-> > >  bool arch_efi_call_virt_setup(void)
-> > >  {
-> > >       if (!may_use_simd())
-> > >               return false;
-> > >
-> > > +     /*
-> > > +      * This might be called from a non-sleepable context so try to take the
-> > > +      * lock but don't block on it. This should never fail in practice, as
-> > > +      * all EFI runtime calls are serialized under the efi_runtime_lock.
-> > > +      */
-> > > +     if (WARN_ON(!mutex_trylock(&efi_rt_lock)))
-> > > +             return false;
-> >
-> > If it will never fail in practice, why do we need the lock at all? Can we
-> > just assert that the efi_runtime_lock is held instead and rely on that?
-> >
-> 
-> Excellent point.
-> 
-> Do you mean a lockdep assert? efi_runtime_lock is a semaphore, so
-> there is no is_locked() API that we can BUG() on here.
+Hello,
 
-Yes, I was thinking of lockdep. Even though lockdep doesn't tend to be
-enabled in production, just having it in the code is useful documentation
-imo.
+> > When booting with root=/dev/ram0 in the kernel commandline,
+> > handle_initrd() where the deprecation message resides is never called,
+> > which is rather unfortunate (init/do_mounts_initrd.c):
 
-Will
+> Yes, this is unfortunate.
+>
+> I personally still think that initrd should be removed.
+
+Considering that the deprecation message didn't get displayed in some
+configurations, maybe it's a bit early at the very least.
+
+> I suggest using workaround I described in cover letter.
+
+I'm not too keen on having an initramfs just to loop-mount
+/sys/firmware/initrd, after all current kernels are able to handle the
+use case just fine.
+
+It looks like there is a lot of code calling into specific filesystems
+so that the initrd code can guess the size of the file system before
+copying into /dev/ram0, and I believe this is what causes the main
+gripe against initrd today. What is wrong with just copying
+/initrd.image using its actual size into /dev/ram0 instead of guessing
+it with the help of filesystem specific code ?
+
+> Also, for unknown reasons I didn't get your letter in my inbox.
+> (Not even in spam folder.) I ocasionally found it on lore.kernel.org .
+
+Sorry about that, When I used git-send-email yesterday to reply, the
+SMTP server I used wasn't authenticated to google, so all gmail
+recipients were dropped. Hopefully this work better today.
+
+Regards,
+
+-- 
+Nicolas Schichan
 
