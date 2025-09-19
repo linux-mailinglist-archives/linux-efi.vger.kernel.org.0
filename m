@@ -1,142 +1,123 @@
-Return-Path: <linux-efi+bounces-4876-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4877-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556B7B894B2
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Sep 2025 13:38:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7306B89B9C
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Sep 2025 15:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19E82562FBC
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Sep 2025 11:38:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30B767BA379
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Sep 2025 13:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE543093C9;
-	Fri, 19 Sep 2025 11:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7DB2C028E;
+	Fri, 19 Sep 2025 13:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BCwf0nIJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YbW7a68a"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438C819755B;
-	Fri, 19 Sep 2025 11:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0222248A0
+	for <linux-efi@vger.kernel.org>; Fri, 19 Sep 2025 13:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758281904; cv=none; b=ZKB6CwKHvOjylZrOGA1PIUGGn5XA4CyceAfx4oBwzktRsWm5vl8+Zz3GVCPFTYmiAuz/5lGp+ZLL5/EVJ++9EzcioqA6TlOr9PRLqNlxFZ5I6daQWBpsEz5vlqSVQxOn5+LFjsZQsHsIhrwBQvgWFFoNGQcOLQksOsDXnXpwEPU=
+	t=1758289348; cv=none; b=jBGoEsyjlEpfoqGmjAJ3KiZ2b+lUCECQFRiiPPwYdhAKafDx2l8onFGYy7lsqeejzbfXvlii2LvoMnqWH2rq2yvc4A8EDKg1KltgDjrL8zTMja60T6BXh431JDr+ReV2MyLLmXoMQz+NA7D9i1EK+tMmudDy/OVvR/ZhhuHfHWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758281904; c=relaxed/simple;
-	bh=vidOkY7U3aiEQG+l70hGzhfUzsMhfAF1dJHgRebiUMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DZr8xJ7n94nTbqRkVrsoUKdj5jnMkEBL55/sEI/VfwXBz9weW+gDjziq/+rCI154jNETe3uwQ1w9E06gjKuJgKc4VEntrDB28YNrmJptAn2m5VBdVcvv964SmKb4psQ5kyt/KwsLt6hp6nwJ690qB+hj93pfaD1BrM08NNvYGIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCwf0nIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1168C4CEF0;
-	Fri, 19 Sep 2025 11:38:21 +0000 (UTC)
+	s=arc-20240116; t=1758289348; c=relaxed/simple;
+	bh=VD9twcb7S80CWtXroi12j7zJyLQewjL/Uh8dbBcqjKE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CNN6kelnLeQhfo78XlrVNgTXZoBX96NqQDgW8iVbViwOGgaJizwIGnKucMuIpJBE4ngWgU85bGebp1+Q6eycDMYbOkR2l+n9jSAIsROWQc5xBjnUEEAIVMcNZByFX+ZfPN8JD+a1vBK1UHE7GTXh+UNi/VMJDCfuSswHuahDMMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YbW7a68a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874F8C4CEF9
+	for <linux-efi@vger.kernel.org>; Fri, 19 Sep 2025 13:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758281903;
-	bh=vidOkY7U3aiEQG+l70hGzhfUzsMhfAF1dJHgRebiUMY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BCwf0nIJ2NO0jzAzO+tjoHLC4pkI79O4txtEutDJD9H2tq0ue553u1NLK/+A8vg+4
-	 1Ta+BjvEMnzptkOy52E7ECxAXzxxA1OwtNBnzPaupKpynRp7lcStlZtwT0lOqrcDVh
-	 G2/RuxROojKq4iU0mE9Ahggzk1IOt3siUdkaPgRSezTueqbPdAnarIIHa5hRkHz8yf
-	 ltVlDqcR5Sh4apOY0wFBtZwQ9JMXyH3qBTLwt3X+7T3TUpue/oBWe7qp3AyM/D/yKS
-	 HnTNyDC/jN/ZK2mTNp+bTsxsLXdiTYbsiQnxAZtyCXBdv7S04DWfSGlyznCTmvIYnu
-	 16s1S6eEiS+iA==
-Date: Fri, 19 Sep 2025 12:38:18 +0100
-From: Will Deacon <will@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 0/8] arm64: Make EFI calls preemptible
-Message-ID: <aM1AqmHc7boSipIl@willie-the-truck>
-References: <20250918103010.2973462-10-ardb+git@google.com>
- <CAMj1kXGndZxxe+u3st6FCebrdutUibspA7tJUpqGMgpj9UTFnA@mail.gmail.com>
+	s=k20201202; t=1758289347;
+	bh=VD9twcb7S80CWtXroi12j7zJyLQewjL/Uh8dbBcqjKE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YbW7a68aWSJxQEfmTEPnCmr11Z2hvNwSBS/1T508pGv4HRlYeL+Y+U5Sf8u2O0BtO
+	 kWFuvqOA59UsVdf9bwfNLIl70YHRbaNNLV8KQGDoZwY+Z+DVrGlGttxJKCgvuN8P0T
+	 17NpHMU9XFYMkAVJQzrKsif4n/e5004EriNYjkF+6qv6yLCJojhNCt9JovMI42Se9X
+	 GWUOmwScY43XVBStyjc/QlurNEI+ii+hQpykMoVxihY+LObjXy9e9BVlyWVDrIwmfY
+	 WZ0Su7L0QT0mff4d8Qp8jerN/mNPxZfchVsYdnaiMMqEEIvTyvFUO+pMomfBh9Yleq
+	 8cTevw6nkr85g==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-577232b26a6so2108599e87.2
+        for <linux-efi@vger.kernel.org>; Fri, 19 Sep 2025 06:42:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWFcKELWMzn5fgTMjT8sfZK+z0SSTcCz+nufG7L74/hI7Nnmu3x5zbiSKrIlzPb+a3KxdiNALiBn5E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHPWNZNAPyJ8PsjgAxYwKyAC1KtioGiO9CnJWk6+OHEc8dzdFB
+	8k67ROdbA1xCN7a8Hn2GV95p2tfD8DqDFlDiIJ+/v4xxUwQ5jfG33XHtxTRGBOhj8DDKNXhzuWi
+	qvLPJhS+ZNMG9lceoKEPBMGLQ+HPvLlU=
+X-Google-Smtp-Source: AGHT+IEVHQt1+umL/shZjWxswdEHXPWfiF7ZzA5sdLmn3VX8+SoqCosMzyNK1tpKJwOoXR+4DBwNsPqC86+/RqtDsIE=
+X-Received: by 2002:a05:6512:20da:b0:55f:6c08:a15a with SMTP id
+ 2adb3069b0e04-579e213146cmr1070509e87.32.1758289345910; Fri, 19 Sep 2025
+ 06:42:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXGndZxxe+u3st6FCebrdutUibspA7tJUpqGMgpj9UTFnA@mail.gmail.com>
+References: <20250918103010.2973462-10-ardb+git@google.com>
+ <20250918103010.2973462-16-ardb+git@google.com> <aM0_96QvR-hlYMJJ@willie-the-truck>
+In-Reply-To: <aM0_96QvR-hlYMJJ@willie-the-truck>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 19 Sep 2025 15:42:12 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHDtTNMzih7OoTYU0vN4M3mOmFL3YOfaPUKReyJQA6uAQ@mail.gmail.com>
+X-Gm-Features: AS18NWAfcXjUAqbspxju1lDMLZ8UsXKdDJ3RZBNTTMabN4mFPEeu8uYKA9lxEsc
+Message-ID: <CAMj1kXHDtTNMzih7OoTYU0vN4M3mOmFL3YOfaPUKReyJQA6uAQ@mail.gmail.com>
+Subject: Re: [PATCH v3 6/8] arm64/efi: Use a mutex to protect the EFI stack
+ and FP/SIMD state
+To: Will Deacon <will@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Mark Rutland <mark.rutland@arm.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 18, 2025 at 01:33:48PM +0200, Ard Biesheuvel wrote:
-> On Thu, 18 Sept 2025 at 12:30, Ard Biesheuvel <ardb+git@google.com> wrote:
-> >
+On Fri, 19 Sept 2025 at 13:35, Will Deacon <will@kernel.org> wrote:
+>
+> On Thu, Sep 18, 2025 at 12:30:17PM +0200, Ard Biesheuvel wrote:
 > > From: Ard Biesheuvel <ardb@kernel.org>
 > >
-> > The arm64 port permits the use of the baseline FP/SIMD register file in
-> > kernel mode, and no longer requires preemption to be disabled. Now that
-> > the EFI spec is being clarified to state that EFI runtime services may
-> > only use baseline FP/SIMD, the fact that EFI may code may use FP/SIMD
-> > registers (while executing at the same privilege level as the kernel) is
-> > no longer a reason to disable preemption when invoking them.
+> > Replace the spinlock in the arm64 glue code with a mutex, so that
+> > the CPU can preempted while running the EFI runtime service.
 > >
-> > This means that the only remaining reason for disabling preemption is
-> > the fact that the active mm is swapped out and replaced with efi_mm in a
-> > way that is hidden from the scheduler, and so scheduling is not
-> > supported currently. However, given that virtually all (*) EFI runtime
-> > calls are made from the efi_rts_wq workqueue, the efi_mm can simply be
-> > loaded into the workqueue worker kthread while the call is in progress,
-> > and this does not require preemption to be disabled.
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  arch/arm64/kernel/efi.c | 13 ++++++++++---
+> >  1 file changed, 10 insertions(+), 3 deletions(-)
 > >
-> > Note that this is only a partial solution in terms of RT guarantees,
-> > given that the runtime services execute at the same privilege level as
-> > the kernel, and can therefore disable interrupts (and therefore
-> > preemption) directly. But it should prevent scheduling latency spikes
-> > for EFI calls that simply take a long time to run to completion.
+> > diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+> > index 0d52414415f3..4372fafde8e9 100644
+> > --- a/arch/arm64/kernel/efi.c
+> > +++ b/arch/arm64/kernel/efi.c
+> > @@ -166,15 +166,22 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
+> >       return s;
+> >  }
 > >
-> > Changes since v2:
-> > - Permit ordinary kernel mode FP/SIMD with IRQs disabled, so that the
-> >   special EFI case only deals with invocations in hardirq or NMI context
-> > - Disallow EFI runtime calls in hardirq or NMI context, so that the
-> >   special FP/SIMD handling for EFI can be dropped entirely
-> > - Use a mutex rather than a semaphore for the arm64 EFI runtime lock,
-> >   now that it is never trylock()ed in IRQ or NMI context.
+> > -static DEFINE_RAW_SPINLOCK(efi_rt_lock);
+> > +static DEFINE_MUTEX(efi_rt_lock);
 > >
-> > Changes since v1/RFC:
-> > - Disable uaccess for SWPAN before updating the preserved TTBR0 value
-> > - Document why disabling migration is needed
-> > - Rebase onto v6.17-rc1
+> >  bool arch_efi_call_virt_setup(void)
+> >  {
+> >       if (!may_use_simd())
+> >               return false;
 > >
-> > (*) only efi_reset_system() and EFI pstore invoke EFI runtime services
-> >     without going through the workqueue, and the latter only when saving
-> >     a kernel oops log to the EFI varstore
-> >
-> > Cc: Will Deacon <will@kernel.org>
-> > Cc: Mark Rutland <mark.rutland@arm.com>
-> > Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> > Cc: Peter Zijlstra <peterz@infradead.org>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Mark Brown <broonie@kernel.org>
-> >
-> > Ard Biesheuvel (8):
-> >   efi: Add missing static initializer for efi_mm::cpus_allowed_lock
-> >   efi/runtime: Return success/failure from arch_efi_call_virt_setup()
-> >   efi/runtime: Deal with arch_efi_call_virt_setup() returning failure
-> 
-> Unless anyone objects, I am going to queue up these 3 patches ^^^ via
-> the EFI tree.
-> 
-> >   arm64/fpsimd: Permit kernel mode NEON with IRQs off
-> >   arm64/fpsimd: Drop special handling for EFI runtime services
-> >   arm64/efi: Use a mutex to protect the EFI stack and FP/SIMD state
-> >   arm64/efi: Move uaccess en/disable out of efi_set_pgd()
-> >   arm64/efi: Call EFI runtime services without disabling preemption
-> >
-> 
-> ... so the rest can go in via the arm64 tree in the next cycle.
+> > +     /*
+> > +      * This might be called from a non-sleepable context so try to take the
+> > +      * lock but don't block on it. This should never fail in practice, as
+> > +      * all EFI runtime calls are serialized under the efi_runtime_lock.
+> > +      */
+> > +     if (WARN_ON(!mutex_trylock(&efi_rt_lock)))
+> > +             return false;
+>
+> If it will never fail in practice, why do we need the lock at all? Can we
+> just assert that the efi_runtime_lock is held instead and rely on that?
+>
 
-As discussed off-list, that's probably the best plan for now. I've left
-a few small comments on some of the arm64 bits and it would be good to
-give them some soak time in -next.
+Excellent point.
 
-Cheers,
-
-Will
+Do you mean a lockdep assert? efi_runtime_lock is a semaphore, so
+there is no is_locked() API that we can BUG() on here.
 
