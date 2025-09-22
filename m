@@ -1,152 +1,165 @@
-Return-Path: <linux-efi+bounces-4929-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4930-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569F5B9046B
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Sep 2025 12:52:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD468B91B48
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Sep 2025 16:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3BA154E0690
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Sep 2025 10:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60DB8423212
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Sep 2025 14:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFF0287268;
-	Mon, 22 Sep 2025 10:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA6F219A8E;
+	Mon, 22 Sep 2025 14:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=whynothugo.nl header.i=@whynothugo.nl header.b="Ow9LCl1e";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Yc8oCpWm"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="T5tm19TQ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FA978F43;
-	Mon, 22 Sep 2025 10:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BB921A447
+	for <linux-efi@vger.kernel.org>; Mon, 22 Sep 2025 14:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758538329; cv=none; b=SQR0iQFAzlTsFcNNh+ch4zTqKHGqURXRzVht/KVHtKBR8NprwJGSqPcRRyOylylClM0YuJmnEl/okEwC+3RbNpQ1PsTY0UaezLE5a69PeSC0e9U0QxRvVegLRB6WRVBQBbucJwO6roEw1uS34A9SIpwr5+kdhcBT9DfkgwDAR/U=
+	t=1758551349; cv=none; b=M5RBDGXQtqgrWqERQ0te0C2u+hqLYBh2eJnb7pj8xLN3U1UTHF7q3C2ja+gqB7i1ZiFe+fEA4ngmh+q9R0gpU/lveSU/0pCdBkJIbttfrF6FX8uhzaGmano1PNGMvxIzGw+6BQrSEvWiH6z4Z0ojqH/aYFSIuXuMhgwtqo+Aukk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758538329; c=relaxed/simple;
-	bh=XTJ6Eaj/i446zNXmwj9Zmnd5ozBQVqnlIGt1oWtpAL4=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Hn0kN0aPCSTEM/vuSB20NZ4q7IrqzTAUFciGi65SXOKRGT2fxotUUQO7X8VuR8rpZmOPfjis2WA3p6QhCYuMlNGYOaMCq4X0qfwFATfCwvMriLdSPDg2JBZbbRqVzRXtdeQ4CKlIGGdsQuzOxsk2ZnHiCy4pwWPnBVBoIrAqf2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=whynothugo.nl; spf=pass smtp.mailfrom=whynothugo.nl; dkim=pass (2048-bit key) header.d=whynothugo.nl header.i=@whynothugo.nl header.b=Ow9LCl1e; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Yc8oCpWm; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=whynothugo.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=whynothugo.nl
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 120221400030;
-	Mon, 22 Sep 2025 06:52:06 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Mon, 22 Sep 2025 06:52:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=whynothugo.nl;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1758538326; x=1758624726; bh=z72JMyrHj5yss06Ds7unVYneJe0p/rLi
-	/xZ/DsNUCTk=; b=Ow9LCl1egC3lCr8HL7YPTutRkXtKOruJA1DFdVni89IKAXQs
-	+ql3EMNKNtVkUWJWfJtCp/8AtHLGRuI9Cl+grnDqyJ6LAyWiFtTEmjwSfVkORrTW
-	krsF3M9eE5G3TZYDBVF7oflp6BElRGZ/tY62OGXGQyUc9IGRVJ9g/fHlSHk3uH6T
-	KCpjZw21kKgkIstcEN/lA4Z19zY/RddKyn3PWwPbluIeM0vuQdFimU2Cv+Y/hhMc
-	qczOomesvy89MP+Dl7riPiCCoTjcVAehrWRI4i6KHgu7kWNCDfJSy70DwqkXnRFY
-	lnVSbjRIXK+2uB2vrA4HEnvYcuEat3KL4S57AQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758538326; x=
-	1758624726; bh=z72JMyrHj5yss06Ds7unVYneJe0p/rLi/xZ/DsNUCTk=; b=Y
-	c8oCpWmM9v6eNHPE3vJTiNVoVI7PR5jddv+zij4uk0c+1Dq5wCH47/yvF9qdmQ0F
-	o8uGK1ChMewhqj72qrPcqwNZrliLPPLMmMQEQo73hqs8vOIoklqWadSxyGNZWK9i
-	TbYQ3fte/Y/wjFMd7wD1rbeg3qVS3oKhqaGY7MaDbQqLOfMhQ8A8m02xCkmJY1me
-	Wzi92KD/Cfkvv6dWGVWEEpqLg5X2MrC2RrKAPGWhb0+7E//UjyE44jd+zt8wxguo
-	GWngOXlxi0PEjgEheyZ5O2wopAmTA91UuFVkCDRdwhCHgTZ7P6jeHUx/QKfjMixi
-	rL3TDX9+2uzRRqQeiftVA==
-X-ME-Sender: <xms:VSrRaIHp1lsLaHpjfv8-EcDpUDP6qoSdmVKguAUfH3MPcM2Z-cGT0A>
-    <xme:VSrRaBVuLZn_ostKCSq-kFmA15TiGFmwI2mJcIXXNEMdTMkmOV6_X0-pFaQG-eX5b
-    GAVpkIkwaRKEOTngA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehjeeihecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdfjuhhgohcu
-    qfhsvhgrlhguohcuuegrrhhrvghrrgdfuceohhhughhoseifhhihnhhothhhuhhgohdrnh
-    hlqeenucggtffrrghtthgvrhhnpeevgeffgfeiffegteelteekhefgfffhkeffudfgfffh
-    ueegveevuedthedthedujeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhephhhughhoseifhhih
-    nhhothhhuhhgohdrnhhlpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggrghgrshgu
-    ohhtmhgvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhguuhhnlhgrphesihhnfhhrrg
-    guvggrugdrohhrghdprhgtphhtthhopegrrhgusgeskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuh
-    htrhhonhhigidruggvpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidr
-    ihhnthgvlhdrtghomhdprhgtphhtthhopegtohhrsggvtheslhifnhdrnhgvthdprhgtph
-    htthhopehmihhnghhosehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:VSrRaOoGji-8EEOBgjo31hHhExSBb5_RcvpI_EvtoAMENvMO68dzOw>
-    <xmx:VSrRaLK10USXWdPpAd0Z7FNicJzzbekiJU8zPWnlJosx6FGWkumlRQ>
-    <xmx:VSrRaOuHvjCImCY6WFHLQUOGhgN2yxBTrhfQho0BBSMI8lx85s9xng>
-    <xmx:VSrRaICUXOh1CPMYuny_xh8ei48Sa4ywtjHVxjj1WbLEcw1sbOa0eg>
-    <xmx:VirRaKJYu7vb66KlQgycyuAuex9hQMQbnBczp70vVirByd00WHA_y_uc>
-Feedback-ID: ib8c04050:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 4436C1B40071; Mon, 22 Sep 2025 06:52:05 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1758551349; c=relaxed/simple;
+	bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Moz6nmY89bkpV8FHZBe2hIyZt4FwJeUCiTK3p/fWCCbda1X+Gl4UsOILKOcl3dTrr2I8xB81Tl7cTjpYiXsVUPQp/uIOQUzkctX77ZfXUTvjBzU+9jJscdQLGflL2zM1Bk5ugOTRgrTxa4hxqT6jJ4Z+i/vYYKWdQhlp8GQBZzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=T5tm19TQ; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-57f0aa38aadso892743e87.2
+        for <linux-efi@vger.kernel.org>; Mon, 22 Sep 2025 07:29:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1758551345; x=1759156145; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
+        b=T5tm19TQZikqjHqoMR54+Q7+U/JgAbrwxCDjAEr+j4BV3oKJ1vYACVblsq/0dgQB3O
+         xzcE44eyHkSt3+1/LwS8iG05NDQybwpGXmErJGsX7qf1JoHnxQE/QJKsAyQCq5BZ8yUL
+         fZfsv/oGGtZ7K0RaFe8fFXZtm3jS4C5jkLwGskUTTKy01oseY4elZgmJ1wcia/Nwx29N
+         /akdQTqyJ1yRSFcBAOKV1BSGnn1RLnJEPHIfsiagl3HTh7OEmakPzgo3DZkunVSmL2Xx
+         hH2z75SXfyBjFg0mXpIzvJjI6rXfLJCfOxCsk/r78caU8Q500JO1XsPO5Zy2dD22Jb+z
+         2rDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758551345; x=1759156145;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
+        b=biDKaUQlZbnnHPK21GyBLEzh8tiQGIXRtFYI4KPwZQuLQFp+aDNGKxp4qJkKOEPDC+
+         EUGwb3CnGJoEwz0xt0AbGq1wLwDzHmsmBujTxj7X4MhAQRHYOqniipQMr0MJLdq/Be/R
+         ZUwbK/DMSrc6g4kFgBQGJEmlJkUeAuIBG6EMCquklkg51Oyw2ts+pHFA3ydFq3j7KiHX
+         QzlthzHjih55JJBkyFvocbGWosMI5oOFFi6k9zNrvsi46iDi28bWc6HnBJYEfrEUIYHL
+         Hdqlcw1tdkRh5u3cIbHsuNO6WqDDWJ+bXi495oujsFanWGF04bMaK8Q5gbP8eLTZG3aw
+         mREg==
+X-Forwarded-Encrypted: i=1; AJvYcCUiNlI9+SPfALmaX8C1oG83OglIGuxv8YBxS4zT8LNlhRYnAjZ8S9R7GiL4CLDdnBk/VxyuZFl7F0U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJBB2hNvreM+KbVNajNi1qyrNd5YnRq9ysJtuOhn/HyKsHo0eN
+	1uO/iZ0eozgr6JDoq1uf8yqMXqzIvbgiIxqEhQ+K6mGnsA29PfdTypmuBi+7YmfzoGTfMO8hgdD
+	tZP1KINiHt9Pdmhmiag2WCwCaLPzWqxHZOBYCtnBFSg==
+X-Gm-Gg: ASbGncuTjkLnRPLidaqUgo9Xl6p5hBWB4VFyCz/aI0S0oV6R2Ao45lnYL8xSKwcwDpr
+	DHr83jX1SAQcPx6O2sU5MnMm4ADvnhWUT4dGfq7hHiU1HizEye9hAJsyGDu03Z7N0+S8gnVgqKT
+	KXNX/39ImVTDYRWzvNBZXMxyL+9yfonBw6EJTBzgL+XA5y3gcxY6JpBhO828986j1r7LjKFIY5I
+	cZhT6EQU8wOCkY=
+X-Google-Smtp-Source: AGHT+IF9Kx0YHTgWZximr8IphichwJGTQ/wmiFKfxBKU7xEPIwY53K1eZ5EsUZqb+vcW1xAllqgOcQU2VEEacURTmEE=
+X-Received: by 2002:a05:6512:4389:b0:57b:478b:d8a6 with SMTP id
+ 2adb3069b0e04-57b478be162mr3313173e87.35.1758551344116; Mon, 22 Sep 2025
+ 07:29:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Ar2Xryr4sLlg
-Date: Mon, 22 Sep 2025 12:51:43 +0200
-From: "Hugo Osvaldo Barrera" <hugo@whynothugo.nl>
-To: "Jonathan Corbet" <corbet@lwn.net>,
- "Bagas Sanjaya" <bagasdotme@gmail.com>,
- "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
- "Linux Documentation" <linux-doc@vger.kernel.org>,
- "Linux EFI" <linux-efi@vger.kernel.org>
-Cc: "Ard Biesheuvel" <ardb@kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Randy Dunlap" <rdunlap@infradead.org>
-Message-Id: <e8bb9bb3-f9ec-49bb-9884-af727ea61caf@app.fastmail.com>
-In-Reply-To: <87zfaufrcq.fsf@trenco.lwn.net>
-References: <20250916073244.590483-1-bagasdotme@gmail.com>
- <b629ff7e-a223-467f-8e32-78f825bd31ac@app.fastmail.com>
- <87zfaufrcq.fsf@trenco.lwn.net>
-Subject: Re: [PATCH v2] Documentation/x86: explain LINUX_EFI_INITRD_MEDIA_GUID
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20250918152830.438554-1-nschichan@freebox.fr> <20250918195806.6337-1-safinaskar@gmail.com>
+ <CAHNNwZAzecVcJXZmycX063-=p-M5jVkfStfgYVKJruOFo7y9zg@mail.gmail.com> <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com>
+In-Reply-To: <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com>
+From: Nicolas Schichan <nschichan@freebox.fr>
+Date: Mon, 22 Sep 2025 16:28:52 +0200
+X-Gm-Features: AS18NWBjmNA3KBj8cPrgwDAVm5OX9a5odWP7LbRlHvhoE96nP3yo2_PGoZ1JbG8
+Message-ID: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+To: Askar Safin <safinaskar@gmail.com>
+Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
+	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
+	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
+	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
+	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
+	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
+	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
+	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
+	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
+	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
+	x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+[resending to the lists and Cc, sorry I initially replied only to Askar]
 
-
-On Tue, 16 Sep 2025, at 15:40, Jonathan Corbet wrote:
-> "Hugo Osvaldo Barrera" <hugo@whynothugo.nl> writes:
+On Sat, Sep 20, 2025 at 5:55=E2=80=AFAM Askar Safin <safinaskar@gmail.com> =
+wrote:
+> On Fri, Sep 19, 2025 at 6:25=E2=80=AFPM Nicolas Schichan <nschichan@freeb=
+ox.fr> wrote:
+> > Considering that the deprecation message didn't get displayed in some
+> > configurations, maybe it's a bit early at the very least.
 >
->>> +When compiled with ``CONFIG_EFI_STUB=y``, the kernel can be executed 
->>> as a
->>> +regular PE/COFF binary. See Documentation/admin-guide/efi-stub.rst for
->>> +implementation details.
->>
->> I must insist that it's a terrible idea to replace an actual link with the
->> name of the source file.
->>
->> This might be (marginally) more convenient for somebody who's editing the
->> documentation, but it becomes completely useless for somebody who's READING
->> the documentation. Documentation needs to target readers.
->>
->> For someone reading https://www.kernel.org/doc/html/latest/arch/x86/boot.html,
->> the above filename conveys no useful information.
->
-> When the documentation is rendered into HTML, that file reference will
-> be turned into a link automatically, and people reading it on kernel.org
-> will not notice the difference.
->
+> I changed my opinion.
+> Breaking users, who did not see a deprecation message at all,
+> is unfair.
+> I will send a patchset soon, which will remove initrd codepath,
+> which currently contains deprecation notice. And I will put
+> deprecation notice to
+> other codepath.
 
-Thanks for the clarification.
-I mis-interpreted this previously.
-Sorry for the noise.
+Thanks
 
+> Then in September 2026 I will fully remove initrd.
 
--- 
-Hugo
+Is there a way to find some kind of middle ground here ?
+
+I'm lead to believe that the main issue with the current code is that
+it needs to parse the superblocks of the ramdisk image in order to get
+the amount to data to copy into /dev/ram0.
+
+It looks like it is partly because of the ramdisk_start=3D kernel
+command line parameter which looks to be a remnant of the time it was
+possible to boot on floppy disk on x86.
+
+This kernel command line allows to look for a rootfs image at an
+offset into the initrd data.
+
+If we assume now that the rootfs image data starts at the beginning of
+the initrd image and is the only part of the initrd image this would
+indeed remove a lot of complexity.
+
+Maybe it would be possible to remove the identify_ramdisk_image()
+function and just copy the actual size of /initrd.image into
+/dev/ram0. This would allow any file system to be used in an initrd
+image (no just romfs, cramfs, minixfs, ext2fs and squashfs), and this
+would simplify the code in init/do_mounts_rd.c greatly, with just the
+function rd_load_image() and nr_blocks() remaining in this file.
+
+I can send a patch for that but first I need to sort out my SMTP
+issues from the other day.
+
+Regards,
+
+--=20
+Nicolas Schichan
 
