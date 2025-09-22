@@ -1,165 +1,127 @@
-Return-Path: <linux-efi+bounces-4930-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4931-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD468B91B48
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Sep 2025 16:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6402B91E33
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Sep 2025 17:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60DB8423212
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Sep 2025 14:29:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96459426B0D
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Sep 2025 15:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA6F219A8E;
-	Mon, 22 Sep 2025 14:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6AA2DE6F5;
+	Mon, 22 Sep 2025 15:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="T5tm19TQ"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="cDie2IVU"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from sonic310-30.consmr.mail.ne1.yahoo.com (sonic310-30.consmr.mail.ne1.yahoo.com [66.163.186.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BB921A447
-	for <linux-efi@vger.kernel.org>; Mon, 22 Sep 2025 14:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5972E091B
+	for <linux-efi@vger.kernel.org>; Mon, 22 Sep 2025 15:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758551349; cv=none; b=M5RBDGXQtqgrWqERQ0te0C2u+hqLYBh2eJnb7pj8xLN3U1UTHF7q3C2ja+gqB7i1ZiFe+fEA4ngmh+q9R0gpU/lveSU/0pCdBkJIbttfrF6FX8uhzaGmano1PNGMvxIzGw+6BQrSEvWiH6z4Z0ojqH/aYFSIuXuMhgwtqo+Aukk=
+	t=1758554489; cv=none; b=b55crzeQVuOCbM8cJ0Hgi6WUp34fzyfl/CL5+HrY9peiPOa3UUdE+XA8QPZme+ETIhzp8ECostCX3N8TebnQ5KHVARqPagj9HYdCqxl7IWOOP5FgjQEJ/pD1K6xsg0lAsC3EfQjAGc3IW2TnSyc+DAF87avOl6IEnN0/6QKH/ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758551349; c=relaxed/simple;
-	bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Moz6nmY89bkpV8FHZBe2hIyZt4FwJeUCiTK3p/fWCCbda1X+Gl4UsOILKOcl3dTrr2I8xB81Tl7cTjpYiXsVUPQp/uIOQUzkctX77ZfXUTvjBzU+9jJscdQLGflL2zM1Bk5ugOTRgrTxa4hxqT6jJ4Z+i/vYYKWdQhlp8GQBZzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=T5tm19TQ; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-57f0aa38aadso892743e87.2
-        for <linux-efi@vger.kernel.org>; Mon, 22 Sep 2025 07:29:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1758551345; x=1759156145; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
-        b=T5tm19TQZikqjHqoMR54+Q7+U/JgAbrwxCDjAEr+j4BV3oKJ1vYACVblsq/0dgQB3O
-         xzcE44eyHkSt3+1/LwS8iG05NDQybwpGXmErJGsX7qf1JoHnxQE/QJKsAyQCq5BZ8yUL
-         fZfsv/oGGtZ7K0RaFe8fFXZtm3jS4C5jkLwGskUTTKy01oseY4elZgmJ1wcia/Nwx29N
-         /akdQTqyJ1yRSFcBAOKV1BSGnn1RLnJEPHIfsiagl3HTh7OEmakPzgo3DZkunVSmL2Xx
-         hH2z75SXfyBjFg0mXpIzvJjI6rXfLJCfOxCsk/r78caU8Q500JO1XsPO5Zy2dD22Jb+z
-         2rDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758551345; x=1759156145;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
-        b=biDKaUQlZbnnHPK21GyBLEzh8tiQGIXRtFYI4KPwZQuLQFp+aDNGKxp4qJkKOEPDC+
-         EUGwb3CnGJoEwz0xt0AbGq1wLwDzHmsmBujTxj7X4MhAQRHYOqniipQMr0MJLdq/Be/R
-         ZUwbK/DMSrc6g4kFgBQGJEmlJkUeAuIBG6EMCquklkg51Oyw2ts+pHFA3ydFq3j7KiHX
-         QzlthzHjih55JJBkyFvocbGWosMI5oOFFi6k9zNrvsi46iDi28bWc6HnBJYEfrEUIYHL
-         Hdqlcw1tdkRh5u3cIbHsuNO6WqDDWJ+bXi495oujsFanWGF04bMaK8Q5gbP8eLTZG3aw
-         mREg==
-X-Forwarded-Encrypted: i=1; AJvYcCUiNlI9+SPfALmaX8C1oG83OglIGuxv8YBxS4zT8LNlhRYnAjZ8S9R7GiL4CLDdnBk/VxyuZFl7F0U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJBB2hNvreM+KbVNajNi1qyrNd5YnRq9ysJtuOhn/HyKsHo0eN
-	1uO/iZ0eozgr6JDoq1uf8yqMXqzIvbgiIxqEhQ+K6mGnsA29PfdTypmuBi+7YmfzoGTfMO8hgdD
-	tZP1KINiHt9Pdmhmiag2WCwCaLPzWqxHZOBYCtnBFSg==
-X-Gm-Gg: ASbGncuTjkLnRPLidaqUgo9Xl6p5hBWB4VFyCz/aI0S0oV6R2Ao45lnYL8xSKwcwDpr
-	DHr83jX1SAQcPx6O2sU5MnMm4ADvnhWUT4dGfq7hHiU1HizEye9hAJsyGDu03Z7N0+S8gnVgqKT
-	KXNX/39ImVTDYRWzvNBZXMxyL+9yfonBw6EJTBzgL+XA5y3gcxY6JpBhO828986j1r7LjKFIY5I
-	cZhT6EQU8wOCkY=
-X-Google-Smtp-Source: AGHT+IF9Kx0YHTgWZximr8IphichwJGTQ/wmiFKfxBKU7xEPIwY53K1eZ5EsUZqb+vcW1xAllqgOcQU2VEEacURTmEE=
-X-Received: by 2002:a05:6512:4389:b0:57b:478b:d8a6 with SMTP id
- 2adb3069b0e04-57b478be162mr3313173e87.35.1758551344116; Mon, 22 Sep 2025
- 07:29:04 -0700 (PDT)
+	s=arc-20240116; t=1758554489; c=relaxed/simple;
+	bh=I0AUswnxQZMNWi9R80zf6vvWy6tCAhYx2psliAWUAZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=utvBxNtspt8gDm/Q1E1mo/R6ILdYET4isHvtb3jXLjq83GWAAwhRB79glfQHzCCjINRpA167m0IIJC/amWVRrxh5sBxFlTJiVVcRFWwybqEEV9+JBte/qm+VbeER5k2EZhO/AqSHpSHo2jmIWx/hC3s0Uwp8YxOIkE74qqTx/2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=cDie2IVU; arc=none smtp.client-ip=66.163.186.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1758554481; bh=4InEgJCpBgl3urehuyUAnpN3vmaPh6mhZWLVpIhzL0s=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=cDie2IVUyWtpxDIWmKwCb2sO7pDFSObBF7FzL+nmkuEnIOa2K7hGsgPcKqL6w2nHUpGZUdJISKQWeTYTq/IVLoNcBD1YOombE036yS87RsBZwEpIdLgw9c7ydWG+q9XatsmT7+k49XijwPvFYdkbg03A4RaC7tEfgpbAUGp2/R7Rzeku1cKBVz3zwHF87o5eIs49nAxSYPF7EE1PP0RwERstae94HbXNXfvaMFoK4QBJi5JVE6AeuQKm0gfIONOnnAS7ruunpGcB/02lKp7ddxaL9O0rzViLD7iC6ZQg+6/kB/GQXE1g4we6tzMDq7J7PDGPwOBR/w7qqIzqdx5+lg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1758554481; bh=W31Kc3REyawnyXiNX9xiHYHIodUKpUcfa6mc6VjHX9D=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=QwRY62Ve0r03jQ3ikN4faGkxSiWYGTJSBDQAidT/ruMl3/dyv4sFWJAA9ocnHm8BA0EPJma3mjj7nO3RYIOBYB319KQF+lpo/JJaJwudjIOYNE27C0DYHCMxGi6SQFXX7Bjxuo9ReL4vXR92HbsTc1SsrQsQAzCK97KEo+UU8nyrWlY6ai/iC7zty90FaKYUVuza+riE6ct7nJVNwGqVhRMQVgfo0U/7rI9TlsS5bQtII9kCzqRjsVZXkATiDb5OzuLw+LFQbFfmKZ4eSqRG0FYogc/N9jQvgKH2gQmr+lQ71pX9KNDViZGxE9zSSQ1kWaP0zPeGDkF+otXcZ9GmrQ==
+X-YMail-OSG: a0ShGM0VM1kS5TdAKyhzMZn1kR2BVScsxCyqUC96KXfqWNmQ7dmcDUkr2C6CD8o
+ F.nNwGtrFxyWKgcaKU7c7SzY5sLRNB.kOmj5_1Qm6ugm1qKEKbdGmcF7HD5CS6uaMhzE.a9se2Qm
+ F1aP8aIzBCHkxN5RNu9eVRSUSnetYV4eQU1XVm4hTaEV4BvxehZwefxFMd6x0JG.j4dEDQi93AD1
+ otuyzSX1.GPHdlyHguPAligClB4vPQXogx4pmPFUNZvIgnYUj3ZAP.eaGvtLAJBWwJZIid7F8Yl7
+ fS1HoQ7Jn3KoiQxx99h22rBrZa75BNGmyO0gktHMEZP6MXXhe53TSWat_vR8FAYXp_VD4R4oJuz0
+ DW.oPlaIk1ghcJ.KbdLt0LsHV4.48F61tmZEA3FvDg6dnsPKuRGJnMhywRU4K6.kIxo9YPvXQjHB
+ F0IEgZLPfOcJ8vj_r5t6ph71MsJq.FE_dJwSDuVWC2OfTIwu3UL950I4YXO0txdngQH3weqQJq6v
+ Gd0etDBRenLr.nP4ZVooL08C.kalSnyjilbjQ6hVCbAJFQ5ac5tNMA0yqzDKczYaots_sFff8rvv
+ U5vBtTDHFGj9pG1htEk98Bie3Sr1Rh3DfjslgmdEQKnh1_RrMAZSOAa.07QtYLdpDe2ASHqoxstq
+ qYaXJgEdH5PCYA35nG5kb60ezbJkPPwOgISysqsYtBczyL7aM0o_YWb87zjEpMrncOBftQRPUxzI
+ yY2X1SAcAlN74EUshXhNxN7bDz0fJ9pyw6Z2FsRjy8NP0ZZgh77q88u5.20P4ilTVK7xnx3zwYf4
+ Uzh2YFJ6lpxu_av3Ty_RSjjqPs_hrHqzS4E2lP1u8zR0J5nKWFZkiuKSJTrN8DJgClAmJqKAahC0
+ NDUnpko2yADSzuuEpuBlBsqp8tv6uhW8teFJt.gLBrwD3pm5T1jSk.0wbeWpfWdlekkEEZwV3NPS
+ xZ7VgGeoZC1jxaMek4SWmhHxcE34bMEKU.ZgnVDtv1vB2BQqLi_s6d77dWDiquPUaQAUCXKkMaQP
+ uhDhqmwm8pzBqj2r0bYaLSBcqFrAk51e5s4ikqTrwey9HRuUMMB8Eh2Y1HQR9LL_GE.p6iKBKxnX
+ nIXVe7cgbeMhuuSyEyhK5k_DGnSaPAqBjwhWbkQQ0EBc3l6dBpb4.Oz6IoO_8WCoLqoiiNyfdai.
+ bJqa6nOKQrPDM66mVqWCrlXJ6g1wtUV7f9_RR3ivDzll782rXlyXthQ7MUGtc1O4ztwW9feR0AFR
+ uC4vfcZi7p42Pwj2PiMqaKleTA3XAs8ovvKSBT_szRVp_5si5CjN8VyeemuMZTkLEg.rLNOiNPCG
+ ytsLPAaDfYvVFrPfcdyYVnIQ2F2svsSmcLS6d07AwqKDkUlZFTirlX5SPJb30aKtLsfZA2vXA1dX
+ byb6p2XV5WARbEoql4FkflHp67betBxxYfMoBuk5wsBX.R08duRAeIA7ywEmn2K_jb6_P91vCYMA
+ AbckozoJFCLrgV6CWtns8rSzy395xhacTQzNQERJ8u6dQJMrmDYQtaS9J7y33Fwf1vHuWoK09FpM
+ l8kJwIWULCnK5tjBv7iWW6LyslPyakaCL6mla8FXtIRDOQbAeGbSfW1aSxgcC89DZHcc2bM0x8e5
+ sBoSsKO.AGS65jFjJYffvA9clbSmTISPOj4t64jG0sZpeeCe8VIxXz7WWTqU0XxkmCWiYwIn6KV_
+ aUtD_EmSIWjW.J3jq2SVufM16hzqmUzhgU1aFQiACBwp.U2rG._edaOcsQrGJYKlS8tWmS4PL22D
+ jSQIOAzuGq548u_mkww0AMgNAVQvlG67kcZ6SNXiFjW.k5iAUl1TlfCPEdCqsi8GWQRdneOBomfT
+ ueajbwUt99M2nKlAjWvxQ_hy0RWGK3Ij4TWwNUYFNIsCXb0AsEOgYljPYO3dSJ0UbJwD6wzpABrG
+ yZP5OsJLBK6ojQjJFmlGDMCbP7c5vxhge0mlgEPh6ACFt6Pqodho68OWazPnWVRIDSME785Zll_g
+ CCQ9BuMOs.kMWTm4pGh28YO3BgmPcOl4hV.JK8XCiEgQY.4EQko2_W9u3bFfLa.Rdf_KvchZbSnR
+ YcjkZQL3Gjhl21R0v_mm0v7UmSWebJxuIgVF4JOQehB9F_WNlcDfoawNwAtelzKXFXTaFRp_C6wK
+ eszOxCUPqTPOQ_dI8MUlSoTR6Ga9y3m4NFIPKfqe_INBR5CwIx2F23bdEgas1vlI64GNmzsihuP2
+ lxI_3RbdGVHuDr69RVlRtRbANidYaUSGf53wBBeZlpqudBL7u_btetqsP2Keq_y6GEDrgR_icQFg
+ BgrZFVqwNWg479To-
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: 2c354591-3949-4080-84f2-5cc1785b2062
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Mon, 22 Sep 2025 15:21:21 +0000
+Received: by hermes--production-gq1-6f9f7cb74b-2n2jr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5a83043d0b8f6a0e34f3bfd1c61ea603;
+          Mon, 22 Sep 2025 15:11:07 +0000 (UTC)
+Message-ID: <8403fd9a-6667-4202-bd5b-5e83172961b3@schaufler-ca.com>
+Date: Mon, 22 Sep 2025 08:11:05 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250918152830.438554-1-nschichan@freebox.fr> <20250918195806.6337-1-safinaskar@gmail.com>
- <CAHNNwZAzecVcJXZmycX063-=p-M5jVkfStfgYVKJruOFo7y9zg@mail.gmail.com> <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com>
-In-Reply-To: <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com>
-From: Nicolas Schichan <nschichan@freebox.fr>
-Date: Mon, 22 Sep 2025 16:28:52 +0200
-X-Gm-Features: AS18NWBjmNA3KBj8cPrgwDAVm5OX9a5odWP7LbRlHvhoE96nP3yo2_PGoZ1JbG8
-Message-ID: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
-Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
-To: Askar Safin <safinaskar@gmail.com>
-Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
-	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
-	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
-	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
-	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
-	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
-	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
-	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
-	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
-	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/39] convert smackfs
+To: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+ raven@themaw.net, miklos@szeredi.hu, a.hindborg@kernel.org,
+ linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+ kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org,
+ linux-usb@vger.kernel.org, paul@paul-moore.com,
+ linuxppc-dev@lists.ozlabs.org, borntraeger@linux.ibm.com,
+ Casey Schaufler <casey@schaufler-ca.com>
+References: <20250920074156.GK39973@ZenIV>
+ <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
+ <20250920074759.3564072-10-viro@zeniv.linux.org.uk>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <20250920074759.3564072-10-viro@zeniv.linux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.24425 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-[resending to the lists and Cc, sorry I initially replied only to Askar]
-
-On Sat, Sep 20, 2025 at 5:55=E2=80=AFAM Askar Safin <safinaskar@gmail.com> =
-wrote:
-> On Fri, Sep 19, 2025 at 6:25=E2=80=AFPM Nicolas Schichan <nschichan@freeb=
-ox.fr> wrote:
-> > Considering that the deprecation message didn't get displayed in some
-> > configurations, maybe it's a bit early at the very least.
+On 9/20/2025 12:47 AM, Al Viro wrote:
+> Entirely static tree populated by simple_fill_super().  Can use
+> kill_anon_super() as-is.
 >
-> I changed my opinion.
-> Breaking users, who did not see a deprecation message at all,
-> is unfair.
-> I will send a patchset soon, which will remove initrd codepath,
-> which currently contains deprecation notice. And I will put
-> deprecation notice to
-> other codepath.
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-Thanks
+Looks fine to me.
+Acked-by: Casey Schaufler <casey@schaufler-ca.com>
 
-> Then in September 2026 I will fully remove initrd.
-
-Is there a way to find some kind of middle ground here ?
-
-I'm lead to believe that the main issue with the current code is that
-it needs to parse the superblocks of the ramdisk image in order to get
-the amount to data to copy into /dev/ram0.
-
-It looks like it is partly because of the ramdisk_start=3D kernel
-command line parameter which looks to be a remnant of the time it was
-possible to boot on floppy disk on x86.
-
-This kernel command line allows to look for a rootfs image at an
-offset into the initrd data.
-
-If we assume now that the rootfs image data starts at the beginning of
-the initrd image and is the only part of the initrd image this would
-indeed remove a lot of complexity.
-
-Maybe it would be possible to remove the identify_ramdisk_image()
-function and just copy the actual size of /initrd.image into
-/dev/ram0. This would allow any file system to be used in an initrd
-image (no just romfs, cramfs, minixfs, ext2fs and squashfs), and this
-would simplify the code in init/do_mounts_rd.c greatly, with just the
-function rd_load_image() and nr_blocks() remaining in this file.
-
-I can send a patch for that but first I need to sort out my SMTP
-issues from the other day.
-
-Regards,
-
---=20
-Nicolas Schichan
+> ---
+>  security/smack/smackfs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+> index b1e5e62f5cbd..e989ae3890c7 100644
+> --- a/security/smack/smackfs.c
+> +++ b/security/smack/smackfs.c
+> @@ -2960,7 +2960,7 @@ static int smk_init_fs_context(struct fs_context *fc)
+>  static struct file_system_type smk_fs_type = {
+>  	.name		= "smackfs",
+>  	.init_fs_context = smk_init_fs_context,
+> -	.kill_sb	= kill_litter_super,
+> +	.kill_sb	= kill_anon_super,
+>  };
+>  
+>  static struct vfsmount *smackfs_mount;
 
