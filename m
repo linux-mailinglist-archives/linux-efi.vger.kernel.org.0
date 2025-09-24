@@ -1,182 +1,159 @@
-Return-Path: <linux-efi+bounces-4943-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4944-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC1DB9AA83
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Sep 2025 17:31:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DCDB9AD98
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Sep 2025 18:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F0541BC05A7
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Sep 2025 15:30:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C86EA2E4F82
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Sep 2025 16:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72950314A95;
-	Wed, 24 Sep 2025 15:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CC93148AA;
+	Wed, 24 Sep 2025 16:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0CX7I7lo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jJ9fR/G/"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E7F3148B2
-	for <linux-efi@vger.kernel.org>; Wed, 24 Sep 2025 15:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97A7313538
+	for <linux-efi@vger.kernel.org>; Wed, 24 Sep 2025 16:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758727656; cv=none; b=jsya51eZxODLvryGyWangSwCZZsOQ5Ge2WAiJTdUzcP1bXeIOyq4RJ3+RXLGzCMZC9Ie960Mo/W1pnFLacYc+hw73B4dmC8VHuJct8J3hVTqiquzRnQ5fNB2Emq9YtEADPEw99dIZxxuimMxZ8ich8uKIfi/9qCh4gSGhxmBAKg=
+	t=1758730691; cv=none; b=KHT+iJW4xbAseiO16OKHHVy+k5KasFboLxgo0uEpudYuc+cT/T/fQOYkmlGIrvPKmDBcHtMw0Y/K8uVkycEnXRau8b8UXVnLUSITyc7Wrgdb0UiIq+TEZRv3ZGr8QAvkOx58r51hV1PsIWVdPG2gtXBoWTxZak4KUqf+Lb7iau0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758727656; c=relaxed/simple;
-	bh=yPsv4tmUGpx19aaWjDO9Ojm0C3uT1FNckcRU2Atthqo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JOUj01tWThTwalcMB3TDHzYSOzeBpEdG871EAAo47oD4aUQH/MTLpS4QC8Tlv0imlxmox43Fz2WZaepfpbAGTdc2+4s14nLLdGVqi0fUwzUnOZ1GJmrpr1rU5tOnFHf7IDcjIKYZ89n+n4sH0L+mAEpsrMqhJFyiPqQx4Mik4pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0CX7I7lo; arc=none smtp.client-ip=209.85.218.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b2f989de76eso113970866b.1
-        for <linux-efi@vger.kernel.org>; Wed, 24 Sep 2025 08:27:34 -0700 (PDT)
+	s=arc-20240116; t=1758730691; c=relaxed/simple;
+	bh=+elp/mgEwQHUPO2/veHl6cFeD7QMzkxV3mT27B/vMe0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g8m2ou13+c99qNmI0i2wW6baPPqJDiE4e4IVbiWsqVvPDt9UBtVZ8NcN8BzNjHy1iBeQD85BXCb6XYuC79IwOG/n1D7NjkoGIBrguQlohgzgYKWRmCYH4a4E0ox3bEP3ufZhtOItk7+zrfKVND4HMOZJCbH0cHlhiOJvM1T1+sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jJ9fR/G/; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4d41154079aso213221cf.0
+        for <linux-efi@vger.kernel.org>; Wed, 24 Sep 2025 09:18:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758727653; x=1759332453; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sPyujSEjHofHg9YDm/Jyl8IxXmB1G+6YXd/CQAOVg0g=;
-        b=0CX7I7loixeIXvyjRribwVAXyCXNuurxqeoHL6SfonIyrkGJl8iVsaPStkijx4sERE
-         NTi1mETxlsSB2BtqrKjcrd+ugQjkVX3rKZt81J91y5EqhAoOlUqjwDxr6HAmKKUqJkhB
-         ltvpO/gqIVG05zcQlvi4BBvGudqzfn2P9J5RLXmerahrBGiUS4kpMlED2OWsqZ65lM2q
-         pACui5rGBWJWGtwzrly41g5B5n2hLvePj5ZyyNYvipTHCEDO2UIzZZ448WM3UKhgBIf5
-         gFtnjjcO8mZX3JMRyapB57Rx/HZ2Zpkl1S8e/oc2OaAD2yKdGnkA/pVUieN1XPtAmgPd
-         iS2g==
+        d=gmail.com; s=20230601; t=1758730685; x=1759335485; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+elp/mgEwQHUPO2/veHl6cFeD7QMzkxV3mT27B/vMe0=;
+        b=jJ9fR/G/uQOoGU1zjzeq+kEGJH0FGPF6hyv+BRd11txZaP6jykJx7KYV+Fy89/hm3r
+         Fj1jHTTr1k3gSZ9YbnsYf7t/+Y1cgcUQRaozim9bYqDxSSoV25zr5djoCo2k+XVY+9XH
+         hZwrqWm/lkHBVgotX1/VMNfSLp5gX19VCA2QcSKMUDXlmxsoFrDA/aUnalMiOUk6S4Dm
+         ApxpBGputpqRfa7MY3pOnEuQUef0R7OKBgerb0vkMv3dzWiW0+dXhhizmvnjoU/shLfI
+         pMehbr68Tb60E0EQMTVNp25KF0WY4uOSvx5h0SUZ0kqikDM0hjKYe9piKoNpkOCmD6s4
+         fVZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758727653; x=1759332453;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sPyujSEjHofHg9YDm/Jyl8IxXmB1G+6YXd/CQAOVg0g=;
-        b=ItuW8Mll/jJ48Q1SS7srhazoYdwMbWzmfFdgAz8aCfiD5ElmDBtyxkQFpStgVFPkgM
-         ERw0x/pr7lG1jR3+GOMZilFg22G+TsP7WE2QD7AQP8UKhqVlqhCZGfgheDGHQCzRL57w
-         rQsrNarqnVLGCEf9AVuaaiYh3ino08v90+e3ut/rGyAbex6yRvfOhXEEklk8F9O8uxBx
-         wzx5XFJ7p+8AzICg7/ok4DW5oDDijX+zoQ/AhhBf/mFSmwuEMiP7fj5ITlFO5H3daE5a
-         9PSDSt/NodHNkIz4mTFCBTj5a5bRGhe1rl0gV0mEt9x2MuLCUYMoD3B/zwcI3TM8sYVb
-         jzng==
-X-Gm-Message-State: AOJu0YyOgUGDR95p9jLYcPFZjv5fm9nX3Xm9oce8GXymPxVHzHR0cFe3
-	8G2s8rH1ZovVyXVdtngI6TY55cmQJIIUQjVgZgyuSAUhNQ6ZKbXp0+X0cbDnaePlTESJuG0htqd
-	QdL5CKIQp967cqCdhQM/I6+lY2OnSt4dSL9g66WIYRXxjIgi69qjrEgXbPACouvRM5q8vRr/PC8
-	7ntFD236K0Y64raVUGSDCy59RDBlB5wg==
-X-Google-Smtp-Source: AGHT+IGhYJri2jw2StcIcnozNtBl5X8wH5wzUecPXuiOreaVtyiBeuhRrBBP2IZw5zrKucj7w3PXpApx
-X-Received: from ejcvk3.prod.google.com ([2002:a17:907:cbc3:b0:b29:9df3:352a])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:868e:b0:b0d:400:9182
- with SMTP id a640c23a62f3a-b34d97c9779mr811566b.22.1758727652921; Wed, 24 Sep
- 2025 08:27:32 -0700 (PDT)
-Date: Wed, 24 Sep 2025 17:26:59 +0200
-In-Reply-To: <20250924152651.3328941-9-ardb+git@google.com>
+        d=1e100.net; s=20230601; t=1758730686; x=1759335486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+elp/mgEwQHUPO2/veHl6cFeD7QMzkxV3mT27B/vMe0=;
+        b=QNxvkeIfbyRRItmN0qR9J/23xU1m/KBh08CWZw3dHCaAI1N9cT40gWGqJbZv6vvs7l
+         1dO5P9pceayrubi4dEVGuS3fokXFqLN8ZGCF8lH16pqrxAfag5ruREbuduT2eWDuPOW4
+         k74sNty6ALRQ5C18Gk09LYTt/CbEkKQ1vcK+dCVAK7OSLuhgLYMeNt03C1jGO/yvNEa6
+         HsNpbjgEnSGC7HnMNs7V+qWTUkiSC3gXKs39k2pVRyjwvikE422dgx4lLrh6ZUNWd+2Z
+         U+ShhV3CXasK4lb24IB0nAq6m/30tSF1BIo89JBR4kYpECcZyHUi/Uyw6xCmIn4YOn+W
+         aMAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCsXNzsMAyi5LMpEmVH34w6G+LbXmcNLINQfAK7ykUCKL6idrZor6MX/ySJGWgEmOls5Hp0jAdC64=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWBderri1nqq06fFB2OC62ALBcKzC1VXnEYrlI2j+2K0L5azDR
+	cbAiEFRP+zh0Tge33bDbb7D0Dg55v1Km5jaJpyey3wBciKza3vgIpCgtiIhi5imBMtKczgijS66
+	klEjybTfCBB7zyKQhfG/CHlvwtvoyU8c=
+X-Gm-Gg: ASbGnctOtc8fx3ZHStxezf94//uluKqzEs6I8MSQgR0Qe0evSjPvsDu3Le3mmmJzrvU
+	wRbIGduWppr8nRF43E01pihpeCdEaolKB4gBnLRWoL4PLZuLr3UpjAH7RBdYPf4mzrvyAKFzkgG
+	LUUdHlvbjs/SKjZp7B/n+lkynAPlBa1q5G6y9UFE2pXofnODo9SLJ1aH1WEmnbBw8H0neii2Um+
+	/8fhr9Be3yMrUYVgUV501DTs5L0RzRqXsBLVZ6m
+X-Google-Smtp-Source: AGHT+IHrjx0XfB3NQHdqBt66Ox1dwY4oj3I0wMxztSwqqFAAkQnhEkK0QBLdnresO+RuCvDJitimjmBRn2YZHsgZxpk=
+X-Received: by 2002:a05:622a:3d2:b0:4d9:ea03:74f8 with SMTP id
+ d75a77b69052e-4da473535b8mr6186491cf.16.1758730685377; Wed, 24 Sep 2025
+ 09:18:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250924152651.3328941-9-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3342; i=ardb@kernel.org;
- h=from:subject; bh=CE858YGwYUY/DV8BNXHqb59oe3QHOpqPxAjPh5x7H10=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeMK78lkzuc7891fhPp9vvPkx4xPP3bezZiqJb6oYdLRh
- TEarxokO0pZGMS4GGTFFFkEZv99t/P0RKla51myMHNYmUCGMHBxCsBEGi8z/Hd1spzUWVpgZF90
- X8z6fe7v11eNVF17d278MLOa9d8kgWuMDPt8rfx/a1xa9mXKu5QAjQm8v38xlUyfPN/i54RAQVF zYS4A
-X-Mailer: git-send-email 2.51.0.534.gc79095c0ca-goog
-Message-ID: <20250924152651.3328941-16-ardb+git@google.com>
-Subject: [PATCH v4 7/7] arm64/efi: Call EFI runtime services without disabling preemption
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>
+MIME-Version: 1.0
+References: <20250913003842.41944-1-safinaskar@gmail.com> <ffbf1a04-047d-4787-ac1e-f5362e1ca600@csgroup.eu>
+In-Reply-To: <ffbf1a04-047d-4787-ac1e-f5362e1ca600@csgroup.eu>
+From: Alexander Patrakov <patrakov@gmail.com>
+Date: Thu, 25 Sep 2025 00:17:39 +0800
+X-Gm-Features: AS18NWB-xeGoRDKYPj3kUYXUnKXLhFMFvvc0QyoLpOeKcP1DsD-enKeBhlulfsI
+Message-ID: <CAN_LGv3Opj9RW0atfXODy-Epn++5mt_DLEi-ewxR9Me5x46Bkg@mail.gmail.com>
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
+	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
+	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>, 
+	Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
+	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
+	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Tue, Sep 23, 2025 at 8:22=E2=80=AFPM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 13/09/2025 =C3=A0 02:37, Askar Safin a =C3=A9crit :
+> > [Vous ne recevez pas souvent de courriers de safinaskar@gmail.com. D=C3=
+=A9couvrez pourquoi ceci est important =C3=A0 https://aka.ms/LearnAboutSend=
+erIdentification ]
+> >
+> > Intro
+> > =3D=3D=3D=3D
+> > This patchset removes classic initrd (initial RAM disk) support,
+> > which was deprecated in 2020.
+> > Initramfs still stays, and RAM disk itself (brd) still stays, too.
+> > init/do_mounts* and init/*initramfs* are listed in VFS entry in
+> > MAINTAINERS, so I think this patchset should go through VFS tree.
+> > This patchset touchs every subdirectory in arch/, so I tested it
+> > on 8 (!!!) archs in Qemu (see details below).
+> > Warning: this patchset renames CONFIG_BLK_DEV_INITRD (!!!) to CONFIG_IN=
+ITRAMFS
+> > and CONFIG_RD_* to CONFIG_INITRAMFS_DECOMPRESS_* (for example,
+> > CONFIG_RD_GZIP to CONFIG_INITRAMFS_DECOMPRESS_GZIP).
+> > If you still use initrd, see below for workaround.
+>
+> Apologise if my question looks stupid, but I'm using QEMU for various
+> tests, and the way QEMU is started is something like:
+>
+> qemu-system-ppc -kernel ./vmlinux -cpu g4 -M mac99 -initrd
+> ./qemu/rootfs.cpio.gz
+>
+> I was therefore expecting (and fearing) it to fail with your series
+> applied, but surprisingly it still works.
+>
+> Therefore is it really initrd you are removing or just some corner case
+> ? If it is really initrd, then how does QEMU still work with that
+> -initrd parameter ?
 
-The only remaining reason why EFI runtime services are invoked with
-preemption disabled is the fact that the mm is swapped out behind the
-back of the context switching code.
+The QEMU -initrd parameter is a misnomer. It can be used to pass an
+initrd or an initramfs, and the kernel automatically figures out what
+it is. What you are passing is an initramfs (a gzipped cpio archive
+with all the files), which is a modern and supported use case.
 
-The kernel no longer disables preemption in kernel_neon_begin().
-Furthermore, the EFI spec is being clarified to explicitly state that
-only baseline FP/SIMD is permitted in EFI runtime service
-implementations, and so the existing kernel mode NEON context switching
-code is sufficient to preserve and restore the execution context of an
-in-progress EFI runtime service call.
-
-Most EFI calls are made from the efi_rts_wq, which is serviced by a
-kthread. As kthreads never return to user space, they usually don't have
-an mm, and so we can use the existing infrastructure to swap in the
-efi_mm while the EFI call is in progress. This is visible to the
-scheduler, which will therefore reactivate the selected mm when
-switching out the kthread and back in again.
-
-Given that the EFI spec explicitly permits runtime services to be called
-with interrupts enabled, firmware code is already required to tolerate
-interruptions. So rather than disable preemption, disable only migration
-so that EFI runtime services are less likely to cause scheduling delays.
-To avoid potential issues where runtime services are interrupted while
-polling the secure firmware for async completions, keep migration
-disabled so that a runtime service invocation does not resume on a
-different CPU from the one it was started on.
-
-Note, though, that the firmware executes at the same privilege level as
-the kernel, and is therefore able to disable interrupts altogether.
-
-Acked-by: Will Deacon <will@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/kernel/efi.c | 23 ++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index 85f65d5c863c..a81cb4aa4738 100644
---- a/arch/arm64/kernel/efi.c
-+++ b/arch/arm64/kernel/efi.c
-@@ -10,6 +10,7 @@
- #include <linux/efi.h>
- #include <linux/init.h>
- #include <linux/kmemleak.h>
-+#include <linux/kthread.h>
- #include <linux/screen_info.h>
- #include <linux/vmalloc.h>
- 
-@@ -168,7 +169,20 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
- void arch_efi_call_virt_setup(void)
- {
- 	efi_runtime_assert_lock_held();
--	efi_virtmap_load();
-+
-+	if (preemptible() && (current->flags & PF_KTHREAD)) {
-+		/*
-+		 * Disable migration to ensure that a preempted EFI runtime
-+		 * service call will be resumed on the same CPU. This avoids
-+		 * potential issues with EFI runtime calls that are preempted
-+		 * while polling for an asynchronous completion of a secure
-+		 * firmware call, which may not permit the CPU to change.
-+		 */
-+		migrate_disable();
-+		kthread_use_mm(&efi_mm);
-+	} else {
-+		efi_virtmap_load();
-+	}
- 
- 	/*
- 	 * Enable access to the valid TTBR0_EL1 and invoke the errata
-@@ -193,7 +207,12 @@ void arch_efi_call_virt_teardown(void)
- 	 */
- 	uaccess_ttbr0_disable();
- 
--	efi_virtmap_unload();
-+	if (preemptible() && (current->flags & PF_KTHREAD)) {
-+		kthread_unuse_mm(&efi_mm);
-+		migrate_enable();
-+	} else {
-+		efi_virtmap_unload();
-+	}
- }
- 
- asmlinkage u64 *efi_rt_stack_top __ro_after_init;
--- 
-2.51.0.534.gc79095c0ca-goog
-
+--=20
+Alexander Patrakov
 
