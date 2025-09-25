@@ -1,186 +1,172 @@
-Return-Path: <linux-efi+bounces-4946-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4947-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332DBB9BB18
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Sep 2025 21:26:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B18B9D38D
+	for <lists+linux-efi@lfdr.de>; Thu, 25 Sep 2025 04:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 745A97A47EA
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Sep 2025 19:24:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA4564A349F
+	for <lists+linux-efi@lfdr.de>; Thu, 25 Sep 2025 02:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E8230ACE8;
-	Wed, 24 Sep 2025 19:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E482E541E;
+	Thu, 25 Sep 2025 02:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b="qP7ktGKp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J58/SCUf"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from eastern.birch.relay.mailchannels.net (eastern.birch.relay.mailchannels.net [23.83.209.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C3A1C8603;
-	Wed, 24 Sep 2025 19:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.209.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758741976; cv=pass; b=QqwhKov7zOBNob91ZIKleb+x94NIUDCPaN7BZF9uLkBt4kE5xramulnCLAdSdiW0cyVJnFkfObRmVW+2NaPKT+aaJFXgTmWdiNSNwH4hOtb3uGsMVl8mDk1BpbbJvDdvvabhxDwk1NimvAx+JyJdqdQVC0c7wjU8JPNz/YyGJ6c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758741976; c=relaxed/simple;
-	bh=BHsTkzdWZajDNDK+ioNil3t9QVIX4IumG9TxYgK95/0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EkBWl7S0eZencH7xz9rP5NLYMH3a5x6ctyim2l14bTBbgE/n98yRgcXErmafAn+2jL6RCklgG7CtUkdaWspVo86kuwH0b/6PF+vk44y7fFgu6xQD8K1CGTzLHKUHHPcFcwC6B6nwx4gqzzmoyiOG4U4cGPQxxGZydr1sO2adL+E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net; spf=pass smtp.mailfrom=landley.net; dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b=qP7ktGKp; arc=pass smtp.client-ip=23.83.209.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=landley.net
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id D68F56C2CDF;
-	Wed, 24 Sep 2025 19:20:52 +0000 (UTC)
-Received: from pdx1-sub0-mail-a233.dreamhost.com (trex-blue-5.trex.outbound.svc.cluster.local [100.108.153.55])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 4D82F6C092A;
-	Wed, 24 Sep 2025 19:20:51 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1758741652; a=rsa-sha256;
-	cv=none;
-	b=FIelBRpKbw4XRCXREIY6GrcomZxyh5mPLsvXc2d6FGp/peq6EwuUT5C41+2LA0F+ggX9yV
-	8sDI+KYqBxmckQrPVNV7rWra63fWqq+o5yLlx5MZRnuTdHQZEQgAmgblFxuGyjaNVrHFDk
-	wPn+M2/WQfSpmZ0IkQEEN3MHnMtbF5yhytJwedRo1ogyg8SQR/ZRrsw9DI3lHGj/2mLKAm
-	dj8jGFwnS4OjNKQjH2R6mDLZ7tlU8MommvaAha7o+UWIylY5K2nv2k5iepHunaoM660neK
-	8apwlyJbofcRsA4DvFw4pkrtRAv7P9DWllpqqR+qR+EGkoSllD3i7IkmAH8Mog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1758741652;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2+5k4o1pMixQXt5VsjL/MYZwcVCEyggOqRD9o8b/qSc=;
-	b=ChRw8wSjyogd2do/v/H6TxZGH/WsiQerw/hid5S8KViit0lwA1gMH0+6UMTmJNQMMIezrz
-	gsCOkeBMJedUyPmRdN0+x/Ibzn4kOtJ+sG57y0ioHbgMKfWThGzPdrmcr4dMMVSyyUw2rk
-	dVBBOmfhJTtYNtYRTDWhwp+mpqmWhEqvL9C8FrlKqiY59ItiMJEd3l6YkcBc//9Lzk6+Fh
-	mvjXUWAyzYxp+VnxExIXavdSHQcTxa/FAQIzz9fgRHT07mtFGrsyWRfq7ZmdI4pGoAxOfN
-	0MoQjrfyn0a4j6aLMBwkDQq4B0YTsphgd54S7yxIuOYwH85l63FNfS25ErSZgQ==
-ARC-Authentication-Results: i=1;
-	rspamd-55b8bfbc7f-nnn52;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
-X-MailChannels-Auth-Id: dreamhost
-X-Callous-Spill: 350181bf214e86d3_1758741652308_3044232165
-X-MC-Loop-Signature: 1758741652308:255498347
-X-MC-Ingress-Time: 1758741652308
-Received: from pdx1-sub0-mail-a233.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.108.153.55 (trex/7.1.3);
-	Wed, 24 Sep 2025 19:20:52 +0000
-Received: from [192.168.88.7] (unknown [209.81.127.98])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: rob@landley.net)
-	by pdx1-sub0-mail-a233.dreamhost.com (Postfix) with ESMTPSA id 4cX6Bm0dnXzJl;
-	Wed, 24 Sep 2025 12:20:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
-	s=dreamhost; t=1758741651;
-	bh=2+5k4o1pMixQXt5VsjL/MYZwcVCEyggOqRD9o8b/qSc=;
-	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
-	b=qP7ktGKps9suFLn+SvwXNJfmXIq5m7DqxjIn++FPW06rQGLdyFrasnCUUBtJnzZ2L
-	 032Pr1ux0M59Obr3XwUHOtHtLFaEBxNmmkXxqPxYnCt1Q6ZqoWdAD9Q0W04+4gmjQl
-	 ds3vnt+/qY5ti8rpHJ46bodAbnhitDUyLxlQ0tRxKsiwmL7TThWSclVniorsogf6MJ
-	 gohNW1AXGJyGgriupkN0gkhVYK+ork7/6bPtZBHhvaB43HB07jP863XLDHcc31YH0+
-	 wfQhtcquMUPSEA+sEb7jFLcwMpbQdjW0Rd1EFegx855pG/OiLXxmVQR1JAWLIYES88
-	 kVFfZokS8hZqg==
-Message-ID: <de56cabd-05a9-4528-8150-9ad97209640e@landley.net>
-Date: Wed, 24 Sep 2025 14:20:47 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B552E0926
+	for <linux-efi@vger.kernel.org>; Thu, 25 Sep 2025 02:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758768240; cv=none; b=LSMhdZDQJcM84Hc/86gke6q27u1xanhYND1gTB/GyA7h4tLYeHIdP+0Ul8s+WArBXGdXZXM2nGRYxqYGxQLtqj6eV6t/Pa73HS1quzZqidHQ+1t/vCFhXoVlTROoWTMiRsnSFoBeZWmDBc0K9ZmOs95BRQtANTk5tgw4ltHqH8E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758768240; c=relaxed/simple;
+	bh=S7vb/zf3V2GaassUXCT9UJV1Et/9TJiqD8ubx2PkhwE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XmXbci2yKoIDzCqQND0TG1aiCN9M9fQrRMkEo7GtXY7HHtCjnUVL4ASYex6595rm2ozjCelWq9Y7Gui+8pTAJyedRyu6tkVY2Y3yhbAUp/s0qWSmq3TKUFZujpaac7+XT2hPrz9/DS1ddL5HW34ZinBsEzFStTVSN9DOgWNcMWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J58/SCUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86401C4AF0B
+	for <linux-efi@vger.kernel.org>; Thu, 25 Sep 2025 02:44:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758768240;
+	bh=S7vb/zf3V2GaassUXCT9UJV1Et/9TJiqD8ubx2PkhwE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=J58/SCUfWipwZ1MVIpQEBYOUxqgqodgM0cUqxO+6oYTnwX30OAYYFnF0WKJxi5SU3
+	 1YOU1P/IZqOtiBNDhKnXN1z4ovoCMhsotskp189F0RKKNay05fweIgyzg2e3gFkOa+
+	 mrEzWgOqJIw9XZ1B1L1AdSJy3OwrymPL9j/QShB/+lcZEezrx+noPCD585qWFJNKzN
+	 6E6HdZZvyCsVBaO63lJCmSambbsyS5Xwl45MRs1Bl9W47XafA1DEa4nLWflPswoZ74
+	 CUlx92J4FcsuHOfMtemFUEOhpKfKnlSdBytdl9IRLQmzaeKqeOP4mbfyhOZCLS3Mji
+	 uaOs9TbYVJNTg==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b2e66a2fb63so79843366b.2
+        for <linux-efi@vger.kernel.org>; Wed, 24 Sep 2025 19:44:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX+PVm3QPbQW4ZCqSCEXAhTcuRllnja7WUHdWibvSpl1UrjvJiLE6cFTHNPf/fzkoPl+n4TvFb5PWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnWwt9WyGbMs9h1WKKBN28us+hfvwmzUo4q478CcLa1SEiaO9G
+	wWtRQ0c6/xG6956V+IvY2t1MttAHJlwYLjco3Sua8t6ykuv5OEBGvI0YxHIJDSAwQ0OJw80Cw4C
+	8hI41hz7bJLj+BWZ29W/u4Jyru3eEcIk=
+X-Google-Smtp-Source: AGHT+IFAKAis+f8CsaeB/ZYEn6Mbsm0qvkYWWb/1JIaJw+bN7o9FCGRKh+44tCSaadZ6c4rMcagZJ6G9mHVPClZ1tck=
+X-Received: by 2002:a17:907:3f1e:b0:b11:c9df:7a73 with SMTP id
+ a640c23a62f3a-b34bd34a2b0mr217761266b.57.1758768239043; Wed, 24 Sep 2025
+ 19:43:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
-To: Alexander Patrakov <patrakov@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>,
- Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>,
- Aleksa Sarai <cyphar@cyphar.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Julian Stecklina <julian.stecklina@cyberus-technology.de>,
- Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>,
- Alexander Graf <graf@amazon.com>, Lennart Poettering <mzxreary@0pointer.de>,
- linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, x86@kernel.org, Ingo Molnar
- <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org,
- linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
- "Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org,
- Michal Simek <monstr@monstr.eu>, devicetree@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>,
- Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>,
- patches@lists.linux.dev
-References: <20250913003842.41944-1-safinaskar@gmail.com>
- <ffbf1a04-047d-4787-ac1e-f5362e1ca600@csgroup.eu>
- <CAN_LGv3Opj9RW0atfXODy-Epn++5mt_DLEi-ewxR9Me5x46Bkg@mail.gmail.com>
-Content-Language: en-US
-From: Rob Landley <rob@landley.net>
-In-Reply-To: <CAN_LGv3Opj9RW0atfXODy-Epn++5mt_DLEi-ewxR9Me5x46Bkg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250919093615.30235-1-yangtiezhu@loongson.cn> <20250919093615.30235-2-yangtiezhu@loongson.cn>
+In-Reply-To: <20250919093615.30235-2-yangtiezhu@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 25 Sep 2025 10:43:44 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4fdfB3fH0DnfgxNimPBsjiOGQZV-w0g63d7TVDOK5-zw@mail.gmail.com>
+X-Gm-Features: AS18NWDZZeQr-H2-K3eeVtlqTGrlSQzrQ7P8GUhNaKX_KK-BVvdywIo1Js7nnoc
+Message-ID: <CAAhV-H4fdfB3fH0DnfgxNimPBsjiOGQZV-w0g63d7TVDOK5-zw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] LoongArch: Only link libstub to final vmlinux
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, loongarch@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/24/25 11:17, Alexander Patrakov wrote:
->> Therefore is it really initrd you are removing or just some corner case
->> ? If it is really initrd, then how does QEMU still work with that
->> -initrd parameter ?
-> 
-> The QEMU -initrd parameter is a misnomer. It can be used to pass an
-> initrd or an initramfs, and the kernel automatically figures out what
-> it is.
+Hi, Tiezhu,
 
-It's not a misnomer, initrams has always been able to make use of the 
-existing initrd loading mechanism to read images externally supplied by 
-the bootloader. It's what grub calls it too. I documented it in the 
-"External initramfs images" section of 
-https://kernel.org/doc/Documentation/filesystems/ramfs-rootfs-initramfs.txt 
-back in 2005. The mechanism itself is 30 years old 
-(Documentation/initrd.txt was written by Werner Almsberger in linux 
-1.3.73 from March 7, 1996, ala 
-https://github.com/mpe/linux-fullhistory/commit/afc106342783 ).
+On Fri, Sep 19, 2025 at 5:36=E2=80=AFPM Tiezhu Yang <yangtiezhu@loongson.cn=
+> wrote:
+>
+> When compiling with LLVM and CONFIG_LTO_CLANG is set, there exists
+> the following objtool warning:
+>
+>   vmlinux.o: warning: objtool: __efistub_efi_boot_kernel()
+>   falls through to next function __efistub_exit_boot_func()
+>
+> This is because efi_boot_kernel() doesn't end with a return instruction
+> or an unconditional jump, then objtool has determined that the function
+> can fall through into the next function.
+>
+> At the beginning, try to do something to make efi_boot_kernel() ends with
+> an unconditional jump instruction, but this modification seems not proper=
+.
+>
+> Since the efistub functions are useless for stack unwinder, they can be
+> ignored by objtool. After many discussions, no need to link libstub to
+> the vmlinux.o, only link libstub to the final vmlinux.
+>
+> Link: https://lore.kernel.org/lkml/pq4h7jgndnt6p45lj4kgubxjd5gidfetugcuf5=
+rcxzxxanzetd@6rrlpjnjsmuy/
+> Suggested-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> ---
+>  Makefile                | 1 +
+>  arch/loongarch/Makefile | 5 ++++-
+>  scripts/link-vmlinux.sh | 5 ++---
+>  3 files changed, 7 insertions(+), 4 deletions(-)
+>
+> diff --git a/Makefile b/Makefile
+> index 9771619ac596..b8e7c63ae3d1 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1201,6 +1201,7 @@ KBUILD_VMLINUX_OBJS :=3D built-in.a $(patsubst %/, =
+%/lib.a, $(filter %/, $(libs-y)
+>  KBUILD_VMLINUX_LIBS :=3D $(filter-out %/, $(libs-y))
+>
+>  export KBUILD_VMLINUX_LIBS
+> +export KBUILD_VMLINUX_LIBS_PRELINK
+>  export KBUILD_LDS          :=3D arch/$(SRCARCH)/kernel/vmlinux.lds
+>
+>  ifdef CONFIG_TRIM_UNUSED_KSYMS
+Why does the LoongArch patch modify the common parts? Since the whole
+series is small enough, I suggest modifying everything in a single
+patch. And the single patch can be merged via the efi tree.
 
-Since initrd contents could always be in a bunch of different 
-autodetected formats (and optionally compressed just like the kernel), 
-initramfs just hooked in to the staircase and said "if the format is 
-cpio, call this function to handle it". The patch series proposes 
-removing all the other formats, but not otherwise changing the existing 
-external image loader mechanism. (Personally I think removing the 
-architecture-specific hacks but leaving the generic support under init/ 
-would probably have made more sense as a first step.)
+Huacai
 
-The bootloader hands off an initrd image, initramfs is the boot-time 
-cpio extraction plumbing that's _init tagged and gets freed, and rootfs 
-is the persistent mounted instance of ramfs or tmpfs that's always there 
-and is analogous to the init task (PID 1) except for the mount tree. 
-(And is often overmounted so it's not visible, but it's still there. And 
-is NOT SPECIAL: overmounts aren't a new concept, nor is hiding them in 
-things like "df".)
-
-There's a REASON my documentation file was called 
-ramfs-rootfs-initramfs.txt: the naming's always been a bit... layered. 
-(And yes, I have always spelled initmpfs with only one t.)
-
-Rob
+> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+> index a3a9759414f4..e9c61f76a045 100644
+> --- a/arch/loongarch/Makefile
+> +++ b/arch/loongarch/Makefile
+> @@ -164,7 +164,10 @@ CHECKFLAGS +=3D $(shell $(CC) $(KBUILD_CPPFLAGS) $(K=
+BUILD_CFLAGS) -dM -E -x c /dev
+>  endif
+>
+>  libs-y +=3D arch/loongarch/lib/
+> -libs-$(CONFIG_EFI_STUB) +=3D $(objtree)/drivers/firmware/efi/libstub/lib=
+.a
+> +
+> +ifdef CONFIG_EFI_STUB
+> +KBUILD_VMLINUX_LIBS_PRELINK +=3D $(objtree)/drivers/firmware/efi/libstub=
+/lib.a
+> +endif
+>
+>  drivers-y              +=3D arch/loongarch/crypto/
+>
+> diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+> index 51367c2bfc21..b3cbff31d8a9 100755
+> --- a/scripts/link-vmlinux.sh
+> +++ b/scripts/link-vmlinux.sh
+> @@ -61,12 +61,11 @@ vmlinux_link()
+>         shift
+>
+>         if is_enabled CONFIG_LTO_CLANG || is_enabled CONFIG_X86_KERNEL_IB=
+T; then
+> -               # Use vmlinux.o instead of performing the slow LTO link a=
+gain.
+>                 objs=3Dvmlinux.o
+> -               libs=3D
+> +               libs=3D"${KBUILD_VMLINUX_LIBS_PRELINK}"
+>         else
+>                 objs=3Dvmlinux.a
+> -               libs=3D"${KBUILD_VMLINUX_LIBS}"
+> +               libs=3D"${KBUILD_VMLINUX_LIBS} ${KBUILD_VMLINUX_LIBS_PREL=
+INK}"
+>         fi
+>
+>         if is_enabled CONFIG_GENERIC_BUILTIN_DTB; then
+> --
+> 2.42.0
+>
 
