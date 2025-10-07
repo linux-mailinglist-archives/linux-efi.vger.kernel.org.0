@@ -1,593 +1,278 @@
-Return-Path: <linux-efi+bounces-4960-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4961-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F53FBBD1B5
-	for <lists+linux-efi@lfdr.de>; Mon, 06 Oct 2025 08:20:46 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E032BC0662
+	for <lists+linux-efi@lfdr.de>; Tue, 07 Oct 2025 08:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3641A1891F3F
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Oct 2025 06:21:09 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A8BDA34CC28
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Oct 2025 06:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C00A2472A5;
-	Mon,  6 Oct 2025 06:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E0922B8AB;
+	Tue,  7 Oct 2025 06:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fvf6myar"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OY5BKxwt"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944871BD9D0
-	for <linux-efi@vger.kernel.org>; Mon,  6 Oct 2025 06:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9F02264A7;
+	Tue,  7 Oct 2025 06:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759731641; cv=none; b=AV8sFFipkDZBEiqx33t0h0N/IV5fiMtE1mhAHAbWC3vSWyrljos2dc1lwhwCu73f1ZfMClH6vU7rKLkzIPu06gG8q2O6UCjiq12OLHlHdtxAOZ/DuAh5jpYQPWB4udb9X/5zzHMbM1NR38dnmH2XuubQjVkFG6iEE6zTvf8vjr4=
+	t=1759820039; cv=none; b=OvB1HnZAzZLID+vLJae5ju5mR5vdHU38OubFhNbIRTlpuZ4cblPY8zp5lqP32t21PBqpGe7krpmjFzsgaOAvUQRjdedGcInNtwjWce0Hl5OimQlU22n9FRhVevW1UvVYqXj3Ob80WgPQaIOj+N/191CaXRG2sFlZZbxHikH5nLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759731641; c=relaxed/simple;
-	bh=g4v2pkEEQ5GxRdAOK1WuY1GJa665YfSdr/vYeDfitpw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u8e8HGaKvHs3TkvCW3bmsf4dXY1BWuwyUufeBRY93G/S0nJc2Z/2qa4HkSHCK0zgjR4YVwr++Q98DDMWkiYHfDMgrEpgtq+k/EicgTGyQWTc8o8aam6RJLaCzQALG2dPhW20d9Kte4OhbD3yhqOzrg8yR8PrjTdzIXIypEZIZAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fvf6myar; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b48d8deafaeso926654166b.1
-        for <linux-efi@vger.kernel.org>; Sun, 05 Oct 2025 23:20:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759731636; x=1760336436; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UNquTlh23mP7iB053Dg0R5L3AAPVXFE8/GScyWT83EA=;
-        b=fvf6myarn0TzuKC7IP14uzKeEZTXvjbBVPaPw9gQ7UtVVTTVE1097Lck/kFDAe31nT
-         CxnmEdK3mhRSaPGKqTWXxIwNG3BAIcZLMKx2aMBQo8cZ7WaNwGhmHcFR1pQiNC6c08XJ
-         kF2kr8vBoiQMp4+sB1zvafZnGEqzIj0rUZMTQ2FPAckbWZM1GCU8mVgstTI+H2UINnMo
-         iKD2fe8cI/brzvSD5RfHcdu2OybB1G7lUyvyqu6504Oa/fhF8ZICh4Il9cRFT6w/0n/o
-         PRtBHDUK5MQEJC0GehXHEkBcWXNAnn0nAiBpCHXp2sAkEjJ4csNe2aXE+pRKzYuCkYHA
-         4+Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759731636; x=1760336436;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UNquTlh23mP7iB053Dg0R5L3AAPVXFE8/GScyWT83EA=;
-        b=v67AD/yGMBq9fKNag8D8yNkfrqRPGBK/TSBM7nYsU5h0KeqL+fz6OIH7hnM56VAii9
-         mGLx5ryP4sG7888DUydWUQhcgMMJ6AnmfYAEKyz+2r1KIECS97jxOUB+T25sqo1eVtPm
-         3uTG5NtoBWWYFc3h0HkqN3Q5JscIlV2k0XIdHWz+0HCt4TSyKFZJHP1PZ9wV4bjK7Fg5
-         5Atc/mvmTOvUjb5RXBrTHplIcn6Rr4TfIVrnvcX73uUUpMTWtDV/8MBdmk+aeyQkijFG
-         KYLMzF40a4IepVUK5ENuJkdTJ5lGka2uLSRV9NcMs6rwLxQfUtxxlUeH9om3IiliG5m8
-         qczQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUAQdTXZ8uMhtG9n2BrvALU6jeTgbUsB0LjChLqSs16OjFw/4+Xkw6/80gi2MZX8pv9FUYPwBFkQ2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuVuHIEWOKH5bFlCjXe4EgDQ5fnf95zhMjFAwDEvQN0A2XrsjB
-	5Fby/tI0MjhNZx8T+LSRgg/yEhd+w0FRA5lYhpOskiWG90IkrmGjcfLg
-X-Gm-Gg: ASbGncu2Xr633/YGy6WriQBxpzEhOpCOBD5KuUEEPirjWuamtEaFEREt2SSLIP+UJYl
-	/ti+3ZJSrQIaUAdfA7jc9LIetoEnVOo500XsbiJ+9Svedsbo49BXbE/9Z5ciCMa2WTiQ52wEnCF
-	Tn2lUWeWqhA0H9zjCS2Rdzt0ALRpASZP0FnfOqwFN4ctC+REG4iC6GyM2kx8s1J5/+nPq5MCkzu
-	kpO7HQX39dbybJ92+TbdOiEc8aHdUYP6/6UY4VmDb0Mfchyo5+KcSPr/AmK9zdUT0McruorQST2
-	ZRGDX7xsdubsi1+qd8g3YOR2NBTp7N0b/KWP9Khu+apFgKJMCNUgwOMTVUwy38ucpH9vQva3yfz
-	OBJuWYAMYi9aQlI/aBenlr1+mHqlejlNdZOhVjhliYqbtgeyVd9xaYg==
-X-Google-Smtp-Source: AGHT+IGd3d1JuyR21TpPk9MiZBONB78IR1Ui0MCDuhOuJlJOi/6hOLi13ihVT2uEw4eqZCl9wOO81g==
-X-Received: by 2002:a17:907:7fa5:b0:b04:25e6:2dbe with SMTP id a640c23a62f3a-b49c52746d1mr1340676066b.63.1759731635370;
-        Sun, 05 Oct 2025 23:20:35 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-6378811236csm9486395a12.42.2025.10.05.23.20.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 05 Oct 2025 23:20:34 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: rob@landley.net
-Cc: akpm@linux-foundation.org,
-	andy.shevchenko@gmail.com,
-	axboe@kernel.dk,
-	brauner@kernel.org,
-	cyphar@cyphar.com,
-	devicetree@vger.kernel.org,
-	email2tema@gmail.com,
-	graf@amazon.com,
-	gregkh@linuxfoundation.org,
-	hca@linux.ibm.com,
-	hch@lst.de,
-	hsiangkao@linux.alibaba.com,
-	initramfs@vger.kernel.org,
-	jack@suse.cz,
-	julian.stecklina@cyberus-technology.de,
-	kees@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-csky@vger.kernel.org,
+	s=arc-20240116; t=1759820039; c=relaxed/simple;
+	bh=sTuEIszWf1hpGyfoffKw9He+rRHF8efyzJJwSZqEKho=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UIG7kjd8UScVSFV2Ih47/4pIBva+W07iXpiUm8ITdSar6w/4qvmZZE3bYLVJqb2Ry+haLk2V7cmVE9xFFmt9oDlyzNmc/MrMKYJCy4GbD3tpoR3pnPrRa5KkcgAfljPcFZ2wI5yre3rVvYKn/shPtBF7P9xs3X7OtdUFYAkIX7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OY5BKxwt; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759820036; x=1791356036;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sTuEIszWf1hpGyfoffKw9He+rRHF8efyzJJwSZqEKho=;
+  b=OY5BKxwtc/dzpR12IXWaXLk9jZ3fQ8guoeSwV2SksDtq6HbyaxoCOuZ1
+   /RniI0BZTPspwEdZe56sOVa6a5455nYV8Wprj9FHIP1ymwPtHyVxwSepD
+   lwfAIrLbkSwodv8Rll3vqtxAriKq9NvrsBbbry05A7ANm+9Jo2BuxsFLK
+   TfVx31dnvaPEbMYCss2Ywg71ZZKewFvapVP0QBErfe0BCAUEKVcATJNZc
+   vW2i6zu2+bsNvqXq+KBUwbd1zfmVH743HsSj7IJNSQWAQAnO5UpE26gTE
+   peXn+lhLvEnJgOKdUe98uCYlFuyjqDsU3PQFV/I+QwciSqUgRLBNCbQ8W
+   w==;
+X-CSE-ConnectionGUID: 5bgibybKTeSvFZvdNsocOQ==
+X-CSE-MsgGUID: e7SOklfCRqqc552f2UKqVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11574"; a="72254371"
+X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; 
+   d="scan'208";a="72254371"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2025 23:53:55 -0700
+X-CSE-ConnectionGUID: LEqFsFcfShWaWb+MH/3Qrw==
+X-CSE-MsgGUID: BdQ+Id4lQk2UAG6g1DUMQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; 
+   d="scan'208";a="184354450"
+Received: from sohilmeh.sc.intel.com ([172.25.103.65])
+  by orviesa004.jf.intel.com with ESMTP; 06 Oct 2025 23:53:55 -0700
+From: Sohil Mehta <sohil.mehta@intel.com>
+To: x86@kernel.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Kirill A . Shutemov" <kas@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Xin Li <xin@zytor.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	linux-doc@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev,
-	mcgrof@kernel.org,
-	mingo@redhat.com,
-	monstr@monstr.eu,
-	mzxreary@0pointer.de,
-	patches@lists.linux.dev,
-	sparclinux@vger.kernel.org,
-	thomas.weissschuh@linutronix.de,
-	thorsten.blum@linux.dev,
-	torvalds@linux-foundation.org,
-	tytso@mit.edu,
-	viro@zeniv.linux.org.uk,
-	x86@kernel.org
-Subject: Re: [PATCH 00/62] initrd: remove classic initrd support
-Date: Mon,  6 Oct 2025 09:19:56 +0300
-Message-ID: <20251006062026.1118184-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
-References: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
+	linux-efi@vger.kernel.org
+Subject: [PATCH v10 00/15] x86: Enable Linear Address Space Separation support
+Date: Mon,  6 Oct 2025 23:51:04 -0700
+Message-ID: <20251007065119.148605-1-sohil.mehta@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Rob Landley <rob@landley.net>:
-> Still useful for embedded systems that can memory map flash, but it's
-
-They can use workaround suggested in cover letter.
-
-> While you're at it, could you fix static/builtin initramfs so PID 1 has 
-> a valid stdin/stdout/stderr?
-
-This is in my low-priority TODO list. I want to help you. I will possibly do this
-after a month or two or three...
-
-> I posted various patches to make CONFIG_DEVTMPFS_MOUNT work for initmpfs
-
-My solution will be different: I will create static /dev/console and /dev/null
-after unpacking of builtin and external initramfs. (/dev/null because of
-that bionic problem you somewhere wrote.)
-
-> Oh hey, somebody using mkroot. Cool. :)
-
-Yeah, thank you for mkroot.
-
-> Now that lkml.iu.edu is back up (yay!) all the links in 
-> ramfs-rootfs-initramfs.txt can theoretically be fixed just by switching 
-> the domain name.
-
-Yes, I plan to replace them with lore.kernel.org ones. This is in my low-priority
-TODO list, too.
-
-> > For example, I renamed the following global variables:
-> > 
-> > __initramfs_start
-> > __initramfs_size
-> 
-> That already said initramfs, and you renamed it.
-
-Yes, to distinguish builtin and external initramfs.
-
-> > phys_initrd_start
-> > phys_initrd_size
-> > initrd_start
-> > initrd_end
-> 
-> Which is data delivered through grub's "initrd" command. Here's how I've 
-
-My plan is to change "official" names for these things.
-"initramfs" will refer both to .cpio archive itself and to loading
-mechanism. Name of GRUB's "initrd" command will become "wrong, kept for
-compatibility".
-
-But I plan to do all these renamings after I fully remove initrd support,
-which will happen in September 2026, as I explained in another email.
-
-> 3) rootfs is (for some reason) the name of the mounted filesystem in 
-> /proc/mounts (because letting it say "ramfs" or "tmpfs" like normal in 
-> /proc/mounts would be consistent and immediately understandable, so they 
-> couldn't have that).
-
-I totally agree. I want to change it to ramfs/tmpfs. But this change
-may break something, so I think we need some strong motivation to
-do this. So I will wait for removal of nommu support. Arnd Bergmann said
-"NOMMU removal maybe 2027" ( https://lwn.net/Articles/1035727/ ,
-https://static.sched.com/hosted_files/osseu2025/75/32-bit%20Linux%20in%202025%20%28OSS%20Europe%29.pdf ,
-slide 20). (Also he said 32-bit support will be removed, too.)
-After that I will remove ramfs (yeah, I love to remove things),
-and, while we are here, I will rename "rootfs" to "tmpfs" in
-/proc/mounts (hopefully I will get away with this).
-
-> > __builtin_initramfs_start
-> > __builtin_initramfs_size
-> > phys_external_initramfs_start
-> > phys_external_initramfs_size
-> > virt_external_initramfs_start
-> > virt_external_initramfs_end
-> 
-> Do you believe people will understand what the slightly longer names are 
-> without looking them up?
-
-No. But I still hope new names are better. As I said above, all these
-will be named "initramfs" under my new plan. But again, all these
-will happen after full initrd removal, which will happen in Sep 2026.
-
-> I'm all for removing obsolete code, but a partial cleanup that still 
-> leaves various sharp edges around isn't necessarily a net improvement. 
-> Did you remove the NFS mount code from init/do_mounts.c? Part of the 
-
-Okay, I put this to my low-priority TODO list.
-
-> The one config symbol that really seems to bite people in this area is 
-> BLK_DEV_INITRD because a common thing people running from initramfs want 
-> to do is yank the block layer entirely (CONFIG_BLOCK=n) and use 
-> initramfs instead, and needing to enable CONFIG_BLK_DEV_INITRD while
-> 
-> And the INSANE part is they generally want a static initrd to do it so 
-> they're not using the external loader, but Kconfig has INITRAMFS_SOURCE 
-> under CONFIG_BLK_DEV_INITRD and it's a mess. Renaming THAT symbol would 
-> be good.
-
-You mean renaming CONFIG_BLK_DEV_INITRD will be good?
-I do exactly that.
-And while we are here, I also rename CONFIG_RD_*,
-because configs will be broken anyway.
-
-Also, recently we got keyword "transitional" to help with such
-renamings: https://www.phoronix.com/news/Linux-6.18-Transitional .
-I will use it.
-
-> To you. I'm not entirely sure what virt_external means. (Yes I could go 
-
-It means "virtual address of external initramfs". But, yes, Borislav Petkov
-said me in another email that kernel devs usually use "va" for virtual
-address and "pa" for physical, so I will use these terms (in Sep 2026).
-
-> Meanwhile 35 years of installed base expertise in other people's heads 
-> has been discarded and developed version skew for anyone maintaining an 
-
-I'm still not convinced. Ideally I want to remove word "initrd" from Linux
-sources completely.
-
-Decision to merge my patches or not is on maintainers anyway. They
-will decide whether these renamings are good idea.
-
-> > - Removed kernel command line parameter "ramdisk_start",
-> > which was used for initrd only (not for initramfs)
-> 
-> Some bootloaders appended that to the kernel command line to specify 
-> where in memory they've loaded the initrd image, which could be a 
-> cpio.gz once upon a time. No idea what regressions happened since though.
-
-I double-checked: ramdisk_start is used for initrd code path only
-in modern kernels, not for initramfs code path.
-
-"initrd=" is used in both code paths, and I keep it.
-
-==
-
-While we are here, let me answer other your emails, too.
-
-Here is answer to https://lore.kernel.org/all/94023988-8498-4070-bdb7-6758dbe4b91d@landley.net/ .
-
-> There used to be a way to feed a the kernel config a text file listing 
-> what to make in the cpio file instead of just pointing it at a 
-> directory, and my old Aboriginal Linux build used that mechanism 
-...
-> But kernel commit 469e87e89fd6 broke that mechanism because somebody 
-> dunning-krugered it away ("I don't understand why we need this therefore 
-
-I will consider fixing this, too. Put to my low-priority TODO list.
-
-But it is possible that I will instead remove gen-init-cpio completely.
-(I will do some experiments before deciding.)
-If it was broken, and nobody except for you cared, then this means that
-nobody except for you use it.
-
-Of course, I will do that after sending patch for unconditional creating of
-/dev/console and /dev/null, so you are safe.
-
-> And again: you ONLY need this for static initramfs. Dynamic initramfs 
-> has code create /dev/console (at boot time, not build time):
->
-> https://github.com/torvalds/linux/blob/v6.16/init/noinitramfs.c#L27
-
-Your explanation is wrong here. As you can see in Makefile, noinitramfs.c
-is not built if there is BLK_DEV_INITRD.
-
-If you don't have BLK_DEV_INITRD, then noinitramfs.c
-is built, and it creates /dev/console.
-
-If there is BLK_DEV_INITRD and there is no INITRAMFS_SOURCE, then
-default built-in initramfs is used, which is specified here:
-https://elixir.bootlin.com/linux/v6.17/source/usr/default_cpio_list
-(and it happens to be equivalent to specified in noinitramfs.c).
-
-If there are both BLK_DEV_INITRD and INITRAMFS_SOURCE, then
-INITRAMFS_SOURCE is used instead of default built-in initramfs,
-so there is no /dev/console.
-
-I am totally sure that my explanation is correct.
-
-> I could emit cpio contents with xxd -r from a HERE document hexdump or
-
-There is no need for "xxd -r". cpio encoding of /dev/console is ASCII
-(except for some null bytes). See:
-
-$ echo /dev/console | cpio --create --format=newc --quiet | xxd
-00000000: 3037 3037 3031 3030 3030 3030 3043 3030  0707010000000C00
-00000010: 3030 3231 3830 3030 3030 3030 3030 3030  0021800000000000
-00000020: 3030 3030 3030 3030 3030 3030 3031 3638  0000000000000168
-00000030: 4438 4337 4241 3030 3030 3030 3030 3030  D8C7BA0000000000
-00000040: 3030 3030 3030 3030 3030 3030 3036 3030  0000000000000600
-00000050: 3030 3030 3035 3030 3030 3030 3031 3030  0000050000000100
-00000060: 3030 3030 3044 3030 3030 3030 3030 2f64  00000D00000000/d
-00000070: 6576 2f63 6f6e 736f 6c65 0000 3037 3037  ev/console..0707
-00000080: 3031 3030 3030 3030 3030 3030 3030 3030  0100000000000000
-00000090: 3030 3030 3030 3030 3030 3030 3030 3030  0000000000000000
-000000a0: 3030 3030 3030 3030 3031 3030 3030 3030  0000000001000000
-000000b0: 3030 3030 3030 3030 3030 3030 3030 3030  0000000000000000
-000000c0: 3030 3030 3030 3030 3030 3030 3030 3030  0000000000000000
-000000d0: 3030 3030 3030 3030 3030 3030 3030 3030  0000000000000000
-000000e0: 3042 3030 3030 3030 3030 5452 4149 4c45  0B00000000TRAILE
-000000f0: 5221 2121 0000 0000 0000 0000 0000 0000  R!!!............
-00000100: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000110: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000120: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000130: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000140: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000150: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000160: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000170: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000180: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000190: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001a0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001b0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001c0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001d0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001e0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001f0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-
-So, I think the following will go (not tested):
-
-==
-printf '%s' '0707010000000C0000218000000000000000000000000168D8C7BA00000000000000000000000600000005000000010000000D00000000/dev/console' > out.cpio
-printf '\0\0' >> out.cpio
-==
-
-Maybe even last '\0\0' is not needed.
-
-Also, this your email ( https://lore.kernel.org/all/94023988-8498-4070-bdb7-6758dbe4b91d@landley.net/ )
-for some reasons didn't end up on https://lore.kernel.org/lkml .
-
-As you can see here https://lore.kernel.org/lkml/94023988-8498-4070-bdb7-6758dbe4b91d@landley.net/ ,
-the full list of lore mailing lists, which got it, is linux-snps-arc, linux-riscv and linux-sh .
-
-I wrote about this to public-inbox:
-http://public-inbox.org/meta/CAPnZJGB7ugY5rytS+hO-QzvPQBNjCh1jzs4WVkuakafBM9c_=w@mail.gmail.com/T/#u .
-But it is possible that the problem is on your side.
-
-Maybe this is why people ignore your emails? Maybe they simply don't get them?
-
-Consider applying for linux.dev email ( https://linux.dev ). They are free for linux devs.
-
-==
-
-Now let me answer to https://lore.kernel.org/lkml/8f595eec-e85e-4c1f-acb0-5069a01c1012@landley.net/T/#u .
-
-> I find the community an elaborate bureaucracy unresponsive to hobbyists. 
-> Documentation/process/submitting-patches.rst being a 934 line document 
-> with a bibliography, plus a 24 step checklist not counting the a) b) c) 
-> subsections are just symptoms. The real problem is following those is 
-> not sufficient to navigate said bureaucracy.
-
-I totally agree.
-
-Still I somehow was able to manage this.
-
-Again: I totally agree. I just want to share some practical advice, that helped me
-to get my patches merged.
-
-As you can see, I was able to get my patches merged:
-https://lore.kernel.org/all/?q=f:%22Askar%20Safin%22 .
-
-And this is despite nobody paid me for this. I do this in my own free time.
-
-As well as I understand, you are doing embedded Linux development as your job,
-so you are in better position.
-
-My patches are merged despite my productivity is low. I am very slow person.
-
-You don't need to remember all of submitting-patches.rst . Just do this:
-
-- Run checkpatch.pl . It accepts git ranges, e. g. "checkpatch.pl origin/HEAD..HEAD"
-- After posting patches respond to comments, apply their edits, send new version, then again and again
-
-When sending patches and responding to comments don't write too long letters.
-Nobody will carefully read long letters and respond to them.
-I respond to such letters, because I'm autistic, and I feel responsibility to carefully
-read and respond to each letter. But other people don't do this.
-
-In particular, when sending patches and responding to comments don't write long
-paragraphs about good things you did in the past and about how you are disappointed
-in the entire world, such as these:
-
-> Let's see, I wrote the initramfs documentation in 2005:
->
-> https://lwn.net/Articles/157676/
->
-> Was already correcting kernel developers on how it actually worked 
-> (rather than theoretically worked) in 2006:
->
-> https://lkml.iu.edu/hypermail//linux/kernel/0603.2/2760.html
->
-> I added tmpfs support to it in 2013 (because nobody else had bothered 
-> for EIGHT YEARS):
->
-> https://lkml.iu.edu/hypermail/linux/kernel/1306.3/04204.html
->
-> I've maintained my own cpio implementation in toybox for over a decade:
->
-> https://github.com/landley/toybox/commit/a2d558151a63
->
-> The successor to aboriginal (above) is a 400 line bash script that 
-> builds a dozen archtectures that each boot to a shell prompt in qemu:
->
-> https://github.com/landley/toybox/blob/master/mkroot/mkroot.sh
-> https://landley.net/bin/mkroot/latest/
->
-> With automated regression test infrastructure to boot them all under 
-> qemu and confirm that it runs, the clocks are set right, the network 
-> works, and it can read from -hda:
->
-> https://github.com/landley/toybox/blob/master/mkroot/testroot.sh
->
-> So yes I _can_ create my own bespoke C program to modify the file in 
-> arbitrary ways, I have my reasons not to do that, and have thought about 
-> them for a while now.
-
-Again: I'm not trying to insult you. I'm just trying to give advice how
-to get your patches merged.
-
-When my patches are ready, I send them using something like this:
-
-==
-UPSTREAM=origin/HEAD
-MERGE_BASE="$(git merge-base "$UPSTREAM" HEAD)"
-
-mkdir /tmp/patches
-
-# For --signoff
-export GIT_COMMITTER_EMAIL=me@example.com
-
-# Prepare patches
-# --base for "base-commit:" footer
-git format-patch --cover-letter --find-renames --base="$MERGE_BASE" --signoff -o /tmp/patches \
-  --subject-prefix='PATCH v2' "$MERGE_BASE"
-
-editor /tmp/patches/0000-cover-letter.patch
-
-# Send
-# "--batch-size=1 --relogin-delay=20" to insert delays between patches. Hopefully
-# this will help me to cope with my mailserver limits
-# "--confirm=" to give myself chance to cancel
-git send-email --batch-size=1 --relogin-delay=20 --confirm=always --to=a@example.com --cc=b@example.com \
-  /tmp/patches
-==
-
-This script will automatically generate nice diffstat in cover letter.
-
-This script is not tested. Actually I use my own 182-line Rust program, which does
-same thing.
-
-This is checklist I plan to do when sending v2 version of this initrd patchset:
-- Read all answers to prev. version, respond and apply edits
-- checkpatch.pl
-- Check that my patchset doesn't conflict with linux-next
-- Check that every commit compiles for x86_64 with "W=1"
-- Test everything using mkroot.sh rewritten in Rust
-
-> Why keep the section when you removed the old mechanism?
-
-This section still contains useful info, so I kept it.
-But okay, I agree, I will rewrite it to not mention initrd.
-I will do this after full removal of initrd, i. e. in Sep 2026.
-
-If you want me to send some patch to this document _now_,
-then just ask me, I will try to do this.
-
-> Those two lines you just touched contradict each other
-
-Will fix in Sep 2026, too.
-
-> The init/noinitramfs.c file does init/mkdir("/dev") and 
-> init_mknod("/dev/console") because calling the syscall_blah() functions 
-> directly was considered icky so they created gratuitous wrappers to do
-
-You cannot directly call syscall from kernel code if your syscall
-works with strings. Reasons are here: https://lwn.net/Articles/832121/ .
-
-mkdir syscall expects string, located in user memory. So you
-cannot call it from kernel and pass kernel string to it.
-Thus you need separate init_mkdir.
-
-> Anyway, that's why the 130+ byte archive was there. It wasn't actually 
-> empty, even when initramfs was disabled.
-
-I just double-checked. If BLK_DEV_INITRD is disabled, then
-there is no any builtin initramfs at all. If BLK_DEV_INITRD is
-disabled, then initramfs_data.S is not built, as we can see here:
-
-https://elixir.bootlin.com/linux/v6.17/source/usr/Makefile#L15
-
-And initramfs_data.S contains symbol __initramfs_size, so, yes,
-initramfs_data.S is actual builtin initramfs.
-
-In fact, that "obj-$(CONFIG_BLK_DEV_INITRD) :=" trick
-is not needed, because whole usr/ dir is compiled out,
-if there is no BLK_DEV_INITRD:
-https://elixir.bootlin.com/linux/v6.17/source/init/Kconfig#L1455
-
-Again: I acknoledge that bug with missing /dev/console. In fact,
-I was able to reproduce it. I plan to fix it in a month or two.
-
-> > +If the kernel has CONFIG_BLK_DEV_INITRD enabled, an external cpio.gz archive can also
->
-> You renamed that symbol, then even you use the old name here.
-
-I rename it in later commit.
-
-> > -This has the memory efficiency advantages of initramfs (no ramdisk block
-> > -device) but the separate packaging of initrd (which is nice if you have
-> > +This is nice if you have
-> >   non-GPL code you'd like to run from initramfs, without conflating it with
-> > -the GPL licensed Linux kernel binary).
-> > +the GPL licensed Linux kernel binary.
->
-> IANAL: Whether or not this qualifies as "mere aggregation" had yet to go 
-> to court last I heard.
-
-This is possible that court will use this file as an argument.
-So let's keep this paragraph here. :)
-
-There is an example, where FAQ on FSF site was actually
-used as argument in court: https://www.sonarsource.com/blog/will-the-new-judicial-ruling-in-the-vizio-lawsuit-strengthen-the-gpl/ .
-
-I mean this quote:
-
-> Vizio “did not dispute” the first two questions, focusing instead on the “expectations” of the contracting parties.
-> Relying on the Free Software Foundation’s (FSF) GPL FAQs, it argued that the FSF never intended for third parties to enforce the contract,
-> and therefore the parties to the contract could not have intended it.
-
-
-> >     echo init | cpio -o -H newc | gzip > test.cpio.gz
-> > -  # Testing external initramfs using the initrd loading mechanism.
-> > +  # Testing external initramfs.
->
-> Does grub not still call it "initrd"?
-
-Yes, grub still calls it "initrd".
-As I said, in Sep 2026 I will rename bootloader loading mechanism to "initramfs",
-and name of grub command "initrd" will simply become "wrong".
-
-> A) they added -hda so you don't have to give it a dummy /dev/zero anymore.
-
-Ok, I will fix.
-
-> B) there's no longer a "qemu" defaulting to the current architecture,
-
-Ok, I will fix.
-
+Linear Address Space Separation (LASS) is a security feature [1] that
+works pre-paging to prevent a class of side-channel attacks that rely on
+speculative access across the user/kernel boundary.
+
+Change of personnel
+-------------------
+I am picking up this series from Kiryl. The patches have switched hands
+multiple times over the last couple of years. I have refreshed the
+commit tags since most of the patches have gone around a full circle.
+
+Many thanks to Kiryl and Alex for taking these patches forward. Would
+highly appreciate your reviews tags on the updated series.
+
+Changes in v10
+--------------
+- Use the simplified versions of inline memcpy/memset (patch 2)
+- New patch to fix an issue during Kexec relocate kernel (patch 7)
+- Dropped the LAM re-enabling patch (will post separately)
+- Reworded some of the commit messages
+- Minor updates to code formatting and code comments
+
+v9: https://lore.kernel.org/lkml/20250707080317.3791624-1-kirill.shutemov@linux.intel.com/
+
+Patch structure
+---------------
+Patch     1: Enumerate LASS
+Patch   2-3: Update text poking
+Patch   4-5: CR pinning changes
+Patch   6-7: Update EFI and kexec flows
+Patch  8-11: Vsyscall impact
+Patch 12-14: LASS hints during #GP and #SS
+Patch    15: Enable LASS
+
+The series is maturing, as reflected by the limited incremental changes.
+Please consider providing review tags/acks for patches that seem ready.
+
+Background
+----------
+Privilege mode based access protection already exists today with paging
+and features such as SMEP and SMAP. However, to enforce these
+protections, the processor must traverse the paging structures in
+memory.  An attacker can use timing information resulting from this
+traversal to determine details about the paging structures, and to
+determine the layout of the kernel memory.
+
+The LASS mechanism provides the same mode-based protections as paging,
+but without traversing the paging structures. Because the protections
+enforced by LASS are applied before paging, an attacker will not be able
+to derive timing information from the various caching structures such as
+the TLBs, mid-level caches, page walkers, data caches, etc. LASS can
+prevent probing using double page faults, TLB flush and reload, and
+software prefetch instructions. See [2], [3], and [4] for research
+on the related attack vectors.
+
+Though LASS was developed in response to Meltdown, in hindsight, it
+alone could have mitigated Meltdown had it been available. In addition,
+LASS prevents an attack vector targeting Linear Address Masking (LAM)
+described in the Spectre LAM (SLAM) whitepaper [5].
+
+LASS enforcement relies on the typical kernel implementation dividing
+the 64-bit virtual address space into two halves:
+  Addr[63]=0 -> User address space
+  Addr[63]=1 -> Kernel address space
+Any data access or code execution across address spaces typically
+results in a #GP, with an #SS generated in some rare cases.
+
+Kernel accesses
+---------------
+When there are valid reasons for the kernel to access memory in the user
+half, it can temporarily suspend LASS enforcement by toggling the
+RFLAGS.AC bit. Most of these cases are already covered today through the
+stac()/clac() pairs, which avoid SMAP violations. However, there are
+kernel usages, such as text poking, that access mappings (!_PAGE_USER)
+in the lower half of the address space. LASS-specific AC bit toggling is
+added for these cases.
+
+There are a couple of cases where instruction fetches are done from a
+lower address. Toggling the AC bit is not sufficient here because it
+only manages data accesses. Therefore, CR4.LASS is modified in the case
+of EFI set_virtual_address_map() and kexec relocate_kernel() to avoid
+LASS violations. To let EFI modify CR4 during boot, CR pinning
+enforcement is deferred until late_initcall().
+
+Exception handling
+------------------
+With LASS enabled, NULL pointer dereferences generate a #GP instead of a
+#PF. Due to the limited error information available during #GP, some of
+the helpful hints would no longer be printed. The patches enchance the
+#GP address decoding logic to identify LASS violations and NULL pointer
+exceptions.
+
+For example, two invalid userspace accesses would generate:
+#PF (without LASS):
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  BUG: unable to handle page fault for address: 0000000000100000
+
+#GP (with LASS):
+  Oops: general protection fault, kernel NULL pointer dereference 0x0: 0000
+  Oops: general protection fault, probably LASS violation for address 0x100000: 0000
+
+Similar debug hints are added for the #SS handling as well.
+
+Userspace accesses
+------------------
+Userspace attempts to access any kernel address generate a #GP when LASS
+is enabled. Unfortunately, legacy vsyscall functions are located in the
+address range 0xffffffffff600000 - 0xffffffffff601000. Prior to LASS,
+default access (XONLY) to the vsyscall page would generate a page fault
+and the access would be emulated in the kernel. To avoid breaking user
+applications when LASS is enabled, the patches extend vsyscall emulation
+in XONLY mode to the #GP handler.
+
+In contrast, the vsyscall EMULATE mode is deprecated and not expected to
+be used by anyone. Supporting EMULATE mode with LASS would require
+complex instruction decoding in the #GP fault handler, which is probably
+not worth the effort. For now, LASS is disabled in the rare case when
+someone absolutely needs to enable vsyscall=emulate via the command
+line.
+
+Links
+-----
+[1]: "Linear-Address Pre-Processing", Intel SDM (June 2025), Vol 3, Chapter 4.
+[2]: "Practical Timing Side Channel Attacks against Kernel Space ASLR", https://www.ieee-security.org/TC/SP2013/papers/4977a191.pdf
+[3]: "Prefetch Side-Channel Attacks: Bypassing SMAP and Kernel ASLR", http://doi.acm.org/10.1145/2976749.2978356
+[4]: "Harmful prefetch on Intel", https://ioactive.com/harmful-prefetch-on-intel/ (H/T Anders)
+[5]: "Spectre LAM", https://download.vusec.net/papers/slam_sp24.pdf
+
+
+Alexander Shishkin (2):
+  x86/efi: Disable LASS while mapping the EFI runtime services
+  x86/traps: Communicate a LASS violation in #GP message
+
+Kirill A. Shutemov (2):
+  x86/traps: Generalize #GP address decode and hint code
+  x86/traps: Provide additional hints for a kernel stack segment fault
+
+Peter Zijlstra (Intel) (1):
+  x86/asm: Introduce inline memcpy and memset
+
+Sohil Mehta (9):
+  x86/cpu: Enumerate the LASS feature bits
+  x86/alternatives: Disable LASS when patching kernel alternatives
+  x86/cpu: Defer CR pinning enforcement until late_initcall()
+  x86/kexec: Disable LASS during relocate kernel
+  x86/vsyscall: Reorganize the page fault emulation code
+  x86/traps: Consolidate user fixups in exc_general_protection()
+  x86/vsyscall: Add vsyscall emulation for #GP
+  x86/vsyscall: Disable LASS if vsyscall mode is set to EMULATE
+  x86/cpu: Enable LASS by default during CPU initialization
+
+Yian Chen (1):
+  x86/cpu: Set LASS CR4 bit as pinning sensitive
+
+ .../admin-guide/kernel-parameters.txt         |   4 +-
+ arch/x86/Kconfig.cpufeatures                  |   4 +
+ arch/x86/entry/vsyscall/vsyscall_64.c         |  83 +++++++-----
+ arch/x86/include/asm/cpufeatures.h            |   1 +
+ arch/x86/include/asm/smap.h                   |  35 ++++-
+ arch/x86/include/asm/string.h                 |  26 ++++
+ arch/x86/include/asm/vsyscall.h               |  13 +-
+ arch/x86/include/uapi/asm/processor-flags.h   |   2 +
+ arch/x86/kernel/alternative.c                 |  18 ++-
+ arch/x86/kernel/cpu/common.c                  |  30 ++--
+ arch/x86/kernel/cpu/cpuid-deps.c              |   1 +
+ arch/x86/kernel/dumpstack.c                   |   6 +-
+ arch/x86/kernel/relocate_kernel_64.S          |   7 +-
+ arch/x86/kernel/traps.c                       | 128 +++++++++++++-----
+ arch/x86/kernel/umip.c                        |   3 +
+ arch/x86/mm/fault.c                           |   2 +-
+ arch/x86/platform/efi/efi.c                   |  14 +-
+ 17 files changed, 284 insertions(+), 93 deletions(-)
+
+
+base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
 -- 
-Askar Safin
+2.43.0
+
 
