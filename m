@@ -1,61 +1,61 @@
-Return-Path: <linux-efi+bounces-4967-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-4968-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89ADDBC06C8
-	for <lists+linux-efi@lfdr.de>; Tue, 07 Oct 2025 08:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63335BC06DD
+	for <lists+linux-efi@lfdr.de>; Tue, 07 Oct 2025 08:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B72264F45C0
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Oct 2025 06:55:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09D064F4DF7
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Oct 2025 06:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D66023D7F5;
-	Tue,  7 Oct 2025 06:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABE624466B;
+	Tue,  7 Oct 2025 06:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ffnAY8Vh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mhpkkTgL"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF1F238150;
-	Tue,  7 Oct 2025 06:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6356E23BD17;
+	Tue,  7 Oct 2025 06:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759820043; cv=none; b=Ywq/H11/XiRjaM5U9VBJocPgwBVToxBXbDhJZEda2yyU2A5H/VBgVUS7TllYc8PRKIArdKPC2LKHlKCInYO70exv9MkSuZdE4zJbAXCgzRZhI5ieGPHq67kULpX9yidfOkBNasllmS7KBueHxrZgvfoeMFsRrxPS70jgKwAZFmA=
+	t=1759820044; cv=none; b=f2sljcQjm/l7sleUKK1CjRtuHks8tyqsM0qijbU0JC1Jh80SVtaqRA1YvKhw8R0Eie+qkWstSNJQeB/TMjeqH66VKFkniBKYh3n9knTPzA2XM7mrJSwaR/9F/nrFJRv5g+K8BnqMfZ7sGXOXdxI7h1FmqO5UEoNEJJtqDb23fDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759820043; c=relaxed/simple;
-	bh=2tLYylj3DF/5PX3moQnEXwNy+fnzilsriKy0eTjLYT0=;
+	s=arc-20240116; t=1759820044; c=relaxed/simple;
+	bh=hIq1Gw3KtkiqpD02POfZXf3xLAd/wm5guqT+PTGj6r0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTaIfgS8grnrE2Du60RR4603ubo+VOz0IJDYScM1hxlzBR+5Oh/sJkFce9Fd0eIkNMI/bOF3ln2WWMxU2B78roKoFY3mifeO1HanQ9btDj8Tu3zOlzih4r8HPPOP3h+CiUCg6UoOIjKpG3H1hs4hCcXzwFf01SBMb9srVndSvPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ffnAY8Vh; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=oC9KKKJ8ot/HP5KUV5PccHHvb9/Mv/Tu4mzOt7ycP4aHa4ejJGBgnopIMGe2Ac5zyV3mJoGCLAb3vYVB0slvgCLRsKYG+wnTZgyjEoeIfq1AwaslIS2d40OSJP6ddcaXtPAjHB8kBlJkyaFu9ZVkJ1+T/TP4QhsC/rx2BATHZCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mhpkkTgL; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759820041; x=1791356041;
+  t=1759820042; x=1791356042;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2tLYylj3DF/5PX3moQnEXwNy+fnzilsriKy0eTjLYT0=;
-  b=ffnAY8Vhq1wpyd6QRBJCbUR37NHMed9I/NaD4LN0OfUSMLUK7QNyT3pC
-   ruR3X6YlQ1K2CtlU5ihvxrtjw+m2GeLOb4mKXCvREyT6SsYzufx7mqbuV
-   1qEKRwe7RhL42l9JGtTpTkEHv9GxQwfp0SbxEnjVoMjzP4/4xljy6ughS
-   T/onDGw9pOBl4MuN+uvcto0SACJWXBmp+Y7b0EgAe/sgTTHBjNP1+jrI2
-   RGxEWFTT5/Pa3sEscaNAmSY1q2mHEpchsMzlKK+POCPw9Ic27aT263FRi
-   pSw4hs4YDZqf3LoF9MC/l1V1pAYMOUSLzzO1H6j+uc6UJiMZTFStbS1AL
-   Q==;
-X-CSE-ConnectionGUID: ogkJhTNkQd6e8htZnZPbmg==
-X-CSE-MsgGUID: UEuiXXqBSqCCr6SEJ7OwXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11574"; a="72254463"
+  bh=hIq1Gw3KtkiqpD02POfZXf3xLAd/wm5guqT+PTGj6r0=;
+  b=mhpkkTgL4+AABfPbbEcgRlSWPsG+s9pAqtkFhJqRf6/u6ZB0Y5XLSa5L
+   zoW1wAoYynGvrmmwqV2EeEBCBIrY8uAzDb03B0zXVdNMYWpL8cYZYFSOk
+   6/MxbYs1nRzOtN5Dp7RNaicuoqHdBpAAdKBu49B4r9qQoEFxCzSSyyldI
+   OcxE0wPijm9gPL0WoJvPyC+9PgTxUqMg+WzcmRCxrrMrigPbY3rfhH1c8
+   5V2GlavoeN/9Hk3TO5EX2KJeGzwDhwKVgYjB1u1BAiMQhA0iFmPLUB6AH
+   w8Q1QzJMnP6KVuDGk5B5YV1FN7dRVrlAfDsHuGt06Kx38QFSL69UvhtB0
+   w==;
+X-CSE-ConnectionGUID: uTOOz0QvRjWgEbYEsmFpMA==
+X-CSE-MsgGUID: 7sUzfKCJTb+5byTcJu2gbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11574"; a="72254478"
 X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; 
-   d="scan'208";a="72254463"
+   d="scan'208";a="72254478"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2025 23:54:00 -0700
-X-CSE-ConnectionGUID: Y7LmAJOSQYWVnMRl+LGvvw==
-X-CSE-MsgGUID: FD6aC6ifTD6sHu3HIhWdbg==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2025 23:54:01 -0700
+X-CSE-ConnectionGUID: tuhU5btZS7y2fiJuYV/SCg==
+X-CSE-MsgGUID: ZzewQD2lTIOQBCHmq4O71w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; 
-   d="scan'208";a="184354483"
+   d="scan'208";a="184354487"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
   by orviesa004.jf.intel.com with ESMTP; 06 Oct 2025 23:54:00 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
@@ -87,9 +87,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v10 06/15] x86/efi: Disable LASS while mapping the EFI runtime services
-Date: Mon,  6 Oct 2025 23:51:10 -0700
-Message-ID: <20251007065119.148605-7-sohil.mehta@intel.com>
+Subject: [PATCH v10 07/15] x86/kexec: Disable LASS during relocate kernel
+Date: Mon,  6 Oct 2025 23:51:11 -0700
+Message-ID: <20251007065119.148605-8-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007065119.148605-1-sohil.mehta@intel.com>
 References: <20251007065119.148605-1-sohil.mehta@intel.com>
@@ -101,63 +101,38 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Relocate kernel uses identity mapping to copy the new kernel which
+leads to an LASS violation. To avoid issues, disable LASS after the
+original CR4 value has been saved but before jumping to the identity
+mapped page.
 
-While mapping EFI runtime services, set_virtual_address_map() is called
-at its lower mapping, which LASS prohibits. Wrapping the EFI call with
-lass_stac()/clac() is not enough, because the AC flag only gates data
-accesses, and not instruction fetches.
-
-Use the big hammer and toggle the CR4.LASS bit to make this work.
-
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
 v10:
- - Reword code comments
+ - New patch to fix an issue detected during internal testing.
 ---
- arch/x86/platform/efi/efi.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/x86/kernel/relocate_kernel_64.S | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 463b784499a8..cc00a7e6599e 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -786,8 +786,8 @@ static void __init __efi_enter_virtual_mode(void)
- {
- 	int count = 0, pg_shift = 0;
- 	void *new_memmap = NULL;
-+	unsigned long pa, lass;
- 	efi_status_t status;
--	unsigned long pa;
+diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+index 11e20bb13aca..4ffba68dc57b 100644
+--- a/arch/x86/kernel/relocate_kernel_64.S
++++ b/arch/x86/kernel/relocate_kernel_64.S
+@@ -95,9 +95,12 @@ SYM_CODE_START_NOALIGN(relocate_kernel)
+ 	/* Leave CR4 in %r13 to enable the right paging mode later. */
+ 	movq	%cr4, %r13
  
- 	if (efi_alloc_page_tables()) {
- 		pr_err("Failed to allocate EFI page tables\n");
-@@ -825,11 +825,23 @@ static void __init __efi_enter_virtual_mode(void)
- 
- 	efi_sync_low_kernel_mappings();
- 
+-	/* Disable global pages immediately to ensure this mapping is RWX */
 +	/*
-+	 * LASS complains because set_virtual_address_map() is located
-+	 * at a lower address. To pause enforcement, flipping RFLAGS.AC
-+	 * is not sufficient here, as it only permits data access and
-+	 * not instruction fetch. Disable the entire LASS mechanism.
++	 * Disable global pages immediately to ensure this mapping is RWX.
++	 * Disable LASS before jumping to the identity mapped page.
 +	 */
-+	lass = cr4_read_shadow() & X86_CR4_LASS;
-+	cr4_clear_bits(lass);
-+
- 	status = efi_set_virtual_address_map(efi.memmap.desc_size * count,
- 					     efi.memmap.desc_size,
- 					     efi.memmap.desc_version,
- 					     (efi_memory_desc_t *)pa,
- 					     efi_systab_phys);
-+
-+	cr4_set_bits(lass);
-+
- 	if (status != EFI_SUCCESS) {
- 		pr_err("Unable to switch EFI into virtual mode (status=%lx)!\n",
- 		       status);
+ 	movq	%r13, %r12
+-	andq	$~(X86_CR4_PGE), %r12
++	andq	$~(X86_CR4_PGE | X86_CR4_LASS), %r12
+ 	movq	%r12, %cr4
+ 
+ 	/* Save %rsp and CRs. */
 -- 
 2.43.0
 
