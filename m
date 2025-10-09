@@ -1,248 +1,264 @@
-Return-Path: <linux-efi+bounces-5008-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5009-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2D4BC62C2
-	for <lists+linux-efi@lfdr.de>; Wed, 08 Oct 2025 19:44:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0751EBC7B30
+	for <lists+linux-efi@lfdr.de>; Thu, 09 Oct 2025 09:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4820034D8D1
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Oct 2025 17:43:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB15719E3292
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Oct 2025 07:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A302C029A;
-	Wed,  8 Oct 2025 17:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ddsubkKc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E272D0C63;
+	Thu,  9 Oct 2025 07:28:00 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FCA285052;
-	Wed,  8 Oct 2025 17:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759945434; cv=fail; b=Y5CxxE1lKSdRALn+8u84KkANxXz/xT9tXptgDTpYg6jB5DZQIIbHoHpOTT2anhNRbY3W3pbE4OCdkLxTdiZ8xcitDXXWnofOPlGTYpfEnHilaXEI6kC3VNU0eAQQiWcK3sLG5wlDnhqr/et21wCOL41bBgV2NX5KEJZ3HzZco2o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759945434; c=relaxed/simple;
-	bh=qVzTEA1rLemZVN8MUp1hDY4PnpwHHZpnm5VX5OnwqiY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gGehr7u5qHrBUj6USoziI6c5AEUgzoeeFDyZWCZWPXMFGR8Z+VLVIQ0BKoZRNVSUWUDyRB031nMTutXsscC9NNBCQa/c3cBqyVDiqVj9ZaE2lOK0acjnP+iH9EP+Z9gQepgLoTBPp43sM6/lC+PCn1DujaMD/Omrc64IjfVGltc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ddsubkKc; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759945434; x=1791481434;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=qVzTEA1rLemZVN8MUp1hDY4PnpwHHZpnm5VX5OnwqiY=;
-  b=ddsubkKcjxbJt5k4/lc6ccb6FADn6SrYIsmSF6OVl/zAdIwLcH1UoFNd
-   S3KBP0Kc0MUvaUbm1tEwscstfUgvgxq+km0U2zA6D7b4bam2pbxEZqwn1
-   gb+8HsmpMKhEeaFvTCmj/xaPJy1859WKOLtFACpjimzWRzgPVCZaC/mwr
-   NnpEvK/h1/Um7wsm2Iu1ZAO+g9mnAkW/sa4OQj1pxKLrHcszUMzF/vC/l
-   eIa+D6ddnyTZew+0ygXKonSa73iyoBuJY3/TDNcccGeUQJ/ae/rb9E5eN
-   PZETAXuAqeXgFoHs6Xf49vBsDenpmZhfJoesXseMVRwGvqszMrY8gJN2Q
-   g==;
-X-CSE-ConnectionGUID: liQ368CzQAet417+XREnjw==
-X-CSE-MsgGUID: QOgVOqIcQhic3dLDpBN27Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="65790694"
-X-IronPort-AV: E=Sophos;i="6.19,214,1754982000"; 
-   d="scan'208";a="65790694"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 10:43:52 -0700
-X-CSE-ConnectionGUID: KwgXYTJfRSS9g0ODUptSXg==
-X-CSE-MsgGUID: zQJ6GsrbRoeY3Cm/SwGwsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,214,1754982000"; 
-   d="scan'208";a="180427748"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 10:43:51 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 8 Oct 2025 10:43:50 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 8 Oct 2025 10:43:50 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.32) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 8 Oct 2025 10:43:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DJRtsm+wFbwII99FfKQq+MeOaJ30exCnC+O0sy1gQYEMPuDHdjyoR6VYvbV0UYywtxFgo9A/Y+1SsuSpO/ISp9Sd7z21PRp7u7N0l+kQv5DM83mASvBMJlH2dX8McaaNdNw5kZxgxaS19crApt9RU7zenpNJ4RkOMQ24ON1FeexgqNckWSYJBodl40D6bngGzJUMWAzLG6IUIf85tHyieSy5FnMw0PlS3RrpydF1f9Ok43n3c955CF9V6r30d6C1pFkhn7y9zlCZPI/xYo6VHuZ/BATnmMsC5cv6kCBIFnDF4JZkC0/HuxmyUNAMQQBxQWDSTPxwKFPh4rLmdtxNcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qVzTEA1rLemZVN8MUp1hDY4PnpwHHZpnm5VX5OnwqiY=;
- b=ALMu3kHK95pp+my8V2kRaDRvrDGmUVDYQTSwLjmuJ9uoHijNqHctqjW/oMs9kVgZUHoXqDGbtW5PVAN/7veVHZRbRlHw/h+XGWrQJEGSkYKLkQA5Vr7XoyqMxyPbR6rbW+NcZNJ+5SDHfavxrQowfRzmcbbqxRFqTLX5OtFt49WjTO8mlcwxlh720dRWJDn5QFHGuCxfyKyv4WqeuHyJqZ2MYIlYSG2n7PpqD8lgrMy2RThYuLCBfFwp3oqvMQnR5fvQt0OKtJYcuNuOxHvetw0JXqh7/FeSKcSLvdBXk3fJzFAAZJZHDTS9evXzvcq70LNJ2A524BRh4Esz0qXquQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB5970.namprd11.prod.outlook.com (2603:10b6:8:5d::6) by
- PH0PR11MB4872.namprd11.prod.outlook.com (2603:10b6:510:32::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9182.20; Wed, 8 Oct 2025 17:43:43 +0000
-Received: from DM4PR11MB5970.namprd11.prod.outlook.com
- ([fe80::e9b1:6f0f:1a91:2c79]) by DM4PR11MB5970.namprd11.prod.outlook.com
- ([fe80::e9b1:6f0f:1a91:2c79%7]) with mapi id 15.20.9203.007; Wed, 8 Oct 2025
- 17:43:43 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "Mehta, Sohil" <sohil.mehta@intel.com>, "tglx@linutronix.de"
-	<tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "bp@alien8.de"
-	<bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>
-CC: "corbet@lwn.net" <corbet@lwn.net>, "ardb@kernel.org" <ardb@kernel.org>,
-	"andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
-	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
-	"luto@kernel.org" <luto@kernel.org>, "david.laight.linux@gmail.com"
-	<david.laight.linux@gmail.com>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
-	"Luck, Tony" <tony.luck@intel.com>, "linux-efi@vger.kernel.org"
-	<linux-efi@vger.kernel.org>, "kas@kernel.org" <kas@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>, "dwmw@amazon.co.uk"
-	<dwmw@amazon.co.uk>, "rdunlap@infradead.org" <rdunlap@infradead.org>,
-	"vegard.nossum@oracle.com" <vegard.nossum@oracle.com>, "xin@zytor.com"
-	<xin@zytor.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "kees@kernel.org" <kees@kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "geert@linux-m68k.org" <geert@linux-m68k.org>
-Subject: Re: [PATCH v10 09/15] x86/traps: Consolidate user fixups in
- exc_general_protection()
-Thread-Topic: [PATCH v10 09/15] x86/traps: Consolidate user fixups in
- exc_general_protection()
-Thread-Index: AQHcN1cx4GvzyB6BEU6xTer8KxhLLrS29eAAgABSdgCAAT8oAA==
-Date: Wed, 8 Oct 2025 17:43:43 +0000
-Message-ID: <75df4d00c009c60043b0c3edb8990342d9b9b9b3.camel@intel.com>
-References: <20251007065119.148605-1-sohil.mehta@intel.com>
-	 <20251007065119.148605-10-sohil.mehta@intel.com>
-	 <e314fabf0597e3ca4acc549e33fd483e64809dc6.camel@intel.com>
-	 <92da314d-b523-4ace-9b09-eaf263b263bd@intel.com>
-In-Reply-To: <92da314d-b523-4ace-9b09-eaf263b263bd@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB5970:EE_|PH0PR11MB4872:EE_
-x-ms-office365-filtering-correlation-id: 6218c910-67ea-48d6-3dd1-08de06923964
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?NVZpcTNCN3VZSWdDbUZueEt2TGRFWnA4MUJadUlGcWZTMWVibjh0MWFXaEda?=
- =?utf-8?B?My9MTWgvc2xPMG9JVkpjMlUwNFhWdjlNYldsRndNWGlNTWdZZStFamk2eXRm?=
- =?utf-8?B?ZDNZZloraEJSNC9wVksxUmV5QnVKOWc3Ti9SK2tDVGhMMk9nekRjenNxbzZ4?=
- =?utf-8?B?YW94aVZjYmpGZFhYT3J0VVRNTDhNNVlWdnVUZyt4NXVabm8veEtKcmpGSWRt?=
- =?utf-8?B?TFJBd0EzY1pUcThwL3dWRWlnTnZ1K0tpUHY2YnFCRmxyV01TdDZUSURLOWc4?=
- =?utf-8?B?Q3o1bkQ1M0NUTHpqWEpPbWxJU0RPenJIck93bEFxQnhkR1c3OXNnWFpOeE9v?=
- =?utf-8?B?S0JaOEFHanF6Smo4eDFTSTBWSVdvRzhGSnZ2cThTME1VMTltT1oyRWJiS2Nq?=
- =?utf-8?B?bFFyUmUyYzlmZ05kdFJQa1E2alZoM2FtMWIrOGFDTm9ZdEFua29ZV0NPUFRF?=
- =?utf-8?B?cmRoazBDV2NkSWpuVEtQNlo2Q2JpQ2J0VzJseGlvR1RGOFJHN0ZoamNMN1Jh?=
- =?utf-8?B?emRrTWJ6WlhQS25JcU9pYkFWbmg2T2YwUXF3azZmUUpyak9EWVRsYkVXUEJp?=
- =?utf-8?B?dUcwdHpxUEFCZVB3Rk8xQ2h5Ujd6eUs4Nm80cERzSUhqaTR2NktNODlHMHU3?=
- =?utf-8?B?NmJubEpqWitxaDhVZnU0TmVJMlp1b3gveGg0SUliaTcrMUtQdmY3dGNKdnF2?=
- =?utf-8?B?blVabnhHWFNMUnBNYXNqL1FWTEh0c3VEVDhJQzk4eDBkMEZwZFZ0WE0vTzJu?=
- =?utf-8?B?R0l1TExYblRIeWpjZnJpbUUycW1IZVNBenpzdWdZK251Qk5icVVsQk1PUmNF?=
- =?utf-8?B?RVozaGMwTXBWK1NZOWQyZWtMQ0thMXFYc1NhRkpleEQzRTJST1pTVFhMK0dm?=
- =?utf-8?B?RnllczgyanZRRkRtRXJESUoxeWdrRjBiekpVd1d3VWNqbVczS04vYXpIczNv?=
- =?utf-8?B?ZWRLODNXZUxIUy9SaW5CZmNPY2hBUkU4QVJYRy85bGNPOWFsMlR4K2dWTlRC?=
- =?utf-8?B?V2xRZVd5MEdLQmZ4OXdibTU3ZFVyZzFPZ1lNSGF1NW4yVUk3TzdqbGtVd0p4?=
- =?utf-8?B?UjUwUTV5dFZsYmlDLytmbUdOUSs5NWhtT3R4OUdEdVp3NmpsVTlVcU1nbTd2?=
- =?utf-8?B?NU50TXM4b3lxSmVJTllvYVRhWHVIcE5hU2JOdERzVE1EQ0lHMGpreldEeEdv?=
- =?utf-8?B?WTFNMmErK3NoeXU1d29BcmZ6ZTJ0UGw4WTBKZkZCQ1BJc1JCVFZVRDJxNHNG?=
- =?utf-8?B?YVorYVNQTmNHbGQ4NWZDYTlpalRkdGxUcTZnbjJ4SmpNcFl6Znl3Um5TaGNr?=
- =?utf-8?B?YWp6RUw2YTRrWjF2OWlDcy9IWk5DY3p3WDRGbXZic1VRbGJXeU9LR0QxNno0?=
- =?utf-8?B?N0RpNlVMTzNrTzlqQ09DQnVIUjZFQWw4aGZnSlJ4cWRQY3p2LzJKemRRTE5h?=
- =?utf-8?B?cVFDbENzKzZselhvU0JoejNhbko0OFVSUHdOSDVkWXFQSC9ZaWdONkpyc202?=
- =?utf-8?B?c0VBY2NwTWkzZVZlbE8vOExRNm8rZDEvSEhadVQ1aUt0Q1lmMTJ2dFd1UDg4?=
- =?utf-8?B?dFJTNkd4S1lSRHEyZ3FaY2FkOUZHWmRLVFE1MG1jRDh5K0g2NlpEVUR6RUQ3?=
- =?utf-8?B?QWI5c1lGcXc2RTdpTDVMdUtCZ0RPSkNhSE1SWnBsR2VJYXp5SVJCUmRZYjBO?=
- =?utf-8?B?VW9GZkN1ZFhOUGRUdnJmZHJWUXpMSWk2YXl5RktRZU5ucTNTQkRydXIrcnhG?=
- =?utf-8?B?UUV4c3ZseEhvSkFTK2JaQmFSR3Q2dlVSTFJmclg2T0FtNkFMRnZnSGMwTHlQ?=
- =?utf-8?B?NzFUenVWN1ptOXBOZzZHUW9oUDhreG1YN0Y3ZndDbGVHTW5GODY3MmxFN2RL?=
- =?utf-8?B?VkErRCt1WlVPcmNyeEl3MjArcXBLME9xcGxBSDAyVHhYbmtOZkVKU1ExaXpE?=
- =?utf-8?B?dVVxR2lGQmlaZXFtL2N3WmxJU2pzelNXN0ozMEZreXZhdDVXNjNwYzBaYkpH?=
- =?utf-8?B?c2t6V1RieXNKRWFCbWE3MjA0Vnd6dUJXTFJUZHlFa3lob2tDVy9VMWo2RVpG?=
- =?utf-8?Q?w2VJXt?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5970.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?K2U5OXd1TUl3UkhvcUZzVDBLZ3J5R0dIUWVaWTdoZUtlVlZ4SXhIdWNkWFZV?=
- =?utf-8?B?eDJXM0g3QVhRQTZiU3NyNm94TDh3ZkpzRjMwRVBaQmJjMm5MNzg5MGsrWmVa?=
- =?utf-8?B?QjlRUC85K2plUHlSeC9wM3g3Tm9IblhWSFlXVjFnYmc1WEJQS3FPZy9NOGNl?=
- =?utf-8?B?bWhsMXR0Zi9XZStxZUY5S08rdm83REh4OXBOa0FxbVlPRUJFOVVQYWZFUXAx?=
- =?utf-8?B?STV6SGZOVkVMZ28yUWhNbEhaRVE4Z3RCWVZRcHRnQnNKT3RFV25lTDRsT3JV?=
- =?utf-8?B?WExraERkRVg5d21hZDl2bnFiZUo5NWdQR0txRkthdldUbHNMeFhqdVYrY0R2?=
- =?utf-8?B?WllEQmtJSUJVMVZKWjlQbU9CTXgwbkhNSyt5OSsyY2dtZi9VSCt4THBYdnM2?=
- =?utf-8?B?eUcyUVA3WThCamZHL0h5WTZmOFplZkhhNXFqM2tDTU5xeW0yTW42RUVSTWsv?=
- =?utf-8?B?L1YzcDhMOFV6U1pRYlFpNDNUS3JWaEh1NnN5bEJVSU9KZzlmZnVJT3pQQm84?=
- =?utf-8?B?QTdLVWh6T0EvMjB4V1JqbHN1V1dWU2hCaWp3SXlqOVRWT2l0VFVCUUovbysy?=
- =?utf-8?B?TncvTHVzYXJIVzNRZ3hFWkIyTmtHVUlTbGZXVmFGTGJkM3hXV0U4a25zbnA0?=
- =?utf-8?B?cTEvK2NYVEJ2RlVXUkFUQVNaZ212eTlUazZtMVNmUDloWkpBT2laR1V6MWpO?=
- =?utf-8?B?WVphMkpZaW5UUkRyRDM0cGtjSEdDUXJ4YzBWSExod0VpTWUzQnJPaWNsSmFS?=
- =?utf-8?B?WUFidC8yZjA0cjM3d05GWCtoem94TVlJaDFmbWFLQjlvNy91SFdYOVR0VTU5?=
- =?utf-8?B?d0E1M3lQaHRhZTRRWFdxYW82VHI1UDBCVCtVeHRpVGhtR1FrczJyRHBlT3FX?=
- =?utf-8?B?QlZTd0lIWTJIcDdMQmk5UGlzYi9TT0NQNEZRcTljWGxKMmFMSGJraTZLSHlk?=
- =?utf-8?B?RzFQTTZSMVV4Nm41UHkrWk8zdWUvQzUxRG5QdHFlYS9veWMyeEh5TUxrZHNW?=
- =?utf-8?B?VStLSE9zT050enRtS20wcWZ0RldqRm9lTVloNWwwMVZRekNJUUxjenRVRi9n?=
- =?utf-8?B?Z3B1d2ZWQmN3MXdYcjg0TmM4eVFUVStTS3F6VlpUd3MydkwwQWVrY2RscnBx?=
- =?utf-8?B?d1ZWWmN5MWljQldybVpaa2NOTjJRNUNsYlA0Y29URkxlTVdnM3JwNGhsRFhl?=
- =?utf-8?B?VUc0Tm5ucGpOMVVqeHpuY05VTXBOQ0pGZWlSUGpmUEUvYzlpanoxLytxWEZ6?=
- =?utf-8?B?NEY4eUt5NWVRUkJPVW10Q0tOaDFMbFR4eXdQTjhScnA4U0RndElxUVVIWXVE?=
- =?utf-8?B?Q09ycTdHUjJaRjJLTlM2ZzBmMWRhUVF3cE96cERqWmRpREtIZklOcXlNMU9m?=
- =?utf-8?B?Y1dLNHhPUDNQUDJid1hyTGVjRXlhOFU0ZStka3h0VExCOUtSZmFZSjllcGF1?=
- =?utf-8?B?Y3I1SStraEdBOUoyVTQrT2xQRTdUSmIyYW9MeHRLNmx2czJCR3hwencrY3VH?=
- =?utf-8?B?RGRGR0VvZi9mVE54eFpKeGU2c0JDcmJRZFRNdDlNbFNVTHk3ajB3QzQ0dGtl?=
- =?utf-8?B?eUhta3pGZEpZYWhwZzl3ajF5S0dRNGpuQlhmM0VoU0ZOSG5ab0hJM2lHTWxN?=
- =?utf-8?B?UkcxSnh5TGRsa1l0SHhBc3A5RkIrZWNsSzVib2p3RUV4c0tUcFppbjFqS05B?=
- =?utf-8?B?RjVXOTlzN0hYVXpKSDA0OWdXT2VPajdkMWZ3c0JkTm92aEx2VzFjSGtVTXdk?=
- =?utf-8?B?TS9EUmI3U2M1b3ArV2VEbmJpdHdjMXQxZWhPR2tRN05uRFcvMFM1YnFNMFZj?=
- =?utf-8?B?ZXl0V2VSWjY0ajBsTDI5Nlc0dDFjc2NCZjRIK0x5UVpWOE1sak5qYlFOY2RF?=
- =?utf-8?B?NXBKZXZnaG9NbFVoNC9wYVlqS1hiSUNDWVNMRTZRa2VlZG1YQTNabWI3eXoz?=
- =?utf-8?B?QVo5aXViQzN5WkduZ2dodUxJckt1cUU2cG00VWJabllUd0N2dEFSV1ZFd0tP?=
- =?utf-8?B?QWZBTTRrMUcyMW5OaUkyVUFvYTU3Z2FXa0VxbkovNTVGRzM4RU4zMVVCTEhy?=
- =?utf-8?B?dlJoTUdtYytKbGhSMmVJZU8vZFdoVzVxUXZZdkpDTld1UEQ2aFhJVEZYditY?=
- =?utf-8?B?UWRWM0cweisvbVlLSktIenhZamtscjQzNnV2ZU9mMFhMa1lhNDQrKzFPVFpL?=
- =?utf-8?B?RGc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F8B621235DEA45429D599E0C2764CC0C@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159D72BE7AF;
+	Thu,  9 Oct 2025 07:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759994880; cv=none; b=e9kw3zw8AaxOTW9B6tXoLSbXIf38eTKXNUkOZzsYMRel3XYAl7NAtR6ixGF+oXjzuPl120BdLWD7UF6Dlsi7uKnbNbOIdgRZWzCK3dH6eo6gI9BMbx+qEQDC8NNJ1I1lRRYkZ14ptN+mK0bV/3v+ky+x5uFzm9U0Oh6lc+JGA14=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759994880; c=relaxed/simple;
+	bh=XfqDBfd6iAezjZ4Zyx6Aa3kJN4a1sI8LfvLWt/i2PWw=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=psr+lKC+ufIEETyV9UGwdXkFy7MboC7QOqG4DOBAZRv058GGrvvO6GsqHL7VKRqNqkMoVXemcLs0LncbRfdW4DfJ5Khhl2Ef4XP19/CVdoyiG1YrwPDanF0ycwOvg4EwYbmpvPCoBKuDxxZmjpr42DQO1Ug16MTUioQC0l78gaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8Cx77_1Y+doGzAUAA--.41427S3;
+	Thu, 09 Oct 2025 15:27:49 +0800 (CST)
+Received: from [10.130.10.66] (unknown [113.200.148.30])
+	by front1 (Coremail) with SMTP id qMiowJCxocLrY+doN1fWAA--.11175S3;
+	Thu, 09 Oct 2025 15:27:39 +0800 (CST)
+Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
+To: Ard Biesheuvel <ardb@kernel.org>, Huacai Chen <chenhuacai@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, loongarch@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250928085506.4471-1-yangtiezhu@loongson.cn>
+ <CAMj1kXG8Wi+THa2SeLxiDT=+t_TKx0AL4H-azZO4DNJvyyv96g@mail.gmail.com>
+ <CAAhV-H7xOf8DEwOrNh+GQGHktOT4Ljp+7SqutGvvDZp6GLXJrA@mail.gmail.com>
+ <CAMj1kXG=EFkRAMkvKMSjPixoGqU-tZXVoRkJJ6Wcnzs3x52X6Q@mail.gmail.com>
+ <CAMj1kXHWe2uGY3S1NJ6mckqD4n116rPmaOzw3_Qbvxyjh7ECMw@mail.gmail.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <fec0c03d-9d8c-89a3-886a-1adc22e59b66@loongson.cn>
+Date: Thu, 9 Oct 2025 15:27:39 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5970.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6218c910-67ea-48d6-3dd1-08de06923964
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Oct 2025 17:43:43.0665
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XhcFbf+qFVAJL49dV38x9HlINDB+GW5dfp/SkMxBrsk5JnXghIn3c0TKLdu7z7v04gHnQIak6ehGmyqEEArNXjekt6vDS8GRoADgjbVrdpU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4872
-X-OriginatorOrg: intel.com
+In-Reply-To: <CAMj1kXHWe2uGY3S1NJ6mckqD4n116rPmaOzw3_Qbvxyjh7ECMw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxocLrY+doN1fWAA--.11175S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxuFyDZr45uF48uFyxuF4DAwc_yoWxWw1kpa
+	yjkFWjyr4kJr4kXas7t3yY9r1YqanIqrWaga4DuryrZa1qqr40vrWUZr4DuF9rXw4DC3WI
+	qF1fJr9Ik3WUJ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17
+	McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7
+	I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCF
+	x2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r
+	1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij
+	64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr
+	0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF
+	0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j7189UUUUU=
 
-T24gVHVlLCAyMDI1LTEwLTA3IGF0IDE1OjQxIC0wNzAwLCBTb2hpbCBNZWh0YSB3cm90ZToNCj4g
-T24gMTAvNy8yMDI1IDEwOjQ2IEFNLCBFZGdlY29tYmUsIFJpY2sgUCB3cm90ZToNCj4gPiBPbiBN
-b24sIDIwMjUtMTAtMDYgYXQgMjM6NTEgLTA3MDAsIFNvaGlsIE1laHRhIHdyb3RlOg0KPiA+ID4g
-TW92ZSB0aGUgVU1JUCBleGNlcHRpb24gZml4dXAgYWxvbmcgd2l0aCB0aGUgb3RoZXIgdXNlciBt
-b2RlIGZpeHVwcywNCj4gPiA+IHRoYXQgaXMsIHVuZGVyIHRoZSBjb21tb24gImlmICh1c2VyX21v
-ZGUocmVncykpIiBjb25kaXRpb24gd2hlcmUgdGhlDQo+ID4gPiByZXN0IG9mIHRoZSBmaXh1cHMg
-cmVzaWRlLg0KPiA+IA0KPiA+IENhbiB5b3UgbWVudGlvbiB0aGF0IGl0IGFsc28gZHJvcHMgc3Rh
-dGljX2NwdV9oYXMoWDg2X0ZFQVRVUkVfVU1JUCkgY2hlY2sNCj4gPiBiZWNhdXNlIGZpeHVwX3Vt
-aXBfZXhjZXB0aW9uKCkgYWxyZWFkeSBjaGVja3MNCj4gPiBjcHVfZmVhdHVyZV9lbmFibGVkKFg4
-Nl9GRUFUVVJFX1VNSVApPw0KPiA+IA0KPiANCj4gVGhlcmUgaXMgbm8gZXhpc3RpbmcgY2hlY2su
-IFRoZSBjdXJyZW50IHBhdGNoIG1vdmVzIHRoZSBYODZfRkVBVFVSRV9VTUlQDQo+IGNoZWNrIHRv
-IGZpeHVwX3VtaXBfZXhjZXB0aW9uKCkuDQoNCkRvaCENCg0KPiANCj4gSSBjYW4gYWRkIGEgc2Vu
-dGVuY2UgdG8gc2F5IHRoYXQgdGhlIGN1cnJlbnQgY2hlY2sgaXMgc3BsaXQgaW50byB0d28NCj4g
-c2VwYXJhdGUgbG9jYXRpb25zLiBCdXQsIGlzIGl0IG5vdCBvYnZpb3VzIGZyb20gdGhlIGRpZmY/
-DQoNClRoZSBsb2cgaXMgcHJldHR5IHRoaW4sIEknZCBhZGQgaXQuDQo=
+On 2025/9/28 下午10:41, Ard Biesheuvel wrote:
+> On Sun, 28 Sept 2025 at 16:39, Ard Biesheuvel <ardb@kernel.org> wrote:
+>>
+>> On Sun, 28 Sept 2025 at 15:52, Huacai Chen <chenhuacai@kernel.org> wrote:
+>>>
+>>> Hi, Ard,
+>>>
+>>> On Sun, Sep 28, 2025 at 9:42 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>>>>
+>>>> On Sun, 28 Sept 2025 at 10:55, Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+>>>>>
+>>>>> When compiling with LLVM and CONFIG_LTO_CLANG is set, there exists
+>>>>> the following objtool warning on LoongArch:
+>>>>>
+>>>>>    vmlinux.o: warning: objtool: __efistub_efi_boot_kernel()
+>>>>>    falls through to next function __efistub_exit_boot_func()
+>>>>>
+>>>>> This is because efi_boot_kernel() doesn't end with a return instruction
+>>>>> or an unconditional jump, then objtool has determined that the function
+>>>>> can fall through into the next function.
+>>>>>
+>>>>> At the beginning, try to do something to make efi_boot_kernel() ends with
+>>>>> an unconditional jump instruction, but this modification seems not proper.
+>>>>>
+>>>>> Since the efistub functions are useless for stack unwinder, they can be
+>>>>> ignored by objtool. After many discussions, no need to link libstub to
+>>>>> the vmlinux.o, only link libstub to the final vmlinux.
+>>>>>
+>>>>
+>>>> Please try keeping these changes confined to arch/loongarch. This
+>>>> problem does not exist on other architectures, and changing the way
+>>>> vmlinux is constructed might create other issues down the road.
+
+This was discussed and tested in the v3 patch, it only touches the code
+of LoongArch and works well like this:
+
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index dc5bd3f1b8d2..f34b416f5ca2 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -169,7 +169,6 @@ CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) 
+$(KBUILD_CFLAGS) -dM -E -x c /dev
+  endif
+
+  libs-y += arch/loongarch/lib/
+-libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+
+  drivers-y              += arch/loongarch/crypto/
+
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 433849ff7529..ed94871c3606 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -69,6 +69,12 @@ vmlinux_link()
+                 libs="${KBUILD_VMLINUX_LIBS}"
+         fi
+
++       if [ "${SRCARCH}" = "loongarch" ]; then
++               if is_enabled CONFIG_EFI_STUB; then
++                       libs="${libs} drivers/firmware/efi/libstub/lib.a"
++               fi
++       fi
++
+         if is_enabled CONFIG_GENERIC_BUILTIN_DTB; then
+                 objs="${objs} .builtin-dtbs.o"
+         fi
+
+https://lore.kernel.org/loongarch/pq4h7jgndnt6p45lj4kgubxjd5gidfetugcuf5rcxzxxanzetd@6rrlpjnjsmuy/
+
+>>> ARM, RISC-V and LoongArch do things exactly in the same way. Now
+>>> LoongArch is the first of the three to enable objtool, so we meet the
+>>> problem first.
+>>>
+>>> But yes, I also don't want to change the way of constructing vmlinux.
+>>> So I prefer the earliest way to fix this problem.
+>>> https://lore.kernel.org/loongarch/CAAhV-H7fRHGFVKV8HitRgmuoDPt5ODt--iSuV0EmeeUb9d5FNw@mail.gmail.com/T/#meef7411abd14f4c28c85e686614aa9211fccdca0
+>>>
+>>
+>> Can we just drop the __noreturn annotation from kernel_entry_t, and
+>> return EFI_SUCCESS from efi_boot_kernel()?
+
+This was done in the early RFC patch, it works well like this:
+
+diff --git a/drivers/firmware/efi/libstub/loongarch.c 
+b/drivers/firmware/efi/libstub/loongarch.c
+index 3782d0a187d1..e309fd78fca7 100644
+--- a/drivers/firmware/efi/libstub/loongarch.c
++++ b/drivers/firmware/efi/libstub/loongarch.c
+@@ -10,7 +10,7 @@
+  #include "efistub.h"
+  #include "loongarch-stub.h"
+
+-typedef void __noreturn (*kernel_entry_t)(bool efi, unsigned long cmdline,
++typedef void (*kernel_entry_t)(bool efi, unsigned long cmdline,
+  					  unsigned long systab);
+
+  efi_status_t check_platform_features(void)
+@@ -81,4 +81,7 @@ efi_status_t efi_boot_kernel(void *handle, 
+efi_loaded_image_t *image,
+
+  	real_kernel_entry(true, (unsigned long)cmdline_ptr,
+  			  (unsigned long)efi_system_table);
++
++	/* We should never get here */
++	while (1);
+  }
+
+https://lore.kernel.org/loongarch/20250826064631.9617-2-yangtiezhu@loongson.cn/
+
+> ... or add efi_boot_kernel() to ./tools/objtool/noreturns.h?
+
+It can not fix the objtool warning.
+
+Are you OK with the following changes?
+
+(1) libstub doesn't link to vmlinux.o, only link libstub with vmlinux.o 
+during the final vmlinux link, keep the changes confined to LoongArch, 
+no need to be something more generic.
+
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index dc5bd3f1b8d2..f34b416f5ca2 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -169,7 +169,6 @@ CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) 
+$(KBUILD_CFLAGS) -dM -E -x c /dev
+  endif
+
+  libs-y += arch/loongarch/lib/
+-libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+
+  drivers-y              += arch/loongarch/crypto/
+
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 433849ff7529..ed94871c3606 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -69,6 +69,12 @@ vmlinux_link()
+                 libs="${KBUILD_VMLINUX_LIBS}"
+         fi
+
++       if [ "${SRCARCH}" = "loongarch" ]; then
++               if is_enabled CONFIG_EFI_STUB; then
++                       libs="${libs} drivers/firmware/efi/libstub/lib.a"
++               fi
++       fi
++
+         if is_enabled CONFIG_GENERIC_BUILTIN_DTB; then
+                 objs="${objs} .builtin-dtbs.o"
+         fi
+
+(2) remove the attribute __noreturn for real_kernel_entry() and add
+"while (1);" at the end of efi_boot_kernel().
+
+diff --git a/drivers/firmware/efi/libstub/loongarch.c 
+b/drivers/firmware/efi/libstub/loongarch.c
+index 3782d0a187d1..e309fd78fca7 100644
+--- a/drivers/firmware/efi/libstub/loongarch.c
++++ b/drivers/firmware/efi/libstub/loongarch.c
+@@ -10,7 +10,7 @@
+  #include "efistub.h"
+  #include "loongarch-stub.h"
+
+-typedef void __noreturn (*kernel_entry_t)(bool efi, unsigned long cmdline,
++typedef void (*kernel_entry_t)(bool efi, unsigned long cmdline,
+  					  unsigned long systab);
+
+  efi_status_t check_platform_features(void)
+@@ -81,4 +81,7 @@ efi_status_t efi_boot_kernel(void *handle, 
+efi_loaded_image_t *image,
+
+  	real_kernel_entry(true, (unsigned long)cmdline_ptr,
+  			  (unsigned long)efi_system_table);
++
++	/* We should never get here */
++	while (1);
+  }
+
+Taking all of the considerations in balance, what should to do?
+
+Thanks,
+Tiezhu
+
 
