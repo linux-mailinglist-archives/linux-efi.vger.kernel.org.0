@@ -1,176 +1,189 @@
-Return-Path: <linux-efi+bounces-5017-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5018-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B893ABCC969
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Oct 2025 12:44:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977B3BCDF50
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Oct 2025 18:26:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B0A2C4EDB82
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Oct 2025 10:44:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F51189A9F6
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Oct 2025 16:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EA2284696;
-	Fri, 10 Oct 2025 10:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715EE2FC01E;
+	Fri, 10 Oct 2025 16:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Edzm6Syy"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6DE2848BF
-	for <linux-efi@vger.kernel.org>; Fri, 10 Oct 2025 10:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5672FC00F
+	for <linux-efi@vger.kernel.org>; Fri, 10 Oct 2025 16:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760093056; cv=none; b=HdfwVbIX/4YDoZSLbT5wljY9BFxb9mKmKYbZeB0MAmwwNk7Hh9BZTe/oioowXzT2bxkYn+v3O1sDkSqYHbgUFhiBcw3VNZu6IrW49s+OZTk5vt0WIZTyQz+B3BWegbXpha9eHJyE/QlyEeuKFwf2TbyuvJjGbpZeczdNnU0GANA=
+	t=1760113571; cv=none; b=ovQnWniK6YkLIVGRyP/fc6SOrgfSduYOlL+gvUzkyqHPNI2kw7hQaJBzETJ8Mb98o+XiWBuT5lZRuxt8UMeUn2PrVzhrzokkXoNAa0HGtH5RrB+AiDaskPDx3u0LwNr23umgzcfPPp6YnwvAXSG1c3zR/fKch49JQruKjUe00jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760093056; c=relaxed/simple;
-	bh=Xv8vfELqxCi0M3JUv12/9oo5sF3vO6GI19h00ESuh1U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jBQOUxDjTOuMW7tJs9AkPLMCe8ado8ANycsSqiBS9pBNbpDyTzZpYEZy9iMjOOeDb46SwI9GGNmb7di16Fq9pz360XUXS3B7oOR29n4ZwWDSEoSmv92SK+mzdHfD4AUtZ5gosoNv235NuMSfjzYlj8BUrzvk2/tJiJaH/hcHXRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b3c2c748bc8so261613966b.2
-        for <linux-efi@vger.kernel.org>; Fri, 10 Oct 2025 03:44:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760093052; x=1760697852;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4hjZQiho0iGA/YlIfjvASm46/AFyTuFHZ48K45pFHug=;
-        b=Tf/YGBGDJgcXIUsWwhwNDQrI6I48YmYuN8Z/5YD6SPvD2/4b7NgbO6R5hhNTMFjVTT
-         6hOxt+d/skWNicq1GNOhkphEZ5JpOVywcDfiMrse3vUWCSgF4NBZSMSsceqCv20xwb6p
-         IDwZGyAwqjH7sjMIaTYHTDXrYkxlfc9pjLWNdZjGaIW/rH9uoeiQXJLDo24rW2pHOR+k
-         PK/1LVR9mzAGFT2fskTZtI23hKQ2EqhfCcLVTqk1TLMZr7psMQt4c9Hpe7e089hg3MQ5
-         eTg8MTS8aDb8gmxm9swnoaYVYLWZuU33DzJU9cJzCiz1jBjGpNBHt+3fay7I1JVDOm0q
-         69sg==
-X-Gm-Message-State: AOJu0YzaceRGx8yBkCwsT2PUHat0NM011k+GltncuW2s3KelCQaJXhqn
-	CcLu45JAxeL9jgWGdHJki9txwn41pa2jwgnmKbzs08z/OemzcYUDe9f311TRzQ==
-X-Gm-Gg: ASbGncuYjDNLChqFUeKlfigVtrMNbsgMXq7LTz8aSRZgJ5uWIQlunlSVLSciI2RXoIA
-	0TMEHom3bnNGaJyYBbL3ldEWpv7BM5iC9uFfpyzJq7q9028VZEx3+D2UkJJdWLUxDDNFTZdH09B
-	TbL0KX2YV/s6b5Fvah8PDjaaEsnq94NUXdM11Fh4N0Y/B3VJtMjjOZtq6Xc3kVst2yivP9HVZJ4
-	Ku0BQcA5cB792GHd8r00otwhR6YT4D68gfog1Vs5Ci9jymplQRE8EEqAJUp3Cq8cZWBdx/BOLrw
-	PKMShbhcpIOKzc7N2DRHoTm3vxjY2Esf3VQkE8KXEcKuQ6im/wPwGsqOj4xzMWAth3WOCbQGajP
-	GOuzBwtpdcwFRT74AxZOXYcdrPKFeRdQbesgA
-X-Google-Smtp-Source: AGHT+IHEr3FgoOnkzJSJ3QXTjdVVTT0W9OMbIhq6GsugiZh5aafP9iMGPMQXEE4tmD+zXgXWqXCs1Q==
-X-Received: by 2002:a17:907:3f14:b0:b41:3c27:e3ca with SMTP id a640c23a62f3a-b50aa4909admr1122902966b.7.1760093051867;
-        Fri, 10 Oct 2025 03:44:11 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:74::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d9525bdesm201931466b.78.2025.10.10.03.44.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 03:44:11 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 10 Oct 2025 03:44:04 -0700
-Subject: [PATCH v3] efi/memattr: Convert efi_memattr_init() return type to
- void
+	s=arc-20240116; t=1760113571; c=relaxed/simple;
+	bh=utKCZjeHw3iqnFfYB1ZfxGnO3UrPmvILiol4TqfBHR4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MUw1+k1Xy8geR7KUrZgdXEdA+qoHSl/iuiFkb5zwa2pfWcemIUZuq4aUq/UMwdXVleMyKnjdtNKfUd9fmOPe68ISuQguRvuwDXIMQoZHJHEA9X8uA6UXOFM6ct0BFUnAdTOi0r05fv8KKcLZICABUSDoL6tZRNYLSU/4Pp939Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Edzm6Syy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC57C4CEF1
+	for <linux-efi@vger.kernel.org>; Fri, 10 Oct 2025 16:26:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760113570;
+	bh=utKCZjeHw3iqnFfYB1ZfxGnO3UrPmvILiol4TqfBHR4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Edzm6SyycKKkFWiTk3912LPCjJ42xcjg9u99+ZCWUuoxk24NyxIEoUV0xYtQ1hUhS
+	 ZusMQJfHtM2t/nyvK+d3GH5aIGZgyQMn4OfO9/mKwlFqZQ0BGVVR8/K61WyGw1Gnfx
+	 hCR7R6B0dRDHMtGQAjYSQjR0oJR/xhkoXFo+ZeIAl5w8rQWa1PkKYdMaE+FlyXYU27
+	 QSIioFAwgaRXm3nXRFlpzxgYTy194pXYy1LgUWUVcXFadZGIW8i9ZlapyZYIRg/5Mh
+	 rxA3StEnbj9gQGcrOzzgEgWNXP8PcnpnB16a1kGiOhggvJ4zKo4zGppCUZdhrF7luz
+	 r771GJdkNs/2w==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-58d29830058so2800696e87.0
+        for <linux-efi@vger.kernel.org>; Fri, 10 Oct 2025 09:26:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWayKxXbJbGGNqkpNTsZRLYNrmEt2XB4Jm7dYldVRyq/fHcSbvlErVpaAa6qPY7cSHSKBdAZ7MSes0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzojGwoDMud9DYh+pI/ixlgTMfLO3DUdPtFm1QQq4nNuUvoXj8D
+	hgtof2lfXvnPgj/EgSCoJx3K05lV8IPa1b+eI6esxdRZOVp0Ok61ITc7LXlqniHz0D9679EUgTa
+	rfzEQ6eouk8+bcxzPSKclfequHeUAoZE=
+X-Google-Smtp-Source: AGHT+IFlrMsUvrC/ZHyp7C1tmfy80lEWySBj/07SSrfUI6v7Q7I01eOrR8aE8CO2xnNLYI6LpFea10RRzC+bIaZdgH8=
+X-Received: by 2002:a05:6512:1152:b0:57b:5794:ccd9 with SMTP id
+ 2adb3069b0e04-5906d77e26bmr3537150e87.9.1760113569266; Fri, 10 Oct 2025
+ 09:26:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251010-efi_fw_bug-v3-1-78259db0f39a@debian.org>
-X-B4-Tracking: v=1; b=H4sIAHTj6GgC/23MQQ6CMBBA0as0s6ZmpkK1rLyHMaSFKXQDptWqI
- dzdwMKExO1P/pshcQycoBYzRM4hhWmEWhwLAe1gx55l6KAWoFBVSKgl+9D4V+OevVROKza2pLM
- xUAi4R/bhvWHXWyFgCOkxxc9mZ1rrXyaTRIlkz+xKdJ7dpWMX7HiYYg+rk9XvJSTcvUqS1OSUo
- apr+aR377IsXynJKK/hAAAA
-X-Change-ID: 20250106-efi_fw_bug-2b62e9a41899
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2436; i=leitao@debian.org;
- h=from:subject:message-id; bh=Xv8vfELqxCi0M3JUv12/9oo5sF3vO6GI19h00ESuh1U=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBo6ON6W6e3C/Qe3WoG1ip9wiq+lAK/++yi87Kr+
- y9kz1yoRvaJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaOjjegAKCRA1o5Of/Hh3
- bQtSEACdpPEJKfBod/cJDK5qm/LcmMRN9hfEyG2qJHSEvRQ/tsM2RGAdgf74izCo3sPyNcne3zK
- IvzZ6GTwDOuQgHLKA5J9oQc8KBh+gSB3AVNP8mnNekhytbpzfEh62Yfx3gLBpDVUVGQz8WZyRg+
- e9LY32dEjrY/AmoBd9LtgFz04IPwF2Kjs/FbPta1KrEEsRa4HmrXRTMaGQ8n1hlOTbd7FwA3VQf
- p/ap0mpfWXvYKxwZVWnJsV2JdQDsnntebB/mHFuuDvU2jeC0ooG1YGlLgCwim+btY1k2L6nwYJj
- qupDG15x+TbW+e42cnJtvewYpJp4WE6uKBuTn42aWfXlUVLCdFjQEGU4vjm8oVvX9/XcwysePfd
- bWQl0L6guEhVaEq2WNu0++kfjw4v/krQj0RFrJ9ez2VMhMQLF8bzgqyP1vck/fk1GTJVXcSH7XI
- 74E7r2Vqabp28EQEl4OkThZQuAjUcFqyhR4s2otISjIlcqrwD+hZitx9v0WMYISRsSCOY5nvJNA
- ivSbRUe3xW3UHrW9u2U23lU21E9LFpkwDwgGbxnEwpYUVAZMvg67unYmcWjIYJ05Wloy0shtKcy
- VrAV3TfUNMNqaXy7dtzBuur59i4tjszJ5NvC43Kn9JD1R4pHaVLNn2OG/HWKtKFTtMIWukGKgha
- qspb2Hn1QkxEfBw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+References: <20250928085506.4471-1-yangtiezhu@loongson.cn> <CAMj1kXG8Wi+THa2SeLxiDT=+t_TKx0AL4H-azZO4DNJvyyv96g@mail.gmail.com>
+ <CAAhV-H7xOf8DEwOrNh+GQGHktOT4Ljp+7SqutGvvDZp6GLXJrA@mail.gmail.com>
+ <CAMj1kXG=EFkRAMkvKMSjPixoGqU-tZXVoRkJJ6Wcnzs3x52X6Q@mail.gmail.com>
+ <CAMj1kXHWe2uGY3S1NJ6mckqD4n116rPmaOzw3_Qbvxyjh7ECMw@mail.gmail.com> <fec0c03d-9d8c-89a3-886a-1adc22e59b66@loongson.cn>
+In-Reply-To: <fec0c03d-9d8c-89a3-886a-1adc22e59b66@loongson.cn>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 10 Oct 2025 09:25:57 -0700
+X-Gmail-Original-Message-ID: <CAMj1kXFLyBbRL+pAAQ6be6dxqFPiyw_Ug8qNQWaicZQ235HE=A@mail.gmail.com>
+X-Gm-Features: AS18NWAp30BvVY9ZXh0_0XY6OhGFXDo-CTjUdGdhBNHw2LQ_EFhIlBfBfuAUJuI
+Message-ID: <CAMj1kXFLyBbRL+pAAQ6be6dxqFPiyw_Ug8qNQWaicZQ235HE=A@mail.gmail.com>
+Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The efi_memattr_init() function's return values (0 and -ENOMEM) are never
-checked by callers. Convert the function to return void since the return
-status is unused.
+On Thu, 9 Oct 2025 at 00:27, Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+>
+> On 2025/9/28 =E4=B8=8B=E5=8D=8810:41, Ard Biesheuvel wrote:
+> > On Sun, 28 Sept 2025 at 16:39, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >>
+> >> On Sun, 28 Sept 2025 at 15:52, Huacai Chen <chenhuacai@kernel.org> wro=
+te:
+> >>>
+> >>> Hi, Ard,
+> >>>
+> >>> On Sun, Sep 28, 2025 at 9:42=E2=80=AFPM Ard Biesheuvel <ardb@kernel.o=
+rg> wrote:
+> >>>>
+> >>>> On Sun, 28 Sept 2025 at 10:55, Tiezhu Yang <yangtiezhu@loongson.cn> =
+wrote:
+> >>>>>
+> >>>>> When compiling with LLVM and CONFIG_LTO_CLANG is set, there exists
+> >>>>> the following objtool warning on LoongArch:
+> >>>>>
+> >>>>>    vmlinux.o: warning: objtool: __efistub_efi_boot_kernel()
+> >>>>>    falls through to next function __efistub_exit_boot_func()
+> >>>>>
+> >>>>> This is because efi_boot_kernel() doesn't end with a return instruc=
+tion
+> >>>>> or an unconditional jump, then objtool has determined that the func=
+tion
+> >>>>> can fall through into the next function.
+> >>>>>
+> >>>>> At the beginning, try to do something to make efi_boot_kernel() end=
+s with
+> >>>>> an unconditional jump instruction, but this modification seems not =
+proper.
+> >>>>>
+> >>>>> Since the efistub functions are useless for stack unwinder, they ca=
+n be
+> >>>>> ignored by objtool. After many discussions, no need to link libstub=
+ to
+> >>>>> the vmlinux.o, only link libstub to the final vmlinux.
+> >>>>>
+> >>>>
+...
+> Are you OK with the following changes?
+>
+> (1) libstub doesn't link to vmlinux.o, only link libstub with vmlinux.o
+> during the final vmlinux link, keep the changes confined to LoongArch,
+> no need to be something more generic.
+>
+> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+> index dc5bd3f1b8d2..f34b416f5ca2 100644
+> --- a/arch/loongarch/Makefile
+> +++ b/arch/loongarch/Makefile
+> @@ -169,7 +169,6 @@ CHECKFLAGS +=3D $(shell $(CC) $(KBUILD_CPPFLAGS)
+> $(KBUILD_CFLAGS) -dM -E -x c /dev
+>   endif
+>
+>   libs-y +=3D arch/loongarch/lib/
+> -libs-$(CONFIG_EFI_STUB) +=3D $(objtree)/drivers/firmware/efi/libstub/lib=
+.a
+>
+>   drivers-y              +=3D arch/loongarch/crypto/
+>
+> diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+> index 433849ff7529..ed94871c3606 100755
+> --- a/scripts/link-vmlinux.sh
+> +++ b/scripts/link-vmlinux.sh
+> @@ -69,6 +69,12 @@ vmlinux_link()
+>                  libs=3D"${KBUILD_VMLINUX_LIBS}"
+>          fi
+>
+> +       if [ "${SRCARCH}" =3D "loongarch" ]; then
+> +               if is_enabled CONFIG_EFI_STUB; then
+> +                       libs=3D"${libs} drivers/firmware/efi/libstub/lib.=
+a"
+> +               fi
+> +       fi
+> +
+>          if is_enabled CONFIG_GENERIC_BUILTIN_DTB; then
+>                  objs=3D"${objs} .builtin-dtbs.o"
+>          fi
+>
+> (2) remove the attribute __noreturn for real_kernel_entry() and add
+> "while (1);" at the end of efi_boot_kernel().
+>
+> diff --git a/drivers/firmware/efi/libstub/loongarch.c
+> b/drivers/firmware/efi/libstub/loongarch.c
+> index 3782d0a187d1..e309fd78fca7 100644
+> --- a/drivers/firmware/efi/libstub/loongarch.c
+> +++ b/drivers/firmware/efi/libstub/loongarch.c
+> @@ -10,7 +10,7 @@
+>   #include "efistub.h"
+>   #include "loongarch-stub.h"
+>
+> -typedef void __noreturn (*kernel_entry_t)(bool efi, unsigned long cmdlin=
+e,
+> +typedef void (*kernel_entry_t)(bool efi, unsigned long cmdline,
+>                                           unsigned long systab);
+>
+>   efi_status_t check_platform_features(void)
+> @@ -81,4 +81,7 @@ efi_status_t efi_boot_kernel(void *handle,
+> efi_loaded_image_t *image,
+>
+>         real_kernel_entry(true, (unsigned long)cmdline_ptr,
+>                           (unsigned long)efi_system_table);
+> +
+> +       /* We should never get here */
+> +       while (1);
+>   }
+>
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
----
-Changes in v3:
-- EDITME: describe what is new in this series revision.
-- EDITME: use bulletpoints and terse descriptions.
-- Link to v2: https://lore.kernel.org/r/20251010-efi_fw_bug-v2-1-61b2915dce76@debian.org
-
-Changes in v2:
-- drop the other patches from the previous patchset
-- Link to v1: https://lore.kernel.org/r/20250106-efi_fw_bug-v1-0-01a8eb40bfeb@debian.org
----
- drivers/firmware/efi/memattr.c | 7 +++----
- include/linux/efi.h            | 2 +-
- 2 files changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/firmware/efi/memattr.c b/drivers/firmware/efi/memattr.c
-index c38b1a335590d..e727cc5909cb6 100644
---- a/drivers/firmware/efi/memattr.c
-+++ b/drivers/firmware/efi/memattr.c
-@@ -19,19 +19,19 @@ unsigned long __ro_after_init efi_mem_attr_table = EFI_INVALID_TABLE_ADDR;
-  * Reserve the memory associated with the Memory Attributes configuration
-  * table, if it exists.
-  */
--int __init efi_memattr_init(void)
-+void __init efi_memattr_init(void)
- {
- 	efi_memory_attributes_table_t *tbl;
- 	unsigned long size;
- 
- 	if (efi_mem_attr_table == EFI_INVALID_TABLE_ADDR)
--		return 0;
-+		return;
- 
- 	tbl = early_memremap(efi_mem_attr_table, sizeof(*tbl));
- 	if (!tbl) {
- 		pr_err("Failed to map EFI Memory Attributes table @ 0x%lx\n",
- 		       efi_mem_attr_table);
--		return -ENOMEM;
-+		return;
- 	}
- 
- 	if (tbl->version > 2) {
-@@ -61,7 +61,6 @@ int __init efi_memattr_init(void)
- 
- unmap:
- 	early_memunmap(tbl, sizeof(*tbl));
--	return 0;
- }
- 
- /*
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index a98cc39e7aaa8..0b9eb3d2ff977 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -772,7 +772,7 @@ extern unsigned long efi_mem_attr_table;
-  */
- typedef int (*efi_memattr_perm_setter)(struct mm_struct *, efi_memory_desc_t *, bool);
- 
--extern int efi_memattr_init(void);
-+extern void efi_memattr_init(void);
- extern int efi_memattr_apply_permissions(struct mm_struct *mm,
- 					 efi_memattr_perm_setter fn);
- 
-
----
-base-commit: 18a7e218cfcdca6666e1f7356533e4c988780b57
-change-id: 20250106-efi_fw_bug-2b62e9a41899
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+Why do we need both (1) and (2)?
 
