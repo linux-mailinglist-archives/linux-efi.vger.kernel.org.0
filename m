@@ -1,70 +1,70 @@
-Return-Path: <linux-efi+bounces-5060-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5059-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4BDBE0BEB
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 23:02:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CC1BE0BF2
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 23:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 980594F9682
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 21:02:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58B271A22751
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 21:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB1730506E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8D9305064;
 	Wed, 15 Oct 2025 21:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sdniQ+/A"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jTd2Opgm"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAF83016F5
-	for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 21:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19417303C86
+	for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 21:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760562073; cv=none; b=Tfc4hqROInK+8Hebywxo6x+rJ7FYpWY/P8fzC88rjDkCqNHbDxAas2rfFzKKV5fwuOiVr5i+Ml5f+l+CboShsnCrtDJa4b5E+SV7IxfPMmYXkVl2ZToh/8kSSADtwx6MI0l+v8cc1Jg1xPloqNYLjg3WvJAOCFGwp2Qu3jlvGU4=
+	t=1760562072; cv=none; b=NzhEsNZEr8qy7KWRzKBB5yXUBrws39ga2M6nx9TLwakUTU0cxE3kb+jeqGGbVRvRVY3GW/1Eq8C+xtFEPs09nMR0iHiqOmagBFzQ0JUdNJdIysRSb2WWdtwkJNcPzoVAUkexYzrw4KUyo8pDODpnXhJivNawDiIus8z1Th3uC9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760562073; c=relaxed/simple;
-	bh=5L4b1rIUXgU5wl8/jKyJxd4Vt1myFkIrr70lbjcEQg0=;
+	s=arc-20240116; t=1760562072; c=relaxed/simple;
+	bh=GEasR0yp9JDDzCfLFtnK5FtUGxYfMchQqiNVE7LLkTk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ad1XlYtfrCWwzdkaP5wFF+2uvWlNX1a6eeJVcZOrjdBi2vdSM4Ga7/sX//BpgICUwhsyEJxeRmSFzxOto0Dp4SyJ4jrrAXMhUgEmd3slxtoLM3+53UhmTj6/4kMeiJhB58RJtdRoBdj6pVoU21P0j5ImPWJh00OLOxLvM6YY/o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sdniQ+/A; arc=none smtp.client-ip=209.85.218.74
+	 To:Cc:Content-Type; b=APdyQpIUwc7n9tBXJY8O4Yd3YO6M1Lug4GAHqjijuD2VJU1z7kzeIP2RhmsHmH9GQNkMR0Ip1P/JEZQgoAiT4Dv0Yqk/w5AqjpWX3kSfnx/IsSmcMYYD/MZPlcsyI7e87kZgtZ+uPL43COOZgYl3BKNQaCO9fZ4Y3AiCdT1PeGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jTd2Opgm; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b3cbee9769fso611966b.3
-        for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 14:01:09 -0700 (PDT)
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-471001b980eso198025e9.1
+        for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 14:01:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760562068; x=1761166868; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1760562069; x=1761166869; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HtXilHA5AAd1z6GdE3uGsC51Fo0T6TRa6MXgCog/xSk=;
-        b=sdniQ+/AIrpNRxg4X/oiZktkjCV3G90M3L9OyRP2IMnm/D65G7fT2/EgGbPJ4UmtRc
-         qnWBQ3LO6t+KGMvmXxIZk4Np1xVunWDMnfx8pfSbuH1poz8Ac1yMhwgVJKYKszveu42K
-         +J95u90cw4ufhCDW3wNoSh3Q6cAoSGkl72a8W9kj4r4FY+TGsWdTX2LDAzY09DbDt3MM
-         iaJ8o9gPYlcx5bsFT9XcIJxtt4Xxjnp9hJvU2cuzbjad7081FFzd+iXBpvsbucWKOPUU
-         aYMvzyQAJ4FXsF+z2ZgryrjQrLcyGhEaBWZ/Qxzz9aNqZJX0ZFbeABJecbxY8+oqN0sB
-         HMtg==
+        bh=MfJeYBJf9dKVExNOryhisMuvn1pJYVbY2e0JV1a62gs=;
+        b=jTd2OpgmyULeNfFVLwsjcL+xqNoq/yBMHY9hXeVF1waW2yYOpcWHPNyKaBaxCl8ich
+         YuqT8iiRXTKj1klWpEHouas8+hV5s0t56b6LeBDGU76jh5TNIb69ANKcsLZxLxfN2dGT
+         6cTYUjWOB1kGK5dm7ji8hwTXON+M8xSOLxNAQx0ZKZQTRT5LDU8SNmwHezs/ATCvCfDW
+         xtFqXYoNQ2H74kuGLyp5f7HdAprWUQ/4v9rd1G6hqeCt4jU/ur6fmQJNFqEYyy6DNpP1
+         +cKVO8tFSKIG+OotbnM+ce92U9551rEAS+nmexXgepVfr07VqtMAI7HXChwRM7dR3546
+         8UHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760562068; x=1761166868;
+        d=1e100.net; s=20230601; t=1760562069; x=1761166869;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HtXilHA5AAd1z6GdE3uGsC51Fo0T6TRa6MXgCog/xSk=;
-        b=aoL0c0t7X0gyEkBjvQHwinH+1sOev0rWWfh5vhhxnCsYJSjS3JIsp8zmljuwgb8gjH
-         DR9AzHloISIhiu1NMKcp+Eg1uKUXHF+17acZJW1jYYOXLY186zhnsFKHJ+e9x8DuGSnl
-         kUCzfJjiY8xKxN0NAJhS1kHLlfTmVHj6xmQTrRMGOWz4CiXnTi3bhjee9SGztXAN1CjV
-         CcwAnBnChE1Lph4wFbYPzmb6M6LLyDNgA+6meZ5AshvwBFORq6eUfy113xIbxLvygKQi
-         G7UsqGQtX1bU+nprXijofGmUObxJNxIVsDpwzYDAjZflTTWfTMEnuGNx940X4fki37bc
-         Mung==
-X-Gm-Message-State: AOJu0Yx8ZF73X3sW+xyvkgR7lPblmc4U5eBDdi1gr4GYmEbqiXC15yPt
-	7gdU/qDn2/I0QSMWCsZe+P66EVVLc6PugIrZNdzXX6obiBXh2hEykfp/5fsu3UAADFopSvQQVm5
-	VD7PH/g8dBog3U4El3cOSnrUc7eiGybgD6FDZfjMOLzI33Cv+HnomOaJ9DidwY5AKY8b8+r6GDc
-	OxgPUgTa0ZW1uf9XZNpOq/9csPdAzy1w==
-X-Google-Smtp-Source: AGHT+IH3ROeCSpPWS9y2jZ7CvrP8/bWnx+s6dPg9rJBua5mdk6FXYUzuc6+UiuwI+/nVZ3rpHBAA+hiX
-X-Received: from ejblo1.prod.google.com ([2002:a17:906:fa01:b0:b47:89a2:8c6c])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:980f:b0:b45:420c:81c0
- with SMTP id a640c23a62f3a-b50ac0cc34cmr3303674866b.36.1760562068221; Wed, 15
- Oct 2025 14:01:08 -0700 (PDT)
-Date: Wed, 15 Oct 2025 22:56:41 +0200
+        bh=MfJeYBJf9dKVExNOryhisMuvn1pJYVbY2e0JV1a62gs=;
+        b=tLANiWKmcvoMhhnHW2lA69DK4RwfsEaDSiLedZaLOfjkqKA2LabpGKIf5YPGhEQl61
+         vjjwQx7yCKbXmH1pbBvOt+fDYsGE6ht7k9u7Eda6ySHu+0vZ5XIknKCprxcZMr0ObEbh
+         4sMTHT7iq7c+c8HmVI9/aCUVAtNCy2dqivwOw5smGAOD5H5Gm5uGwWIDSN6YqSf0z7D4
+         IGQIbfj9jymQ/Wj8gOj2+mX9wLbew/uhgYJBub2bXtfG5uKs9oIQkt3dsBad5kJP3Sco
+         BSTSQIh+DeAaFAIdw5b9mDbEfYGw8hopLs86oSKAOYbxD1Q22JGukQ7oWtCy4BLjWdXe
+         n3Bg==
+X-Gm-Message-State: AOJu0YwkogYJ06pC2yYOJjBElXnQqtY/q9rBClA64PBnjo52UGglatKt
+	imdQWPW/shmpG28fIREtqqZhhA9lurWSlC7Ip4Z++fHsCkVH0mXV9sxS0Tz1ljLhnGYBFWxuJOM
+	ktDKjjrtN+jKaK3mN1rScbNGG8nVB8Np6cEbXOgYsIZLfBfNtgI0nge0GuzY0/LTFLQlWMkmG9T
+	QgcVSb9496nmi2OOalUzFt6dqFKJTE5Q==
+X-Google-Smtp-Source: AGHT+IG+9dkTmwOQEgWRMCLUBLZu1hNOQYGDhgDBr9mXwrcUJWepG/mZYYY9jhBrgkyuHclPeYFheC4j
+X-Received: from wmwq23.prod.google.com ([2002:a05:600d:8357:b0:46e:32e6:eb8f])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c162:b0:46e:4a60:ea2c
+ with SMTP id 5b1f17b1804b1-46fa9b17e57mr225565295e9.37.1760562069252; Wed, 15
+ Oct 2025 14:01:09 -0700 (PDT)
+Date: Wed, 15 Oct 2025 22:56:42 +0200
 In-Reply-To: <20251015205634.3820870-9-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -74,14 +74,15 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251015205634.3820870-9-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2657; i=ardb@kernel.org;
- h=from:subject; bh=997YokF8smvlH2+7Du/063cegE+dHugAIUP6dU3Aa2s=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeMDVzdTg/stWY4eySNf39jeOrDI2WBiyytOz6jjvWbRV
- x/v0FjRUcrCIMbFICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACaSeZKR4apV4b0pL78sZ598
- LzA4+I6BwcnoBUdSut9MUZh7iKesm5Phv0fEh9RthhFMgprc7NoZL8o/mqhbhr2MTOZkDl/GnKb KCgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3342; i=ardb@kernel.org;
+ h=from:subject; bh=V3JoExKah8YdhW3E7vX+STaF9jmPPtKMQXsXC3Dx8GU=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeMDV6/Jz242lTS+WVIXjoZvt3DsOfpAQDKj6UxbRA9vo
+ bXjjfSOUhYGMS4GWTFFFoHZf9/tPD1RqtZ5lizMHFYmkCEMXJwCMBEdI4Y/XAwX+9rNX0+Rdvlo
+ fmVqpOjpZaUz1A+KsFpfrfn4ouyyDsMvZl2bLeJTdxe9UkgwLf07P13Kmv9tW+TczqTrKaXqwTw sAA==
 X-Mailer: git-send-email 2.51.0.869.ge66316f041-goog
-Message-ID: <20251015205634.3820870-15-ardb+git@google.com>
-Subject: [PATCH v4 resend 6/7] arm64/efi: Move uaccess en/disable out of efi_set_pgd()
+Message-ID: <20251015205634.3820870-16-ardb+git@google.com>
+Subject: [PATCH v4 resend 7/7] arm64/efi: Call EFI runtime services without
+ disabling preemption
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-efi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
@@ -93,82 +94,90 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-efi_set_pgd() will no longer be called when invoking EFI runtime
-services via the efi_rts_wq work queue, but the uaccess en/disable are
-still needed when using PAN emulation using TTBR0 switching. So move
-these into the callers.
+The only remaining reason why EFI runtime services are invoked with
+preemption disabled is the fact that the mm is swapped out behind the
+back of the context switching code.
+
+The kernel no longer disables preemption in kernel_neon_begin().
+Furthermore, the EFI spec is being clarified to explicitly state that
+only baseline FP/SIMD is permitted in EFI runtime service
+implementations, and so the existing kernel mode NEON context switching
+code is sufficient to preserve and restore the execution context of an
+in-progress EFI runtime service call.
+
+Most EFI calls are made from the efi_rts_wq, which is serviced by a
+kthread. As kthreads never return to user space, they usually don't have
+an mm, and so we can use the existing infrastructure to swap in the
+efi_mm while the EFI call is in progress. This is visible to the
+scheduler, which will therefore reactivate the selected mm when
+switching out the kthread and back in again.
+
+Given that the EFI spec explicitly permits runtime services to be called
+with interrupts enabled, firmware code is already required to tolerate
+interruptions. So rather than disable preemption, disable only migration
+so that EFI runtime services are less likely to cause scheduling delays.
+To avoid potential issues where runtime services are interrupted while
+polling the secure firmware for async completions, keep migration
+disabled so that a runtime service invocation does not resume on a
+different CPU from the one it was started on.
+
+Note, though, that the firmware executes at the same privilege level as
+the kernel, and is therefore able to disable interrupts altogether.
 
 Acked-by: Will Deacon <will@kernel.org>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/efi.h | 13 +++----------
- arch/arm64/kernel/efi.c      | 18 ++++++++++++++++++
- 2 files changed, 21 insertions(+), 10 deletions(-)
+ arch/arm64/kernel/efi.c | 23 ++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-index bcd5622aa096..aa91165ca140 100644
---- a/arch/arm64/include/asm/efi.h
-+++ b/arch/arm64/include/asm/efi.h
-@@ -126,21 +126,14 @@ static inline void efi_set_pgd(struct mm_struct *mm)
- 		if (mm != current->active_mm) {
- 			/*
- 			 * Update the current thread's saved ttbr0 since it is
--			 * restored as part of a return from exception. Enable
--			 * access to the valid TTBR0_EL1 and invoke the errata
--			 * workaround directly since there is no return from
--			 * exception when invoking the EFI run-time services.
-+			 * restored as part of a return from exception.
- 			 */
- 			update_saved_ttbr0(current, mm);
--			uaccess_ttbr0_enable();
--			post_ttbr_update_workaround();
- 		} else {
- 			/*
--			 * Defer the switch to the current thread's TTBR0_EL1
--			 * until uaccess_enable(). Restore the current
--			 * thread's saved ttbr0 corresponding to its active_mm
-+			 * Restore the current thread's saved ttbr0
-+			 * corresponding to its active_mm
- 			 */
--			uaccess_ttbr0_disable();
- 			update_saved_ttbr0(current, current->active_mm);
- 		}
- 	}
 diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index 0094f5938ba6..85f65d5c863c 100644
+index 85f65d5c863c..a81cb4aa4738 100644
 --- a/arch/arm64/kernel/efi.c
 +++ b/arch/arm64/kernel/efi.c
-@@ -169,12 +169,30 @@ void arch_efi_call_virt_setup(void)
+@@ -10,6 +10,7 @@
+ #include <linux/efi.h>
+ #include <linux/init.h>
+ #include <linux/kmemleak.h>
++#include <linux/kthread.h>
+ #include <linux/screen_info.h>
+ #include <linux/vmalloc.h>
+ 
+@@ -168,7 +169,20 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
+ void arch_efi_call_virt_setup(void)
  {
  	efi_runtime_assert_lock_held();
- 	efi_virtmap_load();
+-	efi_virtmap_load();
 +
-+	/*
-+	 * Enable access to the valid TTBR0_EL1 and invoke the errata
-+	 * workaround directly since there is no return from exception when
-+	 * invoking the EFI run-time services.
-+	 */
-+	uaccess_ttbr0_enable();
-+	post_ttbr_update_workaround();
-+
- 	__efi_fpsimd_begin();
++	if (preemptible() && (current->flags & PF_KTHREAD)) {
++		/*
++		 * Disable migration to ensure that a preempted EFI runtime
++		 * service call will be resumed on the same CPU. This avoids
++		 * potential issues with EFI runtime calls that are preempted
++		 * while polling for an asynchronous completion of a secure
++		 * firmware call, which may not permit the CPU to change.
++		 */
++		migrate_disable();
++		kthread_use_mm(&efi_mm);
++	} else {
++		efi_virtmap_load();
++	}
+ 
+ 	/*
+ 	 * Enable access to the valid TTBR0_EL1 and invoke the errata
+@@ -193,7 +207,12 @@ void arch_efi_call_virt_teardown(void)
+ 	 */
+ 	uaccess_ttbr0_disable();
+ 
+-	efi_virtmap_unload();
++	if (preemptible() && (current->flags & PF_KTHREAD)) {
++		kthread_unuse_mm(&efi_mm);
++		migrate_enable();
++	} else {
++		efi_virtmap_unload();
++	}
  }
  
- void arch_efi_call_virt_teardown(void)
- {
- 	__efi_fpsimd_end();
-+
-+	/*
-+	 * Defer the switch to the current thread's TTBR0_EL1 until
-+	 * uaccess_enable(). Do so before efi_virtmap_unload() updates the
-+	 * saved TTBR0 value, so the userland page tables are not activated
-+	 * inadvertently over the back of an exception.
-+	 */
-+	uaccess_ttbr0_disable();
-+
- 	efi_virtmap_unload();
- }
- 
+ asmlinkage u64 *efi_rt_stack_top __ro_after_init;
 -- 
 2.51.0.869.ge66316f041-goog
 
