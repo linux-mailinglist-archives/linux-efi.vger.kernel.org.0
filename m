@@ -1,174 +1,176 @@
-Return-Path: <linux-efi+bounces-5052-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5053-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A32BDF91F
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 18:09:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3925BE0BBB
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 23:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A01B1A2133F
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 16:09:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C2B41A2308E
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 21:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A99C3375CB;
-	Wed, 15 Oct 2025 16:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C01F21ABAA;
+	Wed, 15 Oct 2025 21:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="z6L7NckZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Gd2VZsKQ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="z6L7NckZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Gd2VZsKQ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jKr27wsf"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C400D335BC4
-	for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 16:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572157494
+	for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 21:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760544525; cv=none; b=dlI0uq5TmHy9u2Wm1eXtKr5aPJHSmb+3bbaXVRAWapvJ6vf6yOEhFt2Z1nGGArlcVl1uxP13KKlEmh/oJa6QFIvYmCRQ9WY3+KWfn4iMGaicU2FdA+UEYS4l55tgrI9r4XoGVv0819+QM+/UMlYzHBJBekrs3FMzRQpEDYJPHMY=
+	t=1760562065; cv=none; b=d9uKbtYsD4LOK3Udoj7T87K/05Z1kOC3Tnth5NMSmjQph4TOI+QGoW7nxADKctZQRfnLSMimCsW4eByY9hm6a8cHBbvG+JFHiuosMPGHRSNibQWPjP2KKadach4Nn3sQoyll0pEm6bJu/MRAVgeLC1Xk4ov8Ki+75O1YCsd0wDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760544525; c=relaxed/simple;
-	bh=UB2jO09vewg6cLax49gAv1K4JPh1V+SV/eZpJldJOAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVqwXNmuZ5bocwZq73pA19QGDmYiWNb8ujRPiKkF3Wlf8Zai9djIdkZtkeQsp9KH1ve6n5SgEu/dPax21lTfSz/mfWl+UFIe5OmlT8qjxz+LZj61c5rqTw9mRhxnm3TriYQbYWWpdavPqeOQYK3fGE2S/+3WerGOCVWK8M5+QaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=z6L7NckZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Gd2VZsKQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=z6L7NckZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Gd2VZsKQ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DD76721B16;
-	Wed, 15 Oct 2025 16:08:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760544502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8AGXNzWUcc3Yh+1xeYPxIrxeW/lSX/LwtRBtEZCGcJg=;
-	b=z6L7NckZhU/p/ZEWJJjQp6NAEgFyuhlmztjNzRxLQ0J6Pv4tEu1ocnisDKcykdhOiwkc0H
-	q7C0LV++Edxgjd357QZbyxU6kcG22nus1JpsEHYXyw0wX3VnmgZi2X7s5UuCQSp86rxKOH
-	9Bh5r7wedjUguN0/pnMG1i/BN/rMxxg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760544502;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8AGXNzWUcc3Yh+1xeYPxIrxeW/lSX/LwtRBtEZCGcJg=;
-	b=Gd2VZsKQKNRbgeTeCba8SK6AtVyiTIZ6hfR1crausgbsGsCLpGBmy6Aee3aKMnz05/AtHU
-	8j5IDi0pWysD3yBQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z6L7NckZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gd2VZsKQ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760544502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8AGXNzWUcc3Yh+1xeYPxIrxeW/lSX/LwtRBtEZCGcJg=;
-	b=z6L7NckZhU/p/ZEWJJjQp6NAEgFyuhlmztjNzRxLQ0J6Pv4tEu1ocnisDKcykdhOiwkc0H
-	q7C0LV++Edxgjd357QZbyxU6kcG22nus1JpsEHYXyw0wX3VnmgZi2X7s5UuCQSp86rxKOH
-	9Bh5r7wedjUguN0/pnMG1i/BN/rMxxg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760544502;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8AGXNzWUcc3Yh+1xeYPxIrxeW/lSX/LwtRBtEZCGcJg=;
-	b=Gd2VZsKQKNRbgeTeCba8SK6AtVyiTIZ6hfR1crausgbsGsCLpGBmy6Aee3aKMnz05/AtHU
-	8j5IDi0pWysD3yBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AADF013AE4;
-	Wed, 15 Oct 2025 16:08:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gL5IKPbG72inaQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 15 Oct 2025 16:08:22 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: ardb@kernel.org,
-	jonathan@marek.ca,
-	javierm@redhat.com
-Cc: linux-efi@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5/5] efi/libstub: x86: Store EDID in boot_params
-Date: Wed, 15 Oct 2025 17:56:34 +0200
-Message-ID: <20251015160816.525825-6-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251015160816.525825-1-tzimmermann@suse.de>
-References: <20251015160816.525825-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1760562065; c=relaxed/simple;
+	bh=/Mc//C09Fvs/en1rt/ODrcIYr2xrTUD2a++fxVCYYt4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kN6gtdhicMLKf5UzqK4rtbUGr5KY7gmXsk9aXfeRwC1iD3FJs7kDTLZ61IEyfCQsMU0dOm0vwOtrG8ZsQbUezr5TsJoH65lylk+7SeWXxTN1DYxv7A0ckXAIv0vA4iht3iIsgoZlh4WVEy9NqWDUhviNCbIgopIAjCjopXgLy1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jKr27wsf; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-46e35baddc1so179185e9.2
+        for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 14:01:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760562062; x=1761166862; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jD+kFUBYAeeVe/ddE0v3sfAZUgaXP696q8DDibnTqBE=;
+        b=jKr27wsfCBQl3qyIUaOQhJ5BrE0SONgGAPgolW2qsZn3fBo9i8SIgnn6gxSsbfxghS
+         L+HAPTOcWFyNSGcq8sqIyQOQ5KHX/R1KODAHGovYhQNaCDyycSPUdK5xTcsruqc66H7R
+         WD7j6KH3typ4cRBG5SYidRCClUS34bKXIPvWwf8QJyzJ7j7pqDgpO8U+w5SnUrTKRKHr
+         t/TPwC2+RO4AhwkXpqYbxv/MhceT1fAQw7gU/0VClk2OBCzLRhAdGG33lmGneeeat25B
+         3cQur/exXxstuPU5EnqfLuwsiYkhQo5DQdc9/E60I+MZnCwMazUNKhGEeVhgpHtLBfru
+         MO5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760562062; x=1761166862;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jD+kFUBYAeeVe/ddE0v3sfAZUgaXP696q8DDibnTqBE=;
+        b=bTQ2NifIKfEnUcWLtJiJcKff+MXDFYiNM79HMuUo06On3GeVAXKjWTAcMGzoVeqn1x
+         s1Q8KERzbdkLZDiV67bUEje7pvO/fOIZQNcAq7PwiuZQg24ds2Oq3s2DGfqHaat6YqNd
+         is7ngJfs9lWVNmhKEzUnzV7kcMczmtjLPXvt7a+3lCtYV/AKyxZ/8sSkf2t9hh6j1+sZ
+         8iEdPtOz5RHJ9DkS8hCZj3sRhbS6XDxSIXYapFV4V6QTv65XeZl+8CKQ/2cjOJa1q0OP
+         k8DXPLefFyLm6WXWvB/CcJLqWYH43voTDVdvYO6HRZFtKYiTGol7GIXqBrt0hCyBe+zo
+         CF7w==
+X-Gm-Message-State: AOJu0Yyo4eyDCCmQXrQ4+yFFzrpU3F0FpMnjZC74tQC1tT23qSrALOAg
+	ZwvLbZSqP6uiokjPT6CzaKV179hjCwgwKXnS567G/GmjQYORQ3hIHFbCl+ur97mnVx5DBUBwuOw
+	yl1VataU7uQC0y8zeJi+l/dpRAvfbmKc7WUngHTIGhwWfErLyttTr0H+qagbl2fCrUZVrLHLbco
+	7XUsuCna58WC9upcb1E9tGG+HVLE0KuQ==
+X-Google-Smtp-Source: AGHT+IFxvD/EQ8rSJVlE+EW9W2l6da03H/DDoZRFzID9t/ZfX7njnQlyQo8cNARQr75jwnOiLRm17aJC
+X-Received: from wmgg6.prod.google.com ([2002:a05:600d:6:b0:46f:aafc:e6d4])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b2a:b0:46e:3e63:9a8e
+ with SMTP id 5b1f17b1804b1-46fa9b07717mr171322045e9.26.1760562061580; Wed, 15
+ Oct 2025 14:01:01 -0700 (PDT)
+Date: Wed, 15 Oct 2025 22:56:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: DD76721B16
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLxjygmbcnsta4qeme9o4pgs8z)];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -3.01
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4002; i=ardb@kernel.org;
+ h=from:subject; bh=QKe9AxQhtU5DJebwz0TSUBdR0vmdHpGkcHrtGscOZ1Q=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIeMDV7O1rafFzh1TTcR2Pj5858b/I+ev7jt29OWyN3McL
+ tp41UokdpSyMIhxMciKKbIIzP77bufpiVK1zrNkYeawMoEMYeDiFICJHExk+F9r/Df39eEsxodc
+ EruWlkoqqfxi/cDuVKYia/4qIHbl8ukM/yweKRW8ODp5XmdnbmTQ0kRfr9qrtrFZrxWnetzevcD bnh0A
+X-Mailer: git-send-email 2.51.0.869.ge66316f041-goog
+Message-ID: <20251015205634.3820870-9-ardb+git@google.com>
+Subject: [PATCH v4 resend 0/7] arm64: Make EFI calls preemptible
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>, 
+	Pierre Gondois <Pierre.Gondois@arm.com>, Sami Mujawar <Sami.Mujawar@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Retrieve the GOP device's EDID information in the kernel's boot
-parameters. Makes the data avaialble to kernel graphics code and
-drives, such as efidrm.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-With efidrm, the EDID is now also available to user-space compositors
-via standard DRM interfaces.
+The arm64 port permits the use of the baseline FP/SIMD register file in
+kernel mode, and no longer requires preemption to be disabled. Now that
+the EFI spec is being clarified to state that EFI runtime services may
+only use baseline FP/SIMD, the fact that EFI may code may use FP/SIMD
+registers (while executing at the same privilege level as the kernel) is
+no longer a reason to disable preemption when invoking them.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/firmware/efi/libstub/x86-stub.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+This means that the only remaining reason for disabling preemption is
+the fact that the active mm is swapped out and replaced with efi_mm in a
+way that is hidden from the scheduler, and so scheduling is not
+supported currently. However, given that virtually all (*) EFI runtime
+calls are made from the efi_rts_wq workqueue, the efi_mm can simply be
+loaded into the workqueue worker kthread while the call is in progress,
+and this does not require preemption to be disabled.
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index b68dbfd1cb87..8c6ff0b49912 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -388,8 +388,9 @@ static void setup_quirks(struct boot_params *boot_params)
- static void setup_graphics(struct boot_params *boot_params)
- {
- 	struct screen_info *si = memset(&boot_params->screen_info, 0, sizeof(*si));
-+	struct edid_info *edid = memset(&boot_params->edid_info, 0, sizeof(*edid));
- 
--	efi_setup_graphics(si, NULL);
-+	efi_setup_graphics(si, edid);
- }
- 
- static void __noreturn efi_exit(efi_handle_t handle, efi_status_t status)
+Note that this is only a partial solution in terms of RT guarantees,
+given that the runtime services execute at the same privilege level as
+the kernel, and can therefore disable interrupts (and therefore
+preemption) directly. But it should prevent scheduling latency spikes
+for EFI calls that simply take a long time to run to completion.
+
+No changes since v4, rebase to v6.18-rc1 only.
+
+Changes since v3:
+- Abandon changes that disallow EFI runtime calls in hardirq or NMI
+  context, as these might occur when EFI pstore records an OOPS into the
+  EFI variable store. Note that this suggests that preserving/restoring
+  userland SVE state in such cases is rather futile, but this can be
+  revisited at a later time.
+- Drop the lock in the arch wrapper, which has become redundant now that
+  all EFI calls are serialized under the efi_runtime_lock semaphore
+- Add code comment to patch #4 to explain the kludge
+- Add some acks from Will
+
+Changes since v2:
+- Permit ordinary kernel mode FP/SIMD with IRQs disabled, so that the
+  special EFI case only deals with invocations in hardirq or NMI context
+- Disallow EFI runtime calls in hardirq or NMI context, so that the
+  special FP/SIMD handling for EFI can be dropped entirely
+- Use a mutex rather than a semaphore for the arm64 EFI runtime lock,
+  now that it is never trylock()ed in IRQ or NMI context.
+
+Changes since v1/RFC:
+- Disable uaccess for SWPAN before updating the preserved TTBR0 value
+- Document why disabling migration is needed
+- Rebase onto v6.17-rc1
+
+(*) only efi_reset_system() and EFI pstore invoke EFI runtime services
+    without going through the workqueue, and the latter only when saving
+    a kernel oops log to the EFI varstore
+
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Pierre Gondois <Pierre.Gondois@arm.com>
+Cc: Sami Mujawar <Sami.Mujawar@arm.com>
+
+Ard Biesheuvel (7):
+  efi: Add missing static initializer for efi_mm::cpus_allowed_lock
+  efi/runtime-wrappers: Keep track of the efi_runtime_lock owner
+  arm64/fpsimd: Don't warn when EFI execution context is preemptible
+  arm64/fpsimd: Permit kernel mode NEON with IRQs off
+  arm64/efi: Drop efi_rt_lock spinlock from EFI arch wrapper
+  arm64/efi: Move uaccess en/disable out of efi_set_pgd()
+  arm64/efi: Call EFI runtime services without disabling preemption
+
+ arch/arm64/include/asm/efi.h            | 13 ++----
+ arch/arm64/include/asm/simd.h           |  2 +-
+ arch/arm64/kernel/efi.c                 | 46 +++++++++++++++++---
+ arch/arm64/kernel/fpsimd.c              | 29 ++++++++----
+ drivers/firmware/efi/efi.c              |  3 ++
+ drivers/firmware/efi/runtime-wrappers.c | 17 +++++++-
+ include/linux/efi.h                     |  2 +
+ 7 files changed, 86 insertions(+), 26 deletions(-)
+
+
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
 -- 
-2.51.0
+2.51.0.869.ge66316f041-goog
 
 
