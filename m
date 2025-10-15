@@ -1,94 +1,94 @@
-Return-Path: <linux-efi+bounces-5049-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5050-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F56BDF90A
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 18:08:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985CDBDF90D
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 18:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3A2AC355C65
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 16:08:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EFBC400D29
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Oct 2025 16:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4947335BDE;
-	Wed, 15 Oct 2025 16:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3AC3375A7;
+	Wed, 15 Oct 2025 16:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Hqo147/p";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2F3VxCDC";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Hqo147/p";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2F3VxCDC"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bgvFNA9a";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="52fjVt4M";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bgvFNA9a";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="52fjVt4M"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A75335BDF
-	for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 16:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84945335BAF
+	for <linux-efi@vger.kernel.org>; Wed, 15 Oct 2025 16:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760544512; cv=none; b=rfaOk4acVIyy3SH14zgjR5gIHUytrdgix/C1YVH/Jfi4h89Vr743LOiTZBEUjZCczOjMsoQJeicyh6oiyeSe6/lGJZlO7j7eG5qPdU8xtiKz2zFnLh8O3Lj/aWuI1AfH7blkR+OtywKOwGv7JCHjUCbZ61UXV6XPm1exnrulxYU=
+	t=1760544513; cv=none; b=AO9SDioP6VMISIUZ0j9sqsfxRyl8E8zs1I9hZoYEnLUS4ZQ/4/imvu63kWiIh45AcEKctEKw0F+BY5hwhCn2t+onTWq7S27hADrcooPl+PygPqIq0wzRGFh2Xm2J/beULzf+dQcwoUyk6qnljbJ+ogoyvlyFvIT5bFnb+94mhw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760544512; c=relaxed/simple;
-	bh=vuRKO/cugdJISeHatmOkDyu6JqwV6pkCpQczWDEm6P0=;
+	s=arc-20240116; t=1760544513; c=relaxed/simple;
+	bh=Z5C8e0XiSxAjnpxu2bSEtV+3exrcivSCS10a+Exawng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUECMXaoa8e9/s7YNxuQHS2iZ3v3r2iBcJLFXd8uRk8afUZtnMNpCOHxN6mUxyJW6W+clVv+/o3eND76izzlX1efjEOvGyCGc+yQ8tG6/ZLkxCy0nmwQ+TU/05oylvRfvGvCwO5F8DgSKHJY51OKLcbkcRVQBRCwqO/rclCZOzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Hqo147/p; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2F3VxCDC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Hqo147/p; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2F3VxCDC; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=etFUTKa1XMbofOKkS7/+XZFxkZ39k0JwIAwvJeCHKcQexnIb+z9sxunmfgK28GWLSB6YmAnXJG4rYJgMZnFmD+vZLe7dXjcp1r2Od1uS/Ep9fjAKEb8p6eid6LFzVp2O22cPjyzEYtXGakZ542kMsWvjN8SF9SJZYa48ZCcOinU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bgvFNA9a; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=52fjVt4M; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bgvFNA9a; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=52fjVt4M; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 24928210BD;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 65FEC2119A;
 	Wed, 15 Oct 2025 16:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1760544502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y9o6wbaGBzG+1WYts7/O+R79Vl4+tBO2OwLz1IXi4EM=;
-	b=Hqo147/pGWeC14HMFrWF5ewq9M+xmzKxspSuUhzL0YJDkLSnmDmzbdclBEF5FDkBkr4CnS
-	VqfRXwCU061wkZARWza8PcOFazfXB8Ru1Es7mKWwLOwYb1iwb/vccbuG0YGYYpx9PzdRAl
-	RBck3VUzhIXFEEYi1lt/B/KpEBK6/kM=
+	bh=JI/tzd589AP9VmmQUX88anLh/JqoSsRu/o/hT6jUtjc=;
+	b=bgvFNA9aWqxSOLSEOdrPvQcVQ75uf7tfm7EZkBfjiue9x7g9nZYUeTe8hR+smvHDJNLOOP
+	rHdoX6KBBMXWuVCnvKdESpD3QqVKpurjRNMlCBvnTya+Y9XXcJPUtPvSl8GeBfc/cW/HYK
+	QMsbbVXE105TzT28EoMZeYaTybrBVBE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1760544502;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y9o6wbaGBzG+1WYts7/O+R79Vl4+tBO2OwLz1IXi4EM=;
-	b=2F3VxCDCzbCzVlCNIT9W1z5Kkquhptt/Qw4Sztiy45ccUSycFlKC5haHM9gH4upP2aoyg8
-	zWPZIfY0rELOpaBQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Hqo147/p";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2F3VxCDC
+	bh=JI/tzd589AP9VmmQUX88anLh/JqoSsRu/o/hT6jUtjc=;
+	b=52fjVt4MZnWZuBLcgc8uqp4y+jw0rLka0xR5IB1aT9/1pQP6NAcU8KVzZlg4tWRR8AZSD1
+	DtxrHMfrnxmer0CA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bgvFNA9a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=52fjVt4M
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1760544502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y9o6wbaGBzG+1WYts7/O+R79Vl4+tBO2OwLz1IXi4EM=;
-	b=Hqo147/pGWeC14HMFrWF5ewq9M+xmzKxspSuUhzL0YJDkLSnmDmzbdclBEF5FDkBkr4CnS
-	VqfRXwCU061wkZARWza8PcOFazfXB8Ru1Es7mKWwLOwYb1iwb/vccbuG0YGYYpx9PzdRAl
-	RBck3VUzhIXFEEYi1lt/B/KpEBK6/kM=
+	bh=JI/tzd589AP9VmmQUX88anLh/JqoSsRu/o/hT6jUtjc=;
+	b=bgvFNA9aWqxSOLSEOdrPvQcVQ75uf7tfm7EZkBfjiue9x7g9nZYUeTe8hR+smvHDJNLOOP
+	rHdoX6KBBMXWuVCnvKdESpD3QqVKpurjRNMlCBvnTya+Y9XXcJPUtPvSl8GeBfc/cW/HYK
+	QMsbbVXE105TzT28EoMZeYaTybrBVBE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1760544502;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y9o6wbaGBzG+1WYts7/O+R79Vl4+tBO2OwLz1IXi4EM=;
-	b=2F3VxCDCzbCzVlCNIT9W1z5Kkquhptt/Qw4Sztiy45ccUSycFlKC5haHM9gH4upP2aoyg8
-	zWPZIfY0rELOpaBQ==
+	bh=JI/tzd589AP9VmmQUX88anLh/JqoSsRu/o/hT6jUtjc=;
+	b=52fjVt4MZnWZuBLcgc8uqp4y+jw0rLka0xR5IB1aT9/1pQP6NAcU8KVzZlg4tWRR8AZSD1
+	DtxrHMfrnxmer0CA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E38DB13A42;
-	Wed, 15 Oct 2025 16:08:21 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2AF2B13AE4;
+	Wed, 15 Oct 2025 16:08:22 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kGlcNvXG72inaQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 15 Oct 2025 16:08:21 +0000
+	id sEJFCfbG72inaQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 15 Oct 2025 16:08:22 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: ardb@kernel.org,
 	jonathan@marek.ca,
@@ -97,9 +97,9 @@ Cc: linux-efi@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 2/5] efi/libstub: gop: Find GOP handle instead of GOP data
-Date: Wed, 15 Oct 2025 17:56:31 +0200
-Message-ID: <20251015160816.525825-3-tzimmermann@suse.de>
+Subject: [PATCH 3/5] efi/libstub: gop: Initialize screen_info in helper function
+Date: Wed, 15 Oct 2025 17:56:32 +0200
+Message-ID: <20251015160816.525825-4-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251015160816.525825-1-tzimmermann@suse.de>
 References: <20251015160816.525825-1-tzimmermann@suse.de>
@@ -112,107 +112,156 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: 
 X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 24928210BD
+X-Rspamd-Queue-Id: 65FEC2119A
 X-Rspamd-Action: no action
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spamd-Result: default: False [-3.01 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
 	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
 	MX_GOOD(-0.01)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLxjygmbcnsta4qeme9o4pgs8z)];
 	DKIM_TRACE(0.00)[suse.de:+]
 X-Spam-Score: -3.01
 
-The device handle of the GOP device is required to retrieve the
-correct EDID data. Find the handle instead of the GOP data. Still
-return the GOP data in the function arguments, as we already looked
-it up.
+Move initialization of screen_info into a single helper function.
+Frees up space in the main setup helper for adding EDID support.
+No functional changes.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/firmware/efi/libstub/gop.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/firmware/efi/libstub/gop.c | 76 +++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 43 deletions(-)
 
 diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 3785fb4986b4..fd32be8dd146 100644
+index fd32be8dd146..02459ef0f18c 100644
 --- a/drivers/firmware/efi/libstub/gop.c
 +++ b/drivers/firmware/efi/libstub/gop.c
-@@ -402,12 +402,13 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
- 	}
+@@ -367,24 +367,31 @@ static void find_bits(u32 mask, u8 *pos, u8 *size)
+ 	*size = __fls(mask) - *pos + 1;
  }
  
--static efi_graphics_output_protocol_t *find_gop(unsigned long num,
--						const efi_handle_t handles[])
-+static efi_handle_t find_handle_with_primary_gop(unsigned long num, const efi_handle_t handles[],
-+						 efi_graphics_output_protocol_t **found_gop)
+-static void
+-setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
+-		 efi_pixel_bitmask_t pixel_info, int pixel_format)
++static void setup_screen_info(struct screen_info *si, const efi_graphics_output_protocol_t *gop)
  {
- 	efi_graphics_output_protocol_t *first_gop;
--	efi_handle_t h;
-+	efi_handle_t h, first_gop_handle;
+-	if (pixel_format == PIXEL_BIT_MASK) {
+-		find_bits(pixel_info.red_mask,
+-			  &si->red_pos, &si->red_size);
+-		find_bits(pixel_info.green_mask,
+-			  &si->green_pos, &si->green_size);
+-		find_bits(pixel_info.blue_mask,
+-			  &si->blue_pos, &si->blue_size);
+-		find_bits(pixel_info.reserved_mask,
+-			  &si->rsvd_pos, &si->rsvd_size);
+-		si->lfb_depth = si->red_size + si->green_size +
+-			si->blue_size + si->rsvd_size;
+-		si->lfb_linelength = (pixels_per_scan_line * si->lfb_depth) / 8;
++	const efi_graphics_output_protocol_mode_t *mode = efi_table_attr(gop, mode);
++	const efi_graphics_output_mode_info_t *info = efi_table_attr(mode, info);
++
++	si->orig_video_isVGA = VIDEO_TYPE_EFI;
++
++	si->lfb_width  = info->horizontal_resolution;
++	si->lfb_height = info->vertical_resolution;
++
++	efi_set_u64_split(efi_table_attr(mode, frame_buffer_base),
++			  &si->lfb_base, &si->ext_lfb_base);
++	if (si->ext_lfb_base)
++		si->capabilities |= VIDEO_CAPABILITY_64BIT_BASE;
++	si->pages = 1;
++
++	if (info->pixel_format == PIXEL_BIT_MASK) {
++		find_bits(info->pixel_information.red_mask, &si->red_pos, &si->red_size);
++		find_bits(info->pixel_information.green_mask, &si->green_pos, &si->green_size);
++		find_bits(info->pixel_information.blue_mask, &si->blue_pos, &si->blue_size);
++		find_bits(info->pixel_information.reserved_mask, &si->rsvd_pos, &si->rsvd_size);
++		si->lfb_depth = si->red_size + si->green_size + si->blue_size + si->rsvd_size;
++		si->lfb_linelength = (info->pixels_per_scan_line * si->lfb_depth) / 8;
+ 	} else {
+-		if (pixel_format == PIXEL_RGB_RESERVED_8BIT_PER_COLOR) {
++		if (info->pixel_format == PIXEL_RGB_RESERVED_8BIT_PER_COLOR) {
+ 			si->red_pos   = 0;
+ 			si->blue_pos  = 16;
+ 		} else /* PIXEL_BGR_RESERVED_8BIT_PER_COLOR */ {
+@@ -394,12 +401,16 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
  
-+	first_gop_handle = NULL;
- 	first_gop = NULL;
- 
- 	for_each_efi_handle(h, handles, num) {
-@@ -442,19 +443,25 @@ static efi_graphics_output_protocol_t *find_gop(unsigned long num,
- 		 */
- 		status = efi_bs_call(handle_protocol, h,
- 				     &EFI_CONSOLE_OUT_DEVICE_GUID, &dummy);
--		if (status == EFI_SUCCESS)
--			return gop;
+ 		si->green_pos = 8;
+ 		si->rsvd_pos  = 24;
+-		si->red_size = si->green_size =
+-			si->blue_size = si->rsvd_size = 8;
 -
--		if (!first_gop)
-+		if (status == EFI_SUCCESS) {
-+			if (found_gop)
-+				*found_gop = gop;
-+			return h;
-+		} else if (!first_gop_handle) {
-+			first_gop_handle = h;
- 			first_gop = gop;
-+		}
++		si->red_size = 8;
++		si->green_size = 8;
++		si->blue_size = 8;
++		si->rsvd_size = 8;
+ 		si->lfb_depth = 32;
+-		si->lfb_linelength = pixels_per_scan_line * 4;
++		si->lfb_linelength = info->pixels_per_scan_line * 4;
  	}
- 
--	return first_gop;
-+	if (found_gop)
-+		*found_gop = first_gop;
-+	return first_gop_handle;
++
++	si->lfb_size = si->lfb_linelength * si->lfb_height;
++	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
  }
  
- efi_status_t efi_setup_gop(struct screen_info *si)
+ static efi_handle_t find_handle_with_primary_gop(unsigned long num, const efi_handle_t handles[],
+@@ -462,8 +473,6 @@ efi_status_t efi_setup_gop(struct screen_info *si)
  {
  	efi_handle_t *handles __free(efi_pool) = NULL;
-+	efi_handle_t handle;
- 	efi_graphics_output_protocol_mode_t *mode;
- 	efi_graphics_output_mode_info_t *info;
+ 	efi_handle_t handle;
+-	efi_graphics_output_protocol_mode_t *mode;
+-	efi_graphics_output_mode_info_t *info;
  	efi_graphics_output_protocol_t *gop;
-@@ -467,8 +474,8 @@ efi_status_t efi_setup_gop(struct screen_info *si)
- 	if (status != EFI_SUCCESS)
- 		return status;
+ 	efi_status_t status;
+ 	unsigned long num;
+@@ -482,27 +491,8 @@ efi_status_t efi_setup_gop(struct screen_info *si)
+ 	set_mode(gop);
  
--	gop = find_gop(num, handles);
--	if (!gop)
-+	handle = find_handle_with_primary_gop(num, handles, &gop);
-+	if (!handle)
- 		return EFI_NOT_FOUND;
+ 	/* EFI framebuffer */
+-	mode = efi_table_attr(gop, mode);
+-	info = efi_table_attr(mode, info);
+-
+-	si->orig_video_isVGA = VIDEO_TYPE_EFI;
+-
+-	si->lfb_width  = info->horizontal_resolution;
+-	si->lfb_height = info->vertical_resolution;
+-
+-	efi_set_u64_split(efi_table_attr(mode, frame_buffer_base),
+-			  &si->lfb_base, &si->ext_lfb_base);
+-	if (si->ext_lfb_base)
+-		si->capabilities |= VIDEO_CAPABILITY_64BIT_BASE;
+-
+-	si->pages = 1;
+-
+-	setup_pixel_info(si, info->pixels_per_scan_line,
+-			     info->pixel_information, info->pixel_format);
+-
+-	si->lfb_size = si->lfb_linelength * si->lfb_height;
+-
+-	si->capabilities |= VIDEO_CAPABILITY_SKIP_QUIRKS;
++	if (si)
++		setup_screen_info(si, gop);
  
- 	/* Change mode if requested */
+ 	return EFI_SUCCESS;
+ }
 -- 
 2.51.0
 
