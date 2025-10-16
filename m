@@ -1,93 +1,65 @@
-Return-Path: <linux-efi+bounces-5064-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5065-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA85BE446B
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Oct 2025 17:36:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBCABE459A
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Oct 2025 17:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0FC874E8F68
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Oct 2025 15:36:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBCFA486514
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Oct 2025 15:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24290339B5C;
-	Thu, 16 Oct 2025 15:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC18634F496;
+	Thu, 16 Oct 2025 15:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PlQkXKBJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYon15nT"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D5927E066;
-	Thu, 16 Oct 2025 15:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB92634F478;
+	Thu, 16 Oct 2025 15:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760628966; cv=none; b=PA/LFCJUuqlsg4PlRpGaZcF8VEep1bOCeBdpSYJrHW3ibmI83X2jEcHAoeCPsojdJ2JmcsNH+j3Dqad2Ta355hYeKNkIz6kW2whh6a5L/uTMbVDXFaC5YKRaoB7ktz/TBUN4rqyAldIVh59CyNWZUSvKeSqVPNhlZRB+T7cI2Zo=
+	t=1760629763; cv=none; b=aixM50ZuDZ/9OGp8V4VohXY40suvrhT7VQCWhM50CoxJyUNg2yQTUCP/Xu3tM2HvDIxqdWqX9JJTbA4Q0NlMFgLaUHdDGWdoJpQFTFOFAeu/QuylGZXRw5wfEm7WhcPBmzKwc97fGjmrhEgAq494E+m2knkyyj1wuxa+ig10JAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760628966; c=relaxed/simple;
-	bh=XZxC3Z7Brl2vKlEpL+VR3iYPXHyRePQJxpgSpCsm/Mc=;
+	s=arc-20240116; t=1760629763; c=relaxed/simple;
+	bh=SA4GVw/nGNJf/qOm9uwEhfvgtPwILVcT7iMh4Nomboc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LZ7xMYIehSgQImc6lv8EcPl3akCibCj7A+jGmyj9BwxCqSgVng9cF4jcC6ZGRfoOgOuRaFg/ffy9wKDOIDVEXaGBhjMwKjCQK47ZhY3HsUK2sLV6huhP4MXTmwM/GfBMMRatJpvqIqyPSJm7I3Gr3AaT2TAIGpmFEsJ5yqUtbFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PlQkXKBJ; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AAB2B40E015B;
-	Thu, 16 Oct 2025 15:35:53 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 63E0fiiBV7Sf; Thu, 16 Oct 2025 15:35:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1760628948; bh=zjmrhIJBJoSPs1NvxJc+Q+GQcsPJIJZQEyPo+J6+Xpk=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=EgWxe+ziWqNYRcJV5i/G3zb4ydNYA5V2v/yt/8htRRK7svNlWH9dYKapHGk322y0mD0YOKsV6y3I5R0RCtvv9i35sRUh5s+C0RwWQAc2h00PCGIZoKY7GjcWApMxpNUcxzA2GxxWmMg4frzhxpZ7r6kEqr0WflPqkUw1/fiYxwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYon15nT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5BDC4CEF1;
+	Thu, 16 Oct 2025 15:49:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760629763;
+	bh=SA4GVw/nGNJf/qOm9uwEhfvgtPwILVcT7iMh4Nomboc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PlQkXKBJj7ZLIERAyD1oEOZFHmn1CsVj6+nlGx48xCSVZvSbFGSTOgTth098UxoUe
-	 LAYrg56uDuYZocKzECUOg+j/Cp17o6fFRPtqtHncsQOTONFRfs39blPuoCnFpkWJzs
-	 fk7pivKHHbJQ/WHPUxSk1ByMJlwJ7Ez1nypGW66G0cO70UiasLKCaoy4tYURLu9r7h
-	 iz+Ax3tq4ga0X5sVuvwFEioTaaWWYQHRl9zsddrtCQZ5FP3yToYr3sX4x1bigiLvrX
-	 4CtdQdYMQmr5AOolLPn5inmGg14hvKHgwhj+l3tYXLyIE4Ml9lKMbWF8++1lhixgMc
-	 9o/EVuT1wz/CzAx1XT4tNXvzfAPEZCmcut69dfc1KxBibTseCcxtiDelvmo80fmHvB
-	 UgSQir/REVvsm4HGcOCCk0MJ4CDlrPk7/xJ2KHDTluekNBnFAN73qQ7vQD/7/kbqNN
-	 RD/3tXqOHvmoTpruAOTwEWGDQGikA8CzBHinZohmpiMfNLpu8CHDfp8jYJA2j02WeU
-	 lJap/ceYWtN/haPsGdCZ8wzF992Ma3KqQjmPbFBanfTeGYKtZGj1s82s9hjPXF7uzw
-	 g/BtnQqL4XhEBnDotIBKlvaHsWXvP856zK36kVnY2sk9qnhMEZwgliyyyOvEv0vnaG
-	 F1EqIqhfX6jhqIhhnkZq/+VE=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D86AB40E00DE;
-	Thu, 16 Oct 2025 15:35:20 +0000 (UTC)
-Date: Thu, 16 Oct 2025 17:35:14 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Kirill A . Shutemov" <kas@kernel.org>, Xin Li <xin@zytor.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v10 01/15] x86/cpu: Enumerate the LASS feature bits
-Message-ID: <20251016153514.GDaPEQsj9eNwWfmtLf@fat_crate.local>
-References: <20251007065119.148605-1-sohil.mehta@intel.com>
- <20251007065119.148605-2-sohil.mehta@intel.com>
+	b=EYon15nTC1mf/Qvey0ODWWWDCuKPTr+/B27xSXjLWRwifGlrhDcQOgJhEMNqsjziR
+	 eDOiocYrPuTcMiBDfhqjwhqH9hA4sSLXWykN43T5M+Ix8ShIiM79qj+AJGvyo089PX
+	 stOi4BAdKthV2JSsl7fMI1yYGo8J8o5uuKi2kihDTXySBmt0eIJajJLrWVbK7+0jGA
+	 qzWWj00vhlfquMHu8Cdg4TiwBuaginpMBQHcctPHlbwBi42bVHU/M//wtdNHb3AEXf
+	 ReNHOGVbu4I8xxDFWQXcYZtcer8mhUYow8CFKTXY+Y181eNS51IOOuYu5LidalJ0HF
+	 AIpnRMtBHrx4w==
+Date: Thu, 16 Oct 2025 08:49:20 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
+Message-ID: <lgyzruqczm7uti2lfbhfhr5hyzpnm7wtvgffa2o7nigx76g6i3@wlffltvmhhez>
+References: <CAMj1kXH-rK0bRyHXdJ-crAyMyvJHApH0WR7_8Qd8vrSPBLK+yg@mail.gmail.com>
+ <0c9b8e6a-96a6-91d4-946f-2109f48a529b@loongson.cn>
+ <CAAhV-H41m96fvEWG5NqAE=tykPjyzt=50CseJDeCqdG-c_WMrQ@mail.gmail.com>
+ <CAMj1kXEs5=VRi_rJwgHUrQWos-27PBbr3c4fYnmkV8Ahi8HZgw@mail.gmail.com>
+ <CAAhV-H7HN128du-b1Rk_9qbYBq7gMSwo0s31909N4pTou6wzew@mail.gmail.com>
+ <CAMj1kXGvSnCMRVCW7eAxgLRWMEV3QRj3Dqg3PmZchZJNpnLK9w@mail.gmail.com>
+ <CAAhV-H4UKdso0BokAqvjYeBLr-jbjFAaQX4z=1ztpBamqrOEEg@mail.gmail.com>
+ <CAMj1kXEXDC_oq4aWbkR5dqYBix2d1xJEdaj-v747e1nOA0Q_Yg@mail.gmail.com>
+ <rhnei6wovxmoqs36wdysomfsul3faxtmgde73wrrqdt3qo3b2j@akd7vzne76rq>
+ <CAMj1kXF+hDJy0vRWNgwoijHxvA-scvhGODMj9A3dv19v3jf2yw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -96,17 +68,33 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251007065119.148605-2-sohil.mehta@intel.com>
+In-Reply-To: <CAMj1kXF+hDJy0vRWNgwoijHxvA-scvhGODMj9A3dv19v3jf2yw@mail.gmail.com>
 
-On Mon, Oct 06, 2025 at 11:51:05PM -0700, Sohil Mehta wrote:
-> Link: https://download.vusec.net/papers/slam_sp24.pdf [1]
+On Thu, Oct 16, 2025 at 04:52:20PM +0200, Ard Biesheuvel wrote:
+> On Tue, 14 Oct 2025 at 18:47, Josh Poimboeuf <jpoimboe@kernel.org> wrote:
+> > The idea is that libstub code doesn't belong in vmlinux.o because it's
+> > not a part of the kernel proper, and doesn't need to be validated or
+> > modified by objtool for any reason.
+> >
+> 
+> I don't see a reason to change this on architectures that a) do not
+> use objtool and b) link the EFI stub into vmlinux. If LoongArch wants
+> to change this, that is fine, but that still does not mean it needs to
+> change on other architectures too.
+> 
+> EFI related boot errors are a nightmare to debug, and I will be the
+> one getting the reports when this regresses arm64 on hardware that 2
+> people on the planet have access to.
 
-Just give the full paper name and people can search for it. Links tend to get
-stale over time.
+The idea was to have more consistency, so vmlinux.o never has libstub,
+regardless of arch, but that's your call.
+
+I'd still propose we keep the KBUILD_VMLINUX_LIBS_PRELINK mechanism to
+allow other arches to opt in as needed.
+
+And that variable might even be useful for other cases (x86 startup
+code?)
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Josh
 
