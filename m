@@ -1,114 +1,117 @@
-Return-Path: <linux-efi+bounces-5074-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5075-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED31BEF8B3
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Oct 2025 08:57:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCB7BF68A4
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Oct 2025 14:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB0144EE719
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Oct 2025 06:56:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7790E504718
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Oct 2025 12:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2904C2DF133;
-	Mon, 20 Oct 2025 06:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12385332EBA;
+	Tue, 21 Oct 2025 12:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CdtgZxUD"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="C0zJv5y0"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4912DEA74
-	for <linux-efi@vger.kernel.org>; Mon, 20 Oct 2025 06:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D4A332EC1;
+	Tue, 21 Oct 2025 12:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760943361; cv=none; b=BGPsgdMg0Vh0mB9C5L8GlURyfczqJspiuYRuBjQhPPKQX+aU//KzUfLEanmMigQKAcKQszxZv0Yv8ySKUZDw4k97h8ZnOkb8xdQEn0R4M2XjbnEQMsLjU7+1f2D4+30Do3rBNDN3YkZy2GS47MpWiBwn9IvLLAZCbn9MaFTq8ns=
+	t=1761050914; cv=none; b=aU7i55pZU6ixJpEbroHf3oUyaOVZBxt3MrexKj9aSZMR9J+3yDAX83LQ7xyr7XR0HjTW4ZlOpCcz5MGibSYRKDG8v7IDQ/uBocylA/ICmWl6SsEgNh/9WBGy8YwkPeSHm0fHeMRG9b+txPy8B3AyviHHKa3Dmr2eLU26GiA2Ia8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760943361; c=relaxed/simple;
-	bh=gjo/6Sjyy4wzQdCVDI4toDbmg3rq4WBazYvMUGXP+aM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uAEhmbLKA4HQOB4BydG8Xk5LxE9OgEKTLc9gKIcBUt7FXy/mrMDwnPPJUt9JFpe3NsuhhqTceHig62iblgXTZLw+FV78iCbEjFfny6GRaZi7l/SsBrVWfbGLifYmp3tgoAt+kO/NulRS6Vtq/gYHSO4vcV9Pl7EfH10qklRv56E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CdtgZxUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6308C4CEF9
-	for <linux-efi@vger.kernel.org>; Mon, 20 Oct 2025 06:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760943360;
-	bh=gjo/6Sjyy4wzQdCVDI4toDbmg3rq4WBazYvMUGXP+aM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CdtgZxUDHqA2aG2niIUkozRqTfns5dsoCNeI5jiz0zWkdjP9k7J7ewWaMO8m+XKNT
-	 zuEtqYS65zfSD0GX2zxkVJBSYAR3n9y3JlQMYKx2kvHJq2zFzVw/IH4YIIBL7Ik1DD
-	 /d5420m7wiKxJOB3PnIFRRnn6j44dIecWPVCSBX/s+OndLN/lFYIkgLwJPTcF4CVxi
-	 oekdb803Eg//VM7GtyIpjXTMV6w0kxQzizo+/se33MY5vjF6Tsjga7sxRh8HI29VDg
-	 p+WuOYuSdB2YccObHd5SRnP83qU0B14HXM9lW7q75WqM6otBQ52pk9KLVCho5NHodS
-	 vGSlNUB2Hxv/g==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-63c4b5a1b70so3854450a12.1
-        for <linux-efi@vger.kernel.org>; Sun, 19 Oct 2025 23:56:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVcFlbHD6ujZv6o7UqzbxQNFb3Cpj9pDiWuiee74W/IkTFZ0A5BN2jK+uOBa1dF51GfcgvfledtHDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU5ln6se8fJ1LFMLLnYsYxddDxEbZgYjj93DWcNWtYhWDGB4Yh
-	hi0GTAMbcgvxM+YHL7WrIMFenFANjV1lN2Pp/Cz21cmn0/W8f0lqq3fffY3ewoD3+mEqKHuWAgi
-	ZF51TlBLBkJVW+YvmVFTfDDMfqxvmH1E=
-X-Google-Smtp-Source: AGHT+IFnfhUn8HN0p4pAoHDFb320UnHrLwc6eiuN03fPNFETWItVQO870cPTacL3OdFj5V/dRgq1RI8aSYi1eCsoLeg=
-X-Received: by 2002:a05:6402:13ca:b0:634:5297:e3bc with SMTP id
- 4fb4d7f45d1cf-63c1f629a40mr12798466a12.6.1760943359107; Sun, 19 Oct 2025
- 23:55:59 -0700 (PDT)
+	s=arc-20240116; t=1761050914; c=relaxed/simple;
+	bh=tNSHcMfdMjXil5gehoy0a3xhu+PGlrxF40sZxea4woQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TjipBpG+JG+D1w0y+0DfLqYyX0Sqg4ew45HsU5O8Y0zN2IovWUOesHQfMSo49WPVm7vWvdev1KJgwj9JEYCLfYtQZUptAYUCJxNM5Jh0SkxBaTBWcZTX6kVVmlp+QGYcMSMUc6CLfN4rbLKn+2UlSQvPUY9r+pyf6+afsD2ykX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=C0zJv5y0; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 38AB940E01AB;
+	Tue, 21 Oct 2025 12:48:29 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id LaiBo3C4YYWW; Tue, 21 Oct 2025 12:48:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1761050905; bh=zjdz4fznUlZqYgkgEE/leAK6J3jv36NG/bZPQvb50CY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C0zJv5y03oTMIdoZr80Yg5S6cq8NzX8Foz2yKf29Q0n0inJ8zNVR8CS3ckyrpz8Eb
+	 u/i9t2IKRTaIz8lhn5491Nvmpo8uv2o/vZavSdW6wHWO1rz6q7uJKRCaORkmPKbpNt
+	 iOJ1WNDZazAGEx7dfV5NZwvX+gPv3q8UOmNgkk7aQk+O9/B2b72hYOcMwQzjAUIojl
+	 IPFO0gwRLaHLtofdR3pvH2LLwNG59vlYNeo2FNT5vQrssHnU/+sYIK/qJKSJGMNpsB
+	 /L55VkWRugGvwhp+nbNPENo8P6NmmAkbRVhaFfwS/+HVFLJhlP18mlcs6el5ShJkkG
+	 PGWvNDDoqFe3a+yX7kF6GZPSRi2aJ70AvpuzFpO+kpgBkH9mkkaVna+5lIMS3juTdS
+	 x7vhB9BPrh37SnJARTdpC3ZBuS2+u/h9O0ldLT/8NC6cdJZGXwifeb1SMEW/ebqteS
+	 PJfJ/9A2qFiQsda5XKnzJW+CdW8y1pXUgel0NtISa0rH/uqdcj92jmzE3AXEM8tDpO
+	 XqYXpwHhlPJq1g7dhSEgizbN+mRzVfW5n19s0gyt/2dsG/XPd6axn9ZXbJfId2s+3G
+	 kYsKDTWOGOO1JrdnR2Q0be5tnzwoPTnZBo8inAe6ubeuiPa6Yv7zNWmkZah3o60p2m
+	 NhoROR4M9pS2AM7lnezALpDE=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id A242740E01A5;
+	Tue, 21 Oct 2025 12:47:57 +0000 (UTC)
+Date: Tue, 21 Oct 2025 14:47:51 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Kirill A . Shutemov" <kas@kernel.org>, Xin Li <xin@zytor.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH v10 02/15] x86/asm: Introduce inline memcpy and memset
+Message-ID: <20251021124751.GLaPeA9z8BCIe8AudC@fat_crate.local>
+References: <20251007065119.148605-1-sohil.mehta@intel.com>
+ <20251007065119.148605-3-sohil.mehta@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAAhV-H7HN128du-b1Rk_9qbYBq7gMSwo0s31909N4pTou6wzew@mail.gmail.com>
- <CAMj1kXGvSnCMRVCW7eAxgLRWMEV3QRj3Dqg3PmZchZJNpnLK9w@mail.gmail.com>
- <CAAhV-H4UKdso0BokAqvjYeBLr-jbjFAaQX4z=1ztpBamqrOEEg@mail.gmail.com>
- <CAMj1kXEXDC_oq4aWbkR5dqYBix2d1xJEdaj-v747e1nOA0Q_Yg@mail.gmail.com>
- <rhnei6wovxmoqs36wdysomfsul3faxtmgde73wrrqdt3qo3b2j@akd7vzne76rq>
- <CAMj1kXF+hDJy0vRWNgwoijHxvA-scvhGODMj9A3dv19v3jf2yw@mail.gmail.com>
- <lgyzruqczm7uti2lfbhfhr5hyzpnm7wtvgffa2o7nigx76g6i3@wlffltvmhhez>
- <CAMj1kXFDquPxCYSBWgjikS=209pSJ_kth67M0RDeuetV9CPYAw@mail.gmail.com>
- <wlx6pt5crtfdwtop4w5vjznjfarrwitq44wdbufncjdvtsx647@tgobruak66yb>
- <CAMj1kXFfEBkcc-aiwGrRR-pKg4LBbS7weK0pEpZJsKOk5pbkuA@mail.gmail.com>
- <jxfb5a2c2qber623l2gwewirwod54bbgfnvt7t7f3jah2ea33g@2uyhy3auzmpx> <d9f3352a-1c1f-464a-a8fd-741cd96b5f8e@loongson.cn>
-In-Reply-To: <d9f3352a-1c1f-464a-a8fd-741cd96b5f8e@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 20 Oct 2025 14:55:48 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6m5vszCyiF3qi94cpHBPVuqM2xH93D=gfsQqOSYvC-sA@mail.gmail.com>
-X-Gm-Features: AS18NWDRalCHnTxlUVVh6Sc0-5BD00KgUctbRu4OmtnXD3m7UgQt5e4S4nAWM6E
-Message-ID: <CAAhV-H6m5vszCyiF3qi94cpHBPVuqM2xH93D=gfsQqOSYvC-sA@mail.gmail.com>
-Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
-To: Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, loongarch@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251007065119.148605-3-sohil.mehta@intel.com>
 
-On Mon, Oct 20, 2025 at 9:24=E2=80=AFAM Tiezhu Yang <yangtiezhu@loongson.cn=
-> wrote:
->
-> Hi Josh, Ard and Huacai,
->
-> On 2025/10/18 =E4=B8=8A=E5=8D=881:05, Josh Poimboeuf wrote:
->
-> ...
->
-> > But IIUC, the libstub code runs *very* early, and wouldn't show up in a
-> > stack trace anyway, because there are no traces of it on the stack once
-> > it branches to head.S code (which doesn't save the link register).
->
-> Thanks for your discussions.
->
-> Are you OK with this current patch?
-For me the current patch is just OK.
+On Mon, Oct 06, 2025 at 11:51:06PM -0700, Sohil Mehta wrote:
+> From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+> 
+> Provide inline memcpy and memset functions that can be used instead of
+> the GCC builtins when necessary. The immediate use case is for the text
+> poking functions to avoid the standard memcpy()/memset() calls within an
+> RFLAGS.AC=1 context.
 
+... because objtool does not allow function calls with AC=1 because... see
+objtool/Documentation/objtool.txt, warning type 9, yadda yadda...
 
-Huacai
+-- 
+Regards/Gruss,
+    Boris.
 
-> Or should I update this patch to remove the changes of arm64 and riscv?
-> Or any other suggestions?
->
-> Thanks,
-> Tiezhu
->
->
+https://people.kernel.org/tglx/notes-about-netiquette
 
