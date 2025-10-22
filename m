@@ -1,79 +1,79 @@
-Return-Path: <linux-efi+bounces-5090-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5091-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691FFBFE604
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 00:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B5FBFE60A
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 00:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8175B3A9050
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Oct 2025 22:08:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 635A93A9063
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Oct 2025 22:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18003307AEE;
-	Wed, 22 Oct 2025 22:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58185305977;
+	Wed, 22 Oct 2025 22:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4UrDUtl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jbANsuqA"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45692306480
-	for <linux-efi@vger.kernel.org>; Wed, 22 Oct 2025 22:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB823074A0
+	for <linux-efi@vger.kernel.org>; Wed, 22 Oct 2025 22:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761170897; cv=none; b=CJmU/3V7Vnsqch14T+GXJFyqqVD/RFKpizgELQl7VuACJHcdfaShGxKWKhbvEIje6IdidmiaM16tUKD5YSiDTKO0DIiX3ncNS1h1/o7Mfq30GQcPBdaBDhJ7aDuKN9WaW/puh2OB9KW4e777dmvAnFcVy/UYvouxOcLKAeLZB04=
+	t=1761170898; cv=none; b=gIHQFXWMdaLnvO6kTr802nUQK6t0URGVrKvcJTc/0KEwpJ631MqKL/LFyYHdA+OlTUzGI9B9JIDJLOLnXFCf0VkMin95WPh7UxeE+yS6pxdTipKqgXi0OqoFUb26o6m12V2tdqUiB6JdNrWm89yZC9egNe454Ghg5AfvkWqHLrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761170897; c=relaxed/simple;
-	bh=hgK4ZyjIlpLLpNf4A/qHlbcpqbD01T3yYuUDE1RHxFc=;
+	s=arc-20240116; t=1761170898; c=relaxed/simple;
+	bh=KHtbUKhDJ6evMlr16tYo5OJNFHx8inB+VOWffIHo3Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQi2cyjPiIcPoaGaJ9JpY1j4QczlGmKuAacagheRmwdawEZhIqC5bpT5GKv0p6ngy2SeJy6fxxopPnu0ZIK2LzoPXnulxcfN0mfG1dXyeRZF0jWpDe7Y9lkx2pfg6zbjMZxAaMxVuyHzNAK1hZacVn5Ns3+3vn2cbSAm2trhtxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4UrDUtl; arc=none smtp.client-ip=209.85.128.177
+	 MIME-Version; b=hmGKJsbtdDajT5KBMkYTmN5t62TxVOlOg9hd/ivGltsl/jICpidjFoW3UleyMsY78e775jdPr1VaHJlDscPBR0BbXikVFMYKQMb0R1tKrOq/XbLYjXM8k1h+UChCy08LSfq0Q6m6BVx5vL9x94CJMczxpnvkk/w/iG25fwCSTJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jbANsuqA; arc=none smtp.client-ip=209.85.128.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d71bcab6fso1070757b3.0
-        for <linux-efi@vger.kernel.org>; Wed, 22 Oct 2025 15:08:15 -0700 (PDT)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-71d6014810fso1055147b3.0
+        for <linux-efi@vger.kernel.org>; Wed, 22 Oct 2025 15:08:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761170894; x=1761775694; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761170895; x=1761775695; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cljSmvm7imXLVfH8+LGI0uPDnsbUZPSnwmJJbFS4AAA=;
-        b=O4UrDUtlU1lljBpVfGtFXJF6SLMAvyxo93awKg1eyxyGFADo8N0FKFqv1WmiYtQZYu
-         L4WBkNrAY7lWn59BC9DepDNPGHknMLDyOnwaI7TiTbjl8fTlqbE6LvkVKRbWxQ6JCRIV
-         keteJBm+jxr9jXDimF1yO2000329guAUQDFq7QQlHNS5jajJ3bmhC9l0HodYa2ab2J1W
-         ud6UA4UXQU5wD29FUZuyS7eIj5M3K99vNFP2PD/pvt4hYnRbEjNN0sLAlTAG0cn6fsqk
-         ovgsDna2+qeszS3NXdhJrei/Gvt+O8EbIZ6bKdlDj5GS10tf/Bd0dZz/b+7wCMjLYOFu
-         VJrA==
+        bh=hpRZ1dQ/QKJRom4EUimyljYI+n94b1tDG+BU5VG5tEY=;
+        b=jbANsuqAtR2q6s5StKBpAm3vwaUWqH+SsEkX93atyI8ypmvfIDCzcY0NlTBcK/NNFr
+         t3iAUpBtFWhLs2Jm3/hXjDzyD/LNI2I7cZ2ACxRVMPNg9Poc5XK0/Hy5RSOflvxmgADx
+         /CuUne6LVT9pbFVwfZMZpRHnRdczYGxRN1aXU931qq9PLdbeXGSo1iYJt/i3JUj8gzcN
+         6lhypRqZ61Ob0Vr2t0KA78+tWbfUHwrLUwhvV/VJymMTH7J2vNMTvs6kStGaJEEVLW3y
+         psvYRRf+91c+Hvip9cpi/0stSQNBBDJ5wxQSpZcW5/rlJMxa/4bChHff/7+moa4Nj/Fq
+         JYwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761170894; x=1761775694;
+        d=1e100.net; s=20230601; t=1761170895; x=1761775695;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cljSmvm7imXLVfH8+LGI0uPDnsbUZPSnwmJJbFS4AAA=;
-        b=MqQAoIT7GXgGSBNF10s0BOwZGSpwMTLAK7OlD0EFA9KdyzvzhY7b+wikHt40KNYVJg
-         PHCRbctKDSisQzaLgcg6maHRmt65e0xR/hzxub+nrsqbj5dFs33VpU7DX5AkzxIHkAQT
-         Jr2xrE+5DFmQ1aAOHSXak7y95yNsjD+IQuv2J7mD2wpDpPFQ4a9PdiL8BPt663nlx8MR
-         lH/rzal869oneJFWkiU8F3cgo/Sh4mdVnO73FpLOn/bLDVWXLjyG1RtQP0emlPeWkVk9
-         60J0QdD355EQvJXLv2qKdOrBQeur43qWsoGDJzn7fUa9gT8ruV2naGXCr78LOIgxImeK
-         GQUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwoZ3OggbpWSxNkU+YzBiG71q8o0FJL3jMeQTiggUVA4PCfXLUOLNZ+Q2Slzjb+Ko2R5Me5yZVGms=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxArbA+d1IgbHQ4E+44Xc2x2h5p4iYr6IGisg5sfpJ0OgV1lhag
-	Ze0f5yJ5aF5qJmPupPYfhHgVDBiMolAKpZteEPE9mfnDQMlVCqOpmPIy
-X-Gm-Gg: ASbGncvxvAl+oCfy9K1OcB+ITQLATCKQau9K5l2X6y/skrt30ZatW2sfUptVwy/VIGk
-	d+nRLukLF1s2BJ7b1dtsbcmRH0rYNEhSkATyo5KE2mW2hl5rH7ffoIiXEWX3Lu6r1MOyAqwwkgd
-	q19hN45v0XfmNzOP6HCfSHGZbX9F8QAxrsj5w9BB47jJ/3wUh218MaSA023T4s/GGnI0NoFtmoL
-	M/dSI2dPI7Tdp9OamjjAeF/tczLvB9IQej9r6gY+WolRImvxcSt9f897SDBRcnu1AEds7HrbeUf
-	fDtYOb8yhd+osl3ccY+hB034xLpL3NNfygf0OCPbxZTfpQNmaCXPWnQ5qfiRw9Kw7quoKRSo753
-	87COvh89V+xpCwtsrScCdJAb6Uas+bmoybT7coy965liPY75XBH+P9XSQTta7TCWWPMlEXwTuRv
-	f41WzgcTpNuFCYd2Per8UB
-X-Google-Smtp-Source: AGHT+IG5DaDz89NnOFYH9AOfsG7HIpnA6jy+K4yFRLLQv4tWHTS94dl5py683yKDSVSPEsJZaroYgg==
-X-Received: by 2002:a05:690c:46c9:b0:729:62ec:9185 with SMTP id 00721157ae682-7836d664f75mr195039327b3.39.1761170894044;
-        Wed, 22 Oct 2025 15:08:14 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:40::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-785cd6c5974sm1212257b3.30.2025.10.22.15.08.13
+        bh=hpRZ1dQ/QKJRom4EUimyljYI+n94b1tDG+BU5VG5tEY=;
+        b=YSK2rwNrKMiEFqgr/+F3HuofUek/VRlgeuV1ebrO/KztFP6I8Phxgvbh9S+pHKq1bO
+         d6TcbqkW2k4zZ22EFkq+LRJRxP3UjbM1zgzA72b1UiXyD1NWvDXUR54pVffRJWQmDrYk
+         cqfb3/gMuiZuCJyk/yAN9E24Oe07MDgQWMfQ+FW8kwbCdWzVRHe0Yw7vT3NJV2yNGV3a
+         d+uzJmrYd6kOi7FRUlTAOvQ9KDuBi62Pr+7PEoPBo8bligtujWIsXZFbaSZ/TgV2cUcR
+         3uFSlimlGd+OzXoOkRJ1on8z3cZl5Zi5PoMwfP0bxIRNnB55qqHa+hy4F9TS68kgY/qa
+         SjKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSU17CGHdiUpVujLiy6BY+3acuIbJHRInleU5YQpvYeC6MXRROTpBA1Bpf2WHL4qQlhRTC7U6RPuk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfS2aob875OFYLa3K3SXt3OGn12vVy0npxohbbWRBgSuz5t8Hh
+	pZDyEeCu/mH7jLPb0HfzOdmB7QAn2msI/0WW2SFC8yoMvrzdAdUG4brz
+X-Gm-Gg: ASbGncsDEzayJDAW/pXqpg7xfch5YEiZiVwFAWBpqSd79org8RdCoPdcqOwcmQV+nHz
+	8tGha1Vl2qiVqEpKzYL7aTYDKNT8fLCi+kS519nd/ij0miL+uyab00PBwxKiOplWtKUw/EV3a+H
+	361Rqui2SXqgpKmePhKWQYTECei8TsgnrzmbMIjk9Neh/ss+lfD3imqT/iXwW/UEJ1QzTaKUkvW
+	ksNcrg3vYZ2IZBVBFNA7huDdKQrYUo2unhYP2kFWwHxIN3hbm9K58DEVopvPAMj5CeYH+0g+ayr
+	gKOukZAW8fiN+CAC1A8yLsLiOeLKyqHGhioEo3pm5nlts3IcePbTNMRiWRJUzgonjKriJZ0/1SZ
+	X+fJuu2DXY+PO1VicuhURIVDZVoqxKTVmmHdfdeuQ2FsrQEUCl18EYMyXMD2iAaZwFrkySV2OHL
+	C9s6qtihcRcHp0/DODUmY=
+X-Google-Smtp-Source: AGHT+IGrEGKxvkO2ZwkMbnXWw3Q2VHyYN1NXFjKC82qQ1CAnog5Bf7Rfk2NIqRxLpfcUnSjt2Y0JuQ==
+X-Received: by 2002:a05:690c:a04d:b0:785:cecb:4b19 with SMTP id 00721157ae682-785cecb53f5mr1240067b3.5.1761170895317;
+        Wed, 22 Oct 2025 15:08:15 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:e::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-785cd6cbe09sm1215107b3.36.2025.10.22.15.08.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 15:08:13 -0700 (PDT)
+        Wed, 22 Oct 2025 15:08:14 -0700 (PDT)
 From: Usama Arif <usamaarif642@gmail.com>
 To: dwmw@amazon.co.uk,
 	tglx@linutronix.de,
@@ -93,9 +93,9 @@ Cc: x86@kernel.org,
 	Usama Arif <usamaarif642@gmail.com>,
 	Michael van der Westhuizen <rmikey@meta.com>,
 	Tobias Fleig <tfleig@meta.com>
-Subject: [PATCH 2/3] efi/libstub: Fix page table access in 5-level to 4-level paging transition
-Date: Wed, 22 Oct 2025 23:06:26 +0100
-Message-ID: <20251022220755.1026144-3-usamaarif642@gmail.com>
+Subject: [PATCH 3/3] x86/mm: Move _PAGE_BIT_NOPTISHADOW from bit 58 to bit 9
+Date: Wed, 22 Oct 2025 23:06:27 +0100
+Message-ID: <20251022220755.1026144-4-usamaarif642@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251022220755.1026144-1-usamaarif642@gmail.com>
 References: <20251022220755.1026144-1-usamaarif642@gmail.com>
@@ -107,50 +107,57 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When transitioning from 5-level to 4-level paging, the existing code
-incorrectly accesses page table entries by directly dereferencing CR3
-and applying PAGE_MASK. This approach has several issues:
+Kexec from a kernel with 5-level page tables to one with 4-level page
+tables is broken because bits above the physical address width are not
+properly masked by the target kernel. This issue was particularly triggered
+by _PAGE_BIT_NOPTISHADOW, which uses _PAGE_BIT_SOFTW5 (bit 58).
 
-- __native_read_cr3() returns the raw CR3 register value, which on
-  x86_64 includes not just the physical address but also flags Bits
-  above the physical address width of the system (i.e. above
-  __PHYSICAL_MASK_SHIFT) are also not masked.
-- The pgd value is masked by PAGE_SIZE which doesn't take into account
-  the higher bits such as _PAGE_BIT_NOPTISHADOW.
+The ideal fix would be to mask the upper bits properly in all kernels.
+However, this is not feasible due to:
+- The logistical challenge of patching all older kernels in production
+- The patch not being applicable for live patching
 
-Replace this with proper accessor functions:
-- read_cr3_pa(): Uses CR3_ADDR_MASK properly clearing SME encryption bit
-  and extracting only the physical address portion.
-- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for
-  flags above physical address (_PAGE_BIT_NOPTISHADOW in particular).
+Instead, move _PAGE_BIT_NOPTISHADOW to use _PAGE_BIT_SOFTW1 (bit 9),
+which is already masked by older kernels using PAGE_MASK. This is safe
+as the other users of _PAGE_BIT_SOFTW1 (_PAGE_BIT_SPECIAL and
+_PAGE_BIT_CPA_TEST) are only used for leaf entries, while
+_PAGE_BIT_NOPTISHADOW is used for PGD and P4D entries only.
 
-Fixes: cb1c9e02b0c1 ("x86/efistub: Perform 4/5 level paging switch from the stub")
+Fixes: d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables")
 Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 Reported-by: Michael van der Westhuizen <rmikey@meta.com>
 Reported-by: Tobias Fleig <tfleig@meta.com>
 ---
- drivers/firmware/efi/libstub/x86-5lvl.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/pgtable_types.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-5lvl.c b/drivers/firmware/efi/libstub/x86-5lvl.c
-index f1c5fb45d5f7c..34b72da457487 100644
---- a/drivers/firmware/efi/libstub/x86-5lvl.c
-+++ b/drivers/firmware/efi/libstub/x86-5lvl.c
-@@ -81,8 +81,11 @@ void efi_5level_switch(void)
- 		new_cr3 = memset(pgt, 0, PAGE_SIZE);
- 		new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
- 	} else {
-+		pgd_t *pgdp;
-+
-+		pgdp = (pgd_t *)read_cr3_pa();
- 		/* take the new root table pointer from the current entry #0 */
--		new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
-+		new_cr3 = (u64 *)(pgd_val(pgdp[0]) & PTE_PFN_MASK);
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index 2ec250ba467e2..616e928d87973 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -29,6 +29,8 @@
+ #define _PAGE_BIT_PKEY_BIT3	62	/* Protection Keys, bit 4/4 */
+ #define _PAGE_BIT_NX		63	/* No execute: only valid after cpuid check */
  
- 		/* copy the new root table if it is not 32-bit addressable */
- 		if ((u64)new_cr3 > U32_MAX)
++/* _PAGE_BIT_SPECIAL and _PAGE_BIT_CPA_TEST only used for leaf entries */
++#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW1
+ #define _PAGE_BIT_SPECIAL	_PAGE_BIT_SOFTW1
+ #define _PAGE_BIT_CPA_TEST	_PAGE_BIT_SOFTW1
+ #define _PAGE_BIT_UFFD_WP	_PAGE_BIT_SOFTW2 /* userfaultfd wrprotected */
+@@ -37,11 +39,9 @@
+ 
+ #ifdef CONFIG_X86_64
+ #define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit (leaf) */
+-#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW5 /* No PTI shadow (root PGD) */
+ #else
+ /* Shared with _PAGE_BIT_UFFD_WP which is not supported on 32 bit */
+ #define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit (leaf) */
+-#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW2 /* No PTI shadow (root PGD) */
+ #endif
+ 
+ /* If _PAGE_BIT_PRESENT is clear, we use these: */
 -- 
 2.47.3
 
