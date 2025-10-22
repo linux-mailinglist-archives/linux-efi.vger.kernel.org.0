@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-5093-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5094-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FB2BFE822
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 01:16:42 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC80EBFE97F
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 01:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D8EFD4E4155
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Oct 2025 23:16:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 82D123576BD
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Oct 2025 23:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0FD28BAB1;
-	Wed, 22 Oct 2025 23:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1861F4262;
+	Wed, 22 Oct 2025 23:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SHgTVQDC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VvWgiDg5"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0645915CD7E;
-	Wed, 22 Oct 2025 23:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFB323E25B;
+	Wed, 22 Oct 2025 23:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761174998; cv=none; b=lp+yt9i/33T781COXIJDdYfHRsFobJyxWawEyVS8hg0n5lQZqJOCkigDc+0RwnlT4veGHxmwQp8l9OkCMJHFAom4FlW0cb4LIKRDAdsm0KJwhbzsD8xf8RB1jP+cg8/eJKhskjGTdG7hOqNEXKmT2pVLtJtUUQai4NuvYxhX7Vw=
+	t=1761176142; cv=none; b=hqG/9AtuN57vMfPh8vdd1pSq4xv0ZVolMfpQOoYIfnqIlTgJNNMhtc8Ppj4Zu6u23RH4YQEuXNxjH0KVjff8KEFcdH3BwdakIVywJlYUwRspKGNqkvbQhatmjS1+Bo6ozs1sv/S1wYmGevM1ovo61T4jtPsnbz+gV25fgLMaNXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761174998; c=relaxed/simple;
-	bh=MVrQfR31sTE8+NA6ERS+6xJEpgTF8UHfLtFSwhbGsxw=;
+	s=arc-20240116; t=1761176142; c=relaxed/simple;
+	bh=L8noicn6rv+RLx4+F7NyGdfmCgnaS2YLiZN5zG/kExQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S+nhlzrmAokqw3r/scBj/++sCzTyLFGuLt6N9+q3dqI+9qUUj9RoT2o5TNA9tEMOyfcILi1kE5rmLi9laN1G5QFYUQCN7vagl09mP5M83ywX2wb9qvU/WCTwekfMUKgz4i2H6Buu02Mf3FIb3FHBI567CfAd5rEQRX3llyhkEHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SHgTVQDC; arc=none smtp.client-ip=198.175.65.21
+	 In-Reply-To:Content-Type; b=ibEpiXZq3jhmLQ0xAYvB6gAll2kdvkG17EKC9JD2kEAGs37/SOyFpbtVC4E6R0M0NDEHnBnhDI/hlhLfVXZKxxNNNg7ui62+5GiNH9bEIw5mLJv/+mEIXs366veVaEt0AeN6ljqQ94RDKcXDuLFYBcR/kl7KbuuYh1SmhHZ9DlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VvWgiDg5; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761174996; x=1792710996;
+  t=1761176141; x=1792712141;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=MVrQfR31sTE8+NA6ERS+6xJEpgTF8UHfLtFSwhbGsxw=;
-  b=SHgTVQDCRnCLAripG12/QTO3zJRTj9vF0ZSXGcn3k+RTbdN6Zs2vCWTQ
-   dh2T21UCnpkDK0/TF066H0kzcCgsXf6BXxKyS3FYoOIp3RlttTi7cziUk
-   /9Qih4W60I/Az+1S4heqfPgJTY1N+eqpI+ChkmdLNgPkM8P669vdAuz0R
-   wRTaLdXrluMf4SES5mOv3PrmbUE05hCeuLZ6jN8fgKsiXfhwGuhwCAsnu
-   +2xT9xJnVuFqiXWrqPc0Dhc/wkQX9n5IeeaG77VsTIEIzqSuo53bcVMXB
-   1dyM6efJxu+YhtEqbq3qqWU3TffvDQBDvY69a7/43ndRKvGC+XNtixz3d
-   w==;
-X-CSE-ConnectionGUID: pGGiTO+7QJasxtPDMj0GhQ==
-X-CSE-MsgGUID: 1Fd4fE0+STmhuIfDjFtMzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63239061"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="63239061"
+  bh=L8noicn6rv+RLx4+F7NyGdfmCgnaS2YLiZN5zG/kExQ=;
+  b=VvWgiDg54bRdX76Pi8NKQL+Y8akfYFBSVJNgQ8fi2syJYTWcFmwyzgZG
+   KQoOlkc3yCEd1sywIaLtMkVK7AxVQtxg9UyN8TFTj6mSFXf+9Ovjq5MCe
+   pz/wjhqBjBxpfUufNrWmtKPMG0j8s+oVSPwecg/9eHZB/rS0gMcejM+QI
+   CFfNcGMiNm1klOIf/Gy5vgC23ZI0UWtLevhODsBVCAG7q+Z7rReqKjN2d
+   Wygvnb7nfgFNuy38vJMqDnyELOU5qfgCyjNH4h2izeYNKdHdGrSLPKJwL
+   ZmQK3q++jXp58G4dTWEbBU1dgKXyxVxctiw5oHtxOUjESPsyC3J4ZXHh6
+   Q==;
+X-CSE-ConnectionGUID: qyPR/WQ0S5iiukd2amqGzQ==
+X-CSE-MsgGUID: /Cmqb25ZTwyH2CvCiutMNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63375826"
+X-IronPort-AV: E=Sophos;i="6.19,248,1754982000"; 
+   d="scan'208";a="63375826"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 16:16:35 -0700
-X-CSE-ConnectionGUID: RNNSyPvoQoKuRtW8j0uE5g==
-X-CSE-MsgGUID: GNG5JWHMQd6xs/HY8BD/0Q==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 16:35:40 -0700
+X-CSE-ConnectionGUID: qXr92ns8Q6e6bKC3/So1Pw==
+X-CSE-MsgGUID: MKN1zQztSmWdXz6DtxdvVw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,248,1754982000"; 
-   d="scan'208";a="188400885"
+   d="scan'208";a="188403983"
 Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.108.226]) ([10.125.108.226])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 16:16:35 -0700
-Message-ID: <8283c1b6-1487-49e2-b220-7dbd043a2913@intel.com>
-Date: Wed, 22 Oct 2025 16:16:34 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 16:35:39 -0700
+Message-ID: <98bc658f-2ec6-43f5-a7e1-e9424450a850@intel.com>
+Date: Wed, 22 Oct 2025 16:35:38 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] x86/boot: Fix page table access in 5-level to 4-level
- paging transition
+Subject: Re: [PATCH 3/3] x86/mm: Move _PAGE_BIT_NOPTISHADOW from bit 58 to bit
+ 9
 To: Usama Arif <usamaarif642@gmail.com>, dwmw@amazon.co.uk,
  tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
  dave.hansen@linux.intel.com, ardb@kernel.org, hpa@zytor.com
@@ -77,7 +77,7 @@ Cc: x86@kernel.org, apopple@nvidia.com, thuth@redhat.com,
  linux-efi@vger.kernel.org, kernel-team@meta.com,
  Michael van der Westhuizen <rmikey@meta.com>, Tobias Fleig <tfleig@meta.com>
 References: <20251022220755.1026144-1-usamaarif642@gmail.com>
- <20251022220755.1026144-2-usamaarif642@gmail.com>
+ <20251022220755.1026144-4-usamaarif642@gmail.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -123,25 +123,14 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251022220755.1026144-2-usamaarif642@gmail.com>
+In-Reply-To: <20251022220755.1026144-4-usamaarif642@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/22/25 15:06, Usama Arif wrote:
-> +		pgdp = (pgd_t *)read_cr3_pa();
-> +		new_cr3 = (u64 *)(pgd_val(pgdp[0]) & PTE_PFN_MASK);
-> +		memcpy(trampoline_32bit, new_cr3, PAGE_SIZE);
+> Instead, move _PAGE_BIT_NOPTISHADOW to use _PAGE_BIT_SOFTW1 (bit 9),
 
-Heh, somebody like casting, I see!
+Wait a sec, though...
 
-But seriously, read_cr3_pa() should be returning a physical address. No?
-Today it does:
-
-static inline unsigned long read_cr3_pa(void)
-{
-        return __read_cr3() & CR3_ADDR_MASK;
-}
-
-So shouldn't CR3_ADDR_MASK be masking out any naughty non-address bits?
-Shouldn't we fix read_cr3_pa() and not do this in its caller?
+This isn't necessary once the previous 2 patches are applied, right?
 
