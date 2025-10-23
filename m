@@ -1,50 +1,50 @@
-Return-Path: <linux-efi+bounces-5102-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5103-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07508BFFE44
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 10:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C62FBFFE50
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 10:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C5031A6070C
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 08:24:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0497E1A606CF
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 08:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A842FD1A3;
-	Thu, 23 Oct 2025 08:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A677D2F39AB;
+	Thu, 23 Oct 2025 08:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="RMu8PuwN"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="e+xmSc6p"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93A92FFFB7;
-	Thu, 23 Oct 2025 08:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097552F5A28;
+	Thu, 23 Oct 2025 08:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761207774; cv=none; b=J0MVWqRTJ66CcFvdBuZNo0i9/7wjoiNihXqnRU/EDqsMNLKUwO0oYjsIVPZeQUriSHa/RoqgWRTvnQspgMJ0rpEyeFI+JyV4prAX/NBGo1uTAjeOmGLO4sILQ89Xfb/urwWbRgXz6/4hxHboszdwdJzUbfIHeSjrQ6lYpdmTnto=
+	t=1761207800; cv=none; b=aKD4NdyGDv8Vs7irJ8bXArgSGK0u73KWfnt/NQ8yFk0y+3K5cOWKFZwwBrW8jivJ7liuJtmhTcnpVp20f886APhnZmk5joTZbVDFByzXcl5KQoix/5b5tHa0pg8fb7O9ViYqzKSWew4R3dgBbjdmF2JeH7W2abbCikurLOagc8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761207774; c=relaxed/simple;
-	bh=R+gBMth60SuPuT+wgJJnhF0Ao/i4dyEqBxAyBFs2B4E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TPmKULCR8hhURsC8LRmH6Jwx071Uf1HlrP6PpDyi9BICtpjzzozRJ6ZzI05IWiwsA99ueEPiAb6Rt+TgO8k8dBl2L+bYdsTsOZRDNDV74bBWO1Qo/TOk9g9xC5pjvr4JgxQ4W9iENKsgPFN6/dVGb4sVboZe4GmLrDskn/+00fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=RMu8PuwN; arc=none smtp.client-ip=54.254.200.92
+	s=arc-20240116; t=1761207800; c=relaxed/simple;
+	bh=H15MGilINUfkYiEn/AYzaZ8bF9e2evKnMaqmUevzPoI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ClikjV8tFbYn1P4wxXYxTzaagp+kR9clv7JFtqqwCY/Rf81e9B+xzpzQpghth5AOIlV9/EJRLJJD4pD6R0t7UZsCVZC6YcWAb3RCSSqRhHhQ2fI7piVudyFdODJQC2FR98gfq0l4BtEH2Z9+rRTDkJIV1qBooJ10HvlpzBtyfTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=e+xmSc6p; arc=none smtp.client-ip=54.204.34.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1761207687;
-	bh=ULH0iKccBdyyGfKIPE8SP4G7gUUCYwe77y7PIyw28Fg=;
+	s=onoh2408; t=1761207714;
+	bh=nuVu2NCjXz8jJvEP5g+aU1zoPZ/sRqG0jqru7JqmYI4=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=RMu8PuwNyWwVysi3GYFmcVSahB5oN9moyuTihwByGtDHXpY+VWx5YwLa9ho4Zqmju
-	 tjwRuotj9zbf2yf4mllBSM3oXd61bAx7O/atSB7X0uAFbfWw1gApInmGV5eDxgxw4H
-	 rlNMtLs65O/DkDV6IBIVo9gBqBpW2T9pAsZ5BiHU=
-X-QQ-mid: esmtpgz14t1761207669t0c42400f
-X-QQ-Originating-IP: e3alAhthGovW8qQgWjONEgVC26JHgxvMtn7tkZ6Ir2w=
+	b=e+xmSc6ppvLF3/VKA+x5CEzBloM18OPAaSzq1JM6JYle0QY+bpB4hFL/8qtZPjJkP
+	 3zFqizfiytQW3t2bHiagDpphH1tgPAhvdg5giOMIBsvOTKvpHmObTCjjQNlWasHFbE
+	 trdg0jf79LRHBKN4YeqLH8AvDCJ774I2ZXvw7QH4=
+X-QQ-mid: esmtpsz17t1761207696ta4c5843b
+X-QQ-Originating-IP: 3/MQeF6QIz9mC8m2fmz4QH6lhabTcyDLi834ZS1yOiU=
 Received: from localhost.localdomain ( [123.114.60.34])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 23 Oct 2025 16:21:07 +0800 (CST)
+	id ; Thu, 23 Oct 2025 16:21:35 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 15548364574209632140
+X-BIZMAIL-ID: 15809968397798270910
 EX-QQ-RecipientCnt: 6
 From: Qiang Ma <maqianga@uniontech.com>
 To: ardb@kernel.org,
@@ -53,9 +53,9 @@ Cc: linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	Qiang Ma <maqianga@uniontech.com>
-Subject: [PATCH 0/2] Remove duplicate function calls and useless message
-Date: Thu, 23 Oct 2025 16:20:51 +0800
-Message-Id: <20251023082051.75183-1-maqianga@uniontech.com>
+Subject: [PATCH 1/2] ARM/efi: Remove duplicate permission settings
+Date: Thu, 23 Oct 2025 16:21:28 +0800
+Message-Id: <20251023082129.75612-1-maqianga@uniontech.com>
 X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -65,51 +65,64 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: NlWvLSkfVnGcnCndnoah1DKaYHvTUYsnQRFyON0Cg2sXiKIeOARTbw+g
-	Kvg0gezSHv69PiNOktscNoSPLV7qmDyXa4Yn3oDzcuZlnDMGcrc6MsyezB2aGpZvF0A0iaK
-	hf3QlldP+tKkFO2laQQiaowy+S8Ka/JOWGTWERLq3YexkekjGBpCLsmulxLBnwUDxDBBNfX
-	1LcKPzmK3xyMIjbPo41Hr+sdygm7eaNy2CV+tVlEKMo49IOIOpWKwxL6tPCN7o0awt4/O3p
-	KERnPVl4pFaLjlROpljizSnxJSxa+xqzURrXQCIvvGgdTIE28xnF1mrPtdzerk6KvNZdAC6
-	xGThdYEcA26W+jkdnxtPIa2zrNl6q8yZihmyRO9xGbOVSb6CXiNvETSvDsV5RbG8S17EVBb
-	JbRdifc/mO2L5YTz1zRkYy1RQJOX/JlR7r/m9ww4kbRLArG1keemKwoE3aaI0HSNB+QCtkf
-	rA5nkOX8lHbFSFGm2gDi7EcGOT1sq52XB8LAbCZt00Ua60Xz20U7zfeD7gQAJqamLhK0K9l
-	uZFkn6qmMVeoc8wGWemU0fLJ6WPnItlgxUyyNaG4P1wPKfeQjdYuYdmv7wFG7kno/Shq5+F
-	QjUPUHrCCE6LKHvI3DHhYBgNAq4iZIeNefTWXicKnd1CoP8eI+t9SEiwebwsbBNK9ge9xJC
-	BAxxhHOa7LH2qhysk5QgVxr1f/Aqf5c9TYi4rWMXmNZS4VgPViQeMO48VBV9OzLCJcCB/ZC
-	Vz4EANCo88iiGBvNRCfqsEUauKjP8qHcaRTl+t5eJUaSm20Ifgy4QCNC9rNnEJVaD78tWiM
-	Qr3vd10Cxb3l+OH2WNdp6HtUiHRxY+Y6JraJpMk+XeCpwvfOQsYoivL0miXmPzDv2wzE/3Q
-	a9HVyvlfrnfvXPk84EP6seZriqqd0JRt/Gctcmo+YCnrUkvFoeJfQT9EiYvad3S57wqADqQ
-	SLOexmLrBw8yPL46QEKzh5BGW6togFKYU8ZRf5DShjAWSf7qlLNkz+nhIjl8Mb3yYHq4XQJ
-	aZorEGBg==
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: MQPu5pFEJFN4FC2AxXnYnFS0c+i/12zWXtVC++pynRPaul1YR/aSHjog
+	V7wYG4Siaxxh7IHCvFd7INhHxNBkEVl6i0RkcProFRYetQH4jx4iYgxdhzh4hau4zF6W4MV
+	/PMTVrmrsyy2qhbmWVB8eawBF0dNlJea7YL0im+V9UbYAv3ugz2jA/kTl5sapKOOskoQ8NP
+	2SIfKt9+7pixdG3ABms/7sU+PpK6ea2H3D3LQZp7W6/qRouLXAZ+edRjWQDrkw9vREmSEUd
+	u1O4Xdc6Z6FjqdxcbrGvjs1fPfY3eAoX9m4B7nWPL7/ib8niEIowmDhddjgGQICmMuExSZD
+	FFWQMpTqKNFZ+W3aTY2IA0Es1Bt8XM4OE2l9ROzSYUnMmEdWcoMFkuNfss/Y1KE6rYw1jIk
+	16eg3m9gc0ICARdYuihrjZgzpRqVrH74ff9OfnO+y5eNsjkphOtFrjAS/JBJNYyThL8fmtw
+	zpxKGDiGkzCtmf2G/1t+NO0uVTA8qmnMziVmhpWwW9Y7o8DxspGd16kCQZH/KruUDAEVTRc
+	TPlfvnpTAwprWTRw2XAhz/JmD1FeBYuhDlhCC27AmdKbhMYNNrtkZiB4UYRLuQGhBUhC7OT
+	Xwg8Ix8DZ3OdSLiwBq4co/5g1kMb05yms4uq78vhddo4fTLHQtHW9QNxIdNiqelNLYewX2v
+	qy3iNJOqTKRJyGLxp+Te9QPP66Ubc6I/SnbH8ArJPWkMreinIpekdF7XTsw//6b3eIYk4KY
+	Ki/QQUtY36mf7QJqTkUxIEMHV3odno3zZ+VYZO1w/N34CkLKHOlLhIiAP5mehmVyoik8tP7
+	H2RdADQc+3qfjWb/1xakxB4EJSpoGKsQHvt0pkVJ4tQYXp5EUSdF7Uhv6Sn4Dk2luTmn5rJ
+	SwMG87Z1pdvAYfvsnK455/3I05I/eqe2c30pBi0XrpZNeogWjLpeSBpilhvPxpoFmZHMR+U
+	OY5D77ze5MMWHEbADzbOE834SHnyUkICIaab5awVLmqVzVGEwlq7nYrdr7zIVQnu39HKFQS
+	jPBeoB+Cpqx7M9zauRSO6xwPwx90q69ucKdEbNFg==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
 X-QQ-RECHKSPAM: 0
 
-From: Qiang Ma <maqianga@uniontech.com>
+In the efi_virtmap_init(), permission settings have been applied:
 
-This patchset removes duplicate function calls and useless debug message
+static bool __init efi_virtmap_init(void)
+{
+	...
+	for_each_efi_memory_desc(md)
+		...
+                efi_create_mapping(&efi_mm, md);
+	...
+	efi_memattr_apply_permissions(&efi_mm, efi_set_mapping_permissions);
+	...
+}
 
-1. The efi_set_mapping_permissions() does not need to be called in
-efi_create_mapping(), because efi_memattr_apply_permissions() will be invoked.
+Therefore, there is no need to apply it again in the efi_create_mapping().
 
-The calling relationship is as follows:
+Fixes: 9fc68b717c24 ("ARM/efi: Apply strict permissions for UEFI Runtime Services regions")
 
-==>efi_create_mapping()
-   ==>efi_set_mapping_permissions()
-==>efi_memattr_apply_permissions()
-   ==>efi_set_mapping_permissions()
+Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+---
+ arch/arm/kernel/efi.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-2. Based on the first point, efi_create_mapping() always returns 0,
-so there is no need to print the failure return message.
-
-Qiang Ma (2):
-  ARM/efi: Remove duplicate permission settings
-  efi/arm*: Remove the useless failure return message print
-
- arch/arm/kernel/efi.c              | 5 -----
- drivers/firmware/efi/arm-runtime.c | 7 +------
- 2 files changed, 1 insertion(+), 11 deletions(-)
-
+diff --git a/arch/arm/kernel/efi.c b/arch/arm/kernel/efi.c
+index 6f9ec7d28a71..d2fca20d912e 100644
+--- a/arch/arm/kernel/efi.c
++++ b/arch/arm/kernel/efi.c
+@@ -70,11 +70,6 @@ int __init efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md)
+ 
+ 	create_mapping_late(mm, &desc, true);
+ 
+-	/*
+-	 * If stricter permissions were specified, apply them now.
+-	 */
+-	if (md->attribute & (EFI_MEMORY_RO | EFI_MEMORY_XP))
+-		return efi_set_mapping_permissions(mm, md, false);
+ 	return 0;
+ }
+ 
 -- 
 2.20.1
 
