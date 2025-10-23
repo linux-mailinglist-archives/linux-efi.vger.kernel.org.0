@@ -1,145 +1,121 @@
-Return-Path: <linux-efi+bounces-5097-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5098-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110D0BFEE61
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 04:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2787FBFF6BE
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 08:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235753A8CFF
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 02:21:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70BBE3A95A1
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 06:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B003120C023;
-	Thu, 23 Oct 2025 02:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="JeOKP1jW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9538728CF4A;
+	Thu, 23 Oct 2025 06:56:24 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B895202960
-	for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 02:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA21529DB61;
+	Thu, 23 Oct 2025 06:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761186066; cv=none; b=nxUjPVpCxLMfcjnQksxo3Ijg3ziM91mOvdrQj62/HVYc0bF5AvXGgGhKGbMoGDSOuvK2sh93Mw+iLWslORUCP/LxVrFAc24Zr5X/9jmhDk81u/jRmSts86rSYbW+q0jubd1XcCF7d6+xa85XIj2ikjld2CJqTA+GuYhoOwwxEvs=
+	t=1761202584; cv=none; b=Wv8fiM/ckuMVpqqP+kyEEsEgQKMD3BHxB7OLIjmRqWHPOouwmhatfO92KgtUUTuYwDsouQY28TiX/nthha03X0piha3HI07/sgFcJ1lAH9GyshwiLaTkLxCVFwDkPJU+Kw7XiS83KFWqd442VMkJA0tGzLJnd6sSByKIbL7Kyk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761186066; c=relaxed/simple;
-	bh=R427Dmu3YODNR2POQX9bpNnQmIqw5THl/CmnS0STWbw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aSLKMrKAM1HVtl3+9j1GyjNUfCCWzZgD9G2mv0I3wGrCqFaUYJdWrNnGPLiJxWZZLKJ/DckYLGou5UXax6ad4Pln6l8p8mQgi4Q82Heazrrz39RMBAog1NVQll0AzcbL1za7sT50Lf2/76DYuRcSx1N17GfhwVdOZiOJPon5+xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=JeOKP1jW; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-3c99d6ff0deso107851fac.1
-        for <linux-efi@vger.kernel.org>; Wed, 22 Oct 2025 19:21:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arista.com; s=google; t=1761186064; x=1761790864; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R427Dmu3YODNR2POQX9bpNnQmIqw5THl/CmnS0STWbw=;
-        b=JeOKP1jWkH3Q5sVlxkuytJ1976e3xdzNC7Buj5tcUiBp57HIu2pKPbyzNRpNpxglyt
-         Xqt5s1ManbIWm75OI6p2fElNN9SjRuDsA8PklE6icmGCympivWXgtiX68QTSjuUQBY+t
-         mpJrH54gY5c2NF8ieLSBXGedp8LqLDra2QQ87+VUm7G6IJcSeiAZiiM2kcdtbybXYovQ
-         5ZGLAJzudMdyDsoi3dDZwHzG1OcqQyMv68sABuW1JwFz6h7PtEtexNH5q3xO2ja+KC4R
-         TKhm2dSA/hIS1O5rH5Pzitn4ZwUvJUAr9Q9XEFhV+oNCF+q3lAOQTA32E1c7pGM2Mt7a
-         zoZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761186064; x=1761790864;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R427Dmu3YODNR2POQX9bpNnQmIqw5THl/CmnS0STWbw=;
-        b=qDCGe1lcYQShZ0sM644Xgf/ABvtywzFXZ4maS6B2DCuNtqS2fivu1LVFZmukA1LiuX
-         hEPfw4vv+fHA+CSvgmMFVJllPg4ValtptUZi+shXblO00h0t8gHCpikhg+YkeraWWxbt
-         ETMvAQEnPsacPuqNqV6kqMZgm/yaZ9N3AhDToK/zb+K6F1cNcjkUkSJd3TQnLC08I/PU
-         V3venU4d77hFXNxObZsUO0tfbiVNDUQDEWDfCKhYiePhAB303X+ohA7lhuFnhgT9Cb4i
-         6aUdrpY3F1zPcoHCqgC0N/YE9r88AfpjyNAVSz5Agzzx5M7/pffxdOwM7sN2VASsBl32
-         jZcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXj3wi2pdLDknUFFoAzK35xHLI3Lc1hWePWjN32ljB+UhWi8+kCxSfS3CtLb1npSHts+Pio15QstSU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoJX3q2Bt9EGqTMwX5v8VSRcmgJuw9RtirM2APwbT9e0sp31L9
-	nQk+sKjewTDIwRUMKKRrrv9MLI2WuxbJV+4DLad7cdBvonsfLWgdpOM27U+fq+kA8W5/FDP6T4K
-	YD2X90PGVJKLepwAwm1kMM/BlSzap0WO9g4UubxQk
-X-Gm-Gg: ASbGncsynBA7rS4N9SyqGPxVBea4rwPLB0/Lurk1sK3x0JOAtMplB5Fj/4QGMFaCwBb
-	EKq9r3NIc9TNH02SriAh7+QtJ1ILT7jTLEAHtxrNkIBtDetqx5JX0Bg/xHrY6VO4CCsOjtU6zkk
-	+fdkVhDk5c0Lxw6U0ophhKiX3SXhU4WN/K6yONWwIc7GthghNCOs7NrxctSwsslL+2usrvqX+mo
-	uB6V1FGcTx/Y9ikCzwqlbHrb2d0/RQASI0MXjGsrdHBDMOVpCbscCFF77qAQFNznXNu45hOdIXi
-	CRUx9CWV+F4uxM6Vr67q+dhqXzLCbA==
-X-Google-Smtp-Source: AGHT+IHmRLKymahTzphWXAcebUY/vioCOyMVmnPrpkx+yuxscWkWBl0sW3ZAInJO76yoYP2ATwjD1Umq93FfkvRAowM=
-X-Received: by 2002:a05:6870:648f:b0:341:33fb:81fe with SMTP id
- 586e51a60fabf-3cd88b3151emr2212186fac.4.1761186064007; Wed, 22 Oct 2025
- 19:21:04 -0700 (PDT)
+	s=arc-20240116; t=1761202584; c=relaxed/simple;
+	bh=L1LbpLlpx3xAoZWTRjWjg2D8AAr3z41hbSaSSnzUD+c=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=oDXoSOtyhqHfbwypEQPOt1y0UPzlQZ8mkS9uONwk2WNcAjpz03H7wh6W0DsGdyPVoiVmOUDNE2DSwNTodEU2U9rJNaqlXKFwUEuzKfavEckXatBJcqh4IeivH9Wlmk3JHG94pQ6lfvXMO/b23KvAXK9Wh+hjOX9k/ZuZBEE2JWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8AxSNFN0floV6QZAA--.55885S3;
+	Thu, 23 Oct 2025 14:55:09 +0800 (CST)
+Received: from [10.130.10.66] (unknown [113.200.148.30])
+	by front1 (Coremail) with SMTP id qMiowJAxusBK0flovcYCAQ--.20792S3;
+	Thu, 23 Oct 2025 14:55:07 +0800 (CST)
+Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <CAAhV-H7HN128du-b1Rk_9qbYBq7gMSwo0s31909N4pTou6wzew@mail.gmail.com>
+ <CAMj1kXGvSnCMRVCW7eAxgLRWMEV3QRj3Dqg3PmZchZJNpnLK9w@mail.gmail.com>
+ <CAAhV-H4UKdso0BokAqvjYeBLr-jbjFAaQX4z=1ztpBamqrOEEg@mail.gmail.com>
+ <CAMj1kXEXDC_oq4aWbkR5dqYBix2d1xJEdaj-v747e1nOA0Q_Yg@mail.gmail.com>
+ <rhnei6wovxmoqs36wdysomfsul3faxtmgde73wrrqdt3qo3b2j@akd7vzne76rq>
+ <CAMj1kXF+hDJy0vRWNgwoijHxvA-scvhGODMj9A3dv19v3jf2yw@mail.gmail.com>
+ <lgyzruqczm7uti2lfbhfhr5hyzpnm7wtvgffa2o7nigx76g6i3@wlffltvmhhez>
+ <CAMj1kXFDquPxCYSBWgjikS=209pSJ_kth67M0RDeuetV9CPYAw@mail.gmail.com>
+ <wlx6pt5crtfdwtop4w5vjznjfarrwitq44wdbufncjdvtsx647@tgobruak66yb>
+ <CAMj1kXFfEBkcc-aiwGrRR-pKg4LBbS7weK0pEpZJsKOk5pbkuA@mail.gmail.com>
+ <jxfb5a2c2qber623l2gwewirwod54bbgfnvt7t7f3jah2ea33g@2uyhy3auzmpx>
+ <d9f3352a-1c1f-464a-a8fd-741cd96b5f8e@loongson.cn>
+ <CAAhV-H6m5vszCyiF3qi94cpHBPVuqM2xH93D=gfsQqOSYvC-sA@mail.gmail.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <33612d85-e70b-26da-8460-ea6b9064ce08@loongson.cn>
+Date: Thu, 23 Oct 2025 14:55:05 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0f006338-e69b-4b3f-b91f-0cc683544011@kernel.org>
- <20251022114527.618908-1-adriana@arista.com> <20251022201953.GA206947-robh@kernel.org>
-In-Reply-To: <20251022201953.GA206947-robh@kernel.org>
-From: Adriana Nicolae <adriana@arista.com>
-Date: Thu, 23 Oct 2025 05:20:53 +0300
-X-Gm-Features: AS18NWAnX3tdmQK4mY34lhn-vtbSOeSxTP9A7wJ8Ju2u0pZ_JzhEiwf9-6ikOXI
-Message-ID: <CAERbo5z6BzHqQxXdxPxmxE_eDR7GGGbt3A8kB0gQiWFBE-28Ug@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] DMI: Scan for DMI table from DTS info
-To: Rob Herring <robh@kernel.org>
-Cc: krzk@kernel.org, jdelvare@suse.com, frowand.list@gmail.com, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, vasilykh@arista.com, 
-	arm.ebbr-discuss@arm.com, boot-architecture@lists.linaro.org, 
-	linux-efi@vger.kernel.org, uefi-discuss@lists.uefi.org, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAAhV-H6m5vszCyiF3qi94cpHBPVuqM2xH93D=gfsQqOSYvC-sA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxusBK0flovcYCAQ--.20792S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7XF4xZF48Kw18Gw1DJFy8Xrc_yoWfArX_ur
+	Wxuwn7Cr4kGFyaya1DKwn8XFsxXw4UCFW5A3yjqryj93sxtrW7Cr48urn7ZF1DGF4kZrZx
+	tFWv93y3Cr1v9osvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbx8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0
+	oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc02F4
+	0EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_
+	Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbI
+	xvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU
+	=
 
-On Wed, Oct 22, 2025 at 11:19=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
-e:
->
-> On Wed, Oct 22, 2025 at 04:45:25AM -0700, adriana wrote:
-> > Some bootloaders like U-boot, particularly for the ARM architecture,
-> > provide SMBIOS/DMI tables at a specific memory address. However, these
-> > systems often do not boot using a full UEFI environment, which means th=
-e
-> > kernel's standard EFI DMI scanner cannot find these tables.
->
-> I thought u-boot is a pretty complete UEFI implementation now. If
-> there's standard way for UEFI to provide this, then that's what we
-> should be using. I know supporting this has been discussed in context of
-> EBBR spec, but no one involved in that has been CC'ed here.
+Hi Josh and Ard,
 
-Regarding the use of UEFI, the non UEFI boot is used on Broadcom iProc whic=
-h
-boots initially into a Hardware Security Module which validates U-boot and =
-then
-loads it. This specific path does not utilize U-Boot's UEFI
-implementation or the
-standard UEFI boot services to pass tables like SMBIOS.
+On 2025/10/20 下午2:55, Huacai Chen wrote:
+> On Mon, Oct 20, 2025 at 9:24 AM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+>>
+>> Hi Josh, Ard and Huacai,
+>>
+>> On 2025/10/18 上午1:05, Josh Poimboeuf wrote:
+>>
+>> ...
+>>
+>>> But IIUC, the libstub code runs *very* early, and wouldn't show up in a
+>>> stack trace anyway, because there are no traces of it on the stack once
+>>> it branches to head.S code (which doesn't save the link register).
+>>
+>> Thanks for your discussions.
+>>
+>> Are you OK with this current patch?
+> For me the current patch is just OK.
 
-Because there's no UEFI configuration table available in this boot mode, we=
- need
-an alternative mechanism to pass the SMBIOS table address to the kernel. Th=
-e
-/chosen node seemed like the most straightforward way for the bootloader to
-communicate this non-discoverable information.
+We have discussed this a few times but there is almost no consensus
+of what should happen next and nothing changes.
 
-I wasn't aware of the EBBR discussions covering this. I've added the
-boot-architecture and arm.ebbr-discuss lists to the Cc. If there's a prefer=
-red
-EBBR-compliant way to handle this for non-UEFI boots, I'm happy to adapt
-the approach.
+Could you please give me a clear reply? Then I can make progress for
+the following series:
 
->
-> > This series adds support for the kernel to find these tables by
-> > reading properties from the Device Tree /chosen node. The bootloader
-> > can specify the physical addresses using "linux,smbios-table" and
-> > "linux,smbios3-table".
->
-> /chosen node entries go in chosen.yaml schema in dtschema repository.
-> But first, I need to see some agreement this is how we want to support
-> this.
->
-> Rob
+https://lore.kernel.org/loongarch/20250917112716.24415-1-yangtiezhu@loongson.cn/
 
-Adriana
+Thanks,
+Tiezhu
+
 
