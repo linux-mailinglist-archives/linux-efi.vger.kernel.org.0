@@ -1,121 +1,144 @@
-Return-Path: <linux-efi+bounces-5104-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5101-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2218BFFE5F
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 10:24:58 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E95BFFE24
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 10:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0BA44FA434
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 08:24:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A91AB354A06
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 08:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3F42FDC28;
-	Thu, 23 Oct 2025 08:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FCA2FF67F;
+	Thu, 23 Oct 2025 08:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="l2TUuhMm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bYb/5IzA"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B3F3002BB;
-	Thu, 23 Oct 2025 08:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799552F8BE6
+	for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 08:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761207810; cv=none; b=r3jLUnhzeKSnpkiXWBWw8HyOUc/y4m9e06sV1nGEC7wG0t8Q2wZZEWUMoup8htxA8AqjX4U+S2RSmk5LCjB3Sqyk/Sbjj6++XTNGvO+47JvRn8UtUW4wQwcgj1UB+pNiVhiwlEwAE4APhvslx2Csf6tBdKd9vC7FhxXkEFnSf5E=
+	t=1761207714; cv=none; b=kv61RNTzH2HBfrNoOZgNXzYNoimgNqnKgKF9cCQ2lWX+jbcVkn2eAeaHdqtOvLej6yZB+yQG4Is/fTRVnof6eH+Ik2IkR6oRPQ8kLl1X5f1/JzehhNQDAp3ifUl1tmeTbhTKkwooKU1z6CvXtleLfxX+1WQauqHD9mNbDxHmazc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761207810; c=relaxed/simple;
-	bh=v0M+YSnxkgvRtoMvqCVVkzehsdPEfV4jIca8cUpLxn0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=midCmvm6ujUHytiFmlruqxXQhn/QPYHYItPcFmfV0sinmGXAnMuuNdWncRZbGWAVINmlEq4SpUL6yDvS6GMrpMkpnk5b2k7Q6pGLQ5MRXtDItZQk7XH5RqxkS3WOze0YUt8OAM1AZB4JAwVmAfA30OZWI9q1U2e/8svcw218llQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=l2TUuhMm; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1761207725;
-	bh=/ryGCoaa5Mw0tnHL+6AJfKDs1HN3Csc9peumNiIny3k=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=l2TUuhMmJbcJDZfe+YXV3qhuj3YMlFIm9wf1gkEkNm+MXN+ItPw137za40aRFoDoP
-	 5vG8sQD6fk4DGFhYOOsuA0WefhSY3EkvKLqcJKaHYjTdl9GwgQsBw2kPID/FcbV1Lr
-	 R8d4qA6zoND/p4l83O66Pf2Pqiom4lvPM5/VuIqQ=
-X-QQ-mid: esmtpsz17t1761207709t44688b9d
-X-QQ-Originating-IP: x+i7FOkwA4c7J7VYbfCrjqnVkzs0wKgBvPuewy/Lez0=
-Received: from localhost.localdomain ( [123.114.60.34])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 23 Oct 2025 16:21:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 7804790617074854445
-EX-QQ-RecipientCnt: 6
-From: Qiang Ma <maqianga@uniontech.com>
-To: ardb@kernel.org,
-	linux@armlinux.org.uk
-Cc: linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Qiang Ma <maqianga@uniontech.com>
-Subject: [PATCH 2/2] efi/arm*: Remove the useless failure return message print
-Date: Thu, 23 Oct 2025 16:21:29 +0800
-Message-Id: <20251023082129.75612-2-maqianga@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20251023082129.75612-1-maqianga@uniontech.com>
-References: <20251023082129.75612-1-maqianga@uniontech.com>
+	s=arc-20240116; t=1761207714; c=relaxed/simple;
+	bh=Mq7wTbaDVrxT5aUwhMPrXpPQYEJ56iNmucEbpajeaW4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f30nugN/MQgDeAq0XnOOT2/vFrWfk0DRymdD4pL5iU1Xx1o3L5QFlAQA9aJzak38mpRifk+cxC1RweY2zRLmm5WtxebZJR5MyMjKzCVvOnFWr3+AKG+3FB8VBwibKTAl+P3mBV0SpuqpbyNw+nysvCq1u6eYTRfXuq1TL6dPA58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bYb/5IzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD990C4AF0D
+	for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 08:21:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761207713;
+	bh=Mq7wTbaDVrxT5aUwhMPrXpPQYEJ56iNmucEbpajeaW4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bYb/5IzAiRYC+or/Q8dBd12Jn6lz/LZcxJEms7PXqNQjIZPbIl/TZkioFwLPQFXr5
+	 ubOPwq+pvakPSbgPE0V8MA053A8LvvijWONqHCfLrQSMLiniBfemwM8JtdgobJhLil
+	 damyu+Tox2rPfSL7dB+Lo1MBBjogPnN9Rg8qA5YxdiVH7eKXIicrnfE7f57G6Ib0+P
+	 O0UqbBhkqiOeNJ684Sf5mk10I/nQyoENN9NLAqzWsh+TX75L5skzIzXo/evGyvpNzn
+	 hLD3jsGJR6uAZsh7DpJyPZOIStyI4aQLo22WvU2JUPTC3ew2PkhU1g7buNK4A7I0LN
+	 FgBcY4aBLWRZw==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3737d0920e6so8324721fa.1
+        for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 01:21:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXjylKC4wQpvtXfXADUhMxooLflwUCnwnOyjzKKjuTRHwFfHi4lvqcylcZJxcuxVpuO9b1+kqWY7EM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFt8IS50g5E+XPVW49uLL1Orog2+TH51JQVB1ehLO0VpwdnVhT
+	Df1a0LZuAoiOs8eM6Hee7gYQ1mnVaYRb/3qaqpcN2Eze0gdA8i+CncI+yKxQ/MRiq/zFyPWf6GS
+	Zv2Ed0l2f5CQP0Z3lNysTcOpBUTDqNp4=
+X-Google-Smtp-Source: AGHT+IGXuEQHrmcpO18jgiQje5gxecX+jQhPRhIZD8/umfhj/iVRHLDn4WDCLHjK5/dO5vBUN3lPnOpu+1uaOPX8hXA=
+X-Received: by 2002:a05:6512:3a90:b0:579:f4b3:bd2d with SMTP id
+ 2adb3069b0e04-591d8591713mr8820336e87.57.1761207712093; Thu, 23 Oct 2025
+ 01:21:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: MgRpQMLhR5LwNsRitc7y1SqH4bnZ3sJ504yZfnKpqJam2871zjeOMTrD
-	7Br6iWKlNcaEraKyvyY8uYPq6KW605LVT72hrSTb2CgeuwFiW3mI6OaCeacx3fDLfBY5uzg
-	qWzVynzPFdRt2zQorAmjMR4p8mZiK1lXZrkhDtI/TxCyq6KvqKrGAKvFXmQjMDc0Q77gMap
-	pLQtwkppYGrn9xvnw6Fcpim+93vhTTML4Fb1WUSpQLu3EiaSgIVtBvq3opHejg+8WbPjHlr
-	FYUgc1e86MFcKVjDsCRDlI97az6K8AcTmGPX5mIwmOlyMKtihDPgZUq377SePYoAvF0YHrF
-	uCMWspyG4r5USmvfMSVot4UUGhca9bihFLffHNFFXpLT0lhWnMCCYs+INhWj8MY4Eq1W4aN
-	PjMMzkqQ8KJZ67LGHkMPkN8X8ASPqUTNgWGCtNWKEI+2AfKcI/7TiGUYxfbOGCr5K8q4ORr
-	j5bcWLb/Ca+yU91G0XRFkXjA22gKSxroem3gOTkJ3wxD35ZcH4SpZrXuJ31si50smWhjSTZ
-	ppUZVign68nnNf9R8Np3XRX9tKtHMUSAXgIWSJTMr5n0/daG2IvtV2jGwM44EVRY+xa2zpy
-	rNvC/CxKp8zvSjIY6L2+c0C3QV1ZQtjBVp5j86PUqXPJhOsABNh0Stbd8QgbJSQwRS5+ZDx
-	QCCvYM53ZRINVtXhoFFo3xdVGMGt5dwjaFtD5hNf0dOU1K2A/c9rBbF8hSaNUSj5OgTUyp8
-	KNKkfveap58uhZrApCNc0KxRP1fv34x6evKVuiZNBCHbcuWIQTTpTmg1hm+VJgk4MxK93vK
-	vLQf7QWKFs7vdaTzJm7q0XJZPNqYdWXLZIx3KHSYm5nNrO1ZdhtC7s3QENAOVVnB2jkrZU8
-	cfOtvyQII6FEl4l2cu6IuYYo9icT/aJXUP6HwoOGfUzzl/AfhsOtRPDA3Zpv6xPFuCafWMl
-	Wuu9ls9FUXtdhUWCeWorqiJYzLl0pLvL72sgg/+0Mw1dszAKpgf9VkI4fl22aauxwdDMT1a
-	QE40UH96RKD0BmjS5oMl7Eji72doK8x1M1pzRPVp2GPEW3wIPhjE80YOJ19DY=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
+References: <0f006338-e69b-4b3f-b91f-0cc683544011@kernel.org>
+ <20251022114527.618908-1-adriana@arista.com> <20251022201953.GA206947-robh@kernel.org>
+ <CAERbo5z6BzHqQxXdxPxmxE_eDR7GGGbt3A8kB0gQiWFBE-28Ug@mail.gmail.com>
+In-Reply-To: <CAERbo5z6BzHqQxXdxPxmxE_eDR7GGGbt3A8kB0gQiWFBE-28Ug@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 23 Oct 2025 10:21:40 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGYinTKiyYhNYWJvoJeUJScCGnyq=ozLgjKAm7_wzG8QA@mail.gmail.com>
+X-Gm-Features: AS18NWAyqpmDp3gFCmfLNnMi4KMri802uIuHk78GHsmKD8sw7K_d0CMpt3v68sU
+Message-ID: <CAMj1kXGYinTKiyYhNYWJvoJeUJScCGnyq=ozLgjKAm7_wzG8QA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] DMI: Scan for DMI table from DTS info
+To: Adriana Nicolae <adriana@arista.com>
+Cc: Rob Herring <robh@kernel.org>, krzk@kernel.org, jdelvare@suse.com, 
+	frowand.list@gmail.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, vasilykh@arista.com, arm.ebbr-discuss@arm.com, 
+	boot-architecture@lists.linaro.org, linux-efi@vger.kernel.org, 
+	uefi-discuss@lists.uefi.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In the efi_create_mapping() in arch/arm*/kernel/efi.c,
-the return value is always 0, and this debug message
-is unnecessary. So, remove it.
+On Thu, 23 Oct 2025 at 04:21, Adriana Nicolae <adriana@arista.com> wrote:
+>
+> On Wed, Oct 22, 2025 at 11:19=E2=80=AFPM Rob Herring <robh@kernel.org> wr=
+ote:
+> >
+> > On Wed, Oct 22, 2025 at 04:45:25AM -0700, adriana wrote:
+> > > Some bootloaders like U-boot, particularly for the ARM architecture,
+> > > provide SMBIOS/DMI tables at a specific memory address. However, thes=
+e
+> > > systems often do not boot using a full UEFI environment, which means =
+the
+> > > kernel's standard EFI DMI scanner cannot find these tables.
+> >
+> > I thought u-boot is a pretty complete UEFI implementation now. If
+> > there's standard way for UEFI to provide this, then that's what we
+> > should be using. I know supporting this has been discussed in context o=
+f
+> > EBBR spec, but no one involved in that has been CC'ed here.
+>
+> Regarding the use of UEFI, the non UEFI boot is used on Broadcom iProc wh=
+ich
+> boots initially into a Hardware Security Module which validates U-boot an=
+d then
+> loads it. This specific path does not utilize U-Boot's UEFI
+> implementation or the
+> standard UEFI boot services to pass tables like SMBIOS.
+>
 
-Signed-off-by: Qiang Ma <maqianga@uniontech.com>
----
- drivers/firmware/efi/arm-runtime.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+What prevents this HSM validated copy of u-boot from loading the kernel via=
+ EFI?
 
-diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
-index 83092d93f36a..ca27fbfaff5c 100644
---- a/drivers/firmware/efi/arm-runtime.c
-+++ b/drivers/firmware/efi/arm-runtime.c
-@@ -66,12 +66,7 @@ static bool __init efi_virtmap_init(void)
- 		if (md->virt_addr == U64_MAX)
- 			return false;
- 
--		ret = efi_create_mapping(&efi_mm, md);
--		if (ret) {
--			pr_warn("  EFI remap %pa: failed to create mapping (%d)\n",
--				&phys, ret);
--			return false;
--		}
-+		efi_create_mapping(&efi_mm, md);
- 	}
- 
- 	if (efi_memattr_apply_permissions(&efi_mm, efi_set_mapping_permissions))
--- 
-2.20.1
+> Because there's no UEFI configuration table available in this boot mode, =
+we need
+> an alternative mechanism to pass the SMBIOS table address to the kernel. =
+The
+> /chosen node seemed like the most straightforward way for the bootloader =
+to
+> communicate this non-discoverable information.
+>
+> I wasn't aware of the EBBR discussions covering this. I've added the
+> boot-architecture and arm.ebbr-discuss lists to the Cc. If there's a pref=
+erred
+> EBBR-compliant way to handle this for non-UEFI boots, I'm happy to adapt
+> the approach.
+>
 
+For the record, I don't see a huge problem with accepting SMBIOS
+tables in this manner, but it would be better if a description of this
+method was contributed to the DMTF spec, which currently states that
+the only way to discover SMBIOS tables on non-x86 systems is via the
+SMBIOS/SMBIOS3 EFI configuration tables. Doing so should prevent other
+folks from inventing their own methods for their own vertically
+integrated systems. (Other OSes exist, and from a boot arch PoV, we
+try to avoid these Linux-only shortcuts)
+
+However, the DT method should *only* be used when not booting via
+UEFI, to avoid future surprises, and to ensure that existing OSes
+(including older Linux) can always find the SMBIOS tables when booting
+via UEFI.
+
+Also, I would suggest to pull the entire entrypoint into DT, rather
+than the address in memory of either/both entrypoint(s). Both just
+carry some version fields, and the address of the actual SMBIOS data
+in memory, and the only difference between SMBIOS and SMBIOS3 is the
+size of the address field (32 vs 64 bits)
 
