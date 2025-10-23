@@ -1,140 +1,133 @@
-Return-Path: <linux-efi+bounces-5109-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5110-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05ABC01A07
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 16:05:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E226FC01BCC
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 16:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64261188DF38
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 14:05:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4314C3B5319
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 14:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F14314A79;
-	Thu, 23 Oct 2025 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C372E2D5955;
+	Thu, 23 Oct 2025 14:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lgX8Qgxg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZexjWfku"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD9531691E;
-	Thu, 23 Oct 2025 14:05:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFC21F8724
+	for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 14:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761228327; cv=none; b=B5uPG1HStakd0mDHrLfLx6O4dtisWBWR/0J0pWDHJAVDdkA9vNn1TrCXiaD7d63aP7zYF4pfut8r4ToV0PIxBjjam/D2FZnVXaEIbLzI5I+HQSyI1Iq3zxdZhUnz870PUdy1zpteE3lQQW3yjSIxJ8Sj+W0rF+aR7Gxc+QOxv5c=
+	t=1761228820; cv=none; b=Rq8mCeZRDxkVXsBovy+2CrFmnwpbNA1t/MQeVCH2JYgOQneN5BJnFOSC8QjZvnPR/ujO3We3H+TejaGC/T57Q/DdaXUFBqi7tzKlCKurH+Cuw3YGKxNo/U/Fj3PWTUsZKbGx41zWH2f0kH/p0HDBF4AnDaMxvzxEcEFP/kWMZ7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761228327; c=relaxed/simple;
-	bh=+1XiQ1QH7zn+6Y5TpucexSz5a4jmRWQYsHUpbWDKMbI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TUvcx5c6pCKZhY3GeRJCWjb3XHp6bVHWQwsPq+zy/XyLpPUn6qyDFhvSIJErkki6TOkhmYjXu3NV1qhY4sKgtcpx4GsvLl55ifhNq0soo+Aahrljj2AD0LCSy1SIT3yoVaqf1fHJWWX6Rdd8z8PjqIiJOZ4Gp63tTYKFL/tj/YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lgX8Qgxg; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761228327; x=1792764327;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+1XiQ1QH7zn+6Y5TpucexSz5a4jmRWQYsHUpbWDKMbI=;
-  b=lgX8Qgxg4Df0G2pRLA4bu9WI9d7wZy5qYV17ieMzB390KOZEWiwaJ3Gi
-   dJqfORdMFO5TT+2zS2VoNyMgqifyNnT5AGS1l6jbmjx9AibBUy5vac54X
-   MjvYDJow41vDnIrXVM+qkmuXVmX7h+ESNcbDbhkIDKW7SdpjSxgbegdjQ
-   ZPwFUCupUiQOwX6KFFU2V7eh58t1n2jo38FubRbPSzESDlbqmzNu392ku
-   zVAMo/dplz9/49DczhqPzDGYP2+VyE3SoIgsoGFHwEi0sDYo++wP/DSjh
-   7IyoNpwPnUnxw3c4IwER9V+iozFQ4suKv3CPUw/J8PwefBXko3i96s/1n
-   g==;
-X-CSE-ConnectionGUID: hb3EI0SkS0u6iXVX0vSVrQ==
-X-CSE-MsgGUID: gPjeM5JBQdumRx6d3N8URA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74514831"
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
-   d="scan'208";a="74514831"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 07:05:26 -0700
-X-CSE-ConnectionGUID: rJ+Qrd/aTO6OKsETqqU0Xw==
-X-CSE-MsgGUID: BUwuqVcuQOOCsB2E9OqBhw==
-X-ExtLoop1: 1
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.108.251]) ([10.125.108.251])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 07:05:24 -0700
-Message-ID: <90047889-3b90-4c6a-90ed-f155c92f7ce1@intel.com>
-Date: Thu, 23 Oct 2025 07:05:24 -0700
+	s=arc-20240116; t=1761228820; c=relaxed/simple;
+	bh=cZpeLUAcuryHPcdrxITI066SvmIhzzKTwSENhSqSg38=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S7DE4xQGPd59YYUSZHDzAgqwJeeeSn5wfTUXF3Q96TJbDVhBwXVqfymwV+qB/CwDuQUDXDkOOwbOVlYuBCPQEXcSrLLXAV5UTHm2OsIMZ6oXTu5a14AtewJ6jX5XVmt5lDgIuwPBfNvw2gnnT2HDTxc0yOTyhgXGS8y6A2x2IO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZexjWfku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB23C116C6
+	for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 14:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761228820;
+	bh=cZpeLUAcuryHPcdrxITI066SvmIhzzKTwSENhSqSg38=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZexjWfkuM1Mnrohl/Rfjbhz03Qh2y244gv0V1ExhgW2AYGEX3k9CHHb6UVonzu4Uc
+	 jQY9dsDPUSlqV+y3IJ2LLJc6yc9E0pD0EEO1fC7WE7TS69zMaE40YWnEkeVX1quzAX
+	 qjJ+v09+zTlULgnrE/XIyMjlRL4timW5IcK2uBR+2UrKb9nAM0WsRBwHRUJpmlGexW
+	 zqbULJN+LWfhm+g9gAIEsJWUwWwIxOkM6lDlxvkA8ZRTauRthqrliZlfgcHPn+5Brr
+	 nFptX+i2+AcyKyvhcD/I1BHQli4STcY/oAkMIKu2jxyCgejYoInS6wvgN8K8uFOK/w
+	 kSZCHruE8WoOQ==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-57b35e176dbso1159845e87.1
+        for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 07:13:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV891fPSyI3VMVw7ULg7vwSFlNdVk9Sl8ZoSnkTy1nPXwqkMeJ71to1DuyCrpFy3YWlYs4nb9i0T1w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHBbnOpJThKck12yWYFklfqvmSef6vNGLQCPQZlqgReabDqkXq
+	QvP/r4ccCiK1Rix/352bIH4kKRIqTGL6G0sP/oeU5x3MFISbEK1e8Yf6lhxZ0sPmCVEW/DzPxUx
+	pxeHc8oic5ApN0rhbMYXUMh115bzZh6w=
+X-Google-Smtp-Source: AGHT+IHO6/AXibCvANwIPz1i1SVGnWXIEXzs5+ih5K1pmNk7GVSQwJgh9sM1FbWbV7Sjq21NzIM2aNTWjm+g/kX+AtQ=
+X-Received: by 2002:a05:6512:ad4:b0:592:f330:217 with SMTP id
+ 2adb3069b0e04-592f330065fmr2006781e87.31.1761228818734; Thu, 23 Oct 2025
+ 07:13:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] x86/mm: Move _PAGE_BIT_NOPTISHADOW from bit 58 to bit
- 9
-To: Usama Arif <usamaarif642@gmail.com>, dwmw@amazon.co.uk,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, ardb@kernel.org, hpa@zytor.com
-Cc: x86@kernel.org, apopple@nvidia.com, thuth@redhat.com,
- nik.borisov@suse.com, kas@kernel.org, linux-kernel@vger.kernel.org,
- linux-efi@vger.kernel.org, kernel-team@meta.com,
- Michael van der Westhuizen <rmikey@meta.com>, Tobias Fleig <tfleig@meta.com>
-References: <20251022220755.1026144-1-usamaarif642@gmail.com>
- <20251022220755.1026144-4-usamaarif642@gmail.com>
- <98bc658f-2ec6-43f5-a7e1-e9424450a850@intel.com>
- <797c78f4-1a90-42da-9fed-e87682456a43@gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <797c78f4-1a90-42da-9fed-e87682456a43@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251022220755.1026144-1-usamaarif642@gmail.com> <20251022220755.1026144-3-usamaarif642@gmail.com>
+In-Reply-To: <20251022220755.1026144-3-usamaarif642@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 23 Oct 2025 16:13:26 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEYYSc8=qMmDW6E2kRFawK34okGvq=rTuhvv5hVPsd-iw@mail.gmail.com>
+X-Gm-Features: AS18NWARiLhzK3lWZNO_ocfdywm7tHpCV6F_eJg7_7UwW2CLn2dF03GBv3x4pbY
+Message-ID: <CAMj1kXEYYSc8=qMmDW6E2kRFawK34okGvq=rTuhvv5hVPsd-iw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] efi/libstub: Fix page table access in 5-level to
+ 4-level paging transition
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: dwmw@amazon.co.uk, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, x86@kernel.org, 
+	apopple@nvidia.com, thuth@redhat.com, nik.borisov@suse.com, kas@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, kernel-team@meta.com, 
+	Michael van der Westhuizen <rmikey@meta.com>, Tobias Fleig <tfleig@meta.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 10/22/25 16:58, Usama Arif wrote:
->> This isn't necessary once the previous 2 patches are applied, right?
-> In kexec if the target kernels have patch 1 and 2, then this patch
-> is not needed. Unfortunately, patches 1 and 2 are not livepatchable.
-> Also backporting patches 1 and 2 to all previous kernels running in
-> production in a large fleet is not very scalable.
+On Thu, 23 Oct 2025 at 00:08, Usama Arif <usamaarif642@gmail.com> wrote:
+>
+> When transitioning from 5-level to 4-level paging, the existing code
+> incorrectly accesses page table entries by directly dereferencing CR3
+> and applying PAGE_MASK. This approach has several issues:
+>
+> - __native_read_cr3() returns the raw CR3 register value, which on
+>   x86_64 includes not just the physical address but also flags Bits
+>   above the physical address width of the system (i.e. above
+>   __PHYSICAL_MASK_SHIFT) are also not masked.
+> - The pgd value is masked by PAGE_SIZE which doesn't take into account
+>   the higher bits such as _PAGE_BIT_NOPTISHADOW.
+>
+> Replace this with proper accessor functions:
+> - read_cr3_pa(): Uses CR3_ADDR_MASK properly clearing SME encryption bit
+>   and extracting only the physical address portion.
+> - mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for
+>   flags above physical address (_PAGE_BIT_NOPTISHADOW in particular).
+>
+> Fixes: cb1c9e02b0c1 ("x86/efistub: Perform 4/5 level paging switch from the stub")
+> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+> Reported-by: Tobias Fleig <tfleig@meta.com>
+> ---
+>  drivers/firmware/efi/libstub/x86-5lvl.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/x86-5lvl.c b/drivers/firmware/efi/libstub/x86-5lvl.c
+> index f1c5fb45d5f7c..34b72da457487 100644
+> --- a/drivers/firmware/efi/libstub/x86-5lvl.c
+> +++ b/drivers/firmware/efi/libstub/x86-5lvl.c
+> @@ -81,8 +81,11 @@ void efi_5level_switch(void)
+>                 new_cr3 = memset(pgt, 0, PAGE_SIZE);
+>                 new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
+>         } else {
+> +               pgd_t *pgdp;
+> +
+> +               pgdp = (pgd_t *)read_cr3_pa();
 
-I don't think I've ever been asked to apply a patch to make livepatching
-easier. I'm not sure that's something we want to pollute mainline with.
+Shouldn't this be using native_read_cr3_pa()? And is there any reason
+to re-read CR3 here, rather than update the code that populates the
+cr3 variable? The preceding other branch of the if() should probably
+use the same sanitised value of CR3, no?
 
+
+>                 /* take the new root table pointer from the current entry #0 */
+> -               new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
+> +               new_cr3 = (u64 *)(pgd_val(pgdp[0]) & PTE_PFN_MASK);
+>
+>                 /* copy the new root table if it is not 32-bit addressable */
+>                 if ((u64)new_cr3 > U32_MAX)
+> --
+> 2.47.3
+>
 
