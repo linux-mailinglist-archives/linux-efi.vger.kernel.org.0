@@ -1,267 +1,249 @@
-Return-Path: <linux-efi+bounces-5127-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5128-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBF1C0628E
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 14:06:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C13C07A77
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 20:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 718924E067F
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 12:06:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E4ED3B5A27
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 18:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E8F313526;
-	Fri, 24 Oct 2025 12:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F8927280E;
+	Fri, 24 Oct 2025 18:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lt+VWgRG";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zvgfz6nf";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lt+VWgRG";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zvgfz6nf"
+	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="LXqCrfAS"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B9D313523
-	for <linux-efi@vger.kernel.org>; Fri, 24 Oct 2025 12:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276C13161B3
+	for <linux-efi@vger.kernel.org>; Fri, 24 Oct 2025 18:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761307571; cv=none; b=fW5nj3wgpJTr2AHlBgfcJvVDHdtsq7KNdM3lrHB0WNQbYUiLrDwb1aPYimAc8xDWXQL/ubbcgmXzXmY1Bw/Dc1pHtr2QaOcA/ypObo2XtQcfRGCBi2hcWi29fwjePiHrtAI8QpZi9WQvkdBdl7mjSXiVAcwEnUF/R4f4YSzbubA=
+	t=1761329272; cv=none; b=KSsOMNPIyMfY69KV865o8MIK5IekOLR4yPyKuQU98QAMrbvHBlh4qRPFZZFVtyOOkVHeTI3r+rnNuWgs7LJ8c4SHEjGUkULYFoGnt7DI3E2/CMN9EhlvYpsf+Te/O2waJt/T+K7HVil23b+1FiX/ziL6/P08fKk+NVd2qvakRtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761307571; c=relaxed/simple;
-	bh=DFD9s2MCqee1UAxPaqjlBBhb6Mqm3R0fE1aD5fH92AY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nRb5EuCiWTqkCKe511tTAqhcGU/HBElPFq0onHFW4+QG/LX+vsyMn9jsck0ejdsroDFMGsG9Gp7xQHQ2voS9y2m+3ml5wOUdGzzZqgBWfLTPmlmvnUPCzWe7r1beS6b6pl+PUxjLZXNVEPL4qe4XR+2YnsszFGvkng2Yp8/V8mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lt+VWgRG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zvgfz6nf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lt+VWgRG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zvgfz6nf; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 346751F441;
-	Fri, 24 Oct 2025 12:06:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761307567; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7+vc5jHXZ/zQy/xm/Cmay7F3lM867jDyJ86O92DRNwo=;
-	b=lt+VWgRGkX493FfmEwo7k/LP/UbAM0Kwyos2BZCtjJt+eo/cz8/YuLfPWNPLAy9Jnqddg2
-	p8xgiWjRtfYkXp7qRYmlNODOJeFIfbRSayX/cNizXMzjswLrKC2vn4ZW3Q/Hq1s3kVAwgm
-	grxYYNhHqR1MbqQcGzduhuiUkHLkWiY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761307567;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7+vc5jHXZ/zQy/xm/Cmay7F3lM867jDyJ86O92DRNwo=;
-	b=zvgfz6nfm0BmqnP9fdcFNNM1XLyTIE294DgEyP1kjAtL6jj0PRS7SwIP07sjbMRKqP+q5T
-	P1kyVzSs9f+v1cDg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761307567; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7+vc5jHXZ/zQy/xm/Cmay7F3lM867jDyJ86O92DRNwo=;
-	b=lt+VWgRGkX493FfmEwo7k/LP/UbAM0Kwyos2BZCtjJt+eo/cz8/YuLfPWNPLAy9Jnqddg2
-	p8xgiWjRtfYkXp7qRYmlNODOJeFIfbRSayX/cNizXMzjswLrKC2vn4ZW3Q/Hq1s3kVAwgm
-	grxYYNhHqR1MbqQcGzduhuiUkHLkWiY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761307567;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7+vc5jHXZ/zQy/xm/Cmay7F3lM867jDyJ86O92DRNwo=;
-	b=zvgfz6nfm0BmqnP9fdcFNNM1XLyTIE294DgEyP1kjAtL6jj0PRS7SwIP07sjbMRKqP+q5T
-	P1kyVzSs9f+v1cDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE006132C2;
-	Fri, 24 Oct 2025 12:06:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id H1aoOK5r+2ieMgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 24 Oct 2025 12:06:06 +0000
-Message-ID: <acadd898-73a0-41fc-8b3b-ce2d0438a173@suse.de>
-Date: Fri, 24 Oct 2025 14:06:06 +0200
+	s=arc-20240116; t=1761329272; c=relaxed/simple;
+	bh=OKklzTl7XZxkfVb3PCGSM8TNNNKDFlBKHCbNE13T0aE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RBvDSsY65IK5FoU74EFcvAopWsCur0tW/ORswmH1iLfsF/dQOOpdt+nvh6Z62DtQvQcNbttLHlgn8E23y+ilqCPGauscdzDvbis6MnEobjcw/nqXHVWo6xiZKCrU1rb7qWVGfCa0lzfL1An+X0K7dghXb49QY+/oiizRJOXsW2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=LXqCrfAS; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7c51c7ad0b6so738823a34.2
+        for <linux-efi@vger.kernel.org>; Fri, 24 Oct 2025 11:07:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google; t=1761329270; x=1761934070; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OKklzTl7XZxkfVb3PCGSM8TNNNKDFlBKHCbNE13T0aE=;
+        b=LXqCrfASIsbLO+SA2DYuAaUx0AS4DEQj7/VPR9LPN8CebJ3sDF6+sSA/+IIcekXInL
+         5BAPo/qgAxpgpBl0lncn5Ku+lU5TfZJp5IegkvENVvG8/YkteTm/u33ESKRrB8UqDsy/
+         T4mQDa5VN3uQ5FVAoonDQTrvqerH5pEXW83GQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761329270; x=1761934070;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OKklzTl7XZxkfVb3PCGSM8TNNNKDFlBKHCbNE13T0aE=;
+        b=cfIsmTl4vzDxnLaAHEjbhwTh5zZIq/9VyoxtoRvWMo7bIKb0rAIgVkViUimhNPnjgW
+         WVjhsuna+47MuwwLHUVXtOXDqgfHhQoWG/a6r42+Kx1f5vY9eHAK4sj2OLWd4NtnmZOz
+         QaGgxzJePtx7bUd0tg+OllTIwdCzRLBtwb6wVFBwjDCp6GyM8QPG7yVwZhF2y8jH4EH4
+         xB7KfxzpVVARNW7X35Hx9KpiItGH0cUdFS191Rznhx7ESsbILcXFMpjuh9E+v8TFYF7U
+         gEDqWUR66HL8zJj0j9xJTURye53KGQkV7CBwdJVO3BIfdkhzsKncms1DxITpMFdc4jEf
+         2d4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUyUcl62i2Nqpne4ZnpsUM34SKeK/o9b5hLrM0ChQwIN3d/8ai7qvwBIHjuhrzLKFsSLeJjH8Lo5wE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyu0KyRos2adhvQgt8sTM3elU9nyU53qeLH+g/e30j9YWAl3cCJ
+	hhd76aPdSFJTeVcdzVYOJLkXgKjLsmOkvohtusGfXTGrxqS+mdYCVkx8EebyKN6Aw1k=
+X-Gm-Gg: ASbGncuRkO1yCVRG6t1+7iujVRrID4nscQlauj9IkoTAX706ABJK9AaUvWVl/FRxyPx
+	hv/MfWuc4U0Me4pscWzhi7SjxuWq1d+tvyoSSX9XcrSUmuFDXv1vS8o/Qznnh25UeoVyqTvDSWA
+	GnAJAXcGUcJpqG4DfC5jTLCNoxxEbn6kWmzaKdj5ni5K41LvoT71UXXMz6oaMx4wHYnpIFaTLg0
+	RispH+fIsNCdCRtFlt1qDHQpkRLhdLOaryd3E/d0hFuzL2wlVHx4qRf8opbDqfe+y/w6oEsbcLT
+	pSMKugY0IkQUdJZ1ICckKwswf9Xeox5novtW4+kJRwRwmPKwVFchbyZ5pMtlio20A/24o1zAF6E
+	L0e2M15/RJcwN9nLUCpgQEwLX5R56sUlxNJyyHYZtOiHNt+Czyw83rjV5jpsCaZ46pbIxTyYRq6
+	cux4WbrewIth7cdWGGA4/BXYHO/vWCk7NZDR7A+eDTy8w93NzJBg==
+X-Google-Smtp-Source: AGHT+IFRDulQPC2WfvWC6MHNbG8ZjN3lKhCb3bn+Uo7GV5yUHZ45PDvygNs6SdpFx/7sNDoXiJFqQw==
+X-Received: by 2002:a05:6830:f8f:b0:78b:8caf:4906 with SMTP id 46e09a7af769-7c5240679bcmr2004161a34.13.1761329270173;
+        Fri, 24 Oct 2025 11:07:50 -0700 (PDT)
+Received: from bill-the-cat (fixed-187-190-202-235.totalplay.net. [187.190.202.235])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c51b059913sm1751074a34.32.2025.10.24.11.07.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 11:07:49 -0700 (PDT)
+Date: Fri, 24 Oct 2025 12:07:46 -0600
+From: Tom Rini <trini@konsulko.com>
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Adriana Nicolae <adriana@arista.com>,
+	Rob Herring <robh@kernel.org>, krzk@kernel.org, jdelvare@suse.com,
+	frowand.list@gmail.com, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, vasilykh@arista.com,
+	arm.ebbr-discuss@arm.com, boot-architecture@lists.linaro.org,
+	linux-efi@vger.kernel.org, uefi-discuss@lists.uefi.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 0/2] DMI: Scan for DMI table from DTS info
+Message-ID: <20251024180746.GT6688@bill-the-cat>
+References: <0f006338-e69b-4b3f-b91f-0cc683544011@kernel.org>
+ <20251022114527.618908-1-adriana@arista.com>
+ <20251022201953.GA206947-robh@kernel.org>
+ <CAERbo5z6BzHqQxXdxPxmxE_eDR7GGGbt3A8kB0gQiWFBE-28Ug@mail.gmail.com>
+ <CAMj1kXGYinTKiyYhNYWJvoJeUJScCGnyq=ozLgjKAm7_wzG8QA@mail.gmail.com>
+ <CAERbo5waY-=6BLZ2SiJSFAXzvU57mJdM9q05vAZw8zR2yExQ5w@mail.gmail.com>
+ <CAMj1kXHin5YacS98ttzHqFqy6HMukXKoLZtr-+bLwVRsWZUugQ@mail.gmail.com>
+ <CAERbo5zgS8XoGcFB3wejqDpx14-SBr5oWn7pu3=PE0djRiKZqg@mail.gmail.com>
+ <CAMj1kXEnSKF4VcMdOvUUuM-pOEWB38qPhWvUm13rnkQiZXp6SA@mail.gmail.com>
+ <CAC_iWjKQ5Smx5hOM9Lgyq_KD6D7OXyDsfJ4mcEnfw4JuRtxy-g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] efi/libstub: gop: Find GOP handle instead of GOP data
-To: Javier Martinez Canillas <javierm@redhat.com>, ardb@kernel.org,
- jonathan@marek.ca
-Cc: linux-efi@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org
-References: <20251015160816.525825-1-tzimmermann@suse.de>
- <20251015160816.525825-3-tzimmermann@suse.de>
- <87wm4k8wcz.fsf@ocarina.mail-host-address-is-not-set>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <87wm4k8wcz.fsf@ocarina.mail-host-address-is-not-set>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-
-Hi Javier,
-
-thanks for reviewing.
-
-Am 24.10.25 um 11:47 schrieb Javier Martinez Canillas:
-> Thomas Zimmermann <tzimmermann@suse.de> writes:
->
->> The device handle of the GOP device is required to retrieve the
->> correct EDID data. Find the handle instead of the GOP data. Still
->> return the GOP data in the function arguments, as we already looked
->> it up.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> ---
->>   drivers/firmware/efi/libstub/gop.c | 27 +++++++++++++++++----------
->>   1 file changed, 17 insertions(+), 10 deletions(-)
->>
->> diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
->> index 3785fb4986b4..fd32be8dd146 100644
->> --- a/drivers/firmware/efi/libstub/gop.c
->> +++ b/drivers/firmware/efi/libstub/gop.c
->> @@ -402,12 +402,13 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
->>   	}
->>   }
->>   
->> -static efi_graphics_output_protocol_t *find_gop(unsigned long num,
->> -						const efi_handle_t handles[])
->> +static efi_handle_t find_handle_with_primary_gop(unsigned long num, const efi_handle_t handles[],
->> +						 efi_graphics_output_protocol_t **found_gop)
->>   {
->>   	efi_graphics_output_protocol_t *first_gop;
->> -	efi_handle_t h;
->> +	efi_handle_t h, first_gop_handle;
->>   
->> +	first_gop_handle = NULL;
->>   	first_gop = NULL;
->>
-> I think the logic of this function could be simplified if you remove some
-> of the variables. For example, I don't think you need a fist_gop variable
-> anymore now that you are passing a found_gop variable as a function param.
->
->>   	for_each_efi_handle(h, handles, num) {
->> @@ -442,19 +443,25 @@ static efi_graphics_output_protocol_t *find_gop(unsigned long num,
->>   		 */
->>   		status = efi_bs_call(handle_protocol, h,
->>   				     &EFI_CONSOLE_OUT_DEVICE_GUID, &dummy);
->> -		if (status == EFI_SUCCESS)
->> -			return gop;
->> -
->> -		if (!first_gop)
->> +		if (status == EFI_SUCCESS) {
->> +			if (found_gop)
->> +				*found_gop = gop;
->> +			return h;
->> +		} else if (!first_gop_handle) {
->> +			first_gop_handle = h;
->>   			first_gop = gop;
-> You can just assign *found_gop = gop here...
->
->> +		}
->>   	}
->>   
->> -	return first_gop;
->> +	if (found_gop)
->> +		*found_gop = first_gop;
-> ...and then this assignment won't be needed anynmore.
-
-TBH I choose that style on purpose. It's easily parseable by the eye. 
-found_gop is allowed be NULL and we'd have to test within the loop. I 
-found this uneasy to read. And assigning *found_gop early leaks state to 
-the outside before it's ready. That's probably not a problem here, but I 
-find that questionable.
-
->
->> +	return first_gop_handle;
-> Also, given that you are calling first_gop_handle to the variable to
-> store the first gop handle, I would for consistency name the parameter
-> fist_gop and just drop the local variable with the same name.
-
-The found_gop is not necessarily the first_gop. We want to return the 
-primary device's handle and GOP state. The first one is only returned if 
-there's no clear primary one. See [1] as for how the primary is being 
-detected.
-
-[1] 
-https://elixir.bootlin.com/linux/v6.17.4/source/drivers/firmware/efi/libstub/gop.c#L433
-
-Best regards
-Thomas
-
->
-> But I agree with the general logic of the patch, so regardless of what
-> you prefer to do:
->
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="9oR5kehjwfSOVgAj"
+Content-Disposition: inline
+In-Reply-To: <CAC_iWjKQ5Smx5hOM9Lgyq_KD6D7OXyDsfJ4mcEnfw4JuRtxy-g@mail.gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
 
 
+--9oR5kehjwfSOVgAj
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Oct 24, 2025 at 02:07:43PM +0300, Ilias Apalodimas wrote:
+> Hi Ard, Adriana
+>=20
+> Thanks for cc'ing me.
+>=20
+> On Fri, 24 Oct 2025 at 12:49, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > On Thu, 23 Oct 2025 at 16:48, Adriana Nicolae <adriana@arista.com> wrot=
+e:
+> > >
+> > > On Thu, Oct 23, 2025 at 4:54=E2=80=AFPM Ard Biesheuvel <ardb@kernel.o=
+rg> wrote:
+> > > >
+> > > > (cc Ilias)
+> > > >
+> > > > On Thu, 23 Oct 2025 at 15:34, Adriana Nicolae <adriana@arista.com> =
+wrote:
+> > > > >
+> > > > > On Thu, Oct 23, 2025 at 11:21=E2=80=AFAM Ard Biesheuvel <ardb@ker=
+nel.org> wrote:
+> > > > > >
+> > > > > > On Thu, 23 Oct 2025 at 04:21, Adriana Nicolae <adriana@arista.c=
+om> wrote:
+> > > > > > >
+> > > > > > > On Wed, Oct 22, 2025 at 11:19=E2=80=AFPM Rob Herring <robh@ke=
+rnel.org> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, Oct 22, 2025 at 04:45:25AM -0700, adriana wrote:
+> > > > > > > > > Some bootloaders like U-boot, particularly for the ARM ar=
+chitecture,
+> > > > > > > > > provide SMBIOS/DMI tables at a specific memory address. H=
+owever, these
+> > > > > > > > > systems often do not boot using a full UEFI environment, =
+which means the
+> > > > > > > > > kernel's standard EFI DMI scanner cannot find these table=
+s.
+> > > > > > > >
+> > > > > > > > I thought u-boot is a pretty complete UEFI implementation n=
+ow. If
+> > > > > > > > there's standard way for UEFI to provide this, then that's =
+what we
+> > > > > > > > should be using. I know supporting this has been discussed =
+in context of
+> > > > > > > > EBBR spec, but no one involved in that has been CC'ed here.
+> > > > > > >
+> > > > > > > Regarding the use of UEFI, the non UEFI boot is used on Broad=
+com iProc which
+> > > > > > > boots initially into a Hardware Security Module which validat=
+es U-boot and then
+> > > > > > > loads it. This specific path does not utilize U-Boot's UEFI
+> > > > > > > implementation or the
+> > > > > > > standard UEFI boot services to pass tables like SMBIOS.
+> > > > > > >
+> > > > > >
+> > > > > > What prevents this HSM validated copy of u-boot from loading th=
+e kernel via EFI?
+> > > > > The vendor's U-Boot configuration for this specific secure boot p=
+ath
+> > > > > (involving the
+> > > > > HSM) explicitly disables the CMD_BOOTEFI option due to security
+> > > > > mitigations, only
+> > > > > a subset of U-boot commands are whitelisted. We could patch the U=
+-boot
+> > > > > to include
+> > > > > that but it is preferable to follow the vendor's recommandations =
+and
+> > > > > just patch U-boot
+> > > > > to fill that memory location with SMBIOS address or directly with=
+ the
+> > > > > entry point.
+> > > >
+> > > > And what security mitigations are deemed needed for the EFI code? Y=
+ou
+> > > > are aware that avoiding EFI boot means that the booting kernel keeps
+> > > > all memory protections disabled for longer than it would otherwise.=
+ Is
+> > > > this allowlisting based on simply minimizing the code footprint?
+> > > >
+> > > From the information I have, it might be just minimizing the footprint
+> > > but the vendor's U-Boot configuration for this specific path
+> > > explicitly disables the CMD_BOOTEFI option. While the vendor cites
+> > > security mitigations for this configuration, the specific details
+> > > could be a set of mitigation removing different boot methods and some
+> > > memory access commands.
+> > >
+> > > The core issue is that this non-EFI boot path is the vendor-validated
+> > > configuration. Enabling EFI would deviate from this setup, require
+> > > significant revalidation, and could impact vendor support. Modifying
+> > > U-Boot to populate the DT is a contained change without modifying the
+> > > U-boot vendor configuration.
+> > >
+> >
+> > I'm not sure I follow why changing U-Boot's code would not require
+> > revalidation if simply changing its build configuration without
+> > modifying the source code would require that.
+> >
+> > > Beyond our specific vendor constraints, this DT method might be used
+> > > by any other non-UEFI arm system needing to expose SMBIOS tables to
+> > > the kernel.
+> > >
+> >
+> > Fair point. So let's do this properly: get buy-in from the U-Boot
+> > folks and contribute your u-boot changes as well. And ideally, we'd
+> > get this into the DMTF spec but if you are not set up for that (I
+> > think you might need to be a member to be able to contribute), we can
+> > find some ARM folks who are.
+>=20
+> +1
+> U-Boot does offer an EFI implementation indeed, but we can't magically
+> force people to use it.
+> The problem with SMBIOS is that afaict is still widely used by various
+> debugging tools, so we might as well support it.
+> I agree with Ard here. I think the best thing we can do is
+> - Make the node standard in the DT spec, so everyone gets a reference
+> - Gatekeep any alternative implementations for the kernel until
+> someone gets this into the DMTF spec as well
+> - Send a patch to U-Boot that adds that mode dynamically if booting is
+> !EFI and SMIOS support is enabled
+
+This sounds like a good plan to me, from the U-Boot side of things.
+
+--=20
+Tom
+
+--9oR5kehjwfSOVgAj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTzzqh0PWDgGS+bTHor4qD1Cr/kCgUCaPvAcgAKCRAr4qD1Cr/k
+Cl0JAQCUcCV+kUm96vHRiAbLB20hAwcJt3oIn8U3QBbLUjGHMAEA+21ItWi4sJ9d
+t7aKVsKPX8WICEe/+i8LMaUG1P0v5AQ=
+=ytOr
+-----END PGP SIGNATURE-----
+
+--9oR5kehjwfSOVgAj--
 
