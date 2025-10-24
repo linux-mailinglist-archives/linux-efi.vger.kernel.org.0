@@ -1,78 +1,80 @@
-Return-Path: <linux-efi+bounces-5118-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5119-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A73AC0411D
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 04:01:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D112FC04FB3
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 10:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4993A4F31
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 02:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857BC1891945
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 08:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12201C860C;
-	Fri, 24 Oct 2025 02:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00E0301497;
+	Fri, 24 Oct 2025 08:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WI0/Hv9L"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dWPRyjwd"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFB61547C9;
-	Fri, 24 Oct 2025 02:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156122ED165;
+	Fri, 24 Oct 2025 08:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761271293; cv=none; b=ZD3t7MY71z2z6Y8Si2F9GVorpy0hokTWFXbaHoknoDvyYJ4XFYR80JeowyLZ8a9PJHC0hfDLHBiaSWB3ob2udMpwgzsTmWUb8wBmnn4Dbcs6Cwl+nfmVDjzYEv859zlN2aPoi3HqqmPuWlbTYodyWg94OTmab62fwiiXAIQ5/Ys=
+	t=1761293285; cv=none; b=d3ekY9EKO2YX3zKkW2k5A1thO+J3Ugi4Ez64LaP3+MP3z6ann6ILjcwUxIpItLzUYRNlmgCmwOLzeyiNGx75zInVOQGRjMv2JxPnVT3LwvbA/9aPyU3rrSZlvHnFPGW/8dZnVn07/ctoXmLFLohcoB/7afDKnZu9qtOLpGkowZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761271293; c=relaxed/simple;
-	bh=5pwkoiBgdK2A6PK3Fa1FU55/2aVLhOmwvVBgWWXu0Ec=;
+	s=arc-20240116; t=1761293285; c=relaxed/simple;
+	bh=oEStOdqPKkYmMdtBrnXaFxilbVoDVz48fbZzqOt555s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ln/RG3bFs+SHkX7dtTdIrHFJqPQ7luK5xbVE2HlFXsOF7m0SfTmGoanE118PZhKhYxcYku9nTXksBiz/3VlvrLRLLv2T4eP831AYRjDirVpLw0blQnlBiDQrYbQRKm8gmvtlRNSu5ytAh8rj0TCzkJ/kKXaFcdlypzUP/mPRRbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WI0/Hv9L; arc=none smtp.client-ip=192.198.163.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=jXQyOp/lmNgDJ1uQsGcebP6+2IrKRSUqDAF7lfdNq1rUW3NZUCPSrLCie9DroChLy3Fr5HwN/tidVBHufn10qzxuuVXjtH/bWe+MJAePUwNVdM7c+zllGe3QNZEkm+TuA+fjibdqhnNEab8CB3jSlkC2kk9jSG2HbBNYjgERbHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dWPRyjwd; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761271292; x=1792807292;
+  t=1761293284; x=1792829284;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=5pwkoiBgdK2A6PK3Fa1FU55/2aVLhOmwvVBgWWXu0Ec=;
-  b=WI0/Hv9LJqhNmnU6Rmp5FigC4LA8dvBeGj3vLlvnmjqyBkdQtG1vxAGr
-   9jUJG95kxbPdszmmEs1peKCh0ZqHo5sf7bHqR4uf1TsyA8XU7c3vWmJ1H
-   g2SzX6tFknX09HMeFqGUNwyhoIzFzVcMpc/CpGeFqMw732ka5les8/4WL
-   gdSHsA04dRR4dDqPvr2+PBOEmsgDaPETLHCICP7ggIABRq1rvo/M+vcyY
-   +04tvrMkDAVqxwdk3jBzQXwKYtzxz/19fd4w3HdHdc9lPATtGJXo0dH8I
-   j5QIFSfJ7J8yWtmADkC4KM/E9X6UbOuhu9eUb0aJxTWhSJGIP88NTlkfM
-   g==;
-X-CSE-ConnectionGUID: BoMrr/a/RaudTwu4CBjCRw==
-X-CSE-MsgGUID: YmDb5KjTQ3mSFwdCAW5HFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74056497"
+  bh=oEStOdqPKkYmMdtBrnXaFxilbVoDVz48fbZzqOt555s=;
+  b=dWPRyjwdMz52Ed2JFL5umSrFz0ZphmdiR022ZhIkcmbrWS0Gne8wmZ7V
+   2iqa3lhD/D9fvvMirXtnSf98wypWZVs6xYM+UjOfODzjnJ5ZX0Hb3No6k
+   CGmNx6G83ZHWgl1AvbZdMFUzYHTTGjadY5gzwZwBRwbfTiXYHyQDIlmF2
+   wbuouCZh59BqQFoLqkQAqe2+lkrE/Wy0cfHkU7pLHdkNVjIfb5mNIA3ln
+   rL58qTYV8vF9Vrkhr6EbdzwFEtnkkCdF04j/D/VEwP2OT1/VWRivpdi01
+   Lvtj5YG2w8r9CyAvUS2hvEo5o3M9pg12cuCLI8BUOyg1snQ+3Pvsihhvr
+   w==;
+X-CSE-ConnectionGUID: nKCIXGf6QY6CvuRHAqw0Vw==
+X-CSE-MsgGUID: q7GLBxLgQNm1Ox861YOO+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62681921"
 X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; 
-   d="scan'208";a="74056497"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 19:01:31 -0700
-X-CSE-ConnectionGUID: zmw9kKYaQUyvy5/SdWeQwA==
-X-CSE-MsgGUID: IZTmjtlYQNu3Pkpb2yJCJg==
+   d="scan'208";a="62681921"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 01:08:03 -0700
+X-CSE-ConnectionGUID: 4juy8i/pQa6vC/c6R6Heng==
+X-CSE-MsgGUID: kpUR26MhQeOxRV6p20pF0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; 
-   d="scan'208";a="189439272"
 Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 23 Oct 2025 19:01:29 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 24 Oct 2025 01:07:59 -0700
 Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1vC77O-000E5J-2l;
-	Fri, 24 Oct 2025 02:01:26 +0000
-Date: Fri, 24 Oct 2025 10:00:52 +0800
+	id 1vCCq5-000EJt-12;
+	Fri, 24 Oct 2025 08:07:57 +0000
+Date: Fri, 24 Oct 2025 16:07:35 +0800
 From: kernel test robot <lkp@intel.com>
-To: Qiang Ma <maqianga@uniontech.com>, ardb@kernel.org,
-	linux@armlinux.org.uk
-Cc: oe-kbuild-all@lists.linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Qiang Ma <maqianga@uniontech.com>
-Subject: Re: [PATCH 2/2] efi/arm*: Remove the useless failure return message
- print
-Message-ID: <202510240949.NKb4ca96-lkp@intel.com>
-References: <20251023082129.75612-2-maqianga@uniontech.com>
+To: Usama Arif <usamaarif642@gmail.com>, dwmw@amazon.co.uk,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, ardb@kernel.org, hpa@zytor.com
+Cc: oe-kbuild-all@lists.linux.dev, x86@kernel.org, apopple@nvidia.com,
+	thuth@redhat.com, nik.borisov@suse.com, kas@kernel.org,
+	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	kernel-team@meta.com, Usama Arif <usamaarif642@gmail.com>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>
+Subject: Re: [PATCH 1/3] x86/boot: Fix page table access in 5-level to
+ 4-level paging transition
+Message-ID: <202510241522.uU9W0Xbv-lkp@intel.com>
+References: <20251022220755.1026144-2-usamaarif642@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -81,71 +83,127 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251023082129.75612-2-maqianga@uniontech.com>
+In-Reply-To: <20251022220755.1026144-2-usamaarif642@gmail.com>
 
-Hi Qiang,
+Hi Usama,
 
-kernel test robot noticed the following build warnings:
+kernel test robot noticed the following build errors:
 
-[auto build test WARNING on efi/next]
-[also build test WARNING on linus/master v6.18-rc2 next-20251023]
+[auto build test ERROR on tip/x86/core]
+[also build test ERROR on tip/master efi/next linus/master v6.18-rc2 next-20251024]
+[cannot apply to tip/auto-latest]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Qiang-Ma/efi-arm-Remove-the-useless-failure-return-message-print/20251023-162558
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-patch link:    https://lore.kernel.org/r/20251023082129.75612-2-maqianga%40uniontech.com
-patch subject: [PATCH 2/2] efi/arm*: Remove the useless failure return message print
-config: arm64-randconfig-001-20251024 (https://download.01.org/0day-ci/archive/20251024/202510240949.NKb4ca96-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251024/202510240949.NKb4ca96-lkp@intel.com/reproduce)
+url:    https://github.com/intel-lab-lkp/linux/commits/Usama-Arif/x86-boot-Fix-page-table-access-in-5-level-to-4-level-paging-transition/20251023-061048
+base:   tip/x86/core
+patch link:    https://lore.kernel.org/r/20251022220755.1026144-2-usamaarif642%40gmail.com
+patch subject: [PATCH 1/3] x86/boot: Fix page table access in 5-level to 4-level paging transition
+config: x86_64-buildonly-randconfig-004-20251024 (https://download.01.org/0day-ci/archive/20251024/202510241522.uU9W0Xbv-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251024/202510241522.uU9W0Xbv-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510240949.NKb4ca96-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510241522.uU9W0Xbv-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
-   drivers/firmware/efi/arm-runtime.c: In function 'efi_virtmap_init':
->> drivers/firmware/efi/arm-runtime.c:62:7: warning: unused variable 'ret' [-Wunused-variable]
-      int ret;
-          ^~~
->> drivers/firmware/efi/arm-runtime.c:61:15: warning: unused variable 'phys' [-Wunused-variable]
-      phys_addr_t phys = md->phys_addr;
-                  ^~~~
+   arch/x86/boot/compressed/pgtable_64.c: In function 'configure_5level_paging':
+>> arch/x86/boot/compressed/pgtable_64.c:185:35: error: implicit declaration of function 'pgd_val' [-Wimplicit-function-declaration]
+     185 |                 new_cr3 = (u64 *)(pgd_val(pgdp[0]) & PTE_PFN_MASK);
+         |                                   ^~~~~~~
 
 
-vim +/ret +62 drivers/firmware/efi/arm-runtime.c
+vim +/pgd_val +185 arch/x86/boot/compressed/pgtable_64.c
 
-9d80448ac92b720 Ard Biesheuvel 2016-08-16  51  
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  52  static bool __init efi_virtmap_init(void)
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  53  {
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  54  	efi_memory_desc_t *md;
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  55  
-f7d924894265794 Ard Biesheuvel 2015-11-30  56  	efi_mm.pgd = pgd_alloc(&efi_mm);
-d1eb98143c56f24 Ard Biesheuvel 2017-03-01  57  	mm_init_cpumask(&efi_mm);
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  58  	init_new_context(NULL, &efi_mm);
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  59  
-78ce248faa3c46e Matt Fleming   2016-04-25  60  	for_each_efi_memory_desc(md) {
-f7d924894265794 Ard Biesheuvel 2015-11-30 @61  		phys_addr_t phys = md->phys_addr;
-f7d924894265794 Ard Biesheuvel 2015-11-30 @62  		int ret;
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  63  
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  64  		if (!(md->attribute & EFI_MEMORY_RUNTIME))
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  65  			continue;
-37926f96302d8b6 Ard Biesheuvel 2022-10-20  66  		if (md->virt_addr == U64_MAX)
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  67  			return false;
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  68  
-73fefd7f81521c6 Qiang Ma       2025-10-23  69  		efi_create_mapping(&efi_mm, md);
-789957ef72f976c Ard Biesheuvel 2016-04-25  70  	}
-789957ef72f976c Ard Biesheuvel 2016-04-25  71  
-789957ef72f976c Ard Biesheuvel 2016-04-25  72  	if (efi_memattr_apply_permissions(&efi_mm, efi_set_mapping_permissions))
-789957ef72f976c Ard Biesheuvel 2016-04-25  73  		return false;
-789957ef72f976c Ard Biesheuvel 2016-04-25  74  
-789957ef72f976c Ard Biesheuvel 2016-04-25  75  	return true;
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  76  }
-e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  77  
+   101	
+   102	asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
+   103	{
+   104		void (*toggle_la57)(void *cr3);
+   105		bool l5_required = false;
+   106	
+   107		/* Initialize boot_params. Required for cmdline_find_option_bool(). */
+   108		sanitize_boot_params(bp);
+   109		boot_params_ptr = bp;
+   110	
+   111		/*
+   112		 * Check if LA57 is desired and supported.
+   113		 *
+   114		 * There are several parts to the check:
+   115		 *   - if user asked to disable 5-level paging: no5lvl in cmdline
+   116		 *   - if the machine supports 5-level paging:
+   117		 *     + CPUID leaf 7 is supported
+   118		 *     + the leaf has the feature bit set
+   119		 */
+   120		if (!cmdline_find_option_bool("no5lvl") &&
+   121		    native_cpuid_eax(0) >= 7 && (native_cpuid_ecx(7) & BIT(16))) {
+   122			l5_required = true;
+   123	
+   124			/* Initialize variables for 5-level paging */
+   125			__pgtable_l5_enabled = 1;
+   126			pgdir_shift = 48;
+   127			ptrs_per_p4d = 512;
+   128		}
+   129	
+   130		/*
+   131		 * The trampoline will not be used if the paging mode is already set to
+   132		 * the desired one.
+   133		 */
+   134		if (l5_required == !!(native_read_cr4() & X86_CR4_LA57))
+   135			return;
+   136	
+   137		trampoline_32bit = (unsigned long *)find_trampoline_placement();
+   138	
+   139		/* Preserve trampoline memory */
+   140		memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
+   141	
+   142		/* Clear trampoline memory first */
+   143		memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
+   144	
+   145		/* Copy trampoline code in place */
+   146		toggle_la57 = memcpy(trampoline_32bit +
+   147				TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
+   148				&trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
+   149	
+   150		/*
+   151		 * Avoid the need for a stack in the 32-bit trampoline code, by using
+   152		 * LJMP rather than LRET to return back to long mode. LJMP takes an
+   153		 * immediate absolute address, which needs to be adjusted based on the
+   154		 * placement of the trampoline.
+   155		 */
+   156		*(u32 *)((u8 *)toggle_la57 + trampoline_ljmp_imm_offset) +=
+   157							(unsigned long)toggle_la57;
+   158	
+   159		/*
+   160		 * The code below prepares page table in trampoline memory.
+   161		 *
+   162		 * The new page table will be used by trampoline code for switching
+   163		 * from 4- to 5-level paging or vice versa.
+   164		 */
+   165	
+   166		if (l5_required) {
+   167			/*
+   168			 * For 4- to 5-level paging transition, set up current CR3 as
+   169			 * the first and the only entry in a new top-level page table.
+   170			 */
+   171			*trampoline_32bit = __native_read_cr3() | _PAGE_TABLE_NOENC;
+   172		} else {
+   173			u64 *new_cr3;
+   174			pgd_t *pgdp;
+   175	
+   176			/*
+   177			 * For 5- to 4-level paging transition, copy page table pointed
+   178			 * by first entry in the current top-level page table as our
+   179			 * new top-level page table.
+   180			 *
+   181			 * We cannot just point to the page table from trampoline as it
+   182			 * may be above 4G.
+   183			 */
+   184			pgdp = (pgd_t *)read_cr3_pa();
+ > 185			new_cr3 = (u64 *)(pgd_val(pgdp[0]) & PTE_PFN_MASK);
 
 -- 
 0-DAY CI Kernel Test Service
