@@ -1,144 +1,153 @@
-Return-Path: <linux-efi+bounces-5117-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5118-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB5DC03A6B
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 00:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A73AC0411D
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 04:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD3E23B6857
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Oct 2025 22:15:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4993A4F31
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 02:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42795299A8A;
-	Thu, 23 Oct 2025 22:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12201C860C;
+	Fri, 24 Oct 2025 02:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jxMkMj1q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WI0/Hv9L"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71956287503
-	for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 22:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFB61547C9;
+	Fri, 24 Oct 2025 02:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761257712; cv=none; b=jN3VbhDLHASfwSU9C3lOrq69IcLYBqMZBCluXmow4Cu6kahV2VhJJMuuempOB7vV8thpjTGJPugiaihlT1eqKFKpcM9dQYqCTN61iD5ZJmruTrY9V6PIGX2CuoHCj0fpBmyHuHZgbQSxNzeOYfNwLSk0nTbloC01gZDCnRBQ57A=
+	t=1761271293; cv=none; b=ZD3t7MY71z2z6Y8Si2F9GVorpy0hokTWFXbaHoknoDvyYJ4XFYR80JeowyLZ8a9PJHC0hfDLHBiaSWB3ob2udMpwgzsTmWUb8wBmnn4Dbcs6Cwl+nfmVDjzYEv859zlN2aPoi3HqqmPuWlbTYodyWg94OTmab62fwiiXAIQ5/Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761257712; c=relaxed/simple;
-	bh=oMC6wy7M+wMo//fYy0JBO3dAoVtDmXvF979orUPQy2o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NktRS3v8r638N4kcw8sF/0IYlgTP4RLzYYduMQAu5GR4zk5aBaJytNJ+p+/BpOs+CM7CAbGdaTG/GqG4IgNufE57Joi0ZzxQzpE9i2kP9sNpGBhvYruqFdFLL7InoJjsuEvJELbH4NsoA+N6u+4VAt+omI2ncv4AfmJOhcBjVd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jxMkMj1q; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47106fc51faso17564645e9.0
-        for <linux-efi@vger.kernel.org>; Thu, 23 Oct 2025 15:15:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761257708; x=1761862508; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1abuvR+39U4BCu0WtCZb5wERbUtkhCRp5Ltmqxnu5wU=;
-        b=jxMkMj1qnVPOVHELxpQNQuZ57xzrFsX1ygqYr66Z+9Lp6pdXa/w6V2/BDJZCX+w63e
-         3jFptB4QqpuCRfG36RlJkU+EwRmUbZCzYUmeWhe6cvcxDR9uXRz+AFLNr3/pOTIjyVaG
-         3zSnMLfqg4iGK5hvWnT/6zHGEks5edxBwfnn++MuSqfZ1/UXQtLDfAl1r9yxIUVLD0yR
-         XPjpqyhnRhC5/0Qb1Xc4Y738e93ce9h/E8o2yqUnZlLxQEM+pmgWlFvQTANzZCI1olew
-         krAXtkjR3NrzaIkLU4B/KtTueE66dCxVAzAh5eJrne2IwbnbvXH/Q5+tNREffU6XdSRh
-         K9+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761257708; x=1761862508;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1abuvR+39U4BCu0WtCZb5wERbUtkhCRp5Ltmqxnu5wU=;
-        b=uRThZSKxPcV9tSFHKNiDe88BwG5l6MDko5hDkfnjLtgDnmHFRa6fev4XHhlpXsR3uD
-         Sz1L2R/Sjtcw3wTb1Mu0aNnTvigKzHUlVSNXwA71TQqTAzsB/gYsQGNEKnq8eVE/ozFL
-         A51bltp9fRrELbEcvV2Ch9FEmCvupiDn4Fh44Lh1ID9UB1hx0usJsiHOBIchnW58fg+k
-         tPzCD0ORwWn0EHXeyDugjWPCIvkVLsMWrYlVSGRgQXArx3Qs2A+buMxVKsjKdBX/4ZDN
-         eZRFI2XDXeuXDr5ckKhG9O8zX27yNPO8BwXEQVTsHCAizjMuB4r9uPjWjFNkAQvYhGaE
-         YBvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyODcHNLgmTfbPlb9dcqqPb5q6o1Q7WFuFHc3jCV3FxIbz5IZ3YDdzC5gMw/oMYjmEUFL43kLEDPM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzseKRmtLO8WTf5atpKffl0qGB5fTVdSFQEc1lmmaL5ljIUwGFb
-	GhdFKkmY66Da01Y/VBAzKfjLYV0Y7ekjKBhsP21k4BhOdajAB1FB8rse
-X-Gm-Gg: ASbGnct9YIcvbVeo6k5Ox9Mbkypy0/mRlMjH+LWtJ/yYeXwu9T7Ftlo3fKeZbUQ99l4
-	zBh+3s0mXILcbwJhCqGScOxWjv2ut4zKkRWf1wgQLfxPvyDs8lyjXr8illx8ltRW+Eaz/sjxOYf
-	3m7WFNglE4x2CpAMAARUbv8/0t02rYeYBQHaz8K703lLLfg86QgLOyI7Dq8/J60fRSrIieH5daF
-	SNFKWNX5t8sh0k0etRKL7rQmSZ9iYjrvjEQ66ZFnhz2gMbwsrGKfpfhzO6dmXtEDOYiokL6Cpof
-	04S2RIojicqpm8YPr23wQOLiKLfpNao2TQoXFOa5ehL6/igzmQzMtQdD/5dDX/MOILV9tCnusSl
-	UYfV9Vv2WCPdyX+cWKD0tZzPnNgzDOE9ozKXv7Bzw+f5qTt7DNk9BCq3yiQpcNf3zzFNH6kBh90
-	CGMoLO8qXu8j9h8FMjcc48oTD/PdWVWHxJ+BrbJx+7vIYXZljB8N5Z/W7+lQBD11h7uNIpoXzbl
-	uVMGW+bIbiogIDgvA==
-X-Google-Smtp-Source: AGHT+IFS7PDCwmJhO3e+p4QIOGLQwGY2qQkayzEzWyhN9VeP5ssAW+SKTxC3iyMEa6P7uWMGnmHlhg==
-X-Received: by 2002:a05:600c:871a:b0:471:14f5:124e with SMTP id 5b1f17b1804b1-4711791ef9bmr194221505e9.35.1761257707419;
-        Thu, 23 Oct 2025 15:15:07 -0700 (PDT)
-Received: from ?IPV6:2001:16a2:cca1:5f00:4fa:aca1:dd42:a7f1? ([2001:16a2:cca1:5f00:4fa:aca1:dd42:a7f1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475caf4642fsm55222625e9.17.2025.10.23.15.15.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 15:15:06 -0700 (PDT)
-Message-ID: <b0c0cd4f-91c9-4bbd-a93f-34b8472c218b@gmail.com>
-Date: Fri, 24 Oct 2025 01:15:03 +0300
+	s=arc-20240116; t=1761271293; c=relaxed/simple;
+	bh=5pwkoiBgdK2A6PK3Fa1FU55/2aVLhOmwvVBgWWXu0Ec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ln/RG3bFs+SHkX7dtTdIrHFJqPQ7luK5xbVE2HlFXsOF7m0SfTmGoanE118PZhKhYxcYku9nTXksBiz/3VlvrLRLLv2T4eP831AYRjDirVpLw0blQnlBiDQrYbQRKm8gmvtlRNSu5ytAh8rj0TCzkJ/kKXaFcdlypzUP/mPRRbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WI0/Hv9L; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761271292; x=1792807292;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5pwkoiBgdK2A6PK3Fa1FU55/2aVLhOmwvVBgWWXu0Ec=;
+  b=WI0/Hv9LJqhNmnU6Rmp5FigC4LA8dvBeGj3vLlvnmjqyBkdQtG1vxAGr
+   9jUJG95kxbPdszmmEs1peKCh0ZqHo5sf7bHqR4uf1TsyA8XU7c3vWmJ1H
+   g2SzX6tFknX09HMeFqGUNwyhoIzFzVcMpc/CpGeFqMw732ka5les8/4WL
+   gdSHsA04dRR4dDqPvr2+PBOEmsgDaPETLHCICP7ggIABRq1rvo/M+vcyY
+   +04tvrMkDAVqxwdk3jBzQXwKYtzxz/19fd4w3HdHdc9lPATtGJXo0dH8I
+   j5QIFSfJ7J8yWtmADkC4KM/E9X6UbOuhu9eUb0aJxTWhSJGIP88NTlkfM
+   g==;
+X-CSE-ConnectionGUID: BoMrr/a/RaudTwu4CBjCRw==
+X-CSE-MsgGUID: YmDb5KjTQ3mSFwdCAW5HFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74056497"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; 
+   d="scan'208";a="74056497"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 19:01:31 -0700
+X-CSE-ConnectionGUID: zmw9kKYaQUyvy5/SdWeQwA==
+X-CSE-MsgGUID: IZTmjtlYQNu3Pkpb2yJCJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; 
+   d="scan'208";a="189439272"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa005.jf.intel.com with ESMTP; 23 Oct 2025 19:01:29 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vC77O-000E5J-2l;
+	Fri, 24 Oct 2025 02:01:26 +0000
+Date: Fri, 24 Oct 2025 10:00:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Qiang Ma <maqianga@uniontech.com>, ardb@kernel.org,
+	linux@armlinux.org.uk
+Cc: oe-kbuild-all@lists.linux.dev, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Qiang Ma <maqianga@uniontech.com>
+Subject: Re: [PATCH 2/2] efi/arm*: Remove the useless failure return message
+ print
+Message-ID: <202510240949.NKb4ca96-lkp@intel.com>
+References: <20251023082129.75612-2-maqianga@uniontech.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] x86/mm: Move _PAGE_BIT_NOPTISHADOW from bit 58 to bit
- 9
-Content-Language: en-GB
-To: Dave Hansen <dave.hansen@intel.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: dwmw@amazon.co.uk, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, ardb@kernel.org, hpa@zytor.com, x86@kernel.org,
- apopple@nvidia.com, thuth@redhat.com, nik.borisov@suse.com,
- linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
- kernel-team@meta.com, Michael van der Westhuizen <rmikey@meta.com>,
- Tobias Fleig <tfleig@meta.com>, Breno Leitao <leitao@debian.org>
-References: <20251022220755.1026144-1-usamaarif642@gmail.com>
- <20251022220755.1026144-4-usamaarif642@gmail.com>
- <98bc658f-2ec6-43f5-a7e1-e9424450a850@intel.com>
- <797c78f4-1a90-42da-9fed-e87682456a43@gmail.com>
- <90047889-3b90-4c6a-90ed-f155c92f7ce1@intel.com>
- <yv2sjut5urpzz426z4wmufshbron35ohwtqk6jzun46elbcqtf@3z54nh33yl4m>
- <49769803-ad4a-4e15-a691-fd512b667ade@intel.com>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <49769803-ad4a-4e15-a691-fd512b667ade@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023082129.75612-2-maqianga@uniontech.com>
+
+Hi Qiang,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on efi/next]
+[also build test WARNING on linus/master v6.18-rc2 next-20251023]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Qiang-Ma/efi-arm-Remove-the-useless-failure-return-message-print/20251023-162558
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+patch link:    https://lore.kernel.org/r/20251023082129.75612-2-maqianga%40uniontech.com
+patch subject: [PATCH 2/2] efi/arm*: Remove the useless failure return message print
+config: arm64-randconfig-001-20251024 (https://download.01.org/0day-ci/archive/20251024/202510240949.NKb4ca96-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251024/202510240949.NKb4ca96-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510240949.NKb4ca96-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/firmware/efi/arm-runtime.c: In function 'efi_virtmap_init':
+>> drivers/firmware/efi/arm-runtime.c:62:7: warning: unused variable 'ret' [-Wunused-variable]
+      int ret;
+          ^~~
+>> drivers/firmware/efi/arm-runtime.c:61:15: warning: unused variable 'phys' [-Wunused-variable]
+      phys_addr_t phys = md->phys_addr;
+                  ^~~~
 
 
+vim +/ret +62 drivers/firmware/efi/arm-runtime.c
 
-On 23/10/2025 16:12, Dave Hansen wrote:
-> On 10/23/25 07:24, Kiryl Shutsemau wrote:
->> The last patch allows us to only update the kernel that has 5-level
->> paging enabled, making it much easier logistically.
->>
->> The fix seems trivial, and I don't see any downsides.
-> 
-> What I'm hearing is: Please change mainline so $COMPANY can do fewer
-> backports.
-> 
+9d80448ac92b720 Ard Biesheuvel 2016-08-16  51  
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  52  static bool __init efi_virtmap_init(void)
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  53  {
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  54  	efi_memory_desc_t *md;
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  55  
+f7d924894265794 Ard Biesheuvel 2015-11-30  56  	efi_mm.pgd = pgd_alloc(&efi_mm);
+d1eb98143c56f24 Ard Biesheuvel 2017-03-01  57  	mm_init_cpumask(&efi_mm);
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  58  	init_new_context(NULL, &efi_mm);
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  59  
+78ce248faa3c46e Matt Fleming   2016-04-25  60  	for_each_efi_memory_desc(md) {
+f7d924894265794 Ard Biesheuvel 2015-11-30 @61  		phys_addr_t phys = md->phys_addr;
+f7d924894265794 Ard Biesheuvel 2015-11-30 @62  		int ret;
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  63  
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  64  		if (!(md->attribute & EFI_MEMORY_RUNTIME))
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  65  			continue;
+37926f96302d8b6 Ard Biesheuvel 2022-10-20  66  		if (md->virt_addr == U64_MAX)
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  67  			return false;
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  68  
+73fefd7f81521c6 Qiang Ma       2025-10-23  69  		efi_create_mapping(&efi_mm, md);
+789957ef72f976c Ard Biesheuvel 2016-04-25  70  	}
+789957ef72f976c Ard Biesheuvel 2016-04-25  71  
+789957ef72f976c Ard Biesheuvel 2016-04-25  72  	if (efi_memattr_apply_permissions(&efi_mm, efi_set_mapping_permissions))
+789957ef72f976c Ard Biesheuvel 2016-04-25  73  		return false;
+789957ef72f976c Ard Biesheuvel 2016-04-25  74  
+789957ef72f976c Ard Biesheuvel 2016-04-25  75  	return true;
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  76  }
+e5bc22a42e4d46c Ard Biesheuvel 2015-11-30  77  
 
-Not at all! Very happy to do the backports (will probably end up doing anyways).
-They apply very cleanly annd are easy to do.
-
-The issue is trying to deploy a kernel with 5-level table. This problem would be encountered
-by anyone that has a medium to large number of machines to manage. 
-Kiryl made a good point about crash kernels, but also medium to large fleets are very
-dynamic. Old kernels remain for some time for a variety of reasons. And once you have
-to kexec into an older kernel that doesnt have patches 1 and 2, it just doesn't work.
-
-The only reason I mentioned live-patch is because that is the only way I know that can
-be used to fix a problem like this and not have patch 3. But even if they were live patchable
-not every uses it.
-
-It would be nice to have patch 3 in upstream, as I would imagine it would make
-life easier for a lot of people when they upgrade their kernel past 6.15 (when the defconfig
-option to switch to 4 level was removed). We know of the problem, so we can mitigate it,
-but I would imagine a lot of people won't. The bug was found when we tried upgrading
-to 6.16, and kexec was breaking when downgrading. It took quite a while to find the bug
-as prints don't work in this part of the code, so I think this patch might just save others
-the trouble of going through the whole debugging process. 
-
-If there is a strong preference to drop patch 3, I will remove it in the next revision.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
