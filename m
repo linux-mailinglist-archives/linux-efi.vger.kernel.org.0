@@ -1,181 +1,175 @@
-Return-Path: <linux-efi+bounces-5121-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5122-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B03C056B7
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 11:48:36 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C592C056C3
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 11:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CC9A1B86D04
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 09:49:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D5FB5348C81
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Oct 2025 09:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3078D30CD8D;
-	Fri, 24 Oct 2025 09:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE4C30BB97;
+	Fri, 24 Oct 2025 09:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tso8acEI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmfdGp0v"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB0823D7D1
-	for <linux-efi@vger.kernel.org>; Fri, 24 Oct 2025 09:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288D630B51B
+	for <linux-efi@vger.kernel.org>; Fri, 24 Oct 2025 09:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761299252; cv=none; b=WjNp3pukbaX+ecwiifc+4GB4saLBUj5/M6Dob8FjDmAd3ItCGcA4IK8s6QlLU0FYX8h6QBINRU9qFKdK05KHXfej+s8s3PQNaLwWLIIbO8v3e5sj0AIzb6Xsc50F/nA6tZiD9i5Fx0VZ8kmPK2+a2mhQdlzBER1xwF/Gn2ei8IM=
+	t=1761299368; cv=none; b=nTeKWDH9rCVmkU9A/FxeoY7q1ta/R+c+d6mll/mrDaaGk8Z5JUn+Y9T4v5cc3ifp7uAdmZRKJRfu3Zr+/Uql3N0u6q/WtYfwpjPVnuI3Fd1TsN7cldSbJuqE9+J41X07cuOwnJAyvMZ5vRKNtBC6CTh3qLjDq8fCDnwWqWc+1PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761299252; c=relaxed/simple;
-	bh=OVet1b2OltvYAT+J+4amsp/J07NrS8O/OQvynNik4js=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WaNCxZ822JeKiAU8cC3uYNDZxFEEVMB+a2snXQ6OkyxhBvw2aUP9+PGuKjE9WiXsnj6RunYQWM18K/pw+t8GsptDjFJeD7Hn9rHcJ+yl5vcK4emA287kequQ5jM8cPCJUGa1Khr4d5oM8DtblvJH0UTPe1p3xze6+/j9uPtgYJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tso8acEI; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761299248;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ArSephldfLwUPIZOEFTFAJsyT1UDLuvR2xDhoRsVk7I=;
-	b=Tso8acEImYW1u95sTyeLP3vnN4lU4WK0awg5YB9cU+S7D9IbVQRgGnlC0ksfHt9TcW/jlM
-	ghQltQOg9aTjjeCvXIcx6pOLIhyMDsWX24L3+zPHmNkOFhYw38R6K5eq5uXjsAeO64NIbH
-	W/ai1FnTEE9Aqg9fZIVxzxPdLzdX7e0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-541-Kop32N41Me-guANwWpHL3w-1; Fri, 24 Oct 2025 05:47:27 -0400
-X-MC-Unique: Kop32N41Me-guANwWpHL3w-1
-X-Mimecast-MFC-AGG-ID: Kop32N41Me-guANwWpHL3w_1761299246
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47111dc7c35so14622285e9.2
-        for <linux-efi@vger.kernel.org>; Fri, 24 Oct 2025 02:47:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761299246; x=1761904046;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ArSephldfLwUPIZOEFTFAJsyT1UDLuvR2xDhoRsVk7I=;
-        b=CmaHAkwW2mlLqpa4JuHO3R7prklR3fA+xoCuK6NzlstJwqKaAS3xSFioQdJX+4M9xN
-         +xvFRfdL11qoIU/dKoYdupxOPF/tZcVqeuncHBQTZUFpykOUZD4m4K//cpWZv2WjMaT/
-         kbmtLnZTmBNzG19DNPts4C/js00tPKoKcBTlWGdZRWkllIJtW9jwc18/9n8C77P/baGM
-         uTBd6OSkJmuOzrgTLgBgxhwvJG+ZVQw2TlaX5aF92rqylgS3+cwdgOjRj+tA1cnagyWX
-         vSOhyeTCtT+X2ayvL4kCjOX2nMWVM6XUgHOyu2N3HjsJRiH8ys3yrvjljOV6SSS3tfMa
-         FEEQ==
-X-Gm-Message-State: AOJu0YytAfHmMq37DoNR3HQ4msgQ+oA92YDL75J7mmzLCJ60QOw21Dh+
-	OWeDJVXHWLF7NstPBJNlWW7lP2YIG2LGW1BonraqRqQLUYkq4kyC6KU9Ka0sP1wEy4qMLs5J24O
-	dd3CJdFJSMFj+4IG9fUh8l1ZSYOvtyBh/Fc+RrYywL1S+apmDsNUQg3rTJCdWLA==
-X-Gm-Gg: ASbGnctfT6mvkGdDSEBr7RkXhJCYreHtQS3Iy5WRLnB1hwUhxufLGtKrQn+emX58VLu
-	3TuHeezTCexZbu/pJ5IXDr3QTJV2OSvLK66Un9PgPZgw8ZyvdvXikaX14b4R7A9CTA9jND4CnG/
-	8sIO7NIFuCR6yLqhyzbY8uqIwiyZ1q6X2XockeiLsEVkfsmhre/c4LEbI4cpGPXX4LVZHl97fgD
-	7blN3xzPp1l7zK4/hIugFX1CuhorZIz/BpBaw5U+3FM4Mpt3yoDT/eK6Iiimo8iH+gGwTGNd0fL
-	38iu4fjd3J+T2KrwA5C6PXjTx7gmDiBbBtq6hCnZv/TJU66dQYuNat3ME4he3fRwdgZTmFFVwg+
-	z1Li3JDQmii5y0ESM63L0CN68eaCjEvTUUqHSJhrog8VwPw+gBr9eQ3+kFg==
-X-Received: by 2002:a05:600c:628f:b0:46f:b32e:5292 with SMTP id 5b1f17b1804b1-475d2e78ebcmr17247995e9.8.1761299246175;
-        Fri, 24 Oct 2025 02:47:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvkiM5n2goHpw250gyY/q1kAO+69ianJVaDlPPHq7N60XvGZtLDRIfaJsJf8t7LldVbkuQMA==
-X-Received: by 2002:a05:600c:628f:b0:46f:b32e:5292 with SMTP id 5b1f17b1804b1-475d2e78ebcmr17247715e9.8.1761299245713;
-        Fri, 24 Oct 2025 02:47:25 -0700 (PDT)
-Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898cce3bsm8302856f8f.38.2025.10.24.02.47.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 02:47:25 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>, ardb@kernel.org, jonathan@marek.ca
-Cc: linux-efi@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH 2/5] efi/libstub: gop: Find GOP handle instead of GOP data
-In-Reply-To: <20251015160816.525825-3-tzimmermann@suse.de>
-References: <20251015160816.525825-1-tzimmermann@suse.de>
- <20251015160816.525825-3-tzimmermann@suse.de>
-Date: Fri, 24 Oct 2025 11:47:24 +0200
-Message-ID: <87wm4k8wcz.fsf@ocarina.mail-host-address-is-not-set>
+	s=arc-20240116; t=1761299368; c=relaxed/simple;
+	bh=+rEgbmUg/T/QmQbXAyRzjpFQS6FK3emL01RgLGpF4yk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QXVM6nmEbbvQG4WJFTBQxzREiJ9LW1ARCA+1lFEcZiQCMa3K7DhCrw1g5i67uzXj5B618kYzEk48GD2j8BFNTrmCJDEdAqmb4DZUlTLjinoST9QJuEx+gQ21c7Kxk2xZoOnN/WX9gb/rPauvBzAB/qu+L6xvwAANz4JkvKfxemI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmfdGp0v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0FAC19423
+	for <linux-efi@vger.kernel.org>; Fri, 24 Oct 2025 09:49:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761299367;
+	bh=+rEgbmUg/T/QmQbXAyRzjpFQS6FK3emL01RgLGpF4yk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=OmfdGp0vNDyyWrNqh8CtsTUNPmZLqV6R707YIIfKgGhPnZpWEKpextUGVrTueOP9o
+	 0dsQoAHP1u0qmDvoxSr6GYJxhvZY77E6bkpKcX5Aa0mN2a48N6E1fTvulvkjBJj6GD
+	 LpMmFl5r462BaXgcHmIa6/r0affuIuU0zfmdNsrWOFt+Z+82revkTYRbleGx5+cIGR
+	 yx1tkMgmBLQVb9BHky+yWmWhXRk6B1d2v+hbPDGqb9x+vYTMbBHDOBkl3vXAIyslXB
+	 E1QgcqkFkiFqAziJco7CxLJQ/MoL8jrCoI8creFMlo4yoBIkbXO3mOn/Re78+x6VlC
+	 445zPB50o3MCw==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-592ee9a16adso3044017e87.0
+        for <linux-efi@vger.kernel.org>; Fri, 24 Oct 2025 02:49:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW4YQG1P2LZ/V2bKDUMKxAsO8JaFibWJ/G0mmJ2OlH0qA6f3TInPZ5qnARm53lSPNmmnTHWBmvlRLI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2qqYPth/H3Jy6QdQTgSVxbPPdczrTcUC+Qr+7sLXl4/IVVq6h
+	vB/LxwPD0fKLOlLm1I0YPcP8mmNgDTwph7zcRwRObLvdMJ/jj2WwXX5/fZO1UO2TpQbGzs3WezQ
+	XMWwmS2d5+wk9iC8SACO2VrF5Lr8kBU0=
+X-Google-Smtp-Source: AGHT+IEM8ITtLMS8DxeBvT6/RmBya3PWaa0XUPnlbL99EeYraeRDcyolno2BS9TfqpcJNo0wZQGPxHyvlXA2cEsbcOw=
+X-Received: by 2002:a05:6512:318b:b0:57d:6fca:f208 with SMTP id
+ 2adb3069b0e04-591d856642dmr9077716e87.45.1761299365868; Fri, 24 Oct 2025
+ 02:49:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <0f006338-e69b-4b3f-b91f-0cc683544011@kernel.org>
+ <20251022114527.618908-1-adriana@arista.com> <20251022201953.GA206947-robh@kernel.org>
+ <CAERbo5z6BzHqQxXdxPxmxE_eDR7GGGbt3A8kB0gQiWFBE-28Ug@mail.gmail.com>
+ <CAMj1kXGYinTKiyYhNYWJvoJeUJScCGnyq=ozLgjKAm7_wzG8QA@mail.gmail.com>
+ <CAERbo5waY-=6BLZ2SiJSFAXzvU57mJdM9q05vAZw8zR2yExQ5w@mail.gmail.com>
+ <CAMj1kXHin5YacS98ttzHqFqy6HMukXKoLZtr-+bLwVRsWZUugQ@mail.gmail.com> <CAERbo5zgS8XoGcFB3wejqDpx14-SBr5oWn7pu3=PE0djRiKZqg@mail.gmail.com>
+In-Reply-To: <CAERbo5zgS8XoGcFB3wejqDpx14-SBr5oWn7pu3=PE0djRiKZqg@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 24 Oct 2025 11:49:13 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEnSKF4VcMdOvUUuM-pOEWB38qPhWvUm13rnkQiZXp6SA@mail.gmail.com>
+X-Gm-Features: AS18NWCrHHLzkvtAZPunKzdDM8HCcW0w6gfwr-1cHOznNZj5IAF1RRNbsGn2J3A
+Message-ID: <CAMj1kXEnSKF4VcMdOvUUuM-pOEWB38qPhWvUm13rnkQiZXp6SA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] DMI: Scan for DMI table from DTS info
+To: Adriana Nicolae <adriana@arista.com>
+Cc: Rob Herring <robh@kernel.org>, krzk@kernel.org, jdelvare@suse.com, 
+	frowand.list@gmail.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, vasilykh@arista.com, arm.ebbr-discuss@arm.com, 
+	boot-architecture@lists.linaro.org, linux-efi@vger.kernel.org, 
+	uefi-discuss@lists.uefi.org, linux-arm-kernel@lists.infradead.org, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
-
-> The device handle of the GOP device is required to retrieve the
-> correct EDID data. Find the handle instead of the GOP data. Still
-> return the GOP data in the function arguments, as we already looked
-> it up.
+On Thu, 23 Oct 2025 at 16:48, Adriana Nicolae <adriana@arista.com> wrote:
 >
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->  drivers/firmware/efi/libstub/gop.c | 27 +++++++++++++++++----------
->  1 file changed, 17 insertions(+), 10 deletions(-)
+> On Thu, Oct 23, 2025 at 4:54=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> =
+wrote:
+> >
+> > (cc Ilias)
+> >
+> > On Thu, 23 Oct 2025 at 15:34, Adriana Nicolae <adriana@arista.com> wrot=
+e:
+> > >
+> > > On Thu, Oct 23, 2025 at 11:21=E2=80=AFAM Ard Biesheuvel <ardb@kernel.=
+org> wrote:
+> > > >
+> > > > On Thu, 23 Oct 2025 at 04:21, Adriana Nicolae <adriana@arista.com> =
+wrote:
+> > > > >
+> > > > > On Wed, Oct 22, 2025 at 11:19=E2=80=AFPM Rob Herring <robh@kernel=
+.org> wrote:
+> > > > > >
+> > > > > > On Wed, Oct 22, 2025 at 04:45:25AM -0700, adriana wrote:
+> > > > > > > Some bootloaders like U-boot, particularly for the ARM archit=
+ecture,
+> > > > > > > provide SMBIOS/DMI tables at a specific memory address. Howev=
+er, these
+> > > > > > > systems often do not boot using a full UEFI environment, whic=
+h means the
+> > > > > > > kernel's standard EFI DMI scanner cannot find these tables.
+> > > > > >
+> > > > > > I thought u-boot is a pretty complete UEFI implementation now. =
+If
+> > > > > > there's standard way for UEFI to provide this, then that's what=
+ we
+> > > > > > should be using. I know supporting this has been discussed in c=
+ontext of
+> > > > > > EBBR spec, but no one involved in that has been CC'ed here.
+> > > > >
+> > > > > Regarding the use of UEFI, the non UEFI boot is used on Broadcom =
+iProc which
+> > > > > boots initially into a Hardware Security Module which validates U=
+-boot and then
+> > > > > loads it. This specific path does not utilize U-Boot's UEFI
+> > > > > implementation or the
+> > > > > standard UEFI boot services to pass tables like SMBIOS.
+> > > > >
+> > > >
+> > > > What prevents this HSM validated copy of u-boot from loading the ke=
+rnel via EFI?
+> > > The vendor's U-Boot configuration for this specific secure boot path
+> > > (involving the
+> > > HSM) explicitly disables the CMD_BOOTEFI option due to security
+> > > mitigations, only
+> > > a subset of U-boot commands are whitelisted. We could patch the U-boo=
+t
+> > > to include
+> > > that but it is preferable to follow the vendor's recommandations and
+> > > just patch U-boot
+> > > to fill that memory location with SMBIOS address or directly with the
+> > > entry point.
+> >
+> > And what security mitigations are deemed needed for the EFI code? You
+> > are aware that avoiding EFI boot means that the booting kernel keeps
+> > all memory protections disabled for longer than it would otherwise. Is
+> > this allowlisting based on simply minimizing the code footprint?
+> >
+> From the information I have, it might be just minimizing the footprint
+> but the vendor's U-Boot configuration for this specific path
+> explicitly disables the CMD_BOOTEFI option. While the vendor cites
+> security mitigations for this configuration, the specific details
+> could be a set of mitigation removing different boot methods and some
+> memory access commands.
 >
-> diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-> index 3785fb4986b4..fd32be8dd146 100644
-> --- a/drivers/firmware/efi/libstub/gop.c
-> +++ b/drivers/firmware/efi/libstub/gop.c
-> @@ -402,12 +402,13 @@ setup_pixel_info(struct screen_info *si, u32 pixels_per_scan_line,
->  	}
->  }
->  
-> -static efi_graphics_output_protocol_t *find_gop(unsigned long num,
-> -						const efi_handle_t handles[])
-> +static efi_handle_t find_handle_with_primary_gop(unsigned long num, const efi_handle_t handles[],
-> +						 efi_graphics_output_protocol_t **found_gop)
->  {
->  	efi_graphics_output_protocol_t *first_gop;
-> -	efi_handle_t h;
-> +	efi_handle_t h, first_gop_handle;
->  
-> +	first_gop_handle = NULL;
->  	first_gop = NULL;
+> The core issue is that this non-EFI boot path is the vendor-validated
+> configuration. Enabling EFI would deviate from this setup, require
+> significant revalidation, and could impact vendor support. Modifying
+> U-Boot to populate the DT is a contained change without modifying the
+> U-boot vendor configuration.
 >
 
-I think the logic of this function could be simplified if you remove some
-of the variables. For example, I don't think you need a fist_gop variable
-anymore now that you are passing a found_gop variable as a function param.
+I'm not sure I follow why changing U-Boot's code would not require
+revalidation if simply changing its build configuration without
+modifying the source code would require that.
 
->  	for_each_efi_handle(h, handles, num) {
-> @@ -442,19 +443,25 @@ static efi_graphics_output_protocol_t *find_gop(unsigned long num,
->  		 */
->  		status = efi_bs_call(handle_protocol, h,
->  				     &EFI_CONSOLE_OUT_DEVICE_GUID, &dummy);
-> -		if (status == EFI_SUCCESS)
-> -			return gop;
-> -
-> -		if (!first_gop)
-> +		if (status == EFI_SUCCESS) {
-> +			if (found_gop)
-> +				*found_gop = gop;
-> +			return h;
-> +		} else if (!first_gop_handle) {
-> +			first_gop_handle = h;
->  			first_gop = gop;
+> Beyond our specific vendor constraints, this DT method might be used
+> by any other non-UEFI arm system needing to expose SMBIOS tables to
+> the kernel.
+>
 
-You can just assign *found_gop = gop here...
-
-> +		}
->  	}
->  
-> -	return first_gop;
-> +	if (found_gop)
-> +		*found_gop = first_gop;
-
-...and then this assignment won't be needed anynmore.
-
-> +	return first_gop_handle;
-
-Also, given that you are calling first_gop_handle to the variable to
-store the first gop handle, I would for consistency name the parameter
-fist_gop and just drop the local variable with the same name.
-
-But I agree with the general logic of the patch, so regardless of what
-you prefer to do:
-
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-
--- 
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
-
+Fair point. So let's do this properly: get buy-in from the U-Boot
+folks and contribute your u-boot changes as well. And ideally, we'd
+get this into the DMTF spec but if you are not set up for that (I
+think you might need to be a member to be able to contribute), we can
+find some ARM folks who are.
 
