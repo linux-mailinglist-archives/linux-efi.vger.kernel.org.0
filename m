@@ -1,100 +1,145 @@
-Return-Path: <linux-efi+bounces-5129-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5130-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF21C0A075
-	for <lists+linux-efi@lfdr.de>; Sat, 25 Oct 2025 23:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEACC0A6B1
+	for <lists+linux-efi@lfdr.de>; Sun, 26 Oct 2025 12:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8DEF1A66E2B
-	for <lists+linux-efi@lfdr.de>; Sat, 25 Oct 2025 21:51:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B3E23AE93E
+	for <lists+linux-efi@lfdr.de>; Sun, 26 Oct 2025 11:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3A2283FEE;
-	Sat, 25 Oct 2025 21:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DE723373D;
+	Sun, 26 Oct 2025 11:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="M7IyTQoS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZO0l5rCu"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CD42AD2F;
-	Sat, 25 Oct 2025 21:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCDF1DA60F
+	for <linux-efi@vger.kernel.org>; Sun, 26 Oct 2025 11:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761429057; cv=none; b=lbAH3EbDfOQJJ8ZrGUotgvUAmRBN/azD+/GeYWSk1q7Y99i13zcwvlGdL65Tz77gsQLuTfC1tyWSFCJWSMIEIROy6JQjj3EKsRMC5XNHSPDim5WXoasMr+fu4cfspHrIPJuzPAj4Jw4Q/e5VaCLu6ztMBedEm3hxVc8R/OeOynM=
+	t=1761477614; cv=none; b=I7EbcTzo/T0ZaCEyRSYbtNpEicbGr85bB4mqUGUAWKyeE55PgBDmf2UvxEp9E/eMTNzMrEIg4ROdqzHrYRka/GnACSVYluv/3hbX8yphXoYVTdpw2X7QqduEfWELOknEQFcp1AWbMfuVsMMB4ypL1fUO33SAPgbXQoryMNHN6GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761429057; c=relaxed/simple;
-	bh=WV6sOsK95CL79pnSDWklrqcJbBh9kw7B+++33ob0zhE=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=VSI+ZqC95H+P+br+Nl9lg36rFKjAAJyfyyhtGB4C3fJox0bLmZNm6S1ujpOQ0kIs2zqqU/q36Y09SYR7WC8pvArQGHaqGB6uD+VZpuKHNJPBucIT0xSnMakFKOzKrW1D0IH69wrLqbRKFgxAp7spNJcf3nakFgF2YcAnjsxAY5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=M7IyTQoS; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from ehlo.thunderbird.net ([172.59.163.204])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59PLoG1S4179485
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sat, 25 Oct 2025 14:50:16 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59PLoG1S4179485
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1761429018;
-	bh=eXQiaXQMBEkffKXwky4JNR+uRHh73bSTtxccDACEux4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=M7IyTQoSCYKp2vhd4FVMOvpoxDSprmjVQjBDad8TG0neqPd1dJLogdJmlkfwB0/zM
-	 7ZdSbTD+ffmRhEB7hQk3DhSLOub/eX6QVXu9SbHz66XeQycmWFnyk8dLduDzmUYNdF
-	 zA/OemUVELrulEMU1bz5Gq05QNoabeBE/CAKLReVVEV5Cya7JbXrH5LjCtvExcbePe
-	 k+zqo09jA+W5Qubulr64zdW+GvUmwRt6g5LV7fq9vJDCl/tnArZKQgh20joJYfMIJW
-	 B8W+clI9xeGbcPyn/JiKbJUzbczRW8Xs15EzsN7EMo3xcLuSxpnHbKLCOjpbO2JcJe
-	 7DcBsl0zTsqQw==
-Date: Sat, 25 Oct 2025 14:50:08 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Dave Hansen <dave.hansen@intel.com>, Usama Arif <usamaarif642@gmail.com>,
-        dwmw@amazon.co.uk, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, ardb@kernel.org
-CC: x86@kernel.org, apopple@nvidia.com, thuth@redhat.com, nik.borisov@suse.com,
-        kas@kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, kernel-team@meta.com,
-        Michael van der Westhuizen <rmikey@meta.com>,
-        Tobias Fleig <tfleig@meta.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/3=5D_x86/boot=3A_Fix_page_table_ac?=
- =?US-ASCII?Q?cess_in_5-level_to_4-level_paging_transition?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <8283c1b6-1487-49e2-b220-7dbd043a2913@intel.com>
-References: <20251022220755.1026144-1-usamaarif642@gmail.com> <20251022220755.1026144-2-usamaarif642@gmail.com> <8283c1b6-1487-49e2-b220-7dbd043a2913@intel.com>
-Message-ID: <7BB09BB9-7034-413B-9FA8-D3FC3EB352D7@zytor.com>
+	s=arc-20240116; t=1761477614; c=relaxed/simple;
+	bh=WXhSsOHYlSratjyBUfDoyHGZ/FPtXvc0lOg0vqlrD54=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hyzBYHbqzgotf3+i4bxxwoHrQmqmNgLe7xRV6sdL382XKo0l477MBT5ls4bt+KZ7fy+67Va8os2U9xajELcLWFRHpbIeR2X8WrO8nCXByh05vQFGQQLupamjuKQYeE76Z5JQ9LE6r8rCafEQpSccjzUR+DqbjX3JRajxSFvHhco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZO0l5rCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39FA2C4CEF1
+	for <linux-efi@vger.kernel.org>; Sun, 26 Oct 2025 11:20:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761477614;
+	bh=WXhSsOHYlSratjyBUfDoyHGZ/FPtXvc0lOg0vqlrD54=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZO0l5rCuPbIC/tMs2ZuC773iICJte/FhCsKJGvRLh/ebR5CG5S+VTY5XG4cXYGP6M
+	 Z/s0dV9b87BHLomxqE3D5UB8YqEJDQMLXCjNhmL9oHg2FyALdelP52uznyqeTRAPMp
+	 oBp5OEhpNRTOVFxf+2szgNMIw5nni1QkLzPtSsAco9J85vpSxJJ18yQu3skkx9ZV48
+	 TeqeJWzUOU+ddhJvY63n21A1GJ/mL1Kp2KEUzUAQcILa1EYMOUZ9Xd4Ih7IKIH87W4
+	 1ZcaMZsEhxOSBXmCN8UXXzR3oP/5iDBxJi5ii6DwIowMZaDj+Q9cssR22TrvUoAcqe
+	 0vAyEzYFx5uSA==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-637e9f9f9fbso6575881a12.0
+        for <linux-efi@vger.kernel.org>; Sun, 26 Oct 2025 04:20:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXx+5U1UZFLHY/rdfBtFMP+vNY8Cgx/5ismW/AvUQyswKpG3NZPGIdbQ/olXqkYkz/hTS4tI1HOCSU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBtvhV+b1ExxK8qJ7M5fQTID5tx8tKt9kin5PGbbTFXT+BG/Cq
+	vvL1Tdg3yupxOyEDbt6BAddk+f1/EygM3DgJsM9E8UeyzEhQi+bPz0Y9IY1xNJZ8pFPhIF0bOmZ
+	0Jy3naxBIyJfsIKF+ursii2G0MGwn5fc=
+X-Google-Smtp-Source: AGHT+IHSStRGe85V7TfWyZyzfF6Ya5hjYUTpONErQ3HLd1kUDYooXBrzJ4vLF95pyPPlWOudi0MNIFeRATeAXFEtvLQ=
+X-Received: by 2002:a05:6402:2554:b0:63e:2d46:cc5d with SMTP id
+ 4fb4d7f45d1cf-63e3dff1673mr10711788a12.7.1761477612710; Sun, 26 Oct 2025
+ 04:20:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <CAAhV-H7HN128du-b1Rk_9qbYBq7gMSwo0s31909N4pTou6wzew@mail.gmail.com>
+ <CAMj1kXGvSnCMRVCW7eAxgLRWMEV3QRj3Dqg3PmZchZJNpnLK9w@mail.gmail.com>
+ <CAAhV-H4UKdso0BokAqvjYeBLr-jbjFAaQX4z=1ztpBamqrOEEg@mail.gmail.com>
+ <CAMj1kXEXDC_oq4aWbkR5dqYBix2d1xJEdaj-v747e1nOA0Q_Yg@mail.gmail.com>
+ <rhnei6wovxmoqs36wdysomfsul3faxtmgde73wrrqdt3qo3b2j@akd7vzne76rq>
+ <CAMj1kXF+hDJy0vRWNgwoijHxvA-scvhGODMj9A3dv19v3jf2yw@mail.gmail.com>
+ <lgyzruqczm7uti2lfbhfhr5hyzpnm7wtvgffa2o7nigx76g6i3@wlffltvmhhez>
+ <CAMj1kXFDquPxCYSBWgjikS=209pSJ_kth67M0RDeuetV9CPYAw@mail.gmail.com>
+ <wlx6pt5crtfdwtop4w5vjznjfarrwitq44wdbufncjdvtsx647@tgobruak66yb>
+ <CAMj1kXFfEBkcc-aiwGrRR-pKg4LBbS7weK0pEpZJsKOk5pbkuA@mail.gmail.com>
+ <jxfb5a2c2qber623l2gwewirwod54bbgfnvt7t7f3jah2ea33g@2uyhy3auzmpx>
+ <d9f3352a-1c1f-464a-a8fd-741cd96b5f8e@loongson.cn> <CAAhV-H6m5vszCyiF3qi94cpHBPVuqM2xH93D=gfsQqOSYvC-sA@mail.gmail.com>
+ <33612d85-e70b-26da-8460-ea6b9064ce08@loongson.cn> <CAAhV-H5ZSTFDxvm-W1CrgEoQ5d_jw5yVsfetQ_J_qL5pqLtzgg@mail.gmail.com>
+ <CAMj1kXGk0udgM67wrWqahqK8H0uE8emQj51SmJey+7fE-FTjdA@mail.gmail.com>
+In-Reply-To: <CAMj1kXGk0udgM67wrWqahqK8H0uE8emQj51SmJey+7fE-FTjdA@mail.gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sun, 26 Oct 2025 19:20:04 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4c=vdNWO0v_mYL2xZ9FYjDyRDvt6f_kV4d8Bh=CRJniQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bnx7p3KGFn8w4CVpWUGoGvdUyYRdpas7DP247MZLQ7EzDz5RnfRwoldkjM
+Message-ID: <CAAhV-H4c=vdNWO0v_mYL2xZ9FYjDyRDvt6f_kV4d8Bh=CRJniQ@mail.gmail.com>
+Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On October 22, 2025 4:16:34 PM PDT, Dave Hansen <dave=2Ehansen@intel=2Ecom>=
- wrote:
->On 10/22/25 15:06, Usama Arif wrote:
->> +		pgdp =3D (pgd_t *)read_cr3_pa();
->> +		new_cr3 =3D (u64 *)(pgd_val(pgdp[0]) & PTE_PFN_MASK);
->> +		memcpy(trampoline_32bit, new_cr3, PAGE_SIZE);
+On Thu, Oct 23, 2025 at 4:07=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
 >
->Heh, somebody like casting, I see!
+> On Thu, 23 Oct 2025 at 10:01, Huacai Chen <chenhuacai@kernel.org> wrote:
+> >
+> > On Thu, Oct 23, 2025 at 2:55=E2=80=AFPM Tiezhu Yang <yangtiezhu@loongso=
+n.cn> wrote:
+> > >
+> > > Hi Josh and Ard,
+> > >
+> > > On 2025/10/20 =E4=B8=8B=E5=8D=882:55, Huacai Chen wrote:
+> > > > On Mon, Oct 20, 2025 at 9:24=E2=80=AFAM Tiezhu Yang <yangtiezhu@loo=
+ngson.cn> wrote:
+> > > >>
+> > > >> Hi Josh, Ard and Huacai,
+> > > >>
+> > > >> On 2025/10/18 =E4=B8=8A=E5=8D=881:05, Josh Poimboeuf wrote:
+> > > >>
+> > > >> ...
+> > > >>
+> > > >>> But IIUC, the libstub code runs *very* early, and wouldn't show u=
+p in a
+> > > >>> stack trace anyway, because there are no traces of it on the stac=
+k once
+> > > >>> it branches to head.S code (which doesn't save the link register)=
+.
+> > > >>
+> > > >> Thanks for your discussions.
+> > > >>
+> > > >> Are you OK with this current patch?
+> > > > For me the current patch is just OK.
+> > >
+> > > We have discussed this a few times but there is almost no consensus
+> > > of what should happen next and nothing changes.
+> > >
+> > > Could you please give me a clear reply? Then I can make progress for
+> > > the following series:
+> > >
+> > > https://lore.kernel.org/loongarch/20250917112716.24415-1-yangtiezhu@l=
+oongson.cn/
+> > For me, this patch is OK, ignore __efistub_ prefix in objtool is also
+> > OK [1]. But I cannot accept the way that modifying the efistub part
+> > only for LoongArch.
+> >
+> > Clear enough?
+> >
 >
->But seriously, read_cr3_pa() should be returning a physical address=2E No=
-?
->Today it does:
->
->static inline unsigned long read_cr3_pa(void)
->{
->        return __read_cr3() & CR3_ADDR_MASK;
->}
->
->So shouldn't CR3_ADDR_MASK be masking out any naughty non-address bits?
->Shouldn't we fix read_cr3_pa() and not do this in its caller?
+> LoongArch is the only architecture which has the problem, so I don't
+> see a reason to modify other architectures.
+From your reply I think the efistub code is completely right, but
+objtool cannot handle the "noreturn" function pointer. And this patch
+is a workaround rather than a proper fix (so you don't want to touch
+other architectures), right?
 
-Ah, the times when one can wish for C++=2E
 
-Too bad they still haven't figured out tagged initializers=2E
+Huacai
 
