@@ -1,51 +1,51 @@
-Return-Path: <linux-efi+bounces-5194-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5195-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A54C14AAD
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Oct 2025 13:40:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD968C14B61
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Oct 2025 13:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91691AA1686
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Oct 2025 12:38:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 584C5348810
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Oct 2025 12:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E965B32D0E7;
-	Tue, 28 Oct 2025 12:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54BE32E12B;
+	Tue, 28 Oct 2025 12:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="keG6XVs4"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Up+wUdpU"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABED32C311;
-	Tue, 28 Oct 2025 12:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C051397;
+	Tue, 28 Oct 2025 12:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761655084; cv=none; b=TlwcOmAwhRuFp3DYrg88lfnBPs6Eiv2etnFWcwRdBCywrOmIRM2sijDmcbUzEMdkDm83zlNw8sNXzSQvW0+CNMTGNtgpz3HIDQo97IM46d44EyIwwTJVg05FXbRdV61dkQNboaCCd92j6XxUjsMoNJ7ujus8cJxUVnVMPGkcP6c=
+	t=1761656030; cv=none; b=Q5r8UcDAnJ316GVC7RwhYjIFU0Qkbo0dvFiWTKLZNPddl4ykNltKJ5Rggj9EpOuYxOuuWZXm2rwhHAmem9GUtaIoWjUp2lfqJlQwDBQngXmvgbDdGZUdIPZJLjFx/U3iRcaxTgVcLZhnDH1ehJceuhZmKkiK57BTTvK2cPiOtLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761655084; c=relaxed/simple;
-	bh=PO5GYW3JRfyGqT//NznkfbFWET3Cuq1GDBXCxKeHqpQ=;
+	s=arc-20240116; t=1761656030; c=relaxed/simple;
+	bh=36eCAB+0sW4xMVrmbFJUt0Jd2fPKRpcz4N2tZkYaW0A=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gpi4wQE9u0VMdZQLXw7qfX408lzGEImhU0bRSBNig+LUPMfYQ/dRExReoCAKxIxWZ+H9c8bDT7pFMN/rNO2R/0Lll/Z9GfkRu2KzWHOyXlTdXaZ3wZUM/lO5tBoWPzTonMilUO2UM1+5DFJjkeXRc4i869J1AYFxdrmhEb9vAmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=keG6XVs4; arc=none smtp.client-ip=198.37.111.173
+	 Content-Type:MIME-Version; b=rzu6VicV0uNtFAIuhOauEi+0+rfayARE1KvnJpKa36rVlu88k75IwanD7U0ZEyKPnunTYH6KCzgPxwFewoFdYu1h5C9F1Rvwx5UEcLApH+z1+O56XtGGWPkXLGzMHgUzTT3nfNnk18OwmkWzPmMSfaLEA4IXhcjXYh38qoo/Tjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Up+wUdpU; arc=none smtp.client-ip=198.37.111.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1761655081;
-	bh=PO5GYW3JRfyGqT//NznkfbFWET3Cuq1GDBXCxKeHqpQ=;
+	d=hansenpartnership.com; s=20151216; t=1761656026;
+	bh=36eCAB+0sW4xMVrmbFJUt0Jd2fPKRpcz4N2tZkYaW0A=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=keG6XVs4IngS/M9orK3tSBGfwrYw0Wbiep2ZWCxwZGD7wpd3Mvw/3qST52CtSKRch
-	 WiOJ7wfTdQF6EK49QnyyyGCrnKdLTw0fbRd5T/YS3toi/mLEwlc8qLiclCh/S57jFf
-	 Un6GUXQaYxOnMWM6Ale69R8Aj0lnkKYuH2cZ+zOw=
+	b=Up+wUdpUE3fM2XmpjOk/4MC2BBN7QcGfqCN/Y30XMtMGeEdr6sS2keJncZnoHtIxc
+	 DUSL0fv5TOME1iHo/0QPy6kCQ/EbzsX/nDu9ZkF/OyKG2r+VSTgHBrf5rWvr3odv+A
+	 bnk/Q+3IpimJ4Pj5aehK+pn8AFKPoritDfPNvoVo=
 Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id AFA251C01DF;
-	Tue, 28 Oct 2025 08:38:00 -0400 (EDT)
-Message-ID: <6d69842d102a496a9729924358c0267f00b170f3.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 06/50] primitives for maintaining persisitency
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 04C181C00EE;
+	Tue, 28 Oct 2025 08:53:45 -0400 (EDT)
+Message-ID: <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 22/50] convert efivarfs
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
 To: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
@@ -56,10 +56,10 @@ Cc: torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
  paul@paul-moore.com, casey@schaufler-ca.com, 
  linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
  selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Date: Tue, 28 Oct 2025 08:38:00 -0400
-In-Reply-To: <20251028004614.393374-7-viro@zeniv.linux.org.uk>
+Date: Tue, 28 Oct 2025 08:53:45 -0400
+In-Reply-To: <20251028004614.393374-23-viro@zeniv.linux.org.uk>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-	 <20251028004614.393374-7-viro@zeniv.linux.org.uk>
+	 <20251028004614.393374-23-viro@zeniv.linux.org.uk>
 Autocrypt: addr=James.Bottomley@HansenPartnership.com;
  prefer-encrypt=mutual;
  keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
@@ -81,24 +81,35 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2025-10-28 at 00:45 +0000, Al Viro wrote:
-[...]
-> +void d_make_discardable(struct dentry *dentry)
-> +{
-> +	spin_lock(&dentry->d_lock);
-> +	dentry->d_flags &=3D ~DCACHE_PERSISTENT;
-> +	dentry->d_lockref.count--;
-> +	rcu_read_lock();
-> +	finish_dput(dentry);
-> +}
-> +EXPORT_SYMBOL(d_make_discardable);
+> Initially filesystem is populated with d_alloc_name() + d_add().
+> That becomes d_alloc_name() + d_make_persistent() + dput().
+> Dynamic creation is switched to d_make_persistent();
+> removal - to simple_unlink() (no point open-coding it in
+> efivarfs_unlink(), better call it there)
+>=20
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-I was going to ask why you don't have a WARN_ON if the dentry is not
-persistent here.  Fortunately I read the next patch which gives the
-explanation and saw that you do do this in patch 50.  For those of us
-who have a very linear way of reading and responding to patches, it
-would have been helpful to put a comment at the top saying something
-like persistency will be checked when all callers are converted, which
-you can replace in patch 50.
+The patch looks fine to me ... you can add an ack if you're collecting
+them, but don't bother if you're not.
+
+This caught my eye, though:
+
+[...]
+> @@ -278,7 +278,8 @@ static int efivarfs_create_dentry(struct
+> super_block *sb, efi_char16_t *name16,
+> =C2=A0	inode->i_private =3D entry;
+> =C2=A0	i_size_write(inode, size + sizeof(__u32)); /* attributes +
+> data */
+> =C2=A0	inode_unlock(inode);
+> -	d_add(dentry, inode);
+> +	d_make_persistent(dentry, inode);
+> +	dput(dentry);
+
+That dput looks misplaced in a creation routine and this is a common
+pattern in pseudo filesystems that either pre-populate the dentry state
+or create effectively unused dentries on other changes.  I know not
+every pseudo filesystem does this, but it did make me wonder if it
+should have it's own API, say d_create_persistent()?
 
 Regards,
 
