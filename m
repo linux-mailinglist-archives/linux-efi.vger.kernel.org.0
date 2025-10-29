@@ -1,121 +1,89 @@
-Return-Path: <linux-efi+bounces-5208-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5209-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821A1C177B8
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 01:10:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F5BC182AD
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 04:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB39C3B7171
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 00:10:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A35A21C62682
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 03:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086A91E0E14;
-	Wed, 29 Oct 2025 00:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527F92D73BC;
+	Wed, 29 Oct 2025 03:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="evHEHdUk"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="XcXd34Uj"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC881DE4E0
-	for <linux-efi@vger.kernel.org>; Wed, 29 Oct 2025 00:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F3078F2B;
+	Wed, 29 Oct 2025 03:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761696643; cv=none; b=s2J6EiK5cknawVUcsBGYzOxCJ6Y3CuT7WFWaSHsjzMRga+e5ejVaiQ2r8uyGaf4aO/5JQsfb9lndZcKia3YXvCHQFGmqk9MuZOmN6uAUuDTLPcirF2fBQhu2kqFB7f17Q03AwdOP6BqHoMSzowItA0YcbJ7OLKznWA09jUXWAhY=
+	t=1761708254; cv=none; b=dHd7HWpIxzq6+MXGmsPOSMkOOUTw9wlnjUwVrKcKIWyZ/kxd6JUfMpNREdkQKdw1FrAMxa8v5Jow4Qsc9lxrkw3w+y8WZ5tA9Qgkz1L/ZnzW58Cn15DppWcb0BiNpi2lmSN2Jh6L7TlwCNYC7o4s/c58iceFu0fE7fkd9paNNn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761696643; c=relaxed/simple;
-	bh=QloRiWksfwupmAUdBgNLV/svbMoFmzJRlSMrdXPaxnQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lnXh9BfdK3QyPNvuTvtRGUpLWB2uHsJuiE6/ZHr80qaXuo5BSw1M+2JoCQwglSEgM/TcdepVoVKuMZuZ5QYy58JZkAmm3C6Rl82L4/bIUxKSrXuWMPjct0JRrhpJVB2o6ATVUaMq85Xj5W+Mb5f3gpAmU2gj4f71U25gW6ADAGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=evHEHdUk; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-34029cd0cbdso1857673a91.3
-        for <linux-efi@vger.kernel.org>; Tue, 28 Oct 2025 17:10:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1761696642; x=1762301442; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OAeYT3sIf5J+urxpWRZdGCYWbbcmjWbjfXki2vhXqBo=;
-        b=evHEHdUkGc41clD3/HvS6TCsRDFkA9q6MEZ+Ee8ikmU90EW0nwK1uXakOJknKdIEYw
-         UPOMfeEvBNhKrHjLjHr7xIYCpdId2KHIvvTrAsza0xQeogPNi8UwwvqaI96FT8ITZ8vQ
-         uzFC0R7kneeJXGfF8/cqcxLa3ozJQN2E70B69L9NShTl9bB++pcLxc0q3bhCZ6JHhbk2
-         c7LXeRcZcT65SzKjp7o+Ph+jEW+BDN8aORwZ2Q6/pPfvCmUIvEEXu+nEyBOVi1hFu8Rr
-         SUBY5Gz0grZxmej8kpSYf3nSsLE60De2XMA1fzyVirRng1clt1tCPFYnLsbjXnIXjkwS
-         8jyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761696642; x=1762301442;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OAeYT3sIf5J+urxpWRZdGCYWbbcmjWbjfXki2vhXqBo=;
-        b=MLDtfDL20uEQZQNsIVm808Tbtoedf1pIV2pHxrrqs5badI5Rby/kfwelGHbV6QIY2p
-         f+kbJ1Q3Zu82EmS8hmvqRYHbIiBefkLp7ffmNstTP43hzXoGLYRZuqBUUR3RUYFEfoIW
-         jSJRPwQW/eR5sxFVNVfNMKIQnXkuvJNA+dvUampuHpZZHEcfRDPdBh8m8lZmZ31FKFwI
-         Vnn0/GH2CruTjoHlffExI/eFLXxpd0VcLjjrO3c/1VcLOa/JMQ66UtP0Jp1EjCC1BuT2
-         6tfsvYSmve12z1b03gCUDmKjXj8n1MaetWLF9daDjAw+YPOePQ1SYMzVpTVt9kEDh5mT
-         mbiw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ2Abx9qcUhqYrVeFgxwQ8wJLmcTbPdu+7giCjgDjFLL96ShrkLZjq69hbJAEmrVQY7ca3WVkdGJI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw08xlbYoCLo+dyqGngDmIJHzzXslepiAp68heQ6LALgaURRM9H
-	Utt7FA1I64NOtIlwKR+Ux0k8oecJNRtPwBPQ9V24qVCqInCHqmLingR0mumQ3RMExukwp3N8vuW
-	gWPVXmcWAXZs0W0pzvO76+jexB8wjscxT3fUjcxIv
-X-Gm-Gg: ASbGncvGiPLesloo5nnxibKOkuhVn0UT57K30ImS1mxQCGCcWbi0a0eSJ3Ihi+DisRS
-	Ab7A4dguduhQ8hIuLtoLQdNTgCLV8IVV+qoj1rrEPYB/nDNVloaRCYMvTNPVz0AdmDc8GMUUZsw
-	oXtYLkBmR06n2kV1jffbH7IRhylJZK9p/HY+p/24xI5WHres7S03XXcE9pXjt7pOb7IrIRE+Wpt
-	mAc0jxLBPc6YSSwcBAnPhZjF6y68DjXszLMadamnllX8DPuol+215IXPiCy
-X-Google-Smtp-Source: AGHT+IGhjs8q4GiygXwr6DCqhQXMqWhNs5oaPfnq5KAn4id0agHe+xmdqRLWlZPNOFZ/N+dUgAnaM8QQHq+RXzkh3rE=
-X-Received: by 2002:a17:90b:4c8c:b0:32e:d600:4fdb with SMTP id
- 98e67ed59e1d1-3403a2a1014mr987268a91.18.1761696641654; Tue, 28 Oct 2025
- 17:10:41 -0700 (PDT)
+	s=arc-20240116; t=1761708254; c=relaxed/simple;
+	bh=3kU3w3v+1u/nUSOObGzhFYNXx/3gI0FR3AhIQTfeUHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CZ4kvJAju1k9lEPXQgtgy0Dp2fkDGzinVhR0dey59GxvPXcVsdYOG3hWh/4uF0dWopFwMjS0vklREwYTuJTaKLUKIaneIuVRAfxBpONMIG/PBUHK73hxoaOSwTuXgharJKi5liyBSZMk5Vm8FiIIORdsBieKBlOLqLNbewotecU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=XcXd34Uj; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/74EwcCNII2uB0u4CPJWojlcJa9JLtb0FVKMbO2Wykg=; b=XcXd34Uj7enu+oskIPJPOtc2sW
+	+JUVmiqxAcaM83jJ33Kj00wrrLLwo9mF6yh+svt4+qcE1PgJRBuN1EjWahP1tsM29WdL0OMW4u/zI
+	wtsAkFC3DMZiEmRlreDEn6/IgmA37eL1BXSnR3JtjGswJcK3NCUEauvGde4K+59f8KsJEo6T5yKwq
+	t4bKDSK3qMusrrsuHwPazN+I9d3szv/tBoGXBSjlJL/knw65vXnnJOFJhIz3yUjx4i5Ghlc/+rHgG
+	7zcbEOG1Ix7lCoeZLSwiWl97ry3iG7ZT6wVMc9hHzyolLyGaE7QLp2JbVftwMF2LmmAKECmJ3Nj5R
+	/es8Sg3A==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDwn6-0000000DcBo-2Wtj;
+	Wed, 29 Oct 2025 03:24:04 +0000
+Date: Wed, 29 Oct 2025 03:24:04 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Paul Moore <paul@paul-moore.com>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
+	linux-mm@kvack.org, linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com, selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org
+Subject: Re: [PATCH v2 35/50] convert selinuxfs
+Message-ID: <20251029032404.GQ2441659@ZenIV>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+ <20251028004614.393374-36-viro@zeniv.linux.org.uk>
+ <CAHC9VhRQNmPZ3Sz496WPgQp-OkijiF7GgmHuR+=Kn3qBE6nj6Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk> <20251028004614.393374-49-viro@zeniv.linux.org.uk>
-In-Reply-To: <20251028004614.393374-49-viro@zeniv.linux.org.uk>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 28 Oct 2025 20:10:29 -0400
-X-Gm-Features: AWmQ_bnyVa46lrJnSEC4p7b8a6-fhgKBPo6xvMl8XVNnPJL6uMjYjs2dxSO45Ps
-Message-ID: <CAHC9VhRX6kqFbbKuOoKOLLve6c+7TN3=fXHrtXyj=osfNYd+2A@mail.gmail.com>
-Subject: Re: [PATCH v2 48/50] convert securityfs
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
-	neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
-	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
-	john.johansen@canonical.com, selinux@vger.kernel.org, 
-	borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHC9VhRQNmPZ3Sz496WPgQp-OkijiF7GgmHuR+=Kn3qBE6nj6Q@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Mon, Oct 27, 2025 at 8:46=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
-rote:
->
-> securityfs uses simple_recursive_removal(), but does not bother to mark
-> dentries persistent.  This is the only place where it still happens; get
-> rid of that irregularity.
->
-> * use simple_{start,done}_creating() and d_make_persitent(); kill_litter_=
-super()
-> use was already gone, since we empty the filesystem instance before it ge=
-ts
-> shut down.
->
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-> ---
->  security/inode.c | 33 ++++++++++++---------------------
->  1 file changed, 12 insertions(+), 21 deletions(-)
+On Tue, Oct 28, 2025 at 08:02:39PM -0400, Paul Moore wrote:
 
-Much cleaner now.
+> I suppose the kill_litter_super()->kill_anon_super() should probably
+> be pulled out into another patch as it's not really related to the
+> d_make_persistent() change,
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+It very much is related - anything persistent left at ->kill_sb() time
+will be taken out by generic_shutdown_super().  If all pinned objects
+in there are marked persistent, kill_litter_super() becomes equivalent
+to kill_anon_super() for that fs.
 
---=20
-paul-moore.com
+Sure, we can switch to kill_anon_super() in a separate later patch,
+but conversion to d_make_persistent() will be a hard prereq for it.
+No point splitting that one line, IMO...
 
