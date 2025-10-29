@@ -1,53 +1,54 @@
-Return-Path: <linux-efi+bounces-5231-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5232-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC041C1CA18
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 18:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC88C1CB2A
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 19:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C8DC24E333A
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 17:55:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 524D74E06FB
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 18:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CD4351FC1;
-	Wed, 29 Oct 2025 17:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D597B2F83A7;
+	Wed, 29 Oct 2025 18:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="ZqaowaHD"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="qstw6GBW"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA923491F4;
-	Wed, 29 Oct 2025 17:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D25A2F83BE;
+	Wed, 29 Oct 2025 18:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761760514; cv=none; b=D6H4Gyp264daYZtZZ9tYtzyOb2iSnASToyWV1fHwveccQDJKZlcR7CntElKmHMV58n+OvTJak+xEqlEO3CzqxUBKG/BfCVqljiQAF8GxAeQ+efEYGtHO6dsRUUxbcSUYFNeFLw1PcHnN7rOhAMS5w38sVNrDr5xCsOBWvROeSOw=
+	t=1761761320; cv=none; b=fezJ3ptepyU1oMSN954Z1rO6258PI/Q5tfR2/jDdoz80VHexBX1LPfpJT7wCVbvI6r2F2DbOanSS1h++f9A1vu7eAN2adLIo++ssL3aHGbQiS6EzNwfXTyL+n5dK4Zj0+6NptgfzN+Z+ri6o6MDhwxfcyUAQcueu7FRN2+TKjMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761760514; c=relaxed/simple;
-	bh=Giqyu8AnZs8eC9Lv6DdMItTT9K2cqweT89MM0MXC6us=;
+	s=arc-20240116; t=1761761320; c=relaxed/simple;
+	bh=3a6hJSaGrmh4VTyPvVaQviVW2k2fiU4d14sr77xDXLo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A6HQz5v5m901vXzkOOOJKi6+I/JjF5WwUkTA8qkP+It1ZvSpJyPpWs5G6KKLIIF+t8/03MfGiUoTPJiVBNn9jndI0mmqcJry+6xdBRjPgmMTySCrhLzbrvDrX1J9VwNz+ZRordNM08FLFqf4acVXsvmztm/AB8fdl23V7i+47MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=ZqaowaHD; arc=none smtp.client-ip=62.89.141.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=baQBeKr2iwcmI+InahVymLDsExnL7TYt1N0w7cp2ua+8bp0DY5/W5QmwwiVQ1NLZG1AERuIgSZ/jfl0B9BgqnBGSBXvN9kycaHJg8BJlzoxDNyIgUws0y6E+T0XjKrDW0s/oiiFSjHe8u6atCD7jVZDLKmO3LXvmE+Hy114vbtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=qstw6GBW; arc=none smtp.client-ip=62.89.141.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hxMUsVatKbWhonDVOdoqCw+QvpkWu6d9zu8seRb9LV0=; b=ZqaowaHDIWj01NIds+0TIejsHt
-	XNcqF3EBDGWDHrewmjlpyIq2j0AgqblkrtlOkNOTt0EWqIzLaIERrwPKq5f9eNXMv1aTIGZLrQ1HH
-	rg+ZORmt81RyG2qU67dv5WXr9ri4iBeQWNdeCGFu2fJJBw6MQcvPU6Grbx5t8CCUE+O3sDZ3z4Rll
-	aINFtyxUrztNEHbgUWxk5lOkAAe1TpMz3bbiONo/ap2hMi1ciYOvoU4Vv8C738OFzygsdk1MinKCa
-	dWoo2gHYZrrQJ6fr+RoKVyeWfb/xKGz1vuqhGzuDHVmJn/TDzmK0rUjeCaSxWOI8aYuDR7FgWfWEr
-	uT4IVvCQ==;
+	bh=IRO5/rJhd7y6qAbtBBfOnyjO73djps2jbwQIhCfiClo=; b=qstw6GBW0gz7l6/NIZ98+H0BuC
+	LPcTpqbv6qZwuSaVXzFp5+8p3uItulr9RO1wyw6k1QzQVAfHUp/CtKNeZtDmZSm+sgFarRadUCpBK
+	QZrzf7l+w0/cYrUWCRtQcOPwVpTXfR6WfE4DMsjuxuOQV+z0xqou2NBsCOGqqoMuLcuomyEM5NJXa
+	RJQMFf1J+khB5G8o/qb4hoF8XxOYm1SETmvEkodR0rT9kGWkPtyAGI//REIRqkdUm4sCbPWkkDpIi
+	qeQgTiYS1sVVgCHccSx1/k4oTcfdfgLL7bzYX5FyStzF5GG23KhpEBcGZmGVQXrQATbM/9H02+9/9
+	Dy4tNtaQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vEANx-0000000D7rD-0xCn;
-	Wed, 29 Oct 2025 17:55:01 +0000
-Date: Wed, 29 Oct 2025 17:55:01 +0000
+	id 1vEAb5-0000000DNn5-15k7;
+	Wed, 29 Oct 2025 18:08:35 +0000
+Date: Wed, 29 Oct 2025 18:08:35 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
-To: Mark Tinguely <mark.tinguely@oracle.com>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
 	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
 	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
 	linux-mm@kvack.org, linux-efi@vger.kernel.org,
@@ -57,12 +58,14 @@ Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
 	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
 	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: Re: [External] : [PATCH v2 07/50] convert
- simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
-Message-ID: <20251029175501.GS2441659@ZenIV>
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+Message-ID: <20251029180835.GT2441659@ZenIV>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-8-viro@zeniv.linux.org.uk>
- <3ec6f671-c490-42f2-b38b-f1fa20c60da2@oracle.com>
+ <20251028004614.393374-23-viro@zeniv.linux.org.uk>
+ <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+ <20251028174540.GN2441659@ZenIV>
+ <20251028210805.GP2441659@ZenIV>
+ <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -71,62 +74,21 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3ec6f671-c490-42f2-b38b-f1fa20c60da2@oracle.com>
+In-Reply-To: <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
 Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Wed, Oct 29, 2025 at 09:02:33AM -0500, Mark Tinguely wrote:
-> On 10/27/25 7:45 PM, Al Viro wrote:
-> > Note that simple_unlink() et.al. are used by many filesystems; for now
-> > they can not assume that persistency mark will have been set back
-> > when the object got created.  Once all conversions are done we'll
-> > have them complain if called for something that had not been marked
-> > persistent.
-> > 
-> > Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-> > ---
-> >   fs/libfs.c | 10 +++++-----
-> >   1 file changed, 5 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/fs/libfs.c b/fs/libfs.c
-> > index a033f35493d0..80f288a771e3 100644
-> > --- a/fs/libfs.c
-> > +++ b/fs/libfs.c
-> 
-> ...
-> 
-> >   EXPORT_SYMBOL(simple_unlink);
-> > @@ -1078,7 +1077,8 @@ int simple_fill_super(struct super_block *s, unsigned long magic,
-> >   		simple_inode_init_ts(inode);
-> >   		inode->i_fop = files->ops;
-> >   		inode->i_ino = i;
-> > -		d_add(dentry, inode);
-> > +		d_make_persistent(dentry, inode);
-> > +		dput(dentry);
-> >   	}
-> >   	return 0;
-> >   }
-> 
-> Putting on the dunce hat for the rest of us:
-> 
-> I think I understand the dput() for d_add() changes, but it is non-obvious.
-> Thinking of future maintenance, you may want to make a comment.
+On Tue, Oct 28, 2025 at 10:34:51PM +0100, Ard Biesheuvel wrote:
 
-As in
-		dput(dentry);	// paired with d_alloc_name()
-or
-		dput(dentry);	// that would've been simple_done_creating(),
-				// if we bothered with directory lock here
-or...?
+> I'll let James respond to the specifics of your suggestion, but I'll
+> just note that this code has a rather convoluted history, as we used
+> to have two separate pseudo-filesystem drivers, up until a few years
+> ago: the sysfs based 'efivars' and this efivarfs driver. Given that
+> modifications in one needed to be visible in the other, they shared a
+> linked list that shadowed the state of the underlying variable store.
+> 'efivars' was removed years ago, but it was only recently that James
+> replaced the linked list in this driver with the dentry cache as the
+> shadow mechanism.
 
-The thing is, d_alloc_name()/dput() instead of simple_start_creating()/
-simple_done_creating() is a bit of a shortcut, possible since we
-	* know that in this case nobody else could access that fs
-(we are in the middle of setting it up)
-	* know that directory we are populating started empty (we'd just
-created it) and nobody else had a chance to mess with it (see above)
-	* trust the caller to have all names in files[] array valid and
-unique
-
-And for simple_fill_super() that's pretty straightforward, but in other 
-cases...  Rationale for taking that shortcut needs to be good.
+Hmm...  Another question about that code: is efivar_get_variable()
+safe outside of efivar_lock()?
 
