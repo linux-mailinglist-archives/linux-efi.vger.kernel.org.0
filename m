@@ -1,121 +1,177 @@
-Return-Path: <linux-efi+bounces-5251-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5252-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF0EC1F814
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 11:23:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C584C1F8CC
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 11:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C38420626
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 10:23:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22E1D1A21C9A
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 10:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39176350D4C;
-	Thu, 30 Oct 2025 10:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583F23587C0;
+	Thu, 30 Oct 2025 10:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2Hq2ux2"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="oFN7PsxS"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1248D33B955
-	for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 10:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24863357716;
+	Thu, 30 Oct 2025 10:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761819796; cv=none; b=DQSE18avcim6GSgjIX2wDQl41CF+yWwZdAs2dERcZ7xnjCi0EEhD0fm7njxWgAsDWinULVQf1OsDidC7BYAlRpUOK1kV1v79UXloDr+A4+2QpsrEXrvGwh4F8Pm9HBfuV0YTnlr6QvqN6vmJvZUqrF0px/a8gheO45BBxI5Y2I4=
+	t=1761819999; cv=none; b=QRJM2DdvzORMx7rMxY8371I2HWKzi5flQ/KPErD2yfepqvFRLtqOAQqPZVvoSJXOtSBJfnnJrtxQz1IjicoFxLDx/j/qSqA1aZbTxVa4gIhoyLZHTbOjE07U4LVY+pf8G3sBhGY5u6TTJbYeFf5empZ6M2Od48M5CQg49/sfNP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761819796; c=relaxed/simple;
-	bh=3PPcT52CUIUtGBb6h391cuWkN0HcI1uyMSEf1lpC1ks=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rbzaD5pD60OeR8K+rlnHDE63EFDmnsfTLIUweDJ6AsDsuURCovVGLfpAJv1/keDiHnCvyiwa1Ls8fk0I7yDbcF+aq2ZzvY8h0oS0+OsFj6WePK3TBELdjwkr+Mv8lHZCO22R/2mG6ZGZ2kjiqXS+f9EeIYHVUNazJYTr10BQh5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2Hq2ux2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D452C4CEFD;
-	Thu, 30 Oct 2025 10:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761819795;
-	bh=3PPcT52CUIUtGBb6h391cuWkN0HcI1uyMSEf1lpC1ks=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k2Hq2ux2aE2ZENt6Doa40MkV6AhEuOjBGlULJY1M5pOdPPA6VtAYBb4cjHYTTNtYs
-	 2gGcoArLmDSQiYhXWKkwqloRrbtedZQ39m74J8mcqRWeXFObECSMig7epsE3mDTuZr
-	 jMNzlfC5EhfdpVpwq5b4X2JdsOp8xFE4OqPUIBPfuwMlpcK9lm2FCz9XFrKJIKdGRN
-	 Mg+LRiIKKaCV9Gq4qZIsJlcPPcBcMEQLnrqtIerTONNmsa6PyE8PDP2a4ATOOmdrNk
-	 QMr1CJcbR5G7BioH34V5Pg1wDiCCkXNS1WuTEBWpfffoLCpHcp+w/TkQ9RSviv2kIk
-	 L8bsRg8hnHQHw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8A357F40066;
-	Thu, 30 Oct 2025 06:23:14 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 30 Oct 2025 06:23:14 -0400
-X-ME-Sender: <xms:kjwDacuIbm0UVdKlKVzSPmonNk1qTKjBIQBDI0Q8jqi20Hq2bDDyjQ>
-    <xme:kjwDaW2XmmLCflga8F7Qu4jM9han6UDTjda0CelQ9ipUeTvPyk8BAFdnO2XD856U9
-    S5qH0wU4yVqOTVh2jp_EVwmeavYorZkYE5hUz4ez8SFdA3W3XBPcX0>
-X-ME-Received: <xmr:kjwDaTxcPNNzWjo-QH1H2l1EmdebZTdJFsZ0y9lwa9GxFUYYx2GSEQ4R74ABgQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieeifeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfeegpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehushgrmhgrrghrihhfieegvd
-    esghhmrghilhdrtghomhdprhgtphhtthhopegufihmfiesrghmrgiiohhnrdgtohdruhhk
-    pdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmh
-    hinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnhes
-    lhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegrrhgusgeskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgtphhtthhopeigkeei
-    sehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:kjwDaS6wq9yfMhelDeGtVaO5eN8nWmhzoMm5wlo88rfpjbJpxVCmBQ>
-    <xmx:kjwDaYijZ8CihzfH88GZCSO2nz-u3LJDOvH59_TRlQF-w68BTcTgYA>
-    <xmx:kjwDaX02jV7Hwc-2t_btDrWNpEbIYDEeWmZuitjGhF8LImduusX1Ag>
-    <xmx:kjwDaZAX3p-AiHWjbEXZXdY6SG6cvIlqt0JMgRGNO5PK1dgFTFHw0w>
-    <xmx:kjwDacEzfUsK_ofGRQoOvayHbotaLH4LMTlqE_1-naf9C5IHi9dHVBh6>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Oct 2025 06:23:13 -0400 (EDT)
-Date: Thu, 30 Oct 2025 10:23:11 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Usama Arif <usamaarif642@gmail.com>, dwmw@amazon.co.uk, 
-	tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com, ardb@kernel.org, 
-	hpa@zytor.com, x86@kernel.org, apopple@nvidia.com, thuth@redhat.com, 
-	nik.borisov@suse.com, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	kernel-team@meta.com, Michael van der Westhuizen <rmikey@meta.com>, 
-	Tobias Fleig <tfleig@meta.com>
-Subject: Re: [PATCH v2 0/2] x86: Fix kexec 5-level to 4-level paging
- transition
-Message-ID: <e7h3mlj6x4k36e2ydsmbqkulh3ombhm3j4kvmw4pzlynoaaxjz@yrth4sw2tf26>
-References: <20251028105637.769470-1-usamaarif642@gmail.com>
- <20251029204814.GHaQJ9jhw4u5SU1rNJ@fat_crate.local>
+	s=arc-20240116; t=1761819999; c=relaxed/simple;
+	bh=vvZQPp6EYrtMWK7Xie71R/nS4riQmKtoLGLX9XgmSyQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=diWaRjVNZN7ZhcY1agPUvbWItY0nU0E2M7mDj3veRkWhwP+/x6dO0Z9QCcyaKKW7Y+00b31m4isOlUo4mWpWAtUTJ99+9pLOi5WZhjEVcFjssehMpiADqQXnLo6YSbYflp0VPsIN2Xy5GUKKUISIJxbii1LeRGpuyWY/aZ+G8BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=oFN7PsxS; arc=none smtp.client-ip=15.184.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1761819857;
+	bh=cIY7WYUzuDGkFE+k2rXKzr0YSMDo3kE1Fa0cpFNPx+8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=oFN7PsxSJWikcUx0u2QyxVradtO/densF9NrZY9+bpF6uWoad2IQJ4Gr7XaG6y8xP
+	 SNyKwdF+JkVG9gVUXdAFS7f0fOey9m8WLsKqLQQQegt5GOS3zogPR5C/qksj+iUUPu
+	 ZZLtLZZw2benOmTuu2C5AM+M8Piag9q8Da91y8nk=
+X-QQ-mid: esmtpsz17t1761819849t112d1f9c
+X-QQ-Originating-IP: XVhXU0kHJRbd+UVQvK+5/J0kiHqJAAeeCHRDMvlf5xk=
+Received: from [10.10.74.117] ( [123.114.60.34])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 30 Oct 2025 18:24:08 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2889926651659397346
+Message-ID: <89364700AD0CD6E1+dd8d745f-5a72-4b0a-80db-eaa1d00c4e64@uniontech.com>
+Date: Thu, 30 Oct 2025 18:24:08 +0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251029204814.GHaQJ9jhw4u5SU1rNJ@fat_crate.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] ARM/efi: Remove duplicate permission settings
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux@armlinux.org.uk, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20251023082129.75612-1-maqianga@uniontech.com>
+ <CAMj1kXHs3vC4TEWg1ogG=N8Dd5L0rkQ=qAFLWKiAA5yi_He3GA@mail.gmail.com>
+ <10D9A93B0633E6BE+75720e07-b39d-452c-952e-41f8ab6aad94@uniontech.com>
+ <CAMj1kXHQ6WQWfbkMP4JUk=nKwSt7CovY25RC4JA0ZM7vRWu6dA@mail.gmail.com>
+ <9F7F632B7963434F+abad2548-a90d-4448-ae79-dd4bf637ee6e@uniontech.com>
+ <CAMj1kXHu5ABgxKsc_gg1j=pWMz6DbWoqv=qAAjx-5CiSF2PAiQ@mail.gmail.com>
+ <BD93A8DBE27154B0+22bf4a83-a850-4f78-8e0d-84cc93fe2715@uniontech.com>
+ <CAMj1kXFUUCoE=gZ0kTMKx87qnJMU9J9skT75STTKjjakXb8kmw@mail.gmail.com>
+Content-Language: en-US
+From: Qiang Ma <maqianga@uniontech.com>
+In-Reply-To: <CAMj1kXFUUCoE=gZ0kTMKx87qnJMU9J9skT75STTKjjakXb8kmw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: NBjdfkqVynM2LzNdcPHTpqy83qJFwYM2EghexspTMIyRZih0xJE/kUI6
+	CU2n2Ez7r8E6wKPNXIOrfx07ea6c9br3UH1SvDIgpRF8wCvserHPG3pGEI8bcntmQXYs5Ha
+	bMCF3VcxxzcrPZIaSA6/gBv8Rs06pgRf9jettx40PzlZB1O8a8KlOwVkY22nMiy9r1uUFbx
+	368C10lpoNy3+Trhadg7eP70Vgkq3JBV2wdD9FVI8xgkax2keMmAoUwqyKFkGq9tR4nGNmZ
+	5MZgMCV3kRkv6x4pHW0tNTlP7tcml2nfA1jRZKmQPmfF/1l3dNYwKt6/otaxYEJykHrsKP4
+	8+LqQQ3pVUwtG7ahIt+emFNA5EcZXNqzv+NUhR6dMETU8nFh+OnwWRrcRM5usQNamtVRRCk
+	7uFqgzcixtj2nYtxdfiHdO6hfHdzhUJFJZsqYFmp2llyJkjG7qDW3tu/2kAUW64FcPhNj0r
+	u9wRhsWgUJIpzcozYMApuf0u8x5dQRWThnTKNAvlD0jfCHxt2gbZ61Jtsj07eXwJtpuknJe
+	MitSMayueG15Xj+xsZmK+ZeCyDuNDig8ffxD84zny60ydHi6LVRd7LPLyGFSVK78DMwdIC+
+	Kqwt9AF75omxruj81Py0uC3zH6rpUOv151MnZxB8cLz8W9DILYPG5QDwcwr/4bUCcpAcoi8
+	DvPC8fxUjL8PU9lSxRBF4RfRevDF99mCBdoin24iEwxqb+cVzV9ZlZPb1m1EWVQfUg1NFUI
+	q4FForLJTuNI7BrWi0WiJFYHRmDSlcNGdav3R+ukBqlu/UUufu1OplkqOp4a6wnGHjShZMj
+	hWZFMm5d+8Gr8+kH2NZJZDK/ZBY42prIcOqrcc3nCZjkDwbEW6DfnO8aOKnPqFfK8iQtlXq
+	UdgUso7wle6ET6pRFk9wm+W/basxqMzh35IZN7PNjqz+9r4EUb4gYFXLDK76jGOVvT7yfcE
+	jdE09YNZgEYtnu2a0JvFoflolYeGtgSh0HztFnpf9ayiVqsoZ83pxBoU9Z5gTOL6F9OtTv7
+	yuTqZQcnjvsbYJUOSmO1o+8uUhATw=
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-On Wed, Oct 29, 2025 at 09:48:14PM +0100, Borislav Petkov wrote:
-> On Tue, Oct 28, 2025 at 10:55:55AM +0000, Usama Arif wrote:
-> > This series addresses critical bugs in the kexec path when transitioning
-> > from a kernel using 5-level page tables to one using 4-level page tables.
-> 
-> Out of curiosity: what is the real-life use case for this?
-> 
-> Judging by the Reported-by's I guess Meta is doing some kexec-ing into default
-> kernels which are 4-level so that they can work on any machine ...
-> 
-> Close?
 
-Older kernels in our fleet run with 5-level paging disabled. The newer
-one enables it. Machines need to switch between kernel version from time
-to time for different reasons. Switching from the newer kernel to an
-older one triggered the issue.
+在 2025/10/30 18:02, Ard Biesheuvel 写道:
+> On Thu, 30 Oct 2025 at 08:37, Qiang Ma <maqianga@uniontech.com> wrote:
+>>
+>> 在 2025/10/29 22:15, Ard Biesheuvel 写道:
+>>> On Wed, 29 Oct 2025 at 10:55, Qiang Ma <maqianga@uniontech.com> wrote:
+>>>> 在 2025/10/28 21:42, Ard Biesheuvel 写道:
+>>>>> On Mon, 27 Oct 2025 at 04:46, Qiang Ma <maqianga@uniontech.com> wrote:
+>>>>>> 在 2025/10/23 16:30, Ard Biesheuvel 写道:
+>>>>>>> On Thu, 23 Oct 2025 at 10:22, Qiang Ma <maqianga@uniontech.com> wrote:
+>>>>>>>> In the efi_virtmap_init(), permission settings have been applied:
+>>>>>>>>
+>>>>>>>> static bool __init efi_virtmap_init(void)
+>>>>>>>> {
+>>>>>>>>             ...
+>>>>>>>>             for_each_efi_memory_desc(md)
+>>>>>>>>                     ...
+>>>>>>>>                     efi_create_mapping(&efi_mm, md);
+>>>>>>>>             ...
+>>>>>>>>             efi_memattr_apply_permissions(&efi_mm, efi_set_mapping_permissions);
+>>>>>>>>             ...
+>>>>>>>> }
+>>>>>>>>
+>>>>>>>> Therefore, there is no need to apply it again in the efi_create_mapping().
+>>>>>>>>
+>>>>>>>> Fixes: 9fc68b717c24 ("ARM/efi: Apply strict permissions for UEFI Runtime Services regions")
+>>>>>>>>
+>>>>>>>> Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+>>>>>>> No, efi_memattr_apply_permissions() uses the /optional/ memory
+>>>>>>> attributes table, whereas efi_create_mapping() uses the permission
+>>>>>>> attributes in the EFI memory map. The memory attributes table is
+>>>>>>> optional, in which case any RO/XP attributes from the memory map
+>>>>>>> should be used.
+>>>>>>>
+>>>>>> I see.
+>>>>>>
+>>>>>> Then, can it be modified like this?
+>>>>> No
+>>>>>
+>>>>>> --- a/arch/arm/kernel/efi.c
+>>>>>> +++ b/arch/arm/kernel/efi.c
+>>>>>> @@ -65,16 +65,13 @@ int __init efi_create_mapping(struct mm_struct *mm,
+>>>>>> efi_memory_desc_t *md)
+>>>>>>                     desc.type = MT_MEMORY_RWX_NONCACHED;
+>>>>>>             else if (md->attribute & EFI_MEMORY_WC)
+>>>>>>                     desc.type = MT_DEVICE_WC;
+>>>>>> +       else if (md->attribute & (EFI_MEMORY_RO | EFI_MEMORY_XP))
+>>>>> This will be true for RO, XP or RO+XP.
+>>>>>
+>>>>>> +               desc.type = MT_MEMORY_RO;
+>>>>> This will apply RO permissions even to XP regions, which need to be writable.
+>>>>>
+>>>> Thanks for your review.
+>>>> I see.
+>>>>
+>>>> I can introduce a new type MT_MEMORY_RO_XP, to describe RO+XP,
+>>>> and then we can use the RO+XP attribute to implement memory mapping.
+>>>>
+>>> Why? The current code is working fine, no?
+>>>
+>> Yes, the current code is running normally.
+>>
+>> The reasons for the modification are as follows:
+>> I noticed that the arm64/RISC-V efi_create_mapping() always return 0,
+>> but in the code where efi_virtmap_init() calls it, it is as follows:
+>>
+>> ret = efi_create_mapping(&efi_mm, md);
+>> if (ret) {
+>>       pr_warn("  EFI remap %pa: failed to create mapping (%d)\n",
+>>           &phys, ret);
+>>       return false;
+>> }
+>>
+>> This return error print is unnecessary, so I want to remove it.
+> So what is preventing you from removing this from the RISC-V version?
+>
+The current idea is to first remove the unnecessary return print from 
+arm/arm64,
+and then remove RISC-V later, as this RISC-V code is also adapted based 
+on arm64.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
 
