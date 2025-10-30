@@ -1,107 +1,108 @@
-Return-Path: <linux-efi+bounces-5271-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5272-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA361C2261C
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 22:13:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2872C226F1
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 22:39:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4171A27427
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 21:13:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4829C188C8BF
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 21:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805EF33555E;
-	Thu, 30 Oct 2025 21:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F3E311944;
+	Thu, 30 Oct 2025 21:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zh4CdJL9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Evh5FF7N"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67AF32C939
-	for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 21:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2D32F4A0A
+	for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 21:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761858804; cv=none; b=DGOVoLp31anXEQorGyOCSqJT7Yh52an/qexkQezE8V/QQJL4m1W5PVay/Jq0nFuYsQAll4WOoBpZ0dcevHexBb2ng5RmQudJziUNYAm0zejyuxUz4c7qvKrNZmTi1wyvqVlPZsvROq5tSRUjHB3h1cOVVd/LHqYk6B5tdMT1tnI=
+	t=1761860227; cv=none; b=it9t53XWCKb/f2GiYvfsGHVn6bLmX1VgTVkENQ9PjFsCvbiRL2+t6TO4empJqX4dxpD6S8TKbAv5i4ZW30TPTiWk7STD247oZGW7cLfuxeNYaxpcTcGpjOs54uzif1rgem9BWDm/FvnEpxHA3kZH1srD+6XZqCPqh2ZZu6iXsOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761858804; c=relaxed/simple;
-	bh=Ds10LqyCnxdrh0ZjTOtUC48GJJV0wJwcpwKLPS3durE=;
+	s=arc-20240116; t=1761860227; c=relaxed/simple;
+	bh=45jfdJnyJ32bvuggaDRa8h9Sl7RrgHGsxTBiE2SnqnM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IrDbl+CA+MP8mmuQKjRL8bvIsWvzauyd2LNt7X8fa/I/yI0qxPbUMPSH7ExGVqLgI5CMk1IGT5Gw4UpoOGRQhy861HNxSAPSTxPL+clFP/kofaSsI0r+v9s0PDKccHN5zQbaXutlMBLxZ+S7Wa7+AYEl5Isg1iIbHdrb4EmXTxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zh4CdJL9; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version:Content-Type; b=ekKFWo9ZjDSkTJ+GzdWvTttvBwEs70XNHsZAHQ24259XHipUDT3rHRmBkSEMzhHqZvKwqf/spplU+z1fb1go/MtvtSsxqst2+V6ibdOCfyueXiNdDmaZKGlR4DfdHTQ4ukSiAb/SPT8/mO4E+03iUnAwQvto3ArdWzdE8dROA5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Evh5FF7N; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-475d9de970eso10739105e9.1
-        for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 14:13:22 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4770c34ca8eso13913005e9.0
+        for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 14:37:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761858801; x=1762463601; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761860223; x=1762465023; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mTFjyfM924ecEs5Bh5eIoT2AnXmgRLbADTYF0WurRYE=;
-        b=Zh4CdJL9Ye4tgOk2PdxNL4xixD0FkiLDlyZWIud5Hia8Zs2K6t2cuCJrS6pPLz1NPt
-         6i2LYEcnuOFXWX7xG2PgAhB9WUCChNRAK0Pq44uF+wXfWyFj2DLG6m+SWwOllx1pXDeZ
-         hb61cTMaqZffAFwcQjZPG4GEhC/NAx+yyKDlgmvCZndxsJ41LsBp+JPuHO6/6S0G8GUR
-         d0FPpP2CKwk7L8m9kEoq9n+oF6IIlcisCYDMbPaCxzehDfjmm9ijl7kOgVUekYjpZUTd
-         JZiVs6mwnGbr7MOQru1cX5FpfOIHNxo0FQjh9HOma1Oomvc8kSs7qR6/zSZpxtRxpwEM
-         FopQ==
+        bh=HBQJ8NZZeDhVExk7zItWUyrPMSm4Navew7MC0raFrQo=;
+        b=Evh5FF7NeH2CdnS6fyJOz0yuZNQpRoE39f8hPOsiPZSAa4r0HO4Td40cQ2JqR7p98s
+         kW9sC6uVKHfymR6Bwc0RHT0UiLqB+1c08pkfJ9FwC0m2t65GZbMbJ7B1qzNteXyY+ZWk
+         cu9OkXFtQpgpuzCF84asi+QaaZDkun3OgofDQX8GxG5rzyXsyY4scEYMV+LesWfF5HRN
+         stIClQywZY0X9Y//nNewmkxAHUX6V8TogoKwg87rS8jC22n7mhPoDr4zCV/shaUFAo3k
+         Vlm4CPXn7Z1RpurzoP3d/1Fs5OcKWDetXRQk9Uz7YfLPG3w5xlKoeVDAVNrQ92KPsKLN
+         kv6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761858801; x=1762463601;
+        d=1e100.net; s=20230601; t=1761860223; x=1762465023;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mTFjyfM924ecEs5Bh5eIoT2AnXmgRLbADTYF0WurRYE=;
-        b=qURWtFCyMTgaDHSs9XnjZc7YHL97RTGEyXqknxzXgFKI7xoRjQQm7uGejCjuXhX1/k
-         vDG4mah3hOEsFM6PYATBfQDUj5BU+jWR85OgwDe8Z9E04dO8mOK/dx3i6jjFQaSleobJ
-         uPHfSw9SZfEvj0Jk9gR00jUXozFvhZQQ5ZE4jDz9DPm8HGvWQc04vXiqu04LWSKLitaQ
-         WHE3aatxNPCdVfNr2c98KiV/QR8blli85z3ZNWUiDxzjUF3kB0p+x+9bDm9RvaED2h4z
-         bVjW0LK4yHm1bUgfo6cD/eIp7tLYjGkT/ZOLk4N7eI1P8YZi/Ln+IzUVP+nIVxdkwwh5
-         9shg==
-X-Forwarded-Encrypted: i=1; AJvYcCWq+ILEMvr7rRz3WXQDluFTGrklLiWjkKB00lqlKgS8/DmRPKj91Y6Z67MrA8elR7I0q5zrjsa7kF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWArV5cC3H4wGPsznSKFVgwyEXgoXjIMiDrTHMxpw952h33Mqx
-	YYRd8l71syelwCE76Rzp8DKjDyUxU0fZo+qczrBWpBVgNnAQDzdCaeS8
-X-Gm-Gg: ASbGnct/mJSmXaMAbaPShqU72bjy6+P+3IJEM7pl52UFl+skd2v49WQxJ6HFZrMU1uM
-	ZftnBkUPLT/w+BvSy592csbUpjMtpTDyeI2nt1U0pjXyneZhDgbQ1gwlQcvM/w1+SM/TbgTdD1x
-	2n9SfRR3r0LEBittKnisNam+DlTYgNdTSujpX0bVf/GLeG/AotNGI5f6u/sQk4Y55l26Jyf/w+L
-	0PacC30wBB7F7wTSX80Q9dYtoDnuUyM1PpTBZYFHL44dl0OtKzbWLvPs32YmT8w5/g2jbCZl4LM
-	HX/MfnT1hYmwdSMXgFmbCAVfOJsOkpn1HUgxHbvdnGSUy5aYWJg2+sb6wh9TwkoJimuwgXmZSyQ
-	E7zwp4VqWXchpu44Nt1YY8psAaoR9gSgiRiILlZAYTgfUKO95czDdeZbmJc0CsPsQajxmJ6vpP2
-	GjKmo2qx+HQHDQt/+A/wDT3L/OKaYpIDunnPA8e2MseHpkB7TOSJYJn/R03NLxXp4=
-X-Google-Smtp-Source: AGHT+IGHccmEm3OTVvfv1cl8GaVw3qg7Fan/QOWhxWwvh6yuV+lD+Cr5FA7Q1nAV3Zqiw6cVkBYCFw==
-X-Received: by 2002:a05:600c:630e:b0:471:11a3:a6a9 with SMTP id 5b1f17b1804b1-477308acfe4mr10073295e9.37.1761858800991;
-        Thu, 30 Oct 2025 14:13:20 -0700 (PDT)
+        bh=HBQJ8NZZeDhVExk7zItWUyrPMSm4Navew7MC0raFrQo=;
+        b=ix2Fw+lugU9KbjJP3lBWxuqxIbil9TwZUAINS0Js5k+L0d4l4jK2l/W0UO7QXCirRF
+         F9KYkBnmh/CX9A2oG3b235dZPh/ZoxljjY1P4LlcOCOdjEszpcl7ow8iZos/LdC/GZ1y
+         HwNIAmR5ZNiRYxlYWkNb2550xHAdehCF7sM1DVUBgoWIq5T8eZZklHzhH3aTPplnO2Bt
+         Z1J/ALSlG5JlNrcNZ0/Tsd/Dw/uDTIWbc9nTGKk28KfvgS9eFu4duq/j6ubGmVDYGfSp
+         fFHjKQGql4Sp+ji9QPAnPqd45XIKAEW62gi/z9yqzF9UI7l0bSBBzJKD3o81py4iHls0
+         zOvw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzgRuW3WP87N4+BK/j2fzjuBqnZvlOOrkLCqgxVxCHa/UXRH1D2k8HYozvHnNk+AZV0/SOnFuhgzk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw67RgTG+FwDjhNYNHbMxJ6+VA7w0cseZRUBs2G+s7OblqOLB3N
+	y7E/DPeHRrdn5VmAr38ozO637CUi514tEnRbk34H20t6OweKfwDA3UqR
+X-Gm-Gg: ASbGnct9bCegyZnNLTKf5MKjoQo55rX0pdXi9y90FT7nrOkpaPLEhZc32AVkTYeulpk
+	N8fOOM3aahATJPKvoqvmPJjkt2oHh0HVwRdmPIQYuDH9EYp7xIgM5Or6FNj88x/Jo6m0PO02wnV
+	U3e11ktAAPxNrrENJo1voSMdATreHwgddgQupdR/q/lUPBI1zeD00XT/q5FZL5Egkfjhb2/5uHr
+	W3pPv1F2zveEaKxVKKQK/yTRwWXSsT8LCc3ni9bhe1VCWynh6EMJvIcMpPpWrsQJsDsv00Kr488
+	A1f7UKfUi2H3Romddmg8NiBZ2FiE+Q5IdkxMy4pdP7id/vvlc4VROBcAZ8B7aY0Or5hwarrFrfC
+	Y7XcbdMKFffo4BXOhIMnfSEA2pMdOlS8CWqJCyFGyAMnU4TRfY9Bj16bnKaRTLWH360cFaRV6DL
+	mcRUZbbPr9ibgs8m26AS/x0TH2ZhZPfsGRNuQP8cKM7Q==
+X-Google-Smtp-Source: AGHT+IHL5HKRR2VQHGsF+tRPHFz6hmgUmkPnqqQQjatvWEU2WCyYG6/w1jSGFQ7BPsCBPfDzFNjvNQ==
+X-Received: by 2002:a05:600c:528e:b0:46e:450d:e037 with SMTP id 5b1f17b1804b1-477307c213fmr10872665e9.5.1761860222541;
+        Thu, 30 Oct 2025 14:37:02 -0700 (PDT)
 Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952d5773sm36299466f8f.27.2025.10.30.14.13.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429ba445463sm4164266f8f.10.2025.10.30.14.37.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 14:13:20 -0700 (PDT)
-Date: Thu, 30 Oct 2025 21:13:18 +0000
+        Thu, 30 Oct 2025 14:37:02 -0700 (PDT)
+Date: Thu, 30 Oct 2025 21:37:00 +0000
 From: David Laight <david.laight.linux@gmail.com>
 To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
- "the arch/x86 maintainers" <x86@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, "Ingo
- Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Jonathan Corbet
- <corbet@lwn.net>, Josh Poimboeuf <jpoimboe@kernel.org>, "Peter Zijlstra
- (Intel)" <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, "Kirill
- A . Shutemov" <kas@kernel.org>, Xin Li <xin@zytor.com>, David Woodhouse
- <dwmw@amazon.co.uk>, Sean Christopherson <seanjc@google.com>, Rick P
- Edgecombe <rick.p.edgecombe@intel.com>, "Vegard Nossum"
- <vegard.nossum@oracle.com>, Andrew Cooper <andrew.cooper3@citrix.com>,
- Randy Dunlap <rdunlap@infradead.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Kees Cook <kees@kernel.org>, Tony Luck
- <tony.luck@intel.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, <linux-doc@vger.kernel.org>, "Linux
- Kernel Mailing List" <linux-kernel@vger.kernel.org>,
- <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH v11 9/9] x86/cpu: Enable LASS by default during CPU
- initialization
-Message-ID: <20251030211318.74d90c3f@pumpkin>
-In-Reply-To: <d1b5698e-94ab-45a2-a472-4488895d55bb@intel.com>
-References: <20251029210310.1155449-1-sohil.mehta@intel.com>
-	<20251029210310.1155449-10-sohil.mehta@intel.com>
-	<789ADBB5-F7AC-4B08-B343-F23260FB8FBC@zytor.com>
-	<13681100-ddc3-4ef0-bd13-744282324ff1@app.fastmail.com>
-	<d1b5698e-94ab-45a2-a472-4488895d55bb@intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Rick P Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, the arch/x86 maintainers <x86@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>, Ard
+ Biesheuvel <ardb@kernel.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>, Tony Luck <tony.luck@intel.com>,
+ "Alexander Shishkin" <alexander.shishkin@linux.intel.com>, "Kirill A .
+ Shutemov" <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, Randy
+ Dunlap <rdunlap@infradead.org>, David Woodhouse <dwmw@amazon.co.uk>, Vegard
+ Nossum <vegard.nossum@oracle.com>, Xin Li <xin@zytor.com>, Linux Kernel
+ Mailing List <linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
+ <linux-doc@vger.kernel.org>, Kees Cook <kees@kernel.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>
+Subject: Re: [PATCH v10 08/15] x86/vsyscall: Reorganize the page fault
+ emulation code
+Message-ID: <20251030213700.1e98203e@pumpkin>
+In-Reply-To: <e3c7987f-7f8d-41bb-9d4d-966f35941757@intel.com>
+References: <20251007065119.148605-1-sohil.mehta@intel.com>
+	<20251007065119.148605-9-sohil.mehta@intel.com>
+	<a33d59c7add98dd9ef352ac95178821dbcd0ce0e.camel@intel.com>
+	<3e3d2426-6296-4a61-beae-4e3ff5d60f2c@intel.com>
+	<f4ae0030-9bc2-4675-ae43-e477cd894750@app.fastmail.com>
+	<e3c7987f-7f8d-41bb-9d4d-966f35941757@intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -109,31 +110,37 @@ List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 30 Oct 2025 09:44:02 -0700
+On Thu, 30 Oct 2025 12:28:52 -0700
 Sohil Mehta <sohil.mehta@intel.com> wrote:
 
-> On 10/30/2025 8:45 AM, Andy Lutomirski wrote:
-> > On Thu, Oct 30, 2025, at 1:40 AM, H. Peter Anvin wrote: =20
-> >> Legacy vsyscalls have been obsolete for how long now? =20
-> >=20
-> > A looooong time.
-> >=20
-> > I would suggest defaulting LASS to on and *maybe* decoding just enough =
-to log, once per boot, that a legacy vsyscall may have been attempted. It=
-=E2=80=99s too bad that #GP doesn=E2=80=99t report the faulting address.
-> >  =20
->=20
-> Unfortunately, CONFIG_X86_VSYSCALL_EMULATION defaults to y. Also, the
-> default Vsyscall mode is XONLY. So even if vsyscalls are deprecated,
-> there is a non-zero possibility someone would complain about it.
+> Thank you for taking a look at these patches.
+> 
+> On 10/30/2025 9:58 AM, Andy Lutomirski wrote:
+> 
+> > So I think all that's needed is to update "[PATCH v10 10/15] x86/vsyscall: Add vsyscall emulation for #GP" to check user_64bit_mode(regs) for the vsyscall case.  (As submitted, unless I missed something while composing the patches in my head, it's only checking user_mode(regs), and I think it's worth the single extra line of code to make the result a tiny bit more robust.)  
+> 
+> I probably don't understand all the nuances here. But, the goal of the
+> check seems to ensure a 32-bit process running on a 64-bit kernel
+> doesn't ever go through this vsyscall emulation code, right?
 
-Presumably a command line parameter could be used to disable LASS
-in order to enable vsyscall emulation?
-
-That might let LASS be enabled by default.
+Do remember that there is no such thing as a '32-bit process'.
+Changing to/from 'long mode' isn't privileged.
+OTOH in 32-bit mode you can't generate an address above 4G.
+(But I've no idea if the high register bits get cleared before the register
+is modified.)
 
 	David
+
+> 
+> I guess a user_64bit_mode(regs) check wouldn't harm. I'll add it when
+> the vsyscall series is posted.
+> 
+> 
+> 
+> 
+> 
+
 
