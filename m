@@ -1,154 +1,139 @@
-Return-Path: <linux-efi+bounces-5257-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5258-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9439AC20466
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 14:40:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBEC2C20C93
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 15:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 30BA04EC08B
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 13:39:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D989D1A23DD5
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 14:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B334258EDF;
-	Thu, 30 Oct 2025 13:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15C627CB35;
+	Thu, 30 Oct 2025 14:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nb9hYRce"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VdjLMwuF"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6660B258ED2
-	for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 13:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8192773F9
+	for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 14:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761831543; cv=none; b=bMNlfJidUhBV7jb0dgSpUkoNiJRCXCfNnUy7h4s55hoTx2c+BfZycVofEYQ+znebAeQ0dWfLFrnnMpjw9HXA3lTkUKzEzHqO0Xfv1JJdl1hT3fD3D3eAijkQEcwBBtBze59LbfolD7t0ltvK1FDnk+dtMrUY+pOXiJazilKA5Ns=
+	t=1761835953; cv=none; b=FaSu7j/MwZs9tMTVjkPY89Hpajh1JPE2bJBqrH3P7ZNilkXW7cQt3wI+crmkCld2L0D3TOe0ZgVyfoYMxtKI7DnhLd5ndQj8AbhWzd5FHWPXtosprjOp3/oLgZ0dBQCz9G1Uo/rg5hUmaEaOiaVr3hs1lJID+b1VdlCTdDX/MUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761831543; c=relaxed/simple;
-	bh=RZeQGMHFOH8IQEd+QAFU2HEJjBeOnS7QbhpbX49cPFc=;
+	s=arc-20240116; t=1761835953; c=relaxed/simple;
+	bh=MwA979kR7JhZAfFkfzHJO13jyEVBAnwcdUBbaUPBNDQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kAkM85c+PhPlfelBD29juGksuYGtCDVemud+jTBN8kriFi72mFFz31wORRu1u7OVo6zQWnz6D7XXWjL/lg8Cu3CBiJtZGSrjgPujKiPHThU4B6Ft0LFgbSZFaxd7C/5cTbuMsSP7y5gBmYANDvjdjAjaRf9P5xpM7zJ2SvNjcfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nb9hYRce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147AAC116B1
-	for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 13:39:03 +0000 (UTC)
+	 To:Cc:Content-Type; b=FjIH95zaMdbYgKuK2jJ8Xcya+TOykwPdszlxPAU04jKz6dwO3Nzq2IeSKTKjC8XIco1Bsd9eb2w8OvNXPexJ/ZKjoXI6gM0ICrqEtuEEgjFoq9l4XZ47vSAJ4e2aoovSrv/sN6kwJjSu7B7qyiP6MJa+9As5IU3MIQVRdtirqzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VdjLMwuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275CAC4CEF1
+	for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 14:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761831543;
-	bh=RZeQGMHFOH8IQEd+QAFU2HEJjBeOnS7QbhpbX49cPFc=;
+	s=k20201202; t=1761835952;
+	bh=MwA979kR7JhZAfFkfzHJO13jyEVBAnwcdUBbaUPBNDQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nb9hYRceUk4W4O5p6nhZrodzLSDCg8SsMQbXPWNYvvDYZnusWNRjM6KboL8KOM2IG
-	 q5/GtAicLgoXVOhY/NZTW0rfpNwuHHMrf4bi1BNZJHl5dHgxNHZd24K/hPItkEloyA
-	 XDm1NwYVPHwsUESuIIcoF2JEtrW3lOLC0laqsDCcCjOOg23+Yb4EOsQP1c5IVf9TiX
-	 swb0AfldRuGM4uJ3UIIX784TrHoHYSV2cTEVEfKK8ykC+DRKJt2+zKEhMfsd+Egnng
-	 wyz4BvU0uA4wZB6bF22hafMDQLnG67sVe7ALTrreMyurTzTY/nzQLkhViIasmHhOPQ
-	 en/rM3RnlpQJA==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-592ff1d80feso235107e87.2
-        for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 06:39:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVy1v82byFG2oaQEpFkLKX1B6qEWiPAxT+4uhG8JBZJ7JZellIo1kKsEpuI1l14d9XfOG7HqeE73do=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzh1/yvQYVG+kbF5AsUF+0jRJprynDkoeaJclmqcIu+2o5Y2XET
-	XygvSpbEn/z/ry/NYijkcY7Xq6x2hd8h5FBAWh8C2/s6MeTe3/ZQu4GPf2RNMtClrRLHNVk6dzC
-	WoQU2uwPWhpi00K4JZ4L1kunDr03nGVY=
-X-Google-Smtp-Source: AGHT+IHJDdIvykMw+qJaXdyYIgiRY+DnHc+mIPN9yuvhEb417CvySaFKQBQhUVYBR40vSqzm7Jpnk2FtJN3WqXDoG3k=
-X-Received: by 2002:a05:6512:3d27:b0:592:eea5:fa43 with SMTP id
- 2adb3069b0e04-5941286ace8mr2039646e87.22.1761831541434; Thu, 30 Oct 2025
- 06:39:01 -0700 (PDT)
+	b=VdjLMwuFuHUPgFaHrRn0v0fstulBaLjTG+83BJJ2A6EUamxWt1FnC4NtGGk7snUX/
+	 VFSPlq6yg4vAX+CGWs64jMkp3HFyJIW/9zaoA+RzZXofmDSOdNAHqaWMr7waO2RZgU
+	 h/lb63DDNseXy8Mb3wUy2SxXitj2rZEpDCinntWb4O7J3afyHHwKTyQxYV870tqtff
+	 YyG2aiqCm/RRmoU2EdQshUtZOHyhhYTF+Gc+KY1AjwGn1aXifD9iF46i/Y+mhbvTBT
+	 S+9NjKHX9ON8QViAsAYfcGx2XhkgPeVMuEcTNvKB08/8jWa+coMKwiVdXv0C9CMUHz
+	 HASMGQSIlkPgg==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-592f098f7adso392613e87.0
+        for <linux-efi@vger.kernel.org>; Thu, 30 Oct 2025 07:52:32 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwOq2w7hXK2vjQzQTjUDyM5eojpWnf7eOw51chgckpBAGPxkoeO
+	EIG7A+w8rbt4147BCpPnKvvBA5be0g/vrIOrVUfxzwXJPiw63OrBQwTUVW1lkGZ3uQvOsdSrLNZ
+	rn9cFewAWKzPjMT/yci8TmV5Cmgp+NDc=
+X-Google-Smtp-Source: AGHT+IEmJYaLKpnIcvX22qOYwwRwAvrgrTNiN+zxLirnrgKEiG1ICDVlDLekPiejuEf+sLDXNomCfruws1l0g6gGQ8U=
+X-Received: by 2002:a05:6512:234c:b0:594:1957:a379 with SMTP id
+ 2adb3069b0e04-5941d4f51c8mr8207e87.6.1761835950472; Thu, 30 Oct 2025 07:52:30
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251023082142.2104456-1-linux@rasmusvillemoes.dk>
- <20251029-redezeit-reitz-1fa3f3b4e171@brauner> <20251029173828.GA1669504@ax162>
- <20251029-wobei-rezept-bd53e76bb05b@brauner> <CAHk-=wjGcos7LACF0J40x-Dwf4beOYj+mhptD+xcLte1RG91Ug@mail.gmail.com>
- <20251030-zuruf-linken-d20795719609@brauner> <20251029233057.GA3441561@ax162> <20251030-meerjungfrau-getrocknet-7b46eacc215d@brauner>
-In-Reply-To: <20251030-meerjungfrau-getrocknet-7b46eacc215d@brauner>
+References: <CAP8-FqnVn=dwOhbNHcmZjdM_htr9m-1FPtEoUBGA14EJSVbCgw@mail.gmail.com>
+In-Reply-To: <CAP8-FqnVn=dwOhbNHcmZjdM_htr9m-1FPtEoUBGA14EJSVbCgw@mail.gmail.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 30 Oct 2025 14:38:50 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHP14_F1xUYHfUzvtoNJjPEQM9yLaoKQX=v4j3-YyAn=A@mail.gmail.com>
-X-Gm-Features: AWmQ_bliKhnn90c2eiWfm-ZlkCUlsnCwA4TiK8TvhwYvM10GpQouQ-ssEgWtCxg
-Message-ID: <CAMj1kXHP14_F1xUYHfUzvtoNJjPEQM9yLaoKQX=v4j3-YyAn=A@mail.gmail.com>
-Subject: Re: fms extension (Was: [PATCH] fs/pipe: stop duplicating union
- pipe_index declaration)
-To: Christian Brauner <brauner@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	linux-efi@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	David Sterba <dsterba@suse.com>
+Date: Thu, 30 Oct 2025 15:52:18 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXG2STQhNhy3rgm+4JmGZZiyK0AFruM6fwNai=LA6is+1g@mail.gmail.com>
+X-Gm-Features: AWmQ_bn2x5uvluP_8g2o_LjYHDkR4H7XBRCINPcfKCAEtFDbEiU1cxIisMoQ8rY
+Message-ID: <CAMj1kXG2STQhNhy3rgm+4JmGZZiyK0AFruM6fwNai=LA6is+1g@mail.gmail.com>
+Subject: Re: Secure boot with the (not deprecated) EFI protocol
+To: Costin Manolache <costin@gmail.com>
+Cc: linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 30 Oct 2025 at 14:23, Christian Brauner <brauner@kernel.org> wrote:
+On Sat, 6 Sept 2025 at 07:57, Costin Manolache <costin@gmail.com> wrote:
 >
-> On Wed, Oct 29, 2025 at 04:30:57PM -0700, Nathan Chancellor wrote:
-> > On Thu, Oct 30, 2025 at 12:13:11AM +0100, Christian Brauner wrote:
-> > > I'm fine either way. @Nathan, if you just want to give Linus the patch
-> > > if it's small enough or just want to give me a stable branch I can pull
-> > > I'll be content. Thanks!
-> >
-> > I do not care either way but I created a shared branch/tag since it was
-> > easy enough to do. If Linus wants to take these directly for -rc4, I am
-> > fine with that as well.
-> >
-> > Cheers,
-> > Nathan
-> >
-> > The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
-> >
-> >   Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
-> >
-> > are available in the Git repository at:
-> >
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git tags/kbuild-ms-extensions-6.19
+> Hi,
 >
-> Thanks, I pulled this and placed it into a branch that I can base other
-> branches on.
+> With UKI and the deprecated protocol - signing the combined
+> (stub,kernel,cmdline,initrd) works as documented.
 >
-> _But_, I'm already running into problems. :)
->
-...
->
-> Because struct cgroup_namespace embeddds struct ns_common and it
-> proliferates via mm stuff into the efi code.
->
-> So the EFI cod has it's own KBUILD_CFLAGS. It does:
->
-> # non-x86 reuses KBUILD_CFLAGS, x86 does not
-> cflags-y                        := $(KBUILD_CFLAGS)
->
-> <snip>
->
-> KBUILD_CFLAGS                   := $(subst $(CC_FLAGS_FTRACE),,$(cflags-y)) \
->                                    -Os -DDISABLE_BRANCH_PROFILING \
->                                    -include $(srctree)/include/linux/hidden.h \
->                                    -D__NO_FORTIFY \
->                                    -ffreestanding \
->                                    -fno-stack-protector \
->                                    $(call cc-option,-fno-addrsig) \
->                                    -D__DISABLE_EXPORTS
->
-> which means x86 doesn't get -fms-extension breaking the build. If I
-> manually insert:
->
-> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> index 94b05e4451dd..4ad2f8f42134 100644
-> --- a/drivers/firmware/efi/libstub/Makefile
-> +++ b/drivers/firmware/efi/libstub/Makefile
-> @@ -42,6 +42,8 @@ KBUILD_CFLAGS                 := $(subst $(CC_FLAGS_FTRACE),,$(cflags-y)) \
->                                    -ffreestanding \
->                                    -fno-stack-protector \
->                                    $(call cc-option,-fno-addrsig) \
-> +                                  -fms-extensions \
-> +                                  -Wno-microsoft-anon-tag \
->                                    -D__DISABLE_EXPORTS
->
-> The build works...
->
-> I think we need to decide how to fix this now because as soon as someone
-> makes use of the extension that is indirectly included by that libstub
-> thing we're fscked.
 
-Unless anyone is feeling brave and wants to untangle the x86 command
-line delta between the stub and core kernel, I suggest we just add
-these flags just like you proposed (assuming all supported compilers
-tolerate their presence)
+UKI uses systemd-stub, which is based on LoadImage/StartImage and the
+initrd loading protocol, except when booting very old x86 kernels.
+
+> I've been trying to use the new recommended protocol - i.e. LoadImage
+> and StartImage, with kernel
+> loading initrd from the kernel stub. The first problem is that initrd
+> is not verified - that can be addressed in a
+> UKI-like stub that loads initrd and checks the SHA against some  value
+> added to an UKI section,
+> before starting the kernel - seems to work fine even if initrd ends up
+> getting loaded 2x. It would be
+> nice if the kernel stub had a command option to check the initrd sha directly.
+>
+
+The kernel's EFI stub is intentionally kept minimal: if authentication
+is required, it needs to be performed by the loader implementing the
+initrd loading protocol, or by the kernel when it unpacks the initrd
+into memory. The EFI stub does measure the initrd into the TPM if the
+TCG2 protocols are available, as the next opportunity to communicate
+with the TPM may be long after the initrd has been loaded.
+
+> What I can't figure out is getting StartImage to work - it will fail
+> if the kernel EFI is not signed (access_denied).
+> It works if the kernel is signed - however a signed kernel can be
+> extracted and used to boot with arbitrary command line
+> and initrd, so anyone can get a root shell.
+>
+
+This is why it should be the kernel's job to authenticate the initrd
+and command line before ingesting them. I am aware that things don't
+work like that today, but this is not an issue with the old vs the new
+protocol. This is also why TPM measured boot based full disk
+encryption is typically deployed alongside secure boot, so that this
+root shell does not actually give you access to the system.
+
+Note that there is a glaring hole in the TCG PC client spec (which
+describes measured boot on EFI systems) as the command line (aka Load
+Options) are not measured into the TPM by default - the loader needs
+to do so explicitly.
+
+> So far the only option I found is to build a custom kernel with a
+> cmdline built-in and not allowing
+> cmdline modifications. It also needs the initrd built-in - and if both
+> cmdline and initrd are included
+> there is no need for a stub, which is nice - what is less nice is
+> passing the dm-verity sha, or
+> having to rebuild the kernel every time the rootfs changes and a new
+> dm-verity needs to
+> be configured. There are some workarounds for this - but at this point
+> I'm wondering if
+> I am missing something obvious ?
+>
+
+No, I don't think you're missing something, this is simply the state of things.
+
+> The goal is to guarantee that only signed rootfs, initrd, cmdline and
+> kernel can be loaded when secure boot is enabled, and can't be changed.
+>
+> Thanks
+>
 
