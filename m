@@ -1,183 +1,169 @@
-Return-Path: <linux-efi+bounces-5247-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5248-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65694C1D5F2
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 22:08:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F86C1ECE1
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 08:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 133F03AA974
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Oct 2025 21:08:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 52BEF4E84E3
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Oct 2025 07:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC2C35A927;
-	Wed, 29 Oct 2025 21:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5B1337681;
+	Thu, 30 Oct 2025 07:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OkNFSSjW"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="ZVpsHK9A"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A2B320CD6;
-	Wed, 29 Oct 2025 21:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894652DF710;
+	Thu, 30 Oct 2025 07:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761771979; cv=none; b=q6sh9Zpq6bO80KzgBtCUpmR5V32ehb/Tgf0julnhs5Uq+pEzqkQ4bEM01Pn1pBcp+bjz0sqvTdZSed8Fp1PAPLNO+7PgT2nhKXcUTomPr69Hr+dJhvfWQH54D6wr9fZ3dz4CkGAzIG5AqcDmqqqP/FlznZAsaUoHpPZAv7Y5KjA=
+	t=1761809880; cv=none; b=Y3Yf9iS8vRhmDorCIvnK2hA/0uGcRYMx+NIJOOmgpkPrE9RH6SW1XW3QPDnZmvNmewqxEiQpa8J3DnX+P+CUXF2xABGT9ae8pIP11fFm1lEqb6D9fqWcn/UEepKFspBLc90YeFPRR0diZA3PjAhEZJYpmfNehkzyjzPyvscAKsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761771979; c=relaxed/simple;
-	bh=Np5CMFbWfUmbU6MayjZ40pxjcZnyi9oeks/j+smFIbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxfMikhN5zJ+5bkMPaocslvTYFDqsxvdlbx3EeboTb6iSe3WUc8qSXq4p7WftutoIdPEERu0Ytm1FAVKYfUAVaFrZPqdXV+SunaDdQqd6RYlqaVFJeYXDGt45G8H2G0CG+ThiSNTA5izwhLUoqhtomlkwTTK2BLTVkAIhDbB9aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OkNFSSjW; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761771978; x=1793307978;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Np5CMFbWfUmbU6MayjZ40pxjcZnyi9oeks/j+smFIbo=;
-  b=OkNFSSjWU5/kAdKnvf6VcexPVvKd8c1x8IaYy65x74JcKpAu/c0LHtGU
-   jOAZ+uWlJsyksipomavlXUlGXByn3NGtakCEKojIbBDKBoewJSuiap4KW
-   MWzzSMNjdSo6aAN9xi1oyqP5LK+Lmglqta6Db05npUsgmZz6LtEHcdu5Q
-   QUawcDnv8hultVtZuwh/WJMab8n+q11zvsrB7IO8bLOmyV8ZyCwQPBhy3
-   aNSFFPwTXlJNga5E5oCN+E9mV5ERT/c84DWgKnTXXzahCAxvzEc9TowQr
-   p2gsdaXkKCD4k7g2bDsrbl14wlcfsN1B/+iTL/ojCi7WOx842AHbFilZH
-   Q==;
-X-CSE-ConnectionGUID: 9prTzSlOS1+C5aakqn1MAw==
-X-CSE-MsgGUID: 0yND17ZeSRC2/VOi+EPefQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="64002745"
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="64002745"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 14:06:16 -0700
-X-CSE-ConnectionGUID: hzvYjJXbTG6vTHQfvsUQgA==
-X-CSE-MsgGUID: cmBIxFr2RDCHUhRKjX2Oog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="216432021"
-Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa002.jf.intel.com with ESMTP; 29 Oct 2025 14:06:16 -0700
-From: Sohil Mehta <sohil.mehta@intel.com>
-To: x86@kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Kirill A . Shutemov" <kas@kernel.org>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	Xin Li <xin@zytor.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Kees Cook <kees@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: [PATCH v11 9/9] x86/cpu: Enable LASS by default during CPU initialization
-Date: Wed, 29 Oct 2025 14:03:10 -0700
-Message-ID: <20251029210310.1155449-10-sohil.mehta@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251029210310.1155449-1-sohil.mehta@intel.com>
-References: <20251029210310.1155449-1-sohil.mehta@intel.com>
+	s=arc-20240116; t=1761809880; c=relaxed/simple;
+	bh=miQb2iaUTfZC3vHPECTUIqz+PsqVKrd+A/8fmF7LPzM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PV+Fcb229zlLP6z9+vqDk7lWBZ6Nn72oEWxkAEJ45ku29qo/didbiiHNBHntnuErGpYbGSiS/CJ0O0s+1KHfATPsGBvh2Jz6XyWJf+s06boBcDsVGVUoHIDLZU6yku4YVw7m7u/dnJX6VuJSTfa+JnQ+Bn2o2gu6DBclfvYS6ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=ZVpsHK9A; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1761809788;
+	bh=oZp2u0B67QsAETphUXyRmOTAga0TDFm7uEB1RHsxask=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=ZVpsHK9AZfcg4dvlIsbuPMJkZqb6I5D5+OMbNKWAOAIxTESE/b4QfCBr58MtQl56J
+	 EMEgwNV4LaGLdIu+iTIWP9IYsuz054eTxM8iIKuFRtHb9zIgMcyWSCE7b4+4I8OAKw
+	 YbwBuqOQH+BAeIOrAZYn6+r91V+luxN185o+tKM4=
+X-QQ-mid: esmtpsz18t1761809778t3d9bdc78
+X-QQ-Originating-IP: A5pFw7+bvHf6LNPL2Gm+8xBIcV9Yxvpvjn5Fl5DM/QE=
+Received: from [10.10.74.117] ( [123.114.60.34])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 30 Oct 2025 15:36:16 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 1780263289059606745
+Message-ID: <BD93A8DBE27154B0+22bf4a83-a850-4f78-8e0d-84cc93fe2715@uniontech.com>
+Date: Thu, 30 Oct 2025 15:36:16 +0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] ARM/efi: Remove duplicate permission settings
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux@armlinux.org.uk, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20251023082129.75612-1-maqianga@uniontech.com>
+ <CAMj1kXHs3vC4TEWg1ogG=N8Dd5L0rkQ=qAFLWKiAA5yi_He3GA@mail.gmail.com>
+ <10D9A93B0633E6BE+75720e07-b39d-452c-952e-41f8ab6aad94@uniontech.com>
+ <CAMj1kXHQ6WQWfbkMP4JUk=nKwSt7CovY25RC4JA0ZM7vRWu6dA@mail.gmail.com>
+ <9F7F632B7963434F+abad2548-a90d-4448-ae79-dd4bf637ee6e@uniontech.com>
+ <CAMj1kXHu5ABgxKsc_gg1j=pWMz6DbWoqv=qAAjx-5CiSF2PAiQ@mail.gmail.com>
+Content-Language: en-US
+From: Qiang Ma <maqianga@uniontech.com>
+In-Reply-To: <CAMj1kXHu5ABgxKsc_gg1j=pWMz6DbWoqv=qAAjx-5CiSF2PAiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: NU4e3V92LJuQkE+CV323mLOZVEj/xEptM+EfU2jLOShEY8x54WnR3bSX
+	TQHVJXl6jTPsPmcAowT08Mz6YDVPYgqBXnwcZ91lmi0k8HsFMgbWhxi5hKl1b/hfluBvQK5
+	4uY+DT0nKG5UXoVxLouSbgYoewIgFP+YYby2/CijCAUX7ygcHrA1dQi+D58u4EZDlSF5lTH
+	7iNs2tFSrjgsEob7wbevxMDE2tZH8wE7BPb20pcNHkbLEkcK5OrsOAC0hIo96+HqtUh9ql7
+	k+icoLZCsQLkdYVChLsyo5+r7zV+aSxjp3i9WriUkYUBvNdAhTyvOwZCLwDlQrCvMm9OySl
+	O0XtJaYs/SX8tpfhZ0PztVRVb/PcaptFx8uHOV9dFku3vp58Ga25kWIRZH4y9dEN0PZ49hN
+	2ixpnH++7ySdIb3IFx2eRaHKVeqhvixiZbCQpdoOVTvGWzCEBqXdgxeTZZxwv0iPKjEkrjK
+	E4ZDGb5JgoyB4FkU2GEbLN1aCkBpGuI1pDVc8gxVsZdMbFAn2GrD3mvqAlG14fCYODRPt3C
+	Nn+HUJIGT6ATO0cqVrpSy0jVO0toY6ToH2dpMHaidpMt7RxkXpRNv2EhmAJ8HP/ZoNM9sM8
+	7xR/fpNqrL3DTmaB0//HTisxDu1U9BozaUXi9cyrQqisDqymHC0I3W6yjr2aq2szONX9Yu2
+	bV8S1T95eob/l/4KLxBMRZq1Jv62hvMEXRf1DniykyhM0A/hgXoMKB6+42QaD0JdNALNFwz
+	+RCn0zTp4LdD70SBqLinw7xWlqSZdSzH0CqNiZLUw2C3Fvjz8F/vQeEPtR6zU4AnT8Z4AVA
+	RkftDGardTFkkcVUWlNfbbWjIlcEd8cpVhMN/snPbWArGlmK5v6cpkll/Th7T/GubKyy2CT
+	rAtz8ncjeO2pIbj0C0kPKV86zGpMJkkls9Vi8iAXFiHUnzox10J8fN0Ysaq1OUzzDgq8qyN
+	Z3EaQwDhz0NCRbTkSlq3Ffv2aKZqCwlqCpJSyOkF2aUoPwFisrj3uk3WFkpkX1bqYvliC/C
+	FeLjPnDmTkLPPBGMox
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-RECHKSPAM: 0
 
-Linear Address Space Separation (LASS) mitigates a class of side-channel
-attacks that rely on speculative access across the user/kernel boundary.
 
-Enable LASS by default if the platform supports it. While at it, remove
-the comment above the SMAP/SMEP/UMIP/LASS setup instead of updating it,
-as the whole sequence is quite self-explanatory.
+在 2025/10/29 22:15, Ard Biesheuvel 写道:
+> On Wed, 29 Oct 2025 at 10:55, Qiang Ma <maqianga@uniontech.com> wrote:
+>>
+>> 在 2025/10/28 21:42, Ard Biesheuvel 写道:
+>>> On Mon, 27 Oct 2025 at 04:46, Qiang Ma <maqianga@uniontech.com> wrote:
+>>>> 在 2025/10/23 16:30, Ard Biesheuvel 写道:
+>>>>> On Thu, 23 Oct 2025 at 10:22, Qiang Ma <maqianga@uniontech.com> wrote:
+>>>>>> In the efi_virtmap_init(), permission settings have been applied:
+>>>>>>
+>>>>>> static bool __init efi_virtmap_init(void)
+>>>>>> {
+>>>>>>            ...
+>>>>>>            for_each_efi_memory_desc(md)
+>>>>>>                    ...
+>>>>>>                    efi_create_mapping(&efi_mm, md);
+>>>>>>            ...
+>>>>>>            efi_memattr_apply_permissions(&efi_mm, efi_set_mapping_permissions);
+>>>>>>            ...
+>>>>>> }
+>>>>>>
+>>>>>> Therefore, there is no need to apply it again in the efi_create_mapping().
+>>>>>>
+>>>>>> Fixes: 9fc68b717c24 ("ARM/efi: Apply strict permissions for UEFI Runtime Services regions")
+>>>>>>
+>>>>>> Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+>>>>> No, efi_memattr_apply_permissions() uses the /optional/ memory
+>>>>> attributes table, whereas efi_create_mapping() uses the permission
+>>>>> attributes in the EFI memory map. The memory attributes table is
+>>>>> optional, in which case any RO/XP attributes from the memory map
+>>>>> should be used.
+>>>>>
+>>>> I see.
+>>>>
+>>>> Then, can it be modified like this?
+>>> No
+>>>
+>>>> --- a/arch/arm/kernel/efi.c
+>>>> +++ b/arch/arm/kernel/efi.c
+>>>> @@ -65,16 +65,13 @@ int __init efi_create_mapping(struct mm_struct *mm,
+>>>> efi_memory_desc_t *md)
+>>>>                    desc.type = MT_MEMORY_RWX_NONCACHED;
+>>>>            else if (md->attribute & EFI_MEMORY_WC)
+>>>>                    desc.type = MT_DEVICE_WC;
+>>>> +       else if (md->attribute & (EFI_MEMORY_RO | EFI_MEMORY_XP))
+>>> This will be true for RO, XP or RO+XP.
+>>>
+>>>> +               desc.type = MT_MEMORY_RO;
+>>> This will apply RO permissions even to XP regions, which need to be writable.
+>>>
+>> Thanks for your review.
+>> I see.
+>>
+>> I can introduce a new type MT_MEMORY_RO_XP, to describe RO+XP,
+>> and then we can use the RO+XP attribute to implement memory mapping.
+>>
+> Why? The current code is working fine, no?
+>
+Yes, the current code is running normally.
 
-The legacy vsyscall page is mapped at 0xffffffffff60?000. Prior to LASS,
-vsyscall page accesses would always generate a #PF. The kernel emulates
-the accesses in the #PF handler and returns the appropriate values to
-userspace.
+The reasons for the modification are as follows:
+I noticed that the arm64/RISC-V efi_create_mapping() always return 0,
+but in the code where efi_virtmap_init() calls it, it is as follows:
 
-With LASS, these accesses are intercepted before the paging structures
-are traversed triggering a #GP instead of a #PF. To avoid breaking user
-applications, equivalent emulation support is required in the #GP
-handler. However, the #GP provides limited error information compared to
-the #PF, making the emulation more complex.
+ret = efi_create_mapping(&efi_mm, md);
+if (ret) {
+     pr_warn("  EFI remap %pa: failed to create mapping (%d)\n",
+         &phys, ret);
+     return false;
+}
 
-For now, keep it simple and disable LASS if vsyscall emulation is
-compiled in. This restricts LASS usability to newer environments where
-legacy vsyscalls are absolutely not needed. In future, LASS support can
-be expanded by enhancing the #GP handler.
-
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
----
-v11:
- - Disable LASS if vsyscall emulation support is compiled in.
- - Drop Rick's review tag because of the new changes.
-
-v10
- - No change.
----
- arch/x86/kernel/cpu/common.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index c7d3512914ca..71e89859dfb4 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -401,6 +401,25 @@ static __always_inline void setup_umip(struct cpuinfo_x86 *c)
- 	cr4_clear_bits(X86_CR4_UMIP);
- }
- 
-+static __always_inline void setup_lass(struct cpuinfo_x86 *c)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_LASS)) {
-+		/*
-+		 * Legacy vsyscall page access causes a #GP when LASS is
-+		 * active. However, vsyscall emulation isn't supported
-+		 * with #GP. To avoid breaking userspace, disable LASS
-+		 * if the emulation code is compiled in.
-+		 */
-+		if (IS_ENABLED(CONFIG_X86_VSYSCALL_EMULATION)) {
-+			pr_info_once("x86/cpu: Disabling LASS due to CONFIG_X86_VSYSCALL_EMULATION=y\n");
-+			setup_clear_cpu_cap(X86_FEATURE_LASS);
-+			return;
-+		}
-+
-+		cr4_set_bits(X86_CR4_LASS);
-+	}
-+}
-+
- /* These bits should not change their value after CPU init is finished. */
- static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
- 					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED;
-@@ -2011,10 +2030,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 	/* Disable the PN if appropriate */
- 	squash_the_stupid_serial_number(c);
- 
--	/* Set up SMEP/SMAP/UMIP */
- 	setup_smep(c);
- 	setup_smap(c);
- 	setup_umip(c);
-+	setup_lass(c);
- 
- 	/* Enable FSGSBASE instructions if available. */
- 	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
--- 
-2.43.0
+This return error print is unnecessary, so I want to remove it.
+But, the return value of efi_create_mapping() in the arm doesn't
+always return 0, so I'm trying to modify it.
 
 
