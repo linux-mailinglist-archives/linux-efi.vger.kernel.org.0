@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-5309-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5310-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C4AC264FF
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 18:16:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D556C264F4
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 18:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153AA3A49F6
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 17:11:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7A31189DCED
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 17:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809B0301468;
-	Fri, 31 Oct 2025 17:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA41130171A;
+	Fri, 31 Oct 2025 17:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lYEXoKta"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P6/H+KAF"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E741D26ED55;
-	Fri, 31 Oct 2025 17:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46F52F693E;
+	Fri, 31 Oct 2025 17:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761930704; cv=none; b=QYMhfhaSMKfwInsCdieqYmjgM3Yvy0t1LiE4RxwmHyr01/KZjjmABTqGXaCoPVGPDjChM8+qGqqqrEi486fqnk2WOAWAN3kWCP1E00LgUtmEhkECREPvNqUeFrJYLJQbtMKy3pMwUAOGrQ/+nK4HyfttdvgA2m6uCjsBIBNTcW4=
+	t=1761930873; cv=none; b=hPfdg3Wy8Fh1Zjxd1gQ0nO9PO2dtmpPcqPf4kr36sdvF2ed5PbusyBpbilfJzokUIP0/U0n7mgm//Qfi8dRK2IbOHo0pYGX7URpjMN+xa+4+4OG8QNNhRkpqK2mivAHgGXeiI1Ujpd6Vnh6QL2SeVS2pS6e+Yg/ZmqCagr58rRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761930704; c=relaxed/simple;
-	bh=hW0hUZbZp5CfzdMky7R/tTgQHLsUVOYibtifeK8w3sA=;
+	s=arc-20240116; t=1761930873; c=relaxed/simple;
+	bh=oZnE6+qHtvnWowL0yFAx71jLpuvYaQM0z/MhnqC6SU4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O1G7osOIkgpmi2G1CBqQFYN1fTajNpL0CLKWl2qX4xJ5TOVl9/qLHJ05ULthf7kNPS5rCU9cljpXCg00RE16CpOfNz2aDnGh0BVicd7AMLb41gVnLCEeY3WwePaGuoR5OZEukV7OONzV1NTjxbWbbr/WJrRhKT2bL4KIR1J4OQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lYEXoKta; arc=none smtp.client-ip=192.198.163.12
+	 In-Reply-To:Content-Type; b=PJOReJY4GDJbRzSKGVFdAFplRKWq/zm/YayPPbKVBNYvzKBd8p7WCZYNGtZYl64fPwD/4F2CqPc6G6e2NB5fjYMOMdjk4HUo6DOG9bfUCAu0KW1N3e2yR/xHnpKCbSfd5iAmbKegVVdxfasJtkW/eAXAVhSe7mg8ax5oalgjeug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P6/H+KAF; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761930703; x=1793466703;
+  t=1761930872; x=1793466872;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=hW0hUZbZp5CfzdMky7R/tTgQHLsUVOYibtifeK8w3sA=;
-  b=lYEXoKtaRyP29zb7HI8KRE/UdYDQioARG8GqwPr3E4qqZoFU+Jv4JApr
-   GpSQ10qQgSeb/bQ3EFlSX8LPDUXvBx3V3xMD4xQnKT7gDZzUXwYJAEQ0T
-   VaHaX7dfuSo5nlTmXld4btIH4DfaGq3ThkH2NbhdqEBrWrVlEH9vqUmrW
-   BxIadV1HDL3UdUeRLgw/REVb8jNP4qsVr+28g4BXGeOa3wxeDVDvSUwjy
-   4leQHKr6TGagq2NNGlNN3iCKYjxgZeGov1dSyteG7Yj2Vc3yX7YyI8uNP
-   sfspWRvl6gtAXFNdtR5QUQd3A5cV8eX4CsNGYWm6MLi47hpQ/labEk80U
-   Q==;
-X-CSE-ConnectionGUID: uQ5TAB8XSsuE1TV/mUmRIQ==
-X-CSE-MsgGUID: jE1Ga2AEQy+Np/HJpEScXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="67957161"
+  bh=oZnE6+qHtvnWowL0yFAx71jLpuvYaQM0z/MhnqC6SU4=;
+  b=P6/H+KAFLufk4Q5xyQLINiJF08btsM7VqU8r0vsOdP1ZYiQYPszS8ttW
+   0s5I1rLM6wwjqLdPbH8MpXUIHUjI80SdDcay1LP6xf6YosmbWzk/sX/S0
+   6VeJJ1fxVDAPKhepow3R+JlwthImc9FZXg0Zei7bPpYsL1W1ZKSuxFLSA
+   cr+odj5VglyQPmGGR4gzfrqfyQ4eoQyDXTpyjfsSPtVGOKxFM4Y44HFm6
+   m49tv3deBVAGHT0os8DvaP54ZryV6eIQYGicgzOtDMB4iYDt7aJhwJrk2
+   YNzQkjzQ98YI6KtQ7Fj7cez3WCo7STLnb/RMoPmjv3vXWzlfUkCZQphxK
+   g==;
+X-CSE-ConnectionGUID: gUXOkPiQS++ZgavSyHVFew==
+X-CSE-MsgGUID: LmVFz5JmRfWhz+Vh+ZiiTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="64247791"
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="67957161"
+   d="scan'208";a="64247791"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:11:42 -0700
-X-CSE-ConnectionGUID: +aRVVqr3ToCdfxHf6lvmHw==
-X-CSE-MsgGUID: YEoYD4ieQU+2Xwmbhc4PrA==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:14:31 -0700
+X-CSE-ConnectionGUID: eDHHT8sjSbu9JKlhd/nRHA==
+X-CSE-MsgGUID: KbYhlqoXRq6mUiRetvbFjg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="217123099"
+   d="scan'208";a="217123756"
 Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.110.52]) ([10.125.110.52])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:11:40 -0700
-Message-ID: <3e9c4fdd-88a8-4597-9405-d865fb837d95@intel.com>
-Date: Fri, 31 Oct 2025 10:11:40 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:14:29 -0700
+Message-ID: <54df1d32-d26b-4fa3-81cc-26f3e6402574@intel.com>
+Date: Fri, 31 Oct 2025 10:14:29 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -67,8 +67,7 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 5/9] x86/efi: Disable LASS while mapping the EFI
- runtime services
+Subject: Re: [PATCH v11 6/9] x86/kexec: Disable LASS during relocate kernel
 To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -88,7 +87,7 @@ Cc: Jonathan Corbet <corbet@lwn.net>, "H . Peter Anvin" <hpa@zytor.com>,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-efi@vger.kernel.org
 References: <20251029210310.1155449-1-sohil.mehta@intel.com>
- <20251029210310.1155449-6-sohil.mehta@intel.com>
+ <20251029210310.1155449-7-sohil.mehta@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -134,22 +133,23 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251029210310.1155449-6-sohil.mehta@intel.com>
+In-Reply-To: <20251029210310.1155449-7-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/29/25 14:03, Sohil Mehta wrote:
-> From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> The relocate kernel mechanism uses an identity mapping to copy the new
+> kernel, which leads to a LASS violation when executing from a low
+> address.
 > 
-> While mapping EFI runtime services, set_virtual_address_map() is called
-> at its lower mapping, which LASS prohibits. Wrapping the EFI call with
-> lass_disable()/_enable() is not enough, because the AC flag only
-> controls data accesses, and not instruction fetches.
-> 
-> Use the big hammer and toggle the CR4.LASS bit to make this work.
+> LASS must be disabled after the original CR4 value is saved because
+> kexec paths that preserve context need to restore CR4.LASS. But,
+> disabling it along with CET during identity_mapped() is too late. So,
+> disable LASS immediately after saving CR4, along with PGE, and before
+> jumping to the identity-mapped page.
 
-One thing that's actually missing here is an explanation on how it's OK
-to munge CR bits here. Why are preemption and interrupts not a problem?
+It's not great when we have to thread the needle like this, but I don't
+have any better ideas:
 
-A reviewer would have to go off and figure this out on their own.
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 
