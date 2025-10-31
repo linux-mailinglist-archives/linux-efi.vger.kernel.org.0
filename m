@@ -1,56 +1,74 @@
-Return-Path: <linux-efi+bounces-5285-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5286-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91486C24082
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 10:10:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C831C242C0
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 10:33:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9094F4EA643
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 09:07:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1ECA189500B
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 09:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B65032E6B8;
-	Fri, 31 Oct 2025 09:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDE4329E52;
+	Fri, 31 Oct 2025 09:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loiaIyIR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="X2Yucodj"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246E632ED3A
-	for <linux-efi@vger.kernel.org>; Fri, 31 Oct 2025 09:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FA53126AF
+	for <linux-efi@vger.kernel.org>; Fri, 31 Oct 2025 09:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761901565; cv=none; b=JRZVmfPjvdzEg7jxADkshnUlJF8AfKxblIIHw8RTN1KYcDTg2ibRtativUUnr2QsmeKRC7gArCf+96WK2jR/WdB+rdiQZy9UJbo2civs2jZhVS5RruG6qxW2Jyvzk3bTQ7Wh5B/hY/uUG+Lu6Muq0ykGNA9FH53ZmG8yELfKCoo=
+	t=1761903111; cv=none; b=WzW6c87l0S5FiNwzH5Q2kPUBwXnZdIq/wKwT5NSY75H/uFJQeyYontcBjw8LuhpLt+2tqbLhXfTHxN1UqRq73SXbLeaJsqMBQy5j8jxYzEaR7L4u/eK85lP/W3NSONldPLmiMcQJyV87IoGB7Gx0SnJrf5XR3YjrXHkmOaPTScY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761901565; c=relaxed/simple;
-	bh=HY35X0Jzske9SGqhpLiK1C62JcE5DLM53IEaMjOcCVY=;
+	s=arc-20240116; t=1761903111; c=relaxed/simple;
+	bh=Ju5scJcqvKgVinWmnh8oTtH0OXNKUbGJQrfL2pV2xBU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I5o3ZZiulSuCY0DFLvWRZp5TPQYTXf4jed1fbTV3SnoWZNYvwHAzfz0WhrbGd78ELyFiFMmkumdAhMhRzd+rHTC/qdy8P94rHeXXPNl7AicE6P439bf1uhtnZ8/GiolRlDMkimv/OD5CjasOTluNDAGZO8sL6hcRNWOnKAm3qSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loiaIyIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DA8C2BC86
-	for <linux-efi@vger.kernel.org>; Fri, 31 Oct 2025 09:06:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761901564;
-	bh=HY35X0Jzske9SGqhpLiK1C62JcE5DLM53IEaMjOcCVY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=loiaIyIRL4ulsJ+FEOYNY2/S0JaFMly4NkQGS459NSi2JDRp7vA9vd5hhO/+s7lQP
-	 PDKYs9cFu3Y4+CBCIeg22y9Ur+yDODNTSL5i+QmD8p0vlURZy3XlnZDOjc2mOAxD5X
-	 VDVAPczTuQaBCJPIlj9a0Az9kAhcSmQWxNcvFIUxTKIXfTrWUVuNu/OzuGtn69HfFL
-	 KJLb9+41Ok1E3GdO0yLxMPmjL3lgN+fQ67PjkNROqU7hkuOspvJ/ozRFnIjDn6VMkQ
-	 ZwBKrsyRrEuTxqye8yU9QRH+FwGRNNHB9h32JsCwr1RRGbtZJ4KUxO1akKXde+Yj9w
-	 02c7pcoln4uUQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-37a0d3d2e8aso21995991fa.0
-        for <linux-efi@vger.kernel.org>; Fri, 31 Oct 2025 02:06:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXRLRFZgalCT+L4EwJFa3a0sAUd0M3wGC/NhGvOyj6oIzxKB6ebShKxG5TsLxb7Iu3zgjgEjmc+t1o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8EgrAjNILNfvhmZ2L1AjYVaPUNIFj8vK6xJNbOvfoii6LPP/h
-	zeCA+XGQRk7QFNiiZ5671f7/yDH6JaVrrBTYjK932/bo/hv1mhRgrh3kISceObdTJ5gq7Npm7B5
-	b7WzY27xb2UR8cjFnOwFKRXKDa3fWwBU=
-X-Google-Smtp-Source: AGHT+IHo1BDxtEcYJCNqrkX3cSbClvnLOEGhzOUXS7m3YmCBUjmZoaCOU8Y8UHOzac6EJyOFBI9H4ZUYvlMV1sk1fT0=
-X-Received: by 2002:a05:651c:50f:b0:372:9fd0:8c44 with SMTP id
- 38308e7fff4ca-37a18da85c2mr7825361fa.3.1761901562867; Fri, 31 Oct 2025
- 02:06:02 -0700 (PDT)
+	 To:Cc:Content-Type; b=owtW8GqaP08YmtBLsWng9+UZaCDPlF3ve3xBH7H9ez7u4RBWxtJkpn8pj/RZT3/AggBHirPKuvxMF1yZAh0x5Be56M6z6XriUxRso0GFcdC9fLBFHPTtVlDUJbgdTHiW8j3wLOhMbmirO9lgBviquacKXTLRg7C/tI/gu4pzau4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=X2Yucodj; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7847ee5f59dso29810107b3.2
+        for <linux-efi@vger.kernel.org>; Fri, 31 Oct 2025 02:31:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761903108; x=1762507908; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rfyBZJmdoTsV5mASRVjVSK13eALqQJfbT9fGRd81eVU=;
+        b=X2Yucodj23ySRgOlNARkCqiDs2q18jfJa5fCPKDwY4D00wvipJfIEtsYZN5buqaig/
+         mxSuYSmPKNzUfh0aiMY19gHV60T7ZHD3EnGxRzJOqHLZE/BVpXynqfkdO+HPUaUfGHha
+         Dz2Ct24OpzvejDI3oXh7IBr+w3vjd8xDj5gj/I2IJQx6hHJoj4jmZ/Dni8f1+oPoIT9M
+         Dd+hKOSNz4RRzUvMuz0uDXGuqQ+p28RxeAVixHU8jbzYjkq6mEApHelXmgoDGYQiiP4V
+         3S0E/aff5P52U+05k7tscgoNH8+EvJ+03hoHOZZ7PHJJDrAsnIMDYApIW/AajdCntfoi
+         wxMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761903108; x=1762507908;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rfyBZJmdoTsV5mASRVjVSK13eALqQJfbT9fGRd81eVU=;
+        b=Jk4Ysk50lN1BAT7JsEcsY/rBWHkEsR9kbsEsLaLpenqg7wEx7TgDdqXxFW8l1z3A8j
+         fCGI+34AVHB7G34omVm+kWFfVByubWvo6M+LA4mo7+535PJomdwhEYJE1n7MU+3KJNEs
+         VJASpefjf0poiTMH0RWMks2vPDmlTPF8aLYgRhj01PN4CaZBtnHIBwEsHRJW9LqLqrkP
+         EtLyTFH3wJcI4EAPgI6CWSiCJozsXRv59sg4MVqhPmeIxkrycf+UpZdcvF8bOKdnaFeE
+         9KZo2jWcD6hFDtkrm4t7EK5DwLt+3T0tYQor38Ojr9iUzw3e7a7UHA86hJ1mtyZAo/Dx
+         dzbA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJAFdsB1w828tb3qrvtRdthoM228HsJFIdzTpomx1ECxUBTRvippVMsHI9qwCfyCuSvcM6f+Ot4xY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwCG4B9kLYKr0R4cnol3D5vmSIvV57ZPrUQJMFp+ZG0EsUigy0
+	mX2u8nc/hQ/6mjliDD9vtJZMQryWjxXdMsSpEE3W/r5jerhNOCaGRAC0A7H+yUwoBXukBSr5GVA
+	GKOnsRP+oHzb3At1jv9vId7VSilkaaSwcSxF5QYIMbg==
+X-Gm-Gg: ASbGncuQfPfjqI3q4hsM7TCT6RlmZLJ7Rk36N2qjUP3s35jHWZDKlXLxiEhWA8plTCT
+	KTFhp2GcYB1pMt6vk8t8x+Ka7S0Txqwe2u4261DVf39rloSCldzEE2mwuPDck5Qj8Tvaxlbarsm
+	3ScQok2al4dIN3DxkQDN3ZxCbZrcZ5YeBlyBjXQlbrkiAV5isjSDDL2DB7U9Cnb3NgTnfcBwfw0
+	qsv6D3Ve0gjaYEo6KLWZOOffJE2hDr8x79bc/rSUa8RjSsfHo7xWimBocJyAOb108rN62Ns5S77
+	pKMdk6le/eo5RZkbumcQ6dGWuZzG7MCe4HO0kr0BY56RZe0PLX0=
+X-Google-Smtp-Source: AGHT+IEj9iIFsZIJy7VYK8k+eD82W99U6thDDvr3Il/rycdxbwYPZw7iXiAb8sYHSRlB0te//hksUCovkbAvYVNVBnU=
+X-Received: by 2002:a05:690c:4b89:b0:786:5499:6340 with SMTP id
+ 00721157ae682-786549968camr624657b3.21.1761903108203; Fri, 31 Oct 2025
+ 02:31:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -60,44 +78,30 @@ MIME-Version: 1.0
 References: <20251022114527.618908-1-adriana@arista.com> <20251031084101.701159-1-adriana@arista.com>
  <20251031084101.701159-3-adriana@arista.com>
 In-Reply-To: <20251031084101.701159-3-adriana@arista.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 31 Oct 2025 10:05:51 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE6L2PTtYYqOC7+fQd7HoB_FJAOtF=p=u+AimhqkLzV8w@mail.gmail.com>
-X-Gm-Features: AWmQ_blu14Z2p8TiOqD9ran31qq1TH0PhxjuvuYB7qcqo-ibv4LM8TnejHIrFyE
-Message-ID: <CAMj1kXE6L2PTtYYqOC7+fQd7HoB_FJAOtF=p=u+AimhqkLzV8w@mail.gmail.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Fri, 31 Oct 2025 11:31:11 +0200
+X-Gm-Features: AWmQ_bmWyYlCW0A93XcRB_MwyaKSsdQLSr0mMsiasbGEhlTJwVwCdJ2Jtv0fY24
+Message-ID: <CAC_iWjKEK6ardoCS9YUArhU-5UJfdb8cCGiiH=Ly=KkXTh=hvg@mail.gmail.com>
 Subject: Re: [PATCH v3 2/2] drivers: firmware: dmi_scan: Add support for
  reading SMBIOS from DT
 To: adriana <adriana@arista.com>
-Cc: ilias.apalodimas@linaro.org, trini@konsulko.com, robh@kernel.org, 
-	krzk@kernel.org, jdelvare@suse.com, frowand.list@gmail.com, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, vasilykh@arista.com, 
-	arm.ebbr-discuss@arm.com, boot-architecture@lists.linaro.org, 
-	linux-efi@vger.kernel.org, uefi-discuss@lists.uefi.org, 
-	linux-arm-kernel@lists.infradead.org
+Cc: ardb@kernel.org, trini@konsulko.com, robh@kernel.org, krzk@kernel.org, 
+	jdelvare@suse.com, frowand.list@gmail.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, vasilykh@arista.com, arm.ebbr-discuss@arm.com, 
+	boot-architecture@lists.linaro.org, linux-efi@vger.kernel.org, 
+	uefi-discuss@lists.uefi.org, linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hello Adriana,
+Hi Adriana,
 
-On Fri, 31 Oct 2025 at 09:41, adriana <adriana@arista.com> wrote:
+On Fri, 31 Oct 2025 at 10:41, adriana <adriana@arista.com> wrote:
 >
 > From: Adriana Nicolae <adriana@arista.com>
->
-> Signed-off-by: Adriana Nicolae <adriana@arista.com>
-> ---
->  drivers/firmware/dmi_scan.c | 58 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 58 insertions(+)
->
-> diff --git a/drivers/firmware/dmi_scan.c b/drivers/firmware/dmi_scan.c
-> index 70d39adf50dc..acc0e18b8d0f 100644
-> --- a/drivers/firmware/dmi_scan.c
-> +++ b/drivers/firmware/dmi_scan.c
-> @@ -10,6 +10,9 @@
->  #include <linux/random.h>
->  #include <asm/dmi.h>
->  #include <linux/unaligned.h>
-> +#if IS_ENABLED(CONFIG_OF)
-> +#include <linux/of.h>
-> +#endif
+
+We'll need a description of why the change is needed here.
+
+[...]
+
 >
 >  #ifndef SMBIOS_ENTRY_POINT_SCAN_START
 >  #define SMBIOS_ENTRY_POINT_SCAN_START 0xF0000
@@ -112,16 +116,7 @@ On Fri, 31 Oct 2025 at 09:41, adriana <adriana@arista.com> wrote:
 > + * Checks if the bootloader has passed SMBIOS table addresses via the /chosen
 > + * node in the Device Tree. This follows the standard kernel DT bindings and
 > + * assumes a fixed 32-byte mapping for the entry point.
-
-Not sure what 'the standard kernel DT bindings' are, or what you mean
-by 'a fixed 32-byte mapping. You could just drop this sentence, I
-think, or otherwise, describe that the DT property gives us the
-physical address of the SMBIOS3 entrypoint structure.
-
 > + * Returns true if a valid table is found and successfully parsed.
-
-if a valid entry point is found
-
 > + */
 > +static bool __init dmi_scan_from_dt(void)
 > +{
@@ -142,7 +137,13 @@ if a valid entry point is found
 > +               addr = be64_to_cpup(prop);
 > +
 > +               p = dmi_early_remap(addr, 32);
+
+Please put '32' into a define that explains what it is
+
 > +               if (p == NULL)
+
+I think if (!p) is preferred
+
 > +                       goto out;
 > +
 > +               memcpy_fromio(buf, p, sizeof(buf));
@@ -171,25 +172,11 @@ if a valid entry point is found
 >                 }
 > +       } else if (IS_ENABLED(CONFIG_OF) && dmi_scan_from_dt()) {
 
-Please drop the IS_ENABLED() here, and fold it into dmi_scan_from_dt(), by doing
-
-if (!IS_ENABLED(CONFIG_OF))
-    return false;
-
-at the beginning. This removes the need to provide two different
-versions of dmi_scan_from_dt().
-
+Can you fold the IS_ENABLED() in dmi_scan_from_dt() please?
 
 > +               /*
-> +                * If EFI is not present or failed, try getting SMBIOS
-> +                * tables from the Device Tree.
-> +                */
-> +               dmi_available = 1;
-> +               return;
->         } else if (IS_ENABLED(CONFIG_DMI_SCAN_MACHINE_NON_EFI_FALLBACK)) {
->                 p = dmi_early_remap(SMBIOS_ENTRY_POINT_SCAN_START, 0x10000);
->                 if (p == NULL)
-> --
-> 2.51.0
->
+[...]
+
+Thanks
+/Ilias
 
