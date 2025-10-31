@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-5307-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5308-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E31C26485
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 18:08:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 097ACC264D5
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 18:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 13B604E33FC
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 17:07:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DFC01A61874
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 17:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5466C303A0B;
-	Fri, 31 Oct 2025 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E21D2F6567;
+	Fri, 31 Oct 2025 17:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JhLfyJF1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B0IWQnuF"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8CA54918;
-	Fri, 31 Oct 2025 17:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A77926ED55;
+	Fri, 31 Oct 2025 17:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761930410; cv=none; b=n11WUvHMdjdVPNBDDG5ZI2TZYrcKtDGxUt6GOLvPmwdwvU9CCqXFZ392IDFIVGcPh+fF5FxYMrP5f1s3j5ix+rDLqJ02mAFTJnYqbSBgulkpdMc8JEQyTPDCkvVDu19+aLeqbqtfuY+cyWM+8GvPFVbNuOcc5gP4N91QLrA8Z1A=
+	t=1761930656; cv=none; b=CBpH+y/lu6t4/OTQKlnXQSXGAIW1dhHptBb1qFzlwDqLI0gQ1jhupLBkHceCNHaUAlbyXvRU5ZGY2nhW5d+FTvWSZu0z804gHzm3qcsyGYpdWg3I/hKtiezKNK4IvHMigC8Yju/hx/aJh3O8RyKjmPgYFd3mDl+Ny2+J9riUotM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761930410; c=relaxed/simple;
-	bh=UktzHszsXI60J8qo7zMB0lE2VnKbJjQU0Yd1Es6F3aw=;
+	s=arc-20240116; t=1761930656; c=relaxed/simple;
+	bh=Y4moqRCudzyQPW2LSCtQbiyiproSjkzCFtuhlukvf0w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kX7+N9V7yZ9ARkrMWrEb9lU9tEThrFbSitcHmXOKE6K0wb7tPDcJ4+/d8NWGADC9VyjdIJsHjKLWWkbgb4olpO2FcC4d8uDvzC4XdA/NB93uEbquYoXZrU8kH0fSmwcAtgG/DQK29ymLWXiQ+Y1IaLF0pCvxwj01ZXxd7zNTMwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JhLfyJF1; arc=none smtp.client-ip=192.198.163.16
+	 In-Reply-To:Content-Type; b=VbQaUIYscYNtyjWdfKSOKO9pTebeY3YZWoSnts5pvPEoeTLVPW4UCuRVIjmoD7i3uTR70fMSIRG/4lygoTvqB413xF+qLz0r5JCLpKgylMYt9lOwoGh16ut+4xarcJbTKh98TStiSHRVQEp8mgrY+PkIt+bJ4H+FJ+vAZHtbYDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B0IWQnuF; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761930408; x=1793466408;
+  t=1761930654; x=1793466654;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=UktzHszsXI60J8qo7zMB0lE2VnKbJjQU0Yd1Es6F3aw=;
-  b=JhLfyJF1XcUNqXdL3wqrs3Phmud/8COiUMX9l++0L7KT1OlV1F3lQmqY
-   rTjFHtFXf+5kvkOLplHwIXif70d41t/A41+T3EBSGp/rXbuXHxaLWCHWS
-   mgMU03pNZSnQb6mr/vy6DUwUGJ/j0bEmkpIFt05o93J6x2V4APbGyTyXx
-   7qs2+735IApsQFPHN+rYcWuWn/1gD0sTMKTOKqOGkcMtFh57u3/pM2tfB
-   RWg6myxdXwXaS3Cm+qT4tLjtcIUJskRnQo5RFehWCuLBhSIIpF7/4r9s2
-   m+rNALr9cR7oAz1ywI6GV2LHJUCR7lOSqsrv9QPIzdC6VlQh7lTNW3vag
+  bh=Y4moqRCudzyQPW2LSCtQbiyiproSjkzCFtuhlukvf0w=;
+  b=B0IWQnuFWtoNtX0jDY6U9PMBd3YyfW7RvaeZYVfp3C/xPAbtrBvPXtHh
+   O556UbNXdArP2vwKZnTYmSZxjYR9KMxPAgXXK4f52vglGtyvxWb4qdPCv
+   9OKHHMVjONjSMeNTh07ZYqEZDmdVdErqt3M1lbPDE+QdInxL2RIcvaUAS
+   5I2kTW6G2DJPOb6zWmr8217NfD1JgIHMGG3Z5poii7Rj2fzo4ada32Zt3
+   893Vp9+J7MHlhYELncOrEqHZ/VrNlFObzOuw2Nw6OsIPpbjwiL8242+Zw
+   DVnaoXDG/AlFG0W8W5Bpxg+AI9HoVyrhQpqYLKjigKrLHnVyM1QV1xgAi
    A==;
-X-CSE-ConnectionGUID: 8Cdln8omRcGFUjIcnjNRxg==
-X-CSE-MsgGUID: O9/9cLeVTmaCvlfpcxRY+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="51667514"
+X-CSE-ConnectionGUID: d6ho3nlMSQSWSuVCLhNMug==
+X-CSE-MsgGUID: InEJROi+Rsyxr9RbnJli/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="75446076"
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="51667514"
+   d="scan'208";a="75446076"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:06:46 -0700
-X-CSE-ConnectionGUID: nxKEWKg1QGCHiIbpT5KP1A==
-X-CSE-MsgGUID: H9AOiStRRKa332b1yndm/A==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:10:53 -0700
+X-CSE-ConnectionGUID: QrNRrJWGTUySXMP1Fc1HNQ==
+X-CSE-MsgGUID: EdapIuPsRuSnMk9CHZX5sQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="217122301"
+   d="scan'208";a="217122932"
 Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.110.52]) ([10.125.110.52])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:06:44 -0700
-Message-ID: <c3cdef69-7ebb-4834-b77d-daa85e001a96@intel.com>
-Date: Fri, 31 Oct 2025 10:06:44 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:10:52 -0700
+Message-ID: <ef788788-a4d0-4924-ae81-4db078398fe9@intel.com>
+Date: Fri, 31 Oct 2025 10:10:52 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -67,7 +67,8 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 3/9] x86/asm: Introduce inline memcpy and memset
+Subject: Re: [PATCH v11 4/9] x86/alternatives: Disable LASS when patching
+ kernel code
 To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -87,7 +88,7 @@ Cc: Jonathan Corbet <corbet@lwn.net>, "H . Peter Anvin" <hpa@zytor.com>,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-efi@vger.kernel.org
 References: <20251029210310.1155449-1-sohil.mehta@intel.com>
- <20251029210310.1155449-4-sohil.mehta@intel.com>
+ <20251029210310.1155449-5-sohil.mehta@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -133,13 +134,26 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251029210310.1155449-4-sohil.mehta@intel.com>
+In-Reply-To: <20251029210310.1155449-5-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/29/25 14:03, Sohil Mehta wrote:
-> Provide inline memcpy and memset functions that can be used instead of
-> the GCC builtins when necessary.
+> Introduce LASS-specific STAC/CLAC helpers to set the AC bit only on
+> platforms that need it. Clarify the usage of the new helpers versus the
+> existing stac()/clac() helpers for SMAP.
 
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+
+One review nit: The
+
+-	/* Note: a barrier is implicit in alternative() */
+
+looks a bit funky in the diffstat. It took me a minute to realize that
+you'd moved it. I _probably_ would have specifically called out that you
+*added* comments for stac()/clac() and moved and existing duplicated
+comment there. Adding a whole new comment block deserves calling out
+explicitly. It is far beyond the "clarify" that's in the changelog.
+
+But it's just a nit in the end.
 
