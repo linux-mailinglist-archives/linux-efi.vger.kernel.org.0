@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-5312-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5313-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70089C2651E
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 18:20:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02888C26524
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 18:21:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 921921A6550E
-	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 17:21:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B48EA4E0626
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Oct 2025 17:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E5F302766;
-	Fri, 31 Oct 2025 17:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98AC2FD684;
+	Fri, 31 Oct 2025 17:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kkKvCjIk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XbNG1Vpl"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699EB2BEFED;
-	Fri, 31 Oct 2025 17:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F392F6567;
+	Fri, 31 Oct 2025 17:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761931243; cv=none; b=mHwxPY16flX0cz2F6R4dy/kk6sZq+0uMI8dXn5Sz+vDdAK+qdKr4WUhZXSt6y5nXK0yrEPdGQ5GCEnip4dbTTb3jT/Naim0bnfoq6hKt3DmUSNO3M6ajFQdM5Zo1EKABd4lFaWQwbPruXVrXOmyprqplU59RCKKk5WI+XOMtKdQ=
+	t=1761931293; cv=none; b=knsIAS/EjsWUFEOKGqMY25y9+nsAXkIY1VKWjvz1adgtnXt127tBIVB7IEGB54igP2VH5mErbHynejuQc5YIpjEL1pusfc/PiysCbKHHr+yHQ6F/3aXFR90tWt0auG/CteCYrURPjuktYFhAGRgLaS5IN3lo7bviJr4FCUO0vqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761931243; c=relaxed/simple;
-	bh=6QDJ0JPhovtySlVqnV0u1XhdzzpPA3eZbrth70sC7V8=;
+	s=arc-20240116; t=1761931293; c=relaxed/simple;
+	bh=ZTJBgB9UC9DeEzZHT0VM2hUv/d1GJVlcINh2TkYBjaM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TczRB/Bk4XTLyuSmKWTDFb6EYjE3DMIGRp8aX8Er/ynBs1MFjAo3jZPOD7EymMY8evjXlIlkSYxNAvTQNeivQgNFW1PaixcEt4Rfy+bqSYM1M4G2wft43u4xwhPIigx1aPJttSC8FM0ojd6p8ikn6kUh+qDTnvvegKYBK/+4ju4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kkKvCjIk; arc=none smtp.client-ip=192.198.163.8
+	 In-Reply-To:Content-Type; b=rCfWwQs6eAxSj8akZ/1BuzTyuoEQBFT9A1ufe25Sf1yMFxbnLFID86UGm8fEA61887jtPKCw4C4M1/XgpH/+UpaaXLCWUGQkvBZaGYCR/nkeelRlzvFuH6bjcTPq2DyjIm0yMhib7L5/aw78chun/b99ZK/3blo+PjdEp7WOjq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XbNG1Vpl; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761931241; x=1793467241;
+  t=1761931292; x=1793467292;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=6QDJ0JPhovtySlVqnV0u1XhdzzpPA3eZbrth70sC7V8=;
-  b=kkKvCjIkG6zitBWWRvbhgBZFjwIhH+PdNiqHYf4O9PyUu9ssyMOcGJTE
-   8ObZQB963OJhUMik/j9PcxepIBQMbL6bqkdGREuFRGaxcJ/8Wz9HaaKbW
-   5sDQBBBWCalx24xQxjfqyL4ukg3dNehDtCT6qqPKRKi8zuJwBGw3wFTC6
-   Y3jKKVp29fC10aMEaeTfBqwLXFkKEEKlahUe/7FuyGfj9pKWftGCVVKi3
-   TFtzZQtq5nQyNIlqC5U7MElRqJLyxaDtli+9Ynn/n9uwsawGIKr9nBYPf
-   xNAr91QaeHVXTy9fmr6pTK3FAZ1HdWxzi5r4a/rXPgNZ40mgtizBz/JX+
-   g==;
-X-CSE-ConnectionGUID: gmNxJM3ETq6kJltrRFdLAg==
-X-CSE-MsgGUID: SNRUDVVhTG6TycywxvIhFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="81726663"
+  bh=ZTJBgB9UC9DeEzZHT0VM2hUv/d1GJVlcINh2TkYBjaM=;
+  b=XbNG1VplKa74aFQNnoPQvkoNBh2KIguvCKKIkmMIn1hlZvkLsVQPQ37G
+   6VbELUJiTdaRuwDwvc5Crlixwk+ZX4gxqSZO/tmuctB2kYVlS+X4jdn7u
+   +R32AOgNwieqfxg3hnSYPBXZnDcUpbeLNLjUVrcZqYdFVHvQVIkWitLMa
+   ILUqHVMnDh+NMwybngg5EFeP+G7f/OrH+WkhZMDtzE2zj1CChqYQF7ZlJ
+   f8a6G0HHkpvixvVfiNebufNIXS5JrU1U3eYvMK6JviBqzVDUmzrzF7U3/
+   4/bJfCWWagL3X2eBjXj+vOpEq81i0YGszCF8Udr76cnj5rTDHKAxRTwhK
+   A==;
+X-CSE-ConnectionGUID: 5iMICB8aQv6wKp8CM9AhLw==
+X-CSE-MsgGUID: e8euoM1SS26OZCBcEHynLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="63300954"
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="81726663"
+   d="scan'208";a="63300954"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:20:40 -0700
-X-CSE-ConnectionGUID: i1wr3gTWQZWqVMwQcFX6ew==
-X-CSE-MsgGUID: ScCVMXBFRZGvQ4kl9wx9jQ==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:21:31 -0700
+X-CSE-ConnectionGUID: RCvf1SJQQt+BNMs5gX5x3w==
+X-CSE-MsgGUID: bMPdhYiUTKuIgwfi8jDPsg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="217124996"
+   d="scan'208";a="217125250"
 Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.110.52]) ([10.125.110.52])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:20:39 -0700
-Message-ID: <f2add4e7-5030-48f2-9410-aae3b2038ca0@intel.com>
-Date: Fri, 31 Oct 2025 10:20:39 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:21:29 -0700
+Message-ID: <50a8d23c-8c91-467c-9ee4-5894dc31d2f7@intel.com>
+Date: Fri, 31 Oct 2025 10:21:30 -0700
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 8/9] selftests/x86: Update the negative vsyscall tests
- to expect a #GP
+Subject: Re: [PATCH v11 9/9] x86/cpu: Enable LASS by default during CPU
+ initialization
 To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -88,7 +88,7 @@ Cc: Jonathan Corbet <corbet@lwn.net>, "H . Peter Anvin" <hpa@zytor.com>,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-efi@vger.kernel.org
 References: <20251029210310.1155449-1-sohil.mehta@intel.com>
- <20251029210310.1155449-9-sohil.mehta@intel.com>
+ <20251029210310.1155449-10-sohil.mehta@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -134,14 +134,44 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251029210310.1155449-9-sohil.mehta@intel.com>
+In-Reply-To: <20251029210310.1155449-10-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/29/25 14:03, Sohil Mehta wrote:
-> Update the failing test to expect either a #GP or a #PF. Also, update
-> the printed messages to show the trap number (denoting the type of
-> fault) instead of assuming a #PF.
+...
+> +static __always_inline void setup_lass(struct cpuinfo_x86 *c)
+> +{
+> +	if (cpu_feature_enabled(X86_FEATURE_LASS)) {
+> +		/*
+> +		 * Legacy vsyscall page access causes a #GP when LASS is
+> +		 * active. However, vsyscall emulation isn't supported
+> +		 * with #GP. To avoid breaking userspace, disable LASS
+> +		 * if the emulation code is compiled in.
+> +		 */
+> +		if (IS_ENABLED(CONFIG_X86_VSYSCALL_EMULATION)) {
+> +			pr_info_once("x86/cpu: Disabling LASS due to CONFIG_X86_VSYSCALL_EMULATION=y\n");
+> +			setup_clear_cpu_cap(X86_FEATURE_LASS);
+> +			return;
+> +		}
+> +
+> +		cr4_set_bits(X86_CR4_LASS);
+> +	}
+> +}
+This breaks two rules I have:
+
+ 1. Indent as little as practical
+ 2. Keep the main code flow at the lowest indentation level
+
+IOW, this should be.
+
+static __always_inline void setup_lass(struct cpuinfo_x86 *c)
+{
+	if (!cpu_feature_enabled(X86_FEATURE_LASS))
+		return;
+...
+
+But I can fix that up when I apply this. I think it's mostly ready.
 
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 
