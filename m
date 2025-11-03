@@ -1,133 +1,126 @@
-Return-Path: <linux-efi+bounces-5343-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5344-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE4FC2DB46
-	for <lists+linux-efi@lfdr.de>; Mon, 03 Nov 2025 19:37:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6C5C2DC39
+	for <lists+linux-efi@lfdr.de>; Mon, 03 Nov 2025 19:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C1E3A255C
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Nov 2025 18:36:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8471899056
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Nov 2025 18:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D35F28D8DF;
-	Mon,  3 Nov 2025 18:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D33218AB9;
+	Mon,  3 Nov 2025 18:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BSxRJoJB"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="i/uRK79H"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739981BD9D0
-	for <linux-efi@vger.kernel.org>; Mon,  3 Nov 2025 18:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664382356C6;
+	Mon,  3 Nov 2025 18:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762195013; cv=none; b=In3Buvt0NPVCEY3mrk9DESRx7fSQmVQPjBysINAjBZCB1HMfnQqjmt26NGbbnkE3d8cSSSFxRwrN/U5xRcQNtsCqQd5ueAYP+/awuuuma5uryOZCQ6DVXnDmfTNqlKx4Wo0EL4NUveTMGGhFeBFoUvfhD9Hv3t03S4ty/kRXo4Y=
+	t=1762196136; cv=none; b=oxo1ee/j5nvpNOpvMitaVQ++k48rWtlDK5xyfkJnxkiHY8q7nbKt01X0jqHh2K7rA7omMFG5bMYnBYCsY+DSdC93bh4IceLkWnegAHJFhzPJT/zEDDh5+Nzb7htt0NWk0svi3EpNCdIFEbFbkB4lJiULd/rpTZbIR70qMZf3G58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762195013; c=relaxed/simple;
-	bh=avadB8g9qjqqRwulQIzu5lecW++0n0UMpXPoAJxVaeo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QEk/Qc/n0upoH8Z5aop/3GGx1+cJFt3oUvbGSH/+6ATIQCxeKLwIL75h/3xHitR5+WbvRGQnkQoR+KgW/gQQJZO5qEAWzKs86K4v8QFrPS/iScqiAV3MUgg5OJwCi870kQxWRyqpmmMW8a1cMnaAqP8BeEzIfo09xMXs4UZVpHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BSxRJoJB; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4710022571cso44997855e9.3
-        for <linux-efi@vger.kernel.org>; Mon, 03 Nov 2025 10:36:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762195008; x=1762799808; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VZanATNUPbFaToYEjjeEZY7zqm3TfGXKjQ4xQUPFBYw=;
-        b=BSxRJoJB0Pw04WvS13QuqsO0ecXX4xoZ1KLV9C4Vu9HBYDfWc5bBvtB5Kkr9m8xn0K
-         kDggvI4UORpCiCiwLaXZO9WOaoges7krCbelrM1dQkCPkxe2op96VxSbZT958tyfkcop
-         +/uzOOmhCNqfZgzxUXFpMqgHBeSfTB2qLbrARIMwHjbpLEtqWUjco+MPnJSUTp7AYdG/
-         IaIKJ3qIkRud14SSvkNiKl2cticrjuLThdh1metYi4v/VfUNnnT2l+HMWe58qto/VQmQ
-         640A5ppAu00RYtb1mjF5adQ4yOK9bDVVWdCbj92ha5NL+SiwvbIreufUvfas+gpb64iy
-         nBDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762195008; x=1762799808;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VZanATNUPbFaToYEjjeEZY7zqm3TfGXKjQ4xQUPFBYw=;
-        b=e7UPINC3dY0MhlwGN8MR/7uim0sSBfaUygJpPJDt3BP/heTwZmIH1mAecjEutjatws
-         vIz62HLhdUM5jbAqQqQrQTfV0NHwKO08u8U/aPNnejTSfmgGmte/mbjj95UDhYDx5n8j
-         jRRe7ilkBJIbHpkSW9Ds7+WXxqKxeepcl6hKMYpzeI9G4zocs9esb+iALSpGlIf/Jtqg
-         Z6wIP5Upkhy8cpU/LKbwSH7ryGbvrFI6EHaVNcYiairy06FkS/oFJWTKgdz8mKA7OU6W
-         OoE28mPyvvOcQpZm+IOxuI2Hie83AGcnc4hGGFDjyZ/P0fJ/C3ryv3/cWOzQ7JXw7sNX
-         lJRw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZKYPvaC+OrjxyGAeu3DOhWCBbCxwYfs/QzDmjagBm8DIFo1rcw28vgwSUUrHtL6+/3UnC3OzCXQM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycXyz6yg02nSus8yIU9MFxafUj+jK33GErAvtCjJ/OYD8/qfAx
-	44/2Wt6L4oRKOWQffWURcsF9HLtq1o6WkTYui5IJrMq+4L1ZkwgyHmDv
-X-Gm-Gg: ASbGncth/k2VTQ1mX6/nLzWMOEvfeuXMtK031qxpohiQHuu++6N8aj7M+3MqV3DOh9C
-	gjVborPK5tnX7em0voOh5itlNzF82P6G7Dbu7LzTYl9E9p7tK189U7ouRcSwn/Mq2Tm+dTjiqv+
-	1ma4RJ41bRAaqLexSSpZ7XHMTiu3DDFdZtY4xtTMxdGsZhyjjXcnDJuSWF7gbBR/KHzcIxv89IN
-	q/EuufeLVJQ/MrWoWoop8UBdn5aoZOkxnQ7eGtcBwQlSxnO3ALSOD5FtAdusYXaGhmYcvbzVPQY
-	q8DbvjXG1yldrEerpVkw2CkYtNNq9UpTM2IDKmy+JGgi7bSA8bhf87+ifI9RcG3igU5ThR1I8C+
-	1B+8nuw6HMihcizDLrda4D+FrW0hs3EZcZw6Hw2A1g4S/p4XcWXZ8XxR4Tnk5B4Rc+DnyaKPIlV
-	3aKEq1lzhys9LfkVTIkeY=
-X-Google-Smtp-Source: AGHT+IHBT3goG6o5/i+wGgWn6B2Jy5qdG/7qj4PSYlOBOKWqyZ1rxQ3CXxOOnLL5mDuZ4WsPZ6qXHw==
-X-Received: by 2002:a05:600c:811a:b0:475:dd89:abc with SMTP id 5b1f17b1804b1-477307c147bmr109383155e9.11.1762195007648;
-        Mon, 03 Nov 2025 10:36:47 -0800 (PST)
-Received: from [192.168.100.110] ([77.31.161.62])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c394e33sm169323925e9.13.2025.11.03.10.36.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Nov 2025 10:36:46 -0800 (PST)
-Message-ID: <e03f4b4e-dc94-4444-8fe0-6c0c18a424d5@gmail.com>
-Date: Mon, 3 Nov 2025 21:36:41 +0300
+	s=arc-20240116; t=1762196136; c=relaxed/simple;
+	bh=AAfW6LxIEJ0JeIn6Asw8EqMYf2wuw3+TS4WBnGzpk+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uo/uoy4mHl366ya6UZvu///OhUYndd5/TpDfPhGpgTzSJCKyN+ro69ENA9Lz94nShD878zTop3GK8q4z2tL+VWaDsugr4IfOo8pI0m7T74Snx7DuQK8gD5EhPkICk7Q/hqm/MOjY0zwsX9YcDoM0CUWsjLj1IH23OiDhxzwMkh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=i/uRK79H; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8649340E01A5;
+	Mon,  3 Nov 2025 18:55:31 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id zolMFbcWYv7b; Mon,  3 Nov 2025 18:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1762196127; bh=5MivvXBLzntfAC8dFObuaGnX0yElZZ2XvecP5BVyF/E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i/uRK79Htngh6e8g6IfJG3pbCvTvIk30jZkODPwIvQN74OPujWuyA9j9LwH618t9C
+	 6x7rWJeuDgaA2WpRuqDido+9Jvl4gkErXp49TKp8f+kN8vnPodhzKvrOIwG6rv3HMd
+	 NVj3VPXJRb3yXei4lWzhg9fgTw5Ld1AzbCfh79rzsqtkRfzyN2ZZ2HAdmkI/IZPLAJ
+	 bm+a5OiTHyUXjTgkDXFff6R2Ois3cVPXLgoogcTuvFMLL2jmWdxxxiE/un9fE0SnTA
+	 /6nJcIfO72MY7zoQywUTo8Xl8RTRcS9GADzsxOIddwW2/z16ZUrhmZMUfnHF9ZDC7j
+	 T0IW1QXyTnIocC5RgLLnYVF/A5ATAVx10QzO1LiBaYWyLvY1qB6pRFcL1f8bPmT1v4
+	 wBYoAQHnna8q3QJWAXJxqem7A8fd1FucVeqUkYng95I6NDfDVvYREdbOTyapw5P+O5
+	 9pqlVXwf44FIUzctqNhqDGnRESFmbLLBugKsx8Hn8R+LFEZibOFje31mz0dbMwSPhN
+	 Zk+yag2zg3wVMYSTlw6fiZQRWWlT5+Y94rczowGTb3+v7kW9Im6ZJwICYD6dHdqr8o
+	 4wQ5FxqP6eQ8o/bSIprwRJ5XC3h1vEdBAdiXHzgldOSuuNCc2inV1eH9Fk+PjZmY3s
+	 4zwM15HR7zY6468LtbXb3e4U=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 855FB40E019D;
+	Mon,  3 Nov 2025 18:55:10 +0000 (UTC)
+Date: Mon, 3 Nov 2025 19:55:04 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: dwmw@amazon.co.uk, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, ardb@kernel.org, hpa@zytor.com,
+	x86@kernel.org, apopple@nvidia.com, thuth@redhat.com,
+	nik.borisov@suse.com, kas@kernel.org, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, kernel-team@meta.com,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>
+Subject: Re: [PATCH v3 0/2] x86: Fix kexec 5-level to 4-level paging
+ transition
+Message-ID: <20251103185504.GLaQj6iHx4pu9RCL7E@fat_crate.local>
+References: <20251103141002.2280812-1-usamaarif642@gmail.com>
+ <20251103144557.GHaQjAJZGz_2ZPVDXq@fat_crate.local>
+ <e03f4b4e-dc94-4444-8fe0-6c0c18a424d5@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] x86: Fix kexec 5-level to 4-level paging
- transition
-Content-Language: en-GB
-To: Borislav Petkov <bp@alien8.de>
-Cc: dwmw@amazon.co.uk, tglx@linutronix.de, mingo@redhat.com,
- dave.hansen@linux.intel.com, ardb@kernel.org, hpa@zytor.com, x86@kernel.org,
- apopple@nvidia.com, thuth@redhat.com, nik.borisov@suse.com, kas@kernel.org,
- linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
- kernel-team@meta.com, Michael van der Westhuizen <rmikey@meta.com>,
- Tobias Fleig <tfleig@meta.com>
-References: <20251103141002.2280812-1-usamaarif642@gmail.com>
- <20251103144557.GHaQjAJZGz_2ZPVDXq@fat_crate.local>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20251103144557.GHaQjAJZGz_2ZPVDXq@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e03f4b4e-dc94-4444-8fe0-6c0c18a424d5@gmail.com>
 
+On Mon, Nov 03, 2025 at 09:36:41PM +0300, Usama Arif wrote:
+> Yes, I did the below build tests:
 
+Thanks!
 
-On 03/11/2025 17:45, Borislav Petkov wrote:
-> On Mon, Nov 03, 2025 at 02:09:21PM +0000, Usama Arif wrote:
->> v2 -> v3:
->> - Use native_pgd_val instead of pgd_val to fix broken build with allmodconfig.
->>   I wanted to keep the code between pgtable_64.c and x86-5lvl.c consistent
->>   so changed it in both patches
->>   (Borislav Petkov and Ard Biesheuvel)
->> - Commit message improvements (Dave Hansen)
+> make LLVM=1 allnoconfig; make LLVM=1 bzImage
+> make LLVM=1 defconfig; make LLVM=1 bzImage
+> make LLVM=1 allmodconfig; make LLVM=1 bzImage
+> make LLVM=1 allyesconfig; make LLVM=1 bzImage
 > 
-> Did you run the build tests I suggested?
-> 
+> make LLVM=1 ARCH=i386 allnoconfig; make LLVM=1 ARCH=i386 bzImage
+> make LLVM=1 ARCH=i386 defconfig; make LLVM=1 ARCH=i386 bzImage
+> make LLVM=1 ARCH=i386 allmodconfig; make LLVM=1 ARCH=i386 bzImage
+> make LLVM=1 ARCH=i386 allyesconfig; make LLVM=1 ARCH=i386 bzImage
 
-Yes, I did the below build tests:
+Next time try gcc too pls. :-) That's the first compiler we ever supported.
 
-make LLVM=1 allnoconfig; make LLVM=1 bzImage
-make LLVM=1 defconfig; make LLVM=1 bzImage
-make LLVM=1 allmodconfig; make LLVM=1 bzImage
-make LLVM=1 allyesconfig; make LLVM=1 bzImage
+> The i386 ones had a failure in lib/math/test_mul_u64_u64_div_u64.c:156:9 for
+> linux-next/master so I rebased my patches on v6.17 and tested and they all
+> built successfully.
 
-make LLVM=1 ARCH=i386 allnoconfig; make LLVM=1 ARCH=i386 bzImage
-make LLVM=1 ARCH=i386 defconfig; make LLVM=1 ARCH=i386 bzImage
-make LLVM=1 ARCH=i386 allmodconfig; make LLVM=1 ARCH=i386 bzImage
-make LLVM=1 ARCH=i386 allyesconfig; make LLVM=1 ARCH=i386 bzImage
+Yeah, that was pointless. 
 
-The i386 ones had a failure in lib/math/test_mul_u64_u64_div_u64.c:156:9 for linux-next/master
-so I rebased my patches on v6.17 and tested and they all built successfully.
+You can simply say that the 32-bit build fails because of an unrelated reason.
 
+But backporting it to another kernel doesn't have any bearing on the code this
+is going to be applied ontop of so...
 
+But not a problem, I'll do the rest of the testing here.
+
+Thanks again.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
