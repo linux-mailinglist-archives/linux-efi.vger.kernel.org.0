@@ -1,221 +1,160 @@
-Return-Path: <linux-efi+bounces-5337-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5338-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1436FC2C445
-	for <lists+linux-efi@lfdr.de>; Mon, 03 Nov 2025 14:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E94C2C5B3
+	for <lists+linux-efi@lfdr.de>; Mon, 03 Nov 2025 15:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 860A03A3C9F
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Nov 2025 13:47:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE38D3A7818
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Nov 2025 14:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C322727F5;
-	Mon,  3 Nov 2025 13:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D02B2D12F3;
+	Mon,  3 Nov 2025 14:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvhdCcDP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKkidALW"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC57B2727E0
-	for <linux-efi@vger.kernel.org>; Mon,  3 Nov 2025 13:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37DE13B5AE
+	for <linux-efi@vger.kernel.org>; Mon,  3 Nov 2025 14:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762177656; cv=none; b=XSNWxTaZRP2vLrw6IFntXTo4hHr09mWY1TeNer84T3BoFscMSkW9mSWj5Kcadl2S1v8S9zm40xKlJj1DawmKKUuVB9LrM9WerQi++QmveB8rxE+3PlkD2QGCd9sg+KObkEDXAqNN/FlwFebWwron66d2SnjmRBgZeyLdPF7QrQ0=
+	t=1762179008; cv=none; b=oZpmLhDyAU0qj4zvFzj+usK4cCgt9J0HBqAnf+5uBlEP3cJae78BOGtLuSdp2TlhtGfVYmWjG3L4R/1o3y3v3dxkCehx6L/5bOkhI265cC2RGZRA6YmohSQAyg/8fwC+wNonqWHLNe5Ehb/uqj5L8L6+pDTLMPGyt19KAg1c318=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762177656; c=relaxed/simple;
-	bh=j7KXt+0qwa6Oysi3rZC11fOb0Go3MJ1KImzAUkZcldo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LD29946pd8Al+DaTE+DlBn/bH0zLZxL88/nbtzlzgl473pbYwiKHhmAWqSpQEYuYfW0a5CcxfxxYIlegRpqdkbUHwhHvEfr6WHtNuzjlI1g+HHGHaz0X8voOJe+RTAIDPr0HoRq2bvke0EzvUY+jePsEOiwYRKbWYBEoUjZiAF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvhdCcDP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8A9C113D0
-	for <linux-efi@vger.kernel.org>; Mon,  3 Nov 2025 13:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762177656;
-	bh=j7KXt+0qwa6Oysi3rZC11fOb0Go3MJ1KImzAUkZcldo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lvhdCcDPRc+jeD7J/gCj2hvD5RebTdYeqVzfkjNBY2xhHeWVJRRmgI15G4nQv7VoK
-	 paQRuTU0yo9M1+SB0iHDorTk1E32PBjoiwlTfmyrZzx8w3OLNSv6H7kusECp1tsKuM
-	 pPgMc5nGPRERma9gjEAw8psriMx9xn3e1Tf4PhULZILvv2wf3G4WwEdYOGyyNmCuQB
-	 hrGHNbx8fjvryyJvxUpWHXjUDaRVV7zt8AvguNpJQ/b48Mbcnj7godzuy7RnA9+yJd
-	 TLhht/DE2me7BSS3Bh/faRQwtTO5cJ/L8niF0zQPoKzF9JEEbZ2P6MA+ern0SYOj6V
-	 ApULL/yAuBe9g==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37a2dcc52aeso20507341fa.0
-        for <linux-efi@vger.kernel.org>; Mon, 03 Nov 2025 05:47:36 -0800 (PST)
-X-Gm-Message-State: AOJu0Yyaab86TBqDIT8fCF229VP8l5/zywdw/o7n6ZRGEwzABQkbbDTM
-	kmvlxYM1Lb1YTpW9kWV4wQhScrIT5xpBx9Go73U45k29IFBeGjYXJBEXl6KiLI79h+ruMyg/p/C
-	W2lYbM3FY0Gbo6FtW2P27y5ueq2pRd4M=
-X-Google-Smtp-Source: AGHT+IFgi/OunRqwG2MPqdDE0aQ6CMLn/DkX/gJimR1rnYl9Ueya7htfn9wwaISdNJKG0beGpdP2LmVTnwIOjoYIrDM=
-X-Received: by 2002:a05:651c:1549:b0:37a:3422:bb61 with SMTP id
- 38308e7fff4ca-37a3422bbdemr12450271fa.37.1762177654748; Mon, 03 Nov 2025
- 05:47:34 -0800 (PST)
+	s=arc-20240116; t=1762179008; c=relaxed/simple;
+	bh=kvR+F866SCLceHUacVTlInqOmhhQYvk+JX3lcueuQxo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bKQnU5VEuO2Xndo8rRV9As9JtkjU70F07R+nResDA3PfM7+4Dfin8okUYs1ykoj1JHev/vU5JAuVHfBohM0NOuMMRsTXbUz/IIb7Ag0HP8hhJwOc5ol2dxr2xZysomnPoURxpcXTANNZ+zvrHS5xSe5Ds32oJMdhXqZoFoZbA14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hKkidALW; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7867497ad2fso14566417b3.0
+        for <linux-efi@vger.kernel.org>; Mon, 03 Nov 2025 06:10:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762179006; x=1762783806; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=69ZIdxIDNMyXZ/xRq3HrmYW4BOl2xzIyC5pgSkkI/HU=;
+        b=hKkidALWt0Ysxm6eappFrc2IUZQmlAhBeXLwc7nIGt29/xwqEXTIha3lJoEdTndQZq
+         Mh8TQ4IoGXvLxCSpb3+CniWyhHlyREK/trjnDptB+WMxZ5ZGOTTCi1Y1V/hjUvZLa7om
+         L4voJnSt1gwuqoe63K2L+ynEvfeFVKXIuDL8ZyLNb3bZeIOP1bpkAY5OtM6zumUfn3EZ
+         oUb23wT+c1CgVsdnjIiypTX4Tc9UDLlWa1bpcMiIitlrqCPfKQfdtKwMFs2+chaoXXhy
+         Fr5EbmZHzGEfkL22bLp9TvgCO97jHrwgDYXaYJF3Zf4u4QJKUlmhyX9J7kRMZ1jFAOMn
+         7ttg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762179006; x=1762783806;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=69ZIdxIDNMyXZ/xRq3HrmYW4BOl2xzIyC5pgSkkI/HU=;
+        b=xAxNKr0Ml4NBxws/ZeR3rJ4XN1PAXlwzn/K2UcAg063jhBWjFtQWR+NyjnYBPfD1do
+         4AeeCeYpLlx0nPJjRMVm/1tKq7oj0pVTi3GU3yTvsjiRsLtrphTKfiukZFMToZa8AJLq
+         4E2sCRrC73aDRN/r+6K9Dbi83eYkk6Ir7Qwe6nTeqnxYm8zSb2WPjh1XNutIjuTXGfr3
+         Wd6sVBJWgq826yyS52yKbaA3ucDrc8fm42eyzuolUWSgRYEAoap0E9Zzivla43MJF0Os
+         HtpLDvS30fpy7UEhfyQoz1kalbj6VlYGUCN2Q9OQzZ9CahY31lLnyhvxjOidZdkUWXqI
+         KpMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWMDjvYczGvIbq75Jpz6l8IimW13tCPtQoG5fBVUoJjY7VG4ik6mEeHoB1t75OOlnwBIEvicPhWWJI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfvfIbivDTjottQGRzu3vf0j/UYAVQceOafZqbxMmkiIoAAZ9o
+	WVb2JsvfWD6BPyLvbnP+xdxC5KrjFPUpuiuHnuUrZ/M5hW3wYJJFopzs
+X-Gm-Gg: ASbGncsmT+6CmEGkdQsQTYI2GrtMHFr+W4K4qR/Eobc2ciblieW5kqpXf2cUqXtxrQM
+	T28dyoGP/XwkzlVhLmZJuCS8qv3EMr+/RLr4i4buawJzKXxBUypItL4ugHpe6R/3+Tuyk5TQFVh
+	XrP/nQM+vbPQtEz5/ly+66ThZ/2zIokSFvqiFsvkUNNOhIyCwtVL1gQ8sA++nUBEe7RPsOyMZ86
+	0dLuletjUN8VpM+B/6+ajmktcMt8LNbER0dqxKE5Fzpg9GA8Bofc/XHRxb4esOdhwIpF1teMMvw
+	NTHIReVtwPnRjG9zIl7kdR9QxRRo8fArJnDMRzwc96bhvDf2qfWd8kL81YmO+Zsr5Dy2HTTctmL
+	tATNGqLAD4WG4RrGvsXhgzOTSaROx5wo6i4wmS/KQIQkNguOehQm/EUuxloMX/6vlLmxNg0gtdH
+	KXNlQysNk9bA==
+X-Google-Smtp-Source: AGHT+IGD6jontoCLUBayhIbAtJav+5thxwXtcpelKDJ0KvQPHTZJga3plVryThbhDNEe0gpi2QFgWA==
+X-Received: by 2002:a05:690c:4984:b0:786:706c:7e8d with SMTP id 00721157ae682-786706c8b65mr43383617b3.27.1762179005542;
+        Mon, 03 Nov 2025 06:10:05 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:4f::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-786920630a4sm837387b3.55.2025.11.03.06.10.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 06:10:04 -0800 (PST)
+From: Usama Arif <usamaarif642@gmail.com>
+To: dwmw@amazon.co.uk,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	ardb@kernel.org,
+	hpa@zytor.com
+Cc: x86@kernel.org,
+	apopple@nvidia.com,
+	thuth@redhat.com,
+	nik.borisov@suse.com,
+	kas@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	kernel-team@meta.com,
+	Usama Arif <usamaarif642@gmail.com>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>
+Subject: [PATCH v3 0/2] x86: Fix kexec 5-level to 4-level paging transition
+Date: Mon,  3 Nov 2025 14:09:21 +0000
+Message-ID: <20251103141002.2280812-1-usamaarif642@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251103123335.1089483-1-francescopompo2@gmail.com>
-In-Reply-To: <20251103123335.1089483-1-francescopompo2@gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 3 Nov 2025 14:47:22 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHO8Mxk+zPEwx2+VP1FF_LoDu58tbDOm+-Y8m07d3nitw@mail.gmail.com>
-X-Gm-Features: AWmQ_bmGMQyq1UXYc2c_M7tkautGQpJUnj4QLKm77mxzQOvVEesb5ICGXsnUmgs
-Message-ID: <CAMj1kXHO8Mxk+zPEwx2+VP1FF_LoDu58tbDOm+-Y8m07d3nitw@mail.gmail.com>
-Subject: Re: [PATCH v2] efistub/x86: Add fallback for SMBIOS record lookup
-To: Francesco Pompo <francescopompo2@gmail.com>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 3 Nov 2025 at 13:33, Francesco Pompo <francescopompo2@gmail.com> wrote:
->
-> Some Apple EFI firmwares do not provide the SMBIOS Protocol,
-> causing efi_get_smbios_record() to fail. This prevents retrieval of
-> system information such as product name, which is needed by
-> apple_set_os() to enable the integrated GPU on dual-graphics Intel
-> MacBooks.
->
-> Add a fallback that directly parses the SMBIOS entry point table when
-> the protocol is unavailable.
->
-> Signed-off-by: Francesco Pompo <francescopompo2@gmail.com>
-> ---
->  drivers/firmware/efi/libstub/x86-stub.c | 107 +++++++++++++++++++++++-
->  1 file changed, 106 insertions(+), 1 deletion(-)
->
+This series addresses critical bugs in the kexec path when transitioning
+from a kernel using 5-level page tables to one using 4-level page tables.
 
-OK, I've pushed this to the efi/next branch now. I did apply some
-cosmetic tweaks, though, so please double check that I did not break
-anything.
+The root cause is improper handling of PGD entry value during the page level
+transition. Specifically PGD entry value is masked with PAGE_MASK instead of
+PTE_PFN_MASK, failing to account for high-order software bits like
+_PAGE_BIT_NOPTISHADOW (bit 58).
+
+When bit 58 (_PAGE_BIT_NOPTISHADOW) is set in the source kernel, the target
+4-level kernel doesn't recognize it and fails to mask it properly, leading
+to kexec failure.
+
+Patch 1: Fixes the x86 boot compressed code path by replacing direct CR3
+dereferencing with read_cr3_pa() and using PTE_PFN_MASK instead
+of PAGE_MASK.
+
+Patch 2: Applies the same fix to the EFI stub code path. (Done in a
+separate patch as Fixes tag is different).
 
 
-> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> index f8e465da344d..13059412fdb9 100644
-> --- a/drivers/firmware/efi/libstub/x86-stub.c
-> +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> @@ -225,6 +225,110 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
->         }
->  }
->
-> +struct smbios_entry_point {
-> +       char anchor[4];
-> +       u8 ep_checksum;
-> +       u8 ep_length;
-> +       u8 major_version;
-> +       u8 minor_version;
-> +       u16 max_size_entry;
-> +       u8 ep_rev;
-> +       u8 reserved[5];
-> +       char int_anchor[5];
-> +       u8 int_checksum;
-> +       u16 st_length;
-> +       u32 st_address;
-> +       u16 number_of_entries;
-> +       u8 bcd_rev;
-> +};
-> +
-> +static bool verify_ep_checksum(const struct smbios_entry_point *ep)
-> +{
-> +       const u8 *ptr = (u8 *)ep;
-> +       u8 sum = 0;
-> +       int i;
-> +
-> +       for (i = 0; i < ep->ep_length; i++)
-> +               sum += ptr[i];
-> +
-> +       return sum == 0;
-> +}
-> +
-> +static bool verify_ep_int_checksum(const struct smbios_entry_point *ep)
-> +{
-> +       const u8 *ptr = (u8 *)&ep->int_anchor;
-> +       u8 sum = 0;
-> +       int i;
-> +
-> +       for (i = 0; i < 15; i++)
-> +               sum += ptr[i];
-> +
-> +       return sum == 0;
-> +}
-> +
-> +static bool verify_ep_integrity(const struct smbios_entry_point *ep)
-> +{
-> +       if (memcmp(ep->anchor, "_SM_", sizeof(ep->anchor)) != 0)
-> +               return false;
-> +
-> +       if (memcmp(ep->int_anchor, "_DMI_", sizeof(ep->int_anchor)) != 0)
-> +               return false;
-> +
-> +       if (!verify_ep_checksum(ep) || !verify_ep_int_checksum(ep))
-> +               return false;
-> +
-> +       return true;
-> +}
-> +
-> +static const struct efi_smbios_record *search_record(void *table, u32 length,
-> +                                                    u8 type)
-> +{
-> +       const u8 *p, *end;
-> +
-> +       p = (u8 *)table;
-> +       end = p + length;
-> +
-> +       while (p + sizeof(struct efi_smbios_record) < end) {
-> +               const struct efi_smbios_record *hdr =
-> +                       (struct efi_smbios_record *)p;
-> +               const u8 *next;
-> +
-> +               if (hdr->type == type)
-> +                       return hdr;
-> +
-> +               /* Type 127 = End-of-Table */
-> +               if (hdr->type == 0x7F)
-> +                       return NULL;
-> +
-> +               /* Jumping to the unformed section */
-> +               next = p + hdr->length;
-> +
-> +               /* Unformed section ends with 0000h */
-> +               while ((next[0] != 0 || next[1] != 0) && next + 1 < end)
-> +                       next++;
-> +
-> +               next += 2;
-> +               p = next;
-> +       }
-> +
-> +       return NULL;
-> +}
-> +
-> +static const struct efi_smbios_record *get_table_record(u8 type)
-> +{
-> +       const struct smbios_entry_point *ep;
-> +
-> +       ep = get_efi_config_table(SMBIOS_TABLE_GUID);
-> +       if (!ep)
-> +               return NULL;
-> +
-> +       if (!verify_ep_integrity(ep))
-> +               return NULL;
-> +
-> +       return search_record((void *)(unsigned long)ep->st_address,
-> +               ep->st_length, type);
-> +}
-> +
->  static bool apple_match_product_name(void)
->  {
->         static const char type1_product_matches[][15] = {
-> @@ -240,7 +344,8 @@ static bool apple_match_product_name(void)
->         const struct efi_smbios_type1_record *record;
->         const u8 *product;
->
-> -       record = (struct efi_smbios_type1_record *)efi_get_smbios_record(1);
-> +       record = (struct efi_smbios_type1_record *)(efi_get_smbios_record(1) ?:
-> +               get_table_record(1));
->         if (!record)
->                 return false;
->
-> --
-> 2.50.1
->
+Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+Reported-by: Tobias Fleig <tfleig@meta.com>
+
+The patches are based on aaa9c3550b60d6259d6ea8b1175ade8d1242444e (next-20251022)
+
+v2 -> v3:
+- Use native_pgd_val instead of pgd_val to fix broken build with allmodconfig.
+  I wanted to keep the code between pgtable_64.c and x86-5lvl.c consistent
+  so changed it in both patches
+  (Borislav Petkov and Ard Biesheuvel)
+- Commit message improvements (Dave Hansen)
+
+v1 -> v2:
+- Remove patch 3 to fix kexec for source kernel in 5-level to 4-level
+  transition where the 4 level kernel doesnt have patch 1 and 2 (Dave Hansen)
+- Add include for asm/pgtable.h to fix build for x86_64-allnoconfig (kernel test bot)
+- Use native_read_cr3_pa and for both paths (Ard Biesheuvel)
+ 
+Usama Arif (2):
+  x86/boot: Fix page table access in 5-level to 4-level paging
+    transition
+  efi/libstub: Fix page table access in 5-level to 4-level paging
+    transition
+
+ arch/x86/boot/compressed/pgtable_64.c   | 11 +++++++----
+ drivers/firmware/efi/libstub/x86-5lvl.c |  4 ++--
+ 2 files changed, 9 insertions(+), 6 deletions(-)
+
+-- 
+2.47.3
+
 
