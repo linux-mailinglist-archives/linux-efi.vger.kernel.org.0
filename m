@@ -1,159 +1,131 @@
-Return-Path: <linux-efi+bounces-5363-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5364-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74310C365D1
-	for <lists+linux-efi@lfdr.de>; Wed, 05 Nov 2025 16:36:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D15C5C37849
+	for <lists+linux-efi@lfdr.de>; Wed, 05 Nov 2025 20:40:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FB771A282A1
-	for <lists+linux-efi@lfdr.de>; Wed,  5 Nov 2025 15:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E13B3B9BDA
+	for <lists+linux-efi@lfdr.de>; Wed,  5 Nov 2025 19:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43868330B3E;
-	Wed,  5 Nov 2025 15:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE1A334C0C;
+	Wed,  5 Nov 2025 19:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uMrvcThp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCo8aa7t"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6F1331A59;
-	Wed,  5 Nov 2025 15:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB6230F81F;
+	Wed,  5 Nov 2025 19:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762356227; cv=none; b=S11uMwJaf8FrbcnQifEJz0plYqTOW3WzX0Nf8KvSN8tyIeCPKiZ9pCrHNWuhxh4fbkZnLqLcGXeukGDzVllsUt/g4gP+oqJBsqLKB1A7rF1dRW6aAGszQ7tJnLMMaaCiJu1SvgmbN4M8/s8ojVJGOQQHTZ5rR+bCUSXgeYWspYQ=
+	t=1762371580; cv=none; b=f9kY/wG4g7dFUnunIP/tWtSM/qk+JooLmKubyXVzJv22ENSHY4sRSSxpXbQPgyvQfTrq6H3RB048lRP7Aq+oZoEqmZ5JfWEhVBXGwhW2QE4Yu8WSH2riH14KBgm+nr7hUGY6t+inZrh/jsO4n5DDcSwi/qPDlkLa45N152avtJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762356227; c=relaxed/simple;
-	bh=kUs8Lv2NDX+HzCDICX2X7wBuseMdW6bT2eEf/zscT/4=;
+	s=arc-20240116; t=1762371580; c=relaxed/simple;
+	bh=msHJOFVV1OB3Fpzsq8IVbuj9UIdZOpLQ1nNFvVBvM9I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aj3T1v/331VyzhdKe9HuEzbzDACObaKZk/f0CION5BGLM1PozB5yuGI9Wymp2UlKrW6pKOfL6kcNCVGmlJNxMyDWfKoDHBvGKonrj9ArOK+3+4Oa3F8X1Ex1t+/IghDsB4fvY9Hj6Yv/U/T60XYXHMaMDj7kKPncOMPonYM6ttg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uMrvcThp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE3FC4CEF5;
-	Wed,  5 Nov 2025 15:23:41 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=aebIiUNqRPOy5gO5W6oS2XNf8X3Ef65H+jYBFnbFWgcIFJZZSYlCl9c35y/ar9n/wPcfwsBqE5DY1STTE4iPpM95A+Prx1YooQJKhT6NYcagBVM/UzRya6B7ziD/TEJ7Fcz/Q/XpTcTnZmJXb7/hP9gsRwZJEkkTnlOUUNiTnBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCo8aa7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F408C4CEF5;
+	Wed,  5 Nov 2025 19:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762356226;
-	bh=kUs8Lv2NDX+HzCDICX2X7wBuseMdW6bT2eEf/zscT/4=;
+	s=k20201202; t=1762371580;
+	bh=msHJOFVV1OB3Fpzsq8IVbuj9UIdZOpLQ1nNFvVBvM9I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uMrvcThpY3YAAbWSY9xnzagjiDcwxd3DE9e20MpciQ0mHPg3Rf2Ci/61aau+E4mQM
-	 8nZgzHXJSUUcSaMnT3I6e/kc2OTFqEOU8mhgloW70El8EVP4uFuINodUwyZYdb4wN6
-	 1lFZyctatEB0Ly2mBkqqT1g1f5kszp3d1j2Gfcxbk6+UPzncHihdjKp/ahdU45prxY
-	 rmgoXHjD8Oya/yhaU7KPl20KhLjgM4879Ne2XzlbiGqEnxwVLMRrnoxp2UrzmMsOXc
-	 mmWDqocG56Gn6iM3/+Xaa3pHugJb+dKTjiXrnAV7pXWqqp81/F+Ra04o22uyDpfK++
-	 osL5X75ZbKhQQ==
-Date: Wed, 5 Nov 2025 16:23:39 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net, 
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
-	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
-	john.johansen@canonical.com, selinux@vger.kernel.org, borntraeger@linux.ibm.com, 
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-Message-ID: <20251105-absatz-zehrt-8d1197f900c9@brauner>
-References: <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
- <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
- <20251029193755.GU2441659@ZenIV>
- <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
- <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
- <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
- <20251105-sohlen-fenster-e7c5af1204c4@brauner>
- <305ff01c159993d8124ae3125f7dacf6b61fa933.camel@HansenPartnership.com>
- <20251105-ausfiel-klopapier-599213591ad2@brauner>
- <ddc9e2efa25d59ae7f1989ac155b9a9043ca830b.camel@HansenPartnership.com>
+	b=DCo8aa7tr6qCXCAwbmbfBQHe6+J1XQ92v/dEdS0D1RmsTXvTBe2y4QWq3i4ntmkp4
+	 hCwptFye8pcPGdiXeKcVMxkeZBrhHluCYl/vU6sn2vu9+WiYI0AQa71hlYpPJp+uwk
+	 nLmGphbfV4NSrG1Ku28gkrTDNfaJG1ZzoKebd314vXufpylTRn3P6E0nSQVUMFx+/G
+	 nEygicNERiduVcddaetu2bZdLTIFFi4RDC/xSKeOjPk8imNyFUelcn9MA6scQFhpbq
+	 naUiHjcZXZDebrmf1ZMmCKbSsI1gDu42pHY/3/s/yeqOxXjPKqA78jz/c32pbgcTEw
+	 rVKRvBK26YgJQ==
+Date: Wed, 5 Nov 2025 12:39:31 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	linux-efi@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] kbuild: Add '-fms-extensions' to areas with dedicated
+ CFLAGS
+Message-ID: <20251105193931.GA2480016@ax162>
+References: <20251101-kbuild-ms-extensions-dedicated-cflags-v1-1-38004aba524b@kernel.org>
+ <20251105-amnesie-eisig-277559b69bae@brauner>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ddc9e2efa25d59ae7f1989ac155b9a9043ca830b.camel@HansenPartnership.com>
+In-Reply-To: <20251105-amnesie-eisig-277559b69bae@brauner>
 
-On Wed, Nov 05, 2025 at 09:01:59AM -0500, James Bottomley wrote:
-> On Wed, 2025-11-05 at 14:46 +0100, Christian Brauner wrote:
-> > On Wed, Nov 05, 2025 at 08:33:10AM -0500, James Bottomley wrote:
-> > > On Wed, 2025-11-05 at 14:16 +0100, Christian Brauner wrote:
-> > > > On Wed, Nov 05, 2025 at 08:09:03AM -0500, James Bottomley wrote:
-> > > > > On Wed, 2025-11-05 at 12:47 +0100, Christian Brauner wrote:
-> > > [...]
-> > > > > > And suspend/resume works just fine with freeze/thaw. See
-> > > > > > commit
-> > > > > > eacfbf74196f ("power: freeze filesystems during
-> > > > > > suspend/resume") which implements exactly that.
-> > > > > > 
-> > > > > > The reason this didn't work for you is very likely:
-> > > > > > 
-> > > > > > cat /sys/power/freeze_filesystems
-> > > > > > 0
-> > > > > > 
-> > > > > > which you must set to 1.
-> > > > > 
-> > > > > Actually, no, that's not correct.  The efivarfs freeze/thaw
-> > > > > logic must run unconditionally regardless of this setting to
-> > > > > fix the systemd bug, so all the variable resyncing is done in
-> > > > > the thaw call, which isn't conditioned on the above (or at
-> > > > > least it shouldn't be).
-> > > > 
-> > > > It is conditioned on the above currently but we can certainly fix
-> > > > it easily to not be.
-> > > 
-> > > It still seems to be unconditional in upstream 6.18-rc4
-> > > kernel/power/hibernate.c with only freeze being conditioned on the
+On Wed, Nov 05, 2025 at 01:56:02PM +0100, Christian Brauner wrote:
+> On Sat, Nov 01, 2025 at 12:35:47PM -0400, Nathan Chancellor wrote:
+> > This is a follow up to commit c4781dc3d1cf ("Kbuild: enable
+> > -fms-extensions") but in a separate change due to being substantially
+> > different from the initial submission.
 > > 
-> > I'm honestly not sure how efivarfs would be frozen if
-> > filesystems_freeze() isn't called... Maybe I missed that memo though.
-> > In any case I just sent you...
-> 
-> We don't need to be frozen: our freeze_fs method is empty, we just need
-> thaw_fs calling.
-
-No, you need to call freeze so the power subsystem can mark the
-filesystem as being exclusively frozen by it because that specific
-freeze must not be undone by anyone else e.g., userspace or some other
-internal unfreeze due to some filesystem (for other filesystems this is
-very relevant) internal freeze for say scrub or whatever.
-
-If filesystem_thaw() doesn't find efivarfs frozen - and exclusively
-frozen by the power subsyste - it obviously won't call the actual
-efivarfs thaw method. It's all working in order. My patch should fix
-your issue and will ensure efivarfs always runs. We wouldn't even need
-an SB_I_* flag for this. We could equally well just match superblock but
-other filesystems might need or want to opt into this too.
-
-Don't implement thaw_super() yourself, please.
-
-> 
-> Is the trouble that there's now freeze/thaw accounting, so thaw won't
-> be called based on that if freeze wasn't?  In which case might it not
-> be better for us to implement thaw_super, which is called
-> unconditionally and leaves the accounting up to the filesystem?
-> 
-> > > setting of the filesystem_freeze variable but I haven't checked -
-> > > next.
-> > > 
-> > > However, if there's anything in the works to change that we would
-> > > need an exception for efivarfs, please ... we can't have a bug fix
-> > > conditioned on a user setting.
+> > There are many places within the kernel that use their own CFLAGS
+> > instead of the main KBUILD_CFLAGS, meaning code written with the main
+> > kernel's use of '-fms-extensions' in mind that may be tangentially
+> > included in these areas will result in "error: declaration does not
+> > declare anything" messages from the compiler.
 > > 
-> > ... a patch in another mail.
+> > Add '-fms-extensions' to all these areas to ensure consistency, along
+> > with -Wno-microsoft-anon-tag to silence clang's warning about use of the
+> > extension that the kernel cares about using. parisc does not build with
+> > clang so it does not need this warning flag. LoongArch does not need it
+> > either because -W flags from KBUILD_FLAGS are pulled into cflags-vdso.
 > > 
-> > Sorry in case I misunderstood that you _always_ wanted that sync
-> > regardless of userspace enabling it.
+> > Reported-by: Christian Brauner <brauner@kernel.org>
+> > Closes: https://lore.kernel.org/20251030-meerjungfrau-getrocknet-7b46eacc215d@brauner/
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > ---
+> > I am taking the original '-fms-extensions' change [1] via a shared
+> > branch in kbuild [2] so I would appreciate acks. I plan to finalize that
+> > branch so that other maintainers can safely pull it on Thursday.
+> > 
+> > [1]: https://git.kernel.org/kbuild/c/c4781dc3d1cf0e017e1f290607ddc56cfe187afc
+> > [2]: https://git.kernel.org/kbuild/l/kbuild-ms-extensions
+> > ---
 > 
-> We need the thaw method called to get the variable resync to happen. 
-> That fixes a bug on hibernate with systemd (and also accounts for an
-> other efi variable changes the user may have made between hibernate and
-> resume), yes.  And we need that to happen unconditionally to fix the
-> systemd bug.
+> I'll give my ack:
 > 
-> Regards,
+> Reviewed-by: Christian Brauner <brauner@kernel.org>
 > 
-> James
-> 
+> but don't invalidate the branch just to add my RvB if you've already had
+> it stable.
+
+I was planning to make it stable tomorrow to give folks time to chime in
+at the beginning of the week. I have your tag and Ard's to add. After
+that, we will just have to rely on the link to this submission for
+follow ups.
+
+Cheers,
+Nathan
 
