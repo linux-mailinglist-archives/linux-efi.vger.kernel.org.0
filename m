@@ -1,88 +1,80 @@
-Return-Path: <linux-efi+bounces-5369-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5370-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC14C3B271
-	for <lists+linux-efi@lfdr.de>; Thu, 06 Nov 2025 14:18:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3333FC3CF5A
+	for <lists+linux-efi@lfdr.de>; Thu, 06 Nov 2025 18:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5815E502F97
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Nov 2025 13:08:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCB144244EE
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Nov 2025 17:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F130932F76F;
-	Thu,  6 Nov 2025 13:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE65302CB9;
+	Thu,  6 Nov 2025 17:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LJB+oMwR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9FnDBrL"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE1A32ABF6
-	for <linux-efi@vger.kernel.org>; Thu,  6 Nov 2025 13:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8187E2BDC00;
+	Thu,  6 Nov 2025 17:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762434508; cv=none; b=HmWwByD7vTUNwnze1OTDAMY4exGLKypwi8J9q6rnE8cCLxWkqn//6PnPF2T3FEQwHh2RLCvhAC7axTSAAqoSjmFv5koCiVbLDbL1juDSYgYvKSC4pzAiU3xKZAycEQAP3t1FKI1m8IzAdXJgFL8NXD3AoPQDX8RQWlRsaet2wZY=
+	t=1762451281; cv=none; b=cIuYrpJ6V7DF4klTPvS6nNtXPg37ClSoqLRyEosaKOtvImkmaRq8pFPF3XhcV9k1rBEF7dnfTeHo+M+3UpL3m7qIblQGE2sL7gQzTjKK62paL5XFvpu44XXI94+h4HyN4M5RLa32weK0baR/+LVOQq2mH1dQ3nwKzr/+CYCJ1us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762434508; c=relaxed/simple;
-	bh=8wi8v4pafiCAVW0LlbviwrSq4+RD7ApxtwSAV0zAito=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ny6CJYar3jpneHLnGGpDn0VBUnsaYLGXHm6nYUzuqoMj5xGqVbeNQafTB5j3Gz9/gCXksX6yiExMX7yIJQreoxA/rbGn5cOPie5yUdYVIFhL3GupTl86E+uus7rQJFZjJWfqL4N+q3TXhsdp/SA/tpIwLAqGqIzI857TucxDYYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LJB+oMwR; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-640b4a52950so1318597a12.1
-        for <linux-efi@vger.kernel.org>; Thu, 06 Nov 2025 05:08:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762434504; x=1763039304; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=enqwyA/A3yCA7Wm2D9J7INIOgAB6+/16vEu7wgpBUcE=;
-        b=LJB+oMwRSDYLXuRamc4Yk0Gw9JWPilvB/no2q3yEKpNvGkLorI7/qJnepZvbp+uVjO
-         JAh4Fv5g5QxkDhU58OGkOQFwgHs6ZhaVX/K3tYx9PPjIcW3N+VGZwgRLO6qSZIUl08r/
-         zCH61rkoVO4696u8ICgu8dk64AKzmRZMqQ1Fq5JhkMSPTR54bPZb0jrJecfmfnuzyh+9
-         VeizpinU402Z0f6oMfRkwdxgGm9Sl1rHnFatOM00iAHZq1QLTasGaGeL/WlakZOD12zu
-         v63XwyjeS/lBOaz30sgqU9yCO58Edu3bilru+bw2dE0g7BllDoOoc9G7U8u8uObfarSj
-         uYFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762434504; x=1763039304;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=enqwyA/A3yCA7Wm2D9J7INIOgAB6+/16vEu7wgpBUcE=;
-        b=Y3BTX0vvPy8fCGE8PMa3DNhEifHUeFSlAnAbWur8IROD/7gGTn7OG9z3kp83wDA/gO
-         AyFkeIJ59qvtjA8OUbzmPOuMkDYgtcrr9kkq0mNuEkA+0UulfM+6yPvYuPrFw5ABZOsq
-         DNmkCtHA2b5dagSAMgy9ZaE8N8fkFmX9bL/PoM8ci0USd+gCJZntYzkJVUYbFfyGh4qE
-         TbKFGIhOn0M6+GNZ7Q5SmhxE/PJuU6jNXF+BR4vrRRuEPOCICKfIXwChdgSx0nGxQgDp
-         C2B9e1TS1XOcr8HA59FHZlC67mYplZlcYnBI4umbM4Ol3bpJIDJfticSEJgqz5wjHqz1
-         qfzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWf/xtfuo6XngP89CAgvfffvMqwH82w9giP4MSRuL2CYXmkUIvSSbfYaJkiHwCf9TcIX+LdlcaU9Mw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDwWpUvh5gH1wrHuc/va4OJ+F3hB7T0uDSDOa1x8J6BhPHbeGh
-	M146HW8JHAVza3LGDqkGm4FCLvF7tXL+2YacQgYEkQ/fUSlfFXZkrmIRzDJ4/WmgoljgLAzU3Nw
-	FY+8p
-X-Gm-Gg: ASbGncuflXdlfGvpeZoT1cFQvyOp2FXiH/xCJeTbPeKbMvN/B9NQ852QRZ41ls2VVFI
-	ISURsXKj3sfypJqki/nULvFXOWplO29OpytNheVPX00wPpVDU5uwuavRTyzUyaJ8JP7svUn8yRN
-	Rd5lgMRlcKnUuADmfERv4xtPPkCeT3Tq1NN4nV+8GBHTgDYTfcanE3qwXqTQOpxxqKm1Vs5pQ0Z
-	vXwcwrdB/QjRaUb1WMlkB5Pzk7I6OQ8U/TJJkoYmJUFQsrlCCd4JG6Dc9/mTqwnJ0DsLx4O491G
-	73iZ24PZxaMiaT6RKp46UrG9L0vfTAQD+SnaCiFDWx1fFlQA/qOlLzXTtfSG1CX7h328++RJBzw
-	stECx8iiRio3gscUYf5LDB4QID3gUHxZKpFxL47rF8wttWI4gVPjRnWYjMoFb9GIC++DrNtuA/B
-	ZQwZV7fHcodJaC
-X-Google-Smtp-Source: AGHT+IFDbNceai8kygqAPsrd4nZO/xDH+qcQBTNTFiNY8JYz+2UNeSt3srq3B3R4fGOrxSuhtxFg2Q==
-X-Received: by 2002:a17:906:c103:b0:b70:7d61:b8a5 with SMTP id a640c23a62f3a-b7265603d1cmr729211766b.62.1762434504394;
-        Thu, 06 Nov 2025 05:08:24 -0800 (PST)
-Received: from localhost ([87.213.113.147])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72896c8e29sm208344066b.74.2025.11.06.05.08.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 05:08:23 -0800 (PST)
-Date: Thu, 6 Nov 2025 16:08:22 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Francesco Pompo <francescopompo2@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Francesco Pompo <francescopompo2@gmail.com>
-Subject: Re: [PATCH] efistub/smbios: Add fallback for SMBIOS record lookup
-Message-ID: <68a428fd-aad8-4540-a509-d33ba116b5b9@suswa.mountain>
+	s=arc-20240116; t=1762451281; c=relaxed/simple;
+	bh=13WsgUGoeK4bC41loapHpdur+Ccm2Mdg30VVAbVHLjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DHFUOeI6jbaFkxwF2R+T5pOHUnQ2VfIyqK3KVXXE0dS+fpFCIWgGxnKirXPoDWQlSQhGFHbt6B8J4zvCGLNeD8ppRdTuk+p5qfuVPpuf4IluDYgFsfNi7gevcsHVzUACEBYcN+a0J+HHChB/USHqhnZOrSgRNU5Al+RTbWPRRtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9FnDBrL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD86C116C6;
+	Thu,  6 Nov 2025 17:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762451281;
+	bh=13WsgUGoeK4bC41loapHpdur+Ccm2Mdg30VVAbVHLjg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z9FnDBrLQxnVZ8j0S6dXWmgDdhzRapTlDLeZphuGquMG48Y0ehHhp+zTZ1t5KXHbE
+	 txcGrmgh0jjFrb2R7Z4I4+T/u5lzxWz5dX1+SmKtEgYTcAlIG9Z7mJs448ffRsunb/
+	 NKjfdgOv8bmEebgrBMp3h9vh4pR0Pq8RkV/w1GvjFyMBhyadJ/0oXUr1y1nJ50U0ub
+	 aJnzIoOLRuwk0h/lQKZix1kH9a4jtd/PFlGQeCzBFejhXmzM34PXGVkA6w+0UTpxmg
+	 kZW7+JyfWA+DtE0VoLbWXC2bDxthopkWbymWnjEda4G9uauXq3ZbYJQm9H/atPuoWh
+	 K90fOO5tmdSWQ==
+Date: Thu, 6 Nov 2025 10:47:52 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	linux-efi@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] kbuild: Add '-fms-extensions' to areas with dedicated
+ CFLAGS
+Message-ID: <20251106174752.GA2440428@ax162>
+References: <20251101-kbuild-ms-extensions-dedicated-cflags-v1-1-38004aba524b@kernel.org>
+ <20251105-amnesie-eisig-277559b69bae@brauner>
+ <20251105193931.GA2480016@ax162>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -91,51 +83,58 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251102001411.108385-1-francescopompo2@gmail.com>
+In-Reply-To: <20251105193931.GA2480016@ax162>
 
-Hi Francesco,
+On Wed, Nov 05, 2025 at 12:39:31PM -0700, Nathan Chancellor wrote:
+> I was planning to make it stable tomorrow to give folks time to chime in
+> at the beginning of the week. I have your tag and Ard's to add. After
+> that, we will just have to rely on the link to this submission for
+> follow ups.
 
-kernel test robot noticed the following build warnings:
+Alright, this should be the final result. If there are any other Acks
+that come in later, they will just have to be recorded here. If there
+are any follow up fixes needed, I will apply them on top and update the
+tag but the branch will not be rebased.
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Cheers,
+Nathan
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Francesco-Pompo/efistub-smbios-Add-fallback-for-SMBIOS-record-lookup/20251102-081803
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-patch link:    https://lore.kernel.org/r/20251102001411.108385-1-francescopompo2%40gmail.com
-patch subject: [PATCH] efistub/smbios: Add fallback for SMBIOS record lookup
-config: i386-randconfig-141-20251103 (https://download.01.org/0day-ci/archive/20251104/202511040131.8yGeRa6u-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202511040131.8yGeRa6u-lkp@intel.com/
+  Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
 
-smatch warnings:
-drivers/firmware/efi/libstub/smbios.c:55 verify_ep_int_checksum() error: buffer overflow 'ptr' 5 <= 14
+are available in the Git repository at:
 
-vim +/ptr +55 drivers/firmware/efi/libstub/smbios.c
+  git://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git tags/kbuild-ms-extensions-6.19
 
-d45578057224c4 Francesco Pompo 2025-11-02  48  static bool verify_ep_int_checksum(const struct smbios_entry_point *ep)
-d45578057224c4 Francesco Pompo 2025-11-02  49  {
-d45578057224c4 Francesco Pompo 2025-11-02  50  	const u8 *ptr = (u8 *)&ep->int_anchor;
-d45578057224c4 Francesco Pompo 2025-11-02  51  	u8 sum = 0;
-d45578057224c4 Francesco Pompo 2025-11-02  52  	int i;
-d45578057224c4 Francesco Pompo 2025-11-02  53  
-d45578057224c4 Francesco Pompo 2025-11-02  54  	for (i = 0; i < 15; i++)
-d45578057224c4 Francesco Pompo 2025-11-02 @55  		sum += ptr[i];
+for you to fetch changes up to 5ff8ad3909524ad55297a434f87c238224825bf4:
 
-This loop reads across a bunch of struct members.  We would normally
-use a struct_group() to say that all the struct members are grouped
-together.
+  kbuild: Add '-fms-extensions' to areas with dedicated CFLAGS (2025-10-30 21:26:28 -0400)
 
-d45578057224c4 Francesco Pompo 2025-11-02  56  
-d45578057224c4 Francesco Pompo 2025-11-02  57  	return sum == 0;
-d45578057224c4 Francesco Pompo 2025-11-02  58  }
+----------------------------------------------------------------
+Shared branch between Kbuild and other trees for enabling '-fms-extensions' for 6.19
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
+----------------------------------------------------------------
+Nathan Chancellor (2):
+      jfs: Rename _inline to avoid conflict with clang's '-fms-extensions'
+      kbuild: Add '-fms-extensions' to areas with dedicated CFLAGS
+
+Rasmus Villemoes (1):
+      Kbuild: enable -fms-extensions
+
+ Makefile                              | 3 +++
+ arch/arm64/kernel/vdso32/Makefile     | 3 ++-
+ arch/loongarch/vdso/Makefile          | 2 +-
+ arch/parisc/boot/compressed/Makefile  | 2 +-
+ arch/powerpc/boot/Makefile            | 3 ++-
+ arch/s390/Makefile                    | 3 ++-
+ arch/s390/purgatory/Makefile          | 3 ++-
+ arch/x86/Makefile                     | 4 +++-
+ arch/x86/boot/compressed/Makefile     | 7 +++++--
+ drivers/firmware/efi/libstub/Makefile | 4 ++--
+ fs/jfs/jfs_incore.h                   | 6 +++---
+ scripts/Makefile.extrawarn            | 4 +++-
+ 12 files changed, 29 insertions(+), 15 deletions(-)
 
