@@ -1,53 +1,53 @@
-Return-Path: <linux-efi+bounces-5397-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5398-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C01C42FC9
-	for <lists+linux-efi@lfdr.de>; Sat, 08 Nov 2025 17:20:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227A7C435B5
+	for <lists+linux-efi@lfdr.de>; Sat, 08 Nov 2025 23:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECBAB3AC0EE
-	for <lists+linux-efi@lfdr.de>; Sat,  8 Nov 2025 16:20:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9513188B74D
+	for <lists+linux-efi@lfdr.de>; Sat,  8 Nov 2025 22:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73876224AFA;
-	Sat,  8 Nov 2025 16:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292151D799D;
+	Sat,  8 Nov 2025 22:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="SQrdexUk"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="lNJEf1Ga"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B060222562;
-	Sat,  8 Nov 2025 16:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC415695;
+	Sat,  8 Nov 2025 22:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762618812; cv=none; b=aJPNUlcJrU+wmeMdWaTvWGkYyv8f/EtS6syh7ZDl7CBzLtJQhPr1BDPlomYR2AFg2vyUDyREmk3Q53GjIIgiN66bxQggSmbPk1Ai5lHAeIGKfRJ7VvOLomtPGkTr/1xFoQloa/NdoNQtjxxt5hLrFdSYutAbrMC9l8SDPKu4oRY=
+	t=1762642252; cv=none; b=jzRJBVqblbSNLX/AeUXHTfQOE+mtmFtcAserVFw9nyX2izUXQ8LXDusBDxPIyxpsmWOolla0Jb2S8D1U5fBxt4zL9h3doK9A7PrnibuC1g6iBJMsZwarJOZT2wlPVtWWp/ZFVafRHNsDV7EBNeap2YLG//2uhvIxIxzEbshFYuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762618812; c=relaxed/simple;
-	bh=IfQPIWym0KcYl4PrJwG7dFVcoXRd2GnV2Jse4Zj+a6w=;
+	s=arc-20240116; t=1762642252; c=relaxed/simple;
+	bh=Ca7/YNodRus5eia0lM3nJa1dKQJVHLJkRstjfG6zoFk=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=TqBroWbVSXM9svvHyRfZ2A6lALQGsWINqS3HUDNT1yUtTpSWon61GEx0Y8GNEeIhz4iNOHsLKETfCh/WuN8Hb3LV2ZIDKjJUvYVgqpTbdbVemacGwAPErFHuTlzlKZ8pOsdertMCvFzd48is5UDMeHd6fJ5X4J3ZOJ3ARwIv6IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=SQrdexUk; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version:Content-Type; b=gR8w+O7TkaIruVaVpev4h/q0JffIKLTGSScLbEB4qwe9lB+9L+8GijDYMkF3KAJC3P/BS/4RskdgzampIJNGFBHuOIzXGYsQ/flZBMLHWTGGwSrm+UnFghdnMwvV4AWlH2aIPWTqGXSanmRxzrw43OIPT4RHQKD4hQ73uWHl0F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=lNJEf1Ga; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5A8GInPF2337389
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5A8Mo5B62491141
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sat, 8 Nov 2025 08:18:49 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5A8GInPF2337389
+	Sat, 8 Nov 2025 14:50:06 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5A8Mo5B62491141
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1762618732;
-	bh=IfQPIWym0KcYl4PrJwG7dFVcoXRd2GnV2Jse4Zj+a6w=;
+	s=2025102301; t=1762642208;
+	bh=Ca7/YNodRus5eia0lM3nJa1dKQJVHLJkRstjfG6zoFk=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=SQrdexUk3Uvp8/NtRrkfFFBaj3c4imtzw8TG1x0d9IBeEM8f4iuSRBnQPHGUuzMAp
-	 ZCeylQqTiJQUdrDeZCSfquep9jpH78EjVmNlvh9UQRcm1/4ttKo442mGZpLvhSuYXy
-	 0u/bd2/ktKgWQLkN6zY3+qpbPKgQfeA+7s4QGmiXn1uYrrMcYOxveqtMRD48eeqUGe
-	 GB9H+NBGpGBItdZwV14jrcRkg+S34eWpA8wJDhAhgFC+frk157Yv0WHDCf+4iIpXD7
-	 urRRXEI0OxYHjJT0qrxi+q/bEro6fbb6S1XoJfzKoEU9s+gQXq2t/zNcaWKHtwKM/I
-	 X61HoP9/zYkCw==
-Date: Sat, 08 Nov 2025 08:18:48 -0800
+	b=lNJEf1GaZLDu0K2v7RvEBuF7keW7GIbhZNoXCvxiSW54CQHSLk1/27oAg9lihpyBA
+	 BdZSFH83ZBfiXrLknM6DA9I4ZCz9gioJvLu9Hkqz7VyilyoGX0mUmproAv8H6e6RZQ
+	 6u6/ESiXPaWLD23/B2L4oc/lNCJbteJibCHWBB/IjNJSCX2WWNjufAK9itT3DUPYB+
+	 RwttRF+BtY1BDhM99wa5qNS0s23a50jQrK58Mgi4m8J+7nUYUtekTC/OWVb8o6zbWu
+	 5/23LQgQjQpB3fQo3RQ3xVRu4NrEdcIQ2UI45rV076uJooA46WaZC8oyojjy493ka7
+	 nQQGw+6tTMOOg==
+Date: Sat, 08 Nov 2025 14:50:04 -0800
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>
@@ -75,7 +75,7 @@ Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v11_5/9=5D_x86/efi=3A_Disable_LAS?=
 User-Agent: K-9 Mail for Android
 In-Reply-To: <99143293-1715-4c40-b937-3e7472e26732@app.fastmail.com>
 References: <20251029210310.1155449-1-sohil.mehta@intel.com> <20251029210310.1155449-6-sohil.mehta@intel.com> <3e9c4fdd-88a8-4597-9405-d865fb837d95@intel.com> <cac58a25-eda6-4738-966f-a4e42818aa6c@app.fastmail.com> <6dec8398-3f7c-44db-a30d-33593af0217f@intel.com> <efd6ec82-5576-41f1-a244-2f80d72e93e4@intel.com> <ee2fce64-91ce-4b78-b2f9-33364ea0c52f@intel.com> <20251107090406.GU3245006@noisy.programming.kicks-ass.net> <CAMj1kXFQaGaz37MNKXXjhUKy_mP-5teCDj80-hjUPHw4x+TKrA@mail.gmail.com> <20251107094008.GA1618871@noisy.programming.kicks-ass.net> <CAMj1kXFWCwEENyS=JM5mAON6ebfTwwJh-mRDYCY5NA+5UGzZJg@mail.gmail.com> <99143293-1715-4c40-b937-3e7472e26732@app.fastmail.com>
-Message-ID: <7B2C410E-E4A3-4998-8C83-BE7D5838AC12@zytor.com>
+Message-ID: <C05D668B-2C88-4BAA-A0F0-0DB881F2F3EF@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -220,14 +220,6 @@ hey were fairly recognizable sequences that would nicely cause VM exits=2E =
 ust EFI to leave AC set=2E
 >
 
-Yeah, AC is way too volatile=2E=20
-
-This thread veered off topic, though=2E The point wasn't that EFI runtime =
-calls weren't crap, but that LASS, SMEP, and SMAP add no value during the E=
-FI runtime call *because we explicitly unmap user space anyway* (efi_mm) so=
- there are no user space mappings to worry about, so disabling them during =
-the execution of the EFI runtime call makes no difference at all =E2=80=94 =
-*as long as* the CR4 manipulation is done strictly inside the efi_mm switch=
-=2E
-
+They certainly cause vmexits, as they are mostly I/O port accesses=2E Mayb=
+e there are MSRs on some platforms=2E But what do you do with them?
 
