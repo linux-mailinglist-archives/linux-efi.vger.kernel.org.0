@@ -1,165 +1,98 @@
-Return-Path: <linux-efi+bounces-5399-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5400-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D48EC436DA
-	for <lists+linux-efi@lfdr.de>; Sun, 09 Nov 2025 01:32:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D87EC446DE
+	for <lists+linux-efi@lfdr.de>; Sun, 09 Nov 2025 21:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E423A75AF
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Nov 2025 00:32:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D94B6188B778
+	for <lists+linux-efi@lfdr.de>; Sun,  9 Nov 2025 20:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674E413DBA0;
-	Sun,  9 Nov 2025 00:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6652676DE;
+	Sun,  9 Nov 2025 20:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NobQE5IK"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="wUuaVauM"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2937B63CB
-	for <linux-efi@vger.kernel.org>; Sun,  9 Nov 2025 00:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4691A0BD6;
+	Sun,  9 Nov 2025 20:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762648333; cv=none; b=AmoHg1qEt7ItFDx36UFuYMGUlVa7Zz7M74wC/01tWwIX5B9tXntH/9xpKYM1MMs997sXVsc1vCx0Q1sMu7tLOl1B9qBBK1d5O+IBPsarspovscSKSlCBNhdIVz3G9IdAMH/urmNmla/FVrtbKXNLaKyLnXAmE2q51Ukjhhycw2Y=
+	t=1762720829; cv=none; b=ldxVnJWP42q4cCeRkxeF55wYw5RikAc96abFI/iip8NAfw5AzSdO38arU//FxzixTArhMYfkF9paQl2HitnFD3q37P4Le91n6Ug2NnKxtWAJranV/tJFyxjnl/MhSUS0/LDqN5kNn+q60aunP/djSc/sXiVSR33KubhSwksIrDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762648333; c=relaxed/simple;
-	bh=S4dLz/QHBHBZp9+wqsdX5NHV8vCDEIcz+b8UEZjbWkc=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=SfiFtkCBASJA/AiL/KMSc6k0R+reaibONktNZRcbXDuX4Ycy+NYOmsvdONRORlwpekBcTDGfErYUcMBOZ/+SAvHL05QvPTjTXMwrjjStMXT1Uao0NfAq++iO5iOcH8hgAcYHzDhLZUVr0BRt9CawINQBOiJ9UNdqQm0MN08JJo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NobQE5IK; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762648332; x=1794184332;
-  h=date:from:to:cc:subject:message-id;
-  bh=S4dLz/QHBHBZp9+wqsdX5NHV8vCDEIcz+b8UEZjbWkc=;
-  b=NobQE5IKpstYs+QLLfS4vaWZNhExhQBZY0qbE11zjkWCUPBb6gSnc7jN
-   THCRypP8CAXjRQOuEz/a93xgAyVjg9nFDA+bWefFNUaKJCcxePB4nCZIm
-   v2iR9npJ9R6QLlBFUP1NejdKVdw+BIM7g2AzS8DVieVVNGeV9nG6zX0GX
-   EKRvyqf0iUDjI8+3/ZS2NnZvKtSH8t2ngzr9ZMOJkws+0pyEbYUoTJUIE
-   TdSfj+KCCAt6aNHXnrtUgKEefSFCc39+sW7zxsiuMdSpZTIL9xyW6YDFX
-   VhhDRJ+P68kXt6REddC1JYHETDaag+grSEnmzM7OX1UE5b7xoPq0XG7CU
-   A==;
-X-CSE-ConnectionGUID: j2Yd4C22Taq4VQAUdq2K3g==
-X-CSE-MsgGUID: 0uH1h0lcS/uj8a1kavCgHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64678932"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64678932"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2025 16:32:09 -0800
-X-CSE-ConnectionGUID: 5H0wzx7ITfSE3cU56Njn0g==
-X-CSE-MsgGUID: XLRePwyBSGm1U+/RQZqFCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,290,1754982000"; 
-   d="scan'208";a="219090993"
-Received: from lkp-server01.sh.intel.com (HELO 6ef82f2de774) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 08 Nov 2025 16:32:07 -0800
-Received: from kbuild by 6ef82f2de774 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vHtLh-0001cZ-0z;
-	Sun, 09 Nov 2025 00:32:05 +0000
-Date: Sun, 09 Nov 2025 08:31:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS
- 4f90742d4a09a8253861b0d5fd0984e3cd399c9b
-Message-ID: <202511090809.DUEb1h8t-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1762720829; c=relaxed/simple;
+	bh=IMyNr6qrkO6d2PRolblpwhjRIVpF93t8I4D1MPZrVk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cXGIxULIPs91Dx2FjONJ7rE6suhFjZbyXRIVWI1nWC2ZjHs0yu1HM2Hv04GxwXVxa+UuctRjiYNT//fPslO0JeO7df5p/6YDx/oteSC8ozuxUj8TaXbzfyobL2NeRnE6PrLUdetMPKJ3Nr22sX955s7Ul3Ka/EIf9nuQ246MIh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=wUuaVauM; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BfmRhkxrsEs9tOM8wGbk7dXcVXNceBqTXcIhtt2SrKs=; b=wUuaVauMMR7ErCaLipgahv02uK
+	f8zmYZUSkXrkSeIWVD+p2We+E7S0R1h/RkWnDRzYS23UkSGwmELAbRJJxSREYjeqifZdYxQ0MI7Y8
+	whP1b+2iLCrarO1lAoXJmD7YCetyf1ykJN7sVe3HCohmhOOvBIYllaLsgF2qgYoPuJ6bpGVgIgYwX
+	WVTBkowQ1Lmcdjvk4p6fM2kbY7LuhZft2NVC8ulf4OPzi+fEUEktbxyTH2D3vg2+jh6CBx75Obxt7
+	6/7552MEzeebUdxzenriy13HTG10/jzbqdfcj+Rdt/3+FhTjfYrzTwilZk/MP+73IUGSCKVk2vREG
+	7z5iDtNA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vICCw-00000007AxF-0Wo7;
+	Sun, 09 Nov 2025 20:40:18 +0000
+Date: Sun, 9 Nov 2025 20:40:18 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <brauner@kernel.org>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
+	linux-mm@kvack.org, linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+Message-ID: <20251109204018.GH2441659@ZenIV>
+References: <20251028174540.GN2441659@ZenIV>
+ <20251028210805.GP2441659@ZenIV>
+ <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+ <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
+ <20251029193755.GU2441659@ZenIV>
+ <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+ <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
+ <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
+ <20251105-sohlen-fenster-e7c5af1204c4@brauner>
+ <20251105-vorbild-zutreffen-fe00d1dd98db@brauner>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105-vorbild-zutreffen-fe00d1dd98db@brauner>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 4f90742d4a09a8253861b0d5fd0984e3cd399c9b  efistub/x86: Add fallback for SMBIOS record lookup
+On Wed, Nov 05, 2025 at 02:43:34PM +0100, Christian Brauner wrote:
 
-elapsed time: 2928m
+> -static void filesystems_freeze_callback(struct super_block *sb, void *unused)
+> +static void filesystems_freeze_callback(struct super_block *sb, void *bool_freeze_all)
+>  {
+> +	bool freeze_all = *(bool *)bool_freeze_all;
+> +
+>  	if (!sb->s_op->freeze_fs && !sb->s_op->freeze_super)
+>  		return;
+>  
+> +	if (!freeze_all) {
 
-configs tested: 72
-configs skipped: 1
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                   allnoconfig    gcc-15.1.0
-alpha                  allyesconfig    gcc-15.1.0
-arc                    allmodconfig    gcc-15.1.0
-arc                     allnoconfig    gcc-15.1.0
-arc                    allyesconfig    gcc-15.1.0
-arm                    allmodconfig    gcc-15.1.0
-arm                     allnoconfig    clang-22
-arm                    allyesconfig    gcc-15.1.0
-arm64                  allmodconfig    clang-19
-arm64                   allnoconfig    gcc-15.1.0
-arm64                  allyesconfig    clang-22
-csky                   allmodconfig    gcc-15.1.0
-csky                    allnoconfig    gcc-15.1.0
-csky                   allyesconfig    gcc-15.1.0
-hexagon                allmodconfig    clang-17
-hexagon                 allnoconfig    clang-22
-hexagon                allyesconfig    clang-22
-i386                   allmodconfig    gcc-14
-i386                    allnoconfig    gcc-14
-i386                   allyesconfig    gcc-14
-loongarch              allmodconfig    clang-19
-loongarch               allnoconfig    clang-22
-loongarch              allyesconfig    clang-22
-m68k                   allmodconfig    gcc-15.1.0
-m68k                    allnoconfig    gcc-15.1.0
-m68k                   allyesconfig    gcc-15.1.0
-microblaze             allmodconfig    gcc-15.1.0
-microblaze              allnoconfig    gcc-15.1.0
-microblaze             allyesconfig    gcc-15.1.0
-mips                   allmodconfig    gcc-15.1.0
-mips                    allnoconfig    gcc-15.1.0
-mips                   allyesconfig    gcc-15.1.0
-nios2                   allnoconfig    gcc-11.5.0
-openrisc                allnoconfig    gcc-15.1.0
-openrisc               allyesconfig    gcc-15.1.0
-parisc                 allmodconfig    gcc-15.1.0
-parisc                  allnoconfig    gcc-15.1.0
-parisc                 allyesconfig    gcc-15.1.0
-parisc      randconfig-001-20251107    gcc-8.5.0
-parisc      randconfig-002-20251107    gcc-12.5.0
-powerpc                allmodconfig    gcc-15.1.0
-powerpc                 allnoconfig    gcc-15.1.0
-powerpc                allyesconfig    clang-22
-powerpc     randconfig-001-20251107    clang-22
-powerpc     randconfig-002-20251107    clang-22
-powerpc64   randconfig-001-20251107    gcc-14.3.0
-powerpc64   randconfig-002-20251107    clang-22
-riscv                  allmodconfig    clang-22
-riscv                   allnoconfig    gcc-15.1.0
-riscv                  allyesconfig    clang-16
-riscv       randconfig-001-20251107    clang-22
-riscv       randconfig-002-20251107    gcc-13.4.0
-s390                   allmodconfig    clang-18
-s390                    allnoconfig    clang-22
-s390                   allyesconfig    gcc-15.1.0
-s390        randconfig-001-20251107    gcc-8.5.0
-s390        randconfig-002-20251107    gcc-15.1.0
-sh                     allmodconfig    gcc-15.1.0
-sh                      allnoconfig    gcc-15.1.0
-sh                     allyesconfig    gcc-15.1.0
-sh          randconfig-001-20251107    gcc-13.4.0
-sh          randconfig-002-20251107    gcc-11.5.0
-sparc                  allmodconfig    gcc-15.1.0
-sparc                   allnoconfig    gcc-15.1.0
-um                     allmodconfig    clang-19
-um                      allnoconfig    clang-22
-um                     allyesconfig    gcc-14
-x86_64                 allmodconfig    clang-20
-x86_64                  allnoconfig    clang-20
-x86_64                 allyesconfig    clang-20
-x86_64                rhel-9.4-rust    clang-20
-xtensa                  allnoconfig    gcc-15.1.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Minor nitpick: do we even need a dereference here?  Just check
+whether the argument is NULL and adjust the caller...
 
