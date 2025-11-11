@@ -1,54 +1,54 @@
-Return-Path: <linux-efi+bounces-5464-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5465-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F247C4CCB2
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 10:56:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C381C4CF89
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 11:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 28C104F7289
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 09:50:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98E3E42362D
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 10:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DE82DD5F6;
-	Tue, 11 Nov 2025 09:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB0533557C;
+	Tue, 11 Nov 2025 10:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="WXA69s3/"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="MW8BXQRZ"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D273E256C87;
-	Tue, 11 Nov 2025 09:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA343358B7;
+	Tue, 11 Nov 2025 10:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762854603; cv=none; b=XEEvzNwvt7G1skMKwHDDzttBvBr1PAkLGKutrIZE9O5RhBGstNREAwaMjRdqk5Xjbm5GSCAcsF9zQUCK3cmbmxqCoTf/z46dr8aqrCiwz/bossJfSLnDZiZeqnXKuDRL6QjXRqfXNpHU42RBqM3C9nRaUiCT7mKii0YVl+qagZU=
+	t=1762855282; cv=none; b=XJjzI1RqBkkm8E5Rorb1T4crJIipo9mqlqAqwnt1RE/YLPc1wB/dVseLqZWwiob+B3GhiVGk/F0BSlI9m8XXVpQepccvGYJdgUm5u3zumKqHQQwvT17B0K4MDGsjdndvA/On57eF8ezkbV6/Yi19HXLzbVgd7TD+9VyKTgu3X/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762854603; c=relaxed/simple;
-	bh=D36LveqlJs6QkLgZQAhRPR+Lxgos/gtCjDPl8hDAgYw=;
+	s=arc-20240116; t=1762855282; c=relaxed/simple;
+	bh=wKBkphm/u5H9VukG6SiMiDP7RhdDvCoVHHzcrQaeABo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dYPKS9dvpG1wsLawvEa11bgustnkaii0gykLIx3dymWAUt+CV59nDG0ENMWaYUZUDYwrpUpAJvKuyMNMGRoDlB7eo8Tt7qyayzM5lR0Q5ymmO6hysdjIHvAtqfWN50K8CyLALMBtkgNpAm3PkFDbsjIXdqBlQWRa5AkLLud8POQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=WXA69s3/; arc=none smtp.client-ip=62.89.141.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=mjy+Pv2di7LTiTBOB+sPAM9Ah8D8B/MuKnXs0wRuiC1dBN8/bU2I9vQ6asuZv3rgagkaVyqWbg1xziHzBKV/38hwA0SO4lWG7XWvfEngTmyVLnM0sqK44DS2DSSGFo6rVp+145byOYfNlExVTXRrUPy/CHs0zXHHtksCqOsya6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=MW8BXQRZ; arc=none smtp.client-ip=62.89.141.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6bsPdtBaqJ4UPF5R7K+ouK1dJ6DCyxBWv0w/QZnr7cE=; b=WXA69s3/ndSSCDKncRmaO/hjic
-	O1y94fGm7YG4wpp1EnXG6yDbvuMjQmTNWvtrC7zZiZbJKSJQ3qPVVV+wFbvU9CFAsYmwuwFWd9TQz
-	502RxsFSRuMlb+ZsoiAw/Eyy0gQ2krWPMw0fEZQ3Z1ZbYzdnWOQhbqHDcknhoQE/b6LUe5OiGj/uX
-	ilItJNCZJAw3WeivKD5Fmg/6ibDscl4juFxBkBG0efupSFSIBUUIdS3DG4fn/rMt/0u9B5d/iqbE3
-	VTHj0bLhd9xu7SVaxQVogoLmue/J7I9fcpgSO2MhCBANTrOxCwyy94lXIyVk5oV9wmikQTnsNUf6U
-	oFmhH9OQ==;
+	bh=mqzMG8DZM/gvRBtNitIiPBI41Lv4Ew10vO1gkoA+Kjs=; b=MW8BXQRZWfQCxSkVRaAW5RDNRv
+	u1sda6MVQC9abOrzArDC8Tn/TJ0Lsnq3zSEIToxqDk+2Y3hn7b+eNYfnCIbwUlXCj2iIT2wjI/wew
+	cBCjS6trY0nXW2EHN2fegFgCawQAJsMgikqLavler34mWIP1rQcTnw8A+1GdCExcvRmhNRc8KvMsv
+	1qNOJzokl6uVp9Ybw0BL5rIhQ4k24h8BTs3yqMPybTjBAdjdlfD5wcYREFELha7wTjdS7t/GfB0pT
+	gJRegxPM88TCv3SWy/DpaceAnnpzuoH08amxqHgXkDEMvxRFnhOFsiApuvBrXKnLF1ZZDYsq8fPYB
+	xbQFpQFQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIl0f-0000000FPaa-0OxV;
-	Tue, 11 Nov 2025 09:49:57 +0000
-Date: Tue, 11 Nov 2025 09:49:57 +0000
+	id 1vIlBb-0000000FeCe-2SRQ;
+	Tue, 11 Nov 2025 10:01:15 +0000
+Date: Tue, 11 Nov 2025 10:01:15 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
-To: bot+bpf-ci@kernel.org
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+To: Christian Brauner <brauner@kernel.org>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net,
 	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
 	linux-mm@kvack.org, linux-efi@vger.kernel.org,
 	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
@@ -59,11 +59,12 @@ Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
 	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
 	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
 	yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
-Subject: Re: [PATCH v3 34/50] selinuxfs: new helper for attaching files to
- tree
-Message-ID: <20251111094957.GT2441659@ZenIV>
-References: <20251111065520.2847791-35-viro@zeniv.linux.org.uk>
- <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
+Subject: Re: [PATCH v3 36/50] functionfs: switch to simple_remove_by_name()
+Message-ID: <20251111100115.GU2441659@ZenIV>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <20251111-verelendung-unpolitisch-1bdcd153611e@brauner>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -72,44 +73,23 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
+In-Reply-To: <20251111-verelendung-unpolitisch-1bdcd153611e@brauner>
 Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Tue, Nov 11, 2025 at 07:53:18AM +0000, bot+bpf-ci@kernel.org wrote:
+On Tue, Nov 11, 2025 at 10:30:22AM +0100, Christian Brauner wrote:
 
-> Can this leak the parent directory's reference count? The parent inode's
-> link count is incremented with inc_nlink(d_inode(dir)) before calling
-> sel_attach(). When sel_attach()->d_alloc_name() fails and returns NULL,
-> sel_attach() correctly cleans up the child inode with iput() and returns
-> ERR_PTR(-ENOMEM). However, the parent directory's link count has already
-> been incremented and is never decremented on this error path.
+> > Incorrect.  The loop in question is
 > 
-> In the original code, the parent link count increment happened after
-> d_add() succeeded, ensuring it only occurred when the full operation
-> completed successfully.
+> Are you aware that you're replying to a bot-generated email?
 
-All callers of sel_make_dir() proceed to remove the parent in case of
-failure.  All directories are created either at mount time or at
-policy reload afterwards.  A failure in the former will have
-sel_fill_super() return an error, with the entire filesystem instance
-being torn apart by the cleanup path in its caller (get_tree_single()).
-No directories survive that.  A failure in the latter (in something
-called from sel_make_policy_nodes()) will be taken care of by the
-call of simple_recursive_removal() in the end of sel_make_policy_nodes() -
-there we
-	1.  create a temporary directory ("/.swapover").  We do *NOT*
-use sel_make_dir() for that - see sel_make_swapover_dir().  If that has
-failed, we return an error.
-	2.  create and populate two subtrees in it ("booleans" and "classes").
-That's the step where we would create subdirectories and that's where
-sel_make_dir() failures might occur.
-	3.  if the subtree creation had been successful, swap "/.swapover/booleans"
-with "/booleans" and "/.swapover/classes" with "/classes" respectively.
-	4.  recursively remove "/.swapover", along with anything that might
-be in it.  In case of success that would be the old "/classes" and "/booleans"
-that got replaced, in case of failure - whatever we have partially created.
+I am.  I couldn't care less about the bot, but there are intelligent
+readers and the loop _is_ unidiomatic enough to trigger a WTF
+reaction in those as well.  Sure, they can figure it out on their
+own, but...
 
-That's the same reason why we don't need to bother with failure cleanups in
-the functions that populate directories - if they fail halfway through, the
-entire (sub)tree is going to be wiped out in one pass.
+And yes, catching places that might smell fishy is one area where that
+kind of bots can be genuinely useful - triage assistance, same as with
+sparse/cc/etc. warnings.  With the same need to LART the cretins of
+"The Most Holy Tool Makes Unhappy Noises - Must Appease It" variety,
+of course...
 
