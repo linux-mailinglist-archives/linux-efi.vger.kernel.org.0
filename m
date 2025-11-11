@@ -1,111 +1,115 @@
-Return-Path: <linux-efi+bounces-5463-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5464-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DD0C4CAF9
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 10:34:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F247C4CCB2
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 10:56:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A556A3ADF00
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 09:31:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 28C104F7289
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 09:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C253B2F616C;
-	Tue, 11 Nov 2025 09:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DE82DD5F6;
+	Tue, 11 Nov 2025 09:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wel3RcIu"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="WXA69s3/"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889702F60D6;
-	Tue, 11 Nov 2025 09:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D273E256C87;
+	Tue, 11 Nov 2025 09:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762853432; cv=none; b=jKVHt9873K6bhNsI2smMolLZygaQUAOT+4x4Rc3EZoc4oWlzsQJL48fHX5UbtGkchDqQpE0P4zcBpBXSnGAO8hzzAsLsmlnoqgoR6bS8xzlHEb4twoLFZGw9UbnBkxKwsB80mygEnvKgdT7Fbi9ORpQlmBrwT2P1YrBUfzAp2Ms=
+	t=1762854603; cv=none; b=XEEvzNwvt7G1skMKwHDDzttBvBr1PAkLGKutrIZE9O5RhBGstNREAwaMjRdqk5Xjbm5GSCAcsF9zQUCK3cmbmxqCoTf/z46dr8aqrCiwz/bossJfSLnDZiZeqnXKuDRL6QjXRqfXNpHU42RBqM3C9nRaUiCT7mKii0YVl+qagZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762853432; c=relaxed/simple;
-	bh=FABYtlEqY2mS5o9frfhx1zgALjceFTO/BSa/J+igp2U=;
+	s=arc-20240116; t=1762854603; c=relaxed/simple;
+	bh=D36LveqlJs6QkLgZQAhRPR+Lxgos/gtCjDPl8hDAgYw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=teQ4i1GVViJV1EJe+i/j6uB43CNVKdqmABbHJAetswcvh8SSs3gfv5fAbflCj0qtPwCvxKVkI4cw839XZ1sWys7CakRfUbjJCVQcvt/opLNKkt112xTNRzj/OSXhpJkD1dAVfxVh+aktP1qAXXA8eDTQY0bqokXYwzadBTwGGUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wel3RcIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B728C19421;
-	Tue, 11 Nov 2025 09:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762853432;
-	bh=FABYtlEqY2mS5o9frfhx1zgALjceFTO/BSa/J+igp2U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wel3RcIuS5j+o/v6AaFglHplRlVo9sjzdy86FsNvkTS5k7A/kuydEY9YQDtDQNrkU
-	 1JCCFOApt8LXWbOxCeqS0vlhGpfcI0c8jf2RAsKomtysjY/RFbLTstpdKXu40yGTYn
-	 FLxjdS45rZweVEmhZDxCWOTnPuYWbymg3w5CfiOvkb1Zp/DixWYVSWmBkR6D86LVRS
-	 90pZQhDvDQUp5C//Nl5fU0nZLj6njdPQoX9etWjUUWT7zS1p8r3mKbTo7WJJiVw2Eh
-	 1ZXIc9VtvUtautgBEOReKPpMqPkOF85M+AtRNgbRjY4ZeYjO80kCfOZdnWtEAjEE0Q
-	 TQ0u/1s2TNihQ==
-Date: Tue, 11 Nov 2025 10:30:22 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org, 
-	torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
-	neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
-	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
-	john.johansen@canonical.com, selinux@vger.kernel.org, borntraeger@linux.ibm.com, 
-	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net, 
-	martin.lau@kernel.org, eddyz87@gmail.com, yonghong.song@linux.dev, clm@meta.com, 
-	ihor.solodrai@linux.dev
-Subject: Re: [PATCH v3 36/50] functionfs: switch to simple_remove_by_name()
-Message-ID: <20251111-verelendung-unpolitisch-1bdcd153611e@brauner>
-References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
- <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
- <20251111092244.GS2441659@ZenIV>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dYPKS9dvpG1wsLawvEa11bgustnkaii0gykLIx3dymWAUt+CV59nDG0ENMWaYUZUDYwrpUpAJvKuyMNMGRoDlB7eo8Tt7qyayzM5lR0Q5ymmO6hysdjIHvAtqfWN50K8CyLALMBtkgNpAm3PkFDbsjIXdqBlQWRa5AkLLud8POQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=WXA69s3/; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6bsPdtBaqJ4UPF5R7K+ouK1dJ6DCyxBWv0w/QZnr7cE=; b=WXA69s3/ndSSCDKncRmaO/hjic
+	O1y94fGm7YG4wpp1EnXG6yDbvuMjQmTNWvtrC7zZiZbJKSJQ3qPVVV+wFbvU9CFAsYmwuwFWd9TQz
+	502RxsFSRuMlb+ZsoiAw/Eyy0gQ2krWPMw0fEZQ3Z1ZbYzdnWOQhbqHDcknhoQE/b6LUe5OiGj/uX
+	ilItJNCZJAw3WeivKD5Fmg/6ibDscl4juFxBkBG0efupSFSIBUUIdS3DG4fn/rMt/0u9B5d/iqbE3
+	VTHj0bLhd9xu7SVaxQVogoLmue/J7I9fcpgSO2MhCBANTrOxCwyy94lXIyVk5oV9wmikQTnsNUf6U
+	oFmhH9OQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vIl0f-0000000FPaa-0OxV;
+	Tue, 11 Nov 2025 09:49:57 +0000
+Date: Tue, 11 Nov 2025 09:49:57 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: bot+bpf-ci@kernel.org
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
+	linux-mm@kvack.org, linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
+	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
+	yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
+Subject: Re: [PATCH v3 34/50] selinuxfs: new helper for attaching files to
+ tree
+Message-ID: <20251111094957.GT2441659@ZenIV>
+References: <20251111065520.2847791-35-viro@zeniv.linux.org.uk>
+ <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251111092244.GS2441659@ZenIV>
+In-Reply-To: <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Tue, Nov 11, 2025 at 09:22:44AM +0000, Al Viro wrote:
-> On Tue, Nov 11, 2025 at 07:53:16AM +0000, bot+bpf-ci@kernel.org wrote:
-> 
-> > When ffs_epfiles_create() calls ffs_epfiles_destroy(epfiles, i - 1) after
-> > the first ffs_sb_create_file() call fails (when i=1), it passes count=0.
-> > The initialization loop starts at i=1, so epfiles[0].ffs is never
-> > initialized.
-> 
-> Incorrect.  The loop in question is
+On Tue, Nov 11, 2025 at 07:53:18AM +0000, bot+bpf-ci@kernel.org wrote:
 
-Are you aware that you're replying to a bot-generated email?
+> Can this leak the parent directory's reference count? The parent inode's
+> link count is incremented with inc_nlink(d_inode(dir)) before calling
+> sel_attach(). When sel_attach()->d_alloc_name() fails and returns NULL,
+> sel_attach() correctly cleans up the child inode with iput() and returns
+> ERR_PTR(-ENOMEM). However, the parent directory's link count has already
+> been incremented and is never decremented on this error path.
+> 
+> In the original code, the parent link count increment happened after
+> d_add() succeeded, ensuring it only occurred when the full operation
+> completed successfully.
 
-> 
-> 	epfile = epfiles;
-> 	for (i = 1; i <= count; ++i, ++epfile) {
-> 		epfile->ffs = ffs;
-> 		mutex_init(&epfile->mutex);
-> 		mutex_init(&epfile->dmabufs_mutex);
-> 		INIT_LIST_HEAD(&epfile->dmabufs);
-> 		if (ffs->user_flags & FUNCTIONFS_VIRTUAL_ADDR)
-> 			sprintf(epfile->name, "ep%02x", ffs->eps_addrmap[i]);
-> 		else   
-> 			sprintf(epfile->name, "ep%u", i);
-> 		err = ffs_sb_create_file(ffs->sb, epfile->name,
-> 					 epfile, &ffs_epfile_operations);
-> 		if (err) {
-> 			ffs_epfiles_destroy(epfiles, i - 1);
-> 			return err;
-> 		}
-> 	}
-> 
-> and invariant maintained through the loop is epfile == epfiles + (i - 1).
-> We start with i == 1 and epfile == epfiles, modify neither variable in
-> the loop body and increment both i and epfile by the same amount in
-> the step.
-> 
-> In other words, on the first pass through the loop we access epfiles[0],
-> not epfiles[1].  Granted, the loop could've been more idiomatic, but
-> it is actually correct.
+All callers of sel_make_dir() proceed to remove the parent in case of
+failure.  All directories are created either at mount time or at
+policy reload afterwards.  A failure in the former will have
+sel_fill_super() return an error, with the entire filesystem instance
+being torn apart by the cleanup path in its caller (get_tree_single()).
+No directories survive that.  A failure in the latter (in something
+called from sel_make_policy_nodes()) will be taken care of by the
+call of simple_recursive_removal() in the end of sel_make_policy_nodes() -
+there we
+	1.  create a temporary directory ("/.swapover").  We do *NOT*
+use sel_make_dir() for that - see sel_make_swapover_dir().  If that has
+failed, we return an error.
+	2.  create and populate two subtrees in it ("booleans" and "classes").
+That's the step where we would create subdirectories and that's where
+sel_make_dir() failures might occur.
+	3.  if the subtree creation had been successful, swap "/.swapover/booleans"
+with "/booleans" and "/.swapover/classes" with "/classes" respectively.
+	4.  recursively remove "/.swapover", along with anything that might
+be in it.  In case of success that would be the old "/classes" and "/booleans"
+that got replaced, in case of failure - whatever we have partially created.
+
+That's the same reason why we don't need to bother with failure cleanups in
+the functions that populate directories - if they fail halfway through, the
+entire (sub)tree is going to be wiped out in one pass.
 
