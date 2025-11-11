@@ -1,255 +1,134 @@
-Return-Path: <linux-efi+bounces-5458-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5459-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68644C4BF0C
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 08:07:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77813C4C2F9
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 08:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F0924F0C93
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 07:04:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 506D6188FA23
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 07:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10E33590B3;
-	Tue, 11 Nov 2025 06:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025A2299950;
+	Tue, 11 Nov 2025 07:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="mCtTlOKV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GT1YKP0D"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8317A351FB7;
-	Tue, 11 Nov 2025 06:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09FA34D39F;
+	Tue, 11 Nov 2025 07:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762844139; cv=none; b=S1AXxtYJ/KBsHW+X8FRMn5HY+l/Bwr5AnWATjhVLZE6LG8C2CN7suBck1h1pQDhpAZ70+aFMoSnHRjNt75d/bN9/keIigKm52jH5XQ/pmsiL6/Qh9D4Na1IbavJBRvOXcMKXHxejtKN1+XWnsYkBdHSBpVT5/P9KLz5f7u+A0EA=
+	t=1762847597; cv=none; b=QIEY2pLn1YWx4/YY2udHLE4jwFO8w1CGxOoaBpBdlAXj9F4r9OgqlTobXehWAJwo0AWNmn31tU96dLcSCGzS0o8+Xa+8HpMTcafLBkJ811LlTEW4E+H4S9kbpeWnVn6R1wYSTQj4uLd9zXWYO8HeYorZE+ylbWISPL0CwZCNnNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762844139; c=relaxed/simple;
-	bh=EPwXfKzUq6WB4Lo0fSXpMaiMt3x+BzpT0g03SMuKZHY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWxKyjDc73XODEkbPmArXNuXF6cDJ2F0aF6Kl7E48+ts/RA3IT20mth1Sbl4BGxdCo/uEW9Xg61wZWL6GCX81tAIdXh0rc3aqcRaf/m9Jc8Eq1HIt67v4Bc1o4kgBkA5esAVxZkGhKjKLRyfX0COlL8NhQ+vYEgib5Ho7glXVpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=mCtTlOKV; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=q+YJfK1JQC1qMGUqrxdt1F1Oxcx2pv8iNDDBzggBjk0=; b=mCtTlOKVOGtAV3Fd6s6t1TxgRe
-	XpkebMhkQJ23JdJ50DloJJh1lPBIgODF0uHNkVHCF0nN4mFnY8p5mCYD7GufmCSBVONhWbAxx5OQU
-	i8tS+ba8dzGs9SHCOePSmdZiJoXKqSw2KQLgDlbl/2pNRodja8ORO2lDdpp6DxKXw0ame4bvrW/Kj
-	PbJ/KBuJFManx7Sho2+mSf+ksoI7PV9UBotmKpRDaa+CtwveOgvlbJ8rDNI2gp8ZQhlbqmfZebR7x
-	9VdzGf0QSTCffumZdqTIi1ODwjGBvi5zgelxMVKWQAFaz9BD/7ZTYuvHi+9t/kaeW9T+tiLc0y3fU
-	BcyH9PFg==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHu-0000000BxRd-0qMW;
-	Tue, 11 Nov 2025 06:55:34 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: [PATCH v3 50/50] d_make_discardable(): warn if given a non-persistent dentry
-Date: Tue, 11 Nov 2025 06:55:19 +0000
-Message-ID: <20251111065520.2847791-51-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
-References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
+	s=arc-20240116; t=1762847597; c=relaxed/simple;
+	bh=6vLdCVtUOmwT2xBG2CthgZi9Ig8JOsV5A1e4sciMj58=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=olwwzqheRfvc4e9iUwdXTH5+JhjJP1JBC97xzxJ1xefQX7YegycUQqgR8J5soQDVcGoLsYROpBYjv6onSucpOkjt36PAMjg2Oxm2IWoLxATZEg3xXabYuMkBOEM0ipystBH36v11SimcXa5SwHIURGnuF7auSkb3fFzzvTuz8Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GT1YKP0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EFAC116D0;
+	Tue, 11 Nov 2025 07:53:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762847597;
+	bh=6vLdCVtUOmwT2xBG2CthgZi9Ig8JOsV5A1e4sciMj58=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=GT1YKP0Dqo8Ysx1f1jn1aJnzunt/m+vgmkHza86dvdju2EoOZI6rbkPd7I+ZcBeM+
+	 sMRoB0c30MgD2v1Yb5EZikViuPNT9qU6D1zpwh1o3OD7j4ZzdXpPAIauOb57UMw4bv
+	 I60wtyPt3IyQJygJ4dixY3dw68KJmjTTO1siXWRgIfdzeLxoIP8G2HrfqFcRWayLag
+	 434bWzG4C5dIXX3cv0RlRRd1dhjWeDIx9KMPU1TowHWPucntp2dQsJT9/iu1QfqbYc
+	 Y/H5S/PxMIu45+cpnJF56ZFcZiXa6QAttdqqbIZMPl+jb91U6hNFBKXExqdER7dwwx
+	 ib+6wzq9EnUzA==
+Content-Type: multipart/mixed; boundary="===============1014260008914052501=="
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Message-Id: <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+In-Reply-To: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v3 36/50] functionfs: switch to simple_remove_by_name()
+From: bot+bpf-ci@kernel.org
+To: viro@zeniv.linux.org.uk,linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,brauner@kernel.org,jack@suse.cz,raven@themaw.net,miklos@szeredi.hu,neil@brown.name,a.hindborg@kernel.org,linux-mm@kvack.org,linux-efi@vger.kernel.org,ocfs2-devel@lists.linux.dev,kees@kernel.org,rostedt@goodmis.org,gregkh@linuxfoundation.org,linux-usb@vger.kernel.org,paul@paul-moore.com,casey@schaufler-ca.com,linuxppc-dev@lists.ozlabs.org,john.johansen@canonical.com,selinux@vger.kernel.org,borntraeger@linux.ibm.com,bpf@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 11 Nov 2025 07:53:16 +0000 (UTC)
 
-At this point there are very few call chains that might lead to
-d_make_discardable() on a dentry that hadn't been made persistent:
-calls of simple_unlink() and simple_rmdir() in configfs and
-apparmorfs.
+--===============1014260008914052501==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Both filesystems do pin (part of) their contents in dcache, but
-they are currently playing very unusual games with that.  Converting
-them to more usual patterns might be possible, but it's definitely
-going to be a long series of changes in both cases.
+> diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+> index 47cfbe41f..43dcd39b7 100644
+> --- a/drivers/usb/gadget/function/f_fs.c
+> +++ b/drivers/usb/gadget/function/f_fs.c
 
-For now the easiest solution is to have both stop using simple_unlink()
-and simple_rmdir() - that allows to make d_make_discardable() warn
-when given a non-persistent dentry.
+[ ... ]
 
-Rather than giving them full-blown private copies (with calls of
-d_make_discardable() replaced with dput()), let's pull the parts of
-simple_unlink() and simple_rmdir() that deal with timestamps and link
-counts into separate helpers (__simple_unlink() and __simple_rmdir()
-resp.) and have those used by configfs and apparmorfs.
+> @@ -2323,6 +2316,7 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+>  {
+>  	struct ffs_epfile *epfile, *epfiles;
+>  	unsigned i, count;
+> +	int err;
+>
+>  	count = ffs->eps_count;
+>  	epfiles = kcalloc(count, sizeof(*epfiles), GFP_KERNEL);
+> @@ -2339,12 +2333,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+>  			sprintf(epfile->name, "ep%02x", ffs->eps_addrmap[i]);
+>  		else
+>  			sprintf(epfile->name, "ep%u", i);
+> -		epfile->dentry = ffs_sb_create_file(ffs->sb, epfile->name,
+> -						 epfile,
+> -						 &ffs_epfile_operations);
+> -		if (!epfile->dentry) {
+> +		err = ffs_sb_create_file(ffs->sb, epfile->name,
+> +					 epfile, &ffs_epfile_operations);
+> +		if (err) {
+>  			ffs_epfiles_destroy(epfiles, i - 1);
+> -			return -ENOMEM;
+> +			return err;
+>  		}
+>  	}
+>
+> @@ -2355,13 +2348,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+>  static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+>  {
+>  	struct ffs_epfile *epfile = epfiles;
+> +	struct dentry *root = epfile->ffs->sb->s_root;
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Can this dereference uninitialized memory in ffs_epfiles_destroy()?
+
+When ffs_epfiles_create() calls ffs_epfiles_destroy(epfiles, i - 1) after
+the first ffs_sb_create_file() call fails (when i=1), it passes count=0.
+The initialization loop starts at i=1, so epfiles[0].ffs is never
+initialized. The kcalloc() zeros the memory, making epfiles[0].ffs NULL.
+
+The new code unconditionally dereferences epfile->ffs->sb->s_root before
+the loop, causing a NULL pointer dereference when count=0. The old code
+was safe because the dereference only happened inside the loop.
+
+>
+>  	for (; count; --count, ++epfile) {
+>  		BUG_ON(mutex_is_locked(&epfile->mutex));
+> -		if (epfile->dentry) {
+> -			simple_recursive_removal(epfile->dentry, NULL);
+> -			epfile->dentry = NULL;
+> -		}
+> +		simple_remove_by_name(root, epfile->name, NULL);
+>  	}
+>
+>  	kfree(epfiles);
+
+
 ---
- fs/configfs/dir.c              | 10 ++++++++--
- fs/configfs/inode.c            |  3 ++-
- fs/dcache.c                    |  9 +--------
- fs/libfs.c                     | 21 +++++++++++++++++----
- include/linux/fs.h             |  2 ++
- security/apparmor/apparmorfs.c | 13 +++++++++----
- 6 files changed, 39 insertions(+), 19 deletions(-)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
-index 81f4f06bc87e..e8f2f44012e9 100644
---- a/fs/configfs/dir.c
-+++ b/fs/configfs/dir.c
-@@ -400,8 +400,14 @@ static void remove_dir(struct dentry * d)
- 
- 	configfs_remove_dirent(d);
- 
--	if (d_really_is_positive(d))
--		simple_rmdir(d_inode(parent),d);
-+	if (d_really_is_positive(d)) {
-+		if (likely(simple_empty(d))) {
-+			__simple_rmdir(d_inode(parent),d);
-+			dput(d);
-+		} else {
-+			pr_warn("remove_dir (%pd): attributes remain", d);
-+		}
-+	}
- 
- 	pr_debug(" o %pd removing done (%d)\n", d, d_count(d));
- 
-diff --git a/fs/configfs/inode.c b/fs/configfs/inode.c
-index 1d2e3a5738d1..bcda3372e141 100644
---- a/fs/configfs/inode.c
-+++ b/fs/configfs/inode.c
-@@ -211,7 +211,8 @@ void configfs_drop_dentry(struct configfs_dirent * sd, struct dentry * parent)
- 			dget_dlock(dentry);
- 			__d_drop(dentry);
- 			spin_unlock(&dentry->d_lock);
--			simple_unlink(d_inode(parent), dentry);
-+			__simple_unlink(d_inode(parent), dentry);
-+			dput(dentry);
- 		} else
- 			spin_unlock(&dentry->d_lock);
- 	}
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 5ee2e78a91b3..824d620bb563 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -931,14 +931,7 @@ EXPORT_SYMBOL(dput);
- void d_make_discardable(struct dentry *dentry)
- {
- 	spin_lock(&dentry->d_lock);
--	/*
--	 * By the end of the series we'll add
--	 * WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT);
--	 * here, but while object removal is done by a few common helpers,
--	 * object creation tends to be open-coded (if nothing else, new inode
--	 * needs to be set up), so adding a warning from the very beginning
--	 * would make for much messier patch series.
--	 */
-+	WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT));
- 	dentry->d_flags &= ~DCACHE_PERSISTENT;
- 	dentry->d_lockref.count--;
- 	rcu_read_lock();
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 80f288a771e3..0aa630e7eb00 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -790,13 +790,27 @@ int simple_empty(struct dentry *dentry)
- }
- EXPORT_SYMBOL(simple_empty);
- 
--int simple_unlink(struct inode *dir, struct dentry *dentry)
-+void __simple_unlink(struct inode *dir, struct dentry *dentry)
- {
- 	struct inode *inode = d_inode(dentry);
- 
- 	inode_set_mtime_to_ts(dir,
- 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
- 	drop_nlink(inode);
-+}
-+EXPORT_SYMBOL(__simple_unlink);
-+
-+void __simple_rmdir(struct inode *dir, struct dentry *dentry)
-+{
-+	drop_nlink(d_inode(dentry));
-+	__simple_unlink(dir, dentry);
-+	drop_nlink(dir);
-+}
-+EXPORT_SYMBOL(__simple_rmdir);
-+
-+int simple_unlink(struct inode *dir, struct dentry *dentry)
-+{
-+	__simple_unlink(dir, dentry);
- 	d_make_discardable(dentry);
- 	return 0;
- }
-@@ -807,9 +821,8 @@ int simple_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (!simple_empty(dentry))
- 		return -ENOTEMPTY;
- 
--	drop_nlink(d_inode(dentry));
--	simple_unlink(dir, dentry);
--	drop_nlink(dir);
-+	__simple_rmdir(dir, dentry);
-+	d_make_discardable(dentry);
- 	return 0;
- }
- EXPORT_SYMBOL(simple_rmdir);
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 95933ceaae51..ef842adbd418 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3621,6 +3621,8 @@ extern int simple_open(struct inode *inode, struct file *file);
- extern int simple_link(struct dentry *, struct inode *, struct dentry *);
- extern int simple_unlink(struct inode *, struct dentry *);
- extern int simple_rmdir(struct inode *, struct dentry *);
-+extern void __simple_unlink(struct inode *, struct dentry *);
-+extern void __simple_rmdir(struct inode *, struct dentry *);
- void simple_rename_timestamp(struct inode *old_dir, struct dentry *old_dentry,
- 			     struct inode *new_dir, struct dentry *new_dentry);
- extern int simple_rename_exchange(struct inode *old_dir, struct dentry *old_dentry,
-diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
-index 391a586d0557..9b9090d38ea2 100644
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -358,10 +358,15 @@ static void aafs_remove(struct dentry *dentry)
- 	dir = d_inode(dentry->d_parent);
- 	inode_lock(dir);
- 	if (simple_positive(dentry)) {
--		if (d_is_dir(dentry))
--			simple_rmdir(dir, dentry);
--		else
--			simple_unlink(dir, dentry);
-+		if (d_is_dir(dentry)) {
-+			if (!WARN_ON(!simple_empty(dentry))) {
-+				__simple_rmdir(dir, dentry);
-+				dput(dentry);
-+			}
-+		} else {
-+			__simple_unlink(dir, dentry);
-+			dput(dentry);
-+		}
- 		d_delete(dentry);
- 		dput(dentry);
- 	}
--- 
-2.47.3
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/19257803162
 
+--===============1014260008914052501==--
 
