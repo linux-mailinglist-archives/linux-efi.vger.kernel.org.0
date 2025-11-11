@@ -1,49 +1,49 @@
-Return-Path: <linux-efi+bounces-5457-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5455-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6609C4BE49
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 08:03:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7B1C4BF7B
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 08:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8CFFE34EF39
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 07:03:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9950D189CD04
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 07:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1891B3587A4;
-	Tue, 11 Nov 2025 06:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72B135772A;
+	Tue, 11 Nov 2025 06:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="cSIskRnD"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="mNRfCj7o"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB1E3502A5;
-	Tue, 11 Nov 2025 06:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EAC3469E7;
+	Tue, 11 Nov 2025 06:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762844138; cv=none; b=XhB57PlP5/+vSplpACs7gIeHBet9/lKe0jk/c4gp8qEp35eUoOy3jODjamPznQH/PS/3Pgbm23djKjnX+WF2DwpwZbB4U3H6SiXE/V+4O/LetyCbAjIQYTqZu79yquqFDVJa1qgVsU6RtYFN+Kn1zXim1Yv2m1LpXeZa/2kqkE4=
+	t=1762844138; cv=none; b=L8X/ukg1pSFcpdEfMSLS64/R81yuwUZmUhvdxVDJBnPkrHMoD7BYfYIeOheQSgym3xtl5bMJ/tSTXY+iUAVBVAz6OhuupZEcmF381SUYDVSPxkXsedvOX6a/Vd9HH8TppS0vCo+YWaOmehEkZ+y7vI9qfjT6DgijSU1ea7gHT+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762844138; c=relaxed/simple;
-	bh=TAB6xfNcoq1MQ7hgBWl+/zjNA0lDZRNHIjvmsH/HXxw=;
+	bh=aQ8wiaM2Vz5X//su5rT71uA1xpaSvUMrx9j5Y7IQzKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnugaZOZqr3i/zWmNC6saLS7q6roG4zd7Mj4QhP+RZx8FRQm+gIFOL+zqUgjZZIBRN7Ea5EQYBh3Tfu5C3m0RwTRPcWhvWnSqDf1sy129AiyWVytv8W3PhzDxA5XK5FQxDRgZ+qcHm3YFrLf3tFskX0eETugpIAdMjKxYXTiec0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=cSIskRnD; arc=none smtp.client-ip=62.89.141.173
+	 MIME-Version; b=mxNNm3ojhQi2xvTC5j0AWRIW0IlXWlJ/P15USoESzPf8oW+lUPBkdwk6/xmsO1UnQ/1rDugeQV5wZIDQ/O38GH/PmNxGqe0fsVDutUb3LXkoggcH+qovfdT0IIuJXicBDJyYMVFGGDV3Lvfqb0n/Jyyu1o43edQG6R/xPhDBi1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=mNRfCj7o; arc=none smtp.client-ip=62.89.141.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=Wj6NtuoUx6rorSoJrKwRjGX8DQ+3LbRm6UPbWp7kXpM=; b=cSIskRnDj9I5POptPLG9Ky8eus
-	Mixrz4PXfoJA4mym6fAA8eR5i4IsHvS6qbvqrYnPJ1csPDlbSa+sMnkpnRzDC9gkmSh2NtFm49jlY
-	sAWx40Zc6JkQwYb78IPIqw5K+H2ZOuAVYNP/CBuIKLRe4rRPfwgivkoDxJv5tInuD5dyjZMTCcEiY
-	6h3dUXU/D6eNt/05Byng0INiGwdAwDIWBeY4jN6PINY8gCEb7uhek+3CZW75NUSf7oYyPw3jMQiRT
-	DoeMVklc6zcDvbYBF3D9uLL8mWt4ryodjJdkLhKdOM2Qe6ieQE0QVMEijYRqlb62e1wiEfp+aPR0E
-	y1jDlcfA==;
+	bh=tZCVSqTQSDDLvQs1X2myYSkLJtZwbiT5pTgxLsDWfWg=; b=mNRfCj7o5DsyadrTOAd3PG913l
+	201C7wMUBSUYG7x8M00Si6M8oYv4ANGn1iKzb+lHWLy0+Lu4uY+ZdiuYrVf4nVdtMwESJEGFGxvEg
+	ddUMj5in/pZybEUgy3WPRJq0oTRhm9nRH3ENr4LQkkaqHtn9JwhQXL2KtntemE79n/9mCYw1tWTfE
+	C8HbTwqu+441Wz5LpaAxDcPcfWvtEtiBRfb3GrswMaYwTuDQc6y012OzP+0oXcxgh/zISf/Q5eAfs
+	kusJonnF9/xByqdJJmx8Pfmts8z1PoUVa7JLLKkc2gdgBbXjFenJ40u0NiNLfONirl3XP70dRc+l/
+	EWpH+UYw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHt-0000000BxQU-3Vvn;
-	Tue, 11 Nov 2025 06:55:33 +0000
+	id 1vIiHi-0000000BwxE-1dWe;
+	Tue, 11 Nov 2025 06:55:22 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -67,9 +67,9 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 49/50] kill securityfs_recursive_remove()
-Date: Tue, 11 Nov 2025 06:55:18 +0000
-Message-ID: <20251111065520.2847791-50-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 07/50] convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
+Date: Tue, 11 Nov 2025 06:54:36 +0000
+Message-ID: <20251111065520.2847791-8-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
@@ -82,27 +82,59 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Al Viro <viro@ftp.linux.org.uk>
 
-it's an unused alias for securityfs_remove()
+Note that simple_unlink() et.al. are used by many filesystems; for now
+they can not assume that persistency mark will have been set back
+when the object got created.  Once all conversions are done we'll
+have them complain if called for something that had not been marked
+persistent.
 
-Acked-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- include/linux/security.h | 2 --
- 1 file changed, 2 deletions(-)
+ fs/libfs.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 92ac3f27b973..9e710cfee744 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -2258,8 +2258,6 @@ static inline void securityfs_remove(struct dentry *dentry)
- 
- #endif
- 
--#define securityfs_recursive_remove securityfs_remove
--
- #ifdef CONFIG_BPF_SYSCALL
- union bpf_attr;
- struct bpf_map;
+diff --git a/fs/libfs.c b/fs/libfs.c
+index a033f35493d0..80f288a771e3 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -630,7 +630,7 @@ static void __simple_recursive_removal(struct dentry *dentry,
+ 				if (callback)
+ 					callback(victim);
+ 				fsnotify_delete(inode, d_inode(victim), victim);
+-				dput(victim);		// unpin it
++				d_make_discardable(victim);
+ 			}
+ 			if (victim == dentry) {
+ 				inode_set_mtime_to_ts(inode,
+@@ -764,8 +764,7 @@ int simple_link(struct dentry *old_dentry, struct inode *dir, struct dentry *den
+ 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
+ 	inc_nlink(inode);
+ 	ihold(inode);
+-	dget(dentry);
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(simple_link);
+@@ -798,7 +797,7 @@ int simple_unlink(struct inode *dir, struct dentry *dentry)
+ 	inode_set_mtime_to_ts(dir,
+ 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
+ 	drop_nlink(inode);
+-	dput(dentry);
++	d_make_discardable(dentry);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(simple_unlink);
+@@ -1078,7 +1077,8 @@ int simple_fill_super(struct super_block *s, unsigned long magic,
+ 		simple_inode_init_ts(inode);
+ 		inode->i_fop = files->ops;
+ 		inode->i_ino = i;
+-		d_add(dentry, inode);
++		d_make_persistent(dentry, inode);
++		dput(dentry);
+ 	}
+ 	return 0;
+ }
 -- 
 2.47.3
 
