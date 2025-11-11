@@ -1,48 +1,48 @@
-Return-Path: <linux-efi+bounces-5411-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5426-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF73C4BC1A
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 07:56:04 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF660C4BC47
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 07:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 256D61887AFB
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 06:56:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7331C34E822
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 06:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9345F34AB06;
-	Tue, 11 Nov 2025 06:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C667034D4C1;
+	Tue, 11 Nov 2025 06:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="KJyJxRMc"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="TqkcMEiv"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D973446C9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C549F346FA7;
 	Tue, 11 Nov 2025 06:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762844131; cv=none; b=Z1TPl/2ujCOajYlAWDDC1z4fgNo6iqkaJKt6+vcUgUO0QzIYKy3L14agOEnyEi3QctL1zPxw/Ps6IwNJAfZAk4fXNBHe3pSnmWgHFTJu/5gi2wXYyRf2i024tsqFk1AGQ5OSElQGfVrUHX7ZPrbEMOmEIGzmYqAc4U7wYG2yqbQ=
+	t=1762844133; cv=none; b=Fzb3F6+lDfj/20G8OlLce4PXI1TwNXuMu0wpXkonXN/bYmZCqjibKBMITzmuYMC0YEb8gkaZs6xtKa/frsmpBbQjrU11DQZOaqBqAbge5JPzl2E3FQcqmii/Ym9W77jW/r5mKYAPVqVcHii1gjgRGn4pBOb8cinctrTCbYHKyKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762844131; c=relaxed/simple;
-	bh=aQb2qy2J1pCZ1132PoicrKjRnzTEBFPwnGLeE5EsJfc=;
+	s=arc-20240116; t=1762844133; c=relaxed/simple;
+	bh=Zkw5PIqzgZo1iaAu+8HqtP/RCpmxhagt1hjrnfFaxjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzoh4o4RBqx172UmT6ni+8YMZxFSdPRMgP+vBcoFzO5+WzLfsW97OB7Y5HoHa0vAnLjrIkcTdpvATSLlrG8qEAIdvebhMqhuTARxV17IR2b1tR4OxgneGw5VXKUcZ0LDoqHfCu9ukiW07Kz2kXGdA5xYV80mRtvhsClC/lrEAco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=KJyJxRMc; arc=none smtp.client-ip=62.89.141.173
+	 MIME-Version; b=r9Mh6ugjDirhPJR5jWqeLxuGinals6vb0i7hYiLl6syz8Ds9l4nxB4hyfKYkj7cJVtJCvvG3Zf1/GvATqgOF3NB/6l4QQXGq8ulnFKhibSN/VmXEQD6fEuSerCMi4lM9+zSD64HOvNurmA91rPifKLK8ypQ3eFWaQvVchopaoDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=TqkcMEiv; arc=none smtp.client-ip=62.89.141.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=; b=KJyJxRMc0dvbQcOITZBVA+WBk6
-	ifKPkydBj5RdVYpkYeX6lt/kJ7ld5xb0t53muvLxLstYnB5Kj+ibW1kF1JoNVPQmbi/Msmgp6IIua
-	rxkVOKwaX09nya1yIHsO/LXlke4OexR2bBkWG9LhOwtpTOY2ugBYceF0WF/wnns6qgtdqeY6EhATx
-	NaphnnRAzZNypERmbf3t7xl0oXOouhXWk5Ks9Gq+2D+L1HLZ20izPqJ7SWklcqVqWcK8WfltyTXu1
-	JWzC4NyfbA4dtQ5vb8jg0/lTWmXs+f02YOh/csRHhSEvARsXS9htgina50+ZEPcUaq8myz/AFR1Nu
-	i5DDMhaA==;
+	bh=NeGicC5Z67ZOycdylyHVP58sPv/wzz9kpKbtM8vrBao=; b=TqkcMEivZIXJYaF6ZOIHxmt9Vk
+	ohKhWrAsLkuIVUzpRtv9GAOLw4PKTjGu0cDrLfq1aZdI1jpzLIeVbQJUtimjnqiyE4l28biMeXbU0
+	SIQ9Rb3j150+dScnH4j4C3q+qtBcOCjEBfpcd3R4Jx8kW1fQP3eCjEpoPGCq/C7xzApDvTnyKJR98
+	PXZAThOhk5zfcqKAsI5C3RZlC5f1Axfu8UDfOLsCHtAoj7mqx27DDYDiOSKPtcPe+a8s9ij06CBms
+	M0WHQ4bUWJL0ApP+7L+eWUGoTAFk9bqmcTwUs5BYke3+24aoCR67UP1bIbQcrW5ESQ9Z9sGcWideo
+	fsqkHMSQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHj-0000000BwyK-2Gux;
+	id 1vIiHj-0000000BwyO-2vqR;
 	Tue, 11 Nov 2025 06:55:23 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -67,9 +67,9 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 14/50] convert mqueue
-Date: Tue, 11 Nov 2025 06:54:43 +0000
-Message-ID: <20251111065520.2847791-15-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 15/50] convert bpf
+Date: Tue, 11 Nov 2025 06:54:44 +0000
+Message-ID: <20251111065520.2847791-16-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
@@ -82,55 +82,65 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Al Viro <viro@ftp.linux.org.uk>
 
-All modifications via normal VFS codepaths; just take care of making
-persistent in in mqueue_create_attr() and discardable in mqueue_unlink()
-and it doesn't need kill_litter_super() at all.
+object creation goes through the normal VFS paths or approximation
+thereof (user_path_create()/done_path_create() in case of bpf_obj_do_pin(),
+open-coded simple_{start,done}_creating() in bpf_iter_link_pin_kernel()
+at mount time), removals go entirely through the normal VFS paths (and
+->unlink() is simple_unlink() there).
 
-mqueue_unlink() side is best handled by having it call simple_unlink()
-rather than duplicating its guts...
+Enough to have bpf_dentry_finalize() use d_make_persistent() instead
+of dget() and we are done.
+
+Convert bpf_iter_link_pin_kernel() to simple_{start,done}_creating(),
+while we are at it.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- ipc/mqueue.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ kernel/bpf/inode.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index 093551fe66a7..5737130137bf 100644
---- a/ipc/mqueue.c
-+++ b/ipc/mqueue.c
-@@ -599,8 +599,7 @@ static int mqueue_create_attr(struct dentry *dentry, umode_t mode, void *arg)
- 	dir->i_size += DIRENT_SIZE;
- 	simple_inode_init_ts(dir);
- 
+diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
+index 81780bcf8d25..9f866a010dad 100644
+--- a/kernel/bpf/inode.c
++++ b/kernel/bpf/inode.c
+@@ -144,8 +144,7 @@ static int bpf_inode_type(const struct inode *inode, enum bpf_type *type)
+ static void bpf_dentry_finalize(struct dentry *dentry, struct inode *inode,
+ 				struct inode *dir)
+ {
 -	d_instantiate(dentry, inode);
 -	dget(dentry);
 +	d_make_persistent(dentry, inode);
- 	return 0;
- out_unlock:
- 	spin_unlock(&mq_lock);
-@@ -617,13 +616,8 @@ static int mqueue_create(struct mnt_idmap *idmap, struct inode *dir,
  
- static int mqueue_unlink(struct inode *dir, struct dentry *dentry)
- {
--	struct inode *inode = d_inode(dentry);
--
--	simple_inode_init_ts(dir);
- 	dir->i_size -= DIRENT_SIZE;
--	drop_nlink(inode);
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+ }
+@@ -420,16 +419,12 @@ static int bpf_iter_link_pin_kernel(struct dentry *parent,
+ 	struct dentry *dentry;
+ 	int ret;
+ 
+-	inode_lock(parent->d_inode);
+-	dentry = lookup_noperm(&QSTR(name), parent);
+-	if (IS_ERR(dentry)) {
+-		inode_unlock(parent->d_inode);
++	dentry = simple_start_creating(parent, name);
++	if (IS_ERR(dentry))
+ 		return PTR_ERR(dentry);
+-	}
+ 	ret = bpf_mkobj_ops(dentry, mode, link, &bpf_link_iops,
+ 			    &bpf_iter_fops);
 -	dput(dentry);
--	return 0;
-+	return simple_unlink(dir, dentry);
+-	inode_unlock(parent->d_inode);
++	simple_done_creating(dentry);
+ 	return ret;
  }
  
- /*
-@@ -1638,7 +1632,7 @@ static const struct fs_context_operations mqueue_fs_context_ops = {
- static struct file_system_type mqueue_fs_type = {
- 	.name			= "mqueue",
- 	.init_fs_context	= mqueue_init_fs_context,
--	.kill_sb		= kill_litter_super,
-+	.kill_sb		= kill_anon_super,
- 	.fs_flags		= FS_USERNS_MOUNT,
- };
+@@ -1080,7 +1075,7 @@ static void bpf_kill_super(struct super_block *sb)
+ {
+ 	struct bpf_mount_opts *opts = sb->s_fs_info;
+ 
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ 	kfree(opts);
+ }
  
 -- 
 2.47.3
