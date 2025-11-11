@@ -1,144 +1,149 @@
-Return-Path: <linux-efi+bounces-5460-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5461-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DE2C4C329
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 08:56:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21701C4C75C
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 09:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A70F4F27CB
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 07:53:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8AB61885C11
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Nov 2025 08:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAB22D8798;
-	Tue, 11 Nov 2025 07:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B68528CF49;
+	Tue, 11 Nov 2025 08:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o8p0McGb"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tqL0h8i4"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068A134D39F;
-	Tue, 11 Nov 2025 07:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42EF1F4CB3
+	for <linux-efi@vger.kernel.org>; Tue, 11 Nov 2025 08:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762847599; cv=none; b=UVfWh+hID1oMXG6ITJpTzxW4bu7HBwe+90T+LQzQYm9Ht8XJwVzMsQvHCclUu2ot7kv1hAGgZQRfSydFEeTZvHdDMq7PL7Ra0BGDpyvb+zqP/5B3/ildMjEk35JbAsNgP9Y3GN0NEDzG/tgWiD5VCfT6dKPjSxfSglgDp0NUK48=
+	t=1762851049; cv=none; b=hnnKFqr32R+Pwq+O1057dHiHX9pQEnKhp1GF4TRRiaca1yp3IJuWodwAVhqPgLRIEJeOeEnnN/ya1aDH3ldKcr0X6ymdFwWPVt3xqMT9eHZaADtAiRK+LMOMS2OQisHuUr7aB+VnEf+xE7y0uu+dZ9wT16GEXW8xpbbkTx6/dUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762847599; c=relaxed/simple;
-	bh=7qxex0fb9sux6H6YiFyflQQ1fF27LToi81rAOC7nyJw=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=lTpg3aMoVowBQmm3doycj0FMjvpH+imPj/F5/lm/8Qj/ZevTLScD7gB6kRXtEytNxXGGJjyKHQh0nqN5qKixXvF0QwAIgA2DFoDGJjUtHFwafH6gxNV0TT8zsKzNAVea5HC8icCstY+ZzKpMmIa0YUnRbu78p0IM25/7OAlkPRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o8p0McGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73270C116B1;
-	Tue, 11 Nov 2025 07:53:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762847598;
-	bh=7qxex0fb9sux6H6YiFyflQQ1fF27LToi81rAOC7nyJw=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=o8p0McGbUBg/mt4W0NwniQY9deSF651afKOoP439t4jTJeKv5LTx9vea9SGEQP8si
-	 Q+5a+sIU7/rr5zqsP+ur8SebApGAvWVYTCiHpEoBxnRS/ATLz92ZlOpzA+IPHvqxX7
-	 dy4GVB4pVeP8wFW2h7PYHaYeO0gbrMbOZYKJPHlrur9uUuvNsp9xny9Zx+MXTS3GYV
-	 cqyVrLtwlM6rSDu0Fgu90qu055/duQnw869B0CGPbEtwgor0ofWM7MG2wjg4jSiR0W
-	 0z4Ylk8vrW16xqRUmM/x1Dj8l4LfK4kIc0/1RsgkaikoHSoF9wMUFwvk/QGdaVgMjc
-	 CIoMYVMhdAYTw==
-Content-Type: multipart/mixed; boundary="===============1170773288298516893=="
+	s=arc-20240116; t=1762851049; c=relaxed/simple;
+	bh=8oJn+F4gp9gQnMSYljsNjq92hs5GdiNacc4G8cz3Ttc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gmBkb6gKlkNX7iBcfhD9LYCGTUIm/XKGqSusSdos18pGtuG79XCaq/daf2sEYqSGShVcuXJVsZD+JarNBloRzsyuz3LrH5DLZ0AhBEkEK9u1OA9fAcwYTNuXqSNrDyRy4+FoYuDLiAm0yky2+BeK1/NTvueZVqe1kFVmCS9/NtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tqL0h8i4; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-786a822e73aso42815237b3.3
+        for <linux-efi@vger.kernel.org>; Tue, 11 Nov 2025 00:50:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762851046; x=1763455846; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y46zxO1C4o8WUqtj07jqBENmFGWJWEsozuquXurmpj0=;
+        b=tqL0h8i47+3vNbr4bq5tJ31fevP/CsLBYDF8QPX//Iim+eY3KEoU8YJTl9vTjt3K2Y
+         9yOa9dsob875C3OYFS5OtTtYC0tYuH+nubgloz4kdPpi/DyF6DGjR1hf9e06gz59Imfb
+         mu9iYtvmxZw/iQJMHk7VPRwAByZgu9QaAvnVsUKVOjhRBBqJX9Xr8i5vSQ4ijibHYAIj
+         +6CxyOC0e8OoZOLh487Nxno6ftvK9WIsQZzTwwgtP6kyPU5/kYAVm9UBM72YTbqq3hkZ
+         wXNIqZtM5hxoiSzR6tbzbhcQyPkpfAEBgq2/aRXCghHjnMCnCDFCoBYFomxtGh+P+gWl
+         kRSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762851046; x=1763455846;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y46zxO1C4o8WUqtj07jqBENmFGWJWEsozuquXurmpj0=;
+        b=d59Vx0AVYTp41EtBgAwbN40o1zwCX+4Lgj1tPUENRnTiBTYe7fyi6ycPWJiVZUw00E
+         8c6B8n2+rR2tStif1H7bECuh2csiLzY/4+9niacW6BEKD8J++CRAeRqlMz3QyXrfiP7I
+         Q11vM4ra3nLRhMevS3i6vJLl8BlL9k4dIXv3t79tGUMot3sKd6hZaCWioXwLHc7yMzq7
+         0SEFPXQu7dltdNK+0oq+89gHlyB864HsM6n4ljqJuaFbTyNTZ3aIfPxjH4fgHa1kfsrT
+         DRRKa0q9joFsYrdF9xoicJ46EZ3ZoLM+9iIwRJ7e5hX6UD3IgIGEbzOSCNa9Lz9Z283+
+         b6Rg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4OFPYWHD+g7uaMLuf0mJA6mq1xEmIPY4BoDXLI+c/oryg+T8LRYH35dILT6O0uGAEMIyyHj9dKHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAt6vRK4rPoQukaHwUULQrIXCNiqu4ysEkG2I5C71NkQrpKfHr
+	kqLHVUX/YuW9BTkvjUB05HtyvfZtsnkDyuE+1rn4v3VsdldChLcuJxOmXkf8eSnuFYzv3LLhQ4e
+	26veuG6EwfdxtdDWVzKVXVGNBgTkx5g9KQtDwdoAHYg==
+X-Gm-Gg: ASbGnctf20G9Gz3vXGYSyEe2eZNTuTQ49fy0wC4BSnpJyhhEBLzOfCVgO4q9W9WjB7U
+	ZlCOl4OJgRdB9/KCHvKBEXfiEAmwQA35HK+ynMrc51LK3wJTc+YFswifuQbQsQ0Gaoccq79J5ah
+	jZ96S30UXehF5gcV+joSisop6Fl60kxm6HCJ0VA/H4LA3PDDh7JgWH4CAGqMpwIBxRj4BbBz3P0
+	ndHF3MxaBGRuV/x84JPuPIzLEzcnNK8HjJT/nSPOF7Ca59mw+Bwg++jy/H4x5Z6PhwoXwuB0+Zn
+	cRQOlzhy356nn+KgPoTYtn4NOqzZCpvXv2mUmfPj
+X-Google-Smtp-Source: AGHT+IFW04NMmm/DmGXKuNoocNXOW1P5E9RSrXkBfL6e/iKOHrJptvsyGLLUH1wJ5OdOEoN0Uvp2X+BW0+RpDBRk76Y=
+X-Received: by 2002:a05:690c:688b:b0:788:c74:d038 with SMTP id
+ 00721157ae682-7880c74da71mr3427737b3.39.1762851045790; Tue, 11 Nov 2025
+ 00:50:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
-In-Reply-To: <20251111065520.2847791-35-viro@zeniv.linux.org.uk>
-References: <20251111065520.2847791-35-viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v3 34/50] selinuxfs: new helper for attaching files to tree
-From: bot+bpf-ci@kernel.org
-To: viro@zeniv.linux.org.uk,linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,brauner@kernel.org,jack@suse.cz,raven@themaw.net,miklos@szeredi.hu,neil@brown.name,a.hindborg@kernel.org,linux-mm@kvack.org,linux-efi@vger.kernel.org,ocfs2-devel@lists.linux.dev,kees@kernel.org,rostedt@goodmis.org,gregkh@linuxfoundation.org,linux-usb@vger.kernel.org,paul@paul-moore.com,casey@schaufler-ca.com,linuxppc-dev@lists.ozlabs.org,john.johansen@canonical.com,selinux@vger.kernel.org,borntraeger@linux.ibm.com,bpf@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 11 Nov 2025 07:53:18 +0000 (UTC)
+References: <20251111060212.1963608-1-rdunlap@infradead.org>
+In-Reply-To: <20251111060212.1963608-1-rdunlap@infradead.org>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Tue, 11 Nov 2025 10:50:09 +0200
+X-Gm-Features: AWmQ_bl9LggH2BnIOi8b_6HMwtRDi2PxmqidNChtL-tYmJN-Isc3DYSw2FH9LTs
+Message-ID: <CAC_iWjKYBgjG=C7NgAFwn6uBSMS0t_WepazvcTQb-gPewL9ckw@mail.gmail.com>
+Subject: Re: [PATCH] efi: stmm: fix kernel-doc "bad line" warnings
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
 
---===============1170773288298516893==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Randy
 
-> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-> index b39e919c2..f088776db 100644
-> --- a/security/selinux/selinuxfs.c
-> +++ b/security/selinux/selinuxfs.c
-
-[ ... ]
-
-> @@ -1197,6 +1197,25 @@ static struct inode *sel_make_inode(struct super_block *sb, umode_t mode)
->  	return ret;
->  }
+On Tue, 11 Nov 2025 at 08:02, Randy Dunlap <rdunlap@infradead.org> wrote:
 >
-> +static struct dentry *sel_attach(struct dentry *parent, const char *name,
-> +				 struct inode *inode)
-> +{
-> +	struct dentry *dentry = d_alloc_name(parent, name);
-> +	if (unlikely(!dentry)) {
-> +		iput(inode);
-> +		return ERR_PTR(-ENOMEM);
-> +	}
-> +	d_add(dentry, inode);
-> +	return dentry;
-> +}
-> +
-> +static int sel_attach_file(struct dentry *parent, const char *name,
-> +			   struct inode *inode)
-> +{
-> +	struct dentry *dentry = sel_attach(parent, name, inode);
-> +	return PTR_ERR_OR_ZERO(dentry);
-> +}
-
-[ ... ]
-
-> @@ -1887,31 +1887,23 @@ static struct dentry *sel_make_dir(struct dentry *dir, const char *name,
->  			unsigned long *ino)
->  {
-> -	struct dentry *dentry = d_alloc_name(dir, name);
->  	struct inode *inode;
+> Add a beginning " *" to each line to avoid kernel-doc warnings:
 >
-> -	if (!dentry)
-> -		return ERR_PTR(-ENOMEM);
+> Warning: drivers/firmware/efi/stmm/mm_communication.h:34 bad line:
+> Warning: drivers/firmware/efi/stmm/mm_communication.h:113 bad line:
+> Warning: drivers/firmware/efi/stmm/mm_communication.h:130 bad line:
+>
+> Fixes: c44b6be62e8d ("efi: Add tee-based EFI variable driver")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+
+Is the fixes tag necessary here?
+Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+
+Thanks
+/Ilias
+> ---
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: linux-efi@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+> ---
+>  drivers/firmware/efi/stmm/mm_communication.h |    6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> --- linux-next-20251107.orig/drivers/firmware/efi/stmm/mm_communication.h
+> +++ linux-next-20251107/drivers/firmware/efi/stmm/mm_communication.h
+> @@ -32,7 +32,7 @@
+>
+>  /**
+>   * struct efi_mm_communicate_header - Header used for SMM variable communication
 > -
->  	inode = sel_make_inode(dir->d_sb, S_IFDIR | S_IRUGO | S_IXUGO);
-> -	if (!inode) {
-> -		dput(dentry);
-> +	if (!inode)
->  		return ERR_PTR(-ENOMEM);
-> -	}
+> + *
+>   * @header_guid:  header use for disambiguation of content
+>   * @message_len:  length of the message. Does not include the size of the
+>   *                header
+> @@ -111,7 +111,7 @@ struct efi_mm_communicate_header {
 >
->  	inode->i_op = &simple_dir_inode_operations;
->  	inode->i_fop = &simple_dir_operations;
->  	inode->i_ino = ++(*ino);
->  	/* directory inodes start off with i_nlink == 2 (for "." entry) */
->  	inc_nlink(inode);
-> -	d_add(dentry, inode);
->  	/* bump link count on parent directory, too */
->  	inc_nlink(d_inode(dir));
-> +
-> +	return sel_attach(dir, name, inode);
->  }
-
-Can this leak the parent directory's reference count? The parent inode's
-link count is incremented with inc_nlink(d_inode(dir)) before calling
-sel_attach(). When sel_attach()->d_alloc_name() fails and returns NULL,
-sel_attach() correctly cleans up the child inode with iput() and returns
-ERR_PTR(-ENOMEM). However, the parent directory's link count has already
-been incremented and is never decremented on this error path.
-
-In the original code, the parent link count increment happened after
-d_add() succeeded, ensuring it only occurred when the full operation
-completed successfully.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/19257803162
-
---===============1170773288298516893==--
+>  /**
+>   * struct smm_variable_communicate_header - Used for SMM variable communication
+> -
+> + *
+>   * @function:     function to call in Smm.
+>   * @ret_status:   return status
+>   * @data:         payload
+> @@ -128,7 +128,7 @@ struct smm_variable_communicate_header {
+>  /**
+>   * struct smm_variable_access - Used to communicate with StMM by
+>   *                              SetVariable and GetVariable.
+> -
+> + *
+>   * @guid:         vendor GUID
+>   * @data_size:    size of EFI variable data
+>   * @name_size:    size of EFI name
+>
 
