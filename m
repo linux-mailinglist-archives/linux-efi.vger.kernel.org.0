@@ -1,303 +1,223 @@
-Return-Path: <linux-efi+bounces-5493-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5494-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB757C53D42
-	for <lists+linux-efi@lfdr.de>; Wed, 12 Nov 2025 19:02:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE81CC569AF
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Nov 2025 10:33:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BF883B51DB
-	for <lists+linux-efi@lfdr.de>; Wed, 12 Nov 2025 17:53:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9FBD84E3FD7
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Nov 2025 09:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE20923BCEE;
-	Wed, 12 Nov 2025 17:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017A729E0E5;
+	Thu, 13 Nov 2025 09:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DISM0op2"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="BZWkX6ff"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAE0346E5E
-	for <linux-efi@vger.kernel.org>; Wed, 12 Nov 2025 17:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4452927B359;
+	Thu, 13 Nov 2025 09:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762970013; cv=none; b=ahSbMiYwInhopVM96XULiguf4u7qS3MfNJScdfB15L/QhU/fxd8M0bHwl78j7Rf8y0hZcBa5T/OdG51z2mZ+b14/gmZc1N1H9YRddeNiNemrdQ0oDryxRcDPbypZmqYsB2VvCHr570SybPY4G+zrY4rlmylvkvTEPO2Ti0XlhP4=
+	t=1763026007; cv=none; b=hg0IyaLU6Ivk3mKmi24M/5KPVhwie24LkviNEm25In/84fax4Ah6/Pq0pMXSan72Q89YDEwTRYQXC2fBhvZEqdDZgvK1XmUPMXim1yO7Ld3wpRViNWypHKFagZkmASSV9u5+Hqfr09aRCi74YjQHnL/8MLDyeIFqwu0jPJWBcLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762970013; c=relaxed/simple;
-	bh=/IgQdi//BI5jazxMmoFRIeq0CQIAIEzpcbw1hfUDZ1g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tuCUF0BE8NZk2xd2FnQiG/IeFXJhg7Ld+ITnBS4fnhEPecaUI5LIhYtlr22QYomyMI7dCFAiYetJlfO01UGUbdSAspG3uqeIjr85xHhHuZaW5XJuARbJeW+kkQ4eAZA3R744h8cSj+WNLDSE+HG/5rA5sG2DB1xvShTRc2/ph2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DISM0op2; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4776b0ada3dso8556715e9.0
-        for <linux-efi@vger.kernel.org>; Wed, 12 Nov 2025 09:53:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762970010; x=1763574810; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1lzPVIM0jk6lCfmTlDsfm5un5OoFWyFqiOUlY/XxPP4=;
-        b=DISM0op25UH14dHkKNw1pCE9qmzRfUUgcCJ4MGjuzR3NTORuuovtfowiqHBjo1bL9/
-         W6foy9HYOqLEdSub0MAnyScT3Y2YlMQw6gw5yB9kZp3cv4YTvvwUPcndKn0LIQUBbGFv
-         tO/fYB4hJieokGUcoFnVG7zvaHxlCFKVBmq+dNsmkcmU2FRNxP0x+lwXPOG6cLu7ad7C
-         IlL74KXKPEn9NPCBa+uTjvfwdYWx/CTB759/YsQCscZhgrSy6CUAeQdbBVWmThB/t/vQ
-         hq3MS6a2B4kHmj5Bsmpw/XwIDvCFYjv9zkAe1Z1UZn8ybtdy4wZrOdVwdG9XAPxybMum
-         GcLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762970010; x=1763574810;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1lzPVIM0jk6lCfmTlDsfm5un5OoFWyFqiOUlY/XxPP4=;
-        b=KG+NYjOeDABrq+kKZsVxs1mt+EQQVaaUQBA+XitmuAJSAYeXKwqfdZEVhWLzk4Cqy2
-         JYa+BUSg5mfhDGYqpnvu9nj91wMZ4lwiiyslnAmJbZS7NFbLtQbTNTHhxb5j/+qa+EUh
-         AEIL9OUz32S8U91RnmcA5o/VIkGu1heH4zgHQoNKQfnKbTabQfSkdajBwlmSES2w79ZX
-         xWaGywiFUdtStuBQb0XgmBx6vPPHBK4WEaWZzD+bzkbZ5CskYgrtyk9z6N2mHKtjRVnN
-         zDX6p9Xa9kpQAx4k6Rg2yRwZV2LFX7cEmlJVX9PbgwXHQcK2wUdHgHItJfsEm2tf8J1d
-         9thg==
-X-Gm-Message-State: AOJu0Yz0Newe8htFq/p/VzS+Y+bOz1wN+Uobq0zeP7cA8t7iIveFlQ/Q
-	fQzP039Pxpcl9k6BQjlGyAlsKF8KsbQ8Ij1soUNSXmKLWh225nR0BU1WqLhDiWNQah/9kjcUzQ=
-	=
-X-Google-Smtp-Source: AGHT+IGIMXmYeRKXlEYO/PcQd+fxrWZjo1uSvFM0H1BRc6rGvHjPZtyXCBPm01G3tFei08dAZ/y0oJAk
-X-Received: from wmat24.prod.google.com ([2002:a05:600c:6d18:b0:471:6089:1622])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c87:b0:477:7f4a:44bd
- with SMTP id 5b1f17b1804b1-4778bc98ae5mr2813645e9.0.1762970010295; Wed, 12
- Nov 2025 09:53:30 -0800 (PST)
-Date: Wed, 12 Nov 2025 18:53:19 +0100
-In-Reply-To: <20251112175316.2841017-4-ardb+git@google.com>
+	s=arc-20240116; t=1763026007; c=relaxed/simple;
+	bh=V9v4rcZd8cRDteZ6yt185AXmX9IehUKxWoOSUbyVPQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gm+k30SNROr3uE8MC0T66+FTRdSZlmMzIXaSmbln1AYrQgIzpQloz3B+n0pKBl/ZYLSf3p54LcPe5UFYZjFRLVncW2KFpB3aTZ80ZcosBlA7oOax4iJPcho7xBfAMrpFB2ZZ6hYs01h+IlGx3eUaGc2yTxFHuMJrtIJacMZuLz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=BZWkX6ff; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=LDUxCZ9a1FBEg+ndXr53elrDsetDAHrRuckIwq+rkq0=; b=BZWkX6ff3GA3RTeDfa4driAPz2
+	WEG9gIlnyiYFdtMOWlbZu9v/maRJmMXsW7OV71VZxaFQzrkQ+QdzfOvUBvZ8qNmBTAaQ0c64+1a4e
+	e2Ntp0fd4Nz2PbSh3xvepolayFe8B+2k6YRJKodfIL7Czycd5Xq28Trj5RrH9AvJL7ifIGizzoNUd
+	S85OBW6rXLf1OGeorqTcGvgW3AVCokPuyfp1wjY7Y3yAbmhvYTcVBNIroydt68NMMAAiPyRPwfcyz
+	nXp2xc7r/dlTreE2iy/5WTgr8kPTqpleSNRGiMCmePXOZMGXGvpta32ZoNyWi03E8Avg9wVxF2qVG
+	6GSVcCPw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJTbA-0000000HMAd-16pF;
+	Thu, 13 Nov 2025 09:26:36 +0000
+Date: Thu, 13 Nov 2025 09:26:36 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, paul@paul-moore.com,
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com, selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org, ast@kernel.org,
+	andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org,
+	eddyz87@gmail.com, yonghong.song@linux.dev, ihor.solodrai@linux.dev,
+	Chris Mason <clm@meta.com>
+Subject: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+Message-ID: <20251113092636.GX2441659@ZenIV>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251112175316.2841017-4-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6331; i=ardb@kernel.org;
- h=from:subject; bh=7htj8rfQixeDPnEtJrTCJldExjmPThxir1A3bYKWWBY=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIVPkZP+Dtbe1qqzs7utJ6lceDFJJmPnok/HZlxoLcr84M
- vMx8CztKGVhEONikBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABOxP8rIMMM5U3V6LStTx9Kb
- Cec/r1Gpz741d87hkpnzlB4wbKxvOcTwz3CJl0Yo94FbgZrRrwtP7Y423CYiUGtRNLXGT2jFbp6 bvAA=
-X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251112175316.2841017-6-ardb+git@google.com>
-Subject: [PATCH 2/2] arm64/efi: Remove unneeded SVE/SME fallback
- preserve/store handling
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>, 
-	Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Tue, Nov 11, 2025 at 10:44:26PM -0500, Chris Mason wrote:
 
-Since commit 7137a203b251 ("arm64/fpsimd: Permit kernel mode NEON with
-IRQs off"), the only condition under which the fallback path is taken
-for FP/SIMD preserve/restore across a EFI runtime call is when it is
-called from hardirq or NMI context.
+> We're wandering into fuzzing territory here, and I honestly have no idea
+> if this is a valid use of any of this code, but AI managed to make a
+> repro that crashes only after your patch.  So, I'll let you decide.
+> 
+> The new review:
+> 
+> Can this dereference ZERO_SIZE_PTR when eps_count is 0?
+> 
+> When ffs->eps_count is 0, ffs_epfiles_create() calls kcalloc(0, ...) which
+> returns ZERO_SIZE_PTR (0x10). The loop never executes so epfiles[0].ffs is
+> never initialized. Later, cleanup paths (ffs_data_closed and ffs_data_clear)
+> check if (epfiles) which is true for ZERO_SIZE_PTR, and call
+> ffs_epfiles_destroy(epfiles, 0).
+> 
+> In the old code, the for loop condition prevented any dereferences when
+> count=0. In the new code, "root = epfile->ffs->sb->s_root" dereferences
+> epfile before checking count, which would fault on ZERO_SIZE_PTR.
 
-In practice, this only happens when the EFI pstore driver is called to
-dump the kernel log buffer into a EFI variable under a panic, oops or
-emergency_restart() condition, and none of these can be expected to
-result in a return to user space for the task in question.
+Lovely.  OK, this is a bug.  It is trivial to work around (all callers
+have ffs avaible, so just passing it as an explicit argument solves
+the problem), but there is a real UAF in functionfs since all the way
+back to original merge.  Take a look at
 
-This means that the existing EFI-specific logic for preserving and
-restoring SVE/SME state is pointless, and can be removed.
+static int
+ffs_epfile_open(struct inode *inode, struct file *file)
+{
+	struct ffs_epfile *epfile = inode->i_private;
 
-Instead, kill the task, so that an exceedingly unlikely inadvertent
-return to user space does not proceed with a corrupted FP/SIMD state.
-Also, retain the preserve and restore of the base FP/SIMD state, as that
-might belong to kernel mode use of FP/SIMD. (Note that EFI runtime calls
-are never invoked reentrantly, even in this case, and so any interrupted
-kernel mode FP/SIMD usage will be unrelated to EFI)
+	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
+		return -ENODEV;
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/kernel/fpsimd.c | 130 +++-----------------
- 1 file changed, 20 insertions(+), 110 deletions(-)
+	file->private_data = epfile;
+	ffs_data_opened(epfile->ffs);
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index c154f72634e0..9de1d8a604cb 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -180,13 +180,6 @@ static inline void set_sve_default_vl(int val)
- 	set_default_vl(ARM64_VEC_SVE, val);
- }
- 
--static u8 *efi_sve_state;
--
--#else /* ! CONFIG_ARM64_SVE */
--
--/* Dummy declaration for code that will be optimised out: */
--extern u8 *efi_sve_state;
--
- #endif /* ! CONFIG_ARM64_SVE */
- 
- #ifdef CONFIG_ARM64_SME
-@@ -1095,36 +1088,6 @@ int vec_verify_vq_map(enum vec_type type)
- 	return 0;
- }
- 
--static void __init sve_efi_setup(void)
--{
--	int max_vl = 0;
--	int i;
--
--	if (!IS_ENABLED(CONFIG_EFI))
--		return;
--
--	for (i = 0; i < ARRAY_SIZE(vl_info); i++)
--		max_vl = max(vl_info[i].max_vl, max_vl);
--
--	/*
--	 * alloc_percpu() warns and prints a backtrace if this goes wrong.
--	 * This is evidence of a crippled system and we are returning void,
--	 * so no attempt is made to handle this situation here.
--	 */
--	if (!sve_vl_valid(max_vl))
--		goto fail;
--
--	efi_sve_state = kmalloc(SVE_SIG_REGS_SIZE(sve_vq_from_vl(max_vl)),
--				GFP_KERNEL);
--	if (!efi_sve_state)
--		goto fail;
--
--	return;
--
--fail:
--	panic("Cannot allocate memory for EFI SVE save/restore");
--}
--
- void cpu_enable_sve(const struct arm64_cpu_capabilities *__always_unused p)
- {
- 	write_sysreg(read_sysreg(CPACR_EL1) | CPACR_EL1_ZEN_EL1EN, CPACR_EL1);
-@@ -1185,8 +1148,6 @@ void __init sve_setup(void)
- 	if (sve_max_virtualisable_vl() < sve_max_vl())
- 		pr_warn("%s: unvirtualisable vector lengths present\n",
- 			info->name);
--
--	sve_efi_setup();
- }
- 
- /*
-@@ -1947,9 +1908,6 @@ EXPORT_SYMBOL_GPL(kernel_neon_end);
- #ifdef CONFIG_EFI
- 
- static struct user_fpsimd_state efi_fpsimd_state;
--static bool efi_fpsimd_state_used;
--static bool efi_sve_state_used;
--static bool efi_sm_state;
- 
- /*
-  * EFI runtime services support functions
-@@ -1976,43 +1934,26 @@ void __efi_fpsimd_begin(void)
- 	if (may_use_simd()) {
- 		kernel_neon_begin(&efi_fpsimd_state);
- 	} else {
--		WARN_ON(preemptible());
--
- 		/*
--		 * If !efi_sve_state, SVE can't be in use yet and doesn't need
--		 * preserving:
-+		 * We are running in hardirq or NMI context, and the only
-+		 * legitimate case where this might happen is when EFI pstore
-+		 * is attempting to record the system's dying gasps into EFI
-+		 * variables. This could be due to an oops, a panic or a call
-+		 * to emergency_restart(), and in none of those cases, we can
-+		 * expect the current task to ever return to user space again,
-+		 * or for the kernel to resume any normal execution, for that
-+		 * matter (an oops in hardirq context triggers a panic too).
-+		 *
-+		 * Therefore, there is no point in attempting to preserve any
-+		 * SVE/SME state here. On the off chance that we might have
-+		 * ended up here for a different reason inadvertently, kill the
-+		 * task and preserve/restore the base FP/SIMD state, which
-+		 * might belong to kernel mode FP/SIMD.
- 		 */
--		if (system_supports_sve() && efi_sve_state != NULL) {
--			bool ffr = true;
--			u64 svcr;
--
--			efi_sve_state_used = true;
--
--			if (system_supports_sme()) {
--				svcr = read_sysreg_s(SYS_SVCR);
--
--				efi_sm_state = svcr & SVCR_SM_MASK;
--
--				/*
--				 * Unless we have FA64 FFR does not
--				 * exist in streaming mode.
--				 */
--				if (!system_supports_fa64())
--					ffr = !(svcr & SVCR_SM_MASK);
--			}
--
--			sve_save_state(efi_sve_state + sve_ffr_offset(sve_max_vl()),
--				       &efi_fpsimd_state.fpsr, ffr);
--
--			if (system_supports_sme())
--				sysreg_clear_set_s(SYS_SVCR,
--						   SVCR_SM_MASK, 0);
--
--		} else {
--			fpsimd_save_state(&efi_fpsimd_state);
--		}
--
--		efi_fpsimd_state_used = true;
-+		pr_warn_ratelimited("Calling EFI runtime from %s context\n",
-+				    in_nmi() ? "NMI" : "hardirq");
-+		force_signal_inject(SIGKILL, SI_KERNEL, 0, 0);
-+		fpsimd_save_state(&efi_fpsimd_state);
- 	}
- }
- 
-@@ -2024,41 +1965,10 @@ void __efi_fpsimd_end(void)
- 	if (!system_supports_fpsimd())
- 		return;
- 
--	if (!efi_fpsimd_state_used) {
-+	if (may_use_simd()) {
- 		kernel_neon_end(&efi_fpsimd_state);
- 	} else {
--		if (system_supports_sve() && efi_sve_state_used) {
--			bool ffr = true;
--
--			/*
--			 * Restore streaming mode; EFI calls are
--			 * normal function calls so should not return in
--			 * streaming mode.
--			 */
--			if (system_supports_sme()) {
--				if (efi_sm_state) {
--					sysreg_clear_set_s(SYS_SVCR,
--							   0,
--							   SVCR_SM_MASK);
--
--					/*
--					 * Unless we have FA64 FFR does not
--					 * exist in streaming mode.
--					 */
--					if (!system_supports_fa64())
--						ffr = false;
--				}
--			}
--
--			sve_load_state(efi_sve_state + sve_ffr_offset(sve_max_vl()),
--				       &efi_fpsimd_state.fpsr, ffr);
--
--			efi_sve_state_used = false;
--		} else {
--			fpsimd_load_state(&efi_fpsimd_state);
--		}
--
--		efi_fpsimd_state_used = false;
-+		fpsimd_load_state(&efi_fpsimd_state);
- 	}
- }
- 
--- 
-2.52.0.rc1.455.g30608eb744-goog
+	return stream_open(inode, file);
+}
 
+and think what happens if that (->open() of dynamic files in there)
+races with file removal.  Specifically, if we get called with ffs->opened
+equal to 1 due to opened ep0 and get preempted away just before the
+call ffs_data_opened().  Another thread closes ep0, hitting
+ffs_data_closed(), dropping ffs->opened to 0 and getting
+			ffs->state = FFS_CLOSING;
+			ffs_data_reset(ffs);
+which calls ffs_data_clear(), where we hit
+		ffs_epfiles_destroy(epfiles, ffs->eps_count);
+All files except ep0 are removed and epfiles gets freed, leaving the
+first thread (in ffs_epfile_open()) with file->private_data pointing
+into a freed array.
+
+open() succeeds, with any subsequent IO on the resulting file leading
+to calls of
+static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+{
+	struct ffs_epfile *epfile = file->private_data;
+
+and a bunch of accesses to *epfile later in that function, all of them
+UAF.
+
+As far as I can tell, the damn thing intends to prevent removals between
+ffs_data_opened() and ffs_data_closed(), so other methods would be safe
+if ->open() had been done right.  I'm not happy with the way that FSM
+is done (the real state is a mix of ffs->state, ffs->opened and ffs->mutex,
+and rules bloody awful; I'm still not entirely convinced that ffs itself
+can't be freed with ffs->reset_work scheduled for execution), but that's
+a separate story.  
+
+Another variant of that scenario is with ffs->no_disconnect set;
+in a sense, it's even nastier.  In that case ffs_data_closed() won't
+remove anything - it will set ffs->state to FFS_DEACTIVATED, leaving
+the removals for ffs_data_open().  If we have *two* threads in open(),
+the first one to call ffs_data_open() will do removal; on another CPU
+the second will just get past its increment of ->opened (from 1 to 2)
+and move on, without waiting for anything.
+
+IMO we should just take ffs->mutex in there, getting to ffs via
+inode->i_sb->s_fs_info.  And yes, compare ffs->state with FFS_ACTIVE -
+under ->mutex, without WARN_ON() and after having bumped ->opened
+so that racing ffs_data_closed() would do nothing.  Not FFS_ACTIVE -
+call ffs_data_closed() ourselves on failure exit.
+
+As in
+
+static int
+ffs_epfile_open(struct inode *inode, struct file *file)
+{
+	strict ffs_data *ffs = inode->i_sb->s_fs_info;
+	int ret;
+
+        /* Acquire mutex */
+	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+	if (ret < 0)
+		return ret;
+
+	ffs_data_opened(ffs);
+	/*
+	 * not FFS_ACTIVE - there might be a pending removal;
+	 * FFS_ACITVE alone is not enough, though - we might have
+	 * been through FFS_CLOSING and back to FFS_ACTIVE,
+	 * with our file already removed.
+	 */
+	if (unlikely(ffs->state != FFS_ACTIVE ||
+		     !simple_positive(file->f_path.dentry))) {
+		ffs_data_closed(ffs);
+		mutex_unlock(&ffs->mutex);
+		return -ENODEV;
+	}
+	mutex_unlock(&ffs->mutex);
+
+	file->private_data = inode->i_private;
+	return stream_open(inode, file);
+}
+
+and
+
+static int ffs_ep0_open(struct inode *inode, struct file *file)
+{
+        struct ffs_data *ffs = inode->i_private;
+	int ret;
+
+        /* Acquire mutex */
+	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+	if (ret < 0)
+		return ret;
+
+	ffs_data_opened(ffs);
+	if (ffs->state == FFS_CLOSING) {
+		ffs_data_closed(ffs);
+		mutex_unlock(&ffs->mutex);
+		return -EBUSY;
+	}
+	mutex_unlock(&ffs->mutex);
+
+	file->private_data = ffs;
+	return stream_open(inode, file);
+}
+
+Said that, I'm _NOT_ familiar with that code; this is just from a couple
+of days digging through the driver, so I would like to hear comments from
+the maintainer...  Greg?
 
