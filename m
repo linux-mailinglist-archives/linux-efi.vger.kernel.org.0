@@ -1,61 +1,61 @@
-Return-Path: <linux-efi+bounces-5498-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5499-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD109C5A5EE
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Nov 2025 23:45:39 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B931BC5A5EB
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Nov 2025 23:45:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 690D53B153F
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Nov 2025 22:45:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 44769351DBB
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Nov 2025 22:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540223271E8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B834C32720A;
 	Thu, 13 Nov 2025 22:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KQvZAs4e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OsKmTkPX"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D08E326956;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B03326D4C;
 	Thu, 13 Nov 2025 22:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763073921; cv=none; b=jAaVuy6MGLlVGUA3AErmhpeJeFW1Lxtbmc+twAAqwp9LX1TP+MfVjrTqSUNpU4oYQ0btJMndJBrlVIXT3MHQMxZogU6chIPyXbTGeKqLQUYhd26HNbVHCkljkaGbsNBDUF7LZ6KsGSY0+qkivo22uqcVBgAAz5vCVrxzvwbnP7s=
+	t=1763073921; cv=none; b=cQojEki7e6PwGUxypPW4WpPAF3tuFHok19d6+KCvyJfgE6lyc/LxcQsiEftJpaQze0r60GTGM7aoI/nVlfNNPj+TK3HAteCfgL1FIV+38NfT2bPT+qgjsBzxesqsll/G3h5R7erogNRPkCAf3g/0pFysjLF7YPLkFGIzqddrmN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763073921; c=relaxed/simple;
-	bh=m0p/Fqdj/eRp0iccSvGc99dMObdenY1CDe3HNWqJxKw=;
+	bh=3v51fqgW7yBK6B/AFGSul1SUT9hseHQhv6m1LfAlgx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhFOQ2PXYEHFOyGhW8PXRuO/eG814ugcmXD5+/21eZZlTrqs85+p3GowSKPUYB3COOm6fhAI5htOasNWgVSuJKlY4SkIq8TduvnM28NboBrZ6s8ZGBlx7Xhxuwp+bbj4PeARHckaU5Fs/mqojEPfhrG09HgAjQp8QkvZL00JINc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KQvZAs4e; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=nT7SU9OC9lUxkDUJSbulWd/R/Ys0Y0wILDaz/ISPafIixtn8pGrSCp23+XbiKbTu+HbaDGzJomt3yapeY8puW4/l5LyGzWyj5xwRDCLtZSQGk5T95hwD8Zf0li1AGMktnZj0zgfcPYLVN8PjJOk1iHQZpFhnMv9SQufmWBaH7EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OsKmTkPX; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763073919; x=1794609919;
+  t=1763073920; x=1794609920;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=m0p/Fqdj/eRp0iccSvGc99dMObdenY1CDe3HNWqJxKw=;
-  b=KQvZAs4ePgBOD7OvOMAMk4Nvx9IMDmRI/+BTjSWCepK+xEmGM94q8aOd
-   Jo6ewY0JwPjEs+3zEOGsD7fj89usrtWlxfOzOH6BZVpQ1SRlXNwwxo9lP
-   MhGD2gVmo96XGvTPJD6H/bm5RK5Dm31Kr0Dps5ROsM13t6wHRKceZaA6O
-   21r2EH45Qo4vpUNoBIIFLcm9zMaBL+Ar+2aHZVKIOPEiZoViPgoD1i2wS
-   SqDpPyxNLeU+wPtEMGrsuE5wnXbHE/ezG5ZwIx2E5Cc8yJwdk6dIOULSs
-   k1CMBx1bXfijZIesuZcN+xdpyVkYkeVR6JQKlQbKEc22ebWuV6Dlv4ooL
-   w==;
-X-CSE-ConnectionGUID: 2vR9V+1jSXWpa4o0dzFV6w==
-X-CSE-MsgGUID: J2S5yswzQZO8RNa0t2mwEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="65051912"
+  bh=3v51fqgW7yBK6B/AFGSul1SUT9hseHQhv6m1LfAlgx4=;
+  b=OsKmTkPXvi5fpHtaT8/TX1YYQivCSllHM/X1jWYi38BDAN+pT/1XT7NP
+   h2q1kaPTBGREyFY26lOFmQ0TD9XNPJq9lwCWXIJ2KwvMXXCe9eDGiUgqY
+   k7eONZxQkC+jffqgYwtfm5FCswjQJ7PCsjdOx962dAXPbchJbqBU3swlF
+   Rldh8ZBrNwqGIx/AVyYKHIwE+WhIzZpq/tTlbQM3lDr4V0NM3tb0/dauK
+   YdP+K3BOZAH4xk5iYb0Vi9WrofD+iivkX18mGoI7D/usNBM6CsRWFAURk
+   OGBx0Y0jPh0IiWsmsHKecl342V0DdkPFd0K/9s+a5Alkl5X1vf8cGEv6s
+   A==;
+X-CSE-ConnectionGUID: A/RvpQKVQgS2ky2XZ1A3Bw==
+X-CSE-MsgGUID: QWsIBu1uQUyDqreM17eXkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="65051927"
 X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
-   d="scan'208";a="65051912"
+   d="scan'208";a="65051927"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 14:45:16 -0800
-X-CSE-ConnectionGUID: zRFYNAJISp6EPC71UBuD5A==
-X-CSE-MsgGUID: eR1d7Rp+S4ChXh+J3vWwWg==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 14:45:17 -0800
+X-CSE-ConnectionGUID: Nm/O97BUTSuR0PH3F97WlQ==
+X-CSE-MsgGUID: 8a00V92+Q4GVpFzlhcdWJQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
-   d="scan'208";a="194611084"
+   d="scan'208";a="194611088"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
   by fmviesa004.fm.intel.com with ESMTP; 13 Nov 2025 14:45:16 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
@@ -86,9 +86,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v12 2/8] x86/cpu: Add an LASS dependency on SMAP
-Date: Thu, 13 Nov 2025 14:41:58 -0800
-Message-ID: <20251113224204.50391-3-sohil.mehta@intel.com>
+Subject: [PATCH v12 3/8] x86/asm: Introduce inline memcpy and memset
+Date: Thu, 13 Nov 2025 14:41:59 -0800
+Message-ID: <20251113224204.50391-4-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251113224204.50391-1-sohil.mehta@intel.com>
 References: <20251113224204.50391-1-sohil.mehta@intel.com>
@@ -100,27 +100,22 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With LASS enabled, any kernel data access to userspace typically results
-in a #GP, or a #SS in some stack-related cases. When the kernel needs to
-access user memory, it can suspend LASS enforcement by toggling the
-RFLAGS.AC bit. Most of these cases are already covered by the
-stac()/clac() pairs used to avoid SMAP violations.
+From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
 
-Even though LASS could potentially be enabled independently, it would be
-very painful without SMAP and the related stac()/clac() calls. There is
-no reason to support such a configuration because all future hardware
-with LASS is expected to have SMAP as well. Also, the STAC/CLAC
-instructions are architected to:
-	#UD - If CPUID.(EAX=07H, ECX=0H):EBX.SMAP[bit 20] = 0.
+Provide inline memcpy and memset functions that can be used instead of
+the GCC builtins when necessary. The immediate use case is for the text
+poking functions to avoid the standard memcpy()/memset() calls because
+objtool complains about such dynamic calls within an AC=1 region. See
+tools/objtool/Documentation/objtool.txt, warning #9, regarding function
+calls with UACCESS enabled.
 
-So, make LASS depend on SMAP to conveniently reuse the existing AC bit
-toggling already in place.
+Some user copy functions such as copy_user_generic() and __clear_user()
+have similar rep_{movs,stos} usages. But, those are highly specialized
+and hard to combine or reuse for other things. Define these new helpers
+for all other usages that need a completely unoptimized, strictly inline
+version of memcpy() or memset().
 
-Note: Additional STAC/CLAC would still be needed for accesses such as
-text poking which are not flagged by SMAP. This is because such mappings
-are in the lower half but do not have the _PAGE_USER bit set which SMAP
-uses for enforcement.
-
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
@@ -128,23 +123,48 @@ v12:
  - Pick up review tag.
 
 v11:
- - New patch (split from patch 1).
+ - Improve commit log.
 ---
- arch/x86/kernel/cpu/cpuid-deps.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/string.h | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-deps.c
-index 46efcbd6afa4..98d0cdd82574 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -89,6 +89,7 @@ static const struct cpuid_dep cpuid_deps[] = {
- 	{ X86_FEATURE_SHSTK,			X86_FEATURE_XSAVES    },
- 	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
- 	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
-+	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
- 	{}
- };
- 
+diff --git a/arch/x86/include/asm/string.h b/arch/x86/include/asm/string.h
+index c3c2c1914d65..9cb5aae7fba9 100644
+--- a/arch/x86/include/asm/string.h
++++ b/arch/x86/include/asm/string.h
+@@ -1,6 +1,32 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_STRING_H
++#define _ASM_X86_STRING_H
++
+ #ifdef CONFIG_X86_32
+ # include <asm/string_32.h>
+ #else
+ # include <asm/string_64.h>
+ #endif
++
++static __always_inline void *__inline_memcpy(void *to, const void *from, size_t len)
++{
++	void *ret = to;
++
++	asm volatile("rep movsb"
++		     : "+D" (to), "+S" (from), "+c" (len)
++		     : : "memory");
++	return ret;
++}
++
++static __always_inline void *__inline_memset(void *s, int v, size_t n)
++{
++	void *ret = s;
++
++	asm volatile("rep stosb"
++		     : "+D" (s), "+c" (n)
++		     : "a" ((uint8_t)v)
++		     : "memory");
++	return ret;
++}
++
++#endif /* _ASM_X86_STRING_H */
 -- 
 2.43.0
 
