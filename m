@@ -1,537 +1,298 @@
-Return-Path: <linux-efi+bounces-5505-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5506-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3DCC5AFDA
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Nov 2025 03:19:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4C9C5BD4B
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Nov 2025 08:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C155A3BC434
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Nov 2025 02:18:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 983A9356B77
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Nov 2025 07:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01713212564;
-	Fri, 14 Nov 2025 02:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9082F4A1B;
+	Fri, 14 Nov 2025 07:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="og0PVXo8"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="RmwmpcQV"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24D91F5842;
-	Fri, 14 Nov 2025 02:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763086674; cv=fail; b=Kwp7xr/9FWcEJf31UUpLBFdtwCxD41knWsD1+Mii7bL9y0ciXRbApieXuu+3YlFQUUDoYUK6hQToeRsa+ocuyV28Jh7QknRH0r6q+LL/6r+y1hy9SA9j/ybm/+dMSWGtQfXAzCS2Sd9iICFIYbOxbDZcSRjvhM7DGc9TI9Yhgiw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763086674; c=relaxed/simple;
-	bh=59DV98NBTLSKEnhQ4b/OzuPFYsqto5z9OVpo+/ezJc4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=OWMJYGcpXl9/ycfn4OqeNNZc2pvCjSSKIHUVWh52te98NWZ7JrQ0ZeB/+sYOGbwBaZx2pucoJDm0RUFeOb9BEvUyDDza08WQvJUyiBWsHD1qoDF6yXR9H6xoMPMbKwj1qbKGh7Ad/2MNloKnyQ6r3U4wuUJ7nP+hLb9ncinEx3s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=og0PVXo8; arc=fail smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 5AE150QN2410002;
-	Thu, 13 Nov 2025 18:17:05 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=KLIJTHdXgv2IfSmg4UnBBJfMSx01Vk5HC/ZbCVwbofE=; b=og0PVXo8WBTd
-	ld0hXmfNs3pS9c4KVvKGgWm5fmxxRxF6kIHLAiXKiLgPWB7DS32915ouPHRxziS5
-	iepUKVt7CorZoFANpCyI18JSXBHiLPWGz/tZH5tcqZ6rcnptJbKjr7zngMF3zYvB
-	dT/bwDAgazKTuSw7BWHlj1t+chZa/iusRT3AUznltwFWZFGmUx2wzCyoR9Cw8QOc
-	V5LUcL6dWVJxNlN3CVBnoSmDRUqi9ij4hIY8/FxOPxdNQeIjnWVzd5eT2wQmUg+m
-	gfCCoUJPr+m6R5PC2qPo5r+fCTIfRSvl5Xvc2mWDiRGzXwxh5tVSZ6qVG2/SKJXJ
-	2a0GCWCAWQ==
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012049.outbound.protection.outlook.com [40.93.195.49])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4adr8a9ehy-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 13 Nov 2025 18:17:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wmd9ySpi0+JZ9ycdcKkqoFSA3k9WmypdBSypSwWXMWMiOUEa/jltRo9FNLcrRuFqCw9q8wKpd8UocxwDN9PkrWV/Ns5zfISRehNbqmd/8dcIakd4HX7M0pG4JcL0rNGdrW0VBLIAJs31Lqh6szNJxxIqcAcZXh8llu72AIDx5ro0oAqcfeNmDzTnz0OYsQqPaffhiw0tFsBMPoIFIQzPQT5IzciGpCNAVH1RiFSbl9TDYRBAYMrG5MzMgo3vw5zwdYemXKfIOdnbmTennsUTKT4V16MJh4GoWMdL2AxFm/KfpDexiZwAldkZZsq915BGb5p+hVflmf8xLCQhJpPnDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KLIJTHdXgv2IfSmg4UnBBJfMSx01Vk5HC/ZbCVwbofE=;
- b=ca3qXgu1Mxbj17tVKW4so5Sinv2mazKiHDukFbQgEnwsuG4lkR9oSTdTShXf64n1RS6mZ2CDJ9523TOdTQd7btdJWHTmcz0qaJRjAdWbXGfXDdzG8rzN7/6TwaB9Jkv27zZMyVzsNIfIb1ki8wM7nmytcOkstXS8lz2fjVmyI5t/qsxLwwDiKAfKJrJAQg7Udjr3O/+DVqNzDXZtnQfNKzzYOjbPgXeebrKgzi+7QTjEcGxCuTYxvgFVNulKg/8AstbdKYkpRWcehTih2d6/2wSseqLp7fpVUsmncwaeShoBugMz343Dt8wHdVME+a0GUFst/oxVnEweqhIkPMfIrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=meta.com; dmarc=pass action=none header.from=meta.com;
- dkim=pass header.d=meta.com; arc=none
-Received: from LV3PR15MB6455.namprd15.prod.outlook.com (2603:10b6:408:1ad::10)
- by DM4PR15MB6034.namprd15.prod.outlook.com (2603:10b6:8:189::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
- 2025 02:17:02 +0000
-Received: from LV3PR15MB6455.namprd15.prod.outlook.com
- ([fe80::8102:bfca:2805:316e]) by LV3PR15MB6455.namprd15.prod.outlook.com
- ([fe80::8102:bfca:2805:316e%5]) with mapi id 15.20.9298.007; Fri, 14 Nov 2025
- 02:17:02 +0000
-Message-ID: <3984c9bd-2ac8-424e-9390-7170fdab3c03@meta.com>
-Date: Thu, 13 Nov 2025 21:16:52 -0500
-User-Agent: Mozilla Thunderbird
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287C915E8B;
+	Fri, 14 Nov 2025 07:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763106384; cv=none; b=q8iW3Y/gkbTdNfLc6/x48nMs+0vWNuZfIAnaklwd0yv9z72uiJgCQ97hJiMHQ94rxBn5zlrOoNIbJMjbllISeWzFF1itBLDXwv9FvDzc6/hL+mXRSZwCGXBS1i1Bo9feOjBLt/D3wTtm8tTfWc2Zwm9MFQ+n1PXqY/YEb57IDiM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763106384; c=relaxed/simple;
+	bh=DOt8m4QkM9hQecTG/tA7QUOrlG38OhFmoW+w88nXRAk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i2wHVEACjtQ1JzJXJPVN2kX+PsARg0nAyeYR0ZgsH2UlMZvoLIvUSRIATlNObTTDraznI1WSvPbr9qOJqsoCh9NMXgoBklqL5BsVSS7h9shGD2hDkCiXAoH7i1JL1TjjhfIltNd0kVJrpw5ymfXxest0UldNEBCL1U3m5hOjNF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=RmwmpcQV; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=h+GY3DA2a89Ro6bK+Ny9JBXd1oGc4240hj01Ocp0k3I=; b=RmwmpcQVdyxseRwak/qof99plg
+	19GIkQZH7ChhzOiG3uz8dg2HkAA5N+5/V1UIxXkDLDUEZCoKXkHmJU2jU1s+Q0xxu/tK+e7sPtX1g
+	p9WnhHDcBBVa4n8KLpZIKcLWl1vD6DcEr3NuPGBC/3lFrFbZqBzzS93Vmonf4mXY1YBnwXFMeqSOq
+	0VjFZh3Nht/9wWMlfASZ7/M0BXd2QaeBC84W+1f0gTGtGlmpUd/NgvFb/SFB2rT88CqI0WGcOH1cX
+	adF7Nl5bHG2kHMKYO15y03X/mRHcKujBsb/+YppfEkDblFYHA+Zfb/PsC9CidjgprrT4VBcTnotMR
+	Z1lBwfCw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJoVa-00000009Pew-1WxF;
+	Fri, 14 Nov 2025 07:46:14 +0000
+Date: Fri, 14 Nov 2025 07:46:14 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
+	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
+	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
+	Chris Mason <clm@meta.com>
 Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
  switch to simple_remove_by_name())
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
-        torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
-        raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
-        a.hindborg@kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org,
-        ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
-        linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com,
-        linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-        selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-        bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
-        daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
-        yonghong.song@linux.dev, ihor.solodrai@linux.dev
+Message-ID: <20251114074614.GY2441659@ZenIV>
 References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
  <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
  <20251111092244.GS2441659@ZenIV>
  <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
- <20251113092636.GX2441659@ZenIV> <2025111316-cornfield-sphinx-ba89@gregkh>
-From: Chris Mason <clm@meta.com>
-Content-Language: en-US
-In-Reply-To: <2025111316-cornfield-sphinx-ba89@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR20CA0050.namprd20.prod.outlook.com
- (2603:10b6:208:235::19) To LV3PR15MB6455.namprd15.prod.outlook.com
- (2603:10b6:408:1ad::10)
+ <20251113092636.GX2441659@ZenIV>
+ <2025111316-cornfield-sphinx-ba89@gregkh>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR15MB6455:EE_|DM4PR15MB6034:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6417f566-8f32-4773-ab84-08de2323e62e
-X-FB-Source: Internal
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dm41YVg3aHJKQVlhMktwdjJIcUxKd1pMWGd1YVdoazVucVczRkdKM29OaEdD?=
- =?utf-8?B?Nk5kekJjM1AvbUlJUUdYVXo4ZzlXN09ZYVgwKzExS2E0U1loOGtsS2RXL0VY?=
- =?utf-8?B?SGttMDRlY2grRktDdktFSEMwbmhZN2dQa3RiNGRHQ2Q2aW9FeXNGRG5ZaE9x?=
- =?utf-8?B?S2xtQU5BTE9xV3g3d0p4Sit2a3VVL2d2WTA0N3gyRGhkRFFlS1oweDBJNDdv?=
- =?utf-8?B?anNHUFFRTlB5YWNsUFdQWU84d1ZFdVBlckVoblVxUjBucE5WOUFwUVNFWlJF?=
- =?utf-8?B?UVVHUktDRWFwaXdwYS9YMHUxR2g2b0IzYWY1NXJ4b1JtMWpvMzhwMGRNZUFK?=
- =?utf-8?B?MjltNldDL3pkZXFjUHpqdjAzbFRDNVQ5NDc3eDdxWmtNVG14N0NSZHYxSUpY?=
- =?utf-8?B?MGlLM2YrUWM5YW0zcm40WlY4TlJndUpNY3RaSFJrNzZaUWRxVnJPOVFzTzN1?=
- =?utf-8?B?T2tCTkFGbTFqZ2hkMXhpcDRIN2grRGZxZVdYQWJJbTNpVkdldm9tc2Y1blYv?=
- =?utf-8?B?bFo5UjVvRlMrd3NMQzFHZ29NNWlqSmsweU1rbTZtRnNWSFFrM3pwTmlieTJD?=
- =?utf-8?B?UXZlR3pKdU82L1owbi9GMms1R3lGckRCZGZ1TkpRL3l1N1dhV1EvSmVPQlFO?=
- =?utf-8?B?YW1pZzZUeENwaTdndjJwV1BxVEh4eEVDZHRpMnU1TGhiWEgvcGpMdUFDSUZh?=
- =?utf-8?B?UHRGWDhYTjZORHp0amdoYUx0NzZ5LzhlOWpPL3hFc0F3YzZGQjhVWmpJbkNY?=
- =?utf-8?B?MG1vdHo0MTJCcURGVEw4dFViOE1ha3BINGdzUTUvbUE3eTNYKzlRUUdnMXdq?=
- =?utf-8?B?aldTc2dXRGxBaWhHM0ZOaElTNG9NdHdMNEJlVmUvVk5CWmljTElpaUxsZXNi?=
- =?utf-8?B?M2NYbU1HVjZ2Q2RFZThxdnNnYi9GUXZzbUo0WHhLaVBrR2ZNaytHbmhzSkRo?=
- =?utf-8?B?QzhhWnN0cTQ2MzMzN01jRXAydHZ1ZjV1c1k0clVmVnEzU01vR2NOTjBPck9C?=
- =?utf-8?B?RXRpUDF3NDFXS25jRktCdEx4VUsxeW5KWDQ1d0pMNVdNR1lhY2dKN1c5WDJk?=
- =?utf-8?B?c1F3SWZwM2xtdU9KNWUvU0lzZjU0cFpNalc3ZE5VelBtQ0M5N2taNlF2dCtE?=
- =?utf-8?B?T0tlUWJGQ090b3U5amR5dHF4QkR3THdJVjNKb0puNnJxWEZLb3VTTHFtczRQ?=
- =?utf-8?B?TGttRHIyRTJUS1NxdGFlU3FlWTBUZWF1Z1hxWUpaMklxZEUwNVhGT0k0UkRi?=
- =?utf-8?B?a2hKcEF3cnNQTkRQRVI4Wjd1V3FIR1dKeXN5dW9aNVdJR3VmaE1ZSXJMZWpm?=
- =?utf-8?B?VElVZTVUZTg5d0YraU5wRW5mYzNtTHFmSWhrV1d0dEhzMUlVeDV1Rm0rMURB?=
- =?utf-8?B?TlJoWmVNa0dzTlZpUktuRGRMaGZSeWZIZ0s2OUJkTURoQS9iZ0RiQ3pITlVX?=
- =?utf-8?B?V0pudjNtZWNYT28rWlg0V1k1bkRBZmFLZ3ZXMDk0VkMrTDdCU1IxV0R6VzJi?=
- =?utf-8?B?U1UyVE9mL0U2R0lySUVlbHp4UDhkOHlucndsazhzZDI1ay9saWU4aGhSQjR0?=
- =?utf-8?B?b2tQaDRncHBJdThLb3pwaXNtdE80N3FmWEhpNGNBc01hQ1ArU1M5QkNkOGht?=
- =?utf-8?B?M0hsWkh0clQ3aVArOUJ0d2tpZzRRWWRORVRsMGt0U2hTTlUzQnVybDNzTHlB?=
- =?utf-8?B?QXptS1pHLzByclZETkJqMDgyd1dFbjVYa3Q3andZTy9lNENmT2lHaFhaNzFz?=
- =?utf-8?B?bENlTUpmU0kzcUZmTjVSbTBiYVFzejdyRGdmUlN5cHRrZGw5LzFQSVlzcEV6?=
- =?utf-8?B?V21tcXROcVMyU05uNHhwSEpVck8vVG1POGV4c1J2NnZvZ2JmbXdWOFdlaEFq?=
- =?utf-8?B?YjNSZ3UvZk9jcXhadFZ1aW1zUENYb3JwWkt6TXdVNVh0ckh5RWk2VGhnUTJC?=
- =?utf-8?Q?bFTauiMkwG7adbET2T0BecyOE/G9joZb?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR15MB6455.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T1dXelJ6OXV6WlhaS0daT3k3SVArckx0VFRQZnI2akNpMDJlWDFIVTVQUkdh?=
- =?utf-8?B?bWVYb1RJZ0VIVFBKVkdnTWI2R1EyN24wTlhDdFlqZkVHV0MrSHlrZnM1SGUr?=
- =?utf-8?B?UVpoNjgzZms2c0ZReTJLU2Z3ZysvcWhheVVZNUhpc2FEYnB6VjlFS2NiaC9r?=
- =?utf-8?B?VldVVDJFdmJOaThHRzk2eUhsbUxmV2hDWGZtREIrajBpRHF4Ni96RU1tSUtw?=
- =?utf-8?B?bFhQNjBwTFhxL3NCWEZ4Tm5UR0Z2cCsrVy9kaisvYWhjL2JwaEZzWlRpUzQv?=
- =?utf-8?B?ZWZwemEvdGQ3SFJBSDFXVWw5NUp3a0h0ZkFNSjZTZkdMdG1FYVlPUFZtUXhj?=
- =?utf-8?B?VWIvQW1UTGx1N2NUUWZGOEFYbnowVXBKZHQ4aDNUT0VrS0hBM3J5cDI2VHRI?=
- =?utf-8?B?c3NTaktybnRSRENIRGo1VjQxZkpIUGh6VWFWNHV1KzhwR3ZWbHk2MzhXVnlW?=
- =?utf-8?B?NTE3L01OMlQ3aDFCcFNrNE5DaHo3OUpGN1lyL2JhS1kyM1h0dlRJTmlOR2Nq?=
- =?utf-8?B?UDJieGVWR1BKUEdiMzN1aVpOc1VUM2VzeTdVV29YRC9BVjhDUzNKcVZyMlUz?=
- =?utf-8?B?NUdodE1wUWY3dGdZd3ZjU3QvVWNXaFEvd29ZVlVLT3NIYUdqNTRxZlYvcFhI?=
- =?utf-8?B?MzFEWnV1L3BEN0JQSks3N1IzeVlwNXhPd1Vpd2crWDZSY1huNlhPQjQxRkdV?=
- =?utf-8?B?Z0Y5V1JjSysxMm5QdEdYdGVFKytkNWRLQngxUUJpcmo4VWk2YTlWaXpSREds?=
- =?utf-8?B?S28xZ0gzakhvYVY3cmEvNGlyckV5K1FYY3NFZmEvQW1tTm05UjJkTk1aTzBI?=
- =?utf-8?B?U0RvaFpFOXpoVm95aGFUQVZka1psN0hpMHN2ZWRzc2U5TFNtU2J2OTR6NlU3?=
- =?utf-8?B?T1RYZytOZFlNZ282OTFsWi9VSFJvWlppb3dTYUwyOHd2ODZRWTVDZXhxQXd1?=
- =?utf-8?B?aHE4Q29HU3pzeEdLdGxOTTZZSGcwdnhtcm53ZXRiWnRiY2RRYVdCYS9xUDE3?=
- =?utf-8?B?dUJJTWlQanhvS2J3ZnNZOUpBWG9lMjk5UVdjWkNVMXRUOW13SUNWSUtva0VZ?=
- =?utf-8?B?NXBnSkMxdEQ1dTNWbzRYcFlwYjN4T3ZjM3FYS3BOQlZCaTBpazB1OU5GVUhu?=
- =?utf-8?B?WmZkcktscFd0a2xJZGdIak93WmxwZ2R3UmlwS2prUzlnLzFPZ0VkQ0xqdHEr?=
- =?utf-8?B?NHBHalQrUjdiSmlmYmRlbytsYnh5TFVJUGZoODVFY0dwc2ZsdnlDSkFWSFBi?=
- =?utf-8?B?ZXZtTHdBSFV3RWh2YS9tdXNaNFI1QjBuUUw2c2YxZ2d0OVc4NUY5dU0xb0FM?=
- =?utf-8?B?ajRpeW4za3QxSFkyNlVxSkZtbDZZQ1lpV1NQNy9HUU9md1JSdHArdm8zNytG?=
- =?utf-8?B?MXZPZ09ubGJqY3FYRzJJWXdWSWJUczlyUFp0dFU0QXJIdmRnMVhqcnFJTzBZ?=
- =?utf-8?B?TE5pT2lpcFVLWkN4QjhES08zRUdMU3RGeGN4NkZ6akExTm4zL0xVY3Npc05Q?=
- =?utf-8?B?cE9pZVhmR1FxbmQ1R1F1MFJFaXVocEpIdXF6RWhhRVhZeXEyOVRZanluOGIz?=
- =?utf-8?B?SHRnbjdydHhwVzIyWXY5YWxpNzV2bXdRVWFTNWNscDlZMXRZRXUyMEZBTEpn?=
- =?utf-8?B?TGh2OFo5Nm9IaWZrZGtpeFZlNjVQL1daeUlMczhPWUNiMkNyaW9WSldKZWk5?=
- =?utf-8?B?c0xVVUI4TTVGQnNIem5vUzBoRVVvVWNPczNYWXFBUTBETUNVUkUyUHlOQXV4?=
- =?utf-8?B?T0RIR3NwMDBzSVdVY0JMd0UvLzdOR3grUlVqRCs3N2djK1crbXBhN1pRbEcr?=
- =?utf-8?B?ckFzcmZTdGZ2WDF0WEtkc01XRzVIV2V5U1ZLb2N6WUVtTkthNUkwYjR2MzFa?=
- =?utf-8?B?RWlVTHRxV1p2OFNOUWk4clYxblpzUEFyV0EvZVVSbGQ0TXBZMDlpM3lKYlov?=
- =?utf-8?B?RjdaSWNoMnlCQnJXU2I3dkM0MWhZS2NkcmdYajRjUXJCc2pBQmRXOWpPcW5G?=
- =?utf-8?B?c3F5NWF1bVJYMm5OTkNpaG1FWEU4U1kyWXV3WG8xRy9icXlCb0ZZUmNKVmZM?=
- =?utf-8?B?WG1FdW5LV3NDZEdYK0drcitJY1pZa3E2d21iSXJjNm5SOXM4TEs5dGxZamda?=
- =?utf-8?Q?1F/Y=3D?=
-X-OriginatorOrg: meta.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6417f566-8f32-4773-ab84-08de2323e62e
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR15MB6455.namprd15.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 02:17:02.7318
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pYLw/u3nKvioSDvRjATEeS9uQEUtBZetlLSS93smUfy712etiCym4+/0ZzQOe39q
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR15MB6034
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDAxNSBTYWx0ZWRfX/LgSfRDtyDtH
- TJldFCceGiPepvc5+GYTmiA+ziCmMbslSwzmdE0KNBGdPCPQJiUGU7kdFmnOw5aTu8UXaObGRfv
- AfA5kGdkbNCsLP42gsWr0f1rB3Ek0Zu0fWF2+MOLSqU+EbtQ1zU+w/rma9oWJ5p2VMPNur98zly
- AST8ncLmaz+CL2l1wCTLWh0oQ7KMjY8NAZztPR/BvDQCM2Qg8T/PFqNyWjG0fYAOgAisLPEZFKr
- JX7FaKYBXyFl3ZAGyGsqHZNFFQSX/WtdoExQ8glbfrJUc2oz2IMDMI11vvZIk3fs0M+f0fBQU/U
- I+XD3Wld35P6Ln9+ElaAPL2cUTU/UsZb+7j6ALH85T/2UgjXZ6JCDL3EKt0Nr3ZpUOZpzfcqlMD
- cSuY9CCeaqyUfpXJhY1YiIIVS4aM+Q==
-X-Proofpoint-ORIG-GUID: xfVBWqs8FqkI4eRp4g7C46DxVwzWVErM
-X-Authority-Analysis: v=2.4 cv=I69ohdgg c=1 sm=1 tr=0 ts=69169121 cx=c_pps
- a=nvwb1BjkeYK3HDx+lqLWkw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=wJNMY6CPLibaGjMAeTcA:9 a=QEXdDO2ut3YA:10
- a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-GUID: xfVBWqs8FqkI4eRp4g7C46DxVwzWVErM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-13_07,2025-11-13_02,2025-10-01_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025111316-cornfield-sphinx-ba89@gregkh>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On 11/13/25 4:20 PM, Greg Kroah-Hartman wrote:
-> On Thu, Nov 13, 2025 at 09:26:36AM +0000, Al Viro wrote:
->> On Tue, Nov 11, 2025 at 10:44:26PM -0500, Chris Mason wrote:
->>
->>> We're wandering into fuzzing territory here, and I honestly have no idea
->>> if this is a valid use of any of this code, but AI managed to make a
->>> repro that crashes only after your patch.  So, I'll let you decide.
->>>
->>> The new review:
->>>
->>> Can this dereference ZERO_SIZE_PTR when eps_count is 0?
->>>
->>> When ffs->eps_count is 0, ffs_epfiles_create() calls kcalloc(0, ...) which
->>> returns ZERO_SIZE_PTR (0x10). The loop never executes so epfiles[0].ffs is
->>> never initialized. Later, cleanup paths (ffs_data_closed and ffs_data_clear)
->>> check if (epfiles) which is true for ZERO_SIZE_PTR, and call
->>> ffs_epfiles_destroy(epfiles, 0).
->>>
->>> In the old code, the for loop condition prevented any dereferences when
->>> count=0. In the new code, "root = epfile->ffs->sb->s_root" dereferences
->>> epfile before checking count, which would fault on ZERO_SIZE_PTR.
->>
->> Lovely.  OK, this is a bug.  It is trivial to work around (all callers
->> have ffs avaible, so just passing it as an explicit argument solves
->> the problem), but there is a real UAF in functionfs since all the way
->> back to original merge.  Take a look at
->>
->> static int
->> ffs_epfile_open(struct inode *inode, struct file *file)
->> {
->> 	struct ffs_epfile *epfile = inode->i_private;
->>
->> 	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
->> 		return -ENODEV;
->>
->> 	file->private_data = epfile;
->> 	ffs_data_opened(epfile->ffs);
->>
->> 	return stream_open(inode, file);
->> }
->>
->> and think what happens if that (->open() of dynamic files in there)
->> races with file removal.  Specifically, if we get called with ffs->opened
->> equal to 1 due to opened ep0 and get preempted away just before the
->> call ffs_data_opened().  Another thread closes ep0, hitting
->> ffs_data_closed(), dropping ffs->opened to 0 and getting
->> 			ffs->state = FFS_CLOSING;
->> 			ffs_data_reset(ffs);
->> which calls ffs_data_clear(), where we hit
->> 		ffs_epfiles_destroy(epfiles, ffs->eps_count);
->> All files except ep0 are removed and epfiles gets freed, leaving the
->> first thread (in ffs_epfile_open()) with file->private_data pointing
->> into a freed array.
->>
->> open() succeeds, with any subsequent IO on the resulting file leading
->> to calls of
->> static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
->> {
->> 	struct ffs_epfile *epfile = file->private_data;
->>
->> and a bunch of accesses to *epfile later in that function, all of them
->> UAF.
->>
->> As far as I can tell, the damn thing intends to prevent removals between
->> ffs_data_opened() and ffs_data_closed(), so other methods would be safe
->> if ->open() had been done right.  I'm not happy with the way that FSM
->> is done (the real state is a mix of ffs->state, ffs->opened and ffs->mutex,
->> and rules bloody awful; I'm still not entirely convinced that ffs itself
->> can't be freed with ffs->reset_work scheduled for execution), but that's
->> a separate story.  
->>
->> Another variant of that scenario is with ffs->no_disconnect set;
->> in a sense, it's even nastier.  In that case ffs_data_closed() won't
->> remove anything - it will set ffs->state to FFS_DEACTIVATED, leaving
->> the removals for ffs_data_open().  If we have *two* threads in open(),
->> the first one to call ffs_data_open() will do removal; on another CPU
->> the second will just get past its increment of ->opened (from 1 to 2)
->> and move on, without waiting for anything.
->>
->> IMO we should just take ffs->mutex in there, getting to ffs via
->> inode->i_sb->s_fs_info.  And yes, compare ffs->state with FFS_ACTIVE -
->> under ->mutex, without WARN_ON() and after having bumped ->opened
->> so that racing ffs_data_closed() would do nothing.  Not FFS_ACTIVE -
->> call ffs_data_closed() ourselves on failure exit.
+On Thu, Nov 13, 2025 at 04:20:08PM -0500, Greg Kroah-Hartman wrote:
 
-I was curious what else would get flagged if I ran the whole f_fs.c through
-the review prompt.  It found a variant of Al's bug above, along with additional
-concerns around unprotected ffs->gadget?  BUGS #1 and #2 below look
-the most important, did AI miss some locking there?
+> Sorry for the delay.  Yes, we should be grabing the mutex in there, good
+> catch.  There's been more issues pointed out with the gadget code in the
+> past year or so as more people are starting to actually use it and
+> stress it more.  So if you have a patch for this, I'll gladly take it :)
 
--chris
+How about the following?
 
-================================================================================
-BUG #1: NULL pointer dereference in ffs_dmabuf_find_attachment()
-================================================================================
+commit 330837c8101578438f64cfaec3fb85521d668e56
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Fri Nov 14 02:18:22 2025 -0500
 
-In ffs_dmabuf_find_attachment(), the gadget pointer is dereferenced without
-a NULL check:
+    functionfs: fix the open/removal races
+    
+    ffs_epfile_open() can race with removal, ending up with file->private_data
+    pointing to freed object.
+    
+    There is a total count of opened files on functionfs (both ep0 and
+    dynamic ones) and when it hits zero, dynamic files get removed.
+    Unfortunately, that removal can happen while another thread is
+    in ffs_epfile_open(), but has not incremented the count yet.
+    In that case open will succeed, leaving us with UAF on any subsequent
+    read() or write().
+    
+    The root cause is that ffs->opened is misused; atomic_dec_and_test() vs.
+    atomic_add_return() is not a good idea, when object remains visible all
+    along.
+    
+    To untangle that
+            * serialize openers on ffs->mutex (both for ep0 and for dynamic files)
+            * have dynamic ones use atomic_inc_not_zero() and fail if we had
+    zero ->opened; in that case the file we are opening is doomed.
+            * have the inodes of dynamic files marked on removal (from the
+    callback of simple_recursive_removal()) - clear ->i_private there.
+            * have open of dynamic ones verify they hadn't been already removed,
+    along with checking that state is FFS_ACTIVE.
+    
+    Fix another abuse of ->opened, while we are at it - it starts equal to 0,
+    is incremented on opens and decremented on ->release()... *and* decremented
+    (always from 0 to -1) in ->kill_sb().  Handling that case has no business
+    in ffs_data_closed() (or to ->opened); just have ffs_kill_sb() do what
+    ffs_data_closed() would in case of decrement to negative rather than
+    calling ffs_data_closed() there.
+    
+    And don't bother with bumping ffs->ref when opening a file - superblock
+    already holds the reference and it won't go away while there are any opened
+    files on the filesystem.
+    
+    Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-static struct dma_buf_attachment *
-ffs_dmabuf_find_attachment(struct ffs_epfile *epfile, struct dma_buf *dmabuf)
-{
-        struct device *dev = epfile->ffs->gadget->dev.parent;
-                                           ^^^^^^^
-
-Can epfile->ffs->gadget be NULL here? This function is called from dmabuf
-ioctl handlers which can execute at any time the file is open. If the USB
-function is unbound or the gadget is being torn down, gadget will be NULL.
-
-================================================================================
-BUG #2: Race condition in ffs_data_closed()
-================================================================================
-
-In ffs_data_closed(), there's an unsynchronized state modification:
-
-static void ffs_data_closed(struct ffs_data *ffs)
-{
-        ...
-        if (atomic_dec_and_test(&ffs->opened)) {
-                if (ffs->no_disconnect) {
-                        ffs->state = FFS_DEACTIVATED;
-                        ...
-                } else {
-                        ffs->state = FFS_CLOSING;
-                        ffs_data_reset(ffs);
-                }
-        }
-        if (atomic_read(&ffs->opened) < 0) {
-                ffs->state = FFS_CLOSING;
-                ffs_data_reset(ffs);
-        }
-        ...
-}
-
-Can this race with concurrent state changes? The atomic_read() check is not
-synchronized with the subsequent state assignment. Between the read and the
-assignment, another thread could modify the state, potentially causing state
-machine corruption or double cleanup via ffs_data_reset().
-
-================================================================================
-BUG #3: race with gadget pointer in ffs_dmabuf_attach()
-================================================================================
-
-In ffs_dmabuf_attach(), the gadget pointer is checked then used without
-synchronization:
-
-static int ffs_dmabuf_attach(struct file *file, int fd)
-{
-        ...
-        struct usb_gadget *gadget = epfile->ffs->gadget;
-        ...
-        if (!gadget || !gadget->sg_supported)
-                return -EPERM;
-
-        dmabuf = dma_buf_get(fd);
-        if (IS_ERR(dmabuf))
-                return PTR_ERR(dmabuf);
-
-        attach = dma_buf_attach(dmabuf, gadget->dev.parent);
-                                        ^^^^^^^
-
-Can the gadget be freed between the NULL check and use? The gadget pointer
-is cached early in the function, checked for NULL, but then used later
-without any locks. If the function is unbound between the check and use,
-gadget->dev.parent dereferences freed memory.
-
-A mutex is held when ffs->gadget is set to NULL, but ffs_dma_buff_attach
-is Called from ff_epfile_ioctl(), with no locks are held.
-
-================================================================================
-BUG #4: dma_fence_put on uninitialized fence in ffs_dmabuf_transfer()
-================================================================================
-
-In ffs_dmabuf_transfer(), error paths call dma_fence_put() before the fence
-is initialized:
-
-static int ffs_dmabuf_transfer(...)
-{
-        ...
-        fence = kmalloc(sizeof(*fence), GFP_KERNEL);
-        if (!fence) {
-                ret = -ENOMEM;
-                goto err_resv_unlock;
-        }
-
-        fence->priv = priv;
-
-        spin_lock_irq(&epfile->ffs->eps_lock);
-
-        if (epfile->ep != ep) {
-                ret = -ESHUTDOWN;
-                goto err_fence_put;
-        }
-
-        usb_req = usb_ep_alloc_request(ep->ep, GFP_ATOMIC);
-        if (!usb_req) {
-                ret = -ENOMEM;
-                goto err_fence_put;
-        }
-
-        seqno = atomic_add_return(1, &epfile->seqno);
-
-        dma_fence_init(&fence->base, &ffs_dmabuf_fence_ops,
-                       &priv->lock, priv->context, seqno);
-        ...
-
-err_fence_put:
-        spin_unlock_irq(&epfile->ffs->eps_lock);
-        dma_fence_put(&fence->base);
-        ...
-}
-
-Can dma_fence_put() be called on an uninitialized fence? The error paths at
-epfile->ep != ep and usb_ep_alloc_request failure jump to err_fence_put, but
-dma_fence_init() isn't called until after those checks. Calling
-dma_fence_put() on an uninitialized fence violates the DMA fence API and
-likely crashes on uninitialized refcount.
-
-================================================================================
-BUG #5: NULL pointer dereference in ffs_epfile_ioctl()
-================================================================================
-
-In ffs_epfile_ioctl() handling FUNCTIONFS_ENDPOINT_DESC, the gadget pointer
-is dereferenced without a NULL check:
-
-static long ffs_epfile_ioctl(...)
-{
-        ...
-        case FUNCTIONFS_ENDPOINT_DESC:
-        {
-                int desc_idx;
-                struct usb_endpoint_descriptor desc1, *desc;
-
-                switch (epfile->ffs->gadget->speed) {
-                                   ^^^^^^^
-
-Can epfile->ffs->gadget be NULL here? The gadget can be
-NULL if the function is unbound. The function holds eps_lock but this
-doesn't protect against gadget being NULL.
-
-================================================================================
-BUG #6: NULL pointer dereference accessing descriptor array
-================================================================================
-
-In the same FUNCTIONFS_ENDPOINT_DESC handler, the descriptor pointer from
-the array is used without NULL check:
-
-                switch (epfile->ffs->gadget->speed) {
-                case USB_SPEED_SUPER:
-                case USB_SPEED_SUPER_PLUS:
-                        desc_idx = 2;
-                        break;
-                case USB_SPEED_HIGH:
-                        desc_idx = 1;
-                        break;
-                default:
-                        desc_idx = 0;
-                }
-
-                desc = epfile->ep->descs[desc_idx];
-                memcpy(&desc1, desc, desc->bLength);
-                                     ^^^^
-
-Can desc be NULL here? The descs array elements may not all be populated if
-userspace only provided descriptors for certain speeds. Accessing
-desc->bLength without a NULL check can crash.
-
-================================================================================
-BUG #7: Out-of-bounds array access in ffs_func_get_alt()
-================================================================================
-
-In ffs_func_get_alt(), the interface parameter is used to index cur_alt[]
-instead of the validated intf value:
-
-static int ffs_func_get_alt(struct usb_function *f,
-                            unsigned int interface)
-{
-        struct ffs_function *func = ffs_func_from_usb(f);
-        int intf = ffs_func_revmap_intf(func, interface);
-
-        return (intf < 0) ? intf : func->cur_alt[interface];
-                                                    ^^^^^^^^^
-}
-
-Can func->cur_alt[interface] overflow the array? The function calls
-ffs_func_revmap_intf() to validate and map the interface number, returning
-the validated index in intf. However, it then uses the unvalidated
-interface parameter to index cur_alt[] instead of intf.
-
-If interface >= MAX_CONFIG_INTERFACES, this reads beyond the array bounds.
-
-ffs_func_set_alt() follows the same incorrect pattern:
-func->cur_alt[interface] = alt;
-
-Data flow analysis:
-
-The interface parameter originates from the USB HOST (the PC or device that
-the USB gadget is plugged into), NOT from the userspace application. Here's
-the call chain:
-
-1. USB HOST sends USB_REQ_GET_INTERFACE control request over the wire
-2. composite_setup() in drivers/usb/gadget/composite.c handles it
-3. Extracts w_index from ctrl->wIndex (16-bit value from USB packet)
-4. Validates LOW 8 bits: checks intf >= MAX_CONFIG_INTERFACES
-5. Gets function: f = cdev->config->interface[intf]
-6. Calls: value = f->get_alt(f, w_index)
-
-The composite layer validates the low 8 bits (intf), but passes the FULL
-16-bit w_index as the interface parameter. The FunctionFS code:
-
-1. Calls ffs_func_revmap_intf(func, interface) which validates and returns
-   a local index
-2. **But then uses the original interface parameter to index cur_alt[]
-   instead of the validated intf**
-
-The interface number comes from the USB HOST over the wire,
-not from userspace application. It's validated partially by composite, but
-FunctionFS uses the wrong variable for array indexing.
-
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 47cfbe41fdff..ed7fa869ea77 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -640,13 +640,22 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
+ 
+ static int ffs_ep0_open(struct inode *inode, struct file *file)
+ {
+-	struct ffs_data *ffs = inode->i_private;
++	struct ffs_data *ffs = inode->i_sb->s_fs_info;
++	int ret;
+ 
+-	if (ffs->state == FFS_CLOSING)
+-		return -EBUSY;
++	/* Acquire mutex */
++	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
++	if (ret < 0)
++		return ret;
+ 
+-	file->private_data = ffs;
+ 	ffs_data_opened(ffs);
++	if (ffs->state == FFS_CLOSING) {
++		ffs_data_closed(ffs);
++		mutex_unlock(&ffs->mutex);
++		return -EBUSY;
++	}
++	mutex_unlock(&ffs->mutex);
++	file->private_data = ffs;
+ 
+ 	return stream_open(inode, file);
+ }
+@@ -1193,14 +1202,33 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+ static int
+ ffs_epfile_open(struct inode *inode, struct file *file)
+ {
+-	struct ffs_epfile *epfile = inode->i_private;
++	struct ffs_data *ffs = inode->i_sb->s_fs_info;
++	struct ffs_epfile *epfile;
++	int ret;
+ 
+-	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
++	/* Acquire mutex */
++	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
++	if (ret < 0)
++		return ret;
++
++	if (!atomic_inc_not_zero(&ffs->opened)) {
++		mutex_unlock(&ffs->mutex);
+ 		return -ENODEV;
++	}
++	/*
++	 * we want the state to be FFS_ACTIVE; FFS_ACTIVE alone is
++	 * not enough, though - we might have been through FFS_CLOSING
++	 * and back to FFS_ACTIVE, with our file already removed.
++	 */
++	epfile = smp_load_acquire(&inode->i_private);
++	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
++		mutex_unlock(&ffs->mutex);
++		ffs_data_closed(ffs);
++		return -ENODEV;
++	}
++	mutex_unlock(&ffs->mutex);
+ 
+ 	file->private_data = epfile;
+-	ffs_data_opened(epfile->ffs);
+-
+ 	return stream_open(inode, file);
+ }
+ 
+@@ -1332,7 +1360,7 @@ static void ffs_dmabuf_put(struct dma_buf_attachment *attach)
+ static int
+ ffs_epfile_release(struct inode *inode, struct file *file)
+ {
+-	struct ffs_epfile *epfile = inode->i_private;
++	struct ffs_epfile *epfile = file->private_data;
+ 	struct ffs_dmabuf_priv *priv, *tmp;
+ 	struct ffs_data *ffs = epfile->ffs;
+ 
+@@ -2071,12 +2099,18 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
+ 	return 0;
+ }
+ 
++static void ffs_data_reset(struct ffs_data *ffs);
++
+ static void
+ ffs_fs_kill_sb(struct super_block *sb)
+ {
+ 	kill_litter_super(sb);
+-	if (sb->s_fs_info)
+-		ffs_data_closed(sb->s_fs_info);
++	if (sb->s_fs_info) {
++		struct ffs_data *ffs = sb->s_fs_info;
++		ffs->state = FFS_CLOSING;
++		ffs_data_reset(ffs);
++		ffs_data_put(ffs);
++	}
+ }
+ 
+ static struct file_system_type ffs_fs_type = {
+@@ -2114,7 +2148,6 @@ static void functionfs_cleanup(void)
+ /* ffs_data and ffs_function construction and destruction code **************/
+ 
+ static void ffs_data_clear(struct ffs_data *ffs);
+-static void ffs_data_reset(struct ffs_data *ffs);
+ 
+ static void ffs_data_get(struct ffs_data *ffs)
+ {
+@@ -2123,7 +2156,6 @@ static void ffs_data_get(struct ffs_data *ffs)
+ 
+ static void ffs_data_opened(struct ffs_data *ffs)
+ {
+-	refcount_inc(&ffs->ref);
+ 	if (atomic_add_return(1, &ffs->opened) == 1 &&
+ 			ffs->state == FFS_DEACTIVATED) {
+ 		ffs->state = FFS_CLOSING;
+@@ -2148,11 +2180,11 @@ static void ffs_data_put(struct ffs_data *ffs)
+ 
+ static void ffs_data_closed(struct ffs_data *ffs)
+ {
+-	struct ffs_epfile *epfiles;
+-	unsigned long flags;
+-
+ 	if (atomic_dec_and_test(&ffs->opened)) {
+ 		if (ffs->no_disconnect) {
++			struct ffs_epfile *epfiles;
++			unsigned long flags;
++
+ 			ffs->state = FFS_DEACTIVATED;
+ 			spin_lock_irqsave(&ffs->eps_lock, flags);
+ 			epfiles = ffs->epfiles;
+@@ -2171,12 +2203,6 @@ static void ffs_data_closed(struct ffs_data *ffs)
+ 			ffs_data_reset(ffs);
+ 		}
+ 	}
+-	if (atomic_read(&ffs->opened) < 0) {
+-		ffs->state = FFS_CLOSING;
+-		ffs_data_reset(ffs);
+-	}
+-
+-	ffs_data_put(ffs);
+ }
+ 
+ static struct ffs_data *ffs_data_new(const char *dev_name)
+@@ -2352,6 +2378,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+ 	return 0;
+ }
+ 
++static void clear_one(struct dentry *dentry)
++{
++	smp_store_release(&dentry->d_inode->i_private, NULL);
++}
++
+ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ {
+ 	struct ffs_epfile *epfile = epfiles;
+@@ -2359,7 +2390,7 @@ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ 	for (; count; --count, ++epfile) {
+ 		BUG_ON(mutex_is_locked(&epfile->mutex));
+ 		if (epfile->dentry) {
+-			simple_recursive_removal(epfile->dentry, NULL);
++			simple_recursive_removal(epfile->dentry, clear_one);
+ 			epfile->dentry = NULL;
+ 		}
+ 	}
 
