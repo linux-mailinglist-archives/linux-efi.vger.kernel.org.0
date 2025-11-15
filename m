@@ -1,194 +1,128 @@
-Return-Path: <linux-efi+bounces-5520-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5521-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F74C5F695
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Nov 2025 22:45:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CCAC5FF41
+	for <lists+linux-efi@lfdr.de>; Sat, 15 Nov 2025 04:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 074B14F27D4
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Nov 2025 21:42:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 913D54E6836
+	for <lists+linux-efi@lfdr.de>; Sat, 15 Nov 2025 03:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4A235C189;
-	Fri, 14 Nov 2025 21:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0772222AA;
+	Sat, 15 Nov 2025 03:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NC0xxulK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gzM3zeP5"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D2E35E52E
-	for <linux-efi@vger.kernel.org>; Fri, 14 Nov 2025 21:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95C419EED3
+	for <linux-efi@vger.kernel.org>; Sat, 15 Nov 2025 03:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763156483; cv=none; b=RUDOEtbG4Hz2JmpIDCY+upX2VHdWmvjfMeCfYNTIeu/G0jk6FsXLQePQAdUWb5CJR6fcJacw/yi+perxtiD8+Pv/yKQDBWkI2yy3fXLqyT3mfKOnAD3d+tm7heyW9g21q8xG23wn9Eh3a/w9vVqKwvBVLmTNHf3GH01tdzA9yWM=
+	t=1763176615; cv=none; b=ZXlK6RX3588ecG9p9DYzxnGmVy2F1dzdHzI8Ya4/yl4nerJGApbtYIetU39On2DpHajhSc2nuOPv8BaPEXIV0hi8HAVDi0v8dBRnvQQIaZj8BIzkwxHT+STi+qetG4PgQ0Xq2qG8fHWckI+eYortMXuGFFOHaAF2bUyhLEPTO+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763156483; c=relaxed/simple;
-	bh=870jrKcu3+KExQtVbENYeTTMwFI1maOpGdGAxr2Wqk8=;
+	s=arc-20240116; t=1763176615; c=relaxed/simple;
+	bh=1dM7txdnL3WwXxhzg0NfITbWJawqUJn8AxOVuQOmSOA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bfAPZULsGDOdguQfpG8FxRJSVpQVqtqGduuTYaclQamqmMhiCJDUFUeiLJRp86vAYzbgMWAQcRttCdWx4DZQA94xmCtbktXxeUzJungi9YySDkN/8PWQReqFtiQ7Mf+rFTb7gPSn07ruYruVu5JESrkvB800Jp4UeloOhj8lKss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NC0xxulK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38657C2BC87
-	for <linux-efi@vger.kernel.org>; Fri, 14 Nov 2025 21:41:23 +0000 (UTC)
+	 To:Cc:Content-Type; b=bqIoGndWKOU9c2yZzIps48+QEu4xhMEHUKjwQtOLKzwsRMFBZyWhFs+f2jZS7davbDbENW7b7mvVqnYBIwKjOAeDHyVrHhEBR3vFGAKr6/5qVCufHehuLN6kLSelVq3UVode17+iB/wNNWPIUT1ZpYVWTBkZxHnFjLUR5cWE1MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gzM3zeP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307ABC2BC9E
+	for <linux-efi@vger.kernel.org>; Sat, 15 Nov 2025 03:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763156483;
-	bh=870jrKcu3+KExQtVbENYeTTMwFI1maOpGdGAxr2Wqk8=;
+	s=k20201202; t=1763176615;
+	bh=1dM7txdnL3WwXxhzg0NfITbWJawqUJn8AxOVuQOmSOA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NC0xxulKy/jVNsKu2R/tGkPcaCYwklP3aCdr0YuDrqo9Xf1BMj70GHOVB/x7T13fc
-	 qU1A3v1x9XrtQ0c8xSf8OADRSL5K+1urQOAVJ8cNeEFWEmjZVWuhBOkeHgTHS3ngF7
-	 jPwhSztkgPhTT/qVJgpNxF1JOAD+uqtvQkTUQ+E26SxQOdFQXdCiDx3XnXXJNK8RU/
-	 2Vw7bEWpXeohGB1XY4JvKXTth4xCsIuPQfdwZXqrSkdwpOdlWL6WCEqN90Ff14rvTh
-	 zDzv9J/aQx+5IXxQlDqcehvahGXpC3GL/kFgcD/f9Vd4lnSaNFQaxQOOYp0INu0SqM
-	 Y1o9ShchqWI9w==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37a5bc6b491so19170761fa.0
-        for <linux-efi@vger.kernel.org>; Fri, 14 Nov 2025 13:41:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVmh8skwlntMcY4tkiGDDxP5xI4R/lR5EbidrYxHHr3D4uq8eJy89mMiLLDAo9DbgFILwCLneP3cOI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4Cy40eaCDKoZK9LIRHcT4TpnD9NnOznOevoivqcjaLm67VeEP
-	VZ7rDZEVr7hP8mThg/U29Tn1UHiWzxbb+wYv/7SVz4hXOCA+qVo+4qi9FvTtNYivh+9+nVl8LPp
-	AMx1EDkdWfnQNFWWWmO0/G9Ws7mX+U+Y=
-X-Google-Smtp-Source: AGHT+IFe29zqo8gCkaVXCnGx37R00NX2gqT1LHiMtVBd28KTVWuGUdLf+hz9jkToQkMKok2Ij0Qi5JeaMuvCOyDXR+c=
-X-Received: by 2002:a2e:8a98:0:b0:379:348:80da with SMTP id
- 38308e7fff4ca-37babb5eed2mr11178121fa.8.1763156481579; Fri, 14 Nov 2025
- 13:41:21 -0800 (PST)
+	b=gzM3zeP5FIrXkPRuKUDq0lbVTzb3+XfJowk7C28SobZejzXWN83pXJEcyP4cRgB1f
+	 dLzKFoPZ3octPecz1SMSWDH8nHJvzNfXENC3F1yAnCMPP2+Lu33dSvEADZWHigo6HP
+	 FX7gf5H3uVur7vI7YK+rnT8AS0H8jzebkxI8WAXvIeSvK8Uyre4RTbMs/fCCMPSk6t
+	 WTgALwDvLQ9dDGeEnhR6p6ypXYVRAF3bL9syz5UR4w25zcc99yA0hbY6o+xRCTEfXV
+	 QEntL7cSSUzWtdBy9PUvqkczBTDH9p2f37yXcVSi0eqcSYlqWObC3hRGvFbzTybSaN
+	 pM6myGQs8xcpQ==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64165cd689eso6020622a12.0
+        for <linux-efi@vger.kernel.org>; Fri, 14 Nov 2025 19:16:55 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXu5BkzLmQEH8ucs2HeF3Xy2tFN60bluv/3eVEUMWz5GrzFLLcOr6tGPmBek3SyabUWHv8k0GTuzDY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzbV2LxIJYYOzpUHrP0D4s2IatHPZFRKFRSLSWy2FWaWye9rN4
+	rLrEw1gzjyHWI+zHvHnXJ4BVDA5v8UZl+y0eXw0ti2y2dOBbVBkbMdlyOmYkQi7vYRyrAV5f5TL
+	7LbRRMcsnvyy6rCYmMGcG7LsoUdzSXFo=
+X-Google-Smtp-Source: AGHT+IEhCFcB8Sc5IPBxNenAIJu3Cub21VKbayDOKy8qEqMDOguZ4v0qRe+zt91ixvviR/N5Gw9ABrYXgf7ej1GR6n4=
+X-Received: by 2002:a17:907:94cb:b0:b72:84bd:88f3 with SMTP id
+ a640c23a62f3a-b73658ae241mr667286066b.11.1763176613598; Fri, 14 Nov 2025
+ 19:16:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251114085058.2195900-1-sumit.garg@kernel.org> <20251114085058.2195900-2-sumit.garg@kernel.org>
-In-Reply-To: <20251114085058.2195900-2-sumit.garg@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 14 Nov 2025 22:41:10 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEsJMp8O-BckAoizDQRyirbZN+jYjYF9GGga4kd30em=A@mail.gmail.com>
-X-Gm-Features: AWmQ_bn_38f2aWCNi1v3PYjks773oxLFEOd0gS6-DSalAed6w3PWFNsA8Tlp6A8
-Message-ID: <CAMj1kXEsJMp8O-BckAoizDQRyirbZN+jYjYF9GGga4kd30em=A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] efi/reboot: Add support for EFI_RESET_PLATFORM_SPECIFIC
-To: Sumit Garg <sumit.garg@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org, 
-	mark.rutland@arm.com, andersson@kernel.org, konradybcio@kernel.org, 
-	dmitry.baryshkov@oss.qualcomm.com, shivendra.pratap@oss.qualcomm.com, 
-	leif.lindholm@oss.qualcomm.com, linux-kernel@vger.kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
+References: <jxfb5a2c2qber623l2gwewirwod54bbgfnvt7t7f3jah2ea33g@2uyhy3auzmpx>
+ <d9f3352a-1c1f-464a-a8fd-741cd96b5f8e@loongson.cn> <CAAhV-H6m5vszCyiF3qi94cpHBPVuqM2xH93D=gfsQqOSYvC-sA@mail.gmail.com>
+ <33612d85-e70b-26da-8460-ea6b9064ce08@loongson.cn> <CAAhV-H5ZSTFDxvm-W1CrgEoQ5d_jw5yVsfetQ_J_qL5pqLtzgg@mail.gmail.com>
+ <CAMj1kXGk0udgM67wrWqahqK8H0uE8emQj51SmJey+7fE-FTjdA@mail.gmail.com>
+ <CAAhV-H4c=vdNWO0v_mYL2xZ9FYjDyRDvt6f_kV4d8Bh=CRJniQ@mail.gmail.com>
+ <CAMj1kXEaxxcWTTANWeEMNjYDymdL5Fxy2B=XBF4RGtteEkfinw@mail.gmail.com>
+ <421c08e1-255b-447b-b5e3-ee6544fbefd2@loongson.cn> <CAAhV-H5KsFShDJ_Cxu+1_ces8oojn8+S-7PLmE7aUj8gX5_GEw@mail.gmail.com>
+ <32s3lvzfu6jkyho7qenrqbsm5wkgjnzn2imdp6tfwycmyxpzgu@kg5367uxmxii>
+In-Reply-To: <32s3lvzfu6jkyho7qenrqbsm5wkgjnzn2imdp6tfwycmyxpzgu@kg5367uxmxii>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 15 Nov 2025 11:16:42 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H47fzaKcMhgLWWOTxB+srBsg85-eK0LW1vQXQnvq32-+w@mail.gmail.com>
+X-Gm-Features: AWmQ_bk1bIi26jaM84_oT28vQ-tc26Bh0XF8H8WDo5TPEOpn0O8V--WlioeejxY
+Message-ID: <CAAhV-H47fzaKcMhgLWWOTxB+srBsg85-eK0LW1vQXQnvq32-+w@mail.gmail.com>
+Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
+To: Josh Poimboeuf <jpoimboe@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, 
+	"Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>, Ard Biesheuvel <ardb@kernel.org>, loongarch@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-efi@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 14 Nov 2025 at 09:51, Sumit Garg <sumit.garg@kernel.org> wrote:
+On Wed, Nov 12, 2025 at 2:00=E2=80=AFAM Josh Poimboeuf <jpoimboe@kernel.org=
+> wrote:
 >
-> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> On Mon, Nov 10, 2025 at 03:00:00PM +0800, Huacai Chen wrote:
+> > On Mon, Nov 10, 2025 at 9:19=E2=80=AFAM Tiezhu Yang <yangtiezhu@loongso=
+n.cn> wrote:
+> > > If I understand correctly, I should modify this patch to remove the
+> > > changes of arm and riscv for now, do the changes only when there is
+> > > a real problem or requirement some day, right? If no more comments,
+> > > I will send v3 later.
+> >
+> > Now everyone involved agrees that the efistub code is correct, so the
+> > proper solution is to fix the compiler.
 >
-> UEFI specification provides support for EfiResetPlatformSpecific reset
-> type as follows:
+> Hm?  I don't see how it's a compiler bug.  It's really just an objtool
+> limitation.
 >
-> "
-> ResetSystem:
+> > Changing efistub code and changing objtool (ignore __efistub prefix)
+> > are both workarounds, but I think changing objtool is a little more
+> > reasonable. Maybe Josh has different ideas?
 >
-> Calling this interface with ResetType of EfiResetPlatformSpecific
-> causes a system-wide reset. The exact type of the reset is defined
-> by the EFI_GUID that follows the Null-terminated Unicode string passed
-> into ResetData. If the platform does not recognize the EFI_GUID in
-> ResetData the platform must pick a supported reset type to perform.
-> The platform may optionally log the parameters from any non-normal
-> reset that occurs.
-> "
+> I thought the conversation had converged on what Tiezhu mentioned above,
+> which is to skip objtool on libstub for loongarch, but leave the other
+> arches alone.  That way objtool behavior is consistent between loongarch
+> and x86, and objtool doesn't need to ignore any prefixes.
 >
-> Lets use the ResetData to pass the platform specific reboot command
-> issued and leave it's interpretation to UEFI implementation following
-> the specification.
->
-> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> ---
->  drivers/firmware/efi/reboot.c | 25 +++++++++++++++----------
->  include/linux/efi.h           |  5 +++--
->  2 files changed, 18 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/firmware/efi/reboot.c b/drivers/firmware/efi/reboot.c
-> index ceae84c19d22..23a2fc68e9c9 100644
-> --- a/drivers/firmware/efi/reboot.c
-> +++ b/drivers/firmware/efi/reboot.c
-> @@ -10,7 +10,7 @@ static struct sys_off_handler *efi_sys_off_handler;
->
->  int efi_reboot_quirk_mode = -1;
->
-> -void efi_reboot(enum reboot_mode reboot_mode, const char *__unused)
-> +void efi_reboot(enum reboot_mode reboot_mode, const char *data)
->  {
->         const char *str[] = { "cold", "warm", "shutdown", "platform" };
->         int efi_mode, cap_reset_mode;
-> @@ -18,14 +18,18 @@ void efi_reboot(enum reboot_mode reboot_mode, const char *__unused)
->         if (!efi_rt_services_supported(EFI_RT_SUPPORTED_RESET_SYSTEM))
->                 return;
->
-> -       switch (reboot_mode) {
-> -       case REBOOT_WARM:
-> -       case REBOOT_SOFT:
-> -               efi_mode = EFI_RESET_WARM;
-> -               break;
-> -       default:
-> -               efi_mode = EFI_RESET_COLD;
-> -               break;
-> +       if (data) {
-> +               efi_mode = EFI_RESET_PLATFORM_SPECIFIC;
-> +       } else {
-> +               switch (reboot_mode) {
-> +               case REBOOT_WARM:
-> +               case REBOOT_SOFT:
-> +                       efi_mode = EFI_RESET_WARM;
-> +                       break;
-> +               default:
-> +                       efi_mode = EFI_RESET_COLD;
-> +                       break;
-> +               }
->         }
->
->         /*
-> @@ -43,7 +47,8 @@ void efi_reboot(enum reboot_mode reboot_mode, const char *__unused)
->                 efi_mode = cap_reset_mode;
->         }
->
-> -       efi.reset_system(efi_mode, EFI_SUCCESS, 0, NULL);
-> +       efi.reset_system(efi_mode, EFI_SUCCESS, sizeof(data),
+> So basically, the v2 patch minus the arm64/riscv changes.
 
-You cannot use sizeof() here - it will return the size of a pointer to
-const char.
+Hi, ARM64 and RISC-V maintainers,
+
+Would you mind that this patch modifies the three architectures
+together (they are exactly the same style now)?
+
+Madhavan is the author of ARM64's objtool, I think your opinion is
+also very important.
 
 
-> +                        (efi_char16_t *)data);
->  }
+Huacai
+
 >
->  bool __weak efi_poweroff_required(void)
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index a98cc39e7aaa..5324db1518b6 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -256,6 +256,7 @@ typedef union efi_boot_services efi_boot_services_t;
->  #define EFI_RESET_COLD 0
->  #define EFI_RESET_WARM 1
->  #define EFI_RESET_SHUTDOWN 2
-> +#define EFI_RESET_PLATFORM_SPECIFIC 3
->
->  /*
->   * EFI Runtime Services table
-> @@ -874,7 +875,7 @@ static inline bool efi_enabled(int feature)
->  {
->         return test_bit(feature, &efi.flags) != 0;
->  }
-> -extern void efi_reboot(enum reboot_mode reboot_mode, const char *__unused);
-> +extern void efi_reboot(enum reboot_mode reboot_mode, const char *data);
->
->  bool __pure __efi_soft_reserve_enabled(void);
->
-> @@ -895,7 +896,7 @@ static inline bool efi_enabled(int feature)
->         return false;
->  }
->  static inline void
-> -efi_reboot(enum reboot_mode reboot_mode, const char *__unused) {}
-> +efi_reboot(enum reboot_mode reboot_mode, const char *data) {}
->
->  static inline bool efi_soft_reserve_enabled(void)
->  {
 > --
-> 2.48.1
->
+> Josh
 
