@@ -1,132 +1,145 @@
-Return-Path: <linux-efi+bounces-5596-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5597-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA4FC690D5
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Nov 2025 12:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A88C6AC63
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Nov 2025 17:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 799324E473B
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Nov 2025 11:24:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1092E4F0006
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Nov 2025 16:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590502F1FD2;
-	Tue, 18 Nov 2025 11:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C20361DD1;
+	Tue, 18 Nov 2025 16:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cF1KwkMX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyNoXJq4"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF6B3254AB;
-	Tue, 18 Nov 2025 11:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05813596F9
+	for <linux-efi@vger.kernel.org>; Tue, 18 Nov 2025 16:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763465057; cv=none; b=cIKERNbIS+uDlo9asxms8E4BWwvx/D3uIDdnGLtdgabV2S+SxWECGsQwPQwxBdr5WaaV4+BxURWuJ/IEgu6bD69h5K9xLrO3M7FEtnEJxHVisztBKNJ2kcgeMWQyny0kqWAoKcPD0IYx6+Rn3qfl1VRTZEJ5VMvPBfNwjl2/+O4=
+	t=1763484746; cv=none; b=IddaBYHPCx6XFffrFug3fUgO0fBIZtwrMb4jNQrUVfzE23ZtJnhIMcWERo3bnYu2rpXSzhStMjWahejrp48tKGH2nlwLjUUtQzd910bwFhfjUhmaM+aWeA82i0bWxeSta9ui7TJ4OxoaiQLec1MoJxQnJyMZEBMDdXOrA3yyhMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763465057; c=relaxed/simple;
-	bh=95RGFT/dhcOn0/N6C6fU5jw+MwuagCZufD9NT8Bkv5g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MIGM7+li9T3z1BVf0vdXc3HmQkEAvGPZntVMqdwi8oQEBd/i/SJkXKUOuTK9nAn6wscD0dtD0jmXkrauGJj/6mv1XZ09Ht0qu9o27a5BAkFmhKySEilJzX4lSgrHlkICFMmZYuYHO6wwYTlAM7GySewz+XhyMQj+fIwQofhiux4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cF1KwkMX; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2FA9040E0258;
-	Tue, 18 Nov 2025 11:24:12 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id fKhnvmpBsDvn; Tue, 18 Nov 2025 11:24:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1763465045; bh=1kLZ5cyCs9UDKm0LBbgOUZyb5nF3nDZlDxQEsPSnVdg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cF1KwkMXQazRUOyIwJVFysULhOSIcknlBbylO3ziLKe6W99FKcAfkWr1s+eBQcKss
-	 V9WjpT4ROnyIkbou8nlFHV4cnu/sNvdxvFtmvxAurcCnSOVZFw67Jn4HsB5f1/9Z0i
-	 jKuf0/jmGIzi9jYSSH+ourYIwo01OboG8Tau2mEivci5tSXB3bHjXyzOZKiVTADIbC
-	 3G7XF8fBs5Q8Cw2ReXKBEO9LsD8qwfOlBH+XRY94dnGyW7hzGVEgtlbMbWl3zE7FMI
-	 ippz1GZYbJVcX8J5by38wKPjdQ1qZR7aFkU+PEL2v4B1qYomooNGn4EOqPbSp90sDX
-	 Ken3zf0j7TcO6BAN/1HqBneWM+BSBiYAkkL9K67CR4k0ZUiNbrrwyMbHPOEkcdMESL
-	 GWEqNIN3ZiS30oxKu+9MLylEpkQpKg1H2ZjoiacQWZrRcmzmXJLIkgROObHwTjnFkO
-	 x7qUWLPJPi0aptq47baslnNGIps4K26aikHIyXJS16bW02Td1+04dUJpkoDWHkG+fR
-	 SbRUyCy5YNTNFOa41zlVURKra0MAJjnn1kG81Wkbxiuya+b6fT0vc0hN0rHsQg77cn
-	 F9qD3WK1DqogexehP1t+0mur95Na4dmJTsZ84Mbk7AqlliMa15AOnZGxlMx8lWNi60
-	 rTptPugGiquJ7YtRAQyvA/V4=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 81B4740E0216;
-	Tue, 18 Nov 2025 11:23:39 +0000 (UTC)
-Date: Tue, 18 Nov 2025 12:23:38 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Kirill A . Shutemov" <kas@kernel.org>, Xin Li <xin@zytor.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Sean Christopherson <seanjc@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v12 6/8] x86/traps: Communicate a LASS violation in #GP
- message
-Message-ID: <20251118112338.GDaRxXOqONunUHGgV6@fat_crate.local>
-References: <20251113224204.50391-1-sohil.mehta@intel.com>
- <20251113224204.50391-7-sohil.mehta@intel.com>
- <20251117144840.GIaRs1yNEYjdNF0SHu@fat_crate.local>
- <bfce23cc-bf7f-494e-a443-baea41f33381@intel.com>
- <20251117182958.GBaRtppoY2uANW2JI8@fat_crate.local>
- <ff8564b5-8b64-4228-84cc-7e3c0156a886@intel.com>
+	s=arc-20240116; t=1763484746; c=relaxed/simple;
+	bh=/UYbgwArONFdvk5Zr+rtS+c/GYFVhvmgd+R153ybqGY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oLsvBC94qB2tM3ZSuEGLHAqZzhEnWH3sijOzY8b1AOlBygW9t6NvGegqcbiykGwxjzu7NXSQh3Z0D+We6DbjuA1cB0B3POR+YIXrlC3StY8FpXBFSg1bj9zUisywl3YzH+s3iOpS4g9kk56HoaOH5q9DYmiEV4z8wnBuddJvshs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyNoXJq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51430C4AF09
+	for <linux-efi@vger.kernel.org>; Tue, 18 Nov 2025 16:52:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763484745;
+	bh=/UYbgwArONFdvk5Zr+rtS+c/GYFVhvmgd+R153ybqGY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SyNoXJq4jqfUAHQHyTiqEz9LkvLvKoyPVCWUygPrHGjdxKHyZtAh/0rofTzJJiOJv
+	 QGO+N1GFrcndODXDQtyA9Dl2ctgZ2+jylsXszcIbvDGH4w0h8DTt0XIeOKhd7+US09
+	 CrXtRg5mV8GaB5E2zR5OJ0mWc28Zfk4b8cPEm53PQHe+mYFmbd7POgX9ZvlJpR1hhh
+	 4RGuABPqVb0/iFJ5EyIL8Y+saWmcA/nIaOGbGGCRo7bZV/ChfeoRXxqpDJ8TIrdgQS
+	 LChIeLsq1jTPXzdxRQ2bu9s0O8VjH9kqHedUmRjvPZ7DpokZv5mHagSS/aFRZhJU0z
+	 0ryOx6wYUYWoQ==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5958187fa55so4284436e87.3
+        for <linux-efi@vger.kernel.org>; Tue, 18 Nov 2025 08:52:25 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWjM3bRuX5Ap0et/nb4U9YCwDp2SxZYIUoMqH+f3jQXurV8FjN8dwq7ZGs+TEk3taEXBXCValIIHJ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJRlIN6yeRoIj0xiwwhorK4K4uKq+LGo0wt2fDQffljHp+21xD
+	0xQZcr9m6zHUqoBFcHe0Is3Pj5n1AsyeZTPuVl+gQoSeGJglT1VECR92DP1hfobtLt7sIWRlnVA
+	sVAIaf6rmXfCBptBJaI+GE+ali5IQekQ=
+X-Google-Smtp-Source: AGHT+IFksk9/clMmZi7mOOu8rAadkOumT7VeVOL++ibIDj8QdKllEdllcxF8SVt5pBbMxZLv1hClzabPHWc/9O7alyo=
+X-Received: by 2002:a05:6512:32ca:b0:595:7e2d:986a with SMTP id
+ 2adb3069b0e04-595841b664emr5509917e87.24.1763484742954; Tue, 18 Nov 2025
+ 08:52:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ff8564b5-8b64-4228-84cc-7e3c0156a886@intel.com>
+References: <20251015160816.525825-1-tzimmermann@suse.de> <CAMj1kXF62pEMUJAM12HnF7qMt5xhZaZXpPoMdebMUKCfoAYisQ@mail.gmail.com>
+ <b6801420-6ae4-44cb-9d86-e9353a2a59d8@suse.de>
+In-Reply-To: <b6801420-6ae4-44cb-9d86-e9353a2a59d8@suse.de>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 18 Nov 2025 17:52:11 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHKc4jJnQ9x+sUhAO54PeZ6QN6yzcHVTovGvunp2QYnDA@mail.gmail.com>
+X-Gm-Features: AWmQ_bl7etIV5p_8fkgiaE4DIbmT-ztJJoP0b_jbGjWYhamjdP8Q_QlshQ_xgdY
+Message-ID: <CAMj1kXHKc4jJnQ9x+sUhAO54PeZ6QN6yzcHVTovGvunp2QYnDA@mail.gmail.com>
+Subject: Re: [PATCH 0/5] efi: x86: Provide EDID from GOP device
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: jonathan@marek.ca, javierm@redhat.com, linux-efi@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 17, 2025 at 11:45:38AM -0800, Sohil Mehta wrote:
-> Would this update to the comment help clarify?
+On Mon, 17 Nov 2025 at 09:02, Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>
+> Hi
+>
+> Am 14.11.25 um 09:31 schrieb Ard Biesheuvel:
+> > On Wed, 15 Oct 2025 at 18:08, Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> >> Add support for EFI_EDID_ACTIVE_PROTOCOL and EFI_EDID_DISCOVERED_PROTOCOL
+> >> on x86. Refactor the GOP helpers for EDID support, then retrieve the EDID
+> >> into x86 boot_params.
+> >>
+> >> Later boot code copies the EDID from the boot parameters into the global
+> >> variable edid_info. Graphics drivers, such as efidrm, can pick up the
+> >> information from there. In the case of efidrm, it provides the EDID to
+> >> user-space compositors, which use it for improved QoS on the display
+> >> output. Similar functionality is already available on old VESA systems
+> >> with vesadrm.
+> >>
+> >> Tested on x86 EFI systems.
+> >>
+> >> Another patch is required to provide EDID on non-x86 systems via the
+> >> generic EFI stub. The implementation can directly build upon this
+> >> series.
+> >>
+> >> Thomas Zimmermann (5):
+> >>    efi: Fix trailing whitespace in header file
+> >>    efi/libstub: gop: Find GOP handle instead of GOP data
+> >>    efi/libstub: gop: Initialize screen_info in helper function
+> >>    efi/libstub: gop: Add support for reading EDID
+> >>    efi/libstub: x86: Store EDID in boot_params
+> >>
+> > Hi,
+> >
+> > Apologies for the delay. This series looks fine to me, although I
+> > would prefer it if we could make things a bit more generic?
+> >
+> > Everything you are adding here is arch-agnostic, except for the bit
+> > where we use x86-specific plumbing to pass the EDID info between the
+> > EFI stub and the core kernel.
+>
+> Attached is an RFC patch that I already have. This would be the next
+> step for EDID support. I've not yet sent the generic-EFI patch, as I did
+> not have opportunity to test it. The patch addresses most of what you
+> ask for, I think.
+>
+> >
+> > More specifically, could we do the following:
+> > - move struct edid_info edid_info into common code
+>
+> edid_info is related to screen_info, so it follows the same conventions.
+> Arnd Bergmann made x86-specific changes for screen_info in commit
+> b8466fe82b79 ("efi: move screen_info into efi init code"). x86 has it's
+> own thing, sort of. See the attached patch for my non-x86 solution.
+>
+> > - pass the detected EDID info block via a EFI config table instead of
+> > boot_params
+>
+> The x86 code uses boot params for screen_info already and also transfers
+> edid_info on VESA systems via boot params (or if grub set up boot_params
+> for us). [1] It's all there and working already. If we transfer
+> edid_info via config table, we'd need extra code on x86.
+>
 
-Yap, that LGTM.
+I understand the x86 already uses edid_info for non-EFI boot, but that
+doesn't mean we have to introduce new dependencies on legacy bits like
+boot_params to the EFI stub.
 
-> 	/*
-> 	 * A NULL pointer dereference usually causes a #PF. However, it
-> 	 * can result in a #GP when LASS is active. Provide the same
-> 	 * hint in the rare case that the condition is hit without LASS.
-> 	 */
-> 	if (*addr < PAGE_SIZE)
-> 		return GP_NULL_POINTER;
-> 
-> 	/*
-> 	 * Assume that LASS caused the exception, because the address is
-> 	 * canonical and in the user half.
-> 	 */
-> 	if (cpu_feature_enabled(X86_FEATURE_LASS))
-> 		return GP_LASS_VIOLATION;
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+For generic EFI, I don't think it is necessary to clone all the config
+table logic with GUIDs and stuff. Instead, given that the EFI stub is
+tightly coupled with the kernel anyway, we can just decide that the
+config table has both a screen_info and a edid_info struct, and the
+generic EFI code consuming the config table populates both.
 
