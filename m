@@ -1,63 +1,63 @@
-Return-Path: <linux-efi+bounces-5605-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5606-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2C4C6B3F6
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Nov 2025 19:36:46 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D757C6B3D8
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Nov 2025 19:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C24014E55AC
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Nov 2025 18:36:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D4D99365CE7
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Nov 2025 18:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E916B2DA759;
-	Tue, 18 Nov 2025 18:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF402E22A3;
+	Tue, 18 Nov 2025 18:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H7zn8IpR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aMp1R5tY"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6222DC787;
-	Tue, 18 Nov 2025 18:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AB12E11D7;
+	Tue, 18 Nov 2025 18:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763490904; cv=none; b=uPpnKszPLOfBnEf4So1Zjmnr5FGMc+JMAXHsmh7poDXoRPobE2mZMa/6GF8c9P0A9Q3Is9EZOTPCkQTlnFo/v5CVAc2Hod6M4patvYUfh/8Y5h3MFsCFYrPsUyCjl9i0xdfS2xZGY9bKCL4A5VUs8D4ukgvrcseXa3ajVqSG/b8=
+	t=1763490909; cv=none; b=XaQFT+ucWTxvx3YHnMPJD5TFT/rh5Phw9Ll9nlHA3rMsTdzNm8CeOeCVG2X0XuLqPmq2G/1RunlKG3q9JhqY7Tc7GCNjeO4Vn/sUrLOAtjodWDezFSu2StgNDBFp2LmO5KilhLtAMpZkc7Fpq1L/KEUE28FdnCZaI6dBNxwxT54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763490904; c=relaxed/simple;
-	bh=Of1UkDgA+A8BDxzkeo8tPZu02XdKsJjP//uVe66ASjQ=;
+	s=arc-20240116; t=1763490909; c=relaxed/simple;
+	bh=kBdXhc+A+wT4FZp9yNpWWziklK2/ynCoRGDow6mU3dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hi/rk9OK8usXgDtMzF+RBxTg8fTN8l776kIA3h2TpMBsxMIZYVdtl2CjrzzvJUP1qDUolB9Z7sx8Or6kXcwdQQuhK9OOHEhoOs8aK2RotEdD3NoyqATeHPOxEzrChUB9dDw0j27PINtR56pMi6jRUenMjA2PPhvBxPKAj50L73E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H7zn8IpR; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=TQoX2StaDL7W/+pwn5bK0eC+CwLQtkNBFJXqI43rSe/i9AHTBwcYv/u+PxvwWtZxHMKtV6Jn9HM2Gpu8T4y+Pxfl8tiIS/X8DZK4I/qAx/g9dtH+z8MRQI1Y3yIXFPKIJPDQH9tiZ1Cg4zHIGstUNjTIYZlO0LuYfJrx4WkctBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aMp1R5tY; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763490903; x=1795026903;
+  t=1763490908; x=1795026908;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Of1UkDgA+A8BDxzkeo8tPZu02XdKsJjP//uVe66ASjQ=;
-  b=H7zn8IpR4em3o8GA6BJ8srEyI21UpHIoLfSdAH00I9fxb5+5pwZohVM+
-   2mbKP+Dnq1NYx3oEr1jhn/Y+yMcDu5DiCWBY2BoYtJ8YdrQ4FhNDHfZjd
-   /7M8f8vp+7MShjAi60xhDV900znP4oqZRK4CtaYK9KASrq8qo1Ejj9tUs
-   QYNEl/NXNgBgj1lqlCVi5zSNjjl6/jngisQohwVXXXD1wDsdxeu2yx5Nj
-   fn5PVsIK9QLSUnEz2S7jEplf6tAjAeWrnnM0cChcl/jZUcx2wXVO9eaSH
-   nsm6t5AkcRaVLnWf27AiNpvr0OZu+hvu2CzhNmAU9o9gW8ZZdYteesKh9
-   Q==;
-X-CSE-ConnectionGUID: kmAlPHxDSWC3GPdIIz5c9Q==
-X-CSE-MsgGUID: +ri3xi97SJaiDkQmtwHB8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="76979955"
+  bh=kBdXhc+A+wT4FZp9yNpWWziklK2/ynCoRGDow6mU3dw=;
+  b=aMp1R5tYnZSf3mPIEBhicKwWFk0dQ7+EF2TEbWxpl0KNM4GPzv3TE7JE
+   dOsQ5YitfrrKOwsbq102llwuqdk8M/7iKUunPEor8Lfwy3KuoNOpF6aWx
+   vtxrNX5CLxXlAsX2r4Uay3aybvsVreqU5bJ6VR3dYGTLu94InRDdwyZz7
+   8FgPpki+QCrGnZ2R5oxetzhdUrOBwMuinhNQrQC8HWW9ank2fj97Jx4j9
+   M3MaJC2uPVcmd1nIjmix5v0D0UJJO0Eo+YkU4kSELBNXHBLioxQvjcbAl
+   PKvzTQ0QLT9eN8hsrAQacg81CptEikeU07eXSu1Vz+G5T2y8ZpZ0WIBdm
+   w==;
+X-CSE-ConnectionGUID: 0z5tgAobQaWMF+RjVAdhiw==
+X-CSE-MsgGUID: Uw6YAPTsS1uccyWX1hTiVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="76979999"
 X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="76979955"
+   d="scan'208";a="76979999"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 10:31:57 -0800
-X-CSE-ConnectionGUID: BReNKAusRMi3989MjLWa7A==
-X-CSE-MsgGUID: vqkSOBvNRnuhJ512RtbM3w==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 10:31:58 -0800
+X-CSE-ConnectionGUID: Gf76gajzT92lT0TA/wE9Sw==
+X-CSE-MsgGUID: jtqyMQBPQUiAnhI9pJqeKQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="190088959"
+   d="scan'208";a="190088965"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa006.jf.intel.com with ESMTP; 18 Nov 2025 10:31:57 -0800
+  by orviesa006.jf.intel.com with ESMTP; 18 Nov 2025 10:31:58 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: x86@kernel.org,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -86,9 +86,9 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v13 7/8] selftests/x86: Update the negative vsyscall tests to expect a #GP
-Date: Tue, 18 Nov 2025 10:29:09 -0800
-Message-ID: <20251118182911.2983253-8-sohil.mehta@intel.com>
+Subject: [PATCH v13 8/8] x86/cpu: Enable LASS during CPU initialization
+Date: Tue, 18 Nov 2025 10:29:10 -0800
+Message-ID: <20251118182911.2983253-9-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251118182911.2983253-1-sohil.mehta@intel.com>
 References: <20251118182911.2983253-1-sohil.mehta@intel.com>
@@ -100,86 +100,102 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some of the vsyscall selftests expect a #PF when vsyscalls are disabled.
-However, with LASS enabled, an invalid access results in a SIGSEGV due
-to a #GP instead of a #PF. One such negative test fails because it is
-expecting X86_PF_INSTR to be set.
+Linear Address Space Separation (LASS) mitigates a class of side-channel
+attacks that rely on speculative access across the user/kernel boundary.
+Enable LASS along with similar security features if the platform
+supports it.
 
-Update the failing test to expect either a #GP or a #PF. Also, update
-the printed messages to show the trap number (denoting the type of
-fault) instead of assuming a #PF.
+While at it, remove the comment above the SMAP/SMEP/UMIP/LASS setup
+instead of updating it, as the whole sequence is quite self-explanatory.
+
+Some EFI runtime and boot services may rely on 1:1 mappings in the lower
+half during early boot and even after SetVirtualAddressMap(). To avoid
+tripping LASS, the initial CR4 programming would need to be delayed
+until EFI has completely finished entering virtual mode (including
+efi_free_boot_services()). Also, LASS would need to be temporarily
+disabled while switching to efi_mm to avoid potential faults on stray
+runtime accesses.
+
+Similarly, legacy vsyscall page accesses are flagged by LASS resulting
+in a #GP (instead of a #PF). Without LASS, the #PF handler emulates the
+accesses and returns the appropriate values. Equivalent emulation
+support is required in the #GP handler with LASS enabled. In case of
+vsyscall XONLY (execute only) mode, the faulting address is readily
+available in the RIP which would make it easier to reuse the #PF
+emulation logic.
+
+For now, keep it simple and disable LASS if either of those are compiled
+in. Though not ideal, this makes it easier to start testing LASS support
+in some environments. In future, LASS support can easily be expanded to
+support EFI and legacy vsyscalls.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
+For reference, here are the relevant discussion links regarding EFI and
+legacy vsyscalls:
+
+https://lore.kernel.org/lkml/CAMj1kXGyTo=4Va1PevMQyCauEKSutfSPo6je0Ps09TabhTe4zQ@mail.gmail.com/
+https://lore.kernel.org/lkml/bbb68600-eea9-45d8-90d1-bc4619186a4d@intel.com/
+https://lore.kernel.org/lkml/CAMj1kXFQaGaz37MNKXXjhUKy_mP-5teCDj80-hjUPHw4x+TKrA@mail.gmail.com/
+https://lore.kernel.org/lkml/d1b5698e-94ab-45a2-a472-4488895d55bb@intel.com/
+
 v12:
+ - Disable LASS when EFI support is compiled in.
  - Pick up review tag.
 
 v11:
- - New patch (Fixes a vsyscall selftest failure)
+ - Disable LASS if vsyscall emulation support is compiled in.
+ - Drop Rick's review tag because of the new changes.
 ---
- tools/testing/selftests/x86/test_vsyscall.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ arch/x86/kernel/cpu/common.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/x86/test_vsyscall.c b/tools/testing/selftests/x86/test_vsyscall.c
-index 05e1e6774fba..918eaec8bfbe 100644
---- a/tools/testing/selftests/x86/test_vsyscall.c
-+++ b/tools/testing/selftests/x86/test_vsyscall.c
-@@ -308,12 +308,13 @@ static void test_getcpu(int cpu)
- #ifdef __x86_64__
- 
- static jmp_buf jmpbuf;
--static volatile unsigned long segv_err;
-+static volatile unsigned long segv_err, segv_trapno;
- 
- static void sigsegv(int sig, siginfo_t *info, void *ctx_void)
- {
- 	ucontext_t *ctx = (ucontext_t *)ctx_void;
- 
-+	segv_trapno = ctx->uc_mcontext.gregs[REG_TRAPNO];
- 	segv_err =  ctx->uc_mcontext.gregs[REG_ERR];
- 	siglongjmp(jmpbuf, 1);
- }
-@@ -336,7 +337,8 @@ static void test_vsys_r(void)
- 	else if (can_read)
- 		ksft_test_result_pass("We have read access\n");
- 	else
--		ksft_test_result_pass("We do not have read access: #PF(0x%lx)\n", segv_err);
-+		ksft_test_result_pass("We do not have read access (trap=%ld, error=0x%lx)\n",
-+				      segv_trapno, segv_err);
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 02d97834a1d4..8afcbfd48a8a 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -405,6 +405,28 @@ static __always_inline void setup_umip(struct cpuinfo_x86 *c)
+ 	cr4_clear_bits(X86_CR4_UMIP);
  }
  
- static void test_vsys_x(void)
-@@ -347,7 +349,7 @@ static void test_vsys_x(void)
- 		return;
- 	}
++static __always_inline void setup_lass(struct cpuinfo_x86 *c)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_LASS))
++		return;
++
++	/*
++	 * Legacy vsyscall page access causes a #GP when LASS is active.
++	 * Disable LASS because the #GP handler doesn't support vsyscall
++	 * emulation.
++	 *
++	 * Also disable LASS when running under EFI, as some runtime and
++	 * boot services rely on 1:1 mappings in the lower half.
++	 */
++	if (IS_ENABLED(CONFIG_X86_VSYSCALL_EMULATION) ||
++	    IS_ENABLED(CONFIG_EFI)) {
++		setup_clear_cpu_cap(X86_FEATURE_LASS);
++		return;
++	}
++
++	cr4_set_bits(X86_CR4_LASS);
++}
++
+ /* These bits should not change their value after CPU init is finished. */
+ static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
+ 					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED;
+@@ -2015,10 +2037,10 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ 	/* Disable the PN if appropriate */
+ 	squash_the_stupid_serial_number(c);
  
--	ksft_print_msg("Make sure that vsyscalls really page fault\n");
-+	ksft_print_msg("Make sure that vsyscalls really cause a fault\n");
+-	/* Set up SMEP/SMAP/UMIP */
+ 	setup_smep(c);
+ 	setup_smap(c);
+ 	setup_umip(c);
++	setup_lass(c);
  
- 	bool can_exec;
- 	if (sigsetjmp(jmpbuf, 1) == 0) {
-@@ -358,13 +360,14 @@ static void test_vsys_x(void)
- 	}
- 
- 	if (can_exec)
--		ksft_test_result_fail("Executing the vsyscall did not page fault\n");
--	else if (segv_err & (1 << 4)) /* INSTR */
--		ksft_test_result_pass("Executing the vsyscall page failed: #PF(0x%lx)\n",
--				      segv_err);
-+		ksft_test_result_fail("Executing the vsyscall did not fault\n");
-+	/* #GP or #PF (with X86_PF_INSTR) */
-+	else if ((segv_trapno == 13) || ((segv_trapno == 14) && (segv_err & (1 << 4))))
-+		ksft_test_result_pass("Executing the vsyscall page failed (trap=%ld, error=0x%lx)\n",
-+				      segv_trapno, segv_err);
- 	else
--		ksft_test_result_fail("Execution failed with the wrong error: #PF(0x%lx)\n",
--				      segv_err);
-+		ksft_test_result_fail("Execution failed with the wrong error (trap=%ld, error=0x%lx)\n",
-+				      segv_trapno, segv_err);
- }
- 
- /*
+ 	/* Enable FSGSBASE instructions if available. */
+ 	if (cpu_has(c, X86_FEATURE_FSGSBASE)) {
 -- 
 2.43.0
 
