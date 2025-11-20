@@ -1,71 +1,103 @@
-Return-Path: <linux-efi+bounces-5616-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5618-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37250C7153B
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Nov 2025 23:45:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E8AC71B75
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Nov 2025 02:49:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id E29CF2F9E3
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Nov 2025 22:45:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62AFC4E36C7
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Nov 2025 01:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697DE320A10;
-	Wed, 19 Nov 2025 22:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBFF23A98D;
+	Thu, 20 Nov 2025 01:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="GkUoEl0B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uF2z7xSs"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6E2330B14;
-	Wed, 19 Nov 2025 22:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F05816EB42;
+	Thu, 20 Nov 2025 01:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763592171; cv=none; b=rpTVZHUugwAWTSZydNYyjPtD5yanw93Z3aDSftD5wz9H8Y4BcXPZNZXDQJJrAsMGRopFS69zUnw7kTzlUATt1n2hJzWRmmNlE3McTVdiZRjzcUcVokImjowlugNx3REljSXBX6vhuVtDa2hMQlroZZPP9qu1gHFibvgHxg0wCNQ=
+	t=1763603259; cv=none; b=LehxLUdygbahBDgmM6n5WKLwmWaaFf9RQCIqQl/qgs2FG5m4isINVZgc+kLIMe0fLrbzyB7ytxDo9p+6iljFwa9nzhm8E8sTPonJt7PR5SgkmRLxv8aL1eiKt4NuVQYW+Yr6g3fvw6SDUo3r+ctpDePa5hzfAdvYg0zmpUaut44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763592171; c=relaxed/simple;
-	bh=ZZNNuTRuiX53llVmFMgKwGGhIW58g3kFCa2xIK5PUCc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T0t7jY0T/rfF1FRueCZ8ZlJOzV4HTFTUawUbteJ/pjagJuTKHfpY7qt1ckTkctFLzRz6OOoUjho8wZn5F4COJ21WHRaitzHKEcx9wK/+ramk8ew+OtjBe2BZ2BCA0b3WfwDyZFjS9F9s4r9QkCzvQUEMTkMw7Y/IzHeqeyOnv9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=GkUoEl0B; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vLqsw-006kvx-LU; Wed, 19 Nov 2025 23:42:46 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To
-	:Message-Id:Date:Subject:Cc:To:From;
-	bh=Vhn8/vbnFTBTrLe40in1hyrWt+hwUetOS1daXHrGJRI=; b=GkUoEl0BxUcro5HrumgEhz6q7S
-	ABk1zCOGPsPuJyp1ZRIagRRuwzkOCh0X4FJqoA+gb+WH43yS/9/fELw+4L+cMrKm286TWzaluczUD
-	kmvzWGSBWmdHpO3mEp3toCKbeQ86UNgVPKKUiwQwfOpMaXOExV5xSOVtSklsVRJBUezKxOfJMeT5C
-	Sy5jmu2eU1AXBMVmKlNkEb7n13V9qpNc3vRdyP0HdznRtS/x6QzaRGq2rxSzIN9g297yPBdk2jDtM
-	WqrenPTlhBjHV2g2szbJ7y0zTVdf/yAXs98gfKaSlJ8/75ShkB42ktGPXLIyvMDkVFbRCGxyhEJ0O
-	faXr9lTA==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vLqsw-00085q-81; Wed, 19 Nov 2025 23:42:46 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vLqsa-00Fos6-9U; Wed, 19 Nov 2025 23:42:24 +0100
-From: david.laight.linux@gmail.com
-To: linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Cc: Davidlohr Bueso <dave@stgolabs.net>,
-	Jens Axboe <axboe@kernel.dk>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Tejun Heo <tj@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH 12/44] block: use min() instead of min_t()
-Date: Wed, 19 Nov 2025 22:41:08 +0000
-Message-Id: <20251119224140.8616-13-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1763603259; c=relaxed/simple;
+	bh=Qz0Kt9BVZotF+W8b8C03wV9uEpjzU2IZVkSaOcZVd50=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AvH6jxCmb00Tu1pC9E68hK/IG2HkCQ2rUi3fteRS7RVCxd98MBVlgnbfgacz7Bq+11mxmr99AHS127RFH9nx6yI1texBxvKKBN1LoiUA+0YwLVTYlGXrBHoll7rtuLyDG5WYzWYIYohdSn8tVnM9wZ6SCws3KeZBQ74dXRwQNSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uF2z7xSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC38C113D0;
+	Thu, 20 Nov 2025 01:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763603258;
+	bh=Qz0Kt9BVZotF+W8b8C03wV9uEpjzU2IZVkSaOcZVd50=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uF2z7xSsJBEF2o7jOCGEA8BICVnf2Ll7GN/YdEoLbs8PaQeAHioKS/o3SZ7QSxsKt
+	 vFnjbh6TICH8PLye1zHlHKdpzDE5Fm345e4L/w0hg/fEJ7Itp2slYgup6C6JZwwIym
+	 LLCi+QyeEmLY48F4L7ZzcbTStdyHeEENY8Hfnp0DqQrXSF5r2MrZk7t4OMHkvbN7PR
+	 8Qcsuc8hp1q4+vdSlLZQjWoYyrPh5U9WhuFsg9TNqdi8dNwuUtBQRxPyNJujXI9VwL
+	 mc5s7M6miwKRs2zV2Elwkq7lUfoGg+X1KHfkkxDDXD+SynQUk6oIGjhckD0gmUEmi4
+	 nBJOVjtHwyLhA==
+Date: Wed, 19 Nov 2025 17:47:34 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: david.laight.linux@gmail.com
+Cc: linux-kernel@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Alexei Starovoitov
+ <ast@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Andreas Dilger
+ <adilger.kernel@dilger.ca>, Andrew Lunn <andrew@lunn.ch>, Andrew Morton
+ <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Ard Biesheuvel
+ <ardb@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, Borislav Petkov <bp@alien8.de>, Christian
+ Brauner <brauner@kernel.org>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Christoph Hellwig <hch@lst.de>, Daniel Borkmann
+ <daniel@iogearbox.net>, Dan Williams <dan.j.williams@intel.com>, Dave
+ Hansen <dave.hansen@linux.intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ David Ahern <dsahern@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, "David S. Miller"
+ <davem@davemloft.net>, Dennis Zhou <dennis@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ingo Molnar <mingo@redhat.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Jarkko Sakkinen
+ <jarkko@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Jens Axboe
+ <axboe@kernel.dk>, Jiri Slaby <jirislaby@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, John Allen <john.allen@amd.com>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, Juergen Gross <jgross@suse.com>, Kees Cook
+ <kees@kernel.org>, KP Singh <kpsingh@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Mika Westerberg <westeri@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, Namhyung Kim
+ <namhyung@kernel.org>, Neal Cardwell <ncardwell@google.com>,
+ nic_swsd@realtek.com, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Olivia
+ Mackall <olivia@selenic.com>, Paolo Abeni <pabeni@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Peter Huewe <peterhuewe@gmx.de>, Peter
+ Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, Srinivas Kandagatla
+ <srini@kernel.org>, Stefano Stabellini <sstabellini@kernel.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>, "Theodore Ts'o"
+ <tytso@mit.edu>, Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, x86@kernel.org, Yury Norov
+ <yury.norov@gmail.com>, amd-gfx@lists.freedesktop.org, bpf@vger.kernel.org,
+ cgroups@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ io-uring@vger.kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linux-mm@kvack.org,
+ linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, mptcp@lists.linux.dev, netdev@vger.kernel.org,
+ usb-storage@lists.one-eyed-alien.net
+Subject: Re: [PATCH 00/44] Change a lot of min_t() that might mask high bits
+Message-ID: <20251119174734.5cba3f95@kernel.org>
 In-Reply-To: <20251119224140.8616-1-david.laight.linux@gmail.com>
 References: <20251119224140.8616-1-david.laight.linux@gmail.com>
 Precedence: bulk
@@ -74,73 +106,15 @@ List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: David Laight <david.laight.linux@gmail.com>
+On Wed, 19 Nov 2025 22:40:56 +0000 david.laight.linux@gmail.com wrote:
+> I've had to trim the 124 maintainers/lists that get_maintainer.pl finds
+> from 124 to under 100 to be able to send the cover letter.
+> The individual patches only go to the addresses found for the associated files.
+> That reduces the number of emails to a less unsane number.
 
-min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
-Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned long'
-and so cannot discard significant bits.
-
-In this case the 'unsigned long' value is small enough that the result
-is ok.
-
-(Similarly for max_t() and clamp_t().)
-
-Detected by an extra check added to min_t().
-
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
----
- block/blk-iocost.c     | 6 ++----
- block/blk-settings.c   | 2 +-
- block/partitions/efi.c | 3 +--
- 3 files changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index 5bfd70311359..a0416927d33d 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -2334,10 +2334,8 @@ static void ioc_timer_fn(struct timer_list *timer)
- 			else
- 				usage_dur = max_t(u64, now.now - ioc->period_at, 1);
- 
--			usage = clamp_t(u32,
--				DIV64_U64_ROUND_UP(usage_us * WEIGHT_ONE,
--						   usage_dur),
--				1, WEIGHT_ONE);
-+			usage = clamp(DIV64_U64_ROUND_UP(usage_us * WEIGHT_ONE, usage_dur),
-+				      1, WEIGHT_ONE);
- 
- 			/*
- 			 * Already donating or accumulated enough to start.
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index d74b13ec8e54..4e0c23e68fac 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -472,7 +472,7 @@ int blk_validate_limits(struct queue_limits *lim)
- 		seg_size = lim->max_segment_size;
- 	else
- 		seg_size = lim->seg_boundary_mask + 1;
--	lim->min_segment_size = min_t(unsigned int, seg_size, PAGE_SIZE);
-+	lim->min_segment_size = min(seg_size, PAGE_SIZE);
- 
- 	/*
- 	 * We require drivers to at least do logical block aligned I/O, but
-diff --git a/block/partitions/efi.c b/block/partitions/efi.c
-index 7acba66eed48..638261e9f2fb 100644
---- a/block/partitions/efi.c
-+++ b/block/partitions/efi.c
-@@ -215,8 +215,7 @@ static int is_pmbr_valid(legacy_mbr *mbr, sector_t total_sectors)
- 		sz = le32_to_cpu(mbr->partition_record[part].size_in_lba);
- 		if (sz != (uint32_t) total_sectors - 1 && sz != 0xFFFFFFFF)
- 			pr_debug("GPT: mbr size in lba (%u) different than whole disk (%u).\n",
--				 sz, min_t(uint32_t,
--					   total_sectors - 1, 0xFFFFFFFF));
-+				 sz, (uint32_t)min(total_sectors - 1, 0xFFFFFFFF));
- 	}
- done:
- 	return ret;
--- 
-2.39.5
-
+Please split the networking (9?) patches out to a separate series.
+It will help you with the CC list, and help us to get this applied..
 
