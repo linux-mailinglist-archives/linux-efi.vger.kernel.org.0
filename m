@@ -1,85 +1,94 @@
-Return-Path: <linux-efi+bounces-5629-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5630-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD70C7A128
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Nov 2025 15:15:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C246C79FDB
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Nov 2025 15:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id C3ABF2E9EF
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Nov 2025 14:00:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 530DC4F2985
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Nov 2025 14:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D7C34D38B;
-	Fri, 21 Nov 2025 13:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F6434DCC4;
+	Fri, 21 Nov 2025 13:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iMKPWBQ2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Abyw+g0j";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iMKPWBQ2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Abyw+g0j"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ufT4qNYQ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LvbvTzte";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ufT4qNYQ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LvbvTzte"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4325347BBE
-	for <linux-efi@vger.kernel.org>; Fri, 21 Nov 2025 13:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2A34D905
+	for <linux-efi@vger.kernel.org>; Fri, 21 Nov 2025 13:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763733395; cv=none; b=uX+LBB0iQlGI10ySH3Ws6mH26iKQ+zVrqivt2eUx2OmYV1PmEj3ylXURL36XeWzy+D1FT+nmdBP03Qu2/MEWzdNHzKKABcTpM8y1SQVZVFtLQNPTxlgFS0ZFpyRz53nsDXKa/3dViDcjYRN56RzHHCJZpP75bExefg9pTQHMDfE=
+	t=1763733400; cv=none; b=KagBb78nZnnxXGLM6hBDYtH40gR+2UQ2r7ClOJ6W2CzEmZsz0BybJfREP1ValU/JgDgyU0hH/4uOnvECqaWubo9Y5LYewVHcMHP9o1VauX56VdWCYjHExIgjf0q1lkXkn4eBZEjUSZaoQYkRROjlfgRwmZrD8BKnv+wpy2Qa+50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763733395; c=relaxed/simple;
-	bh=xym5R5yEVSDL4/KM5LMgvvTEfCR+Kft6Tnj1uH1q3FU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gETERCZ0Oh2ViOjnkMRwRdoeSH/nO6Fq+HaDDYSkvu+X6IG6djBmY4RCqSrlH3kN39CPLW64TJd7pUoVsxXdVawhZg9G7BEBZWRehqrAhwITVJh1ZCa79moeGHi5oMKaGI4g7GzT6HVnqlRILWROm1GXgu81KbrHQ90ye5m7E4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iMKPWBQ2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Abyw+g0j; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iMKPWBQ2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Abyw+g0j; arc=none smtp.client-ip=195.135.223.130
+	s=arc-20240116; t=1763733400; c=relaxed/simple;
+	bh=wuLG6p1+F5v8s/6OdBkkdXwGOeyA+T7HYtlc1BahPYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KTEs8rcwFGaLLvXcn3jc4vxTA+vfyUDliZlEOlIX3ziSE61EbK6yKyPVgY5s+56qfT4Af2bKawlsTkq5sh2cUWOsq/BzagCIAt8MGQf73V8FMm5ibRuz8sVnX9XGkTFDMuwy/BhttdVdsPjji7TELpEeYBuP03SV0SJprNpzp4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ufT4qNYQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LvbvTzte; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ufT4qNYQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LvbvTzte; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 28247218EA;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 78E4121011;
 	Fri, 21 Nov 2025 13:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1763733391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=2fy6AJV5/LJmpRrj1RphVCyLdSqiM/Tki+XKx37wkHU=;
-	b=iMKPWBQ2/YHLmQOMzgxyhZgL0qVKiRCtXOcpIhrGmp/kgyxlmA98lsYRipa9vkpslgCdGp
-	KdwVujc9na0fwt4t97s6rd4OfBWKtXmh/kRfine8gwUkvhtdVbu9uNgzcGm9EhYGSdMrV1
-	YEibxSNMD8K3yNpaFCBYQBYvBRpv3Ss=
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CglNUSO0kp39x0UlCguyZYGnc05enMLut11VcQSN64E=;
+	b=ufT4qNYQ5gJn0P/56UGQHy4wkKsoLKl6dHn7/8Fe7GwuN8UB63Gz62eT5GritqKeK4nUxx
+	ECD4KPBpQFmyvZoXuYgJiFsXCdMzpN0d9qOVswonkfLvmzWfPO/lqWWp+HIxF7/EcgJm7o
+	UOXNPtEq0a0fNiJqBgLm9XOvYTzZw7Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1763733391;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=2fy6AJV5/LJmpRrj1RphVCyLdSqiM/Tki+XKx37wkHU=;
-	b=Abyw+g0jyRAdyZfxtFfsshAV0j5bGUOXfi7JyQENaF5nTh7i2CQVizKVX7OXJuuSarUXYD
-	zmJth7/Q/teZsWBQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iMKPWBQ2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Abyw+g0j
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CglNUSO0kp39x0UlCguyZYGnc05enMLut11VcQSN64E=;
+	b=LvbvTzte+Fr3dlDAdooCBR/Ae/Q04Tk2pCZmTBhPYR1PDQXnhsk/0RSrDP8JwGaTPBB+ss
+	xeJp0/hHNxkTIsDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ufT4qNYQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=LvbvTzte
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1763733391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=2fy6AJV5/LJmpRrj1RphVCyLdSqiM/Tki+XKx37wkHU=;
-	b=iMKPWBQ2/YHLmQOMzgxyhZgL0qVKiRCtXOcpIhrGmp/kgyxlmA98lsYRipa9vkpslgCdGp
-	KdwVujc9na0fwt4t97s6rd4OfBWKtXmh/kRfine8gwUkvhtdVbu9uNgzcGm9EhYGSdMrV1
-	YEibxSNMD8K3yNpaFCBYQBYvBRpv3Ss=
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CglNUSO0kp39x0UlCguyZYGnc05enMLut11VcQSN64E=;
+	b=ufT4qNYQ5gJn0P/56UGQHy4wkKsoLKl6dHn7/8Fe7GwuN8UB63Gz62eT5GritqKeK4nUxx
+	ECD4KPBpQFmyvZoXuYgJiFsXCdMzpN0d9qOVswonkfLvmzWfPO/lqWWp+HIxF7/EcgJm7o
+	UOXNPtEq0a0fNiJqBgLm9XOvYTzZw7Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1763733391;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=2fy6AJV5/LJmpRrj1RphVCyLdSqiM/Tki+XKx37wkHU=;
-	b=Abyw+g0jyRAdyZfxtFfsshAV0j5bGUOXfi7JyQENaF5nTh7i2CQVizKVX7OXJuuSarUXYD
-	zmJth7/Q/teZsWBQ==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CglNUSO0kp39x0UlCguyZYGnc05enMLut11VcQSN64E=;
+	b=LvbvTzte+Fr3dlDAdooCBR/Ae/Q04Tk2pCZmTBhPYR1PDQXnhsk/0RSrDP8JwGaTPBB+ss
+	xeJp0/hHNxkTIsDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B94E83EA61;
-	Fri, 21 Nov 2025 13:56:30 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 21D133EA62;
+	Fri, 21 Nov 2025 13:56:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TzTPK45vIGkqdQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 21 Nov 2025 13:56:30 +0000
+	id uMELB49vIGkqdQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 21 Nov 2025 13:56:31 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: ardb@kernel.org,
 	javierm@redhat.com,
@@ -95,10 +104,12 @@ Cc: x86@kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-fbdev@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 0/6] arch,sysfb: Move screen and edid info into single place
-Date: Fri, 21 Nov 2025 14:36:04 +0100
-Message-ID: <20251121135624.494768-1-tzimmermann@suse.de>
+Subject: [PATCH 1/6] efi: earlycon: Reduce number of references to global screen_info
+Date: Fri, 21 Nov 2025 14:36:05 +0100
+Message-ID: <20251121135624.494768-2-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251121135624.494768-1-tzimmermann@suse.de>
+References: <20251121135624.494768-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -108,7 +119,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: 
 X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 28247218EA
+X-Rspamd-Queue-Id: 78E4121011
 X-Rspamd-Action: no action
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spamd-Result: default: False [-3.01 / 50.00];
@@ -120,97 +131,173 @@ X-Spamd-Result: default: False [-3.01 / 50.00];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
 	MX_GOOD(-0.01)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLtfyjk8sg4x43ngtem9djprcp)];
 	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
 X-Spam-Score: -3.01
 
-Replace screen_info and edid_info with sysfb_primary_device of type
-struct sysfb_display_info. Update all users.
+Replace usage of global screen_info with local pointers. This will
+later reduce churn when screen_info is being moved.
 
-Sysfb DRM drivers currently fetch the global edid_info directly, when
-they should get that information together with the screen_info from their
-device. Wrapping screen_info and edid_info in sysfb_primary_display and
-passing this to drivers enables this.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
+ drivers/firmware/efi/earlycon.c | 40 ++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-Replacing both with sysfb_primary_display has been motivate by the EFI
-stub. EFI wants to transfer EDID via config table in a single entry.
-Using struct sysfb_display_info this will become easily possible. Hence
-accept some churn in architecture code for the long-term improvements.
-
-Patches 1 and 2 reduce the exposure of screen_info in EFI-related code.
-
-Patch 3 adds struct sysfb_display_info.
-
-Patch 4 replaces scren_info with sysfb_primary_display. This results in
-several changes throught the kernel, but is really just a refactoring.
-
-Patch 5 updates sysfb to transfer sysfb_primary_display to the related
-drivers.
-
-Patch 6 moves edid_info into sysfb_primary_display. This resolves some
-drivers' reference to the global edid_info, but also makes the EDID data
-available on non-x86 architectures.
-
-The short-term benefit of this series is in patches 5 and 6. With
-sysfb_primary_display in place a follow-up series will improve EFI support
-for EDID as outlined in the series at [1] and [2].
-
-[1] https://lore.kernel.org/dri-devel/20251015160816.525825-1-tzimmermann@suse.de/
-[2] https://lore.kernel.org/linux-efi/20251119123011.1187249-5-ardb+git@google.com/
-
-Thomas Zimmermann (6):
-  efi: earlycon: Reduce number of references to global screen_info
-  efi: sysfb_efi: Reduce number of references to global screen_info
-  sysfb: Add struct sysfb_display_info
-  sysfb: Replace screen_info with sysfb_primary_display
-  sysfb: Pass sysfb_primary_display to devices
-  sysfb: Move edid_info into sysfb_primary_display
-
- arch/arm64/kernel/image-vars.h                |  2 +-
- arch/loongarch/kernel/efi.c                   | 11 +--
- arch/loongarch/kernel/image-vars.h            |  2 +-
- arch/riscv/kernel/image-vars.h                |  2 +-
- arch/x86/kernel/kexec-bzimage64.c             |  4 +-
- arch/x86/kernel/setup.c                       | 16 ++--
- arch/x86/video/video-common.c                 |  4 +-
- drivers/firmware/efi/earlycon.c               | 42 +++++-----
- drivers/firmware/efi/efi-init.c               | 14 ++--
- drivers/firmware/efi/libstub/efi-stub-entry.c | 18 +++--
- drivers/firmware/efi/sysfb_efi.c              | 81 ++++++++++---------
- drivers/firmware/sysfb.c                      | 13 +--
- drivers/firmware/sysfb_simplefb.c             |  2 +-
- drivers/gpu/drm/sysfb/efidrm.c                | 14 ++--
- drivers/gpu/drm/sysfb/vesadrm.c               | 14 ++--
- drivers/hv/vmbus_drv.c                        |  6 +-
- drivers/pci/vgaarb.c                          |  4 +-
- drivers/video/Kconfig                         |  1 -
- drivers/video/fbdev/core/fbmon.c              |  8 +-
- drivers/video/fbdev/efifb.c                   | 10 ++-
- drivers/video/fbdev/vesafb.c                  | 10 ++-
- drivers/video/fbdev/vga16fb.c                 |  8 +-
- drivers/video/screen_info_pci.c               |  5 +-
- include/linux/screen_info.h                   |  2 -
- include/linux/sysfb.h                         | 23 ++++--
- include/video/edid.h                          |  4 -
- 26 files changed, 177 insertions(+), 143 deletions(-)
-
-
-base-commit: 57e807d4454add8b60e8807ad1cf812141f34cdb
+diff --git a/drivers/firmware/efi/earlycon.c b/drivers/firmware/efi/earlycon.c
+index d18a1a5de144..fac3a295c57f 100644
+--- a/drivers/firmware/efi/earlycon.c
++++ b/drivers/firmware/efi/earlycon.c
+@@ -32,12 +32,13 @@ static void *efi_fb;
+  */
+ static int __init efi_earlycon_remap_fb(void)
+ {
++	const struct screen_info *si = &screen_info;
++
+ 	/* bail if there is no bootconsole or it was unregistered already */
+ 	if (!earlycon_console || !console_is_registered(earlycon_console))
+ 		return 0;
+ 
+-	efi_fb = memremap(fb_base, screen_info.lfb_size,
+-			  fb_wb ? MEMREMAP_WB : MEMREMAP_WC);
++	efi_fb = memremap(fb_base, si->lfb_size, fb_wb ? MEMREMAP_WB : MEMREMAP_WC);
+ 
+ 	return efi_fb ? 0 : -ENOMEM;
+ }
+@@ -71,12 +72,12 @@ static __ref void efi_earlycon_unmap(void *addr, unsigned long len)
+ 	early_memunmap(addr, len);
+ }
+ 
+-static void efi_earlycon_clear_scanline(unsigned int y)
++static void efi_earlycon_clear_scanline(unsigned int y, const struct screen_info *si)
+ {
+ 	unsigned long *dst;
+ 	u16 len;
+ 
+-	len = screen_info.lfb_linelength;
++	len = si->lfb_linelength;
+ 	dst = efi_earlycon_map(y*len, len);
+ 	if (!dst)
+ 		return;
+@@ -85,7 +86,7 @@ static void efi_earlycon_clear_scanline(unsigned int y)
+ 	efi_earlycon_unmap(dst, len);
+ }
+ 
+-static void efi_earlycon_scroll_up(void)
++static void efi_earlycon_scroll_up(const struct screen_info *si)
+ {
+ 	unsigned long *dst, *src;
+ 	u16 maxlen = 0;
+@@ -99,8 +100,8 @@ static void efi_earlycon_scroll_up(void)
+ 	}
+ 	maxlen *= 4;
+ 
+-	len = screen_info.lfb_linelength;
+-	height = screen_info.lfb_height;
++	len = si->lfb_linelength;
++	height = si->lfb_height;
+ 
+ 	for (i = 0; i < height - font->height; i++) {
+ 		dst = efi_earlycon_map(i*len, len);
+@@ -120,7 +121,8 @@ static void efi_earlycon_scroll_up(void)
+ 	}
+ }
+ 
+-static void efi_earlycon_write_char(u32 *dst, unsigned char c, unsigned int h)
++static void efi_earlycon_write_char(u32 *dst, unsigned char c, unsigned int h,
++				    const struct screen_info *si)
+ {
+ 	const u32 color_black = 0x00000000;
+ 	const u32 color_white = 0x00ffffff;
+@@ -145,13 +147,12 @@ static void efi_earlycon_write_char(u32 *dst, unsigned char c, unsigned int h)
+ static void
+ efi_earlycon_write(struct console *con, const char *str, unsigned int num)
+ {
+-	struct screen_info *si;
++	const struct screen_info *si = &screen_info;
+ 	u32 cur_efi_x = efi_x;
+ 	unsigned int len;
+ 	const char *s;
+ 	void *dst;
+ 
+-	si = &screen_info;
+ 	len = si->lfb_linelength;
+ 
+ 	while (num) {
+@@ -174,7 +175,7 @@ efi_earlycon_write(struct console *con, const char *str, unsigned int num)
+ 			x = efi_x;
+ 
+ 			while (n-- > 0) {
+-				efi_earlycon_write_char(dst + x*4, *s, h);
++				efi_earlycon_write_char(dst + x*4, *s, h, si);
+ 				x += font->width;
+ 				s++;
+ 			}
+@@ -207,10 +208,10 @@ efi_earlycon_write(struct console *con, const char *str, unsigned int num)
+ 			cur_line_y = (cur_line_y + 1) % max_line_y;
+ 
+ 			efi_y -= font->height;
+-			efi_earlycon_scroll_up();
++			efi_earlycon_scroll_up(si);
+ 
+ 			for (i = 0; i < font->height; i++)
+-				efi_earlycon_clear_scanline(efi_y + i);
++				efi_earlycon_clear_scanline(efi_y + i, si);
+ 		}
+ 	}
+ }
+@@ -226,22 +227,21 @@ void __init efi_earlycon_reprobe(void)
+ static int __init efi_earlycon_setup(struct earlycon_device *device,
+ 				     const char *opt)
+ {
+-	struct screen_info *si;
++	const struct screen_info *si = &screen_info;
+ 	u16 xres, yres;
+ 	u32 i;
+ 
+ 	fb_wb = opt && !strcmp(opt, "ram");
+ 
+-	if (screen_info.orig_video_isVGA != VIDEO_TYPE_EFI) {
++	if (si->orig_video_isVGA != VIDEO_TYPE_EFI) {
+ 		fb_probed = true;
+ 		return -ENODEV;
+ 	}
+ 
+-	fb_base = screen_info.lfb_base;
+-	if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
+-		fb_base |= (u64)screen_info.ext_lfb_base << 32;
++	fb_base = si->lfb_base;
++	if (si->capabilities & VIDEO_CAPABILITY_64BIT_BASE)
++		fb_base |= (u64)si->ext_lfb_base << 32;
+ 
+-	si = &screen_info;
+ 	xres = si->lfb_width;
+ 	yres = si->lfb_height;
+ 
+@@ -266,7 +266,7 @@ static int __init efi_earlycon_setup(struct earlycon_device *device,
+ 
+ 	efi_y -= font->height;
+ 	for (i = 0; i < (yres - efi_y) / font->height; i++)
+-		efi_earlycon_scroll_up();
++		efi_earlycon_scroll_up(si);
+ 
+ 	device->con->write = efi_earlycon_write;
+ 	earlycon_console = device->con;
 -- 
 2.51.1
 
