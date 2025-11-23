@@ -1,197 +1,205 @@
-Return-Path: <linux-efi+bounces-5656-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5657-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C50C7D400
-	for <lists+linux-efi@lfdr.de>; Sat, 22 Nov 2025 17:37:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B4EC7DACA
+	for <lists+linux-efi@lfdr.de>; Sun, 23 Nov 2025 03:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3D57C4E0397
-	for <lists+linux-efi@lfdr.de>; Sat, 22 Nov 2025 16:37:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C7A83AACB3
+	for <lists+linux-efi@lfdr.de>; Sun, 23 Nov 2025 02:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BDC17A2FB;
-	Sat, 22 Nov 2025 16:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25AF1DF24F;
+	Sun, 23 Nov 2025 02:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GphWKXII"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSkynLBV"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA4615E5BB
-	for <linux-efi@vger.kernel.org>; Sat, 22 Nov 2025 16:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4BC1A9F9B
+	for <linux-efi@vger.kernel.org>; Sun, 23 Nov 2025 02:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763829426; cv=none; b=AlxX188KJWO/nzwjMPf4PGZE5Wx63qKCvV4PsQd0qzjPfRU4h34hVZogLkTQfd2ZzIBebr7ZcObzyGjdGVlGmA9xfzz4GZrdN9AgsqzHFVsho1AdAr2ee+oc+3nAenPC14X0BQ+jlw+sczfVsenqqNn+UBKarNKQv52SrjgcLbI=
+	t=1763864941; cv=none; b=RayNXol2ij+XTjgnRCYwTAnSLUFi4RLM8UkexGfOFmVcFxUMbfpCbmpn6k7SL4acmUcaRjlA7L09fDH3GAnT1N1JYsSY0P3XQ3JEXemh0gzwSdQmbhRA6MgQPOQFKbNdWz2nuNekzkj+9DYHaVAuAFrwk0nbPBfPD1UwciYpkwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763829426; c=relaxed/simple;
-	bh=rqNR1OKFT+ryf1Mn90pOfVVgpOUdUDHcGlOZXahGfEw=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=A+w/xdGp0Y209B/gPNvuvC8nm9YfiefgHyxPdqF+L6qLq03Ny5+Tt+1OjW3w5oavCwsg3xqI3cy8jLOIOiXV8UenD5XbvfFyJ3xPVrHp8ClLFk9ztRevG0g+kV7PNSyDmXO0WQukJxyiHscd5ZCNdxxI52LJeyZTjkLtIDSybig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GphWKXII; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763829424; x=1795365424;
-  h=date:from:to:cc:subject:message-id;
-  bh=rqNR1OKFT+ryf1Mn90pOfVVgpOUdUDHcGlOZXahGfEw=;
-  b=GphWKXIInU7+sJB6zdLTAo046WzVzMZZdhau9xPjZLi4wEM+4/QDFORx
-   6noDrOgYmE7/+WuLja+Jym0DdyolRpaclUmCBCvnvK2nSX7OLj6MKBvMp
-   88CrG50eaOmYW0GzH8OJtyFqntoUY35C1rxPWcCJnuD12iO735VZ5fyUI
-   kHR88tC0MXYsr4b4+GW9c2/HKQQ8EeW79pCSOort3FodvGXqJQ7oWAsaQ
-   F1YLB51Eo9Jq9s5EQ3qwVYSLizZiIDj3gdwmwYrAJGb08zHU7a6d2DB+P
-   OZJDkoQdp/Qokj5bKALimYJ3xEyvapnZzGl9v1QldjicTOiSjVINTUF6L
-   Q==;
-X-CSE-ConnectionGUID: HQgZwKMyRdGpqtIa1oUEwA==
-X-CSE-MsgGUID: YSPVge9rSsmrrMoEttXBeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11621"; a="65084370"
-X-IronPort-AV: E=Sophos;i="6.20,218,1758610800"; 
-   d="scan'208";a="65084370"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2025 08:37:03 -0800
-X-CSE-ConnectionGUID: ipDpq3ICRK23bkNn3kjtmg==
-X-CSE-MsgGUID: v+HOBHmPTQ+A5EOIM63DMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,218,1758610800"; 
-   d="scan'208";a="215306794"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 22 Nov 2025 08:37:03 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vMqbc-0007gt-1e;
-	Sat, 22 Nov 2025 16:37:00 +0000
-Date: Sun, 23 Nov 2025 00:36:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS
- 7a2ff00c3b5e3ca1bbeb13cda52efe870be8501b
-Message-ID: <202511230030.uAdNMUn5-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1763864941; c=relaxed/simple;
+	bh=5/gE9+3vHOoB1f8yml6mnDnZO5OsQRxggIUPttmfMEI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aRd6kMVIGn3pq18CTbIN4wmXGGQhmZKtFTfats3ypy+sYeBBzzWnWffa/sZGcbWylGH0ZhDNekrjoXDA0ar1c5Vkubw7RLoNM8t15++WoRaOwVxizPJh3dbAS8nVitDJ01zeDx89pgyb715IdiAnCofo56vhFDjxkPge8lRKAFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSkynLBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B2EC4CEF5
+	for <linux-efi@vger.kernel.org>; Sun, 23 Nov 2025 02:29:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763864941;
+	bh=5/gE9+3vHOoB1f8yml6mnDnZO5OsQRxggIUPttmfMEI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lSkynLBVL7qbBWmP7VIrRx09zE8Ng0gBmoadl+PInPMq+4lFWJmeMmAgdjGxGV9Q4
+	 nMmQsSLfPGz283G1TBASqmUaA0hSUvc7EuBSpcxU2UzLEW2mvUpAhkP26dcAcwu0C1
+	 bFOYmIVd/0XCG4sQbdwGEywoIYs4WXHc6eHigLBK/MFXyBCSIhfmHU4SKMnb3PW03p
+	 VC1UGiJ7B5n0YlLVsgWG6v3Wf5fSoRR0MvHnIKxmC+rxkO6N6LdLBck0MU0MuNzlJo
+	 y2F0FO4XTTyBGU+G7dFmuiEOrFBgptYD0gG9hMFRjg93a/mlLse1zNSvIY0mYYjpDQ
+	 B3+DHfCj797ww==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b737502f77bso458161966b.2
+        for <linux-efi@vger.kernel.org>; Sat, 22 Nov 2025 18:29:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX0lidYkixUENttNSydUK8ltuPawldQLB00YwYIunKeQOz3ODBJO5cR2RO8j5aBFOlc0KJs34u7RmY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/uUW23ymZ6cc6ad+jxE1DsuCfI3/rWLaIQ7t68OH4xPCQ8ypo
+	UziCP6AxCom3khLP0P/Eq3+sbuVzQnCce+mmdVLFSYODRbJxNoNxtzZA1QO/UzS9zXX7WXYFO55
+	22gXV0H6oGZhI4D36JG2sJRvcSeIr32g=
+X-Google-Smtp-Source: AGHT+IF2NG45CGhewRb+YxxwCpQ+Qs09Wv1Cd6UcCR2RSlep4aU6EwJEltWefiEmVuOu3WrO2PpFhIzvWqq/mYqO3k4=
+X-Received: by 2002:a17:907:7f1e:b0:b70:b077:b957 with SMTP id
+ a640c23a62f3a-b767158cd7amr622544566b.15.1763864939736; Sat, 22 Nov 2025
+ 18:28:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <CAAhV-H6m5vszCyiF3qi94cpHBPVuqM2xH93D=gfsQqOSYvC-sA@mail.gmail.com>
+ <33612d85-e70b-26da-8460-ea6b9064ce08@loongson.cn> <CAAhV-H5ZSTFDxvm-W1CrgEoQ5d_jw5yVsfetQ_J_qL5pqLtzgg@mail.gmail.com>
+ <CAMj1kXGk0udgM67wrWqahqK8H0uE8emQj51SmJey+7fE-FTjdA@mail.gmail.com>
+ <CAAhV-H4c=vdNWO0v_mYL2xZ9FYjDyRDvt6f_kV4d8Bh=CRJniQ@mail.gmail.com>
+ <CAMj1kXEaxxcWTTANWeEMNjYDymdL5Fxy2B=XBF4RGtteEkfinw@mail.gmail.com>
+ <421c08e1-255b-447b-b5e3-ee6544fbefd2@loongson.cn> <CAAhV-H5KsFShDJ_Cxu+1_ces8oojn8+S-7PLmE7aUj8gX5_GEw@mail.gmail.com>
+ <32s3lvzfu6jkyho7qenrqbsm5wkgjnzn2imdp6tfwycmyxpzgu@kg5367uxmxii>
+ <CAAhV-H47fzaKcMhgLWWOTxB+srBsg85-eK0LW1vQXQnvq32-+w@mail.gmail.com>
+ <aRsH7RTpAah4g5Xr@willie-the-truck> <CAAhV-H4AasfFet_Gi_mVyte3RPMH3qBS73dBfF-=Gd7HJ6ZPEw@mail.gmail.com>
+ <39617a3e-c476-abac-8425-bbcece769cdb@loongson.cn>
+In-Reply-To: <39617a3e-c476-abac-8425-bbcece769cdb@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sun, 23 Nov 2025 10:29:02 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4fHBuRpDEDQrExApgnREJaT8JWUJ2700bEPFxDqToi2w@mail.gmail.com>
+X-Gm-Features: AWmQ_bmAZrJIPzwBoGQGazI9CFQ9PH-O_LgSCm_k_cIQ90BdG2Wz9hDhqi3Uewg
+Message-ID: <CAAhV-H4fHBuRpDEDQrExApgnREJaT8JWUJ2700bEPFxDqToi2w@mail.gmail.com>
+Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Will Deacon <will@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	"Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 7a2ff00c3b5e3ca1bbeb13cda52efe870be8501b  docs: efi: add CPER functions to driver-api
+On Sat, Nov 22, 2025 at 7:04=E2=80=AFPM Tiezhu Yang <yangtiezhu@loongson.cn=
+> wrote:
+>
+> Cc: Nathan Chancellor <nathan@kernel.org>
+>
+> Hi all,
+>
+> On 11/21/25 22:36, Huacai Chen wrote:
+> > On Mon, Nov 17, 2025 at 7:33=E2=80=AFPM Will Deacon <will@kernel.org> w=
+rote:
+> >>
+> >> On Sat, Nov 15, 2025 at 11:16:42AM +0800, Huacai Chen wrote:
+> >>> On Wed, Nov 12, 2025 at 2:00=E2=80=AFAM Josh Poimboeuf <jpoimboe@kern=
+el.org> wrote:
+> >>>>
+> >>>> On Mon, Nov 10, 2025 at 03:00:00PM +0800, Huacai Chen wrote:
+> >>>>> On Mon, Nov 10, 2025 at 9:19=E2=80=AFAM Tiezhu Yang <yangtiezhu@loo=
+ngson.cn> wrote:
+> >>>>>> If I understand correctly, I should modify this patch to remove th=
+e
+> >>>>>> changes of arm and riscv for now, do the changes only when there i=
+s
+> >>>>>> a real problem or requirement some day, right? If no more comments=
+,
+> >>>>>> I will send v3 later.
+> >>>>>
+> >>>>> Now everyone involved agrees that the efistub code is correct, so t=
+he
+> >>>>> proper solution is to fix the compiler.
+> >>>>
+> >>>> Hm?  I don't see how it's a compiler bug.  It's really just an objto=
+ol
+> >>>> limitation.
+> >>>>
+> >>>>> Changing efistub code and changing objtool (ignore __efistub prefix=
+)
+> >>>>> are both workarounds, but I think changing objtool is a little more
+> >>>>> reasonable. Maybe Josh has different ideas?
+> >>>>
+> >>>> I thought the conversation had converged on what Tiezhu mentioned ab=
+ove,
+> >>>> which is to skip objtool on libstub for loongarch, but leave the oth=
+er
+> >>>> arches alone.  That way objtool behavior is consistent between loong=
+arch
+> >>>> and x86, and objtool doesn't need to ignore any prefixes.
+> >>>>
+> >>>> So basically, the v2 patch minus the arm64/riscv changes.
+> >>>
+> >>> Hi, ARM64 and RISC-V maintainers,
+> >>>
+> >>> Would you mind that this patch modifies the three architectures
+> >>> together (they are exactly the same style now)?
+> >>>
+> >>> Madhavan is the author of ARM64's objtool, I think your opinion is
+> >>> also very important.
+> >>
+> >> arm64 doesn't (yet) use objtool.
+> >>
+> >> I defer to Ard on anything relating to the arm64 efistub. Reading the
+> >> start of this thread, it doesn't look like he's convinced and I'm not
+> >> surprised if it's purely an issue with objtool.
+> > OK, I know, but I have a concern.
+> >
+> > Ard said that he is reluctant to make changes to accommodate a flawed
+> > build time tool and there may be regression risk.
+> >
+> > So, I'm also reluctant and don't want LoongArch to meet regression
+> > risk. If one day LoongArch has a regression, we probably need another
+> > workaround to "fix" this workaround. But if these three architectures
+> > change in the same way, we may have a chance to solve some fundamental
+> > problems...
+>
+> IIUC, Josh do not like to ignore these EFISTUB functions in
+> validate_branch() of objtool, Huacai do not like to only link
+> libstub to vmlinux only for LoongArch.
+>
+> It seems that there is only one way to fix or workaround this
+> problem, remove the attribute __noreturn for real_kernel_entry()
+> and then make efi_boot_kernel() ends with a return instruction [1]
+> or an unconditional jump instruction [2] that only touches
+> drivers/firmware/efi/libstub/loongarch.c.
+>
+> Since this is a issue only for LoongArch by now, what do you
+> think of this minimal change only for LoongArch libstub code?
+> Using "return EFI_LOAD_ERROR" [1] or "while (1)" [2]?
+>
+> Maybe this is the simple and direct way for this special issue
+> only on LoongArch so far. If not, any other suggestions?
+>
+> On the other hand, is it possible to add KBUILD_VMLINUX_LIBS_FINAL
+> and then use it only for LoongArch first [3]? Any potential risks?
+>
+> What is the next step?
+Is it possible to improve objtool that can handle indirect __noreturn funct=
+ions?
+Is it possible to improve objtool that can handle
+OBJECT_FILES_NON_STANDARD event LTO is enabled?
+Is it possible to improve objtool that only ignore __efistub prefix
+for LoongArch?
 
-elapsed time: 1911m
 
-configs tested: 104
-configs skipped: 2
+Huacai
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                            hsdk_defconfig    gcc-15.1.0
-arc                        nsimosci_defconfig    gcc-15.1.0
-arc                   randconfig-001-20251122    gcc-14.3.0
-arc                   randconfig-002-20251122    gcc-9.5.0
-arm                               allnoconfig    clang-22
-arm                          pxa910_defconfig    gcc-15.1.0
-arm                   randconfig-002-20251122    clang-22
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20251122    gcc-8.5.0
-arm64                 randconfig-002-20251122    gcc-9.5.0
-arm64                 randconfig-003-20251122    gcc-10.5.0
-arm64                 randconfig-004-20251122    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20251122    gcc-15.1.0
-csky                  randconfig-002-20251122    gcc-14.3.0
-hexagon                           allnoconfig    clang-22
-hexagon               randconfig-001-20251122    clang-22
-hexagon               randconfig-002-20251122    clang-17
-i386                              allnoconfig    gcc-14
-i386        buildonly-randconfig-001-20251122    clang-20
-i386        buildonly-randconfig-002-20251122    clang-20
-i386        buildonly-randconfig-003-20251122    gcc-14
-i386        buildonly-randconfig-004-20251122    clang-20
-i386        buildonly-randconfig-005-20251122    clang-20
-i386        buildonly-randconfig-006-20251122    clang-20
-i386                  randconfig-001-20251122    clang-20
-i386                  randconfig-002-20251122    gcc-13
-i386                  randconfig-003-20251122    clang-20
-i386                  randconfig-004-20251122    clang-20
-i386                  randconfig-005-20251122    clang-20
-i386                  randconfig-006-20251122    clang-20
-i386                  randconfig-007-20251122    clang-20
-i386                  randconfig-011-20251122    gcc-14
-i386                  randconfig-012-20251122    clang-20
-i386                  randconfig-013-20251122    clang-20
-i386                  randconfig-014-20251122    gcc-14
-i386                  randconfig-015-20251122    clang-20
-i386                  randconfig-016-20251122    gcc-12
-i386                  randconfig-017-20251122    gcc-14
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20251122    gcc-12.5.0
-loongarch             randconfig-002-20251122    gcc-14.3.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                          amiga_defconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                          eyeq5_defconfig    gcc-15.1.0
-mips                           ip30_defconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20251122    gcc-11.5.0
-nios2                 randconfig-002-20251122    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251122    gcc-14.3.0
-parisc                randconfig-002-20251122    gcc-14.3.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                 mpc836x_rdk_defconfig    clang-22
-powerpc               randconfig-001-20251122    clang-16
-powerpc               randconfig-002-20251122    gcc-11.5.0
-powerpc64             randconfig-001-20251122    clang-17
-powerpc64             randconfig-002-20251122    gcc-10.5.0
-riscv                             allnoconfig    gcc-15.1.0
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20251122    clang-22
-riscv                 randconfig-002-20251122    clang-22
-s390                              allnoconfig    clang-22
-s390                                defconfig    clang-22
-s390                  randconfig-001-20251122    clang-16
-s390                  randconfig-002-20251122    gcc-13.4.0
-sh                                allnoconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20251122    gcc-15.1.0
-sh                    randconfig-002-20251122    gcc-10.5.0
-sh                           se7750_defconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc64                             defconfig    clang-20
-um                                allnoconfig    clang-22
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64      buildonly-randconfig-001-20251122    gcc-14
-x86_64      buildonly-randconfig-002-20251122    gcc-14
-x86_64      buildonly-randconfig-003-20251122    gcc-14
-x86_64      buildonly-randconfig-004-20251122    clang-20
-x86_64      buildonly-randconfig-005-20251122    gcc-14
-x86_64      buildonly-randconfig-006-20251122    gcc-13
-x86_64                              defconfig    gcc-14
-x86_64                randconfig-071-20251122    gcc-14
-x86_64                randconfig-072-20251122    gcc-14
-x86_64                randconfig-073-20251122    clang-20
-x86_64                randconfig-074-20251122    gcc-14
-x86_64                randconfig-076-20251122    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> [1]
+> https://lore.kernel.org/loongarch/CAMj1kXH-rK0bRyHXdJ-crAyMyvJHApH0WR7_8Q=
+d8vrSPBLK+yg@mail.gmail.com/
+> [2]
+> https://lore.kernel.org/loongarch/20250826064631.9617-2-yangtiezhu@loongs=
+on.cn/
+> [3] https://lore.kernel.org/loongarch/20251122000101.GA1996391@ax162/
+>
+> Thanks,
+> Tiezhu
+>
 
