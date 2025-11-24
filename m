@@ -1,94 +1,126 @@
-Return-Path: <linux-efi+bounces-5661-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5662-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E382C7FA4E
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Nov 2025 10:30:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04A6C7FC00
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Nov 2025 10:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D6EB3A24EF
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Nov 2025 09:30:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4DC014E48ED
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Nov 2025 09:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18022F6181;
-	Mon, 24 Nov 2025 09:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2872FB617;
+	Mon, 24 Nov 2025 09:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cJl014zN"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="P87gnIuA"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846CD2F6180
-	for <linux-efi@vger.kernel.org>; Mon, 24 Nov 2025 09:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C901424B28;
+	Mon, 24 Nov 2025 09:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763976628; cv=none; b=JCBYS9oxb8OzC4Gi26H1ZLmW5ym77gGxPim6r04kreybr+GwZHrO4gExpWuK1oChqvX0AMriFMSo2lTjB0EJ+Fygdq4yZcoXh6hch/8HKcRuLmI7s7ZPT9tFIWNDK9NuN8TtCgbAp9571KoIyNy6XRKla+jT1uDsXIjoWDNDxv8=
+	t=1763978079; cv=none; b=OrhBTwl6BMqS8pYcfarqR9HGAhSeI26vREWeXj7sBtD3362M7aMbqTWKdvA+MacwqTfvv60xSfYJrLX5R7ZY13HB4AG4msj+1X0S9R+Z/MP740gcweSDj6N1kvAhRDqqwqzdmvUcPjbfzOSF6WcoccepgvIZ1DE8k4B1kYcckKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763976628; c=relaxed/simple;
-	bh=3JRxI+i0a92b181BOjWjFrS6RqKfjW8qAnaljkajltk=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FYcqcJ895JDblJqWPNs2VyB7h3Mh1b9CUR/+dCsEzs8IJz2EsJP1lgrKZ2U29WFaydkvI0rVtIv4QNxTauViaOl8HgCp/Uimr24/64mRYXw9E7VsmTcLSTh+DhWT6UUKdJ+NU2pMlIR0AejEFlis02YBBq2+fX9yQAklVqwoMQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cJl014zN; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47798ded6fcso24528275e9.1
-        for <linux-efi@vger.kernel.org>; Mon, 24 Nov 2025 01:30:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1763976624; x=1764581424; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:date:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S3aytJ2sZxSRYrfcuOc3im2xCWGoA/zkjwdoYJLrsf8=;
-        b=cJl014zNZvccAiqtB06x5IzcCJDWpSM3W6D6ywD0yTw8MQUQss0PLy4U75XHoqTVvM
-         /1wK/dXZbkycg8mbRLSldb+VLew653WKwQv+97uI5NnoMUFUsIH5ZhOXMbYLR8iL10AS
-         wnQKq0rLxHHZSP/x80bFWJWqLxmkADxmX+XNNIZ0fMkTvVBrMNB1ODhXwc9pG6W3BmRr
-         0aLVcYHk8k5O4UrfnQQWurk0F35i2R5V8D1qTFe17FOBBe9LI5KW0F6RwihTZWNswp+G
-         hgn6Zn3bAPuTpNS2i38CSH2DvA+sPrGHjygXZxsHdlgj3B9h2XJfB2jmq7k+YPb7f2f8
-         cIww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763976624; x=1764581424;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=S3aytJ2sZxSRYrfcuOc3im2xCWGoA/zkjwdoYJLrsf8=;
-        b=hESgnaSKD9UNY6CA7zw9IWmPMl0JKRbU/1IQKD6If2sw7H1qSy4rrERHvUcDnteQ9e
-         DuQMm/FMHjDCFwTe6rP9tCvQjzpCE4LaF3KkFS6aSyapX2QaHrPulioFsbSqfmJR8Ud9
-         K2nlWALo8WqS6vL2XWdqPiBJSPngzHyUHmGm+mapOJSAYSTYhvxszb5gLo/fjyOQLqSb
-         3d0MbbW2OCupW2Melpmb/JYyjRUpvBcN2Qf2/eqq2qe8atdBj9Y1DEcFR3okqZOsyi/p
-         /hQo/xfqd+7GKBEIPrAC6ongcYmSXVBUb1s4ATB7mU5NMFaj/KicZLgspFoDyITC//Pd
-         ud3A==
-X-Forwarded-Encrypted: i=1; AJvYcCXtlfNlLnTSn9AebQfcZsGXAXzn6qdzxotKR6COysse3Qae0J8JeWuhuLjj/O8OGmExmBaC23lIXiE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxp6Blzd+Pgzxr6O+JOHVNnZwWW5BZQz4mZVEmxcHDpZvVI5kni
-	7JgTRnNYcXE0TyN1ZShMeHa7JKQ68pykfxK7QbpVwodN+wQWRrVOV54eN+SzGTAquY4=
-X-Gm-Gg: ASbGncu4M2fmm3BVrjBlAnIeLPPib2v11UIbiwjbWfasqhGCiFUdrJBcEl/Op8PXNFP
-	3o3jTfgs7Zj+iC7Z6zlMq6KPBjMz2s1BQGNEZ4Ew7hJFpI0SACh52OcdDW2HpYd9SGg1Jf8Hk2W
-	kYKHn1s+1Tj30SwvagWiPD6B7rn+t99pr5BMg0pDFpkZiMthrNuuOifai7Ns65HeGtpnHRAF+7x
-	7iEMfOfiNG74zJHhfnXGtW9CMmjjLVRKCduMb5C59R318rd8fN51gPU4FggsJzz0Q0Z3uictK/c
-	yk2TsrNl1nwNTgYojkQl/9ggL9pggBufKUtomHC+jBYcYAOdN5QxJJPR9/gKAvNlWJLpg1ssBCA
-	ai58zlNhU+9lyOIBDox786TO9OS4i5m+gN98FS11A6zJ3MWdANyy3I50Ed6BOvQRjeY0BaorGqt
-	nyI7osIAwzYt9uvwuniDWnBIvZiHPTIq35oY/XQaw50CIe7Z5Pl8Y=
-X-Google-Smtp-Source: AGHT+IGVswGY/a4pp84AoicemWlC3EeMp/CJWZpQbwJ08GptGBtnpFm9nq439AWBsTFVAzH/O3MyVA==
-X-Received: by 2002:a05:600c:4591:b0:477:7925:f7f3 with SMTP id 5b1f17b1804b1-477c10e1cacmr102371425e9.14.1763976623630;
-        Mon, 24 Nov 2025 01:30:23 -0800 (PST)
-Received: from r1chard (220-129-146-231.dynamic-ip.hinet.net. [220.129.146.231])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3ed470ff6sm13929073b3a.19.2025.11.24.01.30.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 01:30:23 -0800 (PST)
-From: Richard Lyu <richard.lyu@suse.com>
-X-Google-Original-From: Richard Lyu <r1chard@r1chard>
-Date: Mon, 24 Nov 2025 17:30:17 +0800
-To: Thomas Zimmermann <tzimmermann@suse.de>, ardb@kernel.org,
-	javierm@redhat.com, arnd@arndb.de
-Cc: x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH 2/6] efi: sysfb_efi: Reduce number of references to
- global screen_info
-Message-ID: <aSQlqZPTAXHvTnrG@r1chard>
-References: <20251121135624.494768-1-tzimmermann@suse.de>
- <20251121135624.494768-3-tzimmermann@suse.de>
+	s=arc-20240116; t=1763978079; c=relaxed/simple;
+	bh=zgUegguLz9fnh3Kc5FyiFvVdDbDa4+bOp5Www3PDcuc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ctY5ec1pVMPgAQziivIuyNMUNBBzBLjHqXG57D/iuzXjRNcJdrcJjU9kdacC12pvOLum/X7GMW/2XgVUnWfvsJJolpF2qFqE3iXEuv3DrL1T+h/W/fWPLtntbF/kEBoAZhmjDER1oIdcu/C7H+zIkeFDv76zc8PF6r9/vuR0yyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=P87gnIuA; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=B05uJapQfRMGohKkgF1xNVyERBHmagh8Bd3xg1q2NeI=; 
+	b=P87gnIuANW/TJp73uiT1mmsGlTWnBuH0H7vh23lNqSWq4OBDSGmsQEtkmAFMHotC7U4wL6z8BsM
+	xZhrA2DnJ6Byz1eNq9hCgsl0YlQqjChTspvActJHQABJusXSSyN3NViM7BAWMow9uYLi6/azgr/1S
+	bPNPkqeI4K++8lXngyxVPKygWdoefLDaHUV8R9vP4h+Voyby/LgDfyG/U2ZiZD9XFH7HpGmBTtoYh
+	gxxkqEEHWY1my7y2fTHFr9TydDJrVMgiVb3KBgJmEGPf57jfBn092eZeVh0rkWj5FfVDm/r5gwJdx
+	bl004005PGTqWH4a9OI+Nq6nG2BqQ4oMU7WA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1vNTCh-005XNj-0w;
+	Mon, 24 Nov 2025 17:49:52 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 24 Nov 2025 17:49:51 +0800
+Date: Mon, 24 Nov 2025 17:49:51 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: david.laight.linux@gmail.com
+Cc: linux-kernel@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Borislav Petkov <bp@alien8.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, David Ahern <dsahern@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dennis Zhou <dennis@kernel.org>, Eric Dumazet <edumazet@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jens Axboe <axboe@kernel.dk>, Jiri Slaby <jirislaby@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Allen <john.allen@amd.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <kees@kernel.org>,
+	KP Singh <kpsingh@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mika Westerberg <westeri@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>, nic_swsd@realtek.com,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Olivia Mackall <olivia@selenic.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>,
+	Theodore Ts'o <tytso@mit.edu>, Thomas Gleixner <tglx@linutronix.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, x86@kernel.org,
+	Yury Norov <yury.norov@gmail.com>, amd-gfx@lists.freedesktop.org,
+	bpf@vger.kernel.org, cgroups@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, io-uring@vger.kernel.org,
+	kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-integrity@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-serial@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, mptcp@lists.linux.dev,
+	netdev@vger.kernel.org, usb-storage@lists.one-eyed-alien.net
+Subject: Re: [PATCH 00/44] Change a lot of min_t() that might mask high bits
+Message-ID: <aSQqP6nlqGYOGqcJ@gondor.apana.org.au>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -97,253 +129,181 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251121135624.494768-3-tzimmermann@suse.de>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+In-Reply-To: <20251119224140.8616-1-david.laight.linux@gmail.com>
 
-Reviewed-by: Richard Lyu <richard.lyu@suse.com>
+On Wed, Nov 19, 2025 at 10:40:56PM +0000, david.laight.linux@gmail.com wrote:
+> From: David Laight <david.laight.linux@gmail.com>
+> 
+> It in not uncommon for code to use min_t(uint, a, b) when one of a or b
+> is 64bit and can have a value that is larger than 2^32;
+> This is particularly prevelant with:
+> 	uint_var = min_t(uint, uint_var, uint64_expression);
+> 
+> Casts to u8 and u16 are very likely to discard significant bits.
+> 
+> These can be detected at compile time by changing min_t(), for example:
+> #define CHECK_SIZE(fn, type, val) \
+> 	BUILD_BUG_ON_MSG(sizeof (val) > sizeof (type) && \
+> 		!statically_true(((val) >> 8 * (sizeof (type) - 1)) < 256), \
+> 		fn "() significant bits of '" #val "' may be discarded")
+> 
+> #define min_t(type, x, y) ({ \
+> 	CHECK_SIZE("min_t", type, x); \
+> 	CHECK_SIZE("min_t", type, y); \
+> 	__cmp_once(min, type, x, y); })
+> 
+> (and similar changes to max_t() and clamp_t().)
+> 
+> This shows up some real bugs, some unlikely bugs and some false positives.
+> In most cases both arguments are unsigned type (just different ones)
+> and min_t() can just be replaced by min().
+> 
+> The patches are all independant and are most of the ones needed to
+> get the x86-64 kernel I build to compile.
+> I've not tried building an allyesconfig or allmodconfig kernel.
+> I've also not included the patch to minmax.h itself.
+> 
+> I've tried to put the patches that actually fix things first.
+> The last one is 0009.
+> 
+> I gave up on fixing sched/fair.c - it is too broken for a single patch!
+> The patch for net/ipv4/tcp.c is also absent because do_tcp_getsockopt()
+> needs multiple/larger changes to make it 'sane'.
+> 
+> I've had to trim the 124 maintainers/lists that get_maintainer.pl finds
+> from 124 to under 100 to be able to send the cover letter.
+> The individual patches only go to the addresses found for the associated files.
+> That reduces the number of emails to a less unsane number.
+> 
+> David Laight (44):
+>   x86/asm/bitops: Change the return type of variable__ffs() to unsigned
+>     int
+>   ext4: Fix saturation of 64bit inode times for old filesystems
+>   perf: Fix branch stack callchain limit
+>   io_uring/net: Change some dubious min_t()
+>   ipc/msg: Fix saturation of percpu counts in msgctl_info()
+>   bpf: Verifier, remove some unusual uses of min_t() and max_t()
+>   net/core/flow_dissector: Fix cap of __skb_flow_dissect() return value.
+>   net: ethtool: Use min3() instead of nested min_t(u16,...)
+>   ipv6: __ip6_append_data() don't abuse max_t() casts
+>   x86/crypto: ctr_crypt() use min() instead of min_t()
+>   arch/x96/kvm: use min() instead of min_t()
+>   block: use min() instead of min_t()
+>   drivers/acpi: use min() instead of min_t()
+>   drivers/char/hw_random: use min3() instead of nested min_t()
+>   drivers/char/tpm: use min() instead of min_t()
+>   drivers/crypto/ccp: use min() instead of min_t()
+>   drivers/cxl: use min() instead of min_t()
+>   drivers/gpio: use min() instead of min_t()
+>   drivers/gpu/drm/amd: use min() instead of min_t()
+>   drivers/i2c/busses: use min() instead of min_t()
+>   drivers/net/ethernet/realtek: use min() instead of min_t()
+>   drivers/nvme: use min() instead of min_t()
+>   arch/x86/mm: use min() instead of min_t()
+>   drivers/nvmem: use min() instead of min_t()
+>   drivers/pci: use min() instead of min_t()
+>   drivers/scsi: use min() instead of min_t()
+>   drivers/tty/vt: use umin() instead of min_t(u16, ...) for row/col
+>     limits
+>   drivers/usb/storage: use min() instead of min_t()
+>   drivers/xen: use min() instead of min_t()
+>   fs: use min() or umin() instead of min_t()
+>   block: bvec.h: use min() instead of min_t()
+>   nodemask: use min() instead of min_t()
+>   ipc: use min() instead of min_t()
+>   bpf: use min() instead of min_t()
+>   bpf_trace: use min() instead of min_t()
+>   lib/bucket_locks: use min() instead of min_t()
+>   lib/crypto/mpi: use min() instead of min_t()
+>   lib/dynamic_queue_limits: use max() instead of max_t()
+>   mm: use min() instead of min_t()
+>   net: Don't pass bitfields to max_t()
+>   net/core: Change loop conditions so min() can be used
+>   net: use min() instead of min_t()
+>   net/netlink: Use umin() to avoid min_t(int, ...) discarding high bits
+>   net/mptcp: Change some dubious min_t(int, ...) to min()
+> 
+>  arch/x86/crypto/aesni-intel_glue.c            |  3 +-
+>  arch/x86/include/asm/bitops.h                 | 18 +++++-------
+>  arch/x86/kvm/emulate.c                        |  3 +-
+>  arch/x86/kvm/lapic.c                          |  2 +-
+>  arch/x86/kvm/mmu/mmu.c                        |  2 +-
+>  arch/x86/mm/pat/set_memory.c                  | 12 ++++----
+>  block/blk-iocost.c                            |  6 ++--
+>  block/blk-settings.c                          |  2 +-
+>  block/partitions/efi.c                        |  3 +-
+>  drivers/acpi/property.c                       |  2 +-
+>  drivers/char/hw_random/core.c                 |  2 +-
+>  drivers/char/tpm/tpm1-cmd.c                   |  2 +-
+>  drivers/char/tpm/tpm_tis_core.c               |  4 +--
+>  drivers/crypto/ccp/ccp-dev.c                  |  2 +-
+>  drivers/cxl/core/mbox.c                       |  2 +-
+>  drivers/gpio/gpiolib-acpi-core.c              |  2 +-
+>  .../gpu/drm/amd/amdgpu/amdgpu_doorbell_mgr.c  |  4 +--
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c        |  2 +-
+>  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  2 +-
+>  drivers/i2c/busses/i2c-designware-master.c    |  2 +-
+>  drivers/net/ethernet/realtek/r8169_main.c     |  3 +-
+>  drivers/nvme/host/pci.c                       |  3 +-
+>  drivers/nvme/host/zns.c                       |  3 +-
+>  drivers/nvmem/core.c                          |  2 +-
+>  drivers/pci/probe.c                           |  3 +-
+>  drivers/scsi/hosts.c                          |  2 +-
+>  drivers/tty/vt/selection.c                    |  9 +++---
+>  drivers/usb/storage/protocol.c                |  3 +-
+>  drivers/xen/grant-table.c                     |  2 +-
+>  fs/buffer.c                                   |  2 +-
+>  fs/exec.c                                     |  2 +-
+>  fs/ext4/ext4.h                                |  2 +-
+>  fs/ext4/mballoc.c                             |  3 +-
+>  fs/ext4/resize.c                              |  2 +-
+>  fs/ext4/super.c                               |  2 +-
+>  fs/fat/dir.c                                  |  4 +--
+>  fs/fat/file.c                                 |  3 +-
+>  fs/fuse/dev.c                                 |  2 +-
+>  fs/fuse/file.c                                |  8 ++---
+>  fs/splice.c                                   |  2 +-
+>  include/linux/bvec.h                          |  3 +-
+>  include/linux/nodemask.h                      |  9 +++---
+>  include/linux/perf_event.h                    |  2 +-
+>  include/net/tcp_ecn.h                         |  5 ++--
+>  io_uring/net.c                                |  6 ++--
+>  ipc/mqueue.c                                  |  4 +--
+>  ipc/msg.c                                     |  6 ++--
+>  kernel/bpf/core.c                             |  4 +--
+>  kernel/bpf/log.c                              |  2 +-
+>  kernel/bpf/verifier.c                         | 29 +++++++------------
+>  kernel/trace/bpf_trace.c                      |  2 +-
+>  lib/bucket_locks.c                            |  2 +-
+>  lib/crypto/mpi/mpicoder.c                     |  2 +-
+>  lib/dynamic_queue_limits.c                    |  2 +-
+>  mm/gup.c                                      |  4 +--
+>  mm/memblock.c                                 |  2 +-
+>  mm/memory.c                                   |  2 +-
+>  mm/percpu.c                                   |  2 +-
+>  mm/truncate.c                                 |  3 +-
+>  mm/vmscan.c                                   |  2 +-
+>  net/core/datagram.c                           |  6 ++--
+>  net/core/flow_dissector.c                     |  7 ++---
+>  net/core/net-sysfs.c                          |  3 +-
+>  net/core/skmsg.c                              |  4 +--
+>  net/ethtool/cmis_cdb.c                        |  7 ++---
+>  net/ipv4/fib_trie.c                           |  2 +-
+>  net/ipv4/tcp_input.c                          |  4 +--
+>  net/ipv4/tcp_output.c                         |  5 ++--
+>  net/ipv4/tcp_timer.c                          |  4 +--
+>  net/ipv6/addrconf.c                           |  8 ++---
+>  net/ipv6/ip6_output.c                         |  7 +++--
+>  net/ipv6/ndisc.c                              |  5 ++--
+>  net/mptcp/protocol.c                          |  8 ++---
+>  net/netlink/genetlink.c                       |  9 +++---
+>  net/packet/af_packet.c                        |  2 +-
+>  net/unix/af_unix.c                            |  4 +--
+>  76 files changed, 141 insertions(+), 176 deletions(-)
 
-On 2025/11/21 14:36, Thomas Zimmermann wrote:
-> Replace usage of global screen_info with local pointers. This will
-> later reduce churn when screen_info is being moved.
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->  drivers/firmware/efi/sysfb_efi.c  | 81 ++++++++++++++++---------------
->  drivers/firmware/sysfb.c          |  4 +-
->  drivers/firmware/sysfb_simplefb.c |  2 +-
->  include/linux/sysfb.h             |  9 ++--
->  4 files changed, 51 insertions(+), 45 deletions(-)
-> 
-> diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-> index 1e509595ac03..8e0f9d08397f 100644
-> --- a/drivers/firmware/efi/sysfb_efi.c
-> +++ b/drivers/firmware/efi/sysfb_efi.c
-> @@ -92,7 +92,7 @@ void efifb_setup_from_dmi(struct screen_info *si, const char *opt)
->  	})
->  
->  #ifdef CONFIG_EFI
-> -static int __init efifb_set_system(const struct dmi_system_id *id)
-> +static int __init efifb_set_system(struct screen_info *si, const struct dmi_system_id *id)
->  {
->  	struct efifb_dmi_info *info = id->driver_data;
->  
-> @@ -101,14 +101,14 @@ static int __init efifb_set_system(const struct dmi_system_id *id)
->  		return 0;
->  
->  	/* Trust the bootloader over the DMI tables */
-> -	if (screen_info.lfb_base == 0) {
-> +	if (si->lfb_base == 0) {
->  #if defined(CONFIG_PCI)
->  		struct pci_dev *dev = NULL;
->  		int found_bar = 0;
->  #endif
->  		if (info->base) {
-> -			screen_info.lfb_base = choose_value(info->base,
-> -				screen_info.lfb_base, OVERRIDE_BASE,
-> +			si->lfb_base = choose_value(info->base,
-> +				si->lfb_base, OVERRIDE_BASE,
->  				info->flags);
->  
->  #if defined(CONFIG_PCI)
-> @@ -135,49 +135,53 @@ static int __init efifb_set_system(const struct dmi_system_id *id)
->  
->  					start = pci_resource_start(dev, i);
->  					end = pci_resource_end(dev, i);
-> -					if (screen_info.lfb_base >= start &&
-> -					    screen_info.lfb_base < end) {
-> +					if (si->lfb_base >= start && si->lfb_base < end) {
->  						found_bar = 1;
->  						break;
->  					}
->  				}
->  			}
->  			if (!found_bar)
-> -				screen_info.lfb_base = 0;
-> +				si->lfb_base = 0;
->  #endif
->  		}
->  	}
-> -	if (screen_info.lfb_base) {
-> -		screen_info.lfb_linelength = choose_value(info->stride,
-> -			screen_info.lfb_linelength, OVERRIDE_STRIDE,
-> +	if (si->lfb_base) {
-> +		si->lfb_linelength = choose_value(info->stride,
-> +			si->lfb_linelength, OVERRIDE_STRIDE,
->  			info->flags);
-> -		screen_info.lfb_width = choose_value(info->width,
-> -			screen_info.lfb_width, OVERRIDE_WIDTH,
-> +		si->lfb_width = choose_value(info->width,
-> +			si->lfb_width, OVERRIDE_WIDTH,
->  			info->flags);
-> -		screen_info.lfb_height = choose_value(info->height,
-> -			screen_info.lfb_height, OVERRIDE_HEIGHT,
-> +		si->lfb_height = choose_value(info->height,
-> +			si->lfb_height, OVERRIDE_HEIGHT,
->  			info->flags);
-> -		if (screen_info.orig_video_isVGA == 0)
-> -			screen_info.orig_video_isVGA = VIDEO_TYPE_EFI;
-> +		if (si->orig_video_isVGA == 0)
-> +			si->orig_video_isVGA = VIDEO_TYPE_EFI;
->  	} else {
-> -		screen_info.lfb_linelength = 0;
-> -		screen_info.lfb_width = 0;
-> -		screen_info.lfb_height = 0;
-> -		screen_info.orig_video_isVGA = 0;
-> +		si->lfb_linelength = 0;
-> +		si->lfb_width = 0;
-> +		si->lfb_height = 0;
-> +		si->orig_video_isVGA = 0;
->  		return 0;
->  	}
->  
->  	printk(KERN_INFO "efifb: dmi detected %s - framebuffer at 0x%08x "
->  			 "(%dx%d, stride %d)\n", id->ident,
-> -			 screen_info.lfb_base, screen_info.lfb_width,
-> -			 screen_info.lfb_height, screen_info.lfb_linelength);
-> +			 si->lfb_base, si->lfb_width,
-> +			 si->lfb_height, si->lfb_linelength);
->  
->  	return 1;
->  }
->  
-> +static int __init efifb_set_system_callback(const struct dmi_system_id *id)
-> +{
-> +	return efifb_set_system(&screen_info, id);
-> +}
-> +
->  #define EFIFB_DMI_SYSTEM_ID(vendor, name, enumid)		\
->  	{							\
-> -		efifb_set_system,				\
-> +		efifb_set_system_callback,			\
->  		name,						\
->  		{						\
->  			DMI_MATCH(DMI_BIOS_VENDOR, vendor),	\
-> @@ -284,12 +288,13 @@ static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
->  	{},
->  };
->  
-> -static bool efifb_overlaps_pci_range(const struct of_pci_range *range)
-> +static bool efifb_overlaps_pci_range(const struct screen_info *si,
-> +				     const struct of_pci_range *range)
->  {
-> -	u64 fb_base = screen_info.lfb_base;
-> +	u64 fb_base = si->lfb_base;
->  
-> -	if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
-> -		fb_base |= (u64)(unsigned long)screen_info.ext_lfb_base << 32;
-> +	if (si->capabilities & VIDEO_CAPABILITY_64BIT_BASE)
-> +		fb_base |= (u64)(unsigned long)si->ext_lfb_base << 32;
->  
->  	return fb_base >= range->cpu_addr &&
->  	       fb_base < (range->cpu_addr + range->size);
-> @@ -311,7 +316,7 @@ static struct device_node *find_pci_overlap_node(void)
->  		}
->  
->  		for_each_of_pci_range(&parser, &range)
-> -			if (efifb_overlaps_pci_range(&range))
-> +			if (efifb_overlaps_pci_range(&screen_info, &range))
->  				return np;
->  	}
->  	return NULL;
-> @@ -349,25 +354,25 @@ static const struct fwnode_operations efifb_fwnode_ops = {
->  
->  static struct fwnode_handle efifb_fwnode;
->  
-> -__init void sysfb_apply_efi_quirks(void)
-> +__init void sysfb_apply_efi_quirks(struct screen_info *si)
->  {
-> -	if (screen_info.orig_video_isVGA != VIDEO_TYPE_EFI ||
-> -	    !(screen_info.capabilities & VIDEO_CAPABILITY_SKIP_QUIRKS))
-> +	if (si->orig_video_isVGA != VIDEO_TYPE_EFI ||
-> +	    !(si->capabilities & VIDEO_CAPABILITY_SKIP_QUIRKS))
->  		dmi_check_system(efifb_dmi_system_table);
->  
-> -	if (screen_info.orig_video_isVGA == VIDEO_TYPE_EFI &&
-> +	if (si->orig_video_isVGA == VIDEO_TYPE_EFI &&
->  	    dmi_check_system(efifb_dmi_swap_width_height)) {
-> -		u16 temp = screen_info.lfb_width;
-> +		u16 temp = si->lfb_width;
->  
-> -		screen_info.lfb_width = screen_info.lfb_height;
-> -		screen_info.lfb_height = temp;
-> -		screen_info.lfb_linelength = 4 * screen_info.lfb_width;
-> +		si->lfb_width = si->lfb_height;
-> +		si->lfb_height = temp;
-> +		si->lfb_linelength = 4 * si->lfb_width;
->  	}
->  }
->  
-> -__init void sysfb_set_efifb_fwnode(struct platform_device *pd)
-> +__init void sysfb_set_efifb_fwnode(const struct screen_info *si, struct platform_device *pd)
->  {
-> -	if (screen_info.orig_video_isVGA == VIDEO_TYPE_EFI && IS_ENABLED(CONFIG_PCI)) {
-> +	if (si->orig_video_isVGA == VIDEO_TYPE_EFI && IS_ENABLED(CONFIG_PCI)) {
->  		fwnode_init(&efifb_fwnode, &efifb_fwnode_ops);
->  		pd->dev.fwnode = &efifb_fwnode;
->  	}
-> diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
-> index 889e5b05c739..916b28538a29 100644
-> --- a/drivers/firmware/sysfb.c
-> +++ b/drivers/firmware/sysfb.c
-> @@ -155,7 +155,7 @@ static __init int sysfb_init(void)
->  	if (disabled)
->  		goto unlock_mutex;
->  
-> -	sysfb_apply_efi_quirks();
-> +	sysfb_apply_efi_quirks(si);
->  
->  	parent = sysfb_parent_dev(si);
->  	if (IS_ERR(parent)) {
-> @@ -200,7 +200,7 @@ static __init int sysfb_init(void)
->  
->  	pd->dev.parent = parent;
->  
-> -	sysfb_set_efifb_fwnode(pd);
-> +	sysfb_set_efifb_fwnode(si, pd);
->  
->  	ret = platform_device_add_data(pd, si, sizeof(*si));
->  	if (ret)
-> diff --git a/drivers/firmware/sysfb_simplefb.c b/drivers/firmware/sysfb_simplefb.c
-> index 592d8a644619..71f542e37732 100644
-> --- a/drivers/firmware/sysfb_simplefb.c
-> +++ b/drivers/firmware/sysfb_simplefb.c
-> @@ -117,7 +117,7 @@ __init struct platform_device *sysfb_create_simplefb(const struct screen_info *s
->  
->  	pd->dev.parent = parent;
->  
-> -	sysfb_set_efifb_fwnode(pd);
-> +	sysfb_set_efifb_fwnode(si, pd);
->  
->  	ret = platform_device_add_resources(pd, &res, 1);
->  	if (ret)
-> diff --git a/include/linux/sysfb.h b/include/linux/sysfb.h
-> index b449665c686a..8527a50a5290 100644
-> --- a/include/linux/sysfb.h
-> +++ b/include/linux/sysfb.h
-> @@ -82,16 +82,17 @@ static inline bool sysfb_handles_screen_info(void)
->  #ifdef CONFIG_EFI
->  
->  extern struct efifb_dmi_info efifb_dmi_list[];
-> -void sysfb_apply_efi_quirks(void);
-> -void sysfb_set_efifb_fwnode(struct platform_device *pd);
-> +void sysfb_apply_efi_quirks(struct screen_info *si);
-> +void sysfb_set_efifb_fwnode(const struct screen_info *si, struct platform_device *pd);
->  
->  #else /* CONFIG_EFI */
->  
-> -static inline void sysfb_apply_efi_quirks(void)
-> +static inline void sysfb_apply_efi_quirks(struct screen_info *si)
->  {
->  }
->  
-> -static inline void sysfb_set_efifb_fwnode(struct platform_device *pd)
-> +static inline void sysfb_set_efifb_fwnode(const struct screen_info *si,
-> +					  struct platform_device *pd)
->  {
->  }
->  
-> -- 
-> 2.51.1
-> 
-> 
+Patches 10,14,16,37 applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
