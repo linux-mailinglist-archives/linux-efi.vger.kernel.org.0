@@ -1,61 +1,61 @@
-Return-Path: <linux-efi+bounces-5683-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5684-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF78C865E2
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Nov 2025 18:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F1AC865EE
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Nov 2025 18:59:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46D0B3B1625
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Nov 2025 17:58:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A8E3B6291
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Nov 2025 17:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01E732ABFB;
-	Tue, 25 Nov 2025 17:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B32532ABFB;
+	Tue, 25 Nov 2025 17:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QclNHlne"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="frYqGrB4"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012064.outbound.protection.outlook.com [40.107.209.64])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010014.outbound.protection.outlook.com [52.101.201.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB0F32ABCF;
-	Tue, 25 Nov 2025 17:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4A032B9B8;
+	Tue, 25 Nov 2025 17:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.14
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764093518; cv=fail; b=nYM18KXObavaGOe7ld3YQ5G1J7QlRb0mXZh3x2hl4SgL9pBbM+8oib9RIQJcWj7qUIqComkMEkoTct1isXsTlKhwDWWC1aR1PW9WT7OaJ5IjBKPxxISP23c6GC11KncPY+aRe+i4LeZ4zb94hJhc/iq9s9XT+tqDHC7/NONxKRo=
+	t=1764093524; cv=fail; b=NB212kRVPXKEtr/pFt+nfqnfZuk+mf7zKqvQXN4dImdTh4q0A8zKYotxKHhOXltHGJnXne4rTwqkMvYT0V/WDa3SQj1VDZgGdpKMs1Q/7JF/5SOlH/CO+BcZkhj6LygOKptDWEQbA18Bw9GgDbMumXKnZKM56yq0w2XAKp27LvA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764093518; c=relaxed/simple;
-	bh=F4i8E5WrWF2dQepSzEqXJOPiWf+zqFj8K4FfSXOOwRk=;
+	s=arc-20240116; t=1764093524; c=relaxed/simple;
+	bh=SCp6B3o2UvYhhtpZj+ZUt+Ok56Fkit61Cyp2WAu+W+I=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lTm7JVq9m7rDF8TkcnQi6UlDGDnGB6u+uxRooFK4N3AKxtqJLPKDRyFpw1dWZVut4Ih7YhSJpzwEyZnb7NuaxkDesu0/85+xPwrH4WtNtrBYnBuhCl2f8ooSHqNC1p4u94YMQExPeb1o5Hfx141h5GNmUVqh5s1HdvVkeYrGA4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QclNHlne; arc=fail smtp.client-ip=40.107.209.64
+	 MIME-Version:Content-Type; b=cRBQCsVaIcQXNZuMTSjv3b0SR7IQKGJf9Oxz5tAFiIV3CPyQDJysBzr4hsyPR+unagbS9ov7C2i/C9vgJaDP0WN4sH4Tj8VNQG18N9htBAuimsnJVWhvM6HuPpxiFFdjrZoKQAdtRvvk0i24aVNiFUVPXiVlLW4RgyuFw96qRyA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=frYqGrB4; arc=fail smtp.client-ip=52.101.201.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=chwVla9TCkD4lKGP0BgyVPmrDPb4LRvJWpBlBQ3v3CYLTINlyC26lBxqSl2LJsw1IPJS4Xynsl5ulYzySH3KVFVqJj7Bkw7c/CSjmhleK7q9c3ZVEfvc3r48kJzdLDYimM+//EPhf1Jjj1Sy/MwE+WbGVq00+1R5quhmRxTvK8qcVR4FQL76wchZHIT6luk7UA9F1bWUkrkxH+O35yE7DCybhcHgOZIpRmEbgpUKGwbsqwwZyLpT710LJcb/6gFYQJ29ve95wbG63+6cg/fPgd+B2ZxGICUqLCeha4uCRLPkeHuNr3/wj+0Ial9aGC062SaMZBBBHuQpjTaPkTjYYQ==
+ b=BGzo1YKAnZFqcgEl5QhlmBE06S6kYtV/p6/x3VqM2FS6mr5Sk++21SCaPSxm05gDmTKFKjsPydQN7RHOZyXZuLn5Vryvm7p/Q1pbYlpN3gPzU+ul7JfM/0HTrynMTATb2PDMnfjyzXJay0IaL1mZiPGX+quob7KZ0MXPdLwZI5USu78LmVZda4RtOU681B2KWbEd2APNnqYbWJRcYNu9hy8Y0roQk1d9dqFQTYtdgVpYL/IkFU3Z3aiYmzIIkhu9XaTwn8ewbPOEoMBFGjyKdQ8CNtuyBcUhzqR/cw3EjszwGiHuGn+6DLxDSQ2LHjeSVlAE89wABM74jWnwsbIxAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1L0C8HDPTtYzTeeMbMzF3MQurU4F7W3wtMzX9+AwXmM=;
- b=kSY/Z5inHdZdMSfokldRgtiuBA1s+GxP+wuUuOnCuzsGPdodfYMKhM72ictRZNLhF0gn4gVZW2uchQhFqetyg38NVDiPonWcAdsl4He1JwLINHI+l86dC1lwq9Mpkps/8LFwIoqmJ6wHDu4O3gB2UX1sOROQhkrfAUHytntymez2eVzw6q4wo/YrQTPN40JxH196meY+Ad9eYv6taNqTEivCKC2a3lMOE2ZGrYgwVqMj5G/ZP+MqBBRVi/SHwoxQTOhQsPyFhnRqjL5DHf6oWY54E5X6SzRwuKyXbjrtTmsQ98LDlswNvUSNamUeogfWBJpdhQEku+N8ArWMJr9AJQ==
+ bh=iYcxaV/0BIoYUz+X4xYCAdgjO1ThW+FLadL/OuqHDO8=;
+ b=cQrA7Y+K02RC/+dsmLnqulHsml/csmfgVQ0TVeDPU4Im+RTqOXTT4xH+wTPPi/9cRUsbQn4edOwwPJMLeTTn0q4+o3DgR+LMNkmLQUnx3fb9ypBKIFA+JB4kcUjdtkRNmkyuBAfiwFQ5NMCc45G5cIy51ypdDl7cCaVAxtooFbMey6SIRppkZBhTs3pUsjpI0UuL57MEs7OGUGN4uKaE2dXATYLntWRXfNa+5r6R5R4K4gv2GYgeQQyc0/GD/1pOweTBqtUPu3h8t4vXc9qezzXOQHTbXB5RyB9T6HLWBZnaQ7fq/Fawc4f6MW4zYBaDt820Se0kJ/DzSIb5pA3lZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kvack.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1L0C8HDPTtYzTeeMbMzF3MQurU4F7W3wtMzX9+AwXmM=;
- b=QclNHlneFCN+QJu2Q6W68gbrp92U6e6vk03BBpYnREg7CqxOLjoAW4yAo9VOoq8YgMp7STJ2xn7PZ+zire80nqCgPc5B5Y0CMt+3LvbjErPtmMCQUwycRpxse1rQmv/tMfSk1vG33KjnnScDagmAConinnB5IAqaueLz2hEUCJU=
-Received: from SA1PR02CA0010.namprd02.prod.outlook.com (2603:10b6:806:2cf::16)
- by CY5PR12MB6226.namprd12.prod.outlook.com (2603:10b6:930:22::5) with
+ bh=iYcxaV/0BIoYUz+X4xYCAdgjO1ThW+FLadL/OuqHDO8=;
+ b=frYqGrB49N5g38Sg2wsS/POY0N9N22Pmd/HnQHZKeyV+pKah4fwqCraF9ZsykGQHuDgDYuoH+qTmLR+OWzcEqas2Lb8xvy+JlF9GxHqo2ZIoHReIIUrHuub1SlcANlMo/Lfbje0tLkFi3asT2AajvBbJFm2dJ0AwmvCznKmcLSI=
+Received: from PH0PR07CA0092.namprd07.prod.outlook.com (2603:10b6:510:4::7) by
+ CH3PR12MB8281.namprd12.prod.outlook.com (2603:10b6:610:128::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Tue, 25 Nov
- 2025 17:58:23 +0000
-Received: from SN1PEPF000252A3.namprd05.prod.outlook.com
- (2603:10b6:806:2cf:cafe::8f) by SA1PR02CA0010.outlook.office365.com
- (2603:10b6:806:2cf::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.11 via Frontend Transport; Tue,
- 25 Nov 2025 17:58:21 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Tue, 25 Nov
+ 2025 17:58:35 +0000
+Received: from SN1PEPF0002529E.namprd05.prod.outlook.com
+ (2603:10b6:510:4:cafe::bb) by PH0PR07CA0092.outlook.office365.com
+ (2603:10b6:510:4::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.17 via Frontend Transport; Tue,
+ 25 Nov 2025 17:58:33 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,13 +63,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000252A3.mail.protection.outlook.com (10.167.242.10) with Microsoft
+ SN1PEPF0002529E.mail.protection.outlook.com (10.167.242.5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9366.7 via Frontend Transport; Tue, 25 Nov 2025 17:58:22 +0000
+ 15.20.9366.7 via Frontend Transport; Tue, 25 Nov 2025 17:58:33 +0000
 Received: from ellora.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 25 Nov
- 2025 11:58:21 -0600
+ 2025 11:58:33 -0600
 From: "Pratik R. Sampat" <prsampat@amd.com>
 To: <linux-mm@kvack.org>, <linux-coco@lists.linux.dev>,
 	<linux-efi@vger.kernel.org>, <x86@kernel.org>, <linux-kernel@vger.kernel.org>
@@ -77,9 +77,9 @@ CC: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
 	<dave.hansen@linux.intel.com>, <kas@kernel.org>, <ardb@kernel.org>,
 	<akpm@linux-foundation.org>, <david@redhat.com>, <osalvador@suse.de>,
 	<thomas.lendacky@amd.com>, <michael.roth@amd.com>, <prsampat@amd.com>
-Subject: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Date: Tue, 25 Nov 2025 11:57:51 -0600
-Message-ID: <20251125175753.1428857-3-prsampat@amd.com>
+Subject: [RFC PATCH 3/4] x86/sev: Introduce hotplug-aware SNP page state validation
+Date: Tue, 25 Nov 2025 11:57:52 -0600
+Message-ID: <20251125175753.1428857-4-prsampat@amd.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251125175753.1428857-1-prsampat@amd.com>
 References: <20251125175753.1428857-1-prsampat@amd.com>
@@ -95,271 +95,339 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000252A3:EE_|CY5PR12MB6226:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb81faa2-a0b8-4505-b5d0-08de2c4c3999
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002529E:EE_|CH3PR12MB8281:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18b30cd2-23f7-45ec-ccf0-08de2c4c4045
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700013;
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SBy4v+3dYQn0B/1rgE3waz29IotYrdoEk60smvYLhJ/9sd9EqxxUjy+93sXm?=
- =?us-ascii?Q?Ny6LHrQZXNIhmt9wg+jJsO7L0ZYV84JSVE3O0uvfk/Dm/tZ1uExflaPr7KuV?=
- =?us-ascii?Q?wjDh6PoP2n6jzfG2XJdiIT0dwEzsuUn+7iWi7o6b6WpL/PBPWlIR+CREOJ0i?=
- =?us-ascii?Q?LWYzirvAxAyrnNEcq+PoUbPM2+pOZq4VHyG7qAK5/HUEYUFEcbYp5VoF5Uo/?=
- =?us-ascii?Q?84zqhTVoqTnWvRfXTer2YlK+tHdTe9+8AD2ZGNxU2Q4wZ3qnhQNFeClzyKgv?=
- =?us-ascii?Q?IqVbqv44Ss6++tDpWH19HIzSUsK2d4KOSHlH8sAQPStkcbRqpXH7RkzHAL3F?=
- =?us-ascii?Q?X5g0eNGbh6QCa5bsvMWxn9Ca4TKHasQqpn5DN+aCYWBFCiybNmTJBUx7cH5U?=
- =?us-ascii?Q?ayqsgvGiU2KKnQEU7+7fpyJjzMuxS+WOfUT+/Iovzi8ga28Ei9WcHFHBU39F?=
- =?us-ascii?Q?ngepjeNl+Kx2ubH2scdSt6I9zv42TYQuH1CLWbm5WXfUp+rBehY0PR9gttK3?=
- =?us-ascii?Q?e5RtPQvJuQB0AunRz0SEG4VDsvv4WK2pLgp5JcWOwXCVzQv3krqzozZZuESQ?=
- =?us-ascii?Q?8dGhBXSf0HCe2bIONOEVC18akWAweSQqdmMADgIzrUhrkJsY01HOVVrjiG/v?=
- =?us-ascii?Q?P+4Vlmi7OxJAgaKOTwLvtbzxLyL4deySTygDQcArxzC7uxNUjBhA4xqufaQx?=
- =?us-ascii?Q?rU2blsbrUmsUYg1GgGqAoCaR6Kqeze0bbfunGLBbAxIb4MGStw9PwhoamoN3?=
- =?us-ascii?Q?+D2ceA8clFBkXZhFRmm2M9GrLKEcj4hHh8p+K8r7K8Hp/9vLPwKKiyR2iqgj?=
- =?us-ascii?Q?gf6uuMdfBin2pzRKn3WOUT5sNFrPBOdyrs9wx7iZphHrP/1b3EfwR+Aa+p0U?=
- =?us-ascii?Q?P2hKI90TGuZfmosXfQOCVc4112aS9JBKjotzVOcwoqOdU+MBShvk7v0ReCYT?=
- =?us-ascii?Q?nFR7JR0rtS/9qAoIAAapPd2APx3G3Q9aLEOQAAT/mdxLQZ043Fuo6LlQpccq?=
- =?us-ascii?Q?n89TkflELn7+RoK4BNFlnWP+S9DYbZ6Iz/tB6Xd2UrFLFjqBfqzhu1R5ygYt?=
- =?us-ascii?Q?EP4y2bvKAzMp7F7c2ko06Fk/Cc+Q3gfsfI3RyvcF2YLoo+W9scyN4P10g2EN?=
- =?us-ascii?Q?QVawycl1NPaVEIjDuKyonLMUOJr+/lDa3QHn14ADqLCZf0ImZF3R6eJVcuU8?=
- =?us-ascii?Q?O0EcphIx7NO/youo7iHm+WBC1ra4HgThJPoismF81q3ZQ1BPSClEU3yvAXJl?=
- =?us-ascii?Q?hIdMRs8TzDPHgbIPBrYPThOY1oKDZVFfQR1S4WD/BlKGBH6uE92xZ9yLNojK?=
- =?us-ascii?Q?EP5/4Z7yLTuwlsA4QeXcjmG/XWqg/+M06cEsYJIbTRyH9R/qV2HrJgXAld/a?=
- =?us-ascii?Q?xphF3PTqO6AQ20EYVt+d3CglTmQ1cTgWzc+C2Ulbv16jo4wnLBLgxjO3eWft?=
- =?us-ascii?Q?45WrTS0qCfINmaILK2lWgzkyKA2AXLd9F6f6xHu/3LiMYR+l4ezaNnvnz/HQ?=
- =?us-ascii?Q?5V6obdAp97tWvWC68sh2zPTgPiehk59x1YCalGTQ5uGNWjrcLXO654vlhh8Z?=
- =?us-ascii?Q?iIOcxkDxUtgEWCWlhb8=3D?=
+	=?us-ascii?Q?N93Fudi/h0LS1F302TWmG1CM1Asqhft9s+BaFE3B5B9y78aFY4A9o8DHcDUh?=
+ =?us-ascii?Q?uKDWRLVNR0YwhAipOr6X9pwQy29BdTA4Nge8LcuBljdPa2fRZEcvEHcmLX9j?=
+ =?us-ascii?Q?GUfJVRXUM158i7xpn2n1zpqQkbgZy/AOpNIM4bsKxBumdVASyfuuwH9wkrFG?=
+ =?us-ascii?Q?sSgAqw5mGoq0ruhfLdEQFzUtLceE5nOrYc2VC8gFYk3I3yybfWeYZYzpHUUd?=
+ =?us-ascii?Q?JHlbzsn5qMP+cO88JTH29owEWUdcGVIQZoTKEMg72ytV+qcsyXXuNYv8AWEg?=
+ =?us-ascii?Q?Zu7/T+X93eBfrRYOyok/YF3opBmFqv45uMA/JUrfJwEVpObjhZV+iSwD3p/v?=
+ =?us-ascii?Q?wBfyhqT7FMVXMNp03K1fwQZYg56AskZ/5V1keE/BaIXNQKIRrYp543VRjs4r?=
+ =?us-ascii?Q?dB6o/YImRq1fmSZyAB6RAFOyYHURR660GPOmrFYTe3+WQxCg8nIvE28suBg6?=
+ =?us-ascii?Q?SgOkrDp3CAnCKKA69X+aipVRaVIfm3g6G4b9m6lEjvVIORemVPxhnayG/nVA?=
+ =?us-ascii?Q?djwgIrMhDlN7V32b0trujo4D1Oyl0p1QFYDKtV5/OfuB6wUFXMwxIc8VkjJv?=
+ =?us-ascii?Q?E8jVzzHuBc6wrHP6yG9g1PBIBiUXhjSFVqZjf+t8JsJrQoevi9zS8cnxAUd9?=
+ =?us-ascii?Q?g3UyDLIZfrpryfj2MIf5Wm+zLW0EE/F1cnTwrYOLPpOsSup5a6n3dZl+mdrv?=
+ =?us-ascii?Q?ZLu1/T/83sftaggWX8Ef7ogzwY/GmWvVm+X5tNHEYtYQEsJQSXL2sKQcFNf8?=
+ =?us-ascii?Q?W7Slg3Fw0JrKGTEAIVutGdalkmVFDmhcAVu4qkcME9VI+tsRZ52YuksU46kh?=
+ =?us-ascii?Q?yV2DCYl3QsW3VXnDtEKAdy+EiZIwVzaEQl7VnyM2rHCMOIX0EnJEvlV8Ewqf?=
+ =?us-ascii?Q?CB348UGEwV+8fQPSg5O/1/3oQUhh2qmz7U9Wsru4k+Ch56zVKzJw/eUc8gUz?=
+ =?us-ascii?Q?bzglQph6PuDG0txxP4ZrH80viptTckR7aL4f5v7QvQ5O8uiiEhhw+s9dVKkT?=
+ =?us-ascii?Q?cKFtal4xbl8gSBKbLfShHWc5clzCjnT8NWc71VegFF9AR5JRKKGvNrBZsVRW?=
+ =?us-ascii?Q?PHey/6dZshrv7aawnay+cbpE5q0s7KLUiVv0SfSGAggXosQbM0WCyzx+DxPc?=
+ =?us-ascii?Q?1zGDnL8qOwPmebgh2FRRKNfuj0q9fuzksHxJEl3x22Xz4fTzCmFqb4zSEzyR?=
+ =?us-ascii?Q?9hFAh21ZHHgeG+hlaifPse5lRtH9uUcNl46EbaTuZw1iMJNKtW35uDKEJGyO?=
+ =?us-ascii?Q?x4jk4bAMNmQk0/BgljPpvrJSG3BBn6MdZDrueBqpltJxMdYSn+hE0Y8mL7zu?=
+ =?us-ascii?Q?uNCmFZK8BvS6nLB62UDIXbRUDx90kD+LarwcItohyAKPIhpiNTTDCnTQ4M2f?=
+ =?us-ascii?Q?DtzWHg5DG1qU1uXkeZQuQMkYrCvgP60s3iPX4eUIp5ZV3/U0qeWc5TYcrtXo?=
+ =?us-ascii?Q?imB8RVh5RBebIT52CZcEyNClLWkGgZjtOKbRxBnTtvqrKpHTZ0/FJz6n0NmM?=
+ =?us-ascii?Q?jBcZP7viI3mw/N0JG6IIU+jQEsOugCiMt8Ds3ubyPVPaqbjzK8pnjXQKg5Et?=
+ =?us-ascii?Q?F7v/LRW20ObO1ICo3iw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700013);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 17:58:22.8069
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 17:58:33.9980
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb81faa2-a0b8-4505-b5d0-08de2c4c3999
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18b30cd2-23f7-45ec-ccf0-08de2c4c4045
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000252A3.namprd05.prod.outlook.com
+	SN1PEPF0002529E.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6226
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8281
 
-The unaccepted memory structure currently only supports accepting memory
-present at boot time. The unaccepted table uses a fixed-size bitmap
-reserved in memblock based on the initial memory layout, preventing
-dynamic addition of memory ranges after boot. This causes guest
-termination when memory is hot-added in a secure virtual machine due to
-accessing pages that have not transitioned to private before use.
+When hot-removing memory in a SEV-SNP environment, pages must be set to
+shared state so they can be reused by the hypervisor. This also applies
+when memory is intended to be hotplugged back in later, as those pages
+will need to be re-accepted after crossing the trust boundary.
 
-Extend the unaccepted memory framework to handle hotplugged memory by
-dynamically managing the unaccepted bitmap. Allocate a new bitmap when
-hotplugged ranges exceed the reserved bitmap capacity and switch to
-kernel-managed allocation.
+However, memory can already be set to shared state externally. In such
+cases, the pvalidate rescind operation will not change the validated bit
+in the RMP table, setting the carry flag and causing the guest to
+terminate.
 
-Hotplugged memory also follows the same acceptance policy using the
-accept_memory=[eager|lazy] kernel parameter to accept memory either
-up-front when added or before first use.
+Since memory hotplug is arguably unique, introduce a guest-maintained
+memory state tracking structure that maintains a bitmap to track the
+state (private vs shared) of all hotplugged memory supplemented with a
+flag to indicate intent. This allows for memory that is already marked
+as shared in the hotplug bitmap to avoid performing the pvalidate
+rescind operation. Additionally, tracking page state changes from the
+guest's perspective, enables the detection of inconsistencies if the
+hypervisor changes states unexpectedly. For example, if the guest bitmap
+reports memory as private but the hypervisor has already changed the RMP
+state to shared, the guest detects this inconsistency when attempting to
+share the memory and terminate rather than skipping over the pvalidate
+rescind operation.
 
 Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
 ---
- arch/x86/boot/compressed/efi.h                |  1 +
- .../firmware/efi/libstub/unaccepted_memory.c  |  1 +
- drivers/firmware/efi/unaccepted_memory.c      | 83 +++++++++++++++++++
- include/linux/efi.h                           |  1 +
- include/linux/mm.h                            | 11 +++
- mm/memory_hotplug.c                           |  7 ++
- mm/page_alloc.c                               |  2 +
- 7 files changed, 106 insertions(+)
+ arch/x86/coco/sev/core.c                 | 104 +++++++++++++++++++++--
+ arch/x86/include/asm/sev.h               |  32 +++++++
+ arch/x86/include/asm/unaccepted_memory.h |  13 +++
+ drivers/firmware/efi/unaccepted_memory.c |   2 +-
+ 4 files changed, 143 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
-index 4f7027f33def..a220a1966cae 100644
---- a/arch/x86/boot/compressed/efi.h
-+++ b/arch/x86/boot/compressed/efi.h
-@@ -102,6 +102,7 @@ struct efi_unaccepted_memory {
- 	u32 unit_size;
- 	u64 phys_base;
- 	u64 size;
-+	bool mem_reserved;
- 	unsigned long *bitmap;
- };
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 14ef5908fb27..a5c9615a6e0c 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -46,6 +46,8 @@
+ #include <asm/cmdline.h>
+ #include <asm/msr.h>
  
-diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
-index c1370fc14555..b16bd61c12bf 100644
---- a/drivers/firmware/efi/libstub/unaccepted_memory.c
-+++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
-@@ -83,6 +83,7 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
- 	unaccepted_table->unit_size = EFI_UNACCEPTED_UNIT_SIZE;
- 	unaccepted_table->phys_base = unaccepted_start;
- 	unaccepted_table->size = bitmap_size;
-+	unaccepted_table->mem_reserved = true;
- 	memset(unaccepted_table->bitmap, 0, bitmap_size);
- 
- 	status = efi_bs_call(install_configuration_table,
-diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-index 4479aad258f8..8537812346e2 100644
---- a/drivers/firmware/efi/unaccepted_memory.c
-+++ b/drivers/firmware/efi/unaccepted_memory.c
-@@ -218,6 +218,89 @@ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size)
++struct snp_hotplug_memory *snp_hp_mem;
++
+ /* AP INIT values as documented in the APM2  section "Processor Initialization State" */
+ #define AP_INIT_CS_LIMIT		0xffff
+ #define AP_INIT_DS_LIMIT		0xffff
+@@ -453,9 +455,54 @@ static int vmgexit_psc(struct ghcb *ghcb, struct snp_psc_desc *desc)
  	return ret;
  }
  
-+static int extend_unaccepted_bitmap(phys_addr_t mem_range_start,
-+				    unsigned long mem_range_size)
++static bool snp_hotplug_state_shared(unsigned long vaddr)
 +{
-+	struct efi_unaccepted_memory *unacc_tbl;
-+	unsigned long *old_bitmap, *new_bitmap;
-+	phys_addr_t start, end, mem_range_end;
-+	u64 phys_base, size, unit_size;
-+	unsigned long flags;
++	phys_addr_t paddr = __pa(vaddr);
++	u64 hotplug_bit;
 +
-+	unacc_tbl = efi_get_unaccepted_table();
-+	if (!unacc_tbl || !unacc_tbl->unit_size)
-+		return -EIO;
++	if (!snp_is_hotplug_memory(paddr))
++		return false;
 +
-+	unit_size = unacc_tbl->unit_size;
-+	phys_base = unacc_tbl->phys_base;
++	hotplug_bit = (paddr - snp_hp_mem->phys_base) / snp_hp_mem->unit_size;
 +
-+	mem_range_end = round_up(mem_range_start + mem_range_size, unit_size);
-+	size = DIV_ROUND_UP(mem_range_end - phys_base, unit_size * BITS_PER_BYTE);
-+
-+	/* Translate to offsets from the beginning of the bitmap */
-+	start = mem_range_start - phys_base;
-+	end = mem_range_end - phys_base;
-+
-+	old_bitmap = efi_get_unaccepted_bitmap();
-+	if (!old_bitmap)
-+		return -EIO;
-+
-+	/* If the bitmap is already large enough, just set the bits */
-+	if (unacc_tbl->size >= size) {
-+		spin_lock_irqsave(&unaccepted_memory_lock, flags);
-+		bitmap_set(old_bitmap, start / unit_size, (end - start) / unit_size);
-+		spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-+
-+		return 0;
-+	}
-+
-+	/* Reserved memblocks cannot be extended so allocate a new bitmap */
-+	if (unacc_tbl->mem_reserved) {
-+		new_bitmap = kzalloc(size, GFP_KERNEL);
-+		if (!new_bitmap)
-+			return -ENOMEM;
-+
-+		spin_lock_irqsave(&unaccepted_memory_lock, flags);
-+		memcpy(new_bitmap, old_bitmap, unacc_tbl->size);
-+		unacc_tbl->mem_reserved = false;
-+		free_reserved_area(old_bitmap, old_bitmap + unacc_tbl->size, -1, NULL);
-+		spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-+	} else {
-+		new_bitmap = krealloc(old_bitmap, size, GFP_KERNEL);
-+		if (!new_bitmap)
-+			return -ENOMEM;
-+
-+		/* Zero the bitmap from the range it was extended from */
-+		memset(new_bitmap + unacc_tbl->size, 0, size - unacc_tbl->size);
-+	}
-+
-+	bitmap_set(new_bitmap, start / unit_size, (end - start) / unit_size);
-+
-+	spin_lock_irqsave(&unaccepted_memory_lock, flags);
-+	unacc_tbl->size = size;
-+	unacc_tbl->bitmap = (unsigned long *)__pa(new_bitmap);
-+	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-+
-+	return 0;
++	return !test_bit(hotplug_bit, snp_hp_mem->bitmap);
 +}
 +
-+int accept_hotplug_memory(phys_addr_t mem_range_start, unsigned long mem_range_size)
++static void snp_set_hotplug_bit(unsigned long vaddr, bool private)
 +{
-+	int ret;
++	phys_addr_t paddr = __pa(vaddr);
++	u64 hotplug_bit;
 +
-+	if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
-+		return 0;
++	if (!snp_is_hotplug_memory(paddr))
++		return;
 +
-+	ret = extend_unaccepted_bitmap(mem_range_start, mem_range_size);
-+	if (ret)
-+		return ret;
-+
-+	if (!mm_lazy_accept_enabled())
-+		accept_memory(mem_range_start, mem_range_size);
-+
-+	return 0;
++	hotplug_bit = (paddr - snp_hp_mem->phys_base) / snp_hp_mem->unit_size;
++	if (private)
++		set_bit(hotplug_bit, snp_hp_mem->bitmap);
++	else
++		clear_bit(hotplug_bit, snp_hp_mem->bitmap);
 +}
 +
- #ifdef CONFIG_PROC_VMCORE
- static bool unaccepted_memory_vmcore_pfn_is_ram(struct vmcore_cb *cb,
- 						unsigned long pfn)
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index a74b393c54d8..1021eb78388f 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -545,6 +545,7 @@ struct efi_unaccepted_memory {
- 	u32 unit_size;
- 	u64 phys_base;
- 	u64 size;
-+	bool mem_reserved;
- 	unsigned long *bitmap;
- };
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1ae97a0b8ec7..bb43876e6c47 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4077,6 +4077,9 @@ int set_anon_vma_name(unsigned long addr, unsigned long size,
- 
- bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size);
- void accept_memory(phys_addr_t start, unsigned long size);
-+int accept_hotplug_memory(phys_addr_t mem_range_start,
-+			  unsigned long mem_range_size);
-+bool mm_lazy_accept_enabled(void);
- 
- #else
- 
-@@ -4090,6 +4093,14 @@ static inline void accept_memory(phys_addr_t start, unsigned long size)
++static void set_hotplug_pages_state(struct snp_psc_desc *desc)
++{
++	struct psc_entry *e;
++	unsigned long vaddr;
++	bool op;
++	int i;
++
++	for (i = 0; i <= desc->hdr.end_entry; i++) {
++		e = &desc->entries[i];
++		vaddr = (unsigned long)pfn_to_kaddr(e->gfn);
++		op = e->operation == SNP_PAGE_STATE_PRIVATE;
++
++		snp_set_hotplug_bit(vaddr, op);
++	}
++}
++
+ static unsigned long __set_pages_state(struct snp_psc_desc *data, unsigned long vaddr,
+-				       unsigned long vaddr_end, int op)
++				       unsigned long vaddr_end, int op, u8 psc_flags)
  {
++	unsigned long vaddr_base;
+ 	struct ghcb_state state;
+ 	bool use_large_entry;
+ 	struct psc_hdr *hdr;
+@@ -465,6 +512,7 @@ static unsigned long __set_pages_state(struct snp_psc_desc *data, unsigned long
+ 	struct ghcb *ghcb;
+ 	int i;
+ 
++	vaddr_base = vaddr;
+ 	hdr = &data->hdr;
+ 	e = data->entries;
+ 
+@@ -499,7 +547,8 @@ static unsigned long __set_pages_state(struct snp_psc_desc *data, unsigned long
+ 	}
+ 
+ 	/* Page validation must be rescinded before changing to shared */
+-	if (op == SNP_PAGE_STATE_SHARED)
++	if (op == SNP_PAGE_STATE_SHARED &&
++	    !(snp_hotplug_state_shared(vaddr_base) && (psc_flags & SNP_PSC_SHARED_TO_SHARED)))
+ 		pvalidate_pages(data);
+ 
+ 	local_irq_save(flags);
+@@ -522,10 +571,12 @@ static unsigned long __set_pages_state(struct snp_psc_desc *data, unsigned long
+ 	if (op == SNP_PAGE_STATE_PRIVATE)
+ 		pvalidate_pages(data);
+ 
++	set_hotplug_pages_state(data);
++
+ 	return vaddr;
  }
  
-+static inline int accept_hotplug_memory(phys_addr_t mem_range_start,
-+					unsigned long mem_range_size)
+-static void set_pages_state(unsigned long vaddr, unsigned long npages, int op)
++static void set_pages_state(unsigned long vaddr, unsigned long npages, int op, u8 psc_flags)
+ {
+ 	struct snp_psc_desc desc;
+ 	unsigned long vaddr_end;
+@@ -538,7 +589,7 @@ static void set_pages_state(unsigned long vaddr, unsigned long npages, int op)
+ 	vaddr_end = vaddr + (npages << PAGE_SHIFT);
+ 
+ 	while (vaddr < vaddr_end)
+-		vaddr = __set_pages_state(&desc, vaddr, vaddr_end, op);
++		vaddr = __set_pages_state(&desc, vaddr, vaddr_end, op, psc_flags);
+ }
+ 
+ void snp_set_memory_shared(unsigned long vaddr, unsigned long npages)
+@@ -546,7 +597,7 @@ void snp_set_memory_shared(unsigned long vaddr, unsigned long npages)
+ 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+ 		return;
+ 
+-	set_pages_state(vaddr, npages, SNP_PAGE_STATE_SHARED);
++	set_pages_state(vaddr, npages, SNP_PAGE_STATE_SHARED, 0);
+ }
+ 
+ void snp_set_memory_private(unsigned long vaddr, unsigned long npages)
+@@ -554,7 +605,7 @@ void snp_set_memory_private(unsigned long vaddr, unsigned long npages)
+ 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+ 		return;
+ 
+-	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
++	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE, 0);
+ }
+ 
+ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+@@ -567,7 +618,46 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+ 	vaddr = (unsigned long)__va(start);
+ 	npages = (end - start) >> PAGE_SHIFT;
+ 
+-	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
++	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE, 0);
++}
++
++int snp_extend_hotplug_memory_state_bitmap(phys_addr_t start,
++					   unsigned long size,
++					   uint64_t unit_size)
++{
++	u64 hp_mem_size = DIV_ROUND_UP(size, unit_size * BITS_PER_BYTE);
++
++	if (snp_hp_mem) {
++		u64 old_size = snp_hp_mem->size;
++		unsigned long *bitmap;
++
++		bitmap = krealloc(snp_hp_mem->bitmap, hp_mem_size, GFP_KERNEL);
++		if (!bitmap)
++			return -ENOMEM;
++
++		memset(bitmap + old_size, 0, hp_mem_size - old_size);
++		snp_hp_mem->size = hp_mem_size;
++		snp_hp_mem->bitmap = bitmap;
++
++		return 0;
++	}
++
++	snp_hp_mem = kzalloc(sizeof(*snp_hp_mem), GFP_KERNEL);
++	if (!snp_hp_mem)
++		return -ENOMEM;
++
++	snp_hp_mem->bitmap = kzalloc(hp_mem_size, GFP_KERNEL);
++	if (!snp_hp_mem->bitmap) {
++		kfree(snp_hp_mem);
++		return -ENOMEM;
++	}
++
++	snp_hp_mem->phys_base = start;
++	snp_hp_mem->phys_end = start + hp_mem_size;
++	snp_hp_mem->size = hp_mem_size;
++	snp_hp_mem->unit_size = unit_size;
++
++	return 0;
+ }
+ 
+ static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 465b19fd1a2d..eb605892645c 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -464,6 +464,38 @@ static __always_inline void sev_es_nmi_complete(void)
+ extern int __init sev_es_efi_map_ghcbs_cas(pgd_t *pgd);
+ extern void sev_enable(struct boot_params *bp);
+ 
++#define SNP_PSC_SHARED_TO_SHARED	0x1
++
++struct snp_hotplug_memory {
++	u64 phys_base;
++	u64 phys_end;
++	u32 unit_size;
++	u64 size;
++	/* bitmap bit unset: shared, set: private */
++	unsigned long *bitmap;
++};
++
++extern struct snp_hotplug_memory *snp_hp_mem;
++
++#ifdef CONFIG_UNACCEPTED_MEMORY
++int snp_extend_hotplug_memory_state_bitmap(phys_addr_t start,
++					   unsigned long size,
++					   uint64_t unit_size);
++static inline bool snp_is_hotplug_memory(phys_addr_t paddr)
++{
++	return snp_hp_mem && paddr >= snp_hp_mem->phys_base && paddr < snp_hp_mem->phys_end;
++}
++#else /* !CONFIG_UNACCEPTED_MEMORY */
++static inline int snp_extend_hotplug_memory_state_bitmap(phys_addr_t start,
++							 unsigned long size,
++							 uint64_t unit_size)
 +{
 +	return 0;
 +}
 +
-+static inline bool mm_lazy_accept_enabled(void) { return false; }
++static inline bool snp_is_hotplug_memory(phys_addr_t paddr) { return false; }
++#endif
 +
+ /*
+  * RMPADJUST modifies the RMP permissions of a page of a lesser-
+  * privileged (numerically higher) VMPL.
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index 5da80e68d718..abdf5472de9e 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -33,4 +33,17 @@ static inline unsigned long *efi_get_unaccepted_bitmap(void)
+ 		return NULL;
+ 	return __va(unaccepted->bitmap);
+ }
++
++static inline int arch_set_unaccepted_mem_state(phys_addr_t start, unsigned long size)
++{
++	struct efi_unaccepted_memory *unaccepted = efi_get_unaccepted_table();
++
++	if (!unaccepted)
++		return -EIO;
++
++	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		return snp_extend_hotplug_memory_state_bitmap(start, size, unaccepted->unit_size);
++
++	return 0;
++}
  #endif
+diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+index 8537812346e2..6796042a64aa 100644
+--- a/drivers/firmware/efi/unaccepted_memory.c
++++ b/drivers/firmware/efi/unaccepted_memory.c
+@@ -281,7 +281,7 @@ static int extend_unaccepted_bitmap(phys_addr_t mem_range_start,
+ 	unacc_tbl->bitmap = (unsigned long *)__pa(new_bitmap);
+ 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
  
- static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 74318c787715..bf8086682b66 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1581,6 +1581,13 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- 	if (!strcmp(res->name, "System RAM"))
- 		firmware_map_add_hotplug(start, start + size, "System RAM");
+-	return 0;
++	return arch_set_unaccepted_mem_state(mem_range_start, mem_range_size);
+ }
  
-+	ret = accept_hotplug_memory(start, size);
-+	if (ret) {
-+		remove_memory_block_devices(start, size);
-+		arch_remove_memory(start, size, params.altmap);
-+		goto error;
-+	}
-+
- 	/* device_online() will take the lock when calling online_pages() */
- 	mem_hotplug_done();
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d1d037f97c5f..d0c298dcaf9d 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7331,6 +7331,8 @@ bool has_managed_dma(void)
- 
- static bool lazy_accept = true;
- 
-+bool mm_lazy_accept_enabled(void) { return lazy_accept; }
-+
- static int __init accept_memory_parse(char *p)
- {
- 	if (!strcmp(p, "lazy")) {
+ int accept_hotplug_memory(phys_addr_t mem_range_start, unsigned long mem_range_size)
 -- 
 2.51.1
 
