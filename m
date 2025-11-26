@@ -1,77 +1,106 @@
-Return-Path: <linux-efi+bounces-5692-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5693-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E276FC8A893
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Nov 2025 16:09:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51882C8AD8C
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Nov 2025 17:10:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B58134EB885
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Nov 2025 15:05:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6FFD3B2B7B
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Nov 2025 16:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F2F3090D7;
-	Wed, 26 Nov 2025 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CAA630BB96;
+	Wed, 26 Nov 2025 16:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhZCWF2U"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ezr4vDnI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4GbyUUUq";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ezr4vDnI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4GbyUUUq"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D79308F33;
-	Wed, 26 Nov 2025 15:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B9033CEB9
+	for <linux-efi@vger.kernel.org>; Wed, 26 Nov 2025 16:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764169554; cv=none; b=UziGZq4hXlWJU5cUDgWgbQqcOnIktYT9P5QnmwiRGYP4fMIHArIoO9slWMGdGkyMQpm3fA6hEjV/MVOd9VMwN1TwF3bmqUOO11yz66M2Yv4vn9LQuUo7a9D6PtQ5vNSmpZM2uzh1Ce4nkeQOqxKAKA+QeIryKgJe5a48sYL+XIA=
+	t=1764173344; cv=none; b=klfNj6f2z6+1PVdQGSnqBE/7iFSYX3jgUHaB0kS2/Y3xEVb1ElOrXWC41VRTVzDypXjG8CkJgvjC0QKz4tKXlkMXuPw64rZmJYqcNI2wCsOw1tOyRGIWkttaHOSVatEwW/Ew65a95OKHiJkaVVD8VM7TWs9NMWJ+urN1w3Rgzj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764169554; c=relaxed/simple;
-	bh=yDmc0KkHB9MrGSqJbRBKHH3aD0kUU3XAZAaRb9UpBZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAqJ7SWuyivfkLf9YG9hRWbRNjmi8E2mZkrhcw5PtnW2umdRkoy1WB4NRbQEYLn8ibKCT8DtBLi+8OUKEGhVOx11/NdjRNVyWOmd/SMMX8FW79JaZxv/DI9z769wCfidpGrSpogYfGjNrqXblUB+DOGJ8iyP1RV3yOwhN1ZTJeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhZCWF2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA5FC4CEF7;
-	Wed, 26 Nov 2025 15:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764169554;
-	bh=yDmc0KkHB9MrGSqJbRBKHH3aD0kUU3XAZAaRb9UpBZc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MhZCWF2UZYdsx21O52l+J6cOSik0H8XblVwQ6pvvMgJLY56P+14bSPJK4HITF8QOo
-	 3vZXqZ9o+2A5PIuhs/l0a3g8YXzpB2a5geTTKJsZiXkG8+sWUYxEblEHdN0/GU9OGH
-	 0HoLfJhleK7J+wO0rs/oNLowJzFo0qGEjbulLsk6QsUUlpp4dUEH4xT6Ew8a/cI3Mn
-	 9Lh9ypH+IM6szGfYf4O8L51vz8SwZfgF6Go/H3+IiqjgaDdYIYM6lHraVHruh41ocX
-	 SmS4aBiWXR07cFgv+y2fJHQnUiQpM8eMm1QjrdIZz0VodkCFKBFcuvMhNaCe0P0hRy
-	 w2kYjiOIlKlpg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.99)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vOH5c-00000003nvq-1r9L;
-	Wed, 26 Nov 2025 16:05:52 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Ard Biesheuvel" <ardb@kernel.org>,
-	"Borislav Petkov" <bp@alien8.de>,
-	"Breno Leitao" <leitao@debian.org>,
-	"Dave Jiang" <dave.jiang@intel.com>,
-	"Hanjun Guo" <guohanjun@huawei.com>,
-	"Ira Weiny" <ira.weiny@intel.com>,
-	"Jason Tian" <jason@os.amperecomputing.com>,
-	"Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
-	"Len Brown" <lenb@kernel.org>,
-	"Mauro Carvalho Chehab" <mchehab@kernel.org>,
-	"Peter Zijlstra" <peterz@infradead.org>,
-	"Shuai Xue" <xueshuai@linux.alibaba.com>,
-	"Smita Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>,
-	"Tony Luck" <tony.luck@intel.com>,
-	"pengdonglin" <pengdonglin@xiaomi.com>,
-	linux-acpi@vger.kernel.org,
+	s=arc-20240116; t=1764173344; c=relaxed/simple;
+	bh=xb7tPH9H1MBueB0fLpet0KsBSzM+SJdYe4tV78sVjoI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YbHRp/rYOMoroGVsxnhdMobd5YW2OBbJiKrV+ep4I+J17OoFB30kSS0M8hxUBWuKLxG5wBxwny8apNcwCYkngxYYPQjM/ae/tYszptYp/UkupfeCd6fQZmKI0Hq/DDD91uMaYuFNa4t6qR5yW4Ny8JHl4Lc4vjkxOXoiX+/SxlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ezr4vDnI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4GbyUUUq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ezr4vDnI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4GbyUUUq; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 748EC5BE77;
+	Wed, 26 Nov 2025 16:08:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764173339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=YbYJIoS8CSkYSEky1xzQmHacWnGGr8CQaD7k/OTeboQ=;
+	b=ezr4vDnI9BlOLnc26FkABd8no3L8/SawwvPCTI6IVIlvPOhxdDOyv8d39UuPjMNL8Mmfx5
+	3jkxeMZmGZWaT2voSsFqhEkuiv5g54zsRyY+5P9CG5e4TZNyO8fPgdKuAaBnCuxgXxFgPP
+	jaadOykargHYJDRdfNNzH3GLgzyOzGk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764173339;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=YbYJIoS8CSkYSEky1xzQmHacWnGGr8CQaD7k/OTeboQ=;
+	b=4GbyUUUqAKT4zSGNS8PWVY06FymL7ZhyflSM/4I6eu0Khvd0nJ9Pjkq868uBdTDOPVn0Cb
+	7qh/+SPNAeDd9HDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ezr4vDnI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4GbyUUUq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764173339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=YbYJIoS8CSkYSEky1xzQmHacWnGGr8CQaD7k/OTeboQ=;
+	b=ezr4vDnI9BlOLnc26FkABd8no3L8/SawwvPCTI6IVIlvPOhxdDOyv8d39UuPjMNL8Mmfx5
+	3jkxeMZmGZWaT2voSsFqhEkuiv5g54zsRyY+5P9CG5e4TZNyO8fPgdKuAaBnCuxgXxFgPP
+	jaadOykargHYJDRdfNNzH3GLgzyOzGk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764173339;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=YbYJIoS8CSkYSEky1xzQmHacWnGGr8CQaD7k/OTeboQ=;
+	b=4GbyUUUqAKT4zSGNS8PWVY06FymL7ZhyflSM/4I6eu0Khvd0nJ9Pjkq868uBdTDOPVn0Cb
+	7qh/+SPNAeDd9HDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 05E093EA63;
+	Wed, 26 Nov 2025 16:08:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DH6WOxomJ2lnIgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 26 Nov 2025 16:08:58 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: ardb@kernel.org,
+	javierm@redhat.com,
+	arnd@arndb.de,
+	richard.lyu@suse.com,
+	helgaas@kernel.org
+Cc: x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] apei/ghes: don't go past the ARM processor CPER record buffer
-Date: Wed, 26 Nov 2025 16:05:45 +0100
-Message-ID: <7a97a0a51c2841b715cde1ee0c92df2765e5d0db.1764169337.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1764169337.git.mchehab+huawei@kernel.org>
-References: <cover.1764169337.git.mchehab+huawei@kernel.org>
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	dri-devel@lists.freedesktop.org,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v3 0/9] arch,sysfb,efi: Support EDID on non-x86 EFI systems
+Date: Wed, 26 Nov 2025 17:03:17 +0100
+Message-ID: <20251126160854.553077-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -79,149 +108,133 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 748EC5BE77
 
-There's a logic inside ghes/cper to detect if the section_length
-is too small, but it doesn't detect if it is too big.
+Replace screen_info and edid_info with sysfb_primary_device of type
+struct sysfb_display_info. Update all users. Then implement EDID support
+in the kernel EFI code.
 
-Currently, if the firmware receives an ARM processor CPER record
-like:
+Sysfb DRM drivers currently fetch the global edid_info directly, when
+they should get that information together with the screen_info from their
+device. Wrapping screen_info and edid_info in sysfb_primary_display and
+passing this to drivers enables this.
 
-  00000000  01 c2 bf 6e 76 b4 94 d7 b0 04 f5 32 e3 5e 89 23   ...nv......2.^.#
-  00000010  f6 4f 40 31 fd 70 3f 7c 0a 87 76 84 2f 4b 30 ff   .O@1.p?|..v./K0.
-  00000020  24 20 71 0d c0 92 4b 0f ae 9b 94 9d 78 8a 7f 6b   $ q...K.....x..k
-  00000030  89 2f 10 8a 6a bf f4 01 96 12 b0 90 b3 9a 08 33   ./..j..........3
-  00000040  0d 01 61                                          ..a
+Replacing both with sysfb_primary_display has been motivate by the EFI
+stub. EFI wants to transfer EDID via config table in a single entry.
+Using struct sysfb_display_info this will become easily possible. Hence
+accept some churn in architecture code for the long-term improvements.
 
-It would produce a very long record, going past the buffer, as,
-in the above record, ERR_INFO_NUM is set to 46198.
+Patches 1 and 2 reduce the exposure of screen_info in EFI-related code.
 
-Fix it by adding a logic to prevent it to go past the buffer
-if ERR_INFO_NUM is too big, reporting instead:
+Patch 3 adds struct sysfb_display_info.
 
-	[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-	[Hardware Error]: event severity: recoverable
-	[Hardware Error]:  Error 0, type: recoverable
-	[Hardware Error]:   section_type: ARM processor error
-	[Hardware Error]:   MIDR: 0xff304b2f8476870a
-	[Hardware Error]:   section length: 854918320, CPER size: 67
-	[Hardware Error]:   section length is too big
-	[Hardware Error]:   firmware-generated error record is incorrect
-	[Hardware Error]:   ERR_INFO_NUM is 46198
+Patch 4 replaces scren_info with sysfb_primary_display. This results in
+several changes throught the kernel, but is really just a refactoring.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- drivers/acpi/apei/ghes.c        | 13 +++++++++++++
- drivers/firmware/efi/cper-arm.c | 14 +++++++++-----
- drivers/firmware/efi/cper.c     |  3 ++-
- include/linux/cper.h            |  3 ++-
- 4 files changed, 26 insertions(+), 7 deletions(-)
+Patch 5 updates sysfb to transfer sysfb_primary_display to the related
+drivers.
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 56107aa00274..8b90b6f3e866 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -557,6 +557,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
- 	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	int length = gdata->error_data_length;
- 	char error_type[120];
- 	bool queued = false;
- 	int sec_sev, i;
-@@ -568,7 +569,12 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 		return false;
- 
- 	p = (char *)(err + 1);
-+	length -= sizeof(err);
-+
- 	for (i = 0; i < err->err_info_num; i++) {
-+		if (length <= 0)
-+			break;
-+
- 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
- 		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
- 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
-@@ -580,10 +586,17 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 		 * and don't filter out 'corrected' error here.
- 		 */
- 		if (is_cache && has_pa) {
-+			length -= err_info->length;
-+			if (length < 0)
-+				break;
- 			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
- 			p += err_info->length;
-+
- 			continue;
- 		}
-+		length -= err_info->length;
-+			if (length < 0)
-+				break;
- 
- 		cper_bits_to_str(error_type, sizeof(error_type),
- 				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index 76542a53e202..6fe26abc9c11 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -226,9 +226,10 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- }
- 
- void cper_print_proc_arm(const char *pfx,
--			 const struct cper_sec_proc_arm *proc)
-+			 const struct cper_sec_proc_arm *proc,
-+			 u32 length)
- {
--	int i, len, max_ctx_type;
-+	int len, i, max_ctx_type;
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
- 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
-@@ -238,9 +239,12 @@ void cper_print_proc_arm(const char *pfx,
- 
- 	len = proc->section_length - (sizeof(*proc) +
- 		proc->err_info_num * (sizeof(*err_info)));
--	if (len < 0) {
--		printk("%ssection length: %d\n", pfx, proc->section_length);
--		printk("%ssection length is too small\n", pfx);
-+
-+	if (len < 0 || len > length) {
-+		printk("%ssection length: %d, CPER size: %d\n",
-+		       pfx, proc->section_length, length);
-+		printk("%ssection length is too %s\n", pfx,
-+		       (len > length) ? "big" : "small");
- 		printk("%sfirmware-generated error record is incorrect\n", pfx);
- 		printk("%sERR_INFO_NUM is %d\n", pfx, proc->err_info_num);
- 		return;
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 0232bd040f61..88fc0293f876 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -659,7 +659,8 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
- 
- 		printk("%ssection_type: ARM processor error\n", newpfx);
- 		if (gdata->error_data_length >= sizeof(*arm_err))
--			cper_print_proc_arm(newpfx, arm_err);
-+			cper_print_proc_arm(newpfx, arm_err,
-+					    gdata->error_data_length);
- 		else
- 			goto err_section_too_small;
- #endif
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 5b1236d8c65b..440b35e459e5 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -595,7 +595,8 @@ void cper_mem_err_pack(const struct cper_sec_mem_err *,
- const char *cper_mem_err_unpack(struct trace_seq *,
- 				struct cper_mem_err_compact *);
- void cper_print_proc_arm(const char *pfx,
--			 const struct cper_sec_proc_arm *proc);
-+			 const struct cper_sec_proc_arm *proc,
-+			 u32 length);
- void cper_print_proc_ia(const char *pfx,
- 			const struct cper_sec_proc_ia *proc);
- int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
+Patch 6 moves edid_info into sysfb_primary_display. This resolves some
+drivers' reference to the global edid_info, but also makes the EDID data
+available on non-x86 architectures.
+
+Patches 7 and 8 add support for EDID transfers on non-x86 EFI systems.
+
+Patch 9 cleans up the config-table allocation to be easier to understand.
+
+v3:
+- replace SCREEN_INFO table entry (Ard)
+- merge libstub patch into kernel patch
+v2:
+- combine v1 of the series at [1] plus changes from [2] and [3].
+
+[1] https://lore.kernel.org/dri-devel/20251121135624.494768-1-tzimmermann@suse.de/
+[2] https://lore.kernel.org/dri-devel/20251015160816.525825-1-tzimmermann@suse.de/
+[3] https://lore.kernel.org/linux-efi/20251119123011.1187249-5-ardb+git@google.com/
+
+Thomas Zimmermann (9):
+  efi: earlycon: Reduce number of references to global screen_info
+  efi: sysfb_efi: Reduce number of references to global screen_info
+  sysfb: Add struct sysfb_display_info
+  sysfb: Replace screen_info with sysfb_primary_display
+  sysfb: Pass sysfb_primary_display to devices
+  sysfb: Move edid_info into sysfb_primary_display
+  efi: Refactor init_primary_display() helpers
+  efi: Support EDID information
+  efi: libstub: Simplify interfaces for primary_display
+
+ arch/arm64/kernel/image-vars.h                |  2 +-
+ arch/loongarch/kernel/efi.c                   | 38 ++++-----
+ arch/loongarch/kernel/image-vars.h            |  2 +-
+ arch/riscv/kernel/image-vars.h                |  2 +-
+ arch/x86/kernel/kexec-bzimage64.c             |  4 +-
+ arch/x86/kernel/setup.c                       | 16 ++--
+ arch/x86/video/video-common.c                 |  4 +-
+ drivers/firmware/efi/earlycon.c               | 42 +++++-----
+ drivers/firmware/efi/efi-init.c               | 46 ++++++-----
+ drivers/firmware/efi/efi.c                    |  4 +-
+ drivers/firmware/efi/libstub/Makefile         |  2 +-
+ drivers/firmware/efi/libstub/efi-stub-entry.c | 36 +++++++--
+ drivers/firmware/efi/libstub/efi-stub.c       | 49 +++++++----
+ drivers/firmware/efi/libstub/efistub.h        |  7 +-
+ .../firmware/efi/libstub/primary_display.c    | 41 ++++++++++
+ drivers/firmware/efi/libstub/screen_info.c    | 53 ------------
+ drivers/firmware/efi/libstub/zboot.c          |  6 +-
+ drivers/firmware/efi/sysfb_efi.c              | 81 ++++++++++---------
+ drivers/firmware/sysfb.c                      | 13 +--
+ drivers/firmware/sysfb_simplefb.c             |  2 +-
+ drivers/gpu/drm/sysfb/efidrm.c                | 14 ++--
+ drivers/gpu/drm/sysfb/vesadrm.c               | 14 ++--
+ drivers/hv/vmbus_drv.c                        |  6 +-
+ drivers/pci/vgaarb.c                          |  4 +-
+ drivers/video/Kconfig                         |  8 +-
+ drivers/video/fbdev/core/fbmon.c              |  8 +-
+ drivers/video/fbdev/efifb.c                   | 10 ++-
+ drivers/video/fbdev/vesafb.c                  | 10 ++-
+ drivers/video/fbdev/vga16fb.c                 |  8 +-
+ drivers/video/screen_info_pci.c               |  5 +-
+ include/linux/efi.h                           |  9 ++-
+ include/linux/screen_info.h                   |  2 -
+ include/linux/sysfb.h                         | 23 ++++--
+ include/video/edid.h                          |  4 -
+ 34 files changed, 321 insertions(+), 254 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/primary_display.c
+ delete mode 100644 drivers/firmware/efi/libstub/screen_info.c
+
+
+base-commit: d724c6f85e80a23ed46b7ebc6e38b527c09d64f5
 -- 
-2.52.0
+2.51.1
 
 
