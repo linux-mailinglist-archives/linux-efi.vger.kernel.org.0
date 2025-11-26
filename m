@@ -1,150 +1,227 @@
-Return-Path: <linux-efi+bounces-5691-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5692-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04AABC8975F
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Nov 2025 12:12:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E276FC8A893
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Nov 2025 16:09:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E01AD4E3F3B
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Nov 2025 11:12:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B58134EB885
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Nov 2025 15:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D4931E10C;
-	Wed, 26 Nov 2025 11:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F2F3090D7;
+	Wed, 26 Nov 2025 15:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahas3Q9R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhZCWF2U"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594B331E0FA;
-	Wed, 26 Nov 2025 11:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D79308F33;
+	Wed, 26 Nov 2025 15:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764155536; cv=none; b=vCcV9Fb77uBKVCzm/Fyq9PU3yQ68njT7kZpu7ItgSiFOnsDCSHXMYICh+ETksnHmITbYc7n0rfhP3GTy/qTrvBoN2ggosMj95v2M/shaGylx2DnIcJYxqDm7saYGqzvHC47pGeu+O9fAtsXCFFf/19P/2NsRjEla+ZM1iWdbd3s=
+	t=1764169554; cv=none; b=UziGZq4hXlWJU5cUDgWgbQqcOnIktYT9P5QnmwiRGYP4fMIHArIoO9slWMGdGkyMQpm3fA6hEjV/MVOd9VMwN1TwF3bmqUOO11yz66M2Yv4vn9LQuUo7a9D6PtQ5vNSmpZM2uzh1Ce4nkeQOqxKAKA+QeIryKgJe5a48sYL+XIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764155536; c=relaxed/simple;
-	bh=5phfIDtqojfphtJHC0IyyK88IR5Qb0Al5LqeMavVjCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dJPdsemPNph40BhDOVYjw5ly0+L4cMYfS1b02oV9Nnnu5/SRALhXjDWJtxKE0r323tTwBP7kD0e6DFLXGETUlZ1amQoodzPrCZeN63xRGj4KvAmf+nOiRt756WXyJCZcdblvJ+4OZAOKM3VAZRuoGupd5atlyxpx+pUa7Xm7WWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahas3Q9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50491C113D0;
-	Wed, 26 Nov 2025 11:12:15 +0000 (UTC)
+	s=arc-20240116; t=1764169554; c=relaxed/simple;
+	bh=yDmc0KkHB9MrGSqJbRBKHH3aD0kUU3XAZAaRb9UpBZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UAqJ7SWuyivfkLf9YG9hRWbRNjmi8E2mZkrhcw5PtnW2umdRkoy1WB4NRbQEYLn8ibKCT8DtBLi+8OUKEGhVOx11/NdjRNVyWOmd/SMMX8FW79JaZxv/DI9z769wCfidpGrSpogYfGjNrqXblUB+DOGJ8iyP1RV3yOwhN1ZTJeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhZCWF2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA5FC4CEF7;
+	Wed, 26 Nov 2025 15:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764155535;
-	bh=5phfIDtqojfphtJHC0IyyK88IR5Qb0Al5LqeMavVjCQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ahas3Q9R7vcSoOjtyH5xVKKoUfwGEdH9YMldDKqXq7mpjBVe/reDYQk7Rgzkj4e+s
-	 TBIa+lBkRYJGxTRgrDpPfWyRv35mTXW5fWk9DgMd+XM6igQi6F+fwRaZOxbnmrCXYr
-	 a09ZJ3S13BjHAStYY6A2tjPlghbu/LOoumFRrjgFt65256V45WJ+S+uuVdk6NfwCNr
-	 d7FlobxPExcOh4NnQYVFm7NbSsKXXG42nfB6UH/INHjNpu1CuNWXRzpULftHLpU4OF
-	 nEpaUs6QJ36yfubqngrXcfFa8768pBWmASIN295allbJG6nZI5Oono8+fhC/CmS7/w
-	 4EXevleu9s31A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 94BB2F40074;
-	Wed, 26 Nov 2025 06:12:14 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 26 Nov 2025 06:12:14 -0500
-X-ME-Sender: <xms:juAmaY-bPQxSpO90AeZ11ay5E1II4KyzeP-auTctxsJsyfe8E6ERhQ>
-    <xme:juAmaeNloSl5Oz3Rld8lU_p-bcUfLyTHkQfLufFM7sFemsug7VmlCZ5iobxMMWkHX
-    q6XdRpgqKrzzJuBnzHzAaJBmgruoWypZ1PYHoqzCoMk6RlLvGhgBmQ>
-X-ME-Received: <xmr:juAmaaFp-4zS2N67TEm6DLu-cw5C6ucRk0LqboOy0Q_Mb5plFPd5GChN7ZjKkQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeegudelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehprhhsrghmphgrthesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmh
-    eskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdr
-    lhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgvfhhisehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgohes
-    rhgvughhrghtrdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggv
-X-ME-Proxy: <xmx:juAmaVuHz4Q9ULWzJJUeST1UHoh03F3sIGKS5znoOrD4KIgaxwi6Dg>
-    <xmx:juAmafvktU0ExlYil5wOkBt_9KuFRpW4x_r0K_ahKgKpZr1_VL6Cxg>
-    <xmx:juAmaeG7L5E0ycU4wuE0iz1pFqA4px9-clJYEo19cBuLfVjKP-BV3A>
-    <xmx:juAmaaK2w9R9Yt78YpWSRzvsz5mxG5QWTCrJalRDZsTdXL6CTZ9LXw>
-    <xmx:juAmaWYb6hiZ2alAOSPn83_ldxz5MrrVXz7FSLLFWHIsvoMAmDw3uegM>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Nov 2025 06:12:14 -0500 (EST)
-Date: Wed, 26 Nov 2025 11:12:13 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Pratik R. Sampat" <prsampat@amd.com>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	linux-efi@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org, 
-	akpm@linux-foundation.org, david@redhat.com, osalvador@suse.de, thomas.lendacky@amd.com, 
-	michael.roth@amd.com
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-3-prsampat@amd.com>
+	s=k20201202; t=1764169554;
+	bh=yDmc0KkHB9MrGSqJbRBKHH3aD0kUU3XAZAaRb9UpBZc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MhZCWF2UZYdsx21O52l+J6cOSik0H8XblVwQ6pvvMgJLY56P+14bSPJK4HITF8QOo
+	 3vZXqZ9o+2A5PIuhs/l0a3g8YXzpB2a5geTTKJsZiXkG8+sWUYxEblEHdN0/GU9OGH
+	 0HoLfJhleK7J+wO0rs/oNLowJzFo0qGEjbulLsk6QsUUlpp4dUEH4xT6Ew8a/cI3Mn
+	 9Lh9ypH+IM6szGfYf4O8L51vz8SwZfgF6Go/H3+IiqjgaDdYIYM6lHraVHruh41ocX
+	 SmS4aBiWXR07cFgv+y2fJHQnUiQpM8eMm1QjrdIZz0VodkCFKBFcuvMhNaCe0P0hRy
+	 w2kYjiOIlKlpg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.99)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1vOH5c-00000003nvq-1r9L;
+	Wed, 26 Nov 2025 16:05:52 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Ard Biesheuvel" <ardb@kernel.org>,
+	"Borislav Petkov" <bp@alien8.de>,
+	"Breno Leitao" <leitao@debian.org>,
+	"Dave Jiang" <dave.jiang@intel.com>,
+	"Hanjun Guo" <guohanjun@huawei.com>,
+	"Ira Weiny" <ira.weiny@intel.com>,
+	"Jason Tian" <jason@os.amperecomputing.com>,
+	"Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+	"Len Brown" <lenb@kernel.org>,
+	"Mauro Carvalho Chehab" <mchehab@kernel.org>,
+	"Peter Zijlstra" <peterz@infradead.org>,
+	"Shuai Xue" <xueshuai@linux.alibaba.com>,
+	"Smita Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>,
+	"Tony Luck" <tony.luck@intel.com>,
+	"pengdonglin" <pengdonglin@xiaomi.com>,
+	linux-acpi@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] apei/ghes: don't go past the ARM processor CPER record buffer
+Date: Wed, 26 Nov 2025 16:05:45 +0100
+Message-ID: <7a97a0a51c2841b715cde1ee0c92df2765e5d0db.1764169337.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1764169337.git.mchehab+huawei@kernel.org>
+References: <cover.1764169337.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125175753.1428857-3-prsampat@amd.com>
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On Tue, Nov 25, 2025 at 11:57:51AM -0600, Pratik R. Sampat wrote:
-> The unaccepted memory structure currently only supports accepting memory
-> present at boot time. The unaccepted table uses a fixed-size bitmap
-> reserved in memblock based on the initial memory layout, preventing
-> dynamic addition of memory ranges after boot. This causes guest
-> termination when memory is hot-added in a secure virtual machine due to
-> accessing pages that have not transitioned to private before use.
+There's a logic inside ghes/cper to detect if the section_length
+is too small, but it doesn't detect if it is too big.
 
-How does the hot-pluggable memory look in EFI memory map? I thought
-hot-pluggable ranges suppose to be declared thare. The cleanest solution
-would be to have hot-pluggable and unaccepted indicated in EFI memory,
-so we can size bitmap accordingly upfront.
+Currently, if the firmware receives an ARM processor CPER record
+like:
 
-> Extend the unaccepted memory framework to handle hotplugged memory by
-> dynamically managing the unaccepted bitmap. Allocate a new bitmap when
-> hotplugged ranges exceed the reserved bitmap capacity and switch to
-> kernel-managed allocation.
-> 
-> Hotplugged memory also follows the same acceptance policy using the
-> accept_memory=[eager|lazy] kernel parameter to accept memory either
-> up-front when added or before first use.
-> 
-> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
-> ---
->  arch/x86/boot/compressed/efi.h                |  1 +
->  .../firmware/efi/libstub/unaccepted_memory.c  |  1 +
->  drivers/firmware/efi/unaccepted_memory.c      | 83 +++++++++++++++++++
->  include/linux/efi.h                           |  1 +
->  include/linux/mm.h                            | 11 +++
->  mm/memory_hotplug.c                           |  7 ++
->  mm/page_alloc.c                               |  2 +
->  7 files changed, 106 insertions(+)
-> 
-> diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
-> index 4f7027f33def..a220a1966cae 100644
-> --- a/arch/x86/boot/compressed/efi.h
-> +++ b/arch/x86/boot/compressed/efi.h
-> @@ -102,6 +102,7 @@ struct efi_unaccepted_memory {
->  	u32 unit_size;
->  	u64 phys_base;
->  	u64 size;
-> +	bool mem_reserved;
->  	unsigned long *bitmap;
->  };
->  
+  00000000  01 c2 bf 6e 76 b4 94 d7 b0 04 f5 32 e3 5e 89 23   ...nv......2.^.#
+  00000010  f6 4f 40 31 fd 70 3f 7c 0a 87 76 84 2f 4b 30 ff   .O@1.p?|..v./K0.
+  00000020  24 20 71 0d c0 92 4b 0f ae 9b 94 9d 78 8a 7f 6b   $ q...K.....x..k
+  00000030  89 2f 10 8a 6a bf f4 01 96 12 b0 90 b3 9a 08 33   ./..j..........3
+  00000040  0d 01 61                                          ..a
 
-Again, this is ABI break for kexec.
+It would produce a very long record, going past the buffer, as,
+in the above record, ERR_INFO_NUM is set to 46198.
 
+Fix it by adding a logic to prevent it to go past the buffer
+if ERR_INFO_NUM is too big, reporting instead:
+
+	[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
+	[Hardware Error]: event severity: recoverable
+	[Hardware Error]:  Error 0, type: recoverable
+	[Hardware Error]:   section_type: ARM processor error
+	[Hardware Error]:   MIDR: 0xff304b2f8476870a
+	[Hardware Error]:   section length: 854918320, CPER size: 67
+	[Hardware Error]:   section length is too big
+	[Hardware Error]:   firmware-generated error record is incorrect
+	[Hardware Error]:   ERR_INFO_NUM is 46198
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ drivers/acpi/apei/ghes.c        | 13 +++++++++++++
+ drivers/firmware/efi/cper-arm.c | 14 +++++++++-----
+ drivers/firmware/efi/cper.c     |  3 ++-
+ include/linux/cper.h            |  3 ++-
+ 4 files changed, 26 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 56107aa00274..8b90b6f3e866 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -557,6 +557,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ {
+ 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+ 	int flags = sync ? MF_ACTION_REQUIRED : 0;
++	int length = gdata->error_data_length;
+ 	char error_type[120];
+ 	bool queued = false;
+ 	int sec_sev, i;
+@@ -568,7 +569,12 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ 		return false;
+ 
+ 	p = (char *)(err + 1);
++	length -= sizeof(err);
++
+ 	for (i = 0; i < err->err_info_num; i++) {
++		if (length <= 0)
++			break;
++
+ 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
+ 		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
+ 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+@@ -580,10 +586,17 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+ 		 * and don't filter out 'corrected' error here.
+ 		 */
+ 		if (is_cache && has_pa) {
++			length -= err_info->length;
++			if (length < 0)
++				break;
+ 			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
+ 			p += err_info->length;
++
+ 			continue;
+ 		}
++		length -= err_info->length;
++			if (length < 0)
++				break;
+ 
+ 		cper_bits_to_str(error_type, sizeof(error_type),
+ 				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
+diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
+index 76542a53e202..6fe26abc9c11 100644
+--- a/drivers/firmware/efi/cper-arm.c
++++ b/drivers/firmware/efi/cper-arm.c
+@@ -226,9 +226,10 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
+ }
+ 
+ void cper_print_proc_arm(const char *pfx,
+-			 const struct cper_sec_proc_arm *proc)
++			 const struct cper_sec_proc_arm *proc,
++			 u32 length)
+ {
+-	int i, len, max_ctx_type;
++	int len, i, max_ctx_type;
+ 	struct cper_arm_err_info *err_info;
+ 	struct cper_arm_ctx_info *ctx_info;
+ 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
+@@ -238,9 +239,12 @@ void cper_print_proc_arm(const char *pfx,
+ 
+ 	len = proc->section_length - (sizeof(*proc) +
+ 		proc->err_info_num * (sizeof(*err_info)));
+-	if (len < 0) {
+-		printk("%ssection length: %d\n", pfx, proc->section_length);
+-		printk("%ssection length is too small\n", pfx);
++
++	if (len < 0 || len > length) {
++		printk("%ssection length: %d, CPER size: %d\n",
++		       pfx, proc->section_length, length);
++		printk("%ssection length is too %s\n", pfx,
++		       (len > length) ? "big" : "small");
+ 		printk("%sfirmware-generated error record is incorrect\n", pfx);
+ 		printk("%sERR_INFO_NUM is %d\n", pfx, proc->err_info_num);
+ 		return;
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index 0232bd040f61..88fc0293f876 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -659,7 +659,8 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
+ 
+ 		printk("%ssection_type: ARM processor error\n", newpfx);
+ 		if (gdata->error_data_length >= sizeof(*arm_err))
+-			cper_print_proc_arm(newpfx, arm_err);
++			cper_print_proc_arm(newpfx, arm_err,
++					    gdata->error_data_length);
+ 		else
+ 			goto err_section_too_small;
+ #endif
+diff --git a/include/linux/cper.h b/include/linux/cper.h
+index 5b1236d8c65b..440b35e459e5 100644
+--- a/include/linux/cper.h
++++ b/include/linux/cper.h
+@@ -595,7 +595,8 @@ void cper_mem_err_pack(const struct cper_sec_mem_err *,
+ const char *cper_mem_err_unpack(struct trace_seq *,
+ 				struct cper_mem_err_compact *);
+ void cper_print_proc_arm(const char *pfx,
+-			 const struct cper_sec_proc_arm *proc);
++			 const struct cper_sec_proc_arm *proc,
++			 u32 length);
+ void cper_print_proc_ia(const char *pfx,
+ 			const struct cper_sec_proc_ia *proc);
+ int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.52.0
+
 
