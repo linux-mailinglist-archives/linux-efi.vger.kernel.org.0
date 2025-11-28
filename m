@@ -1,142 +1,115 @@
-Return-Path: <linux-efi+bounces-5718-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5719-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8BD3C91940
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Nov 2025 11:11:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C80C91CCE
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Nov 2025 12:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7DA5E4E48C1
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Nov 2025 10:11:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 97E1C34330B
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Nov 2025 11:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFA33093DD;
-	Fri, 28 Nov 2025 10:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15313093B8;
+	Fri, 28 Nov 2025 11:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJqpK8dB"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jqPsd8CW"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB0F3081DF
-	for <linux-efi@vger.kernel.org>; Fri, 28 Nov 2025 10:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809AB30103A;
+	Fri, 28 Nov 2025 11:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764324684; cv=none; b=uvEAsfbo9J8hYQPFvnAjcFrGODASCql47FAeT7LuV9cTRO5RiFaejP1BlSnMZpDqUW+JK3n04jRIIbmGpUUR1A+0U+6k8jcPLIM+FH1gRjFLx/oWF9zKoA/1y4hYtPAQitD8jgh2xDrAktIiEIFtztOOCWbXcOp/yu/+dQsN87U=
+	t=1764329688; cv=none; b=aGRsXoSowy9ik9QKK2Vb1XiQdsvh+IoyZWQ1g0Xa437V4lGe9iFUrz46Fup+1kQg7rpdBGBIr8M3aqrAn1252KgGs1IUFsXTxHO+sD0IDlgzAHhmX4hiFn48HGAPNRKGiH4px2k2U4qnvUkRlQt+UXEA8SJ46M68c9OZZHSpX4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764324684; c=relaxed/simple;
-	bh=PWsRhLp6z6n29IRXVTS5+3foE+B/FlguofEGjtrPnAU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HlkvyHI13M9KHvKGmGVAffKEB6Q5Wal+vDA2nXwmKwXggN5JEuGm2jGOW5Rv8YAJmsGlOIPap08GNBxx0STLVJzI6i2FH7Kl0gG8mUFnIzRz7qBSFfPyugliiCdztq1UIvD0Jmyg21XO3HDZRn7FGgZODH7zZFtQTKeHukPGCfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJqpK8dB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02FFC116B1
-	for <linux-efi@vger.kernel.org>; Fri, 28 Nov 2025 10:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764324683;
-	bh=PWsRhLp6z6n29IRXVTS5+3foE+B/FlguofEGjtrPnAU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sJqpK8dBqFSb4b0m9DQYK2iaCS3+Gd3oWB596cjJhVJJk/Zg2OiNnqagNQSREoTKc
-	 BFwKZDjHcBOAiK604Fkf8TtdXStOcWZ1rY5nJJGfFTmIJHGnYtOTKtpvkLHpg4XAPa
-	 J4vFis/tO92GN+97xn7YNGDC/iLi+aRxZVjGqp2bYJTlE4643EWXts7vMqt3Q1AelD
-	 W3o2FD6IbaBn2cpuX96MEOmH02WBhpbJFHoUpuJEim6cupU3bg3FVLhl0vksZ3ZWwq
-	 0PpEuF61HEL+G5WbZ3LdqHhMKuelrI0kzOEaloaKlgldOsoG6gznCCFq9QTKkwb2Uq
-	 RjRS/eD0HIXrg==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b735b89501fso214037966b.0
-        for <linux-efi@vger.kernel.org>; Fri, 28 Nov 2025 02:11:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVUflHZvcwgqEcEVyZcmXWDO4JdGfxut0dUhdy0QPDLIRAazRz7QNX/JWBp8ErPcBpTnCm5jRGjsQQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLNOvPjWnOkSg7arLK4CgeRCUxW2whu82qTr3PRnxVC1Js6cdR
-	Hi1ODFsOG09VFRo7OwWZNMkfGnugQga4JhQVsAtiKrCCj/lmcRiY2fdpk5AGeTJjSvAvIBclq62
-	BdBg4JmzmUh3JAzLtZdQaRL7KjF3gj9Q=
-X-Google-Smtp-Source: AGHT+IER+7jriN3w9Pv8lhWqhpVubB2j1VJ3WiM2RJPPedEcwCvbKIiBl12aNjVZ1s4Ed6Fb1u3VbAod9cGN/G90Wrw=
-X-Received: by 2002:a17:907:747:b0:b76:4c16:6afe with SMTP id
- a640c23a62f3a-b76c5515075mr1672433466b.28.1764324682207; Fri, 28 Nov 2025
- 02:11:22 -0800 (PST)
+	s=arc-20240116; t=1764329688; c=relaxed/simple;
+	bh=vjKsNJcNLGuEthGr4lKZCht1+ua97+nPHkIJI8VIhAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BE4EsQts15TcthOhC1A/lbZnZW1xMnNvJ7uRJi4mniS04eIxS+taQ/rd8MKoQPk+qkxvzSgzytEcWhCfLGODD7c1E/eN3P/0uYVPP2Lzlo8p+NE41ogmE+9xnlf7G1G2x9iPMUCpWxNrmoSPMpqNeVvjeWuCKXFLG+WFJhJLicU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jqPsd8CW; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 97AD440E00DE;
+	Fri, 28 Nov 2025 11:34:38 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id RUR8aTs9spya; Fri, 28 Nov 2025 11:34:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1764329674; bh=n03pb56uV/bng4zeqw0XDs9CYZXB2sMRKA0NowRt37o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jqPsd8CWkdP1sYlUop+5YOGjpjpKztitu/YqeuhptdC192Kr6sCl9pIdqWtUTTQ4d
+	 RlzFfkaEAwP2Jgux2YS/9xQK4tpEHyFmzGUD+QrBOWQxg+1XDNupu2hatR408pAgX6
+	 sYalciOLua+VUGjn9+zrJpYz73MCkaqISeJw6eBEYVZcVkAPpXeZY/F7HcoYvSInGp
+	 Zb5d6b04IdxdrBeoFmY7H6VWcL/y/vJZ9F1xjMf3ubISmokhwuSQ4Z/bHPxEweId+w
+	 xIrn4wDPIXpHxUgVw4U8MJNIf/ahF/3/V7LLjGQ2LAPE50hskEZnIJfAh1ylJwHuz/
+	 098vVCxSaP5i0oitGnzamsx88hO+M5sYkYOaS2W4nr5n9NAAUldloZGZc32ljKNCfA
+	 K6LgfpK0oLEpWWDVSBg/+VHbUlncNcO01dRD+ZZAEY2zuojrhGw94wqqAWQdyH0Jjm
+	 SFFZPPZVDzyFIZjXPezuOfYJN+9FbGr/j5tFVprbuOTmffG44hYCmlrgtFFjw8VPP3
+	 sNoHRlZsgOklHheNX5P27tvAb0fQBrFm2ViGYPGBw4o5wyTY7yplAJ9BZYyxjd4NMb
+	 ZlgRTFo4Ffw2ZlplE66i5QqEvPvxpu0JWa/Hzf19uoi8efmaZOOStL/8yiJGshFyIG
+	 e0rb7cPSvVzh/NQcSv0U0hGQ=
+Received: from zn.tnic (pd953063a.dip0.t-ipconnect.de [217.83.6.58])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B1B2540E0217;
+	Fri, 28 Nov 2025 11:34:17 +0000 (UTC)
+Date: Fri, 28 Nov 2025 12:34:11 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, ardb@kernel.org,
+	akpm@linux-foundation.org, osalvador@suse.de,
+	thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
+Message-ID: <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
+References: <20251125175753.1428857-1-prsampat@amd.com>
+ <20251125175753.1428857-3-prsampat@amd.com>
+ <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
+ <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
+ <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
+ <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
+ <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMj1kXEaxxcWTTANWeEMNjYDymdL5Fxy2B=XBF4RGtteEkfinw@mail.gmail.com>
- <421c08e1-255b-447b-b5e3-ee6544fbefd2@loongson.cn> <CAAhV-H5KsFShDJ_Cxu+1_ces8oojn8+S-7PLmE7aUj8gX5_GEw@mail.gmail.com>
- <32s3lvzfu6jkyho7qenrqbsm5wkgjnzn2imdp6tfwycmyxpzgu@kg5367uxmxii>
- <CAAhV-H47fzaKcMhgLWWOTxB+srBsg85-eK0LW1vQXQnvq32-+w@mail.gmail.com>
- <aRsH7RTpAah4g5Xr@willie-the-truck> <CAAhV-H4AasfFet_Gi_mVyte3RPMH3qBS73dBfF-=Gd7HJ6ZPEw@mail.gmail.com>
- <39617a3e-c476-abac-8425-bbcece769cdb@loongson.cn> <CAAhV-H4fHBuRpDEDQrExApgnREJaT8JWUJ2700bEPFxDqToi2w@mail.gmail.com>
- <fc4fa66f-15a0-ebe3-0a27-f3f38b03bbdb@loongson.cn> <pgzg3tdudow4ww3tnqdvmppufbpbf6ws5adjjcwc7g3ou7yoih@mzk7iwh7trbe>
-In-Reply-To: <pgzg3tdudow4ww3tnqdvmppufbpbf6ws5adjjcwc7g3ou7yoih@mzk7iwh7trbe>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 28 Nov 2025 18:11:26 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4t+zYKmVNdjP53XPbvLFtvik1WRGT0NLtQYBU0m=3GVQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bkX3iCrwW5eCVl7oUJENC1CV_iFBcerr6LqbeRJus8VyU5MC421CDs2fZk
-Message-ID: <CAAhV-H4t+zYKmVNdjP53XPbvLFtvik1WRGT0NLtQYBU0m=3GVQ@mail.gmail.com>
-Subject: Re: [PATCH v2] efistub: Only link libstub to final vmlinux
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	"Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
 
-On Tue, Nov 25, 2025 at 9:49=E2=80=AFAM Josh Poimboeuf <jpoimboe@kernel.org=
-> wrote:
->
-> On Sun, Nov 23, 2025 at 11:37:14AM +0800, Tiezhu Yang wrote:
-> > On 11/23/25 10:29, Huacai Chen wrote:
-> > > Is it possible to improve objtool that can handle indirect __noreturn=
- functions?
->
-> Someday that will be possible via a new compiler feature or plugin.  But
-> today it can't be done.
->
-> > > Is it possible to improve objtool that can handle
-> > > OBJECT_FILES_NON_STANDARD event LTO is enabled?
->
-> No, that is purely a makefile construct which should in general be
-> avoided anyway for a variety of reasons.
->
-> > > Is it possible to improve objtool that only ignore __efistub prefix
-> > > for LoongArch?
-> > [...]
-> > static int validate_branch()
-> > {
-> > ...
-> >                       if (arch_is_efistub(func))
-> >                               return 0;
-> >
-> >                       if (file->ignore_unreachables)
-> >                               return 0;
-> >
-> >                       WARN("%s() falls through to next function %s()",
-> >                            func->name, insn_func(insn)->name);
-> >                       func->warned =3D 1;
-> >
-> >                       return 1;
-> > ...
-> > }
->
-> That only silences the warning, it doesn't prevent objtool from doing
-> the actual stack validation or ORC generation.  Neither of which makes
-> sense for libstub.
->
-> And objtool has many other features beyond just stack validation and
-> ORC.  None of those make sense for libstub either.
->
-> To fully exclude all libstub code from objtool, these arch_is_efistub()
-> checks would need to be sprinkled all over the place.
-If the call sites are less than 5, I think it is acceptable.
+On Fri, Nov 28, 2025 at 10:30:15AM +0100, David Hildenbrand (Red Hat) wrote:
+> kexecing the same kernel is typically used for kdump purposes.
+> 
+> kexecing different kernels is used for all sorts of things (live-upgrade,
+> grub-emu come to mind). It's quite common to kexec different kernels, or
+> maybe I misunderstood the question here?
 
-Huacai
+And my question is: since when do we enforce no-ABI-changes between kernels so
+that we can kexec any kernel into any kernel?
 
->
-> That would be a lot more fragile than just excluding libstub from
-> vmlinux.o in the first place.
->
-> --
-> Josh
+By that logic I should be able to kexec 5.x into 6.x. I'll bet some money that
+it won't work.
+
+So unless it is written down somewhere, I think we should probably talk first
+what we want to support and why...
+
+Makes sense?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
