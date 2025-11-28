@@ -1,115 +1,204 @@
-Return-Path: <linux-efi+bounces-5719-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5720-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C80C91CCE
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Nov 2025 12:34:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D0FC92664
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Nov 2025 16:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 97E1C34330B
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Nov 2025 11:34:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 229BA3A37ED
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Nov 2025 15:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15313093B8;
-	Fri, 28 Nov 2025 11:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2E52D592C;
+	Fri, 28 Nov 2025 15:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jqPsd8CW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="TlQs/hv6"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809AB30103A;
-	Fri, 28 Nov 2025 11:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D960B2405EB
+	for <linux-efi@vger.kernel.org>; Fri, 28 Nov 2025 15:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764329688; cv=none; b=aGRsXoSowy9ik9QKK2Vb1XiQdsvh+IoyZWQ1g0Xa437V4lGe9iFUrz46Fup+1kQg7rpdBGBIr8M3aqrAn1252KgGs1IUFsXTxHO+sD0IDlgzAHhmX4hiFn48HGAPNRKGiH4px2k2U4qnvUkRlQt+UXEA8SJ46M68c9OZZHSpX4I=
+	t=1764342272; cv=none; b=QrRWkB1Dcq+Fw0EAdKQc5E8OzBJnoZjn3Y29iaJ3UXscJq8Hus+wkXhwmULgACsP3F8rV5XwFkKJmMxepCsPTjYAqkBtGfk2xuXAcLkJmzOMJDlAM5+pFWFUb624MzZIXNv/1Sriyvbbj60JKP3gj+fr8arQ6kanehudyYuwACo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764329688; c=relaxed/simple;
-	bh=vjKsNJcNLGuEthGr4lKZCht1+ua97+nPHkIJI8VIhAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BE4EsQts15TcthOhC1A/lbZnZW1xMnNvJ7uRJi4mniS04eIxS+taQ/rd8MKoQPk+qkxvzSgzytEcWhCfLGODD7c1E/eN3P/0uYVPP2Lzlo8p+NE41ogmE+9xnlf7G1G2x9iPMUCpWxNrmoSPMpqNeVvjeWuCKXFLG+WFJhJLicU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jqPsd8CW; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 97AD440E00DE;
-	Fri, 28 Nov 2025 11:34:38 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id RUR8aTs9spya; Fri, 28 Nov 2025 11:34:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1764329674; bh=n03pb56uV/bng4zeqw0XDs9CYZXB2sMRKA0NowRt37o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jqPsd8CWkdP1sYlUop+5YOGjpjpKztitu/YqeuhptdC192Kr6sCl9pIdqWtUTTQ4d
-	 RlzFfkaEAwP2Jgux2YS/9xQK4tpEHyFmzGUD+QrBOWQxg+1XDNupu2hatR408pAgX6
-	 sYalciOLua+VUGjn9+zrJpYz73MCkaqISeJw6eBEYVZcVkAPpXeZY/F7HcoYvSInGp
-	 Zb5d6b04IdxdrBeoFmY7H6VWcL/y/vJZ9F1xjMf3ubISmokhwuSQ4Z/bHPxEweId+w
-	 xIrn4wDPIXpHxUgVw4U8MJNIf/ahF/3/V7LLjGQ2LAPE50hskEZnIJfAh1ylJwHuz/
-	 098vVCxSaP5i0oitGnzamsx88hO+M5sYkYOaS2W4nr5n9NAAUldloZGZc32ljKNCfA
-	 K6LgfpK0oLEpWWDVSBg/+VHbUlncNcO01dRD+ZZAEY2zuojrhGw94wqqAWQdyH0Jjm
-	 SFFZPPZVDzyFIZjXPezuOfYJN+9FbGr/j5tFVprbuOTmffG44hYCmlrgtFFjw8VPP3
-	 sNoHRlZsgOklHheNX5P27tvAb0fQBrFm2ViGYPGBw4o5wyTY7yplAJ9BZYyxjd4NMb
-	 ZlgRTFo4Ffw2ZlplE66i5QqEvPvxpu0JWa/Hzf19uoi8efmaZOOStL/8yiJGshFyIG
-	 e0rb7cPSvVzh/NQcSv0U0hGQ=
-Received: from zn.tnic (pd953063a.dip0.t-ipconnect.de [217.83.6.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B1B2540E0217;
-	Fri, 28 Nov 2025 11:34:17 +0000 (UTC)
-Date: Fri, 28 Nov 2025 12:34:11 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, ardb@kernel.org,
-	akpm@linux-foundation.org, osalvador@suse.de,
-	thomas.lendacky@amd.com, michael.roth@amd.com
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-3-prsampat@amd.com>
- <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
- <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
- <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
- <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
- <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
+	s=arc-20240116; t=1764342272; c=relaxed/simple;
+	bh=RToRdpZgjF1cP6pDUNtTZZjpodjK1qrF7DROP+8kv/Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ECRwSCbdL0DwuojqXGHc/uKRBK3qZGqqBIi8WlUH9/DgKIB/IBUnM6EEJcoaIRUi89gLKNixPatqh/C9hKJM99+LVyaOSs4GCFHNKwOwq13Y9lOv46PtT6ZdvrIVD+Ep+QYPjk+aJDVH4gPxwtUSTtkxkPTrwmQ+ebCs+9seHm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=TlQs/hv6; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=zlaiiMP7Sevijtkm4t7qoCJJmgwp+164Kl80ZMjHygU=; b=TlQs/hv6tiALdS8Sdp/RojDZL/
+	PmfZi9lf2TCsC6kJbHR1ZjzTTu+Ua+xqLyVOAqEKMtygmCMe7no0+1s3YPIzKwvrYCTj7HiDz6HX8
+	UbT7x11RGBbu/9WqiZUWzBR3KpwjfPSJ7xYqadCntU+6R+qMQ7kyGVMVNadgXMNO8ltCsdns3Nh7Z
+	rmkixu9zlRT9I25prEjcVWZZ9JFNneaEUrnTa9Ek+BFkeAONqPN4RSGRTWBIIBLY/mEf3e6/vJEuJ
+	rtQDwx85QiP8LfAcGbB8OZhg3n4nnUGKOa6AUZALBGkjrmv6Po4C9TEeKwTurHbLjidWfkov0cMsR
+	lpkADJJQ==;
+Received: from [90.240.106.137] (helo=localhost)
+	by fanzine2.igalia.com with utf8esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vP012-006Ufe-Nt; Fri, 28 Nov 2025 16:04:08 +0100
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+To: dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Melissa Wen <mwen@igalia.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	linux-efi@vger.kernel.org
+Subject: [RFX] efi: sysfb_efi: Fix simpledrmfb on Steam Deck
+Date: Fri, 28 Nov 2025 15:04:03 +0000
+Message-ID: <20251128150403.11567-1-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 28, 2025 at 10:30:15AM +0100, David Hildenbrand (Red Hat) wrote:
-> kexecing the same kernel is typically used for kdump purposes.
-> 
-> kexecing different kernels is used for all sorts of things (live-upgrade,
-> grub-emu come to mind). It's quite common to kexec different kernels, or
-> maybe I misunderstood the question here?
+I am not sure how is simpledrmfb on top of EFI supposed to work, but at
+least at the moment it appears there is a missing link in the "discovery"
+of frame buffer parameters.
 
-And my question is: since when do we enforce no-ABI-changes between kernels so
-that we can kexec any kernel into any kernel?
+What I can see is that EFI GOP reads some parameters from the firmware and
+infers the other, such as in this case problematic pitch, or stride.
 
-By that logic I should be able to kexec 5.x into 6.x. I'll bet some money that
-it won't work.
+One could be easily excused in thinking that pitch cannot be reliably
+inferred, since different display hardware has differing alignment
+requirements, so it is unclear how is hardware agnostic solution supposed
+to work.
 
-So unless it is written down somewhere, I think we should probably talk first
-what we want to support and why...
+In the specific case of the Steam Deck hardware we have a 800x1280 native
+panel which is also installed rotated 90 degrees counter clockwise.
 
-Makes sense?
+Firmware appears to set up the pitch as 3328, while GOP assumes 3200,
+based of a width * bpp calculation.
 
+When this incorrect pitch propagates through (rather complicated) fbcon
+and DRM call paths, the end result is corrupted rendering all until the
+amdgpu takes over the fbdev.
+
+Simplistic solution in this patch is to add a DMI quirk to the EFI
+frame buffer setup code.
+
+Apart from the incorrect pitch, the quirk also does the swapping of the
+width and height. Apart from setting the correct fbcon dimensions this
+one also allows the quirk from drm_get_panel_orientation_quirk() to
+report the correct orientation.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: Rodrigo Siqueira <siqueira@igalia.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: linux-efi@vger.kernel.org
+---
+ drivers/firmware/efi/sysfb_efi.c | 48 ++++++++++++++++++++++++++++++--
+ 1 file changed, 46 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
+index 1e509595ac03..84d9049bb2cb 100644
+--- a/drivers/firmware/efi/sysfb_efi.c
++++ b/drivers/firmware/efi/sysfb_efi.c
+@@ -231,6 +231,18 @@ static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
+ 	{},
+ };
+ 
++struct efifb_mode_fixup {
++	unsigned int width;
++	unsigned int height;
++	unsigned int pitch;
++};
++
++static const struct efifb_mode_fixup efifb_steamdeck_mode_fixup = {
++	.width = 1280,
++	.height = 800,
++	.pitch = 3328,
++};
++
+ /*
+  * Some devices have a portrait LCD but advertise a landscape resolution (and
+  * pitch). We simply swap width and height for these devices so that we can
+@@ -281,6 +293,24 @@ static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X91"),
+ 		},
+ 	},
++	{
++		/* Valve Steam Deck (Jupiter) */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Valve"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Jupiter"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "1"),
++		},
++		.driver_data = (void *)&efifb_steamdeck_mode_fixup,
++	},
++	{
++		/* Valve Steam Deck (Galileo) */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Valve"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Galileo"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "1"),
++		},
++		.driver_data = (void *)&efifb_steamdeck_mode_fixup,
++	},
+ 	{},
+ };
+ 
+@@ -351,17 +381,31 @@ static struct fwnode_handle efifb_fwnode;
+ 
+ __init void sysfb_apply_efi_quirks(void)
+ {
++	const struct dmi_system_id *match;
++
+ 	if (screen_info.orig_video_isVGA != VIDEO_TYPE_EFI ||
+ 	    !(screen_info.capabilities & VIDEO_CAPABILITY_SKIP_QUIRKS))
+ 		dmi_check_system(efifb_dmi_system_table);
+ 
+-	if (screen_info.orig_video_isVGA == VIDEO_TYPE_EFI &&
+-	    dmi_check_system(efifb_dmi_swap_width_height)) {
++	if (screen_info.orig_video_isVGA != VIDEO_TYPE_EFI)
++		return;
++
++	for (match = dmi_first_match(efifb_dmi_swap_width_height);
++	     match;
++	     match = dmi_first_match(match + 1)) {
++		const struct efifb_mode_fixup *data = match->driver_data;
+ 		u16 temp = screen_info.lfb_width;
+ 
+ 		screen_info.lfb_width = screen_info.lfb_height;
+ 		screen_info.lfb_height = temp;
+ 		screen_info.lfb_linelength = 4 * screen_info.lfb_width;
++
++		if (data && data->pitch &&
++		   data->width == screen_info.lfb_height &&
++		   data->height == screen_info.lfb_width) {
++			screen_info.lfb_linelength = data->pitch;
++			screen_info.lfb_size = data->pitch * data->width;
++		}
+ 	}
+ }
+ 
 -- 
-Regards/Gruss,
-    Boris.
+2.51.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
