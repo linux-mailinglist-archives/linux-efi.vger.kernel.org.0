@@ -1,291 +1,119 @@
-Return-Path: <linux-efi+bounces-5741-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5742-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410D5C98BB8
-	for <lists+linux-efi@lfdr.de>; Mon, 01 Dec 2025 19:36:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 809FEC98CE9
+	for <lists+linux-efi@lfdr.de>; Mon, 01 Dec 2025 20:10:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2F9EF4E28E0
-	for <lists+linux-efi@lfdr.de>; Mon,  1 Dec 2025 18:36:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E252F4E1BB0
+	for <lists+linux-efi@lfdr.de>; Mon,  1 Dec 2025 19:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF93A21D3F4;
-	Mon,  1 Dec 2025 18:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DCE23909C;
+	Mon,  1 Dec 2025 19:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pMhet+Fq"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=it-loops.com header.i=@it-loops.com header.b="YA5tU3cZ"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36DC211290;
-	Mon,  1 Dec 2025 18:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819F622ACEB
+	for <linux-efi@vger.kernel.org>; Mon,  1 Dec 2025 19:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764614168; cv=none; b=nQ9GQzMVoomznJWPmyg0FmjHHh+CMyujfGN9aCoTPSbvyLNnaMAimcuAl/8Up3AT2e3zdjMCAoS5Zvb+gUctNlnibtcW3fRxIyQ4JHJMUGIF7q9/UIovK2fL1LuLVWrGSPZzLPvWjPcJVBV1Xo3JGJ+qkaN4FCWyBUO9O8Q+zYE=
+	t=1764616201; cv=none; b=oP9gr8mf5peTEWwULo/cW8zX+YyLwjU697+Zh/oi52meMiHaMpr6ckKChFKDh0oWdAAKfGaX6Y4VxWpCJuiLVgyEFf610vPBxpPkxM7U6J7PzKK455OHYcBakyKZtPBsvjyemzHbdyQQNYHGw7nPklfUYH1aJpmWUMaOt2iXANQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764614168; c=relaxed/simple;
-	bh=GqUZ1tJI5oUYnsMVH3ZG4nNrDtR+42m3Jo4JWGTzt6I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dZnBF4omKftspcI3MIC7CqtJcEDQycOUHH4/yEaQ6VIviErLSmii/4bqJ9bnbCG6979FmV57sc3h6ml29MINoe2h1/yS2qgrV1cEjC3eWyQrx7vym4HFWyBTJpIXZsd7n15+EneeuBjQzLYZ4v6tJuVHS4Nm66gT4PWjizWp9nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pMhet+Fq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0FEC113D0;
-	Mon,  1 Dec 2025 18:36:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764614167;
-	bh=GqUZ1tJI5oUYnsMVH3ZG4nNrDtR+42m3Jo4JWGTzt6I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pMhet+Fq3OUu5XL3bsQM2Ut07cJpCsYst6na1zeB9QV1LVueGKMNZVJOejLK0OW8u
-	 eeRhAG8QCMeEIUdr7zEbNpDwSNbzmC2xc3TOAkRVTXJud4gK0Clqqj2FuZuKvsry1M
-	 UZZWWPt4xmJ4XzQL0kwBzFXfsWFbPF+JQR8T/S/q20nRzpnyBTzanXMBGmEptQD6C/
-	 Y4tTk2vYgkF8g4GXqo+JpuSce9pLJTEjw/gjuWc8P6vULU1p9h4vE0E159Fqj1sG59
-	 dm0JbRXbwJoJSOnA8CuDKZRqRS2KB+Ehjn5WDu80qLF+9kH4ZpFh+1cHTRPIF5obsy
-	 mpI1pbO18G9cQ==
-Message-ID: <938a7948-7882-41a3-926b-3d2a8d07620d@kernel.org>
-Date: Mon, 1 Dec 2025 19:36:00 +0100
+	s=arc-20240116; t=1764616201; c=relaxed/simple;
+	bh=SVRmWcU4reDKs5HHBiPJg4YERntaC6a4bjb65WL5Ll8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LrpmN46uegbyKrhvNklIa8eF1/S8L7gZhWWDrTCZRCxwljClYsXAkLCKDsNjF1JyfNlxO4rWJN9dCdyov3npvxwiBNmLDKOaH+3otZbOqQfgFRPLOkENgdIvKh/DIgxQYXg733/yQ1pM7gfT6eoMMjTiXC6Fsfi0187kHHrjGhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-loops.com; spf=pass smtp.mailfrom=it-loops.com; dkim=fail (0-bit key) header.d=it-loops.com header.i=@it-loops.com header.b=YA5tU3cZ reason="key not found in DNS"; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-loops.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-loops.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6431b0a1948so1354789a12.3
+        for <linux-efi@vger.kernel.org>; Mon, 01 Dec 2025 11:09:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=it-loops.com; s=google; t=1764616198; x=1765220998; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g9lyjwDqKk+QqPVACOcdksqjAbpRjmOBLHeLAVEc6wc=;
+        b=YA5tU3cZ+g3sK66fC72nxQy9/2Bf9ohExSHsHHJTV8YILVHuCUrfDAxEzrXgceadhF
+         Bpb1Mf6R76mjtka8lO0+yk/AxMa5oQuWTE41VHlhnoWHAFNN4pxgbolpBKSAWKGdcOLJ
+         C1QGNUmMgoOO14IKpjGyLAgEEozOWISy5qr2k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764616198; x=1765220998;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=g9lyjwDqKk+QqPVACOcdksqjAbpRjmOBLHeLAVEc6wc=;
+        b=s7TukXHkRy4Nr8siEICo6AqUeimta7dArSmenEnO1C7FunI7hkza9qlFXChGCuhfH1
+         V8QBpCVU+Jl4t1R+HmprFMMw86jiPtInyXouQKHIU14M74rhfete4znTTMICHn4IJYyJ
+         cnqHCnPrGiJj7y0JRy+wWxQjQwTY2pjxiv73llRiobSWstjmXlVqzNxUSTNl97D9fNGo
+         olCc2crTEuc0vDJytaB3ABTFXCnAbJXgCe3f+iOyCJhgxVR+RrT4JvQJb24J7PlpdZYT
+         +8XV84A8R4G5QlXvfXoRc6jLqZUgHMjxQArjEJUb+A0NZXCk1czH3JyT9Nzft2PRjxRO
+         YPGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUervr9bGX6PCwWz6WN+C4/W1Vq487n36VS+1HcKAhH1xlnkXZ74m989tJNkUKrhBMcQ8qCtO1hjf4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDB2lXbvpnZqwB0z/U2NNn+0nzWMuya9AzhF0NBF8WkZnu+j4s
+	ZtLURKqLdRwgT1qo04Snf1YsE/NU3luNCsDpcZyJmbP66VYYfzscKDRTxmF7ETracy0Mpk+UzrA
+	vuc3ySdRoXOckRUFBNrLbxSq9JJ27kuW1/OVsNRLAkg==
+X-Gm-Gg: ASbGncuGb5YDB6qlPkOpFXbvqX9CGNkFX5ELbo0BiqfxBGdiXDaenxl7+8hnCZL3spW
+	/lwztHK7KlSlIx9xLf2xOn1sC7kbRYkEEPVX/wv4yygLJAIxUfw1OXLtS2XO3lk8FFigLc+NVRy
+	GT6Z2jgMzGyASKf7db8vKgpVy5hGEZNEzgckAuC9XJ//RluckYNef2jfW39slY3nkvig5fWS96J
+	OuH2DA5epoebaHQ2F5J7t/tcWSSqC8VlmVDGXwfWD3ZGcmATLEDm41BuZ97TZVsvqpVh5lh
+X-Google-Smtp-Source: AGHT+IGOTyOpca8Bkm84/CeGDYKF35ETxinW7GVj+Vtn2G6U42NT9STdY6vw7lpQ0JlDfrhENEba8b6RRkfXj6TIzFg=
+X-Received: by 2002:a05:6402:2353:b0:645:d578:13c3 with SMTP id
+ 4fb4d7f45d1cf-645eb2b58e2mr24564984a12.26.1764616197808; Mon, 01 Dec 2025
+ 11:09:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-To: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
- akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
- michael.roth@amd.com
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-3-prsampat@amd.com>
- <ac479414-e0fa-49be-8a30-8f9c0e7b7d32@kernel.org>
- <73a69c03-feda-4c56-9db1-30ec489066fb@amd.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <73a69c03-feda-4c56-9db1-30ec489066fb@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <CALG0vJuaU_5REU55Hg170LipPLj7Tt0V3icn7XzxLY-8+jsx-A@mail.gmail.com>
+ <20251120055748.GM2912318@black.igk.intel.com> <aSGTghJyX-u-leL6@wunner.de> <6e7aa10e-9938-4ab1-af14-b3d2906c211a@panix.com>
+In-Reply-To: <6e7aa10e-9938-4ab1-af14-b3d2906c211a@panix.com>
+From: Michael Guntsche <michael.guntsche@it-loops.com>
+Date: Mon, 1 Dec 2025 20:09:46 +0100
+X-Gm-Features: AWmQ_blakwbWOT6KrL76uyA3F8k_mQ8r2CJl6T5K_SnWqDq6g2_2g2KzHQYk0KY
+Message-ID: <CALG0vJv7ZA8byAF25pKqh9fEBpfgbXk+cAE6s9K1N6ZvVRroUw@mail.gmail.com>
+Subject: Re: Oops when returning from hibernation with changed thunderbolt status
+To: Kenneth Crudup <kenny@panix.com>
+Cc: Lukas Wunner <lukas@wunner.de>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	"rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>, linux-pm@vger.kernel.org, 
+	linux-efi@vger.kernel.org, maarten.lankhorst@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/1/25 18:21, Pratik R. Sampat wrote:
-> 
-> 
-> On 11/28/25 3:32 AM, David Hildenbrand (Red Hat) wrote:
->> On 11/25/25 18:57, Pratik R. Sampat wrote:
->>> The unaccepted memory structure currently only supports accepting memory
->>> present at boot time. The unaccepted table uses a fixed-size bitmap
->>> reserved in memblock based on the initial memory layout, preventing
->>> dynamic addition of memory ranges after boot. This causes guest
->>> termination when memory is hot-added in a secure virtual machine due to
->>> accessing pages that have not transitioned to private before use.
->>>
->>> Extend the unaccepted memory framework to handle hotplugged memory by
->>> dynamically managing the unaccepted bitmap. Allocate a new bitmap when
->>> hotplugged ranges exceed the reserved bitmap capacity and switch to
->>> kernel-managed allocation.
->>>
->>> Hotplugged memory also follows the same acceptance policy using the
->>> accept_memory=[eager|lazy] kernel parameter to accept memory either
->>> up-front when added or before first use.
->>>
->>> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
->>> ---
->>>    arch/x86/boot/compressed/efi.h                |  1 +
->>>    .../firmware/efi/libstub/unaccepted_memory.c  |  1 +
->>>    drivers/firmware/efi/unaccepted_memory.c      | 83 +++++++++++++++++++
->>>    include/linux/efi.h                           |  1 +
->>>    include/linux/mm.h                            | 11 +++
->>>    mm/memory_hotplug.c                           |  7 ++
->>>    mm/page_alloc.c                               |  2 +
->>>    7 files changed, 106 insertions(+)
->>>
->>> diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
->>> index 4f7027f33def..a220a1966cae 100644
->>> --- a/arch/x86/boot/compressed/efi.h
->>> +++ b/arch/x86/boot/compressed/efi.h
->>> @@ -102,6 +102,7 @@ struct efi_unaccepted_memory {
->>>        u32 unit_size;
->>>        u64 phys_base;
->>>        u64 size;
->>> +    bool mem_reserved;
->>>        unsigned long *bitmap;
->>>    };
->>>    diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
->>> index c1370fc14555..b16bd61c12bf 100644
->>> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
->>> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
->>> @@ -83,6 +83,7 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
->>>        unaccepted_table->unit_size = EFI_UNACCEPTED_UNIT_SIZE;
->>>        unaccepted_table->phys_base = unaccepted_start;
->>>        unaccepted_table->size = bitmap_size;
->>> +    unaccepted_table->mem_reserved = true;
->>>        memset(unaccepted_table->bitmap, 0, bitmap_size);
->>>          status = efi_bs_call(install_configuration_table,
->>> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
->>> index 4479aad258f8..8537812346e2 100644
->>> --- a/drivers/firmware/efi/unaccepted_memory.c
->>> +++ b/drivers/firmware/efi/unaccepted_memory.c
->>> @@ -218,6 +218,89 @@ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size)
->>>        return ret;
->>>    }
->>>    +static int extend_unaccepted_bitmap(phys_addr_t mem_range_start,
->>> +                    unsigned long mem_range_size)
->>> +{
->>> +    struct efi_unaccepted_memory *unacc_tbl;
->>> +    unsigned long *old_bitmap, *new_bitmap;
->>> +    phys_addr_t start, end, mem_range_end;
->>> +    u64 phys_base, size, unit_size;
->>> +    unsigned long flags;
->>> +
->>> +    unacc_tbl = efi_get_unaccepted_table();
->>> +    if (!unacc_tbl || !unacc_tbl->unit_size)
->>> +        return -EIO;
->>> +
->>> +    unit_size = unacc_tbl->unit_size;
->>> +    phys_base = unacc_tbl->phys_base;
->>> +
->>> +    mem_range_end = round_up(mem_range_start + mem_range_size, unit_size);
->>> +    size = DIV_ROUND_UP(mem_range_end - phys_base, unit_size * BITS_PER_BYTE);
->>> +
->>> +    /* Translate to offsets from the beginning of the bitmap */
->>> +    start = mem_range_start - phys_base;
->>> +    end = mem_range_end - phys_base;
->>> +
->>> +    old_bitmap = efi_get_unaccepted_bitmap();
->>> +    if (!old_bitmap)
->>> +        return -EIO;
->>> +
->>> +    /* If the bitmap is already large enough, just set the bits */
->>> +    if (unacc_tbl->size >= size) {
->>> +        spin_lock_irqsave(&unaccepted_memory_lock, flags);
->>> +        bitmap_set(old_bitmap, start / unit_size, (end - start) / unit_size);
->>> +        spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
->>> +
->>> +        return 0;
->>> +    }
->>> +
->>> +    /* Reserved memblocks cannot be extended so allocate a new bitmap */
->>> +    if (unacc_tbl->mem_reserved) {
->>> +        new_bitmap = kzalloc(size, GFP_KERNEL);
->>> +        if (!new_bitmap)
->>> +            return -ENOMEM;
->>> +
->>> +        spin_lock_irqsave(&unaccepted_memory_lock, flags);
->>> +        memcpy(new_bitmap, old_bitmap, unacc_tbl->size);
->>> +        unacc_tbl->mem_reserved = false;
->>> +        free_reserved_area(old_bitmap, old_bitmap + unacc_tbl->size, -1, NULL);
->>> +        spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
->>> +    } else {
->>> +        new_bitmap = krealloc(old_bitmap, size, GFP_KERNEL);
->>> +        if (!new_bitmap)
->>> +            return -ENOMEM;
->>> +
->>> +        /* Zero the bitmap from the range it was extended from */
->>> +        memset(new_bitmap + unacc_tbl->size, 0, size - unacc_tbl->size);
->>> +    }
->>> +
->>> +    bitmap_set(new_bitmap, start / unit_size, (end - start) / unit_size);
->>> +
->>> +    spin_lock_irqsave(&unaccepted_memory_lock, flags);
->>> +    unacc_tbl->size = size;
->>> +    unacc_tbl->bitmap = (unsigned long *)__pa(new_bitmap);
->>> +    spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +int accept_hotplug_memory(phys_addr_t mem_range_start, unsigned long mem_range_size)
->>> +{
->>> +    int ret;
->>> +
->>> +    if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
->>> +        return 0;
->>> +
->>> +    ret = extend_unaccepted_bitmap(mem_range_start, mem_range_size);
->>> +    if (ret)
->>> +        return ret;
->>> +
->>> +    if (!mm_lazy_accept_enabled())
->>> +        accept_memory(mem_range_start, mem_range_size);
->>> +
->>> +    return 0;
->>> +}
->>> +
->>>    #ifdef CONFIG_PROC_VMCORE
->>>    static bool unaccepted_memory_vmcore_pfn_is_ram(struct vmcore_cb *cb,
->>>                            unsigned long pfn)
->>> diff --git a/include/linux/efi.h b/include/linux/efi.h
->>> index a74b393c54d8..1021eb78388f 100644
->>> --- a/include/linux/efi.h
->>> +++ b/include/linux/efi.h
->>> @@ -545,6 +545,7 @@ struct efi_unaccepted_memory {
->>>        u32 unit_size;
->>>        u64 phys_base;
->>>        u64 size;
->>> +    bool mem_reserved;
->>>        unsigned long *bitmap;
->>>    };
->>>    diff --git a/include/linux/mm.h b/include/linux/mm.h
->>> index 1ae97a0b8ec7..bb43876e6c47 100644
->>> --- a/include/linux/mm.h
->>> +++ b/include/linux/mm.h
->>> @@ -4077,6 +4077,9 @@ int set_anon_vma_name(unsigned long addr, unsigned long size,
->>>      bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size);
->>>    void accept_memory(phys_addr_t start, unsigned long size);
->>> +int accept_hotplug_memory(phys_addr_t mem_range_start,
->>> +              unsigned long mem_range_size);
->>> +bool mm_lazy_accept_enabled(void);
->>>      #else
->>>    @@ -4090,6 +4093,14 @@ static inline void accept_memory(phys_addr_t start, unsigned long size)
->>>    {
->>>    }
->>>    +static inline int accept_hotplug_memory(phys_addr_t mem_range_start,
->>> +                    unsigned long mem_range_size)
->>> +{
->>> +    return 0;
->>> +}
->>> +
->>> +static inline bool mm_lazy_accept_enabled(void) { return false; }
->>> +
->>>    #endif
->>>      static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
->>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->>> index 74318c787715..bf8086682b66 100644
->>> --- a/mm/memory_hotplug.c
->>> +++ b/mm/memory_hotplug.c
->>> @@ -1581,6 +1581,13 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->>>        if (!strcmp(res->name, "System RAM"))
->>>            firmware_map_add_hotplug(start, start + size, "System RAM");
->>>    +    ret = accept_hotplug_memory(start, size);
->>
->> What makes this special that we have to have "hotplug_memory" as part of the name?
->>
->> Staring at the helper itself, there isn't anything really hotplug specific happening in there except extending the bitmap, maybe?
->>
-> 
-> Right, we are extending the original bitmap and initializing a structure
-> to track state as well. I added the hotplug_memory keyword without
-> much thought, since I didn't see anyone else attempting to extend these
-> structures.
-> 
-> That said, I agree the name is awkward. I could either come up with
-> something different, or we could eliminate the parent function
-> entirely and call extend_unaccepted_bitmap() + accept_memory() directly
-> from add_memory_resource(). Similarly, we could do the same to
-> s/unaccept_hotplug_memory/unaccept_memory too.
+[cc +=3Dmaarten.lankhorst@linux.intel.com]
 
-BTW, can't we allocate the bitmap based on maximum memory in the system 
-as indicated by e820 (which includes to-maybe-be-hotplugged-ranges) and 
-not do this allocation during hotplug events?
+On Mon, Nov 24, 2025 at 7:02=E2=80=AFPM Kenneth Crudup <kenny@panix.com> wr=
+ote:
+>
+>
+>
+> On 11/22/25 02:42, Lukas Wunner wrote:
+>
+> > Also the photo shows a UBSAN splat in drm/display/drm_mst_topology.c
+> > 220 msec before the oops, maybe it's related?
+>
+> FWIW, this sounds really familiar (resume crashes if I changed TB docks
+> between suspend and resume) and was getting an OOPS there I'd bisected to=
+:
+>
+> Resume OOPS from f6971d7427 ("drm/i915/mst: adapt
+> intel_dp_mtp_tu_compute_config() for 128b/132b SST") if MST displays
+> disconnected while suspended
+>
+> ... and this was fixed in 732b87a (Fix determining SST/MST mode during
+> MTP TU state computation) back in 6.15 (which IIRC, is when your crashes
+> started happening).
+>
+> I wonder if this is related? Maybe reach out to the i915 guys?
 
-If you search for max_possible_pfn / max_pfn I think you should find 
-what I mean.
-
-Then it would be a simple accept_memory().
-
--- 
-Cheers
-
-David
+I tried this now with 6.18 and got the same issues, now it even fails
+for me  if I unplug the dock while hibernating.
+The last entry I see is the UBSAN message and an out of bounds index error.
 
