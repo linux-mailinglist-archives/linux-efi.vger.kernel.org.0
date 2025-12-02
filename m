@@ -1,1028 +1,368 @@
-Return-Path: <linux-efi+bounces-5752-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5753-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E87EC9B2D5
-	for <lists+linux-efi@lfdr.de>; Tue, 02 Dec 2025 11:35:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31637C9B35F
+	for <lists+linux-efi@lfdr.de>; Tue, 02 Dec 2025 11:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9AEF14E46C3
-	for <lists+linux-efi@lfdr.de>; Tue,  2 Dec 2025 10:34:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A733A2DA4
+	for <lists+linux-efi@lfdr.de>; Tue,  2 Dec 2025 10:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A40730CD81;
-	Tue,  2 Dec 2025 10:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F465230BCC;
+	Tue,  2 Dec 2025 10:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KMw/aTgX";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="f+vJAaBi";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KMw/aTgX";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="f+vJAaBi"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="LlQt60N+"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CD630F811
-	for <linux-efi@vger.kernel.org>; Tue,  2 Dec 2025 10:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D1728727A
+	for <linux-efi@vger.kernel.org>; Tue,  2 Dec 2025 10:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764671695; cv=none; b=NAqc8IXw3lKkeRf2sYxUm6HZ2sSE/H4ARvlW/srQ7N2mvqimTonL2CRk8cN+A6Nb/Xbrdt7G3ldsRrbjyU8B1AYlZFczjTQb8CqyybjS3rQBD1by6oZANqBtpwV6F6462qBcnnDGlM/G+id2o/IfkZhJA+5hLgQDimUmOSWspLo=
+	t=1764672280; cv=none; b=aTnuYV6EUTcv9b59fCDv1GtScBZkBG0/Jud1rRR6iZno25b1yH+YV2dBwOVRTRB7VUy2n4TxtvppND/RjFcjy1EQfAueFab4XA7qbV5GuOLa6tOQv1s84TlLWHtaKSfg3FcVz5qt8tZ3nctvddWnnLQrDd+3LnVGjkPymTIwm38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764671695; c=relaxed/simple;
-	bh=DjnGDowzE5Vu/eMo9HEGsWKahsGMzszzgLOJiW58T1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g0pMhkrd5koduGm6anvOfVMHTQG0o+Cm7i+oTCwMjMNxqOZsxLad4ie9DqA20khpNzCnGaFaTvBdKqvr7lAqO03nyK8TZly0c7tvls0MQr9Ftf4t6kP+FjegpGQ276JWM6BGvQ9VXwCD9eiEWuM76fqNqK0EmXJZsq2h1+IUzLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KMw/aTgX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=f+vJAaBi; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KMw/aTgX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=f+vJAaBi; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4CD8E33762;
-	Tue,  2 Dec 2025 10:34:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764671686; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PYmHZmVilXlfiQGtFVqw9TIbdkMC8EOv/CJoVyWnuVY=;
-	b=KMw/aTgX4odCGMdTnFsR7ZitV1O/FhrEhKEMddG4p3o/I0Exjxr94PLwRHGHeIubkrHbS8
-	pUCiNL0nvsurLfyLPMMCNY2JBKiyIDe/wQ6QQ671ucQPZEE7UhM6ojAIfDsA7g4pxy5Nrl
-	Uqeq1SfHGuY6nKwNuLpfLT++U1LB9Z0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764671686;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PYmHZmVilXlfiQGtFVqw9TIbdkMC8EOv/CJoVyWnuVY=;
-	b=f+vJAaBimVG6OVyf+oPhNA35ZWqtttX81c6CJ5o769Ty9iuSCInJqIBeqD1HKCddbnmGHi
-	Y2yP4StF/9paSACQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1764671686; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PYmHZmVilXlfiQGtFVqw9TIbdkMC8EOv/CJoVyWnuVY=;
-	b=KMw/aTgX4odCGMdTnFsR7ZitV1O/FhrEhKEMddG4p3o/I0Exjxr94PLwRHGHeIubkrHbS8
-	pUCiNL0nvsurLfyLPMMCNY2JBKiyIDe/wQ6QQ671ucQPZEE7UhM6ojAIfDsA7g4pxy5Nrl
-	Uqeq1SfHGuY6nKwNuLpfLT++U1LB9Z0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1764671686;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PYmHZmVilXlfiQGtFVqw9TIbdkMC8EOv/CJoVyWnuVY=;
-	b=f+vJAaBimVG6OVyf+oPhNA35ZWqtttX81c6CJ5o769Ty9iuSCInJqIBeqD1HKCddbnmGHi
-	Y2yP4StF/9paSACQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 332D73EA63;
-	Tue,  2 Dec 2025 10:34:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xGR6DMbALmlYHwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 02 Dec 2025 10:34:46 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id D1ECFA09DA; Tue,  2 Dec 2025 11:34:45 +0100 (CET)
-Date: Tue, 2 Dec 2025 11:34:45 +0100
-From: Jan Kara <jack@suse.cz>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, 
-	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, Chris Mason <clm@fb.com>, Xiubo Li <xiubli@redhat.com>, 
-	Ilya Dryomov <idryomov@gmail.com>, Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
-	Tyler Hicks <code@tyhicks.com>, Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, 
-	Yuezhang Mo <yuezhang.mo@sony.com>, Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Woodhouse <dwmw2@infradead.org>, Dave Kleikamp <shaggy@kernel.org>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Bob Copeland <me@bobcopeland.com>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Amir Goldstein <amir73il@gmail.com>, Steve French <sfrench@samba.org>, 
-	Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
-	Bharath SM <bharathsm@microsoft.com>, Zhihao Cheng <chengzhihao1@huawei.com>, 
-	Hans de Goede <hansg@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	NeilBrown <neilb@ownmail.net>, linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-afs@lists.infradead.org, linux-btrfs@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, gfs2@lists.linux.dev, linux-um@lists.infradead.org, 
-	linux-mm@kvack.org, linux-mtd@lists.infradead.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org, 
-	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
-	linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, linux-xfs@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, NeilBrown <neil@brown.name>
-Subject: Re: [PATCH RESEND v3] vfs: remove the excl argument from the
- ->create() inode_operation
-Message-ID: <emc244mwqv2o4a522e6mfwe4q5xmf43oexippa4sy7fcphnol7@oeaonoplef2f>
-References: <20251201-create-excl-v3-1-8933a444b046@kernel.org>
+	s=arc-20240116; t=1764672280; c=relaxed/simple;
+	bh=Z5UnZYzZLDxND/jF3AsR0ycfP0tOhT2DbJ1qQm/d18M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ES1MncXF8x3FIWvSB8ZzKmFUrxsG7u6vOwxHf2unZMvqtJUDb9gygt+9NuvxCzObdxneUKXaS9+O6Dndx4i7755GMWQBQmrSdBTVZLqvqSDeNOPqSKfwbteIXF+z2JI7CMk9EvcIXYkY6yZwDtqBfSvhsvWHI/tSXET1PK6PHpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=LlQt60N+; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=r7p81Th9UvtOh54eAvf6X2mM8Gg5Bzqb5cYHFhaUOdo=; b=LlQt60N+UVWvdZ4nOYm4D2dNbb
+	KEZq7LV78FjZqxHGxnwyvYZdDuOFlo2YV9kPkuw81eeFkUGkakU9eSy4vkW0IOy+eBeiAebEY81ie
+	4sp7F7OshFo8Co4mP5uAk2R/WguOe3VU8/GNP2kW4ILDWYU0ITs08U6XuNYTtnj9V5f/0EKs9nFKm
+	u53ikxeAv2UVnX/AWWopiJexJTP2dIBYE8b/YFHQGab87/uV/BtZu98jqn1CPJh1FFwxZrHrcj1J4
+	A6NNlllYUZSKnPYxK70gIbSK42RlipUGG+EqrBG5HkXYhhANgoublYl5RCw05cNafQvdwY+pzdCxA
+	7SQxzhfw==;
+Received: from [90.240.106.137] (helo=[192.168.0.101])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1vQNrg-007lqK-9G; Tue, 02 Dec 2025 11:44:12 +0100
+Message-ID: <74e89e3b-b237-424c-a5cb-f4b3e026b61f@igalia.com>
+Date: Tue, 2 Dec 2025 10:44:11 +0000
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251201-create-excl-v3-1-8933a444b046@kernel.org>
-X-Spam-Flag: NO
-X-Spam-Score: -2.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[ownmail.net];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,ionkov.net,codewreck.org,crudebyte.com,suse.com,redhat.com,auristor.com,gmail.com,fb.com,cs.cmu.edu,tyhicks.com,ozlabs.org,samsung.com,sony.com,mit.edu,dilger.ca,mail.parknet.co.jp,szeredi.hu,dubeyko.com,physik.fu-berlin.de,vivo.com,nod.at,cambridgegreys.com,sipsolutions.net,artax.karlin.mff.cuni.cz,linux.dev,suse.de,infradead.org,paragon-software.com,fasheh.com,evilplan.org,linux.alibaba.com,bobcopeland.com,omnibond.com,samba.org,manguebit.org,microsoft.com,talpey.com,huawei.com,google.com,linux-foundation.org,lwn.net,ownmail.net,vger.kernel.org,lists.linux.dev,lists.infradead.org,coda.cs.cmu.edu,lists.sourceforge.net,kvack.org,lists.orangefs.org,lists.samba.org,brown.name];
-	R_RATELIMIT(0.00)[to_ip_from(RLy3pjxfey5uh47grqbhqso5mm)];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[99];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[codewreck.org:email,suse.com:email,imap1.dmz-prg2.suse.org:helo,brown.name:email]
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFX] efi: sysfb_efi: Fix simpledrmfb on Steam Deck
+To: Thomas Zimmermann <tzimmermann@suse.de>, Ard Biesheuvel <ardb@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com,
+ Javier Martinez Canillas <javierm@redhat.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Melissa Wen <mwen@igalia.com>, Rodrigo Siqueira <siqueira@igalia.com>,
+ Mario Limonciello <mario.limonciello@amd.com>, linux-efi@vger.kernel.org
+References: <20251128150403.11567-1-tvrtko.ursulin@igalia.com>
+ <ce41c2d1-c659-4632-8469-761762202800@suse.de>
+ <660c5469-086f-40b4-99f1-72c1bc613ece@igalia.com>
+ <1df5a480-2510-43b9-9d79-51d842518036@suse.de>
+ <b146fb1b-80e9-403c-acd1-b50ef1aaa646@igalia.com>
+ <1b73df5b-5f47-4ce4-abd4-83d550cc0dea@suse.de>
+ <e7c4a76e-5cef-4a75-847f-59c53a554327@igalia.com>
+ <CAMj1kXFOS9jAzhh2Z_4rarEGd+kGPyNCu9PFoMhFbBVEF8NwJw@mail.gmail.com>
+ <07212b84-fc2a-4efe-a39b-5b536b6dd602@igalia.com>
+ <CAMj1kXH3FyhNinT3-_FqROB53p_574ft6hsoF6aGYeYkhLd+TQ@mail.gmail.com>
+ <086cf4fd-6401-46ce-a55f-ea2fd96a73d1@igalia.com>
+ <f4dfd1b4-76c0-4b88-aefb-f0536e706f96@suse.de>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <f4dfd1b4-76c0-4b88-aefb-f0536e706f96@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon 01-12-25 08:11:42, Jeff Layton wrote:
-> With three exceptions, ->create() methods provided by filesystems ignore
-> the "excl" flag.  Those exception are NFS, GFS2 and vboxsf which all also
-> provide ->atomic_open.
-> 
-> Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()"),
-> the "excl" argument to the ->create() inode_operation is always set to
-> true in vfs_create(). The ->create() call in lookup_open() sets it
-> according to the O_EXCL open flag, but is never called if the filesystem
-> provides ->atomic_open().
-> 
-> The excl flag is therefore always either ignored or true.  Remove it,
-> and change NFS, GFS2 and vboxsf to act as if it were always true.
-> 
-> Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
-> Reviewed-by: NeilBrown <neil@brown.name>
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
-> I sent this a couple of weeks ago and never got a response from
-> Christian, Al or Jan. This seems like it should be a no-brainer cleanup,
-> and I think the Documentation/ updates will be helpful, so I'm guessing
-> it just slipped through the cracks.
-> 
-> A little late at this point for v6.19, so consider for v7.0 ?
 
-Yeah, sorry for that. The patch looks good to me so feel free to add:
+On 02/12/2025 07:34, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 01.12.25 um 16:43 schrieb Tvrtko Ursulin:
+>>
+>> On 01/12/2025 15:00, Ard Biesheuvel wrote:
+>>> On Mon, 1 Dec 2025 at 11:33, Tvrtko Ursulin 
+>>> <tvrtko.ursulin@igalia.com> wrote:
+>>>>
+>>>>
+>>>> On 01/12/2025 10:18, Ard Biesheuvel wrote:
+>>>>> On Mon, 1 Dec 2025 at 11:03, Tvrtko Ursulin 
+>>>>> <tvrtko.ursulin@igalia.com> wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 01/12/2025 09:39, Thomas Zimmermann wrote:
+>>>>>>> Hi
+>>>>>>>
+>>>>>>> Am 01.12.25 um 10:20 schrieb Tvrtko Ursulin:
+>>>>>>>>
+>>>>>>>> On 01/12/2025 07:32, Thomas Zimmermann wrote:
+>>>>>>>>> Hi
+>>>>>>>>>
+>>>>>>>>> Am 29.11.25 um 11:44 schrieb Tvrtko Ursulin:
+>>>>>>>>>>
+>>>>>>>>>> On 28/11/2025 17:07, Thomas Zimmermann wrote:
+>>>>>>>>>>> Hi,
+>>>>>>>>>>>
+>>>>>>>>>>> thanks for the bug report
+>>>>>>>>>>>
+>>>>>>>>>>> Am 28.11.25 um 16:04 schrieb Tvrtko Ursulin:
+>>>>>>>>>>>> I am not sure how is simpledrmfb on top of EFI supposed to 
+>>>>>>>>>>>> work,
+>>>>>>>>>>>> but at
+>>>>>>>>>>>> least at the moment it appears there is a missing link in the
+>>>>>>>>>>>> "discovery"
+>>>>>>>>>>>> of frame buffer parameters.
+>>>>>>>>>>>>
+>>>>>>>>>>>> What I can see is that EFI GOP reads some parameters from the
+>>>>>>>>>>>> firmware and
+>>>>>>>>>>>> infers the other, such as in this case problematic pitch, or 
+>>>>>>>>>>>> stride.
+>>>>>>>>>>>
+>>>>>>>>>>> The pitch/stride value comes from the firmware via
+>>>>>>>>>>> pixels_per_scanline [1].
+>>>>>>>>>>>
+>>>>>>>>>>> Can you verify that this value is really 800 instead of 832 (eq
+>>>>>>>>>>> 3328 bytes) ?
+>>>>>>>>>>>
+>>>>>>>>>>> [1] https://elixir.bootlin.com/linux/v6.17.9/source/drivers/
+>>>>>>>>>>> firmware/ efi/libstub/gop.c#L493
+>>>>>>>>>>
+>>>>>>>>>> I actually got confused a bit in following the flow so thank 
+>>>>>>>>>> you for
+>>>>>>>>>> asking me to double check.
+>>>>>>>>>>
+>>>>>>>>>> GOP actually reports 1280x800 with a stride of 5120. So it 
+>>>>>>>>>> kind of
+>>>>>>>>>> reports a rotated view already, kind of.
+>>>>>>>>>
+>>>>>>>>> These are correct values.
+>>>>>>>>>
+>>>>>>>>> But the stream deck is this device: [1], right? It uses landscape-
+>>>>>>>>> mode orientation. Why does it require rotation at all?
+>>>>>>>>>
+>>>>>>>>> [1] https://de.wikipedia.org/wiki/Steam_Deck#/media/
+>>>>>>>>> Datei:Steam_Deck_(front).png
+>>>>>>>>
+>>>>>>>> That's the device yes. For the user the screen is landscape, but 
+>>>>>>>> the
+>>>>>>>> actual panel is 800x1280 portrait. Left edge is top of the display.
+>>>>>>>> (Hence the pre-existing entry in drm_get_panel_orientation_quirk.)
+>>>>>>>
+>>>>>>> I see. So the EFI display settings are configured as if this was a
+>>>>>>> landscape panel.
+>>>>>>>
+>>>>>>> What happens if you leave the EFI settings as-is and simply 
+>>>>>>> remove the
+>>>>>>> panel-orientation quirk?
+>>>>>>
+>>>>>> That would create effectively the same situation as without my patch
+>>>>>> because the panel-orientation quirk does not trigger unless detected
+>>>>>> screen is 800x1280. Result is corrupted console since fbcon thinks 
+>>>>>> it is
+>>>>>> a landscape 1280x800 screen.
+>>>>>>>>>> Only when the rotation quirk from efifb_dmi_swap_width_height
+>>>>>>>>>> triggers the stride gets incorrectly recalculated:
+>>>>>>>>>>
+>>>>>>>>>>           u16 temp = screen_info.lfb_width;
+>>>>>>>>>>
+>>>>>>>>>>           screen_info.lfb_width = screen_info.lfb_height;
+>>>>>>>>>>           screen_info.lfb_height = temp;
+>>>>>>>>>>           screen_info.lfb_linelength = 4 * screen_info.lfb_width;
+>>>>>>>>>>
+>>>>>>>>>> So this is where things go wrong, well, they actually go wrong a
+>>>>>>>>>> little bit even earlier, in gop.c:
+>>>>>>>>>>
+>>>>>>>>>>       si->lfb_size = si->lfb_linelength * si->lfb_height;
+>>>>>>>>>>
+>>>>>>>>>> Which potentially underestimates the fb size. If GOP was forward
+>>>>>>>>>> looking enough to give us the size we could derive the pitch 
+>>>>>>>>>> based
+>>>>>>>>>> on size..
+>>>>>>>>>>
+>>>>>>>>>> Anyway, as it stands it looks a quirk in sysfb_apply_efi_quirks
+>>>>>>>>>> looks it is required to fix it all up.
+>>>>>>>>>>
+>>>>>>>>>> I am a bit uneasy about declaring the fb size larger than what 
+>>>>>>>>>> was
+>>>>>>>>>> implied by firmware provided pitch * height * depth but 
+>>>>>>>>>> limited to a
+>>>>>>>>>> specific DMI match and if it looks visually okay I think it is a
+>>>>>>>>>> safe assumption the quirked size is actually correct and safe.
+>>>>>>>>>
+>>>>>>>>> Yeah, we better not do that.
+>>>>>>>> You mean declare it a firmware bug and live with the corrupt 
+>>>>>>>> console
+>>>>>>>> until the final fb driver takes over?
+>>>>>>>
+>>>>>>> I only mean that we should not use more video memory than 
+>>>>>>> provided by EFI.
+>>>>>>
+>>>>>> Right, but that information is not available in the GOP, right? 
+>>>>>> Ie. as I
+>>>>>> wrote above it appears assumed:
+>>>>>>
+>>>>>>       si->lfb_size = si->lfb_linelength * si->lfb_height;
+>>>>>>
+>>>>>> Do we have any other options apart from corruption or assume firmware
+>>>>>> configured GOP screen info incorrectly?
+>>>>>>
+>>>>>
+>>>>> How does it make sense to recalculate the line length? Those invisible
+>>>>> pixels at the end of the scanline are not going to be transposed to
+>>>>> the other dimension, right?
+>>>>
+>>>> Not sure what you meant here. The line above is from gop.c and the
+>>>> context is that GOP screen info appears to not carry the frame buffer
+>>>> size in bytes so it is implied.
+>>>>
+>>>> Elsewhere in the patch I quirk the pitch to the correct value so 
+>>>> rotated
+>>>> rendering is correct.
+>>>>
+>>>> But the corrected pitch also means that in principle we need to adjust
+>>>> the frame buffer size, since it is larger than the size implied with 
+>>>> the
+>>>> incorrect pitch.
+>>>>
+>>>
+>>> OK, so if I understand all of the above correctly, you have a 800x1280
+>>> panel with 832 pixels per scanline, right? And the 5120 pitch is
+>>> simply bogus, but needed to maintain the fiction that the panel is
+>>> 1280 pixels wide, and so the resulting lfb_size is bogus too?
+>>>
+>>> Since we know that the PixelsPerScanline value is incorrect, I don't
+>>> think there is any point in attempting to cross reference this against
+>>> other firmware provided data. But it would make sense imho to apply
+>>> the quirk only if the exact combination of incorrect values (i.e.,
+>>> 1280x800/5120) is encountered.
+>>
+>> Right, the whole 1280x800 mode I *think* could be "bogus", that is, 
+>> some kind of a software rotated mode implemented by the firmware.
+>>
+>> Default mode is 800x1280 (pitch 832), while this second native 
+>> resolution mode is 1280x800 (pitch 1280).
+>>
+>> If default mode is left then both simpledrmfb and efidrmfb work fine. 
+>> The existing panel orientation quirk will trigger on 800x1280 and tell 
+>> fbcon to rotate.
+>>
+>> But if someone, like for example grub2, changed the mode to this 
+>> software rotated one then the existing DRM quirk will not work.
+> 
+> So this is a bug in grub? Should it supply the original mode?
+> 
+> 
+> Apologies for only asking dump questions here. I find this very confusing.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Not at all, it is complicated and open whether it is worth improving.
 
-								Honza
+I don't think it is a grub bug. To me it seems like an unfortunate 
+consequence of protocol limitations.
 
-> ---
-> Changes in v3:
-> - fix use of excl in vboxsf_dir_mkfile()
-> - fix tab prefixes in Documentation/filesystems/vfs.rst
-> - Link to v2: https://lore.kernel.org/r/20251107-create-excl-v2-1-f678165d7f3f@kernel.org
+> In the correct mode 800x1280, the first native pixel should be on the 
+> lower left corner. and the second pixel should be 'up form it'. And 
+> because it's marked as rotated CCW, fbcon adapts correctly.
 > 
-> Changes in v2:
-> - better describe why the argument isn't needed in the changelog
-> - updates do Documentation/
-> - Link to v1: https://lore.kernel.org/r/20251105-create-excl-v1-1-a4cce035cc55@kernel.org
-> ---
->  Documentation/filesystems/porting.rst | 12 ++++++++++++
->  Documentation/filesystems/vfs.rst     | 13 ++++++++++---
->  fs/9p/vfs_inode.c                     |  2 +-
->  fs/9p/vfs_inode_dotl.c                |  2 +-
->  fs/affs/affs.h                        |  2 +-
->  fs/affs/namei.c                       |  2 +-
->  fs/afs/dir.c                          |  4 ++--
->  fs/bad_inode.c                        |  2 +-
->  fs/bfs/dir.c                          |  2 +-
->  fs/btrfs/inode.c                      |  2 +-
->  fs/ceph/dir.c                         |  2 +-
->  fs/coda/dir.c                         |  2 +-
->  fs/ecryptfs/inode.c                   |  2 +-
->  fs/efivarfs/inode.c                   |  2 +-
->  fs/exfat/namei.c                      |  2 +-
->  fs/ext2/namei.c                       |  2 +-
->  fs/ext4/namei.c                       |  2 +-
->  fs/f2fs/namei.c                       |  2 +-
->  fs/fat/namei_msdos.c                  |  2 +-
->  fs/fat/namei_vfat.c                   |  2 +-
->  fs/fuse/dir.c                         |  2 +-
->  fs/gfs2/inode.c                       |  5 ++---
->  fs/hfs/dir.c                          |  2 +-
->  fs/hfsplus/dir.c                      |  2 +-
->  fs/hostfs/hostfs_kern.c               |  2 +-
->  fs/hpfs/namei.c                       |  2 +-
->  fs/hugetlbfs/inode.c                  |  2 +-
->  fs/jffs2/dir.c                        |  4 ++--
->  fs/jfs/namei.c                        |  2 +-
->  fs/minix/namei.c                      |  2 +-
->  fs/namei.c                            |  4 ++--
->  fs/nfs/dir.c                          |  4 ++--
->  fs/nfs/internal.h                     |  2 +-
->  fs/nilfs2/namei.c                     |  2 +-
->  fs/ntfs3/namei.c                      |  2 +-
->  fs/ocfs2/dlmfs/dlmfs.c                |  3 +--
->  fs/ocfs2/namei.c                      |  3 +--
->  fs/omfs/dir.c                         |  2 +-
->  fs/orangefs/namei.c                   |  3 +--
->  fs/overlayfs/dir.c                    |  2 +-
->  fs/ramfs/inode.c                      |  2 +-
->  fs/smb/client/cifsfs.h                |  2 +-
->  fs/smb/client/dir.c                   |  2 +-
->  fs/ubifs/dir.c                        |  2 +-
->  fs/udf/namei.c                        |  2 +-
->  fs/ufs/namei.c                        |  3 +--
->  fs/vboxsf/dir.c                       |  4 ++--
->  fs/xfs/xfs_iops.c                     |  3 +--
->  include/linux/fs.h                    |  4 ++--
->  ipc/mqueue.c                          |  2 +-
->  mm/shmem.c                            |  2 +-
->  51 files changed, 78 insertions(+), 65 deletions(-)
+> If the display is in the bogus mode 1280x800, in which direction does it 
+> draw by default?  The framebuffer's first pixel should still be in one 
+> of the corners. And the second pixel is nearby. In which direction does 
+> it advance?
+
+I am not a grub expert, but I had a brief look at its codebase, and 
+AFAICT it draws by software rendering into a shadow frame buffer and 
+calls GOP->Blit to update the screen.
+
+As such my assumption is that with the fake 1280x800 mode, firmware 
+implements the blit to rotate under the hood.
+
+So for grub everything is fine. It sets 1280x800, sees 1280x800, renders 
+the menu in there, and courtesy of firmware blit the menu is presented 
+in the human friendly orientation.
+
+Note this is all when grub is asked to change the mode to 1280x800. This 
+does not happen on the normal SteamOS boot, but only if grub menu was 
+entered. Otherwise mode stays at the default 800x1280 and the DRM quirk 
+triggers to set the orientation both for the simple DRM fb, efidrmfb and 
+later the real amdgpu drm fd.
+
+In other words without this patch fbcon is correctly rotated when the 
+mode is default 800x1280, but broken if grub menu is entered which sets 
+the mode to 1280x800. Because the DRM panel orientation quirk only 
+triggers for 800x1280.
+
+Hence this patch/quirk to fudge the screen info back into the native 
+mode and allow the orientation quirk to always work and fbcon always be 
+right.
+
+Questionable part is that it only fixes the user experience for people 
+who enter the boot menu, so probably only developers. And the broken 
+fbcon is only until amdgpu takes it over, which correctly probes the 
+mode, I guess from the display state, and always sees it as 800x1280 and 
+so panel orientation quirk matches.
+
+I suppose for DRM panic before amdgpu loads, or before it fully 
+initializes, it would be worth having an readable fbcon, but again, I 
+accept it is probably a border line case so if people do not want to 
+take this quirk then it is what it is.
+
+Regards,
+
+Tvrtko
+
+>> The quirk in this patch therefore proposes to correct back the mode to 
+>> the default native.
+>>
+>> You are indeed right that the criteria needs to be tweaked. In v2 I've 
+>> fixed and it now looks like this:
+>>
+>> ...
+>>     for (match = dmi_first_match(efifb_dmi_swap_width_height);
+>>          match;
+>>          match = dmi_first_match(match + 1)) {
+>>         const struct efifb_mode_fixup *data = match->driver_data;
+>>         u16 temp = screen_info.lfb_width;
+>>
+>>         if (!data ||
+>>             (data->width == screen_info.lfb_width &&
+>>              data->height == screen_info.lfb_height)) {
+>>             screen_info.lfb_width = screen_info.lfb_height;
+>>             screen_info.lfb_height = temp;
 > 
-> diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
-> index d33429294252b244e344432e4ef8f5fe07d68f2f..6e6ae5a7a387520968f3c7426acfe44196d60bbe 100644
-> --- a/Documentation/filesystems/porting.rst
-> +++ b/Documentation/filesystems/porting.rst
-> @@ -1322,3 +1322,15 @@ When vfs_mkdir() returns an error, and so both dputs() the original
->  dentry and doesn't provide a replacement, it also unlocks the parent.
->  Consequently the return value from vfs_mkdir() can be passed to
->  end_creating() and the parent will be unlocked precisely when necessary.
-> +
-> +---
-> +
-> +**mandatory**
-> +
-> +The ->create() operation has dropped the bool "excl" argument. This operation
-> +should now always provide O_EXCL semantics (i.e. fail with -EEXIST if the file
-> +exists). If the filesystem needs to handle the case where another entity could
-> +create the file on the backing store after a negative lookup or revalidate
-> +(e.g. it's a network filesystem and another client could create the file after
-> +a negative lookup), then it will require ->atomic_open() in addition to
-> +->create().
-> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-> index 4f13b01e42eb5e2ad9d60cbbce7e47d09ad831e6..0752ed2b6475ab2b42482fde6dff870110a33eac 100644
-> --- a/Documentation/filesystems/vfs.rst
-> +++ b/Documentation/filesystems/vfs.rst
-> @@ -467,7 +467,7 @@ As of kernel 2.6.22, the following members are defined:
->  .. code-block:: c
->  
->  	struct inode_operations {
-> -		int (*create) (struct mnt_idmap *, struct inode *,struct dentry *, umode_t, bool);
-> +		int (*create) (struct mnt_idmap *, struct inode *,struct dentry *, umode_t);
->  		struct dentry * (*lookup) (struct inode *,struct dentry *, unsigned int);
->  		int (*link) (struct dentry *,struct inode *,struct dentry *);
->  		int (*unlink) (struct inode *,struct dentry *);
-> @@ -505,7 +505,10 @@ otherwise noted.
->  	if you want to support regular files.  The dentry you get should
->  	not have an inode (i.e. it should be a negative dentry).  Here
->  	you will probably call d_instantiate() with the dentry and the
-> -	newly created inode
-> +	newly created inode. This operation should always provide O_EXCL
-> +	semantics (i.e. it should fail with -EEXIST if the file exists).
-> +	If the filesystem needs to mediate non-exclusive creation,
-> +	then the filesystem must also provide an ->atomic_open() operation.
->  
->  ``lookup``
->  	called when the VFS needs to look up an inode in a parent
-> @@ -654,7 +657,11 @@ otherwise noted.
->  	handled by f_op->open().  If the file was created, FMODE_CREATED
->  	flag should be set in file->f_mode.  In case of O_EXCL the
->  	method must only succeed if the file didn't exist and hence
-> -	FMODE_CREATED shall always be set on success.
-> +	FMODE_CREATED shall always be set on success. This method is
-> +	usually needed on filesystems where the dentry to be created could
-> +	unexpectedly become positive after the kernel has looked it up or
-> +	revalidated it. (e.g. another host racing in and creating the file
-> +	on an NFS server).
->  
->  ``tmpfile``
->  	called in the end of O_TMPFILE open().  Optional, equivalent to
-> diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-> index 8666c9c622584f018ba314954a871e2eb8f35edf..fe4f76cb0db1a5f8f71a90aa619861088f8dfabc 100644
-> --- a/fs/9p/vfs_inode.c
-> +++ b/fs/9p/vfs_inode.c
-> @@ -643,7 +643,7 @@ v9fs_create(struct v9fs_session_info *v9ses, struct inode *dir,
->  
->  static int
->  v9fs_vfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		struct dentry *dentry, umode_t mode, bool excl)
-> +		struct dentry *dentry, umode_t mode)
->  {
->  	struct v9fs_session_info *v9ses = v9fs_inode2v9ses(dir);
->  	u32 perm = unixmode2p9mode(v9ses, mode);
-> diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-> index 1661a25f277256075790ed49c3a55fbe93bc986e..565fa8096a0b5e4bd161596f39e306b93dba4b6e 100644
-> --- a/fs/9p/vfs_inode_dotl.c
-> +++ b/fs/9p/vfs_inode_dotl.c
-> @@ -218,7 +218,7 @@ int v9fs_open_to_dotl_flags(int flags)
->   */
->  static int
->  v9fs_vfs_create_dotl(struct mnt_idmap *idmap, struct inode *dir,
-> -		     struct dentry *dentry, umode_t omode, bool excl)
-> +		     struct dentry *dentry, umode_t omode)
->  {
->  	return v9fs_vfs_mknod_dotl(idmap, dir, dentry, omode, 0);
->  }
-> diff --git a/fs/affs/affs.h b/fs/affs/affs.h
-> index ac4e9a02910b72d63c8ec5291347b54518e67f4b..665be23c42cfa206dc0a2c9ffa119b7c3c747389 100644
-> --- a/fs/affs/affs.h
-> +++ b/fs/affs/affs.h
-> @@ -167,7 +167,7 @@ extern int	affs_hash_name(struct super_block *sb, const u8 *name, unsigned int l
->  extern struct dentry *affs_lookup(struct inode *dir, struct dentry *dentry, unsigned int);
->  extern int	affs_unlink(struct inode *dir, struct dentry *dentry);
->  extern int	affs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool);
-> +			struct dentry *dentry, umode_t mode);
->  extern struct dentry *affs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
->  			struct dentry *dentry, umode_t mode);
->  extern int	affs_rmdir(struct inode *dir, struct dentry *dentry);
-> diff --git a/fs/affs/namei.c b/fs/affs/namei.c
-> index f883be50db122d3b09f0ae4d24618bd49b55186b..5591e1b5a2f68fc7600115e241f01f81d3aac010 100644
-> --- a/fs/affs/namei.c
-> +++ b/fs/affs/namei.c
-> @@ -243,7 +243,7 @@ affs_unlink(struct inode *dir, struct dentry *dentry)
->  
->  int
->  affs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -	    struct dentry *dentry, umode_t mode, bool excl)
-> +	    struct dentry *dentry, umode_t mode)
->  {
->  	struct super_block *sb = dir->i_sb;
->  	struct inode	*inode;
-> diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-> index f4e9e12373ac10b0230a9a6d6b7e1cb465f470d5..04702fe4e3d9befbb2176859be7c7ac7fd9623a1 100644
-> --- a/fs/afs/dir.c
-> +++ b/fs/afs/dir.c
-> @@ -32,7 +32,7 @@ static bool afs_lookup_one_filldir(struct dir_context *ctx, const char *name, in
->  static bool afs_lookup_filldir(struct dir_context *ctx, const char *name, int nlen,
->  			      loff_t fpos, u64 ino, unsigned dtype);
->  static int afs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		      struct dentry *dentry, umode_t mode, bool excl);
-> +		      struct dentry *dentry, umode_t mode);
->  static struct dentry *afs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
->  				struct dentry *dentry, umode_t mode);
->  static int afs_rmdir(struct inode *dir, struct dentry *dentry);
-> @@ -1637,7 +1637,7 @@ static const struct afs_operation_ops afs_create_operation = {
->   * create a regular file on an AFS filesystem
->   */
->  static int afs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		      struct dentry *dentry, umode_t mode, bool excl)
-> +		      struct dentry *dentry, umode_t mode)
->  {
->  	struct afs_operation *op;
->  	struct afs_vnode *dvnode = AFS_FS_I(dir);
-> diff --git a/fs/bad_inode.c b/fs/bad_inode.c
-> index 0ef9bcb744dd620bf47caa024d97a1316ff7bc89..5701361cf98155a61cb75a4ec602e8fc615eb3ae 100644
-> --- a/fs/bad_inode.c
-> +++ b/fs/bad_inode.c
-> @@ -29,7 +29,7 @@ static const struct file_operations bad_file_ops =
->  
->  static int bad_inode_create(struct mnt_idmap *idmap,
->  			    struct inode *dir, struct dentry *dentry,
-> -			    umode_t mode, bool excl)
-> +			    umode_t mode)
->  {
->  	return -EIO;
->  }
-> diff --git a/fs/bfs/dir.c b/fs/bfs/dir.c
-> index c375e22c4c0c15ba27307d266adfe3f093b90ab8..6beb8605c523cc2c7250d7b1a61508e103f0f3fd 100644
-> --- a/fs/bfs/dir.c
-> +++ b/fs/bfs/dir.c
-> @@ -76,7 +76,7 @@ const struct file_operations bfs_dir_operations = {
->  };
->  
->  static int bfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		      struct dentry *dentry, umode_t mode, bool excl)
-> +		      struct dentry *dentry, umode_t mode)
->  {
->  	int err;
->  	struct inode *inode;
-> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-> index 9c6ca87b3d567bcd591eb65c1b786d264cb672e8..5f452e587109a64531077d70930221fb43616651 100644
-> --- a/fs/btrfs/inode.c
-> +++ b/fs/btrfs/inode.c
-> @@ -6825,7 +6825,7 @@ static int btrfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int btrfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	struct inode *inode;
->  
-> diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
-> index d18c0eaef9b7e7be7eb517c701d6c4af08fd78ac..308903dc0780dbed2382228005d0221f185c61ee 100644
-> --- a/fs/ceph/dir.c
-> +++ b/fs/ceph/dir.c
-> @@ -976,7 +976,7 @@ static int ceph_mknod(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int ceph_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *dentry, umode_t mode, bool excl)
-> +		       struct dentry *dentry, umode_t mode)
->  {
->  	return ceph_mknod(idmap, dir, dentry, mode, 0);
->  }
-> diff --git a/fs/coda/dir.c b/fs/coda/dir.c
-> index ca99900172657d80a479b2eb27f50effdf834995..554e7fd44e5df1aae6da2c41a492a02ae9e0d616 100644
-> --- a/fs/coda/dir.c
-> +++ b/fs/coda/dir.c
-> @@ -134,7 +134,7 @@ static inline void coda_dir_drop_nlink(struct inode *dir)
->  
->  /* creation routines: create, mknod, mkdir, link, symlink */
->  static int coda_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *de, umode_t mode, bool excl)
-> +		       struct dentry *de, umode_t mode)
->  {
->  	int error;
->  	const char *name=de->d_name.name;
-> diff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c
-> index 3978248247dc2197b4441957a331c9711a6190bb..96197e6c7656ecc92355a7a2e9c9a8f693c303fe 100644
-> --- a/fs/ecryptfs/inode.c
-> +++ b/fs/ecryptfs/inode.c
-> @@ -268,7 +268,7 @@ int ecryptfs_initialize_file(struct dentry *ecryptfs_dentry,
->  static int
->  ecryptfs_create(struct mnt_idmap *idmap,
->  		struct inode *directory_inode, struct dentry *ecryptfs_dentry,
-> -		umode_t mode, bool excl)
-> +		umode_t mode)
->  {
->  	struct inode *ecryptfs_inode;
->  	int rc;
-> diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
-> index 2891614abf8d554f563319187b6d54c2bc006a91..043b3e3a4f0adefe27855f8156b946c1dc4bd184 100644
-> --- a/fs/efivarfs/inode.c
-> +++ b/fs/efivarfs/inode.c
-> @@ -75,7 +75,7 @@ static bool efivarfs_valid_name(const char *str, int len)
->  }
->  
->  static int efivarfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			   struct dentry *dentry, umode_t mode, bool excl)
-> +			   struct dentry *dentry, umode_t mode)
->  {
->  	struct inode *inode = NULL;
->  	struct efivar_entry *var;
-> diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
-> index 745dce29ddb532f7f4ca6d9aad5ddc8943aab4b5..083602c1fed0a78cf1c587783b62bc4552125a81 100644
-> --- a/fs/exfat/namei.c
-> +++ b/fs/exfat/namei.c
-> @@ -543,7 +543,7 @@ static int exfat_add_entry(struct inode *inode, const char *path,
->  }
->  
->  static int exfat_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	struct super_block *sb = dir->i_sb;
->  	struct inode *inode;
-> diff --git a/fs/ext2/namei.c b/fs/ext2/namei.c
-> index bde617a66cecd4a2bf12a713a2297bb4fee45916..edea7784ad39acd4afffc7f5ae6e50a20c04999d 100644
-> --- a/fs/ext2/namei.c
-> +++ b/fs/ext2/namei.c
-> @@ -101,7 +101,7 @@ struct dentry *ext2_get_parent(struct dentry *child)
->   */
->  static int ext2_create (struct mnt_idmap * idmap,
->  			struct inode * dir, struct dentry * dentry,
-> -			umode_t mode, bool excl)
-> +			umode_t mode)
->  {
->  	struct inode *inode;
->  	int err;
-> diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-> index 2cd36f59c9e363124ee949f742adccd88447295a..a1e77390a7ce300db02db9af90e45d69efabfea5 100644
-> --- a/fs/ext4/namei.c
-> +++ b/fs/ext4/namei.c
-> @@ -2806,7 +2806,7 @@ static int ext4_add_nondir(handle_t *handle,
->   * with d_instantiate().
->   */
->  static int ext4_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *dentry, umode_t mode, bool excl)
-> +		       struct dentry *dentry, umode_t mode)
->  {
->  	handle_t *handle;
->  	struct inode *inode;
-> diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
-> index af40282a6948e5b7b9001ca5964993064417fd0a..5f99950529da22812085f4a8c3962b7d7821740c 100644
-> --- a/fs/f2fs/namei.c
-> +++ b/fs/f2fs/namei.c
-> @@ -351,7 +351,7 @@ static struct inode *f2fs_new_inode(struct mnt_idmap *idmap,
->  }
->  
->  static int f2fs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *dentry, umode_t mode, bool excl)
-> +		       struct dentry *dentry, umode_t mode)
->  {
->  	struct f2fs_sb_info *sbi = F2FS_I_SB(dir);
->  	struct inode *inode;
-> diff --git a/fs/fat/namei_msdos.c b/fs/fat/namei_msdos.c
-> index 0b920ee40a7f9fe3c57af5d939d3efedf001a3d9..905ffa9e5b99f1507734d99b7c16dcad21d7b5b5 100644
-> --- a/fs/fat/namei_msdos.c
-> +++ b/fs/fat/namei_msdos.c
-> @@ -262,7 +262,7 @@ static int msdos_add_entry(struct inode *dir, const unsigned char *name,
->  
->  /***** Create a file */
->  static int msdos_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	struct super_block *sb = dir->i_sb;
->  	struct inode *inode = NULL;
-> diff --git a/fs/fat/namei_vfat.c b/fs/fat/namei_vfat.c
-> index 5dbc4cbb8fce3d9b891cbc597f876c2c7b8d6aa0..8396b1ec4ec582fcdfadbcb12b04694ef0b8c5fc 100644
-> --- a/fs/fat/namei_vfat.c
-> +++ b/fs/fat/namei_vfat.c
-> @@ -754,7 +754,7 @@ static struct dentry *vfat_lookup(struct inode *dir, struct dentry *dentry,
->  }
->  
->  static int vfat_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *dentry, umode_t mode, bool excl)
-> +		       struct dentry *dentry, umode_t mode)
->  {
->  	struct super_block *sb = dir->i_sb;
->  	struct inode *inode;
-> diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-> index 87a63ae93a456f27cf61d7fdc590dc140b2fbfc1..ca46859e99b198417acaa194a7ed5f24a241f385 100644
-> --- a/fs/fuse/dir.c
-> +++ b/fs/fuse/dir.c
-> @@ -889,7 +889,7 @@ static int fuse_mknod(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int fuse_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *entry, umode_t mode, bool excl)
-> +		       struct dentry *entry, umode_t mode)
->  {
->  	return fuse_mknod(idmap, dir, entry, mode, 0);
->  }
-> diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-> index 890c87e3e3658be95f8eb5ac169b1a6e96c5abc1..7132a268bba049b6947f52aa1d10bd481feb7bab 100644
-> --- a/fs/gfs2/inode.c
-> +++ b/fs/gfs2/inode.c
-> @@ -942,15 +942,14 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
->   * @dir: The directory in which to create the file
->   * @dentry: The dentry of the new file
->   * @mode: The mode of the new file
-> - * @excl: Force fail if inode exists
->   *
->   * Returns: errno
->   */
->  
->  static int gfs2_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *dentry, umode_t mode, bool excl)
-> +		       struct dentry *dentry, umode_t mode)
->  {
-> -	return gfs2_create_inode(dir, dentry, NULL, S_IFREG | mode, 0, NULL, 0, excl);
-> +	return gfs2_create_inode(dir, dentry, NULL, S_IFREG | mode, 0, NULL, 0, 1);
->  }
->  
->  /**
-> diff --git a/fs/hfs/dir.c b/fs/hfs/dir.c
-> index 86a6b317b474a95f283f6a0908582efadde80892..c585942aa985686ca428d2d17f4401aa845a0eb8 100644
-> --- a/fs/hfs/dir.c
-> +++ b/fs/hfs/dir.c
-> @@ -190,7 +190,7 @@ static int hfs_dir_release(struct inode *inode, struct file *file)
->   * the directory and the name (and its length) of the new file.
->   */
->  static int hfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		      struct dentry *dentry, umode_t mode, bool excl)
-> +		      struct dentry *dentry, umode_t mode)
->  {
->  	struct inode *inode;
->  	int res;
-> diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
-> index 1b3e27a0d5e038b559bd19b37d769078b2996d1b..c5ea04e078340a91b992095e189e978a3345f03c 100644
-> --- a/fs/hfsplus/dir.c
-> +++ b/fs/hfsplus/dir.c
-> @@ -518,7 +518,7 @@ static int hfsplus_mknod(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int hfsplus_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			  struct dentry *dentry, umode_t mode, bool excl)
-> +			  struct dentry *dentry, umode_t mode)
->  {
->  	return hfsplus_mknod(&nop_mnt_idmap, dir, dentry, mode, 0);
->  }
-> diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-> index 51d26aa2b93e0955134cfb901619b513a64427ed..f62590281f9f27343a104f879bb43670026de2d5 100644
-> --- a/fs/hostfs/hostfs_kern.c
-> +++ b/fs/hostfs/hostfs_kern.c
-> @@ -593,7 +593,7 @@ static struct inode *hostfs_iget(struct super_block *sb, char *name)
->  }
->  
->  static int hostfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			 struct dentry *dentry, umode_t mode, bool excl)
-> +			 struct dentry *dentry, umode_t mode)
->  {
->  	struct inode *inode;
->  	char *name;
-> diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
-> index 353e13a615f56664638f08a3408f90a727f5458b..809113d8248d50c0eaa57047b6c4bd87b9a5c6be 100644
-> --- a/fs/hpfs/namei.c
-> +++ b/fs/hpfs/namei.c
-> @@ -129,7 +129,7 @@ static struct dentry *hpfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int hpfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *dentry, umode_t mode, bool excl)
-> +		       struct dentry *dentry, umode_t mode)
->  {
->  	const unsigned char *name = dentry->d_name.name;
->  	unsigned len = dentry->d_name.len;
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index f42548ee9083c6bf4b20f9a75e069e5f69fdfc3a..0ebac5c318017edeab79d1d311796926a440bf6e 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -992,7 +992,7 @@ static struct dentry *hugetlbfs_mkdir(struct mnt_idmap *idmap, struct inode *dir
->  
->  static int hugetlbfs_create(struct mnt_idmap *idmap,
->  			    struct inode *dir, struct dentry *dentry,
-> -			    umode_t mode, bool excl)
-> +			    umode_t mode)
->  {
->  	return hugetlbfs_mknod(idmap, dir, dentry, mode | S_IFREG, 0);
->  }
-> diff --git a/fs/jffs2/dir.c b/fs/jffs2/dir.c
-> index dd91f725ded69ccb3a240aafd72a4b552f21bcd9..e77c84e43621a8c53e9852843f18cc3514315650 100644
-> --- a/fs/jffs2/dir.c
-> +++ b/fs/jffs2/dir.c
-> @@ -25,7 +25,7 @@
->  static int jffs2_readdir (struct file *, struct dir_context *);
->  
->  static int jffs2_create (struct mnt_idmap *, struct inode *,
-> -		         struct dentry *, umode_t, bool);
-> +			 struct dentry *, umode_t);
->  static struct dentry *jffs2_lookup (struct inode *,struct dentry *,
->  				    unsigned int);
->  static int jffs2_link (struct dentry *,struct inode *,struct dentry *);
-> @@ -161,7 +161,7 @@ static int jffs2_readdir(struct file *file, struct dir_context *ctx)
->  
->  
->  static int jffs2_create(struct mnt_idmap *idmap, struct inode *dir_i,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	struct jffs2_raw_inode *ri;
->  	struct jffs2_inode_info *f, *dir_f;
-> diff --git a/fs/jfs/namei.c b/fs/jfs/namei.c
-> index 65a218eba8faf9508f5727515b812f6de2661618..48111f8d3efe40becadd857c56c84ed09de867ef 100644
-> --- a/fs/jfs/namei.c
-> +++ b/fs/jfs/namei.c
-> @@ -60,7 +60,7 @@ static inline void free_ea_wmap(struct inode *inode)
->   *
->   */
->  static int jfs_create(struct mnt_idmap *idmap, struct inode *dip,
-> -		      struct dentry *dentry, umode_t mode, bool excl)
-> +		      struct dentry *dentry, umode_t mode)
->  {
->  	int rc = 0;
->  	tid_t tid;		/* transaction id */
-> diff --git a/fs/minix/namei.c b/fs/minix/namei.c
-> index 263e4ba8b1c822c388070a9ed3e123f272fcbe61..79e591bdfdc10de9719ae107e71daca28305b7f9 100644
-> --- a/fs/minix/namei.c
-> +++ b/fs/minix/namei.c
-> @@ -64,7 +64,7 @@ static int minix_tmpfile(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int minix_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	return minix_mknod(&nop_mnt_idmap, dir, dentry, mode, 0);
->  }
-> diff --git a/fs/namei.c b/fs/namei.c
-> index 2c83f894f2764c4c40b3790a9dddd4fde5066d53..9439beabfef6e5d6bc08665284d155aba2deab48 100644
-> --- a/fs/namei.c
-> +++ b/fs/namei.c
-> @@ -4129,7 +4129,7 @@ int vfs_create(struct mnt_idmap *idmap, struct dentry *dentry, umode_t mode,
->  	error = try_break_deleg(dir, di);
->  	if (error)
->  		return error;
-> -	error = dir->i_op->create(idmap, dir, dentry, mode, true);
-> +	error = dir->i_op->create(idmap, dir, dentry, mode);
->  	if (!error)
->  		fsnotify_create(dir, dentry);
->  	return error;
-> @@ -4438,7 +4438,7 @@ static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
->  		}
->  
->  		error = dir_inode->i_op->create(idmap, dir_inode, dentry,
-> -						mode, open_flag & O_EXCL);
-> +						mode);
->  		if (error)
->  			goto out_dput;
->  	}
-> diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-> index ea9f6ca8f30fa250425921b403d67d05fcf13b61..d7f072ca0a77056bd851ad3bbc981883dc3bf08b 100644
-> --- a/fs/nfs/dir.c
-> +++ b/fs/nfs/dir.c
-> @@ -2378,9 +2378,9 @@ static int nfs_do_create(struct inode *dir, struct dentry *dentry,
->  }
->  
->  int nfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -	       struct dentry *dentry, umode_t mode, bool excl)
-> +	       struct dentry *dentry, umode_t mode)
->  {
-> -	return nfs_do_create(dir, dentry, mode, excl ? O_EXCL : 0);
-> +	return nfs_do_create(dir, dentry, mode, O_EXCL);
->  }
->  EXPORT_SYMBOL_GPL(nfs_create);
->  
-> diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-> index 2ecd38e1d17a8053a9134702588d57efc35f49e9..b122c4f34f7b53c5102a8b5138efe269af433c81 100644
-> --- a/fs/nfs/internal.h
-> +++ b/fs/nfs/internal.h
-> @@ -398,7 +398,7 @@ extern unsigned long nfs_access_cache_scan(struct shrinker *shrink,
->  struct dentry *nfs_lookup(struct inode *, struct dentry *, unsigned int);
->  void nfs_d_prune_case_insensitive_aliases(struct inode *inode);
->  int nfs_create(struct mnt_idmap *, struct inode *, struct dentry *,
-> -	       umode_t, bool);
-> +	       umode_t);
->  struct dentry *nfs_mkdir(struct mnt_idmap *, struct inode *, struct dentry *,
->  			 umode_t);
->  int nfs_rmdir(struct inode *, struct dentry *);
-> diff --git a/fs/nilfs2/namei.c b/fs/nilfs2/namei.c
-> index 40f4b1a28705b6e0eb8f0978cf3ac18b43aa1331..31d1d466c03048aaaab23f64c3f413c095939770 100644
-> --- a/fs/nilfs2/namei.c
-> +++ b/fs/nilfs2/namei.c
-> @@ -86,7 +86,7 @@ nilfs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
->   * with d_instantiate().
->   */
->  static int nilfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	struct inode *inode;
->  	struct nilfs_transaction_info ti;
-> diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-> index 82c8ae56beee6d79046dd6c8f02ff0f35e9a1ad3..49fe635b550d3f51f81138649b47c9c831a73e3b 100644
-> --- a/fs/ntfs3/namei.c
-> +++ b/fs/ntfs3/namei.c
-> @@ -105,7 +105,7 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
->   * ntfs_create - inode_operations::create
->   */
->  static int ntfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *dentry, umode_t mode, bool excl)
-> +		       struct dentry *dentry, umode_t mode)
->  {
->  	return ntfs_create_inode(idmap, dir, dentry, NULL, S_IFREG | mode, 0,
->  				 NULL, 0, NULL);
-> diff --git a/fs/ocfs2/dlmfs/dlmfs.c b/fs/ocfs2/dlmfs/dlmfs.c
-> index cccaa1d6fbbac13ebcaf14a9183277890708e643..bd4b2269598b49c6f88dd8d201e246ee5ed855a6 100644
-> --- a/fs/ocfs2/dlmfs/dlmfs.c
-> +++ b/fs/ocfs2/dlmfs/dlmfs.c
-> @@ -454,8 +454,7 @@ static struct dentry *dlmfs_mkdir(struct mnt_idmap * idmap,
->  static int dlmfs_create(struct mnt_idmap *idmap,
->  			struct inode *dir,
->  			struct dentry *dentry,
-> -			umode_t mode,
-> -			bool excl)
-> +			umode_t mode)
->  {
->  	int status = 0;
->  	struct inode *inode;
-> diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-> index c90b254da75eb5b90d2af5e37d41e781efe8b836..7443f468f45657cf68779a02e4edf4e38fb70f59 100644
-> --- a/fs/ocfs2/namei.c
-> +++ b/fs/ocfs2/namei.c
-> @@ -666,8 +666,7 @@ static struct dentry *ocfs2_mkdir(struct mnt_idmap *idmap,
->  static int ocfs2_create(struct mnt_idmap *idmap,
->  			struct inode *dir,
->  			struct dentry *dentry,
-> -			umode_t mode,
-> -			bool excl)
-> +			umode_t mode)
->  {
->  	int ret;
->  
-> diff --git a/fs/omfs/dir.c b/fs/omfs/dir.c
-> index 2ed541fccf331d796805dd1594fbf05c1f7f3b9a..a09a98f7e30bc66deca60725f9462d081b5e4784 100644
-> --- a/fs/omfs/dir.c
-> +++ b/fs/omfs/dir.c
-> @@ -286,7 +286,7 @@ static struct dentry *omfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int omfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		       struct dentry *dentry, umode_t mode, bool excl)
-> +		       struct dentry *dentry, umode_t mode)
->  {
->  	return omfs_add_node(dir, dentry, mode | S_IFREG);
->  }
-> diff --git a/fs/orangefs/namei.c b/fs/orangefs/namei.c
-> index bec5475de094dada6bb29eaf8520a875880f3bab..0ebaa7f000f26f1c1ecffd22cfe4272f20a783ed 100644
-> --- a/fs/orangefs/namei.c
-> +++ b/fs/orangefs/namei.c
-> @@ -18,8 +18,7 @@
->  static int orangefs_create(struct mnt_idmap *idmap,
->  			struct inode *dir,
->  			struct dentry *dentry,
-> -			umode_t mode,
-> -			bool exclusive)
-> +			umode_t mode)
->  {
->  	struct orangefs_inode_s *parent = ORANGEFS_I(dir);
->  	struct orangefs_kernel_op_s *new_op;
-> diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-> index 06b860b9ded6b25ed9762a46f7e26e98e97a8dea..2dfb269a18a89095d56d33d11ca9b7a831832b6d 100644
-> --- a/fs/overlayfs/dir.c
-> +++ b/fs/overlayfs/dir.c
-> @@ -713,7 +713,7 @@ static int ovl_create_object(struct dentry *dentry, int mode, dev_t rdev,
->  }
->  
->  static int ovl_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		      struct dentry *dentry, umode_t mode, bool excl)
-> +		      struct dentry *dentry, umode_t mode)
->  {
->  	return ovl_create_object(dentry, (mode & 07777) | S_IFREG, 0, NULL);
->  }
-> diff --git a/fs/ramfs/inode.c b/fs/ramfs/inode.c
-> index 41f9995da7cab0d11395cb40a98fb4936d52597f..b6502aaa4fb44d27c939da9fae4449af7edd28d4 100644
-> --- a/fs/ramfs/inode.c
-> +++ b/fs/ramfs/inode.c
-> @@ -129,7 +129,7 @@ static struct dentry *ramfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int ramfs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	return ramfs_mknod(&nop_mnt_idmap, dir, dentry, mode | S_IFREG, 0);
->  }
-> diff --git a/fs/smb/client/cifsfs.h b/fs/smb/client/cifsfs.h
-> index e9534258d1efd0bb34f36bf2c725c64d0a8ca8f4..294c66cea2eca3344e09cd77619761e9cb79a807 100644
-> --- a/fs/smb/client/cifsfs.h
-> +++ b/fs/smb/client/cifsfs.h
-> @@ -50,7 +50,7 @@ extern void cifs_sb_deactive(struct super_block *sb);
->  extern const struct inode_operations cifs_dir_inode_ops;
->  extern struct inode *cifs_root_iget(struct super_block *);
->  extern int cifs_create(struct mnt_idmap *, struct inode *,
-> -		       struct dentry *, umode_t, bool excl);
-> +		       struct dentry *, umode_t);
->  extern int cifs_atomic_open(struct inode *, struct dentry *,
->  			    struct file *, unsigned, umode_t);
->  extern struct dentry *cifs_lookup(struct inode *, struct dentry *,
-> diff --git a/fs/smb/client/dir.c b/fs/smb/client/dir.c
-> index da5597dbf5b9f140c6801158ac2357fa911c52ab..b00bc214db9f0e9533f481f41ac99ac8937610ac 100644
-> --- a/fs/smb/client/dir.c
-> +++ b/fs/smb/client/dir.c
-> @@ -566,7 +566,7 @@ cifs_atomic_open(struct inode *inode, struct dentry *direntry,
->  }
->  
->  int cifs_create(struct mnt_idmap *idmap, struct inode *inode,
-> -		struct dentry *direntry, umode_t mode, bool excl)
-> +		struct dentry *direntry, umode_t mode)
->  {
->  	int rc;
->  	unsigned int xid = get_xid();
-> diff --git a/fs/ubifs/dir.c b/fs/ubifs/dir.c
-> index 3c3d3ad4fa6cb719e9ec08fa2164c55371c017c1..4840a6f7974e254eba4ca249357e968764e326e0 100644
-> --- a/fs/ubifs/dir.c
-> +++ b/fs/ubifs/dir.c
-> @@ -303,7 +303,7 @@ static int ubifs_prepare_create(struct inode *dir, struct dentry *dentry,
->  }
->  
->  static int ubifs_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	struct inode *inode;
->  	struct ubifs_info *c = dir->i_sb->s_fs_info;
-> diff --git a/fs/udf/namei.c b/fs/udf/namei.c
-> index 5f2e9a892bffa9579143cedf71d80efa7ad6e9fb..f83b5564cbc4c68c02c07bb3ab2109bfabdc799d 100644
-> --- a/fs/udf/namei.c
-> +++ b/fs/udf/namei.c
-> @@ -371,7 +371,7 @@ static int udf_add_nondir(struct dentry *dentry, struct inode *inode)
->  }
->  
->  static int udf_create(struct mnt_idmap *idmap, struct inode *dir,
-> -		      struct dentry *dentry, umode_t mode, bool excl)
-> +		      struct dentry *dentry, umode_t mode)
->  {
->  	struct inode *inode = udf_new_inode(dir, mode);
->  
-> diff --git a/fs/ufs/namei.c b/fs/ufs/namei.c
-> index 5b3c85c9324298f4ff6aa3d4feeb962ce5ede539..5012e056200aca671364d34a7faf647e6747e1d2 100644
-> --- a/fs/ufs/namei.c
-> +++ b/fs/ufs/namei.c
-> @@ -70,8 +70,7 @@ static struct dentry *ufs_lookup(struct inode * dir, struct dentry *dentry, unsi
->   * with d_instantiate(). 
->   */
->  static int ufs_create (struct mnt_idmap * idmap,
-> -		struct inode * dir, struct dentry * dentry, umode_t mode,
-> -		bool excl)
-> +		struct inode * dir, struct dentry * dentry, umode_t mode)
->  {
->  	struct inode *inode;
->  
-> diff --git a/fs/vboxsf/dir.c b/fs/vboxsf/dir.c
-> index 42bedc4ec7af7709c564a7174805d185ce86f854..330dade582d081e965c0e365bd2f96ae31d92ccc 100644
-> --- a/fs/vboxsf/dir.c
-> +++ b/fs/vboxsf/dir.c
-> @@ -298,9 +298,9 @@ static int vboxsf_dir_create(struct inode *parent, struct dentry *dentry,
->  
->  static int vboxsf_dir_mkfile(struct mnt_idmap *idmap,
->  			     struct inode *parent, struct dentry *dentry,
-> -			     umode_t mode, bool excl)
-> +			     umode_t mode)
->  {
-> -	return vboxsf_dir_create(parent, dentry, mode, false, excl, NULL);
-> +	return vboxsf_dir_create(parent, dentry, mode, false, true, NULL);
->  }
->  
->  static struct dentry *vboxsf_dir_mkdir(struct mnt_idmap *idmap,
-> diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-> index ad94fbf55014c637ab93d38bf4569c6a75b0236e..b39c44285863596a98e5cb73686ea5fc17382392 100644
-> --- a/fs/xfs/xfs_iops.c
-> +++ b/fs/xfs/xfs_iops.c
-> @@ -293,8 +293,7 @@ xfs_vn_create(
->  	struct mnt_idmap	*idmap,
->  	struct inode		*dir,
->  	struct dentry		*dentry,
-> -	umode_t			mode,
-> -	bool			flags)
-> +	umode_t			mode)
->  {
->  	return xfs_generic_create(idmap, dir, dentry, mode, 0, NULL);
->  }
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index ce25feb06727db58f7ddae2c578856311a3fb0ee..47039f3cc6125b70787cc3ec992917e56fb7560c 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -1991,8 +1991,8 @@ struct inode_operations {
->  
->  	int (*readlink) (struct dentry *, char __user *,int);
->  
-> -	int (*create) (struct mnt_idmap *, struct inode *,struct dentry *,
-> -		       umode_t, bool);
-> +	int (*create) (struct mnt_idmap *, struct inode *, struct dentry *,
-> +		       umode_t);
->  	int (*link) (struct dentry *,struct inode *,struct dentry *);
->  	int (*unlink) (struct inode *,struct dentry *);
->  	int (*symlink) (struct mnt_idmap *, struct inode *,struct dentry *,
-> diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-> index c118ca2c377a7ba4deab2da49fbb1aab3a3057af..54c91e401d2d172099ebb6e3bf9b9c8ff396607d 100644
-> --- a/ipc/mqueue.c
-> +++ b/ipc/mqueue.c
-> @@ -610,7 +610,7 @@ static int mqueue_create_attr(struct dentry *dentry, umode_t mode, void *arg)
->  }
->  
->  static int mqueue_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			 struct dentry *dentry, umode_t mode, bool excl)
-> +			 struct dentry *dentry, umode_t mode)
->  {
->  	return mqueue_create_attr(dentry, mode, NULL);
->  }
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 899303d8c9aa39463b96ba1168d3dd125d9e8a7b..e714ee1daf4474b7fc9827b93197edbf9db5554b 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3914,7 +3914,7 @@ static struct dentry *shmem_mkdir(struct mnt_idmap *idmap, struct inode *dir,
->  }
->  
->  static int shmem_create(struct mnt_idmap *idmap, struct inode *dir,
-> -			struct dentry *dentry, umode_t mode, bool excl)
-> +			struct dentry *dentry, umode_t mode)
->  {
->  	return shmem_mknod(idmap, dir, dentry, mode | S_IFREG, 0);
->  }
+> There's a swap() macro BTW. [1]
 > 
-> ---
-> base-commit: d6ea5537c1a66a54d34f50d51ad201b1a2319ccf
-> change-id: 20251105-create-excl-2b366d9bf3bb
+> [1] https://elixir.bootlin.com/linux/v6.18/source/include/linux/ 
+> minmax.h#L307
 > 
-> Best regards,
-> -- 
-> Jeff Layton <jlayton@kernel.org>
+> Best regards
+> Thomas
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>>
+>>             if (data && data->pitch) {
+>>                 screen_info.lfb_linelength = data->pitch;
+>>                 screen_info.lfb_size = data->pitch * data->width;
+>>             } else {
+>>                 screen_info.lfb_linelength = 4 * screen_info.lfb_width;
+>>             }
+>>         }
+>>     }
+>> ...
+>>
+>>
+>> Ie. only swap width<->height for the pre-existing quirks and the new 
+>> quirk *if* it is in 1280x800.
+>>
+>> Regards,
+>>
+>> Tvrtko
+>>
+> 
+
 
