@@ -1,165 +1,131 @@
-Return-Path: <linux-efi+bounces-5784-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5785-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F3AC9F55A
-	for <lists+linux-efi@lfdr.de>; Wed, 03 Dec 2025 15:46:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF43C9F69E
+	for <lists+linux-efi@lfdr.de>; Wed, 03 Dec 2025 16:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 74E673000580
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Dec 2025 14:46:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 367BE3003BD0
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Dec 2025 15:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1663C30101B;
-	Wed,  3 Dec 2025 14:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3D73168FA;
+	Wed,  3 Dec 2025 15:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="meskB6cU"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b="JKUqRZvD"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C173009D8
-	for <linux-efi@vger.kernel.org>; Wed,  3 Dec 2025 14:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833B33168F8;
+	Wed,  3 Dec 2025 15:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.67.55.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764773187; cv=none; b=DStvjn8ntXm4wviykalNpO2XReLBh1rKT4pkWhbYr5WV8uzPXfJk/WI9Q6X1ln171+qRrleyF4CxHhwhDmhbGAM0pd0OS6XsNMAhiRfN5mrmywdJYNe3mA06eLczxMUe8A2fV49iMqOG1P3U7sG/kogeEJ/PU3TF4P+9c9qi47g=
+	t=1764774057; cv=none; b=dxkVXqkNblWh/qmzWvBFjp0fgaqrHgPUw7xn2T5Wi+tQUcDtXYb6De2zmP27JHBHkkAJ999bvD1b/0wM3R996+zDLWaGHoGPe8Hvv/9XXGZuFEr+XTiDAgB5QZmMmtl90IqS1U+kU3McjxVSxKsAZ8P3au7Zf/i09pBlYZESJSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764773187; c=relaxed/simple;
-	bh=jM/ow1A9leA7Y9bLZ+XmYp9O4P74p8od6dKc69m+yVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tQtkYN3AlFyLb++wuUdVA9oNANDhHEJt1yDlfVIxKl4SdjjOZMZvZDP5L4/n/As6V4Q7lMvTDGdwzF/9/Hy/77com6SeeoPlVR0QfgZt8pCIeuAs5rS1zsNW/MaQ+nKYc+v6WCChBwVRlP9zKAeyTylfgUMLuxse2z4YimSK/l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=meskB6cU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4807C116B1;
-	Wed,  3 Dec 2025 14:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764773186;
-	bh=jM/ow1A9leA7Y9bLZ+XmYp9O4P74p8od6dKc69m+yVg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=meskB6cU1n1VE+PIMLR/sLS4SpNTq+aY/SdiWd8UYCXrunUwa+UTSrlkDIOxgBk/I
-	 73HFYFwmmOc8vU51t9m8vQj+rwyd0/mBCvBWdKJyjPKGyYbZHYOTDyfokJhQCdVg83
-	 Oj9VcE640ATvCXvFehLWfejcg+RIQfcdCPvQrw1vY9LRhgm6pxWjnRXjeawrjQ7Jhp
-	 o3z2wFWRSfcF0Abor1FKS7h2YxwB6l8Uq4X8at8QUfxiqcgrR0BjWxlmC4hqHNw56w
-	 U1X6yf9NQ2MB7WRZjCnFBU/PI+4WeL0E3EO8LeGuKgL/vf2qiUcbogv9H9PQFrv4sW
-	 mg2hTNL2EDLmg==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E87B2F4006A;
-	Wed,  3 Dec 2025 09:46:24 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Wed, 03 Dec 2025 09:46:24 -0500
-X-ME-Sender: <xms:QE0waS_3NGTJK-w6vURM7E1_c0oPRA2gEmQAkQzacNL0DC18I7dDjg>
-    <xme:QE0waQFwdThNb4Pe9tNpgJCKk7VoecODKSOpsY5fNZ-F5IvEIghG6yPsqzuVCYEbG
-    sM9kCYH1Cw0HRK4s5uRIFWTJ7KHvA5zp48VelPhfUWyj6YkKOiUiW8k>
-X-ME-Received: <xmr:QE0waUCLb4CS2A7weFkB0y6cMGB78HKPFOyqZ3u_WCfpax7Au_p1iTLPVaUo7g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcuufhh
-    uhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
-    epheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffegnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilh
-    hlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheehqddv
-    keeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrg
-    hmvgdpnhgspghrtghpthhtohepfeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrhgusgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepphhr
-    shgrmhhprghtsegrmhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtg
-    hkrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuhig
-    rdguvghvpdhrtghpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
-    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:QE0waeJMZGc9bkDKe62Qoo9fBpsyqxxPkzUp4WeqJtR4ada39767Lw>
-    <xmx:QE0waSwUvDspi7RHZn2deYxPPwH6dDnPAhqKzCq8XNK32YFfDkdy6w>
-    <xmx:QE0waVGE5M2S2aPwbYJuJ-x21zAawCQQqesCN0No31Z8PhrMhShurw>
-    <xmx:QE0wadSyZg_sWFO8lEFq-k1f-C8JJ_0pd70qS0rbx-WXJvbFew_LMQ>
-    <xmx:QE0wabVn1p6LrnsP3Lzve-NVE9Y11l5XvZ3uzU3D6dliGMsA8mXyXqhA>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Dec 2025 09:46:24 -0500 (EST)
-Date: Wed, 3 Dec 2025 14:46:23 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, ardb@kernel.org
-Cc: Borislav Petkov <bp@alien8.de>, "Pratik R. Sampat" <prsampat@amd.com>, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
-	mingo@redhat.com, dave.hansen@linux.intel.com, akpm@linux-foundation.org, 
-	osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com, 
-	torvalds@linux-foundation.org
+	s=arc-20240116; t=1764774057; c=relaxed/simple;
+	bh=H/WIQWuL+F++EVegTtlfllwMXbPuGlR48JJCbbuyV6o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gpR/joA7dy43SbJfHL+jnjKzdvAbCbLNqpyc3LoYbVAZchB+5H2VTHyeti1XRtizGSlxZ6yiTY1mQYjES+EB8R8onwOA9zBhQuPH8mJR+r65HfCnOLV7lR5UZdKGMOmYXZ0BH3c5c1bhQRkFd2TOEKqsuKTYS/+pC/g/9OKFXY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com; spf=pass smtp.mailfrom=surriel.com; dkim=pass (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b=JKUqRZvD; arc=none smtp.client-ip=96.67.55.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=H/WIQWuL+F++EVegTtlfllwMXbPuGlR48JJCbbuyV6o=; b=JKUqRZvDE6idiWZ6soqKKUQHqQ
+	LJw3VsdEKREWDGD61D7hk3h8S93N7sdvvotBzWUMHyuzigoeJ3wf5XgApT+YNNMbudBRPC+OgalNl
+	o3ZxcIsxZ8qLQBD4s/ptz/u6O3GbR4gsiLPIPl9+UC5wNs0Ipf97PIqP/izl6IlvbOBZAWal9rQJo
+	mkOd6dVI0rUfMmiiDc4Ss5aTFImUhHLqCZ9kkPpl/luCvoOlpSwaVLopvA4qJ6xlZCRZX0uR48thF
+	2dUVLlwkhhvz9kIYrjChlDwxIjUpZ0YGaBPBHZAkXc39JyqJ1C5g4l7O6qNaP826R4L2bVAWpzND0
+	vk1hT7Kw==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1vQoKo-000000006tS-0aPE;
+	Wed, 03 Dec 2025 10:00:03 -0500
+Message-ID: <ed2fd8ed5d3c64e0e57e0d38fe6e3d712f22d13f.camel@surriel.com>
 Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <etd7r45wmnuoftpckrzkzithr443ru6akgwqjgzw2vgmzqi7cs@camfecdmef74>
-References: <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
- <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
- <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
- <47927c25-a317-488a-823f-ac0588f4eee4@kernel.org>
- <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
- <052d7f47-edb6-4978-bc9a-c7eae469720f@kernel.org>
- <20251201191036.GEaS3oLBY8PEuE91Ap@fat_crate.local>
- <dcccdc4b-b7d7-47c4-b1b1-a6c70edb20fa@kernel.org>
- <20251201202507.GFaS35o7WtLJOM0_jh@fat_crate.local>
- <420865fb-34cc-43a8-820c-b15b5f24a27c@kernel.org>
+From: Rik van Riel <riel@surriel.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Borislav Petkov
+	 <bp@alien8.de>, Kiryl Shutsemau <kas@kernel.org>
+Cc: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org, 
+	osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+Date: Wed, 03 Dec 2025 10:00:03 -0500
+In-Reply-To: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
+References: <20251125175753.1428857-1-prsampat@amd.com>
+	 <20251125175753.1428857-3-prsampat@amd.com>
+	 <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
+	 <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
+	 <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
+	 <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
+	 <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <420865fb-34cc-43a8-820c-b15b5f24a27c@kernel.org>
 
-On Mon, Dec 01, 2025 at 09:36:58PM +0100, David Hildenbrand (Red Hat) wrote:
-> On 12/1/25 21:25, Borislav Petkov wrote:
-> > On Mon, Dec 01, 2025 at 09:10:26PM +0100, David Hildenbrand (Red Hat) wrote:
-> > > Just to be clear, I don't think it exist and also I don't think that it
-> > > should exist.
-> > 
-> > By that logic if it doesn't exist and someone sends a patch, I should simply
-> > ignore a review comment about that patch breaking some non-existent ABI and
-> > simply take it.
-> 
-> Well, we can always discuss and see if there is a way to not break a
-> specific use case, independent of any ABI stability guarantees.
+On Fri, 2025-11-28 at 10:30 +0100, David Hildenbrand (Red Hat) wrote:
+> On 11/27/25 19:12, Borislav Petkov wrote:
+> >=20
+> > None of that matters if you kexec the same kernels.
+> >=20
+> > IOW, for some reason you want to be able to kexec different
+> > kernels. The
+> > question is why do we care?
+>=20
+> kexecing the same kernel is typically used for kdump purposes.
+>=20
+> kexecing different kernels is used for all sorts of things=20
+> (live-upgrade, grub-emu come to mind). It's quite common to kexec=20
+> different kernels, or maybe I misunderstood the question here?
+>=20
 
-There is also the #1 Kernel Rule: "we do not break users."
+Even for kdump it is not unusual to use a different
+kernel.
 
-Booting a different version of the kernel is a core functionality of
-kexec. It is widely used to deploy new kernels or revert to older ones.
-Breaking this functionality is a show-stopper for most, if not all,
-hyperscalers.
+When working on kernel code, getting a proper crash
+dump can really help figure out where my code went
+wrong.
 
-This specific change may not be a show-stopper as CoCo deployment is not
-widespread enough to be noticed yet.
+It helps if the kdump kernel doesn't have the same
+broken code that my test kernel does :)
 
-The notion that nobody promised that you can kexec into a different kernel
-is absurd. It is used everywhere.
-
-> > 
-> > Well, it certainly works for me.
-> > 
-> > Unless you folks come-a-runnin' later screaming it broke some use case of
-> > yours.
-> 
-> Heh, not me, but likely some of the CoCo folks regarding this specific use
-> case (kexec in a confidential VM).
-> 
-> > And then we're back to what I've been preaching on this thread from the
-> > very beginning: having a common agreement on what ABI Linux enforces.
-> 
-> Right. Maybe Kiryl knows more about this specific case as he brought up that
-> these structures are versioned.
-
-I am not involved in the deployment of CoCo VMs, but I don't believe it
-is specifically about CoCo or the kexec ABI. I think it is more about
-the boot protocol. Kexec is one way to boot the kernel.
-
-Should we consider the EFI configuration tables format as part of the
-boot protocol? I believe the answer is "yes," at least for some of them,
-like LINUX_EFI_INITRD_MEDIA_GUID.
-
-I also think LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID should be considered in
-the same way.
-
-Ard, do you have any comments on this?
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+--=20
+All Rights Reversed.
 
