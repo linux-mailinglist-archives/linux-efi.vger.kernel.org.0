@@ -1,267 +1,161 @@
-Return-Path: <linux-efi+bounces-5790-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5791-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB50CA28F1
-	for <lists+linux-efi@lfdr.de>; Thu, 04 Dec 2025 07:47:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC69ACA29F3
+	for <lists+linux-efi@lfdr.de>; Thu, 04 Dec 2025 08:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CF13301FF55
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Dec 2025 06:47:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9322C3023578
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Dec 2025 07:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6B21ADC83;
-	Thu,  4 Dec 2025 06:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB4A2E2F0E;
+	Thu,  4 Dec 2025 07:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="DMfKoLH0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dbeSIypn"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D7638D;
-	Thu,  4 Dec 2025 06:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031151D5178;
+	Thu,  4 Dec 2025 07:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764830820; cv=none; b=QLiw6+gFKabfFe0DKolZyfYma6+HmTrB8U1a7hKUHBW5bUgkbhcuUXKs0apdZu/yZMgeetkzavEFmJzS2c9K7GqHCp/2eGPlFzgEgRAJ9jg26yX+1ZF1uVkDYVOTEYmN6pj/fcr5gIaxN9eirBZMNzaJnGm9353RVwDISyq8W10=
+	t=1764833025; cv=none; b=fXDZc2AN0v6M8wcZq6fmndE2fgT+Mkju2n5xO4TVhVw+vDakSkUmMeDmaEGNqStyBmGNb3Y+OIbskIyuLAnbleSlWHdZDVz/diV8q3ohx26zE1EF1lYjeF9MoQT42jP5rMaxte4bln9KjsM4KWdEdi8eZrjs4ChDiQxNBU7oyvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764830820; c=relaxed/simple;
-	bh=JvsNdwxxyzpivZxILB10Eu494+vyyKv0nrXCXxkjz3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=okI0utWkgYOMhNnVmGGJ2uiJzavmF9P+8ai3bSGk5vzBtF/cs5SeoQrfn81KhliTWLoDwbuA8gZR6W1cMKdRaaDi75SeAa7yofnqK+zUqymhiYB57HUtKgKEwjqBfUvbK/65bynMKAAnIQlGDXwzSwyXsiixuDjxQ4kvRhu2OTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=DMfKoLH0; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=6V+oBcK/j52G6lsVveD6nE1Y0DSxEoZWG7pTjATtvx0=; b=DMfKoLH0UioN2bZkTLYha18j63
-	teVEXM2GOEXu0WVLPSffJuq1oNWr3Y8E4BvLx/NQpTGLhn/A7nraB5izgk5B/up/rep0ox91kQqvc
-	iFuyRCUTDTMjVojmT48vkXvYqwxDtvyQ3mzCTBAQwg1vOYto/f6IOmX8yscxV8lJEkrK+XvEf8qK9
-	hzvOhwPJZe8gEGdrzwrq4S+j9OQRnxivkeQXc6xVa8UID5cW6BeKT63HYouXuMiSyHuSo5/fWbbtR
-	nXID9o4oSOQd75OJkYQreZuMnJhLfbAPgK+N7TIK/toyLJjf29/y6kqHAuKzcdo8lUfesJy3aC6T9
-	hLfqJadg==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
-	id 1vR37K-0000000A4eR-3hi7;
-	Thu, 04 Dec 2025 06:47:07 +0000
-Date: Thu, 4 Dec 2025 06:47:06 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Ian Kent <raven@themaw.net>, Miklos Szeredi <miklos@szeredi.hu>,
-	NeilBrown <neil@brown.name>,
-	Andreas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org,
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	Kees Cook <kees@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	John Johansen <john.johansen@canonical.com>,
-	selinux@vger.kernel.org,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	bpf@vger.kernel.org, Chris Mason <clm@meta.com>
-Subject: [git pull][vfs] tree-in-dcache stuff
-Message-ID: <20251204064706.GJ1712166@ZenIV>
+	s=arc-20240116; t=1764833025; c=relaxed/simple;
+	bh=3dJkqqvIDW3blo0AApoHWDPmByvZSTxMaD/dUBIdgNM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XaPZIrig5ADnPFRwizXZhCBEdidbj/tXrPra7v3D8NhkhpAcYikjV9KeNvAsOHafuZbwg24m8du13uLawHjN/TxlBvV7WMNdwpWqR2k/5L4zw7ogCISsu/88nBweA0XSBkoFsKlENMO9pCEoeOu5VNejgPalnrVOvLgK3G3lHaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dbeSIypn; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764833024; x=1796369024;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3dJkqqvIDW3blo0AApoHWDPmByvZSTxMaD/dUBIdgNM=;
+  b=dbeSIypnalcKzA6jBwpKR4CD3meAKWqhcZtZ3um2s5PmUvQww5CiZ2J9
+   EpTDegIMetsUHD6pdTYe0IMBaRnhNIp4PMwEmhGxKzoRrqriRRzcYZleK
+   ma2dTCCXX/QyZCoQoIfR64kfadpkk6cYg2vAzNwmfeVlbKDU4N57QRqnt
+   GyyBqP+u1Ccw6ka52EabdeY3kl0cPGOaG9xLRrVZV2Ohe5eMKHvXcNogA
+   /ToAjHiB03uZzGGY1nt62aIuqyJ77TKLWtfGd4hzwMthibqf6O9kSr+cQ
+   F30H6y3eJasqtqi3CZcThUqKJ3/Yn74ZMVX/ty95ltC48wLIn0OdrRb3E
+   A==;
+X-CSE-ConnectionGUID: 7IjXCD+/R7e/+3W0cTAm0w==
+X-CSE-MsgGUID: XEN47Xb/QbaabVDCK9HUwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66804569"
+X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
+   d="scan'208";a="66804569"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 23:23:44 -0800
+X-CSE-ConnectionGUID: APjSDX9dTMSMPEzIIiY2uw==
+X-CSE-MsgGUID: hNXIueFnSdqcI/xMeEDeEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
+   d="scan'208";a="199861624"
+Received: from sohilmeh.sc.intel.com ([172.25.103.65])
+  by fmviesa004.fm.intel.com with ESMTP; 03 Dec 2025 23:23:42 -0800
+From: Sohil Mehta <sohil.mehta@intel.com>
+To: x86@kernel.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>
+Cc: "H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH 0/3] x86: Extend LASS support to EFI configurations
+Date: Wed,  3 Dec 2025 23:21:40 -0800
+Message-ID: <20251204072143.3636863-1-sohil.mehta@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-The following changes since commit e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c:
+Linear Address Space Separation (LASS) is currently disabled [1] when
+support for vsyscall emulation or EFI is compiled in. This series
+extends LASS support to EFI-enabled configurations.
 
-  Linux 6.18-rc5 (2025-11-09 15:10:19 -0800)
+Issues with EFI
+---------------
+EFI boot and runtime services are incompatible with LASS because they
+end up accessing addresses with bit 63 cleared, which is blocked by LASS.
 
-are available in the Git repository at:
+  1) The most obvious one is the SetVirtualAddressMap() runtime service,
+  which is expected to be called in EFI physical mode [2]. 
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git tags/pull-persistency
+  2) Boot services code and data are referenced long after
+  ExitBootServices(). For example, efi_check_for_embedded_firmwares()
+  accesses boot services memory even after SetVirtualAddressMap().
 
-for you to fetch changes up to eb028c33451af08bb34f45c6be6967ef1c98cbd1:
+  3) Some runtime services fail to switch to virtual mode properly and
+  continue referencing physical addresses [3]. The kernel maintains a
+  1:1 mapping of all runtime services code and data regions to avoid
+  breaking such firmware.
 
-  d_make_discardable(): warn if given a non-persistent dentry (2025-11-17 23:59:27 -0500)
+Solution
+--------
+These patches take LASS out of the path of all EFI boot and runtime
+service interactions by:
 
-	Conflicts in Documentation/filesystems/porting.rst, fs/dcache.c,
-fs/debugfs/inode.c and security/apparmor/apparmorfs.c; proposed resolution
-in #proposed-merge (same as in -next).  Details of conflicts:
-Documentation/filesystems/porting.rst:
-	usual trivial append/append conflict
-fs/dcache.c in d_instantiate_new():
-	pulling spin_unlock(&entry->d_lock) from __d_instantiate() into
-	callers in this branch vs. changes of the lines immediately
-	following the call of __d_instantiate() in mainline.  Obvious
-	resolution.
-fs/debugfs/inode.c in __debugfs_create_file(), debugfs_create_dir()
-	and debugfs_create_automount():
-	removal of pointless check in this branch vs. changes of
-	(unreachable) failure handling in mainline.
-	Resolution: remove it, it's still a dead code.
-fs/debugfs/inode.c in debugfs_create_symlink():
-	d_instantiate() -> d_make_persistent() in this branch,
-	end_creating() -> debugfs_end_creating() in mainline.
-	Obvious resolution...
-security/apparmor/apparmorfs.c in aafs_remove():
-	switch of simple_rmdir() and simple_unlink() to
-	__simple_{rmdir,unlink}() in this branch vs. switch to
-	start_removing_dentry()/end_removing() around those calls
-	in mainline.  Resolution: switch simple_{rmdir,unlink}() as in
-	this branch.  TBH, I rather doubt that mainline change there was
-	worthwhile - aafs interaction with VFS locking is...  special,
-	and _ANY_ changes of locking protocol on our end will have to
-	consider that location very carefully anyway; making it look
-	like a regular removal is at that stage is asking for trouble.
+  Patch 1: Deferring LASS enabling until userspace comes up, which
+  ensures EFI has completed switching to virtual mode and all boot
+  services memory has been freed [4]. 
 
-----------------------------------------------------------------
-Some filesystems use a kinda-sorta controlled dentry refcount leak to pin
-dentries of created objects in dcache (and undo it when removing those).
-Reference is grabbed and not released, but it's not actually _stored_
-anywhere.  That works, but it's hard to follow and verify; among other
-things, we have no way to tell _which_ of the increments is intended
-to be an unpaired one.  Worse, on removal we need to decide whether
-the reference had already been dropped, which can be non-trivial if
-that removal is on umount and we need to figure out if this dentry is
-pinned due to e.g. unlink() not done.  Usually that is handled by using
-kill_litter_super() as ->kill_sb(), but there are open-coded special
-cases of the same (consider e.g. /proc/self).
+  Patch 2: Temporarily disabling LASS every time a runtime service is
+  executed after boot [5].
 
-Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTENT)
-marking those "leaked" dentries.  Having it set claims responsibility
-for +1 in refcount.
+Please find more details in the respective patches.
 
-The end result this series is aiming for:
+Alternate options
+-----------------
+One option is to not support broken firmware implementations with LASS
+by avoiding patch 2. That would trigger #GP faults when runtime calls
+try to access the 1:1 mapped physical memory. However, most client
+BIOSes typically get validated with Windows during development [3]. So,
+some users could see in-field failures when they start running newer
+Linux kernels with LASS enabled. 
 
-* get these unbalanced dget() and dput() replaced with new primitives that
-  would, in addition to adjusting refcount, set and clear persistency flag.
-* instead of having kill_litter_super() mess with removing the remaining
-  "leaked" references (e.g. for all tmpfs files that hadn't been removed
-  prior to umount), have the regular shrink_dcache_for_umount() strip
-  DCACHE_PERSISTENT of all dentries, dropping the corresponding
-  reference if it had been set.  After that kill_litter_super() becomes
-  an equivalent of kill_anon_super().
+In the long run, to encourage BIOSes to fix bad code, the kernel could
+trap invalid accesses to 1:1 mapped physical memory and then warn about
+buggy firmware. However, such an effort should be pursued independent of
+LASS [6].
 
-Doing that in a single step is not feasible - it would affect too many places
-in too many filesystems.  It has to be split into a series.
+Links
+-----
+[1]: https://lore.kernel.org/lkml/20251118182911.2983253-1-sohil.mehta@intel.com/
+[2]: https://uefi.org/specs/UEFI/2.10/08_Services_Runtime_Services.html#setvirtualaddressmap
+[3]: https://lore.kernel.org/lkml/CAMj1kXGyTo=4Va1PevMQyCauEKSutfSPo6je0Ps09TabhTe4zQ@mail.gmail.com/
+[4]: https://lore.kernel.org/lkml/ee2fce64-91ce-4b78-b2f9-33364ea0c52f@intel.com/
+[5]: https://lore.kernel.org/lkml/6ab6e4d3-0caa-41e6-8231-2f3f45949876@intel.com/
+[6]: https://lore.kernel.org/lkml/255724be-a6d8-4aa6-94f9-1e6ffba3a3cc@zytor.com/
 
-This work has really started early in 2024; quite a few preliminary pieces
-have already gone into mainline.  This chunk is finally getting to the
-meat of that stuff - infrastructure and most of the conversions to it.
 
-Some pieces are still sitting in the local branches, but the bulk of
-that stuff is here.
+Sohil Mehta (3):
+  x86/cpu: Defer LASS enabling until userspace comes up
+  x86/efi: Make runtime services compatible with LASS
+  x86/cpu: Remove LASS restriction on EFI
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+ arch/x86/kernel/cpu/common.c   | 24 +++++++++++++++++-------
+ arch/x86/platform/efi/efi_64.c | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+), 7 deletions(-)
 
-----------------------------------------------------------------
-Al Viro (54):
-      fuse_ctl_add_conn(): fix nlink breakage in case of early failure
-      tracefs: fix a leak in eventfs_create_events_dir()
-      new helper: simple_remove_by_name()
-      new helper: simple_done_creating()
-      introduce a flag for explicitly marking persistently pinned dentries
-      primitives for maintaining persisitency
-      convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
-      convert ramfs and tmpfs
-      procfs: make /self and /thread_self dentries persistent
-      configfs, securityfs: kill_litter_super() not needed
-      convert xenfs
-      convert smackfs
-      convert hugetlbfs
-      convert mqueue
-      convert bpf
-      convert dlmfs
-      convert fuse_ctl
-      convert pstore
-      convert tracefs
-      convert debugfs
-      debugfs: remove duplicate checks in callers of start_creating()
-      convert efivarfs
-      convert spufs
-      convert ibmasmfs
-      ibmasmfs: get rid of ibmasmfs_dir_ops
-      convert devpts
-      binderfs: use simple_start_creating()
-      binderfs_binder_ctl_create(): kill a bogus check
-      convert binderfs
-      autofs_{rmdir,unlink}: dentry->d_fsdata->dentry == dentry there
-      convert autofs
-      convert binfmt_misc
-      selinuxfs: don't stash the dentry of /policy_capabilities
-      selinuxfs: new helper for attaching files to tree
-      convert selinuxfs
-      functionfs: don't abuse ffs_data_closed() on fs shutdown
-      functionfs: don't bother with ffs->ref in ffs_data_{opened,closed}()
-      functionfs: need to cancel ->reset_work in ->kill_sb()
-      functionfs: fix the open/removal races
-      functionfs: switch to simple_remove_by_name()
-      convert functionfs
-      gadgetfs: switch to simple_remove_by_name()
-      convert gadgetfs
-      hypfs: don't pin dentries twice
-      hypfs: switch hypfs_create_str() to returning int
-      hypfs: swich hypfs_create_u64() to returning int
-      convert hypfs
-      convert rpc_pipefs
-      convert nfsctl
-      convert rust_binderfs
-      get rid of kill_litter_super()
-      convert securityfs
-      kill securityfs_recursive_remove()
-      d_make_discardable(): warn if given a non-persistent dentry
 
- Documentation/filesystems/porting.rst     |   7 ++
- arch/powerpc/platforms/cell/spufs/inode.c |  17 ++-
- arch/s390/hypfs/hypfs.h                   |   6 +-
- arch/s390/hypfs/hypfs_diag_fs.c           |  60 ++++------
- arch/s390/hypfs/hypfs_vm_fs.c             |  21 ++--
- arch/s390/hypfs/inode.c                   |  82 +++++--------
- drivers/android/binder/rust_binderfs.c    | 121 ++++++-------------
- drivers/android/binderfs.c                |  82 +++----------
- drivers/base/devtmpfs.c                   |   2 +-
- drivers/misc/ibmasm/ibmasmfs.c            |  24 ++--
- drivers/usb/gadget/function/f_fs.c        | 144 +++++++++++++----------
- drivers/usb/gadget/legacy/inode.c         |  49 ++++----
- drivers/xen/xenfs/super.c                 |   2 +-
- fs/autofs/inode.c                         |   2 +-
- fs/autofs/root.c                          |  11 +-
- fs/binfmt_misc.c                          |  69 ++++++-----
- fs/configfs/dir.c                         |  10 +-
- fs/configfs/inode.c                       |   3 +-
- fs/configfs/mount.c                       |   2 +-
- fs/dcache.c                               | 111 +++++++++++-------
- fs/debugfs/inode.c                        |  32 ++----
- fs/devpts/inode.c                         |  57 ++++-----
- fs/efivarfs/inode.c                       |   7 +-
- fs/efivarfs/super.c                       |   5 +-
- fs/fuse/control.c                         |  38 +++---
- fs/hugetlbfs/inode.c                      |  12 +-
- fs/internal.h                             |   1 -
- fs/libfs.c                                |  52 +++++++--
- fs/nfsd/nfsctl.c                          |  18 +--
- fs/ocfs2/dlmfs/dlmfs.c                    |   8 +-
- fs/proc/base.c                            |   6 +-
- fs/proc/internal.h                        |   1 +
- fs/proc/root.c                            |  14 +--
- fs/proc/self.c                            |  10 +-
- fs/proc/thread_self.c                     |  11 +-
- fs/pstore/inode.c                         |   7 +-
- fs/ramfs/inode.c                          |   8 +-
- fs/super.c                                |   8 --
- fs/tracefs/event_inode.c                  |   7 +-
- fs/tracefs/inode.c                        |  13 +--
- include/linux/dcache.h                    |   4 +-
- include/linux/fs.h                        |   6 +-
- include/linux/proc_fs.h                   |   2 -
- include/linux/security.h                  |   2 -
- init/do_mounts.c                          |   2 +-
- ipc/mqueue.c                              |  12 +-
- kernel/bpf/inode.c                        |  15 +--
- mm/shmem.c                                |  38 ++----
- net/sunrpc/rpc_pipe.c                     |  27 ++---
- security/apparmor/apparmorfs.c            |  13 ++-
- security/inode.c                          |  35 +++---
- security/selinux/selinuxfs.c              | 185 +++++++++++++-----------------
- security/smack/smackfs.c                  |   2 +-
- 53 files changed, 649 insertions(+), 834 deletions(-)
+base-commit: d61f1cc5db799f4e44a63418b2dc19396787427b
+-- 
+2.43.0
+
 
