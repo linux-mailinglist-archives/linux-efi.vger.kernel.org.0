@@ -1,84 +1,77 @@
-Return-Path: <linux-efi+bounces-5805-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5806-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C66CA5B27
-	for <lists+linux-efi@lfdr.de>; Fri, 05 Dec 2025 00:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E10CA5DE3
+	for <lists+linux-efi@lfdr.de>; Fri, 05 Dec 2025 03:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8664F3141E90
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Dec 2025 23:36:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3183C3066DF4
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Dec 2025 02:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14F92C237E;
-	Thu,  4 Dec 2025 23:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEA62BF011;
+	Fri,  5 Dec 2025 01:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UhRqa8Z3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIR/OORp"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B3217A2E8;
-	Thu,  4 Dec 2025 23:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FCB274B39
+	for <linux-efi@vger.kernel.org>; Fri,  5 Dec 2025 01:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764891368; cv=none; b=pwqZglK07XBzRfxYggda0EFCDDVuRwycvzqvWi7pg02KZyZJglTEXgcMo2pKjFbr9M6nGc8Zc+LXS49BmDXXHWLJCZH0LvQr7ZH0lrZqOef7JMjLytWw29yYS/pdOdRbwT1jgkwl77FrUn6p47sdTK42abCmJIAFOpQ7wN8oF3o=
+	t=1764899774; cv=none; b=T5C3bnkjTANHCvymgKHtRwu0uFikBNuzl6BwwmWw+0kKnGwHdWpiEOjqaW5mRxdn6ufJS244ir85kEbyTh2MPN5gpZkbdti9TbwBeDkTn74OTTim4zC5CT44LKAt+zJA2e3ZoP4eKB8gHyfeWY3UdrbXcoZ2zSSj+XK7bwl2htw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764891368; c=relaxed/simple;
-	bh=vEFVMwXj0lb+m0V04SQmg1RCYw7+L+EZrawwV/I0unk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hSgn2CpyNThBXzEG/DUU4YDwUGXlj5VUrp4jHVpW5ZaJnwpE07oxor/tdavMxd2aSthiXzI8gSQLhqiJ6wPzGDX2s7YZkbTLuSAy9G8/gdoPo+P0ggjPw0LSI/wmhozrgdi/XtWTRSyoJJ6q9vVBxOxRkFoZn9gv2NvKur8iP3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UhRqa8Z3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6609FC4CEFB;
-	Thu,  4 Dec 2025 23:36:08 +0000 (UTC)
+	s=arc-20240116; t=1764899774; c=relaxed/simple;
+	bh=kWPZwYuHbZb1/1ufR+hZddwhthqnRIia6SuTI7Z86aM=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=ZSb3HRxZBn6fIQuUWbLSzOeohdAYX/FTPBjvVSOztAQU/OsJW7B/u0B+obEheud3sAnV6580eyhMph/o4cnLv7EYpRp4paKP3X8l//Bj9JCPi8IA1ioQzg9bobCm6wmDq8AgrKPjFy+pwiSbhbEOWEbWUcWbf0PPnVpsl+b/Xik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIR/OORp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F344FC4CEFB;
+	Fri,  5 Dec 2025 01:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764891368;
-	bh=vEFVMwXj0lb+m0V04SQmg1RCYw7+L+EZrawwV/I0unk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UhRqa8Z3xAOTiJZ3GBhTb6YZ2CEJVisi15c+G6PaoR85LyTpKNJbYAbl7AgIKF5Ao
-	 3/vjc3C42ttKJIAzMBi2JiWb0mM4p1cMZR4vZtgfU0b11Jevdm1pl/xH8t9dVOs9ki
-	 cuLVsPKn6PFOrZGolTGtVhqMCkbbgrrC4MvWnpatVEfGXe6DHl4/76Ae1U5DK6lIio
-	 SX1VywW7mlo0znEWprjrp6qK/G8Uc1LloSUsX8FB/VzGe4hH/wQ62Ka8IsXROyK+3w
-	 myoik1oU1ozXaE8I94ydL9gBDnk1yqwrA3KXDG6ZsebLvwxRzGaAYxFeG5ic2QpoNS
-	 YO3fsiyx9AlhA==
-Date: Thu, 4 Dec 2025 15:36:08 -0800
-From: Kees Cook <kees@kernel.org>
-To: Val Packett <val@packett.cool>
-Cc: Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-hardening@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] efi: pstore: Support late setup with TEE-backed efivars
- ops
-Message-ID: <202512041535.AA6065A38@keescook>
-References: <20251203042850.14210-1-val@packett.cool>
+	s=k20201202; t=1764899772;
+	bh=kWPZwYuHbZb1/1ufR+hZddwhthqnRIia6SuTI7Z86aM=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=IIR/OORpgtXhCE0O+vQlvXrbEhO3AuiMGzuyyulGvEFUU4JblgCo+1YNwilWrwk3X
+	 LnBsCfJGdnljkPxoFn8j410VmoNxliTKZyTePQhHA+Lirmg9oR7WWec5Sv94HEwOuS
+	 d/mgXiFGLYbWAzPKToCkmEVIN2tx986NyxVMLDCCt8ftcxThfc3laQHPgV1sHvwfZq
+	 KY9GzVs3CwCsHqs5H8pjJfZIlSjk6GN/2dUbygWve7hNDHrzyWUZ5nSn6rEbNfOZuD
+	 uEb+C38cVLfstqJpuv6GH56jtNiXzd6Zwp/Ji+V+84KfuvG7iREEyI+3iSk9SGFaNu
+	 dnXNeWaAoY8sg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B9043AA9A85;
+	Fri,  5 Dec 2025 01:53:11 +0000 (UTC)
+Subject: Re: [GIT PULL] EFI updates for v6.19
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20251202095159.1183189-2-ardb+git@google.com>
+References: <20251202095159.1183189-2-ardb+git@google.com>
+X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20251202095159.1183189-2-ardb+git@google.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v6.19
+X-PR-Tracked-Commit-Id: 7a2ff00c3b5e3ca1bbeb13cda52efe870be8501b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: b1dd1e2f3e4ed970949ab4bb982bb0165f3e979d
+Message-Id: <176489958916.1057018.3919215398282237847.pr-tracker-bot@kernel.org>
+Date: Fri, 05 Dec 2025 01:53:09 +0000
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: torvalds@linux-foundation.org, linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251203042850.14210-1-val@packett.cool>
 
-On Wed, Dec 03, 2025 at 01:28:29AM -0300, Val Packett wrote:
-> On some platforms, EFI variable services only become available when an
-> appropriate TEE driver is initialized such as qseecom, gsmi or stmm.
-> 
-> This would work fine when efi_pstore was built as a module and loaded
-> late by userspace, but with CONFIG_EFI_VARS_PSTORE=y this driver would
-> quit due to non-writable efivars before the necessary driver had any
-> chance to load.
-> 
-> Listen to efivar_ops_nh notifications and retry the initialization when
-> writable EFI variable ops become available.
-> 
-> Signed-off-by: Val Packett <val@packett.cool>
+The pull request you sent on Tue,  2 Dec 2025 10:52:00 +0100:
 
-This seems fine to me, though I defer to Ard, who knows the EFI bits way
-better than I do. :)
+> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v6.19
 
-Acked-by: Kees Cook <kees@kernel.org>
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/b1dd1e2f3e4ed970949ab4bb982bb0165f3e979d
+
+Thank you!
 
 -- 
-Kees Cook
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
