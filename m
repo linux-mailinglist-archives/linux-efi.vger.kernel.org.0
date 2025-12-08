@@ -1,155 +1,107 @@
-Return-Path: <linux-efi+bounces-5819-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5821-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A45CADB1F
-	for <lists+linux-efi@lfdr.de>; Mon, 08 Dec 2025 17:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45EC8CAE1A6
+	for <lists+linux-efi@lfdr.de>; Mon, 08 Dec 2025 20:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB30630C159F
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Dec 2025 16:02:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF66A3026AB3
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Dec 2025 19:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7854031196A;
-	Mon,  8 Dec 2025 15:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C639B2EA169;
+	Mon,  8 Dec 2025 19:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="eyGl2x4l"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D15A30FC30;
-	Mon,  8 Dec 2025 15:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069EB2E7BD2
+	for <linux-efi@vger.kernel.org>; Mon,  8 Dec 2025 19:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765209333; cv=none; b=SK3qcgKrvPiat75zaghICw4Wmq3RCuJXjYgKirfAhmGR2OAJSEvs+af2cLvxMbhH0QtRpB0gz/VIw0o9/w9vta6nBFejUiGA9V27rxRktXm3RC396yBwkh3VKdAsNbJgTKULmKXHfcPxKZ4mB87JxvQNlECFm1i98TMZmhkb1ng=
+	t=1765222781; cv=none; b=iznW8yb9zeNYvh9wSlBPQ7GtwULxOkvK1DkLsTS/GoPRXegoZ92UlFiVKntALTZ/C+wDjBwkzkXXvkaNOcEgcbA7wqV/ZU4U8Q91UK7AXe8rFC9juHwg5cajRz0OoMAPNB/4O8BigN20+qxh+nfR9jio09/8H3ZnGzAyAVsmjN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765209333; c=relaxed/simple;
-	bh=RYT1iy3FBB6uZoZKycGu/YHF0Dzox5/SlFNTtF6/wMw=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GsrxDv/RCnoIXes4+4YXXL9TG0FHzWlvXR1/pU3RXfQJgEmzFtrWXIfPJGIwj0uCwq5wHvrGcDHKliyrgVybc6NizEwMSScP+isV8N+B/OJJyjQ/UAjq0OJMEwvdxYDzcSbD6G4f2RYLTSnRB/Kczg0I5ozRDOVuJZz4J30HI80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dQ64t1wCRzJ46XJ;
-	Mon,  8 Dec 2025 23:55:10 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2E5224056E;
-	Mon,  8 Dec 2025 23:55:25 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 8 Dec
- 2025 15:55:24 +0000
-Date: Mon, 8 Dec 2025 15:55:22 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@alien8.de>, Breno Leitao <leitao@debian.org>, Dave Jiang
-	<dave.jiang@intel.com>, Fan Ni <fan.ni@samsung.com>, Hanjun Guo
-	<guohanjun@huawei.com>, Huang Yiwei <quic_hyiwei@quicinc.com>, Ira Weiny
-	<ira.weiny@intel.com>, Jason Tian <jason@os.amperecomputing.com>, Len Brown
-	<lenb@kernel.org>, "Mauro Carvalho Chehab" <mchehab@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
-	"Smita Koralahalli" <Smita.KoralahalliChannabasappa@amd.com>, Tony Luck
-	<tony.luck@intel.com>, <linux-acpi@vger.kernel.org>,
-	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] apei/ghes: don't go past the ARM processor CPER
- record buffer
-Message-ID: <20251208155522.0000162e@huawei.com>
-In-Reply-To: <0f03f383fa76e41747b95713d50350be21867ccb.1764326826.git.mchehab+huawei@kernel.org>
-References: <cover.1764326826.git.mchehab+huawei@kernel.org>
-	<0f03f383fa76e41747b95713d50350be21867ccb.1764326826.git.mchehab+huawei@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1765222781; c=relaxed/simple;
+	bh=Hn3iIB5i67PIjdR6J9R9fo8QBNDCG+nT5H6Q2PQKLho=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LPIuHkLeWFPhr/oHN+JvD4gOwQ5FEKJKYa5LQE383lQwSygMhjyodsoc3nwqaX7LgHPiw6q4PjqETN7BZg3unoSHLgVhGYAgVDp/gbG1x7Pb00ZZPWWWZbXaY7xMb1CTcIT4XNZOJM4sDURXgPssK+IXf84CsVftuXKgSNmM3t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=eyGl2x4l; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=CeXnkFmcSV7aJ4YLd2lWrv0j8cYu4uCZ7dlnGo+QfgI=; b=eyGl2x4llRoFNFQZW0a3VLEa44
+	/xesk3cUkQ3V4Mw0uXZ5JTW/9f0UzpggCFS2FI/vM/+p3K7KuY2JAhwhMzwPjKRN3MDj7BM9uBxrp
+	HbwomcJaNzhG56o/NbkG2XLDxjvwl3aqks7qcU1uqi/14Y+1RqMkWXTww2iiAjRHkVvlJW4u1ux9T
+	RYl7g7drJgUarieA1rBkmjefUJQGW3tsqjGZ7mqSKBfLKrIgz0Pndw9N7baTJgsUwDChP/9zXQ27+
+	meNp5ZwsShqLr7TRxpjqqRsB5yO1rIJ1JoIWz7ieEpyREJPly2iFpex3VldM3CcPt7yWiPcYJE6t7
+	Gp58HkMQ==;
+Received: from [86.33.28.86] (helo=localhost)
+	by fanzine2.igalia.com with utf8esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vSh4y-00ACWB-Pw; Mon, 08 Dec 2025 20:39:28 +0100
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Melissa Wen <mwen@igalia.com>,
+	linux-efi@vger.kernel.org
+Subject: [PATCH v5 0/4] EFI fbcon fixes etc
+Date: Mon,  8 Dec 2025 20:39:21 +0100
+Message-ID: <20251208193925.7449-1-tursulin@igalia.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Transfer-Encoding: 8bit
 
-On Fri, 28 Nov 2025 11:53:00 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-> There's a logic inside ghes/cper to detect if the section_length
-> is too small, but it doesn't detect if it is too big.
-> 
-> Currently, if the firmware receives an ARM processor CPER record
-> stating that a section length is big, kernel will blindly trust
-> section_lentgh, producing a very long dump. For instance, a 67
+Two generic fixes split out for easy review, one refactoring as requested, and
+then the last patch is the panel/mode quirk to allow for corruption free fbcon
+with simpledrmfb and efidrmfb on the Valve Steam Deck.
 
-section_length
+v2:
+ * s/unsigned/unsigned int/
+ * s/pitch/linelength/
+ * Removed comment explaining the Steam Deck quirk.
+ * Added patch to refactor quirk application via callbacks.
 
-> bytes record with ERR_INFO_NUM set 46198 and section length
-> set to 854918320 would dump a lot of data going a way past the
-> firmware memory-mapped area.
-> 
-> Fix it by adding a logic to prevent it to go past the buffer
-> if ERR_INFO_NUM is too big, making it report instead:
-> 
-> 	[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-> 	[Hardware Error]: event severity: recoverable
-> 	[Hardware Error]:  Error 0, type: recoverable
-> 	[Hardware Error]:   section_type: ARM processor error
-> 	[Hardware Error]:   MIDR: 0xff304b2f8476870a
-> 	[Hardware Error]:   section length: 854918320, CPER size: 67
-> 	[Hardware Error]:   section length is too big
-> 	[Hardware Error]:   firmware-generated error record is incorrect
-> 	[Hardware Error]:   ERR_INFO_NUM is 46198
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  drivers/acpi/apei/ghes.c        | 13 +++++++++++++
->  drivers/firmware/efi/cper-arm.c | 14 +++++++++-----
->  drivers/firmware/efi/cper.c     |  3 ++-
->  include/linux/cper.h            |  3 ++-
->  4 files changed, 26 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 56107aa00274..8b90b6f3e866 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -557,6 +557,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
->  {
->  	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
->  	int flags = sync ? MF_ACTION_REQUIRED : 0;
-> +	int length = gdata->error_data_length;
->  	char error_type[120];
->  	bool queued = false;
->  	int sec_sev, i;
-> @@ -568,7 +569,12 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
->  		return false;
->  
->  	p = (char *)(err + 1);
-> +	length -= sizeof(err);
-> +
->  	for (i = 0; i < err->err_info_num; i++) {
-> +		if (length <= 0)
-> +			break;
-> +
->  		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
->  		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
->  		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
-> @@ -580,10 +586,17 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
->  		 * and don't filter out 'corrected' error here.
->  		 */
->  		if (is_cache && has_pa) {
-> +			length -= err_info->length;
-> +			if (length < 0)
-> +				break;
->  			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
->  			p += err_info->length;
-> +
->  			continue;
->  		}
-> +		length -= err_info->length;
-> +			if (length < 0)
-Indent odd.
+v3:
+ * Added forgotten __initconst.
+ * Use separate callback for the fixup quirk.
 
-> +				break;
->  
->  		cper_bits_to_str(error_type, sizeof(error_type),
->  				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
+v4:
+ * Use __screen_info_lfb_bits_per_pixel() instead of accessing lfb_depth directly.
 
+v5:
+ * s/lfb_width/bpp/.
+ * Grammar and typo tidy in the last patch.
+
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: linux-efi@vger.kernel.org
+
+Tvrtko Ursulin (4):
+  efi: sysfb_efi: Replace open coded swap with the macro
+  efi: sysfb_efi: Fix lfb_linelength calculation when applying quirks
+  efi: sysfb_efi: Convert swap width and height quirk to a callback
+  efi: sysfb_efi: Fix efidrmfb and simpledrmfb on Valve Steam Deck
+
+ drivers/firmware/efi/sysfb_efi.c | 73 ++++++++++++++++++++++++++++----
+ 1 file changed, 65 insertions(+), 8 deletions(-)
+
+-- 
+2.52.0
 
 
