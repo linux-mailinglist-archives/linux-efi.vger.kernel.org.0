@@ -1,275 +1,285 @@
-Return-Path: <linux-efi+bounces-5817-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5818-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856DACAAC8D
-	for <lists+linux-efi@lfdr.de>; Sat, 06 Dec 2025 20:01:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ADD6CACD02
+	for <lists+linux-efi@lfdr.de>; Mon, 08 Dec 2025 11:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6FEDA3009B75
-	for <lists+linux-efi@lfdr.de>; Sat,  6 Dec 2025 19:01:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70515307A9CD
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Dec 2025 10:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C86C1991B6;
-	Sat,  6 Dec 2025 19:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE4E322B6F;
+	Mon,  8 Dec 2025 09:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tv40BQXf"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bGrxRVzC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="S+cJpsAO";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="mXhqTeVI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Dsci+OsW"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64FF2236F2
-	for <linux-efi@vger.kernel.org>; Sat,  6 Dec 2025 19:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC78322B74
+	for <linux-efi@vger.kernel.org>; Mon,  8 Dec 2025 09:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765047687; cv=none; b=RITsdXi89oulzgZXJk/Y/JZ73LUQt3asqo7reaXRsUvSDIOimxwx732ekpQqI2VVKaHDcsjBXnGS9Lp3a4eDV4qY/NuWaY27rb5HQWOl0dDD7uu69FjUlXODgT0rcL1f13oVxK1ULbBqlqOAmi/X9jITT83ch5sj1PYW0DRsbmI=
+	t=1765187885; cv=none; b=UdWCpaKsmVrjtQ062Pr6nRjrDsg9s9ThmULjzKziJfyL+R6KflTFKC27M9rMUIEl9cOm5vaXkAOvaG6Ow4LnxgrivMYN4sqmf25R181K6H3v9MoxGpKwWrbyqZEotU7VPbycQJ5HfOO564/0RGjWGiKLzfX3wL+jAcFvRYL9Cqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765047687; c=relaxed/simple;
-	bh=kUUjaKsfohqrNmtXxJEaE0d09l9YyYzcjeOynrmblQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NeATpbEqUvzVlhk3Wt3mrpwx5wyjgEV5D7UxDEC2WJ4L4rWAhBgrPxG0EzAijo4BEfOWoIzcNXPItlmuSk1YbJbEW5/ST0/JyX4AybdpNZHnqlOzC8C7eP/MPhjmLWLKbJfd3pqIV4A93M06wLjuPQGPDyOqcyPBWnqO3Tfbu88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tv40BQXf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C3DC19421;
-	Sat,  6 Dec 2025 19:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765047686;
-	bh=kUUjaKsfohqrNmtXxJEaE0d09l9YyYzcjeOynrmblQM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tv40BQXfdLIk/yP5RiseJljnqKqUZmIuTCRsQ9h5RmI5BpdLconbIiFydu2GFVZty
-	 234WyIHz2zlWYImQWts/VQi9Ln9WcqkYtoo/034RElw1Uc2Hr9m3JQ3n0/1H7FjUlS
-	 /A1+I3wxk9Ie/wDjui55ck8Vmjf99pLrT8wm5IE3gtgJdN45wlkayDG/glalyAUlUR
-	 t3T6Mb9bOp5PA0beg25SBXj0T3AxhxEkUa+fxQyi326hOrmkmjm85EUtofXz/R7QQw
-	 QLO3VH0FFe4SJgMk2VjaG4GHOlleXIpgvTDrzQnCpxpMxtJQIF28RL4je5CLo6JbiQ
-	 eZ9OHLIgsirtg==
-From: Ard Biesheuvel <ardb@kernel.org>
-To: linux-arm-kernel@lists.infradead.org
-Cc: linux-efi@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH v2 2/2] arm64/efi: Remove unneeded SVE/SME fallback preserve/store handling
-Date: Sat,  6 Dec 2025 20:01:17 +0100
-Message-ID: <20251206190114.892262-6-ardb@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251206190114.892262-4-ardb@kernel.org>
-References: <20251206190114.892262-4-ardb@kernel.org>
+	s=arc-20240116; t=1765187885; c=relaxed/simple;
+	bh=JpfMBx2OB+zicxGugNoBRWL6WzVOUOgcxd3xH6wZzIU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D64t3H6GP72eg5PzLScszBygaSQoZVsnzK+LelVKdas1IAbhIRoPmbqM/VLrji/MLajfNvSQQB+kiGGfnvAr6LrJF3lBz5uAunb7r9HUu3OcyMKBYJDNe3ll3TuuiJm6bX334FFCCAytJscYrnaMtNIkOAL2xS1sAhUFTNldYuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bGrxRVzC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=S+cJpsAO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=mXhqTeVI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Dsci+OsW; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D3002336DE;
+	Mon,  8 Dec 2025 09:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765187881; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tiyqyyRIufoiicXo4/TLfw0nlqeugsiEaNQU5FdAtAs=;
+	b=bGrxRVzCtOXvBsvqfCF1VpEB0APwnii70t8jw7D3PsBNVvZ0mShXa3FRsArNhFeFI3CRBp
+	073y+xcLwMsEz4/L4eNDHEfdsSlbV4I8SOYfRCmwUrZKqdsWw3Jmj5Tz1XALdxwupnwCq3
+	K8rcoBfpfPbJAHpO+jzV+IuvWDBifrg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765187881;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tiyqyyRIufoiicXo4/TLfw0nlqeugsiEaNQU5FdAtAs=;
+	b=S+cJpsAONOwJJoLzLK5PdWdAWDjLfxzvXQ+5entzQcc0ypDyISSEVPMe/kQz6l0qDvp3pj
+	HUEcDfbhu+lsVgAQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765187879; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tiyqyyRIufoiicXo4/TLfw0nlqeugsiEaNQU5FdAtAs=;
+	b=mXhqTeVIwM/hOzjwoFhStzL2RtuNEvS1xAYRW41lDWSwl00wPwFOCfKZ2JQiTqFzX+SSmU
+	efHiFCCalBZnKg3tjVuGapTOGbKBCu2DD49FaYOaSVfwwUAVX+9JCSuPx/5wafTSX3bvaM
+	Vf8j1N68uKH0tdx3b3g50oHqA1Qrd6Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765187879;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tiyqyyRIufoiicXo4/TLfw0nlqeugsiEaNQU5FdAtAs=;
+	b=Dsci+OsWwlH4V3amJMQN1FwGB2jA31qdJV7Z1xah2igm2yx5dVZnRDHdefZNOHxImnTBlK
+	FUjt8mB5mWommkCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A52F53EA63;
+	Mon,  8 Dec 2025 09:57:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fJYnJiehNmlBOAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 08 Dec 2025 09:57:59 +0000
+Message-ID: <bccdbb15-6b91-4dc1-a9fd-7184da1c9f2d@suse.de>
+Date: Mon, 8 Dec 2025 10:57:59 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6306; i=ardb@kernel.org; h=from:subject; bh=kUUjaKsfohqrNmtXxJEaE0d09l9YyYzcjeOynrmblQM=; b=owGbwMvMwCVmkMcZplerG8N4Wi2JIdOktvaM6fdHmyYwFxqwTNxQmyrTmrHVJ6J8jvR296SNy zjuCE7pKGVhEONikBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNZzcPwP+l0x9FTJdyfv339 dW2D3Jz/U9e9SuYKm/+S+RxHe0e4QSzD/xoNoTsV8w91LTi1N79sQqzCH+YfRzP1mQ+euNkRKlh gxwQA
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/4] efi: sysfb_efi: Fix efidrmfb and simpledrmfb on
+ Valve Steam Deck
+To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Ard Biesheuvel <ardb@kernel.org>,
+ Melissa Wen <mwen@igalia.com>, linux-efi@vger.kernel.org
+References: <20251205153611.93297-1-tvrtko.ursulin@igalia.com>
+ <20251205153611.93297-5-tvrtko.ursulin@igalia.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20251205153611.93297-5-tvrtko.ursulin@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.29 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.19)[-0.953];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_TWO(0.00)[2];
+	URIBL_BLOCKED(0.00)[suse.de:mid,suse.de:email,igalia.com:email,suse.com:url,imap1.dmz-prg2.suse.org:helo];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,igalia.com:email,suse.de:mid,suse.de:email]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -4.29
 
-Since commit 7137a203b251 ("arm64/fpsimd: Permit kernel mode NEON with
-IRQs off"), the only condition under which the fallback path is taken
-for FP/SIMD preserve/restore across a EFI runtime call is when it is
-called from hardirq or NMI context.
+Hi
 
-In practice, this only happens when the EFI pstore driver is called to
-dump the kernel log buffer into a EFI variable under a panic, oops or
-emergency_restart() condition, and none of these can be expected to
-result in a return to user space for the task in question.
+Am 05.12.25 um 16:36 schrieb Tvrtko Ursulin:
+> Valve Steam Deck has a 800x1280 portrait screen installed in a landscape
+> orientation. The firmware offers a software rotated 1280x800 mode which
 
-This means that the existing EFI-specific logic for preserving and
-restoring SVE/SME state is pointless, and can be removed.
+"software-rotated"
 
-Instead, kill the task, so that an exceedingly unlikely inadvertent
-return to user space does not proceed with a corrupted FP/SIMD state.
-Also, retain the preserve and restore of the base FP/SIMD state, as that
-might belong to kernel mode use of FP/SIMD. (Note that EFI runtime calls
-are never invoked reentrantly, even in this case, and so any interrupted
-kernel mode FP/SIMD usage will be unrelated to EFI)
+comma before 'which'
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/kernel/fpsimd.c | 130 +++-----------------
- 1 file changed, 20 insertions(+), 110 deletions(-)
+> GRUB can be made to switch to when displaying a boot menu. If this mode
+> was selected frame buffer drivers will see this fake mode and fbcon
+> rendering will be corrupted.
+>
+> Lets therefore add a selective quirk inside the current "swap with and
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index c154f72634e0..9de1d8a604cb 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -180,13 +180,6 @@ static inline void set_sve_default_vl(int val)
- 	set_default_vl(ARM64_VEC_SVE, val);
- }
- 
--static u8 *efi_sve_state;
--
--#else /* ! CONFIG_ARM64_SVE */
--
--/* Dummy declaration for code that will be optimised out: */
--extern u8 *efi_sve_state;
--
- #endif /* ! CONFIG_ARM64_SVE */
- 
- #ifdef CONFIG_ARM64_SME
-@@ -1095,36 +1088,6 @@ int vec_verify_vq_map(enum vec_type type)
- 	return 0;
- }
- 
--static void __init sve_efi_setup(void)
--{
--	int max_vl = 0;
--	int i;
--
--	if (!IS_ENABLED(CONFIG_EFI))
--		return;
--
--	for (i = 0; i < ARRAY_SIZE(vl_info); i++)
--		max_vl = max(vl_info[i].max_vl, max_vl);
--
--	/*
--	 * alloc_percpu() warns and prints a backtrace if this goes wrong.
--	 * This is evidence of a crippled system and we are returning void,
--	 * so no attempt is made to handle this situation here.
--	 */
--	if (!sve_vl_valid(max_vl))
--		goto fail;
--
--	efi_sve_state = kmalloc(SVE_SIG_REGS_SIZE(sve_vq_from_vl(max_vl)),
--				GFP_KERNEL);
--	if (!efi_sve_state)
--		goto fail;
--
--	return;
--
--fail:
--	panic("Cannot allocate memory for EFI SVE save/restore");
--}
--
- void cpu_enable_sve(const struct arm64_cpu_capabilities *__always_unused p)
- {
- 	write_sysreg(read_sysreg(CPACR_EL1) | CPACR_EL1_ZEN_EL1EN, CPACR_EL1);
-@@ -1185,8 +1148,6 @@ void __init sve_setup(void)
- 	if (sve_max_virtualisable_vl() < sve_max_vl())
- 		pr_warn("%s: unvirtualisable vector lengths present\n",
- 			info->name);
--
--	sve_efi_setup();
- }
- 
- /*
-@@ -1947,9 +1908,6 @@ EXPORT_SYMBOL_GPL(kernel_neon_end);
- #ifdef CONFIG_EFI
- 
- static struct user_fpsimd_state efi_fpsimd_state;
--static bool efi_fpsimd_state_used;
--static bool efi_sve_state_used;
--static bool efi_sm_state;
- 
- /*
-  * EFI runtime services support functions
-@@ -1976,43 +1934,26 @@ void __efi_fpsimd_begin(void)
- 	if (may_use_simd()) {
- 		kernel_neon_begin(&efi_fpsimd_state);
- 	} else {
--		WARN_ON(preemptible());
--
- 		/*
--		 * If !efi_sve_state, SVE can't be in use yet and doesn't need
--		 * preserving:
-+		 * We are running in hardirq or NMI context, and the only
-+		 * legitimate case where this might happen is when EFI pstore
-+		 * is attempting to record the system's dying gasps into EFI
-+		 * variables. This could be due to an oops, a panic or a call
-+		 * to emergency_restart(), and in none of those cases, we can
-+		 * expect the current task to ever return to user space again,
-+		 * or for the kernel to resume any normal execution, for that
-+		 * matter (an oops in hardirq context triggers a panic too).
-+		 *
-+		 * Therefore, there is no point in attempting to preserve any
-+		 * SVE/SME state here. On the off chance that we might have
-+		 * ended up here for a different reason inadvertently, kill the
-+		 * task and preserve/restore the base FP/SIMD state, which
-+		 * might belong to kernel mode FP/SIMD.
- 		 */
--		if (system_supports_sve() && efi_sve_state != NULL) {
--			bool ffr = true;
--			u64 svcr;
--
--			efi_sve_state_used = true;
--
--			if (system_supports_sme()) {
--				svcr = read_sysreg_s(SYS_SVCR);
--
--				efi_sm_state = svcr & SVCR_SM_MASK;
--
--				/*
--				 * Unless we have FA64 FFR does not
--				 * exist in streaming mode.
--				 */
--				if (!system_supports_fa64())
--					ffr = !(svcr & SVCR_SM_MASK);
--			}
--
--			sve_save_state(efi_sve_state + sve_ffr_offset(sve_max_vl()),
--				       &efi_fpsimd_state.fpsr, ffr);
--
--			if (system_supports_sme())
--				sysreg_clear_set_s(SYS_SVCR,
--						   SVCR_SM_MASK, 0);
--
--		} else {
--			fpsimd_save_state(&efi_fpsimd_state);
--		}
--
--		efi_fpsimd_state_used = true;
-+		pr_warn_ratelimited("Calling EFI runtime from %s context\n",
-+				    in_nmi() ? "NMI" : "hardirq");
-+		force_signal_inject(SIGKILL, SI_KERNEL, 0, 0);
-+		fpsimd_save_state(&efi_fpsimd_state);
- 	}
- }
- 
-@@ -2024,41 +1965,10 @@ void __efi_fpsimd_end(void)
- 	if (!system_supports_fpsimd())
- 		return;
- 
--	if (!efi_fpsimd_state_used) {
-+	if (may_use_simd()) {
- 		kernel_neon_end(&efi_fpsimd_state);
- 	} else {
--		if (system_supports_sve() && efi_sve_state_used) {
--			bool ffr = true;
--
--			/*
--			 * Restore streaming mode; EFI calls are
--			 * normal function calls so should not return in
--			 * streaming mode.
--			 */
--			if (system_supports_sme()) {
--				if (efi_sm_state) {
--					sysreg_clear_set_s(SYS_SVCR,
--							   0,
--							   SVCR_SM_MASK);
--
--					/*
--					 * Unless we have FA64 FFR does not
--					 * exist in streaming mode.
--					 */
--					if (!system_supports_fa64())
--						ffr = false;
--				}
--			}
--
--			sve_load_state(efi_sve_state + sve_ffr_offset(sve_max_vl()),
--				       &efi_fpsimd_state.fpsr, ffr);
--
--			efi_sve_state_used = false;
--		} else {
--			fpsimd_load_state(&efi_fpsimd_state);
--		}
--
--		efi_fpsimd_state_used = false;
-+		fpsimd_load_state(&efi_fpsimd_state);
- 	}
- }
- 
+"Let us" or "Let's"
+
+> height" handling, which will detect this exact mode and fix it up back to
+> the native one.
+>
+> This will allow the DRM based frame buffer drivers to detect the correct
+
+"DRM-based framebuffer"
+
+> mode and, apply the existing panel orientation quirk, and render the
+
+No 'and' after mode
+
+> console in landscape mode with no corruption.
+>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Melissa Wen <mwen@igalia.com>
+> Cc: linux-efi@vger.kernel.org
+> Tested-by: Melissa Wen <mwen@igalia.com> # v3
+
+With typos fixed:
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+Thanks for fixing this.
+
+Best regards
+Thomas
+
+> ---
+>   drivers/firmware/efi/sysfb_efi.c | 47 ++++++++++++++++++++++++++++++++
+>   1 file changed, 47 insertions(+)
+>
+> diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
+> index 5c54f42d5fef..db28e11d1eb7 100644
+> --- a/drivers/firmware/efi/sysfb_efi.c
+> +++ b/drivers/firmware/efi/sysfb_efi.c
+> @@ -242,6 +242,33 @@ static int __init efifb_swap_width_height(const struct dmi_system_id *id)
+>   	return 1;
+>   }
+>   
+> +struct efifb_mode_fixup {
+> +	unsigned int width;
+> +	unsigned int height;
+> +	unsigned int linelength;
+> +};
+> +
+> +static int __init
+> +efifb_check_and_swap_width_height(const struct dmi_system_id *id)
+> +{
+> +	const struct efifb_mode_fixup *data = id->driver_data;
+> +
+> +	if (data->width == screen_info.lfb_width &&
+> +	    data->height == screen_info.lfb_height) {
+> +		swap(screen_info.lfb_width, screen_info.lfb_height);
+> +		screen_info.lfb_linelength = data->linelength;
+> +		screen_info.lfb_size = data->linelength * data->width;
+> +	}
+> +
+> +	return 1;
+> +}
+> +
+> +static const struct efifb_mode_fixup efifb_steamdeck_mode_fixup __initconst = {
+> +	.width = 1280,
+> +	.height = 800,
+> +	.linelength = 3328,
+> +};
+> +
+>   /*
+>    * Some devices have a portrait LCD but advertise a landscape resolution (and
+>    * pitch). We simply swap width and height for these devices so that we can
+> @@ -297,6 +324,26 @@ static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
+>   		},
+>   		.callback = efifb_swap_width_height,
+>   	},
+> +	{
+> +		/* Valve Steam Deck (Jupiter) */
+> +		.matches = {
+> +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Valve"),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Jupiter"),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "1"),
+> +		},
+> +		.callback = efifb_check_and_swap_width_height,
+> +		.driver_data = (void *)&efifb_steamdeck_mode_fixup,
+> +	},
+> +	{
+> +		/* Valve Steam Deck (Galileo) */
+> +		.matches = {
+> +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Valve"),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Galileo"),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "1"),
+> +		},
+> +		.callback = efifb_check_and_swap_width_height,
+> +		.driver_data = (void *)&efifb_steamdeck_mode_fixup,
+> +	},
+>   	{},
+>   };
+>   
+
 -- 
-2.47.3
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
 
 
