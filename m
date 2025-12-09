@@ -1,116 +1,148 @@
-Return-Path: <linux-efi+bounces-5825-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5826-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954B1CAEB0F
-	for <lists+linux-efi@lfdr.de>; Tue, 09 Dec 2025 03:08:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74823CAEBF5
+	for <lists+linux-efi@lfdr.de>; Tue, 09 Dec 2025 03:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C7523006F4A
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Dec 2025 02:05:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84121302D298
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Dec 2025 02:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A009823C4FD;
-	Tue,  9 Dec 2025 02:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F06730101A;
+	Tue,  9 Dec 2025 02:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5+9n0nB"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="a5KvW3WU"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F6623BF9F
-	for <linux-efi@vger.kernel.org>; Tue,  9 Dec 2025 02:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A51221D9E;
+	Tue,  9 Dec 2025 02:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765245942; cv=none; b=O/LBcY4WXv3SK6z8prLSu9aTa8BS3Z0pILosntQt/QZWxfbQybjYy0xM4GNsPQpcAgXcwMFExABBlK5R7IHzfKjH/Y9cUEbIsDTFfmn+uL0ay30cE4S/mh8Ocxyg0/wUstQocXKaP2eH46OBJZfHkMbHNmt399FgQoNfygDvr5w=
+	t=1765248158; cv=none; b=c4Z+7pxlVb3XKdW4L5nao7WKGzA0/wEZQEge9wEBxy1Nfp5niMNYbvFWDqt1a8BCoBe7qNpbYvr6QIGzlBs56RFg2Ojet5UeMeaU54pylNngwsaM47lGGcV60Y+nlYfRgDeGxCyNddTfBKiz7/w2HVGP/D3ZwAvbNJGfPPvcHG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765245942; c=relaxed/simple;
-	bh=r2TLrXMNY6tdqpLXobOdQ7VcPmjJoeY/D/NczUBVb9c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ORSds1iMU5cXeqXMyu5i+cehFh0RuWgp+49m80zRV7xrze05DoTFwF5LjaKGBQ6sC93vLVllwrz9erPLbCT5WQyhA5wT/nctJizmONBo8kAvQucNVezXIelnq7/HWrnCQA0I2rDfdsRBWE1RzfgizYYwazMwXW3vKyBTQc8fgAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5+9n0nB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E83C19421
-	for <linux-efi@vger.kernel.org>; Tue,  9 Dec 2025 02:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765245941;
-	bh=r2TLrXMNY6tdqpLXobOdQ7VcPmjJoeY/D/NczUBVb9c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=S5+9n0nB615ZurPWCj75TPQeOQKLEF+PlUy/ICSaZbX9qlckBR/2apQcE+3WeY+ZK
-	 fJDJrD+wykBa4ib1qatmEFlI+MMGBL5ML8D0wxtpSffHhMFVoVq4wPOWIZaVJew6UC
-	 ZJNYk6ewGhwfo6fucMNX4YYMNqRtVTP2/QXtZdixUoFFGO1+2O2BDqxhZmDjqK4hBc
-	 Ir/DeQf877PAnDiIOVblz1QDpsGZrNEUalbuyiK6sGC9QqEz63Yzq8gYsoaUL6ds2L
-	 O4wCY5+cOGF4Sy5nXVRjM/2FSmEh8Yl4DVvn0ZvZUEPz19NL62eIc30FgLpai+Z7Sy
-	 /5AMXGopU1GQw==
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3436cbb723fso4360374a91.2
-        for <linux-efi@vger.kernel.org>; Mon, 08 Dec 2025 18:05:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXXsSkH7mLD3dhEfQggggglGw6UtMP+M2/mVlPv2XVVMTDd0IKXuoAEC7ILOyZbDlnsBil+enwLaFQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy08rLP282UVSRAoEnZ7Ca/C0X3WwfNgmkFGkuBcWfwqPGZmuaJ
-	iQtgN+N5ll8rAG5bupqW6CznQLJ6/NZjme9U6MMRH1rY6Euea2d3CmG1ALZIOIcUZrsaE85vFB8
-	0Te3LuFw5ak+5PDElCNl1nE/zeBhID+g=
-X-Google-Smtp-Source: AGHT+IHyKmMSYrVYsbJSKtDPABE9Jn39tYyzOnWg1/bGf+V3ApboC/uhg8RcVjfRBg5ctgchARRcyQuWCs7J6IUWjpY=
-X-Received: by 2002:a17:90a:d450:b0:340:ec3b:b587 with SMTP id
- 98e67ed59e1d1-349a24dd160mr7546009a91.1.1765245941305; Mon, 08 Dec 2025
- 18:05:41 -0800 (PST)
+	s=arc-20240116; t=1765248158; c=relaxed/simple;
+	bh=sE/pXyvd0Lfywd91kpXrjPl90i9VcZIcgejCyno71SA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ru6g7tBBBT6JZkVll/t7PKeMnAA9RSZcaKO+pyE6nV/2kteHp/AcUlss9rWfzv3xQptNjH3jCrnahOJR6gtexW5VUFj7ShwbvrfThIK35uOc9fsV7/EYB2FOvqTN6lkIg0m1JOn8zsCM8BGct6Lpr9o1vQgE/3xPn6FyifIWX0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=a5KvW3WU; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1765248146; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=XuMro7XedIbxeUje5xYrBFUsW7QJmGKlAI8KpxyrRWs=;
+	b=a5KvW3WU7SAUQ2bf7jKmZu4ZZXC4A/TAYsaqVtJc81ZuCAxZ2xKtNpWuCfSCd5pHLwHPfG2v4R6EzBVc6gjduKc1bs0AIUTbICOYHoOgpOnIPopxHbbElSyrFg0SDB80z8bpsV/WGRbpKGTVD8Q3tkpFrQNj1i6OCEUC9Y+/a8g=
+Received: from 30.246.178.18(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WuQmmVh_1765248142 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 09 Dec 2025 10:42:23 +0800
+Message-ID: <b2d9284b-10fb-4ec9-921e-c73b0f79f01f@linux.alibaba.com>
+Date: Tue, 9 Dec 2025 10:42:22 +0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251208193925.7449-1-tursulin@igalia.com>
-In-Reply-To: <20251208193925.7449-1-tursulin@igalia.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 9 Dec 2025 11:05:26 +0900
-X-Gmail-Original-Message-ID: <CAMj1kXFZD+No6C4MEpmSY5Ha0DtJH+kHfTiO02By4ejUekLaRA@mail.gmail.com>
-X-Gm-Features: AQt7F2pxwyMp3jupjJdnRCACLrDOSnZB2DzSsDgxxn7yVjvGaE4-ePdhmDRIjco
-Message-ID: <CAMj1kXFZD+No6C4MEpmSY5Ha0DtJH+kHfTiO02By4ejUekLaRA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/4] EFI fbcon fixes etc
-To: Tvrtko Ursulin <tursulin@igalia.com>
-Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com, 
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Melissa Wen <mwen@igalia.com>, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] apei/ghes: don't go past the ARM processor CPER
+ record buffer
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Breno Leitao <leitao@debian.org>, Dave Jiang <dave.jiang@intel.com>,
+ Fan Ni <fan.ni@samsung.com>, Hanjun Guo <guohanjun@huawei.com>,
+ Huang Yiwei <quic_hyiwei@quicinc.com>, Ira Weiny <ira.weiny@intel.com>,
+ Jason Tian <jason@os.amperecomputing.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Len Brown <lenb@kernel.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1764326826.git.mchehab+huawei@kernel.org>
+ <0f03f383fa76e41747b95713d50350be21867ccb.1764326826.git.mchehab+huawei@kernel.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <0f03f383fa76e41747b95713d50350be21867ccb.1764326826.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 9 Dec 2025 at 04:39, Tvrtko Ursulin <tursulin@igalia.com> wrote:
->
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->
-> Two generic fixes split out for easy review, one refactoring as requested, and
-> then the last patch is the panel/mode quirk to allow for corruption free fbcon
-> with simpledrmfb and efidrmfb on the Valve Steam Deck.
->
-> v2:
->  * s/unsigned/unsigned int/
->  * s/pitch/linelength/
->  * Removed comment explaining the Steam Deck quirk.
->  * Added patch to refactor quirk application via callbacks.
->
-> v3:
->  * Added forgotten __initconst.
->  * Use separate callback for the fixup quirk.
->
-> v4:
->  * Use __screen_info_lfb_bits_per_pixel() instead of accessing lfb_depth directly.
->
-> v5:
->  * s/lfb_width/bpp/.
->  * Grammar and typo tidy in the last patch.
->
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Melissa Wen <mwen@igalia.com>
-> Cc: linux-efi@vger.kernel.org
->
-> Tvrtko Ursulin (4):
->   efi: sysfb_efi: Replace open coded swap with the macro
->   efi: sysfb_efi: Fix lfb_linelength calculation when applying quirks
->   efi: sysfb_efi: Convert swap width and height quirk to a callback
->   efi: sysfb_efi: Fix efidrmfb and simpledrmfb on Valve Steam Deck
->
->  drivers/firmware/efi/sysfb_efi.c | 73 ++++++++++++++++++++++++++++----
->  1 file changed, 65 insertions(+), 8 deletions(-)
->
 
-This looks fine to me now. Unless there are more comments, I intend to
-get this queued up as soon as -rc1 comes around.
 
-Thanks
+在 2025/11/28 18:53, Mauro Carvalho Chehab 写道:
+> There's a logic inside ghes/cper to detect if the section_length
+> is too small, but it doesn't detect if it is too big.
+> 
+> Currently, if the firmware receives an ARM processor CPER record
+> stating that a section length is big, kernel will blindly trust
+> section_lentgh, producing a very long dump. For instance, a 67
+> bytes record with ERR_INFO_NUM set 46198 and section length
+> set to 854918320 would dump a lot of data going a way past the
+> firmware memory-mapped area.
+> 
+> Fix it by adding a logic to prevent it to go past the buffer
+> if ERR_INFO_NUM is too big, making it report instead:
+> 
+> 	[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
+> 	[Hardware Error]: event severity: recoverable
+> 	[Hardware Error]:  Error 0, type: recoverable
+> 	[Hardware Error]:   section_type: ARM processor error
+> 	[Hardware Error]:   MIDR: 0xff304b2f8476870a
+> 	[Hardware Error]:   section length: 854918320, CPER size: 67
+> 	[Hardware Error]:   section length is too big
+> 	[Hardware Error]:   firmware-generated error record is incorrect
+> 	[Hardware Error]:   ERR_INFO_NUM is 46198
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>   drivers/acpi/apei/ghes.c        | 13 +++++++++++++
+>   drivers/firmware/efi/cper-arm.c | 14 +++++++++-----
+>   drivers/firmware/efi/cper.c     |  3 ++-
+>   include/linux/cper.h            |  3 ++-
+>   4 files changed, 26 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 56107aa00274..8b90b6f3e866 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -557,6 +557,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+>   {
+>   	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+>   	int flags = sync ? MF_ACTION_REQUIRED : 0;
+> +	int length = gdata->error_data_length;
+>   	char error_type[120];
+>   	bool queued = false;
+>   	int sec_sev, i;
+> @@ -568,7 +569,12 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+>   		return false;
+>   
+>   	p = (char *)(err + 1);
+> +	length -= sizeof(err);
+> +
+>   	for (i = 0; i < err->err_info_num; i++) {
+> +		if (length <= 0)
+> +			break;
+> +
+
+Hi, Mauro,
+
+The bounds checking logic is duplicated - it appears both in the cache
+error handling branch and after it. This could be simplified. It would
+be better to ensure we have enough data for the error info header in one
+check.
+
+		/* Ensure we have enough data for the error info header */
+		if (length < sizeof(struct cper_arm_err_info))
+			break;
+
+And it would be better to validate the claimed length before using it.
+
+		/* Validate the claimed length before using it */
+		if (err_info->length < sizeof(struct cper_arm_err_info) ||
+		    err_info->length > length)
+			break;
+
+Thanks.
+Shuai
 
