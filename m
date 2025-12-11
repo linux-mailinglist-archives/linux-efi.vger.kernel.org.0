@@ -1,152 +1,196 @@
-Return-Path: <linux-efi+bounces-5833-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5834-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FCDECB6431
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Dec 2025 16:00:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC777CB6A2F
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Dec 2025 18:16:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 353EB301818A
-	for <lists+linux-efi@lfdr.de>; Thu, 11 Dec 2025 15:00:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5F4E30133A8
+	for <lists+linux-efi@lfdr.de>; Thu, 11 Dec 2025 17:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FD72D6E4F;
-	Thu, 11 Dec 2025 15:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB26F315D31;
+	Thu, 11 Dec 2025 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W08HE6zF"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="jhuQxZPi"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468052D663D
-	for <linux-efi@vger.kernel.org>; Thu, 11 Dec 2025 15:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C7A2C324C
+	for <linux-efi@vger.kernel.org>; Thu, 11 Dec 2025 17:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765465243; cv=none; b=RJDtFRcXxBxhnIREW+c7e9rRfsa+OJnKyFTldT0Yyg2oVmbCqhGWZkHWpfZssWNmAa+CSLysR/Fbr67zXwu+7+P+yisPT/BPbXEYlWcKzA+SoWuXKq1G5xjFHgqJ7XR3iSQ3/OBgcF+v3YQ2c55gQLms2LD3LYbUFafxK6rexs0=
+	t=1765473357; cv=none; b=PxGD+cGM8cFaGl8O0Fr8BuQ+4X+pVO9JoGHaXLXqVolcSqoNxga48yaO6mdxIUAMLIy6LAs+DveZIgUCOfpAURjcqEhjUS2r45CQqWJoOpJZ46/hwr6+ejtSC+lPZuhu5XugfqyRSWAImDj/H05YNmt+l/YStIC8/9W5NQA599w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765465243; c=relaxed/simple;
-	bh=1UKwlxIH8EBWmveD91rtbw1zk2GIpitHurcNBZbqQuc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mfJISRuqW1qWHFDAetcJ0eC0FVL3WcZiSYNohuMj37YOBs44hguhZnFLXwds8wufr6hB6Eu0sW8ASpN7c/p98/6RQ2aPqutXScDnVxs5RoxxHNw+sZD+QDHpJA9L82gJ4PiS2zOjkurAG2jxmt5r32h2zrZCOx+AhM7jZHUxVOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W08HE6zF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C45BC113D0;
-	Thu, 11 Dec 2025 15:00:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765465242;
-	bh=1UKwlxIH8EBWmveD91rtbw1zk2GIpitHurcNBZbqQuc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W08HE6zFvXO+PVqKaVp7ZkX9LNSXoX9450L9UGj6FRlcSh0on0DbWkBLhnFnC16bE
-	 1PD0JvylznwzYRvG7RQEQt8sib6yWVX6ZmjlBsquojwFKPY1PHR0EBILC3+Tz+jBrA
-	 Zfwb6/v6FNDPQXf+2ijOYFWznkqkjVCMjQemkP6bLzjClmnA2V6sSm/9rqqoJeIOJf
-	 gn3d20uNKlgruxNJME5t7Oa/TmhC27MgOL9kImAOqUzTJ+RCKterH1D/1LRf5MobqP
-	 QiWe3/EuwPkuaSXL/2sgX8ojiyhJl3XcysZ7+AN/WzhcNbH+PLWCW2CKqpBRum9XHV
-	 zw8UlwIKYEUzQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 68BE0F4007F;
-	Thu, 11 Dec 2025 10:00:41 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 11 Dec 2025 10:00:41 -0500
-X-ME-Sender: <xms:mdw6aSugYlLqhSFkC_QL4fuLRQqmZ90svCc9oTbpJhrhGUJ6AtlLnw>
-    <xme:mdw6aU-EWNGVM0EUDYx23Jq7XrilUUJZPAMufw0aXg-hjt1xly1ADemtvftHioOVW
-    PByc53jmXauMiVmyCXBYiBWjZl_MCyWxsAcxuVgYQNanNjwLFyjRpw>
-X-ME-Received: <xmr:mdw6aZ1l2C5xAY3Sb3Ckw3OVTcBSdDd6LfXPha-3Kop8yxNxmoKVNy_LTEx5Ww>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheeiudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
-    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
-    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
-    grmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    ohepphhrshgrmhhprghtsegrmhgurdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtg
-    hpthhtoheplhhinhhugidqvghfihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnh
-    gvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhu
-    thhrohhnihigrdguvgdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:mdw6aac5m85COt5GDXcf5N8EgK4MjN867SZwm-7FGk0WnsWXqo-q-A>
-    <xmx:mdw6aVcXsQE9PW1Q1fegSLWpVyQGH5vmnHpLx94yZhgTHhHXr1MHcQ>
-    <xmx:mdw6aQ3VMhcz6Op6EKFKWQ0mqr87xCJGOgAKBgERyCSAWjxXXih6Sg>
-    <xmx:mdw6aV72QgkHsEO7IT7gcnA5QiMWjq-EO2SCHqbap8KRc3x-tuqtHw>
-    <xmx:mdw6aXImq48CZQ54RUKyN9zjcudJV7yG6FOlFG0mX5jIUp-c3aE8gsY6>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Dec 2025 10:00:40 -0500 (EST)
-Date: Thu, 11 Dec 2025 15:00:39 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Pratik R. Sampat" <prsampat@amd.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org, osalvador@suse.de, 
-	thomas.lendacky@amd.com, michael.roth@amd.com
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <uc6yz23havsg2cdgtk3fgku7xr4gj2ykse7lxitcs4eh2fw4vo@hyavdm3ovdfh>
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-3-prsampat@amd.com>
- <ac479414-e0fa-49be-8a30-8f9c0e7b7d32@kernel.org>
- <73a69c03-feda-4c56-9db1-30ec489066fb@amd.com>
- <938a7948-7882-41a3-926b-3d2a8d07620d@kernel.org>
- <89fde0fd-57c4-4146-82fc-a4c1a56e74ec@amd.com>
- <a7ac1f74-32a6-41d1-82da-b338c127fb2e@amd.com>
+	s=arc-20240116; t=1765473357; c=relaxed/simple;
+	bh=VskU/7ED+cd07+YT0cLSY6lSv8W33UJFXaXtUVFg16k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KkqSmt3y8fltMR+Wvoea0e5v8vw/bnsYdXsOt2vXh/rBk1grfWOMZowvpoSFlNJisICxjgqFQUdKo4Le3KUZgFWB7xOR3szlm30W9NMFSeBL2RmnEC8A9FaKrt8sKfPDwNpjkhwxZDUMPD/nvuW1VBtpwzMgWvPlRvBNEGUJD1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=jhuQxZPi; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso4064995e9.3
+        for <linux-efi@vger.kernel.org>; Thu, 11 Dec 2025 09:15:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765473353; x=1766078153; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EMUEsjsV+UnHdVdxs42rX4kdIiZsjjM1yfHblt+Kr5Q=;
+        b=jhuQxZPiHcY7x0568DsuGhznsk0hyID112CEv3uq3cwkECw2V2InlsjuFYIc2GBTpR
+         AaDHquU/Hsq2idxE/2U7K/ZCc9YPiONwhqiWNQwswhqgsVNynZ+T/3qfMfVGkTK2XXhn
+         FtXhCZfbQGMJMKiiNkrvykWmlrbwuyWGEmu0IWatmKUw5aOl7bM1fd7E+S7+boXx4AI8
+         Of92W/RNysFIgQ2CrtZbr7SB+Tf9pWK8bOSduFdEy7HLMR7/nbrmC19IN6oIe3vrJdoo
+         k16M1wLtScnPtrpDo/A0duGWOVFaZrJ8xvLNw+mZ1nCVcJHync3ZQFZCgjv0H5GzMMpj
+         gFpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765473353; x=1766078153;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EMUEsjsV+UnHdVdxs42rX4kdIiZsjjM1yfHblt+Kr5Q=;
+        b=fh8qv+7UkTR6a2zQ86WwSvJKQB6dRjB/BRC9dDGK4c/mrReStUcT/k4tEqTNfezedJ
+         CVIzaAbSyWeND2zxS3RDpk297+LqLblZF/9xJ9tS0WgJ+vIQGvHs3K2YymZ0O8mXTbdm
+         qd6hTKWxLbyyAUFYuBhfp9WA5e+QqhbSbI4pDeeTcfffhFtYbgrX0lbjVTnvmUXGhuye
+         G2Jtb9XCXcQZArUKb09TjZ4IaFFwn8lLe7vtGnPcZIlSg159Qk4Xk3F9o9dAsbqcud9a
+         4gGehAH1HTPHgUmPNBvuvjN7Na7UtFBcCAr5S6dAaJQvv6r4sIsk+HQ5C1hC262bC65i
+         94Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCXXB2NdApeGE7oQJCI1OgNF1eadowsP1BCNRZOCBvauJleXNJZxVpxozxlIwn5OEmyqz1XBrP8GuU8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwmgUzdjZNi3mq8EHTv5CFjGIyv35sw1XopGZPkPFXEx8CVnOj
+	Muhs9TqQadQknssl1FNcIDEx5ZF+EoEh4R9wYd2wpN1AQV/giXau5xbuandySDm/vqo=
+X-Gm-Gg: AY/fxX6nQXb8PAATPCn9nB0SBsD1+K2MLFS0i/4hlojx3/ZLeOUeT6Mo0KJ8E5yiB/D
+	DDsr1LAgrixc3pfQZFjSNpD7+wTfpBakjZEGzP8R4B1lsMpx25HpmGmn9R1SDqpgQRLJg9b1fk0
+	1kkTLbmVwmP0+T/I1bzgd87qF5aOgg4OiyE8g8tNfmSkWoEYWiPYsMBnwILSl0ltNxxnBJZTk1P
+	4CEWPO8nI8j9uhcNvxgG7Vxl93gkcaAL7/5yCkF9w7Ei+SuDaX21rWT4prKQQlsIKTTfsRaItU3
+	mULmeBHandyLVrxCIkWTA+MeagX4sSLub6CRDNA+TE0X0isH/Dx/IYvpro909CUWRHArp5jdiJs
+	RliBHX2stx8JgFrqe7pI6Ayi2HniABR02zkdn1K0FS+fqrwskhVoYQ5hcbUTs/Egij85x4LZjgu
+	TEYYBJKMCRjSkDZ58XgRT2LE5mHRXjscph2AfpAbp2dNUrlPKYJy2iCwzFMM4mgkeCQpA7qkYsX
+	jY=
+X-Google-Smtp-Source: AGHT+IH1WdB9lpe0Nt0W2bI91FzFVq1XhPopqcW3gxsnNR/pZMKlmmN+J4cQvorBXPFQhPdkhqM0qw==
+X-Received: by 2002:a05:600c:1d0b:b0:477:7c45:87b2 with SMTP id 5b1f17b1804b1-47a8375ae3dmr83804315e9.16.1765473353260;
+        Thu, 11 Dec 2025 09:15:53 -0800 (PST)
+Received: from localhost (p200300f65f006608b66517f2bd017279.dip0.t-ipconnect.de. [2003:f6:5f00:6608:b665:17f2:bd01:7279])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-42fa8a6fd62sm7327909f8f.10.2025.12.11.09.15.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Dec 2025 09:15:52 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jens Wiklander <jens.wiklander@linaro.org>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	=?utf-8?b?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	=?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Peter Huewe <peterhuewe@gmx.de>
+Cc: op-tee@lists.trustedfirmware.org,
+	linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-rtc@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	arm-scmi@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: [PATCH v1 00/17] tee: Use bus callbacks instead of driver callbacks
+Date: Thu, 11 Dec 2025 18:14:54 +0100
+Message-ID: <cover.1765472125.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a7ac1f74-32a6-41d1-82da-b338c127fb2e@amd.com>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3006; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=VskU/7ED+cd07+YT0cLSY6lSv8W33UJFXaXtUVFg16k=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpOvwTkOdNXplS+sYyTfjIHP/A8Gme4RZEpqcXt diRkMgNgISJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaTr8EwAKCRCPgPtYfRL+ Tl1NCACRY8t0HOZ/pe2jgNYt83zctNNDYXhzu8cPsBYC6DoxIG7qbaEG/i2btzV7P9iWEXcGnaW iTW12DonZuA0Ys9v8JfYi5w/j0bn6FtrwKHIXypEwJzVzqmq0s9FhsPI+49irrtevJQOGtp/6FA ++4ZHclomZVYjG5ZORmnn0yLTtXHbQYEPcyHuzEEUvs+tHCIYIgkV7gzQ+qvpTw0lA+x5uFNqib OwGvVZIMvKV/HN70QhazY/X+w3FigDIT5y0g639i0H9JkEXX1mq5qRYi9kcC8z3WazU0iJ39L6Z w+blXNgg5fNZycKQ3GRhj80bk29PcQH7RHH6Vzov1GydnnYE
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 09, 2025 at 03:36:09PM -0600, Pratik R. Sampat wrote:
-> > Agreed, I think Kiryl was hinting at pre-allocated bitmaps as well.
-> > 
-> > Since, the overhead to do this upfront is fairly minimal, that should
-> > certainly simplify things and have very little to no meddling with the
-> > original EFI struct.
-> > 
-> 
-> Taking another look at this suggestion, I think there may be more to it
-> than I previously thought. Parsing e820 tables to know what the range
-> are for allocating the bitmap to cover hotplug may be difficult. For e.g
-> 
-> [ 0.000000] efi: mem110: [Unaccepted <snip>]
-> range=[0x0000000100000000-0x000000017fffffff] (2048MB)
-> [ 0.000000] efi: mem111: [Reserved   <snip>]
-> range=[0x000000fd00000000-0x000000ffffffffff] (12288MB)
-> 
-> Parsing of the ACPI SRAT seems to be the one that gives us useful ranges
-> to base the upfront bitmap allocation on. e.g.
-> ...
-> [    0.018357] ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0x17fffffff]
-> [    0.018781] ACPI: SRAT: Node 0 PXM 0 [mem 0x180000000-0x2ffffffff]
-> hotplug
-> This is also where max_possible_pfn gets updated to reflect this range.
+Hello,
 
-Do I understand correctly that EFI memory map doesn't mention hot plug
-range at all, but SRAT does?
+the objective of this series is to make tee driver stop using callbacks
+in struct device_driver. These were superseded by bus methods in 2006
+(commit 594c8281f905 ("[PATCH] Add bus_type probe, remove, shutdown
+methods.")) but nobody cared to convert all subsystems accordingly.
 
-That's a mess. I thought, all hotpluggable range supposed to be declared
-in the memory map.
+Here the tee drivers are converted. The first commit is somewhat
+unrelated, but simplifies the conversion (and the drivers). It
+introduces driver registration helpers that care about setting the bus
+and owner. (The latter is missing in all drivers, so by using these
+helpers the drivers become more correct.)
 
-I wounder if it is what BIOS provides, or is it result of EFI memmap
-cleanup by kernel? I see we are doing bunch of them, like in
-efi_remove_e820_mmio().
+The patches #4 - #17 depend on the first two, so if they should be
+applied to their respective subsystem trees these must contain the first
+two patches first.
 
-> One potential solution could be to parse the SRAT during unaccepted
-> memory bitmap allocation in the EFI stub. However, this would fragment
-> the implementation by duplicating the SRAT parsing. Alternatively, we
-> could keep the current approach of dynamically allocating the bitmap on
-> hotplug or I could also replace the entire memblock_reserved unaccepted
-> table like Kiryl suggested if we must absolutely avoid changing the
-> unaccepted structure?
+Note that after patch #2 is applied, unconverted drivers provoke a
+warning in driver_register(), so it would be good for the user
+experience if the whole series goes in during a single merge window. So
+I guess an immutable branch containing the frist three patches that can
+be merged into the other subsystem trees would be sensible.
 
-Other possible option would be to accept all memory on hotplug and don't
-touch the bitmap at all. It might be not that bad: it doesn't block boot.
-We can think of a better solution later, if needed.
+After all patches are applied, tee_bus_type can be made private to
+drivers/tee as it's not used in other places any more.
 
+Best regards
+Uwe
+
+Uwe Kleine-König (17):
+  tee: Add some helpers to reduce boilerplate for tee client drivers
+  tee: Add probe, remove and shutdown bus callbacks to tee_client_driver
+  tee: Adapt documentation to cover recent additions
+  hwrng: optee - Make use of module_tee_client_driver()
+  hwrng: optee - Make use of tee bus methods
+  rtc: optee: Migrate to use tee specific driver registration function
+  rtc: optee: Make use of tee bus methods
+  efi: stmm: Make use of module_tee_client_driver()
+  efi: stmm: Make use of tee bus methods
+  firmware: arm_scmi: optee: Make use of module_tee_client_driver()
+  firmware: arm_scmi: Make use of tee bus methods
+  firmware: tee_bnxt: Make use of module_tee_client_driver()
+  firmware: tee_bnxt: Make use of tee bus methods
+  KEYS: trusted: Migrate to use tee specific driver registration
+    function
+  KEYS: trusted: Make use of tee bus methods
+  tpm/tpm_ftpm_tee: Make use of tee specific driver registration
+  tpm/tpm_ftpm_tee: Make use of tee bus methods
+
+ Documentation/driver-api/tee.rst             | 18 +----
+ drivers/char/hw_random/optee-rng.c           | 26 ++----
+ drivers/char/tpm/tpm_ftpm_tee.c              | 31 +++++---
+ drivers/firmware/arm_scmi/transports/optee.c | 32 +++-----
+ drivers/firmware/broadcom/tee_bnxt_fw.c      | 30 ++-----
+ drivers/firmware/efi/stmm/tee_stmm_efi.c     | 25 ++----
+ drivers/rtc/rtc-optee.c                      | 27 ++-----
+ drivers/tee/tee_core.c                       | 84 ++++++++++++++++++++
+ include/linux/tee_drv.h                      | 12 +++
+ security/keys/trusted-keys/trusted_tee.c     | 17 ++--
+ 10 files changed, 164 insertions(+), 138 deletions(-)
+
+
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.47.3
+
 
