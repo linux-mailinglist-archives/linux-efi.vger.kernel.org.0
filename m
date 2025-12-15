@@ -1,65 +1,65 @@
-Return-Path: <linux-efi+bounces-5872-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5865-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFA4CC0470
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 00:57:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDEBCC04E5
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 01:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 648E8307566A
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Dec 2025 23:52:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4273D3029231
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 00:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E68033890E;
-	Mon, 15 Dec 2025 23:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B103328E9;
+	Mon, 15 Dec 2025 23:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="cUaxa7ws"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="i86jvf2U"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9872A330300;
-	Mon, 15 Dec 2025 23:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70752330309;
+	Mon, 15 Dec 2025 23:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765842137; cv=none; b=i0m1XIGsPIl+T9uac6k/XxBPIZNIWmpYthX6xXhzKbcgOuzAGicNBWVGDoVtIROsfr6l72F/adFiNNZya5nxmvkAX6hEClQU9NayMSd4Wvi6a1XDeIZMcKp+0W2hj1E3YD4YsooptKDRPu7NzHwXHQWMp4h+3StEzLzXrJVDbHQ=
+	t=1765842126; cv=none; b=fc/z3/BpRGVN/Y3Ep3O750t0kNr55Ex+Y9awOpDJIDVLjJ31oWPmsWBLysEMMNaX6Uv8LE1Jnh9rADTKXq0Ai9i6eutHngkXisPa8IBppRmd/4bVbocXFpq9y6TPImlWxocD9RyY9ZoT5o2RRFO5hS20uu34GPQ+TcuO+nFkVDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765842137; c=relaxed/simple;
-	bh=bJTd5U+FhsNucN9Z852MD38T9+haZ3NZg84Xh5XA0ZQ=;
+	s=arc-20240116; t=1765842126; c=relaxed/simple;
+	bh=iukmIdtqj455El9wf+P5zFFCPbgDZS1szPUhUJB/ukA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7+bqK9z5Va0TvZskPPVxha7CDN/m4ozW7j0qavK4d9iXWDwE3Y6vcToWzY7Da12sthN9TPaZSlcE+nxkInvWZRMSQgIysngFM75Zhk8ZLLKhhiIKVCdHtJp/nv5NSxZMY9bcitpGMg0O/rlxuc6OkJNaZO245MX8h9BRccrq5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=cUaxa7ws; arc=none smtp.client-ip=205.220.165.32
+	 MIME-Version; b=Tye13SnrgLMTizs0m69IhBlyYgem14hDfeFFHsImwQveTmUAoOeQM6ucO2PXvzdd5HQcDn6Nd3flM2Grqn/i/RF+p1xr2BMMJa+nPxqYhX7K00IzyUCruOuBfqlGpIySbXc5GaEX/zz0yI2IM4nbFL+lUdKhSfllcO/SM0bOKfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=i86jvf2U; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BFJCNhs2886214;
-	Mon, 15 Dec 2025 23:40:54 GMT
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BFJCJ5A2796331;
+	Mon, 15 Dec 2025 23:40:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=sS+vs
-	cjGqo/DXtce/iWnxtIttfTP1XZi4+OILH8EuuU=; b=cUaxa7wswHSCIs7ugWRgg
-	OZK6Q3uEP31rKtnUOFyRzhiXSJSxcyzwsZefdULPaRMRZKdgQZ/bxXm9E0+6/hWM
-	Zvf9eAFOOovlInhABSvoCM/Q1FQAmQhGjIOpqwZW2OtxQc+AP0bGu62A7KhTeyV4
-	ByiqmCdYdFV+jpvd7pOKIvJKP8EkTbTPuUy43GDp+VNY4cV5qDACt+R2uflFhlzB
-	jDr3T+wOHDZok5d6htnwMID8wLd6f7O8lMhz41IvKaYO1H5STZM118H0qPWjKFEm
-	8r0MlCnV9SHOxa/JMuATXGNGifsfAS8p5+lHwGaqBRnk92H/+NDUuxDXeCT6+quz
-	g==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b1015u18h-1
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=LzPaW
+	Is09l1FjdUXdMTgBuC2HpGHRvaZKFI6HlefLt4=; b=i86jvf2U3jTv2Na6Go96C
+	+1e295EgBFuGufwEbaoDvn7/zp4o60f7glIVDx635k75jqYauioL1TD9rtPYopR3
+	pAq0BLc2Dn0arhU1v3RkoIu8Nzo8YKgAKP5PIORxbgMoiEcaQiJlcq72eWIWJPd+
+	hbsCAUURi/SB0/Pbu1KDU6/yIiAGGEqFXer2xSBHA9LXzUukj3B7F6+QZVnv8dKS
+	L42+C8Hv8C+hh+sgKpCx07NBcRqB5r25vY5DqNQ3Sx6hHym6055SWqd2bcvsq1nL
+	aRdQwhG4Yn3kums7bOOkBZlgzxBJf3jRjzxkIQonYTt6NsQywkEguQjmeV3J+KVZ
+	A==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b0xja318q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Dec 2025 23:40:53 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BFLBRf8022557;
-	Mon, 15 Dec 2025 23:40:52 GMT
+	Mon, 15 Dec 2025 23:40:55 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BFMwHiZ006074;
+	Mon, 15 Dec 2025 23:40:55 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xkjkcaj-1
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xkck9jj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 15 Dec 2025 23:40:51 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BFNep5g010286;
-	Mon, 15 Dec 2025 23:40:51 GMT
+	Mon, 15 Dec 2025 23:40:54 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BFNeQWv023729;
+	Mon, 15 Dec 2025 23:40:54 GMT
 Received: from bur-virt-x6-2-100.us.oracle.com (bur-virt-x6-2-100.us.oracle.com [10.153.92.40])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xkjkc9t-1
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xkck9hs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 15 Dec 2025 23:40:50 +0000
+	Mon, 15 Dec 2025 23:40:53 +0000
 From: Ross Philipson <ross.philipson@oracle.com>
 To: linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
@@ -75,9 +75,9 @@ Cc: ross.philipson@oracle.com, dpsmith@apertussolutions.com,
         dwmw2@infradead.org, baolu.lu@linux.intel.com,
         kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
         trenchboot-devel@googlegroups.com
-Subject: [PATCH v15 14/28] x86: Secure Launch Resource Table header file
-Date: Mon, 15 Dec 2025 15:33:02 -0800
-Message-ID: <20251215233316.1076248-15-ross.philipson@oracle.com>
+Subject: [PATCH v15 15/28] x86: Secure Launch main header file
+Date: Mon, 15 Dec 2025 15:33:03 -0800
+Message-ID: <20251215233316.1076248-16-ross.philipson@oracle.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20251215233316.1076248-1-ross.philipson@oracle.com>
 References: <20251215233316.1076248-1-ross.philipson@oracle.com>
@@ -91,355 +91,294 @@ Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-15_05,2025-12-15_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 adultscore=0
- mlxscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 spamscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
+ adultscore=0 mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
  definitions=main-2512150204
-X-Proofpoint-GUID: WqCkI0G5AahtBsh5rkWFgsOLKwkOFHuJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE1MDIwNCBTYWx0ZWRfX/HzZI1sxHARY
- 1s5pGY0DSr0vzRxcthvfnAg+nPtkev3fNfiMIyFNtaCJwYiwfdrThTX5Spv0BT0jh4oJFqcdV9b
- 1X5tb7RqbWyyQyWjgJenZ/TVXWCmPR+S13aO4/dpyVQs8CNcTsTb4gMoHXavtoYn2J8ZFpSIVnv
- 6TNw7H3myJBf21laC5gVzcwj077COuhf3+TzYVASyDoRJCAVXhIduCCRaQXs1rza2CKvZp2+B8e
- kveTwlaC+XE9AZT9Za+NMbhrh67vzPsmhlSu3zw874yde/C7qEQv0UvG8P8xFSuP5RmkcZq8FvZ
- Dcy33fFkDkMt9CHnNQdt2EVpFkvd7ER723S09ByfJLurFfVU6Bqf36vXJ83/vVZAM+7pXnevBX8
- SHQZfkesTdfL9ZG+jN/Ccpjzcc+oahqR8cH3frIaoemex8zXEjs=
-X-Authority-Analysis: v=2.4 cv=GbUaXAXL c=1 sm=1 tr=0 ts=69409c86 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=oXTKce9TAAAA:20
- a=UN5060LkAAAA:8 a=yPCof4ZbAAAA:8 a=eVZFrSfukqw1CmHGaWIA:9
- a=E6eXv-vVeS7VqOnxGRGn:22 a=bA3UWDv6hWIuX7UZL3qL:22 cc=ntf awl=host:13654
-X-Proofpoint-ORIG-GUID: WqCkI0G5AahtBsh5rkWFgsOLKwkOFHuJ
+X-Authority-Analysis: v=2.4 cv=TbWbdBQh c=1 sm=1 tr=0 ts=69409c87 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=UN5060LkAAAA:8 a=yPCof4ZbAAAA:8
+ a=MVmTxNXeJTXQ7vw_5JEA:9 a=E6eXv-vVeS7VqOnxGRGn:22 cc=ntf awl=host:12109
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE1MDIwNCBTYWx0ZWRfXy6FScxnWw2cP
+ VL0fTh14Oj1sT+V6frZnmYj/3NqYU2U+2+7vSpUTPpJct5uOQS4RcY182xQxNnY+REdxSYblJ+O
+ ORQ+sxlDV9VbZK9hM5Z19LC6bBVAx8sfYLGCtQy7M6FGZiYw+M+uNpvh40VOk28w5Qr2w0NNzda
+ znzpXaCuHEG/NoONIYpIYintOvviV5kjTt/zaOdA4tICMIOc7qtrOocLHS56sp0nQmRAPkXbqUz
+ jIhlWAOa6zAnsRuFK5ULkM96XaL728Ddp5dKiHkdzYdRAEbuJ2bK2I+Z4y3JDLILKb4DBY97ApH
+ TEVJKepyhPmPrldjU8q1ia6iYpuHsyCZordSxAqQ+Li1RnjA7GTW78e+JNpkImYBGvPIOnK2unQ
+ T1De9AONxgi2UJ8I8V9WyOfZu24klweZ89We58xZGq3aNrbP4zA=
+X-Proofpoint-ORIG-GUID: ths9wL6ZKxMuZCADgIFa8pRhv3XJ1LQr
+X-Proofpoint-GUID: ths9wL6ZKxMuZCADgIFa8pRhv3XJ1LQr
 
-The Secure Launch Specification is an architectural agnostic, software neutral
-API/ABI maintained by the TrenchBoot project. Its function is to allow any
-compliant boot loader to communicate the pre-launch configuration to any
-compliant post-launch kernel. The Secure Launch Resource Table, defined
-in the specification, presents the programmatic interface for this API/ABI.
-
-The specification can be found here:
-https://github.com/TrenchBoot/documentation/blob/master/specifications/secure-launch-specification.rst
+Introduce the main Secure Launch header file. This header file
+contains the platform neutral feature definitions. This includes:
+ - Secure Launch error codes
+ - DRTM TPM event logging definitions and helper functions
+ - Other feature specific structures and definitions
 
 Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
 Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
 ---
- include/linux/slr_table.h | 308 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 308 insertions(+)
- create mode 100644 include/linux/slr_table.h
+ include/linux/slaunch.h | 251 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 251 insertions(+)
+ create mode 100644 include/linux/slaunch.h
 
-diff --git a/include/linux/slr_table.h b/include/linux/slr_table.h
+diff --git a/include/linux/slaunch.h b/include/linux/slaunch.h
 new file mode 100644
-index 000000000000..c28bc96d8814
+index 000000000000..330492fcdd8c
 --- /dev/null
-+++ b/include/linux/slr_table.h
-@@ -0,0 +1,308 @@
++++ b/include/linux/slaunch.h
+@@ -0,0 +1,251 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * TrenchBoot Secure Launch Resource Table
-+ *
-+ * The Secure Launch Resource Table (SLRT) is a TrenchBoot project defined
-+ * specification to provide a cross-platform interface/ABI between
-+ * the Secure Launch components. While most of the table is platform
-+ * agnostic, platform or architecture specific entries can be added.
-+ *
-+ * See TrenchBoot Secure Launch kernel documentation for details.
++ * Main Secure Launch header file.
 + *
 + * Copyright (c) 2025 Apertus Solutions, LLC
 + * Copyright (c) 2025, Oracle and/or its affiliates.
 + */
 +
-+#ifndef _LINUX_SLR_TABLE_H
-+#define _LINUX_SLR_TABLE_H
++#ifndef _LINUX_SLAUNCH_H
++#define _LINUX_SLAUNCH_H
 +
-+/* SLR table GUID for registering as an EFI Configuration Table (put this in efi.h if it becomes a standard) */
-+#define SLR_TABLE_GUID				EFI_GUID(0x877a9b2a, 0x0385, 0x45d1, 0xa0, 0x34, 0x9d, 0xac, 0x9c, 0x9e, 0x56, 0x5f)
++#include <asm/txt.h>
 +
-+/* SLR table header values */
-+#define SLR_TABLE_MAGIC		0x4452544d
-+#define SLR_TABLE_REVISION	1
++/*
++ * Secure Launch Defined State Flags
++ */
++#define SL_FLAG_ACTIVE		0x00000001
++#define SL_FLAG_ARCH_TXT	0x00000002
 +
-+/* Current revisions for the policy and UEFI config */
-+#define SLR_POLICY_REVISION		1
-+#define SLR_UEFI_CONFIG_REVISION	1
++/*
++ * Secure Launch CPU Type
++ */
++#define SL_CPU_INTEL	1
 +
-+/* SLR defined architectures */
-+#define SLR_INTEL_TXT		1
-+#define SLR_AMD_SKINIT		2
++#define __SL32_CS	0x0008
++#define __SL32_DS	0x0010
 +
-+/* SLR defined bootloaders */
-+#define SLR_BOOTLOADER_INVALID	0
-+#define SLR_BOOTLOADER_GRUB	1
++/*
++ * Secure Launch Defined Error Codes used in MLE-initiated TXT resets.
++ *
++ * Intel Trusted Execution Technology (TXT) Software Development Guide
++ * Appendix I - ACM Error Codes
++ */
++#define SL_ERROR_GENERIC		0xc0008001
++#define SL_ERROR_TPM_INIT		0xc0008002
++#define SL_ERROR_TPM_INVALID_LOG20	0xc0008003
++#define SL_ERROR_TPM_LOGGING_FAILED	0xc0008004
++#define SL_ERROR_REGION_STRADDLE_4GB	0xc0008005
++#define SL_ERROR_TPM_EXTEND		0xc0008006
++#define SL_ERROR_MTRR_INV_VCNT		0xc0008007
++#define SL_ERROR_MTRR_INV_DEF_TYPE	0xc0008008
++#define SL_ERROR_MTRR_INV_BASE		0xc0008009
++#define SL_ERROR_MTRR_INV_MASK		0xc000800a
++#define SL_ERROR_MSR_INV_MISC_EN	0xc000800b
++#define SL_ERROR_INV_AP_INTERRUPT	0xc000800c
++#define SL_ERROR_INTEGER_OVERFLOW	0xc000800d
++#define SL_ERROR_HEAP_WALK		0xc000800e
++#define SL_ERROR_HEAP_MAP		0xc000800f
++#define SL_ERROR_REGION_ABOVE_4GB	0xc0008010
++#define SL_ERROR_HEAP_INVALID_DMAR	0xc0008011
++#define SL_ERROR_HEAP_DMAR_SIZE		0xc0008012
++#define SL_ERROR_HEAP_DMAR_MAP		0xc0008013
++#define SL_ERROR_HI_PMR_BASE		0xc0008014
++#define SL_ERROR_HI_PMR_SIZE		0xc0008015
++#define SL_ERROR_LO_PMR_BASE		0xc0008016
++#define SL_ERROR_LO_PMR_MLE		0xc0008017
++#define SL_ERROR_INITRD_TOO_BIG		0xc0008018
++#define SL_ERROR_HEAP_ZERO_OFFSET	0xc0008019
++#define SL_ERROR_WAKE_BLOCK_TOO_SMALL	0xc000801a
++#define SL_ERROR_MLE_BUFFER_OVERLAP	0xc000801b
++#define SL_ERROR_BUFFER_BEYOND_PMR	0xc000801c
++#define SL_ERROR_OS_SINIT_BAD_VERSION	0xc000801d
++#define SL_ERROR_EVENTLOG_MAP		0xc000801e
++#define SL_ERROR_TPM_INVALID_ALGS	0xc000801f
++#define SL_ERROR_TPM_EVENT_COUNT	0xc0008020
++#define SL_ERROR_TPM_INVALID_EVENT	0xc0008021
++#define SL_ERROR_INVALID_SLRT		0xc0008022
++#define SL_ERROR_SLRT_MISSING_ENTRY	0xc0008023
++#define SL_ERROR_SLRT_MAP		0xc0008024
 +
-+/* Log formats */
-+#define SLR_DRTM_TPM12_LOG	1
-+#define SLR_DRTM_TPM20_LOG	2
++/*
++ * Secure Launch Defined Limits
++ */
++#define SL_MAX_CPUS		512
++#define SL_BOOT_STACK_SIZE	128
 +
-+/* DRTM Policy Entry Flags */
-+#define SLR_POLICY_FLAG_MEASURED	0x1
-+#define SLR_POLICY_IMPLICIT_SIZE	0x2
++/*
++ * Secure Launch event log entry type. The TXT specification defines the
++ * base event value as 0x400 for DRTM values.
++ *
++ * Intel Trusted Execution Technology (TXT) Software Development Guide
++ * Appendix F - TPM Event Log
++ */
++#define SL_EVTYPE_BASE			0x400
++#define SL_EVTYPE_SECURE_LAUNCH		(SL_EVTYPE_BASE + 0x102)
 +
-+/* Array Lengths */
-+#define TPM_EVENT_INFO_LENGTH		32
-+#define TXT_VARIABLE_MTRRS_LENGTH	32
-+
-+/* Tags */
-+#define SLR_ENTRY_INVALID	0x0000
-+#define SLR_ENTRY_DL_INFO	0x0001
-+#define SLR_ENTRY_LOG_INFO	0x0002
-+#define SLR_ENTRY_ENTRY_POLICY	0x0003
-+#define SLR_ENTRY_INTEL_INFO	0x0004
-+#define SLR_ENTRY_AMD_INFO	0x0005
-+#define SLR_ENTRY_ARM_INFO	0x0006
-+#define SLR_ENTRY_UEFI_INFO	0x0007
-+#define SLR_ENTRY_UEFI_CONFIG	0x0008
-+#define SLR_ENTRY_END		0xffff
-+
-+/* Entity Types */
-+#define SLR_ET_UNSPECIFIED	0x0000
-+#define SLR_ET_SLRT		0x0001
-+#define SLR_ET_BOOT_PARAMS	0x0002
-+#define SLR_ET_SETUP_DATA	0x0003
-+#define SLR_ET_CMDLINE		0x0004
-+#define SLR_ET_UEFI_MEMMAP	0x0005
-+#define SLR_ET_RAMDISK		0x0006
-+#define SLR_ET_TXT_OS2MLE	0x0010
-+#define SLR_ET_UNUSED		0xffff
++/*
++ * MLE scratch area offsets within TXT OS-MLE SL defined portion of the heap.
++ */
++#define SL_SCRATCH_AP_EBX		0
++#define SL_SCRATCH_AP_JMP_OFFSET	4
++#define SL_SCRATCH_AP_STACKS_OFFSET	8
 +
 +#ifndef __ASSEMBLER__
 +
++#include <linux/io.h>
++#include <linux/tpm_eventlog.h>
++
 +/*
-+ * Primary Secure Launch Resource Table header
++ * Secure Launch AP stack and monitor block
 + */
-+struct slr_table {
-+	u32 magic;
-+	u16 revision;
-+	u16 architecture;
-+	u32 size;
-+	u32 max_size;
-+	/* table entries */
++struct sl_ap_stack_and_monitor {
++	u32 monitor;
++	u32 cache_pad[15];
++	u32 stack_pad[15];
++	u32 apicid;
 +} __packed;
 +
 +/*
-+ * Common SLRT entry header
++ * Secure Launch AP wakeup information fetched in SMP boot code.
 + */
-+struct slr_entry_hdr {
-+	u32 tag;
-+	u32 size;
-+} __packed;
++struct sl_ap_wake_info {
++	u32 ap_wake_block;
++	u32 ap_wake_block_size;
++	u32 ap_jmp_offset;
++	u32 ap_stacks_offset;
++};
 +
 +/*
-+ * Boot loader context
-+ */
-+struct slr_bl_context {
-+	u16 bootloader;
-+	u16 reserved[3];
-+	u64 context;
-+} __packed;
-+
-+/*
-+ * Dynamic Launch Callback Function type
-+ */
-+typedef void (*dl_handler_func)(struct slr_bl_context *bl_context);
-+
-+/*
-+ * DRTM Dynamic Launch Configuration
-+ */
-+struct slr_entry_dl_info {
-+	struct slr_entry_hdr hdr;
-+	u64 dce_size;
-+	u64 dce_base;
-+	u64 dlme_size;
-+	u64 dlme_base;
-+	u64 dlme_entry;
-+	struct slr_bl_context bl_context;
-+	u64 dl_handler;
-+} __packed;
-+
-+/*
-+ * TPM Log Information
-+ */
-+struct slr_entry_log_info {
-+	struct slr_entry_hdr hdr;
-+	u16 format;
-+	u16 reserved;
-+	u32 size;
-+	u64 addr;
-+} __packed;
-+
-+/*
-+ * DRTM Measurement Entry
-+ */
-+struct slr_policy_entry {
-+	u16 pcr;
-+	u16 entity_type;
-+	u16 flags;
-+	u16 reserved;
-+	u64 size;
-+	u64 entity;
-+	char evt_info[TPM_EVENT_INFO_LENGTH];
-+} __packed;
-+
-+/*
-+ * DRTM Measurement Policy
-+ */
-+struct slr_entry_policy {
-+	struct slr_entry_hdr hdr;
-+	u16 reserved[2];
-+	u16 revision;
-+	u16 nr_entries;
-+	struct slr_policy_entry policy_entries[];
-+} __packed;
-+
-+/*
-+ * Secure Launch defined MTRR saving structures
-+ */
-+struct slr_txt_mtrr_pair {
-+	u64 mtrr_physbase;
-+	u64 mtrr_physmask;
-+} __packed;
-+
-+struct slr_txt_mtrr_state {
-+	u64 default_mem_type;
-+	u64 mtrr_vcnt;
-+	struct slr_txt_mtrr_pair mtrr_pair[TXT_VARIABLE_MTRRS_LENGTH];
-+} __packed;
-+
-+/*
-+ * Intel TXT Info table
-+ */
-+struct slr_entry_intel_info {
-+	struct slr_entry_hdr hdr;
-+	u64 boot_params_addr;
-+	u64 txt_heap;
-+	u64 saved_misc_enable_msr;
-+	struct slr_txt_mtrr_state saved_bsp_mtrrs;
-+} __packed;
-+
-+/*
-+ * UEFI config measurement entry
-+ */
-+struct slr_uefi_cfg_entry {
-+	u16 pcr;
-+	u16 reserved;
-+	u32 size;
-+	u64 cfg; /* address or value */
-+	char evt_info[TPM_EVENT_INFO_LENGTH];
-+} __packed;
-+
-+/*
-+ * UEFI config measurements
-+ */
-+struct slr_entry_uefi_config {
-+	struct slr_entry_hdr hdr;
-+	u16 reserved[2];
-+	u16 revision;
-+	u16 nr_entries;
-+	struct slr_uefi_cfg_entry uefi_cfg_entries[];
-+} __packed;
-+
-+/*
-+ * The SLRT is laid out as a Tag-Length-Value (TLV) data structure
-+ * allowing a flexible number of entries in the table. An instance
-+ * of the slr_table structure is present as a header at the beginning.
++ * Secure Launch defined OS/MLE TXT Heap table
 + *
-+ * The following functions help to manipulate the SLRT structure
-+ * and contents.
++ * This table is defined at the top level by the TXT specification
++ * but the format of this structure is implementation specific.
++ *
++ * Intel Trusted Execution Technology (TXT) Software Development Guide
++ * Appendix C - Intel TXT Heap Memory
++ */
++struct txt_os_mle_data {
++	u32 version;
++	u32 reserved;
++	u64 slrt;
++	u64 txt_info;
++	u32 ap_wake_block;
++	u32 ap_wake_block_size;
++	u8 mle_scratch[64];
++} __packed;
++
++#ifdef CONFIG_SECURE_LAUNCH
++
++/*
++ * TPM event logging functions.
 + */
 +
 +/*
-+ * Return the address of the end of the SLRT past the final entry.
++ * Log a TPM v1 formatted event to the given DRTM event log.
 + */
-+static inline void *slr_end_of_entries(struct slr_table *table)
++static inline int tpm_log_event(void *evtlog_base, u32 evtlog_size,
++				u32 event_size, void *event)
 +{
-+	return (void *)table + table->size;
-+}
++	struct tpm_event_log_header *evtlog =
++		(struct tpm_event_log_header *)evtlog_base;
 +
-+/*
-+ * Return the next entry in the SLRT given the current entry passed
-+ * to the function. NULL is returned if there are no entries to return.
-+ */
-+static inline void *
-+slr_next_entry(struct slr_table *table,
-+	       struct slr_entry_hdr *curr)
-+{
-+	struct slr_entry_hdr *next = (struct slr_entry_hdr *)((u8 *)curr + curr->size);
++	if (memcmp(evtlog->signature, TPM_EVTLOG_SIGNATURE,
++		   sizeof(TPM_EVTLOG_SIGNATURE)))
++		return -EINVAL;
 +
-+	if ((void *)next >= slr_end_of_entries(table))
-+		return NULL;
-+	if (next->tag == SLR_ENTRY_END)
-+		return NULL;
++	if (evtlog->container_size > evtlog_size)
++		return -EINVAL;
 +
-+	return next;
-+}
++	if (evtlog->next_event_offset + event_size > evtlog->container_size)
++		return -E2BIG;
 +
-+/*
-+ * Return the next entry with the given tag in the SLRT starting at the
-+ * current entry. If entry is NULL, the search begins at the beginning of
-+ * table.
-+ */
-+static inline void *
-+slr_next_entry_by_tag(struct slr_table *table,
-+		      struct slr_entry_hdr *entry,
-+		      u16 tag)
-+{
-+	if (!entry) /* Start from the beginning */
-+		entry = (struct slr_entry_hdr *)(((u8 *)table) + sizeof(*table));
-+
-+	for ( ; ; ) {
-+		if (entry->tag == tag)
-+			return entry;
-+
-+		entry = slr_next_entry(table, entry);
-+		if (!entry)
-+			return NULL;
-+	}
-+
-+	return NULL;
-+}
-+
-+/*
-+ * Add an entry to the SLRT. Entries are placed at the end.
-+ */
-+static inline int
-+slr_add_entry(struct slr_table *table,
-+	      struct slr_entry_hdr *entry)
-+{
-+	struct slr_entry_hdr *end;
-+
-+	if ((table->size + entry->size) > table->max_size)
-+		return -1;
-+
-+	memcpy((u8 *)table + table->size - sizeof(*end), entry, entry->size);
-+	table->size += entry->size;
-+
-+	end = (struct slr_entry_hdr *)((u8 *)table + table->size - sizeof(*end));
-+	end->tag = SLR_ENTRY_END;
-+	end->size = sizeof(*end);
++	memcpy(evtlog_base + evtlog->next_event_offset, event, event_size);
++	evtlog->next_event_offset += event_size;
 +
 +	return 0;
 +}
 +
 +/*
-+ * Initialize the SLRT for use. This prepares the meta-data in the SLRT
-+ * header section of the table and table end entry.
++ * Log a TPM v2 formatted event to the given DRTM event log.
 + */
-+static inline void
-+slr_init_table(struct slr_table *slrt, u16 architecture, u32 max_size)
++static inline int tpm2_log_event(struct txt_heap_event_log_pointer2_1_element *elem,
++				 void *evtlog_base, u32 evtlog_size,
++				 u32 event_size, void *event)
 +{
-+	struct slr_entry_hdr *end;
++	struct tcg_pcr_event *header =
++		(struct tcg_pcr_event *)evtlog_base;
 +
-+	slrt->magic = SLR_TABLE_MAGIC;
-+	slrt->revision = SLR_TABLE_REVISION;
-+	slrt->architecture = architecture;
-+	slrt->size = sizeof(*slrt) + sizeof(*end);
-+	slrt->max_size = max_size;
-+	end = (struct slr_entry_hdr *)((u8 *)slrt + sizeof(*slrt));
-+	end->tag = SLR_ENTRY_END;
-+	end->size = sizeof(*end);
++	/* Has to be at least big enough for the signature */
++	if (header->event_size < sizeof(TCG_SPECID_SIG))
++		return -EINVAL;
++
++	if (memcmp((u8 *)header + sizeof(struct tcg_pcr_event),
++		   TCG_SPECID_SIG, sizeof(TCG_SPECID_SIG)))
++		return -EINVAL;
++
++	if (elem->allocated_event_container_size > evtlog_size)
++		return -EINVAL;
++
++	if (elem->next_record_offset + event_size >
++	    elem->allocated_event_container_size)
++		return -E2BIG;
++
++	memcpy(evtlog_base + elem->next_record_offset, event, event_size);
++	elem->next_record_offset += event_size;
++
++	return 0;
 +}
++
++/*
++ * External functions available in mainline kernel.
++ */
++void slaunch_setup(void);
++void slaunch_fixup_ap_wake_vector(void);
++u32 slaunch_get_flags(void);
++struct sl_ap_wake_info *slaunch_get_ap_wake_info(void);
++struct acpi_table_header *slaunch_get_dmar_table(struct acpi_table_header *dmar);
++void __noreturn slaunch_reset(void *ctx, const char *msg, u64 error);
++void slaunch_finalize(int do_sexit);
++
++static inline bool slaunch_is_txt_launch(void)
++{
++	u32 mask = SL_FLAG_ACTIVE | SL_FLAG_ARCH_TXT;
++
++	return (slaunch_get_flags() & mask) == mask;
++}
++
++#else
++
++static inline void slaunch_setup(void)
++{
++}
++
++static inline void slaunch_fixup_ap_wake_vector(void)
++{
++}
++
++static inline u32 slaunch_get_flags(void)
++{
++	return 0;
++}
++
++static inline struct acpi_table_header *slaunch_get_dmar_table(struct acpi_table_header *dmar)
++{
++	return dmar;
++}
++
++static inline void slaunch_finalize(int do_sexit)
++{
++}
++
++static inline bool slaunch_is_txt_launch(void)
++{
++	return false;
++}
++
++#endif /* !CONFIG_SECURE_LAUNCH */
 +
 +#endif /* !__ASSEMBLER__ */
 +
-+#endif /* _LINUX_SLR_TABLE_H */
++#endif /* _LINUX_SLAUNCH_H */
 -- 
 2.43.7
 
