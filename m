@@ -1,119 +1,171 @@
-Return-Path: <linux-efi+bounces-5885-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5886-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684FFCC3702
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 15:10:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC3CCC4576
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 17:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0054306451F
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 14:03:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EB0A8300671E
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 16:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EAB322B87;
-	Tue, 16 Dec 2025 13:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CE1347BD1;
+	Tue, 16 Dec 2025 13:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhRmTTh3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NeZdgjmo"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4F031DD90
-	for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 13:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53333347BA9
+	for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 13:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765891497; cv=none; b=ZwbwEGTOaZ3g5uYoz+dC31b2ElTILGyTB+0hPcfjqeqVBm4iqzYRADU9Q0Q3txO2YJWa7hYI4+/TRF2oDfmeY/dqOkPt8KfXpt1QcwFDFEt5FAWPREVxP+D8/kP0BDbFHaaijbRAA4B1CdHwA9Hcw7z8AcTqahqOceKqmDSaaEo=
+	t=1765892454; cv=none; b=pJWsLCBeDWfYX1aC9FwnTTchgNUxtKjyxn0jr0AJXHANtsQEPkQR2JHjOZUec/GDT58XXVBLNh3alafzSBgQU0EC7UT2raPjMvG9v8YEAk2qwi0/iC5sz/eNNAVHRo4fY+k607+X2LLghAWSYumAdYp+5PpbSlR/RFJFWcPKWlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765891497; c=relaxed/simple;
-	bh=OFjOLDZ+Htljn9mhZJvvPB7mxrz5xHNxpULHvNFA274=;
+	s=arc-20240116; t=1765892454; c=relaxed/simple;
+	bh=bpE6mSMhtsJNcViEHUKqxdpK/zXIk25nSDmiikJg7Jo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OfbkvPBXcydFqPvgd1+X1KLi21bw+9o9wfSpz1ZzWiRFU8kSWGpR7uL/92OfXaRHKz4FA/5VA0OgU+HRtAiowLCkoCdwp/5jCfbSEl/QliOYFuQ5kMIUH82x+g9Dh8W4RbtNlDsV/G6NEcvcPi8sctvHx8i4hr1kg/n/kX8OKys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhRmTTh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82BCC4CEF1
-	for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 13:24:56 +0000 (UTC)
+	 To:Cc:Content-Type; b=UDnLu/QJChokIYPRgkQFjsaNufPaXEesJ6367LT9Ft31+9NSksxGOcFGvnl1ez33jd64WZ6f0Q08Jqjc74/iJMKTY+K6DIQ5u2wlPl/F+AF4N/5Zy1ut+VyUHrY4d0QtXKsBieo2qqOX+JhCDNl/Bzbf18G1igOuKV5Qw5Nz22o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NeZdgjmo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2737C4CEF1
+	for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 13:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765891496;
-	bh=OFjOLDZ+Htljn9mhZJvvPB7mxrz5xHNxpULHvNFA274=;
+	s=k20201202; t=1765892454;
+	bh=bpE6mSMhtsJNcViEHUKqxdpK/zXIk25nSDmiikJg7Jo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FhRmTTh36eu/CDwWZvZ8g1ZMnmXK4TNT7d8kqvd3AXwlEMzVxvhjTJy9oNeMNuxxc
-	 i2CCxCgtSbdslnAyzHb90nB2i6xvGUquyHJS///EGp9fGqGdo6ofHb0d9uLg1d+SsI
-	 kIWYXD4Xg0Js+FMLncUZHECabbtZoPl29Cr6sIcgNRjdM3I84TgVaYfNS4Nodw3kAF
-	 tGsWfFk9e6jdQ85hXHahi7aZqH/HYf8wr/gyorAAkAQ64yhqr+jHMkERqV721N1fM3
-	 NUgqHEuIuxyvJzlUHnetEezk9F/IoVTkH3RsZPjSuoOKCQ/YmjIagbUuWr32pzeJpj
-	 inRWN94XFn2qw==
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-34c363eb612so3087592a91.0
-        for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 05:24:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU6N+eDdoQQQa2drT/Ce25vZMFrVr75+1jWkzqRcAlJxnzVhHWFUYlIYmfGDfokCg6Ua0XC1OufR5k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqRHS0aMXSYQTcOp95qpX86aY1MybT0G1km9JM+teV7RWXMXIu
-	tjFZsHdow27cGEMhxTwuXgmAYUZ/jgMfTjiuX8NEbpJR63qv2GeCbN5BIb+qBMD06/Ym28En3vF
-	m/Q9vVx9GPb/3oWx7snu1DhD7fSR8YZM=
-X-Google-Smtp-Source: AGHT+IExnmvm24wckON7fJ9fYhZ0zYkTc+hqMRfIglpWonig7OEYfvLFTC7+mFwSOqtbgqRAHyvY2+x9TLgJ4A7eNZQ=
-X-Received: by 2002:a17:90b:1fc6:b0:339:cece:a99 with SMTP id
- 98e67ed59e1d1-34abd6dd2fcmr14151922a91.13.1765891496308; Tue, 16 Dec 2025
- 05:24:56 -0800 (PST)
+	b=NeZdgjmofb5XyxZ/9WvmQDRKMMTSL7UvRP7wXhCM0Sn1k0OBFCu7ph/Ju5GY0XNL7
+	 aqoPVZqK6Uf82+24gaphNn/PeUkv1uFk6jNXl84kPZwk63Ov+FFGyxxW3JfHP6gQ7K
+	 hiEX4jmVRRQ4gXRa8TTiN7k2GFggH0g4IrXrHv/svzQ67VjOTSouguE4IL4rEqYkRu
+	 1fCwDjUzmIhKIHieXY7Djjg+l3hHsd53Fuu1izTymS6+7mURvOZSjrfDGXv1E1njvR
+	 VE6jFsByaR6RC69K1SiOW4Utea7uiGZbxTDnZaJaogGFKZ85nLoQzcQrm6ab4btr3s
+	 ikpOL4/rzbaVQ==
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0d6f647e2so36677965ad.1
+        for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 05:40:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXo5hDo2EMQm+nXEFaC+HNExD7M5XFYYjusHpEp7ChR17Qmiw1X/BBFNF+k3jIlBXxpMiUWMVlU0fU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywWl0EBYyOyDnPokDOoKIHKuwGeAK/CBX8L8pIiHqoj29rYHoR
+	LpjphHEZz3STlIpogCaWctNP42FXkjebla5oiHsN/pQAd1pcA+W1uq82Jv2TOTY+WCTYnBBHJpL
+	OB3cVbNEyYMgaOZK9KrN2hTscTQRK9wU=
+X-Google-Smtp-Source: AGHT+IHcmZJ38d94bL4vjoP1Iao4l30Ahx8lP9aMcBlBTOZ7Gso5/FdhsFfK6P+oxGrsyN3M1S7cHEzzA6Roze4LOiE=
+X-Received: by 2002:a17:902:cf0d:b0:2a0:d59e:9848 with SMTP id
+ d9443c01a7336-2a0d59e9a43mr99280585ad.53.1765892453645; Tue, 16 Dec 2025
+ 05:40:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251208193925.7449-1-tursulin@igalia.com> <CAMj1kXFZD+No6C4MEpmSY5Ha0DtJH+kHfTiO02By4ejUekLaRA@mail.gmail.com>
-In-Reply-To: <CAMj1kXFZD+No6C4MEpmSY5Ha0DtJH+kHfTiO02By4ejUekLaRA@mail.gmail.com>
+References: <20251126160854.553077-1-tzimmermann@suse.de> <20251126160854.553077-8-tzimmermann@suse.de>
+In-Reply-To: <20251126160854.553077-8-tzimmermann@suse.de>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 16 Dec 2025 14:24:45 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHWWzqVKDO81+d6RAZrmZuLcoBhKNqCGJwX1bRyYkXVjQ@mail.gmail.com>
-X-Gm-Features: AQt7F2qNW4SGOOjvSMv4uZLdKi0bWBL2AdBxefzKOS2b3E8LsGGZNjLFauQjcoo
-Message-ID: <CAMj1kXHWWzqVKDO81+d6RAZrmZuLcoBhKNqCGJwX1bRyYkXVjQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/4] EFI fbcon fixes etc
-To: Tvrtko Ursulin <tursulin@igalia.com>
-Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com, 
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Melissa Wen <mwen@igalia.com>, linux-efi@vger.kernel.org
+Date: Tue, 16 Dec 2025 14:40:42 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXG6cFsKwZk3a+xRrOYNz73efxjo=6Jnnr8HCKRO0X-zCQ@mail.gmail.com>
+X-Gm-Features: AQt7F2qIXhwz3lKtiowhJ6LkUm-qxxF02G3Bdlrhhj6FcFVAi1NXBSE5o0PIhTQ
+Message-ID: <CAMj1kXG6cFsKwZk3a+xRrOYNz73efxjo=6Jnnr8HCKRO0X-zCQ@mail.gmail.com>
+Subject: Re: [PATCH v3 7/9] efi: Refactor init_primary_display() helpers
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: javierm@redhat.com, arnd@arndb.de, richard.lyu@suse.com, 
+	helgaas@kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-fbdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 9 Dec 2025 at 03:05, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Wed, 26 Nov 2025 at 17:09, Thomas Zimmermann <tzimmermann@suse.de> wrote:
 >
-> On Tue, 9 Dec 2025 at 04:39, Tvrtko Ursulin <tursulin@igalia.com> wrote:
-> >
-> > From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> >
-> > Two generic fixes split out for easy review, one refactoring as requested, and
-> > then the last patch is the panel/mode quirk to allow for corruption free fbcon
-> > with simpledrmfb and efidrmfb on the Valve Steam Deck.
-> >
-> > v2:
-> >  * s/unsigned/unsigned int/
-> >  * s/pitch/linelength/
-> >  * Removed comment explaining the Steam Deck quirk.
-> >  * Added patch to refactor quirk application via callbacks.
-> >
-> > v3:
-> >  * Added forgotten __initconst.
-> >  * Use separate callback for the fixup quirk.
-> >
-> > v4:
-> >  * Use __screen_info_lfb_bits_per_pixel() instead of accessing lfb_depth directly.
-> >
-> > v5:
-> >  * s/lfb_width/bpp/.
-> >  * Grammar and typo tidy in the last patch.
-> >
-> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > Cc: Melissa Wen <mwen@igalia.com>
-> > Cc: linux-efi@vger.kernel.org
-> >
-> > Tvrtko Ursulin (4):
-> >   efi: sysfb_efi: Replace open coded swap with the macro
-> >   efi: sysfb_efi: Fix lfb_linelength calculation when applying quirks
-> >   efi: sysfb_efi: Convert swap width and height quirk to a callback
-> >   efi: sysfb_efi: Fix efidrmfb and simpledrmfb on Valve Steam Deck
-> >
-> >  drivers/firmware/efi/sysfb_efi.c | 73 ++++++++++++++++++++++++++++----
-> >  1 file changed, 65 insertions(+), 8 deletions(-)
-> >
+> Rework the kernel's init_primary_display() helpers to allow for later
+> support of additional config-table entries and EDID information. No
+> functional changes.
 >
-> This looks fine to me now. Unless there are more comments, I intend to
-> get this queued up as soon as -rc1 comes around.
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> ---
+>  arch/loongarch/kernel/efi.c     | 22 +++++++++++-----------
+>  drivers/firmware/efi/efi-init.c | 19 ++++++++++---------
+>  2 files changed, 21 insertions(+), 20 deletions(-)
 >
 
-Queued up now, thanks.
+This patch seems unnecessary now that we've replace one table with another.
+
+I've dropped it for now - let me know if you really want to keep it.
+
+
+> diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
+> index 638a392d2cd2..1ef38036e8ae 100644
+> --- a/arch/loongarch/kernel/efi.c
+> +++ b/arch/loongarch/kernel/efi.c
+> @@ -81,19 +81,19 @@ EXPORT_SYMBOL_GPL(sysfb_primary_display);
+>
+>  static void __init init_primary_display(void)
+>  {
+> -       struct screen_info *si;
+> -
+> -       if (screen_info_table == EFI_INVALID_TABLE_ADDR)
+> -               return;
+> -
+> -       si = early_memremap(screen_info_table, sizeof(*si));
+> -       if (!si) {
+> -               pr_err("Could not map screen_info config table\n");
+> +       if (screen_info_table == EFI_INVALID_TABLE_ADDR) {
+> +               struct screen_info *si = early_memremap(screen_info_table, sizeof(*si));
+> +
+> +               if (!si) {
+> +                       pr_err("Could not map screen_info config table\n");
+> +                       return;
+> +               }
+> +               sysfb_primary_display.screen = *si;
+> +               memset(si, 0, sizeof(*si));
+> +               early_memunmap(si, sizeof(*si));
+> +       } else {
+>                 return;
+>         }
+> -       sysfb_primary_display.screen = *si;
+> -       memset(si, 0, sizeof(*si));
+> -       early_memunmap(si, sizeof(*si));
+>
+>         memblock_reserve(__screen_info_lfb_base(&sysfb_primary_display.screen),
+>                          sysfb_primary_display.screen.lfb_size);
+> diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+> index d1d418a34407..ca697d485116 100644
+> --- a/drivers/firmware/efi/efi-init.c
+> +++ b/drivers/firmware/efi/efi-init.c
+> @@ -67,10 +67,9 @@ EXPORT_SYMBOL_GPL(sysfb_primary_display);
+>
+>  static void __init init_primary_display(void)
+>  {
+> -       struct screen_info *si;
+> -
+>         if (screen_info_table != EFI_INVALID_TABLE_ADDR) {
+> -               si = early_memremap(screen_info_table, sizeof(*si));
+> +               struct screen_info *si = early_memremap(screen_info_table, sizeof(*si));
+> +
+>                 if (!si) {
+>                         pr_err("Could not map screen_info config table\n");
+>                         return;
+> @@ -78,14 +77,16 @@ static void __init init_primary_display(void)
+>                 sysfb_primary_display.screen = *si;
+>                 memset(si, 0, sizeof(*si));
+>                 early_memunmap(si, sizeof(*si));
+> +       } else {
+> +               return;
+> +       }
+>
+> -               if (memblock_is_map_memory(sysfb_primary_display.screen.lfb_base))
+> -                       memblock_mark_nomap(sysfb_primary_display.screen.lfb_base,
+> -                                           sysfb_primary_display.screen.lfb_size);
+> +       if (memblock_is_map_memory(sysfb_primary_display.screen.lfb_base))
+> +               memblock_mark_nomap(sysfb_primary_display.screen.lfb_base,
+> +                                   sysfb_primary_display.screen.lfb_size);
+>
+> -               if (IS_ENABLED(CONFIG_EFI_EARLYCON))
+> -                       efi_earlycon_reprobe();
+> -       }
+> +       if (IS_ENABLED(CONFIG_EFI_EARLYCON))
+> +               efi_earlycon_reprobe();
+>  }
+>
+>  static int __init uefi_init(u64 efi_system_table)
+> --
+> 2.51.1
+>
 
