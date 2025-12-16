@@ -1,63 +1,63 @@
-Return-Path: <linux-efi+bounces-5887-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5888-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E70CC545A
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 22:55:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A3ECC5523
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 23:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC198306AE3B
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 21:53:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E23C3062E7C
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 22:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A30332571B;
-	Tue, 16 Dec 2025 21:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E449733F369;
+	Tue, 16 Dec 2025 22:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eY+IQBO6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="clLET4uX"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18EE335577;
-	Tue, 16 Dec 2025 21:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC66F33F36B;
+	Tue, 16 Dec 2025 22:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765922023; cv=none; b=NjDRrOa+IfIRGxO57S+1Bz9PxIWoV/a2+qMBoFqhEeJShvAJphd/0qrbVhP2gFcyopF9BDFBCDSV2R4DQslrvaubrZ2rc8Y0+HKKDldt6uYtSRMEg020IgtnIXwV4CV4pmiHX0KpUQeOQIbjILCKjLX5NVbF8JQRGy0fgBrGMec=
+	t=1765923293; cv=none; b=UuY5OKTkhd6JUXO5RSo2dIzxts9hqn7Gl2+Cpi6vAVYNEMc+GS86cTLzoClmCGblBuEZ1st03nxDUgr1vDHQBc8kO2ArhqLmEZe/ztA0eGyMdPYcL/slkFM05mpfRTMPTDdMvJdD7fmFbBSA/41o+Ks5lujeSpuCjPN8K8mWUEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765922023; c=relaxed/simple;
-	bh=BCk1z+n4t1aGaqZ/BTXTCFErniFsz8hfx3uLoM+C9Fo=;
+	s=arc-20240116; t=1765923293; c=relaxed/simple;
+	bh=w7b/e76hAR5ZqOBnJxoTW1IFOT+jD+ZCWdt3eoWorFg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AmKOZVmEC4err50qr6BS0i+oHCvuCd5T47immBAZfvOCYvQoxVwx7a4fiwudCgcSiso3uOmMIa0RaXtXdjrgnrHtr0iyOpKdiF1TokTZp0WOABtX5K6LoATZr5A8EPyQZX3ahsRViNxy4rrUqxXxHPMw6MHz7DQPGftUYK1yXpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eY+IQBO6; arc=none smtp.client-ip=192.198.163.19
+	 In-Reply-To:Content-Type; b=uorAQAfJMO3iUKv18Z/XKK6HDlEwpKJmSmbt1sPCXT/D5cG9QLXOdur0D0ukiiJ+TZQqZZk10vzeKfHaWlPk544gJ+/Hm+fQBu2R2kWMB2Eb4t1l4Fquxnuc5kiBp2y11z3JWN8myFi6H16V4ymiBBjwEM8YB1j8+0aeTj3ooD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=clLET4uX; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765922020; x=1797458020;
+  t=1765923292; x=1797459292;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=BCk1z+n4t1aGaqZ/BTXTCFErniFsz8hfx3uLoM+C9Fo=;
-  b=eY+IQBO6aP93ndoA4ovjCWjUabBjtETN3DQ5FKF0UihPo772d7BLfZKa
-   XBbMwqQ/DwVS0PEYNs81y2wVdBr37fAlWfqj7IotYjSvV8ojsui4wA8XS
-   L7UxRPL7mqEG4Xgmn9xYbVUnPpQ2cwrEUEKL9lNgY0RgRnC5PbeEbaryi
-   kybKQCOIBf8pLbLMysD2NUM7KqZCGs0F0O6uFtMnBL/dk/uTh1Empv46J
-   8rXGwzGS1XOgzb5Te+/CcNtxTWqeDWbVd+FKWYjWae4sH+1OdqggfjB9e
-   uCz4cHb3X5W5X1oMFFaCpFZL+Awe66MmSTFzZzyEN3lkSCM9I0krRw8yp
-   g==;
-X-CSE-ConnectionGUID: eQW4EHimSC2r0LxKpoe+uQ==
-X-CSE-MsgGUID: H0j3FQERSgSazMqrEkMP0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="66839461"
+  bh=w7b/e76hAR5ZqOBnJxoTW1IFOT+jD+ZCWdt3eoWorFg=;
+  b=clLET4uX3cooMZyP2OWXtCMubDr13NC/ZFFIQcSMbZa0gekauXfZuzyW
+   +HjjghxaI4K7aih2/LxMJRkS6z85DFWMt6oFOS2O8RaNJA7R5fDDgZJVb
+   IawmS4rdmf9jtimLwu0VRximh8WDvwLesWBwSdIQmxYE10xfJ76CZ2kV9
+   Vbhe8V7fhQ4My7LlMTU8EC+SKLUejoRw1pb5q4Tz3gRXfBH6NcxYOU+Iv
+   h7vrUfuM1g3AtFupOKDWeaq2vzcovQAq+3gRqSIQuq5HobwHnzYLQmebl
+   3JSnKdFaAGcRXc7QUQsE8/h1BtmpegVQpxcu6D/7OEOgOtb+jLXmZodmD
+   A==;
+X-CSE-ConnectionGUID: MmA8I9eoRdiQ8WMzwf8sdQ==
+X-CSE-MsgGUID: Jljz3YnIQC+WbPHdp5S6VQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="67047958"
 X-IronPort-AV: E=Sophos;i="6.21,154,1763452800"; 
-   d="scan'208";a="66839461"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 13:53:37 -0800
-X-CSE-ConnectionGUID: MuHVZirMQBWFrzeuQtaT0Q==
-X-CSE-MsgGUID: BGkMrOwZQRm6jxep5Zx8cw==
+   d="scan'208";a="67047958"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 14:14:50 -0800
+X-CSE-ConnectionGUID: BxFHyn8qQcGac3NxdIToCQ==
+X-CSE-MsgGUID: aWSUZNYVQEmgbVjvKP3GtA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,154,1763452800"; 
-   d="scan'208";a="198185330"
+   d="scan'208";a="198379940"
 Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.110.199]) ([10.125.110.199])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 13:53:37 -0800
-Message-ID: <56929e8b-a7cf-4390-b4ec-0b4c2c32b311@intel.com>
-Date: Tue, 16 Dec 2025 13:53:35 -0800
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 14:14:49 -0800
+Message-ID: <0cff620d-9be4-487d-8eb1-19375ca58a70@intel.com>
+Date: Tue, 16 Dec 2025 14:14:48 -0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 19/28] x86/tpm: Early TPM PCR extending driver
+Subject: Re: [PATCH v15 00/28] x86: Secure Launch support for Intel TXT
 To: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
  x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
@@ -79,7 +79,6 @@ Cc: dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
  baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
  andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
 References: <20251215233316.1076248-1-ross.philipson@oracle.com>
- <20251215233316.1076248-20-ross.philipson@oracle.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -125,144 +124,13 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251215233316.1076248-20-ross.philipson@oracle.com>
+In-Reply-To: <20251215233316.1076248-1-ross.philipson@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-I'm mostly spot-checking this to see what kind of shape it's in and how
-much work and diligence has been applied in the last 8 months since v14.
+On 12/15/25 15:32, Ross Philipson wrote:
+> Patch set based on commit:
+> torvalds/master/fd57572253bc356330dbe5b233c2e1d8426c66fd
 
-On 12/15/25 15:33, Ross Philipson wrote:
-...
-> The driver could be extended for further operations if needed. This
-> TPM dirver implementation relies as much as possible on existing mainline
-
-<sigh>
-
-v15 and no spell checking. :(
-
-> --- /dev/null
-> +++ b/arch/x86/boot/compressed/early_tpm_extend.c
-> @@ -0,0 +1,601 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) 2010-2012 United States Government, as represented by
-> + * the Secretary of Defense.  All rights reserved.
-
-IANAL, but this looks fishy.
-
-It's theoretically fine to go grab random code off the Internet and
-submit it to the kernel, given the correct license. But I do want to
-know what its story is and where it came from.
-
-I also seem to remember that there are special rules around the US
-federal government's inability to hold copyrights. This seems worth at
-least a mention ... somewhere.
-
-This is helpful, for instance:
-
-> + * based off of the original tools/vtpm_manager code base which is:
-> + * Copyright (c) 2005, Intel Corp.
-> + * All rights reserved.
-
-so thanks for that one.
-
-> + * Redistribution and use in source and binary forms, with or without
-> + * modification, are permitted provided that the following conditions
-> + * are met:
-> + *
-> + *   * Redistributions of source code must retain the above copyright
-> + *     notice, this list of conditions and the following disclaimer.
-> + *   * Redistributions in binary form must reproduce the above
-> + *     copyright notice, this list of conditions and the following
-> + *     disclaimer in the documentation and/or other materials provided
-> + *     with the distribution.
-> + *   * Neither the name of Intel Corporation nor the names of its
-> + *     contributors may be used to endorse or promote products derived
-> + *     from this software without specific prior written permission.
-> + *
-> + * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-> + * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-> + * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-> + * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-> + * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-> + * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-> + * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-> + * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-> + * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
-> + * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-> + * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
-> + * OF THE POSSIBILITY OF SUCH DAMAGE.
-> + */
-
-Also, IANAL, but this looks BSD-ish.
-
-I would have kinda expected the SPDX header to say BSD-blah-blah and not
-GPL-2.0-only.
-
-I'd really appreciate if you could go have a huddle with your corporate
-Open Source folks and make sure this is all proper. To me, it looks
-fishy at _best_.
-
-...
-> +/*
-> + * We're far too early to calibrate time.  Assume a 5GHz processor (the upper
-> + * end of the Fam19h range), which causes us to be wrong in the safe direction
-> + * on slower systems.
-> + */
-
-https://docs.kernel.org/process/maintainer-tip.html#changelog
-
-Imperative voice please.
-
-...
-> +static int __tis_recv_data(struct tpm_chip *chip, u8 *buf, int count)
-> +{
-> +	int size = 0;
-> +	int burstcnt;
-> +
-> +	while (size < count && __tis_wait_for_stat(chip, TPM_STS_DATA_AVAIL | TPM_STS_VALID, chip->timeout_c) == 0) {
-> +		burstcnt = __tis_get_burstcount(chip);
-> +
-> +		for ( ; burstcnt > 0 && size < count; --burstcnt)
-> +			buf[size++] = tpm_read8(chip, TPM_DATA_FIFO(chip->locality));
-> +	}
-> +
-> +	return size;
-> +}
-> +
-> +/**
-> + * tpm_tis_check_locality - Check if the given locality is the active one
-> + * @chip:	The TPM chip instance
-> + * @loc:	The locality to check
-> + *
-> + * Return: true - locality active, false - not active
-> + */
-> +bool tpm_tis_check_locality(struct tpm_chip *chip, int loc)
-> +{
-> +	if ((tpm_read8(chip, TPM_ACCESS(loc)) & (TPM_ACCESS_ACTIVE_LOCALITY | TPM_ACCESS_VALID)) == (TPM_ACCESS_ACTIVE_LOCALITY | TPM_ACCESS_VALID)) {
-> +		chip->locality = loc;
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +/**
-> + * tpm_tis_release_locality - Release the active locality
-> + * @chip:	The TPM chip instance
-> + */
-> +void tpm_tis_release_locality(struct tpm_chip *chip)
-> +{
-> +	if ((tpm_read8(chip, TPM_ACCESS(chip->locality)) & (TPM_ACCESS_REQUEST_PENDING | TPM_ACCESS_VALID)) == (TPM_ACCESS_REQUEST_PENDING | TPM_ACCESS_VALID))
-> +		tpm_write8(chip, TPM_ACCESS(chip->locality), TPM_ACCESS_RELINQUISH_LOCALITY);
-> +
-> +	chip->locality = 0;
-> +}
-
-I guess some folks aren't enforcing the 80-column limits. But this is
-not even close. It's almost 80x2.
-
-Has there even been an attempt to make this conform to kernel coding
-style? What other checkpatch.pl warnings are being ignored?
+That's an interesting place to pick. What was the reasoning behind it?
 
