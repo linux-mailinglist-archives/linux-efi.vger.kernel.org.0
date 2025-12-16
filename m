@@ -1,249 +1,262 @@
-Return-Path: <linux-efi+bounces-5879-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5880-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105D2CC0BBE
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 04:46:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D296CC156D
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 08:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61179301EC63
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 03:46:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8AC43047926
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 07:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B68274658;
-	Tue, 16 Dec 2025 03:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0221DDC33;
+	Tue, 16 Dec 2025 07:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLGHz6t0"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XTFIjUfv";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Y2IlkbVO"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503D1487BE;
-	Tue, 16 Dec 2025 03:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E052620E5
+	for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 07:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765856771; cv=none; b=QG8hwENmNtG9toQOzpdouLKlyYezqUQngSEKAodzYHMPTJlpUtSjOS4Tz4SAS4oCKYzdu+s9qfIGmMpS8ouAAWIJEB5Vrrs0SP0jzhH36o7ZmTJheZlwZtZ36kr3sZa2dnFGgVyia8l83rNQHCWpSI+alu8b1gJo68+X8dy1gqo=
+	t=1765870734; cv=none; b=bBfCSVDYjJ/XfqVKepsOOuJ/oKJWGkt6rYNKg9v/dWJ816FfSo1X+Ofm6v8ULP9Wwjwo3Jr/Gbm8VM8Lm/0n+wOm551d6J78LbA9H6jmKmuHxN/CmCR+xob+CePf5qllADtAhIVy6fMlYDwTz3sCZNIcH33Wtt37/EuEa8cNhvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765856771; c=relaxed/simple;
-	bh=pSGYuRMvBKPFBLH+IHHROcdygnUFsHEmbW+bkqAwZac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OoSa+WkH+wKmqn48ytaXSNwOaatBuglSb3wqNeGkHOgpH6sj2Gc83YCcVev7K12cAGMuNM+X//LUMbB8urOq0hSuLhc9x/mAjerf+EcYrD/sJ2C/t4JFX4eO/xQe2rhorA+d2UOrRtcy7IDCOjMa/Fx83cINymc5sJrT++rdiGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLGHz6t0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46499C4CEF1;
-	Tue, 16 Dec 2025 03:46:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765856769;
-	bh=pSGYuRMvBKPFBLH+IHHROcdygnUFsHEmbW+bkqAwZac=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XLGHz6t0zQTXBXbPM0LT9pPAlum1Ynru9rHis8eTow9FOLRjJNOL2XsKLj/IdQQ/A
-	 vLGRarqJkBymWN5hyRWg3BMkcM8+rgV6LC0AJeKpe9jRonn3wl0Rf8fWupn0CGVomq
-	 aEUIPpdeELEeZK46Xd0sv0BG/HqWVrSQOv9rfNs1vv9qrZ0uuKoNY534+fxTe6DPxV
-	 0a9APA3VMNhpt/cq+4o9BZGubGxbyR11tXitIWpWmNLQFd0QcNCm986DIt99QRUbpe
-	 GKV16JI36iTLR7jEwcM07WFcWVIuQexiIIgaySSJuPykDm0onC5UBC56LaNtKsy3Yf
-	 YbLBvYKEIjnhA==
-Date: Tue, 16 Dec 2025 05:46:05 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Ross Philipson <ross.philipson@oracle.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
-	linux-efi@vger.kernel.org, iommu@lists.linux.dev,
-	dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com,
-	ardb@kernel.org, mjg59@srcf.ucam.org,
-	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de,
-	jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu,
-	herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net,
-	ebiederm@xmission.com, dwmw2@infradead.org,
-	baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
-	andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
-Subject: Re: [PATCH v15 00/28] x86: Secure Launch support for Intel TXT
-Message-ID: <aUDV_e19I0I3GIzN@kernel.org>
-References: <20251215233316.1076248-1-ross.philipson@oracle.com>
+	s=arc-20240116; t=1765870734; c=relaxed/simple;
+	bh=EVtYPoSK83Vy1+h2LJvKFGGxMbDwlr5oVrnogUjKJi4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QuB7As1G731Ah3NPeQlqJgdP5bH9UQfQnwRZLKSWvGYP796QR1Bsw1wArNeSavJGV7Bg4s77+xRT1WQdr1yq7/6QOQb9cVfLX/w83CnMLwmUOCXvo8bb20nFtrM1rdN7GkdzFVb96xsPhRaZ/x9V+e8wxE83gLFTSUfX/cViBC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XTFIjUfv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Y2IlkbVO; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BG6nVOo2810669
+	for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 07:38:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7YmBFkv7BIT1XO2FEXzhMg2xQ1XFzff8WD9iA8ZhYH0=; b=XTFIjUfvzx+0WxwS
+	dxYZGhHRtRb7qI1JBA4pcqy6vbKSOyzJdExYWJot4nyNC5bP1PQTwaol4/9nrFRR
+	cNpfYq+0xplBniApzuR6QM64JR4xlSIG1ySWQmd+F+q6RI4c/HRYUQu+unYmDuNv
+	ovH/RzLAz31fw6dCPurnScEOA3yMEOiKC7huhtgQOpmNCpjlfq4Dztq5qNeiqYLY
+	jHTLvHGqClBMGi7s6HFS3MNm4vkXZAJdCNq/6X4u1Sqy1Q4F4BpI2jYe9sKTsM8i
+	1uZY0wuJCCs9kowVxYLa+FqZz23OiYWlzDcNPQ/wsbuvItrhExVtvoTS5xD/yNst
+	ibD+sw==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b32gar5dn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-efi@vger.kernel.org>; Tue, 16 Dec 2025 07:38:51 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-bce224720d8so8053576a12.1
+        for <linux-efi@vger.kernel.org>; Mon, 15 Dec 2025 23:38:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1765870731; x=1766475531; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7YmBFkv7BIT1XO2FEXzhMg2xQ1XFzff8WD9iA8ZhYH0=;
+        b=Y2IlkbVOZfKbmsmiUf21URSRg7ynnteK+KhpgS3bYxSgc9IrUARfongdPfiSez9o2i
+         /TSF2dTtYlztiimvLDhH41ux18V6DMvVZsUgU8mfoehTZwOwNToMghR8w4QU4m7m2agn
+         XAbF5r0+Ko9LN5UTcj4PMz8fL0mRvXaWmccqOT0vaSG77pnaj0+1RPp1WI/d1NRjdgA6
+         G3tvfFfKx26EKigXqtSzGA5bwZ4GXeMpEytgk0aYIJLtRpugnVNv+tAT1QH4Q2hQQPJ6
+         RDNI1NNyzuLultZCuAEqQ55l6bxvnl3Rm+crEUfJCoUFQLUgCAo/px54SsX+9EzjuL6P
+         eSCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765870731; x=1766475531;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7YmBFkv7BIT1XO2FEXzhMg2xQ1XFzff8WD9iA8ZhYH0=;
+        b=KQYFS5wLGBLaduWOgBZ4DNBE0Qg564X8kIVIvoMzStd6mde51nc9R41LqUpbUKE6JO
+         B63hm9hZqmYUclekMNjrpJtsfcUKd8BTB2ZuqAraQmYye5JHxpD8g1TepeF261OAmIHZ
+         /SjfPqV7kM8f6yVxPuFtdvsCO08D5Qbz2pV61hXfaji9ijFDo3rNQMwUu0I7xnqSx8/3
+         0fO7uJUEvaK2TU7lUk/ZipFSpD9XqavLyt5iQQATGlxPBxLr/BO3kWM2zjSROe/MUgDi
+         oa3hjAj1+Txf6h86eb2TUSIytaf2Epq4MmG9yvguoBZxGXgawKqlvM25+8NnCOSVlOkE
+         wa0A==
+X-Forwarded-Encrypted: i=1; AJvYcCWnl72XLlqn3Ny+6U9iMkDt2wcdRI2XCkr8Qpz1AQrzdkpAOE8MLy1H0lRGlS7ngaZFNDU0ljjD4yI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydOQu2nBqkPER1cE1fKAZO0l7WMCzYvTTqHz4NBEOOJTJE17hy
+	1uu8pOWDoLERhdXRdXXNyz+NfGd4ajQRUWdDDOsmon1SLUdj4zMEgLC2HJ1pdHCngy0AFfUSRAL
+	X4JmHHWwC0ktC5Tz8ZCtXx+1JndPIFBkqKLbRgcLgFdTJ3/aCxcEk+zQWTXDLyat4trHK3EP5gj
+	JsqZjbh/JKmgLszv5mna3Dit1IWhvYTter5SquDw==
+X-Gm-Gg: AY/fxX7FX5SmrN7rbiMPGWk2FzARUKCDBIGkVBeKhT0R/uZ3R3ucXSclkhn8DxIlWoW
+	lKwz8qmFsrdUgd9HdvjO476bw0qtvneM/cfoCg7oh2uLJjHaR3viXwMVpY2GyLLsYCjMan/v3WY
+	ARre/UTWq3PrRgDtUaZRzgQz1Ik1+0zmAyRFhA3P60U8nSkSba0dJ4UNGH/tePNUddt8Y=
+X-Received: by 2002:a05:7300:2a9b:b0:2a4:3593:6453 with SMTP id 5a478bee46e88-2ac2f85e872mr8049907eec.3.1765870731070;
+        Mon, 15 Dec 2025 23:38:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFgAxeScCHPFScnumP+kyrXe4heJGwYVQRSxj+hObliMSDxJWWHv5hYUxaMExJMrxhceQO+g6cVj0vLQa5OEdY=
+X-Received: by 2002:a05:7300:2a9b:b0:2a4:3593:6453 with SMTP id
+ 5a478bee46e88-2ac2f85e872mr8049887eec.3.1765870730525; Mon, 15 Dec 2025
+ 23:38:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215233316.1076248-1-ross.philipson@oracle.com>
+References: <cover.1765472125.git.u.kleine-koenig@baylibre.com>
+ <aT--ox375kg2Mzh-@sumit-X1> <dhunzydod4d7vj73llpuqemxb5er2ja4emxusr66irwf77jhhb@es4yd2axzl25>
+In-Reply-To: <dhunzydod4d7vj73llpuqemxb5er2ja4emxusr66irwf77jhhb@es4yd2axzl25>
+From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Date: Tue, 16 Dec 2025 13:08:38 +0530
+X-Gm-Features: AQt7F2pIGEo3k7l40jiSNtQzSXPgQLv36wLttu_75OXJz9aTmVe9GGZBfjh5ELU
+Message-ID: <CAGptzHOOqLhBnAXDURAzkgckUvRr__UuF1S_7MLV0u-ZxYEdyA@mail.gmail.com>
+Subject: Re: [PATCH v1 00/17] tee: Use bus callbacks instead of driver callbacks
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Sumit Garg <sumit.garg@kernel.org>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Olivia Mackall <olivia@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+        Peter Huewe <peterhuewe@gmx.de>, op-tee@lists.trustedfirmware.org,
+        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=Vcb6/Vp9 c=1 sm=1 tr=0 ts=69410c8b cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=IpJZQVW2AAAA:8
+ a=sfbzD7rgGHNppxHmi9UA:9 a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22
+ a=IawgGOuG5U0WyFbmm1f5:22
+X-Proofpoint-GUID: N3DmyhQ2vIiJh-u7mC71Ct9RKXU2NKxY
+X-Proofpoint-ORIG-GUID: N3DmyhQ2vIiJh-u7mC71Ct9RKXU2NKxY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDA2MiBTYWx0ZWRfXxv6N+he7S5f2
+ wfCsCjxkHvXbOGa1UKcpn4zMrXPkGxLSd87u7c10/ck1KJXrqQlsN86PrBWQBYGbmte/+MEKE6T
+ NEYrv3aBoR75ywGzLwxH7TEQIwL7b+fm6lLtzTFaA3KnpOTjL8b9RG6H435ettucQEPbeq2psrG
+ nx5w0uHHBKWUm/Fy81dUXmQmECLdv2DHwei3SbfPKIFz5ydGQpw9Ml5XskI3j7KHVQyM9KbD+gA
+ Hjh74cyPXM8w3jk7U4qgp4Hp3+f08hcalX0dWy34d5xYb35RFIpOpXMIzgtWL+dXliH2XAnajvB
+ O9krVhoGFaPLB/cBzyYcb0CxQkJX+upSno2yqp74exNy4jQt5GP+bk7M49TppKu+x3kxfb5kFb1
+ a1O/MDyoRvuf/10Flk6yBS3kHqNsIg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-16_01,2025-12-15_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0 spamscore=0
+ clxscore=1011 impostorscore=0 phishscore=0 malwarescore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512160062
 
-On Mon, Dec 15, 2025 at 03:32:48PM -0800, Ross Philipson wrote:
-> Secure Launch is a vendor-neutral approach to implementing TGC Dynamic
-> Root of Trust (DRTM) support in the kernel. This is complementary to
-> better known Static Root of Trust (SRTM) schemes such as UEFI SecureBoot.
-> 
-> This series provides the common infrastructure along with Intel TXT
-> support, without needing the tboot exokernel. Support for AMD SKINIT is
-> pending the common infrastructure getting nailed down, and ARM are
-> looking to build on it too.
-> 
-> Originally, tboot were approached to see if they'd take support for
-> other vendors, but they elected not to. Hence this approach instead.
-> 
-> Work is being coordinated by the Trenchboot project, https://trenchboot.org/,
-> organising Secure Launch support for upstream open source projects including
-> Grub, iPXE and Xen. The goal of the Trenchboot project is to make DTRM easy
-> to use.  e.g. for Grub, it's simply adding "slaunch" as a command in the boot
-> stanza.  See https://trenchboot.org/user-docs/QUICKSTART/#linux-quick-start-guide
-> for more details
-> 
-> Patch set based on commit:
-> torvalds/master/fd57572253bc356330dbe5b233c2e1d8426c66fd
-> 
-> Depends on v3 of the following TPM patch set (note this patch
-> set is being actively worked on separately):
-> [PATCH v3 00/10]  tpm: Decouple Trenchboot dependencies
-> Message ID: 20250929194832.2913286-1-jarkko@kernel.org
-> 
-> Finally we would like to thank everyone for their input and
-> assistance. It has all been very helpful in improving the quality of
-> our solution and in reviewing/strengthening our security posture.
-> 
-> Thanks
-> Ross Philipson and Daniel P. Smith
-> 
-> Changes in v15:
-> 
->  - Rewriting and reformatting of the cover letter, commit message and
->    code comments per requests from maintainers.
->  - Introduction of a early TPM driver in the x86 setup kernel to allow
->    TPM extend command very early in the boot.
->  - Remove previous TPM extending architecture that attempted to update
->    the TPM PCRs later in the boot process.
->  - Split slaunch.h into 2 files, with a new txt.h. The former contains
->    platform agnostic definitions for the SL feature. The new txt.h file
->    contains Intel TXT definitions from the public specs.
->  - Split TPM headers up following the specifications where the
->    technologies are defined.
->  - Include set of split up TPM header files to allow TPM driver reuse
->    in other environments (e.g. early kernel, x86).
->  - Fix code formatting and type-os.
-> 
-> 
-> Alec Brown (1):
->   tpm: Remove main TPM header from TPM event log header
-> 
-> Daniel P. Smith (6):
->   tpm/tpm_tis: Close all localities
->   tpm/tpm_tis: Address positive localities in tpm_tis_request_locality()
->   Documentation/x86: Secure Launch kernel documentation
->   x86: Add early SHA-1 support for Secure Launch early measurements
->   x86: Add early SHA-256 support for Secure Launch early measurements
->   x86: Secure Launch late initcall platform module
-> 
-> Ross Philipson (21):
->   tpm: Initial step to reorganize TPM public headers
->   tpm: Move TPM1 specific definitions and functions to new headers
->   tpm: Move TPM2 specific definitions and functions to new headers
->   tpm: Move TPM common base definitions to new public common header
->   tpm: Move platform specific definitions to the new PTP header
->   tpm: Add TPM buffer support header for standalone reuse
->   tpm/tpm_tis: Allow locality to be set to a different value
->   tpm/sysfs: Show locality used by kernel
->   x86: Secure Launch Kconfig
->   x86: Secure Launch Resource Table header file
->   x86: Secure Launch main header file
->   x86/txt: Intel Trusted eXecution Technology (TXT) definitions
->   x86/tpm: Early TPM PCR extending driver
->   x86/msr: Add variable MTRR base/mask and x2apic ID registers
->   x86/boot: Place TXT MLE header in the kernel_info section
->   x86: Secure Launch kernel early boot stub
->   x86: Secure Launch kernel late boot stub
->   x86: Secure Launch SMP bringup support
->   kexec: Secure Launch kexec SEXIT support
->   x86/reboot: Secure Launch SEXIT support on reboot paths
->   x86/efi: EFI stub DRTM launch support for Secure Launch
-> 
->  Documentation/arch/x86/boot.rst               |  21 +
->  Documentation/security/index.rst              |   1 +
->  .../security/launch-integrity/index.rst       |  11 +
->  .../security/launch-integrity/principles.rst  | 308 +++++++
->  .../secure_launch_details.rst                 | 587 +++++++++++++
->  .../secure_launch_overview.rst                | 240 ++++++
->  arch/x86/Kconfig                              |  14 +
->  arch/x86/boot/compressed/Makefile             |   8 +
->  arch/x86/boot/compressed/early_tpm_extend.c   | 601 ++++++++++++++
->  arch/x86/boot/compressed/head_64.S            |  29 +
->  arch/x86/boot/compressed/kernel_info.S        |  50 +-
->  arch/x86/boot/compressed/sha1.c               |   7 +
->  arch/x86/boot/compressed/sha256.c             |   6 +
->  arch/x86/boot/compressed/sl_main.c            | 638 +++++++++++++++
->  arch/x86/boot/compressed/sl_stub.S            | 770 ++++++++++++++++++
->  arch/x86/boot/compressed/tpm.h                |  42 +
->  arch/x86/boot/compressed/vmlinux.lds.S        |   7 +
->  arch/x86/include/asm/msr-index.h              |   5 +
->  arch/x86/include/asm/realmode.h               |   3 +
->  arch/x86/include/asm/txt.h                    | 330 ++++++++
->  arch/x86/include/uapi/asm/bootparam.h         |   1 +
->  arch/x86/kernel/Makefile                      |   2 +
->  arch/x86/kernel/asm-offsets.c                 |  20 +
->  arch/x86/kernel/reboot.c                      |  14 +
->  arch/x86/kernel/setup.c                       |   3 +
->  arch/x86/kernel/slaunch.c                     | 615 ++++++++++++++
->  arch/x86/kernel/slmodule.c                    | 348 ++++++++
->  arch/x86/kernel/smpboot.c                     |  47 +-
->  arch/x86/realmode/init.c                      |   8 +
->  arch/x86/realmode/rm/header.S                 |   3 +
->  arch/x86/realmode/rm/trampoline_64.S          |  32 +
->  drivers/char/tpm/tpm-buf.c                    |  10 +-
->  drivers/char/tpm/tpm-chip.c                   |  34 +-
->  drivers/char/tpm/tpm-sysfs.c                  |  10 +
->  drivers/char/tpm/tpm.h                        | 180 +---
->  drivers/char/tpm/tpm1-cmd.c                   |  18 +-
->  drivers/char/tpm/tpm1_structs.h               |  97 +++
->  drivers/char/tpm/tpm2-cmd.c                   |  32 +-
->  drivers/char/tpm/tpm2-space.c                 |  13 -
->  drivers/char/tpm/tpm2_structs.h               |  58 ++
->  drivers/char/tpm/tpm_tis_core.c               |  21 +-
->  drivers/char/tpm/tpm_tis_core.h               |  64 +-
->  drivers/firmware/efi/libstub/efistub.h        |   8 +
->  drivers/firmware/efi/libstub/x86-stub.c       | 100 +++
->  drivers/iommu/intel/dmar.c                    |   4 +
->  include/keys/trusted_tpm.h                    |   1 -
->  include/linux/slaunch.h                       | 251 ++++++
->  include/linux/slr_table.h                     | 308 +++++++
->  include/linux/tpm.h                           | 240 +-----
->  include/linux/tpm1.h                          |  87 ++
->  include/linux/tpm2.h                          | 247 ++++++
->  include/linux/tpm_buf.h                       |  57 ++
->  include/linux/tpm_command.h                   |  30 -
->  include/linux/tpm_common.h                    |  99 +++
->  include/linux/tpm_eventlog.h                  |   4 +-
->  include/linux/tpm_ptp.h                       | 139 ++++
->  kernel/kexec_core.c                           |   8 +
->  security/keys/trusted-keys/trusted_tpm1.c     |   1 -
->  security/keys/trusted-keys/trusted_tpm2.c     |   1 -
->  59 files changed, 6319 insertions(+), 574 deletions(-)
->  create mode 100644 Documentation/security/launch-integrity/index.rst
->  create mode 100644 Documentation/security/launch-integrity/principles.rst
->  create mode 100644 Documentation/security/launch-integrity/secure_launch_details.rst
->  create mode 100644 Documentation/security/launch-integrity/secure_launch_overview.rst
->  create mode 100644 arch/x86/boot/compressed/early_tpm_extend.c
->  create mode 100644 arch/x86/boot/compressed/sha1.c
->  create mode 100644 arch/x86/boot/compressed/sha256.c
->  create mode 100644 arch/x86/boot/compressed/sl_main.c
->  create mode 100644 arch/x86/boot/compressed/sl_stub.S
->  create mode 100644 arch/x86/boot/compressed/tpm.h
->  create mode 100644 arch/x86/include/asm/txt.h
->  create mode 100644 arch/x86/kernel/slaunch.c
->  create mode 100644 arch/x86/kernel/slmodule.c
->  create mode 100644 drivers/char/tpm/tpm1_structs.h
->  create mode 100644 drivers/char/tpm/tpm2_structs.h
->  create mode 100644 include/linux/slaunch.h
->  create mode 100644 include/linux/slr_table.h
->  create mode 100644 include/linux/tpm1.h
->  create mode 100644 include/linux/tpm2.h
->  create mode 100644 include/linux/tpm_buf.h
->  delete mode 100644 include/linux/tpm_command.h
->  create mode 100644 include/linux/tpm_common.h
->  create mode 100644 include/linux/tpm_ptp.h
-> 
-> -- 
-> 2.43.7
-> 
+Hi Uwe,
 
-Most likely I'll review this after the holidays (for heads up).
+On Mon, Dec 15, 2025 at 3:02=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@baylibre.com> wrote:
+>
+> Hello Sumit,
+>
+> On Mon, Dec 15, 2025 at 04:54:11PM +0900, Sumit Garg wrote:
+> > On Thu, Dec 11, 2025 at 06:14:54PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> > > Hello,
+> > >
+> > > the objective of this series is to make tee driver stop using callbac=
+ks
+> > > in struct device_driver. These were superseded by bus methods in 2006
+> > > (commit 594c8281f905 ("[PATCH] Add bus_type probe, remove, shutdown
+> > > methods.")) but nobody cared to convert all subsystems accordingly.
+> > >
+> > > Here the tee drivers are converted. The first commit is somewhat
+> > > unrelated, but simplifies the conversion (and the drivers). It
+> > > introduces driver registration helpers that care about setting the bu=
+s
+> > > and owner. (The latter is missing in all drivers, so by using these
+> > > helpers the drivers become more correct.)
+> > >
+> > > The patches #4 - #17 depend on the first two, so if they should be
+> > > applied to their respective subsystem trees these must contain the fi=
+rst
+> > > two patches first.
+> >
+> > Thanks Uwe for your efforts to clean up the boilerplate code for TEE bu=
+s
+> > drivers.
+>
+> Thanks for your feedback. I will prepare a v2 and address your comments
+> (whitespace issues and wrong callback in the shutdown method).
+>
+> > > Note that after patch #2 is applied, unconverted drivers provoke a
+> > > warning in driver_register(), so it would be good for the user
+> > > experience if the whole series goes in during a single merge window.
+> >
+> > +1
+> >
+> > I suggest the whole series goes via the Jens tree since there shouldn't
+> > be any chances for conflict here.
+> >
+> > > So
+> > > I guess an immutable branch containing the frist three patches that c=
+an
+> > > be merged into the other subsystem trees would be sensible.
+> > >
+> > > After all patches are applied, tee_bus_type can be made private to
+> > > drivers/tee as it's not used in other places any more.
+> > >
+> >
+> > Feel free to make the tee_bus_type private as the last patch in the ser=
+ies
+> > such that any followup driver follows this clean approach.
+>
+> There is a bit more to do for that than I'm willing to invest. With my
+> patch series applied `tee_bus_type` is still used in
+> drivers/tee/optee/device.c and drivers/tee/tee_core.c.
 
-BR, Jarkko
+Oh I see, I guess we need to come with some helpers around device
+register/unregister from TEE subsystem as well. Let's plan that for a
+followup patch-set, I don't want this patch-set to be bloated more.
+
+> Maybe it's
+> sensible to merge these two files into a single one.
+
+It's not possible as the design for TEE bus is to have TEE
+implementation drivers like OP-TEE, AMD-TEE, TS-TEE, QTEE and so on to
+register devices on the bus.
+
+>
+> The things I wonder about additionally are:
+>
+>  - if CONFIG_OPTEE=3Dn and CONFIG_TEE=3Dy|m the tee bus is only used for
+>    drivers but not devices.
+
+Yeah since the devices are rather added by the TEE implementation driver.
+
+>
+>  - optee_register_device() calls device_create_file() on
+>    &optee_device->dev after device_register(&optee_device->dev).
+>    (Attention half-knowledge!) I think device_create_file() should not
+>    be called on an already registered device (or you have to send a
+>    uevent afterwards). This should probably use type attribute groups.
+>    (Or the need_supplicant attribute should be dropped as it isn't very
+>    useful. This would maybe be considered an ABI change however.)
+
+The reasoning for this attribute should be explained by commit:
+7269cba53d90 ("tee: optee: Fix supplicant based device enumeration").
+In summary it's due to a weird dependency for devices we have with the
+user-space daemon: tee-supplicant.
+
+>
+>  - Why does optee_probe() in drivers/tee/optee/smc_abi.c unregister all
+>    optee devices in its error path (optee_unregister_devices())?
+
+This is mostly to take care of if any device got registered before the
+failure occured. Let me know if you have a better way to address that.
+
+-Sumit
 
