@@ -1,63 +1,63 @@
-Return-Path: <linux-efi+bounces-5889-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5890-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAEACC5535
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 23:16:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C17CC55C0
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 23:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AD4C307DA66
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 22:15:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 911E9300D3EA
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Dec 2025 22:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F0D33F362;
-	Tue, 16 Dec 2025 22:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FDD32E15B;
+	Tue, 16 Dec 2025 22:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B6SPeW1I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NYSZr5Jg"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7F9221F13;
-	Tue, 16 Dec 2025 22:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF612BEFE3;
+	Tue, 16 Dec 2025 22:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765923300; cv=none; b=urRhkDnHPVcIOg3AxhqsmZUbvT9HhT31HF/OZtoZk7CoXzkb3KkTcJbAGgVJwRsD6qoSmaak+eTOTRWR6zLFPn0v1/GgEwDSezWBkkxT5j+EFc/FjR1QqyFYrxk+aHnJ/0f3H/5Uim33Vgbd/2k/ATb1b7W6Ywh5HYa4VlBdbFk=
+	t=1765924364; cv=none; b=prVuAjvkkeV+QxRO2rOnN7CEMX6OZ4P9xsIYFO0ikmvsh1umTZLXP8p4LX/cm0RNeSbOO6iVQteUsUkugOp/03m76nBulxE+X/vLOHC549sUN3atd5f/YmRg49BQ56vSqzahL1O//cQZjE/bG2H3y9bxlfxIHTXrap7Q7NLQUJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765923300; c=relaxed/simple;
-	bh=CKnV6C7sQb0snXwV77QbYvVGmF3VEDViWTVpf4sksU8=;
+	s=arc-20240116; t=1765924364; c=relaxed/simple;
+	bh=lh/uVY9FnhSIXA6wN5XWkYu0pJ2ZX6BJre7epZlSNUY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VLvwX/5ReYxyRhz3o+SpR6U+xQ4w+d3FjkCDGw7A7XBz/beXVUhHWp/TEAJqG6NP4xnNoQ7ZMzwK1tdMsQueoJnp3PZzNnRoiAgQPFuHpiQC+13zjUqPkUtfWzzSRQsiv90qjIwcMxzwtQT+C3HwCcZbQmgonbswUSK52DZdaQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B6SPeW1I; arc=none smtp.client-ip=192.198.163.18
+	 In-Reply-To:Content-Type; b=tdULAFvEyqNtvM1VXBKZ6oasuUL3aC6p+RTefB5JAyBX0dlB9rrTl00PhUUQlRBy6Os92ma0Ig8439Z6w948NlzB26DH20wKKnaqcJUaZwlNk+/n9aqzM7J4ePiORSBGAmZgleym/BmE5p4rp1F1KkWtv9H6cGvMIuWjHBQCboQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NYSZr5Jg; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765923299; x=1797459299;
+  t=1765924353; x=1797460353;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=CKnV6C7sQb0snXwV77QbYvVGmF3VEDViWTVpf4sksU8=;
-  b=B6SPeW1IzSoNAR0OWnSMv+KHd4UrdkvcTmpUAbYHpfLpz6L7UjbdTc61
-   yznU2sU4ts0Nq6R98px+12zRLbkwoDE1UJEKCXjPsT680Pt8fcmQnyqVy
-   PLXRDLiGneg37/qa6Z4x4caYIjY2cLZtRQM4ugaWfgwFG2UxEoeUfkKE0
-   Q5/evN/Z06vlgKbQCCh2KNMpmVQ8LGuun3ag+G0N6L2YFfGwtAMr9VwFl
-   45CgcdkuqB0OQxIju3gbZh1YQ0CTbkwn3MNxviDrgCK2nAEQMhRBZSbVQ
-   e0R3XyfIxkAo61Dzc8gJ5qwkTN5XAIAb1BcHrZdiRLT4FKtHKazgsxPHF
+  bh=lh/uVY9FnhSIXA6wN5XWkYu0pJ2ZX6BJre7epZlSNUY=;
+  b=NYSZr5JgRoCsbaKJWL3GNtf6umWCNmn3RRdZElol2YXqVVkuPp80wDFY
+   YjO/lMTfMpBiymtERL0iPIHeNLlb7Xbf6RVIL+2SAEnaHkadR/5Wx1ABO
+   lK9fsuccuLvGJDcycrJjpcXN0kKF1waw27QS67Ns5vey0WepOEJVuWUV4
+   qDQ1QoD5hCHvELLu6y8NQct7hAEH8GeUjcxMoUr+Vv1Z4NH17BC9utBXo
+   TzNzlSga4qUoAaJiQefFUiq3cnSTnyLZMiPvvTgVzyvYhP4hiopuHbpmQ
+   aZZP+JVGF9Y/R8o1prXK8vfs4JdBvrtMuv061n72EhM/M0Nf86xv+AKXu
    Q==;
-X-CSE-ConnectionGUID: DWXuvAhKQQCD+VsA5Yr6wQ==
-X-CSE-MsgGUID: Ou1JfpldRgGRP16kkoaDbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="67047985"
+X-CSE-ConnectionGUID: FtuZiAEqTESEq1Lrk10yFA==
+X-CSE-MsgGUID: QFGOLNHrRryUTNbjwwDb+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="55427479"
 X-IronPort-AV: E=Sophos;i="6.21,154,1763452800"; 
-   d="scan'208";a="67047985"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 14:14:56 -0800
-X-CSE-ConnectionGUID: yxbySMJnQAinm/ScGKa28w==
-X-CSE-MsgGUID: HI87zTRWSlSkyXM/k5m2rg==
+   d="scan'208";a="55427479"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 14:32:31 -0800
+X-CSE-ConnectionGUID: BqZjr3JNRYWOf+Dimt0+Aw==
+X-CSE-MsgGUID: FIkHPVcST0GPR3E6ocv8pw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,154,1763452800"; 
-   d="scan'208";a="198379955"
+   d="scan'208";a="228831610"
 Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.110.199]) ([10.125.110.199])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 14:14:55 -0800
-Message-ID: <9febdd36-9c23-458a-8d7e-2bc39849e188@intel.com>
-Date: Tue, 16 Dec 2025 14:14:54 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 14:32:31 -0800
+Message-ID: <5c4734af-d72c-4b1d-9d2f-8c07d4c0dd6d@intel.com>
+Date: Tue, 16 Dec 2025 14:32:30 -0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -65,8 +65,7 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 16/28] x86/txt: Intel Trusted eXecution Technology
- (TXT) definitions
+Subject: Re: [PATCH v15 22/28] x86: Secure Launch kernel early boot stub
 To: Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
  x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
@@ -80,7 +79,7 @@ Cc: dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
  baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
  andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
 References: <20251215233316.1076248-1-ross.philipson@oracle.com>
- <20251215233316.1076248-17-ross.philipson@oracle.com>
+ <20251215233316.1076248-23-ross.philipson@oracle.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -126,40 +125,28 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251215233316.1076248-17-ross.philipson@oracle.com>
+In-Reply-To: <20251215233316.1076248-23-ross.philipson@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/15/25 15:33, Ross Philipson wrote:
-> +static inline struct txt_heap_event_log_pointer2_1_element*
-> +txt_find_log2_1_element(struct txt_os_sinit_data *os_sinit_data)
+> +static u64 sl_txt_read(u32 reg)
 > +{
-> +	struct txt_heap_ext_data_element *ext_elem;
+> +	return readq((void *)(u64)(TXT_PRIV_CONFIG_REGS_BASE + reg));
+> +}
 > +
-> +	/* The extended element array is at the end of this table */
-> +	ext_elem = (struct txt_heap_ext_data_element *)
-> +		((u8 *)os_sinit_data + sizeof(struct txt_os_sinit_data));
+> +static void sl_txt_write(u32 reg, u64 val)
+> +{
+> +	writeq(val, (void *)(u64)(TXT_PRIV_CONFIG_REGS_BASE + reg));
+> +}
 
-I'd really honestly see a helper for this kind of thing:
+Man, that's a lot of casting. If TXT_PRIV_CONFIG_REGS_BASE were just a
+pointer to being with, it could be:
 
-#define ptr_after(foo)	((void *)foo + sizeof(foo))
+	writeq(val, TXT_PRIV_CONFIG_REGS_BASE + reg);
 
-resulting in:
+Right?
 
-	ext_elem = ptr_after(os_sinit_data);
-
-would be a billion times easier to read than what's there. I honestly
-don't even see why this bothers with the u8 and cast to 'struct
-txt_heap_ext_data_element *' versus just using void* and being done with it.
-
-There's no type safety here in the first place so why bother?
-
-> +	while (ext_elem->type != TXT_HEAP_EXTDATA_TYPE_END) {
-> +		if (ext_elem->type == TXT_HEAP_EXTDATA_TYPE_EVENT_LOG_POINTER2_1) {
-> +			return (struct txt_heap_event_log_pointer2_1_element *)
-> +				((u8 *)ext_elem + sizeof(struct txt_heap_ext_data_element));
-> +		}
-> +		ext_elem = (struct txt_heap_ext_data_element *)
-> +			    ((u8 *)ext_elem + ext_elem->size);
-> +	}
+This _looks_ like it was just written and then had casts added to it
+until it compiled.
 
