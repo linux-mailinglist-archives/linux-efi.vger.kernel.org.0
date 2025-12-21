@@ -1,56 +1,94 @@
-Return-Path: <linux-efi+bounces-5911-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5912-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015DECD1F41
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Dec 2025 22:27:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57903CD42DF
+	for <lists+linux-efi@lfdr.de>; Sun, 21 Dec 2025 17:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B79DD303D68F
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Dec 2025 21:27:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43E76300C5EA
+	for <lists+linux-efi@lfdr.de>; Sun, 21 Dec 2025 16:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D449B32B98E;
-	Fri, 19 Dec 2025 21:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23A6223DE7;
+	Sun, 21 Dec 2025 16:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="EHw8A+Hx"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="mCnt4Y8g";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+fysO4lT";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SK/TpTNu";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JK9Vnvs5"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from sender4-of-o50.zoho.com (sender4-of-o50.zoho.com [136.143.188.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEFA304976;
-	Fri, 19 Dec 2025 21:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766179652; cv=pass; b=MSUDCutRx+430SAu7MHCLJ8aYlNYfOLhXSYRKUzNIyoeKxFMwGr3bmapIa3v/Xcy0kxeZDRK814X+lw8KTfs68SRjEGMh0+aXPpZNE/J09Ogcl+Cdhn6ht52sPPP227LTc8P/IKJxisS0AL3C6xhTPdqVXTJKHPMI3TdTuYlavc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766179652; c=relaxed/simple;
-	bh=/KdBLu3zLIn3vMbwoWA7KwHaiELSeLp1z4W3gn1njws=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=az+ip4YPj8Ob79HVm6dXysC3V/sa805/UDBuAW03yhlVI5akPQ1Db/x4DjOjxVmaOcUGMlbOnuxeWh/PfkLI3GD0fMPNqKUubk9FgOzgiF0FAWHGvpVALvOkZIBjSPcjouKzao7CrznDdKBtXsVFut+O9vVli7QYDU5ar4gE7kk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=EHw8A+Hx; arc=pass smtp.client-ip=136.143.188.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apertussolutions.com
-ARC-Seal: i=1; a=rsa-sha256; t=1766179569; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=XPk0Sln3Cy5qk9DCbfpON90DRrJ6nI9A6vUs+SDznVkOPF+0/KPsmXq9b9DDLc6G7FyU9F0CJt5VdkipC61Tei3S1DepoHDKMSB/wa2v9KRUb9My7p/5zHLBW0qRwtrPr9SufQtphsiNXeZQiLxYJ9H+5FZQbYi9qJSWKunnNjw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1766179569; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1ksQG2W08myKpheAB5+lngG8EZBBbzC4ZDZ4Ho0k7yk=; 
-	b=HHVC7hMBfBO846ScF3bcXEHdCW2AJdpkSX1+Km6al2QM4b7oRgPtjjGMrZRAwh5WlSjVAOXmyUdSTN9Li2b/cTPSg+suLtNT0t3rwlYlwliPjw17QP4i47ZCByfWQDxeh730ZvkQm2tgepZ45g5KibgWi2FxQ/jEV0HTbDrKJTI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=apertussolutions.com;
-	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
-	dmarc=pass header.from=<dpsmith@apertussolutions.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766179569;
-	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
-	h=Message-ID:Date:Date:MIME-Version:From:From:Subject:Subject:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=1ksQG2W08myKpheAB5+lngG8EZBBbzC4ZDZ4Ho0k7yk=;
-	b=EHw8A+Hx1IszIEM+SW2HJBnE2oDNbQgT9FR2t1QSNOin+e1UbG5VkGGIH85bazia
-	mcgs4w2xqMOHq6EQHfPnSgU1DLIxdXTY0aLA1V0H8NrITQ6SXGv6YwAcPw2Mt5z7DpN
-	a0wdNOlnOWMU3TV6djzu7cPpRXAjLpHsQ1z+BoW0=
-Received: by mx.zohomail.com with SMTPS id 1766179565947257.12757632667626;
-	Fri, 19 Dec 2025 13:26:05 -0800 (PST)
-Message-ID: <62227ed3-3804-4795-93c9-ce2bbad3f2a7@apertussolutions.com>
-Date: Fri, 19 Dec 2025 16:26:02 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F48C1487E9
+	for <linux-efi@vger.kernel.org>; Sun, 21 Dec 2025 16:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766333918; cv=none; b=Z1QPW0XZdTT8WPclu0IypQURr91ociKX2A/DagpSO+CSDgkUhbQo4FaqBnhUhgTmO5CrL6WDJF26ScCSt/h+AC5A9vS0WHCfyoJArNYDaaif/COnXoAPD/V7tTpaR71HGrptl8uU6Nsvoag9LRexFBfMv+h2t+RMpd20blHfTeA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766333918; c=relaxed/simple;
+	bh=b6N6Jj7QBC5KdMoc+yYcrtzg/8owWwq3DmZcwg0Z8v8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XOTqERgDBERjMVG4+RWYYALh4ZBLhJqrLDSyHH8yiv/ubqZ93WFldVDbC0fhU6SutSsxdMtefxCVxTNWWs7rkWPIg8N6taawSpGMef58p8rLZ5XtCOH1PWtEUIgP3HF/n/gBF+Sw5uOcM/YatPmTYXOyhOcyFoU8ZvjRPCVEfxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=mCnt4Y8g; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+fysO4lT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SK/TpTNu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JK9Vnvs5; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 653C35BCC2;
+	Sun, 21 Dec 2025 16:18:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1766333910; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=3Yj5PCkcX3NpOx0MVubHGjm/vyE75Or7OKm5HcbRRAM=;
+	b=mCnt4Y8g9wsGeC8a71YqMV35vOzr1m0HM69UW17UulhUuwVG0ydF3uuvzeXLa4GIvslZ7S
+	QYQc3/3AA/mLmpp+EtuVSWHSFyj2qHFq13+nY3F0Sz2QLUSg458KpQloTphi22MZ5Meq/4
+	GIRIQkIUdIRy7RQxjyXcgjxIfnpljRA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1766333910;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=3Yj5PCkcX3NpOx0MVubHGjm/vyE75Or7OKm5HcbRRAM=;
+	b=+fysO4lT9QRvCJD4KFhF25SM1m1m/VNA80U1DScLwbWpQQYgUEyHmTeDGtG7rBrqQV+M1F
+	6h3OrRzIQ6Ob+kBA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="SK/TpTNu";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JK9Vnvs5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1766333909; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=3Yj5PCkcX3NpOx0MVubHGjm/vyE75Or7OKm5HcbRRAM=;
+	b=SK/TpTNuD9iwQ9XXcNlTwGcmiWFxH31bYOz2qi35e3x4fDRgAsvNA+ZhUzRPxq2nzxPFHF
+	RvhyFdO8JkbXaUmVNgZ58vW8x0HCHKwcOGRGsaidcJfg1bVOfg3aVOEyZwSXTlFJXdYsPb
+	LNIrSYQRjUUWwcmwLqIn/6OIXHPU5xM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1766333909;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=3Yj5PCkcX3NpOx0MVubHGjm/vyE75Or7OKm5HcbRRAM=;
+	b=JK9Vnvs5Ps/AD+vFcl47c3Ac/ds9F0AXi/mGl57Rxm+IAa4aNyMKLohCuHyatBPjX+BmXa
+	jJVUd9ZB1w6TZPCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E8B7513A54;
+	Sun, 21 Dec 2025 16:18:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oHBlN9QdSGnANgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Sun, 21 Dec 2025 16:18:28 +0000
+Message-ID: <0204b4f2-98b3-4463-9ae7-fc3657ce2fc1@suse.de>
+Date: Sun, 21 Dec 2025 17:18:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -58,220 +96,313 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
-Subject: Re: [PATCH v15 19/28] x86/tpm: Early TPM PCR extending driver
-To: Dave Hansen <dave.hansen@intel.com>,
- Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
- linux-efi@vger.kernel.org, iommu@lists.linux.dev
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
- dave.hansen@linux.intel.com, ardb@kernel.org, mjg59@srcf.ucam.org,
- James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, jarkko@kernel.org,
- jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu,
- herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net,
- ebiederm@xmission.com, dwmw2@infradead.org, baolu.lu@linux.intel.com,
- kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
- trenchboot-devel@googlegroups.com
-References: <20251215233316.1076248-1-ross.philipson@oracle.com>
- <20251215233316.1076248-20-ross.philipson@oracle.com>
- <56929e8b-a7cf-4390-b4ec-0b4c2c32b311@intel.com>
+Subject: Re: [PATCH v3 9/9] efi: libstub: Simplify interfaces for
+ primary_display
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: javierm@redhat.com, arnd@arndb.de, richard.lyu@suse.com,
+ helgaas@kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-fbdev@vger.kernel.org
+References: <20251126160854.553077-1-tzimmermann@suse.de>
+ <20251126160854.553077-10-tzimmermann@suse.de>
+ <CAMj1kXFeBS7O5A-CPds3UfFnjegGTpVsuF7VznBc-zZ+gjygtw@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=dpsmith@apertussolutions.com; keydata=
- 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
-In-Reply-To: <56929e8b-a7cf-4390-b4ec-0b4c2c32b311@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <CAMj1kXFeBS7O5A-CPds3UfFnjegGTpVsuF7VznBc-zZ+gjygtw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: 653C35BCC2
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:dkim,suse.de:email];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Level: 
 
-Hey Dave!
+Hi
 
-On 12/16/25 16:53, Dave Hansen wrote:
-> I'm mostly spot-checking this to see what kind of shape it's in and how
-> much work and diligence has been applied in the last 8 months since v14.
-> 
-> On 12/15/25 15:33, Ross Philipson wrote:
-> ...
->> The driver could be extended for further operations if needed. This
->> TPM dirver implementation relies as much as possible on existing mainline
-> 
-> <sigh>
-> 
-> v15 and no spell checking. :(
-> 
->> --- /dev/null
->> +++ b/arch/x86/boot/compressed/early_tpm_extend.c
->> @@ -0,0 +1,601 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
+Am 16.12.25 um 14:23 schrieb Ard Biesheuvel:
+> Hi Thomas
+>
+> On Wed, 26 Nov 2025 at 17:09, Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>> Rename alloc_primary_display() and __alloc_primary_display(), clarify
+>> free semantics to make interfaces easier to understand.
+>>
+>> Rename alloc_primary_display() to lookup_primary_display() as it
+>> does not necessarily allocate. Then rename __alloc_primary_display()
+>> to the new alloc_primary_display(). The helper belongs to
+>> free_primary_display), so it should be named without underscores.
+>>
+>> The lookup helper does not necessarily allocate, so the output
+>> parameter needs_free to indicate when free should be called.
+> I don't understand why we need this. Whether or not the helper
+> allocates is a compile time decision, and in builds where it doesn't,
+> the free helper doesn't do anything.
+>
+> I'm all for making things simpler, but I don't think this patch
+> achieves that tbh.
+>
+> I've queued up this series now up until this patch - once we converge
+> on the simplification, I'm happy to apply it on top.
+
+If you don't want this patch, just leave it out then. Coming from 
+another subsystem, I found the current logic and naming confusing THB.
+
+Best regards
+Thomas
+
+
+>
+> Thanks,
+>
+>
+>
+>> Pass
+>> an argument through the calls to track this state. Put the free
+>> handling into release_primary_display() for simplificy.
+>>
+>> Also move the comment fro primary_display.c to efi-stub-entry.c,
+>> where it now describes lookup_primary_display().
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> ---
+>>   drivers/firmware/efi/libstub/efi-stub-entry.c | 23 +++++++++++++++++--
+>>   drivers/firmware/efi/libstub/efi-stub.c       | 22 ++++++++++++------
+>>   drivers/firmware/efi/libstub/efistub.h        |  2 +-
+>>   .../firmware/efi/libstub/primary_display.c    | 17 +-------------
+>>   drivers/firmware/efi/libstub/zboot.c          |  6 +++--
+>>   5 files changed, 42 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/drivers/firmware/efi/libstub/efi-stub-entry.c b/drivers/firmware/efi/libstub/efi-stub-entry.c
+>> index aa85e910fe59..3077b51fe0b2 100644
+>> --- a/drivers/firmware/efi/libstub/efi-stub-entry.c
+>> +++ b/drivers/firmware/efi/libstub/efi-stub-entry.c
+>> @@ -14,10 +14,29 @@ static void *kernel_image_addr(void *addr)
+>>          return addr + kernel_image_offset;
+>>   }
+>>
+>> -struct sysfb_display_info *alloc_primary_display(void)
 >> +/*
->> + * Copyright (c) 2010-2012 United States Government, as represented by
->> + * the Secretary of Defense.  All rights reserved.
-> 
-> IANAL, but this looks fishy.
-> 
-> It's theoretically fine to go grab random code off the Internet and
-> submit it to the kernel, given the correct license. But I do want to
-> know what its story is and where it came from.
-
-
-Let me provide some context as to the code origin. Ross, before joining 
-Oracle, and I have a long history of working with DRTM/Intel TXT within 
-Xen. When it was requested to go back to sending the measurements to the 
-TPM in the setup kernel, we needed to find a minimal code base to 
-provide the command buffer packing until the TPM driver could be fully 
-refactored. We knew that Xen's vtpm framework provided a simple macro 
-system to provide contextual TPM command buffer packing. We decided this 
-would be a lightweight choice that would be easy to cut down to only 
-what is needed to handle the very few TPM commands we will need to send. 
-And to that extent, there have been internal reviews that have reduced 
-the amount of that original code.
-
-> I also seem to remember that there are special rules around the US
-> federal government's inability to hold copyrights. This seems worth at
-> least a mention ... somewhere.
-
-IANAL either, but in general the safest/correct approach is to retain 
-any CRs placed on the code being reused, and the above is the CR on the 
-source from the Xen tree.
-
-> This is helpful, for instance:
-> 
->> + * based off of the original tools/vtpm_manager code base which is:
->> + * Copyright (c) 2005, Intel Corp.
->> + * All rights reserved.
-> 
-> so thanks for that one.
-
-That's the origin of all the code reuse, we can do an review to see if 
-any of the code that originated from the USG code is still present.
-
->> + * Redistribution and use in source and binary forms, with or without
->> + * modification, are permitted provided that the following conditions
->> + * are met:
+>> + * There are two ways of populating the core kernel's sysfb_primary_display
+>> + * via the stub:
 >> + *
->> + *   * Redistributions of source code must retain the above copyright
->> + *     notice, this list of conditions and the following disclaimer.
->> + *   * Redistributions in binary form must reproduce the above
->> + *     copyright notice, this list of conditions and the following
->> + *     disclaimer in the documentation and/or other materials provided
->> + *     with the distribution.
->> + *   * Neither the name of Intel Corporation nor the names of its
->> + *     contributors may be used to endorse or promote products derived
->> + *     from this software without specific prior written permission.
+>> + *   - using a configuration table, which relies on the EFI init code to
+>> + *     locate the table and copy the contents; or
 >> + *
->> + * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
->> + * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
->> + * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
->> + * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
->> + * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
->> + * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
->> + * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
->> + * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
->> + * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
->> + * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
->> + * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
->> + * OF THE POSSIBILITY OF SUCH DAMAGE.
+>> + *   - by linking directly to the core kernel's copy of the global symbol.
+>> + *
+>> + * The latter is preferred because it makes the EFIFB earlycon available very
+>> + * early, but it only works if the EFI stub is part of the core kernel image
+>> + * itself. The zboot decompressor can only use the configuration table
+>> + * approach.
 >> + */
-> 
-> Also, IANAL, but this looks BSD-ish.
-> 
-> I would have kinda expected the SPDX header to say BSD-blah-blah and not
-> GPL-2.0-only.
-> 
-> I'd really appreciate if you could go have a huddle with your corporate
-> Open Source folks and make sure this is all proper. To me, it looks
-> fishy at _best_.
-> 
-> ...
->> +/*
->> + * We're far too early to calibrate time.  Assume a 5GHz processor (the upper
->> + * end of the Fam19h range), which causes us to be wrong in the safe direction
->> + * on slower systems.
->> + */
-> 
-> https://docs.kernel.org/process/maintainer-tip.html#changelog
-> 
-> Imperative voice please.
-> 
-> ...
->> +static int __tis_recv_data(struct tpm_chip *chip, u8 *buf, int count)
+>> +
+>> +struct sysfb_display_info *lookup_primary_display(bool *needs_free)
+>>   {
+>> +       *needs_free = true;
+>> +
+>>          if (IS_ENABLED(CONFIG_ARM))
+>> -               return __alloc_primary_display();
+>> +               return alloc_primary_display();
+>> +
+>> +       *needs_free = false;
+>>
+>>          if (IS_ENABLED(CONFIG_X86) ||
+>>              IS_ENABLED(CONFIG_EFI_EARLYCON) ||
+>> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+>> index 42d6073bcd06..dc545f62c62b 100644
+>> --- a/drivers/firmware/efi/libstub/efi-stub.c
+>> +++ b/drivers/firmware/efi/libstub/efi-stub.c
+>> @@ -51,14 +51,14 @@ static bool flat_va_mapping = (EFI_RT_VIRTUAL_OFFSET != 0);
+>>   void __weak free_primary_display(struct sysfb_display_info *dpy)
+>>   { }
+>>
+>> -static struct sysfb_display_info *setup_primary_display(void)
+>> +static struct sysfb_display_info *setup_primary_display(bool *dpy_needs_free)
+>>   {
+>>          struct sysfb_display_info *dpy;
+>>          struct screen_info *screen = NULL;
+>>          struct edid_info *edid = NULL;
+>>          efi_status_t status;
+>>
+>> -       dpy = alloc_primary_display();
+>> +       dpy = lookup_primary_display(dpy_needs_free);
+>>          if (!dpy)
+>>                  return NULL;
+>>          screen = &dpy->screen;
+>> @@ -68,15 +68,22 @@ static struct sysfb_display_info *setup_primary_display(void)
+>>
+>>          status = efi_setup_graphics(screen, edid);
+>>          if (status != EFI_SUCCESS)
+>> -               goto err_free_primary_display;
+>> +               goto err___free_primary_display;
+>>
+>>          return dpy;
+>>
+>> -err_free_primary_display:
+>> -       free_primary_display(dpy);
+>> +err___free_primary_display:
+>> +       if (*dpy_needs_free)
+>> +               free_primary_display(dpy);
+>>          return NULL;
+>>   }
+>>
+>> +static void release_primary_display(struct sysfb_display_info *dpy, bool dpy_needs_free)
 >> +{
->> +	int size = 0;
->> +	int burstcnt;
->> +
->> +	while (size < count && __tis_wait_for_stat(chip, TPM_STS_DATA_AVAIL | TPM_STS_VALID, chip->timeout_c) == 0) {
->> +		burstcnt = __tis_get_burstcount(chip);
->> +
->> +		for ( ; burstcnt > 0 && size < count; --burstcnt)
->> +			buf[size++] = tpm_read8(chip, TPM_DATA_FIFO(chip->locality));
->> +	}
->> +
->> +	return size;
+>> +       if (dpy && dpy_needs_free)
+>> +               free_primary_display(dpy);
 >> +}
 >> +
->> +/**
->> + * tpm_tis_check_locality - Check if the given locality is the active one
->> + * @chip:	The TPM chip instance
->> + * @loc:	The locality to check
->> + *
->> + * Return: true - locality active, false - not active
->> + */
->> +bool tpm_tis_check_locality(struct tpm_chip *chip, int loc)
->> +{
->> +	if ((tpm_read8(chip, TPM_ACCESS(loc)) & (TPM_ACCESS_ACTIVE_LOCALITY | TPM_ACCESS_VALID)) == (TPM_ACCESS_ACTIVE_LOCALITY | TPM_ACCESS_VALID)) {
->> +		chip->locality = loc;
->> +		return true;
->> +	}
+>>   static void install_memreserve_table(void)
+>>   {
+>>          struct linux_efi_memreserve *rsv;
+>> @@ -156,13 +163,14 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+>>                               char *cmdline_ptr)
+>>   {
+>>          struct sysfb_display_info *dpy;
+>> +       bool dpy_needs_free;
+>>          efi_status_t status;
+>>
+>>          status = check_platform_features();
+>>          if (status != EFI_SUCCESS)
+>>                  return status;
+>>
+>> -       dpy = setup_primary_display();
+>> +       dpy = setup_primary_display(&dpy_needs_free);
+>>
+>>          efi_retrieve_eventlog();
+>>
+>> @@ -182,7 +190,7 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+>>
+>>          status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
+>>
+>> -       free_primary_display(dpy);
+>> +       release_primary_display(dpy, dpy_needs_free);
+>>
+>>          return status;
+>>   }
+>> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+>> index 979a21818cc1..1503ffb82903 100644
+>> --- a/drivers/firmware/efi/libstub/efistub.h
+>> +++ b/drivers/firmware/efi/libstub/efistub.h
+>> @@ -1176,8 +1176,8 @@ efi_enable_reset_attack_mitigation(void) { }
+>>
+>>   void efi_retrieve_eventlog(void);
+>>
+>> +struct sysfb_display_info *lookup_primary_display(bool *needs_free);
+>>   struct sysfb_display_info *alloc_primary_display(void);
+>> -struct sysfb_display_info *__alloc_primary_display(void);
+>>   void free_primary_display(struct sysfb_display_info *dpy);
+>>
+>>   void efi_cache_sync_image(unsigned long image_base,
+>> diff --git a/drivers/firmware/efi/libstub/primary_display.c b/drivers/firmware/efi/libstub/primary_display.c
+>> index cdaebab26514..34c54ac1e02a 100644
+>> --- a/drivers/firmware/efi/libstub/primary_display.c
+>> +++ b/drivers/firmware/efi/libstub/primary_display.c
+>> @@ -7,24 +7,9 @@
+>>
+>>   #include "efistub.h"
+>>
+>> -/*
+>> - * There are two ways of populating the core kernel's sysfb_primary_display
+>> - * via the stub:
+>> - *
+>> - *   - using a configuration table, which relies on the EFI init code to
+>> - *     locate the table and copy the contents; or
+>> - *
+>> - *   - by linking directly to the core kernel's copy of the global symbol.
+>> - *
+>> - * The latter is preferred because it makes the EFIFB earlycon available very
+>> - * early, but it only works if the EFI stub is part of the core kernel image
+>> - * itself. The zboot decompressor can only use the configuration table
+>> - * approach.
+>> - */
+>> -
+>>   static efi_guid_t primary_display_guid = LINUX_EFI_PRIMARY_DISPLAY_TABLE_GUID;
+>>
+>> -struct sysfb_display_info *__alloc_primary_display(void)
+>> +struct sysfb_display_info *alloc_primary_display(void)
+>>   {
+>>          struct sysfb_display_info *dpy;
+>>          efi_status_t status;
+>> diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
+>> index 4b76f74c56da..c1fd1fdbcb08 100644
+>> --- a/drivers/firmware/efi/libstub/zboot.c
+>> +++ b/drivers/firmware/efi/libstub/zboot.c
+>> @@ -26,9 +26,11 @@ void __weak efi_cache_sync_image(unsigned long image_base,
+>>          // executable code loaded into memory to be safe for execution.
+>>   }
+>>
+>> -struct sysfb_display_info *alloc_primary_display(void)
+>> +struct sysfb_display_info *lookup_primary_display(bool *needs_free)
+>>   {
+>> -       return __alloc_primary_display();
+>> +       *needs_free = true;
 >> +
->> +	return false;
->> +}
->> +
->> +/**
->> + * tpm_tis_release_locality - Release the active locality
->> + * @chip:	The TPM chip instance
->> + */
->> +void tpm_tis_release_locality(struct tpm_chip *chip)
->> +{
->> +	if ((tpm_read8(chip, TPM_ACCESS(chip->locality)) & (TPM_ACCESS_REQUEST_PENDING | TPM_ACCESS_VALID)) == (TPM_ACCESS_REQUEST_PENDING | TPM_ACCESS_VALID))
->> +		tpm_write8(chip, TPM_ACCESS(chip->locality), TPM_ACCESS_RELINQUISH_LOCALITY);
->> +
->> +	chip->locality = 0;
->> +}
-> 
-> I guess some folks aren't enforcing the 80-column limits. But this is
-> not even close. It's almost 80x2.
-> 
-> Has there even been an attempt to make this conform to kernel coding
-> style? What other checkpatch.pl warnings are being ignored?
+>> +       return alloc_primary_display();
+>>   }
+>>
+>>   asmlinkage efi_status_t __efiapi
+>> --
+>> 2.51.1
+>>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
 
 
 
