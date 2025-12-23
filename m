@@ -1,66 +1,66 @@
-Return-Path: <linux-efi+bounces-5919-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5920-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAB6CD8FAB
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 11:56:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED1CCD8FCF
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 11:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB5BD30215CE
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 10:56:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A544530399A7
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 10:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4DB27453;
-	Tue, 23 Dec 2025 10:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7DC328259;
+	Tue, 23 Dec 2025 10:56:11 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3256A31076B
-	for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 10:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE3632C309
+	for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 10:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766487369; cv=none; b=RKXgVf/Nl8LDTgV/HWY3aoJOqNIIFdpLXktZlRMhexXA/0fO1W4wjaanFH7CbRcDuJ1L4OptPjXFpFSR/pRwTIRACX4JzZHlk4qbzFmudohOC06LFPkfBK4Lo+4wZmPhu1EiTJU9zwFEDxm9pXKSttwDiJvoHiO5A6T2snO0Ty4=
+	t=1766487371; cv=none; b=bG2HzrJ4q3qInCav98T0exTElCoRuGjuoc+t68azwvKaDILhevqGHe/UojKC2iViP3yUULiZy0BAx0JoXuyiWQpJfwH1x1HuqFCIcTEfoxgvsgPpfnFiG3oosLURl/SZ6sWX33LR209n64rauI8s8MHpeIghHzSR64VLwAktYGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766487369; c=relaxed/simple;
-	bh=JPX11ECPaVPrf1MUlS1NHwPHSQuz31NB4jHoPAD7UEs=;
+	s=arc-20240116; t=1766487371; c=relaxed/simple;
+	bh=JVkzh6Mj6r18BxTCZYOIUvNWS/o6kmzf/4mUqtZjoM0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CD0oXMYxeVE1Lt2iBuD9gxnDden0bdpOkkK+EA8B2KG+A/qZVxXhSU0KjWAO9Cm1FOwu6mJelUBX8D1ro0QsnT6DJUqzVkI6V+lzEsPcVvu8hpaUuTj8H7yRWFrvPbo24frPPmnlxwIGLLcZOow4v8bNisLUx3CyKkyFFkP56y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.45
+	 In-Reply-To:To:Cc; b=GG3C/4sN2BF7dX0ADM983ldKlItmzN+l8wlO5qVq4bblpXfKLk3QWXFxdGU8GZKtkc4FGt6HSmF1+7yMaoshtvsk38DkT2HmZzM9e2ZVncv8Mpb+ADj0/LrLRq2uzDjGVg6Nej+3EeLEUSoqhFNLOYGpbuwAMj2xdBN23oHd2Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7c76d855ddbso1382899a34.3
-        for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 02:56:07 -0800 (PST)
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7c71cca8fc2so3010261a34.1
+        for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 02:56:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766487367; x=1767092167;
+        d=1e100.net; s=20230601; t=1766487368; x=1767092168;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=P+FdLdYIbfO7vOmrfvIwEh+YRn/9rHzC4lMj63oYJMc=;
-        b=kqv+7eysk2l8R2Nn9r/yi29zQYlM5xmLDTShLzC9B8Vh/+zqzFH7roaBRdzYP/M0+7
-         7gIlwEdM9LV9XRtLRoNDcQcGrN4mj9VXVbFXp4YxATgNGe9/AMIYh2D7XKSVqW1cjPjF
-         dptd/tvC2GaWPWA1MS2N3/eW+Qe70QYHnSUY74RGnb5cP+YroxfDgO6oyySPWgPfLCqB
-         g1yaMap/iWuGX14+vIbElOGB2XXrfh71Gkv0PiJ35wAEhuSOoUmDxUn6uW/ZKaPeNpvN
-         lsz+wUqbdSchxesY12bo1pwXeiO5iMEIqW9IRyOqQtT+H1jmNFwK9i0AwbcrEp43yADI
-         UfLw==
-X-Gm-Message-State: AOJu0YzYwbBRlRUy39smm0++Ca4wSziWnxtWOMxtsafEOFWwhGgf60Sz
-	KzAAvswGzprLGN1/91gjTgFQRkS/bS+z031WzAkG4tTbgg2TZp7ECHfs5aUXoHf1
-X-Gm-Gg: AY/fxX5yhUcC77NSQzukw+njBcIBb1lVv14+h8qdfw4Ioi5QkVG8xSJfw1M/bLV5uq3
-	zs9ehObAxA71CHjeUvgj6KkZEUXHB16hQ71BuySel4wwjJV0/Mi3W5GlbB00Vx7Q4phsJOygVWY
-	d8dI8BK6J9NddeD7dznUNuwmg3kShW+wEET6igrLylJdb9f8VShpJGHAwhdPydxy4KyxvYJeFbb
-	jWZdJ15yrEC6WXQgK4hriDcj52pdcxAwxVDwPC+8cnpQS3mftZBITRE+3LvG/UBNCebhuCk7jwT
-	eqAWY8A8vX/NiIAP08+EQut29G9N2PrIXvShRIKy/hISYAZ4GK79IIOxcmKhht/ICncC6R7RbK0
-	uzrZEmAICoCfsaMEAVCBpgT4V9Eu55a31jIrwhXzD3a9e0rCOhHk0FZkmliqTJ4+sCK8TjcZxdo
-	QpqvjXszrHn3r/0Q==
-X-Google-Smtp-Source: AGHT+IHN2V35Klregw+9YTKsH2OtlmwwB/mDyXPjK++QZTB2CC0RR+jqY6r+PZxq7ko/5WlgLmeZrw==
-X-Received: by 2002:a05:6830:314e:b0:7c6:cb39:adf7 with SMTP id 46e09a7af769-7cc6689c9d0mr6676247a34.6.1766487367049;
-        Tue, 23 Dec 2025 02:56:07 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:49::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc6673bdabsm9065064a34.10.2025.12.23.02.56.06
+        bh=t1lrhud01Tkkm4DNq9b9beIZ4pRUP61WPiTcci3k5Fk=;
+        b=aMl7JsKG6FRWjOsrkSYeyI0zAKdLzuPS1mFehe0fXredWlfXdUhjPKBXh+X/qe7B7l
+         D0RhnXMBEFRXugMalISzyIrqHJeNWfRwXv1UPldeeY2oh7Tm8g8KQUolgJdFC1XlIl/s
+         3VaN+hgwHQGyDVQhA5h4kXqIrudxvjKMd3/+RpnKzgRXck7dw6nUyrLEiOAmWdn+ECqz
+         Z6+uXY9xziQXGNM9/uY9kMmpW+YWI3gQKQDk69uY0zMdcEVBMaDq4HjE3tlRysGmFSz1
+         m6zY431HvZioUxOoRWF8Ykyo8wdAQKHp5AWWWzqgO0c0kX4Nfpkg9BL+TLWOkhOtJq+L
+         oiwQ==
+X-Gm-Message-State: AOJu0YxmypUx6YL76HMgdU2t9dYNVKiEift/2/17HRBFzMY6hp47SPvw
+	gVKzAhgFha3YHRn97Fr0O05XbohKvGS71YOP/X2Gtgh0NkL3DqHkBmy2
+X-Gm-Gg: AY/fxX6V5d5cG6L8Nas3PToqNCL30DpEG3jKUX1xvkq88nmACVd0+Agrn36e4MwfMjF
+	cWCU6xdc5x2hcnAcqhd5awn8IlTvyK47kJhdUa856jVuhnn6bGZ6PKn8OBqVHf+c+g3dwEZMlYZ
+	EfvC5ADfa/AjGVpeU5MZWHvjyV4/pyJZGEtstrPwhvB9AyaEqrHbjn6xTmd9QTKv2jtfzrzxVaJ
+	R1g+p9g/9fSv8bnVV9KHbqzn2LzXCexfvETtqyQiXkrnFNF7N4FLXRPBi7s5Y/xB8vVdOatqiKf
+	2LsEEbhoRtSd+ob3BiqaPN2kY5+kWovPZLfk5Ow6tVqeJz+fz8JOzt6KHSeLFAUElJoQsKxrCWG
+	kxpaZonP8sm3c3SyjJuIV8UHaq0rhzaiE+Ye39qVfMwNKW8gEzm8/7bj9UJYU0ecgtdXX1rU+6z
+	UvdjD6+fLjzTf3Zg==
+X-Google-Smtp-Source: AGHT+IEEdQF/gHgq3UyLobX8GobuVX0tUFKwYAoMjIMFsmgE4CYjBTAFdX7i1k9CtrdDm1Wa+O8GLQ==
+X-Received: by 2002:a4a:de8f:0:b0:65d:be3:311b with SMTP id 006d021491bc7-65d0eafc4ebmr4785903eaf.78.1766487368481;
+        Tue, 23 Dec 2025 02:56:08 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:4c::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65d0f723ab6sm8713620eaf.17.2025.12.23.02.56.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 02:56:06 -0800 (PST)
+        Tue, 23 Dec 2025 02:56:07 -0800 (PST)
 From: Breno Leitao <leitao@debian.org>
-Date: Tue, 23 Dec 2025 02:55:43 -0800
-Subject: [PATCH 1/2] arm64: efi: Fix NULL pointer dereference by
- initializing user_ns
+Date: Tue, 23 Dec 2025 02:55:44 -0800
+Subject: [PATCH 2/2] kthread: Warn if mm_struct lacks user_ns in
+ kthread_use_mm()
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251223-efi_fix_619-v1-1-e0146b8b9d73@debian.org>
+Message-Id: <20251223-efi_fix_619-v1-2-e0146b8b9d73@debian.org>
 References: <20251223-efi_fix_619-v1-0-e0146b8b9d73@debian.org>
 In-Reply-To: <20251223-efi_fix_619-v1-0-e0146b8b9d73@debian.org>
 To: Ard Biesheuvel <ardb@kernel.org>, 
@@ -79,72 +79,57 @@ Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
  usamaarif642@gmail.com, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2290; i=leitao@debian.org;
- h=from:subject:message-id; bh=JPX11ECPaVPrf1MUlS1NHwPHSQuz31NB4jHoPAD7UEs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpSnVERN1w34K2bU0P1LvowG6Xgn8s0jFHxj1T+
- myf6uG4fiKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaUp1RAAKCRA1o5Of/Hh3
- bcV4D/wMbGBfSuzqozvQHGdYEhbyw9hw7JGeECYucULIyAmq1QKPRk6tmC/KNW66EbKynHk3W0B
- lwz/otxPI/YJZKk9TW7HbW64zgXZ2cICMblLGA8+G/0hqDbsYorXNZ7b+cIRTU3ACDrnP/2zlIP
- iYRjfPI25MWAo08KO8n/FFnekS8D65B1BJqNz/gE9L0qOcRqxQAZfeDvx5kKtlpgwXXsXkaBv+v
- pklHh9H5eJGNGf/LECjmedGBDU2lknktPo807TbRjjF2WhitXoY7UG7mc/3lDvLQ0yjPGno3Nxw
- +1tvxWsEDPI/S241Q18a67nm6rLr4CoF8JY+c+6XaktdUI0bQKOVRXsBI3T/ZRR5nyD8lGdVhk8
- H8IdIJhpJ9pdpbUwYFY9bEOGmP85bjrYtMH7Bl2Fk/ijhZQHzp+HnQL02jQ0eNW6iZJKpltBy9Z
- /k7eShirBHO01BNDZjdc7P3jHTrE33iTh9BCsUnWChJxFhcVToq1RXIJ8FrSY5n6OJBq1ePcqXm
- GwCwSu70Xut+SZvBgSm2ofGBPoqwsz5DS99ipygfYmKcZoyXuJDcjFsFFPAQvZw+JtrTHxWf0KP
- QT8O93E6sgd/j/ZSmvroKHwXYp43yIUyo5R2BZm+OYi+Fwz8yjaA26DoKvT3SneoCsDHtlS3yyK
- MU54OZsno/DXPFA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1268; i=leitao@debian.org;
+ h=from:subject:message-id; bh=JVkzh6Mj6r18BxTCZYOIUvNWS/o6kmzf/4mUqtZjoM0=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpSnVE+bi2ZoQldtZ7u8jeYGlbnlyMfIcy78o4u
+ qgOXEr0OzmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaUp1RAAKCRA1o5Of/Hh3
+ be7LEACHOsztZael5tTqpe9CNoDWhqU8isXgl0v5yAwcqk8Fjm5MKLgC2z7XxxeuUgCxNF2dQba
+ 3ZNyA7Xh/twezTl30dyVRJX+pW3qbfL5irGxa1AV5ua9kSUObxME9BJRk3AReZ0+v+/Cdv1NIbm
+ hYeTxSZg0CBZuWtWvtB2JkNna3nH954ALoHtSiHdSzAI+JBIXvbwP/6bHrhzBioX8g9A+JRbkXb
+ DZtAnS09cTmABI/gYH3ydpbK8zM1ATWLIH5cVVm6oGHT+/ocSpW98EuJdvwV04VcUr6S2wCha9v
+ iULKzhEB7ZJJvA4e+f2lS8Wol22Ka52YSCv9WTUa1lJKhhR/JQi5niFZoN2A7+qD2oCyjUxbKj/
+ Z5W+R1fChfCj1Ak91hQCKiYh0QHa3Sy7q5Emgo8hvsEekSTwRd+H3lfZaSgZ2/pyGSwkWh6myh5
+ IxzvT0EWz83bMSv1DPXp0wEOdvLFBzRpo2lOEzrtjsIPoMx7v5V0L5p1XrLrt1IdDmV3MMs7Ijy
+ yD2Mcu36gtbS0aukBFiGH/E57s2DMKGS3mFcvU57Ug4BQMo1eFcBRbAu9jOvdi6r9EUn0p6oaEb
+ tyz6zNpBvpfoFJdwrZ5RMszVcrHK8lxuJqPrcbz6+RQcKL+A1lRn/H+9PA6wOcYnUaYvT63Su+f
+ MnT0qjGWX+M7iVA==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-Linux 6.19-rc2 (9448598b22c5 ("Linux 6.19-rc2")) is crashing with a NULL
-pointer dereference on arm64 hosts:
+Add a WARN_ON_ONCE() check to detect mm_struct instances that are
+missing user_ns initialization when passed to kthread_use_mm().
 
-  Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c8
-   pc : cap_capable (security/commoncap.c:82 security/commoncap.c:128)
-   Call trace:
-    cap_capable (security/commoncap.c:82 security/commoncap.c:128) (P)
-    security_capable (security/security.c:?)
-    ns_capable_noaudit (kernel/capability.c:342 kernel/capability.c:381)
-    __ptrace_may_access (./include/linux/rcupdate.h:895 kernel/ptrace.c:326)
-    ptrace_may_access (kernel/ptrace.c:353)
-    do_task_stat (fs/proc/array.c:467)
-    proc_tgid_stat (fs/proc/array.c:673)
-    proc_single_show (fs/proc/base.c:803)
+When a kthread adopts an mm via kthread_use_mm(), LSM hooks and
+capability checks may access current->mm->user_ns for credential
+validation. If user_ns is NULL, this leads to a NULL pointer
+dereference crash.
 
-I've bissected the problem to commit a5baf582f4c0 ("arm64/efi: Call EFI
-runtime services without disabling preemption").
-
-From my analyzes, the crash occurs because efi_mm lacks a user_ns field
-initialization. This was previously harmless, but commit a5baf582f4c0
+This was observed with efi_mm on arm64, where commit a5baf582f4c0
 ("arm64/efi: Call EFI runtime services without disabling preemption")
-changed the EFI runtime call path to use kthread_use_mm(&efi_mm), which
-temporarily adopts efi_mm as the current mm for the calling kthread.
+introduced kthread_use_mm(&efi_mm), but efi_mm lacked user_ns
+initialization, causing crashes during /proc access.
 
-When a thread has an active mm, LSM hooks like cap_capable() expect
-mm->user_ns to be valid for credential checks. With efi_mm.user_ns being
-NULL, capability checks during possible /proc access dereference the
-NULL pointer and crash.
+Adding this warning helps catch similar bugs early during development
+rather than waiting for hard-to-debug NULL pointer crashes in
+production.
 
-Fix by initializing efi_mm.user_ns to &init_user_ns.
-
-Fixes: a5baf582f4c0 ("arm64/efi: Call EFI runtime services without disabling preemption")
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/firmware/efi/efi.c | 1 +
+ kernel/kthread.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index a9070d00b833..55452e61af31 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -73,6 +73,7 @@ struct mm_struct efi_mm = {
- 	MMAP_LOCK_INITIALIZER(efi_mm)
- 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
- 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
-+	.user_ns		= &init_user_ns,
- 	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
- #ifdef CONFIG_SCHED_MM_CID
- 	.mm_cid.lock		= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.mm_cid.lock),
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index 99a3808d086f..39511dd2abc9 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -1599,6 +1599,7 @@ void kthread_use_mm(struct mm_struct *mm)
+ 
+ 	WARN_ON_ONCE(!(tsk->flags & PF_KTHREAD));
+ 	WARN_ON_ONCE(tsk->mm);
++	WARN_ON_ONCE(!mm->user_ns);
+ 
+ 	/*
+ 	 * It is possible for mm to be the same as tsk->active_mm, but
 
 -- 
 2.47.3
