@@ -1,65 +1,66 @@
-Return-Path: <linux-efi+bounces-5918-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5919-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AF5CD8FAE
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 11:56:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAB6CD8FAB
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 11:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EDB53029228
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 10:56:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AB5BD30215CE
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 10:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06A1313286;
-	Tue, 23 Dec 2025 10:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4DB27453;
+	Tue, 23 Dec 2025 10:56:10 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D291F3002B3
-	for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 10:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3256A31076B
+	for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 10:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766487368; cv=none; b=i+Bnbnj0wMWq9jUNbNLi5nJRzD0WSSJugzYLOSdaNRmKzS9l69HdhtZBklHCZBKDIeELF5nC+eimDLw26f/T5eO19hZqncUjn9UjRHExUzHIn/evrTwMa1Dug+I3Yl7hvMrZNHLkEB8vPJlIa4ZUkdWDSKWAlnZFebTNN6Iw8Po=
+	t=1766487369; cv=none; b=RKXgVf/Nl8LDTgV/HWY3aoJOqNIIFdpLXktZlRMhexXA/0fO1W4wjaanFH7CbRcDuJ1L4OptPjXFpFSR/pRwTIRACX4JzZHlk4qbzFmudohOC06LFPkfBK4Lo+4wZmPhu1EiTJU9zwFEDxm9pXKSttwDiJvoHiO5A6T2snO0Ty4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766487368; c=relaxed/simple;
-	bh=UFL3EYFptdWksL2TrqK20utlZjnMf15IQidFIh37P6U=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dj5S6dI2Kjy7ENAPEnEZKrEc1KDCsBKRCbgBJ6rwi4l4ohvEDbU3QYHQ0hUxi4wO62o4El3PEOUT9M694EMpnYSt5ODw02TPwi6HscEx4lct1PFcXoWAp5iouXB9/hGpGpX01WPsj/XHOFNSy1MU29WXFTsDCxauhznzVzxtsqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.172
+	s=arc-20240116; t=1766487369; c=relaxed/simple;
+	bh=JPX11ECPaVPrf1MUlS1NHwPHSQuz31NB4jHoPAD7UEs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=CD0oXMYxeVE1Lt2iBuD9gxnDden0bdpOkkK+EA8B2KG+A/qZVxXhSU0KjWAO9Cm1FOwu6mJelUBX8D1ro0QsnT6DJUqzVkI6V+lzEsPcVvu8hpaUuTj8H7yRWFrvPbo24frPPmnlxwIGLLcZOow4v8bNisLUx3CyKkyFFkP56y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-4511f736011so3539663b6e.0
-        for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 02:56:06 -0800 (PST)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7c76d855ddbso1382899a34.3
+        for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 02:56:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766487366; x=1767092166;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=spoP0+Albf1P/crjcQ63AptEOAl1TVHeih5dAbMZP+Q=;
-        b=bmNi+vK1Pb54fmgZ1WtftDv7J6RbLChJrjASYeZRWnV7qsGvZQ294f/wRLClEIaozC
-         H8lIq3wBeVfVr17uj9hi0uw/IQWBIrxQRubz7FljyjPLy1Nzhci/oHO03berlHR/YygI
-         QLodwNg30VBZZv5pYLary598frElS+LoeT/rmCcwHeBiO41CGpVHwnYurqTlVyAmlel1
-         Cu76jOfQg/fKBMdBQJSBLo6H46sZ18x6xYKgVArRCWadeApCZQrj7na6yHxz483lCp8f
-         d6jsGukEIR43eC9af8sAPKQlZd0zMPblt4ZumvRBGibdUQWF+rYWSGQaML7vfC56JmBa
-         lIgg==
-X-Gm-Message-State: AOJu0Ywc2aNch0N1d+MaMkiPaVnTBXoQoWorohlWl9EUciDUw3uQ920/
-	W0IPe2SKQlZuoRW6GhINTc/Jv5OKGh/fBQUC4HO8tiGl/Qq0NaYiJRqy
-X-Gm-Gg: AY/fxX5yMkmNAcqkpdphdYdbNLzVcdo5eqUgxd3aaqY92MXzN33e00tEUVdgqOKQlEg
-	tDqO7kW7fBOKZQBfvLHsR2Mq/RuyzNg9ZOcQXc7Hriq800OROmZ0LYJbrF7VZbSX8c6QPP23sZy
-	YUa4vWUbtoY1tyb+EjLJ2qHHWB90xI/QNBumBXymL8CZxIrONzFrr4We7AzgEUs+sDhXElVNu+7
-	osN0bfJz2THX9Ahl+fRlVptnLRgUVfrks1/WS6/3ghQqmZ+lLi/AratlK4dPQxCB4apxQTGS3dY
-	tr83UG1AR2Ovo5OL4N3S2cxGUtoaboM2gTn8G0ClA+XTQ6XWDEoFxagqUJQ6XW3xvr8NNlkegPc
-	i55NFNrAeOnbCIWfYnsVGPYt+cbtZ/qF2KupVZp8E2pbKGV8UrWhy9HyV9ZUhnfgMi01SVhG2kf
-	/LFBnZZrZjyDQdE0ePVc6wop0=
-X-Google-Smtp-Source: AGHT+IGiZkiYPTPZNUrOfsgRj6L7DBQ+OVmkgtvSX3FWGLRox+YADwlzHeeAwjVmg585DG80xaAIMA==
-X-Received: by 2002:a05:6808:1b2c:b0:450:f45e:f4a7 with SMTP id 5614622812f47-457a28920femr7624447b6e.8.1766487365699;
-        Tue, 23 Dec 2025 02:56:05 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:5::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3fdaac129c7sm7610763fac.21.2025.12.23.02.56.05
+        d=1e100.net; s=20230601; t=1766487367; x=1767092167;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=P+FdLdYIbfO7vOmrfvIwEh+YRn/9rHzC4lMj63oYJMc=;
+        b=kqv+7eysk2l8R2Nn9r/yi29zQYlM5xmLDTShLzC9B8Vh/+zqzFH7roaBRdzYP/M0+7
+         7gIlwEdM9LV9XRtLRoNDcQcGrN4mj9VXVbFXp4YxATgNGe9/AMIYh2D7XKSVqW1cjPjF
+         dptd/tvC2GaWPWA1MS2N3/eW+Qe70QYHnSUY74RGnb5cP+YroxfDgO6oyySPWgPfLCqB
+         g1yaMap/iWuGX14+vIbElOGB2XXrfh71Gkv0PiJ35wAEhuSOoUmDxUn6uW/ZKaPeNpvN
+         lsz+wUqbdSchxesY12bo1pwXeiO5iMEIqW9IRyOqQtT+H1jmNFwK9i0AwbcrEp43yADI
+         UfLw==
+X-Gm-Message-State: AOJu0YzYwbBRlRUy39smm0++Ca4wSziWnxtWOMxtsafEOFWwhGgf60Sz
+	KzAAvswGzprLGN1/91gjTgFQRkS/bS+z031WzAkG4tTbgg2TZp7ECHfs5aUXoHf1
+X-Gm-Gg: AY/fxX5yhUcC77NSQzukw+njBcIBb1lVv14+h8qdfw4Ioi5QkVG8xSJfw1M/bLV5uq3
+	zs9ehObAxA71CHjeUvgj6KkZEUXHB16hQ71BuySel4wwjJV0/Mi3W5GlbB00Vx7Q4phsJOygVWY
+	d8dI8BK6J9NddeD7dznUNuwmg3kShW+wEET6igrLylJdb9f8VShpJGHAwhdPydxy4KyxvYJeFbb
+	jWZdJ15yrEC6WXQgK4hriDcj52pdcxAwxVDwPC+8cnpQS3mftZBITRE+3LvG/UBNCebhuCk7jwT
+	eqAWY8A8vX/NiIAP08+EQut29G9N2PrIXvShRIKy/hISYAZ4GK79IIOxcmKhht/ICncC6R7RbK0
+	uzrZEmAICoCfsaMEAVCBpgT4V9Eu55a31jIrwhXzD3a9e0rCOhHk0FZkmliqTJ4+sCK8TjcZxdo
+	QpqvjXszrHn3r/0Q==
+X-Google-Smtp-Source: AGHT+IHN2V35Klregw+9YTKsH2OtlmwwB/mDyXPjK++QZTB2CC0RR+jqY6r+PZxq7ko/5WlgLmeZrw==
+X-Received: by 2002:a05:6830:314e:b0:7c6:cb39:adf7 with SMTP id 46e09a7af769-7cc6689c9d0mr6676247a34.6.1766487367049;
+        Tue, 23 Dec 2025 02:56:07 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:49::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc6673bdabsm9065064a34.10.2025.12.23.02.56.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 02:56:05 -0800 (PST)
+        Tue, 23 Dec 2025 02:56:06 -0800 (PST)
 From: Breno Leitao <leitao@debian.org>
-Subject: [PATCH 0/2] arm64: efi: Fix NULL pointer crash in 6.19-rc2
-Date: Tue, 23 Dec 2025 02:55:42 -0800
-Message-Id: <20251223-efi_fix_619-v1-0-e0146b8b9d73@debian.org>
+Date: Tue, 23 Dec 2025 02:55:43 -0800
+Subject: [PATCH 1/2] arm64: efi: Fix NULL pointer dereference by
+ initializing user_ns
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -68,10 +69,9 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAC91SmkC/yXMQQ6CMBAF0KtM/pomzqBiexViCJYpjgs0LRgSw
- t2Nunybt6FoNi0ItCHr24o9JwTiihDv/TSqswGBIAc5sUjtNFmXbO3O7F198Rz7ZhDPR1SEV9Z
- k629rr3+X5fbQOH8L7PsHLVOPoW8AAAA=
-X-Change-ID: 20251223-efi_fix_619-3891ca7d2914
+Message-Id: <20251223-efi_fix_619-v1-1-e0146b8b9d73@debian.org>
+References: <20251223-efi_fix_619-v1-0-e0146b8b9d73@debian.org>
+In-Reply-To: <20251223-efi_fix_619-v1-0-e0146b8b9d73@debian.org>
 To: Ard Biesheuvel <ardb@kernel.org>, 
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
 Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -79,88 +79,74 @@ Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
  usamaarif642@gmail.com, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2771; i=leitao@debian.org;
- h=from:subject:message-id; bh=UFL3EYFptdWksL2TrqK20utlZjnMf15IQidFIh37P6U=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpSnVEfEn88+VR44GzKHbDtxIvHlHSEjjrsUc4Z
- UbZAdtQHR6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaUp1RAAKCRA1o5Of/Hh3
- bVv/D/4xoP7Y2y+3fcB+zUfr4xmdyGo5n5zqDOli8tg0MB89tYdCdmkVdAYEMmP3vSKTXqClnvs
- UmrNtHWvGGzJYz5PIo+0Kl4WUqqptbSBIwmHGaJvKVEOtZFrTMZBV9if9ipzZG30ZnaMxLPbGZs
- mD3A8ViD32tj+U4sHI3yAuWeg/8oXXe19hP9nKi4z9FzFjoC6MQYlYT0etsbrR8yv/odZnBDCnz
- JipP/fejbbmkM1pUTy7gkR3jDrJXl2AopNSDNF9tHirQoZKuRMTXGvpUBjIC9GiEKDYVhEkskwG
- RNHb3wJjiPjkluPHGsEoJROxJLsbXoH/oDybAhg8sA/9rrm86lYLi0CDoFhqIWiCp9fPT6Z3WOW
- J48ClXay2ExTVxR3sxsQ4yxFL//XlDKp8z6eUSTCUZwN4UpEXk628sFIfqBeL/pgDY9nyehCJLi
- p0wiIiIfpD/pVZf+qFIXKvkRuFdb4Ok7VafjRFTJUxqdAEIL2t9/sVCX0de47D7lktxCi+7mbZi
- 38hqCxb0nHW/tWoXkFy27ZDkgjCFtdhWpLh9KJmPValJ6pDFyZAwKV6Oe6wIHmxjViYKjwBKIbm
- iWROh78kfH/W1WOjwtQqe8LlRIA+jis99v58RIvBjtt/QCIW06ok5WKjvKIlx+c6djDZ4PhhhNe
- EExYfr5jjmGbHJw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2290; i=leitao@debian.org;
+ h=from:subject:message-id; bh=JPX11ECPaVPrf1MUlS1NHwPHSQuz31NB4jHoPAD7UEs=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpSnVERN1w34K2bU0P1LvowG6Xgn8s0jFHxj1T+
+ myf6uG4fiKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaUp1RAAKCRA1o5Of/Hh3
+ bcV4D/wMbGBfSuzqozvQHGdYEhbyw9hw7JGeECYucULIyAmq1QKPRk6tmC/KNW66EbKynHk3W0B
+ lwz/otxPI/YJZKk9TW7HbW64zgXZ2cICMblLGA8+G/0hqDbsYorXNZ7b+cIRTU3ACDrnP/2zlIP
+ iYRjfPI25MWAo08KO8n/FFnekS8D65B1BJqNz/gE9L0qOcRqxQAZfeDvx5kKtlpgwXXsXkaBv+v
+ pklHh9H5eJGNGf/LECjmedGBDU2lknktPo807TbRjjF2WhitXoY7UG7mc/3lDvLQ0yjPGno3Nxw
+ +1tvxWsEDPI/S241Q18a67nm6rLr4CoF8JY+c+6XaktdUI0bQKOVRXsBI3T/ZRR5nyD8lGdVhk8
+ H8IdIJhpJ9pdpbUwYFY9bEOGmP85bjrYtMH7Bl2Fk/ijhZQHzp+HnQL02jQ0eNW6iZJKpltBy9Z
+ /k7eShirBHO01BNDZjdc7P3jHTrE33iTh9BCsUnWChJxFhcVToq1RXIJ8FrSY5n6OJBq1ePcqXm
+ GwCwSu70Xut+SZvBgSm2ofGBPoqwsz5DS99ipygfYmKcZoyXuJDcjFsFFPAQvZw+JtrTHxWf0KP
+ QT8O93E6sgd/j/ZSmvroKHwXYp43yIUyo5R2BZm+OYi+Fwz8yjaA26DoKvT3SneoCsDHtlS3yyK
+ MU54OZsno/DXPFA==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-I am seeing the following crash on arm64 with 6.19-rc2 (commit 9448598b22c5
-("Linux 6.19-rc2"))
+Linux 6.19-rc2 (9448598b22c5 ("Linux 6.19-rc2")) is crashing with a NULL
+pointer dereference on arm64 hosts:
 
-	Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c8
+  Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c8
+   pc : cap_capable (security/commoncap.c:82 security/commoncap.c:128)
+   Call trace:
+    cap_capable (security/commoncap.c:82 security/commoncap.c:128) (P)
+    security_capable (security/security.c:?)
+    ns_capable_noaudit (kernel/capability.c:342 kernel/capability.c:381)
+    __ptrace_may_access (./include/linux/rcupdate.h:895 kernel/ptrace.c:326)
+    ptrace_may_access (kernel/ptrace.c:353)
+    do_task_stat (fs/proc/array.c:467)
+    proc_tgid_stat (fs/proc/array.c:673)
+    proc_single_show (fs/proc/base.c:803)
 
-	Call trace:
-	cap_capable (security/commoncap.c:82 security/commoncap.c:128) (P)
-	security_capable (security/security.c:?)
-	ns_capable_noaudit (kernel/capability.c:342 kernel/capability.c:381)
-	__ptrace_may_access (./include/linux/rcupdate.h:895 kernel/ptrace.c:326)
-	ptrace_may_access (kernel/ptrace.c:353)
-	do_task_stat (fs/proc/array.c:467)
-	proc_tgid_stat (fs/proc/array.c:673)
-	proc_single_show (fs/proc/base.c:803)
-	seq_read_iter (fs/seq_file.c:209)
-	seq_read (./include/linux/ioprio.h:59 ./include/linux/ioprio.h:84 ./include/linux/fs.h:2177 fs/seq_file.c:158)
-	vfs_read (./arch/arm64/include/asm/uaccess.h:46 fs/read_write.c:560)
-	ksys_read (fs/read_write.c:705)
-	__arm64_sys_read (fs/read_write.c:722)
-	invoke_syscall (arch/arm64/kernel/syscall.c:46)
-	el0_svc_common+0x90/0xe0
-	do_el0_svc (arch/arm64/kernel/syscall.c:150)
-	el0_svc (arch/arm64/kernel/entry-common.c:724)
-	el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:743)
-	el0t_64_sync (arch/arm64/kernel/entry.S:596)
+I've bissected the problem to commit a5baf582f4c0 ("arm64/efi: Call EFI
+runtime services without disabling preemption").
 
-This was bissected to commit a5baf582f4 ("arm64/efi: Call EFI runtime services without
-disabling preemption").
+From my analyzes, the crash occurs because efi_mm lacks a user_ns field
+initialization. This was previously harmless, but commit a5baf582f4c0
+("arm64/efi: Call EFI runtime services without disabling preemption")
+changed the EFI runtime call path to use kthread_use_mm(&efi_mm), which
+temporarily adopts efi_mm as the current mm for the calling kthread.
 
-After the commit above, it crashes arm64 with a NULL pointer dereference in
-cap_capable() when running below (ocassionally). Unfortunately I still don't
-have a simple reproducer, and it takes about 10 minutes to crash on my systems.
-it always crash with below[1] application.
+When a thread has an active mm, LSM hooks like cap_capable() expect
+mm->user_ns to be valid for credential checks. With efi_mm.user_ns being
+NULL, capability checks during possible /proc access dereference the
+NULL pointer and crash.
 
-From my investigation, the root cause is that efi_mm lacks user_ns
-initialization. When kthread_use_mm(&efi_mm) temporarily adopts efi_mm
-for EFI calls, LSM hooks expect mm->user_ns to be valid for credential
-checks. With it being NULL, capability checks crash.
+Fix by initializing efi_mm.user_ns to &init_user_ns.
 
-This series contains two patches:
-
-1. efi: Initialize efi_mm.user_ns to &init_user_ns (the actual fix)
-2. kthread: Add WARN_ON_ONCE() to catch similar bugs early (RFC)
-
-The second patch is mostly an RFC that adds a warning in
-kthread_use_mm() to detect any mm_struct missing user_ns initialization,
-helping prevent similar NULL pointer crashes in the future.
-
-Link: https://github.com/facebookincubator/below [1]
-
+Fixes: a5baf582f4c0 ("arm64/efi: Call EFI runtime services without disabling preemption")
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-Breno Leitao (2):
-      arm64: efi: Fix NULL pointer dereference by initializing user_ns
-      kthread: Warn if mm_struct lacks user_ns in kthread_use_mm()
-
  drivers/firmware/efi/efi.c | 1 +
- kernel/kthread.c           | 1 +
- 2 files changed, 2 insertions(+)
----
-base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
-change-id: 20251223-efi_fix_619-3891ca7d2914
+ 1 file changed, 1 insertion(+)
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index a9070d00b833..55452e61af31 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -73,6 +73,7 @@ struct mm_struct efi_mm = {
+ 	MMAP_LOCK_INITIALIZER(efi_mm)
+ 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
+ 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
++	.user_ns		= &init_user_ns,
+ 	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
+ #ifdef CONFIG_SCHED_MM_CID
+ 	.mm_cid.lock		= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.mm_cid.lock),
+
+-- 
+2.47.3
 
 
