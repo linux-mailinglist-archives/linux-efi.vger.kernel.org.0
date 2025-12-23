@@ -1,32 +1,32 @@
-Return-Path: <linux-efi+bounces-5921-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5922-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4CCCDA5CC
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 20:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54FFFCDA5F3
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 20:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5434930358C3
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 19:25:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA718300726D
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 19:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F23528C5AA;
-	Tue, 23 Dec 2025 19:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2236C2AF1D;
+	Tue, 23 Dec 2025 19:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b="cK5j6/WJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b="XvcgwatD"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E5B27467E;
-	Tue, 23 Dec 2025 19:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1BB34B433;
+	Tue, 23 Dec 2025 19:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.67.55.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766517913; cv=none; b=SqGJWnKFJNvLuJen39ICO1dF5iM/yOedqBhbYOruIGGirLF6+PRR12Wi1CkFQ1lKgTVqSJWfO1uOedk1nEoVC07IcCVQXRuYMROSGto/J4LUK4L3QlNu0jt770Avy57CcqGJ/WYc4PBRDCzKf4H7eer7xUPxxS59w+uDWtBo1xA=
+	t=1766518311; cv=none; b=hQ6UWInxFKQ2NIZUaJg4xWFKwx07wwjW4z69qPUvXYFn8y1vl7fMrD5ywrGDBOyR1W4htY94rMOOPBT7639G3FfgsFoOhl3mDuokj+8/bipCjDvsAwKZW4n6MTyqRXjYa66hD+vcJOZhq2LMKf75NSUDSOyaDrqHOoSm3L/yrBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766517913; c=relaxed/simple;
-	bh=rBMlsRRSL7SYzmLnlzQfBiudmDv05SeXL32l7wrOggg=;
+	s=arc-20240116; t=1766518311; c=relaxed/simple;
+	bh=S3MC/DJyxuqUqO+aA+Wb0Xz81EzDT3zbLRjYsUOml1Q=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H4bVknCUcUCxNNs28VfW3Sy/9nUg0rwbRPAaowi+uqIUwVXzlhIISugzsoXph2TvigUJMA7BkkhNWcpBjHyb/0G+o0zgRdJBBKXXRAeTWxPPaehIvi1TsJqFM5PernrTK1kP/Li9JCOTfOQPf4n5dBNl3hBMhIcxv7g1Tl74m7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com; spf=pass smtp.mailfrom=surriel.com; dkim=pass (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b=cK5j6/WJ; arc=none smtp.client-ip=96.67.55.147
+	 Content-Type:MIME-Version; b=eDw8OZ+teQAPlutBpaqJHw85WaEjpFE/GgBcRm5AU8I8aJloNKePNiesx2AgMrZKuJgQsJdNFwqJLuORsW45dR5C3gX3wAHksglN5lEqLiCg56JXSP4sP9gmjzRBuQnFEAIAeDSWHXIBYFy0bx6dkqTZgvESm4UDOS1v2m50Tok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com; spf=pass smtp.mailfrom=surriel.com; dkim=pass (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b=XvcgwatD; arc=none smtp.client-ip=96.67.55.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
@@ -35,31 +35,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=MKVZ6gnaghV+4OuvPE0MfgGwA+znTse9G/0vYKIzuzc=; b=cK5j6/WJxuN6PUjAGb5ilVl03d
-	yAfLxWN6svhzkrUr9lZKZJLo2EfAKVNMdTrpd8umBGeroEYFOEH9bU8tsIvhhy+rEKQqtYJW9j668
-	OjXdinWl0UXznZcP0+b1HO1/TAIH9+O37NaoAdhvUWeNiF+XXzbXZhZUiOX0IYkCMooyzh/bAqyZn
-	HQQ3a1JzDng4lcTG4H9+yZk6TYqHuQQeihYnubj8eClYvPM0iiGrzRZ4ckg8yQ0QFbcP5nsatLdSY
-	E+jrPYAI0agE6GKt50OuVMTbkPbM+PoerV7ua/tAHe/N5HZ7WowbGLxKIybesFvqLIntJFQjd04Ih
-	6Ysq7I1Q==;
+	bh=S3MC/DJyxuqUqO+aA+Wb0Xz81EzDT3zbLRjYsUOml1Q=; b=XvcgwatDvNRIqTVzxBEvAtRgmD
+	rFkbSYKJopSiemzHlULOFVByZwO+jcvsno7jG50qWziVJDNvgANFEgF8fuV2pTK4Qn+VDodpXvBGu
+	uA+v25gq4eFGrsNCpmLhrxihh8vRM/jzbkO1mAgmLsFu4KZ86dP7BLXo4Kdgw9ehJm3I8ZrUTLker
+	O0HChL0WBF7Sf0W63PKlHiwi4Zmwe3M+EgkvkfP7govGfwvWOr6/9WiMO8QpzdjrWzjsJWwblORCK
+	abajXy7BIwQj79KS7+9KyEr4LrcuDjTPVtH+oN67oPZCW2aZ4y6mhCCP2yhNMQk7TA6Mt9RWiRB7h
+	p83Fiypw==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1vY7zk-000000005Kw-26qy;
-	Tue, 23 Dec 2025 14:24:33 -0500
-Message-ID: <a060d8ec023cb7b8dbec0cb4105d03fb24c57a3d.camel@surriel.com>
-Subject: Re: [PATCH 1/2] arm64: efi: Fix NULL pointer dereference by
- initializing user_ns
+	id 1vY86V-000000005Xj-0BE2;
+	Tue, 23 Dec 2025 14:31:32 -0500
+Message-ID: <4d867df02dcc3cc8f519903282f6e63b2974a461.camel@surriel.com>
+Subject: Re: [PATCH 2/2] kthread: Warn if mm_struct lacks user_ns in
+ kthread_use_mm()
 From: Rik van Riel <riel@surriel.com>
 To: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>, 
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
 Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, puranjay@kernel.org, 
 	usamaarif642@gmail.com, kernel-team@meta.com
-Date: Tue, 23 Dec 2025 14:24:33 -0500
-In-Reply-To: <20251223-efi_fix_619-v1-1-e0146b8b9d73@debian.org>
+Date: Tue, 23 Dec 2025 14:31:32 -0500
+In-Reply-To: <20251223-efi_fix_619-v1-2-e0146b8b9d73@debian.org>
 References: <20251223-efi_fix_619-v1-0-e0146b8b9d73@debian.org>
-	 <20251223-efi_fix_619-v1-1-e0146b8b9d73@debian.org>
+	 <20251223-efi_fix_619-v1-2-e0146b8b9d73@debian.org>
 Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
  keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
  eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
@@ -95,24 +95,24 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2025-12-23 at 02:55 -0800, Breno Leitao wrote:
+> Add a WARN_ON_ONCE() check to detect mm_struct instances that are
+> missing user_ns initialization when passed to kthread_use_mm().
 >=20
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index a9070d00b833..55452e61af31 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -73,6 +73,7 @@ struct mm_struct efi_mm =3D {
-> =C2=A0	MMAP_LOCK_INITIALIZER(efi_mm)
-> =C2=A0	.page_table_lock	=3D
-> __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
-> =C2=A0	.mmlist			=3D
-> LIST_HEAD_INIT(efi_mm.mmlist),
-> +	.user_ns		=3D &init_user_ns,
-> =C2=A0	.cpu_bitmap		=3D { [BITS_TO_LONGS(NR_CPUS)] =3D 0},
-> =C2=A0#ifdef CONFIG_SCHED_MM_CID
-> =C2=A0	.mm_cid.lock		=3D
-> __RAW_SPIN_LOCK_UNLOCKED(efi_mm.mm_cid.lock),
-
-Seems legit?
+> When a kthread adopts an mm via kthread_use_mm(), LSM hooks and
+> capability checks may access current->mm->user_ns for credential
+> validation. If user_ns is NULL, this leads to a NULL pointer
+> dereference crash.
+>=20
+> This was observed with efi_mm on arm64, where commit a5baf582f4c0
+> ("arm64/efi: Call EFI runtime services without disabling preemption")
+> introduced kthread_use_mm(&efi_mm), but efi_mm lacked user_ns
+> initialization, causing crashes during /proc access.
+>=20
+> Adding this warning helps catch similar bugs early during development
+> rather than waiting for hard-to-debug NULL pointer crashes in
+> production.
+>=20
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
 Acked-by: Rik van Riel <riel@surriel.com>
 
