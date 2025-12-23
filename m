@@ -1,176 +1,166 @@
-Return-Path: <linux-efi+bounces-5917-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5918-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3464ECD8D24
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 11:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AF5CD8FAE
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 11:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0BB53064DF2
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 10:31:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EDB53029228
+	for <lists+linux-efi@lfdr.de>; Tue, 23 Dec 2025 10:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001E436B056;
-	Tue, 23 Dec 2025 10:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TRFBtSXE";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="E8+1k9Kd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06A1313286;
+	Tue, 23 Dec 2025 10:56:08 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8686736B04D
-	for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 10:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D291F3002B3
+	for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 10:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766484651; cv=none; b=WMsiWL8reJhM7cEIoSnctQjvrfCBYEe8oWD+muAunz0Jt2DhmY+YLEy4S4bw0/o4n0fTK7k+xAQgCuuQZZgpSXSrG6GkWRICh7JHVAZwiWZGS4gPpQcfazXxL77ic8zcnEG7Q9Vr9K4lgwG7Zd1uLzx0eqHnTL/9rjad3t9J0/0=
+	t=1766487368; cv=none; b=i+Bnbnj0wMWq9jUNbNLi5nJRzD0WSSJugzYLOSdaNRmKzS9l69HdhtZBklHCZBKDIeELF5nC+eimDLw26f/T5eO19hZqncUjn9UjRHExUzHIn/evrTwMa1Dug+I3Yl7hvMrZNHLkEB8vPJlIa4ZUkdWDSKWAlnZFebTNN6Iw8Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766484651; c=relaxed/simple;
-	bh=gDKCTXSHCoUHgGjGdPVsqCxYHy9ab2q8i18avjQ2PS8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T4ymCAmRRBjj1KDK1rd1zv6TEzGgxs2dl5xxHQ0JGLyCdYsWfiDkcl8qX9t7qEhvSdvxnjd/CTAG95MRtIDgLe9gUEJ6foIJqo0R05eDhoQQBgU8/y3hzRfa0+6Sk0MClY2vARTVuRTGH+s4aLn6O867xsiF4mXaM5DRWCyJ/lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TRFBtSXE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=E8+1k9Kd; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BN9iejt1568957
-	for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 10:10:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=NfyaqrUWeOY/Ypu7+0uzad8YzRbjGlo4N5a
-	iYxdoQ2E=; b=TRFBtSXELDfkIktDSxyGZP9LTkvtlh8B2MFn6L9qIkaTRcOmrrJ
-	eDHB/uTKtiHInAKz/5xqPIl6DOUeXKZ9RqAaS9C+n57f0d8QGHyUhtDkOyq5OyKm
-	yqYYjvi3/wleOrzyVuCrBNAGFpyAQ2+dv2ccJPfiuC6GvLZGWnUpN5rvXu2F1G09
-	4iPfDQVqWK9icfElkFQmmz1er0zuGYyuufnGrYx2XMz24xPLEHy7Tp5zqVTrlfRj
-	jL4NHnmF0Sh7WClX2/CRebBQ/ue0BArcAgSY5rTAC01WK3I2xOWhTCfEqGu4CuJ1
-	1cQ5VLGIhJHr0I+PeQWu2lpKUaXi9mpeclg==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b76yy387h-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 10:10:49 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4f1d26abbd8so130973371cf.1
-        for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 02:10:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766484649; x=1767089449; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NfyaqrUWeOY/Ypu7+0uzad8YzRbjGlo4N5aiYxdoQ2E=;
-        b=E8+1k9KdhgWUbMLZraXbbvHxn8GcsrNOM/FRVFLE4ELPkaFKpMifq5iX+fViB1bZma
-         TlgZwn+rvt/WvMzoy/qJUIt+O3lWb2LdDYYiboCyvG3q3CwjjbVkxFw7ZCNGfkSMyKWl
-         W7ybVf7ZG+gVVas4sZQ9pE74aNMm8fCTObYzoK1PTQWYsjnBy2i1RS8l1Jvsoz+I2kP2
-         zVji75eSWdjbBOxZs/stOD2utktMqkZW0Dz7uv4zknctJ/jij8do2c7en4f9yrLAgX/u
-         2v8e7gE4TSNpqYKIR2Xww3A35YERg1/xnwbQXnuqttHcfzS6Qeyazq40Jg/pRhxxrvF2
-         V3Tw==
+	s=arc-20240116; t=1766487368; c=relaxed/simple;
+	bh=UFL3EYFptdWksL2TrqK20utlZjnMf15IQidFIh37P6U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dj5S6dI2Kjy7ENAPEnEZKrEc1KDCsBKRCbgBJ6rwi4l4ohvEDbU3QYHQ0hUxi4wO62o4El3PEOUT9M694EMpnYSt5ODw02TPwi6HscEx4lct1PFcXoWAp5iouXB9/hGpGpX01WPsj/XHOFNSy1MU29WXFTsDCxauhznzVzxtsqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-4511f736011so3539663b6e.0
+        for <linux-efi@vger.kernel.org>; Tue, 23 Dec 2025 02:56:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766484649; x=1767089449;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1766487366; x=1767092166;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NfyaqrUWeOY/Ypu7+0uzad8YzRbjGlo4N5aiYxdoQ2E=;
-        b=VZnJGkSVB/6JC9vkOV1+NTBUYcGetK0jClQgilO9pdyrbnIWtTFwXIoIKLJAMY0ZuR
-         lwV6tRpCpIIy35aDX10Ooq3Jx1bCo6tSbuPFOCdPCiGht918A/A9KBCH3UDsKO59fekD
-         9fTrgsjV/xs0X2Zdm1bImjGliFN3lYOgtjBYrFIvYex8vGNSbCsTBzlUXgs//8ZiFwDe
-         ERkMj/6PvwoQz9jAaEi7FA6aMGUf+43R2onzm+0fIbKCde9SeWhMct+VGdxwppxVtXz/
-         lczTh26cM64Gy0iYGWEO/8CSWjIy5kok4lAqKaqiNREFKhww5I2Hr2zoCOhrDFS3kDk+
-         LyRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUyGJYLDuZ+mX659cpUHQFjvy4WLljbCcNj+JtH3mTb4mHcpsDQmiAAbcuUh1HPsEDmclk1wPQdSK4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGc4nPTyUZU1P90iw/AHA2e97yobK5U58Vx3y9CFgr53oDgm2b
-	u7cadech+iA5xKaRHOqNhZQTxdb3QAvBFkUagxZTHG1EP6IHaIPjwnRSyUaHyajcEuK225nJE+q
-	MBJawPPd3sXXCCsE/+jE2owa8G4dd+E9Y15XiY1pkq13Px1ybkjeQShkk/mTeJ3I=
-X-Gm-Gg: AY/fxX7BSl+OTeleAFSbhh713cOJ2xRnh0k1TKJi0z+wHxy8Hw2vbwhKe+595Nqanu6
-	5FZ109EYku5jfCu/kEqfcba7BhPyQePxyukXNjxfuKnYTVINP1MZLul8Ib0pHApHHlyVz9wftHj
-	86lTVr38ZqT56FNVPswV8ST9EqzjjptS8RRmE8RThxD6KqJ0vkCL6aH+Bv9XTmApu0JmNY5GxXB
-	iTBJSSuiLmmPJGP/FcAJyQrhzIzETpltKFg7HxamhLY4/rxwx+P1n0a//48LLynDkb/qTXB5zjK
-	7Tq6Xw5bjTW9Igv1Ss8nAhOEDEUWslsqkKaian3bTRB+TSFA0DVYUsZXeZDYlaMDGQNbY0KQpBd
-	E2NJF5PuEHUUQhmls+t5t2HJDQOvui26d17r1H6ABRinWT+AbEETBpufQj1BAQ14VqncRh1mBkd
-	lRUg5YaS2mc/mvBXiJo1B/Yc0c
-X-Received: by 2002:ac8:5fc4:0:b0:4ec:f4b9:f475 with SMTP id d75a77b69052e-4f4abccecbbmr185476171cf.15.1766484648869;
-        Tue, 23 Dec 2025 02:10:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFSObLtcdfdlAgQ2U7p+YFPe1TF4Hffdby5mas4uFSxlcAypz+jshMyNwHWosId2S4kGtzHvA==
-X-Received: by 2002:ac8:5fc4:0:b0:4ec:f4b9:f475 with SMTP id d75a77b69052e-4f4abccecbbmr185475791cf.15.1766484648355;
-        Tue, 23 Dec 2025 02:10:48 -0800 (PST)
-Received: from shalem (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037f37ee8sm1329878966b.59.2025.12.23.02.10.47
+        bh=spoP0+Albf1P/crjcQ63AptEOAl1TVHeih5dAbMZP+Q=;
+        b=bmNi+vK1Pb54fmgZ1WtftDv7J6RbLChJrjASYeZRWnV7qsGvZQ294f/wRLClEIaozC
+         H8lIq3wBeVfVr17uj9hi0uw/IQWBIrxQRubz7FljyjPLy1Nzhci/oHO03berlHR/YygI
+         QLodwNg30VBZZv5pYLary598frElS+LoeT/rmCcwHeBiO41CGpVHwnYurqTlVyAmlel1
+         Cu76jOfQg/fKBMdBQJSBLo6H46sZ18x6xYKgVArRCWadeApCZQrj7na6yHxz483lCp8f
+         d6jsGukEIR43eC9af8sAPKQlZd0zMPblt4ZumvRBGibdUQWF+rYWSGQaML7vfC56JmBa
+         lIgg==
+X-Gm-Message-State: AOJu0Ywc2aNch0N1d+MaMkiPaVnTBXoQoWorohlWl9EUciDUw3uQ920/
+	W0IPe2SKQlZuoRW6GhINTc/Jv5OKGh/fBQUC4HO8tiGl/Qq0NaYiJRqy
+X-Gm-Gg: AY/fxX5yMkmNAcqkpdphdYdbNLzVcdo5eqUgxd3aaqY92MXzN33e00tEUVdgqOKQlEg
+	tDqO7kW7fBOKZQBfvLHsR2Mq/RuyzNg9ZOcQXc7Hriq800OROmZ0LYJbrF7VZbSX8c6QPP23sZy
+	YUa4vWUbtoY1tyb+EjLJ2qHHWB90xI/QNBumBXymL8CZxIrONzFrr4We7AzgEUs+sDhXElVNu+7
+	osN0bfJz2THX9Ahl+fRlVptnLRgUVfrks1/WS6/3ghQqmZ+lLi/AratlK4dPQxCB4apxQTGS3dY
+	tr83UG1AR2Ovo5OL4N3S2cxGUtoaboM2gTn8G0ClA+XTQ6XWDEoFxagqUJQ6XW3xvr8NNlkegPc
+	i55NFNrAeOnbCIWfYnsVGPYt+cbtZ/qF2KupVZp8E2pbKGV8UrWhy9HyV9ZUhnfgMi01SVhG2kf
+	/LFBnZZrZjyDQdE0ePVc6wop0=
+X-Google-Smtp-Source: AGHT+IGiZkiYPTPZNUrOfsgRj6L7DBQ+OVmkgtvSX3FWGLRox+YADwlzHeeAwjVmg585DG80xaAIMA==
+X-Received: by 2002:a05:6808:1b2c:b0:450:f45e:f4a7 with SMTP id 5614622812f47-457a28920femr7624447b6e.8.1766487365699;
+        Tue, 23 Dec 2025 02:56:05 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:5::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3fdaac129c7sm7610763fac.21.2025.12.23.02.56.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 02:10:47 -0800 (PST)
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>, linux-efi@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.19 regression fix] efi/libstub: gop: Fix EDID support in mixed-mode
-Date: Tue, 23 Dec 2025 11:10:46 +0100
-Message-ID: <20251223101046.16334-1-johannes.goede@oss.qualcomm.com>
-X-Mailer: git-send-email 2.52.0
+        Tue, 23 Dec 2025 02:56:05 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH 0/2] arm64: efi: Fix NULL pointer crash in 6.19-rc2
+Date: Tue, 23 Dec 2025 02:55:42 -0800
+Message-Id: <20251223-efi_fix_619-v1-0-e0146b8b9d73@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDA4MCBTYWx0ZWRfX6XLUsw5s6Qz6
- M+gIrJvqXiQW+SLmokI89IYKoYvUWdLsxleZov09BDbSanAqzUelD8DRnsZytRcig479vd/pDqC
- 0Hlbf5RkDSX5pULdlbK4ShREhVikKxBupA1iF90OVHjZI1tOkqf18W1ctPG+9BUARZvtXljGaIL
- 5viJniqGITlRwK+TYRJ8kogFN0Yt5J9sKMsKqEOr43LhHM8H+CD59ETIKviCkWeyl2j9wvtFcTk
- l6ofSOs5C+/LlDp/empqVH/KeGh3OSKtifgPczkgWBs8kJ+r8fYyItMDVZ5A9X7TGi2W/5UfcxA
- uc4upU7NBO9qBgSWN9TH38lkpkpgFdpJa2Gf5uKAVn0tR4F7MERwePkTSsIOuOyTQOdLz2QXu9h
- Y0J7TFfwc9w2ODSaiR+FVgVHpuYmOS0+K0BYzHtbd6MRKr6SyZW7Wj4tRv3VIrNRglCl955L41P
- 5aeKJzl67YN5AWX0efQ==
-X-Authority-Analysis: v=2.4 cv=Zb0Q98VA c=1 sm=1 tr=0 ts=694a6aa9 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=20KFwNOVAAAA:8 a=EUspDBNiAAAA:8
- a=Qeq5G1H1nQ1l2CRTfyAA:9 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-ORIG-GUID: S9msoiCNn0w0QStbhO9kOKHNkSmQv0y4
-X-Proofpoint-GUID: S9msoiCNn0w0QStbhO9kOKHNkSmQv0y4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-23_02,2025-12-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
- phishscore=0 spamscore=0 bulkscore=0 adultscore=0 suspectscore=0
- clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2512230080
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC91SmkC/yXMQQ6CMBAF0KtM/pomzqBiexViCJYpjgs0LRgSw
+ t2Nunybt6FoNi0ItCHr24o9JwTiihDv/TSqswGBIAc5sUjtNFmXbO3O7F198Rz7ZhDPR1SEV9Z
+ k629rr3+X5fbQOH8L7PsHLVOPoW8AAAA=
+X-Change-ID: 20251223-efi_fix_619-3891ca7d2914
+To: Ard Biesheuvel <ardb@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, riel@surriel.com, puranjay@kernel.org, 
+ usamaarif642@gmail.com, Breno Leitao <leitao@debian.org>, 
+ kernel-team@meta.com
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2771; i=leitao@debian.org;
+ h=from:subject:message-id; bh=UFL3EYFptdWksL2TrqK20utlZjnMf15IQidFIh37P6U=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpSnVEfEn88+VR44GzKHbDtxIvHlHSEjjrsUc4Z
+ UbZAdtQHR6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaUp1RAAKCRA1o5Of/Hh3
+ bVv/D/4xoP7Y2y+3fcB+zUfr4xmdyGo5n5zqDOli8tg0MB89tYdCdmkVdAYEMmP3vSKTXqClnvs
+ UmrNtHWvGGzJYz5PIo+0Kl4WUqqptbSBIwmHGaJvKVEOtZFrTMZBV9if9ipzZG30ZnaMxLPbGZs
+ mD3A8ViD32tj+U4sHI3yAuWeg/8oXXe19hP9nKi4z9FzFjoC6MQYlYT0etsbrR8yv/odZnBDCnz
+ JipP/fejbbmkM1pUTy7gkR3jDrJXl2AopNSDNF9tHirQoZKuRMTXGvpUBjIC9GiEKDYVhEkskwG
+ RNHb3wJjiPjkluPHGsEoJROxJLsbXoH/oDybAhg8sA/9rrm86lYLi0CDoFhqIWiCp9fPT6Z3WOW
+ J48ClXay2ExTVxR3sxsQ4yxFL//XlDKp8z6eUSTCUZwN4UpEXk628sFIfqBeL/pgDY9nyehCJLi
+ p0wiIiIfpD/pVZf+qFIXKvkRuFdb4Ok7VafjRFTJUxqdAEIL2t9/sVCX0de47D7lktxCi+7mbZi
+ 38hqCxb0nHW/tWoXkFy27ZDkgjCFtdhWpLh9KJmPValJ6pDFyZAwKV6Oe6wIHmxjViYKjwBKIbm
+ iWROh78kfH/W1WOjwtQqe8LlRIA+jis99v58RIvBjtt/QCIW06ok5WKjvKIlx+c6djDZ4PhhhNe
+ EExYfr5jjmGbHJw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-The efi_edid_discovered_protocol and efi_edid_active_protocol have mixed
-mode fields. So all their attributes should be accessed through
-the efi_table_attr() helper.
+I am seeing the following crash on arm64 with 6.19-rc2 (commit 9448598b22c5
+("Linux 6.19-rc2"))
 
-Doing so fixes the upper 32 bits of the 64 bit gop_edid pointer getting
-set to random values (followed by a crash at boot) when booting a x86_64
-kernel on a machine with 32 bit UEFI like the Asus T100TA.
+	Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c8
 
-Fixes: 17029cdd8f9d ("efi/libstub: gop: Add support for reading EDID")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+	Call trace:
+	cap_capable (security/commoncap.c:82 security/commoncap.c:128) (P)
+	security_capable (security/security.c:?)
+	ns_capable_noaudit (kernel/capability.c:342 kernel/capability.c:381)
+	__ptrace_may_access (./include/linux/rcupdate.h:895 kernel/ptrace.c:326)
+	ptrace_may_access (kernel/ptrace.c:353)
+	do_task_stat (fs/proc/array.c:467)
+	proc_tgid_stat (fs/proc/array.c:673)
+	proc_single_show (fs/proc/base.c:803)
+	seq_read_iter (fs/seq_file.c:209)
+	seq_read (./include/linux/ioprio.h:59 ./include/linux/ioprio.h:84 ./include/linux/fs.h:2177 fs/seq_file.c:158)
+	vfs_read (./arch/arm64/include/asm/uaccess.h:46 fs/read_write.c:560)
+	ksys_read (fs/read_write.c:705)
+	__arm64_sys_read (fs/read_write.c:722)
+	invoke_syscall (arch/arm64/kernel/syscall.c:46)
+	el0_svc_common+0x90/0xe0
+	do_el0_svc (arch/arm64/kernel/syscall.c:150)
+	el0_svc (arch/arm64/kernel/entry-common.c:724)
+	el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:743)
+	el0t_64_sync (arch/arm64/kernel/entry.S:596)
+
+This was bissected to commit a5baf582f4 ("arm64/efi: Call EFI runtime services without
+disabling preemption").
+
+After the commit above, it crashes arm64 with a NULL pointer dereference in
+cap_capable() when running below (ocassionally). Unfortunately I still don't
+have a simple reproducer, and it takes about 10 minutes to crash on my systems.
+it always crash with below[1] application.
+
+From my investigation, the root cause is that efi_mm lacks user_ns
+initialization. When kthread_use_mm(&efi_mm) temporarily adopts efi_mm
+for EFI calls, LSM hooks expect mm->user_ns to be valid for credential
+checks. With it being NULL, capability checks crash.
+
+This series contains two patches:
+
+1. efi: Initialize efi_mm.user_ns to &init_user_ns (the actual fix)
+2. kthread: Add WARN_ON_ONCE() to catch similar bugs early (RFC)
+
+The second patch is mostly an RFC that adds a warning in
+kthread_use_mm() to detect any mm_struct missing user_ns initialization,
+helping prevent similar NULL pointer crashes in the future.
+
+Link: https://github.com/facebookincubator/below [1]
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/firmware/efi/libstub/gop.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Breno Leitao (2):
+      arm64: efi: Fix NULL pointer dereference by initializing user_ns
+      kthread: Warn if mm_struct lacks user_ns in kthread_use_mm()
 
-diff --git a/drivers/firmware/efi/libstub/gop.c b/drivers/firmware/efi/libstub/gop.c
-index 72d74436a7a4..80dc8cfeb33e 100644
---- a/drivers/firmware/efi/libstub/gop.c
-+++ b/drivers/firmware/efi/libstub/gop.c
-@@ -513,15 +513,15 @@ efi_status_t efi_setup_graphics(struct screen_info *si, struct edid_info *edid)
- 		status = efi_bs_call(handle_protocol, handle, &EFI_EDID_ACTIVE_PROTOCOL_GUID,
- 				     (void **)&active_edid);
- 		if (status == EFI_SUCCESS) {
--			gop_size_of_edid = active_edid->size_of_edid;
--			gop_edid = active_edid->edid;
-+			gop_size_of_edid = efi_table_attr(active_edid, size_of_edid);
-+			gop_edid = efi_table_attr(active_edid, edid);
- 		} else {
- 			status = efi_bs_call(handle_protocol, handle,
- 					     &EFI_EDID_DISCOVERED_PROTOCOL_GUID,
- 					     (void **)&discovered_edid);
- 			if (status == EFI_SUCCESS) {
--				gop_size_of_edid = discovered_edid->size_of_edid;
--				gop_edid = discovered_edid->edid;
-+				gop_size_of_edid = efi_table_attr(discovered_edid, size_of_edid);
-+				gop_edid = efi_table_attr(discovered_edid, edid);
- 			}
- 		}
- 
--- 
-2.52.0
+ drivers/firmware/efi/efi.c | 1 +
+ kernel/kthread.c           | 1 +
+ 2 files changed, 2 insertions(+)
+---
+base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+change-id: 20251223-efi_fix_619-3891ca7d2914
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
