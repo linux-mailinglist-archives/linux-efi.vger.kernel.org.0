@@ -1,171 +1,236 @@
-Return-Path: <linux-efi+bounces-5931-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5932-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A16CEB882
-	for <lists+linux-efi@lfdr.de>; Wed, 31 Dec 2025 09:32:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A869ACEB8B6
+	for <lists+linux-efi@lfdr.de>; Wed, 31 Dec 2025 09:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41104300CFF0
-	for <lists+linux-efi@lfdr.de>; Wed, 31 Dec 2025 08:32:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CEA7303058F
+	for <lists+linux-efi@lfdr.de>; Wed, 31 Dec 2025 08:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A3C267B89;
-	Wed, 31 Dec 2025 08:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD1A1FC101;
+	Wed, 31 Dec 2025 08:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="J5n9Lbs4"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sEL39B7U"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6CD246768;
-	Wed, 31 Dec 2025 08:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0CB2F7455;
+	Wed, 31 Dec 2025 08:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767169926; cv=none; b=MdBlNSpxxlZZ4YI+JYm1I6/Pgz+/tNSxSCtYV7/bvJM2GjAEtWQ9oQnQGpDZBaqKM02nICWA7OmSkBvtlGBEbiAYC7kJFTMyJ5iVW0yd6nr6wZfVJZs9nssMYzVIhRwcShLgytg/SM48qFsxS2UOVXAT+I+2AdWILf0t2AJHzXk=
+	t=1767169957; cv=none; b=sV5jEza3gL9zmeOf521hBO8oo3QkiqhybZVFQIFueiqnN1GRp+MnC64JxzjQZ/OgLmlMa+t7f3AWEu6Gab/EQ9BsN7R7KL99Yo8XblzoCZqxb40kdu7mpTZkU8JD6KfdSuqTpqVI+hBrcepYhETtzLSoYe/1YUsA7u6oFfYJ1gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767169926; c=relaxed/simple;
-	bh=7DcCyNAxIOrE8PfdIo71cf+hyldla10OgBJkDOcbRtQ=;
-	h=Message-ID:From:Subject:Date:To:Cc; b=s+ZFFarG607jQffIzkfhk+SNmmFj1b/PBzWvQ9yN67cXoN1O250fN/tn0FyFeCStK4DwMgzQdukur4+VXCsVBK2IkbWrXG2WxBTuBYlzWsLgVCprMRshnm8OWRRLPB877WsaPn+6yTBxTiOK2CR6q0ffLJjKns9lyYIWQlvuHqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=J5n9Lbs4; arc=none smtp.client-ip=202.12.124.143
+	s=arc-20240116; t=1767169957; c=relaxed/simple;
+	bh=D8CLdfYVhw03T7M683GXA2rJE7VSouolMexLSrJZi+s=;
+	h=To:Cc:Message-ID:In-Reply-To:References:From:Subject:Date; b=ErqIM/AX9IspjWOBmwf+8up/L290nFH27CEbelS/IoVJf36W8c/JzxxI1VZNuVP+dikydBXbW6qHJereI8EFtsTJ4In2XzhwfGEt7J/taMz7QlGce9DYAvd+Kp3PYXJfsfeIUG0xrouPaQthIe5GlmMbuexKRbhFumMi8ned198=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sEL39B7U; arc=none smtp.client-ip=202.12.124.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id 76BBE13000B8;
-	Wed, 31 Dec 2025 03:32:01 -0500 (EST)
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.stl.internal (Postfix) with ESMTP id 1CE611D000C4;
+	Wed, 31 Dec 2025 03:32:34 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 31 Dec 2025 03:32:02 -0500
+  by phl-compute-11.internal (MEProxy); Wed, 31 Dec 2025 03:32:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1767169921; x=1767177121; bh=Lb2eWdiKdYUIGHuGDDbo7kxfILv0
-	pg03yvKu0vOb+CE=; b=J5n9Lbs4zQ75be3RA51MEYLNsx/D6J6wHE9mjE4Rt+Qf
-	15YQS4LRZ1UBtJuj9+PDhm9Im1kyDJOqAwCZ5PcNufD2WbNmN4XKLgfHwPtTGj7s
-	jgcL1YphW7FW2JHHjwFz5FXtqz4n2SfuXMAmKzIn5Y08IXkvjBs+DDGcspip5Zci
-	cZOmQvmXeCH7j+s5HD3OubVT2LyDYVtPcEcE7uTQKrFsIydtuoj0wuO3ubwwuc75
-	/Gbmctq8XdZFrKXpe2IMDda+gJAFYzAbD8xaC8KyIVfS1NjssIF7jKDvrjgpKwSd
-	SNRRbSEmluMxhkw8NP1kxqbLfWWhTAYVLGfsVwKj3A==
-X-ME-Sender: <xms:fd9UaeiRyKe6EAsts2vuraIWpAGpXYF6S0-ab29iEfg7uIWZsD1jkg>
-    <xme:fd9Uab2fCrjO4ugtginziqp8h-lz0CMGt13DuAQ1828yc4hQNJ1Ml-AzEZAwbR_9d
-    H_-IiI1UP3mRr9WfBOkp6bX4eLNpAZCkwEvgC4oB9Bk8hKG22PNcsU>
-X-ME-Received: <xmr:fd9UaaRW79jsdBtsY1cm8DSOV-NMfoSsF4LSUaTK1lpZOJKtJ14gh1ADzUrbroBSux_Or8KN6wb-zvcO4UoNBdavy_nO4W2C-u0>
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1767169953; x=
+	1767256353; bh=GTOExrkFdZz6ILdbiBTGhbMt+0HZHq9E17gN90wdwYg=; b=s
+	EL39B7URD/7b1EY2rfw7KLprl3qc+VO5DMWLvcLsZZqT5MNNq13qeno7NsVGmscZ
+	qDSKEeef15KEvl4EITkf0HiN6+8eMPFzZPtVqXhva5ucIm3cM7qpjdFcGuebuzA9
+	vf2dEajXjppmhi1L5wIJC3JfN1pwAqPDkoJ+Y/ZJIB7nqs6oawi7gB813qLyrNd3
+	IREBEjMpCaNnqgmraxgs0deUFuG5GQok6Kp/d6i0hEOQRF4LNbtLqJ44AVsN82jT
+	b09jJijckWquJsL5S4jCRC1Cv+zxb5CzWFsEf89Z+ya/Camw6drDaTN7maz6UiwF
+	sZVbJ4Gyu9O8EXqyt2l0A==
+X-ME-Sender: <xms:od9UaWXyOr8S_b9ovWf9w65-1BEEb0vj-v_VvqJxzOPOxYA__fRcmg>
+    <xme:od9UaR0rspE6vHj5TfVzXYAa6jwJzKbvLWaEnskd3oBvXg-xDSdQXZVGnReCJ7tt2
+    4ol0iUDVQtPTdDog94-eqAhWfs1WutBNs-VcaU8xu0ilPcHihZLudg>
+X-ME-Received: <xmr:od9UadNdsxrrgNvXWJi4uPK3TG2Y0y0O_puSXNeteFWuJXaze2Cl-HjmfrxORaruQrUW1zfv5UfwnVMuWo5Tz4Bq3gh82tCeNzw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekvdegfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkhffufffvveestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhnuceo
-    fhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnhepud
-    evtdeiveefvdffteduheetieehtdekhfekiedvledvtdehkeetieeuuddufeeunecuffho
-    mhgrihhnpedujedrqdhnvgifnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepfhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrghdpnhgspghr
-    tghpthhtohepgeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslh
-    hinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepphgvthgvrhiisehi
-    nhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopegrnhgurhhiiheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghr
-    uggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpd
-    hrtghpthhtoheprghstheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqhhunhdr
-    fhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggv
-X-ME-Proxy: <xmx:fd9UaValjqnDrsAQZyzs-n4h9vaQLYxBBEFAH518d7YwUZVtZhwY7A>
-    <xmx:fd9Uaf5eZ4_XVFMc3_Z0pxzB8lW2sV9GCiONli5I5Py9efDA1Rg0-Q>
-    <xmx:fd9UaeuA0xIpFY3NulbznfmXRFsySF9OzbhkbNhUMkBgnjiGEBaN_g>
-    <xmx:fd9UaR4DSIAE_aLXWohDbPAmv_HVG0l-QieXD8fgUiUIz_pVBIMZvg>
-    <xmx:gd9UaSAy4Z2KnDeHIMQ8JvSZv23grHngVf6siI2XZGpH97_SQThrlfqY>
+    hrpefvvefkjghfhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhn
+    uceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epheekudffheejvdeiveekleelgeffieduvdegleeuhfeuudegkeekheffkefggfehnecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
+    pdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprg
+    hkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehpvght
+    vghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegs
+    ohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrh
+    ihghhuohdrnhgvthdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnugesrghrmhdrtgho
+    mhdprhgtphhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    gh
+X-ME-Proxy: <xmx:od9UaU1cAHr0mEBA8wWestIYj3apU0Pc2s4VjAfCv1TgHCox_u6U4g>
+    <xmx:od9UaU3DXFXmZZLkbZMafxSb3FO7Pq4jJOoXTWo_81-xHXEx-5oQ5Q>
+    <xmx:od9Uaa-k9Vx-Vw_JMdFmpDabS9CqIe5WtR_FtmJgDQn3fGr5ADQ3xw>
+    <xmx:od9UaYY_9OKoRL20VNKszsgqDU9AnljuCJBuW7RyuXNmL0T3OSNgdw>
+    <xmx:od9UaRy4SMsx5gy8z29mt3Uaf_58i-GxZtN4giSAEj3guA6LKPGd-JdK>
 Feedback-ID: i58a146ae:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 Dec 2025 03:31:56 -0500 (EST)
-Message-ID: <cover.1767169542.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v6 0/4] Align atomic storage
-Date: Wed, 31 Dec 2025 19:25:42 +1100
+ 31 Dec 2025 03:32:32 -0500 (EST)
 To: Andrew Morton <akpm@linux-foundation.org>,
     Peter Zijlstra <peterz@infradead.org>,
     Will Deacon <will@kernel.org>
-Cc: Andrii Nakryiko <andrii@kernel.org>,    Ard Biesheuvel <ardb@kernel.org>,
-    Arnd Bergmann <arnd@arndb.de>,    Alexei Starovoitov <ast@kernel.org>,
-    Boqun Feng <boqun.feng@gmail.com>,    Borislav Petkov <bp@alien8.de>,
-    bpf@vger.kernel.org,    Rich Felker <dalias@libc.org>,
-    Daniel Borkmann <daniel@iogearbox.net>,
-    Dave Hansen <dave.hansen@linux.intel.com>,
-    Dinh Nguyen <dinguyen@kernel.org>,
-    Eduard Zingerman <eddyz87@gmail.com>,    Gary Guo <gary@garyguo.net>,
-    Geert Uytterhoeven <geert@linux-m68k.org>,
-    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-    Guo Ren <guoren@kernel.org>,    Hao Luo <haoluo@google.com>,
-    "H. Peter Anvin" <hpa@zytor.com>,
-    John Fastabend <john.fastabend@gmail.com>,
-    Jiri Olsa <jolsa@kernel.org>,    Jonas Bonn <jonas@southpole.se>,
-    KP Singh <kpsingh@kernel.org>,    linux-arch@vger.kernel.org,
-    linux-csky@vger.kernel.org,    linux-efi@vger.kernel.org,
-    linux-kernel@vger.kernel.org,    linux-m68k@lists.linux-m68k.org,
-    linux-openrisc@vger.kernel.org,    linux-sh@vger.kernel.org,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+    Boqun Feng <boqun.feng@gmail.com>,
+    Gary Guo <gary@garyguo.net>,
     Mark Rutland <mark.rutland@arm.com>,
-    Martin KaFai Lau <martin.lau@linux.dev>,
-    Ingo Molnar <mingo@redhat.com>,    Sasha Levin <sashal@kernel.org>,
-    Stanislav Fomichev <sdf@fomichev.me>,
-    Stafford Horne <shorne@gmail.com>,    Song Liu <song@kernel.org>,
-    Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-    Thomas Gleixner <tglx@linutronix.de>,    x86@kernel.org,
-    Yonghong Song <yonghong.song@linux.dev>,
-    Yoshinori Sato <ysato@users.sourceforge.jp>
+    linux-arch@vger.kernel.org,
+    linux-kernel@vger.kernel.org,
+    linux-m68k@lists.linux-m68k.org,
+    Sasha Levin <sashal@kernel.org>,
+    Thomas Gleixner <tglx@linutronix.de>,
+    Ingo Molnar <mingo@redhat.com>,
+    Borislav Petkov <bp@alien8.de>,
+    Dave Hansen <dave.hansen@linux.intel.com>,
+    x86@kernel.org,
+    Ard Biesheuvel <ardb@kernel.org>,
+    "H. Peter Anvin" <hpa@zytor.com>,
+    linux-efi@vger.kernel.org
+Message-ID: <f8cfe0d121be0849f5175495e73eafeeb85e1ad3.1767169542.git.fthain@linux-m68k.org>
+In-Reply-To: <cover.1767169542.git.fthain@linux-m68k.org>
+References: <cover.1767169542.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH v6 3/4] atomic: Add alignment check to instrumented atomic
+ operations
+Date: Wed, 31 Dec 2025 19:25:42 +1100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 
-This series adds the __aligned attribute to atomic_t and atomic64_t
-definitions in include/linux and include/asm-generic (respectively)
-to get natural alignment of both types on csky, m68k, microblaze,
-nios2, openrisc and sh.
+From: Peter Zijlstra <peterz@infradead.org>
 
-This series also adds Kconfig options to enable a new run-time warning
-to help reveal misaligned atomic accesses on platforms which don't
-trap that.
+Add a Kconfig option for debug builds which logs a warning when an
+instrumented atomic operation takes place that's misaligned.
+Some platforms don't trap for this.
 
-The performance impact is expected to vary across platforms and workloads.
-The measurements I made on m68k show that some workloads run faster and
-others slower.
+[fthain: added __DISABLE_BUG_TABLE macro.]
 
+Cc: Sasha Levin <sashal@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/lkml/20250901093600.GF4067720@noisy.programming.kicks-ass.net/
+Link: https://lore.kernel.org/linux-next/df9fbd22-a648-ada4-fee0-68fe4325ff82@linux-m68k.org/
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
 ---
-
+Checkpatch.pl says...
+ERROR: Missing Signed-off-by: line by nominal patch author 'Peter Ziljstra <peterz@infradead.org>'
+---
 Changed since v5:
- - Added acked-by and revewed-by tags.
- - Added a new macro to inhibit emission of __bug_table section, for the
- benefit of pre-boot code like the EFI stub loader.
+ - Add new __DISABLE_BUG_TABLE macro to prevent a build failure on those
+architectures which use atomics in pre-boot code like the EFI stub loader:
 
-Changed since v4:
- - Dropped parisc header file patch as it's been merged already.
- - Submitted as PATCH instead of RFC.
-
-Changed since v3:
- - Rebased on v6.17.
- - New patch to resolve header dependency issue on parisc.
- - Dropped documentation patch.
+x86_64-linux-gnu-ld: error: unplaced orphan section `__bug_table' from `arch/x86/boot/compressed/sev-handle-vc.o'
 
 Changed since v2:
- - Specify natural alignment for atomic64_t.
- - CONFIG_DEBUG_ATOMIC checks for natural alignment again.
- - New patch to add weakened alignment check.
- - New patch for explicit alignment in BPF header.
-
+ - Always check for natural alignment.
 ---
-
-Finn Thain (3):
-  bpf: Explicitly align bpf_res_spin_lock
-  atomic: Specify alignment for atomic_t and atomic64_t
-  atomic: Add option for weaker alignment check
-
-Peter Zijlstra (1):
-  atomic: Add alignment check to instrumented atomic operations
-
  arch/x86/boot/compressed/Makefile     |  1 +
  drivers/firmware/efi/libstub/Makefile |  1 +
- include/asm-generic/atomic64.h        |  2 +-
- include/asm-generic/rqspinlock.h      |  2 +-
- include/linux/instrumented.h          | 17 +++++++++++++++++
- include/linux/types.h                 |  2 +-
- kernel/bpf/rqspinlock.c               |  1 -
- lib/Kconfig.debug                     | 18 ++++++++++++++++++
- 8 files changed, 40 insertions(+), 4 deletions(-)
+ include/linux/instrumented.h          | 10 ++++++++++
+ lib/Kconfig.debug                     | 10 ++++++++++
+ 4 files changed, 22 insertions(+)
 
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 68f9d7a1683b..122967c80e48 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -42,6 +42,7 @@ KBUILD_CFLAGS += -Wno-microsoft-anon-tag
+ endif
+ KBUILD_CFLAGS += -Wno-pointer-sign
+ KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
++KBUILD_CFLAGS += -D__DISABLE_BUG_TABLE
+ KBUILD_CFLAGS += -D__DISABLE_EXPORTS
+ # Disable relocation relaxation in case the link is not PIE.
+ KBUILD_CFLAGS += $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 7d15a85d579f..ac3e7c64aedb 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -42,6 +42,7 @@ KBUILD_CFLAGS			:= $(subst $(CC_FLAGS_FTRACE),,$(cflags-y)) \
+ 				   -ffreestanding \
+ 				   -fno-stack-protector \
+ 				   $(call cc-option,-fno-addrsig) \
++				   -D__DISABLE_BUG_TABLE \
+ 				   -D__DISABLE_EXPORTS
+ 
+ #
+diff --git a/include/linux/instrumented.h b/include/linux/instrumented.h
+index 711a1f0d1a73..bcd1113b55a1 100644
+--- a/include/linux/instrumented.h
++++ b/include/linux/instrumented.h
+@@ -7,6 +7,7 @@
+ #ifndef _LINUX_INSTRUMENTED_H
+ #define _LINUX_INSTRUMENTED_H
+ 
++#include <linux/bug.h>
+ #include <linux/compiler.h>
+ #include <linux/kasan-checks.h>
+ #include <linux/kcsan-checks.h>
+@@ -67,6 +68,9 @@ static __always_inline void instrument_atomic_read(const volatile void *v, size_
+ {
+ 	kasan_check_read(v, size);
+ 	kcsan_check_atomic_read(v, size);
++#ifndef __DISABLE_BUG_TABLE
++	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & (size - 1)));
++#endif
+ }
+ 
+ /**
+@@ -81,6 +85,9 @@ static __always_inline void instrument_atomic_write(const volatile void *v, size
+ {
+ 	kasan_check_write(v, size);
+ 	kcsan_check_atomic_write(v, size);
++#ifndef __DISABLE_BUG_TABLE
++	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & (size - 1)));
++#endif
+ }
+ 
+ /**
+@@ -95,6 +102,9 @@ static __always_inline void instrument_atomic_read_write(const volatile void *v,
+ {
+ 	kasan_check_write(v, size);
+ 	kcsan_check_atomic_read_write(v, size);
++#ifndef __DISABLE_BUG_TABLE
++	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & (size - 1)));
++#endif
+ }
+ 
+ /**
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index ba36939fda79..4b4d1445ef9c 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1359,6 +1359,16 @@ config DEBUG_PREEMPT
+ 	  depending on workload as it triggers debugging routines for each
+ 	  this_cpu operation. It should only be used for debugging purposes.
+ 
++config DEBUG_ATOMIC
++	bool "Debug atomic variables"
++	depends on DEBUG_KERNEL
++	help
++	  If you say Y here then the kernel will add a runtime alignment check
++	  to atomic accesses. Useful for architectures that do not have trap on
++	  mis-aligned access.
++
++	  This option has potentially significant overhead.
++
+ menu "Lock Debugging (spinlocks, mutexes, etc...)"
+ 
+ config LOCK_DEBUGGING_SUPPORT
 -- 
 2.49.1
 
