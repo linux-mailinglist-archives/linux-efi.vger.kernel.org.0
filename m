@@ -1,237 +1,156 @@
-Return-Path: <linux-efi+bounces-5932-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5933-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A869ACEB8B6
-	for <lists+linux-efi@lfdr.de>; Wed, 31 Dec 2025 09:33:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC07CF05B2
+	for <lists+linux-efi@lfdr.de>; Sat, 03 Jan 2026 21:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CEA7303058F
-	for <lists+linux-efi@lfdr.de>; Wed, 31 Dec 2025 08:32:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CFBD3016355
+	for <lists+linux-efi@lfdr.de>; Sat,  3 Jan 2026 20:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD1A1FC101;
-	Wed, 31 Dec 2025 08:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F81B29D293;
+	Sat,  3 Jan 2026 20:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sEL39B7U"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CF4E5Elq"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0CB2F7455;
-	Wed, 31 Dec 2025 08:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41928A59;
+	Sat,  3 Jan 2026 20:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767169957; cv=none; b=sV5jEza3gL9zmeOf521hBO8oo3QkiqhybZVFQIFueiqnN1GRp+MnC64JxzjQZ/OgLmlMa+t7f3AWEu6Gab/EQ9BsN7R7KL99Yo8XblzoCZqxb40kdu7mpTZkU8JD6KfdSuqTpqVI+hBrcepYhETtzLSoYe/1YUsA7u6oFfYJ1gE=
+	t=1767473090; cv=none; b=PS39qXGhrlfE6Z3as92OndiPeczGrihz5ThY6TP3brcleU2zGlIxbKJSdGLI9IFGZV8/LFjdqgN0AdfeFi4Nd+Ueayz76HXYqyNuAA1iSuHhVO9oh/xgNlMrdyNy80sIzu1CDGxIybZEsRddwVGA23J9G/nRZKMlErzHlxzUaB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767169957; c=relaxed/simple;
-	bh=D8CLdfYVhw03T7M683GXA2rJE7VSouolMexLSrJZi+s=;
-	h=To:Cc:Message-ID:In-Reply-To:References:From:Subject:Date; b=ErqIM/AX9IspjWOBmwf+8up/L290nFH27CEbelS/IoVJf36W8c/JzxxI1VZNuVP+dikydBXbW6qHJereI8EFtsTJ4In2XzhwfGEt7J/taMz7QlGce9DYAvd+Kp3PYXJfsfeIUG0xrouPaQthIe5GlmMbuexKRbhFumMi8ned198=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sEL39B7U; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id 1CE611D000C4;
-	Wed, 31 Dec 2025 03:32:34 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Wed, 31 Dec 2025 03:32:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1767169953; x=
-	1767256353; bh=GTOExrkFdZz6ILdbiBTGhbMt+0HZHq9E17gN90wdwYg=; b=s
-	EL39B7URD/7b1EY2rfw7KLprl3qc+VO5DMWLvcLsZZqT5MNNq13qeno7NsVGmscZ
-	qDSKEeef15KEvl4EITkf0HiN6+8eMPFzZPtVqXhva5ucIm3cM7qpjdFcGuebuzA9
-	vf2dEajXjppmhi1L5wIJC3JfN1pwAqPDkoJ+Y/ZJIB7nqs6oawi7gB813qLyrNd3
-	IREBEjMpCaNnqgmraxgs0deUFuG5GQok6Kp/d6i0hEOQRF4LNbtLqJ44AVsN82jT
-	b09jJijckWquJsL5S4jCRC1Cv+zxb5CzWFsEf89Z+ya/Camw6drDaTN7maz6UiwF
-	sZVbJ4Gyu9O8EXqyt2l0A==
-X-ME-Sender: <xms:od9UaWXyOr8S_b9ovWf9w65-1BEEb0vj-v_VvqJxzOPOxYA__fRcmg>
-    <xme:od9UaR0rspE6vHj5TfVzXYAa6jwJzKbvLWaEnskd3oBvXg-xDSdQXZVGnReCJ7tt2
-    4ol0iUDVQtPTdDog94-eqAhWfs1WutBNs-VcaU8xu0ilPcHihZLudg>
-X-ME-Received: <xmr:od9UadNdsxrrgNvXWJi4uPK3TG2Y0y0O_puSXNeteFWuJXaze2Cl-HjmfrxORaruQrUW1zfv5UfwnVMuWo5Tz4Bq3gh82tCeNzw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekvdegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefvvefkjghfhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhn
-    uceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnh
-    epheekudffheejvdeiveekleelgeffieduvdegleeuhfeuudegkeekheffkefggfehnecu
-    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
-    pdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprg
-    hkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehpvght
-    vghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegs
-    ohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrh
-    ihghhuohdrnhgvthdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnugesrghrmhdrtgho
-    mhdprhgtphhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    gh
-X-ME-Proxy: <xmx:od9UaU1cAHr0mEBA8wWestIYj3apU0Pc2s4VjAfCv1TgHCox_u6U4g>
-    <xmx:od9UaU3DXFXmZZLkbZMafxSb3FO7Pq4jJOoXTWo_81-xHXEx-5oQ5Q>
-    <xmx:od9Uaa-k9Vx-Vw_JMdFmpDabS9CqIe5WtR_FtmJgDQn3fGr5ADQ3xw>
-    <xmx:od9UaYY_9OKoRL20VNKszsgqDU9AnljuCJBuW7RyuXNmL0T3OSNgdw>
-    <xmx:od9UaRy4SMsx5gy8z29mt3Uaf_58i-GxZtN4giSAEj3guA6LKPGd-JdK>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 Dec 2025 03:32:32 -0500 (EST)
-To: Andrew Morton <akpm@linux-foundation.org>,
-    Peter Zijlstra <peterz@infradead.org>,
-    Will Deacon <will@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-    Boqun Feng <boqun.feng@gmail.com>,
-    Gary Guo <gary@garyguo.net>,
-    Mark Rutland <mark.rutland@arm.com>,
-    linux-arch@vger.kernel.org,
-    linux-kernel@vger.kernel.org,
-    linux-m68k@lists.linux-m68k.org,
-    Sasha Levin <sashal@kernel.org>,
-    Thomas Gleixner <tglx@linutronix.de>,
-    Ingo Molnar <mingo@redhat.com>,
-    Borislav Petkov <bp@alien8.de>,
-    Dave Hansen <dave.hansen@linux.intel.com>,
-    x86@kernel.org,
-    Ard Biesheuvel <ardb@kernel.org>,
-    "H. Peter Anvin" <hpa@zytor.com>,
-    linux-efi@vger.kernel.org
-Message-ID: <f8cfe0d121be0849f5175495e73eafeeb85e1ad3.1767169542.git.fthain@linux-m68k.org>
-In-Reply-To: <cover.1767169542.git.fthain@linux-m68k.org>
-References: <cover.1767169542.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v6 3/4] atomic: Add alignment check to instrumented atomic
- operations
-Date: Wed, 31 Dec 2025 19:25:42 +1100
+	s=arc-20240116; t=1767473090; c=relaxed/simple;
+	bh=5kuczirHcQe4+fkJcH9poXFd9BRfZSEssKljSuVqDJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jxw0TFj3uWwlGJT3dSxUayLLbes0jojESlWufcZyGnLVU24tUO4x2/TaRrVFV6jZSaJnsTTeaUA9fhFvHmNsIiGGEBSXx/LMWLS/osFnNbiRMwun1n0XCfe23FT0QC56iwKx8ms6Rh/8H//bRv1k+reRt2WzCkBQFYjnMIAQACg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CF4E5Elq; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767473088; x=1799009088;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5kuczirHcQe4+fkJcH9poXFd9BRfZSEssKljSuVqDJ8=;
+  b=CF4E5ElqxmvMavON7nlqaYx/jqOq6xgVh3Q4rjCH40laLwCHGMSpOHzG
+   I9B7pvmWDh5LHjdiOsPIXtayCM+IpwQ9s0dKxa3E1c0011uQvsIcgDe5P
+   r1gcE7y2HKbj/IhWEG7nDYXRSjvPoumiMONkRlqyKtjm6iAt3ctq4rMGQ
+   iV0BAGNaS+xtC+1lEaP12VgH1+XyccYkihd7mAlJeussLQOn9dSJ3IhjT
+   IDxaCYps0r1nCl8qPlAbDGWTxWQ0AqyhnGpwrip3K8Br30gTRiMPsP/DF
+   GRxlmh3SYnBVtri54zGOKPDaspCNjI3jtw1MjAWEg7oEjObu1qlQkp8X9
+   g==;
+X-CSE-ConnectionGUID: 9TkKovYwT4e/N71/VVG9bQ==
+X-CSE-MsgGUID: +gEWCv9gSCuvl2wP6khvrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="80275790"
+X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
+   d="scan'208";a="80275790"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2026 12:44:47 -0800
+X-CSE-ConnectionGUID: tk28MacfQHKXkklM6oGp7w==
+X-CSE-MsgGUID: H8m4GpiGSeCgVN3Dk67f2Q==
+X-ExtLoop1: 1
+Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.109.9]) ([10.125.109.9])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2026 12:44:46 -0800
+Message-ID: <a507a85c-e1dd-4c63-94b2-9756ea9ece63@intel.com>
+Date: Sat, 3 Jan 2026 12:44:45 -0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 19/28] x86/tpm: Early TPM PCR extending driver
+To: "Daniel P. Smith" <dpsmith@apertussolutions.com>,
+ Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+ linux-efi@vger.kernel.org, iommu@lists.linux.dev
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+ dave.hansen@linux.intel.com, ardb@kernel.org, mjg59@srcf.ucam.org,
+ James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, jarkko@kernel.org,
+ jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu,
+ herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net,
+ ebiederm@xmission.com, dwmw2@infradead.org, baolu.lu@linux.intel.com,
+ kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
+ trenchboot-devel@googlegroups.com
+References: <20251215233316.1076248-1-ross.philipson@oracle.com>
+ <20251215233316.1076248-20-ross.philipson@oracle.com>
+ <56929e8b-a7cf-4390-b4ec-0b4c2c32b311@intel.com>
+ <62227ed3-3804-4795-93c9-ce2bbad3f2a7@apertussolutions.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <62227ed3-3804-4795-93c9-ce2bbad3f2a7@apertussolutions.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Peter Zijlstra <peterz@infradead.org>
+On 12/19/25 13:26, Daniel P. Smith wrote:
+...
+>> I also seem to remember that there are special rules around the US
+>> federal government's inability to hold copyrights. This seems worth at
+>> least a mention ... somewhere.
+> 
+> IANAL either, but in general the safest/correct approach is to retain
+> any CRs placed on the code being reused, and the above is the CR on the
+> source from the Xen tree.
 
-Add a Kconfig option for debug builds which logs a warning when an
-instrumented atomic operation takes place that's misaligned.
-Some platforms don't trap for this.
+Yeah, in general, that's a good thing to do.
 
-[fthain: added __DISABLE_BUG_TABLE macro.]
+But I'm puzzled by your response. Are you making an attempt to justify
+the past choice to copy the copyrights verbatim? Or are you declining to
+follow my request to involve your companies' legal experts given that
+you used the "safest/correct approach"?
 
-Cc: Sasha Levin <sashal@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: x86@kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/lkml/20250901093600.GF4067720@noisy.programming.kicks-ass.net/
-Link: https://lore.kernel.org/linux-next/df9fbd22-a648-ada4-fee0-68fe4325ff82@linux-m68k.org/
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
----
-Checkpatch.pl says...
-ERROR: Missing Signed-off-by: line by nominal patch author 'Peter Ziljstra <peterz@infradead.org>'
----
-Changed since v5:
- - Add new __DISABLE_BUG_TABLE macro to prevent a build failure on those
-architectures which use atomics in pre-boot code like the EFI stub loader:
+FWIW, I don't think what you did was bad here. You _did_ use a quite
+reasonable approach in the case that a copyright was copied verbatim
+from an existing legitimate* project.
 
-x86_64-linux-gnu-ld: error: unplaced orphan section `__bug_table' from `arch/x86/boot/compressed/sev-handle-vc.o'
-
-Changed since v2:
- - Always check for natural alignment.
----
- arch/x86/boot/compressed/Makefile     |  1 +
- drivers/firmware/efi/libstub/Makefile |  1 +
- include/linux/instrumented.h          | 10 ++++++++++
- lib/Kconfig.debug                     | 10 ++++++++++
- 4 files changed, 22 insertions(+)
-
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 68f9d7a1683b..122967c80e48 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -42,6 +42,7 @@ KBUILD_CFLAGS += -Wno-microsoft-anon-tag
- endif
- KBUILD_CFLAGS += -Wno-pointer-sign
- KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
-+KBUILD_CFLAGS += -D__DISABLE_BUG_TABLE
- KBUILD_CFLAGS += -D__DISABLE_EXPORTS
- # Disable relocation relaxation in case the link is not PIE.
- KBUILD_CFLAGS += $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 7d15a85d579f..ac3e7c64aedb 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -42,6 +42,7 @@ KBUILD_CFLAGS			:= $(subst $(CC_FLAGS_FTRACE),,$(cflags-y)) \
- 				   -ffreestanding \
- 				   -fno-stack-protector \
- 				   $(call cc-option,-fno-addrsig) \
-+				   -D__DISABLE_BUG_TABLE \
- 				   -D__DISABLE_EXPORTS
- 
- #
-diff --git a/include/linux/instrumented.h b/include/linux/instrumented.h
-index 711a1f0d1a73..bcd1113b55a1 100644
---- a/include/linux/instrumented.h
-+++ b/include/linux/instrumented.h
-@@ -7,6 +7,7 @@
- #ifndef _LINUX_INSTRUMENTED_H
- #define _LINUX_INSTRUMENTED_H
- 
-+#include <linux/bug.h>
- #include <linux/compiler.h>
- #include <linux/kasan-checks.h>
- #include <linux/kcsan-checks.h>
-@@ -67,6 +68,9 @@ static __always_inline void instrument_atomic_read(const volatile void *v, size_
- {
- 	kasan_check_read(v, size);
- 	kcsan_check_atomic_read(v, size);
-+#ifndef __DISABLE_BUG_TABLE
-+	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & (size - 1)));
-+#endif
- }
- 
- /**
-@@ -81,6 +85,9 @@ static __always_inline void instrument_atomic_write(const volatile void *v, size
- {
- 	kasan_check_write(v, size);
- 	kcsan_check_atomic_write(v, size);
-+#ifndef __DISABLE_BUG_TABLE
-+	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & (size - 1)));
-+#endif
- }
- 
- /**
-@@ -95,6 +102,9 @@ static __always_inline void instrument_atomic_read_write(const volatile void *v,
- {
- 	kasan_check_write(v, size);
- 	kcsan_check_atomic_read_write(v, size);
-+#ifndef __DISABLE_BUG_TABLE
-+	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & (size - 1)));
-+#endif
- }
- 
- /**
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index ba36939fda79..4b4d1445ef9c 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1359,6 +1359,16 @@ config DEBUG_PREEMPT
- 	  depending on workload as it triggers debugging routines for each
- 	  this_cpu operation. It should only be used for debugging purposes.
- 
-+config DEBUG_ATOMIC
-+	bool "Debug atomic variables"
-+	depends on DEBUG_KERNEL
-+	help
-+	  If you say Y here then the kernel will add a runtime alignment check
-+	  to atomic accesses. Useful for architectures that do not have trap on
-+	  mis-aligned access.
-+
-+	  This option has potentially significant overhead.
-+
- menu "Lock Debugging (spinlocks, mutexes, etc...)"
- 
- config LOCK_DEBUGGING_SUPPORT
--- 
-2.49.1
-
+ * I'll give Xen the benefit of the doubt just this one time and put it
+   in the "legitimate" bucket. :P
 
