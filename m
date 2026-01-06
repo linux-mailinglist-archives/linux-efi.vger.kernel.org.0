@@ -1,114 +1,212 @@
-Return-Path: <linux-efi+bounces-5945-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5946-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D257FCF7E25
-	for <lists+linux-efi@lfdr.de>; Tue, 06 Jan 2026 11:52:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615E0CF8AB4
+	for <lists+linux-efi@lfdr.de>; Tue, 06 Jan 2026 15:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08393314BEA5
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Jan 2026 10:46:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E581530DC149
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Jan 2026 13:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F3432E6B1;
-	Tue,  6 Jan 2026 10:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W9AM8XTT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630823385B3;
+	Tue,  6 Jan 2026 13:40:37 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC5132E157
-	for <linux-efi@vger.kernel.org>; Tue,  6 Jan 2026 10:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05D33375CD;
+	Tue,  6 Jan 2026 13:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767695016; cv=none; b=C2pg+0Eb1nTUiN5fwZxLbPvsk9oQls7jfJAIMDc9VC+/aMMwSIH/t5fh2AGN44JMa2wM+MkwvB6zXYiuKySNFOj3IGvX8XazGrAGd51VH/ipCAy8LdCnQ6N6KcSqSIm1eXuZQIvdkobdRoVofYpVqWCRzKQhZkKmVuzVjWuwOYA=
+	t=1767706836; cv=none; b=pgUBMMlC68D2yd6ZdK9ZDmcstQank6i+kc7vl2IAfCEalOpOg9pgqEnjvGop/xymVb5s3ILxMlTrtwUW/h5+/fErQcn5j4rZGntov4rWeVlrEbQUHp31xvTsOPFBUJ66PUdGYkudy7fyLNn2tyAi3B1kXSBn4tX9yvGUrCeryL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767695016; c=relaxed/simple;
-	bh=7G/63Ebg037MtWPdMChR2/hajf3uRri9rZlipp0hdvw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fFdF89SiQdVaa/QqvuuH7+F3Rd3kiixzZcY9P/b095NPDGbPafS/5lt8w62117K39KElhjQDj2aw9ntqOkTiULKKT5wJCyoMQA79mo+AtRpWSZzTTCtTu/n2n7EZcH3dJGPtQwIsuU+e1YDAvMTh9dH1Vax/X9XEC+4NhFBHHJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W9AM8XTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD662C19425
-	for <linux-efi@vger.kernel.org>; Tue,  6 Jan 2026 10:23:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767695015;
-	bh=7G/63Ebg037MtWPdMChR2/hajf3uRri9rZlipp0hdvw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=W9AM8XTTiEn3d3buU61YhWWO/iV+wvM8AWzOcUCrENr+1LMFqYOQL3NPHjrCv/bBO
-	 lUgyeVkx2QEHvJLtH+O6q4kb65VN6uD9XlgWFZtm8IHSI0NfBHL/3AHRuSNYpzJ3+B
-	 fjEmae8Ytsd96++7EgqD2b2ccRwJdJHO0ZXVQ3xtgu+hE6nNkrN+8CADjKjDeT8tOd
-	 OBhEaxDLawAtthZETP00dUW9XKrubbwoJhRoWpepO2SCAaUoLvQXADGUZ+TVw60qgp
-	 YD3uoMQtyx5rvo2vchc+7yAk+ylRk2yvZBQ4bWDd+T/BKX6wiGHZ8mx2O5Nn0Yx9ck
-	 Uil0DC1Kcu2nw==
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so811797b3a.1
-        for <linux-efi@vger.kernel.org>; Tue, 06 Jan 2026 02:23:35 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWjIRGiwOuDZRnW1F6+3RtfY5wdM9S1sKWtphndhABwxz/6z1cm5FcLjE3HTjpktNjBGWp2RtSbaI8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwUGWm7rogliX1yPFPQZTPKtjeddAjRmwvQOxHM9KD5bB6cMWh
-	SGCCCFFKRurHLmJztL9eokC/CRfUcxvEcnOQzwKA4g9UgNg8K8f3IWAeuD7BJP3ky/1CNb63Crv
-	Mmjf2hiMIsA1F8l/5V1IoB4R4MEl137E=
-X-Google-Smtp-Source: AGHT+IGRu6tzZVsaq2B/AJ6p/F7Ga3K9ztaebfR7/XzLB4J/0IxzBLoDP96qpOtIr0VbIrLiDGar8eXDw4yLmfZ/NT8=
-X-Received: by 2002:a05:6a20:549d:b0:34e:1009:4205 with SMTP id
- adf61e73a8af0-3898227b579mr1971666637.27.1767695015301; Tue, 06 Jan 2026
- 02:23:35 -0800 (PST)
+	s=arc-20240116; t=1767706836; c=relaxed/simple;
+	bh=riYTKJoFQ1Amngen0HhfQApbfcrmFFwHT6saLPWenhg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LxKIvuKSh9bsY+tZnvXYnwJqi90/AXcRxfDQoTGWcsSGUKFkdcQsx8JlALIqmIlvKl4AjftaZfJZc86/kvtoiBxWQsSiOF7UNpisFYgHpjaTy6ijU6R3cfW+CWf0sscRzgH0jNmImpaLuZoKYiXZQlbio/2ujD0xDn8/UXBy1qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EA5E7497;
+	Tue,  6 Jan 2026 05:40:24 -0800 (PST)
+Received: from bogus (e133711.arm.com [10.1.197.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1D1043F6A8;
+	Tue,  6 Jan 2026 05:40:25 -0800 (PST)
+Date: Tue, 6 Jan 2026 13:40:23 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Jens Wiklander <jens.wiklander@linaro.org>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	=?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Peter Huewe <peterhuewe@gmx.de>, op-tee@lists.trustedfirmware.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-rtc@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	arm-scmi@vger.kernel.org, linux-mips@vger.kernel.org,
+	netdev@vger.kernel.org, linux-integrity@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH v2 00/17] tee: Use bus callbacks instead of driver
+ callbacks
+Message-ID: <aV0Qx5BOso5co3tm@bogus>
+References: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
+ <CAHUa44FrDZbvRvfN8obf80_k=Eqxe9YxHpjaE5jU7nkxPUwfag@mail.gmail.com>
+ <20251218135332f323fa91@mail.local>
+ <CAHUa44GpW5aO26GDyL9RZub9vVYvVcJ7etwO0yXBN_mUi0W4AA@mail.gmail.com>
+ <CAHUa44HqRbCJTXsrTCm0G5iwtkQtq+Si=yOspCjpAn-N2uVSVg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260105135847.1585034-1-ben.horgan@arm.com> <aVvPIdREAdweYqZf@e129823.arm.com>
- <aVzAvqv8JnjrjJbF@r1chard>
-In-Reply-To: <aVzAvqv8JnjrjJbF@r1chard>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 6 Jan 2026 11:23:24 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFpvcjtU-j=bQxMkH7h8yTFxGcjtJ0_cbbYPLWv_RXGMA@mail.gmail.com>
-X-Gm-Features: AQt7F2qWXwk26mnOyrsQIoVCqQG-xBmoGdDbnqNwtvhq146Mfo0teG8s7g_Lh_0
-Message-ID: <CAMj1kXFpvcjtU-j=bQxMkH7h8yTFxGcjtJ0_cbbYPLWv_RXGMA@mail.gmail.com>
-Subject: Re: [PATCH v1] arm64/efi: Don't fail check current_in_efi() if preemptible
-To: Richard Lyu <richard.lyu@suse.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Ben Horgan <ben.horgan@arm.com>, linux-efi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, 
-	will@kernel.org, Mark.Rutland@arm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHUa44HqRbCJTXsrTCm0G5iwtkQtq+Si=yOspCjpAn-N2uVSVg@mail.gmail.com>
 
-On Tue, 6 Jan 2026 at 08:59, Richard Lyu <richard.lyu@suse.com> wrote:
->
-> This change is good to me.
-> Reviewed-by: Richard Lyu <richard.lyu@suse.com>
->
-> On 2026/01/05 14:48, Yeoreum Yun wrote:
-> > LGTM. feel free to add:
-> > Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+On Mon, Jan 05, 2026 at 10:16:09AM +0100, Jens Wiklander wrote:
+> Hi,
+> 
+> On Thu, Dec 18, 2025 at 5:29 PM Jens Wiklander
+> <jens.wiklander@linaro.org> wrote:
 > >
-> > > As EFI runtime services can now be run without disabling preemption remove
-> > > the check for non preemptible in current_in_efi(). Without this change,
-> > > firmware errors that were previously recovered from by
-> > > __efi_runtime_kernel_fixup_exception() will lead to a kernel oops.
+> > On Thu, Dec 18, 2025 at 2:53 PM Alexandre Belloni
+> > <alexandre.belloni@bootlin.com> wrote:
 > > >
-> > > Fixes: a5baf582f4c0 ("arm64/efi: Call EFI runtime services without disabling preemption")
-> > > Signed-off-by: Ben Horgan <ben.horgan@arm.com>
-> > > ---
-> > > On the partner platform I was testing on this issue caused the boot to fail.
-> > > ---
-> > >  arch/arm64/include/asm/efi.h | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > On 18/12/2025 08:21:27+0100, Jens Wiklander wrote:
+> > > > Hi,
+> > > >
+> > > > On Mon, Dec 15, 2025 at 3:17 PM Uwe Kleine-König
+> > > > <u.kleine-koenig@baylibre.com> wrote:
+> > > > >
+> > > > > Hello,
+> > > > >
+> > > > > the objective of this series is to make tee driver stop using callbacks
+> > > > > in struct device_driver. These were superseded by bus methods in 2006
+> > > > > (commit 594c8281f905 ("[PATCH] Add bus_type probe, remove, shutdown
+> > > > > methods.")) but nobody cared to convert all subsystems accordingly.
+> > > > >
+> > > > > Here the tee drivers are converted. The first commit is somewhat
+> > > > > unrelated, but simplifies the conversion (and the drivers). It
+> > > > > introduces driver registration helpers that care about setting the bus
+> > > > > and owner. (The latter is missing in all drivers, so by using these
+> > > > > helpers the drivers become more correct.)
+> > > > >
+> > > > > v1 of this series is available at
+> > > > > https://lore.kernel.org/all/cover.1765472125.git.u.kleine-koenig@baylibre.com
+> > > > >
+> > > > > Changes since v1:
+> > > > >
+> > > > >  - rebase to v6.19-rc1 (no conflicts)
+> > > > >  - add tags received so far
+> > > > >  - fix whitespace issues pointed out by Sumit Garg
+> > > > >  - fix shutdown callback to shutdown and not remove
+> > > > >
+> > > > > As already noted in v1's cover letter, this series should go in during a
+> > > > > single merge window as there are runtime warnings when the series is
+> > > > > only applied partially. Sumit Garg suggested to apply the whole series
+> > > > > via Jens Wiklander's tree.
+> > > > > If this is done the dependencies in this series are honored, in case the
+> > > > > plan changes: Patches #4 - #17 depend on the first two.
+> > > > >
+> > > > > Note this series is only build tested.
+> > > > >
+> > > > > Uwe Kleine-König (17):
+> > > > >   tee: Add some helpers to reduce boilerplate for tee client drivers
+> > > > >   tee: Add probe, remove and shutdown bus callbacks to tee_client_driver
+> > > > >   tee: Adapt documentation to cover recent additions
+> > > > >   hwrng: optee - Make use of module_tee_client_driver()
+> > > > >   hwrng: optee - Make use of tee bus methods
+> > > > >   rtc: optee: Migrate to use tee specific driver registration function
+> > > > >   rtc: optee: Make use of tee bus methods
+> > > > >   efi: stmm: Make use of module_tee_client_driver()
+> > > > >   efi: stmm: Make use of tee bus methods
+> > > > >   firmware: arm_scmi: optee: Make use of module_tee_client_driver()
+> > > > >   firmware: arm_scmi: Make use of tee bus methods
+> > > > >   firmware: tee_bnxt: Make use of module_tee_client_driver()
+> > > > >   firmware: tee_bnxt: Make use of tee bus methods
+> > > > >   KEYS: trusted: Migrate to use tee specific driver registration
+> > > > >     function
+> > > > >   KEYS: trusted: Make use of tee bus methods
+> > > > >   tpm/tpm_ftpm_tee: Make use of tee specific driver registration
+> > > > >   tpm/tpm_ftpm_tee: Make use of tee bus methods
+> > > > >
+> > > > >  Documentation/driver-api/tee.rst             | 18 +----
+> > > > >  drivers/char/hw_random/optee-rng.c           | 26 ++----
+> > > > >  drivers/char/tpm/tpm_ftpm_tee.c              | 31 +++++---
+> > > > >  drivers/firmware/arm_scmi/transports/optee.c | 32 +++-----
+> > > > >  drivers/firmware/broadcom/tee_bnxt_fw.c      | 30 ++-----
+> > > > >  drivers/firmware/efi/stmm/tee_stmm_efi.c     | 25 ++----
+> > > > >  drivers/rtc/rtc-optee.c                      | 27 ++-----
+> > > > >  drivers/tee/tee_core.c                       | 84 ++++++++++++++++++++
+> > > > >  include/linux/tee_drv.h                      | 12 +++
+> > > > >  security/keys/trusted-keys/trusted_tee.c     | 17 ++--
+> > > > >  10 files changed, 164 insertions(+), 138 deletions(-)
+> > > > >
+> > > > > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> > > > > --
+> > > > > 2.47.3
+> > > > >
+> > > >
+> > > > Thank you for the nice cleanup, Uwe.
+> > > >
+> > > > I've applied patch 1-3 to the branch tee_bus_callback_for_6.20 in my
+> > > > tree at https://git.kernel.org/pub/scm/linux/kernel/git/jenswi/linux-tee.git/
+> > > >
+> > > > The branch is based on v6.19-rc1, and I'll try to keep it stable for
+> > > > others to depend on, if needed. Let's see if we can agree on taking
+> > > > the remaining patches via that branch.
 > > >
-> > > diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-> > > index aa91165ca140..e8a9783235cb 100644
-> > > --- a/arch/arm64/include/asm/efi.h
-> > > +++ b/arch/arm64/include/asm/efi.h
-> > > @@ -45,7 +45,7 @@ void arch_efi_call_virt_teardown(void);
-> > >   * switching to the EFI runtime stack.
-> > >   */
-> > >  #define current_in_efi()                                           \
-> > > -   (!preemptible() && efi_rt_stack_top != NULL &&                  \
-> > > +   (efi_rt_stack_top != NULL &&                                    \
-> > >      on_task_stack(current, READ_ONCE(efi_rt_stack_top[-1]), 1))
-> > >
-> > >  #define ARCH_EFI_IRQ_FLAGS_MASK (PSR_D_BIT | PSR_A_BIT | PSR_I_BIT | PSR_F_BIT)
-> > > --
-> > > 2.43.0
-> > >
+> > > 6 and 7 can go through your branch.
 > >
+> > Good, I've added them to my branch now.
+> 
+> This entire patch set should go in during a single merge window. I
+> will not send any pull request until I'm sure all patches will be
+> merged.
+> 
+> So far (if I'm not mistaken), only the patches I've already added to
+> next have appeared next. I can take the rest of the patches, too, but
+> I need OK for the following:
+> 
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+[...]
+
+> 
+> Sudeep, you seem happy with the following patches
+> - firmware: arm_scmi: optee: Make use of module_tee_client_driver()
+> - firmware: arm_scmi: Make use of tee bus methods
+> OK if I take them via my tree, or would you rather take them yourself?
+>
+
+I am happy if you want to take all of them in one go. I think I have
+already acked it. Please shout if you need anything else from me, happy to
+help in anyway to make it easier to handle this change set.
+
+-- 
+Regards,
+Sudeep
 
