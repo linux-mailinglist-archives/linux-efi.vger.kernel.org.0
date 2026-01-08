@@ -1,56 +1,56 @@
-Return-Path: <linux-efi+bounces-5965-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5966-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A10D04E4E
-	for <lists+linux-efi@lfdr.de>; Thu, 08 Jan 2026 18:22:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 069C0D04FF7
+	for <lists+linux-efi@lfdr.de>; Thu, 08 Jan 2026 18:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 893A930AE2F6
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jan 2026 16:22:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6E8D313AB49
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jan 2026 16:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DBC27280F;
-	Thu,  8 Jan 2026 16:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F0C28688C;
+	Thu,  8 Jan 2026 16:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="dlxv/K6Z"
+	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="p2vL/Cl3"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from sender4-of-o50.zoho.com (sender4-of-o50.zoho.com [136.143.188.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348772F85B;
-	Thu,  8 Jan 2026 16:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3123D2D73AD;
+	Thu,  8 Jan 2026 16:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767889375; cv=pass; b=ufus9ogG5DwBsBoOFlxyEoxzgi5CXTp+OuzdZ5w/yuT1kdsA6kPRCC8p4+qsz/ErYwC3oqIAvTClh5RWD0WlCFx47kjkxaQTvGIlp2E4ZJBJ5u3brg0876PtfTK8hMGUTdLKvYvAj0Hb32kbQMYS4NIuYx2qHdrtwKasj14k18U=
+	t=1767890216; cv=pass; b=fd7FhDZHWwYBsoeIEknUcRa9a8gRUVWQU6hTgaEmZqHnnrES5q0cRY2DpUIZeXqUaKI/QY+4tFfemw/wxCJSlz40sMRkeNeoS6wPvEeAg+a6UaC7Z+2jzIQNK2B/F0lhjjn5SfRz1T0GI/6pmhT8suVkr6rPvR5df2Nj3RbZ1VI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767889375; c=relaxed/simple;
-	bh=+zUpWzhBo4C4q4QtCguT1lWr97eOh1cfKA9jqI4g5Ug=;
+	s=arc-20240116; t=1767890216; c=relaxed/simple;
+	bh=L+IPos5MuKL/ZcH5DfXa/EUElh2E3SkLtomLuaukDOE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bsCQTwT4/K861wxWK1FsA9HsXjM7tEayLT2L9RdYcCBR0sqyN4xfP3cvHbFsWEh3rQKUxfYeSF83kTZ++6B5drvrCcQjkqXkqfsO5DwRQx/cV9lxFG6nou45VzTPHl914XTHdatCYdGhB4Je8jprpB9SRY08r+faYiDXydLDxcQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=dlxv/K6Z; arc=pass smtp.client-ip=136.143.188.50
+	 In-Reply-To:Content-Type; b=iA8yKj2gArosH/vqzTrcjLcks+hs+sSNZkagWYR4IKJx8Ps2ZpOP4gyg/3GdDwna/suSHlN9Blq5urSt5733GMHi03O1sRIvswlnIHxk79caB7uCXSF9BpRsraddm8Oyd0AWK2qjz5z9bYTscCQFEp1eGfyIXmdyUMj4kHZ6ggQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=p2vL/Cl3; arc=pass smtp.client-ip=136.143.188.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apertussolutions.com
-ARC-Seal: i=1; a=rsa-sha256; t=1767889297; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1767890167; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=IXM3IwQSRjpf/AjEz0IjjgNpQjKhbp5nQ8u43T/PE0S2VoEpHrCn41jycdM712iwf9SCmkXoHzMIahruw+OiMdoiMDU65J49RY54wL/zZJJwPKVDBCcDoveqL4CBjR4yE9wL/S0hCXYHl4a3+rJ6q4JdT07ezzAMed44GQyD5w0=
+	b=Li/kXjANjd65RQe/mTVw6fzSsm+4XzsFNDAoVJc2DH33e5Z3708UttYEjOBRBWiP35libMtJUu1XJQRs3oEXvwqXuZelksks5bbxo2n5mUzkNqEBKZiXTzRHsBJ0ChltIcN4pBng1lra7RrDvS+ORllHGM0jUll0xnhGMJus95o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1767889297; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=oqv29i/Jkyku4YGsPHEwXi5y4vCYAIfyZbGbk20cx3Q=; 
-	b=V4u9qhFfLwuC/8Ag3Sr7TEjepvSGOCV/0ZLCktSz/x6xG7OdamVnnr7uXXtZ8K05UG6IkM2ElQmmVgs2MgnTSYFX8utd266JxvnAhmeeOd5+bfetzHyFAJxsbX51kZa008dUmX9puWqIpF2mcE2Ew2pQNnqeiiGZ8FHA5+0eop4=
+	t=1767890167; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=3fgOKlMQMvrdvMk8koNYIZJMH5yGHQCdYZiiHNFjJEw=; 
+	b=LtXrOUVj+ta+dAHw4nMSae0NbI6tIHT8s3vEqH5NLCGCa0QkU40fNXOTzJed0/BX7Rj/hY2tClKd6BDbrZwBpO0qLVniQmIS2WT82lUyob2ZblmmhTV9zCLHGjy5+PSRhCMXmAzWcTeEGSvucrNy82AWRMTYbFzYsSxA8LpMkCQ=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=apertussolutions.com;
 	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
 	dmarc=pass header.from=<dpsmith@apertussolutions.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767889297;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767890167;
 	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
 	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=oqv29i/Jkyku4YGsPHEwXi5y4vCYAIfyZbGbk20cx3Q=;
-	b=dlxv/K6ZtChdyvl/fMxeMprD8qzLhwyyhoGEar4fSoaloeGwKaCIeVO/F2y/Q5Ka
-	T744G8PcyfblQWZlsHFeICcqT+L/mnCRbA9zEbnGSZ4EGhtqWDeoxqlA7dmfI0TpyXU
-	7GSm0GZP1/k+gmQmJ7byGqtM0ntYyCd6Cup03B7E=
-Received: by mx.zohomail.com with SMTPS id 1767889293888361.3114789025136;
-	Thu, 8 Jan 2026 08:21:33 -0800 (PST)
-Message-ID: <adb92eca-440b-4322-b65b-c21279710a0a@apertussolutions.com>
-Date: Thu, 8 Jan 2026 11:21:31 -0500
+	bh=3fgOKlMQMvrdvMk8koNYIZJMH5yGHQCdYZiiHNFjJEw=;
+	b=p2vL/Cl3px20lR9/1mhM5GDoWubTVBr7vdIAD9h4UIH/mGNndn3QuLbgOZwiyP7J
+	h6d8nX+r4RvFu8SOvFWPGE4MO9NZLS+/6NebbLzbxNPPKf+IWCfLA0GcCshBOohIRRP
+	MuDRw8u6m4E9AiY1IJLZruEOP7t9ACdbzYWUhXx0=
+Received: by mx.zohomail.com with SMTPS id 1767890164219491.1739791671507;
+	Thu, 8 Jan 2026 08:36:04 -0800 (PST)
+Message-ID: <91fd7e8e-6c64-458c-9d78-d97482d95705@apertussolutions.com>
+Date: Thu, 8 Jan 2026 11:36:01 -0500
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 19/28] x86/tpm: Early TPM PCR extending driver
+Subject: Re: [PATCH v15 00/28] x86: Secure Launch support for Intel TXT
 Content-Language: en-US
 To: Dave Hansen <dave.hansen@intel.com>,
  Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
@@ -74,10 +74,7 @@ Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
  kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
  trenchboot-devel@googlegroups.com
 References: <20251215233316.1076248-1-ross.philipson@oracle.com>
- <20251215233316.1076248-20-ross.philipson@oracle.com>
- <56929e8b-a7cf-4390-b4ec-0b4c2c32b311@intel.com>
- <62227ed3-3804-4795-93c9-ce2bbad3f2a7@apertussolutions.com>
- <a507a85c-e1dd-4c63-94b2-9756ea9ece63@intel.com>
+ <0cff620d-9be4-487d-8eb1-19375ca58a70@intel.com>
 From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
 Autocrypt: addr=dpsmith@apertussolutions.com; keydata=
  xsJuBFYrueARCACPWL3r2bCSI6TrkIE/aRzj4ksFYPzLkJbWLZGBRlv7HQLvs6i/K4y/b4fs
@@ -110,43 +107,24 @@ Autocrypt: addr=dpsmith@apertussolutions.com; keydata=
  ke943EIUts9CmFAHt8cNPYOPRd20pPu4VFNBuT4fv9Ys0iv0XGCEP+sos7/pgJ3gV3pCOric
  p15jV4PCYQQYEQgACQUCViu54AIbDAAKCRBTc6WbYpR8Khu7AP9NJrBUn94C/3PeNbtQlEGZ
  NV46Mx5HF0P27lH3sFpNrwD/dVdZ5PCnHQYBZ287ZxVfVr4Zuxjo5yJbRjT93Hl0vMY=
-In-Reply-To: <a507a85c-e1dd-4c63-94b2-9756ea9ece63@intel.com>
+In-Reply-To: <0cff620d-9be4-487d-8eb1-19375ca58a70@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ZohoMailClient: External
 
-On 1/3/26 15:44, Dave Hansen wrote:
-> On 12/19/25 13:26, Daniel P. Smith wrote:
-> ...
->>> I also seem to remember that there are special rules around the US
->>> federal government's inability to hold copyrights. This seems worth at
->>> least a mention ... somewhere.
->>
->> IANAL either, but in general the safest/correct approach is to retain
->> any CRs placed on the code being reused, and the above is the CR on the
->> source from the Xen tree.
+On 12/16/25 17:14, Dave Hansen wrote:
+> On 12/15/25 15:32, Ross Philipson wrote:
+>> Patch set based on commit:
+>> torvalds/master/fd57572253bc356330dbe5b233c2e1d8426c66fd
 > 
-> Yeah, in general, that's a good thing to do.
-> 
-> But I'm puzzled by your response. Are you making an attempt to justify
-> the past choice to copy the copyrights verbatim? Or are you declining to
-> follow my request to involve your companies' legal experts given that
-> you used the "safest/correct approach"?
+> That's an interesting place to pick. What was the reasoning behind it?
 
-My apologies that it came across like I was rebuffing your request. I 
-was just trying to inform as to why it was there. Yes, we are working to 
-determine the answer to your concern and what should be the correct 
-course of action.
+It was simply that it was the tip of torvalds/master at the time the 
+patch series was prepared. As far as we could find, there is not a lot 
+of guidance on commit selection in the patch guide. If there is a 
+generally accepted convention we should follow, we would be glad to 
+follow it.
 
-> FWIW, I don't think what you did was bad here. You _did_ use a quite
-> reasonable approach in the case that a copyright was copied verbatim
-> from an existing legitimate* project.
-> 
->   * I'll give Xen the benefit of the doubt just this one time and put it
->     in the "legitimate" bucket. :P
-
-As a Xen contributor/maintainer, thanks ... I think. (^_^)
-
-V/r,
+v/r,
 dps
 
