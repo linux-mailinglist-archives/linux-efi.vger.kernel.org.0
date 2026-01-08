@@ -1,63 +1,56 @@
-Return-Path: <linux-efi+bounces-5967-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-5968-lists+linux-efi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7B8D048E6
-	for <lists+linux-efi@lfdr.de>; Thu, 08 Jan 2026 17:52:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A4FD04A77
+	for <lists+linux-efi@lfdr.de>; Thu, 08 Jan 2026 18:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D5D331102D2
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jan 2026 16:42:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BC0453064431
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jan 2026 16:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09B52DB7A1;
-	Thu,  8 Jan 2026 16:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BA42DC32D;
+	Thu,  8 Jan 2026 16:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QUpBgiob"
+	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="VI0DVW3M"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from sender4-of-o50.zoho.com (sender4-of-o50.zoho.com [136.143.188.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3506D23C8A0;
-	Thu,  8 Jan 2026 16:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767890509; cv=none; b=UEp2ONfqu9yeZrjAajAwlnTiAgBnfZKfbiEVw7ezj7qbm2+ENIJRvPVL5OMKNI0tG0bxKaEbLcEGlVsdav3R9BWfPoq6dzFAyUbVEtB9N0hDYeeB5217m84TRWZ/799FOlf0CYi2vqAIAVSso5n/Nc+m9ND2hMUDnGUd8qgFQZQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767890509; c=relaxed/simple;
-	bh=yqR1ytLYLEh/Op6dmONC9aspP71JXpvrEGjTbPPsnj0=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381702DA75C;
+	Thu,  8 Jan 2026 16:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767890854; cv=pass; b=ez5tOOnLx6JrAYomov2FNXabVV/bk6yEYBggtd21S47Nrkj7JYIMshCfXcQ9KK1MpqCINxZBYfWxtCQ8pm/+CHZVxPiopKYGFMnf42yZI5s0W06bsqYPfxhNv+yHFgdNuSQJiR5m1+vzZHRzm+et/nWrWyxhpbogseHcDBVPSRk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767890854; c=relaxed/simple;
+	bh=S3k2D/Q5Lqi++kUHj7B/31tkL0MgBzNU01O6nWdKSGQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IrjPcM8zA5oTOSh5uE12ZKklb+Oa9GgvierxPfUIhHrXbTspv60Gnh7Birwa47fUQcVvyDwyKN8zy88jNjSv+uhtjs5o4J5j0MvOsVC4QBbB33HKMB7J5Sk8ujeXQk4fpKG+K32Mn8DnQhls2KLT4K4BhSOb8MX6F3rl1D42ZAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QUpBgiob; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767890509; x=1799426509;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=yqR1ytLYLEh/Op6dmONC9aspP71JXpvrEGjTbPPsnj0=;
-  b=QUpBgiobnS5BAaiNtaz+kreIAz5v+qSSg7z2YIJCeh3FyZsjY2jtvEzM
-   znx/Odexd+FvkFqIhj5K6c+HcbfdULIDa+rDd8w26BIPgeJ+Mhluc5mlB
-   TNbE8QeZNO8erhM7kSbz32UF4uoyoMV094C+D9FvOfzzpFbFYlPieO0Iv
-   7tWyIR8hxq+aJhiTtmm8wNdnGRzxeY8mvYuqIZfIcYxs787BsMqW/N9LK
-   u/fKD6j3f4c5/+kBy8SM+NlvcOjCodAFtGzRkUoOCK3hG5yNx3YIj659K
-   RC4jPjRXmOIGrotLb3etdOlvWg2SzUILmPBROYcx8nQz17gAt/3VJ2E0i
-   Q==;
-X-CSE-ConnectionGUID: oX5ldIBYSbWbs4T15Nkjlw==
-X-CSE-MsgGUID: M01GcznKTC+9eoXIwQxA2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="73119648"
-X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
-   d="scan'208";a="73119648"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 08:41:47 -0800
-X-CSE-ConnectionGUID: YuEq6ekcQ7qXxB58nf7fvA==
-X-CSE-MsgGUID: dj8kgp9/Q263qFhDD237LQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
-   d="scan'208";a="203031331"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.109.197]) ([10.125.109.197])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 08:41:46 -0800
-Message-ID: <b22b52b3-804e-4c51-b49c-8705092ae544@intel.com>
-Date: Thu, 8 Jan 2026 08:41:45 -0800
+	 In-Reply-To:Content-Type; b=LBWEu68DuTSIj2UJL5bc8nVwC6P4a7U7Qq7czmBiAjI57rtvxS+orXpfPDx+0svP6eq7Tpuyky2/Jv0Uy6qv9evbphxfOaKfNGK1LIG2qQNJFehHnkoS8jcGLMnZlaNVuu16HeJ1BUCn4zMwNrEBIfFV4zLRW1jInXLf1dfyJw4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=VI0DVW3M; arc=pass smtp.client-ip=136.143.188.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apertussolutions.com
+ARC-Seal: i=1; a=rsa-sha256; t=1767890794; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=GL94SaYdSVdSzaaCtLiKHho6rAqEsiTDBCdTujMKnffvMXQmEMZddxpVG7tbDTto1C/c/aXWt6XqRat/6289MlEUFcKQVVwHWUjdnOK7x6G+z4vakULYkjyteVHrsCkHMu+CH/GMtXyrO1BFPZy0ZlmbsJIlD8Myn6dsldPX+ko=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1767890794; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=vYW75MrgiZPV+X+9iuY2Xb/OvMEyr70/MJdADot1GL4=; 
+	b=S3YnFmE6BwRnHHsZQKrlTvGG5mZqw5RoJ7BF+mQvab2ByDwehsWxJUGxDMQvCMBbv5XjOfXQEXFXbjqKAFz339wKyZbKdIGHxc1VfJcZqz4SOpZXNsnlLgsKWmad8n0HbrDx0w/XcRM52UMwA3WhoGvIYE0/axJd10iOS6ZYvrY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=apertussolutions.com;
+	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
+	dmarc=pass header.from=<dpsmith@apertussolutions.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767890794;
+	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=vYW75MrgiZPV+X+9iuY2Xb/OvMEyr70/MJdADot1GL4=;
+	b=VI0DVW3M+GHVPfRPPegYY5cJeRA/S5Va35BLYxMzAwQXO5rTOgrFicESHu8Is1Zc
+	cGXFKgoH5f+FqMsoBYs2xlij/OgB2xygVHPh+skIXDfE33oJxtQ4dkViZhMD/D80l2l
+	p1kRoToHUL+a+AN+B/Frnjxb3Pi0nZXChWmAD2Qk=
+Received: by mx.zohomail.com with SMTPS id 1767890790761241.33861597457576;
+	Thu, 8 Jan 2026 08:46:30 -0800 (PST)
+Message-ID: <9785eaec-fcc0-4b72-8f63-7f894e582f38@apertussolutions.com>
+Date: Thu, 8 Jan 2026 11:46:28 -0500
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -66,7 +59,8 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v15 00/28] x86: Secure Launch support for Intel TXT
-To: "Daniel P. Smith" <dpsmith@apertussolutions.com>,
+Content-Language: en-US
+To: Dave Hansen <dave.hansen@intel.com>,
  Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
  x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
@@ -82,65 +76,57 @@ Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
 References: <20251215233316.1076248-1-ross.philipson@oracle.com>
  <0cff620d-9be4-487d-8eb1-19375ca58a70@intel.com>
  <91fd7e8e-6c64-458c-9d78-d97482d95705@apertussolutions.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <91fd7e8e-6c64-458c-9d78-d97482d95705@apertussolutions.com>
-Content-Type: text/plain; charset=UTF-8
+ <b22b52b3-804e-4c51-b49c-8705092ae544@intel.com>
+From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
+Autocrypt: addr=dpsmith@apertussolutions.com; keydata=
+ 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
+In-Reply-To: <b22b52b3-804e-4c51-b49c-8705092ae544@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On 1/8/26 08:36, Daniel P. Smith wrote:
-> It was simply that it was the tip of torvalds/master at the time the
-> patch series was prepared. As far as we could find, there is not a lot
-> of guidance on commit selection in the patch guide. If there is a
-> generally accepted convention we should follow, we would be glad to
-> follow it.
+On 1/8/26 11:41, Dave Hansen wrote:
+> On 1/8/26 08:36, Daniel P. Smith wrote:
+>> It was simply that it was the tip of torvalds/master at the time the
+>> patch series was prepared. As far as we could find, there is not a lot
+>> of guidance on commit selection in the patch guide. If there is a
+>> generally accepted convention we should follow, we would be glad to
+>> follow it.
+> 
+> Barring a specific dependency, pick something that is more likely to
+> have been tested. -rc's are fine. Linus's releases are fine.
+> 
+> Random snapshots in time are not likely to be widely tested and
+> shouldn't be used.
 
-Barring a specific dependency, pick something that is more likely to
-have been tested. -rc's are fine. Linus's releases are fine.
-
-Random snapshots in time are not likely to be widely tested and
-shouldn't be used.
+Will do, thanks.
 
