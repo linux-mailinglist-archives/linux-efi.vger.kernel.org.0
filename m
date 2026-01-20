@@ -1,68 +1,68 @@
-Return-Path: <linux-efi+bounces-6025-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6026-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAjnKsQXcGkEVwAAu9opvQ
-	(envelope-from <linux-efi+bounces-6025-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Jan 2026 01:03:16 +0100
+	id sHp1N6sUcGlyUwAAu9opvQ
+	(envelope-from <linux-efi+bounces-6026-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Jan 2026 00:50:03 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4775A4E413
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Jan 2026 01:03:16 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62634E1E4
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Jan 2026 00:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4BAE14F0940
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Jan 2026 23:49:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 576B59A575A
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Jan 2026 23:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BF5413242;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D66A41B343;
 	Tue, 20 Jan 2026 23:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kJq9io/D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KSf2NYIo"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443643D3CEB;
-	Tue, 20 Jan 2026 23:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461913D3311;
+	Tue, 20 Jan 2026 23:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768952973; cv=none; b=fwvlPbUb/dBxpISycK5Pl28DvvPQBAdK6yhpajFu0OYsU4O8BVSvYNgWf8QVR9gIQOnvX3B9L5pTMKQXo5KrE/bxq3bkb04dLFdJVjQDXpOxvCZMp2vjgVZUC3dHGhH2bIgtYqsr4yI4CGSZkE3FTsWsjcs+5QWwv+DE9fllQN8=
+	t=1768952974; cv=none; b=ElrEoiGV4FsDwP90WtVVleXelRM4vU/akOhcbIGvE/dizKuRGcZxUbYIANxK6xE0gQAGq6JO4I4rAhlqlr1AvxmqxUC95Iv2eX+fuOhx77I22j4KVtoy7Eu404YJyTDvknvgAv99GEZU0HtZ1nUQ9KjErZdTaF0qGrsZ6aImwzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768952973; c=relaxed/simple;
-	bh=zNmBho9MasUBWyYqXc5abaClEA1oHFkqJ35gb6EKTtA=;
+	s=arc-20240116; t=1768952974; c=relaxed/simple;
+	bh=tr5aqXtXqDIqs/AOyqWvJ4kVK8DQjii3mFT06ss72IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFu1govO6Z+OQmOe+EGS9XmE7chfBwKjbouOY74LkBp57Qw6JOLaWixxwmq6XV3RA6wRS7KZd+GjlN7HuF8AJ/k9C45MfeZZHIH95/49qLUXeLo9tPx6JqrusIENtxnghHgZaVp2rGaRY2WzZNLLAtAsBHkc9tvHyUWXGarVUXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kJq9io/D; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=HhwXHLJY2ET/C28NKOhDJoHXvCDnnzdQgo/CmpgyfPYESCOk02WDRbRo2fk4+Rkd+qXYbBEoIgCjSOh2LTru3ks9T804jCSmK5h7ede9f/muW7M+gDx6Cd/7RS7+/wgXnTMHOPpMkPaTFPr7T45US+2iwOsbcEXyEiDWMQjCOuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KSf2NYIo; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768952971; x=1800488971;
+  t=1768952972; x=1800488972;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zNmBho9MasUBWyYqXc5abaClEA1oHFkqJ35gb6EKTtA=;
-  b=kJq9io/DUO9t+B5/qRw9fL4hdbV5u7TFVtC6rsdc93W9JHnnzJnyZpHh
-   D1wvnLvwEA9kUlsP/8lri2mWphm5ikAyoqYYn2T16oYuWN0rFp434HiAh
-   VlqiucQgvPr9pu9UgCTEZXkGXRPrVGdIeRGJkS5ayGckoz46AYUrDQlvp
-   prThDpnEQwGjrAKbXm8lgslRmVDgDLxUcb2/qVDgeA5cYiAjHssdb43yK
-   Ue9CY9kONq95YGFhnWmUvknmJonj9uJIJaV5Im88UhsopFQm+rbRjyYM7
-   Kn7wNmqfikakh9sb0qpn3ALi5JMuNVxKXaTtG+pZjPYlIMhxYyVWhLzTh
-   A==;
-X-CSE-ConnectionGUID: hkiQB+fRTv6Rz7GG7WKT0g==
-X-CSE-MsgGUID: kv2EyQfITp+s0kPrFeMkbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="87752949"
+  bh=tr5aqXtXqDIqs/AOyqWvJ4kVK8DQjii3mFT06ss72IY=;
+  b=KSf2NYIoDvg2rwjGVg9Ldy+i76AXobt5BzAviqwaq2OzSRo73t1fgkwL
+   +HAPieS13Xi0U9zUAXeHJWOaFmgU6GX45CmwB1+q13vuaHFlHYLrIou53
+   dPfXy/LLGVQ4Me+uECGKGPmChy7oxCqGCO2Ex/1Sd1idPBbW6PsGow+fD
+   qgHcABEPG7DOJvzkLDTZL4VACLL1LOArIGYjoQbFdEofCZpT/ioHBBC8E
+   7GXYUa7ijVQQO26vwzKk1xYB3MF/ZpGTsxybx7awbdfhrstr/4aCQHJF6
+   jRlNWEeQ4TRgwT6ynIhDXSg0J7LcbnkgXGG1C+EXOBjF1Yi35l4mZ/zgV
+   g==;
+X-CSE-ConnectionGUID: oECmQO4KSN6sHOJw6dEb1w==
+X-CSE-MsgGUID: jBVJevYORBeyDs/ef6Lfdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="87752958"
 X-IronPort-AV: E=Sophos;i="6.21,241,1763452800"; 
-   d="scan'208";a="87752949"
+   d="scan'208";a="87752958"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 15:49:30 -0800
-X-CSE-ConnectionGUID: 93eYZDFIQPy67lqUY1Fl2w==
-X-CSE-MsgGUID: JlocmBeUQn+fZ54btWH/rg==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 15:49:31 -0800
+X-CSE-ConnectionGUID: BiVEscOqRI2FUHD8Tc5RpQ==
+X-CSE-MsgGUID: 1HeeOkkzQOCYPiSIpNC7Rg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,241,1763452800"; 
-   d="scan'208";a="236932644"
+   d="scan'208";a="236932647"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa002.jf.intel.com with ESMTP; 20 Jan 2026 15:49:29 -0800
+  by orviesa002.jf.intel.com with ESMTP; 20 Jan 2026 15:49:30 -0800
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: x86@kernel.org,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -81,9 +81,9 @@ Cc: "H . Peter Anvin" <hpa@zytor.com>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org
-Subject: [PATCH v2 1/3] x86/cpu: Defer LASS enabling until userspace comes up
-Date: Tue, 20 Jan 2026 15:47:28 -0800
-Message-ID: <20260120234730.2215498-2-sohil.mehta@intel.com>
+Subject: [PATCH v2 2/3] x86/efi: Disable LASS while executing runtime services
+Date: Tue, 20 Jan 2026 15:47:29 -0800
+Message-ID: <20260120234730.2215498-3-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120234730.2215498-1-sohil.mehta@intel.com>
 References: <20260120234730.2215498-1-sohil.mehta@intel.com>
@@ -104,7 +104,7 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6025-lists,linux-efi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6026-lists,linux-efi=lfdr.de];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
@@ -118,95 +118,111 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sohil.mehta@intel.com,linux-efi@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 4775A4E413
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: C62634E1E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-LASS blocks any kernel access to the lower half of the virtual address
-space. Unfortunately, some EFI accesses happen during boot with bit 63
-cleared, which causes a #GP fault when LASS is enabled.
+Ideally, EFI runtime services should switch to kernel virtual addresses
+after SetVirtualAddressMap(). However, firmware implementations are
+known to be buggy in this regard and continue to access physical
+addresses. The kernel maintains a 1:1 mapping of all runtime services
+code and data regions to avoid breaking such firmware.
 
-Notably, the SetVirtualAddressMap() call can only happen in EFI physical
-mode. Also, EFI_BOOT_SERVICES_CODE/_DATA could be accessed even after
-ExitBootServices(). The boot services memory is truly freed during
-efi_free_boot_services() after SVAM has completed.
+LASS enforcement relies on bit 63 of the virtual address, which would
+block such accesses to the lower half. Unfortunately, not doing anything
+could lead to #GP faults when users update to a kernel with LASS
+enabled.
 
-To prevent EFI from tripping LASS, at a minimum, LASS enabling must be
-deferred until EFI has completely finished entering virtual mode
-(including freeing boot services memory). Moving setup_lass() to
-arch_cpu_finalize_init() would do the trick, but that would make the
-implementation very fragile. Something else might come in the future
-that would need the LASS enabling to be moved again.
+One option is to use a STAC/CLAC pair to temporarily disable LASS data
+enforcement. However, there is no guarantee that the stray accesses
+would only touch data and not perform instruction fetches. Also, relying
+on the AC bit would depend on the runtime calls preserving RFLAGS, which
+is highly unlikely in practice.
 
-In general, security features such as LASS provide limited value before
-userspace is up. They aren't necessary during early boot while only
-trusted ring0 code is executing. Introduce a generic late initcall to
-defer activating some CPU features until userspace is enabled.
+Instead, use the big hammer and switch off the entire LASS mechanism
+temporarily by clearing CR4.LASS. Runtime services are called in the
+context of efi_mm, which has explicitly unmapped any memory EFI isn't
+allowed to touch (including userspace). So, do this right after
+switching to efi_mm to avoid any security impact.
 
-For now, only move the LASS CR4 programming to this initcall. As APs are
-already up by the time late initcalls run, some extra steps are needed
-to enable LASS on all CPUs. Use a CPU hotplug callback instead of
-on_each_cpu() or smp_call_function(). This ensures that LASS is enabled
-on every CPU that is currently online as well as any future CPUs that
-come online later. Note, even though hotplug callbacks run with
-preemption enabled, cr4_set_bits() would disable interrupts while
-updating CR4.
-
-Keep the existing logic in place to clear the LASS feature bits early.
-setup_clear_cpu_cap() must be called before boot_cpu_data is finalized
-and alternatives are patched. Eventually, the entire setup_lass() logic
-can go away once the restrictions based on vsyscall emulation and EFI
-are removed.
+Some runtime services can be invoked during boot when LASS isn't active.
+Use a global variable (similar to efi_mm) to save and restore the
+correct CR4.LASS state. The runtime calls are serialized with the
+efi_runtime_lock, so no concurrency issues are expected.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
 v2:
- - Add code comments for clarity.
+ - Improve commit message and code comments.
 ---
- arch/x86/kernel/cpu/common.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ arch/x86/platform/efi/efi_64.c | 35 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index e7ab22fce3b5..cefd0722e6cc 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -422,12 +422,33 @@ static __always_inline void setup_lass(struct cpuinfo_x86 *c)
- 	if (IS_ENABLED(CONFIG_X86_VSYSCALL_EMULATION) ||
- 	    IS_ENABLED(CONFIG_EFI)) {
- 		setup_clear_cpu_cap(X86_FEATURE_LASS);
--		return;
- 	}
-+}
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index b4409df2105a..5861008eab22 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -55,6 +55,7 @@
+  */
+ static u64 efi_va = EFI_VA_START;
+ static struct mm_struct *efi_prev_mm;
++static unsigned long efi_cr4_lass;
  
-+static int enable_lass(unsigned int cpu)
-+{
- 	cr4_set_bits(X86_CR4_LASS);
-+
-+	return 0;
+ /*
+  * We need our own copy of the higher levels of the page tables
+@@ -443,16 +444,50 @@ static void efi_leave_mm(void)
+ 	unuse_temporary_mm(efi_prev_mm);
  }
  
 +/*
-+ * Finalize features that need to be enabled just before entering
-+ * userspace. Note that this only runs on a single CPU. Use appropriate
-+ * callbacks if all the CPUs need to reflect the same change.
++ * Toggle LASS to allow EFI to access any 1:1 mapped region in the lower
++ * half.
++ *
++ * Disable LASS only after switching to EFI-mm, as userspace is not
++ * mapped in it. Similar to EFI-mm, these rely on preemption being
++ * disabled and the calls being serialized.
 + */
-+static int cpu_finalize_pre_userspace(void)
++
++static void efi_disable_lass(void)
 +{
 +	if (!cpu_feature_enabled(X86_FEATURE_LASS))
-+		return 0;
++		return;
 +
-+	/* Runs on all online CPUs and future CPUs that come online. */
-+	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/lass:enable", enable_lass, NULL);
++	lockdep_assert_preemption_disabled();
 +
-+	return 0;
++	/* Save current CR4.LASS state */
++	efi_cr4_lass = cr4_read_shadow() & X86_CR4_LASS;
++	cr4_clear_bits(efi_cr4_lass);
 +}
-+late_initcall(cpu_finalize_pre_userspace);
 +
- /* These bits should not change their value after CPU init is finished. */
- static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
- 					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED;
++static void efi_enable_lass(void)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_LASS))
++		return;
++
++	lockdep_assert_preemption_disabled();
++
++	/* Reprogram CR4.LASS only if it was set earlier */
++	cr4_set_bits(efi_cr4_lass);
++}
++
+ void arch_efi_call_virt_setup(void)
+ {
+ 	efi_sync_low_kernel_mappings();
+ 	efi_fpu_begin();
+ 	firmware_restrict_branch_speculation_start();
+ 	efi_enter_mm();
++	efi_disable_lass();
+ }
+ 
+ void arch_efi_call_virt_teardown(void)
+ {
++	efi_enable_lass();
+ 	efi_leave_mm();
+ 	firmware_restrict_branch_speculation_end();
+ 	efi_fpu_end();
 -- 
 2.43.0
 
