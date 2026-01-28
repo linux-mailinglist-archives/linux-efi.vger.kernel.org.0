@@ -1,79 +1,81 @@
-Return-Path: <linux-efi+bounces-6041-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6042-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGyqE8Ilemlk3QEAu9opvQ
-	(envelope-from <linux-efi+bounces-6041-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Wed, 28 Jan 2026 16:05:38 +0100
+	id sB61Idglemlk3QEAu9opvQ
+	(envelope-from <linux-efi+bounces-6042-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Wed, 28 Jan 2026 16:06:00 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEEEA37E9
-	for <lists+linux-efi@lfdr.de>; Wed, 28 Jan 2026 16:05:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310EDA3807
+	for <lists+linux-efi@lfdr.de>; Wed, 28 Jan 2026 16:06:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25DC6306F248
-	for <lists+linux-efi@lfdr.de>; Wed, 28 Jan 2026 14:59:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 442573077510
+	for <lists+linux-efi@lfdr.de>; Wed, 28 Jan 2026 14:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E88366059;
-	Wed, 28 Jan 2026 14:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90B8350A0A;
+	Wed, 28 Jan 2026 14:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FHH/W3xY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nOkLgXRr"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04CC350A0A
-	for <linux-efi@vger.kernel.org>; Wed, 28 Jan 2026 14:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4358364E9D
+	for <linux-efi@vger.kernel.org>; Wed, 28 Jan 2026 14:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769612356; cv=none; b=Nu3UzYm32nci7YM63C+8FjiuEE72MG+PvPB/ukbDYp9HSbAUiFFEPNwmvNvug+o9nld9+ncKXcI29W9ROAPfW9zrIVbkfJvfhNrQCU0nLu/BZyOKHH+GX4s+iMLtXEBKcrEE4SyG7GnBh77qM6bnKkPC/JOySFeBnc/9pEWmMjI=
+	t=1769612363; cv=none; b=GI+lYs0WymDKZT2tCGrLikuHZ2kBM8p8XMq9zdyJ0yYveJfPPRTf7VowkQA8erDA5woO5WEJjTrKgEiom4e+s3mnS0Z4FVb92EeSQf+lGpAZ0ntgP3wta8jkRc/g2+O51lEcYNf/1OdZZcZgHtnucgiNbMqWT1P3BH06SsYYtDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769612356; c=relaxed/simple;
-	bh=ONV1dULeWnr7J1TFdP6W/WMXTKfkfXZtG7CtmA+JW2c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t6/OyLuEhHP4gGIPlgcWpQ4M7wmqDYsd4d9uEKVfG6rBNzO1PXzwOZmQPG7JIwik+srjtrJ8HL8vpA6uP2tzHtZekCgAa37RRngah/5p85s8KPgVyg5qtRY04bIKmQaJ+I5mDGIEaCVSJQ8AcEQaSbMkCe16nepdwTivhRvr8tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FHH/W3xY; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1769612363; c=relaxed/simple;
+	bh=shI3m5HW3zUOkgaJnc9JS64xYY2D3nRhnNuumTaEZy4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tnrb3oxwAYvoWuIOZLugWfJGngS9YxErPRthPUpFWZyiVNqs+9WRexcH4QBG+UPuIhmB3RKj2zEzGrTjPOW52xQdWYMy+P5hqvDYouONKCcz4n9jAvn8PDp/Sb22QDVG0cw4ZQAIhhcHUlJGPNmqx3K0vttuF2rjpFM5x4YPAb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nOkLgXRr; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a12ebe4b74so68086955ad.0
-        for <linux-efi@vger.kernel.org>; Wed, 28 Jan 2026 06:59:13 -0800 (PST)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso50605765ad.1
+        for <linux-efi@vger.kernel.org>; Wed, 28 Jan 2026 06:59:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769612353; x=1770217153; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zohHYUiSSiWv89YYYBiAoIYe/d4kRFJrNEy84GzqibY=;
-        b=FHH/W3xYoFLpins2yJIKceqzcihPWn3SF/80p72LiIjx51YNI8n2bvbSXmtJMFCq5b
-         R4BBnn7PxqnggvnJQt/tkjgRG5cGPtp+Yzoe/jWuO6CyeVnzvZWNoaIF1xiDzipBzupF
-         /ajp/lHpdGzO58eZijB5WyrOvSTCfZvPngsL5vHPjs82yvqnljVSjyHek3/UWmUqEELb
-         3uR+Py+VHfRs5Guf1YzB/QwAe+Yccr6Q38/zHwGi7QD6+E5eM/qeKl5yLkxpp0FB6fls
-         nQXzu6ONWxdnJ+A9ahQrqO4OtlakzH1iL/1u5OfbhbBjEXGpO8LZWPHNAzQq4JxqAxLl
-         ZB9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769612353; x=1770217153;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769612361; x=1770217161; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zohHYUiSSiWv89YYYBiAoIYe/d4kRFJrNEy84GzqibY=;
-        b=Jkg11RlTqhOBNxKaqcqIpCgdwy31s3Wb4N3yWGuXXEMGEOIh/ZHfFeLesU5NG5tv7/
-         0lMwQQf2mnn4pNjNJklvQRO4bQtM0XF1WfAWxllW8dkS2Zn/0MqSwWpYnca2b12pNnm+
-         RQ4vRoSfsRolS53wCoSsv/ZEbJ1ef+bPbEkko5WgUG80x52qvlTOU5H8S+qLBommWDDd
-         lIkJFn6zzGUtOw/4ZLfqqxih9wp8LGVo8aE3tV5uF0z/2q1MkcHe476PW63gIBGT/cSS
-         RydBnaJyZamQqDkOxcMx3JbgD0LjymmAiIVe84VrBZqJ5J+yegGiPXjJaxyW6cRO3FMF
-         DNXw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCZld2EIsDjXIMwCpIYLi1ldYmkAfgKcOHMlIt/esWzKjx01X97Dks0WPX4e6V0cdmRBSioeBM/7k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1UaA47/XmAOTRhqEdeVGD4xPqK8S7t48mzu5f+dgRLwv5X4mM
-	YW0SmqMEi4HpPxWQeLqSZJiHeCB+ZFJwEWwmP6UP4R6M+3vWgDts9/gJyOD4
-X-Gm-Gg: AZuq6aJKPITFopTIY3pvIyf0O2WWC4ckxl1sNFgSeMB4JsCJ1IBM4hRsKry0UW2YdCM
-	+r8ZLc9uMr19YYLr8UX+7WeFWTx4GKfdN1ALGKjXziM+SBWkTcSSvzjP3qV3mfqyCjzXJPvFHad
-	WVNXhvAc2d/MlcQoy3UGZUiI4/QHpkcLvCqBwFRcKLBrYrvUfvhHAB0yExbYeeRiOGq9HClqGO2
-	pPH+J3bzzo6IE8GNjpLZbEGW5ndmhmV3fcCuP1udvoivsVWnzxFuy5IJwG+sdxlMnBjVBQy6f5o
-	vtF39e31ULoT4r8H8Nwp2Av3zkk/CRTo4/QyXzW+CNT3iAJBM77DDMt2klQSluvUd2HH5JAB2mQ
-	DEGHu7fys3y5DMj4Ycli9gym0yT5sDHuP1gB0ZBQkX5IDS4pti7Ixn7/+kj+/0Rw4PFFRkDrLX+
-	7QK7ShkypuqKMW
-X-Received: by 2002:a17:903:1a88:b0:2a3:e7b6:ab53 with SMTP id d9443c01a7336-2a870db403amr54053765ad.22.1769612352864;
-        Wed, 28 Jan 2026 06:59:12 -0800 (PST)
+        bh=vGJMSx3RqPnXMSF3iMxugpnUOfI/BDwqereywSHSzkk=;
+        b=nOkLgXRrNdKUYduO4d8YqBkojOq5MrukBoxGZGSn7whCvi8JFdp+lDdhbEigAlYcqF
+         QBCGufuoMHXtalEY342S3Be4BpCk8NnVuTmoj7LsLi6uZB3SN69pkqFcL1g0ZY9NbDaV
+         hjwN1f2QylCV1wVH4ENXTEly1yAWzT4ViugQR5RNUjLWPx0sbYOuPPkh/erywgwbkZsr
+         RIENiKN4BRNNUXvb4ODRK8Y2qlJAFeCdcEpmoOAUxJsknl82Y/sqjm1d3TtX+yUPI8bN
+         f85Skk6ETZZyHPqit5p4pKS3nsdZ40ioCNs6ZRxHOpH2oZGu3njKbw4wdvmLHSIDyJba
+         +Z9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769612361; x=1770217161;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vGJMSx3RqPnXMSF3iMxugpnUOfI/BDwqereywSHSzkk=;
+        b=VwktDDUPsTtN8ixutP9g6sJuL2lsv0oK3rsqfLlskBLpDyqqjZNjlCUFxmOqqusdhq
+         s+/xLDh/Tzz8e1ObQpQwweh5HkL4bA+xXK1rdsuV0FNHwNfylK/A79+I6o/eKN6Q9eQo
+         6d1GGu2V+CXwh2okLYeYB6ydANkouSCQ9XscrdsTAslwWe84HZPKuoFRDXVOK+liMAet
+         fcvmG9fgjnShInJda2uHklxN9JIGO1uX5hzbKoQ9t21C0lhqtxBHNYmYFhv3sYtcmXx6
+         JjX/VyrO/M+iJ7yb0X/TBdzTS+QdmkHQHTDz++tUtqFeL8xS8t4B6ONCG2lZ55mYEYa9
+         V7Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUXEhPzNEvKM0Ll8t3l4bk1bxdWiM7JSq/XT2MNtvwa9htgEddukolKcsJ/xlx78ioLIoPRhx8nrs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTGZNVfWRJXH+HBcHEV0WGUacgINuSCrQSYdnwz1vAyk3ZRBCz
+	aZAu60HYQXiu/IVm7kPAVy0Gck19tcHqmEcFjibaiIv2LO1E+iDI3nE=
+X-Gm-Gg: AZuq6aJM7OCdL5Isq9eZlALR/1AUSQ/nHOC3RUxSSpeWEccc1athYVp8V5dQgzX2dWU
+	riFibbzhL41mLC+DXhg0ENq6XHaoY/+TdUpuymYZNnIERFiQ0c5SXHJ9i46IytmfgAdwYevzTMS
+	ZXaWx2JnGKrE9jA/KnyWo7dc6jYmQR3g3hU3qzigEA+kvE02D3gjyQ4n6h6SxF2P3jgwiOopOCA
+	oK2AK0ElDwDGqlo86W68Rxx5IBXXbPf4aMa78texgNC2F7exekEmFpMAB23XwVsiaFKiHUKYwRx
+	g64iJxviQL0sjafOemdUO7vgZDvDVtL7CH9qbez3L7oPFj4Su/2esecjctMwVb01oVlP7q5Fut1
+	bzS029dODGYZXpQrTfuxvJqtDlVO10agSvNt4KhONVgcfpyqY7gpGegAoaGe7+VaA7glFYWSV3Q
+	IdLxtaLVZYQMyF7sBjZ37N0ZQ=
+X-Received: by 2002:a17:903:4410:b0:296:2b7a:90cd with SMTP id d9443c01a7336-2a870db7c28mr53750585ad.32.1769612360659;
+        Wed, 28 Jan 2026 06:59:20 -0800 (PST)
 Received: from at.. ([171.61.161.8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b5d9a7bsm25820235ad.79.2026.01.28.06.59.06
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b5d9a7bsm25820235ad.79.2026.01.28.06.59.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 06:59:12 -0800 (PST)
+        Wed, 28 Jan 2026 06:59:20 -0800 (PST)
 From: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
 To: 
 Cc: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
@@ -86,81 +88,111 @@ Cc: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
 	Javier Martinez Canillas <javierm@redhat.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lenny Szubowicz <lszubowi@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Francesco Pompo <francescopompo2@gmail.com>,
+	Lenny Szubowicz <lszubowi@redhat.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	intel-gfx@lists.freedesktop.org,
 	intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH v2 0/2] Add support for eGPUs on Apple Products
-Date: Wed, 28 Jan 2026 14:58:36 +0000
-Message-ID: <20260128145855.1071-1-atharvatiwarilinuxdev@gmail.com>
+Subject: [PATCH v2 1/2] efi/libstub: enable apple-set-os for all apple devices
+Date: Wed, 28 Jan 2026 14:58:37 +0000
+Message-ID: <20260128145855.1071-2-atharvatiwarilinuxdev@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260128145855.1071-1-atharvatiwarilinuxdev@gmail.com>
+References: <20260128145855.1071-1-atharvatiwarilinuxdev@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6041-lists,linux-efi=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.intel.com,intel.com,ursulin.net,ffwll.ch,redhat.com,suse.de,vger.kernel.org,lists.freedesktop.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.intel.com,intel.com,ursulin.net,ffwll.ch,redhat.com,suse.de,alien8.de,vger.kernel.org,lists.freedesktop.org];
+	TAGGED_FROM(0.00)[bounces-6042-lists,linux-efi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[atharvatiwarilinuxdev@gmail.com,linux-efi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-efi];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-efi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BAEEEA37E9
+X-Rspamd-Queue-Id: 310EDA3807
 X-Rspamd-Action: no action
 
-This series adds support for eGPUs on Apple products, by
-enabling apple-set-os on all apple devices.
+Make apple-set-os run on all macs, as
+apple-set-os is needed to use eGPUs and iGPU.
 
-A side effect of this patch is that the iGPU becomes enabled on iMacs.
-However, iMacs can’t use the iGPU to drive the display
-(They can't link-train the internal display),
-so displays must be disabled on iMacs.
+(tested on iMac20,1)
 
-Changes in v2:
-- Reworded cover-letter
-- Transferred logic to has_no_display in the 2nd patch
+Signed-off-by: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+---
+ drivers/firmware/efi/libstub/x86-stub.c | 22 +++++-----------------
+ 1 file changed, 5 insertions(+), 17 deletions(-)
 
-Link to v1:
-https://lore.kernel.org/all/20260125001111.1269-1-atharvatiwarilinuxdev@gmail.com/
-
-Atharva Tiwari (2):
-  efi/libstub: enable apple-set-os for all apple devices
-  drm/i915/display: Disable display for iMac's
-
- drivers/firmware/efi/libstub/x86-stub.c       | 22 +++++--------------
- .../drm/i915/display/intel_display_device.c   | 13 ++++++++++-
- 2 files changed, 17 insertions(+), 18 deletions(-)
-
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index cef32e2c82d8..60e1a41bfe5f 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -303,32 +303,20 @@ static const struct efi_smbios_record *get_table_record(u8 type)
+ 
+ static bool apple_match_product_name(void)
+ {
+-	static const char type1_product_matches[][15] = {
+-		"MacBookPro11,3",
+-		"MacBookPro11,5",
+-		"MacBookPro13,3",
+-		"MacBookPro14,3",
+-		"MacBookPro15,1",
+-		"MacBookPro15,3",
+-		"MacBookPro16,1",
+-		"MacBookPro16,4",
+-	};
+ 	const struct efi_smbios_type1_record *record;
+-	const u8 *product;
++	const u8 *vendor;
+ 
+ 	record = (struct efi_smbios_type1_record *)
+ 			(efi_get_smbios_record(1) ?: get_table_record(1));
+ 	if (!record)
+ 		return false;
+ 
+-	product = efi_get_smbios_string(record, product_name);
+-	if (!product)
++	vendor = efi_get_smbios_string(record, manufacturer);
++	if (!vendor)
+ 		return false;
+ 
+-	for (int i = 0; i < ARRAY_SIZE(type1_product_matches); i++) {
+-		if (!strcmp(product, type1_product_matches[i]))
+-			return true;
+-	}
++	if (!strcmp(vendor, "Apple Inc."))
++		return true;
+ 
+ 	return false;
+ }
 -- 
 2.43.0
 
