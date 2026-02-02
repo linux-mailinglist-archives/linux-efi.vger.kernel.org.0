@@ -1,158 +1,154 @@
-Return-Path: <linux-efi+bounces-6078-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6079-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBT9BdnXf2kIygIAu9opvQ
-	(envelope-from <linux-efi+bounces-6078-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Sun, 01 Feb 2026 23:46:49 +0100
+	id 2MNFN65bgGlj7AIAu9opvQ
+	(envelope-from <linux-efi+bounces-6079-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Mon, 02 Feb 2026 09:09:18 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297B4C7706
-	for <lists+linux-efi@lfdr.de>; Sun, 01 Feb 2026 23:46:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AE9C981B
+	for <lists+linux-efi@lfdr.de>; Mon, 02 Feb 2026 09:09:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4E24B30011A6
-	for <lists+linux-efi@lfdr.de>; Sun,  1 Feb 2026 22:46:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B970D30382A1
+	for <lists+linux-efi@lfdr.de>; Mon,  2 Feb 2026 08:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7501D2DC774;
-	Sun,  1 Feb 2026 22:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CAE22DFA4;
+	Mon,  2 Feb 2026 08:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="demddUI3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dbRIq891"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE131E1024;
-	Sun,  1 Feb 2026 22:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896A130F7EA
+	for <linux-efi@vger.kernel.org>; Mon,  2 Feb 2026 08:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769986003; cv=none; b=Yeck7ivCkhSzKkpqKko2Y+upEy7DQre0XNKA5Y7RKBYyyKi2pryn2BumtLw9G7DOSAoN3ku2aJM/KBZFu/9fLVLPFJ1ogd//+U6+OEmkovbSwWZWrUpSSOVD6gMiFnTkefVBQjlmUx0gUlNyXzGEhVll6knBHg+z3uOCg5GroIM=
+	t=1770019278; cv=none; b=QfmwgOOzSNSoOeJ28itg/09LzZ1W3sCkDgRQ6DnB7SAnCTc34JuPx7/KoT8acMHDHTMjuWV2W8mQU93/wdGVS7G6MRHcGx3W07+EXfMdnR1OiBcm1fBX3FgNQiaZT5dYDgjFpndhQeKJXFogxHufJ7qTKJMC/983hPg7KqxZ74g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769986003; c=relaxed/simple;
-	bh=FCYpJl8EOX8GMWf4gm75QpFvBDwzIFIO8cA6R9Ty+Ac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eJIVd+RVJ3T9mmRVTUPpEdogViVmzT4omayqcJI+fFdwZft7K89fzXd4MsFggS1h6P4i7EODw9Av/NYVzvkFLvsvm6HfWSB/d/FUwD7pl+37WOUPoUYs5EPQYUFMlkAKyYcPc1vqde1lEPxbXs+5I+j/YeNSeabJwk28CJlBBbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=demddUI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9944FC4CEF7;
-	Sun,  1 Feb 2026 22:46:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769986003;
-	bh=FCYpJl8EOX8GMWf4gm75QpFvBDwzIFIO8cA6R9Ty+Ac=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=demddUI3kI/QRadXK8U7OSeKMbsdkhKJqfLguBHAca+Trk4VXSu0sJZCszhFvMfeF
-	 QBhh4DkygaGFZjcREzGN+Gg3DGSZf4C9/aCNsy9ixHnDgHtnTp34sz+GtxNQ7YEfMx
-	 uTogeujSiWcnvxxf/yJJ3NRK0/IJ2TBa4ES8Gre9M/GYhHOloTrh686VAzyxHSNW9+
-	 azvzULdZsop3ti7N1x4mnbaRHfu4ahXro61ihGNaHMZVmrkqeHLxo6kSE7TEkw4xJq
-	 G1VieqSHaz92qAYAL2qzNdThPFf0+IsKjI1kqbXL6ENmRTt0F3PXmIR+kMkQaJw9Wm
-	 e2I9O5NDkD9Ww==
-Date: Mon, 2 Feb 2026 00:46:39 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: "Daniel P. Smith" <dpsmith@apertussolutions.com>
-Cc: Ross Philipson <ross.philipson@oracle.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
-	linux-efi@vger.kernel.org, iommu@lists.linux.dev,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-	dave.hansen@linux.intel.com, ardb@kernel.org, mjg59@srcf.ucam.org,
-	James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de,
-	jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu,
-	herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net,
-	ebiederm@xmission.com, dwmw2@infradead.org,
-	baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
-	andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
-Subject: Re: [PATCH v15 01/28] tpm: Initial step to reorganize TPM public
- headers
-Message-ID: <aX_Xz3ERMEb7GwK8@kernel.org>
-References: <20251215233316.1076248-1-ross.philipson@oracle.com>
- <20251215233316.1076248-2-ross.philipson@oracle.com>
- <aW7A-4xJSzln1HtH@kernel.org>
- <b94815dc-fc4d-4073-bfd6-31ab99a6b85b@apertussolutions.com>
+	s=arc-20240116; t=1770019278; c=relaxed/simple;
+	bh=Gpa7TO42qLDaaK7rvjxkwHnmN2Z6us+3ErmDg7wFIC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GUo0H5+pyEX4hRXwYPL0w82aFuoP6yGP1feOYq/R9l4dUtkNZ9w/IS+jYDjbpe/cNL4jU4M8nQ+8ZaPJCG5dMAnpduiVFvf8KJdJfAEGN5o9maHH6efhHlPuOCjYG74EbrYVAIVDH3POS3FXfp80Nb333yLNyjHeDXVet0U5vKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dbRIq891; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c61343f82d7so1634982a12.1
+        for <linux-efi@vger.kernel.org>; Mon, 02 Feb 2026 00:01:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770019277; x=1770624077; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gpa7TO42qLDaaK7rvjxkwHnmN2Z6us+3ErmDg7wFIC0=;
+        b=dbRIq891s0VTHtOeNPz+RLBOMq5ri44qi601F+wjTeoiXcq5KEnBpFYx//3YtY/TA9
+         eGVzdVi/KNv6dZPKh56O/8vJ6E9aQslzofwXNzbkjoPjwYP5CdH6alOfT/XxElW90ug1
+         1B+6c78BDgF7som23wiudH6wBk738iX0XXxCh9BzqbwFF8LLzo69P33OxginX52XF0s6
+         2kxQwFjiYW3Te4fD834+Y86ptSdig3jJlnWFPO1eHy0LyJfAsbvBXW1knjw9xYScAVUV
+         ZyIATd4P4mZet8UEp8L5pmmaysMSL5XTh4PNgmWhAVmwfVTzFbFqeEimB1Tg1jKXfnH0
+         uNig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770019277; x=1770624077;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Gpa7TO42qLDaaK7rvjxkwHnmN2Z6us+3ErmDg7wFIC0=;
+        b=lGmG9pg2FDTt7H4/ANgCWHC8m7oeUWsnLS+ZiTkjyewB8nlRY9YqIYb05VQdTiePtR
+         JpxOyLgbl3dmHAMBMlv6RcGw639PJlJ0G3gTEagvAepXyJSUfjXMfuINupNPJnKGYUvh
+         1Km0tPPlg6ZYDmmkUDntA4RL+7gI469CCWaGqbKCkbbvpsXwaOpoQQiSe6Cx00ytRbYY
+         Jp7BZP0cojJZLHo+W5KdgdP8aA53+Bgnt0J46xfp5dF0ASSTYA/w53CYxyfAlEuLvHp7
+         SNYRkX+3oq8+LhV4sRvhh6c6K61I87Jktn1CdAGzz610/KQYvvsPexriOSPhkAaAYQzk
+         Gg9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUoZr6iyHHicrdjvXJ2zoBwU+4U11Es/NetAs90OsLd5ZSK6sXgw2ndm2sKWeDJrbf1WoZ45WC1XxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynGTicJwUCRwqPUeWEgc1m7L+CxRVWqRsn1dIpNL72KYcbFlCy
+	YnebHqTrJBW7jRML6PLwNq+qZiqHGCAg/6wPk2rk1dYPwgGeY0+Xdew=
+X-Gm-Gg: AZuq6aKUl/HeLYdA1pjJ5Aow3ED5R6C7JNLlaKGbh2Wql2feja9j2Tp2fBelxZk2lbx
+	tLNXD1+e2cLVG/2sNxmIiX5K3mb1gCUSlxwKIvIEWevlC7UFVjlwJv4Mo2KaxR017tDIFhXKQH6
+	oF73f1scxy+/+TkUZTxWoElHmpD2+lGTo07srqClPu3e/l8SxYJdinsnf9h2nIDBLMgM/BrGuUX
+	tht026KbcmfkFAFNTy82eFLDrmsUTxlKSos39n2aeRaoWSgCBge945YD3r0P3kQ26tFVLl3sz7a
+	gTa9i+EB9n5JSPNMDeLvqPeBRAuQx2QftAaYwTqBd/WW142LBCPOb9odA97f3o9akAwZJxUziC5
+	5JHIYXH4/aT/nL861TNOyjkQazunHkrFCWjY58TjFwvKEEapl7cbSXn2DOuHjxFROeNfWbALYjy
+	OLh/aVIzAlkZZF7BE=
+X-Received: by 2002:a17:90b:3dcb:b0:340:b912:536 with SMTP id 98e67ed59e1d1-3543b3ad361mr9815251a91.31.1770019275904;
+        Mon, 02 Feb 2026 00:01:15 -0800 (PST)
+Received: from at.. ([171.61.160.203])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f2f02aasm14655168a91.7.2026.02.02.00.01.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 00:01:15 -0800 (PST)
+From: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+To: lukas@wunner.de
+Cc: airlied@gmail.com,
+	ardb@kernel.org,
+	atharvatiwarilinuxdev@gmail.com,
+	bp@alien8.de,
+	dri-devel@lists.freedesktop.org,
+	francescopompo2@gmail.com,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	jani.nikula@linux.intel.com,
+	javierm@redhat.com,
+	joonas.lahtinen@linux.intel.com,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lszubowi@redhat.com,
+	rodrigo.vivi@intel.com,
+	simona@ffwll.ch,
+	tursulin@ursulin.net,
+	tzimmermann@suse.de
+Subject: Re: [PATCH v2 1/2] efi/libstub: enable apple-set-os for all apple devices
+Date: Mon,  2 Feb 2026 08:01:06 +0000
+Message-ID: <20260202080106.1093-1-atharvatiwarilinuxdev@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <aXovFQsk-w90wZi1@wunner.de>
+References: <aXovFQsk-w90wZi1@wunner.de>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b94815dc-fc4d-4073-bfd6-31ab99a6b85b@apertussolutions.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,kernel.org,lists.infradead.org,lists.linux.dev,linutronix.de,redhat.com,alien8.de,zytor.com,linux.intel.com,srcf.ucam.org,hansenpartnership.com,gmx.de,ziepe.ca,amacapital.net,alum.mit.edu,gondor.apana.org.au,davemloft.net,lwn.net,xmission.com,infradead.org,citrix.com,googlegroups.com];
-	TAGGED_FROM(0.00)[bounces-6078-lists,linux-efi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-6079-lists,linux-efi=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,alien8.de,lists.freedesktop.org,linux.intel.com,redhat.com,vger.kernel.org,intel.com,ffwll.ch,ursulin.net,suse.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jarkko@kernel.org,linux-efi@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_NEQ_ENVFROM(0.00)[atharvatiwarilinuxdev@gmail.com,linux-efi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-efi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,apertussolutions.com:email]
-X-Rspamd-Queue-Id: 297B4C7706
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 38AE9C981B
 X-Rspamd-Action: no action
 
-On Sun, Feb 01, 2026 at 11:20:20AM -0500, Daniel P. Smith wrote:
-> On 1/19/26 18:40, Jarkko Sakkinen wrote:
-> > On Mon, Dec 15, 2025 at 03:32:49PM -0800, Ross Philipson wrote:
-> > > Replace the existing public header tpm_command.h with the first two
-> > > new public headers tpm1.h and tpm_common.h. In addition, related
-> > > definitions in tpm1_cmd.c were moved to the new tpm1.h.
-> > > 
-> > > Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
-> > > Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
-> > > ---
-> > >   drivers/char/tpm/tpm-buf.c                |  3 +-
-> > >   drivers/char/tpm/tpm1-cmd.c               | 13 +-----
-> > >   include/keys/trusted_tpm.h                |  1 -
-> > >   include/linux/tpm.h                       |  3 ++
-> > >   include/linux/tpm1.h                      | 55 +++++++++++++++++++++++
-> > >   include/linux/tpm_command.h               | 30 -------------
-> > 
-> > Removing tpm_command.h causes unnecessary noise.
-> > 
-> > It would be better to retain tpm_command.h, and simply supplement
-> > it with TPM2 constants.
-> > 
-> > Also, what is the reason to not have both TPM1 and TPM2 in tpm.h?
-> > 
-> > To put the question in other words: is there something in tpm.h that
-> > would be incompatible with early boot code?
-> > 
-> > I'd rather tweak that than have more files...
-> 
-> Every #include in tpm.h will break in the early boot code. I don't see any
-> way to avoid having one header that is the device driver header that
-> integrates with mainline features and at least one header that holds the
-> general TPM definitions.
-> 
-> We will move everything that was broken out into tpm_command.h, making it
-> the header with the general definitions. I would raise the question of
-> whether tpm_command.h would be the best name of the file after definition
-> reloactions
+> Maybe you could give it a spin and verify if it fixes the issue for you?
 
-tpm_command.h conforms with lowest common denominator in the sense that
-it in its current state it is compatible with early boot code.
+I tested it, and only tested to see if it booted.
+now again i tested, and it seems my iGPU and eGPU wasnt detected?
+and after futher debuging i found that setup_efi_pci only detected
+dGPU, so using update_nr_gpus was useless.
 
-I'd consolidate TPM1 and TPM2 definitions that can be shared to that
-header. I guess rename is fine as long as protocol definitions are
-not scattered to two headers.
-
-BR, Jarkko
+and about the macbookair situation, i say we just exclude macbook from
+enabling apple-set-os via a smbios quirk.
 
