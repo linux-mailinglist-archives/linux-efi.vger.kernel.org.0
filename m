@@ -1,79 +1,81 @@
-Return-Path: <linux-efi+bounces-6081-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6082-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MJDJvikgWktIQMAu9opvQ
-	(envelope-from <linux-efi+bounces-6081-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Tue, 03 Feb 2026 08:34:16 +0100
+	id sFzPFASlgWnuIAMAu9opvQ
+	(envelope-from <linux-efi+bounces-6082-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Tue, 03 Feb 2026 08:34:28 +0100
 X-Original-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49D6D5C1E
-	for <lists+linux-efi@lfdr.de>; Tue, 03 Feb 2026 08:34:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C01D5C34
+	for <lists+linux-efi@lfdr.de>; Tue, 03 Feb 2026 08:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B98930994DF
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Feb 2026 07:31:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B4A0305DB2C
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Feb 2026 07:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6362FE04E;
-	Tue,  3 Feb 2026 07:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BBA2DF144;
+	Tue,  3 Feb 2026 07:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMKWlEEl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTZl3tR6"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DC52EFDA2
-	for <linux-efi@vger.kernel.org>; Tue,  3 Feb 2026 07:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BF52EFDA2
+	for <linux-efi@vger.kernel.org>; Tue,  3 Feb 2026 07:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770103912; cv=none; b=bMmAkP/hk3DBUgBrPh1vXv0T1qO6mjGZhLtYz7A3z9aNGKhJ1Y94M6AxZ8OkCUBu3i/VHikKB3Qt5NqvNLBCD/vEMl4GkrmMtEz/oAjteV1OPzvXxZlQ0N7/FGz7tCbsz1kUl0la6yV9bdj02+LXtBi8UAWFRqfKoWmTJ+FCP60=
+	t=1770103919; cv=none; b=WAGHvVNvRBrc6yzDKwtVvySwf1UhjTaUXPOX7ACO86pJ2T/nhLJcGbwxTI/t6s4ziSRJN8SUKHeSlKMu5+VXfSjRqnyS0Jt8eUnc0ealWbpw6dNz0qfM4X6iW0HStSyM/gi4ztDq57AH3yB7IykmldeVlc3Ey0/s+dDxGmicPAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770103912; c=relaxed/simple;
-	bh=45PIjMo/z6DggtsXPfuJkBLlw0PtjHPx4PhAmUfs/pM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VPAUJt0tFLWgSbfNhucFory8MYpbuVnys7gaq8IqsEtVZh061ZkrBeOGqaawFE5GnJrxLahX+rEDDKreFHAj6rMLj2jmClRBfFN6Leaf7B5U5tPHZNx9LDHFpXF4uz7FUKTcvsnbVPPgyDgeUkisBPaqlDG5r1wE3LUoPOmBvAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMKWlEEl; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1770103919; c=relaxed/simple;
+	bh=JPmSucsEIJvnITlI+6E+ViaITfqKP7DT7Hn0utPJy/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qDTf6G4UM7Wh64eM6ivECsouD1kaBehAGU07Y1YE/IbqQbjc23DPMJDDie+UtDNnZkuqTQPO1zGr+XUE829k1N7AIhV11JYjjPeaq9yJdYEjnGxT02krZIUxdm6f4HW63WnFZMsEFQYa2ZQ2oCAx6Oqbw/FvCNRAx5kcZS8Fshw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTZl3tR6; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8230c2d3128so2842466b3a.0
-        for <linux-efi@vger.kernel.org>; Mon, 02 Feb 2026 23:31:50 -0800 (PST)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a871c8b171so31416395ad.3
+        for <linux-efi@vger.kernel.org>; Mon, 02 Feb 2026 23:31:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770103909; x=1770708709; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=f1PNOi1oh0/Zk5XEHIqvUN6ECXvN0Y2KoNmyJjB7WcQ=;
-        b=GMKWlEElkCKLZQ3kDDBuvlYwKRbnBcvOeoRKZ1Y/KYleVTPLlh+qWPqDmiwHJnWE5Z
-         JACwi8WwF4vfYEjErggNTB3w7AvFtk48xMxFymHcL+JC+4mgEVBVSQI1hspy3lVm//qv
-         XlDYMmGiTYcoUGbJ2HMxcBwDhnutADRFPha/3d0eaXiburZ2wkiYvFbc3/xUpJZVikOR
-         gipzy0WD5i7GLDjJKjMi0A4CthpZqsQ+CJjmZg5DBbT0YDCNMWRKIDpv+0NkF+xSoLVj
-         kQvVggUgwTJoyx60VYXRluoAvh+W2RGUFhvj1Dytr3wv9FiAKZSPhPm8hNbZ3f9vIvCn
-         RbIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770103909; x=1770708709;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770103917; x=1770708717; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f1PNOi1oh0/Zk5XEHIqvUN6ECXvN0Y2KoNmyJjB7WcQ=;
-        b=MMwAoD8fM0mA/rQ9pXwSgvChTDk7mQ5y/6x8WAdVPM/QmXy8S/2QjW3QMPtD5RO10+
-         yJM7LQD2Gk0JyInttB5hLw+jYi7uVVDOmyq3vfWTmEeb7aFSxpLBlf5NDFUNISGeZ8Nk
-         KL4mX0E51lfe3pFHOzdWhmLt9C5C2naHjwvVtYUS74j8ik5n6AgbbRi6Xf/iUC5InBa2
-         hXHvJzzzrCDl71f+3CWCk+qSwqMY+01SzWu4sPp+WkT0LGrBo2P+r3EpufS4ykU4nnWu
-         cE7SO0RsCToAMhmVnDCil19dxF7IMLnln02GdllRxyIOAtBtG7VVOeYsF5TC+2YMzx48
-         qxOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVMTwVXpT6Jt6cKQvEI+fQviy/b/UiljuGTAYBuQfgsRfexeYO0OGPhvK0XIK2U6Za77PpcOOqKPOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8LLkXA4xZgd3qVd58SIaP96ELOMFSrl+hJz5Wp+zJ7Gbn3rQF
-	x8YWVZD119WzJkprcYrUgOjrAIS4X2b0Gdk9ijh0JD2KTRA1a5Q62vXJwqkH
-X-Gm-Gg: AZuq6aLRc5lqq86E8M9WS326Ws7CigjT4A8/jQzu0NryRZLO7XhZBfJEOifE92wnNDO
-	j1evHy3h9wY66gCPIVQekJSNcxGujFJQzXFr0fPwlQ86IoQeb2NBCpqJrddMr+jqOzBbK5q7ZAD
-	04BoKqweZ1LifINyrq41Zxfj2isf4mGnu22MKfPtBQngA6wGuZwGZILymI/OSQLH2zGUBNkZlRZ
-	vOKMnNjxEK2mdKgSyIL1/7/aMD2CqmM/R4GUXcdKHciy6g2dasdn4ubbC4Wq69jnvl+lmKe649U
-	ooo0zsYVDZzgmthy/7dSH2afviMEwoFEwDKsBcLOBLgLWN5NHr5dV/2FaygKp4GQ/GHRmQnyQkB
-	ynmDCKeG8BDIJvBySkG7xBVHa16nIlEa7A6AceyzsH2SJI9kiix0AcWqwLYv2dKSAqU6/tYgVb1
-	G5j+yUCBWK6jMIzXA=
-X-Received: by 2002:a05:6300:4093:b0:38d:e674:b5ef with SMTP id adf61e73a8af0-392e01aa144mr12357123637.75.1770103909557;
-        Mon, 02 Feb 2026 23:31:49 -0800 (PST)
+        bh=JuaUAhd1+lDG6wBrbXZqMO2C5ILHdpZJbCQrItpX1Ck=;
+        b=BTZl3tR6H/BiWoJ8JsiGKxwAoyyqN3TMtSGC83glNLtXrtkP1/kGDmkW0Qa0Fi4GAN
+         qhhVHwepC2bwuWOCjOKJthOe7cSTx40h7lLQ06t3alDjRgWiEfZXjewnzXvmGlszYabP
+         CLKB7s246tKz/hh9UA9Fmiwhm2ifVYcuKEoo9N34/gtbnG1FS3o6n0EGrbXqekzX1s4r
+         1GwfZUsvPdwgfBYZ+v/XnyHNx6QbZPsYP8kWxCRcBLm9NLIKLx4OakuZlXmksgSwP+7v
+         XSSAFJhXz3EFYSuX5PTx7BQPTVYP/94bjbixWRlDor38qWgfJO3lXfSFhTjR7BlK5l7W
+         0UJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770103917; x=1770708717;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JuaUAhd1+lDG6wBrbXZqMO2C5ILHdpZJbCQrItpX1Ck=;
+        b=KjPD9J+64slDYlWcFB0Ky6BxnoYuDSfNvsWzydAx9KQgQhR37b1fa2iRANRW4J/kZV
+         KIIVyINl6F8KYKWvDdalNx1SlY4Ya6DqUfoS1j5P0P0ogJTYCcuNAQXw3C3xwpeIhFoq
+         ZE9Z5XHTUbhdcypGz2ORD7Pfd+mGJltcz0rPsPWoj0iIa4gY+YB0fbO15MRXNRiYaknJ
+         OOZ/Qyap5HJzIC0XVzv0Fce17DaQd01m1MaIFc7U0Nsed5pM3SY5ic0IWQBQByYjfAHB
+         kQzwi9lb758bYH6iTvQcTBbEoMp74JK+rxU/sJAk3HoigEYWPQLpYt8lMG3Toojkmc6V
+         3YhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWmmLA1eg9oA0EOl3RkFrHna4V6TCaal71t2/MtKZNdam4HFvq1eJGjGYVFukb9jtu4PBf3VbjFblI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz6VTCdhuOG+hVxwHLNMGV0ONKXMOetzSXZzSjCrAkUHxxNBbL
+	xz79WV0RpPaMTMwY+jel08KulmQ63HxZSMeXUPMazVhikqcUau9DgDA=
+X-Gm-Gg: AZuq6aLsYANPHfeCaSn75HTzFyFlb97wFmDRhcOKOHnMaCM7oDzZp9RfOTNlDXnC3xi
+	2aKomj+vy3+FXP3sEVfj/43qnQB2Uua98kVvAVUe6Jfo+XQcPL8DabpjOVrWxL4kiy4xYC09+ZD
+	1zHsQwVpnEShgu9WFgaLT8mrMS7c7bidwsnWWg9LATJGtT/7O+s645vDQBGwsOvz/rT8HV9X1bl
+	LhlQFiVFhtUGywmil96WNOOVrnjeCv7dRxIZB/DAJGSMImBeN58u7Ff2RQ+GqTk8qfbonRWhfTy
+	yz0IB4deAdU9xOPMdNQk4e5HGr+6Dr7PM8SfJvEKYzrGfdXnh1JfmFyTfHQF9727GPY0Zo2EW4G
+	5thSiXt787Y55T2+VoHwDpEaHP1v/gr+ro2J8vZxTPebI8BsGVq6rUT1oXbf6f4b+XL16ybHPDs
+	xZ0GNNMHdBAJVM4ECHW+sCl8+9Zw==
+X-Received: by 2002:a17:903:1ac8:b0:2a0:d728:2e79 with SMTP id d9443c01a7336-2a8d7ed9bcbmr138418055ad.16.1770103917493;
+        Mon, 02 Feb 2026 23:31:57 -0800 (PST)
 Received: from at.. ([171.61.163.171])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a8dc225534sm108280865ad.68.2026.02.02.23.31.43
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a8dc225534sm108280865ad.68.2026.02.02.23.31.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 23:31:49 -0800 (PST)
+        Mon, 02 Feb 2026 23:31:57 -0800 (PST)
 From: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
 To: 
 Cc: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
@@ -84,89 +86,114 @@ Cc: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
 	Tvrtko Ursulin <tursulin@ursulin.net>,
 	David Airlie <airlied@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
 	Javier Martinez Canillas <javierm@redhat.com>,
-	Francesco Pompo <francescopompo2@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Lenny Szubowicz <lszubowi@redhat.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Francesco Pompo <francescopompo2@gmail.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	intel-gfx@lists.freedesktop.org,
 	intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH v3 0/2] Add support for eGPUs on Apple Products
-Date: Tue,  3 Feb 2026 07:31:16 +0000
-Message-ID: <20260203073130.1111-1-atharvatiwarilinuxdev@gmail.com>
+Subject: [PATCH v3 1/2] efi/libstub: Enable apple-set-os for most apple devices
+Date: Tue,  3 Feb 2026 07:31:17 +0000
+Message-ID: <20260203073130.1111-2-atharvatiwarilinuxdev@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260203073130.1111-1-atharvatiwarilinuxdev@gmail.com>
+References: <20260203073130.1111-1-atharvatiwarilinuxdev@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6081-lists,linux-efi=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.intel.com,intel.com,ursulin.net,ffwll.ch,suse.de,redhat.com,alien8.de,vger.kernel.org,lists.freedesktop.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.intel.com,intel.com,ursulin.net,ffwll.ch,redhat.com,suse.de,alien8.de,vger.kernel.org,lists.freedesktop.org];
+	TAGGED_FROM(0.00)[bounces-6082-lists,linux-efi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[atharvatiwarilinuxdev@gmail.com,linux-efi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-efi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E49D6D5C1E
+X-Rspamd-Queue-Id: E4C01D5C34
 X-Rspamd-Action: no action
 
-This series adds support for eGPUs on Apple products, by
-enabling apple-set-os on all apple devices.
+Enable apple-set-os on Apple Mac systems by default.
 
-A side effect of this patch is that the iGPU becomes enabled on iMacs.
-However, iMacs can’t use the iGPU to drive the display
-(They can't link-train the internal display),
-so displays must be disabled on iMacs.
+Exclude MacBook6,2 and MacBookAir7,2, as enabling apple-set-os on
+these models causes regressions.
 
-Changes in v3:
-- Disabled apple-set-os on MacBookAir6,1 and 7,1 to avoid regressions
-- Reworded 1st patch
-Changes in v2:
-- Reworded cover-letter
-- Transferred logic to has_no_display in the 2nd patch
+(tested on iMac20,1)
 
-Link to v2:
-https://lore.kernel.org/all/20260128145855.1071-1-atharvatiwarilinuxdev@gmail.com/#t
+Signed-off-by: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+---
+ drivers/firmware/efi/libstub/x86-stub.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-Link to v1:
-https://lore.kernel.org/all/20260125001111.1269-1-atharvatiwarilinuxdev@gmail.com/
-
-Atharva Tiwari (2):
-  efi/libstub: Enable apple-set-os for most apple devices
-  drm/i915/display: Disable display for iMac's
-
- drivers/firmware/efi/libstub/x86-stub.c       | 20 +++++++------------
- .../drm/i915/display/intel_display_device.c   | 14 ++++++++++++-
- 2 files changed, 20 insertions(+), 14 deletions(-)
-
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index cef32e2c82d8..532a713adef5 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -303,15 +303,9 @@ static const struct efi_smbios_record *get_table_record(u8 type)
+ 
+ static bool apple_match_product_name(void)
+ {
+-	static const char type1_product_matches[][15] = {
+-		"MacBookPro11,3",
+-		"MacBookPro11,5",
+-		"MacBookPro13,3",
+-		"MacBookPro14,3",
+-		"MacBookPro15,1",
+-		"MacBookPro15,3",
+-		"MacBookPro16,1",
+-		"MacBookPro16,4",
++	static const char disabled_product_matches[][14] = {
++		"MacBookPro6,2",
++		"MacBookPro7,2",
+ 	};
+ 	const struct efi_smbios_type1_record *record;
+ 	const u8 *product;
+@@ -325,12 +319,12 @@ static bool apple_match_product_name(void)
+ 	if (!product)
+ 		return false;
+ 
+-	for (int i = 0; i < ARRAY_SIZE(type1_product_matches); i++) {
+-		if (!strcmp(product, type1_product_matches[i]))
+-			return true;
++	for (int i = 0; i < ARRAY_SIZE(disabled_product_matches); i++) {
++		if (!strcmp(product, disabled_product_matches[i]))
++			return false;
+ 	}
+ 
+-	return false;
++	return true;
+ }
+ 
+ static void apple_set_os(void)
 -- 
 2.43.0
 
