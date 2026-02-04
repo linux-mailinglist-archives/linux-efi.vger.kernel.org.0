@@ -1,156 +1,200 @@
-Return-Path: <linux-efi+bounces-6085-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6086-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YO63EjzYgWlYKgMAu9opvQ
-	(envelope-from <linux-efi+bounces-6085-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Tue, 03 Feb 2026 12:13:00 +0100
+	id MDGZGaJ8g2nyngMAu9opvQ
+	(envelope-from <linux-efi+bounces-6086-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Wed, 04 Feb 2026 18:06:42 +0100
 X-Original-To: lists+linux-efi@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF39AD81BE
-	for <lists+linux-efi@lfdr.de>; Tue, 03 Feb 2026 12:12:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E147EACA1
+	for <lists+linux-efi@lfdr.de>; Wed, 04 Feb 2026 18:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 341AF305C892
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Feb 2026 11:12:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D662302B51A
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Feb 2026 17:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61872330645;
-	Tue,  3 Feb 2026 11:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5403232D7EC;
+	Wed,  4 Feb 2026 17:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FLH+M6Ck"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="moen/VYO"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE133009DA
-	for <linux-efi@vger.kernel.org>; Tue,  3 Feb 2026 11:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2EE340A70
+	for <linux-efi@vger.kernel.org>; Wed,  4 Feb 2026 17:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770117177; cv=none; b=VKCUwII3itTc1rQ7yrPlzPe+i9fVw0ERFqxKOw3QBd53K9sZIkuZ7rY96HlA1Ery+13eMLWLvTp5u3cfLqRVG08+N72I2kvQ/w4k2nLT6UbZxMaDFzBC121c2QgSN08lHX06rVMxXCzkXuXKQ4H8GJ/xVBm3lTt3K6loVZ0Uiy4=
+	t=1770224644; cv=none; b=iLGRqhuV5Hnmh6SYmTLjIUXKeBsDAtFbmonzhIN/Nb85RzHTz/jHUKY5Ow0lYmmPexmi5wahAZjhDl5ixGsJVLvenX8QOXVP8woGP9Q0ybeI7C42krIg72gyy2g/eIn0rEwXQpIoENs0IU55i+DFM6HO9eLd9axiOS4/hpDbnbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770117177; c=relaxed/simple;
-	bh=nTpe9wbQPfWCaTdsw1hxkwbQbogjCIFzERnAV3j9o7k=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=r6Tlku1plMGFTlBV8mS9n703cQftWEoqfxompQUUS5tZ+MTCJPbmSkxHQDUp6sIF2q1y5GBk/fn+YL0gOgwRRsk/vMsUdByCEV3Ue1NAVzrzHrCptBk+sFUir/tpJtNZDko677dt3Fj8jA9wU5du5XY0T3xR2IwWakXabREXwA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FLH+M6Ck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68096C19421;
-	Tue,  3 Feb 2026 11:12:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770117177;
-	bh=nTpe9wbQPfWCaTdsw1hxkwbQbogjCIFzERnAV3j9o7k=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=FLH+M6CkuRZGpe+DvYQjNSzmG5/pakcdziAPmzb3oiP+LdHxHqfLDglnOy8cmbo5H
-	 gXerPFw3JjbQxymgdn317zKRzjccR/7NaWjaVhsRIYSIK3bkiVHyeYIlH0k27fkJZB
-	 QgvvPLbVDI13H6jjunRQinbgXXWeMIJ7lrk3mq2xbRTB0bSDfJ6kbTgQgxPEUnaY/O
-	 8KwohXX+TP5uEbAJZBn0Uk/IKjwDcHoCnMMcOpU8AfKTBa4szyeDAzVkdZ7heeWE+2
-	 dx9JnyE9ufwNtZ+N1PndrTe6wYbxn+DQWTHUFBxZRH7gWgwD4bI71MEJkQMvvfT7JY
-	 7zvGeHKvhUnwA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4CF55F40068;
-	Tue,  3 Feb 2026 06:12:55 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Tue, 03 Feb 2026 06:12:55 -0500
-X-ME-Sender: <xms:N9iBaSDnI1ySTcZQgSUxyZKlXtVGr_OXK3Ka2kDx9zuw_85xTyyefg>
-    <xme:N9iBaXX8_imykBF7gkafTS4WlwDL0qlcuLlIJ7Y45Jy9_yypIAKmqif8mxJM_EXQx
-    FzgObKUSkR236DV6TjOXtpmgs5od50YYDF9LKla-Nh3p2EMt9kXAnjg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeelleeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
-    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
-    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
-    gurdgtohhmpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepshhimhhonhgrsehffhiflh
-    hlrdgthhdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthht
-    oheprghthhgrrhhvrghtihifrghrihhlihhnuhiguggvvhesghhmrghilhdrtghomhdprh
-    gtphhtthhopehfrhgrnhgtvghstghophhomhhpohdvsehgmhgrihhlrdgtohhmpdhrtghp
-    thhtohepjhgrnhhirdhnihhkuhhlrgesihhnthgvlhdrtghomhdprhgtphhtthhopehroh
-    gurhhighhordhvihhvihesihhnthgvlhdrtghomhdprhgtphhtthhopehmihhnghhosehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehjrghnihdrnhhikhhulhgrsehlihhnuhigrd
-    hinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:N9iBaenzbIIMVQhcmCIzSe0N1WdjdYaWjASVhpxjAZywalDletKxKA>
-    <xmx:N9iBaUMaxqdWnBmU6eLFsyWvKU5mV99m7mlWJfqA-Y7cPU_XJJvpig>
-    <xmx:N9iBaYoZITaOjXg5cO3QTAwUqjhAcGlFBuwKzcyfNqwAa-hBIAmehA>
-    <xmx:N9iBaVtyncDAUdi-kz1Xr2YJKVT_rbJtNzBieNym0FRheHh99Jh3Uw>
-    <xmx:N9iBaU6UdddKTBw7Ijyblc5A2a0rtFg1Shz6-SxnQyWEaTq9Mp12fR_A>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1CE9E700065; Tue,  3 Feb 2026 06:12:55 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1770224644; c=relaxed/simple;
+	bh=6+CkfrLTtjZlH9fTVCCKcz8x8islFo0zdgYGbjCwpHs=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=gG80II1EIo7jMkMRVgrLqV08vIUP9pJcryoRapd/Qv7EkB0z8xuSNtv9PggDAHmXy7KEJn+hbFYIYbt+GkTCPUYRzXiKmvBeoyCGAaUrQMLgp8kQ0LM+URjw7nEAQxhx/92w3Ei1QhBAfolugdWs7TDkF8azWsY77VIBA/O4Lm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=moen/VYO; arc=none smtp.client-ip=109.224.244.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1770224635; x=1770483835;
+	bh=ZBn5kzNLw5QXk9rYVHlNbsbry1C8l/I3ewTrGqA4X9o=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=moen/VYO3pNAnk7j4QeloICgbx5ennDWIQsN7y4nbA3EMXBv85Hp2RAYUWpUZwdyO
+	 tiou3w4imW+OXeoPoXuE/N4stoDTduGBEWZqezCTsIlrBmNIXgOn7GvEF/JfmVn4s+
+	 p7lPRSyOGsZV0dQFAWLfMMjXzRE9lLCoQbZEY3Q01sSThS1FDDcY37aHb+z4SOfdNK
+	 tKz2ZXEouXJEMk9q6CTqgK6NuWxSwInNdrxO7ReatAMrppsKdgziJOyeNkRr9vuDLd
+	 Pg6K3jicmJ35TqbFFQVcM0ZNKuP7ODuals/3/JExpj5+xI2nAtzFmqJi0p+MjT9Ilb
+	 2WGI5/SYRBMUg==
+Date: Wed, 04 Feb 2026 17:03:51 +0000
+To: Sohil Mehta <sohil.mehta@intel.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, "Kirill A . Shutemov" <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Andrew Cooper <andrew.cooper3@citrix.com>, Tony Luck <tony.luck@intel.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] x86: Extend LASS support to EFI configurations
+Message-ID: <aYNfqAl0MQRnyYqj@wieczorr-mobl1.localdomain>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: ccc70aad8fa6d04526f80aae8cb09377502f9065
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: APW7_PzxWZZ-
-Date: Tue, 03 Feb 2026 12:12:21 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Atharva Tiwari" <atharvatiwarilinuxdev@gmail.com>
-Cc: "Jani Nikula" <jani.nikula@intel.com>,
- "Jani Nikula" <jani.nikula@linux.intel.com>,
- "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
- "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>,
- "Tvrtko Ursulin" <tursulin@ursulin.net>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Thomas Zimmermann" <tzimmermann@suse.de>,
- "Javier Martinez Canillas" <javierm@redhat.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, "Ingo Molnar" <mingo@kernel.org>,
- "Francesco Pompo" <francescopompo2@gmail.com>,
- "Lenny Szubowicz" <lszubowi@redhat.com>, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Message-Id: <40497cd8-b8c7-42bd-a176-96f38b994dc4@app.fastmail.com>
-In-Reply-To: <20260203073130.1111-3-atharvatiwarilinuxdev@gmail.com>
-References: <20260203073130.1111-1-atharvatiwarilinuxdev@gmail.com>
- <20260203073130.1111-3-atharvatiwarilinuxdev@gmail.com>
-Subject: Re: [PATCH v3 2/2] drm/i915/display: Disable display for iMac's
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	FAKE_REPLY(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[pm.me,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[pm.me:s=protonmail3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6085-lists,linux-efi=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,linux.intel.com,ursulin.net,gmail.com,ffwll.ch,suse.de,redhat.com,alien8.de,kernel.org,vger.kernel.org,lists.freedesktop.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-6086-lists,linux-efi=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,app.fastmail.com:mid];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,linux-efi@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m.wieczorretman@pm.me,linux-efi@vger.kernel.org];
+	DKIM_TRACE(0.00)[pm.me:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-efi];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: AF39AD81BE
+	TAGGED_RCPT(0.00)[linux-efi];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 9E147EACA1
 X-Rspamd-Action: no action
 
+Booted successfully with the patches on a Sierra Forest system. Checked it =
+out
+with LAM enabled and my KASAN series, and ran KASAN kunits without issues a=
+nd
+the LAM selftests also worked as expected.
 
+Tested-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-On Tue, 3 Feb 2026, at 08:31, Atharva Tiwari wrote:
-> Disable display on iMacs, as they can't do link training
-> on the internal display.
+On 2026-01-20 at 15:47:27 -0800, Sohil Mehta wrote:
+>Linear Address Space Separation (LASS) is currently disabled [1] when
+>support for vsyscall emulation or EFI is compiled in. This series
+>extends LASS support to EFI-enabled configurations.
 >
-> (tested on iMac20,1)
+>Changes in v2
+>-------------
+>- Rebased the series to v6.19-rc5
+>- Improved commit messages and code comments based on feedback
+>
+>v1: https://lore.kernel.org/lkml/20251204072143.3636863-1-sohil.mehta@inte=
+l.com/
+>
+>Issues with EFI
+>---------------
+>EFI boot and runtime services are incompatible with LASS because they
+>end up accessing addresses with bit 63 cleared, which is blocked by LASS.
+>
+>  1) The most obvious one is the SetVirtualAddressMap() runtime service,
+>  which is expected to be called in EFI physical mode [2].=20
+>
+>  2) Some runtime services fail to switch to virtual mode properly and
+>  continue referencing physical addresses even after SVAM. The kernel
+>  maintains a 1:1 mapping of all runtime services code and data regions
+>  to avoid breaking such firmware.
+>
+>  3) Some boot services code and data regions are referenced long after
+>  ExitBootServices(). Most of these access use the kernel direct map so
+>  bit 63 is expected to be set. But some odd firmware implementation
+>  could access that memory via a mapping in the lower range.
+>
+>Solution
+>--------
+>These patches take LASS out of the path of all EFI boot and runtime
+>service interactions by:
+>
+>  Patch 1: Deferring LASS enabling until userspace comes up, which
+>  ensures EFI has completed switching to virtual mode and all boot
+>  services memory has been freed [3].=20
+>
+>  Patch 2: Temporarily disabling LASS every time a runtime service is
+>  executed after boot. Runtime services execute in a special efi_mm
+>  which doesn't have userspace mapped. So, the security implications of
+>  disabling LASS are fairly limited [4].
+>
+>Please find more details in the respective patches.
+>
+>Alternate options
+>-----------------
+>One option is to not support broken firmware implementations (by
+>avoiding patch 2) starting with systems that support LASS. That would
+>trigger #GP faults if runtime calls try to access the 1:1 mapped
+>physical memory. Even though this is expected to be rare in modern
+>platforms, there isn't a clear benefit of keeping LASS active during
+>runtime calls executing under efi_mm.
+>
+>Also, client BIOSes typically get validated with Windows during
+>development. So, some users could see in-field failures when they start
+>running newer Linux kernels with LASS enabled. Though Ard suggests that
+>things have improved on the Windows side, it doesn't seem worth taking
+>the risk to me.
+>
+>In the long run, to encourage BIOSes to fix bad code, the kernel could
+>trap invalid accesses to 1:1 mapped physical memory and then warn about
+>buggy firmware. However, such an effort should be pursued independent of
+>LASS [5].
+>
+>Links
+>-----
+>[1]: https://lore.kernel.org/lkml/20251118182911.2983253-1-sohil.mehta@int=
+el.com/
+>[2]: https://uefi.org/specs/UEFI/2.10/08_Services_Runtime_Services.html#se=
+tvirtualaddressmap
+>[3]: https://lore.kernel.org/lkml/ee2fce64-91ce-4b78-b2f9-33364ea0c52f@int=
+el.com/
+>[4]: https://lore.kernel.org/lkml/F707CA45-DA37-460A-AEFF-C11AC6AB6A05@zyt=
+or.com/
+>[5]: https://lore.kernel.org/lkml/255724be-a6d8-4aa6-94f9-1e6ffba3a3cc@zyt=
+or.com/
+>
+>
+>Sohil Mehta (3):
+>  x86/cpu: Defer LASS enabling until userspace comes up
+>  x86/efi: Disable LASS while executing runtime services
+>  x86/cpu: Remove LASS restriction on EFI
+>
+> arch/x86/kernel/cpu/common.c   | 30 ++++++++++++++++++++++-------
+> arch/x86/platform/efi/efi_64.c | 35 ++++++++++++++++++++++++++++++++++
+> 2 files changed, 58 insertions(+), 7 deletions(-)
+>
+>
+>base-commit: 0f61b1860cc3f52aef9036d7235ed1f017632193
+>--=20
+>2.43.0
 >
 
-How will you use the iMac if you disable the display?
-
-If this is not in fact what you are doing, please explain in the commit log what exactly you are disabling and why.
+--=20
+Kind regards
+Maciej Wiecz=C3=B3r-Retman
 
 
