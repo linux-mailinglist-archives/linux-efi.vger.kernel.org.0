@@ -1,172 +1,322 @@
-Return-Path: <linux-efi+bounces-6097-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6098-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIRiHoPlhWnCHwQAu9opvQ
-	(envelope-from <linux-efi+bounces-6097-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Fri, 06 Feb 2026 13:58:43 +0100
+	id YM3AB2xpiGkzpQQAu9opvQ
+	(envelope-from <linux-efi+bounces-6098-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Sun, 08 Feb 2026 11:46:04 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF394FDC98
-	for <lists+linux-efi@lfdr.de>; Fri, 06 Feb 2026 13:58:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DA6108689
+	for <lists+linux-efi@lfdr.de>; Sun, 08 Feb 2026 11:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E72DC302D130
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Feb 2026 12:57:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77ADA300B059
+	for <lists+linux-efi@lfdr.de>; Sun,  8 Feb 2026 10:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F938377542;
-	Fri,  6 Feb 2026 12:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA905311C3B;
+	Sun,  8 Feb 2026 10:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YWOqyAHo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="szMovIaU"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AA535F8D5
-	for <linux-efi@vger.kernel.org>; Fri,  6 Feb 2026 12:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A681427AC28;
+	Sun,  8 Feb 2026 10:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770382640; cv=none; b=G4WSCUHFSCpAGbs3kOIWlB/g1SXLzV3lDHeTm0zh3BLMDi6RA1rcO3/Fv2J4ANtTZdBLjsBoaytFd3/EHoemoqkUXJkRZcijR+aj8MFVwGb3OlGo144PnjaGLC90rZiQN39nIeqGiZq5f8fD+DnUi5t1tS4QCroE2/ZUPfg+EPU=
+	t=1770547559; cv=none; b=ogcZMDq0BrE0xhnQsU3XcVC6O/KFFdHrJtyVSe39mkVPSKzTSqfN/U8XEobTq803JUKD3Mb922efg9n361JdJVMVDDEPBhz3DvytnA+/loyzGPGYsPJPablwflp2gyjwLaZFtYoN8V2wxEh74xdo1951opkvq19OYI9CCcfqs1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770382640; c=relaxed/simple;
-	bh=Gm/45C6aiyq1VubFEgZhyjA7HQmfRnDcaftZAQwtYDk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pwh6ZmVg5CN7JHEkS6mfOhOlGdCXFw0WcV8M0tp0p+sNp43qSJeM4UpDKHc5VwqG+o3yLXJf1RfO/WjdRwnMvxj0IssZ4FxoIX2Tp58Qirx58dFFI2pifhcM78r4S7J5+srQiKlmbfn8EyI62XXKHbGODTqsp7zhPo9xY/F1jbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YWOqyAHo; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a7bced39cfso22297185ad.1
-        for <linux-efi@vger.kernel.org>; Fri, 06 Feb 2026 04:57:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770382639; x=1770987439; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9Nj7rTmIxrIyoM/Zv2E7TPav3Q6NYtriqtqId7+NMO4=;
-        b=YWOqyAHo5FT1cTWCmeiUcL3s80iYsRy0X6JKYQWHTuO3yGnzO9HYtu99CrIPywTpeZ
-         wlaxUVbfyvqo5mnLljSlHou7F0Mgk0pCLcY+xLTuh0FTorwc+ujO9LX98Pn/3kMsyb6i
-         8cO1yqWFD7ksKuCtQBME7C9//3pF2PKGlnySQ/QKKyTQ5Dn4S3hCUBH27heoV4D+Swww
-         Wk1CT33aYego5MOwZNtsKi92RzaeVIwqCqnuZvI7BhRG+NNwnjVjMaRH4+fLktKexpyd
-         SFKjke4g3qo831W3IXzs7t0CgM17ZmE4uwaLH8BWOySe63B0/dBsy1E7gtqXwUDp4WPx
-         f2sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770382639; x=1770987439;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9Nj7rTmIxrIyoM/Zv2E7TPav3Q6NYtriqtqId7+NMO4=;
-        b=JX1ycGtmHli6W2RcnkfU/NmBAB5bK6Whk5QEf4aQm6kiutBs2Un6CyalpRXhlAwItH
-         HYaGTTTxrMzoSXicykArZpELHMrxecgfMlysxFHhOqUIag+RGI8MCs/rAoN9PE1Oh/OI
-         o2o1M+YSZi2OUQwsM2R67G4N551eM+LOSI8qFGZOay8NvLX1tQl7bqoSp+/F/sb2BXl3
-         R/7eU36Kp2rKzuKU5J9X1+n5JNMRxIYTKsW2BFeDhINiOCGkk5APX2OKsTLyxSm11SmW
-         1nHs9Uuln5YDJdbnJj1wgonDsiJFYW2hsOM3yqoM9MsaSIxNoV3nkDOGlvcFDALwFp67
-         GDsg==
-X-Forwarded-Encrypted: i=1; AJvYcCVdLk0xLl2nn7sdlT8fzVWmu+rUijodrbx/Vayb6axdM92dvlpvIWKNLOe+Mjkar4odEjbdGAPDIe0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGDSUE/3igcksdHCMrqRFDwCuK92gF0qw87n+OR+lhdoyukoUr
-	e0SWObOor+ozeCd411CplZ9wQLyHD5Lu2QnzzTc4CdSp/KQoUebkQy7tFc0prpU=
-X-Gm-Gg: AZuq6aIM44hvA+FxBCYL5z/u9dVTCDM19S34nK4qaR8n9Y50JBYLQWhLLEWHgpdi5BW
-	IYE1eouXYzfuDd8BWEnogw25wX9Ubsm/t62EcfNK7ZR0kEo6tP8P9jC+kiCMWK8aCvABwHayien
-	ATedv/NYp6KE/UlZnL63CXW1dfFYKpKsRVzscQ39RRe7JsYHQ4v307afSRTJXJRTNXLZEFvn2SK
-	J8e0TUW3/anJEokTjlTrpMGsh4r4Z6BKlVZyKlda84f0g35YPkQK554EEPOpQ1wqpP1scMciRfe
-	29/j2AGQ/lFtd3xqETA7clKThF7WC5/6NTZDX5msMGTzrELIx2i1eG58pVe+O1GgfSZ9czw5aTd
-	Azdv2MTTZB2P2OUXvxHtzv9lUdJQ4kh4QVMeyFe+wlc9W2saAKXh+eYhdmwdImb6SHWBKxvLh4a
-	IPw7Rl7ZNNCJY2pidSaNem/R20Gg==
-X-Received: by 2002:a17:902:da91:b0:2a0:c5a6:c8df with SMTP id d9443c01a7336-2a9516cd2fbmr27802775ad.21.1770382639301;
-        Fri, 06 Feb 2026 04:57:19 -0800 (PST)
-Received: from at.. ([171.61.167.190])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a951a636aasm23336005ad.12.2026.02.06.04.57.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 04:57:18 -0800 (PST)
-From: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
-To: 
-Cc: Lukas Wunner <lukas@wunner.de>,
-	Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH 2/2] platform/apple-gmux: use apple_brightness to save brightness to EFI
-Date: Fri,  6 Feb 2026 12:56:22 +0000
-Message-ID: <20260206125641.12983-3-atharvatiwarilinuxdev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260206125641.12983-1-atharvatiwarilinuxdev@gmail.com>
-References: <20260206125641.12983-1-atharvatiwarilinuxdev@gmail.com>
+	s=arc-20240116; t=1770547559; c=relaxed/simple;
+	bh=oCOks4Zu7lnr+Dn0QAI7n4eMmSuai+UyfMfboMsdGlY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=swt4ddwBwqQXW5WZTUvt8dI8hBnNqkZ8rogyiAXzTrtEpgPHJSIMw57RXOiLCAPdshwob2tIPainSJPczdz73CsrnSNcKKZ7yWsuPosjn8SttYDl8oxUH+C6wRtApiTkXNH/TUKNoYYIFxKMXnpUWz1jAW1vQ+zMVdjMBIfg/8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=szMovIaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F83C4CEF7;
+	Sun,  8 Feb 2026 10:45:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770547559;
+	bh=oCOks4Zu7lnr+Dn0QAI7n4eMmSuai+UyfMfboMsdGlY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=szMovIaUZmX2u8cIlV4PbkpacHnR3bebZelZbbP1/i+8/7hUYK0VcJ+HEceivEVyt
+	 /VWx0Z+UaxQEI1PwKgNzCUGcf4J80cmIpa9c0Didmx7hqhYrxY+JIIedxH29TAcMGO
+	 jhRIqM/FNPC+BhpTfNi7RFgoNaCDbnCPuwK3LW8JvXrN0fuoNAQ8zt/2CTibJCo7a3
+	 72yXIOpAdz1hkMEH2gzlJ3yVsjXpFWOJYOVcgwwtE7p0fQ/WInFiw4ZiOnmLdjXV7U
+	 iPWXhyM6Ubuucjxf1s7hZ6w+9109n1MeoCGenz6knXhkqVutK3aghrQJR0s0DtTKh0
+	 enFrlJ1Jdj7KA==
+Message-ID: <c2d14818-1c34-47c7-a210-1f7c737f0bc9@kernel.org>
+Date: Sun, 8 Feb 2026 11:45:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] efi: Save Brightness using EFI on Macs
+To: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+Cc: Lukas Wunner <lukas@wunner.de>, Ard Biesheuvel <ardb@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org
+References: <20260206125641.12983-1-atharvatiwarilinuxdev@gmail.com>
+ <20260206125641.12983-2-atharvatiwarilinuxdev@gmail.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20260206125641.12983-2-atharvatiwarilinuxdev@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-6098-lists,linux-efi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[wunner.de,gmail.com,kernel.org,linux.intel.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-6097-lists,linux-efi=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[atharvatiwarilinuxdev@gmail.com,linux-efi@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,linux-efi@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-efi];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EF394FDC98
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wunner.de:email]
+X-Rspamd-Queue-Id: 74DA6108689
 X-Rspamd-Action: no action
 
-use apple_brightness to save brightness to EFI.
+Hi,
 
-(tested on iMac20,1)
+On 6-Feb-26 13:56, Atharva Tiwari wrote:
+> Currently when a Mac reboots, the brightness is not the same
+> as the previous boot instead its the same as the last time the
+> Mac booted macOS.
+> 
+> We can fix this issue by saving the brightness level to the efivar
+> backlight-level.
+> 
+> We use delayed work instead of a shutdown callback,
+> as it still applies the brightness
+> even during forced shutdowns and at 0% battery.
+> 
+> (tested on iMac20,1)
+> 
+> Suggested-by: Lukas Wunner <lukas@wunner.de>
+> Signed-off-by: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+> ---
+>  drivers/firmware/efi/Kconfig                  | 10 ++
+>  drivers/firmware/efi/Makefile                 |  1 +
+>  drivers/firmware/efi/apple-brightness.c       | 91 +++++++++++++++++++
+>  .../linux/platform_data/apple-brightness.h    | 21 +++++
+>  4 files changed, 123 insertions(+)
+>  create mode 100644 drivers/firmware/efi/apple-brightness.c
+>  create mode 100644 include/linux/platform_data/apple-brightness.h
+> 
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index 29e0729299f5..dd0a9c9a772a 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -167,6 +167,16 @@ config APPLE_PROPERTIES
+>  
+>  	  If unsure, say Y if you have a Mac.  Otherwise N.
+>  
+> +config APPLE_BRIGHTNESS
+> +	bool "Apple Backlight control for EFI"
+> +	depends on X86
+> +	help
+> +	  This will save the brightness level to EFI, so brightness
+> +	  level is preserved across reboots and shutdows. allowing
+> +	  for improved support of Apple hardware.
+> +
+> +	  If unsure, say Y if you have a Mac, Otherwise N.
+> +
+>  config RESET_ATTACK_MITIGATION
+>  	bool "Reset memory attack mitigation"
+>  	depends on EFI_STUB
+> diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+> index 8efbcf699e4f..1f5705cc87a2 100644
+> --- a/drivers/firmware/efi/Makefile
+> +++ b/drivers/firmware/efi/Makefile
+> @@ -26,6 +26,7 @@ obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)	+= efibc.o
+>  obj-$(CONFIG_EFI_TEST)			+= test/
+>  obj-$(CONFIG_EFI_DEV_PATH_PARSER)	+= dev-path-parser.o
+>  obj-$(CONFIG_APPLE_PROPERTIES)		+= apple-properties.o
+> +obj-$(CONFIG_APPLE_BRIGHTNESS)		+= apple-brightness.o
+>  obj-$(CONFIG_EFI_RCI2_TABLE)		+= rci2-table.o
+>  obj-$(CONFIG_EFI_EMBEDDED_FIRMWARE)	+= embedded-firmware.o
+>  obj-$(CONFIG_LOAD_UEFI_KEYS)		+= mokvar-table.o
+> diff --git a/drivers/firmware/efi/apple-brightness.c b/drivers/firmware/efi/apple-brightness.c
+> new file mode 100644
+> index 000000000000..c32e365dc511
+> --- /dev/null
+> +++ b/drivers/firmware/efi/apple-brightness.c
+> @@ -0,0 +1,91 @@
+> +// SPDX-License-Identifier: GPL-2.0-only OR MIT
+> +/*
+> + * apple-brightness.c - EFI brightness saver on Macs
+> + * Copyright (C) 2026 Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+> + */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <linux/backlight.h>
+> +#include <linux/cleanup.h>
+> +#include <linux/efi.h>
+> +#include <linux/mutex.h>
+> +#include <linux/workqueue.h>
+> +#include <linux/platform_data/apple-brightness.h>
+> +
+> +static DEFINE_MUTEX(apple_brightness_mutex);
+> +static struct delayed_work apple_brightness_work;
+> +
+> +static u32 efi_attr;
+> +static u16 last_saved_level;
+> +
+> +static int (*get_brightness)(struct backlight_device *bl);
+> +static struct backlight_device *bl_dev;
+> +
+> +static void apple_brightness_workfn(struct work_struct *work)
+> +{
+> +	u16 level;
+> +	efi_status_t status;
+> +
+> +	mutex_lock(&apple_brightness_mutex);
+> +
+> +	level = (u16)get_brightness(bl_dev);
+> +
+> +	if (level == last_saved_level)
+> +		goto out;
+> +
+> +	status = efivar_set_variable(APPLE_BRIGHTNESS_NAME, &APPLE_BRIGHTNESS_GUID,
+> +				efi_attr, sizeof(level), &level);
+> +	if (status != EFI_SUCCESS)
+> +		pr_debug("Unable to set brightness: 0x%lx\n", status);
+> +	else
+> +		last_saved_level = level;
+> +
+> +out:
+> +	mutex_unlock(&apple_brightness_mutex);
+> +
+> +	mod_delayed_work(system_wq, &apple_brightness_work,
+> +			msecs_to_jiffies(APPLE_BRIGHTNESS_POLL));
 
-Signed-off-by: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
----
- drivers/platform/x86/apple-gmux.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Wait so this now writes an non-volatile EFI variable every
+300ms ?  I don't know how these are backed on Apple hw,
+but typically these are backed by some SPI-nor flash or
+something similar.
 
-diff --git a/drivers/platform/x86/apple-gmux.c b/drivers/platform/x86/apple-gmux.c
-index 1417e230edbd..cfb20c115eb0 100644
---- a/drivers/platform/x86/apple-gmux.c
-+++ b/drivers/platform/x86/apple-gmux.c
-@@ -22,6 +22,7 @@
- #include <linux/pci.h>
- #include <linux/vga_switcheroo.h>
- #include <linux/debugfs.h>
-+#include <linux/platform_data/apple-brightness.h>
- #include <acpi/video.h>
- #include <asm/io.h>
- 
-@@ -960,6 +961,12 @@ static int gmux_probe(struct pnp_dev *pnp, const struct pnp_device_id *id)
- 	}
- 
- 	gmux_init_debugfs(gmux_data);
-+	if (IS_ENABLED(CONFIG_APPLE_BRIGHTNESS)) {
-+		ret = apple_brightness_probe(gmux_data->bdev, &gmux_get_brightness);
-+		if (ret)
-+			pr_warn("Unable to Enable EFI brightness saver: %d\n", ret);
-+	}
-+
- 	return 0;
- 
- err_register_handler:
--- 
-2.43.0
+Writing this every 300ms is a sure fire way to wear out
+the flash and brick the machine real fast.
+
+So NACK.
+
+I was already worried about the shutdown approach on v1,
+but did not say anything since I'm not that familiar
+with apple hw and other apple code is already doing
+something similar.
+
+But writing a non-volatile EFI variable every 300ms is
+just a very very bad idea.
+
+Also I do not understand why this is necessary at all?
+
+Systemd already has a service which saves the value
+of all /sys/class/backlight and /sys/class/leds/*kbd_backlight
+devices on shutdown/reboot and restores these on boot.
+
+So what is the advantage here? Only advantage I can
+see is having the old-brightness value right away
+rather then getting it restored during boot?
+
+Regards,
+
+Hans
+
+
+
+
+
+> +}
+> +
+> +int apple_brightness_probe(struct backlight_device *bl,
+> +	int (*get_brightnessfn)(struct backlight_device *bl))
+> +{
+> +	efi_status_t status;
+> +	unsigned long size = sizeof(last_saved_level);
+> +	int ret;
+> +
+> +	guard(mutex)(&apple_brightness_mutex);
+> +
+> +	bl_dev = bl;
+> +	get_brightness = get_brightnessfn;
+> +
+> +	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE))
+> +		return -ENODEV;
+> +
+> +	ret = efivar_lock();
+> +	if (ret)
+> +		return ret;
+> +
+> +	status = efivar_get_variable(APPLE_BRIGHTNESS_NAME, &APPLE_BRIGHTNESS_GUID,
+> +				&efi_attr, &size, &last_saved_level);
+> +
+> +	efivar_unlock();
+> +
+> +	if (status != EFI_SUCCESS)
+> +		return -ENODEV;
+> +
+> +	bl_dev = bl;
+> +	get_brightness = get_brightnessfn;
+> +
+> +	INIT_DELAYED_WORK(&apple_brightness_work, apple_brightness_workfn);
+> +	mod_delayed_work(system_wq, &apple_brightness_work,
+> +			msecs_to_jiffies(APPLE_BRIGHTNESS_POLL));
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(apple_brightness_probe);
+> +
+> +MODULE_AUTHOR("Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>");
+> +MODULE_DESCRIPTION("EFI Brightness saver for Macs");
+> +MODULE_LICENSE("Dual MIT/GPL");
+> diff --git a/include/linux/platform_data/apple-brightness.h b/include/linux/platform_data/apple-brightness.h
+> new file mode 100644
+> index 000000000000..4cf5e2d346cb
+> --- /dev/null
+> +++ b/include/linux/platform_data/apple-brightness.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
+> +/*
+> + * apple-brightness.h - EFI brightness saver for Macs
+> + * Copyright (C) 2026 Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+> + */
+> +
+> +#ifndef _APPLE_BL_H_
+> +#define _APPLE_BL_H_
+> +
+> +#include <linux/backlight.h>
+> +#include <linux/efi.h>
+> +
+> +#define APPLE_BRIGHTNESS_NAME           L"backlight-level"
+> +#define APPLE_BRIGHTNESS_GUID           EFI_GUID(0x7c436110, 0xab2a, 0x4bbb, 0xa8, 0x80, 0xfe, 0x41, 0x99, 0x5c, 0x9f, 0x82)
+> +
+> +#define APPLE_BRIGHTNESS_POLL           300
+> +
+> +int apple_brightness_probe(struct backlight_device *bl,
+> +	int (*get_brightnessfn)(struct backlight_device *bl));
+> +
+> +#endif /* _APPLE_BL_H */
 
 
