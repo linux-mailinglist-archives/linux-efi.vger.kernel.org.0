@@ -1,218 +1,200 @@
-Return-Path: <linux-efi+bounces-6102-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6103-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCdOMzvqiWmdDwAAu9opvQ
-	(envelope-from <linux-efi+bounces-6102-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Mon, 09 Feb 2026 15:07:55 +0100
+	id MGQ1Cdf7iWluFQAAu9opvQ
+	(envelope-from <linux-efi+bounces-6103-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Mon, 09 Feb 2026 16:23:03 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F82811014F
-	for <lists+linux-efi@lfdr.de>; Mon, 09 Feb 2026 15:07:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CEE111DA0
+	for <lists+linux-efi@lfdr.de>; Mon, 09 Feb 2026 16:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBEAB3007AE6
-	for <lists+linux-efi@lfdr.de>; Mon,  9 Feb 2026 14:06:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 942A6303674F
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Feb 2026 15:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F6D378D9A;
-	Mon,  9 Feb 2026 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B772379997;
+	Mon,  9 Feb 2026 15:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nqaei6k0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ThN62Pon"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BE33783D1;
-	Mon,  9 Feb 2026 14:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4243793D2
+	for <linux-efi@vger.kernel.org>; Mon,  9 Feb 2026 15:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770645987; cv=none; b=sqSTkReX5lud3qQ/DuYfthl4o9Qn/8KES4nfInHOFvTp1ROv23QG4OcdGd3V0Qrv8H/ho2nwKltoEz7V30G7zZQjnES2NmD6rGdC6kmj8xdLeNXplsPuJUbqOYLmqRHc4HUySBhcooHQvDZuxTu7URlnEogOR+15Nvf/dA8ig7k=
+	t=1770650279; cv=none; b=f81nG80wltmNEmPe1fIiHTPhqm/HcPUFaoc+YUl99Of1efhHVprCejekv71hJV8uk8WqedNxLZoLXeJQ6FKHX0odTXh9g1FoVvrWUb07zTb7sS9ABr7zO1yJCi2Z9sfk5hi8nQKcjrh1sTahqKJO4PlBq/1+6j7aiEM9iJ0dtF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770645987; c=relaxed/simple;
-	bh=WYECX5SXJ228M5jBGqJxP6dlxH7z8FBmfDhplBvQyNA=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=VYhD8N7s4Z6v8O/mekhitWkQWZw9gEhnRmTmdp/ovnI44kJ5JYTQj7NNCbwTifxFHPA6J7IQ7Eh+S8EcZQ8nDFhSLvGWg+SU9aoWqSubkamywpojhG0xBucdYHr6MF4iwj3OvHwccpKFLlQw0NkuQ3p/eMOJIueT4X+ZoM9ao3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nqaei6k0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D061C19424;
-	Mon,  9 Feb 2026 14:06:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770645986;
-	bh=WYECX5SXJ228M5jBGqJxP6dlxH7z8FBmfDhplBvQyNA=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=Nqaei6k05Q/DhlRq9r1x/EcPXoaFx+9YhtkVy51zs8T5adcEb8G5bApEMw+mdUOOj
-	 /BM58X9WiMvkKCaSx3BqPxyHiwOyDmZF/MzDaHkUxG0VHWujRE0vZmjBszeid+uQhD
-	 x1GdKQW8DyIotjSoD+FNEPiOKcWzdASOyeMCV/ujYMnpfMHM3IGNq4z0xy0DGxqxpv
-	 M/NIlgbrPnyB4/GLvJ/uLX08b3bF5Ik8SNL91g9Al4vHkpa4vgN6KjHcMd3uen2ZN5
-	 rVXPxC8PjYipmaaMWOss0DKBV5t35yjU+a5WA40GtzvbCuzNH9w2ITmtEyiao0CE83
-	 On4LBRFXW05lQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1BD8AF40068;
-	Mon,  9 Feb 2026 09:06:25 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Mon, 09 Feb 2026 09:06:25 -0500
-X-ME-Sender: <xms:4emJaTad_Wco9m3j7o3lgpax2A6VgGCE8LZeGlO9i5g2yHyEDNUiHw>
-    <xme:4emJadNHkb9EKjKmR5ad65jXJKhI9WcoOxoazz_YJlip6wBxlVxBeuygzzZ21Nwrv
-    KHso3jK22jchQasdrWQMQ3oh9QNVDuPbfnhAnDLDBRUXmvb2K1YWAo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduleejtddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedtgefgheeutdeivdegiefgueeghfekhfffhfetheeggefhheeuvdegieev
-    tdefudenucffohhmrghinhepthhrvghntghhsghoohhtrdhorhhgpdhkvghrnhgvlhdroh
-    hrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegr
-    rhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeelqd
-    effedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrhgu
-    rdgtohhmpdhnsggprhgtphhtthhopeefuddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepnhhivhgvughithgrsegrlhhu
-    mhdrmhhithdrvgguuhdprhgtphhtthhopehluhhtohesrghmrggtrghpihhtrghlrdhnvg
-    htpdhrtghpthhtohepughpshhmihhthhesrghpvghrthhushhsohhluhhtihhonhhsrdgt
-    ohhmpdhrtghpthhtoheprghnughrvgifrdgtohhophgvrhefsegtihhtrhhigidrtghomh
-    dprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohep
-    phgvthgvrhhhuhgvfigvsehgmhigrdguvgdprhgtphhtthhopehhvghrsggvrhhtsehgoh
-    hnughorhdrrghprghnrgdrohhrghdrrghupdhrtghpthhtohepthhrvghntghhsghoohht
-    qdguvghvvghlsehgohhoghhlvghgrhhouhhpshdrtghomh
-X-ME-Proxy: <xmx:4emJaQzUmyPR98OS0DVfVCBs7nP2yOprhVntmSFyFqqjCmSR2Op5vA>
-    <xmx:4emJaYjdE9_HEUdD0T7A9LUZNY5kj5IvupGKg9KTA8aXMCOAi4HI0Q>
-    <xmx:4emJafQ6xQcu41rnAo5XeQjx4pSSvTX8JVKYhyLWPcyn_t6QftTgKQ>
-    <xmx:4emJadPScFbmSVydk2_hRmtKQrY0ItBJpYwS2Vv8kIokJLoMdP3xtA>
-    <xmx:4emJacGg1Yqc0Zi7oImUY8WRMQf-r0h2LVcpe4s-75BQFRJhA66uOmpp>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id DEDB1700065; Mon,  9 Feb 2026 09:06:24 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1770650279; c=relaxed/simple;
+	bh=KUrB2ixHhbk8tXReGVRYZjGMeVc1cY5bqQ/6Yef0SdE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NIxtAwJTkYsS/75EFEocxggqEkPFTsCAhojnHoXw2yI/KwNWtk3NCVRJzPw/uoV2BtX7/f5d6zJuk9MaJ2GkWLk+2dFjdkucaJDnPcaovMBxHqEt1TR73Q528j9CwgvdgL83m0rndPMxggkaghXqiG3CCX/udntgFLolXa3RHNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ThN62Pon; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770650278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fngc8mPVj+G9GNxVuTpiu+ARVdY7pvX/WkbOn6P4HDw=;
+	b=ThN62PonQPPHGKyioKdWRd1mzJ8ioC7q65w5rr7pNpBuqO28RX6DUS5vcBxgEXdmbYnmQc
+	czM4CXVjHljw7oPdloQ0minbWrSyhlMXG77eqWaPkfkZSbiQypP+DzFVN1CGgmAxWru/zc
+	nzG/gDQdTJROrp0kMzhOkRAwYOJjI0o=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-I9cyAgBGPM6bVqWai9FRAw-1; Mon,
+ 09 Feb 2026 10:17:51 -0500
+X-MC-Unique: I9cyAgBGPM6bVqWai9FRAw-1
+X-Mimecast-MFC-AGG-ID: I9cyAgBGPM6bVqWai9FRAw_1770650269
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 37C351954105;
+	Mon,  9 Feb 2026 15:17:37 +0000 (UTC)
+Received: from localhost (unknown [10.22.64.105])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5328D18004BB;
+	Mon,  9 Feb 2026 15:17:36 +0000 (UTC)
+Date: Mon, 9 Feb 2026 12:17:35 -0300
+From: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Lai Jiangshan <jiangshanlai@gmail.com>, Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH 0/2] efi: Expose the runtime-services workqueue via sysfs
+Message-ID: <aYn6j_JLBENcY96V@redhat.com>
+References: <20260205115559.1625236-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AAnEvm6syrbF
-Date: Mon, 09 Feb 2026 15:04:36 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Ross Philipson" <ross.philipson@oracle.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org,
- linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
- linux-efi@vger.kernel.org, iommu@lists.linux.dev
-Cc: dpsmith@apertussolutions.com, "Thomas Gleixner" <tglx@linutronix.de>,
- mingo@redhat.com, bp@alien8.de, "H . Peter Anvin" <hpa@zytor.com>,
- dave.hansen@linux.intel.com, mjg59@srcf.ucam.org,
- James.Bottomley@hansenpartnership.com, peterhuewe@gmx.de, jarkko@kernel.org,
- jgg@ziepe.ca, luto@amacapital.net, nivedita@alum.mit.edu,
- herbert@gondor.apana.org.au, davem@davemloft.net, corbet@lwn.net,
- ebiederm@xmission.com, dwmw2@infradead.org, baolu.lu@linux.intel.com,
- kanth.ghatraju@oracle.com, andrew.cooper3@citrix.com,
- trenchboot-devel@googlegroups.com
-Message-Id: <b5f2b5a5-b984-4ed3-a023-c06d634f9146@app.fastmail.com>
-In-Reply-To: <20251215233316.1076248-1-ross.philipson@oracle.com>
-References: <20251215233316.1076248-1-ross.philipson@oracle.com>
-Subject: Re: [PATCH v15 00/28] x86: Secure Launch support for Intel TXT
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260205115559.1625236-1-bigeasy@linutronix.de>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-6102-lists,linux-efi=lfdr.de];
-	FREEMAIL_CC(0.00)[apertussolutions.com,linutronix.de,redhat.com,alien8.de,zytor.com,linux.intel.com,srcf.ucam.org,hansenpartnership.com,gmx.de,kernel.org,ziepe.ca,amacapital.net,alum.mit.edu,gondor.apana.org.au,davemloft.net,lwn.net,xmission.com,infradead.org,oracle.com,citrix.com,googlegroups.com];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,app.fastmail.com:mid,trenchboot.org:url];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,linux-efi@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,kernel.org,linutronix.de,gmail.com];
+	TAGGED_FROM(0.00)[bounces-6103-lists,linux-efi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgoncalv@redhat.com,linux-efi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-efi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 3F82811014F
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74CEE111DA0
 X-Rspamd-Action: no action
 
-On Tue, 16 Dec 2025, at 00:32, Ross Philipson wrote:
-> Secure Launch is a vendor-neutral approach to implementing TGC Dynamic
-> Root of Trust (DRTM) support in the kernel. This is complementary to
-> better known Static Root of Trust (SRTM) schemes such as UEFI SecureBoot.
->
-> This series provides the common infrastructure along with Intel TXT
-> support, without needing the tboot exokernel. Support for AMD SKINIT is
-> pending the common infrastructure getting nailed down, and ARM are
-> looking to build on it too.
->
-> Originally, tboot were approached to see if they'd take support for
-> other vendors, but they elected not to. Hence this approach instead.
->
-> Work is being coordinated by the Trenchboot project, 
-> https://trenchboot.org/,
-> organising Secure Launch support for upstream open source projects 
-> including
-> Grub, iPXE and Xen. The goal of the Trenchboot project is to make DTRM 
-> easy
-> to use.  e.g. for Grub, it's simply adding "slaunch" as a command in 
-> the boot
-> stanza.  See 
-> https://trenchboot.org/user-docs/QUICKSTART/#linux-quick-start-guide
-> for more details
->
-> Patch set based on commit:
-> torvalds/master/fd57572253bc356330dbe5b233c2e1d8426c66fd
->
-> Depends on v3 of the following TPM patch set (note this patch
-> set is being actively worked on separately):
-> [PATCH v3 00/10]  tpm: Decouple Trenchboot dependencies
-> Message ID: 20250929194832.2913286-1-jarkko@kernel.org
->
-> Finally we would like to thank everyone for their input and
-> assistance. It has all been very helpful in improving the quality of
-> our solution and in reviewing/strengthening our security posture.
->
+On Thu, Feb 05, 2026 at 12:55:57PM +0100, Sebastian Andrzej Siewior wrote:
+> EFI runtime services are disabled on PREEMPT_RT by default which can be
+> overwritten on the boot command line. For native EFI, an invocation
+> requires to disable preemption while a call is made into EFI. The time
+> spent in EFI is not deterministic and depends on SW and HW of the
+> system.
+> While accessing the efi-rtc device can be avoided by using a native
+> driver, accessing the "variables" is important and there is no second
+> path.
+> 
+> The "runtime-wrappers" is wrapping access to the EFI callback via a
+> workqueue. On a SMP system one CPU could be declared as housekeeping/
+> not-realtime-capable and force all EFI invocation to be performed on
+> this CPU. This could be achieved by setting workqueue.unbound_cpus or
+> 	/sys/devices/virtual/workqueue/cpumask
+> 
+> at runtime. This however will affect all workqueues and might not be
+> desired. With an explicit setting such as
+> 	/sys/devices/virtual/workqueue/efi_runtime/cpumask
+> 
+> it looks like an official way to limit the CPUs involved here.
+> 
+> With this in place I was wondering if EFI_DISABLE_RUNTIME could be
+> lifted at runtime on SMP systems. But given the unbound_cpus option
+> and the auto-config based on NOHZ-full it might not be wise to add yet
+> another smart option here. Also it needs to be a subset of root cpumask
+> or it won't be effective.
 
-Hi Daniel and Ross,
+I ran tests on two aarch64 boxes and two x86_64 boxes. I ran timerlat on a
+set of isolated CPUs (10-30) and serviced the EFI Runtime requests on CPU4.
+During the tests I ran operations such as df, efibootmgr, read individual
+EFIvars and performed read/write ops to the boxes using efi-rtc. All that,
+at regular intervals during the test duration.
 
-I have finally gotten around to getting the right hardware and building GRUB and Linux with your patches, and I have managed to get them running on an old Skylake HP laptop successfully.
+I had previously checked the interference/latency generated by these
+operations on each box, so I knew what to look for in terms of expected
+latency spikes.
 
-Surprisingly, even when doing a secure launch, the EFI runtime services still work happily, which means (AIUI) that code that was excluded from the D-RTM TCB is still being executed at ring 0? Doesn't this defeat D-RTM entirely in the case some exploit is hidden in the EFI runtime code? Should we measure the contents of EfiRuntimeServicesCode regions too?
+On the aarch64 boxes the impact of the EFI-related requests was confined to
+CPU4, as expected, and no apparent noise was recorded on the isolated CPUs.
 
-In any case, I am aware that upstreaming this work has been a painful experience so far. Unfortunately, I don't think we're quite there yet.
+In one of the x86_64 boxes the noise also seemed to be contained to CPU4.
+The other box gave me the impression that SMIs were being triggered by the
+EFI runtime requests and that was affecting all the CPUs. I will explore
+a bit more both x86_64 cases, but I am more than satisfied with the results
+of the proposed patches.
 
-The way the work is divided between GRUB and Linux seems to be predicated entirely (at least originally) on the idea that the GRUB->Linux handover and the secure launch should be one and the same. I.e., GRUB sets the stage, pokes the ACM, which returns to the loaded linux image and boots it. This requires a lot of coordination, e.g., putting a MLE header in the kernel image and exposing it to GRUB in a certain manner, resource tables and other things that have to remain in sync between both sides.
+Sebastian, as for the TEE feature you mentioned, is there specific test I
+should run? Or is there any test you would like me to run in the context of
+this change?
 
-There also appears to be an assumption that the fact that the ACM returns to the loaded image in 32-bit mode requires a round trip through the decompressor, which may relocate itself in memory and do other things that the slaunch code then has to work around again.
+In any case,
 
-Due to the changes to the EFI boot path, this design has been watered down a bit already, in the sense that GRUB invokes the EFI entry point as usual, and only later, the pivot via the ACM is made.
+Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
 
-Other than the SHA-1 debate [*], the main issue I have with this approach is that it adds things to the boot ABI that are closely tied to TXT on the one hand, and bzImage oddities on the other (kernel_info, setup block etc). IOW, the complete lack of abstractions is going to make this a maintenance burden going forward.
+ 
+> There are two EFI invocations which are not covered by this
+> - mixed EFI
+>   Used on x86 with 64bit kernel but 32bit EFI. Would it work to use here
+>   the same workqueue mechanism?
+> 
+> - TEE / ARM secure monitor
+>   If I understand this right then TEE invokes the secure monitor which
+>   is preemptible. So an interrupt will interrupt and enter "normal"
+>   world immediately and could wake a user task. The following context
+>   switch will not happen because the return from interrupt path goes
+>   back to the secure monitor/ TEE.
+>   If so, or if TEE may disable interrupts from normal world, would it
+>   make sense to use a wrapper here, too?
+> 
+> Any comments or things I have missed?
+> 
+> Sebastian
+> 
+> Sebastian Andrzej Siewior (2):
+>   workqueue: Allow to expose ordered workqueues via sysfs
+>   efi: Allow to expose the workqueue via sysfs
+> 
+>  drivers/firmware/efi/efi.c |  2 +-
+>  kernel/workqueue.c         | 14 +++++++-------
+>  2 files changed, 8 insertions(+), 8 deletions(-)
+> 
+> -- 
+> 2.51.0
+> 
+---end quoted text---
 
-I've had a stab at implementing all of this in a manner that is more idiomatic for EFI boot:
-
-- GRUB does minimal TXT related preparation upfront, and exposes the remaining functionality via a protocol that is attached to the loaded image by GRUB
-- The SL stub is moved to the core kernel, with some startup code added to pivot to long mode
-- the EFI stub executes and decompresses the kernel as usual
-- if the protocol is present, the EFI stub calls it to pass the bootparams pointer, the base and size of the MLE and the header offset back to the GRUB code
-- after calling ExitBootServices(), it calls another protocol method to trigger the secure launch.
-
-The only pre-launch ABI that is being added here is a GRUB-specific protocol that is not necessarily tied to TXT. (For legacy boot, it should be feasible to call back into GRUB too, although it would be more of a ad-hoc construction, via the SLR table perhaps.) But no kernel_info and MLE headers etc being added to the ABI surface. Also, there is no longer a need for the GRUB code to understand how the decompressor is constructed, with a setup block etc, or take special care to perform PMR checks when its moves itself around in memory.
-
-Code can be found here:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/ardb/grub.git/log/?h=sl-v2
-https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=x86-slaunch
-
-I am aware that this is not the feedback you are waiting for at this point, given that we're at v15 already. But there are some warts in the current design that really need to be addressed before we can proceed with this IMHO.
-
--- 
-Ard.
-
-
-[*] which I still don't get: why is it fine to cap other banks with a single 0x1 byte [as the ACM does too, apparently], but do we require an SHA-1 implementation for capping the SHA-1 banks? Also, the TXT spec dropped all support for TPM1.2 so I wonder if that should be dropped from this series as well.
 
