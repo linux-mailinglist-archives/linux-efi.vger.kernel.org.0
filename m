@@ -1,237 +1,189 @@
-Return-Path: <linux-efi+bounces-6143-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6144-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDogDciokWn8lAEAu9opvQ
-	(envelope-from <linux-efi+bounces-6143-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Sun, 15 Feb 2026 12:06:48 +0100
+	id u7lOFgi5kmmEwwEAu9opvQ
+	(envelope-from <linux-efi+bounces-6144-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Feb 2026 07:28:24 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5C013E8E7
-	for <lists+linux-efi@lfdr.de>; Sun, 15 Feb 2026 12:06:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A41721411D8
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Feb 2026 07:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56496300E155
-	for <lists+linux-efi@lfdr.de>; Sun, 15 Feb 2026 11:06:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE2EF300BDA3
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Feb 2026 06:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFEF2C08AB;
-	Sun, 15 Feb 2026 11:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4A326ED54;
+	Mon, 16 Feb 2026 06:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S+XsWXtN";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="N73rRdBj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vvw7taDt"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3280B2DEA93
-	for <linux-efi@vger.kernel.org>; Sun, 15 Feb 2026 11:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481D82744F;
+	Mon, 16 Feb 2026 06:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771153596; cv=none; b=Z4rX7y97C3Upeiz7K4m9Nc+zffLBFZ6CZCti0stne4hO74aMcnoLv5yxSknJwhmdQORddPh47go65hh6pX+JgCkJJ5Mkh3CnRqWe13rFczCZKgx2Yva9dHVjVSEtdczfd9glQ2NtE6V/iN43CKn4DBNK8MwKUvehuRnsXOWc6ls=
+	t=1771223300; cv=none; b=eQwALwU9i6B4ydlN0cOkdK4+DGxEYXYK+9ijfe0LHX5q4MWwDLi7T6HRq28T4bvJdDyqhxUlXgNkjrkqVGqdjmS15XyexgPkbMJYv1Ec0xTxnahkCGtt+F3ookghRYPbZY6FPuRXYgpqtxT1cjOUKA8J/cIuLVq6yqqIHHfViOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771153596; c=relaxed/simple;
-	bh=NP94FmMc49hVak9d84xroc99UMOfASUZ7FO4Vb9UwNE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=haNzwRGToo5Zz9FrbxFanvbIGDY/gSbMjuRsnb0A20p8X/c7s1PuBJP7e7srBfhzIuvhWQ/G4MKpGjF/LZ4Z1ACJLFATDrP5714zM/CgRsTgznzrR6Y84UIRGpNmmQLXyDyMQMnoyjbPNAijeI2sJ4rBt7r5d4w8IlHKYZfDlMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S+XsWXtN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=N73rRdBj; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61F8l1vY3925030
-	for <linux-efi@vger.kernel.org>; Sun, 15 Feb 2026 11:06:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=ld1npyEylhh9T/ZrLUK2KA2uppN+ES3kJsT
-	5nxT2auI=; b=S+XsWXtNwq8KK4YXODBXvTA5hKPUNWG6nwUU3T0pjsMNAQTH6dY
-	ZdE1pl9ceKZYKmugtQawlKT4wI47oTgXiCmEIVReXm25gGSkeSWJwQI6BDd4u/MR
-	xRnjxlpzRs84j+TDjfamMoT+Sas4lQQc+wRqSe6WQShjzQkNZ8mEg+6EFgq8rt+c
-	22JmorGW4Q4cKLYb7KJiYQCXkel9P5Sa1Iav3dcQBvFT2Ln7nXoDNZXRG8H1MZ/B
-	Jv2vyaAJP3zbk2gUfurCOaYoZGMxqmwOCuBgZpy9qkhMHG31CZf8MwUg4hs8/18Z
-	5kAd2RJk0MEn8qQvB+bTkguUmgYWNIAwkWg==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cajb8t25q-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-efi@vger.kernel.org>; Sun, 15 Feb 2026 11:06:33 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-506bfff75edso66309981cf.3
-        for <linux-efi@vger.kernel.org>; Sun, 15 Feb 2026 03:06:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771153592; x=1771758392; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ld1npyEylhh9T/ZrLUK2KA2uppN+ES3kJsT5nxT2auI=;
-        b=N73rRdBjkfALEPAWcIl+KoJI5x22TUU/fL+xIPtn/jNTBMY+MJdZEAxvaedfSyw3R1
-         NkvM4cDaI45LPop1q0oqh2eY6d1zZrszcIAYxBthQAONHp2bpm90tsmmfevp2cWk2TIl
-         oHsKazk67uP573KXNWS8yDW9x2N2bL+FPd34UbfHsb1HJdZrjIqQqFJwH8iPq//9KypX
-         lGFd1lUpn5LaztBNlRv6JMugEUJ07kSX3Gqg8MvZ7XNt9ZzBUxHH0fjDdaDGOhobo44x
-         gt0sp3+pWBfqDOip9PETjaew9JIEjW8X/ZJzzb6FMU9y2hsI8cLD3n1BYM6YGvXD/R+w
-         WTmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771153592; x=1771758392;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ld1npyEylhh9T/ZrLUK2KA2uppN+ES3kJsT5nxT2auI=;
-        b=qJN7jAsFp8um3Qj5Zt8ggbFmvCHzM9km4ym/QmdRezq02fIDK7TGPyR8/brQ3Iu2zm
-         OOUhOGec11b2Ng0udPaPvbgOCEgvYQ85bMU0I72WJlYbNVbeEC4G9W3WpsMMfHoPFdGn
-         5qwYv7QUUofXwvCydkVf5BGVTeqNisE18m2bi1O3GMPX+S4Tstu20urR4T8jxMruJucq
-         5Xhaf+UivYWAdMgswimBIanRVl/wgAOAVKaO5AG6viAB5MDoURHajh4llt4R4p+ks55c
-         2tRXcbCVlkQV8GLnL2bToDDc8LeVjzWIxGcXasPafmuQckBn6Ht3Xmsifq/QjBuSdwL+
-         d4cw==
-X-Forwarded-Encrypted: i=1; AJvYcCUawNMhPHlgom9O92bzy+u3lR0w2UuHpvDEBS5IJvmGEcVMzF86cqeoyOXrYJf6Hc6AZNxXqIibc3c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5pSW6GcDiFgRKTCUvax64hCnZ11rXkzDH0C17Pot8zj+8iHW4
-	kNeDMMClMJdbYcsUDMHuMtl/ifo1GSm57ZbGk7sxz0nm2Kr9Koxaxi0b3UXxG+lMS689ZMw4fM8
-	lkk3N7qW2oRMxiq6WlCaZW2SsD21Yn39mFx/cMGyvUdbA8MkhwCXefRmFl263kSA=
-X-Gm-Gg: AZuq6aIdh0F3HoXvvqKObrU0DbLzTc945v/ik6vKQsYdPDhC5lGK/we1kEihq6BkrUA
-	nuqcUrDgYZtEt2QAiClIt+HotlkzBrVHJZltf+vudr+A/qQMVXBVYril7M/d6pkTCeOd/Wgiepc
-	zi5Qj9ry3FHeDH1QQEkHwUa/wDpWkK8A4RSn8aZMWIUfG3v+jn2DqOFH7x70tRsqWCJVXhErkiH
-	s7laNEFGZNNvOinVzEl2RFpa+Y9/NyE0ovcBkUMlxZ7VQUJ2d+AJFLEYG1KJbxO7fseZrSOB+cN
-	jY4NjzVnoKVeKcghLK6QBFEquvOU7yZIuSo9cMmlz4gAKxL5/PdQ4Zqz3Ov/HgzrWM7G/MU5GKq
-	qKDHd2nVtXlYBXIgJ8wEKtYwzDKfn1bhycQ5nJg==
-X-Received: by 2002:a05:620a:7081:b0:8b2:ec00:7840 with SMTP id af79cd13be357-8cb42268fb7mr859964885a.27.1771153592475;
-        Sun, 15 Feb 2026 03:06:32 -0800 (PST)
-X-Received: by 2002:a05:620a:7081:b0:8b2:ec00:7840 with SMTP id af79cd13be357-8cb42268fb7mr859962585a.27.1771153592073;
-        Sun, 15 Feb 2026 03:06:32 -0800 (PST)
-Received: from quoll ([178.197.223.140])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4835dcfafcdsm546360325e9.9.2026.02.15.03.06.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Feb 2026 03:06:31 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-To: Ard Biesheuvel <ardb@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-efi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH] efi: stmm: Constify struct efivar_operations
-Date: Sun, 15 Feb 2026 12:06:28 +0100
-Message-ID: <20260215110628.34293-2-krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1771223300; c=relaxed/simple;
+	bh=IB6S87GqJDUeZVCDWsj9FO7zAiiLNHQjIae0NCwbIyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OWohndtm/hBboFIE7zcVyT6LlADg+ibdgMvsNVj77QDCxSpYghDiC2YksjYd6mE9rVWGn5lBUtvRw/EoghUli8VMSJ+ZpxhBEtIhBit44vjtZjFB8qGggCWe9TxxExbULDTYusCRXqN5QqTrOTbwXSKnzOO0aAUxYXe0K5hjcQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vvw7taDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B66C116C6;
+	Mon, 16 Feb 2026 06:28:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771223299;
+	bh=IB6S87GqJDUeZVCDWsj9FO7zAiiLNHQjIae0NCwbIyg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Vvw7taDtzIRHRPpyGWyElmvnZLUhQHz605cFYNwB67Xs3cPclrRcoUfPhUV/p1+75
+	 2AWNLD7UZLuLiQIUSuQxvIIBN07fbTMo+bamb3iFjWzFTTxVEqJvv0BS72OK+GbcQa
+	 MaGe1qIKa8LJ5Xlg3GXUwsHQHvvHz3gLFQ88OoTuAKfooJgVFServunzAKdNHlYzWM
+	 gjNSCngjfv6y6QYeB0jRGpsxVo5okoCk1MOqnLIEfZGaJBN6wS60aXFqkMnkI2TKqT
+	 /mhX+mzim3N96bnOeNAhpE8lKu7P8W+vWg6Nox4X7UttTiba7Dx09uyiWlZ7yjkhB5
+	 Euz23RmJRex/g==
+Date: Mon, 16 Feb 2026 11:58:10 +0530
+From: Sumit Garg <sumit.garg@kernel.org>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Jens Wiklander <jens.wiklander@linaro.org>,
+	Matthew Wilcox <willy@infradead.org>, vbabka@suse.cz,
+	akpm@linux-foundation.org, kernel@pengutronix.de,
+	op-tee@lists.trustedfirmware.org, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, ilias.apalodimas@linaro.org,
+	jan.kiszka@siemens.com, masahisa.kojima@linaro.org,
+	spu@pengutronix.de
+Subject: Re: [PATCH v2] tee: shm: fix slab page refcounting
+Message-ID: <aZK4-grGSdOFXHTK@sumit-xelite>
+References: <20250325200740.3645331-1-m.felsch@pengutronix.de>
+ <Z-Pc6C1YUqLyej3Z@casper.infradead.org>
+ <20250326110718.qzbwpmaf6xlcb4xf@pengutronix.de>
+ <CAHUa44FUK_73oKSaqGdiPqB3geZbTNDFsC1Mh=KN3YPWr9=7gQ@mail.gmail.com>
+ <Z-TXMIXzaro0w60M@sumit-X1>
+ <CAHUa44HEsMkzQHZZufdwutQyZRtig6e0qWomhwgDZAhy2qDyhg@mail.gmail.com>
+ <20260212125830.jfwos3flga2l5uwk@pengutronix.de>
+ <aY8N90jMp25bBZhi@sumit-xelite>
+ <252s4lfnujhrl3bkqm3xwatdkcdd3tfge3e6fla6f2llq4szjm@xltjvpqjgffn>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2165; i=krzysztof.kozlowski@oss.qualcomm.com;
- h=from:subject; bh=NP94FmMc49hVak9d84xroc99UMOfASUZ7FO4Vb9UwNE=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpkai0cmoweuXzmNdkt3cUKsm8kSCLQVJPu23p+
- dCZSm7zbAmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaZGotAAKCRDBN2bmhouD
- 11qAD/wN+jA1lzX6+fvH+7NvijyyXmKjI69j+7amUOgM5sbk570RGatIFifeiMMYCzNsjRtka1N
- SK1h155UeEuyH4Bh28xMW0yl3B4RbpKRBgecF8bJOoauDz6gj89z70NAhEoCXnlMQzyliGE3BKi
- Ahxw8Ny/zGlGitabsYrEgLDKuVSld04+JP8Sog5HdJ35M1hsyWuZXSNr+jqW6HxZMPq5fhBdzXr
- 5u07sXCHRdxtXIs+A6LZdb0qYJ3D3oSR874npKfRbML/aPlxh7DQXJPoWBoDL65GifRkJaHhZl2
- MjJDpmk/7UdZIzOdP56MOfqQlImW+obhbofUzlCs1cKDpZd8hVCB7LOBYj+bJw2dfZR5nGwgGuZ
- MKmrUgz9ADLHW7MgUaHtCdjIKKMF+PoQjoN1Zzo30F3SVWfda9kAEQK8GxotrYMrO4n6LI9kcAL
- Fwl8MNE2IFEYm5DVap6C+VDkyMhbmTb84uEMDJYMHqastkqmUxy05JsGSD217Kev8/4HnhENdLN
- HINqvMPYNNQTDLiPSGaaDq8A2zGrjc9XKAUK9kOHbF2DT8UZsu+SuYHn0DHl5L7anJl4Itr+pii
- caB1cZK16piHfC546QaES/WzkbiqD9u/sxAYzvAYEfsLIlrT6dpd6lKsaXed1zbkbjcXudDC5+I fgr4KP1y45xlKHg==
-X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE1MDA4OSBTYWx0ZWRfX7V2pODYp/psf
- LgpoK/IVzc/t6QbQoUCmWC8O3NLBIrSfAQ+1zWzd/m+zYhoimmsJUSgb/IOgDAEX1FltKYl4Qy8
- SPP5ehD+R75DrZtSmyor31d1WM2JC/OD/leRS/Zyo6SRGaPrTbjHV4MuDNmSDBeNGuGCVkZBpu6
- SBq7rYqYfx4cKDhPki58dxy6moT9C7hHiRfp/hnTTvOC4aH6eGHOSOm9ItSSHhb6OFtaenh/24g
- 3+3iBPoPc4OePSZ5EcwIWmLn9+i3vS2Jnulv++n+ZSpu06vbAZnYb5XL0p5m8wweE7Xhewj6J+s
- wVrKH23roiFS61RoCaLYtW8qaxNYoXxceyeMuBQVM7rT3xjHgu3yx0+hBYNENyi/TObodSQQu0w
- +yR7WTo/zLRDpYY5GNrVVKiiCaKh34fNb7jnTUGp8recBDeA41Dfc+AMkPiDLeswJ88CmXK2E7z
- Jqe7IXyb6uMh3eTRa5g==
-X-Proofpoint-ORIG-GUID: ARegXh3bFUQSR0LSO-XU_5mYjzhRqdTK
-X-Authority-Analysis: v=2.4 cv=Pe/yRyhd c=1 sm=1 tr=0 ts=6991a8b9 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=6nO30s3o7FuWeffXwhKHTA==:17
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=EUspDBNiAAAA:8
- a=NNID--eWxax2qouwXSIA:9 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-GUID: ARegXh3bFUQSR0LSO-XU_5mYjzhRqdTK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-15_04,2026-02-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 spamscore=0
- bulkscore=0 malwarescore=0 clxscore=1011 priorityscore=1501 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602150089
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <252s4lfnujhrl3bkqm3xwatdkcdd3tfge3e6fla6f2llq4szjm@xltjvpqjgffn>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6144-lists,linux-efi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,foss.st.com,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-6143-lists,linux-efi=lfdr.de];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzysztof.kozlowski@oss.qualcomm.com,linux-efi@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linux-efi];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-efi@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linaro.org,infradead.org,suse.cz,linux-foundation.org,pengutronix.de,lists.trustedfirmware.org,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org,gmail.com,foss.st.com,siemens.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8B5C013E8E7
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A41721411D8
 X-Rspamd-Action: no action
 
-The 'struct efivar_operations' is not modified by the driver after
-initialization, so it should follow typical practice of being static
-const for increased code safety and readability.
+On Fri, Feb 13, 2026 at 11:04:48PM +0100, Marco Felsch wrote:
+> Hi Sumit,
+> 
+> On 26-02-13, Sumit Garg wrote:
+> > Hi Marco,
+> > 
+> > On Thu, Feb 12, 2026 at 01:58:30PM +0100, Marco Felsch wrote:
+> > > Hi Sumit,
+> > > 
+> > > TBH: I was hoping that you will take care of this since you're marked as
+> > > maintainer for the tee-trusted-key and we noticed the warning with 6.14
+> > > and still no fix available :/
+> > 
+> > Mathew did suggested a fix long back on which everybody agreed but
+> 
+> You agreed. I said that the current TEE API also allows non-slabed based
+> backed memory and therefore I don't wanted to send this patch approach
+> and instead asked you to do so since you're the maintainer and fine with
+> the change.
+> 
+> > didn't got enough attention from you to test and report if that fixed
+> 
+> Why should it get attention from us? Maybe we do have different views of
+> being a maintainer.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
----
- drivers/firmware/efi/stmm/tee_stmm_efi.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+It's really the basic expectation I have put here which every reporter
+of a bug needs to say if a suggested fix works for them or not.
 
-diff --git a/drivers/firmware/efi/stmm/tee_stmm_efi.c b/drivers/firmware/efi/stmm/tee_stmm_efi.c
-index 7b04dd649629..3bea2ef50ef3 100644
---- a/drivers/firmware/efi/stmm/tee_stmm_efi.c
-+++ b/drivers/firmware/efi/stmm/tee_stmm_efi.c
-@@ -14,7 +14,6 @@
- #include "mm_communication.h"
- 
- static struct efivars tee_efivars;
--static struct efivar_operations tee_efivar_ops;
- 
- static size_t max_buffer_size; /* comm + var + func + data */
- static size_t max_payload_size; /* func + data */
-@@ -520,6 +519,15 @@ static void tee_stmm_restore_efivars_generic_ops(void)
- 	efivars_generic_ops_register();
- }
- 
-+static const struct efivar_operations tee_efivar_ops = {
-+	.get_variable			= tee_get_variable,
-+	.get_next_variable		= tee_get_next_variable,
-+	.set_variable			= tee_set_variable,
-+	.set_variable_nonblocking	= tee_set_variable_nonblocking,
-+	.query_variable_store		= efi_query_variable_store,
-+	.query_variable_info		= tee_query_variable_info,
-+};
-+
- static int tee_stmm_efi_probe(struct tee_client_device *tee_dev)
- {
- 	struct device *dev = &tee_dev->dev;
-@@ -558,13 +566,6 @@ static int tee_stmm_efi_probe(struct tee_client_device *tee_dev)
- 			  MM_VARIABLE_COMMUNICATE_SIZE +
- 			  max_payload_size;
- 
--	tee_efivar_ops.get_variable		= tee_get_variable;
--	tee_efivar_ops.get_next_variable	= tee_get_next_variable;
--	tee_efivar_ops.set_variable		= tee_set_variable;
--	tee_efivar_ops.set_variable_nonblocking	= tee_set_variable_nonblocking;
--	tee_efivar_ops.query_variable_store	= efi_query_variable_store;
--	tee_efivar_ops.query_variable_info	= tee_query_variable_info;
--
- 	efivars_generic_ops_unregister();
- 	pr_info("Using TEE-based EFI runtime variable services\n");
- 	efivars_register(&tee_efivars, &tee_efivar_ops);
--- 
-2.51.0
+> 
+> > your issue. Since you insisted further, I have created a formal fix
+> 
+> Why is it our issue? It's everyones issue which uses the tee trusted-key
+> driver.
+> 
+> > patch based on that here [1]. Care to test that?
+> 
+> A colleague of mine is going to test it and will reply on the patch.
+> 
+> > [1] https://lore.kernel.org/all/20260213113317.1728769-1-sumit.garg@kernel.org/
+> 
+> ...
+> 
+> > > I checked the code once again and figured that we could drop/replace
+> > > tee_shm_register_kernel_buf() with tee_shm_alloc_kernel_buf(). I don't
+> > > see why a kernel driver needs to tee_shm_register_kernel_buf() in the
+> > > first place, maybe this is legacy. The only users of
+> > > tee_shm_register_kernel_buf() are trusted_tee.c and tee_stmm_efi.c.
+> > 
+> > No it's not legacy but allows for efficient memory reuse within the
+> > kernel as to not create bounce buffers to share data with TEE.
+> 
+> To be hones, there are only two driver using the API. The tee_stmm_efi
+> driver can do the alloc during the probe(). The trusted_tee has to use a
+> bounce buffer, yes but how often do you assume that (un)sealing and rng
+> ops have to be done during runtime? This shouldn't be a overhead at all.
+> 
+> Therefore my suggestion would be still to drop the internal kernel API
+> and only use it for userspace pages, where it could really matter.
 
+I don't disagree with what you are saying here but we really need to
+promote efficient memory reuse for TEE clients. There will surely be
+more use-cases coming in future which can benefit from the flexibility
+to register buffer. One another kernel client being remoteproc subsystem
+which is already under review for this API.
+
+-Sumit
+
+> 
+> Regards,
+>   Marco
+> -- 
+> #gernperDu 
+> #CallMeByMyFirstName
+> 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
