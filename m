@@ -1,167 +1,162 @@
-Return-Path: <linux-efi+bounces-6155-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6156-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBlxDrtDk2kP3AEAu9opvQ
-	(envelope-from <linux-efi+bounces-6155-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Feb 2026 17:20:11 +0100
+	id wJ9eLeoglGmKAAIAu9opvQ
+	(envelope-from <linux-efi+bounces-6156-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Tue, 17 Feb 2026 09:03:54 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BDC146088
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Feb 2026 17:20:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C21D149889
+	for <lists+linux-efi@lfdr.de>; Tue, 17 Feb 2026 09:03:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A1AF83017BF2
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Feb 2026 16:19:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA64F301DED6
+	for <lists+linux-efi@lfdr.de>; Tue, 17 Feb 2026 08:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786B53328F8;
-	Mon, 16 Feb 2026 16:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62712DBF78;
+	Tue, 17 Feb 2026 08:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkXWZvsx"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SdH2nkby"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5590D331A46;
-	Mon, 16 Feb 2026 16:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B742D838E
+	for <linux-efi@vger.kernel.org>; Tue, 17 Feb 2026 08:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771258794; cv=none; b=bcdV1ww6oqcH4aY9scBaGR1meIhQbOPUMv8a/qE4/OZ6xRKfE/gwYe+2OCWMniKix/iRp2atEbPYg8GcXLXr4FGWOIDH7v0XWgYUq7vUf3FAgMrT2Tl3X1XsjqWzxRRpdFutHDEWRFUSGqCO9CyLU9UFnkwa3booxbMaJw5QWUQ=
+	t=1771315431; cv=none; b=eCEkjIkYRZLrRZtUnpuYbikTBwOYGEIFxH3K7W5U0ytD73cV71+XPLL0O4YU8L8lfm8W3YNNZAjplZ4eKirHRW3bSEud4ejbWNMKevbghxh8wq3REvlV1oWQhNkh22A5np4/m2d9T720NYHx2hQSmB1vyvjs0R4lYeynCGDfJqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771258794; c=relaxed/simple;
-	bh=Xdcj83X+S0jAZzhzAiEPWWH/OhbcSoEDUGOUeQEAPKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z5uWYM0bh9beT+CE8/plz3KCZ+Ey3LF/MpBi/ufWg/fUEhnWh/aM9PhBYQNxKAKR38coV9fsdhKw+tJhbS4G30leXaXambLX4I1Vr/eHKpYxgZVuvhaBd41AeQcYNCzXWXRX5zM6yE5ZqDRzrw0GWMSBd8DklFrsUaBunk8EtY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkXWZvsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160DAC116C6;
-	Mon, 16 Feb 2026 16:19:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771258793;
-	bh=Xdcj83X+S0jAZzhzAiEPWWH/OhbcSoEDUGOUeQEAPKc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QkXWZvsxTA+V/n96k5wSHxcNjkLNZ8bSahD58XOBxcmWjA2/CrJ1B+W8vA0GxT00C
-	 qHMIeAWh/+zHov1BNeNySXAIBkhc6ZF5L8NtiG/fx1/S+bIwq3y+m/0WUOkfZaluFA
-	 nhTCqvNaYP8GyCwIa0R+vaoiKnvAamr54SynTI/f1tD5RFa4nG9DhbR6LlLw7dAXjF
-	 WfhG1nElyEFP6HN6pyxBUgjQB5V30knOgAYQRHLFsDrRT/uz4siKz/dCQ2lEQeJ+Ex
-	 bI20NA1FqzSq2AN3Ei5IN0AGDDhevDbUe1nbmrxqfGt6jGzxULYYm7HNxmFqZCr9Cz
-	 zR+nu1kAvcmCw==
-Date: Mon, 16 Feb 2026 18:19:46 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
-	linux-efi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Moritz Sanft <ms@edgeless.systems>
-Subject: Re: [PATCH 1/2] efi: Fix reservation of unaccepted memory table
-Message-ID: <aZNDogxae67mAXDg@kernel.org>
-References: <20260213154838.46567-1-kas@kernel.org>
- <20260213154838.46567-2-kas@kernel.org>
- <b3b073e4-d51e-4fd7-ad7c-7465dab412b6@intel.com>
- <aY9Mf8oZODGiDoXp@thinkstation>
- <6d6dd421-774c-4f29-84d5-3e449240eb93@intel.com>
- <aY9c80nXefdXjGXh@thinkstation>
- <aZCaE04vDpf2hDEc@kernel.org>
- <6a43f009-335f-44de-a48f-f48ee1e912d0@intel.com>
+	s=arc-20240116; t=1771315431; c=relaxed/simple;
+	bh=fBXwAEZd3nALXEsGIll356q2GrHqcdxNggAcIvQq68k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=r76KZTApN3ynVoyR+libxn4ESVaBQ+q+hVdeVp4RCBxGMQiDXKFKEhKbz4k25qeXE0daiiEoUxocQuHR4QpvEiKZm+gkGLqS/VoO72c5wS/13FGeod4ZS3BAk3KeeU2O4Q/tGrXxjL627X7/G/fP4WALdlQA2e4au1sqAOEUzHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SdH2nkby; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771315429;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=j4A53eO8aaanQ6ygp53jr6CDnyXo0/FyyAuhKBZ5z/E=;
+	b=SdH2nkbyk68lSwmz+awIVmVMhOALOfMRy/kxD/WDtY3VXKqm/62AYD6gsZjlcgKzIa9CrL
+	d9pc75gfynYCxKfdeRRae1/1aEjlp0Skgfpw2HRkxySqLi+hQacGwzxBEYY/Gy4JrD2Xrr
+	zxbAO+ePbEs88od3yQ6lc/o48BhULGc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-E9ebRdzKNZyQE7MxqXtdWg-1; Tue,
+ 17 Feb 2026 03:03:43 -0500
+X-MC-Unique: E9ebRdzKNZyQE7MxqXtdWg-1
+X-Mimecast-MFC-AGG-ID: E9ebRdzKNZyQE7MxqXtdWg_1771315422
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DA24B1955D88;
+	Tue, 17 Feb 2026 08:03:41 +0000 (UTC)
+Received: from darkstar.users.ipa.redhat.com (unknown [10.72.116.33])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 60F03180058F;
+	Tue, 17 Feb 2026 08:03:36 +0000 (UTC)
+Date: Tue, 17 Feb 2026 16:04:14 +0800
+From: Dave Young <dyoung@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, x86@kernel.org
+Subject: [PATCH] efi/x86-stub: store acpi_rsdp_addr in bootparams
+Message-ID: <aZQg_tRQmdKNadCg@darkstar.users.ipa.redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6a43f009-335f-44de-a48f-f48ee1e912d0@intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-6156-lists,linux-efi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6155-lists,linux-efi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,linux-efi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dyoung@redhat.com,linux-efi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-efi];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 95BDC146088
+X-Rspamd-Queue-Id: 3C21D149889
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 07:53:24AM -0800, Dave Hansen wrote:
-> On 2/14/26 07:51, Mike Rapoport wrote:
-> > Heh, it's x86's choice of memblock iterator that's rounding the ranges 😉
-> 
-> Ahh, good point. I was just assuming that the memblock iteration _had_
-> to be over PFNs. Silly me.
-> 
-> > Maybe I miss some context, but my understanding is that for crash kernels
-> > the unaccepted table is E820_TYPE_RESERVED and those are never added to
-> > memblock.memory by e820 code, hence the call to memblock_add() in
-> > reserve_unaccepted().
-> > 
-> > When x86 creates page tables, init_range_memory_mapping() walks
-> > memblock.memory with for_each_mem_pfn_range() that rounds ranges that are
-> > not page-aligned, which is normally fine, because it would mean that we
-> > miss some partial pages that are divided between E820_RAM and
-> > E820_SOMETHING_ELSE.
-> > 
-> > And Kiryl's intention to round up unaccepted to page boundary seems correct
-> > to me.
-> 
-> It fixes the bug for sure.
-> 
-> I'm more worried about the next feature, or the existing features that
-> also only working because memory is page-aligned somewhere (even though
-> it isn't guaranteed to remain that way).
-> 
-> There are two choices for fixing this: One, we do Kiryl's fix plus
-> checks to ensure that all the memblocks that generate direct mappings
-> (is it _just_ the "memory" type?) are padded out to page-aligned boundaries.
-> 
-> The other alternative is to do for_each_mem_range() and do the padding
-> universally when creating the mappings. Maybe _also_ with warnings or
-> maybe a pr_debug().
-> 
-> I do still think it's a little wonky for memblock_add()'s management of
-> the "memory" type to allow unaligned arguments when that type is also
-> used to create page-aligned mapping structures. Memblocks themselves
-> obviously need to be byte-level, but I'm not sure it's the right thing
-> for the "memory" type API.
+Kernel panic occurs during a kexec reboot when EFI runtime services
+are not enabled in the first kernel. The issue is that the second
+kernel cannot find the ACPI RSDP address during boot.
 
-Well, we could make memblock_add() implicitly cut down the edges when it's
-adding to memblock.memory and make everything there page aligned, but I
-truly have no idea what will break and I'm sure something will :)
+In legacy boot, the acpi_rsdp_addr is set in early x86 boot code.
+However, kernel decompression has moved to the EFI stub for EFI boot.
+Therefore, the x86 EFI stub must also be updated to store the
+acpi_rsdp_addr in the boot parameters to ensure the kexec kernel
+can find it.
 
-Another thing that's more on x86 side, is that translation from e820 to
-memblock only adds E820_TYPE_RAM to memblock. And since in e820 these are
-mutually exclusive with other e820 types, this could create non-aligned
-chunks when firmware reservations are not page aligned. It also creates
-unnecessary holes in memblock.memory that slow down memblock interation a
-bit and more interestingly, everything that's not in E820_TYPE_RAM is
-treated as IO and requires ioremap/memremap for access, even it is in DRAM.
+(Note: If the pre-kexec kernel was itself a kexec boot, the later kexec
+reboot will still utilize the legacy decompressor path, so the original
+code remains functional though some cleanups can be done later.)
 
-If these reserved regions were added to memblock.memory along with being
-memblock_reserve()ed we wouldn't hit the bug with unaccepted I believe some
-others as well.
+Signed-off-by: Dave Young <dyoung@redhat.com>
+---
+ drivers/firmware/efi/libstub/x86-stub.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
--- 
-Sincerely yours,
-Mike.
+Index: linux-x86/drivers/firmware/efi/libstub/x86-stub.c
+===================================================================
+--- linux-x86.orig/drivers/firmware/efi/libstub/x86-stub.c
++++ linux-x86/drivers/firmware/efi/libstub/x86-stub.c
+@@ -484,6 +484,22 @@ static void setup_quirks(struct boot_par
+ 	}
+ }
+ 
++static void setup_acpi_rsdp(struct boot_params *boot_params)
++{
++	u64 rsdp_addr;
++
++	/*
++	 * Search EFI system tables for RSDP. Preferred is ACPI_20_TABLE_GUID to
++	 * ACPI_TABLE_GUID because it has more features.
++	 */
++	rsdp_addr = (u64)get_efi_config_table(ACPI_20_TABLE_GUID);
++	if (!rsdp_addr)
++		rsdp_addr = (u64)get_efi_config_table(ACPI_TABLE_GUID);
++
++	if (rsdp_addr)
++		boot_params->acpi_rsdp_addr = rsdp_addr;
++}
++
+ static void setup_graphics(struct boot_params *boot_params)
+ {
+ 	struct screen_info *si = memset(&boot_params->screen_info, 0, sizeof(*si));
+@@ -1017,6 +1033,8 @@ void __noreturn efi_stub_entry(efi_handl
+ 
+ 	setup_graphics(boot_params);
+ 
++	setup_acpi_rsdp(boot_params);
++
+ 	setup_efi_pci(boot_params);
+ 
+ 	setup_quirks(boot_params);
+
 
