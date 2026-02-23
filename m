@@ -1,59 +1,61 @@
-Return-Path: <linux-efi+bounces-6207-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6208-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOIXGv3CnGnJKAQAu9opvQ
-	(envelope-from <linux-efi+bounces-6207-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Feb 2026 22:13:33 +0100
+	id mOzINEzJnGkwKQQAu9opvQ
+	(envelope-from <linux-efi+bounces-6208-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Feb 2026 22:40:28 +0100
 X-Original-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD38717D66E
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Feb 2026 22:13:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 546F717DA71
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Feb 2026 22:40:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53E7D307AA73
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Feb 2026 21:13:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FF693033AA0
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Feb 2026 21:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B8837881C;
-	Mon, 23 Feb 2026 21:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A45B378D8F;
+	Mon, 23 Feb 2026 21:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="a8PazJZj"
+	dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b="P7PcAYWe"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from sender4-of-o51.zoho.com (sender4-of-o51.zoho.com [136.143.188.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8AF314B6A;
-	Mon, 23 Feb 2026 21:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771881210; cv=none; b=g4p/UeCNiC8i7pjcnDPwj+pjFhwpE/4I23dPqBUEm4uL8l7C3W5FE1M8SgWegjsiv56k5rbpjkRLPFGk3z3YnQkmnNbaQyh7zXIeleTYp/5DarK0sjKBux2GxLCQsVmUcLjzsPbnkkFmoZtTf/czTR0lRkBBuvIbu3t7Bbc8mK4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771881210; c=relaxed/simple;
-	bh=FXWLsFBULN47oU6UnihHicv55DBHr+3HTf5qLu27+E8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D6E377543;
+	Mon, 23 Feb 2026 21:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771882764; cv=pass; b=qvoheuN2w0uiLbjy8TcUD1pnLVQkL08kwxb9/Ifa3CU/nX0keWxdWjkp9d28ujkAKMWgn68mLshEC86pmjcPyiEGDxWoh39CIx4DSP+7FTIuC+RsqK5sLy8zjSzYBBS6Br1wYkJXMiUVJqYJLBXrpUUvUEcT0eabdvkRUXldiIU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771882764; c=relaxed/simple;
+	bh=uZGxSgxVWt2XAaBxrM4B4yacmSav+waMJqGMxbIEW+4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RNngwPX8ZexUwKsX75dDJ2TxTf0qZbztCFdSwJmwAU+2FjEflj1Cm6mfjZ012wTf5e3GMYzDJCCdr0q3gVWcsu4bUxUfCcORURbNOYS0SAx9e+4Ko3h3kcUEjfqoN00ySRnpsXBTJ3Ue3Dol7SCpynjzU/lsYvVCd0s90SpB7JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=a8PazJZj; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1771881192; x=1772485992; i=deller@gmx.de;
-	bh=RJf0nsljCI+i9g1LVWsmN8S0BjGbbwcRgx9+3Q3RHbw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=a8PazJZjG/Zr0HnSR181NIFhqvPsxm4+nm0uAq5rKQECgoXKr8+eGdYkVtUCRAxz
-	 UBXzqrDnWr0Y15ZnLzkfHhkG8TBCPFDzD6dMYpUOYsgkadHubyFZfC+a8si5uY32I
-	 oDedrp0LwCBukPGafutleaNe5Ej3nvmY9WqMw3LYl29Yme0DCo2ksQ/DTVvHZrvBh
-	 RG50P4ixzzZwO6LhItn3lg/Ceu8bPZcE5gaLpE2RTwmQCYOtaVQu+OM7aL2zVQ8zz
-	 AECjshx8UJLZ4Esd9Nzzt4q79gIsCCi8uuwHjJhXPPMop0rifMXwkOFWsoW4uNelE
-	 cChB9a6if+cgGCgwNA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.51.98]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mof9F-1vNpeT1l4D-00fO4G; Mon, 23
- Feb 2026 22:13:12 +0100
-Message-ID: <fe6b9a16-232b-4819-b978-95775791c197@gmx.de>
-Date: Mon, 23 Feb 2026 22:13:10 +0100
+	 In-Reply-To:Content-Type; b=kbtDq8WNpVWlSD3uxcgfEIG8K6rGfAzp4SYdV8Lu9wF1Av6YFwzWJn/oTViK3eRRrhOMx5HjPetHAcDBXxwC0EfA9Tf2rhAFCTd6rgBqp68PvQ0VzFpGBNOFaI90p7Il8xw4fup/QoXBEKI4jFhJSacosTt0/1xhG/7Li52XJzw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com; spf=pass smtp.mailfrom=apertussolutions.com; dkim=pass (1024-bit key) header.d=apertussolutions.com header.i=dpsmith@apertussolutions.com header.b=P7PcAYWe; arc=pass smtp.client-ip=136.143.188.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apertussolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apertussolutions.com
+ARC-Seal: i=1; a=rsa-sha256; t=1771882677; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ffjYtNOjrVDY85s8H1n2+Y4wa878dKU05XaPBpiQhMjhrkbwRhTcsvhek9WA/vN8ptkYTLjn3ypd8dCSySrh0XT8P/i6R8nunHsBLimTczlL+Ek5eICIVFPgNRrsepAyk10HAydAF5MLLeI1gsErtl0StDUwjMG9hG/FXJrDCb8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1771882677; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=h8NnLyDahIjYa2r/mE8SrBY5YeZya77iJfvSt7LZAuk=; 
+	b=cWaxR9XlGzKr65BZnm8jUFH1zgUwhL/DodbGfpIZlIM6Ycs+8FSpsYy5EVqYJ8yvKXz4rWeqH9bMtM4ChWBG1gDLNIVVwqqy22uLA4krxCrJCHSW4H9R2d3sp8gUavrTZM7GdIKtQb+BT4CZpCf0bMFzxB+VnXTtLdxgXKmg9Dc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=apertussolutions.com;
+	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
+	dmarc=pass header.from=<dpsmith@apertussolutions.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771882677;
+	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=h8NnLyDahIjYa2r/mE8SrBY5YeZya77iJfvSt7LZAuk=;
+	b=P7PcAYWewsxI7zMHuuIOTExnellqQJfITJDN8fsRqp3WdhX/HuQGt6f8wbGjUdM1
+	JnV8NQ1V6ZrXfrsve9kHI39ivmu766uO0AFsZKamepbKgMiMfAH4HyTZfJ7ZQQ9OAZk
+	pfRpttFfJlE5rMuuoCcq3Qcr/SI4uvU8EZarOy3A=
+Received: by mx.zohomail.com with SMTPS id 1771882674971616.8376032703019;
+	Mon, 23 Feb 2026 13:37:54 -0800 (PST)
+Message-ID: <f5323525-493c-4419-8199-d65630fce084@apertussolutions.com>
+Date: Mon, 23 Feb 2026 16:37:51 -0500
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
@@ -61,241 +63,249 @@ List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] kbuild: Switch from '-fms-extensions' to
- '-fms-anonymous-structs' when available
-To: Ard Biesheuvel <ardb@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nsc@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Kees Cook <kees@kernel.org>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-efi@vger.kernel.org, llvm@lists.linux.dev
-References: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
- <9ba5bb34-2356-4c10-a3d3-f122abe1073b@app.fastmail.com>
+Subject: Re: [PATCH v15 00/28] x86: Secure Launch support for Intel TXT
 Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <9ba5bb34-2356-4c10-a3d3-f122abe1073b@app.fastmail.com>
+To: Ard Biesheuvel <ardb@kernel.org>, Andy Lutomirski <luto@amacapital.net>
+Cc: Simo Sorce <simo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Ross Philipson <ross.philipson@oracle.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kexec@lists.infradead.org,
+ linux-efi@vger.kernel.org, iommu@lists.linux.dev,
+ dave.hansen@linux.intel.com, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ mjg59@srcf.ucam.org, James.Bottomley@hansenpartnership.com,
+ peterhuewe@gmx.de, Jarkko Sakkinen <jarkko@kernel.org>, jgg@ziepe.ca,
+ nivedita@alum.mit.edu, Herbert Xu <herbert@gondor.apana.org.au>,
+ davem@davemloft.net, corbet@lwn.net, ebiederm@xmission.com,
+ dwmw2@infradead.org, baolu.lu@linux.intel.com, kanth.ghatraju@oracle.com,
+ andrew.cooper3@citrix.com, trenchboot-devel@googlegroups.com
+References: <20251215233316.1076248-1-ross.philipson@oracle.com>
+ <b5f2b5a5-b984-4ed3-a023-c06d634f9146@app.fastmail.com>
+ <1ffd3cb5-2c76-4371-a067-3e4849907d80@apertussolutions.com>
+ <49d169bf-0ad2-49be-b7d7-fceb9e7f831a@app.fastmail.com>
+ <CALCETrUE8c-dxRWhtHKz_PojwZuWMXJSzOsFQf2vt5LS3ATwpA@mail.gmail.com>
+ <1BBD7449-8420-43FD-930B-A4E1BA38FFC6@zytor.com>
+ <CALCETrWzG1Mjb-RcwLQ5-tGFZ15WKHjZbqtLvyif+UPuVKJ_5g@mail.gmail.com>
+ <32e62cef7b89d9691bdd4120388ce752fd041230.camel@redhat.com>
+ <CALCETrUMR0RvOFXGzL7=F4c-3veL+1Sm2xf-BprHTK4=UKw8yA@mail.gmail.com>
+ <558d0f28-01fb-4447-891c-2ffbf869c077@app.fastmail.com>
+ <CALCETrWynypSD7vEjJNLcym3JhBw4k0ovDiR_3YuOHh92TnM=A@mail.gmail.com>
+ <9034c6a1-ebce-40b6-9ac8-0b8cc5a50dd4@app.fastmail.com>
+From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
+Autocrypt: addr=dpsmith@apertussolutions.com; keydata=
+ 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
+In-Reply-To: <9034c6a1-ebce-40b6-9ac8-0b8cc5a50dd4@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:edyU13fh/kMHHybT6GaqRMeq5qiPJzYGzoSP9IilU+H5UfLe2wQ
- oDiFn7ntb+Sc2C1oFkVuugZ3Yio0sM9opPmpbo5e/bfgfChIR2f38fiq3gyZQP4PwNxnp1A
- 7RRRiLtZ/A9BTHEwih+bDa9/OBmP4fpdnVIX7px0BaxZqMOrjH/rG0WCmZItpSUUw938zf7
- Y/bYxXGufbN7sGvHlcpGw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:OX7zAu/9Gb8=;aoV7n9ivZnuEgRDXBlXSDAmx603
- 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
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[apertussolutions.com:s=zoho];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6207-lists,linux-efi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[apertussolutions.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[37];
-	FREEMAIL_CC(0.00)[linux-foundation.org,arm.com,kernel.org,xen0n.name,hansenpartnership.com,linux.ibm.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,zytor.com,linaro.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-6208-lists,linux-efi=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[32];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[redhat.com,zytor.com,oracle.com,vger.kernel.org,kernel.org,lists.infradead.org,lists.linux.dev,linux.intel.com,linutronix.de,alien8.de,srcf.ucam.org,hansenpartnership.com,gmx.de,ziepe.ca,alum.mit.edu,gondor.apana.org.au,davemloft.net,lwn.net,xmission.com,infradead.org,citrix.com,googlegroups.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[deller@gmx.de,linux-efi@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
+	FROM_NEQ_ENVFROM(0.00)[dpsmith@apertussolutions.com,linux-efi@vger.kernel.org];
+	DKIM_TRACE(0.00)[apertussolutions.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-efi];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-efi,lkml];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DD38717D66E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amacapital.net:email,zytor.com:email]
+X-Rspamd-Queue-Id: 546F717DA71
 X-Rspamd-Action: no action
 
-On 2/23/26 20:38, Ard Biesheuvel wrote:
->=20
->=20
-> On Mon, 23 Feb 2026, at 20:10, Nathan Chancellor wrote:
->> Hi all,
+On 2/20/26 03:30, Ard Biesheuvel wrote:
+> 
+> 
+> On Thu, 19 Feb 2026, at 18:34, Andy Lutomirski wrote:
+>> On Wed, Feb 18, 2026 at 11:55 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>>>
+>>> On Wed, 18 Feb 2026, at 22:54, Andy Lutomirski wrote:
+>>>> On Wed, Feb 18, 2026 at 1:04 PM Simo Sorce <simo@redhat.com> wrote:
+>>>>>
+>>>>> On Wed, 2026-02-18 at 12:34 -0800, Andy Lutomirski wrote:
+>>>>>> On Wed, Feb 18, 2026 at 12:29 PM H. Peter Anvin <hpa@zytor.com> wrote:
+>>>>>>>
+>>>>>>> On February 18, 2026 12:03:27 PM PST, Andy Lutomirski <luto@amacapital.net> wrote:
+>>>>>>>> On Thu, Feb 12, 2026 at 12:40 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>>>>>>>>>
+>>>>>>>>> On Thu, 12 Feb 2026, at 20:49, Daniel P. Smith wrote:
+>>>>>>>>>> On 2/9/26 09:04, Ard Biesheuvel wrote:
+>>>>>>>>> ...
+>>>>>>>>> But would it be better to disable the runtime services by default when doing a secure launch? PREEMPT_RT already does the same.
+>>>>>>>>
+>>>>>>>> So I have a possible way to disable EFI runtime service without losing
+>>>>>>>> the ability to write EFI vars.  We come up with a simple file format
+>>>>>>>> to store deferred EFI var updates and we come up with a place to put
+>>>>>>>> it so that we find it early-ish in boot the next time around.  (This
+>>>>>>>> could be done via integration with systemd-boot or shim some other
+>>>>>>>> boot loader or it could actually be part of the kernel.)  And then,
+>>>>>>>> instead of writing variables directly, we write them to the deferred
+>>>>>>>> list and then update them on reboot (before TXT launch, etc).  [0]
+>>>>>>>> This would be a distincly nontrivial project and would not work for
+>>>>>>>> all configurations.
+>>>>>>>>
+>>>>>>>> As a maybe less painful option, we could disable EFI runtime services
+>>>>>>>> but have a root-writable thing in sysfs that (a) turns them back on
+>>>>>>>> but (b) first extends a PCR to say that they're turned back on.
+>>>>>>>>
+>>>>>>>> (Or someone could try running runtime services at CPL3...)
+>>>>>>>>
+>>>>>>>> [0] I have thought for years that Intel and AMD should do this on
+>>>>>>>> their end, too.  Keep the sensitive part of SMI flash entirely locked
+>>>>>>>> after boot and, instead of using magic SMM stuff to validate that
+>>>>>>>> write attempts have the appropriate permissions and signatures, queue
+>>>>>>>> them up as deferred upates and validate the signatures on the next
+>>>>>>>> boot before locking flash.
+>>>>>>>>
+>>>>>>>
+>>>>>>> *If* a physical EFI partition exists there is a lot to be said for this approach.
+>>>>>>>
+>>>>>>> The only issue with this that I can see is for things like network or CD/DVD booting where there isn't necessarily any EFI boot partition, it might not be writable, or it might not be persistent (e.g. http booting typically uses a ramdisk, like the old Linux initrd.)
+>>>>>>
+>>>>>> Hmm, I guess my approach is a 100% complete nonstarter for installing
+>>>>>> Linux from a CD, and it's really not awesome for installing Linux from
+>>>>>> a USB stick.
+>>>>>
+>>>>> Doing any of this on a removable device feels generally like a trap.
+>>>>> You get your USB disk in, try to boot, and it saves vars, but reboot
+>>>>> fails for whatever reason, you plug it in another machine ... and it
+>>>>> tries to "continue" from there? The amount of validation needed and
+>>>>> testing for failure modes across reboots sounds really painful.
+>>>>
+>>>> I kind of stand by my other previous suggestion, though:
+>>>>
+>>>> As a maybe less painful option, we could disable EFI runtime services
+>>>> but have a root-writable thing in sysfs that (a) turns them back on
+>>>> but (b) first extends a PCR to say that they're turned back on.
+>>>>
+>>>
+>>> After setting the EFI boot path to GRUB (or systemd-boot or whatever) at installation time, what other meaningful interactions do we expect with the EFI runtime services?
+>>>
+>>> And given that the secure launch is orchestrated by the bootloader , with which the kernel has a backchannel via its configuration file, it should be rather straight-forward to implement the staging of variable updates there if we really need it.
+>>>
+>>> Doing any of this at the EFI/spec level might lead to a situation where the OS now has to guess which of the provided APIs to manipulate variables is the least broken.
+>>>
+>>> Of course, for readinf variables, dumping the RT variables into a memory buffer at boot time and exposing it via a EFI config table would be rather straight-forward, but it is also something I feel should be the job of the boot component that takes part in the decision to shield the runtime services from the OS.
 >>
->> The kernel enabled '-fms-extensions' in commit c4781dc3d1cf ("Kbuild:
->> enable -fms-extensions") in 6.19 to gain access to a Microsoft
->> (originally Plan 9) extension around including a tagged structure/union
->> anonymously in an other structure/union. Since then, Clang 23.0.0
->> (current main) has added a flag to enable only that extension, rather
->> than all Microsoft extensions, '-fms-anonymous-structs' [1]. Using this
->> narrower compiler option would have avoided the build error fixed by
->> commit a6773e6932cb ("jfs: Rename _inline to avoid conflict with clang'=
-s
->> '-fms-extensions'"). While these errors are not expected to be common,
->> using the narrower option when available has no drawbacks because the
->> kernel only cares about this extension in '-fms-extensions', no others.
->> While this could result in build errors for folks using
->> '-fms-anonymous-structs' if a developer uses another extension in
->> '-fms-extensions' (either intentionally or unintentionally), flagging
->> these uses for further scrutiny seems worthwhile.
+>> So there's sort of a usability issue here.  On the one hand, this can
+>> all be orchestrated to work.  We build a kernel, and the kernel
+>> supports secure launch.  Someone makes an installer image, and that
+>> image is configured to skip secure launch, then install to disk, then
+>> program EFI vars, then reboot.  And the installed image is configured
+>> to do the secure launch, and EFI variable writes are turned off.
 >>
->> This series converts the build system to use that flag when it is
->> available. The first patch consolidates all of the C dialect flags into
->> a single variable to make future updates to the dialect flags less
->> painful, as updating the logic in every place that uses their custom
->> built C flags is getting cumbersome (and C23 is looming). The second
->> patch makes the actual switch.
+>> On the other hand, this all sucks.  I'm getting sick of having the
+>> kernel tell me that I am not permitted to do things.  I'm sick of
+>> writing software that deals with unnecessary restrictions.  If I were
+>> writing an OS with a USB stick-based installer, I might want to be
+>> able to boot the thing and decide later whether I'm installing an OS
+>> to disk.  (In fact, many USB installers work this way.)  But, in the
+>> model where EFI variable writes are hard-disabled on a secure launch,
+>> the decision to do the secure launch happens before the decision to
+>> install an OS, and we all lose.
 >>
->> I would like Nicolas to carry this in the Kbuild tree for 7.1, please
->> provide Acks as necessary.
+>> So I'm proposing that EFI variable writes be treated a bit like kexec
+>> [0] -- root (which is already part of the TCB for any practical
+>> purpose) is going to decide, like a grown up, to execute some code
+>> that it doesn't fully trust -- in this case, the EFI variable writes.
+>> And root will coordinate, correctly, with whomever it's busy using the
+>> TPM to coordinate with, and tell it that it's going to do something
+>> that will change its trustworthiness.  So it works like this:
 >>
->> [1]:
->> https://github.com/llvm/llvm-project/commit/c391efe6fb67329d8e2fd231692=
-cc6b0ea902956
+>> 1. Secure launch the environment on the stick.  (At this stage,
+>> neither the boot loader nor the kernel has the faintest clue whether
+>> anyone needs that secure launch, but this doesn't matter.)
 >>
->> ---
->> Nathan Chancellor (2):
->>        kbuild: Consolidate C dialect options
->>        kbuild: Use '-fms-anonymous-structs' if it is available
+>> 2. The owner of the machine clicks "install".
 >>
->=20
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+>> 3. The installer makes some partitions and writes some files.
+>>
+>> (Up until now, the security posture of the running environment has not changed.)
+>>
+>> 4. The installer decides that it's now time to do untrustworthy
+>> things, namely writing EFI vars.  So it unmounts anything it mounted
+>> using TPM-sealed keys (or not -- this is between the distro and
+>> whoever trusts the distro), and it does:
+>>
+>> # echo 1 >/sys/.../extend_pcr_and_unlock_efi
+>>
+>> which *first* extends a PCR because we are about to change our
+>> security posture and *second* sets whatever flag permits use of EFI
+>> runtime services.
+>>
+>> 5. The installer writes to EFI variables.  And the installer can no
+>> longer generate attestations to its previous security posture, which
+>> is the correct behavior.  And maybe the user can no longer unlock
+>> their home directory or whatever until they reboot.  Which is not
+>> really a big deal.
+>>
+>> (This is *dynamic* root of trust.  In theory the system could do a
+>> DRTM re-launch and recover its security posture, but I don't think
+>> this is implemented.)
+>>
+>>
+>> One thing I like about this is that it involves very little code.
+>>
+> 
+> It does seem rather straight-forward, and it doesn't have to be specific to TXT either. I.e., we should probably always measure the runtime enabled/disabled state into the PCRs.
 
-For the series:
-Acked-by: Helge Deller <deller@gmx.de>  # parisc
 
-Thanks!
-Helge
+As you mentioned, this is not unique to the DRTM case, but allow me to 
+provide our perspective. We would enjoy a sysfs controlled lock that 
+results in a PCR Event. With that said, while it may be getting down 
+into the implementation details, I would like to suggest the PCR be 
+configurable. When under DRTM, it would be desirable to have the ability 
+for the measurement to be extended into a DRTM PCR.
+
+v/r,
+dps
+
+> But given the actual problem at hand (untrustworthy glue code running in ring 3 that does little more than poke SMM, which itself fundamentally remains part of the TCB), it would be nice if we could just sandbox that code using virtualization.
+> 
+> This came up in a separate discussion regarding ACPI PRM (the new dumping ground for evil vendor code now that SMM has gone out of fashion), although there it should be feasible to run it unprivileged, as the spec requires that capability for the PRM payloads.
+
 
