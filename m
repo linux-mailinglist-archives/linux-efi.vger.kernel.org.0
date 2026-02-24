@@ -1,147 +1,237 @@
-Return-Path: <linux-efi+bounces-6217-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6218-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNEmLvt1nWmAQAQAu9opvQ
-	(envelope-from <linux-efi+bounces-6217-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Feb 2026 10:57:15 +0100
+	id UGhqHjiLnWnBQQQAu9opvQ
+	(envelope-from <linux-efi+bounces-6218-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Feb 2026 12:27:52 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E7E185035
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Feb 2026 10:57:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871C518642E
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Feb 2026 12:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 91BA7303A3C4
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Feb 2026 09:56:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3D729300E4BC
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Feb 2026 11:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA62372B32;
-	Tue, 24 Feb 2026 09:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kklVnf5U"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132FA37C106;
+	Tue, 24 Feb 2026 11:24:09 +0000 (UTC)
 X-Original-To: linux-efi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BCE36683E;
-	Tue, 24 Feb 2026 09:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E830937C101;
+	Tue, 24 Feb 2026 11:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771926983; cv=none; b=aQVqOgOZLVXRVGJ3szkeUPLDLyHal2e3gOwx6s534cO/H7Q3xyqr3LSqN+rr7c5lCjChJ8U5YO6t6mXnXsiZ2QIP+bbqxlMwYWqdjPERoHHuGw9TEFTHxUlb2WJ5u8F36tlwjjmxCD5UrrzS/vJANs3Q9HRbJgYkZUcI9i+Y4LM=
+	t=1771932249; cv=none; b=tvsvhi9wZfQhQ/V+Fw4Gs0DvIrD/Ln8LNQmDZqE0FHylB4T2sBoxQ56v9kZwEF0j6u2KyK35cRmZAbuWNcKrYtgTOuDREAiA/lLd3oJ4qxDhjI86EvNpUTv1oQYQmzKWhIc2q5stas5Z5bdc7MkxpP8he7bla1jhSRlE/bqqkl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771926983; c=relaxed/simple;
-	bh=K3RDjAlZowo+4rYvPnOOa5kXWHplgjhbrLLqCtnsTA0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FiiSWnb4yOCVxZAh1JOUqRZm32lYYV7HIzab2oTAg7fwHq1N1lswzXktCwtMVRkuZ1cAq4rPyDo+uNUgusD0FB/7iNJR6ZhcZ9HFasm+AvzMD0u9kbj1yHuvVAaRxgDIpoctmh8byceBeie7nxspgozd3fzBE7pFkwIq+6sybFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kklVnf5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C49C116D0;
-	Tue, 24 Feb 2026 09:56:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771926983;
-	bh=K3RDjAlZowo+4rYvPnOOa5kXWHplgjhbrLLqCtnsTA0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kklVnf5UCe2Ljmnyt2i0NloaCbFvUnJlmKMizwcQtrZT2U3zTmCSy0VgOmSjjCtHZ
-	 j0EIcKGW8lRtqwzfV+vEUJdLu/o7sB++sXBQpJNjPNRQHG86G+NopNAzT77MGSLTTq
-	 JABx/8iY8+nQV4ke9Pv1Cukb2sFTn6RShrkSmkuDfik2mQSXFJH7rX7n60klv0bZSV
-	 w+VDtLyROzo48mj+8gmH2mg4drUHk0Q/a9kxitZC3Bia1/BzgWj1Npx+urRr6LYk8q
-	 cW50O4U1pO0pKs4E3E/rwW+BwD69hP+4qVU9ZRZy2MJ5xJFjf9bvNY1nDAf9RnsYZM
-	 k5/s+FtOHhu6Q==
-Date: Tue, 24 Feb 2026 11:56:15 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
-Message-ID: <aZ11vw7mYmX1onEL@kernel.org>
-References: <20260223075219.2348035-1-rppt@kernel.org>
- <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
- <aZwyNAbEqb8ZwLUM@kernel.org>
- <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
- <aZw8xSI-TM-Gz84t@kernel.org>
- <bfe487fe-6868-4215-b5be-99a0360e9bd2@app.fastmail.com>
- <aZ1vWEgJNwc2nrrA@kernel.org>
- <3a01d817-e08c-45ec-b5a7-4a8d9ecd0fc6@app.fastmail.com>
- <aZ11J7D_iBuG_qjC@kernel.org>
+	s=arc-20240116; t=1771932249; c=relaxed/simple;
+	bh=kVx/H6oRjNOdFfka1DfIJ9iHFi9JXILBcKcsrEOFPh8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tL4ITQhzn4N6vVjubEJYum/uzBCSkZGNaz0COJEjgYJmB0aWxu7babZh2aZQIMw/qrk/sj8UhDx1JX0e0EQ0NgmIpD73i7KIWX0N0tfq2l5QmIUgzRQGBsli8pp4rMVXQbCMLOF82czaYfj27+aglTR9IWXnweXhAJReg2WwdUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fKwMX1yB6zJ46sr;
+	Tue, 24 Feb 2026 19:23:36 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id BB87940539;
+	Tue, 24 Feb 2026 19:23:57 +0800 (CST)
+Received: from dubpeml500008.china.huawei.com (7.214.146.94) by
+ dubpeml500005.china.huawei.com (7.214.145.207) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 24 Feb 2026 11:23:57 +0000
+Received: from dubpeml500008.china.huawei.com ([7.214.146.94]) by
+ dubpeml500008.china.huawei.com ([7.214.146.94]) with mapi id 15.02.1544.011;
+ Tue, 24 Feb 2026 11:23:57 +0000
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Kai-Heng Feng <kaihengf@nvidia.com>, "ardb@kernel.org" <ardb@kernel.org>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>, "Guohanjun (Hanjun Guo)"
+	<guohanjun@huawei.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Shuai Xue
+	<xueshuai@linux.alibaba.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Morduan Zang <zhangdandan@uniontech.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-efi@vger.kernel.org"
+	<linux-efi@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH] efi/cper: Add NVIDIA CPER section support
+Thread-Topic: [PATCH] efi/cper: Add NVIDIA CPER section support
+Thread-Index: AQHcpJCy3fIFpd0GQEKD/TgSJF+VC7WRsUUw
+Date: Tue, 24 Feb 2026 11:23:57 +0000
+Message-ID: <786211585e2b4a1fbca58c1427102260@huawei.com>
+References: <20260223064924.6449-1-kaihengf@nvidia.com>
+In-Reply-To: <20260223064924.6449-1-kaihengf@nvidia.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ11J7D_iBuG_qjC@kernel.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6217-lists,linux-efi=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,linux-efi@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6218-lists,linux-efi=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[linux-efi];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shiju.jose@huawei.com,linux-efi@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 34E7E185035
+	FORGED_SENDER_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 871C518642E
 X-Rspamd-Action: no action
 
-On Tue, Feb 24, 2026 at 11:53:50AM +0200, Mike Rapoport wrote:
-> On Tue, Feb 24, 2026 at 10:29:59AM +0100, Ard Biesheuvel wrote:
-> > 
-> > 
-> > On Tue, 24 Feb 2026, at 10:28, Mike Rapoport wrote:
-> > > On Mon, Feb 23, 2026 at 01:18:41PM +0100, Ard Biesheuvel wrote:
-> > >> On Mon, 23 Feb 2026, at 12:40, Mike Rapoport wrote:
-> > >> > On Mon, Feb 23, 2026 at 12:17:22PM +0100, Ard Biesheuvel wrote:
-> > >> >>
-> > >> >> > I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
-> > >> >> > why I didn't use the existing EFI memory map.
-> > >> >> >
-> > >> >> > Now thinking about it, if the unmapping can happen later, maybe we'll just
-> > >> >> > move the entire efi_free_boot_services() to an initcall?
-> > >> >> 
-> > >> >> As long as it is pre-SMP, as that code also contains a quirk to allocate
-> > >> >> the real mode trampoline if all memory below 1 MB is used for boot
-> > >> >> services.
-> > >> >
-> > >> > initcall is long after SMP. It the real mode trampoline allocation is the
-> > >> > only thing that should happen pre-SMP?
-> > >> 
-> > >> early_initcall() should be early enough, those run before SMP init.
-> > >
-> > > I don't think so. All initcalls run quite late in boot, early ones just run
-> > > before the others.
-> > > 
-> > 
-> > It is documented as running before SMP. If that is no longer true, we should fix the documentation.
-> 
-> Ah, my bad, it is running before SMP. 
+>-----Original Message-----
+>From: Kai-Heng Feng <kaihengf@nvidia.com>
+>Sent: 23 February 2026 06:49
+>To: ardb@kernel.org
+>Cc: Kai-Heng Feng <kaihengf@nvidia.com>; Rafael J. Wysocki
+><rafael@kernel.org>; Tony Luck <tony.luck@intel.com>; Borislav Petkov
+><bp@alien8.de>; Guohanjun (Hanjun Guo) <guohanjun@huawei.com>; Mauro
+>Carvalho Chehab <mchehab@kernel.org>; Shuai Xue
+><xueshuai@linux.alibaba.com>; Jonathan Cameron
+><jonathan.cameron@huawei.com>; Morduan Zang
+><zhangdandan@uniontech.com>; linux-kernel@vger.kernel.org; linux-
+>efi@vger.kernel.org; linux-acpi@vger.kernel.org
+>Subject: [PATCH] efi/cper: Add NVIDIA CPER section support
+>
+>Add support for decoding NVIDIA-specific error sections in UEFI CPER recor=
+ds.
+>NVIDIA hardware generates vendor-specific CPER sections containing error
+>signatures and diagnostic register dumps. This implementation decodes thes=
+e
+>sections and prints error details to the kernel log.
+>
+>The NVIDIA CPER section contains a fixed header with error metadata (signa=
+ture,
+>error type, severity, socket) followed by variable-length register address=
+-value
+>pairs for hardware diagnostics.
+>
+>This work is based on libcper [0].
+>
+>Example output:
+>Hardware error from APEI Generic Hardware Error Source: 816 event severity=
+:
+>info  imprecise tstamp: 2025-11-17 07:57:38  Error 0, type: info
+>  section_type: NVIDIA, error_data_length: 224
+>  signature: HSS-IDLE
+>  error_type: 0
+>  error_instance: 0
+>  severity: 0
+>  socket: 255
+>  number_regs: 12
+>  instance_base: 0x0000000000000000
+>  register[0]: address=3D0x0000000004f10008 value=3D0x0000000000002019
+>  register[1]: address=3D0x0000000000000000 value=3D0x0000000000000000
+>
+>[0] https://github.com/openbmc/libcper/commit/683e055061ce
+>Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
+>---
+> drivers/firmware/efi/Kconfig       | 16 ++++++
+> drivers/firmware/efi/Makefile      |  1 +
+> drivers/firmware/efi/cper-nvidia.c | 79 ++++++++++++++++++++++++++++++
+>drivers/firmware/efi/cper-nvidia.h | 33 +++++++++++++
+> drivers/firmware/efi/cper.c        |  3 ++
+> include/linux/cper.h               |  4 ++
+> 6 files changed, 136 insertions(+)
+> create mode 100644 drivers/firmware/efi/cper-nvidia.c
+> create mode 100644 drivers/firmware/efi/cper-nvidia.h
+>
+>diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig i=
+ndex
+>29e0729299f5..ed1f53b8e878 100644
+>--- a/drivers/firmware/efi/Kconfig
+>+++ b/drivers/firmware/efi/Kconfig
+>@@ -329,6 +329,22 @@ config UEFI_CPER_X86
+> 	depends on UEFI_CPER && X86
+> 	default y
+>
+>+config UEFI_CPER_NVIDIA
+>+	bool "UEFI CPER NVIDIA support"
+>+	depends on UEFI_CPER
+>+	help
+>+	  This option enables support for decoding NVIDIA-specific error
+>+	  sections in UEFI Common Platform Error Records (CPER). These
+>+	  sections contain additional diagnostic information for errors
+>+	  occurring in NVIDIA hardware such as GPUs, switches, and other
+>+	  devices.
+>+
+>+	  The NVIDIA CPER sections include error signatures (e.g., PCIe-DPC,
+>+	  DCC-ECC, GPU-STATUS) and diagnostic registers that provide detailed
+>+	  information about hardware errors for debugging and analysis.
+>+
+>+	  If unsure, say N.
+>+
+> config TEE_STMM_EFI
+> 	tristate "TEE-based EFI runtime variable service driver"
+> 	depends on EFI && OPTEE
+>diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile=
+ index
+>8efbcf699e4f..a571b6086860 100644
+>--- a/drivers/firmware/efi/Makefile
+>+++ b/drivers/firmware/efi/Makefile
+>@@ -42,5 +42,6 @@ obj-$(CONFIG_EFI_CAPSULE_LOADER)	+=3D capsule-
+>loader.o
+> obj-$(CONFIG_EFI_EARLYCON)		+=3D earlycon.o
+> obj-$(CONFIG_UEFI_CPER_ARM)		+=3D cper-arm.o
+> obj-$(CONFIG_UEFI_CPER_X86)		+=3D cper-x86.o
+>+obj-$(CONFIG_UEFI_CPER_NVIDIA)		+=3D cper-nvidia.o
 
-But then it also runs before page_alloc_init_late(), and it's too early for
-free reserved memory with CONFIG_DEFERRED_STRUCT_INIT=y :(
+Hi,
 
--- 
-Sincerely yours,
-Mike.
+Is drivers/firmware/efi/cper.c the right place to log vendor-specific error=
+s,=20
+given that so far drivers/firmware/efi/ only logs CPER information defined =
+by the standards?
+Vendor-specific errors are currently logged and recorded in rasdaemon.
+https://github.com/mchehab/rasdaemon
+https://github.com/mchehab/rasdaemon/blob/master/ras-non-standard-handler.c=
+#L52
+
+If some kernel-level  recovery action or logging is required, we can also r=
+egister with
+acpi/apei/ghes using ghes_register_vendor_record_notifier() to receive a ca=
+llback.
+https://elixir.bootlin.com/linux/v6.19.3/source/drivers/acpi/apei/ghes.c#L6=
+52
+
+[...]
+>+/* NVIDIA Error Section */
+>+#define CPER_SEC_NVIDIA
+>	\
+>+	GUID_INIT(0x6d5244f2, 0x2712, 0x11ec, 0xbe, 0xa7, 0xcb, 0x3f,	\
+>+		  0xdb, 0x95, 0xc7, 0x86)
+>
+> #define CPER_PROC_VALID_TYPE			0x0001
+> #define CPER_PROC_VALID_ISA			0x0002
+>--
+>2.43.0
+>
+
+Thanks,
+Shiju
 
