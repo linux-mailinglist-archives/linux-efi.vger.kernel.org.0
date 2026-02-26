@@ -1,297 +1,220 @@
-Return-Path: <linux-efi+bounces-6224-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6225-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aH6yNAWdnmkZWgQAu9opvQ
-	(envelope-from <linux-efi+bounces-6224-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Feb 2026 07:56:05 +0100
+	id QM1UAuEfoGmzfgQAu9opvQ
+	(envelope-from <linux-efi+bounces-6225-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Feb 2026 11:26:41 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7280019290A
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Feb 2026 07:56:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 707841A4353
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Feb 2026 11:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64782301DD9F
-	for <lists+linux-efi@lfdr.de>; Wed, 25 Feb 2026 06:56:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C666C30ADBAC
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Feb 2026 10:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B1F2C21DF;
-	Wed, 25 Feb 2026 06:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD173A4F47;
+	Thu, 26 Feb 2026 10:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkEd7g1M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CqBSIZl/"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EAC2C11CF;
-	Wed, 25 Feb 2026 06:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F4D3A641E;
+	Thu, 26 Feb 2026 10:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002563; cv=none; b=EiNoE64Pvc17tekPqBPqAp1DCZIVw+Gnxx09jtDGzFCGoFJmhGXFro/Wcnc+HLoR6KdnxBWLL3Lf1fNbGyLpSmC0xEsMlhEFsQ65uCoBWSgSwydg+W521swnT7cNLOIMOtZ2O3SX/t9iDyWASGEM+oqbj9SFUs7QVZor9MuAz3U=
+	t=1772101450; cv=none; b=A+6eXLo5cIpTSi9jS2e5j0sHOsGNsRYZ9Ltq694LjsYT6wlG9ZfQzXnjMbtEm93F6wqY5hr3ebz4w8AeCUvk3jLGCJZdtKR52syw2YCoe1ZG0xqgCOcnm1WuEa+Kfl4M0fCYq6c1zOQCjX2iRXWvaJ/Nkz/6SW1Ylcj7vk/c/DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002563; c=relaxed/simple;
-	bh=c8mFbnM9U8FHHhGL8ssz28X5TtDgBLCNoO42oAAqqbQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NKZf7bvkY80kSeVm4YAQ0fbEPE3JKH1qC7IpbOWqUEKVLhjdzjTSSamafGifVacvxcbsEQk38boon7DqSfGXbytOrwKSJOqEJP6yn7bydDrE8hbzsRuJYzRFVHjPPvj+HfPXKANYHtEV6I78977yGD3cNLZVLnQ3uteCF2nVVas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkEd7g1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFC9C19425;
-	Wed, 25 Feb 2026 06:55:59 +0000 (UTC)
+	s=arc-20240116; t=1772101450; c=relaxed/simple;
+	bh=P8zq4XL1vIHvWaTfBf9OJPokXFV2/Uw/qIckm/L5wQg=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=CH9kMJSuPJi/PULwhlY5FShUk4S/ddVxWVgl9C8C2YbL1RGNxZaZ4//q5hSxuuK1Vz8kbWbJfdc37Mz3tVX1P0X67Aqtv9+frFfTKbW2Y+Tg87bRuKgG5VVX/8jiof5c7RxiM4Fcy4wYjUpg7onaDmMLcdTgtQnFuIhzNuIecf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CqBSIZl/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAECC19422;
+	Thu, 26 Feb 2026 10:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772002562;
-	bh=c8mFbnM9U8FHHhGL8ssz28X5TtDgBLCNoO42oAAqqbQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SkEd7g1Mj5AaEydDMbFzILf8tBoIZJKGMp96yd43Y0MJCHTwM82ONmBCoNFtVZzHi
-	 D3P290d01ENWEEEIIG6mu7AwkXcz2oytKekOZWQu+dD0ft0PXI3sQeWyIrx5I3NJwI
-	 +ya5o+VP/DOq4cKJXsWxRf8sLm0ErJfFl0OB0gJ9TG3gfDFJy/QCpT2vHH6v4p+5tk
-	 EjT2EPxH2vgE83Fk9bQ9nw6rQIXSrKgBhSSX4KXH+t6VOlPKfKQwLimrlDwFH6ZDSZ
-	 bvZ/+w8VMNsmA9i9k2V2OryXWT4BtuDHTkp5B/HzSOdkm1DTUNIjY8tpr+kn7v9XrR
-	 Ik6t3ZZdPL5fw==
-From: Mike Rapoport <rppt@kernel.org>
-To: x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-efi@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] x86/efi: defer freeing of boot services memory
-Date: Wed, 25 Feb 2026 08:55:55 +0200
-Message-ID: <20260225065555.2471844-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=k20201202; t=1772101450;
+	bh=P8zq4XL1vIHvWaTfBf9OJPokXFV2/Uw/qIckm/L5wQg=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=CqBSIZl/P5R11a+PbbwP8EJIEnape46aReEtYeFPGKuQwo6JuYPMOhUf/ivT/NGkB
+	 eXMFnYLPc0Qug2v3GAlm2hfMo3AEhaOEyi3ZyF45CWN+wmg1Ytanhv9lAvK+0xMHh2
+	 fkBzkKxMEF1f73kx0BbvlVzVwD2esgJecthJePIYctOyCgv1N+vOc4FeretrL+9dwl
+	 yPVn11PrBJc5BXMOfxAd+eGXEmJnTZin8RXBEGmytdYJFgR2oDdrICNNK+pUzag+LJ
+	 xPKXbyJ9ovIhvsM3RRZ/6Mf5FMQVv2aEgMpd/+fp7PW1VuyAdwBpXIwS3ii8jK7yQ3
+	 rJt1fkAYF2yIg==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DD5D3F4006A;
+	Thu, 26 Feb 2026 05:24:07 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Thu, 26 Feb 2026 05:24:07 -0500
+X-ME-Sender: <xms:Rx-gaXkDrx5pnznR-SNMQS1tYTFTDjDVzc2UVuufzpa3L83PXaWj2A>
+    <xme:Rx-gaVoEvkp6raOOwqQWPDa0cH-Ob-gPQix5xIzkuQVQm6h-NQbdzrS1pMcsoN3Ia
+    -kZBU3FrMUKRHOIg7YnLpvy204Tr5tobrq5gruzze2vMtko18K1InM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeehjeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
+    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekvdffkefhgfegveekfedtieffhfelgeetiedvieffhfekfeeikeetueeg
+    teetteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghrugdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqudeijedthedttdejledqfeefvdduieegudehqdgrrhgusgeppe
+    hkvghrnhgvlhdrohhrghesfihorhhkohhfrghrugdrtghomhdpnhgspghrtghpthhtohep
+    feeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
+    dprhgtphhtthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghp
+    thhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepughmihhtrh
+    ihrdhkrghsrghtkhhinhesghhmrghilhdrtghomhdprhgtphhtthhopehnphhighhgihhn
+    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgvgeshhgrlhhlhihnrdgtohhmpd
+    hrtghpthhtoheprhhosggvrhhtohdrshgrshhsuheshhhurgifvghirdgtohhmpdhrtghp
+    thhtoheprhhosggvrhhtohdrshgrshhsuheshhhurgifvghitghlohhuugdrtghomhdprh
+    gtphhtthhopegurghvvgdrhhgrnhhsvghnsehinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:Rx-gaceSkD7L3hUQ-QIntX5c8SF2UJvuNnlnCMg5x0km8JqIId1NUw>
+    <xmx:Rx-gaXnaIY1-tJR3H2eKYjQqxgSwsae5h1FvMCQzz1XTnwkXn4A87w>
+    <xmx:Rx-gaWo6YeaJZds-Per8yiexkNYiocIFKlSdVrZEta5R-DmtVqRepA>
+    <xmx:Rx-gaU9JdnIBR33acIHa5vRJ_FAVN8423onO6PDBDHqIfNIXMgTbhw>
+    <xmx:Rx-gaS0UmRYHqy-FoG7gumIna3Ay9Z737XOXqgkPGLVVt4wqDB4deV7_>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id AE587700065; Thu, 26 Feb 2026 05:24:07 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: A6OHCiXwHjx-
+Date: Thu, 26 Feb 2026 11:23:47 +0100
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Mimi Zohar" <zohar@linux.ibm.com>
+Cc: "Coiby Xu" <coxu@redhat.com>, "Dave Hansen" <dave.hansen@intel.com>,
+ linux-integrity@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>,
+ "Roberto Sassu" <roberto.sassu@huaweicloud.com>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Will Deacon" <will@kernel.org>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+ "H . Peter Anvin" <hpa@zytor.com>,
+ "Roberto Sassu" <roberto.sassu@huawei.com>,
+ "Dmitry Kasatkin" <dmitry.kasatkin@gmail.com>,
+ "Eric Snowberg" <eric.snowberg@oracle.com>,
+ "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ "Jarkko Sakkinen" <jarkko@kernel.org>,
+ "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)"
+ <linux-arm-kernel@lists.infradead.org>,
+ "open list" <linux-kernel@vger.kernel.org>,
+ "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)"
+ <linuxppc-dev@lists.ozlabs.org>,
+ "open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>,
+ "open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)"
+ <linux-efi@vger.kernel.org>,
+ "open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>,
+ "open list:KEYS/KEYRINGS_INTEGRITY" <keyrings@vger.kernel.org>
+Message-Id: <2115ea47-9a9f-4718-8531-4a9c2067899b@app.fastmail.com>
+In-Reply-To: <ad471c33eeb9e21c49ac81032dc64555a2fb816f.camel@linux.ibm.com>
+References: <20260115004328.194142-1-coxu@redhat.com>
+ <20260115004328.194142-2-coxu@redhat.com>
+ <CAMj1kXFXNo1-pMbo-VZrjQ3TYe1tufebrLr_avL12A0nHMSGnA@mail.gmail.com>
+ <8bfa859ed3a4f1cf0db0ab64d8c1c3b24684582a.camel@linux.ibm.com>
+ <CAMj1kXHsJNZoUEnbD1y=v4Ftuv9d2c08VckRV7ru4k4P83vZbQ@mail.gmail.com>
+ <97b69bc79a5d9246f7a399510908c7b95b2e95e7.camel@linux.ibm.com>
+ <CAMj1kXGx4ebaK87W7k0SNUNQnO9+=z1nmYxXC7retmp3OqRRFg@mail.gmail.com>
+ <ac5e5e45c12e9b0bda19807e60b06057d74be0b3.camel@linux.ibm.com>
+ <aW2i3yacr5TvWU-m@Rk>
+ <1a0b6e5601a673a81f8823de0815f92b7afbeb60.camel@linux.ibm.com>
+ <CAMj1kXFBMSEdRL8FotASbQO3dcfNG0bpp9Vnm5JPn-yjyDr=GA@mail.gmail.com>
+ <ad471c33eeb9e21c49ac81032dc64555a2fb816f.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/3] integrity: Make arch_ima_get_secureboot integrity-wide
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6224-lists,linux-efi=lfdr.de];
+	XM_UA_NO_VERSION(0.01)[];
+	TAGGED_FROM(0.00)[bounces-6225-lists,linux-efi=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[36];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[redhat.com,intel.com,vger.kernel.org,linux.ibm.com,huaweicloud.com,arm.com,kernel.org,ellerman.id.au,gmail.com,linutronix.de,alien8.de,linux.intel.com,zytor.com,huawei.com,oracle.com,paul-moore.com,namei.org,hallyn.com,lists.infradead.org,lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,linux-efi@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,linux-efi@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-efi];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7280019290A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 707841A4353
 X-Rspamd-Action: no action
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
-and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+On Wed, 25 Feb 2026, at 01:03, Mimi Zohar wrote:
+> On Wed, 2026-01-21 at 17:25 +0100, Ard Biesheuvel wrote:
+>> On Wed, 21 Jan 2026 at 16:41, Mimi Zohar <zohar@linux.ibm.com> wrote:
+>> > 
+>> > On Mon, 2026-01-19 at 12:04 +0800, Coiby Xu wrote:
+>> > 
+>> > > diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+>> > > index 976e75f9b9ba..5dce572192d6 100644
+>> > > --- a/security/integrity/ima/Kconfig
+>> > > +++ b/security/integrity/ima/Kconfig
+>> > > @@ -311,6 +311,7 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+>> > >   config IMA_SECURE_AND_OR_TRUSTED_BOOT
+>> > >          bool
+>> > >          depends on IMA_ARCH_POLICY
+>> > > +       depends on INTEGRITY_SECURE_BOOT
+>> > > 
+>> > > 
+>> > > Another idea is make a tree-wide arch_get_secureboot i.e. to move
+>> > > current arch_ima_get_secureboot code to arch-specific secure boot
+>> > > implementation. By this way, there will no need for a new Kconfig option
+>> > > INTEGRITY_SECURE_BOOT. But I'm not sure if there is any unforeseen
+>> > > concern.
+>> > 
+>> > Originally basing IMA policy on the secure boot mode was an exception.  As long
+>> > as making it public isn't an issue any longer, this sounds to me.  Ard, Dave, do
+>> > you have any issues with replacing arch_ima_get_secureboot() with
+>> > arch_get_secureboot()?
+>> 
+>> I don't see an issue with that. If there is a legitimate need to
+>> determine this even if IMA is not enabled, then this makes sense.
+>
+> Ard, Dave -
+>
+> FYI, Coiby posted v3 of this patch set[1], which is queued in the next-
+> integrity-testing branch[2].
+>
+> [1]
+> https://lore.kernel.org/linux-integrity/20260213012851.2532722-1-coxu@redhat.com/
+>
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity.git/
+>
 
-There are two issue with that: memblock_free_late() should be used for
-memory allocated with memblock_alloc() while the memory reserved with
-memblock_reserve() should be freed with free_reserved_area().
-
-More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
-efi_free_boot_services() is called before deferred initialization of the
-memory map is complete.
-
-Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
-RAM on EC2 t3a.nano instances which only have 512MB or RAM.
-
-If the freed memory resides in the areas that memory map for them is
-still uninitialized, they won't be actually freed because
-memblock_free_late() calls memblock_free_pages() and the latter skips
-uninitialized pages.
-
-Using free_reserved_area() at this point is also problematic because
-__free_page() accesses the buddy of the freed page and that again might
-end up in uninitialized part of the memory map.
-
-Delaying the entire efi_free_boot_services() could be problematic
-because in addition to freeing boot services memory it updates
-efi.memmap without any synchronization and that's undesirable late in
-boot when there is concurrency.
-
-More robust approach is to only defer freeing of the EFI boot services
-memory.
-
-Split efi_free_boot_services() in two. First efi_unmap_boot_services()
-collects ranges that should be freed into an array then
-efi_free_boot_services() later frees them after deferred init is complete.
-
-Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
-Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
----
-
-v1: https://lore.kernel.org/all/20260223075219.2348035-1-rppt@kernel.org
-* update the commit message with correct function names (Ben)
-
- arch/x86/include/asm/efi.h          |  2 +-
- arch/x86/platform/efi/efi.c         |  2 +-
- arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
- drivers/firmware/efi/mokvar-table.c |  2 +-
- 4 files changed, 55 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index f227a70ac91f..51b4cdbea061 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
- extern int __init efi_reuse_config(u64 tables, int nr_tables);
- extern void efi_delete_dummy_variable(void);
- extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
--extern void efi_free_boot_services(void);
-+extern void efi_unmap_boot_services(void);
- 
- void arch_efi_call_virt_setup(void);
- void arch_efi_call_virt_teardown(void);
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index d00c6de7f3b7..d84c6020dda1 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
- 	}
- 
- 	efi_check_for_embedded_firmwares();
--	efi_free_boot_services();
-+	efi_unmap_boot_services();
- 
- 	if (!efi_is_mixed())
- 		efi_native_runtime_setup();
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 553f330198f2..35caa5746115 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
- 
- 		/*
- 		 * Because the following memblock_reserve() is paired
--		 * with memblock_free_late() for this region in
-+		 * with free_reserved_area() for this region in
- 		 * efi_free_boot_services(), we must be extremely
- 		 * careful not to reserve, and subsequently free,
- 		 * critical regions of memory (like the kernel image) or
-@@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
- 		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
- }
- 
--void __init efi_free_boot_services(void)
-+struct efi_freeable_range {
-+	u64 start;
-+	u64 end;
-+};
-+
-+static struct efi_freeable_range *ranges_to_free;
-+
-+void __init efi_unmap_boot_services(void)
- {
- 	struct efi_memory_map_data data = { 0 };
- 	efi_memory_desc_t *md;
- 	int num_entries = 0;
-+	int idx = 0;
-+	size_t sz;
- 	void *new, *new_md;
- 
- 	/* Keep all regions for /sys/kernel/debug/efi */
- 	if (efi_enabled(EFI_DBG))
- 		return;
- 
-+	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-+	ranges_to_free = kzalloc(sz, GFP_KERNEL);
-+	if (!ranges_to_free) {
-+		pr_err("Failed to allocate storage for freeable EFI regions\n");
-+		return;
-+	}
-+
- 	for_each_efi_memory_desc(md) {
- 		unsigned long long start = md->phys_addr;
- 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
-@@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
- 			start = SZ_1M;
- 		}
- 
--		memblock_free_late(start, size);
-+		/*
-+		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
-+		 * map are still not initialized and we can't reliably free
-+		 * memory here.
-+		 * Queue the ranges to free at a later point.
-+		 */
-+		ranges_to_free[idx].start = start;
-+		ranges_to_free[idx].end = start + size;
-+		idx++;
- 	}
- 
- 	if (!num_entries)
-@@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
- 	}
- }
- 
-+static int __init efi_free_boot_services(void)
-+{
-+	struct efi_freeable_range *range = ranges_to_free;
-+	unsigned long freed = 0;
-+
-+	if (!ranges_to_free)
-+		return 0;
-+
-+	while (range->start) {
-+		void *start = phys_to_virt(range->start);
-+		void *end = phys_to_virt(range->end);
-+
-+		free_reserved_area(start, end, -1, NULL);
-+		freed += (end - start);
-+		range++;
-+	}
-+	kfree(ranges_to_free);
-+
-+	if (freed)
-+		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
-+
-+	return 0;
-+}
-+arch_initcall(efi_free_boot_services);
-+
- /*
-  * A number of config table entries get remapped to virtual addresses
-  * after entering EFI virtual mode. However, the kexec kernel requires
-diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
-index 4ff0c2926097..6842aa96d704 100644
---- a/drivers/firmware/efi/mokvar-table.c
-+++ b/drivers/firmware/efi/mokvar-table.c
-@@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
-  * as an alternative to ordinary EFI variables, due to platform-dependent
-  * limitations. The memory occupied by this table is marked as reserved.
-  *
-- * This routine must be called before efi_free_boot_services() in order
-+ * This routine must be called before efi_unmap_boot_services() in order
-  * to guarantee that it can mark the table as reserved.
-  *
-  * Implicit inputs:
-
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
--- 
-2.51.0
+Ack. Looks fine to me.
 
 
