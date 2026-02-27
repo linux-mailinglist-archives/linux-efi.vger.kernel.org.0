@@ -1,38 +1,38 @@
-Return-Path: <linux-efi+bounces-6229-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6230-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Am/KobPoWn3wQQAu9opvQ
-	(envelope-from <linux-efi+bounces-6229-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Feb 2026 18:08:22 +0100
+	id mH/lDIrPoWn3wQQAu9opvQ
+	(envelope-from <linux-efi+bounces-6230-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Feb 2026 18:08:26 +0100
 X-Original-To: lists+linux-efi@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A55F1BB388
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Feb 2026 18:08:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0ED1BB396
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Feb 2026 18:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 943B630AC5ED
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Feb 2026 17:01:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7490630EEDFF
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Feb 2026 17:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC4835B654;
-	Fri, 27 Feb 2026 17:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353D135CB64;
+	Fri, 27 Feb 2026 17:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="baA+DpAg";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6vRbr0jq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GSwGN+41";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dVfhfQr8"
 X-Original-To: linux-efi@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A898735970F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D593135A39F;
 	Fri, 27 Feb 2026 17:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772211670; cv=none; b=dddxBiIHAxAVW79KvACVklFb0eSmyTDA6jj+sE+1owUBeI0vF0OaL0J5dZTEZurDA4u5v7PVtFisTb/JnZ7lTdy+K3qHZCXFzEvrr3/MCrs5y87+k3o08n3FCXGDioaSOHoUbOIk9CjRokIatxnIgy0MQKilSEVafidefvdz6og=
+	t=1772211671; cv=none; b=KVYAgcJvbirjPn6vmVtXG16ijvCDhBu6jMPigFcVsz3ULluy4y0ijB/7tuMvOCcv4CyypU/QhoCq+n6Lf9hb+P9/CGss8RAFYE3B+0T708Hwo/TB4Z6Gf9Zt9BW1QJ9HR9ldSGfFr00uFUHUDMlvtBsPj22kNGz5xjDhvmhVhyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772211670; c=relaxed/simple;
-	bh=pP0+vLPgMfHqfQbUnCgXTR7J+QeiTwq9mkuMlf6BB7M=;
+	s=arc-20240116; t=1772211671; c=relaxed/simple;
+	bh=1cjoIDiqLFttBjFaCvVhjgWaa8GFJ/AZ1WWKyZUjN3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJtjqeqbrKAWQMJ6eqyQzloA13cLMMwi7qOd5gQTdALdbX2nC0ThV6a6XTdQCt+zFHvGHB1qoTc3VeP/5vSllJeS403on3xqhpSw2N9Jcoda1CycDpC2GLGRsO9WFrKSW6LntNYL5Wl0MgkX4F3G84O7Uqv3g0kE/6c18koKgNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=baA+DpAg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6vRbr0jq; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version; b=rYyNFbm0IAN4sVKzcyHRMCdvr/zwXRF4yMUxIueLmCCokkUJ8nQ+gxwTQT82MzqVcDr83IFq0jp/wfhBQu9ALBi9wV6zeTORZpCaiWo9Y3ruOahereAmySsKxMujgIHQ265E/j5uyajUsNTmgpC1cXyGxUf3LHQLsKbeOGFlCFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GSwGN+41; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dVfhfQr8; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
@@ -42,21 +42,21 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qW7YC+NhUcGv9AiAl1k536TG+Cb4xwm5b/RZaPT5+U8=;
-	b=baA+DpAgWRw5dFtv3CAdh6AW0mivJMwkcgJZGJh5kwwB9MrChHPwsh/N4Md1qtl2E6YpCh
-	4wXggi7237oPKMxriPxum/+APwtZJkEcbyZ0HOaJVTn1zAA267xB8+gyK2+hHXoJ0oEvvN
-	nWSrNy3zl7FWDdB3mpmg9meocmcAMGf1k1sUy6pE6t5yen87A+SQev8UmhXI3DoPGuR81D
-	oTNPC4qaTAnyWhgn/9SUZwq2eV7lK4yiVFlycALijCw5TR5gu4s/UyJX+XjDEEOWWSJ3NO
-	DI2bK2ypWheGUIjWVa/omi/F3Kzq17d+RMCXoS9wvLwz5O05nstZBSlYaIkQew==
+	bh=JOq5V4/dwverftSI+2e+3Cqh4irrH3bkTVizH8crF4U=;
+	b=GSwGN+41eVc362HWs+g02Ef5kzye1jRNkZXJGDY7MfKWVc2qArkwCpFJ90aRZdUGZ4Lfk0
+	NQZoW7MJpSLKtAscrcc+QG00VjUGKkS/Xc1ETMfgbKqFoB2GHZqbpdj1cmUjJuQ8nD900P
+	tFQnKqBtxlFmQ2Imuuf4X2z3IJy6fBywywRB4EJ+cWf1ecGBe4tMiNtNHVkNhbm4C9WJhl
+	jUnReFtm/5ERReVp3IBYvKHJEehWq8DcITTMi9bZHHqPlnZnlcFpyVgtxWU6jbYw+nTDBX
+	xa8Jv5KXKl9H60sA923Ab7ZAwVqS6t84hpY8Aagn+zbz/gblR97sWqH01o1sWQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1772211668;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qW7YC+NhUcGv9AiAl1k536TG+Cb4xwm5b/RZaPT5+U8=;
-	b=6vRbr0jqHvkXYWOMn0LSyJ7aJ4heJUiPNIPZISAxGhJrpPsb4FgZiYvrEX15aSR2aOFzeg
-	4p1hAeIXBCY0P8Dg==
+	bh=JOq5V4/dwverftSI+2e+3Cqh4irrH3bkTVizH8crF4U=;
+	b=dVfhfQr8605EhTgyzWVqj5uvifvBdgVRkCG14gfim0k92nLxY7DMdf5M7gHiFEgTHNeQ7I
+	W36Q9NO10oF4moAA==
 To: linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
@@ -67,9 +67,9 @@ Cc: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
 	Tejun Heo <tj@kernel.org>,
 	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH v2 1/2] workqueue: Allow to expose ordered workqueues via sysfs
-Date: Fri, 27 Feb 2026 18:01:02 +0100
-Message-ID: <20260227170103.4042157-2-bigeasy@linutronix.de>
+Subject: [PATCH v2 2/2] efi: Allow to expose the workqueue via sysfs
+Date: Fri, 27 Feb 2026 18:01:03 +0100
+Message-ID: <20260227170103.4042157-3-bigeasy@linutronix.de>
 In-Reply-To: <20260227170103.4042157-1-bigeasy@linutronix.de>
 References: <20260227170103.4042157-1-bigeasy@linutronix.de>
 Precedence: bulk
@@ -95,7 +95,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6229-lists,linux-efi=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6230-lists,linux-efi=lfdr.de];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -107,79 +107,36 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-efi];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
-X-Rspamd-Queue-Id: 2A55F1BB388
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:mid,linutronix.de:dkim,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CB0ED1BB396
 X-Rspamd-Action: no action
 
-Ordered workqueues are not exposed via sysfs because the 'max_active'
-attribute changes the number actives worker. More than one active worker
-can break ordering guarantees.
+Exposing the efi_rts_wq workqueue via sysfs provides an easy mechanism
+to restrict EFI firmware invocation to certain CPU(s).
+This can be used to restrict EFI invocations to specific CPUs while
+allowing other workqueue to use the remaning CPUs.
 
-This can be avoided by forbidding writes the file for ordered
-workqueues. Exposing it via sysfs allows to alter other attributes such
-as the cpumask on which CPU the worker can run.
-
-The 'max_active' value shouldn't be changed for BH worker because the
-core never spawns additional worker and the worker itself can not be
-preempted. So this make no sense.
-
-Allow to expose ordered workqueues via sysfs if requested and forbid
-changing 'max_active' value for ordered and BH worker.
+Expose the workqueue via sysfs. Change the name to efi_runtime which is
+what will be visible under sysfs.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- kernel/workqueue.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ drivers/firmware/efi/efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index aeaec79bc09c4..2f95cb0d2f1b8 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -7176,7 +7176,26 @@ static struct attribute *wq_sysfs_attrs[] =3D {
- 	&dev_attr_max_active.attr,
- 	NULL,
- };
--ATTRIBUTE_GROUPS(wq_sysfs);
-+
-+static umode_t wq_sysfs_is_visible(struct kobject *kobj, struct attribute =
-*a, int n)
-+{
-+	struct device *dev =3D kobj_to_dev(kobj);
-+	struct workqueue_struct *wq =3D dev_to_wq(dev);
-+
-+	/*
-+	 * Adjusting max_active breaks ordering guarantee. Changing it has no
-+	 * effect on BH worker. Limit max_active to RO in such case.
-+	 */
-+	if (wq->flags & (WQ_BH | __WQ_ORDERED))
-+		return 0444;
-+	return a->mode;
-+}
-+
-+static const struct attribute_group wq_sysfs_group =3D {
-+	.is_visible =3D wq_sysfs_is_visible,
-+	.attrs =3D wq_sysfs_attrs,
-+};
-+__ATTRIBUTE_GROUPS(wq_sysfs);
-=20
- static ssize_t wq_nice_show(struct device *dev, struct device_attribute *a=
-ttr,
- 			    char *buf)
-@@ -7479,13 +7498,6 @@ int workqueue_sysfs_register(struct workqueue_struct=
- *wq)
- 	struct wq_device *wq_dev;
- 	int ret;
-=20
--	/*
--	 * Adjusting max_active breaks ordering guarantee.  Disallow exposing
--	 * ordered workqueues.
--	 */
--	if (WARN_ON(wq->flags & __WQ_ORDERED))
--		return -EINVAL;
--
- 	wq->wq_dev =3D wq_dev =3D kzalloc_obj(*wq_dev);
- 	if (!wq_dev)
- 		return -ENOMEM;
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index b2fb92a4bbd11..3dab284a7754d 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -423,7 +423,7 @@ static int __init efisubsys_init(void)
+ 		 * ordered workqueue (which creates only one execution context)
+ 		 * should suffice for all our needs.
+ 		 */
+-		efi_rts_wq =3D alloc_ordered_workqueue("efi_rts_wq", 0);
++		efi_rts_wq =3D alloc_ordered_workqueue("efi_runtime", WQ_SYSFS);
+ 		if (!efi_rts_wq) {
+ 			pr_err("Creating efi_rts_wq failed, EFI runtime services disabled.\n");
+ 			clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
 --=20
 2.51.0
 
