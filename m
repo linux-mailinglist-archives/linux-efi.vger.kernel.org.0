@@ -1,171 +1,303 @@
-Return-Path: <linux-efi+bounces-6239-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6240-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFxYLxQep2kUeAAAu9opvQ
-	(envelope-from <linux-efi+bounces-6239-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Tue, 03 Mar 2026 18:44:52 +0100
+	id 8KsJCqPrp2lDlwAAu9opvQ
+	(envelope-from <linux-efi+bounces-6240-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Wed, 04 Mar 2026 09:21:55 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BF81F4C47
-	for <lists+linux-efi@lfdr.de>; Tue, 03 Mar 2026 18:44:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B34EB1FC775
+	for <lists+linux-efi@lfdr.de>; Wed, 04 Mar 2026 09:21:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 480EE301BF44
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Mar 2026 17:42:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5613D30713DB
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Mar 2026 08:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EDC3EF0B6;
-	Tue,  3 Mar 2026 17:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28A83803D6;
+	Wed,  4 Mar 2026 08:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HSX10pF3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XkNWm/Jl"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2008C351C00;
-	Tue,  3 Mar 2026 17:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7EA3264E5;
+	Wed,  4 Mar 2026 08:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772559744; cv=none; b=pTNeuaU8ugDmRy8AWmtSsLuAW+2UpDX6xx8NI0RBXrTke8O4uowCKDD57eJJ5L1ltu+DD1jJIEJXyHO9r7m/MN+jfXtgLDvTG+QpIlBapjqsE8CZ0jDpSJpC3oHOxtmNrJ7L/cCVasFb0a67e4vYoKwjKqGcZKWlRevYqHkQy6U=
+	t=1772612237; cv=none; b=J8l7swVGqMjHC6TuZT4Hyu5b3RwV/BV5qtKZfTEl41udb7oix74rZ0/Hj87hE0kV7+5v38xAlWJArjKv17g2ydzBDz+FviIGzr0zX1Zl/jLr1BOqdECDLMLCxrhPyBHRNoLXRXetUaYDC+MSgC3Lvt/kdSkf3xjhIHBJkv2nEhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772559744; c=relaxed/simple;
-	bh=4vSqs+UjSmfudYIwPgIxG2FMOzXvhVXOnpnKNCKorXU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TkIpj3eLZdYdyC9ljB3nqss4Tl64l4rFQUTNTbVzTCC5WIDSfj2VPz9RV5CmZJsAHZowuNrwjaMWkQixBb2jcx7HSyUP92Fs+YGHmtOc8QX2szP2GVGjgZC5vC7RqHpGCyWEag92zHfN3aPoOj3JOlarspmdnMk6owzaVTAqchs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HSX10pF3; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772559742; x=1804095742;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=4vSqs+UjSmfudYIwPgIxG2FMOzXvhVXOnpnKNCKorXU=;
-  b=HSX10pF3ftNdv5C9FiHm+5uxMVQgOzNulqNLTH9KCmbEL+YyyT8ssGDc
-   oFDp64b0n05IHVOKYNt0ppmS8gz496FIWneYTZzVidNMdNFxEv4g/msHo
-   m3jICqFMg48lHB16503p4abvW4ifcvCdSWd2uNRZTxLF5gdAj4RWMaFtz
-   ggWdWuN+P66WUYiRlbDRlxcoHL+ANzhDpnfeYTK0VruHaVYTlbCiC1wyT
-   U9Dz1DYA89j4R0X/TPdaiGujsDelcLBb7F4+bzt4lRLaY4moYrEryavpV
-   wQ95PZq99ao4wJnrTZt52iW3rzXqY24p+XeD888bAahnHR4vzUTVyW55c
-   g==;
-X-CSE-ConnectionGUID: Q/EAFDVMR6ykxP8egllXvA==
-X-CSE-MsgGUID: TocVoedvRAqjLL3jTSWimg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="72634414"
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="72634414"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 09:42:21 -0800
-X-CSE-ConnectionGUID: jLyy9GmpQAOqJnfEh+Fgzw==
-X-CSE-MsgGUID: A29b2anMQhan50ceDa4WbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="218042272"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.135]) ([10.125.108.135])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 09:42:21 -0800
-Message-ID: <78349c8c-99bf-4358-9190-b6d14caed93b@intel.com>
-Date: Tue, 3 Mar 2026 09:42:26 -0800
+	s=arc-20240116; t=1772612237; c=relaxed/simple;
+	bh=hHEQX82pLAavXA3KfQ27txuW9+UXTV4nQHbLANQ3ags=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tF0Jyo6HpfGl0oqby8hgF+XBsLgbD9IPQkFx9bTQLUsdrjx+GSufui91eedUrVYqQHPQ9/ZWoLScnOVyEj4uz9zTJCmwlC7zspVVIBNd0VLb+34ffDwp1BJ7hDdrPS45JppDOGUTBr6gsRN+MRZpd1bJ4SgLWlugALE//+FtmVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XkNWm/Jl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911FFC19423;
+	Wed,  4 Mar 2026 08:17:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772612237;
+	bh=hHEQX82pLAavXA3KfQ27txuW9+UXTV4nQHbLANQ3ags=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XkNWm/JlfdmOsdc9lJ5EIVyC4M7Aau4FuAmmJkHvgV+ZsArAV3bl0t6jMz69wDh6W
+	 KFSzPRZoahLHVJ7nMV7MBA5d9nndSu2+vTfysbUql6hIfxbFaJ6bYr1/UyBm3Jwq8v
+	 Kw4BORufVOSJ1S43xzJ1LUDkgkyjhiNCcr1Rb6wvAhSrkKq2EBqwtKZzQIhFhgAxBr
+	 XpaRf5Phk7D/h0TSB/JE02nYmVn2Ta/XzjN9QMRSuBpIcAqmnkM5YqSPckt6NuZPy8
+	 3WUNG8YrQLZyJA+5sp85ZsC1EHmtErmW34AvkffpMnzQHKiN97jOIbb8EY/Br6+azL
+	 IfAM52jbI7cpg==
+Date: Wed, 4 Mar 2026 10:17:09 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@kernel.org>,
+	linux-efi@vger.kernel.org, linux-mm@kvack.org,
+	stable@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
+Message-ID: <aafqhcG67FoNrF41@kernel.org>
+References: <20260225065555.2471844-1-rppt@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] x86: Extend LASS support to EFI configurations
-To: Sohil Mehta <sohil.mehta@intel.com>, x86@kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>
-Cc: "H . Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, "Kirill A . Shutemov"
- <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Andrew Cooper <andrew.cooper3@citrix.com>, Tony Luck <tony.luck@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
- Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-References: <20260120234730.2215498-1-sohil.mehta@intel.com>
- <b476c206-08f0-4582-a924-2164ba6ae84b@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <b476c206-08f0-4582-a924-2164ba6ae84b@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 32BF81F4C47
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225065555.2471844-1-rppt@kernel.org>
+X-Rspamd-Queue-Id: B34EB1FC775
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-6239-lists,linux-efi=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6240-lists,linux-efi=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,linux-efi@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,linux-efi@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-efi];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On 2/24/26 10:45, Sohil Mehta wrote:
-> Overall, the approach in patch 1 seems useful. The implementation is
-> based on a combination of late_initcall() and CPU hotplug callbacks.
-> Thoughts?
+Gentle ping?
 
-It looks great, actually. It's really nice how the CPU hotplug
-infrastructure takes care of all the hard work.
+On Wed, Feb 25, 2026 at 08:55:55AM +0200, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+> and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+> 
+> There are two issue with that: memblock_free_late() should be used for
+> memory allocated with memblock_alloc() while the memory reserved with
+> memblock_reserve() should be freed with free_reserved_area().
+> 
+> More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+> efi_free_boot_services() is called before deferred initialization of the
+> memory map is complete.
+> 
+> Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+> RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+> 
+> If the freed memory resides in the areas that memory map for them is
+> still uninitialized, they won't be actually freed because
+> memblock_free_late() calls memblock_free_pages() and the latter skips
+> uninitialized pages.
+> 
+> Using free_reserved_area() at this point is also problematic because
+> __free_page() accesses the buddy of the freed page and that again might
+> end up in uninitialized part of the memory map.
+> 
+> Delaying the entire efi_free_boot_services() could be problematic
+> because in addition to freeing boot services memory it updates
+> efi.memmap without any synchronization and that's undesirable late in
+> boot when there is concurrency.
+> 
+> More robust approach is to only defer freeing of the EFI boot services
+> memory.
+> 
+> Split efi_free_boot_services() in two. First efi_unmap_boot_services()
+> collects ranges that should be freed into an array then
+> efi_free_boot_services() later frees them after deferred init is complete.
+> 
+> Link: https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
+> Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after switching to virtual mode")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> ---
+> 
+> v1: https://lore.kernel.org/all/20260223075219.2348035-1-rppt@kernel.org
+> * update the commit message with correct function names (Ben)
+> 
+>  arch/x86/include/asm/efi.h          |  2 +-
+>  arch/x86/platform/efi/efi.c         |  2 +-
+>  arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
+>  drivers/firmware/efi/mokvar-table.c |  2 +-
+>  4 files changed, 55 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> index f227a70ac91f..51b4cdbea061 100644
+> --- a/arch/x86/include/asm/efi.h
+> +++ b/arch/x86/include/asm/efi.h
+> @@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
+>  extern int __init efi_reuse_config(u64 tables, int nr_tables);
+>  extern void efi_delete_dummy_variable(void);
+>  extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
+> -extern void efi_free_boot_services(void);
+> +extern void efi_unmap_boot_services(void);
+>  
+>  void arch_efi_call_virt_setup(void);
+>  void arch_efi_call_virt_teardown(void);
+> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> index d00c6de7f3b7..d84c6020dda1 100644
+> --- a/arch/x86/platform/efi/efi.c
+> +++ b/arch/x86/platform/efi/efi.c
+> @@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
+>  	}
+>  
+>  	efi_check_for_embedded_firmwares();
+> -	efi_free_boot_services();
+> +	efi_unmap_boot_services();
+>  
+>  	if (!efi_is_mixed())
+>  		efi_native_runtime_setup();
+> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> index 553f330198f2..35caa5746115 100644
+> --- a/arch/x86/platform/efi/quirks.c
+> +++ b/arch/x86/platform/efi/quirks.c
+> @@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
+>  
+>  		/*
+>  		 * Because the following memblock_reserve() is paired
+> -		 * with memblock_free_late() for this region in
+> +		 * with free_reserved_area() for this region in
+>  		 * efi_free_boot_services(), we must be extremely
+>  		 * careful not to reserve, and subsequently free,
+>  		 * critical regions of memory (like the kernel image) or
+> @@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+>  		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
+>  }
+>  
+> -void __init efi_free_boot_services(void)
+> +struct efi_freeable_range {
+> +	u64 start;
+> +	u64 end;
+> +};
+> +
+> +static struct efi_freeable_range *ranges_to_free;
+> +
+> +void __init efi_unmap_boot_services(void)
+>  {
+>  	struct efi_memory_map_data data = { 0 };
+>  	efi_memory_desc_t *md;
+>  	int num_entries = 0;
+> +	int idx = 0;
+> +	size_t sz;
+>  	void *new, *new_md;
+>  
+>  	/* Keep all regions for /sys/kernel/debug/efi */
+>  	if (efi_enabled(EFI_DBG))
+>  		return;
+>  
+> +	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
+> +	ranges_to_free = kzalloc(sz, GFP_KERNEL);
+> +	if (!ranges_to_free) {
+> +		pr_err("Failed to allocate storage for freeable EFI regions\n");
+> +		return;
+> +	}
+> +
+>  	for_each_efi_memory_desc(md) {
+>  		unsigned long long start = md->phys_addr;
+>  		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+> @@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
+>  			start = SZ_1M;
+>  		}
+>  
+> -		memblock_free_late(start, size);
+> +		/*
+> +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
+> +		 * map are still not initialized and we can't reliably free
+> +		 * memory here.
+> +		 * Queue the ranges to free at a later point.
+> +		 */
+> +		ranges_to_free[idx].start = start;
+> +		ranges_to_free[idx].end = start + size;
+> +		idx++;
+>  	}
+>  
+>  	if (!num_entries)
+> @@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
+>  	}
+>  }
+>  
+> +static int __init efi_free_boot_services(void)
+> +{
+> +	struct efi_freeable_range *range = ranges_to_free;
+> +	unsigned long freed = 0;
+> +
+> +	if (!ranges_to_free)
+> +		return 0;
+> +
+> +	while (range->start) {
+> +		void *start = phys_to_virt(range->start);
+> +		void *end = phys_to_virt(range->end);
+> +
+> +		free_reserved_area(start, end, -1, NULL);
+> +		freed += (end - start);
+> +		range++;
+> +	}
+> +	kfree(ranges_to_free);
+> +
+> +	if (freed)
+> +		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
+> +
+> +	return 0;
+> +}
+> +arch_initcall(efi_free_boot_services);
+> +
+>  /*
+>   * A number of config table entries get remapped to virtual addresses
+>   * after entering EFI virtual mode. However, the kexec kernel requires
+> diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
+> index 4ff0c2926097..6842aa96d704 100644
+> --- a/drivers/firmware/efi/mokvar-table.c
+> +++ b/drivers/firmware/efi/mokvar-table.c
+> @@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
+>   * as an alternative to ordinary EFI variables, due to platform-dependent
+>   * limitations. The memory occupied by this table is marked as reserved.
+>   *
+> - * This routine must be called before efi_free_boot_services() in order
+> + * This routine must be called before efi_unmap_boot_services() in order
+>   * to guarantee that it can mark the table as reserved.
+>   *
+>   * Implicit inputs:
+> 
+> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> -- 
+> 2.51.0
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
