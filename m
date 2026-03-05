@@ -1,238 +1,169 @@
-Return-Path: <linux-efi+bounces-6247-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6248-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JubAPG9qWnNDQEAu9opvQ
-	(envelope-from <linux-efi+bounces-6247-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Thu, 05 Mar 2026 18:31:29 +0100
+	id cGMuEmsVqmnFKgEAu9opvQ
+	(envelope-from <linux-efi+bounces-6248-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Fri, 06 Mar 2026 00:44:43 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9B4216421
-	for <lists+linux-efi@lfdr.de>; Thu, 05 Mar 2026 18:31:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A35219735
+	for <lists+linux-efi@lfdr.de>; Fri, 06 Mar 2026 00:44:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60E6530579DF
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2026 17:26:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02FB3300BE9A
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Mar 2026 23:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5313E39E6FD;
-	Thu,  5 Mar 2026 17:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DAB368297;
+	Thu,  5 Mar 2026 23:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="f5HhaZL2"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="NiuHMNof"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24931FBCA7;
-	Thu,  5 Mar 2026 17:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED25634D4D6;
+	Thu,  5 Mar 2026 23:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772731597; cv=none; b=dVpHcTHtl7sNzMHmv5R4We3lHKKRgdyJCTIUeeH6S/qfIv1/pOhDD6xf20bam8SwjDLWdm4Bp56kDJa1MT8Ao79CgtuDBQa4Agy6u0kjOE5rjWZQ0kcq1SrbouE6bp7THLUDZqAB1gziNrXlutcSt5AUHnBM4W1FpEbgu38ySEQ=
+	t=1772754277; cv=none; b=f8IYx7m66ADuyvXsFmMM1eo4EGZBDzLBTzVglp52UuFrfNhMLkXYJy1n0Vx8Sx3fda5YPCijXSaK2GJA/T0JhqMaIJsqtktChqsqgUlYcWeIWmyV+qIFsCLEw78ovj5Umiu4APe+uusMfZ6DXaAkIkgsRojiIjpY0VbmuMMEdDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772731597; c=relaxed/simple;
-	bh=+MuY8pawrgi2FwNb6rRlOW9g7zPesgMFXQ7H4DyrZcQ=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=bMOU+admFMdY47ynBatHaKybIYLOtltslRB0XrWwUJkLTcgEINA9A0JFQP1PHx2uCrUw7wTQ/LVczo0Pmbm11vrDhXd/I2IV/lhmOzDxI9R83sPmz7lMuwNCWOvlVgsgkhUV4swXcSl6cpaBJoYO4WwvBPwbUxnhKPTGmDp8jas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=f5HhaZL2; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6256XhaF2358989;
-	Thu, 5 Mar 2026 17:25:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=pKEoPg
-	CndWCLrBzB+ANvkugEGsbEG9dKmNVe+ux6b/I=; b=f5HhaZL2YLiPpyCKTkbu9J
-	IGDq/HdnHKBMZigcHjg/Cd8VlwblJsE5+TR6lvbkI5Itkm2FCCPoXMXxxGzkVVvN
-	bkMVpn/KPZJI92/LSPO0lr5t3nk74fy+h6B7QHwtK66PgaHvIhzoBAIVFUVNx7es
-	hquql/vPTH9LvLzyoPvW3uKrBwLMuJiaoyB4zSQFiKMgm+Z214WiMZhbLKDnsQB9
-	U5nt7kT7cFoq0J8dv4iysXNG/Lx8rndllpDctzwLpxo/qsWhw/+udsiCIS98ggBq
-	yb3XfU9eksHCf7WGOG0KxVZb3P+eJYk7eIXLSYGp91e+yU344EWER5UygGXcPBww
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksk44ce4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 17:25:46 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 625FQouo027658;
-	Thu, 5 Mar 2026 17:25:45 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmcwjm17q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 17:25:45 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 625HPips8979076
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Mar 2026 17:25:44 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A49858056;
-	Thu,  5 Mar 2026 17:25:44 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6FC9F5805D;
-	Thu,  5 Mar 2026 17:25:42 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.185.249])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Mar 2026 17:25:42 +0000 (GMT)
-Message-ID: <b33086b5f20a635a86d935fef3f4c429c723f6ac.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 1/3] integrity: Make arch_ima_get_secureboot
- integrity-wide
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Vasily Gorbik <gor@linux.ibm.com>
-Cc: linux-integrity@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Egorenkov <egorenar@linux.ibm.com>,
-        Ard Biesheuvel
- <ardb@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
-        Coiby Xu
- <coxu@redhat.com>, Roberto Sassu <roberto.sassu@huawei.com>,
-        Madhavan
- Srinivasan	 <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin	 <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle	
- <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar	
- <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen	
- <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND
- 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Dmitry
- Kasatkin	 <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg
- <eric.snowberg@oracle.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris
- <jmorris@namei.org>,
-        "Serge E. Hallyn"	 <serge@hallyn.com>,
-        Jarkko Sakkinen
- <jarkko@kernel.org>,
-        open list	 <linux-kernel@vger.kernel.org>,
-        "open
- list:LINUX FOR POWERPC (32-BIT AND 64-BIT)"
- <linuxppc-dev@lists.ozlabs.org>,
-        "open list:S390 ARCHITECTURE"
- <linux-s390@vger.kernel.org>,
-        "open list:EXTENSIBLE FIRMWARE INTERFACE
- (EFI)"	 <linux-efi@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM"	
- <linux-security-module@vger.kernel.org>,
-        "open
- list:KEYS/KEYRINGS_INTEGRITY"	 <keyrings@vger.kernel.org>
-In-Reply-To: <c00-01.ttbfdx5@ub.hpns>
-References: <20260213012851.2532722-2-coxu@redhat.com>
-	 <c00-01.ttbfdx5@ub.hpns>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Mar 2026 12:25:42 -0500
+	s=arc-20240116; t=1772754277; c=relaxed/simple;
+	bh=iauzQaGDXiC231/mypgQatCf2nfYRe0nN8HUXliGuCs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R8FMYjeVtokUXzaGEEW8Q8wleVLIcoea5JSHcp55HjlFjYF4qGcN3hvWs56h1FGYOcUsH26nMcuSLtB6YTgM4dtYFatxZ0TWt/UhoKDBYIEg3SxtId0dF4gOIpC0BSqINiqwOWZSNb2F6A8s+fSzOGgjKDaWkL8DSucRuioG4HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=NiuHMNof; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [172.27.2.41] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 625NhY3o4127751
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 5 Mar 2026 15:43:35 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 625NhY3o4127751
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026022301; t=1772754218;
+	bh=W+08PYjDQhAaObzzVmi0H3Jb7j0xETdylBL3/4YZEk8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NiuHMNofaKp4X3OTkTE4sx+ETMmwUFwgJjU83eBnK2/BqKkOamVxH8/VjJ6FOT+rj
+	 cX8EORzUxiaeuPL/1KqpN374d4Fv+bjiIc9qbH2fAFX6suJ7cqLLdsFwbLkHnOb4e/
+	 4rbho2As0pJPemgWwc3J3VEGg1b0DHzc5RkY8zixe6iRpSUQIEDHsEBxGqiEhzlUvB
+	 SdoTrvFmB+3vG9ZsjdkJ/n76P3jMN/BwJ0h8M1f7ogLYnkjnS0DdO4PbTJCc0rLtsz
+	 xxrlilrcBpzg9J0XWBj/4aaFK7REjIiRGJ0ywiqx438ZCLfQPfIZNO74P6Ue7O7SPu
+	 4MLF4w7uvkNjQ==
+Message-ID: <01433066-eb9b-4a96-8d7f-794af941d365@zytor.com>
+Date: Thu, 5 Mar 2026 15:43:29 -0800
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
 List-Id: <linux-efi.vger.kernel.org>
 List-Subscribe: <mailto:linux-efi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: n5u3KvkqHsHSG1MPOf93GcHhdfPo5Ydn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDE0MCBTYWx0ZWRfX2GwyKh4RC1hO
- 8e835PXQ73sAhRTjc5hcUXNuRa16LUmjeYrKhRTH8uumRPD6u6AHpv+R1U4wbUNUKtaVD4BCTwU
- Gs+8eec+4MXi+5GADfbifXChrow3C7bOocLltn0fEKw6L/ghXKT3D9c7AQEND5Uxazf8QO/as6O
- J5n+fKJXv/TUTDvqUiyiZIgw51FJfJVs8F857zTKeHXbBMmRDNcvSlDk8Xig0Ffwjxv6t2OSjLR
- H1mzlFXc6/oBzQqofGITH/P1rzOap9r9zEpCq7G6PvzEKhDJtotff/HlT1iz6uiuttTQhZblak4
- 7lPagrK2S28ATugKW7HODfQ1dDd7pFes418ioZ7o7ZU73J8mwDENhGclmBn91xk0SlzKfvnVbi7
- 5YqF7xT68eY0VP3tD7JPON8zHDmEngH2dZZrq5VbC3H+w0alPrWtihSo4X35W0+8XOvAzN7Lv2h
- Ah50ca8+F56uPHOCZ7w==
-X-Authority-Analysis: v=2.4 cv=csCWUl4i c=1 sm=1 tr=0 ts=69a9bc9a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=i0EeH86SAAAA:8 a=20KFwNOVAAAA:8 a=FlYQV3jgbqAUZRz1eTYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 1tcHdgBiVXli_g0ESprzx_tD6GHaaEJp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-05_05,2026-03-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
- clxscore=1015 bulkscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050140
-X-Rspamd-Queue-Id: 5D9B4216421
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] kbuild: Switch from '-fms-extensions' to
+ '-fms-anonymous-structs' when available
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
+        llvm@lists.linux.dev
+References: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 37A35219735
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
+	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026022301];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-6248-lists,linux-efi=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,kernel.org,intel.com,redhat.com,huawei.com,ellerman.id.au,gmail.com,alien8.de,linux.intel.com,zytor.com,oracle.com,paul-moore.com,namei.org,hallyn.com,lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-6247-lists,linux-efi=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,arm.com,kernel.org,xen0n.name,HansenPartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,linaro.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[38];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zohar@linux.ibm.com,linux-efi@vger.kernel.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-efi];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hpa@zytor.com,linux-efi@vger.kernel.org];
+	DKIM_TRACE(0.00)[zytor.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-efi,lkml];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zytor.com:dkim,zytor.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Thu, 2026-03-05 at 13:55 +0100, Vasily Gorbik wrote:
-> On Fri, Feb 13, 2026 at 09:28:46AM +0800, Coiby Xu wrote:
-> > EVM and other LSMs need the ability to query the secure boot status of
-> > the system, without directly calling the IMA arch_ima_get_secureboot
-> > function. Refactor the secure boot status check into a general function
-> > named arch_get_secureboot.
-> >=20
-> > Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> > Suggested-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > Signed-off-by: Coiby Xu <coxu@redhat.com>
-> > ---
-> >  MAINTAINERS                                   |  1 +
-> >  arch/powerpc/kernel/ima_arch.c                |  5 --
-> >  arch/powerpc/kernel/secure_boot.c             |  6 ++
-> >  arch/s390/kernel/ima_arch.c                   |  6 --
-> >  arch/s390/kernel/ipl.c                        |  5 ++
-> >  arch/x86/include/asm/efi.h                    |  4 +-
-> >  arch/x86/platform/efi/efi.c                   |  2 +-
-> >  include/linux/ima.h                           |  7 +--
-> >  include/linux/secure_boot.h                   | 19 +++++++
-> >  security/integrity/Makefile                   |  3 +-
-> >  security/integrity/efi_secureboot.c           | 56 +++++++++++++++++++
-> >  security/integrity/ima/ima_appraise.c         |  2 +-
-> >  security/integrity/ima/ima_efi.c              | 47 +---------------
-> >  security/integrity/ima/ima_main.c             |  3 +-
-> >  security/integrity/integrity.h                |  1 +
-> >  security/integrity/platform_certs/load_uefi.c |  2 +-
-> >  security/integrity/secure_boot.c              | 16 ++++++
-> >  17 files changed, 115 insertions(+), 70 deletions(-)
-> >  create mode 100644 include/linux/secure_boot.h
-> >  create mode 100644 security/integrity/efi_secureboot.c
-> >  create mode 100644 security/integrity/secure_boot.c
->=20
-> This triggers a warning on s390:
->=20
-> arch/s390/kernel/ipl.c:2507:6: warning: no previous prototype for =E2=80=
-=98arch_get_secureboot=E2=80=99 [-Wmissing-prototypes]
->  2507 | bool arch_get_secureboot(void)
->       |      ^~~~~~~~~~~~~~~~~~~
->=20
-> @Mimi: could you please squash this fixup into the offending commit,
-> or pick it up separately?
+On 2026-02-23 11:10, Nathan Chancellor wrote:
+> Hi all,
+> 
+> The kernel enabled '-fms-extensions' in commit c4781dc3d1cf ("Kbuild:
+> enable -fms-extensions") in 6.19 to gain access to a Microsoft
+> (originally Plan 9) extension around including a tagged structure/union
+> anonymously in an other structure/union. Since then, Clang 23.0.0
+> (current main) has added a flag to enable only that extension, rather
+> than all Microsoft extensions, '-fms-anonymous-structs' [1]. Using this
+> narrower compiler option would have avoided the build error fixed by
+> commit a6773e6932cb ("jfs: Rename _inline to avoid conflict with clang's
+> '-fms-extensions'"). While these errors are not expected to be common,
+> using the narrower option when available has no drawbacks because the
+> kernel only cares about this extension in '-fms-extensions', no others.
+> While this could result in build errors for folks using
+> '-fms-anonymous-structs' if a developer uses another extension in
+> '-fms-extensions' (either intentionally or unintentionally), flagging
+> these uses for further scrutiny seems worthwhile.
+> 
+> This series converts the build system to use that flag when it is
+> available. The first patch consolidates all of the C dialect flags into
+> a single variable to make future updates to the dialect flags less
+> painful, as updating the logic in every place that uses their custom
+> built C flags is getting cumbersome (and C23 is looming). The second
+> patch makes the actual switch.
+> 
+> I would like Nicolas to carry this in the Kbuild tree for 7.1, please
+> provide Acks as necessary.
+> 
+> [1]: https://github.com/llvm/llvm-project/commit/c391efe6fb67329d8e2fd231692cc6b0ea902956
+> 
 
-Thanks, Vasily.  It's now squashed.
+Question: does clang allow this with __extension__, or only if the option is
+on the command line?  It would be desirable in the long run if both clang and
+gcc would allow this with __extension__, as that would be required to use it
+in uapi headers (at least without some doable-but-nontrivial preprocessing,
+which might be worthwhile to do anyway...)
 
-Mimi
+	-hpa
+
 
