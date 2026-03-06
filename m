@@ -1,71 +1,71 @@
-Return-Path: <linux-efi+bounces-6261-lists+linux-efi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-efi+bounces-6262-lists+linux-efi=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNMyOA/7qmmcZAEAu9opvQ
-	(envelope-from <linux-efi+bounces-6261-lists+linux-efi=lfdr.de@vger.kernel.org>)
-	for <lists+linux-efi@lfdr.de>; Fri, 06 Mar 2026 17:04:31 +0100
+	id wFI5HTT6qmmcZAEAu9opvQ
+	(envelope-from <linux-efi+bounces-6262-lists+linux-efi=lfdr.de@vger.kernel.org>)
+	for <lists+linux-efi@lfdr.de>; Fri, 06 Mar 2026 17:00:52 +0100
 X-Original-To: lists+linux-efi@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A03224860
-	for <lists+linux-efi@lfdr.de>; Fri, 06 Mar 2026 17:04:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6CA22473B
+	for <lists+linux-efi@lfdr.de>; Fri, 06 Mar 2026 17:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A7AF319E6D4
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Mar 2026 15:58:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A30D530AB64A
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Mar 2026 15:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441253EFD28;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA05C3F0749;
 	Fri,  6 Mar 2026 15:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FQW5IGVQ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hXc1BGKG"
 X-Original-To: linux-efi@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D593EF0A6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6553EF0BB
 	for <linux-efi@vger.kernel.org>; Fri,  6 Mar 2026 15:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772812650; cv=none; b=tqrpVlwICkkWEc9TBJS2Z7Ph012EiIjxXeSq53Bxnv22SmwjHbr0CVy0mIhbjc8HB/ZTuUpQsdE4QpufLeL034a944tFhDiLhFl9JScInBocV3BNLp0sfob/YTOBFbZ5Im5YL+eIwu05VM+VVEkUQVt7ZLP3aRiO0kA79RfVQSY=
+	t=1772812650; cv=none; b=NuCe8tL+H+n81XvcWxaMr/jor0CXMf1AOcIZkNufmNiPdVyCPsxhoTPyQb7m0QcrwspFYtoIYbZnBMwyU/1ZwZg2vSUIucEz3QaVLVhU7kwhffysajFY57q373i7o+uLyU4r6UyGt1e36NEzPEv54bzP5UcSC62yxjKmEkT1ew0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772812650; c=relaxed/simple;
-	bh=AcDvV7hr6f9ZvnKPw0LOtcj7T7Cb7fyegl+5ztfQwus=;
+	bh=5zd9SfMdyJBxjHTVPHqLum9qpDstlixyq0HqoJ8o+18=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PrIFvxLSHNByOC0biJ/e8W9jDRU3MA9DBQ1+0JrCbIzqLR8ZOIby47bOGEaPTW9/o6tHH28UZA4y0ikHVv+ptGKTa5E9Qz0qw4UM0Q4kR0tjM4AJrZCQAzx74UZAj37dvypRen2R8fxsc17WkFJ+Sko/K1JvumYxS485cvAYNDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FQW5IGVQ; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=uRmYLuz2MBF0xd2atUQhqY93ihNEhNi1uHDb4HbIaRmionmDVJTgJd2RiRxYdVpE3n3vr7AIhbCtUcIG1P1X37OgR7SRbemCoGZEj6Gy3ylCKgDzzftl+rW3hot1W5rMJx5pR+hk/3S5/rOu64Xo4/BHuwMKGLj5fhbLJ8rkV9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hXc1BGKG; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4837246211bso121720625e9.0
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4830e7c6131so97821095e9.2
         for <linux-efi@vger.kernel.org>; Fri, 06 Mar 2026 07:57:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772812646; x=1773417446; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1772812647; x=1773417447; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uUL+2jwG2aYHm6Demo1pooALvVPYq2HBm66gmXpaBJo=;
-        b=FQW5IGVQf2ZFh4X01lzvzWfVEzp+LdaXq+cYhSncdw1YWLHQWl97i4rgozfuIh4YYv
-         Z3vKsRY/7Ky2/Ex0YE1QNkaSKY3KjPa2QSvvtq80G8+wNtcCtfohmBRaqddhnz5hrZsW
-         ADN5bUXPhUJyJxLPTfyEHTI5seFQ9Hnkps115oWbo1dMLRQPWkPL1faiYf6MoakAv9kN
-         0wGia21ON+HcbvwNF4ekYD8rHdPiukgNZcSEn2dqnSjJYfuay7i04bNx3VxqAR3v1JFT
-         c2n8LNoHQxlv5cJ8BhTCjz5EPXdQdA5PNCCWPYBe8yw2lcTZVw4jZyrzCsY+bJHQvyd4
-         GLRg==
+        bh=rmprDLEjUjr/uUOMNaPL1M9LRCd51D3rl5+x6D9Z3Tc=;
+        b=hXc1BGKGk3kg30wOKdG6sGnzeP6AxG6uFxinPrNC15DNbRcu7QBTclzsiM9za00Zxm
+         YFZzwI9vZK/A7SzFIyDG7ipB/tqNGt5+/ayfTH+TVPpl9u1YiDyqNfXzbyixpfwbkngw
+         9jl8mvnLy/faVfXNZFf5wl/CU93TzjC+fV0lAJW/ZTRvvaTgKMqPKZAelFo5SWImIf4h
+         3Ao/2wpo3LzRp3jLP76hANEoIiWlDi1Sg5tHPBeaxrVyDnQzwUzuz8/oaOkuseqn+11V
+         TYkqUCcir0tFqfT+qJnK33J3jFXCwlncHKe6gc/BOXSau6dbIbvD55nNWRLugx64xnKf
+         fqeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772812646; x=1773417446;
+        d=1e100.net; s=20230601; t=1772812647; x=1773417447;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uUL+2jwG2aYHm6Demo1pooALvVPYq2HBm66gmXpaBJo=;
-        b=ZZN2UPvxNdG7d/u7GuXvl32Rqkm10kbl6/2zd48aYvhexOwQSP7U6hu4jDntkPShvB
-         bTU+X9QBvCVlFNxMpF/7Klfg0yQEgLBezSd/0bUPzkh4XkmdDaK5GpsNKIcwTxQlJvC2
-         Wv2EQX6SZe9YoK+e8EquDKv/TErSoqNfO1tnGb5Gso9uVhpRN52uMwYZTkKQvPqQSEnP
-         cwokw90MqVhL8Rv5ebNLffW8tH4UtbOhKzo8VF6exzzT6xtUKz+4lHfsR0A/W9pgh6VM
-         PilVua1w7ayle0olzdIIwUz61y+Gb5czuu6VcccOtRP5ZOJF0WOiM/GJzXFSixw9SykL
-         /28Q==
-X-Gm-Message-State: AOJu0YwbeOiAfk+fPPFW/tr5XHyc6kGrvW34IELU9SJA3rTciRDvkZH4
-	Zf0V6VrZDWZupE9DBe9B8cpOQr9H1w78TahBaNjzZaIVSDpZTRH6Y6QKpQ8++LHnaLunyhyqiQ=
+        bh=rmprDLEjUjr/uUOMNaPL1M9LRCd51D3rl5+x6D9Z3Tc=;
+        b=cbqp+mpG8NY9YPb1Q+sNzTjWk9ygQSQ581LitahohRr9dk3F6d+cpk+Wys38jtjkZq
+         QpzwcLi+3pcEtNykAkHHLpk8qnNQE+0NXgQhiIwIkTBYUSZzUqvby+ZGR/C0y+dwpPco
+         bd271HZ3ajWuMY8qFUuH8GoW2RVQO3d/bLsIu0Z8wlsTxuB0ITXLhSrUeSXh7nlv84su
+         mNDcg4tmA8keZQk4P9uSE5N+mU+oxc4NQ9j2MoFLbeNIVBooUkzMCwNm+mDBI1yo8tyU
+         Wj51c1nX7eCWKRq11BpoekHwZdFcNG87fzrZ66Gtys7k/yEEh8RsgBcbRYF6Rce7XHxD
+         W4nA==
+X-Gm-Message-State: AOJu0YzjlaRoettbnYpPp6crbeVFgHUiV7Dcem7K7H5pzpEQpC9zwRvq
+	ATWT+NTjrKcH1FTIrvMiutu0BMQrKxUWMRtvC/ZHemnYxREvHPPxGNuBe7Xj4Zt2y/7oAhPHNQ=
 	=
-X-Received: from wmqn19.prod.google.com ([2002:a05:600c:4f93:b0:483:a1ee:5eb8])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:6386:b0:483:afbb:a064
- with SMTP id 5b1f17b1804b1-48526918f7fmr47374065e9.1.1772812646554; Fri, 06
- Mar 2026 07:57:26 -0800 (PST)
-Date: Fri,  6 Mar 2026 16:57:12 +0100
+X-Received: from wmjy24.prod.google.com ([2002:a7b:cd98:0:b0:485:2ab7:1775])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:a0d:b0:485:1878:7b8c
+ with SMTP id 5b1f17b1804b1-4852695b6fcmr41463395e9.18.1772812647341; Fri, 06
+ Mar 2026 07:57:27 -0800 (PST)
+Date: Fri,  6 Mar 2026 16:57:13 +0100
 In-Reply-To: <20260306155703.815272-12-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-efi@vger.kernel.org
@@ -75,288 +75,254 @@ List-Unsubscribe: <mailto:linux-efi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260306155703.815272-12-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7331; i=ardb@kernel.org;
- h=from:subject; bh=QVcwFSJX1AHsu94pZJ2sqfnsDGPzuZFlAdmjpouGCM8=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIXPVz5DtH4KtmL+Fv049n8IrOol/LaPi4kWK13kXHbqUu
- u5l2JGUjlIWBjEuBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCR1lCG//Xrp1YwPzPlEF+w
- bhPjwt3X3+6/IOQ0J+FTZFep6et3Tj8ZGT4c0r0veCXzoYicc2ntltM/z8jm9gUk5fK+SbOtMVx YywAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6680; i=ardb@kernel.org;
+ h=from:subject; bh=hw+BPkyMQz0wZCk+FdNvJtlzl9MRgrvosyieBfbdoWE=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIXPVz5AK78klujLeSpYr56mwCLXJ25x16v/zJv7DZZ9vJ
+ Qbmz/d2lLIwiHExyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIlwVzEy9M5Ouli1S+Zvi19s
+ yIccya9X5r745Px09bad9z0v8Hg5zWP4K6LQvOKg4knf4z9Lb5yOW6NelXjz6RyHc2EsZ7b1vQu vZQAA
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260306155703.815272-20-ardb+git@google.com>
-Subject: [RFC PATCH 7/9] x86/efi: Reuse memory map instead of reallocating it
+Message-ID: <20260306155703.815272-21-ardb+git@google.com>
+Subject: [RFC PATCH 8/9] x86/efi: Defer compaction of the EFI memory map
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-efi@vger.kernel.org, x86@kernel.org, 
 	Ard Biesheuvel <ardb@kernel.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
 	Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 74A03224860
+X-Rspamd-Queue-Id: EE6CA22473B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6261-lists,linux-efi=lfdr.de,git];
+	TAGGED_FROM(0.00)[bounces-6262-lists,linux-efi=lfdr.de,git];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ardb@google.com,linux-efi@vger.kernel.org];
 	DKIM_TRACE(0.00)[google.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-efi];
-	NEURAL_HAM(-0.00)[-0.931];
+	NEURAL_HAM(-0.00)[-0.932];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-The EFI memory map consists of 10s to 100s of entries of around 40 bytes
-each. The initial version is allocated and populated by the EFI stub,
-but later on, after freeing the boot services data regions and pruning
-the associated entries, a new memory map is allocated with room for only
-the remaining entries, which are typically much fewer in number.
+Currently, the EFI memory map is compacted early at boot, to leave only
+the entries that are significant to the current kernel or potentially a
+kexec'ed kernel that comes after, and to suppress all boot services code
+and data entries that have no correspondence with anything that either
+the firmware or the kernel treats as reserved for firmware use.
 
-Given that the original allocation is never freed, this does not
-actually save any memory, and it is much simpler to just move the
-entries that need to be preserved to the beginning of the map, and to
-truncate it. That way, a lot of the complicated memory map allocation
-and freeing code can simply be dropped.
+Given that actually freeing those regions to the page allocator is not
+possible yet at this point, those suppressed entries are converted into
+yet another type of temporary memory reservation map, and freed during
+an arch_initcall(), which is the earliest convenient time to actually
+perform this operation.
+
+Given that compacting the memory map does not need to occur that early
+to begin with, move it to the arch_initcall(). This removes the need for
+the special memory reservation map, as the entries still exist at this
+point, and can be consulted directly to decide whether they need to be
+preserved in their entirety or only partially.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/include/asm/efi.h     |  3 -
- arch/x86/platform/efi/memmap.c | 83 +-------------------
- arch/x86/platform/efi/quirks.c | 30 +++----
- include/linux/efi.h            |  2 -
- 4 files changed, 10 insertions(+), 108 deletions(-)
+ arch/x86/platform/efi/quirks.c | 130 +++++++-------------
+ 1 file changed, 46 insertions(+), 84 deletions(-)
 
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index b01dd639bf62..ec352a8f6e7a 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -392,9 +392,6 @@ static inline void efi_reserve_boot_services(void)
- }
- #endif /* CONFIG_EFI */
- 
--extern int __init efi_memmap_alloc(unsigned int num_entries,
--				   struct efi_memory_map_data *data);
--
- extern int __init efi_memmap_install(struct efi_memory_map_data *data);
- 
- extern enum efi_secureboot_mode __x86_ima_efi_boot_mode(void);
-diff --git a/arch/x86/platform/efi/memmap.c b/arch/x86/platform/efi/memmap.c
-index 8ef45014c7e7..951a90235abb 100644
---- a/arch/x86/platform/efi/memmap.c
-+++ b/arch/x86/platform/efi/memmap.c
-@@ -8,78 +8,7 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/efi.h>
--#include <linux/io.h>
--#include <asm/early_ioremap.h>
- #include <asm/efi.h>
--#include <linux/memblock.h>
--#include <linux/slab.h>
--
--static phys_addr_t __init __efi_memmap_alloc_early(unsigned long size)
--{
--	return memblock_phys_alloc(size, SMP_CACHE_BYTES);
--}
--
--static phys_addr_t __init __efi_memmap_alloc_late(unsigned long size)
--{
--	unsigned int order = get_order(size);
--	struct page *p = alloc_pages(GFP_KERNEL, order);
--
--	if (!p)
--		return 0;
--
--	return PFN_PHYS(page_to_pfn(p));
--}
--
--static
--void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
--{
--	if (flags & EFI_MEMMAP_MEMBLOCK) {
--		if (slab_is_available())
--			memblock_free_late(phys, size);
--		else
--			memblock_phys_free(phys, size);
--	} else if (flags & EFI_MEMMAP_SLAB) {
--		struct page *p = pfn_to_page(PHYS_PFN(phys));
--		unsigned int order = get_order(size);
--
--		__free_pages(p, order);
--	}
--}
--
--/**
-- * efi_memmap_alloc - Allocate memory for the EFI memory map
-- * @num_entries: Number of entries in the allocated map.
-- * @data: efi memmap installation parameters
-- *
-- * Depending on whether mm_init() has already been invoked or not,
-- * either memblock or "normal" page allocation is used.
-- *
-- * Returns zero on success, a negative error code on failure.
-- */
--int __init efi_memmap_alloc(unsigned int num_entries,
--		struct efi_memory_map_data *data)
--{
--	/* Expect allocation parameters are zero initialized */
--	WARN_ON(data->phys_map || data->size);
--
--	data->size = num_entries * efi.memmap.desc_size;
--	data->desc_version = efi.memmap.desc_version;
--	data->desc_size = efi.memmap.desc_size;
--	data->flags &= ~(EFI_MEMMAP_SLAB | EFI_MEMMAP_MEMBLOCK);
--	data->flags |= efi.memmap.flags & EFI_MEMMAP_LATE;
--
--	if (slab_is_available()) {
--		data->flags |= EFI_MEMMAP_SLAB;
--		data->phys_map = __efi_memmap_alloc_late(data->size);
--	} else {
--		data->flags |= EFI_MEMMAP_MEMBLOCK;
--		data->phys_map = __efi_memmap_alloc_early(data->size);
--	}
--
--	if (!data->phys_map)
--		return -ENOMEM;
--	return 0;
--}
- 
- /**
-  * efi_memmap_install - Install a new EFI memory map in efi.memmap
-@@ -93,20 +22,10 @@ int __init efi_memmap_alloc(unsigned int num_entries,
-  */
- int __init efi_memmap_install(struct efi_memory_map_data *data)
- {
--	unsigned long size = efi.memmap.desc_size * efi.memmap.nr_map;
--	unsigned long flags = efi.memmap.flags;
--	u64 phys = efi.memmap.phys_map;
--	int ret;
--
- 	efi_memmap_unmap();
- 
- 	if (efi_enabled(EFI_PARAVIRT))
- 		return 0;
- 
--	ret = __efi_memmap_init(data);
--	if (ret)
--		return ret;
--
--	__efi_memmap_free(phys, size, flags);
--	return 0;
-+	return __efi_memmap_init(data);
- }
 diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 8a4a0c6b64bc..5bf97376c1a0 100644
+index 5bf97376c1a0..d7a64b404bea 100644
 --- a/arch/x86/platform/efi/quirks.c
 +++ b/arch/x86/platform/efi/quirks.c
-@@ -359,12 +359,15 @@ static struct efi_freeable_range *ranges_to_free;
+@@ -350,37 +350,10 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+ 		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
+ }
  
+-struct efi_freeable_range {
+-	u64 start;
+-	u64 end;
+-};
+-
+-static struct efi_freeable_range *ranges_to_free;
+-
  void __init efi_unmap_boot_services(void)
  {
--	struct efi_memory_map_data data = { 0 };
+-	struct efi_memory_map_data data = {
+-		.phys_map	= efi.memmap.phys_map,
+-		.desc_version	= efi.memmap.desc_version,
+-		.desc_size	= efi.memmap.desc_size,
+-	};
+ 	efi_memory_desc_t *md;
+-	void *new_md;
+-	int idx = 0;
+-	size_t sz;
+ 
+-	/* Keep all regions for /sys/kernel/debug/efi */
+-	if (efi_enabled(EFI_DBG))
+-		return;
+-
+-	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
+-	ranges_to_free = kzalloc(sz, GFP_KERNEL);
+-	if (!ranges_to_free) {
+-		pr_err("Failed to allocate storage for freeable EFI regions\n");
+-		return;
+-	}
+-
+-	new_md = efi.memmap.map;
+ 	for_each_efi_memory_desc(md) {
+ 		unsigned long long start = md->phys_addr;
+ 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+@@ -394,15 +367,10 @@ void __init efi_unmap_boot_services(void)
+ 		/*
+ 		 * Before calling set_virtual_address_map(), EFI boot services
+ 		 * code/data regions were mapped as a quirk for buggy firmware.
+-		 * Unmap them from efi_pgd before freeing them up.
++		 * Unmap them from efi_pgd, they will be freed later.
+ 		 */
+ 		efi_unmap_pages(md);
+ 
+-		/* Do not free, someone else owns it: */
+-		if (md->attribute & EFI_MEMORY_RUNTIME) {
+-			continue;
+-		}
+-
+ 		/*
+ 		 * Nasty quirk: if all sub-1MB memory is used for boot
+ 		 * services, we can get here without having allocated the
+@@ -416,49 +384,14 @@ void __init efi_unmap_boot_services(void)
+ 		 * this happened, but Linux should still try to boot rather
+ 		 * panicking early.)
+ 		 */
+-		rm_size = real_mode_size_needed();
++		rm_size = PAGE_ALIGN(real_mode_size_needed());
+ 		if (rm_size && (start + rm_size) < (1<<20) && size >= rm_size) {
+ 			set_real_mode_mem(start);
+-			start += rm_size;
+-			size -= rm_size;
+-		}
+-
+-		/*
+-		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
+-		 * map are still not initialized and we can't reliably free
+-		 * memory here.
+-		 * Queue the ranges to free at a later point.
+-		 */
+-		ranges_to_free[idx].start = start;
+-		ranges_to_free[idx].end = start + size;
+-		idx++;
+-	}
+ 
+-	/*
+-	 * Build a new EFI memmap that excludes any boot services
+-	 * regions that are not tagged EFI_MEMORY_RUNTIME, since those
+-	 * regions have now been freed.
+-	 */
+-	new_md = efi.memmap.map;
+-	for_each_efi_memory_desc(md) {
+-		if (!(md->attribute & EFI_MEMORY_RUNTIME) &&
+-		    (md->type == EFI_BOOT_SERVICES_CODE ||
+-		     md->type == EFI_BOOT_SERVICES_DATA) &&
+-		    !e820__mapped_any(md->phys_addr,
+-				      md->phys_addr + md->num_pages * EFI_PAGE_SIZE,
+-				      E820_TYPE_RESERVED)) {
+-			continue;
++			/* Remove the allocated space from the descriptor */
++			md->phys_addr += rm_size;
++			md->num_pages -= rm_size / EFI_PAGE_SIZE;
+ 		}
+-
+-		memcpy(new_md, md, efi.memmap.desc_size);
+-		new_md += efi.memmap.desc_size;
+-	}
+-
+-	data.size = new_md - efi.memmap.map;
+-
+-	if (efi_memmap_install(&data) != 0) {
+-		pr_err("Could not install new EFI memmap\n");
+-		return;
+ 	}
+ }
+ 
+@@ -498,24 +431,53 @@ efi_free_unreserved_subregions(u64 range_start, u64 range_end)
+ 
+ static int __init efi_free_boot_services(void)
+ {
+-	struct efi_freeable_range *range = ranges_to_free;
 +	struct efi_memory_map_data data = {
 +		.phys_map	= efi.memmap.phys_map,
 +		.desc_version	= efi.memmap.desc_version,
 +		.desc_size	= efi.memmap.desc_size,
 +	};
- 	efi_memory_desc_t *md;
--	int num_entries = 0;
+ 	unsigned long freed = 0;
++	efi_memory_desc_t *md;
 +	void *new_md;
- 	int idx = 0;
- 	size_t sz;
--	void *new, *new_md;
  
- 	/* Keep all regions for /sys/kernel/debug/efi */
- 	if (efi_enabled(EFI_DBG))
-@@ -377,6 +380,7 @@ void __init efi_unmap_boot_services(void)
- 		return;
- 	}
+-	if (!ranges_to_free)
++	/* Keep all regions for /sys/kernel/debug/efi */
++	if (efi_enabled(EFI_DBG))
+ 		return 0;
  
+-	while (range->start) {
+-		/*
+-		 * Don't free memory under 1M for two reasons:
+-		 * - BIOS might clobber it
+-		 * - Crash kernel needs it to be reserved
+-		 */
+-		u64 start = max(range->start, SZ_1M);
 +	new_md = efi.memmap.map;
- 	for_each_efi_memory_desc(md) {
- 		unsigned long long start = md->phys_addr;
- 		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
-@@ -384,7 +388,6 @@ void __init efi_unmap_boot_services(void)
++	for_each_efi_memory_desc(md) {
++		u64 md_start = max(md->phys_addr, SZ_1M);
++		u64 md_end = md->phys_addr + md->num_pages * EFI_PAGE_SIZE;
++		bool preserve_entry = true;
++
++		if (!(md->attribute & EFI_MEMORY_RUNTIME) &&
++		    (md->type == EFI_BOOT_SERVICES_CODE ||
++		     md->type == EFI_BOOT_SERVICES_DATA)) {
++			u64 f = efi_free_unreserved_subregions(md_start, md_end);
++
++			/*
++			 * Omit the memory map entry of this region only if it
++			 * has been freed entirely. This ensures that boot data
++			 * regions for things like ESRT and BGRT tables carry
++			 * over correctly during kexec.
++			 */
++			if (f == md_end - md_start)
++				preserve_entry = false;
++
++			freed += f;
++		}
  
- 		if (md->type != EFI_BOOT_SERVICES_CODE &&
- 		    md->type != EFI_BOOT_SERVICES_DATA) {
--			num_entries++;
- 			continue;
- 		}
- 
-@@ -397,7 +400,6 @@ void __init efi_unmap_boot_services(void)
- 
- 		/* Do not free, someone else owns it: */
- 		if (md->attribute & EFI_MEMORY_RUNTIME) {
--			num_entries++;
- 			continue;
- 		}
- 
-@@ -432,26 +434,12 @@ void __init efi_unmap_boot_services(void)
- 		idx++;
+-		freed += efi_free_unreserved_subregions(start, range->end);
+-		range++;
++		if (preserve_entry) {
++			if (new_md != md)
++				memcpy(new_md, md, efi.memmap.desc_size);
++			new_md += efi.memmap.desc_size;
++		}
  	}
- 
--	if (!num_entries)
--		return;
--
--	if (efi_memmap_alloc(num_entries, &data) != 0) {
--		pr_err("Failed to allocate new EFI memmap\n");
--		return;
--	}
--
--	new = memremap(data.phys_map, data.size, MEMREMAP_WB);
--	if (!new) {
--		pr_err("Failed to map new EFI memmap\n");
--		return;
--	}
--
- 	/*
- 	 * Build a new EFI memmap that excludes any boot services
- 	 * regions that are not tagged EFI_MEMORY_RUNTIME, since those
- 	 * regions have now been freed.
- 	 */
--	new_md = new;
-+	new_md = efi.memmap.map;
- 	for_each_efi_memory_desc(md) {
- 		if (!(md->attribute & EFI_MEMORY_RUNTIME) &&
- 		    (md->type == EFI_BOOT_SERVICES_CODE ||
-@@ -466,7 +454,7 @@ void __init efi_unmap_boot_services(void)
- 		new_md += efi.memmap.desc_size;
- 	}
- 
--	memunmap(new);
+-	kfree(ranges_to_free);
++
 +	data.size = new_md - efi.memmap.map;
++
++	if (efi_memmap_install(&data) != 0)
++		pr_err("Could not install new EFI memmap\n");
  
- 	if (efi_memmap_install(&data) != 0) {
- 		pr_err("Could not install new EFI memmap\n");
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 664898d09ff5..dbf5971dd1c5 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -572,8 +572,6 @@ struct efi_memory_map {
- 	unsigned long desc_version;
- 	unsigned long desc_size;
- #define EFI_MEMMAP_LATE (1UL << 0)
--#define EFI_MEMMAP_MEMBLOCK (1UL << 1)
--#define EFI_MEMMAP_SLAB (1UL << 2)
- 	unsigned long flags;
- };
- 
+ 	if (freed)
+ 		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
 -- 
 2.53.0.473.g4a7958ca14-goog
 
